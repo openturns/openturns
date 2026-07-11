@@ -27,6 +27,7 @@
 #include "openturns/Compact.hxx"
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
@@ -54,7 +55,7 @@ public:
   RandomVector getEvent() const;
 
   /** Result accessor */
-  ProbabilitySimulationResult getResult() const;
+  SimulationResult getResult() const;
 
   /** String converter */
   String __repr__() const override;

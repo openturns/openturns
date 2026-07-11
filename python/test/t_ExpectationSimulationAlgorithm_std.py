@@ -52,7 +52,7 @@ print("algo=", algo)
 algo.run()
 
 # Stream out the result
-result = algo.getResult()
+result = ot.ExpectationSimulationResult(algo.getResult())
 print("result=", result)
 
 ref_mu = composite.getSample(1000000).computeMean()

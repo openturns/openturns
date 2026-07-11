@@ -70,7 +70,7 @@ for experiment in experiments:
 
     # Stream out the result
     print("algo result=", myAlgo.getResult())
-    print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())
+    print("probability distribution=", ot.ProbabilitySimulationResult(myAlgo.getResult()).getProbabilityDistribution())
 
     # Use the standard deviation as a stopping rule
     experiment = ot.MonteCarloExperiment()
@@ -89,7 +89,7 @@ for experiment in experiments:
 
     # Stream out the result
     print("algo result=", myAlgo.getResult())
-    print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())
+    print("probability distribution=", ot.ProbabilitySimulationResult(myAlgo.getResult()).getProbabilityDistribution())
 
 print("-" * 32)
 ot.RandomGenerator.SetSeed(0)
@@ -131,4 +131,28 @@ for i, event in enumerate(all_events):
         pass
     myAlgo.run()
     print("MonteCarlo result=", myAlgo.getResult())
-    print("probability distribution=", myAlgo.getResult().getProbabilityDistribution())
+    print("probability distribution=", ot.ProbabilitySimulationResult(myAlgo.getResult()).getProbabilityDistribution())
+
+# Test setter of event
+ot.RandomGenerator.SetSeed(0)
+experiment = ot.MonteCarloExperiment()
+X = ot.RandomVector(ot.Normal())
+Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
+event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
+algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
+algo.setMaximumOuterSampling(100000)
+algo.setMaximumCoefficientOfVariation(0.01)
+algo.run()
+result = algo.getResult()
+assert_almost_equal(
+    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-1, 0.0
+)
+Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["2*X"]), X)
+event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
+algo.setEvent(event2)
+ot.RandomGenerator.SetSeed(0)
+algo.run()
+result2 = algo.getResult()
+assert_almost_equal(
+    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-1, 0.0
+)

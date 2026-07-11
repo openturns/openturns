@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of SimulationResult
+ *  @brief Implementation of SimulationResultImplementation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -22,7 +22,7 @@
 #define OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 
 #include "openturns/RandomVector.hxx"
-#include "openturns/SimulationResult.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/Graph.hxx"
@@ -33,10 +33,10 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class ProbabilitySimulationResult
- * Implementation of SimulationResult
+ * Implementation of SimulationResultImplementation
  */
 class OT_API ProbabilitySimulationResult
-  : public SimulationResult
+  : public SimulationResultImplementation
 {
 
   CLASSNAME

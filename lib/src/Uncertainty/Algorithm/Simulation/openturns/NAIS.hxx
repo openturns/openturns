@@ -22,6 +22,7 @@
 #define OPENTURNS_NAIS_HXX
 
 #include "openturns/EventSimulation.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/NAISResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -59,7 +60,7 @@ public:
   String __repr__() const override;
 
   /** Accessor to results */
-  NAISResult getResult() const;
+  SimulationResult getResult() const;
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;

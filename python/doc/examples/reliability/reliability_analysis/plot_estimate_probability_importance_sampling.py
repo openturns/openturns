@@ -120,7 +120,7 @@ algo.run()
 
 # %%
 # We can retrieve results of this estimate :
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 probability = result.getProbabilityEstimate()
 print("Probability = ", probability)
 

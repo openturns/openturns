@@ -3,7 +3,7 @@
 
 See also
 --------
-NAIS, SimulationResult"
+NAIS, SimulationResultImplementation, SimulationResult"
 
 // ---------------------------------------------------------------------------
 

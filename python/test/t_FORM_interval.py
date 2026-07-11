@@ -55,7 +55,7 @@ for domain in intervals:
     ot.RandomGenerator.SetSeed(0)
     algo = ot.ProbabilitySimulationAlgorithm(event, ot.MonteCarloExperiment())
     algo.run()
-    res = algo.getResult().getProbabilityEstimate()
+    res = ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate()
     print("MC p=%.6g" % res)
 
     ot.RandomGenerator.SetSeed(0)

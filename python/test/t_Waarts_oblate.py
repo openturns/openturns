@@ -236,7 +236,7 @@ SensitivityAR = resultAR.getEventProbabilitySensitivity()
 
 #
 # Monte Carlo
-ResultMC = myMC.getResult()
+ResultMC = ot.ProbabilitySimulationResult(myMC.getResult())
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
@@ -247,7 +247,7 @@ ott.assert_almost_equal(PFMC, 0.0869565)
 
 #
 # LHS
-ResultLHS = myLHS.getResult()
+ResultLHS = ot.ProbabilitySimulationResult(myLHS.getResult())
 PFLHS = ResultLHS.getProbabilityEstimate()
 CVLHS = ResultLHS.getCoefficientOfVariation()
 Variance_PF_LHS = ResultLHS.getVarianceEstimate()
@@ -258,7 +258,7 @@ ott.assert_almost_equal(PFLHS, 0.126801)
 
 #
 # Directional Sampling
-ResultDS1 = myDS1.getResult()
+ResultDS1 = ot.ProbabilitySimulationResult(myDS1.getResult())
 PFDS1 = ResultDS1.getProbabilityEstimate()
 CVDS1 = ResultDS1.getCoefficientOfVariation()
 Variance_PF_DS1 = ResultDS1.getVarianceEstimate()
@@ -267,7 +267,7 @@ length90DS1 = ResultDS1.getProbabilityDistribution().computeBilateralConfidenceI
 )
 ott.assert_almost_equal(PFDS1, 0.119112)
 
-ResultDS2 = myDS2.getResult()
+ResultDS2 = ot.ProbabilitySimulationResult(myDS2.getResult())
 PFDS2 = ResultDS2.getProbabilityEstimate()
 CVDS2 = ResultDS2.getCoefficientOfVariation()
 Variance_PF_DS2 = ResultDS2.getVarianceEstimate()
@@ -276,7 +276,7 @@ length90DS2 = ResultDS2.getProbabilityDistribution().computeBilateralConfidenceI
 )
 ott.assert_almost_equal(PFDS2, 0.205649)
 
-ResultDS3 = myDS3.getResult()
+ResultDS3 = ot.ProbabilitySimulationResult(myDS3.getResult())
 PFDS3 = ResultDS3.getProbabilityEstimate()
 CVDS3 = ResultDS3.getCoefficientOfVariation()
 Variance_PF_DS3 = ResultDS3.getVarianceEstimate()
@@ -287,7 +287,7 @@ ott.assert_almost_equal(PFDS3, 0.093882)
 
 #
 # Importance Sampling
-ResultISS = myISS.getResult()
+ResultISS = ot.ProbabilitySimulationResult(myISS.getResult())
 PFISS = ResultISS.getProbabilityEstimate()
 CVISS = ResultISS.getCoefficientOfVariation()
 Variance_PF_ISS = ResultISS.getVarianceEstimate()
@@ -296,7 +296,7 @@ length90ISS = ResultISS.getProbabilityDistribution().computeBilateralConfidenceI
 )
 ott.assert_almost_equal(PFISS, 0.130078)
 
-ResultIS = myIS.getResult()
+ResultIS = ot.ProbabilitySimulationResult(myIS.getResult())
 PFIS = ResultIS.getProbabilityEstimate()
 CVIS = ResultIS.getCoefficientOfVariation()
 Variance_PF_IS = ResultIS.getVarianceEstimate()

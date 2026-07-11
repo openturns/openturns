@@ -113,7 +113,7 @@ myMC.setMaximumOuterSampling(1000)
 myMC.setBlockSize(100)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
-result = myMC.getResult()
+result = ot.ProbabilitySimulationResult(myMC.getResult())
 ott.assert_almost_equal(result.getProbabilityEstimate(), 0.0133333)
 
 #

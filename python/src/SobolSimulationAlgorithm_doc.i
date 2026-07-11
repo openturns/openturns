@@ -97,7 +97,7 @@ This means that for each iteration, the model is evaluated 4 times:
 >>> algo.setIndexQuantileLevel(0.05)  # alpha
 >>> algo.setIndexQuantileEpsilon(1e-2)  # epsilon
 >>> algo.run()
->>> result = algo.getResult()
+>>> result = ot.SobolSimulationResult(algo.getResult())
 >>> fo = result.getFirstOrderIndicesEstimate()
 >>> foDist = result.getFirstOrderIndicesDistribution()
 )RAW"
@@ -109,7 +109,7 @@ This means that for each iteration, the model is evaluated 4 times:
 
 Returns
 -------
-result : :class:`~openturns.SobolSimulationResult`
+result : :class:`~openturns.SimulationResult`
     The simulation result."
 
 // ---------------------------------------------------------------------

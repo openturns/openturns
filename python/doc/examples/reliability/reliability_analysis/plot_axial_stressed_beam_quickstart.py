@@ -156,7 +156,7 @@ algoMC.run()
 # We can then get the results of the algorithm.
 
 # %%
-result = algoMC.getResult()
+result = ot.ProbabilitySimulationResult(algoMC.getResult())
 probability = result.getProbabilityEstimate()
 numberOfFunctionEvaluations = (
     limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall

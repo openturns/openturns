@@ -169,7 +169,7 @@ MC_algo.setBlockSize(100)
 MC_algo.setMaximumCoefficientOfVariation(0.01)
 MC_algo.run()
 
-result = MC_algo.getResult()
+result = ot.ProbabilitySimulationResult(MC_algo.getResult())
 
 proba = result.getProbabilityEstimate()
 print("Probability = ", proba)

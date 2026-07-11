@@ -53,7 +53,7 @@ algo.setMaximumOuterSampling(int(n_MC))
 algo.run()
 
 # retrieve results
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 probability = result.getProbabilityEstimate()
 assert_almost_equal(probability, 0.0023828813801648916)
 
@@ -71,7 +71,7 @@ Nais_algo.setKeepSample(True)
 
 # Run of the algorithm
 Nais_algo.run()
-NAIS_result = Nais_algo.getResult()
+NAIS_result = ot.NAISResult(Nais_algo.getResult())
 
 assert_almost_equal(NAIS_result.getProbabilityEstimate(), 0.00215688)
 

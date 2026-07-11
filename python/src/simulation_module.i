@@ -55,6 +55,7 @@
 %include SobolIndicesExperiment.i
 
 /* Uncertainty/Algorithm/Simulation */
+%include SimulationResultImplementation.i
 %include SimulationResult.i
 %include ProbabilitySimulationResult.i
 %include SimulationAlgorithm.i

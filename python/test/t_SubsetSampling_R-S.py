@@ -58,7 +58,7 @@ mySS.run()
 #
 
 # Monte Carlo
-resultMC = myMC.getResult()
+resultMC = ot.ProbabilitySimulationResult(myMC.getResult())
 PFMC = resultMC.getProbabilityEstimate()
 CVMC = resultMC.getCoefficientOfVariation()
 variance_PF_MC = resultMC.getVarianceEstimate()
@@ -69,7 +69,7 @@ N_MC = resultMC.getOuterSampling() * resultMC.getBlockSize()
 
 #
 # SubsetSampling
-resultSS = mySS.getResult()
+resultSS = ot.ProbabilitySimulationResult(mySS.getResult())
 PFSS = resultSS.getProbabilityEstimate()
 CVSS = resultSS.getCoefficientOfVariation()
 variance_PF_SS = resultSS.getVarianceEstimate()
@@ -117,7 +117,7 @@ print("MC:    ", result)
 subset = ot.SubsetSampling(event)
 subset.setBlockSize(18)
 subset.run()
-result = subset.getResult()
+result = ot.ProbabilitySimulationResult(subset.getResult())
 print("SUBSET:", result)
 assert subset.getStepsNumber() == 1, "wrong steps"
 assert result.getProbabilityEstimate() == 1.0, "wrong pf"

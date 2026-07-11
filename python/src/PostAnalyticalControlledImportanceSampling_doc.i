@@ -143,6 +143,6 @@ Create the post analytical importance sampling algorithm and launch it:
 
 >>> algo = ot.PostAnalyticalControlledImportanceSampling(analyticalResult)
 >>> algo.run()
->>> result = algo.getResult()
+>>> result = ot.ProbabilitySimulationResult(algo.getResult())
 >>> pf = result.getProbabilityEstimate()
 )RAW"

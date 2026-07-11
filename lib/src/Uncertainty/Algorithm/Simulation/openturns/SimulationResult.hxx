@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Base class for simulation results
+ *  @brief Result of a simulation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -21,31 +21,43 @@
 #ifndef OPENTURNS_SIMULATIONRESULT_HXX
 #define OPENTURNS_SIMULATIONRESULT_HXX
 
-#include "openturns/PersistentObject.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class SimulationResult
- * Implementation of SimulationResult
+ *
+ * Result of a simulation.
  */
 class OT_API SimulationResult
-  : public PersistentObject
+  : public TypedInterfaceObject<SimulationResultImplementation>
 {
-
   CLASSNAME
 public:
-
 
   /** Default constructor */
   SimulationResult();
 
-  /** Standard constructor */
-  SimulationResult(const UnsignedInteger outerSampling,
-                   const UnsignedInteger blockSize);
+  /** Constructor from implementation */
+  SimulationResult(const SimulationResultImplementation & implementation);
 
-  /** Virtual constructor */
-  SimulationResult * clone() const override;
+  /** Constructor from implementation pointer */
+#ifndef SWIG
+  SimulationResult(SimulationResultImplementation * p_implementation);
+#endif
+
+  /** Constructor from implementation */
+  SimulationResult(const Implementation & p_implementation);
+
+  /** Comparison operator */
+  using TypedInterfaceObject<SimulationResultImplementation>::operator ==;
+  Bool operator ==(const SimulationResult & other) const;
+
+  /** Comparison operator */
+  using TypedInterfaceObject<SimulationResultImplementation>::operator !=;
+  Bool operator !=(const SimulationResult & other) const;
 
   /** Sample size accessor */
   UnsignedInteger getOuterSampling() const;
@@ -61,18 +73,6 @@ public:
 
   /** String converter */
   String __repr__() const override;
-
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-
-protected:
-
-  UnsignedInteger outerSampling_ = 0;
-  UnsignedInteger blockSize_ = 0;
-  Scalar timeDuration_ = 0.0;
 
 }; // class SimulationResult
 

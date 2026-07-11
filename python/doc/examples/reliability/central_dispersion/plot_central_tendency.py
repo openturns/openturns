@@ -78,7 +78,7 @@ algo.setMaximumOuterSampling(1000)
 algo.setCoefficientOfVariationCriterionType("NONE")
 algo.run()
 print("model evaluation calls number=", f.getEvaluationCallsNumber())
-expectation_result = algo.getResult()
+expectation_result = ot.ExpectationSimulationResult(algo.getResult())
 expectation_mean = expectation_result.getExpectationEstimate()
 print(
     "monte carlo mean=",

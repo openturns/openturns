@@ -100,12 +100,12 @@ quantileLevel : float
 // ---------------------------------------------------------------------------
 
 %feature("docstring") OT::CrossEntropyImportanceSampling::getResult
-"Accessor to the intermediate quantile level.
+"Accessor to the result.
 
 Returns
 -------
-CrossEntropyResult : :class:`~openturns.CrossEntropyResult`
-    Contains all the results of the Cross Entropy algorithm simulation."
+result : :class:`~openturns.SimulationResult`
+    The simulation result."
     
 // ---------------------------------------------------------------------------
 

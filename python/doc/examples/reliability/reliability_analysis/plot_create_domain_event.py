@@ -184,7 +184,7 @@ algoMC.setMaximumOuterSampling(1000)
 algoMC.setBlockSize(100)
 algoMC.setMaximumCoefficientOfVariation(0.02)
 algoMC.run()
-print("Pf = %.4f" % algoMC.getResult().getProbabilityEstimate())
+print("Pf = %.4f" % ot.ProbabilitySimulationResult(algoMC.getResult()).getProbabilityEstimate())
 
 
 # %%

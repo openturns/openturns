@@ -102,7 +102,7 @@ def sim_event(ev):
     algo.setBlockSize(4)
     algo.setMaximumCoefficientOfVariation(-1.0)
     algo.run()
-    result = algo.getResult()
+    result = ot.ProbabilitySimulationResult(algo.getResult())
     return result.getProbabilityEstimate()
 
 
@@ -124,7 +124,7 @@ def subset_event(ev):
     algo.setMaximumOuterSampling(2500)
     algo.setBlockSize(4)
     algo.run()
-    result = algo.getResult()
+    result = ot.ProbabilitySimulationResult(algo.getResult())
     return result.getProbabilityEstimate()
 
 

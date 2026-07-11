@@ -127,7 +127,7 @@ def computeCrossingProbability_MonteCarlo(
     algo.setMaximumOuterSampling(n_iter)
     algo.setMaximumCoefficientOfVariation(CoV)
     algo.run()
-    return algo.getResult().getProbabilityEstimate() / delta_t
+    return ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate() / delta_t
 
 
 # %%
@@ -147,7 +147,7 @@ def computeCrossingProbability_QMC(
     algo.setMaximumOuterSampling(n_iter)
     algo.setMaximumCoefficientOfVariation(CoV)
     algo.run()
-    return algo.getResult().getProbabilityEstimate() / delta_t
+    return ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate() / delta_t
 
 
 # %%

@@ -97,7 +97,7 @@ algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 algo.setMaximumOuterSampling(int(1e5))
 algo.run()
 
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 probability = result.getProbabilityEstimate()
 print("Failure probability = ", probability)
 
@@ -372,7 +372,7 @@ for i in range(distribution.getDimension()):
 postAnalyticalIS = ot.PostAnalyticalImportanceSampling(result)
 postAnalyticalIS.setMaximumCoefficientOfVariation(0.05)
 postAnalyticalIS.run()
-resultPostAnalyticalIS = postAnalyticalIS.getResult()
+resultPostAnalyticalIS = ot.ProbabilitySimulationResult(postAnalyticalIS.getResult())
 print(
     "Probability of failure with post analytical IS = ",
     resultPostAnalyticalIS.getProbabilityEstimate(),

@@ -120,7 +120,7 @@ Create the directional sampling algorithm and the convergence criteria:
 Run the algorithm and extract the estimated probability:
 
 >>> myAlgo.run()
->>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
+>>> print('Probability estimate=%.6f' % ot.ProbabilitySimulationResult(myAlgo.getResult()).getProbabilityEstimate())
 Probability estimate=0.169716)RAW"
 
 // ---------------------------------------------------------------------

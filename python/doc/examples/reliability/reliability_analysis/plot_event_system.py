@@ -200,7 +200,7 @@ algo.run()
 
 # %%
 # We retrieve the results and display the approximate probability and a confidence interval:
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 prb = result.getProbabilityEstimate()
 print("Probability of e6 through MC : %.4f" % prb)
 ci95 = result.getProbabilityDistribution().computeBilateralConfidenceInterval(0.95)

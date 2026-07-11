@@ -22,7 +22,7 @@
 #define OPENTURNS_EXPECTATIONSIMULATIONRESULT_HXX
 
 #include "openturns/RandomVector.hxx"
-#include "openturns/SimulationResult.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ExpectationSimulationResult
  */
 class OT_API ExpectationSimulationResult
-  : public SimulationResult
+  : public SimulationResultImplementation
 {
 
   CLASSNAME

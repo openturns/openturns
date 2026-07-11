@@ -44,6 +44,7 @@ Simulation algorithm
     :template: class.rst_t
 
     SimulationAlgorithm
+    SimulationResultImplementation
     SimulationResult
     EventSimulation
     ProbabilitySimulationAlgorithm

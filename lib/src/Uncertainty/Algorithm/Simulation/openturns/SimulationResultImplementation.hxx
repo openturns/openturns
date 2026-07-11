@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Result of a Meta-model algorithm
+ *  @brief Base class for simulation results
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,21 +18,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_METAMODELRESULT_HXX
-#define OPENTURNS_METAMODELRESULT_HXX
+#ifndef OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX
+#define OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Function.hxx"
-#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 /**
- * @class MetaModelResult
- * Implementation of MetaModelResult
+ * @class SimulationResultImplementation
+ * Implementation of SimulationResultImplementation
  */
-class OT_API MetaModelResult
+class OT_API SimulationResultImplementation
   : public PersistentObject
 {
 
@@ -41,27 +38,34 @@ public:
 
 
   /** Default constructor */
-  MetaModelResult();
+  SimulationResultImplementation();
 
   /** Standard constructor */
-  MetaModelResult(const Sample & inputSample,
-                  const Sample & outputSample,
-                  const Function & metaModel);
+  SimulationResultImplementation(const UnsignedInteger outerSampling,
+                   const UnsignedInteger blockSize);
 
   /** Virtual constructor */
-  MetaModelResult * clone() const override;
+  SimulationResultImplementation * clone() const override;
 
-  /** Sample accessor */
-  virtual void setInputSample(const Sample & sampleX);
-  virtual Sample getInputSample() const;
+  /** Sample size accessor */
+  UnsignedInteger getOuterSampling() const;
+  void setOuterSampling(const UnsignedInteger outerSampling);
 
-  /** Sample accessor */
-  virtual void setOutputSample(const Sample & sampleY);
-  virtual Sample getOutputSample() const;
+  /** Block size accessor */
+  UnsignedInteger getBlockSize() const;
+  void setBlockSize(const UnsignedInteger blockSize);
 
-  /** MetaModel accessor */
-  virtual void setMetaModel(const Function & metaModel);
-  virtual Function getMetaModel() const;
+  /** Elapsed time accessor */
+  void setTimeDuration(const Scalar time);
+  Scalar getTimeDuration() const;
+
+  using PersistentObject::operator==;
+  /** Comparison operator */
+  Bool operator ==(const PersistentObject & other) const override;
+
+  using PersistentObject::operator!=;
+  /** Comparison operator */
+  Bool operator !=(const PersistentObject & other) const override;
 
   /** String converter */
   String __repr__() const override;
@@ -74,14 +78,12 @@ public:
 
 protected:
 
-  Sample inputSample_;
-  Sample outputSample_;
+  UnsignedInteger outerSampling_ = 0;
+  UnsignedInteger blockSize_ = 0;
+  Scalar timeDuration_ = 0.0;
 
-  // The corresponding meta-model
-  Function metaModel_;
-
-}; // class MetaModelResult
+}; // class SimulationResultImplementation
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_METAMODELRESULT_HXX */
+#endif /* OPENTURNS_SIMULATIONRESULTIMPLEMENTATION_HXX */

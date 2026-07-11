@@ -82,7 +82,7 @@ void EventSimulation::setResult(const ProbabilitySimulationResult & result)
 }
 
 /* Result accessor */
-ProbabilitySimulationResult EventSimulation::getResult() const
+SimulationResult EventSimulation::getResult() const
 {
   return result_;
 }
@@ -118,7 +118,7 @@ void EventSimulation::run()
   Scalar probabilityEstimate = 0.0;
   Scalar varianceEstimate = 0.0;
   const UnsignedInteger blockSize = getBlockSize();
-  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
+  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResultImplementation or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
   result_.setEvent(event_);

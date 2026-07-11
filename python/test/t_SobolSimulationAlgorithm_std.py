@@ -56,7 +56,7 @@ print("algo=", algo)
 algo.run()
 
 # Stream out the result
-result = algo.getResult()
+result = ot.SobolSimulationResult(algo.getResult())
 print("result=", result)
 print("FO=", result.getFirstOrderIndicesEstimate())
 print("TO=", result.getTotalOrderIndicesEstimate())

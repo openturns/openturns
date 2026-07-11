@@ -77,7 +77,7 @@ algo.run()
 # Retrieve results.
 
 # %%
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 probability = result.getProbabilityEstimate()
 print(result)
 print("Pf=", probability)

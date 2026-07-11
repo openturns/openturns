@@ -1188,7 +1188,7 @@ private:
     algo.setBlockSize(domainSamplingSize_);
     algo.setMaximumOuterSampling(1);
     algo.run();
-    return algo.getResult().getProbabilityEstimate();
+    return dynamic_cast<const ProbabilitySimulationResult &>(*algo.getResult().getImplementation()).getProbabilityEstimate();
   }
 
   void checkMinimumVolumeLevelSet() const

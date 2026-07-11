@@ -6,6 +6,6 @@
 
 %include SimulationResult_doc.i
 
-%copyctor OT::SimulationResult;
+OTTypedInterfaceObjectHelper(SimulationResult)
 
 %include openturns/SimulationResult.hxx

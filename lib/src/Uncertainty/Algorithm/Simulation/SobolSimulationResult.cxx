@@ -31,7 +31,7 @@ static const Factory<SobolSimulationResult> Factory_SobolSimulationResult;
 
 /* Default constructor */
 SobolSimulationResult::SobolSimulationResult()
-  : SimulationResult()
+  : SimulationResultImplementation()
 {
   // Nothing to do
 }
@@ -42,7 +42,7 @@ SobolSimulationResult::SobolSimulationResult(const Distribution & firstOrderIndi
     const UnsignedInteger outerSampling,
     const UnsignedInteger experimentSize,
     const UnsignedInteger blockSize)
-  : SimulationResult(outerSampling, blockSize)
+  : SimulationResultImplementation(outerSampling, blockSize)
   , firstOrderIndicesDistribution_(firstOrderIndicesDistribution)
   , totalOrderIndicesDistribution_(totalOrderIndicesDistribution)
   , experimentSize_(experimentSize)
@@ -127,7 +127,7 @@ Graph SobolSimulationResult::draw(const Scalar confidenceLevel) const
 /* Method save() stores the object through the StorageManager */
 void SobolSimulationResult::save(Advocate & adv) const
 {
-  SimulationResult::save(adv);
+  SimulationResultImplementation::save(adv);
   adv.saveAttribute("firstOrderIndicesDistribution_", firstOrderIndicesDistribution_);
   adv.saveAttribute("totalOrderIndicesDistribution_", totalOrderIndicesDistribution_);
   adv.saveAttribute("experimentSize_", experimentSize_);
@@ -136,7 +136,7 @@ void SobolSimulationResult::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SobolSimulationResult::load(Advocate & adv)
 {
-  SimulationResult::load(adv);
+  SimulationResultImplementation::load(adv);
   adv.loadAttribute("firstOrderIndicesDistribution_", firstOrderIndicesDistribution_);
   adv.loadAttribute("totalOrderIndicesDistribution_", totalOrderIndicesDistribution_);
   if (adv.hasAttribute("experimentSize_"))

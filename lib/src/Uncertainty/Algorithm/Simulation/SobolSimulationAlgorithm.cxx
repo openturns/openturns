@@ -86,7 +86,7 @@ void SobolSimulationAlgorithm::setResult(const SobolSimulationResult & result)
 }
 
 /* Result accessor */
-SobolSimulationResult SobolSimulationAlgorithm::getResult() const
+SimulationResult SobolSimulationAlgorithm::getResult() const
 {
   return result_;
 }

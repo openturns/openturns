@@ -31,7 +31,7 @@ algo = ot.PhysicalSpaceCrossEntropyImportanceSampling(
 algo.setKeepSample(True)
 algo.setOptimizationAlgorithm(ot.TNC())
 algo.run()
-result = algo.getResult()
+result = ot.CrossEntropyResult(algo.getResult())
 print(result)
 assert_almost_equal(result.getProbabilityEstimate(), 0.000135442, 5e-2, 0.0)
 

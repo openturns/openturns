@@ -22,6 +22,7 @@
 #define OPENTURNS_EXPECTATIONSIMULATIONALGORITHM_HXX
 
 #include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/ExpectationSimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
@@ -50,7 +51,7 @@ public:
   RandomVector getRandomVector() const;
 
   /** Result accessor */
-  ExpectationSimulationResult getResult() const;
+  SimulationResult getResult() const;
 
   /** Criterion type on coefficient of variation accessor */
   void setCoefficientOfVariationCriterionType(const String & criterionType);

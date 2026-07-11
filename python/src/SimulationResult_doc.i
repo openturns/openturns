@@ -1,67 +1,16 @@
+// SimulationResult docstrings are defined in SimulationResultImplementation_doc.i
+
 %feature("docstring") OT::SimulationResult
-"EventSimulation result base class.
-
-Notes
------
-Structure created by the method run() of a :class:`~openturns.EventSimulation`,
-and obtained thanks to the method getResult()."
-
-// ---------------------------------------------------------------------
-
+OT_SimulationResultImplementation_doc
 %feature("docstring") OT::SimulationResult::getBlockSize
-"Accessor to the block size.
-
-Returns
--------
-blockSize : int
-    Number of terms in the probability simulation estimator grouped together."
-
-// ---------------------------------------------------------------------
-
+OT_SimulationResultImplementation_getBlockSize_doc
 %feature("docstring") OT::SimulationResult::setBlockSize
-R"RAW(Accessor to the block size.
-
-Parameters
-----------
-blockSize : int, :math:`blockSize \geq 0`
-    Number of terms in the probability simulation estimator grouped together.)RAW"
-
-// ---------------------------------------------------------------------
-
+OT_SimulationResultImplementation_setBlockSize_doc
 %feature("docstring") OT::SimulationResult::getOuterSampling
-"Accessor to the outer sampling.
-
-Returns
--------
-outerSampling : int
-    Number of groups of terms in the probability simulation estimator."
-
-// ---------------------------------------------------------------------
-
+OT_SimulationResultImplementation_getOuterSampling_doc
 %feature("docstring") OT::SimulationResult::setOuterSampling
-R"RAW(Accessor to the outer sampling.
-
-Parameters
-----------
-outerSampling : int, :math:`outerSampling \geq 0`
-    Number of groups of terms in the probability simulation estimator.)RAW"
-
-// ---------------------------------------------------------------------
-
+OT_SimulationResultImplementation_setOuterSampling_doc
 %feature("docstring") OT::SimulationResult::setTimeDuration
-"Accessor to the elapsed time.
-
-Parameters
-----------
-time : float
-    Simulation duration in seconds"
-
-// ---------------------------------------------------------------------
-
+OT_SimulationResultImplementation_setTimeDuration_doc
 %feature("docstring") OT::SimulationResult::getTimeDuration
-"Accessor to the elapsed time.
-
-Returns
--------
-time : float
-    Simulation duration in seconds"
+OT_SimulationResultImplementation_getTimeDuration_doc

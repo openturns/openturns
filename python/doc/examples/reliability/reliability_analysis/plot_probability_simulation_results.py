@@ -78,6 +78,7 @@ algo.run()
 
 # %%
 result = algo.getResult()
+result = ot.ProbabilitySimulationResult(result)
 
 # %%
 # Display the simulation event probability.

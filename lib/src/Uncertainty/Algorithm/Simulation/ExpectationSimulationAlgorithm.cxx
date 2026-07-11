@@ -73,7 +73,7 @@ void ExpectationSimulationAlgorithm::setResult(const ExpectationSimulationResult
 }
 
 /* Result accessor */
-ExpectationSimulationResult ExpectationSimulationAlgorithm::getResult() const
+SimulationResult ExpectationSimulationAlgorithm::getResult() const
 {
   return result_;
 }
@@ -106,7 +106,7 @@ void ExpectationSimulationAlgorithm::run()
   Point meanEstimate(dimension);
   Point varianceEstimate(dimension);
   const UnsignedInteger blockSize = getBlockSize();
-  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
+  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResultImplementation or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
   result_.setRandomVector(randomVector_);
