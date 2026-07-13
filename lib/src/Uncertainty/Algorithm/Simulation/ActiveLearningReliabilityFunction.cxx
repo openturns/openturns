@@ -71,6 +71,7 @@ Point ActiveLearningReliabilityFunction::operator()(const Point & x) const
 {
   return Point(1, computeAsScalar(x));
 }
+
   
 Sample ActiveLearningReliabilityFunction::operator()(const Sample & inputSample) const 
 {
