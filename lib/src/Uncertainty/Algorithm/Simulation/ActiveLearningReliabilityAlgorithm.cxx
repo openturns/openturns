@@ -83,9 +83,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , defaultGPFitter_(gpFitter)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();  
     p_activeLearningFunction = activelearningFunction.clone();
-
+    p_defaultSimulationAlgorithm_->setKeepSample(true);
   }
 
 /** Constructor with StandardSpaceCrossEntropyImportanceSampling */  
@@ -99,8 +98,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , defaultGPFitter_(gpFitter)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_activeLearningFunction = activelearningFunction.clone();
+    p_defaultSimulationAlgorithm_->setKeepSample(true);
   }
 
 /** Constructor with PhysicalSpaceCrossEntropyImportanceSampling */  
@@ -114,8 +113,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , defaultGPFitter_(gpFitter)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_activeLearningFunction = activelearningFunction.clone();
+    p_defaultSimulationAlgorithm_->setKeepSample(true);
   }
   
      
@@ -128,11 +127,15 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
+  
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_activeLearningFunction = activelearningFunction.clone();
+    p_defaultSimulationAlgorithm_->setKeepSample(true);
+
   }
+  
+
 
 /** Constructor with ProbabilitySimulationAlgorithm*/   
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
@@ -145,8 +148,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , defaultGPFitter_(gpFitter)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
-    p_currentSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_activeLearningFunction = activelearningFunction.clone();
+    p_defaultSimulationAlgorithm_->setKeepSample(true);
   }
                             
 /* Virtual constructor */
@@ -156,17 +159,249 @@ ActiveLearningReliabilityAlgorithm * ActiveLearningReliabilityAlgorithm::clone()
 }
 
 
+
+/* Class to retrieve GP plus uncertainty as Function*/
+class GPWithUncertainty : public EvaluationImplementation {
+public:
+  GPWithUncertainty(const GaussianProcessRegressionResult & gprResult, const Scalar kFactor)
+    : kFactor_(kFactor)
+    , gprCov_(gprResult)
+    , gprMetamodel_(gprResult.getMetaModel())
+    {}
+    
+  GPWithUncertainty * clone() const override
+  {
+    return new GPWithUncertainty(*this);
+  }
+  // Interface obligatoire pour Function
+  Sample operator()(const Sample & x) const 
+  {
+    // Calculation of mean
+    const Sample mean = gprMetamodel_(x);
+    // Calculation of variance
+    const Sample variance = gprCov_.getConditionalMarginalVariance(x);
+    // Calculation of k * std
+    Sample result(mean.getSize(), mean.getDimension());
+    for (UnsignedInteger i = 0; i < mean.getSize(); ++i) 
+    {
+      Scalar stdDev = std::sqrt(variance(i, 0));
+      result(i, 0) = mean(i, 0) + kFactor_ * stdDev;
+    }
+    return result;
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return gprMetamodel_.getInputDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+  
+protected:
+  Function gprMetamodel_;
+  Scalar kFactor_;
+  GaussianProcessConditionalCovariance gprCov_;
+};
+
+
+
+
+/*Point ActiveLearningReliabilityAlgorithm::checkConvergenceWithUncertainty(Scalar epsilon,
+                                                                          Scalar kFactor)
+{
+  const Distribution inputDistribution = defaultEvent_.getImplementation()->getAntecedent().getDistribution();
+  // Build of GPR with current DoE
+  GaussianProcessFitter GPfitter = GaussianProcessFitter(inputDoE_,
+                                                         outputDoE_,
+                                                         defaultGPFitter_.getResult().getCovarianceModel(),
+                                                         defaultGPFitter_.getResult().getBasis());
+  GPfitter.run();
+  GaussianProcessRegression GPR;
+  GPR = GaussianProcessRegression(GPfitter.getResult());
+  GPR.run();
+      
+  GaussianProcessRegressionResult GPRResult = GPR.getResult();
+  Function GPRmetamodel = GPRResult.getMetaModel();
+  GaussianProcessConditionalCovariance gpcc(GPRResult);
+  
+  // Creation of functions for threshold event
+  GPWithUncertainty GPMean(GPRResult, 0.);
+  GPWithUncertainty GPMinus(GPRResult, kFactor);
+  GPWithUncertainty GPPlus(GPRResult, - kFactor);
+  
+  // Computation of probability with GP mean
+  CompositeRandomVector meanEventRV = CompositeRandomVector(GPMean,
+                                                            RandomVector(inputDistribution));
+  ThresholdEvent meanEvent = ThresholdEvent(meanEventRV,
+                                            defaultEvent_.getOperator(),
+                                            defaultEvent_.getThreshold());
+                                               
+  Pointer<EventSimulation> p_simulationAlgorithmMean_ = p_defaultSimulationAlgorithm_->clone();
+                                                
+  p_simulationAlgorithmMean_->setEvent(meanEvent);
+  p_simulationAlgorithmMean_->run();
+  Scalar meanProbability = p_simulationAlgorithmMean_-> getResult().getProbabilityEstimate();
+  Scalar meanReliabilityIndex = - Normal().computeQuantile(meanProbability)[0];
+  
+  // Computation of probability with GP mean - k sigma
+  CompositeRandomVector minusEventRV(GPMinus,
+                                     RandomVector(inputDistribution));
+
+  ThresholdEvent eventMinus = ThresholdEvent(minusEventRV,
+                                             defaultEvent_.getOperator(),
+                                             defaultEvent_.getThreshold());
+                                               
+  Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();                                               
+  p_simulationAlgorithmMinus_->setEvent(eventMinus);
+  p_simulationAlgorithmMinus_->run();
+  Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
+  Scalar minusReliabilityIndex = - Normal().computeQuantile(minusProbability)[0];
+  
+  // Computation of probability with GP mean + k sigma
+  CompositeRandomVector plusEventRV(GPPlus,
+                                    RandomVector(inputDistribution));
+
+  ThresholdEvent eventPlus = ThresholdEvent(plusEventRV,
+                                            defaultEvent_.getOperator(),
+                                            defaultEvent_.getThreshold());
+  
+  Pointer<EventSimulation> p_simulationAlgorithmPlus_ = p_defaultSimulationAlgorithm_->clone();                                               
+  p_simulationAlgorithmPlus_->setEvent(eventMinus);
+  p_simulationAlgorithmPlus_->run();
+  Scalar plusProbability = p_simulationAlgorithmPlus_-> getResult().getProbabilityEstimate();
+  Scalar plusReliabilityIndex = - Normal().computeQuantile(plusProbability)[0];  
+  const Bool convergenceProbability = abs((plusProbability - minusProbability) / meanProbability) <= epsilon;
+  const Bool convergenceReliabilityIndex = abs((plusProbability - minusProbability) / meanProbability) <= epsilon;
+  
+  Collection<UnsignedInteger> convergenceIndicators(2);
+  convergenceIndicators[0] = convergenceProbability;
+  convergenceIndicators[1] = convergenceReliabilityIndex;
+  
+  std::cout<<convergenceIndicators<<std::endl;
+  return convergenceIndicators;
+}*/
+
+/* Check convergence based on probability uncertainty due to GP error */
+Bool ActiveLearningReliabilityAlgorithm::checkConvergenceProbabilityWithUncertainty(const Scalar epsilon,
+                                                                                    const Scalar kFactor) 
+{
+
+  const Point probabilitiesWithUncertainty = computeProbabilityWithUncertainty(kFactor);
+  
+  const Scalar meanProbability = probabilitiesWithUncertainty[0];
+  const Scalar minusProbability = probabilitiesWithUncertainty[1];
+  const Scalar plusProbability =  probabilitiesWithUncertainty[2]; 
+  const Bool convergenceProbability = abs((plusProbability - minusProbability) / meanProbability) <= epsilon;
+  
+  return convergenceProbability;
+}
+
+/* Check convergence based on reliability index uncertainty due to GP error */
+Bool ActiveLearningReliabilityAlgorithm::checkConvergenceReliabilityIndexWithUncertainty(const Scalar epsilon,
+                                                                                         const Scalar kFactor) 
+{
+
+  const Point probabilitiesWithUncertainty = computeProbabilityWithUncertainty(kFactor);
+  
+  const Scalar meanProbability = probabilitiesWithUncertainty[0];
+  const Scalar meanReliabilityIndex = - Normal().computeQuantile(meanProbability)[0];
+  const Scalar minusProbability = probabilitiesWithUncertainty[1];
+  const Scalar minusReliabilityIndex = - Normal().computeQuantile(minusProbability)[0];
+  const Scalar plusProbability =  probabilitiesWithUncertainty[2] ;
+  const Scalar plusReliabilityIndex = - Normal().computeQuantile(plusProbability)[0]; 
+   
+  const Bool convergenceReliabilityIndex = abs((plusReliabilityIndex - minusReliabilityIndex) / meanReliabilityIndex) <= epsilon;
+  
+  return convergenceReliabilityIndex;
+}
+
+
+
+/* Compute three probability with GP uncertainty : minus, mean and plus k * std */
+Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(const Scalar kFactor) 
+{
+  const Distribution inputDistribution = defaultEvent_.getImplementation()->getAntecedent().getDistribution();
+  // Build of GPR with current DoE
+  GaussianProcessFitter GPfitter = GaussianProcessFitter(inputDoE_,
+                                                         outputDoE_,
+                                                         defaultGPFitter_.getResult().getCovarianceModel(),
+                                                         defaultGPFitter_.getResult().getBasis());
+  GPfitter.run();
+  GaussianProcessRegression GPR;
+  GPR = GaussianProcessRegression(GPfitter.getResult());
+  GPR.run();
+      
+  GaussianProcessRegressionResult GPRResult = GPR.getResult();
+  Function GPRmetamodel = GPRResult.getMetaModel();
+  GaussianProcessConditionalCovariance gpcc(GPRResult);
+  
+  // Creation of functions for threshold event
+  GPWithUncertainty GPMean(GPRResult, 0.);
+  GPWithUncertainty GPMinus(GPRResult, kFactor);
+  GPWithUncertainty GPPlus(GPRResult, - kFactor);
+  
+  // Computation of probability with GP mean
+  CompositeRandomVector meanEventRV = CompositeRandomVector(GPMean,
+                                                            RandomVector(inputDistribution));
+  ThresholdEvent meanEvent = ThresholdEvent(meanEventRV,
+                                            defaultEvent_.getOperator(),
+                                            defaultEvent_.getThreshold());
+                                               
+  Pointer<EventSimulation> p_simulationAlgorithmMean_ = p_defaultSimulationAlgorithm_->clone();
+                                                
+  p_simulationAlgorithmMean_->setEvent(meanEvent);
+  p_simulationAlgorithmMean_->run();
+  Scalar meanProbability = p_simulationAlgorithmMean_-> getResult().getProbabilityEstimate();
+  //Scalar meanReliabilityIndex = - Normal().computeQuantile(meanProbability)[0];
+  
+  // Computation of probability with GP mean - k sigma
+  CompositeRandomVector minusEventRV(GPMinus,
+                                     RandomVector(inputDistribution));
+
+  ThresholdEvent eventMinus = ThresholdEvent(minusEventRV,
+                                             defaultEvent_.getOperator(),
+                                             defaultEvent_.getThreshold());
+                                               
+  Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();                                               
+  p_simulationAlgorithmMinus_->setEvent(eventMinus);
+  p_simulationAlgorithmMinus_->run();
+  Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
+  //Scalar minusReliabilityIndex = - Normal().computeQuantile(minusProbability)[0];
+  
+  // Computation of probability with GP mean + k sigma
+  CompositeRandomVector plusEventRV(GPPlus,
+                                    RandomVector(inputDistribution));
+
+  ThresholdEvent eventPlus = ThresholdEvent(plusEventRV,
+                                            defaultEvent_.getOperator(),
+                                            defaultEvent_.getThreshold());
+  
+  Pointer<EventSimulation> p_simulationAlgorithmPlus_ = p_defaultSimulationAlgorithm_->clone();                                               
+  p_simulationAlgorithmPlus_->setEvent(eventMinus);
+  p_simulationAlgorithmPlus_->run();
+  Scalar plusProbability = p_simulationAlgorithmPlus_-> getResult().getProbabilityEstimate();
+  //Scalar plusReliabilityIndex = - Normal().computeQuantile(plusProbability)[0];  
+
+  Point probabilitiesWithUncertainty = Point({meanProbability, minusProbability, plusProbability});
+  return probabilitiesWithUncertainty;
+}
+
 /* Run of the algorithm */
 void ActiveLearningReliabilityAlgorithm::run()
 {
-
   const Distribution inputDistribution = defaultEvent_.getImplementation()->getAntecedent().getDistribution();
-  
   const Function model(defaultEvent_.getFunction());
   UnsignedInteger size = inputDoE_.getSize();
   
-  /* training of initial GPR */  
-  GaussianProcessFitter currentFitter = defaultGPFitter_;
+  /* Training of initial GPR */  
+  GaussianProcessFitter currentFitter = GaussianProcessFitter(inputDoE_,
+                                                              outputDoE_,
+                                                              defaultGPFitter_.getResult().getCovarianceModel(),
+                                                              defaultGPFitter_.getResult().getBasis());
+                                                              
   currentFitter.run();
 
   GaussianProcessRegression currentGPR;
@@ -184,10 +419,12 @@ void ActiveLearningReliabilityAlgorithm::run()
   ThresholdEvent currentEvent = ThresholdEvent(currentRandomVector,
                                                defaultEvent_.getOperator(),
                                                defaultEvent_.getThreshold());
-  p_currentSimulationAlgorithm_->setEvent(currentEvent);
-  p_currentSimulationAlgorithm_->run();
+                                               
+  Pointer<EventSimulation> p_initialSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();                                               
+  p_initialSimulationAlgorithm_->setEvent(currentEvent);
+  p_initialSimulationAlgorithm_->run();
 
-  Sample currentInputSample = p_currentSimulationAlgorithm_->getInputSample();
+  Sample currentInputSample = p_initialSimulationAlgorithm_->getInputSample();
    
   p_activeLearningFunction->setGaussianProcessRegression(currentGPRResult);
   
@@ -199,7 +436,7 @@ void ActiveLearningReliabilityAlgorithm::run()
   activeLearningIndicator = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
   
   std::cout<< "----------------------- First probability -----------------------"<<std::endl;  
-  std::cout<<p_currentSimulationAlgorithm_->getResult()<<std::endl;   
+  std::cout<<p_initialSimulationAlgorithm_->getResult()<<std::endl;   
   std::cout<< "----------------------- --------- -----------------------"<<std::endl;
   
   std::cout<< "----------------------- is converged before loop? -----------------------"<<std::endl;  
@@ -208,18 +445,21 @@ void ActiveLearningReliabilityAlgorithm::run()
   
   int iterationNumber = 0;
   
-  while (iterationNumber<5)
+  while ((iterationNumber<200) && (!activeLearningIndicator))
   {
+  
+    std::cout<<"******************** Iteration number ************************"<<std::endl;
+    std::cout<<iterationNumber<<std::endl;
     // Evaluation of infill sample
-    Sample infillOutputSample = model( infillInputSample);
+    Sample infillOutputSample = model(infillInputSample);
       
     // Update of GPR
     inputDoE_.add(infillInputSample);
     outputDoE_.add(infillOutputSample);
     GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
                                                               outputDoE_,
-                                                              currentFitter.getResult().getCovarianceModel(),
-                                                              currentFitter.getResult().getBasis());
+                                                              defaultGPFitter_.getResult().getCovarianceModel(),
+                                                              defaultGPFitter_.getResult().getBasis());
     newGPfitter.run();
     
     GaussianProcessRegression newGPR;
@@ -227,7 +467,6 @@ void ActiveLearningReliabilityAlgorithm::run()
     newGPR.run();
       
     GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
-
       
     /* Update of current event with metamodel as function */  
 
@@ -254,32 +493,24 @@ void ActiveLearningReliabilityAlgorithm::run()
    
     p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
     activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
-    std::cout<< "----------------------------U sample---------------------------------------"<<std::endl;
-    std::cout<<      activeLearningValues<<std::endl;
     infillInputSample = p_activeLearningFunction->getInfillSample(currentInputSample, activeLearningValues);
-    
     activeLearningIndicator = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
 
-    std::cout<< "----------------------------infill input---------------------------------------"<<std::endl;
-     std::cout<<      infillInputSample<<std::endl;
-    std::cout<< "----------------------------infill output---------------------------------------"<<std::endl;
-    std::cout<<      model(infillInputSample)<<std::endl;
-    std::cout<< "----------------------------size DOE---------------------------------------"<<std::endl;      
-    std::cout<<     inputDoE_.getSize()<<std::endl;
-    std::cout<< "----------------------------Min U---------------------------------------"<<std::endl;
+
+    std::cout<< "---------------------------- Min U ---------------------------------------"<<std::endl;
     std::cout<<(*p_activeLearningFunction)(Sample(infillInputSample));
-    std::cout<<"---------------------------Is AK converged------------------------------"<<std::endl;
+    //std::cout<<"---------------------------Is AK converged------------------------------"<<std::endl;
     std::cout<<activeLearningIndicator<<std::endl;
-    std::cout<< "----------------------- --------- -----------------------"<<std::endl;
+    std::cout<< "---------------------------------------------------------"<<std::endl;
     
     iterationNumber += 1;
   }
   // test probability estimation
-  
+
   GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
-                                                              outputDoE_,
-                                                              currentFitter.getResult().getCovarianceModel(),
-                                                              currentFitter.getResult().getBasis());
+                                                            outputDoE_,
+                                                            currentFitter.getResult().getCovarianceModel(),
+                                                            currentFitter.getResult().getBasis());
   newGPfitter.run();
     
   GaussianProcessRegression newGPR;
@@ -289,22 +520,21 @@ void ActiveLearningReliabilityAlgorithm::run()
   GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
   Function newGPRmetamodel =  newGPRResult.getMetaModel();
   CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
-                                                                  RandomVector(inputDistribution));
+                                                                RandomVector(inputDistribution));
                                                                         
   ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
-                                             defaultEvent_.getOperator(),
-                                             defaultEvent_.getThreshold());
+                                           defaultEvent_.getOperator(),
+                                           defaultEvent_.getThreshold());
                                                    
-  Pointer<EventSimulation> p_newSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+  Pointer<EventSimulation> p_currentSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+  p_currentSimulationAlgorithm_->setEvent(newEvent);
+  p_currentSimulationAlgorithm_->run();
       
-  p_newSimulationAlgorithm_->setEvent(newEvent);
-      
-  p_newSimulationAlgorithm_->run();
-      
-  std::cout<< "----------------------- New probability -----------------------"<<std::endl;  
-  std::cout<<p_newSimulationAlgorithm_->getResult()<<std::endl; 
-                                                            
-    
+  std::cout<< "----------------------- Conv on proba -----------------------"<<std::endl;  
+  std::cout<<checkConvergenceProbabilityWithUncertainty(0.1, 2. )<<std::endl;                                                                                      
+  std::cout<< "----------------------- Conv on beta -----------------------"<<std::endl;  
+  std::cout<<checkConvergenceReliabilityIndexWithUncertainty(0.1, 2. )<<std::endl;                                                                                      
+       
 }
 
 

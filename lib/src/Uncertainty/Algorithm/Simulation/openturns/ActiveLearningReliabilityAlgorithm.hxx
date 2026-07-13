@@ -79,11 +79,19 @@ public:
 
   void run();
   
+  
 protected:
+
+  Bool checkConvergenceProbabilityWithUncertainty(const Scalar epsilon,
+                                                  const Scalar kFactor);
+
+  Bool checkConvergenceReliabilityIndexWithUncertainty(const Scalar epsilon,
+                                                       const Scalar kFactor);
+
+  Point computeProbabilityWithUncertainty(const Scalar kFactor);                                                                                         
 
   const RandomVector defaultEvent_;
   Pointer<EventSimulation> p_defaultSimulationAlgorithm_;
-  Pointer<EventSimulation> p_currentSimulationAlgorithm_;
   Pointer<ActiveLearningReliabilityFunction> p_activeLearningFunction;
   
   GaussianProcessFitter defaultGPFitter_;

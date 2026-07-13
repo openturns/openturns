@@ -77,6 +77,9 @@ public:
   /** Input accessor */
   virtual Sample getInputSample() const;
   
+  /** Setter keep sample */
+  virtual void setKeepSample(const Bool);
+    
 protected:
 
   /** Result accessor */
