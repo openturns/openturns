@@ -53,6 +53,8 @@ MemoizeEvaluation::MemoizeEvaluation()
   , outputStrategy_(Full())
   , p_cache_(new CacheType)
 {
+  inputStrategy_.setDimension(evaluation_.getInputDimension());
+  outputStrategy_.setDimension(evaluation_.getOutputDimension());
   // We disable the cache by default
   p_cache_->disable();
 }
