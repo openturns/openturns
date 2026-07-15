@@ -26,6 +26,11 @@
 #include "openturns/OTwindows.h" // ceres includes windows.h
 #include <ceres/ceres.h>
 #define CERES_VERSION_NR 100000 * CERES_VERSION_MAJOR + 100 * CERES_VERSION_MINOR
+#if CERES_VERSION_NR < 200300
+// https://github.com/ceres-solver/ceres-solver/commit/41958f3f
+#define StringToLoggingType StringtoLoggingType
+#define StringToDumpFormatType StringtoDumpFormatType
+#endif
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -286,6 +291,7 @@ void Ceres::run()
 
     // Run the solver!
     ceres::Solver::Options options;
+    options.logging_type = ceres::SILENT;
 
     // Switch trust region / line search depending on algoName as it's the union
     if (ceres::StringToTrustRegionStrategyType(algoName_, &options.trust_region_strategy_type))
@@ -397,11 +403,14 @@ void Ceres::run()
       options.use_inner_iterations = ResourceMap::GetAsBool("Ceres-use_inner_iterations");
     if (ResourceMap::HasKey("Ceres-inner_iteration_tolerance"))
       options.inner_iteration_tolerance = ResourceMap::GetAsScalar("Ceres-inner_iteration_tolerance");
-    // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
-    options.logging_type = ceres::SILENT;
+    if (ResourceMap::HasKey("Ceres-logging_type") && !ceres::StringToLoggingType(ResourceMap::Get("Ceres-logging_type"), &options.logging_type))
+      throw InvalidArgumentException(HERE) << "Invalid value for logging_type";
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
-    // trust_region_problem_dump_directory/trust_region_problem_dump_format_type: https://github.com/ceres-solver/ceres-solver/issues/470
+    if (ResourceMap::HasKey("Ceres-trust_region_problem_dump_directory"))
+      options.trust_region_problem_dump_directory = ResourceMap::Get("Ceres-trust_region_problem_dump_directory");
+    if (ResourceMap::HasKey("Ceres-trust_region_problem_dump_format_type") && !ceres::StringToDumpFormatType(ResourceMap::Get("Ceres-trust_region_problem_dump_format_type"), &options.trust_region_problem_dump_format_type))
+      throw InvalidArgumentException(HERE) << "Invalid value for trust_region_problem_dump_format_type";
     if (ResourceMap::HasKey("Ceres-check_gradients"))
       options.check_gradients = ResourceMap::GetAsBool("Ceres-check_gradients");
     if (ResourceMap::HasKey("Ceres-gradient_check_relative_precision"))
@@ -426,6 +435,8 @@ void Ceres::run()
     // general optimization
 
     ceres::GradientProblemSolver::Options options;
+    options.logging_type = ceres::SILENT;
+
     // check that algoName is a line search method
     if (!ceres::StringToLineSearchDirectionType(algoName_, &options.line_search_direction_type))
       throw InvalidArgumentException(HERE) << "Unconstrained optimization only allows line search methods";
@@ -475,8 +486,8 @@ void Ceres::run()
       options.gradient_tolerance = ResourceMap::GetAsScalar("Ceres-gradient_tolerance");
     if (ResourceMap::HasKey("Ceres-parameter_tolerance"))
       options.parameter_tolerance = ResourceMap::GetAsScalar("Ceres-parameter_tolerance");
-    // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
-    options.logging_type = ceres::SILENT;
+    if (ResourceMap::HasKey("Ceres-logging_type") && !ceres::StringToLoggingType(ResourceMap::Get("Ceres-logging_type"), &options.logging_type))
+      throw InvalidArgumentException(HERE) << "Invalid value for logging_type";
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
 
