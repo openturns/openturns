@@ -261,7 +261,7 @@ if (USE_DLIB)
 endif ()
 
 if (USE_CERES)
-  find_package (Ceres CONFIG)
+  find_package (Ceres 2 CONFIG)
   if (Ceres_FOUND AND CERES_USES_MINIGLOG)
     message (STATUS "Ceres was built with miniglog and will likely leak logs to stderr (prefer glog), disabling.")
     set (Ceres_FOUND FALSE)

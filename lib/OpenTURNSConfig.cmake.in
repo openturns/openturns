@@ -65,7 +65,7 @@ if (NOT @BUILD_SHARED_LIBS@)
   endif ()
 
   if ("@Ceres_FOUND@")
-    find_dependency (Ceres CONFIG QUIET)
+    find_dependency (Ceres 2 CONFIG QUIET)
   endif ()
 
   if ("@CMinpack_FOUND@")
