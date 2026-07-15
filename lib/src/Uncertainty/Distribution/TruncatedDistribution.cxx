@@ -868,6 +868,14 @@ Point TruncatedDistribution::computeSequentialConditionalPDF(const Point & x) co
   return DistributionImplementation::computeSequentialConditionalPDF(x);
 }
 
+Point TruncatedDistribution::computeSequentialConditionalPDF(const Point & x, const Indices & ordering) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalPDF(x, ordering);
+
+  return DistributionImplementation::computeSequentialConditionalPDF(x, ordering);
+}
+
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar TruncatedDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
 {
@@ -885,6 +893,14 @@ Point TruncatedDistribution::computeSequentialConditionalCDF(const Point & x) co
   return DistributionImplementation::computeSequentialConditionalCDF(x);
 }
 
+Point TruncatedDistribution::computeSequentialConditionalCDF(const Point & x, const Indices & ordering) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalCDF(x, ordering);
+
+  return DistributionImplementation::computeSequentialConditionalCDF(x, ordering);
+}
+
 Scalar TruncatedDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   if (useSimplifiedVersion_)
@@ -899,6 +915,14 @@ Point TruncatedDistribution::computeSequentialConditionalQuantile(const Point & 
     return simplifiedVersion_.computeSequentialConditionalQuantile(q);
 
   return DistributionImplementation::computeSequentialConditionalQuantile(q);
+}
+
+Point TruncatedDistribution::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalQuantile(q, ordering);
+
+  return DistributionImplementation::computeSequentialConditionalQuantile(q, ordering);
 }
 
 /* Get the isoprobabilist transformation */

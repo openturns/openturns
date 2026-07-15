@@ -118,11 +118,13 @@ public:
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  using DistributionImplementation::computeSequentialConditionalPDF;
   Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  using DistributionImplementation::computeSequentialConditionalCDF;
   Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Get the i-th marginal distribution */
