@@ -319,6 +319,8 @@ Parameters
 ----------
 x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the CDF.
+ordering : sequence of int, optional
+    Permutation of :math:`[0,\\ldots,d-1]` specifying the variable order.
 
 Returns
 -------
@@ -340,7 +342,8 @@ where for :math:`2 \leq j \leq d`:
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
     \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
-The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1)`.)RAW"
+The first term, for :math:`j=1`, is :math:`F_{X_1}(x_1)`.
+When an *ordering* is given, the variables are processed in the specified order instead of the natural order.)RAW"
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalCDF
@@ -391,6 +394,8 @@ Parameters
 ----------
 x : sequence of float, with size :math:`d`
     Values to be taken sequentially as argument and conditioning part of the PDF.
+ordering : sequence of int, optional
+    Permutation of :math:`[0,\\ldots,d-1]` specifying the variable order.
 
 Returns
 -------
@@ -412,7 +417,8 @@ where for :math:`2 \leq j \leq d`:
     F_{X_j \mid X_1, \ldots, X_{j - 1}}(x_j; x_1, \dots, x_{j-1}) =
     \Prob{X_j \leq x_j \mid X_1=x_1, \ldots, X_{j-1}=x_{j-1}}.
 
-The first term, for :math:`j=1`, is :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`.)RAW"
+The first term, for :math:`j=1`, is :math:`\dfrac{d}{d\,x_1}F_{X_1}(x_1)`.
+When an *ordering* is given, the variables are processed in the specified order instead of the natural order.)RAW"
 
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeSequentialConditionalPDF

@@ -1091,6 +1091,29 @@ Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point 
   return result;
 }
 
+Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point & x, const Indices & ordering) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalPDF(x, ordering);
+
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
+  const UnsignedInteger conditioningSize = conditioningIndices_.getSize();
+  const UnsignedInteger dim = ordering.getSize();
+  if (!ordering.check(getDimension())) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (x.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dim << ", got dimension=" << x.getDimension();
+  Point xCond(conditioningValues_);
+  xCond.add(x);
+  Indices fullOrdering(conditioningSize + dim);
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i)
+    fullOrdering[i] = i;
+  for (UnsignedInteger i = 0; i < dim; ++i)
+    fullOrdering[conditioningSize + i] = conditioningSize + ordering[i];
+  Point result(reorderedDistribution_.computeSequentialConditionalPDF(xCond, fullOrdering));
+  result.erase(result.begin(), result.begin() + conditioningSize);
+  return result;
+}
+
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar PointConditionalDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
 {
@@ -1118,6 +1141,29 @@ Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point 
   return result;
 }
 
+Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point & y, const Indices & ordering) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalCDF(y, ordering);
+
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
+  const UnsignedInteger conditioningSize = conditioningIndices_.getSize();
+  const UnsignedInteger dim = ordering.getSize();
+  if (!ordering.check(getDimension())) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (y.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dim << ", got dimension=" << y.getDimension();
+  Point xCond(conditioningValues_);
+  xCond.add(y);
+  Indices fullOrdering(conditioningSize + dim);
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i)
+    fullOrdering[i] = i;
+  for (UnsignedInteger i = 0; i < dim; ++i)
+    fullOrdering[conditioningSize + i] = conditioningSize + ordering[i];
+  Point result(reorderedDistribution_.computeSequentialConditionalCDF(xCond, fullOrdering));
+  result.erase(result.begin(), result.begin() + conditioningSize);
+  return result;
+}
+
 Scalar PointConditionalDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   if (useSimplifiedVersion_)
@@ -1141,6 +1187,29 @@ Point PointConditionalDistribution::computeSequentialConditionalQuantile(const P
   qCond.add(q);
   Point result(reorderedDistribution_.computeSequentialConditionalQuantile(qCond));
   result.erase(result.begin(), result.begin() + conditioningIndices_.getSize());
+  return result;
+}
+
+Point PointConditionalDistribution::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  if (useSimplifiedVersion_)
+    return simplifiedVersion_.computeSequentialConditionalQuantile(q, ordering);
+
+  if (!conditioningCDF_.getSize())
+    throw InvalidArgumentException(HERE) << "Transformation was not initialized";
+  const UnsignedInteger conditioningSize = conditioningIndices_.getSize();
+  const UnsignedInteger dim = ordering.getSize();
+  if (!ordering.check(getDimension())) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (q.getDimension() != dim) throw InvalidArgumentException(HERE) << "Cannot compute sequential conditional quantile from an argument of dimension=" << q.getDimension() << ", expected " << dim;
+  Point qCond(conditioningCDF_);
+  qCond.add(q);
+  Indices fullOrdering(conditioningSize + dim);
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i)
+    fullOrdering[i] = i;
+  for (UnsignedInteger i = 0; i < dim; ++i)
+    fullOrdering[conditioningSize + i] = conditioningSize + ordering[i];
+  Point result(reorderedDistribution_.computeSequentialConditionalQuantile(qCond, fullOrdering));
+  result.erase(result.begin(), result.begin() + conditioningSize);
   return result;
 }
 

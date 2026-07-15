@@ -499,6 +499,26 @@ Point MarginalDistribution::computeSequentialConditionalQuantile(const Point & q
   return distribution_.computeSequentialConditionalQuantile(q, indices_);
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1 */
+Point MarginalDistribution::computeSequentialConditionalPDF(const Point & x) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (x.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << x.getDimension();
+  // Dispatch to the underlying distribution's 2-arg SCPDF with our indices as ordering
+  return distribution_.computeSequentialConditionalPDF(x, indices_);
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1 */
+Point MarginalDistribution::computeSequentialConditionalCDF(const Point & x) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (x.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << x.getDimension();
+  // Dispatch to the underlying distribution's 2-arg SCCDF with our indices as ordering
+  return distribution_.computeSequentialConditionalCDF(x, indices_);
+}
+
 
 /* Compute the CDF of Xi | X1, ..., Xi-1, x = Xi, y = (X1,...,Xi-1) */
 Scalar MarginalDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
