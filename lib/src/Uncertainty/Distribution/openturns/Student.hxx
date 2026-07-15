@@ -107,11 +107,13 @@ public:
 
   using EllipticalDistribution::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  using EllipticalDistribution::computeSequentialConditionalPDF;
   Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using EllipticalDistribution::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  using EllipticalDistribution::computeSequentialConditionalCDF;
   Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */

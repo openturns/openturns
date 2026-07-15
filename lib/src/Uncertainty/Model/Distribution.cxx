@@ -850,6 +850,11 @@ Point Distribution::computeSequentialConditionalPDF(const Point & x) const
   return getImplementation()->computeSequentialConditionalPDF(x);
 }
 
+Point Distribution::computeSequentialConditionalPDF(const Point & x, const Indices & ordering) const
+{
+  return getImplementation()->computeSequentialConditionalPDF(x, ordering);
+}
+
 Point Distribution::computeConditionalPDF(const Point & x, const Sample & y) const
 {
   return getImplementation()->computeConditionalPDF(x, y);
@@ -864,6 +869,11 @@ Scalar Distribution::computeConditionalCDF(const Scalar x, const Point & y) cons
 Point Distribution::computeSequentialConditionalCDF(const Point & x) const
 {
   return getImplementation()->computeSequentialConditionalCDF(x);
+}
+
+Point Distribution::computeSequentialConditionalCDF(const Point & x, const Indices & ordering) const
+{
+  return getImplementation()->computeSequentialConditionalCDF(x, ordering);
 }
 
 Point Distribution::computeConditionalCDF(const Point & x, const Sample & y) const

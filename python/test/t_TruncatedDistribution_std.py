@@ -343,3 +343,16 @@ distribution = ot.KernelSmoothing().build(sample)
 truncated = ot.TruncatedDistribution(distribution, prior.getRange())
 marginal = truncated.getMarginal([0, 1])
 assert marginal.getDescription() == ["a1", "a3"], f"Got {list(marginal.getDescription())}"
+
+# Test computeSequentialConditional* with custom ordering
+td = ot.TruncatedDistribution(ot.Normal(2), ot.Interval([-1.0] * 2, [1.0] * 2))
+x = ot.Point([0.5, 0.5])
+ordering = [0, 1]
+# Identity ordering should match 1-arg version
+ott.assert_almost_equal(td.computeSequentialConditionalCDF(x, ordering), td.computeSequentialConditionalCDF(x), 1e-5, 1e-5)
+ott.assert_almost_equal(td.computeSequentialConditionalPDF(x, ordering), td.computeSequentialConditionalPDF(x), 1e-5, 1e-5)
+ott.assert_almost_equal(td.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7]), ordering), td.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])), 1e-5, 1e-5)
+# Reversed ordering
+x_rev = ot.Point([x[1], x[0]])
+r_cdf = td.computeSequentialConditionalCDF(x_rev, [1, 0])
+ott.assert_almost_equal(r_cdf, [td.computeSequentialConditionalCDF(x)[1], td.computeSequentialConditionalCDF(x_rev)[1]], 1e-4, 1e-4)

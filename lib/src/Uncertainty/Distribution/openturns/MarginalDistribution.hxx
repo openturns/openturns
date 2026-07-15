@@ -145,6 +145,14 @@ public:
   using DistributionImplementation::computeSequentialConditionalQuantile;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
 
+  /** Compute the sequential conditional PDF */
+  using DistributionImplementation::computeSequentialConditionalPDF;
+  Point computeSequentialConditionalPDF(const Point & x) const override;
+
+  /** Compute the sequential conditional CDF */
+  using DistributionImplementation::computeSequentialConditionalCDF;
+  Point computeSequentialConditionalCDF(const Point & x) const override;
+
   /** Compute the CDF of Xi | X1, ..., Xi-1 */
   using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;

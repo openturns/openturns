@@ -173,3 +173,12 @@ indep = ot.IndependentCopula(2)
 cond = ot.PointConditionalDistribution(indep, [1], [0.3])
 ott.assert_almost_equal(cond.computeCDF([0.5]), 0.5)
 ott.assert_almost_equal(cond.computePDF([0.5]), 1.0)
+
+# Test computeSequentialConditional* with custom ordering
+copula = ot.NormalCopula(ot.CorrelationMatrix([[1.0, 0.8], [0.8, 1.0]]))
+pcd = ot.PointConditionalDistribution(copula, [1], [0.3])
+q = ot.Point([0.6])
+# 2-arg with full identity ordering should match 1-arg version
+ott.assert_almost_equal(pcd.computeSequentialConditionalCDF(q, [0]), pcd.computeSequentialConditionalCDF(q), 1e-5, 1e-5)
+ott.assert_almost_equal(pcd.computeSequentialConditionalPDF(q, [0]), pcd.computeSequentialConditionalPDF(q), 1e-5, 1e-5)
+ott.assert_almost_equal(pcd.computeSequentialConditionalQuantile(q, [0]), pcd.computeSequentialConditionalQuantile(q), 1e-5, 1e-5)

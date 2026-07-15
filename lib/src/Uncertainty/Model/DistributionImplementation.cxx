@@ -2283,6 +2283,27 @@ Point DistributionImplementation::computeSequentialConditionalPDF(const Point & 
   return result;
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1, with custom variable ordering */
+Point DistributionImplementation::computeSequentialConditionalPDF(const Point & x, const Indices & ordering) const
+{
+  const UnsignedInteger dim = ordering.getSize();
+  if (!ordering.check(dimension_)) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (x.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dim << ", got dimension=" << x.getDimension();
+  if ((dim == dimension_) && ordering.isIncreasing() && (ordering[0] == 0)) return computeSequentialConditionalPDF(x);
+  Point result(dim);
+  for (UnsignedInteger i = 0; i < dim; ++i)
+  {
+    Indices prefix(i + 1);
+    std::copy(ordering.begin(), ordering.begin() + i + 1, prefix.begin());
+    const Distribution marg(getMarginal(prefix));
+    Point localX(i + 1);
+    std::copy(x.begin(), x.begin() + i + 1, localX.begin());
+    const Point localResult(marg.getImplementation()->DistributionImplementation::computeSequentialConditionalPDF(localX));
+    result[i] = localResult[i];
+  }
+  return result;
+}
+
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Point DistributionImplementation::computeConditionalPDF(const Point & x,
     const Sample & y) const
@@ -2388,6 +2409,27 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
     if (conditioningDimension < dimension_ - 1)
       pdfConditioning = conditioningDistribution->computePDF(currentX);
   } // conditioningDimension
+  return result;
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1, with custom variable ordering */
+Point DistributionImplementation::computeSequentialConditionalCDF(const Point & x, const Indices & ordering) const
+{
+  const UnsignedInteger dim = ordering.getSize();
+  if (!ordering.check(dimension_)) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (x.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dim << ", got dimension=" << x.getDimension();
+  if ((dim == dimension_) && ordering.isIncreasing() && (ordering[0] == 0)) return computeSequentialConditionalCDF(x);
+  Point result(dim);
+  for (UnsignedInteger i = 0; i < dim; ++i)
+  {
+    Indices prefix(i + 1);
+    std::copy(ordering.begin(), ordering.begin() + i + 1, prefix.begin());
+    const Distribution marg(getMarginal(prefix));
+    Point localX(i + 1);
+    std::copy(x.begin(), x.begin() + i + 1, localX.begin());
+    const Point localResult(marg.getImplementation()->DistributionImplementation::computeSequentialConditionalCDF(localX));
+    result[i] = localResult[i];
+  }
   return result;
 }
 

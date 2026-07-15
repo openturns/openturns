@@ -256,3 +256,39 @@ ott.assert_almost_equal(
     normal4.computeSequentialConditionalQuantile(ot.Point([0.3, 0.7]), [0, 2]),
     ot.MarginalDistribution(normal4, [0, 2]).computeSequentialConditionalQuantile(ot.Point([0.3, 0.7])),
     1e-4, 1e-4)
+
+# Test computeSequentialConditionalCDF wrapping BlockIndependentCopula
+# with permutation that preserves block-internal order
+a = 0.8
+b = 0.1
+copulas_sc = [
+    ot.NormalCopula(ot.CorrelationMatrix([[1.0, a], [a, 1.0]])),
+    ot.NormalCopula(ot.CorrelationMatrix([[1.0, b], [b, 1.0]])),
+]
+bic_cdf = ot.BlockIndependentCopula(copulas_sc)
+
+# Use distinct x values so the permutation is tested
+perm_cdf = [0, 2, 1, 3]
+x_global = ot.Point([0.7, 0.4, 0.6, 0.8])
+
+# Direct BlockIndependentCopula (contiguous blocks)
+ref_cdf = bic_cdf.computeSequentialConditionalCDF(x_global)
+
+# MarginalDistribution with reordering (non-contiguous blocks)
+marg_dist_cdf = bic_cdf.getMarginal(perm_cdf)
+
+# Permute x to match the marginal order
+x_marg = ot.Point([x_global[perm_cdf[i]] for i in range(4)])
+result_cdf = marg_dist_cdf.computeSequentialConditionalCDF(x_marg)
+
+# Expected: result is the inverse permutation of ref
+expected_cdf = [ref_cdf[perm_cdf[i]] for i in range(4)]
+ott.assert_almost_equal(result_cdf, expected_cdf, 1e-5, 1e-5)
+
+# Test computeSequentialConditionalPDF wrapping BlockIndependentCopula
+x_global_pdf = ot.Point([0.7, 0.4, 0.6, 0.8])
+ref_pdf = bic_cdf.computeSequentialConditionalPDF(x_global_pdf)
+x_marg_pdf = ot.Point([x_global_pdf[perm_cdf[i]] for i in range(4)])
+result_pdf = marg_dist_cdf.computeSequentialConditionalPDF(x_marg_pdf)
+expected_pdf = [ref_pdf[perm_cdf[i]] for i in range(4)]
+ott.assert_almost_equal(result_pdf, expected_pdf, 1e-5, 1e-5)
