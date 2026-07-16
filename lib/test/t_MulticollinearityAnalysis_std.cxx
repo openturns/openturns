@@ -2,7 +2,7 @@
 /**
  *  @brief Tests for MulticollinearityAnalysis
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +53,7 @@ int main(int, char *[])
   const Scalar vif12 = 1 / (1 - r * r);
 
   // Draw an input sample
-  const UnsignedInteger sampleSize = 10000;
+  const UnsignedInteger sampleSize = 100000;
   const CorrelationMatrix corrMatrix(2, {1.0, r, r, 1.0});
   const Normal inputDistribution(Point({0.0, 0.0}), Point({sigma1, sigma2}), corrMatrix);
   const Sample inputSample(inputDistribution.getSample(sampleSize));
@@ -69,35 +69,54 @@ int main(int, char *[])
     MulticollinearityAnalysis analysis(inputSample, outputSample);
 
     // LMG and PMVD indices
-    PointWithDescription lmg;
-    PointWithDescription pmvd;
-    analysis.computeLMGPMVD(lmg, pmvd);
+    PointWithDescription lmg_computed, pmvd_computed;
+    analysis.computeLmgPmvd(lmg_computed, pmvd_computed);
+    PointWithDescription lmg_estimated, pmvd_estimated;
+    analysis.estimateLmgPmvdMonteCarlo(lmg_estimated, pmvd_estimated, 1000);
     fullprint << "Theoretical LMG = [" << lmg1 << ", " << lmg2 << "]" << std::endl;
-    fullprint << "Computed LMG = [" << lmg[0] << ", " << lmg[1] << "]" << std::endl;
-    assert_almost_equal(lmg, Point({lmg1, lmg2}), 1e-2, 0.0);
+    fullprint << "Computed LMG = [" << lmg_computed[0] << ", " << lmg_computed[1] << "]" << std::endl;
+    assert_almost_equal(lmg_computed, Point({lmg1, lmg2}), 2e-3, 0.0);
+    fullprint << "Estimated LMG = [" << lmg_estimated[0] << ", " << lmg_estimated[1] << "]" << std::endl;
+    assert_almost_equal(lmg_estimated, lmg_computed, 6e-3, 0.0);
     fullprint << "Theoretical PMVD = [" << pmvd1 << ", " << pmvd2 << "]" << std::endl;
-    fullprint << "Computed PMVD = [" << pmvd[0] << ", " << pmvd[1] << "]" << std::endl;
-    assert_almost_equal(pmvd, Point({pmvd1, pmvd2}), 1e-2, 0.0);
-
-    // LMG and PMVD indices (Monte Carlo estimation)
-    PointWithDescription lmgMC;
-    PointWithDescription pmvdMC;
-    analysis.estimateLMGPMVDMonteCarlo(lmgMC, pmvdMC, 1000);
-    fullprint << "Estimated LMG = [" << lmgMC[0] << ", " << lmgMC[1] << "]" << std::endl;
-    assert_almost_equal(lmgMC, Point({0.84, 0.15}), 1e-10, 0.0);
-    fullprint << "Estimated PMVD = [" << pmvdMC[0] << ", " << pmvdMC[1] << "]" << std::endl;
-    assert_almost_equal(pmvdMC, Point({0.99, 0.0036}), 1e-10, 0.0);
+    fullprint << "Computed PMVD = [" << pmvd_computed[0] << ", " << pmvd_computed[1] << "]" << std::endl;
+    assert_almost_equal(pmvd_computed, Point({pmvd1, pmvd2}), 2e-3, 0.0);
+    fullprint << "Estimated PMVD = [" << pmvd_estimated[0] << ", " << pmvd_estimated[1] << "]" << std::endl;
+    assert_almost_equal(pmvd_estimated, pmvd_computed, 4e-3, 0.0);
 
     // Johnson index
-    const PointWithDescription johnson(analysis.computeJohnson());
-    fullprint << "Computed Johnson = [" << johnson[0] << ", " << johnson[1] << "]" << std::endl;
-    assert_almost_equal(johnson, lmg, 1e-10, 0.0); // In 2D, Johnson and LMG indices are identical
+    const PointWithDescription johnson_computed(analysis.computeJohnson());
+    fullprint << "Computed Johnson = [" << johnson_computed[0] << ", " << johnson_computed[1] << "]" << std::endl;
+    assert_almost_equal(johnson_computed, lmg_computed, 1e-12, 0.0);  // In 2D, Johnson and LMG indices are identical
+  }
+  catch (TestFailed & ex)
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
+  try
+  {
+    // Check that an exception is raised when outputSample is not provided
+    MulticollinearityAnalysis analysis(inputSample);
+    PointWithDescription lmg_computed, pmvd_computed;
+    analysis.computeLmgPmvd(lmg_computed, pmvd_computed);
+    std::cerr << "InvalidArgumentException should have been thrown" << std::endl;
+    return ExitCode::Error;
+  }
+  catch (InvalidArgumentException & ex)
+  {
+    // Expected exception
+  }
+
+  try
+  {
     // VIF metric
-    const PointWithDescription vif(analysis.computeVIF());
+    MulticollinearityAnalysis analysis(inputSample);
+    const PointWithDescription vif_computed(analysis.computeVIF());
     fullprint << "Theoretical VIF = [" << vif12 << ", " << vif12 << "]" << std::endl;
-    fullprint << "Computed VIF = [" << vif[0] << ", " << vif[1] << "]" << std::endl;
-    assert_almost_equal(vif, Point({vif12, vif12}), 1e-2, 0.0);
+    fullprint << "Computed VIF = [" << vif_computed[0] << ", " << vif_computed[1] << "]" << std::endl;
+    assert_almost_equal(vif_computed, Point({vif12, vif12}), 1e-2, 0.0);
   }
   catch (TestFailed & ex)
   {

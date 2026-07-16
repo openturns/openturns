@@ -14,7 +14,7 @@ library(mvtnorm)
 # Parameters
 # - x: a data.frame containing the input variables
 # - y: a vector containing the output variable
-# - type: the measure type ("LMG" or "PMVD")
+# - type: the measure type ("LMG", "PMVD" or "Johnson")
 # - package: the name of the package that will compute the measure ("relaimpo" or "sensitivity")
 #
 # Output
@@ -51,6 +51,13 @@ compute_measure <- function(x, y, type, package)
     }
     else
       stop("Unknown package")
+  }
+  else if (type=="Johnson")
+  {
+    res <- johnson(x, y)
+    vec <- res$johnson[,1]
+    names(vec) <- rownames(res$johnson)
+    return(vec)
   }
   else
     stop("Unknown type")
@@ -149,7 +156,7 @@ get_data8 <- function()
 #
 # Parameters
 # - case: the case number (between 1 and 8)
-# - type: the measure type ("LMG" or "PMVD")
+# - type: the measure type ("LMG", "PMVD" or "Johnson")
 # - package: the name of the package that will compute the measure ("relaimpo" or "sensitivity")
 #
 compute <- function(case, type, package)
