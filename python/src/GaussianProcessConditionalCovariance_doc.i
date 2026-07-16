@@ -197,3 +197,63 @@ Returns
 marginal : :class:`~openturns.Normal`
     The marginal Gaussian distribution :math:`\mathcal{N}(\Expect{\vect{Z}(\omega, \vect{x})}, \Cov{\vect{Z}(\omega, \vect{x})})`
 )RAW"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessConditionalCovariance::draw
+R"RAW(Draw 1d confidence intervals associated to Gaussian Process Regression.
+
+Parameters
+----------
+xMin : float
+    Lower scalar bound of interest
+
+xMax : float
+    Upper scalar bound of interest.
+
+pointNumber : int
+    Number of points for the graph.
+
+x : sequence of float or 2-d sequence of float
+    The point :math:`\vect{x}` or the sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_\sampleSize)`
+    where the marginal distribution has to be evaluated
+
+confidenceLevel : positive float :math:`< 1`, optional
+    Confidence level used for the drawing the interval
+    Equal to 0.95 by default.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph representing the conditional mean (as a Curve) and `1 - confidenceLevel` confidence
+    interval.
+
+Examples
+--------
+Create the model :math:`g: \Rset \mapsto \Rset` and the samples:
+
+>>> import openturns as ot
+>>> trend = ot.SymbolicFunction(['x'],  ['1'])
+>>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0]]
+>>> sampleY = trend(sampleX)
+
+Create the algorithm:
+
+>>> covarianceModel = ot.SquaredExponential([1.0])
+>>> covarianceModel.setActiveParameter([])
+
+>>> algo = ot.GaussianProcessRegression(sampleX, sampleY, covarianceModel, trend)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> condCov = ot.GaussianProcessConditionalCovariance(result)
+
+Draw the conditional mean and 95% confidence interval on [0, 7] with 100 points:
+
+>>> graph = condCov.draw(0.0, 7.0, 100, 0.95)
+
+Or use the sample as argument:
+
+>>> sampleTest = [[1.0], [1.5],[2.0], [2.5], [3.0], [3.5] ,[4.0], [4.5], [5.0], [5.5], [6.0], [6.5], [7.0]]
+>>> graph = condCov.draw(sampleTest, 0.95)
+)RAW"
