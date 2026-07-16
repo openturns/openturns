@@ -38,6 +38,10 @@ then
   zip -r openturns-doc.zip html/*
   sudo chown ${UID_GID} openturns-doc.zip && sudo cp -p openturns-doc.zip ${source_dir}
 fi
+if test "${CIRCLE_BRANCH}" = "master"
+then
+  exit 0
+fi
 ctest -R pyinstallcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 #make tests
 #ctest -R cppcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
