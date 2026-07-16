@@ -14,10 +14,10 @@ def compute_measure(X, Y, type):
     """
     analysis = ot.MulticollinearityAnalysis(X, Y)
     if type == "LMG":
-        lmg, _ = analysis.computeLMGPMVD()
+        lmg, _ = analysis.computeLmgPmvd()
         return lmg
     elif type == "PMVD":
-        _, pmvd = analysis.computeLMGPMVD()
+        _, pmvd = analysis.computeLmgPmvd()
         return pmvd
     elif type == "Johnson":
         return analysis.computeJohnson()
@@ -75,13 +75,20 @@ def compute(case, type, bootstrap_size=100):
     title = f"Case #{case} - {type}"
 
     # Compute the requested measure
+    print("-" * 18)
     print(title)
+    print("-" * 18)
+    print()
+    rep = 20
     t1 = time.time()
-    measure = compute_measure(X, Y, type)
+    for i in range(rep):
+        measure = compute_measure(X, Y, type)
     t2 = time.time()
     for i in range(dimension):
-        print(f"{names[i]} = {measure[i]:.6f}")
-    print(f"Duration: {t2 - t1:.4f} secs\n")
+        print(f"{names[i]} = {measure[i]:.8f}")
+    duration = (t2 - t1) / rep
+    print()
+    print(f"Duration: {1000 * duration:.1f} ms\n")
 
     # Perform a bootstrap
     sample_size = sample.getSize()

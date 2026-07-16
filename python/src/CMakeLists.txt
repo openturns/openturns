@@ -637,6 +637,7 @@ ot_add_python_module(statistics statistics_module.i
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i
+                      MulticollinearityAnalysis.i MulticollinearityAnalysis_doc.i
                       LatentVariableModel.i LatentVariableModel_doc.i
                       SamplePartition.i SamplePartition_doc.i
                    )
