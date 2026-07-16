@@ -79,6 +79,16 @@ public:
 
   void run();
   
+  enum convergenceCriterion {PROBABILITY = 0, RELIABILITYINDEX = 1};
+  
+  // Accessor to convergence attributes
+  void setConvergenceCriterion(const UnsignedInteger convergenceCriterion = PROBABILITY);
+  
+  void setConvergenceUncertaintyFactor(const Scalar convergenceUncertaintyFactor);
+  
+  void setConvergenceCriterionThreshold(const Scalar convergenceCriterionThreshold);
+  
+  void setSimulationBudget(const UnsignedInteger simulationBudget);
   
 protected:
 
@@ -98,7 +108,11 @@ protected:
   Sample currentInputSample_;
   Sample inputDoE_;
   Sample outputDoE_;
-  
+  UnsignedInteger convergenceCriterion_;
+  Scalar convergenceCriterionThreshold_;
+  UnsignedInteger convergenceUncertaintyFactor_;
+  UnsignedInteger simulationBudget_;
+    
 } ; /* class ActiveLearningReliabilityAlgorithm */
 
 END_NAMESPACE_OPENTURNS
