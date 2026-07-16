@@ -116,8 +116,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
     p_activeLearningFunction = activelearningFunction.clone();
     p_defaultSimulationAlgorithm_->setKeepSample(true);
   }
-  
-     
+
 /** Constructor with SubsetSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const SubsetSampling & reliabilityAlgorithm,
@@ -127,15 +126,11 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
-  
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_activeLearningFunction = activelearningFunction.clone();
     p_defaultSimulationAlgorithm_->setKeepSample(true);
-
   }
-  
-
 
 /** Constructor with ProbabilitySimulationAlgorithm*/   
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
@@ -318,8 +313,6 @@ Bool ActiveLearningReliabilityAlgorithm::checkConvergenceReliabilityIndexWithUnc
   return convergenceReliabilityIndex;
 }
 
-
-
 /* Compute three probability with GP uncertainty : minus, mean and plus k * std */
 Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(const Scalar kFactor) 
 {
@@ -355,7 +348,6 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
   p_simulationAlgorithmMean_->setEvent(meanEvent);
   p_simulationAlgorithmMean_->run();
   Scalar meanProbability = p_simulationAlgorithmMean_-> getResult().getProbabilityEstimate();
-  //Scalar meanReliabilityIndex = - Normal().computeQuantile(meanProbability)[0];
   
   // Computation of probability with GP mean - k sigma
   CompositeRandomVector minusEventRV(GPMinus,
@@ -369,7 +361,6 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
   p_simulationAlgorithmMinus_->setEvent(eventMinus);
   p_simulationAlgorithmMinus_->run();
   Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
-  //Scalar minusReliabilityIndex = - Normal().computeQuantile(minusProbability)[0];
   
   // Computation of probability with GP mean + k sigma
   CompositeRandomVector plusEventRV(GPPlus,
@@ -383,10 +374,48 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty(cons
   p_simulationAlgorithmPlus_->setEvent(eventMinus);
   p_simulationAlgorithmPlus_->run();
   Scalar plusProbability = p_simulationAlgorithmPlus_-> getResult().getProbabilityEstimate();
-  //Scalar plusReliabilityIndex = - Normal().computeQuantile(plusProbability)[0];  
 
   Point probabilitiesWithUncertainty = Point({meanProbability, minusProbability, plusProbability});
   return probabilitiesWithUncertainty;
+}
+
+// Set type of convergence
+void ActiveLearningReliabilityAlgorithm::setConvergenceCriterion(const UnsignedInteger typeConvergence)
+{
+  if (typeConvergence > 2)
+    throw InvalidArgumentException(HERE) << "ActiveLearningReliability algorithm convergence criterion (" << typeConvergence << ") must be in [0-2]";
+    
+  convergenceCriterion_ = typeConvergence;
+}
+
+// Set thresholds for active learning and convergence
+void ActiveLearningReliabilityAlgorithm::setConvergenceUncertaintyFactor(const Scalar convergenceUncertaintyFactor)
+{
+  if (convergenceUncertaintyFactor < 0)
+  {
+    throw InvalidArgumentException(HERE) << "convergenceUncertaintyFactor (" << convergenceUncertaintyFactor << ") must be in greater than 0";
+  }
+  convergenceUncertaintyFactor_ = convergenceUncertaintyFactor;
+}
+
+void ActiveLearningReliabilityAlgorithm::setConvergenceCriterionThreshold(const Scalar convergenceCriterionThreshold)
+{
+  if (convergenceCriterionThreshold < 0)
+  {
+    throw InvalidArgumentException(HERE) << "convergenceCriterionThreshold (" << convergenceCriterionThreshold << ") must be in greater than 0";
+  }
+  
+  convergenceCriterionThreshold_ = convergenceCriterionThreshold;
+}
+
+void ActiveLearningReliabilityAlgorithm::setSimulationBudget(const UnsignedInteger simulationBudget)
+{
+  if (simulationBudget < 1)
+  {
+    throw InvalidArgumentException(HERE) << "simulationBudget (" << simulationBudget << ") must be in greater than 1";
+  }
+  
+  simulationBudget_ = simulationBudget;
 }
 
 /* Run of the algorithm */
@@ -443,99 +472,89 @@ void ActiveLearningReliabilityAlgorithm::run()
   std::cout<<activeLearningIndicator<<std::endl;   
   std::cout<< "----------------------- --------- -----------------------"<<std::endl;
   
-  int iterationNumber = 0;
+  int functionCallNumber = 0;
   
-  while ((iterationNumber<200) && (!activeLearningIndicator))
-  {
+  Bool convergenceIndicator = false;
   
-    std::cout<<"******************** Iteration number ************************"<<std::endl;
-    std::cout<<iterationNumber<<std::endl;
-    // Evaluation of infill sample
-    Sample infillOutputSample = model(infillInputSample);
-      
-    // Update of GPR
-    inputDoE_.add(infillInputSample);
-    outputDoE_.add(infillOutputSample);
+  while ((!convergenceIndicator) && (functionCallNumber<=simulationBudget_))
+    {
+      while ((functionCallNumber<=simulationBudget_) && (!activeLearningIndicator))
+      {
+        std::cout<<"******************** Call number ************************"<<std::endl;
+        std::cout<<functionCallNumber<<std::endl;
+        // Evaluation of infill sample
+        Sample infillOutputSample = model(infillInputSample);
+          
+        // Update of GPR
+        inputDoE_.add(infillInputSample);
+        outputDoE_.add(infillOutputSample);
+        GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
+                                                                  outputDoE_,
+                                                                  defaultGPFitter_.getResult().getCovarianceModel(),
+                                                                  defaultGPFitter_.getResult().getBasis());
+        newGPfitter.run();
+        
+        GaussianProcessRegression newGPR;
+        newGPR = GaussianProcessRegression(newGPfitter.getResult());
+        newGPR.run();
+          
+        GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
+       
+        // Compute active learning values
+        p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
+        activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
+        //Get input sample to evaluate
+        infillInputSample = p_activeLearningFunction->getInfillSample(currentInputSample, activeLearningValues);
+        // check convergence of active learning
+        activeLearningIndicator = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
+
+        
+        functionCallNumber += 1;
+        std::cout<<"------- active learning values --------"<<std::endl;
+        std::cout<<activeLearningValues<<std::endl;
+        
+        
+      }
+    // test probability estimation
+
     GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
                                                               outputDoE_,
-                                                              defaultGPFitter_.getResult().getCovarianceModel(),
-                                                              defaultGPFitter_.getResult().getBasis());
+                                                              currentFitter.getResult().getCovarianceModel(),
+                                                              currentFitter.getResult().getBasis());
     newGPfitter.run();
-    
+        
     GaussianProcessRegression newGPR;
     newGPR = GaussianProcessRegression(newGPfitter.getResult());
     newGPR.run();
-      
+          
     GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
-      
-    /* Update of current event with metamodel as function */  
-
-    /*
     Function newGPRmetamodel =  newGPRResult.getMetaModel();
     CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
                                                                   RandomVector(inputDistribution));
-                                                                        
+                                                                            
     ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
                                              defaultEvent_.getOperator(),
                                              defaultEvent_.getThreshold());
-                                                   
-    Pointer<EventSimulation> p_newSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
-      
-    p_newSimulationAlgorithm_->setEvent(newEvent);
-      
-    p_newSimulationAlgorithm_->run();
-      
-    std::cout<< "----------------------- New probability -----------------------"<<std::endl;  
-    std::cout<<p_newSimulationAlgorithm_->getResult()<<std::endl;   
-    std::cout<< "----------------------- --------- -----------------------"<<std::endl;
-      
-    currentInputSample = p_newSimulationAlgorithm_->getInputSample();*/
-   
-    p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
-    activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
-    infillInputSample = p_activeLearningFunction->getInfillSample(currentInputSample, activeLearningValues);
-    activeLearningIndicator = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
-
-
-    std::cout<< "---------------------------- Min U ---------------------------------------"<<std::endl;
-    std::cout<<(*p_activeLearningFunction)(Sample(infillInputSample));
-    //std::cout<<"---------------------------Is AK converged------------------------------"<<std::endl;
-    std::cout<<activeLearningIndicator<<std::endl;
-    std::cout<< "---------------------------------------------------------"<<std::endl;
+                                                       
+    Pointer<EventSimulation> p_currentSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+    p_currentSimulationAlgorithm_->setEvent(newEvent);
+    p_currentSimulationAlgorithm_->run();
     
-    iterationNumber += 1;
-  }
-  // test probability estimation
-
-  GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
-                                                            outputDoE_,
-                                                            currentFitter.getResult().getCovarianceModel(),
-                                                            currentFitter.getResult().getBasis());
-  newGPfitter.run();
     
-  GaussianProcessRegression newGPR;
-  newGPR = GaussianProcessRegression(newGPfitter.getResult());
-  newGPR.run();
+    std::cout<<"------- Probability value --------"<<std::endl;
+    std::cout<<p_currentSimulationAlgorithm_->getResult().getProbabilityEstimate()<<std::endl;
+        
       
-  GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
-  Function newGPRmetamodel =  newGPRResult.getMetaModel();
-  CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
-                                                                RandomVector(inputDistribution));
-                                                                        
-  ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
-                                           defaultEvent_.getOperator(),
-                                           defaultEvent_.getThreshold());
-                                                   
-  Pointer<EventSimulation> p_currentSimulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
-  p_currentSimulationAlgorithm_->setEvent(newEvent);
-  p_currentSimulationAlgorithm_->run();
-      
-  std::cout<< "----------------------- Conv on proba -----------------------"<<std::endl;  
-  std::cout<<checkConvergenceProbabilityWithUncertainty(0.1, 2. )<<std::endl;                                                                                      
-  std::cout<< "----------------------- Conv on beta -----------------------"<<std::endl;  
-  std::cout<<checkConvergenceReliabilityIndexWithUncertainty(0.1, 2. )<<std::endl;                                                                                      
-       
+    if (convergenceCriterion_ == 0)
+    {
+      convergenceIndicator = checkConvergenceProbabilityWithUncertainty(convergenceCriterionThreshold_, convergenceUncertaintyFactor_ );
+    }
+    else if (convergenceCriterion_ == 1)
+    {
+      convergenceIndicator = checkConvergenceReliabilityIndexWithUncertainty(convergenceCriterionThreshold_, convergenceUncertaintyFactor_ );
+    }
+           
+    }
 }
-
 
 END_NAMESPACE_OPENTURNS
