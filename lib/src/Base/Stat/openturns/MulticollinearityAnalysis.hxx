@@ -3,7 +3,7 @@
  *  @brief MulticollinearityAnalysis implements computation of various
  *  statistics used in a multicollinear context
  *
- *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2026 Airbus-EDF-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,10 +56,10 @@ public:
   String __repr__() const override;
 
   /** Compute LMG and PMVD indices */
-  void computeLMGPMVD(PointWithDescription & lmgOut, PointWithDescription & pmvdOut) const;
+  void computeLmgPmvd(PointWithDescription & lmgOut, PointWithDescription & pmvdOut) const;
 
   /** Estimate LMG and PMVD indices via a Monte Carlo method */
-  void estimateLMGPMVDMonteCarlo(PointWithDescription & lmgOut, PointWithDescription & pmvdOut, const UnsignedInteger iterations) const;
+  void estimateLmgPmvdMonteCarlo(PointWithDescription & lmgOut, PointWithDescription & pmvdOut, const UnsignedInteger iterations) const;
 
   /** Compute Johnson index */
   PointWithDescription computeJohnson() const;
@@ -74,6 +74,12 @@ public:
   void load(Advocate & adv) override;
 
 private:
+
+  void checkInputSample() const;
+
+  void checkOutputSample() const;
+
+  CovarianceMatrix computeCovariance() const;
 
   Sample firstSample_;
   Sample secondSample_;

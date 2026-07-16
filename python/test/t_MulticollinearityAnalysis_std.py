@@ -26,7 +26,7 @@ pmvd2 = c * (1 + b / (a + c)) / (a + b + c + sigmaEps * sigmaEps)
 vif12 = 1 / (1 - r * r)
 
 # Draw an input sample
-sampleSize = 10000
+sampleSize = 100000
 corrMatrix = ot.CorrelationMatrix(2, [1.0, r, r, 1.0])
 inputDistribution = ot.Normal([0.0, 0.0], [sigma1, sigma2], corrMatrix)
 inputSample = inputDistribution.getSample(sampleSize)
@@ -40,28 +40,32 @@ outputSample = linearFunction(inputSample) + noiseSample
 analysis = ot.MulticollinearityAnalysis(inputSample, outputSample)
 
 # LMG and PMVD indices
-lmg, pmvd = analysis.computeLMGPMVD()
+lmg_computed, pmvd_computed = analysis.computeLmgPmvd()
+lmg_estimated, pmvd_estimated = analysis.estimateLmgPmvdMonteCarlo(1000)
 print(f"Theoretical LMG = [{lmg1}, {lmg2}]")
-print(f"Computed LMG = [{lmg[0]}, {lmg[1]}]")
-ott.assert_almost_equal(lmg, [lmg1, lmg2], 1e-2, 0.0)
+print(f"Computed LMG = [{lmg_computed[0]}, {lmg_computed[1]}]")
+ott.assert_almost_equal(lmg_computed, [lmg1, lmg2], 2e-3, 0.0)
+print(f"Estimated LMG = [{lmg_estimated[0]}, {lmg_estimated[1]}]")
+ott.assert_almost_equal(lmg_estimated, lmg_computed, 6e-3, 0.0)
 print(f"Theoretical PMVD = [{pmvd1}, {pmvd2}]")
-print(f"Computed PMVD = [{pmvd[0]}, {pmvd[1]}]")
-ott.assert_almost_equal(pmvd, [pmvd1, pmvd2], 1e-2, 0.0)
-
-# LMG and PMVD indices (Monte Carlo estimation)
-lmgMC, pmvdMC = analysis.estimateLMGPMVDMonteCarlo(1000)
-print(f"Estimated LMG = [{lmgMC[0]}, {lmgMC[1]}]")
-ott.assert_almost_equal(lmgMC, [0.84, 0.15], 1e-10, 0.0)
-print(f"Estimated PMVD = [{pmvdMC[0]}, {pmvdMC[1]}]")
-ott.assert_almost_equal(pmvdMC, [0.99, 0.0036], 1e-10, 0.0)
+print(f"Computed PMVD = [{pmvd_computed[0]}, {pmvd_computed[1]}]")
+ott.assert_almost_equal(pmvd_computed, [pmvd1, pmvd2], 2e-3, 0.0)
+print(f"Estimated PMVD = [{pmvd_estimated[0]}, {pmvd_estimated[1]}]")
+ott.assert_almost_equal(pmvd_estimated, pmvd_computed, 4e-3, 0.0)
 
 # Johnson index
-johnson = analysis.computeJohnson()
-print(f"Computed Johnson = [{johnson[0]}, {johnson[1]}]")
-ott.assert_almost_equal(johnson, lmg, 1e-10, 0.0)  # In 2D, Johnson and LMG indices are identical
+johnson_computed = analysis.computeJohnson()
+print(f"Computed Johnson = [{johnson_computed[0]}, {johnson_computed[1]}]")
+ott.assert_almost_equal(johnson_computed, lmg_computed, 1e-12, 0.0)  # In 2D, Johnson and LMG indices are identical
+
+# Check that an exception is raised when outputSample is not provided
+analysis = ot.MulticollinearityAnalysis(inputSample)
+with ott.assert_raises(TypeError):
+    analysis.computeLmgPmvd()
 
 # VIF metric
-vif = analysis.computeVIF()
+analysis = ot.MulticollinearityAnalysis(inputSample)
+vif_computed = analysis.computeVIF()
 print(f"Theoretical VIF = [{vif12}, {vif12}]")
-print(f"Computed VIF = [{vif[0]}, {vif[1]}]")
-ott.assert_almost_equal(vif, [vif12, vif12], 1e-2, 0.0)
+print(f"Computed VIF = [{vif_computed[0]}, {vif_computed[1]}]")
+ott.assert_almost_equal(vif_computed, [vif12, vif12], 1e-2, 0.0)
