@@ -75,6 +75,14 @@ RandomVector EventSimulation::getEvent() const
   return event_;
 }
 
+/*  Event accessor */
+void EventSimulation::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent())
+    throw InvalidArgumentException(HERE) << "Not an event";
+  event_ = event;
+}
+
 /* Result accessor */
 void EventSimulation::setResult(const ProbabilitySimulationResult & result)
 {

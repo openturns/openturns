@@ -69,6 +69,21 @@ SubsetSampling * SubsetSampling::clone() const
   return new SubsetSampling(*this);
 }
 
+/*  Event accessor */
+void SubsetSampling::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent() || !event.isComposite())
+    throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
+  const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
+  const UnsignedInteger outputDimension = composedEvent.getFunction().getOutputDimension();
+  if (outputDimension > 1)
+    throw InvalidArgumentException(HERE)
+      << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
+      << outputDimension;
+
+  EventSimulation::setEvent(composedEvent);
+  setInitialExperiment(initialExperiment_);
+}
 
 /* Performs the actual computation. */
 void SubsetSampling::run()

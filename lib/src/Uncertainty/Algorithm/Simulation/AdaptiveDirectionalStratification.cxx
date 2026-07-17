@@ -59,6 +59,16 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
   return new AdaptiveDirectionalStratification(*this);
 }
 
+/*  Event accessor */
+void AdaptiveDirectionalStratification::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  standardEvent_ = StandardEvent(getEvent());
+  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
+  samplingStrategy_.setDimension(dimension);
+  if ((quadrantOrientation_.getDimension() > 0) && (quadrantOrientation_.getDimension() != dimension))
+    throw InvalidDimensionException(HERE) << "Error: the quadrant orientation dimension (" << quadrantOrientation_.getDimension() << ") is not compatible with the antecedent dimension (" << dimension << ")";
+}
 
 
 void AdaptiveDirectionalStratification::run()

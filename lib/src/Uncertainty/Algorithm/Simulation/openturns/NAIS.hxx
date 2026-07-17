@@ -80,6 +80,10 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+  
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
+  
 private:
 
   /** Function computing the auxiliary distribution as a function of current samples and associated weights */
