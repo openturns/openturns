@@ -658,6 +658,7 @@ ot_add_python_module(simulation simulation_module.i
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
                       SimulationResult.i SimulationResult_doc.i
+                      SimulationAlgorithmImplementation.i SimulationAlgorithmImplementation_doc.i
                       SimulationAlgorithm.i SimulationAlgorithm_doc.i
                       EventSimulation.i EventSimulation_doc.i
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i

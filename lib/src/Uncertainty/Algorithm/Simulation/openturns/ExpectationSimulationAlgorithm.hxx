@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_EXPECTATIONSIMULATIONALGORITHM_HXX
 #define OPENTURNS_EXPECTATIONSIMULATIONALGORITHM_HXX
 
-#include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
 #include "openturns/ExpectationSimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ExpectationSimulationAlgorithm
-  : public SimulationAlgorithm
+  : public SimulationAlgorithmImplementation
 {
 
   CLASSNAME

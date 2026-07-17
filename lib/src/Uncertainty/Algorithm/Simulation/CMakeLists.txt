@@ -4,6 +4,7 @@
 ot_add_current_dir_to_include_dirs ()
 
 ot_add_source_file (SimulationAlgorithm.cxx)
+ot_add_source_file (SimulationAlgorithmImplementation.cxx)
 ot_add_source_file (ProbabilitySimulationResult.cxx)
 ot_add_source_file (SimulationResult.cxx)
 ot_add_source_file (SimulationSensitivityAnalysis.cxx)
@@ -40,6 +41,7 @@ ot_add_source_file (StandardSpaceCrossEntropyImportanceSampling.cxx)
 ot_add_source_file (PhysicalSpaceCrossEntropyImportanceSampling.cxx)
 
 ot_install_header_file (SimulationAlgorithm.hxx)
+ot_install_header_file (SimulationAlgorithmImplementation.hxx)
 ot_install_header_file (RootStrategyImplementation.hxx)
 ot_install_header_file (SamplingStrategy.hxx)
 ot_install_header_file (PostAnalyticalControlledImportanceSampling.hxx)

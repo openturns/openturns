@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SOBOLSIMULATIONALGORITHM_HXX
 #define OPENTURNS_SOBOLSIMULATIONALGORITHM_HXX
 
-#include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
 #include "openturns/SobolSimulationResult.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API SobolSimulationAlgorithm
-  : public SimulationAlgorithm
+  : public SimulationAlgorithmImplementation
 {
 
   CLASSNAME

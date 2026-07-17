@@ -44,7 +44,7 @@ static const Factory<EventSimulation> Factory_EventSimulation;
 
 /** For save/load mechanism */
 EventSimulation::EventSimulation(const HistoryStrategy & convergenceStrategy)
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , event_(ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
@@ -54,7 +54,7 @@ EventSimulation::EventSimulation(const HistoryStrategy & convergenceStrategy)
 /* Constructor with parameters */
 EventSimulation::EventSimulation(const RandomVector & event,
                                  const HistoryStrategy & convergenceStrategy)
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , event_(event)
   , result_()
 {
@@ -246,7 +246,7 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
 void EventSimulation::save(Advocate & adv) const
 {
 
-  SimulationAlgorithm::save(adv);
+  SimulationAlgorithmImplementation::save(adv);
   adv.saveAttribute("event_", event_);
   adv.saveAttribute("result_", result_);
 }
@@ -254,7 +254,7 @@ void EventSimulation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void EventSimulation::load(Advocate & adv)
 {
-  SimulationAlgorithm::load(adv);
+  SimulationAlgorithmImplementation::load(adv);
   adv.loadAttribute("event_", event_);
   adv.loadAttribute("result_", result_);
 }
