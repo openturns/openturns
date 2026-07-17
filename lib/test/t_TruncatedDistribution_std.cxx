@@ -49,7 +49,7 @@ int main(int, char *[])
   try
   {
     Collection<TruncatedDistribution> distributionCollection(0);
-    distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0));
+    distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), Interval(1.0, 4.0)));
     distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), 1.0, TruncatedDistribution::LOWER));
     distributionCollection.add(TruncatedDistribution(Normal(2.0, 1.5), 4.0, TruncatedDistribution::UPPER));
     Collection<Distribution> referenceDistributionCollection(0);
@@ -155,7 +155,7 @@ int main(int, char *[])
     intervals.add(Interval(0.2, 2.4));
     candidates.add(Exponential(1.0, 2.0));
     intervals.add(Interval(2.5, 65.0));
-    candidates.add(TruncatedDistribution(WeibullMin(), 1.5, 7.8));
+    candidates.add(TruncatedDistribution(WeibullMin(), Interval(1.5, 7.8)));
     intervals.add(Interval(2.5, 6.0));
     candidates.add(Beta(1.5, 6.3, -1.0, 2.0));
     intervals.add(Interval(-2.5, 6.0));
