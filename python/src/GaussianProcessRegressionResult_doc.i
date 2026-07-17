@@ -164,13 +164,24 @@ R"RAW(Accessor to the trend coefficients.
 Returns
 -------
 trendCoef : :class:`~openturns.Point`
-    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})`
+    The trend coefficients stored as a flat vector of dimension :math:`b \times \outputDim`.
 
 Notes
 -----
-As the same basis is used for each marginal output, each :math:`\vect{\beta}^\ell` vector is of dimension
-:math:`b`, the size of the functional basis.
-)RAW"
+The same basis :math:`(\varphi_j)_{1 \leq j \leq b}` is used for each of the :math:`\outputDim` marginal outputs.
+The coefficients are stored **interleaved by basis function**. For each basis function :math:`\varphi_j`
+(:math:`1 \leq j \leq b`), the coefficients for all output marginals are stored consecutively:
+
+.. math::
+
+    \vect{\beta} = (\beta_1^1, \dots, \beta_1^{\outputDim}, \beta_2^1, \dots, \beta_2^{\outputDim}, \dots, \beta_b^1, \dots, \beta_b^{\outputDim})
+
+where :math:`\beta_j^\ell` is the coefficient of the :math:`j`-th basis function
+for the :math:`\ell`-th output marginal.
+
+The coefficient of the :math:`j`-th basis function for the :math:`\ell`-th output marginal
+is located at position :math:`(j - 1) \times \outputDim + \ell` in the flat vector
+(0-indexed basis and output marginal).)RAW"
 
 // ---------------------------------------------------------------------
 
