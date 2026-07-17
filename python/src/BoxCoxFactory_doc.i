@@ -5,7 +5,9 @@ Notes
 -----
 The class :class:`~openturns.BoxCoxFactory` enables to build a Box Cox transformation from data.
 
-The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` maps a sample into a new sample following a normal distribution with independent components. That sample may be the realization of a process as well as the realization of a distribution.
+The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` maps
+a sample into a new sample following a normal distribution with independent components.
+That sample may be the realization of a process as well as the realization of a distribution.
 
 In the multivariate case, we proceed component by component: :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset` which writes:
 
@@ -23,8 +25,11 @@ for all :math:`x+\alpha_i >0`.
 
 |
 
-BoxCox transformation could also be performed in the case of the estimation of a general linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
-The objective is to estimate the most likely surrogate model (general linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the general linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
+BoxCox transformation could also be performed in the case of the estimation of a general linear model through GeneralLinearModelAlgorithm.
+The objective is to estimate the most likely surrogate model (general linear model)
+which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}`
+are to be calibrated such as maximizing the general linear model's likelihood function.
+In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -97,8 +102,8 @@ Estimation of a linear model:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BoxCoxFactory::buildWithGLM
-R"RAW(Estimate the Box Cox transformation with general linear model.
+%feature("docstring") OT::BoxCoxFactory::buildWithGPF
+R"RAW(Estimate the Box Cox transformation with gaussian process fitter.
 
 Refer to :meth:`build` for details.
 
@@ -121,12 +126,12 @@ Returns
 -------
 transform : :class:`~openturns.BoxCoxTransform`
     The estimated Box Cox transformation.
-generalLinearModelResult : :class:`~openturns.GeneralLinearModelResult`
-    The structure that contains results of general linear model algorithm.
+gaussianProcessFitterResult : :class:`~openturns.GaussianProcessFitterResult`
+    The structure that contains results of gaussian process fitter.
 
 Examples
 --------
-Estimation of a general linear model:
+Estimation of a gaussian process fitter:
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
@@ -142,7 +147,7 @@ Estimation of a general linear model:
 >>> basis = ot.LinearBasisFactory(1).build()
 >>> covarianceModel = ot.DiracCovarianceModel()
 >>> shift = [1.0e-1]
->>> boxCox, result = ot.BoxCoxFactory().buildWithGLM(inputSample, outputSample, covarianceModel, basis, shift)
+>>> boxCox, result = ot.BoxCoxFactory().buildWithGPF(inputSample, outputSample, covarianceModel, basis, shift)
 )RAW"
 
 // ---------------------------------------------------------------------

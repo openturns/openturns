@@ -14,3 +14,4 @@ Remove deprecated LinearModelResult.buildMethod()
 Remove GaussianProcessConditionalCovariance.operator() in some future version
 Remove ProcessSample.setField(Field, int)
 Remove Field.getInputDimension/getOutputDimension
+Remove BoxCoxFactory.buildWithGLM

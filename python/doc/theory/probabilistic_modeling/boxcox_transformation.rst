@@ -317,7 +317,6 @@ to get both the optimal and assess the robustness of the optimum.
     - See :class:`~openturns.BoxCoxTransform`
     - See :class:`~openturns.InverseBoxCoxTransform`
     - See :class:`~openturns.BoxCoxFactory`
-    - See :class:`~openturns.GeneralLinearModelAlgorithm`
     - See :class:`~openturns.LinearModelAlgorithm`
 
 .. topic:: Examples:
