@@ -39,6 +39,8 @@
 #include "openturns/SimulationResult.hxx"
 #include "openturns/SimulationResultImplementation.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
+#include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/SubsetSamplingResult.hxx"
 #include "openturns/SubsetSampling.hxx"

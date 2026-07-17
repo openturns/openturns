@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_EVENTSIMULATION_HXX
 #define OPENTURNS_EVENTSIMULATION_HXX
 
-#include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/Compact.hxx"
 #include "openturns/Last.hxx"
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API EventSimulation
-  : public SimulationAlgorithm
+  : public SimulationAlgorithmImplementation
 {
 
   CLASSNAME

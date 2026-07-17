@@ -1,10 +1,10 @@
-// SWIG file SimulationAlgorithm.i
+// SWIG file SimulationAlgorithmImplementation.i
 
 %{
-#include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
 
-static void SimulationAlgorithm_ProgressCallback(OT::Scalar percent, void * data) {
+static void SimulationAlgorithmImplementation_ProgressCallback(OT::Scalar percent, void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer point(OT::convert< OT::Scalar, OT::_PyFloat_ >(percent));
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, point.get(), NULL));
@@ -12,7 +12,7 @@ static void SimulationAlgorithm_ProgressCallback(OT::Scalar percent, void * data
     OT::handleException();
 }
 
-static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
+static OT::Bool SimulationAlgorithmImplementation_StopCallback(void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, NULL));
   if (result.isNull())
@@ -22,22 +22,22 @@ static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
 
 %}
 
-%include SimulationAlgorithm_doc.i
+%include SimulationAlgorithmImplementation_doc.i
 
-%ignore OT::SimulationAlgorithm::setProgressCallback(ProgressCallback callBack, void * data);
-%ignore OT::SimulationAlgorithm::setStopCallback(StopCallback callBack, void * data);
+%ignore OT::SimulationAlgorithmImplementation::setProgressCallback(ProgressCallback callBack, void * data);
+%ignore OT::SimulationAlgorithmImplementation::setStopCallback(StopCallback callBack, void * data);
 
-OTTypedInterfaceObjectHelper(SimulationAlgorithm)
+%copyctor OT::SimulationAlgorithmImplementation;
 
-%include openturns/SimulationAlgorithm.hxx
+%include openturns/SimulationAlgorithmImplementation.hxx
 
 namespace OT {
 
-%extend SimulationAlgorithm {
+%extend SimulationAlgorithmImplementation {
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
-    self->setProgressCallback(&SimulationAlgorithm_ProgressCallback, callBack);
+    self->setProgressCallback(&SimulationAlgorithmImplementation_ProgressCallback, callBack);
   }
   else {
     throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
@@ -46,12 +46,12 @@ void setProgressCallback(PyObject * callBack) {
 
 void setStopCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
-    self->setStopCallback(&SimulationAlgorithm_StopCallback, callBack);
+    self->setStopCallback(&SimulationAlgorithmImplementation_StopCallback, callBack);
   }
   else {
     throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
   }
 }
 
-} // SimulationAlgorithm
+} // SimulationAlgorithmImplementation
 } // OT

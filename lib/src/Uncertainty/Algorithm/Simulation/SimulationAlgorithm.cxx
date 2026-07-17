@@ -18,172 +18,148 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SimulationAlgorithm.hxx"
-#include "openturns/Log.hxx"
-#include "openturns/Curve.hxx"
-#include "openturns/ResourceMap.hxx"
-#include "openturns/Compact.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/*
- * @class SimulationAlgorithm
- */
-
 CLASSNAMEINIT(SimulationAlgorithm)
 
-static const Factory<SimulationAlgorithm> Factory_SimulationAlgorithm;
-
-/** For save/load mechanism */
+/* Default constructor */
 SimulationAlgorithm::SimulationAlgorithm()
-  : PersistentObject()
-  , blockSize_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultBlockSize" ))
-  , progressCallback_(std::make_pair<ProgressCallback, void *>(0, 0))
-  , stopCallback_(std::make_pair<StopCallback, void *>(0, 0))
-  , convergenceStrategy_(Compact())
-  , maximumOuterSampling_(ResourceMap::GetAsUnsignedInteger( "SimulationAlgorithm-DefaultMaximumOuterSampling" ))
-  , maximumCoefficientOfVariation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumCoefficientOfVariation" ))
-  , maximumStandardDeviation_(ResourceMap::GetAsScalar( "SimulationAlgorithm-DefaultMaximumStandardDeviation" ))
-  , maximumTimeDuration_(ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumTimeDuration"))
+  : TypedInterfaceObject<SimulationAlgorithmImplementation>(new SimulationAlgorithmImplementation())
 {
   // Nothing to do
 }
 
-/* Virtual constructor */
-SimulationAlgorithm * SimulationAlgorithm::clone() const
+/* Constructor from implementation */
+SimulationAlgorithm::SimulationAlgorithm(const SimulationAlgorithmImplementation & implementation)
+  : TypedInterfaceObject<SimulationAlgorithmImplementation>(implementation.clone())
 {
-  return new SimulationAlgorithm(*this);
+  // Nothing to do
+}
+
+/* Constructor from implementation pointer */
+SimulationAlgorithm::SimulationAlgorithm(SimulationAlgorithmImplementation * p_implementation)
+  : TypedInterfaceObject<SimulationAlgorithmImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
+/* Constructor from implementation */
+SimulationAlgorithm::SimulationAlgorithm(const Implementation & p_implementation)
+  : TypedInterfaceObject<SimulationAlgorithmImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
+/* Comparison operator */
+Bool SimulationAlgorithm::operator ==(const SimulationAlgorithm & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+/* Comparison operator */
+Bool SimulationAlgorithm::operator !=(const SimulationAlgorithm & other) const
+{
+  return !operator==(other);
 }
 
 /* Maximum sample size accessor */
 void SimulationAlgorithm::setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling)
 {
-  maximumOuterSampling_ = maximumOuterSampling;
+  copyOnWrite();
+  getImplementation()->setMaximumOuterSampling(maximumOuterSampling);
 }
 
-/* Maximum sample size accessor */
 UnsignedInteger SimulationAlgorithm::getMaximumOuterSampling() const
 {
-  return maximumOuterSampling_;
+  return getImplementation()->getMaximumOuterSampling();
 }
 
 /* Maximum coefficient of variation accessor */
 void SimulationAlgorithm::setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation)
 {
-  // Check if the given coefficient of variation is >= 0
-  //      if (!(maximumCoefficientOfVariation >= 0.0)) throw InvalidArgumentException(HERE) << "The maximum coefficient of variation must be >= 0.0";
-  maximumCoefficientOfVariation_ = maximumCoefficientOfVariation;
+  copyOnWrite();
+  getImplementation()->setMaximumCoefficientOfVariation(maximumCoefficientOfVariation);
 }
 
-/* Maximum coefficient of variation accessor */
 Scalar SimulationAlgorithm::getMaximumCoefficientOfVariation() const
 {
-  return maximumCoefficientOfVariation_;
+  return getImplementation()->getMaximumCoefficientOfVariation();
 }
 
 /* Maximum standard deviation accessor */
 void SimulationAlgorithm::setMaximumStandardDeviation(const Scalar maximumStandardDeviation)
 {
-  maximumStandardDeviation_ = maximumStandardDeviation;
+  copyOnWrite();
+  getImplementation()->setMaximumStandardDeviation(maximumStandardDeviation);
 }
 
 Scalar SimulationAlgorithm::getMaximumStandardDeviation() const
 {
-  return maximumStandardDeviation_;
+  return getImplementation()->getMaximumStandardDeviation();
 }
 
 /* Block size accessor */
 void SimulationAlgorithm::setBlockSize(const UnsignedInteger blockSize)
 {
-  // Check if the given block size is >= 1
-  if (blockSize < 1) throw InvalidArgumentException(HERE) << "The block size must be >= 1";
-  blockSize_ = blockSize;
+  copyOnWrite();
+  getImplementation()->setBlockSize(blockSize);
 }
 
-/* Block size accessor */
 UnsignedInteger SimulationAlgorithm::getBlockSize() const
 {
-  return blockSize_;
+  return getImplementation()->getBlockSize();
 }
 
 /* String converter */
 String SimulationAlgorithm::__repr__() const
 {
-  OSS oss;
-  oss << "class=" << SimulationAlgorithm::GetClassName()
-      << " maximumOuterSampling=" << maximumOuterSampling_
-      << " maximumCoefficientOfVariation=" << maximumCoefficientOfVariation_
-      << " maximumStandardDeviation=" << maximumStandardDeviation_
-      << " blockSize=" << blockSize_;
-  return oss;
+  return getImplementation()->__repr__();
 }
 
 /* Performs the actual computation. */
 void SimulationAlgorithm::run()
 {
-  throw NotYetImplementedException(HERE) << "In SimulationAlgorithm::run()";
+  copyOnWrite();
+  getImplementation()->run();
 }
 
 /* Convergence strategy accessor */
 void SimulationAlgorithm::setConvergenceStrategy(const HistoryStrategy & convergenceStrategy)
 {
-  convergenceStrategy_ = convergenceStrategy;
+  copyOnWrite();
+  getImplementation()->setConvergenceStrategy(convergenceStrategy);
 }
 
 HistoryStrategy SimulationAlgorithm::getConvergenceStrategy() const
 {
-  return convergenceStrategy_;
+  return getImplementation()->getConvergenceStrategy();
 }
-
-
-/* Method save() stores the object through the StorageManager */
-void SimulationAlgorithm::save(Advocate & adv) const
-{
-
-  PersistentObject::save(adv);
-  adv.saveAttribute("blockSize_", blockSize_);
-  adv.saveAttribute("maximumOuterSampling_", maximumOuterSampling_);
-  adv.saveAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
-  adv.saveAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
-  adv.saveAttribute("maximumTimeDuration_", maximumTimeDuration_);
-  adv.saveAttribute("convergenceStrategy_", convergenceStrategy_);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void SimulationAlgorithm::load(Advocate & adv)
-{
-  PersistentObject::load(adv);
-  adv.loadAttribute("blockSize_", blockSize_);
-  adv.loadAttribute("maximumOuterSampling_", maximumOuterSampling_);
-  adv.loadAttribute("maximumCoefficientOfVariation_", maximumCoefficientOfVariation_);
-  adv.loadAttribute("maximumStandardDeviation_", maximumStandardDeviation_);
-  if (adv.hasAttribute("maximumTimeDuration_")) // OT>=1.23
-    adv.loadAttribute("maximumTimeDuration_", maximumTimeDuration_);
-  adv.loadAttribute("convergenceStrategy_", convergenceStrategy_);
-}
-
 
 void SimulationAlgorithm::setProgressCallback(ProgressCallback callBack, void * state)
 {
-  progressCallback_ = std::pair<ProgressCallback, void *>(callBack, state);
+  copyOnWrite();
+  getImplementation()->setProgressCallback(callBack, state);
 }
-
 
 void SimulationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 {
-  stopCallback_ = std::pair<StopCallback, void *>(callBack, state);
+  copyOnWrite();
+  getImplementation()->setStopCallback(callBack, state);
 }
 
 /* Maximum time accessor */
 void SimulationAlgorithm::setMaximumTimeDuration(const Scalar maximumTimeDuration)
 {
-  maximumTimeDuration_ = maximumTimeDuration;
+  copyOnWrite();
+  getImplementation()->setMaximumTimeDuration(maximumTimeDuration);
 }
 
 Scalar SimulationAlgorithm::getMaximumTimeDuration() const
 {
-  return maximumTimeDuration_;
+  return getImplementation()->getMaximumTimeDuration();
 }
 
 END_NAMESPACE_OPENTURNS
