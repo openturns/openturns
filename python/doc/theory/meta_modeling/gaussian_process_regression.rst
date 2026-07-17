@@ -146,7 +146,7 @@ The maximization of :eq:`logLikelihoodGP` leads to the following optimality cond
     = \argmin_{\vect{\beta}} \left\| \mat{L}_{\vect{p}^*}^{-1} \left(\vect{y} - \vect{m}_{\vect{\beta}} \right) \right\|^2_2
 
 This expression of :math:`\vect{\beta}^*` as a function of :math:`\vect{p}^*` is taken as a general relation
-between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihood`, leading to
+between :math:`\vect{\beta}` and :math:`\vect{p}` and is substituted into :eq:`logLikelihoodGP`, leading to
 a *reduced log-likelihood* function depending solely on :math:`\vect{p}`.
 
 In the particular case where :math:`\outputDim=\dim(\vect{\sigma})=1` and :math:`\sigma` is a part of

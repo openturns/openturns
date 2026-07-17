@@ -31,6 +31,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/GeneralLinearModelResult.hxx"
+#include "openturns/GaussianProcessFitterResult.hxx"
 #include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -78,7 +79,7 @@ public:
                                  const Point & shift,
                                  Graph & graph) const;
 
-  /** Build the factory from data by estimating the best generalized linear model */
+  /** @deprecated Build the factory from data by estimating the best generalized linear model */
   BoxCoxTransform buildWithGLM(const Sample &inputSample,
                                const Sample &outputSample,
                                const CovarianceModel &covarianceModel,
@@ -91,6 +92,20 @@ public:
                                const CovarianceModel & covarianceModel,
                                const Point & shift,
                                GeneralLinearModelResult & generalLinearModelResult);
+
+  /** Build the factory from data by estimating the best gaussian process fitter */
+  BoxCoxTransform buildWithGPF(const Sample &inputSample,
+                               const Sample &outputSample,
+                               const CovarianceModel &covarianceModel,
+                               const Basis &basis,
+                               const Point &shift,
+                               GaussianProcessFitterResult &gaussianProcessFitterResult);
+
+  BoxCoxTransform buildWithGPF(const Sample &inputSample,
+                               const Sample &outputSample,
+                               const CovarianceModel &covarianceModel,
+                               const Point &shift,
+                               GaussianProcessFitterResult &gaussianProcessFitterResult);
 
   BoxCoxTransform buildWithLM(const Sample &inputSample,
                               const Sample &outputSample,
