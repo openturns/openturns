@@ -38,9 +38,9 @@ factory = ot.BoxCoxFactory()
 basis = ot.LinearBasisFactory(1).build()
 covarianceModel = ot.DiracCovarianceModel()
 shift = [1.0e-10]
-myBoxCox, result = factory.buildWithGLM(
+myBoxCox, result = factory.buildWithGPF(
     inputSample, outputSample, covarianceModel, basis, shift
 )
 
-print("myBoxCox (GLM) =", myBoxCox)
-print("GLM result     =", result)
+print("myBoxCox (GPF) =", myBoxCox)
+print("GPF result     =", result)
