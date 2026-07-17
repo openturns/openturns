@@ -320,7 +320,7 @@ print("case 2, q=%.6f" % q)
 q = case2.computeQuantile(0.95, True)[0]
 print("case 2, q comp=%.6f" % q)
 # For ticket 953
-atom1 = ot.TruncatedDistribution(ot.Uniform(0.0, 1.0), 0.0, 1.0)
+atom1 = ot.TruncatedDistribution(ot.Uniform(0.0, 1.0), ot.Interval(0.0, 1.0))
 atom2 = ot.Uniform(0.0, 2.0)
 sum = atom1 + atom2
 print("sum=", sum)
@@ -330,7 +330,7 @@ minS = 0.2
 maxS = 10.0
 muS = (log(minS) + log(maxS)) / 2.0
 sigma = (log(maxS) - muS) / 3.0
-atom1 = ot.TruncatedDistribution(ot.LogNormal(muS, sigma), minS, maxS)
+atom1 = ot.TruncatedDistribution(ot.LogNormal(muS, sigma), ot.Interval(minS, maxS))
 atom2 = ot.Uniform(0.0, 2.0)
 sum = atom1 + atom2
 print("sum=", sum)

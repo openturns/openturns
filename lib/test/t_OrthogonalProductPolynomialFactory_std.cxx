@@ -112,7 +112,7 @@ int main(int, char *[])
     aCollection4.add( Distribution(marginalN) );
     Uniform marginalU(12345.6, 123456.7);
     aCollection4.add( Distribution(marginalU) );
-    TruncatedDistribution marginalTN(Normal(2.0, 1.5), 1.0, 4.0);
+    TruncatedDistribution marginalTN(Normal(2.0, 1.5), Interval(1.0, 4.0));
     aCollection4.add( Distribution(marginalTN) );
     OrthogonalProductPolynomialFactory productBasis4(aCollection4);
     fullprint << productBasis4.__str__() << std::endl;

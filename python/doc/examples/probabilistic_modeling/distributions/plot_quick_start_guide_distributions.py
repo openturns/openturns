@@ -251,7 +251,7 @@ view = otv.View(graph)
 # We can truncate this distribution to the :math:`[1,2]` interval. We see that the PDF of the distribution becomes discontinuous at the truncation points 1 and 2.
 
 # %%
-Y = ot.TruncatedDistribution(X, 1.0, 2.0)
+Y = ot.TruncatedDistribution(X, ot.Interval(1.0, 2.0))
 graph = Y.drawPDF()
 view = otv.View(graph)
 

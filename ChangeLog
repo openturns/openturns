@@ -17,6 +17,7 @@
  * VonMisesFisher(Factory) (openturns.experimental)
 
 ==== API changes ====
+ * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed deprecated SpecFunc.IsNormal
