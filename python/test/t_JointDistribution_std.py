@@ -260,7 +260,7 @@ marginalU = ot.Uniform(12345.6, 123456.7)
 marginalU.setName("Second")
 marginalU.setDescription(["Two"])
 aCollection2.append(marginalU)
-marginalTN = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0)
+marginalTN = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval(1.0, 4.0))
 marginalTN.setName("Third")
 marginalTN.setDescription(["Three"])
 aCollection2.append(marginalTN)
@@ -314,7 +314,7 @@ assert composed.getDescription() == ["a", "b", "X0", "X1", "X2"], "wrong descrip
 # complexities and print them
 aCollection = [
     ot.Uniform(),
-    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
+    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval(1.0, 4.0)),
     ot.Normal(),
 ]
 distribution = ot.JointDistribution(aCollection)

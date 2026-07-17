@@ -297,7 +297,7 @@ int main(int, char *[])
     Triangular triangular(-0.5, 1.5, 2.5);
     study.add("triangular", triangular);
 
-    TruncatedDistribution truncatedDistribution(Normal(2.0, 1.5), 1.0, 4.0);
+    TruncatedDistribution truncatedDistribution(Normal(2.0, 1.5), Interval(1.0, 4.0));
     study.add("truncatedDistribution", truncatedDistribution);
 
     TruncatedNormal truncatedNormal(0.5, 3.0, -2.0, 2.0);

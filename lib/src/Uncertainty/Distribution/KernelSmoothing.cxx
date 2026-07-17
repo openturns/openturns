@@ -621,7 +621,7 @@ TruncatedDistribution KernelSmoothing::buildWeightedAsTruncatedDistribution(cons
   else baseDistribution = buildWeightedAsKernelMixture(newSample, newWeights, bandwidth);
   if (boundingOption_ == LOWER) return TruncatedDistribution(baseDistribution, xMin, TruncatedDistribution::LOWER);
   if (boundingOption_ == UPPER) return TruncatedDistribution(baseDistribution, xMax, TruncatedDistribution::UPPER);
-  return TruncatedDistribution(baseDistribution, xMin, xMax);
+  return TruncatedDistribution(baseDistribution, Interval(xMin, xMax));
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
@@ -969,7 +969,7 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   else baseDistribution = buildAsKernelMixture(newSample, bandwidth);
   if (boundingOption_ == LOWER) return TruncatedDistribution(baseDistribution, xMin, TruncatedDistribution::LOWER);
   if (boundingOption_ == UPPER) return TruncatedDistribution(baseDistribution, xMax, TruncatedDistribution::UPPER);
-  return TruncatedDistribution(baseDistribution, xMin, xMax);
+  return TruncatedDistribution(baseDistribution, Interval(xMin, xMax));
 }
 
 /* Bandwidth accessor */

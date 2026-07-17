@@ -31,7 +31,7 @@ referenceDistribution = [
     ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0),
 ]
 distribution = [
-    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
+    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval(1.0, 4.0)),
     ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, ot.TruncatedDistribution.LOWER),
     ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 4.0, ot.TruncatedDistribution.UPPER),
     ot.TruncatedDistribution(
@@ -209,7 +209,7 @@ candidates = [
     ot.Normal(1.0, 2.0),
     ot.Uniform(1.0, 2.0),
     ot.Exponential(1.0, 2.0),
-    ot.TruncatedDistribution(ot.WeibullMin(), 1.5, 7.8),
+    ot.TruncatedDistribution(ot.WeibullMin(), ot.Interval(1.5, 7.8)),
     ot.Beta(1.5, 6.3, -1.0, 2.0),
     ot.JointDistribution([ot.Normal()] * 2),
     ot.BlockIndependentDistribution([ot.Normal(2), ot.Normal(2)]),
@@ -249,7 +249,7 @@ print("proba=%.6f" % dist.computeCDF([3.0, -3.0]))
 
 # relative range wrt quantile epsilon issue
 unif = ot.Uniform(0.0, 1e12)
-trunc = ot.TruncatedDistribution(unif, 0.25, 2.0)
+trunc = ot.TruncatedDistribution(unif, ot.Interval(0.25, 2.0))
 print("q@0.1=", trunc.computeQuantile(0.1))
 
 # n-d CDF inversion
@@ -363,28 +363,28 @@ y_trunc = ot.Point([0.1, 0.5, 0.3, 0.1])
 dist_trunc = otexp.PiecewiseLinearDistribution(x_trunc, y_trunc)
 
 # Left endpoint: truncate at original lower bound
-t_left = ot.TruncatedDistribution(dist_trunc, 0.0, 2.0)
+t_left = ot.TruncatedDistribution(dist_trunc, ot.Interval(0.0, 2.0))
 s_left = t_left.getSimplifiedVersion()
 for test_x in [0.0, 0.5, 1.0, 1.5, 2.0]:
     ott.assert_almost_equal(s_left.computePDF(test_x), t_left.computePDF(test_x))
     ott.assert_almost_equal(s_left.computeCDF(test_x), t_left.computeCDF(test_x))
 
 # Right endpoint: truncate at original upper bound
-t_right = ot.TruncatedDistribution(dist_trunc, 1.0, 3.0)
+t_right = ot.TruncatedDistribution(dist_trunc, ot.Interval(1.0, 3.0))
 s_right = t_right.getSimplifiedVersion()
 for test_x in [1.0, 1.5, 2.0, 2.5, 3.0]:
     ott.assert_almost_equal(s_right.computePDF(test_x), t_right.computePDF(test_x))
     ott.assert_almost_equal(s_right.computeCDF(test_x), t_right.computeCDF(test_x))
 
 # Both endpoints: truncate at original bounds
-t_both = ot.TruncatedDistribution(dist_trunc, 0.0, 3.0)
+t_both = ot.TruncatedDistribution(dist_trunc, ot.Interval(0.0, 3.0))
 s_both = t_both.getSimplifiedVersion()
 for test_x in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]:
     ott.assert_almost_equal(s_both.computePDF(test_x), t_both.computePDF(test_x))
     ott.assert_almost_equal(s_both.computeCDF(test_x), t_both.computeCDF(test_x))
 
 # Interior truncation (not at original bounds)
-t_interior = ot.TruncatedDistribution(dist_trunc, 0.5, 2.5)
+t_interior = ot.TruncatedDistribution(dist_trunc, ot.Interval(0.5, 2.5))
 s_interior = t_interior.getSimplifiedVersion()
 for test_x in [0.5, 1.0, 1.5, 2.0, 2.5]:
     ott.assert_almost_equal(s_interior.computePDF(test_x), t_interior.computePDF(test_x))
