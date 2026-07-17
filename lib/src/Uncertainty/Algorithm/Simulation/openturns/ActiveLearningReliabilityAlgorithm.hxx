@@ -78,11 +78,15 @@ public:
   ActiveLearningReliabilityAlgorithm * clone() const override;
 
   void run();
-  
-  enum convergenceCriterion {PROBABILITY = 0, RELIABILITYINDEX = 1};
+
+  enum convergenceCriterion {PROBABILITY_UNCERTAINTY = 0,
+                             RELIABILITY_INDEX_UNCERTAINTY = 1,
+                             ACTIVE_LEARNING = 2,
+                             PROBABILITY_STABILITY = 3,
+                             RELIABILITY_INDEX_STABILITY = 4};
   
   // Accessor to convergence attributes
-  void setConvergenceCriterion(const UnsignedInteger convergenceCriterion = PROBABILITY);
+  void setConvergenceCriterion(const UnsignedInteger convergenceCriterion = PROBABILITY_UNCERTAINTY);
   
   void setConvergenceUncertaintyFactor(const Scalar convergenceUncertaintyFactor);
   
@@ -90,18 +94,28 @@ public:
   
   void setSimulationBudget(const UnsignedInteger simulationBudget);
   
+  Pointer<EventSimulation> getSimulationAlgorithm() const;
+  
+  //EventSimulation & getSimulationAlgorithm() const;
+  UnsignedInteger getFunctionCallNumber() const;
+  
+  Sample getInputDoE() const;
+  
+  Sample getOutputDoE() const;
+  
 protected:
 
-  Bool checkConvergenceProbabilityWithUncertainty(const Scalar epsilon,
-                                                  const Scalar kFactor);
+  Bool checkConvergenceProbabilityWithUncertainty();
 
-  Bool checkConvergenceReliabilityIndexWithUncertainty(const Scalar epsilon,
-                                                       const Scalar kFactor);
+  Bool checkConvergenceReliabilityIndexWithUncertainty();
 
-  Point computeProbabilityWithUncertainty(const Scalar kFactor);                                                                                         
-
+  Bool checkConvergenceStability(const Point currentValue,
+                                 const Point previousValue);
+  
+  Point computeProbabilityWithUncertainty();                                                                                         
   const RandomVector defaultEvent_;
   Pointer<EventSimulation> p_defaultSimulationAlgorithm_;
+  Pointer<EventSimulation> p_simulationAlgorithm_;
   Pointer<ActiveLearningReliabilityFunction> p_activeLearningFunction;
   
   GaussianProcessFitter defaultGPFitter_;
@@ -109,10 +123,15 @@ protected:
   Sample inputDoE_;
   Sample outputDoE_;
   UnsignedInteger convergenceCriterion_;
+  
   Scalar convergenceCriterionThreshold_;
-  UnsignedInteger convergenceUncertaintyFactor_;
+  Scalar convergenceUncertaintyFactor_;
+  
   UnsignedInteger simulationBudget_;
-    
+  UnsignedInteger functionCallNumber_;
+  Sample probabilityHistory_;
+  Sample reliabilityIndexHistory_;
+      
 } ; /* class ActiveLearningReliabilityAlgorithm */
 
 END_NAMESPACE_OPENTURNS
