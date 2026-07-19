@@ -30,6 +30,9 @@
 %include BaseFuncCollection.i
 %import base_module.i
 
+/* Base/Stat */
+%import statistics_module.i
+
 /* Base/Optim */
 %import optim_module.i
 %include LinearProblem.i
@@ -55,6 +58,10 @@
 
 /* Uncertainty/Process */
 %import model_process_module.i
+
+/* Base/Stat */
+%include CurlFreeModel.i
+%include DivFreeModel.i
 
 /* Uncertainty/Distribution */
 %include MarginalUniformOrderStatistics.i
