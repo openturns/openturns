@@ -21,7 +21,7 @@ needed to determine the distribution measure of projection of the input
 variable. Let's note that the exact hessian and gradient have been implemented
 for the product of polynomials.
 To facilitate the construction of the basis it is recommended to use the class
-:class:`~openturns.StandardDistributionPolynomialFactory`.
+:class:`~openturns.experimental.StandardDistributionPolynomialFactory`.
 
 See also
 --------

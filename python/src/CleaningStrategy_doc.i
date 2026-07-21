@@ -66,6 +66,7 @@ significant contribution (greatest absolute value of the coefficients), with res
 significance factor :math:`10^{-4}`.
 
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Define the model
 >>> inputDim = 1
@@ -75,7 +76,7 @@ significance factor :math:`10^{-4}`.
 >>> # Construction of the multivariate orthonormal basis
 >>> polyColl = [0.0]*inputDim
 >>> for i in range(distribution.getDimension()):
-...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+...     polyColl[i] = otexp.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 >>> maximumDimension = 100

@@ -30,7 +30,7 @@ to :math:`n_e = d_x` and the dimension of each marginal experiment is
 
 For each marginal, the algorithm computes the family of orthogonal 
 polynomials depending on the marginal distribution using the
-:class:`~openturns.StandardDistributionPolynomialFactory` class. 
+:class:`~openturns.experimental.StandardDistributionPolynomialFactory` class. 
 The input distribution must have an independent copula.
 
 The :class:`~openturns.GaussLegendre` class provides a simple algorithm

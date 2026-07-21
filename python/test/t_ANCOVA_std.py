@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -98,7 +99,7 @@ dim = 3
 enumerateFunction = ot.LinearEnumerateFunction(dim)
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+    polyCol[i] = otexp.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 
 # Chaos definition
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)

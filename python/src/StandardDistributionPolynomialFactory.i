@@ -4,6 +4,8 @@
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 %}
 
+%import UniVariateDistributionPolynomialFactory.i
+
 %include StandardDistributionPolynomialFactory_doc.i
 
 %copyctor OT::StandardDistributionPolynomialFactory;

@@ -1,4 +1,5 @@
 import openturns as ot
+import openturns.experimental as otexp
 from openturns.usecases import ishigami_function
 
 uc = ishigami_function.IshigamiModel()
@@ -16,7 +17,7 @@ enumerateFunction = ot.LinearEnumerateFunction(uc.dim)
 indexMax = enumerateFunction.getBasisSizeFromTotalDegree(degree)
 polyColl = [0.0] * uc.dim
 for i in range(uc.distribution.getDimension()):
-    polyColl[i] = ot.StandardDistributionPolynomialFactory(
+    polyColl[i] = otexp.StandardDistributionPolynomialFactory(
         uc.distribution.getMarginal(i)
     )
 productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)

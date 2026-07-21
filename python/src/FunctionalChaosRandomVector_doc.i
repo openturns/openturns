@@ -56,13 +56,14 @@ Examples
 First, we create the PCE.
 
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> inputDimension = 1
 >>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
 >>> distribution = ot.JointDistribution([ot.Uniform()] * inputDimension)
 >>> polyColl = [0.0] * inputDimension
 >>> for i in range(distribution.getDimension()):
-...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+...     polyColl[i] = otexp.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 >>> degree = 4

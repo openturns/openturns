@@ -558,8 +558,9 @@ ot_add_python_module(experimental experimental_module.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
-                     UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
-                    )
+                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
+                      StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i
+                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i
                       RandomWalk.i RandomWalk_doc.i
@@ -812,7 +813,6 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i
                        AdaptiveStieltjesAlgorithm.i AdaptiveStieltjesAlgorithm_doc.i
-                       StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i
                       OrthogonalFunctionFactory.i OrthogonalFunctionFactory_doc.i
                       OrthogonalProductPolynomialFactory.i OrthogonalProductPolynomialFactory_doc.i
                       OrthogonalBasis.i OrthogonalBasis_doc.i

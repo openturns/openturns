@@ -6,6 +6,7 @@
 # Le chaos fitté correspond à un R^2 = 0.0
 
 import openturns as ot
+import openturns.experimental as otexp
 
 # ot.Log.Show(ot.Log.NONE)
 
@@ -45,7 +46,7 @@ outputSample = poutre(inputSample)
 dim = distribution.getDimension()
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+    polyCol[i] = otexp.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 
 enumerateFunction = ot.LinearEnumerateFunction(dim)
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)

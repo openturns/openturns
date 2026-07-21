@@ -41,6 +41,7 @@ memory requirements when dealing with high-dimensional problems.
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> # Define the model
 >>> inputDim = 1
@@ -50,7 +51,7 @@ Examples
 >>> # Construction of the multivariate orthonormal basis
 >>> polyColl = [0.0]*inputDim
 >>> for i in range(distribution.getDimension()):
-...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+...     polyColl[i] = otexp.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDim)
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 >>> # Truncature strategy of the multivariate orthonormal basis

@@ -83,11 +83,12 @@ See also
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 
 Build the specific orthonormal polynomial factory associated to the normal
 distribution (Hermite):
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.Normal())
+>>> polynomial_factory = otexp.StandardDistributionPolynomialFactory(ot.Normal())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
@@ -97,7 +98,7 @@ X
 Build an orthonormal polynomial factory for the WeibullMin distribution with
 the default orthonormalization algorithm:
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.WeibullMin())
+>>> polynomial_factory = otexp.StandardDistributionPolynomialFactory(ot.WeibullMin())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
@@ -108,7 +109,7 @@ Build an orthonormal polynomial factory for the log-normal distribution with
 Chebychev's othonormalization algorithm:
 
 >>> algorithm = ot.AdaptiveStieltjesAlgorithm(ot.WeibullMin())
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(algorithm)
+>>> polynomial_factory = otexp.StandardDistributionPolynomialFactory(algorithm)
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
