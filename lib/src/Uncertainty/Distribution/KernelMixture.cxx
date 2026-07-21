@@ -629,7 +629,7 @@ Distribution KernelMixture::getMarginal(const Indices & indices) const
  * C = \frac{1}{N\prod_{k=1}^n h_k}
  * mu_j = \int_{-\infty}^{\infty} x_j\frac{1}{Nh_j}\sum_{i=1}^N K((x_j - X^i_j) / h_j) dx_j
  = \int_{-\infty}^{\infty} \frac{1}{Nh_j}\sum_{i=1}^N(h_jt + X^i_j)K(t) h_j dt
- = \frac{1}{Nh_j}\sum_{i=1}^NX^i_j + \int_{-\infty}^{\infty} \frac{1}{N}\sum_{i=1}^Nh_jtK(t) dt
+ = \frac{1}{N}\sum_{i=1}^NX^i_j + \int_{-\infty}^{\infty} \frac{1}{N}\sum_{i=1}^Nh_jtK(t) dt
  = mu_sample_j + h_j mu_K
 */
 void KernelMixture::computeMean() const

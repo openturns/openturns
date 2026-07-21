@@ -3,75 +3,126 @@
 Linear regression
 -----------------
 
-This method deals with the parametric modelling of a probability
-distribution for a random vector
-:math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. It aims to measure
-a type of dependence (here a linear relation) which may exist between a
-component :math:`X^i` and other uncertain variables :math:`X^j`.
+Linear regression enables to fit a  linear regression model between a scalar output random variable :math:`Y` and a
+random vector of regressors  of dimension :math:`\inputDim` denoted by
+:math:`\inputRV = (X_1, \dots, X_\inputDim)`.
 
-The principle of the multiple linear regression model is to find the
-function that links the variable :math:`X^i` to other variables
-:math:`X^{j_1}`,…,\ :math:`X^{j_K}` by means of a linear model:
+The linear regression model is defined by:
+
+.. math::
+    :label: RandomLinearModel
+
+    Y = \sum_{j=1}^{p} a_j \varphi_j(\inputRV) + \epsilon
+
+
+where :math:`a_1, ..., a_{p} \in \Rset` are scalar coefficients,
+:math:`\epsilon` is a random
+noise with zero mean and constant variance :math:`\sigma^2` independent from
+the random variables :math:`\varphi_j(\inputRV)` and :math:`(\varphi_j)_{1 \leq j \leq p}`  is a functional basis
+such that :math:`\varphi_j : \Rset^{\inputDim} \rightarrow \Rset`.
+
+The forecast output random variable is defined by:
+
+.. math::
+   :label: linearOutputRV
+
+   \widehat{Y} = \sum_{j=1}^{p} a_j \varphi_j(\inputRV).
+
+Let :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)` be a sample of the input random vector :math:`\inputRV`
+and :math:`(y_1, \dots, y_\sampleSize)` the associated output values.
+We denote by:
 
 .. math::
 
-    \begin{aligned}
-       X^i = a_0 + \sum_{j \in \{ j_1,\ldots,j_K \} } a_j X^j + \varepsilon
-     \end{aligned}
+   \widehat{y}_i = \sum_{j=1}^{p} a_j \varphi_j(\vect{x}_i)
 
-where :math:`\varepsilon` describes a random variable with zero mean
-and standard deviation :math:`\sigma` independent of the input variables
-:math:`X^i`. For given values of :math:`X^{j_1}`,…,\ :math:`X^{j_K}`,
-the average forecast of :math:`X^i` is denoted by :math:`\widehat{X}^i`
-and is defined as:
+the linear forecast values of the :math:`\vect{x}_i`.
+
+The residuals are defined by:
 
 .. math::
 
-    \begin{aligned}
-       \widehat{X}^i = a_0 + \sum_{j \in \{ j_1,\ldots,j_K \} } a_j X^j
-     \end{aligned}
+    \epsilon_i  = y_i -\widehat{y}_i
 
-The estimators for the regression coefficients
-:math:`\widehat{a}_0,\widehat{a}_1,\ldots,\widehat{a}_{K}`, and the
-standard deviation :math:`\sigma` are obtained from a sample of
-:math:`(X^i,X^{j_1},\ldots,X^{j_K})`, that is a set of :math:`\sampleSize` values
-:math:`(x_1^i,x_1^{j_1},\ldots,x_1^{j_K})`,…,\ :math:`(x_\sampleSize^i,x_\sampleSize^{j_1},\ldots,x_\sampleSize^{j_K})`.
-They are determined via the least-squares method:
+and are assumed to be independent realizations of  :math:`\epsilon`.
+
+The linear coefficients :math:`(a_1, \ldots, a_{p})` and the variance :math:`\sigma^2` are estimated by maximizing the
+likelihood of the residuals according to the distribution of :math:`\epsilon`.
+
+If the noise  :math:`\varepsilon` follows a normal distribution with zero mean, the maximization of the residuals
+likelihood with respect to the normal distribution is equivalent to solving the least-squares problem (see [bingham2010]_ theorem 1.8 page 22):
+
+.. math::
+    :label: linRegCoef
+
+    \left\{ \widehat{a}_1,\ldots,\widehat{a}_{p} \right\} = \textrm{argmin} \sum_{i=1}^{\sampleSize}
+    \left( y_i - \widehat{y}_i\right)^2
+
+Refer to  :any:`least_squares` to get details on the resolution of the problem.
+
+In addition, considering a normal noise enables to make tests of
+significance (see [rawlings2001]_ page 3).
+In particular, this enables to use the F-test and T-test detailed in the next sections.
+
+Statistics
+~~~~~~~~~~
+
+Let :math:`\bar{y}` be the sample mean:
 
 .. math::
 
-    \begin{aligned}
-       \left\{ \widehat{a}_0,\widehat{a}_1,\ldots,\widehat{a}_{K} \right\} = \textrm{argmin} \sum_{k=1}^\sampleSize \left[ x^i_k - a_0 - \sum_{j \in \{ j_1,\ldots,j_K \} } a_j x^j_k \right]^2
-     \end{aligned}
+    \bar{y} = \frac{1}{\sampleSize} \sum_{j = 1}^\sampleSize y_j.
 
-In other words, the principle is to minimize the total quadratic
-distance between the observations :math:`x^i_k` and the linear forecast
-:math:`\widehat{x}^i_k`.
-
-Some estimated coefficient :math:`\widehat{a}_\ell` may be close to
-zero, which may indicate that the variable :math:`X^{j_\ell}` does not
-bring valuable information to forecast :math:`X^i`. A classical statistical
-test to identify such situations is available: Fisher’s test.
-For each estimated coefficient :math:`\widehat{a}_\ell`, an important
-characteristic is the so-called “*p*-value” of Fisher’s test. The
-coefficient is said to be “significant” if and only if
-:math:`\alpha_{\ell \textrm{lim}}` is lower than a value
-:math:`\alpha` chosen by the user (typically 5% or 10%). The lower the
-*p*-value, the more significant the coefficient.
-
-Another important characteristic of the adjusted linear model is the
-coefficient of determination :math:`R^2`. This quantity indicates the
-part of the variance of :math:`X^i` that is explained by the linear
-model:
+The total sum of squares (see [baron2014]_ page 398) is:
 
 .. math::
 
-    \begin{aligned}
-       R^2 = \frac{ \displaystyle \sum_{k=1}^\sampleSize \left( x^i_k - \overline{x}^i \right)^2 - \sum_{k=1}^\sampleSize \left( x^i_k - \widehat{x}_k^i \right)^2 }{ \sum_{k=1}^\sampleSize \left( x^i_k - \overline{x}^i \right)^2 }
-     \end{aligned}
+    SS_{\text{TOT}}
+    = \sum_{j = 1}^\sampleSize \left(y_j - \bar{y}\right)^2.
 
-where :math:`\overline{x}^i` denotes the empirical mean of the sample
-:math:`\left\{ x^i_1,\ldots,x_\sampleSize^i  \right\}`.
+The regression sum of squares is:
+
+.. math::
+
+    SS_{\text{REG}}
+    = \sum_{j = 1}^\sampleSize \left(\hat{y}_j - \bar{y}\right)^2.
+
+The error sum of squares is:
+
+.. math::
+
+    SS_{\text{ERR}}
+    = \sum_{j = 1}^\sampleSize \left(y_j -\widehat{y}_j\right)^2.
+
+Caution
+~~~~~~~
+
+There is an ambiguity when the number of parameters is unspecified in the
+text, which may explain the differences between the various formulas
+we find in books.
+In some texts, the intercept has the index 0, which leads to an
+increased number of parameters.
+In the present document, the number of parameters is equal to :math:`p`,
+but not all books use the same convention:
+
+- in [baron2014]_ (eq. 11.11 page 396), in [sen1990]_ (eq. 2.1 page 28)
+  and in [rawlings2001]_ (eq. 3.1 page 75), the number of parameters is equal
+  to :math:`p + 1`,
+- in [bingham2010]_ (page 61) and in [faraway2014]_ (page 15), the number of parameters is
+  equal to :math:`p`.
+
+
+Coefficient of determination
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The coefficient of determination is (see [baron2014]_ page 399):
+
+.. math::
+
+    R^2 = \frac{SS_{\text{REG}}}{SS_{\text{TOT}}}.
+
+
+The coefficient of determination measures the part
+of the variance explained by the linear regression model.
 
 Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
 of the linear model, whereas a value close to 0 indicates that the
@@ -80,9 +131,165 @@ allows one to detect significant values of :math:`R^2`. Again, a
 *p*-value is provided: the lower the *p*-value, the more
 significant the coefficient of determination.
 
-By definition, the multiple regression model is only relevant for linear
+Variance
+~~~~~~~~
+The unbiased estimator of the variance is (see [baron2014]_ page 400,
+[bingham2010]_ page 67):
+
+.. math::
+
+   \widehat{\sigma}^2 = \frac{SS_{\text{ERR}}}{\sampleSize - p}.
+
+Fisher - test
+~~~~~~~~~~~~~
+We assume that the residual :math:`\varepsilon` follows a normal distribution with zero mean.
+
+The  Fisher’s statistic tests if a coefficient is significantly different from the null value. If not,
+it indicates that the variable :math:`\varphi_i(\inputRV)` does not
+bring valuable information to the forecast :math:`\hat{Y}`. The lower the *p*-value, the more
+significant the coefficient.
+
+ANOVA F-test
+~~~~~~~~~~~~
+We assume that the residual :math:`\varepsilon` follows a normal distribution with zero mean.
+
+The F-statistic is based on the hypothesis that all coefficients
+are simultaneously zero (see [baron2014]_ page 400).
+More precisely, the ANOVA F-test is based on the hypothesis:
+
+.. math::
+
+    H_0 : a_1 = \ldots = a_p = 0
+    \qquad \textrm{vs} \qquad
+    H_A : \textrm{at least one } a_k \neq 0.
+
+Let :math:`\vect{y} \in \Rset^\sampleSize` be the vector of
+observations and :math:`\vect{\hat{y}} \in \Rset^\sampleSize`
+be the vector of predictions.
+
+The F-statistic is (see [bingham2010]_ Kolodziejcyzk’s theorem 6.5 page 154,
+[baron2014]_ page 400):
+
+.. math::
+
+    f = \frac{SS_{\text{REG}} / (p - 1)}{SS_{\text{ERR}} / (\sampleSize - p)}.
+
+The *p*-value is computed from the Fisher-Snedecor
+distribution :math:`F_{p - 1, \sampleSize - p}` (see [baron2014]_ page 400, [faraway2014]_ page 35).
+
+T-test for individual coefficients
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We assume that the residual :math:`\varepsilon` follows a normal distribution with zero mean.
+
+The T-test is based on the hypothesis that one single coefficient is zero.
+More precisely, let :math:`\hat{\sigma}^2` be the estimator of the variance
+(see [baron2014]_ page 400):
+
+.. math::
+
+   \widehat{\sigma}^2 = \frac{SS_{\text{ERR}}}{\sampleSize - p}.
+
+Let us define the design matrix :math:`\mat{\Psi}` of dimensions :math:`\sampleSize \times p`.
+This matrix evaluates each of the :math:`p` basis functions on the :math:`\sampleSize` observations
+of the input sample. Its elements are defined by:
+
+.. math::
+
+    \mat{\Psi}_{i,j} = \varphi_j(\vect{x}_i)
+
+for :math:`i = 1, \dots, \sampleSize` and :math:`j = 1, \dots, p`.
+
+Consequently, the ordinary least squares problem can be expressed in matrix form, and the normal
+equations guarantee that the matrix :math:`\Tr{\mat{\Psi}}\mat{\Psi}` is invertible provided the basis
+unctions are linearly independent.
+
+The variance of the estimator of the parameters is:
+
+.. math::
+
+    \Var{\hat{a}_k} =\widehat{\sigma}^2 (\Tr{\mat{\Psi}} \mat{\Psi})^{-1}_{k,k}.
+
+Let :math:`\operatorname{SD}(\hat{a}_k)` be the standard deviation of the
+estimator of :math:`a_k`:
+
+.. math::
+
+    \operatorname{SD}(\hat{a}_k) = \sqrt{\Var{\hat{a}_k}}
+
+for any :math:`k \in \{1, \ldots, p\}`.
+For :math:`k = 1, \ldots, p`, the T-test is (see [baron2014]_ page 401):
+
+.. math::
+
+    H_0 : a_k = 0 \qquad \textrm{vs} \qquad H_A : a_k \neq 0.
+
+The T-statistic is (see [baron2014]_ page 401, [rawlings2001]_ eq. 4.47 page 122):
+
+.. math::
+
+    t = \frac{\hat{a}_k}{\operatorname{SD}(\hat{a}_k)}
+
+for :math:`k = 1, \ldots, p`.
+The *p*-value is computed from the Student's T distribution
+with :math:`\sampleSize - p` degrees of freedom (see [baron2014]_ page 401).
+
+Distribution of estimators
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The estimated coefficients follow the distribution:
+
+.. math::
+    :label: linRegCoefDist
+
+    \widehat{\vect{a}} \sim \cN(\vect{a}, \sigma^2 \left(\Tr{\mat{\Psi}}
+    \mat{\Psi}\right)^{-1}).
+
+It is exact in case of normally-distributed errors, otherwise it is asymptotic.
+
+The estimated variance of the error follows a Gamma distribution in case of normally-distributed errors:
+
+.. math::
+    :label: linRegVarDist1
+
+    \widehat{\sigma}^2 \sim \operatorname{Gamma}(\alpha, \theta)
+
+with :math:`\alpha = \frac{\sampleSize - p}{2}` and
+:math:`\theta = \frac{2\sigma^2}{\sampleSize - p}`.
+
+In the general case, the asymptotic distribution is normal:
+
+.. math::
+    :label: linRegVarDist2
+
+    \widehat{\sigma}^2 \sim \cN\left(\sigma^2, \frac{2  \sigma^4}{\sampleSize - p}\right).
+
+The prediction on a given input vector :math:`\vect{x}_0` is defined by:
+
+.. math::
+
+   \widehat{y} = \Tr{\vect{x}} \vect{\hat{a}}
+
+where :math:`\vect{x} = \Tr{(\varphi_1(\vect{x}_0),\dots,\varphi_p(\vect{x}_0))}`.
+
+In case of normally-distributed errors, it follows the distribution:
+
+.. math::
+    :label: linRegPredictDist
+
+    \widehat{y} \sim \cN\left(\Tr{\vect{x}} \vect{a}, \Tr{\vect{x}} (\Tr{\mat{\Psi}}
+    \mat{\Psi})^{-1} \vect{x} \sigma^2\right).
+
+Moreover:
+
+.. math::
+    :label: linRegOutputDist
+
+    Y -\widehat{y} \sim \cN\left(0, \left(1 + \Tr{\vect{x}} \left(\Tr{\mat{\Psi}} \mat{\Psi}\right)^{-1} \vect{x}\right) \sigma^2\right).
+
+Some illustrations
+~~~~~~~~~~~~~~~~~~
+By definition, the linear regression model is only relevant for linear
 relationships, as in the following simple example where
-:math:`X^2 = a_0 + a_1 X^1`.
+:math:`Y = a_0 + a_1 X_1`.
 
 .. plot::
 
@@ -107,16 +314,15 @@ relationships, as in the following simple example where
     cloud.setPointStyle('times')
     graph.setDrawable(0, cloud)
     graph.setTitle('')
+    graph.setXTitle(r'$x_1$')
+    graph.setYTitle('y')
     otv.View(graph)
 
 
 In this second example (still in dimension 1), the linear model is not
 relevant because of the exponential shape of the relation. But a linear
 approach would be useful on the transformed problem
-:math:`X^2 = a_0 + a_1 \exp X^1`. In other words, what is important is
-that the relationship between :math:`X^i` and the variables
-:math:`X^{j_1}`,…,\ :math:`X^{j_K}` is linear with respect to the
-regression coefficients :math:`a_j`.
+:math:`Y = a_0 + a_1 \exp X_1`.
 
 .. plot::
 
@@ -140,26 +346,19 @@ regression coefficients :math:`a_j`.
     cloud.setPointStyle('times')
     graph.setDrawable(0, cloud)
     graph.setTitle('')
+    graph.setXTitle(r'$x_1$')
+    graph.setYTitle('y')
     otv.View(graph)
 
 
 The value of :math:`R^2` is a good indication of the goodness-of fit of
 the linear model. However, several other verifications have to be
 carried out before concluding that the linear model is satisfactory. For
-instance, one has to pay attention to the “residuals”
-:math:`\{ u_1,\ldots,u_\sampleSize \}` of the regression:
-
-.. math::
-
-    \begin{aligned}
-       u_j = x^i - \widehat{x}^i
-     \end{aligned}
-
-A residual is thus equal to the difference between the observed value
-of :math:`X^i` and the average forecast provided by the linear model. A
+instance, one has to pay attention to the *residuals* of the regression. A
 key assumption for the robustness of the model is that the
 characteristics of the residuals do not depend on the values of
-:math:`X^i,X^{j_1},\dots,X^{j_K}`: the mean value should be close
+the samples :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)` and
+:math:`(y_1, \dots, y_\sampleSize)`: the mean value should be close
 to 0 and the standard deviation should be constant. Thus, plotting the
 residuals versus these variables can be fruitful.
 
@@ -222,7 +421,6 @@ be abandoned, or at least used very cautiously.
     graph.setTitle('')
     otv.View(graph)
 
-The analysis of a linear regression model is presented in :ref:`regression_analysis`.
 
 .. topic:: API:
 
@@ -243,6 +441,11 @@ The analysis of a linear regression model is presented in :ref:`regression_analy
 
 .. topic:: References:
 
+    - [baron2014]_
+    - [faraway2014]_
+    - [rawlings2001]_
+    - [sen1990]_
+    - [bingham2010]_
     - [saporta1990]_
     - [dixon1983]_
     - [nisthandbook]_
