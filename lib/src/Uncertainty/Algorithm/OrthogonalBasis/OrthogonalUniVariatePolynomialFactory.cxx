@@ -33,6 +33,27 @@ CLASSNAMEINIT(OrthogonalUniVariatePolynomialFactory)
 
 static const Factory<OrthogonalUniVariatePolynomialFactory> Factory_OrthogonalUniVariatePolynomialFactory;
 
+/* Comparison operators */
+Bool OrthogonalUniVariatePolynomialFactory::operator ==(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool OrthogonalUniVariatePolynomialFactory::operator !=(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  return !operator==(other);
+}
+
+Bool OrthogonalUniVariatePolynomialFactory::equals(const OrthogonalUniVariatePolynomialFactory & ) const
+{
+  throw NotYetImplementedException(HERE) << "In OrthogonalUniVariatePolynomialFactory::equals";
+}
+
+Bool OrthogonalUniVariatePolynomialFactory::hasEqualBase(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  return measure_ == other.measure_;
+}
 
 /* Default constructor */
 OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory()

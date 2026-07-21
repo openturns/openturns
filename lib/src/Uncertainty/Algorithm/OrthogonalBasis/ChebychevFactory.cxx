@@ -42,6 +42,18 @@ ChebychevFactory * ChebychevFactory::clone() const
   return new ChebychevFactory(*this);
 }
 
+/* Comparison operators */
+Bool ChebychevFactory::operator ==(const ChebychevFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool ChebychevFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const ChebychevFactory * p_other = dynamic_cast<const ChebychevFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
@@ -91,3 +103,4 @@ String ChebychevFactory::__repr__() const
 
 
 END_NAMESPACE_OPENTURNS
+

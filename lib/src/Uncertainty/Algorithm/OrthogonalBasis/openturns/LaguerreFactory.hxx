@@ -50,6 +50,10 @@ public:
   /** Virtual constructor */
   LaguerreFactory * clone() const override;
 
+  /** Comparison operator */
+  using OrthogonalUniVariatePolynomialFactory::operator ==;
+  Bool operator ==(const LaguerreFactory & other) const;
+
   /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
@@ -67,6 +71,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  Bool equals(const OrthogonalUniVariatePolynomialFactory & other) const override;
   /** Parameter of the Laguerre polynomial */
   Scalar k_;
 

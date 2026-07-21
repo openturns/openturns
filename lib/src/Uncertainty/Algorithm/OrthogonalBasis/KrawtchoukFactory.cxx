@@ -60,6 +60,18 @@ KrawtchoukFactory * KrawtchoukFactory::clone() const
   return new KrawtchoukFactory(*this);
 }
 
+/* Comparison operators */
+Bool KrawtchoukFactory::operator ==(const KrawtchoukFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (n_ == other.n_) && (p_ == other.p_);
+}
+
+Bool KrawtchoukFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const KrawtchoukFactory * p_other = dynamic_cast<const KrawtchoukFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */

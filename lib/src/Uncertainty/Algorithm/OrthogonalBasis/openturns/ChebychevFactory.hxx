@@ -45,6 +45,10 @@ public:
   /** Virtual constructor */
   ChebychevFactory * clone() const override;
 
+  /** Comparison operator */
+  using OrthogonalUniVariatePolynomialFactory::operator ==;
+  Bool operator ==(const ChebychevFactory & other) const;
+
   /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
@@ -60,6 +64,7 @@ public:
   String __repr__() const override;
 
 private:
+  Bool equals(const OrthogonalUniVariatePolynomialFactory & other) const override;
 
 } ; /* class ChebychevFactory */
 

@@ -57,6 +57,18 @@ CharlierFactory * CharlierFactory::clone() const
   return new CharlierFactory(*this);
 }
 
+/* Comparison operators */
+Bool CharlierFactory::operator ==(const CharlierFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (lambda_ == other.lambda_);
+}
+
+Bool CharlierFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const CharlierFactory * p_other = dynamic_cast<const CharlierFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */

@@ -56,6 +56,18 @@ LaguerreFactory * LaguerreFactory::clone() const
   return new LaguerreFactory(*this);
 }
 
+/* Comparison operators */
+Bool LaguerreFactory::operator ==(const LaguerreFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (k_ == other.k_);
+}
+
+Bool LaguerreFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const LaguerreFactory * p_other = dynamic_cast<const LaguerreFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */

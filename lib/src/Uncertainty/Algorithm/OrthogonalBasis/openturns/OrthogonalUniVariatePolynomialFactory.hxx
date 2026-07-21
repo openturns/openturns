@@ -57,6 +57,16 @@ public:
   /** Virtual constructor */
   OrthogonalUniVariatePolynomialFactory * clone() const override;
 
+  /** Comparison operator */
+  Bool operator ==(const OrthogonalUniVariatePolynomialFactory & other) const;
+  using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const OrthogonalUniVariatePolynomialFactory & other) const;
+  Bool hasEqualBase(const OrthogonalUniVariatePolynomialFactory & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const OrthogonalUniVariatePolynomialFactory & other) const;
+
   /** String converter */
   String __repr__() const override;
 

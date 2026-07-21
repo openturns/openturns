@@ -56,6 +56,10 @@ public:
   /** Virtual constructor */
   StandardDistributionPolynomialFactory * clone() const override;
 
+  /** Comparison operator */
+  using OrthogonalUniVariatePolynomialFactory::operator ==;
+  Bool operator ==(const StandardDistributionPolynomialFactory & other) const;
+
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
@@ -79,6 +83,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  Bool equals(const OrthogonalUniVariatePolynomialFactory & other) const override;
 
   /** Check the existence of a specific family more efficient for the given measure */
   void checkSpecificFamily();

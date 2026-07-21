@@ -48,6 +48,18 @@ LegendreFactory * LegendreFactory::clone() const
   return new LegendreFactory(*this);
 }
 
+/* Comparison operators */
+Bool LegendreFactory::operator ==(const LegendreFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool LegendreFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const LegendreFactory * p_other = dynamic_cast<const LegendreFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
@@ -109,3 +121,4 @@ void LegendreFactory::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+
