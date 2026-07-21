@@ -710,6 +710,7 @@ ot_pyinstallcheck_test (IterativeThreshold_std IGNOREOUT)
 ot_pyinstallcheck_test (IterativeMoments_std IGNOREOUT)
 
 ## OrthogonalBasis
+ot_pyinstallcheck_test (EnumerateFunction_std IGNOREOUT)
 ot_pyinstallcheck_test (LinearEnumerateFunction_std)
 ot_pyinstallcheck_test (HyperbolicAnisotropicEnumerateFunction_std)
 ot_pyinstallcheck_test (NormInfEnumerateFunction_std)

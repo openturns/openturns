@@ -50,6 +50,10 @@ public:
   /** Virtual constructor */
   LinearEnumerateFunction * clone() const override;
 
+  /** Comparison operator */
+  using EnumerateFunctionImplementation::operator ==;
+  Bool operator ==(const LinearEnumerateFunction & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -86,6 +90,8 @@ protected:
 private:
   /** Find the smallest n such that Binomial(n, n + dimension) > index and also returns the value of Binomial(n, n + dimension) */
   UnsignedInteger findBinomialCoefficient(const UnsignedInteger index, const UnsignedInteger dimension, UnsignedInteger & BinomialCoefficient) const;
+
+  Bool equals(const EnumerateFunctionImplementation & other) const override;
 
 } ; /* class LinearEnumerateFunction */
 
