@@ -48,6 +48,10 @@ public:
   /** Virtual constructor */
   ConditionedGaussianProcess * clone() const override;
 
+  /** Comparison operator */
+  using GaussianProcess::operator ==;
+  Bool operator ==(const ConditionedGaussianProcess & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -97,6 +101,7 @@ private:
 
   /** Known values indices */
   Indices knownValuesIndices_;
+  Bool equals(const ProcessImplementation & other) const override;
 }; /* class ConditionedGaussianProcess */
 
 END_NAMESPACE_OPENTURNS

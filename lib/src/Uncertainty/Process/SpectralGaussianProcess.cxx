@@ -85,6 +85,19 @@ SpectralGaussianProcess * SpectralGaussianProcess::clone() const
   return new SpectralGaussianProcess(*this);
 }
 
+/* Comparison operators */
+Bool SpectralGaussianProcess::operator ==(const SpectralGaussianProcess & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool SpectralGaussianProcess::equals(const ProcessImplementation & other) const
+{
+  const SpectralGaussianProcess * p_other = dynamic_cast<const SpectralGaussianProcess *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /** Get the Cholesky factor of the kth DSP matrix from cache or computed on the fly */
 TriangularComplexMatrix SpectralGaussianProcess::getCholeskyFactor(const UnsignedInteger k) const
 {

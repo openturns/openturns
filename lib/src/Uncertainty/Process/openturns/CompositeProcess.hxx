@@ -50,6 +50,10 @@ public:
   /** Virtual constructor */
   CompositeProcess * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const CompositeProcess & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -88,6 +92,8 @@ protected:
 
   /** The antecedent of the process through the function */
   Process antecedent_;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class CompositeProcess */
 

@@ -61,6 +61,10 @@ public:
   /** Virtual constructor */
   FunctionalBasisProcess * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const FunctionalBasisProcess & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -117,6 +121,8 @@ private:
 
   /** The last state */
   mutable Point state_;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class FunctionalBasisProcess */
 END_NAMESPACE_OPENTURNS

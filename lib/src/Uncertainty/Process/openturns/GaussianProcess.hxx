@@ -56,6 +56,10 @@ public:
   /** Virtual constructor */
   GaussianProcess * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const GaussianProcess & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -135,6 +139,8 @@ protected:
 
   /** Sampling method */
   UnsignedInteger samplingMethod_ = SamplingMethod::CHOLESKY;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class GaussianProcess */
 

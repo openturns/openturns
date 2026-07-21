@@ -27,6 +27,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Process)
 
+/* Comparison operator */
+Bool Process::operator ==(const Process & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
 /* Default constructor */
 Process::Process()
   : TypedInterfaceObject<ProcessImplementation>(new ProcessImplementation())

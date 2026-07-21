@@ -67,6 +67,19 @@ CompositeProcess * CompositeProcess::clone() const
   return new CompositeProcess(*this);
 }
 
+/* Comparison operators */
+Bool CompositeProcess::operator ==(const CompositeProcess & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (antecedent_ == other.antecedent_);
+}
+
+Bool CompositeProcess::equals(const ProcessImplementation & other) const
+{
+  const CompositeProcess * p_other = dynamic_cast<const CompositeProcess *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String CompositeProcess::__repr__() const
 {

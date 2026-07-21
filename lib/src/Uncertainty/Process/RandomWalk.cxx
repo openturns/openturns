@@ -74,6 +74,19 @@ RandomWalk * RandomWalk::clone() const
   return new RandomWalk(*this);
 }
 
+/* Comparison operators */
+Bool RandomWalk::operator ==(const RandomWalk & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (origin_ == other.origin_) && (distribution_ == other.distribution_);
+}
+
+Bool RandomWalk::equals(const ProcessImplementation & other) const
+{
+  const RandomWalk * p_other = dynamic_cast<const RandomWalk *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String RandomWalk::__repr__() const
 {

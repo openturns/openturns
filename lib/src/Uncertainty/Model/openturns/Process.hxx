@@ -42,6 +42,10 @@ public:
   /* Some typedefs for easy reading */
   typedef Pointer<ProcessImplementation> Implementation;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<ProcessImplementation>::operator ==;
+  Bool operator ==(const Process & other) const;
+
   /** Default constructor */
   Process();
 

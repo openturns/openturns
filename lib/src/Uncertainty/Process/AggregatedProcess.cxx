@@ -55,6 +55,23 @@ AggregatedProcess * AggregatedProcess::clone() const
   return new AggregatedProcess(*this);
 }
 
+/* Comparison operators */
+Bool AggregatedProcess::operator ==(const AggregatedProcess & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (processCollection_.getSize() != other.processCollection_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < processCollection_.getSize(); ++i)
+    if (!(processCollection_[i] == other.processCollection_[i])) return false;
+  return true;
+}
+
+Bool AggregatedProcess::equals(const ProcessImplementation & other) const
+{
+  const AggregatedProcess * p_other = dynamic_cast<const AggregatedProcess *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String AggregatedProcess::__repr__() const
 {

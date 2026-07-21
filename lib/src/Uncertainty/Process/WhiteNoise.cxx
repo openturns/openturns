@@ -65,6 +65,19 @@ WhiteNoise * WhiteNoise::clone() const
   return new WhiteNoise(*this);
 }
 
+/* Comparison operators */
+Bool WhiteNoise::operator ==(const WhiteNoise & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (distribution_ == other.distribution_);
+}
+
+Bool WhiteNoise::equals(const ProcessImplementation & other) const
+{
+  const WhiteNoise * p_other = dynamic_cast<const WhiteNoise *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String WhiteNoise::__repr__() const
 {

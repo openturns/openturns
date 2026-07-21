@@ -33,6 +33,29 @@ CLASSNAMEINIT(ProcessImplementation)
 
 static const Factory<ProcessImplementation> Factory_ProcessImplementation;
 
+/* Comparison operators */
+Bool ProcessImplementation::operator ==(const ProcessImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool ProcessImplementation::operator !=(const ProcessImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool ProcessImplementation::equals(const ProcessImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In ProcessImplementation::equals";
+}
+
+Bool ProcessImplementation::hasEqualBase(const ProcessImplementation & other) const
+{
+  return (outputDimension_ == other.outputDimension_)
+         && (mesh_ == other.mesh_);
+}
+
 /* Default constructor */
 ProcessImplementation::ProcessImplementation()
   : PersistentObject()

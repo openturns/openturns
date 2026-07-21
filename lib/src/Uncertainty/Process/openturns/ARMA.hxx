@@ -62,6 +62,10 @@ public:
   /** Virtual constructor */
   ARMA * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const ARMA & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -148,6 +152,7 @@ private:
 
   /** Number of iterations for the thermalize method */
   mutable UnsignedInteger nThermalization_;
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class ARMA */
 END_NAMESPACE_OPENTURNS

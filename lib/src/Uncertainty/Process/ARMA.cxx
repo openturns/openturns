@@ -116,6 +116,19 @@ ARMA * ARMA::clone() const
   return new ARMA(*this);
 }
 
+/* Comparison operators */
+Bool ARMA::operator ==(const ARMA & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (noiseDistribution_ == other.noiseDistribution_) && (ARCoefficients_ == other.ARCoefficients_) && (MACoefficients_ == other.MACoefficients_);
+}
+
+Bool ARMA::equals(const ProcessImplementation & other) const
+{
+  const ARMA * p_other = dynamic_cast<const ARMA *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ARMA::__repr__() const
 {
