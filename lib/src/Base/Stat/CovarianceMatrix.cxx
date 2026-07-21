@@ -125,6 +125,7 @@ TriangularMatrix CovarianceMatrix::computeRegularizedCholesky() const
 /* Resolution of a linear system */
 Point CovarianceMatrix::solveLinearSystemInPlace(const Point & b)
 {
+  copyOnWrite();
   return getImplementation()->solveLinearSystemCovInPlace(b);
 }
 
@@ -135,6 +136,7 @@ Point CovarianceMatrix::solveLinearSystem(const Point & b) const
 
 Matrix CovarianceMatrix::solveLinearSystemInPlace(const Matrix & b)
 {
+  copyOnWrite();
   return Implementation(getImplementation()->solveLinearSystemCovInPlace(*b.getImplementation()).clone());
 }
 

@@ -258,6 +258,7 @@ Point TriangularMatrix::solveLinearSystem(const Point & b) const
 
 Point TriangularMatrix::solveLinearSystemInPlace(const Point & b)
 {
+  copyOnWrite();
   return getImplementation()->solveLinearSystemTriInPlace(b, isLowerTriangular_);
 }
 
@@ -268,6 +269,7 @@ Matrix TriangularMatrix::solveLinearSystem(const Matrix & b) const
 
 Matrix TriangularMatrix::solveLinearSystemInPlace(const Matrix & b)
 {
+  copyOnWrite();
   return getImplementation()->solveLinearSystemTriInPlace(*b.getImplementation(), isLowerTriangular_);
 }
 

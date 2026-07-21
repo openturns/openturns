@@ -248,6 +248,7 @@ SymmetricMatrix SymmetricMatrix::power(const UnsignedInteger n) const
 /* Resolution of a linear system */
 Point SymmetricMatrix::solveLinearSystemInPlace(const Point & b)
 {
+  copyOnWrite();
   return getImplementation()->solveLinearSystemSymInPlace(b);
 }
 
@@ -258,6 +259,7 @@ Point SymmetricMatrix::solveLinearSystem(const Point & b) const
 
 Matrix SymmetricMatrix::solveLinearSystemInPlace(const Matrix & b)
 {
+  copyOnWrite();
   return getImplementation()->solveLinearSystemSymInPlace(*b.getImplementation());
 }
 
