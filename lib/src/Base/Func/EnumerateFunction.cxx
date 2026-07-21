@@ -28,6 +28,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EnumerateFunction)
 
+/* Comparison operator */
+Bool EnumerateFunction::operator ==(const EnumerateFunction & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
 /* Default constructor */
 EnumerateFunction::EnumerateFunction()
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(1))

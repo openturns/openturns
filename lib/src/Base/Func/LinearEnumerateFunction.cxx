@@ -55,6 +55,18 @@ LinearEnumerateFunction * LinearEnumerateFunction::clone() const
   return new LinearEnumerateFunction(*this);
 }
 
+/* Comparison operators */
+Bool LinearEnumerateFunction::operator ==(const LinearEnumerateFunction & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool LinearEnumerateFunction::equals(const EnumerateFunctionImplementation & other) const
+{
+  const LinearEnumerateFunction * p_other = dynamic_cast<const LinearEnumerateFunction *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String LinearEnumerateFunction::__repr__() const

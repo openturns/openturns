@@ -84,6 +84,10 @@ public:
   /** Virtual constructor */
   HyperbolicAnisotropicEnumerateFunction * clone() const override;
 
+  /** Comparison operator */
+  using EnumerateFunctionImplementation::operator ==;
+  Bool operator ==(const HyperbolicAnisotropicEnumerateFunction & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -152,6 +156,8 @@ private:
 
   /** Cumulated strata cardinals */
   mutable Indices strataCumulatedCardinal_;
+
+  Bool equals(const EnumerateFunctionImplementation & other) const override;
 
 } ; /* class HyperbolicAnisotropicEnumerateFunction */
 
