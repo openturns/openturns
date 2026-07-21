@@ -111,6 +111,9 @@ public:
 
   /** Build the weighted design matrix */
   virtual Matrix computeWeightedDesign(const Bool whole = false) const;
+
+  /** Build the raw design matrix without weight scaling */
+  Matrix computeDesign(const Bool whole = false) const;
 protected:
   virtual Matrix computeWeightedDesign(const Indices & indices) const;
 public:

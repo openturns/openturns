@@ -167,6 +167,11 @@ Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
   return getImplementation()->computeWeightedDesign(whole);
 }
 
+Matrix LeastSquaresMethod::computeDesign(bool whole) const
+{
+  return getImplementation()->computeDesign(whole);
+}
+
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,
     const DesignProxy & proxy,
     const Point & weight,

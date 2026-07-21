@@ -125,12 +125,6 @@ int main(int, char *[])
       //ProcessSample KLScaledModesPS(result.getScaledModesAsProcessSample());
       // The output is hidden due to near-zero nonreproducible values
       //fullprint << "KL scaled modes (process sample)=" << KLScaledModesPS << std::endl;
-      Basis KLModes(result.getModes());
-      // The output is hidden due to near-zero nonreproducible values
-      //fullprint << "KL modes (functions)=" << KLModes << std::endl;
-      Basis KLScaledModes(result.getScaledModes());
-      // The output is hidden due to near-zero nonreproducible values
-      //fullprint << "KL scaled modes (functions)=" << KLScaledModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov2D, mesh);
       ProcessSample processSample(process.getSample(10));

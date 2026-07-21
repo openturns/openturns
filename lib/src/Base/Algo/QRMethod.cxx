@@ -116,10 +116,9 @@ Point QRMethod::solve(const Point & rhs)
   // x = R^{-1}(Q^t b)
   update(Indices(0), currentIndices_, Indices(0));
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
   }
   // compute c = Q^t b
   const Point c(q_.getImplementation()->genVectProd(b, true)); // transpose
@@ -134,10 +133,9 @@ Point QRMethod::solveNormal(const Point & rhs)
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[hasUniformWeight_ ? 0 : i];
   }
   const Point c(r_.getImplementation()->solveLinearSystemTri(b, false, true)); // rhs, lower, transpose
   const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, false, false)); // rhs, lower, transpose

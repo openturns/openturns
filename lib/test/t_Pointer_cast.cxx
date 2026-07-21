@@ -179,12 +179,6 @@ int main(int, char *[])
 
 
 
-  /** Now we try to pass a NotDerived Pointer  to a function that except a Base Pointer */
-  /** THIS SHOULD NOT WORK */
-  Pointer<NotDerivedClass> p_notderived = new NotDerivedClass("ND1");
-  // functionThatCastPointer(p_notderived); // ERROR : cannot convert `NotDerivedClass*' to `BaseClass*'
-
-
   /** We cast a Derived Pointer to a Base Pointer to a Derived Pointer again */
   {
     /** We create a pointer onto a DerivedClass object */

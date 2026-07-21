@@ -163,6 +163,8 @@ void IntegrationExpansion::run()
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(false);
   result_.setInvolvesModelSelection(false);
+  result_.setSelectionHistory(Collection<Indices>(), Collection<Point>(), Indices(outputDimension + 1, 0));
+  result_.setErrorHistory(Point(), Indices(outputDimension + 1, 0));
 }
 
 /* Method to get/set the active functions */

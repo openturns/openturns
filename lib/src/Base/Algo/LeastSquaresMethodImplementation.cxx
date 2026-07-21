@@ -221,18 +221,23 @@ Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole)
 Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Indices & indices) const
 {
   MatrixImplementation design(*proxy_.computeDesign(indices).getImplementation());
-  if (hasUniformWeight_) return design;
-  // Here we take the weights into account
+  // Scale each row by sqrt(w_i), including sqrt(1/n) for uniform weights
   UnsignedInteger flatIndex = 0;
   const UnsignedInteger basisDimension = design.getNbColumns();
   const UnsignedInteger sampleSize = design.getNbRows();
   for (UnsignedInteger j = 0; j < basisDimension; ++j)
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      design[flatIndex] *= weightSqrt_[i];
+      design[flatIndex] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
       ++flatIndex;
     }
   return design;
+}
+
+Matrix LeastSquaresMethodImplementation::computeDesign(const Bool whole) const
+{
+  if (whole) return proxy_.computeDesign(initialIndices_);
+  return proxy_.computeDesign(currentIndices_);
 }
 
 

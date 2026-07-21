@@ -68,4 +68,5 @@
 %include LinearModelValidation.i
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
+%include OMPExpansion.i
 

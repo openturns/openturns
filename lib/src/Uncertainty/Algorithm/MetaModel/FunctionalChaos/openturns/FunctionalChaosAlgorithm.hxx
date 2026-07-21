@@ -133,7 +133,7 @@ public:
 private:
 
   /** Marginal computation */
-  void runMarginal(const UnsignedInteger marginalIndex, Indices & indices, Point & coefficients);
+  void runMarginal(const UnsignedInteger marginalIndex, Indices & indices, Point & coefficients, Collection<Point> & coefficientsHistory, Collection<Indices> & indicesHistory, Point & errorHistory);
 
   /** The composed model */
   Function composedModel_;
