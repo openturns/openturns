@@ -51,6 +51,24 @@ FejerExperiment * FejerExperiment::clone() const
   return new FejerExperiment(*this);
 }
 
+/* Comparison operators */
+Bool FejerExperiment::operator ==(const FejerExperiment & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (discretization_ != other.discretization_) return false;
+  if (ruleType_ != other.ruleType_) return false;
+  if (bounds_ != other.bounds_) return false;
+  if (useNestedLevels_ != other.useNestedLevels_) return false;
+  return true;
+}
+
+Bool FejerExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const FejerExperiment * p_other = dynamic_cast<const FejerExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 Bool FejerExperiment::hasUniformWeights() const
 {
   for (UnsignedInteger i = 0; i < discretization_.getSize(); ++ i)

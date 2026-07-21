@@ -50,6 +50,10 @@ public:
   /** Virtual constructor method */
   MonteCarloLHS * clone() const override;
 
+  /** Comparison operator */
+  using OptimalLHSExperiment::operator ==;
+  Bool operator ==(const MonteCarloLHS & other) const;
+
   /** Compute next design method **/
   Sample generateWithWeights(Point & weightsOut) const override;
 
@@ -61,6 +65,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   UnsignedInteger N_;

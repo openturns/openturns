@@ -46,6 +46,10 @@ public:
   /** Virtual copy constructor */
   FejerExperiment *clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const FejerExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -86,6 +90,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   // Generate nodes and weights for ClenshawCurtis

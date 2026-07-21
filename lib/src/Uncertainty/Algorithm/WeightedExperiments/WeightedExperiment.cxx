@@ -25,6 +25,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(WeightedExperiment)
 
+/* Comparison operator */
+Bool WeightedExperiment::operator ==(const WeightedExperiment & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
 /* Default constructor */
 WeightedExperiment::WeightedExperiment() :
   TypedInterfaceObject<WeightedExperimentImplementation>(new MonteCarloExperiment())

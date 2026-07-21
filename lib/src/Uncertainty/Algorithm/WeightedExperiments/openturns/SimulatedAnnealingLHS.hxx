@@ -60,6 +60,10 @@ public:
   /** Virtual constructor method */
   SimulatedAnnealingLHS * clone() const override;
 
+  /** Comparison operator */
+  using OptimalLHSExperiment::operator ==;
+  Bool operator ==(const SimulatedAnnealingLHS & other) const;
+
   /** Compute design method **/
   Sample generateWithWeights(Point & weightsOut) const override;
   Sample generateWithRestart(const UnsignedInteger nRestart) const;
@@ -72,6 +76,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   TemperatureProfile profile_;

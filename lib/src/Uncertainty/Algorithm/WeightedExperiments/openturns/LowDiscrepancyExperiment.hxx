@@ -64,6 +64,10 @@ public:
   /** Virtual constructor */
   LowDiscrepancyExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const LowDiscrepancyExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -94,6 +98,7 @@ public:
   Sample generateWithWeights(Point & weightsOut) const override;
 
 protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
 

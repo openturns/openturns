@@ -84,6 +84,19 @@ SimulatedAnnealingLHS * SimulatedAnnealingLHS::clone() const
   return new SimulatedAnnealingLHS(*this);
 }
 
+/* Comparison operators */
+Bool SimulatedAnnealingLHS::operator ==(const SimulatedAnnealingLHS & other) const
+{
+  if (this == &other) return true;
+  return OptimalLHSExperiment::equals(other);
+}
+
+Bool SimulatedAnnealingLHS::equals(const WeightedExperimentImplementation & other) const
+{
+  const SimulatedAnnealingLHS * p_other = dynamic_cast<const SimulatedAnnealingLHS *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Generate design method */
 Sample SimulatedAnnealingLHS::generateWithWeights(Point & weights) const
 {

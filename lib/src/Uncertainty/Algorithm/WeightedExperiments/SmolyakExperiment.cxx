@@ -67,6 +67,24 @@ SmolyakExperiment * SmolyakExperiment::clone() const
   return new SmolyakExperiment(*this);
 }
 
+/* Comparison operators */
+Bool SmolyakExperiment::operator ==(const SmolyakExperiment & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (level_ != other.level_) return false;
+  if (collection_.getSize() != other.collection_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    if (!(collection_[i] == other.collection_[i])) return false;
+  return true;
+}
+
+Bool SmolyakExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const SmolyakExperiment * p_other = dynamic_cast<const SmolyakExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String SmolyakExperiment::__repr__() const
 {

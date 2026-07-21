@@ -55,6 +55,19 @@ MonteCarloLHS * MonteCarloLHS::clone() const
   return new MonteCarloLHS(*this);
 }
 
+/* Comparison operators */
+Bool MonteCarloLHS::operator ==(const MonteCarloLHS & other) const
+{
+  if (this == &other) return true;
+  return OptimalLHSExperiment::equals(other);
+}
+
+Bool MonteCarloLHS::equals(const WeightedExperimentImplementation & other) const
+{
+  const MonteCarloLHS * p_other = dynamic_cast<const MonteCarloLHS *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Generate a Sample. */
 Sample MonteCarloLHS::generateWithWeights(Point & weights) const
 {

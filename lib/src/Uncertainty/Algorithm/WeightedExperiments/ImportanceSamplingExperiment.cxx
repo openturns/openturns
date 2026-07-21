@@ -70,6 +70,19 @@ ImportanceSamplingExperiment * ImportanceSamplingExperiment::clone() const
   return new ImportanceSamplingExperiment(*this);
 }
 
+/* Comparison operators */
+Bool ImportanceSamplingExperiment::operator ==(const ImportanceSamplingExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (importanceDistribution_ == other.importanceDistribution_);
+}
+
+Bool ImportanceSamplingExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const ImportanceSamplingExperiment * p_other = dynamic_cast<const ImportanceSamplingExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Importance distribution accessor */
 Distribution ImportanceSamplingExperiment::getImportanceDistribution() const
 {

@@ -77,6 +77,19 @@ LHSExperiment * LHSExperiment::clone() const
   return new LHSExperiment(*this);
 }
 
+/* Comparison operators */
+Bool LHSExperiment::operator ==(const LHSExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (alwaysShuffle_ == other.alwaysShuffle_) && (randomShift_ == other.randomShift_);
+}
+
+Bool LHSExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const LHSExperiment * p_other = dynamic_cast<const LHSExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String LHSExperiment::__repr__() const
 {
