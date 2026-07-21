@@ -234,7 +234,7 @@ myModel.setRadius(1.5)
 ott.assert_almost_equal(myModel.getRadius(), 1.5, 0, 0)
 
 # 7) FractionalBrownianMotionModel
-myModel = ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25)
+myModel = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])
 test_model(myModel)
 
 # 8) DiracCovarianceModel
@@ -542,8 +542,8 @@ assert ot.SphericalModel([1.0], [2.0], 3.0) == ot.SphericalModel([1.0], [2.0], 3
 assert ot.SphericalModel([1.0], [2.0], 3.0) != ot.SphericalModel([1.0], [2.0], 4.0), "SM!=SM radius"
 
 # FractionalBrownianMotionModel
-assert ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25) == ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25), "FBMM==FBMM"
-assert ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25) != ot.FractionalBrownianMotionModel(3.0, 3.0, 0.25), "FBMM!=FBMM scale"
+assert ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]) == ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]), "FBMM==FBMM"
+assert ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]) != ot.FractionalBrownianMotionModel([3.0], [3.0], [0.25]), "FBMM!=FBMM scale"
 
 # DiracCovarianceModel
 assert ot.DiracCovarianceModel(2, [1.0, 2.0]) == ot.DiracCovarianceModel(2, [1.0, 2.0]), "DCM==DCM"
