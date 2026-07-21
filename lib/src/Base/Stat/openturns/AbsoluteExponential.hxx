@@ -46,6 +46,10 @@ public:
   AbsoluteExponential(const Point & scale,
                       const Point & amplitude);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const AbsoluteExponential & other) const;
+
   /** Virtual copy constructor */
   AbsoluteExponential * clone() const override;
 
@@ -75,6 +79,7 @@ public:
   void load(Advocate & adv) override;
 
 private:
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class AbsoluteExponential */
 

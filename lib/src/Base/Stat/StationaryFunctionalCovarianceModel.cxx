@@ -55,6 +55,19 @@ StationaryFunctionalCovarianceModel * StationaryFunctionalCovarianceModel::clone
   return new StationaryFunctionalCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool StationaryFunctionalCovarianceModel::operator ==(const StationaryFunctionalCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (rho_ == other.rho_);
+}
+
+Bool StationaryFunctionalCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const StationaryFunctionalCovarianceModel * p_other = dynamic_cast<const StationaryFunctionalCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance function */
 Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Point & tau) const
 {

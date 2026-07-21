@@ -51,6 +51,10 @@ public:
   UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
                                        const SquareMatrixCollection & covarianceCollection);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const UserDefinedStationaryCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   UserDefinedStationaryCovarianceModel * clone() const override;
 
@@ -96,6 +100,8 @@ private:
 
   /** Evaluation of nearest neighbour on a RegularGrid */
   RegularGridNearestNeighbour nearestNeighbour_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class UserDefinedStationaryCovarianceModel */
 

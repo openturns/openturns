@@ -182,6 +182,15 @@ public:
   virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
 
+  /** Comparison operator */
+  Bool operator ==(const CovarianceModelImplementation & other) const;
+  using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const CovarianceModelImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const CovarianceModelImplementation & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -210,6 +219,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+
+  /** Helper to compare base class fields */
+  Bool hasEqualBase(const CovarianceModelImplementation & other) const;
 
   // set the covariance structure
   void updateOutputCovariance();

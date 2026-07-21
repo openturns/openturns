@@ -43,6 +43,10 @@ public:
   IsotropicCovarianceModel(const CovarianceModel & oneDimensional,
                            const UnsignedInteger inputDimension);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const IsotropicCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   IsotropicCovarianceModel * clone() const override;
 
@@ -104,6 +108,8 @@ protected:
 private:
   /** The 1D covariance kernel */
   CovarianceModel kernel_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class IsotropicCovarianceModel */
 

@@ -60,6 +60,10 @@ public:
   ExponentialModel(const Point & scale,
                    const CovarianceMatrix & spatialCovariance);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const ExponentialModel & other) const;
+
   /** Virtual copy constructor */
   ExponentialModel * clone() const override;
 
@@ -97,6 +101,7 @@ public:
   void load(Advocate & adv) override;
 
 private :
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class ExponentialModel */
 

@@ -67,6 +67,19 @@ GeneralizedExponential * GeneralizedExponential::clone() const
   return new GeneralizedExponential(*this);
 }
 
+/* Comparison operators */
+Bool GeneralizedExponential::operator ==(const GeneralizedExponential & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (p_ == other.p_);
+}
+
+Bool GeneralizedExponential::equals(const CovarianceModelImplementation & other) const
+{
+  const GeneralizedExponential * p_other = dynamic_cast<const GeneralizedExponential *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance density function */
 Scalar GeneralizedExponential::computeAsScalar(const Point & tau) const
 {

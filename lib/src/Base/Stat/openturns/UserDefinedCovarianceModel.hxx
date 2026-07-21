@@ -49,6 +49,10 @@ public:
   UserDefinedCovarianceModel(const Mesh & mesh,
                              const CovarianceMatrix & covariance);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const UserDefinedCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   UserDefinedCovarianceModel * clone() const override;
 
@@ -105,6 +109,8 @@ private:
 
   /** NearestNeighbourAlgorithm to speed-up nearest neighbour search */
   NearestNeighbourAlgorithm nearestNeighbour_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class UserDefinedCovarianceModel */
 

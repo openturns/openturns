@@ -51,6 +51,10 @@ public:
                                 const SquareMatrix & eta,
                                 const CorrelationMatrix & rho);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const FractionalBrownianMotionModel & other) const;
+
   /** Virtual copy constructor */
   FractionalBrownianMotionModel * clone() const override;
 
@@ -109,6 +113,8 @@ private:
 
   /** The dissymetry between the components */
   SquareMatrix eta_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class FractionalBrownianMotionModel */
 

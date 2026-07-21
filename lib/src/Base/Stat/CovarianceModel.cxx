@@ -32,6 +32,13 @@ CLASSNAMEINIT(CovarianceModel)
 
 //   static const Factory<CovarianceModel> Factory_CovarianceModel;
 
+/* Comparison operator */
+Bool CovarianceModel::operator ==(const CovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
 /* Constructor without parameter */
 CovarianceModel::CovarianceModel()
   : TypedInterfaceObject<CovarianceModelImplementation>(new ExponentialModel())

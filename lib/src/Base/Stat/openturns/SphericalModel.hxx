@@ -49,6 +49,10 @@ public:
                  const Point & amplitude,
                  const Scalar radius = 1);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const SphericalModel & other) const;
+
   /** Virtual copy constructor */
   SphericalModel * clone() const override;
 
@@ -87,6 +91,7 @@ protected:
 private :
 
   Scalar radius_;
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class SphericalModel */
 

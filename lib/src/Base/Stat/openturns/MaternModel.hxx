@@ -47,6 +47,10 @@ public:
               const Point & amplitude,
               const Scalar nu);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const MaternModel & other) const;
+
   /** Virtual copy constructor */
   MaternModel * clone() const override;
 
@@ -104,6 +108,8 @@ private:
 
   // Scaling factor
   Point sqrt2nuOverTheta_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class MaternModel */
 

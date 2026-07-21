@@ -49,6 +49,10 @@ public:
   RankMCovarianceModel(const CovarianceMatrix & covariance,
                        const Basis & basis);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const RankMCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   RankMCovarianceModel * clone() const override;
 
@@ -99,6 +103,8 @@ private:
 
   /** The functions involved into the rank m decomposition */
   Basis::FunctionPersistentCollection functions_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class RankMCovarianceModel */
 

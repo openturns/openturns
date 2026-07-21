@@ -51,6 +51,10 @@ public:
   TensorizedCovarianceModel(const CovarianceModelCollection & collection,
                             const Point & scale);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const TensorizedCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   TensorizedCovarianceModel * clone() const override;
 
@@ -116,6 +120,8 @@ protected:
 private:
   /** The collection of marginal models */
   CovarianceModelPersistentCollection collection_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class TensorizedCovarianceModel */
 

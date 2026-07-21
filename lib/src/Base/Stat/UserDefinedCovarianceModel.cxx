@@ -64,6 +64,19 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
   return new UserDefinedCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool UserDefinedCovarianceModel::operator ==(const UserDefinedCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (covariance_ == other.covariance_) && (*p_mesh_ == *other.p_mesh_);
+}
+
+Bool UserDefinedCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const UserDefinedCovarianceModel * p_other = dynamic_cast<const UserDefinedCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 Scalar UserDefinedCovarianceModel::computeAsScalar(const Point &s,
     const Point &t) const
 {

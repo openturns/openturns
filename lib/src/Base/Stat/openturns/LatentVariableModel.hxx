@@ -41,6 +41,10 @@ public:
   LatentVariableModel(const UnsignedInteger nLevels = 2,
                       const UnsignedInteger latentDim = 2);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const LatentVariableModel & other) const;
+
   /** Virtual copy constructor */
   LatentVariableModel * clone() const override;
 
@@ -126,6 +130,8 @@ private:
 
   /** Covariance matrix update */
   void updateLatentCovarianceMatrix();
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class LatentVariableModel */
 

@@ -53,6 +53,10 @@ public:
   DiracCovarianceModel(const UnsignedInteger inputDimension,
                        const CovarianceMatrix & covariance);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const DiracCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   DiracCovarianceModel * clone() const override;
 
@@ -115,6 +119,9 @@ protected:
   friend struct DiracCovarianceModelDiscretizeAndFactorizePolicy;
   mutable TriangularMatrix covarianceFactor_;
   void computeCovariance();
+
+private:
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class DiracCovarianceModel */
 

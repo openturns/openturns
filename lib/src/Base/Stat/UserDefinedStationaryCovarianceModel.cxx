@@ -74,6 +74,23 @@ UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clo
   return new UserDefinedStationaryCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool UserDefinedStationaryCovarianceModel::operator ==(const UserDefinedStationaryCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (covarianceCollection_.getSize() != other.covarianceCollection_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < covarianceCollection_.getSize(); ++i)
+    if (!(covarianceCollection_[i] == other.covarianceCollection_[i])) return false;
+  return (mesh_ == other.mesh_);
+}
+
+Bool UserDefinedStationaryCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const UserDefinedStationaryCovarianceModel * p_other = dynamic_cast<const UserDefinedStationaryCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) const
 {
   if (outputDimension_ > 1)

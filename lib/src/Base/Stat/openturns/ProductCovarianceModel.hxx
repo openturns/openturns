@@ -48,6 +48,10 @@ public:
   /** Parameters constructor */
   explicit ProductCovarianceModel(const CovarianceModelCollection & collection);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const ProductCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   ProductCovarianceModel * clone() const override;
 
@@ -106,6 +110,8 @@ private:
 
   /** Handle extra parameters of the marginal models */
   Indices extraParameterNumber_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class ProductCovarianceModel */
 

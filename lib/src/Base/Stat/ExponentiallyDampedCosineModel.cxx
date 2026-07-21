@@ -59,6 +59,19 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
   return new ExponentiallyDampedCosineModel(*this);
 }
 
+/* Comparison operators */
+Bool ExponentiallyDampedCosineModel::operator ==(const ExponentiallyDampedCosineModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (frequency_ == other.frequency_);
+}
+
+Bool ExponentiallyDampedCosineModel::equals(const CovarianceModelImplementation & other) const
+{
+  const ExponentiallyDampedCosineModel * p_other = dynamic_cast<const ExponentiallyDampedCosineModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance function, stationary interface
  * C_{0,0}(tau) = amplitude_ * exp(-|tau / scale_|) * cos(2 * pi * frequency_ * |tau / scale|)
  */

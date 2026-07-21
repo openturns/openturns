@@ -145,6 +145,19 @@ DiracCovarianceModel * DiracCovarianceModel::clone() const
   return new DiracCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool DiracCovarianceModel::operator ==(const DiracCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool DiracCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const DiracCovarianceModel * p_other = dynamic_cast<const DiracCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance density function */
 SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
 {
