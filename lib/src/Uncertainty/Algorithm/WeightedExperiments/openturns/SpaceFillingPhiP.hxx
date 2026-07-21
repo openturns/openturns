@@ -29,7 +29,7 @@ namespace OT
 /**
  * @class SpaceFillingPhiP
  *
- * This class computes centered L2-discrepancy of samples.
+ * This class computes the PhiP space-filling criterion.
  */
 class OT_API SpaceFillingPhiP
   : public SpaceFillingImplementation

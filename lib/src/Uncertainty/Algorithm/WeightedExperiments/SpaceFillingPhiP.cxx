@@ -48,10 +48,11 @@ SpaceFillingPhiP * SpaceFillingPhiP::clone() const
 /** Evaluate criterion on a sample */
 Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
 {
-  const UnsignedInteger size(sample.getSize());
-  const UnsignedInteger dimension(sample.getDimension());
+  const Sample normalizedSample(normalize(sample));
+  const UnsignedInteger size = normalizedSample.getSize();
+  const UnsignedInteger dimension = normalizedSample.getDimension();
   Scalar sum = 0.0;
-  const Scalar* addr_sample = &sample(0, 0);
+  const Scalar* addr_sample = normalizedSample.getImplementation()->data();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar* ptI(addr_sample + i * dimension);
@@ -78,14 +79,14 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
   if (row1 == row2) return oldCriterion;
   if (p_ > 5) return SpaceFillingImplementation::perturbLHS(oldDesign, oldCriterion, row1, row2, column);
 
-  const UnsignedInteger size(oldDesign.getSize());
-  const UnsignedInteger dimension(oldDesign.getDimension());
-  const Scalar* addr_sample = &oldDesign(0, 0);
+  const UnsignedInteger size = oldDesign.getSize();
+  const UnsignedInteger dimension = oldDesign.getDimension();
+  const Scalar* addr_sample = oldDesign.getImplementation()->data();
 
   Scalar result = (oldCriterion <= 0.0 ? 0.0 : std::exp(p_ * std::log(oldCriterion)));
   Scalar oldSum = 0.0;
-  Scalar* pt1(&oldDesign(0, 0) + dimension * row1);
-  Scalar* pt2(&oldDesign(0, 0) + dimension * row2);
+  Scalar* pt1 = const_cast<Scalar*>(oldDesign.getImplementation()->data()) + dimension * row1;
+  Scalar* pt2 = const_cast<Scalar*>(oldDesign.getImplementation()->data()) + dimension * row2;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (i == row1 || i == row2) continue;
