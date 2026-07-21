@@ -45,10 +45,7 @@ class OT_API ActiveLearningEFFFunction
   ActiveLearningEFFFunction (const Scalar reliabilityThreshold,
                              const GaussianProcessRegressionResult & gprResult,
                              const Scalar learningThreshold);
-  /* Constructor with parameters */
-  ActiveLearningEFFFunction(const Scalar reliabilityThreshold,
-                          const Scalar learningThreshold);
-                          
+
   /** Virtual constructor */
   ActiveLearningEFFFunction * clone() const override;
 

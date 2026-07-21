@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ActiveLearningUFunction implements parent class for 
- *  active learning "U" criterion used in reliability algorithms
+ *  @brief ActiveLearningGMMFunction implements parent class for 
+ *  active learning "Generalized Maximin" criterion used in reliability algorithms
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,38 +20,44 @@
  *
  */
 
-#ifndef OPENTURNS_ACTIVELEARNINGUFUNCTION_HXX
-#define OPENTURNS_ACTIVELEARNINGUFUNCTION_HXX
+#ifndef OPENTURNS_ACTIVELEARNINGGMMFUNCTION_HXX
+#define OPENTURNS_ACTIVELEARNINGGMMFUNCTION_HXX
 
 #include "openturns/ActiveLearningReliabilityFunction.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class ActiveLearningUFunction
+ * @class ActiveLearningGMMFunction
 */
 
-class OT_API ActiveLearningUFunction
+class OT_API ActiveLearningGMMFunction
   : public ActiveLearningReliabilityFunction
 {
 
   CLASSNAME
   
- /** Default constructor */
-  ActiveLearningUFunction();
+  /** Default constructor */
+  ActiveLearningGMMFunction();
   
   /** Default constructor */  
-  ActiveLearningUFunction (const Scalar reliabilityThreshold,
-                           const GaussianProcessRegressionResult & gprResult,
-                           const Scalar learningThreshold);
- 
+  ActiveLearningGMMFunction(const Scalar reliabilityThreshold,
+                            const GaussianProcessRegressionResult & gprResult,
+                            const Scalar learningThreshold,
+                            const Distribution & inputDistribution,
+                            const Scalar outputQuantileLevel);
+                          
   /** Virtual constructor */
-  ActiveLearningUFunction * clone() const override;
+  ActiveLearningGMMFunction * clone() const override;
 
   /** Computation of active learning function */
   Scalar computeAsScalar(const Point & inputSample) const override;
-  
+
+  /** Computation of active learning function */
+  Sample operator()(const Sample & inputSample, const Sample & inputDoE) const override;
+      
   /** Check convergence of learning */
   Bool checkConvergenceLearning(const Sample  & criterionValues) const override;
   
@@ -61,9 +67,12 @@ class OT_API ActiveLearningUFunction
   /* return infill Sample */
   Sample getInfillSample(const Sample & inputSample,
                          const Sample & criterionValues) const override;
+                  
+  Distribution inputDistribution_;
+  Scalar outputQuantileLevel_;
 } ; /* class ActiveLearningUFunction */
 
 END_NAMESPACE_OPENTURNS
 
 
-#endif /* OPENTURNS_ACTIVELEARNINGUFUNCTION_HXX */
+#endif /* OPENTURNS_ACTIVELEARNINGGMMFUNCTION_HXX */

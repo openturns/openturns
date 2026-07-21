@@ -51,17 +51,7 @@ ActiveLearningEFFFunction::ActiveLearningEFFFunction(const Scalar reliabilityThr
                                         learningThreshold)
   {
   }
-  
-  
-/* Constructor with parameters */
-ActiveLearningEFFFunction::ActiveLearningEFFFunction(const Scalar reliabilityThreshold,
-
-                                                     const Scalar learningThreshold)
-    : ActiveLearningReliabilityFunction(reliabilityThreshold,
-                                        learningThreshold)
-  {
-  }
-  
+    
 /* Virtual constructor */
 ActiveLearningEFFFunction * ActiveLearningEFFFunction::clone() const
 {
@@ -112,7 +102,7 @@ Scalar ActiveLearningEFFFunction::computeAsScalar(const Point & x) const
 }
 
 
-/* Compute U criterion for one sample */
+/* Compute EFF criterion for one sample */
 Bool ActiveLearningEFFFunction::checkConvergenceLearning(const Sample & criterionValues) const 
 {
   Scalar max_EFF = criterionValues.getMax()[0];

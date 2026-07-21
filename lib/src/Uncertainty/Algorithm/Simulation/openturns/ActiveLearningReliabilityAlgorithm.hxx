@@ -56,23 +56,23 @@ public:
                                                
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const ProbabilitySimulationAlgorithm & reliabilityAlgorithm,
-                                      const ActiveLearningUFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction);
 
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const NAIS & reliabilityAlgorithm,
-                                      const ActiveLearningUFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const SubsetSampling & reliabilityAlgorithm,
-                                      const ActiveLearningUFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                      const ActiveLearningUFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                      const ActiveLearningUFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction);
                                       
   /** Virtual constructor */
   ActiveLearningReliabilityAlgorithm * clone() const override;

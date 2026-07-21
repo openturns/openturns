@@ -50,14 +50,6 @@ ActiveLearningUFunction::ActiveLearningUFunction(const Scalar reliabilityThresho
                                         learningThreshold)
   {
   }
-
-/* Constructor with parameters */
-ActiveLearningUFunction::ActiveLearningUFunction(const Scalar reliabilityThreshold,
-                                                 const Scalar learningThreshold)
-    : ActiveLearningReliabilityFunction(reliabilityThreshold,
-                                        learningThreshold)
-  {
-  }
   
 /* Virtual constructor */
 ActiveLearningUFunction * ActiveLearningUFunction::clone() const

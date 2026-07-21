@@ -57,6 +57,7 @@
 #include "openturns/ActiveLearningReliabilityFunction.hxx"
 #include "openturns/ActiveLearningUFunction.hxx"
 #include "openturns/ActiveLearningEFFFunction.hxx"
+#include "openturns/ActiveLearningGMMFunction.hxx"
 #include "openturns/ActiveLearningReliabilityAlgorithm.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

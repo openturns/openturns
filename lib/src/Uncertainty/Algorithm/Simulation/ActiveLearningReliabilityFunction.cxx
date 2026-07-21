@@ -51,17 +51,22 @@ ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scala
     , gprCov_(gprResult)
 {
 }
-
-/* Constructor with parameters */
-ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
-                                                                     const Scalar learningThreshold)
+                                                                     
+/*ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
+                                    const GaussianProcessRegressionResult & gprResult,
+                                    const Scalar learningThreshold,
+                                    const Distribution & inputDistribution,
+                                    const Scalar outputQuantileLevel)    
     : EvaluationImplementation()
     , reliabilityThreshold_(reliabilityThreshold)
     , learningThreshold_(learningThreshold)
+    , gprResult_(gprResult)
+    , gprCov_(gprResult)
 {
-}
+  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,const GaussianProcessRegressionResult & gprResult,const Distribution & inputDistribution,const Scalar learningThreshold)";
+}*/
 
-  
+
 ActiveLearningReliabilityFunction * ActiveLearningReliabilityFunction::clone() const 
 {
   return new ActiveLearningReliabilityFunction(*this);
@@ -73,7 +78,7 @@ Point ActiveLearningReliabilityFunction::operator()(const Point & x) const
 }
 
   
-Sample ActiveLearningReliabilityFunction::operator()(const Sample & inputSample) const 
+Sample ActiveLearningReliabilityFunction::operator()(const Sample & inputSample, const Sample & inputDoE) const 
 {
   const UnsignedInteger size = inputSample.getSize();
   // avoid creating size points
