@@ -26,8 +26,14 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
 CLASSNAMEINIT(OrthogonalUniVariatePolynomialFamily)
+
+/* Comparison operator */
+Bool OrthogonalUniVariatePolynomialFamily::operator ==(const OrthogonalUniVariatePolynomialFamily & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
 
 /* Default constructor */
 OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily()

@@ -61,6 +61,18 @@ MeixnerFactory * MeixnerFactory::clone() const
   return new MeixnerFactory(*this);
 }
 
+/* Comparison operators */
+Bool MeixnerFactory::operator ==(const MeixnerFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (r_ == other.r_) && (p_ == other.p_);
+}
+
+Bool MeixnerFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const MeixnerFactory * p_other = dynamic_cast<const MeixnerFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
