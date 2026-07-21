@@ -144,7 +144,7 @@ algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 algo.setMaximumOuterSampling(100000)
 algo.setMaximumCoefficientOfVariation(0.01)
 algo.run()
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 ott.assert_almost_equal(
     result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-1, 0.0
 )
@@ -153,7 +153,7 @@ event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
 algo.setEvent(event2)
 ot.RandomGenerator.SetSeed(0)
 algo.run()
-result2 = algo.getResult()
+result2 = ot.ProbabilitySimulationResult(algo.getResult())
 ott.assert_almost_equal(
     result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-1, 0.0
 )
