@@ -1,3 +1,10 @@
 build*/
 *~
 *kate-swp
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+pixi.lock
+pixi.toml
+
