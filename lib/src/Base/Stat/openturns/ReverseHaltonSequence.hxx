@@ -42,6 +42,10 @@ public:
   /** Virtual constructor */
   ReverseHaltonSequence * clone() const override;
 
+  /** Comparison operator */
+  using LowDiscrepancySequenceImplementation::operator ==;
+  Bool operator ==(const ReverseHaltonSequence & other) const;
+
   /** Initialize the sequence */
   void initialize(const UnsignedInteger dimension) override;
 
@@ -65,6 +69,8 @@ private:
 
   /** Current seed into the sequence */
   mutable Unsigned64BitsInteger seed_;
+
+  Bool equals(const LowDiscrepancySequenceImplementation & other) const override;
 
 }; /* class ReverseHaltonSequence */
 

@@ -39,6 +39,28 @@ CLASSNAMEINIT(LowDiscrepancySequenceImplementation)
 
 static const Factory<LowDiscrepancySequenceImplementation> Factory_LowDiscrepancySequenceImplementation;
 
+/* Comparison operators */
+Bool LowDiscrepancySequenceImplementation::operator ==(const LowDiscrepancySequenceImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool LowDiscrepancySequenceImplementation::operator !=(const LowDiscrepancySequenceImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool LowDiscrepancySequenceImplementation::equals(const LowDiscrepancySequenceImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In LowDiscrepancySequenceImplementation::equals";
+}
+
+Bool LowDiscrepancySequenceImplementation::hasEqualBase(const LowDiscrepancySequenceImplementation & other) const
+{
+  return dimension_ == other.dimension_;
+}
+
 /* Constructor with parameters */
 LowDiscrepancySequenceImplementation::LowDiscrepancySequenceImplementation(const UnsignedInteger dimension)
   : PersistentObject()

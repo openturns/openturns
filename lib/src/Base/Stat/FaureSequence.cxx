@@ -42,6 +42,24 @@ FaureSequence * FaureSequence::clone() const
   return new FaureSequence(*this);
 }
 
+/* Comparison operators */
+Bool FaureSequence::operator ==(const FaureSequence & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (modulus_ != other.modulus_) return false;
+  if (modulusInverse_ != other.modulusInverse_) return false;
+  if (coefficients_.getSize() != other.coefficients_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < coefficients_.getSize(); ++i)
+    if (coefficients_[i] != other.coefficients_[i]) return false;
+  return true;
+}
+
+Bool FaureSequence::equals(const LowDiscrepancySequenceImplementation & other) const
+{
+  const FaureSequence * p_other = dynamic_cast<const FaureSequence *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Initialize the sequence */
 void FaureSequence::initialize(const UnsignedInteger dimension)
