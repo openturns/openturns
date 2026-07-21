@@ -240,14 +240,15 @@ We can also choose **a basis which is not orthonormal with respect to**
 which is orthonormal with respect to an *instrumental measure* :math:`\tilde{p} \neq \mu_{\inputRV}`.
 This instrumental measure is such that:
 
-- the support of :math:`\tilde{p}` is larger than the support of :math:`\mu_{\inputRV}`,
+- if :math:`\mu_{\inputRV}` has bounded support, the support of :math:`\tilde{p}` is larger than the support of :math:`\mu_{\inputRV}`,
+- if :math:`\mu_{\inputRV}` has unbounded support, there exists a constant :math:`C > 0` such that :math:`C \tilde{p} > \mu_{\inputRV}`,
 - :math:`\tilde{p}` has independent components.
 
 This choice is done in the **domination** strategy.
 
 Once the basis has been chosen, the enumeration function helps to enumerate the
 elements of the basis in a specific order
-(see :ref:`enumeration_multivariate_basis` and :ref:`enumeration_strategy` for more
+(see :ref:`enumeration_multivariate_basis` and :ref:`enumeration_strategy` or [jakeman2019]_ for more
 details on this topic).
 
 Which sub-space of approximation?
@@ -407,6 +408,7 @@ more details on this topic.
     - [lemaitre2010]_
     - [sullivan2015]_
     - [xiu2010]_
+    - [jakeman2019]_
     - [soizeghanem2004]_
     - [dahlquist2008]_
     - [rudin1987]_
