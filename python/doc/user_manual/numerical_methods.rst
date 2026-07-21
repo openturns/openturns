@@ -106,6 +106,8 @@ Transformations
 
     TrendTransform
     InverseTrendTransform
+    experimental.SlicedInverseRegression
+    experimental.SlicedInverseRegressionResult
 
 Spatial lookup
 ==============
