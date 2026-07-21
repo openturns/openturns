@@ -26,6 +26,7 @@
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
 #include "openturns/GaussianProcessConditionalCovariance.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,9 +48,14 @@ public:
   ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
                                     const GaussianProcessRegressionResult & gprResult,
                                     const Scalar learningThreshold);
-  /* Constructor with parameters */
-  ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
-                                    const Scalar learningThreshold);                                                               
+                                    
+                                    
+  /*ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
+                                    const GaussianProcessRegressionResult & gprResult,
+                                    const Scalar learningThreshold,
+                                    const Distribution & inputDistribution,
+                                    const Scalar outputQuantileLevel);*/
+                                                                                                                   
   /** Virtual constructor */
   ActiveLearningReliabilityFunction * clone() const override;
     
@@ -69,7 +75,7 @@ public:
   /** String converter */
   String __repr__() const override;
   
-  Sample operator()(const Sample & inputSample) const override; 
+  virtual Sample operator()(const Sample & inputSample, const Sample & inputDoE) const; 
   
   /* return infill Sample */
   virtual Sample getInfillSample(const Sample & inputSample,

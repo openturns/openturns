@@ -59,7 +59,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
   , outputDoE_(gpFitter.getOutputSample())
-  , defaultGPFitter_(gpFitter)
+  , defaultGPFitter_(gpFitter)ActiveLearningFunction
   {
   
     
@@ -75,7 +75,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
 /** Constructor with NAIS */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const NAIS & reliabilityAlgorithm,
-                                                                        const ActiveLearningUFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -94,7 +94,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with StandardSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                                                        const ActiveLearningUFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -113,7 +113,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with PhysicalSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                                                        const ActiveLearningUFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -132,7 +132,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with SubsetSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const SubsetSampling & reliabilityAlgorithm,
-                                                                        const ActiveLearningUFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -151,7 +151,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with ProbabilitySimulationAlgorithm*/   
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const ProbabilitySimulationAlgorithm  &reliabilityAlgorithm,
-                                                                        const ActiveLearningUFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -224,10 +224,7 @@ protected:
 /* Check convergence based on probability uncertainty due to GP error */
 Bool ActiveLearningReliabilityAlgorithm::checkConvergenceProbabilityWithUncertainty() 
 {
-
-
-  const Point probabilitiesWithUncertainty = computeProbabilityWithUncertainty();
-  
+  const Point probabilitiesWithUncertainty = computeProbabilityWithUncertainty(); 
   const Scalar meanProbability = probabilitiesWithUncertainty[0];
   const Scalar minusProbability = probabilitiesWithUncertainty[1];
   const Scalar plusProbability =  probabilitiesWithUncertainty[2]; 
@@ -242,16 +239,13 @@ Bool ActiveLearningReliabilityAlgorithm::checkConvergenceProbabilityWithUncertai
 /* Check convergence based on reliability index uncertainty due to GP error */
 Bool ActiveLearningReliabilityAlgorithm::checkConvergenceReliabilityIndexWithUncertainty() 
 {
-
   const Point probabilitiesWithUncertainty = computeProbabilityWithUncertainty();
-  
   const Scalar meanProbability = probabilitiesWithUncertainty[0];
   const Scalar meanReliabilityIndex = - Normal().computeQuantile(meanProbability)[0];
   const Scalar minusProbability = probabilitiesWithUncertainty[1];
   const Scalar minusReliabilityIndex = - Normal().computeQuantile(minusProbability)[0];
-  const Scalar plusProbability =  probabilitiesWithUncertainty[2] ;
-  const Scalar plusReliabilityIndex = - Normal().computeQuantile(plusProbability)[0]; 
-   
+  const Scalar plusProbability =  probabilitiesWithUncertainty[2];
+  const Scalar plusReliabilityIndex = - Normal().computeQuantile(plusProbability)[0];
   const Bool convergenceReliabilityIndex = abs((plusReliabilityIndex - minusReliabilityIndex) / meanReliabilityIndex) <= convergenceCriterionThreshold_;
 
   return convergenceReliabilityIndex;
@@ -304,7 +298,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
                                              defaultEvent_.getOperator(),
                                              defaultEvent_.getThreshold());
                                                
-  Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();                                               
+  Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();                                          
   p_simulationAlgorithmMinus_->setEvent(eventMinus);
   p_simulationAlgorithmMinus_->run();
   Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
@@ -327,22 +321,19 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
   return probabilitiesWithUncertainty;
 }
 
-
 /* Check convergence based on stability of history */
 Bool ActiveLearningReliabilityAlgorithm::checkConvergenceStability(const Point currentValue,
                                                                    const Point previousValue) 
 {
-
  return abs(currentValue[0] - previousValue[0])/ currentValue[0] <= convergenceCriterionThreshold_;
 }
-                                                                                         
-                                                                                         
+                                                                                      
 // Set type of convergence
 void ActiveLearningReliabilityAlgorithm::setConvergenceCriterion(const UnsignedInteger typeConvergence)
 {
   if (typeConvergence > 4)
     throw InvalidArgumentException(HERE) << "ActiveLearningReliability algorithm convergence criterion (" << typeConvergence << ") must be in [0-4]";
-    
+
   convergenceCriterion_ = typeConvergence;
 }
 
@@ -370,8 +361,7 @@ void ActiveLearningReliabilityAlgorithm::setSimulationBudget(const UnsignedInteg
   if (simulationBudget < 1)
   {
     throw InvalidArgumentException(HERE) << "simulationBudget (" << simulationBudget << ") must be in greater than 1";
-  }
-  
+  }  
   simulationBudget_ = simulationBudget;
 }
 
@@ -392,13 +382,10 @@ Sample ActiveLearningReliabilityAlgorithm::getInputDoE() const
   return inputDoE_;
 }
 
-
 Sample ActiveLearningReliabilityAlgorithm::getOutputDoE() const
 {
   return outputDoE_;
 }
-
-
 
 /*EventSimulation& ActiveLearningReliabilityAlgorithm::getSimulationAlgorithm() const
 {
@@ -409,8 +396,6 @@ Sample ActiveLearningReliabilityAlgorithm::getOutputDoE() const
 {
   return inputDoE_;
 }*/
-
-
 
 /* Run of the algorithm */
 void ActiveLearningReliabilityAlgorithm::run()
@@ -423,8 +408,7 @@ void ActiveLearningReliabilityAlgorithm::run()
   Bool convergenceStatus = false;
   
   while ((!convergenceStatus) && (functionCallNumber_<=simulationBudget_))
-    {
-      
+    {      
       std::cout<<"-----------------Remaining budget ---------------"<<std::endl;
       std::cout<< simulationBudget_ - functionCallNumber_<<std::endl;
       // Estimate probability with GP
@@ -443,7 +427,7 @@ void ActiveLearningReliabilityAlgorithm::run()
       //Estimate probability with current GP
       Function newGPRmetamodel =  newGPRResult.getMetaModel();
       CompositeRandomVector newRandomVector = CompositeRandomVector(newGPRmetamodel,
-                                                                  RandomVector(inputDistribution));
+                                                                    RandomVector(inputDistribution));
                                                                             
       ThresholdEvent newEvent = ThresholdEvent(newRandomVector,
                                                defaultEvent_.getOperator(),
@@ -462,7 +446,7 @@ void ActiveLearningReliabilityAlgorithm::run()
       
       // Compute active learning values
       p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
-      Sample activeLearningValues = (*p_activeLearningFunction)(currentInputSample);
+      Sample activeLearningValues = (*p_activeLearningFunction)(currentInputSample, inputDoE_);
       
       // Store history
       Scalar currentProbabilityEstimate = p_currentSimulationAlgorithm->getResult().getProbabilityEstimate();
@@ -497,7 +481,6 @@ void ActiveLearningReliabilityAlgorithm::run()
 
           convergenceStatus = checkConvergenceStability(probabilityEstimate[0], probabilityEstimate[1]);
         }
-
       }
       else if (convergenceCriterion_ = 4)
       {
@@ -511,8 +494,7 @@ void ActiveLearningReliabilityAlgorithm::run()
           Sample reliabilityIndexEstimate = reliabilityIndexHistory_.select(index);
 
           convergenceStatus = checkConvergenceStability(reliabilityIndexEstimate[0], reliabilityIndexEstimate[1]);
-        }
-        
+        } 
       }
 
       // Add infill sample if convergence is not reached
@@ -525,12 +507,8 @@ void ActiveLearningReliabilityAlgorithm::run()
         Sample infillOutputSample = model(infillInputSample);
         outputDoE_.add(infillOutputSample);
         functionCallNumber_ += 1;
-      }
-
-      
-       
+      } 
     }
-
 }
 
 END_NAMESPACE_OPENTURNS
