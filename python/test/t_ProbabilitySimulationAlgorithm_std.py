@@ -2,6 +2,7 @@
 
 import sys
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -144,7 +145,7 @@ algo.setMaximumOuterSampling(100000)
 algo.setMaximumCoefficientOfVariation(0.01)
 algo.run()
 result = algo.getResult()
-assert_almost_equal(
+ott.assert_almost_equal(
     result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-1, 0.0
 )
 Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["2*X"]), X)
@@ -153,6 +154,6 @@ algo.setEvent(event2)
 ot.RandomGenerator.SetSeed(0)
 algo.run()
 result2 = algo.getResult()
-assert_almost_equal(
+ott.assert_almost_equal(
     result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-1, 0.0
 )
