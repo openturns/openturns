@@ -260,6 +260,7 @@ TriangularComplexMatrix HermitianMatrix::computeCholesky() const
 
 TriangularComplexMatrix HermitianMatrix::computeCholeskyInPlace()
 {
+  copyOnWrite();
   return TriangularComplexMatrix(Implementation(getImplementation()->computeCholeskyInPlace().clone()), true);
 }
 
