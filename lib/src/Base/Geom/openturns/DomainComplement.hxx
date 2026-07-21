@@ -78,6 +78,8 @@ private:
   // The domain which is complemented
   Domain domain_;
 
+  Bool equals(const DomainImplementation & other) const override;
+
 }; /* class DomainComplement */
 
 END_NAMESPACE_OPENTURNS

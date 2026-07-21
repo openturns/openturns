@@ -29,6 +29,27 @@ CLASSNAMEINIT(DomainImplementation)
 
 static const Factory<DomainImplementation> Factory_DomainImplementation;
 
+/* Comparison operators */
+Bool DomainImplementation::operator ==(const DomainImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool DomainImplementation::operator !=(const DomainImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool DomainImplementation::equals(const DomainImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In DomainImplementation::equals";
+}
+
+Bool DomainImplementation::hasEqualBase(const DomainImplementation & other) const
+{
+  return dimension_ == other.dimension_;
+}
 
 /* Default constructor */
 DomainImplementation::DomainImplementation(UnsignedInteger dimension)

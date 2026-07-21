@@ -157,6 +157,8 @@ private:
   BoolPersistentCollection finiteLowerBound_;
   BoolPersistentCollection finiteUpperBound_;
 
+  Bool equals(const DomainImplementation & other) const override;
+
 }; /* class Interval */
 
 END_NAMESPACE_OPENTURNS

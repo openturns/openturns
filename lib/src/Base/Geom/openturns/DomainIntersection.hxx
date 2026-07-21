@@ -78,6 +78,8 @@ private:
 
   DomainPersistentCollection collection_;
 
+  Bool equals(const DomainImplementation & other) const override;
+
 }; /* class DomainIntersection */
 
 END_NAMESPACE_OPENTURNS
