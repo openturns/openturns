@@ -552,6 +552,8 @@ ot_add_python_module(model_copula2 model_copula2_module.i
 )
 
 ot_add_python_module(experimental experimental_module.i
+                     Kent.i Kent_doc.i
+                     KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      MultivariateUniform.i MultivariateUniform_doc.i
                      MultivariateUniformFactory.i MultivariateUniformFactory_doc.i
