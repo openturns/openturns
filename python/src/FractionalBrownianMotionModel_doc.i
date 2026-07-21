@@ -9,7 +9,7 @@ Available constructors:
 
 Parameters
 ----------
-scale : positive float
+scale : sequence of positive floats of dimension 1
     Correlation scale between two locations.
 amplitude : sequence of positive floats
     Standard deviations of the model :math:`\vect{\sigma}\in \Rset^d`.
@@ -68,11 +68,11 @@ univariate standard Brownian motion:
 
 Create an univariate fractional Brownian motion covariance:
 
->>> covModel2 = ot.FractionalBrownianMotionModel(0.5, 1.5, 0.25)
+>>> covModel2 = ot.FractionalBrownianMotionModel([0.5], [1.5], [0.25])
 
 Create a multivariate fractional Brownian motion covariance:
 
->>> covModel3 = ot.FractionalBrownianMotionModel(0.5, [1.5, 1.0], [0.25, 0.6], ot.SquareMatrix([[0.0, 0.2], [-0.2, 0.0]]), ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]]))
+>>> covModel3 = ot.FractionalBrownianMotionModel([0.5], [1.5, 1.0], [0.25, 0.6], ot.SquareMatrix([[0.0, 0.2], [-0.2, 0.0]]), ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]]))
 )RAW"
 
 

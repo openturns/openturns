@@ -234,7 +234,7 @@ myModel.setRadius(1.5)
 ott.assert_almost_equal(myModel.getRadius(), 1.5, 0, 0)
 
 # 7) FractionalBrownianMotionModel
-myModel = ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25)
+myModel = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])
 test_model(myModel)
 
 # 8) DiracCovarianceModel
