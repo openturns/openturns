@@ -86,6 +86,12 @@ Bool DomainIntersection::operator != (const DomainIntersection & other) const
   return !operator==(other);
 }
 
+Bool DomainIntersection::equals(const DomainImplementation & other) const
+{
+  const DomainIntersection * p_other = dynamic_cast<const DomainIntersection *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Is it safe to call in parallel? */
 Bool DomainIntersection::isParallel() const
 {

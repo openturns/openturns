@@ -27,6 +27,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Domain)
 
+/* Comparison operator */
+Bool Domain::operator ==(const Domain & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
 /* Default constructor */
 Domain::Domain():
   TypedInterfaceObject<DomainImplementation>(new Interval())

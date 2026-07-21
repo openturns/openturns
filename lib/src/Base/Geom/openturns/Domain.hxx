@@ -39,6 +39,10 @@ class OT_API OT_WARN_UNUSED Domain
 public:
   typedef DomainImplementation::BoolCollection BoolCollection;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<DomainImplementation>::operator ==;
+  Bool operator ==(const Domain & other) const;
+
   /** Default constructor */
   Domain();
 

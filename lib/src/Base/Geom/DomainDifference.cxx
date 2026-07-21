@@ -103,6 +103,12 @@ Bool DomainDifference::operator != (const DomainDifference & other) const
   return !operator==(other);
 }
 
+Bool DomainDifference::equals(const DomainImplementation & other) const
+{
+  const DomainDifference * p_other = dynamic_cast<const DomainDifference *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Is it safe to call in parallel? */
 Bool DomainDifference::isParallel() const
 {

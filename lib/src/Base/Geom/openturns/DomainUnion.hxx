@@ -82,6 +82,8 @@ private:
 
   DomainPersistentCollection collection_;
 
+  Bool equals(const DomainImplementation & other) const override;
+
 }; /* class DomainUnion */
 
 END_NAMESPACE_OPENTURNS

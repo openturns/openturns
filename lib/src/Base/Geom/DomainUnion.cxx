@@ -96,6 +96,12 @@ Bool DomainUnion::operator != (const DomainUnion & other) const
   return !operator==(other);
 }
 
+Bool DomainUnion::equals(const DomainImplementation & other) const
+{
+  const DomainUnion * p_other = dynamic_cast<const DomainUnion *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Is it safe to call in parallel? */
 Bool DomainUnion::isParallel() const
 {

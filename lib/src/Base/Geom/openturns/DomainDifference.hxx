@@ -83,6 +83,8 @@ private:
   // The second domain
   Domain right_;
 
+  Bool equals(const DomainImplementation & other) const override;
+
 }; /* class DomainDifference */
 
 END_NAMESPACE_OPENTURNS
