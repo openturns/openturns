@@ -60,6 +60,19 @@ SquaredExponential * SquaredExponential::clone() const
   return new SquaredExponential(*this);
 }
 
+/* Comparison operators */
+Bool SquaredExponential::operator ==(const SquaredExponential & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool SquaredExponential::equals(const CovarianceModelImplementation & other) const
+{
+  const SquaredExponential * p_other = dynamic_cast<const SquaredExponential *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance function */
 Scalar SquaredExponential::computeAsScalar(const Point & tau) const
 {

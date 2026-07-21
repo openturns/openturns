@@ -41,6 +41,33 @@ CLASSNAMEINIT(CovarianceModelImplementation)
 
 static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImplementation;
 
+/* Comparison operators */
+Bool CovarianceModelImplementation::operator ==(const CovarianceModelImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool CovarianceModelImplementation::operator !=(const CovarianceModelImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool CovarianceModelImplementation::equals(const CovarianceModelImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::equals";
+}
+
+Bool CovarianceModelImplementation::hasEqualBase(const CovarianceModelImplementation & other) const
+{
+  return (scale_ == other.scale_)
+         && (amplitude_ == other.amplitude_)
+         && (outputCorrelation_ == other.outputCorrelation_)
+         && (isDiagonal_ == other.isDiagonal_)
+         && (isStationary_ == other.isStationary_)
+         && (nuggetFactor_ == other.nuggetFactor_);
+}
+
 /* Dimension-based constructor */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger inputDimension)
   : PersistentObject()

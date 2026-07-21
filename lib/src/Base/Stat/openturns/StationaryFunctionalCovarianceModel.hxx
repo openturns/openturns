@@ -45,6 +45,10 @@ public:
                                       const Point & amplitude,
                                       const Function & rho);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const StationaryFunctionalCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   StationaryFunctionalCovarianceModel * clone() const override;
 
@@ -87,6 +91,8 @@ private:
 
   /** Correlation function */
   Function rho_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class StationaryFunctionalCovarianceModel */
 

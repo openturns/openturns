@@ -50,6 +50,10 @@ public:
                                  const Point & amplitude,
                                  const Scalar frequency);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const ExponentiallyDampedCosineModel & other) const;
+
   /** Virtual copy constructor */
   ExponentiallyDampedCosineModel * clone() const override;
 
@@ -94,6 +98,7 @@ private :
 
   /** Frequency */
   Scalar frequency_;
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class ExponentiallyDampedCosineModel */
 

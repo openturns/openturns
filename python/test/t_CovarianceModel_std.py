@@ -507,3 +507,89 @@ assert myModel.getFullParameterDescription() == [
     "R_1_0",
     "nu",
 ]
+
+# 14) equality tests
+# SquaredExponential
+assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]), "SE==SE"
+assert not ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([2.0], [2.0]), "SE!=SE scale"
+assert not ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [3.0]), "SE!=SE amplitude"
+assert not ot.SquaredExponential([1.0], [2.0]) != ot.SquaredExponential([1.0], [2.0]), "SE!=SE neg"
+assert ot.SquaredExponential([1.0], [2.0]) != ot.ExponentialModel([1.0], [2.0]), "SE!=Exp"
+
+# ExponentialModel
+assert ot.ExponentialModel([1.0], [2.0]) == ot.ExponentialModel([1.0], [2.0]), "Exp==Exp"
+assert not ot.ExponentialModel([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]), "Exp!=SE"
+assert ot.ExponentialModel([1.0], [3.0]) != ot.ExponentialModel([1.0], [2.0]), "Exp!=Exp amplitude"
+
+# AbsoluteExponential
+assert ot.AbsoluteExponential([1.0], [2.0]) == ot.AbsoluteExponential([1.0], [2.0]), "AE==AE"
+assert ot.AbsoluteExponential([1.0], [2.0]) != ot.SquaredExponential([1.0], [2.0]), "AE!=SE"
+
+# GeneralizedExponential
+assert ot.GeneralizedExponential([1.0], [2.0], 1.5) == ot.GeneralizedExponential([1.0], [2.0], 1.5), "GE==GE"
+assert ot.GeneralizedExponential([1.0], [2.0], 1.5) != ot.GeneralizedExponential([1.0], [2.0], 2.0), "GE!=GE p"
+
+# MaternModel
+assert ot.MaternModel([1.0], [2.0], 1.5) == ot.MaternModel([1.0], [2.0], 1.5), "MM==MM"
+assert ot.MaternModel([1.0], [2.0], 1.5) != ot.MaternModel([1.0], [2.0], 2.5), "MM!=MM nu"
+
+# ExponentiallyDampedCosineModel
+assert ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5) == ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5), "EDCM==EDCM"
+assert ot.ExponentiallyDampedCosineModel([1.0], [2.0], 0.5) != ot.ExponentiallyDampedCosineModel([1.0], [2.0], 1.0), "EDCM!=EDCM freq"
+
+# SphericalModel
+assert ot.SphericalModel([1.0], [2.0], 3.0) == ot.SphericalModel([1.0], [2.0], 3.0), "SM==SM"
+assert ot.SphericalModel([1.0], [2.0], 3.0) != ot.SphericalModel([1.0], [2.0], 4.0), "SM!=SM radius"
+
+# FractionalBrownianMotionModel
+assert ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25) == ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25), "FBMM==FBMM"
+assert ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25) != ot.FractionalBrownianMotionModel(3.0, 3.0, 0.25), "FBMM!=FBMM scale"
+
+# DiracCovarianceModel
+assert ot.DiracCovarianceModel(2, [1.0, 2.0]) == ot.DiracCovarianceModel(2, [1.0, 2.0]), "DCM==DCM"
+assert ot.DiracCovarianceModel(2, [1.0, 2.0]) != ot.DiracCovarianceModel(2, [3.0, 2.0]), "DCM!=DCM amplitude"
+
+# IsotropicCovarianceModel
+kernel1 = ot.SquaredExponential([1.0], [2.0])
+kernel2 = ot.SquaredExponential([1.0], [2.0])
+assert ot.IsotropicCovarianceModel(kernel1, 2) == ot.IsotropicCovarianceModel(kernel2, 2), "ICM==ICM"
+assert ot.IsotropicCovarianceModel(kernel1, 2) != ot.IsotropicCovarianceModel(ot.MaternModel([1.0], [2.0], 1.5), 2), "ICM!=ICM kernel"
+
+# ProductCovarianceModel
+coll1 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([3.0], [4.0])]
+coll2 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([3.0], [4.0])]
+assert ot.ProductCovarianceModel(coll1) == ot.ProductCovarianceModel(coll2), "PCM==PCM"
+coll3 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([5.0], [4.0])]
+assert ot.ProductCovarianceModel(coll1) != ot.ProductCovarianceModel(coll3), "PCM!=PCM coll"
+
+# TensorizedCovarianceModel
+coll1 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])]
+coll2 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])]
+assert ot.TensorizedCovarianceModel(coll1) == ot.TensorizedCovarianceModel(coll2), "TCM==TCM"
+coll3 = [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [4.0])]
+assert ot.TensorizedCovarianceModel(coll1) != ot.TensorizedCovarianceModel(coll3), "TCM!=TCM coll"
+
+# KroneckerCovarianceModel
+rho1 = ot.GeneralizedExponential([1.0], 1.0)
+rho2 = ot.GeneralizedExponential([1.0], 1.0)
+assert ot.KroneckerCovarianceModel(rho1, [1.0, 2.0]) == ot.KroneckerCovarianceModel(rho2, [1.0, 2.0]), "KCM==KCM"
+rho3 = ot.GeneralizedExponential([2.0], 1.0)
+assert ot.KroneckerCovarianceModel(rho1, [1.0, 2.0]) != ot.KroneckerCovarianceModel(rho3, [1.0, 2.0]), "KCM!=KCM rho"
+
+# StationaryFunctionalCovarianceModel
+f1 = ot.SymbolicFunction(["tau"], ["exp(-abs(tau))"])
+f2 = ot.SymbolicFunction(["tau"], ["exp(-abs(tau))"])
+assert ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f1) == ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f2), "SFCM==SFCM"
+f3 = ot.SymbolicFunction(["tau"], ["exp(-2*abs(tau))"])
+assert ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f1) != ot.StationaryFunctionalCovarianceModel([1.0], [2.0], f3), "SFCM!=SFCM rho"
+
+# Self equality
+se = ot.SquaredExponential([1.0], [2.0])
+assert se == se, "self=="
+assert not se != se, "self!="
+
+# Nugget factor equality
+assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]), "SE==SE no nugget"
+with_nugget = ot.SquaredExponential([1.0], [2.0])
+with_nugget.setNuggetFactor(0.1)
+assert with_nugget != ot.SquaredExponential([1.0], [2.0]), "SE!=SE nugget"

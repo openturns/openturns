@@ -40,6 +40,10 @@ public:
 
   typedef CovarianceModelImplementation::Implementation    Implementation;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<CovarianceModelImplementation>::operator ==;
+  Bool operator ==(const CovarianceModel & other) const;
+
   /** Default constructor without parameter */
   CovarianceModel();
 

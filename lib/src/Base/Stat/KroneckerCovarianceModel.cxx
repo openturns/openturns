@@ -107,6 +107,19 @@ KroneckerCovarianceModel * KroneckerCovarianceModel::clone() const
   return new KroneckerCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool KroneckerCovarianceModel::operator ==(const KroneckerCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (rho_ == other.rho_);
+}
+
+Bool KroneckerCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const KroneckerCovarianceModel * p_other = dynamic_cast<const KroneckerCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 void KroneckerCovarianceModel::setCorrelationModel(const CovarianceModel &rho)
 {
   if (rho.getInputDimension() != inputDimension_)

@@ -86,6 +86,19 @@ MaternModel * MaternModel::clone() const
   return new MaternModel(*this);
 }
 
+/* Comparison operators */
+Bool MaternModel::operator ==(const MaternModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (nu_ == other.nu_);
+}
+
+Bool MaternModel::equals(const CovarianceModelImplementation & other) const
+{
+  const MaternModel * p_other = dynamic_cast<const MaternModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance  function */
 Scalar MaternModel::computeAsScalar(const Point & tau) const
 {

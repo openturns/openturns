@@ -60,6 +60,19 @@ AbsoluteExponential * AbsoluteExponential::clone() const
   return new AbsoluteExponential(*this);
 }
 
+/* Comparison operators */
+Bool AbsoluteExponential::operator ==(const AbsoluteExponential & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool AbsoluteExponential::equals(const CovarianceModelImplementation & other) const
+{
+  const AbsoluteExponential * p_other = dynamic_cast<const AbsoluteExponential *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance function */
 Scalar AbsoluteExponential::computeAsScalar(const Point & tau) const
 {
