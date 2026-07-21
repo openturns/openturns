@@ -52,6 +52,24 @@ SobolSequence * SobolSequence::clone() const
   return new SobolSequence(*this);
 }
 
+/* Comparison operators */
+Bool SobolSequence::operator ==(const SobolSequence & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (scrambling_ != other.scrambling_) return false;
+  if (multidigitBits_ != other.multidigitBits_) return false;
+  if (base_.getSize() != other.base_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < base_.getSize(); ++i)
+    if (base_[i] != other.base_[i]) return false;
+  return true;
+}
+
+Bool SobolSequence::equals(const LowDiscrepancySequenceImplementation & other) const
+{
+  const SobolSequence * p_other = dynamic_cast<const SobolSequence *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Initialize the sequence */
 void SobolSequence::initialize(const UnsignedInteger dimension)

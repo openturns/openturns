@@ -49,6 +49,19 @@ HaselgroveSequence * HaselgroveSequence::clone() const
   return new HaselgroveSequence(*this);
 }
 
+/* Comparison operators */
+Bool HaselgroveSequence::operator ==(const HaselgroveSequence & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (base_ == other.base_);
+}
+
+Bool HaselgroveSequence::equals(const LowDiscrepancySequenceImplementation & other) const
+{
+  const HaselgroveSequence * p_other = dynamic_cast<const HaselgroveSequence *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Initialize the sequence */
 void HaselgroveSequence::initialize(const UnsignedInteger dimension)
 {

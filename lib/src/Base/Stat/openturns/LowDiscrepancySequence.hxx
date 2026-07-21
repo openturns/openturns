@@ -38,6 +38,10 @@ class OT_API LowDiscrepancySequence :
 public:
   typedef Pointer<LowDiscrepancySequenceImplementation> Implementation;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<LowDiscrepancySequenceImplementation>::operator ==;
+  Bool operator ==(const LowDiscrepancySequence & other) const;
+
   /** Default constructor */
   LowDiscrepancySequence();
 

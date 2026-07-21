@@ -50,6 +50,26 @@ HaltonSequence * HaltonSequence::clone() const
   return new HaltonSequence(*this);
 }
 
+/* Comparison operators */
+Bool HaltonSequence::operator ==(const HaltonSequence & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (scrambling_ != other.scrambling_) return false;
+  if (base_.getSize() != other.base_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < base_.getSize(); ++i)
+    if (base_[i] != other.base_[i]) return false;
+  if (permutations_.getSize() != other.permutations_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < permutations_.getSize(); ++i)
+    if (permutations_[i] != other.permutations_[i]) return false;
+  return true;
+}
+
+Bool HaltonSequence::equals(const LowDiscrepancySequenceImplementation & other) const
+{
+  const HaltonSequence * p_other = dynamic_cast<const HaltonSequence *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Initialize the sequence */
 void HaltonSequence::initialize(const UnsignedInteger dimension)

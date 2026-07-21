@@ -45,6 +45,10 @@ public:
   /** Virtual constructor */
   HaltonSequence * clone() const override;
 
+  /** Comparison operator */
+  using LowDiscrepancySequenceImplementation::operator ==;
+  Bool operator ==(const HaltonSequence & other) const;
+
   /** Initialize the sequence */
   void initialize(const UnsignedInteger dimension) override;
 
@@ -83,6 +87,8 @@ private:
 
   /** Scrambling method */
   String scrambling_;
+
+  Bool equals(const LowDiscrepancySequenceImplementation & other) const override;
 
 }; /* class HaltonSequence */
 

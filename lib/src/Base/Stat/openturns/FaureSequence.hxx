@@ -42,6 +42,10 @@ public:
   /** Virtual constructor */
   FaureSequence * clone() const override;
 
+  /** Comparison operator */
+  using LowDiscrepancySequenceImplementation::operator ==;
+  Bool operator ==(const FaureSequence & other) const;
+
   /** Initialize the sequence */
   void initialize(const UnsignedInteger dimension) override;
 
@@ -87,6 +91,8 @@ private:
   /** Reusable digit buffers to avoid per-call allocation */
   mutable Unsigned64BitsIntegerCollection aI_;
   mutable Unsigned64BitsIntegerCollection aINew_;
+
+  Bool equals(const LowDiscrepancySequenceImplementation & other) const override;
 
 }; /* class FaureSequence */
 

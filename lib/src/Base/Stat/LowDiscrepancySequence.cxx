@@ -25,6 +25,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LowDiscrepancySequence)
 
+/* Comparison operator */
+Bool LowDiscrepancySequence::operator ==(const LowDiscrepancySequence & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
 
 /* Default constructor */
 LowDiscrepancySequence::LowDiscrepancySequence()
