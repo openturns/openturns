@@ -54,6 +54,10 @@ public:
   /** Virtual constructor */
   WhiteNoise * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const WhiteNoise & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -95,6 +99,8 @@ private:
 
   /** The distribution of the WhiteNoise */
   Distribution distribution_;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class WhiteNoise */
 END_NAMESPACE_OPENTURNS

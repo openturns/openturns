@@ -52,6 +52,10 @@ public:
   /** Virtual constructor */
   AggregatedProcess * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const AggregatedProcess & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -104,6 +108,8 @@ protected:
 
   /** The collection of process to aggregate */
   ProcessPersistentCollection processCollection_;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class AggregatedProcess */
 

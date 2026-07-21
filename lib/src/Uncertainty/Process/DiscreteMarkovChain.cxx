@@ -137,6 +137,19 @@ DiscreteMarkovChain * DiscreteMarkovChain::clone() const
   return new DiscreteMarkovChain(*this);
 }
 
+/* Comparison operators */
+Bool DiscreteMarkovChain::operator ==(const DiscreteMarkovChain & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (origin_ == other.origin_) && (transitionMatrix_ == other.transitionMatrix_);
+}
+
+Bool DiscreteMarkovChain::equals(const ProcessImplementation & other) const
+{
+  const DiscreteMarkovChain * p_other = dynamic_cast<const DiscreteMarkovChain *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converters */
 String DiscreteMarkovChain::__repr__() const
 {

@@ -63,6 +63,10 @@ public:
   /** Virtual constructor */
   DiscreteMarkovChain * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const DiscreteMarkovChain & other) const;
+
   /** String converters */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -110,6 +114,7 @@ private:
 
   /** The current position of the chain */
   mutable UnsignedInteger currentState_ = 0;
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class DiscreteMarkovChain */
 

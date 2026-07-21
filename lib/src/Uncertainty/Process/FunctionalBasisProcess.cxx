@@ -78,6 +78,19 @@ FunctionalBasisProcess * FunctionalBasisProcess::clone() const
   return new FunctionalBasisProcess(*this);
 }
 
+/* Comparison operators */
+Bool FunctionalBasisProcess::operator ==(const FunctionalBasisProcess & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (distribution_ == other.distribution_);
+}
+
+Bool FunctionalBasisProcess::equals(const ProcessImplementation & other) const
+{
+  const FunctionalBasisProcess * p_other = dynamic_cast<const FunctionalBasisProcess *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FunctionalBasisProcess::__repr__() const
 {
