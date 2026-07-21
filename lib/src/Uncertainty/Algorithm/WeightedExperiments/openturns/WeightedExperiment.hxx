@@ -41,6 +41,10 @@ public:
 
   typedef Pointer<WeightedExperimentImplementation> Implementation;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<WeightedExperimentImplementation>::operator ==;
+  Bool operator ==(const WeightedExperiment & other) const;
+
   /** Default constructor */
   WeightedExperiment();
 

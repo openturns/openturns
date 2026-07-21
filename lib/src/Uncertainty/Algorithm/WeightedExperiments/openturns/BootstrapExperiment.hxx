@@ -48,6 +48,10 @@ public:
   /** Virtual constructor */
   BootstrapExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const BootstrapExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -65,6 +69,7 @@ public:
                                    const UnsignedInteger length);
 
 protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
 

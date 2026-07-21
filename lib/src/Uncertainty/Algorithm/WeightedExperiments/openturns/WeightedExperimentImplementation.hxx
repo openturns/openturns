@@ -54,6 +54,16 @@ public:
   /** Virtual constructor */
   WeightedExperimentImplementation * clone() const override;
 
+  /** Comparison operator */
+  Bool operator ==(const WeightedExperimentImplementation & other) const;
+  using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const WeightedExperimentImplementation & other) const;
+  Bool hasEqualBase(const WeightedExperimentImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const WeightedExperimentImplementation & other) const;
+
   /** String converter */
   String __repr__() const override;
 

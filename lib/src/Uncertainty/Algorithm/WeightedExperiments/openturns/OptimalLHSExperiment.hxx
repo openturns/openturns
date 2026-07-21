@@ -51,6 +51,10 @@ public:
   /** Virtual constructor method */
   OptimalLHSExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const OptimalLHSExperiment & other) const;
+
   /** Attributes for LHSExperiment */
   LHSExperiment getLHS() const;
 
@@ -71,6 +75,7 @@ public:
 
 protected:
   void setLHS(const LHSExperiment & lhs);
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
   LHSExperiment lhs_;
 

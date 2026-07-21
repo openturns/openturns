@@ -55,6 +55,10 @@ public:
   /** Virtual constructor */
   SobolIndicesExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const SobolIndicesExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -83,6 +87,7 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   WeightedExperiment experiment_;

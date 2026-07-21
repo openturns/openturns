@@ -57,6 +57,10 @@ public:
   /** Virtual constructor */
   ImportanceSamplingExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const ImportanceSamplingExperiment & other) const;
+
   /** Importance distribution accessor */
   Distribution getImportanceDistribution() const;
 
@@ -77,6 +81,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   // The importance distribution according to which the sample is built

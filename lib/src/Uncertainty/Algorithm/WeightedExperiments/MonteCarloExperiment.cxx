@@ -55,6 +55,19 @@ MonteCarloExperiment * MonteCarloExperiment::clone() const
   return new MonteCarloExperiment(*this);
 }
 
+/* Comparison operators */
+Bool MonteCarloExperiment::operator ==(const MonteCarloExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool MonteCarloExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const MonteCarloExperiment * p_other = dynamic_cast<const MonteCarloExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String MonteCarloExperiment::__repr__() const
 {

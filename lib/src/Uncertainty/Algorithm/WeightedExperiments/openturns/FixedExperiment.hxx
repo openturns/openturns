@@ -52,6 +52,10 @@ public:
   /** Virtual constructor */
   FixedExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const FixedExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -72,6 +76,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   // The fixed sample that will be returned at each call

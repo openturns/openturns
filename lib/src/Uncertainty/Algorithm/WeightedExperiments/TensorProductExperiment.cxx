@@ -70,6 +70,23 @@ TensorProductExperiment * TensorProductExperiment::clone() const
   return new TensorProductExperiment(*this);
 }
 
+/* Comparison operators */
+Bool TensorProductExperiment::operator ==(const TensorProductExperiment & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (collection_.getSize() != other.collection_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    if (!(collection_[i] == other.collection_[i])) return false;
+  return true;
+}
+
+Bool TensorProductExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const TensorProductExperiment * p_other = dynamic_cast<const TensorProductExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String TensorProductExperiment::__repr__() const
 {

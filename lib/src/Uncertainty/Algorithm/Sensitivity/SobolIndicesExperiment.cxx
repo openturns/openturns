@@ -126,6 +126,18 @@ SobolIndicesExperiment * SobolIndicesExperiment::clone() const
   return new SobolIndicesExperiment(*this);
 }
 
+/* Comparison operators */
+Bool SobolIndicesExperiment::operator ==(const SobolIndicesExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (experiment_ == other.experiment_) && (computeSecondOrder_ == other.computeSecondOrder_);
+}
+
+Bool SobolIndicesExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const SobolIndicesExperiment * p_other = dynamic_cast<const SobolIndicesExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String SobolIndicesExperiment::__repr__() const
