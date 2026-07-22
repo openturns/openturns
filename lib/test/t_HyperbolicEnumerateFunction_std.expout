@@ -1,0 +1,35 @@
+Default q : 0.4
+
+First 10 values for dimension 1
+index=0, multi-index=[0], qNorm = 0
+index=1, multi-index=[1], qNorm = 1
+index=2, multi-index=[2], qNorm = 2
+index=3, multi-index=[3], qNorm = 3
+index=4, multi-index=[4], qNorm = 4
+index=5, multi-index=[5], qNorm = 5
+index=6, multi-index=[6], qNorm = 6
+index=7, multi-index=[7], qNorm = 7
+index=8, multi-index=[8], qNorm = 8
+index=9, multi-index=[9], qNorm = 9
+And first 5 strata cardinals :[1,1,1,1,1]
+
+First 10 values for dimension 2
+index=0, multi-index=[0,0], qNorm = 0
+index=1, multi-index=[1,0], qNorm = 1
+index=2, multi-index=[0,1], qNorm = 1
+index=3, multi-index=[2,0], qNorm = 2
+index=4, multi-index=[1,1], qNorm = 2
+index=5, multi-index=[0,2], qNorm = 2
+index=6, multi-index=[3,0], qNorm = 3
+index=7, multi-index=[2,1], qNorm = 3
+index=8, multi-index=[1,2], qNorm = 3
+index=9, multi-index=[0,3], qNorm = 3
+And first 5 strata cardinals :[1,2,3,4,5]
+
+First 10 values for dimension 3
+index=0, multi-index=[0,0,0], qNorm = 0
+index=1, multi-index=[1,0,0], qNorm = 1
+index=2, multi-index=[0,1,0], qNorm = 1
+index=3, multi-index=[0,0,1], qNorm = 1
+index=4, multi-index=[2,0,0], qNorm = 2
+index=5, multi-index=[1,1,0], qNorm = 2

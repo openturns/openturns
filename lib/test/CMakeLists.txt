@@ -599,6 +599,7 @@ ot_check_test (IterativeMoments_std IGNOREOUT)
 # OrthogonalBasis
 ot_check_test (LinearEnumerateFunction_std)
 ot_check_test (HyperbolicAnisotropicEnumerateFunction_std)
+ot_check_test (HyperbolicEnumerateFunction_std)
 ot_check_test (OrthogonalUniVariatePolynomial_std)
 ot_check_test (CharlierFactory_std)
 ot_check_test (ChebychevFactory_std)
