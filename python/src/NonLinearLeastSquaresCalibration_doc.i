@@ -11,28 +11,37 @@ inputObservations : 2-d sequence of float
 outputObservations : 2-d sequence of float
     The sample of output observations.
 startingPoint : sequence of float
-    The reference value of the parameter, used as the starting point
-    of the optimization.
+    Initial parameter value used as the starting point of the optimization.
 
 Notes
 -----
-NonLinearLeastSquaresCalibration is the minimum variance estimator of the parameter 
-of a given model with no assumption on the dependence of the model with respect 
-to the parameter.
 
-The prior distribution of the parameter is a noninformative prior
-emulated using a flat :class:`~openturns.Normal` centered on the `startingPoint` and with a variance equal to SpecFunc.Infinity.
+NonLinearLeastSquaresCalibration estimates the parameter of a model by
+minimizing the sum of squared residuals between the model predictions and
+the observed outputs.
+Under standard assumptions on the observation errors, the resulting
+estimator coincides with the maximum likelihood estimator for Gaussian
+errors.
+Unlike :class:`~openturns.LinearLeastSquaresCalibration`, this algorithm
+does not require the model to depend linearly on the parameter.
 
-The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
-variability of the optimum parameter depending on the observation sample. 
-By default, the posterior distribution is evaluated based on a linear approximation 
+The prior distribution of the parameter is approximated by a Normal
+distribution centered on the `startingPoint` with a very large variance,
+so that the influence of the prior is negligible compared with that of
+the observations.
+
+The posterior distribution of the parameter reflects the sampling
+variability of the estimated parameter.
+If the key `NonLinearLeastSquaresCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
+is set to zero, the posterior distribution is evaluated based on a linear approximation 
 of the model at the optimum. 
 This corresponds to using the :class:`~openturns.LinearLeastSquaresCalibration` at the optimum, 
 and is named *Laplace approximation* in the Bayesian context. 
 However, if the key `NonLinearLeastSquaresCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
 is set to a nonzero positive integer, then a bootstrap resampling of the observations 
 is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing` 
-of the sample of bootstrap optimum parameters. 
+of the sample of parameter estimates obtained from the bootstrap resamples.
+By default, a bootstrap algorithm is used.
 
 The resulting distribution of the output error is a :class:`~openturns.Normal` and is 
 computed from the residuals. 
@@ -72,17 +81,17 @@ Calibrate a nonlinear model using non-linear least-squares:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getStartingPoint
-"Accessor to the parameter `startingPoint`.
+"Return the starting point used for the optimization.
 
 Returns
 -------
 startingPoint : :class:`~openturns.Point`
-    Parameter startingPoint."
+    Starting point used for the optimization."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getOptimizationAlgorithm
-"Accessor to the optimization algorithm used for the computation.
+"Return the optimization algorithm used for the computation.
 
 Returns
 -------
@@ -92,7 +101,7 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::setOptimizationAlgorithm
-"Accessor to the optimization algorithm used for the computation.
+"Set the optimization algorithm used for the computation.
 
 Parameters
 ----------
@@ -102,28 +111,28 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::getBootstrapSize
-"Accessor to the bootstrap size used to sample the posterior distribution.
+"Return the bootstrap size used to sample the posterior distribution.
 
 Returns
 -------
 size : int
-    Bootstrap size used to sample the posterior distribution. A value of 0
-    means that no bootstrap has been done but a linear approximation has
-    been used to get the posterior distribution, using the :class:`~openturns.GaussianLinearCalibration`
-    algorithm at the maximum a posteriori estimate."
+    Bootstrap size used to sample the posterior distribution.
+    A value of 0 means that no bootstrap is performed and that the posterior
+    distribution is approximated using a linearization of the model around
+    the optimum, equivalent to applying :class:`~openturns.LinearLeastSquaresCalibration`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::setBootstrapSize
-"Accessor to the bootstrap size used to sample the posterior distribution.
+"Set the bootstrap size used to sample the posterior distribution.
 
 Parameters
 ----------
 size : int
-    Bootstrap size used to sample the posterior distribution. A value of 0
-    means that no bootstrap has to be done but a linear approximation has
-    been used to get the posterior distribution, using the :class:`~openturns.GaussianLinearCalibration`
-    algorithm at the maximum a posteriori estimate."
+    Bootstrap size used to sample the posterior distribution.
+    A value of 0 means that no bootstrap is performed and that the posterior
+    distribution is approximated using a linearization of the model around
+    the optimum, equivalent to applying :class:`~openturns.LinearLeastSquaresCalibration`."
 
 // ---------------------------------------------------------------------
 
@@ -136,28 +145,33 @@ model : :class:`~openturns.Function`
     Parametric model.
 inputObservations : 2-d sequence of float
     Input observations associated to the output observations.
-outputObservations : :class:`~openturns.Function`
+outputObservations : 2-d sequence of float
     Output observations.
 
 Returns
 -------
 residual : :class:`~openturns.Function`
-Residual function.
+    Residual function.
 
 Notes
 -----
-Given a parametric model :math:`F_{\theta}:\Rset^n\rightarrow\Rset^p` with
-parameter :math:`\theta\in\Rset^m`, a sample of input points
-:math:`(x_i)_{i=1,\dots,N}` and the associated output
-:math:`(y_i)_{i=1,\dots,N}`, the residual function :math:`f` is defined by:
+Given a parametric model :math:`F_{\theta}:\Rset^\inputDim \rightarrow \Rset^p` with
+parameter :math:`\theta \in \Rset^m`, a sample of input points
+:math:`(\vect{x}_i)_{i=1, \dots, \sampleSize}` and the associated output
+:math:`(\vect{y}_i)_{i=1, \dots, \sampleSize}`,
+the residual function :math:`f : \Rset^m \rightarrow \Rset^{p \sampleSize}` is defined by:
 
 .. math::
 
-    \forall \theta\in\Rset^m, f(\theta)=\left(\begin{array}{c}
-    F_{\theta}(x_1)-y_1 \\
+    f(\theta)=
+    \begin{pmatrix}
+    F_{\theta}(\vect{x}_1) - \vect{y}_1 \\
     \vdots \\
-    F_{\theta}(x_N)-y_N
-    \end{array}
-    \right)
+    F_{\theta}(\vect{x}_\sampleSize) - \vect{y}_\sampleSize
+    \end{pmatrix}
+
+for all :math:`\theta\in\Rset^m`.
+The residual vector is obtained by stacking the residuals associated with
+all observations.
 
 )RAW"
