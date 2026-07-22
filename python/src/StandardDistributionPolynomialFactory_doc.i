@@ -78,7 +78,7 @@ OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorith
 
 See also
 --------
-:any:`orthonormal_polynomials`, ~openturns.AdaptiveStieltjesAlgorithm
+UniVariateDistributionPolynomialFactory, openturns.AdaptiveStieltjesAlgorithm
 
 Examples
 --------
