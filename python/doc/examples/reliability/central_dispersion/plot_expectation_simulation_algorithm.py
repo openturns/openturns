@@ -52,7 +52,7 @@ algo.setCoefficientOfVariationCriterionType("NONE")
 # %%
 # We are then ready to launch the algorithm and store the result.
 algo.run()
-result = algo.getResult()
+result = ot.ExpectationSimulationResult(algo.getResult())
 
 
 # %%

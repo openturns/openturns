@@ -86,7 +86,7 @@ algo.run()
 # %%
 # Extract the results
 # -------------------
-result = algo.getResult()
+result = ot.SobolSimulationResult(algo.getResult())
 fo = result.getFirstOrderIndicesEstimate()
 to = result.getTotalOrderIndicesEstimate()
 foDist = result.getFirstOrderIndicesDistribution()

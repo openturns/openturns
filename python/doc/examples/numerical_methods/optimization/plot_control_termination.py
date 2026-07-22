@@ -76,6 +76,6 @@ algo.setMaximumTimeDuration(0.01)
 # %%
 # Run the algorithm
 algo.run()
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 pf = result.getProbabilityEstimate()
 nCalls = myFunction.getCallsNumber()

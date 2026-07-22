@@ -19,7 +19,7 @@ Examples
 >>> experiment = ot.MonteCarloExperiment()
 >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
 >>> algo.run()
->>> result = algo.getResult()
+>>> result = ot.ProbabilitySimulationResult(algo.getResult())
 >>> importanceFactors = result.getImportanceFactors()"
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult

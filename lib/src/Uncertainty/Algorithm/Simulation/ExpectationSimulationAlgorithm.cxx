@@ -39,7 +39,7 @@ static const Factory<ExpectationSimulationAlgorithm> Factory_ExpectationSimulati
 
 /** For save/load mechanism */
 ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm()
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
   , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
 {
@@ -47,7 +47,7 @@ ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm()
 
 /* Constructor with parameters */
 ExpectationSimulationAlgorithm::ExpectationSimulationAlgorithm(const RandomVector & randomVector)
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , randomVector_(randomVector)
   , coefficientOfVariationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType"))
   , standardDeviationCriterionType_(ResourceMap::GetAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType"))
@@ -73,7 +73,7 @@ void ExpectationSimulationAlgorithm::setResult(const ExpectationSimulationResult
 }
 
 /* Result accessor */
-ExpectationSimulationResult ExpectationSimulationAlgorithm::getResult() const
+SimulationResult ExpectationSimulationAlgorithm::getResult() const
 {
   return result_;
 }
@@ -106,7 +106,7 @@ void ExpectationSimulationAlgorithm::run()
   Point meanEstimate(dimension);
   Point varianceEstimate(dimension);
   const UnsignedInteger blockSize = getBlockSize();
-  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
+  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResultImplementation or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
   result_.setRandomVector(randomVector_);
@@ -352,7 +352,7 @@ Graph ExpectationSimulationAlgorithm::drawExpectationConvergence(const UnsignedI
 /* Method save() stores the object through the StorageManager */
 void ExpectationSimulationAlgorithm::save(Advocate & adv) const
 {
-  SimulationAlgorithm::save(adv);
+  SimulationAlgorithmImplementation::save(adv);
   adv.saveAttribute("randomVector_", randomVector_);
   adv.saveAttribute("coefficientOfVariationCriterionType_", coefficientOfVariationCriterionType_);
   adv.saveAttribute("standardDeviationCriterionType_", standardDeviationCriterionType_);
@@ -363,7 +363,7 @@ void ExpectationSimulationAlgorithm::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ExpectationSimulationAlgorithm::load(Advocate & adv)
 {
-  SimulationAlgorithm::load(adv);
+  SimulationAlgorithmImplementation::load(adv);
   adv.loadAttribute("randomVector_", randomVector_);
   adv.loadAttribute("coefficientOfVariationCriterionType_", coefficientOfVariationCriterionType_);
   adv.loadAttribute("standardDeviationCriterionType_", standardDeviationCriterionType_);

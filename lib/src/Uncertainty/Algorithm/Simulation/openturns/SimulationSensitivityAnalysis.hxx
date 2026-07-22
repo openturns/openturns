@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of SimulationResult
+ *  @brief Implementation of SimulationResultImplementation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

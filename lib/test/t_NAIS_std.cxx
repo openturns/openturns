@@ -66,7 +66,7 @@ int main()
   algo.run();
 
   // Retrieve results
-  const ProbabilitySimulationResult result = algo.getResult();
+  const ProbabilitySimulationResult result(dynamic_cast<const ProbabilitySimulationResult &>(*algo.getResult().getImplementation()));
   const Scalar probability = result.getProbabilityEstimate();
   OT::Test::assert_almost_equal(probability, 0.00238288);
 
@@ -87,7 +87,7 @@ int main()
   // Run of the algorithm
   algoNais.run();
 
-  const NAISResult resultNais(algoNais.getResult());
+  const NAISResult resultNais(dynamic_cast<const NAISResult &>(*algoNais.getResult().getImplementation()));
   OT::Test::assert_almost_equal(resultNais.getProbabilityEstimate(), 0.00215688);
   return 0;
 }

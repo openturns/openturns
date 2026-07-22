@@ -299,7 +299,7 @@ void CrossEntropyImportanceSampling::run()
 }
 
 // Accessor to CrossEntropyImportanceSampling Result_s
-CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
+SimulationResult CrossEntropyImportanceSampling::getResult() const
 {
   return crossEntropyResult_;
 }

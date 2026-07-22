@@ -85,7 +85,7 @@ initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 algoMC.run()
 
 # %%
-result = algoMC.getResult()
+result = ot.ProbabilitySimulationResult(algoMC.getResult())
 probabilityMonteCarlo = result.getProbabilityEstimate()
 numberOfFunctionEvaluationsMonteCarlo = (
     limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
@@ -120,7 +120,7 @@ initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 algo.run()
 
 # %%
-resultLHS = algo.getResult()
+resultLHS = ot.ProbabilitySimulationResult(algo.getResult())
 
 numberOfFunctionEvaluationsLHS = (
     limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
@@ -202,7 +202,7 @@ initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 algoDS.run()
 
 # %%
-result = algoDS.getResult()
+result = ot.ProbabilitySimulationResult(algoDS.getResult())
 probabilityDirectionalSampling = result.getProbabilityEstimate()
 numberOfFunctionEvaluationsDirectionalSampling = (
     limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
@@ -272,7 +272,7 @@ algo.run()
 
 # %%
 # retrieve results
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 probabilityFORMIS = result.getProbabilityEstimate()
 numberOfFunctionEvaluationsFORMIS = (
     limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall

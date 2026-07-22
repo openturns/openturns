@@ -121,7 +121,7 @@ algo.setKeepSample(True)
 
 # %%
 algo.run()
-result = algo.getResult()
+result = ot.ProbabilitySimulationResult(algo.getResult())
 proba = result.getProbabilityEstimate()
 print("Proba NAIS = ", proba)
 print("Current coefficient of variation = ", result.getCoefficientOfVariation())

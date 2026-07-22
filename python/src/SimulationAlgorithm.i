@@ -27,7 +27,8 @@ static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
 %ignore OT::SimulationAlgorithm::setProgressCallback(ProgressCallback callBack, void * data);
 %ignore OT::SimulationAlgorithm::setStopCallback(StopCallback callBack, void * data);
 
-%copyctor OT::SimulationAlgorithm;
+OTTypedInterfaceObjectHelper(SimulationAlgorithm)
+
 %include openturns/SimulationAlgorithm.hxx
 
 namespace OT {

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of SimulationResult
+ *  @brief Result of a simulation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,98 +19,92 @@
  *
  */
 #include "openturns/SimulationResult.hxx"
-#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SimulationResult)
 
-static const Factory<SimulationResult> Factory_SimulationResult;
-
 /* Default constructor */
 SimulationResult::SimulationResult()
-  : PersistentObject()
-  , outerSampling_(0)
-  , blockSize_(0)
+  : TypedInterfaceObject<SimulationResultImplementation>(new SimulationResultImplementation())
 {
   // Nothing to do
 }
 
-/* Standard constructor */
-SimulationResult::SimulationResult(const UnsignedInteger outerSampling,
-                                   const UnsignedInteger blockSize)
-  : PersistentObject()
-  , outerSampling_(outerSampling)
-  , blockSize_(blockSize)
+/* Constructor from implementation */
+SimulationResult::SimulationResult(const SimulationResultImplementation & implementation)
+  : TypedInterfaceObject<SimulationResultImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
-/* Virtual constructor */
-SimulationResult * SimulationResult::clone() const
+/* Constructor from implementation pointer */
+SimulationResult::SimulationResult(SimulationResultImplementation * p_implementation)
+  : TypedInterfaceObject<SimulationResultImplementation>(p_implementation)
 {
-  return new SimulationResult(*this);
+  // Nothing to do
 }
 
-/* Outer sampling accessor */
+/* Constructor from implementation */
+SimulationResult::SimulationResult(const Implementation & p_implementation)
+  : TypedInterfaceObject<SimulationResultImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
+/* Comparison operator */
+Bool SimulationResult::operator ==(const SimulationResult & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+/* Comparison operator */
+Bool SimulationResult::operator !=(const SimulationResult & other) const
+{
+  return !operator==(other);
+}
+
+/* Sample size accessor */
 UnsignedInteger SimulationResult::getOuterSampling() const
 {
-  return outerSampling_;
+  return getImplementation()->getOuterSampling();
 }
 
 void SimulationResult::setOuterSampling(const UnsignedInteger outerSampling)
 {
-  outerSampling_ = outerSampling;
+  copyOnWrite();
+  getImplementation()->setOuterSampling(outerSampling);
 }
 
 /* Block size accessor */
 UnsignedInteger SimulationResult::getBlockSize() const
 {
-  return blockSize_;
+  return getImplementation()->getBlockSize();
 }
 
 void SimulationResult::setBlockSize(const UnsignedInteger blockSize)
 {
-  blockSize_ = blockSize;
+  copyOnWrite();
+  getImplementation()->setBlockSize(blockSize);
 }
 
 /* Elapsed time accessor */
 void SimulationResult::setTimeDuration(const Scalar time)
 {
-  timeDuration_ = time;
+  copyOnWrite();
+  getImplementation()->setTimeDuration(time);
 }
 
 Scalar SimulationResult::getTimeDuration() const
 {
-  return timeDuration_;
+  return getImplementation()->getTimeDuration();
 }
 
 /* String converter */
 String SimulationResult::__repr__() const
 {
-  OSS oss;
-  oss << " outerSampling=" << outerSampling_
-      << " blockSize=" << blockSize_;
-  return oss;
-}
-
-/* Method save() stores the object through the StorageManager */
-void SimulationResult::save(Advocate & adv) const
-{
-  PersistentObject::save(adv);
-  adv.saveAttribute("outerSampling_", outerSampling_);
-  adv.saveAttribute("blockSize_", blockSize_);
-  adv.saveAttribute("timeDuration_", timeDuration_);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void SimulationResult::load(Advocate & adv)
-{
-  PersistentObject::load(adv);
-  adv.loadAttribute("outerSampling_", outerSampling_);
-  adv.loadAttribute("blockSize_", blockSize_);
-  if (adv.hasAttribute("timeDuration_"))
-    adv.loadAttribute("timeDuration_", timeDuration_);
+  return getImplementation()->__repr__();
 }
 
 END_NAMESPACE_OPENTURNS

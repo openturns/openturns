@@ -21,7 +21,8 @@
 #ifndef OPENTURNS_EXPECTATIONSIMULATIONALGORITHM_HXX
 #define OPENTURNS_EXPECTATIONSIMULATIONALGORITHM_HXX
 
-#include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/ExpectationSimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
@@ -32,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ExpectationSimulationAlgorithm
-  : public SimulationAlgorithm
+  : public SimulationAlgorithmImplementation
 {
 
   CLASSNAME
@@ -50,7 +51,7 @@ public:
   RandomVector getRandomVector() const;
 
   /** Result accessor */
-  ExpectationSimulationResult getResult() const;
+  SimulationResult getResult() const;
 
   /** Criterion type on coefficient of variation accessor */
   void setCoefficientOfVariationCriterionType(const String & criterionType);

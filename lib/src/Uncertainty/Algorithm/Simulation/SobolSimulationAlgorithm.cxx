@@ -46,7 +46,7 @@ static const Factory<SobolSimulationAlgorithm> Factory_SobolSimulationAlgorithm;
 
 /** For save/load mechanism */
 SobolSimulationAlgorithm::SobolSimulationAlgorithm()
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , experimentSize_(ResourceMap::GetAsUnsignedInteger("SobolSimulationAlgorithm-DefaultExperimentSize"))
   , indexQuantileLevel_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileLevel"))
   , indexQuantileEpsilon_(ResourceMap::GetAsScalar("SobolSimulationAlgorithm-DefaultIndexQuantileEpsilon"))
@@ -57,7 +57,7 @@ SobolSimulationAlgorithm::SobolSimulationAlgorithm()
 SobolSimulationAlgorithm::SobolSimulationAlgorithm(const Distribution & distribution,
     const Function & model,
     const SobolIndicesAlgorithm & estimator)
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , distribution_(distribution)
   , model_(model)
   , estimator_(estimator)
@@ -86,7 +86,7 @@ void SobolSimulationAlgorithm::setResult(const SobolSimulationResult & result)
 }
 
 /* Result accessor */
-SobolSimulationResult SobolSimulationAlgorithm::getResult() const
+SimulationResult SobolSimulationAlgorithm::getResult() const
 {
   return result_;
 }
@@ -427,7 +427,7 @@ Graph SobolSimulationAlgorithm::drawTotalOrderIndexConvergence(const UnsignedInt
 /* Method save() stores the object through the StorageManager */
 void SobolSimulationAlgorithm::save(Advocate & adv) const
 {
-  SimulationAlgorithm::save(adv);
+  SimulationAlgorithmImplementation::save(adv);
   adv.saveAttribute("distribution_", distribution_);
   adv.saveAttribute("model_", model_);
   adv.saveAttribute("estimator_", estimator_);
@@ -441,7 +441,7 @@ void SobolSimulationAlgorithm::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SobolSimulationAlgorithm::load(Advocate & adv)
 {
-  SimulationAlgorithm::load(adv);
+  SimulationAlgorithmImplementation::load(adv);
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("model_", model_);
   adv.loadAttribute("estimator_", estimator_);

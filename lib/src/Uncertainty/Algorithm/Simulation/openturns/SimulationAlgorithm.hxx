@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief EventSimulation algorithms base class
+ *  @brief SimulationAlgorithm algorithms base class
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -21,27 +21,44 @@
 #ifndef OPENTURNS_SIMULATIONALGORITHM_HXX
 #define OPENTURNS_SIMULATIONALGORITHM_HXX
 
-#include "openturns/PersistentObject.hxx"
-#include "openturns/HistoryStrategy.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class SimulationAlgorithm
+ *
+ * SimulationAlgorithm is the interface to SimulationAlgorithmImplementation.
  */
 
 class OT_API SimulationAlgorithm
-  : public PersistentObject
+  : public TypedInterfaceObject<SimulationAlgorithmImplementation>
 {
-
   CLASSNAME
 public:
 
-  /** Constructor with parameters */
+  /** Default constructor */
   SimulationAlgorithm();
 
-  /** Virtual constructor */
-  SimulationAlgorithm * clone() const override;
+  /** Constructor from implementation */
+  SimulationAlgorithm(const SimulationAlgorithmImplementation & implementation);
+
+  /** Constructor from implementation pointer */
+#ifndef SWIG
+  SimulationAlgorithm(SimulationAlgorithmImplementation * p_implementation);
+#endif
+
+  /** Constructor from implementation */
+  SimulationAlgorithm(const Implementation & p_implementation);
+
+  /** Comparison operator */
+  using TypedInterfaceObject<SimulationAlgorithmImplementation>::operator ==;
+  Bool operator ==(const SimulationAlgorithm & other) const;
+
+  /** Comparison operator */
+  using TypedInterfaceObject<SimulationAlgorithmImplementation>::operator !=;
+  Bool operator !=(const SimulationAlgorithm & other) const;
 
   /** Maximum sample size accessor */
   void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
@@ -56,24 +73,18 @@ public:
   Scalar getMaximumStandardDeviation() const;
 
   /** Block size accessor */
-  virtual void setBlockSize(const UnsignedInteger blockSize);
+  void setBlockSize(const UnsignedInteger blockSize);
   UnsignedInteger getBlockSize() const;
 
   /** String converter */
   String __repr__() const override;
 
   /** Performs the actual computation. */
-  virtual void run();
+  void run();
 
   /** Convergence strategy accessor */
   void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
   HistoryStrategy getConvergenceStrategy() const;
-
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
@@ -87,30 +98,7 @@ public:
   void setMaximumTimeDuration(const Scalar maximumTimeDuration);
   Scalar getMaximumTimeDuration() const;
 
-protected:
-  // Size of the atomic blocks of computation
-  UnsignedInteger blockSize_ = 0;
-
-  // callbacks
-  std::pair< ProgressCallback, void *> progressCallback_;
-  std::pair< StopCallback, void *> stopCallback_;
-
-  /** History strategy for the probability and variance estimate */
-  HistoryStrategy convergenceStrategy_;
-
-private:
-
-  // Maximum number of outer iteration allowed
-  UnsignedInteger maximumOuterSampling_ = 0;
-
-  // Maximum coefficient of variation allowed for convergence
-  Scalar maximumCoefficientOfVariation_ = 0.0;
-
-  // Maximum standard deviation allowed for convergence
-  Scalar maximumStandardDeviation_ = 0.0;
-
-  Scalar maximumTimeDuration_ = -1.0;
-} ; /* class SimulationAlgorithm */
+}; // class SimulationAlgorithm
 
 
 END_NAMESPACE_OPENTURNS

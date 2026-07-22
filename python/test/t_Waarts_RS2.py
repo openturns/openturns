@@ -27,6 +27,13 @@ output = ot.CompositeRandomVector(limitState, vect)
 myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
 #
+# Reference value
+#
+pRef = (myDistribution.getMarginal(0) - myDistribution.getMarginal(1).sqr()).computeCDF(
+    0.0
+)
+
+#
 # FORM/SORM Cobyla
 myCobyla = ot.Cobyla()
 myCobyla.setMaximumCallsNumber(1000 * dim)
@@ -63,22 +70,28 @@ myAlgoAR2.run()
 
 resultAR = myAlgoAR.getResult()
 resultAR2 = myAlgoAR2.getResult()
+pFORM = resultAR.getEventProbability()
+ott.assert_almost_equal(pFORM, pRef, 1e-2, 1e-2)
+pSORM = resultAR2.getEventProbabilityBreitung()
+ott.assert_almost_equal(pSORM, pRef, 1e-2, 1e-2)
 
 #
 # Monte Carlo
-CoV_MC = 0.1
+CoV_MC = 0.05
 experiment = ot.MonteCarloExperiment()
 myMC = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
 myMC.setMaximumOuterSampling(1000000)
-myMC.setBlockSize(1000)
+myMC.setBlockSize(100)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
-result = myMC.getResult()
-ott.assert_almost_equal(result.getProbabilityEstimate(), 0.000258312)
+result = ot.ProbabilitySimulationResult(myMC.getResult())
+pMC = result.getProbabilityEstimate()
+ott.assert_almost_equal(pMC, pRef, 5e-2, 5e-2)
 
 #
 # LHS
-CoV_LHS = 0.1
+#
+CoV_LHS = 0.05
 experiment = ot.LHSExperiment()
 experiment.setAlwaysShuffle(True)
 myLHS = ot.ProbabilitySimulationAlgorithm(myEvent, experiment)
@@ -86,5 +99,6 @@ myLHS.setMaximumOuterSampling(1000000)
 myLHS.setBlockSize(100)
 myLHS.setMaximumCoefficientOfVariation(CoV_LHS)
 myLHS.run()
-result = myMC.getResult()
-ott.assert_almost_equal(result.getProbabilityEstimate(), 0.000258312)
+result = ot.ProbabilitySimulationResult(myLHS.getResult())
+pLHS = result.getProbabilityEstimate()
+ott.assert_almost_equal(pLHS, pRef, 5e-2, 5e-2)

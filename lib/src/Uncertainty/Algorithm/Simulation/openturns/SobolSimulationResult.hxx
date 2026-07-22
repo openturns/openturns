@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_SOBOLSIMULATIONRESULT_HXX
 #define OPENTURNS_SOBOLSIMULATIONRESULT_HXX
 
-#include "openturns/SimulationResult.hxx"
+#include "openturns/SimulationResultImplementation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class SobolSimulationResult
  */
 class OT_API SobolSimulationResult
-  : public SimulationResult
+  : public SimulationResultImplementation
 {
 
   CLASSNAME

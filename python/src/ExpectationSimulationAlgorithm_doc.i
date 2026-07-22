@@ -224,7 +224,7 @@ of the sample mean falls below the threshold.
 >>> algo.setBlockSize(8)  # The number of cores we usually have.
 >>> algo.setMaximumCoefficientOfVariation(0.01)  # 1% C.O.V.
 >>> algo.run()
->>> result = algo.getResult()
+>>> result = ot.ExpectationSimulationResult(algo.getResult())
 >>> expectation = result.getExpectationEstimate()
 >>> print(expectation)
 [-1.41067]
@@ -283,7 +283,7 @@ componentwise_max_sigma= [5.42445e+07,0.9375,0.00090211,2.22058e-10]
 >>> algo.setCoefficientOfVariationCriterionType('NONE')
 >>> algo.setMaximumStandardDeviationPerComponent(componentwise_max_sigma)
 >>> algo.run()
->>> result = algo.getResult()
+>>> result = ot.ExpectationSimulationResult(algo.getResult())
 >>> expectation = result.getExpectationEstimate()
 >>> outer_sampling = result.getOuterSampling()
 )RAW"
@@ -295,7 +295,7 @@ componentwise_max_sigma= [5.42445e+07,0.9375,0.00090211,2.22058e-10]
 
 Returns
 -------
-result : :class:`~openturns.ExpectationSimulationResult`
+result : :class:`~openturns.SimulationResult`
     The simulation result."
 
 // ---------------------------------------------------------------------

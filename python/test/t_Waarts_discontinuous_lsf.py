@@ -99,7 +99,7 @@ myMC.setMaximumOuterSampling(10000000)
 myMC.setBlockSize(10000)
 myMC.setMaximumCoefficientOfVariation(CoV_MC)
 myMC.run()
-result = myMC.getResult()
+result = ot.ProbabilitySimulationResult(myMC.getResult())
 ott.assert_almost_equal(result.getProbabilityEstimate(), 5e-05)
 
 #
@@ -209,7 +209,7 @@ beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex()
 
 #
 # Monte Carlo
-ResultMC = myMC.getResult()
+ResultMC = ot.ProbabilitySimulationResult(myMC.getResult())
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()
@@ -219,7 +219,7 @@ length90MC = ResultMC.getProbabilityDistribution().computeBilateralConfidenceInt
 
 #
 # LHS
-ResultLHS = myLHS.getResult()
+ResultLHS = ot.ProbabilitySimulationResult(myLHS.getResult())
 PFLHS = ResultLHS.getProbabilityEstimate()
 CVLHS = ResultLHS.getCoefficientOfVariation()
 Variance_PF_LHS = ResultLHS.getVarianceEstimate()
@@ -229,7 +229,7 @@ length90LHS = ResultLHS.getProbabilityDistribution().computeBilateralConfidenceI
 
 #
 # Directional Sampling
-ResultDS1 = myDS1.getResult()
+ResultDS1 = ot.ProbabilitySimulationResult(myDS1.getResult())
 PFDS1 = ResultDS1.getProbabilityEstimate()
 CVDS1 = ResultDS1.getCoefficientOfVariation()
 Variance_PF_DS1 = ResultDS1.getVarianceEstimate()
@@ -237,7 +237,7 @@ length90DS1 = ResultDS1.getProbabilityDistribution().computeBilateralConfidenceI
     0.9
 )
 
-ResultDS2 = myDS2.getResult()
+ResultDS2 = ot.ProbabilitySimulationResult(myDS2.getResult())
 PFDS2 = ResultDS2.getProbabilityEstimate()
 CVDS2 = ResultDS2.getCoefficientOfVariation()
 Variance_PF_DS2 = ResultDS2.getVarianceEstimate()
@@ -245,7 +245,7 @@ length90DS2 = ResultDS2.getProbabilityDistribution().computeBilateralConfidenceI
     0.9
 )
 
-ResultDS3 = myDS3.getResult()
+ResultDS3 = ot.ProbabilitySimulationResult(myDS3.getResult())
 PFDS3 = ResultDS3.getProbabilityEstimate()
 CVDS3 = ResultDS3.getCoefficientOfVariation()
 Variance_PF_DS3 = ResultDS3.getVarianceEstimate()

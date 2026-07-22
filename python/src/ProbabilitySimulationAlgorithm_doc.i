@@ -156,7 +156,7 @@ Estimate a probability by Monte Carlo
 >>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> algo.run()
->>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
+>>> print('Probability estimate=%.6f' % ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate())
 Probability estimate=0.140000
 
 Estimate a probability by Importance Sampling
@@ -173,7 +173,7 @@ Estimate a probability by Importance Sampling
 >>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> algo.run()
->>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
+>>> print('Probability estimate=%.6f' % ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate())
 Probability estimate=0.153315
 
 Estimate a probability by Quasi Monte Carlo
@@ -186,7 +186,7 @@ Estimate a probability by Quasi Monte Carlo
 >>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> algo.run()
->>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
+>>> print('Probability estimate=%.6f' % ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate())
 Probability estimate=0.141667
 
 Estimate a probability by Randomized Quasi Monte Carlo
@@ -200,7 +200,7 @@ Estimate a probability by Randomized Quasi Monte Carlo
 >>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> algo.run()
->>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
+>>> print('Probability estimate=%.6f' % ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate())
 Probability estimate=0.160000
 
 Estimate a probability by Randomized LHS
@@ -214,7 +214,7 @@ Estimate a probability by Randomized LHS
 >>> algo.setMaximumCoefficientOfVariation(0.1)
 >>> # Perform the simulation
 >>> algo.run()
->>> print('Probability estimate=%.6f' % algo.getResult().getProbabilityEstimate())
+>>> print('Probability estimate=%.6f' % ot.ProbabilitySimulationResult(algo.getResult()).getProbabilityEstimate())
 Probability estimate=0.140000)RAW"
 
 

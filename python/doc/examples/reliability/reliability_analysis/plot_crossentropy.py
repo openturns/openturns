@@ -75,7 +75,7 @@ standardSpaceIS.setMaximumOuterSampling(1000)
 
 # %%
 standardSpaceIS.run()
-standardSpaceISResult = standardSpaceIS.getResult()
+standardSpaceISResult = ot.CrossEntropyResult(standardSpaceIS.getResult())
 proba = standardSpaceISResult.getProbabilityEstimate()
 print("Proba Standard Space Cross Entropy IS = ", proba)
 print(
@@ -213,7 +213,7 @@ physicalSpaceIS1.setMaximumOuterSampling(1000)
 
 # %%
 physicalSpaceIS1.run()
-physicalSpaceISResult1 = physicalSpaceIS1.getResult()
+physicalSpaceISResult1 = ot.CrossEntropyResult(physicalSpaceIS1.getResult())
 print("Probability of failure:", physicalSpaceISResult1.getProbabilityEstimate())
 print("Coefficient of variation:", physicalSpaceISResult1.getCoefficientOfVariation())
 
@@ -237,7 +237,7 @@ physicalSpaceIS2 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS2.run()
-physicalSpaceISResult2 = physicalSpaceIS2.getResult()
+physicalSpaceISResult2 = ot.CrossEntropyResult(physicalSpaceIS2.getResult())
 print("Probability of failure:", physicalSpaceISResult2.getProbabilityEstimate())
 print("Coefficient of variation:", physicalSpaceISResult2.getCoefficientOfVariation())
 
@@ -298,7 +298,7 @@ physicalSpaceIS3 = ot.PhysicalSpaceCrossEntropyImportanceSampling(
     event, auxiliaryDistribution, activeParameters, initialParameters, bounds
 )
 physicalSpaceIS3.run()
-physicalSpaceISResult3 = physicalSpaceIS3.getResult()
+physicalSpaceISResult3 = ot.CrossEntropyResult(physicalSpaceIS3.getResult())
 desc = physicalSpaceISResult3.getAuxiliaryDistribution().getParameterDescription()
 p = physicalSpaceISResult3.getAuxiliaryDistribution().getParameter()
 print(

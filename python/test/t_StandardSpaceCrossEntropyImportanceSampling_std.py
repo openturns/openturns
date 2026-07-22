@@ -18,7 +18,7 @@ event = ot.ThresholdEvent(g, ot.Less(), -50.0)
 algo = ot.StandardSpaceCrossEntropyImportanceSampling(event, 0.3)
 
 algo.run()
-result = algo.getResult()
+result = ot.CrossEntropyResult(algo.getResult())
 
 assert_almost_equal(result.getProbabilityEstimate(), 0.000126895, 1.0e-2, 0.0)
 

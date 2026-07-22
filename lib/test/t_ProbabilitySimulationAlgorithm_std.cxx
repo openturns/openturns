@@ -109,9 +109,10 @@ int main(int, char *[])
 
       /* Stream out the result */
       fullprint << "algo result=" << myAlgo.getResult() << std::endl;
-      fullprint << "Confidence interval at level 99%=" << myAlgo.getResult().getProbabilityDistribution().computeBilateralConfidenceInterval(0.99) << std::endl;
-      fullprint << "Confidence interval at level 80%=" << myAlgo.getResult().getProbabilityDistribution().computeBilateralConfidenceInterval(0.8) << std::endl;
-      fullprint << "Probability distribution=" << myAlgo.getResult().getProbabilityDistribution() << std::endl;
+      const ProbabilitySimulationResult probResult(dynamic_cast<const ProbabilitySimulationResult &>(*myAlgo.getResult().getImplementation()));
+      fullprint << "Confidence interval at level 99%=" << probResult.getProbabilityDistribution().computeBilateralConfidenceInterval(0.99) << std::endl;
+      fullprint << "Confidence interval at level 80%=" << probResult.getProbabilityDistribution().computeBilateralConfidenceInterval(0.8) << std::endl;
+      fullprint << "Probability distribution=" << probResult.getProbabilityDistribution() << std::endl;
 
       /* Use the standard deviation as a stopping rule */
       myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiments[i]);
@@ -127,7 +128,8 @@ int main(int, char *[])
 
       /* Stream out the result */
       fullprint << "algo result=" << myAlgo.getResult() << std::endl;
-      fullprint << "Probability distribution=" << myAlgo.getResult().getProbabilityDistribution() << std::endl;
+      const ProbabilitySimulationResult probResult2(dynamic_cast<const ProbabilitySimulationResult &>(*myAlgo.getResult().getImplementation()));
+      fullprint << "Probability distribution=" << probResult2.getProbabilityDistribution() << std::endl;
     }
   }
   catch (TestFailed & ex)

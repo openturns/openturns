@@ -168,7 +168,7 @@ beta_hasoferAR2 = resultAR2.getHasoferReliabilityIndex()
 
 #
 # Monte Carlo
-ResultMC = myMC.getResult()
+ResultMC = ot.ProbabilitySimulationResult(myMC.getResult())
 PFMC = ResultMC.getProbabilityEstimate()
 CVMC = ResultMC.getCoefficientOfVariation()
 Variance_PF_MC = ResultMC.getVarianceEstimate()

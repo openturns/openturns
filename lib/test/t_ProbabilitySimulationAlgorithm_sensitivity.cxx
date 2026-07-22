@@ -72,7 +72,7 @@ int main(int, char *[])
     /* Perform the simulation */
     myAlgo.run();
 
-    ProbabilitySimulationResult result(myAlgo.getResult());
+    ProbabilitySimulationResult result(dynamic_cast<const ProbabilitySimulationResult &>(*myAlgo.getResult().getImplementation()));
     fullprint << "MonteCarlo result=" << result << std::endl;
 
     /* Compute sensitivity information */

@@ -22,11 +22,12 @@
 #ifndef OPENTURNS_EVENTSIMULATION_HXX
 #define OPENTURNS_EVENTSIMULATION_HXX
 
-#include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/SimulationAlgorithmImplementation.hxx"
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/Compact.hxx"
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
@@ -37,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API EventSimulation
-  : public SimulationAlgorithm
+  : public SimulationAlgorithmImplementation
 {
 
   CLASSNAME
@@ -54,7 +55,7 @@ public:
   RandomVector getEvent() const;
 
   /** Result accessor */
-  ProbabilitySimulationResult getResult() const;
+  SimulationResult getResult() const;
 
   /** String converter */
   String __repr__() const override;

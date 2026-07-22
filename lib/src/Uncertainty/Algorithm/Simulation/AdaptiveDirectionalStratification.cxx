@@ -140,7 +140,7 @@ void AdaptiveDirectionalStratification::run()
       if (progressCallback_.first)
         progressCallback_.first((100.0 * n) / n0, progressCallback_.second);
 
-      const ProbabilitySimulationResult result(directionalSampling.getResult());
+      const ProbabilitySimulationResult result(dynamic_cast<const ProbabilitySimulationResult &>(*directionalSampling.getResult().getImplementation()));
       const Scalar pf = result.getProbabilityEstimate();
 
       // concatenate the convergence history

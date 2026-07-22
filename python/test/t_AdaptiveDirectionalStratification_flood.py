@@ -62,7 +62,7 @@ for k in [0.0, 2.0, 5.0, 8.0][0:1]:
             calls0 = function.getEvaluationCallsNumber()
             algo.run()
             calls = function.getEvaluationCallsNumber() - calls0
-            result = algo.getResult()
+            result = ot.ProbabilitySimulationResult(algo.getResult())
             pf = result.getProbabilityEstimate()
             var = result.getVarianceEstimate()
             cov = result.getCoefficientOfVariation()

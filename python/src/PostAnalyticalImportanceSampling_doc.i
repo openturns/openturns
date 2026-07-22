@@ -33,5 +33,5 @@ Examples
 >>> analyticalResult = analytical.getResult()
 >>> algo = ot.PostAnalyticalImportanceSampling(analyticalResult)
 >>> algo.run()
->>> result = algo.getResult()
+>>> result = ot.ProbabilitySimulationResult(algo.getResult())
 >>> pf = result.getProbabilityEstimate()"

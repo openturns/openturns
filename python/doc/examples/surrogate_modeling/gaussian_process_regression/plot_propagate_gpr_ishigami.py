@@ -73,7 +73,7 @@ algo.setCoefficientOfVariationCriterionType("NONE")
 # %%
 # We run it and store the results :
 algo.run()
-result = algo.getResult()
+result = ot.ExpectationSimulationResult(algo.getResult())
 
 # %%
 # The expectation ( :math:`\mathbb{E}(Y)` mean ) is obtained with :

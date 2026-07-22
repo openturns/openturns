@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class MetaModelResult
- * Implementation of SimulationResult
+ * Implementation of MetaModelResult
  */
 class OT_API MetaModelResult
   : public PersistentObject

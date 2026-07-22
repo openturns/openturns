@@ -36,7 +36,7 @@ static const Factory<ExpectationSimulationResult> Factory_ExpectationSimulationR
 
 /* Default constructor */
 ExpectationSimulationResult::ExpectationSimulationResult()
-  : SimulationResult()
+  : SimulationResultImplementation()
   , expectationEstimate_(0.0)
   , varianceEstimate_(0.0)
 {
@@ -48,7 +48,7 @@ ExpectationSimulationResult::ExpectationSimulationResult(const RandomVector & ra
     const Point expectationEstimate,
     const UnsignedInteger outerSampling,
     const UnsignedInteger blockSize)
-  : SimulationResult(outerSampling, blockSize)
+  : SimulationResultImplementation(outerSampling, blockSize)
   , randomVector_(randomVector)
   , expectationEstimate_(expectationEstimate)
   , varianceEstimate_(0.0)
@@ -155,7 +155,7 @@ String ExpectationSimulationResult::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void ExpectationSimulationResult::save(Advocate & adv) const
 {
-  SimulationResult::save(adv);
+  SimulationResultImplementation::save(adv);
   adv.saveAttribute("randomVector_", randomVector_);
   adv.saveAttribute("expectationEstimate_", expectationEstimate_);
   adv.saveAttribute("varianceEstimate_", varianceEstimate_);
@@ -164,7 +164,7 @@ void ExpectationSimulationResult::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ExpectationSimulationResult::load(Advocate & adv)
 {
-  SimulationResult::load(adv);
+  SimulationResultImplementation::load(adv);
   adv.loadAttribute("randomVector_", randomVector_);
   adv.loadAttribute("expectationEstimate_", expectationEstimate_);
   adv.loadAttribute("varianceEstimate_", varianceEstimate_);

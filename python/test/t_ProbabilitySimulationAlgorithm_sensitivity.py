@@ -45,7 +45,7 @@ print("MonteCarlo=", myAlgo)
 myAlgo.run()
 
 # Stream out the result
-result = myAlgo.getResult()
+result = ot.ProbabilitySimulationResult(myAlgo.getResult())
 print("MonteCarlo result=", result)
 
 # Compute sensitivity information

@@ -56,7 +56,7 @@ int main()
   RandomGenerator::SetSeed(1);
   algoStandardSpaceCE.run();
 
-  const CrossEntropyResult resultCE(algoStandardSpaceCE.getResult());
+  const CrossEntropyResult resultCE(dynamic_cast<const CrossEntropyResult &>(*algoStandardSpaceCE.getResult().getImplementation()));
   OT::Test::assert_almost_equal(resultCE.getProbabilityEstimate(), 0.0805575);
   OT::Test::assert_almost_equal(resultCE.getCoefficientOfVariation(), 0.0475189);
   OT::Test::assert_almost_equal(resultCE.getStandardDeviation(), 0.003828);

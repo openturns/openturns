@@ -44,7 +44,7 @@ static const Factory<EventSimulation> Factory_EventSimulation;
 
 /** For save/load mechanism */
 EventSimulation::EventSimulation(const HistoryStrategy & convergenceStrategy)
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , event_(ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
@@ -54,7 +54,7 @@ EventSimulation::EventSimulation(const HistoryStrategy & convergenceStrategy)
 /* Constructor with parameters */
 EventSimulation::EventSimulation(const RandomVector & event,
                                  const HistoryStrategy & convergenceStrategy)
-  : SimulationAlgorithm()
+  : SimulationAlgorithmImplementation()
   , event_(event)
   , result_()
 {
@@ -82,7 +82,7 @@ void EventSimulation::setResult(const ProbabilitySimulationResult & result)
 }
 
 /* Result accessor */
-ProbabilitySimulationResult EventSimulation::getResult() const
+SimulationResult EventSimulation::getResult() const
 {
   return result_;
 }
@@ -118,7 +118,7 @@ void EventSimulation::run()
   Scalar probabilityEstimate = 0.0;
   Scalar varianceEstimate = 0.0;
   const UnsignedInteger blockSize = getBlockSize();
-  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResult or QuasiMonteCarloResult)
+  // Initialize the result. We use the accessors in order to preserve the exact nature of the result (SimulationResultImplementation or QuasiMonteCarloResult)
   // First, the invariant part
   // For the event, we have to access to the implementation as the interface does not provide the setEvent() method ON PURPOSE!
   result_.setEvent(event_);
@@ -246,7 +246,7 @@ Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
 void EventSimulation::save(Advocate & adv) const
 {
 
-  SimulationAlgorithm::save(adv);
+  SimulationAlgorithmImplementation::save(adv);
   adv.saveAttribute("event_", event_);
   adv.saveAttribute("result_", result_);
 }
@@ -254,7 +254,7 @@ void EventSimulation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void EventSimulation::load(Advocate & adv)
 {
-  SimulationAlgorithm::load(adv);
+  SimulationAlgorithmImplementation::load(adv);
   adv.loadAttribute("event_", event_);
   adv.loadAttribute("result_", result_);
 }

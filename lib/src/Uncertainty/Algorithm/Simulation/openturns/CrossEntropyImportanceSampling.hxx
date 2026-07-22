@@ -22,6 +22,7 @@
 #define OPENTURNS_CROSSENTROPYIMPORTANCESAMPLING_HXX
 
 #include "openturns/EventSimulation.hxx"
+#include "openturns/SimulationResult.hxx"
 #include "openturns/JointDistribution.hxx"
 #include "openturns/CrossEntropyResult.hxx"
 
@@ -56,7 +57,7 @@ public:
   String __repr__() const override;
 
   /** Accessor to results */
-  CrossEntropyResult getResult() const;
+  SimulationResult getResult() const;
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;

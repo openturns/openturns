@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of SimulationResult
+ *  @brief Implementation of SimulationResultImplementation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -34,7 +34,7 @@ static const Factory<ProbabilitySimulationResult> Factory_ProbabilitySimulationR
 
 /* Default constructor */
 ProbabilitySimulationResult::ProbabilitySimulationResult()
-  : SimulationResult()
+  : SimulationResultImplementation()
 {
   // Nothing to do
 }
@@ -45,7 +45,7 @@ ProbabilitySimulationResult::ProbabilitySimulationResult(const RandomVector & ev
     const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,
     const UnsignedInteger blockSize)
-  : SimulationResult(outerSampling, blockSize)
+  : SimulationResultImplementation(outerSampling, blockSize)
   , event_(event)
   , probabilityEstimate_(probabilityEstimate)
   , varianceEstimate_(varianceEstimate)
@@ -180,7 +180,7 @@ Graph ProbabilitySimulationResult::drawImportanceFactors() const
 /* Method save() stores the object through the StorageManager */
 void ProbabilitySimulationResult::save(Advocate & adv) const
 {
-  SimulationResult::save(adv);
+  SimulationResultImplementation::save(adv);
   adv.saveAttribute("event_", event_);
   adv.saveAttribute("probabilityEstimate_", probabilityEstimate_);
   adv.saveAttribute("varianceEstimate_", varianceEstimate_);
@@ -189,7 +189,7 @@ void ProbabilitySimulationResult::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProbabilitySimulationResult::load(Advocate & adv)
 {
-  SimulationResult::load(adv);
+  SimulationResultImplementation::load(adv);
   adv.loadAttribute("event_", event_);
   adv.loadAttribute("probabilityEstimate_", probabilityEstimate_);
   adv.loadAttribute("varianceEstimate_", varianceEstimate_);

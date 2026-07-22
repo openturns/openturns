@@ -3,4 +3,4 @@
 
 See also
 --------
-SubsetSampling, SimulationResult"
+SubsetSampling, SimulationResultImplementation, SimulationResult"
