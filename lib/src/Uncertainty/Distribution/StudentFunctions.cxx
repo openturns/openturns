@@ -29,8 +29,6 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/ParametricFunction.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/SymbolicFunction.hxx"
-#include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #define BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
 #include <boost/math/distributions/students_t.hpp>
@@ -114,41 +112,6 @@ Scalar StudentCDF(const Scalar nu,
   else value = 0.5 * SpecFunc::RegularizedIncompleteBeta(0.5 * nu, 0.5, nu / (x2 + nu), false);
   return (((x < 0.0) == tail) ? 0.5 + (0.5 - value) : value);
 #endif // OPENTURNS_HAVE_BOOST
-}
-
-
-Scalar Student2DCDF(const Scalar nu,
-                    const Scalar x0,
-                    const Scalar x1,
-                    const Scalar rho,
-                    const Bool tail)
-{
-  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Student2DCDF: nu must be positive, here nu=" << nu;
-  Scalar p1 = 0.0;
-  Scalar p2 = 0.0;
-  Scalar hiLimit = 0.0;
-  if (rho >= 0.0)
-  {
-    p1 = DistFunc::pStudent(nu, std::min(x0, x1));
-    hiLimit = 0.5 * M_PI;
-  }
-  else
-  {
-    p1 = DistFunc::pStudent(nu, x0) - DistFunc::pStudent(nu, -x1);
-    hiLimit = -0.5 * M_PI;
-  }
-  if (std::abs(rho) < 1.0)
-  {
-    const Scalar loLimit = std::asin(rho);
-    if (std::isfinite(x0) && std::isfinite(x1))
-    {
-      // Twice the speed of a ParametricFunction, same accuracy
-      const SymbolicFunction kernel("theta", String(OSS(true) << "1/(1+((" << x0 << "*sin(theta)-(" << x1 << "))^2 / cos(theta)^2 + (" << x0 << ")^2)/" << nu << ")^(0.5*" << nu << ")"));
-      p2 = GaussKronrod().integrate(kernel, Interval(loLimit, hiLimit))[0];
-    }
-  }
-  const Scalar p = p1 - p2 / (2.0 * M_PI);
-  return tail ? 0.5 + (0.5 - p) : p;
 }
 
 

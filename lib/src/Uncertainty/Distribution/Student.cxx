@@ -248,7 +248,6 @@ Scalar Student::computeCDF(const Point & point) const
 
   // Special case for dimension 1
   if (dimension == 1) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   // Special case for dimension 2
   if (dimension == 2)
   {
@@ -256,43 +255,18 @@ Scalar Student::computeCDF(const Point & point) const
     if (sigma_[1] == 0.0) return DistFunc::pStudent(nu_, (point[0] - mean_[0]) / sigma_[0]);
     return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], R_(1, 0));
   }
-#endif
-  // For moderate dimension, use a Gauss-Legendre integration
-  if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
+  // Special case for dimension 3
+  if (dimension == 3)
   {
-    const Scalar a = ResourceMap::GetAsScalar("Student-CDFScaleFactor");
-    return DistributionImplementation::computeCDFUnimodal(point, mean_, a * sigma_, IteratedQuadrature(), std::pow(cdfEpsilon_, 1.0 / dimension_));
+    if (sigma_[0] == 0.0) return DistFunc::pStudent2D(nu_, (point[1] - mean_[1]) / sigma_[1], (point[2] - mean_[2]) / sigma_[2], R_(2, 1));
+    if (sigma_[1] == 0.0) return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[2] - mean_[2]) / sigma_[2], R_(2, 0));
+    if (sigma_[2] == 0.0) return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], R_(1, 0));
+    return DistFunc::pStudent3D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], (point[2] - mean_[2]) / sigma_[2], R_(1, 0), R_(2, 0), R_(2, 1));
   }
-  // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
-  RandomGeneratorState initialState(RandomGenerator::GetState());
-  RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-  Scalar value = 0.0;
-  Scalar variance = 0.0;
-  Scalar a99 = DistFunc::qNormal(0.995);
-  const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" );
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / blockSize;
-  Scalar precision = 0.0;
-  for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
-  {
-    const Sample sample(getSample(blockSize));
-    LOGDEBUG(OSS(false) << "indexOuter=" << indexOuter << ", point=" << point << ", sample=" << sample);
-    const Scalar valueBlock = sample.computeEmpiricalCDF(point);
-    const Scalar varianceBlock = valueBlock * (1.0 - valueBlock) / blockSize;
-    LOGDEBUG(OSS(false) << "valueBlock=" << valueBlock << ", varianceBlock=" << varianceBlock);
-    const Scalar norm = 1.0 / (indexOuter + 1.0);
-    variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
-    value = (value * indexOuter + valueBlock) * norm;
-    LOGDEBUG(OSS(false) << "value=" << value << ", variance=" << variance);
-    // Quick return for value = 1
-    if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
-    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
-    // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
-    LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
-  }
-  RandomGenerator::SetState(initialState);
-  return value;
+  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz)
+  LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  const Point lowerBounds(dimension, SpecFunc::LowestScalar);
+  return DistFunc::pStudentND(lowerBounds, point, mean_, cholesky_, nu_);
 } // computeCDF
 
 Sample Student::computeCDF(const Sample & sample) const
@@ -311,52 +285,67 @@ Scalar Student::computeProbability(const Interval & interval) const
   if (interval.isEmpty()) return 0.0;
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the DistributionImplementation upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
-  // Decompose and normalize the interval
-  /* General case */
-  // For moderate dimension, use a Gauss-Legendre integration
-  if (dimension <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
+  // Special case for dimension 2
+  if (dimension == 2)
   {
-    // Reduce the default integration point number for CDF computation in the range 3 < dimension <= Student-SmallDimension
-    const UnsignedInteger maximumNumber = static_cast< UnsignedInteger > (round(std::pow(ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ), 1.0 / getDimension())));
-    const UnsignedInteger candidateNumber = ResourceMap::GetAsUnsignedInteger( "Student-MarginalIntegrationNodesNumber" );
-    if (candidateNumber > maximumNumber) LOGWARN(OSS() << "The requested number of marginal integration nodes=" << candidateNumber << " would lead to an excessive number of PDF evaluations. It has been reduced to " << maximumNumber << ". You should increase the ResourceMap key \"Student-MaximumNumberOfPoints\"");
-    setIntegrationNodesNumber(std::min(maximumNumber, candidateNumber));
-    return DistributionImplementation::computeProbability(interval);
-  }
-  // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for low values of the CDF...");
-  RandomGeneratorState initialState(RandomGenerator::GetState());
-  RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-  Scalar value = 0.0;
-  Scalar variance = 0.0;
-  const Scalar a99 = DistFunc::qNormal(0.995);
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" );
-  Scalar precision = 0.0;
-  for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
-  {
-    Scalar valueBlock = 0.0;
-    Scalar varianceBlock = 0.0;
-    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ); ++indexSample)
+    const Point lower(interval.getLowerBound());
+    const Point upper(interval.getUpperBound());
+    Scalar lower0 = (lower[0] - mean_[0]) / sigma_[0];
+    Scalar lower1 = (lower[1] - mean_[1]) / sigma_[1];
+    Scalar upper0 = (upper[0] - mean_[0]) / sigma_[0];
+    Scalar upper1 = (upper[1] - mean_[1]) / sigma_[1];
+    if (sigma_[0] == 0.0)
     {
-      // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      Scalar ind = interval.numericallyContains(getRealization());
-      Scalar norm = 1.0 / (indexSample + 1.0);
-      varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
-      valueBlock = (valueBlock * indexSample + ind) * norm;
+      if (lower[0] > mean_[0] || upper[0] < mean_[0]) return 0.0;
+      return DistFunc::pStudent(nu_, upper1) - DistFunc::pStudent(nu_, lower1);
     }
-    Scalar norm = 1.0 / (indexOuter + 1.0);
-    variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
-    value = (value * indexOuter + valueBlock) * norm;
-    // Quick return for value = 1
-    const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
-    if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
-    precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
-    if (precision < ResourceMap::GetAsScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
-    // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
-    LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
+    if (sigma_[1] == 0.0)
+    {
+      if (lower[1] > mean_[1] || upper[1] < mean_[1]) return 0.0;
+      return DistFunc::pStudent(nu_, upper0) - DistFunc::pStudent(nu_, lower0);
+    }
+    return DistFunc::pStudent2D(nu_, lower0, lower1, upper0, upper1, R_(0, 1));
   }
-  RandomGenerator::SetState(initialState);
-  return value;
+  // Special case for dimension 3
+  if (dimension == 3)
+  {
+    const Point lower(interval.getLowerBound());
+    const Point upper(interval.getUpperBound());
+    Scalar lower0 = (lower[0] - mean_[0]) / sigma_[0];
+    Scalar lower1 = (lower[1] - mean_[1]) / sigma_[1];
+    Scalar lower2 = (lower[2] - mean_[2]) / sigma_[2];
+    Scalar upper0 = (upper[0] - mean_[0]) / sigma_[0];
+    Scalar upper1 = (upper[1] - mean_[1]) / sigma_[1];
+    Scalar upper2 = (upper[2] - mean_[2]) / sigma_[2];
+    if (sigma_[0] == 0.0)
+    {
+      if (lower[0] > mean_[0] || upper[0] < mean_[0]) return 0.0;
+      return DistFunc::pStudent2D(nu_, lower1, lower2, upper1, upper2, R_(1, 2));
+    }
+    if (sigma_[1] == 0.0)
+    {
+      if (lower[1] > mean_[1] || upper[1] < mean_[1]) return 0.0;
+      return DistFunc::pStudent2D(nu_, lower0, lower2, upper0, upper2, R_(0, 2));
+    }
+    if (sigma_[2] == 0.0)
+    {
+      if (lower[2] > mean_[2] || upper[2] < mean_[2]) return 0.0;
+      return DistFunc::pStudent2D(nu_, lower0, lower1, upper0, upper1, R_(0, 1));
+    }
+    return DistFunc::pStudent3D(nu_, lower0, lower1, lower2, upper0, upper1, upper2, R_(0, 1), R_(0, 2), R_(1, 2));
+  }
+  // For large dimension, use a quasi-Monte Carlo algorithm (Genz)
+  LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is large. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  Point lowerBounds(interval.getLowerBound());
+  Point upperBounds(interval.getUpperBound());
+  const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpper(interval.getFiniteUpperBound());
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (!finiteLower[i]) lowerBounds[i] = SpecFunc::LowestScalar;
+    if (!finiteUpper[i]) upperBounds[i] = SpecFunc::MaxScalar;
+  }
+  return DistFunc::pStudentND(lowerBounds, upperBounds, mean_, cholesky_, nu_);
 }
 
 /* Compute the entropy of the distribution */
@@ -451,7 +440,6 @@ Scalar Student::computeConditionalPDF(const Scalar x,
       const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
       return std::exp(-0.5 * (nu_ + 1.0) * log1p(z * z / nu_) - SpecFunc::LogBeta(0.5, 0.5 * nu_)) / sigma_[conditioningDimension] / std::sqrt(nu_);
     }
-    const TriangularMatrix cholesky(getCholesky());
     MatrixImplementation R_active(activeDim, activeDim);
     Point yCentered(activeDim);
     for (UnsignedInteger j = 0; j < activeDim; ++j)
@@ -464,19 +452,19 @@ Scalar Student::computeConditionalPDF(const Scalar x,
         Scalar r = 0.0;
         const UnsignedInteger maxS = std::min(idx, kdx);
         for (UnsignedInteger s = 0; s <= maxS; ++s)
-          r += cholesky(idx, s) * cholesky(kdx, s);
+          r += cholesky_(idx, s) * cholesky_(kdx, s);
         R_active(j, k) = r;
         R_active(k, j) = r;
       }
     }
-    const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+    const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
     const Scalar nuCond = nu_ + activeDim;
     MatrixImplementation cholYFactor = R_active.computeCholesky();
-    Scalar sigmaCond = std::sqrt((nu_ + Point(cholYFactor.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
-    Scalar meanRos = 0.0;
+    const Point zActive(cholYFactor.solveLinearSystemTri(yCentered));
+    Scalar sigmaCond = std::sqrt((nu_ + zActive.normSquare()) / nuCond) * sigmaRos;
+    Scalar meanRos = mean_[conditioningDimension];
     for (UnsignedInteger j = 0; j < activeDim; ++j)
-      meanRos += inverseCholesky_(conditioningDimension, activeIndices[j]) * yCentered[j] / std::sqrt(sigma_[activeIndices[j]]);
-    meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+      meanRos += cholesky_(conditioningDimension, activeIndices[j]) * zActive[j];
     const Scalar z = (x - meanRos) / sigmaCond;
     return std::exp(-0.5 * (nuCond + 1.0) * log1p(z * z / nuCond) - SpecFunc::LogBeta(0.5, 0.5 * nuCond)) / sigmaCond / std::sqrt(nuCond);
   }
@@ -493,24 +481,23 @@ Scalar Student::computeConditionalPDF(const Scalar x,
   UnsignedInteger stop = conditioningDimension;
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
-  const TriangularMatrix cholesky(getCholesky());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     yCentered[i] = y[i] - mean_[i];
-    std::copy(cholesky.getImplementation()->begin() + start, cholesky.getImplementation()->begin() + stop, cholY.begin() + shift);
+    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
     start += dimension_ + 1;
     stop += dimension_;
     shift += conditioningDimension + 1;
   }
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
   const Scalar nuCond = nu_ + conditioningDimension;
-  Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
-  Scalar meanRos = 0.0;
+  const Point z(cholY.solveLinearSystemTri(yCentered));
+  Scalar sigmaCond = std::sqrt((nu_ + z.normSquare()) / nuCond) * sigmaRos;
+  Scalar meanRos = mean_[conditioningDimension];
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky_(conditioningDimension, i) * yCentered[i] / std::sqrt(sigma_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  const Scalar z = (x - meanRos) / sigmaCond;
-  Scalar value = std::exp(-0.5 * (nuCond + 1.0) * log1p(z * z / nuCond) - SpecFunc::LogBeta(0.5, 0.5 * nuCond)) / sigmaCond / std::sqrt(nuCond);
+    meanRos += cholesky_(conditioningDimension, i) * z[i];
+  const Scalar scaledX = (x - meanRos) / sigmaCond;
+  Scalar value = std::exp(-0.5 * (nuCond + 1.0) * log1p(scaledX * scaledX / nuCond) - SpecFunc::LogBeta(0.5, 0.5 * nuCond)) / sigmaCond / std::sqrt(nuCond);
   return value;
 }
 
@@ -555,7 +542,6 @@ Scalar Student::computeConditionalCDF(const Scalar x,
     const UnsignedInteger activeDim = activeIndices.getSize();
     if (activeDim == 0)
       return DistFunc::pStudent(nu_, (x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
-    const TriangularMatrix cholesky(getCholesky());
     MatrixImplementation R_active(activeDim, activeDim);
     Point yCentered(activeDim);
     for (UnsignedInteger j = 0; j < activeDim; ++j)
@@ -568,19 +554,19 @@ Scalar Student::computeConditionalCDF(const Scalar x,
         Scalar r = 0.0;
         const UnsignedInteger maxS = std::min(idx, kdx);
         for (UnsignedInteger s = 0; s <= maxS; ++s)
-          r += cholesky(idx, s) * cholesky(kdx, s);
+          r += cholesky_(idx, s) * cholesky_(kdx, s);
         R_active(j, k) = r;
         R_active(k, j) = r;
       }
     }
-    const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+    const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
     const Scalar nuCond = nu_ + activeDim;
     MatrixImplementation cholYFactor = R_active.computeCholesky();
-    Scalar sigmaCond = std::sqrt((nu_ + Point(cholYFactor.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
-    Scalar meanRos = 0.0;
+    const Point zActive(cholYFactor.solveLinearSystemTri(yCentered));
+    Scalar sigmaCond = std::sqrt((nu_ + zActive.normSquare()) / nuCond) * sigmaRos;
+    Scalar meanRos = mean_[conditioningDimension];
     for (UnsignedInteger j = 0; j < activeDim; ++j)
-      meanRos += inverseCholesky_(conditioningDimension, activeIndices[j]) * yCentered[j] / std::sqrt(sigma_[activeIndices[j]]);
-    meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+      meanRos += cholesky_(conditioningDimension, activeIndices[j]) * zActive[j];
     return DistFunc::pStudent(nuCond, (x - meanRos) / sigmaCond);
   }
   // Special case for no conditioning or independent copula
@@ -593,22 +579,21 @@ Scalar Student::computeConditionalCDF(const Scalar x,
   UnsignedInteger stop = conditioningDimension;
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
-  const TriangularMatrix cholesky(getCholesky());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     yCentered[i] = y[i] - mean_[i];
-    std::copy(cholesky.getImplementation()->begin() + start, cholesky.getImplementation()->begin() + stop, cholY.begin() + shift);
+    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
     start += dimension_ + 1;
     stop += dimension_;
     shift += conditioningDimension + 1;
   }
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
   const Scalar nuCond = nu_ + conditioningDimension;
-  Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
-  Scalar meanRos = 0.0;
+  const Point z(cholY.solveLinearSystemTri(yCentered));
+  Scalar sigmaCond = std::sqrt((nu_ + z.normSquare()) / nuCond) * sigmaRos;
+  Scalar meanRos = mean_[conditioningDimension];
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky_(conditioningDimension, i) * yCentered[i] / std::sqrt(sigma_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    meanRos += cholesky_(conditioningDimension, i) * z[i];
   return DistFunc::pStudent(nuCond, (x - meanRos) / sigmaCond);
 }
 
@@ -654,7 +639,6 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
     }
     const UnsignedInteger activeDim = activeIndices.getSize();
     if (activeDim == 0) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qStudent(nu_, q);
-    const TriangularMatrix cholesky(getCholesky());
     MatrixImplementation R_active(activeDim, activeDim);
     Point yCentered(activeDim);
     for (UnsignedInteger j = 0; j < activeDim; ++j)
@@ -667,19 +651,19 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
         Scalar r = 0.0;
         const UnsignedInteger maxS = std::min(idx, kdx);
         for (UnsignedInteger s = 0; s <= maxS; ++s)
-          r += cholesky(idx, s) * cholesky(kdx, s);
+          r += cholesky_(idx, s) * cholesky_(kdx, s);
         R_active(j, k) = r;
         R_active(k, j) = r;
       }
     }
-    const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+    const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
     const Scalar nuCond = nu_ + activeDim;
     MatrixImplementation cholYFactor = R_active.computeCholesky();
-    Scalar sigmaCond = std::sqrt((nu_ + Point(cholYFactor.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
-    Scalar meanRos = 0.0;
+    const Point zActive(cholYFactor.solveLinearSystemTri(yCentered));
+    Scalar sigmaCond = std::sqrt((nu_ + zActive.normSquare()) / nuCond) * sigmaRos;
+    Scalar meanRos = mean_[conditioningDimension];
     for (UnsignedInteger j = 0; j < activeDim; ++j)
-      meanRos += inverseCholesky_(conditioningDimension, activeIndices[j]) * yCentered[j] / std::sqrt(sigma_[activeIndices[j]]);
-    meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+      meanRos += cholesky_(conditioningDimension, activeIndices[j]) * zActive[j];
     return meanRos + sigmaCond * DistFunc::qStudent(nuCond, q);
   }
   // Special case when no contitioning or independent copula
@@ -691,22 +675,21 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
   UnsignedInteger stop = conditioningDimension;
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
-  const TriangularMatrix cholesky(getCholesky());
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     yCentered[i] = y[i] - mean_[i];
-    std::copy(cholesky.getImplementation()->begin() + start, cholesky.getImplementation()->begin() + stop, cholY.begin() + shift);
+    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
     start += dimension_ + 1;
     stop += dimension_;
     shift += conditioningDimension + 1;
   }
-  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  const Scalar sigmaRos = cholesky_(conditioningDimension, conditioningDimension);
   const Scalar nuCond = nu_ + conditioningDimension;
-  Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
-  Scalar meanRos = 0.0;
+  const Point z(cholY.solveLinearSystemTri(yCentered));
+  Scalar sigmaCond = std::sqrt((nu_ + z.normSquare()) / nuCond) * sigmaRos;
+  Scalar meanRos = mean_[conditioningDimension];
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky_(conditioningDimension, i) * yCentered[i] / std::sqrt(sigma_[i]);
-  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+    meanRos += cholesky_(conditioningDimension, i) * z[i];
   return meanRos + sigmaCond * DistFunc::qStudent(nuCond, q);
 }
 

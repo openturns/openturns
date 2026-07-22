@@ -141,6 +141,69 @@ int main(int, char *[])
         }
       }
     } // rStudent
+    // pStudentND (Genz algorithm)
+    {
+      fullprint << "MVT d=2 independent" << std::endl;
+      const UnsignedInteger dim = 2;
+      TriangularMatrix L(dim);
+      L(0, 0) = 1.0;
+      L(1, 0) = 0.0;
+      L(1, 1) = 1.0;
+      const Point a = {-1.0, -1.0};
+      const Point b = {1.0, 1.0};
+      const Scalar nu = 5.0;
+      const Scalar p = DistFunc::pStudentND(a, b, L, nu, 10000);
+      assert_almost_equal(p, 0.5, 2e-1);
+    }
+    {
+      fullprint << "MVT d=2 correlated" << std::endl;
+      const UnsignedInteger dim = 2;
+      CovarianceMatrix sigma(dim);
+      sigma(0, 0) = 1.0;
+      sigma(1, 0) = 0.5;
+      sigma(1, 1) = 1.0;
+      const Point a = {-1.0, -1.0};
+      const Point b = {1.0, 1.0};
+      const Scalar nu = 5.0;
+      const Scalar p = DistFunc::pStudentND(a, b, sigma, nu, 10000);
+      assert_almost_equal(p, 0.5, 2e-1);
+    }
+    {
+      fullprint << "MVT d=2 with mu" << std::endl;
+      const UnsignedInteger dim = 2;
+      CovarianceMatrix sigma(dim);
+      sigma(0, 0) = 1.0;
+      sigma(1, 0) = 0.3;
+      sigma(1, 1) = 1.0;
+      const Point a = {-1.0, -1.0};
+      const Point b = {1.0, 1.0};
+      const Point mu = {0.5, -0.5};
+      const Scalar nu = 5.0;
+      const Scalar p = DistFunc::pStudentND(a, b, mu, sigma, nu, 10000);
+      assert_almost_equal(p, 0.3485, 2e-1);
+    }
+    {
+      fullprint << "Error: nu <= 0" << std::endl;
+      TriangularMatrix L(1);
+      L(0, 0) = 1.0;
+      try
+      {
+        DistFunc::pStudentND({-1.0}, {1.0}, L, 0.0);
+        throw TestFailed("Exception has NOT been thrown or caught!");
+      }
+      catch (const InvalidArgumentException &)
+      {
+        // expected
+      }
+    }
+    {
+      fullprint << "MVT d=1 exact" << std::endl;
+      TriangularMatrix L(1);
+      L(0, 0) = 1.0;
+      const Scalar p = DistFunc::pStudentND({-1.0}, {1.0}, L, 100.0, 10000);
+      const Scalar expected = DistFunc::pStudent(100.0, 1.0) - DistFunc::pStudent(100.0, -1.0);
+      assert_almost_equal(p, expected, 1e-4);
+    }
   }
   catch (TestFailed & ex)
   {

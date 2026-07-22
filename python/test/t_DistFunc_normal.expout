@@ -31,3 +31,17 @@ rNormal()=-0.355007
 rNormal()=1.43725
 rNormal()=0.810668
 rNormal()=0.793156
+pNormal2D(1.0, 1.0, 0.9)=0.79818, complementary=0.11549
+pNormal2D(-1.0, -1.0, 1.0, 1.0, 0.9)=0.59636
+pNormal3D(-1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 0.5, 0.2, 0.0)=0.343858
+MVN d=1 exact
+MVN d=2 independent
+MVN d=2 correlated
+MVN d=2 with mu
+Error: dimension mismatch
+Error: a > b
+Error: n = 0
+Error: L(i,i) <= 0
+Edge: a == b
+Edge: wide interval
+MVN d=3 independent

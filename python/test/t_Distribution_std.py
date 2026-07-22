@@ -68,13 +68,19 @@ for factory in factories:
 Torque = ot.LogNormal(0.0, 0.25)
 Angle = ot.Normal(0.0, 2.0)
 rho = 0.5
-TorqueAngleCopula = ot.NormalCopula(ot.CorrelationMatrix(2, [1.0, rho, rho, 1.0]))
-d = ot.JointDistribution([Torque, Angle], TorqueAngleCopula)
+R = ot.CorrelationMatrix(2, [1.0, rho, rho, 1.0])
+listTorqueAngleCopula = [
+    ot.NormalCopula(R),
+    ot.StudentCopula(3.0, R),
+    ot.StudentCopula(10.5, R),
+]
 interval = ot.Interval(
     [6.30177467808195, 3.56435643564356], [6.36881483423176, 3.72277227722772]
 )
-p = d.computeProbability(interval)
-assert p > 0.0, "!positive proba"
+for TorqueAngleCopula in listTorqueAngleCopula:
+    d = ot.JointDistribution([Torque, Angle], TorqueAngleCopula)
+    p = d.computeProbability(interval)
+    assert p > 0.0, "!positive proba"
 
 # getSampleByQMC: static SobolSequence must match each distribution's dimension
 dist1 = ot.Normal()

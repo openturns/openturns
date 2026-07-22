@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/EllipticalDistribution.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/NormalCopula.hxx"
 #include "openturns/NatafEllipticalDistributionEvaluation.hxx"
 #include "openturns/NatafEllipticalDistributionGradient.hxx"
 #include "openturns/NatafEllipticalDistributionHessian.hxx"
@@ -190,78 +191,11 @@ Point EllipticalDistribution::computeDDF(const Point & point) const
     }
   }
 
-  switch(dimension)
-  {
-    case 1:
-    {
-      const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
-      return Point(1, 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(iLx * iLx) * inverseCholesky_(0, 0) * iLx);
-    }
-    break;
-    case 2:
-    {
-      const Scalar deltaX = point[0] - mean_[0];
-      const Scalar deltaY = point[1] - mean_[1];
-      Scalar iLx, iLy;
-      Point result(2);
-      if (inverseCholesky_.isLowerTriangular())
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX;
-        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
-        const Scalar betaSquare = iLx * iLx + iLy * iLy;
-        const Scalar factor = 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare);
-        result[0] = factor * (inverseCholesky_(0, 0) * iLx + inverseCholesky_(1, 0) * iLy);
-        result[1] = factor * (inverseCholesky_(1, 1) * iLy);
-      }
-      else
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY;
-        iLy = inverseCholesky_(1, 1) * deltaY;
-        const Scalar betaSquare = iLx * iLx + iLy * iLy;
-        const Scalar factor = 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare);
-        result[0] = factor * (inverseCholesky_(0, 0) * iLx);
-        result[1] = factor * (inverseCholesky_(0, 1) * iLx + inverseCholesky_(1, 1) * iLy);
-      }
-      return result;
-    }
-    break;
-    case 3:
-    {
-      const Scalar deltaX = point[0] - mean_[0];
-      const Scalar deltaY = point[1] - mean_[1];
-      const Scalar deltaZ = point[2] - mean_[2];
-      Scalar iLx, iLy, iLz;
-      Point result(3);
-      if (inverseCholesky_.isLowerTriangular())
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX;
-        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
-        iLz = inverseCholesky_(2, 0) * deltaX + inverseCholesky_(2, 1) * deltaY + inverseCholesky_(2, 2) * deltaZ;
-        const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
-        const Scalar factor = 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare);
-        result[0] = factor * (inverseCholesky_(0, 0) * iLx + inverseCholesky_(1, 0) * iLy + inverseCholesky_(2, 0) * iLz);
-        result[1] = factor * (inverseCholesky_(1, 1) * iLy + inverseCholesky_(2, 1) * iLz);
-        result[2] = factor * (inverseCholesky_(2, 2) * iLz);
-      }
-      else
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY + inverseCholesky_(0, 2) * deltaZ;
-        iLy = inverseCholesky_(1, 1) * deltaY + inverseCholesky_(1, 2) * deltaZ;
-        iLz = inverseCholesky_(2, 2) * deltaZ;
-        const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
-        const Scalar factor = 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare);
-        result[0] = factor * (inverseCholesky_(0, 0) * iLx);
-        result[1] = factor * (inverseCholesky_(0, 1) * iLx + inverseCholesky_(1, 1) * iLy);
-        result[2] = factor * (inverseCholesky_(0, 2) * iLx + inverseCholesky_(1, 2) * iLy + inverseCholesky_(2, 2) * iLz);
-      }
-      return result;
-    }
-    break;
-    default:
-      const Point iLx(inverseCholesky_ * (point - mean_));
-      const Scalar betaSquare = iLx.normSquare();
-      return 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare) * inverseCholesky_.transpose() * iLx;
-  }
+  // General case: solve forward L*z = (point - mean_), then back substitute L^T * w = z
+  const Point iLx(cholesky_.solveLinearSystem(point - mean_));
+  const Scalar betaSquare = iLx.normSquare();
+  const Scalar factor = 2.0 * normalizationFactor_ * computeDensityGeneratorDerivative(betaSquare);
+  return factor * cholesky_.transpose().solveLinearSystem(iLx);
 }
 
 /* Get the PDF of the distribution */
@@ -295,18 +229,9 @@ Scalar EllipticalDistribution::computePDF(const Point & point) const
     {
       const Scalar deltaX = point[0] - mean_[0];
       const Scalar deltaY = point[1] - mean_[1];
-      Scalar iLx, iLy;
-      if (inverseCholesky_.isLowerTriangular())
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX;
-        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
-      }
-      else
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY;
-        iLy = inverseCholesky_(1, 1) * deltaY;
-      }
-      const Scalar betaSquare = iLx * iLx + iLy * iLy;
+      const Scalar z0 = deltaX / cholesky_(0, 0);
+      const Scalar z1 = (deltaY - cholesky_(1, 0) * z0) / cholesky_(1, 1);
+      const Scalar betaSquare = z0 * z0 + z1 * z1;
       return normalizationFactor_ * computeDensityGenerator(betaSquare);
     }
     break;
@@ -315,27 +240,19 @@ Scalar EllipticalDistribution::computePDF(const Point & point) const
       const Scalar deltaX = point[0] - mean_[0];
       const Scalar deltaY = point[1] - mean_[1];
       const Scalar deltaZ = point[2] - mean_[2];
-      Scalar iLx, iLy, iLz;
-      if (inverseCholesky_.isLowerTriangular())
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX;
-        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
-        iLz = inverseCholesky_(2, 0) * deltaX + inverseCholesky_(2, 1) * deltaY + inverseCholesky_(2, 2) * deltaZ;
-      }
-      else
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY + inverseCholesky_(0, 2) * deltaZ;
-        iLy = inverseCholesky_(1, 1) * deltaY + inverseCholesky_(1, 2) * deltaZ;
-        iLz = inverseCholesky_(2, 2) * deltaZ;
-      }
-      const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
+      const Scalar z0 = deltaX / cholesky_(0, 0);
+      const Scalar z1 = (deltaY - cholesky_(1, 0) * z0) / cholesky_(1, 1);
+      const Scalar z2 = (deltaZ - cholesky_(2, 0) * z0 - cholesky_(2, 1) * z1) / cholesky_(2, 2);
+      const Scalar betaSquare = z0 * z0 + z1 * z1 + z2 * z2;
       return normalizationFactor_ * computeDensityGenerator(betaSquare);
     }
     break;
     default:
-      const Point iLx(inverseCholesky_ * (point - mean_));
+    {
+      const Point iLx(cholesky_.solveLinearSystem(point - mean_));
       const Scalar betaSquare = iLx.normSquare();
       return normalizationFactor_ * computeDensityGenerator(betaSquare);
+    }
   }
 }
 
@@ -373,18 +290,9 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
     {
       const Scalar deltaX = point[0] - mean_[0];
       const Scalar deltaY = point[1] - mean_[1];
-      Scalar iLx, iLy;
-      if (inverseCholesky_.isLowerTriangular())
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX;
-        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
-      }
-      else
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY;
-        iLy = inverseCholesky_(1, 1) * deltaY;
-      }
-      const Scalar betaSquare = iLx * iLx + iLy * iLy;
+      const Scalar z0 = deltaX / cholesky_(0, 0);
+      const Scalar z1 = (deltaY - cholesky_(1, 0) * z0) / cholesky_(1, 1);
+      const Scalar betaSquare = z0 * z0 + z1 * z1;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
       if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
@@ -395,31 +303,23 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Scalar deltaX = point[0] - mean_[0];
       const Scalar deltaY = point[1] - mean_[1];
       const Scalar deltaZ = point[2] - mean_[2];
-      Scalar iLx, iLy, iLz;
-      if (inverseCholesky_.isLowerTriangular())
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX;
-        iLy = inverseCholesky_(1, 0) * deltaX + inverseCholesky_(1, 1) * deltaY;
-        iLz = inverseCholesky_(2, 0) * deltaX + inverseCholesky_(2, 1) * deltaY + inverseCholesky_(2, 2) * deltaZ;
-      }
-      else
-      {
-        iLx = inverseCholesky_(0, 0) * deltaX + inverseCholesky_(0, 1) * deltaY + inverseCholesky_(0, 2) * deltaZ;
-        iLy = inverseCholesky_(1, 1) * deltaY + inverseCholesky_(1, 2) * deltaZ;
-        iLz = inverseCholesky_(2, 2) * deltaZ;
-      }
-      const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
+      const Scalar z0 = deltaX / cholesky_(0, 0);
+      const Scalar z1 = (deltaY - cholesky_(1, 0) * z0) / cholesky_(1, 1);
+      const Scalar z2 = (deltaZ - cholesky_(2, 0) * z0 - cholesky_(2, 1) * z1) / cholesky_(2, 2);
+      const Scalar betaSquare = z0 * z0 + z1 * z1 + z2 * z2;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
       if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
     default:
-      const Point iLx(inverseCholesky_ * (point - mean_));
+    {
+      const Point iLx(cholesky_.solveLinearSystem(point - mean_));
       const Scalar betaSquare = iLx.normSquare();
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
       if (!std::isfinite(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
+    }
   }
 }
 
@@ -434,7 +334,7 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   Point iRu(u);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
     iRu[i] *= std::max(SpecFunc::Precision, sigma_[i]);
-  iRu = inverseCholesky_.transpose() * inverseCholesky_ * iRu;
+  iRu = cholesky_.transpose().solveLinearSystem(cholesky_.solveLinearSystem(iRu));
   for (UnsignedInteger i = 0; i < dimension; ++ i)
     iRu[i] *= std::max(SpecFunc::Precision, sigma_[i]);
   const Scalar betaSquare = u.dot(iRu);
@@ -544,18 +444,14 @@ void EllipticalDistribution::update()
     if (effectiveDimension == dimension)
     {
       // Standard case: all dimensions are non-degenerate
-      TriangularMatrix cholesky(shape.computeRegularizedCholesky());
-      inverseCholesky_ = cholesky.inverse().getImplementation();
+      cholesky_ = shape.computeRegularizedCholesky();
       normalizationFactor_ = 1.0;
-      for (UnsignedInteger i = 0; i < dimension; ++ i) normalizationFactor_ /= cholesky(i, i);
+      for (UnsignedInteger i = 0; i < dimension; ++ i) normalizationFactor_ /= cholesky_(i, i);
     }
     else if (effectiveDimension == 0)
     {
       // All dimensions degenerate
-      inverseCholesky_ = TriangularMatrix(dimension);
-      for (UnsignedInteger i = 0; i < dimension; ++ i)
-        for (UnsignedInteger j = 0; j <= i; ++ j)
-          inverseCholesky_(i, j) = 0.0;
+      cholesky_ = TriangularMatrix(dimension);
       normalizationFactor_ = 1.0;
     }
     else
@@ -575,7 +471,7 @@ void EllipticalDistribution::update()
       TriangularMatrix subCholesky(subShape.computeRegularizedCholesky());
 
       // Build the full Cholesky factor (lower triangular) with zeros for degenerate dims
-      TriangularMatrix cholesky(dimension);
+      cholesky_ = TriangularMatrix(dimension);
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
         if (sigma_[i] > 0.0)
@@ -586,55 +482,38 @@ void EllipticalDistribution::update()
             if (sigma_[j] > 0.0)
             {
               const UnsignedInteger jj = nonDegenerate.find(j);
-              cholesky(i, j) = subCholesky(ii, jj);
+              cholesky_(i, j) = subCholesky(ii, jj);
             }
             else
-              cholesky(i, j) = 0.0;
+              cholesky_(i, j) = 0.0;
           }
         }
         else
         {
           for (UnsignedInteger j = 0; j <= i; ++ j)
-            cholesky(i, j) = 0.0;
-        }
-      }
-
-      // Invert only the non-degenerate subblock, then build full inverse with zeros
-      TriangularMatrix subInverse(subCholesky.inverse().getImplementation());
-      inverseCholesky_ = TriangularMatrix(dimension);
-      for (UnsignedInteger i = 0; i < dimension; ++ i)
-      {
-        for (UnsignedInteger j = 0; j <= i; ++ j)
-        {
-          if ((sigma_[i] > 0.0) && (sigma_[j] > 0.0))
-          {
-            const UnsignedInteger ii = nonDegenerate.find(i);
-            const UnsignedInteger jj = nonDegenerate.find(j);
-            inverseCholesky_(i, j) = subInverse(ii, jj);
-          }
-          else
-            inverseCholesky_(i, j) = 0.0;
+            cholesky_(i, j) = 0.0;
         }
       }
       normalizationFactor_ = 1.0;
       for (UnsignedInteger i = 0; i < dimension; ++ i)
-        if (sigma_[i] > 0.0) normalizationFactor_ /= cholesky(i, i);
+        if (sigma_[i] > 0.0) normalizationFactor_ /= cholesky_(i, i);
     }
   } // dimension > 1
   else  // dimension 1
   {
-    if (!inverseCholesky_.getDimension())  // First time we enter here, set matrix sizes
+    if (!cholesky_.getDimension())  // First time we enter here, set matrix sizes
     {
-      inverseCholesky_ = TriangularMatrix(1);
+      cholesky_ = TriangularMatrix(1);
     }
+
     if (sigma_[0] > 0.0)
     {
-      inverseCholesky_(0, 0) = 1.0 / sigma_[0];
+      cholesky_(0, 0) = sigma_[0];
       normalizationFactor_ = 1.0 / sigma_[0];
     }
     else
     {
-      inverseCholesky_(0, 0) = 0.0;
+      cholesky_(0, 0) = 0.0;
       normalizationFactor_ = 1.0;
     }
   } // dimension == 1
@@ -657,6 +536,16 @@ void EllipticalDistribution::setMu(const Point & mu)
 Point EllipticalDistribution::getMu() const
 {
   return mean_;
+}
+
+/* Get the Kendall concordance of the distribution */
+CorrelationMatrix EllipticalDistribution::getKendallTau() const
+{
+  const UnsignedInteger dimension = getDimension();
+  CorrelationMatrix tau(dimension);
+  for (UnsignedInteger i = 1; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j < i; ++j) tau(i, j) = std::asin(R_(i, j)) * 2.0 / M_PI;
+  return tau;
 }
 
 /* Mean computation */
@@ -797,7 +686,9 @@ TriangularMatrix EllipticalDistribution::getCholesky() const
 /* Inverse of the Cholesky factor of the correlation matrix accessor */
 TriangularMatrix EllipticalDistribution::getInverseCholesky() const
 {
-  return inverseCholesky_;
+  const UnsignedInteger dimension = getDimension();
+  const Matrix inverseMatrix(cholesky_.solveLinearSystem(IdentityMatrix(dimension)));
+  return TriangularMatrix(inverseMatrix.getImplementation(), true);
 }
 
 /* Virtual copy constructor */
@@ -810,8 +701,8 @@ EllipticalDistribution * EllipticalDistribution::clone() const
 EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::getIsoProbabilisticTransformation() const
 {
   IsoProbabilisticTransformation transform;
-  transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean_, inverseCholesky_));
-  transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky_));
+  transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean_, getInverseCholesky()));
+  transform.setGradient(new NatafEllipticalDistributionGradient(getInverseCholesky()));
   transform.setHessian(new NatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
   // The result of parameterGradient is given
@@ -1045,7 +936,7 @@ void EllipticalDistribution::save(Advocate & adv) const
   DistributionImplementation::save(adv);
   adv.saveAttribute( "R_", R_ );
   adv.saveAttribute( "sigma_", sigma_ );
-  adv.saveAttribute( "inverseCholesky_", inverseCholesky_ );
+  adv.saveAttribute( "cholesky_", cholesky_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
 }
 
@@ -1055,7 +946,20 @@ void EllipticalDistribution::load(Advocate & adv)
   DistributionImplementation::load(adv);
   adv.loadAttribute( "R_", R_ );
   adv.loadAttribute( "sigma_", sigma_ );
-  adv.loadAttribute( "inverseCholesky_", inverseCholesky_ );
+  if (adv.hasAttribute("cholesky_"))
+    adv.loadAttribute( "cholesky_", cholesky_ );
+  else
+  {
+    // Backward compatibility: old format stored inverseCholesky_ instead of cholesky_
+    TriangularMatrix inverseCholesky;
+    adv.loadAttribute( "inverseCholesky_", inverseCholesky );
+    const UnsignedInteger dimension = inverseCholesky.getDimension();
+    if (dimension > 0)
+    {
+      const Matrix cholMat(inverseCholesky.solveLinearSystem(IdentityMatrix(dimension)));
+      cholesky_ = TriangularMatrix(cholMat.getImplementation(), true);
+    }
+  }
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
 }
 

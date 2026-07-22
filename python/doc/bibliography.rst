@@ -448,6 +448,9 @@ Bibliography
     *The Metropolis-Hastings algorithm.*
     arXiv preprint arXiv:1504.01896, 2015.
     `pdf <https://arxiv.org/pdf/1504.01896.pdf>`__
+.. [ridgway2016] Ridgway, J. (2016). *Computation of Gaussian orthant probabilities in
+    high dimension.* Statistics and Computing, 26(4), 899-916.
+    `pdf <https://arxiv.org/abs/1411.1314>`__
 .. [robertson2024] Robertson, G., Sjöstrand, H., Andersson, P., Göök, A. and Blair, P.
     *Addressing model inadequacy in fuel performance model calibration using MH-within-gibbs sampling.*
     Best Estimate Plus Uncertainty International Conference (BEPU 2024), Real Collegio, Lucca, Tuscany, Italy, May 19–24, 2024.

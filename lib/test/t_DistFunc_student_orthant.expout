@@ -1,0 +1,12 @@
+MVT orthant d=1 exact
+MVT orthant d=2 independent
+MVT orthant d=2 correlated
+MVT orthant d=2 with mu
+Error: dimension mismatch
+Error: a > b
+Error: M = 0
+Error: L(i,i) <= 0
+Error: nu <= 0
+Edge: a == b
+Edge: wide interval
+MVT orthant d=3 independent

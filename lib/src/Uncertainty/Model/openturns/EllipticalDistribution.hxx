@@ -114,6 +114,9 @@ public:
   void setR(const CorrelationMatrix & R);
   CorrelationMatrix getR() const;
 
+  /** Get the Kendall concordance of the distribution */
+  CorrelationMatrix getKendallTau() const override;
+
 protected:
   /** Compute the mean of the distribution */
   void computeMean() const override;
@@ -170,8 +173,8 @@ protected:
   /** The correlation matrix (Rij) of the distribution */
   CorrelationMatrix R_;
 
-  /** The inverse Cholesky factor of the covariance matrix */
-  TriangularMatrix inverseCholesky_;
+  /** The Cholesky factor of the covariance matrix */
+  TriangularMatrix cholesky_;
 
   /** The normalization factor of the distribution */
   Scalar normalizationFactor_ = 0.0;

@@ -62,24 +62,6 @@ Notes
 -----
 In the first usage, a scalar centered and unit-variance normal distribution is built.
 
-The CDF is computed using several algorithms, depending on the dimension of the distribution:
-
-- In dimension 1, it is done using the implementation of the complementary
-  error function developed by Steven G. Johnson, Massachusetts Institute of
-  Technology;
-- In any dimension, it is done as the product of 1D marginal CDFs if the
-  components are independent;
-- In dimension 2 and 3, it is done using an integration in dimension 1 or 2 of
-  a dedicated kernel;
-- In dimension 4 to the value given by the entry *Normal-SmallDimension* of
-  :class:`~openturns.ResourceMap`, it is done using the adaptive integration
-  algorithm :class:`~openturns.IteratedQuadrature`.
-- In dimension greater than the entry *Normal-SmallDimension* of
-  :class:`~openturns.ResourceMap`, it is done using a Monte Carlo estimation
-  controlled by the *Normal-MinimumCDFEpsilon*, *Normal-MinimumNumberOfPoints*
-  and *Normal-MaximumNumberOfPoints* entries of :class:`~openturns.ResourceMap`.
-
-
 Examples
 --------
 Create a distribution:
@@ -120,4 +102,66 @@ distribution= Normal(mu = [0,0,0,0,0], sigma = [1,1.73205,1,1,1], R = 5x5
  [ -0.5  0    1    0    0   ]
  [  0    0    0    1   -0.2 ]
  [  0    0    0   -0.2  1   ]])
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Normal::computeCDF
+R"RAW(Compute the cumulative distribution function.
+
+See the class notes for the algorithm selection strategy.
+
+Parameters
+----------
+x : sequence of float
+    Point in :math:`\Rset^d`.
+
+Returns
+-------
+F : float
+    CDF value at *x*.
+
+Notes
+-----
+The algorithm depends on the dimension:
+
+- dim 1: direct evaluation via the complementary error function;
+- any dim, independent copula: product of the marginal CDFs;
+- dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pNormal2D`);
+- dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pNormal3D`);
+- dim 4-*Normal-SmallDimension* (default 6): tensor-product Gauss-Kronrod
+  quadrature on :math:`N^k` nodes;
+- dim > *Normal-SmallDimension*: quasi-Monte Carlo Genz algorithm with
+  *Genz-DefaultSampleSize* Sobol' realizations.
+
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Normal::computeProbability
+R"RAW(Compute the probability content of an interval.
+
+See the class notes for the algorithm selection strategy.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    Interval over which the probability is computed.
+
+Returns
+-------
+P : float
+    Probability of the interval.
+
+Notes
+-----
+The algorithm depends on the dimension:
+
+- dim 1: generic 1D algorithm;
+- any dim, independent copula: product of the marginal probabilities;
+- dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pNormal2D`);
+- dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pNormal3D`);
+- dim >= 4: quasi-Monte Carlo Genz algorithm with *Genz-DefaultSampleSize*
+  Sobol' realizations.
+
 )RAW"

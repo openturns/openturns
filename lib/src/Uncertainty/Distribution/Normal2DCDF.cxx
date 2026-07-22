@@ -24,6 +24,8 @@
 #include "openturns/Normal2DCDF.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/IteratedQuadrature.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -162,6 +164,28 @@ Scalar Normal2DCDF(const Scalar x1,
   if (rho > 0.0) cdf = cdf + DistFunc::pNormal(-std::max(u1, u2));
   else cdf = -cdf + std::max(0.0, DistFunc::pNormal(-u1) - DistFunc::pNormal(-u2));
   return SpecFunc::Clip01(cdf);
+}
+
+Scalar Normal2DRectangularProbability(const Scalar a1,
+                                      const Scalar a2,
+                                      const Scalar b1,
+                                      const Scalar b2,
+                                      const Scalar rho)
+{
+  if (!(std::abs(rho) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the correlation coefficient must be in [-1,1], here rho=" << rho;
+  if ((a1 >= b1) || (a2 >= b2)) return 0.0;
+  // Inclusion-exclusion using the bivariate CDF
+  const Scalar prob = SpecFunc::Clip01((Normal2DCDF(b1, b2, rho, false) - Normal2DCDF(a1, b2, rho, false)) - (Normal2DCDF(b1, a2, rho, false) - Normal2DCDF(a1, a2, rho, false)));
+  if (prob > 0.0) return prob;
+  // Fallback to multivariate integration when prob == 0.0
+  CorrelationMatrix R(2);
+  R(0, 1) = rho;
+  const Normal distribution(Point(2, 0.0), Point(2, 1.0), R);
+  const Point lower({a1, a2});
+  const Point upper({b1, b2});
+  const Interval interval(Interval(lower, upper).intersect(distribution.getRange()));
+  if (interval.isEmpty()) return 0.0;
+  return IteratedQuadrature().integrate(distribution.getPDF(), interval)[0];
 }
 
 #undef NORMAL2DCDF_INF

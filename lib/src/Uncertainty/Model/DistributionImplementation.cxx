@@ -3419,7 +3419,7 @@ void DistributionImplementation::computeCovarianceGeneral() const
       marginals[component] = getMarginal(component).getImplementation();
     const Scalar delta = 2.0;
     Indices indices(2);
-    const int N(8 * 2 * 2 * 2 * 2 * 2);
+    const SignedInteger N(8 * 2 * 2 * 2 * 2 * 2);
     const Scalar h = 0.5 / 2 / 2 / 2 / 2 / 2;
     for(UnsignedInteger rowIndex = 0; rowIndex < dimension_; ++rowIndex)
     {
@@ -3441,7 +3441,7 @@ void DistributionImplementation::computeCovarianceGeneral() const
           xij[1] = mj;
           Scalar covarianceIJ = 0.0;
           // Then we loop over the integration points
-          for(int rowNodeIndex = -N; rowNodeIndex < N + 1; ++rowNodeIndex)
+          for(SignedInteger rowNodeIndex = -N; rowNodeIndex < N + 1; ++rowNodeIndex)
           {
             const Scalar hi = h * rowNodeIndex;
             const Scalar expHi = std::exp(hi);
@@ -3453,7 +3453,7 @@ void DistributionImplementation::computeCovarianceGeneral() const
             const Scalar xip = mi + expSinhHi * iTwoCoshSinhHi * di * delta;
             const Scalar wi = (expHi + iexpHi) * iTwoCoshSinhHi * iTwoCoshSinhHi;
             const Scalar cdfip = marginals[rowIndex]->computeCDF(xip);
-            for(int columnNodeIndex = -N; columnNodeIndex < N + 1; ++columnNodeIndex)
+            for(SignedInteger columnNodeIndex = -N; columnNodeIndex < N + 1; ++columnNodeIndex)
             {
               const Scalar hj = h * columnNodeIndex;
               const Scalar expHj = std::exp(hj);

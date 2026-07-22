@@ -1408,6 +1408,18 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("StudentCopulaFactory-DefaultOptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("StudentCopulaFactory-MaximumCallsNumber", 1000);
 
+  // Genz parameters //
+
+  addAsUnsignedInteger("Genz-DefaultSampleSize", 1048576);
+  addAsString("Genz-LowDiscrepancySequence", "SobolSequence");
+
+  // Ridgway parameters //
+
+  addAsUnsignedInteger("Ridgway-DefaultParticleNumber", 1000);
+  addAsScalar("Ridgway-DefaultAlpha", 0.5);
+  addAsUnsignedInteger("Ridgway-DefaultStudentSampleSize", 1024);
+  addAsString("Ridgway-LowDiscrepancySequence", "SobolSequence");
+
   // FiniteDiscreteDistribution parameters //
   addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 

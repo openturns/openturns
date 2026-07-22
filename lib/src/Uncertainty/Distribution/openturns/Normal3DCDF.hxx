@@ -34,6 +34,16 @@ Scalar Normal3DCDF(const Scalar x1,
                    const Scalar rho23,
                    const Bool tail);
 
+Scalar Normal3DRectangularProbability(const Scalar a1,
+                                       const Scalar a2,
+                                       const Scalar a3,
+                                       const Scalar b1,
+                                       const Scalar b2,
+                                       const Scalar b3,
+                                       const Scalar rho12,
+                                       const Scalar rho13,
+                                       const Scalar rho23);
+
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_NORMALCDF3D_HXX */

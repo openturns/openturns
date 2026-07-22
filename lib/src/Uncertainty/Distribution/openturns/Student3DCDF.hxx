@@ -1,7 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Efficient implementation of the CDF computation for a bi-dimensional
- *         Normal distribution
+ *  @brief Efficient implementation of the trivariate Student CDF
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,24 +18,33 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_NORMALCDF2D_HXX
-#define OPENTURNS_NORMALCDF2D_HXX
+#ifndef OPENTURNS_STUDENT3DCDF_HXX
+#define OPENTURNS_STUDENT3DCDF_HXX
 
 #include "openturns/OTprivate.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-Scalar Normal2DCDF(const Scalar x1,
-                   const Scalar x2,
-                   const Scalar rho,
-                   const Bool tail);
+Scalar Student3DCDF(const Scalar nu,
+                    const Scalar x1,
+                    const Scalar x2,
+                    const Scalar x3,
+                    const Scalar rho12,
+                    const Scalar rho13,
+                    const Scalar rho23,
+                    const Bool tail = false);
 
-Scalar Normal2DRectangularProbability(const Scalar a1,
+Scalar Student3DRectangularProbability(const Scalar nu,
+                                       const Scalar a1,
                                        const Scalar a2,
+                                       const Scalar a3,
                                        const Scalar b1,
                                        const Scalar b2,
-                                       const Scalar rho);
+                                       const Scalar b3,
+                                       const Scalar rho12,
+                                       const Scalar rho13,
+                                       const Scalar rho23);
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_NORMALCDF2D_HXX */
+#endif /* OPENTURNS_STUDENT3DCDF_HXX */
