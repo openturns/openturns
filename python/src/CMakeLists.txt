@@ -689,7 +689,8 @@ ot_add_python_module(simulation simulation_module.i
                       ActiveLearningUFunction.i  
                       ActiveLearningEFFFunction.i
                       ActiveLearningGMMFunction.i       
-                      ActiveLearningReliabilityAlgorithm.i       
+                      ActiveLearningReliabilityAlgorithm.i  
+                      ActiveLearningReliabilityResult.i            
                       )
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i

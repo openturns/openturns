@@ -31,8 +31,8 @@
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/ActiveLearningReliabilityFunction.hxx"
-#include "openturns/ActiveLearningUFunction.hxx"
-#include "openturns/ActiveLearningEFFFunction.hxx"
+#include "openturns/ActiveLearningReliabilityResult.hxx"
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -47,6 +47,8 @@ class OT_API ActiveLearningReliabilityAlgorithm
   CLASSNAME
 public:
 
+  typedef Collection<Scalar> ScalarCollection;
+  
   /** Default constructor */
   ActiveLearningReliabilityAlgorithm();
     
@@ -103,16 +105,24 @@ public:
   
   Sample getOutputDoE() const;
   
+  /** Accessor to results */
+  ActiveLearningReliabilityResult getResult() const;
+    
 protected:
 
+  /** Accessor to results */
+  void setResult(const ActiveLearningReliabilityResult & activeLearningReliabilityResult);
+  
+  /** Convergence checks */
   Bool checkConvergenceProbabilityWithUncertainty();
 
   Bool checkConvergenceReliabilityIndexWithUncertainty();
 
-  Bool checkConvergenceStability(const Point currentValue,
-                                 const Point previousValue);
+  Bool checkConvergenceStability(const Scalar currentValue,
+                                 const Scalar previousValue);
   
   Point computeProbabilityWithUncertainty();                                                                                         
+  
   const RandomVector defaultEvent_;
   Pointer<EventSimulation> p_defaultSimulationAlgorithm_;
   Pointer<EventSimulation> p_simulationAlgorithm_;
@@ -129,9 +139,11 @@ protected:
   
   UnsignedInteger simulationBudget_;
   UnsignedInteger functionCallNumber_;
-  Sample probabilityHistory_;
-  Sample reliabilityIndexHistory_;
-      
+  ScalarCollection probabilityHistory_;
+  ScalarCollection reliabilityIndexHistory_;
+  
+  ActiveLearningReliabilityResult activeLearningReliabilityResult_;
+
 } ; /* class ActiveLearningReliabilityAlgorithm */
 
 END_NAMESPACE_OPENTURNS
