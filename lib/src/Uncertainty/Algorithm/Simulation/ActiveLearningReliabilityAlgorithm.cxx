@@ -24,7 +24,7 @@
 #include "openturns/GaussianProcessRegression.hxx"
 #include "openturns/ThresholdEvent.hxx"
 #include "openturns/CompositeRandomVector.hxx"
-//#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EventSimulation.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/SimulationResult.hxx"
@@ -33,8 +33,8 @@
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/ActiveLearningReliabilityFunction.hxx"
-
-
+#include "openturns/ActiveLearningReliabilityResult.hxx"
+#include "openturns/RandomGenerator.hxx"
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
@@ -82,8 +82,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   , functionCallNumber_(0)
-  , probabilityHistory_(0, 1)
-  , reliabilityIndexHistory_(0, 1)
+  , probabilityHistory_(0)
+  , reliabilityIndexHistory_(0)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -101,8 +101,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   , functionCallNumber_(0)
-  , probabilityHistory_(0, 1)
-  , reliabilityIndexHistory_(0, 1)
+  , probabilityHistory_(0)
+  , reliabilityIndexHistory_(0)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -120,8 +120,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   , functionCallNumber_(0)
-  , probabilityHistory_(0, 1)
-  , reliabilityIndexHistory_(0, 1)
+  , probabilityHistory_(0)
+  , reliabilityIndexHistory_(0)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -139,8 +139,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   , functionCallNumber_(0)
-  , probabilityHistory_(0, 1)
-  , reliabilityIndexHistory_(0, 1)
+  , probabilityHistory_(0)
+  , reliabilityIndexHistory_(0)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -158,8 +158,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , outputDoE_(gpFitter.getOutputSample())
   , defaultGPFitter_(gpFitter)
   , functionCallNumber_(0)
-  , probabilityHistory_(0, 1)
-  , reliabilityIndexHistory_(0, 1)
+  , probabilityHistory_(0)
+  , reliabilityIndexHistory_(0)
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -229,10 +229,7 @@ Bool ActiveLearningReliabilityAlgorithm::checkConvergenceProbabilityWithUncertai
   const Scalar minusProbability = probabilitiesWithUncertainty[1];
   const Scalar plusProbability =  probabilitiesWithUncertainty[2]; 
   const Bool convergenceProbability = abs((plusProbability - minusProbability) / meanProbability) <= convergenceCriterionThreshold_;
-  std::cout<<" ---------------------- Convergence indicator ------------------------"<<std::endl;
-  std::cout<< Point({meanProbability,minusProbability,plusProbability})<<std::endl;
-  std::cout<<convergenceCriterionThreshold_ <<std::endl;
-  std::cout<<abs((plusProbability - minusProbability) / meanProbability) <<std::endl;
+
   return convergenceProbability;
 }
 
@@ -269,9 +266,6 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
   //Function GPRmetamodel = GPRResult.getMetaModel();
   GaussianProcessConditionalCovariance gpcc(GPRResult);
   
-  std::cout<< " --------- k factor ----------"<<std::endl;
-  std::cout<< convergenceUncertaintyFactor_<<std::endl;
-  
   // Creation of functions for threshold event
   GPWithUncertainty GPMean(GPRResult, 0.);
   GPWithUncertainty GPMinus(GPRResult, - convergenceUncertaintyFactor_);
@@ -287,6 +281,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
   Pointer<EventSimulation> p_simulationAlgorithmMean_ = p_defaultSimulationAlgorithm_->clone();
                                                 
   p_simulationAlgorithmMean_->setEvent(meanEvent);
+  RandomGenerator::SetSeed(0);
   p_simulationAlgorithmMean_->run();
   Scalar meanProbability = p_simulationAlgorithmMean_-> getResult().getProbabilityEstimate();
   
@@ -300,6 +295,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
                                                
   Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();                                          
   p_simulationAlgorithmMinus_->setEvent(eventMinus);
+  RandomGenerator::SetSeed(0);
   p_simulationAlgorithmMinus_->run();
   Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
   
@@ -313,6 +309,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
   
   Pointer<EventSimulation> p_simulationAlgorithmPlus_ = p_defaultSimulationAlgorithm_->clone();                                               
   p_simulationAlgorithmPlus_->setEvent(eventPlus);
+  RandomGenerator::SetSeed(0);
   p_simulationAlgorithmPlus_->run();
   Scalar plusProbability = p_simulationAlgorithmPlus_-> getResult().getProbabilityEstimate();
 
@@ -322,10 +319,10 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
 }
 
 /* Check convergence based on stability of history */
-Bool ActiveLearningReliabilityAlgorithm::checkConvergenceStability(const Point currentValue,
-                                                                   const Point previousValue) 
+Bool ActiveLearningReliabilityAlgorithm::checkConvergenceStability(const Scalar currentValue,
+                                                                   const Scalar previousValue) 
 {
- return abs(currentValue[0] - previousValue[0])/ currentValue[0] <= convergenceCriterionThreshold_;
+ return abs(currentValue - previousValue)/ currentValue <= convergenceCriterionThreshold_;
 }
                                                                                       
 // Set type of convergence
@@ -387,6 +384,20 @@ Sample ActiveLearningReliabilityAlgorithm::getOutputDoE() const
   return outputDoE_;
 }
 
+// Accessor to Results
+
+void ActiveLearningReliabilityAlgorithm::setResult(const ActiveLearningReliabilityResult &activeLearningReliabilityResult)
+{
+   activeLearningReliabilityResult_ = activeLearningReliabilityResult;
+}
+
+
+ActiveLearningReliabilityResult ActiveLearningReliabilityAlgorithm::getResult() const
+{
+   return activeLearningReliabilityResult_;
+}
+
+
 /*EventSimulation& ActiveLearningReliabilityAlgorithm::getSimulationAlgorithm() const
 {
   return dynamic_cast<EventSimulation>(&p_simulationAlgorithm_);
@@ -409,8 +420,7 @@ void ActiveLearningReliabilityAlgorithm::run()
   
   while ((!convergenceStatus) && (functionCallNumber_<=simulationBudget_))
     {      
-      std::cout<<"-----------------Remaining budget ---------------"<<std::endl;
-      std::cout<< simulationBudget_ - functionCallNumber_<<std::endl;
+
       // Estimate probability with GP
       
       GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
@@ -435,13 +445,10 @@ void ActiveLearningReliabilityAlgorithm::run()
                                                        
       Pointer<EventSimulation> p_currentSimulationAlgorithm = p_defaultSimulationAlgorithm_->clone();
       p_currentSimulationAlgorithm->setEvent(newEvent);
+      RandomGenerator::SetSeed(0);
       p_currentSimulationAlgorithm->run();
 
-      std::cout<<"------- Probability value --------"<<std::endl;
-      std::cout<<p_currentSimulationAlgorithm->getResult().getProbabilityEstimate()<<std::endl;
-    
       *p_simulationAlgorithm_ = *p_currentSimulationAlgorithm;
-      
       Sample currentInputSample = p_currentSimulationAlgorithm->getInputSample();
       
       // Compute active learning values
@@ -450,8 +457,9 @@ void ActiveLearningReliabilityAlgorithm::run()
       
       // Store history
       Scalar currentProbabilityEstimate = p_currentSimulationAlgorithm->getResult().getProbabilityEstimate();
-      probabilityHistory_.add(Point(1, currentProbabilityEstimate));
-      reliabilityIndexHistory_.add(Point(1, - Normal().computeQuantile(currentProbabilityEstimate)[0]));
+      probabilityHistory_.add(currentProbabilityEstimate);
+      Scalar currentReliabilityIndex = - Normal().computeQuantile(currentProbabilityEstimate)[0];
+      reliabilityIndexHistory_.add(currentReliabilityIndex);
       
       // Check convergence
       if (convergenceCriterion_ == 0)
@@ -477,7 +485,7 @@ void ActiveLearningReliabilityAlgorithm::run()
           Indices index(2);
           index[0] = historySize - 1;
           index[1] = historySize - 2;
-          Sample probabilityEstimate = probabilityHistory_.select(index);
+          ScalarCollection probabilityEstimate = probabilityHistory_.select(index);
 
           convergenceStatus = checkConvergenceStability(probabilityEstimate[0], probabilityEstimate[1]);
         }
@@ -491,7 +499,7 @@ void ActiveLearningReliabilityAlgorithm::run()
           index[0] = historySize - 1;
           index[1] = historySize - 2;
 
-          Sample reliabilityIndexEstimate = reliabilityIndexHistory_.select(index);
+          ScalarCollection reliabilityIndexEstimate = reliabilityIndexHistory_.select(index);
 
           convergenceStatus = checkConvergenceStability(reliabilityIndexEstimate[0], reliabilityIndexEstimate[1]);
         } 
@@ -509,6 +517,53 @@ void ActiveLearningReliabilityAlgorithm::run()
         functionCallNumber_ += 1;
       } 
     }
+    
+    // storage of results
+    GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
+                                                                outputDoE_,
+                                                                defaultGPFitter_.getResult().getCovarianceModel(),
+                                                                defaultGPFitter_.getResult().getBasis());
+    newGPfitter.run();
+    GaussianProcessRegression newGPR;
+    newGPR = GaussianProcessRegression(newGPfitter.getResult());
+    newGPR.run();
+          
+    GaussianProcessRegressionResult newGPRResult = newGPR.getResult();
+    
+    UnsignedInteger historySize = probabilityHistory_.getSize();
+    Indices index(2);
+    index[0] = historySize - 1;
+    Scalar currentProbabilityEstimate = probabilityHistory_.select(index)[0];
+    Scalar currentReliabilityIndex = reliabilityIndexHistory_.select(index)[0];
+    
+    Point probaCI = computeProbabilityWithUncertainty();
+    Scalar reliabIndexLowerBound = - Normal().computeQuantile(probaCI[0])[0];  
+    Scalar reliabIndexUpperBound = - Normal().computeQuantile(probaCI[1])[0];
+            
+    Interval probabilityCI;
+    Interval reliabilityCI;
+    if (probaCI[0]< probaCI[1])
+    {
+      probabilityCI = Interval(Point(1, probaCI[0]), Point(1, probaCI[1]));
+      reliabilityCI = Interval(Point(1, reliabIndexUpperBound), Point(1, reliabIndexLowerBound));
+    }
+    else
+    {
+      probabilityCI = Interval(Point(1, probaCI[1]), Point(1, probaCI[0]));
+      reliabilityCI = Interval(Point(1, reliabIndexLowerBound), Point(1, reliabIndexUpperBound));    
+    }
+
+
+    ActiveLearningReliabilityResult results = ActiveLearningReliabilityResult(currentProbabilityEstimate, 
+                                               currentReliabilityIndex, 
+                                               newGPRResult,
+                                               probabilityHistory_,
+                                               reliabilityIndexHistory_,
+                                               functionCallNumber_,
+                                               probabilityCI,
+                                               reliabilityCI);
+    setResult( results);
+
 }
 
 END_NAMESPACE_OPENTURNS

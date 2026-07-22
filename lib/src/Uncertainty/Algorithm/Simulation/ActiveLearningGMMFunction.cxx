@@ -132,7 +132,7 @@ Sample ActiveLearningGMMFunction::operator()(const Sample & inputSample, const S
           }
           else
           {
-            Scalar proposalMin = dist * std::pow(inputDistribution_.computePDF(inputSample_i), 1./dimension);
+            Scalar proposalMin = dist* std::pow(inputDistribution_.computePDF(inputSample_i), 1./dimension);
           
           if ( proposalMin < currentMin)
             {
