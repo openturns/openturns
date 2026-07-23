@@ -42,13 +42,10 @@ ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction()
 
 /* Constructor with parameters */
 ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
-                                                                     const GaussianProcessRegressionResult & gprResult,
                                                                      const Scalar learningThreshold)
     : EvaluationImplementation()
     , reliabilityThreshold_(reliabilityThreshold)
     , learningThreshold_(learningThreshold)
-    , gprResult_(gprResult)
-    , gprCov_(gprResult)
 {
 }
                                                                      

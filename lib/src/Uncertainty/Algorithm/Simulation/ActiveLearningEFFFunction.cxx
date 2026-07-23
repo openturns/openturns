@@ -44,10 +44,8 @@ ActiveLearningEFFFunction::ActiveLearningEFFFunction()
 
 /* Constructor with parameters */
 ActiveLearningEFFFunction::ActiveLearningEFFFunction(const Scalar reliabilityThreshold,
-                                                     const GaussianProcessRegressionResult & gprResult,
                                                      const Scalar learningThreshold)
     : ActiveLearningReliabilityFunction(reliabilityThreshold,
-                                        gprResult,
                                         learningThreshold)
   {
   }

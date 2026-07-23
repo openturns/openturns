@@ -46,7 +46,6 @@ public:
   
   /** Default constructor */  
   ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
-                                    const GaussianProcessRegressionResult & gprResult,
                                     const Scalar learningThreshold);
                                     
                                     
