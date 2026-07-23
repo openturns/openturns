@@ -24,6 +24,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
@@ -1026,7 +1027,7 @@ Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) c
   const ComputeCDFPolicy policy(inSample, result, *this);
   // This calls GaussKronrodRule::InitializeRules before entering parallel region to prevent concurrent access
   GaussKronrod::GetRules();
-  TBBImplementation::ParallelFor(0, size, policy);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1071,8 +1072,8 @@ Sample DistributionImplementation::computeComplementaryCDFParallel(const Sample 
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeComplementaryCDFPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeComplementaryCDFPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1117,8 +1118,8 @@ Sample DistributionImplementation::computeSurvivalFunctionParallel(const Sample 
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeSurvivalFunctionPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeSurvivalFunctionPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1600,7 +1601,7 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeDDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1648,7 +1649,7 @@ Sample DistributionImplementation::computePDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputePDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1696,7 +1697,7 @@ Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeLogPDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1932,7 +1933,7 @@ Sample DistributionImplementation::computeQuantileParallel(const Point & prob,
   const UnsignedInteger size = prob.getSize();
   Sample result(size, dimension_);
   const ComputeQuantilePolicy policy(prob, result, tail, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -2084,7 +2085,7 @@ Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & 
   const UnsignedInteger size = sample.getSize();
   Sample outSample(size, getParameterDimension());
   const ComputeLogPDFGradientPolicy policy(sample, outSample, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return outSample;
 }
 
