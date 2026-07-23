@@ -14,7 +14,7 @@ secondSample : 2-d list of float
 
 See also
 --------
-LinearModelAlgorithm
+LinearModelAlgorithm, MulticollinearityAnalysis
 
 Examples
 --------

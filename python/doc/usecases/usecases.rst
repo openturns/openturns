@@ -27,5 +27,6 @@ Contents
    use_case_oscillator
    use_case_coles
    use_case_linthurst
+   use_case_ames_housing
    use_case_stiffened_panel
    use_case_fission_gas

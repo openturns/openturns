@@ -3,6 +3,7 @@
 
 library(relaimpo)
 library(sensitivity)
+library(car)
 library(AmesHousing)
 library(caret)
 library(mlbench)
@@ -14,13 +15,13 @@ library(mvtnorm)
 # Parameters
 # - x: a data.frame containing the input variables
 # - y: a vector containing the output variable
-# - type: the measure type ("LMG", "PMVD" or "Johnson")
-# - package: the name of the package that will compute the measure ("relaimpo" or "sensitivity")
+# - type: the measure type ("LMG", "PMVD", "Johnson" or "VIF")
+# - package: the name of the package that will compute the measure (only used for LMG and PMVD)
 #
 # Output
 #   A vector containing the measure for each input variable
 #
-compute_measure <- function(x, y, type, package)
+compute_measure <- function(x, y, type, package="")
 {
   if (type=="LMG")
   {
@@ -58,6 +59,13 @@ compute_measure <- function(x, y, type, package)
     vec <- res$johnson[,1]
     names(vec) <- rownames(res$johnson)
     return(vec)
+  }
+  else if (type=="VIF")
+  {
+    d <- data.frame(Y=y, x)
+    mod <- lm(Y ~ ., data=d)
+    res <- vif(mod)
+    return(res)
   }
   else
     stop("Unknown type")
@@ -156,8 +164,8 @@ get_data8 <- function()
 #
 # Parameters
 # - case: the case number (between 1 and 8)
-# - type: the measure type ("LMG", "PMVD" or "Johnson")
-# - package: the name of the package that will compute the measure ("relaimpo" or "sensitivity")
+# - type: the measure type ("LMG", "PMVD", "Johnson" or "VIF")
+# - package: the name of the package that will compute the measure ("relaimpo", "sensitivity" or "car")
 #
 compute <- function(case, type, package)
 {
@@ -183,4 +191,5 @@ compute <- function(case, type, package)
 
 cases <- 1:8
 for(case in cases)
-  compute(case, "LMG", "relaimpo")
+#  compute(case, "LMG", "relaimpo")
+  compute(case, "VIF", "car")
