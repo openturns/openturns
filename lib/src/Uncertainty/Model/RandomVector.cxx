@@ -210,6 +210,7 @@ Point RandomVector::getParameter() const
 
 void RandomVector::setParameter(const Point & parameter)
 {
+  copyOnWrite();
   getImplementation()->setParameter(parameter);
 }
 
