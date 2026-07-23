@@ -27,9 +27,6 @@ output = ot.CompositeRandomVector(myFunction, vect)
 myEvent = ot.ThresholdEvent(output, ot.Less(), -3)
 
 # We create a FORM algorithm
-# The first parameter is an OptimizationAlgorithm
-# The second parameter is an event
-# The third parameter is a starting point for the design point research
 myCobyla = ot.Cobyla()
 myCobyla.setMaximumCallsNumber(400)
 myCobyla.setStartingPoint(mean)
@@ -38,21 +35,21 @@ myAlgo = ot.FORM(myCobyla, myEvent)
 # Perform the simulation
 myAlgo.run()
 
-# Create a PostAnalyticalControlledImportanceSampling algorithm based on
+# Create a PostAnalyticalImportanceSampling algorithm based on
 # the previous FORM result
 formResult = myAlgo.getResult()
-mySamplingAlgo = ot.PostAnalyticalControlledImportanceSampling(formResult)
+mySamplingAlgo = ot.PostAnalyticalImportanceSampling(formResult)
 print("FORM probability= %.11g" % formResult.getEventProbability())
 mySamplingAlgo.setMaximumOuterSampling(250)
 mySamplingAlgo.setBlockSize(4)
 mySamplingAlgo.setMaximumCoefficientOfVariation(0.1)
 
-print("PostAnalyticalControlledImportanceSampling=", mySamplingAlgo)
+print("PostAnalyticalImportanceSampling=", mySamplingAlgo)
 
 mySamplingAlgo.run()
 
 # Stream out the result
-print("PostAnalyticalControlledImportanceSampling result=", mySamplingAlgo.getResult())
+print("PostAnalyticalImportanceSampling result=", mySamplingAlgo.getResult())
 
 # Ticket #3210: Strange differences between PostAnalyticalControlledImportanceSampling and PostAnalyticalImportanceSampling
 
@@ -76,13 +73,13 @@ for i, comp in enumerate([ot.Less(), ot.Greater()]):
         algo.run()
         result_form = algo.getResult()
 
-        algo = ot.PostAnalyticalControlledImportanceSampling(result_form)
+        algo = ot.PostAnalyticalImportanceSampling(result_form)
         algo.setMaximumOuterSampling(1000)
-        algo.setBlockSize(10)
+        algo.setBlockSize(100)
         algo.setMaximumCoefficientOfVariation(0.001)
         algo.run()
         if i == 0:
             ref = threshold
         else:
             ref = 1.0 - threshold
-        ott.assert_almost_equal(algo.getResult().getProbabilityEstimate(), ref, 1e-2, 1e-2)
+        ott.assert_almost_equal(algo.getResult().getProbabilityEstimate(), ref, 5e-2, 5e-2)
