@@ -62,7 +62,7 @@ Triangular::Triangular(const Scalar a,
 Bool Triangular::operator ==(const Triangular & other) const
 {
   if (this == &other) return true;
-  return (a_ == other.a_) && (m_ == other.m_) && (b_ == other.b_);
+  return hasEqualBase(other) && (a_ == other.a_) && (m_ == other.m_) && (b_ == other.b_);
 }
 
 Bool Triangular::equals(const DistributionImplementation & other) const

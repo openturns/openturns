@@ -78,7 +78,7 @@ CompoundDistribution::CompoundDistribution(const Distribution & conditionedDistr
 Bool CompoundDistribution::operator ==(const CompoundDistribution & other) const
 {
   if (this == &other) return true;
-  return (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
+  return hasEqualBase(other) && (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
 }
 
 Bool CompoundDistribution::equals(const DistributionImplementation & other) const

@@ -59,7 +59,7 @@ Logistic::Logistic(const Scalar mu,
 Bool Logistic::operator ==(const Logistic & other) const
 {
   if (this == &other) return true;
-  return (mu_ == other.mu_) && (beta_ == other.beta_);
+  return hasEqualBase(other) && (mu_ == other.mu_) && (beta_ == other.beta_);
 }
 
 Bool Logistic::equals(const DistributionImplementation & other) const

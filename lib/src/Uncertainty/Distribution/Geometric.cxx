@@ -74,7 +74,7 @@ Bool Geometric::isIntegral() const
 Bool Geometric::operator ==(const Geometric & other) const
 {
   if (this == &other) return true;
-  return p_ == other.p_;
+  return hasEqualBase(other) && p_ == other.p_;
 }
 
 Bool Geometric::equals(const DistributionImplementation & other) const

@@ -61,7 +61,7 @@ WeibullMax::WeibullMax(const Scalar beta,
 Bool WeibullMax::operator ==(const WeibullMax & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
 }
 
 Bool WeibullMax::equals(const DistributionImplementation & other) const

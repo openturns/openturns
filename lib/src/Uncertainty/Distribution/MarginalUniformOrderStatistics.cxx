@@ -66,7 +66,7 @@ MarginalUniformOrderStatistics::MarginalUniformOrderStatistics(const UnsignedInt
 Bool MarginalUniformOrderStatistics::operator ==(const MarginalUniformOrderStatistics & other) const
 {
   if (this == &other) return true;
-  return (getN() == other.getN()) && (indices_ == other.indices_);
+  return hasEqualBase(other) && (getN() == other.getN()) && (indices_ == other.indices_);
 }
 
 Bool MarginalUniformOrderStatistics::equals(const DistributionImplementation & other) const

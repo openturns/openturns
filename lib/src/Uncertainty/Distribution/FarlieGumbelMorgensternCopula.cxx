@@ -61,7 +61,7 @@ FarlieGumbelMorgensternCopula::FarlieGumbelMorgensternCopula(const Scalar theta)
 Bool FarlieGumbelMorgensternCopula::operator ==(const FarlieGumbelMorgensternCopula & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool FarlieGumbelMorgensternCopula::equals(const DistributionImplementation & other) const

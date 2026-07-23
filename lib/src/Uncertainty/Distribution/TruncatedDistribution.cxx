@@ -128,7 +128,7 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
 Bool TruncatedDistribution::operator ==(const TruncatedDistribution & other) const
 {
   if (this == &other) return true;
-  return (bounds_ == other.bounds_) && (distribution_ == other.getDistribution());
+  return hasEqualBase(other) && (bounds_ == other.bounds_) && (distribution_ == other.getDistribution());
 }
 
 Bool TruncatedDistribution::equals(const DistributionImplementation & other) const

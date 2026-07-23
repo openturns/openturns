@@ -60,7 +60,7 @@ Burr::Burr(const Scalar c,
 Bool Burr::operator ==(const Burr & other) const
 {
   if (this == &other) return true;
-  return (c_ == other.c_) && (k_ == other.k_);
+  return hasEqualBase(other) && (c_ == other.c_) && (k_ == other.k_);
 }
 
 Bool Burr::equals(const DistributionImplementation & other) const

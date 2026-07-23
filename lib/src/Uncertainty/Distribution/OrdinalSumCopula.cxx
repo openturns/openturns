@@ -76,7 +76,7 @@ OrdinalSumCopula * OrdinalSumCopula::clone() const
 Bool OrdinalSumCopula::operator ==(const OrdinalSumCopula & other) const
 {
   if (this == &other) return true;
-  return (copulaCollection_ == other.copulaCollection_) && (bounds_ == other.bounds_);
+  return hasEqualBase(other) && (copulaCollection_ == other.copulaCollection_) && (bounds_ == other.bounds_);
 }
 
 Bool OrdinalSumCopula::equals(const DistributionImplementation & other) const

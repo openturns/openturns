@@ -79,7 +79,7 @@ Bool Skellam::isIntegral() const
 Bool Skellam::operator ==(const Skellam & other) const
 {
   if (this == &other) return true;
-  return (lambda1_ == other.lambda1_) && (lambda2_ == other.lambda2_);
+  return hasEqualBase(other) && (lambda1_ == other.lambda1_) && (lambda2_ == other.lambda2_);
 }
 
 Bool Skellam::equals(const DistributionImplementation & other) const

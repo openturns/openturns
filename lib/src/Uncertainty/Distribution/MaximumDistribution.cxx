@@ -92,7 +92,7 @@ MaximumDistribution::MaximumDistribution(const Distribution & distribution,
 Bool MaximumDistribution::operator ==(const MaximumDistribution & other) const
 {
   if (this == &other) return true;
-  return (distribution_ == other.distribution_);
+  return hasEqualBase(other) && (distribution_ == other.distribution_);
 }
 
 Bool MaximumDistribution::equals(const DistributionImplementation & other) const

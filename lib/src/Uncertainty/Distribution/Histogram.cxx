@@ -94,7 +94,7 @@ Histogram::Histogram(const Point & ticks,
 Bool Histogram::operator ==(const Histogram & other) const
 {
   if (this == &other) return true;
-  return (first_ == other.first_) && (width_ == other.width_) && (height_ == other.height_);
+  return hasEqualBase(other) && (first_ == other.first_) && (width_ == other.width_) && (height_ == other.height_);
 }
 
 Bool Histogram::equals(const DistributionImplementation & other) const

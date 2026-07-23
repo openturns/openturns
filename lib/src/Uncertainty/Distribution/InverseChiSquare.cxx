@@ -53,7 +53,7 @@ InverseChiSquare::InverseChiSquare(const Scalar nu)
 Bool InverseChiSquare::operator ==(const InverseChiSquare & other) const
 {
   if (this == &other) return true;
-  return nu_ == other.nu_;
+  return hasEqualBase(other) && nu_ == other.nu_;
 }
 
 Bool InverseChiSquare::equals(const DistributionImplementation & other) const

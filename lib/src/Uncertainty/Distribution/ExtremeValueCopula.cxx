@@ -66,7 +66,7 @@ ExtremeValueCopula::ExtremeValueCopula(const Function & pickandFunction)
 Bool ExtremeValueCopula::operator ==(const ExtremeValueCopula & other) const
 {
   if (this == &other) return true;
-  return pickandFunction_ == other.pickandFunction_;
+  return hasEqualBase(other) && pickandFunction_ == other.pickandFunction_;
 }
 
 Bool ExtremeValueCopula::equals(const DistributionImplementation & other) const

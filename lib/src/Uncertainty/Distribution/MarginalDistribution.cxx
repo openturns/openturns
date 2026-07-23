@@ -58,7 +58,7 @@ MarginalDistribution::MarginalDistribution(const Distribution & distribution,
 Bool MarginalDistribution::operator ==(const MarginalDistribution & other) const
 {
   if (this == &other) return true;
-  return (distribution_ == other.distribution_) && (indices_ == other.indices_);
+  return hasEqualBase(other) && (distribution_ == other.distribution_) && (indices_ == other.indices_);
 }
 
 Bool MarginalDistribution::equals(const DistributionImplementation & other) const

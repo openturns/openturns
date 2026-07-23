@@ -58,7 +58,7 @@ Dirichlet::Dirichlet(const Point & theta)
 Bool Dirichlet::operator ==(const Dirichlet & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool Dirichlet::equals(const DistributionImplementation & other) const

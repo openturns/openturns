@@ -63,7 +63,7 @@ FisherSnedecor::FisherSnedecor(const Scalar d1,
 Bool FisherSnedecor::operator ==(const FisherSnedecor & other) const
 {
   if (this == &other) return true;
-  return (d1_ == other.d1_) && (d2_ == other.d2_);
+  return hasEqualBase(other) && (d1_ == other.d1_) && (d2_ == other.d2_);
 }
 
 Bool FisherSnedecor::equals(const DistributionImplementation & other) const

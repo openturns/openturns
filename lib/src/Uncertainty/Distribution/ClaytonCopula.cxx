@@ -58,7 +58,7 @@ ClaytonCopula::ClaytonCopula(const Scalar theta)
 Bool ClaytonCopula::operator ==(const ClaytonCopula & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool ClaytonCopula::equals(const DistributionImplementation & other) const

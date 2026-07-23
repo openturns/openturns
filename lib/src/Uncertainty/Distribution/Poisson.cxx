@@ -75,7 +75,7 @@ Bool Poisson::isIntegral() const
 Bool Poisson::operator ==(const Poisson & other) const
 {
   if (this == &other) return true;
-  return (lambda_ == other.lambda_);
+  return hasEqualBase(other) && (lambda_ == other.lambda_);
 }
 
 Bool Poisson::equals(const DistributionImplementation & other) const

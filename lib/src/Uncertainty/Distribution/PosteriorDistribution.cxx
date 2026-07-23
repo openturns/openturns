@@ -82,7 +82,7 @@ PosteriorDistribution::PosteriorDistribution(const CompoundDistribution & compou
 Bool PosteriorDistribution::operator ==(const PosteriorDistribution & other) const
 {
   if (this == &other) return true;
-  return (compoundDistribution_ == other.compoundDistribution_) && (observations_ == other.observations_);
+  return hasEqualBase(other) && (compoundDistribution_ == other.compoundDistribution_) && (observations_ == other.observations_);
 }
 
 Bool PosteriorDistribution::equals(const DistributionImplementation & other) const

@@ -77,7 +77,7 @@ GeneralizedPareto::GeneralizedPareto(const Pareto & pareto)
 Bool GeneralizedPareto::operator ==(const GeneralizedPareto & other) const
 {
   if (this == &other) return true;
-  return (sigma_ == other.sigma_) && (xi_ == other.xi_) && (u_ == other.u_);
+  return hasEqualBase(other) && (sigma_ == other.sigma_) && (xi_ == other.xi_) && (u_ == other.u_);
 }
 
 Bool GeneralizedPareto::equals(const DistributionImplementation & other) const

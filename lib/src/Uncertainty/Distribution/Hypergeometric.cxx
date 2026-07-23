@@ -87,7 +87,7 @@ Bool Hypergeometric::isIntegral() const
 Bool Hypergeometric::operator ==(const Hypergeometric & other) const
 {
   if (this == &other) return true;
-  return (n_ == other.n_) && (k_ == other.k_) && (m_ == other.m_);
+  return hasEqualBase(other) && (n_ == other.n_) && (k_ == other.k_) && (m_ == other.m_);
 }
 
 Bool Hypergeometric::equals(const DistributionImplementation & other) const

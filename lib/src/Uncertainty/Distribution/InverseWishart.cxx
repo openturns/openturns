@@ -57,7 +57,7 @@ InverseWishart::InverseWishart(const CovarianceMatrix & v,
 Bool InverseWishart::operator ==(const InverseWishart & other) const
 {
   if (this == &other) return true;
-  return (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
+  return hasEqualBase(other) && (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
 }
 
 Bool InverseWishart::equals(const DistributionImplementation & other) const

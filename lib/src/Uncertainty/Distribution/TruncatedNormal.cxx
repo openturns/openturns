@@ -111,7 +111,7 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
 Bool TruncatedNormal::operator ==(const TruncatedNormal & other) const
 {
   if (this == &other) return true;
-  return (mu_ == other.mu_) && (sigma_ == other.sigma_) &&
+  return hasEqualBase(other) && (mu_ == other.mu_) && (sigma_ == other.sigma_) &&
          (a_ == other.a_) && (b_ == other.b_);
 }
 

@@ -86,7 +86,7 @@ void MeixnerDistribution::initializeOptimizationAlgorithmParameter()
 Bool MeixnerDistribution::operator ==(const MeixnerDistribution & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (delta_ == other.delta_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (alpha_ == other.alpha_) && (delta_ == other.delta_) && (gamma_ == other.gamma_);
 }
 
 Bool MeixnerDistribution::equals(const DistributionImplementation & other) const
