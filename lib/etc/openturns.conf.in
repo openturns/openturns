@@ -376,6 +376,10 @@
   <!-- OT::Compact parameters -->
   <Compact-DefaultHalfMaximumSize value_int="1024" />
 
+  <!-- OT::MulticollinearityAnalysis parameters -->
+  <MulticollinearityAnalysis-DimensionThresholdForLmgPmvdParallelization value_int="12" />
+  <MulticollinearityAnalysis-MaximumInputDimensionForLmgPmvd value_int="28" />
+
   <!-- OT::FaureSequence parameters -->
   <FaureSequence-InitialSeed value_int="1" />
 
