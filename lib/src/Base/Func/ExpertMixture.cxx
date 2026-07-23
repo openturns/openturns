@@ -77,7 +77,7 @@ ExpertMixture * ExpertMixture::clone() const
 Bool ExpertMixture::operator ==(const ExpertMixture & other) const
 {
   if (this == &other) return true;
-  return (experts_ == other.experts_) && (classifier_ == other.classifier_);
+  return hasEqualBase(other) && (experts_ == other.experts_) && (classifier_ == other.classifier_);
 }
 
 /* String converter */

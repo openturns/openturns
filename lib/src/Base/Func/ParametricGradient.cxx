@@ -66,7 +66,7 @@ ParametricGradient * ParametricGradient::clone() const
 Bool ParametricGradient::operator ==(const ParametricGradient & other) const
 {
   if (this == &other) return true;
-  return *p_evaluation_ == *other.p_evaluation_;
+  return hasEqualBase(other) && *p_evaluation_ == *other.p_evaluation_;
 }
 
 Bool ParametricGradient::equals(const GradientImplementation & other) const

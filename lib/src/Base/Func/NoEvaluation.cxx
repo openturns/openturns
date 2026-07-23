@@ -44,9 +44,9 @@ NoEvaluation * NoEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool NoEvaluation::operator ==(const NoEvaluation & ) const
+Bool NoEvaluation::operator ==(const NoEvaluation & other) const
 {
-  return true;
+  return hasEqualBase(other) && true;
 }
 
 Bool NoEvaluation::equals(const EvaluationImplementation & other) const

@@ -51,7 +51,7 @@ ConstantEvaluation * ConstantEvaluation::clone() const
 /* Comparison operator */
 Bool ConstantEvaluation::operator ==(const ConstantEvaluation & other) const
 {
-  return inputDimension_ == other.inputDimension_ && constant_ == other.constant_;
+  return hasEqualBase(other) && inputDimension_ == other.inputDimension_ && constant_ == other.constant_;
 }
 
 /* String converter */

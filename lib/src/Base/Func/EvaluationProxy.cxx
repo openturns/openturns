@@ -55,7 +55,7 @@ EvaluationProxy * EvaluationProxy::clone() const
 /* Comparison operator */
 Bool EvaluationProxy::operator ==(const EvaluationProxy & other) const
 {
-  return evaluation_ == other.evaluation_;
+  return hasEqualBase(other) && evaluation_ == other.evaluation_;
 }
 
 /* String converter */

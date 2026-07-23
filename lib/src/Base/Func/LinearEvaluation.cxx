@@ -72,7 +72,7 @@ LinearEvaluation * LinearEvaluation::clone() const
 /* Comparison operator */
 Bool LinearEvaluation::operator ==(const LinearEvaluation & other) const
 {
-  return ((linear_ == other.linear_) && (constant_ == other.constant_) && (center_ == other.center_));
+  return hasEqualBase(other) && ((linear_ == other.linear_) && (constant_ == other.constant_) && (center_ == other.center_));
 }
 
 /* String converter */

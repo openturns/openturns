@@ -63,6 +63,9 @@ public:
   using PersistentObject::operator ==;
 protected:
   virtual Bool equals(const EvaluationImplementation & other) const;
+
+  /** Compare base class members */
+  Bool hasEqualBase(const EvaluationImplementation & other) const;
 public:
   using PersistentObject::operator !=;
   Bool operator !=(const EvaluationImplementation & other) const;

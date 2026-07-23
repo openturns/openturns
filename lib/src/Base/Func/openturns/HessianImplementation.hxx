@@ -56,6 +56,9 @@ public:
   using PersistentObject::operator ==;
 protected:
   virtual Bool equals(const HessianImplementation & other) const;
+
+  /** Compare base class members */
+  Bool hasEqualBase(const HessianImplementation & other) const;
 public:
   using PersistentObject::operator !=;
   Bool operator !=(const HessianImplementation & other) const;

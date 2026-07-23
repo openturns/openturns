@@ -58,7 +58,7 @@ IndicatorEvaluation * IndicatorEvaluation::clone() const
 /* Comparison operator */
 Bool IndicatorEvaluation::operator ==(const IndicatorEvaluation & other) const
 {
-  return domain_ == other.domain_;
+  return hasEqualBase(other) && domain_ == other.domain_;
 }
 
 /* String converter */

@@ -60,7 +60,7 @@ TrendEvaluation * TrendEvaluation::clone() const
 Bool TrendEvaluation::operator ==(const TrendEvaluation & other) const
 {
   if (this == &other) return true;
-  return (function_ == other.function_);
+  return hasEqualBase(other) && (function_ == other.function_);
 }
 
 /* String converter */

@@ -72,7 +72,7 @@ QuadraticEvaluation * QuadraticEvaluation::clone() const
 /* Comparison operator */
 Bool QuadraticEvaluation::operator ==(const QuadraticEvaluation & other) const
 {
-  return ((quadratic_ == other.getQuadratic()) && (linear_ == other.getLinear()) && (constant_ == other.getConstant()) && (center_ == other.getCenter()));
+  return hasEqualBase(other) && ((quadratic_ == other.getQuadratic()) && (linear_ == other.getLinear()) && (constant_ == other.getConstant()) && (center_ == other.getCenter()));
 }
 
 /* String converter */

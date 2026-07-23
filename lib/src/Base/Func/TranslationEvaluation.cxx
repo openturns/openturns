@@ -54,7 +54,7 @@ TranslationEvaluation * TranslationEvaluation::clone() const
 /* Comparison operator */
 Bool TranslationEvaluation::operator ==(const TranslationEvaluation & other) const
 {
-  return constant_ == other.constant_;
+  return hasEqualBase(other) && constant_ == other.constant_;
 }
 
 /* String converter */

@@ -64,7 +64,7 @@ ProductUniVariateFunctionEvaluation * ProductUniVariateFunctionEvaluation::clone
 Bool ProductUniVariateFunctionEvaluation::operator ==(const ProductUniVariateFunctionEvaluation & other) const
 {
   if (this == &other) return true;
-  return functions_ == other.functions_;
+  return hasEqualBase(other) && functions_ == other.functions_;
 }
 
 Bool ProductUniVariateFunctionEvaluation::equals(const EvaluationImplementation & other) const
