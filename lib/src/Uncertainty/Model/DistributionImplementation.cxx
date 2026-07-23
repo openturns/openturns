@@ -1338,7 +1338,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar cosNOmegaDt = std::cos(N * omegaDt);
       const Scalar sinNOmegaDt = std::sin(N * omegaDt);
       // The bound 4.3556e-4 is such that we get full double precision
-      const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2) : 1.0 - omegaDt2 / 12.0;
+      const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? 1.0 - omegaDt2 / 12.0 : std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2);
       //      value = pdfGrid[N] * w + pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       value = pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       for (UnsignedInteger n = 1; n < N; ++n)
