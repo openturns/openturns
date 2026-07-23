@@ -102,6 +102,7 @@ Continuous parametric distributions
     VonMises
 
     :template: classWithPlot.rst_t
+    experimental.VonMisesFisher
     WeibullMin
     WeibullMax
 

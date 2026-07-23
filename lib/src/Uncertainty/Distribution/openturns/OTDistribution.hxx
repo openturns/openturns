@@ -189,6 +189,8 @@
 #include "openturns/FiniteDiscreteDistributionFactory.hxx"
 #include "openturns/VonMises.hxx"
 #include "openturns/VonMisesFactory.hxx"
+#include "openturns/VonMisesFisher.hxx"
+#include "openturns/VonMisesFisherFactory.hxx"
 #include "openturns/WeibullMax.hxx"
 #include "openturns/WeibullMaxFactory.hxx"
 #include "openturns/WeibullMaxMuSigma.hxx"
