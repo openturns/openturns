@@ -43,7 +43,6 @@ class OT_API ActiveLearningUFunction
   
   /** Default constructor */  
   ActiveLearningUFunction (const Scalar reliabilityThreshold,
-                           const GaussianProcessRegressionResult & gprResult,
                            const Scalar learningThreshold);
  
   /** Virtual constructor */

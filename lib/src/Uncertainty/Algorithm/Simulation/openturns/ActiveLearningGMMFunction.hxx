@@ -44,7 +44,6 @@ class OT_API ActiveLearningGMMFunction
   
   /** Default constructor */  
   ActiveLearningGMMFunction(const Scalar reliabilityThreshold,
-                            const GaussianProcessRegressionResult & gprResult,
                             const Scalar learningThreshold,
                             const Distribution & inputDistribution,
                             const Scalar outputQuantileLevel);
