@@ -23,6 +23,7 @@
 #include <bitset>
 #include "openturns/MulticollinearityAnalysis.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
+#include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBBImplementation.hxx"
@@ -52,10 +53,8 @@ class LmgPmvdAlgorithm;
  *
  * TBB body to compute the variances associated with combinations of input variables
  */
-class LmgPmvdTBBBody
+struct LmgPmvdTBBBody
 {
-public:
-
   LmgPmvdTBBBody(LmgPmvdAlgorithm & algo)
     : algo_(algo)
   {
@@ -63,9 +62,6 @@ public:
   }
 
   void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const;
-
-private:
-
   void getIndices(const UnsignedInteger combination, const UnsignedInteger size, Indices & indices) const;
   void extract2D(const SquareMatrix & source, const Indices & indices, SquareMatrix & target) const;
   void extract1D(const Matrix & source, const Indices & indices, Matrix & target) const;
@@ -85,7 +81,7 @@ public:
   /* Constructor */
   LmgPmvdAlgorithm(const CovarianceMatrix & covMatrix)
     : dimension_(covMatrix.getDimension() - 1)
-    , numberOfCombinations_(1 << dimension_)
+    , numberOfCombinations_(1ul << dimension_) // 2^dimension_
     , covMatrix_(covMatrix)
     , covXY_(dimension_, 1)
     , sizes_(numberOfCombinations_)
@@ -97,71 +93,79 @@ public:
     for (UnsignedInteger i = 0; i < dimension_; i++)
       covXY_(i, 0) = covMatrix(i, dimension_);
     varY_ = covMatrix(dimension_, dimension_);
+    if (!(varY_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the output variance must be positive";
   }
 
   void run()
   {
     // First step: compute the variance associated with every combination of input variables
-    LmgPmvdTBBBody body(*this);
-    TBBImplementation::ParallelForIf(dimension_ >= 12, 1, numberOfCombinations_, body, 1024);
+    const LmgPmvdTBBBody body(*this);
+    const UnsignedInteger threshold = ResourceMap::GetAsUnsignedInteger("MulticollinearityAnalysis-DimensionThresholdForLmgPmvdParallelization");
+    TBBImplementation::ParallelForIf(dimension_ >= threshold, 1, numberOfCombinations_, body, 1024);
 
     // Compute LMG indices
-    for (UnsignedInteger i = 0; i < dimension_; i++)
-      lmg_[i] = computeLmg(i);
+    computeLmg();
 
     // Compute PMVD indices
     computePmvd();
   }
 
-  void getResult(Point & lmg, Point & pmvd) const
+  Point getLmg() const
   {
-    lmg = lmg_;
-    pmvd = pmvd_;
+    return lmg_;
   }
 
-  Scalar computeLmg(const UnsignedInteger variable) const
+  Point getPmvd() const
   {
-    Collection<Scalar> var1(dimension_);
-    Collection<Scalar> var2(dimension_);
-    for (UnsignedInteger c = 1; c < numberOfCombinations_; c++)
-    {
-      const UnsignedInteger size = sizes_[c];
-      if (c & (1 << variable))
-      {
-        // The combination contains the variable
-        var2[size - 1] += variances_[c];
-      }
-      else
-      {
-        // The combination does not contain the variable
-        var1[size] += variances_[c];
-      }
-    }
+    return pmvd_;
+  }
 
-    Scalar lmg = 0.0;
-    for (UnsignedInteger j = 0; j < dimension_; j++)
-      lmg += SpecFunc::Factorial(j) * SpecFunc::Factorial(dimension_ - j - 1) * (var2[j] - var1[j]);
-    lmg /= SpecFunc::Factorial(dimension_) * varY_;
-    return lmg;
+  void computeLmg()
+  {
+    for(UnsignedInteger i = 0; i < dimension_; i++)
+    {
+      Point var1(dimension_);
+      Point var2(dimension_);
+      for (UnsignedInteger c = 1; c < numberOfCombinations_; c++)
+      {
+        const UnsignedInteger size = sizes_[c];
+        if (c & (1ul << i))
+        {
+          // The combination contains the variable
+          var2[size - 1] += variances_[c];
+        }
+        else
+        {
+          // The combination does not contain the variable
+          var1[size] += variances_[c];
+        }
+      }
+
+      Scalar lmg = 0.0;
+      for (UnsignedInteger j = 0; j < dimension_; j++)
+        lmg += SpecFunc::Factorial(j) * SpecFunc::Factorial(dimension_ - j - 1) * (var2[j] - var1[j]);
+      lmg /= SpecFunc::Factorial(dimension_) * varY_;
+      lmg_[i] = lmg;
+    }
   }
 
   void computePmvd()
   {
     // Partition the combinations by their size
-    Collection<std::vector<Scalar>> partition(dimension_ + 1);
-    for(UnsignedInteger size = 0; size <= dimension_; size++)
-      partition[size].reserve(SpecFunc::BinomialCoefficient(dimension_, size));
-    for(UnsignedInteger c = 0; c < numberOfCombinations_; c++)
+    Collection<std::vector<UnsignedInteger>> partition(dimension_ + 1);
+    for (UnsignedInteger size = 0; size <= dimension_; size++)
+      partition[size].reserve(static_cast<std::size_t>(SpecFunc::BinomialCoefficient(dimension_, size)));
+    for (UnsignedInteger c = 0; c < numberOfCombinations_; c++)
       partition[sizes_[c]].push_back(c);
 
-    Collection<Scalar> potentials(numberOfCombinations_);
+    Point potentials(numberOfCombinations_);
 
     // Compute the potential for combinations of size 1 (a single variable)
     UnsignedInteger k = 0;
     UnsignedInteger mask = 0;
     for (UnsignedInteger i = 0; i < dimension_; i++)
     {
-      const UnsignedInteger c = 1 << i;
+      const UnsignedInteger c = 1ul << i;
       potentials[c] = computeWorth(c);
       if (potentials[c] == 0.0)
       {
@@ -183,7 +187,7 @@ public:
           UnsignedInteger j = 0;
           do
           {
-            const UnsignedInteger d = c & ~(1 << i);
+            const UnsignedInteger d = c & ~(1ul << i);
             if (d != c)
             {
               // We have a sub-combination
@@ -193,7 +197,9 @@ public:
             i++;
           }
           while(j < size);
-          potentials[c] = computeWorth(c) / sum;
+          const Scalar worth = computeWorth(c);
+          if (!(worth > 0.0)) throw InvalidArgumentException(HERE) << "Invalid worth value: " << worth;
+          potentials[c] = worth / sum;
         }
       }
     }
@@ -202,10 +208,11 @@ public:
     const UnsignedInteger all = (numberOfCombinations_ - 1) & ~mask;
     for (UnsignedInteger i = 0; i < dimension_; i++)
     {
-      const UnsignedInteger c = 1 << i;
+      const UnsignedInteger c = 1ul << i;
       if ((c & mask) == 0)
       {
         const UnsignedInteger complement = all & ~c;
+        if (!(potentials[complement] > 0.0)) throw InvalidArgumentException(HERE) << "Invalid potential value: " << potentials[complement];
         pmvd_[i] = potentials[all] / (potentials[complement] * varY_);
       }
       else
@@ -220,13 +227,13 @@ public:
     return variances_[all] - variances_[complement];
   }
 
-  const UnsignedInteger dimension_;
-  const UnsignedInteger numberOfCombinations_;
-  const CovarianceMatrix covMatrix_;
+  UnsignedInteger dimension_;
+  UnsignedInteger numberOfCombinations_;
+  CovarianceMatrix covMatrix_;
   Matrix covXY_;
   Scalar varY_;
   Collection<UnsignedInteger> sizes_;
-  Collection<Scalar> variances_;
+  Point variances_;
   Point lmg_;
   Point pmvd_;
 };
@@ -250,7 +257,8 @@ void LmgPmvdTBBBody::operator()(const TBBImplementation::BlockedRange<UnsignedIn
   // Iterate over the range of combinations
   for (UnsignedInteger c = r.begin() ; c < r.end(); c++)
   {
-    // The size of the combination is the number of bits set to 1
+    // The size of a combination is the number of bits set to 1
+    // Note: 32 bits in the bitset are enough because the dimension is enforced to be less than 32
     const UnsignedInteger size = std::bitset<32>(c).count();
     getIndices(c, size, indices);
     CovarianceMatrix & mat2D = matrices2D[size - 1];
@@ -273,7 +281,7 @@ void LmgPmvdTBBBody::getIndices(const UnsignedInteger combination, const Unsigne
   UnsignedInteger j = 0;
   while(j < size)
   {
-    if (combination & (1 << i))
+    if (combination & (1ul << i))
     {
       // Bit found, store the index
       indices[j++] = i;
@@ -324,7 +332,7 @@ public:
     , covXY_(dimension_, 1)
     , covXYperm_(dimension_, 1)
     , nbPermutations_(0)
-    , totalWeigtht_(0.0)
+    , totalWeight_(0.0)
     , lmg_(dimension_)
     , pmvd_(dimension_)
     , delta_(dimension_)
@@ -334,17 +342,19 @@ public:
     for (UnsignedInteger i = 0; i < dimension_; i++)
       covXY_(i, 0) = covMatrix(i, dimension_);
     varY_ = covMatrix(dimension_, dimension_);
+    if (!(varY_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: the output variance must be positive";
     // Pre-allocate some matrices
     for (UnsignedInteger size = 1; size <= dimension_; size++)
     {
-      matrices2D.add(SquareMatrix(size));
-      matrices1D.add(Matrix(size, 1));
+      matrices2D_.add(SquareMatrix(size));
+      matrices1D_.add(Matrix(size, 1));
     }
   }
 
   void run()
   {
-    fullVar = computeFullVariance();
+    fullVar_ = computeFullVariance();
+    // Draw a random permutation for each iteration
     const KPermutationsDistribution distribution(dimension_, dimension_);
     Indices permutation(dimension_);
     for (UnsignedInteger i = 0; i < iterations_; i++)
@@ -355,16 +365,18 @@ public:
       addPermutation(permutation);
     }
     lmg_ /= nbPermutations_ * varY_;
-    pmvd_ /= totalWeigtht_ * varY_;
+    pmvd_ /= totalWeight_ * varY_;
   }
 
-  void getResult(Point & lmg, Point & pmvd) const
+  Point getLmg() const
   {
-    lmg = lmg_;
-    pmvd = pmvd_;
+    return lmg_;
   }
 
-private:
+  Point getPmvd() const
+  {
+    return pmvd_;
+  }
 
   void addPermutation(const Indices & permutation)
   {
@@ -381,22 +393,22 @@ private:
         var1 = 0.0;
       else
         var1 = var2;
-      SquareMatrix & mat2D = matrices2D[i];
-      Matrix & mat1D = matrices1D[i];
+      SquareMatrix & mat2D = matrices2D_[i];
+      Matrix & mat1D = matrices1D_[i];
       extract2D(Linv, mat2D);
       extract1D(covXYperm_, mat1D);
-      const MatrixImplementation m1(mat1D.getImplementation()->genProd(*mat2D.getImplementation(), true, true));
-      const MatrixImplementation m2(m1.genProd(*mat2D.getImplementation(), false, false));
-      const MatrixImplementation m3(m2.genProd(*mat1D.getImplementation(), false, false));
-      var2 = m3(0, 0);
+      const MatrixImplementation M1(mat1D.getImplementation()->genProd(*mat2D.getImplementation(), true, true));
+      const MatrixImplementation M2(M1.genProd(*mat2D.getImplementation(), false, false));
+      const MatrixImplementation M3(M2.genProd(*mat1D.getImplementation(), false, false));
+      var2 = M3(0, 0);
       delta_[permutation[i]] = var2 - var1;
-      if (i < dimension_ - 1 && fullVar - var2 > 0)
-        weight /= fullVar - var2;
+      if (i < dimension_ - 1 && fullVar_ - var2 > 0)
+        weight /= fullVar_ - var2;
     }
     lmg_ += delta_;
     pmvd_ += weight * delta_;
     nbPermutations_++;
-    totalWeigtht_ += weight;
+    totalWeight_ += weight;
   }
 
   /* Apply a permutation to a square matrix */
@@ -460,14 +472,14 @@ private:
   Matrix covXY_;
   Matrix covXYperm_;
   Scalar varY_;
-  Scalar fullVar;
+  Scalar fullVar_;
   UnsignedInteger nbPermutations_;
-  Scalar totalWeigtht_;
+  Scalar totalWeight_;
   Point lmg_;
   Point pmvd_;
   Point delta_;
-  Collection<SquareMatrix> matrices2D;
-  Collection<Matrix> matrices1D;
+  Collection<SquareMatrix> matrices2D_;
+  Collection<Matrix> matrices1D_;
 };
 
 
@@ -478,7 +490,7 @@ MulticollinearityAnalysis::MulticollinearityAnalysis()
   // Nothing to do
 }
 
-/* Constructor with input sample */
+/* Constructor with input sample (will only allow one to compute the VIF metric) */
 MulticollinearityAnalysis::MulticollinearityAnalysis(const Sample & firstSample)
   : PersistentObject()
   , firstSample_(firstSample)
@@ -518,12 +530,15 @@ void MulticollinearityAnalysis::computeLmgPmvd(PointWithDescription & lmg, Point
 {
   checkInputSample();
   checkOutputSample();
-  if (!(firstSample_.getDimension() <= 28)) throw InvalidDimensionException(HERE) << "Error: input sample dimension must be at most 28";
+  UnsignedInteger maxDimension = ResourceMap::GetAsUnsignedInteger("MulticollinearityAnalysis-MaximumInputDimensionForLmgPmvd");
+  maxDimension = std::min(maxDimension, 31ul); // Make sure we don't overflow 32-bit integers
+  if (!(firstSample_.getDimension() <= maxDimension)) throw InvalidDimensionException(HERE) << "Error: input sample dimension must be at most " << maxDimension;
 
   LmgPmvdAlgorithm algo(computeCovariance());
   algo.run();
-  algo.getResult(lmg, pmvd);
+  lmg = algo.getLmg();
   lmg.setDescription(firstSample_.getDescription());
+  pmvd = algo.getPmvd();
   pmvd.setDescription(firstSample_.getDescription());
 }
 
@@ -532,11 +547,13 @@ void MulticollinearityAnalysis::estimateLmgPmvdMonteCarlo(PointWithDescription &
 {
   checkInputSample();
   checkOutputSample();
+  if (!(iterations > 0)) throw InvalidArgumentException(HERE) << "Error: the number of iterations must be positive";
 
   LmgPmvdMonteCarloAlgorithm algo(computeCovariance(), iterations);
   algo.run();
-  algo.getResult(lmg, pmvd);
+  lmg = algo.getLmg();
   lmg.setDescription(firstSample_.getDescription());
+  pmvd = algo.getPmvd();
   pmvd.setDescription(firstSample_.getDescription());
 }
 
@@ -547,9 +564,9 @@ PointWithDescription MulticollinearityAnalysis::computeJohnson() const
   checkOutputSample();
 
   // Compute the correlation matrix of the full sample (input + output)
-  Sample fullSample(firstSample_);
-  fullSample.stack(secondSample_);
-  const CorrelationMatrix corMatrix(fullSample.computeLinearCorrelation());
+  Sample joinedSample(firstSample_);
+  joinedSample.stack(secondSample_);
+  const CorrelationMatrix corMatrix(joinedSample.computeLinearCorrelation());
 
   // Extract needed parts of the correlation matrix
   const UnsignedInteger dimension = firstSample_.getDimension();
@@ -583,7 +600,31 @@ PointWithDescription MulticollinearityAnalysis::computeJohnson() const
 /* Compute VIF metric */
 PointWithDescription MulticollinearityAnalysis::computeVIF() const
 {
-  throw NotYetImplementedException(HERE);
+  checkInputSample();
+
+  // We create an arbitrary output sample (the algorithm needs one although the metric doesn't depend on it)
+  const UnsignedInteger size = firstSample_.getSize();
+  Sample outputSample(size, 1);
+  for (UnsignedInteger i = 0; i < size; i += 2)
+    outputSample(i, 0) = 1.0;
+
+  // Perform a linear regression
+  LinearModelAlgorithm algo(firstSample_, outputSample);
+  const LinearModelResult linearModelResult(algo.getResult());
+  const SymmetricMatrix gramInverse(linearModelResult.getLeastSquaresMethod().getGramInverse());
+  const CorrelationMatrix R(covarianceToCorrelation(removeRowAndColumn(gramInverse, 0)));
+  const Scalar detR = R.computeDeterminant();
+  if (!(detR > 0.0)) throw NotDefinedException(HERE) << "Error: the matrix is singular, its determinant is " << detR;
+
+  const UnsignedInteger dimension = firstSample_.getDimension();
+  PointWithDescription result(dimension);
+  for(UnsignedInteger i = 0; i < dimension; i++)
+  {
+    const SymmetricMatrix Ri(removeRowAndColumn(R, i));
+    result[i] = Ri.computeDeterminant() / detR;
+  }
+  result.setDescription(firstSample_.getDescription());
+  return result;
 }
 
 void MulticollinearityAnalysis::checkInputSample() const
@@ -602,9 +643,51 @@ void MulticollinearityAnalysis::checkOutputSample() const
 /* Compute the covariance matrix of the full sample (input + output) */
 CovarianceMatrix MulticollinearityAnalysis::computeCovariance() const
 {
-  Sample fullSample(firstSample_);
-  fullSample.stack(secondSample_);
-  return fullSample.computeCovariance();
+  Sample joinedSample(firstSample_);
+  joinedSample.stack(secondSample_);
+  return joinedSample.computeCovariance();
+}
+
+/* Remove a row and a column from a symmetric matrix */
+SymmetricMatrix MulticollinearityAnalysis::removeRowAndColumn(const SymmetricMatrix & matrix, const UnsignedInteger rowCol) const
+{
+  const UnsignedInteger size = matrix.getDimension();
+  SymmetricMatrix result(size - 1);
+  UnsignedInteger i2 = 0;
+  for (UnsignedInteger i = 0; i < size; i++)
+  {
+    if (i != rowCol)
+    {
+      UnsignedInteger j2 = 0;
+      for (UnsignedInteger j = 0; j <= i; j++)
+      {
+        if (j != rowCol)
+        {
+          result(i2, j2) = matrix(i, j);
+          j2++;
+        }
+      }
+      i2++;
+    }
+  }
+  return result;
+}
+
+/* Convert a covariance matrix to a correlation matrix */
+CorrelationMatrix MulticollinearityAnalysis::covarianceToCorrelation(const SymmetricMatrix & matrix) const
+{
+  const UnsignedInteger size = matrix.getDimension();
+  CorrelationMatrix result(size);
+  for (UnsignedInteger i = 0; i < size; i++)
+  {
+    for (UnsignedInteger j = 0; j < i; j++)
+    {
+      Scalar pij = matrix(i, i) * matrix(j, j);
+      if (!(pij > 0)) throw InvalidArgumentException(HERE) << "Error: can't compute the correlation matrix";
+      result(i, j) = matrix(i, j) / std::sqrt(pij);
+    }
+  }
+  return result;
 }
 
 /* Method save() stores the object through the StorageManager */
