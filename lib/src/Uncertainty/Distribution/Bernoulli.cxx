@@ -75,7 +75,7 @@ Bool Bernoulli::isIntegral() const
 Bool Bernoulli::operator ==(const Bernoulli & other) const
 {
   if (this == &other) return true;
-  return p_ == other.p_;
+  return hasEqualBase(other) && p_ == other.p_;
 }
 
 Bool Bernoulli::equals(const DistributionImplementation & other) const

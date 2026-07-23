@@ -75,7 +75,7 @@ Bool KernelMixture::operator ==(const KernelMixture & other) const
 {
   if (this == &other) return true;
   if (useApproximatePDFCDF_) return (bandwidth_ == other.bandwidth_) && (*p_kernel_ == *other.p_kernel_) && (pdfApproximationCDF_ == other.pdfApproximationCDF_) && (cdfApproximation_ == other.cdfApproximation_) && (pdfApproximationCCDF_ == other.pdfApproximationCCDF_) && (ccdfApproximation_ == other.ccdfApproximation_);
-  return (bandwidth_ == other.bandwidth_) && (*p_kernel_ == *other.p_kernel_) && (sample_ == other.sample_);
+  return hasEqualBase(other) && (bandwidth_ == other.bandwidth_) && (*p_kernel_ == *other.p_kernel_) && (sample_ == other.sample_);
 }
 
 Bool KernelMixture::equals(const DistributionImplementation & other) const

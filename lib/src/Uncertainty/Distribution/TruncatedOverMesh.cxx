@@ -67,7 +67,7 @@ TruncatedOverMesh::TruncatedOverMesh(const Distribution & distribution, const Me
 Bool TruncatedOverMesh::operator ==(const TruncatedOverMesh & other) const
 {
   if (this == &other) return true;
-  return (distribution_ == other.distribution_) && (mesh_ == other.mesh_);
+  return hasEqualBase(other) && (distribution_ == other.distribution_) && (mesh_ == other.mesh_);
 }
 
 Bool TruncatedOverMesh::equals(const DistributionImplementation & other) const

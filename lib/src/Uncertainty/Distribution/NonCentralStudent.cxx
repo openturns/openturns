@@ -52,7 +52,7 @@ NonCentralStudent::NonCentralStudent(const Scalar nu,
 Bool NonCentralStudent::operator ==(const NonCentralStudent & other) const
 {
   if (this == &other) return true;
-  return (nu_ == other.nu_) && (delta_ == other.delta_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (nu_ == other.nu_) && (delta_ == other.delta_) && (gamma_ == other.gamma_);
 }
 
 Bool NonCentralStudent::equals(const DistributionImplementation & other) const

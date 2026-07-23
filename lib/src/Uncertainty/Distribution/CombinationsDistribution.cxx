@@ -57,7 +57,7 @@ CombinationsDistribution::CombinationsDistribution(const UnsignedInteger k,
 Bool CombinationsDistribution::operator ==(const CombinationsDistribution & other) const
 {
   if (this == &other) return true;
-  return (k_ == other.k_) && (n_ == other.n_);
+  return hasEqualBase(other) && (k_ == other.k_) && (n_ == other.n_);
 }
 
 Bool CombinationsDistribution::equals(const DistributionImplementation & other) const

@@ -297,7 +297,7 @@ Solver CompositeDistribution::getSolver() const
 Bool CompositeDistribution::operator ==(const CompositeDistribution & other) const
 {
   if (this == &other) return true;
-  return (antecedent_ == other.antecedent_) && (function_ == other.function_);
+  return hasEqualBase(other) && (antecedent_ == other.antecedent_) && (function_ == other.function_);
 }
 
 Bool CompositeDistribution::equals(const DistributionImplementation & other) const

@@ -57,7 +57,7 @@ UniformOrderStatistics::UniformOrderStatistics(const UnsignedInteger dimension)
 Bool UniformOrderStatistics::operator ==(const UniformOrderStatistics & other) const
 {
   if (this == &other) return true;
-  return vertices_ == other.vertices_;
+  return hasEqualBase(other) && vertices_ == other.vertices_;
 }
 
 Bool UniformOrderStatistics::equals(const DistributionImplementation & other) const

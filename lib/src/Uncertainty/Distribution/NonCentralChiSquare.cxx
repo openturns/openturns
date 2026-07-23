@@ -48,7 +48,7 @@ NonCentralChiSquare::NonCentralChiSquare(const Scalar nu,
 Bool NonCentralChiSquare::operator ==(const NonCentralChiSquare & other) const
 {
   if (this == &other) return true;
-  return (nu_ == other.nu_) && (lambda_ == other.lambda_);
+  return hasEqualBase(other) && (nu_ == other.nu_) && (lambda_ == other.lambda_);
 }
 
 Bool NonCentralChiSquare::equals(const DistributionImplementation & other) const

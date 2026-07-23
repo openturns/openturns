@@ -63,7 +63,7 @@ ProductDistribution::ProductDistribution(const Distribution & left,
 Bool ProductDistribution::operator ==(const ProductDistribution & other) const
 {
   if (this == &other) return true;
-  return (p_left_ == other.getLeft().getImplementation()) && (p_right_ == other.getRight().getImplementation());
+  return hasEqualBase(other) && (p_left_ == other.getLeft().getImplementation()) && (p_right_ == other.getRight().getImplementation());
 }
 
 Bool ProductDistribution::equals(const DistributionImplementation & other) const

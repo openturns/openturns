@@ -61,7 +61,7 @@ GumbelCopula::GumbelCopula(const Scalar theta)
 Bool GumbelCopula::operator ==(const GumbelCopula & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool GumbelCopula::equals(const DistributionImplementation & other) const

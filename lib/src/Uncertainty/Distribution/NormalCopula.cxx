@@ -70,7 +70,7 @@ NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
 Bool NormalCopula::operator ==(const NormalCopula & other) const
 {
   if (this == &other) return true;
-  return correlation_ == other.correlation_;
+  return hasEqualBase(other) && correlation_ == other.correlation_;
 }
 
 Bool NormalCopula::equals(const DistributionImplementation & other) const

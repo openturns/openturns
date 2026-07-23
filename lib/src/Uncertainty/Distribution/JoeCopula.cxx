@@ -77,7 +77,7 @@ void JoeCopula::updatePickandFunction()
 Bool JoeCopula::operator ==(const JoeCopula & other) const
 {
   if (this == &other) return true;
-  return (theta_ == other.theta_) && (psi1_ == other.psi1_) && (psi2_ == other.psi2_);
+  return hasEqualBase(other) && (theta_ == other.theta_) && (psi1_ == other.psi1_) && (psi2_ == other.psi2_);
 }
 
 /* String converter */

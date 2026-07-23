@@ -65,7 +65,7 @@ BlockIndependentCopula::BlockIndependentCopula(const DistributionCollection & co
 Bool BlockIndependentCopula::operator ==(const BlockIndependentCopula & other) const
 {
   if (this == &other) return true;
-  return copulaCollection_ == other.copulaCollection_;
+  return hasEqualBase(other) && copulaCollection_ == other.copulaCollection_;
 }
 
 Bool BlockIndependentCopula::equals(const DistributionImplementation & other) const

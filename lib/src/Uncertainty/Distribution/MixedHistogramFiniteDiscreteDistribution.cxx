@@ -110,7 +110,7 @@ MixedHistogramFiniteDiscreteDistribution::MixedHistogramFiniteDiscreteDistributi
 Bool MixedHistogramFiniteDiscreteDistribution::operator ==(const MixedHistogramFiniteDiscreteDistribution & other) const
 {
   if (this == &other) return true;
-  return (ticksCollection_ == other.ticksCollection_) && (kind_ == other.kind_) && (probabilityTable_ == other.probabilityTable_);
+  return hasEqualBase(other) && (ticksCollection_ == other.ticksCollection_) && (kind_ == other.kind_) && (probabilityTable_ == other.probabilityTable_);
 }
 
 Bool MixedHistogramFiniteDiscreteDistribution::equals(const DistributionImplementation & other) const

@@ -60,7 +60,7 @@ ChiSquare::ChiSquare(const Scalar nu)
 Bool ChiSquare::operator ==(const ChiSquare & other) const
 {
   if (this == &other) return true;
-  return nu_ == other.nu_;
+  return hasEqualBase(other) && nu_ == other.nu_;
 }
 
 Bool ChiSquare::equals(const DistributionImplementation & other) const

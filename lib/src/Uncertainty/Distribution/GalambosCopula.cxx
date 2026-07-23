@@ -67,7 +67,7 @@ void GalambosCopula::updatePickandFunction()
 Bool GalambosCopula::operator ==(const GalambosCopula & other) const
 {
   if (this == &other) return true;
-  return (theta_ == other.theta_);
+  return hasEqualBase(other) && (theta_ == other.theta_);
 }
 
 /* String converter */

@@ -113,7 +113,7 @@ Bool FiniteDiscreteDistribution::isIntegral() const
 Bool FiniteDiscreteDistribution::operator ==(const FiniteDiscreteDistribution & other) const
 {
   if (this == &other) return true;
-  return (points_ == other.points_) && (probabilities_ == other.probabilities_);
+  return hasEqualBase(other) && (points_ == other.points_) && (probabilities_ == other.probabilities_);
 }
 
 Bool FiniteDiscreteDistribution::equals(const DistributionImplementation & other) const

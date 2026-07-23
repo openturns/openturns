@@ -293,6 +293,7 @@ int main(int, char *[])
         // Comparison with a clone
         Normal other(distribution.getDimension());
         other.setParameter(distribution.getParameter());
+        other.setDescription(distribution.getDescription());
         const Bool equal = distribution == other;
         fullprint << "Comparison with a clone " << equal << std::endl;
       }
@@ -300,6 +301,7 @@ int main(int, char *[])
         // Comparison with another member of the same family
         Normal other(distribution.getDimension());
         other.setParameter(distribution.getParameter() * 0.5);
+        other.setDescription(distribution.getDescription());
         const Bool equal = distribution == other;
         fullprint << "Comparison with another member " << equal << std::endl;
       }

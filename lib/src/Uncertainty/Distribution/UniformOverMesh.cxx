@@ -54,7 +54,7 @@ UniformOverMesh::UniformOverMesh(const Mesh & mesh)
 Bool UniformOverMesh::operator ==(const UniformOverMesh & other) const
 {
   if (this == &other) return true;
-  return (mesh_ == other.mesh_);
+  return hasEqualBase(other) && (mesh_ == other.mesh_);
 }
 
 Bool UniformOverMesh::equals(const DistributionImplementation & other) const

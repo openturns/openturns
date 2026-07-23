@@ -51,7 +51,7 @@ SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
 Bool SquaredNormal::operator ==(const SquaredNormal & other) const
 {
   if (this == &other) return true;
-  return mu_ == other.mu_ && sigma_ == other.sigma_;
+  return hasEqualBase(other) && mu_ == other.mu_ && sigma_ == other.sigma_;
 }
 
 Bool SquaredNormal::equals(const DistributionImplementation & other) const

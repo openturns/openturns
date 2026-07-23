@@ -161,7 +161,7 @@ PointConditionalDistribution::PointConditionalDistribution(const Distribution & 
 Bool PointConditionalDistribution::operator ==(const PointConditionalDistribution & other) const
 {
   if (this == &other) return true;
-  return (distribution_ == other.distribution_) && (conditioningIndices_ == other.conditioningIndices_) && (conditioningValues_ == other.conditioningValues_);
+  return hasEqualBase(other) && (distribution_ == other.distribution_) && (conditioningIndices_ == other.conditioningIndices_) && (conditioningValues_ == other.conditioningValues_);
 }
 
 Bool PointConditionalDistribution::equals(const DistributionImplementation & other) const

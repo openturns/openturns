@@ -59,7 +59,7 @@ Chi::Chi(const Scalar nu)
 Bool Chi::operator ==(const Chi & other) const
 {
   if (this == &other) return true;
-  return nu_ == other.nu_;
+  return hasEqualBase(other) && nu_ == other.nu_;
 }
 
 Bool Chi::equals(const DistributionImplementation & other) const

@@ -61,7 +61,7 @@ Wishart::Wishart(const CovarianceMatrix & v,
 Bool Wishart::operator ==(const Wishart & other) const
 {
   if (this == &other) return true;
-  return (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
+  return hasEqualBase(other) && (nu_ == other.nu_) && (cholesky_ == other.cholesky_);
 }
 
 Bool Wishart::equals(const DistributionImplementation & other) const

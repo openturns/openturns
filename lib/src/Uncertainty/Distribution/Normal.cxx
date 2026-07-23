@@ -130,7 +130,7 @@ Normal::Normal(const Point & mean,
 Bool Normal::operator ==(const Normal & other) const
 {
   if (this == &other) return true;
-  return EllipticalDistribution::equals(other);
+  return hasEqualBase(other) && EllipticalDistribution::equals(other);
 }
 
 /* String converter */

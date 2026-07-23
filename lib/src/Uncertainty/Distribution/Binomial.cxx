@@ -79,7 +79,7 @@ Bool Binomial::isIntegral() const
 Bool Binomial::operator ==(const Binomial & other) const
 {
   if (this == &other) return true;
-  return (n_ == other.n_) && (p_ == other.p_);
+  return hasEqualBase(other) && (n_ == other.n_) && (p_ == other.p_);
 }
 
 Bool Binomial::equals(const DistributionImplementation & other) const

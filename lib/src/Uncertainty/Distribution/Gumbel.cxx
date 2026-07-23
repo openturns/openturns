@@ -58,7 +58,7 @@ Gumbel::Gumbel(const Scalar beta,
 Bool Gumbel::operator ==(const Gumbel & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
 }
 
 Bool Gumbel::equals(const DistributionImplementation & other) const

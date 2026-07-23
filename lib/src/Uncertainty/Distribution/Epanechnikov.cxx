@@ -41,9 +41,9 @@ Epanechnikov::Epanechnikov()
 }
 
 /* Comparison operator */
-Bool Epanechnikov::operator ==(const Epanechnikov & ) const
+Bool Epanechnikov::operator ==(const Epanechnikov & other) const
 {
-  return true;
+  return hasEqualBase(other) && true;
 }
 
 Bool Epanechnikov::equals(const DistributionImplementation & other) const

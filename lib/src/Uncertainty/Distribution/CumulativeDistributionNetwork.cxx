@@ -58,7 +58,7 @@ CumulativeDistributionNetwork::CumulativeDistributionNetwork(const DistributionC
 Bool CumulativeDistributionNetwork::operator ==(const CumulativeDistributionNetwork & other) const
 {
   if (this == &other) return true;
-  return (distributionCollection_ == other.distributionCollection_) && (graph_ == other.graph_);
+  return hasEqualBase(other) && (distributionCollection_ == other.distributionCollection_) && (graph_ == other.graph_);
 }
 
 Bool CumulativeDistributionNetwork::equals(const DistributionImplementation & other) const

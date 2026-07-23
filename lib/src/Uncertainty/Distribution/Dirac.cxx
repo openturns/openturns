@@ -85,7 +85,7 @@ Bool Dirac::isIntegral() const
 Bool Dirac::operator ==(const Dirac & other) const
 {
   if (this == &other) return true;
-  return point_ == other.point_;
+  return hasEqualBase(other) && point_ == other.point_;
 }
 
 Bool Dirac::equals(const DistributionImplementation & other) const

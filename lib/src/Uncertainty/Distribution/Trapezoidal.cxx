@@ -62,7 +62,7 @@ Trapezoidal::Trapezoidal(const Scalar a,
 Bool Trapezoidal::operator ==(const Trapezoidal & other) const
 {
   if (this == &other) return true;
-  return (a_ == other.a_) && (b_ == other.b_) && (c_ == other.c_) && (d_ == other.d_);
+  return hasEqualBase(other) && (a_ == other.a_) && (b_ == other.b_) && (c_ == other.c_) && (d_ == other.d_);
 }
 
 Bool Trapezoidal::equals(const DistributionImplementation & other) const

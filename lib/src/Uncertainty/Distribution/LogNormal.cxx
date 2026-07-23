@@ -74,7 +74,7 @@ LogNormal::LogNormal(const Scalar muLog,
 Bool LogNormal::operator ==(const LogNormal & other) const
 {
   if (this == &other) return true;
-  return (muLog_ == other.muLog_) && (sigmaLog_ == other.sigmaLog_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (muLog_ == other.muLog_) && (sigmaLog_ == other.sigmaLog_) && (gamma_ == other.gamma_);
 }
 
 Bool LogNormal::equals(const DistributionImplementation & other) const

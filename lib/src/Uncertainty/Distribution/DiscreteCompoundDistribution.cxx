@@ -74,7 +74,7 @@ Bool DiscreteCompoundDistribution::isIntegral() const
 Bool DiscreteCompoundDistribution::operator ==(const DiscreteCompoundDistribution & other) const
 {
   if (this == &other) return true;
-  return baseDistribution_ == other.baseDistribution_ && compoundDistribution_ == other.compoundDistribution_;
+  return hasEqualBase(other) && baseDistribution_ == other.baseDistribution_ && compoundDistribution_ == other.compoundDistribution_;
 }
 
 Bool DiscreteCompoundDistribution::equals(const DistributionImplementation & other) const

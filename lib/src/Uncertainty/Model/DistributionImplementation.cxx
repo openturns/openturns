@@ -145,6 +145,16 @@ Bool DistributionImplementation::equals(const DistributionImplementation & ) con
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::equals";
 }
 
+Bool DistributionImplementation::hasEqualBase(const DistributionImplementation & other) const
+{
+  return (dimension_ == other.dimension_)
+      && (description_ == other.description_)
+      && (weight_ == other.weight_)
+      && (range_ == other.range_)
+      && (isParallel_ == other.isParallel_)
+      && (isCopula_ == other.isCopula_);
+}
+
 /* Comparison operator */
 Bool DistributionImplementation::operator !=(const DistributionImplementation & other) const
 {

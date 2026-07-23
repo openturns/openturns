@@ -95,7 +95,7 @@ void NormalGamma::computeRange()
 Bool NormalGamma::operator ==(const NormalGamma & other) const
 {
   if (this == &other) return true;
-  return (mu_ == other.mu_) && (kappa_ == other.kappa_) && (alpha_ == other.alpha_) && (beta_ == other.beta_);
+  return hasEqualBase(other) && (mu_ == other.mu_) && (kappa_ == other.kappa_) && (alpha_ == other.alpha_) && (beta_ == other.beta_);
 }
 
 Bool NormalGamma::equals(const DistributionImplementation & other) const

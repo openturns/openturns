@@ -67,7 +67,7 @@ JointByConditioningDistribution::JointByConditioningDistribution(const Distribut
 Bool JointByConditioningDistribution::operator ==(const JointByConditioningDistribution & other) const
 {
   if (this == &other) return true;
-  return (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
+  return hasEqualBase(other) && (conditionedDistribution_ == other.conditionedDistribution_) && (conditioningDistribution_ == other.conditioningDistribution_) && (linkFunction_ == other.linkFunction_);
 }
 
 Bool JointByConditioningDistribution::equals(const DistributionImplementation & other) const

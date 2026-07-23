@@ -60,7 +60,7 @@ PlackettCopula::PlackettCopula(const Scalar theta)
 Bool PlackettCopula::operator ==(const PlackettCopula & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool PlackettCopula::equals(const DistributionImplementation & other) const

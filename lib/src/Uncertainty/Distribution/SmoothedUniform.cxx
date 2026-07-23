@@ -73,7 +73,7 @@ SmoothedUniform::SmoothedUniform(const Scalar a,
 Bool SmoothedUniform::operator ==(const SmoothedUniform & other) const
 {
   if (this == &other) return true;
-  return (a_ == other.a_) && (b_ == other.b_) && (sigma_ == other.sigma_);
+  return hasEqualBase(other) && (a_ == other.a_) && (b_ == other.b_) && (sigma_ == other.sigma_);
 }
 
 Bool SmoothedUniform::equals(const DistributionImplementation & other) const

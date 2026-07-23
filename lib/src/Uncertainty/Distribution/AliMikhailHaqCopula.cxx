@@ -58,7 +58,7 @@ AliMikhailHaqCopula::AliMikhailHaqCopula(const Scalar theta)
 Bool AliMikhailHaqCopula::operator ==(const AliMikhailHaqCopula & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool AliMikhailHaqCopula::equals(const DistributionImplementation & other) const

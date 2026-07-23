@@ -67,7 +67,7 @@ VonMises::VonMises(const Scalar mu,
 Bool VonMises::operator ==(const VonMises & other) const
 {
   if (this == &other) return true;
-  return (mu_ == other.mu_) && (kappa_ == other.kappa_);
+  return hasEqualBase(other) && (mu_ == other.mu_) && (kappa_ == other.kappa_);
 }
 
 Bool VonMises::equals(const DistributionImplementation & other) const

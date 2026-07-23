@@ -61,7 +61,7 @@ Arcsine::Arcsine(const Scalar a,
 Bool Arcsine::operator ==(const Arcsine & other) const
 {
   if (this == &other) return true;
-  return (a_ == other.a_) && (b_ == other.b_);
+  return hasEqualBase(other) && (a_ == other.a_) && (b_ == other.b_);
 }
 
 Bool Arcsine::equals(const DistributionImplementation & other) const

@@ -49,7 +49,7 @@ MinCopula::MinCopula(const UnsignedInteger dim)
 Bool MinCopula::operator ==(const MinCopula & other) const
 {
   if (this == &other) return true;
-  return getDimension() == other.getDimension();
+  return hasEqualBase(other) && getDimension() == other.getDimension();
 }
 
 Bool MinCopula::equals(const DistributionImplementation & other) const

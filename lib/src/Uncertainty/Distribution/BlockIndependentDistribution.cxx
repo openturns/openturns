@@ -62,7 +62,7 @@ BlockIndependentDistribution::BlockIndependentDistribution(const DistributionCol
 Bool BlockIndependentDistribution::operator ==(const BlockIndependentDistribution & other) const
 {
   if (this == &other) return true;
-  return distributionCollection_ == other.distributionCollection_;
+  return hasEqualBase(other) && distributionCollection_ == other.distributionCollection_;
 }
 
 Bool BlockIndependentDistribution::equals(const DistributionImplementation & other) const

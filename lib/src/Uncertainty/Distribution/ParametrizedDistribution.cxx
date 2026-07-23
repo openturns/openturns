@@ -61,7 +61,7 @@ ParametrizedDistribution * ParametrizedDistribution::clone() const
 Bool ParametrizedDistribution::operator ==(const ParametrizedDistribution & other) const
 {
   if (this == &other) return true;
-  return (distributionParameters_ == other.distributionParameters_) && (distribution_ == other.distribution_);
+  return hasEqualBase(other) && (distributionParameters_ == other.distributionParameters_) && (distribution_ == other.distribution_);
 }
 
 Bool ParametrizedDistribution::equals(const DistributionImplementation & other) const

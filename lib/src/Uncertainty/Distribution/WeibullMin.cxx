@@ -62,7 +62,7 @@ WeibullMin::WeibullMin(const Scalar beta,
 Bool WeibullMin::operator ==(const WeibullMin & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
 }
 
 Bool WeibullMin::equals(const DistributionImplementation & other) const

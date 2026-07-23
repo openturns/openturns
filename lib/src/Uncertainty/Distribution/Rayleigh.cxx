@@ -59,7 +59,7 @@ Rayleigh::Rayleigh(const Scalar beta,
 Bool Rayleigh::operator ==(const Rayleigh & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
 }
 
 Bool Rayleigh::equals(const DistributionImplementation & other) const

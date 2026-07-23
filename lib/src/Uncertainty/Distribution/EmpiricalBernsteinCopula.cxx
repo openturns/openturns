@@ -105,7 +105,7 @@ EmpiricalBernsteinCopula * EmpiricalBernsteinCopula::clone() const
 Bool EmpiricalBernsteinCopula::operator ==(const EmpiricalBernsteinCopula & other) const
 {
   if (this == &other) return true;
-  return (copulaSample_ == other.copulaSample_) && (binNumber_ == other.binNumber_);
+  return hasEqualBase(other) && (copulaSample_ == other.copulaSample_) && (binNumber_ == other.binNumber_);
 }
 
 Bool EmpiricalBernsteinCopula::equals(const DistributionImplementation & other) const

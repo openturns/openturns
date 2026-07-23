@@ -84,7 +84,7 @@ Mixture::Mixture(const DistributionCollection & coll,
 Bool Mixture::operator ==(const Mixture & other) const
 {
   if (this == &other) return true;
-  return distributionCollection_ == other.distributionCollection_;
+  return hasEqualBase(other) && distributionCollection_ == other.distributionCollection_;
 }
 
 Bool Mixture::equals(const DistributionImplementation & other) const

@@ -74,7 +74,7 @@ Beta::Beta(const Scalar alpha,
 Bool Beta::operator ==(const Beta & other) const
 {
   if (this == &other) return true;
-  return (alpha_ == other.alpha_) && (beta_ == other.beta_) &&
+  return hasEqualBase(other) && (alpha_ == other.alpha_) && (beta_ == other.beta_) &&
          (a_ == other.a_) && (b_ == other.b_);
 }
 

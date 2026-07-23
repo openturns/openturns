@@ -85,7 +85,7 @@ Bool ZipfMandelbrot::isIntegral() const
 Bool ZipfMandelbrot::operator ==(const ZipfMandelbrot & other) const
 {
   if (this == &other) return true;
-  return (n_ == other.n_) && (q_ == other.q_) && (s_ == other.s_);
+  return hasEqualBase(other) && (n_ == other.n_) && (q_ == other.q_) && (s_ == other.s_);
 }
 
 Bool ZipfMandelbrot::equals(const DistributionImplementation & other) const
