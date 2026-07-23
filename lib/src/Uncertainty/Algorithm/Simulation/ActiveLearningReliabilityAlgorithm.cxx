@@ -84,6 +84,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -103,6 +104,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -122,6 +124,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -141,6 +144,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -160,6 +164,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
     p_simulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -172,8 +177,6 @@ ActiveLearningReliabilityAlgorithm * ActiveLearningReliabilityAlgorithm::clone()
 {
   return new ActiveLearningReliabilityAlgorithm(*this);
 }
-
-
 
 /* Class to retrieve GP plus uncertainty as Function*/
 class GPWithUncertainty : public EvaluationImplementation {
@@ -281,7 +284,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
   Pointer<EventSimulation> p_simulationAlgorithmMean_ = p_defaultSimulationAlgorithm_->clone();
                                                 
   p_simulationAlgorithmMean_->setEvent(meanEvent);
-  RandomGenerator::SetSeed(0);
+  RandomGenerator::SetSeed(simulationAlgorithmSeed_);
   p_simulationAlgorithmMean_->run();
   Scalar meanProbability = p_simulationAlgorithmMean_-> getResult().getProbabilityEstimate();
   
@@ -295,7 +298,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
                                                
   Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();                                          
   p_simulationAlgorithmMinus_->setEvent(eventMinus);
-  RandomGenerator::SetSeed(0);
+  RandomGenerator::SetSeed(simulationAlgorithmSeed_);
   p_simulationAlgorithmMinus_->run();
   Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
   
@@ -309,7 +312,7 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
   
   Pointer<EventSimulation> p_simulationAlgorithmPlus_ = p_defaultSimulationAlgorithm_->clone();                                               
   p_simulationAlgorithmPlus_->setEvent(eventPlus);
-  RandomGenerator::SetSeed(0);
+  RandomGenerator::SetSeed(simulationAlgorithmSeed_);
   p_simulationAlgorithmPlus_->run();
   Scalar plusProbability = p_simulationAlgorithmPlus_-> getResult().getProbabilityEstimate();
 
@@ -394,9 +397,21 @@ void ActiveLearningReliabilityAlgorithm::setResult(const ActiveLearningReliabili
 
 ActiveLearningReliabilityResult ActiveLearningReliabilityAlgorithm::getResult() const
 {
-   return activeLearningReliabilityResult_;
+  return activeLearningReliabilityResult_;
 }
 
+
+// Accessor to simulationAlgorithmSeed
+
+void ActiveLearningReliabilityAlgorithm::setSimulationAlgorithmSeed(const UnsignedInteger seed) 
+{
+  simulationAlgorithmSeed_ = seed;
+}
+  
+UnsignedInteger ActiveLearningReliabilityAlgorithm::getSimulationAlgorithmSeed(const UnsignedInteger seed) const 
+{
+  return simulationAlgorithmSeed_;
+}
 
 /*EventSimulation& ActiveLearningReliabilityAlgorithm::getSimulationAlgorithm() const
 {
@@ -445,7 +460,7 @@ void ActiveLearningReliabilityAlgorithm::run()
                                                        
       Pointer<EventSimulation> p_currentSimulationAlgorithm = p_defaultSimulationAlgorithm_->clone();
       p_currentSimulationAlgorithm->setEvent(newEvent);
-      RandomGenerator::SetSeed(0);
+      RandomGenerator::SetSeed(simulationAlgorithmSeed_);
       p_currentSimulationAlgorithm->run();
 
       *p_simulationAlgorithm_ = *p_currentSimulationAlgorithm;
