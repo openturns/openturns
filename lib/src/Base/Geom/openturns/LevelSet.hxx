@@ -119,6 +119,8 @@ private:
 
   /** Upper bound of the bounding box */
   Point upperBound_;
+
+  Bool equals(const DomainImplementation & other) const override;
 }; /* class LevelSet */
 
 END_NAMESPACE_OPENTURNS

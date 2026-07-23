@@ -60,6 +60,19 @@ SphericalModel * SphericalModel::clone() const
   return new SphericalModel(*this);
 }
 
+/* Comparison operators */
+Bool SphericalModel::operator ==(const SphericalModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (radius_ == other.radius_);
+}
+
+Bool SphericalModel::equals(const CovarianceModelImplementation & other) const
+{
+  const SphericalModel * p_other = dynamic_cast<const SphericalModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the representative function:
  * rho(tau) = amplitude_ * (1 - 0.5|tau/scale| (3 - (|tau/scale| / radius)^2)) for 0<=|tau/scale|<=radius, 0 otherwise
  */

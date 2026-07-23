@@ -30,6 +30,28 @@ CLASSNAMEINIT(WeightedExperimentImplementation)
 
 static const Factory<WeightedExperimentImplementation> Factory_WeightedExperimentImplementation;
 
+/* Comparison operators */
+Bool WeightedExperimentImplementation::operator ==(const WeightedExperimentImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool WeightedExperimentImplementation::operator !=(const WeightedExperimentImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool WeightedExperimentImplementation::equals(const WeightedExperimentImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In WeightedExperimentImplementation::equals";
+}
+
+Bool WeightedExperimentImplementation::hasEqualBase(const WeightedExperimentImplementation & other) const
+{
+  return (distribution_ == other.distribution_) && (size_ == other.size_);
+}
+
 /* Default constructor */
 WeightedExperimentImplementation::WeightedExperimentImplementation()
   : ExperimentImplementation()

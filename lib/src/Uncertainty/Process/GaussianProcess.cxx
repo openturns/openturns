@@ -95,6 +95,19 @@ GaussianProcess * GaussianProcess::clone() const
   return new GaussianProcess(*this);
 }
 
+/* Comparison operators */
+Bool GaussianProcess::operator ==(const GaussianProcess & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (covarianceModel_ == other.covarianceModel_);
+}
+
+Bool GaussianProcess::equals(const ProcessImplementation & other) const
+{
+  const GaussianProcess * p_other = dynamic_cast<const GaussianProcess *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 void GaussianProcess::initialize() const
 {
   // There is a specific regularization for h-matrices

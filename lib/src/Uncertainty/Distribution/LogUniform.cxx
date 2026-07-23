@@ -63,7 +63,7 @@ LogUniform::LogUniform(const Scalar aLog,
 Bool LogUniform::operator ==(const LogUniform & other) const
 {
   if (this == &other) return true;
-  return (aLog_ == other.aLog_) && (bLog_ == other.bLog_);
+  return hasEqualBase(other) && (aLog_ == other.aLog_) && (bLog_ == other.bLog_);
 }
 
 Bool LogUniform::equals(const DistributionImplementation & other) const

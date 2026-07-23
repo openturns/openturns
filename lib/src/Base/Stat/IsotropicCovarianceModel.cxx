@@ -80,6 +80,19 @@ IsotropicCovarianceModel * IsotropicCovarianceModel::clone() const
   return new IsotropicCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool IsotropicCovarianceModel::operator ==(const IsotropicCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (kernel_ == other.kernel_);
+}
+
+Bool IsotropicCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const IsotropicCovarianceModel * p_other = dynamic_cast<const IsotropicCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance function */
 Scalar IsotropicCovarianceModel::computeAsScalar(const Point & tau) const
 {

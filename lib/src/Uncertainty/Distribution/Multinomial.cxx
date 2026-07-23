@@ -94,7 +94,7 @@ Bool Multinomial::isIntegral() const
 Bool Multinomial::operator ==(const Multinomial & other) const
 {
   if (this == &other) return true;
-  return (n_ == other.n_) && (p_ == other.p_);
+  return hasEqualBase(other) && (n_ == other.n_) && (p_ == other.p_);
 }
 
 Bool Multinomial::equals(const DistributionImplementation & other) const

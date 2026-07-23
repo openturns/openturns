@@ -63,7 +63,7 @@ MultivariateUniform::MultivariateUniform(const Point & a,
 Bool MultivariateUniform::operator ==(const MultivariateUniform & other) const
 {
   if (this == &other) return true;
-  return (a_ == other.a_) && (b_ == other.b_);
+  return hasEqualBase(other) && (a_ == other.a_) && (b_ == other.b_);
 }
 
 Bool MultivariateUniform::equals(const DistributionImplementation & other) const

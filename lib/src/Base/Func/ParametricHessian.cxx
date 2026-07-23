@@ -62,7 +62,7 @@ ParametricHessian * ParametricHessian::clone() const
 Bool ParametricHessian::operator ==(const ParametricHessian & other) const
 {
   if (this == &other) return true;
-  return *p_evaluation_ == *other.p_evaluation_;
+  return hasEqualBase(other) && *p_evaluation_ == *other.p_evaluation_;
 }
 
 Bool ParametricHessian::equals(const HessianImplementation & other) const

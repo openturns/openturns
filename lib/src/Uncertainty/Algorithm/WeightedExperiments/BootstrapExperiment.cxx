@@ -50,6 +50,19 @@ BootstrapExperiment * BootstrapExperiment::clone() const
   return new BootstrapExperiment(*this);
 }
 
+/* Comparison operators */
+Bool BootstrapExperiment::operator ==(const BootstrapExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (sample_ == other.sample_);
+}
+
+Bool BootstrapExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const BootstrapExperiment * p_other = dynamic_cast<const BootstrapExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String BootstrapExperiment::__repr__() const
 {

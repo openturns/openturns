@@ -56,7 +56,7 @@ InverseGamma::InverseGamma(const Scalar k,
 Bool InverseGamma::operator ==(const InverseGamma & other) const
 {
   if (this == &other) return true;
-  return (k_ == other.k_) && (lambda_ == other.lambda_);
+  return hasEqualBase(other) && (k_ == other.k_) && (lambda_ == other.lambda_);
 }
 
 Bool InverseGamma::equals(const DistributionImplementation & other) const

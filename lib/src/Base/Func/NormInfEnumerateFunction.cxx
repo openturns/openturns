@@ -48,6 +48,18 @@ NormInfEnumerateFunction * NormInfEnumerateFunction::clone() const
   return new NormInfEnumerateFunction(*this);
 }
 
+/* Comparison operators */
+Bool NormInfEnumerateFunction::operator ==(const NormInfEnumerateFunction & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool NormInfEnumerateFunction::equals(const EnumerateFunctionImplementation & other) const
+{
+  const NormInfEnumerateFunction * p_other = dynamic_cast<const NormInfEnumerateFunction *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String NormInfEnumerateFunction::__repr__() const

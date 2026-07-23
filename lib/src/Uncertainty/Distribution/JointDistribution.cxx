@@ -118,7 +118,7 @@ Bool JointDistribution::operator ==(const JointDistribution & other) const
     const Distribution right(other.distributionCollection_[i]);
     if (!(left == right)) return false;
   }
-  return true;
+  return hasEqualBase(other) && true;
 }
 
 Bool JointDistribution::equals(const DistributionImplementation & other) const

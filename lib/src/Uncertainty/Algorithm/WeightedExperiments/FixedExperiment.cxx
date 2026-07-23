@@ -59,6 +59,19 @@ FixedExperiment * FixedExperiment::clone() const
   return new FixedExperiment(*this);
 }
 
+/* Comparison operators */
+Bool FixedExperiment::operator ==(const FixedExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (sample_ == other.sample_) && (weights_ == other.weights_);
+}
+
+Bool FixedExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const FixedExperiment * p_other = dynamic_cast<const FixedExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String FixedExperiment::__repr__() const
 {

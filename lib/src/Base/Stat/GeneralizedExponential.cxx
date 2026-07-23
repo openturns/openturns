@@ -67,6 +67,19 @@ GeneralizedExponential * GeneralizedExponential::clone() const
   return new GeneralizedExponential(*this);
 }
 
+/* Comparison operators */
+Bool GeneralizedExponential::operator ==(const GeneralizedExponential & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (p_ == other.p_);
+}
+
+Bool GeneralizedExponential::equals(const CovarianceModelImplementation & other) const
+{
+  const GeneralizedExponential * p_other = dynamic_cast<const GeneralizedExponential *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance density function */
 Scalar GeneralizedExponential::computeAsScalar(const Point & tau) const
 {
@@ -153,8 +166,12 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
 
 void GeneralizedExponential::setFullParameter(const Point & parameter)
 {
+  const UnsignedInteger totalSize = 1 + inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
+  if (parameter.getSize() <= totalSize)
+    throw InvalidArgumentException(HERE) << "In GeneralizedExponential::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
+                                         << " whereas expected size = " << totalSize + 1 ;
   CovarianceModelImplementation::setFullParameter(parameter);
-  setP(parameter[parameter.getSize() - 1]);
+  setP(parameter[totalSize]);
 }
 
 Point GeneralizedExponential::getFullParameter() const

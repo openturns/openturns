@@ -85,7 +85,7 @@ P1LagrangeEvaluation * P1LagrangeEvaluation::clone() const
 Bool P1LagrangeEvaluation::operator ==(const P1LagrangeEvaluation & other) const
 {
   if (this == &other) return true;
-  return (mesh_ == other.mesh_) && (values_ == other.values_);
+  return hasEqualBase(other) && (mesh_ == other.mesh_) && (values_ == other.values_);
 }
 
 

@@ -52,7 +52,7 @@ Frechet::Frechet(const Scalar beta,
 Bool Frechet::operator ==(const Frechet & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
 }
 
 Bool Frechet::equals(const DistributionImplementation & other) const

@@ -85,6 +85,14 @@ protected:
   /** The algorithm for point location */
   EnclosingSimplexAlgorithm enclosingSimplex_;
 
+public:
+  /** Comparison operator */
+  using DomainImplementation::operator ==;
+  Bool operator ==(const MeshDomain & other) const;
+
+private:
+  Bool equals(const DomainImplementation & other) const override;
+
 }; /* class MeshDomain */
 
 END_NAMESPACE_OPENTURNS

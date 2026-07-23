@@ -55,6 +55,11 @@ Bool HessianImplementation::equals(const HessianImplementation & ) const
   throw NotYetImplementedException(HERE) << "In HessianImplementation::equals";
 }
 
+Bool HessianImplementation::hasEqualBase(const HessianImplementation & other) const
+{
+  return parameter_ == other.parameter_;
+}
+
 Bool HessianImplementation::operator !=(const HessianImplementation & other) const
 {
   return !operator==(other);

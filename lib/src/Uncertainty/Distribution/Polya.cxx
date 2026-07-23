@@ -80,7 +80,7 @@ Bool Polya::isIntegral() const
 Bool Polya::operator ==(const Polya & other) const
 {
   if (this == &other) return true;
-  return (r_ == other.r_) && (p_ == other.p_);
+  return hasEqualBase(other) && (r_ == other.r_) && (p_ == other.p_);
 }
 
 Bool Polya::equals(const DistributionImplementation & other) const

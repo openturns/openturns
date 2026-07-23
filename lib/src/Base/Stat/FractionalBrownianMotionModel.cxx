@@ -69,6 +69,19 @@ FractionalBrownianMotionModel * FractionalBrownianMotionModel::clone() const
   return new FractionalBrownianMotionModel(*this);
 }
 
+/* Comparison operators */
+Bool FractionalBrownianMotionModel::operator ==(const FractionalBrownianMotionModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (exponent_ == other.exponent_) && (eta_ == other.eta_);
+}
+
+Bool FractionalBrownianMotionModel::equals(const CovarianceModelImplementation & other) const
+{
+  const FractionalBrownianMotionModel * p_other = dynamic_cast<const FractionalBrownianMotionModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 Scalar FractionalBrownianMotionModel::computeAsScalar(const Point &s,
     const Point &t) const
 {

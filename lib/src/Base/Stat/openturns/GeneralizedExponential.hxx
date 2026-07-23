@@ -47,6 +47,10 @@ public:
                          const Point & amplitude,
                          const Scalar p);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const GeneralizedExponential & other) const;
+
   /** Virtual copy constructor */
   GeneralizedExponential * clone() const override;
 
@@ -91,6 +95,8 @@ private:
 
   /** Exponent of the model */
   Scalar p_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class GeneralizedExponential */
 

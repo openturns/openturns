@@ -59,6 +59,9 @@ public:
   using PersistentObject::operator ==;
 protected:
   virtual Bool equals(const GradientImplementation & other) const;
+
+  /** Compare base class members */
+  Bool hasEqualBase(const GradientImplementation & other) const;
 public:
   using PersistentObject::operator !=;
   Bool operator !=(const GradientImplementation & other) const;

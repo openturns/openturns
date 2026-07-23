@@ -117,6 +117,7 @@ SymmetricMatrix SymmetricTensor::getSheet(const UnsignedInteger k) const
 void SymmetricTensor::setSheet(const UnsignedInteger k,
                                const SymmetricMatrix & m)
 {
+  copyOnWrite();
   hasBeenSymmetrized_ = false;
   getImplementation()->setSheetSym(k, m);
 }

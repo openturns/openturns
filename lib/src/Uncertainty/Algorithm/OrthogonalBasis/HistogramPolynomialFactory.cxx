@@ -71,6 +71,18 @@ HistogramPolynomialFactory * HistogramPolynomialFactory::clone() const
   return new HistogramPolynomialFactory(*this);
 }
 
+/* Comparison operators */
+Bool HistogramPolynomialFactory::operator ==(const HistogramPolynomialFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool HistogramPolynomialFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const HistogramPolynomialFactory * p_other = dynamic_cast<const HistogramPolynomialFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x), P-1(x)=0, P0(x)=1

@@ -97,7 +97,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
 Bool MaximumEntropyOrderStatisticsDistribution::operator ==(const MaximumEntropyOrderStatisticsDistribution & other) const
 {
   if (this == &other) return true;
-  return (distributionCollection_ == other.distributionCollection_);
+  return hasEqualBase(other) && (distributionCollection_ == other.distributionCollection_);
 }
 
 Bool MaximumEntropyOrderStatisticsDistribution::equals(const DistributionImplementation & other) const

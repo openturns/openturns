@@ -46,6 +46,18 @@ HermiteFactory * HermiteFactory::clone() const
   return new HermiteFactory(*this);
 }
 
+/* Comparison operators */
+Bool HermiteFactory::operator ==(const HermiteFactory & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool HermiteFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const HermiteFactory * p_other = dynamic_cast<const HermiteFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
@@ -88,3 +100,4 @@ void HermiteFactory::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
+

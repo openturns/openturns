@@ -56,6 +56,10 @@ public:
   /** Virtual constructor */
   LHSExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const LHSExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -92,6 +96,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   // Cells shuffle

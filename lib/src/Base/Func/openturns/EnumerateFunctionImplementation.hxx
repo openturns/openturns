@@ -48,6 +48,16 @@ public:
   /** Virtual constructor */
   EnumerateFunctionImplementation * clone() const override;
 
+  /** Comparison operator */
+  Bool operator ==(const EnumerateFunctionImplementation & other) const;
+  using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const EnumerateFunctionImplementation & other) const;
+  Bool hasEqualBase(const EnumerateFunctionImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const EnumerateFunctionImplementation & other) const;
+
   /** String converter */
   String __repr__() const override;
 

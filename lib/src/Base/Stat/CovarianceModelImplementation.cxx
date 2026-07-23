@@ -41,6 +41,33 @@ CLASSNAMEINIT(CovarianceModelImplementation)
 
 static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImplementation;
 
+/* Comparison operators */
+Bool CovarianceModelImplementation::operator ==(const CovarianceModelImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool CovarianceModelImplementation::operator !=(const CovarianceModelImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool CovarianceModelImplementation::equals(const CovarianceModelImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::equals";
+}
+
+Bool CovarianceModelImplementation::hasEqualBase(const CovarianceModelImplementation & other) const
+{
+  return (scale_ == other.scale_)
+         && (amplitude_ == other.amplitude_)
+         && (outputCorrelation_ == other.outputCorrelation_)
+         && (isDiagonal_ == other.isDiagonal_)
+         && (isStationary_ == other.isStationary_)
+         && (nuggetFactor_ == other.nuggetFactor_);
+}
+
 /* Dimension-based constructor */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger inputDimension)
   : PersistentObject()
@@ -933,8 +960,8 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   // First the scale parameter
   UnsignedInteger index = 0;
   // Check the size
-  const UnsignedInteger totalSize = inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
-  if (!(parameter.getSize() >= totalSize))
+  const UnsignedInteger totalSize = 1 + inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
+  if (parameter.getSize() < totalSize)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
 
@@ -1015,12 +1042,12 @@ Description CovarianceModelImplementation::getFullParameterDescription() const
 /* Indices of the active parameters */
 void CovarianceModelImplementation::setActiveParameter(const Indices & active)
 {
-  activeParameter_ = active;
-  std::sort(activeParameter_.begin(), activeParameter_.end());
-  auto last = std::unique(activeParameter_.begin(), activeParameter_.end());
-  activeParameter_.erase(last, activeParameter_.end());
-  if (activeParameter_ != active)
+  Indices sorted(active);
+  std::sort(sorted.begin(), sorted.end());
+  const auto last = std::unique(sorted.begin(), sorted.end());
+  if (last != sorted.end())
     throw InvalidArgumentException(HERE) << "Active parameter indices must be unique";
+  activeParameter_ = active;
 }
 
 Indices CovarianceModelImplementation::getActiveParameter() const

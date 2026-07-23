@@ -22,7 +22,7 @@ Compute the criterion based a sample points denoted by :math:`(\vect{x}_1, \dots
       \|\vect{x}_i - \vect{x}_j\|_2^{-p} \right)^{\frac{1}{p}}
     \end{equation*}
 
-This criterion is known to converge to the MinDist criterion defined in :class:`~openturns.SpaceFillingMinDist` (which is the minimal distance between two distinct elements of the design) criterion when :math:`p` tends to infinity.
+This criterion is known to be equivalent to the MinDist criterion defined in :class:`~openturns.SpaceFillingMinDist` (which is the minimal distance between two distinct elements of the design) when :math:`p` tends to infinity, i.e. minimizing :math:`\phi_p` yields the same design as maximizing the minimal distance. Note however that :math:`\phi_p` tends to :math:`1/d_{\min}` numerically, not to :math:`d_{\min}`.
 )RAW"
 
 %enddef

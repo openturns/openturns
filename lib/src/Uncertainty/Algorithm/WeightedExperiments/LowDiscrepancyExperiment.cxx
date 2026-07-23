@@ -92,6 +92,19 @@ LowDiscrepancyExperiment * LowDiscrepancyExperiment::clone() const
   return new LowDiscrepancyExperiment(*this);
 }
 
+/* Comparison operators */
+Bool LowDiscrepancyExperiment::operator ==(const LowDiscrepancyExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (sequence_ == other.sequence_) && (restart_ == other.restart_) && (randomize_ == other.randomize_);
+}
+
+Bool LowDiscrepancyExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const LowDiscrepancyExperiment * p_other = dynamic_cast<const LowDiscrepancyExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String LowDiscrepancyExperiment::__repr__() const
 {

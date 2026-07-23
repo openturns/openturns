@@ -60,7 +60,7 @@ Uniform::Uniform(const Scalar a,
 Bool Uniform::operator ==(const Uniform & other) const
 {
   if (this == &other) return true;
-  return (a_ == other.a_) && (b_ == other.b_);
+  return hasEqualBase(other) && (a_ == other.a_) && (b_ == other.b_);
 }
 
 Bool Uniform::equals(const DistributionImplementation & other) const

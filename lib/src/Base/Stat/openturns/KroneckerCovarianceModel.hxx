@@ -56,6 +56,10 @@ public:
   KroneckerCovarianceModel(const CovarianceModel &rho,
                            const CovarianceMatrix &sigma);
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const KroneckerCovarianceModel & other) const;
+
   /** Virtual copy constructor */
   KroneckerCovarianceModel * clone() const override;
 
@@ -119,6 +123,8 @@ private :
 
   // Number of extra parameter (not scale/amplitude)
   UnsignedInteger extraParameterNumber_;
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
 } ; /* class KroneckerCovarianceModel */
 

@@ -67,7 +67,7 @@ GeneralizedExtremeValue::GeneralizedExtremeValue(const Distribution & distributi
 Bool GeneralizedExtremeValue::operator ==(const GeneralizedExtremeValue & other) const
 {
   if (this == &other) return true;
-  return (mu_ == other.getMu()) && (sigma_ == other.getSigma()) && (xi_ == other.getXi());
+  return hasEqualBase(other) && (mu_ == other.getMu()) && (sigma_ == other.getSigma()) && (xi_ == other.getXi());
 }
 
 Bool GeneralizedExtremeValue::equals(const DistributionImplementation & other) const

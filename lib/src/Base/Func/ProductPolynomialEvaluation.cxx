@@ -64,7 +64,7 @@ ProductPolynomialEvaluation * ProductPolynomialEvaluation::clone() const
 Bool ProductPolynomialEvaluation::operator ==(const ProductPolynomialEvaluation & other) const
 {
   if (this == &other) return true;
-  return polynomials_ == other.polynomials_;
+  return hasEqualBase(other) && polynomials_ == other.polynomials_;
 }
 
 Bool ProductPolynomialEvaluation::equals(const EvaluationImplementation & other) const

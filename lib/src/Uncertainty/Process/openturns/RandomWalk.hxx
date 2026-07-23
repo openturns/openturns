@@ -55,6 +55,10 @@ public:
   /** Virtual constructor */
   RandomWalk * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const RandomWalk & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -108,6 +112,8 @@ private:
 
   /** The current position of the walk */
   mutable Point currentPosition_;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class RandomWalk */
 

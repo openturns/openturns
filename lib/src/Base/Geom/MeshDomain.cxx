@@ -51,6 +51,19 @@ MeshDomain * MeshDomain::clone() const
   return new MeshDomain(*this);
 }
 
+/* Comparison operators */
+Bool MeshDomain::operator ==(const MeshDomain & other) const
+{
+  if (this == &other) return true;
+  return (mesh_ == other.mesh_);
+}
+
+Bool MeshDomain::equals(const DomainImplementation & other) const
+{
+  const MeshDomain * p_other = dynamic_cast<const MeshDomain *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /** Mesh accessor */
 Mesh MeshDomain::getMesh() const
 {

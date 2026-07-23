@@ -59,6 +59,16 @@ public:
   /** Compute the Euclidean distance from given points to the domain */
   virtual Sample computeDistance(const Sample & sample) const;
 
+  /** Comparison operator */
+  Bool operator ==(const DomainImplementation & other) const;
+  using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const DomainImplementation & other) const;
+  Bool hasEqualBase(const DomainImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const DomainImplementation & other) const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

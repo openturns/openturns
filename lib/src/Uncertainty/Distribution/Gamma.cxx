@@ -63,7 +63,7 @@ Gamma::Gamma(const Scalar k,
 Bool Gamma::operator ==(const Gamma & other) const
 {
   if (this == &other) return true;
-  return (k_ == other.k_) && (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (k_ == other.k_) && (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
 }
 
 Bool Gamma::equals(const DistributionImplementation & other) const

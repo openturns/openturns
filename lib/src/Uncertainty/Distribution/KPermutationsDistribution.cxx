@@ -78,7 +78,7 @@ Bool KPermutationsDistribution::isIntegral() const
 Bool KPermutationsDistribution::operator ==(const KPermutationsDistribution & other) const
 {
   if (this == &other) return true;
-  return (k_ == other.k_) && (n_ == other.n_);
+  return hasEqualBase(other) && (k_ == other.k_) && (n_ == other.n_);
 }
 
 Bool KPermutationsDistribution::equals(const DistributionImplementation & other) const

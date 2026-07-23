@@ -59,7 +59,7 @@ InverseNormal::InverseNormal(const Scalar mu,
 Bool InverseNormal::operator ==(const InverseNormal & other) const
 {
   if (this == &other) return true;
-  return (lambda_ == other.lambda_) && (mu_ == other.mu_);
+  return hasEqualBase(other) && (lambda_ == other.lambda_) && (mu_ == other.mu_);
 }
 
 Bool InverseNormal::equals(const DistributionImplementation & other) const

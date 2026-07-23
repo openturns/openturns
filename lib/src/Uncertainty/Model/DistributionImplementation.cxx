@@ -24,6 +24,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
@@ -142,6 +143,16 @@ Bool DistributionImplementation::operator ==(const DistributionImplementation & 
 Bool DistributionImplementation::equals(const DistributionImplementation & ) const
 {
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::equals";
+}
+
+Bool DistributionImplementation::hasEqualBase(const DistributionImplementation & other) const
+{
+  return (dimension_ == other.dimension_)
+      && (description_ == other.description_)
+      && (weight_ == other.weight_)
+      && (range_ == other.range_)
+      && (isParallel_ == other.isParallel_)
+      && (isCopula_ == other.isCopula_);
 }
 
 /* Comparison operator */
@@ -1026,7 +1037,7 @@ Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) c
   const ComputeCDFPolicy policy(inSample, result, *this);
   // This calls GaussKronrodRule::InitializeRules before entering parallel region to prevent concurrent access
   GaussKronrod::GetRules();
-  TBBImplementation::ParallelFor(0, size, policy);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1071,8 +1082,8 @@ Sample DistributionImplementation::computeComplementaryCDFParallel(const Sample 
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeComplementaryCDFPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeComplementaryCDFPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1117,8 +1128,8 @@ Sample DistributionImplementation::computeSurvivalFunctionParallel(const Sample 
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
-  const ComputeSurvivalFunctionPolicy policy( inSample, result, *this );
-  TBBImplementation::ParallelFor( 0, size, policy );
+  const ComputeSurvivalFunctionPolicy policy(inSample, result, *this);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1337,7 +1348,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar cosNOmegaDt = std::cos(N * omegaDt);
       const Scalar sinNOmegaDt = std::sin(N * omegaDt);
       // The bound 4.3556e-4 is such that we get full double precision
-      const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2) : 1.0 - omegaDt2 / 12.0;
+      const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? 1.0 - omegaDt2 / 12.0 : std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2);
       //      value = pdfGrid[N] * w + pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       value = pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       for (UnsignedInteger n = 1; n < N; ++n)
@@ -1600,7 +1611,7 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeDDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1648,7 +1659,7 @@ Sample DistributionImplementation::computePDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputePDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1696,7 +1707,7 @@ Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeLogPDFPolicy policy(inSample, result, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -1932,7 +1943,7 @@ Sample DistributionImplementation::computeQuantileParallel(const Point & prob,
   const UnsignedInteger size = prob.getSize();
   Sample result(size, dimension_);
   const ComputeQuantilePolicy policy(prob, result, tail, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
 }
 
@@ -2084,7 +2095,7 @@ Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & 
   const UnsignedInteger size = sample.getSize();
   Sample outSample(size, getParameterDimension());
   const ComputeLogPDFGradientPolicy policy(sample, outSample, *this);
-  TBBImplementation::ParallelFor(0, size, policy, 1024);
+  TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return outSample;
 }
 

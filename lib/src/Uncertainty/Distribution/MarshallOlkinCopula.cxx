@@ -64,7 +64,7 @@ MarshallOlkinCopula::MarshallOlkinCopula(const Scalar alpha,
 Bool MarshallOlkinCopula::operator ==(const MarshallOlkinCopula & other) const
 {
   if (this == &other) return true;
-  return ((alpha_ == other.alpha_) && (beta_ == other.beta_));
+  return hasEqualBase(other) && ((alpha_ == other.alpha_) && (beta_ == other.beta_));
 }
 
 Bool MarshallOlkinCopula::equals(const DistributionImplementation & other) const

@@ -59,7 +59,7 @@ DatabaseEvaluation * DatabaseEvaluation::clone() const
 Bool DatabaseEvaluation::operator ==(const DatabaseEvaluation & other) const
 {
   if (this == &other) return true;
-  return (inputSample_ == other.inputSample_) && (outputSample_ == other.outputSample_);
+  return hasEqualBase(other) && (inputSample_ == other.inputSample_) && (outputSample_ == other.outputSample_);
 }
 
 

@@ -84,7 +84,7 @@ PointToPointEvaluation * PointToPointEvaluation::clone() const
 Bool PointToPointEvaluation::operator ==(const PointToPointEvaluation & other) const
 {
   if (this == &other) return true;
-  return pointToFieldFunction_ == other.pointToFieldFunction_ && fieldToPointFunction_ == other.fieldToPointFunction_ && leftFunction_ == other.leftFunction_ && rightFunction_ == other.rightFunction_;
+  return hasEqualBase(other) && pointToFieldFunction_ == other.pointToFieldFunction_ && fieldToPointFunction_ == other.fieldToPointFunction_ && leftFunction_ == other.leftFunction_ && rightFunction_ == other.rightFunction_;
 }
 
 /* Get the i-th marginal function */

@@ -70,6 +70,19 @@ OptimalLHSExperiment * OptimalLHSExperiment::clone() const
   return new OptimalLHSExperiment(*this);
 }
 
+/* Comparison operators */
+Bool OptimalLHSExperiment::operator ==(const OptimalLHSExperiment & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (lhs_ == other.lhs_);
+}
+
+Bool OptimalLHSExperiment::equals(const WeightedExperimentImplementation & other) const
+{
+  const OptimalLHSExperiment * p_other = dynamic_cast<const OptimalLHSExperiment *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /** Attributes for dimension, size, randomDesign */
 LHSExperiment OptimalLHSExperiment::getLHS() const
 {

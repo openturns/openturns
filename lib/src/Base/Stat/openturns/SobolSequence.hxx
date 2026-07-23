@@ -64,6 +64,10 @@ public:
   /** Virtual constructor */
   SobolSequence * clone() const override;
 
+  /** Comparison operator */
+  using LowDiscrepancySequenceImplementation::operator ==;
+  Bool operator ==(const SobolSequence & other) const;
+
   /** Initialize the sequence */
   void initialize(const UnsignedInteger dimension) override;
 
@@ -111,6 +115,8 @@ private:
 
   /** Returns the position of the lowest '0' in the binary representation of an unsigned integer */
   static UnsignedInteger computePositionOfLowest0Bit(const Unsigned64BitsInteger number);
+
+  Bool equals(const LowDiscrepancySequenceImplementation & other) const override;
 
 }; /* class SobolSequence */
 

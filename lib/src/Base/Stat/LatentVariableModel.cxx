@@ -58,6 +58,24 @@ LatentVariableModel * LatentVariableModel::clone() const
   return new LatentVariableModel(*this);
 }
 
+/* Comparison operators */
+Bool LatentVariableModel::operator ==(const LatentVariableModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other)
+         && (latentDim_ == other.latentDim_)
+         && (nLevels_ == other.nLevels_)
+         && (latentCovarianceMatrix_ == other.latentCovarianceMatrix_)
+         && (activeLatentCoordinateDim_ == other.activeLatentCoordinateDim_)
+         && (activeLatentVariables_ == other.activeLatentVariables_);
+}
+
+Bool LatentVariableModel::equals(const CovarianceModelImplementation & other) const
+{
+  const LatentVariableModel * p_other = dynamic_cast<const LatentVariableModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance  function */
 Scalar LatentVariableModel::computeAsScalar(const Scalar z1, const Scalar z2) const
 {

@@ -82,6 +82,19 @@ RankMCovarianceModel * RankMCovarianceModel::clone() const
   return new RankMCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool RankMCovarianceModel::operator ==(const RankMCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (variance_ == other.variance_) && (covariance_ == other.covariance_);
+}
+
+Bool RankMCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const RankMCovarianceModel * p_other = dynamic_cast<const RankMCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Computation of the covariance function
  * Suppose that X(\omega,t)=\sum_{i=1}^M\xi_i(\omega)\phi_i(t)
  * with E[\xi_i]=0. Then:

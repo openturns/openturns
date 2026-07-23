@@ -49,6 +49,16 @@ public:
   /** Virtual constructor */
   LowDiscrepancySequenceImplementation * clone() const override;
 
+  /** Comparison operator */
+  Bool operator ==(const LowDiscrepancySequenceImplementation & other) const;
+  using PersistentObject::operator ==;
+protected:
+  virtual Bool equals(const LowDiscrepancySequenceImplementation & other) const;
+  Bool hasEqualBase(const LowDiscrepancySequenceImplementation & other) const;
+public:
+  using PersistentObject::operator !=;
+  Bool operator !=(const LowDiscrepancySequenceImplementation & other) const;
+
   /** Initialize the sequence */
   virtual void initialize(const UnsignedInteger dimension);
 

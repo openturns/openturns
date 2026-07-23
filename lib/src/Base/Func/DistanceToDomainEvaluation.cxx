@@ -58,7 +58,7 @@ DistanceToDomainEvaluation * DistanceToDomainEvaluation::clone() const
 /* Comparison operator */
 Bool DistanceToDomainEvaluation::operator ==(const DistanceToDomainEvaluation & other) const
 {
-  return domain_ == other.domain_;
+  return hasEqualBase(other) && domain_ == other.domain_;
 }
 
 /* String converter */

@@ -81,7 +81,7 @@ PiecewiseHermiteEvaluation * PiecewiseHermiteEvaluation::clone() const
 Bool PiecewiseHermiteEvaluation::operator ==(const PiecewiseHermiteEvaluation & other) const
 {
   if (this == &other) return true;
-  return (enableExtrapolation_ == other.enableExtrapolation_) && (locations_ == other.locations_) && (values_ == other.values_) && (derivatives_ == other.derivatives_);
+  return hasEqualBase(other) && (enableExtrapolation_ == other.enableExtrapolation_) && (locations_ == other.locations_) && (values_ == other.values_) && (derivatives_ == other.derivatives_);
 }
 
 Bool PiecewiseHermiteEvaluation::equals(const EvaluationImplementation & other) const

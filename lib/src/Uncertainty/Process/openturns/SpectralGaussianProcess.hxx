@@ -62,6 +62,10 @@ public:
   /** Virtual constructor */
   SpectralGaussianProcess * clone() const override;
 
+  /** Comparison operator */
+  using ProcessImplementation::operator ==;
+  Bool operator ==(const SpectralGaussianProcess & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -153,6 +157,8 @@ private:
 
   /** FFT Algorithm */
   FFT fftAlgorithm_;
+
+  Bool equals(const ProcessImplementation & other) const override;
 
 }; /* class SpectralGaussianProcess */
 

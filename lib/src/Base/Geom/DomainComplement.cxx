@@ -91,6 +91,12 @@ Bool DomainComplement::operator != (const DomainComplement & other) const
   return !operator==(other);
 }
 
+Bool DomainComplement::equals(const DomainImplementation & other) const
+{
+  const DomainComplement * p_other = dynamic_cast<const DomainComplement *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Is it safe to call in parallel? */
 Bool DomainComplement::isParallel() const
 {

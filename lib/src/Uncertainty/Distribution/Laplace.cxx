@@ -61,7 +61,7 @@ Laplace::Laplace(const Scalar mu,
 Bool Laplace::operator ==(const Laplace & other) const
 {
   if (this == &other) return true;
-  return (lambda_ == other.lambda_) && (mu_ == other.mu_);
+  return hasEqualBase(other) && (lambda_ == other.lambda_) && (mu_ == other.mu_);
 }
 
 Bool Laplace::equals(const DistributionImplementation & other) const

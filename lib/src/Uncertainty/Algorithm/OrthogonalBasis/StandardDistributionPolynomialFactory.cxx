@@ -82,6 +82,21 @@ StandardDistributionPolynomialFactory * StandardDistributionPolynomialFactory::c
   return new StandardDistributionPolynomialFactory(*this);
 }
 
+/* Comparison operators */
+Bool StandardDistributionPolynomialFactory::operator ==(const StandardDistributionPolynomialFactory & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (hasSpecificFamily_ != other.hasSpecificFamily_) return false;
+  if (hasSpecificFamily_ && !(specificFamily_ == other.specificFamily_)) return false;
+  return true;
+}
+
+Bool StandardDistributionPolynomialFactory::equals(const OrthogonalUniVariatePolynomialFactory & other) const
+{
+  const StandardDistributionPolynomialFactory * p_other = dynamic_cast<const StandardDistributionPolynomialFactory *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* Calculate the coefficients of recurrence a0n, a1n, a2n such that
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */

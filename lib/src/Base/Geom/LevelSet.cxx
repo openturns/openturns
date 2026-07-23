@@ -340,6 +340,12 @@ Bool LevelSet::operator == (const LevelSet & other) const
   return (function_ == other.function_) && (operator_ == other.operator_) && (level_ == other.level_);
 }
 
+Bool LevelSet::equals(const DomainImplementation & other) const
+{
+  const LevelSet * p_other = dynamic_cast<const LevelSet *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Function accessor */
 Function LevelSet::getFunction() const
 {

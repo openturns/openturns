@@ -46,6 +46,10 @@ public:
   /** Virtual constructor */
   NormInfEnumerateFunction * clone() const override;
 
+  /** Comparison operator */
+  using EnumerateFunctionImplementation::operator ==;
+  Bool operator ==(const NormInfEnumerateFunction & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -78,6 +82,8 @@ private:
   mutable UnsignedInteger index_ = 0;
   mutable Indices multiIndices_;
   mutable UnsignedInteger strataIndex_ = 0;
+
+  Bool equals(const EnumerateFunctionImplementation & other) const override;
 
 } ; /* class NormInfEnumerateFunction */
 

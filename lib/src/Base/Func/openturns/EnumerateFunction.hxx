@@ -42,6 +42,10 @@ public:
 
   typedef Pointer<EnumerateFunctionImplementation> Implementation;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<EnumerateFunctionImplementation>::operator ==;
+  Bool operator ==(const EnumerateFunction & other) const;
+
   /** Default constructor */
   EnumerateFunction();
 

@@ -61,7 +61,7 @@ Exponential::Exponential(const Scalar lambda,
 Bool Exponential::operator ==(const Exponential & other) const
 {
   if (this == &other) return true;
-  return (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
+  return hasEqualBase(other) && (lambda_ == other.lambda_) && (gamma_ == other.gamma_);
 }
 
 Bool Exponential::equals(const DistributionImplementation & other) const

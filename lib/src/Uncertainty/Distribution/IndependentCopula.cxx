@@ -52,7 +52,7 @@ IndependentCopula::IndependentCopula(const UnsignedInteger dimension)
 Bool IndependentCopula::operator ==(const IndependentCopula & other) const
 {
   if (this == &other) return true;
-  return getDimension() == other.getDimension();
+  return hasEqualBase(other) && getDimension() == other.getDimension();
 }
 
 Bool IndependentCopula::equals(const DistributionImplementation & other) const

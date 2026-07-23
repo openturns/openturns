@@ -57,7 +57,7 @@ FrankCopula::FrankCopula(const Scalar theta)
 Bool FrankCopula::operator ==(const FrankCopula & other) const
 {
   if (this == &other) return true;
-  return theta_ == other.theta_;
+  return hasEqualBase(other) && theta_ == other.theta_;
 }
 
 Bool FrankCopula::equals(const DistributionImplementation & other) const

@@ -70,6 +70,19 @@ ExponentialModel * ExponentialModel::clone() const
   return new ExponentialModel(*this);
 }
 
+/* Comparison operators */
+Bool ExponentialModel::operator ==(const ExponentialModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other);
+}
+
+Bool ExponentialModel::equals(const CovarianceModelImplementation & other) const
+{
+  const ExponentialModel * p_other = dynamic_cast<const ExponentialModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 SquareMatrix ExponentialModel::operator()(const Point &tau) const
 {
   // L2 norm of tau / scale

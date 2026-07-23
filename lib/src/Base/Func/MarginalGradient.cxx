@@ -66,7 +66,7 @@ MarginalGradient * MarginalGradient::clone() const
 /* Comparison operator */
 Bool MarginalGradient::operator ==(const MarginalGradient & other) const
 {
-  return (this == &other);
+  return hasEqualBase(other) && (this == &other);
 }
 
 /* String converter */

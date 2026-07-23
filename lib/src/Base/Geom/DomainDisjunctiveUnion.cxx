@@ -108,6 +108,12 @@ Bool DomainDisjunctiveUnion::operator != (const DomainDisjunctiveUnion & other) 
   return !operator==(other);
 }
 
+Bool DomainDisjunctiveUnion::equals(const DomainImplementation & other) const
+{
+  const DomainDisjunctiveUnion * p_other = dynamic_cast<const DomainDisjunctiveUnion *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Is it safe to call in parallel? */
 Bool DomainDisjunctiveUnion::isParallel() const
 {

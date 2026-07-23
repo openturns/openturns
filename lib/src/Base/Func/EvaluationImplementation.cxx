@@ -70,6 +70,15 @@ Bool EvaluationImplementation::equals(const EvaluationImplementation & ) const
   throw NotYetImplementedException(HERE) << "In EvaluationImplementation::equals";
 }
 
+Bool EvaluationImplementation::hasEqualBase(const EvaluationImplementation & other) const
+{
+  return (parameter_ == other.parameter_)
+      && (inputDescription_ == other.inputDescription_)
+      && (outputDescription_ == other.outputDescription_)
+      && (parameterDescription_ == other.parameterDescription_)
+      && (checkOutput_ == other.checkOutput_);
+}
+
 Bool EvaluationImplementation::operator !=(const EvaluationImplementation & other) const
 {
   return !operator==(other);

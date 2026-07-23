@@ -403,6 +403,12 @@ Bool Interval::operator != (const Interval & other) const
   return !operator==(other);
 }
 
+Bool Interval::equals(const DomainImplementation & other) const
+{
+  const Interval * p_other = dynamic_cast<const Interval *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* Lower bound accessor */
 Point Interval::getLowerBound() const
 {

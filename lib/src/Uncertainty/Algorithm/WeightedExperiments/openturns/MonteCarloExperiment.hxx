@@ -52,6 +52,10 @@ public:
   /** Virtual constructor */
   MonteCarloExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const MonteCarloExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -61,6 +65,7 @@ public:
   Sample generateWithWeights(Point & weightsOut) const override;
 
 protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
 

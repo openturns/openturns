@@ -94,6 +94,7 @@ ComplexMatrix::ComplexMatrix(const HermitianMatrix & hermitian)
 /* Resolution of a linear system */
 ComplexMatrix::ComplexCollection ComplexMatrix::solveLinearSystemInPlace(const ComplexCollection & b)
 {
+  copyOnWrite();
   return getImplementation()->solveLinearSystemRectInPlace(b);
 }
 
@@ -104,6 +105,7 @@ ComplexMatrix::ComplexCollection ComplexMatrix::solveLinearSystem(const ComplexC
 
 ComplexMatrix ComplexMatrix::solveLinearSystemInPlace(const ComplexMatrix & b)
 {
+  copyOnWrite();
   return Implementation(getImplementation()->solveLinearSystemRectInPlace(*(b.getImplementation())).clone());
 }
 

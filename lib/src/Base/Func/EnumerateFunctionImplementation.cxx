@@ -31,6 +31,32 @@ CLASSNAMEINIT(EnumerateFunctionImplementation)
 
 static const Factory<EnumerateFunctionImplementation> Factory_EnumerateFunctionImplementation;
 
+/* Comparison operators */
+Bool EnumerateFunctionImplementation::operator ==(const EnumerateFunctionImplementation & other) const
+{
+  if (this == &other) return true;
+  return equals(other) && other.equals(*this);
+}
+
+Bool EnumerateFunctionImplementation::operator !=(const EnumerateFunctionImplementation & other) const
+{
+  return !operator==(other);
+}
+
+Bool EnumerateFunctionImplementation::equals(const EnumerateFunctionImplementation & ) const
+{
+  throw NotYetImplementedException(HERE) << "In EnumerateFunctionImplementation::equals";
+}
+
+Bool EnumerateFunctionImplementation::hasEqualBase(const EnumerateFunctionImplementation & other) const
+{
+  if (dimension_ != other.dimension_) return false;
+  if (upperBound_.getSize() != other.upperBound_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < upperBound_.getSize(); ++i)
+    if (upperBound_[i] != other.upperBound_[i]) return false;
+  return true;
+}
+
 /* Parameter constructor */
 EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedInteger dimension)
   : PersistentObject()

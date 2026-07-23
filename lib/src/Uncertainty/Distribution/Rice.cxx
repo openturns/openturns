@@ -64,7 +64,7 @@ Rice::Rice(const Scalar beta,
 Bool Rice::operator ==(const Rice & other) const
 {
   if (this == &other) return true;
-  return (beta_ == other.beta_) && (nu_ == other.nu_);
+  return hasEqualBase(other) && (beta_ == other.beta_) && (nu_ == other.nu_);
 }
 
 Bool Rice::equals(const DistributionImplementation & other) const

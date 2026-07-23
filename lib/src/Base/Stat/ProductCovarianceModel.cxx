@@ -218,6 +218,23 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
   return new ProductCovarianceModel(*this);
 }
 
+/* Comparison operators */
+Bool ProductCovarianceModel::operator ==(const ProductCovarianceModel & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (collection_.getSize() != other.collection_.getSize()) return false;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    if (!(collection_[i] == other.collection_[i])) return false;
+  return true;
+}
+
+Bool ProductCovarianceModel::equals(const CovarianceModelImplementation & other) const
+{
+  const ProductCovarianceModel * p_other = dynamic_cast<const ProductCovarianceModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 Scalar ProductCovarianceModel::computeAsScalar(const Point & tau) const
 {
   if (!isStationary())

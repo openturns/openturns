@@ -68,6 +68,20 @@ HyperbolicAnisotropicEnumerateFunction * HyperbolicAnisotropicEnumerateFunction:
   return new HyperbolicAnisotropicEnumerateFunction(*this);
 }
 
+/* Comparison operators */
+Bool HyperbolicAnisotropicEnumerateFunction::operator ==(const HyperbolicAnisotropicEnumerateFunction & other) const
+{
+  if (this == &other) return true;
+  if (!hasEqualBase(other)) return false;
+  if (!(weight_ == other.weight_)) return false;
+  return q_ == other.q_;
+}
+
+Bool HyperbolicAnisotropicEnumerateFunction::equals(const EnumerateFunctionImplementation & other) const
+{
+  const HyperbolicAnisotropicEnumerateFunction * p_other = dynamic_cast<const HyperbolicAnisotropicEnumerateFunction *>(&other);
+  return p_other && (*this == *p_other);
+}
 
 /* String converter */
 String HyperbolicAnisotropicEnumerateFunction::__repr__() const

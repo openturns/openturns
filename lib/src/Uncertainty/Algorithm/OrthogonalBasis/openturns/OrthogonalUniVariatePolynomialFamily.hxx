@@ -42,6 +42,10 @@ public:
 
   typedef OrthogonalUniVariatePolynomialFactory::Coefficients                   Coefficients;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<OrthogonalUniVariatePolynomialFactory>::operator ==;
+  Bool operator ==(const OrthogonalUniVariatePolynomialFamily & other) const;
+
   /** Default constructor */
   OrthogonalUniVariatePolynomialFamily();
 

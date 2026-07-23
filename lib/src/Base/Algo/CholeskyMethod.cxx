@@ -246,6 +246,7 @@ Point CholeskyMethod::solve(const Point & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
+  if (rhs.getDimension() < weightSqrt_.getSize()) throw InvalidArgumentException(HERE) << "CholeskyMethod::solve invalid rhs size=" << rhs.getSize();
   Point b(rhs);
   if (!hasUniformWeight_)
   {

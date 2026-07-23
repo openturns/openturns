@@ -56,6 +56,10 @@ public:
   /** Virtual constructor */
   SmolyakExperiment * clone() const override;
 
+  /** Comparison operator */
+  using WeightedExperimentImplementation::operator ==;
+  Bool operator ==(const SmolyakExperiment & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -88,6 +92,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+protected:
+  Bool equals(const WeightedExperimentImplementation & other) const override;
 
 private:
   // Merge (potentially) duplicated nodes

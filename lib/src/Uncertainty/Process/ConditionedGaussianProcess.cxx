@@ -62,6 +62,19 @@ ConditionedGaussianProcess * ConditionedGaussianProcess::clone() const
   return new ConditionedGaussianProcess(*this);
 }
 
+/* Comparison operators */
+Bool ConditionedGaussianProcess::operator ==(const ConditionedGaussianProcess & other) const
+{
+  if (this == &other) return true;
+  return GaussianProcess::equals(other);
+}
+
+Bool ConditionedGaussianProcess::equals(const ProcessImplementation & other) const
+{
+  const ConditionedGaussianProcess * p_other = dynamic_cast<const ConditionedGaussianProcess *>(&other);
+  return p_other && (*this == *p_other);
+}
+
 /* String converter */
 String ConditionedGaussianProcess::__repr__() const
 {

@@ -212,6 +212,7 @@ Sample Field::getValues() const
 
 void Field::setValues(const Sample & values)
 {
+  copyOnWrite();
   getImplementation()->setValues(values);
 }
 
