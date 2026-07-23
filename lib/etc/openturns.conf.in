@@ -853,6 +853,9 @@
   <!-- OT::CrossEntropyImportanceSampling parameters -->
   <CrossEntropyImportanceSampling-DefaultQuantileLevel value_float="0.25" />
 
+  <!-- OT::ActiveLearningReliabilityAlgorithm parameters -->
+  <ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed value_int="0" />
+  
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 

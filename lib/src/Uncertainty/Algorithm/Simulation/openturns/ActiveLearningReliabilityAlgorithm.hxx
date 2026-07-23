@@ -95,6 +95,10 @@ public:
   void setConvergenceCriterionThreshold(const Scalar convergenceCriterionThreshold);
   
   void setSimulationBudget(const UnsignedInteger simulationBudget);
+
+  void setSimulationAlgorithmSeed(const UnsignedInteger seed);
+  
+  UnsignedInteger getSimulationAlgorithmSeed(const UnsignedInteger seed) const;    
   
   Pointer<EventSimulation> getSimulationAlgorithm() const;
   
@@ -133,6 +137,8 @@ protected:
   Sample inputDoE_;
   Sample outputDoE_;
   UnsignedInteger convergenceCriterion_;
+  
+  UnsignedInteger simulationAlgorithmSeed_;
   
   Scalar convergenceCriterionThreshold_;
   Scalar convergenceUncertaintyFactor_;
