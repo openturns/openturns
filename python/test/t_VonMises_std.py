@@ -37,8 +37,10 @@ PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 ott.assert_almost_equal(PDF, ot.math.exp(LPDF))
 # DDF vs finite difference
-ddfFD = (distribution.computePDF(point + ot.Point(1, eps))
-         - distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps)
+ddfFD = (
+    distribution.computePDF(point + ot.Point(1, eps))
+    - distribution.computePDF(point + ot.Point(1, -eps))
+) / (2.0 * eps)
 ott.assert_almost_equal(DDF[0], ddfFD, 1e-4, 1e-4)
 
 CDF = distribution.computeCDF(point)
@@ -59,20 +61,28 @@ PDFgr = distribution.computePDFGradient(point)
 print("pdf gradient     =", PDFgr)
 # FD check of PDF gradient
 PDFgrFD = ot.Point(2)
-PDFgrFD[0] = (ot.VonMises(distribution.getMu() + eps, distribution.getKappa()).computePDF(point) -
-              ot.VonMises(distribution.getMu() - eps, distribution.getKappa()).computePDF(point)) / (2.0 * eps)
-PDFgrFD[1] = (ot.VonMises(distribution.getMu(), distribution.getKappa() + eps).computePDF(point) -
-              ot.VonMises(distribution.getMu(), distribution.getKappa() - eps).computePDF(point)) / (2.0 * eps)
+PDFgrFD[0] = (
+    ot.VonMises(distribution.getMu() + eps, distribution.getKappa()).computePDF(point)
+    - ot.VonMises(distribution.getMu() - eps, distribution.getKappa()).computePDF(point)
+) / (2.0 * eps)
+PDFgrFD[1] = (
+    ot.VonMises(distribution.getMu(), distribution.getKappa() + eps).computePDF(point)
+    - ot.VonMises(distribution.getMu(), distribution.getKappa() - eps).computePDF(point)
+) / (2.0 * eps)
 ott.assert_almost_equal(PDFgr, PDFgrFD, 1e-4, 1e-4)
 
 CDFgr = distribution.computeCDFGradient(point)
 print("cdf gradient     =", CDFgr)
 # FD check of CDF gradient
 CDFgrFD = ot.Point(2)
-CDFgrFD[0] = (ot.VonMises(distribution.getMu() + eps, distribution.getKappa()).computeCDF(point) -
-              ot.VonMises(distribution.getMu() - eps, distribution.getKappa()).computeCDF(point)) / (2.0 * eps)
-CDFgrFD[1] = (ot.VonMises(distribution.getMu(), distribution.getKappa() + eps).computeCDF(point) -
-              ot.VonMises(distribution.getMu(), distribution.getKappa() - eps).computeCDF(point)) / (2.0 * eps)
+CDFgrFD[0] = (
+    ot.VonMises(distribution.getMu() + eps, distribution.getKappa()).computeCDF(point)
+    - ot.VonMises(distribution.getMu() - eps, distribution.getKappa()).computeCDF(point)
+) / (2.0 * eps)
+CDFgrFD[1] = (
+    ot.VonMises(distribution.getMu(), distribution.getKappa() + eps).computeCDF(point)
+    - ot.VonMises(distribution.getMu(), distribution.getKappa() - eps).computeCDF(point)
+) / (2.0 * eps)
 ott.assert_almost_equal(CDFgr, CDFgrFD, 1e-4, 1e-4)
 
 quantile = distribution.computeQuantile(0.95)
@@ -86,7 +96,9 @@ print(
     "Survival(inverseSurvival)=%.6f"
     % distribution.computeSurvivalFunction(inverseSurvival)
 )
-ott.assert_almost_equal(distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-5, 0.0)
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-5, 0.0
+)
 print("entropy=%.6f" % distribution.computeEntropy())
 
 # Confidence regions
@@ -206,7 +218,9 @@ print("setMu range OK")
 # Test setKappa updates internal state
 dist.setKappa(3.0)
 ott.assert_almost_equal(dist.getKappa(), 3.0)
-ott.assert_almost_equal(dist.getCircularVariance(), 1.0 - ot.math.exp(ot.SpecFunc.DeltaLogBesselI10(3.0)))
+ott.assert_almost_equal(
+    dist.getCircularVariance(), 1.0 - ot.math.exp(ot.SpecFunc.DeltaLogBesselI10(3.0))
+)
 print("setKappa OK")
 
 # Test setParameter / getParameter round-trip
@@ -261,7 +275,9 @@ for x in [-2.0, 0.0, 1.0, 2.5]:
     pt = ot.Point([x])
     ddf = dist.computeDDF(pt)
     pdf = dist.computePDF(pt)
-    ddfFD = (dist.computePDF(pt + ot.Point([eps])) - dist.computePDF(pt - ot.Point([eps]))) / (2.0 * eps)
+    ddfFD = (
+        dist.computePDF(pt + ot.Point([eps])) - dist.computePDF(pt - ot.Point([eps]))
+    ) / (2.0 * eps)
     ott.assert_almost_equal(ddf[0], ddfFD, 1e-4, 1e-4)
 print("DDF gradient FD OK")
 
