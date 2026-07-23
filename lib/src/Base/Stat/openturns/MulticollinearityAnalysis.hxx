@@ -65,7 +65,7 @@ public:
   PointWithDescription computeJohnson() const;
 
   /** Compute VIF metric */
-  PointWithDescription computeVIF() const;
+  PointWithDescription computeVif() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -79,7 +79,14 @@ private:
 
   void checkOutputSample() const;
 
+  /** Compute the covariance matrix of the full sample (input + output) */
   CovarianceMatrix computeCovariance() const;
+
+  /** Remove a row and a column from a symmetric matrix */
+  SymmetricMatrix removeRowAndColumn(const SymmetricMatrix & matrix, const UnsignedInteger rowCol) const;
+
+  /** Convert a covariance matrix to a correlation matrix */
+  CorrelationMatrix covarianceToCorrelation(const SymmetricMatrix & matrix) const;
 
   Sample firstSample_;
   Sample secondSample_;

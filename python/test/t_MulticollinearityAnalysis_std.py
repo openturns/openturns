@@ -27,8 +27,8 @@ vif12 = 1 / (1 - r * r)
 
 # Draw an input sample
 sampleSize = 100000
-corrMatrix = ot.CorrelationMatrix(2, [1.0, r, r, 1.0])
-inputDistribution = ot.Normal([0.0, 0.0], [sigma1, sigma2], corrMatrix)
+corMatrix = ot.CorrelationMatrix(2, [1.0, r, r, 1.0])
+inputDistribution = ot.Normal([0.0, 0.0], [sigma1, sigma2], corMatrix)
 inputSample = inputDistribution.getSample(sampleSize)
 
 # Build the output sample
@@ -62,10 +62,12 @@ ott.assert_almost_equal(johnson_computed, lmg_computed, 1e-12, 0.0)  # In 2D, Jo
 analysis = ot.MulticollinearityAnalysis(inputSample)
 with ott.assert_raises(TypeError):
     analysis.computeLmgPmvd()
+with ott.assert_raises(TypeError):
+    analysis.computeJohnson()
 
 # VIF metric
 analysis = ot.MulticollinearityAnalysis(inputSample)
-vif_computed = analysis.computeVIF()
+vif_computed = analysis.computeVif()
 print(f"Theoretical VIF = [{vif12}, {vif12}]")
 print(f"Computed VIF = [{vif_computed[0]}, {vif_computed[1]}]")
-ott.assert_almost_equal(vif_computed, [vif12, vif12], 1e-2, 0.0)
+ott.assert_almost_equal(vif_computed, [vif12, vif12], 7e-4, 0.0)

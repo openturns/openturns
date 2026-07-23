@@ -54,8 +54,8 @@ int main(int, char *[])
 
   // Draw an input sample
   const UnsignedInteger sampleSize = 100000;
-  const CorrelationMatrix corrMatrix(2, {1.0, r, r, 1.0});
-  const Normal inputDistribution(Point({0.0, 0.0}), Point({sigma1, sigma2}), corrMatrix);
+  const CorrelationMatrix corMatrix(2, {1.0, r, r, 1.0});
+  const Normal inputDistribution(Point({0.0, 0.0}), Point({sigma1, sigma2}), corMatrix);
   const Sample inputSample(inputDistribution.getSample(sampleSize));
 
   // Build the output sample
@@ -113,10 +113,10 @@ int main(int, char *[])
   {
     // VIF metric
     MulticollinearityAnalysis analysis(inputSample);
-    const PointWithDescription vif_computed(analysis.computeVIF());
+    const PointWithDescription vif_computed(analysis.computeVif());
     fullprint << "Theoretical VIF = [" << vif12 << ", " << vif12 << "]" << std::endl;
     fullprint << "Computed VIF = [" << vif_computed[0] << ", " << vif_computed[1] << "]" << std::endl;
-    assert_almost_equal(vif_computed, Point({vif12, vif12}), 1e-2, 0.0);
+    assert_almost_equal(vif_computed, Point({vif12, vif12}), 7e-4, 0.0);
   }
   catch (TestFailed & ex)
   {

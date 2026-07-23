@@ -22,7 +22,7 @@ def compute_measure(X, Y, type):
     elif type == "Johnson":
         return analysis.computeJohnson()
     elif type == "VIF":
-        return analysis.computeVIF()
+        return analysis.computeVif()
     else:
         raise Exception(f"Invalid type: {type}")
 
