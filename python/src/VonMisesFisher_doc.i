@@ -33,7 +33,7 @@ The **mean** is:
     \mathbb{E}[\mathbf{X}] = \frac{I_{p/2}(\kappa)}{I_{p/2-1}(\kappa)}\,
     \boldsymbol{\mu}.
 
-Note that the **mean** is not in the unit sphere, its norm is less than 1.
+Note that the **mean** is not in the unit sphere as its norm is less than 1.
 The **entropy** is:
 
 .. math::
@@ -46,10 +46,10 @@ Pinzón and Jung [pinzon2023]_.
 When :math:`p=2`, the von Mises-Fisher distribution is related to the
 von Mises distribution the following way. The von Mises-Fisher distribution
 is distributed over the unit circle while the von Mises distribution is the
-corresponding univariate angular distribution.
+absolutely continuous -distribution of its angle wrt the :math:`x` axis.
 
-As the von Mises-Fisher distribution has no density, most of its methods are
-not implemented.
+As the von Mises-Fisher distribution has no density wrt the bivariate Lebesgue
+measure, most of its methods are not implemented.
 
 Parameters
 ----------
