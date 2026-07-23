@@ -105,12 +105,14 @@ Bool IndicesCollection::operator !=(const IndicesCollection & other) const
 
 IndicesCollection::iterator IndicesCollection::begin_at(const UnsignedInteger index)
 {
+  copyOnWrite();
   // Arguments are checked in implementation
   return getImplementation()->begin_at(index);
 }
 
 IndicesCollection::iterator IndicesCollection::end_at(const UnsignedInteger index)
 {
+  copyOnWrite();
   return getImplementation()->end_at(index);
 }
 
@@ -132,6 +134,7 @@ const UnsignedInteger & IndicesCollection::operator()(const UnsignedInteger inde
 
 UnsignedInteger & IndicesCollection::operator()(const UnsignedInteger index, const UnsignedInteger pos)
 {
+  copyOnWrite();
   return getImplementation()->operator()(index, pos);
 }
 
