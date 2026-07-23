@@ -42,7 +42,7 @@ public:
   /** Default constructor */
   MulticollinearityAnalysis();
 
-  /** Constructor with input sample */
+  /** Constructor with input sample (will only allow one to compute the VIF metric) */
   MulticollinearityAnalysis(const Sample & firstSample);
 
   /** Constructor with input and output samples */
@@ -79,7 +79,14 @@ private:
 
   void checkOutputSample() const;
 
+  /** Compute the covariance matrix of the full sample (input + output) */
   CovarianceMatrix computeCovariance() const;
+
+  /** Remove a row and a column from a symmetric matrix */
+  SymmetricMatrix removeRowAndColumn(const SymmetricMatrix & matrix, const UnsignedInteger rowCol) const;
+
+  /** Convert a covariance matrix to a correlation matrix */
+  CorrelationMatrix covarianceToCorrelation(const SymmetricMatrix & matrix) const;
 
   Sample firstSample_;
   Sample secondSample_;
