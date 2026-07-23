@@ -250,6 +250,7 @@ Point CholeskyMethod::solve(const Point & rhs)
   if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
+    if (size != weightSqrt_.getSize()) throw InvalidArgumentException(HERE) << "CholeskyMethod::solve invalid rhs size=" << rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
   const Matrix psiAk(computeWeightedDesign());
