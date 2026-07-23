@@ -166,8 +166,12 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
 
 void GeneralizedExponential::setFullParameter(const Point & parameter)
 {
+  const UnsignedInteger totalSize = 1 + inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
+  if (parameter.getSize() <= totalSize)
+    throw InvalidArgumentException(HERE) << "In GeneralizedExponential::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
+                                         << " whereas expected size = " << totalSize + 1 ;
   CovarianceModelImplementation::setFullParameter(parameter);
-  setP(parameter[parameter.getSize() - 1]);
+  setP(parameter[totalSize]);
 }
 
 Point GeneralizedExponential::getFullParameter() const
