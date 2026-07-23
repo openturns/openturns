@@ -324,7 +324,7 @@ Scalar PosteriorDistribution::getLogNormalizationFactor() const
 /* Compute the numerical range of the distribution given the parameters values */
 void PosteriorDistribution::computeRange()
 {
-  setRange(compoundDistribution_.conditioningDistribution_.getRange());
+  setRange(compoundDistribution_.getConditioningDistribution().getRange());
 }
 
 /* Compute the mean of the distribution */
@@ -366,7 +366,7 @@ Point PosteriorDistribution::getSkewness() const
   const Point varThird(compoundDistribution_.computeExpectation(normalizedLikelihood * skewnessFunction, getRange().getUpperBound()));
   Point skewness(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    skewness[i] = varThird[2 * i + 1] / std::pow(varThird[2 * i], 1.5);
+    skewness[i] = (varThird[2 * i] > 0.0) ? varThird[2 * i + 1] / std::pow(varThird[2 * i], 1.5) : 0.0;
   return skewness;
 }
 
@@ -389,7 +389,7 @@ Point PosteriorDistribution::getKurtosis() const
   const Point varFourth(compoundDistribution_.computeExpectation(normalizedLikelihood * kurtosisFunction, getRange().getUpperBound()));
   Point kurtosis(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    kurtosis[i] = varFourth[2 * i + 1] / std::pow(varFourth[2 * i], 2.0);
+    kurtosis[i] = (varFourth[2 * i] > 0.0) ? varFourth[2 * i + 1] / std::pow(varFourth[2 * i], 2.0) : 0.0;
   return kurtosis;
 }
 
@@ -432,7 +432,6 @@ void PosteriorDistribution::save(Advocate & adv) const
   DistributionImplementation::save(adv);
   adv.saveAttribute( "compoundDistribution_", compoundDistribution_ );
   adv.saveAttribute( "observations_", observations_ );
-  adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
