@@ -60,7 +60,7 @@ InverseTrendEvaluation * InverseTrendEvaluation::clone() const
 Bool InverseTrendEvaluation::operator ==(const InverseTrendEvaluation & other) const
 {
   if (this == &other) return true;
-  return (function_ == other.function_);
+  return hasEqualBase(other) && (function_ == other.function_);
 }
 
 /* String converter */

@@ -75,7 +75,7 @@ MarginalEvaluation * MarginalEvaluation::clone() const
 /* Comparison operator */
 Bool MarginalEvaluation::operator ==(const MarginalEvaluation & other) const
 {
-  return (this == &other);
+  return hasEqualBase(other) && (this == &other);
 }
 
 /* String converter */

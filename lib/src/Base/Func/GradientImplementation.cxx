@@ -56,6 +56,11 @@ Bool GradientImplementation::equals(const GradientImplementation & ) const
   throw NotYetImplementedException(HERE) << "In GradientImplementation::equals";
 }
 
+Bool GradientImplementation::hasEqualBase(const GradientImplementation & other) const
+{
+  return parameter_ == other.parameter_;
+}
+
 Bool GradientImplementation::operator !=(const GradientImplementation & other) const
 {
   return !operator==(other);

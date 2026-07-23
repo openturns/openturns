@@ -67,7 +67,7 @@ BoxCoxEvaluation * BoxCoxEvaluation::clone() const
 Bool BoxCoxEvaluation::operator ==(const BoxCoxEvaluation & other) const
 {
   if (this == &other) return true;
-  return (lambda_ == other.lambda_) && (shift_ == other.shift_);
+  return hasEqualBase(other) && (lambda_ == other.lambda_) && (shift_ == other.shift_);
 }
 
 /* String converter */

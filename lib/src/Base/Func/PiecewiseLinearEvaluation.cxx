@@ -73,7 +73,7 @@ PiecewiseLinearEvaluation * PiecewiseLinearEvaluation::clone() const
 Bool PiecewiseLinearEvaluation::operator ==(const PiecewiseLinearEvaluation & other) const
 {
   if (this == &other) return true;
-  return (enableExtrapolation_ == other.enableExtrapolation_) && (locations_ == other.locations_) && (values_ == other.values_);
+  return hasEqualBase(other) && (enableExtrapolation_ == other.enableExtrapolation_) && (locations_ == other.locations_) && (values_ == other.values_);
 }
 
 Bool PiecewiseLinearEvaluation::equals(const EvaluationImplementation & other) const

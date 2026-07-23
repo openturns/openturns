@@ -57,7 +57,7 @@ AggregatedEvaluation * AggregatedEvaluation::clone() const
 Bool AggregatedEvaluation::operator ==(const AggregatedEvaluation & other) const
 {
   if (this == &other) return true;
-  return (functionsCollection_ == other.functionsCollection_) && (outputDimension_ == other.outputDimension_);
+  return hasEqualBase(other) && (functionsCollection_ == other.functionsCollection_) && (outputDimension_ == other.outputDimension_);
 }
 
 Bool AggregatedEvaluation::equals(const EvaluationImplementation & other) const

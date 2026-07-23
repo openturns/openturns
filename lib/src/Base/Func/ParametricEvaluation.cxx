@@ -92,7 +92,7 @@ ParametricEvaluation * ParametricEvaluation::clone() const
 Bool ParametricEvaluation::operator ==(const ParametricEvaluation & other) const
 {
   if (this == &other) return true;
-  return (function_ == other.function_) && (parametersPositions_ == other.parametersPositions_) && (inputPositions_ == other.inputPositions_);
+  return hasEqualBase(other) && (function_ == other.function_) && (parametersPositions_ == other.parametersPositions_) && (inputPositions_ == other.inputPositions_);
 }
 
 Bool ParametricEvaluation::equals(const EvaluationImplementation & other) const

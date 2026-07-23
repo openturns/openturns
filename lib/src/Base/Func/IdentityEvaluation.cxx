@@ -48,7 +48,7 @@ IdentityEvaluation * IdentityEvaluation::clone() const
 /* Comparison operator */
 Bool IdentityEvaluation::operator ==(const IdentityEvaluation & other) const
 {
-  return dimension_ == other.dimension_;
+  return hasEqualBase(other) && dimension_ == other.dimension_;
 }
 
 /* String converter */

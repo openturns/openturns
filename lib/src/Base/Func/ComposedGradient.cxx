@@ -56,9 +56,9 @@ ComposedGradient * ComposedGradient::clone() const
 }
 
 /* Comparison operator */
-Bool ComposedGradient::operator ==(const ComposedGradient & ) const
+Bool ComposedGradient::operator ==(const ComposedGradient & other) const
 {
-  return true;
+  return hasEqualBase(other) && true;
 }
 
 /* String converter */
