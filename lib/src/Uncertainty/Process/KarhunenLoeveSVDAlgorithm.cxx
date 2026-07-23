@@ -495,6 +495,7 @@ void KarhunenLoeveSVDAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "centeredSample_", centeredSample_ );
   adv.saveAttribute( "verticesWeights_", verticesWeights_ );
   adv.saveAttribute( "uniformVerticesWeights_", uniformVerticesWeights_ );
+  adv.saveAttribute( "sampleWeights_", sampleWeights_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -505,6 +506,8 @@ void KarhunenLoeveSVDAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "centeredSample_", centeredSample_ );
   adv.loadAttribute( "verticesWeights_", verticesWeights_ );
   adv.loadAttribute( "uniformVerticesWeights_", uniformVerticesWeights_ );
+  if (adv.hasAttribute("sampleWeights_"))
+    adv.loadAttribute( "sampleWeights_", sampleWeights_ );
 }
 
 END_NAMESPACE_OPENTURNS
