@@ -70,6 +70,13 @@ SubsetSampling * SubsetSampling::clone() const
 }
 
 
+/* Setter for MaximumCoefficientOfVariation. */
+void SubsetSampling::setMaximumCoefficientOfVariation(const Scalar)
+{
+    throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm.";
+}
+
+
 /* Performs the actual computation. */
 void SubsetSampling::run()
 {
@@ -90,9 +97,6 @@ void SubsetSampling::run()
   const UnsignedInteger N = maximumOuterSampling * blockSize;
   const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
   const Function uToX(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
-
-  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
-    LOGWARN(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
   if (seedNumber_ < 1)
