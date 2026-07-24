@@ -1,5 +1,9 @@
-%feature("docstring") OT::StandardDistributionPolynomialFactory
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory
 R"RAW(Build orthonormal or orthogonal univariate polynomial families.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
 
 Parameters
 ----------
@@ -18,7 +22,7 @@ Use this functionality with caution:
    - The polynomials exist if and only if the distribution admits finite
      moments of all orders. Even if some algorithms manage to compute something, it
      will be plain numerical noise.
-   - Even if the polynomials exist, they form an Hilbertian basis with respect to the
+   - Even if the polynomials exist, they form a Hilbertian basis with respect to the
      dot product induced by the distribution if and only if the distribution is
      **determinate**, ie is characterized by its moments. For example, the
      :class:`~openturns.LogNormal` distribution has orthonormal polynomials of
@@ -78,16 +82,17 @@ OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorith
 
 See also
 --------
-:any:`orthonormal_polynomials`, AdaptiveStieltjesAlgorithm
+:any:`orthonormal_polynomials`, openturns.AdaptiveStieltjesAlgorithm
 
 Examples
 --------
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 
 Build the specific orthonormal polynomial factory associated to the normal
 distribution (Hermite):
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.Normal())
+>>> polynomial_factory = otexp.UniVariateDistributionPolynomialFactory(ot.Normal())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
@@ -97,18 +102,18 @@ X
 Build an orthonormal polynomial factory for the WeibullMin distribution with
 the default orthonormalization algorithm:
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.WeibullMin())
+>>> polynomial_factory = otexp.UniVariateDistributionPolynomialFactory(ot.WeibullMin())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
 -1 + X
 1 - 2 * X + 0.5 * X^2
 
-Build an orthonormal polynomial factory for the log-normal distribution with
-Chebychev's othonormalization algorithm:
+Build an orthonormal polynomial factory for the Weibull min distribution with
+adaptive Stieltjes's othonormalization algorithm:
 
 >>> algorithm = ot.AdaptiveStieltjesAlgorithm(ot.WeibullMin())
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(algorithm)
+>>> polynomial_factory = otexp.UniVariateDistributionPolynomialFactory(algorithm)
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
@@ -118,7 +123,7 @@ Chebychev's othonormalization algorithm:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StandardDistributionPolynomialFactory::getHasSpecificFamily
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory::getHasSpecificFamily
 "Accessor to the specific family boolean.
 
 Returns
@@ -128,7 +133,7 @@ hasSpecificFamily : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StandardDistributionPolynomialFactory::getOrthonormalizationAlgorithm
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory::getOrthonormalizationAlgorithm
 "Accessor to the orthonormalization algorithm.
 
 Returns
@@ -138,7 +143,7 @@ orthonormalizationAlgorithm : :class:`~openturns.OrthonormalizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StandardDistributionPolynomialFactory::getSpecificFamily
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory::getSpecificFamily
 "Accessor to the specific orthonormal polynomial family.
 
 Returns

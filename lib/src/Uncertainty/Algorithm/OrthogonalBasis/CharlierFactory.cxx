@@ -35,8 +35,8 @@ static const Factory<CharlierFactory> Factory_CharlierFactory;
 
 /* Default constructor, associated with the default Poisson distribution which is equal to the Exponential distribution */
 CharlierFactory::CharlierFactory()
-  : OrthogonalUniVariatePolynomialFactory(Poisson()),
-    lambda_(1.0)
+  : OrthogonalUniVariatePolynomialFactory(Poisson())
+  , lambda_(1.0)
 {
   initializeCache();
 }
@@ -44,8 +44,8 @@ CharlierFactory::CharlierFactory()
 
 /* Parameter constructor: lambda is the order of the generalized Charlier polynomial, associated with the Poisson(lambda) distribution */
 CharlierFactory::CharlierFactory(const Scalar lambda)
-  : OrthogonalUniVariatePolynomialFactory( Poisson(lambda) ),
-    lambda_(lambda)
+  : OrthogonalUniVariatePolynomialFactory( Poisson(lambda) )
+  , lambda_(lambda)
 {
   if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Error: must have lambda>0 to build Charlier polynomials.";
   initializeCache();

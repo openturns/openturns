@@ -8,14 +8,12 @@ Parameters
 arg1 : float
     If `parameters_set == ot.JacobiFactory.PROBABILITY`: default shape
     parameter :math:`r > 0` of the :class:`~openturns.Beta` distribution.
-
     If `parameters_set == ot.JacobiFactory.ANALYSIS`: alternative shape
     parameter :math:`\alpha = t - r - 1 > -1` of the :class:`~openturns.Beta`
     distribution.
 arg2 : float
     If `parameters_set == ot.JacobiFactory.PROBABILITY`: default shape
     parameter :math:`t > r` of the :class:`~openturns.Beta` distribution.
-
     If `parameters_set == ot.JacobiFactory.ANALYSIS`: alternative shape
     parameter :math:`\beta = r - 1` of the :class:`~openturns.Beta`
     distribution.
@@ -66,7 +64,7 @@ of the :class:`~openturns.Beta` distribution, and:
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -76,7 +74,11 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 2.23607 * X
--0.935414 + 4.67707 * X^2)RAW"
+-0.935414 + 4.67707 * X^2
+
+>>> polynomial_factory = ot.JacobiFactory(2.5, 3.5, -1.0, 2.0)
+>>> print(polynomial_factory)
+class=JacobiFactory alpha=2.5 beta=1.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=-1 b=2)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -43,6 +43,10 @@ public:
   /** Default constructor */
   HermiteFactory();
 
+  /** Constructor with arbitrary Normal mu/sigma */
+  HermiteFactory(const Scalar mu,
+                 const Scalar sigma);
+
   /** Virtual constructor */
   HermiteFactory * clone() const override;
 

@@ -42,6 +42,10 @@ public:
   /** Default constructor */
   ChebychevFactory();
 
+  /** Constructor with arbitrary Arcsine bounds */
+  ChebychevFactory(const Scalar a,
+                   const Scalar b);
+
   /** Virtual constructor */
   ChebychevFactory * clone() const override;
 

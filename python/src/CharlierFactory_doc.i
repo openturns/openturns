@@ -33,7 +33,7 @@ where :math:`\lambda` is the location parameter of
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------

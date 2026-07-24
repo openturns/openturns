@@ -18,7 +18,7 @@ This class implements a user-defined multivariate orthonormal basis associated w
 
 See also
 --------
-openturns.StandardDistributionPolynomialFactory, openturns.OrthogonalProductPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory, OrthogonalProductPolynomialFactory
 
 Examples
 --------

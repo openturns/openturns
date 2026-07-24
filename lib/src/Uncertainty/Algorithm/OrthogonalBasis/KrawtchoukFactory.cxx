@@ -35,9 +35,9 @@ static const Factory<KrawtchoukFactory> Factory_KrawtchoukFactory;
 
 /* Default constructor: (1, 0.5) order Krawtchouk polynomial associated with the default Binomial() = Binomial(1, 0.5) distribution which is equal to the Bernoulli(0.5) distribution */
 KrawtchoukFactory::KrawtchoukFactory()
-  : OrthogonalUniVariatePolynomialFactory(Binomial()),
-    n_(1),
-    p_(0.5)
+  : OrthogonalUniVariatePolynomialFactory(Binomial())
+  , n_(1)
+  , p_(0.5)
 {
   initializeCache();
 }
@@ -46,9 +46,9 @@ KrawtchoukFactory::KrawtchoukFactory()
 /* Parameter constructor: (n, p) is the order of the Krawtchouk polynomial, associated with the Binomial(n, p) distribution */
 KrawtchoukFactory::KrawtchoukFactory(const UnsignedInteger n,
                                      const Scalar p)
-  : OrthogonalUniVariatePolynomialFactory(Binomial(n, p)),
-    n_(n),
-    p_(p)
+  : OrthogonalUniVariatePolynomialFactory(Binomial(n, p))
+  , n_(n)
+  , p_(p)
 {
   if ((n == 0) || (p <= 0.0) || (p >= 1.0)) throw InvalidArgumentException(HERE) << "Error: must have N>0 and p in ]0, 1[ to build Krawtchouk polynomials.";
   initializeCache();

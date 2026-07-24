@@ -34,7 +34,6 @@ Use advanced features for PCE
 # %%
 import openturns as ot
 
-
 # %%
 model = ot.SymbolicFunction(["x1", "x2", "x3", "x4"], ["1+x1*x2 + 2*x3^2+x4^4"])
 
@@ -68,23 +67,13 @@ polyColl[0] = ot.KrawtchoukFactory()
 polyColl[1] = ot.CharlierFactory()
 
 # %%
-# We could also use the automatic selection of the polynomial which corresponds to the distribution:
-# this is done with the :class:`~openturns.StandardDistributionPolynomialFactory` class.
-
-# %%
-for i in range(inputDimension):
-    marginal = distribution.getMarginal(i)
-    polyColl[i] = ot.StandardDistributionPolynomialFactory(marginal)
-
-# %%
 # In our specific case, we use specific polynomial factories.
 
 # %%
 polyColl[0] = ot.HermiteFactory()
 polyColl[1] = ot.LegendreFactory()
 polyColl[2] = ot.LaguerreFactory(2.75)
-# Parameter for the Jacobi factory : 'Probabilty' encoded with 1
-polyColl[3] = ot.JacobiFactory(2.5, 3.5, 1)
+polyColl[3] = ot.JacobiFactory(2.5, 3.5)
 
 # %%
 # Create the enumeration function.

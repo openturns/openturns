@@ -35,9 +35,9 @@ static const Factory<MeixnerFactory> Factory_MeixnerFactory;
 
 /* Default constructor, associated with the default Negative Binomial distribution of parameter 1, 1/2. */
 MeixnerFactory::MeixnerFactory()
-  : OrthogonalUniVariatePolynomialFactory(Polya()),
-    r_(1.0),
-    p_(0.5)
+  : OrthogonalUniVariatePolynomialFactory(Polya())
+  , r_(1.0)
+  , p_(0.5)
 {
   initializeCache();
 }
@@ -46,9 +46,9 @@ MeixnerFactory::MeixnerFactory()
 /* Parameter constructor: lambda is the order of the generalized Meixner polynomial, associated with the Polya(r, p) distribution */
 MeixnerFactory::MeixnerFactory(const Scalar r,
                                const Scalar p)
-  : OrthogonalUniVariatePolynomialFactory( Polya(r, p) ),
-    r_(r),
-    p_(p)
+  : OrthogonalUniVariatePolynomialFactory(Polya(r, p))
+  , r_(r)
+  , p_(p)
 {
   if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "Error: must have r>0 to build Meixner polynomials.";
   if ((p <= 0.0) || (p >= 1.0)) throw InvalidArgumentException(HERE) << "Error: p must be in [0, 1] to build Meixner polynomials.";

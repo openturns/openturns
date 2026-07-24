@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/AdaptiveStieltjesAlgorithm.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
@@ -316,7 +316,7 @@ void SoizeGhanemFactory::buildProductPolynomialAndAdaptation(const Bool useCopul
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     marginals[i] = measure_.getMarginal(i);
-    coll[i] = StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(marginals[i]));
+    coll[i] = UniVariateDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(marginals[i]));
   }
   productPolynomial_ = OrthogonalProductPolynomialFactory(coll, phi_);
   // Build the adaptation factor only if needed

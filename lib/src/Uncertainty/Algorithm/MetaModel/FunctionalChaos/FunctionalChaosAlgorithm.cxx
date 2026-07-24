@@ -37,7 +37,7 @@
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
 #include "openturns/LARS.hxx"
 #include "openturns/KFold.hxx"
@@ -111,7 +111,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   const UnsignedInteger inputDimension = inputSample.getDimension();
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   for (UnsignedInteger i = 0; i < inputDimension; ++ i)
-    polynomials[i] = StandardDistributionPolynomialFactory(getDistribution().getMarginal(i));
+    polynomials[i] = UniVariateDistributionPolynomialFactory(getDistribution().getMarginal(i));
 
   const Scalar qNorm = ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-QNorm");
   EnumerateFunction enumerate;

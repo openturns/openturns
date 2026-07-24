@@ -40,6 +40,17 @@ HermiteFactory::HermiteFactory()
 }
 
 
+/* Constructor with arbitrary Normal parameters */
+HermiteFactory::HermiteFactory(const Scalar mu,
+                               const Scalar sigma)
+  : OrthogonalUniVariatePolynomialFactory(Normal(mu, sigma))
+{
+  setA(sigma);
+  setB(mu);
+  initializeCache();
+}
+
+
 /* Virtual constructor */
 HermiteFactory * HermiteFactory::clone() const
 {
