@@ -52,6 +52,9 @@ public:
 
   /** Event accessor */
   RandomVector getEvent() const;
+  
+  /** Event accessor */
+  virtual void setEvent(const RandomVector & event);
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
@@ -71,11 +74,17 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Input accessor */
+  virtual Sample getInputSample() const;
+  
+  /** Setter keep sample */
+  virtual void setKeepSample(const Bool);
+    
 protected:
 
   /** Result accessor */
   void setResult(const ProbabilitySimulationResult & result);
-
+  
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
 

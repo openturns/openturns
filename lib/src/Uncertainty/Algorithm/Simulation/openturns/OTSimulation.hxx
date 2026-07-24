@@ -54,5 +54,11 @@
 #include "openturns/CrossEntropyImportanceSampling.hxx"
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
+#include "openturns/ActiveLearningReliabilityFunction.hxx"
+#include "openturns/ActiveLearningUFunction.hxx"
+#include "openturns/ActiveLearningEFFFunction.hxx"
+#include "openturns/ActiveLearningGMMFunction.hxx"
+#include "openturns/ActiveLearningReliabilityAlgorithm.hxx"
+#include "openturns/ActiveLearningReliabilityResult.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

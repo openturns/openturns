@@ -61,6 +61,24 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
+/*  Event accessor */
+void NAIS::setEvent(const RandomVector & event)
+{
+
+  const Bool previousDirection = getEvent().getOperator()(0, 1);
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const Interval range(getEvent().getAntecedent().getDistribution().getRange());
+  const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
+  const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
+  for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
+    if (rangeUpper[i] || rangeLower[i])
+      throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution";
+
+  const Bool newDirection = getEvent().getOperator()(0, 1);
+  if (previousDirection != newDirection)
+    quantileLevel_ = 1.0 - quantileLevel_;
+}
+
 /* Keep event sample */
 void NAIS::setKeepSample(const Bool keepSample)
 {
@@ -144,7 +162,8 @@ Point NAIS::computeWeights(const Sample & sample,
 // Main function that computes the failure probability
 void NAIS::run()
 {
-
+  std::cout<<"-------------inside NAIS beginning of run-------------"<<std::endl;
+    std::cout<<naisResult_<<std::endl;
   // First, initialize some parameters
   inputSample_.clear();
   outputSample_.clear();
@@ -311,6 +330,12 @@ void NAIS::run()
   naisResult_.setOuterSampling(getMaximumOuterSampling() * numberOfSteps_);
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
+  
+  std::cout<<"--------- Results inside NAIS --------"<<std::endl;
+
+  std::cout<<naisResult_<<std::endl;
+  std::cout<<result_<<std::endl;
+  std::cout<<"--------- End / Results inside NAIS --------"<<std::endl;  
 
 }
 
@@ -324,6 +349,14 @@ Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger se
   if (select > 2)
     throw InvalidArgumentException(HERE) << "NAIS select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+Sample NAIS::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
 }
 
 Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
@@ -360,6 +393,7 @@ UnsignedInteger NAIS::getStepsNumber() const
 
 
 // Accessor to naisResult_s
+
 NAISResult NAIS::getResult() const
 {
   return naisResult_;

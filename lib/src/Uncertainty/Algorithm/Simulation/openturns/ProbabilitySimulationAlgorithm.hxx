@@ -56,7 +56,7 @@ public:
   void setExperiment(const WeightedExperiment & experiment);
 
   /** Keep event sample */
-  void setKeepSample(const Bool keepSample);
+  void setKeepSample(const Bool keepSample) override;
 
   /** Input/output sample accessor according to select flag */
   Sample getInputSample() const;
@@ -74,6 +74,9 @@ public:
   /** Block size accessor */
   void setBlockSize(const UnsignedInteger blockSize) override;
 
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
+  
 protected:
 
   /** Compute the block sample and the points that realized the event */

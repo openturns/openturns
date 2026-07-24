@@ -75,11 +75,20 @@ RandomVector EventSimulation::getEvent() const
   return event_;
 }
 
+/*  Event accessor */
+void EventSimulation::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent())
+    throw InvalidArgumentException(HERE) << "Not an event";
+  event_ = event;
+}
+
 /* Result accessor */
 void EventSimulation::setResult(const ProbabilitySimulationResult & result)
 {
   result_ = result;
 }
+
 
 /* Result accessor */
 ProbabilitySimulationResult EventSimulation::getResult() const
@@ -198,12 +207,26 @@ void EventSimulation::run()
   } // while
 }
 
+/* Accessor to input sample */
+Sample EventSimulation::getInputSample() const
+{
+  throw NotYetImplementedException(HERE) << "In EventSimulation::getInputSample()";
+}
+
+
 /* Compute the block sample and the points that realized the event */
 Sample EventSimulation::computeBlockSample()
 {
   throw NotYetImplementedException(HERE) << "In EventSimulation::computeBlockSample()";
 }
 
+
+/** Setter keep sample */
+void EventSimulation::setKeepSample(const Bool) 
+{
+  throw NotYetImplementedException(HERE) << "In EventSimulation::csetKeepSample(Bool)";
+} 
+  
 /* Draw the probability convergence at the given level */
 Graph EventSimulation::drawProbabilityConvergence(const Scalar level) const
 {
