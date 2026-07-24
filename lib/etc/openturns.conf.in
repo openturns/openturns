@@ -854,7 +854,8 @@
 
   <!-- OT::ActiveLearningReliabilityAlgorithm parameters -->
   <ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed value_int="0" />
-  
+  <ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor value_float="2.0" />
+    
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 

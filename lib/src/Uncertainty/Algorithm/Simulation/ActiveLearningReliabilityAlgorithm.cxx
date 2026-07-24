@@ -75,7 +75,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
 /** Constructor with NAIS */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const NAIS & reliabilityAlgorithm,
-                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction,
+                                                                        const UnsignedInteger SimulationBudget)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -84,6 +85,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , convergenceCriterion_(2)  
+  , simulationBudget_(SimulationBudget)
+  , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -95,7 +99,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with StandardSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction,
+                                                                        const UnsignedInteger SimulationBudget)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -104,6 +109,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , convergenceCriterion_(2)
+  , simulationBudget_(SimulationBudget)
+  , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -115,7 +123,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with PhysicalSpaceCrossEntropyImportanceSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction,
+                                                                        const UnsignedInteger SimulationBudget)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -124,6 +133,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , convergenceCriterion_(2)
+  , simulationBudget_(SimulationBudget)
+  , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -135,7 +147,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with SubsetSampling */  
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const SubsetSampling & reliabilityAlgorithm,
-                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction,
+                                                                        const UnsignedInteger SimulationBudget)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -144,6 +157,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , convergenceCriterion_(2)
+  , simulationBudget_(SimulationBudget)
+  , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -155,7 +171,8 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
 /** Constructor with ProbabilitySimulationAlgorithm*/   
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                                                         const ProbabilitySimulationAlgorithm  &reliabilityAlgorithm,
-                                                                        const ActiveLearningReliabilityFunction & activelearningFunction)
+                                                                        const ActiveLearningReliabilityFunction & activelearningFunction,
+                                                                        const UnsignedInteger SimulationBudget)
   : EventSimulation(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , defaultEvent_(reliabilityAlgorithm.getEvent().getImplementation()->asComposedEvent())
   , inputDoE_(gpFitter.getInputSample())
@@ -164,6 +181,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm (const Ga
   , functionCallNumber_(0)
   , probabilityHistory_(0)
   , reliabilityIndexHistory_(0)
+  , convergenceCriterion_(2)
+  , simulationBudget_(SimulationBudget)
+  , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     p_defaultSimulationAlgorithm_ = reliabilityAlgorithm.clone();
@@ -535,9 +555,9 @@ void ActiveLearningReliabilityAlgorithm::run()
     
     // storage of results
     GaussianProcessFitter newGPfitter = GaussianProcessFitter(inputDoE_,
-                                                                outputDoE_,
-                                                                defaultGPFitter_.getResult().getCovarianceModel(),
-                                                                defaultGPFitter_.getResult().getBasis());
+                                                              outputDoE_,
+                                                              defaultGPFitter_.getResult().getCovarianceModel(),
+                                                              defaultGPFitter_.getResult().getBasis());
     newGPfitter.run();
     GaussianProcessRegression newGPR;
     newGPR = GaussianProcessRegression(newGPfitter.getResult());
