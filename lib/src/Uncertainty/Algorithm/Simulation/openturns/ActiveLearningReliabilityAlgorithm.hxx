@@ -58,23 +58,28 @@ public:
                                                
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const ProbabilitySimulationAlgorithm & reliabilityAlgorithm,
-                                      const ActiveLearningReliabilityFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction,
+                                      const UnsignedInteger SimulationBudget);
 
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const NAIS & reliabilityAlgorithm,
-                                      const ActiveLearningReliabilityFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction,
+                                      const UnsignedInteger SimulationBudget);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const SubsetSampling & reliabilityAlgorithm,
-                                      const ActiveLearningReliabilityFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction,
+                                      const UnsignedInteger SimulationBudget);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const StandardSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                      const ActiveLearningReliabilityFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction,
+                                      const UnsignedInteger SimulationBudget);
                                       
   ActiveLearningReliabilityAlgorithm (const GaussianProcessFitter & gpFitter,
                                       const PhysicalSpaceCrossEntropyImportanceSampling & reliabilityAlgorithm,
-                                      const ActiveLearningReliabilityFunction & activelearningFunction);
+                                      const ActiveLearningReliabilityFunction & activelearningFunction,
+                                      const UnsignedInteger SimulationBudget);
                                       
   /** Virtual constructor */
   ActiveLearningReliabilityAlgorithm * clone() const override;
@@ -136,7 +141,7 @@ protected:
   Sample currentInputSample_;
   Sample inputDoE_;
   Sample outputDoE_;
-  UnsignedInteger convergenceCriterion_;
+  UnsignedInteger convergenceCriterion_; // by default convergenceCriterion_ is set to active learning
   
   UnsignedInteger simulationAlgorithmSeed_;
   

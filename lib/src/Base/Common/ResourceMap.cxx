@@ -1503,9 +1503,10 @@ void ResourceMap::loadDefaultConfiguration()
   // Cross Entropy Importance Sampling parameters //
   addAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.25);
 
-  // ActiveLearningReliability Algorithm seed //
+  // ActiveLearningReliability Algorithm parameters //
   addAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed", 0);
-
+  addAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor", 2.0);
+  
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 
