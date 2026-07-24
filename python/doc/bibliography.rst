@@ -95,6 +95,10 @@ Bibliography
     *An overview of variance-based importance measures in the linear regression context: comparative analyses and numerical tests*,
     Socio-Environmental Systems Modeling, vol. 7, 18681, doi:10.18174/sesmo.18681
     `pdf <https://sesmo.org/article/view/18681/18319>`__
+.. [coeurjolly2016] Coeurjolly, J.-F. and Porcu, E. (2016).
+    *Fast and exact simulation of complex-valued stationary Gaussian processes
+    through embedding circulant matrix.* arXiv:1604.00362.
+    `pdf <https://arxiv.org/abs/1604.00362>`__
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
@@ -116,6 +120,8 @@ Bibliography
 .. [daveiga2022] Da Veiga, S., Gamboa, F., Iooss, B., and Prieur, C. (2021).
     *Basics and trends in sensitivity analysis: theory and practice in R.*
     Society for Industrial and Applied Mathematics.
+.. [davies1987] Davies, R. and Harte, D. (1987). *Tests for Hurst effect.*
+    Biometrika, 74(1), 95-101.
 .. [davis1975] Davis, P.-J. and P.Rabinowitz, P. (1975). *Methods of numerical integration*,
     Academic Press.
 .. [delmas2006] Delmas, J.F. and Jourdain, B. *Modèles aléatoires: Applications aux
@@ -546,6 +552,8 @@ Bibliography
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
 .. [wilks1948] Wilks, S. S. (1948). Order statistics. Bulletin of the American Mathematical Society, 54(1) :6–50.
+.. [wood1994] Wood, A. and Chan, G. (1994). *Simulation of stationary Gaussian processes
+    in [0,1]^d.* Journal of Computational and Graphical Statistics, 3(4), 409-432.
 .. [robert2004] Robert C.P., Casella G. *Monte-Carlo Statistical Methods*, Springer, ISBN 0-387-21239-6, 2nd ed, 2004.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
@@ -556,3 +564,11 @@ Bibliography
     PhD thesis, Vanderbilt University, USA, 2012
 .. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors*
     Technometrics 62.3 (2020): 291-302.
+.. [graham2018a] Graham, I. G., Kuo, F. Y., Nuyens, D., Scheichl, R., and Sloan, I. H. (2018).
+    *Analysis of Circulant Embedding Methods for Sampling Stationary Random Fields.*
+    SIAM Journal on Numerical Analysis, 56(3), 1871-1895.
+    `pdf <https://doi.org/10.1137/17M1129730>`__
+.. [pichot2022] Pichot, G., Legrand, S., Kern, M., and Tepakbong-Tematio, N. (2022).
+    *Initialization of the Circulant Embedding method to speed up the generation of Gaussian random fields.*
+    SMAI Journal of Computational Mathematics, 8, 21.
+    `pdf <https://doi.org/10.5802/smai-jcm.89>`__

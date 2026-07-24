@@ -157,186 +157,100 @@ KissFFT::ComplexCollection KissFFT::inverseTransform(const ComplexCollection & c
   return transformationResult;
 }
 
-ComplexMatrix KissFFT::fft2D(const ComplexMatrix & complexMatrix, const Bool isIFFT) const
+KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
+                                const Indices & dimensions,
+                                const Bool isIFFT) const
 {
-  const UnsignedInteger columns = complexMatrix.getNbColumns();
-  const UnsignedInteger rows = complexMatrix.getNbRows();
-  ComplexCollection output(rows * columns);
-  KISSFFTScalar fftRows(rows, isIFFT);
-  const  FFTPolicy policyRows(*(complexMatrix.getImplementation().get()), output, fftRows, rows);
-  TBBImplementation::ParallelFor( 0, columns, policyRows);
-  ComplexCollection transposedData(rows * columns);
-  for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-    for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-      transposedData[columnIndex + rowIndex * columns] = output[rowIndex + rows * columnIndex];
-  KISSFFTScalar fftColumns(columns, isIFFT);
-  const  FFTPolicy policyColumns(transposedData, output, fftColumns, columns);
-  TBBImplementation::ParallelFor( 0, rows, policyColumns );
-  ComplexMatrix result(rows, columns);
-  Complex factor(1.0);
-  if (isIFFT) factor /= (rows * columns);
-  for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-    for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-      result(rowIndex, columnIndex) = output[columnIndex + rowIndex * columns] * factor;
-  return result;
-}
+  const UnsignedInteger nDims = dimensions.getSize();
+  UnsignedInteger totalSize = 1;
+  for (UnsignedInteger i = 0; i < nDims; ++i)
+    totalSize *= dimensions[i];
+  if (data.getSize() != totalSize)
+    throw InvalidArgumentException(HERE) << "In KissFFT::fftND: data size (" << data.getSize()
+                                         << ") does not match product of dimensions (" << totalSize << ")";
 
-/** FFT 2D transformation on complex */
-ComplexMatrix KissFFT::transform2D(const ComplexMatrix & complexMatrix) const
-{
-  return fft2D(complexMatrix, false);
-}
-
-
-/** FFT 2D transformation on real matrix */
-ComplexMatrix KissFFT::transform2D(const Matrix & matrix) const
-{
-  const UnsignedInteger rows = matrix.getNbRows();
-  const UnsignedInteger columns = matrix.getNbColumns();
-  ComplexMatrix complexMatrix(rows, columns);
-
-  for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-    for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-      complexMatrix(rowIndex, columnIndex) = matrix(rowIndex, columnIndex);
-  return transform2D(complexMatrix);
-}
-
-/** FFT 2D transformation on sample */
-ComplexMatrix KissFFT::transform2D(const Sample & sample) const
-{
-  const UnsignedInteger rows = sample.getSize();
-  const UnsignedInteger columns = sample.getDimension();
-  ComplexMatrix complexMatrix(rows, columns);
-
-  for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-    for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-      complexMatrix(rowIndex, columnIndex) = sample(rowIndex, columnIndex);
-  return transform2D(complexMatrix);
-}
-
-/** IFFT 2D transformation on complex */
-ComplexMatrix KissFFT::inverseTransform2D(const ComplexMatrix & complexMatrix) const
-{
-  return fft2D(complexMatrix, true);
-}
-
-/** IFFT 2D transformation on real matrix */
-ComplexMatrix KissFFT::inverseTransform2D(const Matrix & matrix) const
-{
-  const UnsignedInteger rows = matrix.getNbRows();
-  const UnsignedInteger columns = matrix.getNbColumns();
-  ComplexMatrix complexMatrix(rows, columns);
-
-  for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-    for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-      complexMatrix(rowIndex, columnIndex) = matrix(rowIndex, columnIndex);
-  return inverseTransform2D(complexMatrix);
-}
-
-/** IFFT 2D transformation on sample */
-ComplexMatrix KissFFT::inverseTransform2D(const Sample & sample) const
-{
-  const UnsignedInteger rows = sample.getSize();
-  const UnsignedInteger columns = sample.getDimension();
-  ComplexMatrix complexMatrix(rows, columns);
-
-  for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-    for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-      complexMatrix(rowIndex, columnIndex) = sample(rowIndex, columnIndex);
-  return inverseTransform2D(complexMatrix);
-}
-
-ComplexTensor KissFFT::fft3D(const ComplexTensor & tensor, const Bool isIFFT) const
-{
-  // Get the dimensions of the tensor
-  const UnsignedInteger rows = tensor.getNbRows();
-  const UnsignedInteger columns = tensor.getNbColumns();
-  const UnsignedInteger sheets = tensor.getNbSheets();
-  // tensor result
-  ComplexTensor result(rows, columns, sheets);
-  for(UnsignedInteger sheetIndex = 0; sheetIndex < sheets; ++sheetIndex)
+  ComplexCollection work(data);
+  ComplexCollection result(totalSize);
+  UnsignedInteger stride = 1;
+  for (UnsignedInteger dim = 0; dim < nDims; ++dim)
   {
-    // 2D transform on the current sheet
-    ComplexMatrix sheet(tensor.getSheet(sheetIndex));
-    result.setSheet(sheetIndex, fft2D(sheet, isIFFT));
-  }
-
-  ComplexCollection input(rows * columns * sheets);
-  ComplexCollection output(rows * columns * sheets);
-  UnsignedInteger index = 0;
-  for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-  {
-    for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
+    const UnsignedInteger dimSize = dimensions[dim];
+    const UnsignedInteger numFFTs = totalSize / dimSize;
+    KISSFFTScalar fft(dimSize, isIFFT);
+    struct FFTPolicyND
     {
-      for(UnsignedInteger sheetIndex = 0; sheetIndex < sheets; ++sheetIndex)
+      const ComplexCollection & work_;
+      ComplexCollection & result_;
+      KISSFFTScalar & fft_;
+      const UnsignedInteger dimSize_;
+      const UnsignedInteger stride_;
+
+      inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
       {
-        input[index] = result(rowIndex, columnIndex, sheetIndex);
-        index += 1;
+        ComplexCollection buf(dimSize_);
+        ComplexCollection out(dimSize_);
+        for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+        {
+          const UnsignedInteger lower = i % stride_;
+          const UnsignedInteger upper = i / stride_;
+          const UnsignedInteger base = lower + upper * dimSize_ * stride_;
+          for (UnsignedInteger j = 0; j < dimSize_; ++j)
+            buf[j] = work_[base + j * stride_];
+          fft_.transform( &buf[0], &out[0] );
+          for (UnsignedInteger j = 0; j < dimSize_; ++j)
+            result_[base + j * stride_] = out[j];
+        }
       }
-    }
+    };
+
+    const FFTPolicyND policy{work, result, fft, dimSize, stride};
+    TBBImplementation::ParallelFor( 0, numFFTs, policy );
+    stride *= dimSize;
+    if (dim < nDims - 1) work = result;
   }
-  KISSFFTScalar fft(sheets, isIFFT);
-  const FFTPolicy policy(input, output, fft, sheets);
-  TBBImplementation::ParallelFor( 0, rows * columns, policy );
-  index = 0;
-  Complex factor(1.0);
-  if (isIFFT) factor /= sheets;
-  for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
+  if (isIFFT)
   {
-    for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-    {
-      for(UnsignedInteger sheetIndex = 0; sheetIndex < sheets; ++sheetIndex)
-      {
-        result(rowIndex, columnIndex, sheetIndex) = output[index] * factor;
-        index += 1;
-      }
-    }
+    const Complex factor(1.0 / totalSize);
+    for (UnsignedInteger i = 0; i < totalSize; ++i)
+      result[i] *= factor;
   }
   return result;
 }
 
-/** FFT 3D transformation on complex */
-ComplexTensor KissFFT::transform3D(const ComplexTensor & tensor) const
+/* FFT ND transformation on real data */
+KissFFT::ComplexCollection KissFFT::transform(const Point & data,
+    const Indices & dimensions) const
 {
-  return fft3D(tensor, false);
+  const UnsignedInteger totalSize = data.getSize();
+  ComplexCollection complexData(totalSize);
+  for (UnsignedInteger i = 0; i < totalSize; ++i)
+    complexData[i] = Complex(data[i], 0.0);
+  return transform(complexData, dimensions);
 }
 
-/* FFT 3D transformation on real data */
-ComplexTensor KissFFT::transform3D(const Tensor & tensor) const
+/* FFT ND transformation on complex data */
+KissFFT::ComplexCollection KissFFT::transform(const ComplexCollection & data,
+    const Indices & dimensions) const
 {
-  // Get the dimensions of the tensor
-  const UnsignedInteger rows = tensor.getNbRows();
-  const UnsignedInteger columns = tensor.getNbColumns();
-  const UnsignedInteger sheets = tensor.getNbSheets();
-  // tensor result
-  ComplexTensor complexTensor(rows, columns, sheets);
-  for(UnsignedInteger sheetIndex = 0; sheetIndex < sheets; ++sheetIndex)
-    for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-      for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-        complexTensor(rowIndex, columnIndex, sheetIndex) = tensor(rowIndex, columnIndex, sheetIndex);
-  return transform3D(complexTensor);
+  return fftND(data, dimensions, false);
 }
 
-/** IFFT 3D transformation on complex */
-ComplexTensor KissFFT::inverseTransform3D(const ComplexTensor & tensor) const
+/* IFFT ND transformation on real data */
+KissFFT::ComplexCollection KissFFT::inverseTransform(const Point & data,
+    const Indices & dimensions) const
 {
-  return fft3D(tensor, true);
+  const UnsignedInteger totalSize = data.getSize();
+  ComplexCollection complexData(totalSize);
+  for (UnsignedInteger i = 0; i < totalSize; ++i)
+    complexData[i] = Complex(data[i], 0.0);
+  return inverseTransform(complexData, dimensions);
 }
 
-/** IFFT 3D transformation on real */
-ComplexTensor KissFFT::inverseTransform3D(const Tensor & tensor) const
+/* IFFT ND transformation on complex data */
+KissFFT::ComplexCollection KissFFT::inverseTransform(const ComplexCollection & data,
+    const Indices & dimensions) const
 {
-  // Get the dimensions of the tensor
-  const UnsignedInteger rows = tensor.getNbRows();
-  const UnsignedInteger columns = tensor.getNbColumns();
-  const UnsignedInteger sheets = tensor.getNbSheets();
-  // tensor result
-  ComplexTensor complexTensor(rows, columns, sheets);
-  for(UnsignedInteger sheetIndex = 0; sheetIndex < sheets; ++sheetIndex)
-    for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
-      for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
-        complexTensor(rowIndex, columnIndex, sheetIndex) = tensor(rowIndex, columnIndex, sheetIndex);
-  return inverseTransform3D(complexTensor);
+  return fftND(data, dimensions, true);
 }
 
 END_NAMESPACE_OPENTURNS

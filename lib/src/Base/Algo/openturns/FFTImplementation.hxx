@@ -28,6 +28,8 @@
 #include "openturns/Sample.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/Tensor.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -80,6 +82,14 @@ public:
                                       const UnsignedInteger step,
                                       const UnsignedInteger last) const;
 
+  /** FFT ND transformation on data stored as a flat array */
+  virtual ComplexCollection transform(const Point & data,
+                                      const Indices & dimensions) const;
+
+  /** FFT ND transformation on complex data stored as a flat array */
+  virtual ComplexCollection transform(const ComplexCollection & data,
+                                      const Indices & dimensions) const;
+
   /** FFT inverse transformation */
   virtual ComplexCollection inverseTransform(const ScalarCollection & collection) const;
 
@@ -108,35 +118,13 @@ public:
       const UnsignedInteger step,
       const UnsignedInteger last) const;
 
-  /** FFT 2D transformation on complex */
-  virtual ComplexMatrix transform2D(const ComplexMatrix & complexMatrix) const;
+  /** IFFT ND transformation on data stored as a flat array */
+  virtual ComplexCollection inverseTransform(const Point & data,
+      const Indices & dimensions) const;
 
-  /** FFT 2D transformation on real matrix */
-  virtual ComplexMatrix transform2D(const Matrix & matrix) const;
-
-  /** FFT 2D transformation on sample */
-  virtual ComplexMatrix transform2D(const Sample & sample) const;
-
-  /** IFFT 2D transformation on complex */
-  virtual ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const;
-
-  /** IFFT 2D transformation on real matrix */
-  virtual ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
-
-  /** IFFT 2D transformation on sample */
-  virtual ComplexMatrix inverseTransform2D(const Sample & sample) const;
-
-  /** FFT 3D transformation */
-  virtual ComplexTensor transform3D(const ComplexTensor & tensor) const;
-
-  /** FFT 3D transformation on real data */
-  virtual ComplexTensor transform3D(const Tensor & tensor) const;
-
-  /** IFFT 3D transformation */
-  virtual ComplexTensor inverseTransform3D(const ComplexTensor & tensor) const;
-
-  /** IFFT 3D transformation */
-  virtual ComplexTensor inverseTransform3D(const Tensor & tensor) const;
+  /** IFFT ND transformation on complex data stored as a flat array */
+  virtual ComplexCollection inverseTransform(const ComplexCollection & data,
+      const Indices & dimensions) const;
 
   /** String converter */
   String __repr__() const override;
