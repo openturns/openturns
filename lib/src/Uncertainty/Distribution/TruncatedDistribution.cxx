@@ -63,22 +63,6 @@ TruncatedDistribution::TruncatedDistribution()
   computeRange();
 }
 
-/* Parameters constructor to use when the two bounds are finite */
-TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
-    const Scalar lowerBound,
-    const Scalar upperBound,
-    const Scalar thresholdRealization)
-  : DistributionImplementation()
-  , bounds_(Point(distribution.getDimension(), lowerBound), Point(distribution.getDimension(), upperBound))
-{
-  if (std::isnan(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter is NaN";
-  if (std::isnan(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter is NaN";
-  setName("TruncatedDistribution");
-  // This call also set the range
-  setDistribution(distribution);
-  setThresholdRealization(thresholdRealization);
-}
-
 /* Parameters constructor to use when one of the bounds is not finite */
 TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
     const Scalar bound,
@@ -268,7 +252,7 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
         Scalar wI = normalizationFactor_;
         for (UnsignedInteger j = 0; j < dimension_; ++j)
         {
-          const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), lb[j], ub[j]);
+          const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), Interval(Point(1, lb[j]), Point(1, ub[j])));
           wI /= componentJ.normalizationFactor_;
           components[j] = componentJ.getSimplifiedVersion();
         }

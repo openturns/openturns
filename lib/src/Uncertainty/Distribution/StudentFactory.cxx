@@ -66,40 +66,54 @@ DistributionFactoryResult StudentFactory::buildEstimator(const Sample & sample) 
 }
 
 
-class StudentFactoryReducedLogLikelihood : public EvaluationImplementation
+class StudentFactoryLogLikelihood : public EvaluationImplementation
 {
 public:
-  /** Constructor from a sample and a derivative factor estimate */
-  StudentFactoryReducedLogLikelihood(const Sample & sample,
-                                     const Point & mu,
-                                     const Point & stdev,
-                                     const CorrelationMatrix & R)
+  /** Constructor from a sample, fixed mu, and correlation matrix */
+  StudentFactoryLogLikelihood(const Sample & sample,
+                              const Point & mu,
+                              const CorrelationMatrix & R,
+                              const Point & sigmaTip,
+                              const UnsignedInteger reducedDimThreshold)
     : sample_(sample)
+    , d_(sample.getDimension())
     , mu_(mu)
-    , stdev_(stdev)
     , R_(R)
+    , sigmaTip_(sigmaTip)
+    , reducedDimThreshold_(reducedDimThreshold)
   {
     // Nothing to do
   }
 
-  StudentFactoryReducedLogLikelihood * clone() const override
+  StudentFactoryLogLikelihood * clone() const override
   {
-    return new StudentFactoryReducedLogLikelihood(*this);
+    return new StudentFactoryLogLikelihood(*this);
   }
 
   Point operator() (const Point & parameter) const override
   {
     const Scalar nu = parameter[0];
+    if (nu <= 0.0) return Point(1, SpecFunc::LowestScalar);
 
-    const Scalar factor = 1.0 - 2.0 / nu;
-    if (factor <= 0.0) return Point(1, SpecFunc::LowestScalar);
-    const Point sigma(stdev_ * std::sqrt(factor));
+    Point sigma(d_);
+    if (d_ <= reducedDimThreshold_)
+    {
+      for (UnsignedInteger j = 0; j < d_; ++ j)
+      {
+        sigma[j] = parameter[1 + j];
+        if (sigma[j] <= 0.0) return Point(1, SpecFunc::LowestScalar);
+      }
+    }
+    else
+    {
+      sigma = sigmaTip_;
+    }
     return Student(nu, mu_, sigma, R_).computeLogPDF(sample_).computeMean();
   }
 
   UnsignedInteger getInputDimension() const override
   {
-    return 1;
+    return (d_ <= reducedDimThreshold_) ? 1 + d_ : 1;
   }
 
   UnsignedInteger getOutputDimension() const override
@@ -109,33 +123,76 @@ public:
 
 private:
   Sample sample_;
+  UnsignedInteger d_;
   Point mu_;
-  Point stdev_;
   CorrelationMatrix R_;
+  Point sigmaTip_;
+  UnsignedInteger reducedDimThreshold_;
 };
 
 
 Student StudentFactory::buildAsStudent(const Sample & sample) const
 {
   if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from a sample of size < 2";
-  const Point mu(sample.computeMean());
-  const Point stdev(sample.computeStandardDeviation());
-  // The relation between Kendall's tau and shape matrix is universal among the elliptical copulas. Use the method in NormalCopula.
+  const Point mu(sample.computeMedian());
   const CorrelationMatrix R(NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau()));
+  const UnsignedInteger d = sample.getDimension();
 
-  // Now, nu is found by reduced likelihood maximization
-  StudentFactoryReducedLogLikelihood logLikelihood(sample, mu, stdev, R);
+  // Robust scale estimate
+  const Point q25(sample.computeQuantilePerComponent(0.25));
+  const Point q75(sample.computeQuantilePerComponent(0.75));
+  Point sigmaTip(d);
+  for (UnsignedInteger j = 0; j < d; ++ j)
+    sigmaTip[j] = (q75[j] - q25[j]) / 1.349;
+
+  const UnsignedInteger reducedDimThreshold = 5;
+  StudentFactoryLogLikelihood logLikelihood(sample, mu, R, sigmaTip, reducedDimThreshold);
   const Function objective(logLikelihood.clone());
   OptimizationProblem problem(objective);
-  const Interval bounds(2.0 * (1.0 + SpecFunc::ScalarEpsilon), ResourceMap::GetAsScalar("StudentFactory-NuMax"));
-  problem.setBounds(bounds);
   problem.setMinimization(false);
+
+  const UnsignedInteger dim = (d <= reducedDimThreshold) ? 1 + d : 1;
+  Point lowerBound(dim, 0.0);
+  Point upperBound(dim, SpecFunc::Infinity);
+  Interval::BoolCollection finiteLowerBound(dim, false);
+  Interval::BoolCollection finiteUpperBound(dim, false);
+  lowerBound[0] = SpecFunc::ScalarEpsilon;
+  finiteLowerBound[0] = true;
+  if (d <= reducedDimThreshold)
+  {
+    for (UnsignedInteger j = 0; j < d; ++ j)
+    {
+      lowerBound[1 + j] = SpecFunc::ScalarEpsilon;
+      finiteLowerBound[1 + j] = true;
+    }
+  }
+  problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+
+  Scalar nu0 = 1.0;
+  Point startingPoint(dim);
+  startingPoint[0] = nu0;
+  if (d <= reducedDimThreshold)
+  {
+    for (UnsignedInteger j = 0; j < d; ++ j)
+      startingPoint[1 + j] = sigmaTip[j];
+  }
+
   TNC solver(problem);
-  solver.setStartingPoint((bounds.getLowerBound() + bounds.getUpperBound()) * 0.5);
+  solver.setStartingPoint(startingPoint);
   solver.run();
-  const Scalar nu = solver.getResult().getOptimalPoint()[0];
-  const Point sigma(stdev * std::sqrt(1.0 - 2.0 / nu));
-  Student result(nu, mu, sigma, R);
+  const Point optimalParameter(solver.getResult().getOptimalPoint());
+  const Scalar nu = optimalParameter[0];
+  Point optimalSigma(d);
+  if (d <= reducedDimThreshold)
+  {
+    for (UnsignedInteger j = 0; j < d; ++ j)
+      optimalSigma[j] = optimalParameter[1 + j];
+  }
+  else
+  {
+    optimalSigma = sigmaTip;
+  }
+  Student result(nu, mu, optimalSigma, R);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);
   return result;

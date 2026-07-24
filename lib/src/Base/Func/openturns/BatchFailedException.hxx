@@ -35,17 +35,21 @@ public:
                        const Indices & failedIndices,
                        const Description & errorDescription,
                        const Indices & succeededIndices,
+                       const Sample & inputSample,
                        const Sample & outputSample)
     : Exception(point, "BatchFailedException"),
       failedIndices_(failedIndices),
       errorDescription_(errorDescription),
       succeededIndices_(succeededIndices),
+      inputSample_(inputSample),
       outputSample_(outputSample)
   {
     if (failedIndices_.getSize() != errorDescription.getSize())
       throw InvalidArgumentException(HERE) << "indices size must match error size";
     if (succeededIndices_.getSize() != outputSample.getSize())
       throw InvalidArgumentException(HERE) << "indices size must match output size";
+    if (inputSample.getSize() != failedIndices_.getSize() + succeededIndices_.getSize())
+      throw InvalidArgumentException(HERE) << "succeed+failed indices size must match input size";
   }
 
   template <class T> BatchFailedException & operator << (T obj)
@@ -84,7 +88,7 @@ public:
     return succeededIndices_;
   }
 
-  /** Succeeded evaluations accessor */
+  /** Outputs accessor (succeeded only) */
   void setOutputSample(const Sample & outputSample)
   {
     outputSample_ = outputSample;
@@ -94,10 +98,21 @@ public:
     return outputSample_;
   }
 
+  /** Inputs accessor (succeeded + failed) */
+  void setInputSample(const Sample & inputSample)
+  {
+    inputSample_ = inputSample;
+  }
+  Sample getInputSample() const
+  {
+    return inputSample_;
+  }
+
 private:
   Indices failedIndices_;
   Description errorDescription_;
   Indices succeededIndices_;
+  Sample inputSample_;
   Sample outputSample_;
 };
 

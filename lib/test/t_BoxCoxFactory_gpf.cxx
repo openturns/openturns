@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class BoxCoxFactory for standard methods using GLM
+ *  @brief The test file of class BoxCoxFactory for standard methods using GPF
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -60,14 +60,14 @@ int main(int, char *[])
     BoxCoxFactory factory;
 
     // Creation of the BoxCoxTransform
-    GeneralLinearModelResult result;
+    GaussianProcessFitterResult result;
     const Basis basis = LinearBasisFactory(1).build();
     const DiracCovarianceModel covarianceModel;
     const Point shift = {1e-10};
-    BoxCoxTransform myBoxCox = factory.buildWithGLM(inputSample, outputSample, covarianceModel, basis, shift, result);
+    BoxCoxTransform myBoxCox = factory.buildWithGPF(inputSample, outputSample, covarianceModel, basis, shift, result);
 
-    fullprint << "myBoxCox (GLM)=" << myBoxCox.__str__() << std::endl;
-    fullprint << "GLM result=" << result.__str__() << std::endl;
+    fullprint << "myBoxCox (GPF)=" << myBoxCox.__str__() << std::endl;
+    fullprint << "GPF result=" << result.__str__() << std::endl;
 
   }
   catch (TestFailed & ex)

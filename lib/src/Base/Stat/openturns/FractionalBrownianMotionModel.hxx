@@ -41,11 +41,11 @@ public:
   FractionalBrownianMotionModel();
 
   /** Parameters constructor */
-  FractionalBrownianMotionModel(const Scalar scale,
-                                const Scalar amplitude,
-                                const Scalar exponent);
+  FractionalBrownianMotionModel(const Point & scale,
+                                const Point & amplitude,
+                                const Point & exponent);
 
-  FractionalBrownianMotionModel(const Scalar scale,
+  FractionalBrownianMotionModel(const Point & scale,
                                 const Point & amplitude,
                                 const Point & exponent,
                                 const SquareMatrix & eta,

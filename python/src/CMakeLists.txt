@@ -1049,6 +1049,8 @@ install (DIRECTORY usecases DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturn
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
+set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
+separate_arguments (SPHINX_FLAGS)
 if (SPHINX_FOUND)
 
   # exclude examples according to available dependencies
@@ -1155,9 +1157,6 @@ if (SPHINX_FOUND)
       list (APPEND sphinx_clones ${sphinx_clone})
     endif ()
   endforeach ()
-
-  set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
-  separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format
   foreach (format ${doc_formats})

@@ -358,7 +358,7 @@ int main(int, char *[])
     fullprint << "case 2, q comp=" << q << std::endl;
     // For ticket 953
     {
-      TruncatedDistribution atom1(Uniform(0.0, 1.0), 0.0, 1.0);
+      TruncatedDistribution atom1(Uniform(0.0, 1.0), Interval(0.0, 1.0));
       Uniform atom2(0.0, 2.0);
       Distribution sum(atom1 + atom2);
       fullprint << "sum=" << sum << std::endl;
@@ -370,7 +370,7 @@ int main(int, char *[])
       Scalar maxS = 10.0;
       Scalar muS = (std::log(minS) + std::log(maxS)) / 2.0;
       Scalar sigma = (std::log(maxS) - muS) / 3.0;
-      TruncatedDistribution atom1(LogNormal(muS, sigma), minS, maxS);
+      TruncatedDistribution atom1(LogNormal(muS, sigma), Interval(minS, maxS));
       Uniform atom2(0.0, 2.0);
       Distribution sum(atom1 + atom2);
       fullprint << "sum=" << sum << std::endl;

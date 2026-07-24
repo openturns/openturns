@@ -24,8 +24,6 @@ and its cumulative distribution function is defined as:
     \end{array}
 
 Available constructors:
-    TruncatedDistribution(*distribution, lowerBound, upperBound, threshold=0.5*)
-
     TruncatedDistribution(*distribution, bound, side=ot.TruncatedDistribution.LOWER, threshold=0.5*)
 
     TruncatedDistribution(*distribution, truncationInterval, threshold=0.5*)
@@ -34,10 +32,6 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     The distribution to be truncated.
-lowerBound, upperBound : float
-    Define a new distribution range :math:`[lowerBound, upperBound]` with
-    finite bounds. The upper bound must be strictly greater than the lower
-    bound.
 bound : float
     Scalar used when one of the bounds of the distribution is not finite.
 
@@ -63,7 +57,7 @@ threshold : float, :math:`\tau \in [0, 1]`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0)
+>>> distribution = ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval(1.0, 4.0))
 
 Draw a sample:
 

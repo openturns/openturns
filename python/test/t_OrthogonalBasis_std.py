@@ -52,7 +52,7 @@ for i in range(10):
 # Polynomial factories using a collection of distributions
 distributionCollection = [
     ot.Normal(),
-    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
+    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval(1.0, 4.0)),
     ot.Uniform(),
 ]
 basisFactory = ot.OrthogonalProductPolynomialFactory(distributionCollection)

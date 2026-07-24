@@ -41,24 +41,25 @@ FractionalBrownianMotionModel::FractionalBrownianMotionModel()
 }
 
 /* Parameters constructor */
-FractionalBrownianMotionModel::FractionalBrownianMotionModel(const Scalar scale,
-    const Scalar amplitude,
-    const Scalar exponent)
-  : CovarianceModelImplementation(Point(1, scale), Point(1, amplitude))
-  , exponent_(0)
+FractionalBrownianMotionModel::FractionalBrownianMotionModel(const Point & scale,
+    const Point & amplitude,
+    const Point & exponent)
+  : CovarianceModelImplementation(scale, amplitude)
 {
-  setExponentEtaRho(Point(1, exponent), SquareMatrix(1), CorrelationMatrix(1));
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the scale has dimension=" << scale.getDimension() << ", expected dimension=1";
+  setExponentEtaRho(exponent, SquareMatrix(1), CorrelationMatrix(1));
 }
 
 
 /* Parameters constructor */
-FractionalBrownianMotionModel::FractionalBrownianMotionModel(const Scalar scale,
+FractionalBrownianMotionModel::FractionalBrownianMotionModel(const Point & scale,
     const Point & amplitude,
     const Point & exponent,
     const SquareMatrix & eta,
     const CorrelationMatrix & rho)
-  : CovarianceModelImplementation(Point(1, scale), amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the scale has dimension=" << scale.getDimension() << ", expected dimension=1";
   setExponentEtaRho(exponent, eta, rho);
 }
 
