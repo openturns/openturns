@@ -203,7 +203,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         }
         p_cache_->merge(tempCache);
         const Indices okIndices(failedIndices.complement(size));
-        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, okSample) << exc.what();
+        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, inSample, okSample) << exc.what();
       }
     }
     // Fill remaining output values
