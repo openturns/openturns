@@ -287,7 +287,7 @@ view = otv.View(graph)
 
 # %%
 # We define two small lists to draw three different confidence intervals (defined by the alpha value) :
-alphas = [0.05, 0.1, 0.2]
+alphas = [0.95, 0.90, 0.80]
 # three different alpha transparencies
 transparencyList = [0.1, 0.2, 0.4]
 
@@ -306,14 +306,19 @@ graph = ot.Graph(
 
 # Now we loop over the different values :
 for idx, v in enumerate(alphas):
-    quantileAlpha = computeQuantileAlpha(v)
+    """
+    Draw the confidence interval of level "v"
+    As the draw method provides both the mean and confidence,
+    we only keep the confidence graph. It corresponds to the bounds
+    [vLow, vUp] where respectively vLow & vUp are defined by:
+      - vLow = yTestMM - quantileAlpha * conditionalSigma
+      - vUp = yTestMM + quantileAlpha * conditionalSigma
+    with quantileAlpha = computeQuantileAlpha(v)
+    """
     # Compute the bounds of the interval.
-    vLow = yTestMM - quantileAlpha * conditionalSigma
-    vUp = yTestMM + quantileAlpha * conditionalSigma
-    boundsPoly = ot.Polygon.FillBetween(x_test, vLow, vUp)
+    boundsPoly = gccc.draw(x_test, v).getDrawable(1)
     boundsPoly.setColor("forestgreen")
     boundsPoly.setAlpha(transparencyList[idx])
-    boundsPoly.setLegend(" %d%% bounds" % ((1.0 - v) * 100))
     graph.add(boundsPoly)
 
 graph.add(plot_test_data(x_test, y_test))

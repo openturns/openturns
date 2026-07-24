@@ -23,6 +23,9 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/AggregatedFunction.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Cloud.hxx"
+#include "openturns/Polygon.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -99,6 +102,82 @@ Matrix GaussianProcessConditionalCovariance::solveTriangularSystem(const Matrix 
     result = result_.getHMatCholeskyFactor().solveLower(rhs);
   }
   return result;
+}
+
+Graph GaussianProcessConditionalCovariance::draw(const Scalar xMin,
+                                                 const Scalar xMax,
+                                                 const UnsignedInteger pointsNumber,
+                                                 const Scalar confidenceLevel) const
+{
+  // Check that pointsNumber is at least 2
+  if (pointsNumber < 2)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, expected pointsNumber >= 2";
+  // Check that xMin < xMax
+  if (xMin >= xMax)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, expected xMin < xMax";
+  // check confidence level is in (0,1)
+  if (!(confidenceLevel > 0.0 && confidenceLevel < 1.0))
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, expected a confidence level in (0,1)";
+  // Build a grid of points to draw the confidence interval
+  Sample xi(pointsNumber, 1);
+  const Scalar step = (xMax - xMin) / (pointsNumber - 1);
+  Scalar x = xMin;
+  for (UnsignedInteger i = 0; i < pointsNumber; ++i)
+  {
+    xi(i, 0) = x;
+    x += step;
+  }
+  return draw(xi, confidenceLevel);
+}
+Graph GaussianProcessConditionalCovariance::draw(const Sample & xi, const Scalar confidenceLevel) const
+{
+  // input dimension check
+  if (result_.getMetaModel().getInputDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, method valid only for models with an input dimension 1";
+  // output dimension check
+  if (result_.getMetaModel().getOutputDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, method valid only for models with an output dimension 1";
+  // check sample compatibility
+  // input dimension check
+  if (xi.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, expected an input sample of dimension 1";
+  const UnsignedInteger size = xi.getSize();
+  // check size
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, expected a sample of size >= 2";
+  // check confidence level is in (0,1)
+  if (!(confidenceLevel > 0.0 && confidenceLevel < 1.0))
+    throw InvalidArgumentException(HERE) << "In GaussianProcessConditionalCovariance::draw, expected a confidence level in (0,1)";
+  // sort the xi sample
+  Sample sortedXi(xi);
+  sortedXi.sort();
+  const Sample conditionalMean(getConditionalMean(sortedXi));
+  const Sample conditionalVariance(getConditionalMarginalVariance(sortedXi));
+  Sample lowerBound(size, 1);
+  Sample upperBound(size, 1);
+  const Scalar quantileAlpha = Normal().computeBilateralConfidenceInterval(confidenceLevel).getUpperBound()[0];
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar scaledStandardDeviation = quantileAlpha * sqrt(conditionalVariance(i, 0));
+    lowerBound(i, 0) = conditionalMean(i, 0) - scaledStandardDeviation;
+    upperBound(i, 0) = conditionalMean(i, 0) + scaledStandardDeviation;
+  }
+   // Graph with 1D cloud
+   Graph graph("", "x", "y", true, "topright");
+   // First the mean curve as a line
+   Curve meanCurve(sortedXi, conditionalMean);
+   meanCurve.setColor("blue");
+   meanCurve.setLegend("mean");
+   graph.add(meanCurve);
+   // Then the bounds as a polygon
+   Polygon boundsPoly(Polygon::FillBetween(sortedXi, lowerBound, upperBound));
+   boundsPoly.setColor("forestgreen");
+   boundsPoly.setAlpha(0.3);
+   OSS oss;
+   oss << confidenceLevel * 100 << "% bounds";
+   boundsPoly.setLegend(oss.str());
+   graph.add(boundsPoly);
+   return graph;
 }
 
 /* Compute mean of new points conditionally to observations */

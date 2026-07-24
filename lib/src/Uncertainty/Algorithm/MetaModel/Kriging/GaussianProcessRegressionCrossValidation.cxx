@@ -53,15 +53,16 @@ GaussianProcessRegressionCrossValidation::GaussianProcessRegressionCrossValidati
   , gaussianProcessRegressionResult_(gaussianProcessRegressionResult)
   , splitter_ (splitter)
 {
-  if (gaussianProcessRegressionResult.getLinearAlgebraMethod() != 0)
-    throw NotYetImplementedException(HERE) << "Error: HMAT is not supported yet.";
   const UnsignedInteger sampleSize = gaussianProcessRegressionResult.getOutputSample().getSize();
   if ((splitter_.getN() != sampleSize))
     throw InvalidArgumentException(HERE) << "The parameter N in the splitter is " << splitter_.getN()
                                          << " but the sample size is " << sampleSize;
   // set the output & loo samples
   outputSample_ = gaussianProcessRegressionResult.getOutputSample();
-  metaModelPredictions_ = computeGPRLeaveOneOutPredictions(gaussianProcessRegressionResult);
+  if (gaussianProcessRegressionResult.getLinearAlgebraMethod() == GaussianProcessFitterResult::LAPACK)
+    metaModelPredictions_ = computeGPRLeaveOneOutPredictions(gaussianProcessRegressionResult);
+  else
+    metaModelPredictions_ = computeLOOWithHMat(gaussianProcessRegressionResult);
   initialize();
 }
 
@@ -120,7 +121,6 @@ Sample GaussianProcessRegressionCrossValidation::computeGPRLeaveOneOutPrediction
     throw InvalidArgumentException(HERE) << "Gaussian Process Regression cross-validation is only implemented for scalar output (current output dimension is "
                                          << sampleDimension << ").";
 
-
   // Implement second formula from Equation (32) in (Ginsbourger, 2023 preprint) which is equivalent to Dubrule (1983)
   // Let y be the vector of the output samples, yi its i-th element and ŷi the cross-validation prediction,
   // i.e. the GPR regression based on the sample of the yj (j != i)
@@ -158,6 +158,65 @@ Sample GaussianProcessRegressionCrossValidation::computeGPRLeaveOneOutPrediction
     // Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi (Phi^T Phi)^-1 Phi^T L^-1
     const Matrix Phitranspose(Phi.transpose());
     CovarianceMatrix PhiGram(Phi.computeGram()); // Phi^T Phi (not to be used, later modified in-place)
+    TriangularMatrix phi(PhiGram.computeCholesky()); // Phi^T Phi =: phi phi^T (phi not to be used, later modified in-place)
+    // Thus Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi phi^-T phi^-1 Phi^T L^-1 = (phi^-1 Phi^T L^-1)^T (phi^-1 Phi^T L^-1)
+    Matrix auxiliary(phi.solveLinearSystemInPlace(Phitranspose * covarianceCholeskyFactorInverse)); // auxiliary := phi^-1 Phi^T L^-1 has basisSize rows
+    // (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i] = ||auxiliary[:,i]||^2
+    auxiliary.squareElements();
+    scales -= auxiliary.getImplementation()->genVectProd(Point(basisSize, 1.0), true);
+  }
+
+  // Each scale is actually the squared inverse of an LOO prediction standard deviation.
+  // We store the standard deviations and rescale the residuals.
+  leaveOneOutStandardDeviations_.resize(outputSample.getSize());
+  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++i)
+  {
+    leaveOneOutStandardDeviations_[i] = 1.0 / std::sqrt(scales[i]); // store LOO prediction standard deviation
+    residuals[i] /= scales[i]; // compute scaled residual
+  }
+
+  // LOO predictions computed from the LOO residuals
+  return outputSample - Sample::BuildFromPoint(residuals);
+}
+
+Sample GaussianProcessRegressionCrossValidation::computeLOOWithHMat(
+  const GaussianProcessRegressionResult & gaussianProcessRegressionResult)
+{
+  const Sample outputSample(gaussianProcessRegressionResult.getOutputSample());
+  const UnsignedInteger sampleDimension = outputSample.getDimension();
+  const UnsignedInteger sampleSize = outputSample.getSize();
+  if (sampleDimension != 1)
+    throw InvalidArgumentException(HERE) << "Gaussian Process Regression cross-validation is only implemented for scalar output (current output dimension is "
+                                         << sampleDimension << ").";
+
+  // Compute unscaled residuals using the already computed rho : Sigmatilde y = L^-T rho
+  const GaussianProcessFitterResult gpfResult(gaussianProcessRegressionResult.getGaussianProcessFitterResult());
+  const Point rho(gpfResult.getStandardizedOutput());
+  const HMatrix covarianceCholeskyFactor(gpfResult.getHMatCholeskyFactor());  // L
+  Point residuals(covarianceCholeskyFactor.solveLower(rho, true));// L^-T rho = (Sigma^-1  - Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 ) y
+
+  // Compute scales of residuals : Sigmatilde[i,i] for all i
+  // Start by computing Sigma^-1[i,i] = ||L^-1[:,i]||^2 for all i
+  // ||L^-1[:,i]||^2 can be computed as 1^T S[:,i],
+  // where 1 is the column vector filled with ones,
+  // and S is the matrix whose elements are the squares of the elements of L^-1.
+  // Therefore the vector of the Sigma^-1[i,i] is 1^T S.
+  const Matrix covarianceCholeskyFactorInverse(covarianceCholeskyFactor.solveLower(IdentityMatrix(sampleSize))); //L^-1
+  Matrix covarianceCholeskyFactorInverseSquared(covarianceCholeskyFactorInverse);
+  covarianceCholeskyFactorInverseSquared.squareElements(); // L^{-1}^2
+  // Compute L^{-T} L^{-1} 1 = (L^{-1}^2)^T 1 = (L^{-1}^2) 1 since L^{-1}^2 is symmetric
+  Point scales(covarianceCholeskyFactorInverseSquared.getImplementation()->genVectProd(Point(sampleSize, 1.0), true)); // diagonal elements of L^-T L^-1
+
+  // Then, if the trend is estimated, the scales (which are homogeneous to precisions) must be diminished:
+  // we subtract (Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1)[i,i]
+  const UnsignedInteger  basisSize = gaussianProcessRegressionResult.getBasis().getSize();
+  if (basisSize > 0)
+  {
+    const Matrix regressionMatrix(gaussianProcessRegressionResult.getRegressionMatrix()); // F
+    const Matrix Phi(covarianceCholeskyFactor.solveLower(regressionMatrix, false)); // Phi := L^-1 F
+    // Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi (Phi^T Phi)^-1 Phi^T L^-1
+    const Matrix Phitranspose(Phi.transpose());
+    const CovarianceMatrix PhiGram(Phi.computeGram()); // Phi^T Phi (not to be used, later modified in-place)
     TriangularMatrix phi(PhiGram.computeCholesky()); // Phi^T Phi =: phi phi^T (phi not to be used, later modified in-place)
     // Thus Sigma^-1 F (F^T Sigma^-1 F)^-1 F^T Sigma^-1 = L^-T Phi phi^-T phi^-1 Phi^T L^-1 = (phi^-1 Phi^T L^-1)^T (phi^-1 Phi^T L^-1)
     Matrix auxiliary(phi.solveLinearSystemInPlace(Phitranspose * covarianceCholeskyFactorInverse)); // auxiliary := phi^-1 Phi^T L^-1 has basisSize rows

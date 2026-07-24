@@ -1614,6 +1614,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
   addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
+  // GaussianProcessConditionalCovariance parameters //
+  addAsScalar("GaussianProcessConditionalCovariance-DefaultConfidenceLevel", 0.95);
+
   // KrigingAlgorithm parameters //
   addAsString("KrigingAlgorithm-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 

@@ -964,6 +964,9 @@
   <GaussianProcessFitter-DefaultOptimizationAlgorithm           value_str="Cobyla"     />
   <GaussianProcessFitter-LinearAlgebra                          value_str="LAPACK"  />
 
+  <!-- OT::GaussianProcessConditionalCovariance parameters -->
+  <GaussianProcessConditionalCovariance-DefaultConfidenceLevel    value_float="0.95"   />
+
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-LinearAlgebra   value_str="LAPACK"  />
 

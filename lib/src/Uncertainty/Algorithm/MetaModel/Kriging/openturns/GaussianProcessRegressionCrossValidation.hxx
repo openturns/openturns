@@ -96,6 +96,10 @@ private:
   Sample computeGPRLeaveOneOutPredictions(
     const GaussianProcessRegressionResult & gaussianProcessRegressionResult);
 
+  /* Compute h-mat cross-validation metamodel predictions */
+  Sample computeLOOWithHMat(
+    const GaussianProcessRegressionResult & gaussianProcessRegressionResult);
+
   /* Compute cross-validation metamodel predictions */
   static Sample ComputeMetamodelKFoldPredictions(
     const GaussianProcessRegressionResult & gaussianProcessRegressionResult, const KFoldSplitter & splitter);

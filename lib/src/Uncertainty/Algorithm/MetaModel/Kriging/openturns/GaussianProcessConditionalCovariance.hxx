@@ -57,6 +57,13 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
+  /** Draw confidence method for 1d inputs */
+  Graph draw(const Scalar xMin,
+             const Scalar xMax,
+             const UnsignedInteger pointsNumber,
+             const Scalar confidenceLevel = ResourceMap::GetAsScalar("GaussianProcessConditionalCovariance-DefaultConfidenceLevel")) const;
+  Graph draw(const Sample & xi, const Scalar confidenceLevel = ResourceMap::GetAsScalar("GaussianProcessConditionalCovariance-DefaultConfidenceLevel")) const;
+
   /** Compute mean of new points conditionally to observations */
   virtual Sample getConditionalMean(const Sample & xi) const;
 
