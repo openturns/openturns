@@ -334,4 +334,63 @@ print("Test namespace isolation")
 print("=" * 60)
 assert not hasattr(ot, "CurlFreeModel")
 
+# ====================================================================
+# Extreme scales: scale-aware finite differences
+# ====================================================================
+print("=" * 60)
+print("Test extreme scales (scale-aware FD)")
+print("=" * 60)
+s_ex = [5e-5, 5e-4]
+t_ex = [1e-5, 2e-4]
+# Very small scale
+small_scale = [1e-4, 1e-3]
+model_small = ot.SquaredExponential(small_scale, [1.0])
+curl_small = otexp.CurlFreeModel(model_small)
+val_small = curl_small(s_ex, t_ex)
+assert val_small.getNbRows() == 2
+assert val_small.getNbColumns() == 2
+assert_matrix_symmetric(val_small)
+assert_curl_curl_transpose(curl_small, s_ex, t_ex)
+assert_stationary_consistency(curl_small, s_ex, t_ex)
+# tau=0: C_curl(0)_{ii} = 1/scale_i^2
+val0_small = curl_small([0.0, 0.0])
+ott.assert_almost_equal(val0_small[0, 0], 1.0 / (1e-4 * 1e-4), 1e-6)
+ott.assert_almost_equal(val0_small[1, 1], 1.0 / (1e-3 * 1e-3), 1e-6)
+ott.assert_almost_equal(val0_small[0, 1], 0.0, 1e-6)
+# Very large scale
+large_scale = [1e4, 1e5]
+model_large = ot.SquaredExponential(large_scale, [1.0])
+curl_large = otexp.CurlFreeModel(model_large)
+val_large = curl_large(s_ex, t_ex)
+assert val_large.getNbRows() == 2
+assert val_large.getNbColumns() == 2
+assert_matrix_symmetric(val_large)
+assert_curl_curl_transpose(curl_large, s_ex, t_ex)
+assert_stationary_consistency(curl_large, s_ex, t_ex)
+val0_large = curl_large([0.0, 0.0])
+ott.assert_almost_equal(val0_large[0, 0], 1.0 / (1e4 * 1e4), 1e-6)
+ott.assert_almost_equal(val0_large[1, 1], 1.0 / (1e5 * 1e5), 1e-6)
+# Metadata consistency: amplitude should match sqrt(C(0)_{jj})
+amp_small = curl_small.getAmplitude()
+ott.assert_almost_equal(amp_small[0], 1.0 / 1e-4, 1e-6)
+ott.assert_almost_equal(amp_small[1], 1.0 / 1e-3, 1e-6)
+amp_large = curl_large.getAmplitude()
+ott.assert_almost_equal(amp_large[0], 1.0 / 1e4, 1e-6)
+ott.assert_almost_equal(amp_large[1], 1.0 / 1e5, 1e-6)
+# ====================================================================
+# setScale refreshes metadata
+# ====================================================================
+print("=" * 60)
+print("Test setScale refreshes metadata")
+print("=" * 60)
+curl_meta = otexp.CurlFreeModel(2)
+amp_before = curl_meta.getAmplitude()
+curl_meta.setScale([5.0, 10.0])
+amp_after = curl_meta.getAmplitude()
+ott.assert_almost_equal(amp_after[0], 1.0 / 5.0, 1e-10)
+ott.assert_almost_equal(amp_after[1], 1.0 / 10.0, 1e-10)
+val0_meta = curl_meta([0.0, 0.0])
+ott.assert_almost_equal(val0_meta[0, 0], 1.0 / 25.0, 1e-10)
+ott.assert_almost_equal(val0_meta[1, 1], 1.0 / 100.0, 1e-10)
+
 print("All tests passed!")

@@ -363,4 +363,82 @@ print("Test namespace isolation")
 print("=" * 60)
 assert not hasattr(ot, "DivFreeModel")
 
+# ====================================================================
+# Extreme scales: scale-aware finite differences
+# ====================================================================
+print("=" * 60)
+print("Test extreme scales (scale-aware FD)")
+print("=" * 60)
+s_ex = [5e-5, 5e-4]
+t_ex = [1e-5, 2e-4]
+# Very small scale
+small_scale = [1e-4, 1e-3]
+model_small = ot.SquaredExponential(small_scale, [1.0])
+div_small = otexp.DivFreeModel(model_small)
+val_small = div_small(s_ex, t_ex)
+assert val_small.getNbRows() == 2
+assert val_small.getNbColumns() == 2
+assert_matrix_symmetric(val_small)
+assert_div_transpose(div_small, s_ex, t_ex)
+assert_stationary_consistency(div_small, s_ex, t_ex)
+# tau=0: C_div(0)_{ii} = sum_{k!=i} 1/scale_k^2
+val0_small = div_small([0.0, 0.0])
+ott.assert_almost_equal(val0_small[0, 0], 1.0 / (1e-3 * 1e-3), 1e-6)
+ott.assert_almost_equal(val0_small[1, 1], 1.0 / (1e-4 * 1e-4), 1e-6)
+ott.assert_almost_equal(val0_small[0, 1], 0.0, 1e-6)
+# Very large scale
+large_scale = [1e4, 1e5]
+model_large = ot.SquaredExponential(large_scale, [1.0])
+div_large = otexp.DivFreeModel(model_large)
+val_large = div_large(s_ex, t_ex)
+assert val_large.getNbRows() == 2
+assert val_large.getNbColumns() == 2
+assert_matrix_symmetric(val_large)
+assert_div_transpose(div_large, s_ex, t_ex)
+assert_stationary_consistency(div_large, s_ex, t_ex)
+val0_large = div_large([0.0, 0.0])
+ott.assert_almost_equal(val0_large[0, 0], 1.0 / (1e5 * 1e5), 1e-6)
+ott.assert_almost_equal(val0_large[1, 1], 1.0 / (1e4 * 1e4), 1e-6)
+# Metadata consistency: amplitude should match sqrt(C(0)_{jj})
+amp_small = div_small.getAmplitude()
+ott.assert_almost_equal(amp_small[0], 1.0 / 1e-3, 1e-6)
+ott.assert_almost_equal(amp_small[1], 1.0 / 1e-4, 1e-6)
+amp_large = div_large.getAmplitude()
+ott.assert_almost_equal(amp_large[0], 1.0 / 1e5, 1e-6)
+ott.assert_almost_equal(amp_large[1], 1.0 / 1e4, 1e-6)
+# curl-div relation at extreme scales
+curl_small = otexp.CurlFreeModel(model_small)
+assert_curl_div_relation(curl_small, div_small, s_ex, t_ex, 1e-4)
+curl_large = otexp.CurlFreeModel(model_large)
+assert_curl_div_relation(curl_large, div_large, s_ex, t_ex, 1e-4)
+
+# ====================================================================
+# Default 3D DivFreeModel: output covariance matches C(0)
+# ====================================================================
+print("=" * 60)
+print("Test default 3D DivFreeModel metadata")
+print("=" * 60)
+div_3d_meta = otexp.DivFreeModel(3)
+amp_3d = div_3d_meta.getAmplitude()
+# C_div(0)_{ii} = sum_{k!=i} 1/L_k^2, all L_k = 1 => C_div(0) = 2*I
+ott.assert_almost_equal(amp_3d[0], 2.0 ** 0.5, 1e-10)
+ott.assert_almost_equal(amp_3d[1], 2.0 ** 0.5, 1e-10)
+ott.assert_almost_equal(amp_3d[2], 2.0 ** 0.5, 1e-10)
+
+# ====================================================================
+# setScale refreshes metadata
+# ====================================================================
+print("=" * 60)
+print("Test setScale refreshes metadata")
+print("=" * 60)
+div_meta = otexp.DivFreeModel(2)
+div_meta.setScale([5.0, 10.0])
+amp_meta = div_meta.getAmplitude()
+# C_div(0)_{00} = 1/10^2 = 1/100, C_div(0)_{11} = 1/5^2 = 1/25
+ott.assert_almost_equal(amp_meta[0], 1.0 / 10.0, 1e-10)
+ott.assert_almost_equal(amp_meta[1], 1.0 / 5.0, 1e-10)
+val0_meta = div_meta([0.0, 0.0])
+ott.assert_almost_equal(val0_meta[0, 0], 1.0 / 100.0, 1e-10)
+ott.assert_almost_equal(val0_meta[1, 1], 1.0 / 25.0, 1e-10)
+
 print("All tests passed!")

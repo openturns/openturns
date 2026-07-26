@@ -41,8 +41,11 @@ CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
     LOGWARN(OSS() << "The curl-free model is proven for d=2,3; for d>3 it is a conjecture, see [scheuerer2012].");
   outputDimension_ = inputDimension;
   isStationary_ = model_.isStationary();
-  amplitude_ = Point(outputDimension_, 1.0);
   activeParameter_ = model_.getActiveParameter();
+  amplitude_ = Point(outputDimension_);
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
 }
 
@@ -60,9 +63,12 @@ CurlFreeModel::CurlFreeModel(const CovarianceModel & model)
     LOGWARN(OSS() << "The curl-free model is proven for d=2,3; for d>3 it is a conjecture, see [scheuerer2012].");
   outputDimension_ = model.getInputDimension();
   scale_ = model.getScale();
-  amplitude_ = Point(outputDimension_, 1.0);
   isStationary_ = model.isStationary();
   activeParameter_ = model.getActiveParameter();
+  amplitude_ = Point(outputDimension_);
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
 }
 
@@ -82,10 +88,12 @@ SquareMatrix CurlFreeModel::operator()(const Point & s, const Point & t) const
     throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
   SquareMatrix result(outputDimension_);
-  const Scalar epsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Point scale(model_.getScale());
 
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
   {
+    const Scalar epsilon = scale[j] * baseEps;
     Point tPlus(t);
     Point tMinus(t);
     tPlus[j] += epsilon;
@@ -108,11 +116,13 @@ SquareMatrix CurlFreeModel::operator()(const Point & tau) const
     throw InvalidArgumentException(HERE) << "Error: the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
 
   SquareMatrix result(outputDimension_);
-  const Scalar epsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Point scale(model_.getScale());
   const Point zero(inputDimension_);
 
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
   {
+    const Scalar epsilon = scale[j] * baseEps;
     Point tauPlus(tau);
     Point tauMinus(tau);
     tauPlus[j] += epsilon;
@@ -139,6 +149,10 @@ void CurlFreeModel::setScale(const Point & scale)
 {
   model_.setScale(scale);
   scale_ = model_.getScale();
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
 }
 
 
