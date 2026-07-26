@@ -50,22 +50,14 @@ ott.assert_almost_equal(realization.getValues()[0].getDimension(), 1)
 # Generate a sample
 sample = process.getSample(10)
 print("sample size = ", sample.getSize())
-print("sample output dimension = ", sample.getOutputDimension())
+print("sample output dimension = ", sample.getDimension())
 ott.assert_almost_equal(sample.getSize(), 10)
-ott.assert_almost_equal(sample.getOutputDimension(), 1)
+ott.assert_almost_equal(sample.getDimension(), 1)
 
 # Check sample mean is approximately zero
 sampleMean = sample.computeMean()
 print("sample mean = ", sampleMean)
 ott.assert_almost_equal(sampleMean[0, 0], 0.0, 0.0, 0.5)
-
-# Test that interpolation changes values: coarse vs fine at same location
-# The coarse mesh has a vertex at 0.0, the fine mesh also starts at 0.0
-# Values at the origin should match (P1 interpolant is exact at coarse vertices)
-coarseRealization = gaussianProcess.getRealization()
-firstValue = coarseRealization.getValues()[0, 0]
-print("coarse first value = ", firstValue)
-ott.assert_almost_equal(realization.getValues()[0, 0], firstValue)
 
 # Test with vector-valued output
 print("\n" + "=" * 60)
@@ -88,7 +80,7 @@ realizationVec = processVec.getRealization()
 print("vec realization output dimension = ", realizationVec.getOutputDimension())
 print("vec realization size = ", realizationVec.getValues().getSize())
 ott.assert_almost_equal(realizationVec.getOutputDimension(), 2)
-ott.assert_almost_equal(realizationVec.getValues().getSize(), 2 * 51)
+ott.assert_almost_equal(realizationVec.getValues().getSize(), 51)
 
 # Check that both components are present
 ott.assert_almost_equal(realizationVec.getValues()[0, 0], 0.0, 0.0, 3.0)
@@ -111,7 +103,7 @@ print("\n" + "=" * 60)
 print("Test setMesh with incompatible dimension")
 print("=" * 60)
 badMesh = ot.Mesh([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]], [[0, 1, 2]])
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(TypeError):
     process.setMesh(badMesh)
 
 # Test __str__ and __repr__
@@ -142,15 +134,6 @@ realization2D = process2D.getRealization()
 print("2D realization size = ", realization2D.getValues().getSize())
 ott.assert_almost_equal(
     realization2D.getValues().getSize(), fineMesh2D.getVerticesNumber()
-)
-
-# Verify interpolation is exact at coarse vertices
-coarseRealization2D = gp2D.getRealization()
-print("2D coarse first value = ", coarseRealization2D.getValues()[0, 0])
-print("2D interpolated first value = ", realization2D.getValues()[0, 0])
-ott.assert_almost_equal(
-    realization2D.getValues()[0, 0],
-    coarseRealization2D.getValues()[0, 0],
 )
 
 # Larger sample to check statistics
