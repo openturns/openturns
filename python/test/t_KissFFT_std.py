@@ -39,7 +39,7 @@ sample = distribution.getSample(2 * N)
 rows = sample.getSize()
 cols = sample.getDimension()
 sampleFlat = ot.ComplexCollection(
-    [complex(sample[i, j], 0.0) for i in range(rows) for j in range(cols)]
+    [complex(sample[i, j], 0.0) for j in range(cols) for i in range(rows)]
 )
 
 transformedSample = myFFT.transform(sampleFlat, [rows, cols])
@@ -50,6 +50,7 @@ print("2D FFT back size = ", inverseSample.getSize())
 
 for i in range(rows * cols):
     ott.assert_almost_equal(inverseSample[i].real, sampleFlat[i].real, 1e-12, 0.0)
+    ott.assert_almost_equal(inverseSample[i].imag, sampleFlat[i].imag, 0.0, 1e-12)
 
 # 3D case
 ot.RandomGenerator.SetSeed(0)
@@ -67,3 +68,4 @@ print("3D FFT back size = ", inverseTensor.getSize())
 
 for i in range(N * N * N):
     ott.assert_almost_equal(inverseTensor[i].real, tensorFlat[i].real, 1e-12, 0.0)
+    ott.assert_almost_equal(inverseTensor[i].imag, tensorFlat[i].imag, 0.0, 1e-12)

@@ -77,7 +77,7 @@ realization4 = process3.getRealization()
 
 # Test that getRealization returns consistent mesh
 field = process.getRealization()
-assert field.getMesh().getVerticesNumber() == n, "mesh mismatch"
+ott.assert_almost_equal(field.getMesh().getVerticesNumber(), n, 0.0, 0.0)
 
 # Test setTimeGrid
 print("\nTest setTimeGrid")
