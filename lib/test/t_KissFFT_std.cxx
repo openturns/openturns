@@ -34,6 +34,7 @@ int main(int, char *[])
 
   try
   {
+    RandomGenerator::SetSeed(0);
 
     // for fft, the best implementation is given for N = 2^p
     const UnsignedInteger size = 16;
@@ -55,16 +56,11 @@ int main(int, char *[])
     KissFFT myFFT;
     fullprint << "myFFT = " << myFFT << std::endl;
 
-    // Initial transformation
-    fullprint << "collection = " << collection << std::endl;
-
-    // FFT transform
+    // 1D case
     const ComplexCollection transformedCollection(myFFT.transform(collection));
-    fullprint << "FFT result = " << transformedCollection << std::endl;
-
-    // Inverse transformation
     const ComplexCollection inverseTransformedCollection(myFFT.inverseTransform(transformedCollection));
-    fullprint << "FFT back=" << inverseTransformedCollection << std::endl;
+    for (UnsignedInteger i = 0; i < collection.getSize(); ++i)
+      assert_almost_equal(inverseTransformedCollection[i], collection[i]);
 
     // 2D ND case
     const UnsignedInteger N = 8;
@@ -79,11 +75,11 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < rows; ++i)
         sampleFlat[i + j * rows] = Complex(sample(i, j), 0.0);
     const ComplexCollection transformedSample(myFFT.transform(sampleFlat, {rows, cols}));
-    fullprint << "2D FFT result = " << transformedSample << std::endl;
 
     // Inverse transformation
     const ComplexCollection inverseTransformedSample(myFFT.inverseTransform(transformedSample, {rows, cols}));
-    fullprint << "2D FFT back=" << inverseTransformedSample << std::endl;
+    for (UnsignedInteger i = 0; i < sampleFlat.getSize(); ++i)
+      assert_almost_equal(inverseTransformedSample[i], sampleFlat[i]);
 
     // 3D ND case
     Tensor tensor(N, N, N);
@@ -99,11 +95,11 @@ int main(int, char *[])
         for (UnsignedInteger i = 0; i < N; ++i)
           tensorFlat[i + j * N + k * N * N] = Complex(tensor(i, j, k), 0.0);
     const ComplexCollection transformedTensor(myFFT.transform(tensorFlat, {N, N, N}));
-    fullprint << "3D FFT result = " << transformedTensor << std::endl;
 
     // Inverse transformation
     const ComplexCollection inverseTransformedTensor(myFFT.inverseTransform(transformedTensor, {N, N, N}));
-    fullprint << "3D FFT back=" << inverseTransformedTensor << std::endl;
+    for (UnsignedInteger i = 0; i < tensorFlat.getSize(); ++i)
+      assert_almost_equal(inverseTransformedTensor[i], tensorFlat[i]);
 
 
   }
