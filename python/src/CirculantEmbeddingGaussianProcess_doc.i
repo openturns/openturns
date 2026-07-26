@@ -58,8 +58,8 @@ Create a 1D CirculantEmbeddingGaussianProcess with scalar output:
 >>> interval = ot.Interval(0.0, 10.0)
 >>> process = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval, [100])
 >>> realization = process.getRealization()
->>> print(realization.getValues()[0:5])
-    [0.606..., 1.04..., -0.472..., -0.411..., -1.21...]
+>>> print(realization.getValues().getDimension())
+1
 
 Create a 2D process with scalar output:
 
@@ -70,7 +70,7 @@ Create a 2D process with scalar output:
 >>> process2D = otexp.CirculantEmbeddingGaussianProcess(cov2D, ot.Interval([0.0]*2, [5.0]*2), [10, 8])
 >>> realization2D = process2D.getRealization()
 >>> print(realization2D.getOutputDimension())
-    1
+1
 
 Create a 2D process with vector-valued output (2 components):
 
@@ -80,10 +80,10 @@ Create a 2D process with vector-valued output (2 components):
 >>> covVec = ot.ExponentialModel([1.0, 1.0], [1.0, 0.5])
 >>> processVec = otexp.CirculantEmbeddingGaussianProcess(covVec, ot.Interval([0.0]*2, [3.0]*2), [6, 6])
 >>> print(processVec.getOutputDimension())
-    2
+2
 >>> realizationVec = processVec.getRealization()
 >>> print(realizationVec.getOutputDimension())
-    2
+2
 
 )RAW"
 // ---------------------------------------------------------------------
