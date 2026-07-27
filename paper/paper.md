@@ -35,6 +35,7 @@ authors:
     orcid: 0000-0002-5139-106X
     affiliation: 1
   - name: Régis Lebrun
+    orcid: 0000-0003-3089-4642
     affiliation: 2
   - name: Julien Schueller
     orcid: 0009-0006-2452-7861
