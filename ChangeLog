@@ -13,7 +13,8 @@
  * PiecewiseLinearDistribution (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
- * SlicedInverseRegression
+ * SlicedInverseRegression (openturns.experimental)
+ * VonMisesFisher(Factory) (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
