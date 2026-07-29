@@ -28,6 +28,9 @@ macro (ot_check_test TESTNAME)
   add_executable (${TEST_TARGET} EXCLUDE_FROM_ALL ${TEST_TARGET}.cxx)
   add_dependencies(tests ${TEST_TARGET})
   target_include_directories(${TEST_TARGET} PRIVATE ${INTERNAL_INCLUDE_DIRS} BEFORE)
+  if (MSVC OR WINTEL)
+    target_compile_definitions(${TEST_TARGET} PRIVATE _USE_MATH_DEFINES)
+  endif ()
   target_link_libraries (${TEST_TARGET} PRIVATE OT)
   set_target_properties (${TEST_TARGET} PROPERTIES
                          UNITY_BUILD OFF
