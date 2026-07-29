@@ -29,6 +29,7 @@ macro (ot_check_test TESTNAME)
   add_dependencies(tests ${TEST_TARGET})
   target_include_directories(${TEST_TARGET} PRIVATE ${INTERNAL_INCLUDE_DIRS} BEFORE)
   target_link_libraries (${TEST_TARGET} PRIVATE OT)
+  target_compile_definitions(${TEST_TARGET} PRIVATE ${OPENTURNS_DEFINITIONS})
   set_target_properties (${TEST_TARGET} PROPERTIES
                          UNITY_BUILD OFF
                          INSTALL_RPATH "${PROJECT_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
