@@ -52,9 +52,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-namespace {
-  typedef Collection<Complex> ComplexCollection;
+typedef Collection<Complex> ComplexCollection;
 
+namespace {
   ComplexMatrix fftMatrix(const FFT& algo, const ComplexMatrix& mat)
   {
     const UnsignedInteger rows = mat.getNbRows();
@@ -82,7 +82,6 @@ static const Factory<PersistentCollection<Distribution> > Factory_PersistentColl
 
 typedef Collection<Distribution> DistributionCollection;
 typedef Collection<Point> PointCollection;
-typedef Collection<Complex> ComplexCollection;
 
 
 CLASSNAMEINIT(LinearCombinationDistribution)
