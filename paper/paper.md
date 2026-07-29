@@ -35,13 +35,16 @@ authors:
     orcid: 0000-0002-5139-106X
     affiliation: 1
   - name: Régis Lebrun
+    orcid: 0000-0003-3089-4642
     affiliation: 2
   - name: Julien Schueller
     orcid: 0009-0006-2452-7861
     affiliation: 3
   - name: Sofiane Haddad
+    orcid: 0009-0006-5573-2534
     affiliation: 2
   - name: Loïc Brevault
+    orcid: 0000-0001-8081-6082
     affiliation: 4
   - name: Mathieu Balesdent
     orcid: 0000-0003-4064-3361
