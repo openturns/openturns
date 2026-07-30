@@ -14,7 +14,7 @@ computational cost, in order to obtain accurate results.
 A possible solution to overcome this problem is to project the model
 :math:`\model` in a suitable functional space, such as
 the Hilbert space :math:`L^2\left(\mu_{\inputRV}\right)` of square-integrable functions with
-respect to :math:`\mu_{\inputRV}`. This projection is called a *functional chaos expansion* of 
+respect to :math:`\mu_{\inputRV}`. This projection is called a *functional chaos expansion* of
 :math:`\model`.
 
 The principles of the building of a functional chaos expansion are described in the sequel.

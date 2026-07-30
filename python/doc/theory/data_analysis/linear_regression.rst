@@ -140,14 +140,6 @@ The unbiased estimator of the variance is (see [baron2014]_ page 400,
 
    \widehat{\sigma}^2 = \frac{SS_{\text{ERR}}}{\sampleSize - p}.
 
-Fisher - test
-~~~~~~~~~~~~~
-We assume that the residual :math:`\varepsilon` follows a normal distribution with zero mean.
-
-The  Fisher’s statistic tests if a coefficient is significantly different from the null value. If not,
-it indicates that the variable :math:`\varphi_i(\inputRV)` does not
-bring valuable information to the forecast :math:`\hat{Y}`. The lower the *p*-value, the more
-significant the coefficient.
 
 ANOVA F-test
 ~~~~~~~~~~~~
@@ -172,13 +164,13 @@ The F-statistic is (see [bingham2010]_ Kolodziejcyzk’s theorem 6.5 page 154,
 
 .. math::
 
-    f = \frac{SS_{\text{REG}} / (p - 1)}{SS_{\text{ERR}} / (\sampleSize - p)}.
+    f = \frac{SS_{\text{REG}} / p}{SS_{\text{ERR}} / (\sampleSize - p)}.
 
 The *p*-value is computed from the Fisher-Snedecor
 distribution :math:`F_{p - 1, \sampleSize - p}` (see [baron2014]_ page 400, [faraway2014]_ page 35).
 
-T-test for individual coefficients
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Fisher-Test (T-test) for individual coefficients
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 We assume that the residual :math:`\varepsilon` follows a normal distribution with zero mean.
 
 The T-test is based on the hypothesis that one single coefficient is zero.
@@ -201,7 +193,7 @@ for :math:`i = 1, \dots, \sampleSize` and :math:`j = 1, \dots, p`.
 
 Consequently, the ordinary least squares problem can be expressed in matrix form, and the normal
 equations guarantee that the matrix :math:`\Tr{\mat{\Psi}}\mat{\Psi}` is invertible provided the basis
-unctions are linearly independent.
+functions are linearly independent.
 
 The variance of the estimator of the parameters is:
 

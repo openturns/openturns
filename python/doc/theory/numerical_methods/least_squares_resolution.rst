@@ -93,7 +93,7 @@ In this setup the least squares problem is equivalent to solving:
 This upper triangular system can be solved using backwards
 substitution.
 
-The solving scheme based on Householder QR factorization leads to arelative error that is proportional to:
+The solving scheme based on Householder QR factorization leads to a relative error that is proportional to:
 
 .. math::
 
