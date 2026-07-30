@@ -40,38 +40,31 @@ name : str
     The name of the least-squares method
     Values are 'QR', 'SVD', 'Cholesky'
 proxy : :class:`~openturns.DesignProxy`
-    The design proxy that builds the design matrix
-weight : sequence of float
-    The output weights
+    Input sample
+weight : sequence of float, optional
+    Output weights
 indices : sequence of int
-    The indices allowed in the basis
+    Indices allowed in the basis
 design : 2-d sequence of float
-    The known design matrix
+    A priori known design matrix
 
 Returns
 -------
 method : :class:`~openturns.LeastSquaresMethod`
     The built method
 
-Notes
------
-This method implements a method to solve the least squares problem specified in
-:eq:`def_A_lsmethod` and :eq:`func_obj_def`, using the specified method.
-
-Refer to :any:`least_squares` to get all the notations.
-
 Examples
 --------
 >>> import openturns as ot
 >>> basisSize = 3
 >>> sampleSize = 5
->>> x = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
+>>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
 >>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
 >>> basis = ot.Basis(phis)
->>> proxy = ot.DesignProxy(x, phis)
+>>> proxy = ot.DesignProxy(X, phis)
 >>> indices = range(basisSize)
 >>> designMatrix = ot.Matrix(proxy.computeDesign(indices))
 >>> method = ot.LeastSquaresMethod.Build('SVD', designMatrix)
 >>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
 >>> y = normal.getRealization()
->>> A = method.solve(y)"
+>>> x = method.solve(y)"

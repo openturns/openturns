@@ -11,13 +11,13 @@ Available constructors:
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
-    The design proxy that builds the design matrix
+    Input sample
 weight : sequence of float
-    The output weights
+    Output weights
 indices : sequence of int
-    The indices allowed in the basis
+    Indices allowed in the basis
 design : 2-d sequence of float
-    The known design matrix
+    A priori known design matrix
 
 See also
 --------
@@ -25,36 +25,20 @@ CholeskyMethod, SVDMethod, QRMethod
 
 Notes
 -----
-This class finds :math:`\widehat{\mat{A}}` that minimizes the objective function  :math:`\cJ`:
+Solve the least-squares problem:
 
 .. math::
-    :label: def_A_lsmethod
 
-    \widehat{\mat{A}} = \argmin \cJ(\mat{A})
-
-
-where :math:`\cJ` is defined by:
-
-.. math::
-    :label: func_obj_def
-
-    \cJ(\mat{A}) = \sum_{i=1}^\sampleSize \left \| \vect{y}^{(i)} - \Tr{\mat{A}} \vect{\Psi(\vect{x}^{(i)})}
-    \right \|_{L^2}^2
-
-with :math:`\vect{\Psi(\vect{x}^{(i)})}` the *design matrix*.
-
-The default method to solve the least squares problem is the *SVD* one. To specify another method, use the *Build* method.
-
-Refer to :any:`least_squares` to get all the notations.
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P} ||y - \vect{b}^{\intercal} \vect{\Psi}(\vect{U})||^2
 
 Examples
 --------
 >>> import openturns as ot
->>> design_matrix = ot.Matrix([[1, 1], [1, 2], [1, 3], [1, 4]])
+>>> A = ot.Matrix([[1, 1], [1, 2], [1, 3], [1, 4]])
 >>> y = [6, 5, 7, 10]
->>> method = ot.LeastSquaresMethod(design_matrix)
->>> A = method.solve(y)
->>> print(A)
+>>> method = ot.LeastSquaresMethod(A)
+>>> x = method.solve(y)
+>>> print(x)
 [3.5,1.4]
 )RAW"
 %enddef
