@@ -25,8 +25,7 @@ LeastSquaresMethod, SVDMethod, QRMethod
 
 Notes
 -----
-This method implements a method to solve the least squares problem specified in
-:eq:`def_A_lsmethod` and :eq:`func_obj_def`, using the Cholesky method.
+This method implements a method to solve the least squares problem  using the Cholesky method.
 
 Refer to :any:`least_squares` to get all the notations.
 
