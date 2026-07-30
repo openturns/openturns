@@ -118,18 +118,22 @@ The coefficient of determination is (see [baron2014]_ page 399):
 
 .. math::
 
+    R^2 = 1 - \frac{SS_{\text{ERR}}}{SS_{\text{TOT}}}.
+
+
+For a linear regression model fitted by ordinary least squares that includes an intercept, the total sum of squares is exactly equal to the sum of the regression and error sums of squares. In this
+specific case, the formula is equivalently written as (see [baron2014]_ page 399):
+
+.. math::
+
     R^2 = \frac{SS_{\text{REG}}}{SS_{\text{TOT}}}.
 
 
-The coefficient of determination measures the part
-of the variance explained by the linear regression model.
+The coefficient of determination measures the proportion of the variance explained by the model. When the model includes an intercept and is evaluated on the training data, :math:0 \leq R^2 \leq 1. A
+value close to 1 indicates a good fit, whereas a value close to 0 indicates that the linear model does not provide a relevant forecast.
 
-Thus, :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit
-of the linear model, whereas a value close to 0 indicates that the
-linear model does not provide a relevant forecast. A statistical test
-allows one to detect significant values of :math:`R^2`. Again, a
-*p*-value is provided: the lower the *p*-value, the more
-significant the coefficient of determination.
+However, :math:R^2 can be negative if the model's predictions are worse than simply predicting the sample mean. This can occur in models without an intercept, models with poorly optimized parameters, or
+when evaluating predictions on out-of-sample data.
 
 Variance
 ~~~~~~~~
