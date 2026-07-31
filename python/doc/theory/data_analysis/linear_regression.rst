@@ -130,9 +130,9 @@ sums of squares. In this specific case, the formula is equivalently written as (
 
 
 The coefficient of determination measures the proportion of the variance explained by the model. When the model includes an intercept and is evaluated on the training data,
-:math:0 \leq R^2 \leq 1. A value close to 1 indicates a good fit, whereas a value close to 0 indicates that the linear model does not provide a relevant forecast.
+:math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit, whereas a value close to 0 indicates that the linear model does not provide a relevant forecast.
 
-However, :math:R^2 can be negative if the model's predictions are worse than simply predicting the sample mean. This can occur in models without an intercept,
+However, :math:`R^2` can be negative if the model's predictions are worse than simply predicting the sample mean. This can occur in models without an intercept,
 models with poorly optimized parameters, or when evaluating predictions on out-of-sample data.
 
 Variance

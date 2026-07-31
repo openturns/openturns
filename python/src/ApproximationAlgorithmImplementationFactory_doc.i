@@ -37,7 +37,7 @@ Parameters
 ----------
 x : 2-d sequence of float
     The input sample :math:`\left\{\vect{x}^{(1)}, ..., \vect{x}^{(\sampleSize)}\right\}`
-    where :math:`\vect{y}\in \Rset^\inputDim`
+    where :math:`\vect{x}\in \Rset^\inputDim`
 y : 2-d sequence of float
     The output sample :math:`\left\{\vect{y}^{(1)}, ..., \vect{y}^{(\sampleSize)}\right\}`
     where :math:`\vect{y}\in \Rset^\outputDim`

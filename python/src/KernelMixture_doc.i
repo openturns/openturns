@@ -32,7 +32,7 @@ The covariance matrix :math:`\Cov{\inputRV}` is defined by:
 
 .. math::
 
-    \Cov{\inputRV} = \left( 1 - \dfrac{1}{\sampleSize} \right) \Cov{\vect{s}} + \sigma_K
+    \Cov{\inputRV} = \left( 1 - \dfrac{1}{\sampleSize} \right) \Cov{\vect{s}} + \sigma_K^2
     \left( \mbox{Diag}(\vect{h})\right)^2
 
 where :math:`\sigma_K` is the standard deviation of the kernel, :math:`\Cov{\vect{s}}` the covariance
