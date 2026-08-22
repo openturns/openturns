@@ -53,6 +53,7 @@ TruncatedNormal::TruncatedNormal()
 {
   setName("TruncatedNormal");
   setDimension(1);
+  computeBoundProducts();
   computeRange();
 }
 
@@ -102,6 +103,7 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
   }
   phiANorm_ = DistFunc::dNormal(aNorm_);
   phiBNorm_ = DistFunc::dNormal(bNorm_);
+  computeBoundProducts();
   computeRange();
 }
 
@@ -146,6 +148,17 @@ String TruncatedNormal::__str__(const String & ) const
 TruncatedNormal * TruncatedNormal::clone() const
 {
   return new TruncatedNormal(*this);
+}
+
+/* Compute safe products x^n * phi(x), handling infinite bounds where x*phi(x) -> 0 */
+void TruncatedNormal::computeBoundProducts()
+{
+  aNormPhiA_ = std::isinf(aNorm_) ? 0.0 : aNorm_ * phiANorm_;
+  bNormPhiB_ = std::isinf(bNorm_) ? 0.0 : bNorm_ * phiBNorm_;
+  aNorm2PhiA_ = std::isinf(aNorm_) ? 0.0 : aNorm_ * aNormPhiA_;
+  bNorm2PhiB_ = std::isinf(bNorm_) ? 0.0 : bNorm_ * bNormPhiB_;
+  aNorm3PhiA_ = std::isinf(aNorm_) ? 0.0 : aNorm_ * aNorm2PhiA_;
+  bNorm3PhiB_ = std::isinf(bNorm_) ? 0.0 : bNorm_ * bNorm2PhiB_;
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
@@ -274,7 +287,7 @@ Scalar TruncatedNormal::computeEntropy() const
 {
   if (normalizationFactorIsLog_)
     return DistributionImplementation::computeEntropy();
-  return 0.5 - std::log(SpecFunc::ISQRT2PI * normalizationFactor_ / sigma_) + 0.5 * (aNorm_ * phiANorm_ - bNorm_ * phiBNorm_) * normalizationFactor_;
+  return 0.5 - std::log(SpecFunc::ISQRT2PI * normalizationFactor_ / sigma_) + 0.5 * (aNormPhiA_ - bNormPhiB_) * normalizationFactor_;
 }
 
 /* Get the product minimum volume interval containing a given probability of the distribution */
@@ -386,7 +399,7 @@ Point TruncatedNormal::computePDFGradient(const Point & point) const
   const Scalar iDenom2 = iDenom * iDenom;
   const Scalar factPhiXNorm = DistFunc::dNormal(xNorm) * iDenom2;
   pdfGradient[0] = factPhiXNorm * (xNorm * (PhiBNorm_ - PhiANorm_) + phiBNorm_ - phiANorm_);
-  pdfGradient[1] = factPhiXNorm * ((xNorm * xNorm - 1.0) * (PhiBNorm_ - PhiANorm_) + bNorm_ * phiBNorm_ - aNorm_ * phiANorm_);
+  pdfGradient[1] = factPhiXNorm * ((xNorm * xNorm - 1.0) * (PhiBNorm_ - PhiANorm_) + bNormPhiB_ - aNormPhiA_);
   pdfGradient[2] = factPhiXNorm * phiANorm_;
   pdfGradient[3] = -factPhiXNorm * phiBNorm_;
   return pdfGradient;
@@ -481,7 +494,7 @@ Point TruncatedNormal::getStandardDeviation() const
   if (normalizationFactorIsLog_)
     return DistributionImplementation::getStandardDeviation();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
-  return Point(1, sigma_ * std::sqrt(1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio));
+  return Point(1, sigma_ * std::sqrt(1.0 - (bNormPhiB_ - aNormPhiA_) * normalizationFactor_ - ratio * ratio));
 }
 
 /* Get the skewness of the distribution */
@@ -491,8 +504,8 @@ Point TruncatedNormal::getSkewness() const
     return DistributionImplementation::getSkewness();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const Scalar ratio2 = ratio * ratio;
-  const Scalar crossTerm1 = (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_;
-  const Scalar crossTerm2 = (bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_;
+  const Scalar crossTerm1 = (bNormPhiB_ - aNormPhiA_) * normalizationFactor_;
+  const Scalar crossTerm2 = (bNorm2PhiB_ - aNorm2PhiA_) * normalizationFactor_;
   return Point(1, (-2.0 * ratio * ratio2 - 3.0 * ratio * crossTerm1 + ratio - crossTerm2) / std::pow(1.0 - crossTerm1 - ratio2, 1.5));
 }
 
@@ -503,9 +516,9 @@ Point TruncatedNormal::getKurtosis() const
     return DistributionImplementation::getKurtosis();
   const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
   const Scalar ratio2 = ratio * ratio;
-  const Scalar crossTerm1 = (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_;
-  const Scalar crossTerm2 = (bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_;
-  const Scalar crossTerm3 = (bNorm_ * bNorm_ * bNorm_ * phiBNorm_ - aNorm_ * aNorm_ * aNorm_ * phiANorm_) * normalizationFactor_;
+  const Scalar crossTerm1 = (bNormPhiB_ - aNormPhiA_) * normalizationFactor_;
+  const Scalar crossTerm2 = (bNorm2PhiB_ - aNorm2PhiA_) * normalizationFactor_;
+  const Scalar crossTerm3 = (bNorm3PhiB_ - aNorm3PhiA_) * normalizationFactor_;
   return Point(1, (3.0 - 3.0 * ratio2 * ratio2 - 6.0 * ratio2 * crossTerm1 - 2.0 * ratio * (ratio + 2.0 * crossTerm2) - 3.0 * crossTerm1 - crossTerm3) / std::pow(1.0 - crossTerm1 - ratio2, 2.0));
 }
 
@@ -526,7 +539,7 @@ void TruncatedNormal::computeCovariance() const
   {
     covariance_ = CovarianceMatrix(1);
     const Scalar ratio = (phiBNorm_ - phiANorm_) * normalizationFactor_;
-    covariance_(0, 0) = sigma_ * sigma_ * (1.0 - (bNorm_ * phiBNorm_ - aNorm_ * phiANorm_) * normalizationFactor_ - ratio * ratio);
+    covariance_(0, 0) = sigma_ * sigma_ * (1.0 - (bNormPhiB_ - aNormPhiA_) * normalizationFactor_ - ratio * ratio);
   }
   isAlreadyComputedCovariance_ = true;
 }
@@ -624,6 +637,7 @@ void TruncatedNormal::setA(const Scalar a)
       normalizationFactorIsLog_ = false;
     }
     phiANorm_ = DistFunc::dNormal(aNorm_);
+    computeBoundProducts();
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -668,6 +682,7 @@ void TruncatedNormal::setB(const Scalar b)
       normalizationFactorIsLog_ = false;
     }
     phiBNorm_ = DistFunc::dNormal(bNorm_);
+    computeBoundProducts();
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -716,6 +731,7 @@ void TruncatedNormal::load(Advocate & adv)
     adv.loadAttribute( "normalizationFactorIsLog_", normalizationFactorIsLog_ );
   else
     normalizationFactorIsLog_ = (PhiANorm_ >= PhiBNorm_);
+  computeBoundProducts();
   computeRange();
 }
 
