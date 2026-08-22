@@ -178,6 +178,9 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
+  /** Compute safe products x^n * phi(x) for moment formulas */
+  void computeBoundProducts();
+
   /** The main parameter set of the distribution */
   Scalar mu_ = 0.0;
   Scalar sigma_ = 0.0;
@@ -192,6 +195,13 @@ private:
   Scalar PhiBNorm_ = 0.0;
   Scalar normalizationFactor_ = 0.0;
   Bool normalizationFactorIsLog_ = false;
+  /** Safe products x*phi(x) that are 0 when x is infinite */
+  Scalar aNormPhiA_ = 0.0;
+  Scalar bNormPhiB_ = 0.0;
+  Scalar aNorm2PhiA_ = 0.0;
+  Scalar bNorm2PhiB_ = 0.0;
+  Scalar aNorm3PhiA_ = 0.0;
+  Scalar bNorm3PhiB_ = 0.0;
 
 }; /* class TruncatedNormal */
 
