@@ -264,7 +264,7 @@ Scalar _kolmogn_Pomeranz(const UnsignedInteger n, const Scalar x, const Bool cdf
       const UnsignedInteger conv_len = j2 - j1 + 1;  // Number of entries to use from conv
       std::copy(conv.begin() + conv_start, conv.begin() + conv_start + conv_len, V1.begin());
       // Scale to avoid underflow.
-      const Scalar v1max = *max_element(std::begin(V1), std::end(V1));
+      const Scalar v1max = *std::max_element(std::begin(V1), std::end(V1));
       if ((v1max > 0.0) && (v1max  < _EM128))
       {
         V1 *= _EP128;
