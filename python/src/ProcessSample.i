@@ -48,7 +48,7 @@ OTTypedInterfaceObjectHelper(ProcessSample)
 namespace OT {
 %extend ProcessSample {
 
-Sample __getitem__(SignedInteger index) const
+OT::Sample __getitem__(SignedInteger index) const
 {
   OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
@@ -57,7 +57,7 @@ Sample __getitem__(SignedInteger index) const
   if (index < 0) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
-  return self->operator[](index);
+  return self->getField(index).getValues();
 }
 
 PyObject * __getitem__(PyObject * args) const
@@ -74,7 +74,7 @@ PyObject * __getitem__(PyObject * args) const
 
     OT::ProcessSample result(self->getMesh(), size, self->getDimension());
     for (Py_ssize_t i = 0; i < size; ++ i)
-      result.getImplementation()->operator[](i) = self->operator[](start + i * step);
+      result.setField(i, self->getField(start + i * step));
     return SWIG_NewPointerObj(new OT::ProcessSample(result), SWIG_TypeQuery("OT::ProcessSample *"), SWIG_POINTER_OWN);
   }
   else if (PySequence_Check(args))
@@ -95,7 +95,7 @@ PyObject * __getitem__(PyObject * args) const
         index += self->getSize();
       if (index < 0)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
-      result.getImplementation()->operator[](i) = self->operator[](index);
+      result.setField(i, self->getField(index));
     }
     return SWIG_NewPointerObj(new OT::ProcessSample(result), SWIG_TypeQuery("OT::ProcessSample *"), SWIG_POINTER_OWN);
   }
@@ -109,7 +109,7 @@ PyObject * __getitem__(PyObject * args) const
       index += self->getSize();
     if (index < 0)
       throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
-    OT::Sample result(self->operator[](index));
+    OT::Sample result(self->getField(index).getValues());
     return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_OWN);
   }
   throw OT::InvalidArgumentException(HERE) << "ProcessSample.__getitem__ expects int, slice or sequence arguments";
@@ -130,7 +130,7 @@ void __setitem__(SignedInteger index,
     throw OT::InvalidArgumentException(HERE) << "got value of size " << values.getSize() << " expected " << self->getMesh().getVerticesNumber();
   if (values.getDimension() != self->getDimension())
     throw OT::InvalidArgumentException(HERE) << "got value of dimension " << values.getDimension() << " expected " << self->getDimension();
-  self->operator[](index) = values;
+  self->setField((OT::UnsignedInteger)index, OT::Field(self->getMesh(), values));
 }
 
 void __setitem__(PyObject * args, PyObject * valObj)
@@ -150,7 +150,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       throw OT::InvalidArgumentException(HERE) << "ProcessSample.__setitem__ expects a ProcessSample value for slice assignment";
     }
     for (Py_ssize_t i = 0; i < size; ++ i)
-      self->operator[](start + i * step) = val->operator[](i);
+      self->setField((OT::UnsignedInteger)(start + i * step), val->getField(i));
   }
   else if (PySequence_Check(args))
   {
@@ -174,7 +174,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
         index += self->getSize();
       if (index < 0)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
-      self->operator[](index) = val->operator[](i);
+      self->setField((OT::UnsignedInteger)index, val->getField(i));
     }
   }
   else if (PyObject_HasAttrString(args, "__int__"))
@@ -197,7 +197,7 @@ void __setitem__(PyObject * args, PyObject * valObj)
       throw OT::InvalidArgumentException(HERE) << "got value of size " << val->getSize() << " expected " << self->getMesh().getVerticesNumber();
     if (val->getDimension() != self->getDimension())
       throw OT::InvalidArgumentException(HERE) << "got value of dimension " << val->getDimension() << " expected " << self->getDimension();
-    self->operator[](index) = *val;
+    self->setField((OT::UnsignedInteger)index, OT::Field(self->getMesh(), OT::Sample(*val)));
   }
   else
     throw OT::InvalidArgumentException(HERE) << "ProcessSample.__setitem__ expects int, slice or sequence arguments";

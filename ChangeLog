@@ -23,6 +23,10 @@
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
 
 ==== New classes ====
+ * DataContainer
+ * ComplexDataContainer
+ * AlgebraEngine
+ * StatisticsEngine
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -3574,3 +3578,5 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
+
+

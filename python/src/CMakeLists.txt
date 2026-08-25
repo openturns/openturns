@@ -253,6 +253,8 @@ ot_add_python_module(typ typ_module.i
                       Sample.i Sample_doc.i
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i
                       HistoryStrategy.i HistoryStrategy_doc.i
+                      DataContainer.i DataContainer_doc.i
+                      AlgebraEngine.i AlgebraEngine_doc.i
                       BaseTypCollection.i
                       BaseTypTemplateDefs.i
                    )
@@ -654,6 +656,7 @@ ot_add_python_module(statistics statistics_module.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i
                       LatentVariableModel.i LatentVariableModel_doc.i
                       SamplePartition.i SamplePartition_doc.i
+                      StatisticsEngine.i StatisticsEngine_doc.i
                    )
 ot_add_python_module(simulation simulation_module.i
                       ANCOVA.i ANCOVA_doc.i

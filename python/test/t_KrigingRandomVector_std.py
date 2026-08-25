@@ -3,6 +3,18 @@
 import openturns as ot
 import openturns.testing as ott
 
+
+def matrix_to_point(m):
+    """Flatten a matrix into a Point in storage (column-major) order."""
+    res = ot.Point(m.getNbRows() * m.getNbColumns())
+    k = 0
+    for j in range(m.getNbColumns()):
+        for i in range(m.getNbRows()):
+            res[k] = m[i, j]
+            k += 1
+    return res
+
+
 ot.TESTPREAMBLE()
 
 ot.PlatformInfo.SetNumericalPrecision(3)
@@ -53,7 +65,7 @@ var = result.getConditionalCovariance(inputSample)
 
 # assert_almost_equal could not be applied to matrices
 # application to Point
-covariancePoint = ot.Point(var.getImplementation())
+covariancePoint = matrix_to_point(var)
 trueVariance = ot.Point(covariancePoint.getSize(), 0.0)
 ott.assert_almost_equal(covariancePoint, trueVariance, 1e-6, 1e-6)
 

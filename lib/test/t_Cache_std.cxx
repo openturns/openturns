@@ -74,18 +74,24 @@ int main(int, char *[])
     fullprint << "myCache = " << myCache << std::endl;
 
     // Add some more points in the cache
-    KeyType p1  = 2. * k;
-    ValueType pv1 = 2. * v;
+    KeyType p1(k);
+    ValueType pv1(v);
+    for (UnsignedInteger i = 0; i < p1.getSize(); ++i) p1[i] *= 2.;
+    for (UnsignedInteger i = 0; i < pv1.getSize(); ++i) pv1[i] *= 2.;
     myCache.add( p1, pv1 );
     fullprint << "myCache = " << myCache << std::endl;
 
-    KeyType p2  = 3. * k;
-    ValueType pv2 = 3. * v;
+    KeyType p2(k);
+    ValueType pv2(v);
+    for (UnsignedInteger i = 0; i < p2.getSize(); ++i) p2[i] *= 3.;
+    for (UnsignedInteger i = 0; i < pv2.getSize(); ++i) pv2[i] *= 3.;
     myCache.add( p2, pv2 );
     fullprint << "myCache = " << myCache << std::endl;
 
-    KeyType p3  = 4. * k;
-    ValueType pv3 = 4. * v;
+    KeyType p3(k);
+    ValueType pv3(v);
+    for (UnsignedInteger i = 0; i < p3.getSize(); ++i) p3[i] *= 4.;
+    for (UnsignedInteger i = 0; i < pv3.getSize(); ++i) pv3[i] *= 4.;
     myCache.add( p3, pv3 );
     fullprint << "myCache = " << myCache << std::endl;
 
