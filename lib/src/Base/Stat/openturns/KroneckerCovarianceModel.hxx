@@ -74,8 +74,8 @@ public:
                          const Point &t) const override;
   Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
-  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                         const Collection<Scalar>::const_iterator &t_begin) const override;
+  Scalar computeAsScalar(const Scalar * s_begin,
+                         const Scalar * t_begin) const override;
 #endif
 
   /** Discretize the covariance function on a given TimeGrid */
@@ -113,8 +113,8 @@ public:
 protected:
   friend struct KroneckerModelDiscretizePolicy;
   void setCorrelationModel(const CovarianceModel & rho);
-  Scalar computeRhoOverSample(const Collection<Scalar>::const_iterator &s_begin,
-                              const Collection<Scalar>::const_iterator &t_begin) const;
+  Scalar computeRhoOverSample(const Scalar * s_begin,
+                              const Scalar * t_begin) const;
 
 private :
 
