@@ -21,9 +21,10 @@
 #ifndef OPENTURNS_MATRIXIMPLEMENTATION_HXX
 #define OPENTURNS_MATRIXIMPLEMENTATION_HXX
 
-#include "openturns/PersistentCollection.hxx"
+#include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/DataContainer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,7 +39,7 @@ class ComplexMatrixImplementation;
 class Sample;
 
 class OT_API MatrixImplementation
-  : public PersistentCollection<Scalar>
+  : public PersistentObject
 
 {
   CLASSNAME
@@ -57,6 +58,17 @@ public:
 
   typedef Collection<Scalar>       ScalarCollection;
   typedef Collection<Complex>      ComplexCollection;
+
+  typedef Scalar*                  iterator;
+  typedef const Scalar*            const_iterator;
+
+#ifndef SWIG
+  /** Copy constructor */
+  MatrixImplementation(const MatrixImplementation & other);
+
+  /** Assignment operator */
+  MatrixImplementation & operator = (const MatrixImplementation & other);
+#endif
 
   /** Default constructor */
   MatrixImplementation();
@@ -105,11 +117,61 @@ public:
   /** Dimension (for square matrices only */
   UnsignedInteger getDimension() const;
 
+  /** Number of elements */
+  inline UnsignedInteger getSize() const
+  {
+    return nbRows_ * nbColumns_;
+  }
+
+  /** Size in bytes of one element */
+  UnsignedInteger elementSize() const;
+
+#ifndef SWIG
+  /** Flat element access (column-major) */
+  inline Scalar & operator [] (const UnsignedInteger flatIndex)
+  {
+    return data_[flatIndex];
+  }
+  inline const Scalar & operator [] (const UnsignedInteger flatIndex) const
+  {
+    return data_[flatIndex];
+  }
+
+  /** Method begin() points to the first element */
+  inline iterator begin()
+  {
+    return data_.data();
+  }
+  inline const_iterator begin() const
+  {
+    return data_.data();
+  }
+
+  /** Method end() points beyond the last element */
+  inline iterator end()
+  {
+    return data_.data() + getSize();
+  }
+  inline const_iterator end() const
+  {
+    return data_.data() + getSize();
+  }
+
+  /** Returns a pointer to the block of memory */
+  inline const Scalar * data() const
+  {
+    return data_.data();
+  }
+  inline Scalar * data()
+  {
+    return data_.data();
+  }
+#endif
+
   /** MatrixImplementation transpose */
   MatrixImplementation transpose() const;
 
   /** Resize */
-  using Collection<Scalar>::resize;
   void resize(const UnsignedInteger newRowDim, const UnsignedInteger newColDim);
 
   /** MatrixImplementation reshape */
@@ -327,10 +389,8 @@ public:
   virtual MatrixImplementation computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
-  using PersistentCollection::operator ==;
   Bool operator == (const MatrixImplementation & rhs) const;
 
-  using PersistentCollection::operator !=;
   inline Bool operator != (const MatrixImplementation & rhs) const
   {
     return !((*this) == rhs);
@@ -350,6 +410,14 @@ public:
 
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;
+
+  /** Convert to DataContainer (column-major) */
+  DataContainer toDataContainer() const;
+
+  /** Construct a MatrixImplementation from a DataContainer (column-major) */
+  static MatrixImplementation FromDataContainer(const DataContainer & dc,
+      UnsignedInteger nbRows,
+      UnsignedInteger nbColumns);
 
   /** Extract diagonal */
   MatrixImplementation getDiagonal(const SignedInteger k = 0) const;
@@ -384,6 +452,9 @@ protected:
   UnsignedInteger nbRows_;
   UnsignedInteger nbColumns_;
 
+  /** The flat column-major storage of the coefficients */
+  DataContainer data_;
+
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
   inline UnsignedInteger convertPosition (const UnsignedInteger i,
                                           const UnsignedInteger j) const;
@@ -404,11 +475,14 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
-  : PersistentCollection<Scalar>(rowDim * colDim, 0.0),
+  : PersistentObject(),
     nbRows_(rowDim),
-    nbColumns_(colDim)
+    nbColumns_(colDim),
+    data_(rowDim, colDim, 0.0)
 {
-  this->assign(first, last);
+  const std::vector<Scalar> tmp(first, last);
+  const UnsignedInteger matrixSize = std::min(rowDim * colDim, static_cast<UnsignedInteger>(tmp.size()));
+  std::copy(tmp.begin(), tmp.begin() + matrixSize, begin());
 }
 
 END_NAMESPACE_OPENTURNS
