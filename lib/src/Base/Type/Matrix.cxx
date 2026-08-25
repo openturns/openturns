@@ -74,8 +74,10 @@ Matrix::Matrix(const MatrixImplementation & i)
 }
 
 Matrix::Matrix(const SymmetricMatrix & symmetric)
-  : TypedInterfaceObject<MatrixImplementation>(symmetric.getImplementation())
+  : TypedInterfaceObject<MatrixImplementation>(symmetric.getImplementation()->clone())
 {
+  /* Deep-copy the storage before mutating it: the source matrix may be
+   * owned (and concurrently read) by other objects */
   getImplementation()->symmetrize();
 }
 
