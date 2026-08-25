@@ -388,6 +388,12 @@ public:
     return coll__.data();
   }
 
+  inline
+  T * data()
+  {
+    return coll__.data();
+  }
+
   UnsignedInteger elementSize() const
   {
     return sizeof(T);
