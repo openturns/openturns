@@ -134,7 +134,9 @@ Point CorrelationAnalysis::ComputeSRC(const Sample & firstSample,
   LinearLeastSquares regressionAlgorithm(firstSample, secondSample);
   regressionAlgorithm.run();
   // Linear coefficients
-  const Point linear(*regressionAlgorithm.getLinear().getImplementation());
+  const Matrix linear_matrix(regressionAlgorithm.getLinear());
+  const MatrixImplementation & linear_impl(*linear_matrix.getImplementation());
+  const Point linear(linear_impl.begin(), linear_impl.end());
 
   const Scalar stdOutput = secondSample.computeStandardDeviation()[0];
   if (!(stdOutput > 0.0))

@@ -152,7 +152,7 @@ Point QRMethod::getHDiag() const
   MatrixImplementation::const_iterator q_iterator(q_.getImplementation()->begin());
   for (UnsignedInteger j = 0; j < basisSize; ++ j)
   {
-    for (MatrixImplementation::iterator diag_iterator = diag.begin(); diag_iterator != diag.end(); ++ diag_iterator)
+    for (Point::iterator diag_iterator = diag.begin(); diag_iterator != diag.end(); ++ diag_iterator)
     {
       *diag_iterator += (*q_iterator) * (*q_iterator);
       ++ q_iterator;
