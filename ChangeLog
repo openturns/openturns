@@ -111,6 +111,10 @@
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
+ * DataContainer
+ * ComplexDataContainer
+ * AlgebraEngine
+ * StatisticsEngine
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -3772,3 +3776,5 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
+
+
