@@ -172,8 +172,9 @@ Matrix KroneckerCovarianceModel::partialGradient(const Point &s, const Point &t)
 
   // Covariance matrix is S * rho(tau), so gradient written as Sigma * grad(rho) where * is the Kronecker product,
   SquareMatrix covariance(outputCovariance_);
+  covariance.copyOnWrite();
   covariance.getImplementation()->symmetrize();
-  Point covariancePoint(*covariance.getImplementation());
+  Point covariancePoint(covariance.getImplementation()->begin(), covariance.getImplementation()->end());
   // Gradient using rho_ ==> inputDimension_ x 1 matrix
   const Matrix rhoGradient(rho_.partialGradient(s, t));
 
@@ -232,8 +233,8 @@ Scalar KroneckerCovarianceModel::computeAsScalar(const Point &tau) const
   return amplitude_[0] * amplitude_[0] * rho;
 }
 
-Scalar KroneckerCovarianceModel::computeRhoOverSample(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar KroneckerCovarianceModel::computeRhoOverSample(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   // rho_.computeAsScalar here plays the role of correlation only
   // Purpose is to return the evaluation of rho_ model over a sample
@@ -241,8 +242,8 @@ Scalar KroneckerCovarianceModel::computeRhoOverSample(const Collection<Scalar>::
   return rho_.getImplementation()->computeAsScalar(s_begin, t_begin);
 }
 
-Scalar KroneckerCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar KroneckerCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   // Limiting outputDimension ==> Make sure there is no other usage
   if (outputDimension_ > 1)

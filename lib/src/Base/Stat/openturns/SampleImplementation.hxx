@@ -29,6 +29,7 @@
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/DataContainer.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -463,8 +464,8 @@ public:
   /* Some typedefs for easy reading */
   typedef NSI_iterator               iterator;
   typedef NSI_const_iterator         const_iterator;
-  typedef Collection<Scalar>::iterator       data_iterator;
-  typedef Collection<Scalar>::const_iterator data_const_iterator;
+  typedef Scalar *                   data_iterator;
+  typedef const Scalar *             data_const_iterator;
   typedef Collection<UnsignedInteger>   UnsignedIntegerCollection;
 
 protected:
@@ -475,6 +476,12 @@ protected:
   SampleImplementation();
 
 public:
+
+  /** Copy constructor */
+  SampleImplementation(const SampleImplementation & other);
+
+  /** Assignment operator */
+  SampleImplementation & operator = (const SampleImplementation & other);
 
   /** Standard constructor */
   SampleImplementation(const UnsignedInteger size,
@@ -515,19 +522,19 @@ public:
 
   inline data_iterator data_begin()
   {
-    return data_.begin();
+    return data_.data();
   }
   inline data_iterator data_end()
   {
-    return data_.end();
+    return data_.data() + size_ * dimension_;
   }
   inline data_const_iterator data_begin() const
   {
-    return data_.begin();
+    return data_.data();
   }
   inline data_const_iterator data_end() const
   {
-    return data_.end();
+    return data_.data() + size_ * dimension_;
   }
 
   void erase(const UnsignedInteger first, const UnsignedInteger last);
@@ -776,6 +783,17 @@ public:
                        const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
                        const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
+  /** Convert to DataContainer (row-major) */
+  DataContainer toDataContainer() const;
+
+  /** Construct a SampleImplementation from a DataContainer (row-major) */
+  static Pointer<SampleImplementation> FromDataContainer(const DataContainer & dc);
+
+  /** Shallow constructor: shares the storage of dc when it is a non-owning
+   * view, deep-copies it otherwise. The caller must keep the viewed
+   * container alive while the sample is in use. */
+  static Pointer<SampleImplementation> FromDataContainerView(const DataContainer & dc);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -807,7 +825,7 @@ private:
   UnsignedInteger dimension_;
 
   /** The collection of unwrapped points */
-  PersistentCollection<Scalar> data_;
+  DataContainer data_;
 
   /** The description of all components */
   Pointer<Description> p_description_;

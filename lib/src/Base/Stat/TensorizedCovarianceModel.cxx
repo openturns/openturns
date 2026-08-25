@@ -148,8 +148,8 @@ Scalar TensorizedCovarianceModel::computeAsScalar(const Point &tau) const
   return collection_[0].computeAsScalar(tau);
 }
 
-Scalar TensorizedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar TensorizedCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."

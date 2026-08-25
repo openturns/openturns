@@ -87,8 +87,8 @@ public:
 
 #ifndef SWIG
   // Special case for 1D model
-  virtual Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                                 const Collection<Scalar>::const_iterator & t_begin) const;
+  virtual Scalar computeAsScalar(const Scalar * s_begin,
+                                 const Scalar * t_begin) const;
 #endif
 
   virtual SquareMatrix operator() (const Scalar tau) const;
