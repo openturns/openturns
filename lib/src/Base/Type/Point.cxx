@@ -24,6 +24,7 @@
 #include "openturns/StorageManager.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Lapack.hxx"
+#include "openturns/AlgebraEngine.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,8 +36,8 @@ static const Factory<Point> Factory_Point;
 
 /* Default constructor */
 Point::Point()
-  : InternalType() //,
-    // p_description_()
+  : PersistentObject()
+  , data_()
 {
   // Nothing to do
 }
@@ -44,7 +45,8 @@ Point::Point()
 /* Constructor with size */
 Point::Point(const UnsignedInteger size,
              const Scalar value)
-  : InternalType(size, value)
+  : PersistentObject()
+  , data_(size, value)
 {
   // Nothing to do
 }
@@ -52,16 +54,52 @@ Point::Point(const UnsignedInteger size,
 
 /* Constructor from a collection */
 Point::Point(const Collection<Scalar> & coll)
-  : InternalType(coll)
+  : PersistentObject()
+  , data_()
 {
-  // Nothing to do
+  assign(coll.begin(), coll.end());
+}
+
+/* Constructor from a DataContainer (1D) */
+Point::Point(const DataContainer & dc)
+  : PersistentObject()
+  , data_()
+{
+  if (dc.isEmpty()) return;
+  if (dc.getDimension() > 1)
+    throw InvalidArgumentException(HERE)
+        << "Cannot construct a 1D Point from a DataContainer with dimension " << dc.getDimension();
+  const UnsignedInteger n = dc.getSize();
+  data_.resize(n);
+  std::copy(dc.data(), dc.data() + n, data_.data());
 }
 
 Point::Point(std::initializer_list<Scalar> initList)
-  : InternalType(initList)
+  : PersistentObject()
+  , data_()
 {
-  // Nothing to do
+  assign(initList.begin(), initList.end());
 }
+
+#ifndef SWIG
+/* Copy constructor */
+Point::Point(const Point & other)
+  : PersistentObject(other)
+  , data_(other.data_)
+{
+}
+
+/* Assignment operator */
+Point & Point::operator = (const Point & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    data_ = other.data_;
+  }
+  return *this;
+}
+#endif
 
 /* Virtual constructor */
 Point * Point::clone() const
@@ -119,35 +157,154 @@ Bool Point::isMonotonic() const
 /* String converter */
 String Point::__repr__() const
 {
+  OSS ossValues(true);
+  ossValues << "[";
+  std::copy( begin(), end(), OSS_iterator<Scalar>(ossValues, ",") );
+  ossValues << "]";
   return OSS(true) << "class=" << Point::GetClassName()
          << " name=" << getName()
          << " dimension=" << getDimension()
-         << " values=" << PersistentCollection<Scalar>::__repr__();
+         << " values=" << String(ossValues);
+}
+
+namespace
+{
+String pointValuesToString(const Point & point, const String & offset)
+{
+  OSS oss(false);
+  oss << offset << "[";
+  std::copy( point.begin(), point.end(), OSS_iterator<Scalar>(oss, ",") );
+  oss << "]";
+  if (point.getSize() >= ResourceMap::GetAsUnsignedInteger("Collection-size-visible-in-str-from"))
+    oss << "#" << point.getSize();
+  return oss;
+}
 }
 
 String Point::__str__(const String & offset) const
 {
-  return PersistentCollection<Scalar>::__str__(offset);
+  return pointValuesToString(*this, offset);
+}
+
+/* At() gives access to the elements of the point but throws an exception if bounds are overcome */
+Scalar & Point::at(const UnsignedInteger i)
+{
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "Index i is out of range. Got " << i << " (size=" << getSize() << ")";
+  return (*this)[i];
+}
+
+const Scalar & Point::at(const UnsignedInteger i) const
+{
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "Index i is out of range. Got " << i << " (size=" << getSize() << ")";
+  return (*this)[i];
+}
+
+/* Method __getitem__() is for Python */
+Scalar Point::__getitem__(SignedInteger i) const
+{
+  if (i < 0)
+  {
+    i += getSize();
+  }
+  return at(i);
+}
+
+/* Method __setitem__() is for Python */
+void Point::__setitem__(SignedInteger i,
+                        const Scalar & val)
+{
+  if (i < 0)
+  {
+    i += getSize();
+  }
+  at(i) = val;
+}
+
+/* Whether the list contains the value val */
+Bool Point::contains(Scalar val) const
+{
+  return (std::find(begin(), end(), val) != end());
+}
+
+/** find returns the index of the first occurrence of the value */
+UnsignedInteger Point::find(const Scalar & val) const
+{
+  return std::find(begin(), end(), val) - begin();
+}
+
+/** Method add() appends an element to the point */
+void Point::add(const Scalar & elt)
+{
+  const UnsignedInteger oldSize = getSize();
+  data_.resize(oldSize + 1);
+  data_[oldSize] = elt;
+}
+
+/** Method add() appends a collection to the point */
+void Point::add(const Collection<Scalar> & coll)
+{
+  const UnsignedInteger oldSize = getSize();
+  data_.resize(oldSize + coll.getSize());
+  std::copy(coll.begin(), coll.end(), data_.data() + oldSize);
+}
+
+void Point::add(const Point & coll)
+{
+  add(static_cast<const Collection<Scalar> &>(coll));
+}
+
+/** Select elements designated by their indices */
+Point::ScalarCollection Point::select(const Collection<UnsignedInteger> & marginalIndices) const
+{
+  ScalarCollection marginalCollection(marginalIndices.getSize());
+  for (UnsignedInteger i = 0; i < marginalIndices.getSize(); ++ i)
+  {
+    const UnsignedInteger index = marginalIndices[i];
+    if (index >= getSize())
+      throw OutOfBoundException(HERE) << "Selection index is out of range (" << index << ") as size=" << getSize();
+    marginalCollection[i] = (*this)[index];
+  }
+  return marginalCollection;
+}
+
+/** Method resize() changes the size of the point */
+void Point::resize(const UnsignedInteger newSize)
+{
+  data_.resize(newSize);
+}
+
+/** Clear all elements of the point */
+void Point::clear()
+{
+  data_.clear();
+}
+
+/** Whether the point is empty */
+Bool Point::isEmpty() const
+{
+  return getSize() == 0;
 }
 
 /* Erase the elements between first and last */
 Point::iterator Point::erase(const iterator first, const iterator last)
 {
-  return PersistentCollection<Scalar>::erase(first, last);
+  const UnsignedInteger offsetFirst = first - begin();
+  const UnsignedInteger offsetLast = last - begin();
+  data_.erase(offsetFirst, offsetLast);
+  return begin() + offsetFirst;
 }
 
 /* Erase the element pointed by position */
 Point::iterator Point::erase(iterator position)
 {
-  return PersistentCollection<Scalar>::erase(position);
+  return erase(position, position + 1);
 }
 
 /* Erase the element pointed by position */
 Point::iterator Point::erase(UnsignedInteger position)
 {
-  return PersistentCollection<Scalar>::erase(begin() + position);
+  return erase(begin() + position);
 }
-
 
 
 /* Addition operator */
@@ -327,7 +484,9 @@ Scalar Point::dot(const Point & rhs) const
 Bool operator ==(const Point & lhs,
                  const Point & rhs)
 {
-  return static_cast<const PersistentCollection<Scalar> >(lhs) == static_cast<const PersistentCollection<Scalar> >(rhs);
+  if (&lhs == &rhs) return true;
+  return (lhs.getSize() == rhs.getSize()) &&
+         std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
 
@@ -336,7 +495,8 @@ Bool operator ==(const Point & lhs,
 Bool operator <(const Point & lhs,
                 const Point & rhs)
 {
-  return static_cast<const PersistentCollection<Scalar> >(lhs) < static_cast<const PersistentCollection<Scalar> >(rhs);
+  return std::lexicographical_compare(lhs.begin(), lhs.end(),
+                                      rhs.begin(), rhs.end());
 }
 
 
@@ -398,17 +558,74 @@ Point Point::normalizeSquare() const
   return result;
 }
 
+/* Give access to the underlying storage as a STL vector */
+std::vector<Scalar> Point::toStdVector() const
+{
+  return std::vector<Scalar>(begin(), end());
+}
+
+/* Collection accessor */
+Point::ScalarCollection Point::getCollection() const
+{
+  return ScalarCollection(begin(), end());
+}
+
+/* Implicit conversion to a scalar collection (compatibility bridge) */
+Point::operator ScalarCollection() const
+{
+  return getCollection();
+}
+
+/* Convert to DataContainer (1D) */
+DataContainer Point::toDataContainer() const
+{
+  const UnsignedInteger n = getDimension();
+  if (n == 0) return DataContainer();
+  DataContainer dc(n);
+  std::copy(begin(), end(), dc.data());
+  return dc;
+}
+
+/* Construct a Point from a DataContainer (1D) */
+Point Point::FromDataContainer(const DataContainer & dc)
+{
+  if (dc.isEmpty()) return Point();
+  if (dc.getDimension() > 1)
+    throw InvalidArgumentException(HERE)
+        << "Cannot construct a 1D Point from a DataContainer with dimension " << dc.getDimension();
+  return Point(dc);
+}
+
 /* Method save() stores the object through the StorageManager */
 void Point::save(Advocate & adv) const
 {
-  InternalType::save(adv);
+  PersistentObject::save(adv);
+  // Same layout as the former PersistentCollection<Scalar>: a size attribute
+  // followed by the values, so existing studies remain readable.
+  adv.saveAttribute("size", getSize());
+  AdvocateIterator<Scalar> adv_it(adv);
+  const Scalar * pData = data_.data();
+  const UnsignedInteger totalSize = getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void Point::load(Advocate & adv)
 {
-  InternalType::load(adv);
+  PersistentObject::load(adv);
+  UnsignedInteger size = 0;
+  adv.loadAttribute("size", size);
+  data_.resize(size);
+  AdvocateIterator<Scalar> adv_it(adv);
+  Scalar * pData = data_.data();
+  for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+  {
+    pData[i] = adv_it();
+  }
 }
 
 

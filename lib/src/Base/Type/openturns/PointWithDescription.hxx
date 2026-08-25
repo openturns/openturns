@@ -57,6 +57,18 @@ public:
   /** Virtual constructor */
   PointWithDescription * clone() const override;
 
+#ifndef SWIG
+  /** Assignment from a Point: only the coordinates are affected */
+  PointWithDescription & operator = (const Point & other)
+  {
+    if (this != &other)
+    {
+      Point::operator = (other);
+    }
+    return *this;
+  }
+#endif
+
   /** Description Accessor */
   void setDescription(const Description & description);
   Description getDescription() const;

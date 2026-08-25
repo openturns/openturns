@@ -56,7 +56,6 @@ PointWithDescription::PointWithDescription(const Point & values, const Descripti
     throw InvalidDimensionException(HERE) << "PointWithDescription: description dimension (" << description.getSize() << ") must match values dimension (" << values.getSize() << ")";
 }
 
-
 /* Constructor from a collection */
 PointWithDescription::PointWithDescription(std::initializer_list<Scalar> initList)
   : Point(initList)
@@ -75,11 +74,15 @@ PointWithDescription * PointWithDescription::clone() const
 /* String converter */
 String PointWithDescription::__repr__() const
 {
+  OSS ossValues(true);
+  ossValues << "[";
+  std::copy( begin(), end(), OSS_iterator<Scalar>(ossValues, ",") );
+  ossValues << "]";
   return OSS() << "class=" << PointWithDescription::GetClassName()
          << " name=" << getName()
          << " dimension=" << getDimension()
          << " description=" << getDescription()
-         << " values=" << PersistentCollection<Scalar>::__repr__();
+         << " values=" << String(ossValues);
 }
 
 class KeyValuePair : public Object
