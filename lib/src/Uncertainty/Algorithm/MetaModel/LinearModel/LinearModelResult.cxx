@@ -140,7 +140,8 @@ void LinearModelResult::checkIntercept()
   UnsignedInteger j = 0;
   while((j < p) && cont)
   {
-    const Point column(design.getColumn(j));
+    const Matrix colMatrix(design.getColumn(j));
+    const Point column(colMatrix.getImplementation()->begin(), colMatrix.getImplementation()->end());
     sample.setData(column);
     const Scalar xMin = sample.getMin()[0];
     const Scalar xMax = sample.getMax()[0];
