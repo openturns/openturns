@@ -85,12 +85,12 @@ Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Point & tau) c
   return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
 }
 
-Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   Point tauOverTheta(inputDimension_);
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i, ++ s_it, ++ t_it)
     tauOverTheta[i] = (*s_it - *t_it) / scale_[i];
   // The model is stationary
