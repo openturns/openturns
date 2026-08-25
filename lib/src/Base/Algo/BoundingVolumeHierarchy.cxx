@@ -142,17 +142,17 @@ private:
   const UnsignedInteger activeDimension_;
 };
 
-void update_lower_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>::iterator end, Collection<Scalar>::const_iterator otherLower)
+void update_lower_bounds(Point::iterator begin, Point::iterator end, const Scalar * otherLower)
 {
-  for(Collection<Scalar>::iterator it = begin; it != end; ++it, ++otherLower)
+  for(Point::iterator it = begin; it != end; ++it, ++otherLower)
   {
     *it = std::min(*it, *otherLower);
   }
 }
 
-void update_upper_bounds(Collection<Scalar>::iterator begin, Collection<Scalar>::iterator end, Collection<Scalar>::const_iterator otherUpper)
+void update_upper_bounds(Point::iterator begin, Point::iterator end, const Scalar * otherUpper)
 {
-  for(Collection<Scalar>::iterator it = begin; it != end; ++it, ++otherUpper)
+  for(Point::iterator it = begin; it != end; ++it, ++otherUpper)
   {
     *it = std::max(*it, *otherUpper);
   }
@@ -172,8 +172,8 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   Point lowerBounds(dimension, SpecFunc::Infinity);
   Point upperBounds(dimension, - SpecFunc::Infinity);
 
-  const Collection<Scalar>::const_iterator lowerData = lowerBoundingBoxSimplices_.getImplementation()->data_begin();
-  const Collection<Scalar>::const_iterator upperData = upperBoundingBoxSimplices_.getImplementation()->data_begin();
+  const Scalar * lowerData = lowerBoundingBoxSimplices_.getImplementation()->data_begin();
+  const Scalar * upperData = upperBoundingBoxSimplices_.getImplementation()->data_begin();
   for(UnsignedInteger i = firstIndex; i < lastIndex; ++i)
   {
     update_lower_bounds(lowerBounds.begin(), lowerBounds.end(), lowerData + dimension * sortedSimplices_[i]);
@@ -189,7 +189,7 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
   // First search the minimum and maximum center.
   Point lowerMiddle(dimension, SpecFunc::Infinity);
   Point upperMiddle(dimension, - SpecFunc::Infinity);
-  const Collection<Scalar>::const_iterator centerData = centerBoundingBoxSimplices_.getImplementation()->data_begin();
+  const Scalar * centerData = centerBoundingBoxSimplices_.getImplementation()->data_begin();
   for(UnsignedInteger i = firstIndex; i < lastIndex; ++i)
   {
     update_lower_bounds(lowerMiddle.begin(), lowerMiddle.end(), centerData + dimension * sortedSimplices_[i]);
@@ -245,8 +245,8 @@ BoundingVolumeHierarchy::Node::NodePointer BoundingVolumeHierarchy::build(
 
   lowerBounds = leftChild->lowerBounds_;
   upperBounds = leftChild->upperBounds_;
-  update_lower_bounds(lowerBounds.begin(), lowerBounds.end(), rightChild->lowerBounds_.begin());
-  update_upper_bounds(upperBounds.begin(), upperBounds.end(), rightChild->upperBounds_.begin());
+  update_lower_bounds(lowerBounds.begin(), lowerBounds.end(), &*rightChild->lowerBounds_.begin());
+  update_upper_bounds(upperBounds.begin(), upperBounds.end(), &*rightChild->upperBounds_.begin());
   return new Node(activeDimension, valueSplit, leftChild, rightChild, lowerBounds, upperBounds);
 }
 
