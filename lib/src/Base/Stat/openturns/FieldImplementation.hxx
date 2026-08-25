@@ -179,6 +179,8 @@ protected:
   /** Check that the given field is compatible for arithmetic operations */
   void checkArithmeticCompatibility(const FieldImplementation & other) const;
 
+  friend class ProcessSampleImplementation;
+
   /** Compute the input mean of the field */
   void computeInputMean() const;
 
