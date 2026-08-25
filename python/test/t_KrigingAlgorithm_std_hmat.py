@@ -3,6 +3,18 @@
 import openturns as ot
 import openturns.testing as ott
 
+
+def matrix_to_point(m):
+    """Flatten a matrix into a Point in storage (column-major) order."""
+    res = ot.Point(m.getNbRows() * m.getNbColumns())
+    k = 0
+    for j in range(m.getNbColumns()):
+        for i in range(m.getNbRows()):
+            res[k] = m[i, j]
+            k += 1
+    return res
+
+
 ot.TESTPREAMBLE()
 
 # Set hmat
@@ -41,7 +53,7 @@ def test_one_input_one_output():
 
     # Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(X)
-    ot.Point(covariance.getImplementation())
+    matrix_to_point(covariance)
     ot.Point(sampleSize * sampleSize)
     ott.assert_almost_equal(covariance, ot.Matrix(sampleSize, sampleSize), 0.0, 1e-1)
 
