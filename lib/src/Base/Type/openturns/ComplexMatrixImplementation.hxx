@@ -21,7 +21,9 @@
 #ifndef OPENTURNS_COMPLEXMATRIXIMPLEMENTATION_HXX
 #define OPENTURNS_COMPLEXMATRIXIMPLEMENTATION_HXX
 
-#include "openturns/PersistentCollection.hxx"
+#include <vector>
+#include "openturns/PersistentObject.hxx"
+#include "openturns/ComplexDataContainer.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/MatrixImplementation.hxx"
@@ -35,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API ComplexMatrixImplementation
-  : public PersistentCollection<Complex>
+  : public PersistentObject
 
 {
   CLASSNAME
@@ -53,6 +55,17 @@ public:
 
   typedef Collection<Complex>        ComplexCollection;
   typedef Collection<Scalar>         ScalarCollection;
+
+  typedef Complex*                   iterator;
+  typedef const Complex*             const_iterator;
+
+#ifndef SWIG
+  /** Copy constructor */
+  ComplexMatrixImplementation(const ComplexMatrixImplementation & other);
+
+  /** Assignment operator */
+  ComplexMatrixImplementation & operator = (const ComplexMatrixImplementation & other);
+#endif
 
   /** Default constructor */
   ComplexMatrixImplementation();
@@ -211,10 +224,9 @@ public:
   virtual ComplexMatrixImplementation computeCholeskyInPlace();
 
   /** Comparison operators */
-  using PersistentCollection::operator ==;
   Bool operator == (const ComplexMatrixImplementation & rhs) const;
 
-  using PersistentCollection::operator !=;
+
   inline Bool operator != (const ComplexMatrixImplementation & rhs) const
   {
     return !((*this) == rhs);
@@ -235,11 +247,65 @@ public:
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;
 
+  /** Number of elements */
+  inline UnsignedInteger getSize() const
+  {
+    return nbRows_ * nbColumns_;
+  }
+
+  /** Size in bytes of one element */
+  UnsignedInteger elementSize() const;
+
+#ifndef SWIG
+  /** Flat element access (column-major) */
+  inline Complex & operator [] (const UnsignedInteger flatIndex)
+  {
+    return data_[flatIndex];
+  }
+  inline const Complex & operator [] (const UnsignedInteger flatIndex) const
+  {
+    return data_[flatIndex];
+  }
+
+  /** Method begin() points to the first element */
+  inline iterator begin()
+  {
+    return data_.data();
+  }
+  inline const_iterator begin() const
+  {
+    return data_.data();
+  }
+
+  /** Method end() points beyond the last element */
+  inline iterator end()
+  {
+    return data_.data() + getSize();
+  }
+  inline const_iterator end() const
+  {
+    return data_.data() + getSize();
+  }
+
+  /** Returns a pointer to the block of memory */
+  inline Complex * data()
+  {
+    return data_.data();
+  }
+  inline const Complex * data() const
+  {
+    return data_.data();
+  }
+#endif
+
 protected:
 
   /** ComplexMatrixImplementation Dimensions */
   UnsignedInteger nbRows_;
   UnsignedInteger nbColumns_;
+
+  /** The flat column-major storage of the coefficients */
+  ComplexDataContainer data_;
 
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
   inline UnsignedInteger convertPosition (const UnsignedInteger i,
@@ -259,11 +325,14 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
     const UnsignedInteger colDim,
     const InputIterator first,
     const InputIterator last)
-  : PersistentCollection<Complex>(rowDim * colDim, 0.0),
+  : PersistentObject(),
     nbRows_(rowDim),
-    nbColumns_(colDim)
+    nbColumns_(colDim),
+    data_(rowDim * colDim)
 {
-  this->assign(first, last);
+  const std::vector<Complex> tmp(first, last);
+  const UnsignedInteger matrixSize = std::min(rowDim * colDim, static_cast<UnsignedInteger>(tmp.size()));
+  std::copy(tmp.begin(), tmp.begin() + matrixSize, begin());
 }
 
 END_NAMESPACE_OPENTURNS

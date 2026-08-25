@@ -29,12 +29,12 @@ typedef kissfft<Scalar> KISSFFTScalar;
 
 struct FFTPolicy
 {
-  const KissFFT::ComplexCollection & input_;
+  const Complex * input_;
   KissFFT::ComplexCollection  & output_;
   KISSFFTScalar & fft_;
   const UnsignedInteger fftSize_;
 
-  FFTPolicy(const KissFFT::ComplexCollection & input,
+  FFTPolicy(const Complex * input,
             KissFFT::ComplexCollection & output,
             KISSFFTScalar & fft,
             UnsignedInteger fftSize)
