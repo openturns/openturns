@@ -178,7 +178,10 @@ ProcessSample KarhunenLoeveResultImplementation::getScaledModesAsProcessSample()
 {
   ProcessSample scaledModesAsProcessSample(modesAsProcessSample_.getMesh(), modesAsProcessSample_.getSize(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < modesAsProcessSample_.getSize(); ++i)
-    scaledModesAsProcessSample[i] = modesAsProcessSample_[i] * std::sqrt(eigenvalues_[i]);
+    {
+      Sample scaledValues(modesAsProcessSample_.getField(i).getValues() * std::sqrt(eigenvalues_[i]));
+      scaledModesAsProcessSample.setField(i, Field(scaledModesAsProcessSample.getMesh(), scaledValues));
+    }
   return scaledModesAsProcessSample;
 }
 
@@ -232,7 +235,10 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
     //   result = sample.data_ * transposed(projection_)
     Sample values(size, length * dimension);
     for(UnsignedInteger i = 0; i < size; ++i)
-      std::copy(&sample[i](0, 0), &sample[i](0, 0) + length * dimension, &values(i, 0));
+    {
+      const Sample row(sample[i]);
+      std::copy(&row(0, 0), &row(0, 0) + length * dimension, &values(i, 0));
+    }
     return projection_.getImplementation()->genSampleProd(values, true, false, 'R');
   }
   else
@@ -273,7 +279,7 @@ Sample KarhunenLoeveResultImplementation::liftAsSample(const Point & coefficient
     throw InvalidDimensionException(HERE) << "Expected coefficients of dimension " << dimension << " got " << coefficients.getDimension();
   Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
+    values += modesAsProcessSample_.getField(i).getValues() * (std::sqrt(eigenvalues_[i]) * coefficients[i]);
   return values;
 }
 
