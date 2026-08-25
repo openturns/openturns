@@ -11,10 +11,13 @@
  * Covariance models for functional spaces to generate trajectories within crucial functional spaces for physical simulations
 
 ==== New classes ====
+ * AlgebraEngine
  * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature, GaussLPQuadratureRule (openturns.experimental)
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
+ * ComplexDataContainer
  * CumulativeDistributionNetworkFactory (openturns.experimental)
+ * DataContainer
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -30,6 +33,7 @@
  * SparseExpansion (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
+ * StatisticsEngine
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
