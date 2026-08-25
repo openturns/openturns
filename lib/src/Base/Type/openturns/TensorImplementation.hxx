@@ -21,9 +21,11 @@
 #ifndef OPENTURNS_TENSORIMPLEMENTATION_HXX
 #define OPENTURNS_TENSORIMPLEMENTATION_HXX
 
-#include "openturns/PersistentCollection.hxx"
+#include "openturns/PersistentObject.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/SymmetricMatrix.hxx"
+#include <vector>
+#include "openturns/DataContainer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,13 +38,23 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API TensorImplementation
-  : public PersistentCollection<Scalar>
+  : public PersistentObject
 
 {
   CLASSNAME
 
 public:
 
+  typedef Scalar*                  iterator;
+  typedef const Scalar*            const_iterator;
+
+#ifndef SWIG
+  /** Copy constructor */
+  TensorImplementation(const TensorImplementation & other);
+
+  /** Assignment operator */
+  TensorImplementation & operator = (const TensorImplementation & other);
+#endif
 
   /** Default constructor */
   TensorImplementation();
@@ -113,6 +125,57 @@ public:
   /** Number of sheets */
   UnsignedInteger getNbSheets() const;
 
+  /** Number of elements */
+  inline UnsignedInteger getSize() const
+  {
+    return nbRows_ * nbColumns_ * nbSheets_;
+  }
+
+  /** Size in bytes of one element */
+  UnsignedInteger elementSize() const;
+
+#ifndef SWIG
+  /** Flat element access */
+  inline Scalar & operator [] (const UnsignedInteger flatIndex)
+  {
+    return data_[flatIndex];
+  }
+  inline const Scalar & operator [] (const UnsignedInteger flatIndex) const
+  {
+    return data_[flatIndex];
+  }
+
+  /** Method begin() points to the first element */
+  inline iterator begin()
+  {
+    return data_.data();
+  }
+  inline const_iterator begin() const
+  {
+    return data_.data();
+  }
+
+  /** Method end() points beyond the last element */
+  inline iterator end()
+  {
+    return data_.data() + getSize();
+  }
+  inline const_iterator end() const
+  {
+    return data_.data() + getSize();
+  }
+
+  /** Returns a pointer to the block of memory */
+  inline const Scalar * data() const
+  {
+    return data_.data();
+  }
+  inline Scalar * data()
+  {
+    return data_.data();
+  }
+#endif
+
   /** Check for symmetry */
   Bool isSymmetric() const;
 
@@ -120,7 +183,6 @@ public:
   void symmetrize() const;
 
   /** Comparison operators */
-  using PersistentCollection::operator ==;
   Bool operator == (const TensorImplementation & rhs) const;
 
   /** Empty returns true if there is no element in the tensor */
@@ -135,12 +197,27 @@ public:
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;
 
+  /** Give access to the underlying storage as a STL vector */
+  std::vector<Scalar> toStdVector() const;
+
+  /** Convert to DataContainer (column-major, 3D flattened) */
+  DataContainer toDataContainer() const;
+
+  /** Construct a TensorImplementation from a DataContainer */
+  static TensorImplementation FromDataContainer(const DataContainer & dc,
+      UnsignedInteger nbRows,
+      UnsignedInteger nbColumns,
+      UnsignedInteger nbSheets);
+
 protected:
 
   /** TensorImplementation Dimensions */
   UnsignedInteger nbRows_;
   UnsignedInteger nbColumns_;
   UnsignedInteger nbSheets_;
+
+  /** The flat storage of the coefficients */
+  DataContainer data_;
 
   /** Position conversion function : the indices i & j are used to compute the actual position of the element in the collection */
   inline UnsignedInteger convertPosition (const UnsignedInteger i,
@@ -156,12 +233,15 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger sheetDim,
     InputIterator first,
     InputIterator last)
-  : PersistentCollection<Scalar>(rowDim * colDim * sheetDim),
+  : PersistentObject(),
     nbRows_(rowDim),
     nbColumns_(colDim),
-    nbSheets_(sheetDim)
+    nbSheets_(sheetDim),
+    data_(rowDim * colDim * sheetDim, 0.0)
 {
-  this->assign(first, last);
+  const std::vector<Scalar> tmp(first, last);
+  const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, static_cast<UnsignedInteger>(tmp.size()));
+  std::copy(tmp.begin(), tmp.begin() + tensorSize, begin());
 }
 
 /** Inline functions */
