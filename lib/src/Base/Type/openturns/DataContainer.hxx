@@ -168,7 +168,9 @@ public:
 
   /** Comparison operators */
   Bool operator==(const DataContainer & other) const;
+  using PersistentObject::operator ==;
   Bool operator!=(const DataContainer & other) const;
+  using PersistentObject::operator !=;
 
   /** Raw data access */
   inline Scalar * data()

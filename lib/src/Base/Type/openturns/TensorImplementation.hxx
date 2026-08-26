@@ -184,6 +184,7 @@ public:
 
   /** Comparison operators */
   Bool operator == (const TensorImplementation & rhs) const;
+  using PersistentObject::operator ==;
 
   /** Empty returns true if there is no element in the tensor */
   Bool isEmpty() const;

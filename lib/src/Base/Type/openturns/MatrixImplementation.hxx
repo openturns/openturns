@@ -390,11 +390,13 @@ public:
 
   /** Comparison operators */
   Bool operator == (const MatrixImplementation & rhs) const;
+  using PersistentObject::operator ==;
 
   inline Bool operator != (const MatrixImplementation & rhs) const
   {
     return !((*this) == rhs);
   }
+  using PersistentObject::operator !=;
 
   /** Empty returns true if there is no element in the MatrixImplementation */
   Bool isEmpty() const;

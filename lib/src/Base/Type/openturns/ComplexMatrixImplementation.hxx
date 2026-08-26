@@ -225,12 +225,14 @@ public:
 
   /** Comparison operators */
   Bool operator == (const ComplexMatrixImplementation & rhs) const;
+  using PersistentObject::operator ==;
 
 
   inline Bool operator != (const ComplexMatrixImplementation & rhs) const
   {
     return !((*this) == rhs);
   }
+  using PersistentObject::operator !=;
 
   /** Empty returns true if there is no element in the ComplexMatrixImplementation */
   Bool isEmpty() const;
