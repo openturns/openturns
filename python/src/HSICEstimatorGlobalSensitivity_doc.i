@@ -18,7 +18,7 @@ estimatorType : :class:`~openturns.HSICStat`
 
 See also
 --------
-:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`
+HSICEstimatorConditionalSensitivity, HSICEstimatorTargetSensitivity
 
 Examples
 --------
