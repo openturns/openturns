@@ -14,10 +14,13 @@ r2 = fft.transform(data)
 ott.assert_almost_equal(max(abs(r1[i] - r2[i]) for i in range(4)), 0.0, 0.0, 1e-14)
 print("1D ND OK")
 
-# 2D transform
+# 2D transform + roundtrip
 vals = [1.0, 4.0, 2.0, 5.0, 3.0, 6.0]
 data = ot.Point(vals)
 r1 = fft.transform(data, [2, 3])
+r2 = fft.inverseTransform(r1, [2, 3])
+for i in range(6):
+    ott.assert_almost_equal(r2[i], data[i], 1e-14, 0.0)
 print("2D ND OK")
 
 # 3D transform
