@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+from openturns.experimental import MulticollinearityAnalysis
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -37,7 +38,7 @@ noiseDistribution = ot.Normal(0.0, sigmaEps)
 noiseSample = noiseDistribution.getSample(sampleSize)
 outputSample = linearFunction(inputSample) + noiseSample
 
-analysis = ot.MulticollinearityAnalysis(inputSample, outputSample)
+analysis = MulticollinearityAnalysis(inputSample, outputSample)
 
 # LMG and PMVD indices
 lmg_computed, pmvd_computed = analysis.computeLmgPmvd()
@@ -56,10 +57,12 @@ ott.assert_almost_equal(pmvd_estimated, pmvd_computed, 4e-3, 0.0)
 # Johnson index
 johnson_computed = analysis.computeJohnson()
 print(f"Computed Johnson = [{johnson_computed[0]}, {johnson_computed[1]}]")
-ott.assert_almost_equal(johnson_computed, lmg_computed, 1e-10, 0.0)  # In 2D, Johnson and LMG indices are identical
+ott.assert_almost_equal(
+    johnson_computed, lmg_computed, 1e-10, 0.0
+)  # In 2D, Johnson and LMG indices are identical
 
 # Check that an exception is raised when outputSample is not provided
-analysis = ot.MulticollinearityAnalysis(inputSample)
+analysis = MulticollinearityAnalysis(inputSample)
 with ott.assert_raises(TypeError):
     analysis.computeLmgPmvd()
 with ott.assert_raises(TypeError):
@@ -68,7 +71,7 @@ with ott.assert_raises(TypeError):
     analysis.computeJohnson()
 
 # VIF metric
-analysis = ot.MulticollinearityAnalysis(inputSample)
+analysis = MulticollinearityAnalysis(inputSample)
 vif_computed = analysis.computeVIF()
 print(f"Theoretical VIF = [{vif12}, {vif12}]")
 print(f"Computed VIF = [{vif_computed[0]}, {vif_computed[1]}]")

@@ -90,7 +90,6 @@
 %include IsotropicCovarianceModel.i
 %include LatentVariableModel.i
 %include CorrelationAnalysis.i
-%include MulticollinearityAnalysis.i
 %include SamplePartition.i
 
 /* At last we include template definitions */

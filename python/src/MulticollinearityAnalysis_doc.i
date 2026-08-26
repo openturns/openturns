@@ -1,9 +1,15 @@
 %feature("docstring") OT::MulticollinearityAnalysis
 "Multicollinearity analysis methods.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+
 Provides sensitivity analysis methods to determine the influence of each
 component of a random vector over a single one-dimensional variable,
 in the case where the components are correlated.
+Refer to :ref:`regression_importance_indices`.
 
 Available constructors:
     MulticollinearityAnalysis(*firstSample*)
@@ -22,18 +28,19 @@ secondSample : 2-d list of float
 
 See also
 --------
-CorrelationAnalysis
+:class:`~openturns.CorrelationAnalysis`
 
 Examples
 --------
 >>> import openturns as ot
+>>> from openturns.experimental import MulticollinearityAnalysis
 >>> ot.RandomGenerator.SetSeed(0)
 >>> corMatrix = ot.CorrelationMatrix(3, [1.0, 0.5, 0.5, 0.5, 1.0, 0.5, 0.5, 0.5, 1.0])
 >>> distribution = ot.Normal([0.0] * 3, [1.0] * 3, corMatrix)
 >>> firstSample = distribution.getSample(100)
 >>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
 >>> secondSample = model(firstSample)
->>> analysis = ot.MulticollinearityAnalysis(firstSample, secondSample)
+>>> analysis = MulticollinearityAnalysis(firstSample, secondSample)
 >>> lmg, pmvd = analysis.computeLmgPmvd()
 >>> johnson = analysis.computeJohnson()
 "
