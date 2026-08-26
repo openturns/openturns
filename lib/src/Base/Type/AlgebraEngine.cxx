@@ -158,7 +158,14 @@ DataContainer AlgebraEngine::MatrixProduct(const DataContainer & A, const DataCo
 
 DataContainer AlgebraEngine::SymProd(const DataContainer & A, const DataContainer & B, char symSide)
 {
-  return MatrixProduct(A, B);
+  const UnsignedInteger n = A.getSize();
+  if (A.getDimension() != n)
+    throw InvalidDimensionException(HERE) << "Cannot compute symmetric product: matrix must be square (rows=" << A.getSize() << ", columns=" << A.getDimension() << ")";
+  if (B.getSize() != n || B.getDimension() != n)
+    throw InvalidDimensionException(HERE) << "Cannot compute symmetric product: matrix size=" << B.getSize() << "x" << B.getDimension() << " does not match n=" << n;
+  if (symSide == 'R' || symSide == 'r')
+    return MatrixProduct(Transpose(A), MatrixProduct(B, A));
+  return MatrixProduct(MatrixProduct(A, B), Transpose(A));
 }
 
 DataContainer AlgebraEngine::TriangularProd(const DataContainer & A, const DataContainer & B, char side, char uplo)
@@ -1009,7 +1016,6 @@ void AlgebraEngine::ComputeQRBlockwise(const DataContainer & A,
   if (fullQR)
   {
     int intR = static_cast<int>(rRows);
-    int intK = static_cast<int>(k);
     info = -1;
     dorgqr_(&intM, &intR, &intK, qData, &intM, allTau.data(), work.data(), &lwork, &info);
     if (info != 0)
@@ -1019,7 +1025,6 @@ void AlgebraEngine::ComputeQRBlockwise(const DataContainer & A,
   }
   else
   {
-    int intK = static_cast<int>(k);
     info = -1;
     dorgqr_(&intM, &intK, &intK, qData, &intM, allTau.data(), work.data(), &lwork, &info);
     if (info != 0)
