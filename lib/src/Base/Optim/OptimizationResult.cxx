@@ -494,7 +494,8 @@ Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
   // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
   const UnsignedInteger inputDimension = x.getDimension();
   // Get the lhs as a Point
-  const Point lhs(Point(problem_.getObjective().gradient(x).getImplementation()->begin(), problem_.getObjective().gradient(x).getImplementation()->end()) * (-1.0));
+  const Matrix objectiveGradient(problem_.getObjective().gradient(x));
+  const Point lhs(Point(objectiveGradient.getImplementation()->begin(), objectiveGradient.getImplementation()->end()) * (-1.0));
   // In order to ease the construction of the rhs matrix, we use its internal storage representation as a Point in column-major storage.
   Point rhs(0);
   // First, the equality constraints. Each scalar equality constraint gives a column in the rhs
