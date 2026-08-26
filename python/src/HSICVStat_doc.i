@@ -7,7 +7,7 @@ This a biased estimator for the computation of an HSIC index.
 
 See also
 --------
-:class:`~openturns.HSICUStat`"
+openturns.HSICUStat"
 
 // ---------------------------------------------------------------------
 
