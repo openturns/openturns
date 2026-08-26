@@ -164,7 +164,11 @@ KissFFT::ComplexCollection KissFFT::fftND(const ComplexCollection & data,
   const UnsignedInteger nDims = dimensions.getSize();
   UnsignedInteger totalSize = 1;
   for (UnsignedInteger i = 0; i < nDims; ++i)
+  {
+    if (dimensions[i] == 0)
+      throw InvalidArgumentException(HERE) << "In KissFFT::fftND: dimension " << i << " is zero";
     totalSize *= dimensions[i];
+  }
   if (data.getSize() != totalSize)
     throw InvalidArgumentException(HERE) << "In KissFFT::fftND: data size (" << data.getSize()
                                          << ") does not match product of dimensions (" << totalSize << ")";
