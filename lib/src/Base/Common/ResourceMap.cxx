@@ -1020,6 +1020,9 @@ void ResourceMap::loadDefaultConfiguration()
   // AlgebraEngine parameters //
   addAsUnsignedInteger("AlgebraEngine-DefaultBlockSize", 384);
 
+  // StatisticsEngine parameters //
+  addAsUnsignedInteger("StatisticsEngine-DefaultBlockSize", 4096);
+
   // Compact parameters //
   addAsUnsignedInteger("Compact-DefaultHalfMaximumSize", 1024);
 

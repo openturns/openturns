@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DataContainer.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -95,15 +96,15 @@ public:
 
   /** Block-based mean: processes sample in blocks of blockSize rows. */
   static DataContainer ComputeMeanBlockwise(const DataContainer & sample,
-      UnsignedInteger blockSize = 4096);
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
 
   /** Block-based variance: two-pass (mean then variance). */
   static DataContainer ComputeVarianceBlockwise(const DataContainer & sample,
-      UnsignedInteger blockSize = 4096);
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
 
   /** Block-based covariance: two-pass. */
   static DataContainer ComputeCovarianceBlockwise(const DataContainer & sample,
-      UnsignedInteger blockSize = 4096);
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
 
 }; /* class StatisticsEngine */
 
