@@ -45,6 +45,14 @@ try:
 except Exception:
     print("Bad size error OK")
 
+# Check error on zero dimension (empty data passes size check but would divide by zero)
+empty = ot.ComplexCollection(0)
+with ott.assert_raises(Exception):
+    fft.transform(empty, [0])
+with ott.assert_raises(Exception):
+    fft.transform(empty, [2, 0])
+print("zero dimension rejected OK")
+
 # 4D transform + roundtrip
 vals = [i + 1.0 for i in range(120)]
 data = ot.Point(vals)

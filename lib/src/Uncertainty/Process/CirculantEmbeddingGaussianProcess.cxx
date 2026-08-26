@@ -105,18 +105,18 @@ void CirculantEmbeddingGaussianProcess::initializeND() const
   for (UnsignedInteger dim = 0; dim < d; ++dim)
     N[dim] = SpecFunc::NextPowerOfTwo(Nmin[dim]);
 
-  const Bool userOverride = (circularSize_.getSize() == d);
+  const Bool userOverride = (userCircularSize_.getSize() == d);
   if (userOverride)
   {
     for (UnsignedInteger dim = 0; dim < d; ++dim)
     {
-      if (circularSize_[dim] > 0)
+      if (userCircularSize_[dim] > 0)
       {
-        if ((circularSize_[dim] & (circularSize_[dim] - 1)) != 0)
+        if ((userCircularSize_[dim] & (userCircularSize_[dim] - 1)) != 0)
           throw InvalidArgumentException(HERE) << "Error: the circular size must be a power of two.";
-        if (circularSize_[dim] < Nmin[dim])
+        if (userCircularSize_[dim] < Nmin[dim])
           throw InvalidArgumentException(HERE) << "Error: the circular size is too small.";
-        N[dim] = circularSize_[dim];
+        N[dim] = userCircularSize_[dim];
       }
     }
   }
@@ -384,6 +384,7 @@ String CirculantEmbeddingGaussianProcess::__repr__() const
       << " discretization=" << discretization_
       << " covarianceModel=" << covarianceModel_
       << " circularSize=" << circularSize_
+      << " userCircularSize=" << userCircularSize_
       << " dimension=" << dimension_
       << " isInitialized=" << isInitialized_;
   return oss;
@@ -527,12 +528,16 @@ void CirculantEmbeddingGaussianProcess::setTimeGrid(const RegularGrid & timeGrid
 /* Circular size accessors */
 void CirculantEmbeddingGaussianProcess::setCircularSize(const Indices & circularSize)
 {
-  circularSize_ = circularSize;
+  userCircularSize_ = circularSize;
   isInitialized_ = false;
 }
 
 Indices CirculantEmbeddingGaussianProcess::getCircularSize() const
 {
+  if (isInitialized_ && circularSize_.getSize() == dimension_)
+    return circularSize_;
+  if (userCircularSize_.getSize() == dimension_)
+    return userCircularSize_;
   return circularSize_;
 }
 
@@ -787,6 +792,7 @@ void CirculantEmbeddingGaussianProcess::save(Advocate & adv) const
   adv.saveAttribute("cholFactors_", cholFactors_);
   adv.saveAttribute("eigenvalues_", eigenvalues_);
   adv.saveAttribute("circularSize_", circularSize_);
+  adv.saveAttribute("userCircularSize_", userCircularSize_);
   adv.saveAttribute("isInitialized_", isInitialized_);
   adv.saveAttribute("fftAlgorithm_", fftAlgorithm_);
   adv.saveAttribute("interval_", interval_);
@@ -802,6 +808,10 @@ void CirculantEmbeddingGaussianProcess::load(Advocate & adv)
   adv.loadAttribute("cholFactors_", cholFactors_);
   adv.loadAttribute("eigenvalues_", eigenvalues_);
   adv.loadAttribute("circularSize_", circularSize_);
+  if (adv.hasAttribute("userCircularSize_")) // OT>=1.27
+    adv.loadAttribute("userCircularSize_", userCircularSize_);
+  else
+    userCircularSize_.clear();
   adv.loadAttribute("isInitialized_", isInitialized_);
   adv.loadAttribute("fftAlgorithm_", fftAlgorithm_);
   adv.loadAttribute("interval_", interval_);
