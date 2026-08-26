@@ -252,7 +252,7 @@ Parameters
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 blockSize : int, optional
-    Number of rows per block. Default is 4096.
+    Number of rows per block. Default from ResourceMap.
 
 Returns
 -------
@@ -269,7 +269,7 @@ Parameters
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 blockSize : int, optional
-    Number of rows per block. Default is 4096.
+    Number of rows per block. Default from ResourceMap.
 
 Returns
 -------
@@ -286,7 +286,7 @@ Parameters
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 blockSize : int, optional
-    Number of rows per block. Default is 4096.
+    Number of rows per block. Default from ResourceMap.
 
 Returns
 -------
