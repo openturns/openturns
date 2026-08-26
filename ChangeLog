@@ -15,6 +15,7 @@
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
+ * MulticollinearityAnalysis (openturns.experimental)
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
