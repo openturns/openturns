@@ -3777,7 +3777,11 @@ Sample LinearCombinationDistribution::getSupport(const Interval & interval) cons
   Sample support(0, dimension);
   Sample supportCandidates;
   if (dimension == 1)
-    supportCandidates = distributionCollection_[0].getSupport() * Point(weights_.getColumn(0).getImplementation()->begin(), weights_.getColumn(0).getImplementation()->end()) + constant_;
+  {
+    const Matrix col0(weights_.getColumn(0));
+    const MatrixImplementation & col0_impl(*col0.getImplementation());
+    supportCandidates = distributionCollection_[0].getSupport() * Point(col0_impl.begin(), col0_impl.end()) + constant_;
+  }
   else
   {
     const Sample support0 = distributionCollection_[0].getSupport();
@@ -3792,7 +3796,11 @@ Sample LinearCombinationDistribution::getSupport(const Interval & interval) cons
   {
     Sample nextSupport;
     if (dimension == 1)
-      nextSupport = distributionCollection_[indexNext].getSupport() * Point(weights_.getColumn(indexNext).getImplementation()->begin(), weights_.getColumn(indexNext).getImplementation()->end());
+    {
+      const Matrix colN(weights_.getColumn(indexNext));
+      const MatrixImplementation & colN_impl(*colN.getImplementation());
+      nextSupport = distributionCollection_[indexNext].getSupport() * Point(colN_impl.begin(), colN_impl.end());
+    }
     else
     {
       const Sample supportNext = distributionCollection_[indexNext].getSupport();
