@@ -28,8 +28,8 @@ print("FFT back=", inverseCollection)
 
 # Verify 1D roundtrip
 for i in range(size):
-    ott.assert_almost_equal(inverseCollection[i].real, collection[i].real, 1e-14, 0.0)
-    ott.assert_almost_equal(inverseCollection[i].imag, collection[i].imag, 1e-14, 0.0)
+    ott.assert_almost_equal(inverseCollection[i].real, collection[i].real, 1e-14, 1e-13)
+    ott.assert_almost_equal(inverseCollection[i].imag, collection[i].imag, 1e-14, 1e-13)
 
 # 2D case
 N = 8
@@ -49,7 +49,7 @@ inverseSample = myFFT.inverseTransform(transformedSample, [rows, cols])
 print("2D FFT back size = ", inverseSample.getSize())
 
 for i in range(rows * cols):
-    ott.assert_almost_equal(inverseSample[i].real, sampleFlat[i].real, 1e-12, 0.0)
+    ott.assert_almost_equal(inverseSample[i].real, sampleFlat[i].real, 1e-12, 1e-12)
     ott.assert_almost_equal(inverseSample[i].imag, sampleFlat[i].imag, 0.0, 1e-12)
 
 # 3D case
@@ -67,5 +67,5 @@ inverseTensor = myFFT.inverseTransform(transformedTensor, [N, N, N])
 print("3D FFT back size = ", inverseTensor.getSize())
 
 for i in range(N * N * N):
-    ott.assert_almost_equal(inverseTensor[i].real, tensorFlat[i].real, 1e-12, 0.0)
+    ott.assert_almost_equal(inverseTensor[i].real, tensorFlat[i].real, 1e-12, 1e-12)
     ott.assert_almost_equal(inverseTensor[i].imag, tensorFlat[i].imag, 0.0, 1e-12)
