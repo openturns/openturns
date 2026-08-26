@@ -182,7 +182,12 @@ print("Axpy: OK")
 
 # MatrixPointProduct
 A = ot.DataContainer(2, 3, 0.0)
-A[0] = 1.0; A[1] = 2.0; A[2] = 3.0; A[3] = 4.0; A[4] = 5.0; A[5] = 6.0
+A[0] = 1.0
+A[1] = 2.0
+A[2] = 3.0
+A[3] = 4.0
+A[4] = 5.0
+A[5] = 6.0
 x = ot.DataContainer(3, 1.0)
 r = ot.AlgebraEngine.MatrixPointProduct(A, x)
 assert abs(r[0] - 9.0) < 1e-12
@@ -191,9 +196,15 @@ print("MatrixPointProduct: OK")
 
 # MatrixProduct
 A2 = ot.DataContainer(2, 2, 0.0)
-A2[0] = 1.0; A2[1] = 2.0; A2[2] = 3.0; A2[3] = 4.0
+A2[0] = 1.0
+A2[1] = 2.0
+A2[2] = 3.0
+A2[3] = 4.0
 B2 = ot.DataContainer(2, 2, 0.0)
-B2[0] = 5.0; B2[1] = 6.0; B2[2] = 7.0; B2[3] = 8.0
+B2[0] = 5.0
+B2[1] = 6.0
+B2[2] = 7.0
+B2[3] = 8.0
 C2 = ot.AlgebraEngine.MatrixProduct(A2, B2)
 assert abs(C2[0] - 23.0) < 1e-12
 assert abs(C2[1] - 34.0) < 1e-12
@@ -214,7 +225,10 @@ print("Transpose: OK")
 
 # ComputeCholesky (2x2 SPD)
 spd = ot.DataContainer(2, 2, 0.0)
-spd[0] = 4.0; spd[1] = 2.0; spd[2] = 2.0; spd[3] = 5.0
+spd[0] = 4.0
+spd[1] = 2.0
+spd[2] = 2.0
+spd[3] = 5.0
 L = ot.AlgebraEngine.ComputeCholesky(spd)
 assert abs(L[0] - 2.0) < 1e-12
 assert abs(L[1] - 1.0) < 1e-12
@@ -224,16 +238,16 @@ print("ComputeCholesky: OK")
 # SolveLinearSystemSPD: inv([[4,2],[2,5]]) * [1,1] = [5/16-2/16, -2/16+4/16] = [3/16, 2/16]
 b = ot.DataContainer(2, 1.0)
 x = ot.AlgebraEngine.SolveLinearSystemSPD(spd, b)
-assert abs(x[0] - 3.0/16.0) < 1e-12
-assert abs(x[1] - 2.0/16.0) < 1e-12
+assert abs(x[0] - 3.0 / 16.0) < 1e-12
+assert abs(x[1] - 2.0 / 16.0) < 1e-12
 print("SolveLinearSystemSPD: OK")
 
 # Inverse
 inv = ot.AlgebraEngine.Inverse(spd)
-assert abs(inv[0] - 5.0/16.0) < 1e-12
-assert abs(inv[1] - (-2.0/16.0)) < 1e-12
-assert abs(inv[2] - (-2.0/16.0)) < 1e-12
-assert abs(inv[3] - 4.0/16.0) < 1e-12
+assert abs(inv[0] - 5.0 / 16.0) < 1e-12
+assert abs(inv[1] - (-2.0 / 16.0)) < 1e-12
+assert abs(inv[2] - (-2.0 / 16.0)) < 1e-12
+assert abs(inv[3] - 4.0 / 16.0) < 1e-12
 print("Inverse: OK")
 
 # InverseSPD
@@ -254,14 +268,20 @@ print("ComputeTrace: OK")
 # IsSymmetric
 assert ot.AlgebraEngine.IsSymmetric(spd)
 notSym = ot.DataContainer(2, 2, 0.0)
-notSym[0] = 1.0; notSym[1] = 2.0; notSym[2] = 3.0; notSym[3] = 4.0
+notSym[0] = 1.0
+notSym[1] = 2.0
+notSym[2] = 3.0
+notSym[3] = 4.0
 assert not ot.AlgebraEngine.IsSymmetric(notSym)
 print("IsSymmetric: OK")
 
 # IsPositiveDefinite
 assert ot.AlgebraEngine.IsPositiveDefinite(spd)
 notPD = ot.DataContainer(2, 2, 0.0)
-notPD[0] = 0.0; notPD[1] = 1.0; notPD[2] = 1.0; notPD[3] = 0.0
+notPD[0] = 0.0
+notPD[1] = 1.0
+notPD[2] = 1.0
+notPD[3] = 0.0
 assert not ot.AlgebraEngine.IsPositiveDefinite(notPD)
 print("IsPositiveDefinite: OK")
 
@@ -283,7 +303,12 @@ print("ComputeGram: OK")
 
 # ComputeQR
 A3 = ot.DataContainer(3, 2, 0.0)
-A3[0] = 1.0; A3[1] = 2.0; A3[2] = 3.0; A3[3] = 4.0; A3[4] = 5.0; A3[5] = 6.0
+A3[0] = 1.0
+A3[1] = 2.0
+A3[2] = 3.0
+A3[3] = 4.0
+A3[4] = 5.0
+A3[5] = 6.0
 Q = ot.DataContainer()
 R = ot.DataContainer()
 ot.AlgebraEngine.ComputeQR(A3, Q, R)
@@ -303,7 +328,10 @@ print("ComputeSVD: OK")
 
 # SolveLinearSystemTriangular
 tri = ot.DataContainer(2, 2, 0.0)
-tri[0] = 2.0; tri[1] = 0.0; tri[2] = 1.0; tri[3] = 3.0
+tri[0] = 2.0
+tri[1] = 0.0
+tri[2] = 1.0
+tri[3] = 3.0
 btri = ot.DataContainer(2, 1.0)
 xtri = ot.AlgebraEngine.SolveLinearSystemTriangular(tri, btri, True, False)
 assert abs(xtri[0] - 0.5) < 1e-12
@@ -311,7 +339,10 @@ print("SolveLinearSystemTriangular: OK")
 
 # Block methods (blockSize=1 matches C++ test coverage)
 spd2 = ot.DataContainer(2, 2, 0.0)
-spd2[0] = 4.0; spd2[1] = 2.0; spd2[2] = 2.0; spd2[3] = 5.0
+spd2[0] = 4.0
+spd2[1] = 2.0
+spd2[2] = 2.0
+spd2[3] = 5.0
 
 Gblock = ot.AlgebraEngine.ComputeGramBlockwise(spd2, True, 1)
 Gdirect = ot.AlgebraEngine.ComputeGram(spd2, True)
@@ -415,10 +446,14 @@ print("All AlgebraEngine tests passed!")
 print("\n=== StatisticsEngine Tests ===")
 
 sample = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
-sample[0] = 1.0; sample[1] = 2.0
-sample[2] = 3.0; sample[3] = 4.0
-sample[4] = 5.0; sample[5] = 6.0
-sample[6] = 7.0; sample[7] = 8.0
+sample[0] = 1.0
+sample[1] = 2.0
+sample[2] = 3.0
+sample[3] = 4.0
+sample[4] = 5.0
+sample[5] = 6.0
+sample[6] = 7.0
+sample[7] = 8.0
 
 # Mean
 mean = ot.StatisticsEngine.ComputeMean(sample)
@@ -428,13 +463,13 @@ print("ComputeMean: OK")
 
 # Variance
 var = ot.StatisticsEngine.ComputeVariance(sample)
-assert abs(var[0] - 20.0/3.0) < 1e-12
-assert abs(var[1] - 20.0/3.0) < 1e-12
+assert abs(var[0] - 20.0 / 3.0) < 1e-12
+assert abs(var[1] - 20.0 / 3.0) < 1e-12
 print("ComputeVariance: OK")
 
 # StandardDeviation
 std = ot.StatisticsEngine.ComputeStandardDeviation(sample)
-assert abs(std[0] - math.sqrt(20.0/3.0)) < 1e-12
+assert abs(std[0] - math.sqrt(20.0 / 3.0)) < 1e-12
 print("ComputeStandardDeviation: OK")
 
 # Covariance
@@ -483,7 +518,7 @@ print("ComputeRawMoment: OK")
 
 # CentralMoment
 cm = ot.StatisticsEngine.ComputeCentralMoment(sample, 2)
-assert abs(cm[0] - 20.0/4.0) < 1e-12
+assert abs(cm[0] - 20.0 / 4.0) < 1e-12
 print("ComputeCentralMoment: OK")
 
 # Skewness
