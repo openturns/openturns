@@ -100,6 +100,10 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 %feature("docstring") OT::CirculantEmbeddingGaussianProcess::getCircularSize
 "Get the size of the circulant matrix per dimension.
 
+Returns the user-defined circular size if it has been set with
+:cyan:`setCircularSize`, otherwise returns the automatically computed
+size (empty until a realization is generated).
+
 Returns
 -------
 circularSize : :class:`~openturns.Indices`
@@ -113,13 +117,15 @@ circularSize : :class:`~openturns.Indices`
 The circulant size must be a power of two. By default it is chosen as the
 smallest power of two greater than or equal to 2(n_d-1). Setting a larger
 value may help when the covariance function leads to negative eigenvalues
-with the minimal embedding.
+with the minimal embedding. Use 0 for a given dimension to keep its size
+automatically computed. The user-defined sizes are validated when the
+process is initialized and remain in effect across mesh changes.
 
 Parameters
 ----------
 circularSize : sequence of int
     Size N_d of the circulant matrix in each spatial dimension
-    (must be a power of two)."
+    (must be a power of two, or 0 to select it automatically)."
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::CirculantEmbeddingGaussianProcess::getFFTAlgorithm

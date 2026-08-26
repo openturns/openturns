@@ -289,4 +289,34 @@ print("3D vec theoretical variance = ", theoreticalVar3DVec)
 ott.assert_almost_equal(empiricalVar3DVec[0, 0], theoreticalVar3DVec[0, 0], 0.0, 0.5)
 ott.assert_almost_equal(empiricalVar3DVec[1, 1], theoreticalVar3DVec[1, 1], 0.0, 0.5)
 
+# Test that the computed circular size is not treated as a user override
+print("\n" + "=" * 60)
+print("Test automatic circular size recomputation on mesh change")
+print("=" * 60)
+covAuto = ot.ExponentialModel([1.0], [1.0])
+processAuto = otexp.CirculantEmbeddingGaussianProcess(covAuto, ot.Interval(0.0, 10.0), [50])
+processAuto.getRealization()
+ott.assert_almost_equal(processAuto.getCircularSize()[0], 128, 0.0, 0.0)
+
+# Finer mesh: the minimal embedding grows past the previously computed size
+# (used to fail with "the circular size is too small")
+processAuto.setTimeGrid(ot.RegularGrid(0.0, 10.0 / 200, 201))
+processAuto.getRealization()
+ott.assert_almost_equal(processAuto.getCircularSize()[0], 512, 0.0, 0.0)
+
+# A user-defined circular size survives realizations
+processUser = otexp.CirculantEmbeddingGaussianProcess(covAuto, ot.Interval(0.0, 10.0), [50])
+processUser.setCircularSize([256])
+ott.assert_almost_equal(processUser.getCircularSize()[0], 256, 0.0, 0.0)
+processUser.getRealization()
+processUser.getRealization()
+ott.assert_almost_equal(processUser.getCircularSize()[0], 256, 0.0, 0.0)
+
+# A user-defined circular size below the minimum is rejected at initialization
+with ott.assert_raises(Exception):
+    processUser.setCircularSize([64])
+    processUser.getRealization()
+
+print("circular size override OK")
+
 print("\nAll tests passed!")

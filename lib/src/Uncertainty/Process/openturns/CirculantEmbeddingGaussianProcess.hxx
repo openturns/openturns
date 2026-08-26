@@ -127,6 +127,9 @@ protected:
   /** Size of the circulant matrix per dimension (power of two) */
   mutable Indices circularSize_;
 
+  /** User-provided circular size override (empty if not set) */
+  Indices userCircularSize_;
+
   /** Flag to manage process initialization */
   mutable Bool isInitialized_ = false;
 
