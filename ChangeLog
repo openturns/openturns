@@ -27,6 +27,7 @@
  * ComplexDataContainer
  * AlgebraEngine
  * StatisticsEngine
+
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
