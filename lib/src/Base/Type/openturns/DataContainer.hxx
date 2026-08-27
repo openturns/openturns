@@ -83,6 +83,7 @@ public:
     std::vector<Scalar> storage_;
   };
 
+#ifndef SWIG
   /** Non-owning view backend over external memory */
   class ViewBackend
     : public StorageBackend
@@ -99,6 +100,7 @@ public:
     Scalar * ptr_;
     UnsignedInteger size_;
   };
+#endif // SWIG
 
   /** Default constructor */
   DataContainer();
