@@ -101,7 +101,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 "Get the size of the circulant matrix per dimension.
 
 Returns the user-defined circular size if it has been set with
-:cyan:`setCircularSize`, otherwise returns the automatically computed
+:meth:`setCircularSize`, otherwise returns the automatically computed
 size (empty until a realization is generated).
 
 Returns
