@@ -107,7 +107,7 @@ framework for probabilistic modeling.
 
 # State of the field
 
-There are many software packages and libraries for Uncertainty Quantification.
+There are many software packages and libraries for uncertainty quantification.
 Although the landscape is highly fragmented with significant specialization,
 these tools fall into two broad categories.
 First, there are general-purpose libraries, which aim to provide
@@ -129,7 +129,7 @@ projects (e.g., Dakota has more than 300,000 lines of code).
 Some of these tools have a graphical user interface (e.g., SmartUQ), but not all.
 The second category comprises a large number of specialized libraries.
 In this class of tools, we find, for example, GPy [@gpy2014] for Gaussian
-Processes, QUESO [@McDougall2017] for Bayesian inference, SALib [@Herman2017]
+processes, QUESO [@McDougall2017] for Bayesian inference, SALib [@Herman2017]
 and sensitivity [@iooss2026sensitivity] for sensitivity analysis and
 ChaosPy [@feinberg2015chaospy] for polynomial chaos expansion, among
 many others.
@@ -162,8 +162,8 @@ OpenTURNS was created in 2005 at a time when SciPy was
 a relatively new library (the development of SciPy was started in 2001)
 and scikit-learn did not exist (the first public release was in 2010).
 Today, this choice remains relevant as OpenTURNS is integrated into other C++
-libraries such as Persalys, SALOME (see [@salome_platform]) and pSeven
-(see [@pseven]), where the C++ implementation of OpenTURNS is
+libraries such as Persalys, SALOME [see @salome_platform] and pSeven
+[see @pseven], where the C++ implementation of OpenTURNS is
 mandatory.
 
 # Software design
@@ -279,8 +279,8 @@ multiple science and engineering domains
 The Persalys graphical user interface [@persalys], built on top of OpenTURNS,
 enables users to perform UQ analyses with no (or minimal) Python
 programming.
-OpenTURNS is a requirement for several other tools, including [@gemseo] 
-and [@Roy2018], for example.
+OpenTURNS is a requirement for several other tools, including GEMSEO [@gemseo] 
+and BATMAN [@Roy2018], for example.
 
 An annual Users’ Day has been held since 2008, fostering collaboration
 and knowledge exchange among researchers, engineers, and educators.
