@@ -480,8 +480,10 @@ public:
   /** Copy constructor */
   SampleImplementation(const SampleImplementation & other);
 
+#ifndef SWIG
   /** Assignment operator */
   SampleImplementation & operator = (const SampleImplementation & other);
+#endif
 
   /** Standard constructor */
   SampleImplementation(const UnsignedInteger size,
