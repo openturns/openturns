@@ -30,6 +30,7 @@
  * ComplexDataContainer
  * AlgebraEngine
  * StatisticsEngine
+
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
