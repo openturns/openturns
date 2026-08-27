@@ -95,7 +95,8 @@ CovarianceMatrix NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix(co
   {
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      std::copy(sample[i].data(), sample[i].data() + fullDimension, designBegin);
+      const Sample field(sample[i]);
+      std::copy(field.data(), field.data() + fullDimension, designBegin);
       designBegin += fullDimension;
     }
   } // isCentered
@@ -105,7 +106,8 @@ CovarianceMatrix NonStationaryCovarianceModelFactory::buildAsCovarianceMatrix(co
     Point point(fullDimension);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      std::copy(sample[i].data(), sample[i].data() + fullDimension, &point[0]);
+      const Sample field(sample[i]);
+      std::copy(field.data(), field.data() + fullDimension, &point[0]);
       point -= mean;
       std::copy(point.begin(), point.end(), designBegin);
       designBegin += fullDimension;
