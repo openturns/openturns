@@ -221,6 +221,11 @@ void ProcessSampleImplementation::setField(const UnsignedInteger index,
   if (!(index < getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << getSize() - 1;
   if (values.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << dimension_ << ", got a field of dimension=" << values.getDimension();
   if (values.getSize() != verticesNumber_) throw InvalidArgumentException(HERE) << "Error: expected a field of size=" << verticesNumber_ << ", got a field of size=" << values.getSize();
+  if (description_.getSize() == 0)
+  {
+    const Description defaultDescription(Description::BuildDefault(values.getDimension(), "v"));
+    if (values.getDescription().getSize() > 0 && values.getDescription() != defaultDescription) description_ = values.getDescription();
+  }
   std::copy(values.getImplementation()->data_begin(), values.getImplementation()->data_end(), flatData_.data() + blockOffset(index));
 }
 

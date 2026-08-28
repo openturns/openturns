@@ -576,7 +576,7 @@ A : DataContainer
 B : DataContainer
     Right matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -593,7 +593,7 @@ Parameters
 A : DataContainer
     Symmetric positive definite matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -612,7 +612,7 @@ A : DataContainer
 b : DataContainer
     Right-hand side vector.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -635,7 +635,7 @@ R : DataContainer
 fullQR : bool, optional
     If True, Q is m x m. Default is False.
 blockSize : int, optional
-    Block size. Default from ResourceMap."
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``."
 
 // ---------------------------------------------------------------------
 
@@ -651,7 +651,7 @@ L : DataContainer
 U : DataContainer
     Output upper triangular matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap."
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``."
 
 // ---------------------------------------------------------------------
 
@@ -669,7 +669,7 @@ lower : bool, optional
 transpose : bool, optional
     If True, solve T^T x = b.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -688,7 +688,7 @@ A : DataContainer
 transpose : bool, optional
     If True (default), compute :math:`A^T A`.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -705,7 +705,7 @@ Parameters
 A : DataContainer
     Square matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -722,7 +722,7 @@ Parameters
 A : DataContainer
     Square matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -739,7 +739,7 @@ Parameters
 A : DataContainer
     Square non-singular matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -756,7 +756,7 @@ Parameters
 A : DataContainer
     Symmetric positive definite matrix.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -775,7 +775,7 @@ A : DataContainer
 b : DataContainer
     Right-hand side vector of size m.
 blockSize : int, optional
-    Block size. Default from ResourceMap.
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
 
 Returns
 -------

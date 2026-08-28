@@ -11,6 +11,7 @@
 %ignore OT::DataContainer::operator();
 %ignore OT::DataContainer::operator[];
 %ignore OT::DataContainer::at;
+%ignore OT::DataContainer::backendSizeDebug;
 %ignore OT::operator << (OStream &, const DataContainer &);
 %ignore OT::operator << (std::ostream &, const DataContainer &);
 

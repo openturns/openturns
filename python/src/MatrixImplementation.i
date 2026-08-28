@@ -25,7 +25,11 @@
 %ignore OT::MatrixImplementation;
 
 %rename(__stride__) OT::MatrixImplementation::stride;
+%rename(__elementsize__) OT::MatrixImplementation::elementSize;
 %rename(MatrixImplementation_operator___eq__) OT::operator ==(const MatrixImplementation & lhs, const MatrixImplementation & rhs);
+
+%ignore OT::MatrixImplementation::toDataContainer;
+%ignore OT::MatrixImplementation::FromDataContainer;
 
 %copyctor OT::MatrixImplementation;
 

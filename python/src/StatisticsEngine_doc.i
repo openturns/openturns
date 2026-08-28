@@ -252,7 +252,7 @@ Parameters
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 blockSize : int, optional
-    Number of rows per block. Default from ResourceMap.
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -269,7 +269,7 @@ Parameters
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 blockSize : int, optional
-    Number of rows per block. Default from ResourceMap.
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
 
 Returns
 -------
@@ -286,7 +286,7 @@ Parameters
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 blockSize : int, optional
-    Number of rows per block. Default from ResourceMap.
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
 
 Returns
 -------
