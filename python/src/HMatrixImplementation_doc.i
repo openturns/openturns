@@ -145,38 +145,6 @@ OT_HMatrix_assemble_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_HMatrix_assembleReal_doc
-"Assemble matrix.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a float
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleReal
-OT_HMatrix_assembleReal_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_HMatrix_assembleTensor_doc
-"Assemble matrix by block.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a Matrix
-outputDimension : int
-    Block dimension
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleTensor
-OT_HMatrix_assembleTensor_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_HMatrix_factorize_doc
 "Factorize matrix.
 
