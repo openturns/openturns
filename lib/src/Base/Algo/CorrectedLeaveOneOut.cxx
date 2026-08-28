@@ -81,7 +81,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   // Build the design of experiments
   LOGINFO("Build the design matrix");
 
-  const Matrix psiAk(method.computeWeightedDesign());
+  const Matrix psiAk(method.computeDesign());
 
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
@@ -104,7 +104,10 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   LOGINFO(OSS() << "Empirical error=" << empiricalError);
 
   LOGINFO("Compute the correcting factor");
-  const Scalar traceInverse = method.getGramInverseTrace();
+  // G = Psi^T*Psi where Psi = sqrt(W)*Phi, so G^{-1} = (Phi^T*W*Phi)^{-1}
+  // For uniform weights w: G = w*Phi^T*Phi, G^{-1} = (1/w)*(Phi^T*Phi)^{-1}
+  // The CLOO formula needs tr((Phi^T*Phi)^{-1}) = tr(G^{-1}) * w
+  const Scalar traceInverse = method.getGramInverseTrace() * method.getImplementation()->weight_[0];
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
   const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * empiricalError / variance);

@@ -122,15 +122,15 @@ public:
   void load(Advocate & adv) override;
 
   /** Selection history accessor */
-  IndicesCollection getIndicesHistory() const;
-  Collection<Point> getCoefficientsHistory() const;
-  void setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory);
-  Graph drawSelectionHistory() const;
+  Collection<Indices> getIndicesHistory(const UnsignedInteger outputIndex = 0) const;
+  Collection<Point> getCoefficientsHistory(const UnsignedInteger outputIndex = 0) const;
+  void setSelectionHistory(const Collection<Indices> & indicesHistory, const Collection<Point> & coefficientsHistory, const Indices & historyCutPoints);
+  Graph drawSelectionHistory(const UnsignedInteger outputIndex = 0) const;
 
   /** Error history accessor */
-  void setErrorHistory(const Point & errorHistory);
-  Point getErrorHistory() const;
-  Graph drawErrorHistory() const;
+  void setErrorHistory(const Point & errorHistory, const Indices & historyCutPoints);
+  Point getErrorHistory(const UnsignedInteger outputIndex = 0) const;
+  Graph drawErrorHistory(const UnsignedInteger outputIndex = 0) const;
 
   /** getMarginal accessor */
   FunctionalChaosResult getMarginal(const UnsignedInteger indexOutput) const;
@@ -173,6 +173,9 @@ protected:
   /** Error history */
   Point errorHistory_;
 
+  /** Cut point in history */
+  Indices historyCutPoints_ = {0};
+  
   /** Is regression? */
   Bool isLeastSquares_ = true;
 

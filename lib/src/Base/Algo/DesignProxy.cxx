@@ -75,15 +75,15 @@ DesignProxy::DesignProxy(const Matrix & matrix)
 void DesignProxy::initialize() const
 {
   // allocate cache
-  UnsignedInteger cacheSize = ResourceMap::GetAsUnsignedInteger("DesignProxy-DefaultCacheSize");
-  UnsignedInteger nbRows = x_.getSize();
+  const UnsignedInteger cacheSize = ResourceMap::GetAsUnsignedInteger("DesignProxy-DefaultCacheSize");
+  const UnsignedInteger nbRows = x_.getSize();
   if (!(nbRows > 0)) throw InvalidArgumentException(HERE) << "Cannot initialize a DesignProxy with an empty sample";
 
-  UnsignedInteger nbCols = cacheSize / nbRows;
-  // The cache stores at least the first function values
-  if (nbCols <= 0) nbCols = 1;
-  if (nbCols > basis_.getSize()) nbCols = basis_.getSize();
+  // Store at least the first function values, at most the smallest
+  // of the full design and the cache size
+  const UnsignedInteger nbCols = std::min(basis_.getSize(), std::max(1UL, cacheSize / nbRows));
   designCache_ = Matrix(nbRows, nbCols);
+  // Initialization by nbCols as a guard telling us that nothing has been computed
   alreadyComputed_ = Indices(nbCols, nbCols);
 }
 

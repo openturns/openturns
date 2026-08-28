@@ -122,6 +122,7 @@ Main classes
     FunctionalChaosAlgorithm
     LeastSquaresExpansion
     IntegrationExpansion
+    experimental.SparseExpansion
 
 Construction of the truncated multivariate orthogonal basis
 -----------------------------------------------------------
