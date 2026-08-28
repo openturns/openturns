@@ -130,7 +130,7 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
     const Point coefficients(method.solve(rhs));
     // evaluate on the test sample
     method.getImplementation()->proxy_.setRowFilter(inverseRowFilter);
-    const Matrix psiAk(method.computeWeightedDesign());
+    const Matrix psiAk(method.computeDesign());
     const Point yHatTest(psiAk * coefficients);
     LOGINFO("Compute the residual");
 
