@@ -13,6 +13,7 @@
  * TruncatedDistributionFactory (openturns.experimental)
 
 ==== API changes ====
+ * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed deprecated SpecFunc.IsNormal
