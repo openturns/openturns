@@ -10,6 +10,10 @@ Available constructors:
 
     LeastSquaresExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, methodName*)
 
+    LeastSquaresExpansion(*inputSample, outputSample, distribution, basis, basisSize, activeFunctions, methodName*)
+
+    LeastSquaresExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, activeFunctions, methodName*)
+
 Parameters
 ----------
 inputSample : 2-d sequence of float of size :math:`n>0`
@@ -40,6 +44,10 @@ methodName : str, optional
     type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
     `LeastSquaresExpansion-DecompositionMethod` key in
     :class:`~openturns.ResourceMap`.
+activeFunctions : sequence of `int`, optional
+    The indices of the basis functions to use for the approximation.
+    If not given, all functions from 0 to basisSize-1 are used.
+    Must be non-empty and all indices must be less than basisSize.
 
 See also
 --------
