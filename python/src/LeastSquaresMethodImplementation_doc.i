@@ -259,6 +259,45 @@ OT_LeastSquaresMethod_computeWeightedDesign_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_LeastSquaresMethod_computeDesign_doc
+"Build the raw design matrix without weight scaling.
+
+Parameters
+----------
+whole : bool, defaults to False
+    Whether to use the initial indices instead of the current indices
+
+Returns
+-------
+design : :class:`~openturns.Matrix`
+    The raw design matrix."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_solveNormalGram_doc
+"Solve the Gram system :math:`G x = \\mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
+
+Unlike :meth:`solveNormal`, this method does not apply weight multiplication
+to the right-hand side.
+
+Parameters
+----------
+rhs : sequence of float
+    Right-hand side of the equation.
+
+Returns
+-------
+x : :class:`~openturns.Point`
+    The solution."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_LeastSquaresMethod_trashDecomposition_doc
 "Drop the current decomposition."
 %enddef
