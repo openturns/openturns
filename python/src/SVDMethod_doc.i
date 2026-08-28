@@ -36,3 +36,12 @@ Solves a linear least squares problem with SVD method:
 [3.5,1.4]"
 
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SVDMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SVDMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc
