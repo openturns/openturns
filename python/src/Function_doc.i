@@ -13,7 +13,12 @@ OT_Function_getHessianCallsNumber_doc
 %feature("docstring") OT::Function::getMarginal
 OT_Function_getMarginal_doc
 %feature("docstring") OT::Function::getImplementation
-OT_Function_getImplementation_doc
+"Accessor to the internal implementation.
+
+Returns
+-------
+impl : :class:`~openturns.FunctionImplementation`
+    A copy of the evaluation, gradient and hessian functions."
 %feature("docstring") OT::Function::getEvaluation
 OT_Function_getEvaluation_doc
 %feature("docstring") OT::Function::getGradient
