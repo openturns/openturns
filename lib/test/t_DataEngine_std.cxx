@@ -160,6 +160,7 @@ int main()
   b[0] = 4.0; b[1] = 5.0; b[2] = 6.0;
   Scalar dotResult = AlgebraEngine::Dot(a, b);
   assert(std::abs(dotResult - 32.0) < 1e-12); // 1*4 + 2*5 + 3*6 = 32
+  (void)dotResult;
   std::cout << "  Dot: OK" << std::endl;
 
   // Test Norm
@@ -167,6 +168,7 @@ int main()
   v[0] = 3.0; v[1] = 4.0; v[2] = 0.0;
   Scalar normResult = AlgebraEngine::Norm(v);
   assert(std::abs(normResult - 5.0) < 1e-12);
+  (void)normResult;
   std::cout << "  Norm: OK" << std::endl;
 
   // Test MatrixProduct
@@ -213,6 +215,7 @@ int main()
   D(1, 0) = 3.0; D(1, 1) = 4.0;
   Scalar det = AlgebraEngine::ComputeDeterminant(D);
   assert(std::abs(det - (-2.0)) < 1e-12);
+  (void)det;
   std::cout << "  Determinant: OK" << std::endl;
 
   // Test SolveLinearSystem
@@ -347,6 +350,7 @@ int main()
   // Test block determinant
   Scalar detBlock = AlgebraEngine::ComputeDeterminantBlockwise(D, 1);
   assert(std::abs(detBlock - (-2.0)) < 1e-10);
+  (void)detBlock;
   std::cout << "  ComputeDeterminantBlockwise: OK" << std::endl;
 
   // Test block log-absolute-determinant
@@ -354,6 +358,7 @@ int main()
   Scalar logDetBlock = AlgebraEngine::ComputeLogAbsoluteDeterminantBlockwise(D, signOut, 1);
   assert(std::abs(signOut - (-1.0)) < 1e-10);
   assert(std::abs(logDetBlock - std::log(2.0)) < 1e-10);
+  (void)logDetBlock;
   std::cout << "  ComputeLogAbsoluteDeterminantBlockwise: OK" << std::endl;
 
   // Test block inverse
