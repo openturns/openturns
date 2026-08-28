@@ -35,7 +35,7 @@ Usage:
 
   run(*y, weight, indices, proxy*)
 
-  run(*y, indices, indices*)
+  run(*y, indices, proxy*)
 
   run(method, y*)
 

@@ -54,7 +54,6 @@ int main(int, char *[])
     JointDistribution aDistribution(aCollection, IndependentCopula(dimension));
 
     RandomVector randomVector(aDistribution);
-    CompositeRandomVector composite(analytical, randomVector);
 
     // we create two input samples for the function
     Sample inputSample(randomVector.getSample(sampleSize));

@@ -76,8 +76,7 @@ int main(int, char *[])
       // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
       result.lift(coefficients[0]);
       // fullprint << "KL lift=" << lifted.__str__() << std::endl;
-      Field liftedAsField(result.liftAsField(coefficients[0]));
-      // fullprint << "KL lift as field=" << liftedAsField << std::endl;
+      result.liftAsField(coefficients[0]);
     }
     // Now using Legendre/Gauss quadrature + trunk
     {
@@ -98,8 +97,7 @@ int main(int, char *[])
       // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
       result.lift(coefficients[0]);
       // fullprint << "KL lift=" << lifted.__str__() << std::endl;
-      Field liftedAsField(result.liftAsField(coefficients[0]));
-      // fullprint << "KL lift as field=" << liftedAsField << std::endl;
+      result.liftAsField(coefficients[0]);
     }
   }
   catch (TestFailed & ex)

@@ -321,7 +321,7 @@ int main(int, char *[])
       // Gradient test in comparison with FD
       test_model(myModel);
       // Check that a ProductCovarianceModel can be built from a DiracCovarianceModel
-      ProductCovarianceModel cov(Collection<CovarianceModel>(1, DiracCovarianceModel(1)));
+      ProductCovarianceModel(Collection<CovarianceModel>(1, DiracCovarianceModel(1)));
     }
 
     // 11) Tensorized model
