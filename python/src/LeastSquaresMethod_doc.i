@@ -2,6 +2,8 @@
 OT_LeastSquaresMethod_doc
 %feature("docstring") OT::LeastSquaresMethod::computeWeightedDesign
 OT_LeastSquaresMethod_computeWeightedDesign_doc
+%feature("docstring") OT::LeastSquaresMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
 %feature("docstring") OT::LeastSquaresMethod::getInputSample
 OT_LeastSquaresMethod_getInputSample_doc
 %feature("docstring") OT::LeastSquaresMethod::getWeight
@@ -16,6 +18,8 @@ OT_LeastSquaresMethod_getInitialIndices_doc
 OT_LeastSquaresMethod_solve_doc
 %feature("docstring") OT::LeastSquaresMethod::solveNormal
 OT_LeastSquaresMethod_solveNormal_doc
+%feature("docstring") OT::LeastSquaresMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc
 %feature("docstring") OT::LeastSquaresMethod::getGramInverse
 OT_LeastSquaresMethod_getGramInverse_doc
 %feature("docstring") OT::LeastSquaresMethod::getGramInverseDiag
