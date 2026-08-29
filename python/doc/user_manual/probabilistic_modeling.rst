@@ -92,6 +92,7 @@ Continuous parametric distributions
 
     :template: Distribution.rst_t
     Uniform
+    UserDefined
 
     :template: classWithPlot.rst_t
     UniformOverMesh
@@ -419,3 +420,17 @@ Refer to :ref:`isoprobabilistic_transformation`.
     NatafEllipticalDistributionHessian
     InverseRosenblattEvaluation
     RosenblattEvaluation
+
+Deprecated distribution aliases
+================================
+
+.. currentmodule:: openturns.dist
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    BayesDistribution
+    MixedHistogramUserDefined
+    RandomMixture
+    UserDefinedFactory
