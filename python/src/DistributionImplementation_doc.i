@@ -1,9 +1,42 @@
 %define OT_Distribution_doc
-"Base class for probability distributions.
+R"RAW(Base class for probability distributions.
 
 Notes
 -----
-In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution*."
+In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution*.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Distribution-MinimumVolumeLevelSetBySampling* (:Raw:`Bool`, default: `false`): Whether to use sampling for minimum volume level set computation.
+- *Distribution-Parallel* (:Raw:`Bool`, default: `true`): Whether distribution computations are parallelized.
+- *Distribution-ScaleColorsDiscretePDF* (:Raw:`Bool`, default: `true`): Whether to scale colors for discrete PDF plots.
+- *Distribution-ShowSupportDiscretePDF* (:Raw:`Bool`, default: `true`): Whether to show support points in discrete PDF plots.
+- *Distribution-UseCovarianceAdaptiveAlgorithm* (:Raw:`Bool`, default: `true`): Whether to use adaptive algorithm for covariance computation.
+- *Distribution-QMin* (:Raw:`Scalar`, default: `0.15`): Lower quantile for plot range.
+- *Distribution-QMax* (:Raw:`Scalar`, default: `0.85`): Upper quantile for plot range.
+- *Distribution-DefaultQuantileEpsilon* (:Raw:`Scalar`, default: `1.0e-12`): Precision for quantile computation.
+- *Distribution-DefaultPDFEpsilon* (:Raw:`Scalar`, default: `1.0e-14`): Precision for PDF computation.
+- *Distribution-DefaultCDFEpsilon* (:Raw:`Scalar`, default: `1.0e-14`): Precision for CDF computation.
+- *Distribution-DiscreteDrawPDFScaling* (:Raw:`Scalar`, default: `0.25`): Scaling factor for discrete PDF bar plots.
+- *Distribution-TailDependenceEpsilon* (:Raw:`Scalar`, default: `1.0e-12`): Precision for tail dependence coefficient computation.
+- *Distribution-TailDependenceMargin* (:Raw:`Scalar`, default: `1.0e-3`): Margin for tail dependence computation.
+- *Distribution-SupportEpsilon* (:Raw:`Scalar`, default: `1.0e-14`): Precision for support detection.
+- *Distribution-EntropySamplingMethod* (:Raw:`String`, default: `MonteCarlo`): Method for entropy computation by sampling.
+- *Distribution-RoughnessSamplingMethod* (:Raw:`String`, default: `MonteCarlo`): Method for roughness computation by sampling.
+- *Distribution-SupportPointStyleDiscretePDF* (:Raw:`String`, default: `dot`): Point style for discrete PDF support points.
+- *Distribution-CharacteristicFunctionNMax* (:Raw:`UnsignedInteger`, default: `1000000`): Maximum number of points for characteristic function inversion.
+- *Distribution-DefaultCDFIteration* (:Raw:`UnsignedInteger`, default: `10000`): Maximum number of iterations for CDF inversion.
+- *Distribution-DefaultIntegrationNodesNumber* (:Raw:`UnsignedInteger`, default: `255`): Default number of integration nodes.
+- *Distribution-DefaultLevelNumber* (:Raw:`UnsignedInteger`, default: `10`): Default number of contour levels.
+- *Distribution-DefaultPointNumber* (:Raw:`UnsignedInteger`, default: `129`): Default number of points for function plots.
+- *Distribution-DefaultQuantileIteration* (:Raw:`UnsignedInteger`, default: `100`): Maximum number of iterations for quantile computation.
+- *Distribution-EntropySamplingSize* (:Raw:`UnsignedInteger`, default: `524288`): Sample size for entropy computation.
+- *Distribution-MinimumVolumeLevelSetSamplingSize* (:Raw:`UnsignedInteger`, default: `16384`): Sample size for minimum volume level set computation.
+- *Distribution-SmallDimensionEntropy* (:Raw:`UnsignedInteger`, default: `3`): Dimension threshold for using analytical entropy.
+- *Distribution-RoughnessSamplingSize* (:Raw:`UnsignedInteger`, default: `524288`): Sample size for roughness computation.
+- *Distribution-SmallDimensionRoughness* (:Raw:`UnsignedInteger`, default: `3`): Dimension threshold for using analytical roughness.
+- *Distribution-SmallSupport* (:Raw:`UnsignedInteger`, default: `10`): Threshold for considering support as small.
+)RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation
 OT_Distribution_doc

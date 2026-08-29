@@ -26,6 +26,15 @@ Notes
 -----
 The residual function returns `model(inputObservations) - outputObservations`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CalibrationResult-PriorLineStyle*: line style for prior visualization,
+- *CalibrationResult-PosteriorLineStyle*: line style for posterior visualization,
+- *CalibrationResult-ObservationLineStyle*: line style for observation visualization,
+- *CalibrationResult-PriorPointStyle*: point style for prior visualization,
+- *CalibrationResult-PosteriorPointStyle*: point style for posterior visualization,
+- *CalibrationResult-ObservationPointStyle*: point style for observation visualization.
+
 Examples
 --------
 >>> import openturns as ot

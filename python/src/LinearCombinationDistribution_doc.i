@@ -106,6 +106,22 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearCombinationDistribution-SimplifyAtoms*: whether to simplify identical atoms.
+- *LinearCombinationDistribution-DefaultAlpha*: lower bound for atoms identification.
+- *LinearCombinationDistribution-DefaultBeta*: upper bound for atoms identification.
+- *LinearCombinationDistribution-DefaultCDFEpsilon*: precision for CDF computation.
+- *LinearCombinationDistribution-DefaultPDFEpsilon*: precision for PDF computation.
+- *LinearCombinationDistribution-DefaultBlockMax*: maximum block size for PDF/CDF computation.
+- *LinearCombinationDistribution-DefaultBlockMin*: minimum block size for PDF/CDF computation.
+- *LinearCombinationDistribution-DefaultMaxSize*: maximum number of atoms after simplification.
+- *LinearCombinationDistribution-MaximumSupportSize*: maximum support size for exact computation.
+- *LinearCombinationDistribution-ProjectionDefaultSize*: default projection size.
+- *LinearCombinationDistribution-SmallSize*: threshold for using small-size algorithms.
 )RAW"
 
 // ---------------------------------------------------------------------
