@@ -25,6 +25,8 @@
 ==== New classes ====
  * DataContainer
  * ComplexDataContainer
+ * HDF5Backend
+ * ComplexHDF5Backend
  * AlgebraEngine
  * StatisticsEngine
 

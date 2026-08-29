@@ -216,9 +216,13 @@ void AlgebraEngine::ComputeQR(const DataContainer & A, DataContainer & Q, DataCo
   int intN = static_cast<int>(n);
   int lda = intM;
   int k = static_cast<int>(std::min(m, n));
-
-  DataContainer workMatrix(m, n, 0.0);
-  std::copy(A.data(), A.data() + m * n, workMatrix.data());
+  // DGEQRF updates the whole M x N matrix while DORGQR in full mode writes
+  // an M x M Q, so the buffer must hold M x max(M, N) elements.
+  const UnsignedInteger p = fullQR ? m : k;
+  DataContainer workMatrix(m, std::max(m, n), 0.0);
+  for (UnsignedInteger j = 0; j < n; ++j)
+    for (UnsignedInteger i = 0; i < m; ++i)
+      workMatrix(i, j) = A(i, j);
 
   std::vector<double> tau(k);
 
@@ -232,23 +236,23 @@ void AlgebraEngine::ComputeQR(const DataContainer & A, DataContainer & Q, DataCo
   dgeqrf_(&intM, &intN, workMatrix.data(), &lda, tau.data(), work.data(), &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "LAPACK DGEQRF: error code=" << info;
 
-  int p = fullQR ? intM : k;
-  R = DataContainer(static_cast<UnsignedInteger>(p), n, 0.0);
+  int intP = static_cast<int>(p);
+  R = DataContainer(p, n, 0.0);
   for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(k); ++i)
     for (UnsignedInteger j = i; j < n; ++j)
       R(i, j) = workMatrix(i, j);
 
   lwork = -1;
   lwork_d = -1.0;
-  dorgqr_(&intM, &p, &k, workMatrix.data(), &lda, tau.data(), &lwork_d, &lwork, &info);
+  dorgqr_(&intM, &intP, &k, workMatrix.data(), &lda, tau.data(), &lwork_d, &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "LAPACK DORGQR: error code=" << info;
   lwork = static_cast<int>(lwork_d);
   work = std::vector<double>(lwork);
-  dorgqr_(&intM, &p, &k, workMatrix.data(), &lda, tau.data(), work.data(), &lwork, &info);
+  dorgqr_(&intM, &intP, &k, workMatrix.data(), &lda, tau.data(), work.data(), &lwork, &info);
   if (info != 0) throw InternalException(HERE) << "LAPACK DORGQR: error code=" << info;
 
-  Q = DataContainer(m, static_cast<UnsignedInteger>(p), 0.0);
-  for (UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(p); ++j)
+  Q = DataContainer(m, p, 0.0);
+  for (UnsignedInteger j = 0; j < p; ++j)
     for (UnsignedInteger i = 0; i < m; ++i)
       Q(i, j) = workMatrix(i, j);
 }
@@ -306,8 +310,6 @@ void AlgebraEngine::ComputeLU(const DataContainer & A, DataContainer & L, DataCo
 
   for (UnsignedInteger j = 0; j < minMN; ++j)
   {
-    for (UnsignedInteger i = 0; i < j; ++i)
-      L(i, j) = workMatrix(i, j);
     L(j, j) = 1.0;
     for (UnsignedInteger i = j + 1; i < m; ++i)
       L(i, j) = workMatrix(i, j);
@@ -542,9 +544,12 @@ DataContainer AlgebraEngine::ComputeEigenValuesSquare(const DataContainer & A)
   dgeev_(&jobvl, &jobvr, &intN, Acopy.data(), &intN, wr.data(), wi.data(), &vl, &ldvl, &vr, &ldvr, work.data(), &lwork, &info, &ljobvl, &ljobvr);
   if (info != 0) throw InternalException(HERE) << "LAPACK dgeev failed with info=" << info;
 
-  DataContainer eigenValues(n, 1, 0.0);
+  DataContainer eigenValues(2 * n, 1, 0.0);
   for (UnsignedInteger i = 0; i < n; ++i)
-    eigenValues[i] = wr[i];
+  {
+    eigenValues[2 * i] = wr[i];
+    eigenValues[2 * i + 1] = wi[i];
+  }
   return eigenValues;
 }
 
@@ -695,8 +700,10 @@ Scalar AlgebraEngine::SumElements(const DataContainer & A)
 DataContainer AlgebraEngine::Clean(const DataContainer & A, Scalar threshold)
 {
   const UnsignedInteger n = A.getSize();
-  DataContainer result(n, 0.0);
-  for (UnsignedInteger i = 0; i < n; ++i)
+  const UnsignedInteger d = A.getDimension();
+  const UnsignedInteger totalSize = n * d;
+  DataContainer result(n, d, 0.0, A.getLayout());
+  for (UnsignedInteger i = 0; i < totalSize; ++i)
     result[i] = (std::abs(A[i]) < threshold) ? 0.0 : A[i];
   return result;
 }

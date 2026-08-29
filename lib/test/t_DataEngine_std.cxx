@@ -149,6 +149,17 @@ int main()
     Pointer<DataContainer> clonedView = owned.clone();
     assert(!clonedView->isView()); // cloned view is owned
     std::cout << "  ViewBackend isView: OK" << std::endl;
+
+    // makeUnique ensures exclusive ownership
+    DataContainer shared1(3, 0.0);
+    for (UnsignedInteger i = 0; i < 3; ++i) shared1[i] = static_cast<Scalar>(i);
+    DataContainer shared2 = shared1;
+    shared1.makeUnique();
+    shared1[0] = 99.0;
+    assert(shared2[0] == 0.0); // detaches before mutation
+    assert(shared1[0] == 99.0);
+    assert(shared1[1] == 1.0);
+    std::cout << "  makeUnique: OK" << std::endl;
   }
 
   std::cout << "\n=== AlgebraEngine Tests ===" << std::endl;
@@ -397,6 +408,176 @@ int main()
     assert(std::abs(lhsCheck(i, 0) - Atb(i, 0)) < 1e-8);
   std::cout << "  SolveLinearSystemRectangularBlockwise: OK" << std::endl;
 
+  std::cout << "\n=== Additional AlgebraEngine API Coverage ===" << std::endl;
+
+  // SymMatrixPointProduct
+  DataContainer Ssym(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Ssym(0, 0) = 4.0; Ssym(1, 0) = 1.0;
+  Ssym(0, 1) = 1.0; Ssym(1, 1) = 3.0;
+  DataContainer xsym(2, 1, 0.0, DataContainer::COLUMN_MAJOR);
+  xsym(0, 0) = 1.0; xsym(1, 0) = 2.0;
+  DataContainer rsym = AlgebraEngine::SymMatrixPointProduct(Ssym, xsym);
+  assert(std::abs(rsym(0, 0) - 6.0) < 1e-12);
+  assert(std::abs(rsym(1, 0) - 7.0) < 1e-12);
+  std::cout << "  SymMatrixPointProduct: OK" << std::endl;
+
+  // SymProd: 'L' -> A B A^T, 'R' -> A^T B A
+  DataContainer Adiag(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Adiag(0, 0) = 1.0; Adiag(1, 1) = 2.0;
+  DataContainer Bdiag(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Bdiag(0, 0) = 2.0; Bdiag(1, 1) = 3.0;
+  DataContainer symL = AlgebraEngine::SymProd(Adiag, Bdiag, 'L');
+  assert(std::abs(symL(0, 0) - 2.0) < 1e-12);
+  assert(std::abs(symL(1, 1) - 12.0) < 1e-12);
+  DataContainer symR = AlgebraEngine::SymProd(Adiag, Bdiag, 'R');
+  assert(std::abs(symR(0, 0) - 2.0) < 1e-12);
+  assert(std::abs(symR(1, 1) - 12.0) < 1e-12);
+  std::cout << "  SymProd: OK" << std::endl;
+
+  // TriangularProd: lower/upper, left/right
+  DataContainer Ltri(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Ltri(0, 0) = 2.0; Ltri(1, 0) = 1.0; Ltri(1, 1) = 3.0; // lower triangular
+  DataContainer Idc(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Idc(0, 0) = 1.0; Idc(1, 1) = 1.0;
+  DataContainer tL = AlgebraEngine::TriangularProd(Ltri, Idc, 'L', 'L');
+  assert(std::abs(tL(0, 0) - 2.0) < 1e-12);
+  assert(std::abs(tL(1, 1) - 3.0) < 1e-12);
+  DataContainer tR = AlgebraEngine::TriangularProd(Idc, Ltri, 'R', 'L');
+  assert(std::abs(tR(0, 0) - 2.0) < 1e-12);
+  assert(std::abs(tR(1, 0) - 1.0) < 1e-12);
+  assert(std::abs(tR(1, 1) - 3.0) < 1e-12);
+  std::cout << "  TriangularProd: OK" << std::endl;
+
+  // ComputeQR (economy + full, tall 3x2 and wide 2x3)
+  DataContainer A3(3, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  A3(0, 0) = 1.0; A3(1, 0) = 2.0; A3(2, 0) = 3.0;
+  A3(0, 1) = 4.0; A3(1, 1) = 5.0; A3(2, 1) = 6.0;
+  DataContainer Q, R;
+  AlgebraEngine::ComputeQR(A3, Q, R);
+  assert(Q.getSize() == 3);
+  assert(Q.getDimension() == 2);
+  assert(R.getSize() == 2);
+  assert(R.getDimension() == 2);
+  DataContainer QRprod = AlgebraEngine::MatrixProduct(Q, R);
+  for (UnsignedInteger idx = 0; idx < A3.getSize() * A3.getDimension(); ++idx)
+    assert(std::abs(QRprod[idx] - A3[idx]) < 1e-10);
+  DataContainer Qf, Rf;
+  AlgebraEngine::ComputeQR(A3, Qf, Rf, true);
+  assert(Qf.getSize() == 3);
+  assert(Qf.getDimension() == 3);
+  DataContainer Qw, Rw;
+  AlgebraEngine::ComputeQR(AlgebraEngine::Transpose(A3), Qw, Rw);
+  DataContainer Qfw, Rfw;
+  AlgebraEngine::ComputeQR(AlgebraEngine::Transpose(A3), Qfw, Rfw, true);
+  assert(Qfw.getSize() == 2);
+  assert(Qfw.getDimension() == 2);
+  std::cout << "  ComputeQR (tall + wide): OK" << std::endl;
+
+  // ComputeSVD (economy + full)
+  DataContainer Us, Ss, VTs;
+  AlgebraEngine::ComputeSVD(A3, Us, Ss, VTs);
+  assert(Ss.getSize() == 2);
+  DataContainer Sdiag(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Sdiag(0, 0) = Ss[0]; Sdiag(1, 1) = Ss[1];
+  DataContainer USVT = AlgebraEngine::MatrixProduct(Us, AlgebraEngine::MatrixProduct(Sdiag, VTs));
+  for (UnsignedInteger idx = 0; idx < A3.getSize() * A3.getDimension(); ++idx)
+    assert(std::abs(USVT[idx] - A3[idx]) < 1e-9);
+  DataContainer Uf, Sf, VTf;
+  AlgebraEngine::ComputeSVD(A3, Uf, Sf, VTf, true);
+  assert(Uf.getSize() == 3);
+  assert(Uf.getDimension() == 3);
+  std::cout << "  ComputeSVD (economy + full): OK" << std::endl;
+
+  // ComputeLU (non-block): L unit lower-triangular, U upper-triangular, L*U equals A up to pivoting
+  DataContainer ALU(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  ALU(0, 0) = 1.0; ALU(1, 0) = 3.0; ALU(0, 1) = 2.0; ALU(1, 1) = 1.0; // [[1, 2], [3, 1]]
+  DataContainer Lc, Uc;
+  AlgebraEngine::ComputeLU(ALU, Lc, Uc);
+  // L is unit lower triangular
+  assert(std::abs(Lc(0, 0) - 1.0) < 1e-12);
+  assert(std::abs(Lc(1, 1) - 1.0) < 1e-12);
+  assert(std::abs(Lc(0, 1)) < 1e-12);
+  // U is upper triangular
+  assert(std::abs(Uc(1, 0)) < 1e-12);
+  // L * U reproduces A up to the internal row permutation
+  DataContainer PALU = AlgebraEngine::MatrixProduct(Lc, Uc);
+  if (std::abs(PALU(0, 0) - ALU(1, 0)) < 1e-10)
+  {
+    assert(std::abs(PALU(0, 1) - ALU(1, 1)) < 1e-10);
+    assert(std::abs(PALU(1, 0) - ALU(0, 0)) < 1e-10);
+    assert(std::abs(PALU(1, 1) - ALU(0, 1)) < 1e-10);
+  }
+  else
+  {
+    for (UnsignedInteger i = 0; i < 2; ++i)
+      for (UnsignedInteger j = 0; j < 2; ++j)
+        assert(std::abs(PALU(i, j) - ALU(i, j)) < 1e-10);
+  }
+  DataContainer bLU(2, 1, 0.0, DataContainer::COLUMN_MAJOR);
+  bLU(0, 0) = 3.0; bLU(1, 0) = 4.0;
+  DataContainer xLU = AlgebraEngine::SolveLinearSystem(ALU, bLU);
+  assert(std::abs(xLU(0, 0) - 1.0) < 1e-10);
+  assert(std::abs(xLU(1, 0) - 1.0) < 1e-10);
+  std::cout << "  ComputeLU: OK" << std::endl;
+
+  // ComputeLogAbsoluteDeterminant (non-block)
+  Scalar signDet = 0.0;
+  Scalar logDet = AlgebraEngine::ComputeLogAbsoluteDeterminant(ALU, signDet);
+  assert(std::abs(signDet - (-1.0)) < 1e-10);
+  assert(std::abs(logDet - std::log(5.0)) < 1e-10);
+  std::cout << "  ComputeLogAbsoluteDeterminant: OK" << std::endl;
+
+  // ComputeEigenValuesSymmetric
+  DataContainer eigSym = AlgebraEngine::ComputeEigenValuesSymmetric(Ssym);
+  assert(eigSym.getSize() == 2);
+  // eigenvalues of [[4,1],[1,3]]: (7 +/- sqrt(5))/2, ascending
+  assert(std::abs(eigSym[0] - (7.0 - std::sqrt(5.0)) / 2.0) < 1e-10);
+  assert(std::abs(eigSym[1] - (7.0 + std::sqrt(5.0)) / 2.0) < 1e-10);
+  std::cout << "  ComputeEigenValuesSymmetric: OK" << std::endl;
+
+  // ComputeEigenValuesSquare returns real/imag pairs: rotation [[0,-1],[1,0]] -> +/- i
+  DataContainer Rrot(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Rrot(0, 0) = 0.0; Rrot(1, 0) = 1.0; Rrot(0, 1) = -1.0; Rrot(1, 1) = 0.0;
+  DataContainer eigRot = AlgebraEngine::ComputeEigenValuesSquare(Rrot);
+  assert(eigRot.getSize() == 4);
+  assert(std::abs(eigRot[0]) < 1e-10);
+  assert(std::abs(std::abs(eigRot[1]) - 1.0) < 1e-10);
+  assert(std::abs(eigRot[2]) < 1e-10);
+  assert(std::abs(std::abs(eigRot[3]) - 1.0) < 1e-10);
+  std::cout << "  ComputeEigenValuesSquare (complex pairs): OK" << std::endl;
+
+  // ComputeSingularValues
+  DataContainer Sdiag2(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Sdiag2(0, 0) = 4.0; Sdiag2(1, 1) = 2.0;
+  DataContainer sosv = AlgebraEngine::ComputeSingularValues(Sdiag2);
+  assert(sosv.getSize() == 2);
+  assert(std::abs(sosv[0] - 4.0) < 1e-10);
+  assert(std::abs(sosv[1] - 2.0) < 1e-10);
+  std::cout << "  ComputeSingularValues: OK" << std::endl;
+
+  // Clean preserves shape and cleans all elements
+  DataContainer Adirty(2, 2, 0.0, DataContainer::COLUMN_MAJOR);
+  Adirty(0, 0) = 1e-15; Adirty(1, 0) = 1.0; Adirty(0, 1) = -1e-13; Adirty(1, 1) = 2.0;
+  DataContainer Aclean = AlgebraEngine::Clean(Adirty, 1e-10);
+  assert(Aclean.getSize() == 2);
+  assert(Aclean.getDimension() == 2);
+  assert(Aclean(0, 0) == 0.0);
+  assert(std::abs(Aclean(1, 0) - 1.0) < 1e-15);
+  assert(Aclean(0, 1) == 0.0);
+  assert(std::abs(Aclean(1, 1) - 2.0) < 1e-15);
+  std::cout << "  Clean: OK" << std::endl;
+
+  // SolveLinearSystemRectangular (least-squares)
+  DataContainer Arect(3, 3, 0.0, DataContainer::COLUMN_MAJOR);
+  Arect(0, 0) = 1.0; Arect(1, 0) = 4.0; Arect(2, 0) = 7.0;
+  Arect(0, 1) = 2.0; Arect(1, 1) = 5.0; Arect(2, 1) = 8.0;
+  Arect(0, 2) = 3.0; Arect(1, 2) = 6.0; Arect(2, 2) = 10.0;
+  DataContainer brect2(3, 1, 0.0, DataContainer::COLUMN_MAJOR);
+  brect2(0, 0) = 1.0; brect2(1, 0) = 1.0; brect2(2, 0) = 1.0;
+  DataContainer xrect2 = AlgebraEngine::SolveLinearSystemRectangular(Arect, brect2);
+  assert(std::abs(xrect2(1, 0) - 1.0) < 1e-8);
+  std::cout << "  SolveLinearSystemRectangular: OK" << std::endl;
+
   std::cout << "\n=== StatisticsEngine Tests ===" << std::endl;
 
   // Create a sample: 5 observations, 2 variables (row-major)
@@ -465,6 +646,18 @@ int main()
   assert(std::abs(corr(1, 1) - 1.0) < 1e-12);
   assert(std::abs(corr(0, 1) - 1.0) < 1e-12);
   std::cout << "  PearsonCorrelation: OK" << std::endl;
+
+  // Test Spearman rank correlation (monotonically increasing columns -> rank 1)
+  DataContainer sp_r(4, 2, 0.0, DataContainer::ROW_MAJOR);
+  sp_r(0, 0) = 1.0; sp_r(0, 1) = 1.0;
+  sp_r(1, 0) = 2.0; sp_r(1, 1) = 4.0;
+  sp_r(2, 0) = 3.0; sp_r(2, 1) = 9.0;
+  sp_r(3, 0) = 4.0; sp_r(3, 1) = 16.0;
+  DataContainer sp_corr = StatisticsEngine::ComputeSpearmanCorrelation(sp_r);
+  assert(std::abs(sp_corr(0, 0) - 1.0) < 1e-12);
+  assert(std::abs(sp_corr(1, 1) - 1.0) < 1e-12);
+  assert(std::abs(sp_corr(0, 1) - 1.0) < 1e-12);
+  std::cout << "  SpearmanCorrelation: OK" << std::endl;
 
   // Test block-based statistics
   DataContainer meanBlock = StatisticsEngine::ComputeMeanBlockwise(sample, 2);
