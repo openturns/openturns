@@ -35,13 +35,5 @@ Solves a linear least squares problem with Cholesky method:
 >>> print(x)
 [3.5,1.4]"
 
-// ---------------------------------------------------------------------
 
-%feature("docstring") OT::CholeskyMethod::computeDesign
-OT_LeastSquaresMethod_computeDesign_doc
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CholeskyMethod::solveNormalGram
-OT_LeastSquaresMethod_solveNormalGram_doc
 

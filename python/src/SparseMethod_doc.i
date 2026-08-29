@@ -36,12 +36,4 @@ Examples
 >>> yAt = design.transpose() * y
 >>> x = method.solve(y)"
 
-// ---------------------------------------------------------------------
 
-%feature("docstring") OT::SparseMethod::computeDesign
-OT_LeastSquaresMethod_computeDesign_doc
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::SparseMethod::solveNormalGram
-OT_LeastSquaresMethod_solveNormalGram_doc
