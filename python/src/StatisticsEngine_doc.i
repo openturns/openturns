@@ -1,7 +1,7 @@
 %feature("docstring") OT::StatisticsEngine
 "Statistical operations on DataContainer objects.
 
-This class is experimental.
+This class is experimental and likely to be modified in future releases.
 
 StatisticsEngine provides static methods for statistical operations
 on DataContainer objects, using TBBImplementation for parallelism.

@@ -1,7 +1,7 @@
 %feature("docstring") OT::DataContainer
 "Unified data storage with pluggable backends.
 
-This class is experimental.
+This class is experimental and likely to be modified in future releases.
 
 DataContainer separates data storage from algebra and statistical services,
 enabling zero-copy interoperability between different container types.

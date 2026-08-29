@@ -117,6 +117,19 @@ assert dc13.isEmpty()
 assert len(dc13) == 0
 print("clear: OK")
 
+# makeUnique (copy-on-write)
+dc14 = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i in range(8):
+    dc14[i] = float(i)
+dc14.makeUnique()
+assert not dc14.isView()
+assert len(dc14) == 8
+assert dc14[3] == 3.0
+# mutations after makeUnique still work and are isolated
+dc14[0] = -1.0
+assert dc14[0] == -1.0
+print("makeUnique: OK")
+
 # views (subView over contiguous rows, zero-copy)
 parent = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
 for i in range(8):
@@ -194,6 +207,19 @@ assert abs(r[0] - 9.0) < 1e-12
 assert abs(r[1] - 12.0) < 1e-12
 print("MatrixPointProduct: OK")
 
+# SymMatrixPointProduct (A symmetric, column-major)
+Asym = ot.DataContainer(2, 2, 0.0)
+Asym[0] = 4.0
+Asym[1] = 1.0
+Asym[2] = 1.0
+Asym[3] = 3.0
+xs = ot.DataContainer(2, 1.0)
+xs[1] = 2.0
+rs = ot.AlgebraEngine.SymMatrixPointProduct(Asym, xs)
+assert abs(rs[0] - 6.0) < 1e-12  # 4*1 + 1*2
+assert abs(rs[1] - 7.0) < 1e-12  # 1*1 + 3*2
+print("SymMatrixPointProduct: OK")
+
 # MatrixProduct
 A2 = ot.DataContainer(2, 2, 0.0)
 A2[0] = 1.0
@@ -212,7 +238,66 @@ assert abs(C2[2] - 31.0) < 1e-12
 assert abs(C2[3] - 46.0) < 1e-12
 print("MatrixProduct: OK")
 
-# Transpose
+# SymProd: 'L' -> A B A^T, 'R' -> A^T B A
+Adiag = ot.DataContainer(2, 2, 0.0)
+Adiag[0] = 1.0
+Adiag[3] = 2.0
+Bdiag = ot.DataContainer(2, 2, 0.0)
+Bdiag[0] = 2.0
+Bdiag[3] = 3.0
+symL = ot.AlgebraEngine.SymProd(Adiag, Bdiag, "L")
+assert abs(symL[0] - 2.0) < 1e-12
+assert abs(symL[3] - 12.0) < 1e-12
+symR = ot.AlgebraEngine.SymProd(Adiag, Bdiag, "R")
+assert abs(symR[0] - 2.0) < 1e-12
+assert abs(symR[3] - 12.0) < 1e-12
+print("SymProd: OK")
+
+# TriangularProd: lower/upper, left/right
+Ltri = ot.DataContainer(2, 2, 0.0)
+Ltri[0] = 2.0
+Ltri[1] = 1.0
+Ltri[3] = 3.0  # lower triangular [[2, 0], [1, 3]]
+Id2 = ot.DataContainer(2, 2, 0.0)
+Id2[0] = 1.0
+Id2[3] = 1.0
+tL = ot.AlgebraEngine.TriangularProd(Ltri, Id2, "L", "L")
+assert abs(tL[0] - 2.0) < 1e-12
+assert abs(tL[3] - 3.0) < 1e-12
+tR = ot.AlgebraEngine.TriangularProd(Id2, Ltri, "R", "L")
+assert abs(tR[0] - 2.0) < 1e-12
+assert abs(tR[1] - 1.0) < 1e-12
+assert abs(tR[3] - 3.0) < 1e-12
+print("TriangularProd: OK")
+
+# ComputeLU (non-block): L unit lower-triangular, U upper-triangular, L*U equals A up to pivoting
+ALU = ot.DataContainer(2, 2, 0.0)
+ALU[0] = 1.0
+ALU[1] = 3.0
+ALU[2] = 2.0
+ALU[3] = 1.0  # column-major [[1, 2], [3, 1]]
+L4 = ot.DataContainer()
+U4 = ot.DataContainer()
+ot.AlgebraEngine.ComputeLU(ALU, L4, U4)
+# L unit lower triangular, U upper triangular
+assert L4[0] == 1.0
+assert L4[3] == 1.0
+assert L4[2] == 0.0
+assert U4[1] == 0.0
+LULU = ot.AlgebraEngine.MatrixProduct(L4, U4)
+rows_lu = sorted([(LULU[0], LULU[2]), (LULU[1], LULU[3])])
+rows_a = sorted([(ALU[0], ALU[2]), (ALU[1], ALU[3])])
+for (rl0, rl1), (ra0, ra1) in zip(rows_lu, rows_a):
+    assert abs(rl0 - ra0) < 1e-10
+    assert abs(rl1 - ra1) < 1e-10
+# solve A x = [3, 4] -> x = [1, 1]
+bLU = ot.DataContainer(2, 3.0)
+bLU[1] = 4.0
+xLU = ot.AlgebraEngine.SolveLinearSystem(ALU, bLU)
+assert abs(xLU[0] - 1.0) < 1e-10
+assert abs(xLU[1] - 1.0) < 1e-10
+print("ComputeLU: OK")
+
 # Transpose of [[1,3],[2,4]] = [[1,2],[3,4]], column-major stored as [1,3,2,4]
 AT = ot.AlgebraEngine.Transpose(A2)
 assert AT.getSize() == 2
@@ -260,10 +345,63 @@ det = ot.AlgebraEngine.ComputeDeterminant(spd)
 assert abs(det - 16.0) < 1e-12
 print("ComputeDeterminant: OK")
 
+# ComputeDeterminant on non-symmetric matrix
+detNS = ot.AlgebraEngine.ComputeDeterminant(ALU)
+assert abs(detNS + 5.0) < 1e-12  # det([[1, 2], [3, 1]]) = -5
+print("ComputeDeterminantNS: OK")
+
+# ComputeLogAbsoluteDeterminant returns (logAbsDet, sign)
+logdet, sign = ot.AlgebraEngine.ComputeLogAbsoluteDeterminant(spd)
+assert abs(logdet - math.log(16.0)) < 1e-12
+assert abs(sign - 1.0) < 1e-12
+logdetNS, signNS = ot.AlgebraEngine.ComputeLogAbsoluteDeterminant(ALU)
+assert abs(logdetNS - math.log(5.0)) < 1e-12
+assert abs(signNS + 1.0) < 1e-12
+logdetB, signB = ot.AlgebraEngine.ComputeLogAbsoluteDeterminantBlockwise(spd, 1)
+assert abs(logdetB - math.log(16.0)) < 1e-12
+assert abs(signB - 1.0) < 1e-12
+logdetB2, signB2 = ot.AlgebraEngine.ComputeLogAbsoluteDeterminantBlockwise(ALU)
+assert abs(logdetB2 - math.log(5.0)) < 1e-12
+assert abs(signB2 + 1.0) < 1e-12
+print("ComputeLogAbsoluteDeterminant(+Blockwise): OK")
+
 # ComputeTrace
 tr = ot.AlgebraEngine.ComputeTrace(spd)
 assert abs(tr - 9.0) < 1e-12
 print("ComputeTrace: OK")
+
+# Eigenvalues of a symmetric matrix are real
+eigSym = ot.AlgebraEngine.ComputeEigenValuesSymmetric(spd)
+assert len(eigSym) == 2
+# eigenvalues of [[4, 2], [2, 5]]: (9 +/- sqrt(17))/2, ascending
+assert abs(eigSym[0] - (9.0 - math.sqrt(17.0)) / 2.0) < 1e-12
+assert abs(eigSym[1] - (9.0 + math.sqrt(17.0)) / 2.0) < 1e-12
+print("ComputeEigenValuesSymmetric: OK")
+
+# Eigenvalues of a square matrix are returned as real/imag pairs
+# rotation [[0, -1], [1, 0]] has eigenvalues +/- i
+rot = ot.DataContainer(2, 2, 0.0)
+rot[0] = 0.0
+rot[1] = 1.0
+rot[2] = -1.0
+rot[3] = 0.0
+eigRot = ot.AlgebraEngine.ComputeEigenValuesSquare(rot)
+assert len(eigRot) == 4
+pairs = [(eigRot[0], eigRot[1]), (eigRot[2], eigRot[3])]
+for re, im in pairs:
+    assert abs(re) < 1e-12
+    assert abs(abs(im) - 1.0) < 1e-12
+print("ComputeEigenValuesSquare (complex pairs): OK")
+
+# Singular values
+Ssg = ot.DataContainer(2, 2, 0.0)
+Ssg[0] = 4.0
+Ssg[3] = 2.0
+sv = ot.AlgebraEngine.ComputeSingularValues(Ssg)
+assert len(sv) == 2
+assert abs(sv[0] - 4.0) < 1e-12
+assert abs(sv[1] - 2.0) < 1e-12
+print("ComputeSingularValues: OK")
 
 # IsSymmetric
 assert ot.AlgebraEngine.IsSymmetric(spd)
@@ -295,6 +433,21 @@ se = ot.AlgebraEngine.SumElements(A2)
 assert abs(se - 10.0) < 1e-12
 print("SumElements: OK")
 
+# Clean
+Adirty = ot.DataContainer(2, 2, 0.0)
+Adirty[0] = 1e-15
+Adirty[1] = 1.0
+Adirty[2] = -1e-13
+Adirty[3] = 2.0
+Aclean = ot.AlgebraEngine.Clean(Adirty, 1e-10)
+assert Aclean.getSize() == 2
+assert Aclean.getDimension() == 2
+for idx in [0, 2]:
+    assert Aclean[idx] == 0.0
+assert abs(Aclean[1] - 1.0) < 1e-15
+assert abs(Aclean[3] - 2.0) < 1e-15
+print("Clean: OK")
+
 # ComputeGram (2x2 matrix → 2x2 Gram)
 G = ot.AlgebraEngine.ComputeGram(A2, True)
 assert G.getSize() == 2
@@ -316,15 +469,94 @@ assert Q.getSize() == 3
 assert Q.getDimension() == 2
 assert R.getSize() == 2
 assert R.getDimension() == 2
-print("ComputeQR: OK")
+# A = Q R and Q^T Q = I
+QRcheck = ot.AlgebraEngine.MatrixProduct(Q, R)
+for i in range(len(A3)):
+    assert abs(QRcheck[i] - A3[i]) < 1e-10
+QtQ = ot.AlgebraEngine.MatrixProduct(ot.AlgebraEngine.Transpose(Q), Q)
+Id_check = ot.DataContainer(2, 2, 0.0)
+Id_check[0] = 1.0
+Id_check[3] = 1.0
+for i in range(4):
+    assert abs(QtQ[i] - Id_check[i]) < 1e-10
+# fullQR: Q becomes 3 x 3
+Qf = ot.DataContainer()
+Rf = ot.DataContainer()
+ot.AlgebraEngine.ComputeQR(A3, Qf, Rf, True)
+assert Qf.getSize() == 3
+assert Qf.getDimension() == 3
+print("ComputeQR (economy + full): OK")
 
-# ComputeSVD
+# ComputeQR on a wide matrix (thin Q: 2 x 2 for a 2 x 3 A)
+A4 = ot.DataContainer(2, 3, 0.0)
+A4[0] = 1.0
+A4[1] = 4.0
+A4[2] = 2.0
+A4[3] = 5.0
+A4[4] = 3.0
+A4[5] = 6.0
+Qw = ot.DataContainer()
+Rw = ot.DataContainer()
+ot.AlgebraEngine.ComputeQR(A4, Qw, Rw)
+assert Qw.getSize() == 2
+assert Qw.getDimension() == 2
+assert Rw.getSize() == 2
+assert Rw.getDimension() == 3
+QRw = ot.AlgebraEngine.MatrixProduct(Qw, Rw)
+for i in range(len(A4)):
+    assert abs(QRw[i] - A4[i]) < 1e-10
+Qfw = ot.DataContainer()
+Rfw = ot.DataContainer()
+ot.AlgebraEngine.ComputeQR(A4, Qfw, Rfw, True)
+assert Qfw.getSize() == 2
+assert Qfw.getDimension() == 2
+print("ComputeQR (wide matrix): OK")
+
+# ComputeSVD: A = U S VT, U^T U = I, VT^T VT = I
 U = ot.DataContainer()
 S = ot.DataContainer()
 VT = ot.DataContainer()
 ot.AlgebraEngine.ComputeSVD(A3, U, S, VT)
 assert S.getSize() == 2
-print("ComputeSVD: OK")
+assert S[0] >= S[1]
+Sdiag = ot.DataContainer(2, 2, 0.0)
+Sdiag[0] = S[0]
+Sdiag[3] = S[1]
+USVT = ot.AlgebraEngine.MatrixProduct(U, ot.AlgebraEngine.MatrixProduct(Sdiag, VT))
+for i in range(len(A3)):
+    assert abs(USVT[i] - A3[i]) < 1e-9
+UtU = ot.AlgebraEngine.MatrixProduct(ot.AlgebraEngine.Transpose(U), U)
+for i in range(4):
+    assert abs(UtU[i] - Id_check[i]) < 1e-10
+VtV = ot.AlgebraEngine.MatrixProduct(VT, ot.AlgebraEngine.Transpose(VT))
+for i in range(4):
+    assert abs(VtV[i] - Id_check[i]) < 1e-10
+# fullSVD: U is 3 x 3
+Uf = ot.DataContainer()
+Sf = ot.DataContainer()
+VTf = ot.DataContainer()
+ot.AlgebraEngine.ComputeSVD(A3, Uf, Sf, VTf, True)
+assert Uf.getSize() == 3
+assert Uf.getDimension() == 3
+print("ComputeSVD (economy + full): OK")
+
+# SolveLinearSystem (rectangular, least-squares): min ||A x - b||
+Arect = ot.DataContainer(3, 3, 0.0)
+Arect[0] = 1.0
+Arect[1] = 4.0
+Arect[2] = 7.0
+Arect[3] = 2.0
+Arect[4] = 5.0
+Arect[5] = 8.0
+Arect[6] = 3.0
+Arect[7] = 6.0
+Arect[8] = 10.0
+brect = ot.DataContainer(3, 1.0)
+xrect = ot.AlgebraEngine.SolveLinearSystemRectangular(Arect, brect)
+assert abs(xrect[1] - 1.0) < 1e-10
+xrectB = ot.AlgebraEngine.SolveLinearSystemRectangularBlockwise(Arect, brect, 1)
+assert abs(xrectB[1] - 1.0) < 1e-10
+print("SolveLinearSystemRectangular(+Blockwise): OK")
 
 # SolveLinearSystemTriangular
 tri = ot.DataContainer(2, 2, 0.0)
@@ -483,6 +715,21 @@ corr = ot.StatisticsEngine.ComputePearsonCorrelation(sample)
 assert abs(corr[0] - 1.0) < 1e-12
 assert abs(corr[3] - 1.0) < 1e-12
 print("ComputePearsonCorrelation: OK")
+
+# SpearmanCorrelation (monotone and non-monotone samples)
+sp_r = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+sp_r[0] = 1.0
+sp_r[1] = 1.0
+sp_r[2] = 2.0
+sp_r[3] = 4.0
+sp_r[4] = 3.0
+sp_r[5] = 9.0
+sp_r[6] = 4.0
+sp_r[7] = 16.0
+sp_corr = ot.StatisticsEngine.ComputeSpearmanCorrelation(sp_r)
+assert abs(sp_corr[0] - 1.0) < 1e-12   # strictly increasing in both columns
+assert abs(sp_corr[3] - 1.0) < 1e-12
+print("ComputeSpearmanCorrelation: OK")
 
 # Min / Max
 mn = ot.StatisticsEngine.ComputeMin(sample)

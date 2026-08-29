@@ -1,7 +1,7 @@
 %feature("docstring") OT::AlgebraEngine
 "Linear algebra operations on DataContainer objects.
 
-This class is experimental.
+This class is experimental and likely to be modified in future releases.
 
 AlgebraEngine provides static methods for linear algebra operations
 on DataContainer objects, delegating to LAPACK/BLAS routines.
@@ -360,7 +360,9 @@ A : DataContainer
 Returns
 -------
 logAbsDet : float
-    Log of absolute value of determinant."
+    Log of absolute value of determinant.
+sign : float
+    Sign of the determinant."
 
 // ---------------------------------------------------------------------
 
@@ -646,6 +648,8 @@ Parameters
 ----------
 A : DataContainer
     Input square matrix.
+P : DataContainer
+    Output permutation matrix.
 L : DataContainer
     Output lower triangular matrix.
 U : DataContainer
@@ -727,7 +731,9 @@ blockSize : int, optional
 Returns
 -------
 logAbsDet : float
-    Log of absolute determinant."
+    Log of absolute determinant.
+sign : float
+    Sign of the determinant."
 
 // ---------------------------------------------------------------------
 
