@@ -16,8 +16,10 @@
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * ComplexDataContainer
+ * ComplexHDF5Backend
  * CumulativeDistributionNetworkFactory (openturns.experimental)
  * DataContainer
+ * HDF5Backend
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
