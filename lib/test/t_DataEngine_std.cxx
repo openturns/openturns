@@ -27,6 +27,7 @@
 #include "openturns/StatisticsEngine.hxx"
 #ifdef OPENTURNS_HAVE_HDF5
 #include "openturns/HDF5Backend.hxx"
+#include "openturns/ComplexHDF5Backend.hxx"
 #endif
 
 using namespace OT;
@@ -160,6 +161,13 @@ int main()
     assert(shared1[0] == 99.0);
     assert(shared1[1] == 1.0);
     std::cout << "  makeUnique: OK" << std::endl;
+
+    // name/lifecycle accessors
+    shared1.setName("named");
+    assert(shared1.getName() == "named");
+    assert(shared1.hasName());
+    assert(shared1.getClassName() == "DataContainer");
+    std::cout << "  name/lifecycle accessors: OK" << std::endl;
   }
 
   std::cout << "\n=== AlgebraEngine Tests ===" << std::endl;
@@ -727,6 +735,43 @@ int main()
   std::remove("/tmp/test_ot_hdf5_res.h5");
   std::remove("/tmp/ot_hdf5_1.h5");
   std::cout << "  HDF5Backend cleanup: OK" << std::endl;
+
+  std::cout << "\n=== ComplexHDF5Backend Tests ===" << std::endl;
+
+  // Test create + roundtrip through re/im datasets
+  ComplexDataContainer cdc(3);
+  cdc[0] = Complex(1.0, 2.0); cdc[1] = Complex(3.0, 4.0); cdc[2] = Complex(5.0, 6.0);
+  cdc.setBackend(new ComplexHDF5Backend("/tmp/test_ot_chdf5.h5", "cmydata", 3));
+  assert(cdc[0] == Complex(1.0, 2.0));
+  assert(cdc[2] == Complex(5.0, 6.0));
+  std::cout << "  ComplexHDF5Backend create/roundtrip: OK" << std::endl;
+
+  // Test Open existing file
+  Pointer<ComplexHDF5Backend> p_copened = ComplexHDF5Backend::Open("/tmp/test_ot_chdf5.h5", "cmydata");
+  assert(p_copened->size() == 3);
+  assert(p_copened->data()[1] == Complex(3.0, 4.0));
+  std::cout << "  ComplexHDF5Backend Open: OK" << std::endl;
+
+  // Test clone
+  Pointer<ComplexDataContainer::StorageBackend> p_cclone = cdc.getBackend()->clone();
+  assert(p_cclone->size() == 3);
+  assert(p_cclone->data()[0] == Complex(1.0, 2.0));
+  std::cout << "  ComplexHDF5Backend clone: OK" << std::endl;
+
+  // Test resize
+  ComplexDataContainer cdc_res(3);
+  cdc_res[0] = Complex(7.0, 0.0); cdc_res[1] = Complex(8.0, 0.0); cdc_res[2] = Complex(9.0, 0.0);
+  cdc_res.setBackend(new ComplexHDF5Backend("/tmp/test_ot_chdf5_res.h5", "cresizable", 3));
+  cdc_res.resize(5);
+  cdc_res[3] = Complex(10.0, 0.0); cdc_res[4] = Complex(11.0, 0.0);
+  assert(cdc_res[0] == Complex(7.0, 0.0));
+  assert(cdc_res[4] == Complex(11.0, 0.0));
+  std::cout << "  ComplexHDF5Backend resize: OK" << std::endl;
+
+  std::remove("/tmp/test_ot_chdf5.h5");
+  std::remove("/tmp/test_ot_chdf5_res.h5");
+  std::remove("/tmp/ot_chdf5_1.h5");
+  std::cout << "  ComplexHDF5Backend cleanup: OK" << std::endl;
 #endif
 
   std::cout << "\n=== All tests passed! ===" << std::endl;
