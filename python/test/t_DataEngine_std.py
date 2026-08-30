@@ -130,6 +130,13 @@ dc14[0] = -1.0
 assert dc14[0] == -1.0
 print("makeUnique: OK")
 
+# name/lifecycle accessors
+assert dc14.getClassName() == "DataContainer"
+dc14.setName("named")
+assert dc14.getName() == "named"
+assert dc14.hasName()
+print("name/lifecycle accessors: OK")
+
 # views (subView over contiguous rows, zero-copy)
 parent = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
 for i in range(8):
@@ -667,6 +674,20 @@ for bs in [1, 2]:
     for i in range(len(b)):
         assert abs(Lxt[i] - b[i]) < 1e-10
     print(f"  SolveLinearSystemTriangularBlockwise(bs={bs}): OK")
+
+    # ComputeQRBlockwise: A = Q R (economy), tall 3x2 matrix
+    Qb = ot.DataContainer()
+    Rb = ot.DataContainer()
+    ot.AlgebraEngine.ComputeQRBlockwise(A3, Qb, Rb, False, bs)
+    QRb = ot.AlgebraEngine.MatrixProduct(Qb, Rb)
+    for i in range(len(A3)):
+        assert abs(QRb[i] - A3[i]) < 1e-10
+    Qbf = ot.DataContainer()
+    Rbf = ot.DataContainer()
+    ot.AlgebraEngine.ComputeQRBlockwise(A3, Qbf, Rbf, True, bs)
+    assert Qbf.getSize() == 3
+    assert Qbf.getDimension() == 3
+    print(f"  ComputeQRBlockwise(bs={bs}): OK")
 
 print("All block method tests passed!")
 
