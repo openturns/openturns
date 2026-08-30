@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * FastGaussQuadrature, FastHermite, FastJacobi, FastLaguerre, FastLegendre (internal C++, not exposed in Python)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -35,6 +36,9 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
+ * Deprecated StandardDistributionPolynomialFactory class
+ * UniVariateDistributionPolynomialFactory moved to experimental
+
 
 === Documentation ===
 

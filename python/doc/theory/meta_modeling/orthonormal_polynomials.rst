@@ -91,7 +91,7 @@ orthonormal bases. However it is known to be numerically unstable, so alternativ
 procedures are often used in practice.
 
 For all arbitrary distributions, the three-term recurrence is computed (see :class:`~openturns.AdaptiveStieltjesAlgorithm`)
-and used to build its orthonormal polynomial family (see :class:`~openturns.StandardDistributionPolynomialFactory`).
+and used to build its orthonormal polynomial family (see :class:`~openturns.experimental.StandardDistributionPolynomialFactory`).
 
 .. topic:: API:
 

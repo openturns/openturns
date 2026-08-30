@@ -67,7 +67,7 @@ The univariate bases may be:
   known (see :ref:`orthonormal_polynomials`).
   For all the other arbitrary distributions, the three-term recurrence is computed (see
   :class:`~openturns.AdaptiveStieltjesAlgorithm`) and used to build its orthonormal
-  polynomial family (see :class:`~openturns.StandardDistributionPolynomialFactory`).
+  polynomial family (see :class:`~openturns.experimental.StandardDistributionPolynomialFactory`).
 
 - Haar wavelets: the Haar wavelets basis is orthonormal with respect to the  :math:`\cU(0,1)`
   measure. This basis is used to approximate functions with discontinuities.
@@ -122,7 +122,7 @@ That is the reason why the use of such a multivariate orthonormal basis is not r
 
 .. topic:: API:
 
-    - See :class:`~openturns.StandardDistributionPolynomialFactory`
+    - See :class:`~openturns.experimental.StandardDistributionPolynomialFactory`
     - See :class:`~openturns.AdaptiveStieltjesAlgorithm`
     - See :class:`~openturns.OrthogonalUniVariatePolynomial`
     - See :class:`~openturns.OrthogonalUniVariatePolynomialFactory`

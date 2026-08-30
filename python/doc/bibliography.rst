@@ -198,6 +198,22 @@ Bibliography
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
 .. [gobet2016] Gobet, E., 2016, *Monte-Carlo Methods and Stochastic Processes: From Linear to Non-Linear*,
     Chapman \& Hall/CRC.
+.. [golub1969] Golub, G. H. and Welsch, J. H. (1969).
+    *Calculation of Gauss Quadrature Rules.*
+    Mathematics of Computation, 23(106), 221-230.
+    `doi:10.1090/S0025-5718-69-99647-1 <https://doi.org/10.1090/S0025-5718-69-99647-1>`__
+.. [gst2018] Gil, A., Segura, J. and Temme, N. M. (2018).
+    *Asymptotic approximations to the nodes and weights of Gauss-Hermite and Gauss-Laguerre quadratures.*
+    Studies in Applied Mathematics, 140(3), 298-332.
+    `doi:10.1111/sapm.12201 <https://doi.org/10.1111/sapm.12201>`__
+.. [gst2026] Gil, A., Segura, J. and Temme, N. M. (2026).
+    *Fast and accurate computation of classical Gaussian quadratures.*
+    SIAM Journal on Scientific Computing.
+    `arXiv:2509.16716 <https://arxiv.org/abs/2509.16716>`__
+.. [bogaert2014] Bogaert, I. (2014).
+    *Iteration-free computation of Gauss-Legendre quadrature nodes and weights.*
+    SIAM Journal on Scientific Computing, 36(3), A1008-A1026.
+    `doi:10.1137/140954969 <https://doi.org/10.1137/140954969>`__
 .. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
     Wiley StatsRef: Statistics Reference Online, Wiley
 .. [ginsbourger2025] Ginsbouger, D., & Schärer, C. (2025).
