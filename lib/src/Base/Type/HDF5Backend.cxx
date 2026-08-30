@@ -154,7 +154,14 @@ HDF5Backend::~HDF5Backend()
 #ifndef OPENTURNS_HAVE_HDF5
   return;
 #else
-  flush();
+  try
+  {
+    flush();
+  }
+  catch (...)
+  {
+    // Never throw from a destructor.
+  }
 
 #ifdef _MSC_VER
   delete static_cast<H5::DataSet *>(h5Dataset_);
