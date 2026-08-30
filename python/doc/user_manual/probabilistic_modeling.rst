@@ -327,6 +327,7 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
+    DistFunc.dNonCentralStudentAlt0
     DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
@@ -424,13 +425,14 @@ Refer to :ref:`isoprobabilistic_transformation`.
 Deprecated distribution aliases
 ================================
 
-.. currentmodule:: openturns.dist
+.. currentmodule:: openturns
 
 .. autosummary::
     :toctree: _generated/
     :template: function.rst_t
 
-    BayesDistribution
-    MixedHistogramUserDefined
-    RandomMixture
-    UserDefinedFactory
+    dist.BayesDistribution
+    dist.MixedHistogramUserDefined
+    dist.RandomMixture
+    dist.UserDefined
+    dist.UserDefinedFactory
