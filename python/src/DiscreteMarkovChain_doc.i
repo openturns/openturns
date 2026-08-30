@@ -55,6 +55,12 @@ Create a Markov chain:
 Get a realization:
 
 >>> myReal = myMarkovChain.getRealization()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DiscreteMarkovChain-ProbabilitySumPrecision* (:raw:`Scalar`, default: `1e-06`)
 )RAW"
 
 // ---------------------------------------------------------------------

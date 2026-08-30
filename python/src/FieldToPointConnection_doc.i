@@ -17,7 +17,13 @@ f_FieldToPoint, g_FieldToPoint : :class:`~openturns.FieldToPointFunction`
 
 Notes
 -----
-This class is a particular case  of the general class :class:`~openturns.FieldToPointFunction`. Thus it doesn't implement the  gradient nor the hessian.)RAW"
+This class is a particular case  of the general class :class:`~openturns.FieldToPointFunction`. Thus it doesn't implement the  gradient nor the hessian.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FieldToPointConnection-BlockSize* (:raw:`UnsignedInteger`, default: `256`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

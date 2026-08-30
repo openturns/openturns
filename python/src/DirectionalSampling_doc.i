@@ -121,7 +121,13 @@ Run the algorithm and extract the estimated probability:
 
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.169716)RAW"
+Probability estimate=0.169716
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DirectionalSampling-MeanContributionIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `255`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

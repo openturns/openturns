@@ -80,7 +80,15 @@ experiments:
 >>> print(sample - sample[0, 0])
 0 : [ 0 1 ]
 1 : [ 2 3 ]
-2 : [ 4 5 ])RAW"
+2 : [ 4 5 ]
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Sample-PrintEllipsisSize* (:raw:`UnsignedInteger`, default: `3`)
+- *Sample-PrintEllipsisThreshold* (:raw:`UnsignedInteger`, default: `1000`)
+- *Sample-SmallKendallTau* (:raw:`UnsignedInteger`, default: `23`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

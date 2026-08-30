@@ -202,7 +202,13 @@ polynomial with maximum possible marginal degrees.
 >>> algo = ot.GaussLegendre([3, 2, 4])
 >>> computedIntegral = algo.integrate(polynomial, bounds)
 >>> print(computedIntegral)
-[0.00520833])RAW"
+[0.00520833]
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussLegendre-DefaultMarginalIntegrationPointsNumber* (:raw:`UnsignedInteger`, default: `64`)
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::integrate

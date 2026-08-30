@@ -68,6 +68,13 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = distT.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CompositeDistribution-SolverEpsilon* (:raw:`Scalar`, default: `1e-14`)
+- *CompositeDistribution-StepNumber* (:raw:`UnsignedInteger`, default: `256`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -101,6 +101,13 @@ For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`t
 
 where :math:`\sigma(a_k)` is the standard deviation of the distribution of the estimator :math:`\hat{a}_k`
 defined in :eq:`std_dev_estim`.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelAnalysis-MinimumSigma* (:raw:`Scalar`, default: `1e-05`)
+- *LinearModelAnalysis-PrintEllipsisThreshold* (:raw:`UnsignedInteger`, default: `20`)
 )RAW"
 
 // ---------------------------------------------------------------------

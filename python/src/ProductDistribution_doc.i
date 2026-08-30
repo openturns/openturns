@@ -49,6 +49,12 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = distZ.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ProductDistribution-LargeCharacteristicFunctionArgument* (:raw:`Scalar`, default: `10`)
 )RAW"
 
 // ---------------------------------------------------------------------

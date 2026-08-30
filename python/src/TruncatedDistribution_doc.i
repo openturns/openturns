@@ -68,6 +68,12 @@ Examples
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TruncatedDistribution-DefaultThresholdRealization* (:raw:`Scalar`, default: `0.5`)
 )RAW"
 
 // ---------------------------------------------------------------------

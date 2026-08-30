@@ -640,6 +640,14 @@ Examples
 >>> mesh = ot.Mesh()
 >>> vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]]
 >>> mesh.setVertices(vertices)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Mesh-BackfaceCulling* (:raw:`Bool`, default: `false`)
+- *Mesh-LargeSize* (:raw:`UnsignedInteger`, default: `5000`)
+
 )RAW"
 
 // ---------------------------------------------------------------------

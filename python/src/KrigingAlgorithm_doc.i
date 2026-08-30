@@ -87,6 +87,12 @@ Get the resulting meta model:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KrigingAlgorithm-LinearAlgebra* (:raw:`String`, default: `LAPACK`)
 )RAW"
 
 // ---------------------------------------------------------------------

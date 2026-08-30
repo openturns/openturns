@@ -78,7 +78,13 @@ to the :class:`~openturns.ResourceMap` key `GeneralizedParetoFactory-SmallSize`
 - If the sample size is less or equal to `GeneralizedParetoFactory-SmallSize` from :class:`~openturns.ResourceMap`, then the method of probability weighted moments is used. If it fails, the method of exponential regression is used.
 - Otherwise, the first method tried is the method of exponential regression, then the method of probability weighted moments if the first one fails.
 
-In the third usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built.)RAW"
+In the third usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GeneralizedParetoFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
+)RAW"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedParetoFactory::buildAsGeneralizedPareto

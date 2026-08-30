@@ -131,7 +131,17 @@ p = [1, 2, 4] and q = [4,5,6]:
 To get the quantified AICc, AIC and BIC criteria:
 
 >>> myARMA_42, myCriterion = myFactory_42.buildWithCriteria(ot.TimeSeries(myTimeSeries))
->>> AICc, AIC, BIC = myCriterion[0:3])RAW"
+>>> AICc, AIC, BIC = myCriterion[0:3]
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *WhittleFactory-DefaultMaximumCallsNumber* (:raw:`UnsignedInteger`, default: `2000`)
+- *WhittleFactory-DefaultRhoBeg* (:raw:`Scalar`, default: `0.1`)
+- *WhittleFactory-DefaultRhoEnd* (:raw:`Scalar`, default: `1e-10`)
+- *WhittleFactory-DefaultStartingPointScale* (:raw:`Scalar`, default: `1`)
+- *WhittleFactory-RootEpsilon* (:raw:`Scalar`, default: `1e-06`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

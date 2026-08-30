@@ -99,6 +99,12 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = finalDist.getSample(5)  # doctest: +SKIP
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CompoundDistribution-MaximumIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `100000`)
 )RAW"
 
 // ---------------------------------------------------------------------

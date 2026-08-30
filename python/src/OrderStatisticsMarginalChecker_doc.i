@@ -43,6 +43,13 @@ Create the test checker:
 Check the compatibility:
 
 >>> compatibilityResult = testChecker.isCompatible()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *OrderStatisticsMarginalChecker-OptimizationEpsilon* (:raw:`Scalar`, default: `1e-07`)
+- *OrderStatisticsMarginalChecker-QuantileIteration* (:raw:`UnsignedInteger`, default: `100`)
 )RAW"
 
 // ---------------------------------------------------------------------

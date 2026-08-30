@@ -50,6 +50,17 @@ with maximum likelihood estimation.
 >>> sample = distribution.getSample(10)
 >>> factory = ot.MaximumLikelihoodFactory(ot.Normal())
 >>> inf_distribution = factory.build(sample)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MaximumLikelihoodFactory-DefaultOptimizationAlgorithm* (:raw:`String`, default: `TNC`)
+- *MaximumLikelihoodFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
+- *MaximumLikelihoodFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
+- *MaximumLikelihoodFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
+- *MaximumLikelihoodFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
+- *MaximumLikelihoodFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -97,4 +97,13 @@ smooth : float
 Parameters
 ----------
 smooth : float
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SQP-DefaultOmega* (:raw:`Scalar`, default: `0.0001`)
+- *SQP-DefaultSmooth* (:raw:`Scalar`, default: `1.2`)
+
     Growing factor in penalization term."
+

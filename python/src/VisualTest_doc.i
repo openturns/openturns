@@ -73,6 +73,16 @@ Draw an Henry plot against an inferred Normal distribution:
 >>> henry_graph = ot.VisualTest.DrawHenryLine(sample)
 >>> henry_graph.setTitle('Henry plot against inferred Normal distribution')
 >>> View(henry_graph).show()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *VisualTest-CloudMediumSize* (:raw:`UnsignedInteger`, default: `1000`)
+- *VisualTest-CloudSmallSize* (:raw:`UnsignedInteger`, default: `100`)
+- *VisualTest-DependenceConfidenceLevel* (:raw:`Scalar`, default: `0.95`)
+- *VisualTest-DrawPairsMarginals-AxesMargin* (:raw:`Scalar`, default: `0.1`)
+- *VisualTest-KendallPlot-MonteCarloSize* (:raw:`UnsignedInteger`, default: `100`)
 )RAW"
 
 // ---------------------------------------------------------------------

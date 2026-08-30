@@ -106,5 +106,13 @@ r2Score : :class:`~openturns.Point`
 Returns
 -------
 result : :class:`~openturns.GaussianProcessRegressionResult`
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussianProcessRegressionCrossValidation-DefaultBlockSize* (:raw:`UnsignedInteger`, default: `100`)
+
     The result provided."
+
 

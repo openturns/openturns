@@ -80,6 +80,13 @@ Create a Gauss-Kronrod algorithm:
 
 >>> import openturns as ot
 >>> algo = ot.GaussKronrod(100, 1e-8, ot.GaussKronrodRule(ot.GaussKronrodRule.G11K23))
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussKronrod-MaximumError* (:raw:`Scalar`, default: `1e-12`)
+- *GaussKronrod-MaximumSubIntervals* (:raw:`UnsignedInteger`, default: `100`)
 )RAW"
 
 // ---------------------------------------------------------------------

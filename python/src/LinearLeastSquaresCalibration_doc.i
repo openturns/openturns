@@ -77,7 +77,13 @@ Calibrate a nonlinear model using linear least-squares:
 >>> algo = ot.LinearLeastSquaresCalibration(modelX, x, y, startingPoint, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[8.24019,0.0768046,0.992957])RAW"
+[8.24019,0.0768046,0.992957]
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearLeastSquaresCalibration-Method* (:raw:`String`, default: `QR`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

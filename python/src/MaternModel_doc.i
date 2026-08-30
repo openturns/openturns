@@ -71,6 +71,13 @@ Create a  Matern covariance function specifying the scale vector and :math:`\nu`
 Create a  Matern covariance function specifying the scale vector, the amplitude and :math:`\nu`:
 
 >>> covModel3 = ot.MaternModel([1.5, 2.5], [3.5], 4.5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MaternModel-DefaultNu* (:raw:`Scalar`, default: `1.5`)
+- *MaternModel-DefaultTheta* (:raw:`Scalar`, default: `1`)
 )RAW"
 
 // ---------------------------------------------------------------------

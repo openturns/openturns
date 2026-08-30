@@ -86,4 +86,12 @@ name : str
 Returns
 -------
 factory : :class:`~openturns.DistributionFactory`
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DistributionFactory-BootstrapErrorTolerance* (:raw:`Scalar`, default: `0.1`)
+
     An instance of the desired class."
+

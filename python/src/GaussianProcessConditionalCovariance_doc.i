@@ -51,6 +51,12 @@ Create the algorithm:
 >>> result = algo.getResult()
 >>> condCov = ot.GaussianProcessConditionalCovariance(result)
 >>> marginal = condCov.getMarginalDistribution([1.1])
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussianProcessConditionalCovariance-DefaultConfidenceLevel* (:raw:`Scalar`, default: `0.95`)
 )RAW"
 
 // ---------------------------------------------------------------------

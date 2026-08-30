@@ -81,6 +81,16 @@ With parameter bounds:
 >>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
 >>> factory = ot.MethodOfMomentsFactory(ot.Normal(), orders, bounds)
 >>> inf_distribution = factory.build(sample)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MethodOfMomentsFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
+- *MethodOfMomentsFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
 )RAW"
 
 // ---------------------------------------------------------------------

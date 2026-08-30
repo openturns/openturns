@@ -128,6 +128,12 @@ Create it from a Frechet distribution:
 Draw a sample:
 
 >>> sample = dist1.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GeneralizedExtremeValue-XiThreshold* (:raw:`Scalar`, default: `1e-06`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -217,6 +217,12 @@ The user sets the value of :math:`\gamma` (index 2 in the order :math:`\beta`,
 >>> factory.setKnownParameter([2], [known_gamma])
 >>> estimated_distribution_fixed = factory.build(sample)
 
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ParetoFactory-AlphaUpperBound* (:raw:`Scalar`, default: `1000`)
 )RAW"
 
 // ----------------------------------------------------------------------------

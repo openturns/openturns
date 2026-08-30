@@ -62,6 +62,12 @@ Estimate the ARMA process with the maximum likelihood estimator:
 
 >>> myFactory = ot.ARMALikelihoodFactory(4, 2, 1)
 >>> myARMA = myFactory.build(ot.TimeSeries(myTimeSeries))
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ARMALikelihoodFactory-RootEpsilon* (:raw:`Scalar`, default: `1e-06`)
 )RAW"
 
 // ---------------------------------------------------------------------

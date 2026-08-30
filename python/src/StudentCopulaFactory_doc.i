@@ -23,6 +23,12 @@ the optimization step:
 See also
 --------
 DistributionFactory, StudentCopula
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *StudentCopulaFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
 )RAW"
 
 // ---------------------------------------------------------------------

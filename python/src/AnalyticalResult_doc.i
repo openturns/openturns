@@ -125,7 +125,14 @@ Returns
 -------
 factors : :class:`~openturns.PointWithDescription`
     Sequence containing the importance factors with a description for each
-    component.)RAW"
+    component.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *AnalyticalResult-DefaultWidth* (:raw:`Scalar`, default: `1`)
+- *AnalyticalResult-MeanPointIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `255`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

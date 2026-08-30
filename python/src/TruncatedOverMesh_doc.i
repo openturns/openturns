@@ -40,6 +40,15 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TruncatedOverMesh-MarginalIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `64`)
+- *TruncatedOverMesh-MaximumIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `262144`)
+- *TruncatedOverMesh-OptimizationAlgorithm* (:raw:`String`, default: `TNC`)
+- *TruncatedOverMesh-UseRejection* (:raw:`Bool`, default: `false`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -88,6 +88,12 @@ Examples
 >>> algo = ot.NAIS(myEvent, 0.1)
 >>> # Perform the simulation
 >>> algo.run()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *NAIS-DefaultQuantileLevel* (:raw:`Scalar`, default: `0.25`)
 )RAW"
 
 // ---------------------------------------------------------------------------

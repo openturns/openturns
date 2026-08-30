@@ -24,7 +24,13 @@ Then
 
 See also
 --------
-DistributionFactory, Burr)RAW"
+DistributionFactory, Burr
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *BurrFactory-AbsolutePrecision* (:raw:`Scalar`, default: `1e-12`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

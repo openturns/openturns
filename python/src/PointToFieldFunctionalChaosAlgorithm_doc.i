@@ -144,6 +144,12 @@ Examples
 >>> metamodel = result.getPointToFieldMetaModel()
 >>> y0hat = metamodel(x[0])
 >>> ot.ResourceMap.Reset()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *PointToFieldFunctionalChaosAlgorithm-DefaultRecompress* (:raw:`Bool`, default: `false`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -134,6 +134,15 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.LogNormal(1.5, 2.5, -1.5).getSample(1000)
 >>> estimated = ot.LogNormalFactory().build(sample)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LogNormalFactory-AbsolutePrecision* (:raw:`Scalar`, default: `1e-12`)
+- *LogNormalFactory-MaximumIteration* (:raw:`UnsignedInteger`, default: `50`)
+- *LogNormalFactory-RelativePrecision* (:raw:`Scalar`, default: `1e-12`)
+- *LogNormalFactory-ResidualPrecision* (:raw:`Scalar`, default: `1e-12`)
 )RAW"
 
 // ---------------------------------------------------------------------

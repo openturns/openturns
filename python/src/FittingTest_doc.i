@@ -580,4 +580,12 @@ class=TestResult name=Unnamed type=Lilliefors Normal binaryQualityMeasure=true p
 >>> quality
 True
 >>> ot.ResourceMap.Reset()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FittingTest-ChiSquaredCheckSample* (:raw:`Bool`, default: `true`)
+- *FittingTest-ChiSquaredMinimumBinCount* (:raw:`UnsignedInteger`, default: `5`)
+
 )RAW"

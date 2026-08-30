@@ -36,6 +36,16 @@ Examples
 >>> sample = distribution.getSample(10)
 >>> factory = ot.LeastSquaresDistributionFactory(ot.Normal())
 >>> inf_distribution = factory.build(sample)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LeastSquaresDistributionFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
+- *LeastSquaresDistributionFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -63,7 +63,15 @@ expresses as the classic Monte Carlo c.o.v.
 
 See also
 --------
-EventSimulation)RAW"
+EventSimulation
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SubsetSampling-DefaultConditionalProbability* (:raw:`Scalar`, default: `0.1`)
+- *SubsetSampling-DefaultMaximumOuterSampling* (:raw:`UnsignedInteger`, default: `10000`)
+- *SubsetSampling-DefaultProposalRange* (:raw:`Scalar`, default: `2`)
+)RAW"
 
 // ---------------------------------------------------------------------------
 

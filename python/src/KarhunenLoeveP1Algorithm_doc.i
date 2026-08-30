@@ -66,6 +66,12 @@ Run it!
 
 >>> algorithm.run()
 >>> result = algorithm.getResult()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KarhunenLoeveP1Algorithm-RegularizationFactor* (:raw:`Scalar`, default: `0`)
 )RAW"
 
 // ---------------------------------------------------------------------

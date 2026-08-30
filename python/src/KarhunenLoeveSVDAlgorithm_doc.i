@@ -144,6 +144,13 @@ Run it!
 
 >>> algorithm.run()
 >>> result = algorithm.getResult()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KarhunenLoeveSVDAlgorithm-Halko2011Iterations* (:raw:`UnsignedInteger`, default: `2`)
+- *KarhunenLoeveSVDAlgorithm-Halko2011Margin* (:raw:`UnsignedInteger`, default: `2`)
 )RAW"
 
 // ---------------------------------------------------------------------
