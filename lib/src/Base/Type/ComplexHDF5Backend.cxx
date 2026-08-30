@@ -140,7 +140,14 @@ ComplexHDF5Backend::~ComplexHDF5Backend()
 #ifndef OPENTURNS_HAVE_HDF5
   return;
 #else
-  flush();
+  try
+  {
+    flush();
+  }
+  catch (...)
+  {
+    // Never throw from a destructor.
+  }
 
   delete reinterpret_cast<H5::DataSet *>(h5DatasetRe_);
   delete reinterpret_cast<H5::DataSet *>(h5DatasetIm_);
@@ -202,13 +209,21 @@ UnsignedInteger ComplexHDF5Backend::size() const
 
 Bool ComplexHDF5Backend::isShareable() const
 {
-  return true;
+  return false;
 }
 
 Pointer<ComplexDataContainer::StorageBackend> ComplexHDF5Backend::clone() const
 {
-  Pointer<ComplexDataContainer::StorageBackend> result(new ComplexHDF5Backend(*this));
-  return result;
+#ifndef OPENTURNS_HAVE_HDF5
+  throw NotYetImplementedException(HERE) << "ComplexHDF5Backend requires HDF5 support";
+#else
+  static UnsignedInteger counter = 0;
+  FileName tempFile = String("/tmp/ot_chdf5_") + String(OSS() << ++counter) + ".h5";
+
+  Pointer<ComplexHDF5Backend> p_copy(new ComplexHDF5Backend(tempFile, dataSetName_ + "_copy", size_, compressionLevel_));
+  std::copy(buffer_.begin(), buffer_.end(), p_copy->buffer_.begin());
+  return p_copy;
+#endif
 }
 
 /* Write pending modifications to disk: split complex values into re/im datasets */
