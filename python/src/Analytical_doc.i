@@ -101,6 +101,12 @@ Examples
 >>> myOptim = ot.AbdoRackwitz()
 >>> myOptim.setStartingPoint(myDistribution.getMean())
 >>> myAlgo = ot.Analytical(myOptim, myEvent)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Analytical-LimitStateToleranceFactor* (:raw:`Scalar`, default: `1.15`)
 )RAW"
 
 // ---------------------------------------------------------------------

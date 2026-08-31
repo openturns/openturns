@@ -70,6 +70,13 @@ Stepwise regression
 >>> algo_forward.setPenalty(penalty)
 >>> algo_forward.run()
 >>> result_forward = algo_forward.getResult()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelStepwiseAlgorithm-MaximumIterationNumber* (:raw:`UnsignedInteger`, default: `1000`)
+- *LinearModelStepwiseAlgorithm-Penalty* (:raw:`Scalar`, default: `2`)
 )RAW"
 
 // ---------------------------------------------------------------------

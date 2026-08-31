@@ -101,6 +101,14 @@ Examples
 >>> updatedGPRResult = algo.getGaussianProcessRegressionResult()
 >>> updatedOutputSample = updatedGPRResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *EfficientGlobalOptimization-DefaultAEITradeoff* (:raw:`Scalar`, default: `1`)
+- *EfficientGlobalOptimization-DefaultCorrelationLengthFactor* (:raw:`Scalar`, default: `1`)
+- *EfficientGlobalOptimization-DefaultOptimizationAlgorithm* (:raw:`String`, default: `Cobyla`)
 )RAW"
 
 // ---------------------------------------------------------------------

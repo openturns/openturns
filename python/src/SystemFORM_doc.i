@@ -63,6 +63,13 @@ Examples
 >>> result = algo.getResult()
 >>> form_results = result.getFORMResultCollection()
 >>> pf = result.getEventProbability()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SystemFORM-MaximalScaling* (:raw:`Scalar`, default: `1e-05`)
+- *SystemFORM-StartingScaling* (:raw:`Scalar`, default: `1e-13`)
 )RAW"
 
 // ---------------------------------------------------------------------

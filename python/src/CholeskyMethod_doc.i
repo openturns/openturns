@@ -33,7 +33,15 @@ Solves a linear least squares problem with Cholesky method:
 >>> method = ot.CholeskyMethod(A)
 >>> x = method.solve(y)
 >>> print(x)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CholeskyMethod-LargeCase* (:raw:`UnsignedInteger`, default: `128`)
+
 [3.5,1.4]"
+
 
 
 

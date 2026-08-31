@@ -35,6 +35,12 @@ residualsVariance : float
 See Also
 --------
 LinearModelAlgorithm
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelResult-DecompositionMethod* (:raw:`String`, default: `QR`)
 )RAW"
 
 // ---------------------------------------------------------------------

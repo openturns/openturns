@@ -75,6 +75,13 @@ Examples
 >>> myStandardEvent = ot.StandardEvent(myEvent)
 >>> myTest = ot.StrongMaximumTest(myStandardEvent, designPoint, 0.15, 3, 0.99)
 >>> myTest.run()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *StrongMaximumTest-DefaultDeltaPrecision* (:raw:`Scalar`, default: `1e-07`)
+- *StrongMaximumTest-Epsilon* (:raw:`Scalar`, default: `1e-10`)
 )RAW"
 
 // ---------------------------------------------------------------------

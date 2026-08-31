@@ -53,4 +53,12 @@ rhoBeg : float
 Parameters
 ----------
 rhoBeg : float
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Cobyla-DefaultRhoBeg* (:raw:`Scalar`, default: `0.1`)
+
     A reasonable initial change to the variables."
+

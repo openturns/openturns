@@ -418,4 +418,12 @@ R"RAW(Observation noise variance accessor.
 Parameters
 ----------
 noise : sequence of positive float
-    The noise variance :math:`\tau_k^2` of each output value.)RAW"
+    The noise variance :math:`\tau_k^2` of each output value.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GeneralLinearModelAlgorithm-MeanEpsilon* (:raw:`Scalar`, default: `1e-12`)
+- *GeneralLinearModelAlgorithm-OptimizeParameters* (:raw:`Bool`, default: `true`)
+
+)RAW"
