@@ -226,7 +226,7 @@ DataContainer::DataContainer(const DataContainer & other)
   , p_description_(other.p_description_)
 {
   refreshCache();
-  if (!isView())
+  if (!other.isView())
     backend_ = backend_->clone();
   refreshCache();
 }
@@ -242,7 +242,7 @@ DataContainer & DataContainer::operator = (const DataContainer & other)
     layout_ = other.layout_;
     p_description_ = other.p_description_;
     backend_ = other.backend_;
-    if (!isView())
+    if (!other.isView())
       backend_ = backend_->clone();
     refreshCache();
   }
