@@ -73,7 +73,7 @@ result : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::AlgebraEngine::Scale
-"Scale a vector.
+R"RAW(Scale a vector.
 
 Parameters
 ----------
@@ -85,12 +85,12 @@ alpha : float
 Returns
 -------
 result : DataContainer
-    :math:`\alpha x`."
+    :math:`\alpha x`.)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::AlgebraEngine::Axpy
-"Compute alpha * x + y.
+R"RAW(Compute alpha * x + y.
 
 Parameters
 ----------
@@ -104,7 +104,7 @@ y : DataContainer
 Returns
 -------
 result : DataContainer
-    :math:`\alpha x + y`."
+    :math:`\alpha x + y`.)RAW"
 
 // ---------------------------------------------------------------------
 
