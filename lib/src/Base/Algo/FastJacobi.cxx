@@ -63,22 +63,17 @@ namespace FastJacobi
     const Scalar ab = alpha + beta;
     Point gamma(n);
     Point b(n, 0.0);
-    gamma[0] = (beta * beta - alpha * alpha) / (ab * (ab + 2.0));
+    gamma[0] = (beta - alpha) / (ab + 2.0);
     for (UnsignedInteger j = 1; j < n; ++j)
     {
       const Scalar s = static_cast<Scalar>(j);
       const Scalar t = 2.0 * s + ab;
       gamma[j] = (beta * beta - alpha * alpha) / (t * (t + 2.0));
-      b[j] = 2.0 / (t + 2.0) * std::sqrt(s * (s + alpha) * (s + beta) * (s + ab) / ((t + 1.0) * (t - 1.0)));
-    }
-
-    // Initial guesses: Gatteschi-Pittaluga asymptotic formula (fg_core.py)
-    for (UnsignedInteger i = 0; i < n; ++i)
-    {
-      const Scalar s = static_cast<Scalar>(n - i);  // descending
-      const Scalar phi = M_PI * (s + alpha / 2.0 - 0.25) / (n + ab / 2.0);
-      nodes[i] = std::cos(phi) + ((0.25 - alpha * alpha) / std::tan(phi / 2.0)
-                 - (0.25 - beta * beta) * std::tan(phi / 2.0)) / (2.0 * std::pow(n + ab / 2.0, 2.0));
+      if (t == 1.0)
+        // canceled form for ab == -1, j == 1
+        b[j] = 2.0 / t * std::sqrt((s + alpha) * (s + beta) / (t + 1.0));
+      else
+        b[j] = 2.0 / t * std::sqrt(s * (s + alpha) * (s + beta) * (s + ab) / ((t + 1.0) * (t - 1.0)));
     }
 
     FastGaussQuadrature::PolishedSolve(&gamma[0], &b[0], n, nodes, weights);

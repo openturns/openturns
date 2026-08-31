@@ -60,29 +60,6 @@ namespace FastHermite
     for (UnsignedInteger j = 1; j < n; ++j)
       b[j] = std::sqrt(static_cast<Scalar>(j));
 
-    // Initial guesses: roots of Hermite polynomial from asymptotic formula
-    // Szego 6.32: edge nodes via Airy zeros, bulk by cosine interpolation
-    static const Scalar airyAbs[] = {
-      2.33811, 4.08795, 5.52056, 6.78671, 7.94413,
-      9.02265, 10.04017, 11.00852
-    };
-    const Scalar r = std::sqrt(2.0 * n + 1.0);
-    const Scalar s = std::pow(r, 1.0 / 3.0) / std::sqrt(2.0);
-    const UnsignedInteger na = std::min(static_cast<UnsignedInteger>(8), n / 2);
-    for (UnsignedInteger i = 0; i < na; ++i)
-    {
-      nodes[n - 1 - i] = r - s * airyAbs[i];
-      nodes[i] = -nodes[n - 1 - i];
-    }
-    const UnsignedInteger m = n - 2 * na;
-    if (m > 0)
-    {
-      const Scalar lo = nodes[na - 1];
-      const Scalar hi = nodes[n - na];
-      for (UnsignedInteger i = 0; i < m; ++i)
-        nodes[na + i] = lo + (hi - lo) * (i + 1.0) / (m + 1.0);
-    }
-
     FastGaussQuadrature::PolishedSolve(&gamma[0], &b[0], n, nodes, weights);
   }
 } // namespace FastHermite

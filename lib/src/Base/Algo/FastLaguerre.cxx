@@ -65,13 +65,6 @@ namespace FastLaguerre
     for (UnsignedInteger j = 1; j < n; ++j)
       b[j] = std::sqrt(j * (j + k - 1.0));
 
-    // Initial guesses: asymptotic formula (fg_core.py)
-    for (UnsignedInteger i = 0; i < n; ++i)
-    {
-      const Scalar s = static_cast<Scalar>(i + 1);
-      nodes[i] = M_PI * M_PI * std::pow(s - (k - 1.0) / 4.0 - 0.25, 2.0) / (4.0 * n + 2.0 * k);
-    }
-
     FastGaussQuadrature::PolishedSolve(&gamma[0], &b[0], n, nodes, weights);
   }
 } // namespace FastLaguerre
