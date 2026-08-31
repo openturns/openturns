@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
 #include <cmath>
 
 #include "openturns/CompositeDistribution.hxx"
@@ -103,13 +104,8 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   // Compute the variations
   for (UnsignedInteger i = 0; i < size - 1; ++i) increasing_[i] = values_[i + 1] > values[i];
   // Compute the range
-  Scalar xMin = values[0];
-  Scalar xMax = xMin;
-  for (UnsignedInteger i = 1; i < size; ++i)
-  {
-    xMin = std::min(xMin, values[i]);
-    xMax = std::max(xMax, values[i]);
-  }
+  const Scalar xMin = *std::min_element(values.begin(), values.end());
+  const Scalar xMax = *std::max_element(values.begin(), values.end());
   // Range based on interval arithmetic
   setRange(Interval(xMin, xMax));
 }
