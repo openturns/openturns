@@ -533,7 +533,7 @@ int main()
   Scalar logDet = AlgebraEngine::ComputeLogAbsoluteDeterminant(ALU, signDet);
   assert(std::abs(signDet - (-1.0)) < 1e-10);
   assert(std::abs(logDet - std::log(5.0)) < 1e-10);
-  std::cout << "  ComputeLogAbsoluteDeterminant: OK" << std::endl;
+  std::cout << "  ComputeLogAbsoluteDeterminant: OK (logDet=" << logDet << ")" << std::endl;
 
   // ComputeEigenValuesSymmetric
   DataContainer eigSym = AlgebraEngine::ComputeEigenValuesSymmetric(Ssym);
