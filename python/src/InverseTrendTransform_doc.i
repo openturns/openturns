@@ -46,3 +46,13 @@ myTrendTransform : :class:`~openturns.TrendTransform`
     The :math:`f_{trend}` function.
 
 "
+
+
+%feature("docstring") OT::InverseTrendTransform::getTrendFunction
+"Accessor to the trend function.
+
+Returns
+-------
+trend : :class:`~openturns.NumericalMathFunction`
+    The trend function"
+

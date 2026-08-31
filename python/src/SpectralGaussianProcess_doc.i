@@ -139,3 +139,13 @@ Returns
 specMod : :class:`~openturns.SpectralModel`
     The spectral model defining the process.
 "
+
+
+%feature("docstring") OT::SpectralGaussianProcess::AdaptGrid
+"Adapt the frequency grid.
+
+Returns
+-------
+grid : :class:`~openturns.RegularGrid`
+    The adapted frequency grid"
+

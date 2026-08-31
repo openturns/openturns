@@ -191,3 +191,23 @@ To get the surrogate model :math:`\metaModel` defined in :eq:`QuadraticLeastSqua
 
 %feature("docstring") OT::QuadraticLeastSquares::run
 "Perform the least squares approximation."
+
+
+%feature("docstring") OT::QuadraticLeastSquares::getDataIn
+"Accessor to the input data.
+
+Returns
+-------
+dataIn : :class:`~openturns.NumericalSample`
+    The input sample"
+
+
+
+%feature("docstring") OT::QuadraticLeastSquares::getDataOut
+"Accessor to the output data.
+
+Returns
+-------
+dataOut : :class:`~openturns.NumericalSample`
+    The output sample"
+

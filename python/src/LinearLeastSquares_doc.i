@@ -175,3 +175,23 @@ as a :class:`~openturns.Function`, use the :meth:`~openturns.MetaModelResult.get
 
 %feature("docstring") OT::LinearLeastSquares::run
 "Perform the least squares approximation."
+
+
+%feature("docstring") OT::LinearLeastSquares::getDataIn
+"Accessor to the input data.
+
+Returns
+-------
+dataIn : :class:`~openturns.NumericalSample`
+    The input sample"
+
+
+
+%feature("docstring") OT::LinearLeastSquares::getDataOut
+"Accessor to the output data.
+
+Returns
+-------
+dataOut : :class:`~openturns.NumericalSample`
+    The output sample"
+

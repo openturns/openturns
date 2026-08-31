@@ -49,3 +49,13 @@ Parameters
 ----------
 version : positive int
     Study version."
+
+
+%feature("docstring") OT::StorageManager::cleanSavedObject
+"Clean the saved object.
+
+Parameters
+----------
+id : int
+    The identifier of the object to clean"
+

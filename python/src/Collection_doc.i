@@ -212,3 +212,17 @@ This class uses the following entries of :class:`~openturns.ResourceMap`:
     Sub-collection of values at the selection indices."
 
 
+
+%feature("docstring") OT::Collection::find
+"Find the index of the first occurrence of a value.
+
+Parameters
+----------
+val : collection value type
+    The value to find
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the value.
+    The size of the collection if the value is not found."

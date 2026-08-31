@@ -5,6 +5,7 @@
 %}
 
 %copyctor OT::IndicesCollectionImplementation;
+%include IndicesCollectionImplementation_doc.i
 %include openturns/IndicesCollectionImplementation.hxx
 
 
