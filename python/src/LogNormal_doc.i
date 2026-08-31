@@ -79,6 +79,13 @@ Create it from :math:`(\mu, \sigma/\mu, \gamma)` and keep that parametrization f
 Draw a sample:
 
 >>> sample = myDist.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LogNormal-CharacteristicFunctionIntegrationNodes* (:raw:`UnsignedInteger`, default: `256`)
+- *LogNormal-CharacteristicFunctionSmallSigmaThreshold* (:raw:`Scalar`, default: `0.2`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -58,7 +58,13 @@ Compute bandwidth with optimal estimator:
 
 See also
 --------
-DistributionFactory, Histogram)RAW"
+DistributionFactory, Histogram
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *HistogramFactory-MaximumBinNumber* (:raw:`UnsignedInteger`, default: `1024`)
+)RAW"
 
 // ----------------------------------------------------------------------------
 

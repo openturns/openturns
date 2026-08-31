@@ -67,4 +67,10 @@ Create a squared exponential covariance function specifying the scale vector (am
 Create a  squared exponential covariance function specifying the scale vector and the amplitude :
 
 >>> covModel3 = ot.SquaredExponential([1.5, 2.5], [3.5])
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SquaredExponential-DefaultTheta* (:raw:`Scalar`, default: `1`)
 )RAW"

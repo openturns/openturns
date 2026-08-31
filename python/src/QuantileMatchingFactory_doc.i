@@ -86,7 +86,17 @@ An example with 4 parameters:
 >>> sample = distribution.getSample(10)
 >>> distribution = ot.Beta()
 >>> factory = ot.QuantileMatchingFactory(distribution, [0.01, 1/3, 2/3, 0.99])
->>> inf_distribution = factory.build(sample)  # doctest: +SKIP)RAW"
+>>> inf_distribution = factory.build(sample)  # doctest: +SKIP
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *QuantileMatchingFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
+- *QuantileMatchingFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
+- *QuantileMatchingFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
+- *QuantileMatchingFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
+- *QuantileMatchingFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -71,6 +71,13 @@ Create a distribution of dimension :math:`\inputDim = 2`:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Dirichlet-DefaultIntegrationSize* (:raw:`UnsignedInteger`, default: `50`)
+- *Dirichlet-DefaultSamplingSize* (:raw:`UnsignedInteger`, default: `500000`)
 )RAW"
 
 // ---------------------------------------------------------------------

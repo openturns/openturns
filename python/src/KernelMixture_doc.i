@@ -47,6 +47,12 @@ Create a *KernelMixture*:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KernelMixture-PDFCDFDiscretization* (:raw:`UnsignedInteger`, default: `1000`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -35,5 +35,14 @@ Returns
 dist : :class:`~openturns.Dirichlet`
     The estimated distribution as a :class:`openturns.Dirichlet`.
     
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DirichletFactory-MaximumIteration* (:raw:`UnsignedInteger`, default: `10`)
+- *DirichletFactory-ParametersEpsilon* (:raw:`Scalar`, default: `1e-12`)
+
     In the first usage, the default :class:`openturns.Dirichlet` distribution is built."
+
 

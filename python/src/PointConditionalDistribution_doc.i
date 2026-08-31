@@ -181,6 +181,12 @@ Examples
 >>> normal.setR(R)
 >>> distribution = ot.PointConditionalDistribution(normal, indices, values)
 >>> sample = distribution.getSample(2)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *PointConditionalDistribution-UseFullParameters* (:raw:`Bool`, default: `false`)
 )RAW"
 
 // ----------------------------------------------------------------------------

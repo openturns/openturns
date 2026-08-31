@@ -118,5 +118,14 @@ Returns
 flag : bool
     Flag telling if the marginal PDF is computed using an integration
     of the PDF of the underlying uniformOrderStatistics or if it is computed
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MarginalUniformOrderStatistics-LargeCaseCDF* (:raw:`UnsignedInteger`, default: `1000`)
+- *MarginalUniformOrderStatistics-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000000`)
+
     using finite differences of the underlying CDF."
+
 

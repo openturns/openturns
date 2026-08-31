@@ -19,7 +19,16 @@ where :math:`D` is the Debye function defined as
 
 See also
 --------
-DistributionFactory, FrankCopula)RAW"
+DistributionFactory, FrankCopula
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FrankCopulaFactory-AbsolutePrecision* (:raw:`Scalar`, default: `1e-14`)
+- *FrankCopulaFactory-MaximumIteration* (:raw:`UnsignedInteger`, default: `100`)
+- *FrankCopulaFactory-RelativePrecision* (:raw:`Scalar`, default: `1e-14`)
+- *FrankCopulaFactory-ResidualPrecision* (:raw:`Scalar`, default: `1e-14`)
+)RAW"
 
 
 // ---------------------------------------------------------------------

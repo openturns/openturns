@@ -71,7 +71,19 @@ Using the second constructor:
 >>> myContour.setLabels(labels)
 >>> myContour.setDrawLabels(drawLabels)
 >>> myGraph.add(myContour)
-)RAW"
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Contour-DefaultLevelsNumber*: default number of contour levels,
+- *Contour-DefaultIsFilled*: whether contour plots are filled by default,
+- *Contour-DefaultDrawLabels*: whether to draw labels on contour lines,
+- *Contour-DefaultColorMapNorm*: default color map normalization,
+- *Contour-DefaultColorMap*: default color map name,
+- *Contour-DefaultColorBarPosition*: default color bar position,
+- *Contour-DefaultExtend*: default extend mode for color bar,
+- *Contour-DefaultAlpha*: default transparency for contour plots.)RAW"
 
 
 // ---------------------------------------------------------------------

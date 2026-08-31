@@ -35,6 +35,12 @@ This is mathematically equivalent to a Poisson distribution with parameter :math
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DiscreteCompoundDistribution-DefaultEpsilon* (:raw:`Scalar`, default: `1e-12`)
 )RAW"
 
 // ---------------------------------------------------------------------

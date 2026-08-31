@@ -69,6 +69,12 @@ Create a  generalized exponential covariance function specifying the scale vecto
 Create a  generalized exponential covariance function specifying the scale vector, the amplitude and p:
 
 >>> covModel3 = ot.GeneralizedExponential([1.5, 2.5], [3.5], 1.5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GeneralizedExponential-DefaultTheta* (:raw:`Scalar`, default: `1`)
 )RAW"
 
 

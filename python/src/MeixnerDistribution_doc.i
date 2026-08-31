@@ -54,6 +54,16 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MeixnerDistribution-CDFDiscretization* (:raw:`UnsignedInteger`, default: `10000`)
+- *MeixnerDistribution-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-12`)
+- *MeixnerDistribution-MaximumConstraintError* (:raw:`Scalar`, default: `1e-12`)
+- *MeixnerDistribution-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-12`)
+- *MeixnerDistribution-MaximumRelativeError* (:raw:`Scalar`, default: `1e-12`)
 )RAW"
 
 // ---------------------------------------------------------------------

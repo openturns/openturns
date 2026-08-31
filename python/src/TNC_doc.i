@@ -43,7 +43,18 @@ Examples
 >>> algo = ot.TNC(problem)
 >>> algo.setStartingPoint([1.0] * 4)
 >>> algo.run()
->>> result = algo.getResult()"
+>>> result = algo.getResult()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TNC-DefaultAccuracy*: accuracy for the L-BFGS-B algorithm,
+- *TNC-DefaultEta*: direction finding accuracy,
+- *TNC-DefaultFmin*: function value for gradient check,
+- *TNC-DefaultRescale*: rescale factor for the gradient,
+- *TNC-DefaultStepmx*: maximum step length,
+- *TNC-DefaultMaxCGit*: maximum number of conjugate gradient iterations."
 
 // ---------------------------------------------------------------------
 

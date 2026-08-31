@@ -113,6 +113,17 @@ distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5
  [ -0.5  0    1    0    0   ]
  [  0    0    0    1   -0.2 ]
  [  0    0    0   -0.2  1   ]])
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Student-CDFScaleFactor* (:raw:`Scalar`, default: `4`)
+- *Student-MarginalIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `16`)
+- *Student-MaximumNumberOfPoints* (:raw:`UnsignedInteger`, default: `10000000`)
+- *Student-MinimumCDFEpsilon* (:raw:`Scalar`, default: `0.05`)
+- *Student-MinimumNumberOfPoints* (:raw:`UnsignedInteger`, default: `100000`)
+- *Student-SmallDimension* (:raw:`UnsignedInteger`, default: `6`)
 )RAW"
 
 // ---------------------------------------------------------------------

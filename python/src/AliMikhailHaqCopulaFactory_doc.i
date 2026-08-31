@@ -13,7 +13,13 @@ The parameter :math:`\Hat{\theta}_n` is solution of:
 
 See also
 --------
-DistributionFactory, AliMikhailHaqCopula)RAW"
+DistributionFactory, AliMikhailHaqCopula
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *AliMikhailHaqCopulaFactory-ThetaEpsilon* (:raw:`Scalar`, default: `1e-14`)
+)RAW"
 
 
 // ---------------------------------------------------------------------

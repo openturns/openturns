@@ -28,6 +28,15 @@ Create a *Mixture*:
 >>> collDist = [ot.Triangular(1.0, 2.0, 4.0), ot.Normal(-1.0, 1.0), ot.Uniform(5.0, 6.0)]
 >>> weight = [0.4, 1.0, 0.2]
 >>> myMixture = ot.Mixture(collDist, weight)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Mixture-LargeSize* (:raw:`UnsignedInteger`, default: `20`)
+- *Mixture-PDFCDFDiscretization* (:raw:`UnsignedInteger`, default: `1000`)
+- *Mixture-SmallSize* (:raw:`UnsignedInteger`, default: `50`)
+- *Mixture-SmallWeight* (:raw:`Scalar`, default: `1e-12`)
 )RAW"
 
 // ---------------------------------------------------------------------
