@@ -356,3 +356,36 @@ ott.assert_almost_equal(td.computeSequentialConditionalQuantile(ot.Point([0.3, 0
 x_rev = ot.Point([x[1], x[0]])
 r_cdf = td.computeSequentialConditionalCDF(x_rev, [1, 0])
 ott.assert_almost_equal(r_cdf, [td.computeSequentialConditionalCDF(x)[1], td.computeSequentialConditionalCDF(x_rev)[1]], 1e-4, 1e-4)
+
+# PiecewiseLinearDistribution simplification, including endpoint regression
+x_trunc = ot.Point([0.0, 1.0, 2.0, 3.0])
+y_trunc = ot.Point([0.1, 0.5, 0.3, 0.1])
+dist_trunc = otexp.PiecewiseLinearDistribution(x_trunc, y_trunc)
+
+# Left endpoint: truncate at original lower bound
+t_left = ot.TruncatedDistribution(dist_trunc, 0.0, 2.0)
+s_left = t_left.getSimplifiedVersion()
+for test_x in [0.0, 0.5, 1.0, 1.5, 2.0]:
+    ott.assert_almost_equal(s_left.computePDF(test_x), t_left.computePDF(test_x))
+    ott.assert_almost_equal(s_left.computeCDF(test_x), t_left.computeCDF(test_x))
+
+# Right endpoint: truncate at original upper bound
+t_right = ot.TruncatedDistribution(dist_trunc, 1.0, 3.0)
+s_right = t_right.getSimplifiedVersion()
+for test_x in [1.0, 1.5, 2.0, 2.5, 3.0]:
+    ott.assert_almost_equal(s_right.computePDF(test_x), t_right.computePDF(test_x))
+    ott.assert_almost_equal(s_right.computeCDF(test_x), t_right.computeCDF(test_x))
+
+# Both endpoints: truncate at original bounds
+t_both = ot.TruncatedDistribution(dist_trunc, 0.0, 3.0)
+s_both = t_both.getSimplifiedVersion()
+for test_x in [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]:
+    ott.assert_almost_equal(s_both.computePDF(test_x), t_both.computePDF(test_x))
+    ott.assert_almost_equal(s_both.computeCDF(test_x), t_both.computeCDF(test_x))
+
+# Interior truncation (not at original bounds)
+t_interior = ot.TruncatedDistribution(dist_trunc, 0.5, 2.5)
+s_interior = t_interior.getSimplifiedVersion()
+for test_x in [0.5, 1.0, 1.5, 2.0, 2.5]:
+    ott.assert_almost_equal(s_interior.computePDF(test_x), t_interior.computePDF(test_x))
+    ott.assert_almost_equal(s_interior.computeCDF(test_x), t_interior.computeCDF(test_x))

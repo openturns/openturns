@@ -557,6 +557,7 @@ ot_add_python_module(experimental experimental_module.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      MultivariateUniform.i MultivariateUniform_doc.i
                      MultivariateUniformFactory.i MultivariateUniformFactory_doc.i
+                     PiecewiseLinearDistribution.i PiecewiseLinearDistribution_doc.i
                      TruncatedDistributionFactory.i TruncatedDistributionFactory_doc.i
                      SquaredNormalFactory.i SquaredNormalFactory_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
