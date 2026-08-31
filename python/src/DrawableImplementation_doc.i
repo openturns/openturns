@@ -32,7 +32,18 @@ Examples
 >>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'upper right')
 >>> sample = ot.Normal([0.0,0.0], [1.0,1.0], ot.CorrelationMatrix(2)).getSample(10)
 >>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'A Cloud')
->>> myGraph.add(myCloud)"
+>>> myGraph.add(myCloud)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Drawable-AlternativePattern* (:raw:`String`, default: `S`)
+- *Drawable-DefaultFillStyle* (:raw:`String`, default: `solid`)
+- *Drawable-DefaultLineStyle* (:raw:`String`, default: `solid`)
+- *Drawable-DefaultLineWidth* (:raw:`Scalar`, default: `1`)
+- *Drawable-DefaultPattern* (:raw:`String`, default: `s`)"
+
 %enddef
 %feature("docstring") OT::DrawableImplementation
 OT_Drawable_doc

@@ -69,4 +69,15 @@ True
 >>> print(pie.IsValidColorPalette(['green','red','darkorange']))
 True
 >>> print(pie.IsValidColorPalette(['green','red','darkpink']))
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Pie-HorizontalMargin* (:raw:`Scalar`, default: `0.3`)
+- *Pie-LabelEllipsisSize* (:raw:`UnsignedInteger`, default: `20`)
+- *Pie-SmallValue* (:raw:`Scalar`, default: `0.0001`)
+- *Pie-VerticalMargin* (:raw:`Scalar`, default: `0.1`)
+
 False"
+

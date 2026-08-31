@@ -15,4 +15,12 @@ Examples
 1 : [ 0.25     0.333333 ]
 2 : [ 0.75     0.222222 ]
 3 : [ 0.125    0.888889 ]
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ReverseHaltonSequence-InitialSeed* (:raw:`UnsignedInteger`, default: `1`)
+
 4 : [ 0.625    0.555556 ]"
+
