@@ -250,6 +250,14 @@ void SQP::run()
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 
+    result_.setAbsoluteError(absoluteError);
+    result_.setRelativeError(relativeError);
+    result_.setResidualError(residualError);
+    result_.setConstraintError(constraintError);
+
+    result_.setOptimalPoint(currentPoint_);
+    result_.setOptimalValue(Point(1, currentLevelValue_));
+
     if (evaluationNumber > getMaximumCallsNumber())
     {
       stop = true;

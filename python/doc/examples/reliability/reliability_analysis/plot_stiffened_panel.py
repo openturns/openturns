@@ -70,7 +70,7 @@ optimAlgo.setMaximumCallsNumber(1000)
 optimAlgo.setMaximumAbsoluteError(1.0e-10)
 optimAlgo.setMaximumRelativeError(1.0e-10)
 optimAlgo.setMaximumResidualError(1.0e-10)
-optimAlgo.setMaximumConstraintError(1.0e-10)
+optimAlgo.setMaximumConstraintError(1.0e-8)
 
 # %%
 # Run FORM.
