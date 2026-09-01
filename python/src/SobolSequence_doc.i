@@ -38,8 +38,10 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``SobolSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)
-- ``SobolSequence-Scrambling`` (``String``, default: ``NONE``)
+- ``SobolSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``): initial seed of the sequence.
+- ``SobolSequence-Scrambling`` (``String``, default: ``NONE``): scrambling method used, among the possible values ``NONE`` and ``MULTIDIGIT``.
+- ``SobolSequence-MultidigitBits`` (``UnsignedInteger``, default: ``31``): number of bits of the multi-digit scrambling method.
+- ``SobolSequence-MultidigitMultiplier`` (``UnsignedInteger``, default: ``16807``): multiplier of the multi-digit scrambling method.
 )RAW"
 
 // ---------------------------------------------------------------------
