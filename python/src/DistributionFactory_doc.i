@@ -86,4 +86,7 @@ name : str
 Returns
 -------
 factory : :class:`~openturns.DistributionFactory`
-    An instance of the desired class."
+
+    An instance of the desired class.
+"
+

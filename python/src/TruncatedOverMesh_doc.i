@@ -22,8 +22,20 @@ UniformOverMesh
 
 Notes
 -----
-The sampling can be done using either a global rejection method or a local rejection method simplex by simplex. This is controlled by the entry *TtuncatedOverMesh-UseRejection* of :class:`~openturns.ResourceMap`. If it is set to *True*, the global rejection is used, otherwise the local rejection is used.
+The sampling can be done using either a global rejection method or a local rejection method simplex by simplex. This is controlled by the entry *TruncatedOverMesh-UseRejection* of :class:`~openturns.ResourceMap`. If it is set to *True*, the global rejection is used, otherwise the local rejection is used.
 If the mesh is significantly smaller than the support of the distribution, the second method is more efficient but it needs an offline computation of cost proportionnal to the number of simplices in the mesh.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TruncatedOverMesh-MarginalIntegrationNodesNumber* (`UnsignedInteger`, default: `64`): number of
+  integration nodes in each marginal direction,
+- *TruncatedOverMesh-MaximumIntegrationNodesNumber* (`UnsignedInteger`, default: `262144`): maximum number
+  of integration nodes over the mesh, which bounds the total computational cost,
+- *TruncatedOverMesh-OptimizationAlgorithm* (`String`, default: `TNC`): name of the optimization algorithm
+  used to compute the integration nodes. Other possible values are the names of the algorithms recognized
+  by :class:`~openturns.OptimizationAlgorithm`,
+- *TruncatedOverMesh-UseRejection* (`Bool`, default: `false`): whether the sampling uses the global rejection
+  method (`true`) or the local rejection method (`false`), as described above.
 
 Examples
 --------

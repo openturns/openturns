@@ -6,6 +6,13 @@ Notes
 The estimation is done by maximizing the likelihood of the sample,
 using the algorithm described in [minka2012]_.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DirichletFactory-MaximumIteration* (`UnsignedInteger`, default: `10`): maximum number of iterations
+  of the fixed point algorithm used by the likelihood maximization,
+- *DirichletFactory-ParametersEpsilon* (`Scalar`, default: `1e-12`): tolerance used as a stopping criterion
+  of the fixed point algorithm and as a lower bound for the estimated parameters.
+
 See also
 --------
 DistributionFactory, Dirichlet"
@@ -35,5 +42,8 @@ Returns
 dist : :class:`~openturns.Dirichlet`
     The estimated distribution as a :class:`openturns.Dirichlet`.
     
+
     In the first usage, the default :class:`openturns.Dirichlet` distribution is built."
+
+
 
