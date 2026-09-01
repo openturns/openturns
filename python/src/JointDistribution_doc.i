@@ -39,6 +39,12 @@ See also
 --------
 SklarCopula
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *JointDistribution-UseGenericCovarianceAlgorithm* (`Bool`, default: `false`)
+
 Examples
 --------
 Use a copula:
