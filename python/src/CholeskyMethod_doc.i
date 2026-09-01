@@ -19,6 +19,12 @@ indices : sequence of int
 design : 2-d sequence of float
     A priori known design matrix
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CholeskyMethod-LargeCase* (:raw:`UnsignedInteger`, default: `128`)
+
 See also
 --------
 LeastSquaresMethod, SVDMethod, QRMethod
@@ -34,6 +40,4 @@ Solves a linear least squares problem with Cholesky method:
 >>> x = method.solve(y)
 >>> print(x)
 [3.5,1.4]"
-
-
 

@@ -147,5 +147,13 @@ flag : bool
 Returns
 -------
 name : str
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussianLinearCalibration-Method* (:raw:`String`, default: `QR`)
+
     Name of least-squares method used for the resolution."
+
 

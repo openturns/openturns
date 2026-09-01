@@ -49,6 +49,13 @@ See Also
 --------
 CompoundDistribution, MetropolisHastings
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *PosteriorDistribution-OptimizationAlgorithm* (:raw:`String`, default: `Cobyla`)
+- *PosteriorDistribution-RatioUniformCandidateNumber* (:raw:`UnsignedInteger`, default: `10000`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -65,6 +72,7 @@ Examples
 >>> observations = observationsDistribution.getSample(observationsSize)
 >>> # Posterior distribution
 >>> distribution = ot.PosteriorDistribution(compound, observations)
+
 )RAW"
 
 // ---------------------------------------------------------------------

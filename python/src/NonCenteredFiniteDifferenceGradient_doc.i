@@ -25,6 +25,10 @@ finite-difference scheme:
     \frac{\partial f_j}{\partial x_i} \approx \frac{f_j(x + \epsilon_i) - f_j(x)}
                                                    {\epsilon_i}
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *NonCenteredFiniteDifferenceGradient-DefaultEpsilon* (:raw:`Scalar`, default: `1e-07`)
 Examples
 --------
 >>> import openturns as ot
@@ -35,4 +39,6 @@ Examples
 >>> inPoint = [1.0]*2
 >>> print(myGradient.gradient(inPoint))
 [[  0.841471 -0.907202  0.73945  ]
- [  0.536086 -0.907202 -1.09631  ]])RAW"
+ [  0.536086 -0.907202 -1.09631  ]]
+>>> #
+)RAW"

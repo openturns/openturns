@@ -51,4 +51,10 @@ sample of output observations,
 :math:`P \in \Nset` is the number of coefficients,
 :math:`\mat{\Psi} \in \Rset^{n \times P}` is the design matrix
 computed from the input sample *x* and
-:math:`\vect{a} \in \Rset^P` is the vector of coefficients.)RAW"
+:math:`\vect{a} \in \Rset^P` is the vector of coefficients.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *PenalizedLeastSquaresAlgorithm-UseNormal* (:raw:`Bool`, default: `false`)
+)RAW"

@@ -139,7 +139,15 @@ than one learning step. For now, only ADS-2 is implemented.
 
 See also
 --------
-EventSimulation)RAW"
+EventSimulation
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *AdaptiveDirectionalStratification-DefaultGamma* (:raw:`Scalar`, default: `0.5`)
+- *AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension* (:raw:`UnsignedInteger`, default: `3`)
+- *AdaptiveDirectionalStratification-DefaultNumberOfSteps* (:raw:`UnsignedInteger`, default: `2`)
+)RAW"
 
 
 // ---------------------------------------------------------------------

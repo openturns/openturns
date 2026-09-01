@@ -34,4 +34,14 @@ Returns
 dist : :class:`~openturns.Trapezoidal`
     The estimated distribution as a Trapezoidal.
     
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TrapezoidalFactory-MaximumIteration* (:raw:`UnsignedInteger`, default: `2000`)
+- *TrapezoidalFactory-RhoBeg* (:raw:`Scalar`, default: `0.1`)
+- *TrapezoidalFactory-RhoEnd* (:raw:`Scalar`, default: `1e-05`)
+
     In the first usage, the default Trapezoidal distribution is built."
+

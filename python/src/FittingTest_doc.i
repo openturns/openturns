@@ -554,6 +554,12 @@ The Monte Carlo algorithm can be configured with the following keys in
 - *FittingTest-LillieforsPrecision* defining the target standard
   deviation for the p-value estimate. Default value is 0.01.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FittingTest-ChiSquaredCheckSample* (:raw:`Bool`, default: `true`)
+- *FittingTest-ChiSquaredMinimumBinCount* (:raw:`UnsignedInteger`, default: `5`)
+
 Examples
 --------
 
@@ -580,4 +586,5 @@ class=TestResult name=Unnamed type=Lilliefors Normal binaryQualityMeasure=true p
 >>> quality
 True
 >>> ot.ResourceMap.Reset()
+
 )RAW"

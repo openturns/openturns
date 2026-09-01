@@ -76,6 +76,86 @@ Some algorithms support batch evaluation, see :meth:`setBlockSize`.
 Default parameters are available in the :class:`~openturns.ResourceMap` for
 each algorithm, refer to the correspondings keys in the Pagmo `documentation <https://esa.github.io/pagmo2/>`_.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Pagmo-InitialSeed* (:raw:`UnsignedInteger`, default: `0`): seed for the random number generator.
+- *Pagmo-memory* (:raw:`Bool`, default: `false`): whether to use memory in the algorithm.
+- *Pagmo-DefaultIncrementalEvolution* (:raw:`Bool`, default: `false`): default incremental evolution mode.
+- *Pagmo-gaco-ker* (:raw:`UnsignedInteger`, default: `63`): number of ants to evaluate the solution.
+- *Pagmo-gaco-q* (:raw:`Scalar`, default: `1.0`): input parameter for the pheromone evaluation.
+- *Pagmo-gaco-oracle* (:raw:`Scalar`, default: `0.0`): oracle parameter for the GACO algorithm.
+- *Pagmo-gaco-acc* (:raw:`Scalar`, default: `0.01`): convergence speed parameter.
+- *Pagmo-gaco-threshold* (:raw:`UnsignedInteger`, default: `1`): threshold for the pheromone.
+- *Pagmo-gaco-n_gen_mark* (:raw:`UnsignedInteger`, default: `7`): number of generations for the convergence check.
+- *Pagmo-gaco-impstop* (:raw:`UnsignedInteger`, default: `100000`): number of generations without improvement before stopping.
+- *Pagmo-gaco-focus* (:raw:`Scalar`, default: `0.0`): focus parameter for the GACO algorithm.
+- *Pagmo-de-F* (:raw:`Scalar`, default: `0.8`): DE scaling factor.
+- *Pagmo-de-CR* (:raw:`Scalar`, default: `0.9`): DE crossover probability.
+- *Pagmo-de-variant* (:raw:`UnsignedInteger`, default: `2`): DE variant.
+- *Pagmo-sade-variant* (:raw:`UnsignedInteger`, default: `2`): SADE variant.
+- *Pagmo-sade-variant_adptv* (:raw:`UnsignedInteger`, default: `1`): SADE adaptive variant.
+- *Pagmo-de1220-variant_adptv* (:raw:`UnsignedInteger`, default: `1`): de1220 adaptive variant.
+- *Pagmo-ihs-phmcr* (:raw:`Scalar`, default: `0.85`): IHS pitch adjusting rate.
+- *Pagmo-ihs-ppar_min* (:raw:`Scalar`, default: `0.35`): IHS minimum pitch adjustment.
+- *Pagmo-ihs-ppar_max* (:raw:`Scalar`, default: `0.99`): IHS maximum pitch adjustment.
+- *Pagmo-ihs-bw_min* (:raw:`Scalar`, default: `1e-05`): IHS minimum bandwidth.
+- *Pagmo-ihs-bw_max* (:raw:`Scalar`, default: `1.0`): IHS maximum bandwidth.
+- *Pagmo-pso-omega* (:raw:`Scalar`, default: `0.7298`): PSO inertia weight.
+- *Pagmo-pso-eta1* (:raw:`Scalar`, default: `2.05`): PSO personal learning factor.
+- *Pagmo-pso-eta2* (:raw:`Scalar`, default: `2.05`): PSO social learning factor.
+- *Pagmo-pso-max_vel* (:raw:`Scalar`, default: `0.5`): PSO maximum velocity.
+- *Pagmo-pso-variant* (:raw:`UnsignedInteger`, default: `5`): PSO variant.
+- *Pagmo-pso-neighb_type* (:raw:`UnsignedInteger`, default: `2`): PSO neighbor topology type.
+- *Pagmo-pso-neighb_param* (:raw:`UnsignedInteger`, default: `4`): PSO neighbor topology parameter.
+- *Pagmo-sga-cr* (:raw:`Scalar`, default: `0.9`): SGA crossover probability.
+- *Pagmo-sga-eta_c* (:raw:`Scalar`, default: `1.0`): SGA crossover distribution index.
+- *Pagmo-sga-m* (:raw:`Scalar`, default: `0.01`): SGA mutation probability.
+- *Pagmo-sga-param_m* (:raw:`Scalar`, default: `1.0`): SGA mutation distribution index.
+- *Pagmo-sga-param_s* (:raw:`UnsignedInteger`, default: `2`): SGA tournament selection parameter.
+- *Pagmo-sga-crossover* (:raw:`String`, default: `exponential`): SGA crossover type.
+- *Pagmo-sga-mutation* (:raw:`String`, default: `polynomial`): SGA mutation type.
+- *Pagmo-sga-selection* (:raw:`String`, default: `tournament`): SGA selection type.
+- *Pagmo-simulated_annealing-Ts* (:raw:`Scalar`, default: `10.0`): SA starting temperature.
+- *Pagmo-simulated_annealing-Tf* (:raw:`Scalar`, default: `0.1`): SA final temperature.
+- *Pagmo-simulated_annealing-n_T_adj* (:raw:`UnsignedInteger`, default: `10`): SA temperature adjustment step.
+- *Pagmo-simulated_annealing-n_range_adj* (:raw:`UnsignedInteger`, default: `1`): SA range adjustment step.
+- *Pagmo-simulated_annealing-bin_size* (:raw:`UnsignedInteger`, default: `20`): SA bin size.
+- *Pagmo-simulated_annealing-start_range* (:raw:`Scalar`, default: `1.0`): SA initial range.
+- *Pagmo-bee_colony-limit* (:raw:`UnsignedInteger`, default: `20`): ABC limit parameter.
+- *Pagmo-cmaes-cc* (:raw:`Scalar`, default: `-1.0`): CMA-ES cc parameter.
+- *Pagmo-cmaes-cs* (:raw:`Scalar`, default: `-1.0`): CMA-ES cs parameter.
+- *Pagmo-cmaes-c1* (:raw:`Scalar`, default: `-1.0`): CMA-ES c1 parameter.
+- *Pagmo-cmaes-cmu* (:raw:`Scalar`, default: `-1.0`): CMA-ES cmu parameter.
+- *Pagmo-cmaes-sigma0* (:raw:`Scalar`, default: `0.5`): CMA-ES initial step size.
+- *Pagmo-xnes-eta_mu* (:raw:`Scalar`, default: `-1.0`): xNES eta_mu parameter.
+- *Pagmo-xnes-eta_sigma* (:raw:`Scalar`, default: `-1.0`): xNES eta_sigma parameter.
+- *Pagmo-xnes-eta_b* (:raw:`Scalar`, default: `-1.0`): xNES eta_b parameter.
+- *Pagmo-xnes-sigma0* (:raw:`Scalar`, default: `-1.0`): xNES initial step size.
+- *Pagmo-nsga2-cr* (:raw:`Scalar`, default: `0.95`): NSGA2 crossover probability.
+- *Pagmo-nsga2-eta_c* (:raw:`Scalar`, default: `10.0`): NSGA2 crossover distribution index.
+- *Pagmo-nsga2-m* (:raw:`Scalar`, default: `0.01`): NSGA2 mutation probability.
+- *Pagmo-nsga2-eta_m* (:raw:`Scalar`, default: `50.0`): NSGA2 mutation distribution index.
+- *Pagmo-moead-weight_generation* (:raw:`String`, default: `grid`): MOEAD weight generation method.
+- *Pagmo-moead-decomposition* (:raw:`String`, default: `tchebycheff`): MOEAD decomposition method.
+- *Pagmo-moead-neighbours* (:raw:`UnsignedInteger`, default: `20`): MOEAD neighbourhood size.
+- *Pagmo-moead-CR* (:raw:`Scalar`, default: `1.0`): MOEAD crossover probability.
+- *Pagmo-moead-F* (:raw:`Scalar`, default: `0.5`): MOEAD scaling factor.
+- *Pagmo-moead-eta_m* (:raw:`Scalar`, default: `20.0`): MOEAD mutation distribution index.
+- *Pagmo-moead-realb* (:raw:`Scalar`, default: `0.9`): MOEAD probability of using polynomial mutation.
+- *Pagmo-moead-limit* (:raw:`UnsignedInteger`, default: `2`): MOEAD maximum number of replacements.
+- *Pagmo-moead-preserve_diversity* (:raw:`Bool`, default: `true`): MOEAD preserve diversity flag.
+- *Pagmo-mhaco-ker* (:raw:`UnsignedInteger`, default: `63`): MHACO number of ants.
+- *Pagmo-mhaco-q* (:raw:`Scalar`, default: `1.0`): MHACO pheromone parameter.
+- *Pagmo-mhaco-threshold* (:raw:`UnsignedInteger`, default: `1`): MHACO threshold.
+- *Pagmo-mhaco-n_gen_mark* (:raw:`UnsignedInteger`, default: `7`): MHACO convergence check generations.
+- *Pagmo-mhaco-focus* (:raw:`Scalar`, default: `0.0`): MHACO focus parameter.
+- *Pagmo-nspso-omega* (:raw:`Scalar`, default: `0.6`): NSPSO inertia weight.
+- *Pagmo-nspso-c1* (:raw:`Scalar`, default: `2.0`): NSPSO personal learning factor.
+- *Pagmo-nspso-c2* (:raw:`Scalar`, default: `2.0`): NSPSO social learning factor.
+- *Pagmo-nspso-chi* (:raw:`Scalar`, default: `1.0`): NSPSO velocity parameter.
+- *Pagmo-nspso-v_coeff* (:raw:`Scalar`, default: `0.5`): NSPSO velocity coefficient.
+- *Pagmo-nspso-leader_selection_range* (:raw:`UnsignedInteger`, default: `60`): NSPSO leader selection range.
+
 Examples
 --------
 Define an optimization problem to find the minimum of the Rosenbrock function:

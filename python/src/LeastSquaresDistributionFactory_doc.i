@@ -24,6 +24,14 @@ The estimator :math:`\hat{\theta}` minimizes the mean square error between
 
     \hat{\theta} = \argmin_{\vect{\theta} \in \Theta} \sum_{i=1}^{n} \left( F_{\vect{\theta}}(\vect{x}_i) - F_{\hat{\vect{\theta}}}(\vect{x}_i) \right) ^2
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LeastSquaresDistributionFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
+- *LeastSquaresDistributionFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
 See also
 --------
 DistributionFactory
@@ -36,6 +44,7 @@ Examples
 >>> sample = distribution.getSample(10)
 >>> factory = ot.LeastSquaresDistributionFactory(ot.Normal())
 >>> inf_distribution = factory.build(sample)
+
 )RAW"
 
 // ---------------------------------------------------------------------
