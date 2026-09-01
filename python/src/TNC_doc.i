@@ -30,6 +30,15 @@ fmin : float
 rescale : float
     f scaling factor (in log10) used to trigger f value rescaling.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TNC-DefaultAccuracy* (`Scalar`, default: `1e-4`): accuracy for the TNC algorithm,
+- *TNC-DefaultEta* (`Scalar`, default: `0.25`): severity of the line search,
+- *TNC-DefaultFmin* (`Scalar`, default: `1.0`): minimum function value estimate,
+- *TNC-DefaultRescale* (`Scalar`, default: `1.3`): scaling factor (in log10) used to trigger f value rescaling,
+- *TNC-DefaultStepmx* (`Scalar`, default: `10.0`): maximum step for the line search,
+- *TNC-DefaultMaxCGit* (`UnsignedInteger`, default: `50`): maximum number of conjugate gradient iterations.
+
 See also
 --------
 AbdoRackwitz, SQP, Cobyla, NLopt
@@ -43,7 +52,8 @@ Examples
 >>> algo = ot.TNC(problem)
 >>> algo.setStartingPoint([1.0] * 4)
 >>> algo.run()
->>> result = algo.getResult()"
+>>> result = algo.getResult()
+"
 
 // ---------------------------------------------------------------------
 
