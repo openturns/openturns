@@ -24,7 +24,7 @@ OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 20
 # coverage
 gcov `find lib/src/ -name "*.gcno"`
 time lcov --capture --directory . --output-file coverage.info --include "*.cxx" --exclude "*_wrap.cxx" -j 4
-genhtml --ignore-errors inconsistent,corrupt --output-directory coverage coverage.info
+genhtml --ignore-errors inconsistent --output-directory coverage coverage.info
 cp -v coverage.info coverage
 
 if test -n "${UID_GID}"
