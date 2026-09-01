@@ -85,6 +85,7 @@ Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
   integration in each direction (only active when a quadrature method is applied),
 - The integer entry *CompoundDistribution-MarginalIntegrationNodesNumber* specifies the maximum number of nodes used to 
   the multivariate integration (only active when a quadrature method is applied).
+- *CompoundDistribution-MaximumIntegrationNodesNumber* (``UnsignedInteger``, default: `100000`)
 
 Examples
 --------

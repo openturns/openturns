@@ -80,7 +80,16 @@ experiments:
 >>> print(sample - sample[0, 0])
 0 : [ 0 1 ]
 1 : [ 2 3 ]
-2 : [ 4 5 ])RAW"
+2 : [ 4 5 ]
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Sample-PrintEllipsisSize* (``UnsignedInteger``, default: `3`)
+- *Sample-PrintEllipsisThreshold* (``UnsignedInteger``, default: `1000`)
+- *Sample-SmallKendallTau* (``UnsignedInteger``, default: `23`)
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -880,6 +889,27 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Sample::find
+"Find the index of a point in the sample.
+
+Parameters
+----------
+point : sequence of float
+    The point to search for.
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the point in the sample.
+    Returns the size of the sample if the point is not found.
+
+Notes
+-----
+Unlike :meth:`index`, this method does not throw when the point is not found.
+Instead, it returns :meth:`getSize`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::getDescription
 "Accessor to the componentwise description.
 
@@ -1009,7 +1039,7 @@ Examples
 Parameters
 ----------
 description : sequence of str
-    Description of the sample's components.
+    Description of the sample components.
 
 See Also
 --------
@@ -1344,3 +1374,4 @@ Examples
 0 : [ 0 2 2 ]
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"
+

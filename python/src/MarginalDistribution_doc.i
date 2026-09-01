@@ -96,5 +96,15 @@ Returns
 flag : bool
     Flag telling if the marginal PDF is computed using an integration
     of the PDF of the underlying distribution or if it is computed
-    using finite differences of the underlying CDF."
+    using finite differences of the underlying CDF.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MarginalDistribution-MaximumError* (``Scalar``, default: `1e-07`)
+- *MarginalDistribution-MaximumSubIntervals* (``UnsignedInteger``, default: `128`)
+- *MarginalDistribution-Rule* (``String``, default: `G15K31`)
+- *MarginalDistribution-UsePDF* (``Bool``, default: `true`)"
+
 

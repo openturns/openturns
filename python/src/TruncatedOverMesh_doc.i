@@ -25,6 +25,13 @@ Notes
 The sampling can be done using either a global rejection method or a local rejection method simplex by simplex. This is controlled by the entry *TtuncatedOverMesh-UseRejection* of :class:`~openturns.ResourceMap`. If it is set to *True*, the global rejection is used, otherwise the local rejection is used.
 If the mesh is significantly smaller than the support of the distribution, the second method is more efficient but it needs an offline computation of cost proportionnal to the number of simplices in the mesh.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *TruncatedOverMesh-MarginalIntegrationNodesNumber* (``UnsignedInteger``, default: `64`)
+- *TruncatedOverMesh-MaximumIntegrationNodesNumber* (``UnsignedInteger``, default: `262144`)
+- *TruncatedOverMesh-OptimizationAlgorithm* (``String``, default: `TNC`)
+- *TruncatedOverMesh-UseRejection* (``Bool``, default: `false`)
+
 Examples
 --------
 Create a distribution:

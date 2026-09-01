@@ -18,10 +18,15 @@ likelihood method:
 where :math:`\mat{\tau}` is the sample Kendall tau matrix and :math:`\Hat{\nu}`
 maximizes the reduced likelihood associated to :class:`~openturns.Student` with
 parameters :math:`(\Hat{\nu}, \Hat{\mu}, \hat{\sigma}(\Hat{\nu}), \Hat{\mat{R}})`.
-    
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *StudentFactory-NuMax* (``Scalar``, default: `1000`)
+
 See also
 --------
-DistributionFactory, Student)RAW"
+DistributionFactory, Student
+)RAW"
 
 // ---------------------------------------------------------------------
 

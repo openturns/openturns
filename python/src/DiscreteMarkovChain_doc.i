@@ -41,6 +41,9 @@ The transition matrix :math:`\cM` of the process is square, and its dimension :m
     
 The origin of the process must be provided either as a deterministic value :math:`x_0 \in [\![ 0,...,p-1]\!]`, or as a probability distribution. In this case, the distribution of :math:`X_0` must be 1D, and its support must be a part of :math:`[\![ 0,...,p-1]\!]`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DiscreteMarkovChain-ProbabilitySumPrecision* (``Scalar``, default: `1e-06`)
 
 Examples
 --------

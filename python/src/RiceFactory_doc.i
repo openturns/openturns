@@ -33,6 +33,15 @@ Returns
 -------
 dist : :class:`~openturns.Rice`
     The estimated distribution as a Rice.
-    
-    In the first usage, the default Rice distribution is built."
+    In the first usage, the default Rice distribution is built.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *RiceFactory-AbsolutePrecision* (``Scalar``, default: `1e-12`)
+- *RiceFactory-MaximumIteration* (``UnsignedInteger``, default: `10`)
+- *RiceFactory-RelativePrecision* (``Scalar``, default: `1e-12`)
+- *RiceFactory-ResidualPrecision* (``Scalar``, default: `1e-12`)"
+
 

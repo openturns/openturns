@@ -36,6 +36,14 @@ next state of the chain as follows: denoting the current state by
 :math:`\vect{c}^k = \vect{\theta}^k +\vect{\delta}^k` where the
 distribution of :math:`\vect{\delta}^k` is the provided *proposal* distribution.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor* (``Scalar``, default: `1.2`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationLowerBound* (``Scalar``, default: `0.117`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationPeriod* (``UnsignedInteger``, default: `30`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor* (``Scalar``, default: `0.8`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationUpperBound* (``Scalar``, default: `0.468`)
+
 See Also
 --------
 Gibbs, RandomVectorMetropolisHastings

@@ -69,4 +69,11 @@ pos : str
 Returns
 -------
 isValid : bool
-    Whether the position is a valid identifier"
+    Whether the position is a valid identifier.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Text-DefaultTextSize* (``Scalar``, default: `0.75`)"
+

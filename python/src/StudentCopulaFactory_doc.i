@@ -20,6 +20,10 @@ the optimization step:
 - `StudentCopulaFactory-DefaultOptimizationAlgorithm`
 - `StudentCopulaFactory-MaximumEvaluationNumber`
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *StudentCopulaFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
+
 See also
 --------
 DistributionFactory, StudentCopula

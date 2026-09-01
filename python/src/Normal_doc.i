@@ -62,6 +62,13 @@ Notes
 -----
 In the first usage, a scalar centered and unit-variance normal distribution is built.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Normal-MarginalIntegrationNodesNumber* (``UnsignedInteger``, default: `16`)
+- *Normal-MaximumNumberOfPoints* (``UnsignedInteger``, default: `10000000`)
+- *Normal-MinimumCDFEpsilon* (``Scalar``, default: `0.05`)
+- *Normal-MinimumNumberOfPoints* (``UnsignedInteger``, default: `100000`)
+
 Examples
 --------
 Create a distribution:
