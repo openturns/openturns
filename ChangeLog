@@ -56,6 +56,13 @@
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
+==== New features ====
+ * The unary subtraction operator on Function and FunctionImplementation is now available
+ * The multiplication of a function by a scalar is now available
+ * The division operator between functions with the same input dimension is now available; the right operand must have 1D output, the left operand can have any output dimension
+ * Adding, subtracting or negating functions whose implementations are linear combinations now returns a flattened linear combination: the weights of identical atoms are summed and nested linear combinations are flattened
+ * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
+
 === Documentation ===
  * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation

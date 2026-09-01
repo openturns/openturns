@@ -115,11 +115,32 @@ public:
   /** Multiplication of two 1D output functions with the same input dimension */
   virtual ProductFunction operator * (const Function & right) const;
 
+  /** Multiplication of a function and a 1D output function implementation with the same input dimension */
+  virtual ProductFunction operator * (const FunctionImplementation & right) const;
+
+  /** Multiplication of a function by a scalar */
+  virtual Function operator * (const Scalar & scalar) const;
+
+  /** Division of two functions with the same input dimension; right must have 1D output */
+  virtual Function operator / (const Function & right) const;
+
+  /** Division of a function and a function implementation with the same input dimension; right must have 1D output */
+  virtual Function operator / (const FunctionImplementation & right) const;
+
   /** Addition of two functions with the same input and output dimensions */
   virtual Function operator + (const Function & right) const;
 
+  /** Addition of a function implementation with the same input and output dimensions */
+  virtual Function operator + (const FunctionImplementation & right) const;
+
   /** Soustraction of two functions with the same input and output dimensions */
   virtual Function operator - (const Function & right) const;
+
+  /** Soustraction of a function implementation with the same input and output dimensions */
+  virtual Function operator - (const FunctionImplementation & right) const;
+
+  /** Negation of a function */
+  virtual Function operator - () const;
 
   /** Operator () */
   Point operator() (const Point & inP) const;
@@ -237,6 +258,10 @@ public:
 
 }; /* class Function */
 
+
+/** Product of a scalar by a function */
+OT_API Function operator * (const Scalar & scalar,
+                             const Function & function);
 
 END_NAMESPACE_OPENTURNS
 
