@@ -2392,3 +2392,34 @@ Examples
 >>> L[0, 0] = 1.0
 >>> p = ot.DistFunc.pStudentND([-1.0], [1.0], L, 5.0)
 )RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dNonCentralStudentAlt0
+R"RAW(PDF of the non-central Student distribution for :math:`\nu = 0`.
+
+This is an alternative algorithm used when the degrees of freedom
+parameter is zero.
+
+Parameters
+----------
+nu : float
+    Degrees of freedom. Must be 0 for this method.
+delta : float
+    Non-centrality parameter.
+x : float
+    Quantile.
+precision : float, optional
+    Precision of the integration. Default is 1e-12.
+maximumIteration : int, optional
+    Maximum number of iterations. Default is 50.
+
+Returns
+-------
+pdf : float
+    The value of the PDF.
+
+See Also
+--------
+DistFunc.dNonCentralStudent
+)RAW"

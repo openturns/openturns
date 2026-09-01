@@ -270,37 +270,6 @@ OT_Function_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Function_getImplementation_doc
-"Accessor to the evaluation, gradient and hessian functions.
-
-Returns
--------
-function : :class:`~openturns.FunctionImplementation`
-    A copy of the evaluation, gradient and hessian functions.
-
-Examples
---------
->>> import openturns as ot
->>> f = ot.SymbolicFunction(['x1', 'x2'],
-...                         ['2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6'])
->>> print(f.getImplementation())
-input  : [x1,x2]
-output : [y0]
-evaluation : 2 * x1^2 + x1 + 8 * x2 + 4 * cos(x1) * x2 + 6
-gradient   :
-| d(y) / d(x1) = (1)+(4*x1)+((-4*((x2)*(sin(x1)))))
-| d(y) / d(x2) = (8)+((4*(cos(x1)))) 
-
-hessian    :
-|    d^2(y) / d(x1)^2 = (4)+((-4*((x2)*(cos(x1)))))
-| d^2(y) / d(x2)d(x1) = (-4*(sin(x1))) 
-|    d^2(y) / d(x2)^2 = 0"
-%enddef
-%feature("docstring") OT::FunctionImplementation::getImplementation
-OT_Function_getImplementation_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Function_getEvaluation_doc
 "Accessor to the evaluation function.
 
