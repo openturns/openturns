@@ -91,6 +91,13 @@ where :math:`m` is half the number of points of the time grid of the process sam
 
 The *BIC* criterion leads to a model that gives a better prediction. The *AIC* criterion selects the best model that fits the given data. The :math:`AIC_c` criterion improves the previous one by penalizing a too high order that would artificially fit to the data.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *WhittleFactory-DefaultMaximumCallsNumber* (`UnsignedInteger`, default: `2000`)
+- *WhittleFactory-DefaultRhoBeg* (`Scalar`, default: `0.1`)
+- *WhittleFactory-DefaultRhoEnd* (`Scalar`, default: `1e-10`)
+- *WhittleFactory-DefaultStartingPointScale* (`Scalar`, default: `1`)
+- *WhittleFactory-RootEpsilon* (`Scalar`, default: `1e-06`)
 
 Examples
 --------
@@ -131,7 +138,8 @@ p = [1, 2, 4] and q = [4,5,6]:
 To get the quantified AICc, AIC and BIC criteria:
 
 >>> myARMA_42, myCriterion = myFactory_42.buildWithCriteria(ot.TimeSeries(myTimeSeries))
->>> AICc, AIC, BIC = myCriterion[0:3])RAW"
+>>> AICc, AIC, BIC = myCriterion[0:3]
+)RAW"
 
 // ---------------------------------------------------------------------
 
