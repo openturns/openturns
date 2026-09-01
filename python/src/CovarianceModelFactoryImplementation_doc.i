@@ -7,7 +7,20 @@ This class is an interface class for all the classes that build covariance model
 
 See also
 --------
-StationaryCovarianceModelFactory, NonStationaryCovarianceModelFactory"
+StationaryCovarianceModelFactory, NonStationaryCovarianceModelFactory
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CovarianceModel-DefaultNuggetFactor* (:raw:`Scalar`, default: `1e-12`)"
+
+
+
+
+
+
+
 %enddef
 %feature("docstring") OT::CovarianceModelFactoryImplementation
 OT_CovarianceModelFactory_doc

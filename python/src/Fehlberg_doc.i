@@ -132,4 +132,11 @@ Examples
 >>> nt = 100
 >>> timeGrid = [(i**2.0) / (nt - 1.0)**2.0 for i in range(nt)]
 >>> result = solver.solve(Y0, timeGrid)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Fehlberg-InitialStep* (:raw:`Scalar`, default: `1e-07`)
+- *Fehlberg-MinimalStep* (:raw:`Scalar`, default: `1e-07`)
 )RAW"

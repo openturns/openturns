@@ -65,6 +65,26 @@ be performed:
    sensibly from standard dense representation (for instance when computing a
    Cholesky or LU decomposition).
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *HMatrix-ForceSequential*: force sequential computation.
+- *HMatrix-AdmissibilityFactor*: admissibility factor for H-matrix blocks.
+- *HMatrix-AssemblyEpsilon*: epsilon for matrix assembly compression.
+- *HMatrix-LargestEigenValueRelativeError*: relative error for eigenvalue computation.
+- *HMatrix-RegularizationEpsilon*: regularization epsilon.
+- *HMatrix-RecompressionEpsilon*: epsilon for recompression.
+- *HMatrix-ValidationError*: validation error threshold.
+- *HMatrix-ClusteringAlgorithm*: clustering algorithm name.
+- *HMatrix-CompressionMethod*: compression method name.
+- *HMatrix-FactorizationMethod*: factorization method name.
+- *HMatrix-FactorizationIterations*: number of factorization iterations.
+- *HMatrix-LargestEigenValueIterations*: number of eigenvalue iterations.
+- *HMatrix-MaxLeafSize*: maximum leaf size for cluster tree.
+- *HMatrix-ValidationDump*: validation dump level.
+- *HMatrix-ValidationRerun*: validation rerun count.
+
 See also
 --------
 HMatrixFactory, HMatrixParameters"
@@ -142,38 +162,6 @@ symmetry : str
 %enddef
 %feature("docstring") OT::HMatrixImplementation::assemble
 OT_HMatrix_assemble_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_HMatrix_assembleReal_doc
-"Assemble matrix.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a float
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleReal
-OT_HMatrix_assembleReal_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_HMatrix_assembleTensor_doc
-"Assemble matrix by block.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a Matrix
-outputDimension : int
-    Block dimension
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleTensor
-OT_HMatrix_assembleTensor_doc
 
 // ---------------------------------------------------------------------
 

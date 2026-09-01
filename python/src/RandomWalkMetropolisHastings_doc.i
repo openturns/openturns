@@ -76,6 +76,16 @@ We sample from the posterior.
 >>> linkFunction = ot.ParametricFunction(fun, [2], [0.0])
 >>> sampler.setLikelihood(conditional, observations, linkFunction, covariates)
 >>> alpha_beta = sampler.getSample(10)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor* (:raw:`Scalar`, default: `1.2`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationLowerBound* (:raw:`Scalar`, default: `0.117`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationPeriod* (:raw:`UnsignedInteger`, default: `30`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor* (:raw:`Scalar`, default: `0.8`)
+- *RandomWalkMetropolisHastings-DefaultAdaptationUpperBound* (:raw:`Scalar`, default: `0.468`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -17,7 +17,16 @@ We use the following estimator:
 
 See also
 --------
-DistributionFactory, Polya)RAW"
+DistributionFactory, Polya
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *PolyaFactory-AbsolutePrecision* (:raw:`Scalar`, default: `1e-12`)
+- *PolyaFactory-MaximumIteration* (:raw:`UnsignedInteger`, default: `50`)
+- *PolyaFactory-RelativePrecision* (:raw:`Scalar`, default: `1e-12`)
+- *PolyaFactory-ResidualPrecision* (:raw:`Scalar`, default: `1e-12`)
+)RAW"
 
 
 // ---------------------------------------------------------------------
