@@ -80,12 +80,12 @@ algo = otexp.SparseExpansion(
     inputSample, outputSample, distribution,
     productBasis, basisSize, methodName
 )
-algo.setActiveFunctions(range(3))
+algo.setActiveFunctions(ot.Indices(range(3)))
 ott.assert_almost_equal(algo.getActiveFunctions(), ot.Indices([0, 1, 2]))
 print("setActiveFunctions/getActiveFunctions: OK")
 
 # Check setActiveFunctions ensures index 0 is always present
-algo.setActiveFunctions([1, 2, 3])
+algo.setActiveFunctions(ot.Indices([1, 2, 3]))
 ott.assert_almost_equal(algo.getActiveFunctions(), ot.Indices([1, 2, 3, 0]))
 print("setActiveFunctions ensures index 0: OK")
 
