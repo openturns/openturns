@@ -51,6 +51,12 @@ Examples
 >>> basis = ot.Basis(func_coll)
 >>> proxy = ot.DesignProxy(X, func_coll)
 >>> proxy2 = ot.DesignProxy(X, basis)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DesignProxy-DefaultCacheSize* (:raw:`UnsignedInteger`, default: `16777216`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -48,6 +48,12 @@ Examples
 >>> size = 100
 >>> myProcess = ot.GaussianProcess(covarianceModel, meshGrid)
 >>> myProcess.setSamplingMethod(myProcess.CHOLESKY)
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussianProcess-GibbsMaximumIteration* (:raw:`UnsignedInteger`, default: `100`)
 )RAW"
 
 // ---------------------------------------------------------------------
