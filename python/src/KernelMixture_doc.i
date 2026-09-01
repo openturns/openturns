@@ -34,6 +34,11 @@ Notes
 If :math:`\inputDim = 1` and the `KernelMixture-EnableInterpolation` ResourceMap key is set to `True` (it is `False` by default),
 then the PDF and CDF of the kernel mixture are interpolated with :class:`PiecewiseHermiteEvaluation`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KernelMixture-EnableInterpolation* (`Bool`, default: `false`)
+- *KernelMixture-PDFCDFDiscretization* (`UnsignedInteger`, default: `1000`)
+
 Examples
 --------
 Create a *KernelMixture*:
@@ -47,6 +52,7 @@ Create a *KernelMixture*:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
 )RAW"
 
 // ---------------------------------------------------------------------

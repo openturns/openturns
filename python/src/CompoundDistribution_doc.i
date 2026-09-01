@@ -83,7 +83,7 @@ Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
   preferred (e.g. for a :class:`~openturns.Uniform` distribution).
 - The integer entry *CompoundDistribution-MarginalIntegrationNodesNumber* specifies the number of nodes used to the
   integration in each direction (only active when a quadrature method is applied),
-- The integer entry *CompoundDistribution-MarginalIntegrationNodesNumber* specifies the maximum number of nodes used to 
+- The integer entry *CompoundDistribution-MaximumIntegrationNodesNumber* specifies the maximum number of nodes used to 
   the multivariate integration (only active when a quadrature method is applied).
 
 Examples
@@ -99,6 +99,7 @@ Create a distribution:
 Draw a sample:
 
 >>> sample = finalDist.getSample(5)  # doctest: +SKIP
+
 )RAW"
 
 // ---------------------------------------------------------------------
