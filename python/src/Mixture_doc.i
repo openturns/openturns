@@ -20,6 +20,15 @@ weights : sequence of float, optional
     taken equal to 1. The weights are automatically normalized so that their
     sum is equal to 1.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Mixture-LargeSize* (`UnsignedInteger`, default: `20`)
+- *Mixture-PDFCDFDiscretization* (`UnsignedInteger`, default: `1000`)
+- *Mixture-SmallSize* (`UnsignedInteger`, default: `50`)
+- *Mixture-SmallWeight* (`Scalar`, default: `1e-12`)
+
 Examples
 --------
 Create a *Mixture*:
