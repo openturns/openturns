@@ -19,9 +19,12 @@
  *
  */
 #include "openturns/Function.hxx"
+#include "openturns/ConstantFunction.hxx"
 #include "openturns/LinearCombinationEvaluation.hxx"
-#include "openturns/LinearCombinationGradient.hxx"
-#include "openturns/LinearCombinationHessian.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/AggregatedFunction.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
 #include "openturns/P1LagrangeEvaluation.hxx"
@@ -162,27 +165,74 @@ ProductFunction Function::operator * (const Function & right) const
   return ProductFunction(getImplementation(), right.getImplementation());
 }
 
+/* Multiplication operator between a function and a function implementation with the same input dimension and 1D output dimension */
+ProductFunction Function::operator * (const FunctionImplementation & right) const
+{
+  return ProductFunction(getImplementation(), Function(right).getImplementation());
+}
+
+/* Multiplication operator between a function and a scalar */
+Function Function::operator * (const Scalar & scalar) const
+{
+  if (scalar == 1.0) return *this;
+  if (scalar == 0.0) return ConstantFunction(getInputDimension(), Point(getOutputDimension(), 0.0));
+  FunctionCollection collection(1, *this);
+  Point coefficients(1, scalar);
+  return LinearCombinationFunction(collection, coefficients);
+}
+
+/* Division operator between two functions with the same input dimension; right must have 1D output */
+Function Function::operator / (const Function & right) const
+{
+  SymbolicFunction reciprocal("y", "1/y");
+  Function invG(ComposedFunction(reciprocal, right).clone());
+  const UnsignedInteger outputDim = getOutputDimension();
+  if (outputDim == 1)
+  {
+    return ProductFunction(getImplementation(), invG.getImplementation());
+  }
+  FunctionCollection divided(outputDim);
+  for (UnsignedInteger i = 0; i < outputDim; ++i)
+  {
+    divided[i] = getMarginal(i) * invG;
+  }
+  return AggregatedFunction(divided);
+}
+
+/* Division operator between a function and a 1D output function implementation with the same input dimension */
+Function Function::operator / (const FunctionImplementation & right) const
+{
+  return *this / Function(right);
+}
+
 /* Addition operator between two functions with the same input dimension and output dimension */
 Function Function::operator + (const Function & right) const
 {
-  const Point coefficients(2, 1.0);
-  FunctionCollection collection(2);
-  collection[0] = *this;
-  collection[1] = right;
-  const LinearCombinationEvaluation evaluation(collection, coefficients);
-  return Function(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
+  return LinearCombinationFunction::add(*this, right, 1.0);
 }
 
 /* Soustraction operator between two functions with the same input dimension and output dimension */
 Function Function::operator - (const Function & right) const
 {
-  Point coefficients(2, 1.0);
-  coefficients[1] = -1.0;
-  FunctionCollection collection(2);
-  collection[0] = *this;
-  collection[1] = right;
-  const LinearCombinationEvaluation evaluation(collection, coefficients);
-  return Function(evaluation.clone(), LinearCombinationGradient(evaluation).clone(), LinearCombinationHessian(evaluation).clone());
+  return LinearCombinationFunction::add(*this, right, -1.0);
+}
+
+/* Negation operator */
+Function Function::operator - () const
+{
+  return LinearCombinationFunction::negate(*this);
+}
+
+/* Addition operator between function and function implementation */
+Function Function::operator + (const FunctionImplementation & right) const
+{
+  return LinearCombinationFunction::add(*this, Function(right), 1.0);
+}
+
+/* Soustraction operator between function and function implementation */
+Function Function::operator - (const FunctionImplementation & right) const
+{
+  return LinearCombinationFunction::add(*this, Function(right), -1.0);
 }
 
 /* Function implementation accessors */
@@ -438,6 +488,13 @@ void Function::setDetachCallback(FunctionImplementation::DetachCallback callBack
 {
   copyOnWrite();
   getImplementation()->setDetachCallback(callBack, state);
+}
+
+/* Product of a scalar by a function */
+Function operator * (const Scalar & scalar,
+                     const Function & function)
+{
+  return function * scalar;
 }
 
 END_NAMESPACE_OPENTURNS
