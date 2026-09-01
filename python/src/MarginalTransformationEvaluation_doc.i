@@ -55,6 +55,13 @@ evaluated in one point but which proposes no gradient nor hessian implementation
 
       (x_1, \ldots, x_n) \rightarrow (F^{-1}_{Y_1} \circ F_{X_1}(x_1), \ldots, F^{-1}_{Y_n} \circ F_{X_n}(x_n))
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MarginalTransformationEvaluation-DefaultTailThreshold* (``Scalar``, default: ``0.99``)
+- *MarginalTransformationEvaluation-ParametersEpsilon* (``Scalar``, default: ``1e-14``)
+- *MarginalTransformationEvaluation-Simplify* (``Bool``, default: ``true``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -69,6 +76,7 @@ Examples
 >>> margTransEvalComposed = ot.MarginalTransformationEvaluation(distCol, outputDistCol)
 >>> print(margTransEvalComposed([1, 3]))
 [1.84102,1.99533]
+
 )RAW"
 
 // ---------------------------------------------------------------------

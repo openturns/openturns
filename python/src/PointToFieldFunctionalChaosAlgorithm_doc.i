@@ -125,6 +125,10 @@ than on all output variables at once (at the price of increased chaos decomposit
 which then makes sensitivity analysis possible for each output variable
 or group of output variables.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FieldFunctionalChaosAlgorithm-DefaultRecompress* (``Bool``, default: ``false``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -165,6 +169,17 @@ Returns
 -------
 outputSample : :class:`~openturns.ProcessSample`
     Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
+"Set the output block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Groups of output component indices. The groups must form a
+    complete, non-overlapping partition of all output components."
 
 // ---------------------------------------------------------------------
 

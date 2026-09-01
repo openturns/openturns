@@ -15,4 +15,11 @@ Examples
 1 : [ 0.25  0.75  ]
 2 : [ 0.75  0.25  ]
 3 : [ 0.125 0.625 ]
-4 : [ 0.625 0.125 ]"
+4 : [ 0.625 0.125 ]
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FaureSequence-InitialSeed* (``UnsignedInteger``, default: ``1``)"
+

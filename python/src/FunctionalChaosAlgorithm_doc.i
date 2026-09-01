@@ -100,6 +100,11 @@ key of the :class:`~openturns.ResourceMap` is used.
   :class:`~openturns.KFold` criteria is used.
 - Otherwise, an exception is produced.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FunctionalChaosAlgorithm-DefaultMaximumResidual* (``Scalar``, default: ``1e-06``)
+
 Examples
 --------
 Create the model:
@@ -209,6 +214,8 @@ sparse PCE.
 >>> algo = ot.FunctionalChaosAlgorithm( 
 ...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
 ... )
+
+
 )RAW"
 
 // ---------------------------------------------------------------------

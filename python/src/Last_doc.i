@@ -19,6 +19,11 @@ The last strategy stores only the *N* last points."
 %feature("docstring") OT::Last::getHasWrapped
 "Accessor to a wrapped flag.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Last-DefaultMaximumSize* (``UnsignedInteger``, default: ``65536``)
+
 Returns
 -------
 wrapped : bool
@@ -42,4 +47,6 @@ index : int
 Returns
 -------
 N : int
-    The maximum number of points to store."
+    The maximum number of points to store.
+
+"

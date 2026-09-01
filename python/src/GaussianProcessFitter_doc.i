@@ -97,6 +97,12 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
   The input data itself is not directly normalized to avoid introducing an additional transformation to the metamodel.
   see also :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
 
+The following entries of :class:`~openturns.ResourceMap` control the optimization:
+
+- *GaussianProcessFitter-DefaultOptimizationNuggetLowerBound* (``Scalar``, default: ``1e-12``)
+- *GaussianProcessFitter-KeepCovariance* (``Bool``, default: ``true``)
+- *GaussianProcessFitter-OptimizeParameters* (``Bool``, default: ``true``)
+
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
 

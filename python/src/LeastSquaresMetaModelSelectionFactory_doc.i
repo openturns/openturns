@@ -20,6 +20,14 @@ an :class:`~openturns.ApproximationAlgorithm`.
 This class is not usable because it is operational only within the
 :class:`~openturns.FunctionalChaosAlgorithm`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LeastSquaresMetaModelSelection-ErrorThreshold* (``Scalar``, default: ``0.0``)
+- *LeastSquaresMetaModelSelection-MaximumError* (``Scalar``, default: ``0.5``)
+- *LeastSquaresMetaModelSelection-MaximumErrorFactor* (``Scalar``, default: ``2.0``)
+- *LeastSquaresMetaModelSelection-DecompositionMethod* (``String``, default: ``SVD``)
+- *LeastSquaresMetaModelSelection-SmallBasisSize* (``UnsignedInteger``, default: ``10``)
+
 Examples
 --------
 >>> import openturns as ot

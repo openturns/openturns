@@ -25,6 +25,15 @@ for all :math:`x+\alpha_i >0`.
 
 BoxCox transformation could also be performed in the case of the estimation of a general linear model through :class:`~openturns.GeneralLinearModelAlgorithm`.
 The objective is to estimate the most likely surrogate model (general linear model) which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}` are to be calibrated such as maximizing the general linear model's likelihood function. In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
+
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *BoxCoxFactory-DefaultMaximumCallsNumber* (``UnsignedInteger``, default: ``2000``)
+- *BoxCoxFactory-DefaultPointNumber* (``UnsignedInteger``, default: ``201``)
+- *BoxCoxFactory-DefaultRhoBeg* (``Scalar``, default: ``0.1``)
+- *BoxCoxFactory-DefaultRhoEnd* (``Scalar``, default: ``1e-10``)
+
 )RAW"
 
 // ---------------------------------------------------------------------
