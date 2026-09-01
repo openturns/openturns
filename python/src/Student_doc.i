@@ -72,6 +72,17 @@ R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\
 Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in  \cM_{d \times d}(\Rset)`
     Covariance matrix.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Student-CDFScaleFactor* (`Scalar`, default: `4`)
+- *Student-MarginalIntegrationNodesNumber* (`UnsignedInteger`, default: `16`)
+- *Student-MaximumNumberOfPoints* (`UnsignedInteger`, default: `10000000`)
+- *Student-MinimumCDFEpsilon* (`Scalar`, default: `0.05`)
+- *Student-MinimumNumberOfPoints* (`UnsignedInteger`, default: `100000`)
+- *Student-SmallDimension* (`UnsignedInteger`, default: `6`)
+
 Examples
 --------
 Create a distribution:
