@@ -1,5 +1,5 @@
 %feature("docstring") OT::HaltonSequence
-"Halton sequence.
+R"RAW(Halton sequence.
 
 Parameters
 ----------
@@ -11,6 +11,13 @@ scrambling : str
     scrambling ('NONE', default value). Default value is given by the
     'HaltonSequence-Scrambling' key in the :class:`~openturns.ResourceMap`.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *HaltonSequence-InitialSeed* (``UnsignedInteger``, default: ``1``)
+- *HaltonSequence-Scrambling* (``String``, default: ``NONE``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -20,7 +27,7 @@ Examples
 1 : [ 0.25     0.666667 ]
 2 : [ 0.75     0.111111 ]
 3 : [ 0.125    0.444444 ]
-4 : [ 0.625    0.777778 ]"
+4 : [ 0.625    0.777778 ])RAW"
 
 // ---------------------------------------------------------------------
 

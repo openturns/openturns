@@ -33,6 +33,10 @@ The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GaussianProcess-GibbsMaximumIteration`` (``UnsignedInteger``, default: ``100``)
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussianProcess-GibbsMaximumIteration* (``UnsignedInteger``, default: ``100``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -51,6 +55,7 @@ Examples
 >>> size = 100
 >>> myProcess = ot.GaussianProcess(covarianceModel, meshGrid)
 >>> myProcess.setSamplingMethod(myProcess.CHOLESKY)
+
 )RAW"
 
 // ---------------------------------------------------------------------
