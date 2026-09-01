@@ -18,6 +18,14 @@ Implementation of an approximation algorithm implementation factory which builds
 an :class:`~openturns.ApproximationAlgorithm`: this latter class is not directly usable because
 it is operational only within the :class:`~openturns.FunctionalChaosAlgorithm`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LeastSquaresMetaModelSelection-ErrorThreshold* (:raw:`Scalar`, default: `0.0`)
+- *LeastSquaresMetaModelSelection-MaximumError* (:raw:`Scalar`, default: `0.5`)
+- *LeastSquaresMetaModelSelection-MaximumErrorFactor* (:raw:`Scalar`, default: `2.0`)
+- *LeastSquaresMetaModelSelection-DecompositionMethod* (:raw:`String`, default: `SVD`)
+- *LeastSquaresMetaModelSelection-SmallBasisSize* (:raw:`UnsignedInteger`, default: `10`)
+
 Examples
 --------
 >>> import openturns as ot

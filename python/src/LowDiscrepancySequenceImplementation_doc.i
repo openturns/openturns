@@ -191,7 +191,14 @@ R"RAW(Accessor to the linear congruential generator (LCG) used to scramble the s
 Parameters
 ----------
 state : int
-    The state of the LCG, defined by the recursion :math:`x_{n+1}=2862933555777941757 * x_n + 3037000493\mbox{ mod }2^{64}`.)RAW"
+    The state of the LCG, defined by the recursion :math:`x_{n+1}=2862933555777941757 * x_n + 3037000493\mbox{ mod }2^{64}`.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LowDiscrepancySequence-ScramblingSeed* (:raw:`UnsignedInteger`, default: `0`)
+
+)RAW"
 
 %enddef
 %feature("docstring") OT::LowDiscrepancySequenceImplementation::setScramblingState

@@ -209,6 +209,13 @@ sparse PCE.
 >>> algo = ot.FunctionalChaosAlgorithm( 
 ...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
 ... )
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FunctionalChaosAlgorithm-DefaultMaximumResidual* (:raw:`Scalar`, default: `1e-06`)
+
 )RAW"
 
 // ---------------------------------------------------------------------

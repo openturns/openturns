@@ -128,6 +128,13 @@ STG([0, 1]) =  0.99...
 Get the part of variance of first multi-indices:
 
 >>> partOfVariance = chaosSI.getPartOfVariance()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FunctionalChaosSobolIndices-MaximumNumberOfOutput* (:raw:`UnsignedInteger`, default: `1000`)
+- *FunctionalChaosSobolIndices-PrintColumnWidth* (:raw:`UnsignedInteger`, default: `15`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -65,7 +65,13 @@ sheet #1
  [  8 11 ]]
 sheet #2
 [[  3  6 ]
- [  9 12 ]])RAW"
+ [  9 12 ]]
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Tensor-size-visible-in-str-from* (:raw:`UnsignedInteger`, default: `5`)
+)RAW"
 %enddef
 %feature("docstring") OT::Tensor
 OT_Tensor_doc

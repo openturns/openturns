@@ -32,7 +32,13 @@ Examples
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
 3 : [ 0.375 0.375 ]
-4 : [ 0.875 0.875 ])RAW"
+4 : [ 0.875 0.875 ]
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SobolSequence-InitialSeed* (:raw:`UnsignedInteger`, default: `1`)
+)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -149,7 +149,15 @@ marginalIndex : int, optional
 Returns
 -------
 indices : :class:`~openturns.SymmetricMatrix`
-    Tensor containing second order Sobol indices.)RAW"
+    Tensor containing second order Sobol indices.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SobolIndicesAlgorithm-DefaultBlockSize* (:raw:`UnsignedInteger`, default: `1`)
+- *SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel* (:raw:`Scalar`, default: `0.95`)
+
+)RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getSecondOrderIndices
 OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc

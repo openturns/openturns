@@ -19,7 +19,13 @@ A Domain object can be created through its derived classes:
 
 - :class:`~openturns.DomainComplement`
 
-- :class:`~openturns.DomainDifference`"
+- :class:`~openturns.DomainDifference`
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Domain-SmallVolume* (:raw:`Scalar`, default: `1e-12`)
+- *Domain-DefaultInColor* (:raw:`String`, default: `prettyOrange`)
+- *Domain-DefaultOutColor* (:raw:`String`, default: `prettyBlue`)"
 
 %enddef
 %feature("docstring") OT::DomainImplementation

@@ -448,6 +448,14 @@ Examples
 >>> f = ot.SymbolicFunction(['x0', 'x1', 'x2'], ['sin(1*pi_*x0) + x1 - x2 ^ 2'])
 >>> grid = f.drawCrossCuts([0., 0., 0.], [-3., -3, -3], [3, 3, 3], [100, 20, 20], True, True)
 >>> View(grid).show()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Evaluation-DefaultPointNumber* (:raw:`UnsignedInteger`, default: `129`)
+- *Evaluation-ParameterEpsilon* (:raw:`Scalar`, default: `1e-07`)
+
 )RAW"
 %enddef
 %feature("docstring") OT::EvaluationImplementation::drawCrossCuts

@@ -144,6 +144,12 @@ Examples
 >>> metamodel = result.getPointToFieldMetaModel()
 >>> y0hat = metamodel(x[0])
 >>> ot.ResourceMap.Reset()
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *PointToFieldFunctionalChaosAlgorithm-DefaultRecompress* (:raw:`Bool`, default: `false`)
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -165,6 +171,16 @@ Returns
 -------
 outputSample : :class:`~openturns.ProcessSample`
     Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
+"Accessor to the output block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Independent output components indices."
 
 // ---------------------------------------------------------------------
 
