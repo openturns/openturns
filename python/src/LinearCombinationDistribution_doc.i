@@ -93,6 +93,22 @@ constant : sequence of float
 weightsMatrix :  2-d sequence of float
     Weights of the affine combination.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearCombinationDistribution-SimplifyAtoms* (`Bool`, default: `true`): whether to simplify identical atoms.
+- *LinearCombinationDistribution-DefaultAlpha* (`Scalar`, default: `5.0`): lower bound for atoms identification.
+- *LinearCombinationDistribution-DefaultBeta* (`Scalar`, default: `8.5`): upper bound for atoms identification.
+- *LinearCombinationDistribution-DefaultCDFEpsilon* (`Scalar`, default: `1e-10`): precision for CDF computation.
+- *LinearCombinationDistribution-DefaultPDFEpsilon* (`Scalar`, default: `1e-10`): precision for PDF computation.
+- *LinearCombinationDistribution-DefaultBlockMax* (`UnsignedInteger`, default: `16`): maximum block size for PDF/CDF computation.
+- *LinearCombinationDistribution-DefaultBlockMin* (`UnsignedInteger`, default: `3`): minimum block size for PDF/CDF computation.
+- *LinearCombinationDistribution-DefaultMaxSize* (`UnsignedInteger`, default: `65536`): maximum number of atoms after simplification.
+- *LinearCombinationDistribution-MaximumSupportSize* (`UnsignedInteger`, default: `2048`): maximum support size for exact computation.
+- *LinearCombinationDistribution-ProjectionDefaultSize* (`UnsignedInteger`, default: `25`): default projection size.
+- *LinearCombinationDistribution-SmallSize* (`UnsignedInteger`, default: `100`): threshold for using small-size algorithms.
+
 Examples
 --------
 Create a distribution:
