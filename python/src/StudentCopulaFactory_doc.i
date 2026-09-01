@@ -19,6 +19,10 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``StudentCopulaFactory-NuStart`` (``Scalar``, default: ``5.0``): starting value of the :math:`\nu` parameter,
 - ``StudentCopulaFactory-DefaultOptimizationAlgorithm`` (``String``, default: ``Cobyla``): name of the optimization algorithm used, among the ones recognized by :class:`~openturns.OptimizationAlgorithm`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *StudentCopulaFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
+
 See also
 --------
 DistributionFactory, StudentCopula
