@@ -6,12 +6,6 @@ Notes
 Structure created by the method run() of a :class:`~openturns.EventSimulation`,
 and obtained thanks to the method getResult().
 
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``ProbabilitySimulationResult-CheckPositiveVariance`` (``Bool``, default: ``false``): whether the variance of the probability estimator is checked to be strictly positive
-
-- ``ProbabilitySimulationResult-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default confidence level used to compute the confidence interval of the probability estimator
-
 Examples
 --------
 >>> import openturns as ot
@@ -53,6 +47,12 @@ Parameters
 ----------
 blockSize : int, :math:`blockSize \geq 0`
     Number of terms in the probability simulation estimator grouped together.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ProbabilitySimulationResult-CheckPositiveVariance* (:raw:`Bool`, default: `false`)
+- *ProbabilitySimulationResult-DefaultConfidenceLevel* (:raw:`Scalar`, default: `0.95`)
 )RAW"
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::setBlockSize

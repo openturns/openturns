@@ -34,6 +34,13 @@ supervised : bool (default=True)
     of :math:`(\vect{x}, f(\vect{x}))` whereas in non-supervised mode the
     classifier only partitions the input space.
 
+Notes
+-----
+The number of experts must match the number of classes of the classifier.
+
+See also
+--------
+
 Examples
 --------
 >>> import openturns as ot
@@ -53,12 +60,6 @@ Examples
 >>> print(mixtureOfExperts([0.1]))
 [0.1]
 
-Notes
------
-The number of experts must match the number of classes of the classifier.
-
-See also
---------
 Classifier, MixtureClassifier)RAW"
 
 // ---------------------------------------------------------------------

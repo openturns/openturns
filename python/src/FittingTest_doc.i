@@ -555,6 +555,12 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``FittingTest-LillieforsPrecision`` (``Scalar``, default: ``0.01``): target standard deviation of the estimated p-value of the Lilliefors test
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FittingTest-ChiSquaredCheckSample* (:raw:`Bool`, default: `true`)
+- *FittingTest-ChiSquaredMinimumBinCount* (:raw:`UnsignedInteger`, default: `5`)
+
 Examples
 --------
 
