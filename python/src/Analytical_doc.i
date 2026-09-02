@@ -86,9 +86,9 @@ is the absolute tolerance.
 The initial points are directly defined in the Physical Space through the used :class:`~openturns.OptimizationAlgorithm`.
 
 
-The following :class:`~openturns.ResourceMap` key is used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``Analytical-LimitStateToleranceFactor`` (``Scalar``, default: ``1.15``): factor used to define the tolerance of the limit state approximation
+- *Analytical-LimitStateToleranceFactor* (``Scalar``, default: `1.15`)
 
 See also
 --------

@@ -40,10 +40,10 @@ distribution, :math:`\phi_i` the i-th element of the basis.
 
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``LinearModelStepwiseAlgorithm-MaximumIterationNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of iterations of the stepwise algorithm
-- ``LinearModelStepwiseAlgorithm-Penalty`` (``Scalar``, default: ``2.0``): value of the penalty used in the criterion of the stepwise algorithm
+- *LinearModelStepwiseAlgorithm-MaximumIterationNumber* (``UnsignedInteger``, default: `1000`)
+- *LinearModelStepwiseAlgorithm-Penalty* (``Scalar``, default: `2`)
 
 Examples
 --------

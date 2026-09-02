@@ -43,8 +43,8 @@ This class solves the least squares problem for each output marginal :math:`k \i
 
 The finite discrete distribution based on the input sample and the weights defines the inner product that will be used to solve the least squares problem.
 
-The following :class:`~openturns.ResourceMap` key is used:
+This class uses the following :class:`~openturns.ResourceMap` keys:
 
-- ``PenalizedLeastSquaresAlgorithm-UseNormal`` (``Bool``, default: ``false``)
+- ``PenalizedLeastSquaresAlgorithm-UseNormal``: Bool, flag determining whether to solve the least-squares problem using the normal equations, default value ``false``.
 
 )RAW"
