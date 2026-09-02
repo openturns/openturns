@@ -252,8 +252,7 @@ n_active_default = result_default.getIndices().getSize()
 print(f"ConsecutiveIncreases k=1: {n_active_k1} active functions")
 print(f"ConsecutiveIncreases k=2 (default): {n_active_default} active functions")
 print(f"ConsecutiveIncreases k=5: {n_active_k5} active functions")
-assert n_active_k1 <= n_active_default <= n_active_k5, \
-    f"Expected n_active_k1 <= n_active_default <= n_active_k5, got {n_active_k1}, {n_active_default}, {n_active_k5}"
+ott.assert_almost_equal(n_active_k1 <= n_active_default <= n_active_k5, True)
 print("SparseExpansion-ConsecutiveIncreases: OK")
 
 # Check LARS selection method

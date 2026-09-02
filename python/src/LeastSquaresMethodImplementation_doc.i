@@ -311,7 +311,7 @@ OT_LeastSquaresMethod_computeDesign_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_solveNormalGram_doc
-"Solve the Gram system :math:`G x = \\mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
+R"RAW(Solve the Gram system :math:`G x = \mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
 
 Unlike :meth:`solveNormal`, this method does not apply weight multiplication
 to the right-hand side.
@@ -324,7 +324,7 @@ rhs : sequence of float
 Returns
 -------
 x : :class:`~openturns.Point`
-    The solution."
+    The solution.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solveNormalGram
 OT_LeastSquaresMethod_solveNormalGram_doc

@@ -10,6 +10,7 @@ max degree 3, using CLOO fitting.
 
 import openturns as ot
 import openturns.experimental as otexp
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -199,5 +200,13 @@ for i in range(dimension):
     s1_cpp = sobol_cpp.getSobolIndex(i)
     s1_py = sobol_py.getSobolIndex(i)
     print(f"X{i + 1} S1: C++={s1_cpp:.6f}, Python={s1_py:.6f}, diff={abs(s1_cpp - s1_py):.6e}")
+
+# Assert C++ OMP produces correct Sobol indices (within tolerance)
+# The C++ implementation uses cross-validation stopping, while the Python reference
+# runs all iterations, so active sets may differ. Check that the C++ result is
+# close to the reference values.
+for i in range(dimension):
+    s1_cpp = sobol_cpp.getSobolIndex(i)
+    ott.assert_almost_equal(s1_cpp, sob_1_ref[i], 0.05, 1e-5)
 
 print("OMP comparison: OK")
