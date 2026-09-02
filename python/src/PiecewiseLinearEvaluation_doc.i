@@ -99,13 +99,12 @@ enableExtrapolation : bool
 Returns
 -------
 enableExtrapolation : bool
+    Parameter for extrapolation.
 
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *PiecewiseLinearEvaluation-DefaultEnableExtrapolation* (:raw:`Bool`, default: `true`)
-- *PiecewiseLinearEvaluation-EpsilonRegular* (:raw:`Scalar`, default: `1e-12`)
-
-    Parameter for extrapolation."
+- *PiecewiseLinearEvaluation-DefaultEnableExtrapolation* (`Bool`, default: `true`)
+- *PiecewiseLinearEvaluation-EpsilonRegular* (`Scalar`, default: `1e-12`)"
 

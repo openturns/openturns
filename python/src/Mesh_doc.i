@@ -645,8 +645,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Mesh-BackfaceCulling* (:raw:`Bool`, default: `false`)
-- *Mesh-LargeSize* (:raw:`UnsignedInteger`, default: `5000`)
+- *Mesh-BackfaceCulling* (`Bool`, default: `false`)
+- *Mesh-LargeSize* (`UnsignedInteger`, default: `5000`)
 
 )RAW"
 

@@ -5,6 +5,6 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LinearCombinationEvaluation-SmallCoefficient* (:raw:`Scalar`, default: `0`)
+- *LinearCombinationEvaluation-SmallCoefficient* (`Scalar`, default: `0`)
 )RAW"
 %enddef

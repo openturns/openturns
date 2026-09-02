@@ -81,13 +81,14 @@ experiments:
 0 : [ 0 1 ]
 1 : [ 2 3 ]
 2 : [ 4 5 ]
+
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Sample-PrintEllipsisSize* (:raw:`UnsignedInteger`, default: `3`)
-- *Sample-PrintEllipsisThreshold* (:raw:`UnsignedInteger`, default: `1000`)
-- *Sample-SmallKendallTau* (:raw:`UnsignedInteger`, default: `23`)
+- *Sample-PrintEllipsisSize* (`UnsignedInteger`, default: `3`)
+- *Sample-PrintEllipsisThreshold* (`UnsignedInteger`, default: `1000`)
+- *Sample-SmallKendallTau* (`UnsignedInteger`, default: `23`)
 )RAW"
 
 // ---------------------------------------------------------------------

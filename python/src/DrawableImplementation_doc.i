@@ -26,23 +26,25 @@ The different drawable elements are:
 
 - :class:`~openturns.Text`
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Drawable-AlternativePattern* (`String`, default: `S`)
+- *Drawable-DefaultColor* (`String`, default: `blue`)
+- *Drawable-DefaultFillStyle* (`String`, default: `solid`)
+- *Drawable-DefaultLineStyle* (`String`, default: `solid`)
+- *Drawable-DefaultLineWidth* (`Scalar`, default: `1`)
+- *Drawable-DefaultPaletteName* (`String`, default: `Tableau10`)
+- *Drawable-DefaultPalettePhase* (`UnsignedInteger`, default: `0`)
+- *Drawable-DefaultPattern* (`String`, default: `s`)
+- *Drawable-DefaultPointStyle* (`String`, default: `circle`)
+
 Examples
 --------
 >>> import openturns as ot
 >>> myGraph = ot.Graph('Normal sample', 'x1', 'x2', True, 'upper right')
 >>> sample = ot.Normal([0.0,0.0], [1.0,1.0], ot.CorrelationMatrix(2)).getSample(10)
 >>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'A Cloud')
->>> myGraph.add(myCloud)
-
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *Drawable-AlternativePattern* (:raw:`String`, default: `S`)
-- *Drawable-DefaultFillStyle* (:raw:`String`, default: `solid`)
-- *Drawable-DefaultLineStyle* (:raw:`String`, default: `solid`)
-- *Drawable-DefaultLineWidth* (:raw:`Scalar`, default: `1`)
-- *Drawable-DefaultPattern* (:raw:`String`, default: `s`)"
+>>> myGraph.add(myCloud)"
 
 %enddef
 %feature("docstring") OT::DrawableImplementation
