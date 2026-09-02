@@ -127,6 +127,14 @@ And the remaining parameters are estimated with:
     \hat{\sigma}_l &= \frac{1}{a_1}\\
     \hat{\mu}_l &= -a_0 \hat{\sigma}_l
 
+This class uses the following entries of :class:`~openturns.ResourceMap`. All the keys drive the precision
+of the optimization solver involved in the estimation:
+
+- *LogNormalFactory-AbsolutePrecision* (`Scalar`, default: `1e-12`)
+- *LogNormalFactory-MaximumIteration* (`UnsignedInteger`, default: `50`)
+- *LogNormalFactory-RelativePrecision* (`Scalar`, default: `1e-12`)
+- *LogNormalFactory-ResidualPrecision* (`Scalar`, default: `1e-12`)
+
 Examples
 --------
 
