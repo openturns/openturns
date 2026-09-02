@@ -178,7 +178,8 @@ outputSample : :class:`~openturns.ProcessSample`
 Parameters
 ----------
 blockIndices : 2-d sequence of int
-    Independent output components indices."
+    Blocks of output component indices. The flattened indices must contain
+    exactly the output dimension and satisfy the index validation requirements."
 
 // ---------------------------------------------------------------------
 

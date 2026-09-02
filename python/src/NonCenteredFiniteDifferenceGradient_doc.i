@@ -26,9 +26,9 @@ finite-difference scheme:
                                                    {\epsilon_i}
 
 
-The following :class:`~openturns.ResourceMap` key is used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``NonCenteredFiniteDifferenceGradient-DefaultEpsilon`` (``Scalar``, default: ``1.0e-7``): default finite difference step of the non-centered finite difference gradient
+- *NonCenteredFiniteDifferenceGradient-DefaultEpsilon* (``Scalar``, default: `1e-07`)
 
 Examples
 --------

@@ -6,6 +6,12 @@ Notes
 Structure created by the method run() of the :class:`~openturns.Analytical`
 class and obtained thanks to its method getAnalyticalResult().
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *AnalyticalResult-DefaultWidth* (``Scalar``, default: `1`)
+
+- *AnalyticalResult-MeanPointIntegrationNodesNumber* (``UnsignedInteger``, default: `255`)
+
 Parameters
 ----------
 designPoint : sequence of float
@@ -126,12 +132,7 @@ Returns
 factors : :class:`~openturns.PointWithDescription`
     Sequence containing the importance factors with a description for each
     component.
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *AnalyticalResult-DefaultWidth* (:raw:`Scalar`, default: `1`)
-- *AnalyticalResult-MeanPointIntegrationNodesNumber* (:raw:`UnsignedInteger`, default: `255`)
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -212,7 +213,6 @@ By symmetry in the standard space, the mean point in the standard event domain i
 .. math::
 
     \Expect{\vect{U}|\vect{U} \in \cD} = \Expect{\|\vect{U}\| | \|\vect{U}\| \geq \beta_{HL}}   \vect{u}^* =  \frac{1}{E(-\beta_{HL})} \left(\int_{\beta}^{+\infty} u e(u)\, \di{u} \right)\vect{u}^*
-
 
 )RAW"
     

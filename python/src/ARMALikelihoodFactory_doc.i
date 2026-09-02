@@ -47,9 +47,9 @@ where :math:`\vect{\beta} = (\mat{A}_{k}, \mat{B}_{l}, \mat{Q}),\ k = 1,\ldots,p
 No evaluation of selection criteria such as AIC or BIC is done.
 
 
-The following :class:`~openturns.ResourceMap` key is used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``ARMALikelihoodFactory-RootEpsilon`` (``Scalar``, default: ``1.0e-6``): tolerance used to bound the roots of the autoregressive polynomial
+- *ARMALikelihoodFactory-RootEpsilon* (``Scalar``, default: `1e-06`)
 
 Examples
 --------

@@ -39,19 +39,13 @@ The solver to use must be specified by setting the ``KarhunenLoeveP1Algorithm-Ei
 Some solvers set limits to the number of eigenvalues they can compute with regards to the size of the problem.
 The following table summarizes the supported solvers and their maximum number of eigenvalues for a problem of size :math:`n`:
 
-.. list-table::
-   :widths: 20 45 35
-   :header-rows: 1
-
-   * - Solver
-     - ResourceMap key
-     - Maximum EV number
-   * - Lapack
-     - LAPACK
-     - :math:`n`
-   * - Spectra
-     - SPECTRA
-     - :math:`n-2`
++-------------+---------------------+----------------------+
+| Solver      | ResourceMap key     | Maximum EV number    |
++=============+=====================+======================+
+| Lapack      | LAPACK              | :math:`n`            |
++-------------+---------------------+----------------------+
+| Spectra     | SPECTRA             | :math:`n-2`          |
++-------------+---------------------+----------------------+
 
 For large dimension problems, it can be useful to generate the covariance matrix of the
 problem as a :class:`~openturns.HMatrix` instead of a standard dense matrix.
@@ -59,9 +53,9 @@ In this case, one can set the ``KarhunenLoeveP1Algorithm-CovarianceMatrixStorage
 key in :class:`~openturns.ResourceMap` to ``HMAT`` (instead of ``DENSE``).
 
 
-The following :class:`~openturns.ResourceMap` key is used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``KarhunenLoeveP1Algorithm-RegularizationFactor`` (``Scalar``, default: ``0.0``): regularization factor used when assembling the covariance matrices of the P1 algorithm
+- *KarhunenLoeveP1Algorithm-RegularizationFactor* (``Scalar``, default: `0`)
 
 Examples
 --------

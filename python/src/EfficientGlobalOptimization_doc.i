@@ -73,6 +73,13 @@ with starting points uniformly sampled in the optimization problem bounds,
 see :func:`setMultiStartExperimentSize` and :func:`setMultiStartNumber`.
 This behavior can be overridden by using another solver with :func:`setOptimizationAlgorithm`.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *EfficientGlobalOptimization-DefaultAEITradeoff* (``Scalar``, default: `1`)
+- *EfficientGlobalOptimization-DefaultCorrelationLengthFactor* (``Scalar``, default: `1`)
+- *EfficientGlobalOptimization-DefaultOptimizationAlgorithm* (``String``, default: `Cobyla`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -102,19 +109,6 @@ Examples
 >>> updatedOutputSample = updatedGPRResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
 
-By default the criterion is optimized with :class:`~openturns.MultiStart`
-over starting points uniformly drawn within the problem bounds. Both the
-size of the design from which the starting points are selected and the
-number of retained starting points can be configured:
-
->>> algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
->>> algo.setMultiStartExperimentSize(200)
->>> algo.setMultiStartNumber(10)
-
-Alternatively, the whole criterion optimization strategy can be changed by
-providing another optimization algorithm:
-
->>> algo.setOptimizationAlgorithm(ot.Cobyla())
 )RAW"
 
 // ---------------------------------------------------------------------

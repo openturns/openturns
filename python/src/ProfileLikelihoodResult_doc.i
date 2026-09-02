@@ -23,14 +23,14 @@ GeneralizedExtremeValueFactory
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``ProfileLikelihoodResult-AbsolutePrecision`` (``Scalar``, default: ``1.0e-10``): absolute precision of the solver used to compute the confidence interval
-- ``ProfileLikelihoodResult-ConfidenceIntervalMargin`` (``Scalar``, default: ``0.05``): margin used to enlarge the search interval of the confidence interval
-- ``ProfileLikelihoodResult-RelativePrecision`` (``Scalar``, default: ``1.0e-10``): relative precision of the solver used to compute the confidence interval
-- ``ProfileLikelihoodResult-StartingScaling`` (``Scalar``, default: ``1.0e-2``): initial value of the :math:`\rho` parameter used to run the profile likelihood computation
+- *ProfileLikelihoodResult-AbsolutePrecision* (``Scalar``, default: `1e-10`)
+- *ProfileLikelihoodResult-ConfidenceIntervalMargin* (``Scalar``, default: `0.05`)
+- *ProfileLikelihoodResult-RelativePrecision* (``Scalar``, default: `1e-10`)
+- *ProfileLikelihoodResult-StartingScaling* (``Scalar``, default: `0.01`)
 
-- ``ProfileLikelihoodResult-TextMargin`` (``Scalar``, default: ``0.03``): margin used to place the text on the graph of the profile likelihood
+- *ProfileLikelihoodResult-TextMargin* (``Scalar``, default: `0.03`)
 
 )RAW"
 

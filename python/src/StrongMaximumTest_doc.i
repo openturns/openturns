@@ -53,10 +53,10 @@ in the U-space is greater than :math:`\varepsilon` times the density value at
 the design point).
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``StrongMaximumTest-DefaultDeltaPrecision`` (``Scalar``, default: ``1.0e-7``): default value of the precision of the increment :math:`\delta_{\varepsilon}` of the strong maximum test
-- ``StrongMaximumTest-Epsilon`` (``Scalar``, default: ``1.0e-10``): default value of the importance level :math:`\varepsilon` of the strong maximum test
+- *StrongMaximumTest-DefaultDeltaPrecision* (``Scalar``, default: `1e-07`)
+- *StrongMaximumTest-Epsilon* (``Scalar``, default: `1e-10`)
 
 See also
 --------

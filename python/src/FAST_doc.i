@@ -91,10 +91,10 @@ that :math:`16 \leq \omega_i/N_r \leq 64`.
 
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- ``FAST-DefaultInterferenceFactor`` (``UnsignedInteger``, default: ``4``): default value of the interference factor used by the FAST algorithm
-- ``FAST-DefaultResamplingSize`` (``UnsignedInteger``, default: ``1``): default resampling size used by the FAST algorithm
+- *FAST-DefaultInterferenceFactor* (``UnsignedInteger``, default: `4`)
+- *FAST-DefaultResamplingSize* (``UnsignedInteger``, default: `1`)
 
 Examples
 --------
