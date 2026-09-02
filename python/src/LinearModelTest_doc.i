@@ -55,10 +55,8 @@ coefficients (Fisher distribution is used).
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LinearModelTest-DefaultDurbinWatsonHypothesis* (:raw:`String`, default: `Equal`)
-- *LinearModelTest-DefaultHarrisonMcCabeBreakpoint* (:raw:`Scalar`, default: `0.5`)
-- *LinearModelTest-DefaultHarrisonMcCabeSimulationSize* (:raw:`UnsignedInteger`, default: `1000`)
-- *LinearModelTest-DefaultLevel* (:raw:`Scalar`, default: `0.05`)
+- *LinearModelTest-DefaultLevel* (``Scalar``, default: `0.05`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -206,6 +204,11 @@ The Harrison-McCabe test checks the heteroskedasticity of the residuals. The
 breakpoint in the variances is set by default to the half of the sample. The
 p-value is estimed using simulation. If the binary quality measure is false, then
 the homoskedasticity hypothesis can be rejected with respect to the given level.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelTest-DefaultHarrisonMcCabeBreakpoint* (``Scalar``, default: `0.5`)
+- *LinearModelTest-DefaultHarrisonMcCabeSimulationSize* (``UnsignedInteger``, default: `1000`)
 
 Examples
 --------
@@ -358,6 +361,10 @@ to test is the autocorrelation is equal to 0.
 The p-value is computed using a normal approximation based on the mean and variance of the
 Durbin-Watson test statistic. If the binary quality measure is false, then the
 given autocorrelation hypothesis can be rejected with respect to the given level.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelTest-DefaultDurbinWatsonHypothesis* (``String``, default: `Equal`)
 
 Examples
 --------

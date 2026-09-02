@@ -69,7 +69,8 @@ with :func:`setNoise()`:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *KrigingAlgorithm-LinearAlgebra* (:raw:`String`, default: `LAPACK`)
+- *KrigingAlgorithm-LinearAlgebra* (``String``, default: `LAPACK`)
+
 Examples
 --------
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:

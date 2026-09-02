@@ -423,7 +423,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GeneralLinearModelAlgorithm-MeanEpsilon* (:raw:`Scalar`, default: `1e-12`)
-- *GeneralLinearModelAlgorithm-OptimizeParameters* (:raw:`Bool`, default: `true`)
+- *GeneralLinearModelAlgorithm-MeanEpsilon* (``Scalar``, default: `1e-12`)
+- *GeneralLinearModelAlgorithm-OptimizeParameters* (``Bool``, default: `true`)
 
 )RAW"

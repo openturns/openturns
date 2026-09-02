@@ -65,11 +65,12 @@ which is equivalent to the solution of the following optimization problem:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *MethodOfMomentsFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
-- *MethodOfMomentsFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumAbsoluteError* (``Scalar``, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
+- *MethodOfMomentsFactory-MaximumConstraintError* (``Scalar``, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumObjectiveError* (``Scalar``, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumRelativeError* (``Scalar``, default: `1e-10`)
+
 See also
 --------
 DistributionFactory

@@ -40,6 +40,7 @@ The number of experts must match the number of classes of the classifier.
 
 See also
 --------
+Classifier, MixtureClassifier
 
 Examples
 --------
@@ -59,8 +60,7 @@ Examples
 [0.3]
 >>> print(mixtureOfExperts([0.1]))
 [0.1]
-
-Classifier, MixtureClassifier)RAW"
+)RAW"
 
 // ---------------------------------------------------------------------
 

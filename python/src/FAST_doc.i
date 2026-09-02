@@ -93,8 +93,9 @@ that :math:`16 \leq \omega_i/N_r \leq 64`.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FAST-DefaultInterferenceFactor* (:raw:`UnsignedInteger`, default: `4`)
-- *FAST-DefaultResamplingSize* (:raw:`UnsignedInteger`, default: `1`)
+- *FAST-DefaultInterferenceFactor* (``UnsignedInteger``, default: `4`)
+- *FAST-DefaultResamplingSize* (``UnsignedInteger``, default: `1`)
+
 Examples
 --------
 >>> import openturns as ot

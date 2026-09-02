@@ -20,15 +20,18 @@ parameter : float
 See also
 --------
 GeneralizedExtremeValueFactory
+
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *ProfileLikelihoodResult-AbsolutePrecision* (:raw:`Scalar`, default: `1e-10`)
-- *ProfileLikelihoodResult-ConfidenceIntervalMargin* (:raw:`Scalar`, default: `0.05`)
-- *ProfileLikelihoodResult-RelativePrecision* (:raw:`Scalar`, default: `1e-10`)
-- *ProfileLikelihoodResult-StartingScaling* (:raw:`Scalar`, default: `0.01`)
-- *ProfileLikelihoodResult-TextMargin* (:raw:`Scalar`, default: `0.03`)
+- *ProfileLikelihoodResult-AbsolutePrecision* (``Scalar``, default: `1e-10`)
+- *ProfileLikelihoodResult-ConfidenceIntervalMargin* (``Scalar``, default: `0.05`)
+- *ProfileLikelihoodResult-RelativePrecision* (``Scalar``, default: `1e-10`)
+- *ProfileLikelihoodResult-StartingScaling* (``Scalar``, default: `0.01`)
+
+- *ProfileLikelihoodResult-TextMargin* (``Scalar``, default: `0.03`)
+
 )RAW"
 
 // ---------------------------------------------------------------------

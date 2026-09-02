@@ -47,7 +47,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Last-DefaultMaximumSize* (:raw:`UnsignedInteger`, default: `65536`)
+- *Last-DefaultMaximumSize* (``UnsignedInteger``, default: `65536`)
 
     The maximum number of points to store."
 

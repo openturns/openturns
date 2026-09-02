@@ -28,7 +28,8 @@ finite-difference scheme:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *NonCenteredFiniteDifferenceGradient-DefaultEpsilon* (:raw:`Scalar`, default: `1e-07`)
+- *NonCenteredFiniteDifferenceGradient-DefaultEpsilon* (``Scalar``, default: `1e-07`)
+
 Examples
 --------
 >>> import openturns as ot

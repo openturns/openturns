@@ -163,12 +163,14 @@ outputSample : :class:`~openturns.Sample`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FieldToPointFunctionalChaosAlgorithm::setBlockIndices
-"Accessor to the output block indices.
+"Accessor to the input block indices.
 
 Parameters
 ----------
 blockIndices : 2-d sequence of int
-    Independent output components indices."
+    Blocks of independent input component indices. The flattened indices must
+    contain exactly the input process dimension and satisfy the index
+    validation requirements."
 
 // ---------------------------------------------------------------------
 

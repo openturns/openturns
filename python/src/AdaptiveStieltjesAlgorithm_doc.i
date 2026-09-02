@@ -29,10 +29,10 @@ coefficients of the three-terms recurrence relation that defines :math:`P_n`
 
 where :math:`\alpha_n = S_n / R_n`, :math:`\beta_n  = R_n / R_{n-1}`, :math:`n>0` and :math:`\beta_0 = 0`.
 
-Notes
------
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *AdaptiveStieltjesAlgorithm-MaximumError* (:raw:`Scalar`, default: `1e-12`)
-- *AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots* (:raw:`UnsignedInteger`, default: `64`)
+- *AdaptiveStieltjesAlgorithm-MaximumError* (``Scalar``, default: `1e-12`)
+
+- *AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots* (``UnsignedInteger``, default: `64`)
+
 )RAW"

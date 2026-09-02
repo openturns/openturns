@@ -2421,5 +2421,5 @@ pdf : float
 
 See Also
 --------
-DistFunc.dNonCentralStudent
+openturns.DistFunc.dNonCentralStudent
 )RAW"

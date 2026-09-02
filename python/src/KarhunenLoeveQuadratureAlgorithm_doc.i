@@ -79,7 +79,8 @@ The second constructor is a short-hand to the first one, where *basis* is the te
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *KarhunenLoeveQuadratureAlgorithm-RegularizationFactor* (:raw:`Scalar`, default: `0`)
+- *KarhunenLoeveQuadratureAlgorithm-RegularizationFactor* (``Scalar``, default: `0`)
+
 Examples
 --------
 Discretize the domain :math:`\cD` and create a covariance model:

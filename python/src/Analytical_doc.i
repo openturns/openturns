@@ -88,7 +88,8 @@ The initial points are directly defined in the Physical Space through the used :
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Analytical-LimitStateToleranceFactor* (:raw:`Scalar`, default: `1.15`)
+- *Analytical-LimitStateToleranceFactor* (``Scalar``, default: `1.15`)
+
 See also
 --------
 FORM, SORM, StrongMaximumTest, StandardEvent, AnalyticalResult

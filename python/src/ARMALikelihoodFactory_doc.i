@@ -49,7 +49,8 @@ No evaluation of selection criteria such as AIC or BIC is done.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *ARMALikelihoodFactory-RootEpsilon* (:raw:`Scalar`, default: `1e-06`)
+- *ARMALikelihoodFactory-RootEpsilon* (``Scalar``, default: `1e-06`)
+
 Examples
 --------
 Create a time series from a scalar ARMA(4,2) and a normal white noise:

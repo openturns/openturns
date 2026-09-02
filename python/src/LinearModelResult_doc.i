@@ -45,7 +45,7 @@ The linear model decompositions use the following entries of
   :class:`~openturns.LinearModelAlgorithm`.
 
 - *LinearModelResult-DecompositionMethod* (``String``, default: `QR`) used by
-  :class:`~openturns.LinearModelStepwiseAlgorithm`.)
+  :class:`~openturns.LinearModelStepwiseAlgorithm`.
 )RAW"
 
 // ---------------------------------------------------------------------

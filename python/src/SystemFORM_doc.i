@@ -47,8 +47,9 @@ FORM results collection (returned by :meth:`~openturns.MultiFORMResult.getFORMRe
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SystemFORM-MaximalScaling* (:raw:`Scalar`, default: `1e-05`)
-- *SystemFORM-StartingScaling* (:raw:`Scalar`, default: `1e-13`)
+- *SystemFORM-MaximalScaling* (``Scalar``, default: `1e-05`)
+- *SystemFORM-StartingScaling* (``Scalar``, default: `1e-13`)
+
 See also
 --------
 FORM, MultiFORMResult

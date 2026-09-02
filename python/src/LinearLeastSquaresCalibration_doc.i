@@ -55,7 +55,8 @@ Please read :any:`code_calibration` for more details.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LinearLeastSquaresCalibration-Method* (:raw:`String`, default: `QR`)
+- *LinearLeastSquaresCalibration-Method* (``String``, default: `QR`)
+
 See also
 --------
 GaussianLinearCalibration, NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration

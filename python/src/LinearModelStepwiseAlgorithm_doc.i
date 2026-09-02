@@ -42,8 +42,9 @@ distribution, :math:`\phi_i` the i-th element of the basis.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LinearModelStepwiseAlgorithm-MaximumIterationNumber* (:raw:`UnsignedInteger`, default: `1000`)
-- *LinearModelStepwiseAlgorithm-Penalty* (:raw:`Scalar`, default: `2`)
+- *LinearModelStepwiseAlgorithm-MaximumIterationNumber* (``UnsignedInteger``, default: `1000`)
+- *LinearModelStepwiseAlgorithm-Penalty* (``Scalar``, default: `2`)
+
 Examples
 --------
 Definition of the data set

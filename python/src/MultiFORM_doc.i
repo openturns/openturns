@@ -42,9 +42,9 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *MultiFORM-DefaultDelta* (:raw:`Scalar`, default: `0.75`)
-- *MultiFORM-DefaultGamma* (:raw:`Scalar`, default: `1.1`)
-- *MultiFORM-DefaultMaximumDesignPointsNumber* (:raw:`UnsignedInteger`, default: `4`)
+- *MultiFORM-DefaultDelta* (``Scalar``, default: `0.75`)
+- *MultiFORM-DefaultGamma* (``Scalar``, default: `1.1`)
+- *MultiFORM-DefaultMaximumDesignPointsNumber* (``UnsignedInteger``, default: `4`)
 
 Examples
 --------

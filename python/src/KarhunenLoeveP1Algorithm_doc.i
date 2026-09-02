@@ -55,7 +55,8 @@ key in :class:`~openturns.ResourceMap` to ``HMAT`` (instead of ``DENSE``).
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *KarhunenLoeveP1Algorithm-RegularizationFactor* (:raw:`Scalar`, default: `0`)
+- *KarhunenLoeveP1Algorithm-RegularizationFactor* (``Scalar``, default: `0`)
+
 Examples
 --------
 Create a Karhunen-Loeve P1 algorithm:

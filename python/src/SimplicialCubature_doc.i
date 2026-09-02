@@ -38,11 +38,11 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SimplicialCubature-DefaultMaximumAbsoluteError* (:raw:`Scalar`, default: `0`)
-- *SimplicialCubature-DefaultMaximumCallsNumber* (:raw:`UnsignedInteger`, default: `100000`)
-- *SimplicialCubature-DefaultMaximumRelativeError* (:raw:`Scalar`, default: `1e-05`)
-- *SimplicialCubature-DefaultRule* (:raw:`UnsignedInteger`, default: `3`)
-- *SimplicialCubature-MarginalDiscretizationIntervalsNumber* (:raw:`UnsignedInteger`, default: `1`)
+- *SimplicialCubature-DefaultMaximumAbsoluteError* (``Scalar``, default: `0`)
+- *SimplicialCubature-DefaultMaximumCallsNumber* (``UnsignedInteger``, default: `100000`)
+- *SimplicialCubature-DefaultMaximumRelativeError* (``Scalar``, default: `1e-05`)
+- *SimplicialCubature-DefaultRule* (``UnsignedInteger``, default: `3`)
+- *SimplicialCubature-MarginalDiscretizationIntervalsNumber* (``UnsignedInteger``, default: `1`)
 
 Examples
 --------

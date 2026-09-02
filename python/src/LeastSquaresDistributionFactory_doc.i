@@ -27,11 +27,12 @@ The estimator :math:`\hat{\theta}` minimizes the mean square error between
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LeastSquaresDistributionFactory-MaximumAbsoluteError* (:raw:`Scalar`, default: `1e-10`)
-- *LeastSquaresDistributionFactory-MaximumCallsNumber* (:raw:`UnsignedInteger`, default: `1000`)
-- *LeastSquaresDistributionFactory-MaximumConstraintError* (:raw:`Scalar`, default: `1e-10`)
-- *LeastSquaresDistributionFactory-MaximumObjectiveError* (:raw:`Scalar`, default: `1e-10`)
-- *LeastSquaresDistributionFactory-MaximumRelativeError* (:raw:`Scalar`, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumAbsoluteError* (``Scalar``, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
+- *LeastSquaresDistributionFactory-MaximumConstraintError* (``Scalar``, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumObjectiveError* (``Scalar``, default: `1e-10`)
+- *LeastSquaresDistributionFactory-MaximumRelativeError* (``Scalar``, default: `1e-10`)
+
 See also
 --------
 DistributionFactory

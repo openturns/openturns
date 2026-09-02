@@ -92,7 +92,6 @@ Continuous parametric distributions
 
     :template: Distribution.rst_t
     Uniform
-    UserDefined
 
     :template: classWithPlot.rst_t
     UniformOverMesh

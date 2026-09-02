@@ -77,8 +77,9 @@ When the function :math:`f: \Rset^d \mapsto \Rset^p` with :math:`d>1`, use the i
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GaussKronrod-MaximumError* (:raw:`Scalar`, default: `1e-12`)
-- *GaussKronrod-MaximumSubIntervals* (:raw:`UnsignedInteger`, default: `100`)
+- *GaussKronrod-MaximumError* (``Scalar``, default: `1e-12`)
+- *GaussKronrod-MaximumSubIntervals* (``UnsignedInteger``, default: `100`)
+
 Examples
 --------
 Create a Gauss-Kronrod algorithm:

@@ -91,15 +91,14 @@ smooth : float
 Parameters
 ----------
 smooth : float
+    Growing factor in penalization term.
 
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *AbdoRackwitz-DefaultOmega* (:raw:`Scalar`, default: `0.0001`)
-- *AbdoRackwitz-DefaultSmooth* (:raw:`Scalar`, default: `1.2`)
-- *AbdoRackwitz-DefaultTau* (:raw:`Scalar`, default: `0.5`)
-
-    Growing factor in penalization term."
+- *AbdoRackwitz-DefaultOmega* (``Scalar``, default: `0.0001`)
+- *AbdoRackwitz-DefaultSmooth* (``Scalar``, default: `1.2`)
+- *AbdoRackwitz-DefaultTau* (``Scalar``, default: `0.5`)"
 
 

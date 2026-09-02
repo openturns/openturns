@@ -69,7 +69,8 @@ The NAIS algorithm with the Silverman rule is implemented in the current NAIS cl
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *NAIS-DefaultQuantileLevel* (:raw:`Scalar`, default: `0.25`)
+- *NAIS-DefaultQuantileLevel* (``Scalar``, default: `0.25`)
+
 See also
 --------
 SubsetSampling

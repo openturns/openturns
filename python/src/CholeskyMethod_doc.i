@@ -23,7 +23,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *CholeskyMethod-LargeCase* (:raw:`UnsignedInteger`, default: `128`)
+- *CholeskyMethod-LargeCase* (``UnsignedInteger``, default: `128`)
 
 See also
 --------

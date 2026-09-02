@@ -55,8 +55,9 @@ the design point).
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *StrongMaximumTest-DefaultDeltaPrecision* (:raw:`Scalar`, default: `1e-07`)
-- *StrongMaximumTest-Epsilon* (:raw:`Scalar`, default: `1e-10`)
+- *StrongMaximumTest-DefaultDeltaPrecision* (``Scalar``, default: `1e-07`)
+- *StrongMaximumTest-Epsilon* (``Scalar``, default: `1e-10`)
+
 See also
 --------
 Analytical, SORM, FORM, SORMResult, FORMResult

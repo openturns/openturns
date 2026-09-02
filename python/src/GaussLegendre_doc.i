@@ -155,7 +155,8 @@ polynomials of the vector space:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GaussLegendre-DefaultMarginalIntegrationPointsNumber* (:raw:`UnsignedInteger`, default: `64`)
+- *GaussLegendre-DefaultMarginalIntegrationPointsNumber* (``UnsignedInteger``, default: `64`)
+
 See also
 --------
 GaussProductExperiment, TensorProductExperiment

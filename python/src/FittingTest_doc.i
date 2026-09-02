@@ -374,6 +374,13 @@ Raises
 TypeError : If the distribution is not discrete or if the sample is
     multivariate.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FittingTest-ChiSquaredCheckSample* (``Bool``, default: `true`)
+- *FittingTest-ChiSquaredMinimumBinCount* (``UnsignedInteger``, default: `5`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -553,12 +560,6 @@ The Monte Carlo algorithm can be configured with the following keys in
 
 - *FittingTest-LillieforsPrecision* defining the target standard
   deviation for the p-value estimate. Default value is 0.01.
-
-
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *FittingTest-ChiSquaredCheckSample* (:raw:`Bool`, default: `true`)
-- *FittingTest-ChiSquaredMinimumBinCount* (:raw:`UnsignedInteger`, default: `5`)
 
 Examples
 --------

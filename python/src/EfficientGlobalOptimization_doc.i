@@ -76,9 +76,10 @@ This behavior can be overridden by using another solver with :func:`setOptimizat
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *EfficientGlobalOptimization-DefaultAEITradeoff* (:raw:`Scalar`, default: `1`)
-- *EfficientGlobalOptimization-DefaultCorrelationLengthFactor* (:raw:`Scalar`, default: `1`)
-- *EfficientGlobalOptimization-DefaultOptimizationAlgorithm* (:raw:`String`, default: `Cobyla`)
+- *EfficientGlobalOptimization-DefaultAEITradeoff* (``Scalar``, default: `1`)
+- *EfficientGlobalOptimization-DefaultCorrelationLengthFactor* (``Scalar``, default: `1`)
+- *EfficientGlobalOptimization-DefaultOptimizationAlgorithm* (``String``, default: `Cobyla`)
+
 Examples
 --------
 >>> import openturns as ot
