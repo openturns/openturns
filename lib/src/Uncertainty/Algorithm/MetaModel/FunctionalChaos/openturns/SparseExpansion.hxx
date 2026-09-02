@@ -133,7 +133,7 @@ private:
   OrthogonalBasis basis_;
 
   /** The size of the basis used for the projection */
-  UnsignedInteger basisSize_;
+  UnsignedInteger basisSize_ = 0;
 
   /** The active functions in the basis */
   Indices activeFunctions_;

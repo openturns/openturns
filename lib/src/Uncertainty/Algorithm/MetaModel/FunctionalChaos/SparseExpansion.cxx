@@ -42,6 +42,10 @@ static const Factory<SparseExpansion> Factory_SparseExpansion;
 /* Default constructor */
 SparseExpansion::SparseExpansion()
   : FunctionalChaosAlgorithm()
+  , basisSize_(0)
+  , methodName_(ResourceMap::GetAsString("SparseExpansion-DecompositionMethod"))
+  , fitting_(CorrectedLeaveOneOut())
+  , selectionMethod_("OMP")
 {
   // Nothing to do
 }
@@ -112,6 +116,7 @@ SparseExpansion::SparseExpansion(const Sample & inputSample,
   if (basis.getMeasure().getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the basis must have a measure with the same dimension as the input distribution, here measure dimension=" << basis.getMeasure().getDimension() << " and distribution dimension=" << distribution.getDimension();
   if (basisSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot project on a basis of size zero";
   // Use the provided active functions, ensuring index 0 is always included
+  if (!activeFunctions.check(basisSize)) throw InvalidArgumentException(HERE) << "Error: the active functions must have indices less than " << basisSize;
   activeFunctions_ = activeFunctions;
   if (!activeFunctions_.contains(0))
     activeFunctions_.add(0);
@@ -186,6 +191,8 @@ void SparseExpansion::run()
 
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   const UnsignedInteger sampleSize = inputSample_.getSize();
+  if (basisSize_ == 0) throw InvalidArgumentException(HERE) << "Error: the basis size must be positive, here basisSize=" << basisSize_;
+  if (sampleSize == 0) throw InvalidArgumentException(HERE) << "Error: the sample size must be positive, here sampleSize=" << sampleSize;
   const Scalar alpha = std::max(1.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor"));
   const Scalar errorThreshold = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold"));
   const Scalar maximumError = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumError"));
@@ -210,11 +217,6 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
                              const Scalar smallCoefficient,
                              const UnsignedInteger consecutiveIncreases)
 {
-  LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
-  std::vector<bool> isCandidate(basisSize_, false);
-  for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
-    isCandidate[activeFunctions_[idx]] = true;
-
   std::map<UnsignedInteger, Point> coefficientsMap;
   Collection<Indices> allIndicesHistory;
   Collection<Point> allCoefficientsHistory;
@@ -226,6 +228,10 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
     Indices marginalActiveFunctions(1, 0);
     Indices flagActiveFunctions(basisSize_, 0);
     flagActiveFunctions[0] = 1;
+    LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
+    std::vector<bool> isCandidate(basisSize_, false);
+    for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
+      isCandidate[activeFunctions_[idx]] = true;
     const Sample marginalOutputSample(outputSample_.getMarginal(outputIndex));
     const Point rhs(marginalOutputSample.asPoint());
 
@@ -365,11 +371,6 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
   LeastSquaresMethod fullMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
   const Matrix PhiW = fullMethod.computeWeightedDesign(true);
 
-  std::vector<bool> isCandidate(basisSize_, false);
-  for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
-    isCandidate[activeFunctions_[idx]] = true;
-
-  LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
   std::map<UnsignedInteger, Point> coefficientsMap;
   Collection<Indices> allIndicesHistory;
   Collection<Point> allCoefficientsHistory;
@@ -381,6 +382,10 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
     Indices marginalActiveFunctions(1, 0);
     Indices flagActiveFunctions(basisSize_, 0);
     flagActiveFunctions[0] = 1;
+    LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
+    std::vector<bool> isCandidate(basisSize_, false);
+    for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
+      isCandidate[activeFunctions_[idx]] = true;
     const Sample marginalOutputSample(outputSample_.getMarginal(outputIndex));
     const Point rhs(marginalOutputSample.asPoint());
 
