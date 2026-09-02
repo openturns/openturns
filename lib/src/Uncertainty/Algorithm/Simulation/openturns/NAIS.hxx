@@ -68,11 +68,13 @@ public:
   UnsignedInteger getStepsNumber() const;
 
   /** Keep event sample */
-  void setKeepSample(const Bool keepSample);
+  void setKeepSample(const Bool keepSample) override;
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getInputSample() const override;
+    
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
   /** Method save() stores the object through the StorageManager */
@@ -80,6 +82,10 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+  
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
+  
 private:
 
   /** Function computing the auxiliary distribution as a function of current samples and associated weights */

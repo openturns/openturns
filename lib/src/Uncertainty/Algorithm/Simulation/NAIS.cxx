@@ -61,6 +61,24 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
+/*  Event accessor */
+void NAIS::setEvent(const RandomVector & event)
+{
+
+  const Bool previousDirection = getEvent().getOperator()(0, 1);
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const Interval range(getEvent().getAntecedent().getDistribution().getRange());
+  const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
+  const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
+  for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
+    if (rangeUpper[i] || rangeLower[i])
+      throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution";
+
+  const Bool newDirection = getEvent().getOperator()(0, 1);
+  if (previousDirection != newDirection)
+    quantileLevel_ = 1.0 - quantileLevel_;
+}
+
 /* Keep event sample */
 void NAIS::setKeepSample(const Bool keepSample)
 {
@@ -144,7 +162,6 @@ Point NAIS::computeWeights(const Sample & sample,
 // Main function that computes the failure probability
 void NAIS::run()
 {
-
   // First, initialize some parameters
   inputSample_.clear();
   outputSample_.clear();
@@ -326,6 +343,14 @@ Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger se
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
 }
 
+Sample NAIS::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
+}
+
 Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
 {
   if (!keepSample_)
@@ -360,6 +385,7 @@ UnsignedInteger NAIS::getStepsNumber() const
 
 
 // Accessor to naisResult_s
+
 NAISResult NAIS::getResult() const
 {
   return naisResult_;

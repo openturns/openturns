@@ -692,7 +692,13 @@ ot_add_python_module(simulation simulation_module.i
                       StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i
                       PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i
                       LineSampling.i LineSampling_doc.i
-                    )
+                      ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
+                      ActiveLearningUFunction.i  ActiveLearningUFunction_doc.i
+                      ActiveLearningEFFFunction.i ActiveLearningEFFFunction_doc.i
+                      ActiveLearningGMMFunction.i ActiveLearningGMMFunction_doc.i
+                      ActiveLearningReliabilityAlgorithm.i ActiveLearningReliabilityAlgorithm_doc.i
+                      ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
+                      )
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i
                       Drawable.i Drawable_doc.i

@@ -64,6 +64,21 @@ LineSampling * LineSampling::clone() const
   return new LineSampling(*this);
 }
 
+/*  Event accessor */
+void LineSampling::setEvent(const RandomVector & event)
+{
+  if (!(event.isEvent() && event.isComposite())) throw InvalidArgumentException(HERE) << "LineSampling requires a composite event";
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
+  
+  const UnsignedInteger inputDimension = getEvent().getAntecedent().getDistribution().getDimension();
+  if (initialAlpha_.getDimension() != inputDimension)
+    throw InvalidArgumentException(HERE) << "Got a direction of dimension=" << initialAlpha_.getDimension();
+
+  if (outputDimension > 1)
+    throw InvalidArgumentException(HERE) << "Output dimension for LineSampling cannot be greater than 1, here output dimension=" << outputDimension;
+  standardEvent_ = StandardEvent(getEvent());
+}
 
 /* Performs the actual computation. */
 void LineSampling::run()

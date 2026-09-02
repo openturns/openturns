@@ -69,6 +69,21 @@ SubsetSampling * SubsetSampling::clone() const
   return new SubsetSampling(*this);
 }
 
+/*  Event accessor */
+void SubsetSampling::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent() || !event.isComposite())
+    throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
+  const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
+  const UnsignedInteger outputDimension = composedEvent.getFunction().getOutputDimension();
+  if (outputDimension > 1)
+    throw InvalidArgumentException(HERE)
+      << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
+      << outputDimension;
+
+  EventSimulation::setEvent(composedEvent);
+  setInitialExperiment(initialExperiment_);
+}
 
 /* Performs the actual computation. */
 void SubsetSampling::run()
@@ -545,6 +560,15 @@ Sample SubsetSampling::getOutputSample(const UnsignedInteger step, const Unsigne
   if (select > 2)
     throw InvalidArgumentException(HERE) << "SubsetSampling select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+
+Sample SubsetSampling::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
 }
 
 Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const

@@ -62,6 +62,16 @@ Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
   return getEvent().getAntecedent().getDistribution();
 }
 
+/*  Event accessor */
+void CrossEntropyImportanceSampling::setEvent(const RandomVector & event)
+{
+  const Bool previousDirection = getEvent().getOperator()(0, 1);
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const Bool newDirection = getEvent().getOperator()(0, 1);
+  if (previousDirection != newDirection)
+    quantileLevel_ = 1.0 - quantileLevel_;  
+}
+
 // Get quantileLevel
 Scalar CrossEntropyImportanceSampling::getQuantileLevel() const
 {
@@ -325,6 +335,15 @@ Sample CrossEntropyImportanceSampling::getInputSample(const UnsignedInteger step
   if (select > 2)
     throw InvalidArgumentException(HERE) << "CrossEntropy select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+
+Sample CrossEntropyImportanceSampling::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "CrossEntropyImportanceSampling keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
 }
 
 Sample CrossEntropyImportanceSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const

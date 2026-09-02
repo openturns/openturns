@@ -65,6 +65,16 @@ event : :class:`~openturns.RandomVector`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::EventSimulation::setEvent
+"Accessor to the event.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we want to evaluate the probability."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::EventSimulation::run
 "Launch simulation.
 
@@ -101,3 +111,23 @@ Returns
 -------
 graph : a :class:`~openturns.Graph`
     probability convergence graph"
+    
+// ---------------------------------------------------------------------
+%feature("docstring") OT::EventSimulation::setKeepSample
+"Accessor to keepSample parameter.
+
+Parameters
+----------
+keepSample : boolean
+    Keep sample indicator
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::EventSimulation::getInputSample
+"Accessor to input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input sample
+"
