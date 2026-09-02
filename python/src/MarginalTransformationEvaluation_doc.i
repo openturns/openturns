@@ -55,6 +55,16 @@ evaluated in one point but which proposes no gradient nor hessian implementation
 
       (x_1, \ldots, x_n) \rightarrow (F^{-1}_{Y_1} \circ F_{X_1}(x_1), \ldots, F^{-1}_{Y_n} \circ F_{X_n}(x_n))
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MarginalTransformationEvaluation-DefaultTailThreshold* (`Scalar`, default: `0.99`): probability value
+  beyond which the point is considered to be in the tail of its distribution, so that a dedicated tail
+  inversion is used,
+- *MarginalTransformationEvaluation-ParametersEpsilon* (`Scalar`, default: `1e-14`): tolerance used to detect
+  when two marginal distributions share the same parameters,
+- *MarginalTransformationEvaluation-Simplify* (`Bool`, default: `true`): whether the transformation is
+  simplified when the two distributions are identical.
+
 Examples
 --------
 >>> import openturns as ot
