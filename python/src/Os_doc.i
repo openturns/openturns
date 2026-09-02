@@ -5,6 +5,6 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Os-RemoveFiles* (:raw:`Bool`, default: `true`)
+- *Os-RemoveFiles* (`Bool`, default: `true`)
 )RAW"
 %enddef

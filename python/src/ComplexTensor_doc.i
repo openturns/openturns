@@ -59,7 +59,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *ComplexTensor-size-visible-in-str-from* (:raw:`UnsignedInteger`, default: `6`)
+- *ComplexTensor-size-visible-in-str-from* (`UnsignedInteger`, default: `6`)
 )RAW"
 
 // ---------------------------------------------------------------------

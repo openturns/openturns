@@ -5,6 +5,6 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SymbolicParserMuParser-SmallSize* (:raw:`UnsignedInteger`, default: `1000`)
+- *SymbolicParserMuParser-SmallSize* (`UnsignedInteger`, default: `1000`)
 )RAW"
 %enddef

@@ -36,6 +36,10 @@ They can be used to enumerate a multivariate basis
 built as the tensorization of univariate basis, using the indexation of each marginal basis
 (refer to and :any:`enumeration_multivariate_basis`).
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *HyperbolicAnisotropicEnumerateFunction-DefaultQ* (`Scalar`, default: `0.4`)
+
 Examples
 --------
 In the following example, we create an hyperbolic enumerate function
@@ -88,12 +92,6 @@ i= 16 enum= [9,0,0]
 i= 17 enum= [0,5,0]
 i= 18 enum= [10,0,0]
 i= 19 enum= [11,0,0]
-
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *HyperbolicAnisotropicEnumerateFunction-DefaultQ* (:raw:`Scalar`, default: `0.4`)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -46,6 +46,14 @@ of the empirical probabilities) on the **Henry line** whose equation reads:
 
 The Henry plot is a special case of the more general QQ-plot.
 
+This function uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *VisualTest-CloudMediumSize* (`UnsignedInteger`, default: `1000`)
+- *VisualTest-CloudSmallSize* (`UnsignedInteger`, default: `100`)
+- *VisualTest-DependenceConfidenceLevel* (`Scalar`, default: `0.95`)
+- *VisualTest-DrawPairsMarginals-AxesMargin* (`Scalar`, default: `0.1`)
+- *VisualTest-KendallPlot-MonteCarloSize* (`UnsignedInteger`, default: `100`)
+
 See Also
 --------
 openturns.VisualTest.DrawQQplot
@@ -74,15 +82,6 @@ Draw an Henry plot against an inferred Normal distribution:
 >>> henry_graph.setTitle('Henry plot against inferred Normal distribution')
 >>> View(henry_graph).show()
 
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *VisualTest-CloudMediumSize* (:raw:`UnsignedInteger`, default: `1000`)
-- *VisualTest-CloudSmallSize* (:raw:`UnsignedInteger`, default: `100`)
-- *VisualTest-DependenceConfidenceLevel* (:raw:`Scalar`, default: `0.95`)
-- *VisualTest-DrawPairsMarginals-AxesMargin* (:raw:`Scalar`, default: `0.1`)
-- *VisualTest-KendallPlot-MonteCarloSize* (:raw:`UnsignedInteger`, default: `100`)
 )RAW"
 
 // ---------------------------------------------------------------------

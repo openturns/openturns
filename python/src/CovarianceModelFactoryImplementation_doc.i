@@ -5,15 +5,13 @@ Notes
 -----
 This class is an interface class for all the classes that build covariance models. OpenTURNS provides two covariance model factories: :class:`~openturns.StationaryCovarianceModelFactory` for stationary processes and :class:`~openturns.NonStationaryCovarianceModelFactory` for all processes. This factory does not make any hypothesis on the stationarity of the process.
 
-See also
---------
-StationaryCovarianceModelFactory, NonStationaryCovarianceModelFactory
-
-Notes
------
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *CovarianceModel-DefaultNuggetFactor* (:raw:`Scalar`, default: `1e-12`)"
+- *CovarianceModel-DefaultNuggetFactor* (`Scalar`, default: `1e-12`)
+
+See also
+--------
+StationaryCovarianceModelFactory, NonStationaryCovarianceModelFactory"
 
 
 

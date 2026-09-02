@@ -54,13 +54,14 @@ Basic linear algebra operations (provided the dimensions are compatible)
 [[ 0 1 ]
  [ 2 3 ]
  [ 4 5 ]]
+
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Matrix-DefaultSmallPivot* (:raw:`Scalar`, default: `1e-07`)
-- *Matrix-SymmetryThreshold* (:raw:`Scalar`, default: `1e-12`)
-- *Matrix-size-visible-in-str-from* (:raw:`UnsignedInteger`, default: `5`)
+- *Matrix-DefaultSmallPivot* (`Scalar`, default: `1e-07`)
+- *Matrix-SymmetryThreshold* (`Scalar`, default: `1e-12`)
+- *Matrix-size-visible-in-str-from* (`UnsignedInteger`, default: `5`)
 )RAW"
 
 // ---------------------------------------------------------------------

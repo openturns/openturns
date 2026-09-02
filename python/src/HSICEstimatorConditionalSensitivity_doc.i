@@ -30,8 +30,8 @@ throws an exception in that case.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *HSICEstimator-ParallelPValues* (:raw:`Bool`, default: `true`)
-- *HSICEstimator-PermutationSize* (:raw:`UnsignedInteger`, default: `100`)
+- *HSICEstimator-ParallelPValues* (`Bool`, default: `true`)
+- *HSICEstimator-PermutationSize* (`UnsignedInteger`, default: `100`)
 
 Examples
 --------

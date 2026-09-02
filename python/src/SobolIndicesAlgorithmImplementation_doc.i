@@ -141,6 +141,11 @@ then the interaction Sobol' index can be computed from the equation:
 .. math::
     S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SobolIndicesAlgorithm-DefaultBlockSize* (`UnsignedInteger`, default: `1`)
+- *SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel* (`Scalar`, default: `0.95`)
+
 Parameters
 ----------
 marginalIndex : int, optional
@@ -150,12 +155,6 @@ Returns
 -------
 indices : :class:`~openturns.SymmetricMatrix`
     Tensor containing second order Sobol indices.
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *SobolIndicesAlgorithm-DefaultBlockSize* (:raw:`UnsignedInteger`, default: `1`)
-- *SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel* (:raw:`Scalar`, default: `0.95`)
 
 )RAW"
 %enddef
