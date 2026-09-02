@@ -34,15 +34,14 @@ Examples
 >>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
 >>> y = normal.getRealization()
 >>> yAt = design.transpose() * y
+>>> x = method.solve(y)
 
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SparseMethod-ErrorThreshold* (:raw:`Scalar`, default: `0.001`)
-- *SparseMethod-MaximumErrorFactor* (:raw:`Scalar`, default: `2`)
-
->>> x = method.solve(y)"
+- *SparseMethod-ErrorThreshold* (`Scalar`, default: `0.001`)
+- *SparseMethod-MaximumErrorFactor* (`Scalar`, default: `2`)"
 
 
 

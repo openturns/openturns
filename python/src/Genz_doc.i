@@ -5,7 +5,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Genz-LowDiscrepancySequence* (:raw:`String`, default: `SobolSequence`)
-- *Genz-DefaultSampleSize* (:raw:`UnsignedInteger`, default: `1048576`)
+- *Genz-LowDiscrepancySequence* (`String`, default: `SobolSequence`)
+- *Genz-DefaultSampleSize* (`UnsignedInteger`, default: `1048576`)
 )RAW"
 %enddef

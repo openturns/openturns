@@ -49,12 +49,11 @@ k : int
 Parameters
 ----------
 k : int
+    Number of folds in which the sample is split.
 
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *KFold-DefaultK* (:raw:`UnsignedInteger`, default: `10`)
-
-    Number of folds in which the sample is split."
+- *KFold-DefaultK* (`UnsignedInteger`, default: `10`)"
 

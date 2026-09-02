@@ -56,7 +56,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *HaltonSequence-InitialSeed* (:raw:`UnsignedInteger`, default: `1`)
+- *HaltonSequence-InitialSeed* (`UnsignedInteger`, default: `1`)
 
     Name of the scrambling method. Possible values are 'NONE', 'REVERSE' and 'RANDOM'."
 

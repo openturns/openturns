@@ -18,11 +18,10 @@ g_PointToField : :class:`~openturns.PointToFieldFunction`
 Notes
 -----
 This class only implements the evaluation operator and does not propose any implementation for the gradient nor the hessian of the composition.
-Notes
------
+
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *PointToPointEvaluation-BlockSize* (:raw:`UnsignedInteger`, default: `256`)
+- *PointToPointEvaluation-BlockSize* (`UnsignedInteger`, default: `256`)
 )RAW"
 
 // ---------------------------------------------------------------------

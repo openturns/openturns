@@ -125,6 +125,10 @@ than on all output variables at once (at the price of increased chaos decomposit
 which then makes sensitivity analysis possible for each output variable
 or group of output variables.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FieldFunctionalChaosAlgorithm-DefaultRecompress* (`Bool`, default: `false`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -144,12 +148,6 @@ Examples
 >>> metamodel = result.getPointToFieldMetaModel()
 >>> y0hat = metamodel(x[0])
 >>> ot.ResourceMap.Reset()
-
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *PointToFieldFunctionalChaosAlgorithm-DefaultRecompress* (:raw:`Bool`, default: `false`)
 )RAW"
 
 // ---------------------------------------------------------------------

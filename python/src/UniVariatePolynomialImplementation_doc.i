@@ -36,7 +36,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *UniVariatePolynomial-SmallDegree* (:raw:`UnsignedInteger`, default: `400`)"
+- *UniVariatePolynomial-SmallDegree* (`UnsignedInteger`, default: `400`)"
 
 
 

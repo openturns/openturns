@@ -29,6 +29,9 @@ The gaussian processes may have a trend: in that case, the Gaussian
 process is the sum of the trend function
 :math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean Gaussian process.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GaussianProcess-GibbsMaximumIteration* (`UnsignedInteger`, default: `100`)
 
 Examples
 --------
@@ -48,12 +51,6 @@ Examples
 >>> size = 100
 >>> myProcess = ot.GaussianProcess(covarianceModel, meshGrid)
 >>> myProcess.setSamplingMethod(myProcess.CHOLESKY)
-
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *GaussianProcess-GibbsMaximumIteration* (:raw:`UnsignedInteger`, default: `100`)
 )RAW"
 
 // ---------------------------------------------------------------------

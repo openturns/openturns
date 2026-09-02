@@ -13,12 +13,13 @@ x : float
 Returns
 -------
 result : float
+
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SpecFunc-MaximumIteration* (:raw:`UnsignedInteger`, default: `1000`)
-- *SpecFunc-Precision* (:raw:`Scalar`, default: `2e-16`)
+- *SpecFunc-MaximumIteration* (`UnsignedInteger`, default: `1000`)
+- *SpecFunc-Precision* (`Scalar`, default: `2e-16`)
 )RAW"
 
 // ---------------------------------------------------------------------

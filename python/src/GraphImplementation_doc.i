@@ -20,9 +20,9 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Graph-DefaultLegendFontSize* (:raw:`Scalar`, default: `10`)
-- *Graph-DefaultHorizontalMargin* (:raw:`Scalar`, default: `0.05`)
-- *Graph-DefaultVerticalMargin* (:raw:`Scalar`, default: `0.05`)"
+- *Graph-DefaultLegendFontSize* (`Scalar`, default: `10`)
+- *Graph-DefaultHorizontalMargin* (`Scalar`, default: `0.05`)
+- *Graph-DefaultVerticalMargin* (`Scalar`, default: `0.05`)"
 
 
 

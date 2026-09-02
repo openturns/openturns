@@ -139,13 +139,12 @@ enableExtrapolation : bool
 Returns
 -------
 enableExtrapolation : bool
+    Parameter for extrapolation.
 
 Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *PiecewiseHermiteEvaluation-DefaultEnableExtrapolation* (:raw:`Bool`, default: `true`)
-- *PiecewiseHermiteEvaluation-EpsilonRegular* (:raw:`Scalar`, default: `1e-12`)
-
-    Parameter for extrapolation."
+- *PiecewiseHermiteEvaluation-DefaultEnableExtrapolation* (`Bool`, default: `true`)
+- *PiecewiseHermiteEvaluation-EpsilonRegular* (`Scalar`, default: `1e-12`)"
 
