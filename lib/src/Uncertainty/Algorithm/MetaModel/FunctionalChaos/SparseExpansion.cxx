@@ -371,6 +371,12 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
   LeastSquaresMethod fullMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
   const Matrix PhiW = fullMethod.computeWeightedDesign(true);
 
+  // Build global-to-active column mapping for PhiW
+  // PhiW has activeFunctions_.getSize() columns; column c corresponds to basis function activeFunctions_[c]
+  std::vector<UnsignedInteger> globalToActive(basisSize_, 0);
+  for (UnsignedInteger c = 0; c < activeFunctions_.getSize(); ++c)
+    globalToActive[activeFunctions_[c]] = c;
+
   std::map<UnsignedInteger, Point> coefficientsMap;
   Collection<Indices> allIndicesHistory;
   Collection<Point> allCoefficientsHistory;
@@ -429,14 +435,16 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
 
       // Compute weighted correlations c_j = <phi_j, r>_W = Phi^T W r
       // Using PhiW = sqrt(W) Phi, this is PhiW^T sqrt(W) r
+      // Note: PhiW column c corresponds to basis function activeFunctions_[c]
       for (UnsignedInteger k = 0; k < basisSize_; ++k)
         correlations[k] = 0.0;
       for (UnsignedInteger j = 0; j < basisSize_; ++j)
       {
         if (!isCandidate[j]) continue;
+        const UnsignedInteger col = globalToActive[j];
         Scalar c = 0.0;
         for (UnsignedInteger s = 0; s < sampleSize; ++s)
-          c += PhiW(s, j) * weightSqrt[s] * residual[s];
+          c += PhiW(s, col) * weightSqrt[s] * residual[s];
         correlations[j] = c;
       }
 
@@ -483,13 +491,15 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
 
       // Compute correlations of all basis functions with u: d_j = <phi_j, u>_W = Phi^T W u
       // Using PhiW = sqrt(W) Phi, this is PhiW^T sqrt(W) u
+      // Note: PhiW column c corresponds to basis function activeFunctions_[c]
       Point d(basisSize_, 0.0);
       for (UnsignedInteger j = 0; j < basisSize_; ++j)
       {
         if (!isCandidate[j]) continue;
+        const UnsignedInteger col = globalToActive[j];
         Scalar dj = 0.0;
         for (UnsignedInteger s = 0; s < sampleSize; ++s)
-          dj += PhiW(s, j) * weightSqrt[s] * u[s];
+          dj += PhiW(s, col) * weightSqrt[s] * u[s];
         d[j] = dj;
       }
 
