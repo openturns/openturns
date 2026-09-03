@@ -247,10 +247,12 @@ Point CholeskyMethod::solve(const Point & rhs)
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
+    if (!hasUniformWeight_ && size != weightSqrt_.getSize())
+      throw InvalidArgumentException(HERE) << "CholeskyMethod::solve invalid rhs size=" << rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
   }
   const Matrix psiAk(computeWeightedDesign());
   const Point c(psiAk.getImplementation()->genVectProd(b, true));
@@ -272,10 +274,10 @@ Point CholeskyMethod::solveNormal(const Point & rhs)
   update(Indices(0), currentIndices_, Indices(0));
 
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+    for (UnsignedInteger i = 0; i < size; ++i)
+      b[i] *= weight_[hasUniformWeight_ ? 0 : i];
   }
   // We first solve Ly=b then L^Tx=y. The flags given to solveLinearSystemTri() are:
   // 1) To say that the matrix L is lower triangular
