@@ -258,11 +258,6 @@ public:
 
 }; /* class Function */
 
-
-/** Product of a scalar by a function */
-OT_API Function operator * (const Scalar & scalar,
-                             const Function & function);
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_FUNCTION_HXX */

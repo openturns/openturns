@@ -490,11 +490,4 @@ void Function::setDetachCallback(FunctionImplementation::DetachCallback callBack
   getImplementation()->setDetachCallback(callBack, state);
 }
 
-/* Product of a scalar by a function */
-Function operator * (const Scalar & scalar,
-                     const Function & function)
-{
-  return function * scalar;
-}
-
 END_NAMESPACE_OPENTURNS
