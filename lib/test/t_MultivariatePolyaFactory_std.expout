@@ -1,0 +1,7 @@
+Distribution          =class=MultivariatePolya name=MultivariatePolya dimension=3 alpha=class=Point name=Unnamed dimension=3 values=[1,1,1] c=1 n=5
+Estimated distribution=class=MultivariatePolya name=MultivariatePolya dimension=3 alpha=class=Point name=Unnamed dimension=3 values=[0.996139,1.0034,1.00274] c=1 n=5
+Default distribution=class=MultivariatePolya name=MultivariatePolya dimension=1 alpha=class=Point name=Unnamed dimension=1 values=[1] c=1 n=1
+MultivariatePolya          =class=MultivariatePolya name=MultivariatePolya dimension=3 alpha=class=Point name=Unnamed dimension=3 values=[1,1,1] c=1 n=5
+Estimated multivariate polya=class=MultivariatePolya name=MultivariatePolya dimension=3 alpha=class=Point name=Unnamed dimension=3 values=[0.996139,1.0034,1.00274] c=1 n=5
+Default multivariate polya=class=MultivariatePolya name=MultivariatePolya dimension=1 alpha=class=Point name=Unnamed dimension=1 values=[1] c=1 n=1
+Degenerate estimated multivariate polya=class=MultivariatePolya name=MultivariatePolya dimension=3 alpha=class=Point name=Unnamed dimension=3 values=[0.33374,0.33016,0.3361] c=0 n=5
