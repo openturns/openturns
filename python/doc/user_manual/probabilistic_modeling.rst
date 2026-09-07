@@ -133,6 +133,10 @@ Discrete parametric distributions
     Hypergeometric
     Multinomial
 
+    :template: Distribution.rst_t
+    experimental.MultivariateHypergeometric
+    experimental.MultivariatePolya
+
     :template: classWithPlot.rst_t
     Polya
     KPermutationsDistribution

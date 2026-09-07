@@ -320,6 +320,10 @@ Bibliography
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
     `pdf <https://openturns.github.io/openturns/papers/lebrun2009c.pdf>`__
+.. [lebrun2013] Lebrun, R. (2013). *Efficient time/space algorithm to compute
+    rectangular probabilities of multinomial, multivariate hypergeometric and
+    multivariate Polya distributions.* Statistics and Computing 23, 615-623.
+    `doi <https://doi.org/10.1007/s11222-012-9334-8>`__
 .. [legratiet2017] Le Gratiet, L., Marelli, S., & Sudret, B. (2017).
     *Metamodel-based sensitivity analysis: polynomial chaos expansions and
     Gaussian processes.* In Handbook of uncertainty quantification

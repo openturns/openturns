@@ -671,6 +671,14 @@
   <Multinomial-eta    value_float="1.0e-9" />
   <Multinomial-smallA value_float="10.0"   />
 
+  <!-- OT::MultivariateHypergeometric parameters -->
+  <MultivariateHypergeometric-eta    value_float="1.0e-9" />
+  <MultivariateHypergeometric-smallA value_float="10.0"    />
+
+  <!-- OT::MultivariatePolya parameters -->
+  <MultivariatePolya-eta    value_float="1.0e-9" />
+  <MultivariatePolya-smallA value_float="10.0"   />
+
   <!-- OT::PolyaFactory parameters -->
   <PolyaFactory-AbsolutePrecision value_float="1e-12"        />
   <PolyaFactory-RelativePrecision value_float="1e-12"        />
