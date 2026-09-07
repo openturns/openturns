@@ -9,6 +9,8 @@
 ==== New classes ====
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
+ * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
+ * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
