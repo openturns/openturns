@@ -482,6 +482,9 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
     // Extract the marginal sample and apply the shift
     marginalSamples[d] = sample.getMarginal(d);
     marginalSamples[d] += Point(1, shift[d]);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (!(marginalSamples[d](i, 0) > 0.0))
+        throw InvalidArgumentException(HERE) << "Error: shifted sample must be strictly positive, got " << marginalSamples[d](i, 0) << " at index " << i << " marginal " << d;
 
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d]);
     Function objectiveFunction(boxCoxOptimization);
@@ -573,6 +576,9 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
   // Keep the shifted marginal samples
   Sample shiftedSample(outputSample);
   shiftedSample += shift;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (!(shiftedSample(i, 0) > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
   BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
@@ -646,6 +652,9 @@ BoxCoxTransform BoxCoxFactory::buildWithGPF(const Sample & inputSample,
   // Keep the shifted marginal samples
   Sample shiftedSample(outputSample);
   shiftedSample += shift;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (!(shiftedSample(i, 0) > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
   BoxCoxGPFOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
@@ -711,6 +720,9 @@ BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
   // Keep the shifted marginal samples
   Sample shiftedSample(outputSample);
   shiftedSample += shift;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (!(shiftedSample(i, 0) > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
   const BoxCoxLMOptimizationEvaluation boxCoxOptimization(inputSample, shiftedSample, basis);
