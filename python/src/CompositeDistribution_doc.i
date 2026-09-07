@@ -42,6 +42,8 @@ distY : :class:`~openturns.Distribution`, univariate
 Notes
 -----
 Its first moments are obtained by numerical integration.
+The mathematical support of a CompositeDistribution is defined as the image of the numerical support of the antecedent.
+Consequently, its bounds are finite.
 
 Examples
 --------
