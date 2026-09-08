@@ -567,8 +567,13 @@ ot_add_python_module(experimental experimental_module.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
-                     SlicedInverseRegression.i SlicedInverseRegression_doc.i
+SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
+                     FastGaussQuadrature.i FastGaussQuadrature_doc.i
+                     FastHermite.i FastHermite_doc.i
+                     FastJacobi.i FastJacobi_doc.i
+                     FastLaguerre.i FastLaguerre_doc.i
+                     FastLegendre.i FastLegendre_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i

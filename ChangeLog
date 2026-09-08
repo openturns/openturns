@@ -7,7 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
- * FastGaussQuadrature, FastHermite, FastJacobi, FastLaguerre, FastLegendre (internal C++, not exposed in Python)
+ * FastGaussQuadrature, FastHermite, FastJacobi, FastLaguerre, FastLegendre (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)

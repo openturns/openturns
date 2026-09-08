@@ -710,6 +710,11 @@ ot_pyinstallcheck_test (Experiment_python)
 ot_pyinstallcheck_test (Splitter_std IGNOREOUT)
 ot_pyinstallcheck_test (TensorProductExperiment_std IGNOREOUT)
 ot_pyinstallcheck_test (FejerExperiment_std IGNOREOUT)
+ot_pyinstallcheck_test (FastGaussQuadrature_std IGNOREOUT)
+ot_pyinstallcheck_test (FastHermite_std IGNOREOUT)
+ot_pyinstallcheck_test (FastJacobi_std IGNOREOUT)
+ot_pyinstallcheck_test (FastLaguerre_std IGNOREOUT)
+ot_pyinstallcheck_test (FastLegendre_std IGNOREOUT)
 
 # IterativeStat
 ot_pyinstallcheck_test (IterativeExtrema_std IGNOREOUT)
