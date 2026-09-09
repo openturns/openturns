@@ -22,7 +22,10 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DatabaseFunction.hxx"
-#include "openturns/ParametricFunction.hxx"
+#include "openturns/FunctionImplementation.hxx"
+#include "openturns/TBBImplementation.hxx"
+
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -58,73 +61,145 @@ IteratedQuadrature * IteratedQuadrature::clone() const
 }
 
 
-// Class to compute in a recursive way a multidimensional integral
-class IteratedQuadraturePartialFunctionWrapper : public FunctionImplementation
+// Class to evaluate the original integrand on the complete points built from the
+// fixed coordinates of the already integrated dimensions and the current one.
+// It is used only for the innermost integration, in order to avoid nesting the
+// integrand in a parametric function at each level of the recursion
+class IteratedQuadratureLastFunction : public FunctionImplementation
 {
 public:
   /* Default constructor */
-  IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
-      const Function & function,
-      const IteratedQuadrature::FunctionCollection & lowerBounds,
-      const IteratedQuadrature::FunctionCollection & upperBounds)
+  IteratedQuadratureLastFunction(const Function & function,
+                                 const Point & prefix)
     : FunctionImplementation()
-    , quadrature_(quadrature)
     , function_(function)
-    , lowerBounds_(lowerBounds)
-    , upperBounds_(upperBounds)
+    , prefix_(prefix)
   {
     // Nothing to do
   }
 
   Point operator()(const Point & point) const override
   {
-    // Create the arguments of the local integration problem
-    const Indices index(1, 0);
-    const ParametricFunction function(function_, index, point);
-    const UnsignedInteger size = lowerBounds_.getSize() - 1;
-    const Scalar a = lowerBounds_[0](point)[0];
-    const Scalar b = upperBounds_[0](point)[0];
-    IteratedQuadrature::FunctionCollection lowerBounds(size);
-    IteratedQuadrature::FunctionCollection upperBounds(size);
-    for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, point);
-      upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, point);
-    }
-    const Point value(quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false));
-    for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
-      if (!std::isfinite(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function;
-    return value;
+    const UnsignedInteger prefixDimension = prefix_.getDimension();
+    Point fullPoint(prefixDimension + 1);
+    std::copy(prefix_.begin(), prefix_.end(), fullPoint.begin());
+    fullPoint[prefixDimension] = point[0];
+    return function_(fullPoint);
   }
 
   Sample operator()(const Sample & sample) const override
   {
     const UnsignedInteger sampleSize = sample.getSize();
-    const UnsignedInteger outputDimension = function_.getOutputDimension();
-    const UnsignedInteger size = lowerBounds_.getSize() - 1;
-    IteratedQuadrature::FunctionCollection lowerBounds(size);
-    IteratedQuadrature::FunctionCollection upperBounds(size);
-    Sample result(sampleSize, outputDimension);
-    const Indices index(1, 0);
-    const Sample sampleA(lowerBounds_[0](sample));
-    const Sample sampleB(upperBounds_[0](sample));
-    for (UnsignedInteger k = 0; k < sampleSize; ++k)
+    const UnsignedInteger prefixDimension = prefix_.getDimension();
+    Sample fullSample(sampleSize, prefixDimension + 1);
+    SampleImplementation & fullSampleImplementation = *fullSample.getImplementation();
+    const UnsignedInteger fullDimension = prefixDimension + 1;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      const Point x(sample[k]);
-      // Create the arguments of the local integration problem
-      const ParametricFunction function(function_, index, x);
-      const Scalar a = sampleA(k, 0);
-      const Scalar b = sampleB(k, 0);
-      for (UnsignedInteger i = 0; i < size; ++i)
-      {
-        lowerBounds[i] = ParametricFunction(lowerBounds_[i + 1], index, x);
-        upperBounds[i] = ParametricFunction(upperBounds_[i + 1], index, x);
-      } // Loop over bound functions
-      result[k] = quadrature_.integrate(function, a, b, lowerBounds, upperBounds, false);
-      for (UnsignedInteger i = 0; i < outputDimension; ++i)
-        if (!std::isfinite(result(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << x << " while integrating " << function;
-    } // Loop over sample points
-    return result;
+      std::copy(prefix_.begin(), prefix_.end(), fullSampleImplementation.data_begin() + i * fullDimension);
+      fullSample(i, prefixDimension) = sample(i, 0);
+    }
+    return function_(fullSample);
+  }
+
+  // In-place update of the fixed coordinates, to allow the reuse of the
+  // integrand over the points of a sample instead of allocating one instance
+  // per point
+  void setPrefix(const Point & prefix)
+  {
+    prefix_ = prefix;
+  }
+
+  IteratedQuadratureLastFunction * clone() const override
+  {
+    return new IteratedQuadratureLastFunction(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return function_.getOutputDimension();
+  }
+
+  Description getInputDescription() const override
+  {
+    return Description(1, "t");
+  }
+
+  Description getOutputDescription() const override
+  {
+    return function_.getOutputDescription();
+  }
+
+private:
+  const Function & function_;
+  Point prefix_;
+}; // class IteratedQuadratureLastFunction
+
+// Class to compute in a recursive way a multidimensional integral. It carries
+// the fixed coordinates of the already integrated dimensions in a prefix point
+// and evaluates the integrand on the complete points instead of wrapping it in
+// a parametric function at each level, in order to limit the number of
+// allocations in the recursion of IteratedQuadrature::integrate
+class IteratedQuadraturePartialFunctionWrapper : public FunctionImplementation
+{
+  friend struct IteratedQuadratureIntegratePolicy;
+public:
+  /* Default constructor */
+  IteratedQuadraturePartialFunctionWrapper(const IteratedQuadrature & quadrature,
+      const Function & function,
+      const Point & prefix,
+      const IteratedQuadrature::FunctionCollection & lowerBounds,
+      const IteratedQuadrature::FunctionCollection & upperBounds,
+      const UnsignedInteger depth)
+    : FunctionImplementation()
+    , quadrature_(quadrature)
+    , function_(function)
+    , prefix_(prefix)
+    , lowerBounds_(lowerBounds)
+    , upperBounds_(upperBounds)
+    , depth_(depth)
+  {
+    // Check the compatibility of the bound functions with the integrand:
+    // this prevents any out-of-bounds access below when check=false was used
+    // in the calling integrate method
+    if (lowerBounds.getSize() != upperBounds.getSize()) throw InvalidArgumentException(HERE) << "Error: expected the same number of lower and upper bound functions, got " << lowerBounds.getSize() << " lower and " << upperBounds.getSize() << " upper bound functions";
+    if (lowerBounds.getSize() + 1 != function.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected " << function.getInputDimension() - 1 << " bound functions, got " << lowerBounds.getSize();
+  }
+
+  Point operator()(const Point & point) const override
+  {
+    // Build the full point of the local integration problem
+    const UnsignedInteger prefixDimension = prefix_.getDimension();
+    Point fullPoint(prefixDimension + 1);
+    std::copy(prefix_.begin(), prefix_.end(), fullPoint.begin());
+    fullPoint[prefixDimension] = point[0];
+    const Scalar a = lowerBounds_[depth_](fullPoint)[0];
+    const Scalar b = upperBounds_[depth_](fullPoint)[0];
+    // Compute the local integral, the last dimension being integrated directly
+    // on the original integrand
+    const Bool last = (depth_ == function_.getInputDimension() - 2);
+    const Function partialFunction(last ?
+        static_cast<FunctionImplementation *>(new IteratedQuadratureLastFunction(function_, fullPoint)) :
+        static_cast<FunctionImplementation *>(new IteratedQuadraturePartialFunctionWrapper(quadrature_, function_, fullPoint, lowerBounds_, upperBounds_, depth_ + 1)));
+    const Point value(quadrature_.getAlgorithm().integrate(partialFunction, Interval(a, b)));
+    for (UnsignedInteger i = 0; i < value.getDimension(); ++i)
+      if (!std::isfinite(value[i])) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << point << " while integrating " << function_;
+    return value;
+  }
+
+  Sample operator()(const Sample & sample) const override;
+
+  // In-place update of the fixed coordinates, to allow the reuse of the
+  // integrand over the points of a sample instead of allocating one instance
+  // per point
+  void setPrefix(const Point & prefix)
+  {
+    prefix_ = prefix;
   }
 
   IteratedQuadraturePartialFunctionWrapper * clone() const override
@@ -155,9 +230,162 @@ public:
 private:
   const IteratedQuadrature & quadrature_;
   const Function & function_;
+  Point prefix_;
   const IteratedQuadrature::FunctionCollection & lowerBounds_;
   const IteratedQuadrature::FunctionCollection & upperBounds_;
+  const UnsignedInteger depth_;
 }; // class IteratedQuadraturePartialFunctionWrapper
+
+
+// Body of the parallel evaluation of the local integrals over the sample
+// points. Each thread gets its own copy of the body, hence its own integrand
+// with a dedicated prefix, so that the prefix-based reuse does not introduce
+// any data race
+struct IteratedQuadratureIntegratePolicy
+{
+  const IteratedQuadrature & quadrature_;
+  const Function & function_;
+  const IteratedQuadrature::FunctionCollection & lowerBounds_;
+  const IteratedQuadrature::FunctionCollection & upperBounds_;
+  const UnsignedInteger depth_;
+  const Bool last_;
+  const IntegrationAlgorithm algorithm_;
+  const Sample & fullSample_;
+  const Sample & sampleA_;
+  const Sample & sampleB_;
+  const Sample & sample_;
+  Sample & result_;
+  mutable Function partialFunction_;
+  mutable IteratedQuadraturePartialFunctionWrapper * wrapper_;
+  mutable IteratedQuadratureLastFunction * lastFunction_;
+  // Per-thread workspace of the underlying GaussKronrod algorithm, reused
+  // across the local integrals of this thread, and fast path to its
+  // allocation-free integrate method (nullptr for the other algorithms)
+  mutable Point ai_;
+  mutable Point bi_;
+  mutable Point ei_;
+  mutable Sample fi_;
+  mutable Sample x_;
+  mutable Sample y_;
+  const GaussKronrod * gk_;
+
+  IteratedQuadratureIntegratePolicy(const IteratedQuadraturePartialFunctionWrapper & outer,
+                                    const Sample & fullSample,
+                                    const Sample & sampleA,
+                                    const Sample & sampleB,
+                                    const Sample & sample,
+                                    Sample & result)
+    : quadrature_(outer.quadrature_)
+    , function_(outer.function_)
+    , lowerBounds_(outer.lowerBounds_)
+    , upperBounds_(outer.upperBounds_)
+    , depth_(outer.depth_)
+    , last_(outer.depth_ == outer.function_.getInputDimension() - 2)
+    , algorithm_(outer.quadrature_.getAlgorithm())
+    , fullSample_(fullSample)
+    , sampleA_(sampleA)
+    , sampleB_(sampleB)
+    , sample_(sample)
+    , result_(result)
+    , partialFunction_()
+    , wrapper_(nullptr)
+    , lastFunction_(nullptr)
+    , gk_(dynamic_cast<const GaussKronrod *>(algorithm_.getImplementation().get()))
+  {
+    createFunction();
+  }
+
+  IteratedQuadratureIntegratePolicy(const IteratedQuadratureIntegratePolicy & other)
+    : quadrature_(other.quadrature_)
+    , function_(other.function_)
+    , lowerBounds_(other.lowerBounds_)
+    , upperBounds_(other.upperBounds_)
+    , depth_(other.depth_)
+    , last_(other.last_)
+    , algorithm_(other.algorithm_)
+    , fullSample_(other.fullSample_)
+    , sampleA_(other.sampleA_)
+    , sampleB_(other.sampleB_)
+    , sample_(other.sample_)
+    , result_(other.result_)
+    , partialFunction_()
+    , wrapper_(nullptr)
+    , lastFunction_(nullptr)
+    , gk_(dynamic_cast<const GaussKronrod *>(algorithm_.getImplementation().get()))
+  {
+    createFunction();
+  }
+
+  void createFunction() const
+  {
+    if (last_)
+    {
+      lastFunction_ = new IteratedQuadratureLastFunction(function_, Point(fullSample_[0]));
+      partialFunction_ = Function(lastFunction_);
+    }
+    else
+    {
+      wrapper_ = new IteratedQuadraturePartialFunctionWrapper(quadrature_, function_, Point(fullSample_[0]), lowerBounds_, upperBounds_, depth_ + 1);
+      partialFunction_ = Function(wrapper_);
+    }
+  }
+
+  void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & range) const
+  {
+    for (UnsignedInteger k = range.begin(); k < range.end(); ++k)
+    {
+      // The prefix is updated for every point of the range, including the first
+      // one, since the initial prefix of the thread-local integrand may not
+      // correspond to this thread
+      const Point fullPoint(fullSample_[k]);
+      if (last_) lastFunction_->setPrefix(fullPoint);
+      else wrapper_->setPrefix(fullPoint);
+      const Scalar a = sampleA_(k, 0);
+      const Scalar b = sampleB_(k, 0);
+      if (gk_)
+      {
+        // Fast path for a GaussKronrod inner algorithm: reuse the per-thread
+        // workspace so that the local integrals do not allocate
+        Scalar error = 0.0;
+        result_[k] = gk_->integrate(partialFunction_, a, b, error, ai_, bi_, fi_, ei_, x_, y_);
+      }
+      else
+      {
+        result_[k] = algorithm_.integrate(partialFunction_, Interval(a, b));
+      }
+      const UnsignedInteger outputDimension = result_[k].getDimension();
+      for (UnsignedInteger i = 0; i < outputDimension; ++i)
+        if (!std::isfinite(result_(k, i))) throw InternalException(HERE) << "Error: NaN or Inf produced for x=" << sample_[k] << " while integrating " << function_;
+    }
+  }
+}; // struct IteratedQuadratureIntegratePolicy
+
+Sample IteratedQuadraturePartialFunctionWrapper::operator()(const Sample & sample) const
+{
+  const UnsignedInteger sampleSize = sample.getSize();
+  const UnsignedInteger outputDimension = function_.getOutputDimension();
+  Sample result(sampleSize, outputDimension);
+  if (sampleSize == 0) return result;
+  // Build the full sample of the local integration problem in order to
+  // evaluate the bound functions with a single batch call
+  const UnsignedInteger prefixDimension = prefix_.getDimension();
+  Sample fullSample(sampleSize, prefixDimension + 1);
+  SampleImplementation & fullSampleImplementation = *fullSample.getImplementation();
+  const UnsignedInteger fullDimension = prefixDimension + 1;
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    std::copy(prefix_.begin(), prefix_.end(), fullSampleImplementation.data_begin() + i * fullDimension);
+    fullSample(i, prefixDimension) = sample(i, 0);
+  }
+  const Sample sampleA(lowerBounds_[depth_](fullSample));
+  const Sample sampleB(upperBounds_[depth_](fullSample));
+  // Evaluate the local integrals over the sample points, using one integrand
+  // per thread in order to keep the prefix-based reuse while being safe to
+  // call concurrently when the original integrand allows parallel evaluation
+  const IteratedQuadratureIntegratePolicy policy(*this, fullSample, sampleA, sampleB, sample, result);
+  TBBImplementation::ParallelForIf(sampleSize > 1 && TBBImplementation::GetThreadsNumber() > 1 && function_.getImplementation()->isParallel(), 0, sampleSize, policy);
+  return result;
+}
 
 
 /* Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
@@ -188,8 +416,8 @@ Point IteratedQuadrature::integrate(const Function & function,
     } // bounds dimensions
   } // check
   if (inputDimension == 1) return algorithm_.integrate(function, Interval(a, b));
-  // Prepare the integrand using a IteratedQuadraturePartialFunctionWrapper::evaluate
-  const Function partialFunction(IteratedQuadraturePartialFunctionWrapper(*this, function, lowerBounds, upperBounds).clone());
+  // Prepare the integrand using an IteratedQuadraturePartialFunctionWrapper
+  const Function partialFunction(new IteratedQuadraturePartialFunctionWrapper(*this, function, Point(), lowerBounds, upperBounds, 0));
   return algorithm_.integrate(partialFunction, Interval(a, b));
 }
 
