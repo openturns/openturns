@@ -2418,7 +2418,7 @@ nu : float
 delta : float
     Non-centrality parameter.
 x : float
-    Quantile.
+    Location at which to evaluate the PDF.
 precision : float, optional
     Precision of the integration. Default is 1e-12.
 maximumIteration : int, optional
@@ -2431,5 +2431,5 @@ pdf : float
 
 See Also
 --------
-openturns.DistFunc.dNonCentralStudent
+:meth:`~openturns.DistFunc.dNonCentralStudent`
 )RAW"
