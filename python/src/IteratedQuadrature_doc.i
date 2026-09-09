@@ -30,6 +30,14 @@ the bound functions is smooth but with many oscillations.
 
 When the function :math:`f: \Rset \mapsto \Rset^p` has a scalar input, use the iterated quadrature algorithm of the :class:`~openturns.GaussKronrod` class.
 
+The local integrals over the points of a batch are evaluated in parallel
+with :class:`~openturns.TBB` when the integrand function allows parallel
+evaluation (its ``isParallel`` method returns ``True``) and more than one
+thread is available. In that case each thread owns its own copy of the
+integrand and of the workspace of the underlying 1D algorithm (for
+:class:`~openturns.GaussKronrod`), so the memory usage grows linearly with
+the number of threads. The results do not depend on the number of threads.
+
 Examples
 --------
 Create an iterated quadrature algorithm:
