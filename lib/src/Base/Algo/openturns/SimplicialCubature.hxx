@@ -83,20 +83,17 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 private:
-  UnsignedInteger getNodeNumber(const UnsignedInteger dimension) const;
+  Indices initializeBasicRule(const UnsignedInteger dimension, Matrix & B, Matrix & Wbar) const;
 
-  Point computePermutationSums(const UnsignedInteger dimension, const Sample & simplexVertices,
-                               const Function & function, const Point & G) const;
+  void computeRulePoints(const Sample & simplexVertices, const Matrix & B, Sample & points, const UnsignedInteger offset) const;
 
-  Indices initializeBasicRule(const UnsignedInteger dimension, Matrix & W, Matrix & G) const;
-
-  void computeRuleValueAndError(const UnsignedInteger dimension, const Sample & simplexVertices, const Scalar volume,
-                                const UnsignedInteger outputDimension, const Function & function, const Matrix & G,
-                                const Matrix & W, const Indices & evalBudget, Point & value, Point & error) const;
+  void computeRuleValueAndError(const UnsignedInteger offset, const Scalar volume, const UnsignedInteger outputDimension,
+                                const Sample & values, const Matrix & Wbar, Matrix & RULE, Point & value, Point & error) const;
 
   UnsignedInteger computeNewSubregions(const UnsignedInteger dimension, const UnsignedInteger outputDimension,
                                        const Function & function, const UnsignedInteger bestSimplex,
-                                       const UnsignedInteger flatSize, Collection<Sample> & flatVertices) const;
+                                       const UnsignedInteger flatSize, Collection<Sample> & flatVertices,
+                                       Point & CN, Point & FC, Sample & inS, Matrix & FRTHDF) const;
 
   // integration rule
   UnsignedInteger rule_ = 0;

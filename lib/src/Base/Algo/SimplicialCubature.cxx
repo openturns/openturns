@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/IntervalMesher.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -128,30 +129,6 @@ void SimplicialCubature::load(Advocate & adv)
   adv.loadAttribute("rule_", rule_);
 }
 
-UnsignedInteger SimplicialCubature::getNodeNumber(const UnsignedInteger dimension) const
-{
-  UnsignedInteger nodeNumber = 0;
-  switch (rule_)
-  {
-    case 1:
-      nodeNumber = 2 * dimension + 3;
-      break;
-    case 2:
-      nodeNumber = (dimension + 3) * (dimension + 2) / 2 + 2 * (dimension + 1);
-      break;
-    case 3:
-      nodeNumber = (dimension + 4) * (dimension + 3) * (dimension + 2) / 6 + (dimension + 2) * (dimension + 1);
-      break;
-    case 4:
-      nodeNumber = (dimension + 5) * (dimension + 4) * (dimension + 3) * (dimension + 2) / 24 + 5 * (dimension + 2) * (dimension + 1) / 2;
-      break;
-    default:
-      throw InvalidArgumentException(HERE) << "Invalid integration rule";
-  }
-  return nodeNumber;
-}
-
-
 Point SimplicialCubature::integrate(const Function & function,
                                     const Interval & interval) const
 {
@@ -172,21 +149,94 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   const Scalar ER = maximumRelativeError_;
   const UnsignedInteger dimension = mesh.getDimension();
   UnsignedInteger flatSize = mesh.getSimplicesNumber();
-  const UnsignedInteger nodeNumber = getNodeNumber(dimension);
+
+  if (F.getInputDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "The input dimension of the integrand (" << F.getInputDimension()
+                                         << ") must match the dimension of the mesh (" << dimension << ")";
+  if (flatSize == 0)
+    return Point(outputDimension, 0.0);
 
   UnsignedInteger NV = 0;
   const UnsignedInteger DFCOST = 1 + 2 * dimension * (dimension + 1);
   Point VL(outputDimension);
   Point AE(outputDimension);
 
-  Matrix W, G;
-  Indices evalBudget(initializeBasicRule(dimension, W, G));
+  Matrix B, Wbar;
+  const Indices ruleInfo(initializeBasicRule(dimension, B, Wbar));
+  const UnsignedInteger nodeNumber = ruleInfo[0];
   Sample VLS(flatSize, outputDimension);
   Sample AES(flatSize, outputDimension);
   Point volume(mesh.computeSimplicesVolume());
 
-  Point error;
-  Point value;
+  // Contract the rule over the function values, with a per-thread scratch.
+  struct ContractPolicy
+  {
+    const SimplicialCubature & cubature_;
+    const UnsignedInteger nodeNumber_;
+    const UnsignedInteger outputDimension_;
+    const Indices & targets_;
+    const Point & volumes_;
+    const Sample & outputs_;
+    const Matrix & Wbar_;
+    Sample & VLS_;
+    Sample & AES_;
+    mutable Matrix RULE_;
+    mutable Point value_;
+    mutable Point error_;
+
+    ContractPolicy(const SimplicialCubature & cubature,
+                   const UnsignedInteger nodeNumber,
+                   const UnsignedInteger outputDimension,
+                   const Indices & targets,
+                   const Point & volumes,
+                   const Sample & outputs,
+                   const Matrix & Wbar,
+                   Sample & VLS,
+                   Sample & AES)
+      : cubature_(cubature)
+      , nodeNumber_(nodeNumber)
+      , outputDimension_(outputDimension)
+      , targets_(targets)
+      , volumes_(volumes)
+      , outputs_(outputs)
+      , Wbar_(Wbar)
+      , VLS_(VLS)
+      , AES_(AES)
+      , RULE_(Wbar.getNbRows(), outputDimension)
+      , value_(outputDimension)
+      , error_(outputDimension)
+    {
+    }
+
+    ContractPolicy(const ContractPolicy & other)
+      : cubature_(other.cubature_)
+      , nodeNumber_(other.nodeNumber_)
+      , outputDimension_(other.outputDimension_)
+      , targets_(other.targets_)
+      , volumes_(other.volumes_)
+      , outputs_(other.outputs_)
+      , Wbar_(other.Wbar_)
+      , VLS_(other.VLS_)
+      , AES_(other.AES_)
+      , RULE_(other.Wbar_.getNbRows(), other.outputDimension_)
+      , value_(other.outputDimension_)
+      , error_(other.outputDimension_)
+    {
+    }
+
+    void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & range) const
+    {
+      for (UnsignedInteger t = range.begin(); t < range.end(); ++ t)
+      {
+        const UnsignedInteger K = targets_[t];
+        cubature_.computeRuleValueAndError(t * nodeNumber_, volumes_[t], outputDimension_, outputs_, Wbar_, RULE_, value_, error_);
+        VLS_[K] = value_;
+        AES_[K] = error_;
+      }
+    }
+  }; // struct ContractPolicy
+
+  const Bool parallel = (flatSize > 1) && (TBBImplementation::GetThreadsNumber() > 1);
 
   // flat mesh, will be modified in-place
   Collection<Sample> flatVertices(flatSize, Sample(0, dimension));
@@ -195,16 +245,38 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     const Indices simplex(mesh.getSimplex(K));
     for (UnsignedInteger i = 0; i < simplex.getSize(); ++ i)
       flatVertices[K].add(mesh.getVertex(simplex[i]));
+  }
 
-    // Apply basic rule over each simplex.
-    computeRuleValueAndError(dimension, flatVertices[K], volume[K], outputDimension, F, G, W, evalBudget, value, error);
-
-    AES[K] = error;
-    VLS[K] = value;
-
-    VL += value;
-    AE += error;
-    NV += nodeNumber;
+  // Build the physical rule points of the simplices and evaluate the
+  // integrand over them in blocks of simplices, so that the batching gain is
+  // kept while the memory footprint stays bounded: the full mesh would need
+  // flatSize * nodeNumber points, which grows with the mesh and the rule.
+  const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize");
+  for (UnsignedInteger blockBegin = 0; blockBegin < flatSize; blockBegin += blockSize)
+  {
+    const UnsignedInteger blockFlatSize = std::min(blockSize, flatSize - blockBegin);
+    Sample blockPoints(blockFlatSize * nodeNumber, dimension);
+    TBBImplementation::ParallelForIf(parallel, blockBegin, blockBegin + blockFlatSize,
+                                     [&](const TBBImplementation::BlockedRange<UnsignedInteger> & range)
+    {
+      for (UnsignedInteger K = range.begin(); K < range.end(); ++ K)
+        computeRulePoints(flatVertices[K], B, blockPoints, (K - blockBegin) * nodeNumber);
+    });
+    const Sample blockOutputs(F(blockPoints));
+    Indices blockTargets(blockFlatSize);
+    Point blockVolumes(blockFlatSize);
+    std::copy(volume.begin() + blockBegin, volume.begin() + blockBegin + blockFlatSize, blockVolumes.begin());
+    for (UnsignedInteger t = 0; t < blockFlatSize; ++ t)
+      blockTargets[t] = blockBegin + t;
+    const ContractPolicy contractPolicy(*this, nodeNumber, outputDimension, blockTargets, blockVolumes, blockOutputs, Wbar, VLS, AES);
+    TBBImplementation::ParallelForIf(parallel, 0, blockFlatSize, contractPolicy);
+    for (UnsignedInteger t = 0; t < blockFlatSize; ++ t)
+    {
+      const UnsignedInteger K = blockBegin + t;
+      VL += VLS[K];
+      AE += AES[K];
+      NV += nodeNumber;
+    }
   }
 
   Bool FL = false;
@@ -215,51 +287,81 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
       break;
     }
 
+  // Scratch for the subdivision difference tests.
+  Point CN(dimension);
+  Point FC(outputDimension);
+  Sample inS(4, dimension);
+  Matrix FRTHDF(dimension, dimension + 1);
+
   while (FL && (NV + DFCOST + 4 * nodeNumber <= MXFS))
   {
-    // select simplex with biggest abs. error
-    UnsignedInteger ID = flatSize;
-    Scalar maxAES = -SpecFunc::Infinity;
+    // Number of simplices that can be refined within the remaining budget,
+    // capped so that the refinement stays focused on the largest errors.
+    const UnsignedInteger MAXR = 2048;
+    const UnsignedInteger R = std::min({flatSize, (MXFS - NV) / (DFCOST + 4 * nodeNumber), MAXR});
+    // Select the R simplices with the largest error, in decreasing order,
+    // using a partial sort so the selection costs O(flatSize log R) instead
+    // of O(R x flatSize).
+    Point maxError(flatSize);
     for (UnsignedInteger i = 0; i < flatSize; ++ i)
-      for (UnsignedInteger j = 0; j < outputDimension; ++ j)
-        if (AES(i, j) > maxAES)
-        {
-          ID = i;
-          maxAES = AES(i, j);
-        }
-
-    VL -= VLS[ID];
-    AE -= AES[ID];
-    const UnsignedInteger NEW = computeNewSubregions(dimension, outputDimension, F, ID, flatSize, flatVertices);
-    const Scalar VI = volume[ID] / NEW;
-
-    //     Apply basic rule, and add new contributions to VL and AE.
-    volume.resize(flatSize + NEW - 1);
-    VLS.add(Sample(NEW - 1, outputDimension));
-    AES.add(Sample(NEW - 1, outputDimension));
-
-    // same as for loop below but K=ID
-    volume[ID] = VI;
-    computeRuleValueAndError(dimension, flatVertices[ID], VI, outputDimension, F, G, W, evalBudget, value, error);
-    VLS[ID] = value;
-    AES[ID] = error;
-    VL += VLS[ID];
-    AE += AES[ID];
-    NV += nodeNumber;
-
-    for (UnsignedInteger K = flatSize; K < flatSize + NEW - 1; ++K)
     {
-      volume[K] = VI;
-      computeRuleValueAndError(dimension, flatVertices[K], VI, outputDimension, F, G, W, evalBudget, value, error);
-      VLS[K] = value;
-      AES[K] = error;
+      Scalar maxAES = -SpecFunc::Infinity;
+      for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+        maxAES = std::max(maxAES, AES(i, j));
+      maxError[i] = maxAES;
+    }
+    Indices selected(flatSize);
+    for (UnsignedInteger i = 0; i < flatSize; ++ i)
+      selected[i] = i;
+    std::partial_sort(selected.begin(), selected.begin() + R, selected.end(),
+                      [&](const UnsignedInteger a, const UnsignedInteger b) { return maxError[a] > maxError[b]; });
+    selected.resize(R);
+    // Subdivide the selected simplices, and gather the simplices on which the
+    // rule must be applied.
+    Indices ruleTargets;
+    Point ruleVolumes;
+    UnsignedInteger newFlatSize = flatSize;
+    for (UnsignedInteger r = 0; r < R; ++ r)
+    {
+      const UnsignedInteger ID = selected[r];
+      VL -= VLS[ID];
+      AE -= AES[ID];
+      const UnsignedInteger NEW = computeNewSubregions(dimension, outputDimension, F, ID, newFlatSize, flatVertices, CN, FC, inS, FRTHDF);
+      const Scalar VI = volume[ID] / NEW;
+      volume.resize(newFlatSize + NEW - 1);
+      VLS.add(Sample(NEW - 1, outputDimension));
+      AES.add(Sample(NEW - 1, outputDimension));
+      volume[ID] = VI;
+      ruleTargets.add(ID);
+      ruleVolumes.add(VI);
+      for (UnsignedInteger K = newFlatSize; K < newFlatSize + NEW - 1; ++K)
+      {
+        volume[K] = VI;
+        ruleTargets.add(K);
+        ruleVolumes.add(VI);
+      }
+      newFlatSize += NEW - 1;
+      NV += DFCOST + nodeNumber * NEW;
+    }
+    // Apply the rule to all the gathered simplices in a single call.
+    const UnsignedInteger ruleTargetsNumber = ruleTargets.getSize();
+    Sample roundPoints(ruleTargetsNumber * nodeNumber, dimension);
+    TBBImplementation::ParallelForIf(parallel, 0, ruleTargetsNumber,
+                                     [&](const TBBImplementation::BlockedRange<UnsignedInteger> & range)
+    {
+      for (UnsignedInteger t = range.begin(); t < range.end(); ++ t)
+        computeRulePoints(flatVertices[ruleTargets[t]], B, roundPoints, t * nodeNumber);
+    });
+    const Sample roundOutputs(F(roundPoints));
+    const ContractPolicy roundPolicy(*this, nodeNumber, outputDimension, ruleTargets, ruleVolumes, roundOutputs, Wbar, VLS, AES);
+    TBBImplementation::ParallelForIf(parallel, 0, ruleTargetsNumber, roundPolicy);
+    for (UnsignedInteger t = 0; t < ruleTargetsNumber; ++ t)
+    {
+      const UnsignedInteger K = ruleTargets[t];
       VL += VLS[K];
       AE += AES[K];
-      NV += nodeNumber;
     }
-
-    NV += DFCOST;
-    flatSize += NEW - 1;
+    flatSize = newFlatSize;
 
     // Check for error termination.
     FL = false;
@@ -273,92 +375,52 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   return VL;
 }
 
-Point SimplicialCubature::computePermutationSums(const UnsignedInteger dimension, const Sample & simplexVertices,
-    const Function & function, const Point & GConst) const
+void SimplicialCubature::computeRulePoints(const Sample & simplexVertices, const Matrix & B, Sample & points, const UnsignedInteger offset) const
 {
-  Point G(GConst);
-  std::sort(G.begin(), G.end(), std::greater<Scalar>());
-
-  Bool pr = true;
-  // Compute integrand value for permutations of G
-  Sample inS(0, dimension);
-  while (pr)
-  {
-    // TODO: better matrix conversion ?
-    Matrix VERTEXM(simplexVertices.getDimension(), simplexVertices.getSize());
-    for (UnsignedInteger i = 0; i < simplexVertices.getSize(); ++ i)
-      for (UnsignedInteger j = 0; j < simplexVertices.getDimension(); ++ j)
-        VERTEXM(j, i) = simplexVertices(i, j);
-
-    inS.add(VERTEXM * G);
-    pr = false;
-
-    for (UnsignedInteger I = 1; I < dimension + 1; ++ I)
+  const UnsignedInteger dimension = simplexVertices.getDimension();
+  const UnsignedInteger nodeNumber = B.getNbColumns();
+  for (UnsignedInteger p = 0; p < nodeNumber; ++ p)
+    for (UnsignedInteger d = 0; d < dimension; ++ d)
     {
-      const Scalar GI = G[I];
-      if (G[I - 1] > GI)
-      {
-        UnsignedInteger IX = I - 1;
-        UnsignedInteger LX = 0;
-        for (UnsignedInteger L = 0; L < ((IX + 2) / 2); ++ L)
-        {
-          const Scalar GL = G[L];
-          if (GL <= GI)
-            --IX;
-          G[L] = G[I - L - 1];
-          G[I - L - 1] = GL;
-          if (G[L] > GI)
-            LX = L;
-        }
-        if (G[IX] <= GI)
-          IX = LX;
-        G[I] = G[IX];
-        G[IX] = GI;
-        pr = true;
-        break;
-      }
+      Scalar sum = 0.0;
+      for (UnsignedInteger j = 0; j < dimension + 1; ++ j)
+        sum += simplexVertices(j, d) * B(j, p);
+      points[offset + p][d] = sum;
     }
-  }
-  const Sample outS(function(inS));
-  return outS.computeMean() * (0.0 + outS.getSize());
 }
 
-void SimplicialCubature::computeRuleValueAndError(const UnsignedInteger dimension, const Sample & simplexVertices,
-    const Scalar volume, const UnsignedInteger outputDimension,
-    const Function & function, const Matrix & G, const Matrix & W,
-    const Indices & evalBudget, Point & value, Point & error) const
+void SimplicialCubature::computeRuleValueAndError(const UnsignedInteger offset, const Scalar volume, const UnsignedInteger outputDimension,
+    const Sample & values, const Matrix & Wbar, Matrix & RULE, Point & value, Point & error) const
 {
   const Scalar RTMN = 1e-1;
   const Scalar SMALL = SpecFunc::Precision;
   const Scalar ERRCOF = 8.0;
 
-  const UnsignedInteger WTS = W.getNbRows();
-  const UnsignedInteger RLS = W.getNbColumns();
-  Matrix RULE(outputDimension, RLS);
-
-  for (UnsignedInteger K = 0; K < WTS; ++ K)
-    if (evalBudget[K] > 0)
+  const UnsignedInteger RLS = Wbar.getNbRows();
+  const UnsignedInteger nodeNumber = Wbar.getNbColumns();
+  for (UnsignedInteger j = 0; j < RLS; ++ j)
+    for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+      RULE(j, i) = 0.0;
+  for (UnsignedInteger j = 0; j < RLS; ++ j)
+    for (UnsignedInteger p = 0; p < nodeNumber; ++ p)
     {
-      const Point sym(computePermutationSums(dimension, simplexVertices, function, G.getColumn(K)*Point(1, 1.0)));
-      for (UnsignedInteger i = 0; i < outputDimension; ++ i)
-      {
-        const Scalar scaledSymI = volume * sym[i];
-        for (UnsignedInteger j = 0; j < RLS; ++ j)
-          RULE(i, j) += scaledSymI * W(K, j);
-      }
+      const Scalar weight = volume * Wbar(j, p);
+      if (weight != 0.0)
+        for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+          RULE(j, i) += weight * values[offset + p][i];
     }
   // Scale integral values and compute the error estimates.
   value = Point(outputDimension);
   error = Point(outputDimension);
   for (UnsignedInteger I = 0; I < outputDimension; ++ I)
   {
-    value[I] = RULE(I, 0);
+    value[I] = RULE(0, I);
     const Scalar NMBS = std::abs(value[I]);
     Scalar NMCP = 0.0;
     Scalar RT = RTMN;
     for (SignedInteger K = RLS - 1 - ((RLS + 1) % 2); K >= 2; K -= 2)
     {
-      const Scalar NMRL = std::max(std::abs(RULE(I, K)), std::abs(RULE(I, K - 1)));
+      const Scalar NMRL = std::max(std::abs(RULE(K, I)), std::abs(RULE(K - 1, I)));
       if ((NMRL > SMALL * NMBS) && (K < (SignedInteger)RLS - 1))
         RT = std::max(NMRL / NMCP, RT);
       error[I] = std::max(NMRL, error[I]);
@@ -372,7 +434,8 @@ void SimplicialCubature::computeRuleValueAndError(const UnsignedInteger dimensio
 
 UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger dimension, const UnsignedInteger outputDimension,
     const Function & function, const UnsignedInteger bestSimplex,
-    const UnsignedInteger flatSize, Collection<Sample> & flatVertices) const
+    const UnsignedInteger flatSize, Collection<Sample> & flatVertices,
+    Point & CN, Point & FC, Sample & inS, Matrix & FRTHDF) const
 {
   (void)outputDimension;
   const UnsignedInteger CUTTF = 2;
@@ -385,11 +448,9 @@ UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger d
   Scalar EMX = 0;
   Sample V(flatVertices[bestSimplex]);
 
-  const Point CN(V.computeMean());
-  const Point FC(function(CN));
+  CN = V.computeMean();
+  FC = function(CN);
   const Scalar DFMD = FC.norm1();
-
-  Matrix FRTHDF(dimension, dimension + 1);
 
   UnsignedInteger IE = 0;
   UnsignedInteger JE = 0;
@@ -409,11 +470,10 @@ UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger d
         JE = J;
         EMX = EWD;
       }
-      Sample inS(0, dimension);
-      inS.add(CN - 2 * H);
-      inS.add(CN + 2 * H);
-      inS.add(CN - H);
-      inS.add(CN + H);
+      inS[0] = CN - 2 * H;
+      inS[1] = CN + 2 * H;
+      inS[2] = CN - H;
+      inS[3] = CN + H;
       const Sample outS(function(inS));
       Scalar DFR = (outS[0] + outS[1] + 6 * FC - 4 * (outS[2] + outS[3])).norm1();
       if ((DFMD + DFR / 8.0) == DFMD)
@@ -538,7 +598,7 @@ UnsignedInteger SimplicialCubature::computeNewSubregions(const UnsignedInteger d
   return NEW;
 }
 
-Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension, Matrix & W, Matrix & G) const
+Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension, Matrix & B, Matrix & Wbar) const
 {
   UnsignedInteger RLS = 0;
   UnsignedInteger GMS = 0;
@@ -573,9 +633,9 @@ Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension,
     default:
       throw InvalidArgumentException(HERE) << "Invalid rule: " << rule_;
   }
-  W = Matrix(WTS, RLS);
+  Matrix W(WTS, RLS);
   Indices evalBudget(WTS);
-  G = Matrix(dimension + 1, WTS);
+  Matrix G(dimension + 1, WTS);
 
   const UnsignedInteger N = dimension;
   const UnsignedInteger NP = N + 1;
@@ -752,7 +812,7 @@ Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension,
     Scalar R = std::sqrt(-std::pow(P, 3.0));
     Scalar TH = acos(-Q / (2.0 * R)) / 3.0;
     R = 2.0 * std::cbrt(R);
-    Scalar TP = 2.0 * M_PI / 3.0;
+    Scalar TP = 2.0 * std::acos(-1.0) / 3.0;
     Scalar A1 = -A + R * std::cos(TH);
     Scalar A2 = -A + R * std::cos(TH + 2 * TP);
     Scalar A3 = -A + R * std::cos(TH + TP);
@@ -872,7 +932,60 @@ Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension,
     for (UnsignedInteger i = 0; i < WTS; ++ i)
       W(i, K) *= std::sqrt(NB / sum);
   }
-  return evalBudget;
+
+  // Compute the barycentric coordinates of the integration points, grouped by generator,
+  // and the weight of each point for every (sub)rule.
+  UnsignedInteger nodeNumber = 0;
+  for (UnsignedInteger K = 0; K < WTS; ++ K)
+    nodeNumber += evalBudget[K];
+  B = Matrix(dimension + 1, nodeNumber);
+  Wbar = Matrix(RLS, nodeNumber);
+  UnsignedInteger offset = 0;
+  for (UnsignedInteger K = 0; K < WTS; ++ K)
+    if (evalBudget[K] > 0)
+    {
+      // Generate all the distinct permutations of the generator coordinates.
+      Point g(dimension + 1);
+      for (UnsignedInteger i = 0; i < dimension + 1; ++ i)
+        g[i] = G(i, K);
+      std::sort(g.begin(), g.end(), std::greater<Scalar>());
+      Bool pr = true;
+      while (pr)
+      {
+        for (UnsignedInteger i = 0; i < dimension + 1; ++ i)
+          B(i, offset) = g[i];
+        for (UnsignedInteger j = 0; j < RLS; ++ j)
+          Wbar(j, offset) = W(K, j);
+        ++offset;
+        pr = false;
+        for (UnsignedInteger I = 1; I < dimension + 1; ++ I)
+        {
+          const Scalar GI = g[I];
+          if (g[I - 1] > GI)
+          {
+            UnsignedInteger IX = I - 1;
+            UnsignedInteger LX = 0;
+            for (UnsignedInteger L = 0; L < ((IX + 2) / 2); ++ L)
+            {
+              const Scalar GL = g[L];
+              if (GL <= GI)
+                --IX;
+              g[L] = g[I - L - 1];
+              g[I - L - 1] = GL;
+              if (g[L] > GI)
+                LX = L;
+            }
+            if (g[IX] <= GI)
+              IX = LX;
+            g[I] = g[IX];
+            g[IX] = GI;
+            pr = true;
+            break;
+          }
+        }
+      }
+    }
+  return Indices {nodeNumber, RLS};
 }
 
 

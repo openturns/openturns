@@ -1196,6 +1196,7 @@
   <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
   <SimplicialCubature-DefaultMaximumCallsNumber   value_int="100000" />
   <SimplicialCubature-DefaultRule value_int="3" />
+  <SimplicialCubature-EvaluationBlockSize value_int="2048" />
   <SimplicialCubature-MarginalDiscretizationIntervalsNumber value_int="1" />
 
   <!-- OT::SlicedInverseRegression parameters -->
