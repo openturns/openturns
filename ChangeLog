@@ -71,6 +71,7 @@
 === Miscellaneous ===
  * Added sum and difference operators between fields
  * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow (see #1489, #1596)
+ * Parallelized and accelerated IteratedQuadrature and SimplicialCubature (batched integrand evaluations, TBB, reduced allocations)
 
 
 == 1.27 release (2026-04-28) == #release-1.27

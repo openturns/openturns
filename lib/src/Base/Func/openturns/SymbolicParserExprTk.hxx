@@ -25,6 +25,9 @@
 #include "openturns/SymbolicParserImplementation.hxx"
 #include "openturns/Pointer.hxx"
 
+#include <memory>
+#include <mutex>
+
 // Forward declaration
 namespace exprtk
 {
@@ -71,6 +74,11 @@ private:
   // one expression per thread for batch evaluation
   mutable Collection<ExpressionCollection> threadExpressions_;
   mutable Collection<Point> threadStack_;
+
+  // guards the lazy initialization of threadExpressions_ and the point
+  // evaluation which uses the shared expressions_, so that the parser can be
+  // evaluated concurrently from several threads
+  mutable std::shared_ptr<std::mutex> mutex_ = std::make_shared<std::mutex>();
 
   Description outputVariablesNames_;
 
