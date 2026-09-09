@@ -8,4 +8,5 @@ OTAutodoc(ParametricEvaluation)
 
 %copyctor OT::ParametricEvaluation;
 
+%include ParametricEvaluation_doc.i
 %include openturns/ParametricEvaluation.hxx

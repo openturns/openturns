@@ -157,3 +157,18 @@ blockNumber : int, :math:`0 \leq overlap \leq 0.5`.
     The overlap rate of the times series.
 )RAW"
 
+
+
+%feature("docstring") OT::WelchFactory::buildAsUserDefinedSpectralModel
+"Build a UserDefinedSpectralModel from a TimeSeries.
+
+Parameters
+----------
+timeSeries : :class:`~openturns.TimeSeries`
+    The time series
+
+Returns
+-------
+spectralModel : :class:`~openturns.UserDefinedSpectralModel`
+    The spectral model"
+
