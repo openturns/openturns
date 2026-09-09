@@ -977,6 +977,11 @@ public:
       return Description(1, "pdf");
     }
 
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1059,6 +1064,11 @@ public:
     Description getOutputDescription() const override
     {
       return Description(1, "logpdf");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
     }
 
     String __repr__() const override
@@ -1155,6 +1165,11 @@ public:
       return Description(1, "cdf");
     }
 
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1244,6 +1259,11 @@ protected:
       return p_distribution_->getDescription();
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1328,6 +1348,11 @@ protected:
       return Description(1, "survival function");
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1379,6 +1404,11 @@ protected:
     UnsignedInteger getOutputDimension() const override
     {
       return 1;
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
   private:
@@ -1433,6 +1463,11 @@ protected:
     Description getOutputDescription() const override
     {
       return Description(1, "-logPDF");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
     Description getDescription() const override
@@ -1582,6 +1617,11 @@ protected:
       return Description(1, "c");
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1647,6 +1687,11 @@ protected:
     UnsignedInteger getOutputDimension() const override
     {
       return 1;
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
     String __repr__() const override
@@ -1825,6 +1870,11 @@ protected:
       return Description(1, "entropyKernel");
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1891,6 +1941,11 @@ protected:
     Description getOutputDescription() const override
     {
       return Description(1, "pdfSquared");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
     String __repr__() const override
