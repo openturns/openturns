@@ -8,4 +8,5 @@ OTAutodoc(ParametricGradient)
 
 %copyctor OT::ParametricGradient;
 
+%include ParametricGradient_doc.i
 %include openturns/ParametricGradient.hxx

@@ -95,3 +95,19 @@ False"
 
 The list is sorted in-place.
 "
+
+
+%feature("docstring") OT::Description::find
+"Find the index of the first occurrence of a value.
+
+Parameters
+----------
+val : str
+    The string to find
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the value.
+    The size of the collection if the value is not found."
+

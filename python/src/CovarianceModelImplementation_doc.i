@@ -208,7 +208,21 @@ OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_discretizeRow_doc
-"**(TODO)**"
+R"RAW(Discretize the covariance function on a given mesh for a specific row.
+
+Parameters
+----------
+vertices : :class:`~openturns.Sample`
+    Container of the discretization vertices :math:`(\vect{t}_1, \dots, \vect{t}_N)`
+p : int, :math:`p \in \{0, \dots, N-1\}`
+    Row index of the covariance matrix to discretize
+
+Returns
+-------
+result : :class:`~openturns.Sample`
+    Sample of size :math:`N \times d` (if the process is of dimension
+    :math:`d`) containing the covariance values
+    :math:`C(\vect{t}_i, \vect{t}_p)` for :math:`i = 1, \dots, N`.)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeRow
 OT_CovarianceModel_discretizeRow_doc

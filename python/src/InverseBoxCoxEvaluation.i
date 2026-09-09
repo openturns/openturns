@@ -8,4 +8,5 @@ OTAutodoc(InverseBoxCoxEvaluation)
 
 %copyctor OT::InverseBoxCoxEvaluation;
 
+%include InverseBoxCoxEvaluation_doc.i
 %include openturns/InverseBoxCoxEvaluation.hxx

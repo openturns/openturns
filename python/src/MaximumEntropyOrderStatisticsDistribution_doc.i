@@ -95,6 +95,12 @@ Create a distribution which components are ordered almost surely:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber* (``UnsignedInteger``, default: `16`)
+- *MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration* (``UnsignedInteger``, default: `10`)
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -118,4 +124,24 @@ coll : sequence of :class:`~openturns.Distribution`
     The collection of the marginals."
 
 // ---------------------------------------------------------------------
+
+
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::getApproximation
+"Accessor to the approximation.
+
+Returns
+-------
+approximation : :class:`~openturns.Distribution`
+    The approximation of the distribution"
+
+
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::useApproximation
+"Ask whether the approximation is used.
+
+Returns
+-------
+useApproximation : bool
+    Whether the approximation is used"
 

@@ -278,3 +278,13 @@ rho : sequence of float
 Notes
 -----
 The standardized output vector is defined as :math:`\mat{L}_{\vect{p}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{p}^*)})`.)RAW"
+
+
+%feature("docstring") OT::GaussianProcessFitterResult::setCholeskyFactor
+"Cholesky factor accessor.
+
+Parameters
+----------
+choleskyFactor : :class:`~openturns.TriangularMatrix`
+    The Cholesky factor of the covariance matrix"
+

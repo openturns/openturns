@@ -8,4 +8,5 @@ OTAutodoc(SymbolicGradient)
 
 %copyctor OT::SymbolicGradient;
 
+%include SymbolicGradient_doc.i
 %include openturns/SymbolicGradient.hxx

@@ -79,3 +79,19 @@ A new list of elements composed with scalars.
 A new list of elements composed with square matrices.
 
 "
+
+
+%feature("docstring") OT::ARMACoefficients::find
+"Find the index of the first occurrence of a value.
+
+Parameters
+----------
+val : collection value type
+    The value to find
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the value.
+    The size of the collection if the value is not found."
+
