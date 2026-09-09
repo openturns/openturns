@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 
 class RandomExp:
@@ -21,3 +22,21 @@ experiment = ot.Experiment(pyexp)
 print(experiment)
 sample = experiment.generate()
 print(sample)
+assert experiment == ot.Experiment(experiment)
+
+
+class NoGenerate:
+    pass
+
+
+with ott.assert_raises(Exception):
+    ot.Experiment(NoGenerate())
+
+
+class BadGenerate:
+    def generate(self):
+        return 42
+
+
+with ott.assert_raises(Exception):
+    ot.Experiment(BadGenerate()).generate()
