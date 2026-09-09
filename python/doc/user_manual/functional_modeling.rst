@@ -232,6 +232,7 @@ as Python functions.
     SpecFunc.Beta
     SpecFunc.BitCount
     SpecFunc.Clip01
+    SpecFunc.Clip
     SpecFunc.Dawson
     SpecFunc.Debye
     SpecFunc.DeltaLogBesselI10

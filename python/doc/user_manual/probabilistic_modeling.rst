@@ -327,6 +327,7 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
+    DistFunc.dNonCentralStudentAlt0
     DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
@@ -420,3 +421,4 @@ Refer to :ref:`isoprobabilistic_transformation`.
     NatafEllipticalDistributionHessian
     InverseRosenblattEvaluation
     RosenblattEvaluation
+
