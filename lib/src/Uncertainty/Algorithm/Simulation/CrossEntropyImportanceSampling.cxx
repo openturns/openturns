@@ -35,7 +35,7 @@ static const Factory<CrossEntropyImportanceSampling> Factory_CrossEntropyImporta
 
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
-  : EventSimulation()
+  : EventSimulationImplementation()
 {
   // Nothing to do
 }
@@ -44,7 +44,7 @@ CrossEntropyImportanceSampling::CrossEntropyImportanceSampling()
 // Default constructor
 CrossEntropyImportanceSampling::CrossEntropyImportanceSampling(const RandomVector & event,
     const Scalar quantileLevel)
-  : EventSimulation(event.getImplementation()->asComposedEvent())
+  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
   , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
   if (!(quantileLevel <= 1.0) || !(quantileLevel >= 0.0))
@@ -66,7 +66,7 @@ Distribution CrossEntropyImportanceSampling::getInitialDistribution() const
 void CrossEntropyImportanceSampling::setEvent(const RandomVector & event)
 {
   const Bool previousDirection = getEvent().getOperator()(0, 1);
-  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  EventSimulationImplementation::setEvent(event.getImplementation()->asComposedEvent());
   const Bool newDirection = getEvent().getOperator()(0, 1);
   if (previousDirection != newDirection)
     quantileLevel_ = 1.0 - quantileLevel_;
@@ -377,7 +377,7 @@ String CrossEntropyImportanceSampling::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulation::__repr__()
+      << " derived from " << EventSimulationImplementation::__repr__()
       << " quantileLevel=" << quantileLevel_;
   return oss;
 }
@@ -386,7 +386,7 @@ String CrossEntropyImportanceSampling::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void CrossEntropyImportanceSampling::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.saveAttribute("quantileLevel_", quantileLevel_);
   adv.saveAttribute("crossEntropyResult_", crossEntropyResult_);
@@ -403,7 +403,7 @@ void CrossEntropyImportanceSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void CrossEntropyImportanceSampling::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.loadAttribute("quantileLevel_", quantileLevel_);
   adv.loadAttribute("crossEntropyResult_", crossEntropyResult_);

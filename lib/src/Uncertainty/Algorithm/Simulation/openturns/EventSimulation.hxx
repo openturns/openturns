@@ -22,13 +22,9 @@
 #ifndef OPENTURNS_EVENTSIMULATION_HXX
 #define OPENTURNS_EVENTSIMULATION_HXX
 
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/EventSimulationImplementation.hxx"
 #include "openturns/SimulationAlgorithm.hxx"
-#include "openturns/HistoryStrategy.hxx"
-#include "openturns/Compact.hxx"
-#include "openturns/Last.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/ProbabilitySimulationResult.hxx"
-#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,24 +33,37 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API EventSimulation
-  : public SimulationAlgorithm
+  : public TypedInterfaceObject<EventSimulationImplementation>
 {
 
   CLASSNAME
 public:
 
+  typedef Pointer<EventSimulationImplementation> Implementation;
+  typedef SimulationAlgorithm::ProgressCallback ProgressCallback;
+  typedef SimulationAlgorithm::StopCallback StopCallback;
+
+  /** Default constructor */
+  EventSimulation();
+
   /** Constructor with parameters */
   explicit EventSimulation(const RandomVector & event,
                            const HistoryStrategy & convergenceStrategy = Compact());
 
+  /** Constructor from implementation */
+  EventSimulation(const EventSimulationImplementation & implementation);
+
+  /** Constructor from implementation pointer */
+  EventSimulation(const Implementation & p_implementation);
+
   /** Virtual constructor */
-  EventSimulation * clone() const override;
+  EventSimulation * clone() const;
 
   /** Event accessor */
   RandomVector getEvent() const;
-
+  
   /** Event accessor */
-  virtual void setEvent(const RandomVector & event);
+  void setEvent(const RandomVector & event);
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
@@ -63,35 +72,46 @@ public:
   String __repr__() const override;
 
   /** Performs the actual computation. */
-  void run() override;
+  void run();
 
   /** Draw the probability convergence at the given level */
   Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
+  /** Input accessor */
+  Sample getInputSample() const;
+  
+  /** Setter keep sample */
+  void setKeepSample(const Bool);
 
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
+  /** Maximum iterations number accessor */
+  void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
+  UnsignedInteger getMaximumOuterSampling() const;
 
-protected:
+  /** Maximum coefficient of variation accessor */
+  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation);
+  Scalar getMaximumCoefficientOfVariation() const;
 
-  /** Result accessor */
-  void setResult(const ProbabilitySimulationResult & result);
+  /** Maximum standard deviation accessor */
+  void setMaximumStandardDeviation(const Scalar maximumStandardDeviation);
+  Scalar getMaximumStandardDeviation() const;
 
-  /** Compute the block sample and the points that realized the event */
-  virtual Sample computeBlockSample();
+  /** Block size accessor */
+  void setBlockSize(const UnsignedInteger blockSize);
+  UnsignedInteger getBlockSize() const;
 
-  /** For save/load mechanism*/
-  EventSimulation(const HistoryStrategy & convergenceStrategy = Compact());
+  /** Convergence strategy accessor */
+  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
+  HistoryStrategy getConvergenceStrategy() const;
 
-  friend class Factory<EventSimulation>;
+  /** Maximum time accessor */
+  void setMaximumTimeDuration(const Scalar maximumTimeDuration);
+  Scalar getMaximumTimeDuration() const;
 
-  // The event we are computing the probability of
-  RandomVector event_;
+  /** Progress callback */
+  void setProgressCallback(ProgressCallback callBack, void * state = nullptr);
 
-  // Result of the simulation
-  ProbabilitySimulationResult result_;
+  /** Stop callback */
+  void setStopCallback(StopCallback callBack, void * state = nullptr);
 
 } ; /* class EventSimulation */
 
