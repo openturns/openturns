@@ -201,3 +201,129 @@ bModel = BFunction()
 with ott.assert_raises(AttributeError):
     # when super is not called in init, should not crash
     bFunction = ot.Function(bModel)
+
+print("copy=True (discard memoryview) on point and sample")
+copyFunc = ot.PythonFunction(2, 1, a_exec, copy=True)
+ott.assert_almost_equal(copyFunc([1.0, 2.0]), [3.0])
+ott.assert_almost_equal(copyFunc([[1.0, 2.0], [3.0, 4.0]]), [[3.0], [7.0]])
+copySampleFunc = ot.PythonFunction(2, 1, func_sample=a_exec_sample, copy=True)
+ott.assert_almost_equal(copySampleFunc([1.0, 2.0]), [3.0])
+ott.assert_almost_equal(copySampleFunc([[1.0, 2.0], [3.0, 4.0]]), [[3.0], [7.0]])
+
+print("linearity accessors")
+assert not copyFunc.isLinear()
+assert not copyFunc.isLinearlyDependent(0)
+linearFunc = ot.PythonFunction(
+    2,
+    1,
+    a_exec,
+    functionLinearity=lambda: True,
+    variablesLinearity=lambda index: True,
+)
+assert linearFunc.isLinear()
+assert linearFunc.isLinearlyDependent(0)
+assert linearFunc.isLinearlyDependent(1)
+with ott.assert_raises(Exception):
+    linearFunc.isLinearlyDependent(5)
+
+print("input dimension errors")
+with ott.assert_raises(Exception):
+    copyFunc([1.0, 2.0, 3.0])
+with ott.assert_raises(Exception):
+    copyFunc([[1.0]])
+with ott.assert_raises(Exception):
+    copyFunc.gradient([1.0])
+with ott.assert_raises(Exception):
+    copyFunc.hessian([1.0])
+
+
+def bad_output_dim(X):
+    return [1.0, 2.0, 3.0]
+
+
+print("output dimension error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, bad_output_dim)([1.0, 2.0])
+
+
+def non_sequence_exec(X):
+    return 42
+
+
+print("non-sequence _exec return")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, non_sequence_exec)([1.0, 2.0])
+
+
+def bad_size_sample(Xs):
+    return [[1.0]]
+
+
+print("bad _exec_sample size")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, func_sample=bad_size_sample)(
+        [[1.0, 2.0], [3.0, 4.0]]
+    )
+
+
+def bad_dim_sample(Xs):
+    return [[1.0, 2.0, 3.0] for _ in Xs]
+
+
+print("bad _exec_sample dimension")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, func_sample=bad_dim_sample)([[1.0, 2.0]])
+
+
+def non_sequence_sample(Xs):
+    return 42
+
+
+print("non-sequence _exec_sample return")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, func_sample=non_sequence_sample)([[1.0, 2.0]])
+
+print("gradient errors")
+
+
+def bad_grad(X):
+    return 42
+
+
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, gradient=bad_grad).gradient([1.0, 2.0])
+
+
+def bad_grad_col(X):
+    return [[1.0, 2.0], [3.0, 4.0]]
+
+
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, gradient=bad_grad_col).gradient([1.0, 2.0])
+
+print("hessian errors")
+
+
+def bad_hess(X):
+    return 42
+
+
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=bad_hess).hessian([1.0, 2.0])
+
+
+def bad_hess_sheet(X):
+    return [[[0.1], [0.3]], [[0.3], [0.1]]] * 2
+
+
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=bad_hess_sheet).hessian([1.0, 2.0])
+
+print("copy and descriptions")
+funcCopy = ot.Function(copyFunc)
+assert funcCopy.getInputDimension() == 2
+assert "PythonEvaluation" in repr(funcCopy.getEvaluation())
+assert funcCopy.getInputDescription() == ["x0", "x1"]
+descFunc = ot.Function(F)
+assert descFunc.getInputDescription() == ["R", "S"]
+assert descFunc.getOutputDescription() == ["T"]
