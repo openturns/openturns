@@ -49,13 +49,10 @@ DirectionalSampling::DirectionalSampling()
 DirectionalSampling::DirectionalSampling(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulation(event.getImplementation()->asComposedEvent())
+  : EventSimulation()
   , rootStrategy_(rootStrategy)
 {
-  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
-  standardEvent_ = StandardEvent(getEvent());
-  standardFunction_ = standardEvent_.getImplementation()->getFunction();
-  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
+  setEvent(event);
   setSamplingStrategy(samplingStrategy);
 }
 
@@ -63,6 +60,17 @@ DirectionalSampling::DirectionalSampling(const RandomVector & event,
 DirectionalSampling * DirectionalSampling::clone() const
 {
   return new DirectionalSampling(*this);
+}
+
+/*  Event accessor */
+void DirectionalSampling::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  standardEvent_ = StandardEvent(getEvent());
+  standardFunction_ = standardEvent_.getImplementation()->getFunction();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
+  samplingStrategy_.setDimension(inputDistribution_.getDimension());
 }
 
 /* Compute the contribution of a direction to the probability given the roots x_0,...,x_{n-1} of the performance function along the direction.

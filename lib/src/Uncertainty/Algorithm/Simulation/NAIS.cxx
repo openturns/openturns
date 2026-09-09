@@ -61,6 +61,24 @@ NAIS * NAIS::clone() const
   return new NAIS(*this);
 }
 
+/*  Event accessor */
+void NAIS::setEvent(const RandomVector & event)
+{
+
+  const Bool previousDirection = getEvent().getOperator()(0, 1);
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const Interval range(getEvent().getAntecedent().getDistribution().getRange());
+  const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
+  const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
+  for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
+    if (rangeUpper[i] || rangeLower[i])
+      throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution";
+
+  const Bool newDirection = getEvent().getOperator()(0, 1);
+  if (previousDirection != newDirection)
+    quantileLevel_ = 1.0 - quantileLevel_;
+}
+
 /* Keep event sample */
 void NAIS::setKeepSample(const Bool keepSample)
 {

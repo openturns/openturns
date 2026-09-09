@@ -78,6 +78,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
+
   /** Maximum coefficient of variation accessor */
   void setMaximumCoefficientOfVariation(const Scalar) override;
 

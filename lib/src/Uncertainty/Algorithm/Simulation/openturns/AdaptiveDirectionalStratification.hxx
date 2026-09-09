@@ -84,6 +84,9 @@ public:
   /** Performs the actual computation. */
   void run() override;
 
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
+
 private:
   /** Compute the block sample and the points that realized the event */
   Sample computeBlockSample() override;
