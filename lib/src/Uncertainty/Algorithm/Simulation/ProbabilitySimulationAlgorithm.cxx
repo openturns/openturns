@@ -44,14 +44,9 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStra
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(event, convergenceStrategy)
+  : EventSimulation(convergenceStrategy)
 {
-  // Filter out if the event is composite
-  if (event_.isComposite())
-  {
-    isExperimentProvided_ = true;
-    setExperiment(MonteCarloExperiment());
-  }
+  setEvent(event);
 }
 
 /* Constructor with parameters */
@@ -71,6 +66,24 @@ ProbabilitySimulationAlgorithm * ProbabilitySimulationAlgorithm::clone() const
   return new ProbabilitySimulationAlgorithm(*this);
 }
 
+/*  Event accessor */
+void ProbabilitySimulationAlgorithm::setEvent(const RandomVector & event)
+{
+  EventSimulationImplementation::setEvent(event);
+
+  if (getEvent().isComposite())
+  {
+    if (!isExperimentProvided_)
+      setExperiment(MonteCarloExperiment());
+    else
+      setExperiment(experiment_);
+    isExperimentProvided_ = true;
+  }
+  else
+  {
+    isExperimentProvided_ = false;
+  }
+}
 
 void ProbabilitySimulationAlgorithm::setExperiment(const WeightedExperiment & experiment)
 {

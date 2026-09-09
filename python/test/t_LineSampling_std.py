@@ -240,3 +240,26 @@ algo.run()
 result = algo.getResult()
 print(result)
 ott.assert_almost_equal(result.getProbabilityEstimate(), 2.103779e-07)
+
+# Test setter of event
+ot.RandomGenerator.SetSeed(0)
+X = ot.RandomVector(ot.Normal(2))
+Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X1", "X2"], ["X1"]), X)
+event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
+algo = ot.LineSampling(event, ot.Point([0.0, -2.0]))
+algo.setMaximumOuterSampling(100000)
+algo.setMaximumCoefficientOfVariation(0.01)
+algo.run()
+result = algo.getResult()
+ott.assert_almost_equal(
+    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-1, 0.0
+)
+ot.RandomGenerator.SetSeed(0)
+Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X1", "X2"], ["2 * X1"]), X)
+event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
+algo.setEvent(event2)
+algo.run()
+result2 = algo.getResult()
+ott.assert_almost_equal(
+    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-1, 0.0
+)

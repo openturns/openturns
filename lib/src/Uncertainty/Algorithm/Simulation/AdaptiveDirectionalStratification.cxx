@@ -42,15 +42,14 @@ AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulation(event.getImplementation()->asComposedEvent())
-  , standardEvent_(StandardEvent(getEvent()))
+  : EventSimulation()
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
   , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultGamma"))
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
-  samplingStrategy_.setDimension(getEvent().getImplementation()->getAntecedent().getDimension());
+  setEvent(event);
 }
 
 /* Virtual constructor */
@@ -59,7 +58,16 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
   return new AdaptiveDirectionalStratification(*this);
 }
 
-
+/*  Event accessor */
+void AdaptiveDirectionalStratification::setEvent(const RandomVector & event)
+{
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  standardEvent_ = StandardEvent(getEvent());
+  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
+  samplingStrategy_.setDimension(dimension);
+  if ((quadrantOrientation_.getDimension() > 0) && (quadrantOrientation_.getDimension() != dimension))
+    throw InvalidDimensionException(HERE) << "Error: the quadrant orientation dimension (" << quadrantOrientation_.getDimension() << ") is not compatible with the antecedent dimension (" << dimension << ")";
+}
 
 void AdaptiveDirectionalStratification::run()
 {
