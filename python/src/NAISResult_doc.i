@@ -86,3 +86,13 @@ weights : :class:`~openturns.Point`
     Auxiliary distribution input sample associated weights." 
 
 
+
+
+%feature("docstring") OT::NAISResult::getConfidenceLength
+"Accessor to the confidence length.
+
+Returns
+-------
+confLength : float
+    The confidence length of the simulation."
+

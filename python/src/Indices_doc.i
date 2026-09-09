@@ -183,3 +183,19 @@ Examples
 >>> indices = ot.Indices([3, 5, 7, 9])
 >>> print(indices.norm1())
 24"
+
+
+%feature("docstring") OT::Indices::find
+"Find the index of the first occurrence of a value.
+
+Parameters
+----------
+val : int
+    The value to find
+
+Returns
+-------
+index : int
+    The index of the first occurrence of the value.
+    The size of the collection if the value is not found."
+

@@ -8,4 +8,5 @@ OTAutodoc(ParametricHessian)
 
 %copyctor OT::ParametricHessian;
 
+%include ParametricHessian_doc.i
 %include openturns/ParametricHessian.hxx

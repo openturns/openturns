@@ -68,3 +68,23 @@ Parameters
 ----------
 outputSample : :class:`~openturns.Sample`
     The output sample defining the function."
+
+
+%feature("docstring") OT::DatabaseEvaluation::getNearestNeighbourAlgorithm
+"Accessor to the nearest neighbour algorithm.
+
+Returns
+-------
+algo : :class:`~openturns.NearestNeighbourAlgorithm`
+    The algorithm used to find the nearest neighbour"
+
+
+
+%feature("docstring") OT::DatabaseEvaluation::setNearestNeighbourAlgorithm
+"Accessor to the nearest neighbour algorithm.
+
+Parameters
+----------
+algo : :class:`~openturns.NearestNeighbourAlgorithm`
+    The algorithm used to find the nearest neighbour"
+

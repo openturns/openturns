@@ -36,3 +36,43 @@ Examples
 >>> productBasis = ot.TensorizedUniVariateFunctionFactory(funcColl, enumerateFunction)
 )RAW"
 
+
+
+%feature("docstring") OT::TensorizedUniVariateFunctionFactory::getEnumerateFunction
+"Accessor to the enumerate function.
+
+Returns
+-------
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    The enumerate function"
+
+
+
+%feature("docstring") OT::TensorizedUniVariateFunctionFactory::getFunctionFamilyCollection
+"Accessor to the collection of function families.
+
+Returns
+-------
+coll : sequence of :class:`~openturns.UniVariateFunctionFamily`
+    The collection of function families"
+
+
+
+%feature("docstring") OT::TensorizedUniVariateFunctionFactory::setEnumerateFunction
+"Accessor to the enumerate function.
+
+Parameters
+----------
+enumerateFunction : :class:`~openturns.EnumerateFunction`
+    The enumerate function"
+
+
+
+%feature("docstring") OT::TensorizedUniVariateFunctionFactory::setFunctionFamilyCollection
+"Accessor to the collection of function families.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.UniVariateFunctionFamily`
+    The collection of function families"
+
