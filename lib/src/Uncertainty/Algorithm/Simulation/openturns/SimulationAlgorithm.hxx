@@ -43,7 +43,7 @@ public:
   /** Virtual constructor */
   SimulationAlgorithm * clone() const override;
 
-  /** Maximum sample size accessor */
+  /** Maximum iterations number accessor */
   void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
   UnsignedInteger getMaximumOuterSampling() const;
 

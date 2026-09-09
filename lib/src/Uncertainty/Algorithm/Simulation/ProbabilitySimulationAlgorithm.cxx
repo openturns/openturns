@@ -36,7 +36,7 @@ CLASSNAMEINIT(ProbabilitySimulationAlgorithm)
 static const Factory<ProbabilitySimulationAlgorithm> Factory_ProbabilitySimulationAlgorithm;
 
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(convergenceStrategy)
+  : EventSimulationImplementation(convergenceStrategy)
 {
   // Nothing to do
 }
@@ -44,7 +44,7 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const HistoryStra
 /* Constructor with parameters */
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(convergenceStrategy)
+  : EventSimulationImplementation(convergenceStrategy)
 {
   setEvent(event);
 }
@@ -53,7 +53,7 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVecto
 ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const WeightedExperiment & experiment,
     const HistoryStrategy & convergenceStrategy)
-  : EventSimulation(event, convergenceStrategy)
+  : EventSimulationImplementation(event, convergenceStrategy)
   , isExperimentProvided_(true)
 {
   if (!event.isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
@@ -70,7 +70,6 @@ ProbabilitySimulationAlgorithm * ProbabilitySimulationAlgorithm::clone() const
 void ProbabilitySimulationAlgorithm::setEvent(const RandomVector & event)
 {
   EventSimulationImplementation::setEvent(event);
-
   if (getEvent().isComposite())
   {
     if (!isExperimentProvided_)
@@ -114,7 +113,7 @@ String ProbabilitySimulationAlgorithm::__repr__() const
   OSS oss;
   oss << "class=" << ProbabilitySimulationAlgorithm::GetClassName()
       << " experiment=" << experiment_
-      << " derived from " << EventSimulation::__repr__();
+      << " derived from " << EventSimulationImplementation::__repr__();
   return oss;
 }
 
@@ -157,7 +156,7 @@ Sample ProbabilitySimulationAlgorithm::computeBlockSampleComposite()
 /* Method save() stores the object through the StorageManager */
 void ProbabilitySimulationAlgorithm::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
   adv.saveAttribute("isExperimentProvided_", isExperimentProvided_);
   adv.saveAttribute("keepSample_", keepSample_);
@@ -168,7 +167,7 @@ void ProbabilitySimulationAlgorithm::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ProbabilitySimulationAlgorithm::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("experiment_", experiment_);
   adv.loadAttribute("isExperimentProvided_", isExperimentProvided_);
   if (adv.hasAttribute("keepSample_")) // OT>=1.26
@@ -181,7 +180,7 @@ void ProbabilitySimulationAlgorithm::load(Advocate & adv)
 
 void ProbabilitySimulationAlgorithm::setBlockSize(const UnsignedInteger blockSize)
 {
-  EventSimulation::setBlockSize(blockSize);
+  EventSimulationImplementation::setBlockSize(blockSize);
   experiment_.setSize(blockSize);
 }
 

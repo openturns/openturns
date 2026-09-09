@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * AdaptiveDirectionalStratification
  */
 class OT_API AdaptiveDirectionalStratification
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
   CLASSNAME
 

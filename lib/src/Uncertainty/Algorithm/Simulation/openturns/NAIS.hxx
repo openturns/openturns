@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NAIS is some nais type to illustrate how to add some classes in OpenTURNS
  */
 class OT_API NAIS
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
 
   CLASSNAME
@@ -68,10 +68,11 @@ public:
   UnsignedInteger getStepsNumber() const;
 
   /** Keep event sample */
-  void setKeepSample(const Bool keepSample);
+  void setKeepSample(const Bool keepSample) override;
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
+  using EventSimulationImplementation::getInputSample;
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 

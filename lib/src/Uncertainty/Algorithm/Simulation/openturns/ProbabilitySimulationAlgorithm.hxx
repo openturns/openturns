@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ProbabilitySimulationAlgorithm
  */
 
-class OT_API ProbabilitySimulationAlgorithm : public EventSimulation
+class OT_API ProbabilitySimulationAlgorithm : public EventSimulationImplementation
 {
 
   CLASSNAME
@@ -56,10 +56,10 @@ public:
   void setExperiment(const WeightedExperiment & experiment);
 
   /** Keep event sample */
-  void setKeepSample(const Bool keepSample);
+  void setKeepSample(const Bool keepSample) override;
 
   /** Input/output sample accessor according to select flag */
-  Sample getInputSample() const;
+  Sample getInputSample() const override;
   Sample getOutputSample() const;
 
   /** String converter */

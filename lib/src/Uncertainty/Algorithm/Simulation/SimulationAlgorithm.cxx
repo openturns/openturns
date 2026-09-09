@@ -56,7 +56,7 @@ SimulationAlgorithm * SimulationAlgorithm::clone() const
   return new SimulationAlgorithm(*this);
 }
 
-/* Maximum sample size accessor */
+/* Maximum iterations number accessor */
 void SimulationAlgorithm::setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling)
 {
   maximumOuterSampling_ = maximumOuterSampling;

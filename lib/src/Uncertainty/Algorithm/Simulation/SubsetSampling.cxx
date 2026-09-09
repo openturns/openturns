@@ -39,7 +39,7 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 
 /* Default constructor */
 SubsetSampling::SubsetSampling()
-  : EventSimulation()
+  : EventSimulationImplementation()
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
 {
 }
@@ -49,7 +49,7 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : EventSimulation()
+  : EventSimulationImplementation()
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
@@ -78,7 +78,7 @@ void SubsetSampling::setEvent(const RandomVector & event)
       << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
       << outputDimension;
 
-  EventSimulation::setEvent(composedEvent);
+  EventSimulationImplementation::setEvent(composedEvent);
   setInitialExperiment(initialExperiment_);
 }
 
@@ -594,7 +594,7 @@ String SubsetSampling::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulation::__repr__()
+      << " derived from " << EventSimulationImplementation::__repr__()
       << " proposalRange=" << proposalRange_
       << " conditionalProbability=" << conditionalProbability_
       << " keepSample_=" << keepSample_;
@@ -605,7 +605,7 @@ String SubsetSampling::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SubsetSampling::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("proposalRange_", proposalRange_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
@@ -626,7 +626,7 @@ void SubsetSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SubsetSampling::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
   adv.loadAttribute("minimumProbability_", minimumProbability_);
