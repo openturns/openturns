@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -59,3 +60,32 @@ print((repr(outSample)))
 
 outSample = myFunc(((100.0, 100.0), (101.0, 101.0), (102.0, 102.0)))
 print((repr(outSample)))
+
+assert ot.PointToFieldFunction(myFunc) == myFunc
+
+with ott.assert_raises(Exception):
+    myFunc([1.0, 2.0, 3.0])
+
+
+class BadPointToFieldFunction(ot.OpenTURNSPythonPointToFieldFunction):
+    def __init__(self):
+        super().__init__(2, mesh, 2)
+
+    def _exec(self, X):
+        return [[1.0] * 5] * 11
+
+
+with ott.assert_raises(Exception):
+    ot.PointToFieldFunction(BadPointToFieldFunction())([1.0, 2.0])
+
+
+class NonSequencePointToFieldFunction(ot.OpenTURNSPythonPointToFieldFunction):
+    def __init__(self):
+        super().__init__(2, mesh, 2)
+
+    def _exec(self, X):
+        return 42
+
+
+with ott.assert_raises(Exception):
+    ot.PointToFieldFunction(NonSequencePointToFieldFunction())([1.0, 2.0])
