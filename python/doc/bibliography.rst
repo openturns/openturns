@@ -463,6 +463,11 @@ Bibliography
 .. [ridgway2016] Ridgway, J. (2016). *Computation of Gaussian orthant probabilities in
     high dimension.* Statistics and Computing, 26(4), 899-916.
     `pdf <https://arxiv.org/abs/1411.1314>`__
+.. [ryu2015] Ryu, E.K. and Boyd, S.P., *Extensions of Gauss Quadrature Via Linear Programming*,
+    Foundations of Computational Mathematics, 15(4):953-971, 2015.
+.. [jakeman2018] Jakeman, J.D. and Narayan, A., *Generation and application of multivariate
+    polynomial quadrature rules*, Computer Methods in Applied Mechanics and Engineering,
+    338:134-161, 2018.
 .. [robertson2024] Robertson, G., Sjöstrand, H., Andersson, P., Göök, A. and Blair, P.
     *Addressing model inadequacy in fuel performance model calibration using MH-within-gibbs sampling.*
     Best Estimate Plus Uncertainty International Conference (BEPU 2024), Real Collegio, Lucca, Tuscany, Italy, May 19–24, 2024.
