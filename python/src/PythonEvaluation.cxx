@@ -33,6 +33,30 @@ CLASSNAMEINIT(PythonEvaluation)
 static const Factory<PythonEvaluation> Factory_PythonEvaluation;
 
 
+namespace
+{
+// RAII class ensuring the Python GIL is held during the evaluation, so that
+// Python-based functions can be evaluated from any thread, e.g. TBB workers.
+// PyGILState_Ensure/Release are safe to call even if the GIL is already held
+// by the calling thread (e.g. standard SWIG calls from Python).
+class ScopedPyGIL
+{
+public:
+  ScopedPyGIL()
+    : state_(PyGILState_Ensure())
+  {}
+
+  ~ScopedPyGIL()
+  {
+    PyGILState_Release(state_);
+  }
+
+private:
+  PyGILState_STATE state_;
+};
+}
+
+
 
 /* Default constructor */
 PythonEvaluation::PythonEvaluation()
@@ -168,6 +192,8 @@ String PythonEvaluation::__str__(const String & ) const
 /* Operator () */
 Point PythonEvaluation::operator() (const Point & inP) const
 {
+  // The evaluation may be called from any thread: hold the GIL
+  const ScopedPyGIL gil;
   const UnsignedInteger dimension = inP.getDimension();
 
   if (dimension != getInputDimension())
@@ -265,6 +291,8 @@ Point PythonEvaluation::operator() (const Point & inP) const
 /* Operator () */
 Sample PythonEvaluation::operator() (const Sample & inS) const
 {
+  // The evaluation may be called from any thread: hold the GIL
+  const ScopedPyGIL gil;
   const UnsignedInteger inDim = inS.getDimension();
 
   if (inDim != getInputDimension())
@@ -397,6 +425,8 @@ void PythonEvaluation::initializePythonState()
 /* Accessor for input point dimension */
 UnsignedInteger PythonEvaluation::getInputDimension() const
 {
+  // The accessor may be called from any thread: hold the GIL
+  const ScopedPyGIL gil;
   if (!PyObject_HasAttrString(pyObj_, "getInputDimension"))
     throw InvalidArgumentException(HERE) << "PythonEvaluation: mandatory getInputDimension method is missing";
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
@@ -412,6 +442,8 @@ UnsignedInteger PythonEvaluation::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonEvaluation::getOutputDimension() const
 {
+  // The accessor may be called from any thread: hold the GIL
+  const ScopedPyGIL gil;
   if (!PyObject_HasAttrString(pyObj_, "getOutputDimension"))
     throw InvalidArgumentException(HERE) << "PythonEvaluation: mandatory getOutputDimension method is missing";
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
@@ -426,6 +458,8 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
 /* Linearity accessors */
 Bool PythonEvaluation::isLinear() const
 {
+  // The accessor may be called from any thread: hold the GIL
+  const ScopedPyGIL gil;
   if (PyObject_HasAttrString(pyObj_, "isLinear"))
   {
     ScopedPyObjectPointer result( PyObject_CallMethod (pyObj_,
@@ -442,6 +476,8 @@ Bool PythonEvaluation::isLinear() const
 
 Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
+  // The accessor may be called from any thread: hold the GIL
+  const ScopedPyGIL gil;
   // Check index consistency
   if (index > getInputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
@@ -465,6 +501,11 @@ Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 /* Is it safe to call in parallel? */
 Bool PythonEvaluation::isParallel() const
 {
+  // A Python-based evaluation cannot run on TBB worker threads: the workers
+  // would block on the Python GIL while the main thread holds it and waits for
+  // them, which would deadlock. The evaluation remains safe to call
+  // concurrently from user threads thanks to the GIL management, but it must
+  // not be parallelized by the algorithms
   return false;
 }
 
