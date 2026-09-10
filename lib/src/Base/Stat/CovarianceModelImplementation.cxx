@@ -22,6 +22,8 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/HODLRMatrix.hxx"
+#include "openturns/HODLRMatrixFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/HMatrix.hxx"
@@ -989,6 +991,51 @@ HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Sampl
   // Second step we compute the factor
   HMatrix covarianceFactor = discretizeHMatrix(vertices, parameters);
   covarianceFactor.factorize(parameters.getFactorizationMethod());
+  return covarianceFactor;
+}
+
+/* Discretize the covariance function on a given TimeGrid/Mesh using HODLR */
+HODLRMatrix CovarianceModelImplementation::discretizeHODLRMatrix(const RegularGrid & timeGrid,
+    const HODLRMatrixParameters & parameters) const
+{
+  return discretizeHODLRMatrix(timeGrid.getVertices(), parameters);
+}
+
+HODLRMatrix CovarianceModelImplementation::discretizeHODLRMatrix(const Mesh & mesh,
+    const HODLRMatrixParameters & parameters) const
+{
+  return discretizeHODLRMatrix(mesh.getVertices(), parameters);
+}
+
+HODLRMatrix CovarianceModelImplementation::discretizeHODLRMatrix(const Sample & vertices,
+    const HODLRMatrixParameters & parameters) const
+{
+  HODLRMatrixFactory factory;
+  HODLRMatrix covarianceHODLR = factory.build(vertices, outputDimension_, true, parameters);
+  HODLRCovarianceAssemblyFunction evaluator(*this, vertices);
+  covarianceHODLR.assemble(evaluator, 'L');
+  covarianceHODLR.applyNugget();
+  return covarianceHODLR;
+}
+
+/* Discretize and factorize the covariance function on a given TimeGrid/Mesh using HODLR */
+HODLRMatrix CovarianceModelImplementation::discretizeAndFactorizeHODLRMatrix(const RegularGrid & timeGrid,
+    const HODLRMatrixParameters & parameters) const
+{
+  return discretizeAndFactorizeHODLRMatrix(timeGrid.getVertices(), parameters);
+}
+
+HODLRMatrix CovarianceModelImplementation::discretizeAndFactorizeHODLRMatrix(const Mesh & mesh,
+    const HODLRMatrixParameters & parameters) const
+{
+  return discretizeAndFactorizeHODLRMatrix(mesh.getVertices(), parameters);
+}
+
+HODLRMatrix CovarianceModelImplementation::discretizeAndFactorizeHODLRMatrix(const Sample & vertices,
+    const HODLRMatrixParameters & parameters) const
+{
+  HODLRMatrix covarianceFactor = discretizeHODLRMatrix(vertices, parameters);
+  covarianceFactor.factorize();
   return covarianceFactor;
 }
 

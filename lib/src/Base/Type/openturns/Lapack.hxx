@@ -104,6 +104,9 @@ void dgeqrf_(int *m, int *n, double *a, int *lda, double *tau, double *work, int
 /** Function dorgqr is used to generate a real matrix Q with orthogonal columns */
 void dorgqr_(int *m, int *n, int *k, double *a, int *lda, double *tau, double *work, int *lwork, int *info);
 
+/** Function dormqr is used to multiply a general real matrix C by the orthogonal matrix Q from a QR factorisation */
+void dormqr_(char *side, char *trans, int *m, int *n, int *k, double *a, int *lda, double *tau, double *c, int *ldc, double *work, int *lwork, int *info, int *lside, int *ltrans);
+
 /** Function dger is used to make the Kronecker product of two vectors */
 void dger_(int *m, int *n, double *alpha, double *x, int *incx, double *y, int *incy, double *a, int *lda);
 
@@ -122,6 +125,9 @@ void dtrsm_(char *side, char *uplo, char *transa, char *diag, int *m, int *n, do
 /** Function dgesdd computes singular values by using a divide and conquer strategy.
     The number of singular values is the min of the column dimension and the row dimension. */
 void dgesdd_(char *jobz, int *m, int *n, double *A, int *lda, double *S, double *U, int *ldu, double *VT, int *ldvt, double *work, int *lwork, int *iwork, int *info, int *ljobz);
+
+/** Function dsyevd computes the eigenvalues and eigenvectors of a symmetric matrix by a divide and conquer strategy */
+void dsyevd_(char *jobz, char *uplo, int *n, double *a, int *lda, double *w, double *work, int *lwork, int *iwork, int *liwork, int *info, int *ljobz, int *luplo);
 
 /** Function dtrmv is to be used to compute the product of a triangular
     (upper or lower) matrix with a vector (point) */

@@ -133,6 +133,12 @@ HMatrix GaussianProcessRegressionResult::getHMatCholeskyFactor() const
   return gpfResult_.getHMatCholeskyFactor();
 }
 
+/* Method that returns the covariance factor - hodlr */
+HODLRMatrix GaussianProcessRegressionResult::getHODLRCholeskyFactor() const
+{
+  return gpfResult_.getHODLRCholeskyFactor();
+}
+
 /* Fitter result accessor */
 GaussianProcessFitterResult GaussianProcessRegressionResult::getGaussianProcessFitterResult() const
 {

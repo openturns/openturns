@@ -19,6 +19,8 @@
  *
  */
 
+#include <algorithm>
+
 #include "openturns/KDTree.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -286,9 +288,10 @@ class KDTreeSampleAdaptor
 {
 public:
   explicit KDTreeSampleAdaptor(const Sample & points)
-    : data_(points.getImplementation()->data())
-    , size_(points.getSize())
-    , dimension_(points.getDimension())
+    : sample_(points)
+    , data_(sample_.getImplementation()->data())
+    , size_(sample_.getSize())
+    , dimension_(sample_.getDimension())
   {
   }
 
@@ -309,6 +312,7 @@ public:
   }
 
 private:
+  Sample sample_;
   const Scalar *data_ = nullptr;
   UnsignedInteger size_ = 0;
   UnsignedInteger dimension_ = 0;
@@ -423,6 +427,13 @@ void KDTree::setSample(const Sample & points)
   boundingBox_.setLowerBound(points_.getMin());
   boundingBox_.setUpperBound(points_.getMax());
 #endif
+
+  // Build a deterministic space-filling ordering of the points
+  const UnsignedInteger orderSize = points_.getSize();
+  ordering_ = Indices(orderSize);
+  Indices orderBuffer(orderSize);
+  orderBuffer.fill();
+  computeOrdering(orderBuffer, 0, orderSize);
 }
 
 /* Virtual constructor */
@@ -476,6 +487,55 @@ void KDTree::insert(UnsignedInteger & inode,
     insert(tree_[3 * inode + 1], currentSize, index, (activeDimension + 1) % points_.getDimension());
   else
     insert(tree_[3 * inode + 2], currentSize, index, (activeDimension + 1) % points_.getDimension());
+}
+
+/* Recursively reorder the points by a balanced split along the axis of largest extent */
+void KDTree::computeOrdering(Indices & buffer,
+                             const UnsignedInteger lo,
+                             const UnsignedInteger hi)
+{
+  const UnsignedInteger count = hi - lo;
+  if (count <= 1)
+  {
+    if (count == 1) ordering_[lo] = buffer[lo];
+    return;
+  }
+  // Split along the axis of largest extent
+  const UnsignedInteger dimension = points_.getDimension();
+  UnsignedInteger axis = 0;
+  Scalar largestExtent = -SpecFunc::Infinity;
+  for (UnsignedInteger d = 0; d < dimension; ++ d)
+  {
+    Scalar minimum = points_(buffer[lo], d);
+    Scalar maximum = minimum;
+    for (UnsignedInteger i = lo + 1; i < hi; ++ i)
+    {
+      const Scalar value = points_(buffer[i], d);
+      if (value < minimum) minimum = value;
+      if (value > maximum) maximum = value;
+    }
+    const Scalar extent = maximum - minimum;
+    if (extent > largestExtent)
+    {
+      largestExtent = extent;
+      axis = d;
+    }
+  }
+  // Partition around the median value along this axis
+  const UnsignedInteger mid = lo + count / 2;
+  std::nth_element(buffer.begin() + lo, buffer.begin() + mid, buffer.begin() + hi,
+                   [&](const UnsignedInteger a, const UnsignedInteger b)
+                   {
+                     return points_(a, axis) < points_(b, axis);
+                   });
+  computeOrdering(buffer, lo, mid);
+  computeOrdering(buffer, mid, hi);
+}
+
+/* Get a space-filling ordering of the points */
+Indices KDTree::getOrdering() const
+{
+  return ordering_;
 }
 
 /* Get the index of the nearest neighbour of the given point */

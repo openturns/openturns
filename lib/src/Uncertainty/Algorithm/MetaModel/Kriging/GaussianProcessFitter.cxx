@@ -22,6 +22,8 @@
 #include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/HODLRMatrixFactory.hxx"
+#include "openturns/HODLRMatrixParameters.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
@@ -325,9 +327,11 @@ void GaussianProcessFitter::run()
       const Scalar sigma = reducedCovarianceModel_.getAmplitude()[0];
       // Case of LAPACK backend
       if (method_ == GaussianProcessFitterResult::LAPACK) covarianceCholeskyFactor_ = covarianceCholeskyFactor_ * sigma;
-      else covarianceCholeskyFactorHMatrix_.scale(sigma);
+      else if (method_ == GaussianProcessFitterResult::HMAT) covarianceCholeskyFactorHMatrix_.scale(sigma);
+      // HODLR: the scaling is handled through rho_ (divided by sigma^2 in
+      // computeReducedLogLikelihood) instead of the factor, so no scaling needed here
     }
-    result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
+    result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_, covarianceCholeskyFactorHODLR_);
   }
   hasRun_ = true;
 }
@@ -462,10 +466,26 @@ Point GaussianProcessFitter::computeReducedLogLikelihood(const Point & parameter
   reducedCovarianceModel_.setParameter(parameters);
   // First, compute the log-determinant of the Cholesky factor of the covariance
   // matrix. As a by-product, also compute rho.
-  if (method_ == GaussianProcessFitterResult::LAPACK)
-    logDeterminant = computeLapackLogDeterminantCholesky();
-  else
-    logDeterminant = computeHMatLogDeterminantCholesky();
+  try
+  {
+    if (method_ == GaussianProcessFitterResult::LAPACK)
+      logDeterminant = computeLapackLogDeterminantCholesky();
+    else if (method_ == GaussianProcessFitterResult::HMAT)
+      logDeterminant = computeHMatLogDeterminantCholesky();
+    else
+      logDeterminant = computeHODLRLogDeterminantCholesky();
+  }
+  catch (const std::exception & exc)
+  {
+    // The HODLR factorization may fail for extreme parameter values explored
+    // during optimization. Return a finite but very bad log-likelihood so the
+    // optimizer can continue searching from other starting points instead of
+    // aborting. Must be finite because COBYLA cannot handle inf/-inf values.
+    LOGDEBUG(OSS(false) << "HODLR factorization failed: " << exc.what() << ", returning worst-case log-likelihood");
+    static const Scalar worstLogLikelihood = -SpecFunc::MaxScalar;
+    lastReducedLogLikelihood_ = worstLogLikelihood;
+    return Point(1, lastReducedLogLikelihood_);
+  }
   // Compute the amplitude using an analytical formula if needed
   // and update the reduced log-likelihood.
   if (analyticalAmplitude_)
@@ -475,19 +495,44 @@ Point GaussianProcessFitter::computeReducedLogLikelihood(const Point & parameter
     //          =-N\log(\sigma)-\log(\det{R})/2-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
     // dJ/d\sigma=-N/\sigma+(Y-M)^tR^{-1}(Y-M)/\sigma^3=0
     // \sigma=\sqrt{(Y-M)^tR^{-1}(Y-M)/N}
+    // For HODLR rho_ is the raw residual, not L^{-1}(residual), so use the
+    // precomputed quadratic form instead of rho_.normSquare().
     const UnsignedInteger size = inputSample_.getSize();
-    const Scalar sigma = std::sqrt(rho_.normSquare() / (ResourceMap::GetAsBool("GaussianProcessFitter-UnbiasedVariance") ? size - beta_.getSize() : size));
+    // For the LAPACK and HMAT methods, rho_ = L^{-1}(y - F.beta) so the
+    // quadratic form is rho_.normSquare(). For the HODLR method, rho_ is the
+    // raw residual and the quadratic form is stored in lastQuadraticForm_.
+    const Scalar quadraticForm = (method_ == GaussianProcessFitterResult::HODLR) ? lastQuadraticForm_ : rho_.normSquare();
+    const Scalar sigma = std::sqrt(quadraticForm / (ResourceMap::GetAsBool("GaussianProcessFitter-UnbiasedVariance") ? size - beta_.getSize() : size));
     LOGDEBUG(OSS(false) << "sigma=" << sigma);
     reducedCovarianceModel_.setAmplitude(Point(1, sigma));
     logDeterminant += 2.0 * size * std::log(sigma);
-    rho_ /= sigma;
+    if (method_ == GaussianProcessFitterResult::HODLR)
+    {
+      // Scale the quadratic form and the residual so that the epsilon and the
+      // standardized output are consistent with the full covariance sigma^2 R.
+      lastQuadraticForm_ /= sigma * sigma;
+      rho_ /= sigma * sigma;
+    }
+    else
+      rho_ /= sigma;
     LOGDEBUG(OSS(false) << "rho_=" << rho_);
+    // For HODLR, lastQuadraticForm_ holds y^T R^{-1} y (computed with amplitude=1).
+    // Divide by sigma^2 so that it matches the scaled quadratic form needed by
+    // the log-likelihood formula (epsilon = y^T R^{-1} y / sigma^2).
+    if (method_ == GaussianProcessFitterResult::HODLR)
+      lastQuadraticForm_ = quadraticForm / (sigma * sigma);
   } // analyticalAmplitude
 
   LOGDEBUG(OSS(false) << "log-determinant=" << logDeterminant << ", rho=" << rho_);
-  const Scalar epsilon = rho_.normSquare();
+  const Scalar epsilon = (method_ == GaussianProcessFitterResult::HODLR) ? lastQuadraticForm_ : rho_.normSquare();
   LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
-  if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
+  if (epsilon <= 0 || !std::isfinite(epsilon) || !std::isfinite(logDeterminant))
+  {
+    // Return a finite but very bad log-likelihood. Must be finite because
+    // COBYLA cannot handle inf/-inf values as the objective.
+    LOGDEBUG(OSS(false) << "Bad epsilon=" << epsilon << " logDet=" << logDeterminant << ", returning worst-case log-likelihood");
+    lastReducedLogLikelihood_ = -SpecFunc::MaxScalar;
+  }
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
   LOGDEBUG(OSS(false) << "Point " << parameters << " -> reduced log-likelihood=" << lastReducedLogLikelihood_);
@@ -611,6 +656,56 @@ Scalar GaussianProcessFitter::computeHMatLogDeterminantCholesky()
   return 2.0 * logDetL;
 }
 
+Scalar GaussianProcessFitter::computeHODLRLogDeterminantCholesky()
+{
+  LOGDEBUG(OSS(false) << "Compute the HODLR log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
+
+  if (noise_.getSize() > 0)
+    throw NotYetImplementedException(HERE) << "Noise is not handled with HODLR method";
+
+  const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getOutputDimension();
+
+  HODLRMatrixParameters parameters;
+  HODLRMatrixFactory factory;
+  covarianceCholeskyFactorHODLR_ = factory.build(inputSample_, covarianceDimension, true, parameters);
+
+  HODLRCovarianceAssemblyFunction evaluator(reducedCovarianceModel_, inputSample_);
+  covarianceCholeskyFactorHODLR_.assemble(evaluator, 'L');
+  covarianceCholeskyFactorHODLR_.applyNugget();
+  covarianceCholeskyFactorHODLR_.factorize();
+
+  // y corresponds to output data
+  const Point y(outputSample_.getImplementation()->getData());
+  // Compute C^{-1} y via full solve
+  LOGDEBUG("Solve C^{-1} y via HODLR");
+  Point Cinv_y(covarianceCholeskyFactorHODLR_.solve(y));
+
+  if (basis_.getSize() > 0)
+  {
+    // Compute C^{-1} F
+    LOGDEBUG("Solve C^{-1} F via HODLR");
+    Matrix Cinv_F(covarianceCholeskyFactorHODLR_.solve(F_));
+    // Normal equations: (F^T C^{-1} F) beta = F^T C^{-1} y
+    LOGDEBUG("Solve normal equations for beta");
+    const Matrix FtCinvF(F_.transpose() * Cinv_F);
+    Point FtCinv_y(F_.transpose() * Cinv_y);
+    beta_ = FtCinvF.solveLinearSystem(FtCinv_y);
+    // Residual
+    Point residual(y - F_ * beta_);
+    // Quadratic form: residual^T C^{-1} residual
+    Point Cinv_residual(covarianceCholeskyFactorHODLR_.solve(residual));
+    lastQuadraticForm_ = residual.dot(Cinv_residual);
+    rho_ = residual;
+  }
+  else
+  {
+    lastQuadraticForm_ = y.dot(Cinv_y);
+    rho_ = y;
+  }
+
+  return covarianceCholeskyFactorHODLR_.logDeterminant();
+}
+
 /* Optimization solver accessor */
 OptimizationAlgorithm GaussianProcessFitter::getOptimizationAlgorithm() const
 {
@@ -688,8 +783,11 @@ Function GaussianProcessFitter::getReducedLogLikelihoodFunction()
 
 void GaussianProcessFitter::initializeMethod()
 {
-  if (ResourceMap::GetAsString("GaussianProcessFitter-LinearAlgebra") == "HMAT")
+  const String method(ResourceMap::GetAsString("GaussianProcessFitter-LinearAlgebra"));
+  if (method == "HMAT")
     setMethod(GaussianProcessFitterResult::HMAT);
+  else if (method == "HODLR")
+    setMethod(GaussianProcessFitterResult::HODLR);
 }
 
 GaussianProcessFitter::LinearAlgebra GaussianProcessFitter::getMethod() const
@@ -704,8 +802,10 @@ void GaussianProcessFitter::reset()
   // Same remark for setCovarianceModel & setData
   covarianceCholeskyFactor_ = TriangularMatrix();
   covarianceCholeskyFactorHMatrix_ = HMatrix();
+  covarianceCholeskyFactorHODLR_ = HODLRMatrix();
   hasRun_ = false;
   lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
+  lastQuadraticForm_ = 0.0;
   beta_ = Point();
   rho_ = Point();
   // The current output Gram matrix
@@ -718,8 +818,8 @@ void GaussianProcessFitter::setMethod(const LinearAlgebra method)
   // First update only if method has changed. It avoids useless reset
   if (method != method_)
   {
-    if (method > 1)
-      throw InvalidArgumentException(HERE) << "Expecting 0 (LAPACK) or 1 (HMAT)";
+    if (method > 2)
+      throw InvalidArgumentException(HERE) << "Expecting 0 (LAPACK), 1 (HMAT) or 2 (HODLR)";
     // Set new method
     method_ = method;
     // reset for new computation

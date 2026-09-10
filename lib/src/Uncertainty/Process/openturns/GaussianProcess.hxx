@@ -25,6 +25,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TrendTransform.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/HODLRMatrix.hxx"
 #include "openturns/Process.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -71,7 +72,7 @@ public:
   void setTimeGrid(const RegularGrid & timeGrid) override;
 
   /** Set sampling method accessor */
-  enum SamplingMethod { CHOLESKY, HMAT, GALLIGAOGIBBS };
+  enum SamplingMethod { CHOLESKY, HMAT, GALLIGAOGIBBS, HODLR };
   SamplingMethod getSamplingMethod() const;
   void setSamplingMethod(const SamplingMethod samplingMethod);
 
@@ -81,6 +82,7 @@ private:
   Sample getRealizationCholesky() const;
   Sample getRealizationGibbs() const;
   Sample getRealizationHMatrix() const;
+  Sample getRealizationHODLR() const;
 public:
 
   /** Covariance model accessor */
@@ -124,6 +126,9 @@ protected:
 
   /** Cholesky factor  */
   mutable HMatrix covarianceHMatrix_;
+
+  /** HODLR matrix for Cholesky-based sampling */
+  mutable HODLRMatrix covarianceHODLRMatrix_;
 
   /** Flag to manage process initialization */
   mutable Bool isInitialized_ = false;

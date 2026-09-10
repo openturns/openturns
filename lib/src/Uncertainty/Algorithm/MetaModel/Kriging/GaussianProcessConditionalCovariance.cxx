@@ -98,6 +98,10 @@ Matrix GaussianProcessConditionalCovariance::solveTriangularSystem(const Matrix 
   {
     result = result_.getCholeskyFactor().solveLinearSystem(rhs);
   }
+  else if (method == GaussianProcessFitterResult::HODLR)
+  {
+    result = result_.getHODLRCholeskyFactor().solveLower(rhs);
+  }
   else
   {
     result = result_.getHMatCholeskyFactor().solveLower(rhs);

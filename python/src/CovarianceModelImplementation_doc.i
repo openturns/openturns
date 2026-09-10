@@ -207,6 +207,70 @@ OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_discretizeHODLRMatrix_doc
+R"RAW(Discretize the covariance function on a given mesh using HODLRMatrix.
+
+Parameters
+----------
+where : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid` or :class:`~openturns.Sample`
+    Container of the discretization vertices
+hodlrParam : :class:`~openturns.HODLRMatrixParameters`
+    Parameter values for the HODLR matrix
+
+Returns
+-------
+HODLRMatrix : :class:`~openturns.HODLRMatrix`
+    Covariance matrix :math:`\in\cS_{nd}^+(\Rset)` (if the process is of
+    dimension :math:`d`), stored in hierarchical format (HODLR)
+
+Notes
+-----
+This method is similar to the :py:meth:`discretize` method, but stores the
+result in a :class:`~openturns.HODLRMatrix` instead of a dense
+:class:`~openturns.CovarianceMatrix`.
+The method is helpful for very large parameters (Mesh, grid, Sample)
+because it compresses data. It does not require any external library.
+The result must be factorized with the
+:py:meth:`~openturns.HODLRMatrix.factorize` method before
+being used by :py:meth:`~openturns.HODLRMatrix.solve` or
+:py:meth:`~openturns.HODLRMatrix.logDeterminant`.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeHODLRMatrix
+OT_CovarianceModel_discretizeHODLRMatrix_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_discretizeAndFactorizeHODLRMatrix_doc
+R"RAW(Discretize and factorize the covariance function on a given mesh.
+
+This uses HODLRMatrix.
+
+Parameters
+----------
+where : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid` or :class:`~openturns.Sample`
+    Container of the discretization vertices
+hodlrParam : :class:`~openturns.HODLRMatrixParameters`
+    Parameter values for the HODLR matrix
+
+Returns
+-------
+HODLRMatrix : :class:`~openturns.HODLRMatrix`
+    Cholesky matrix :math:`\in \cS_{nd}^+(\Rset)` (if the process is of
+    dimension :math:`d`), stored in hierarchical format (HODLR)
+
+Notes
+-----
+This method is similar to the :py:meth:`discretizeAndFactorize` method, but
+stores the result in a :class:`~openturns.HODLRMatrix` instead
+of a dense :class:`~openturns.TriangularMatrix`. It does not require any
+external library. The method is helpful for very large parameters (Mesh,
+grid, Sample) because it compresses data.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorizeHODLRMatrix
+OT_CovarianceModel_discretizeAndFactorizeHODLRMatrix_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_discretizeRow_doc
 "**(TODO)**"
 %enddef
