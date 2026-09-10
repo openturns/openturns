@@ -196,6 +196,12 @@ Matrix ExponentialModel::partialGradient(const Point & s,
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) const
 {
+  // In the scalar case the generic implementation walks the diagonals through
+  // the allocation-free computeAsScalar(Scalar), whereas the block-based
+  // approach below would allocate a SquareMatrix for each diagonal.
+  if (getOutputDimension() == 1)
+    return CovarianceModelImplementation::discretize(timeGrid);
+
   const UnsignedInteger size = timeGrid.getN();
   const UnsignedInteger fullSize = size * getOutputDimension();
   const Scalar timeStep = timeGrid.getStep();

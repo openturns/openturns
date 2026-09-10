@@ -478,6 +478,54 @@ struct CovarianceModelDiscretizeScalarPolicy
   }
 }; /* end struct CovarianceModelDiscretizeScalarPolicy */
 
+struct CovarianceModelDiscretizeDiagonalPolicy
+{
+  const SampleImplementation & input_;
+  // output_ is a CovarianceMatrix, but since we fill only its half part,
+  // we can directly store results in the underlying MatrixImplementation.
+  MatrixImplementation & output_;
+  // Marginals are scalar models, so the fast iterator-based overload applies
+  const Collection<CovarianceModel> marginals_;
+  const UnsignedInteger outputDimension_;
+  const UnsignedInteger inputDimension_;
+
+  CovarianceModelDiscretizeDiagonalPolicy(const Sample & input,
+                                          CovarianceMatrix & output,
+                                          const CovarianceModelImplementation & model)
+    : input_(*input.getImplementation())
+    , output_(*output.getImplementation())
+    , marginals_(buildMarginals(model))
+    , outputDimension_(model.getOutputDimension())
+    , inputDimension_(input_.getDimension())
+  {}
+
+  static Collection<CovarianceModel> buildMarginals(const CovarianceModelImplementation & model)
+  {
+    const UnsignedInteger outputDimension = model.getOutputDimension();
+    Collection<CovarianceModel> marginals(outputDimension);
+    for (UnsignedInteger k = 0; k < outputDimension; ++k)
+      marginals[k] = model.getMarginal(k);
+    return marginals;
+  }
+
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
+      const UnsignedInteger jBase = jLocal * outputDimension_;
+      const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
+      const UnsignedInteger iBase = iLocal * outputDimension_;
+      // By construction, iLocal <= jLocal, so (jBase + k, iBase + k) is the
+      // lower-triangle slot used as canonical storage by SymmetricMatrix
+      for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+        output_(jBase + k, iBase + k) = marginals_[k].getImplementation()->computeAsScalar(
+          input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
+    }
+  }
+
+}; /* end struct CovarianceModelDiscretizeDiagonalPolicy */
+
 CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << inputDimension_;
@@ -486,6 +534,18 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
   {
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
+    // The loop is over the lower block-triangular part
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    return covarianceMatrix;
+  }
+  else if (isDiagonal())
+  {
+    // The output blocks are diagonal, so the marginal scalar models can be
+    // evaluated directly into the diagonal entries, avoiding the per-pair
+    // SquareMatrix allocation and the full block copies
+    const UnsignedInteger fullSize = size * outputDimension_;
+    CovarianceMatrix covarianceMatrix(fullSize);
+    const CovarianceModelDiscretizeDiagonalPolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
     TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
@@ -584,6 +644,48 @@ struct CrossCovarianceFunctor
 };
 /* end struct CrossCovarianceFunctor */
 
+struct CrossCovarianceDiagonalFunctor
+{
+  const SampleImplementation &firstSample_;
+  const SampleImplementation &secondSample_;
+  MatrixImplementation &output_;
+  const Collection<CovarianceModel> marginals_;
+  const UnsignedInteger dimension_;
+  const UnsignedInteger firstInputDimension_;
+  const UnsignedInteger secondInputDimension_;
+
+  CrossCovarianceDiagonalFunctor(const Sample &firstSample,
+                                 const Sample &secondSample,
+                                 Matrix &output,
+                                 const CovarianceModelImplementation &model)
+    : firstSample_(*firstSample.getImplementation())
+    , secondSample_(*secondSample.getImplementation())
+    , output_(*output.getImplementation())
+    , marginals_(CovarianceModelDiscretizeDiagonalPolicy::buildMarginals(model))
+    , dimension_(model.getOutputDimension())
+    , firstInputDimension_(firstSample_.getDimension())
+    , secondInputDimension_(secondSample_.getDimension())
+  {
+  }
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
+  {
+    const UnsignedInteger firstSampleSize = firstSample_.getSize();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      // Fill by column
+      const UnsignedInteger jLocal = i / firstSampleSize;
+      const UnsignedInteger jBase = jLocal * dimension_;
+      const UnsignedInteger iLocal = i - jLocal * firstSampleSize;
+      const UnsignedInteger iBase = iLocal * dimension_;
+      for (UnsignedInteger k = 0; k < dimension_; ++k)
+        output_(iBase + k, jBase + k) = marginals_[k].getImplementation()->computeAsScalar(
+          firstSample_.data_begin() + iLocal * firstInputDimension_, secondSample_.data_begin() + jLocal * secondInputDimension_);
+    }
+  }
+};
+/* end struct CrossCovarianceDiagonalFunctor */
+
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &firstSample,
     const Sample &secondSample) const
 {
@@ -609,6 +711,16 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
   const UnsignedInteger secondSampleSize = secondSample.getSize();
   const UnsignedInteger secondSampleFullSize = secondSampleSize * dimension;
   Matrix result(firstSampleFullSize, secondSampleFullSize);
+  if (isDiagonal())
+  {
+    // The output blocks are diagonal, so the marginal scalar models can be
+    // evaluated directly into the diagonal entries, avoiding the per-pair
+    // SquareMatrix allocation and the full block copies
+    const CrossCovarianceDiagonalFunctor policy(firstSample, secondSample, result, *this);
+    // The loop is over the lower block-triangular part
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    return result;
+  }
   const CrossCovarianceFunctor policy(firstSample, secondSample, result, *this);
   // The loop is over the lower block-triangular part
   TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
