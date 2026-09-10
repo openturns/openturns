@@ -164,6 +164,9 @@ public:
   /** Get the diagonal */
   Point getDiagonal() const;
 
+  /** Get the regularization shift applied during the last factorization */
+  Scalar getRegularizationShift() const;
+
   /** Solve system op(A)*X = b */
   Point solve(const Point& b, Bool trans) const;
 
@@ -175,6 +178,9 @@ public:
 
   /** Solve system op(L)*X = m */
   Matrix solveLower(const Matrix& m, Bool trans) const;
+
+  /** Compute y = L * x where L is the lower-triangular Cholesky factor */
+  void applyFactor(Point& y, const Point& x) const;
 
   /** Get number of HMatrix elements in compressed and uncompressed forms */
   std::pair<size_t, size_t> compressionRatio() const;
@@ -196,6 +202,8 @@ private:
   std::shared_ptr<void> hmatInterface_;
   Pointer<HMatrixClusterTree> hmatClusterTree_;
   void * hmat_;
+  // Shift added to the diagonal during the last factorization, 0 if none
+  Scalar regularizationShift_;
 
 };
 

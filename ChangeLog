@@ -25,6 +25,7 @@
  * HODLRMatrix: the adaptive cross approximation now uses max-element (partial-pivoting) pivots, which compress low-rank blocks reliably on smooth kernels; the former random-pivot selection was removed
  * HODLRMatrix: fixed gemv() after a Cholesky factorization, which applied the factor L instead of the full matrix A = L L^T
  * HODLRMatrix: new method applyFactor(y, x) applies the lower-triangular Cholesky factor once (y = L x); GaussianProcess HODLR sampling now uses it so that realizations have the covariance A of the process instead of A^2
+ * HMatrix: new method applyFactor(y, x) applies the lower-triangular Cholesky factor once (y = L x); GaussianProcess HMAT sampling now uses it as the single factor-application entry point, so that realizations have the covariance A of the process on both the HMAT and HODLR backends
  * HODLRMatrix: leaf blocks are now assembled from the lower-triangular kernel evaluations only, mirroring them into the upper triangle (the HODLR tree is symmetric), which halves the kernel evaluations in the leaf assembly
  * HODLRMatrix: fixed the fast Matern assembly path truncating the point coordinates to the first 3 dimensions, which silently corrupted the assembled matrix (and any downstream solve or factorization) for input points of dimension >= 4
  * GaussianProcess: HMAT sampling now forces the Cholesky factorization, so that realizations have the covariance A of the process whatever the ResourceMap key "HMatrix-FactorizationMethod" is (with an LU factorization the hmat-oss gemv reconstructed A z, i.e. a N(0, A^2) realization)
@@ -57,10 +58,12 @@
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
 
 ==== Bug fixes ====
+ * HMatrix: the low-rank recompression epsilon (HMatrixParameters::setRecompressionEpsilon) was applied to the hmat-oss matrix only after the assembly, so during assembly hmat-oss used its default epsilon of -1: every admissible block was kept at full rank and the internal truncation asserted (epsilon must be nonnegative) in debug builds. The epsilon is now set before the assembly, and the LLt factorization no longer fails on ill-conditioned kernels
  * HODLRMatrix: with the adaptive-rank default (MaxRank=0), a locally-correlated kernel (e.g. a 4D Matern with short correlation length) made the ACA pivot the noise floor of every negligible off-diagonal block: the relative stopping criteria never terminated, so each such block was stored at the full block rank and the assembly/factorization time exploded (4D n=20736 took ~14s+23s, n=50625 >300s). Negligible blocks (all entries below the assembly tolerance relative to the matrix scale) are now stored as rank-0 factors, which also fixes the corresponding silent SPD loss and wrong Cholesky factors
  * HODLRMatrix: rank-0 (empty) low-rank factors are now handled in the factorization, inverse-application, and matrix-vector paths (guards on dim in the coupling dgetrf calls, early returns in applyInverse/apply), instead of indexing empty matrices
  * KDTree: batch nearest-neighbour queries (query(Sample)) returned wrong indices and corrupted the tree once the input sample was destroyed, because the nanoflann data adaptor held a raw pointer to the sample data without retaining the sample
  * HODLRMatrixFactory and HODLRMatrixImplementation were not serializable (missing Factory registration and save/load), breaking Study-based persistence
+ * HMatrix: computeApproximateLargestEigenValue() read out of bounds on an empty matrix
 
 === Documentation ===
 

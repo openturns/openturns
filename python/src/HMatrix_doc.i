@@ -2,6 +2,8 @@
 OT_HMatrix_doc
 %feature("docstring") OT::HMatrix::getDiagonal
 OT_HMatrix_getDiagonal_doc
+%feature("docstring") OT::HMatrix::getRegularizationShift
+OT_HMatrix_getRegularizationShift_doc
 %feature("docstring") OT::HMatrix::addIdentity
 OT_HMatrix_addIdentity_doc
 %feature("docstring") OT::HMatrix::dump
@@ -37,6 +39,8 @@ OT_HMatrix_factorize_doc
 OT_HMatrix_solve_doc
 %feature("docstring") OT::HMatrix::solveLower
 OT_HMatrix_solveLower_doc
+%feature("docstring") OT::HMatrix::applyFactor
+OT_HMatrix_applyFactor_doc
 %feature("docstring") OT::HMatrix::compressionRatio
 OT_HMatrix_compressionRatio_doc
 %feature("docstring") OT::HMatrix::fullrkRatio
