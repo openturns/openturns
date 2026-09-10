@@ -72,4 +72,10 @@
 %include LinearModelValidation.i
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
+%include SparseGaussianProcessFitterResult.i
+%include SparseGaussianProcessEvaluation.i
+%include SparseGaussianProcessGradient.i
+%include SparseGaussianProcessHessian.i
+%include SparseGaussianProcessFitter.i
+%include SparseGaussianProcessRegression.i
 

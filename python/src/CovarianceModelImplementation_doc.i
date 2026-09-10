@@ -403,6 +403,25 @@ OT_CovarianceModel_partialGradient_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_partialHessian_doc
+R"RAW(Compute the Hessian of the covariance function.
+
+Parameters
+----------
+s, t : floats or sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricMatrix`
+    Hessian of the covariance function with respect to :math:`\vect{s}`
+    for the first output component.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::partialHessian
+OT_CovarianceModel_partialHessian_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_parameterGradient_doc
 R"RAW(Compute the gradient according to the parameters.
 

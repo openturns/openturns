@@ -142,6 +142,63 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
   return gradient;
 }
 
+/* Hessian */
+SymmetricMatrix AbsoluteExponential::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  Scalar norm1 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    norm1 += std::abs(s[i] - t[i]) / scale_[i];
+  // The kernel is not differentiable when any coordinate separation is zero:
+  // fall back to the finite-difference implementation
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    if (s[i] == t[i]) return CovarianceModelImplementation::partialHessian(s, t);
+  // k(s, t) = amplitude^2 * exp(-sum_i |tau_i| / scale_i)
+  // d^2 k / ds_a ds_b = amplitude^2 exp(-norm1) sign(tau_a) sign(tau_b) / (scale_a scale_b)
+  const Scalar value = amplitude_[0] * amplitude_[0] * std::exp(-norm1);
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    const Scalar signA = (s[a] - t[a] > 0.0) ? -1.0 : 1.0;
+    for (UnsignedInteger b = 0; b <= a; ++b)
+    {
+      const Scalar signB = (s[b] - t[b] > 0.0) ? -1.0 : 1.0;
+      hessian(a, b) = value * signA * signB / (scale_[a] * scale_[b]);
+    }
+  }
+  return hessian;
+}
+
+/* Gradient */
+Matrix AbsoluteExponential::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Point tau(s - t);
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverThetaNorm += std::abs(tau[i] / scale_[i]);
+  const Bool isZero = (tauOverThetaNorm <= SpecFunc::ScalarEpsilon);
+  const Scalar k = computeAsScalar(s, t);
+  Point fullGradient(inputDimension_ + 2, 0.0);
+  if (!isZero)
+  {
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      fullGradient[i] = k * std::abs(tau[i]) / (scale_[i] * scale_[i]);
+  }
+  else
+  {
+    // The nugget factor is the only parameter that affects the value at tau=0
+    fullGradient[inputDimension_] = outputCovariance_(0, 0);
+  }
+  // Amplitude: k = amplitude^2 * rho
+  fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* String converter */
 String AbsoluteExponential::__repr__() const
 {

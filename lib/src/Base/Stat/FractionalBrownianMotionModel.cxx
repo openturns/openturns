@@ -188,7 +188,65 @@ Matrix FractionalBrownianMotionModel::partialGradient(const Point & s,
   return CovarianceModelImplementation::partialGradient(s, t);
 }
 
+/** Hessian wrt s */
+SymmetricMatrix FractionalBrownianMotionModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const Scalar s0 = s[0];
+  const Scalar t0 = t[0];
+  // At s = 0 or s = t the Hessian diverges for H < 1: fall back to the finite-difference implementation
+  if (std::abs(s0) <= SpecFunc::ScalarEpsilon || std::abs(s0 - t0) <= SpecFunc::ScalarEpsilon)
+    return CovarianceModelImplementation::partialHessian(s, t);
+  // k(s, t) = 0.5 amplitude^2 (|s/theta|^{2H} + |t/theta|^{2H} - |(t - s)/theta|^{2H})
+  // d^2 k / ds^2 = 0.5 amplitude^2 2H (2H - 1) / theta^2 (|s/theta|^{2H - 2} - |(t - s)/theta|^{2H - 2})
+  const Scalar Hi = exponent_[0];
+  const Scalar thetaSquared = scale_[0] * scale_[0];
+  const Scalar value = 0.5 * amplitude_[0] * amplitude_[0] * 2.0 * Hi * (2.0 * Hi - 1.0) / thetaSquared * (std::pow(std::abs(s0 / scale_[0]), 2.0 * Hi - 2.0) - std::pow(std::abs((t0 - s0) / scale_[0]), 2.0 * Hi - 2.0));
+  SymmetricMatrix hessian(1);
+  hessian(0, 0) = value;
+  return hessian;
+}
+
 /* Exponent accessor */
+/* Gradient wrt the parameters */
+Matrix FractionalBrownianMotionModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Scalar sOverTheta = s[0] / scale_[0];
+  const Scalar tOverTheta = t[0] / scale_[0];
+  const Scalar stOverTheta = tOverTheta - sOverTheta;
+  const Scalar absSOverTheta = std::abs(sOverTheta);
+  const Scalar absTOverTheta = std::abs(tOverTheta);
+  const Scalar absSTOverTheta = std::abs(stOverTheta);
+  const Scalar Hi = exponent_[0];
+  const Scalar sigmaI = amplitude_[0];
+  const Scalar sPow = (absSOverTheta == 0.0 ? 0.0 : std::pow(absSOverTheta, 2.0 * Hi));
+  const Scalar tPow = (absTOverTheta == 0.0 ? 0.0 : std::pow(absTOverTheta, 2.0 * Hi));
+  const Scalar stPow = (absSTOverTheta == 0.0 ? 0.0 : std::pow(absSTOverTheta, 2.0 * Hi));
+  const Scalar sumTerm = sPow + tPow - stPow;
+  const Bool isSamePoint = (absSTOverTheta <= SpecFunc::ScalarEpsilon);
+  const Scalar nuggetMultiplier = isSamePoint ? (1.0 + nuggetFactor_) : 1.0;
+  // Full parameter layout: [scale, nuggetFactor, amplitude, H]
+  Point fullGradient(4, 0.0);
+  // dk/dscale: k = 0.5 amplitude^2 (|sO|^{2H} + |tO|^{2H} - |stO|^{2H})
+  fullGradient[0] = 0.5 * sigmaI * sigmaI * 2.0 * Hi * (stPow - sPow - tPow) / scale_[0] * nuggetMultiplier;
+  // dk/dnuggetFactor
+  if (isSamePoint) fullGradient[1] = 0.5 * sigmaI * sigmaI * sumTerm;
+  // dk/damplitude
+  fullGradient[2] = 2.0 * computeAsScalar(s, t) / sigmaI;
+  // dk/dH
+  const Scalar sLogPow = (absSOverTheta == 0.0 ? 0.0 : sPow * std::log(absSOverTheta));
+  const Scalar tLogPow = (absTOverTheta == 0.0 ? 0.0 : tPow * std::log(absTOverTheta));
+  const Scalar stLogPow = (absSTOverTheta == 0.0 ? 0.0 : stPow * std::log(absSTOverTheta));
+  fullGradient[3] = 0.5 * sigmaI * sigmaI * 2.0 * (sLogPow + tLogPow - stLogPow) * nuggetMultiplier;
+  return filterActiveParameterGradient(fullGradient);
+}
+
 void FractionalBrownianMotionModel::setExponentEtaRho(const Point & exponent,
     const SquareMatrix & eta,
     const CorrelationMatrix & rho)

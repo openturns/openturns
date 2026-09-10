@@ -133,6 +133,63 @@ Matrix SquaredExponential::partialGradient(const Point & s,
   return Matrix(inputDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
 }
 
+/* Hessian */
+SymmetricMatrix SquaredExponential::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const Point tau(s - t);
+  Scalar tauOverTheta2 = 0.0;
+  Point tauOverTheta2_2(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverTheta2 += dx * dx;
+    tauOverTheta2_2[i] = tau[i] / (scale_[i] * scale_[i]);
+  }
+  // k(s, t) = amplitude^2 * exp(-0.5 * sum_i (tau_i/scale_i)^2)
+  // d^2k/ds_a ds_b = k * (tau_a tau_b / (scale_a^2 scale_b^2) - delta_ab / scale_a^2)
+  const Scalar k = amplitude_[0] * amplitude_[0] * std::exp(-0.5 * tauOverTheta2);
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+    for (UnsignedInteger b = 0; b <= a; ++b)
+      hessian(a, b) = k * (tauOverTheta2_2[a] * tauOverTheta2_2[b] - (a == b ? 1.0 / (scale_[a] * scale_[a]) : 0.0));
+  return hessian;
+}
+
+/* Gradient */
+Matrix SquaredExponential::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Point tau(s - t);
+  Scalar tauOverTheta2 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverTheta2 += dx * dx;
+  }
+  const Bool isZero = (tauOverTheta2 <= SpecFunc::ScalarEpsilon);
+  const Scalar k = computeAsScalar(s, t);
+  Point fullGradient(inputDimension_ + 2, 0.0);
+  if (!isZero)
+  {
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      fullGradient[i] = k * tau[i] * tau[i] / (scale_[i] * scale_[i] * scale_[i]);
+  }
+  else
+  {
+    // The nugget factor is the only parameter that affects the value at tau=0
+    fullGradient[inputDimension_] = outputCovariance_(0, 0);
+  }
+  // Amplitude: k = amplitude^2 * rho
+  fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* String converter */
 String SquaredExponential::__repr__() const
 {

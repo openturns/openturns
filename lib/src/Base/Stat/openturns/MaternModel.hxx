@@ -63,9 +63,17 @@ public:
 #endif
 
   Scalar computeAsScalar(const Scalar tau) const override;
+/** Gradient */
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
 
-  /** Gradient */
-  Matrix partialGradient(const Point & s, const Point & t) const override;
+  /** Hessian */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Gradient wrt parameters */
+  Matrix parameterGradient(const Point & s,
+                           const Point & t) const override;
 
   // Reimplement the setScale method
   using CovarianceModelImplementation::setScale;

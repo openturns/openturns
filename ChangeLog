@@ -5,6 +5,26 @@
 === Library ===
 
 ==== Major changes ====
+ * Analytic parameterGradient implementation for 12 covariance models
+   (SquaredExponential, MaternModel, AbsoluteExponential, GeneralizedExponential,
+   ExponentialModel, ExponentiallyDampedCosineModel, SphericalModel,
+   IsotropicCovarianceModel, FractionalBrownianMotionModel, DiracCovarianceModel,
+   ProductCovarianceModel, StationaryFunctionalCovarianceModel)
+ * Analytic ELBO gradient for SparseGaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
+ * Analytic reduced log-likelihood gradient for GaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
+ * Analytic partialHessian implementation for the 12 covariance models
+   listed above, and analytic metamodel hessian for SparseGaussianProcessRegression
+   (the finite-difference hessian is replaced by an exact one)
+ * Analytic partialHessian for KroneckerCovarianceModel and TensorizedCovarianceModel,
+   analytic partialGradient and partialHessian for RankMCovarianceModel
+ * Analytic partialGradient for SphericalModel and ExponentiallyDampedCosineModel
+   (finite-difference gradients replaced by exact ones, so that every analytic
+   partialHessian covariance model now also has an analytic partialGradient)
+ * HMAT linear algebra method for SparseGaussianProcessFitter and
+   SparseGaussianProcessRegression (ELBO computation and metamodel evaluation),
+   the ELBO gradient and its optimization remain LAPACK-only
 
 ==== New classes ====
  * InverseGammaFactory (openturns.experimental)
@@ -12,6 +32,8 @@
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
+ * SparseGaussianProcessFitter, SparseGaussianProcessFitterResult, SparseGaussianProcessRegression (openturns.experimental)
+ * SparseGaussianProcessHessian (openturns.experimental)
 
 ==== API changes ====
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)

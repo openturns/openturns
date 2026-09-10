@@ -128,6 +128,45 @@ Scalar SphericalModel::computeAsScalar(const Scalar tau) const
   return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
+/* Gradient wrt the parameters */
+Matrix SphericalModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::parameterGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::parameterGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Point tau(s - t);
+  Scalar normTauOverScale = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    normTauOverScale += dx * dx;
+  }
+  normTauOverScale = std::sqrt(normTauOverScale);
+  const Scalar n = normTauOverScale / radius_;
+  const Bool isZero = (normTauOverScale <= SpecFunc::ScalarEpsilon);
+  const Bool isOutside = (n >= 1.0);
+  const Scalar k = computeAsScalar(s, t);
+  Point fullGradient(inputDimension_ + 3, 0.0);
+  if (isZero)
+  {
+    // The nugget factor is the only parameter that affects the value at tau=0
+    fullGradient[inputDimension_] = outputCovariance_(0, 0);
+  }
+  else if (!isOutside)
+  {
+    // k = amplitude^2 (1 - 1.5 n + 0.5 n^3), dk/dn = 1.5 amplitude^2 (n^2 - 1)
+    const Scalar dkOverDn = 1.5 * amplitude_[0] * amplitude_[0] * (n * n - 1.0);
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      fullGradient[i] = dkOverDn * (-tau[i] * tau[i] / (n * radius_ * radius_ * scale_[i] * scale_[i] * scale_[i]));
+    // dk/dradius = dk/dn * dn/dradius, dn/dradius = -n/radius
+    fullGradient[inputDimension_ + 2] = dkOverDn * (-n / radius_);
+  }
+  // Amplitude: k = amplitude^2 * rho
+  fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+  return filterActiveParameterGradient(fullGradient);
+}
+
 void SphericalModel::setFullParameter(const Point & parameter)
 {
   CovarianceModelImplementation::setFullParameter(parameter);
@@ -199,6 +238,72 @@ void SphericalModel::load(Advocate & adv)
 {
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute("radius_", radius_);
+}
+
+/** Gradient wrt the first input point */
+Matrix SphericalModel::partialGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+
+  Point tau(s - t);
+  Scalar normTauOverScale = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    normTauOverScale += dx * dx;
+  }
+  normTauOverScale = std::sqrt(normTauOverScale);
+  // At zero norm the gradient is not defined (conical kernel): fall back to the finite-difference implementation
+  if (normTauOverScale <= SpecFunc::ScalarEpsilon) return CovarianceModelImplementation::partialGradient(s, t);
+  const Scalar z = normTauOverScale / radius_;
+  // Outside the support the kernel vanishes
+  if (z >= 1.0) return Matrix(inputDimension_, 1);
+  // k(s, t) = amplitude^2 (1 - 1.5 z + 0.5 z^3), z = ||tau/scale|| / radius
+  // dk/dz = 1.5 amplitude^2 (z^2 - 1), dz/dtau_a = tau_a / (scale_a^2 normTauOverScale radius)
+  const Scalar dkOverDz = amplitude_[0] * amplitude_[0] * 1.5 * (z * z - 1.0);
+  Matrix gradient(inputDimension_, 1);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+    gradient(a, 0) = dkOverDz * tau[a] / (scale_[a] * scale_[a] * normTauOverScale * radius_);
+  return gradient;
+}
+
+/** Hessian wrt s */
+SymmetricMatrix SphericalModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::partialHessian, the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "SphericalModel::partialHessian, the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+
+  Scalar norm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) / scale_[i];
+    norm += dx * dx;
+  }
+  norm = std::sqrt(norm) / radius_;
+  // At zero norm the Hessian is not defined: fall back to the finite-difference implementation
+  if (norm <= SpecFunc::ScalarEpsilon) return CovarianceModelImplementation::partialHessian(s, t);
+  // Outside the support the kernel vanishes
+  if (norm >= 1.0) return SymmetricMatrix(inputDimension_);
+  // k(s, t) = amplitude^2 (1 - 1.5 z + 0.5 z^3), z = ||tau/scale|| / radius
+  // d^2 k / ds_a ds_b = u_a u_b 1.5 (1 + z^2) / z^3
+  //   + delta_ab 1.5 (z^2 - 1) / (scale_a^2 z), with u_i = tau_i / scale_i^2
+  const Scalar z = norm;
+  const Scalar factor = amplitude_[0] * amplitude_[0] * 1.5 * (1.0 + z * z) / (z * z * z);
+  const Scalar diagonalFactor = amplitude_[0] * amplitude_[0] * 1.5 * (z * z - 1.0) / z;
+  const Scalar radiusSquared = radius_ * radius_;
+  Point u(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) u[i] = (s[i] - t[i]) / (scale_[i] * scale_[i] * radiusSquared);
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    for (UnsignedInteger b = 0; b < a; ++b)
+      hessian(a, b) = factor * u[a] * u[b];
+    hessian(a, a) = factor * u[a] * u[a] + diagonalFactor / (scale_[a] * scale_[a] * radiusSquared);
+  }
+  return hessian;
 }
 
 END_NAMESPACE_OPENTURNS

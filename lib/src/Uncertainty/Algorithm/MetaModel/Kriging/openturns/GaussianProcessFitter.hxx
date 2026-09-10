@@ -109,6 +109,8 @@ protected:
 
   // Compute the output log-likelihood function
   Point computeReducedLogLikelihood(const Point & parameters);
+  // Compute the gradient of the reduced log-likelihood wrt the optimization parameters
+  Point computeReducedLogLikelihoodGradient(const Point & parameters);
   Scalar computeLapackLogDeterminantCholesky();
   Scalar computeHMatLogDeterminantCholesky();
 
@@ -121,19 +123,27 @@ protected:
   /** reset method - If one change method */
   void reset();
 
+  // Initialize reducedCovarianceModel_ and analyticalAmplitude_ from
+  // covarianceModel_ and the current noise_.  Called from the constructor
+  // and from setNoise() so that adding/removing noise correctly toggles
+  // the analytical-amplitude path.
+  void initializeReducedCovarianceModel();
+
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
 
 private:
 
-  // Helper class to compute the reduced log-likelihood function of the model
+  // Helper class to compute the reduced log-likelihood function of the model.
+  // Owns a clone of the algorithm so that the returned Function can outlive the
+  // original algorithm without creating a dangling reference.
   class ReducedLogLikelihoodEvaluation: public EvaluationImplementation
   {
   public:
-    // Constructor from a GLM algorithm
+    // Constructor from a GaussianProcessFitter algorithm
     ReducedLogLikelihoodEvaluation(GaussianProcessFitter & algorithm)
       : EvaluationImplementation()
-      , algorithm_(algorithm)
+      , algorithm_(algorithm.clone())
     {
       // Nothing to do
     }
@@ -146,13 +156,13 @@ private:
     // It is a simple call to the computeReducedLogLikelihood() of the algo
     Point operator() (const Point & point) const override
     {
-      const Point value(algorithm_.computeReducedLogLikelihood(point));
+      const Point value(algorithm_->computeReducedLogLikelihood(point));
       return value;
     }
 
     UnsignedInteger getInputDimension() const override
     {
-      return algorithm_.getReducedCovarianceModel().getParameter().getDimension();
+      return algorithm_->getReducedCovarianceModel().getParameter().getDimension();
     }
 
     UnsignedInteger getOutputDimension() const override
@@ -162,7 +172,7 @@ private:
 
     Description getInputDescription() const override
     {
-      return algorithm_.getReducedCovarianceModel().getParameterDescription();
+      return algorithm_->getReducedCovarianceModel().getParameterDescription();
     }
 
     Description getOutputDescription() const override
@@ -188,12 +198,69 @@ private:
     String __str__(const String & offset = "") const override
     {
       // Don't print algorithm_ here as it will result in an infinite loop!
+      OSS oss;
+      return oss << offset << __repr__();
+    }
+
+  private:
+    mutable Pointer<GaussianProcessFitter> algorithm_;
+  }; // ReducedLogLikelihoodEvaluation
+
+  // Helper class to compute the gradient of the reduced log-likelihood of the model
+  class ReducedLogLikelihoodGradient: public GradientImplementation
+  {
+  public:
+    // Constructor from a GaussianProcessFitter algorithm
+    ReducedLogLikelihoodGradient(GaussianProcessFitter & algorithm)
+      : GradientImplementation()
+      , algorithm_(algorithm.clone())
+    {
+      // Nothing to do
+    }
+
+    ReducedLogLikelihoodGradient * clone() const override
+    {
+      return new ReducedLogLikelihoodGradient(*this);
+    }
+
+    // It is a simple call to the computeReducedLogLikelihoodGradient() of the algo
+    Matrix gradient(const Point & point) const override
+    {
+      const Point value(algorithm_->computeReducedLogLikelihoodGradient(point));
+      const UnsignedInteger parameterSize = algorithm_->getReducedCovarianceModel().getParameter().getDimension();
+      Matrix result(parameterSize, 1);
+      for (UnsignedInteger i = 0; i < parameterSize; ++i)
+        result(i, 0) = value[i];
+      return result;
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return algorithm_->getReducedCovarianceModel().getParameter().getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      // Don't print algorithm_ here as it will result in an infinite loop!
+      oss << "ReducedLogLikelihoodGradient";
+      return oss;
+    }
+
+    String __str__(const String & offset = "") const override
+    {
+      // Don't print algorithm_ here as it will result in an infinite loop!
       return OSS() << offset << __repr__();
     }
 
   private:
-    GaussianProcessFitter & algorithm_;
-  }; // ReducedLogLikelihoodEvaluation
+    mutable Pointer<GaussianProcessFitter> algorithm_;
+  }; // ReducedLogLikelihoodGradient
 
   /** Covariance model accessor */
   void setCovarianceModel(const CovarianceModel & covarianceModel);

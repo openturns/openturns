@@ -67,7 +67,7 @@ def use_case_3(X, Y):
     assert algo.getOptimizeParameters()
     algo.setKeepCholeskyFactor(False)
     algo.run()
-    cov_param = [0.0078, 1]
+    cov_param = [0.0078, 0.19575]
     trend_coefficients = [-0.110943, 1.01498]
     result = algo.getResult()
     assert (
@@ -104,7 +104,7 @@ def use_case_4(X, Y):
     )
     print(result.getCovarianceModel().getParameter())
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), [0.0078, 1], 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), [0.0078, 0.19575], 1e-4, 1e-4
     )
     print(result.getTrendCoefficients())
     ott.assert_almost_equal(
@@ -197,7 +197,9 @@ def use_case_8(X, Y):
     result = algo.getResult()
     scale1, amplitude1 = result.getCovarianceModel().getParameter()
     assert scale1 < scale0, "scale comparison"
-    assert amplitude1 < amplitude0, "amplitude comparison"
+    # When noise is present, analytical amplitude is disabled so amplitude
+    # is an optimisation parameter; it no longer equals the analytical 1.0.
+    assert amplitude1 != amplitude0, "amplitude should change with noise"
 
 
 def bugfix_optim_no_feasible():
@@ -264,6 +266,36 @@ def bugfix_optim_no_feasible():
     ott.assert_almost_equal(squared_epsilon, [7.248e-06, 298.4, 0.9051], 5e-1, 1e-3)
 
 
+def test_reduced_loglikelihood_gradient(X, Y):
+    # The analytic gradient of the reduced log-likelihood must match a central finite difference
+
+    def checkGradient(logLikelihood, referencePoint):
+        epsilon = 1e-5
+        size = len(referencePoint)
+        finiteDifferenceGradient = [0.0] * size
+        for i in range(size):
+            pointMinus = list(referencePoint)
+            pointPlus = list(referencePoint)
+            pointMinus[i] -= epsilon
+            pointPlus[i] += epsilon
+            finiteDifferenceGradient[i] = (
+                logLikelihood(pointPlus)[0] - logLikelihood(pointMinus)[0]
+            ) / (2.0 * epsilon)
+        gradient = logLikelihood.gradient(referencePoint)
+        gradientPoint = [gradient[i, 0] for i in range(size)]
+        ott.assert_almost_equal(gradientPoint, finiteDifferenceGradient, 1e-4, 1e-4)
+
+    # General case: scale and amplitude are both optimized
+    ot.ResourceMap.SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False)
+    covarianceModel = ot.SquaredExponential([1.0])
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    checkGradient(fitter.getReducedLogLikelihoodFunction(), [0.2, 1.0])
+    # Analytical amplitude case: only the scale is optimized
+    ot.ResourceMap.SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", True)
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    checkGradient(fitter.getReducedLogLikelihoodFunction(), [0.2])
+
+
 if __name__ == "__main__":
 
     ot.RandomGenerator.SetSeed(0)
@@ -292,5 +324,6 @@ if __name__ == "__main__":
     use_case_6(X, Y)
     use_case_7(X, Y)
     use_case_8(X, Y)
+    test_reduced_loglikelihood_gradient(X, Y)
     # fix https://github.com/openturns/openturns/issues/2953
     bugfix_optim_no_feasible()

@@ -1642,6 +1642,18 @@ void ResourceMap::loadDefaultConfiguration()
   // GaussianProcessConditionalCovariance parameters //
   addAsScalar("GaussianProcessConditionalCovariance-DefaultConfidenceLevel", 0.95);
 
+  // SparseGaussianProcessFitter parameters //
+  addAsBool("SparseGaussianProcessFitter-OptimizationNormalization", true);
+  addAsScalar("SparseGaussianProcessFitter-DefaultOptimizationLowerBound", 1.0e-2);
+  addAsScalar("SparseGaussianProcessFitter-DefaultOptimizationUpperBound", 1.0e2);
+  addAsScalar("SparseGaussianProcessFitter-OptimizationLowerBoundScaleFactor", 1.0e-3);
+  addAsScalar("SparseGaussianProcessFitter-OptimizationUpperBoundScaleFactor", 2.0);
+  addAsString("SparseGaussianProcessFitter-DefaultOptimizationAlgorithm", "TNC");
+  addAsScalar("SparseGaussianProcessFitter-DefaultNoiseStdDev", 1.0e-3);
+  addAsScalar("SparseGaussianProcessFitter-DefaultNoiseStdDevLowerBound", 1.0e-12);
+  addAsScalar("SparseGaussianProcessFitter-DefaultNoiseStdDevUpperBound", 1.0e8);
+  addAsString("SparseGaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
+
   // GaussianProcessRegressionCrossValidation- parameters //
   addAsUnsignedInteger("GaussianProcessRegressionCrossValidation-DefaultBlockSize", 100);
 

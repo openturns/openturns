@@ -990,6 +990,18 @@
   <!-- OT::GaussianProcessConditionalCovariance parameters -->
   <GaussianProcessConditionalCovariance-DefaultConfidenceLevel    value_float="0.95"   />
 
+  <!-- OT::SparseGaussianProcessFitter parameters -->
+  <SparseGaussianProcessFitter-OptimizationNormalization          value_bool="true"      />
+  <SparseGaussianProcessFitter-DefaultOptimizationLowerBound      value_float="1.0e-2"  />
+  <SparseGaussianProcessFitter-DefaultOptimizationUpperBound      value_float="1.0e2"   />
+  <SparseGaussianProcessFitter-OptimizationLowerBoundScaleFactor  value_float="1.0e-3" />
+  <SparseGaussianProcessFitter-OptimizationUpperBoundScaleFactor  value_float="2.0" />
+  <SparseGaussianProcessFitter-DefaultOptimizationAlgorithm       value_str="TNC"     />
+  <SparseGaussianProcessFitter-DefaultNoiseStdDev               value_float="1.0e-3" />
+  <SparseGaussianProcessFitter-DefaultNoiseStdDevLowerBound     value_float="1.0e-12" />
+  <SparseGaussianProcessFitter-DefaultNoiseStdDevUpperBound     value_float="1.0e8" />
+  <SparseGaussianProcessFitter-LinearAlgebra                      value_str="LAPACK"  />
+
   <!-- OT::GaussianProcessRegressionCrossValidation parameters -->
   <GaussianProcessRegressionCrossValidation-DefaultBlockSize value_int="100"   />
 

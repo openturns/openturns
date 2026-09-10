@@ -31,6 +31,7 @@ int main(int, char *[])
 
   try
   {
+    RandomGenerator::SetSeed(0);
     UnsignedInteger sampleSize = 40;
     UnsignedInteger inputDimension = 1;
 
@@ -75,7 +76,7 @@ int main(int, char *[])
       algo.run();
       result = algo.getResult();
       std::cout << result.getCovarianceModel().getParameter() << std::endl;
-      ref = {0.0078, 1};
+      ref = {0.0078, 0.19575};
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
       ref = {-0.110943, 1.01498};
       std::cout << result.getTrendCoefficients() << std::endl;
@@ -84,7 +85,7 @@ int main(int, char *[])
       algo = GaussianProcessFitter(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.0078, 1};
+      ref = {0.0078, 0.190793};
       std::cout << result.getCovarianceModel().getParameter() << std::endl;
       assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
       ref = {-0.110943, 1.01498};

@@ -98,6 +98,10 @@ public:
   virtual Matrix partialGradient(const Point & s,
                                  const Point & t) const;
 
+  /** Hessian */
+  virtual SymmetricMatrix partialHessian(const Point & s,
+                                         const Point & t) const;
+
   /** Gradient wrt parameters */
   virtual Matrix parameterGradient (const Point & s,
                                     const Point & t) const;
@@ -225,6 +229,10 @@ protected:
 
   // set the covariance structure
   void updateOutputCovariance();
+
+  /** Filter a gradient computed wrt all the full parameters down to the active ones */
+  Matrix filterActiveParameterGradient(const Point & fullGradient) const;
+  Matrix filterActiveParameterGradient(const Matrix & fullGradient) const;
 
   /** Container for scale values  */
   Point scale_;

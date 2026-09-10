@@ -552,12 +552,20 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [titsias2009] Titsias, M. K. *Variational learning of inducing variables in sparse Gaussian processes*,
+    Proceedings of the 12th International Conference on Artificial Intelligence and Statistics (AISTATS),
+    pp. 567-574, 2009.
+    `pdf <http://proceedings.mlr.press/v5/titsias09a/titsias09a.pdf>`__
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
 .. [wang2012] Wang, Y. *Model selection.* (2012).
     In Handbook of computational statistics (pp. 469-497). Springer, Berlin, Heidelberg.
+.. [wenliang2021] Wenliang, L.-K. & Kanagawa, H. *Loose ends in sparse GP inference*,
+    Proceedings of the 24th International Conference on Artificial Intelligence and Statistics (AISTATS),
+    pp. 2764-2773, 2021.
+    `pdf <https://arxiv.org/pdf/2006.16163>`__
 .. [wertz1999] Wertz, J. and Larson, W. *Space Mission Analysis and Design.*
     Microcosm, Inc. Torrance, CA.,1999.
 .. [wilks1948] Wilks, S. S. (1948). Order statistics. Bulletin of the American Mathematical Society, 54(1) :6–50.

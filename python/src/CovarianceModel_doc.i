@@ -42,6 +42,8 @@ OT_CovarianceModel_isDiagonal_doc
 OT_CovarianceModel_isStationary_doc
 %feature("docstring") OT::CovarianceModel::partialGradient
 OT_CovarianceModel_partialGradient_doc
+%feature("docstring") OT::CovarianceModel::partialHessian
+OT_CovarianceModel_partialHessian_doc
 %feature("docstring") OT::CovarianceModel::parameterGradient
 OT_CovarianceModel_parameterGradient_doc
 %feature("docstring") OT::CovarianceModel::setAmplitude

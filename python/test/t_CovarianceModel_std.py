@@ -114,6 +114,45 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
             grad, gradfd, 1e-5, 1e-5, "in " + myModel.getClassName() + " grad"
         )
 
+    if test_partial_grad and dimension == 1:
+        hess = myModel.partialHessian(x1, x2)
+        eps_hess = 1e-3
+        hessfd = ot.SymmetricMatrix(inputDimension)
+        for a in range(inputDimension):
+            # Diagonal term
+            x1_g = ot.Point(x1)
+            x1_d = ot.Point(x1)
+            x1_g[a] = x1_d[a] + eps_hess
+            x1_d[a] = x1_d[a] - eps_hess
+            hessfd[a, a] = (
+                myModel.computeAsScalar(x1_g, x2)
+                - 2.0 * myModel.computeAsScalar(x1, x2)
+                + myModel.computeAsScalar(x1_d, x2)
+            ) / (eps_hess * eps_hess)
+            # Cross terms
+            for b in range(a):
+                x1_pp = ot.Point(x1)
+                x1_pm = ot.Point(x1)
+                x1_mp = ot.Point(x1)
+                x1_mm = ot.Point(x1)
+                x1_pp[a] += eps_hess
+                x1_pp[b] += eps_hess
+                x1_pm[a] += eps_hess
+                x1_pm[b] -= eps_hess
+                x1_mp[a] -= eps_hess
+                x1_mp[b] += eps_hess
+                x1_mm[a] -= eps_hess
+                x1_mm[b] -= eps_hess
+                hessfd[a, b] = (
+                    myModel.computeAsScalar(x1_pp, x2)
+                    - myModel.computeAsScalar(x1_pm, x2)
+                    - myModel.computeAsScalar(x1_mp, x2)
+                    + myModel.computeAsScalar(x1_mm, x2)
+                ) / (4.0 * eps_hess * eps_hess)
+        ott.assert_almost_equal(
+            hess, hessfd, 1e-5, 1e-5, "in " + myModel.getClassName() + " hess"
+        )
+
 
 def test_scalar_model(myModel, x1=None, x2=None):
     if x1 is None and x2 is None:
@@ -232,6 +271,23 @@ ott.assert_almost_equal(myModel.getRadius(), 4.5, 0, 0)
 test_model(myModel)
 myModel.setRadius(1.5)
 ott.assert_almost_equal(myModel.getRadius(), 1.5, 0, 0)
+
+# Check the analytic partialGradient at additional points for these two models
+for model in (
+    ot.SphericalModel([1.2, 0.8], [2.0], 0.7),
+    ot.ExponentiallyDampedCosineModel([1.2, 0.8], [2.0], 0.5),
+):
+    for s, t in [([0.7, 0.9], [0.3, 0.4]), ([3.0, 3.0], [0.1, 0.4])]:
+        s = ot.Point(s)
+        t = ot.Point(t)
+        grad = model.partialGradient(s, t)
+        eps = 1e-6
+        gradfd = ot.Matrix(model.getInputDimension(), 1)
+        for j in range(model.getInputDimension()):
+            s_g = ot.Point(s)
+            s_g[j] += eps
+            gradfd[j, 0] = (model.computeAsScalar(s_g, t) - model.computeAsScalar(s, t)) / eps
+        ott.assert_almost_equal(grad, gradfd, 1e-4, 1e-4, "in " + model.getClassName() + " grad extra")
 
 # 7) FractionalBrownianMotionModel
 myModel = ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25)
