@@ -50,7 +50,7 @@ basis = ot.OrthogonalProductPolynomialFactory(marginals)
 
 # %%
 # Generate a learning sample with Monte-Carlo simulations (or retrieve the design from experimental data).
-N = 35  # size of the experimental design
+N = 50  # size of the experimental design
 X = distribution.getSample(N)
 Y = g(X)
 
@@ -223,12 +223,15 @@ def computeBootstrapChaosSobolIndices(
     dim_input = X.getDimension()
     fo_sample = ot.Sample(0, dim_input)
     to_sample = ot.Sample(0, dim_input)
-    unit_eps = ot.Interval([1e-9] * dim_input, [1 - 1e-9] * dim_input)
+    unit_eps = ot.Interval([-1e-9] * dim_input, [1 + 1e-9] * dim_input)
     for i in range(bootstrap_size):
         X_boot, Y_boot = multiBootstrap(X, Y)
-        first_order, total_order = computeChaosSensitivity(
-            X_boot, Y_boot, basis, total_degree, distribution
-        )
+        try:
+            first_order, total_order = computeChaosSensitivity(
+                X_boot, Y_boot, basis, total_degree, distribution
+            )
+        except Exception:
+            continue
         if unit_eps.contains(first_order) and unit_eps.contains(total_order):
             fo_sample.add(first_order)
             to_sample.add(total_order)
@@ -270,6 +273,8 @@ def computeSobolIndicesConfidenceInterval(fo_sample, to_sample, alpha=0.95):
     to_interval : ot.Interval
         The confidence interval of total order Sobol' indices
     """
+    if fo_sample.getSize() == 0:
+        raise ValueError("Empty bootstrap sample: cannot compute confidence intervals.")
     dim_input = fo_sample.getDimension()
     fo_lb = [0] * dim_input
     fo_ub = [0] * dim_input
