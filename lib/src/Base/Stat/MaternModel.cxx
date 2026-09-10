@@ -110,7 +110,7 @@ Scalar MaternModel::computeAsScalar(const Point & tau) const
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * computeCovarianceValue(scaledPoint);
 }
 
 Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
@@ -129,7 +129,7 @@ Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * computeCovarianceValue(scaledPoint);
 }
 
 Scalar MaternModel::computeAsScalar(const Scalar tau) const
@@ -143,7 +143,29 @@ Scalar MaternModel::computeAsScalar(const Scalar tau) const
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * computeCovarianceValue(scaledPoint);
+}
+
+// Exact value of the Matern covariance for the scaled distance scaledPoint =
+// sqrt(2 nu) * ||tau|| / scale. For the half-integer smoothness nu = p + 1/2
+// the modified Bessel function K_nu reduces to exp(-s) times a polynomial of
+// degree p in s, which is cheaper and numerically more stable than the
+// general formula in terms of log and LogBesselK.
+Scalar MaternModel::computeCovarianceValue(const Scalar scaledPoint) const
+{
+  if (nu_ == 0.5)
+    return std::exp(-scaledPoint);
+  if (nu_ == 1.5)
+  {
+    const Scalar s = scaledPoint;
+    return std::exp(-s) * (1.0 + s);
+  }
+  if (nu_ == 2.5)
+  {
+    const Scalar s = scaledPoint;
+    return std::exp(-s) * (1.0 + s * (1.0 + s / 3.0));
+  }
+  return std::exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */

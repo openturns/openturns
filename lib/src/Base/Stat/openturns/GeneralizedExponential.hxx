@@ -93,6 +93,11 @@ protected:
 
 private:
 
+  // Exact covariance factor for a scaled distance, using the closed forms of
+  // the p = 1 and p = 2 cases to avoid the log/exp hidden in std::pow.
+  Scalar computeCovarianceValue(const Scalar norm,
+                                const Scalar normSquare) const;
+
   /** Exponent of the model */
   Scalar p_;
 

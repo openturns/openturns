@@ -617,6 +617,25 @@
   <!-- OT::HistogramFactory parameters -->
   <HistogramFactory-MaximumBinNumber value_int="1024" />
 
+  <!-- OT::HODLRMatrix parameters -->
+  <HODLRMatrix-AssemblyEpsilon value_float="1.0e-7" />
+  <HODLRMatrix-RecompressionEpsilon value_float="1.0e-7" />
+  <HODLRMatrix-MinLeafSize value_int="250" />
+  <HODLRMatrix-MaxRank value_int="0" />
+  <HODLRMatrix-FactorizationIterations value_int="20" />
+  <HODLRMatrix-DenseThreshold value_int="256" />
+  <HODLRMatrix-RegularizationEpsilon value_float="1.0e-7" />
+  <HODLRMatrix-RegularizationWarnThreshold value_float="1.0e-4" />
+  <HODLRMatrix-MaxRegularization value_float="1.0" />
+  <HODLRMatrix-RecompressCorrections value_bool="true" />
+  <HODLRMatrix-ProfileFactorization value_bool="false" />
+  <HODLRMatrix-StackTruncation value_bool="true" />
+  <HODLRMatrix-StackTruncationFactor value_float="0.1" />
+  <HODLRMatrix-RegularizationFactor value_float="2.0" />
+  <HODLRMatrix-RegularizationAttempts value_int="60" />
+  <HODLRMatrix-Nugget value_float="1.0e-8" />
+  <HODLRMatrix-UseSpatialOrdering value_bool="true" />
+
   <!-- OT::InverseNormalFactory parameters -->
   <InverseNormalFactory-Method value_str="MLE" />
 
@@ -1095,6 +1114,7 @@
   <HMatrix-AssemblyEpsilon      value_float="1.0e-4"         />
   <HMatrix-LargestEigenValueRelativeError value_float="1.0e-1" />
   <HMatrix-RegularizationEpsilon value_float="1.0e-4"         />
+  <HMatrix-RegularizationWarnThreshold value_float="1.0e-4"   />
   <HMatrix-RecompressionEpsilon value_float="1.0e-4"         />
   <HMatrix-ValidationError      value_float="0.0"            />
   <HMatrix-ClusteringAlgorithm  value_str="median"         />

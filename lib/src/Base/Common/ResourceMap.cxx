@@ -1001,7 +1001,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // KarhunenLoeveP1Algorithm parameters //
   addAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
-  addAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "DENSE");
+  addAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "DENSE", {"DENSE", "HMAT", "HODLR"});
   addAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "LAPACK");
 
   // AdaptiveStieltjesAlgorithm parameters //
@@ -1637,7 +1637,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GaussianProcessFitter-OptimizationLowerBoundScaleFactor", 1.0e-3);
   addAsScalar("GaussianProcessFitter-OptimizationUpperBoundScaleFactor", 2.0);
   addAsString("GaussianProcessFitter-DefaultOptimizationAlgorithm", "Cobyla");
-  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
+  addAsString("GaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT", "HODLR"});
 
   // GaussianProcessConditionalCovariance parameters //
   addAsScalar("GaussianProcessConditionalCovariance-DefaultConfidenceLevel", 0.95);
@@ -1741,6 +1741,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);
   addAsScalar("HMatrix-RegularizationEpsilon", 1.0e-4);
+  addAsScalar("HMatrix-RegularizationWarnThreshold", 1.0e-4);
   addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
   addAsString("HMatrix-ClusteringAlgorithm", "median", {"median", "geometric", "hybrid"});
@@ -1751,6 +1752,25 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
   addAsUnsignedInteger("HMatrix-ValidationDump", 0);
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
+
+  // HODLRMatrix parameters //
+  addAsScalar("HODLRMatrix-AssemblyEpsilon", 1.0e-7);
+  addAsScalar("HODLRMatrix-RecompressionEpsilon", 1.0e-7);
+  addAsUnsignedInteger("HODLRMatrix-MinLeafSize", 250);
+  addAsUnsignedInteger("HODLRMatrix-MaxRank", 0);
+  addAsUnsignedInteger("HODLRMatrix-FactorizationIterations", 20);
+  addAsUnsignedInteger("HODLRMatrix-DenseThreshold", 256);
+  addAsScalar("HODLRMatrix-RegularizationEpsilon", 1.0e-7);
+  addAsScalar("HODLRMatrix-RegularizationWarnThreshold", 1.0e-4);
+  addAsScalar("HODLRMatrix-MaxRegularization", 1.0);
+  addAsBool("HODLRMatrix-RecompressCorrections", true);
+  addAsBool("HODLRMatrix-ProfileFactorization", false);
+  addAsBool("HODLRMatrix-StackTruncation", true);
+  addAsScalar("HODLRMatrix-StackTruncationFactor", 0.1);
+  addAsScalar("HODLRMatrix-RegularizationFactor", 2.0);
+  addAsUnsignedInteger("HODLRMatrix-RegularizationAttempts", 60);
+  addAsScalar("HODLRMatrix-Nugget", 1.0e-8);
+  addAsBool("HODLRMatrix-UseSpatialOrdering", true);
 
   // GaussianProcess parameters //
   addAsUnsignedInteger("GaussianProcess-GibbsMaximumIteration", 100);

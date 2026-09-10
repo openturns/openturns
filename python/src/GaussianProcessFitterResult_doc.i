@@ -26,7 +26,9 @@ linAlgMethod : int
 
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model,
+
+    - ot.GaussianProcessFitterResult.HODLR or 2: using `HODLR` to fit the model.
 
 Notes
 -----
@@ -121,7 +123,9 @@ linAlgMethod : int
 
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model,
+
+    - ot.GaussianProcessFitterResult.HODLR or 2: using `HODLR` to fit the model.
 "
 
 // ---------------------------------------------------------------------
@@ -250,6 +254,33 @@ Returns
 L : :class:`~openturns.HMatrix`
     Cholesky factor :math:`\mat{L}_{\vect{p}^*}` of the covariance matrix,
     which can be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::getHODLRCholeskyFactor
+R"RAW(Accessor to the HODLR Cholesky factor of the covariance matrix.
+
+Only available with HODLR algebra.
+
+Returns
+-------
+L : :class:`~openturns.HODLRMatrix`
+    Cholesky factor :math:`\mat{L}_{\vect{p}^*}` of the covariance matrix,
+    which can be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianProcessFitterResult::setCholeskyFactor
+R"RAW(Set the Cholesky factors of the covariance matrix.
+
+Parameters
+----------
+covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
+    LAPACK Cholesky factor :math:`\mat{L}_{\vect{p}^*}`.
+covarianceHMatrix : :class:`~openturns.HMatrix`
+    HMatrix Cholesky factor (may be empty when not using HMAT algebra).
+covarianceHODLRMatrix : :class:`~openturns.HODLRMatrix`
+    HODLR Cholesky factor (may be empty when not using HODLR algebra).)RAW"
 
 // ---------------------------------------------------------------------
 

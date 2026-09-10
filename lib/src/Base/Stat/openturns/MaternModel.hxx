@@ -100,6 +100,10 @@ private:
   void computeLogNormalizationFactor();
   void computeSqrt2nuOverTheta();
 
+  // Exact covariance value for a scaled distance, using the closed forms of
+  // the half-integer smoothness cases to avoid the Bessel function.
+  Scalar computeCovarianceValue(const Scalar scaledPoint) const;
+
   // The shape parameter
   Scalar nu_;
 

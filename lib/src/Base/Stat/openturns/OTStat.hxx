@@ -86,6 +86,10 @@
 #include "openturns/HMatrixImplementation.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/HODLRMatrixParameters.hxx"
+#include "openturns/HODLRMatrixImplementation.hxx"
+#include "openturns/HODLRMatrix.hxx"
+#include "openturns/HODLRMatrixFactory.hxx"
 #include "openturns/IsotropicCovarianceModel.hxx"
 #include "openturns/LatentVariableModel.hxx"
 

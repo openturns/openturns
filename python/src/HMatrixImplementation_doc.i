@@ -192,6 +192,9 @@ on an approximation of the largest eigenvalue module. Its computation
 is done using a power iteration, controlled by the
 'HMatrix-LargestEigenValueRelatveError' and
 'HMatrix-LargestEigenValueIterations' keys in the :class:`~openturns.ResourceMap`.
+A warning is emitted whenever the applied shift is non-negligible relative
+to the diagonal, as controlled by the 'HMatrix-RegularizationWarnThreshold'
+key in the :class:`~openturns.ResourceMap`.
 "
 %enddef
 %feature("docstring") OT::HMatrixImplementation::factorize
@@ -222,6 +225,20 @@ diag : :class:`~openturns.Point`
 %enddef
 %feature("docstring") OT::HMatrixImplementation::getDiagonal
 OT_HMatrix_getDiagonal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_getRegularizationShift_doc
+"Regularization shift accessor.
+
+Returns
+-------
+shift : float
+    Shift which was added to the diagonal before the last factorization,
+    or 0 if the last factorization succeeded without regularization."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::getRegularizationShift
+OT_HMatrix_getRegularizationShift_doc
 
 // ---------------------------------------------------------------------
 
@@ -277,6 +294,33 @@ x : :class:`~openturns.Point` or :class:`~openturns.Matrix`
 %enddef
 %feature("docstring") OT::HMatrixImplementation::solveLower
 OT_HMatrix_solveLower_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_applyFactor_doc
+"Compute the product with the Cholesky factor.
+
+Computes y = L * x, where L is the lower-triangular Cholesky factor of
+the matrix A, with A = L * L^T. The matrix must have been factorized
+with the LLt method (after which the stored factor is L).
+
+The main use is sampling a centered Gaussian random vector of
+covariance A: if x is a vector of independent standard normal variates,
+then L * x follows the centered normal distribution of covariance A.
+Contrary to :meth:`gemv`, which computes the full product A * x (and
+would hence sample a random vector of covariance A^2 from unit noise
+after an LLt factorization, as the stored factor L is then applied
+instead of A), this method applies the factor only once.
+
+Parameters
+----------
+y : sequence of float
+    Output vector, updated in place.
+x : sequence of float
+    Input vector."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::applyFactor
+OT_HMatrix_applyFactor_doc
 
 // ---------------------------------------------------------------------
 

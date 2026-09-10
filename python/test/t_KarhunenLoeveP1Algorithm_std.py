@@ -30,6 +30,16 @@ if ot.PlatformInfo.HasFeature("spectra"):
     ott.assert_almost_equal(lambd2, lambd)
     ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "LAPACK")
 
+# check the HODLR storage variant against the DENSE reference
+if ot.PlatformInfo.HasFeature("spectra"):
+    ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
+    ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HODLR")
+    algo.run()
+    resultHODLR = algo.getResult()
+    lambdHODLR = resultHODLR.getEigenvalues()
+    ott.assert_almost_equal(lambdHODLR, lambd2)
+    ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "DENSE")
+
 R = ot.CorrelationMatrix(2)
 R[0, 1] = 0.5
 scale = [1.0]

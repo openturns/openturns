@@ -39,6 +39,7 @@
 %include Last.i  
 %include Null.i  
 %include HMatrixParameters.i
+%include HODLRMatrixParameters.i
 %include TestResult.i  
 %include RandomGeneratorState.i
 %include RandomGenerator.i
@@ -87,6 +88,9 @@
 %include HMatrixFactory.i
 %include HMatrixImplementation.i
 %include HMatrix.i
+%include HODLRMatrixFactory.i
+%include HODLRMatrixImplementation.i
+%include HODLRMatrix.i
 %include IsotropicCovarianceModel.i
 %include LatentVariableModel.i
 %include CorrelationAnalysis.i

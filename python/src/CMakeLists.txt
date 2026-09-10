@@ -643,6 +643,10 @@ ot_add_python_module(statistics statistics_module.i
                       HMatrixFactory.i HMatrixFactory_doc.i
                       HMatrix.i HMatrix_doc.i
                       HMatrixImplementation.i HMatrixImplementation_doc.i
+                      HODLRMatrixParameters.i HODLRMatrixParameters_doc.i
+                      HODLRMatrixFactory.i HODLRMatrixFactory_doc.i
+                      HODLRMatrix.i HODLRMatrix_doc.i
+                      HODLRMatrixImplementation.i HODLRMatrixImplementation_doc.i
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i

@@ -97,14 +97,18 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
   The input data itself is not directly normalized to avoid introducing an additional transformation to the metamodel.
   see also :doc:`/auto_surrogate_modeling/gaussian_process_regression/plot_gpr_normalization`
 
-With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
-implementation could be used if `hmat-oss` support has been enabled.
+With huge samples, a compressed representation of an approximated covariance matrix
+(and its Cholesky factor) can be used. It has a better complexity both in terms of memory requirements
+and floating point operations.
 
-This implementation, which is based on a compressed representation of an approximated covariance matrix
-(and its Cholesky factor), has a better complexity both in terms of memory requirements
-and floating point operations. To use it, the entry `GaussianProcessFitter-LinearAlgebra` of the
-:class:`openturns.ResourceMap` class should be
-instancied to `HMAT`. Default value of the key is `LAPACK`.
+Two compressed backends are available:
+
+- the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_ implementation (`HMAT`),
+  which requires `hmat-oss` support to have been enabled,
+- the `HODLR` implementation, which is self-contained and always available.
+
+To use one of them, the entry `GaussianProcessFitter-LinearAlgebra` of the :class:`openturns.ResourceMap`
+class should be instantiated to `HMAT` or `HODLR`. Default value of the key is `LAPACK`.
 
 Examples
 --------
@@ -328,7 +332,9 @@ linAlgMethod : int
 
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model,
+
+    - ot.GaussianProcessFitterResult.HODLR or 2: using `HODLR` to fit the model."
 
 // ---------------------------------------------------------------------
 
@@ -342,7 +348,9 @@ linAlgMethod : int
 
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
-    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model."
+    - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model,
+
+    - ot.GaussianProcessFitterResult.HODLR or 2: using `HODLR` to fit the model."
 
 // ---------------------------------------------------------------------
 

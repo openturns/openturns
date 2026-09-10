@@ -6,5 +6,11 @@ diagonal= [1,1,1,1,1,1,1,1,1]
 compressionRatio= (81, 81)
 fullrkRatio= (81, 0)
 y= [2.03,2.04,2.03,2.04,2.06,2.04,2.03,2.04,2.03]
+no regularization applied
 norm(A-LLt) < 1e-3
 |norm(L) - 10 * norm(0.1*L)| < 1e-10
+1D LLt: no regularization applied
+1D LLt: norm(A-LLt) < 1e-6
+1D LLt: relative residual < 1e-6
+applyFactor == gemv('N')
+solveLower(applyFactor(x)) == x
