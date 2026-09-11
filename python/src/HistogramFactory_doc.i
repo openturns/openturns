@@ -11,10 +11,6 @@ This class uses the following entries of :class:`~openturns.ResourceMap`:
 
 - *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`)
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`)
-
 Examples
 --------
 Create an histogram:
