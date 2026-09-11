@@ -315,7 +315,7 @@ basis = ot.Basis(
 covarianceModel = ot.TensorizedCovarianceModel(
     [ot.SquaredExponential([1.0]) for _ in range(output_dimension)]
 )
-algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 lh = algo.getReducedLogLikelihoodFunction()
 # Using 1d graph we get the optimum around 1.5625
 max_lh = lh([1.5625])
