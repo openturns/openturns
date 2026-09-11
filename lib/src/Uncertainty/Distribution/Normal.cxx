@@ -450,19 +450,24 @@ Scalar Normal::computeProbability(const Interval & interval) const
     throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
 
   if (dimension == 1)
-    return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+    return computeProbabilityGeneral1D(interval);
 
   // Decompose and normalize the interval
-  Point lower(normalize(interval.getLowerBound()));
-  Point upper(normalize(interval.getUpperBound()));
   Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
   Interval::BoolCollection finiteUpper(interval.getFiniteUpperBound());
+  Point rawLower(interval.getLowerBound());
+  Point rawUpper(interval.getUpperBound());
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (!finiteLower[i]) rawLower[i] = SpecFunc::LowestScalar;
+    if (!finiteUpper[i]) rawUpper[i] = SpecFunc::MaxScalar;
+  }
+  Point lower(normalize(rawLower));
+  Point upper(normalize(rawUpper));
   /* Special treatment for independent components */
   if (hasIndependentCopula_)
   {
     Scalar value = 1.0;
-    const Point rawLower(interval.getLowerBound());
-    const Point rawUpper(interval.getUpperBound());
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
       if (sigma_[i] == 0.0)
