@@ -246,3 +246,15 @@ dist = ot.Normal(
     [0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 )
 sample = dist.getSample(10)
+
+# computeProbability with infinite bounds in 1D
+dist = ot.Normal()
+ott.assert_almost_equal(
+    dist.computeProbability(ot.Interval([-1.0], [0.0], [False], [True])), 0.5
+)
+ott.assert_almost_equal(
+    dist.computeProbability(ot.Interval([0.0], [1.0], [True], [False])), 0.5
+)
+ott.assert_almost_equal(
+    dist.computeProbability(ot.Interval([-1.0], [1.0], [False], [False])), 1.0
+)
