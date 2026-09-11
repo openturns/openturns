@@ -279,6 +279,7 @@ public:
   virtual Scalar computeProbabilityGeneral(const Interval & interval) const;
   /** Generic implementation for 1D continuous distributions */
   virtual Scalar computeProbabilityGeneral1D(const Scalar a, const Scalar b) const;
+  virtual Scalar computeProbabilityGeneral1D(const Interval & interval) const;
   /** Generic implementation for continuous distribution by integration of the PDF */
   virtual Scalar computeProbabilityContinuous(const Interval & interval) const;
   /** Generic implementation for 1D continuous distribution by integration of the PDF */

@@ -1153,7 +1153,7 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
     return computeProbabilityDiscrete(interval);
 
   if (dimension_ == 1)
-    return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+    return computeProbabilityGeneral1D(interval);
 
   return computeProbabilityGeneral(interval);
 }
@@ -1167,12 +1167,17 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
 
   const Point a(reducedInterval.getLowerBound());
   const Point b(reducedInterval.getUpperBound());
+  const Interval::BoolCollection reducedFiniteLower(reducedInterval.getFiniteLowerBound());
+  const Interval::BoolCollection reducedFiniteUpper(reducedInterval.getFiniteUpperBound());
   Scalar probability = 1.0;
   if (hasIndependentCopula())
   {
     // independent case
     for (UnsignedInteger i = 0; i < dimension_; ++ i)
-      probability *= getMarginal(i).getImplementation()->computeProbabilityGeneral1D(a[i], b[i]);
+    {
+      const Interval marginalInterval(Point(1, a[i]), Point(1, b[i]), Interval::BoolCollection(1, reducedFiniteLower[i]), Interval::BoolCollection(1, reducedFiniteUpper[i]));
+      probability *= getMarginal(i).computeProbability(marginalInterval);
+    }
   }
   else
   {
@@ -1182,21 +1187,43 @@ Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & in
     probability = 0.0;
     if (dimension_ >= std::numeric_limits<UnsignedInteger>::digits)
       throw InternalException(HERE) << "Error: dimension too large for inclusion-exclusion probability computation";
+    Point af(a);
+    Point bf(b);
+    for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    {
+      // No huge value for -inf: corners using a lower infinite bound have
+      // zero CDF and are skipped explicitly below. A huge value is only
+      // kept as a proxy for +inf in CDF calls, never for integration.
+      if (!reducedFiniteUpper[j]) bf[j] = SpecFunc::MaxScalar;
+      if (!reducedFiniteLower[j]) af[j] = SpecFunc::LowestScalar;
+    }
     const UnsignedInteger iMax = 1 << dimension_;
     Point probabilities(iMax);
     for (UnsignedInteger i = 0; i < iMax; ++ i)
     {
       Bool evenLower = true;
-      Point c(b);
+      Point c(bf);
+      Bool hasMinusInfinity = false;
       for (UnsignedInteger j = 0; j < dimension_; ++ j)
       {
         const UnsignedInteger mask = 1L << j;
         if (i & mask)
         {
-          c[j] = a[j];
+          if (!reducedFiniteLower[j])
+          {
+            // CDF(..., -inf, ...) = 0 explicitly
+            hasMinusInfinity = true;
+            break;
+          }
+          c[j] = af[j];
           evenLower = (!evenLower);
         }
       } // j
+      if (hasMinusInfinity)
+      {
+        probabilities[i] = 0.0;
+        continue;
+      }
       const Scalar cdf = computeCDF(c);
       probabilities[i] = (evenLower ? cdf : -cdf);
     } // i
@@ -1221,6 +1248,19 @@ Scalar DistributionImplementation::computeProbabilityGeneral1D(const Scalar a,
   return cdfB - cdfA;
 }
 
+Scalar DistributionImplementation::computeProbabilityGeneral1D(const Interval & interval) const
+{
+  const Bool finiteLower = interval.getFiniteLowerBound()[0];
+  const Bool finiteUpper = interval.getFiniteUpperBound()[0];
+  if (!finiteLower)
+  {
+    if (!finiteUpper) return 1.0;
+    return computeCDF(interval.getUpperBound()[0]);
+  }
+  if (!finiteUpper) return computeComplementaryCDF(interval.getLowerBound()[0]);
+  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+}
+
 /* Generic implementation for continuous distribution by integration of the PDF */
 Scalar DistributionImplementation::computeProbabilityContinuous(const Interval & interval) const
 {
@@ -1228,15 +1268,30 @@ Scalar DistributionImplementation::computeProbabilityContinuous(const Interval &
   const Interval reducedInterval(interval.intersect(range_));
   if (reducedInterval.isEmpty()) return 0.0;
   if (reducedInterval == range_) return 1.0;
+  const Interval::BoolCollection reducedFiniteLower(reducedInterval.getFiniteLowerBound());
+  const Interval::BoolCollection reducedFiniteUpper(reducedInterval.getFiniteUpperBound());
   if (dimension_ == 1)
+  {
+    // No huge finite value here: an infinite bound is handled explicitly
+    // through the CDF/CCDF, so the adaptive integration below only ever
+    // sees the finite numerical range of the distribution
+    if (!reducedFiniteLower[0])
+    {
+      if (!reducedFiniteUpper[0]) return 1.0;
+      return computeCDF(reducedInterval.getUpperBound()[0]);
+    }
+    if (!reducedFiniteUpper[0]) return computeComplementaryCDF(reducedInterval.getLowerBound()[0]);
     return computeProbabilityContinuous1D(reducedInterval.getLowerBound()[0], reducedInterval.getUpperBound()[0]);
+  }
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   Scalar probability = 1.0;
   if (hasIndependentCopula())
   {
-    const Point lower(interval.getLowerBound());
-    const Point upper(interval.getUpperBound());
-    for (UnsignedInteger i = 0; i < dimension_; ++i) probability *= getMarginal(i).getImplementation()->computeProbabilityContinuous1D(lower[i], upper[i]);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const Interval marginalInterval(Point(1, reducedInterval.getLowerBound()[i]), Point(1, reducedInterval.getUpperBound()[i]), Interval::BoolCollection(1, reducedFiniteLower[i]), Interval::BoolCollection(1, reducedFiniteUpper[i]));
+      probability *= getMarginal(i).computeProbability(marginalInterval);
+    }
   }
   else
     probability = IteratedQuadrature().integrate(getPDF(), reducedInterval)[0];

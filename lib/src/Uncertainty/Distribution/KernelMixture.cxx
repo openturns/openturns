@@ -380,8 +380,15 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   const Interval reducedInterval(interval.intersect(getRange()));
   if (reducedInterval == getRange()) return 1.0;
   if (reducedInterval.isEmpty()) return 0.0;
-  const Point lowerBound(reducedInterval.getLowerBound());
-  const Point upperBound(reducedInterval.getUpperBound());
+  Point lowerBound(reducedInterval.getLowerBound());
+  Point upperBound(reducedInterval.getUpperBound());
+  const Interval::BoolCollection reducedFiniteLower(reducedInterval.getFiniteLowerBound());
+  const Interval::BoolCollection reducedFiniteUpper(reducedInterval.getFiniteUpperBound());
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    if (!reducedFiniteLower[j]) lowerBound[j] = SpecFunc::LowestScalar;
+    if (!reducedFiniteUpper[j]) upperBound[j] = SpecFunc::MaxScalar;
+  }
   if (useApproximatePDFCDF_)
   {
     const Scalar mean = getMean()[0];
