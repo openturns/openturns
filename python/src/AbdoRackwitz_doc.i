@@ -35,6 +35,12 @@ Because the rule is a disjunction, setting some of these thresholds to
 zero only disables the corresponding pair: the other pair still applies
 with its own default thresholds.
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``AbdoRackwitz-DefaultOmega`` (``Scalar``, default: ``1e-04``): Armijo factor of the line search,
+- ``AbdoRackwitz-DefaultSmooth`` (``Scalar``, default: ``1.2``): growing factor of the penalization term,
+- ``AbdoRackwitz-DefaultTau`` (``Scalar``, default: ``0.5``): multiplicative decrease of the linear step.
+
 See also
 --------
 Cobyla, SQP, TNC, NLopt
@@ -116,5 +122,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``AbdoRackwitz-DefaultOmega`` (``Scalar``, default: ``1.0e-4``): default value of the relaxation parameter of the Abdo-Rackwitz algorithm
 - ``AbdoRackwitz-DefaultSmooth`` (``Scalar``, default: ``1.2``): default value of the smooth parameter of the Abdo-Rackwitz algorithm
 - ``AbdoRackwitz-DefaultTau`` (``Scalar``, default: ``0.5``): default value of the step size of the Abdo-Rackwitz algorithm"
+
 
 

@@ -6,10 +6,10 @@ and obtained thanks to the method getResult().
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``ProbabilitySimulationResult-CheckPositiveVariance`` (``Bool``, default: ``false``)
-- ``ProbabilitySimulationResult-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``)
+- ``ProbabilitySimulationResult-CheckPositiveVariance`` (``Bool``, default: ``False``): whether the variance of the probability estimator is checked to be strictly positive,
+- ``ProbabilitySimulationResult-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default confidence level used to compute the confidence interval of the probability estimator.
 
 Examples
 --------
@@ -52,6 +52,12 @@ Parameters
 ----------
 blockSize : int, :math:`blockSize \geq 0`
     Number of terms in the probability simulation estimator grouped together.
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ProbabilitySimulationResult-CheckPositiveVariance* (`Bool`, default: `false`)
+- *ProbabilitySimulationResult-DefaultConfidenceLevel* (`Scalar`, default: `0.95`)
 )RAW"
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::setBlockSize
