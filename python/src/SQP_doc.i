@@ -25,6 +25,12 @@ SQP methods solve a sequence of optimization subproblems,
 each of which optimizes a quadratic model of the objective
 subject to a linearization of the constraints.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SQP-DefaultOmega* (`Scalar`, default: `0.0001`)
+- *SQP-DefaultSmooth* (`Scalar`, default: `1.2`)
+- *SQP-DefaultTau* (`Scalar`, default: `0.5`)
+
 See also
 --------
 AbdoRackwitz, Cobyla, TNC, NLopt
@@ -98,3 +104,4 @@ Parameters
 ----------
 smooth : float
     Growing factor in penalization term."
+

@@ -1,6 +1,13 @@
 %feature("docstring") OT::SimulationAlgorithm
 "Base class for simulation algorithms.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SimulationAlgorithm-DefaultBlockSize* (`UnsignedInteger`, default: `1`)
+- *SimulationAlgorithm-DefaultMaximumTimeDuration* (`Scalar`, default: `-1`)
+
 See also
 --------
 ProbabilitySimulationAlgorithm, ExpectationSimulationAlgorithm"

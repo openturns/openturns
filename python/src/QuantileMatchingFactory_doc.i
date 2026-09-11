@@ -86,7 +86,8 @@ An example with 4 parameters:
 >>> sample = distribution.getSample(10)
 >>> distribution = ot.Beta()
 >>> factory = ot.QuantileMatchingFactory(distribution, [0.01, 1/3, 2/3, 0.99])
->>> inf_distribution = factory.build(sample)  # doctest: +SKIP)RAW"
+>>> inf_distribution = factory.build(sample)  # doctest: +SKIP
+)RAW"
 
 // ---------------------------------------------------------------------
 

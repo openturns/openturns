@@ -85,6 +85,10 @@ where :math:`\vect{x}^*` is the design point, :math:`s` is the threshold and :ma
 is the absolute tolerance.
 The initial points are directly defined in the Physical Space through the used :class:`~openturns.OptimizationAlgorithm`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Analytical-LimitStateToleranceFactor* (`Scalar`, default: `1.15`)
+
 See also
 --------
 FORM, SORM, StrongMaximumTest, StandardEvent, AnalyticalResult

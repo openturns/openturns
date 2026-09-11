@@ -6,6 +6,11 @@ Notes
 Structure created by the method run() of the :class:`~openturns.Analytical`
 class and obtained thanks to its method getAnalyticalResult().
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *AnalyticalResult-DefaultWidth* (`Scalar`, default: `1`)
+- *AnalyticalResult-MeanPointIntegrationNodesNumber* (`UnsignedInteger`, default: `255`)
+
 Parameters
 ----------
 designPoint : sequence of float

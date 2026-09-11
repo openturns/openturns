@@ -34,6 +34,15 @@ The estimator of  :math:`\vect{\theta}` maximizes the log-likelihood:
 
     \hat{\vect{\theta}} = \argmax_{\vect{\theta} \in \Theta} \log \ell (\vect{x}_1, \dots, \vect{x}_n; \vect{\theta}) 
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MaximumLikelihoodFactory-DefaultOptimizationAlgorithm* (`String`, default: `TNC`)
+- *MaximumLikelihoodFactory-MaximumAbsoluteError* (`Scalar`, default: `1e-10`)
+- *MaximumLikelihoodFactory-MaximumCallsNumber* (`UnsignedInteger`, default: `1000`)
+- *MaximumLikelihoodFactory-MaximumConstraintError* (`Scalar`, default: `1e-10`)
+- *MaximumLikelihoodFactory-MaximumObjectiveError* (`Scalar`, default: `1e-10`)
+- *MaximumLikelihoodFactory-MaximumRelativeError* (`Scalar`, default: `1e-10`)
+
 See also
 --------
 DistributionFactory

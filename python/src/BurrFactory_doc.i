@@ -22,9 +22,14 @@ Then
 
     \Hat{k}_n =  \frac{n}{\sum_{i=1}^n \log(1+x_i^c)}
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *BurrFactory-AbsolutePrecision* (`Scalar`, default: `1e-12`)
+
 See also
 --------
-DistributionFactory, Burr)RAW"
+DistributionFactory, Burr
+)RAW"
 
 // ---------------------------------------------------------------------
 

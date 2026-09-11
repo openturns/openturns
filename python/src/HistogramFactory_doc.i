@@ -7,6 +7,14 @@ The range is :math:`[\min(data), \max(data)]`.
 
 See the :meth:`~openturns.HistogramFactory.computeBandwidth` method for the bandwidth selection. 
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`)
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`)
+
 Examples
 --------
 Create an histogram:
@@ -58,7 +66,8 @@ Compute bandwidth with optimal estimator:
 
 See also
 --------
-DistributionFactory, Histogram)RAW"
+DistributionFactory, Histogram
+)RAW"
 
 // ----------------------------------------------------------------------------
 

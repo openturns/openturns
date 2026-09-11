@@ -50,6 +50,10 @@ where the Jacobian matrix is evaluated at the `startingPoint`.
 The diagonal of the covariance matrix of the output error
 is constant and is estimated with the unbiased variance estimator.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearLeastSquaresCalibration-Method* (`String`, default: `QR`)
+
 Please read :any:`code_calibration` for more details.
 
 See also
@@ -77,7 +81,8 @@ Calibrate a nonlinear model using linear least-squares:
 >>> algo = ot.LinearLeastSquaresCalibration(modelX, x, y, startingPoint, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[8.24019,0.0768046,0.992957])RAW"
+[8.24019,0.0768046,0.992957]
+)RAW"
 
 // ---------------------------------------------------------------------
 

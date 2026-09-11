@@ -52,6 +52,13 @@ distribution.
 The LinearModelFisher test checks the nullity of the regression linear model
 coefficients (Fisher distribution is used).
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelTest-DefaultDurbinWatsonHypothesis* (`String`, default: `Equal`)
+- *LinearModelTest-DefaultHarrisonMcCabeBreakpoint* (`Scalar`, default: `0.5`)
+- *LinearModelTest-DefaultHarrisonMcCabeSimulationSize* (`UnsignedInteger`, default: `1000`)
+- *LinearModelTest-DefaultLevel* (`Scalar`, default: `0.05`)
+
 Examples
 --------
 >>> import openturns as ot
