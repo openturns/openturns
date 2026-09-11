@@ -78,13 +78,14 @@ print("Sparse chaos scoring")
 print("R2 = ", metaModelValidationSPC.computeR2Score())
 print("Residual sample = ", repr(metaModelValidationSPC.getResidualSample()))
 
-# 2) Kriging algorithm
-# KrigingAlgorithm
+# 2) GPR algorithm
 basis = ot.QuadraticBasisFactory(dimension).build()
 # model already computed, separately
 covarianceModel = ot.GeneralizedExponential([3.52, 2.15, 2.99], [11.41], 2.0)
-algo2 = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
-algo2.setOptimizeParameters(False)
+fitter = ot.GaussianProcessFitter(inputSample, outputSample, covarianceModel, basis)
+fitter.setOptimizeParameters(False)
+fitter.run()
+algo2 = ot.GaussianProcessRegression(fitter.getResult())
 algo2.run()
 result2 = algo2.getResult()
 
