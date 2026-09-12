@@ -81,11 +81,10 @@ Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
   :class:`~openturns.WeightedExperiment` which is used to discretize the continuous part of the conditioning distribution
   in order to perform the integration. It can be *GaussProduct*, *QMC* or *MC*: The default is *GaussProduct*, well adapted if the conditioned model is *regular*, meaning that its range does not depend on the parameters (e.g. a :class:`~openturns.Normal` distribution). Otherwise, one of the other discretization methods is to be 
   preferred (e.g. for a :class:`~openturns.Uniform` distribution).
-- The integer entry *CompoundDistribution-MarginalIntegrationNodesNumber* specifies the number of nodes used to the
-  integration in each direction (only active when a quadrature method is applied),
-- The integer entry *CompoundDistribution-MarginalIntegrationNodesNumber* specifies the maximum number of nodes used to 
-  the multivariate integration (only active when a quadrature method is applied).
-- *CompoundDistribution-MaximumIntegrationNodesNumber* (``UnsignedInteger``, default: `100000`)
+- The integer entry *CompoundDistribution-MarginalIntegrationNodesNumber* (``UnsignedInteger``, default: ``48``) specifies
+  the number of nodes used for the integration in each direction (only active when a quadrature method is applied),
+- The integer entry *CompoundDistribution-MaximumIntegrationNodesNumber* (``UnsignedInteger``, default: ``100000``) specifies
+  the maximum number of nodes used for the multivariate integration (only active when a quadrature method is applied).
 
 Examples
 --------

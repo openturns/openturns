@@ -138,6 +138,7 @@ Examples
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
 - *LogNormalFactory-AbsolutePrecision* (``Scalar``, default: `1e-12`)
+- *LogNormalFactory-EstimationMethod* (``UnsignedInteger``, default: `0`)
 - *LogNormalFactory-MaximumIteration* (``UnsignedInteger``, default: `50`)
 - *LogNormalFactory-RelativePrecision* (``Scalar``, default: `1e-12`)
 - *LogNormalFactory-ResidualPrecision* (``Scalar``, default: `1e-12`)

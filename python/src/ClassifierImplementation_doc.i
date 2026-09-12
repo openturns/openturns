@@ -14,12 +14,6 @@ This class uses the following entries of :class:`~openturns.ResourceMap`:
 
 - *Classifier-Parallel* (``Bool``, default: `true`)"
 
-
-
-
-
-
-
 %enddef
 %feature("docstring") OT::ClassifierImplementation
 OT_Classifier_doc

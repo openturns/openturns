@@ -889,27 +889,6 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Sample::find
-"Find the index of a point in the sample.
-
-Parameters
-----------
-point : sequence of float
-    The point to search for.
-
-Returns
--------
-index : int
-    The index of the first occurrence of the point in the sample.
-    Returns the size of the sample if the point is not found.
-
-Notes
------
-Unlike :meth:`index`, this method does not throw when the point is not found.
-Instead, it returns :meth:`getSize`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Sample::getDescription
 "Accessor to the componentwise description.
 
