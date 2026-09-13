@@ -7,6 +7,9 @@
     import openturns as ot
     from matplotlib import pyplot as plt
     import openturns.viewer as otv
+{% if module == "openturns.experimental" %}
+    import openturns.experimental as otexp
+{% endif %}
     if "{{ objname }}" == "ExponentialModel":
         covarianceModel = ot.ExponentialModel([0.5], [5.0])
     elif "{{ objname }}" == "GeneralizedExponential":
@@ -26,7 +29,11 @@
         rho = ot.SymbolicFunction(["tau"], ["exp(-tau)*cos(2*pi_*tau)"])
         covarianceModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
     else:
+{% if module == "openturns.experimental" %}
+        covarianceModel = otexp.{{ objname }}()
+{% else %}
         covarianceModel = ot.{{ objname }}()
+{% endif %}
     title = str(covarianceModel)[:100]
     if covarianceModel.getInputDimension() == 1:
         scale = covarianceModel.getScale()[0]
