@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * Speeding up Gaussian field simulation on large grids with the FFT-based circulant embedding method and the P1 interpolation of the simulated trajectories (new CirculantEmbeddingGaussianProcess and P1InterpolatedProcess, openturns.experimental). It addresses part of the HPC probabilistic modelling roadmap (issue #3305), building on the preliminary work of Valentin Abongo (@Proteidore).
 
 ==== New classes ====
  * InverseGammaFactory (openturns.experimental)
