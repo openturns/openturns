@@ -38,6 +38,7 @@
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
+ * Removed FFT.transform2D/transform3D/inverseTransform2D/inverseTransform3D; use the N-D transforms of flat data instead
  * Removed deprecated SpecFunc.IsNormal
  * Removed deprecated ResourceMap.Reload
  * Removed deprecated Wilks class
