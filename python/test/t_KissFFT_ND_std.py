@@ -41,14 +41,14 @@ ott.assert_almost_equal(max(abs(r4[i] - r1[i]) for i in range(len(vals))), 0.0, 
 print("Complex input OK")
 
 # Check error on bad size
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     fft.transform(data, [2, 3, 5])
 
 # Check error on zero dimension (empty data passes size check but would divide by zero)
 empty = ot.ComplexCollection(0)
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     fft.transform(empty, [0])
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     fft.transform(empty, [2, 0])
 print("zero dimension rejected OK")
 
