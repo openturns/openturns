@@ -24,11 +24,40 @@
 #include "openturns/Log.hxx"
 #include "openturns/SquaredExponential.hxx"
 
+#include <limits>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(DivFreeModel)
 
 static const Factory<DivFreeModel> Factory_DivFreeModel;
+
+/** Compute two representable endpoints around value for a central difference stencil.
+    If the nominal symmetric step collapses (huge coordinates) or overflows near the
+    finite-coordinate limits, the endpoints fall back to adjacent representable
+    neighbors, and the stencil becomes one-sided at the very ends of the range. */
+static void representableStencil(Scalar & plus,
+                                 Scalar & minus,
+                                 const Scalar value,
+                                 const Scalar targetStep)
+{
+  plus = value + targetStep;
+  minus = value - targetStep;
+  if ((plus == value) || !std::isfinite(plus))
+    plus = std::nextafter(value, std::numeric_limits<Scalar>::infinity());
+  if ((minus == value) || !std::isfinite(minus))
+    minus = std::nextafter(value, -std::numeric_limits<Scalar>::infinity());
+  if (!std::isfinite(plus))
+    plus = std::nextafter(value, -std::numeric_limits<Scalar>::infinity());
+  if (!std::isfinite(minus))
+    minus = std::nextafter(value, std::numeric_limits<Scalar>::infinity());
+  if (!(plus > minus))
+  {
+    plus = value;
+    minus = std::nextafter(value, -std::numeric_limits<Scalar>::infinity());
+  }
+}
+
 
 /** Helper: compute the Hessian of the underlying scalar model */
 static SquareMatrix computeHessian(const CovarianceModel & model,
@@ -37,14 +66,20 @@ static SquareMatrix computeHessian(const CovarianceModel & model,
                                     const UnsignedInteger inputDimension)
 {
   SquareMatrix hessian(inputDimension);
-  const Scalar epsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Point scale(model.getScale());
+  const Bool isotropic = (scale.getSize() == 1);
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
+    const Scalar epsilon = (isotropic ? scale[0] : scale[j]) * baseEps;
+    Scalar tPlusValue = 0.0;
+    Scalar tMinusValue = 0.0;
+    representableStencil(tPlusValue, tMinusValue, t[j], epsilon);
     Point tPlus(t);
     Point tMinus(t);
-    tPlus[j] += epsilon;
-    tMinus[j] -= epsilon;
-    const Scalar delta = tPlus[j] - tMinus[j];
+    tPlus[j] = tPlusValue;
+    tMinus[j] = tMinusValue;
+    const Scalar delta = tPlusValue - tMinusValue;
     const Matrix gradPlus(model.partialGradient(s, tPlus));
     const Matrix gradMinus(model.partialGradient(s, tMinus));
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
@@ -62,15 +97,21 @@ static SquareMatrix computeHessianStationary(const CovarianceModel & model,
     const UnsignedInteger inputDimension)
 {
   SquareMatrix hessian(inputDimension);
-  const Scalar epsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Point scale(model.getScale());
+  const Bool isotropic = (scale.getSize() == 1);
   const Point zero(inputDimension);
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
+    const Scalar epsilon = (isotropic ? scale[0] : scale[j]) * baseEps;
+    Scalar tauPlusValue = 0.0;
+    Scalar tauMinusValue = 0.0;
+    representableStencil(tauPlusValue, tauMinusValue, tau[j], epsilon);
     Point tauPlus(tau);
     Point tauMinus(tau);
-    tauPlus[j] += epsilon;
-    tauMinus[j] -= epsilon;
-    const Scalar delta = tauPlus[j] - tauMinus[j];
+    tauPlus[j] = tauPlusValue;
+    tauMinus[j] = tauMinusValue;
+    const Scalar delta = tauPlusValue - tauMinusValue;
     const Matrix gradPlus(model.partialGradient(tauPlus, zero));
     const Matrix gradMinus(model.partialGradient(tauMinus, zero));
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
@@ -93,8 +134,11 @@ DivFreeModel::DivFreeModel(const UnsignedInteger inputDimension)
     LOGWARN(OSS() << "The divergence-free model is proven for d=2,3; for d>3 it is a conjecture, see [scheuerer2012].");
   outputDimension_ = inputDimension;
   isStationary_ = model_.isStationary();
-  amplitude_ = Point(outputDimension_, 1.0);
   activeParameter_ = model_.getActiveParameter();
+  amplitude_ = Point(outputDimension_);
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
 }
 
@@ -112,9 +156,12 @@ DivFreeModel::DivFreeModel(const CovarianceModel & model)
     LOGWARN(OSS() << "The divergence-free model is proven for d=2,3; for d>3 it is a conjecture, see [scheuerer2012].");
   outputDimension_ = model.getInputDimension();
   scale_ = model.getScale();
-  amplitude_ = Point(outputDimension_, 1.0);
   isStationary_ = model.isStationary();
   activeParameter_ = model.getActiveParameter();
+  amplitude_ = Point(outputDimension_);
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
 }
 
@@ -190,6 +237,10 @@ void DivFreeModel::setScale(const Point & scale)
 {
   model_.setScale(scale);
   scale_ = model_.getScale();
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
 }
 
 
