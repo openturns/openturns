@@ -14,6 +14,7 @@ the optimization step:
 - `StudentCopulaFactory-MaximumConstraintError`
 - `StudentCopulaFactory-MaximumObjectiveError`
 - `StudentCopulaFactory-MaximumRelativeError`
+- `StudentCopulaFactory-MaximumCallsNumber`
 - `StudentCopulaFactory-NuMin`
 - `StudentCopulaFactory-NuMax`
 - `StudentCopulaFactory-NuStart`
