@@ -124,8 +124,8 @@ these algorithms:
   on a random compression of both the rows and columns of :math:`\mat{Y}`, the
   second one being based on an iterative compressed sampling of the columns of
   :math:`\mat{Y}`.
-- 'KarhunenLoeveSVDAlgorithm-halko2011Margin' and
-  'KarhunenLoeveSVDAlgorithm-halko2011Iterations' to fix the parameters of the
+- 'KarhunenLoeveSVDAlgorithm-Halko2011Margin' and
+  'KarhunenLoeveSVDAlgorithm-Halko2011Iterations' to fix the parameters of the
   'halko2011' variant. See [halko2011]_ for the details.
 
       
