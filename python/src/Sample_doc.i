@@ -188,7 +188,7 @@ This method allows for more permissive file formatting than :py:meth:`ImportFrom
 - Comment lines or empty ones are allowed
 - Lines can be skipped from the start of the file
 
-The comment marker is defined by the `Sample-CommentsMarker` entry from :class:`~openturns.ResourceMap`.
+The comment marker is defined by the `Sample-CommentMarker` entry from :class:`~openturns.ResourceMap`.
 
 See Also
 --------
@@ -410,7 +410,7 @@ by David Simcha based on the paper by [knight1966]_. It actually switches
 between two implementations depending on the sample size:
 
     - The most basic implementation performing in :math:`O(m^2)` is used when
-      the sample size is less than `SampleImplementation-SmallKendallTau`
+      the sample size is less than `Sample-SmallKendallTau`
       from the :class:`~openturns.ResourceMap`.
     - The other more complex implementation performing in :math:`O(m\log(m))`
       is used for larger samples.
