@@ -313,7 +313,7 @@ processUser.getRealization()
 ott.assert_almost_equal(processUser.getCircularSize()[0], 256, 0.0, 0.0)
 
 # A user-defined circular size below the minimum is rejected at initialization
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     processUser.setCircularSize([64])
     processUser.getRealization()
 
@@ -328,7 +328,7 @@ nonStationary = ot.UserDefinedCovarianceModel(
     ot.CovarianceMatrix(11),
 )
 assert not nonStationary.isStationary()
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     otexp.CirculantEmbeddingGaussianProcess(nonStationary, interval, discretization)
 
 # Test that a non-uniform mesh is rejected
@@ -337,7 +337,7 @@ print("Test non-uniform mesh rejection")
 print("=" * 60)
 nonUniform = ot.Mesh(ot.Sample([[0.0], [0.3], [1.0], [1.1], [1.2], [1.3], [1.4], [1.5], [1.6], [1.7], [1.8]]))
 processNonUniform = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, ot.Interval(0.0, 1.8), [10])
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     processNonUniform.setMesh(nonUniform)
 
 print("mesh validation OK")
