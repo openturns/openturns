@@ -49,13 +49,36 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+typedef Collection<Complex> ComplexCollection;
+
+namespace {
+  ComplexMatrix fftMatrix(const FFT& algo, const ComplexMatrix& mat)
+  {
+    const UnsignedInteger rows = mat.getNbRows();
+    const UnsignedInteger cols = mat.getNbColumns();
+    const ComplexCollection& flat = *mat.getImplementation();
+    ComplexCollection resultFlat = algo.transform(flat, {rows, cols});
+    ComplexMatrixImplementation impl(rows, cols, resultFlat.begin(), resultFlat.end());
+    return ComplexMatrix(impl);
+  }
+
+  ComplexTensor fftTensor(const FFT& algo, const ComplexTensor& tensor)
+  {
+    const UnsignedInteger rows = tensor.getNbRows();
+    const UnsignedInteger cols = tensor.getNbColumns();
+    const UnsignedInteger sheets = tensor.getNbSheets();
+    const ComplexCollection& flat = *tensor.getImplementation();
+    ComplexCollection resultFlat = algo.transform(flat, {rows, cols, sheets});
+    return ComplexTensor(rows, cols, sheets, resultFlat.begin(), resultFlat.end());
+  }
+}
+
 TEMPLATE_CLASSNAMEINIT(PersistentCollection<Distribution>)
 static const Factory<PersistentCollection<Distribution> > Factory_PersistentCollection_Distribution;
 
 
 typedef Collection<Distribution> DistributionCollection;
 typedef Collection<Point> PointCollection;
-typedef Collection<Complex> ComplexCollection;
 
 
 CLASSNAMEINIT(LinearCombinationDistribution)
@@ -1664,7 +1687,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * fy[j];
 
-  ComplexMatrix sigma_plus_plus(fftAlgorithm_.transform2D(yk));
+  ComplexMatrix sigma_plus_plus(fftMatrix(fftAlgorithm_, yk));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_plus_plus(i, j) *= z_exp_mx[i] * z_exp_my[j];
@@ -1674,7 +1697,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       ykc(i, j) = std::conj(yk(Nx - 1 - i, Ny - 1 - j));
-  ComplexMatrix sigma_minus_minus(fftAlgorithm_.transform2D(ykc));
+  ComplexMatrix sigma_minus_minus(fftMatrix(fftAlgorithm_, ykc));
 
   // 3) compute \Sigma_+-
   const AddPDFOn2DGridPolicy policyGridPM(*this, xPlus, yMinus, *(yk.getImplementation().get()));
@@ -1683,7 +1706,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk(i, j) *= fx[i] * std::conj(fy[Ny - 1 - j]);
 
-  ComplexMatrix sigma_plus_minus(fftAlgorithm_.transform2D(yk));
+  ComplexMatrix sigma_plus_minus(fftMatrix(fftAlgorithm_, yk));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_plus_minus(i, j) *= z_exp_mx[i];
@@ -1693,7 +1716,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
     for (UnsignedInteger i = 0; i < Nx; ++i)
       ykc(i, j) = std::conj(yk(Nx - 1 - i, Ny - 1 - j));
 
-  ComplexMatrix sigma_minus_plus(fftAlgorithm_.transform2D(ykc));
+  ComplexMatrix sigma_minus_plus(fftMatrix(fftAlgorithm_, ykc));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_minus_plus(i, j) *= z_exp_my[j];
@@ -1855,7 +1878,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
         yk(i, j, k) *= fx[i] * fy[j] * fz[k];
 
   // 1) compute \Sigma_+++
-  ComplexTensor sigma_plus_plus_plus(fftAlgorithm_.transform3D(yk));
+  ComplexTensor sigma_plus_plus_plus(fftTensor(fftAlgorithm_, yk));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1866,7 +1889,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
         ykc(i, j, k) = std::conj(yk(Nx - 1 - i, Ny - 1 - j, Nz - 1 - k));
-  ComplexTensor sigma_minus_minus_minus(fftAlgorithm_.transform3D(ykc));
+  ComplexTensor sigma_minus_minus_minus(fftTensor(fftAlgorithm_, ykc));
 
   // 3) compute \Sigma_++-
   const AddPDFOn3DGridPolicy policyGridPPM(*this, xPlus, yPlus, zMinus, *(yk.getImplementation().get()));
@@ -1876,7 +1899,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       for (UnsignedInteger i = 0; i < Nx; ++i)
         yk(i, j, k) *= fx[i] * fy[j] * std::conj(fz[Nz - 1 - k]);
 
-  ComplexTensor sigma_plus_plus_minus(fftAlgorithm_.transform3D(yk));
+  ComplexTensor sigma_plus_plus_minus(fftTensor(fftAlgorithm_, yk));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1888,7 +1911,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       for (UnsignedInteger i = 0; i < Nx; ++i)
         ykc(i, j, k) = std::conj(yk(Nx - 1 - i, Ny - 1 - j, Nz - 1 - k));
 
-  ComplexTensor sigma_minus_minus_plus(fftAlgorithm_.transform3D(ykc));
+  ComplexTensor sigma_minus_minus_plus(fftTensor(fftAlgorithm_, ykc));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1902,7 +1925,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       for (UnsignedInteger i = 0; i < Nx; ++i)
         yk(i, j, k) *= fx[i] * std::conj(fy[Ny - 1 - j]) * fz[k];
 
-  ComplexTensor sigma_plus_minus_plus(fftAlgorithm_.transform3D(yk));
+  ComplexTensor sigma_plus_minus_plus(fftTensor(fftAlgorithm_, yk));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1914,7 +1937,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       for (UnsignedInteger i = 0; i < Nx; ++i)
         ykc(i, j, k) = std::conj(yk(Nx - 1 - i, Ny - 1 - j, Nz - 1 - k));
 
-  ComplexTensor sigma_minus_plus_minus(fftAlgorithm_.transform3D(ykc));
+  ComplexTensor sigma_minus_plus_minus(fftTensor(fftAlgorithm_, ykc));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1928,7 +1951,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       for (UnsignedInteger i = 0; i < Nx; ++i)
         yk(i, j, k) *= fx[i] * std::conj(fy[Ny - 1 - j]) * std::conj(fz[Nz - 1 - k]);
 
-  ComplexTensor sigma_plus_minus_minus(fftAlgorithm_.transform3D(yk));
+  ComplexTensor sigma_plus_minus_minus(fftTensor(fftAlgorithm_, yk));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1940,7 +1963,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       for (UnsignedInteger i = 0; i < Nx; ++i)
         ykc(i, j, k) = std::conj(yk(Nx - 1 - i, Ny - 1 - j, Nz - 1 - k));
 
-  ComplexTensor sigma_minus_plus_plus(fftAlgorithm_.transform3D(ykc));
+  ComplexTensor sigma_minus_plus_plus(fftTensor(fftAlgorithm_, ykc));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1959,7 +1982,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       yk0(i, j) = computeDeltaCharacteristicFunction(x) * fx[i] * fy[j];
     }
   }
-  ComplexMatrix sigma_plus_plus_0(fftAlgorithm_.transform2D(yk0));
+  ComplexMatrix sigma_plus_plus_0(fftMatrix(fftAlgorithm_, yk0));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_plus_plus_0(i, j) *= z_exp_mx[i] * z_exp_my[j];
@@ -1969,7 +1992,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk0c(i, j) = std::conj(yk0(Nx - 1 - i, Ny - 1 - j));
-  ComplexMatrix sigma_minus_minus_0(fftAlgorithm_.transform2D(yk0c));
+  ComplexMatrix sigma_minus_minus_0(fftMatrix(fftAlgorithm_, yk0c));
 
   // 11) compute \Sigma_0++
   if (Nx != Ny || Ny != Nz)
@@ -1987,7 +2010,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       yk0(j, k) = computeDeltaCharacteristicFunction(x) * fy[j] * fz[k];
     }
   }
-  ComplexMatrix sigma_0_plus_plus(fftAlgorithm_.transform2D(yk0));
+  ComplexMatrix sigma_0_plus_plus(fftMatrix(fftAlgorithm_, yk0));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       sigma_0_plus_plus(j, k) *= z_exp_my[j] * z_exp_mz[k];
@@ -1996,7 +2019,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       yk0c(j, k) = std::conj(yk0(Ny - 1 - j, Nz - 1 - k));
-  ComplexMatrix sigma_0_minus_minus(fftAlgorithm_.transform2D(yk0c));
+  ComplexMatrix sigma_0_minus_minus(fftMatrix(fftAlgorithm_, yk0c));
 
   // 13) compute \Sigma_+0+
   if (Nx != Ny)
@@ -2014,7 +2037,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       yk0(i, k) = computeDeltaCharacteristicFunction(x) * fx[i] * fz[k];
     }
   }
-  ComplexMatrix sigma_plus_0_plus(fftAlgorithm_.transform2D(yk0));
+  ComplexMatrix sigma_plus_0_plus(fftMatrix(fftAlgorithm_, yk0));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_plus_0_plus(i, k) *= z_exp_mx[i] * z_exp_mz[k];
@@ -2023,7 +2046,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk0c(i, k) = std::conj(yk0(Nx - 1 - i, Nz - 1 - k));
-  ComplexMatrix sigma_minus_0_minus(fftAlgorithm_.transform2D(yk0c));
+  ComplexMatrix sigma_minus_0_minus(fftMatrix(fftAlgorithm_, yk0c));
 
   // 15) compute \Sigma_+-0
   if (Ny != Nz)
@@ -2041,7 +2064,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       yk0(i, j) = computeDeltaCharacteristicFunction(x) * fx[i] * std::conj(fy[Ny - 1 - j]);
     }
   }
-  ComplexMatrix sigma_plus_minus_0(fftAlgorithm_.transform2D(yk0));
+  ComplexMatrix sigma_plus_minus_0(fftMatrix(fftAlgorithm_, yk0));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_plus_minus_0(i, j) *= z_exp_mx[i];
@@ -2050,7 +2073,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk0c(i, j) = std::conj(yk0(Nx - 1 - i, Ny - 1 - j));
-  ComplexMatrix sigma_minus_plus_0(fftAlgorithm_.transform2D(yk0c));
+  ComplexMatrix sigma_minus_plus_0(fftMatrix(fftAlgorithm_, yk0c));
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_minus_plus_0(i, j) *= z_exp_my[j];
@@ -2071,7 +2094,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       yk0(i, k) = computeDeltaCharacteristicFunction(x) * fx[i] * std::conj(fz[Nz - 1 - k]);
     }
   }
-  ComplexMatrix sigma_plus_0_minus(fftAlgorithm_.transform2D(yk0));
+  ComplexMatrix sigma_plus_0_minus(fftMatrix(fftAlgorithm_, yk0));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_plus_0_minus(i, k) *= z_exp_mx[i];
@@ -2080,7 +2103,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       yk0c(i, k) = std::conj(yk0(Nx - 1 - i, Nz - 1 - k));
-  ComplexMatrix sigma_minus_0_plus(fftAlgorithm_.transform2D(yk0c));
+  ComplexMatrix sigma_minus_0_plus(fftMatrix(fftAlgorithm_, yk0c));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger i = 0; i < Nx; ++i)
       sigma_minus_0_plus(i, k) *= z_exp_mz[k];
@@ -2101,7 +2124,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
       yk0(j, k) = computeDeltaCharacteristicFunction(x) * fy[j] * std::conj(fz[Nz - 1 - k]);
     }
   }
-  ComplexMatrix sigma_0_plus_minus(fftAlgorithm_.transform2D(yk0));
+  ComplexMatrix sigma_0_plus_minus(fftMatrix(fftAlgorithm_, yk0));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       sigma_0_plus_minus(j, k) *= z_exp_my[j];
@@ -2110,7 +2133,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       yk0c(j, k) = std::conj(yk0(Ny - 1 - j, Nz - 1 - k));
-  ComplexMatrix sigma_0_minus_plus(fftAlgorithm_.transform2D(yk0c));
+  ComplexMatrix sigma_0_minus_plus(fftMatrix(fftAlgorithm_, yk0c));
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
       sigma_0_minus_plus(j, k) *= z_exp_mz[k];

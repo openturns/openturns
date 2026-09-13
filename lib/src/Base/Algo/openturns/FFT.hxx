@@ -91,27 +91,13 @@ public:
                               const UnsignedInteger step,
                               const UnsignedInteger last) const;
 
-  /** FFT 2D transformation on real
-   * Given the real sequence X_n, compute the sequence Z_k such that:
-   * Z_{k,l} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1} X_{m,n}\exp(-\frac{2i\pi km}{M}) \exp(-\frac{2i\pi ln}{N})
-   */
-  ComplexMatrix transform2D(const ComplexMatrix & matrix) const;
+  /** FFT ND transformation on data stored as a flat array */
+  ComplexCollection transform(const Point & data,
+                              const Indices & dimensions) const;
 
-  /** FFT 2D transformation on complex */
-  ComplexMatrix transform2D(const Matrix & matrix) const;
-
-  /** FFT 2D transformation on complex */
-  ComplexMatrix transform2D(const Sample & sample) const;
-
-  /** FFT 3D transformation
-   * Given the real sequence X, compute the sequence Z such that:
-   * Z_{k,l,r} = \sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{p=0}^{P-1} X_{m,n,p}\exp(-\frac{2i\pi km}{M}) \exp(-\frac{2i\pi ln}{N}) \exp(-\frac{2i\pi rp}{P})
-   */
-  ComplexTensor transform3D(const ComplexTensor & tensor) const;
-
-  /** FFT 3D transformation on real data */
-  ComplexTensor transform3D(const Tensor & tensor) const;
-
+  /** FFT ND transformation on complex data stored as a flat array */
+  ComplexCollection transform(const ComplexCollection & data,
+                              const Indices & dimensions) const;
 
   /** FFT inverse transformation
    * Given the complex sequence Z_n, compute the sequence Y_k such that:
@@ -144,26 +130,13 @@ public:
                                      const UnsignedInteger step,
                                      const UnsignedInteger last) const;
 
-  /** FFT inverse transformation
-   * Given the complex sequence Z_n, compute the sequence Y_k such that:
-   * Y_{k,l} = \frac{1}{M.N}\sum_{m=0}^{M-1}\sum_{n=0}^{N-1} Z_{m,n}\exp(\frac{2i\pi km}{M} \exp(\frac{2i\pi ln}{N})
-   */
-  ComplexMatrix inverseTransform2D(const ComplexMatrix & matrix) const;
+  /** IFFT ND transformation on data stored as a flat array */
+  ComplexCollection inverseTransform(const Point & data,
+                                     const Indices & dimensions) const;
 
-  /** IFFT 2D transformation on real matrix */
-  ComplexMatrix inverseTransform2D(const Matrix & matrix) const;
-
-  /** IFFT 2D transformation on sample */
-  ComplexMatrix inverseTransform2D(const Sample & sample) const;
-
-  /** FFT inverse transformation
-   * Given the complex sequence Z, compute the sequence Y such that:
-   * Y_{k,l,r} = \frac{1}{M.N.P}\sum_{m=0}^{M-1}\sum_{n=0}^{N-1}\sum_{n=0}^{P-1} Z_{m,n,p}\exp(\frac{2i\pi km}{M} \exp(\frac{2i\pi ln}{N}) \exp(\frac{2i\pi rp}{P})
-   */
-  ComplexTensor inverseTransform3D(const ComplexTensor & tensor) const;
-
-  /** IFFT 3D transformation on real tensors */
-  ComplexTensor inverseTransform3D(const Tensor & tensor) const;
+  /** IFFT ND transformation on complex data stored as a flat array */
+  ComplexCollection inverseTransform(const ComplexCollection & data,
+                                     const Indices & dimensions) const;
 
   /** String converter */
   String __repr__() const override;
