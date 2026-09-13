@@ -29,14 +29,13 @@ The different drawable elements are:
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
 - *Drawable-AlternativePattern* (`String`, default: `S`)
-- *Drawable-DefaultColor* (`String`, default: `blue`)
 - *Drawable-DefaultFillStyle* (`String`, default: `solid`)
 - *Drawable-DefaultLineStyle* (`String`, default: `solid`)
 - *Drawable-DefaultLineWidth* (`Scalar`, default: `1`)
-- *Drawable-DefaultPaletteName* (`String`, default: `Tableau10`)
-- *Drawable-DefaultPalettePhase* (`UnsignedInteger`, default: `0`)
+- *Drawable-DefaultPaletteName* (`String`, default: `Tableau`)
+- *Drawable-DefaultPalettePhase* (`UnsignedInteger`, default: `12`)
 - *Drawable-DefaultPattern* (`String`, default: `s`)
-- *Drawable-DefaultPointStyle* (`String`, default: `circle`)
+- *Drawable-DefaultPointStyle* (`String`, default: `plus`)
 
 Examples
 --------
