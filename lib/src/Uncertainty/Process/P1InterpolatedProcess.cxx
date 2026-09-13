@@ -98,10 +98,11 @@ void P1InterpolatedProcess::setMesh(const Mesh & mesh)
                                           << mesh.getDimension()
                                           << " on a P1InterpolatedProcess whose compound process has input dimension "
                                           << compoundProcess_.getInputDimension();
-  ProcessImplementation::setMesh(mesh);
   const UnsignedInteger outputDim = compoundProcess_.getOutputDimension();
   const P1LagrangeInterpolation interpolation(compoundProcess_.getMesh(), mesh, outputDim);
-  p1Interpolation_ = FieldFunction(interpolation);
+  const FieldFunction p1Interpolation(interpolation);
+  ProcessImplementation::setMesh(mesh);
+  p1Interpolation_ = p1Interpolation;
 }
 
 /* Method save() stores the object through the StorageManager */
