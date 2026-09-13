@@ -5,6 +5,7 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
 import os
+import math
 
 ot.TESTPREAMBLE()
 
@@ -461,5 +462,26 @@ assert_matrix_symmetric(val_iso)
 assert_div_transpose(div_iso, s, t)
 assert_stationary_consistency(div_iso, s, t)
 assert_curl_div_relation(curl_iso, div_iso, s, t)
+
+# ====================================================================
+# Extreme coordinates: finite-difference endpoints must stay representable
+# ====================================================================
+print("=" * 60)
+print("Test extreme coordinates (representable FD endpoints)")
+print("=" * 60)
+extreme_points = ([1e16, 1e16], [-1e16, -1e16])
+model_extreme = ot.SquaredExponential([1.0, 1.0], [1.0])
+val_div_extreme = otexp.DivFreeModel(model_extreme)
+for point in extreme_points:
+    val_extreme = val_div_extreme(point, point)
+    assert val_extreme.getNbRows() == 2
+    assert val_extreme.getNbColumns() == 2
+    for i in range(2):
+        for j in range(2):
+            assert math.isfinite(val_extreme[i, j])
+    val_extreme_tau = val_div_extreme(point)
+    for i in range(2):
+        for j in range(2):
+            assert math.isfinite(val_extreme_tau[i, j])
 
 print("All tests passed!")
