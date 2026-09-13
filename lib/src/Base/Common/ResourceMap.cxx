@@ -1446,6 +1446,31 @@ void ResourceMap::loadDefaultConfiguration()
   // KentFactory parameters //
   addAsScalar("KentFactory-AbsolutePrecision", 1.0e-8);
 
+  // Bingham parameters //
+  addAsScalar("Bingham-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("Bingham-MaximumIteration", 50);
+
+  // BinghamFactory parameters //
+  addAsScalar("BinghamFactory-AbsolutePrecision", 1.0e-8);
+
+  // MatrixFisher parameters //
+  addAsScalar("MatrixFisher-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("MatrixFisher-MaximumIteration", 50);
+
+  // MatrixFisherFactory parameters //
+  addAsScalar("MatrixFisherFactory-AbsolutePrecision", 1.0e-8);
+
+  // RiemannianGaussian parameters //
+  addAsScalar("RiemannianGaussian-PositiveDefiniteThreshold", 1.0e-12);
+
+  // RiemannianGaussianFactory parameters //
+  addAsScalar("RiemannianGaussianFactory-StepSize", 0.1);
+  addAsScalar("RiemannianGaussianFactory-Tolerance", 1.0e-8);
+  addAsUnsignedInteger("RiemannianGaussianFactory-MaximumIteration", 100);
+
+  // WrappedNormalFactory parameters //
+  addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 

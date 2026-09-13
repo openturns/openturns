@@ -71,6 +71,14 @@
 %include InverseGammaFactory.i
 %include VonMisesFisher.i
 %include VonMisesFisherFactory.i
+%include Bingham.i
+%include BinghamFactory.i
+%include MatrixFisher.i
+%include MatrixFisherFactory.i
+%include RiemannianGaussian.i
+%include RiemannianGaussianFactory.i
+%include WrappedNormal.i
+%include WrappedNormalFactory.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i

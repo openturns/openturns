@@ -36,6 +36,11 @@ Building distributions from samples
     BernoulliFactory
     BetaFactory
     BinomialFactory
+
+    :template: DistributionFactory.rst_t
+    experimental.BinghamFactory
+
+    :template: DistributionFactory.rst_t
     BurrFactory
     ChiFactory
     ChiSquareFactory
@@ -87,6 +92,9 @@ Building distributions from samples
 
     MeixnerDistributionFactory
 
+    :template: DistributionFactory.rst_t
+    experimental.MatrixFisherFactory
+
     :template: class.rst_t
 
     MethodOfMomentsFactory
@@ -106,6 +114,9 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     RayleighFactory
+
+    :template: DistributionFactory.rst_t
+    experimental.RiemannianGaussianFactory
 
     :template: class.rst_t
 
@@ -130,6 +141,7 @@ Building distributions from samples
     UniformFactory
     VonMisesFactory
     experimental.VonMisesFisherFactory
+    experimental.WrappedNormalFactory
     WeibullMinFactory
     WeibullMaxFactory
 
