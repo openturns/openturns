@@ -18,7 +18,7 @@ the optimization step:
 - `StudentCopulaFactory-NuMax`
 - `StudentCopulaFactory-NuStart`
 - `StudentCopulaFactory-DefaultOptimizationAlgorithm`
-- `StudentCopulaFactory-MaximumEvaluationNumber`
+- `StudentCopulaFactory-MaximumCallsNumber`
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
