@@ -28,6 +28,7 @@
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/HermitianMatrix.hxx"
 #include "openturns/TriangularComplexMatrix.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -503,9 +504,8 @@ void CirculantEmbeddingGaussianProcess::setMesh(const Mesh & mesh)
         const UnsignedInteger previous = i - strides[dim];
         const Scalar step = vertices[i][dim] - vertices[previous][dim];
         const Scalar refStep = vertices[strides[dim]][dim] - vertices[0][dim];
-        const Scalar tolerance = SpecFunc::ScalarEpsilon
-                                 * std::max(1.0, std::max(std::abs(lowerBound[dim]), std::abs(upperBound[dim])))
-                                 * 100.0;
+        const Scalar tolerance = ResourceMap::GetAsScalar("Mesh-VertexEpsilon")
+                                 * std::max(1.0, std::max(std::abs(lowerBound[dim]), std::abs(upperBound[dim])));
         if (std::abs(step - refStep) > tolerance)
           throw InvalidArgumentException(HERE) << "Error: the input mesh must be a regular Cartesian grid with uniform spacing, got a non-uniform mesh.";
       }
@@ -649,8 +649,8 @@ void CirculantEmbeddingGaussianProcess::getRealizationND(Field & field) const
       Collection<Complex> Z(outputDim);
       for (UnsignedInteger p = 0; p < outputDim; ++p)
       {
-        const Scalar realPart = DistFunc::rNormal() * M_SQRT1_2;
-        const Scalar imagPart = DistFunc::rNormal() * M_SQRT1_2;
+        const Scalar realPart = DistFunc::rNormal() * std::sqrt(0.5);
+        const Scalar imagPart = DistFunc::rNormal() * std::sqrt(0.5);
         Z[p] = Complex(realPart, imagPart);
       }
 
