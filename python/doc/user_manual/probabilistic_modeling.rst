@@ -31,6 +31,9 @@ Continuous parametric distributions
     Burr
 
     :template: Distribution.rst_t
+    experimental.Bingham
+
+    :template: Distribution.rst_t
     Chi
     ChiSquare
 
@@ -65,6 +68,9 @@ Continuous parametric distributions
     LogUniform
     MeixnerDistribution
 
+    :template: Distribution.rst_t
+    experimental.MatrixFisher
+
     :template: classWithPlot.rst_t
     experimental.MultivariateUniform
 
@@ -83,6 +89,11 @@ Continuous parametric distributions
     Pareto
     Rayleigh
     Rice
+
+    :template: Distribution.rst_t
+    experimental.RiemannianGaussian
+
+    :template: Distribution.rst_t
     SmoothedUniform
     SquaredNormal
     Student
@@ -107,6 +118,7 @@ Continuous parametric distributions
 
     :template: classWithPlot.rst_t
     experimental.VonMisesFisher
+    experimental.WrappedNormal
     WeibullMin
     WeibullMax
 
