@@ -15,13 +15,13 @@ Three tests are performed. We note :math:`[a_i,b_i]` the range of :math:`X_i`. T
 - Test 1 checks that :math:`a_i \leq a_{i+1}` and :math:`b_i \leq b_{i+1}` for all :math:`i`.
 
 - Test 2 discretizes :math:`[0,1]` with :math:`\{\dfrac{1}{2n},\dfrac{3}{2n}, \dots,\dfrac{2n-1}{2n}\} = \{q_1, \dots, q_{2n-1} \}`
-  where :math:`n` is defined in the :class:`~openturns.ResourceMap` with `OSMC-OptimizationEpsilon`. By default, :math:`n=100`. Test 2 checks that:
+  where :math:`n` is defined in the :class:`~openturns.ResourceMap` with `OrderStatisticsMarginalChecker-QuantileIteration`. By default, :math:`n=100`. Test 2 checks that:
 
   .. math::
   
       F_k^{-1}(q_j) \geq F_{k-1}^{-1}(q_j)+\epsilon, \quad 1 \leq j \leq d
 
-  where :math:`\epsilon` is defined in the :class:`~openturns.ResourceMap` with `OSMC-QuantileIteration`. By default, :math:`\epsilon=10^{-7}`.
+  where :math:`\epsilon` is defined in the :class:`~openturns.ResourceMap` with `OrderStatisticsMarginalChecker-OptimizationEpsilon`. By default, :math:`\epsilon=10^{-7}`.
 
 - Test 3 checks that: 
 
