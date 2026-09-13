@@ -162,6 +162,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
   // Loop over the time series
   for (UnsignedInteger l = 0 ; l < sampleSize; ++l)
   {
+    const Sample fieldL(sample.getField(l).getValues());
     // The current time series values are stored into a ComplexMatrix in order to
     // have a two-indices access and an internal linear storage. The data are stored column-wise, i.e the column elements are contiguous in memory
     ComplexMatrix zHat(kMax, dimension);
@@ -171,7 +172,7 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Pro
     {
       // Loop over the time stamps
       ComplexCollection zP(N);
-      for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * sample[l](m, p); // The first component of the value of a time series at a given index is the time value
+      for (UnsignedInteger m = 0; m < N; ++m) zP[m] = alpha[m] * fieldL(m, p); // The first component of the value of a time series at a given index is the time value
       // Perform the FFT direct transform of the tapered data
       const ComplexCollection zPHat(fftAlgorithm_.transform(zP));
       // Stores the result. Only the values associated with nonnegative frequency values are stored.
@@ -205,9 +206,11 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Fie
   const Sample values(timeSeries.getValues());
   for (UnsignedInteger blockIndex = 0; blockIndex < blockNumber_; ++blockIndex)
   {
+    Sample block(blockSize, dimension);
     std::copy(&values(blockIndex * hopSize, 0),
               &values(blockIndex * hopSize + blockSize - 1, dimension - 1) + 1,
-              &sample[blockIndex](0, 0));
+              block.getImplementation()->data_begin());
+    sample.setField(blockIndex, block);
   } // Loop on the blocks
   return buildAsUserDefinedSpectralModel(sample);
 }

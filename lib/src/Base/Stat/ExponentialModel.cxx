@@ -100,6 +100,7 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
   else
     factor = exp(-tauOverThetaNorm);
   SquareMatrix output(outputCovariance_);
+  output.copyOnWrite();
   output.getImplementation()->symmetrize();
   return output * factor;
 }
@@ -131,15 +132,15 @@ Scalar ExponentialModel::computeAsScalar(const Point &tau) const
  * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar ExponentialModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
 
   Scalar tauOverThetaNorm = 0;
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = (*s_it - *t_it) / scale_[i];
@@ -182,8 +183,9 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   norm = std::sqrt(norm);
   // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'kronecker',
   SquareMatrix covariance(outputCovariance_);
+  covariance.copyOnWrite();
   covariance.getImplementation()->symmetrize();
-  Point covariancePoint(*covariance.getImplementation());
+  Point covariancePoint(covariance.getImplementation()->begin(), covariance.getImplementation()->end());
   // Finally assemble the final matrix
   const Scalar value = -std::exp(-norm) / norm;
   Matrix gradient(getInputDimension(), covariancePoint.getDimension());

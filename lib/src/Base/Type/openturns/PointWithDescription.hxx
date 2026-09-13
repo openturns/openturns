@@ -50,6 +50,9 @@ public:
   /** Constructor from a collection */
   PointWithDescription(const Collection<Scalar> & coll);
 
+  /** Constructor from a point */
+  explicit PointWithDescription(const Point & point);
+
   /** Constructor from a base class */
   PointWithDescription(const Pointer<Point> & p_base);
 
@@ -58,6 +61,18 @@ public:
 
   /** Virtual constructor */
   PointWithDescription * clone() const override;
+
+#ifndef SWIG
+  /** Assignment from a Point: only the coordinates are affected */
+  PointWithDescription & operator = (const Point & other)
+  {
+    if (this != &other)
+    {
+      Point::operator = (other);
+    }
+    return *this;
+  }
+#endif
 
   /** Description Accessor */
   void setDescription(const Description & description);

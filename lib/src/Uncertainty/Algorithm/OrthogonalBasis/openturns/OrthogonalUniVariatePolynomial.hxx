@@ -22,7 +22,7 @@
 #define OPENTURNS_ORTHOGONALUNIVARIATEPOLYNOMIAL_HXX
 
 #include "openturns/UniVariatePolynomialImplementation.hxx"
-#include "openturns/PersistentCollection.hxx"
+#include "openturns/DataContainer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -78,7 +78,7 @@ private:
   Coefficients buildCoefficients(const UnsignedInteger n);
 
   /** The recurrence coefficients (an, bn, cn) that defines the orthogonal polynomial for n >= 0. The polynomial P0 is constant equal to 1.0, and by convention we note P-1(x) the null polynomial. For n>=1 we have: Pn+1(x) = (an * x + bn) * Pn(x) + cn * Pn-1(x). The recurrence coefficients are stored starting with (a1, b1, c1). */
-  PersistentCollection<Scalar> recurrenceCoefficients_;
+  DataContainer recurrenceCoefficients_;
 
 } ; /* class OrthogonalUniVariatePolynomial */
 

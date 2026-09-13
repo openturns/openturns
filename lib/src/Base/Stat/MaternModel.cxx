@@ -113,12 +113,12 @@ Scalar MaternModel::computeAsScalar(const Point & tau) const
     return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
-Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                                    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar MaternModel::computeAsScalar(const Scalar * s_begin,
+                                    const Scalar * t_begin) const
 {
   Scalar scaledPoint = 0;
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = (*s_it - *t_it) * sqrt2nuOverTheta_[i];

@@ -109,16 +109,16 @@ Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) c
   return covarianceCollection_[index](0, 0);
 }
 
-Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
 
   // Work on iterators
   // Unfortunately there is no other solution then generating the tau point
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   Point tau(inputDimension_, 0.0);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {

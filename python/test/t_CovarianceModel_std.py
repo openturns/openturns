@@ -4,6 +4,18 @@ import openturns as ot
 import openturns.testing as ott
 from math import sqrt
 
+
+def matrix_to_point(m):
+    """Flatten a matrix into a Point in storage (column-major) order."""
+    res = ot.Point(m.getNbRows() * m.getNbColumns())
+    k = 0
+    for j in range(m.getNbColumns()):
+        for i in range(m.getNbRows()):
+            res[k] = m[i, j]
+            k += 1
+    return res
+
+
 ot.TESTPREAMBLE()
 
 
@@ -100,13 +112,13 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
         else:
             gradfd = ot.Matrix(inputDimension, dimension * dimension)
             covarianceX1X2 = myModel(x1, x2)
-            centralValue = ot.Point(covarianceX1X2.getImplementation())
+            centralValue = matrix_to_point(covarianceX1X2)
             # Loop over the shifted points
             for i in range(inputDimension):
                 currentPoint = ot.Point(x1)
                 currentPoint[i] += eps
                 localCovariance = myModel(currentPoint, x2)
-                currentValue = ot.Point(localCovariance.getImplementation())
+                currentValue = matrix_to_point(localCovariance)
                 for j in range(currentValue.getSize()):
                     gradfd[i, j] = (currentValue[j] - centralValue[j]) / eps
 

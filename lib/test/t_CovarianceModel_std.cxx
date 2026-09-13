@@ -43,7 +43,9 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
 
   if (myModel.isStationary())
   {
+fprintf(stderr, "A1\n");
     assert_almost_equal(myModel(x1 - x2), myModel(x1, x2), 0, 0);
+fprintf(stderr, "A2\n");
     assert_almost_equal(myModel(x2 - x1), myModel(x1, x2), 0, 0);
   }
 
@@ -68,7 +70,11 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
     // Check that discretize & computeAsScalar provide the same values
     for (UnsignedInteger j = 0; j < vertices.getSize(); ++j)
       for (UnsignedInteger i = j; i < vertices.getSize(); ++i)
+{
         assert_almost_equal(cov(i, j), myModel.computeAsScalar(vertices[i], vertices[j]), 1e-14, 1e-14);
+fprintf(stderr, "A3\n");
+}
+
   }
   else
   {
@@ -85,6 +91,7 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
             localMatrix(localI, localJ) = cov(i * dimension + localI, j * dimension + localJ);
           }
         }
+fprintf(stderr, "A4\n");
         assert_almost_equal(localMatrix, myModel(vertices[i], vertices[j]), 1e-14, 1e-14);
       }
     }
@@ -94,12 +101,14 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
   // we look at crossCovariance of (vertices, vertices) which should return the same values
   cov.getImplementation()->symmetrize();
   const Matrix crossCov(myModel.computeCrossCovariance(vertices, vertices));
+fprintf(stderr, "A5\n");
   assert_almost_equal(crossCov, cov, 1e-14, 1e-14, OSS() << "in " << myModel.getImplementation()->getClassName() << "::computeCrossCovariance" );
 
   // Now crossCovariance(sample, sample) is ok
   // Let us validate crossCovariance(Sample, point) with 1st column(s) of previous calculations
   const Matrix crossCovSamplePoint(myModel.computeCrossCovariance(vertices, vertices[0]));
   const Matrix crossCovCol(crossCov.reshape(crossCov.getNbRows(), dimension));
+fprintf(stderr, "A6\n");
   assert_almost_equal(crossCovSamplePoint, crossCovCol, 1e-14, 1e-14,  OSS() << "in " << myModel.getImplementation()->getClassName() << "::computeCrossCovarianceSamplePoint");
 
   // gradient testing
@@ -120,6 +129,7 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
         x1_d[j] -= eps;
         gradfd(j, 0) = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
       }
+fprintf(stderr, "A7\n");
       assert_almost_equal(grad, gradfd, 1e-6, 1e-6, OSS() << "in " << myModel.getImplementation()->getClassName() << " grad");
     }
     else
@@ -128,7 +138,7 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
       SquareMatrix covarianceX1X2 = myModel(x1, x2);
       // Convert result into MatrixImplementation to get the collection
       MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
-      const Point centralValue(covarianceX1X2Implementation);
+      const Point centralValue(covarianceX1X2Implementation.begin(), covarianceX1X2Implementation.end());
       // Loop over the shifted points
       for (UnsignedInteger i = 0; i < inputDimension; ++i)
       {
@@ -136,10 +146,11 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
         currentPoint[i] += eps;
         SquareMatrix localCovariance = myModel(currentPoint, x2);
         MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
-        const Point currentValue(localCovarianceImplementation);
+        const Point currentValue(localCovarianceImplementation.begin(), localCovarianceImplementation.end());
         for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
           gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
       }
+fprintf(stderr, "A8\n");
       assert_almost_equal(grad, gradfd, 2e5, 2e-5, OSS() << "in " << myModel.__str__() << " grad");
     }
   }
@@ -154,6 +165,7 @@ static void test_scalar_model(const CovarianceModel &myModel)
 
   const Point x1(inputDimension,  2.0);
   const Point x2(inputDimension, -3.0);
+fprintf(stderr, "A9\n");
   assert_almost_equal(myModel.computeAsScalar(x1[0], x2[0]), myModel.computeAsScalar(x1, x2), 1.0e-14, 1.0e-14);
 
   const  Matrix grad(myModel.partialGradient(x1, x2));
@@ -168,6 +180,7 @@ static void test_scalar_model(const CovarianceModel &myModel)
     x1_d[j] -= eps;
     gradfd[j] = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
   }
+fprintf(stderr, "A10\n");
   assert_almost_equal(gradfd[0], grad(0, 0), 1.0e-5, 1.0e-5);
 }
 
@@ -182,6 +195,9 @@ int main(int, char *[])
     // Default input dimension parameter to evaluate the model
     UnsignedInteger dimension = 2;
 
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 1) return 0;
+
     // 1) Squared exponential model
     {
       /* Default constructor */
@@ -191,6 +207,9 @@ int main(int, char *[])
       SquaredExponential myModel(dimension);
       test_model(myModel);
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 2) return 0;
 
     // 2) Generalized exponential model
     {
@@ -202,6 +221,9 @@ int main(int, char *[])
       test_model(myModel);
     }
 
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 3) return 0;
+
     // 3) Absolute exponential model
     {
       /* Default constructor */
@@ -211,6 +233,9 @@ int main(int, char *[])
       AbsoluteExponential myModel(Point(dimension, 10.0));
       test_model(myModel);
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 4) return 0;
 
     // 4) Matern  model
     {
@@ -222,6 +247,9 @@ int main(int, char *[])
       test_model(myModel);
     }
 
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 5) return 0;
+
     // 5) ExponentiallyDampedCosineModel
     {
 
@@ -232,14 +260,21 @@ int main(int, char *[])
       const Point amplitude = {3};
 
       ExponentiallyDampedCosineModel myModel(scale, amplitude, 1);
+fprintf(stderr, "A11\n");
       assert_almost_equal(myModel.getScale(), scale, 0, 0);
+fprintf(stderr, "A12\n");
       assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0);
+fprintf(stderr, "A13\n");
       assert_almost_equal(myModel.getFrequency(), 1, 0, 0);
       test_model(myModel);
       // set new freq
       myModel.setFrequency(3);
+fprintf(stderr, "A14\n");
       assert_almost_equal(myModel.getFrequency(), 3, 0, 0);
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 6) return 0;
 
     // 6) Spherical model
     {
@@ -249,19 +284,29 @@ int main(int, char *[])
 
       dimension = 2;
       SphericalModel myModel(Point(dimension, 2), Point(1, 3), 4.5);
+fprintf(stderr, "A15\n");
       assert_almost_equal(myModel.getScale(), Point(dimension, 2), 0, 0);
+fprintf(stderr, "A16\n");
       assert_almost_equal(myModel.getAmplitude(), Point(1, 3), 0, 0);
+fprintf(stderr, "A17\n");
       assert_almost_equal(myModel.getRadius(), 4.5, 0, 0);
       test_model(myModel);
       myModel.setRadius(1.5);
+fprintf(stderr, "A18\n");
       assert_almost_equal(myModel.getRadius(), 1.5, 0, 0);
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 7) return 0;
 
     // 7) FractionalBrownianMotionModel
     {
       FractionalBrownianMotionModel myModel(2.0, 3.0, 0.25);
       test_model(myModel);
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 8) return 0;
 
     // 8) DiracCovarianceModel
     {
@@ -279,7 +324,9 @@ int main(int, char *[])
         for (UnsignedInteger i = j + 1; j < dimension; ++j)
           spatialCorrelation(i, j) = (i + 1.0) / dimension - (j + 1.0) / dimension;
       DiracCovarianceModel myModel(2, amplitude, spatialCorrelation);
+fprintf(stderr, "A19\n");
       assert_almost_equal(myModel.getScale(), Point(2, 1), 0, 0);
+fprintf(stderr, "A20\n");
       assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0);
       test_model(myModel, false);
     }
@@ -295,10 +342,15 @@ int main(int, char *[])
       const Point amplitude = {1};
 
       StationaryFunctionalCovarianceModel myModel(scale, amplitude, rho);
+fprintf(stderr, "A21\n");
       assert_almost_equal(myModel.getScale(), scale, 0, 0);
+fprintf(stderr, "A22\n");
       assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0);
       test_model(myModel);
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 9) return 0;
 
     // 10) Product covariance model
     {
@@ -317,12 +369,16 @@ int main(int, char *[])
       point[1] = -6.0;
       const Point x(1, point[0]);
       const Point y(1, point[1]);
+fprintf(stderr, "A23\n");
       assert_almost_equal(myModel.computeAsScalar(point), myAbsoluteExponential.computeAsScalar(x) * mySquaredExponential.computeAsScalar(y), 1.0e-15, 1.0e-15);
       // Gradient test in comparison with FD
       test_model(myModel);
       // Check that a ProductCovarianceModel can be built from a DiracCovarianceModel
       ProductCovarianceModel cov(Collection<CovarianceModel>(1, DiracCovarianceModel(1)));
     }
+
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 10) return 0;
 
     // 11) Tensorized model
     {
@@ -349,6 +405,9 @@ int main(int, char *[])
       test_model(myModel);
     }
 
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 11) return 0;
+
     // 12) 1d in/out models
 
     {
@@ -365,6 +424,9 @@ int main(int, char *[])
       }
     }
 
+    fprintf(stderr, "SECTION\n");
+    if (getenv("STOP_AT") && std::atoi(getenv("STOP_AT")) == 12) return 0;
+
     // 13) isotropic model
     {
       Point scalePoint = {3.5};
@@ -373,9 +435,13 @@ int main(int, char *[])
       IsotropicCovarianceModel myIsotropicKernel(myOneDimensionalKernel, 2);
 
       // Test consistency of isotropic model with underlying 1D kernel
+fprintf(stderr, "A24\n");
       assert_almost_equal(myIsotropicKernel.getAmplitude(), amplitudePoint, 1e-12, 0.0);
+fprintf(stderr, "A25\n");
       assert_almost_equal(myIsotropicKernel.getScale(), scalePoint, 1e-12, 0.0);
+fprintf(stderr, "A26\n");
       assert_almost_equal(myIsotropicKernel.getKernel().getAmplitude(), amplitudePoint, 1e-12, 0.0);
+fprintf(stderr, "A27\n");
       assert_almost_equal(myIsotropicKernel.getKernel().getScale(), scalePoint, 1e-12, 0.0);
 
       // Standard tests applied
@@ -386,7 +452,9 @@ int main(int, char *[])
       inputVector[0] = 0.3;
       inputVector[1] = 1.7;
       Point inputVectorNorm(1, inputVector.norm());
+fprintf(stderr, "A28\n");
       assert_almost_equal(myOneDimensionalKernel(inputVectorNorm)(0, 0), 1.992315565746, 1e-12, 0.0);
+fprintf(stderr, "A29\n");
       assert_almost_equal(myIsotropicKernel(inputVector)(0, 0), 1.992315565746, 1e-12, 0.0);
       Sample inputSample(2, 2);
       inputSample[1] = inputVector;
@@ -394,11 +462,17 @@ int main(int, char *[])
       inputSampleNorm[1] = inputVectorNorm;
       CovarianceMatrix oneDimensionalCovMatrix(myOneDimensionalKernel.discretize(inputSampleNorm));
       CovarianceMatrix isotropicCovMatrix(myIsotropicKernel.discretize(inputSample));
+fprintf(stderr, "A30\n");
       assert_almost_equal(oneDimensionalCovMatrix(0, 0), 2.250000000002, 1e-12, 0.0);
+fprintf(stderr, "A31\n");
       assert_almost_equal(oneDimensionalCovMatrix(1, 1), 2.250000000002, 1e-12, 0.0);
+fprintf(stderr, "A32\n");
       assert_almost_equal(isotropicCovMatrix(0, 0), 2.250000000002, 1e-12, 0.0);
+fprintf(stderr, "A33\n");
       assert_almost_equal(isotropicCovMatrix(1, 1), 2.250000000002, 1e-12, 0.0);
+fprintf(stderr, "A34\n");
       assert_almost_equal(oneDimensionalCovMatrix(0, 1), 1.992315565746, 1e-12, 0.0);
+fprintf(stderr, "A35\n");
       assert_almost_equal(isotropicCovMatrix(0, 1), 1.992315565746, 1e-12, 0.0);
     }
 
@@ -417,6 +491,7 @@ int main(int, char *[])
       if (!checkDiag)
         throw TestFailed(OSS() << "isDiagonal differ between spatial covariance & covariance model");
       const Scalar rho = spatialCovariance(1, 0) / std::sqrt(spatialCovariance(0, 0) * spatialCovariance(1, 1));
+fprintf(stderr, "A36\n");
       assert_almost_equal(myModel.getOutputCorrelation()(0, 1), rho, 0, 0, "in ExponentialModel correlation");
     }
 
@@ -455,33 +530,45 @@ int main(int, char *[])
       Point scale = {1};
       KroneckerCovarianceModel myModel(rho, amplitude, outputCorrelation);
       test_model(myModel);
+fprintf(stderr, "A37\n");
       assert_almost_equal(myModel.getInputDimension(), 3, 0, 0, "in kronecker dimension check");
+fprintf(stderr, "A38\n");
       assert_almost_equal(myModel.getScale(), scale, 0, 0, "in kronecker scale check");
       // full param size = 6 (scale(1), nuggetFactor(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
       Point fullParameter = {1, 1e-12, 1, 2, 0.8, 1.5};
+fprintf(stderr, "A39\n");
       assert_almost_equal(myModel.getFullParameter().getSize(), 6, 0, 0, "in kronecker param size check");
+fprintf(stderr, "A40\n");
       assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker full param check");
+fprintf(stderr, "A41\n");
       assert_almost_equal(myModel.getFullParameterDescription().getSize(), 6, 0, 0, "in kronecker param description size check");
       Indices active = {0, 2, 3};
       assert_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
       fullParameter = {2, 1e-12, 1, 2, .5, 2.5};
       myModel.setFullParameter(fullParameter);
+fprintf(stderr, "A42\n");
       assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker param check");
       active.add(5);
       myModel.setActiveParameter(active);
       assert_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
       // Now we should get all values except correlation
       Point parameter = {2, 1, 2, 2.5};
+fprintf(stderr, "A43\n");
       assert_almost_equal(myModel.getParameter(), parameter, 0, 0, "in kronecker param check");
       myModel.activateAmplitude(false);
+fprintf(stderr, "A44\n");
       assert_almost_equal(myModel.getParameter(), {2, 2.5}, 0, 0, "in kronecker deactivate amplitude check");
       myModel.activateScale(false);
+fprintf(stderr, "A45\n");
       assert_almost_equal(myModel.getParameter(), {2.5}, 0, 0, "in kronecker deactivate scale check");
       myModel.activateNuggetFactor(true);
+fprintf(stderr, "A46\n");
       assert_almost_equal(myModel.getParameter(), {1e-12, 2.5}, 0, 0, "in kronecker activate nuggetFactor check");
       myModel.activateAmplitude(true);
+fprintf(stderr, "A47\n");
       assert_almost_equal(myModel.getParameter(), {1e-12, 1, 2, 2.5}, 0, 0, "in kronecker activate amplitude check");
       myModel.activateScale(true);
+fprintf(stderr, "A48\n");
       assert_almost_equal(myModel.getParameter(), {2, 1e-12, 1, 2, 2.5}, 0, 0, "in kronecker activate scale check");
       Description description = {"scale_0", "nuggetFactor", "amplitude_0", "amplitude_1", "R_1_0", "nu"};
       Bool checkDesc = myModel.getFullParameterDescription() == description;

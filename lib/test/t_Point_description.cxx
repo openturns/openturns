@@ -70,7 +70,7 @@ int main(int, char *[])
 
   // Creation
   Collection<PointWithDescription> coll1(5, PointWithDescription(4));
-  Collection<PointWithDescription> coll2(5, Point(4));
+  Collection<PointWithDescription> coll2(5, PointWithDescription(4));
   Collection<Point> coll3(5, PointWithDescription(4));
   Collection<Point> coll4(5, Point(4));
   (void)coll1;

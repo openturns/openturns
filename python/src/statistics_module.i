@@ -91,6 +91,7 @@
 %include LatentVariableModel.i
 %include CorrelationAnalysis.i
 %include SamplePartition.i
+%include StatisticsEngine.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i

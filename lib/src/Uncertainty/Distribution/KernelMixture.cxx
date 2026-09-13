@@ -653,7 +653,10 @@ void KernelMixture::computeCovariance() const
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
   const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
   // Covariance(sample) term, with the proper scaling
-  covariance_ = CovarianceMatrix(dimension, Collection<Scalar>(sample_.computeCovariance().getImplementation()->operator*(1.0 - 1.0 / sample_.getSize())));
+  {
+    const MatrixImplementation covImpl(sample_.computeCovariance().getImplementation()->operator*(1.0 - 1.0 / sample_.getSize()));
+    covariance_ = CovarianceMatrix(dimension, Collection<Scalar>(covImpl.begin(), covImpl.end()));
+  }
   // Add the diagonal kernel covariance contribution
   for (UnsignedInteger i = 0; i < dimension; ++i)
     covariance_(i, i) += std::pow(bandwidth_[i] * sigmaKernel, 2);

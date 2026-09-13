@@ -380,6 +380,12 @@
   <LinearModelTest-DefaultDurbinWatsonHypothesis       value_str="Equal"                 />
   <LinearModelTest-DefaultHarrisonMcCabeSimulationSize value_int="1000" />
 
+  <!-- OT::AlgebraEngine parameters -->
+  <AlgebraEngine-DefaultBlockSize value_int="384" />
+
+  <!-- OT::StatisticsEngine parameters -->
+  <StatisticsEngine-DefaultBlockSize value_int="4096" />
+
   <!-- OT::Last parameters -->
   <Last-DefaultMaximumSize value_int="65536" />
 

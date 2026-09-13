@@ -40,7 +40,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> fft = ot.FFT()
->>> result = fft.transform(ot.Normal(8).getRealization())
+>>> result = fft.transform(ot.ScalarCollection(ot.Normal(8).getSample(1)[0]))
 )RAW"
 %enddef
 

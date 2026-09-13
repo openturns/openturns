@@ -26,7 +26,7 @@
 #include "openturns/Field.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
+#include "openturns/DataContainer.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,7 +44,6 @@ public:
 
   /** Some typedefs to ease reading */
   typedef Collection<Sample>           SampleCollection;
-  typedef PersistentCollection<Sample> SamplePersistentCollection;
 
   /** Default constructor */
   ProcessSampleImplementation();
@@ -73,15 +72,15 @@ public:
 
   /** Field accessor */
   void setField (const UnsignedInteger i, const Field & field);
+  void setField (const UnsignedInteger i, const Sample & values);
   void setField (const Field & field, const UnsignedInteger i); // @deprecated
   Field getField (const UnsignedInteger i) const;
 
 #ifndef SWIG
-
-  /** Operators accessors */
-  Sample & operator[] (const UnsignedInteger i);
-  const Sample & operator[] (const UnsignedInteger i) const;
-
+  /** Zero-copy accessor: the returned field aliases this process sample.
+   * The process sample must outlive the field, and mutating the field
+   * mutates the process sample. */
+  Field getFieldView (const UnsignedInteger i) const;
 #endif
 
   /** Virtual constructor */
@@ -201,11 +200,31 @@ public:
   Sample getSampleAtVertex(const UnsignedInteger index) const;
 
 private:
+
+  /** Offset of the first scalar of the given realization */
+  inline UnsignedInteger blockOffset(const UnsignedInteger k) const
+  {
+    return k * verticesNumber_ * dimension_;
+  }
+
   /** Mesh on which the ProcessSampleImplementation focuses */
   Mesh mesh_;
 
-  /** Sample collection of all the fields */
-  SamplePersistentCollection data_;
+  /** Number of realizations */
+  UnsignedInteger size_;
+
+  /** Dimension of the values */
+  UnsignedInteger dimension_;
+
+  /** Number of vertices of the mesh */
+  UnsignedInteger verticesNumber_;
+
+  /** Description of the value components (shared by all realizations) */
+  Description description_;
+
+  /** Flat storage of all the realizations: realization k occupies the
+   * contiguous block [k * verticesNumber * dimension, ...) in row-major order */
+  DataContainer flatData_;
 
 }; /* class ProcessSampleImplementation */
 

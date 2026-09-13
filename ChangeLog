@@ -5,8 +5,16 @@
 === Library ===
 
 ==== Major changes ====
+ * Separating data storage from services: all numeric containers (Point, Sample, Matrix, Tensor, ComplexMatrix, ProcessSample) now store their data into a pluggable DataContainer with MemoryBackend and HDF5Backend (out-of-core) backends, with dense algebra and reductions moved to dedicated AlgebraEngine/StatisticsEngine classes. It addresses part of the HPC probabilistic modelling roadmap (issue #3305), in particular the in-memory data limitations.
 
 ==== New classes ====
+ * DataContainer
+ * ComplexDataContainer
+ * HDF5Backend
+ * ComplexHDF5Backend
+ * AlgebraEngine
+ * StatisticsEngine
+
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -3526,3 +3534,5 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
+
+

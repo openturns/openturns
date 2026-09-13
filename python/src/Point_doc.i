@@ -356,3 +356,28 @@ Examples
 >>> import openturns as ot
 >>> x = ot.Point([1.0, 2.0, 3.0])
 >>> prod = x.dot([4, 5, 6])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::toDataContainer
+"Convert the Point to a DataContainer (1D layout).
+
+Returns
+-------
+dc : DataContainer
+    A DataContainer wrapping the same memory as this Point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::FromDataContainer
+"Construct a Point from a DataContainer (1D layout).
+
+Parameters
+----------
+dc : DataContainer
+    A 1D DataContainer.
+
+Returns
+-------
+point : Point
+    A Point with the same data as the DataContainer."

@@ -22,8 +22,13 @@
 #define OPENTURNS_POINT_HXX
 
 #include <vector>
-#include "openturns/PersistentCollection.hxx"
+#include <algorithm>
+#include <functional>
+#include "openturns/PersistentObject.hxx"
 #include "openturns/Description.hxx"
+#include "openturns/Collection.hxx"
+#include "openturns/DataContainer.hxx"
+#include "openturns/AlgebraEngine.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -34,13 +39,16 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API OT_WARN_UNUSED Point
-  : public PersistentCollection<Scalar>
+  : public PersistentObject
 {
   CLASSNAME
 
 public:
 
-  typedef PersistentCollection<Scalar> InternalType;
+  typedef Scalar*             iterator;
+  typedef const Scalar*       const_iterator;
+  typedef std::reverse_iterator<iterator>       reverse_iterator;
+  typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
   typedef Collection<Scalar>           ScalarCollection;
   typedef Point                        ImplementationType;
 
@@ -54,16 +62,32 @@ public:
   /** Constructor from a collection */
   Point(const Collection<Scalar> & coll);
 
+  /** Constructor from a DataContainer (1D) */
+  explicit Point(const DataContainer & dc);
+
   /** Initializer list constructor */
   Point(std::initializer_list<Scalar> initList);
 
   /** Constructor from a range of elements */
-  template <typename InputIterator>
+  template <typename InputIterator,
+            typename std::enable_if<!std::is_integral<InputIterator>::value, bool>::type = true>
   Point(InputIterator first, InputIterator last)
-    : InternalType(first, last) {}
+    : PersistentObject()
+    , data_()
+  {
+    assign(first, last);
+  }
 
   /** Virtual constructor */
   Point * clone() const override;
+
+#ifndef SWIG
+  /** Copy constructor */
+  Point(const Point & other);
+
+  /** Assignment operator */
+  Point & operator = (const Point & other);
+#endif
 
   /** String converter */
   String __repr__() const override;
@@ -87,30 +111,163 @@ public:
   /** Dimension accessor */
   inline UnsignedInteger getDimension() const
   {
-    return PersistentCollection<Scalar>::getSize();
+    return data_.getSize();
   }
   inline UnsignedInteger getSize() const
   {
-    return PersistentCollection<Scalar>::getSize();
-  }
-
-  /** Collection accessor */
-  inline const ScalarCollection & getCollection() const
-  {
-    return *this;
+    return data_.getSize();
   }
 
 #ifndef SWIG
+  /** Operator[]() gives access to the elements of the point */
+  inline Scalar & operator [] (const UnsignedInteger i)
+  {
+    return data_[i];
+  }
+
+  /** Operator[]() gives access to the elements of the const point */
+  inline const Scalar & operator [] (const UnsignedInteger i) const
+  {
+    return data_[i];
+  }
+#endif
+
+  /** At() gives access to the elements of the point but throws an exception if bounds are overcome */
+  Scalar & at(const UnsignedInteger i);
+  const Scalar & at(const UnsignedInteger i) const;
+
+  /** Method __len__() is for Python */
+  inline UnsignedInteger __len__() const
+  {
+    return getSize();
+  }
+
+  /* Method __eq__() is for Python */
+  Bool __eq__(const Point & rhs) const
+  {
+    return *this == rhs;
+  }
+
+  /* Method __getitem__() is for Python */
+  Scalar __getitem__(SignedInteger i) const;
+
+  /* Method __setitem__() is for Python */
+  void __setitem__(SignedInteger i,
+                   const Scalar & val);
+
+  /* Whether the list contains the value val */
+  Bool contains(Scalar val) const;
+
+  /** find returns the index of the first occurrence of the value */
+  UnsignedInteger find(const Scalar & val) const;
+
+  /** Method add() appends an element to the point */
+  void add(const Scalar & elt);
+
+  /** Method add() appends a collection to the point */
+  void add(const Collection<Scalar> & coll);
+  void add(const Point & coll);
+
+  /** Select elements designated by their indices */
+  ScalarCollection select(const Collection<UnsignedInteger> & marginalIndices) const;
+
+  /** Method getSize() returns the number of elements of the point */
+
+  /** Method resize() changes the size of the point */
+  void resize(const UnsignedInteger newSize);
+
+  /** Clear all elements of the point */
+  void clear();
+
+  /** Assign elements to the point */
+  template <typename InputIterator>
+  void assign(InputIterator first,
+              InputIterator last)
+  {
+    /* Delegate to std::vector so that (count, value) calls with
+       non-iterator arithmetic types keep their historical meaning */
+    const std::vector<Scalar> tmp(first, last);
+    data_.resize(tmp.size());
+    std::copy(tmp.begin(), tmp.end(), data_.data());
+  }
+
+  /** Whether the point is empty */
+  Bool isEmpty() const;
+
+#ifndef SWIG
   /** Erase the elements between first and last */
-  iterator erase(const iterator first, const iterator last) override;
+  iterator erase(const iterator first, const iterator last);
 
   /** Erase the element pointed by position */
-  iterator erase(iterator position) override;
+  iterator erase(iterator position);
 
   /** Erase the element pointed by position */
   iterator erase(UnsignedInteger position);
+#endif
 
-  /** In-place addition operator */
+  /** Method begin() points to the first element of the point */
+  inline iterator begin()
+  {
+    return data_.data();
+  }
+  inline const_iterator begin() const
+  {
+    return data_.data();
+  }
+
+  /** Method end() points beyond the last element of the point */
+  inline iterator end()
+  {
+    return data_.data() + getSize();
+  }
+  inline const_iterator end() const
+  {
+    return data_.data() + getSize();
+  }
+
+  /** Method rbegin() points to the last element of the point */
+  inline reverse_iterator rbegin()
+  {
+    return reverse_iterator(end());
+  }
+  inline const_reverse_iterator rbegin() const
+  {
+    return const_reverse_iterator(end());
+  }
+
+  /** Method rend() points before the first element of the point */
+  inline reverse_iterator rend()
+  {
+    return reverse_iterator(begin());
+  }
+  inline const_reverse_iterator rend() const
+  {
+    return const_reverse_iterator(begin());
+  }
+
+  /** Returns a pointer to the block of memory */
+  inline const Scalar * data() const
+  {
+    return data_.data();
+  }
+  inline Scalar * data()
+  {
+    return data_.data();
+  }
+
+  /** Give access to the underlying storage as a STL vector */
+  std::vector<Scalar> toStdVector() const;
+
+  /** Collection accessor */
+  ScalarCollection getCollection() const;
+
+#ifndef SWIG
+  /** Implicit conversion to a scalar collection (compatibility bridge) */
+  operator ScalarCollection() const;
+#endif
+
+#ifndef SWIG
+  /**  In-place addition operator */
   Point & operator +=(const Point & other);
 
   /** In-place subtraction operator */
@@ -141,8 +298,14 @@ public:
   /** Square normalize the vector */
   Point normalizeSquare() const;
 
-  /** Dot product operator */
+  /**  Dot product operator */
   Scalar dot(const Point & rhs) const;
+
+  /** Convert to DataContainer (1D) */
+  DataContainer toDataContainer() const;
+
+  /** Construct a Point from a DataContainer (1D) */
+  static Point FromDataContainer(const DataContainer & dc);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -152,8 +315,8 @@ public:
 
 private:
 
-  //      /** The description of all components */
-  //      Description:: p_description_;
+  /** The flat storage of the coordinates */
+  DataContainer data_;
 
 }; /* class Point */
 
@@ -162,6 +325,13 @@ private:
 /** Comparison operator */
 OT_API Bool operator == (const Point & lhs,
                          const Point & rhs);
+
+/** Difference operator */
+inline Bool operator != (const Point & lhs,
+                         const Point & rhs)
+{
+  return !(lhs == rhs);
+}
 
 /** Ordering operator */
 OT_API Bool operator < (const Point & lhs,

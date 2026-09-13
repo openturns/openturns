@@ -102,7 +102,7 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
   if (p_cache_->isEnabled())
   {
     // If cache is enabled
-    CacheKeyType inKey = inPoint.getCollection();
+    CacheKeyType inKey(inPoint);
     if (p_cache_->hasKey(inKey))
     {
       outPoint = Point::ImplementationType(p_cache_->find(inKey));
@@ -111,7 +111,7 @@ Point MemoizeEvaluation::operator() (const Point & inPoint) const
     {
       outPoint = evaluation_.operator()(inPoint);
       callsNumber_.increment();
-      CacheValueType outValue(outPoint.getCollection());
+      CacheValueType outValue(outPoint);
       p_cache_->add(inKey, outValue);
     }
   }
@@ -143,7 +143,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
     Indices toDoIndices;
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
-      CacheKeyType inKey(inSample[i].getCollection());
+      CacheKeyType inKey(inSample[i]);
       if (p_cache_->hasKey(inKey))
       {
         outSample[i] = Point::ImplementationType(p_cache_->find(inKey));
@@ -166,7 +166,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         const Sample result(evaluation_.operator()(toDo));
         callsNumber_.fetchAndAdd(toDoSize);
         for (UnsignedInteger i = 0; i < toDoSize; ++ i)
-          tempCache.add(toDo[i], result[i]);
+          tempCache.add(toDo[i], Point(result[i]));
       }
       catch (const BatchFailedException & exc)
       {
@@ -182,13 +182,13 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         Sample okSample(0, outDim);
         okSample.setDescription(evaluation_.getOutputDescription());
         for (UnsignedInteger i = 0; i < localOkIndices.getSize(); ++ i)
-          tempCache.add(toDo[localOkIndices[i]], localOkSample[i]);
+          tempCache.add(toDo[localOkIndices[i]], Point(localOkSample[i]));
         std::map<Point, String> failCache;
         for (UnsignedInteger i = 0; i < localFailedIndices.getSize(); ++ i)
           failCache[toDo[localFailedIndices[i]]] = localErrorDescription[i];
         for (UnsignedInteger i = 0; i < size; ++ i)
         {
-          const CacheKeyType inKey(inSample[i].getCollection());
+          const CacheKeyType inKey(inSample[i]);
           if (p_cache_->hasKey(inKey))
             okSample.add(outSample[i]);// already retrieved
           else if (tempCache.hasKey(inKey))
@@ -207,7 +207,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
     // Fill remaining output values
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
-      const CacheKeyType inKey(inSample[i].getCollection());
+      const CacheKeyType inKey(inSample[i]);
       if (tempCache.hasKey(inKey))
         outSample[i] = Point::ImplementationType(tempCache.find(inKey));
     }
@@ -269,7 +269,7 @@ void MemoizeEvaluation::addCacheContent(const Sample& inSample, const Sample& ou
   const UnsignedInteger start = size <= cacheSize ? 0 : size - cacheSize;
   for (UnsignedInteger i = start; i < size; ++ i)
   {
-    p_cache_->add(inSample[i], outSample[i]);
+    p_cache_->add(Point(inSample[i]), Point(outSample[i]));
   }
 }
 

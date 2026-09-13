@@ -29,12 +29,12 @@ typedef kissfft<Scalar> KISSFFTScalar;
 
 struct FFTPolicy
 {
-  const KissFFT::ComplexCollection & input_;
+  const Complex * input_;
   KissFFT::ComplexCollection  & output_;
   KISSFFTScalar & fft_;
   const UnsignedInteger fftSize_;
 
-  FFTPolicy(const KissFFT::ComplexCollection & input,
+  FFTPolicy(const Complex * input,
             KissFFT::ComplexCollection & output,
             KISSFFTScalar & fft,
             UnsignedInteger fftSize)
@@ -163,14 +163,14 @@ ComplexMatrix KissFFT::fft2D(const ComplexMatrix & complexMatrix, const Bool isI
   const UnsignedInteger rows = complexMatrix.getNbRows();
   ComplexCollection output(rows * columns);
   KISSFFTScalar fftRows(rows, isIFFT);
-  const  FFTPolicy policyRows(*(complexMatrix.getImplementation().get()), output, fftRows, rows);
+  const  FFTPolicy policyRows(complexMatrix.getImplementation()->data(), output, fftRows, rows);
   TBBImplementation::ParallelFor( 0, columns, policyRows);
   ComplexCollection transposedData(rows * columns);
   for (UnsignedInteger rowIndex = 0; rowIndex < rows; ++rowIndex)
     for (UnsignedInteger columnIndex = 0; columnIndex < columns; ++columnIndex)
       transposedData[columnIndex + rowIndex * columns] = output[rowIndex + rows * columnIndex];
   KISSFFTScalar fftColumns(columns, isIFFT);
-  const  FFTPolicy policyColumns(transposedData, output, fftColumns, columns);
+  const  FFTPolicy policyColumns(transposedData.data(), output, fftColumns, columns);
   TBBImplementation::ParallelFor( 0, rows, policyColumns );
   ComplexMatrix result(rows, columns);
   Complex factor(1.0);
@@ -276,7 +276,7 @@ ComplexTensor KissFFT::fft3D(const ComplexTensor & tensor, const Bool isIFFT) co
     }
   }
   KISSFFTScalar fft(sheets, isIFFT);
-  const FFTPolicy policy(input, output, fft, sheets);
+  const FFTPolicy policy(input.data(), output, fft, sheets);
   TBBImplementation::ParallelFor( 0, rows * columns, policy );
   index = 0;
   Complex factor(1.0);

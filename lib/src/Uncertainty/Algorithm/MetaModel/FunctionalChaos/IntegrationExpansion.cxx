@@ -158,7 +158,10 @@ void IntegrationExpansion::run()
   LOGINFO(OSS() << "Compute all the coefficients");
   Matrix coefficientsAsMatrix(weightedOutput * designMatrix);
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
-  coefficients.setData(*coefficientsAsMatrix.getImplementation());
+  {
+  const MatrixImplementation & cm_impl(*coefficientsAsMatrix.getImplementation());
+  coefficients.setData(Collection<Scalar>(cm_impl.begin(), cm_impl.end()));
+}
   // Build the result
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(false);

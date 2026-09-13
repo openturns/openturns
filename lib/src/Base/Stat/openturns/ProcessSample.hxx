@@ -81,14 +81,17 @@ public:
 
   /** Field accessor */
   void setField (const UnsignedInteger i, const Field & field);
+  void setField (const UnsignedInteger i, const Sample & values);
   void setField (const Field & field, const UnsignedInteger i); // @deprecated
   Field getField (const UnsignedInteger i) const;
 #ifndef SWIG
+  /** Zero-copy accessor: returned field aliases this process sample */
+  Field getFieldView (const UnsignedInteger i) const;
+#endif
 
-  /** Operators accessors */
-  Sample & operator[] (const UnsignedInteger i);
-  const Sample & operator[] (const UnsignedInteger i) const;
-
+#ifndef SWIG
+  /** Field accessor (returns a copy) */
+  Sample operator[] (const UnsignedInteger i) const;
 #endif
 
   /** String converter */

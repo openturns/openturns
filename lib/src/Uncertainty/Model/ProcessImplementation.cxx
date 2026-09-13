@@ -200,7 +200,7 @@ Function ProcessImplementation::getContinuousRealization() const
 ProcessSample ProcessImplementation::getSample(const UnsignedInteger size) const
 {
   ProcessSample result(size, getRealization());
-  for (UnsignedInteger i = 1; i < size; ++i) result[i] = getRealization().getValues();
+  for (UnsignedInteger i = 1; i < size; ++i) result.setField(i, getRealization());
   return result;
 }
 
@@ -216,7 +216,7 @@ ProcessSample ProcessImplementation::getFuture(const UnsignedInteger stepNumber,
   if (getInputDimension() != 1) throw NotDefinedException(HERE) << "Error: can extend the realization of a process only if defined on a 1D mesh.";
   if (size == 0) return ProcessSample(mesh_, 0, getOutputDimension());
   ProcessSample result(size, getFuture(stepNumber));
-  for (UnsignedInteger i = 1; i < size; ++i) result[i] = getFuture(stepNumber).getValues();
+  for (UnsignedInteger i = 1; i < size; ++i) result.setField(i, getFuture(stepNumber));
   return result;
 }
 

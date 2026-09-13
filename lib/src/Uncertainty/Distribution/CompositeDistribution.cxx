@@ -471,7 +471,7 @@ Point CompositeDistribution::getSingularities() const
   Point singularities(values_);
   std::sort(singularities.begin(), singularities.end());
   // Remove the end points
-  singularities.erase(0);
+  singularities.erase(UnsignedInteger(0));
   singularities.erase(singularities.getSize() - 1);
   return singularities;
 }

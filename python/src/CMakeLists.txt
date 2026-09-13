@@ -17,6 +17,10 @@ add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h
                      COMMENT "Swig runtime header")
 add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swigpyrun.h)
 
+# let swig track the C++ headers it parses so that wrappers are regenerated
+# when they change (otherwise stale wrappers silently keep pre-migration class layouts)
+set (SWIG_USE_SWIG_DEPENDENCIES ON)
+
 # Build Python wrapping classes
 add_library (OTPythonWrapping OBJECT
                       PythonEvaluation.cxx
@@ -253,6 +257,8 @@ ot_add_python_module(typ typ_module.i
                       Sample.i Sample_doc.i
                       HistoryStrategyImplementation.i HistoryStrategyImplementation_doc.i
                       HistoryStrategy.i HistoryStrategy_doc.i
+                      DataContainer.i DataContainer_doc.i
+                      AlgebraEngine.i AlgebraEngine_doc.i
                       BaseTypCollection.i
                       BaseTypTemplateDefs.i
                    )
@@ -648,6 +654,7 @@ ot_add_python_module(statistics statistics_module.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i
                       LatentVariableModel.i LatentVariableModel_doc.i
                       SamplePartition.i SamplePartition_doc.i
+                      StatisticsEngine.i StatisticsEngine_doc.i
                    )
 ot_add_python_module(simulation simulation_module.i
                       ANCOVA.i ANCOVA_doc.i

@@ -132,7 +132,9 @@ Matrix GaussianProcessGradient::gradient(const Point & inP) const
     for (UnsignedInteger j = 0; j < getInputDimension(); ++ j)
     {
       // Get the row of size dimension x dimension
-      const Matrix gradient_i_j(dimension, dimension, *gradient_i.getRow(j).getImplementation());
+      const Matrix gradient_i_j_row(gradient_i.getRow(j));
+      const MatrixImplementation & grad_row_impl(*gradient_i_j_row.getImplementation());
+      const Matrix gradient_i_j(dimension, dimension, grad_row_impl.begin(), grad_row_impl.end());
       const Point localValue(gradient_i_j * gamma_[i]);
       for (UnsignedInteger k = 0; k < dimension; ++k) result(j, k) += localValue[k];
     }

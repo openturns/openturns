@@ -495,12 +495,17 @@ Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
   // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
   const UnsignedInteger inputDimension = x.getDimension();
   // Get the lhs as a Point
-  const Point lhs(Point(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
+  const Matrix objectiveGradient(problem_.getObjective().gradient(x));
+  const Point lhs(Point(objectiveGradient.getImplementation()->begin(), objectiveGradient.getImplementation()->end()) * (-1.0));
   // In order to ease the construction of the rhs matrix, we use its internal storage representation as a Point in column-major storage.
   Point rhs(0);
   // First, the equality constraints. Each scalar equality constraint gives a column in the rhs
   if (equalityDimension > 0)
-    rhs.add(*problem_.getEqualityConstraint().gradient(x).getImplementation());
+    {
+      const Matrix eq_gradient(problem_.getEqualityConstraint().gradient(x));
+      const MatrixImplementation & eq_impl(*eq_gradient.getImplementation());
+      rhs.add(Point(eq_impl.begin(), eq_impl.end()));
+    }
   // Second, the bounds
   if (boundDimension > 0)
   {
@@ -534,7 +539,10 @@ Point OptimizationResult::computeLagrangeMultipliers(const Point & x) const
     {
       // Check if the current inequality constraint is active up to the tolerance
       if (std::abs(inequality[i]) <= maximumConstraintError)
-        rhs.add(*gradientInequality.getColumn(i).getImplementation());
+        {
+          const MatrixImplementation & col_impl(*gradientInequality.getColumn(i).getImplementation());
+          rhs.add(Point(col_impl.begin(), col_impl.end()));
+        }
       else
         rhs.add(Point(inputDimension));
     }

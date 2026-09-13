@@ -106,8 +106,8 @@ Scalar FractionalBrownianMotionModel::computeAsScalar(const Point &s,
   return result;
 }
 
-Scalar FractionalBrownianMotionModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar FractionalBrownianMotionModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : FractionalBrownianMotionModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;

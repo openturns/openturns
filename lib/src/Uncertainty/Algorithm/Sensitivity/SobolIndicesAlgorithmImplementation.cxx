@@ -240,7 +240,9 @@ void SobolIndicesAlgorithmImplementation::computeAsymptoticDistribution() const
 
 Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, const Function & psi) const
 {
-  Point gradient(*psi.gradient(u.computeMean()).getImplementation());
+  const Matrix gradientMatrix(psi.gradient(u.computeMean()));
+  const MatrixImplementation & grad_impl(*gradientMatrix.getImplementation());
+  Point gradient(grad_impl.begin(), grad_impl.end());
   return gradient.dot(u.computeCovariance() * gradient) / size_;
 }
 

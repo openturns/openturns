@@ -55,6 +55,21 @@ ProcessSample::ProcessSample(const Mesh & mesh,
 }
 
 /* Parameters constructor */
+Sample ProcessSample::operator[] (const UnsignedInteger index) const
+{
+  return getImplementation()->getField(index).getValues();
+}
+
+Field ProcessSample::getFieldView (const UnsignedInteger index) const
+{
+  // The returned field aliases this sample: clone first if shared.
+  // const_cast is safe: we only replace our own pointer, never mutate the pointee.
+  ProcessSample & self = const_cast<ProcessSample &>(*this);
+  if (!self.getImplementation().unique())
+    self.getImplementation().reset(self.getImplementation()->clone());
+  return self.getImplementation()->getFieldView(index);
+}
+
 ProcessSample::ProcessSample(const ProcessSampleImplementation & implementation)
   : TypedInterfaceObject<ProcessSampleImplementation>(implementation.clone())
 {
@@ -131,22 +146,18 @@ void ProcessSample::setField(const UnsignedInteger index,
   getImplementation()->setField(index, field);
 }
 
+void ProcessSample::setField(const UnsignedInteger index,
+                             const Sample & values)
+{
+  copyOnWrite();
+  getImplementation()->setField(index, values);
+}
+
 void ProcessSample::setField(const Field & field,
                              const UnsignedInteger index)
 {
   copyOnWrite();
   getImplementation()->setField(field, index);
-}
-
-Sample & ProcessSample::operator[] (const UnsignedInteger index)
-{
-  copyOnWrite();
-  return getImplementation()->operator[](index);
-}
-
-const Sample & ProcessSample::operator[] (const UnsignedInteger index) const
-{
-  return getImplementation()->operator[](index);
 }
 
 /* Time grid accessors */

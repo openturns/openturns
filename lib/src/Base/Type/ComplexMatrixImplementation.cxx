@@ -34,21 +34,47 @@ static const Factory<ComplexMatrixImplementation> Factory_ComplexMatrixImplement
 
 /* Default constructor */
 ComplexMatrixImplementation::ComplexMatrixImplementation()
-  : PersistentCollection<Complex>()
+  : PersistentObject()
   , nbRows_(0)
   , nbColumns_(0)
+  , data_()
 {
   // Nothing to do
 }
+
+#ifndef SWIG
+/* Copy constructor */
+ComplexMatrixImplementation::ComplexMatrixImplementation(const ComplexMatrixImplementation & other)
+  : PersistentObject(other)
+  , nbRows_(other.nbRows_)
+  , nbColumns_(other.nbColumns_)
+  , data_(other.data_)
+{
+}
+
+/* Assignment operator */
+ComplexMatrixImplementation & ComplexMatrixImplementation::operator = (const ComplexMatrixImplementation & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    nbRows_ = other.nbRows_;
+    nbColumns_ = other.nbColumns_;
+    data_ = other.data_;
+  }
+  return *this;
+}
+#endif
 
 /* Constructor with size (rowDim and colDim) */
 /* The ComplexMatrixImplementation is made up of a collection of rowDim*colDim elements */
 /* The ComplexMatrixImplementation is viewed as a set of column vectors read one after another */
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<Complex>(rowDim * colDim, Complex(0.0, 0.0))
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim * colDim)
 {
   // Nothing to do
 }
@@ -57,9 +83,10 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<Complex> & elementsValues)
-  : PersistentCollection<Complex>(rowDim * colDim, Complex(0.0, 0.0))
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim * colDim)
 {
   const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   for(UnsignedInteger i = 0; i < matrixSize; ++i) operator[](i) = elementsValues[i];
@@ -69,9 +96,10 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<Scalar> & elementsValues)
-  : PersistentCollection<Complex>(rowDim * colDim, Complex(0.0, 0.0))
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim * colDim)
 {
   const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   //  Implicit cast from Scalar into Complex
@@ -80,9 +108,10 @@ ComplexMatrixImplementation::ComplexMatrixImplementation(const UnsignedInteger r
 
 
 ComplexMatrixImplementation::ComplexMatrixImplementation(const MatrixImplementation & matrix)
-  : PersistentCollection<Complex>(matrix.getNbRows() * matrix.getNbColumns(), 0.0)
+  : PersistentObject()
   , nbRows_(matrix.getNbRows())
   , nbColumns_(matrix.getNbColumns())
+  , data_(matrix.getNbRows() * matrix.getNbColumns())
 {
   // Copy from matrix
   const UnsignedInteger matrixSize = nbRows_ * nbColumns_;
@@ -147,8 +176,9 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::solv
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
-  // A ComplexMatrixImplementation is also a collection of Complex, so it is automatically converted into a ComplexCollection
-  return solveLinearSystemRectInPlace(ComplexMatrixImplementation(m, 1, b));
+  ComplexMatrixImplementation B(m, 1, b.begin(), b.end());
+  const ComplexMatrixImplementation x(solveLinearSystemRectInPlace(B));
+  return ComplexCollection(x.begin(), x.end());
 }
 
 ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::solveLinearSystemRect(const ComplexCollection & b) const
@@ -192,7 +222,13 @@ String ComplexMatrixImplementation::__repr__() const
          << " name=" << getName()
          << " rows=" << nbRows_
          << " columns=" << nbColumns_
-         << " values=" << PersistentCollection<Complex>::__repr__();
+         << " values=" << [&]() {
+           OSS ossValues(true);
+           ossValues << "[";
+           std::copy( begin(), end(), OSS_iterator<Complex>(ossValues, ",") );
+           ossValues << "]";
+           return String(ossValues);
+         }();
 }
 
 String ComplexMatrixImplementation::__str__(const String & offset) const
@@ -378,7 +414,7 @@ MatrixImplementation ComplexMatrixImplementation::imagSym() const
 /* Empty returns true if there is no element in theComplexMatrixImplementation */
 Bool ComplexMatrixImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<Complex>::isEmpty()));
+  return ((nbRows_ == 0) || (nbColumns_ == 0)) ;
 }
 
 /* Returns true if triangular lower or upper */
@@ -957,9 +993,7 @@ Bool ComplexMatrixImplementation::operator == (const ComplexMatrixImplementation
 
   if (&lhs != &rhs)   // Not the same object
   {
-    const Collection<Complex> & refLhs(static_cast<const Collection<Complex> >(lhs));
-    const Collection<Complex> & refRhs(static_cast<const Collection<Complex> >(rhs));
-    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && refLhs == refRhs);
+    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
   }
 
   return equality;
@@ -970,7 +1004,17 @@ Bool ComplexMatrixImplementation::operator == (const ComplexMatrixImplementation
 /* Method save() stores the object through the StorageManager */
 void ComplexMatrixImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<Complex>::save(adv);
+  PersistentObject::save(adv);
+  // Same layout as the former PersistentCollection<Complex>: a size attribute
+  // followed by the values, so existing studies remain readable.
+  adv.saveAttribute("size", getSize());
+  AdvocateIterator<Complex> adv_it(adv);
+  const Complex * pData = data();
+  const UnsignedInteger totalSize = getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
   adv.saveAttribute( "nbRows_",    nbRows_);
   adv.saveAttribute( "nbColumns_", nbColumns_);
 }
@@ -978,10 +1022,24 @@ void ComplexMatrixImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComplexMatrixImplementation::load(Advocate & adv)
 {
-  PersistentCollection<Complex>::load(adv);
-
+  PersistentObject::load(adv);
+  UnsignedInteger size = 0;
+  adv.loadAttribute("size", size);
   adv.loadAttribute( "nbRows_",    nbRows_);
   adv.loadAttribute( "nbColumns_", nbColumns_);
+  data_.resize(nbRows_ * nbColumns_);
+  AdvocateIterator<Complex> adv_it(adv);
+  Complex * pData = data();
+  for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+  {
+    pData[i] = adv_it();
+  }
+}
+
+/* Size in bytes of one element */
+UnsignedInteger ComplexMatrixImplementation::elementSize() const
+{
+  return sizeof(Complex);
 }
 
 UnsignedInteger ComplexMatrixImplementation::stride(const UnsignedInteger dim) const

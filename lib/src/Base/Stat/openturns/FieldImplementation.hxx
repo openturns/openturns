@@ -167,6 +167,8 @@ public:
 
 protected:
 
+  friend class ProcessSampleImplementation;
+
   /** Compute the input mean of the field */
   void computeInputMean() const;
 

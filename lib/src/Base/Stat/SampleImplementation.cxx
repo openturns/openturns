@@ -350,6 +350,32 @@ SampleImplementation::SampleImplementation(const SampleImplementation & other, c
 }
 
 
+/* Copy constructor */
+SampleImplementation::SampleImplementation(const SampleImplementation & other)
+  : PersistentObject(other)
+  , size_(other.size_)
+  , dimension_(other.dimension_)
+  , data_(other.data_)
+  , p_description_(other.p_description_)
+{
+}
+
+
+/* Assignment operator */
+SampleImplementation & SampleImplementation::operator = (const SampleImplementation & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    size_ = other.size_;
+    dimension_ = other.dimension_;
+    data_ = other.data_;
+    p_description_ = other.p_description_;
+  }
+  return *this;
+}
+
+
 /* Virtual constructor */
 SampleImplementation * SampleImplementation::clone() const
 {
@@ -405,18 +431,14 @@ Bool operator ==(const SampleImplementation & lhs,
 void SampleImplementation::erase(iterator first,
                                  iterator last)
 {
-  PersistentCollection<Scalar>::iterator f = data_.begin() + (first - begin()) * dimension_;
-  PersistentCollection<Scalar>::iterator l = data_.begin() + (last - begin()) * dimension_;
-  data_.erase( f, l );
+  data_.erase((first - begin()) * dimension_, (last - begin()) * dimension_);
   size_ -= last - first;
 }
 
 void SampleImplementation::erase(const UnsignedInteger first,
                                  const UnsignedInteger last)
 {
-  PersistentCollection<Scalar>::iterator f = data_.begin() + first * dimension_;
-  PersistentCollection<Scalar>::iterator l = data_.begin() + last * dimension_;
-  data_.erase( f, l );
+  data_.erase(first * dimension_, last * dimension_);
   size_ -= last - first;
 }
 
@@ -430,13 +452,15 @@ void SampleImplementation::clear()
 /* Raw internal format accessor */
 Point SampleImplementation::getData() const
 {
-  return data_;
+  Point result(size_ * dimension_);
+  std::copy(data_.data(), data_.data() + size_ * dimension_, result.begin());
+  return result;
 }
 
 void SampleImplementation::setData(const Collection<Scalar> & data)
 {
   if (data.getSize() != dimension_ * size_) throw InvalidArgumentException(HERE) << "Error: the given raw data are not compatible with the dimension and size of the sample.";
-  data_ = data;
+  std::copy(data.begin(), data.end(), data_.data());
 }
 
 /* Whether the list contains the value val */
@@ -670,7 +694,7 @@ SampleImplementation & SampleImplementation::add(const Point & point)
     throw InternalException(HERE) << "Error: cannot add point, overflow detected";
   data_.resize(newCount * dimension_);
   ++ size_;
-  std::copy(point.begin(), point.begin() + dimension_, data_.begin() + oldSize * dimension_);
+  std::copy(point.begin(), point.begin() + dimension_, data_.data() + oldSize * dimension_);
   return *this;
 }
 
@@ -1061,7 +1085,7 @@ void SampleImplementation::sortInPlace()
   // Special case for 1D sample
   if (dimension_ == 1)
   {
-    TBBImplementation::ParallelSort(data_.begin(), data_.end());
+    TBBImplementation::ParallelSort(data_.data(), data_.data() + size_ * dimension_);
     return;
   }
   // The nD samples
@@ -1108,7 +1132,7 @@ Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(co
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample->data_.begin() + shift);
+    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample->data_.data() + shift);
     shift += dimension_;
   }
   if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
@@ -1128,7 +1152,7 @@ void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedIntege
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), data_.begin() + shift);
+    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), data_.data() + shift);
     shift += dimension_;
   }
 }
@@ -1939,7 +1963,7 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
     }
     const UnsignedInteger count = i2 - i1;
     const UnsignedInteger start = indices[i1];
-    std::copy(data_.begin() + start * dimension_, data_.begin() + (start + count) * dimension_, result->data_.begin() + offset * dimension_);
+    std::copy(data_.data() + start * dimension_, data_.data() + (start + count) * dimension_, result->data_.data() + offset * dimension_);
     offset += count;
     i1 = i2;
   }
@@ -2014,13 +2038,53 @@ void SampleImplementation::exportToCSVFile(const FileName & fileName,
 }
 
 
+/* Convert to DataContainer (row-major) */
+DataContainer SampleImplementation::toDataContainer() const
+{
+  if (size_ == 0 || dimension_ == 0) return DataContainer();
+  DataContainer dc(size_, dimension_, 0.0, DataContainer::ROW_MAJOR);
+  std::copy(data_begin(), data_end(), dc.data());
+  return dc;
+}
+
+/* Construct a SampleImplementation from a DataContainer (row-major) */
+Pointer<SampleImplementation> SampleImplementation::FromDataContainer(const DataContainer & dc)
+{
+  if (dc.isEmpty()) return new SampleImplementation(0, 0);
+  const UnsignedInteger nbRows = dc.getSize();
+  const UnsignedInteger nbCols = dc.getDimension();
+  Pointer<SampleImplementation> p_sam = new SampleImplementation(nbRows, nbCols);
+  std::copy(dc.data(), dc.data() + nbRows * nbCols, p_sam->data_begin());
+  return p_sam;
+}
+
+/* Shallow constructor: share a view's storage, copy owned data */
+Pointer<SampleImplementation> SampleImplementation::FromDataContainerView(const DataContainer & dc)
+{
+  if (dc.isEmpty()) return new SampleImplementation(0, 0);
+  const UnsignedInteger nbRows = dc.getSize();
+  const UnsignedInteger nbCols = dc.getDimension();
+  Pointer<SampleImplementation> p_sam = new SampleImplementation(nbRows, nbCols);
+  p_sam->data_ = dc; // DataContainer shares views, deep-copies owning buffers
+  return p_sam;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void SampleImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "size_", size_);
   adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "data_", data_);
+  // Store the flat data inline (self-contained node)
+  const UnsignedInteger totalSize = size_ * dimension_;
+  adv.saveAttribute( "size", totalSize );
+  AdvocateIterator<Scalar> adv_it(adv);
+  const Scalar * pData = data_.data();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
   if (!p_description_.isNull())
     adv.saveAttribute( "description_", *p_description_ );
 }
@@ -2032,11 +2096,29 @@ void SampleImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "size_", size_);
   adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "data_", data_);
+  const UnsignedInteger totalSize = size_ * dimension_;
+  data_.resize(totalSize);
+  if (adv.hasAttribute("data_"))
+  {
+    // Legacy format: the data was stored as a nested PersistentCollection<Scalar>
+    PersistentCollection<Scalar> legacyData;
+    adv.loadAttribute( "data_", legacyData );
+    std::copy(legacyData.begin(), legacyData.begin() + totalSize, data_.data());
+  }
+  else
+  {
+    Scalar * pData = data_.data();
+    AdvocateIterator<Scalar> adv_it(adv);
+    for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+    {
+      pData[i] = adv_it();
+    }
+  }
   Description description;
   adv.loadAttribute( "description_", description );
   if (description.getSize() != 0) setDescription(description);
 }
+
 
 /* Product by a scalar */
 SampleImplementation operator *(const Scalar scalar,

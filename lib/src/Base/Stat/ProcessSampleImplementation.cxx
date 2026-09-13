@@ -20,6 +20,7 @@
  */
 
 #include "openturns/ProcessSampleImplementation.hxx"
+#include "openturns/Lapack.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Function.hxx"
@@ -42,7 +43,10 @@ static const Factory<ProcessSampleImplementation> Factory_ProcessSampleImplement
 ProcessSampleImplementation::ProcessSampleImplementation()
   : PersistentObject()
   , mesh_()
-  , data_(0)
+  , size_(0)
+  , dimension_(0)
+  , verticesNumber_(0)
+  , flatData_()
 {
   // Nothing to do
 }
@@ -52,9 +56,17 @@ ProcessSampleImplementation::ProcessSampleImplementation(const UnsignedInteger s
     const Field & field)
   : PersistentObject()
   , mesh_(field.getMesh())
-  , data_(size, field.getValues())
+  , size_(size)
+  , dimension_(field.getOutputDimension())
+  , verticesNumber_(mesh_.getVerticesNumber())
+  , flatData_()
 {
-  // Nothing to do
+  const Sample values(field.getValues());
+  description_ = values.getDescription();
+  const UnsignedInteger blockSize = verticesNumber_ * dimension_;
+  flatData_.resize(size_ * blockSize);
+  for (UnsignedInteger k = 0; k < size_; ++k)
+    std::copy(values.getImplementation()->data_begin(), values.getImplementation()->data_end(), flatData_.data() + k * blockSize);
 }
 
 ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
@@ -62,7 +74,10 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
     const UnsignedInteger dimension)
   : PersistentObject()
   , mesh_(mesh)
-  , data_(size, Sample(mesh.getVerticesNumber(), dimension))
+  , size_(size)
+  , dimension_(dimension)
+  , verticesNumber_(mesh.getVerticesNumber())
+  , flatData_(size * verticesNumber_ * dimension)
 {
   // Nothing to do
 }
@@ -71,9 +86,12 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
     const SampleCollection & collection)
   : PersistentObject()
   , mesh_(mesh)
-  , data_(collection)
+  , size_(0)
+  , dimension_(0)
+  , verticesNumber_(mesh.getVerticesNumber())
+  , flatData_()
 {
-  // Nothing to do
+  for (UnsignedInteger k = 0; k < collection.getSize(); ++k) add(collection[k]);
 }
 
 /* Virtual constructor */
@@ -88,7 +106,11 @@ String ProcessSampleImplementation::__repr__() const
   OSS oss(true);
   oss << "class=" << ProcessSampleImplementation::GetClassName()
       << " mesh=" << mesh_
-      << " values=" << data_;
+      << " values=[" << [&]() {
+           String str;
+           for (UnsignedInteger i = 0; i < getSize(); ++i) str += ((i > 0) ? "," : "") + getField(i).__repr__();
+           return str;
+         }() << "]";
   return oss;
 }
 
@@ -97,19 +119,25 @@ String ProcessSampleImplementation::__str__(const String & offset) const
   OSS oss(false);
   oss << "[";
   String separator("");
-  for (UnsignedInteger i = 0; i < data_.getSize(); ++i, separator = "\n") oss << separator << offset << "field " << i << ":" << "\n" << getField(i).__str__(offset);
+  for (UnsignedInteger i = 0; i < getSize(); ++i, separator = "\n") oss << separator << offset << "field " << i << ":" << "\n" << getField(i).__str__(offset);
   oss << "]";
   return oss;
 }
 
 void ProcessSampleImplementation::erase(const UnsignedInteger first, const UnsignedInteger last)
 {
-  data_.erase(data_.begin() + first, data_.begin() + last);
+  if (!(first <= last && last <= getSize())) throw OutOfBoundException(HERE) << "Error: cannot erase rows outside of the process sample";
+  const UnsignedInteger blockSize = verticesNumber_ * dimension_;
+  flatData_.erase(first * blockSize, last * blockSize);
+  size_ -= last - first;
 }
 
 void ProcessSampleImplementation::clear()
 {
-  data_.clear();
+  size_ = 0;
+  dimension_ = 0;
+  description_ = Description();
+  flatData_ = DataContainer();
 }
 
 /* Partial copy constructor */
@@ -117,34 +145,88 @@ void ProcessSampleImplementation::add(const Field & field)
 {
   if (getSize() == 0)
   {
-    data_.add(field.getValues());
     mesh_ = field.getMesh();
+    verticesNumber_ = mesh_.getVerticesNumber();
+    dimension_ = field.getOutputDimension();
   }
-  else if ((data_[0].getDimension() == field.getOutputDimension()) && (mesh_ == field.getMesh())) data_.add(field.getValues());
-  else throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimension or its mesh are incompatible.";
+  else if ((dimension_ != field.getOutputDimension()) || !(mesh_ == field.getMesh()))
+    throw InvalidArgumentException(HERE) << "Error: could not add the field. Either its dimension or its mesh are incompatible.";
+  add(field.getValues());
 }
 
 void ProcessSampleImplementation::add(const Sample & values)
 {
-  if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their size=" << values.getSize() << " does not match the number of vertices=" << mesh_.getVerticesNumber() << " of the mesh.";
-  if (!(getSize() == 0 || data_[0].getDimension() == values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << data_[0].getDimension();
-  data_.add(values);
+  if (values.getSize() != verticesNumber_) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their size=" << values.getSize() << " does not match the number of vertices=" << verticesNumber_ << " of the mesh.";
+  if (!(getSize() == 0 || dimension_ == values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << dimension_;
+  if (getSize() == 0) dimension_ = values.getDimension();
+  if (description_.getSize() == 0)
+  {
+    const Description defaultDescription(Description::BuildDefault(values.getDimension(), "v"));
+    if (values.getDescription().getSize() > 0 && values.getDescription() != defaultDescription) description_ = values.getDescription();
+  }
+  const UnsignedInteger oldSize = flatData_.getSize();
+  const UnsignedInteger blockSize = values.getSize() * dimension_;
+  flatData_.resize(oldSize + blockSize);
+  std::copy(values.getImplementation()->data_begin(), values.getImplementation()->data_end(), flatData_.data() + oldSize);
+  ++size_;
 }
 
 
 /* Operators accessors */
 Field ProcessSampleImplementation::getField(const UnsignedInteger index) const
 {
-  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-  return Field(mesh_, data_[index]);
+  if (!(index < getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << getSize() - 1;
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  const UnsignedInteger dimension = getDimension();
+  Sample values(verticesNumber, dimension);
+  std::copy(flatData_.data() + blockOffset(index), flatData_.data() + blockOffset(index) + verticesNumber * dimension, values.getImplementation()->data_begin());
+  const Description defaultDescription(Description::BuildDefault(dimension, "v"));
+  if (description_.getSize() > 0 && description_ != defaultDescription) values.setDescription(description_);
+  return Field(mesh_, values);
+}
+
+
+Field ProcessSampleImplementation::getFieldView(const UnsignedInteger index) const
+{
+  if (!(index < getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << getSize() - 1;
+  // zero-copy view over realization k: (verticesNumber, dimension) row-major
+  Pointer<FieldImplementation> p_impl(new FieldImplementation(mesh_, dimension_));
+  p_impl->values_ = Sample(*SampleImplementation::FromDataContainerView(
+      DataContainer(const_cast<Scalar *>(flatData_.data()) + blockOffset(index), verticesNumber_, dimension_, DataContainer::ROW_MAJOR)).getImplementation());
+  if (description_.getSize() > 0)
+  {
+    const Description defaultDescription(Description::BuildDefault(dimension_, "v"));
+    if (description_ != defaultDescription) p_impl->values_.setDescription(description_);
+  }
+  return Field(p_impl);
 }
 
 void ProcessSampleImplementation::setField(const UnsignedInteger index,
                                            const Field & field)
 {
-  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-  if (field.getOutputDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getOutputDimension();
-  data_[index] = field.getValues();
+  if (!(index < getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << getSize() - 1;
+  if (field.getOutputDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << getDimension() << ", got a field of dimension=" << field.getOutputDimension();
+  const Sample values(field.getValues());
+  if (description_.getSize() == 0)
+  {
+    const Description defaultDescription(Description::BuildDefault(values.getDimension(), "v"));
+    if (values.getDescription().getSize() > 0 && values.getDescription() != defaultDescription) description_ = values.getDescription();
+  }
+  std::copy(values.getImplementation()->data_begin(), values.getImplementation()->data_end(), flatData_.data() + blockOffset(index));
+}
+
+void ProcessSampleImplementation::setField(const UnsignedInteger index,
+                                           const Sample & values)
+{
+  if (!(index < getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << getSize() - 1;
+  if (values.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << dimension_ << ", got a field of dimension=" << values.getDimension();
+  if (values.getSize() != verticesNumber_) throw InvalidArgumentException(HERE) << "Error: expected a field of size=" << verticesNumber_ << ", got a field of size=" << values.getSize();
+  if (description_.getSize() == 0)
+  {
+    const Description defaultDescription(Description::BuildDefault(values.getDimension(), "v"));
+    if (values.getDescription().getSize() > 0 && values.getDescription() != defaultDescription) description_ = values.getDescription();
+  }
+  std::copy(values.getImplementation()->data_begin(), values.getImplementation()->data_end(), flatData_.data() + blockOffset(index));
 }
 
 void ProcessSampleImplementation::setField(const Field & field,
@@ -152,18 +234,6 @@ void ProcessSampleImplementation::setField(const Field & field,
 {
   LOGWARN("ProcessSample.setField(Field, int) is deprecated, use ProcessSample.setField(int, Field)");
   setField(index, field);
-}
-
-Sample & ProcessSampleImplementation::operator[] (const UnsignedInteger index)
-{
-  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-  return data_[index];
-}
-
-const Sample & ProcessSampleImplementation::operator[] (const UnsignedInteger index) const
-{
-  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-  return data_[index];
 }
 
 /* Time grid accessors */
@@ -181,14 +251,14 @@ Mesh ProcessSampleImplementation::getMesh() const
 /* Dimension accessors */
 UnsignedInteger ProcessSampleImplementation::getDimension() const
 {
-  if (data_.getSize() == 0) return 0;
-  return data_[0].getDimension();
+  if (size_ == 0 && verticesNumber_ > 0) return 0;
+  return dimension_;
 }
 
 /* Dimension accessors */
 UnsignedInteger ProcessSampleImplementation::getSize() const
 {
-  return data_.getSize();
+  return size_;
 }
 
 /* Mean accessor */
@@ -196,10 +266,15 @@ Field ProcessSampleImplementation::computeMean() const
 {
   const UnsignedInteger size = getSize();
   if (!(size > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
-  if (size == 1) return Field(mesh_, data_[0]);
-  Sample meanValues(data_[0]);
-  for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
-  meanValues *= Point(getDimension(), 1.0 / size);
+  // Each realization block is contiguous, so accumulation is a sequence
+  // of unit-stride axpy operations over the whole block
+  Sample meanValues(getField(0).getValues());
+  int n = static_cast<int>(verticesNumber_ * dimension_);
+  int one = 1;
+  double alpha = 1.0;
+  for (UnsignedInteger k = 1; k < size; ++k)
+    daxpy_(&n, &alpha, const_cast<double *>(flatData_.data() + blockOffset(k)), &one, meanValues.getImplementation()->data_begin(), &one);
+  meanValues *= Point(dimension_, 1.0 / size);
   return Field(mesh_, meanValues);
 }
 
@@ -331,10 +406,16 @@ Sample ProcessSampleImplementation::computeTemporalMean() const
 /* Compute the sample of spatial means of each field */
 Sample ProcessSampleImplementation::computeSpatialMean() const
 {
-  const UnsignedInteger size = getSize();
-  const UnsignedInteger dimension = getDimension();
-  Sample result(size, dimension);
-  for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].computeMean();
+  Sample result(getSize(), dimension_);
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    Scalar sum = 0.0;
+    const Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger d = 0; d < dimension_; ++d)
+        sum += block[v * dimension_ + d];
+    for (UnsignedInteger d = 0; d < dimension_; ++d) result(k, d) = sum / verticesNumber_;
+  }
   return result;
 }
 
@@ -345,21 +426,21 @@ Field ProcessSampleImplementation::computeStandardDeviation() const
   if (size == 0) return Field();
   if (size == 1) return Field(mesh_, getDimension());
   Sample meanValues(computeMean().getValues());
-  const UnsignedInteger verticesNumber = getMesh().getVerticesNumber();
-  const UnsignedInteger dimension = getDimension();
-  Sample stdValues(verticesNumber, getDimension());
-  for (UnsignedInteger i = 0; i < size; ++i)
+  Sample stdValues(verticesNumber_, dimension_);
+  for (UnsignedInteger k = 0; k < size; ++k)
   {
-    Sample slack(data_[i] - meanValues);
-    for (UnsignedInteger j = 0; j < verticesNumber; ++ j)
-      for (UnsignedInteger k = 0; k < dimension; ++ k)
-        slack(j, k) = slack(j, k) * slack(j, k);
-    stdValues += slack;
+    const Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger d = 0; d < dimension_; ++d)
+      {
+        const Scalar slack = block[v * dimension_ + d] - meanValues(v, d);
+        stdValues(v, d) += slack * slack;
+      }
   }
-  stdValues *= Point(getDimension(), 1.0 / (size - 1.0));
-  for (UnsignedInteger j = 0; j < verticesNumber; ++ j)
-    for (UnsignedInteger k = 0; k < dimension; ++ k)
-      stdValues(j, k) = std::sqrt(stdValues(j, k));
+  stdValues *= Point(dimension_, 1.0 / (size - 1.0));
+  for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      stdValues(v, d) = std::sqrt(stdValues(v, d));
   return Field(mesh_, stdValues);
 }
 
@@ -432,16 +513,16 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
 {
   const UnsignedInteger size = getSize();
   if (size == 0) return Field();
-  if (size == 1) return Field(mesh_, data_[0]);
-  const UnsignedInteger dimension = data_[0].getDimension();
-  const UnsignedInteger length = data_[0].getSize();
+  if (size == 1) return getField(0);
+  const UnsignedInteger dimension = dimension_;
+  const UnsignedInteger length = verticesNumber_;
   const UnsignedInteger sampleSize = dimension * length;
 
   // Store and transpose values in a contiguous buffer
   Point contiguous(size * sampleSize);
   for (UnsignedInteger k = 0; k < size; ++k)
   {
-    const SampleImplementation::data_const_iterator data_begin = data_[k].getImplementation()->data_begin();
+    const Scalar * data_begin = flatData_.data() + blockOffset(k);
     for (UnsignedInteger ij = 0; ij < sampleSize; ++ij)
       contiguous[ij * size + k] = *(data_begin + ij);
   }
@@ -479,15 +560,15 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
   for (UnsignedInteger p = 0; p < probSize; ++p)
     if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
-  const UnsignedInteger dimension = data_[0].getDimension();
-  const UnsignedInteger length = data_[0].getSize();
+  const UnsignedInteger dimension = dimension_;
+  const UnsignedInteger length = verticesNumber_;
   const UnsignedInteger sampleSize = dimension * length;
 
   // Store and transpose values in a contiguous buffer
   Point contiguous(size * sampleSize);
   for (UnsignedInteger k = 0; k < size; ++k)
   {
-    const SampleImplementation::data_const_iterator data_begin = data_[k].getImplementation()->data_begin();
+    const Scalar * data_begin = flatData_.data() + blockOffset(k);
     for (UnsignedInteger ij = 0; ij < sampleSize; ++ij)
       contiguous[ij * size + k] = *(data_begin + ij);
   }
@@ -527,31 +608,42 @@ Sample ProcessSampleImplementation::getSampleAtVertex(const UnsignedInteger inde
   if (index >= verticesNumber)
     throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than vertices number (" << verticesNumber << ")";
   const UnsignedInteger size = getSize();
-  const UnsignedInteger dimension = getDimension();
-  Sample result(size, dimension);
-  const UnsignedInteger offsetBegin = index * dimension;
-  const UnsignedInteger offsetEnd = offsetBegin + dimension;
-  UnsignedInteger offsetResult = 0;
-  for (UnsignedInteger i = 0; i < size; ++i, offsetResult += dimension)
-    std::copy(data_[i].getImplementation()->data_begin() + offsetBegin, data_[i].getImplementation()->data_begin() + offsetEnd, result.getImplementation()->data_begin() + offsetResult);
+  Sample result(size, dimension_);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const Scalar * block = flatData_.data() + blockOffset(k) + index * dimension_;
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      result.getImplementation()->data_begin()[k * dimension_ + d] = block[d];
+  }
   return result;
 }
 
 /* Get the i-th marginal process sample */
 ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const UnsignedInteger index) const
 {
-  const UnsignedInteger size = data_.getSize();
-  ProcessSampleImplementation result(mesh_, size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].getMarginal(index);
+  if (!(index < dimension_)) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than dimension (" << dimension_ << ")";
+  ProcessSampleImplementation result(mesh_, getSize(), 1);
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    const Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      result.flatData_[k * verticesNumber_ + v] = block[v * dimension_ + index];
+  }
   return result;
 }
 
 /* Get the marginal field corresponding to indices dimensions */
 ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const Indices & indices) const
 {
-  const UnsignedInteger size = data_.getSize();
-  ProcessSampleImplementation result(mesh_, size, indices.getSize());
-  for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].getMarginal(indices);
+  const UnsignedInteger marginalDimension = indices.getSize();
+  ProcessSampleImplementation result(mesh_, getSize(), marginalDimension);
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    const Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger j = 0; j < marginalDimension; ++j)
+        result.flatData_[(k * verticesNumber_ + v) * marginalDimension + j] = block[v * dimension_ + indices[j]];
+  }
   return result;
 }
 
@@ -566,11 +658,11 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
   const String title(OSS() << getName() << " - " << index << " marginal" );
   Graph graph(title, "Time", "Values");
   graph.setLegendPosition("topright");
-  const UnsignedInteger size = data_.getSize();
+  const UnsignedInteger size = getSize();
   const Description colors(Drawable::BuildDefaultPalette(size));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Drawable drawable(Field(mesh_, data_[i]).drawMarginal(index, interpolate).getDrawable(0));
+    Drawable drawable(getField(i).drawMarginal(index, interpolate).getDrawable(0));
     drawable.setColor(colors[i]);
     graph.add(drawable);
   }
@@ -680,7 +772,19 @@ void ProcessSampleImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "mesh_", mesh_);
-  adv.saveAttribute( "data_", data_ );
+  adv.saveAttribute( "size_", size_ );
+  adv.saveAttribute( "dimension_", dimension_ );
+  adv.saveAttribute("verticesNumber_", verticesNumber_);
+  adv.saveAttribute( "description_", description_ );
+  // Flat storage: a total-size attribute followed by the values
+  adv.saveAttribute("size", flatData_.getSize());
+  AdvocateIterator<Scalar> adv_it(adv);
+  const Scalar * pData = flatData_.data();
+  const UnsignedInteger totalSize = flatData_.getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -688,67 +792,109 @@ void ProcessSampleImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "mesh_", mesh_);
-  adv.loadAttribute( "data_", data_ );
+
+  if (adv.hasAttribute("data_"))
+  {
+    // Legacy format: the realizations were stored as a collection of samples
+    PersistentCollection<Sample> legacyData;
+    adv.loadAttribute( "data_", legacyData );
+    size_ = legacyData.getSize();
+    dimension_ = (size_ > 0) ? legacyData[0].getDimension() : 0;
+    verticesNumber_ = mesh_.getVerticesNumber();
+    description_ = (size_ > 0) ? legacyData[0].getDescription() : Description();
+    flatData_.resize(size_ * verticesNumber_ * dimension_);
+    for (UnsignedInteger k = 0; k < size_; ++k)
+      std::copy(legacyData[k].getImplementation()->data_begin(), legacyData[k].getImplementation()->data_end(), flatData_.data() + blockOffset(k));
+  }
+  else
+  {
+    adv.loadAttribute( "size_", size_ );
+    adv.loadAttribute( "dimension_", dimension_ );
+    adv.loadAttribute("verticesNumber_", verticesNumber_);
+    adv.loadAttribute( "description_", description_ );
+    UnsignedInteger size = 0;
+    adv.loadAttribute("size", size);
+    flatData_.resize(size);
+    AdvocateIterator<Scalar> adv_it(adv);
+    Scalar * pData = flatData_.data();
+    for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+    {
+      pData[i] = adv_it();
+    }
+  }
 }
 
 /* Comparison function */
 Bool ProcessSampleImplementation::operator ==(const ProcessSampleImplementation & other) const
 {
   if (this == &other) return true;
-  return (mesh_ == other.mesh_) && (data_ == other.data_);
+  return (mesh_ == other.mesh_) && (dimension_ == other.dimension_) && (size_ == other.size_)
+         && std::equal(flatData_.data(), flatData_.data() + flatData_.getSize(), other.flatData_.data());
 }
 
 /* In place sum operator between process sample and sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Sample & translation)
 {
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    data_[i] += translation;
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger d = 0; d < dimension_; ++d)
+        block[v * dimension_ + d] += translation(v, d);
+  }
   return *this;
 }
 
 /* In place difference operator between process sample and sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Sample & translation)
 {
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    data_[i] -= translation;
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger d = 0; d < dimension_; ++d)
+        block[v * dimension_ + d] -= translation(v, d);
+  }
   return *this;
 }
 
 /* In place sum operator between process sample and point */
 ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Point & translation)
 {
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    data_[i] += translation;
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger d = 0; d < dimension_; ++d)
+        block[v * dimension_ + d] += translation[d];
+  }
   return *this;
 }
 
 /* In place difference operator between process sample and point */
 ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Point & translation)
 {
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    data_[i] -= translation;
+  for (UnsignedInteger k = 0; k < getSize(); ++k)
+  {
+    Scalar * block = flatData_.data() + blockOffset(k);
+    for (UnsignedInteger v = 0; v < verticesNumber_; ++v)
+      for (UnsignedInteger d = 0; d < dimension_; ++d)
+        block[v * dimension_ + d] -= translation[d];
+  }
   return *this;
 }
 
 /* In place sum operator between process sample and process sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator += (const ProcessSampleImplementation & translation)
 {
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    data_[i] += translation[i];
+  for (UnsignedInteger i = 0; i < flatData_.getSize(); ++i) flatData_[i] += translation.flatData_[i];
   return *this;
 }
 
 /* In place difference operator between process sample and process sample */
 ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const ProcessSampleImplementation & translation)
 {
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    data_[i] -= translation[i];
+  for (UnsignedInteger i = 0; i < flatData_.getSize(); ++i) flatData_[i] -= translation.flatData_[i];
   return *this;
 }
 
@@ -795,9 +941,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator + (const Proce
   if (getDimension() != translation.getDimension()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their dimensions are different.";
   if (getSize() != translation.getSize()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their sizes are different.";
   ProcessSampleImplementation processSample(*this);
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    processSample[i] += translation[i];
+  for (UnsignedInteger i = 0; i < processSample.flatData_.getSize(); ++i) processSample.flatData_[i] += translation.flatData_[i];
   return processSample;
 }
 
@@ -808,9 +952,7 @@ ProcessSampleImplementation ProcessSampleImplementation::operator - (const Proce
   if (getDimension() != translation.getDimension()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their dimensions are different.";
   if (getSize() != translation.getSize()) throw InvalidArgumentException(HERE) << "Error: could not sum the two process samples, their sizes are different.";
   ProcessSampleImplementation processSample(*this);
-  const UnsignedInteger size = getSize();
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    processSample[i] -= translation[i];
+  for (UnsignedInteger i = 0; i < processSample.flatData_.getSize(); ++i) processSample.flatData_[i] -= translation.flatData_[i];
   return processSample;
 }
 
