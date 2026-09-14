@@ -132,7 +132,7 @@ def wrong_dim_grad(X):
 
 print("gradient with wrong dim")
 myFunc = ot.PythonFunction(2, 1, a_exec, gradient=wrong_dim_grad)
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(ValueError):
     grad = myFunc.gradient([100.0, 100.0])
 
 
