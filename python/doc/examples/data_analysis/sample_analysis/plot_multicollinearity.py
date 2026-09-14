@@ -18,7 +18,7 @@ Compute sensitivity indices in a multicollinear context
 
 import openturns as ot
 import openturns.viewer as otv
-from openturns.experimental import LinearModelValidation, MulticollinearityAnalysis
+import openturns.experimental as otexp
 from openturns.usecases import ames_housing
 import matplotlib
 
@@ -34,7 +34,7 @@ X = data[:, 1 : data.getDimension()]  # Extract the other features
 # We fit a linear regression model to predict Y, e.g. sale prices from the other features, and we compute the R² score to check that the model is relevant:
 
 regression = ot.LinearModelAlgorithm(X, Y).getResult()
-r2 = LinearModelValidation(regression).computeR2Score()
+r2 = otexp.LinearModelValidation(regression).computeR2Score()
 print(f"R² score: {r2[0]}")
 
 # %%
@@ -55,7 +55,7 @@ def compute_quantity(X, Y, kind):
     - Y: the output sample
     - kind: the type of quantity to compute ("LMG", "PMVD", "Johnson" or "VIF")
     """
-    analysis = MulticollinearityAnalysis(X, Y)
+    analysis = otexp.MulticollinearityAnalysis(X, Y)
     if kind == "LMG":
         lmg, _ = analysis.computeLmgPmvd()
         return lmg
@@ -139,7 +139,7 @@ def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
 # %%
 # LMG and PMVD indices:
 
-analysis = MulticollinearityAnalysis(X, Y)
+analysis = otexp.MulticollinearityAnalysis(X, Y)
 lmg, pmvd = analysis.computeLmgPmvd()
 print(lmg)
 
@@ -155,7 +155,7 @@ bootstrap(X, Y, "PMVD")
 # %%
 # Johnson index:
 
-analysis = MulticollinearityAnalysis(X, Y)
+analysis = otexp.MulticollinearityAnalysis(X, Y)
 johnson = analysis.computeJohnson()
 print(johnson)
 
@@ -167,7 +167,7 @@ bootstrap(X, Y, "Johnson")
 #
 # VIF metric:
 
-analysis = MulticollinearityAnalysis(X)
+analysis = otexp.MulticollinearityAnalysis(X)
 vif = analysis.computeVIF()
 print(vif)
 
