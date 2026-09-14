@@ -42,7 +42,7 @@ Corresponding confidence intervals are provided by the methods
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
 Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
 The default confidence level is stored in the :class:`~openturns.ResourceMap`
-and can be accessed with the `SobolIndicesAlgorithm-DefaultConfidenceLevel` key.
+and can be accessed with the `SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel` key.
 
 Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
 For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
