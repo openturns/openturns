@@ -68,6 +68,11 @@ The following :class:`~openturns.ResourceMap` keys are used:
 The range of :math:`distY` is the interval between the minimum and the maximum
 of the values :math:`v[k]`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CompositeDistribution-SolverEpsilon* (`Scalar`, default: `1e-14`)
+- *CompositeDistribution-StepNumber* (`UnsignedInteger`, default: `256`)
+
 Examples
 --------
 Create a distribution:
