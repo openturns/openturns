@@ -14,11 +14,14 @@ The keys of :class:`~openturns.ResourceMap` related to the class are:
 - the keys `BernsteinCopulaFactory-MinM` and `BernsteinCopulaFactory-MaxM` that define the range of :math:`m`
   in the optimization
   problems computing the optimal bin number according to a specified criterion,
-- the key `BernsteinCopulaFactory-BinNumberSelection` that defines the criterion to compute the optimal bin number
-  when it is not specified. The possible choices are 'AMISE', 'LogLikelihood', 'PenalizedCsiszarDivergence';
-- the key `BernsteinCopulaFactory-KFraction` that defines the fraction of the sample used for the validation in the
-  method :meth:`ComputeLogLikelihoodBinNumber`,
-- the key `BernsteinCopulaFactory-SamplingSize`  that defines the :math:`N` parameter used in the
+- the key `BernsteinCopulaFactory-BinNumberSelectionMethod` (default: 'LogLikelihood') that defines the criterion
+  to compute the optimal bin number when it is not specified. The possible choices are 'AMISE', 'LogLikelihood',
+  'PenalizedCsiszarDivergence';
+- the key `BernsteinCopulaFactory-kFraction` (default: 2) that defines the fraction of the sample used for the
+  validation in the method :meth:`ComputeLogLikelihoodBinNumber`,
+- the key `BernsteinCopulaFactory-SamplingSize` (default: 10000) that defines the :math:`N` parameter used in the
+  method :meth:`ComputePenalizedCsiszarDivergenceBinNumber`,
+- the key `BernsteinCopulaFactory-alpha` (default: 1.0) that defines the weight of the penalization term in the
   method :meth:`ComputePenalizedCsiszarDivergenceBinNumber`.
 
 See also
