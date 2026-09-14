@@ -1577,6 +1577,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
   addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold"});
 
+  // SparseExpansion parameters //
+  addAsString("SparseExpansion-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
+  addAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases", 2);
+
   // LeastSquaresExpansion parameters //
   addAsString("LeastSquaresExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
 

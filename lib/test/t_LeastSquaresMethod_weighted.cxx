@@ -24,6 +24,42 @@
 using namespace OT;
 using namespace OT::Test;
 
+void checkMethodResults(const String & name,
+                        const Point & solve,
+                        const Point & solveNormal,
+                        const CovarianceMatrix & gramInverse,
+                        const Point & hDiag,
+                        Scalar gramInverseTrace,
+                        const Point & gramInverseDiag,
+                        const Point & refSolve,
+                        const Point & refSolveNormal,
+                        const CovarianceMatrix & refGramInverse,
+                        const Point & refHDiag,
+                        Scalar refGramInverseTrace,
+                        const Point & refGramInverseDiag)
+{
+  OStream fullprint(std::cout);
+  fullprint << name << std::endl;
+
+  assert_almost_equal(solve, refSolve, 1e-10, 1e-10);
+  assert_almost_equal(solveNormal, refSolveNormal, 1e-10, 1e-10);
+  assert_almost_equal(gramInverse, refGramInverse, 1e-10, 1e-10);
+  assert_almost_equal(hDiag, refHDiag, 1e-10, 1e-10);
+  assert_almost_equal(gramInverseTrace, refGramInverseTrace, 1e-10, 1e-10);
+  assert_almost_equal(gramInverseDiag, refGramInverseDiag, 1e-10, 1e-10);
+}
+
+template <typename Method>
+void checkMethodH(Method & method, UnsignedInteger size)
+{
+  Point hFromH(size);
+  SymmetricMatrix H(method.getH());
+  for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
+  assert_almost_equal(hFromH, method.getHDiag(), 1e-15, 1e-15);
+  SquareMatrix H2(H * H);
+  assert_almost_equal(H2, H, 1e-15, 1e-15);
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -47,82 +83,90 @@ int main(int, char *[])
     indices.fill();
     DesignProxy proxy(x, coll);
     Point weights(size, 10.0);
+
+    // Reference values extracted from QR with uniform weights
+    Point refSolve;
+    Point refSolveNormal;
+    CovarianceMatrix refGramInverse;
+    Point refHDiag;
+    Scalar refGramInverseTrace = 0.0;
+    Point refGramInverseDiag;
+
+    // Test uniform weights: all three methods should agree
     fullprint << "Uniform weights" << std::endl << std::endl;
     {
       QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
-
-      fullprint << "QR" << std::endl;
-      fullprint << "Solve=" << qrMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << qrMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << qrMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << qrMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << qrMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
+      refSolve = qrMethod.solve(Point(size, 1.0));
+      refSolveNormal = qrMethod.solveNormal(Point(dimension, 1.0));
+      refGramInverse = qrMethod.getGramInverse();
+      refHDiag = qrMethod.getHDiag();
+      refGramInverseTrace = qrMethod.getGramInverseTrace();
+      refGramInverseDiag = qrMethod.getGramInverseDiag();
+    }
+    {
+      QRMethod qrMethod(proxy, weights, indices);
+      qrMethod.update(Indices(0), indices, Indices(0));
+      checkMethodResults("QR", qrMethod.solve(Point(size, 1.0)), qrMethod.solveNormal(Point(dimension, 1.0)), qrMethod.getGramInverse(), qrMethod.getHDiag(), qrMethod.getGramInverseTrace(), qrMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkMethodH(qrMethod, size);
     }
     {
       SVDMethod svdMethod(proxy, weights, indices);
       svdMethod.update(Indices(0), indices, Indices(0));
-
-      fullprint << "SVD" << std::endl;
-      fullprint << "Solve=" << svdMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << svdMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << svdMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << svdMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << svdMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
+      checkMethodResults("SVD", svdMethod.solve(Point(size, 1.0)), svdMethod.solveNormal(Point(dimension, 1.0)), svdMethod.getGramInverse(), svdMethod.getHDiag(), svdMethod.getGramInverseTrace(), svdMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkMethodH(svdMethod, size);
     }
     {
       CholeskyMethod choleskyMethod(proxy, weights, indices);
       choleskyMethod.update(Indices(0), indices, Indices(0));
-
-      fullprint << "Cholesky" << std::endl;
-      fullprint << "Solve=" << choleskyMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << choleskyMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << choleskyMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << choleskyMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << choleskyMethod.getGramInverseDiag() << std::endl;
+      checkMethodResults("Cholesky", choleskyMethod.solve(Point(size, 1.0)), choleskyMethod.solveNormal(Point(dimension, 1.0)), choleskyMethod.getGramInverse(), choleskyMethod.getHDiag(), choleskyMethod.getGramInverseTrace(), choleskyMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkMethodH(choleskyMethod, size);
     }
 
+    // Save uniform-weight reference for cross-checking with non-uniform
+    const Point uniformSolve(refSolve);
+    const Point uniformSolveNormal(refSolveNormal);
+    const CovarianceMatrix uniformGramInverse(refGramInverse);
+    const Scalar uniformGramInverseTrace(refGramInverseTrace);
+
+    // Test non-uniform weights: perturbation should barely change results
     fullprint << std::endl << "Non-uniform weights" << std::endl << std::endl;
     weights[0] += 1.e-10;
     {
       QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
-
-      fullprint << "QR" << std::endl;
-      fullprint << "Solve=" << qrMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << qrMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << qrMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << qrMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << qrMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
+      refSolve = qrMethod.solve(Point(size, 1.0));
+      refSolveNormal = qrMethod.solveNormal(Point(dimension, 1.0));
+      refGramInverse = qrMethod.getGramInverse();
+      refHDiag = qrMethod.getHDiag();
+      refGramInverseTrace = qrMethod.getGramInverseTrace();
+      refGramInverseDiag = qrMethod.getGramInverseDiag();
+    }
+    {
+      QRMethod qrMethod(proxy, weights, indices);
+      qrMethod.update(Indices(0), indices, Indices(0));
+      checkMethodResults("QR", qrMethod.solve(Point(size, 1.0)), qrMethod.solveNormal(Point(dimension, 1.0)), qrMethod.getGramInverse(), qrMethod.getHDiag(), qrMethod.getGramInverseTrace(), qrMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkMethodH(qrMethod, size);
     }
     {
       SVDMethod svdMethod(proxy, weights, indices);
       svdMethod.update(Indices(0), indices, Indices(0));
-
-      fullprint << "SVD" << std::endl;
-      fullprint << "Solve=" << svdMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << svdMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << svdMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << svdMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << svdMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
+      checkMethodResults("SVD", svdMethod.solve(Point(size, 1.0)), svdMethod.solveNormal(Point(dimension, 1.0)), svdMethod.getGramInverse(), svdMethod.getHDiag(), svdMethod.getGramInverseTrace(), svdMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkMethodH(svdMethod, size);
     }
     {
       CholeskyMethod choleskyMethod(proxy, weights, indices);
       choleskyMethod.update(Indices(0), indices, Indices(0));
-
-      fullprint << "Cholesky" << std::endl;
-      fullprint << "Solve=" << choleskyMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << choleskyMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << choleskyMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << choleskyMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << choleskyMethod.getGramInverseDiag() << std::endl;
+      checkMethodResults("Cholesky", choleskyMethod.solve(Point(size, 1.0)), choleskyMethod.solveNormal(Point(dimension, 1.0)), choleskyMethod.getGramInverse(), choleskyMethod.getHDiag(), choleskyMethod.getGramInverseTrace(), choleskyMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkMethodH(choleskyMethod, size);
     }
+
+    // Non-uniform results should be nearly identical to uniform
+    // (perturbation is only 1e-10)
+    assert_almost_equal(refSolve, uniformSolve, 1e-4, 1e-4);
+    assert_almost_equal(refSolveNormal, uniformSolveNormal, 1e-4, 1e-4);
+    assert_almost_equal(refGramInverse, uniformGramInverse, 1e-4, 1e-4);
+    assert_almost_equal(refGramInverseTrace, uniformGramInverseTrace, 1e-4, 1e-4);
   }
 
   catch (TestFailed & ex)

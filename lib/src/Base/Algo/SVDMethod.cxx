@@ -133,10 +133,9 @@ Point SVDMethod::solve(const Point & rhs)
 
   // First step
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
   }
   const Point c(u_.getImplementation()->genVectProd(b, true));
   // Second step
@@ -153,13 +152,28 @@ Point SVDMethod::solveNormal(const Point & rhs)
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[hasUniformWeight_ ? 0 : i];
   }
   // G^-1= V*S^-2*V^T
   Point coefficients(vT_ * b);
+  for (UnsignedInteger i = 0; i < basisSize; ++i)
+  {
+    const Scalar sv = singularValues_[i];
+    coefficients[i] /= (sv * sv);
+  }
+  return vT_.getImplementation()->genVectProd(coefficients, true);
+}
+
+
+Point SVDMethod::solveNormalGram(const Point & rhs)
+{
+  update(Indices(0), currentIndices_, Indices(0));
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  // G = V S^2 V^T, G^{-1} = V S^{-2} V^T
+  // G^{-1} rhs = V S^{-2} V^T rhs, no weight multiplication on rhs
+  Point coefficients(vT_ * rhs);
   for (UnsignedInteger i = 0; i < basisSize; ++i)
   {
     const Scalar sv = singularValues_[i];

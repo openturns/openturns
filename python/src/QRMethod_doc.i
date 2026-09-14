@@ -37,3 +37,12 @@ Solves a linear least squares problem with SVD method:
 [3.5,1.4]"
 
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QRMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QRMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc

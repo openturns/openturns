@@ -940,6 +940,10 @@
   <!-- OT::FunctionalChaosValidation parameters -->
   <FunctionalChaosValidation-ModelSelection        value_bool="false" />
 
+  <!-- OT::SparseExpansion parameters -->
+  <SparseExpansion-DecompositionMethod       value_str="SVD" />
+  <SparseExpansion-ConsecutiveIncreases      value_int="2" />
+
   <!-- OT::LeastSquaresExpansion parameters -->
   <LeastSquaresExpansion-DecompositionMethod       value_str="QR" />
 

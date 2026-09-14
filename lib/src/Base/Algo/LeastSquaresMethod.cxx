@@ -104,6 +104,11 @@ Point LeastSquaresMethod::solveNormal(const Point & rhs)
   return getImplementation()->solveNormal(rhs);
 }
 
+Point LeastSquaresMethod::solveNormalGram(const Point & rhs)
+{
+  return getImplementation()->solveNormalGram(rhs);
+}
+
 Point LeastSquaresMethod::getHDiag() const
 {
   return getImplementation()->getHDiag();
@@ -165,6 +170,11 @@ Point LeastSquaresMethod::getWeight() const
 Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
 {
   return getImplementation()->computeWeightedDesign(whole);
+}
+
+Matrix LeastSquaresMethod::computeDesign(bool whole) const
+{
+  return getImplementation()->computeDesign(whole);
 }
 
 LeastSquaresMethod LeastSquaresMethod::Build(const String name,

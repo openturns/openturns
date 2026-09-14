@@ -64,7 +64,7 @@ int main(int, char *[])
 
     // Creation of the BoxCoxTransform using shift with graph
     Graph graph;
-    BoxCoxTransform myBoxCoxShiftGraph(factory.buildWithGraph(timeSeries, shift, graph));
+    factory.buildWithGraph(timeSeries, shift, graph);
 
     fullprint << "BoxCox graph (time-series)=" << graph << std::endl;
 

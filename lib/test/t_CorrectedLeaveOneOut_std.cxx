@@ -29,39 +29,49 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  UnsignedInteger size = 100;
-  Uniform xuniform(0.9, 1.1);
-  Sample x( xuniform.getSample(size) );
-  Uniform yuniform(1.9, 2.1);
-  Sample y( yuniform.getSample(size) );
-  SymbolicFunction f( Description(1, "x"), Description(1, "2.0*x") );
-  Collection<Function> basis(1, f);
-  Indices indices(1);
-  indices.fill();
-  FittingAlgorithm fittingAlgo = CorrectedLeaveOneOut();
-
-  Scalar result = fittingAlgo.run(x, y, basis, indices);
-
-  fullprint << "result = " << result << std::endl;
-
-
   try
   {
-    size = 2;
-    x = xuniform.getSample(size);
-    y = yuniform.getSample(size);
-    SymbolicFunction f2( Description(1, "x"), Description(1, "x^2") );
-    basis.add(f2);
-    SymbolicFunction f3( Description(1, "x"), Description(1, "x^3") );
-    basis.add(f3);
-    indices = Indices(basis.getSize());
+    UnsignedInteger size = 100;
+    Uniform xuniform(0.9, 1.1);
+    Sample x( xuniform.getSample(size) );
+    Uniform yuniform(1.9, 2.1);
+    Sample y( yuniform.getSample(size) );
+    SymbolicFunction f( Description(1, "x"), Description(1, "2.0*x") );
+    Collection<Function> basis(1, f);
+    Indices indices(1);
     indices.fill();
-    result = fittingAlgo.run( x, y, basis, indices );
-    fullprint << "result=" << result << std::endl;
+    FittingAlgorithm fittingAlgo = CorrectedLeaveOneOut();
+
+    Scalar result = fittingAlgo.run(x, y, basis, indices);
+
+    fullprint << "result = " << result << std::endl;
+    assert_almost_equal(result, 5.42565, 1e-5, 1e-5);
+
+    // Test exception on too few samples
+    try
+    {
+      size = 2;
+      x = xuniform.getSample(size);
+      y = yuniform.getSample(size);
+      SymbolicFunction f2( Description(1, "x"), Description(1, "x^2") );
+      basis.add(f2);
+      SymbolicFunction f3( Description(1, "x"), Description(1, "x^3") );
+      basis.add(f3);
+      indices = Indices(basis.getSize());
+      indices.fill();
+      result = fittingAlgo.run( x, y, basis, indices );
+      throw TestFailed("Expected InvalidArgumentException not thrown");
+    }
+    catch (InvalidArgumentException &)
+    {
+      // expected
+    }
   }
-  catch (InvalidArgumentException & ex)
+
+  catch (TestFailed & ex)
   {
-    fullprint << "caught exception: " << ex.what() << std::endl;
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
   }
 
   return ExitCode::Success;

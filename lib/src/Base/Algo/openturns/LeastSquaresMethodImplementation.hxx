@@ -84,6 +84,7 @@ public:
   /** Solve least-squares problem, ie x=\argmin |D(Mx-b)|^2 */
   virtual Point solve(const Point & rhs);
   virtual Point solveNormal(const Point & rhs);
+  virtual Point solveNormalGram(const Point & rhs);
 
   /** Get the inverse of the Gram matrix */
   virtual CovarianceMatrix getGramInverse() const;
@@ -111,6 +112,9 @@ public:
 
   /** Build the weighted design matrix */
   virtual Matrix computeWeightedDesign(const Bool whole = false) const;
+
+  /** Build the raw design matrix without weight scaling */
+  Matrix computeDesign(const Bool whole = false) const;
 protected:
   virtual Matrix computeWeightedDesign(const Indices & indices) const;
 public:

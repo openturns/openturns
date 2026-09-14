@@ -231,7 +231,6 @@ int main(int, char *[])
       const Sample outputTest(f(inputTest));
 
       // create covariance model
-      const Basis basis(ConstantBasisFactory(dimension).build());
       const Point scale = {1.6326932047296538};
       const Point amplitude = {4.895995962015954};
       const SquaredExponential covarianceModel(scale, amplitude);

@@ -92,7 +92,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   // precompute the design matrix on the whole basis
   if (mPsiX_.getNbRows() == 0)
   {
-    mPsiX_ = method.computeWeightedDesign(true);
+    mPsiX_ = method.computeDesign(true);
   }
   const UnsignedInteger basisSize = mPsiX_.getNbColumns();
 
@@ -154,7 +154,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
 
     LOGDEBUG(OSS() << "matrix of elements of the inactive set built.");
 
-    const Matrix mPsiAk(method.computeWeightedDesign());
+    const Matrix mPsiAk(method.computeDesign());
 
     LOGDEBUG(OSS() << "matrix of elements of the active set built.");
 

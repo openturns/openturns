@@ -119,8 +119,7 @@ int main(int, char *[])
     fullprint << "factory=" << factory << std::endl;
     factory.setInitialConditions(phi, theta, cov);
 
-    Process result(factory.build(timeSeries));
-    //fullprint << "Estimated ARMA=" << result << std::endl;
+    factory.build(timeSeries);
 
   }
   catch (TestFailed & ex)

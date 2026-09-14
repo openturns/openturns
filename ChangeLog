@@ -10,10 +10,12 @@
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
+ * SparseExpansion (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
 
 ==== API changes ====
+ * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed deprecated SpecFunc.IsNormal

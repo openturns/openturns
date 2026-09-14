@@ -101,6 +101,39 @@ IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
   activeFunctions_.fill();
 }
 
+/* Constructor with active functions */
+IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
+    const Point & weights,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const OrthogonalBasis & basis,
+    const UnsignedInteger basisSize,
+    const Indices & activeFunctions)
+  : FunctionalChaosAlgorithm(inputSample, weights, outputSample, distribution, FixedStrategy(basis, basisSize), IntegrationStrategy())
+  , basis_(basis)
+  , basisSize_(basisSize)
+{
+  // The arguments are checked in the base class, excepted the basis and its size
+  if (basis.getMeasure().getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the basis must have a measure with the same dimension as the input distribution, here measure dimension=" << basis.getMeasure().getDimension() << " and distribution dimension=" << distribution.getDimension();
+  if (basisSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot project on a basis of size zero";
+  if (activeFunctions.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: active functions cannot be empty";
+  for (UnsignedInteger i = 0; i < activeFunctions.getSize(); ++i)
+    if (activeFunctions[i] >= basisSize) throw InvalidArgumentException(HERE) << "Error: active function index " << activeFunctions[i] << " must be less than basisSize " << basisSize;
+  activeFunctions_ = activeFunctions;
+}
+
+/* Constructor with active functions */
+IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
+    const Sample & outputSample,
+    const Distribution & distribution,
+    const OrthogonalBasis & basis,
+    const UnsignedInteger basisSize,
+    const Indices & activeFunctions)
+  : IntegrationExpansion(inputSample, Point(inputSample.getSize(), 1.0 / inputSample.getSize()), outputSample, distribution, basis, basisSize, activeFunctions)
+{
+  // Nothing to do
+}
+
 
 /* Virtual constructor */
 IntegrationExpansion * IntegrationExpansion::clone() const
@@ -163,6 +196,8 @@ void IntegrationExpansion::run()
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(false);
   result_.setInvolvesModelSelection(false);
+  result_.setSelectionHistory(Collection<Indices>(), Collection<Point>(), Indices(outputDimension + 1, 0));
+  result_.setErrorHistory(Point(), Indices(outputDimension + 1, 0));
 }
 
 /* Method to get/set the active functions */
