@@ -40,7 +40,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *DiscreteCompoundDistribution-DefaultEpsilon* (``Scalar``, default: `1e-12`)
+- *DiscreteCompoundDistribution-DefaultEpsilon* (``Scalar``, default: `1e-12`): tolerance used to truncate
+  the sum defining the compound distribution when computing its probabilities by discrete Fourier transform.
 )RAW"
 
 // ---------------------------------------------------------------------

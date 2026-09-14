@@ -37,7 +37,8 @@ dist : :class:`~openturns.Rice`
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+This class uses the following entries of :class:`~openturns.ResourceMap`. All the keys drive the precision
+of the optimization solver involved in the estimation:
 
 - *RiceFactory-AbsolutePrecision* (``Scalar``, default: `1e-12`)
 - *RiceFactory-MaximumIteration* (``UnsignedInteger``, default: `10`)

@@ -102,9 +102,13 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *MarginalDistribution-MaximumError* (``Scalar``, default: `1e-07`)
-- *MarginalDistribution-MaximumSubIntervals* (``UnsignedInteger``, default: `128`)
-- *MarginalDistribution-Rule* (``String``, default: `G15K31`)
-- *MarginalDistribution-UsePDF* (``Bool``, default: `true`)"
+- *MarginalDistribution-MaximumError* (``Scalar``, default: `1e-07`): admitted error of the numerical
+  integration of the marginal distributions,
+- *MarginalDistribution-MaximumSubIntervals* (``UnsignedInteger``, default: `128`): maximum number of
+  sub-intervals used by the adaptive numerical integration,
+- *MarginalDistribution-Rule* (``String``, default: `G15K31`): name of the Gauss-Kronrod integration rule
+  used by the numerical integration, among `G1K3`, `G3K7`, `G7K15`, `G11K23`, `G15K31` and `G25K51`,
+- *MarginalDistribution-UsePDF* (``Bool``, default: `true`): if true, the marginals are computed from the
+  probability density function, otherwise they are computed from the cumulative distribution function."
 
 
