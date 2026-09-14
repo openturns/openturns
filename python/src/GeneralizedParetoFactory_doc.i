@@ -11,7 +11,7 @@ The following :class:`~openturns.ResourceMap` entries can be used to tweak
 the parameters of the optimization solver involved in the different estimators:
 
 - `GeneralizedParetoFactory-DefaultOptimizationAlgorithm`
-- `GeneralizedParetoFactory-MaximumEvaluationNumber`
+- `GeneralizedParetoFactory-MaximumCallsNumber`
 - `GeneralizedParetoFactory-MaximumAbsoluteError`
 - `GeneralizedParetoFactory-MaximumRelativeError`
 - `GeneralizedParetoFactory-MaximumObjectiveError`
