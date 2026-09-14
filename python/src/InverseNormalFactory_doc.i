@@ -13,9 +13,15 @@ The parameters are estimated by method of moments:
       \displaystyle\Hat{\lambda}_n = \left(  \frac{1}{n} \sum_{i=1}^n \frac{1}{x_i} - \frac{1}{\bar{x}_n} \right)^{-1}
     \end{eqnarray*}
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *InverseNormalFactory-Method* (`String`, default: `MLE`): the estimation method, either `MLE` for the
+  likelihood-based estimation or `Moments` for the method of moments.
+
 See also
 --------
-DistributionFactory, InverseNormal)RAW"
+DistributionFactory, InverseNormal
+)RAW"
 
 // ---------------------------------------------------------------------
 
