@@ -1682,8 +1682,8 @@ Point SampleImplementation::getMin() const
 void SampleImplementation::translate(const Point & translation)
 {
   if (dimension_ != translation.getDimension())
-    throw InvalidArgumentException(HERE) << "Translation point has incorrect dimension. Got " << translation.getDimension()
-                                         << ". Expected " << dimension_;
+    throw InvalidDimensionException(HERE) << "Translation point has incorrect dimension. Got " << translation.getDimension()
+                                          << ". Expected " << dimension_;
 
   if (size_ == 0) return;
 
@@ -1706,8 +1706,8 @@ SampleImplementation & SampleImplementation::operator += (const Point & translat
 
 SampleImplementation & SampleImplementation::operator += (const SampleImplementation & translation)
 {
-  if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
-  if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
+  if (translation.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
+  if (translation.getSize() != size_) throw InvalidDimensionException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
   int size = size_ * dimension_;
   double alpha = 1.0;
   int one = 1;
@@ -1727,8 +1727,8 @@ SampleImplementation & SampleImplementation::operator -= (const Point & translat
 
 SampleImplementation & SampleImplementation::operator -= (const SampleImplementation & translation)
 {
-  if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
-  if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
+  if (translation.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
+  if (translation.getSize() != size_) throw InvalidDimensionException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
   int size = size_ * dimension_;
   double alpha = -1.0;
   int one = 1;
