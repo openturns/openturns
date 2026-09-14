@@ -18,7 +18,7 @@ the optimization step:
 - `StudentCopulaFactory-NuMax`
 - `StudentCopulaFactory-NuStart`
 - `StudentCopulaFactory-DefaultOptimizationAlgorithm`
-- `StudentCopulaFactory-MaximumEvaluationNumber`
+- `StudentCopulaFactory-MaximumCallsNumber`
 
 See also
 --------
