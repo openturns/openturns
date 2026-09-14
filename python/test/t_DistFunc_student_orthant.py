@@ -45,7 +45,7 @@ L = ot.TriangularMatrix(2)
 L[0, 0] = 1.0
 L[1, 0] = 0.0
 L[1, 1] = 1.0
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(ValueError):
     ot.DistFunc.pStudentOrthantND([-1.0], [1.0], L, 5.0)
 
 print("Error: a > b")

@@ -85,6 +85,7 @@ Point __radd__(const Scalar s)
   return *self;
 }
 
+#if SWIG_VERSION >= 0x040200
 Point operator +(const Point & other)
 {
  return *self + other;
@@ -94,6 +95,22 @@ Point __sub__(const Point & other)
 {
  return *self - other;
 }
+#else
+// Fallback for SWIG<4.2: slot wrappers (__add__, ...) turn any exception
+// into NotImplemented, losing the dimension message. Expose
+// the operations under non-slot names (normal wrappers propagate) and
+// alias them to the dunders in %pythoncode below. The slot then calls the
+// builtin directly, so there is no per-call Python overhead.
+Point _add(const Point & other)
+{
+ return *self + other;
+}
+
+Point _sub(const Point & other)
+{
+ return *self - other;
+}
+#endif
 
 Point __mul__(Scalar s)
 {
@@ -112,6 +129,7 @@ Point __div__(Scalar s)
 
 Point __truediv__(Scalar s) { return (*self) / s; }
 
+#if SWIG_VERSION >= 0x040200
 Point __iadd__(const Point & other)
 {
  *self += other;
@@ -123,6 +141,19 @@ Point __isub__(const Point & other)
  *self -= other;
  return *self;
 }
+#else
+Point _iadd(const Point & other)
+{
+ *self += other;
+ return *self;
+}
+
+Point _isub(const Point & other)
+{
+ *self -= other;
+ return *self;
+}
+#endif
 
 Point __neg__()
 {
@@ -140,3 +171,13 @@ def _Point___iter__(self):
         yield self[i]
 Point.__iter__ = _Point___iter__
 %}
+
+#if SWIG_VERSION < 0x040200
+%pythoncode %{
+# Fallback for SWIG<4.2, see dimension note above
+Point.__add__ = Point._add
+Point.__sub__ = Point._sub
+Point.__iadd__ = Point._iadd
+Point.__isub__ = Point._isub
+%}
+#endif
