@@ -33,14 +33,14 @@ See also
 Examples
 --------
 >>> import openturns as ot
->>> from openturns.experimental import MulticollinearityAnalysis
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> corMatrix = ot.CorrelationMatrix(3, [1.0, 0.5, 0.5, 0.5, 1.0, 0.5, 0.5, 0.5, 1.0])
 >>> distribution = ot.Normal([0.0] * 3, [1.0] * 3, corMatrix)
 >>> firstSample = distribution.getSample(100)
 >>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
 >>> secondSample = model(firstSample)
->>> analysis = MulticollinearityAnalysis(firstSample, secondSample)
+>>> analysis = otexp.MulticollinearityAnalysis(firstSample, secondSample)
 >>> lmg, pmvd = analysis.computeLmgPmvd()
 >>> johnson = analysis.computeJohnson()
 "

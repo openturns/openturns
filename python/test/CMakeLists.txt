@@ -886,8 +886,6 @@ if (MATPLOTLIB_FOUND)
       set_tests_properties (pyinstallcheck_example_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
     endif ()
   endforeach ()
-  # Sometimes the following test takes a bit more than 100 seconds
-  set_tests_properties (pyinstallcheck_example_plot_multicollinearity PROPERTIES TIMEOUT 150)
   if (NOT Bonmin_FOUND)
     set_tests_properties (pyinstallcheck_example_plot_optimization_bonmin PROPERTIES DISABLED TRUE)
   endif()
