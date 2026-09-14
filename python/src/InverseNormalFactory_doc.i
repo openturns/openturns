@@ -15,7 +15,8 @@ The parameters are estimated by method of moments:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *InverseNormalFactory-Method* (`String`, default: `MLE`)
+- *InverseNormalFactory-Method* (`String`, default: `MLE`): the estimation method, either `MLE` for the
+  likelihood-based estimation or `Moments` for the method of moments.
 
 See also
 --------

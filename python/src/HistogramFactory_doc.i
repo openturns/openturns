@@ -9,7 +9,8 @@ See the :meth:`~openturns.HistogramFactory.computeBandwidth` method for the band
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`)
+- *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`): maximum number of bins of the
+  computed histogram, i.e. the maximal number of bins after merging.
 
 Examples
 --------

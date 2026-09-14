@@ -18,7 +18,8 @@ with :math:`\gamma \simeq 0.57721` as Euler's constant (not to be confused with 
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FrechetFactory-BoundMargin* (`Scalar`, default: `10`)
+- *FrechetFactory-BoundMargin* (`Scalar`, default: `10`): margin used to define the lower and upper bounds
+  of the likelihood maximization from the point estimates.
 
 See also
 --------

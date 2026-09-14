@@ -13,8 +13,9 @@ where :math:`\displaystyle SR = \displaystyle \sum_{i=1}^n \frac{ \log(x_i)}{1+x
 and :math:`\displaystyle SSR = \displaystyle \sum_{i=1}^n \frac{ x_i^c\log(x_i)}{1+x_i^c}`
 
 The resolution of this equation can be tuned through
-`BurrFactory-RelativePrecision`, `BurrFactory-ResidualPrecision`,
-`BurrFactory-MaximumIteration` in :class:`~openturns.ResourceMap`
+`BurrFactory-RelativePrecision` (`Scalar`, default: `1e-12`), `BurrFactory-ResidualPrecision`
+(`Scalar`, default: `1e-12`), `BurrFactory-MaximumIteration` (`UnsignedInteger`, default: `10`)
+in :class:`~openturns.ResourceMap`
 
 Then
 
