@@ -169,6 +169,8 @@ Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained co
   the generic conditional methods are used (see :meth:`~openturns.Distribution.computeConditionalCDF()` for example). These methods can only be
   used when we want to create the distribution of :math:`X_d|(X_1, \dots, X_{d-1}) = (x_1, \dots, x_{d-1})` or when :math:`\inputRV` is bivariate
   with a symmetric copula.
+- *PointConditionalDistribution-UseFullParameters* (`Bool`, default: `false`): whether to use all the
+  parameters of the underlying distribution when computing the conditional distribution.
 
 Examples
 --------

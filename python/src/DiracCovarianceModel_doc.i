@@ -50,10 +50,11 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = 1_{\{\vect{s}=\vect{t}\}}
 
-
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *DiracCovarianceModel-CheckUnique* (``Bool``, default: ``true``)
+- *DiracCovarianceModel-CheckUnique* (`Bool`, default: `true`): whether to check if the discretization
+  mesh has repeated vertices, in which case the generic discretization algorithm is used instead of the
+  optimized diagonal one.
 
 See Also
 --------
@@ -83,5 +84,4 @@ Create a  Dirac covariance function specifying the amplitude vector and the corr
 >>> corrMat = ot.CorrelationMatrix(2)
 >>> corrMat[1,0] = 0.1
 >>> covModel3 =  ot.DiracCovarianceModel(2, [1.5, 2.5], corrMat)
-
 )RAW"
