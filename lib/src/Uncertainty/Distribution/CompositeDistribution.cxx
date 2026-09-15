@@ -177,8 +177,6 @@ void CompositeDistribution::update()
   if (!std::isfinite(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   probabilities_ = Point(1, antecedent_.computeCDF(xMin));
   increasing_ = Indices(0);
-  Scalar fMin = values_[0];
-  Scalar fMax = values_[0];
   const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber");
   const Function derivative(new CompositeDistributionDerivativeEvaluation(function_));
   Scalar a = xMin;
@@ -225,8 +223,6 @@ void CompositeDistribution::update()
       increasing_.add(value > values_[values_.getSize() - 1]);
       values_.add(value);
       probabilities_.add(antecedent_.computeCDF(root));
-      fMin = std::min(value, fMin);
-      fMax = std::max(value, fMax);
     }
     catch(...)
     {
@@ -247,8 +243,8 @@ void CompositeDistribution::update()
   increasing_.add(value > values_[values_.getSize() - 1]);
   values_.add(value);
   probabilities_.add(Point(1, antecedent_.computeCDF(xMax)));
-  fMin = std::min(value, fMin);
-  fMax = std::max(value, fMax);
+  const Scalar fMin = *std::min_element(values_.begin(), values_.end());
+  const Scalar fMax = *std::max_element(values_.begin(), values_.end());
   setRange(Interval(fMin, fMax));
 }
 
