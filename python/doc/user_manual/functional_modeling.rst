@@ -142,6 +142,7 @@ Evaluation functions
     MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
+    experimental.ExceptionPenalizedEvaluation
 
     :template: classWithPlot.rst_t
     PiecewiseHermiteEvaluation
