@@ -120,3 +120,9 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
 
+/* Base/Func */
+%include ExceptionPenalizedEvaluation.i
+
+/* Base/Optim */
+%include ExceptionPenalizedProblem.i
+

@@ -65,6 +65,7 @@
  * PiecewiseLinearDistribution (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
+ * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
