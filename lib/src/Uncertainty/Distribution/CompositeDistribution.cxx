@@ -440,6 +440,83 @@ Scalar CompositeDistribution::computeCDF(const Point & point) const
   return cdf;
 }
 
+/* Get the probability content of an interval */
+Scalar CompositeDistribution::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension 1, here dimension=" << interval.getDimension();
+  Scalar probability = 0.0;
+  const Scalar lo = interval.getLowerBound()[0];
+  const Scalar hi = interval.getUpperBound()[0];
+  if (!(hi > lo)) return probability;
+  Scalar a = bounds_[0];
+  Scalar fA = values_[0];
+  Scalar b = a;
+  Scalar fB = fA;
+  const UnsignedInteger size = bounds_.getSize();
+  for (UnsignedInteger i = 1; i < size; ++i)
+  {
+    a = b;
+    fA = fB;
+    b = bounds_[i];
+    fB = values_[i];
+    // The contribution of the current segment [a, b] to the probability
+    // P(lo <= f(antecedent) <= hi) where f is monotonic on [a, b]
+    if (increasing_[i - 1])
+    {
+      // f increasing on [a, b], image = [fA, fB]
+      if (hi <= fA || lo >= fB) continue;
+      Scalar pLo = 0.0;
+      Scalar pHi = 0.0;
+      if (lo <= fA)
+      {
+        pLo = probabilities_[i - 1];
+      }
+      else
+      {
+        const Point t(1, solver_.solve(function_, lo, a, b, fA, fB));
+        pLo = antecedent_.computeCDF(t);
+      }
+      if (hi >= fB)
+      {
+        pHi = probabilities_[i];
+      }
+      else
+      {
+        const Point t(1, solver_.solve(function_, hi, a, b, fA, fB));
+        pHi = antecedent_.computeCDF(t);
+      }
+      probability += pHi - pLo;
+    } // increasing
+    else
+    {
+      // f decreasing on [a, b], image = [fB, fA]
+      if (hi <= fB || lo >= fA) continue;
+      Scalar pLo = 0.0;
+      Scalar pHi = 0.0;
+      if (lo <= fB)
+      {
+        pLo = probabilities_[i];
+      }
+      else
+      {
+        const Point t(1, solver_.solve(function_, lo, a, b, fA, fB));
+        pLo = antecedent_.computeCDF(t);
+      }
+      if (hi >= fA)
+      {
+        pHi = probabilities_[i - 1];
+      }
+      else
+      {
+        const Point t(1, solver_.solve(function_, hi, a, b, fA, fB));
+        pHi = antecedent_.computeCDF(t);
+      }
+      probability += pLo - pHi;
+    } // decreasing
+  } // i
+  return SpecFunc::Clip01(probability);
+}
+
 /** Get the product minimum volume interval containing a given probability of the distribution */
 Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
@@ -466,13 +543,15 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
 /* Get the PDF singularities inside of the range - 1D only */
 Point CompositeDistribution::getSingularities() const
 {
-  if (values_.getSize() == 2) return Point(1, 0);
-  // The singularities are at the extrema of f
-  Point singularities(values_);
+  // The singularities are at the images of the roots of the derivative
+  // of f located inside of the range, ie the interior elements of values_.
+  // The first and last elements of values_ are the images of the bounds
+  // of the range, which are not singularities.
+  const UnsignedInteger size = values_.getSize();
+  if (size <= 2) return Point(0);
+  Point singularities(size - 2);
+  for (UnsignedInteger i = 1; i < size - 1; ++i) singularities[i - 1] = values_[i];
   std::sort(singularities.begin(), singularities.end());
-  // Remove the end points
-  singularities.erase(0);
-  singularities.erase(singularities.getSize() - 1);
   return singularities;
 }
 

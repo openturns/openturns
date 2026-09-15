@@ -41,6 +41,9 @@
  * Add Process sample slicing operator
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
 
+=== Bug fixes (total 1) ===
+ * #3308 (The CompositeDistribution.getSingularities method returns incorrect values and the computation of the interval probabilities can diverge)
+
 === Miscellaneous ===
 
 
