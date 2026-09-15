@@ -1,12 +1,12 @@
 #! /usr/bin/env python
 
+import math
 import pickle
 
 import openturns as ot
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 # Instantiate one distribution object
 f = ot.SymbolicFunction("x", "x^2 + 2 * sin(x)")
@@ -210,11 +210,11 @@ d_assign.setFunction(f2)
 assert d_assign != d1, "setFunction should update the distribution"
 
 # Constructor argument checks
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     ot.CompositeDistribution(ot.SymbolicFunction(["x", "y"], ["x+y"]), ot.Normal())  # wrong input dim
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     ot.CompositeDistribution(ot.SymbolicFunction("x", ["x", "x^2"]), ot.Normal())  # wrong output dim
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     ot.CompositeDistribution(ot.SymbolicFunction("x", "x^2"), ot.Normal(2))  # wrong antecedent dim
 
 # Analytic reference: x^2 with X~N(0,1) is exactly a Chi2(1) distribution
@@ -262,7 +262,7 @@ ott.assert_almost_equal(sing_pl, [-2.0, 2.0])  # sorted ascending
 
 # sin: f'(x)=cos(x)=0 at pi/2, 3pi/2, singularities at y=...=+/-1
 f_sin = ot.SymbolicFunction("x", "sin(x)")
-d_sin = ot.CompositeDistribution(f_sin, ot.Uniform(0, 6.283185307))
+d_sin = ot.CompositeDistribution(f_sin, ot.Uniform(0, 2 * math.pi))
 sing_sin = d_sin.getSingularities()
 ott.assert_almost_equal(sing_sin.getSize(), 2)
 ott.assert_almost_equal(sing_sin, [-1.0, 1.0])
@@ -274,6 +274,24 @@ ott.assert_almost_equal(sing_exp.getSize(), 0)
 # identity: f'(x)=1, no critical points, empty singularities
 sing_id = d_id.getSingularities()
 ott.assert_almost_equal(sing_id.getSize(), 0)
+
+# Explicit partition: a refinement point inside a monotonic region is not a
+# singularity. Here identity g(x)=x with an extra bound at 0 (not a critical
+# point), so the singularities must stay empty.
+d_id_expl = ot.CompositeDistribution(f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0])
+sing_id_expl = d_id_expl.getSingularities()
+ott.assert_almost_equal(sing_id_expl.getSize(), 0)
+
+# Explicit partition with a constant segment: g(x)=max(x,0) on Uniform(-1,1)
+# maps the half-mass below 0 to the single value 0, creating an atom there.
+f_pos = ot.SymbolicFunction("x", "max(x, 0)")
+d_pos = ot.CompositeDistribution(f_pos, ot.Uniform(-1.0, 1.0), [-1.0, 0.0, 1.0], [0.0, 0.0, 1.0])
+ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([0.0], [0.0])), 0.5)
+ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([-0.1], [0.1])), 0.55)
+ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([-1.0], [0.0])), 0.5)
+ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([0.5], [1.0])), 0.25)
+ott.assert_almost_equal(d_pos.getSingularities(), [0.0])
+ott.assert_almost_equal(d_pos.computeCDF(0.0), 0.5)
 
 # computePDF at a singularity must be finite: the singularities are points
 # where the PDF is undefined/infinite, but the solver-based summation keeps
@@ -324,7 +342,7 @@ assert p_sin3 > 0.0 and p_sin3 < 1.0, f"sin P[-0.99,-0.5]={p_sin3} should be in 
 # PDF at 0.5 for sin: 2 preimages, each with |cos(x)|=sqrt(3)/2, pdf=1/(2pi)*(2/|cos|)=4/(2pi sqrt(3))
 ott.assert_almost_equal(
     d_sin.computePDF(0.5),
-    4.0 / (2.0 * 6.283185307 * 0.8660254037844387),
+    4.0 / (2.0 * (2.0 * math.pi) * (math.sqrt(3.0) / 2.0)),
     1e-4,
     1e-3,
 )
@@ -371,7 +389,7 @@ d_mut.setFunction(f_exp)
 ott.assert_almost_equal(d_mut.getSingularities().getSize(), 0)
 
 # setSolver changes the solver
-d_solv = ot.CompositeDistribution(f_sin, ot.Uniform(0.0, 6.283185307))
+d_solv = ot.CompositeDistribution(f_sin, ot.Uniform(0.0, 2 * math.pi))
 brent = ot.Brent(1e-4, 1e-6, 1e-6)
 d_solv.setSolver(brent)
 ott.assert_almost_equal(d_solv.getSolver().getAbsoluteError(), brent.getAbsoluteError())
