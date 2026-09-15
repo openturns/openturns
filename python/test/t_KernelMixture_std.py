@@ -178,3 +178,18 @@ boundedDist = ot.KernelMixture(uniformKernel, boundedBandwidth, boundedSample)
 ott.assert_almost_equal(boundedDist.computeSurvivalFunction([0.0, 1.0]), 0.5)
 ott.assert_almost_equal(boundedDist.computeSurvivalFunction([0.0, 0.0]), 1.0)
 ott.assert_almost_equal(boundedDist.computeSurvivalFunction([2.0, 2.0]), 0.0)
+
+# Test computeProbability with infinite bounds in 1D with interpolation
+sample1D = ot.Sample([[0.5], [1.5], [2.5]])
+dist1D = ot.KernelMixture(ot.Normal(), [0.3], sample1D)
+ott.assert_almost_equal(
+    dist1D.computeProbability(ot.Interval([0.0], [0.0], [False], [True])),
+    dist1D.computeCDF([0.0]),
+)
+ott.assert_almost_equal(
+    dist1D.computeProbability(ot.Interval([1.0], [0.0], [True], [False])),
+    dist1D.computeComplementaryCDF([1.0]),
+)
+ott.assert_almost_equal(
+    dist1D.computeProbability(ot.Interval([0.0], [0.0], [False], [False])), 1.0
+)
