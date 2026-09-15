@@ -29,7 +29,7 @@ The following :class:`openturns.ResourceMap` keys are used:
 
 See also
 --------
-openturns.DistributionFactory, UniformOverMesh
+openturns.DistributionFactory, openturns.UniformOverMesh
 
 Examples
 --------
