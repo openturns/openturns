@@ -22,7 +22,9 @@ assert_almost_equal(g([-1.0]), [penalty], 0.0, 0.0)
 # sample evaluation with mixed success/failure
 inSample = ot.Sample([[-1.0], [4.0], [9.0], [-4.0]])
 outSample = g(inSample)
-assert_almost_equal(outSample, [[penalty], [2.0], [3.0], [penalty]], 1e-12, 0.0)
+assert_almost_equal(
+    outSample, [[penalty], [2.0], [3.0], [penalty]], 1e-12, 0.0
+)
 
 # default penalized value is sqrt(MaxScalar) to stay finite if squared
 g2 = otexp.PenalizedEvaluation(f.getEvaluation())

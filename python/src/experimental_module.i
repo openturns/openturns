@@ -81,3 +81,6 @@
 /* Base/Func */
 %include PenalizedEvaluation.i
 
+/* Base/Optim */
+%include PenalizedProblem.i
+
