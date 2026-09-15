@@ -10,7 +10,7 @@ Uniform distribution on a triangular mesh
 # In this example, we present the :class:`~openturns.UniformOverMesh`
 # distribution, which is the uniform distribution on a triangulated surface
 # embedded in an ambient space of dimension strictly larger than the intrinsic
-# dimension of the surface. We show how to build the distribution explicitely
+# dimension of the surface. We show how to build the distribution explicitly
 # from a mesh, and how to estimate the mesh from a sample with the
 # :class:`~openturns.experimental.UniformOverMeshFactory` class.
 
