@@ -187,6 +187,26 @@ var_sample = sample.computeCovariance()
 ott.assert_almost_equal(var_sample[0, 0], concentrated.getCovariance()[0, 0],
                         0.1, 0.0)
 
+# Distribution validation
+validation = ott.DistributionValidation(distribution)
+validation.skipCDF()
+validation.skipCorrelation()
+validation.skipDependenceMeasures()
+validation.skipGradient()
+validation.skipMoments()
+validation.skipDDF()
+validation.skipQuantile()
+validation.skipProbability()
+validation.skipMinimumVolumeLevelSet()
+validation.skipMinimumVolumeInterval()
+validation.skipConfidenceInterval()
+validation.skipInverseSurvival()
+validation.skipComplementaryCDF()
+validation.skipConditional()
+validation.skipTransformation()
+validation.skipParameters()
+validation.run()
+
 # __repr__ and __str__
 assert "Bingham" in repr(distribution)
 assert "Bingham" in str(distribution)
