@@ -37,6 +37,7 @@
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/NearestPointProblem.hxx"
+#include "openturns/PenalizedProblem.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/LinearProblem.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
