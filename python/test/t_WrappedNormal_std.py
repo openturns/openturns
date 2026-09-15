@@ -111,6 +111,27 @@ ott.assert_almost_equal(default.getPeriod(), 2.0 * math.pi, 1e-12, 0.0)
 dist = ot.Distribution(distribution)
 assert dist.getImplementation().getClassName() == "WrappedNormal"
 
+# Distribution validation
+ot.RandomGenerator.SetSeed(0)
+validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()
+validation.skipCorrelation()
+validation.skipDependenceMeasures()
+validation.skipGradient()
+validation.skipMoments()
+validation.skipDDF()
+validation.skipQuantile()
+validation.skipProbability()
+validation.skipMinimumVolumeLevelSet()
+validation.skipMinimumVolumeInterval()
+validation.skipConfidenceInterval()
+validation.skipInverseSurvival()
+validation.skipComplementaryCDF()
+validation.skipConditional()
+validation.skipTransformation()
+validation.skipParameters()
+validation.run()
+
 # __repr__ and __str__
 assert "WrappedNormal" in repr(distribution)
 assert "WrappedNormal" in str(distribution)

@@ -127,6 +127,26 @@ ott.assert_almost_equal(mean_default[1, 1], 1.0, 1e-12, 0.0)
 dist = ot.Distribution(distribution)
 assert dist.getImplementation().getClassName() == "RiemannianGaussian"
 
+# Distribution validation
+validation = ott.DistributionValidation(distribution)
+validation.skipCDF()
+validation.skipCorrelation()
+validation.skipDependenceMeasures()
+validation.skipGradient()
+validation.skipMoments()
+validation.skipDDF()
+validation.skipQuantile()
+validation.skipProbability()
+validation.skipMinimumVolumeLevelSet()
+validation.skipMinimumVolumeInterval()
+validation.skipConfidenceInterval()
+validation.skipInverseSurvival()
+validation.skipComplementaryCDF()
+validation.skipConditional()
+validation.skipTransformation()
+validation.skipParameters()
+validation.run()
+
 # __repr__ and __str__
 assert "RiemannianGaussian" in repr(distribution)
 assert "RiemannianGaussian" in str(distribution)
