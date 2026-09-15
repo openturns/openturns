@@ -80,6 +80,10 @@ public:
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
+  /** Get the probability content of an interval */
+  using DistributionImplementation::computeProbability;
+  Scalar computeProbability(const Interval & interval) const override;
+
   /** Get the product minimum volume interval containing a given probability of the distribution */
   Interval computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProbOut) const override;
 
