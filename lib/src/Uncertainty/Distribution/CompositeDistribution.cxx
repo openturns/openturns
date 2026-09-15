@@ -20,6 +20,7 @@
  */
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -453,7 +454,7 @@ Scalar CompositeDistribution::computeProbability(const Interval & interval) cons
   Scalar probability = 0.0;
   const Scalar lo = interval.getLowerBound()[0];
   const Scalar hi = interval.getUpperBound()[0];
-  if (!(hi > lo)) return probability;
+  if (hi < lo) return probability;
   Scalar a = bounds_[0];
   Scalar fA = values_[0];
   Scalar b = a;
@@ -465,6 +466,15 @@ Scalar CompositeDistribution::computeProbability(const Interval & interval) cons
     fA = fB;
     b = bounds_[i];
     fB = values_[i];
+    // A constant segment maps all its antecedent mass to the single value fA,
+    // which is an atom of the distribution: it is taken into account when the
+    // interval contains this value.
+    if (fA == fB)
+    {
+      LOGDEBUG(OSS() << "constant segment, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << hi << ", b=" << b << ", fB=" << fB);
+      if ((lo <= fA) && (fA <= hi)) probability += probabilities_[i] - probabilities_[i - 1];
+      continue;
+    }
     // The contribution of the current segment [a, b] to the probability
     // P(lo <= f(antecedent) <= hi) where f is monotonic on [a, b]
     if (increasing_[i - 1])
@@ -549,16 +559,17 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
 /* Get the PDF singularities inside of the range - 1D only */
 Point CompositeDistribution::getSingularities() const
 {
-  // The singularities are at the images of the roots of the derivative
-  // of f located inside of the range, ie the interior elements of values_.
-  // The first and last elements of values_ are the images of the bounds
-  // of the range, which are not singularities.
+  // The singularities are at the images of the points where the monotonicity
+  // of g changes, ie at interior values where the increasing flag differs
+  // from the previous segment. Points which are not critical (eg refinement
+  // points inside a monotonic region of the explicit partition) are excluded.
   const UnsignedInteger size = values_.getSize();
   if (size <= 2) return Point(0);
-  Point singularities(size - 2);
-  for (UnsignedInteger i = 1; i < size - 1; ++i) singularities[i - 1] = values_[i];
+  std::vector<Scalar> singularities;
+  for (UnsignedInteger i = 1; i < size - 1; ++i)
+    if (increasing_[i - 1] != increasing_[i]) singularities.push_back(values_[i]);
   std::sort(singularities.begin(), singularities.end());
-  return singularities;
+  return Point(singularities.begin(), singularities.end());
 }
 
 /* Parameters value and description accessor */
