@@ -27,6 +27,7 @@
 #include "openturns/IntegrationAlgorithm.hxx"
 #include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/Dirichlet.hxx"
+#include "openturns/SquareMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -91,6 +92,12 @@ public:
   void setMesh(const Mesh & mesh);
   Mesh getMesh() const;
 
+  /** Intrinsic dimension of the mesh accessor */
+  UnsignedInteger getIntrinsicDimension() const;
+
+  /** Volume of the mesh accessor */
+  Scalar getVolume() const;
+
   /** Integration algorithm accessor */
   void setIntegrationAlgorithm(const IntegrationAlgorithm & integrationAlgorithm);
   IntegrationAlgorithm getIntegrationAlgorithm() const;
@@ -126,6 +133,12 @@ protected:
   /** Simplices */
   IndicesCollection simplices_;
 
+  /** Intrinsic dimension of the mesh */
+  UnsignedInteger intrinsicDimension_ = 0;
+
+  /** Relative tolerance for the on-manifold test */
+  Scalar epsilon_ = 0.0;
+
   /** Structures for the alias sampling method */
   Point base_;
   Indices alias_;
@@ -135,8 +148,20 @@ private:
   /** Compute the mean of the distribution */
   void computeMean() const override;
 
+  /** Compute the covariance of the distribution */
+  void computeCovariance() const override;
+
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
+
+  /** Check if the point belongs to the affine hull of the simplex at the
+      given index, and if so give its barycentric coordinates */
+  Bool isOnSimplex(const Point & point,
+                   const UnsignedInteger index,
+                   Point & barycentricCoordinates) const;
+
+  /** Check if the point belongs to the mesh */
+  Bool isOnMesh(const Point & point) const;
 
 }; /* class UniformOverMesh */
 

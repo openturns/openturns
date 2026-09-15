@@ -95,6 +95,9 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
     experimental.MatrixFisherFactory
 
+    :template: DistributionFactory.rst_t
+    experimental.UniformOverMeshFactory
+
     :template: class.rst_t
 
     MethodOfMomentsFactory
