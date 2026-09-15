@@ -26,6 +26,7 @@
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
+ * PenalizedEvaluation (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
