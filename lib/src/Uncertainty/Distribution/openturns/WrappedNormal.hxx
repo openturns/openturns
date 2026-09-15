@@ -24,6 +24,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +38,7 @@ public:
 
   WrappedNormal(const Point & mu,
                 const CovarianceMatrix & sigma,
-                const Scalar period = 2.0 * M_PI);
+                const Scalar period = SpecFunc::TWOPI);
 
   using DistributionImplementation::operator ==;
   Bool operator ==(const WrappedNormal & other) const;
