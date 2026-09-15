@@ -268,7 +268,7 @@ Bibliothèques considérées mais non retenues:
 
 \subsection{Notes d'Intégration pour OpenTURNS}
 \begin{itemize}
-    \item \textbf{Eigen} est déjà dépendance OpenTURNS ; utiliser pour toute l'algèbre linéaire espaces tangents.
+    \item \textbf{LAPACK/BLAS} est déjà une dépendance obligatoire d'OpenTURNS (résolution systèmes, décompositions LU/QR/Cholesky, VP, SVD) ; utiliser via \texttt{SquareMatrix} pour toute l'algèbre linéaire espaces tangents. \textbf{Eigen} reste disponible en option (via \texttt{Spectra}).
     \item \textbf{Manif} ou \textbf{Sophus} fournissent $\text{SO}(3)$/$\text{SE}(3)$ exp/log et jacobiens testés pour Matrix Fisher.
     \item \textbf{Boost.Math} fournit ${}_1F_1$ (Bingham) et $I_\nu$ (vMF) pour constantes de normalisation.
     \item Éviter les bibliothèques GPL-only et celles inactives ou sans base d'utilisateurs (Directional C++, ROPTLIB).
@@ -555,8 +555,8 @@ Cette section propose une feuille de route concrète pour intégrer les distribu
 \toprule
 \textbf{Tâche} & \textbf{Description} & \textbf{Dépendances} & \textbf{Effort} \\
 \midrule
-Classe abstraite \texttt{Manifold} & Interface: dimension, exp/log map, métrique, volume, projection pushforward/pullback & Eigen (existant) & 1.5 ps \\
-Implémentation $\mathcal{S}^{n-1}$ & Sphère: exp/log analytiques, métrique induite, volume élément & Eigen & 0.5 ps \\
+Classe abstraite \texttt{Manifold} & Interface: dimension, exp/log map, métrique, volume, projection pushforward/pullback & LAPACK/SquareMatrix (existant) & 1.5 ps \\
+Implémentation $\mathcal{S}^{n-1}$ & Sphère: exp/log analytiques, métrique induite, volume élément & LAPACK/SquareMatrix & 0.5 ps \\
 Implémentation $\text{SO}(3)$ & Groupe rotations: exp/log via Rodrigues/quaternions, jacobiens & Manif/Sophus (header-only) & 1 ps \\
 Tests infrastructure & Validation géodésiques, inverses exp/log, conservation métrique & Geomstats (ref) & 0.5 ps \\
 \bottomrule
@@ -599,7 +599,7 @@ Le travail d'implémentation des classes étant effectué, la priorité se dépl
 \midrule
 MLE / Méthode des moments & Implémentation \texttt{Factory} pour chaque distribution: estimation $\kappa$, $\boldsymbol{\mu}$, $\mathbf{Z}$, $\mathbf{F}$ & Optimisation riemannienne (implémentation native gradient/retraction) & 2 ps \\
 Moyenne de Fréchet & Algorithme gradient riemannien générique pour $\arg\min \sum d_g^2$ & Implémentation native, pymanopt & 1 ps \\
-ACP Tangente & Projection données sur $T_{\mu_F}\mathcal{M}$, ACP standard, re-projection & Eigen, Geomstats & 1 ps \\
+ACP Tangente & Projection données sur $T_{\mu_F}\mathcal{M}$, ACP standard, re-projection & LAPACK/SquareMatrix (native), Geomstats & 1 ps \\
 \bottomrule
 \end{longtable}
 
@@ -637,7 +637,7 @@ Benchmarks performance & Comparaison vitesse/précision vs implémentations Pyth
     \item Basé sur équipe familière OpenTURNS + géométrie riemannienne ; ajouter 30--50\% si montée en compétence requise.
     \item Les quatre distributions de la Phase 3 (Bingham, MatrixFisher, RiemannianGaussian, WrappedNormal) sont déjà implémentées sur la branche \texttt{manifold\_distribution} (commit \texttt{817c1f9a6}) ; l'effort Phase 3 restant porte exclusivement sur la validation, la revue et l'intégration upstream. L'extension d'UniformOverMesh aux maillages embarqués et la factory \texttt{UniformOverMeshFactory} sont également implémentées (commit \texttt{4ac89296a}). Le développement de \texttt{ManifoldMappedDistribution} (pushforward générique) nécessite une expertise externe en géométrie différentielle computationnelle.
     \item Parallélisation possible pour les tests de validation des distributions indépendantes.
-    \item Dépendances externes minimales : Eigen (existant), Manif/Sophus (header-only), Boost.Math (existant), pas de nouvelle dépendance d'optimisation riemannienne (implémentation native gradient/rétraction).
+    \item Dépendances externes minimales : LAPACK/SquareMatrix (obligatoire, existant), Manif/Sophus (header-only), Boost.Math (existant), pas de nouvelle dépendance d'optimisation riemannienne (implémentation native gradient/rétraction).
 \end{itemize}
 
 \subsection{Ressources Critiques et Risques}
