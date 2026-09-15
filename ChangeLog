@@ -6,11 +6,16 @@
 
 ==== Major changes ====
 
+ * UniformOverMesh now accepts meshes embedded in an ambient space of
+   dimension larger than their intrinsic dimension, and exposes
+   getIntrinsicDimension() and getVolume() accessors.
+
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
+ * UniformOverMeshFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SlicedInverseRegression

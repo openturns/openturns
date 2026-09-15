@@ -571,6 +571,7 @@ Bingham.i Bingham_doc.i
                      BinghamFactory.i BinghamFactory_doc.i
                      MatrixFisher.i MatrixFisher_doc.i
                      MatrixFisherFactory.i MatrixFisherFactory_doc.i
+                     UniformOverMeshFactory.i UniformOverMeshFactory_doc.i
                      RiemannianGaussian.i RiemannianGaussian_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
