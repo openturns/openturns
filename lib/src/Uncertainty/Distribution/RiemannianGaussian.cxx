@@ -284,6 +284,77 @@ SymmetricMatrix RiemannianGaussian::expMap(const SymmetricMatrix & v) const
   return result;
 }
 
+Scalar RiemannianGaussian::computeLogExpJacobian(const SymmetricMatrix & v) const
+{
+  // Compute log-Jacobian determinant of the exponential map at v
+  // The eigenvalues are those of mu^{-1/2} * v * mu^{-1/2}
+  // Formula from the literature (see e.g. Pennec's work on SPD manifolds)
+
+  // The eigenvectors are stored as the columns of the eigenvector matrix
+  auto reconstruct = [&](const SquareMatrix & eigVec, const Point & fEig)
+  {
+    SymmetricMatrix result(n_);
+    for (UnsignedInteger i = 0; i < n_; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+      {
+        Scalar value = 0.0;
+        for (UnsignedInteger k = 0; k < n_; ++k)
+          value += eigVec(i, k) * fEig[k] * eigVec(j, k);
+        result(i, j) = value;
+      }
+    return result;
+  };
+
+  // Compute mu^{-1/2} - need to make a copy since computeEVInPlace modifies the matrix
+  SymmetricMatrix meanCopy(meanMatrix_);
+  SquareMatrix meanEigVec(n_);
+  const Point meanEig = meanCopy.computeEVInPlace(meanEigVec);
+
+  Point invSqrt(n_);
+  for (UnsignedInteger k = 0; k < n_; ++k)
+    invSqrt[k] = 1.0 / std::sqrt(meanEig[k]);
+  const SymmetricMatrix meanInvSqrt = reconstruct(meanEigVec, invSqrt);
+
+  // Compute C = mu^{-1/2} * v * mu^{-1/2}
+  SquareMatrix CSq = meanInvSqrt * v * meanInvSqrt;
+  SymmetricMatrix C(n_);
+  for (UnsignedInteger i = 0; i < n_; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+      C(i, j) = CSq(i, j);
+
+  // Eigenvalues of C
+  SquareMatrix cEigVec(n_);
+  const Point cEig = C.computeEVInPlace(cEigVec);
+
+  // Log-Jacobian formula
+  // log|det(d exp_mu(v))| = sum_i cEig[i] + sum_{i<j} g(cEig[i], cEig[j])
+  // where g(a, b) = max(a,b) - log|a-b| + log(1 - exp(-|a-b|)) for a != b
+  // and g(a, a) = a + (a^2)/24 - (a^4)/2880 (limit case)
+  Scalar logJac = 0.0;
+  for (UnsignedInteger i = 0; i < n_; ++i)
+    logJac += cEig[i];
+
+  for (UnsignedInteger i = 0; i < n_; ++i)
+  {
+    for (UnsignedInteger j = i + 1; j < n_; ++j)
+    {
+      const Scalar diff = cEig[i] - cEig[j];
+      const Scalar ad = std::abs(diff);
+      if (ad < 1e-4)
+      {
+        const Scalar avg = 0.5 * (cEig[i] + cEig[j]);
+        logJac += avg + diff * diff / 24.0 - std::pow(diff, 4) / 2880.0;
+      }
+      else
+      {
+        logJac += std::max(cEig[i], cEig[j]) - std::log(ad) + std::log1p(-std::exp(-ad));
+      }
+    }
+  }
+
+  return logJac;
+}
+
 void RiemannianGaussian::computeNormalization()
 {
   const UnsignedInteger d = dimension_;
@@ -447,7 +518,10 @@ Scalar RiemannianGaussian::computeLogPDF(const Point & point) const
     for (UnsignedInteger j = 0; j < dimension_; ++j)
       quadForm += vVec[i] * sigmaInv_(i, j) * vVec[j];
 
-  return -0.5 * quadForm - logNormalization_;
+  // Log-Jacobian of the exponential map
+  const Scalar logJac = computeLogExpJacobian(v);
+
+  return -0.5 * quadForm - logNormalization_ - logJac;
 }
 
 Point RiemannianGaussian::getParameter() const

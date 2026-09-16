@@ -254,11 +254,18 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
   // Compute sum of Gaussians
   Scalar logSum = -SpecFunc::Infinity;
 
-  // For efficiency, use a recursive approach or direct loop for small d
-  // Here we use a simple approach for d <= 3, otherwise approximate
-  if (d <= 3 && K <= 5)
+  // For efficiency, use the full sum when the total number of terms is reasonable.
+  // The total number of lattice points is (2*K+1)^d. We use the full sum when
+  // this is <= 100000, otherwise fall back to the k=0 approximation.
+  // This handles both small d with large K and large d with small K correctly.
+  const UnsignedInteger termsPerDim = 2 * K + 1;
+  double totalTerms = 1.0;
+  for (UnsignedInteger i = 0; i < d; ++i)
+    totalTerms *= termsPerDim;
+
+  if (totalTerms <= 100000.0)
   {
-    // Full sum
+    // Full sum over [-K, K]^d
     std::vector<Point> latticePoints;
     std::function<void(UnsignedInteger, Point&)> generateLattice = [&](UnsignedInteger dim, Point& k)
     {
@@ -297,7 +304,8 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
   }
   else
   {
-    // Approximation: use only k=0 term (valid when sigma is small compared to period)
+    // Approximation: use only k=0 term wrapped to fundamental domain
+    // This is only accurate when sigma is small compared to period
     Point diff(d);
     for (UnsignedInteger i = 0; i < d; ++i)
       diff[i] = point[i] - mu_[i];
