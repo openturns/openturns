@@ -69,12 +69,3 @@ auxiliaryDistribution : :class:`~openturns.Distribution`
     Auxiliary distribution at the final Cross Entropy algorithm step."    
 
 
-
-%feature("docstring") OT::CrossEntropyResult::getConfidenceLength
-"Accessor to the confidence length.
-
-Returns
--------
-confLength : float
-    The confidence length of the simulation."
-
