@@ -97,7 +97,7 @@ n_points : int, optional
     The number of points that is used for interpolating the empirical CDF of
     the two samples (with possibly different sizes).
 
-    It will default to *DistributionImplementation-DefaultPointNumber* from
+    It will default to *Distribution-DefaultPointNumber* from
     the :class:`~openturns.ResourceMap`.
 
 Returns
@@ -176,7 +176,7 @@ n_points : int, optional
     The number of points that is used for interpolating the empirical CDF of
     the two samples (with possibly different sizes).
 
-    It will default to *DistributionImplementation-DefaultPointNumber* from
+    It will default to *Distribution-DefaultPointNumber* from
     the :class:`~openturns.ResourceMap`.
 
 Returns

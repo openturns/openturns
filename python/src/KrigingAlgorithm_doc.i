@@ -66,6 +66,11 @@ with :func:`setNoise()`:
 
 .. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KrigingAlgorithm-LinearAlgebra* (``String``, default: ``LAPACK``)
+
 Examples
 --------
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
@@ -87,6 +92,7 @@ Get the resulting meta model:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()
+
 )RAW"
 
 // ---------------------------------------------------------------------

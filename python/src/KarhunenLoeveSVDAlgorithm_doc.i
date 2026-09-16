@@ -124,11 +124,16 @@ these algorithms:
   on a random compression of both the rows and columns of :math:`\mat{Y}`, the
   second one being based on an iterative compressed sampling of the columns of
   :math:`\mat{Y}`.
-- 'KarhunenLoeveSVDAlgorithm-halko2011Margin' and
-  'KarhunenLoeveSVDAlgorithm-halko2011Iterations' to fix the parameters of the
-  'halko2011' variant. See [halko2011]_ for the details.
+- 'KarhunenLoeveSVDAlgorithm-Halko2011Margin' and
+  'KarhunenLoeveSVDAlgorithm-Halko2011Iterations' to fix the parameters of the
+  'Halko2011' variant. See [halko2011]_ for the details.
 
-      
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KarhunenLoeveSVDAlgorithm-Halko2011Iterations* (``UnsignedInteger``, default: ``2``)
+- *KarhunenLoeveSVDAlgorithm-Halko2011Margin* (``UnsignedInteger``, default: ``2``)
+
 Examples
 --------
 Create a Karhunen-Loeve SVD algorithm:
@@ -144,6 +149,7 @@ Run it!
 
 >>> algorithm.run()
 >>> result = algorithm.getResult()
+
 )RAW"
 
 // ---------------------------------------------------------------------

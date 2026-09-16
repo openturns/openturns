@@ -70,7 +70,7 @@ the `FunctionalChaosAlgorithm-QNorm` parameter of the :class:`~openturns.Resourc
 - Otherwise, the :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` class is used.
 
 The first elements of the basis are used to build the approximation space. By default, the number of elements is
-defined by the keys `FunctionalChaosAlgorithm-BasisSize` and  `FunctionalChaosAlgorithm-TotalDegree`:
+defined by the keys `FunctionalChaosAlgorithm-BasisSize` and  `FunctionalChaosAlgorithm-MaximumTotalDegree`:
 
 - is the BasisSize is 0, then the number is computed from the total degree (using the enumerate function of the basis);
 - is the BasisSize is less than the input sample size, this value is used;
@@ -99,6 +99,11 @@ key of the :class:`~openturns.ResourceMap` is used.
 - If this key is equal to 'KFold', then the
   :class:`~openturns.KFold` criteria is used.
 - Otherwise, an exception is produced.
+
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FunctionalChaosAlgorithm-DefaultMaximumResidual* (``Scalar``, default: ``1e-06``)
 
 Examples
 --------
@@ -209,6 +214,8 @@ sparse PCE.
 >>> algo = ot.FunctionalChaosAlgorithm( 
 ...     inputSample, outputSample, distribution, adaptiveStrategy, projectionStrategy
 ... )
+
+
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -15,6 +15,11 @@ Notes
 -----
 KFold inherits from :class:`~openturns.FittingAlgorithm`.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *KFold-DefaultK* (``UnsignedInteger``, default: ``10``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -49,4 +54,6 @@ k : int
 Parameters
 ----------
 k : int
-    Number of folds in which the sample is split."
+    Number of folds in which the sample is split.
+
+"

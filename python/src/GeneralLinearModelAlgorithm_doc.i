@@ -208,6 +208,12 @@ with :func:`setNoise()`:
     \widehat{\vect{y}}_k 
     = \vect{y}_k + \epsilon_k, \quad \epsilon_k \sim \mathcal{N}\left(0, \tau_k^2\right)
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GeneralLinearModelAlgorithm-MeanEpsilon* (``Scalar``, default: ``1e-12``)
+- *GeneralLinearModelAlgorithm-OptimizeParameters* (``Bool``, default: ``true``)
+
 Examples
 --------
 Create the model :math:`\model: \Rset \mapsto \Rset` and the samples:
@@ -418,4 +424,6 @@ R"RAW(Observation noise variance accessor.
 Parameters
 ----------
 noise : sequence of positive float
-    The noise variance :math:`\tau_k^2` of each output value.)RAW"
+    The noise variance :math:`\tau_k^2` of each output value.
+
+)RAW"

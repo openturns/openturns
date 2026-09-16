@@ -51,6 +51,12 @@ This threshold can be customized using the
 `FunctionalChaosSobolIndices-VariancePartThreshold` key of the
 :class:`~openturns.ResourceMap`.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FunctionalChaosSobolIndices-MaximumNumberOfOutput* (``UnsignedInteger``, default: ``1000``)
+- *FunctionalChaosSobolIndices-PrintColumnWidth* (``UnsignedInteger``, default: ``15``)
+
 Examples
 --------
 Create a polynomial chaos for the Ishigami function:
@@ -128,6 +134,7 @@ STG([0, 1]) =  0.99...
 Get the part of variance of first multi-indices:
 
 >>> partOfVariance = chaosSI.getPartOfVariance()
+
 )RAW"
 
 // ---------------------------------------------------------------------

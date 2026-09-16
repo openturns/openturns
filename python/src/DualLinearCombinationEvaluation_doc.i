@@ -26,6 +26,12 @@ It returns a :class:`~openturns.Function` which is the function
 
 .. math::
     \forall \vect{x} \in \Rset^n, f(\vect{x}) = \left\{ \sum_{i=1}^l f_i( \vect{x} ) c_i^{(j)} \right\}_{j = 1, \ldots, p}
+
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DualLinearCombinationEvaluation-SmallCoefficient* (``Scalar``, default: ``0``)
+
 )RAW"
 
 // ---------------------------------------------------------------------

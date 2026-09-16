@@ -65,7 +65,16 @@ sample variance of the :math:`i`-th output.
 
 This structure is created by the method `run()` of
 :class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the 
-`getResult()` method.)RAW"
+`getResult()` method.
+
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FunctionalChaosResult-PrintColumnWidth* (``UnsignedInteger``, default: ``15``)
+- *FunctionalChaosResult-PrintEllipsisSize* (``UnsignedInteger``, default: ``3``)
+- *FunctionalChaosResult-PrintEllipsisThreshold* (``UnsignedInteger``, default: ``1000``)
+
+)RAW"
 
 // ---------------------------------------------------------------------
 
