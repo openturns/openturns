@@ -35,8 +35,7 @@ public:
 
   MatrixFisher();
 
-  MatrixFisher(const SquareMatrix & F,
-               const Scalar epsilon = ResourceMap::GetAsScalar("MatrixFisher-OrthogonalityThreshold"));
+  MatrixFisher(const SquareMatrix & F);
 
   using DistributionImplementation::operator ==;
   Bool operator ==(const MatrixFisher & other) const;
@@ -66,6 +65,7 @@ public:
   SquareMatrix getF() const;
 
   /** Epsilon accessor */
+  void setEpsilon(const Scalar epsilon);
   Scalar getEpsilon() const;
 
   /** Compute the entropy of the distribution */

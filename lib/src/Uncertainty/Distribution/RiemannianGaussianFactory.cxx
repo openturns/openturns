@@ -258,6 +258,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
     }
 
   RiemannianGaussian result(mean, sigma);
+  result.setEpsilon(ResourceMap::GetAsScalar("RiemannianGaussian-PositiveDefiniteThreshold"));
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);
   return result;

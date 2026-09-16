@@ -41,9 +41,13 @@ WrappedNormal::WrappedNormal()
   , mu_(2)
   , sigma_(2)
   , period_(2.0 * M_PI)
+  , maxLatticeTerms_(ResourceMap::GetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms"))
   , logNormalization_(0.0)
   , sigmaInv_(2)
   , sigmaDet_(1.0)
+  , sigmaEigVec_(2)
+  , sigmaEig_(2)
+  , maxEig_(0.0)
 {
   mu_[0] = 0.0;
   mu_[1] = 0.0;
@@ -64,9 +68,13 @@ WrappedNormal::WrappedNormal(const Point & mu,
   , mu_(mu)
   , sigma_(sigma.getDimension())
   , period_(period)
+  , maxLatticeTerms_(ResourceMap::GetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms"))
   , logNormalization_(0.0)
   , sigmaInv_(sigma.getDimension())
   , sigmaDet_(1.0)
+  , sigmaEigVec_(sigma.getDimension())
+  , sigmaEig_(sigma.getDimension())
+  , maxEig_(0.0)
 {
   const UnsignedInteger d = dimension_;
   if (d < 1)
@@ -172,12 +180,16 @@ void WrappedNormal::computeNormalization()
   // (the sum integrates to 1 over the fundamental domain)
 
   // Compute log determinant and inverse of sigma
-  SymmetricMatrix sigma_sym(sigma_);
-  SquareMatrix sigmaEigVec(d);
-  const Point sigmaEig = sigma_sym.computeEVInPlace(sigmaEigVec);
+  SymmetricMatrix sigmaSym(sigma_);
+  sigmaEigVec_ = SquareMatrix(d);
+  sigmaEig_ = sigmaSym.computeEVInPlace(sigmaEigVec_);
   Scalar logDetSigma = 0.0;
+  maxEig_ = 0.0;
   for (UnsignedInteger i = 0; i < d; ++i)
-    logDetSigma += std::log(sigmaEig[i]);
+  {
+    logDetSigma += std::log(sigmaEig_[i]);
+    maxEig_ = std::max(maxEig_, sigmaEig_[i]);
+  }
   sigmaDet_ = std::exp(logDetSigma);
   sigmaInv_ = sigma_.inverse();
 
@@ -198,17 +210,13 @@ Point WrappedNormal::getRealization() const
   for (UnsignedInteger i = 0; i < d; ++i)
     z[i] = DistFunc::rNormal();
 
-  // Apply sigma^{1/2} and add mu
-  SymmetricMatrix sigma_sym(sigma_);
-  SquareMatrix sigmaEigVec(d);
-  const Point sigmaEig = sigma_sym.computeEVInPlace(sigmaEigVec);
-
+  // Apply sigma^{1/2} and add mu using cached eigendecomposition
   Point sample(d);
   for (UnsignedInteger i = 0; i < d; ++i)
   {
     sample[i] = mu_[i];
     for (UnsignedInteger j = 0; j < d; ++j)
-      sample[i] += sigmaEigVec(i, j) * std::sqrt(sigmaEig[j]) * z[j];
+      sample[i] += sigmaEigVec_(i, j) * std::sqrt(sigmaEig_[j]) * z[j];
   }
 
   // Wrap to torus
@@ -236,34 +244,25 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
   // p(x) = sum_{k in Z^d} N(x + k*period; mu, sigma)
   // We sum over k in [-K, K]^d where K is chosen based on sigma
 
-  // Estimate how many terms we need
-  // The Gaussian decays as exp(-1/2 k^T (period^2 sigma^{-1}) k)
-  // For diagonal sigma with max eigenvalue lambda_max, decay ~ exp(-period^2 k^2 / (2 lambda_max))
-  Scalar maxEig = 0.0;
-  SymmetricMatrix sigma_sym2(sigma_);
-  SquareMatrix sigmaEigVec2(d);
-  const Point sigmaEig2 = sigma_sym2.computeEVInPlace(sigmaEigVec2);
-  for (UnsignedInteger i = 0; i < d; ++i)
-    maxEig = std::max(maxEig, sigmaEig2[i]);
-
-  // Choose K such that exp(-period^2 K^2 / (2 maxEig)) < 1e-12
-  const Scalar targetLog = -27.63; // log(1e-12)
+  // Choose K such that exp(-period^2 K^2 / (2 maxEig)) < SpecFunc::Precision
+  // Using SpecFunc::Precision (2e-16) as the truncation tolerance
+  const Scalar targetLog = std::log(SpecFunc::Precision);
   const UnsignedInteger K = std::max(static_cast<UnsignedInteger>(1),
-                                     static_cast<UnsignedInteger>(std::ceil(std::sqrt(-2.0 * maxEig * targetLog) / period_)));
+                                     static_cast<UnsignedInteger>(std::ceil(std::sqrt(-2.0 * maxEig_ * targetLog) / period_)));
 
   // Compute sum of Gaussians
   Scalar logSum = -SpecFunc::Infinity;
 
   // For efficiency, use the full sum when the total number of terms is reasonable.
   // The total number of lattice points is (2*K+1)^d. We use the full sum when
-  // this is <= 100000, otherwise fall back to the k=0 approximation.
+  // this is <= maxLatticeTerms_, otherwise fall back to the k=0 approximation.
   // This handles both small d with large K and large d with small K correctly.
   const UnsignedInteger termsPerDim = 2 * K + 1;
   double totalTerms = 1.0;
   for (UnsignedInteger i = 0; i < d; ++i)
     totalTerms *= termsPerDim;
 
-  if (totalTerms <= 100000.0)
+  if (totalTerms <= static_cast<double>(maxLatticeTerms_))
   {
     // Full sum over [-K, K]^d
     std::vector<Point> latticePoints;
@@ -299,13 +298,16 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       if (logSum == -SpecFunc::Infinity)
         logSum = logTerm;
       else
-        logSum = logSum + std::log(1.0 + std::exp(logTerm - logSum));
+        logSum = logSum + std::log1p(std::exp(logTerm - logSum));
     }
   }
   else
   {
     // Approximation: use only k=0 term wrapped to fundamental domain
     // This is only accurate when sigma is small compared to period
+    OSS oss;
+    oss << "WrappedNormal: number of lattice terms (" << totalTerms << ") exceeds WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using k=0 approximation";
+    LOGWARN(oss.str());
     Point diff(d);
     for (UnsignedInteger i = 0; i < d; ++i)
       diff[i] = point[i] - mu_[i];
@@ -359,7 +361,8 @@ Scalar WrappedNormal::computeCDF(const Point & point) const
   const Scalar x = point[0];
   const Scalar mu = mu_[0];
   const Scalar sigma = std::sqrt(sigma_(0, 0));
-  const Scalar targetLog = -27.63;
+  // Choose K such that the tail of the normal is below SpecFunc::Precision
+  const Scalar targetLog = std::log(SpecFunc::Precision);
   const UnsignedInteger K = std::max(static_cast<UnsignedInteger>(1),
                                      static_cast<UnsignedInteger>(std::ceil(std::sqrt(-2.0 * sigma * sigma * targetLog) / period_)));
   Scalar cdf = 0.0;
@@ -497,6 +500,21 @@ void WrappedNormal::setPeriod(const Scalar period)
 Scalar WrappedNormal::getPeriod() const
 {
   return period_;
+}
+
+void WrappedNormal::setMaxLatticeTerms(const UnsignedInteger maxTerms)
+{
+  if (maxTerms != maxLatticeTerms_)
+  {
+    maxLatticeTerms_ = maxTerms;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+  }
+}
+
+UnsignedInteger WrappedNormal::getMaxLatticeTerms() const
+{
+  return maxLatticeTerms_;
 }
 
 Scalar WrappedNormal::computeEntropy() const

@@ -17,5 +17,5 @@ for i, sigma in enumerate([0.5, 1.0, 2.0, 3.0]):
 fig = plt.figure(figsize=(10, 4))
 pdf_axis = fig.add_subplot(121)
 otv.View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=True)
-fig.suptitle("WrappedNormal(0,sigma^2) on the circle")
+fig.suptitle(r"WrappedNormal(0,$\sigma^2$) on the circle")
 plt.subplots_adjust(wspace=0.3)

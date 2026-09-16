@@ -36,8 +36,7 @@ public:
   RiemannianGaussian();
 
   RiemannianGaussian(const SymmetricMatrix & mean,
-                     const SquareMatrix & sigma,
-                     const Scalar epsilon = ResourceMap::GetAsScalar("RiemannianGaussian-PositiveDefiniteThreshold"));
+                     const SquareMatrix & sigma);
 
   using DistributionImplementation::operator ==;
   Bool operator ==(const RiemannianGaussian & other) const;
@@ -72,6 +71,7 @@ public:
   SquareMatrix getSigma() const;
 
   /** Epsilon accessor */
+  void setEpsilon(const Scalar epsilon);
   Scalar getEpsilon() const;
 
   /** Compute the entropy of the distribution */

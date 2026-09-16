@@ -139,10 +139,14 @@ MatrixFisher MatrixFisherFactory::buildAsMatrixFisher(const Sample & sample) con
 
   // For now, use the singular values of M as concentrations directly
   // (simplified estimation)
+  // 0.5 is the standard threshold in the literature (Kato & Pennec 2018)
+  // separating small concentration (s ~ kappa/3) from large concentration
+  // (s ~ 1 - 1/(2*kappa)) approximations
+  const Scalar concentrationThreshold = 0.5;
   Point F_diag(3);
   for (UnsignedInteger i = 0; i < 3; ++i)
   {
-    if (s[i] < 0.5)
+    if (s[i] < concentrationThreshold)
       F_diag[i] = 3.0 * s[i]; // Small concentration: s ~ kappa/3
     else
       F_diag[i] = 1.0 / (2.0 * (1.0 - s[i])); // Large concentration: s ~ 1 - 1/(2*kappa)

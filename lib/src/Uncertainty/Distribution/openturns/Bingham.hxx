@@ -36,8 +36,7 @@ public:
   Bingham();
 
   Bingham(const Point & zeta,
-          const SquareMatrix & gamma,
-          const Scalar epsilon = ResourceMap::GetAsScalar("Bingham-OrthogonalityThreshold"));
+          const SquareMatrix & gamma);
 
   using DistributionImplementation::operator ==;
   Bool operator ==(const Bingham & other) const;
@@ -71,6 +70,7 @@ public:
   SquareMatrix getGamma() const;
 
   /** Epsilon accessor */
+  void setEpsilon(const Scalar epsilon);
   Scalar getEpsilon() const;
 
   /** Compute the entropy of the distribution */

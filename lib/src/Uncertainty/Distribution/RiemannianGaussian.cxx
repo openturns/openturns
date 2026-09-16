@@ -64,14 +64,13 @@ RiemannianGaussian::RiemannianGaussian()
 }
 
 RiemannianGaussian::RiemannianGaussian(const SymmetricMatrix & mean,
-                                       const SquareMatrix & sigma,
-                                       const Scalar epsilon)
+                                       const SquareMatrix & sigma)
   : DistributionImplementation()
   , dimension_(mean.getDimension() * (mean.getDimension() + 1) / 2)
   , n_(mean.getDimension())
   , meanMatrix_(mean)
   , sigma_(sigma.getDimension())
-  , epsilon_(std::max(SpecFunc::ScalarEpsilon, epsilon))
+  , epsilon_(ResourceMap::GetAsScalar("RiemannianGaussian-PositiveDefiniteThreshold"))
   , logNormalization_(0.0)
   , sigmaInv_(sigma.getDimension())
   , sigmaDet_(1.0)
@@ -329,7 +328,10 @@ Scalar RiemannianGaussian::computeLogExpJacobian(const SymmetricMatrix & v) cons
   // Log-Jacobian formula
   // log|det(d exp_mu(v))| = sum_i cEig[i] + sum_{i<j} g(cEig[i], cEig[j])
   // where g(a, b) = max(a,b) - log|a-b| + log(1 - exp(-|a-b|)) for a != b
-  // and g(a, a) = a + (a^2)/24 - (a^4)/2880 (limit case)
+  // and g(a, a) = a + a^2/24 - a^4/2880 + O(a^6) (limit case)
+  // Taylor threshold: 1e-3 ensures the next term a^6/181440 ~ 1e-18
+  // is below double precision (2e-16). ResourceMap default: 1e-3.
+  const Scalar taylorThreshold = ResourceMap::GetAsScalar("RiemannianGaussian-LogJacobianTaylorThreshold");
   Scalar logJac = 0.0;
   for (UnsignedInteger i = 0; i < n_; ++i)
     logJac += cEig[i];
@@ -340,7 +342,7 @@ Scalar RiemannianGaussian::computeLogExpJacobian(const SymmetricMatrix & v) cons
     {
       const Scalar diff = cEig[i] - cEig[j];
       const Scalar ad = std::abs(diff);
-      if (ad < 1e-4)
+      if (ad < taylorThreshold)
       {
         const Scalar avg = 0.5 * (cEig[i] + cEig[j]);
         logJac += avg + diff * diff / 24.0 - std::pow(diff, 4) / 2880.0;
@@ -559,8 +561,9 @@ void RiemannianGaussian::setParameter(const Point & parameter)
       sigma(i, j) = parameter[idx++];
 
   const Scalar w = getWeight();
-  *this = RiemannianGaussian(mean, sigma, epsilon_);
+  *this = RiemannianGaussian(mean, sigma);
   setWeight(w);
+  setEpsilon(epsilon_);
 }
 
 Description RiemannianGaussian::getParameterDescription() const
@@ -666,6 +669,19 @@ SquareMatrix RiemannianGaussian::getSigma() const
 Scalar RiemannianGaussian::getEpsilon() const
 {
   return epsilon_;
+}
+
+void RiemannianGaussian::setEpsilon(const Scalar epsilon)
+{
+  const Scalar eps = std::max(SpecFunc::ScalarEpsilon, epsilon);
+  if (eps != epsilon_)
+  {
+    epsilon_ = eps;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    computeNormalization();
+    updateSampler();
+  }
 }
 
 Scalar RiemannianGaussian::computeEntropy() const
