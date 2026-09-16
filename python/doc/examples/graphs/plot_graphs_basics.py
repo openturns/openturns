@@ -227,7 +227,7 @@ myPDF = n.drawPDF()
 myCDF = n.drawCDF()
 
 # %%
-# Using `~openturns.GridLayout`.
+# Using :class:`~openturns.GridLayout`.
 grid = ot.GridLayout(1, 2)
 grid.setGraph(0, 0, myPDF)
 grid.setGraph(0, 1, myCDF)
