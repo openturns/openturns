@@ -12,6 +12,10 @@ The penalized values account for the minimization/maximization flags:
 a failed evaluation returns a large positive value for minimization
 and a large negative value for maximization, per output for
 multi-objective problems.
+Equality and inequality constraints are penalized as well:
+a failed constraint evaluation is reported as infeasible
+(+penalizedValue for equality constraints, -penalizedValue
+for inequality constraints).
 Analytic gradient/hessian are wrapped with
 :class:`~openturns.experimental.PenalizedGradient` /
 :class:`~openturns.experimental.PenalizedHessian` and return zeros on failure.

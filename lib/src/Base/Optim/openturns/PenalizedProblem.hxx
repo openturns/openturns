@@ -35,7 +35,10 @@ BEGIN_NAMESPACE_OPENTURNS
  * by a penalized function using PenalizedEvaluation, so that optimization
  * algorithms can proceed when the objective throws. The penalized values
  * account for the minimization/maximization flags, including per-output
- * flags for multi-objective problems. Analytic gradient/hessian are wrapped
+ * flags for multi-objective problems. Equality and inequality constraints
+ * are penalized as well: a failed constraint evaluation is reported as
+ * infeasible (+penalizedValue_ for equality constraints, -penalizedValue_
+ * for inequality constraints). Analytic gradient/hessian are wrapped
  * with PenalizedGradient/PenalizedHessian and return zeros on failure;
  * finite-difference gradient/hessian need no wrapping as they are evaluated
  * on the penalized evaluation.
@@ -96,7 +99,14 @@ private:
   /** Rebuild the penalized objective from the wrapped problem */
   void updateObjective();
 
-  /** Copy constraints, bounds, minimization flags and variables type */
+  /** Rebuild the penalized constraints from the wrapped problem */
+  void updateConstraints();
+
+  /** Wrap a function with penalized evaluation/gradient/hessian */
+  static Function penalizeFunction(const Function & function,
+                                   const Point & penalizedValues);
+
+  /** Copy bounds, minimization flags and variables type */
   void syncFromProblem();
 
   // The wrapped (unpenalized) problem
