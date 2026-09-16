@@ -11,20 +11,14 @@ component of a random vector over a single one-dimensional variable,
 in the case where the components are correlated.
 Refer to :ref:`regression_importance_indices`.
 
-Available constructors:
-    MulticollinearityAnalysis(*firstSample*)
-        This constructor supports only :meth:`computeVIF`.
-
-    MulticollinearityAnalysis(*firstSample, secondSample*)
-        This constructor supports all indices.
-
 Parameters
 ----------
 firstSample : 2-d list of float
     Values taken by a random vector.
-secondSample : 2-d list of float
+secondSample : 2-d list of float, optional
     Values taken by a single one-dimensional random variable.
     This sample is used to compute the LMG, PMVD and Johnson indices; the VIF metric ignores it.
+    If it is not provided, then LMG, PMVD and Johnson indices are unavailable.
 
 See also
 --------
