@@ -5,8 +5,8 @@
 Parameters
 ----------
 lambda : :class:`~openturns.Point`
-    The shift parameter.
-mu : :class:`~openturns.Point`
+    The lambda parameter.
+shift : :class:`~openturns.Point`
     The shift parameter."
 
 
@@ -26,6 +26,6 @@ lambda : :class:`~openturns.Point`
 
 Returns
 -------
-mu : :class:`~openturns.Point`
+shift : :class:`~openturns.Point`
     The shift parameter"
 

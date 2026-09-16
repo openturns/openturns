@@ -1,5 +1,14 @@
 %feature("docstring") OT::LinearGradient
-"Linear numerical math gradient implementation."
+"Linear numerical math gradient implementation.
+
+Parameters
+----------
+center : :class:`~openturns.Point`
+    The center point.
+constant : :class:`~openturns.Matrix`
+    The constant term of the gradient.
+linear : :class:`~openturns.SymmetricTensor`
+    The linear coefficients of the gradient."
 
 %feature("docstring") OT::LinearGradient::getCenter
 "Accessor to the center point.
