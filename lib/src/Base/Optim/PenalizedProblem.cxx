@@ -22,6 +22,8 @@
 #include "openturns/PenalizedProblem.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/PenalizedEvaluation.hxx"
+#include "openturns/PenalizedGradient.hxx"
+#include "openturns/PenalizedHessian.hxx"
 #include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -169,6 +171,18 @@ void PenalizedProblem::updateObjective()
   const PenalizedEvaluation penalizedEvaluation(originalObjective.getEvaluation(), signedValues);
   Function penalizedObjective(penalizedEvaluation);
   penalizedObjective.setName(originalObjective.getName());
+  penalizedObjective.setDescription(originalObjective.getDescription());
+  // Wrap analytic gradient/hessian so they return zeros on failure.
+  // Finite-difference gradient/hessian need no wrapping: penalizedObjective
+  // already evaluates them on the penalized evaluation, which never throws.
+  const Gradient gradient(originalObjective.getGradient());
+  if (gradient.getImplementation()->isActualImplementation()
+      && (gradient.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
+    penalizedObjective.setGradient(PenalizedGradient(gradient));
+  const Hessian hessian(originalObjective.getHessian());
+  if (hessian.getImplementation()->isActualImplementation()
+      && (hessian.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
+    penalizedObjective.setHessian(PenalizedHessian(hessian));
   objective_ = penalizedObjective;
 }
 

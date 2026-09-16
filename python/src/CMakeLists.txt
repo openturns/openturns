@@ -568,6 +568,8 @@ ot_add_python_module(experimental experimental_module.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
                      PenalizedEvaluation.i PenalizedEvaluation_doc.i
+                     PenalizedGradient.i PenalizedGradient_doc.i
+                     PenalizedHessian.i PenalizedHessian_doc.i
 		     PenalizedProblem.i PenalizedProblem_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i

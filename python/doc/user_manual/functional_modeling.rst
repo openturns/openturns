@@ -181,6 +181,7 @@ Gradient functions
     ParametricGradient
     ProductGradient
     MarginalGradient
+    experimental.PenalizedGradient
 
 Hessian functions
 =================
@@ -200,6 +201,7 @@ Hessian functions
     ParametricHessian
     ProductHessian
     MarginalHessian
+    experimental.PenalizedHessian
 
 Differential equation solvers
 =============================

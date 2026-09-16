@@ -67,6 +67,51 @@ assert_almost_equal(
     penalizedBounds.getBounds().getLowerBound(), [-5.0], 1e-12, 0.0
 )
 
+# analytic gradient/hessian are wrapped and return zeros on failure
+
+
+def df_py(x):
+    if x[0] < 0.0:
+        raise RuntimeError("negative input")
+    return [[0.5 / x[0] ** 0.5]]
+
+
+def d2f_py(x):
+    if x[0] < 0.0:
+        raise RuntimeError("negative input")
+    return [[[-0.25 / x[0] ** 1.5]]]
+
+
+fa = ot.PythonFunction(1, 1, f_py, gradient=df_py, hessian=d2f_py)
+analyticProblem = otexp.PenalizedProblem(ot.OptimizationProblem(fa), penalty)
+analyticObjective = analyticProblem.getObjective()
+gradClassName = analyticObjective.getGradient().getImplementation()
+assert gradClassName.getClassName() == "PenalizedGradient"
+hessClassName = analyticObjective.getHessian().getImplementation()
+assert hessClassName.getClassName() == "PenalizedHessian"
+assert_almost_equal(
+    analyticProblem.getObjective().gradient([4.0])[0, 0], 0.25, 1e-12, 0.0
+)
+assert_almost_equal(
+    analyticProblem.getObjective().gradient([-1.0]),
+    ot.Matrix(1, 1),
+    0.0,
+    0.0,
+)
+assert_almost_equal(
+    analyticProblem.getObjective().hessian([-1.0]),
+    ot.SymmetricTensor(1, 1),
+    0.0,
+    0.0,
+)
+
+# finite-difference gradient needs no wrapping: evaluated on penalized values
+fdProblem = otexp.PenalizedProblem(problem, penalty)
+assert (
+    fdProblem.getObjective().getGradient().getImplementation().getClassName()
+    != "PenalizedGradient"
+)
+
 # can be used by an optimizer
 algo = ot.Cobyla(ot.OptimizationProblem(penalizedProblem))
 algo.setStartingPoint([4.0])
