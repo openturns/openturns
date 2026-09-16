@@ -16,8 +16,8 @@ inputPositions : :class:`~openturns.Indices`
 
 Returns
 -------
-evaluation : ``Hessian``
-    The underlying hessian"
+evaluation : ``Evaluation``
+    The underlying evaluation"
 
 
 
