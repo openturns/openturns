@@ -64,21 +64,3 @@ description : sequence of str
 
 Returns
 -------
-description : :class:`~openturns.Description`
-    Description of the components."
-
-
-%feature("docstring") OT::PointWithDescription::find
-"Find the index of the first occurrence of a value.
-
-Parameters
-----------
-val : float
-    The value to find
-
-Returns
--------
-index : int
-    The index of the first occurrence of the value.
-    The size of the collection if the value is not found."
-

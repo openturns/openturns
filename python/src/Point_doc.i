@@ -354,21 +354,3 @@ dot : float
 Examples
 --------
 >>> import openturns as ot
->>> x = ot.Point([1.0, 2.0, 3.0])
->>> prod = x.dot([4, 5, 6])"
-
-
-%feature("docstring") OT::Point::find
-"Find the index of the first occurrence of a value.
-
-Parameters
-----------
-val : float
-    The value to find
-
-Returns
--------
-index : int
-    The index of the first occurrence of the value.
-    The size of the collection if the value is not found."
-

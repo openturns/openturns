@@ -280,12 +280,3 @@ getImportanceFactors"
 %feature("docstring") OT::ProbabilitySimulationResult::drawImportanceFactors
 OT_SimulationResult_drawImportanceFactors_doc
 
-
-%feature("docstring") OT::ProbabilitySimulationResult::getConfidenceLength
-"Accessor to the confidence length.
-
-Returns
--------
-confLength : float
-    The confidence length of the simulation."
-
