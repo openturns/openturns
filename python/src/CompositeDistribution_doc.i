@@ -52,7 +52,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 The two-argument constructor determines the monotonicity partition
 :math:`(a_0,\ldots,a_N)` automatically, by solving
-:math:`g'(x)=0` on the support of :math:`distX`. The three-argument
+:math:`g'(x)=0` on the support of :math:`distX`. The four-argument
 constructor lets the user specify this partition, when the user knows a priori
 the monotonicity intervals of :math:`g`, or when :math:`g` is not smooth enough
 for its derivatives to be computed numerically by the automatic procedure.

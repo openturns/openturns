@@ -282,6 +282,14 @@ d_id_expl = ot.CompositeDistribution(f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0,
 sing_id_expl = d_id_expl.getSingularities()
 ott.assert_almost_equal(sing_id_expl.getSize(), 0)
 
+# Stationary critical point: g(x)=x^3 on [-1,0,1], derivative 3x^2=0 at x=0.
+# With antecedent PDF positive near 0, the push-forward PDF diverges at y=0.
+f_cube = ot.SymbolicFunction("x", "x^3")
+d_cube = ot.CompositeDistribution(f_cube, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0])
+sing_cube = d_cube.getSingularities()
+ott.assert_almost_equal(sing_cube.getSize(), 1)
+ott.assert_almost_equal(sing_cube[0], 0.0)
+
 # Explicit partition with a constant segment: g(x)=max(x,0) on Uniform(-1,1)
 # maps the half-mass below 0 to the single value 0, creating an atom there.
 f_pos = ot.SymbolicFunction("x", "max(x, 0)")
@@ -292,6 +300,34 @@ ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([-1.0], [0.0])), 0.
 ott.assert_almost_equal(d_pos.computeProbability(ot.Interval([0.5], [1.0])), 0.25)
 ott.assert_almost_equal(d_pos.getSingularities(), [0.0])
 ott.assert_almost_equal(d_pos.computeCDF(0.0), 0.5)
+
+# Discrete antecedent: atoms at partition boundaries should be counted correctly.
+# X takes values -1, 0, 1 with equal probability 1/3. g(x)=x^2.
+# Y takes values 0 (from X=0), 1 (from X=-1,1) with probabilities 1/3, 2/3.
+disc = ot.UserDefined([[-1.0], [0.0], [1.0]], [1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0])
+f_sq = ot.SymbolicFunction("x", "x^2")
+d_disc = ot.CompositeDistribution(f_sq, disc, [-1.0, 0.0, 1.0], [1.0, 0.0, 1.0])
+# P(Y=0) = P(X=0) = 1/3
+ott.assert_almost_equal(d_disc.computeProbability(ot.Interval([0.0], [0.0])), 1.0 / 3.0)
+# P(Y=1) = P(X=-1) + P(X=1) = 2/3
+ott.assert_almost_equal(d_disc.computeProbability(ot.Interval([1.0], [1.0])), 2.0 / 3.0)
+# P(0 <= Y <= 1) = 1
+ott.assert_almost_equal(d_disc.computeProbability(ot.Interval([0.0], [1.0])), 1.0)
+# Singularity at y=0 (from X=0, derivative 2x=0, direction change)
+sing_disc = d_disc.getSingularities()
+ott.assert_almost_equal(sing_disc.getSize(), 1)
+ott.assert_almost_equal(sing_disc[0], 0.0)
+
+# Discrete antecedent with atom at internal partition bound (not endpoint).
+# X in {-2, -1, 0, 1, 2} with equal prob 0.2. g(x)=x^3. Partition [-2, -1, 1, 2].
+# Y in {-8, -1, 0, 1, 8}. Atom at y=-1 (X=-1), y=0 (X=0), y=1 (X=1).
+disc2 = ot.UserDefined([[-2.0], [-1.0], [0.0], [1.0], [2.0]], [0.2] * 5)
+f_cube = ot.SymbolicFunction("x", "x^3")
+d_disc2 = ot.CompositeDistribution(f_cube, disc2, [-2.0, -1.0, 1.0, 2.0], [-8.0, -1.0, 1.0, 8.0])
+# P(Y=-1) = P(X=-1) = 0.2
+ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([-1.0], [-1.0])), 0.2)
+# P(Y=1) = P(X=1) = 0.2
+ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([1.0], [1.0])), 0.2)
 
 # computePDF at a singularity must be finite: the singularities are points
 # where the PDF is undefined/infinite, but the solver-based summation keeps
