@@ -325,3 +325,23 @@ Returns
 -------
 solver : :class:`~openturns.OptimizationAlgorithm`
     The solver used for numerical optimization."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoxCoxFactory::setOptimizationStartingPoint
+"Accessor to the optimization starting point.
+
+Parameters
+----------
+startingPoint : sequence of float of dimension 1
+    The starting lambda value of the likelihood maximization."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BoxCoxFactory::getOptimizationStartingPoint
+"Accessor to the optimization starting point.
+
+Returns
+-------
+startingPoint : :class:`~openturns.Point`
+    The starting lambda value of the likelihood maximization."

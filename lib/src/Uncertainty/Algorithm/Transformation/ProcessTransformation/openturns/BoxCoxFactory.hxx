@@ -122,10 +122,17 @@ public:
   OptimizationAlgorithm getOptimizationAlgorithm() const;
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
 
+  /** Optimization starting point accessor */
+  Point getOptimizationStartingPoint() const;
+  void setOptimizationStartingPoint(const Point & startingPoint);
+
 protected:
 
   /** Optimization solver */
   OptimizationAlgorithm solver_;
+
+  /** Starting point of the lambda optimization (1D) */
+  Point optimizationStartingPoint_;
 
 } ; /* class BoxCoxFactory */
 
