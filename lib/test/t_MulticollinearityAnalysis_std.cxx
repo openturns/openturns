@@ -70,9 +70,9 @@ int main(int, char *[])
 
     // LMG and PMVD indices
     PointWithDescription lmg_computed, pmvd_computed;
-    analysis.computeLmgPmvd(lmg_computed, pmvd_computed);
+    analysis.computeLMGAndPMVD(lmg_computed, pmvd_computed);
     PointWithDescription lmg_estimated, pmvd_estimated;
-    analysis.estimateLmgPmvdMonteCarlo(lmg_estimated, pmvd_estimated, 1000);
+    analysis.computeLMGAndPMVDMonteCarlo(lmg_estimated, pmvd_estimated, 1000);
     fullprint << "Theoretical LMG = [" << lmg1 << ", " << lmg2 << "]" << std::endl;
     fullprint << "Computed LMG = [" << lmg_computed[0] << ", " << lmg_computed[1] << "]" << std::endl;
     assert_almost_equal(lmg_computed, Point({lmg1, lmg2}), 2e-3, 0.0);
@@ -100,7 +100,7 @@ int main(int, char *[])
     // Check that an exception is raised when outputSample is not provided
     MulticollinearityAnalysis analysis(inputSample);
     PointWithDescription lmg_computed, pmvd_computed;
-    analysis.computeLmgPmvd(lmg_computed, pmvd_computed);
+    analysis.computeLMGAndPMVD(lmg_computed, pmvd_computed);
     std::cerr << "InvalidArgumentException should have been thrown" << std::endl;
     return ExitCode::Error;
   }

@@ -14,10 +14,10 @@ def compute_measure(X, Y, type):
     """
     analysis = ot.MulticollinearityAnalysis(X, Y)
     if type == "LMG":
-        lmg, _ = analysis.computeLmgPmvd()
+        lmg, _ = analysis.computeLMGAndPMVD()
         return lmg
     elif type == "PMVD":
-        _, pmvd = analysis.computeLmgPmvd()
+        _, pmvd = analysis.computeLMGAndPMVD()
         return pmvd
     elif type == "Johnson":
         return analysis.computeJohnson()
