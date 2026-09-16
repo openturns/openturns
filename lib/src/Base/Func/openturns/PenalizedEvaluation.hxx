@@ -28,6 +28,7 @@
 #include "openturns/Evaluation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

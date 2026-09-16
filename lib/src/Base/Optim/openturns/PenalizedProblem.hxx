@@ -35,7 +35,10 @@ BEGIN_NAMESPACE_OPENTURNS
  * by a penalized function using PenalizedEvaluation, so that optimization
  * algorithms can proceed when the objective throws. The penalized values
  * account for the minimization/maximization flags, including per-output
- * flags for multi-objective problems.
+ * flags for multi-objective problems. Analytic gradient/hessian are wrapped
+ * with PenalizedGradient/PenalizedHessian and return zeros on failure;
+ * finite-difference gradient/hessian need no wrapping as they are evaluated
+ * on the penalized evaluation.
  */
 class OT_API PenalizedProblem
   : public OptimizationProblemImplementation

@@ -153,6 +153,8 @@
 #include "openturns/QuadraticBasisFactory.hxx"
 #include "openturns/EvaluationProxy.hxx"
 #include "openturns/PenalizedEvaluation.hxx"
+#include "openturns/PenalizedGradient.hxx"
+#include "openturns/PenalizedHessian.hxx"
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/NullHessian.hxx"

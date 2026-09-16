@@ -12,6 +12,9 @@ The penalized values account for the minimization/maximization flags:
 a failed evaluation returns a large positive value for minimization
 and a large negative value for maximization, per output for
 multi-objective problems.
+Analytic gradient/hessian are wrapped with
+:class:`~openturns.experimental.PenalizedGradient` /
+:class:`~openturns.experimental.PenalizedHessian` and return zeros on failure.
 
 Parameters
 ----------
