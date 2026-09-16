@@ -49,6 +49,11 @@ It is possible to create a LogNormal distribution from the alternative parametri
 
 In order to use the alternative parametrization only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\mu_\ell, \sigma_\ell, \gamma)`.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LogNormal-CharacteristicFunctionIntegrationNodes* (``UnsignedInteger``, default: `256`)
+- *LogNormal-CharacteristicFunctionSmallSigmaThreshold* (``Scalar``, default: `0.2`)
+
 Examples
 --------
 Create a distribution from its native parameters :math:`(\mu_\ell, \sigma_\ell, \gamma)`:

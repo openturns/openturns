@@ -80,7 +80,16 @@ experiments:
 >>> print(sample - sample[0, 0])
 0 : [ 0 1 ]
 1 : [ 2 3 ]
-2 : [ 4 5 ])RAW"
+2 : [ 4 5 ]
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Sample-PrintEllipsisSize* (``UnsignedInteger``, default: `3`)
+- *Sample-PrintEllipsisThreshold* (``UnsignedInteger``, default: `1000`)
+- *Sample-SmallKendallTau* (``UnsignedInteger``, default: `23`)
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -179,7 +188,7 @@ This method allows for more permissive file formatting than :py:meth:`ImportFrom
 - Comment lines or empty ones are allowed
 - Lines can be skipped from the start of the file
 
-The comment marker is defined by the `Sample-CommentsMarker` entry from :class:`~openturns.ResourceMap`.
+The comment marker is defined by the `Sample-CommentMarker` entry from :class:`~openturns.ResourceMap`.
 
 See Also
 --------
@@ -401,7 +410,7 @@ by David Simcha based on the paper by [knight1966]_. It actually switches
 between two implementations depending on the sample size:
 
     - The most basic implementation performing in :math:`O(m^2)` is used when
-      the sample size is less than `SampleImplementation-SmallKendallTau`
+      the sample size is less than `Sample-SmallKendallTau`
       from the :class:`~openturns.ResourceMap`.
     - The other more complex implementation performing in :math:`O(m\log(m))`
       is used for larger samples.
@@ -1009,7 +1018,7 @@ Examples
 Parameters
 ----------
 description : sequence of str
-    Description of the sample's components.
+    Description of the sample components.
 
 See Also
 --------
@@ -1344,3 +1353,4 @@ Examples
 0 : [ 0 2 2 ]
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"
+

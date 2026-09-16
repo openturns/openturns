@@ -26,6 +26,14 @@ The different drawable elements are:
 
 - :class:`~openturns.Text`
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Drawable-AlternativePattern* (``String``, default: `S`)
+- *Drawable-DefaultFillStyle* (``String``, default: `solid`)
+- *Drawable-DefaultLineStyle* (``String``, default: `solid`)
+- *Drawable-DefaultLineWidth* (``Scalar``, default: `1`)
+- *Drawable-DefaultPattern* (``String``, default: `s`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -33,6 +41,7 @@ Examples
 >>> sample = ot.Normal([0.0,0.0], [1.0,1.0], ot.CorrelationMatrix(2)).getSample(10)
 >>> myCloud = ot.Cloud(sample, 'blue', 'fsquare', 'A Cloud')
 >>> myGraph.add(myCloud)"
+
 %enddef
 %feature("docstring") OT::DrawableImplementation
 OT_Drawable_doc

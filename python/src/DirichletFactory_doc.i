@@ -34,6 +34,15 @@ Returns
 -------
 dist : :class:`~openturns.Dirichlet`
     The estimated distribution as a :class:`openturns.Dirichlet`.
-    
-    In the first usage, the default :class:`openturns.Dirichlet` distribution is built."
+    In the first usage, the default :class:`openturns.Dirichlet` distribution is built.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DirichletFactory-MaximumIteration* (``UnsignedInteger``, default: `10`): maximum number of iterations
+  of the fixed point algorithm used by the likelihood maximization,
+- *DirichletFactory-ParametersEpsilon* (``Scalar``, default: `1e-12`): tolerance used as a stopping criterion
+  of the fixed point algorithm and as a lower bound for the estimated parameters."
+
 

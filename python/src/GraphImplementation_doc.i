@@ -14,7 +14,24 @@ xTitle : str
     Legend of the X axe.
 yTitle : str
     Legend of the Y axe.
-"
+
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Graph-DefaultLegendFontSize* (``Scalar``, default: `10`)
+- *Graph-DefaultHorizontalMargin* (``Scalar``, default: `0.05`)
+- *Graph-DefaultVerticalMargin* (``Scalar``, default: `0.05`)"
+
+
+
+
+
+
+
+
+
 %enddef
 %feature("docstring") OT::GraphImplementation
 OT_Graph_doc
