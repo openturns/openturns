@@ -60,6 +60,9 @@ The following :class:`openturns.ResourceMap` keys are used:
 - ``RiemannianGaussian-PositiveDefiniteThreshold``: relative tolerance for
   the validation of the positive definiteness of the mean and covariance
   matrices.
+- ``RiemannianGaussian-LogJacobianTaylorThreshold``: threshold on the
+  exponential coordinates norm below which a Taylor expansion is used to
+  compute the log-Jacobian of the exponential map.
 
 Examples
 --------
