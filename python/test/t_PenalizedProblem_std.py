@@ -105,6 +105,47 @@ assert_almost_equal(
     0.0,
 )
 
+# derivatives are zeroed wherever only the evaluation throws
+
+
+def df_ok_py(x):
+    return [[0.5 / abs(x[0]) ** 0.5]]
+
+
+def d2f_ok_py(x):
+    return [[[-0.25 / abs(x[0]) ** 1.5]]]
+
+
+fb = ot.PythonFunction(1, 1, f_py, gradient=df_ok_py, hessian=d2f_ok_py)
+coordinatedProblem = otexp.PenalizedProblem(
+    ot.OptimizationProblem(fb), penalty
+)
+coordinatedObjective = coordinatedProblem.getObjective()
+assert_almost_equal(
+    coordinatedObjective.gradient([4.0])[0, 0], 0.25, 1e-12, 0.0
+)
+assert_almost_equal(
+    coordinatedObjective.gradient([-1.0]),
+    ot.Matrix(1, 1),
+    0.0,
+    0.0,
+)
+assert_almost_equal(
+    coordinatedObjective.hessian([-1.0]),
+    ot.SymmetricTensor(1, 1),
+    0.0,
+    0.0,
+)
+# coordinated wrappers are installed
+assert (
+    coordinatedObjective.getGradient().getImplementation().getClassName()
+    == "PenalizedGradient"
+)
+assert (
+    coordinatedObjective.getHessian().getImplementation().getClassName()
+    == "PenalizedHessian"
+)
+
 # finite-difference gradient needs no wrapping: evaluated on penalized values
 fdProblem = otexp.PenalizedProblem(problem, penalty)
 assert (
@@ -125,6 +166,10 @@ def ineq_py(x):
     if x[0] < 0.0:
         raise RuntimeError("negative input")
     return [x[0] - 1.0]
+
+
+def dineq_ok_py(x):
+    return [[1.0]]
 
 
 constrained = ot.OptimizationProblem(f)
@@ -195,6 +240,24 @@ algo.run()
 result = algo.getResult()
 assert result.getOptimalValue()[0] < penalty
 print("constrained optimal point=", result.getOptimalPoint())
+
+# constraint derivatives are zeroed wherever only the evaluation throws
+analyticIneqOnly = ot.OptimizationProblem(f)
+analyticIneqOnly.setMinimization(True)
+analyticIneqOnly.setInequalityConstraint(
+    ot.PythonFunction(1, 1, ineq_py, gradient=dineq_ok_py)
+)
+penalizedAnalyticIneq = otexp.PenalizedProblem(analyticIneqOnly, penalty)
+penalizedIneq = penalizedAnalyticIneq.getInequalityConstraint()
+assert penalizedIneq.getGradient().getImplementation().getClassName() == (
+    "PenalizedGradient"
+)
+assert_almost_equal(penalizedIneq([4.0]), [3.0], 1e-12, 0.0)
+assert_almost_equal(penalizedIneq([-1.0]), [-penalty], 0.0, 0.0)
+assert_almost_equal(penalizedIneq.gradient([4.0])[0, 0], 1.0, 1e-12, 0.0)
+assert_almost_equal(
+    penalizedIneq.gradient([-1.0]), ot.Matrix(1, 1), 0.0, 0.0
+)
 
 # can be used by an optimizer
 algo = ot.Cobyla(ot.OptimizationProblem(penalizedProblem))

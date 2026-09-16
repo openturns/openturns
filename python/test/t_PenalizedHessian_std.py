@@ -30,6 +30,25 @@ assert h.getHessian().getInputDimension() == 1
 h.setHessian(f.getHessian())
 assert h.getHessian().getOutputDimension() == 1
 
+# coordinated evaluation: zeros where only the evaluation throws
+
+
+def d2f_ok_py(x):
+    return [[[2.0]]]
+
+
+f2 = ot.PythonFunction(1, 1, f_py, hessian=d2f_ok_py)
+hc = otexp.PenalizedHessian(f2.getHessian(), f2.getEvaluation())
+ott.assert_almost_equal(hc.hessian([4.0])[0, 0, 0], 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(
+    hc.hessian([-1.0]), ot.SymmetricTensor(1, 1), 0.0, 0.0
+)
+assert hc.getEvaluation().getInputDimension() == 1
+hc.setEvaluation(f2.getEvaluation())
+# mismatched dimensions are rejected
+with ott.assert_raises(TypeError):
+    hc.setEvaluation(ot.SymbolicFunction(["x1", "x2"], ["x1"]).getEvaluation())
+
 # marginal keeps penalization
 g = otexp.PenalizedHessian(
     ot.SymbolicFunction(["x1", "x2"], ["x1", "x2"]).getHessian()

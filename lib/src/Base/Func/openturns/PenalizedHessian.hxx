@@ -24,6 +24,7 @@
 
 #include "openturns/HessianImplementation.hxx"
 #include "openturns/Hessian.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/SymmetricTensor.hxx"
 
@@ -36,6 +37,9 @@ BEGIN_NAMESPACE_OPENTURNS
  * when the underlying hessian throws, e.g. for optimization.
  * This is consistent with PenalizedEvaluation: the penalized
  * function is locally constant on failure, hence its hessian is zero.
+ * If an evaluation is provided, zeros are also returned wherever
+ * the evaluation fails, even when the hessian itself would succeed.
+ * This keeps the derivative consistent with the penalized values.
  */
 class OT_API PenalizedHessian
   : public HessianImplementation
@@ -49,12 +53,20 @@ public:
   /** Parameter constructor */
   explicit PenalizedHessian(const Hessian & hessian);
 
+  /** Parameter constructor with coordinated evaluation */
+  PenalizedHessian(const Hessian & hessian,
+                   const Evaluation & evaluation);
+
   /** Virtual constructor */
   PenalizedHessian * clone() const override;
 
   /** Hessian implementation accessors */
   void setHessian(const Hessian & hessian);
   Hessian getHessian() const;
+
+  /** Coordinated evaluation accessors */
+  void setEvaluation(const Evaluation & evaluation);
+  Evaluation getEvaluation() const;
 
   /** Comparison operator */
   using HessianImplementation::operator ==;
@@ -101,8 +113,14 @@ public:
 
 private:
 
+  /** Check that the coordinated evaluation matches the hessian dimensions */
+  void checkDimensions() const;
+
   /** The wrapped hessian */
   Hessian hessian_;
+
+  /** The coordinated evaluation (returns zeros where it fails) */
+  Evaluation evaluation_;
 
 }; /* class PenalizedHessian */
 

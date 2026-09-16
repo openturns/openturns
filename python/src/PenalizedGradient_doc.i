@@ -10,11 +10,16 @@ e.g. when the gradient fails outside of its domain of definition.
 User interruptions are rethrown, not penalized.
 This is consistent with :class:`~openturns.experimental.PenalizedEvaluation`:
 the penalized function is locally constant on failure, hence its gradient is zero.
+If an evaluation is provided, zeros are also returned wherever the evaluation
+fails, even when the gradient itself would succeed, so the derivative stays
+consistent with the penalized values.
 
 Parameters
 ----------
 gradient : :class:`~openturns.GradientImplementation`
     Delegate gradient
+evaluation : :class:`~openturns.EvaluationImplementation`, optional
+    Coordinated evaluation, used only to detect failures
 
 Examples
 --------
@@ -46,3 +51,23 @@ Parameters
 ----------
 gradient : :class:`~openturns.GradientImplementation`
     The internal gradient."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedGradient::getEvaluation
+"Accessor to the coordinated evaluation.
+
+Returns
+-------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The coordinated evaluation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedGradient::setEvaluation
+"Accessor to the coordinated evaluation.
+
+Parameters
+----------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The coordinated evaluation."

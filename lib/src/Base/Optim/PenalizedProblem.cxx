@@ -168,16 +168,19 @@ Function PenalizedProblem::penalizeFunction(const Function & function,
   penalizedFunction.setName(function.getName());
   penalizedFunction.setDescription(function.getDescription());
   // Wrap analytic gradient/hessian so they return zeros on failure.
-  // Finite-difference gradient/hessian need no wrapping: penalizedFunction
-  // already evaluates them on the penalized evaluation, which never throws.
+  // The original evaluation is shared with the wrappers so that zeros
+  // are returned wherever the evaluation fails, even when the analytic
+  // derivative itself would succeed. Finite-difference gradient/hessian
+  // need no wrapping: penalizedFunction already evaluates them on the
+  // penalized evaluation, which never throws.
   const Gradient gradient(function.getGradient());
   if (gradient.getImplementation()->isActualImplementation()
       && (gradient.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
-    penalizedFunction.setGradient(PenalizedGradient(gradient));
+    penalizedFunction.setGradient(PenalizedGradient(gradient, function.getEvaluation()));
   const Hessian hessian(function.getHessian());
   if (hessian.getImplementation()->isActualImplementation()
       && (hessian.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
-    penalizedFunction.setHessian(PenalizedHessian(hessian));
+    penalizedFunction.setHessian(PenalizedHessian(hessian, function.getEvaluation()));
   return penalizedFunction;
 }
 
