@@ -1,3 +1,8 @@
 Drift and linear trend model= class=TestResult name=Unnamed type=DickeyFullerUnitRootInDriftAndLinearTrendModel binaryQualityMeasure=false p-value threshold=0.05 p-value=0.01 statistic=-12.4758 description=[]
 Drift model= class=TestResult name=Unnamed type=DickeyFullerUnitRootInDriftModel binaryQualityMeasure=false p-value threshold=0.05 p-value=0.01 statistic=-12.4763 description=[]
 AR1 model= class=TestResult name=Unnamed type=DickeyFullerUnitRootAR1Model binaryQualityMeasure=false p-value threshold=0.05 p-value=0.01 statistic=-12.4339 description=[]
+Strategy= class=TestResult name=Unnamed type=DickeyFullerDriftNullWithoutUnitRoot binaryQualityMeasure=false p-value threshold=0.05 p-value=0.740769 statistic=0.648085 description=[]
+Unit root and no linear trend= class=TestResult name=Unnamed type=DickeyFullerTrendNullWithUnitRoot binaryQualityMeasure=false p-value threshold=0.05 p-value=1 statistic=76.3229 description=[]
+No unit root and no linear trend= class=TestResult name=Unnamed type=DickeyFullerTrendNullWithoutUnitRoot binaryQualityMeasure=true p-value threshold=0.05 p-value=0.409517 statistic=0.229415 description=[]
+Unit root and no drift= class=TestResult name=Unnamed type=DickeyFullerDriftNullWithUnitRoot binaryQualityMeasure=false p-value threshold=0.05 p-value=1 statistic=77.0521 description=[]
+No unit root and no drift= class=TestResult name=Unnamed type=DickeyFullerDriftNullWithoutUnitRoot binaryQualityMeasure=false p-value threshold=0.05 p-value=0.740769 statistic=0.648085 description=[]
