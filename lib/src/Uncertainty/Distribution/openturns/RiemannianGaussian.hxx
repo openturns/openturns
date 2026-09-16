@@ -105,6 +105,9 @@ private:
   /** Exp map on SPD manifold */
   SymmetricMatrix expMap(const SymmetricMatrix & v) const;
 
+  /** Log-Jacobian of the exponential map on SPD manifold */
+  Scalar computeLogExpJacobian(const SymmetricMatrix & v) const;
+
   /** Dimension of SPD manifold (n*(n+1)/2) */
   UnsignedInteger dimension_;
 
