@@ -20,7 +20,6 @@ import openturns as ot
 import openturns.viewer as otv
 import openturns.experimental as otexp
 from openturns.usecases import ames_housing
-import matplotlib
 
 # %%
 # We will take the X and Y samples from the :ref:`Ames Housing<use-case-ames-housing>` dataset
@@ -78,7 +77,6 @@ def create_graph(title, names, mean, interval):
     dimension = mean.getDimension()
     palette = ot.Drawable.BuildDefaultPalette(2)
     graph = ot.Graph(title, "", "")
-    matplotlib.rc("xtick", labelsize=8.0)  # reduce the font size of the X labels
 
     # Confidence bounds
     lb = interval.getLowerBound()
@@ -100,7 +98,8 @@ def create_graph(title, names, mean, interval):
     box.setLowerBound([0.8, 0.0])
     graph.setBoundingBox(box)
     axes_kw = {"xticks": range(1, dimension + 1), "xticklabels": names}
-    otv.View(graph, axes_kw=axes_kw, figure_kw={"figsize": (10.0, 4.8)})
+    view = otv.View(graph, axes_kw=axes_kw, figure_kw={"figsize": (10.0, 4.8)})
+    view.getAxes()[0].tick_params(axis="x", labelsize=8.0)  # reduce the font size of the X labels
 
 
 # %%
