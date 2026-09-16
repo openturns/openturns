@@ -503,10 +503,15 @@ Scalar CompositeDistribution::computeProbability(const Interval & interval) cons
           const Scalar atomMass = antecedent_.computePDF(a);
           if (atomMass > 0.0) probability += atomMass;
           continue;
-        }
-        // For i>1, atom at fA belongs to previous segment, so skip.
-      }
-      Scalar pLo = 0.0;
+}
+      // For i>1, atom at fA belongs to previous segment, so skip.
+    }
+    // For continuous antecedents, degenerate interval ]y, y] has probability 0
+    if (lo == hi && !antecedent_.isDiscrete())
+    {
+      continue;
+    }
+    Scalar pLo = 0.0;
       Scalar pHi = 0.0;
       if (lo < fA)
       {
@@ -582,6 +587,11 @@ Scalar CompositeDistribution::computeProbability(const Interval & interval) cons
           continue;
         }
         // For fA (upper endpoint), atom at a belongs to previous segment, so skip.
+      }
+      // For continuous antecedents, degenerate interval ]y, y] has probability 0
+      if (lo == hi && !antecedent_.isDiscrete())
+      {
+        continue;
       }
       Scalar pLo = 0.0;
       Scalar pHi = 0.0;
