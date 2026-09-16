@@ -26,7 +26,7 @@ The forecast output random variable is defined by:
 .. math::
    :label: linearOutputRV
 
-   \widehat{Y} = \sum_{j=1}^{p} a_j \varphi_j(\inputRV).
+   \widehat{Y} = \sum_{j=1}^{p} \hat{a}_j \varphi_j(\inputRV).
 
 Let :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)` be a sample of the input random vector :math:`\inputRV`
 and :math:`(y_1, \dots, y_\sampleSize)` the associated output values.
@@ -49,7 +49,7 @@ and are assumed to be independent realizations of  :math:`\epsilon`.
 The linear coefficients :math:`(a_1, \ldots, a_{p})` and the variance :math:`\sigma^2` are estimated by maximizing the
 likelihood of the residuals according to the distribution of :math:`\epsilon`.
 
-If the noise  :math:`\varepsilon` follows a normal distribution with zero mean, the maximization of the residuals
+If the noise :math:`\varepsilon` follows a normal distribution with zero mean, the maximization of the residuals
 likelihood with respect to the normal distribution is equivalent to solving the least-squares problem (see [bingham2010]_ theorem 1.8 page 22):
 
 .. math::
@@ -114,20 +114,19 @@ but not all books use the same convention:
 
 Coefficient of determination
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The coefficient of determination is (see [baron2014]_ page 399):
+The coefficient of determination is generally defined as:
 
 .. math::
 
     R^2 = 1 - \frac{SS_{\text{ERR}}}{SS_{\text{TOT}}}.
 
-
-For a linear regression model fitted by ordinary least squares that includes an intercept, the total sum of squares is exactly equal to the sum of the regression and error
-sums of squares. In this specific case, the formula is equivalently written as (see [baron2014]_ page 399):
+For a linear regression model fitted by ordinary least squares that includes an intercept, the total sum of squares is exactly equal
+to the sum of the regression and error sums of squares. In this specific case, the formula is equivalently written as (see
+[baron2014]_ page 399):
 
 .. math::
 
     R^2 = \frac{SS_{\text{REG}}}{SS_{\text{TOT}}}.
-
 
 The coefficient of determination measures the proportion of the variance explained by the model. When the model includes an intercept and is evaluated on the training data,
 :math:`0 \leq R^2 \leq 1`. A value close to 1 indicates a good fit, whereas a value close to 0 indicates that the linear model does not provide a relevant forecast.
@@ -283,9 +282,12 @@ Moreover:
 
 Some illustrations
 ~~~~~~~~~~~~~~~~~~
-By definition, the linear regression model is only relevant for linear
-relationships, as in the following simple example where
-:math:`Y = a_0 + a_1 X_1`.
+Example 1: We consider the output random variable defined by :math:`Y = 0.5 + 3 X_1 + \epsilon` where the random noise
+:math:`\varepsilon` is distributed according to the standard normal distribution and :math:`X_1` is distributed according to
+the Triangular(1.0, 5.0, 10.0) distribution.
+
+In that case, the linear regression model is relevant. The default functional basis is composed of
+the functions :math:`\varphi_1: x \rightarrow 1` and :math:`\varphi_2: x \rightarrow  x`.
 
 .. plot::
 
@@ -315,10 +317,12 @@ relationships, as in the following simple example where
     otv.View(graph)
 
 
-In this second example (still in dimension 1), the linear model is not
-relevant because of the exponential shape of the relation. But a linear
-approach would be useful on the transformed problem
-:math:`Y = a_0 + a_1 \exp X_1`.
+Example 2: We consider now the output random variable defined by :math:`Y = \exp (0.5X_1)+ \epsilon` where the random noise :math:`\varepsilon` is distributed according to the standard normal
+distribution and :math:`X_1` is distributed according to the Triangular(1.0, 5.0, 10.0) distribution.
+
+In that case, the default functional basis is not relevant because of the exponential shape of the relation. The following graph shows it clearly. We should have used the functional basis  composed of
+the functions :math:`\varphi_1: x \rightarrow 1` and :math:`\varphi_2: x \rightarrow  \exp (0.5X_1)`.
+
 
 .. plot::
 
@@ -358,7 +362,7 @@ the samples :math:`(\vect{x}_1, \dots, \vect{x}_\sampleSize)` and
 to 0 and the standard deviation should be constant. Thus, plotting the
 residuals versus these variables can be fruitful.
 
-In the following example, the behavior of the residuals is
+In Example1, the behavior of the residuals is
 satisfactory: no particular trend can be detected neither in the mean
 nor in the standard deviation.
 
@@ -388,7 +392,7 @@ nor in the standard deviation.
     otv.View(graph)
 
 
-The next example illustrates a less favorable situation: the mean value
+In Example 2 using the default functional basis, on the other hand, the mean value
 of the residuals seems to be close to 0 but the standard deviation tends
 to increase with :math:`X`. In such a situation, the linear model should
 be abandoned, or at least used very cautiously.
