@@ -41,8 +41,8 @@ outputSample = linearFunction(inputSample) + noiseSample
 analysis = otexp.MulticollinearityAnalysis(inputSample, outputSample)
 
 # LMG and PMVD indices
-lmg_computed, pmvd_computed = analysis.computeLmgPmvd()
-lmg_estimated, pmvd_estimated = analysis.estimateLmgPmvdMonteCarlo(1000)
+lmg_computed, pmvd_computed = analysis.computeLMGAndPMVD()
+lmg_estimated, pmvd_estimated = analysis.computeLMGAndPMVDMonteCarlo(1000)
 print(f"Theoretical LMG = [{lmg1}, {lmg2}]")
 print(f"Computed LMG = [{lmg_computed[0]}, {lmg_computed[1]}]")
 ott.assert_almost_equal(lmg_computed, [lmg1, lmg2], 2e-3, 0.0)
@@ -64,9 +64,9 @@ ott.assert_almost_equal(
 # Check that an exception is raised when outputSample is not provided
 analysis = otexp.MulticollinearityAnalysis(inputSample)
 with ott.assert_raises(TypeError):
-    analysis.computeLmgPmvd()
+    analysis.computeLMGAndPMVD()
 with ott.assert_raises(TypeError):
-    analysis.estimateLmgPmvdMonteCarlo(1000)
+    analysis.computeLMGAndPMVDMonteCarlo(1000)
 with ott.assert_raises(TypeError):
     analysis.computeJohnson()
 

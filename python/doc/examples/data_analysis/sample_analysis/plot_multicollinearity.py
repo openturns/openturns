@@ -56,10 +56,10 @@ def compute_quantity(X, Y, kind):
     """
     analysis = otexp.MulticollinearityAnalysis(X, Y)
     if kind == "LMG":
-        lmg, _ = analysis.computeLmgPmvd()
+        lmg, _ = analysis.computeLMGAndPMVD()
         return lmg
     elif kind == "PMVD":
-        _, pmvd = analysis.computeLmgPmvd()
+        _, pmvd = analysis.computeLMGAndPMVD()
         return pmvd
     elif kind == "Johnson":
         return analysis.computeJohnson()
@@ -139,7 +139,7 @@ def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
 # LMG and PMVD indices:
 
 analysis = otexp.MulticollinearityAnalysis(X, Y)
-lmg, pmvd = analysis.computeLmgPmvd()
+lmg, pmvd = analysis.computeLMGAndPMVD()
 print(lmg)
 
 # %%

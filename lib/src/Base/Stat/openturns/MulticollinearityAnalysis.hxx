@@ -56,10 +56,10 @@ public:
   String __repr__() const override;
 
   /** Compute LMG and PMVD indices */
-  void computeLmgPmvd(PointWithDescription & lmgOut, PointWithDescription & pmvdOut) const;
+  void computeLMGAndPMVD(PointWithDescription & lmgOut, PointWithDescription & pmvdOut) const;
 
   /** Estimate LMG and PMVD indices via a Monte Carlo method */
-  void estimateLmgPmvdMonteCarlo(PointWithDescription & lmgOut, PointWithDescription & pmvdOut, const UnsignedInteger iterations) const;
+  void computeLMGAndPMVDMonteCarlo(PointWithDescription & lmgOut, PointWithDescription & pmvdOut, const UnsignedInteger iterations) const;
 
   /** Compute Johnson index */
   PointWithDescription computeJohnson() const;
