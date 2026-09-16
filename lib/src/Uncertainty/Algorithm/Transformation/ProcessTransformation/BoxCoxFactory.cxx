@@ -401,6 +401,7 @@ private:
 BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
   , solver_(new Cobyla())
+  , optimizationStartingPoint_(1, 1.0)
 {
   const Scalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
   dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
@@ -422,6 +423,18 @@ OptimizationAlgorithm BoxCoxFactory::getOptimizationAlgorithm() const
 void BoxCoxFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
+}
+
+Point BoxCoxFactory::getOptimizationStartingPoint() const
+{
+  return optimizationStartingPoint_;
+}
+
+void BoxCoxFactory::setOptimizationStartingPoint(const Point & startingPoint)
+{
+  if (startingPoint.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: the optimization starting point must be of dimension 1, got dimension=" << startingPoint.getDimension();
+  optimizationStartingPoint_ = startingPoint;
 }
 
 
@@ -487,13 +500,13 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
         throw InvalidArgumentException(HERE) << "Error: shifted sample must be strictly positive, got " << marginalSamples[d](i, 0) << " at index " << i << " marginal " << d;
 
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d]);
-    Function objectiveFunction(boxCoxOptimization);
+    const Function objectiveFunction(boxCoxOptimization);
     // Define optimization problem
     OptimizationProblem problem((objectiveFunction));
     problem.setMinimization(false);
     OptimizationAlgorithm solver(solver_);
     solver.setProblem(problem);
-    solver.setStartingPoint(Point(1, 1.0));
+    solver.setStartingPoint(optimizationStartingPoint_);
     // run Optimization problem
     solver.run();
     // Return optimization point
@@ -581,15 +594,15 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
       throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
-  BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
-  Function objectiveFunction(boxCoxOptimization);
+  const BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
+  const Function objectiveFunction(boxCoxOptimization);
   MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
   objectiveMemoizeFunction.enableCache();
   OptimizationProblem problem(objectiveMemoizeFunction);
   problem.setMinimization(false);
   OptimizationAlgorithm solver(solver_);
   solver.setProblem(problem);
-  solver.setStartingPoint(Point(1, 1.0));
+  solver.setStartingPoint(optimizationStartingPoint_);
   // run Optimization problem
   solver.run();
   // Return optimization point
@@ -657,15 +670,15 @@ BoxCoxTransform BoxCoxFactory::buildWithGPF(const Sample & inputSample,
       throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
-  BoxCoxGPFOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
-  Function objectiveFunction(boxCoxOptimization);
+  const BoxCoxGPFOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
+  const Function objectiveFunction(boxCoxOptimization);
   MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
   objectiveMemoizeFunction.enableCache();
   OptimizationProblem problem(objectiveMemoizeFunction);
   problem.setMinimization(false);
   OptimizationAlgorithm solver(solver_);
   solver.setProblem(problem);
-  solver.setStartingPoint(Point(1, 1.0));
+  solver.setStartingPoint(optimizationStartingPoint_);
   // run Optimization problem
   solver.run();
   // Return optimization point
@@ -733,7 +746,7 @@ BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
   problem.setMinimization(false);
   OptimizationAlgorithm solver(solver_);
   solver.setProblem(problem);
-  solver.setStartingPoint(Point(1, 1.0));
+  solver.setStartingPoint(optimizationStartingPoint_);
   // run Optimization problem
   solver.run();
   // Return optimization point
