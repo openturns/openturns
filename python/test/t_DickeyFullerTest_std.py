@@ -31,3 +31,20 @@ print(
 )
 print("Drift model=", test.testUnitRootInDriftModel(0.05))
 print("AR1 model=", test.testUnitRootInAR1Model(0.05))
+print("Strategy=", test.runStrategy(0.05))
+print(
+    "Unit root and no linear trend=",
+    test.testUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(0.05),
+)
+print(
+    "No unit root and no linear trend=",
+    test.testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel(0.05),
+)
+print(
+    "Unit root and no drift=",
+    test.testUnitRootAndNoDriftInDriftModel(0.05),
+)
+print(
+    "No unit root and no drift=",
+    test.testNoUnitRootAndNoDriftInDriftModel(0.05),
+)
