@@ -59,13 +59,12 @@ Bingham::Bingham()
 }
 
 Bingham::Bingham(const Point & zeta,
-                 const SquareMatrix & gamma,
-                 const Scalar epsilon)
+                 const SquareMatrix & gamma)
   : DistributionImplementation()
   , dimension_(zeta.getDimension())
   , zeta_(zeta)
   , gamma_(gamma.getDimension())
-  , epsilon_(std::max(SpecFunc::ScalarEpsilon, epsilon))
+  , epsilon_(ResourceMap::GetAsScalar("Bingham-OrthogonalityThreshold"))
   , logNormalization_(0.0)
   , optimalB_(0.0)
 {
@@ -419,8 +418,9 @@ void Bingham::setParameter(const Point & parameter)
       gamma(i, j) = parameter[n + i * n + j];
 
   const Scalar w = getWeight();
-  *this = Bingham(zeta, gamma, epsilon_);
+  *this = Bingham(zeta, gamma);
   setWeight(w);
+  setEpsilon(epsilon_);
 }
 
 Description Bingham::getParameterDescription() const
@@ -503,6 +503,19 @@ SquareMatrix Bingham::getGamma() const
 Scalar Bingham::getEpsilon() const
 {
   return epsilon_;
+}
+
+void Bingham::setEpsilon(const Scalar epsilon)
+{
+  const Scalar eps = std::max(SpecFunc::ScalarEpsilon, epsilon);
+  if (eps != epsilon_)
+  {
+    epsilon_ = eps;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    computeNormalization();
+    updateSampler();
+  }
 }
 
 void Bingham::computeMean() const

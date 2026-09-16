@@ -25,8 +25,8 @@ Notes
 -----
 The following :class:`openturns.ResourceMap` keys are used:
 
-- ``WrappedNormalFactory-DefaultPeriod``: default value of the period used
-  when the sample does not determine it.
+- ``WrappedNormal-MaxLatticeTerms``: maximum number of lattice terms
+  for exact sum in PDF computation (default: 100000).
 
 See also
 --------

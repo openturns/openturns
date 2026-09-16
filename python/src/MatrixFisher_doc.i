@@ -73,6 +73,9 @@ The following :class:`openturns.ResourceMap` keys are used:
   validation of the orthogonality of the sampled matrices.
 - ``MatrixFisher-MaximumIteration``: number of quadrature nodes per dimension
   used in the evaluation of the normalization constant.
+- ``MatrixFisher-ConcentrationThreshold``: threshold for splitting between
+  small and large concentration approximations in the factory
+  (default: 0.5).
 
 Examples
 --------

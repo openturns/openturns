@@ -44,8 +44,10 @@ Notes
 -----
 The following :class:`openturns.ResourceMap` keys are used:
 
+- ``WrappedNormal-MaxLatticeTerms``: maximum number of lattice terms
+  for exact sum in PDF computation (default: 100000).
 - ``WrappedNormalFactory-DefaultPeriod``: default period used by the
-  :class:`~openturns.experimental.WrappedNormalFactory`.
+  :class:`~openturns.experimental.WrappedNormalFactory` (default: :math:`2\pi`).
 
 Examples
 --------
@@ -99,6 +101,26 @@ Returns
 -------
 sigma : :class:`openturns.CovarianceMatrix`
     Covariance matrix of the underlying normal distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WrappedNormal::setMaxLatticeTerms
+R"RAW(Accessor to the maximum number of lattice terms for exact sum.
+
+Parameters
+----------
+maxTerms : int
+    Maximum number of lattice terms for exact PDF sum (default: 100000).)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::WrappedNormal::getMaxLatticeTerms
+R"RAW(Accessor to the maximum number of lattice terms for exact sum.
+
+Returns
+-------
+maxTerms : int
+    Maximum number of lattice terms for exact PDF sum.)RAW"
 
 // ---------------------------------------------------------------------
 

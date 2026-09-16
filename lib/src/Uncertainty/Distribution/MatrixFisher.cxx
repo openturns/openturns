@@ -60,14 +60,13 @@ MatrixFisher::MatrixFisher()
   computeRange();
 }
 
-MatrixFisher::MatrixFisher(const SquareMatrix & F,
-                           const Scalar epsilon)
+MatrixFisher::MatrixFisher(const SquareMatrix & F)
   : DistributionImplementation()
   , F_(F.getDimension())
   , U_(F.getDimension())
   , V_(F.getDimension())
   , singularValues_(F.getDimension())
-  , epsilon_(std::max(SpecFunc::ScalarEpsilon, epsilon))
+  , epsilon_(ResourceMap::GetAsScalar("MatrixFisher-OrthogonalityThreshold"))
   , logNormalization_(0.0)
   , maxTrace_(0.0)
   , expectedMatrix_(3)
@@ -369,8 +368,9 @@ void MatrixFisher::setParameter(const Point & parameter)
       F(i, j) = parameter[i * 3 + j];
 
   const Scalar w = getWeight();
-  *this = MatrixFisher(F, epsilon_);
+  *this = MatrixFisher(F);
   setWeight(w);
+  setEpsilon(epsilon_);
 }
 
 Description MatrixFisher::getParameterDescription() const
@@ -413,6 +413,19 @@ Scalar MatrixFisher::getEpsilon() const
   return epsilon_;
 }
 
+void MatrixFisher::setEpsilon(const Scalar epsilon)
+{
+  const Scalar eps = std::max(SpecFunc::ScalarEpsilon, epsilon);
+  if (eps != epsilon_)
+  {
+    epsilon_ = eps;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    computeNormalization();
+    updateSampler();
+  }
+}
+
 Scalar MatrixFisher::computeEntropy() const
 {
   // Entropy = log a_0(F) - E[tr(F^T R)]
@@ -433,8 +446,23 @@ void MatrixFisher::computeMean() const
 void MatrixFisher::computeCovariance() const
 {
   // Cov[R] = E[RR^T] - E[R] E[R]^T, both integrals evaluated by quadrature
-  const SquareMatrix covariance(expectedSquaredMatrix_ - expectedMatrix_ * expectedMatrix_.transpose());
-  covariance_ = CovarianceMatrix(covariance.getImplementation());
+  // The distribution is 9-dimensional (flattened 3x3), so covariance is 9x9
+  CovarianceMatrix cov(9);
+  const SquareMatrix diff = expectedSquaredMatrix_ - expectedMatrix_ * expectedMatrix_.transpose();
+  for (UnsignedInteger i = 0; i < 3; ++i)
+  {
+    for (UnsignedInteger j = 0; j < 3; ++j)
+    {
+      for (UnsignedInteger k = 0; k < 3; ++k)
+      {
+        for (UnsignedInteger l = 0; l < 3; ++l)
+        {
+          cov(i * 3 + j, k * 3 + l) = diff(i, k) * diff(j, l);
+        }
+      }
+    }
+  }
+  covariance_ = cov;
   isAlreadyComputedCovariance_ = true;
 }
 

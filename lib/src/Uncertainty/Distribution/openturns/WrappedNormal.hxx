@@ -77,6 +77,10 @@ public:
   void setPeriod(const Scalar period);
   Scalar getPeriod() const;
 
+  /** Maximum lattice terms for exact sum accessor */
+  void setMaxLatticeTerms(const UnsignedInteger maxTerms);
+  UnsignedInteger getMaxLatticeTerms() const;
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 
@@ -114,9 +118,17 @@ private:
   /** Period (2*pi for standard torus) */
   Scalar period_;
 
+  /** Maximum number of lattice terms for exact sum */
+  UnsignedInteger maxLatticeTerms_;
+
   Scalar logNormalization_;
   SquareMatrix sigmaInv_;
   Scalar sigmaDet_;
+
+  // Cached eigendecomposition of sigma_ for efficiency
+  SquareMatrix sigmaEigVec_;
+  Point sigmaEig_;
+  Scalar maxEig_;
 
 }; /* class WrappedNormal */
 
