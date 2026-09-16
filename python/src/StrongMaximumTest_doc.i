@@ -52,6 +52,12 @@ which contribution to :math:`P_f` is not negligible (i.e. which density value
 in the U-space is greater than :math:`\varepsilon` times the density value at
 the design point).
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *StrongMaximumTest-DefaultDeltaPrecision* (``Scalar``, default: `1e-07`)
+- *StrongMaximumTest-Epsilon* (``Scalar``, default: `1e-10`)
+
 See also
 --------
 Analytical, SORM, FORM, SORMResult, FORMResult
@@ -75,6 +81,7 @@ Examples
 >>> myStandardEvent = ot.StandardEvent(myEvent)
 >>> myTest = ot.StrongMaximumTest(myStandardEvent, designPoint, 0.15, 3, 0.99)
 >>> myTest.run()
+
 )RAW"
 
 // ---------------------------------------------------------------------

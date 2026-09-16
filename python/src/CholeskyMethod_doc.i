@@ -19,6 +19,12 @@ indices : sequence of int
 design : 2-d sequence of float
     A priori known design matrix
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CholeskyMethod-LargeCase* (``UnsignedInteger``, default: `128`)
+
 See also
 --------
 LeastSquaresMethod, SVDMethod, QRMethod

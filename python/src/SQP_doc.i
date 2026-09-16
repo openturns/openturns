@@ -97,4 +97,12 @@ smooth : float
 Parameters
 ----------
 smooth : float
-    Growing factor in penalization term."
+    Growing factor in penalization term.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SQP-DefaultOmega* (``Scalar``, default: `0.0001`)
+- *SQP-DefaultSmooth* (``Scalar``, default: `1.2`)"
+

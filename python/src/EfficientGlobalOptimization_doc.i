@@ -73,6 +73,13 @@ with starting points uniformly sampled in the optimization problem bounds,
 see :func:`setMultiStartExperimentSize` and :func:`setMultiStartNumber`.
 This behavior can be overridden by using another solver with :func:`setOptimizationAlgorithm`.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *EfficientGlobalOptimization-DefaultAEITradeoff* (``Scalar``, default: `1`)
+- *EfficientGlobalOptimization-DefaultCorrelationLengthFactor* (``Scalar``, default: `1`)
+- *EfficientGlobalOptimization-DefaultOptimizationAlgorithm* (``String``, default: `Cobyla`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -101,6 +108,7 @@ Examples
 >>> updatedGPRResult = algo.getGaussianProcessRegressionResult()
 >>> updatedOutputSample = updatedGPRResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
+
 )RAW"
 
 // ---------------------------------------------------------------------

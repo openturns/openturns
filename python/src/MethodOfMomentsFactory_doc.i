@@ -62,6 +62,15 @@ which is equivalent to the solution of the following optimization problem:
     \widehat{\mu}_k^{1/k} \right]^2
 
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MethodOfMomentsFactory-MaximumAbsoluteError* (``Scalar``, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
+- *MethodOfMomentsFactory-MaximumConstraintError* (``Scalar``, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumObjectiveError* (``Scalar``, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumRelativeError* (``Scalar``, default: `1e-10`)
+
 See also
 --------
 DistributionFactory
@@ -81,6 +90,7 @@ With parameter bounds:
 >>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
 >>> factory = ot.MethodOfMomentsFactory(ot.Normal(), orders, bounds)
 >>> inf_distribution = factory.build(sample)
+
 )RAW"
 
 // ---------------------------------------------------------------------

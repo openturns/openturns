@@ -39,6 +39,12 @@ where :math:`\epsilon` is the residual, supposed to follow the standard Normal
 distribution, :math:`\phi_i` the i-th element of the basis.
 
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelStepwiseAlgorithm-MaximumIterationNumber* (``UnsignedInteger``, default: `1000`)
+- *LinearModelStepwiseAlgorithm-Penalty* (``Scalar``, default: `2`)
+
 Examples
 --------
 Definition of the data set
@@ -70,6 +76,7 @@ Stepwise regression
 >>> algo_forward.setPenalty(penalty)
 >>> algo_forward.run()
 >>> result_forward = algo_forward.getResult()
+
 )RAW"
 
 // ---------------------------------------------------------------------

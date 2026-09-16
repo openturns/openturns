@@ -374,6 +374,13 @@ Raises
 TypeError : If the distribution is not discrete or if the sample is
     multivariate.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *FittingTest-ChiSquaredCheckSample* (``Bool``, default: `true`)
+- *FittingTest-ChiSquaredMinimumBinCount* (``UnsignedInteger``, default: `5`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -580,4 +587,5 @@ class=TestResult name=Unnamed type=Lilliefors Normal binaryQualityMeasure=true p
 >>> quality
 True
 >>> ot.ResourceMap.Reset()
+
 )RAW"

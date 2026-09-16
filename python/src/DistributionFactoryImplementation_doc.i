@@ -6,6 +6,13 @@ Notes
 This class generally describes the factory mechanism of each OpenTURNS
 distribution. Refer to :any:`parametric_estimation` for information on the specific
 estimators used for each distribution.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *DistributionFactory-BootstrapErrorTolerance* (`Scalar`, default: `0.1`): admitted fraction of bootstrap
+  resamples that fail to build an estimated distribution,
+- *DistributionFactory-DefaultBootstrapSize* (`UnsignedInteger`, default: `100`): default number of bootstrap
+  resamples used to estimate the dispersion of the estimated parameters.
 "
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation

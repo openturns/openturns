@@ -168,6 +168,17 @@ outputSample : :class:`~openturns.ProcessSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
+"Accessor to the output block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Blocks of output component indices. The flattened indices must contain
+    exactly the output dimension and satisfy the index validation requirements."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::run
 "Compute the response surfaces.
 

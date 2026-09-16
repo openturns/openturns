@@ -53,4 +53,11 @@ rhoBeg : float
 Parameters
 ----------
 rhoBeg : float
-    A reasonable initial change to the variables."
+    A reasonable initial change to the variables.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Cobyla-DefaultRhoBeg* (``Scalar``, default: `0.1`)"
+

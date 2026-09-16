@@ -35,3 +35,5 @@ Examples
 >>> y = normal.getRealization()
 >>> yAt = design.transpose() * y
 >>> x = method.solve(y)"
+
+

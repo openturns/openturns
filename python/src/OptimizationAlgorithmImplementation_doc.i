@@ -9,7 +9,18 @@ problem : :class:`~openturns.OptimizationProblem`
 Notes
 -----
 Class :class:`~openturns.OptimizationAlgorithm` is an abstract class, which has several implementations.
-The default implementation is :class:`~openturns.Cobyla`
+The default implementation is :class:`~openturns.Cobyla`.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *OptimizationAlgorithm-DefaultMaximumAbsoluteError*: default maximum absolute error for optimization,
+- *OptimizationAlgorithm-DefaultMaximumConstraintError*: default maximum constraint error,
+- *OptimizationAlgorithm-DefaultMaximumRelativeError*: default maximum relative error,
+- *OptimizationAlgorithm-DefaultMaximumResidualError*: default maximum residual error,
+- *OptimizationAlgorithm-DefaultMaximumTimeDuration*: default maximum time duration (-1 means no limit),
+- *OptimizationAlgorithm-DefaultMaximumCallsNumber*: default maximum number of function calls,
+- *OptimizationAlgorithm-DefaultMaximumIterationNumber*: default maximum number of iterations,
+- *OptimizationAlgorithm-DefaultCheckStatus*: whether to check optimization status.
 
 See also
 --------

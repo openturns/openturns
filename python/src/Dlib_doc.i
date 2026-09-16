@@ -230,4 +230,14 @@ algoName : str
 Returns
 -------
 algoName : str
-    The identifier of the algorithm."
+    The identifier of the algorithm.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Dlib-DefaultInitialTrustRegionRadius* (``Scalar``, default: `1`)
+- *Dlib-DefaultMaxLineSearchIterations* (``UnsignedInteger``, default: `100`)
+- *Dlib-DefaultWolfeRho* (``Scalar``, default: `0.01`)
+- *Dlib-DefaultWolfeSigma* (``Scalar``, default: `0.9`)"
+

@@ -27,7 +27,7 @@ maximumDistance : positive float
     Distance from the center of the standard space until which we research an
     intersection with the limit state function along each direction. By
     default, the maximum distance is equal to the value defined through the key
-    RootStrategyImplementation-DefaultMaximumDistance of the
+    RootStrategy-DefaultMaximumDistance of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::getMaximumDistance
@@ -44,7 +44,7 @@ maximumDistance : positive float
     Distance from the center of the standard space until which we research an
     intersection with the limit state function along each direction. By
     default, the maximum distance is equal to the value defined through the key
-    RootStrategyImplementation-DefaultMaximumDistance of the
+    RootStrategy-DefaultMaximumDistance of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::setMaximumDistance
@@ -112,7 +112,7 @@ Returns
 stepSize : float
     Length of each segment inside which the root research is performed. By
     default, the step size is equal to the value defined through the key
-    RootStrategyImplementation-DefaultStepSize of the
+    RootStrategy-DefaultStepSize of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::getStepSize
@@ -128,7 +128,7 @@ Parameters
 stepSize : float
     Length of each segment inside which the root research is performed. By
     default, the step size is equal to the value defined through the key
-    RootStrategyImplementation-DefaultStepSize of the
+    RootStrategy-DefaultStepSize of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::setStepSize
@@ -162,7 +162,16 @@ roots : :class:`~openturns.ScalarCollection`
     - If :class:`~openturns.MediumSafe`:
       the real value :math:`x` such as *function(x) = value* researched the
       first segment of length *stepSize*, within *[origin, maximumDistance]*
-      where a sign changement of function has been detected.)RAW"
+      where a sign changement of function has been detected.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *RootStrategy-DefaultMaximumDistance* (``Scalar``, default: `8`)
+- *RootStrategy-DefaultStepSize* (``Scalar``, default: `1`)
+
+)RAW"
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::solve
 OT_RootStrategy_solve_doc

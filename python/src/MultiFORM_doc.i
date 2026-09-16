@@ -38,6 +38,14 @@ See also
 --------
 FORM, MultiFORMResult
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MultiFORM-DefaultDelta* (``Scalar``, default: `0.75`)
+- *MultiFORM-DefaultGamma* (``Scalar``, default: `1.1`)
+- *MultiFORM-DefaultMaximumDesignPointsNumber* (``UnsignedInteger``, default: `4`)
+
 Examples
 --------
 >>> import openturns as ot
@@ -54,6 +62,7 @@ Examples
 >>> result = algo.getResult()
 >>> n_design_pts = len(result.getFORMResultCollection())
 >>> pf = result.getEventProbability()
+
 )RAW"
 
 // ---------------------------------------------------------------------

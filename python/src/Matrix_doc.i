@@ -279,7 +279,7 @@ matrix if it has some properties that could simplify the resolution (see
 :class:`~openturns.TriangularMatrix`, :class:`~openturns.SquareMatrix`).
 
 This uses LAPACK's `DGELSY <http://www.netlib.org/lapack/lapack-3.1.1/html/dgelsy.f.html>`_.
-The `RCOND` parameter of this routine can be changed through the `MatrixImplementation-DefaultSmallPivot`
+The `RCOND` parameter of this routine can be changed through the `Matrix-DefaultSmallPivot`
 key of the :class:`~openturns.ResourceMap`.
 
 Examples

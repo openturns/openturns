@@ -53,4 +53,11 @@ eta : :class:`~openturns.Point`
 Parameters
 ----------
 eta : sequence of positive float
-    Finite difference step offsets for each dimension."
+    Finite difference step offsets for each dimension.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *BlendedStep-DefaultEta* (``Scalar``, default: `1`)"
+

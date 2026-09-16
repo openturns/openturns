@@ -61,6 +61,13 @@ See Also
 --------
 Multinomial
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Dirichlet-DefaultIntegrationSize* (`UnsignedInteger`, default: `50`)
+- *Dirichlet-DefaultSamplingSize* (`UnsignedInteger`, default: `500000`)
+
 Examples
 --------
 Create a distribution of dimension :math:`\inputDim = 2`:

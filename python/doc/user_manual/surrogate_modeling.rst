@@ -103,6 +103,9 @@ Main classes
     experimental.GaussianProcessRegressionCrossValidation
     GaussianProcessConditionalCovariance
     GaussianProcessRandomVector
+    KrigingAlgorithm
+    KrigingRandomVector
+    KrigingResult
 
 Construction of the regression basis
 ------------------------------------

@@ -50,11 +50,11 @@ Parameters
 sample : 2-d sequence of float
     Data.
 param : sequence of float
-    The parameters of the :class:`~openturns.MultivariateUniform`.
+    The parameters of the :class:`~openturns.experimental.MultivariateUniform`.
 
 Returns
 -------
-dist : :class:`~openturns.MultivariateUniform`
-    The estimated distribution as a :class:`openturns.MultivariateUniform`.
+dist : :class:`~openturns.experimental.MultivariateUniform`
+    The estimated distribution as a :class:`openturns.experimental.MultivariateUniform`.
     
-    In the first usage, the default :class:`openturns.MultivariateUniform` distribution is built."
+    In the first usage, the default :class:`openturns.experimental.MultivariateUniform` distribution is built."

@@ -64,7 +64,12 @@ where
 Be careful: this notion is only valid for :class:`~openturns.MonteCarloExperiment` or
 :class:`~openturns.LHSExperiment` sampling as the mean is evaluated from the equation
 :eq:`importance_factor` (only uniform weights over the realizations
-:math:`\vect{X}_i`.)RAW"
+:math:`\vect{X}_i`).
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SimulationSensitivityAnalysis-DefaultSampleMargin* (``UnsignedInteger``, default: `400`)
+
+)RAW"
 
 // ---------------------------------------------------------------------
 
