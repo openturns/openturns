@@ -10,11 +10,16 @@ e.g. when the hessian fails outside of its domain of definition.
 User interruptions are rethrown, not penalized.
 This is consistent with :class:`~openturns.experimental.PenalizedEvaluation`:
 the penalized function is locally constant on failure, hence its hessian is zero.
+If an evaluation is provided, zeros are also returned wherever the evaluation
+fails, even when the hessian itself would succeed, so the derivative stays
+consistent with the penalized values.
 
 Parameters
 ----------
 hessian : :class:`~openturns.HessianImplementation`
     Delegate hessian
+evaluation : :class:`~openturns.EvaluationImplementation`, optional
+    Coordinated evaluation, used only to detect failures
 
 Examples
 --------
@@ -45,3 +50,23 @@ Parameters
 ----------
 hessian : :class:`~openturns.HessianImplementation`
     The internal hessian."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedHessian::getEvaluation
+"Accessor to the coordinated evaluation.
+
+Returns
+-------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The coordinated evaluation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedHessian::setEvaluation
+"Accessor to the coordinated evaluation.
+
+Parameters
+----------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The coordinated evaluation."

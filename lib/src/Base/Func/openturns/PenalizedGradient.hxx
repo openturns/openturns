@@ -24,6 +24,7 @@
 
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/Gradient.hxx"
+#include "openturns/Evaluation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Matrix.hxx"
 
@@ -36,6 +37,9 @@ BEGIN_NAMESPACE_OPENTURNS
  * when the underlying gradient throws, e.g. for optimization.
  * This is consistent with PenalizedEvaluation: the penalized
  * function is locally constant on failure, hence its gradient is zero.
+ * If an evaluation is provided, zeros are also returned wherever
+ * the evaluation fails, even when the gradient itself would succeed.
+ * This keeps the derivative consistent with the penalized values.
  */
 class OT_API PenalizedGradient
   : public GradientImplementation
@@ -49,12 +53,20 @@ public:
   /** Parameter constructor */
   explicit PenalizedGradient(const Gradient & gradient);
 
+  /** Parameter constructor with coordinated evaluation */
+  PenalizedGradient(const Gradient & gradient,
+                    const Evaluation & evaluation);
+
   /** Virtual constructor */
   PenalizedGradient * clone() const override;
 
   /** Gradient implementation accessors */
   void setGradient(const Gradient & gradient);
   Gradient getGradient() const;
+
+  /** Coordinated evaluation accessors */
+  void setEvaluation(const Evaluation & evaluation);
+  Evaluation getEvaluation() const;
 
   /** Comparison operator */
   using GradientImplementation::operator ==;
@@ -101,8 +113,14 @@ public:
 
 private:
 
+  /** Check that the coordinated evaluation matches the gradient dimensions */
+  void checkDimensions() const;
+
   /** The wrapped gradient */
   Gradient gradient_;
+
+  /** The coordinated evaluation (returns zeros where it fails) */
+  Evaluation evaluation_;
 
 }; /* class PenalizedGradient */
 
