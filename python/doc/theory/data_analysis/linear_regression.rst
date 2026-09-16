@@ -317,11 +317,11 @@ the functions :math:`\varphi_1: x \rightarrow 1` and :math:`\varphi_2: x \righta
     otv.View(graph)
 
 
-Example 2: We consider now the output random variable defined by :math:`Y = \exp (0.5X_1)+ \epsilon` where the random noise 
+Example 2: We consider now the output random variable defined by :math:`Y = \exp (0.5X_1)+ \epsilon` where the random noise
 :math:`\varepsilon` is distributed according to the standard normal
 distribution and :math:`X_1` is distributed according to the Triangular(1.0, 5.0, 10.0) distribution.
 
-In that case, the default functional basis is not relevant because of the exponential shape of the relation. The following graph shows 
+In that case, the default functional basis is not relevant because of the exponential shape of the relation. The following graph shows
 it clearly. We should have used the functional basis  composed of
 the functions :math:`\varphi_1: x \rightarrow 1` and :math:`\varphi_2: x \rightarrow  \exp (0.5X_1)`.
 
