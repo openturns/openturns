@@ -112,6 +112,90 @@ assert (
     != "PenalizedGradient"
 )
 
+# failed constraints are reported as infeasible
+
+
+def eq_py(x):
+    if x[0] < 0.0:
+        raise RuntimeError("negative input")
+    return [x[0] - 4.0]
+
+
+def ineq_py(x):
+    if x[0] < 0.0:
+        raise RuntimeError("negative input")
+    return [x[0] - 1.0]
+
+
+constrained = ot.OptimizationProblem(f)
+constrained.setMinimization(True)
+constrained.setEqualityConstraint(ot.PythonFunction(1, 1, eq_py))
+constrained.setInequalityConstraint(ot.PythonFunction(1, 1, ineq_py))
+penalizedConstrained = otexp.PenalizedProblem(constrained, penalty)
+assert penalizedConstrained.hasEqualityConstraint()
+assert penalizedConstrained.hasInequalityConstraint()
+# feasible point: constraints agree with the raw functions
+assert_almost_equal(
+    penalizedConstrained.getEqualityConstraint()([4.0]), [0.0], 1e-12, 0.0
+)
+assert_almost_equal(
+    penalizedConstrained.getInequalityConstraint()([4.0]), [3.0], 1e-12, 0.0
+)
+# failure: equality reports +penalty (infeasible since != 0),
+# inequality reports -penalty (infeasible since < 0)
+assert_almost_equal(
+    penalizedConstrained.getEqualityConstraint()([-1.0]), [penalty], 0.0, 0.0
+)
+assert_almost_equal(
+    penalizedConstrained.getInequalityConstraint()([-1.0]),
+    [-penalty],
+    0.0,
+    0.0,
+)
+
+# raw problem is preserved
+assert_almost_equal(
+    penalizedConstrained.getProblem().getEqualityConstraint()([4.0]),
+    [0.0],
+    1e-12,
+    0.0,
+)
+
+# setPenalizedValue refreshes constraints too
+penalizedConstrained.setPenalizedValue(123.0)
+assert_almost_equal(
+    penalizedConstrained.getEqualityConstraint()([-1.0]), [123.0], 0.0, 0.0
+)
+assert_almost_equal(
+    penalizedConstrained.getInequalityConstraint()([-1.0]), [-123.0], 0.0, 0.0
+)
+penalizedConstrained.setPenalizedValue(penalty)
+
+# constraints can be replaced after construction
+penalizedConstrained.setInequalityConstraint(ot.PythonFunction(1, 1, ineq_py))
+assert_almost_equal(
+    penalizedConstrained.getInequalityConstraint()([-1.0]),
+    [-penalty],
+    0.0,
+    0.0,
+)
+penalizedConstrained.setEqualityConstraint(ot.PythonFunction(1, 1, eq_py))
+assert_almost_equal(
+    penalizedConstrained.getEqualityConstraint()([-1.0]), [penalty], 0.0, 0.0
+)
+
+# optimizer proceeds with penalized constraints (no model throw escapes)
+inequalityOnly = ot.OptimizationProblem(f)
+inequalityOnly.setMinimization(True)
+inequalityOnly.setInequalityConstraint(ot.PythonFunction(1, 1, ineq_py))
+penalizedInequality = otexp.PenalizedProblem(inequalityOnly, penalty)
+algo = ot.Cobyla(ot.OptimizationProblem(penalizedInequality))
+algo.setStartingPoint([0.5])
+algo.run()
+result = algo.getResult()
+assert result.getOptimalValue()[0] < penalty
+print("constrained optimal point=", result.getOptimalPoint())
+
 # can be used by an optimizer
 algo = ot.Cobyla(ot.OptimizationProblem(penalizedProblem))
 algo.setStartingPoint([4.0])

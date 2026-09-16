@@ -52,6 +52,7 @@ PenalizedProblem::PenalizedProblem(const OptimizationProblem & problem,
     throw InvalidArgumentException(HERE) << "PenalizedProblem: penalized value must be finite and strictly positive";
   syncFromProblem();
   updateObjective();
+  updateConstraints();
 }
 
 /* Virtual constructor */
@@ -71,6 +72,7 @@ void PenalizedProblem::setProblem(const OptimizationProblem & problem)
   problem_ = problem;
   syncFromProblem();
   updateObjective();
+  updateConstraints();
 }
 
 /* Penalized value (magnitude) accessor */
@@ -85,6 +87,7 @@ void PenalizedProblem::setPenalizedValue(const Scalar penalizedValue)
     throw InvalidArgumentException(HERE) << "PenalizedProblem: penalized value must be finite and strictly positive";
   penalizedValue_ = penalizedValue;
   updateObjective();
+  updateConstraints();
 }
 
 /* Objective accessor, replaces the objective in the wrapped problem */
@@ -93,20 +96,23 @@ void PenalizedProblem::setObjective(const Function & objective)
   problem_.setObjective(objective);
   syncFromProblem();
   updateObjective();
+  updateConstraints();
 }
 
 /* Equality constraint accessor */
 void PenalizedProblem::setEqualityConstraint(const Function & equalityConstraint)
 {
   problem_.setEqualityConstraint(equalityConstraint);
-  OptimizationProblemImplementation::setEqualityConstraint(equalityConstraint);
+  syncFromProblem();
+  updateConstraints();
 }
 
 /* Inequality constraint accessor */
 void PenalizedProblem::setInequalityConstraint(const Function & inequalityConstraint)
 {
   problem_.setInequalityConstraint(inequalityConstraint);
-  OptimizationProblemImplementation::setInequalityConstraint(inequalityConstraint);
+  syncFromProblem();
+  updateConstraints();
 }
 
 /* Bounds accessor */
@@ -141,18 +147,38 @@ String PenalizedProblem::__repr__() const
   return oss;
 }
 
-/* Copy constraints, bounds, minimization flags and variables type */
+/* Copy bounds, minimization flags and variables type */
 void PenalizedProblem::syncFromProblem()
 {
   const Function objective(problem_.getObjective());
   const UnsignedInteger outputDimension = objective.getOutputDimension();
   dimension_ = problem_.getDimension();
-  equalityConstraint_ = problem_.hasEqualityConstraint() ? problem_.getEqualityConstraint() : Function();
-  inequalityConstraint_ = problem_.hasInequalityConstraint() ? problem_.getInequalityConstraint() : Function();
   bounds_ = problem_.hasBounds() ? problem_.getBounds() : Interval();
   variablesType_ = problem_.getVariablesType();
   minimizationCollection_ = BoolPersistentCollection(outputDimension);
   for (UnsignedInteger i = 0; i < outputDimension; ++ i) minimizationCollection_[i] = problem_.isMinimization(i);
+}
+
+/* Wrap a function with penalized evaluation/gradient/hessian, using the given per-output penalized values */
+Function PenalizedProblem::penalizeFunction(const Function & function,
+    const Point & penalizedValues)
+{
+  const PenalizedEvaluation penalizedEvaluation(function.getEvaluation(), penalizedValues);
+  Function penalizedFunction(penalizedEvaluation);
+  penalizedFunction.setName(function.getName());
+  penalizedFunction.setDescription(function.getDescription());
+  // Wrap analytic gradient/hessian so they return zeros on failure.
+  // Finite-difference gradient/hessian need no wrapping: penalizedFunction
+  // already evaluates them on the penalized evaluation, which never throws.
+  const Gradient gradient(function.getGradient());
+  if (gradient.getImplementation()->isActualImplementation()
+      && (gradient.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
+    penalizedFunction.setGradient(PenalizedGradient(gradient));
+  const Hessian hessian(function.getHessian());
+  if (hessian.getImplementation()->isActualImplementation()
+      && (hessian.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
+    penalizedFunction.setHessian(PenalizedHessian(hessian));
+  return penalizedFunction;
 }
 
 /* Rebuild the penalized objective from the wrapped problem */
@@ -168,22 +194,31 @@ void PenalizedProblem::updateObjective()
   Point signedValues(outputDimension, penalizedValue_);
   for (UnsignedInteger i = 0; i < outputDimension; ++ i)
     if (!problem_.isMinimization(i)) signedValues[i] = -signedValues[i];
-  const PenalizedEvaluation penalizedEvaluation(originalObjective.getEvaluation(), signedValues);
-  Function penalizedObjective(penalizedEvaluation);
-  penalizedObjective.setName(originalObjective.getName());
-  penalizedObjective.setDescription(originalObjective.getDescription());
-  // Wrap analytic gradient/hessian so they return zeros on failure.
-  // Finite-difference gradient/hessian need no wrapping: penalizedObjective
-  // already evaluates them on the penalized evaluation, which never throws.
-  const Gradient gradient(originalObjective.getGradient());
-  if (gradient.getImplementation()->isActualImplementation()
-      && (gradient.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
-    penalizedObjective.setGradient(PenalizedGradient(gradient));
-  const Hessian hessian(originalObjective.getHessian());
-  if (hessian.getImplementation()->isActualImplementation()
-      && (hessian.getImplementation()->getClassName().find("FiniteDifference") == String::npos))
-    penalizedObjective.setHessian(PenalizedHessian(hessian));
-  objective_ = penalizedObjective;
+  objective_ = penalizeFunction(originalObjective, signedValues);
+}
+
+/* Rebuild the penalized constraints from the wrapped problem.
+ * A failed constraint evaluation is reported as infeasible:
+ * equality constraints (g = 0) return +penalizedValue_,
+ * inequality constraints (h >= 0) return -penalizedValue_. */
+void PenalizedProblem::updateConstraints()
+{
+  if (problem_.hasEqualityConstraint())
+  {
+    const Function originalConstraint(problem_.getEqualityConstraint());
+    const UnsignedInteger outputDimension = originalConstraint.getOutputDimension();
+    equalityConstraint_ = penalizeFunction(originalConstraint, Point(outputDimension, penalizedValue_));
+  }
+  else
+    equalityConstraint_ = Function();
+  if (problem_.hasInequalityConstraint())
+  {
+    const Function originalConstraint(problem_.getInequalityConstraint());
+    const UnsignedInteger outputDimension = originalConstraint.getOutputDimension();
+    inequalityConstraint_ = penalizeFunction(originalConstraint, Point(outputDimension, -penalizedValue_));
+  }
+  else
+    inequalityConstraint_ = Function();
 }
 
 /* Method save() stores the object through the StorageManager */
