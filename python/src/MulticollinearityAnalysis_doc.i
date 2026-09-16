@@ -35,7 +35,7 @@ Examples
 >>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
 >>> secondSample = model(firstSample)
 >>> analysis = otexp.MulticollinearityAnalysis(firstSample, secondSample)
->>> lmg, pmvd = analysis.computeLmgPmvd()
+>>> lmg, pmvd = analysis.computeLMGAndPMVD()
 >>> johnson = analysis.computeJohnson()
 "
 
@@ -52,7 +52,7 @@ johnson : :class:`~openturns.PointWithDescription`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MulticollinearityAnalysis::computeLmgPmvd
+%feature("docstring") OT::MulticollinearityAnalysis::computeLMGAndPMVD
 "LMG and PMVD indices.
 
 Returns
@@ -64,8 +64,8 @@ pmvd : :class:`~openturns.PointWithDescription`
 
 Notes
 -----
-This function uses the `MulticollinearityAnalysis-MaximumInputDimensionForLmgPmvd` and
-`MulticollinearityAnalysis-DimensionThresholdForLmgPmvdParallelization` keys of the
+This function uses the `MulticollinearityAnalysis-MaximumInputDimensionForLMGAndPMVD` and
+`MulticollinearityAnalysis-DimensionThresholdForLMGAndPMVDParallelization` keys of the
 :class:`~openturns.ResourceMap` class. The former is the maximum dimension allowed for
 the input sample; the latter is the dimension which triggers a parallelized computation.
 "
@@ -83,7 +83,7 @@ vif : :class:`~openturns.PointWithDescription`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MulticollinearityAnalysis::estimateLmgPmvdMonteCarlo
+%feature("docstring") OT::MulticollinearityAnalysis::computeLMGAndPMVDMonteCarlo
 "Estimated LMG and PMVD indices.
 
 Parameters

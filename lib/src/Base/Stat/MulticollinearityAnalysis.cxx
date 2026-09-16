@@ -46,16 +46,16 @@ static void extract(const SymmetricMatrix & source, SymmetricMatrix & target)
   target.checkSymmetry();
 }
 
-class LmgPmvdAlgorithm;
+class LMGAndPMVDAlgorithm;
 
 /**
- * @class LmgPmvdTBBBody
+ * @class LMGAndPMVDTBBPolicy
  *
  * TBB body to compute the variances associated with combinations of input variables
  */
-struct LmgPmvdTBBBody
+struct LMGAndPMVDTBBPolicy
 {
-  LmgPmvdTBBBody(LmgPmvdAlgorithm & algo)
+  LMGAndPMVDTBBPolicy(LMGAndPMVDAlgorithm & algo)
     : algo_(algo)
   {
     // Nothing to do
@@ -66,20 +66,20 @@ struct LmgPmvdTBBBody
   void extract2D(const SquareMatrix & source, const Indices & indices, SquareMatrix & target) const;
   void extract1D(const Matrix & source, const Indices & indices, Matrix & target) const;
 
-  LmgPmvdAlgorithm & algo_;
+  LMGAndPMVDAlgorithm & algo_;
 };
 
 /**
- * @class LmgPmvdAlgorithm
+ * @class LMGAndPMVDAlgorithm
  *
  * Class for computation of LMG and PMVD indices
  */
-class LmgPmvdAlgorithm
+class LMGAndPMVDAlgorithm
 {
 public:
 
   /* Constructor */
-  LmgPmvdAlgorithm(const CovarianceMatrix & covMatrix)
+  LMGAndPMVDAlgorithm(const CovarianceMatrix & covMatrix)
     : dimension_(covMatrix.getDimension() - 1)
     , numberOfCombinations_(1ul << dimension_) // 2^dimension_
     , covMatrix_(covMatrix)
@@ -99,8 +99,8 @@ public:
   void run()
   {
     // First step: compute the variance associated with every combination of input variables
-    const LmgPmvdTBBBody body(*this);
-    const UnsignedInteger threshold = ResourceMap::GetAsUnsignedInteger("MulticollinearityAnalysis-DimensionThresholdForLmgPmvdParallelization");
+    const LMGAndPMVDTBBPolicy body(*this);
+    const UnsignedInteger threshold = ResourceMap::GetAsUnsignedInteger("MulticollinearityAnalysis-DimensionThresholdForLMGAndPMVDParallelization");
     TBBImplementation::ParallelForIf(dimension_ >= threshold, 1, numberOfCombinations_, body, 1024);
 
     // Compute LMG indices
@@ -240,7 +240,7 @@ public:
 
 
 /* Compute variances associated with a range of combinations */
-void LmgPmvdTBBBody::operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+void LMGAndPMVDTBBPolicy::operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
 {
   // Pre-allocate some matrices
   Collection<CovarianceMatrix> matrices2D;
@@ -275,7 +275,7 @@ void LmgPmvdTBBBody::operator()(const TBBImplementation::BlockedRange<UnsignedIn
 }
 
 /* Get the list of indices contained in a combination */
-void LmgPmvdTBBBody::getIndices(const UnsignedInteger combination, const UnsignedInteger size, Indices & indices) const
+void LMGAndPMVDTBBPolicy::getIndices(const UnsignedInteger combination, const UnsignedInteger size, Indices & indices) const
 {
   UnsignedInteger i = 0;
   UnsignedInteger j = 0;
@@ -291,7 +291,7 @@ void LmgPmvdTBBBody::getIndices(const UnsignedInteger combination, const Unsigne
 }
 
 /* Extract a subset of a square matrix */
-void LmgPmvdTBBBody::extract2D(const SquareMatrix & source, const Indices & indices, SquareMatrix & target) const
+void LMGAndPMVDTBBPolicy::extract2D(const SquareMatrix & source, const Indices & indices, SquareMatrix & target) const
 {
   const MatrixImplementation & sourceImpl = *source.getImplementation();
   MatrixImplementation & targetImpl = *target.getImplementation();
@@ -304,7 +304,7 @@ void LmgPmvdTBBBody::extract2D(const SquareMatrix & source, const Indices & indi
 }
 
 /* Extract a subset of a column matrix */
-void LmgPmvdTBBBody::extract1D(const Matrix & source, const Indices & indices, Matrix & target) const
+void LMGAndPMVDTBBPolicy::extract1D(const Matrix & source, const Indices & indices, Matrix & target) const
 {
   const MatrixImplementation & sourceImpl = *source.getImplementation();
   MatrixImplementation & targetImpl = *target.getImplementation();
@@ -315,16 +315,16 @@ void LmgPmvdTBBBody::extract1D(const Matrix & source, const Indices & indices, M
 
 
 /**
- * @class LmgPmvdMonteCarloAlgorithm
+ * @class LMGAndPMVDMonteCarloAlgorithm
  *
  * Estimation of LMG and PMVD indices via a Monte Carlo method
  */
-class LmgPmvdMonteCarloAlgorithm
+class LMGAndPMVDMonteCarloAlgorithm
 {
 public:
 
   /* Constructor */
-  LmgPmvdMonteCarloAlgorithm(const CovarianceMatrix & covMatrix, const UnsignedInteger iterations)
+  LMGAndPMVDMonteCarloAlgorithm(const CovarianceMatrix & covMatrix, const UnsignedInteger iterations)
     : dimension_(covMatrix.getDimension() - 1)
     , iterations_(iterations)
     , covXX_(dimension_)
@@ -526,15 +526,15 @@ String MulticollinearityAnalysis::__repr__() const
 }
 
 /* Compute LMG and PMVD indices */
-void MulticollinearityAnalysis::computeLmgPmvd(PointWithDescription & lmg, PointWithDescription & pmvd) const
+void MulticollinearityAnalysis::computeLMGAndPMVD(PointWithDescription & lmg, PointWithDescription & pmvd) const
 {
   checkInputSample();
   checkOutputSample();
-  UnsignedInteger maxDimension = ResourceMap::GetAsUnsignedInteger("MulticollinearityAnalysis-MaximumInputDimensionForLmgPmvd");
+  UnsignedInteger maxDimension = ResourceMap::GetAsUnsignedInteger("MulticollinearityAnalysis-MaximumInputDimensionForLMGAndPMVD");
   maxDimension = std::min(maxDimension, 31ul); // Make sure we don't overflow 32-bit integers
   if (!(firstSample_.getDimension() <= maxDimension)) throw InvalidDimensionException(HERE) << "Error: input sample dimension must be at most " << maxDimension;
 
-  LmgPmvdAlgorithm algo(computeCovariance());
+  LMGAndPMVDAlgorithm algo(computeCovariance());
   algo.run();
   lmg = algo.getLmg();
   lmg.setDescription(firstSample_.getDescription());
@@ -543,13 +543,13 @@ void MulticollinearityAnalysis::computeLmgPmvd(PointWithDescription & lmg, Point
 }
 
 /* Estimate LMG and PMVD indices via a Monte Carlo method */
-void MulticollinearityAnalysis::estimateLmgPmvdMonteCarlo(PointWithDescription & lmg, PointWithDescription & pmvd, const UnsignedInteger iterations) const
+void MulticollinearityAnalysis::computeLMGAndPMVDMonteCarlo(PointWithDescription & lmg, PointWithDescription & pmvd, const UnsignedInteger iterations) const
 {
   checkInputSample();
   checkOutputSample();
   if (!(iterations > 0)) throw InvalidArgumentException(HERE) << "Error: the number of iterations must be positive";
 
-  LmgPmvdMonteCarloAlgorithm algo(computeCovariance(), iterations);
+  LMGAndPMVDMonteCarloAlgorithm algo(computeCovariance(), iterations);
   algo.run();
   lmg = algo.getLmg();
   lmg.setDescription(firstSample_.getDescription());

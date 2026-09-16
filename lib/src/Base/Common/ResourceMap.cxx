@@ -1021,8 +1021,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Compact-DefaultHalfMaximumSize", 1024);
 
   // MulticollinearityAnalysis parameters //
-  addAsUnsignedInteger("MulticollinearityAnalysis-DimensionThresholdForLmgPmvdParallelization", 12);
-  addAsUnsignedInteger("MulticollinearityAnalysis-MaximumInputDimensionForLmgPmvd", 28);
+  addAsUnsignedInteger("MulticollinearityAnalysis-DimensionThresholdForLMGAndPMVDParallelization", 12);
+  addAsUnsignedInteger("MulticollinearityAnalysis-MaximumInputDimensionForLMGAndPMVD", 28);
 
   // FaureSequence parameters //
   addAsUnsignedInteger("FaureSequence-InitialSeed", 1);
