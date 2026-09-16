@@ -169,12 +169,12 @@ outputSample : :class:`~openturns.ProcessSample`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
-"Setter for the output block indices.
+"Sets the independent output component block indices.
 
 Parameters
 ----------
 blockIndices : 2-d sequence of int
-    Independent output components indices."
+    Independent output component block indices."
 
 // ---------------------------------------------------------------------
 
