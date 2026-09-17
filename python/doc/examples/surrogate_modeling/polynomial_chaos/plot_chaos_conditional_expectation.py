@@ -14,6 +14,8 @@ Reduce the dimension of a model
 #   using the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation` method
 #   of the :class:`~openturns.FunctionalChaosResult` class. This case is valid only of the input random
 #   vector has independent marginals.
+#
+# We apply the methods on the :ref:`Ishigami function <use-case-ishigami>`.
 
 # %%
 # Introduction
@@ -67,7 +69,7 @@ Reduce the dimension of a model
 # Parametric FCE
 # ~~~~~~~~~~~~~~
 #
-# Assume here that the model has a finite variance and that it is expressed as a FunctionalChaos
+# Assume here that the model has a finite variance and that it is expressed as a Functional Chaos
 # Expansion (FCE). As done previously,
 # we can fix some of
 # its components to some given values so as  to get a model which depends on the free components only.
@@ -125,7 +127,7 @@ Reduce the dimension of a model
 # orthonormal with respect to  the marginal distributions.
 
 # %%
-# Create the PCE
+# Create the FCE
 # ~~~~~~~~~~~~~~
 
 # %%
@@ -135,8 +137,9 @@ from openturns.usecases import ishigami_function
 import matplotlib.pyplot as plt
 
 # %%
-# The next function creates a parametric PCE based on a
-# given PCE and a set of indices.
+# The next function creates a parametric FCE based on a
+# given FCE and a set of indices. We use the PCE notation as it is a polynomial
+# chaos expansion.
 
 
 # %%
