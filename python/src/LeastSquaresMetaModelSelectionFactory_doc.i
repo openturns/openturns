@@ -15,10 +15,8 @@ ApproximationAlgorithm, PenalizedLeastSquaresAlgorithmFactory
 Notes
 -----
 Implementation of an approximation algorithm implementation factory which builds
-an :class:`~openturns.ApproximationAlgorithm`.
-
-This class is not usable because it is operational only within the
-:class:`~openturns.FunctionalChaosAlgorithm`.
+an :class:`~openturns.ApproximationAlgorithm`: this latter class is not directly usable because
+it is operational only within the :class:`~openturns.FunctionalChaosAlgorithm`.
 
 Examples
 --------
