@@ -42,6 +42,33 @@ public:
   /** Default constructor */
   SymbolicParserMuParser();
 
+  /** Copy constructor: each clone gets its own mutex */
+  SymbolicParserMuParser(const SymbolicParserMuParser & other)
+    : SymbolicParserImplementation(other)
+    , expressions_(other.expressions_)
+    , stack_(other.stack_)
+    , threadExpressions_(other.threadExpressions_)
+    , threadStack_(other.threadStack_)
+    , mutex_(std::make_shared<std::mutex>())
+    , smallSize_(other.smallSize_)
+  {}
+
+  /** Copy assignment: each clone gets its own mutex */
+  SymbolicParserMuParser & operator=(const SymbolicParserMuParser & other)
+  {
+    if (this != &other)
+    {
+      SymbolicParserImplementation::operator=(other);
+      expressions_ = other.expressions_;
+      stack_ = other.stack_;
+      threadExpressions_ = other.threadExpressions_;
+      threadStack_ = other.threadStack_;
+      mutex_ = std::make_shared<std::mutex>();
+      smallSize_ = other.smallSize_;
+    }
+    return *this;
+  }
+
   /** Virtual copy constructor */
   SymbolicParserMuParser * clone() const override;
 

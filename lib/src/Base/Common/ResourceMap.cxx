@@ -1843,6 +1843,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 100000);
   addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
   addAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2048);
+  addAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", 2048);
   addAsUnsignedInteger("SimplicialCubature-MarginalDiscretizationIntervalsNumber", 1);
 
   // SparseMethod parameters //

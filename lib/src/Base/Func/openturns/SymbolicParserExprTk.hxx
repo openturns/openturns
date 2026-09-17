@@ -46,6 +46,35 @@ public:
   /** Default constructor */
   SymbolicParserExprTk();
 
+  /** Copy constructor: each clone gets its own mutex */
+  SymbolicParserExprTk(const SymbolicParserExprTk & other)
+    : SymbolicParserImplementation(other)
+    , expressions_(other.expressions_)
+    , stack_(other.stack_)
+    , threadExpressions_(other.threadExpressions_)
+    , threadStack_(other.threadStack_)
+    , mutex_(std::make_shared<std::mutex>())
+    , outputVariablesNames_(other.outputVariablesNames_)
+    , smallSize_(other.smallSize_)
+  {}
+
+  /** Copy assignment: each clone gets its own mutex */
+  SymbolicParserExprTk & operator=(const SymbolicParserExprTk & other)
+  {
+    if (this != &other)
+    {
+      SymbolicParserImplementation::operator=(other);
+      expressions_ = other.expressions_;
+      stack_ = other.stack_;
+      threadExpressions_ = other.threadExpressions_;
+      threadStack_ = other.threadStack_;
+      mutex_ = std::make_shared<std::mutex>();
+      outputVariablesNames_ = other.outputVariablesNames_;
+      smallSize_ = other.smallSize_;
+    }
+    return *this;
+  }
+
   /** Constructor with parameter */
   explicit SymbolicParserExprTk(const Description & outputVariablesNames);
 

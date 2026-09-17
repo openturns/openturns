@@ -77,15 +77,57 @@ algo.setRule(1)
 print("repr=", repr(algo))
 print("str=", str(algo))
 
-# Test the EvaluationBlockSize ResourceMap key
-ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2)
-f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(x1 + x2 + x3)"])
-algo.setRule(1)
-algo.setMaximumAbsoluteError(0.0)
-algo.setMaximumRelativeError(1.0e-5)
+# Test deterministic tie-breaking: a symmetric integrand over a simplex mesh
+# where multiple simplices share the same error, so the comparator's
+# tie-breaker on simplex index determines which simplices are refined.
+# If the tie-breaker is absent, the result may vary across runs.
+f = ot.SymbolicFunction(["x1", "x2", "x3"], ["1.0"])
+vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0],
+            [0.0, 0.0, 1.0], [1.0, 1.0, 0.0], [1.0, 0.0, 1.0],
+            [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
+simplices = [[0, 1, 3, 6], [1, 3, 5, 6], [1, 2, 4, 5],
+             [1, 4, 5, 6], [3, 4, 5, 6]]
+sym_mesh = ot.Mesh(vertices, simplices)
+algo.setRule(3)
+algo.setMaximumRelativeError(1e-5)
 algo.setMaximumCallsNumber(50000)
-value = algo.integrate(f, mesh)[0]
-ott.assert_almost_equal(value, (m.exp(1.0) - 1.0) ** 3 / 6, 1e-4, 1e-4)
-ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2048)
+# Integrate twice: both must give the same result
+v1 = algo.integrate(f, sym_mesh)
+v2 = algo.integrate(f, sym_mesh)
+ott.assert_almost_equal(v1, v2)
+
+# Test EvaluationBlockSize = 0 guard
+oldBlockSize = ot.ResourceMap.GetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize")
+ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 0)
+with ott.assert_raises(TypeError):
+    algo.integrate(f, sym_mesh)
+ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", oldBlockSize)
+
+# Test MaximumRefinementNumber ResourceMap key
+algo.setRule(3)
+algo.setMaximumRelativeError(1e-5)
+algo.setMaximumCallsNumber(50000)
+oldMaxR = ot.ResourceMap.GetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber")
+try:
+    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", 1)
+    f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(-10.0 * (x1 + x2 + x3))"])
+    value = algo.integrate(f, ot.Interval([0.0] * 3, [1.0] * 3))
+    ott.assert_almost_equal(value[0], ((1.0 - m.exp(-10.0)) / 10.0) ** 3, 1e-4, 1e-4)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", oldMaxR)
+
+# Test the EvaluationBlockSize ResourceMap key with exception safety
+oldBlockSize = ot.ResourceMap.GetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize")
+try:
+    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2)
+    f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(x1 + x2 + x3)"])
+    algo.setRule(1)
+    algo.setMaximumAbsoluteError(0.0)
+    algo.setMaximumRelativeError(1.0e-5)
+    algo.setMaximumCallsNumber(50000)
+    value = algo.integrate(f, mesh)[0]
+    ott.assert_almost_equal(value, (m.exp(1.0) - 1.0) ** 3 / 6, 1e-4, 1e-4)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", oldBlockSize)
 
 print("OK")
