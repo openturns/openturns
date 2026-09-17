@@ -1119,7 +1119,7 @@ Scalar MatrixImplementation::computeDeterminantSymInPlace()
   if (nbRows_ == 1) return (*this)(0, 0);
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(1, 0);
   Scalar sign = 0.0;
-  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminantInPlace(sign);
+  const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminantSymInPlace(sign);
   if (logAbsoluteDeterminant <= SpecFunc::LowestScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
