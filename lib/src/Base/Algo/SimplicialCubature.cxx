@@ -236,7 +236,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     }
   }; // struct ContractPolicy
 
-  const Bool parallel = (flatSize > 1) && (TBBImplementation::GetThreadsNumber() > 1);
+  const Bool parallel = (flatSize > 1) && F.getImplementation()->isParallel() && (TBBImplementation::GetThreadsNumber() > 1);
 
   // flat mesh, will be modified in-place
   Collection<Sample> flatVertices(flatSize, Sample(0, dimension));
@@ -252,6 +252,8 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   // kept while the memory footprint stays bounded: the full mesh would need
   // flatSize * nodeNumber points, which grows with the mesh and the rule.
   const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize");
+  if (blockSize == 0)
+    throw InvalidArgumentException(HERE) << "SimplicialCubature-EvaluationBlockSize must be > 0";
   for (UnsignedInteger blockBegin = 0; blockBegin < flatSize; blockBegin += blockSize)
   {
     const UnsignedInteger blockFlatSize = std::min(blockSize, flatSize - blockBegin);
@@ -297,7 +299,7 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
   {
     // Number of simplices that can be refined within the remaining budget,
     // capped so that the refinement stays focused on the largest errors.
-    const UnsignedInteger MAXR = 2048;
+    const UnsignedInteger MAXR = ResourceMap::GetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber");
     const UnsignedInteger R = std::min({flatSize, (MXFS - NV) / (DFCOST + 4 * nodeNumber), MAXR});
     // Select the R simplices with the largest error, in decreasing order,
     // using a partial sort so the selection costs O(flatSize log R) instead
@@ -314,7 +316,11 @@ Point SimplicialCubature::integrate(const Function & F, const Mesh & mesh) const
     for (UnsignedInteger i = 0; i < flatSize; ++ i)
       selected[i] = i;
     std::partial_sort(selected.begin(), selected.begin() + R, selected.end(),
-                      [&](const UnsignedInteger a, const UnsignedInteger b) { return maxError[a] > maxError[b]; });
+                      [&](const UnsignedInteger a, const UnsignedInteger b)
+    {
+      return (maxError[a] > maxError[b])
+             || ((maxError[a] == maxError[b]) && (a < b));
+    });
     selected.resize(R);
     // Subdivide the selected simplices, and gather the simplices on which the
     // rule must be applied.
@@ -985,6 +991,9 @@ Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension,
         }
       }
     }
+  if (offset != nodeNumber)
+    throw InternalException(HERE) << "Inconsistent rule initialization: generated " << offset
+                                  << " points instead of " << nodeNumber;
   return Indices {nodeNumber, RLS};
 }
 
