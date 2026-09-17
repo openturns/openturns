@@ -75,7 +75,7 @@ method, in the particular case of a Gaussian probability distribution.
     axis = fig.add_subplot(111)
     axis.set_xlim(auto=True)
 
-    N=6
+    N = 6
     # coordinates of points
     x = [v[0] for v in distribution.getSample(N)]
     y = [distribution.computePDF([v]) for v in x]
@@ -87,8 +87,8 @@ method, in the particular case of a Gaussian probability distribution.
 
     # draw labels
     for i in range(N):
-        plt.text(x[i]-0.1, -0.015, 'x'+str(i+1))
-        plt.text(0.0, y[i]-0.01, 'f_X(x'+str(i+1)+')')
+        plt.text(x[i] - 0.1, -0.015, f'x{i + 1}')
+        plt.text(0.0, y[i] - 0.01, f'$f_X$(x{i + 1})')
 
     otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 
@@ -140,30 +140,30 @@ defined as:
                      \frac{\partial \log f_X(X; \vect{\theta})}{\partial \theta_j} \right]
 
 In practice, the expected Fisher information matrix is often replaced by
-the **sample Fisher information matrix**, evaluated at the MLE
+the **full-sample Fisher information matrix**, evaluated at the MLE
 :math:`\widehat{\vect{\theta}}`:
 
 .. math::
 
-   \widehat{\mat{I}}\left(\widehat{\vect{\theta}}\right)_{ij}
+   \widehat{\mat{I}}_{\sampleSize}\left(\widehat{\vect{\theta}}\right)_{ij}
    = \sum_{k=1}^{\sampleSize}
      \frac{\partial \log f_X\left(x_k; \widehat{\vect{\theta}}\right)}{\partial \theta_i}
      \frac{\partial \log f_X\left(x_k; \widehat{\vect{\theta}}\right)}{\partial \theta_j}
 
 The asymptotic covariance matrix of the MLE is then estimated by the
-inverse of the sample Fisher information matrix:
+inverse of the full-sample Fisher information matrix:
 
 .. math::
 
    \widehat{\mat{\Sigma}}_{\widehat{\vect{\theta}}}
-   = \widehat{\mat{I}}(\widehat{\vect{\theta}})^{-1}
+   = \widehat{\mat{I}}_{\sampleSize}(\widehat{\vect{\theta}})^{-1}
 
 This result is used by the
 :meth:`~openturns.DistributionFactory.buildEstimator` method when the
 model is estimated by maximum likelihood and is regular. In that case,
 the parameter distribution is a normal distribution:
-:math:`\widehat{\vect{\theta}} \sim \mathcal{N}\left( \widehat{\vect{\theta}},
-\widehat{\mat{I}}(\widehat{\vect{\theta}})^{-1} \right)`.
+:math:`\vect{\theta} \sim \mathcal{N}\left( \widehat{\vect{\theta}},
+\widehat{\mat{I}}_{\sampleSize}(\widehat{\vect{\theta}})^{-1} \right)`.
 
 .. topic:: API:
 
