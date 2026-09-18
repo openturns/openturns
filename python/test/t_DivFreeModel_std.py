@@ -126,6 +126,15 @@ assert param.getSize() > 0
 divFree.setParameter(param)
 desc = divFree.getParameterDescription()
 assert desc.getSize() == param.getSize()
+# parameter forwarding: setParameter acts on the wrapped model
+divFree.setParameter([3.0, 4.0, 2.0])
+ott.assert_almost_equal(divFree.getScale(), [3.0, 4.0])
+ott.assert_almost_equal(divFree([0.0, 0.0])[0, 0], 4.0 / 16.0, 1e-10)
+ott.assert_almost_equal(divFree([0.0, 0.0])[1, 1], 4.0 / 9.0, 1e-10)
+amp_fwd = divFree.getAmplitude()
+ott.assert_almost_equal(amp_fwd[0], 2.0 / 4.0, 1e-10)
+ott.assert_almost_equal(amp_fwd[1], 2.0 / 3.0, 1e-10)
+divFree.setParameter(param)
 # __repr__ and __str__
 assert "DivFreeModel" in divFree.__repr__()
 assert "DivFreeModel" in divFree.__str__()
@@ -332,7 +341,12 @@ print("=" * 60)
 active = divFree.getActiveParameter()
 assert active.getSize() == 3
 divFree.setActiveParameter([0, 1])
+ott.assert_almost_equal(divFree.getParameter(), [1.5, 2.0])
+divFree.setParameter([3.0, 4.0])
+ott.assert_almost_equal(divFree.getScale(), [3.0, 4.0])
 assert divFree.getActiveParameter().getSize() == 2
+divFree.setActiveParameter(active)
+divFree.setParameter(param)
 
 # ====================================================================
 # Save / load round-trip
