@@ -376,32 +376,6 @@ are provided to enclose your code in the namespace as follow:
     // code
     END_NAMESPACE_OPENTURNS
 
-Internationalization
-~~~~~~~~~~~~~~~~~~~~
-
-The platform is meant to be widely distributed within the
-scientific community revolving around probability and statistics, which
-is essentially an international community. Therefore, the platform
-should be designed so as to be adjustable to the users, particularly
-those who do not speak English [1]_.
-
-This involves not using any messages directly in the source code of the
-platform, but rather to create a resource catalogue that can be loaded,
-according to the locale setting of the user, when the application is
-launched.
-
-Another consequence of internationalization is the need for the Unicode
-extended character set to be used for all strings.
-
-Accessibility
-~~~~~~~~~~~~~
-
-The platform shall be accessible to disabled users. This has
-implications on the ergonomics and the design of the User Interface,
-particularly the GUI which should offer keyboard shortcuts for any
-available function as well as keyboard-based (rather than mouse-based)
-mechanisms to handle and select objects.
-
 Profiling
 ~~~~~~~~~
 
@@ -464,8 +438,3 @@ At this point you should be able to generate the graph from the perf data:
 ::
 
     OPENTURNS_NUM_THREADS=1 OMP_NUM_THREADS=1 PATH=/tmp/linux/tools/perf:$PATH perf script -i /tmp/perf.data | /tmp/FlameGraph/stackcollapse-perf.pl | /tmp/FlameGraph/flamegraph.pl > /tmp/perf.svg
-
-
-
-.. [1]
-   English has been chosen as the native language for the platform.
