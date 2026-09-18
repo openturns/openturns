@@ -34,53 +34,50 @@ Use this functionality with caution:
      projected (see [ernst2012]_).
      See :any:`functional_chaos` for more details on this topic.
 
-OpenTURNS implements the following **specific orthonormal** [#orthonormal]_
-univariate polynomial families together with their associated **standard
-distributions**.
+OpenTURNS implements the following **specific orthonormal** univariate
+polynomial families together with their associated distributions.
 
 .. table::
 
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | Standard distribution                                                 | Polynomial                            |
-    +=======================================================================+=======================================+
-    | :class:`~openturns.Normal`                                            | :class:`~openturns.HermiteFactory`    |
-    | :math:`\cN(\mu = 0, \sigma = 1)`                                      |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.Uniform`                                           | :class:`~openturns.LegendreFactory`   |
-    | :math:`\cU(a = -1, b = 1)`                                            |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.Gamma`                                             | :class:`~openturns.LaguerreFactory`   |
-    | :math:`\Gamma(k = k_a + 1, \lambda = 1, \gamma = 0)`                  |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.Beta`                                              | :class:`~openturns.JacobiFactory`     |
-    | :math:`{\rm B}(r = \beta + 1, t = \alpha + \beta + 2, a = -1, b = 1)` |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.Poisson`                                           | :class:`~openturns.CharlierFactory`   |
-    | :math:`\cP(\lambda)`                                                  |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.Binomial`                                          | :class:`~openturns.KrawtchoukFactory` |
-    | :math:`\cB(n, p)`                                                     |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
-    | :class:`~openturns.Polya`                                             | :class:`~openturns.MeixnerFactory`    |
-    | :math:`\cB^-(r, p)`                                                   |                                       |
-    +-----------------------------------------------------------------------+---------------------------------------+
+    +--------------------------------------------------------------+---------------------------------------+
+    | Distribution                                                 | Polynomial                            |
+    +==============================================================+=======================================+
+    | :class:`~openturns.Normal` :math:`\cN(\mu, \sigma)`          | :class:`~openturns.HermiteFactory`    |
+    +--------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Uniform` :math:`\cU(a, b)`                | :class:`~openturns.LegendreFactory`   |
+    +--------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Gamma` :math:`\Gamma(k, \lambda, \gamma)` | :class:`~openturns.LaguerreFactory`   |
+    +--------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Beta` :math:`B(\alpha, \beta, a, b)`      | :class:`~openturns.JacobiFactory`     |
+    +--------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Poisson` :math:`\cP(\lambda)`             | :class:`~openturns.CharlierFactory`   |
+    +--------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Binomial` :math:`\cB(n, p)`               | :class:`~openturns.KrawtchoukFactory` |
+    +--------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Polya` :math:`\cB^-(r, p)`                | :class:`~openturns.MeixnerFactory`    |
+    +--------------------------------------------------------------+---------------------------------------+
+
+For a distribution which admits a standard representative in the same
+parametric family, the polynomial family is built for this **standard
+representative**. The affine transformation
+:math:`T(x) = a x + b` maps a random variable :math:`X` distributed
+according to :math:`\mu` to its standard representative
+:math:`Z = aX + b`. For example, if :math:`X \sim \cN(\mu, \sigma)`, its
+standard representative is
+:math:`Z = (X - \mu)/\sigma \sim \cN(0, 1)`. The polynomial :math:`P_n`
+orthonormal with respect to :math:`\mu` is the composition of the
+polynomial :math:`p_n` orthonormal with respect to the standard
+representative :math:`\mu_0` and of the affine transformation :math:`T`:
+
+.. math::
+
+    P_n(x)\ =\ p_n(a x + b)\ =\ p_n \circ T(x).
 
 Aside, OpenTURNS also implements generic algorithms for building orthonormal
 univariate polynomial families with respect to any arbitrary probability
 measure (implemented as a :class:`~openturns.Distribution`).
-OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorithm`\s, 
+OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorithm`\s,
 with :class:`~openturns.AdaptiveStieltjesAlgorithm` as the default.
-
-.. [#orthonormal] A polynomial family :math:`(P_n)_{n \geq 0}` is said to be
-    orthonormal with respect to the probability measure :math:`w(z) \di{z}` if
-    and only if:
-
-    .. math::
-
-        \scalarproduct{P_i}{P_j} = \int_{\supp{w}} P_i(z) P_j(z) w(z) \di{z}
-                                 = \delta_{ij}, \quad i, j = 1, \ldots, n
-
-    where :math:`\delta_{ij}` denotes Kronecker's delta.
 
 See also
 --------

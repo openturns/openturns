@@ -218,8 +218,13 @@ OT_OrthogonalUniVariatePolynomialFactory_getRoots_doc
 %define OT_OrthogonalUniVariatePolynomialFactory_getA_doc
 "Accessor to the scale coefficient of the affine transformation.
 
-The affine transformation maps the variable :math:`x` of the associated
-measure to the variable :math:`z = a x + b` of its standard representative.
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
 
 Returns
 -------
@@ -234,8 +239,13 @@ OT_OrthogonalUniVariatePolynomialFactory_getA_doc
 %define OT_OrthogonalUniVariatePolynomialFactory_getB_doc
 "Accessor to the translation coefficient of the affine transformation.
 
-The affine transformation maps the variable :math:`x` of the associated
-measure to the variable :math:`z = a x + b` of its standard representative.
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
 
 Returns
 -------
