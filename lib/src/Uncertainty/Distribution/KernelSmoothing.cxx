@@ -600,7 +600,7 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   else baseDistribution = buildAsKernelMixture(newSample, bandwidth);
   if (boundingOption_ == LOWER) return TruncatedDistribution(baseDistribution, xMin, TruncatedDistribution::LOWER);
   if (boundingOption_ == UPPER) return TruncatedDistribution(baseDistribution, xMax, TruncatedDistribution::UPPER);
-  return TruncatedDistribution(baseDistribution, xMin, xMax);
+  return TruncatedDistribution(baseDistribution, Interval(xMin, xMax));
 }
 
 /* Bandwidth accessor */

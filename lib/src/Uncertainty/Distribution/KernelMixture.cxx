@@ -382,29 +382,55 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   if (reducedInterval.isEmpty()) return 0.0;
   const Point lowerBound(reducedInterval.getLowerBound());
   const Point upperBound(reducedInterval.getUpperBound());
+  const Interval::BoolCollection reducedFiniteLower(reducedInterval.getFiniteLowerBound());
+  const Interval::BoolCollection reducedFiniteUpper(reducedInterval.getFiniteUpperBound());
   if (useApproximatePDFCDF_)
   {
     const Scalar mean = getMean()[0];
-    if (lowerBound[0] > mean) return ccdfApproximation_(lowerBound)[0] - ccdfApproximation_(upperBound)[0];
-    else return cdfApproximation_(upperBound)[0] - cdfApproximation_(lowerBound)[0];
+    // An infinite bound is handled explicitly as CDF(-inf)=0 / CDF(+inf)=1,
+    // no huge finite value is substituted so the interpolations below
+    // only ever see the finite numerical range of the distribution
+    if (reducedFiniteLower[0] && lowerBound[0] > mean) return ccdfApproximation_(lowerBound)[0] - (reducedFiniteUpper[0] ? ccdfApproximation_(upperBound)[0] : 0.0);
+    return (reducedFiniteUpper[0] ? cdfApproximation_(upperBound)[0] : 1.0) - (reducedFiniteLower[0] ? cdfApproximation_(lowerBound)[0] : 0.0);
   }
   Scalar probability = 0.0;
   const UnsignedInteger size = sample_.getSize();
   if (dimension == 1)
   {
     const Scalar hInverse = bandwidthInverse_[0];
+    const Bool finiteLower = reducedFiniteLower[0];
+    const Bool finiteUpper = reducedFiniteUpper[0];
     for(UnsignedInteger i = 0; i < size; ++i)
-      probability += p_kernel_->computeProbabilityGeneral1D((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse);
+    {
+      if (!finiteLower)
+      {
+        if (!finiteUpper) probability += 1.0;
+        else probability += p_kernel_->computeCDF((upperBound[0] - sample_(i, 0)) * hInverse);
+      }
+      else if (!finiteUpper) probability += p_kernel_->computeComplementaryCDF((lowerBound[0] - sample_(i, 0)) * hInverse);
+      else probability += p_kernel_->computeProbabilityGeneral1D((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse);
+    }
     return probability / size;
   }
   const Scalar probabilityEpsilon = p_kernel_->getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar probabilityAtom = p_kernel_->computeProbabilityGeneral1D((lowerBound[0] - sample_(i, 0)) * bandwidthInverse_[0], (upperBound[0] - sample_(i, 0)) * bandwidthInverse_[0]);
-    for (UnsignedInteger j = 1; j < dimension; ++j)
+    Scalar probabilityAtom = 1.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
+      Scalar marginalProb = 0.0;
+      const Scalar hInv = bandwidthInverse_[j];
+      const Bool finiteLower = reducedFiniteLower[j];
+      const Bool finiteUpper = reducedFiniteUpper[j];
+      if (!finiteLower)
+      {
+        if (!finiteUpper) marginalProb = 1.0;
+        else marginalProb = p_kernel_->computeCDF((upperBound[j] - sample_(i, j)) * hInv);
+      }
+      else if (!finiteUpper) marginalProb = p_kernel_->computeComplementaryCDF((lowerBound[j] - sample_(i, j)) * hInv);
+      else marginalProb = p_kernel_->computeProbabilityGeneral1D((lowerBound[j] - sample_(i, j)) * hInv, (upperBound[j] - sample_(i, j)) * hInv);
+      probabilityAtom *= marginalProb;
       if (probabilityAtom < probabilityEpsilon) break;
-      probabilityAtom *= p_kernel_->computeProbabilityGeneral1D((lowerBound[j] - sample_(i, j)) * bandwidthInverse_[j], (upperBound[j] - sample_(i, j)) * bandwidthInverse_[j]);
     }
     probability += probabilityAtom;
   } /* end for */

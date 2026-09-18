@@ -43,7 +43,7 @@ view = otv.View(graph)
 
 # %%
 # Truncate on both bounds
-truncated = ot.TruncatedDistribution(distribution, 0.2, 1.5)
+truncated = ot.TruncatedDistribution(distribution, ot.Interval(0.2, 1.5))
 graph = truncated.drawPDF()
 view = otv.View(graph)
 

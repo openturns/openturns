@@ -33,6 +33,7 @@
 #include "openturns/Cobyla.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/GeneralLinearModelAlgorithm.hxx"
+#include "openturns/GaussianProcessFitter.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/DesignProxy.hxx"
@@ -212,6 +213,85 @@ private:
   Scalar sumLog_;
 };
 
+class BoxCoxGPFOptimization : public EvaluationImplementation
+{
+
+public:
+  BoxCoxGPFOptimization(const Sample &inputSample,
+                         const Sample &shiftedOutputSample,
+                         const CovarianceModel &covarianceModel,
+                         const Basis &basis)
+    : inputSample_(inputSample)
+    , shiftedOutputSample_(shiftedOutputSample)
+    , covarianceModel_(covarianceModel)
+    , basis_(basis)
+    , sumLog_(0.0)
+  {
+    computeSumLog();
+  }
+
+  BoxCoxGPFOptimization(const Sample &inputSample,
+                         const Sample &shiftedOutputSample,
+                         const CovarianceModel &covarianceModel,
+                         const Basis &basis,
+                         const Scalar sumLog)
+    : inputSample_(inputSample)
+    , shiftedOutputSample_(shiftedOutputSample)
+    , covarianceModel_(covarianceModel)
+    , basis_(basis)
+    , sumLog_(sumLog)
+  {
+    // Nothing to do
+  }
+
+  BoxCoxGPFOptimization *clone() const override
+  {
+    return new BoxCoxGPFOptimization(*this);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  Point operator()(const Point &lambda) const override
+  {
+    BoxCoxEvaluation myBoxFunction(lambda);
+    const Sample transformedOutputSample(myBoxFunction(shiftedOutputSample_));
+    GaussianProcessFitter algo(inputSample_, transformedOutputSample, covarianceModel_, basis_);
+    algo.run();
+    const Scalar result = algo.getResult().getOptimalLogLikelihood() + (lambda[0] - 1) * getSumLog();
+    return Point(1, result);
+  }
+
+  void computeSumLog()
+  {
+    const UnsignedInteger size = shiftedOutputSample_.getSize();
+    const UnsignedInteger dimension = shiftedOutputSample_.getDimension();
+    sumLog_ = 0.0;
+    for (UnsignedInteger k = 0; k < size; ++k)
+      for (UnsignedInteger d = 0; d < dimension; ++d)
+        sumLog_ += std::log(shiftedOutputSample_(k, d));
+  }
+
+  Scalar getSumLog() const
+  {
+    return sumLog_;
+  }
+
+private:
+  Sample inputSample_;
+  Sample shiftedOutputSample_;
+  CovarianceModel covarianceModel_;
+  Basis basis_;
+  Scalar sumLog_;
+};
+
 class BoxCoxLMOptimizationEvaluation : public EvaluationImplementation
 {
 
@@ -321,6 +401,7 @@ private:
 BoxCoxFactory::BoxCoxFactory()
   : PersistentObject()
   , solver_(new Cobyla())
+  , optimizationStartingPoint_(1, 1.0)
 {
   const Scalar rhoBeg = ResourceMap::GetAsScalar("BoxCoxFactory-DefaultRhoBeg");
   dynamic_cast<Cobyla*>(solver_.getImplementation().get())->setRhoBeg(rhoBeg);
@@ -342,6 +423,18 @@ OptimizationAlgorithm BoxCoxFactory::getOptimizationAlgorithm() const
 void BoxCoxFactory::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
   solver_ = solver;
+}
+
+Point BoxCoxFactory::getOptimizationStartingPoint() const
+{
+  return optimizationStartingPoint_;
+}
+
+void BoxCoxFactory::setOptimizationStartingPoint(const Point & startingPoint)
+{
+  if (startingPoint.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: the optimization starting point must be of dimension 1, got dimension=" << startingPoint.getDimension();
+  optimizationStartingPoint_ = startingPoint;
 }
 
 
@@ -402,15 +495,18 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
     // Extract the marginal sample and apply the shift
     marginalSamples[d] = sample.getMarginal(d);
     marginalSamples[d] += Point(1, shift[d]);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (!(marginalSamples[d](i, 0) > 0.0))
+        throw InvalidArgumentException(HERE) << "Error: shifted sample must be strictly positive, got " << marginalSamples[d](i, 0) << " at index " << i << " marginal " << d;
 
     BoxCoxSampleOptimization boxCoxOptimization(marginalSamples[d]);
-    Function objectiveFunction(boxCoxOptimization);
+    const Function objectiveFunction(boxCoxOptimization);
     // Define optimization problem
     OptimizationProblem problem((objectiveFunction));
     problem.setMinimization(false);
     OptimizationAlgorithm solver(solver_);
     solver.setProblem(problem);
-    solver.setStartingPoint(Point(1, 1.0));
+    solver.setStartingPoint(optimizationStartingPoint_);
     // run Optimization problem
     solver.run();
     // Return optimization point
@@ -464,6 +560,8 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
     const Point & shift,
     GeneralLinearModelResult & generalLinearModelResult)
 {
+  LOGWARN("BoxCoxFactory::buildWithGLM is deprecated");
+
   // Check the input size
   const UnsignedInteger size = inputSample.getSize();
   if (size == 0)
@@ -475,6 +573,9 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
   // Check the dimensions
   const UnsignedInteger dimension = outputSample.getDimension();
   const UnsignedInteger inputDimension = inputSample.getDimension();
+
+  if (dimension != 1)
+    throw InvalidArgumentException(HERE) << "Error: output sample dimension must be 1 for Box-Cox GLM/GPF, got dimension=" << dimension;
 
   if (covarianceModel.getInputDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: the covariance model has an input dimension=" << covarianceModel.getInputDimension() << " different from the input sample dimension=" << inputDimension;
@@ -488,17 +589,20 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample & inputSample,
   // Keep the shifted marginal samples
   Sample shiftedSample(outputSample);
   shiftedSample += shift;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (!(shiftedSample(i, 0) > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
-  BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
-  Function objectiveFunction(boxCoxOptimization);
+  const BoxCoxGLMOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
+  const Function objectiveFunction(boxCoxOptimization);
   MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
   objectiveMemoizeFunction.enableCache();
   OptimizationProblem problem(objectiveMemoizeFunction);
   problem.setMinimization(false);
   OptimizationAlgorithm solver(solver_);
   solver.setProblem(problem);
-  solver.setStartingPoint(Point(1, 1.0));
+  solver.setStartingPoint(optimizationStartingPoint_);
   // run Optimization problem
   solver.run();
   // Return optimization point
@@ -526,6 +630,82 @@ BoxCoxTransform BoxCoxFactory::buildWithGLM(const Sample &inputSample,
   return buildWithGLM(inputSample, outputSample, covarianceModel, Basis(), shift, generalLinearModelResult);
 }
 
+/** Build the factory from data by estimating the best gaussian process fitter */
+BoxCoxTransform BoxCoxFactory::buildWithGPF(const Sample & inputSample,
+    const Sample & outputSample,
+    const CovarianceModel & covarianceModel,
+    const Basis & basis,
+    const Point & shift,
+    GaussianProcessFitterResult & gaussianProcessFitterResult)
+{
+  // Check the input size
+  const UnsignedInteger size = inputSample.getSize();
+  if (size == 0)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Box-Cox factory from empty data";
+
+  if (size != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "Error: input and output sample have different size. Could not perform GPF & Box Cox algorithms";
+
+  // Check the dimensions
+  const UnsignedInteger dimension = outputSample.getDimension();
+  const UnsignedInteger inputDimension = inputSample.getDimension();
+
+  if (dimension != 1)
+    throw InvalidArgumentException(HERE) << "Error: output sample dimension must be 1 for Box-Cox GLM/GPF, got dimension=" << dimension;
+
+  if (covarianceModel.getInputDimension() != inputDimension)
+    throw InvalidArgumentException(HERE) << "Error: the covariance model has an input dimension=" << covarianceModel.getInputDimension() << " different from the input sample dimension=" << inputDimension;
+
+  if (covarianceModel.getOutputDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the covariance model should be of dimension " << dimension << ". Here, covariance model dimension=" << covarianceModel.getOutputDimension();
+
+  if (shift.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the output sample dimension=" << dimension;
+
+  // Keep the shifted marginal samples
+  Sample shiftedSample(outputSample);
+  shiftedSample += shift;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (!(shiftedSample(i, 0) > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
+
+  // optimization process
+  const BoxCoxGPFOptimization boxCoxOptimization(inputSample, shiftedSample, covarianceModel, basis);
+  const Function objectiveFunction(boxCoxOptimization);
+  MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
+  objectiveMemoizeFunction.enableCache();
+  OptimizationProblem problem(objectiveMemoizeFunction);
+  problem.setMinimization(false);
+  OptimizationAlgorithm solver(solver_);
+  solver.setProblem(problem);
+  solver.setStartingPoint(optimizationStartingPoint_);
+  // run Optimization problem
+  solver.run();
+  // Return optimization point
+  const Point optpoint(solver.getResult().getOptimalPoint());
+
+  // Define BoxCox transformation for output sample
+  BoxCoxEvaluation myBoxFunction(optpoint, shift);
+  // compute the transformed output sample using the Box-Cox function
+  const Sample transformedOutputSample = myBoxFunction(outputSample);
+  // Build the GaussianProcessFitterResult
+  // Use of GPF to estimate the best gaussian process fitter
+  GaussianProcessFitter algo(inputSample, transformedOutputSample, covarianceModel, basis);
+  algo.run();
+  // Get result
+  gaussianProcessFitterResult = algo.getResult();
+  return BoxCoxTransform(optpoint, shift);
+}
+
+BoxCoxTransform BoxCoxFactory::buildWithGPF(const Sample &inputSample,
+    const Sample &outputSample,
+    const CovarianceModel &covarianceModel,
+    const Point &shift,
+    GaussianProcessFitterResult &gaussianProcessFitterResult)
+{
+  return buildWithGPF(inputSample, outputSample, covarianceModel, Basis(), shift, gaussianProcessFitterResult);
+}
+
 /** Build the factory from data by estimating the best generalized linear model */
 BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
     const Sample &outputSample,
@@ -544,12 +724,18 @@ BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
   // Check the dimensions
   const UnsignedInteger dimension = outputSample.getDimension();
 
+  if (dimension != 1)
+    throw InvalidArgumentException(HERE) << "Error: output sample dimension must be 1 for Box-Cox LM, got dimension=" << dimension;
+
   if (shift.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the output sample dimension=" << dimension;
 
   // Keep the shifted marginal samples
   Sample shiftedSample(outputSample);
   shiftedSample += shift;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (!(shiftedSample(i, 0) > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: shifted output sample must be strictly positive, got " << shiftedSample(i, 0) << " at index " << i;
 
   // optimization process
   const BoxCoxLMOptimizationEvaluation boxCoxOptimization(inputSample, shiftedSample, basis);
@@ -560,7 +746,7 @@ BoxCoxTransform BoxCoxFactory::buildWithLM(const Sample &inputSample,
   problem.setMinimization(false);
   OptimizationAlgorithm solver(solver_);
   solver.setProblem(problem);
-  solver.setStartingPoint(Point(1, 1.0));
+  solver.setStartingPoint(optimizationStartingPoint_);
   // run Optimization problem
   solver.run();
   // Return optimization point

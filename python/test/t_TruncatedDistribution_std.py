@@ -31,7 +31,7 @@ referenceDistribution = [
     ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0),
 ]
 distribution = [
-    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
+    ot.TruncatedDistribution(ot.Normal(2.0, 1.5), ot.Interval(1.0, 4.0)),
     ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, ot.TruncatedDistribution.LOWER),
     ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 4.0, ot.TruncatedDistribution.UPPER),
     ot.TruncatedDistribution(
@@ -209,7 +209,7 @@ candidates = [
     ot.Normal(1.0, 2.0),
     ot.Uniform(1.0, 2.0),
     ot.Exponential(1.0, 2.0),
-    ot.TruncatedDistribution(ot.WeibullMin(), 1.5, 7.8),
+    ot.TruncatedDistribution(ot.WeibullMin(), ot.Interval(1.5, 7.8)),
     ot.Beta(1.5, 6.3, -1.0, 2.0),
     ot.JointDistribution([ot.Normal()] * 2),
     ot.BlockIndependentDistribution([ot.Normal(2), ot.Normal(2)]),
@@ -249,7 +249,7 @@ print("proba=%.6f" % dist.computeCDF([3.0, -3.0]))
 
 # relative range wrt quantile epsilon issue
 unif = ot.Uniform(0.0, 1e12)
-trunc = ot.TruncatedDistribution(unif, 0.25, 2.0)
+trunc = ot.TruncatedDistribution(unif, ot.Interval(0.25, 2.0))
 print("q@0.1=", trunc.computeQuantile(0.1))
 
 # n-d CDF inversion
