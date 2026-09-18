@@ -211,6 +211,9 @@ OT_Field_getDescription_doc
 %define OT_Field_getOutputDimension_doc
 "Get the dimension :math:`d` of the values.
 
+.. deprecated:: 1.28
+   Use :func:`getDimension` instead.
+
 Returns
 -------
 d : int
@@ -218,6 +221,18 @@ d : int
 %enddef
 %feature("docstring") OT::FieldImplementation::getOutputDimension
 OT_Field_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getDimension_doc
+"Get the dimension :math:`d` of the values.
+
+Returns
+-------
+d : int
+    Dimension of the field values: :math:`d`."
+%enddef
+%feature("docstring") OT::FieldImplementation::getDimension
+OT_Field_getDimension_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_getMesh_doc
@@ -260,6 +275,9 @@ OT_Field_getSize_doc
 // ---------------------------------------------------------------------
 %define OT_Field_getInputDimension_doc
 R"RAW(Get the dimension of the domain :math:`\cD`.
+
+.. deprecated:: 1.28
+   Use ``getMesh().getDimension()`` instead.
 
 Returns
 -------

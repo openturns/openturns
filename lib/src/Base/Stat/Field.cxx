@@ -121,7 +121,7 @@ Scalar & Field::at (const UnsignedInteger i,
                     const UnsignedInteger j)
 {
   if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(j <= getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
   copyOnWrite();
   return (*getImplementation())(i, j);
 }
@@ -130,7 +130,7 @@ const Scalar & Field::at (const UnsignedInteger i,
                           const UnsignedInteger j) const
 {
   if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(j <= getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
   return (*getImplementation())(i, j);
 }
 
@@ -203,6 +203,12 @@ UnsignedInteger Field::getInputDimension() const
 UnsignedInteger Field::getOutputDimension() const
 {
   return getImplementation()->getOutputDimension();
+}
+
+/* Dimension accessor of the values */
+UnsignedInteger Field::getDimension() const
+{
+  return getImplementation()->getDimension();
 }
 
 Sample Field::getValues() const
