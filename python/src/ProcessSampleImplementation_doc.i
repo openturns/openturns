@@ -495,6 +495,30 @@ OT_ProcessSample_getMarginal_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_ProcessSample_split_doc
+"Split the process sample at a given index.
+
+The current process sample is truncated: it keeps only the realizations
+before the given index. The method returns the remaining realizations as a
+new process sample.
+
+Parameters
+----------
+index : int
+    Index before which the process sample is truncated, must be less than or
+    equal to the sample size.
+
+Returns
+-------
+split : :class:`~openturns.ProcessSample`
+    The process sample containing the realizations from *index* to the end.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::split
+OT_ProcessSample_split_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_ProcessSample_drawMarginal_doc
 "Draw the selected field.
 

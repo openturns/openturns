@@ -281,6 +281,14 @@ ProcessSample ProcessSample::getMarginal(const Indices & indices) const
   return getImplementation()->getMarginal(indices);
 }
 
+/* Method split() truncates the process sample before the index passed as argument
+ * and returns the remainder as a new process sample */
+ProcessSample ProcessSample::split(const UnsignedInteger index)
+{
+  copyOnWrite();
+  return getImplementation()->split(index);
+}
+
 /* Draw a marginal */
 Graph ProcessSample::drawMarginal(const UnsignedInteger index,
                                   const Bool interpolate) const

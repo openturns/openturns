@@ -191,3 +191,35 @@ for i in range(2):
 processSample[[1, 3]] = fill2
 ott.assert_almost_equal(processSample[1], fill2[0])
 ott.assert_almost_equal(processSample[3], fill2[1])
+
+# split
+nvertices = mesh.getVerticesNumber()
+psampleA = ot.ProcessSample(mesh, 5, outputDimension)
+for i in range(5):
+    psampleA[i] = ot.Normal(outputDimension).getSample(nvertices)
+ref = psampleA[2]
+rest = psampleA.split(2)
+assert psampleA.getSize() == 2, "split size"
+assert rest.getSize() == 3, "split remainder size"
+assert rest.getMesh().getVerticesNumber() == nvertices, "split mesh"
+assert rest.getDimension() == outputDimension, "split dimension"
+ott.assert_almost_equal(rest[0], ref)
+
+# splitting at the full size keeps the sample and returns an empty one
+psampleB = ot.ProcessSample(mesh, 3, outputDimension)
+for i in range(3):
+    psampleB[i] = ot.Normal(outputDimension).getSample(nvertices)
+empty = psampleB.split(3)
+assert psampleB.getSize() == 3, "split at size should not truncate"
+assert empty.getSize() == 0, "split at size should return empty"
+
+# splitting at index 0 returns everything
+all_ = psampleB.split(0)
+assert all_.getSize() == 3, "split at 0 should return everything"
+assert psampleB.getSize() == 0, "split at 0 should truncate everything"
+
+try:
+    psampleA.split(psampleA.getSize() + 1)
+    assert False, "out-of-bounds split should raise"
+except Exception:
+    pass

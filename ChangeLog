@@ -36,6 +36,7 @@
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
  * Added Graph.setXMin/setXMax/setYMin/setYMax
+ * Added ProcessSample.split
 
 === Documentation ===
 
