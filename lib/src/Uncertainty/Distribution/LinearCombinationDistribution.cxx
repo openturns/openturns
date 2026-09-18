@@ -21,6 +21,8 @@
 #include <cmath>
 #include <iomanip>
 #include <algorithm>
+#include <unordered_map>
+#include <cstdint>
 
 #include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -85,6 +87,7 @@ LinearCombinationDistribution::LinearCombinationDistribution()
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -121,6 +124,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -161,6 +165,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -202,6 +207,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -244,6 +250,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -283,6 +290,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -320,6 +328,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -342,6 +351,8 @@ void LinearCombinationDistribution::computeRange()
   const UnsignedInteger size = distributionCollection_.getSize();
   // First, compute the *exact* range. It will be used to clip the asymptotic range if Poisson's formula is used (ie the collection has a size greater than the dimension)
   const UnsignedInteger dimension = getDimension();
+  bandCenter_ = Point(dimension);
+  bandScale_ = Point(dimension);
   if (dimension == 1 && size == 1)
   {
     const Scalar w = weights_(0, 0);
@@ -400,7 +411,9 @@ void LinearCombinationDistribution::computeRange()
     for (UnsignedInteger j = 0; j < dimension; ++j)
       s[j] = std::sqrt(s[j]);
   } // dimension > 1
-  Interval intersection(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+  bandCenter_ = m;
+  bandScale_ = s;
+  Interval intersection(range.intersect(Interval(m - s * bandBeta_, m + s * bandBeta_)));
   intersection.setFiniteLowerBound(finiteLowerBound); // restore flags
   intersection.setFiniteUpperBound(finiteUpperBound);
   setRange(intersection);
@@ -475,6 +488,8 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     const Bool simplifyAtoms)
 {
   weights_ = weights;
+  // The confidence band adaptation restarts from the configured beta
+  bandBeta_ = beta_;
   // Size will be updated during the several treatments of the collection
   UnsignedInteger size = coll.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LinearCombinationDistribution based on an empty distribution collection.";
@@ -1019,8 +1034,10 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     computeCovariance();
     (void) getPositionIndicator();
     (void) getDispersionIndicator();
-    computeReferenceBandwidth();
     computeEquivalentNormal();
+    // Adapt the confidence band: this recomputes the range and the
+    // reference bandwidth, possibly several times
+    adaptBand();
   }
   // In 1D case, collection's size might change
   // When reducing collection to 1, computations become faster
@@ -1393,7 +1410,7 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
   // otherwise lead to a prohibitive cost
   Bool kmaxCapped = false;
   {
-    const UnsignedInteger cappedKmax = std::min(kmax, ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel"));
+    const UnsignedInteger cappedKmax = effectiveKmax(kmax);
     if (cappedKmax < kmax)
     {
       kmax = cappedKmax;
@@ -2563,7 +2580,7 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
   // would otherwise lead to a prohibitive cost
   Bool kmaxCapped = false;
   {
-    const UnsignedInteger cappedKmax = std::min(kmax, ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel"));
+    const UnsignedInteger cappedKmax = effectiveKmax(kmax);
     if (cappedKmax < kmax)
     {
       kmax = cappedKmax;
@@ -3119,8 +3136,7 @@ void LinearCombinationDistribution::setAlpha(const Scalar alpha)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: the alpha parameter must be strictly positive";
   alpha_ = alpha;
-  computeRange();
-  computeReferenceBandwidth();
+  adaptBand();
 }
 
 Scalar LinearCombinationDistribution::getAlpha() const
@@ -3130,9 +3146,9 @@ Scalar LinearCombinationDistribution::getAlpha() const
 
 void LinearCombinationDistribution::setBeta(const Scalar beta)
 {
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: the beta parameter must be strictly positive";
   beta_ = beta;
-  computeRange();
-  computeReferenceBandwidth();
+  adaptBand();
 }
 
 Scalar LinearCombinationDistribution::getBeta() const
@@ -3166,11 +3182,121 @@ void LinearCombinationDistribution::setCDFPrecision(const Scalar cdfPrecision)
   cdfPrecision_ = cdfPrecision;
 }
 
+/* Adapt the confidence band so that the mass outside it is negligible:
+   starting from the configured beta, double it until a conservative bound on
+   the probability mass within [positionIndicator_ +/- beta *
+   dispersionIndicator_] differs from one by less than
+   BetaAdaptationEpsilon. The bound relies on the union of the per-atom tail
+   probabilities: if every contribution |w_{jk}| * |X_j - E[X_j]| stays below
+   its share of the distance to the band edge, then so does their sum. Each
+   share is evaluated with the corresponding atom complementary CDF, which
+   remains reliable far in the tails, contrarily to the Poisson inversion
+   used for the pointwise evaluations. */
+void LinearCombinationDistribution::adaptBand()
+{
+  const Bool adapt = ResourceMap::GetAsBool("LinearCombinationDistribution-BetaAdaptation");
+  // First stage: configured beta, fresh cache
+  bandBeta_ = beta_;
+  computeRange();
+  computeReferenceBandwidth(false);
+  // The range of a single-atom mixture is exact: nothing to adapt
+  const Bool isSingleAtom = (dimension_ == 1) && (distributionCollection_.getSize() == 1);
+  if ((!adapt) || isSingleAtom) return;
+  const Scalar epsilon = ResourceMap::GetAsScalar("LinearCombinationDistribution-BetaAdaptationEpsilon");
+  const Scalar maximumBeta = ResourceMap::GetAsScalar("LinearCombinationDistribution-MaximumBeta");
+  // Conservative bound on the mass outside [center +/- bandBeta * scale]:
+  // union of the per-atom exceedance probabilities, each atom being granted
+  // an equal share of the distance to the band edges
+  const UnsignedInteger numAtoms = distributionCollection_.getSize();
+  auto outsideMassBound = [this, numAtoms]() -> Scalar
+  {
+    Scalar bound = 0.0;
+    for (UnsignedInteger k = 0; k < dimension_; ++k)
+    {
+      if (!(bandScale_[k] > 0.0)) continue;
+      const Scalar distance = bandBeta_ * bandScale_[k];
+      // Grant each atom a share of the distance to the edge proportional to
+      // its contribution to the standard deviation along that axis; atoms
+      // with infinite dispersion fall back on an equal split
+      Point shares(numAtoms);
+      Scalar sumShares = 0.0;
+      Bool usable = true;
+      for (UnsignedInteger j = 0; j < numAtoms; ++j)
+      {
+        const Scalar c = weights_(k, j);
+        const Scalar sigma = (c == 0.0) ? 0.0 : distributionCollection_[j].getDispersionIndicator();
+        if (!(sigma >= 0.0) || (std::isinf(sigma)))
+        {
+          usable = false;
+          break;
+        }
+        shares[j] = std::abs(c) * sigma;
+        sumShares += shares[j];
+      }
+      if (!usable || !(sumShares > 0.0))
+        for (UnsignedInteger j = 0; j < numAtoms; ++j) shares[j] = 1.0 / numAtoms;
+      else
+        shares *= 1.0 / sumShares;
+      for (UnsignedInteger dir = 0; dir < 2; ++dir)
+      {
+        const Scalar direction = (dir == 0) ? 1.0 : -1.0;
+        Scalar tail = 0.0;
+        for (UnsignedInteger j = 0; j < numAtoms; ++j)
+        {
+          const Scalar c = weights_(k, j);
+          if ((c == 0.0) || (shares[j] <= 0.0)) continue;
+          // Exceedance of the centered contribution: X_j deviates from its
+          // mean by more than its share of the distance to the band edge
+          const Scalar muJ = distributionCollection_[j].getMean()[0];
+          const Scalar threshold = muJ + direction * distance * shares[j] / std::abs(c);
+          tail += (direction * c > 0.0)
+                  ? distributionCollection_[j].computeComplementaryCDF(threshold)
+                  : distributionCollection_[j].computeCDF(threshold);
+        }
+        bound += tail;
+      }
+    }
+    return bound;
+  };
+  while (true)
+  {
+    const Scalar outside = outsideMassBound();
+    if (outside <= epsilon) break;
+    const Scalar probedBeta = 2.0 * bandBeta_;
+    if (probedBeta > maximumBeta)
+    {
+      LOGWARN(OSS() << "Warning! In dimension " << dimension_ << ", the estimated mass outside the confidence band exceeds BetaAdaptationEpsilon=" << epsilon << " (bound: " << outside << "), but beta cannot exceed MaximumBeta=" << maximumBeta << ". Tail quantities may be inaccurate.");
+      break;
+    }
+    // Widen the band: doubling beta halves the reference bandwidth and the
+    // previous lattice is included in the new one at even multi-indices, so
+    // the characteristic values are recycled
+    bandBeta_ = probedBeta;
+    computeRange();
+    computeReferenceBandwidth(true);
+  } // while
+}
+
+/* Number of blocks allowed at the current stage: each beta doubling halves
+   the reference bandwidth and doubles the number of levels needed to reach
+   a given accuracy, so the budget shrinks accordingly. Mixtures whose band
+   was not widened keep their full budget. */
+UnsignedInteger LinearCombinationDistribution::effectiveKmax(const UnsignedInteger kmax) const
+{
+  // A mixture whose band was never widened keeps the legacy budget
+  if (!(bandBeta_ > beta_)) return kmax;
+  const UnsignedInteger maximumLevel = ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel");
+  return std::min(kmax, std::max(static_cast<UnsignedInteger>(1) << blockMin_, maximumLevel));
+}
+
 /* Compute the reference bandwidth. It is defined as the largest bandwidth
    that allow a precise computation of the PDF over the range
    [positionIndicator_ +/- beta * dispersionIndicator_] */
-void LinearCombinationDistribution::computeReferenceBandwidth()
+void LinearCombinationDistribution::computeReferenceBandwidth(const Bool recycleCache)
 {
+  const Point oldBandwidth(referenceBandwidth_);
+  const SphereUniformNorm oldMesher(gridMesher_);
+  const UnsignedInteger oldStoredSize(storedSize_);
   referenceBandwidth_ = Point(getDimension(), 0.0);
   Bool isFinite = true;
   const Point a(getRange().getLowerBound());
@@ -3190,9 +3316,139 @@ void LinearCombinationDistribution::computeReferenceBandwidth()
   // Compute grid helper object
   gridMesher_ = SphereUniformNorm::GetFromGridSteps(referenceBandwidth_, true);
 
-  // Reset the cached values
+  if (recycleCache)
+    recycleCharacteristicValues(oldMesher, oldBandwidth, oldStoredSize);
+  else
+  {
+    // Reset the cached values
+    storedSize_ = 0;
+    characteristicValuesCache_ = ComplexPersistentCollection(0);
+  }
+}
+
+/* Carry over the characteristic function values of the previous lattice into
+   the current one when the previous lattice is included in the current one,
+   which happens when the confidence band is doubled: halving the bandwidth
+   maps the old lattice points on even multi-indices of the new lattice. The
+   remaining points of the recycled levels are computed immediately so that
+   the cache stays contiguous. */
+void LinearCombinationDistribution::recycleCharacteristicValues(const SphereUniformNorm & oldMesher,
+    const Point & oldBandwidth,
+    const UnsignedInteger oldStoredSize)
+{
+  const UnsignedInteger dimension = getDimension();
+  // The nesting only holds when the bandwidth is exactly halved along every axis
+  const Scalar bandwidthConvergenceEpsilon = ResourceMap::GetAsScalar( "LinearCombinationDistribution-BandwidthConvergenceEpsilon" );
+  if (bandwidthConvergenceEpsilon < 0.0) throw InvalidArgumentException(HERE) << "Error: LinearCombinationDistribution-BandwidthConvergenceEpsilon should be non negative";
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    if ((getReferenceBandwidth()[k] <= 0.0) || (std::abs(oldBandwidth[k] / getReferenceBandwidth()[k] - 2.0) > bandwidthConvergenceEpsilon))
+    {
+      storedSize_ = 0;
+      characteristicValuesCache_ = ComplexPersistentCollection(0);
+      return;
+    }
+  }
+  // Nothing has been cached yet
+  if (oldStoredSize == 0)
+  {
+    storedSize_ = 0;
+    characteristicValuesCache_ = ComplexPersistentCollection(0);
+    return;
+  }
+  // Bias used to pack signed multi-indices into a single integer. A zero key
+  // is impossible for a valid multi-index, so it flags out-of-range indices.
+  const std::uint64_t bias = std::uint64_t(1) << 20;
+  auto pack = [dimension](const SignedInteger * n) -> std::uint64_t
+  {
+    std::uint64_t key = 0;
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      const SignedInteger value = n[k] + (1L << 20);
+      if ((value <= 0) || (value >= (1L << 21))) return 0;
+      key = (key << 21) | static_cast<std::uint64_t>(value);
+    }
+    return key;
+  };
+  // Build a lookup table from the multi-index of each cached point to its
+  // position in the old cache, following the level order of the old mesh.
+  // The number of complete cached levels is deduced from the stored size.
+  std::unordered_map<std::uint64_t, UnsignedInteger> lookup;
+  UnsignedInteger oldLevels = 0;
+  SignedInteger n[3] = {0, 0, 0};
+  // Level l occupies the indices [getOffsetLevel(l) - 1, getOffsetLevel(l + 1) - 2],
+  // so it is entirely cached when getOffsetLevel(l + 1) <= oldStoredSize + 1
+  while (oldMesher.getOffsetLevel(oldLevels + 2) <= oldStoredSize + 1)
+  {
+    const Sample points(oldMesher.getPoints(oldLevels + 1));
+    for (UnsignedInteger i = 0; i < points.getSize(); ++i)
+    {
+      Bool decodable = true;
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+      {
+        n[k] = static_cast<SignedInteger>(std::lround(points(i, k) / oldBandwidth[k]));
+        if (std::abs(n[k]) >= static_cast<SignedInteger>(bias))
+        {
+          decodable = false;
+          break;
+        }
+      }
+      if (decodable) lookup[pack(n)] = oldMesher.getOffsetLevel(oldLevels + 1) + i - 1;
+    }
+    ++oldLevels;
+  } // loop over the cached levels of the old mesh
+  if (oldLevels == 0)
+  {
+    storedSize_ = 0;
+    characteristicValuesCache_ = ComplexPersistentCollection(0);
+    return;
+  }
+  // The recycled levels of the new mesh go from 1 to twice the old ones,
+  // capped by the maximum size of the cache. The values are appended
+  // sequentially, reusing the old entries whenever possible
+  const ComplexPersistentCollection oldCache(characteristicValuesCache_);
   storedSize_ = 0;
   characteristicValuesCache_ = ComplexPersistentCollection(0);
+  Point pti(dimension);
+  for (UnsignedInteger m = 1; m <= 2 * oldLevels; ++m)
+  {
+    if (gridMesher_.getOffsetLevel(m + 1) - 1 > getMaxSize()) break;
+    const Sample points(gridMesher_.getPoints(m));
+    for (UnsignedInteger i = 0; i < points.getSize(); ++i)
+    {
+      Bool recyclable = true;
+      SignedInteger c[3] = {0, 0, 0};
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+      {
+        pti[k] = points(i, k);
+        const SignedInteger np = static_cast<SignedInteger>(std::lround(pti[k] / referenceBandwidth_[k]));
+        if (((np % 2) != 0) || (std::abs(np) >= static_cast<SignedInteger>(bias)))
+        {
+          recyclable = false;
+          break;
+        }
+        c[k] = np / 2;
+      }
+      Bool found = false;
+      Complex value(0.0, 0.0);
+      if (recyclable)
+      {
+        const UnsignedInteger oldLevel = static_cast<SignedInteger>(std::max(std::max(std::abs(c[0]), std::abs(c[1])), std::abs(c[2])));
+        if ((oldLevel >= 1) && (oldLevel <= oldLevels))
+        {
+          const auto it = lookup.find(pack(c));
+          if (it != lookup.end())
+          {
+            value = oldCache[it->second];
+            found = true;
+          }
+        }
+      }
+      if (!found) value = computeDeltaCharacteristicFunction(pti);
+      characteristicValuesCache_.add(value);
+      ++storedSize_;
+    } // points of the level
+  } // levels of the new mesh
 }
 
 /* Compute the equivalent normal distribution, i.e. with the same mean and
@@ -3591,8 +3847,8 @@ void LinearCombinationDistribution::load(Advocate & adv)
   computePositionIndicator();
   computeDispersionIndicator();
   computeRange();
-  computeReferenceBandwidth();
   computeEquivalentNormal();
+  adaptBand();
 } // load
 
 END_NAMESPACE_OPENTURNS
