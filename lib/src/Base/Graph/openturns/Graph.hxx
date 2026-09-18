@@ -149,6 +149,12 @@ public:
   Interval getBoundingBox() const;
   void setBoundingBox(const Interval & boundingBox);
 
+  /** Individual bounds of the whole plot accessors */
+  void setXMin(const Scalar xMin);
+  void setXMax(const Scalar xMax);
+  void setYMin(const Scalar yMin);
+  void setYMax(const Scalar yMax);
+
   /** Automatic bounding box accessor */
   Bool getAutomaticBoundingBox() const;
   void setAutomaticBoundingBox(const Bool automaticBoundingBox);
