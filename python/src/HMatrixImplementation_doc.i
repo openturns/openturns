@@ -114,6 +114,24 @@ OT_HMatrix_norm_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_HMatrix_computelogdet_doc
+"Compute log determinant value.
+
+Returns
+-------
+logdet : float
+    Log determinant.
+
+Notes
+-----
+The log-determinant is computed only if the HMatrix has been factorized using LLt or HODLR.
+Otherwise, an exception is raised."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::computeLogDeterminant
+OT_HMatrix_computelogdet_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_HMatrix_transpose_doc
 "Transpose matrix in-place."
 %enddef
@@ -183,7 +201,7 @@ OT_HMatrix_assembleTensor_doc
 Parameters
 ----------
 method : str
-    Factorization method, either one of: LDLt, LLt or LU
+    Factorization method, either one of: LDLt, LLt, LU, hodlr or hodlrsym
 
 Notes
 -----
@@ -360,3 +378,32 @@ beta : float
 %enddef
 %feature("docstring") OT::HMatrixImplementation::gemm
 OT_HMatrix_gemm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_gemm_dense_doc
+"Multiply matrix y=alpha*op(B)*op(M).
+
+Parameters
+----------
+transB : str
+    Whether to use B or B^t: either N or T.
+    B being the hmat.
+transA : str
+    Whether to use A or A^t: either N or T.
+    A being a matrix.
+side : str
+    Whether we consider op(A)*op(B) or op(B)*op(A)
+    Either L or R.
+alpha : float
+    Coefficient
+lhs : :class:`~openturns.Matrix`
+    Matrix to be multiplied
+
+Returns
+-------
+rhs : :class:`~openturns.Matrix`
+    Result matrix."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::gemm_dense
+OT_HMatrix_gemm_dense_doc

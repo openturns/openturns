@@ -12,6 +12,7 @@ Numerical methods
     optimization_algorithm
     least_squares_resolution
     enumeration_strategy
+    hierarchical_matrices
 
 Isoprobabilistic transformation
 -------------------------------

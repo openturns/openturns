@@ -148,6 +148,9 @@ public:
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
+  /** compute y<- alpha op(this) * x + beta * op(y) */
+  Matrix gemm_dense(char transB, char transA, char side, Scalar alpha, const Matrix & lhs);
+
 private:
   /** Compute an approximation of the maximum eigenvalue */
   Scalar computeApproximateLargestEigenValue(const Scalar epsilon = ResourceMap::GetAsScalar("HMatrix-LargestEigenValueRelativeError"));
@@ -157,6 +160,9 @@ public:
   void transpose();
 
   void addIdentity(Scalar alpha);
+
+  /** Compute log determinant */
+  Scalar computeLogDeterminant() const;
 
   /** Get the Frobenius norm */
   Scalar norm() const;
@@ -196,7 +202,7 @@ private:
   std::shared_ptr<void> hmatInterface_;
   Pointer<HMatrixClusterTree> hmatClusterTree_;
   void * hmat_;
-
+  Bool isFactorized_ = false;
 };
 
 // First implementation, by using HMatrixRealAssemblyFunction

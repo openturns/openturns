@@ -241,10 +241,13 @@ ot_check_test (LatentVariableModel_std IGNOREOUT)
 if (HMAT_FOUND)
 ot_check_test (HMatrix_LDLt)
 ot_check_test (HMatrix_LLt)
+ot_check_test (HMatrix_hodlrsym IGNOREOUT)
+ot_check_test (HMatrix_hodlr IGNOREOUT)
 ot_check_test (HMatrix_LU)
 ot_check_test (HMatrix_block_LLt)
 ot_check_test (HMatrix_block_LU)
 ot_check_test (DiracCovarianceModel_hmat)
+ot_check_test (HMatrix_gemm_dense IGNOREOUT)
 endif ()
 
 # Diff

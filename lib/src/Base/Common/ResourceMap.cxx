@@ -1737,6 +1737,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // HMatrix parameters //
   addAsBool("HMatrix-ForceSequential", false);
+  addAsString("HMatrix-ParallelSolver", "starpu");
+  addAsString("HMatrix-Admissibility", "standard");
   addAsScalar("HMatrix-AdmissibilityFactor", 100.0);
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);
@@ -1749,6 +1751,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
+  addAsUnsignedInteger("HMatrix-ClusteringMaxDof", 250);
   addAsUnsignedInteger("HMatrix-ValidationDump", 0);
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
 

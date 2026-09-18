@@ -574,3 +574,4 @@ Bibliography
     PhD thesis, Vanderbilt University, USA, 2012
 .. [zhang2020] Zhang, Y., Tao, S., Chen, W., & Apley, D. W.  *A latent variable approach to Gaussian process modeling with qualitative and quantitative factors*
     Technometrics 62.3 (2020): 291-302.
+.. [hackbusch1999] Hackbusch, W. (1999). *A sparse matrix arithmetic based on H-matrices. Part I: Introduction to H-matrices.* Computing, 62(2), 89-108.
