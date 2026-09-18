@@ -62,18 +62,12 @@ ott.assert_almost_equal(fDiffFF.getValues(), vals1 - vals2)
 
 # incompatible meshes are rejected
 otherMesh = ot.RegularGrid(0, 2, 4)
-try:
+with ott.assert_raises(TypeError):
     f1 + ot.Field(otherMesh, vals1)
-    assert False, "different meshes should raise"
-except Exception:
-    pass
 
 # incompatible dimensions are rejected
-try:
+with ott.assert_raises(TypeError):
     f1 + ot.Field(mesh, vals1.getMarginal(0))
-    assert False, "different dimensions should raise"
-except Exception:
-    pass
 
 # centering a process sample, see issue #1475
 processSample = ot.ProcessSample(mesh, 3, 3)
