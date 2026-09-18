@@ -185,10 +185,12 @@ void WrappedNormal::computeNormalization()
   sigmaEig_ = sigmaSym.computeEVInPlace(sigmaEigVec_);
   Scalar logDetSigma = 0.0;
   maxEig_ = 0.0;
+  minEig_ = SpecFunc::MaxScalar;
   for (UnsignedInteger i = 0; i < d; ++i)
   {
     logDetSigma += std::log(sigmaEig_[i]);
     maxEig_ = std::max(maxEig_, sigmaEig_[i]);
+    minEig_ = std::min(minEig_, sigmaEig_[i]);
   }
   sigmaDet_ = std::exp(logDetSigma);
   sigmaInv_ = sigma_.inverse();
@@ -238,7 +240,6 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension_ << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger d = dimension_;
-  const Scalar halfP = period_ / 2.0;
 
   // Sum over lattice points (truncated for numerical stability)
   // p(x) = sum_{k in Z^d} N(x + k*period; mu, sigma)
@@ -255,7 +256,8 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
 
   // For efficiency, use the full sum when the total number of terms is reasonable.
   // The total number of lattice points is (2*K+1)^d. We use the full sum when
-  // this is <= maxLatticeTerms_, otherwise fall back to the k=0 approximation.
+  // this is <= maxLatticeTerms_, otherwise fall back to the dual Fourier series
+  // which converges quickly when sigma is large compared to the period.
   // This handles both small d with large K and large d with small K correctly.
   const UnsignedInteger termsPerDim = 2 * K + 1;
   double totalTerms = 1.0;
@@ -298,36 +300,61 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       if (logSum == -SpecFunc::Infinity)
         logSum = logTerm;
       else
-        logSum = logSum + std::log1p(std::exp(logTerm - logSum));
+        logSum = std::max(logSum, logTerm) + std::log1p(std::exp(-std::abs(logTerm - logSum)));
     }
   }
   else
   {
-    // Approximation: use only k=0 term wrapped to fundamental domain
-    // This is only accurate when sigma is small compared to period
-    OSS oss;
-    oss << "WrappedNormal: number of lattice terms (" << totalTerms << ") exceeds WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using k=0 approximation";
-    LOGWARN(oss.str());
-    Point diff(d);
-    for (UnsignedInteger i = 0; i < d; ++i)
-      diff[i] = point[i] - mu_[i];
-
-    // Wrap diff to fundamental domain
-    for (UnsignedInteger i = 0; i < d; ++i)
+    // The wrapped density can be rewritten by Poisson summation as the dual
+    // Fourier series p(x) = (1/period^d) sum_{m in Z^d} exp(-(2*pi*m/period)^T sigma (2*pi*m/period)/2) cos(2*pi*m.(x-mu)/period)
+    // which converges quickly when sigma is large compared to the period,
+    // i.e. exactly in the regime where the direct lattice sum is expensive.
+    // Choose M such that exp(-(2*pi/period)^2 minEig M^2 / 2) < SpecFunc::Precision
+    const UnsignedInteger M = std::max(static_cast<UnsignedInteger>(1),
+                                       static_cast<UnsignedInteger>(std::ceil(period_ * std::sqrt(-2.0 * targetLog) / (SpecFunc::TWOPI * std::sqrt(minEig_)))));
+    const double fourierTerms = std::pow(static_cast<double>(2 * M + 1), static_cast<int>(d));
+    if (fourierTerms <= static_cast<double>(maxLatticeTerms_))
     {
-      Scalar val = diff[i];
-      val = std::fmod(val + halfP, period_);
-      if (val < 0.0) val += period_;
-      val -= halfP;
-      diff[i] = val;
+      // Dual Fourier series over [-M, M]^d
+      const Scalar omega = SpecFunc::TWOPI / period_;
+      const Scalar omegaSquare = omega * omega;
+      Scalar sum = 0.0;
+      std::function<void(UnsignedInteger, Point&)> generateFourier = [&](UnsignedInteger dim, Point& m)
+      {
+        if (dim == d)
+        {
+          // Quadratic form m^T sigma m
+          Scalar quad = 0.0;
+          for (UnsignedInteger i = 0; i < d; ++i)
+            for (UnsignedInteger j = 0; j < d; ++j)
+              quad += static_cast<Scalar>(m[i]) * sigma_(i, j) * static_cast<Scalar>(m[j]);
+          // Phase 2*pi*m.(x-mu)/period
+          Scalar phase = 0.0;
+          for (UnsignedInteger i = 0; i < d; ++i)
+            phase += static_cast<Scalar>(m[i]) * (point[i] - mu_[i]);
+          sum += std::exp(-0.5 * omegaSquare * quad) * std::cos(omega * phase);
+          return;
+        }
+        for (int mi = -static_cast<int>(M); mi <= static_cast<int>(M); ++mi)
+        {
+          m[dim] = static_cast<Scalar>(mi);
+          generateFourier(dim + 1, m);
+        }
+      };
+      Point m(d);
+      generateFourier(0, m);
+      logSum = std::log(sum) - static_cast<Scalar>(d) * std::log(period_);
     }
-
-    Scalar quad = 0.0;
-    for (UnsignedInteger i = 0; i < d; ++i)
-      for (UnsignedInteger j = 0; j < d; ++j)
-        quad += diff[i] * sigmaInv_(i, j) * diff[j];
-
-    logSum = -0.5 * quad - logNormalization_;
+    else
+    {
+      // Even the dual Fourier series requires too many terms: the density is
+      // essentially uniform on the torus, so use the uniform limit 1/period^d
+      // which is properly normalized.
+      OSS oss;
+      oss << "WrappedNormal: number of lattice terms (" << totalTerms << ") exceeds WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
+      LOGWARN(oss.str());
+      logSum = -static_cast<Scalar>(d) * std::log(period_);
+    }
   }
 
   return logSum;

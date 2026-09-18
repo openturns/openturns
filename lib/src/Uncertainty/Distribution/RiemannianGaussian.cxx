@@ -561,9 +561,10 @@ void RiemannianGaussian::setParameter(const Point & parameter)
       sigma(i, j) = parameter[idx++];
 
   const Scalar w = getWeight();
+  const Scalar epsilon = epsilon_;
   *this = RiemannianGaussian(mean, sigma);
   setWeight(w);
-  setEpsilon(epsilon_);
+  setEpsilon(epsilon);
 }
 
 Description RiemannianGaussian::getParameterDescription() const

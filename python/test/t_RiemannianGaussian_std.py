@@ -106,6 +106,12 @@ ott.assert_almost_equal(new_dist.getParameter(), param, 1e-12, 0.0)
 with ott.assert_raises(TypeError):
     distribution.setParameter([1.0] * 5)
 
+# setParameter preserves a custom epsilon
+custom_eps = 1e-9
+new_dist.setEpsilon(custom_eps)
+new_dist.setParameter(param)
+ott.assert_almost_equal(new_dist.getEpsilon(), custom_eps, 1e-12, 0.0)
+
 # getParameterDescription
 desc = distribution.getParameterDescription()
 assert desc.getSize() == 3 + 9
