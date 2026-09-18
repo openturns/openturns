@@ -54,4 +54,10 @@ Evaluate the function:
 
 >>> x = [1.0]
 >>> y = f(x)
+
+Notes
+-----
+- ``LinearCombinationFunction-MergeDuplicates``: when set to ``True``,
+  the parameter constructor flattens nested linear combinations and sums
+  the weights of identical atoms. Default is ``False``.
 )RAW"

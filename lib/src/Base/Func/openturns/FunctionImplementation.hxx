@@ -75,6 +75,42 @@ public:
   /** Multiplication of two 1D output functions with the same input dimension */
   virtual FunctionImplementation operator * (const Implementation & p_right) const;
 
+  /** Multiplication of a 1D output function implementation and a function with the same input dimension */
+  virtual FunctionImplementation operator * (const Function & right) const;
+
+  /** Multiplication of a function implementation by a scalar */
+  virtual FunctionImplementation operator * (const Scalar & scalar) const;
+
+  /** Division of two function implementations with the same input dimension; right must have 1D output */
+  virtual FunctionImplementation operator / (const FunctionImplementation & right) const;
+
+  /** Division of two functions with the same input dimension; right must have 1D output */
+  virtual FunctionImplementation operator / (const Implementation & p_right) const;
+
+  /** Division of a function implementation and a function with the same input dimension; right must have 1D output */
+  virtual FunctionImplementation operator / (const Function & right) const;
+
+  /** Addition of two functions with the same input and output dimensions */
+  virtual FunctionImplementation operator + (const FunctionImplementation & right) const;
+
+  /** Addition of two functions with the same input and output dimensions */
+  virtual FunctionImplementation operator + (const Implementation & p_right) const;
+
+  /** Addition of two functions with the same input and output dimensions */
+  virtual FunctionImplementation operator + (const Function & right) const;
+
+  /** Soustraction of two functions with the same input and output dimensions */
+  virtual FunctionImplementation operator - (const FunctionImplementation & right) const;
+
+  /** Soustraction of two functions with the same input and output dimensions */
+  virtual FunctionImplementation operator - (const Implementation & p_right) const;
+
+  /** Soustraction of two functions with the same input and output dimensions */
+  virtual FunctionImplementation operator - (const Function & right) const;
+
+  /** Negation of a function */
+  virtual FunctionImplementation operator - () const;
+
   /** Virtual constructor */
   FunctionImplementation * clone() const override;
 

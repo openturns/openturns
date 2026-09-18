@@ -1481,6 +1481,9 @@ void ResourceMap::loadDefaultConfiguration()
   // LinearCombinationEvaluation //
   addAsScalar("LinearCombinationEvaluation-SmallCoefficient", 0.0);
 
+  // LinearCombinationFunction //
+  addAsBool("LinearCombinationFunction-MergeDuplicates", false);
+
   // DistFunc parameters //
   addAsScalar("DistFunc-Precision", 1.0e-14);
   addAsUnsignedInteger("DistFunc-MaximumIteration", 5000);

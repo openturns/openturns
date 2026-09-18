@@ -153,7 +153,15 @@ where :math:`\forall 1 \leq i \leq N, \,   \vect{c}_i \in \Rset^p`
 
 If the input and output dimensions of two functions are equal
 then we can perform arithmetic operations on these functions
-using the `+`, `-` and `*` operators.
+using the `+`, `-` and `*` operators. The unary `-` operator
+is also available to negate a function.
+
+When one of the operands of a `+` or `-` operation (or the operand
+of a unary `-`) is a linear combination of functions, the result is
+itself a linear combination whose atoms are flattened and whose
+weights are merged: the weights of the atoms that appear in several
+combined linear combinations are summed, and there is no atom which
+is itself a linear combination.
 
 >>> g1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
 ...                          ['x1 + 2 * x2 + x3'])
@@ -162,6 +170,7 @@ using the `+`, `-` and `*` operators.
 >>> g_sum = g1 + g2
 >>> g_difference = g1 - g2
 >>> g_product = g1 * g2
+>>> g_negation = -g1
 
 Create a *Function* from values of the inputs and the outputs:
 

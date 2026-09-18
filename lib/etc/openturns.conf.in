@@ -829,6 +829,9 @@
   <!-- OT::LinearCombinationEvaluation parameters -->
   <LinearCombinationEvaluation-SmallCoefficient value_float="0.0" />
 
+  <!-- OT::LinearCombinationFunction parameters -->
+  <LinearCombinationFunction-MergeDuplicates value_bool="false" />
+
   <!-- OT::DistFunc parameters -->
   <DistFunc-Precision        value_float="1.0e-14"        />
   <DistFunc-MaximumIteration value_int="5000" />

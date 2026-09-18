@@ -70,6 +70,16 @@ Function(const Function & other)
   return new OT::Function( other );
 }
 
+Function __neg__()
+{
+  return -*self;
+}
+
+Function __rmul__(double scalar)
+{
+  return *self * scalar;
+}
+
 
 }
 
