@@ -6,6 +6,18 @@
 
 ==== Major changes ====
 
+ * LinearCombinationDistribution: fuse opposite-weight Poisson atoms into a weighted Skellam atom
+ * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
+ * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
+ * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
+
+==== New ResourceMap keys ====
+ * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
+ * LinearCombinationDistribution-BetaAdaptationEpsilon: target for the estimated mass outside the confidence band (default is 1e-6)
+ * LinearCombinationDistribution-MaximumBeta: upper bound on the confidence band parameter reached by the adaptation (default is 64.0)
+ * LinearCombinationDistribution-BandwidthConvergenceEpsilon: tolerance for the bandwidth nesting check when recycling the characteristic function cache (default is 1e-9)
+ * LinearCombinationDistribution-MaximumPDFLevel: maximal number of levels summed when the PDF or the CDF is evaluated point by point once the confidence band has been adapted (default is 100)
+
 ==== New classes ====
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
@@ -41,6 +53,10 @@
 === Python module ===
  * Add Process sample slicing operator
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
+
+=== Bug fixes ===
+
+ * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
 
 === Miscellaneous ===
 
