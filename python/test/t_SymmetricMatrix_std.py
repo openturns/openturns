@@ -139,3 +139,11 @@ inverseReference = ot.SymmetricMatrix(
 )
 inverseReference /= 67.0
 assert_almost_equal(symmetricMatrix7, inverseReference)
+
+# out of bounds message mentions the offending index, see issue #2502
+m = ot.SymmetricMatrix(1)
+try:
+    m[0, 1] = 2.0
+    assert False, "out of bounds should raise"
+except Exception as e:
+    assert "column dim" in str(e), "message must mention the column dim, got: " + str(e)
