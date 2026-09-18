@@ -11,11 +11,16 @@ Available constructors:
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
-    Input sample
-weight : sequence of float
-    Output weights
+    Proxy of the design matrix: its element of row :math:`i` and column
+    :math:`j` is :math:`\psi_j(\vect{u}_i)`, ie the value of the j-th basis
+    term at the i-th point of the input sample.
+weight : sequence of positive floats
+    Statistical weights :math:`w_i` of the equations, of size equal to the
+    size of the input sample.
+    By default, all the weights are equal to 1.
 indices : sequence of int
-    Indices allowed in the basis
+    Indices of the basis terms retained as columns of the design matrix.
+    By default, all the terms are used.
 design : 2-d sequence of float
     A priori known design matrix
 
@@ -25,11 +30,24 @@ CholeskyMethod, SVDMethod, QRMethod
 
 Notes
 -----
-Solve the least-squares problem:
+Solve the weighted least-squares problem:
 
 .. math::
 
-    \vect{a} = \argmin_{\vect{b} \in \Rset^P} ||y - \vect{b}^{\intercal} \vect{\Psi}(\vect{U})||^2
+    \vect{a}  = \argmin_{\vect{b} \in \Rset^P}
+    \left\|\mat{W}^{1/2} \left(\vect{y} - \mat{\Psi}(\mat{U}) \vect{b}\right)\right\|_2^2
+
+where:
+
+- :math:`\vect{y} \in \Rset^n` is the output sample,
+- :math:`\mat{U}` is the input sample of :math:`n` points
+  :math:`\vect{u}_i`,
+- :math:`\mat{\Psi}(\mat{U})` is the design matrix: its element of row
+  :math:`i` and column :math:`j` is :math:`\psi_j(\vect{u}_i)`,
+- :math:`\mat{W} = \mathrm{diag}(w_1, \dots, w_n)` is the diagonal matrix
+  built from the *weights*,
+- the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
+  selected basis terms.
 
 Examples
 --------
@@ -115,14 +133,19 @@ OT_LeastSquaresMethod_getInitialIndices_doc
 %define OT_LeastSquaresMethod_solve_doc
 R"RAW(Solve the least-squares problem.
 
+The returned vector minimizes the weighted norm of the residual with
+respect to the second member :math:`\vect{b}`, as described in the
+mathematical definition of the class:
+
 .. math::
 
-    \vect{a} = \argmin_{\vect{x} \in \Rset^P} ||M\vect{x}-\vect{b}||^2
+    \vect{a} = \argmin_{\vect{x} \in \Rset^P}
+    \left\|\mat{W}^{1/2} \left(\mat{\Psi} \vect{x} - \vect{b}\right)\right\|_2^2
 
 Parameters
 ----------
 b : sequence of float
-    Second term of the equation
+    Second member of the equation, typically the output sample.
 
 Returns
 -------
@@ -135,21 +158,22 @@ OT_LeastSquaresMethod_solve_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_solveNormal_doc
-"Solve the least-squares problem using normal equation.
+R"RAW( Solve the least-squares problem using normal equation.
 
 .. math::
 
-    M^T*M*x=M^T*b
+    \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi} \, \vect{x}
+    = \mat{\Psi}^\intercal \mat{W} \, \vect{b}
 
 Parameters
 ----------
 b : sequence of float
-    Second term of the equation
+    Second member of the equation.
 
 Returns
 -------
 x : :class:`~openturns.Point`
-    The solution."
+    The solution.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solveNormal
 OT_LeastSquaresMethod_solveNormal_doc
@@ -157,16 +181,18 @@ OT_LeastSquaresMethod_solveNormal_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getGramInverse_doc
-"Get the inverse Gram matrix of input sample.
+R"RAW(Get the inverse Gram matrix of the input sample.
+
+The weighted Gram matrix is defined as:
 
 .. math::
 
-    G^{-1} = (X^T * X)^{-1}
+    \mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}
 
 Returns
 -------
-c : :class:`~openturns.CovarianceMatrix`
-    The inverse Gram matrix."
+gramInverse : :class:`~openturns.CovarianceMatrix`
+    The inverse :math:`\mat{G}^{-1}` of the weighted Gram matrix.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverse
 OT_LeastSquaresMethod_getGramInverse_doc
@@ -174,16 +200,16 @@ OT_LeastSquaresMethod_getGramInverse_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getGramInverseDiag_doc
-"Get the diagonal of the inverse Gram matrix.
+R"RAW(Get the diagonal of the inverse Gram matrix.
 
 .. math::
 
-    diag(G^{-1}) = diag((X^T * X)^{-1})
+    \mathrm{diag}(\mat{G}^{-1}) = \mathrm{diag}\left((\mat{\Psi}^\intercal \mat{W} \, \mat{\Psi})^{-1}\right)
 
 Returns
 -------
-d : :class:`~openturns.Point`
-    The diagonal of the inverse Gram matrix."
+diagGramInverse : :class:`~openturns.Point`
+    The diagonal of the inverse of the weighted Gram matrix.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseDiag
 OT_LeastSquaresMethod_getGramInverseDiag_doc
@@ -191,16 +217,16 @@ OT_LeastSquaresMethod_getGramInverseDiag_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getGramInverseTrace_doc
-"Get the trace of the inverse Gram matrix.
+R"RAW(Get the trace of the inverse Gram matrix.
 
 .. math::
 
-    Tr(G^{-1}) = Tr(x^T * x)^{-1}
+    \mathrm{Tr}(\mat{G}^{-1}) = \mathrm{Tr}\left((\mat{\Psi}^\intercal \mat{W} \, \mat{\Psi})^{-1}\right)
 
 Returns
 -------
-x : float
-    The trace of inverse Gram matrix."
+trace : float
+    The trace of the inverse of the weighted Gram matrix.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseTrace
 OT_LeastSquaresMethod_getGramInverseTrace_doc
@@ -208,16 +234,17 @@ OT_LeastSquaresMethod_getGramInverseTrace_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getH_doc
-"Get the projection matrix H.
+R"RAW(Get the symmetric WLS kernel H.
 
 .. math::
 
-    H = X * (X^T * X)^{-1} * X^T
+    \mat{H} = \mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal
 
 Returns
 -------
 h : :class:`~openturns.SymmetricMatrix`
-    The projection matrix H."
+    The symmetric WLS kernel H. For non-unit weights, the fitted values
+    are :math:`\mat{H}\mat{W}\vect{b}`.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getH
 OT_LeastSquaresMethod_getH_doc
@@ -225,16 +252,17 @@ OT_LeastSquaresMethod_getH_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getHDiag_doc
-"Get the diagonal of the projection matrix H.
+R"RAW(Get the diagonal of the symmetric WLS kernel H.
 
 .. math::
 
-    H = X * (X^T * X)^{-1} * X^T
+    \mathrm{diag}(\mat{H}) = \mathrm{diag}\left(\mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal\right)
 
 Returns
 -------
-d : :class:`~openturns.Point`
-    The diagonal of H."
+diagH : :class:`~openturns.Point`
+    The diagonal of the symmetric WLS kernel H. For non-unit weights, the
+    fitted values are :math:`\mat{H}\mat{W}\vect{b}`.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag
 OT_LeastSquaresMethod_getHDiag_doc
@@ -242,7 +270,12 @@ OT_LeastSquaresMethod_getHDiag_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_computeWeightedDesign_doc
-"Build the design matrix.
+R"RAW(Build the design matrix.
+
+The element of row :math:`i` and column :math:`j` of the returned matrix
+is :math:`w_i^{1/2} \psi_j(\vect{u}_i)`: the rows are scaled by the square
+root of the weights, and the columns are restricted to the selected
+indices.
 
 Parameters
 ----------
@@ -252,7 +285,7 @@ whole : bool, defaults to False
 Returns
 -------
 psiAk : :class:`~openturns.Matrix`
-    The design matrix"
+    The design matrix)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::computeWeightedDesign
 OT_LeastSquaresMethod_computeWeightedDesign_doc
