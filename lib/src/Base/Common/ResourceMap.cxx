@@ -1020,6 +1020,10 @@ void ResourceMap::loadDefaultConfiguration()
   // Compact parameters //
   addAsUnsignedInteger("Compact-DefaultHalfMaximumSize", 1024);
 
+  // MulticollinearityAnalysis parameters //
+  addAsUnsignedInteger("MulticollinearityAnalysis-DimensionThresholdForLMGAndPMVDParallelization", 12);
+  addAsUnsignedInteger("MulticollinearityAnalysis-MaximumInputDimensionForLMGAndPMVD", 28);
+
   // FaureSequence parameters //
   addAsUnsignedInteger("FaureSequence-InitialSeed", 1);
 

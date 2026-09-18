@@ -7,7 +7,7 @@ HSIC-based analyses must be performed by using the derived classes: :class:`~ope
 
 See also
 --------
-:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorGlobalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`"
+HSICEstimatorConditionalSensitivity, HSICEstimatorGlobalSensitivity, HSICEstimatorTargetSensitivity"
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation
 OT_HSICEstimator_doc
