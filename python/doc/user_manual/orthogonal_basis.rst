@@ -75,6 +75,23 @@ Refer to :ref:`orthonormal_polynomials`.
     KrawtchoukFactory
     MeixnerFactory
 
+Fast Gauss quadrature rules
+---------------------------
+
+.. warning::
+    These functions are experimental and likely to be modified in future releases.
+    They must be imported from the ``openturns.experimental`` submodule.
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    experimental.FastGaussQuadrature
+    experimental.FastHermite
+    experimental.FastJacobi
+    experimental.FastLaguerre
+    experimental.FastLegendre
+
 Orthogonal univariate function families
 ---------------------------------------
 
