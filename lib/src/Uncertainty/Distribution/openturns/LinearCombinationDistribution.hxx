@@ -237,10 +237,10 @@ public:
   Matrix getWeights() const;
 
   /** Get a position indicator for a 1D distribution */
-  Scalar getPositionIndicator() const;
+  Scalar getPositionIndicator() const override;
 
   /** Get a dispersion indicator for a 1D distribution */
-  Scalar getDispersionIndicator() const;
+  Scalar getDispersionIndicator() const override;
 
   /** BlockMin accessor */
   void setBlockMin(const UnsignedInteger blockMin);

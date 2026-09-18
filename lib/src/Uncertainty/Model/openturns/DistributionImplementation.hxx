@@ -792,10 +792,10 @@ public:
   Scalar getCDFEpsilon() const;
 
   /** Get a position indicator for a 1D distribution */
-  Scalar getPositionIndicator() const;
+  virtual Scalar getPositionIndicator() const;
 
   /** Get a dispersion indicator for a 1D distribution */
-  Scalar getDispersionIndicator() const;
+  virtual Scalar getDispersionIndicator() const;
 
   /** Is it safe to compute PDF/CDF etc in parallel? */
   Bool isParallel() const;
