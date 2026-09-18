@@ -321,6 +321,7 @@ private:
   Scalar computeEquivalentNormalCDFSum(const Scalar s, const Scalar t) const;
 
   friend struct EquivalentNormalPDFSumPolicy;
+  friend struct DeltaContributionAccumulator;
   Scalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
                                        UnsignedInteger imax, UnsignedInteger & levelMax) const;
 public:

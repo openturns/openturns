@@ -1235,7 +1235,79 @@ private:
    formula 5.5.
    We use an incremental update of the trigonometric functions and reduce the complex arithmetic to a real
    arithmetic for performance purpose.
+ */
 
+/* Accumulate the contributions of the points of one level of the grid, either
+   from the characteristic values cache or by direct evaluation. The range is
+   decomposed into fixed size chunks whose partial sums are stored and later
+   combined in index order, so the result does not depend on the scheduling
+   while allowing multithreaded evaluation. */
+struct DeltaContributionAccumulator
+{
+  const LinearCombinationDistribution & mixture_;
+  const Sample & skinPoints_;
+  const Point & point_;
+  const Bool useCache_;
+  const UnsignedInteger fromIndex_;
+  const UnsignedInteger numberOfPoints_;
+  const UnsignedInteger chunkSize_;
+  Collection<Scalar> & partialContributions_;
+  Collection<Scalar> & partialErrors_;
+
+  DeltaContributionAccumulator(const LinearCombinationDistribution & mixture,
+                               const Sample & skinPoints,
+                               const Point & point,
+                               const Bool useCache,
+                               const UnsignedInteger fromIndex,
+                               const UnsignedInteger numberOfPoints,
+                               const UnsignedInteger chunkSize,
+                               Collection<Scalar> & partialContributions,
+                               Collection<Scalar> & partialErrors)
+    : mixture_(mixture)
+    , skinPoints_(skinPoints)
+    , point_(point)
+    , useCache_(useCache)
+    , fromIndex_(fromIndex)
+    , numberOfPoints_(numberOfPoints)
+    , chunkSize_(chunkSize)
+    , partialContributions_(partialContributions)
+    , partialErrors_(partialErrors)
+  {}
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+  {
+    const UnsignedInteger dimension = mixture_.dimension_;
+    Point pti(dimension);
+    for (UnsignedInteger c = r.begin(); c != r.end(); ++c)
+    {
+      const UnsignedInteger iBegin = c * chunkSize_;
+      const UnsignedInteger iEnd = std::min(iBegin + chunkSize_, numberOfPoints_);
+      Scalar contributionChunk = 0.0;
+      Scalar errorChunk = 0.0;
+      for (UnsignedInteger i = iBegin; i < iEnd; ++i)
+      {
+        Complex deltaValue(0.0, 0.0);
+        if (useCache_) deltaValue = mixture_.characteristicValuesCache_[fromIndex_ + i - 1];
+        else
+        {
+          for (UnsignedInteger j = 0; j < dimension; ++j) pti[j] = skinPoints_(i, j);
+          deltaValue = mixture_.computeDeltaCharacteristicFunction(pti);
+        }
+        Scalar hX = 0.0;
+        for (UnsignedInteger j = 0; j < dimension; ++j) hX += skinPoints_(i, j) * point_[j];
+        const Scalar sinHX = std::sin(hX);
+        const Scalar cosHX = std::cos(hX);
+        const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
+        contributionChunk += contribution;
+        errorChunk += std::abs(contribution);
+      } // points of the chunk
+      partialContributions_[c] = contributionChunk;
+      partialErrors_[c] = errorChunk;
+    } // chunks
+  }
+}; /* end struct DeltaContributionAccumulator */
+
+/*
    Here, we recall the Poisson summation formula:
    \sum_{k\in Z}p(x+2k\pi/h) = h/2\pi\sum_{j\in Z}\phi(jh)\exp(-Ihjx)
    We can rewrite this formula as:
@@ -1315,10 +1387,25 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
   UnsignedInteger k = 1;
   const Scalar precision = pdfPrecision_;
   const UnsignedInteger kmin = 1 << blockMin_;
-  const UnsignedInteger kmax = 1 << blockMax_;
+  UnsignedInteger kmax = 1 << blockMax_;
+  // Bound the number of blocks: their cost grows geometrically with the
+  // number of levels, so a slowly decaying characteristic function would
+  // otherwise lead to a prohibitive cost
+  Bool kmaxCapped = false;
+  {
+    const UnsignedInteger cappedKmax = std::min(kmax, ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel"));
+    if (cappedKmax < kmax)
+    {
+      kmax = cappedKmax;
+      kmaxCapped = true;
+    }
+  }
   // hX is only useful in 1D
   Scalar hX = referenceBandwidth_[0] * point[0];
   Scalar error = 2.0 * precision;
+  // Warm up the equivalent normal covariance cache before entering the
+  // parallel section to avoid a data race on isAlreadyComputedCovariance_
+  if (dimension_ > 1) equivalentNormal_.getCovariance();
   LOGDEBUG(OSS() << std::setprecision(20) << "h=" << referenceBandwidth_ << ", equivalent normal pdf sum=" << value << ", k=" << k << ", precision=" << precision << ", kmin=" << kmin << ", kmax=" << kmax << ", error=" << error);
   while ( (k < kmin) || ( (k < kmax) && (error > precision) ) )
   {
@@ -1338,47 +1425,29 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
       } // dimension_ == 1
       else
       {
-        Sample skinPoints(gridMesher_.getPoints(m));
+        const Sample skinPoints(gridMesher_.getPoints(m));
         const UnsignedInteger fromIndex = gridMesher_.getOffsetLevel(m);
         const UnsignedInteger lastIndex = gridMesher_.getOffsetLevel(m + 1) - 1;
-        if (lastIndex <= maxSize_)
+        // If the level fits into the cache, update it once sequentially so
+        // that the level is then entirely available for concurrent reads
+        const Bool useCache = lastIndex <= maxSize_;
+        if (useCache && (lastIndex > storedSize_))
+          updateCacheDeltaCharacteristicFunction(skinPoints);
+        // Split the accumulation into fixed size chunks accumulated
+        // independently then summed in index order
+        const UnsignedInteger numberOfPoints = skinPoints.getSize();
+        const UnsignedInteger chunkSize = 1024;
+        const UnsignedInteger numberOfChunks = (numberOfPoints + chunkSize - 1) / chunkSize;
+        Collection<Scalar> partialContributions(numberOfChunks, 0.0);
+        Collection<Scalar> partialErrors(numberOfChunks, 0.0);
+        const DeltaContributionAccumulator accumulator(*this, skinPoints, point, useCache, fromIndex, numberOfPoints, chunkSize, partialContributions, partialErrors);
+        TBBImplementation::ParallelFor(0, numberOfChunks, accumulator, 1);
+        for (UnsignedInteger c = 0; c < numberOfChunks; ++c)
         {
-          if (lastIndex > storedSize_)
-            updateCacheDeltaCharacteristicFunction(skinPoints);
-          // Level is now entirely on cache
-          for (UnsignedInteger i = 0; i < skinPoints.getSize(); ++i)
-          {
-            const Complex deltaValue(characteristicValuesCache_[fromIndex + i - 1]);
-            hX = 0.0;
-            for (UnsignedInteger j = 0; j < dimension_; ++j) hX += skinPoints(i, j) * point[j];
-            const Scalar sinHX = std::sin(hX);
-            const Scalar cosHX = std::cos(hX);
-            const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
-            error += std::abs(contribution);
-            sumContributions += contribution;
-            LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution << ", error=" << error);
-          } // skinPoints
-        } // lastIndex <= maxSize_
-        else
-        {
-          Point pti(dimension_);
-          for (UnsignedInteger i = 0; i < skinPoints.getSize(); ++i)
-          {
-            hX = 0.0;
-            for (UnsignedInteger j = 0; j < dimension_; ++j)
-            {
-              pti[j] = skinPoints(i, j);
-              hX += skinPoints(i, j) * point[j];
-            }
-            const Complex deltaValue(computeDeltaCharacteristicFunction(pti));
-            const Scalar sinHX = std::sin(hX);
-            const Scalar cosHX = std::cos(hX);
-            const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
-            error += std::abs(contribution);
-            sumContributions += contribution;
-            LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution << ", error=" << error);
-          } // skinPoints
-        } // lastIndex > maxSize_
+          sumContributions += partialContributions[c];
+          error += partialErrors[c];
+        }
+        LOGDEBUG(OSS() << "m=" << m << ", sumContributions=" << sumContributions << ", error=" << error);
       } // dimension > 1
     }
     error *= referenceBandwidthFactor_;
@@ -1391,6 +1460,10 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
     value += sumContributions;
     k *= 2;
   } // while
+  // Warn if the summation stopped on the block limit without reaching the
+  // requested precision: the result may be noticeably inaccurate
+  if (kmaxCapped && (error > precision))
+    LOGWARN(OSS() << "Warning! In dimension " << dimension_ << ", the pointwise PDF summation stopped after " << k / 2 << " blocks without reaching the requested precision=" << precision << ". The result may be inaccurate: consider evaluating such a mixture on a grid using drawPDF() instead.");
   // For very low level of PDF, the computed value can be slightly negative. Round it up to zero.
   if (value < 0.0) value = 0.0;
   return value;
@@ -2485,7 +2558,18 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
   Scalar value = computeEquivalentNormalCDFSum(lowerBound, upperBound);
   UnsignedInteger k = 1;
   const UnsignedInteger kmin = 1 << blockMin_;
-  const UnsignedInteger kmax = 1 << blockMax_;
+  UnsignedInteger kmax = 1 << blockMax_;
+  // Bound the number of blocks: a slowly decaying characteristic function
+  // would otherwise lead to a prohibitive cost
+  Bool kmaxCapped = false;
+  {
+    const UnsignedInteger cappedKmax = std::min(kmax, ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel"));
+    if (cappedKmax < kmax)
+    {
+      kmax = cappedKmax;
+      kmaxCapped = true;
+    }
+  }
   while ( (k < kmax) && (error > std::max(precision, std::abs(precision * value)) || k < kmin) )
   {
     error = 0.0;
@@ -2500,6 +2584,8 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
       value += contribution;
       error += std::abs(contribution);
     }
+    if (kmaxCapped && (error > std::max(precision, std::abs(precision * value))))
+      LOGWARN(OSS() << "Warning! The pointwise CDF summation stopped after " << k << " blocks without reaching the requested precision=" << precision << ". Tail quantities may be inaccurate.");
     k *= 2;
   }
   // For extrem values of the argument, the computed value can be slightly outside of [0,1]. Truncate it.
@@ -3163,6 +3249,11 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point 
     the current density value.
   */
   if (gridStep.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: invalid grid dimension";
+  // The number of levels is bounded in order to avoid a prohibitive cost when
+  // the convergence is slow. imax == 0 means that no caller-provided bound is
+  // available, in which case the global bound is used.
+  const UnsignedInteger maximumLevel = ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel");
+  const UnsignedInteger maxLevel = (imax == 0 ? maximumLevel : std::min(imax, maximumLevel));
   if (dimension_ == 1)
   {
     const Scalar x = y[0];
@@ -3194,7 +3285,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point 
   levelMax = imax;
   Point skin1(dimension_);
   Point skin2(dimension_);
-  for (UnsignedInteger i = 1; (imax == 0 || i < imax) && (delta > gaussian_pdf * epsilon); ++i)
+  for (UnsignedInteger i = 1; (i < maxLevel) && (delta > gaussian_pdf * epsilon); ++i)
   {
     const Sample skinPoints(grid.getPoints(i));
 
