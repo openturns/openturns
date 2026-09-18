@@ -25,6 +25,7 @@ print(f"exact probability={pf_ref}")
 
 # FORM analysis
 optimAlgo = ot.Cobyla()
+optimAlgo.setMaximumConstraintError(1e-4)
 optimAlgo.setStartingPoint(distribution.getMean())
 algoFORM = ot.FORM(optimAlgo, event)
 algoFORM.run()

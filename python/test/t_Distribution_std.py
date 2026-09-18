@@ -97,3 +97,14 @@ cf = dist1.computeCharacteristicFunction(x)
 dist2 = ot.Rice()
 cf = dist2.computeCharacteristicFunction(x)
 ott.assert_almost_equal(cf, 2.655225e-12 + 1.321260e-18j)
+
+# DistributionCollection slicing
+dc = ot.DistributionCollection([ot.Normal(), ot.Uniform(), ot.Exponential(), ot.Gamma(2.0, 3.0)])
+sliced_dc = dc[1:3]
+assert isinstance(sliced_dc, ot.DistributionCollection)
+assert sliced_dc.getSize() == 2
+assert sliced_dc[0].getMean()[0] == ot.Uniform().getMean()[0]
+seq_dc = dc[[3, 0]]
+assert seq_dc.getSize() == 2
+dc[0:2] = ot.DistributionCollection([ot.Triangular(), ot.Beta(2.0, 2.0, 0.0, 1.0)])
+assert dc.getSize() == 4

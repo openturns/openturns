@@ -156,7 +156,7 @@ Point operator + (const Point & lhs,
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
-    throw InvalidArgumentException(HERE)
+    throw InvalidDimensionException(HERE)
         << "Points of different dimensions cannot be added (LHS dimension = "
         << n
         << "; RHS dimension = "
@@ -177,7 +177,7 @@ Point & Point::operator +=(const Point & other)
 {
   int n = getDimension();
   if (n != (int)other.getDimension())
-    throw InvalidArgumentException(HERE)
+    throw InvalidDimensionException(HERE)
         << "Points of different dimensions cannot be added (LHS dimension = "
         << n
         << "; RHS dimension = "
@@ -196,7 +196,7 @@ Point operator - (const Point & lhs, const Point & rhs)
 {
   int n = lhs.getDimension();
   if (n != (int)rhs.getDimension())
-    throw InvalidArgumentException(HERE)
+    throw InvalidDimensionException(HERE)
         << "Points of different dimensions cannot be subtracted (LHS dimension = "
         << n
         << "; RHS dimension = "
@@ -226,7 +226,7 @@ Point & Point::operator -=(const Point & other)
 {
   int n = getDimension();
   if (n != (int)other.getDimension())
-    throw InvalidArgumentException(HERE)
+    throw InvalidDimensionException(HERE)
         << "Points of different dimensions cannot be subtracted (LHS dimension = "
         << n
         << "; RHS dimension = " <<
@@ -309,8 +309,8 @@ Scalar Point::dot(const Point & rhs) const
 {
   int n = getDimension();
   if (n != (int)rhs.getDimension())
-    throw InvalidArgumentException(HERE)
-        << "Points of different dimensions cannot be added (LHS dimension = "
+    throw InvalidDimensionException(HERE)
+        << "Points of different dimensions cannot have dot product (LHS dimension = "
         << n
         << "; RHS dimension = "
         << rhs.getDimension();
