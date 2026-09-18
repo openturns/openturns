@@ -36,7 +36,7 @@ static const Factory<CurlFreeModel> Factory_CurlFreeModel;
     If the nominal symmetric step collapses (huge coordinates) or overflows near the
     finite-coordinate limits, the endpoints fall back to adjacent representable
     neighbors, and the stencil becomes one-sided at the very ends of the range. */
-static void curlFreeStencil(Scalar & plus,
+static void CurlFreeStencil(Scalar & plus,
                                  Scalar & minus,
                                  const Scalar value,
                                  const Scalar targetStep)
@@ -125,7 +125,7 @@ SquareMatrix CurlFreeModel::operator()(const Point & s, const Point & t) const
     const Scalar epsilon = (isotropic ? scale[0] : scale[j]) * baseEps;
     Scalar tPlusValue = 0.0;
     Scalar tMinusValue = 0.0;
-    curlFreeStencil(tPlusValue, tMinusValue, t[j], epsilon);
+    CurlFreeStencil(tPlusValue, tMinusValue, t[j], epsilon);
     Point tPlus(t);
     Point tMinus(t);
     tPlus[j] = tPlusValue;
@@ -158,7 +158,7 @@ SquareMatrix CurlFreeModel::operator()(const Point & tau) const
     const Scalar epsilon = (isotropic ? scale[0] : scale[j]) * baseEps;
     Scalar tauPlusValue = 0.0;
     Scalar tauMinusValue = 0.0;
-    curlFreeStencil(tauPlusValue, tauMinusValue, tau[j], epsilon);
+    CurlFreeStencil(tauPlusValue, tauMinusValue, tau[j], epsilon);
     Point tauPlus(tau);
     Point tauMinus(tau);
     tauPlus[j] = tauPlusValue;
