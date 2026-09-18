@@ -148,6 +148,7 @@
 #include "openturns/NormalFactory.hxx"
 #include "openturns/NormalGamma.hxx"
 #include "openturns/ParametrizedDistribution.hxx"
+#include "openturns/PiecewiseLinearDistribution.hxx"
 #include "openturns/Pareto.hxx"
 #include "openturns/ParetoFactory.hxx"
 #include "openturns/PlackettCopula.hxx"

@@ -76,6 +76,9 @@ Continuous parametric distributions
     :template: classWithPlot.rst_t
     NormalGamma
 
+    :template: classWithPlot.rst_t
+    experimental.PiecewiseLinearDistribution
+
     :template: Distribution.rst_t
     Pareto
     Rayleigh
