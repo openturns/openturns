@@ -97,3 +97,27 @@ cf = dist1.computeCharacteristicFunction(x)
 dist2 = ot.Rice()
 cf = dist2.computeCharacteristicFunction(x)
 ott.assert_almost_equal(cf, 2.655225e-12 + 1.321260e-18j)
+
+# minimum volume level sets for several levels, see issue #1734
+distribution = ot.Normal(2.0, 3.0)
+probs = [0.5, 0.8, 0.95]
+levelSets, thresholds = distribution.computeMinimumVolumeLevelSetCollectionWithThreshold(probs)
+assert levelSets.getSize() == 3, "collection size"
+assert thresholds.getSize() == 3, "threshold size"
+# consistent with the scalar version
+for i, p in enumerate(probs):
+    _, refThreshold = distribution.computeMinimumVolumeLevelSetWithThreshold(p)
+    ott.assert_almost_equal(thresholds[i], refThreshold, 1e-6, 0.0)
+# shared-sampling path agrees with the analytic path
+ot.ResourceMap.SetAsBool("Distribution-MinimumVolumeLevelSetBySampling", True)
+levelSetsQMC, thresholdsQMC = distribution.computeMinimumVolumeLevelSetCollectionWithThreshold(
+    probs
+)
+ot.ResourceMap.SetAsBool("Distribution-MinimumVolumeLevelSetBySampling", False)
+ott.assert_almost_equal(thresholdsQMC, thresholds, 0.0, 1e-4)
+# invalid probability raises
+try:
+    distribution.computeMinimumVolumeLevelSetCollectionWithThreshold([0.5, 1.5])
+    assert False, "invalid probability should raise"
+except Exception:
+    pass
