@@ -21,6 +21,8 @@
 #include <cmath>
 #include <iomanip>
 #include <algorithm>
+#include <unordered_map>
+#include <cstdint>
 
 #include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -41,6 +43,7 @@
 #include "openturns/Bernoulli.hxx"
 #include "openturns/Binomial.hxx"
 #include "openturns/Poisson.hxx"
+#include "openturns/Skellam.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/TBBImplementation.hxx"
@@ -84,6 +87,7 @@ LinearCombinationDistribution::LinearCombinationDistribution()
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -120,6 +124,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -160,6 +165,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -201,6 +207,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -243,6 +250,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -282,6 +290,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -319,6 +328,7 @@ LinearCombinationDistribution::LinearCombinationDistribution(const DistributionC
   , characteristicValuesCache_(0)
   , alpha_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultAlpha" ))
   , beta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
+  , bandBeta_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultBeta" ))
   , pdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "LinearCombinationDistribution-DefaultCDFEpsilon" ))
   , equivalentNormal_()
@@ -341,6 +351,8 @@ void LinearCombinationDistribution::computeRange()
   const UnsignedInteger size = distributionCollection_.getSize();
   // First, compute the *exact* range. It will be used to clip the asymptotic range if Poisson's formula is used (ie the collection has a size greater than the dimension)
   const UnsignedInteger dimension = getDimension();
+  bandCenter_ = Point(dimension);
+  bandScale_ = Point(dimension);
   if (dimension == 1 && size == 1)
   {
     const Scalar w = weights_(0, 0);
@@ -399,7 +411,9 @@ void LinearCombinationDistribution::computeRange()
     for (UnsignedInteger j = 0; j < dimension; ++j)
       s[j] = std::sqrt(s[j]);
   } // dimension > 1
-  Interval intersection(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+  bandCenter_ = m;
+  bandScale_ = s;
+  Interval intersection(range.intersect(Interval(m - s * bandBeta_, m + s * bandBeta_)));
   intersection.setFiniteLowerBound(finiteLowerBound); // restore flags
   intersection.setFiniteUpperBound(finiteUpperBound);
   setRange(intersection);
@@ -451,8 +465,7 @@ String LinearCombinationDistribution::__str__(const String & offset) const
         else oss << " - ";
       }
       else if (w < 0.0) oss << "-";
-      const String coeff(OSS() << std::abs(w));
-      if (coeff != "1") oss << std::abs(w) << " * ";
+      if (std::abs(std::abs(w) - 1.0) > SpecFunc::Precision) oss << std::abs(w) << " * ";
       oss << distributionCollection_[i];
     }
     // skip to new line
@@ -475,6 +488,8 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     const Bool simplifyAtoms)
 {
   weights_ = weights;
+  // The confidence band adaptation restarts from the configured beta
+  bandBeta_ = beta_;
   // Size will be updated during the several treatments of the collection
   UnsignedInteger size = coll.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LinearCombinationDistribution based on an empty distribution collection.";
@@ -609,12 +624,16 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     // Discrete optimizations:
     // + The Bernoulli and Binomial atoms can be merged into a unique Binomial as soon as they share the same value for p and the same weight
     // + The Poisson atoms can be merged into a unique Poisson as soon as they share the same weight
-    // + Poisson atoms with opposite weights could be merged into a Skellam atom but it is not clear if it is worth the effort...
+    // + Poisson atoms with opposite weights are merged into a Skellam atom weighted by the absolute value of their weights
     // + The Discrete atoms can be grouped into Discrete atoms of larger support, if these merged atoms have a support of reasonable size.
     //
     // Mixed optimizations:
     //
-    // + A continuous atom can be merged with a discrete atom to form a Mixture. This simplification can be done for each pair (continuous,discrete). It is not clear if some pairings are to prefer to others.
+    // + A continuous atom could be merged with a discrete atom to form a
+    //   Mixture. This used to be done for each (continuous, discrete) pair
+    //   but the pointwise evaluation of such mixtures turned out to be more
+    //   costly than the generic Poisson summation applied to the raw atoms,
+    //   so it is no longer performed.
     distributionCollection_ = DistributionCollection(0);
     Sample reducedWeights(0, dimension);
     if (dimension == 1)
@@ -809,6 +828,29 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
         }
       } // discreteAtoms
       // Add the aggregated Poisson if any
+      // First, fuse the opposite-weight Poisson atoms into a Skellam atom
+      // weighted by the absolute value of their weights:
+      // w * (sum_i Poi(l_i) - sum_j Poi(m_j)) = w * Skellam(sum l, sum m)
+      {
+        std::map<Scalar, Scalar>::const_iterator it = poissonMap.begin();
+        while (it != poissonMap.end())
+        {
+          const Scalar w = it->first;
+          if (w > 0.0)
+          {
+            std::map<Scalar, Scalar>::const_iterator opposite = poissonMap.find(-w);
+            if (opposite != poissonMap.end())
+            {
+              distributionCollection_.add(Skellam(it->second, opposite->second));
+              reducedWeights.add(Point(1, w));
+              poissonMap.erase(it++);
+              poissonMap.erase(opposite);
+              continue;
+            }
+          }
+          ++it;
+        } // while opposite-weight Poisson atoms to fuse
+      }
       while (!poissonMap.empty())
       {
         const Scalar w = poissonMap.begin()->first;
@@ -861,7 +903,12 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
               reducedWeights[indexAggregated] = Point(1, 1.0);
             }
             else
+            {
               distributionCollection_[indexAggregated] = firstDiscrete;
+              // The atom may be stored at a place distinct from its initial one, in which case its weight has to be moved as well
+              if (indexAggregated != firstDiscreteIndex)
+                reducedWeights[indexAggregated] = reducedWeights[firstDiscreteIndex];
+            }
             ++indexAggregated;
             firstDiscreteIndex = secondDiscreteIndex;
             firstDiscrete = secondDiscrete;
@@ -915,7 +962,12 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
         // + an aggregated atom with small support (detected because firstDiscreteIndex < firstOtherAtom - 1
         // + a single atom (the second one, but now equals to the first one) (detected because firstDiscreteIndex == firstOtherAtom - 1)
         if (firstDiscreteIndex == firstOtherAtom - 1)
+        {
           distributionCollection_[indexAggregated] = firstDiscrete;
+          // The atom may be stored at a place distinct from its initial one, in which case its weight has to be moved as well
+          if (indexAggregated != firstDiscreteIndex)
+            reducedWeights[indexAggregated] = reducedWeights[firstDiscreteIndex];
+        }
         else
         {
           distributionCollection_[indexAggregated] = FiniteDiscreteDistribution(aggregatedSupport, aggregatedProbabilities);
@@ -929,34 +981,13 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
         firstOtherAtom = distributionCollection_.getSize();
       } // If there are discrete atoms to merge
 
-      // Then perform the continuous/discrete simplification using mixtures
-      // There must be continuous atoms and discrete ones
-      if (firstNonContinuousAtom > 0 && firstNonContinuousAtom != firstOtherAtom)
-      {
-        const SignedInteger firstContinuous = 0;
-        const SignedInteger firstDiscrete = firstNonContinuousAtom;
-        SignedInteger currentContinuous = firstNonContinuousAtom - 1;
-        SignedInteger currentDiscrete = firstOtherAtom - 1;
-        while (currentContinuous >= firstContinuous && currentDiscrete >= firstDiscrete)
-        {
-          const Distribution continuousAtom(distributionCollection_[currentContinuous]);
-          const Scalar continuousWeight = reducedWeights(currentContinuous, 0);
-          Distribution discreteAtom(distributionCollection_[currentDiscrete]);
-          Scalar discreteWeight = reducedWeights(currentDiscrete, 0);
-          const Sample support(discreteAtom.getSupport());
-          DistributionCollection mixtureAtoms;
-          for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-            mixtureAtoms.add(LinearCombinationDistribution(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support(i, 0) * discreteWeight));
-          const Point probabilities(discreteAtom.getProbabilities());
-          // Replace the current continuous atom by the Mixture
-          distributionCollection_[currentContinuous] = Mixture(mixtureAtoms, probabilities);
-          // Remove the current discrete atom
-          distributionCollection_.erase(distributionCollection_.begin() + currentDiscrete);
-          reducedWeights.erase(currentDiscrete);
-          --currentContinuous;
-          --currentDiscrete;
-        } // loop over (continuous, discrete) pairs
-      } // continuous and discrete atoms to merge?
+      // No continuous/discrete simplification: the pairing of each
+      // (continuous, discrete) pair into a Mixture of translated copies of
+      // the continuous atom used to be performed here, but the pointwise
+      // evaluation of such mixtures is more costly than the generic Poisson
+      // summation applied to the raw atoms, while providing the same
+      // accuracy. Continuous and discrete atoms are kept as they are.
+
       // No simplification for other atoms
       distributionCollection_.add(otherAtoms);
       reducedWeights.add(otherWeights);
@@ -1003,8 +1034,10 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     computeCovariance();
     (void) getPositionIndicator();
     (void) getDispersionIndicator();
-    computeReferenceBandwidth();
     computeEquivalentNormal();
+    // Adapt the confidence band: this recomputes the range and the
+    // reference bandwidth, possibly several times
+    adaptBand();
   }
   // In 1D case, collection's size might change
   // When reducing collection to 1, computations become faster
@@ -1219,7 +1252,79 @@ private:
    formula 5.5.
    We use an incremental update of the trigonometric functions and reduce the complex arithmetic to a real
    arithmetic for performance purpose.
+ */
 
+/* Accumulate the contributions of the points of one level of the grid, either
+   from the characteristic values cache or by direct evaluation. The range is
+   decomposed into fixed size chunks whose partial sums are stored and later
+   combined in index order, so the result does not depend on the scheduling
+   while allowing multithreaded evaluation. */
+struct DeltaContributionAccumulator
+{
+  const LinearCombinationDistribution & mixture_;
+  const Sample & skinPoints_;
+  const Point & point_;
+  const Bool useCache_;
+  const UnsignedInteger fromIndex_;
+  const UnsignedInteger numberOfPoints_;
+  const UnsignedInteger chunkSize_;
+  Collection<Scalar> & partialContributions_;
+  Collection<Scalar> & partialErrors_;
+
+  DeltaContributionAccumulator(const LinearCombinationDistribution & mixture,
+                               const Sample & skinPoints,
+                               const Point & point,
+                               const Bool useCache,
+                               const UnsignedInteger fromIndex,
+                               const UnsignedInteger numberOfPoints,
+                               const UnsignedInteger chunkSize,
+                               Collection<Scalar> & partialContributions,
+                               Collection<Scalar> & partialErrors)
+    : mixture_(mixture)
+    , skinPoints_(skinPoints)
+    , point_(point)
+    , useCache_(useCache)
+    , fromIndex_(fromIndex)
+    , numberOfPoints_(numberOfPoints)
+    , chunkSize_(chunkSize)
+    , partialContributions_(partialContributions)
+    , partialErrors_(partialErrors)
+  {}
+
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+  {
+    const UnsignedInteger dimension = mixture_.dimension_;
+    Point pti(dimension);
+    for (UnsignedInteger c = r.begin(); c != r.end(); ++c)
+    {
+      const UnsignedInteger iBegin = c * chunkSize_;
+      const UnsignedInteger iEnd = std::min(iBegin + chunkSize_, numberOfPoints_);
+      Scalar contributionChunk = 0.0;
+      Scalar errorChunk = 0.0;
+      for (UnsignedInteger i = iBegin; i < iEnd; ++i)
+      {
+        Complex deltaValue(0.0, 0.0);
+        if (useCache_) deltaValue = mixture_.characteristicValuesCache_[fromIndex_ + i - 1];
+        else
+        {
+          for (UnsignedInteger j = 0; j < dimension; ++j) pti[j] = skinPoints_(i, j);
+          deltaValue = mixture_.computeDeltaCharacteristicFunction(pti);
+        }
+        Scalar hX = 0.0;
+        for (UnsignedInteger j = 0; j < dimension; ++j) hX += skinPoints_(i, j) * point_[j];
+        const Scalar sinHX = std::sin(hX);
+        const Scalar cosHX = std::cos(hX);
+        const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
+        contributionChunk += contribution;
+        errorChunk += std::abs(contribution);
+      } // points of the chunk
+      partialContributions_[c] = contributionChunk;
+      partialErrors_[c] = errorChunk;
+    } // chunks
+  }
+}; /* end struct DeltaContributionAccumulator */
+
+/*
    Here, we recall the Poisson summation formula:
    \sum_{k\in Z}p(x+2k\pi/h) = h/2\pi\sum_{j\in Z}\phi(jh)\exp(-Ihjx)
    We can rewrite this formula as:
@@ -1299,10 +1404,25 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
   UnsignedInteger k = 1;
   const Scalar precision = pdfPrecision_;
   const UnsignedInteger kmin = 1 << blockMin_;
-  const UnsignedInteger kmax = 1 << blockMax_;
+  UnsignedInteger kmax = 1 << blockMax_;
+  // Bound the number of blocks: their cost grows geometrically with the
+  // number of levels, so a slowly decaying characteristic function would
+  // otherwise lead to a prohibitive cost
+  Bool kmaxCapped = false;
+  {
+    const UnsignedInteger cappedKmax = effectiveKmax(kmax);
+    if (cappedKmax < kmax)
+    {
+      kmax = cappedKmax;
+      kmaxCapped = true;
+    }
+  }
   // hX is only useful in 1D
   Scalar hX = referenceBandwidth_[0] * point[0];
   Scalar error = 2.0 * precision;
+  // Warm up the equivalent normal covariance cache before entering the
+  // parallel section to avoid a data race on isAlreadyComputedCovariance_
+  if (dimension_ > 1) equivalentNormal_.getCovariance();
   LOGDEBUG(OSS() << std::setprecision(20) << "h=" << referenceBandwidth_ << ", equivalent normal pdf sum=" << value << ", k=" << k << ", precision=" << precision << ", kmin=" << kmin << ", kmax=" << kmax << ", error=" << error);
   while ( (k < kmin) || ( (k < kmax) && (error > precision) ) )
   {
@@ -1322,47 +1442,29 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
       } // dimension_ == 1
       else
       {
-        Sample skinPoints(gridMesher_.getPoints(m));
+        const Sample skinPoints(gridMesher_.getPoints(m));
         const UnsignedInteger fromIndex = gridMesher_.getOffsetLevel(m);
         const UnsignedInteger lastIndex = gridMesher_.getOffsetLevel(m + 1) - 1;
-        if (lastIndex <= maxSize_)
+        // If the level fits into the cache, update it once sequentially so
+        // that the level is then entirely available for concurrent reads
+        const Bool useCache = lastIndex <= maxSize_;
+        if (useCache && (lastIndex > storedSize_))
+          updateCacheDeltaCharacteristicFunction(skinPoints);
+        // Split the accumulation into fixed size chunks accumulated
+        // independently then summed in index order
+        const UnsignedInteger numberOfPoints = skinPoints.getSize();
+        const UnsignedInteger chunkSize = 1024;
+        const UnsignedInteger numberOfChunks = (numberOfPoints + chunkSize - 1) / chunkSize;
+        Collection<Scalar> partialContributions(numberOfChunks, 0.0);
+        Collection<Scalar> partialErrors(numberOfChunks, 0.0);
+        const DeltaContributionAccumulator accumulator(*this, skinPoints, point, useCache, fromIndex, numberOfPoints, chunkSize, partialContributions, partialErrors);
+        TBBImplementation::ParallelFor(0, numberOfChunks, accumulator, 1);
+        for (UnsignedInteger c = 0; c < numberOfChunks; ++c)
         {
-          if (lastIndex > storedSize_)
-            updateCacheDeltaCharacteristicFunction(skinPoints);
-          // Level is now entirely on cache
-          for (UnsignedInteger i = 0; i < skinPoints.getSize(); ++i)
-          {
-            const Complex deltaValue(characteristicValuesCache_[fromIndex + i - 1]);
-            hX = 0.0;
-            for (UnsignedInteger j = 0; j < dimension_; ++j) hX += skinPoints(i, j) * point[j];
-            const Scalar sinHX = std::sin(hX);
-            const Scalar cosHX = std::cos(hX);
-            const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
-            error += std::abs(contribution);
-            sumContributions += contribution;
-            LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution << ", error=" << error);
-          } // skinPoints
-        } // lastIndex <= maxSize_
-        else
-        {
-          Point pti(dimension_);
-          for (UnsignedInteger i = 0; i < skinPoints.getSize(); ++i)
-          {
-            hX = 0.0;
-            for (UnsignedInteger j = 0; j < dimension_; ++j)
-            {
-              pti[j] = skinPoints(i, j);
-              hX += skinPoints(i, j) * point[j];
-            }
-            const Complex deltaValue(computeDeltaCharacteristicFunction(pti));
-            const Scalar sinHX = std::sin(hX);
-            const Scalar cosHX = std::cos(hX);
-            const Scalar contribution = deltaValue.real() * cosHX + deltaValue.imag() * sinHX;
-            error += std::abs(contribution);
-            sumContributions += contribution;
-            LOGDEBUG(OSS() << "m=" << m << ", delta=" << deltaValue << ", contribution=" << contribution << ", error=" << error);
-          } // skinPoints
-        } // lastIndex > maxSize_
+          sumContributions += partialContributions[c];
+          error += partialErrors[c];
+        }
+        LOGDEBUG(OSS() << "m=" << m << ", sumContributions=" << sumContributions << ", error=" << error);
       } // dimension > 1
     }
     error *= referenceBandwidthFactor_;
@@ -1375,6 +1477,10 @@ Scalar LinearCombinationDistribution::computePDF(const Point & point) const
     value += sumContributions;
     k *= 2;
   } // while
+  // Warn if the summation stopped on the block limit without reaching the
+  // requested precision: the result may be noticeably inaccurate
+  if (kmaxCapped && (error > precision))
+    LOGWARN(OSS() << "Warning! In dimension " << dimension_ << ", the pointwise PDF summation stopped after " << k / 2 << " blocks without reaching the requested precision=" << precision << ". The result may be inaccurate: consider evaluating such a mixture on a grid using drawPDF() instead.");
   // For very low level of PDF, the computed value can be slightly negative. Round it up to zero.
   if (value < 0.0) value = 0.0;
   return value;
@@ -2365,9 +2471,9 @@ Scalar LinearCombinationDistribution::computeComplementaryCDF(const Point & poin
   const Scalar x = point[0];
   // Special case for combination containing only one contributor Y = alpha * X + beta
   // for alpha > 0.0:
-  // P(Y < y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
+  // P(Y > y) = P(X > (y - beta) / alpha) = complementaryCDF_X((y - beta) / alpha)
   // for alpha < 0.0:
-  // P(Y < y) = P(X > (y - beta) / alpha) = 1.0 - CDF_X((y - beta) / alpha)
+  // P(Y > y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
   if (isAnalytical_)
   {
     const Scalar alpha = weights_(0, 0);
@@ -2382,10 +2488,9 @@ Scalar LinearCombinationDistribution::computeComplementaryCDF(const Point & poin
   if (x <= lowerBound) return 1.0;
   if (x >= upperBound) return 0.0;
   // Here we call computeProbability with a [x, +inf[ interval
-  // Here we call computeProbability with a ]-inf, x] interval
   const Scalar complementaryCDF = computeProbability(Interval(point, Point(1, upperBound), Interval::BoolCollection(1, true), getRange().getFiniteUpperBound()));
   if (complementaryCDF < 0.5) return complementaryCDF;
-  // and if the cdf value is less than 1/2, it was better to use the complementary CDF
+  // and if the complementary CDF value is greater than 1/2, it is better to use 1 - CDF
   else return 1.0 - computeProbability(Interval(Point(1, lowerBound), point, getRange().getFiniteLowerBound(), Interval::BoolCollection(1, true)));
 }
 
@@ -2422,14 +2527,24 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
   }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-SmallSize" )))
   {
+    const Scalar savedPdfPrecision = pdfPrecision_;
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     Scalar probability;
-    // Generic implementation for continuous distributions
-    if (isContinuous()) probability = computeProbabilityContinuous(interval);
-    // Generic implementation for discrete distributions
-    else if (isDiscrete()) probability = computeProbabilityDiscrete(interval);
-    // Generic implementation for general distributions
-    else probability = computeProbabilityGeneral(interval);
+    try
+    {
+      // Generic implementation for continuous distributions
+      if (isContinuous()) probability = computeProbabilityContinuous(interval);
+      // Generic implementation for discrete distributions
+      else if (isDiscrete()) probability = computeProbabilityDiscrete(interval);
+      // Generic implementation for general distributions
+      else probability = computeProbabilityGeneral(interval);
+    }
+    catch (...)
+    {
+      pdfPrecision_ = savedPdfPrecision;
+      throw;
+    }
+    pdfPrecision_ = savedPdfPrecision;
     return probability;
   }
   // Special case for combination containing only one contributor
@@ -2460,7 +2575,18 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
   Scalar value = computeEquivalentNormalCDFSum(lowerBound, upperBound);
   UnsignedInteger k = 1;
   const UnsignedInteger kmin = 1 << blockMin_;
-  const UnsignedInteger kmax = 1 << blockMax_;
+  UnsignedInteger kmax = 1 << blockMax_;
+  // Bound the number of blocks: a slowly decaying characteristic function
+  // would otherwise lead to a prohibitive cost
+  Bool kmaxCapped = false;
+  {
+    const UnsignedInteger cappedKmax = effectiveKmax(kmax);
+    if (cappedKmax < kmax)
+    {
+      kmax = cappedKmax;
+      kmaxCapped = true;
+    }
+  }
   while ( (k < kmax) && (error > std::max(precision, std::abs(precision * value)) || k < kmin) )
   {
     error = 0.0;
@@ -2475,6 +2601,8 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
       value += contribution;
       error += std::abs(contribution);
     }
+    if (kmaxCapped && (error > std::max(precision, std::abs(precision * value))))
+      LOGWARN(OSS() << "Warning! The pointwise CDF summation stopped after " << k << " blocks without reaching the requested precision=" << precision << ". Tail quantities may be inaccurate.");
     k *= 2;
   }
   // For extrem values of the argument, the computed value can be slightly outside of [0,1]. Truncate it.
@@ -2542,14 +2670,14 @@ Scalar LinearCombinationDistribution::computeScalarQuantile(const Scalar prob,
     {
       const Scalar pdf = computePDF(x);
       dx = (q - cdf) / pdf;
+      x += dx;
       // Depending on the size of the mixture, use computeCDF (size == 2) or computeProbability (size > 2)
       if (twoAtoms) cdf = computeCDF(x);
       else
       {
-        const Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
+        const Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x - dx, x)) : computeProbability(Interval(x, x - dx)));
         cdf += (dx > 0.0 ? dcdf : -dcdf);
       }
-      x += dx;
     }
     // Has the Newton iteration converged?
     if (std::abs(dx) <= epsilon) return x;
@@ -2649,6 +2777,8 @@ Complex LinearCombinationDistribution::computeDeltaCharacteristicFunction(const 
     const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
     const Complex deltaLog(logCF - logNormalCF);
     Complex value;
+    // Use a 3rd order Taylor expansion of exp(deltaLog) - 1 if |deltaLog| <= 1e-5
+    // to avoid catastrophic cancellation when logCF and logNormalCF are close
     if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = std::exp(logCF) - std::exp(logNormalCF);
     return value;
@@ -3006,8 +3136,7 @@ void LinearCombinationDistribution::setAlpha(const Scalar alpha)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: the alpha parameter must be strictly positive";
   alpha_ = alpha;
-  computeRange();
-  computeReferenceBandwidth();
+  adaptBand();
 }
 
 Scalar LinearCombinationDistribution::getAlpha() const
@@ -3017,9 +3146,9 @@ Scalar LinearCombinationDistribution::getAlpha() const
 
 void LinearCombinationDistribution::setBeta(const Scalar beta)
 {
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: the beta parameter must be strictly positive";
   beta_ = beta;
-  computeRange();
-  computeReferenceBandwidth();
+  adaptBand();
 }
 
 Scalar LinearCombinationDistribution::getBeta() const
@@ -3053,11 +3182,121 @@ void LinearCombinationDistribution::setCDFPrecision(const Scalar cdfPrecision)
   cdfPrecision_ = cdfPrecision;
 }
 
+/* Adapt the confidence band so that the mass outside it is negligible:
+   starting from the configured beta, double it until a conservative bound on
+   the probability mass within [positionIndicator_ +/- beta *
+   dispersionIndicator_] differs from one by less than
+   BetaAdaptationEpsilon. The bound relies on the union of the per-atom tail
+   probabilities: if every contribution |w_{jk}| * |X_j - E[X_j]| stays below
+   its share of the distance to the band edge, then so does their sum. Each
+   share is evaluated with the corresponding atom complementary CDF, which
+   remains reliable far in the tails, contrarily to the Poisson inversion
+   used for the pointwise evaluations. */
+void LinearCombinationDistribution::adaptBand()
+{
+  const Bool adapt = ResourceMap::GetAsBool("LinearCombinationDistribution-BetaAdaptation");
+  // First stage: configured beta, fresh cache
+  bandBeta_ = beta_;
+  computeRange();
+  computeReferenceBandwidth(false);
+  // The range of a single-atom mixture is exact: nothing to adapt
+  const Bool isSingleAtom = (dimension_ == 1) && (distributionCollection_.getSize() == 1);
+  if ((!adapt) || isSingleAtom) return;
+  const Scalar epsilon = ResourceMap::GetAsScalar("LinearCombinationDistribution-BetaAdaptationEpsilon");
+  const Scalar maximumBeta = ResourceMap::GetAsScalar("LinearCombinationDistribution-MaximumBeta");
+  // Conservative bound on the mass outside [center +/- bandBeta * scale]:
+  // union of the per-atom exceedance probabilities, each atom being granted
+  // an equal share of the distance to the band edges
+  const UnsignedInteger numAtoms = distributionCollection_.getSize();
+  auto outsideMassBound = [this, numAtoms]() -> Scalar
+  {
+    Scalar bound = 0.0;
+    for (UnsignedInteger k = 0; k < dimension_; ++k)
+    {
+      if (!(bandScale_[k] > 0.0)) continue;
+      const Scalar distance = bandBeta_ * bandScale_[k];
+      // Grant each atom a share of the distance to the edge proportional to
+      // its contribution to the standard deviation along that axis; atoms
+      // with infinite dispersion fall back on an equal split
+      Point shares(numAtoms);
+      Scalar sumShares = 0.0;
+      Bool usable = true;
+      for (UnsignedInteger j = 0; j < numAtoms; ++j)
+      {
+        const Scalar c = weights_(k, j);
+        const Scalar sigma = (c == 0.0) ? 0.0 : distributionCollection_[j].getDispersionIndicator();
+        if (!(sigma >= 0.0) || (std::isinf(sigma)))
+        {
+          usable = false;
+          break;
+        }
+        shares[j] = std::abs(c) * sigma;
+        sumShares += shares[j];
+      }
+      if (!usable || !(sumShares > 0.0))
+        for (UnsignedInteger j = 0; j < numAtoms; ++j) shares[j] = 1.0 / numAtoms;
+      else
+        shares *= 1.0 / sumShares;
+      for (UnsignedInteger dir = 0; dir < 2; ++dir)
+      {
+        const Scalar direction = (dir == 0) ? 1.0 : -1.0;
+        Scalar tail = 0.0;
+        for (UnsignedInteger j = 0; j < numAtoms; ++j)
+        {
+          const Scalar c = weights_(k, j);
+          if ((c == 0.0) || (shares[j] <= 0.0)) continue;
+          // Exceedance of the centered contribution: X_j deviates from its
+          // mean by more than its share of the distance to the band edge
+          const Scalar muJ = distributionCollection_[j].getMean()[0];
+          const Scalar threshold = muJ + direction * distance * shares[j] / std::abs(c);
+          tail += (direction * c > 0.0)
+                  ? distributionCollection_[j].computeComplementaryCDF(threshold)
+                  : distributionCollection_[j].computeCDF(threshold);
+        }
+        bound += tail;
+      }
+    }
+    return bound;
+  };
+  while (true)
+  {
+    const Scalar outside = outsideMassBound();
+    if (outside <= epsilon) break;
+    const Scalar probedBeta = 2.0 * bandBeta_;
+    if (probedBeta > maximumBeta)
+    {
+      LOGWARN(OSS() << "Warning! In dimension " << dimension_ << ", the estimated mass outside the confidence band exceeds BetaAdaptationEpsilon=" << epsilon << " (bound: " << outside << "), but beta cannot exceed MaximumBeta=" << maximumBeta << ". Tail quantities may be inaccurate.");
+      break;
+    }
+    // Widen the band: doubling beta halves the reference bandwidth and the
+    // previous lattice is included in the new one at even multi-indices, so
+    // the characteristic values are recycled
+    bandBeta_ = probedBeta;
+    computeRange();
+    computeReferenceBandwidth(true);
+  } // while
+}
+
+/* Number of blocks allowed at the current stage: each beta doubling halves
+   the reference bandwidth and doubles the number of levels needed to reach
+   a given accuracy, so the budget shrinks accordingly. Mixtures whose band
+   was not widened keep their full budget. */
+UnsignedInteger LinearCombinationDistribution::effectiveKmax(const UnsignedInteger kmax) const
+{
+  // A mixture whose band was never widened keeps the legacy budget
+  if (!(bandBeta_ > beta_)) return kmax;
+  const UnsignedInteger maximumLevel = ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel");
+  return std::min(kmax, std::max(static_cast<UnsignedInteger>(1) << blockMin_, maximumLevel));
+}
+
 /* Compute the reference bandwidth. It is defined as the largest bandwidth
    that allow a precise computation of the PDF over the range
    [positionIndicator_ +/- beta * dispersionIndicator_] */
-void LinearCombinationDistribution::computeReferenceBandwidth()
+void LinearCombinationDistribution::computeReferenceBandwidth(const Bool recycleCache)
 {
+  const Point oldBandwidth(referenceBandwidth_);
+  const SphereUniformNorm oldMesher(gridMesher_);
+  const UnsignedInteger oldStoredSize(storedSize_);
   referenceBandwidth_ = Point(getDimension(), 0.0);
   Bool isFinite = true;
   const Point a(getRange().getLowerBound());
@@ -3077,9 +3316,139 @@ void LinearCombinationDistribution::computeReferenceBandwidth()
   // Compute grid helper object
   gridMesher_ = SphereUniformNorm::GetFromGridSteps(referenceBandwidth_, true);
 
-  // Reset the cached values
+  if (recycleCache)
+    recycleCharacteristicValues(oldMesher, oldBandwidth, oldStoredSize);
+  else
+  {
+    // Reset the cached values
+    storedSize_ = 0;
+    characteristicValuesCache_ = ComplexPersistentCollection(0);
+  }
+}
+
+/* Carry over the characteristic function values of the previous lattice into
+   the current one when the previous lattice is included in the current one,
+   which happens when the confidence band is doubled: halving the bandwidth
+   maps the old lattice points on even multi-indices of the new lattice. The
+   remaining points of the recycled levels are computed immediately so that
+   the cache stays contiguous. */
+void LinearCombinationDistribution::recycleCharacteristicValues(const SphereUniformNorm & oldMesher,
+    const Point & oldBandwidth,
+    const UnsignedInteger oldStoredSize)
+{
+  const UnsignedInteger dimension = getDimension();
+  // The nesting only holds when the bandwidth is exactly halved along every axis
+  const Scalar bandwidthConvergenceEpsilon = ResourceMap::GetAsScalar( "LinearCombinationDistribution-BandwidthConvergenceEpsilon" );
+  if (bandwidthConvergenceEpsilon < 0.0) throw InvalidArgumentException(HERE) << "Error: LinearCombinationDistribution-BandwidthConvergenceEpsilon should be non negative";
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    if ((getReferenceBandwidth()[k] <= 0.0) || (std::abs(oldBandwidth[k] / getReferenceBandwidth()[k] - 2.0) > bandwidthConvergenceEpsilon))
+    {
+      storedSize_ = 0;
+      characteristicValuesCache_ = ComplexPersistentCollection(0);
+      return;
+    }
+  }
+  // Nothing has been cached yet
+  if (oldStoredSize == 0)
+  {
+    storedSize_ = 0;
+    characteristicValuesCache_ = ComplexPersistentCollection(0);
+    return;
+  }
+  // Bias used to pack signed multi-indices into a single integer. A zero key
+  // is impossible for a valid multi-index, so it flags out-of-range indices.
+  const std::uint64_t bias = std::uint64_t(1) << 20;
+  auto pack = [dimension](const SignedInteger * n) -> std::uint64_t
+  {
+    std::uint64_t key = 0;
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      const SignedInteger value = n[k] + (1L << 20);
+      if ((value <= 0) || (value >= (1L << 21))) return 0;
+      key = (key << 21) | static_cast<std::uint64_t>(value);
+    }
+    return key;
+  };
+  // Build a lookup table from the multi-index of each cached point to its
+  // position in the old cache, following the level order of the old mesh.
+  // The number of complete cached levels is deduced from the stored size.
+  std::unordered_map<std::uint64_t, UnsignedInteger> lookup;
+  UnsignedInteger oldLevels = 0;
+  SignedInteger n[3] = {0, 0, 0};
+  // Level l occupies the indices [getOffsetLevel(l) - 1, getOffsetLevel(l + 1) - 2],
+  // so it is entirely cached when getOffsetLevel(l + 1) <= oldStoredSize + 1
+  while (oldMesher.getOffsetLevel(oldLevels + 2) <= oldStoredSize + 1)
+  {
+    const Sample points(oldMesher.getPoints(oldLevels + 1));
+    for (UnsignedInteger i = 0; i < points.getSize(); ++i)
+    {
+      Bool decodable = true;
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+      {
+        n[k] = static_cast<SignedInteger>(std::lround(points(i, k) / oldBandwidth[k]));
+        if (std::abs(n[k]) >= static_cast<SignedInteger>(bias))
+        {
+          decodable = false;
+          break;
+        }
+      }
+      if (decodable) lookup[pack(n)] = oldMesher.getOffsetLevel(oldLevels + 1) + i - 1;
+    }
+    ++oldLevels;
+  } // loop over the cached levels of the old mesh
+  if (oldLevels == 0)
+  {
+    storedSize_ = 0;
+    characteristicValuesCache_ = ComplexPersistentCollection(0);
+    return;
+  }
+  // The recycled levels of the new mesh go from 1 to twice the old ones,
+  // capped by the maximum size of the cache. The values are appended
+  // sequentially, reusing the old entries whenever possible
+  const ComplexPersistentCollection oldCache(characteristicValuesCache_);
   storedSize_ = 0;
   characteristicValuesCache_ = ComplexPersistentCollection(0);
+  Point pti(dimension);
+  for (UnsignedInteger m = 1; m <= 2 * oldLevels; ++m)
+  {
+    if (gridMesher_.getOffsetLevel(m + 1) - 1 > getMaxSize()) break;
+    const Sample points(gridMesher_.getPoints(m));
+    for (UnsignedInteger i = 0; i < points.getSize(); ++i)
+    {
+      Bool recyclable = true;
+      SignedInteger c[3] = {0, 0, 0};
+      for (UnsignedInteger k = 0; k < dimension; ++k)
+      {
+        pti[k] = points(i, k);
+        const SignedInteger np = static_cast<SignedInteger>(std::lround(pti[k] / referenceBandwidth_[k]));
+        if (((np % 2) != 0) || (std::abs(np) >= static_cast<SignedInteger>(bias)))
+        {
+          recyclable = false;
+          break;
+        }
+        c[k] = np / 2;
+      }
+      Bool found = false;
+      Complex value(0.0, 0.0);
+      if (recyclable)
+      {
+        const UnsignedInteger oldLevel = static_cast<SignedInteger>(std::max(std::max(std::abs(c[0]), std::abs(c[1])), std::abs(c[2])));
+        if ((oldLevel >= 1) && (oldLevel <= oldLevels))
+        {
+          const auto it = lookup.find(pack(c));
+          if (it != lookup.end())
+          {
+            value = oldCache[it->second];
+            found = true;
+          }
+        }
+      }
+      if (!found) value = computeDeltaCharacteristicFunction(pti);
+      characteristicValuesCache_.add(value);
+      ++storedSize_;
+    } // points of the level
+  } // levels of the new mesh
 }
 
 /* Compute the equivalent normal distribution, i.e. with the same mean and
@@ -3111,7 +3480,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Scalar
     delta = equivalentNormal_.computePDF(x + step) + equivalentNormal_.computePDF(x - step);
     value += delta;
   }
-  while (delta > 0.0 * value);
+  while (delta > value * pdfPrecision_);
   return value;
 }
 
@@ -3136,6 +3505,11 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point 
     the current density value.
   */
   if (gridStep.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: invalid grid dimension";
+  // The number of levels is bounded in order to avoid a prohibitive cost when
+  // the convergence is slow. imax == 0 means that no caller-provided bound is
+  // available, in which case the global bound is used.
+  const UnsignedInteger maximumLevel = ResourceMap::GetAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel");
+  const UnsignedInteger maxLevel = (imax == 0 ? maximumLevel : std::min(imax, maximumLevel));
   if (dimension_ == 1)
   {
     const Scalar x = y[0];
@@ -3149,7 +3523,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point 
       delta = equivalentNormal_.computePDF(x + step) + equivalentNormal_.computePDF(x - step);
       value += delta;
     }
-    while (delta > 0.0 * value);
+    while (delta > value * pdfPrecision_);
     return value;
   }
 
@@ -3167,7 +3541,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point 
   levelMax = imax;
   Point skin1(dimension_);
   Point skin2(dimension_);
-  for (UnsignedInteger i = 1; (imax == 0 || i < imax) && (delta > gaussian_pdf * epsilon); ++i)
+  for (UnsignedInteger i = 1; (i < maxLevel) && (delta > gaussian_pdf * epsilon); ++i)
   {
     const Sample skinPoints(grid.getPoints(i));
 
@@ -3204,7 +3578,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalCDFSum(const Scalar
     delta = (equivalentNormal_.computeCDF(t + step) - equivalentNormal_.computeCDF(s + step)) + (equivalentNormal_.computeCDF(t - step) - equivalentNormal_.computeCDF(s - step));
     value += delta;
   }
-  while (delta > 0.0 * value);
+  while (delta > std::abs(value) * cdfPrecision_);
   return value;
 }
 
@@ -3473,8 +3847,8 @@ void LinearCombinationDistribution::load(Advocate & adv)
   computePositionIndicator();
   computeDispersionIndicator();
   computeRange();
-  computeReferenceBandwidth();
   computeEquivalentNormal();
+  adaptBand();
 } // load
 
 END_NAMESPACE_OPENTURNS
