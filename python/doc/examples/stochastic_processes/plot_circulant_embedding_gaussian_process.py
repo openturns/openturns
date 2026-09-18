@@ -9,11 +9,12 @@ discretization of an interval, and the use of the
 :class:`~openturns.experimental.P1InterpolatedProcess` class to interpolate these
 realizations onto an unstructured mesh.
 
-The circulant embedding method (also known as the Davies-Harte algorithm)
-relies on the fast Fourier transform, so very large regular grids can be
-sampled in a blink. The P1 interpolation then allows one to evaluate the
-simulated trajectories at any location inside the simulation domain,
-whatever the mesh topology.
+The circulant embedding method relies on the fast Fourier transform, so very
+large regular grids can be sampled in a blink: this method is fast and
+generates exact simulations (see the Davies-Harte algorithm [davies1987]_,
+[wood1994]_). The P1 interpolation then allows one to evaluate the simulated
+trajectories at any location inside the simulation domain, whatever the mesh
+topology.
 """
 
 # %%
@@ -123,10 +124,10 @@ direct = process.getRealization()
 
 # %%
 # The reference field on the disk is obtained by interpolating the direct
-# realization with the same P1 interpolation as the interpolated process. If
-# both meshes are discretized enough, the two fields are essentially equal on
-# the disk: the residual is only the P1 interpolation error, which decreases
-# with the mesh steps.
+# realization with the same P1 interpolation as the interpolated process.
+# Since both realizations are built from the same trajectory with the same
+# interpolation, the two fields coincide on the disk: the max residual is
+# equal to 0 up to floating point precision.
 
 # %%
 interpolation = ot.P1LagrangeInterpolation(process.getMesh(), diskMesh, 1)
@@ -135,6 +136,6 @@ residual = np.abs(np.asarray(reference.getValues() - realization.getValues()))
 print("max |residual| on the disk: %.3e" % residual.max())
 
 # %%
-# When the sources meshes are replaced by finer ones, the same experiment
-# gives even smaller residuals, as the two processes converge towards the same
-# underlying Gaussian field.
+# The interpolated process and the direct P1 interpolation of the process
+# realization are two consistent ways to evaluate the same Gaussian field on
+# the disk.
