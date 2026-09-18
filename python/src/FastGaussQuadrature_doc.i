@@ -18,4 +18,17 @@ Returns
 nodes : :class:`~openturns.Point`
     Nodes of the rule, strictly increasing.
 weights : :class:`~openturns.Point`
-    Weights of the rule, positive and summing to 1.)RAW"
+    Weights of the rule, positive and summing to 1.
+
+Examples
+--------
+>>> import math
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> gamma = [0.0, 0.0, 0.0]
+>>> b = [0.0, 1.0, math.sqrt(2.0)]
+>>> nodes, weights = otexp.FastGaussQuadrature(gamma, b)
+>>> print(nodes)
+[-1.73205,...,1.73205]
+>>> print(weights)
+[0.166667,...,0.166667])RAW"

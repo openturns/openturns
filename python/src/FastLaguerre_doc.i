@@ -20,4 +20,14 @@ Returns
 nodes : :class:`~openturns.Point`
     Nodes of the rule, strictly increasing.
 weights : :class:`~openturns.Point`
-    Weights of the rule, positive and summing to 1.)RAW"
+    Weights of the rule, positive and summing to 1.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> nodes, weights = otexp.FastLaguerre(3, 1.0)
+>>> print(nodes)
+[0.415775,...,6.28995]
+>>> print(weights)
+[0.711093,...,0.0103893])RAW"
