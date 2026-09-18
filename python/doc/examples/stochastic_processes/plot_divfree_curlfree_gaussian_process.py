@@ -5,10 +5,10 @@ Curl-free and divergence-free Gaussian processes
 This example presents two experimental covariance models built from a given
 scalar covariance model:
 
-- :class:`~openturns.experimental.DivFreeModel` extracts its divergence-free part, so that the
-  realizations of the associated Gaussian process are approximately divergence-free;
 - :class:`~openturns.experimental.CurlFreeModel` extracts its curl-free part, so that the
-  realizations of the associated Gaussian process are approximately curl-free.
+  realizations of the associated Gaussian process are approximately curl-free;
+- :class:`~openturns.experimental.DivFreeModel` extracts its divergence-free part, so that the
+  realizations of the associated Gaussian process are approximately divergence-free.
 
 We start from an isotropic :class:`~openturns.MaternModel` covariance model with smoothness
 parameter :math:`\nu=5/2` and correlation length :math:`0.1`.
@@ -36,13 +36,13 @@ scalar_model = ot.IsotropicCovarianceModel(kernel, 2)
 print(scalar_model)
 
 # %%
-# Extract its divergence-free and curl-free parts.
+# Extract its curl-free and divergence-free parts.
 
 # %%
-div_free = otexp.DivFreeModel(scalar_model)
 curl_free = otexp.CurlFreeModel(scalar_model)
-print(div_free)
+div_free = otexp.DivFreeModel(scalar_model)
 print(curl_free)
+print(div_free)
 
 # %%
 # Discretize the domain with a regular grid
@@ -58,18 +58,19 @@ mesh = ot.IntervalMesher([41, 41]).build(ot.Interval([-0.1, -0.1], [0.1, 0.1]))
 print("Number of vertices:", mesh.getVerticesNumber())
 
 # %%
-# Sample realizations of the two Gaussian processes.
+# Sample realizations of the two Gaussian processes
+# =================================================
 #
 # The sampling uses the exact dense factorization of the covariance matrix on
 # the 1764 mesh vertices, so the realization is the exact restriction of a
-# divergence-free, resp. curl-free, Gaussian field to the grid.
+# curl-free, resp. divergence-free, Gaussian field to the grid.
 
 # %%
 ot.RandomGenerator.SetSeed(6)
-div_free_process = ot.GaussianProcess(div_free, mesh)
 curl_free_process = ot.GaussianProcess(curl_free, mesh)
-div_free_field = div_free_process.getRealization()
+div_free_process = ot.GaussianProcess(div_free, mesh)
 curl_free_field = curl_free_process.getRealization()
+div_free_field = div_free_process.getRealization()
 
 # %%
 # Draw the vector fields with arrows fixed on the vertices of the mesh. To keep
@@ -87,14 +88,8 @@ def decimate(field, ratio):
     return ot.Field(ot.Mesh(ot.Sample(vertices)), ot.Sample(values.reshape(-1, 2)))
 
 
-div_free_display = decimate(div_free_field, 3)
 curl_free_display = decimate(curl_free_field, 3)
-
-graph_div = div_free_display.draw()
-graph_div.setTitle("Divergence-free realization")
-graph_div.setXTitle(r"$x_0$")
-graph_div.setYTitle(r"$x_1$")
-graph_div.setLegendPosition("")
+div_free_display = decimate(div_free_field, 3)
 
 graph_curl = curl_free_display.draw()
 graph_curl.setTitle("Curl-free realization")
@@ -102,18 +97,24 @@ graph_curl.setXTitle(r"$x_0$")
 graph_curl.setYTitle(r"$x_1$")
 graph_curl.setLegendPosition("")
 
+graph_div = div_free_display.draw()
+graph_div.setTitle("Divergence-free realization")
+graph_div.setXTitle(r"$x_0$")
+graph_div.setYTitle(r"$x_1$")
+graph_div.setLegendPosition("")
+
 grid = ot.GridLayout(1, 2)
-grid.setGraph(0, 0, graph_div)
-grid.setGraph(0, 1, graph_curl)
+grid.setGraph(0, 0, graph_curl)
+grid.setGraph(0, 1, graph_div)
 view = otv.View(grid)
 
 # %%
 # Verify the divergence-free and curl-free properties
 # ---------------------------------------------------
 #
-# The divergence :math:`\mathrm{div}\\ \mathbf{u} = \partial u_1/\partial x_0 +
+# The divergence :math:`\mathrm{div}\ \mathbf{u} = \partial u_1/\partial x_0 +
 # \partial u_2/\partial x_1` and the (scalar) curl
-# :math:`\mathrm{curl}\\ \mathbf{u} = \partial u_2/\partial x_0 -
+# :math:`\mathrm{curl}\ \mathbf{u} = \partial u_2/\partial x_0 -
 # \partial u_1/\partial x_1` of each field are estimated by central finite
 # differences on the regular grid. For a divergence-free field, the finite
 # difference estimate of the divergence should be much smaller than the one of
@@ -137,10 +138,10 @@ def divergence_and_curl(field, mesh_step):
     return divergence, curl
 
 
-max_div, max_curl = divergence_and_curl(div_free_field, step)
-print("Divergence-free field: max |divergence| =", max_div, ", max |curl| =", max_curl)
 max_div, max_curl = divergence_and_curl(curl_free_field, step)
 print("Curl-free field: max |divergence| =", max_div, ", max |curl| =", max_curl)
+max_div, max_curl = divergence_and_curl(div_free_field, step)
+print("Divergence-free field: max |divergence| =", max_div, ", max |curl| =", max_curl)
 
 # %%
 # The finite-difference divergence of the divergence-free field is about
