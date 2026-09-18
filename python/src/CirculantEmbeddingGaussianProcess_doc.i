@@ -5,27 +5,13 @@ R"RAW(Circulant embedding Gaussian process.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-It is created with the empty constructor or with
-``CirculantEmbeddingGaussianProcess(*covarianceModel, interval, discretization*)``.
-
-Parameters
-----------
-covarianceModel : :class:`~openturns.CovarianceModel`
-    Stationary covariance model :math:`C`.
-    Supports scalar or vector-valued output (output dimension >= 1).
-interval : :class:`~openturns.Interval`
-    Spatial domain :math:`\cD` of dimension d.
-discretization : sequence of int
-    Number of cells per dimension. Each entry must be at least 1.
-
-Notes
------
-CirculantEmbeddingGaussianProcess implements the fast and exact simulation
-of stationary Gaussian processes using the circulant embedding method,
-also known as the Davies-Harte algorithm [davies1987]_, [wood1994]_. The extension
-to d-dimensional domains follows [coeurjolly2016]_.
-[graham2018a]_ proves that for a sufficiently large embedding domain,
-the circulant matrix is guaranteed to be positive definite.
+CirculantEmbeddingGaussianProcess implements a stationary Gaussian process
+on a regular mesh. It takes advantage of the circulant embedding method to
+simulate it: this method is fast and generates exact simulations
+[davies1987]_, [wood1994]_. The extension to d-dimensional domains follows
+[coeurjolly2016]_. [graham2018a]_ proves that for a sufficiently large
+embedding domain, the circulant matrix is guaranteed to be positive
+definite.
 
 An :class:`~openturns.IntervalMesher` is used internally to build a regular
 mesh from the given interval and discretization.
@@ -44,6 +30,28 @@ via Cholesky at each frequency.
 If the circulant matrix has negative eigenvalues, the embedding domain
 is automatically increased until all eigenvalues are non-negative,
 following the iterative strategy of [pichot2022]_.
+
+Parameters
+----------
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Stationary covariance model :math:`C`.
+    Supports scalar or vector-valued output (output dimension >= 1).
+interval : :class:`~openturns.Interval`
+    Spatial domain :math:`\cD` of dimension d.
+discretization : sequence of int
+    Number of cells per dimension. Each entry must be at least 1.
+
+Notes
+-----
+The following keys of :class:`~openturns.ResourceMap` tune the handling of
+negative eigenvalues:
+
+- 'CirculantEmbeddingGaussianProcess-MaximumIteration' which bounds the
+  number of successive doublings of the embedding size performed when
+  negative eigenvalues are detected. By default, it is set to 20.
+- 'Mesh-VertexEpsilon' which is the relative tolerance used to check that
+  the input mesh is a regular Cartesian grid with uniform spacing. By
+  default, it is set to 1.0e-6.
 
 Examples
 --------
