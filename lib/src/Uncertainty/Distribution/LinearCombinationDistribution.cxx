@@ -451,8 +451,7 @@ String LinearCombinationDistribution::__str__(const String & offset) const
         else oss << " - ";
       }
       else if (w < 0.0) oss << "-";
-      const String coeff(OSS() << std::abs(w));
-      if (coeff != "1") oss << std::abs(w) << " * ";
+      if (std::abs(std::abs(w) - 1.0) > SpecFunc::Precision) oss << std::abs(w) << " * ";
       oss << distributionCollection_[i];
     }
     // skip to new line
@@ -2365,9 +2364,9 @@ Scalar LinearCombinationDistribution::computeComplementaryCDF(const Point & poin
   const Scalar x = point[0];
   // Special case for combination containing only one contributor Y = alpha * X + beta
   // for alpha > 0.0:
-  // P(Y < y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
+  // P(Y > y) = P(X > (y - beta) / alpha) = complementaryCDF_X((y - beta) / alpha)
   // for alpha < 0.0:
-  // P(Y < y) = P(X > (y - beta) / alpha) = 1.0 - CDF_X((y - beta) / alpha)
+  // P(Y > y) = P(X < (y - beta) / alpha) = CDF_X((y - beta) / alpha)
   if (isAnalytical_)
   {
     const Scalar alpha = weights_(0, 0);
@@ -2382,10 +2381,9 @@ Scalar LinearCombinationDistribution::computeComplementaryCDF(const Point & poin
   if (x <= lowerBound) return 1.0;
   if (x >= upperBound) return 0.0;
   // Here we call computeProbability with a [x, +inf[ interval
-  // Here we call computeProbability with a ]-inf, x] interval
   const Scalar complementaryCDF = computeProbability(Interval(point, Point(1, upperBound), Interval::BoolCollection(1, true), getRange().getFiniteUpperBound()));
   if (complementaryCDF < 0.5) return complementaryCDF;
-  // and if the cdf value is less than 1/2, it was better to use the complementary CDF
+  // and if the complementary CDF value is greater than 1/2, it is better to use 1 - CDF
   else return 1.0 - computeProbability(Interval(Point(1, lowerBound), point, getRange().getFiniteLowerBound(), Interval::BoolCollection(1, true)));
 }
 
@@ -2422,14 +2420,24 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
   }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "LinearCombinationDistribution-SmallSize" )))
   {
+    const Scalar savedPdfPrecision = pdfPrecision_;
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     Scalar probability;
-    // Generic implementation for continuous distributions
-    if (isContinuous()) probability = computeProbabilityContinuous(interval);
-    // Generic implementation for discrete distributions
-    else if (isDiscrete()) probability = computeProbabilityDiscrete(interval);
-    // Generic implementation for general distributions
-    else probability = computeProbabilityGeneral(interval);
+    try
+    {
+      // Generic implementation for continuous distributions
+      if (isContinuous()) probability = computeProbabilityContinuous(interval);
+      // Generic implementation for discrete distributions
+      else if (isDiscrete()) probability = computeProbabilityDiscrete(interval);
+      // Generic implementation for general distributions
+      else probability = computeProbabilityGeneral(interval);
+    }
+    catch (...)
+    {
+      pdfPrecision_ = savedPdfPrecision;
+      throw;
+    }
+    pdfPrecision_ = savedPdfPrecision;
     return probability;
   }
   // Special case for combination containing only one contributor
@@ -2542,14 +2550,14 @@ Scalar LinearCombinationDistribution::computeScalarQuantile(const Scalar prob,
     {
       const Scalar pdf = computePDF(x);
       dx = (q - cdf) / pdf;
+      x += dx;
       // Depending on the size of the mixture, use computeCDF (size == 2) or computeProbability (size > 2)
       if (twoAtoms) cdf = computeCDF(x);
       else
       {
-        const Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x, x + dx)) : computeProbability(Interval(x + dx, x)));
+        const Scalar dcdf = (dx > 0.0 ? computeProbability(Interval(x - dx, x)) : computeProbability(Interval(x, x - dx)));
         cdf += (dx > 0.0 ? dcdf : -dcdf);
       }
-      x += dx;
     }
     // Has the Newton iteration converged?
     if (std::abs(dx) <= epsilon) return x;
@@ -3111,7 +3119,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Scalar
     delta = equivalentNormal_.computePDF(x + step) + equivalentNormal_.computePDF(x - step);
     value += delta;
   }
-  while (delta > 0.0 * value);
+  while (delta > value * pdfPrecision_);
   return value;
 }
 
@@ -3149,7 +3157,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalPDFSum(const Point 
       delta = equivalentNormal_.computePDF(x + step) + equivalentNormal_.computePDF(x - step);
       value += delta;
     }
-    while (delta > 0.0 * value);
+    while (delta > value * pdfPrecision_);
     return value;
   }
 
@@ -3204,7 +3212,7 @@ Scalar LinearCombinationDistribution::computeEquivalentNormalCDFSum(const Scalar
     delta = (equivalentNormal_.computeCDF(t + step) - equivalentNormal_.computeCDF(s + step)) + (equivalentNormal_.computeCDF(t - step) - equivalentNormal_.computeCDF(s - step));
     value += delta;
   }
-  while (delta > 0.0 * value);
+  while (delta > std::abs(value) * cdfPrecision_);
   return value;
 }
 
