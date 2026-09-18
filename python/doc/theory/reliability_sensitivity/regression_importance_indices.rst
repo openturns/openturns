@@ -19,25 +19,25 @@ Consider the centered linear model
 
 .. math::
 
-    Y = \vect{X}^{\mathsf{T}}\vect{a} + \varepsilon,
-    \qquad \vect{X}=(X_1,\ldots,X_d),
+    \outputRV = \Tr{\inputRV}\vect{a} + \varepsilon,
+    \qquad \inputRV=(X_1,\ldots,X_d),
 
 where :math:`\vect{a}` is the vector of regression coefficients and
 :math:`\varepsilon` is the residual.  The coefficient of determination is
 
 .. math::
 
-    R^2 = \frac{\Var{\Expect{Y\,|\,\vect{X}}}}{\Var{Y}}.
+    R^2 = \frac{\Var{\Expect{\outputRV\,|\,\inputRV}}}{\Var{\outputRV}}.
 
 For a subset :math:`u\subseteq\{1,\ldots,d\}`, let
-:math:`R^2_{Y(\vect{X}_u)}` denote the coefficient of determination of
+:math:`R^2_{\outputRV(\inputRV_u)}` denote the coefficient of determination of
 the regression using only the inputs in :math:`u`.  Define the marginal
 contribution of input :math:`i` after the subset :math:`u` by
 
 .. math::
 
-    \Delta_i(u) = R^2_{Y(\vect{X}_{u\cup\{i\}})}
-                 - R^2_{Y(\vect{X}_u)}.
+    \Delta_i(u) = R^2_{\outputRV(\inputRV_{u\cup\{i\}})}
+                 - R^2_{\outputRV(\inputRV_u)}.
 
 The indices below are normalized so that their sum is :math:`R^2`.
 
@@ -50,9 +50,9 @@ index.  For input :math:`X_i`, it is defined by
 .. math::
 
     \operatorname{VIF}_i =
-    \frac{1}{1-R^2_{X_i(\vect{X}_{-i})}},
+    \frac{1}{1-R^2_{X_i(\inputRV_{-i})}},
 
-where :math:`\vect{X}_{-i}` contains all inputs except :math:`X_i`.
+where :math:`\inputRV_{-i}` contains all inputs except :math:`X_i`.
 The minimum value is one; large values indicate that the input is strongly
 explained by the other inputs.
 
@@ -97,8 +97,8 @@ ordering :math:`\pi`, define
 
     L(\pi) = \prod_{k=1}^{d-1}
     \left[
-        R^2_{Y(\vect{X})}
-        - R^2_{Y(\vect{X}_{\{\pi_1,\ldots,\pi_k\}})}
+        R^2_{\outputRV(\inputRV)}
+        - R^2_{\outputRV(\inputRV_{\{\pi_1,\ldots,\pi_k\}})}
     \right]^{-1},
 
 where the term in brackets is the difference between the coefficient of
@@ -121,22 +121,22 @@ Johnson indices
 
 Johnson indices use an orthogonal transformation and are therefore suitable
 for larger input dimensions.  First let
-:math:`\mat{R}_{\vect{X},\vect{X}}` be the correlation matrix of the inputs.  Its
+:math:`\matcor_{\inputRV,\inputRV}` be the correlation matrix of the inputs.  Its
 eigendecomposition gives
 
 .. math::
 
-    \mat{R}_{\vect{X},\vect{X}}
-      = \mat{Q}\mat{\Delta}^2\mat{Q}^{\mathsf{T}},
+        \matcor_{\inputRV,\inputRV}
+            = \mat{Q}\mat{\Delta}^2\Tr{\mat{Q}},
     \qquad
-    \mat{W}=\mat{Q}\mat{\Delta}\mat{Q}^{\mathsf{T}}.
+        \mat{W}=\mat{Q}\mat{\Delta}\Tr{\mat{Q}}.
 
-Let :math:`\vect{r}_{\vect{X},Y}` be the vector of correlations between the
-inputs and :math:`Y`.  Let us define:
+Let :math:`\vect{r}_{\inputRV,\outputRV}` be the vector of correlations between the
+inputs and :math:`\outputRV`.  Let us define:
 
 .. math::
 
-    \vect{\alpha} = \mat{W}^{-1}\vect{r}_{\vect{X},Y}.
+    \vect{\alpha} = \mat{W}^{-1}\vect{r}_{\inputRV,\outputRV}.
 
 The standardized Johnson index of input :math:`X_j` is then
 

@@ -45,22 +45,18 @@ print(f"R² score: {r2[0]}")
 # First, we define one that computes the desired quantity:
 
 
-def compute_quantity(X, Y, kind):
+def compute_collinearity_metric(X, Y, kind):
     """
     Compute a quantity for the given dataset
 
     Parameters
     - X: the input sample
     - Y: the output sample
-    - kind: the type of quantity to compute ("LMG", "PMVD", "Johnson" or "VIF")
+    - kind: the type of quantity to compute ("LMG_PMVD", "Johnson" or "VIF")
     """
     analysis = otexp.MulticollinearityAnalysis(X, Y)
-    if kind == "LMG":
-        lmg, _ = analysis.computeLMGAndPMVD()
-        return lmg
-    elif kind == "PMVD":
-        _, pmvd = analysis.computeLMGAndPMVD()
-        return pmvd
+    if kind == "LMG_PMVD":
+        return analysis.computeLMGAndPMVD()
     elif kind == "Johnson":
         return analysis.computeJohnson()
     elif kind == "VIF":
@@ -99,7 +95,9 @@ def create_graph(title, names, mean, interval):
     graph.setBoundingBox(box)
     axes_kw = {"xticks": range(1, dimension + 1), "xticklabels": names}
     view = otv.View(graph, axes_kw=axes_kw, figure_kw={"figsize": (10.0, 4.8)})
-    view.getAxes()[0].tick_params(axis="x", labelsize=8.0)  # reduce the font size of the X labels
+    view.getAxes()[0].tick_params(
+        axis="x", labelsize=8.0
+    )  # reduce the font size of the X labels
 
 
 # %%
@@ -113,7 +111,7 @@ def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
     Parameters
     - X: the input sample
     - Y: the output sample
-    - kind: the type of quantity to compute ("LMG", "PMVD", "Johnson" or "VIF")
+    - kind: the type of quantity to compute ("LMG_PMVD", "Johnson" or "VIF")
     - alpha: the confidence level
     - bootstrap_size: the number of points in the experiment
     """
@@ -121,18 +119,34 @@ def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
     # Perform a bootstrap
     sample_size = X.getSize()
     boot = ot.Sample(bootstrap_size, X.getDimension())
+    if kind == "LMG_PMVD":
+        boot_pmvd = ot.Sample(bootstrap_size, X.getDimension())
     for i in range(bootstrap_size):
         selection = ot.BootstrapExperiment.GenerateSelection(sample_size, sample_size)
         X_boot = X[selection]
         Y_boot = Y[selection]
-        boot[i, :] = compute_quantity(X_boot, Y_boot, kind)
+        if kind == "LMG_PMVD":
+            boot[i, :], boot_pmvd[i, :] = compute_collinearity_metric(
+                X_boot, Y_boot, kind
+            )
+        else:
+            boot[i, :] = compute_collinearity_metric(X_boot, Y_boot, kind)
 
     # Create a graph with the mean values and confidence intervals computed from the bootstrap
     mean = boot.computeMean()
     lb = boot.computeQuantilePerComponent((1.0 - alpha) / 2.0)
     ub = boot.computeQuantilePerComponent(1.0 - (1.0 - alpha) / 2.0)
     interval = ot.Interval(lb, ub)
-    create_graph(kind, X.getDescription(), mean, interval)
+
+    if kind == "LMG_PMVD":
+        create_graph("LMG", X.getDescription(), mean, interval)
+        pmvd_mean = boot_pmvd.computeMean()
+        pmvd_lb = boot_pmvd.computeQuantilePerComponent((1.0 - alpha) / 2.0)
+        pmvd_ub = boot_pmvd.computeQuantilePerComponent(1.0 - (1.0 - alpha) / 2.0)
+        pmvd_interval = ot.Interval(pmvd_lb, pmvd_ub)
+        create_graph("PMVD", X.getDescription(), pmvd_mean, pmvd_interval)
+    else:
+        create_graph(kind, X.getDescription(), mean, interval)
 
 
 # %%
@@ -140,23 +154,18 @@ def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
 
 analysis = otexp.MulticollinearityAnalysis(X, Y)
 lmg, pmvd = analysis.computeLMGAndPMVD()
-print(lmg)
+print("LMG indices: ", lmg)
+print("PMVD indices: ", pmvd)
 
 # %%
-bootstrap(X, Y, "LMG")
-
-# %%
-print(pmvd)
-
-# %%
-bootstrap(X, Y, "PMVD")
+bootstrap(X, Y, "LMG_PMVD")
 
 # %%
 # Johnson index:
 
 analysis = otexp.MulticollinearityAnalysis(X, Y)
 johnson = analysis.computeJohnson()
-print(johnson)
+print("Johnson indices: ", johnson)
 
 # %%
 bootstrap(X, Y, "Johnson")
@@ -168,7 +177,7 @@ bootstrap(X, Y, "Johnson")
 
 analysis = otexp.MulticollinearityAnalysis(X)
 vif = analysis.computeVIF()
-print(vif)
+print("VIF: ", vif)
 
 # %%
 bootstrap(X, Y, "VIF")
