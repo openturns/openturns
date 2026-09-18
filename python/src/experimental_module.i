@@ -77,3 +77,11 @@
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 
+/* Base/Func */
+%include PenalizedEvaluation.i
+%include PenalizedGradient.i
+%include PenalizedHessian.i
+
+/* Base/Optim */
+%include PenalizedProblem.i
+

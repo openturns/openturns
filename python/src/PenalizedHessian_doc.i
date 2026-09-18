@@ -1,0 +1,72 @@
+%feature("docstring") OT::PenalizedHessian
+R"RAW(Hessian which returns zeros on failure.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+Useful for optimization of functions which may throw,
+e.g. when the hessian fails outside of its domain of definition.
+User interruptions are rethrown, not penalized.
+This is consistent with :class:`~openturns.experimental.PenalizedEvaluation`:
+the penalized function is locally constant on failure, hence its hessian is zero.
+If an evaluation is provided, zeros are also returned wherever the evaluation
+fails, even when the hessian itself would succeed, so the derivative stays
+consistent with the penalized values.
+
+Parameters
+----------
+hessian : :class:`~openturns.HessianImplementation`
+    Delegate hessian
+evaluation : :class:`~openturns.EvaluationImplementation`, optional
+    Coordinated evaluation, used only to detect failures
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> f = ot.SymbolicFunction(['x'], ['x^2'])
+>>> h = otexp.PenalizedHessian(f.getHessian())
+>>> print(h.hessian([4.0]))
+sheet #0
+[[ 2 ]])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedHessian::getHessian
+"Accessor to the internal hessian.
+
+Returns
+-------
+hessian : :class:`~openturns.HessianImplementation`
+    The internal hessian."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedHessian::setHessian
+"Accessor to the internal hessian.
+
+Parameters
+----------
+hessian : :class:`~openturns.HessianImplementation`
+    The internal hessian."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedHessian::getEvaluation
+"Accessor to the coordinated evaluation.
+
+Returns
+-------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The coordinated evaluation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PenalizedHessian::setEvaluation
+"Accessor to the coordinated evaluation.
+
+Parameters
+----------
+evaluation : :class:`~openturns.EvaluationImplementation`
+    The coordinated evaluation."
