@@ -88,6 +88,9 @@ public:
   UnsignedInteger getInputDimension() const;
   UnsignedInteger getOutputDimension() const;
 
+  /** Dimension accessor of the values */
+  UnsignedInteger getDimension() const;
+
   /** Return the values stored in the field as a sample */
   Sample getValues() const;
   void setValues(const Sample & values);

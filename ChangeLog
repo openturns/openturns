@@ -35,23 +35,18 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
+ * Deprecated Field.getInputDimension/getOutputDimension in favor of getMesh().getDimension()/getDimension
  * Added Graph.setXMin/setXMax/setYMin/setYMax
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
 === Documentation ===
- * Process definitions: unify mean function notations
- * Add discrete input function example
- * LogNormalFactory: document initial vs transformed data estimation
- * EGO: document criterion solver configuration
- * KissFFT: add usage example
 
 === Python module ===
  * Add Process sample slicing operator
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
 
 === Miscellaneous ===
- * CompositeDistribution: compose functions of nested composites
 
 
 == 1.27 release (2026-04-28) == #release-1.27

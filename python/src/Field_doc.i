@@ -16,6 +16,8 @@ OT_Field_exportToVTKFile_doc
 OT_Field_getDescription_doc
 %feature("docstring") OT::Field::getOutputDimension
 OT_Field_getOutputDimension_doc
+%feature("docstring") OT::Field::getDimension
+OT_Field_getDimension_doc
 %feature("docstring") OT::Field::getMesh
 OT_Field_getMesh_doc
 %feature("docstring") OT::Field::getSize
