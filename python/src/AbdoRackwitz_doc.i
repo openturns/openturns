@@ -19,6 +19,22 @@ omega : float
 smooth : float
     Growing factor in penalization term.
 
+Notes
+-----
+The algorithm stops when one of the two following pairs of criteria is
+met, in which case it has converged:
+
+- the absolute error and the relative error are both below their maximum,
+  set through :meth:`setMaximumAbsoluteError` and
+  :meth:`setMaximumRelativeError`;
+- the residual error and the constraint error are both below their
+  maximum, set through :meth:`setMaximumResidualError` and
+  :meth:`setMaximumConstraintError`.
+
+Because the rule is a disjunction, setting some of these thresholds to
+zero only disables the corresponding pair: the other pair still applies
+with its own default thresholds.
+
 See also
 --------
 Cobyla, SQP, TNC, NLopt
@@ -26,10 +42,10 @@ Cobyla, SQP, TNC, NLopt
 Examples
 --------
 >>> import openturns as ot
->>> model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
->>> problem = ot.NearestPointProblem(model, 5.0)
+>>> model = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
+>>> problem = ot.NearestPointProblem(model, 3.0)
 >>> algo = ot.AbdoRackwitz(problem)
->>> algo.setStartingPoint([1.0] * 4)
+>>> algo.setStartingPoint([0.0] * 4)
 >>> algo.run()
 >>> result = algo.getResult()"
 
