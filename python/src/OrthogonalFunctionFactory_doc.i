@@ -10,7 +10,7 @@ of polynomial chaos expansion.
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------

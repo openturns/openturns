@@ -55,6 +55,13 @@ public:
   /** Recurrence coefficients accessor */
   Sample getRecurrenceCoefficients() const;
 
+  /** Affine coefficients accessors */
+  Scalar getA() const;
+  void setA(const Scalar a);
+  
+  Scalar getB() const;
+  void setB(const Scalar b);
+
   /** Roots of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix */
   ComplexCollection getRoots() const;
 
@@ -68,18 +75,22 @@ protected:
 
   friend class OrthogonalUniVariatePolynomialFactory;
 
-  /** Constructor from recurrence coefficients and coefficients. It is protected to prevent the end user to give incoherent coefficients. */
+  /** Constructor from recurrence coefficients, coefficients and affine transformation. It is protected to prevent the end user to give incoherent coefficients. */
   OrthogonalUniVariatePolynomial(const Sample & recurrenceCoefficients,
-                                 const Coefficients & coefficients);
+				 const Scalar a,
+				 const Scalar b);
+
+  /** Build the monomial coefficients from the recurrence coefficients, handling the affine transformation */
+  Coefficients buildCoefficients() const;
 
 private:
-
-  /** Build the coefficients of the polynomial based on the recurrence coefficients */
-  Coefficients buildCoefficients(const UnsignedInteger n);
 
   /** The recurrence coefficients (an, bn, cn) that defines the orthogonal polynomial for n >= 0. The polynomial P0 is constant equal to 1.0, and by convention we note P-1(x) the null polynomial. For n>=1 we have: Pn+1(x) = (an * x + bn) * Pn(x) + cn * Pn-1(x). The recurrence coefficients are stored starting with (a1, b1, c1). */
   PersistentCollection<Scalar> recurrenceCoefficients_;
 
+  /** The coefficients of the affine transformation wrt the standard distribution */
+  Scalar a_ = 1.0;
+  Scalar b_ = 0.0;
 } ; /* class OrthogonalUniVariatePolynomial */
 
 

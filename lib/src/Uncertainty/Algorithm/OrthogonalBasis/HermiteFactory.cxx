@@ -40,6 +40,20 @@ HermiteFactory::HermiteFactory()
 }
 
 
+/* Constructor with arbitrary Normal parameters */
+HermiteFactory::HermiteFactory(const Scalar mu,
+                               const Scalar sigma)
+  : OrthogonalUniVariatePolynomialFactory(Normal(mu, sigma))
+{
+  // Normal has infinite support so the parent constructor cannot compute
+  // the affine transform from range bounds. Set it directly:
+  // z = (x - mu) / sigma, so a_ = 1/sigma, b_ = -mu/sigma.
+  a_ = 1.0 / sigma;
+  b_ = -mu / sigma;
+  initializeCache();
+}
+
+
 /* Virtual constructor */
 HermiteFactory * HermiteFactory::clone() const
 {

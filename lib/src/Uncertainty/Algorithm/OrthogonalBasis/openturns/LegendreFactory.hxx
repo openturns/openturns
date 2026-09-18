@@ -43,6 +43,10 @@ public:
   /** Default constructor */
   LegendreFactory();
 
+  /** Constructor with arbitrary uniform bounds */
+  LegendreFactory(const Scalar a,
+                  const Scalar b);
+
   /** Virtual constructor */
   LegendreFactory * clone() const override;
 

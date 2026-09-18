@@ -21,8 +21,8 @@
 #include "openturns/LegendreFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/GaussLegendre.hxx"
 #include "openturns/Exception.hxx"
+#include "fastgl.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,6 +37,15 @@ static const Factory<LegendreFactory> Factory_LegendreFactory;
 /* Default constructor */
 LegendreFactory::LegendreFactory()
   : OrthogonalUniVariatePolynomialFactory(Uniform())
+{
+  initializeCache();
+}
+
+
+/* Constructor with arbitrary uniform bounds */
+LegendreFactory::LegendreFactory(const Scalar a,
+                                 const Scalar b)
+  : OrthogonalUniVariatePolynomialFactory(Uniform(a, b))
 {
   initializeCache();
 }
@@ -102,9 +111,17 @@ Point LegendreFactory::getNodesAndWeights(const UnsignedInteger n,
     Point & weights) const
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
-  const GaussLegendre algo(Indices(1, n));
-  weights = algo.getWeights();
-  return (2.0 * algo.getNodes().asPoint() - Point(n, 1.0));
+  const Scalar a = measure_.getRange().getLowerBound()[0];
+  const Scalar b = measure_.getRange().getUpperBound()[0];
+  Point nodes(n);
+  weights = Point(n);
+  for (UnsignedInteger j = 0; j < n; ++j)
+  {
+    const fastgl::QuadPair p(fastgl::GLPair(n, n - j));
+    nodes[j] = a + 0.5 * (b - a) * (1.0 + cos(p.theta));
+    weights[j] = 0.5 * p.weight;
+  }
+  return nodes;
 }
 
 /* Method save() stores the object through the StorageManager */

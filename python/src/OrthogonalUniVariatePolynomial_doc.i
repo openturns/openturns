@@ -53,3 +53,105 @@ Examples
 >>> print(polynomial.getRecurrenceCoefficients())
 0 : [  1         0         0        ]
 1 : [  0.707107  0        -0.707107 ])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomial::getA
+R"RAW(Accessor to the scale coefficient of the affine transformation.
+
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
+
+Returns
+-------
+a : float
+    The scale coefficient :math:`a` of the affine transformation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
+>>> print(polynomial.getA())
+1.0)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomial::setA
+R"RAW(Accessor to the scale coefficient of the affine transformation.
+
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
+
+Parameters
+----------
+a : float
+    The scale coefficient :math:`a` of the affine transformation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
+>>> polynomial.setA(2.0)
+>>> print(polynomial.getA())
+2.0)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomial::getB
+R"RAW(Accessor to the translation coefficient of the affine transformation.
+
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
+
+Returns
+-------
+b : float
+    The translation coefficient :math:`b` of the affine transformation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
+>>> print(polynomial.getB())
+0.0)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OrthogonalUniVariatePolynomial::setB
+R"RAW(Accessor to the translation coefficient of the affine transformation.
+
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
+
+Parameters
+----------
+b : float
+    The translation coefficient :math:`b` of the affine transformation.
+
+Examples
+--------
+>>> import openturns as ot
+>>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
+>>> polynomial.setB(1.0)
+>>> print(polynomial.getB())
+1.0)RAW"

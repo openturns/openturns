@@ -6,18 +6,14 @@ For the :class:`~openturns.Gamma` distribution.
 Parameters
 ----------
 k : float
-    If `parameters_set == ot.JacobiFactory.PROBABILITY`: default shape
-    parameter :math:`k > 0` of the :class:`~openturns.Gamma` distribution.
+    Shape parameter :math:`k > 0` of the :class:`~openturns.Gamma` distribution.
+lambda : float, optional
+    Scale parameter :math:`\lambda > 0` of the :class:`~openturns.Gamma`
+    distribution. Defaults to 1.0.
+gamma : float, optional
+    Location parameter :math:`\gamma` of the :class:`~openturns.Gamma`
+    distribution. Defaults to 0.0.
 
-    If `parameters_set == ot.JacobiFactory.ANALYSIS`: alternative shape
-    parameter :math:`k_a = k - 1 > -1` of the :class:`~openturns.Gamma`
-    distribution.
-parameters_set : int, optional
-    Integer telling which parameters set is used for defining the distribution
-    (amongst `ot.LaguerreFactory.ANALYSIS, ot.LaguerreFactory.PROBABILITY`).
-
-Notes
------
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
 
@@ -31,9 +27,9 @@ read:
 .. math::
 
     \begin{array}{rcl}
-        a_i & = & \omega_i \\
-        b_i & = & - (2 i + k_a + 1) \omega_i \\
-        c_i & = & - \sqrt{(i + k_a) i} \omega_i
+    a_i & = & \omega_i \\
+    b_i & = & - (2 i + k_a + 1) \omega_i \\
+    c_i & = & - \sqrt{(i + k_a) i} \omega_i
     \end{array}, \quad 1 < i
 
 where :math:`k_a` is the alternative shape parameter of the
@@ -45,7 +41,7 @@ where :math:`k_a` is the alternative shape parameter of the
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -55,7 +51,11 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 -1 + X
-1 - 2 * X + 0.5 * X^2)RAW"
+1 - 2 * X + 0.5 * X^2
+
+>>> polynomial_factory = ot.LaguerreFactory(2.5, 2.0, -1.0)
+>>> print(polynomial_factory)
+class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=2.5 lambda=2 gamma=-1)RAW"
 
 // ---------------------------------------------------------------------
 

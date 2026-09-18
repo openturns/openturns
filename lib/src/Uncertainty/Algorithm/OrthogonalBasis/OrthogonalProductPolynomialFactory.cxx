@@ -28,7 +28,7 @@
 #include "openturns/ProductPolynomialEvaluation.hxx"
 #include "openturns/ProductPolynomialGradient.hxx"
 #include "openturns/ProductPolynomialHessian.hxx"
-#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/Os.hxx"
@@ -89,7 +89,7 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const Dis
   Bool hasDiscrete = false;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    coll[i] = StandardDistributionPolynomialFactory(marginals[i]);
+    coll[i] = UniVariateDistributionPolynomialFactory(marginals[i]);
     if (marginals[i].isDiscrete())
       hasDiscrete = true;
   }
@@ -107,7 +107,7 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const Dis
   const UnsignedInteger size = marginals.getSize();
   PolynomialFamilyCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++ i)
-    coll[i] = StandardDistributionPolynomialFactory(marginals[i]);
+    coll[i] = UniVariateDistributionPolynomialFactory(marginals[i]);
   *this = OrthogonalProductPolynomialFactory(coll, phi);
 }
 
@@ -166,9 +166,9 @@ String OrthogonalProductPolynomialFactory::getMarginalPolynomialName(const Unsig
   String className;
   const OrthogonalUniVariatePolynomialFamily univariatePolynomial(coll_[marginalIndex]);
   const String basicClassName(univariatePolynomial.getImplementation()->getClassName());
-  if (basicClassName == "StandardDistributionPolynomialFactory")
+  if (basicClassName == "UniVariateDistributionPolynomialFactory" || basicClassName == "StandardDistributionPolynomialFactory")
   {
-    const StandardDistributionPolynomialFactory* p_factory = dynamic_cast<const StandardDistributionPolynomialFactory*>(univariatePolynomial.getImplementation().get());
+    const UniVariateDistributionPolynomialFactory* p_factory = dynamic_cast<const UniVariateDistributionPolynomialFactory*>(univariatePolynomial.getImplementation().get());
     if (p_factory)
     {
       const Bool hasSpecificFamily = p_factory->getHasSpecificFamily();

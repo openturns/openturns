@@ -3,8 +3,15 @@ R"RAW(Legendre specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Uniform` distribution.
 
-Notes
------
+Parameters
+----------
+a : float, optional
+    Lower bound :math:`a` of the :class:`~openturns.Uniform` distribution.
+    Defaults to -1.0.
+b : float, optional
+    Upper bound :math:`b` of the :class:`~openturns.Uniform` distribution.
+    Defaults to 1.0.
+
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
 
@@ -18,16 +25,17 @@ read:
 .. math::
 
     \begin{array}{rcl}
-        a_i & = & \displaystyle \frac{\sqrt{(2 i + 1) (2 i + 3)}}
-                                     {i + 1} \\
-        b_i & = & 0 \\
-        c_i & = & \displaystyle - \frac{i \sqrt{2 i + 3}}
-                                       {(i + 1) \sqrt{2 i - 1}}
+    a_i & = & \displaystyle \frac{\sqrt{(2 i + 1) (2 i + 3)}}{i + 1} \\
+    b_i & = & 0 \\
+    c_i & = & \displaystyle - \frac{i \sqrt{2 i + 3}}{(i + 1) \sqrt{2 i - 1}}
     \end{array}, \quad 1 < i
+
+The nodes and weights of the associated Gauss-Legendre quadrature rule are
+computed using the symmetric tridiagonal Jacobi matrix approach.
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -37,4 +45,11 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 1.73205 * X
--1.11803 + 3.3541 * X^2)RAW"
+-1.11803 + 3.3541 * X^2
+
+>>> polynomial_factory = ot.LegendreFactory(0.0, 2.0)
+>>> for i in range(3):
+...     print(polynomial_factory.build(i))
+1
+-1.73205 + 1.73205 * X
+2.23607 - 6.7082 * X + 3.3541 * X^2)RAW"

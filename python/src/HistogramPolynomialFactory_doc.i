@@ -11,8 +11,6 @@ width : positive sequence of float
 height : positive sequence of float
     :math:`h_i` is the frequency of the class :math:`i`.
 
-Notes
------
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
 
@@ -26,7 +24,7 @@ evaluation of the dot-products.
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -35,8 +33,8 @@ Examples
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
--2.56273 + 1.13899 * X
-7.80593 - 7.42767 * X + 1.5268 * X^2
+-4.46104 + 0.759326 * X
+24.4265 - 8.34467 * X + 0.678578 * X^2
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -3,7 +3,7 @@
 
 See also
 --------
-StandardDistributionPolynomialFactory"
+experimental.UniVariateDistributionPolynomialFactory"
 %enddef
 %feature("docstring") OT::OrthogonalUniVariatePolynomialFactory
 OT_OrthogonalUniVariatePolynomialFactory_doc
@@ -212,3 +212,45 @@ Examples
 %enddef
 %feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getRoots
 OT_OrthogonalUniVariatePolynomialFactory_getRoots_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_getA_doc
+"Accessor to the scale coefficient of the affine transformation.
+
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
+
+Returns
+-------
+a : float
+    The scale coefficient :math:`a` of the affine transformation."
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getA
+OT_OrthogonalUniVariatePolynomialFactory_getA_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OrthogonalUniVariatePolynomialFactory_getB_doc
+"Accessor to the translation coefficient of the affine transformation.
+
+The affine transformation maps the variable :math:`x` to the variable
+:math:`z = a x + b`: if :math:`X` is a random variable distributed according
+to the associated measure, then :math:`Z = aX + b` is distributed according
+to its standard representative. The polynomial is evaluated at :math:`x` as
+the composition of the polynomial :math:`p_n` orthonormal with respect to the
+standard representative and of the affine transformation :math:`T`,
+i.e. :math:`P_n(x) = p_n(a x + b)`.
+
+Returns
+-------
+b : float
+    The translation coefficient :math:`b` of the affine transformation."
+%enddef
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFactory::getB
+OT_OrthogonalUniVariatePolynomialFactory_getB_doc

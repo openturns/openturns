@@ -31,25 +31,80 @@ int main(int, char *[])
 
   try
   {
-    {
-      JacobiFactory jacobi(2.5, 3.5, JacobiFactory::PROBABILITY);
-      fullprint << "jacobi=" << jacobi << std::endl;
-    }
-    {
-      JacobiFactory jacobi(2.5, 3.5, JacobiFactory::ANALYSIS);
-      fullprint << "jacobi=" << jacobi << std::endl;
-    }
+    // Standard 2-arg factory
     JacobiFactory jacobi(2.5, 3.5);
     fullprint << "jacobi=" << jacobi << std::endl;
+
+    // Build first 10 polynomials and check coefficient evaluation consistency
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
-      fullprint << "jacobi(" << i << ")=" << jacobi.build(i).__str__() << std::endl;
+      auto p = jacobi.build(i);
+      fullprint << "jacobi(" << i << ")=" << p.__str__() << std::endl;
+      Point coeffs(p.getCoefficients());
+      for (Scalar x = -0.5; x <= 0.5; x += 0.5)
+      {
+        Scalar yCoeff = 0.0;
+        for (UnsignedInteger j = 0; j < coeffs.getDimension(); ++j)
+          yCoeff += coeffs[j] * std::pow(x, j);
+        assert_almost_equal(yCoeff, p(x));
+      }
     }
+
+    // Check orthonormality using Gauss quadrature
+    {
+      const UnsignedInteger degreeMax = 6;
+      const UnsignedInteger m = degreeMax + 1;
+      Point weights;
+      Point nodes = jacobi.getNodesAndWeights(m, weights);
+      for (UnsignedInteger i = 0; i <= degreeMax; ++i)
+      {
+        auto pI = jacobi.build(i);
+        for (UnsignedInteger j = 0; j <= i; ++j)
+        {
+          auto pJ = jacobi.build(j);
+          Scalar val = 0.0;
+          for (UnsignedInteger k = 0; k < m; ++k)
+            val += weights[k] * pI(nodes[k]) * pJ(nodes[k]);
+          assert_almost_equal(val, (i == j) ? 1.0 : 0.0);
+        }
+      }
+    }
+
+    // Check roots
     Point roots(jacobi.getRoots(10));
     fullprint << "jacobi(10) roots=" << roots << std::endl;
-    Point weights;
-    roots = jacobi.getNodesAndWeights(10, weights);
-    fullprint << "jacobi(10) roots=" << roots << " and weights=" << weights << std::endl;
+    assert_equal(static_cast<UnsignedInteger>(roots.getDimension()), static_cast<UnsignedInteger>(10));
+    auto p10 = jacobi.build(10);
+    for (UnsignedInteger i = 0; i < 10; ++i)
+      assert_almost_equal(p10(roots[i]), 0.0);
+
+    // Check nodes and weights
+    Point weights2;
+    roots = jacobi.getNodesAndWeights(10, weights2);
+    fullprint << "jacobi(10) nodes=" << roots << " and weights=" << weights2 << std::endl;
+    assert_equal(static_cast<UnsignedInteger>(weights2.getDimension()), static_cast<UnsignedInteger>(10));
+
+    // Bounded 4-arg factory
+    JacobiFactory jacobiBounded(2.5, 3.5, -1.0, 2.0);
+    fullprint << "jacobiBounded=" << jacobiBounded << std::endl;
+    {
+      const UnsignedInteger degreeMax = 4;
+      const UnsignedInteger m = degreeMax + 1;
+      Point w;
+      Point n = jacobiBounded.getNodesAndWeights(m, w);
+      for (UnsignedInteger i = 0; i <= degreeMax; ++i)
+      {
+        auto pI = jacobiBounded.build(i);
+        for (UnsignedInteger j = 0; j <= i; ++j)
+        {
+          auto pJ = jacobiBounded.build(j);
+          Scalar val = 0.0;
+          for (UnsignedInteger k = 0; k < m; ++k)
+            val += w[k] * pI(n[k]) * pJ(n[k]);
+          assert_almost_equal(val, (i == j) ? 1.0 : 0.0);
+        }
+      }
+    }
   }
   catch (TestFailed & ex)
   {

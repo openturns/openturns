@@ -34,7 +34,7 @@ for the product of polynomials.
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -105,8 +105,8 @@ Examples
 >>> nodes, weights = productBasis.getNodesAndWeights([2, 3, 1])
 >>> print(nodes[:2])
     [ v0        v1        v2        ]
-0 : [ -1        -0.774597  3.75     ]
-1 : [  1        -0.774597  3.75     ]
+0 : [ -1        -0.774597  2.75     ]
+1 : [  1        -0.774597  2.75     ]
 >>> print(weights[:2])
 [0.138889,0.138889])RAW"
 

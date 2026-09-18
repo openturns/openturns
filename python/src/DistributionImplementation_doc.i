@@ -2739,9 +2739,11 @@ std_repr_dist : :class:`~openturns.Distribution`
 Notes
 -----
 The standard representative distribution is defined on a distribution-by-distribution basis, most of the time by
-scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (ie zero mean, unit variance) the
-distributions with unbounded support. It is the member of the family for which orthonormal polynomials will be built using
-generic algorithms of orthonormalization (see :class:`~openturns.StandardDistributionPolynomialFactory`)."
+scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (i.e. zero mean, unit variance) the
+distributions with unbounded support. It is the member of the family for which the recurrence coefficients of the
+orthonormal polynomial family are computed. The orthonormal polynomials of the given distribution are then deduced from
+those of its standard representative by composition with the affine transformation which maps the given distribution to
+its standard representative (see :class:`~openturns.experimental.UniVariateDistributionPolynomialFactory`)."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc

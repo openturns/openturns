@@ -11,7 +11,7 @@ build multivariate polynomial basis by tensorization in the polynomial chaos exp
 :ref:`functional_chaos` and :ref:`chaos_basis`).
 
 A sequence of univariate orthonormal polynomials is defined by a three-term recurrence
-formula. Let by :math:`P_n` the polynomial of degree :math:`n`.
+formula. Let :math:`P_n` the polynomial of degree :math:`n`.
 Then the sequence :math:`(P_n)_{n \in \Nset}` verifies the relation:
 
 .. math::
@@ -19,6 +19,15 @@ Then the sequence :math:`(P_n)_{n \in \Nset}` verifies the relation:
     P_{n+1}\ =\ (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}
 
 where for all :math:`n`, :math:`a_n \geq 0` and :math:`c_n < 0`.
+
+When the distribution :math:`\mu` belongs to a parametric family which
+admits a **standard representative** :math:`\mu_0` (see the dedicated
+section :ref:`std-repr-affine` below), the three-term recurrence is
+computed for :math:`\mu_0` and not for :math:`\mu`, when possible. The
+polynomial family orthonormal with respect to :math:`\mu` is then deduced
+from the family orthonormal with respect to :math:`\mu_0` by composition
+with the affine transformation which maps :math:`\mu` to
+:math:`\mu_0`.
 
 We detail:
 
@@ -61,23 +70,56 @@ equal to zero.
 
 The Table below sums up the available polynomials sequences and the distribution with respect to which they are orthonormal.
 
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Distribution                           | Support                 | Polynomial family                |   In the library                      |
-+========================================+=========================+==================================+=======================================+
-| Normal :math:`\cN(0,1)`                | :math:`\Rset`           | Hermite                          | :class:`~openturns.HermiteFactory`    |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Uniform :math:`\cU(-1,1)`              | :math:`[-1,1]`          | Legendre                         | :class:`~openturns.LegendreFactory`   |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Gamma :math:`\Gamma(k,1,0)`            | :math:`(0,+\infty)`     | Laguerre                         | :class:`~openturns.LaguerreFactory`   |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Beta :math:`B(\alpha,\beta,-1,1)`      | :math:`(-1,1)`          | Jacobi                           | :class:`~openturns.JacobiFactory`     |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Poisson :math:`\cP(\lambda)`           | :math:`\Nset`           | Charlier                         | :class:`~openturns.CharlierFactory`   |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Binomial :math:`\cB(m,p)`              | :math:`\{0,\dots,m\}`   | Krawtchouk\ :math:`^{\dagger}`   | :class:`~openturns.KrawtchoukFactory` |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
-| Negative Binomial :math:`\cN \cB(m,p)` | :math:`\Nset`           | Meixner                          | :class:`~openturns.MeixnerFactory`    |
-+----------------------------------------+-------------------------+----------------------------------+---------------------------------------+
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Distribution                             | Support                   | Polynomial family              | In the library                        |
++==========================================+===========================+================================+=======================================+
+| Normal :math:`\cN(\mu, \sigma)`          | :math:`\Rset`             | Hermite                        | :class:`~openturns.HermiteFactory`    |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Uniform :math:`\cU(a, b)`                | :math:`[a, b]`            | Legendre                       | :class:`~openturns.LegendreFactory`   |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Gamma :math:`\Gamma(k, \lambda, \gamma)` | :math:`[\gamma, +\infty)` | Laguerre                       | :class:`~openturns.LaguerreFactory`   |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Beta :math:`B(\alpha, \beta, a, b)`      | :math:`(a, b)`            | Jacobi                         | :class:`~openturns.JacobiFactory`     |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Poisson :math:`\cP(\lambda)`             | :math:`\Nset`             | Charlier                       | :class:`~openturns.CharlierFactory`   |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Binomial :math:`\cB(m, p)`               | :math:`\{0, \dots, m\}`   | Krawtchouk\ :math:`^{\dagger}` | :class:`~openturns.KrawtchoukFactory` |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+| Negative binomial :math:`\cN\cB(r, p)`   | :math:`\Nset`             | Meixner                        | :class:`~openturns.MeixnerFactory`    |
++------------------------------------------+---------------------------+--------------------------------+---------------------------------------+
+
+.. _std-repr-affine:
+
+Standard representative and affine transformation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For a distribution :math:`\mu` which admits a **standard representative**
+:math:`\mu_0` in the same parametric family, the orthonormal polynomial
+family is built for :math:`\mu_0`, and the family orthonormal with respect
+to :math:`\mu` is obtained by composition with the affine transformation
+:math:`T` which maps :math:`\mu` to :math:`\mu_0`.
+
+Let :math:`T(x) = a x + b` be this affine transformation: it maps a random
+variable :math:`X \sim \mu` to the random variable
+:math:`Z = T(X) = aX + b \sim \mu_0`. If :math:`p_n` denotes the polynomial
+of degree :math:`n` orthonormal with respect to :math:`\mu_0`, then the
+polynomial :math:`P_n` of degree :math:`n` orthonormal with respect to
+:math:`\mu` is the composition of :math:`p_n` and :math:`T`:
+
+.. math::
+
+    P_n(x)\ =\ p_n(a x + b)\ =\ p_n \circ T(x).
+
+For example, if :math:`X \sim \cN(\mu, \sigma)`, its standard
+representative is :math:`Z = (X - \mu)/\sigma \sim \cN(0, 1)`, associated
+to the Hermite polynomial family. The polynomial orthonormal with respect
+to :math:`X \sim \cN(\mu, \sigma)` is therefore the composition of the
+Hermite polynomial and of the affine transformation
+:math:`T(x) = (x - \mu)/\sigma`.
+
+When the distribution does not admit a standard representative, or when no
+specific polynomial family is associated to it, the polynomial family is
+built numerically by a generic orthonormalization algorithm (see below).
 
 Orthonormal polynomials with respect to arbitrary probability distributions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,7 +133,9 @@ orthonormal bases. However it is known to be numerically unstable, so alternativ
 procedures are often used in practice.
 
 For all arbitrary distributions, the three-term recurrence is computed (see :class:`~openturns.AdaptiveStieltjesAlgorithm`)
-and used to build its orthonormal polynomial family (see :class:`~openturns.StandardDistributionPolynomialFactory`).
+and used to build its orthonormal polynomial family, which stores the affine
+transformation between the distribution and its standard representative, if
+any, on the result (see :class:`~openturns.experimental.UniVariateDistributionPolynomialFactory`).
 
 .. topic:: API:
 

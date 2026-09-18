@@ -8,14 +8,12 @@ Parameters
 arg1 : float
     If `parameters_set == ot.JacobiFactory.PROBABILITY`: default shape
     parameter :math:`r > 0` of the :class:`~openturns.Beta` distribution.
-
     If `parameters_set == ot.JacobiFactory.ANALYSIS`: alternative shape
     parameter :math:`\alpha = t - r - 1 > -1` of the :class:`~openturns.Beta`
     distribution.
 arg2 : float
     If `parameters_set == ot.JacobiFactory.PROBABILITY`: default shape
     parameter :math:`t > r` of the :class:`~openturns.Beta` distribution.
-
     If `parameters_set == ot.JacobiFactory.ANALYSIS`: alternative shape
     parameter :math:`\beta = r - 1` of the :class:`~openturns.Beta`
     distribution.
@@ -23,8 +21,6 @@ parameters_set : int, optional
     Integer telling which parameters set is used for defining the distribution
     (amongst `ot.JacobiFactory.ANALYSIS, ot.JacobiFactory.PROBABILITY`).
 
-Notes
------
 Any sequence of orthogonal polynomials has a recurrence formula relating any
 three consecutive polynomials as follows:
 
@@ -38,16 +34,9 @@ read:
 .. math::
 
     \begin{array}{rcl}
-        a_i & = & \displaystyle K_{2,i} (2 i + \alpha + \beta + 2) \\
-        b_i & = & \displaystyle K_{2,i} \frac{(\alpha - \beta)(\alpha + \beta)}
-                                             {2 i + \alpha + \beta} \\
-        c_i & = & \displaystyle - \frac{2 i + \alpha + \beta + 2}
-                                       {2 i + \alpha + \beta}
-                                \left[(i + \alpha) (i + \beta)
-                                      (i + \alpha + \beta) i
-                                      \frac{K_{1,i}}
-                                           {2 i + \alpha + \beta - 1}
-                                      \right]^{1/2}
+    a_i & = & \displaystyle K_{2,i} (2 i + \alpha + \beta + 2) \\
+    b_i & = & \displaystyle K_{2,i} \frac{(\alpha - \beta)(\alpha + \beta)}{2 i + \alpha + \beta} \\
+    c_i & = & \displaystyle - \frac{2 i + \alpha + \beta + 2}{2 i + \alpha + \beta} \left[(i + \alpha) (i + \beta) (i + \alpha + \beta) i \frac{K_{1,i}}{2 i + \alpha + \beta - 1}\right]^{1/2}
     \end{array}, \quad 1 < i
 
 where :math:`\alpha` and :math:`\beta` are the alternative shape parameters
@@ -56,17 +45,13 @@ of the :class:`~openturns.Beta` distribution, and:
 .. math::
 
     \begin{array}{rcl}
-        K_{1,i} & = & \displaystyle \frac{2 i + \alpha + \beta + 3}
-                                         {(i + 1) (i + \alpha + 1)
-                                          (i + \beta + 1)
-                                          (i + \alpha + \beta + 1)} \\
-        K_{2,i} & = & \displaystyle \frac{1}{2}
-                                    \sqrt{(2 i + \alpha + \beta + 1) K_{1,i}}
+    K_{1,i} & = & \displaystyle \frac{2 i + \alpha + \beta + 3}{(i + 1) (i + \alpha + 1) (i + \beta + 1) (i + \alpha + \beta + 1)} \\
+    K_{2,i} & = & \displaystyle \frac{1}{2} \sqrt{(2 i + \alpha + \beta + 1) K_{1,i}}
     \end{array}, \quad i > 1
 
 See also
 --------
-StandardDistributionPolynomialFactory
+experimental.UniVariateDistributionPolynomialFactory
 
 Examples
 --------
@@ -76,7 +61,11 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 2.23607 * X
--0.935414 + 4.67707 * X^2)RAW"
+-0.935414 + 4.67707 * X^2
+
+>>> polynomial_factory = ot.JacobiFactory(2.5, 3.5, -1.0, 2.0)
+>>> print(polynomial_factory)
+class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=-1 b=2)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -88,7 +77,7 @@ Of the :class:`~openturns.Beta` distribution.
 Returns
 -------
 alpha : float
-    Alternative shape parameter :math:`\alpha = r - 1` of the
+    Alternative shape parameter :math:`\alpha = t - r - 1` of the
     :class:`~openturns.Beta` distribution.)RAW"
 
 // ---------------------------------------------------------------------
@@ -101,5 +90,5 @@ Of the :class:`~openturns.Beta` distribution.
 Returns
 -------
 beta : float
-    Alternative shape parameter :math:`\beta = t - r - 1` of the
+    Alternative shape parameter :math:`\beta = r - 1` of the
     :class:`~openturns.Beta` distribution.)RAW"

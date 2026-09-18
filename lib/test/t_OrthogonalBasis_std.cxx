@@ -33,19 +33,27 @@ int main(int, char *[])
   {
     UnsignedInteger dim = 3;
     OrthogonalProductPolynomialFactory::PolynomialFamilyCollection polynomCollection(dim);
-    polynomCollection[0] = LaguerreFactory(2.5);
+    polynomCollection[0] = LaguerreFactory(3.5);
     polynomCollection[1] = LegendreFactory();
     polynomCollection[2] = HermiteFactory();
     OrthogonalProductPolynomialFactory basisFactory(polynomCollection);
     OrthogonalBasis basis(basisFactory);
     Point point(dim, 0.5);
+
+    // Test build by index and build by multi-index produce the same result
+    EnumerateFunction enumFunction(basis.getEnumerateFunction());
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
-      Function f(basis.build(i));
-      fullprint << "i=" << i << " f(point)=" << f(point) << std::endl;
+      Function fByIndex(basis.build(i));
+      Indices indices(enumFunction(i));
+      Function fByMultiIndex(basis.build(indices));
+      Point valByIndex(fByIndex(point));
+      Point valByMultiIndex(fByMultiIndex(point));
+      fullprint << "i=" << i << " f(point)=" << valByIndex << std::endl;
+      assert_almost_equal(valByIndex, valByMultiIndex, 1e-14, 0.0);
     }
-    // Using multi-indices
-    EnumerateFunction enumFunction(basis.getEnumerateFunction());
+
+    // Using multi-indices explicitly
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
       Indices indices(enumFunction(i));

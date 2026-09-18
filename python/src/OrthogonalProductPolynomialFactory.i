@@ -53,7 +53,7 @@ def __OrthogonalProductPolynomialFactory_repr_html(self):
                 orthoImplementation = orthoAlgorithm.getImplementation()
                 className = orthoImplementation.getClassName()
         except:
-            className = univariateImplementation.getClassName()
+            className = marginalName
         html += f"    <td>{className}</td>\n"
         html += "  </tr>\n"
     html += "</table>\n"

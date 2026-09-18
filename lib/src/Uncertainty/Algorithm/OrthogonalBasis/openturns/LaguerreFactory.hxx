@@ -43,9 +43,13 @@ public:
   /** Default constructor, associated with the default Gamma distribution which is equal to the Exponential distribution */
   LaguerreFactory();
 
-  /** Parameter constructor: k is the order of the generalized Laguerre polynomial, associated with the Gamma(k+1, 1, 0) distribution in the ANALYSIS parameter set, or with the Gamma(k, 1, 0) with the PROBABILITY parameter set */
+  /** Parameter constructor: k is the shape parameter of the Gamma distribution */
+  LaguerreFactory(const Scalar k);
+
+  /** Constructor with arbitrary Gamma parameters */
   LaguerreFactory(const Scalar k,
-                  const ParameterSet parameterization = ANALYSIS);
+                  const Scalar lambda,
+                  const Scalar gamma);
 
   /** Virtual constructor */
   LaguerreFactory * clone() const override;

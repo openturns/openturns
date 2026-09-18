@@ -48,6 +48,8 @@
 %import orthogonalbasis_module.i
 %import UncertaintyOrthogonalBasisTemplateDefs.i
 %include FiniteOrthogonalFunctionFactory.i
+%include UniVariateDistributionPolynomialFactory.i
+%include StandardDistributionPolynomialFactory.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
