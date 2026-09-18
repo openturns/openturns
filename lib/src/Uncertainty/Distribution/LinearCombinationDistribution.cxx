@@ -2657,6 +2657,8 @@ Complex LinearCombinationDistribution::computeDeltaCharacteristicFunction(const 
     const Complex logNormalCF(equivalentNormal_.computeLogCharacteristicFunction(x));
     const Complex deltaLog(logCF - logNormalCF);
     Complex value;
+    // Use a 3rd order Taylor expansion of exp(deltaLog) - 1 if |deltaLog| <= 1e-5
+    // to avoid catastrophic cancellation when logCF and logNormalCF are close
     if (std::abs(deltaLog) < 1.0e-5) value = std::exp(logNormalCF) * (deltaLog * (1.0 + deltaLog * (0.5 + deltaLog / 6.0)));
     else value = std::exp(logCF) - std::exp(logNormalCF);
     return value;
