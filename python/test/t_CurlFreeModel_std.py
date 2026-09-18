@@ -111,6 +111,15 @@ assert param.getSize() > 0
 curlFree.setParameter(param)
 desc = curlFree.getParameterDescription()
 assert desc.getSize() == param.getSize()
+# parameter forwarding: setParameter acts on the wrapped model
+curlFree.setParameter([3.0, 4.0, 2.0])
+ott.assert_almost_equal(curlFree.getScale(), [3.0, 4.0])
+ott.assert_almost_equal(curlFree([0.0, 0.0])[0, 0], 4.0 / 9.0, 1e-10)
+ott.assert_almost_equal(curlFree([0.0, 0.0])[1, 1], 4.0 / 16.0, 1e-10)
+amp_fwd = curlFree.getAmplitude()
+ott.assert_almost_equal(amp_fwd[0], 2.0 / 3.0, 1e-10)
+ott.assert_almost_equal(amp_fwd[1], 2.0 / 4.0, 1e-10)
+curlFree.setParameter(param)
 # __repr__ and __str__
 assert "CurlFreeModel" in curlFree.__repr__()
 assert "CurlFreeModel" in curlFree.__str__()
@@ -303,7 +312,12 @@ print("=" * 60)
 active = curlFree.getActiveParameter()
 assert active.getSize() == 3
 curlFree.setActiveParameter([0, 1])
+ott.assert_almost_equal(curlFree.getParameter(), [1.5, 2.0])
+curlFree.setParameter([3.0, 4.0])
+ott.assert_almost_equal(curlFree.getScale(), [3.0, 4.0])
 assert curlFree.getActiveParameter().getSize() == 2
+curlFree.setActiveParameter(active)
+curlFree.setParameter(param)
 
 # ====================================================================
 # Save / load round-trip
@@ -386,6 +400,8 @@ print("Test setScale refreshes metadata")
 print("=" * 60)
 curl_meta = otexp.CurlFreeModel(2)
 amp_before = curl_meta.getAmplitude()
+ott.assert_almost_equal(amp_before[0], 1.0, 1e-10)
+ott.assert_almost_equal(amp_before[1], 1.0, 1e-10)
 curl_meta.setScale([5.0, 10.0])
 amp_after = curl_meta.getAmplitude()
 ott.assert_almost_equal(amp_after[0], 1.0 / 5.0, 1e-10)

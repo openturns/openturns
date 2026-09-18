@@ -61,6 +61,13 @@ public:
   /** Scale accessor */
   void setScale(const Point & scale) override;
 
+  /** Parameter accessor, forwarded to the underlying model */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+  Description getParameterDescription() const override;
+  Indices getActiveParameter() const override;
+  void setActiveParameter(const Indices & active) override;
+
   /** String converter */
   String __repr__() const override;
 
