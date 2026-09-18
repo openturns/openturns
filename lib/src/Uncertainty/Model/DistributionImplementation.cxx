@@ -3070,10 +3070,65 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
   return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
+/* Collection version of the minimum volume level set computation, sharing
+   the sampling effort between the requested probabilities, see #1734 */
+Collection<LevelSet> DistributionImplementation::computeMinimumVolumeLevelSetCollectionWithThreshold(const Point & prob,
+    Point & threshold) const
+{
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeLevelSetCollectionWithThreshold()";
+  const UnsignedInteger size = prob.getSize();
+  Collection<LevelSet> levelSets(size);
+  threshold = Point(size);
+  if (size == 0) return levelSets;
+  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+  minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
+  // 1D special case with QMC sampling: one sample serves all the probabilities
+  if ((dimension_ == 1) && ResourceMap::GetAsBool("Distribution-MinimumVolumeLevelSetBySampling"))
+  {
+    LOGINFO("Compute the minimum volume level sets by sampling (QMC)");
+    const UnsignedInteger sampleSize = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
+    const Sample xQMC(getSampleByQMC(sampleSize));
+    const Sample logPDFSample(computeLogPDF(xQMC));
+    const Sample sortedLogPDF(logPDFSample.sort(0));
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      if (!(prob[i] >= 0.0) || !(prob[i] <= 1.0))
+        throw InvalidArgumentException(HERE) << "The probability must be in [0, 1] here prob=" << prob[i];
+      const Scalar minusLogPDFThreshold = -sortedLogPDF.computeQuantile(1.0 - prob[i])[0];
+      threshold[i] = std::exp(-minusLogPDFThreshold);
+      levelSets[i] = LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
+    }
+    return levelSets;
+  }
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (!(prob[i] >= 0.0) || !(prob[i] <= 1.0))
+      throw InvalidArgumentException(HERE) << "The probability must be in [0, 1] here prob=" << prob[i];
+    Scalar minusLogPDFThreshold;
+    // If dimension_ == 1 the threshold can be computed analytically
+    if (dimension_ == 1)
+    {
+      LOGINFO("Compute the minimum volume level set by using a composite distribution quantile (univariate general case)");
+      const CompositeDistribution composite(minimumVolumeLevelSetFunction, *this);
+      minusLogPDFThreshold = composite.computeScalarQuantile(prob[i]);
+    } // dimension == 1
+    else
+    {
+      LOGINFO("Compute the minimum volume level set by sampling (Monte Carlo)");
+      const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize");
+      const Sample xSample(getSample(sampleSize));
+      const Sample logPDFSample(computeLogPDF(xSample));
+      minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob[i])[0];
+    } // dimension > 1
+    threshold[i] = std::exp(-minusLogPDFThreshold);
+    levelSets[i] = LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
+  }
+  return levelSets;
+}
+
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
     Scalar & threshold) const
-{
-  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
+{  Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   // As we are in 1D and as the function defining the composite distribution can have complex variations,
   // we use an improved sampling method to compute the quantile of the -logPDF(X) distribution

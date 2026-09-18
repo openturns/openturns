@@ -261,6 +261,10 @@ public:
   LevelSet computeMinimumVolumeLevelSet(const Scalar prob) const;
   LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
+  /** Get the minimum volume level sets containing given probabilities of the distribution */
+  Collection<LevelSet> computeMinimumVolumeLevelSetCollectionWithThreshold(const Point & prob,
+      Point & thresholdOut) const;
+
   /** Get the mathematical and numerical range of the distribution.
       Its mathematical range is the smallest closed interval outside
       of which the PDF is zero, and the numerical range is the interval
