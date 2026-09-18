@@ -31,6 +31,32 @@ reduction. The result is returned as a :class:`~openturns.Point` of dimension
 
 All the integration routines and the parameters are discussed in [hahn2005]_.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CubaIntegration-DefaultMaximumAbsoluteError* (`Scalar`, default: `0.0001`): default absolute error.
+- *CubaIntegration-DefaultMaximumRelativeError* (`Scalar`, default: `0.0001`): default relative error.
+- *CubaIntegration-DefaultMaximumCallsNumber* (`UnsignedInteger`, default: `1000000`): default maximum number of integrand calls.
+- *CubaIntegration-mineval* (`UnsignedInteger`, default: `0`): minimum number of integrand evaluations.
+- *CubaIntegration-seed* (`UnsignedInteger`, default: `0`): random number generator seed.
+- *CubaIntegration-cuhre-key* (`UnsignedInteger`, default: `0`): Cuhre integration key.
+- *CubaIntegration-flags* (`UnsignedInteger`, default: `0`): global flags.
+- *CubaIntegration-divonne-border* (`Scalar`, default: `0.0`): Divonne border parameter.
+- *CubaIntegration-divonne-maxchisq* (`Scalar`, default: `10.0`): Divonne maximum chi-square.
+- *CubaIntegration-divonne-mindeviation* (`Scalar`, default: `0.25`): Divonne minimum deviation.
+- *CubaIntegration-divonne-key1* (`UnsignedInteger`, default: `47`): Divonne key1 parameter.
+- *CubaIntegration-divonne-key2* (`UnsignedInteger`, default: `1`): Divonne key2 parameter.
+- *CubaIntegration-divonne-key3* (`UnsignedInteger`, default: `1`): Divonne key3 parameter.
+- *CubaIntegration-divonne-maxpass* (`UnsignedInteger`, default: `5`): Divonne maximum passes.
+- *CubaIntegration-divonne-ngiven* (`UnsignedInteger`, default: `0`): Divonne number of given points.
+- *CubaIntegration-divonne-nextra* (`UnsignedInteger`, default: `0`): Divonne number of extra points.
+- *CubaIntegration-suave-flatness* (`Scalar`, default: `25.0`): Suave flatness parameter.
+- *CubaIntegration-suave-nnew* (`UnsignedInteger`, default: `1000`): Suave number of new integrand evaluations.
+- *CubaIntegration-suave-nmin* (`UnsignedInteger`, default: `2`): Suave minimum number of evaluations.
+- *CubaIntegration-vegas-nstart* (`UnsignedInteger`, default: `1000`): Vegas initial number of integrand evaluations.
+- *CubaIntegration-vegas-nincrease* (`UnsignedInteger`, default: `500`): Vegas increase in evaluations per iteration.
+- *CubaIntegration-vegas-nbatch* (`UnsignedInteger`, default: `1000`): Vegas batch size.
+- *CubaIntegration-vegas-gridno* (`UnsignedInteger`, default: `0`): Vegas grid number.
+
 Examples
 --------
 Create a Cuba algorithm:

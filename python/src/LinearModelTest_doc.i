@@ -54,6 +54,13 @@ is less than a given threshold (typically 5% or 10%). Thus, the lower the *p*-va
 the more significant the coefficient.
 
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelTest-DefaultDurbinWatsonHypothesis* (`String`, default: `Equal`)
+- *LinearModelTest-DefaultHarrisonMcCabeBreakpoint* (`Scalar`, default: `0.5`)
+- *LinearModelTest-DefaultHarrisonMcCabeSimulationSize* (`UnsignedInteger`, default: `1000`)
+- *LinearModelTest-DefaultLevel* (`Scalar`, default: `0.05`)
+
 Examples
 --------
 >>> import openturns as ot

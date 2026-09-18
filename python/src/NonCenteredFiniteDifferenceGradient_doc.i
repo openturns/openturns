@@ -25,6 +25,10 @@ finite-difference scheme:
     \frac{\partial f_j}{\partial x_i} \approx \frac{f_j(x + \epsilon_i) - f_j(x)}
                                                    {\epsilon_i}
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *NonCenteredFiniteDifferenceGradient-DefaultEpsilon* (`Scalar`, default: `1e-07`)
+
 Examples
 --------
 >>> import openturns as ot

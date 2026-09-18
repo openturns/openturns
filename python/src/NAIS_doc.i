@@ -66,6 +66,10 @@ Its iterative principle is described by the following steps.
 
 The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *NAIS-DefaultQuantileLevel* (`Scalar`, default: `0.25`)
+
 See also
 --------
 SubsetSampling

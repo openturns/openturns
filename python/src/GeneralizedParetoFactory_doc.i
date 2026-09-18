@@ -11,7 +11,7 @@ The following :class:`~openturns.ResourceMap` entries can be used to tweak
 the parameters of the optimization solver involved in the different estimators:
 
 - `GeneralizedParetoFactory-DefaultOptimizationAlgorithm`
-- `GeneralizedParetoFactory-MaximumEvaluationNumber`
+- `GeneralizedParetoFactory-MaximumCallsNumber`
 - `GeneralizedParetoFactory-MaximumAbsoluteError`
 - `GeneralizedParetoFactory-MaximumRelativeError`
 - `GeneralizedParetoFactory-MaximumObjectiveError`
@@ -78,7 +78,12 @@ to the :class:`~openturns.ResourceMap` key `GeneralizedParetoFactory-SmallSize`
 - If the sample size is less or equal to `GeneralizedParetoFactory-SmallSize` from :class:`~openturns.ResourceMap`, then the method of probability weighted moments is used. If it fails, the method of exponential regression is used.
 - Otherwise, the first method tried is the method of exponential regression, then the method of probability weighted moments if the first one fails.
 
-In the third usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built.)RAW"
+In the third usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built.
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *GeneralizedParetoFactory-MaximumCallsNumber* (`UnsignedInteger`, default: `1000`)
+)RAW"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedParetoFactory::buildAsGeneralizedPareto

@@ -61,6 +61,14 @@ which is equivalent to the solution of the following optimization problem:
     \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{k=1}^{d_\theta} \left[ \left( g_k(\vect{\theta}) \right)^{1/k}-
     \widehat{\mu}_k^{1/k} \right]^2
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MethodOfMomentsFactory-MaximumAbsoluteError* (`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumCallsNumber* (`UnsignedInteger`, default: `1000`)
+- *MethodOfMomentsFactory-MaximumConstraintError* (`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumObjectiveError* (`Scalar`, default: `1e-10`)
+- *MethodOfMomentsFactory-MaximumRelativeError* (`Scalar`, default: `1e-10`)
+
 
 See also
 --------
