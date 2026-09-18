@@ -129,6 +129,7 @@ private:
   SquareMatrix sigmaEigVec_;
   Point sigmaEig_;
   Scalar maxEig_;
+  Scalar minEig_;
 
 }; /* class WrappedNormal */
 

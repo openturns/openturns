@@ -418,9 +418,10 @@ void Bingham::setParameter(const Point & parameter)
       gamma(i, j) = parameter[n + i * n + j];
 
   const Scalar w = getWeight();
+  const Scalar epsilon = epsilon_;
   *this = Bingham(zeta, gamma);
   setWeight(w);
-  setEpsilon(epsilon_);
+  setEpsilon(epsilon);
 }
 
 Description Bingham::getParameterDescription() const

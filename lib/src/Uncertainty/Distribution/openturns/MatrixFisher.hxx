@@ -108,7 +108,7 @@ private:
   Scalar logNormalization_;
   Scalar maxTrace_;
 
-  /** Moments of R, stored for the mean/covariance/entropy */
+  /** Moments of R: expectedMatrix_ is E[R] (3x3), expectedSquaredMatrix_ is E[vec(R)vec(R)^T] (9x9), expectedTrace_ is E[tr(R)] */
   SquareMatrix expectedMatrix_;
   SquareMatrix expectedSquaredMatrix_;
   Scalar expectedTrace_;

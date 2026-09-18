@@ -177,7 +177,7 @@ void MatrixFisher::computeNormalization()
   Scalar sumWeighted = 0.0;
   Scalar sumTrWeighted = 0.0;
   Matrix sumRWeighted(3, 3);
-  Matrix sumRRTWeighted(3, 3);
+  Matrix sumRFlatRFlatWeighted(9, 9);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar tPhi = nodes(i, 0);
@@ -197,10 +197,10 @@ void MatrixFisher::computeNormalization()
       for (UnsignedInteger c = 0; c < 3; ++c)
       {
         sumRWeighted(r, c) += weight * R(r, c);
-        Scalar rrt = 0.0;
-        for (UnsignedInteger k = 0; k < 3; ++k)
-          rrt += R(r, k) * R(c, k);
-        sumRRTWeighted(r, c) += weight * rrt;
+        const UnsignedInteger idx = 3 * r + c;
+        for (UnsignedInteger r2 = 0; r2 < 3; ++r2)
+          for (UnsignedInteger c2 = 0; c2 < 3; ++c2)
+            sumRFlatRFlatWeighted(idx, 3 * r2 + c2) += weight * R(r, c) * R(r2, c2);
       }
   }
 
@@ -209,8 +209,8 @@ void MatrixFisher::computeNormalization()
   expectedTrace_ = (4.0 * std::pow(M_PI, 3) * sumTrWeighted) / integral;
   const Matrix scaledR((4.0 * std::pow(M_PI, 3) * sumRWeighted) / integral);
   expectedMatrix_ = SquareMatrix(scaledR.getImplementation());
-  const Matrix scaledRRT((4.0 * std::pow(M_PI, 3) * sumRRTWeighted) / integral);
-  expectedSquaredMatrix_ = SquareMatrix(scaledRRT.getImplementation());
+  const Matrix scaledRFlatRFlat((4.0 * std::pow(M_PI, 3) * sumRFlatRFlatWeighted) / integral);
+  expectedSquaredMatrix_ = SquareMatrix(scaledRFlatRFlat.getImplementation());
 }
 
 void MatrixFisher::updateSampler()
@@ -368,9 +368,10 @@ void MatrixFisher::setParameter(const Point & parameter)
       F(i, j) = parameter[i * 3 + j];
 
   const Scalar w = getWeight();
+  const Scalar epsilon = epsilon_;
   *this = MatrixFisher(F);
   setWeight(w);
-  setEpsilon(epsilon_);
+  setEpsilon(epsilon);
 }
 
 Description MatrixFisher::getParameterDescription() const
@@ -445,23 +446,17 @@ void MatrixFisher::computeMean() const
 
 void MatrixFisher::computeCovariance() const
 {
-  // Cov[R] = E[RR^T] - E[R] E[R]^T, both integrals evaluated by quadrature
+  // Cov[vec(R)] = E[vec(R)vec(R)^T] - E[vec(R)] E[vec(R)]^T,
+  // both integrals evaluated by quadrature.
   // The distribution is 9-dimensional (flattened 3x3), so covariance is 9x9
   CovarianceMatrix cov(9);
-  const SquareMatrix diff = expectedSquaredMatrix_ - expectedMatrix_ * expectedMatrix_.transpose();
   for (UnsignedInteger i = 0; i < 3; ++i)
-  {
     for (UnsignedInteger j = 0; j < 3; ++j)
-    {
       for (UnsignedInteger k = 0; k < 3; ++k)
-      {
         for (UnsignedInteger l = 0; l < 3; ++l)
-        {
-          cov(i * 3 + j, k * 3 + l) = diff(i, k) * diff(j, l);
-        }
-      }
-    }
-  }
+          cov(3 * i + j, 3 * k + l) =
+              expectedSquaredMatrix_(3 * i + j, 3 * k + l)
+              - expectedMatrix_(i, j) * expectedMatrix_(k, l);
   covariance_ = cov;
   isAlreadyComputedCovariance_ = true;
 }

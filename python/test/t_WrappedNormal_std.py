@@ -102,6 +102,19 @@ torus = otexp.WrappedNormal([0.0, 0.0], ot.CovarianceMatrix(2))
 torus_cdf = torus.computeCDF([0.0, 0.0])
 assert 0.0 <= torus_cdf <= 1.0
 
+# Large-sigma cases approach the uniform density 1/period^d on the torus
+lattice_terms = ot.ResourceMap.GetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms")
+ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100)
+for d in (1, 2, 4):
+    cov = ot.CovarianceMatrix(d)
+    for i in range(d):
+        cov[i, i] = 625.0
+    wide = otexp.WrappedNormal([0.0] * d, cov, 2.0 * math.pi)
+    uniform = 1.0 / (2.0 * math.pi) ** d
+    ott.assert_almost_equal(wide.computePDF([0.0] * d), uniform, 0.0, 1e-9)
+    ott.assert_almost_equal(wide.computeLogPDF([0.0] * d), math.log(uniform), 0.0, 1e-9)
+ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
+
 # Default constructor: dimension 2 on the torus
 default = otexp.WrappedNormal()
 assert default.getDimension() == 2
