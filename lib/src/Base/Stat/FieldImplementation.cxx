@@ -303,6 +303,47 @@ FieldImplementation FieldImplementation::operator - (const Point & translation) 
   return fieldImplementation;
 }
 
+/* Check that the given field is compatible for arithmetic operations */
+void FieldImplementation::checkArithmeticCompatibility(const FieldImplementation & other) const
+{
+  if (!(mesh_ == other.mesh_)) throw InvalidArgumentException(HERE) << "Error: the two fields must be defined on the same mesh.";
+  if (getDimension() != other.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two fields must have the same dimension. Here dimension=" << getDimension() << " and dimension=" << other.getDimension();
+}
+
+/* In place sum operator between fields */
+FieldImplementation & FieldImplementation::operator += (const FieldImplementation & translation)
+{
+  checkArithmeticCompatibility(translation);
+  values_ += translation.values_;
+  return *this;
+}
+
+/* In place difference operator between fields */
+FieldImplementation & FieldImplementation::operator -= (const FieldImplementation & translation)
+{
+  checkArithmeticCompatibility(translation);
+  values_ -= translation.values_;
+  return *this;
+}
+
+/* Sum operator between fields */
+FieldImplementation FieldImplementation::operator + (const FieldImplementation & translation) const
+{
+  checkArithmeticCompatibility(translation);
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation += translation;
+  return fieldImplementation;
+}
+
+/* Difference operator between fields */
+FieldImplementation FieldImplementation::operator - (const FieldImplementation & translation) const
+{
+  checkArithmeticCompatibility(translation);
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation -= translation;
+  return fieldImplementation;
+}
+
 
 /* String converter */
 String FieldImplementation::__repr__() const

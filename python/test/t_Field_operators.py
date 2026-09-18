@@ -50,3 +50,36 @@ fInPlaceSum += p
 ott.assert_almost_equal(fInPlaceSum, fSum)
 fInPlaceSum -= p
 ott.assert_almost_equal(fInPlaceSum, f1)
+
+# Field vs Field operations return a field, see issue #1475
+fSumFF = f1 + f2
+assert isinstance(fSumFF, ot.Field), "sum should be a Field"
+ott.assert_almost_equal(fSumFF.getValues(), vals1 + vals2)
+ott.assert_almost_equal(fSumFF.getMesh().getVertices(), mesh.getVertices())
+fDiffFF = copy.deepcopy(f1)
+fDiffFF -= f2
+ott.assert_almost_equal(fDiffFF.getValues(), vals1 - vals2)
+
+# incompatible meshes are rejected
+otherMesh = ot.RegularGrid(0, 2, 4)
+try:
+    f1 + ot.Field(otherMesh, vals1)
+    assert False, "different meshes should raise"
+except Exception:
+    pass
+
+# incompatible dimensions are rejected
+try:
+    f1 + ot.Field(mesh, vals1.getMarginal(0))
+    assert False, "different dimensions should raise"
+except Exception:
+    pass
+
+# centering a process sample, see issue #1475
+processSample = ot.ProcessSample(mesh, 3, 3)
+for i in range(3):
+    processSample[i] = vals1
+meanField = processSample.computeMean()
+centered = processSample.getField(0) - meanField
+assert isinstance(centered, ot.Field), "centering should give a Field"
+ott.assert_almost_equal(centered.getValues(), vals1 - meanField.getValues())

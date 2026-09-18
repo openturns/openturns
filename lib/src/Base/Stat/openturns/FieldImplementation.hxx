@@ -86,6 +86,8 @@ public:
 
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const;
+
+  /** Dimension accessor */
   UnsignedInteger getOutputDimension() const;
 
   /** Dimension accessor of the values */
@@ -161,14 +163,21 @@ public:
   FieldImplementation & operator -= (const Sample & translation);
   FieldImplementation & operator += (const Point & translation);
   FieldImplementation & operator -= (const Point & translation);
+  FieldImplementation & operator += (const FieldImplementation & translation);
+  FieldImplementation & operator -= (const FieldImplementation & translation);
 
   /** Translate realizations */
   FieldImplementation operator + (const Sample & translation) const;
   FieldImplementation operator - (const Sample & translation) const;
   FieldImplementation operator + (const Point & translation) const;
   FieldImplementation operator - (const Point & translation) const;
+  FieldImplementation operator + (const FieldImplementation & translation) const;
+  FieldImplementation operator - (const FieldImplementation & translation) const;
 
 protected:
+
+  /** Check that the given field is compatible for arithmetic operations */
+  void checkArithmeticCompatibility(const FieldImplementation & other) const;
 
   /** Compute the input mean of the field */
   void computeInputMean() const;
