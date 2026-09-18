@@ -60,6 +60,19 @@ public:
   using DistributionFactoryImplementation::build;
   Distribution build(const Sample & sample) const override;
 
+  /** Build a weighted kernel smoothing, the weights being normalized internally */
+  Distribution buildWeighted(const Sample & sample, const Point & weights) const;
+
+  /** Build a weighted kernel smoothing applying the configured bounding, binning
+      and log transform options, without the public weight normalization */
+  Distribution buildWeighted(const Sample & sample, const Point & weights, const Point & bandwidth) const;
+
+  Mixture buildWeightedAsKernelMixture(const Sample & sample, const Point & weights, const Point & bandwidth) const;
+
+  Mixture buildWeightedAsMixture(const Sample & sample, const Point & weights, const Point & bandwidth) const;
+
+  TruncatedDistribution buildWeightedAsTruncatedDistribution(const Sample & sample, const Point & weights, const Point & bandwidth) const;
+
   /** Build a (possibly truncated) kernel mixture based on the given sample and bandwidth */
   Distribution build(const Sample & sample, const Point & bandwidth) const;
 
