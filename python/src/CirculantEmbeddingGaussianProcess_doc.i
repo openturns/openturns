@@ -50,8 +50,9 @@ negative eigenvalues:
   number of successive doublings of the embedding size performed when
   negative eigenvalues are detected. By default, it is set to 20.
 - 'Mesh-VertexEpsilon' which is the relative tolerance used to check that
-  the input mesh is a regular Cartesian grid with uniform spacing. By
-  default, it is set to 1.0e-6.
+  the input mesh is a regular Cartesian grid with uniform spacing and to
+  identify coincident vertices, expressed relative to the coordinate
+  magnitude. It must be non-negative. By default, it is set to 1.0e-6.
 
 Examples
 --------

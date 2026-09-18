@@ -127,8 +127,9 @@ void CirculantEmbeddingGaussianProcess::initializeND() const
     step[dim] = (interval_.getUpperBound()[dim] - interval_.getLowerBound()[dim]) / discretization_[dim];
 
   UnsignedInteger totalSize = 1;
-  static const Scalar negativeThreshold = -1.0e-13;
-  static const UnsignedInteger maxIterations = 20;
+  const Scalar negativeThreshold = -SpecFunc::Precision;
+  const UnsignedInteger maxIterations = ResourceMap::GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration");
+  if (maxIterations < 1) throw InvalidArgumentException(HERE) << "Error: the maximum number of iterations must be at least 1, here maxIterations=" << maxIterations << ". Check the value of the key 'CirculantEmbeddingGaussianProcess-MaximumIteration' in ResourceMap.";
 
   if (outputDim == 1)
   {
@@ -171,7 +172,8 @@ void CirculantEmbeddingGaussianProcess::initializeND() const
         eigenvalues_[k] = lambda;
         minEigenvalue = std::min(minEigenvalue, lambda);
         if (lambda < 0.0) hasNegativeEigenvalues = true;
-        if (std::abs(std::imag(eigenvaluesFFT[k])) > 1e-12)
+        const Scalar absImag = std::abs(std::imag(eigenvaluesFFT[k]));
+        if (absImag > (SpecFunc::Precision * (1.0 + absImag)))
         {
           LOGWARN(OSS() << "Non-zero imaginary part in eigenvalue " << k << ": " << std::imag(eigenvaluesFFT[k]));
         }
@@ -315,7 +317,7 @@ void CirculantEmbeddingGaussianProcess::initializeND() const
             Scalar diagVal = std::real(spectralDensity(i, i));
             if (diagVal <= 0.0)
             {
-              diagVal = std::abs(minEigenvalue) + 1.0e-10;
+              diagVal = std::abs(minEigenvalue) + SpecFunc::Precision;
               spectralDensity(i, i) = Complex(diagVal, 0.0);
             }
           }
@@ -347,7 +349,7 @@ void CirculantEmbeddingGaussianProcess::initializeND() const
           {
             Scalar diagVal = std::real(spectralDensity(i, i));
             if (diagVal < 0.0)
-              spectralDensity(i, i) = Complex(1.0e-10, 0.0);
+              spectralDensity(i, i) = Complex(SpecFunc::Precision, 0.0);
           }
 
           HermitianMatrix H(outputDim);
@@ -403,6 +405,8 @@ String CirculantEmbeddingGaussianProcess::__str__(const String & offset) const
 /* Mesh accessor */
 void CirculantEmbeddingGaussianProcess::setMesh(const Mesh & mesh)
 {
+  const Scalar vertexEpsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
+  if (vertexEpsilon < 0.0) throw InvalidArgumentException(HERE) << "Error: the key 'Mesh-VertexEpsilon' in ResourceMap must be non-negative, here vertexEpsilon=" << vertexEpsilon << ".";
   const UnsignedInteger n = mesh.getVerticesNumber();
   dimension_ = mesh.getDimension();
   const Sample vertices(mesh.getVertices());
@@ -419,7 +423,7 @@ void CirculantEmbeddingGaussianProcess::setMesh(const Mesh & mesh)
       Bool same = true;
       for (UnsignedInteger dim = 1; dim < dimension_; ++dim)
       {
-        if (std::abs(vertices[i][dim] - v0[dim]) >= SpecFunc::Precision)
+        if (std::abs(vertices(i, dim) - v0[dim]) >= (vertexEpsilon * std::max(1.0, std::abs(v0[dim]))))
         {
           same = false;
           break;
@@ -443,7 +447,7 @@ void CirculantEmbeddingGaussianProcess::setMesh(const Mesh & mesh)
         Bool same = true;
         for (UnsignedInteger dim = d + 1; dim < dimension_; ++dim)
         {
-          if (std::abs(vertices[i][dim] - v0[dim]) >= SpecFunc::Precision)
+          if (std::abs(vertices[i][dim] - v0[dim]) >= (vertexEpsilon * std::max(1.0, std::abs(v0[dim]))))
           {
             same = false;
             break;
@@ -504,7 +508,7 @@ void CirculantEmbeddingGaussianProcess::setMesh(const Mesh & mesh)
         const UnsignedInteger previous = i - strides[dim];
         const Scalar step = vertices[i][dim] - vertices[previous][dim];
         const Scalar refStep = vertices[strides[dim]][dim] - vertices[0][dim];
-        const Scalar tolerance = ResourceMap::GetAsScalar("Mesh-VertexEpsilon")
+        const Scalar tolerance = vertexEpsilon
                                  * std::max(1.0, std::max(std::abs(lowerBound[dim]), std::abs(upperBound[dim])));
         if (std::abs(step - refStep) > tolerance)
           throw InvalidArgumentException(HERE) << "Error: the input mesh must be a regular Cartesian grid with uniform spacing, got a non-uniform mesh.";

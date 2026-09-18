@@ -340,6 +340,12 @@ processNonUniform = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, ot.
 with ott.assert_raises(TypeError):
     processNonUniform.setMesh(nonUniform)
 
+# Test that a negative Mesh-VertexEpsilon is rejected
+ot.ResourceMap.SetAsScalar("Mesh-VertexEpsilon", -1.0)
+with ott.assert_raises(TypeError):
+    otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval, discretization)
+ot.ResourceMap.SetAsScalar("Mesh-VertexEpsilon", 1.0e-6)
+
 print("mesh validation OK")
 
 print("\nAll tests passed!")
