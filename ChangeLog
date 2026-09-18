@@ -40,6 +40,7 @@
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
 === Documentation ===
+ * Process definitions: unify mean function notations
  * Add discrete input function example
  * LogNormalFactory: document initial vs transformed data estimation
  * EGO: document criterion solver configuration
