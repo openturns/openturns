@@ -6,6 +6,21 @@ Notes
 This is a reimplementation of the method described in [genz2003]_.
 The original matlab file can be found at https://www.math.wsu.edu/faculty/genz/software/software.html.
 
+The keys of :class:`~openturns.ResourceMap` related to the class are:
+
+- the key `SimplicialCubature-DefaultMaximumAbsoluteError` that defines the default maximum absolute error,
+- the key `SimplicialCubature-DefaultMaximumRelativeError` that defines the default maximum relative error,
+- the key `SimplicialCubature-DefaultMaximumCallsNumber` that defines the default maximum calls number,
+- the key `SimplicialCubature-DefaultRule` that defines the default integration rule,
+- the key `SimplicialCubature-EvaluationBlockSize` that defines the number of simplices over which the integrand is evaluated in a single batch, keeping the memory usage bounded,
+- the key `SimplicialCubature-MarginalDiscretizationIntervalsNumber` that defines the number of discretization intervals used along each marginal of the integration interval.
+
+The rule points of the simplices are built and the rule is contracted over
+the function values with :class:`~openturns.TBB` when the integrand function
+allows parallel evaluation and more than one thread is available. The
+refinement sequence itself is serial, so the result does not depend on the
+number of threads.
+
 Examples
 --------
 >>> import openturns as ot

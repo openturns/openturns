@@ -66,6 +66,9 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   const UnsignedInteger outputDimension(outputVariablesNames_.getSize() > 0 ? outputVariablesNames_.getSize() : formulas_.getSize());
   if (outputDimension == 0) return Point();
+  // ExprTk is not thread-safe: the point evaluation is serialized so that it
+  // can be used concurrently from several threads
+  const std::lock_guard<std::mutex> lock(*mutex_);
   initialize();
   std::copy(inP.begin(), inP.end(), stack_.begin());
   Point result(outputDimension);
@@ -170,20 +173,25 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
 
-  if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
+  // The lazy initialization is protected by a mutex so that the first batch
+  // evaluation can be performed concurrently from several threads
   {
-    threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
-    threadStack_.resize(TBBImplementation::GetThreadsNumber());
-    try
+    const std::lock_guard<std::mutex> lock(*mutex_);
+    if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
     {
-      for (UnsignedInteger i = 0; i < threadStack_.getSize(); ++ i)
-        threadExpressions_[i] = allocateExpressions(threadStack_[i]);
-    }
-    catch (const std::exception &)
-    {
-      // we want the allocateExpressions to enter the condition and throw each time
-      threadExpressions_.clear();
-      throw;
+      threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
+      threadStack_.resize(TBBImplementation::GetThreadsNumber());
+      try
+      {
+        for (UnsignedInteger i = 0; i < threadStack_.getSize(); ++ i)
+          threadExpressions_[i] = allocateExpressions(threadStack_[i]);
+      }
+      catch (const std::exception &)
+      {
+        // we want the allocateExpressions to enter the condition and throw each time
+        threadExpressions_.clear();
+        throw;
+      }
     }
   }
 
