@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -153,3 +154,25 @@ sampleFractional = ot.Sample(
     ]
 )
 print(sampleFractional._repr_html_())
+
+# erase a set of indices, see issue #1730
+sample = ot.Sample([[float(x)] for x in range(10)])
+sample.erase([3, 5, 8])
+ott.assert_almost_equal(sample, ot.Sample([[0.0], [1.0], [2.0], [4.0], [6.0], [7.0], [9.0]]))
+# unsorted indices are fine
+sample = ot.Sample([[float(x)] for x in range(10)])
+sample.erase([8, 3, 5])
+ott.assert_almost_equal(sample, ot.Sample([[0.0], [1.0], [2.0], [4.0], [6.0], [7.0], [9.0]]))
+# empty list is a no-op
+reference = ot.Sample([[float(x)] for x in range(10)])
+sample = ot.Sample(reference)
+sample.erase([])
+ott.assert_almost_equal(sample, reference)
+# invalid calls raise
+for bad in ([10], [-1], [2, 2]):
+    sample = ot.Sample([[float(x)] for x in range(10)])
+    try:
+        sample.erase(bad)
+        assert False, "should have raised for %s" % bad
+    except Exception:
+        pass

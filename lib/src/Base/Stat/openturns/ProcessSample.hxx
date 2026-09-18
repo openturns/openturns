@@ -76,6 +76,10 @@ public:
   void erase(const UnsignedInteger index);
   void erase(const UnsignedInteger first, const UnsignedInteger last);
 
+  /*! Erase the fields at the given indices, in-place. The indices can be
+   * given in any order but must be unique and less than the sample size. */
+  void erase(const Indices & indices);
+
   /** Clear data */
   void clear();
 

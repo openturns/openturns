@@ -223,3 +223,19 @@ try:
     assert False, "out-of-bounds split should raise"
 except Exception:
     pass
+
+# erase a set of indices, see issue #1730
+psampleC = ot.ProcessSample(mesh, 5, outputDimension)
+for i in range(5):
+    psampleC[i] = ot.Normal(outputDimension).getSample(nvertices)
+kept = [psampleC[0], psampleC[2], psampleC[4]]
+psampleC.erase([1, 3])
+assert psampleC.getSize() == 3, "erase size"
+ott.assert_almost_equal(psampleC[0], kept[0])
+ott.assert_almost_equal(psampleC[1], kept[1])
+ott.assert_almost_equal(psampleC[2], kept[2])
+try:
+    psampleC.erase([psampleC.getSize()])
+    assert False, "out-of-bounds erase should raise"
+except Exception:
+    pass

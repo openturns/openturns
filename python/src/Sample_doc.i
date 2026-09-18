@@ -785,6 +785,13 @@ Examples
 %feature("docstring") OT::Sample::erase
 R"RAW(Erase point(s) at or between index(es) (in-place).
 
+Available usages:
+    erase(*f*)
+
+    erase(*f, l*)
+
+    erase(*indices*)
+
 Parameters
 ----------
 f : int, :math:`0 \leq f < m`
@@ -792,6 +799,8 @@ f : int, :math:`0 \leq f < m`
 l : int, :math:`f < l \leq m`, optional
     The index after the last point to erase.
     Default uses `l = f + 1` and only removes `sample[f]`.
+indices : sequence of int
+    The indices of the points to erase, in any order but unique.
 
 Examples
 --------
