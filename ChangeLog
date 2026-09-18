@@ -12,6 +12,7 @@
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
+ * SlicedInverseRegression
  * UniVariateDistributionPolynomialFactory (openturns.experimental)
 
 ==== API changes ====

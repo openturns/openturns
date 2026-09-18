@@ -78,7 +78,6 @@ Regression
 
 
     linear_regression
-    regression_analysis
 
 Estimation of a quantile confidence interval
 --------------------------------------------

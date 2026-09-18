@@ -7,7 +7,7 @@ This method deals with the parametric modeling of a probability
 distribution for a random vector
 :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)`. The appropriate
 probability distribution is found by using a sample of data
-:math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}`. Such an approach
+:math:`\left\{ \vect{x}_1,\ldots,\vect{x}_\sampleSize \right\}`. Such an approach
 can be described in two steps as follows:
 
 -  Choose a probability distribution (e.g. the Normal distribution, or
@@ -16,7 +16,7 @@ can be described in two steps as follows:
 -  Find the parameter values :math:`\vect{\theta}` that characterize the
    probability distribution (e.g. the mean and standard deviation for
    the Normal distribution) which best describes the sample
-   :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}`.
+   :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_\sampleSize \right\}`.
 
 The maximum likelihood method is used for the second step.
 
@@ -30,19 +30,19 @@ likelihood function :math:`L\left(X,\vect{\theta}\right)`:
 .. math::
 
    \begin{aligned}
-       \hat{\vect{\theta}} = \textrm{argmax}\ L\left(X,\vect{\theta} \right)
-     \end{aligned}
+       \widehat{\vect{\theta}} = \textrm{argmax}\ L\left(X,\vect{\theta} \right)
+   \end{aligned}
 
-Given that :math:`\left\{x_1,\ldots,x_N \right\}` is a sample of
+Given that :math:`\left\{x_1,\ldots,x_\sampleSize \right\}` is a sample of
 independent identically distributed (i.i.d) observations,
-:math:`L\left(x_1,\ldots, x_N, \vect{\theta} \right)` represents the
+:math:`L\left(x_1,\ldots, x_\sampleSize, \vect{\theta} \right)` represents the
 probability of observing such a sample assuming that they are taken from
 a probability distribution with parameters :math:`\vect{\theta}`. In
 concrete terms, the likelihood
-:math:`L\left(x_1,\ldots, x_N, \vect{\theta}\right)` is calculated as
+:math:`L\left(x_1,\ldots, x_\sampleSize, \vect{\theta}\right)` is calculated as
 follows:
 
-.. math:: L\left(x_1,\ldots, x_N, \vect{\theta} \right) = \prod_{j=1}^{N} f_X\left(x_j;\vect{\theta} \right)
+.. math:: L\left(x_1,\ldots, x_\sampleSize, \vect{\theta} \right) = \prod_{j=1}^{\sampleSize} f_X\left(x_j;\vect{\theta} \right)
 
 if the distribution is continuous, with density
 :math:`f_X\left(x;\vect{\theta}\right)`.
@@ -54,8 +54,9 @@ and standard deviation),
 .. math::
 
    \begin{aligned}
-       L\left(x_1,\ldots, x_N, \vect{\theta}\right) &=& \prod_{j=1}^{N} \frac{1}{\sigma \sqrt{2\pi}} \exp \left[ -\frac{1}{2} \left( \frac{x_j-\mu}{\sigma}  \right)^2  \right] \\
-       &=& \frac{1}{\sigma^N (2\pi)^{N/2}} \exp \left[ -\frac{1}{2\sigma^2} \sum_{j=1}^N \left( x_j-\mu \right)^2  \right]
+       L\left(x_1,\ldots, x_\sampleSize, \vect{\theta}\right)
+       &= \prod_{j=1}^{\sampleSize} \frac{1}{\sigma \sqrt{2\pi}} \exp \left( -\frac{1}{2} \left( \frac{x_j-\mu}{\sigma}  \right)^2  \right) \\
+       &= \frac{1}{\sigma^\sampleSize (2\pi)^{\sampleSize/2}} \exp \left( -\frac{1}{2\sigma^2} \sum_{j=1}^\sampleSize \left( x_j-\mu \right)^2  \right)
      \end{aligned}
 
 The following figure graphically illustrates the maximum likelihood
@@ -74,7 +75,7 @@ method, in the particular case of a Gaussian probability distribution.
     axis = fig.add_subplot(111)
     axis.set_xlim(auto=True)
 
-    N=6
+    N = 6
     # coordinates of points
     x = [v[0] for v in distribution.getSample(N)]
     y = [distribution.computePDF([v]) for v in x]
@@ -86,8 +87,8 @@ method, in the particular case of a Gaussian probability distribution.
 
     # draw labels
     for i in range(N):
-        plt.text(x[i]-0.1, -0.015, 'x'+str(i+1))
-        plt.text(0.0, y[i]-0.01, 'f_X(x'+str(i+1)+')')
+        plt.text(x[i] - 0.1, -0.015, f'x{i + 1}')
+        plt.text(0.0, y[i] - 0.01, f'$f_X$(x{i + 1})')
 
     otv.View(graph, figure=fig, axes=[axis], add_legend=True)
 
@@ -99,8 +100,11 @@ estimators are obtained analytically:
 .. math::
 
    \begin{aligned}
-       \widehat{\mu}  = \frac{1}{N} \sum_{i=1}^N x_i,\ \widehat{\sigma^2} = \frac{1}{N} \sum_{i=1}^N \left( x_i - \widehat{\mu} \right)^2
-     \end{aligned}
+       \widehat{\mu}
+       & = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize x_i, \\
+       \widehat{\sigma^2}
+       & = \frac{1}{\sampleSize} \sum_{i=1}^\sampleSize \left( x_i - \widehat{\mu} \right)^2
+   \end{aligned}
 
 .. topic:: API:
 
@@ -114,11 +118,11 @@ Asymptotic distribution of the maximum likelihood estimator
 -----------------------------------------------------------
 
 Under regularity conditions, the maximum likelihood estimator (MLE)
-:math:`\hat{\vect{\theta}}` is asymptotically normal. More precisely,
+:math:`\widehat{\vect{\theta}}` is asymptotically normal. More precisely,
 
 .. math::
 
-   \sqrt{N} \left( \hat{\vect{\theta}} - \vect{\theta}_0 \right)
+   \sqrt{\sampleSize} \left( \widehat{\vect{\theta}} - \vect{\theta}_0 \right)
    \xrightarrow{d} \mathcal{N}\left( \vect{0}, \mat{I}(\vect{\theta}_0)^{-1} \right)
 
 where :math:`\vect{\theta}_0` is the true parameter value and
@@ -136,30 +140,30 @@ defined as:
                      \frac{\partial \log f_X(X; \vect{\theta})}{\partial \theta_j} \right]
 
 In practice, the expected Fisher information matrix is often replaced by
-the **observed Fisher information matrix**, evaluated at the MLE
-:math:`\hat{\vect{\theta}}`:
+the **full-sample Fisher information matrix**, evaluated at the MLE
+:math:`\widehat{\vect{\theta}}`:
 
 .. math::
 
-   \hat{\mat{I}}(\hat{\vect{\theta}})_{ij}
-   = \sum_{k=1}^{N}
-     \frac{\partial \log f_X(x_k; \hat{\vect{\theta}})}{\partial \theta_i}
-     \frac{\partial \log f_X(x_k; \hat{\vect{\theta}})}{\partial \theta_j}
+   \widehat{\mat{I}}_{\sampleSize}\left(\widehat{\vect{\theta}}\right)_{ij}
+   = \sum_{k=1}^{\sampleSize}
+     \frac{\partial \log f_X\left(x_k; \widehat{\vect{\theta}}\right)}{\partial \theta_i}
+     \frac{\partial \log f_X\left(x_k; \widehat{\vect{\theta}}\right)}{\partial \theta_j}
 
 The asymptotic covariance matrix of the MLE is then estimated by the
-inverse of the observed Fisher information matrix:
+inverse of the full-sample Fisher information matrix:
 
 .. math::
 
-   \widehat{\mat{\Sigma}}_{\hat{\vect{\theta}}}
-   = \hat{\mat{I}}(\hat{\vect{\theta}})^{-1}
+   \widehat{\mat{\Sigma}}_{\widehat{\vect{\theta}}}
+   = \widehat{\mat{I}}_{\sampleSize}(\widehat{\vect{\theta}})^{-1}
 
 This result is used by the
 :meth:`~openturns.DistributionFactory.buildEstimator` method when the
 model is estimated by maximum likelihood and is regular. In that case,
 the parameter distribution is a normal distribution:
-:math:`\hat{\vect{\theta}} \sim \mathcal{N}\left( \hat{\vect{\theta}},
-\hat{\mat{I}}(\hat{\vect{\theta}})^{-1} \right)`.
+:math:`\vect{\theta} \sim \mathcal{N}\left( \widehat{\vect{\theta}},
+\widehat{\mat{I}}_{\sampleSize}(\widehat{\vect{\theta}})^{-1} \right)`.
 
 .. topic:: API:
 

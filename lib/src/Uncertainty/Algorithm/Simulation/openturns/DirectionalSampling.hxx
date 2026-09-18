@@ -33,8 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class DirectionalSampling
  */
 
-class OT_API DirectionalSampling :
-  public EventSimulation
+class OT_API DirectionalSampling : public EventSimulationImplementation
 {
   CLASSNAME
 public:
@@ -70,6 +69,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
 
 private:
 

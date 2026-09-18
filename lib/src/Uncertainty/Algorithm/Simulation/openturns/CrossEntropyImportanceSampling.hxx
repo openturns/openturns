@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 class OT_API CrossEntropyImportanceSampling
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
 
   CLASSNAME
@@ -65,10 +65,11 @@ public:
   UnsignedInteger getStepsNumber() const;
 
   /** Keep event sample */
-  void setKeepSample(const Bool keepSample);
+  void setKeepSample(const Bool keepSample) override;
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
+  using EventSimulationImplementation::getInputSample;
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
@@ -77,6 +78,9 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
+
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
 
   /** Maximum coefficient of variation accessor */
   void setMaximumCoefficientOfVariation(const Scalar) override;

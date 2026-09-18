@@ -57,7 +57,7 @@ where :math:`h_1, \hdots, h_{\inputDim} \in \Rset` and
 :math:`\imath` is the complex imaginary number, i.e. :math:`\imath^2 = -1`.
 If :math:`h_1,\hdots,h_{\inputDim}` are close to zero, then:
 
-.. math:: \frac{2k\pi}{h_j} \approx + \in fty
+.. math:: \frac{2k\pi}{h_j} \approx + \infty
 
 and:
 

@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * AdaptiveDirectionalStratification
  */
 class OT_API AdaptiveDirectionalStratification
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
   CLASSNAME
 
@@ -83,6 +83,9 @@ public:
 
   /** Performs the actual computation. */
   void run() override;
+
+  /** Event accessor */
+  void setEvent(const RandomVector & event) override;
 
 private:
   /** Compute the block sample and the points that realized the event */

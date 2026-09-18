@@ -568,6 +568,8 @@ ot_add_python_module(experimental experimental_module.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
+                     SlicedInverseRegression.i SlicedInverseRegression_doc.i
+                     SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i
@@ -664,6 +666,7 @@ ot_add_python_module(simulation simulation_module.i
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
                       SimulationResult.i SimulationResult_doc.i
                       SimulationAlgorithm.i SimulationAlgorithm_doc.i
+                      EventSimulationImplementation.i EventSimulationImplementation_doc.i
                       EventSimulation.i EventSimulation_doc.i
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i
