@@ -21,6 +21,8 @@
 
 #include "openturns/ProcessSample.hxx"
 
+#include <algorithm>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ProcessSample)
@@ -109,6 +111,35 @@ void ProcessSample::erase(const UnsignedInteger first, const UnsignedInteger las
 {
   copyOnWrite();
   getImplementation()->erase(first, last);
+}
+
+/* Erase the fields at the given indices */
+void ProcessSample::erase(const Indices & indices)
+{
+  const UnsignedInteger size = getSize();
+  const UnsignedInteger count = indices.getSize();
+  if (count == 0) return;
+  // Check that the indices are valid and sort them
+  Indices sortedIndices(indices);
+  std::sort(sortedIndices.begin(), sortedIndices.end());
+  if (sortedIndices[count - 1] >= size) throw OutOfBoundException(HERE) << "Index over size. Index=" << sortedIndices[count - 1] << " size=" << size;
+  for (UnsignedInteger i = 1; i < count; ++i)
+    if (sortedIndices[i] == sortedIndices[i - 1]) throw InvalidArgumentException(HERE) << "Error: the indices must be unique. Duplicate index=" << sortedIndices[i];
+  copyOnWrite();
+  ProcessSample result(getMesh(), size - count, getDimension());
+  UnsignedInteger kept = 0;
+  UnsignedInteger position = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if ((position < count) && (i == sortedIndices[position]))
+      ++position;
+    else
+    {
+      result[kept] = getImplementation()->operator[](i);
+      ++kept;
+    }
+  }
+  *this = result;
 }
 
 void ProcessSample::clear()

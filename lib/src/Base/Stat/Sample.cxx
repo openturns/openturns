@@ -24,6 +24,8 @@
 #include "openturns/Log.hxx"
 #include "openturns/CSVParser.hxx"
 
+#include <algorithm>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Sample)
@@ -347,6 +349,36 @@ void Sample::erase(const UnsignedInteger index)
 {
   copyOnWrite();
   getImplementation()->erase(index, index + 1);
+}
+
+/* Erase the points at the given indices */
+void Sample::erase(const Indices & indices)
+{
+  const UnsignedInteger size = getSize();
+  const UnsignedInteger count = indices.getSize();
+  if (count == 0) return;
+  // Check that the indices are valid and sort them
+  Indices sortedIndices(indices);
+  std::sort(sortedIndices.begin(), sortedIndices.end());
+  if (sortedIndices[count - 1] >= size) throw OutOfBoundException(HERE) << "Index over size. Index=" << sortedIndices[count - 1] << " size=" << size;
+  for (UnsignedInteger i = 1; i < count; ++i)
+    if (sortedIndices[i] == sortedIndices[i - 1]) throw InvalidArgumentException(HERE) << "Error: the indices must be unique. Duplicate index=" << sortedIndices[i];
+  // Build the indices of the points to keep
+  Indices keptIndices(size - count);
+  UnsignedInteger kept = 0;
+  UnsignedInteger position = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if ((position < count) && (i == sortedIndices[position]))
+      ++position;
+    else
+    {
+      keptIndices[kept] = i;
+      ++kept;
+    }
+  }
+  copyOnWrite();
+  *this = select(keptIndices);
 }
 
 void Sample::erase(SampleImplementation::iterator first, SampleImplementation::iterator last)
