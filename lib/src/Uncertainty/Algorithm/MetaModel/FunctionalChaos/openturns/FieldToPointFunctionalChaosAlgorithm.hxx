@@ -56,7 +56,7 @@ public:
   Bool getCenteredSample() const;
 
   /** Block indices accessors */
-  void setBlockIndices(const Collection<Indices> & blockIndices);
+  void setBlockIndices(const Collection<Indices> & blockIndices) override;
 
   /** String converter */
   String __repr__() const override;
