@@ -41,6 +41,7 @@
 #include "openturns/Bernoulli.hxx"
 #include "openturns/Binomial.hxx"
 #include "openturns/Poisson.hxx"
+#include "openturns/Skellam.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/TBBImplementation.hxx"
@@ -608,12 +609,16 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     // Discrete optimizations:
     // + The Bernoulli and Binomial atoms can be merged into a unique Binomial as soon as they share the same value for p and the same weight
     // + The Poisson atoms can be merged into a unique Poisson as soon as they share the same weight
-    // + Poisson atoms with opposite weights could be merged into a Skellam atom but it is not clear if it is worth the effort...
+    // + Poisson atoms with opposite weights are merged into a Skellam atom weighted by the absolute value of their weights
     // + The Discrete atoms can be grouped into Discrete atoms of larger support, if these merged atoms have a support of reasonable size.
     //
     // Mixed optimizations:
     //
-    // + A continuous atom can be merged with a discrete atom to form a Mixture. This simplification can be done for each pair (continuous,discrete). It is not clear if some pairings are to prefer to others.
+    // + A continuous atom could be merged with a discrete atom to form a
+    //   Mixture. This used to be done for each (continuous, discrete) pair
+    //   but the pointwise evaluation of such mixtures turned out to be more
+    //   costly than the generic Poisson summation applied to the raw atoms,
+    //   so it is no longer performed.
     distributionCollection_ = DistributionCollection(0);
     Sample reducedWeights(0, dimension);
     if (dimension == 1)
@@ -808,6 +813,29 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
         }
       } // discreteAtoms
       // Add the aggregated Poisson if any
+      // First, fuse the opposite-weight Poisson atoms into a Skellam atom
+      // weighted by the absolute value of their weights:
+      // w * (sum_i Poi(l_i) - sum_j Poi(m_j)) = w * Skellam(sum l, sum m)
+      {
+        std::map<Scalar, Scalar>::const_iterator it = poissonMap.begin();
+        while (it != poissonMap.end())
+        {
+          const Scalar w = it->first;
+          if (w > 0.0)
+          {
+            std::map<Scalar, Scalar>::const_iterator opposite = poissonMap.find(-w);
+            if (opposite != poissonMap.end())
+            {
+              distributionCollection_.add(Skellam(it->second, opposite->second));
+              reducedWeights.add(Point(1, w));
+              poissonMap.erase(it++);
+              poissonMap.erase(opposite);
+              continue;
+            }
+          }
+          ++it;
+        } // while opposite-weight Poisson atoms to fuse
+      }
       while (!poissonMap.empty())
       {
         const Scalar w = poissonMap.begin()->first;
@@ -860,7 +888,12 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
               reducedWeights[indexAggregated] = Point(1, 1.0);
             }
             else
+            {
               distributionCollection_[indexAggregated] = firstDiscrete;
+              // The atom may be stored at a place distinct from its initial one, in which case its weight has to be moved as well
+              if (indexAggregated != firstDiscreteIndex)
+                reducedWeights[indexAggregated] = reducedWeights[firstDiscreteIndex];
+            }
             ++indexAggregated;
             firstDiscreteIndex = secondDiscreteIndex;
             firstDiscrete = secondDiscrete;
@@ -914,7 +947,12 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
         // + an aggregated atom with small support (detected because firstDiscreteIndex < firstOtherAtom - 1
         // + a single atom (the second one, but now equals to the first one) (detected because firstDiscreteIndex == firstOtherAtom - 1)
         if (firstDiscreteIndex == firstOtherAtom - 1)
+        {
           distributionCollection_[indexAggregated] = firstDiscrete;
+          // The atom may be stored at a place distinct from its initial one, in which case its weight has to be moved as well
+          if (indexAggregated != firstDiscreteIndex)
+            reducedWeights[indexAggregated] = reducedWeights[firstDiscreteIndex];
+        }
         else
         {
           distributionCollection_[indexAggregated] = FiniteDiscreteDistribution(aggregatedSupport, aggregatedProbabilities);
@@ -928,34 +966,13 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
         firstOtherAtom = distributionCollection_.getSize();
       } // If there are discrete atoms to merge
 
-      // Then perform the continuous/discrete simplification using mixtures
-      // There must be continuous atoms and discrete ones
-      if (firstNonContinuousAtom > 0 && firstNonContinuousAtom != firstOtherAtom)
-      {
-        const SignedInteger firstContinuous = 0;
-        const SignedInteger firstDiscrete = firstNonContinuousAtom;
-        SignedInteger currentContinuous = firstNonContinuousAtom - 1;
-        SignedInteger currentDiscrete = firstOtherAtom - 1;
-        while (currentContinuous >= firstContinuous && currentDiscrete >= firstDiscrete)
-        {
-          const Distribution continuousAtom(distributionCollection_[currentContinuous]);
-          const Scalar continuousWeight = reducedWeights(currentContinuous, 0);
-          Distribution discreteAtom(distributionCollection_[currentDiscrete]);
-          Scalar discreteWeight = reducedWeights(currentDiscrete, 0);
-          const Sample support(discreteAtom.getSupport());
-          DistributionCollection mixtureAtoms;
-          for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-            mixtureAtoms.add(LinearCombinationDistribution(DistributionCollection(1, continuousAtom), Point(1, continuousWeight), support(i, 0) * discreteWeight));
-          const Point probabilities(discreteAtom.getProbabilities());
-          // Replace the current continuous atom by the Mixture
-          distributionCollection_[currentContinuous] = Mixture(mixtureAtoms, probabilities);
-          // Remove the current discrete atom
-          distributionCollection_.erase(distributionCollection_.begin() + currentDiscrete);
-          reducedWeights.erase(currentDiscrete);
-          --currentContinuous;
-          --currentDiscrete;
-        } // loop over (continuous, discrete) pairs
-      } // continuous and discrete atoms to merge?
+      // No continuous/discrete simplification: the pairing of each
+      // (continuous, discrete) pair into a Mixture of translated copies of
+      // the continuous atom used to be performed here, but the pointwise
+      // evaluation of such mixtures is more costly than the generic Poisson
+      // summation applied to the raw atoms, while providing the same
+      // accuracy. Continuous and discrete atoms are kept as they are.
+
       // No simplification for other atoms
       distributionCollection_.add(otherAtoms);
       reducedWeights.add(otherWeights);
