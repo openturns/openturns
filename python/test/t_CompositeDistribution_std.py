@@ -167,3 +167,37 @@ assert not (d1 == d2), "different function should not be equal"
 assert d1 != d2, "different function should be different"
 d3 = ot.CompositeDistribution(f, ot.Uniform())  # different antecedent
 assert not (d1 == d3), "different antecedent should not be equal"
+
+# Nesting composite distributions composes the functions and keeps a
+# non-composite antecedent, see issue #1479
+g = ot.SymbolicFunction(["x"], ["sin(x) + cos(x)"])
+h = ot.SymbolicFunction(["x"], ["x^3"])
+distY = ot.CompositeDistribution(g, ot.Normal(1.0, 0.5))
+distZ = ot.CompositeDistribution(h, distY)
+antecedent_class = distZ.getAntecedent().getImplementation().getClassName()
+assert antecedent_class != "CompositeDistribution", "antecedent not composite"
+# for increasing h, F_Z(z) = F_Y(h^-1(z))
+z = 2.0
+hinv = z ** (1.0 / 3.0)
+ott.assert_almost_equal(distZ.computeCDF([z]), distY.computeCDF([hinv]))
+# same law as the explicitly composed version
+expected = ot.CompositeDistribution(
+    ot.ComposedFunction(h, distY.getFunction()), distY.getAntecedent()
+)
+ott.assert_almost_equal(distZ.computeCDF([1.2]), expected.computeCDF([1.2]))
+ott.assert_almost_equal(distZ.computePDF([1.2]), expected.computePDF([1.2]))
+
+# solver precision is rescaled to the range of the flattened, non-composite
+# antecedent, so that a large-scale inner transformation does not leave a
+# solver precision scaled to the outer composite range, see issue #1479
+smallAnt = ot.Uniform(0.0, 1e-3)
+bigAnt = ot.CompositeDistribution(ot.SymbolicFunction(["x"], ["1e6 * x"]), smallAnt)
+assert bigAnt.getRange().getUpperBound()[0] > 10.0, "a relatively large range was expected"
+scaled = ot.CompositeDistribution(ot.SymbolicFunction(["x"], ["x"]), bigAnt)
+scale = ot.ResourceMap.GetAsScalar("CompositeDistribution-SolverEpsilon")
+anteRange = scaled.getAntecedent().getRange()
+offset = scale * (anteRange.getUpperBound()[0] - anteRange.getLowerBound()[0])
+ott.assert_almost_equal(scaled.getSolver().getAbsoluteError(), offset, 1e-12, 1e-12)
+# the flattened law is Y = 1e6 * U with U uniform on [0, 1e-3]
+for y in [250.0, 500.0, 750.0]:
+    ott.assert_almost_equal(scaled.computeCDF([y]), y / 1000.0, 1e-8, 1e-4)
