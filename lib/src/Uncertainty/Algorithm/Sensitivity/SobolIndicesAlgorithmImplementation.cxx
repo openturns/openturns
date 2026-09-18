@@ -765,14 +765,16 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
 }
 
 Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
-    const String & title)
+    const String & title,
+    const String & yLabel)
 {
-  return DrawCorrelationCoefficients(correlationCoefficients, correlationCoefficients.getDescription(), title);
+  return DrawCorrelationCoefficients(correlationCoefficients, correlationCoefficients.getDescription(), title, yLabel);
 }
 
 Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Point & values,
     const Description & names,
-    const String & title)
+    const String & title,
+    const String & yLabel)
 {
   /* build data for the pie */
   const UnsignedInteger dimension = values.getDimension();
@@ -788,7 +790,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   }
   Cloud cloud(data, "red", "circle", "");
 
-  Graph graph(title, "inputs", "correlation coefficient");
+  Graph graph(title, "inputs", yLabel);
   graph.add(cloud);
 
   // Min & max rhos

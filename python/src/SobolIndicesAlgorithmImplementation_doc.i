@@ -278,9 +278,9 @@ OT_SobolIndicesAlgorithm_draw_doc
  As correlation coefficients are considered, values might be positive or negative.
 
 Available usages:
-    DrawCorrelationCoefficients(*correlationCoefficients, title='Correlation coefficients'*)
+    DrawCorrelationCoefficients(*correlationCoefficients, title='Correlation coefficients', yLabel='correlation coefficient'*)
 
-    DrawCorrelationCoefficients(*values, names, title='Correlation coefficients'*)
+    DrawCorrelationCoefficients(*values, names, title='Correlation coefficients', yLabel='correlation coefficient'*)
 
 Parameters
 ----------
@@ -294,6 +294,9 @@ names : sequence of str
     Variables' names used to build labels for the created the graph.
 title : str
     Title of the graph.
+yLabel : str
+    Y-axis label of the graph, which allows one to adapt it to other kinds of
+    coefficients such as SRC indices.
 
 Returns
 -------
