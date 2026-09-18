@@ -43,6 +43,7 @@
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
 === Documentation ===
+ * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation
 
 === Python module ===
