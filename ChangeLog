@@ -42,6 +42,7 @@
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
 === Documentation ===
+ * KissFFT: add usage example
 
 === Python module ===
  * Add Process sample slicing operator
