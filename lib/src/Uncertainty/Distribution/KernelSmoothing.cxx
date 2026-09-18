@@ -254,9 +254,378 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   }
 }
 
-/* Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
-Distribution KernelSmoothing::build(const Sample & sample) const
+/* Build a weighted kernel mixture based on the given sample and weights.
+   The weights are normalized internally. If no bandwidth has already been
+   set, it is computed from the unweighted sample, see #1554. */
+Distribution KernelSmoothing::buildWeighted(const Sample & sample,
+    const Point & weights) const
 {
+  const UnsignedInteger size = sample.getSize();
+  if (weights.getDimension() != size)
+    throw InvalidArgumentException(HERE) << "Error: the number of weights=" << weights.getDimension() << " does not match the sample size=" << size;
+  Scalar totalWeight = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (!(weights[i] >= 0.0))
+      throw InvalidArgumentException(HERE) << "Error: the weights must be non negative, here weight[" << i << "]=" << weights[i];
+    totalWeight += weights[i];
+  }
+  if (!(totalWeight > 0.0))
+    throw InvalidArgumentException(HERE) << "Error: the sum of the weights must be positive, here sum=" << totalWeight;
+  Point normalizedWeights(size);
+  for (UnsignedInteger i = 0; i < size; ++i) normalizedWeights[i] = weights[i] / totalWeight;
+  const UnsignedInteger dimension = sample.getDimension();
+  if ((dimension == 1) && useLogTransform_)
+  {
+    const Scalar skewness = sample.computeSkewness()[0];
+    const Scalar xMin = sample.getMin()[0];
+    const Scalar xMax = sample.getMax()[0];
+    const Scalar delta = (xMax - xMin) * std::max(SpecFunc::Precision, ResourceMap::GetAsScalar("KernelSmoothing-DefaultShiftScale"));
+    ParametricFunction transform;
+    ParametricFunction inverseTransform;
+    // Need to construct explicitly a Description to disambiguate the call
+    // to SymbolicFunction constructor
+    const Description inVars = {"x", "shift"};
+    if (skewness >= 0.0)
+    {
+      const Scalar shift = delta - xMin;
+      transform = ParametricFunction(SymbolicFunction(inVars, {"log(x+shift)"}), {1}, {shift});
+      inverseTransform = ParametricFunction(SymbolicFunction(inVars, {"exp(x)-shift"}), {1}, {shift});
+    }
+    else
+    {
+      const Scalar shift = xMax + delta;
+      transform = ParametricFunction(SymbolicFunction(inVars, {"log(shift-x)"}), {1}, {shift});
+      inverseTransform = ParametricFunction(SymbolicFunction(inVars, {"shift - exp(x)"}), {1}, {shift});
+    }
+    const Sample transformedSample(transform(sample));
+    // As in build(), the automatic bandwidth is computed on the transformed sample
+    const Point bandwidth(computeMixedBandwidth(transformedSample));
+    Distribution transformedDistribution(buildWeighted(transformedSample, normalizedWeights, bandwidth));
+    CompositeDistribution fitted(inverseTransform, transformedDistribution);
+    fitted.setDescription(sample.getDescription());
+    return fitted;
+  }
+  // The automatic bandwidth selection ignores the weights and is
+  // recomputed from the sample, as build() does
+  const Point bandwidth(dimension == 1 ? computeMixedBandwidth(sample) : computeSilvermanBandwidth(sample));
+  return buildWeighted(sample, normalizedWeights, bandwidth);
+}
+
+/* Build a weighted kernel mixture based on the given sample, weights and bandwidth,
+   applying the configured boundary correction, binning and log transform
+   options as the unweighted build() does */
+Distribution KernelSmoothing::buildWeighted(const Sample & sample,
+    const Point & weights,
+    const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  const Point xmin(sample.getMin());
+  const Point xmax(sample.getMax());
+  // Check the degenerate case of constant sample
+  if (xmin == xmax)
+  {
+    Dirac result(xmin);
+    result.setDescription(sample.getDescription());
+    return result;
+  }
+  Indices degenerateIndices;
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (!(xmax[j] > xmin[j]))
+      degenerateIndices.add(j);
+  const Bool degenerate = (degenerateIndices.getSize() > 0);
+  if (degenerate)
+  {
+    Point marginalBandwidth;
+    Point marginalConstant;
+    Description description(sample.getDescription());
+    Description degenerateDescription;
+    Description okDescription;
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      if (xmax[j] > xmin[j])
+      {
+        marginalBandwidth.add(bandwidth[j]);
+        okDescription.add(description[j]);
+      }
+      else
+      {
+        marginalConstant.add(xmin[j]);
+        degenerateDescription.add(description[j]);
+      }
+    JointDistribution::DistributionCollection coll;
+    const Indices okIndices(degenerateIndices.complement(dimension));
+    const Sample marginalSample(sample.getMarginal(okIndices));
+    Distribution okDistribution(buildWeighted(marginalSample, weights, marginalBandwidth));
+    okDistribution.setDescription(okDescription);
+    coll.add(okDistribution);
+    Dirac degenerateDistribution(marginalConstant);
+    degenerateDistribution.setDescription(degenerateDescription);
+    coll.add(degenerateDistribution);
+    Indices marginalIndices(dimension);
+    UnsignedInteger degenerateCount = 0;
+    UnsignedInteger okCount = 0;
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      if (xmax[j] > xmin[j])
+      {
+        marginalIndices[j] = okCount;
+        ++ okCount;
+      }
+      else
+      {
+        marginalIndices[j] = degenerateCount + okIndices.getSize();
+        ++ degenerateCount;
+      }
+    }
+    return BlockIndependentDistribution(coll).getMarginal(marginalIndices);
+  }
+  // Check if we have to perform boundary correction
+  if (boundingOption_ != NONE) return buildWeightedAsTruncatedDistribution(sample, weights, bandwidth);
+  // Check if we have to bin the data
+  const UnsignedInteger size = sample.getSize();
+  const Bool mustBin = binned_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
+  if (binned_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
+  if ((dimension > 2) || (!mustBin)) return buildWeightedAsKernelMixture(sample, weights, bandwidth);
+  return buildWeightedAsMixture(sample, weights, bandwidth);
+}
+
+/* Build a weighted kernel mixture based on the given sample, weights and bandwidth */
+Mixture KernelSmoothing::buildWeightedAsKernelMixture(const Sample & sample,
+    const Point & weights,
+    const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  setBandwidth(bandwidth);
+  const UnsignedInteger size = sample.getSize();
+  Collection< Distribution > atoms(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    atoms[i] = KernelMixture(kernel_, bandwidth, Sample(1, sample[i]));
+  Mixture result(atoms, weights);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+/* Build a binned weighted kernel mixture based on the given sample, weights
+   and bandwidth, the weight of each point being distributed linearly over the
+   grid points around it */
+Mixture KernelSmoothing::buildWeightedAsMixture(const Sample & sample,
+    const Point & weights,
+    const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  if (dimension > 2) throw InternalException(HERE) << "Error: binning is not available for dimension > 2, here dimension=" << dimension;
+  setBandwidth(bandwidth);
+  const UnsignedInteger size = sample.getSize();
+  // 2D binning?
+  if (dimension == 2)
+  {
+    const Point sMin(sample.getMin());
+    const Scalar xMin = sMin[0];
+    const Scalar yMin = sMin[1];
+    const Point sMax(sample.getMax());
+    const Scalar xMax = sMax[0];
+    const Scalar yMax = sMax[1];
+    Point gridWeights((binNumber_ + 1) * (binNumber_ + 1));
+    Point gridX(binNumber_ + 1);
+    Point gridY(binNumber_ + 1);
+    const Scalar deltaX = (xMax - xMin) / binNumber_;
+    const Scalar deltaY = (yMax - yMin) / binNumber_;
+    for (UnsignedInteger i = 0; i <= binNumber_; ++i)
+    {
+      gridX[i] = xMin + i * deltaX;
+      gridY[i] = yMin + i * deltaY;
+    }
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar x = sample(i, 0);
+      UnsignedInteger indexX;
+      if (x == xMin) indexX = 0;
+      else if (x == xMax) indexX = binNumber_;
+      else
+      {
+        indexX = static_cast< UnsignedInteger > (trunc((x - xMin) / deltaX));
+        // Here we cannot have indexX == 0 as gridX[0] == xMin <= x
+        if ((indexX > 0) && (gridX[indexX] > x)) --indexX;
+        if ((indexX < binNumber_) && (gridX[indexX + 1] < x)) ++indexX;
+      }
+      const Scalar y = sample(i, 1);
+      UnsignedInteger indexY;
+      if (y == yMin) indexY = 0;
+      else if (y == yMax) indexY = binNumber_;
+      else
+      {
+        indexY = static_cast< UnsignedInteger > (trunc((y - yMin) / deltaY));
+        // Here we cannot have indexY == 0 as gridY[0] == yMin <= y
+        if ((indexY > 0) && (gridY[indexY] > y)) --indexY;
+        if ((indexY < binNumber_) && (gridY[indexY + 1] < y)) ++indexY;
+      }
+      const Scalar wRight  = (x - gridX[indexX]) / deltaX;
+      const Scalar wLeft   = 1.0 - wRight;
+      const Scalar wTop    = (y - gridY[indexY]) / deltaY;
+      const Scalar wBottom = 1.0 - wTop;
+      if ((indexX > 0) && (indexX < binNumber_))
+      {
+        // Fully inside of a patch
+        if ((indexY > 0) && (indexY < binNumber_))
+        {
+          gridWeights[indexX     + indexY * (binNumber_ + 1)]       += weights[i] * wLeft  * wBottom;
+          gridWeights[indexX + 1 + indexY * (binNumber_ + 1)]       += weights[i] * wRight * wBottom;
+          gridWeights[indexX     + (indexY + 1) * (binNumber_ + 1)] += weights[i] * wLeft  * wTop;
+          gridWeights[indexX + 1 + (indexY + 1) * (binNumber_ + 1)] += weights[i] * wRight * wTop;
+        } // Fully inside of a patch
+        else
+        {
+          gridWeights[indexX     + indexY * (binNumber_ + 1)] += weights[i] * wLeft;
+          gridWeights[indexX + 1 + indexY * (binNumber_ + 1)] += weights[i] * wRight;
+        } // On an y boundary
+      } // Fully inside of the columns
+      else
+      {
+        // Fully inside of y
+        if ((indexY > 0) && (indexY < binNumber_))
+        {
+          gridWeights[indexX     + indexY * (binNumber_ + 1)]       += weights[i] * wBottom;
+          gridWeights[indexX     + (indexY + 1) * (binNumber_ + 1)] += weights[i] * wTop;
+        } // Fully inside of a patch
+        else
+        {
+          gridWeights[indexX     + indexY * (binNumber_ + 1)] += weights[i];
+        } // On a corner
+      } // On an x-boundary
+    }
+    Collection< Distribution > atoms;
+    Point weights2;
+    for (UnsignedInteger j = 0; j <= binNumber_; ++ j)
+    {
+      Point point = {0.0, gridY[j]};
+      for (UnsignedInteger i = 0; i <= binNumber_; ++ i)
+      {
+        const Scalar weightIJ = gridWeights[i + j * (binNumber_ + 1)];
+        if (weightIJ > 0.0)
+        {
+          point[0] = gridX[i];
+          atoms.add(KernelMixture(kernel_, bandwidth, Sample(1, point)));
+          weights2.add(weightIJ);
+        }
+      } // i
+    } // j
+    Mixture result(atoms, weights2);
+    result.setDescription(sample.getDescription());
+    return result;
+  } // 2D binning
+  // 1D binning
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+
+  Point gridWeights(binNumber_ + 1);
+  Point grid(binNumber_ + 1);
+  const Scalar delta = (xMax - xMin) / binNumber_;
+  for (UnsignedInteger i = 0; i <= binNumber_; ++i) grid[i] = xMin + i * delta;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar x = sample(i, 0);
+    // x will be located between grid[index] and grid[index+1] if 0<index<binNumber
+    // if index=0 then x=xMin and if index=binNumber then x=xMax
+    // Here we increase a little bit the slice number to insure that the max value will have an index equal to binNumber
+    UnsignedInteger index;
+    if (x == xMin) index = 0;
+    else if (x == xMax) index = binNumber_;
+    else
+    {
+      index = static_cast< UnsignedInteger > (trunc((x - xMin) / delta));
+      // Here we cannot have indexX == 0 as gridX[0] == xMin <= x
+      if ((index > 0) && (grid[index] > x)) --index;
+      if ((index < binNumber_) && (grid[index + 1] < x)) ++index;
+    }
+    // Split the contribution of the point between the two endpoints of the bin
+    // containing it using a linear split, weighted by the point weight
+    if ((index > 0) && (index < binNumber_))
+    {
+      gridWeights[index]     += weights[i] * (grid[index + 1] - x) / delta;
+      gridWeights[index + 1] += weights[i] * (x - grid[index])     / delta;
+    }
+    // The full weight is given to the end points
+    else gridWeights[index] += weights[i];
+  }
+  Collection< Distribution > atoms;
+  Point weights2;
+  for (UnsignedInteger i = 0; i <= binNumber_; ++i)
+    if (gridWeights[i] > 0.0)
+    {
+      atoms.add(KernelMixture(kernel_, bandwidth, Sample(1, Point({grid[i]}))));
+      weights2.add(gridWeights[i]);
+    }
+  Mixture result(atoms, weights2);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+/* Build a weighted truncated kernel mixture based on the given sample, weights
+   and bandwidth, mirroring the points close to the boundaries as the
+   unweighted path does, then truncating the result */
+TruncatedDistribution KernelSmoothing::buildWeightedAsTruncatedDistribution(const Sample & sample,
+    const Point & weights,
+    const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  if (dimension > 1) throw InternalException(HERE) << "Error: cannot make boundary correction on samples with dimension>1, here dimension=" << dimension;
+  setBandwidth(bandwidth);
+  Scalar xMin = sample.getMin()[0];
+  Scalar xMax = sample.getMax()[0];
+  if (((boundingOption_ == LOWER) || (boundingOption_ == BOTH)) && (!automaticLowerBound_))
+  {
+    // Check the sample against the user-defined bounds
+    if (!(lowerBound_ <= xMin)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a minimum value at least equal to lowerBound=" << lowerBound_ << ", got xMin=" << xMin;
+    xMin = lowerBound_;
+  } // Boundary correction on the lower bound
+  if (((boundingOption_ == UPPER) || (boundingOption_ == BOTH)) && (!automaticUpperBound_))
+  {
+    if (!(upperBound_ >= xMax)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a maximum value at most equal to upperBound=" << upperBound_ << ", got xMax=" << xMax;
+    xMax = upperBound_;
+  } // Boundary correction on the upper bound
+  Point newSampleData(sample.asPoint());
+  Point newWeights(weights);
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot make boundary correction on constant samples.";
+  const Scalar h = bandwidth[0];
+  // Reflect and add points close to the boundaries of the sample, with their weight
+  const Scalar lower = kernel_.getRange().getLowerBound()[0];
+  const Scalar upper = kernel_.getRange().getUpperBound()[0];
+  UnsignedInteger size = sample.getSize();
+  const Bool doLower = ((boundingOption_ == LOWER) || (boundingOption_ == BOTH)) && (xMin > -0.5 * SpecFunc::MaxScalar + h * lower);
+  const Bool doUpper = ((boundingOption_ == UPPER) || (boundingOption_ == BOTH)) && (xMax <  0.5 * SpecFunc::MaxScalar + h * upper);
+  for (UnsignedInteger i = 0; i < size; i++)
+  {
+    const Scalar x = newSampleData[i];
+    // lower < 0
+    if (doLower && (x <= xMin - h * lower)) { newSampleData.add(2.0 * xMin - x); newWeights.add(weights[i]); }
+    // upper > 0
+    if (doUpper && (x >= xMax - h * upper)) { newSampleData.add(2.0 * xMax - x); newWeights.add(weights[i]); }
+  }
+  // Now, work on the extended sample
+  SampleImplementation newSample(newSampleData.getSize(), 1);
+  newSample.setData(newSampleData);
+  newSample.setDescription(sample.getDescription());
+  size = newSample.getSize();
+  const Bool mustBin = binned_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
+  if (binned_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
+  Distribution baseDistribution;
+  if (mustBin) baseDistribution = buildWeightedAsMixture(newSample, newWeights, bandwidth);
+  else baseDistribution = buildWeightedAsKernelMixture(newSample, newWeights, bandwidth);
+  if (boundingOption_ == LOWER) return TruncatedDistribution(baseDistribution, xMin, TruncatedDistribution::LOWER);
+  if (boundingOption_ == UPPER) return TruncatedDistribution(baseDistribution, xMax, TruncatedDistribution::UPPER);
+  return TruncatedDistribution(baseDistribution, xMin, xMax);
+}
+
+/* Build a Normal kernel mixture based on the given sample. If no bandwidth has already been set, Silverman's rule is used */
+Distribution KernelSmoothing::build(const Sample & sample) const{
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
   if (sample.getDimension() == 1)
   {
