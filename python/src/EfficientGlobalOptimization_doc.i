@@ -101,6 +101,20 @@ Examples
 >>> updatedGPRResult = algo.getGaussianProcessRegressionResult()
 >>> updatedOutputSample = updatedGPRResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
+
+By default the criterion is optimized with :class:`~openturns.MultiStart`
+over starting points uniformly drawn within the problem bounds. Both the
+size of the design from which the starting points are selected and the
+number of retained starting points can be configured:
+
+>>> algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
+>>> algo.setMultiStartExperimentSize(200)
+>>> algo.setMultiStartNumber(10)
+
+Alternatively, the whole criterion optimization strategy can be changed by
+providing another optimization algorithm:
+
+>>> algo.setOptimizationAlgorithm(ot.Cobyla())
 )RAW"
 
 // ---------------------------------------------------------------------
