@@ -47,6 +47,7 @@
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
 
 === Miscellaneous ===
+ * Added sum and difference operators between fields
 
 
 == 1.27 release (2026-04-28) == #release-1.27

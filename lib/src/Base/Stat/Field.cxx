@@ -286,6 +286,38 @@ Field Field::operator - (const Sample & translation) const
   return field;
 }
 
+/* In place sum operator between fields */
+Field & Field::operator += (const Field & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(*translation.getImplementation());
+  return *this;
+}
+
+/* In place difference operator between fields */
+Field & Field::operator -= (const Field & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(*translation.getImplementation());
+  return *this;
+}
+
+/* Sum operator between fields */
+Field Field::operator + (const Field & translation) const
+{
+  Field field(getImplementation());
+  field += translation;
+  return field;
+}
+
+/* Difference operator between fields */
+Field Field::operator - (const Field & translation) const
+{
+  Field field(getImplementation());
+  field -= translation;
+  return field;
+}
+
 /* In place sum operator between field and point */
 Field & Field::operator += (const Point & translation)
 {
