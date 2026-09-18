@@ -295,6 +295,47 @@ void Graph::setBoundingBox(const Interval & boundingBox)
   getImplementation()->setBoundingBox(boundingBox);
 }
 
+/* Individual bounds of the whole plot accessors */
+void Graph::setXMin(const Scalar xMin)
+{
+  Interval boundingBox(getBoundingBox());
+  Point lowerBound(boundingBox.getLowerBound());
+  lowerBound[0] = xMin;
+  boundingBox.setLowerBound(lowerBound);
+  setAutomaticBoundingBox(false);
+  setBoundingBox(boundingBox);
+}
+
+void Graph::setXMax(const Scalar xMax)
+{
+  Interval boundingBox(getBoundingBox());
+  Point upperBound(boundingBox.getUpperBound());
+  upperBound[0] = xMax;
+  boundingBox.setUpperBound(upperBound);
+  setAutomaticBoundingBox(false);
+  setBoundingBox(boundingBox);
+}
+
+void Graph::setYMin(const Scalar yMin)
+{
+  Interval boundingBox(getBoundingBox());
+  Point lowerBound(boundingBox.getLowerBound());
+  lowerBound[1] = yMin;
+  boundingBox.setLowerBound(lowerBound);
+  setAutomaticBoundingBox(false);
+  setBoundingBox(boundingBox);
+}
+
+void Graph::setYMax(const Scalar yMax)
+{
+  Interval boundingBox(getBoundingBox());
+  Point upperBound(boundingBox.getUpperBound());
+  upperBound[1] = yMax;
+  boundingBox.setUpperBound(upperBound);
+  setAutomaticBoundingBox(false);
+  setBoundingBox(boundingBox);
+}
+
 /* Automatic bounding box accessor */
 Bool Graph::getAutomaticBoundingBox() const
 {
