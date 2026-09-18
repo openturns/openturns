@@ -1525,7 +1525,10 @@ Scalar DistributionImplementation::computeEntropy() const
           for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
           {
             const Scalar logPI = logPDFAtNodes[i];
-            entropy += -logPI * std::exp(logPI) * weights[i] * delta;
+            // Skip the nodes where the PDF underflows to zero: -p*log(p) is
+            // zero there, but the naive expression evaluates inf*0
+            if (std::isfinite(logPI))
+              entropy += -logPI * std::exp(logPI) * weights[i] * delta;
           } // integration nodes
         } // Singularities
       } // marginal
