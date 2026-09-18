@@ -190,3 +190,7 @@ print("Group = ", group)
 S_computed = sensitivity.getSobolGroupedTotalIndex(group)
 printSobolResult(S_computed, 1.0)
 assert_almost_equal(S_computed, 1.0, rtol, atol)
+
+# draw the Sobol indices, see issue #1937
+graph = sensitivity.draw()
+assert graph.getDrawables().getSize() > 0, "non empty drawing"
