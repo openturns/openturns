@@ -61,3 +61,23 @@ ott.assert_almost_equal(spearman, [0.94, 0.30], 0.0, 1e-2)  # approximate value
 
 kendalltau = corr_analysis.computeKendallTau()
 ott.assert_almost_equal(kendalltau, [0.79, 0.20], 0.0, 1e-2)  # approximate value
+
+# Draw the SRC indices with a dedicated y-axis label, see issue #1363
+input_names = analytical.getInputDescription()
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    src, input_names, "SRC indices", "SRC index"
+)
+assert graph.getYTitle() == "SRC index", "custom y label"
+# default y label is unchanged
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    src, input_names, "SRC indices"
+)
+assert graph.getYTitle() == "correlation coefficient", "default y label"
+
+# same for the PointWithDescription overload
+pointWithDescription = ot.PointWithDescription(src)
+pointWithDescription.setDescription(input_names)
+graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
+    pointWithDescription, "SRC indices", "SRC index"
+)
+assert graph.getYTitle() == "SRC index", "custom y label (PWD)"
