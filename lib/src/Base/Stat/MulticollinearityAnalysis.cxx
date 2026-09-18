@@ -602,27 +602,23 @@ PointWithDescription MulticollinearityAnalysis::computeVIF() const
 {
   checkInputSample();
 
-  // We create an arbitrary output sample (the algorithm needs one although the metric doesn't depend on it)
-  const UnsignedInteger size = firstSample_.getSize();
-  Sample outputSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; i += 2)
-    outputSample(i, 0) = 1.0;
-
-  // Perform a linear regression
-  LinearModelAlgorithm algo(firstSample_, outputSample);
-  const LinearModelResult linearModelResult(algo.getResult());
-  const SymmetricMatrix gramInverse(linearModelResult.getLeastSquaresMethod().getGramInverse());
-  const CorrelationMatrix R(covarianceToCorrelation(removeRowAndColumn(gramInverse, 0)));
-  const Scalar detR = R.computeDeterminant();
-  if (!(detR > 0.0)) throw NotDefinedException(HERE) << "Error: the matrix is singular, its determinant is " << detR;
-
   const UnsignedInteger dimension = firstSample_.getDimension();
+
+  // Correlation matrix of the predictors — no dummy regression needed
+  const CorrelationMatrix R(firstSample_.computeLinearCorrelation());
+
+  // Guard against (near-)singularity
+  const Scalar detR = R.computeDeterminant();
+  if (!(detR > 0.0))
+    throw NotDefinedException(HERE) << "Error: the matrix is singular, its determinant is " << detR;
+
+  // VIFs are just the diagonal of the inverse correlation matrix
+  const SymmetricMatrix Rinv(R.inverse());
+
   PointWithDescription result(dimension);
-  for(UnsignedInteger i = 0; i < dimension; i++)
-  {
-    const SymmetricMatrix Ri(removeRowAndColumn(R, i));
-    result[i] = Ri.computeDeterminant() / detR;
-  }
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    result[i] = Rinv(i, i);
+
   result.setDescription(firstSample_.getDescription());
   return result;
 }
