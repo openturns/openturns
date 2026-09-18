@@ -14,6 +14,16 @@ of the underlying sample :math:`(x_1,\dots,x_n)`.
 
 Each estimator is detailed its corresponding :ref:`factory <parametric_distribution_factories>`.
 
+.. note::
+
+    The method of moments matches the empirical moments of the *initial*
+    sample, while estimators based on a transformation of the data (such
+    as the least-squares estimator of the LogNormal distribution, which
+    regresses on the log-transformed sample) optimize their criterion on
+    the *transformed* data. Because both criteria differ, the resulting
+    parameter estimates are generally different, and the discrepancy can
+    be significant for small samples.
+
 .. topic:: API:
 
     - See the available :ref:`parametric distribution factories <parametric_distribution_factories>`.

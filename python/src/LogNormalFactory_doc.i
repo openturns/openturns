@@ -273,7 +273,15 @@ sample : 2-d sequence of float, of dimension 1
 Returns
 -------
 dist : :class:`~openturns.LogNormal`
-    The built distribution."
+    The built distribution.
+
+Notes
+-----
+The moment equations are solved on the *initial* data, ie the sample is
+used as such. Estimating the parameters on the log-transformed data
+instead (as :func:`buildMethodOfLeastSquares` does) optimizes a different
+criterion, and both estimators generally produce different values,
+especially for small samples."
 
 // ---------------------------------------------------------------------
 
@@ -290,4 +298,12 @@ gamma : float, optional
 Returns
 -------
 dist : :class:`~openturns.LogNormal`
-    The built distribution.)RAW"
+    The built distribution.
+
+Notes
+-----
+The parameters are adjusted by linear regression on the
+*log-transformed* data. Because this criterion differs from matching the
+moments of the initial data (see :func:`buildMethodOfMoments`), both
+methods generally yield different estimates, especially for small
+samples.)RAW"
