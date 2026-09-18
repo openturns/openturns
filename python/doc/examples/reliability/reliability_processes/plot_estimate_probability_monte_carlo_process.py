@@ -26,9 +26,9 @@ Estimate a process-based event probability
 # The Monte Carlo algorithm is manipulated the same way as in the case
 # where the event is based on a random variable independent of time.
 #
-# We illustrate the algorithm on the example of the bidimensionnal white
+# We illustrate the algorithm on the example of the bidimensional white
 # noise process :math:`\varepsilon: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^2` where
-# :math:`\mathcal{D}\in \mathbb{R}`, distributed according to the bidimensionnal standard
+# :math:`\mathcal{D}\in \mathbb{R}`, distributed according to the bidimensional standard
 # normal distribution (with zero mean, unit variance and independent
 # marginals).
 #
@@ -65,24 +65,26 @@ Estimate a process-based event probability
 import openturns as ot
 import openturns.viewer as otv
 
+ot.RandomGenerator.SetSeed(0)
+
 # %%
-# Create a time grid
+# Create a time grid of size :math:`N = 10`
 tMin = 0.0
 timeStep = 0.1
-n = 100
-tgrid = ot.RegularGrid(tMin, timeStep, n)
+N = 10
+tgrid = ot.RegularGrid(tMin, timeStep, N)
 
 # %%
-# Create a normal process
-amplitude = [5.0]
-scale = [3.0]
-model = ot.ExponentialModel(scale, amplitude)
-process = ot.GaussianProcess(model, tgrid)
+# Create the bidimensional white noise process: independent standard normal
+# marginals at each time stamp
+marginals = [ot.Normal()] * 2
+distribution = ot.JointDistribution(marginals)
+process = ot.WhiteNoise(distribution, tgrid)
 
 # %%
-# Create the 1-d domain A: [2.,5.]
-lowerBound = [2.0]
-upperBound = [5.0]
+# Create the 2-d domain :math:`\mathcal{A} = [1,2] \times [1,2]`
+lowerBound = [1.0] * 2
+upperBound = [2.0] * 2
 domain = ot.Interval(lowerBound, upperBound)
 
 # %%
@@ -90,26 +92,34 @@ domain = ot.Interval(lowerBound, upperBound)
 event = ot.ProcessEvent(process, domain)
 
 # %%
+# Compute the exact probability
+Phi = ot.Normal().computeCDF
+p1 = (Phi(2.0) - Phi(1.0)) ** 2
+pexact = 1.0 - (1.0 - p1) ** N
+print("p1=%.6f" % p1)
+print("p_exact=%.5f" % pexact)
+
+# %%
 # Create the Monte-Carlo algorithm
+
+# Define the total number of simulations
+K = 10 ** 4
 montecarlo = ot.ProbabilitySimulationAlgorithm(event)
-
-# Define the maximum number of simulations
-montecarlo.setMaximumOuterSampling(1000)
-
-# Define the block size
-montecarlo.setBlockSize(100)
-
-# Define the maximum coefficient of variation
-montecarlo.setMaximumCoefficientOfVariation(0.0025)
+montecarlo.setMaximumOuterSampling(K)
+montecarlo.setBlockSize(1)
 
 # Run the algorithm
 montecarlo.run()
 
 # Get the result
-montecarlo.getResult()
+result = montecarlo.getResult()
+print("p_MC=%.4f" % result.getProbabilityEstimate())
 
 # %%
 graph = montecarlo.drawProbabilityConvergence(0.95)
+exact_line = ot.Curve([-10, 530], [pexact, pexact], "exact probability")
+exact_line.setColor("black")
+graph.add(exact_line)
 view = otv.View(graph)
 
 # %%
