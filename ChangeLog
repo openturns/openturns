@@ -42,6 +42,7 @@
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
 === Documentation ===
+ * LogNormalFactory: document initial vs transformed data estimation
  * EGO: document criterion solver configuration
  * KissFFT: add usage example
 
