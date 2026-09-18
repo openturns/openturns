@@ -9,7 +9,7 @@
 Provides sensitivity analysis methods to determine the influence of each
 component of a random vector over a single one-dimensional variable,
 in the case where the components are correlated.
-Refer to :ref:`regression_importance_indices`.
+Refer to :any:`regression_importance_indices`.
 
 Parameters
 ----------

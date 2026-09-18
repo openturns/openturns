@@ -20,6 +20,7 @@
  *
  */
 
+#include <algorithm>
 #include <bitset>
 #include "openturns/MulticollinearityAnalysis.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
@@ -441,11 +442,8 @@ public:
     const MatrixImplementation & sourceImpl = *source.getImplementation();
     MatrixImplementation & targetImpl = *target.getImplementation();
     const UnsignedInteger size = targetImpl.getDimension();
-    for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      for (UnsignedInteger j = 0; j <= i; ++j)
-        targetImpl(i, j) = sourceImpl(i, j);
-    }
+    for (UnsignedInteger j = 0; j < size; ++j)
+      std::copy(&sourceImpl(j, j), &sourceImpl(j, j) + size - j, &targetImpl(j, j));
   }
 
   /* Extract the top part of a vector matrix */
@@ -454,8 +452,7 @@ public:
     const MatrixImplementation & sourceImpl = *source.getImplementation();
     MatrixImplementation & targetImpl = *target.getImplementation();
     const UnsignedInteger size = targetImpl.getNbRows();
-    for (UnsignedInteger i = 0; i < size; ++i)
-      targetImpl(i, 0) = sourceImpl(i, 0);
+    std::copy(&sourceImpl(0, 0), &sourceImpl(0, 0) + size, &targetImpl(0, 0));
   }
 
   /* Compute the explained variance of the full model (i.e. with all input variables) */
@@ -643,48 +640,6 @@ CovarianceMatrix MulticollinearityAnalysis::computeCovariance() const
   Sample joinedSample(firstSample_);
   joinedSample.stack(secondSample_);
   return joinedSample.computeCovariance();
-}
-
-/* Remove a row and a column from a symmetric matrix */
-SymmetricMatrix MulticollinearityAnalysis::removeRowAndColumn(const SymmetricMatrix & matrix, const UnsignedInteger rowCol) const
-{
-  const UnsignedInteger size = matrix.getDimension();
-  SymmetricMatrix result(size - 1);
-  UnsignedInteger i2 = 0;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    if (i != rowCol)
-    {
-      UnsignedInteger j2 = 0;
-      for (UnsignedInteger j = 0; j <= i; ++j)
-      {
-        if (j != rowCol)
-        {
-          result(i2, j2) = matrix(i, j);
-          j2++;
-        }
-      }
-      i2++;
-    }
-  }
-  return result;
-}
-
-/* Convert a covariance matrix to a correlation matrix */
-CorrelationMatrix MulticollinearityAnalysis::covarianceToCorrelation(const SymmetricMatrix & matrix) const
-{
-  const UnsignedInteger size = matrix.getDimension();
-  CorrelationMatrix result(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    for (UnsignedInteger j = 0; j < i; ++j)
-    {
-      Scalar pij = matrix(i, i) * matrix(j, j);
-      if (!(pij > 0)) throw InvalidArgumentException(HERE) << "Error: can't compute the correlation matrix";
-      result(i, j) = matrix(i, j) / std::sqrt(pij);
-    }
-  }
-  return result;
 }
 
 /* Method save() stores the object through the StorageManager */
