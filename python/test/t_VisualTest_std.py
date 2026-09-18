@@ -127,3 +127,9 @@ print(grid)
 dist = ot.Mixture([ot.Uniform(8, 15), ot.Dirac(10)], [0.1, 0.9])
 ud = ot.FiniteDiscreteDistribution(dist.getSample(1000))
 graph = ot.VisualTest.DrawCDFplot(ud.getSample(100), ud)
+
+# large-sample QQ plot points must remain visible, see issue #1357
+medium_size = ot.ResourceMap.GetAsUnsignedInteger("VisualTest-CloudMediumSize")
+large_sample = normal.getSample(10 * medium_size)
+large_qq_plot = ot.VisualTest.DrawQQplot(large_sample, normal)
+assert large_qq_plot.getDrawable(1).getPointStyle() == "plus", "visible point style expected"
