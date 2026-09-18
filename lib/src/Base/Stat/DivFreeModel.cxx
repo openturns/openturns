@@ -36,7 +36,7 @@ static const Factory<DivFreeModel> Factory_DivFreeModel;
     If the nominal symmetric step collapses (huge coordinates) or overflows near the
     finite-coordinate limits, the endpoints fall back to adjacent representable
     neighbors, and the stencil becomes one-sided at the very ends of the range. */
-static void divFreeStencil(Scalar & plus,
+static void DivFreeStencil(Scalar & plus,
                                  Scalar & minus,
                                  const Scalar value,
                                  const Scalar targetStep)
@@ -74,7 +74,7 @@ static SquareMatrix computeHessian(const CovarianceModel & model,
     const Scalar epsilon = (isotropic ? scale[0] : scale[j]) * baseEps;
     Scalar tPlusValue = 0.0;
     Scalar tMinusValue = 0.0;
-    divFreeStencil(tPlusValue, tMinusValue, t[j], epsilon);
+    DivFreeStencil(tPlusValue, tMinusValue, t[j], epsilon);
     Point tPlus(t);
     Point tMinus(t);
     tPlus[j] = tPlusValue;
@@ -106,7 +106,7 @@ static SquareMatrix computeHessianStationary(const CovarianceModel & model,
     const Scalar epsilon = (isotropic ? scale[0] : scale[j]) * baseEps;
     Scalar tauPlusValue = 0.0;
     Scalar tauMinusValue = 0.0;
-    divFreeStencil(tauPlusValue, tauMinusValue, tau[j], epsilon);
+    DivFreeStencil(tauPlusValue, tauMinusValue, tau[j], epsilon);
     Point tauPlus(tau);
     Point tauMinus(tau);
     tauPlus[j] = tauPlusValue;
