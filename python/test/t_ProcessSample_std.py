@@ -199,10 +199,10 @@ for i in range(5):
     psampleA[i] = ot.Normal(outputDimension).getSample(nvertices)
 ref = psampleA[2]
 rest = psampleA.split(2)
-assert psampleA.getSize() == 2, "split size"
-assert rest.getSize() == 3, "split remainder size"
-assert rest.getMesh().getVerticesNumber() == nvertices, "split mesh"
-assert rest.getDimension() == outputDimension, "split dimension"
+ott.assert_almost_equal(psampleA.getSize(), 2)
+ott.assert_almost_equal(rest.getSize(), 3)
+ott.assert_almost_equal(rest.getMesh().getVerticesNumber(), nvertices)
+ott.assert_almost_equal(rest.getDimension(), outputDimension)
 ott.assert_almost_equal(rest[0], ref)
 
 # splitting at the full size keeps the sample and returns an empty one
@@ -210,19 +210,16 @@ psampleB = ot.ProcessSample(mesh, 3, outputDimension)
 for i in range(3):
     psampleB[i] = ot.Normal(outputDimension).getSample(nvertices)
 empty = psampleB.split(3)
-assert psampleB.getSize() == 3, "split at size should not truncate"
-assert empty.getSize() == 0, "split at size should return empty"
+ott.assert_almost_equal(psampleB.getSize(), 3)
+ott.assert_almost_equal(empty.getSize(), 0)
 
 # splitting at index 0 returns everything
 all_ = psampleB.split(0)
-assert all_.getSize() == 3, "split at 0 should return everything"
-assert psampleB.getSize() == 0, "split at 0 should truncate everything"
+ott.assert_almost_equal(all_.getSize(), 3)
+ott.assert_almost_equal(psampleB.getSize(), 0)
 
-try:
+with ott.assert_raises(IndexError):
     psampleA.split(psampleA.getSize() + 1)
-    assert False, "out-of-bounds split should raise"
-except Exception:
-    pass
 
 # erase a set of indices, see issue #1730
 psampleC = ot.ProcessSample(mesh, 5, outputDimension)
@@ -234,8 +231,5 @@ assert psampleC.getSize() == 3, "erase size"
 ott.assert_almost_equal(psampleC[0], kept[0])
 ott.assert_almost_equal(psampleC[1], kept[1])
 ott.assert_almost_equal(psampleC[2], kept[2])
-try:
+with ott.assert_raises(IndexError):
     psampleC.erase([psampleC.getSize()])
-    assert False, "out-of-bounds erase should raise"
-except Exception:
-    pass

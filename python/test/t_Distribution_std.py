@@ -116,8 +116,5 @@ levelSetsQMC, thresholdsQMC = distribution.computeMinimumVolumeLevelSetCollectio
 ot.ResourceMap.SetAsBool("Distribution-MinimumVolumeLevelSetBySampling", False)
 ott.assert_almost_equal(thresholdsQMC, thresholds, 0.0, 1e-4)
 # invalid probability raises
-try:
+with ott.assert_raises(TypeError):
     distribution.computeMinimumVolumeLevelSetCollectionWithThreshold([0.5, 1.5])
-    assert False, "invalid probability should raise"
-except Exception:
-    pass

@@ -43,15 +43,10 @@ print("sample2=", repr(sample2))
 sample2[5] = point2
 print("sample2=", repr(sample2))
 
-try:
+with ott.assert_raises(IndexError):
     # We get the tenth element of the sample
     # THIS SHOULD NORMALLY FAIL
     tenthElement = sample1[9]
-
-    # Normally, we should never go here
-    raise
-except Exception:
-    pass
 
 # We try to create a sample with 5 times the same point
 samePoint = ot.Point(3)
@@ -102,16 +97,12 @@ print(sample1._repr_html_())
 # check conversion
 v1 = [ot.Point([12.0]), ot.Point([1.0])]
 v2 = [ot.Point([13.0]), ot.Point([2.0])]
-try:
+with ott.assert_raises(TypeError):
     s = ot.Sample([v1, v2])
-except Exception:
-    print("ok")
 
-try:
+with ott.assert_raises(TypeError):
     # uneven points
     s = ot.Sample([[1.0, 2.0], [5.0]])
-except Exception:
-    print("ok")
 
 # getMarginal by identifiers
 sample = ot.Normal(4).getSample(5)
@@ -171,8 +162,5 @@ ott.assert_almost_equal(sample, reference)
 # invalid calls raise
 for bad in ([10], [-1], [2, 2]):
     sample = ot.Sample([[float(x)] for x in range(10)])
-    try:
+    with ott.assert_raises(Exception):
         sample.erase(bad)
-        assert False, "should have raised for %s" % bad
-    except Exception:
-        pass
