@@ -160,6 +160,10 @@ public:
   /** Get the marginal sample corresponding to indices dimensions */
   ProcessSample getMarginal(const Indices & indices) const;
 
+  /** Method split() truncates the process sample before the index passed as argument
+   *  and returns the remainder as a new process sample */
+  ProcessSample split(const UnsignedInteger index);
+
   /** Draw a marginal */
   Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;
