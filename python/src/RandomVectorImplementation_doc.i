@@ -478,7 +478,7 @@ Returns
 event : :class:`~openturns.RandomVector`
     Intersection event"
 %enddef
-%feature("docstring") OT::RandomVectorImplementation::intersect
+%feature("docstring") OT::RandomVector::intersect
 OT_RandomVector_intersect_doc
 
 // ---------------------------------------------------------------------
@@ -496,7 +496,7 @@ Returns
 event : :class:`~openturns.RandomVector`
     Union event"
 %enddef
-%feature("docstring") OT::RandomVectorImplementation::join
+%feature("docstring") OT::RandomVector::join
 OT_RandomVector_join_doc
 
 // ---------------------------------------------------------------------

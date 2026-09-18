@@ -27,10 +27,6 @@ OT_HMatrix_getNbRows_doc
 OT_HMatrix_getNbColumns_doc
 %feature("docstring") OT::HMatrix::assemble
 OT_HMatrix_assemble_doc
-%feature("docstring") OT::HMatrix::assembleReal
-OT_HMatrix_assembleReal_doc
-%feature("docstring") OT::HMatrix::assembleTensor
-OT_HMatrix_assembleTensor_doc
 %feature("docstring") OT::HMatrix::factorize
 OT_HMatrix_factorize_doc
 %feature("docstring") OT::HMatrix::solve

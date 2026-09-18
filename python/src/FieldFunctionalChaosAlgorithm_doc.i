@@ -13,16 +13,6 @@ result : :class:`openturns.FieldFunctionalChaosResult`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FieldFunctionalChaosAlgorithm::setBlockIndices
-"Accessor to the output block indices.
-
-Parameters
-----------
-blockIndices : 2-d sequence of int
-    Independent output components indices."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::FieldFunctionalChaosAlgorithm::getBlockIndices
 "Accessor to the output block indices.
 
