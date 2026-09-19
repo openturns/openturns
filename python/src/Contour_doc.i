@@ -20,6 +20,19 @@ sampleX, sampleY : two 2-d sequences of float of dimension 1
     First and second coordinates. If not specified the points are equally
     spaced in :math:`[0, 1]` along the :math:`X` and :math:`Y`-directions.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Contour-DefaultLevelsNumber*: default number of contour levels,
+- *Contour-DefaultIsFilled*: whether contour plots are filled by default,
+- *Contour-DefaultDrawLabels*: whether to draw labels on contour lines,
+- *Contour-DefaultColorMapNorm*: default color map normalization,
+- *Contour-DefaultColorMap*: default color map name,
+- *Contour-DefaultColorBarPosition*: default color bar position,
+- *Contour-DefaultExtend*: default extend mode for color bar,
+- *Contour-DefaultAlpha*: default transparency for contour plots.
+
 Examples
 --------
 

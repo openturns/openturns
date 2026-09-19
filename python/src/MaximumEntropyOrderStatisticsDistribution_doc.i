@@ -84,6 +84,11 @@ following keys in :class:`~openturns.ResourceMap`:
 
 The approximation should be used *with caution*. There is no easy quantitative criterion to guide the choice, but either it works with a high degree of precision, or it fails producing negative values for the exponential factor. It occurs when two marginal distributions have almost the same range, eg two uniform distributions with range [0,1] and [0.038, 1.038].
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber* (`UnsignedInteger`, default: `16`)
+- *MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration* (`UnsignedInteger`, default: `10`)
+
 Examples
 --------
 Create a distribution which components are ordered almost surely:
@@ -95,6 +100,7 @@ Create a distribution which components are ordered almost surely:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
 )RAW"
 
 // ---------------------------------------------------------------------

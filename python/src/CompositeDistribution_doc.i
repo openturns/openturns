@@ -43,6 +43,11 @@ Notes
 -----
 Its first moments are obtained by numerical integration.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *CompositeDistribution-SolverEpsilon* (`Scalar`, default: `1e-14`)
+- *CompositeDistribution-StepNumber* (`UnsignedInteger`, default: `256`)
+
 Examples
 --------
 Create a distribution:

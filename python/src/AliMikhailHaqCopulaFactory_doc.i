@@ -11,9 +11,14 @@ The parameter :math:`\Hat{\theta}_n` is solution of:
 
     \displaystyle \Hat{\tau}_n = \displaystyle \frac{3\theta-2}{3\theta} - \frac{2(1-\theta)^2\ln(1-\theta)}{3\theta^2}
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *AliMikhailHaqCopulaFactory-ThetaEpsilon* (`Scalar`, default: `1e-14`)
+
 See also
 --------
-DistributionFactory, AliMikhailHaqCopula)RAW"
+DistributionFactory, AliMikhailHaqCopula
+)RAW"
 
 
 // ---------------------------------------------------------------------
