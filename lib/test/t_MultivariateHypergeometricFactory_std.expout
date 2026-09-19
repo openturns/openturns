@@ -1,0 +1,6 @@
+Distribution          =class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=3 colors=class=Point name=Unnamed dimension=3 values=[3,3,3] n=5
+Estimated distribution=class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=3 colors=class=Point name=Unnamed dimension=3 values=[3,3,3] n=5
+Default distribution=class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=1 colors=class=Point name=Unnamed dimension=1 values=[2] n=1
+MultivariateHypergeometric          =class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=3 colors=class=Point name=Unnamed dimension=3 values=[3,3,3] n=5
+Estimated multivariate hypergeometric=class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=3 colors=class=Point name=Unnamed dimension=3 values=[3,3,3] n=5
+Default multivariate hypergeometric=class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=1 colors=class=Point name=Unnamed dimension=1 values=[2] n=1

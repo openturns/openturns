@@ -1,0 +1,24 @@
+Distribution class=MultivariateHypergeometric name=MultivariateHypergeometric dimension=3 colors=class=Point name=Unnamed dimension=3 values=[3,3,3] n=5
+Continuous = false
+oneRealization=class=Point name=Unnamed dimension=3 values=[2,2,1]
+oneSample first=class=Point name=Unnamed dimension=3 values=[2,0,3] last=class=Point name=Unnamed dimension=3 values=[1,1,3]
+mean=class=Point name=Unnamed dimension=3 values=[1.6744,1.6602,1.6654]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.55684,-0.280367,-0.276473,-0.280367,0.556392,-0.276025,-0.276473,-0.276025,0.552498]
+support=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=3 data=[[3,2,0],[3,1,1],[3,0,2],[2,3,0],[2,2,1],[2,1,2],[2,0,3],[1,3,1],[1,2,2],[1,1,3],[0,3,2],[0,2,3]]
+support restricted to the interval=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[2,2,2] finite lower bound=[1,1,1] finite upper bound=[1,1,1] gives=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=3 data=[[2,2,1],[2,1,2],[1,2,2]]
+Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
+log pdf([1,1,1])=-inf
+pdf    ([1,1,1])=0
+cdf    ([1,1,1])=0
+ccdf   ([1,1,1])=1
+survival([1,1,1])=0
+quantile(0.95)=class=Point name=Unnamed dimension=3 values=[3,3,3]
+cdf(quantile)=1
+probability([0, 1]
+[1, 2]
+[2, 3])=0.309524
+mean=class=Point name=Unnamed dimension=3 values=[1.66667,1.66667,1.66667]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.555556,-0.277778,-0.277778,-0.277778,0.555556,-0.277778,-0.277778,-0.277778,0.555556]
+correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.5,-0.5,-0.5,1,-0.5,-0.5,-0.5,1]
+parameters=[[n : 5, c_0 : 3],[n : 5, c_1 : 3],[n : 5, c_2 : 3],[n : 5, c_0 : 3, c_1 : 3, c_2 : 3]]
+marginal(0)=class=Hypergeometric name=Hypergeometric dimension=1 n=9 k=3 m=5

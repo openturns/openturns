@@ -555,6 +555,10 @@ ot_add_python_module(experimental experimental_module.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
+MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
+                     MultivariateHypergeometricFactory.i MultivariateHypergeometricFactory_doc.i
+                     MultivariatePolya.i MultivariatePolya_doc.i
+                     MultivariatePolyaFactory.i MultivariatePolyaFactory_doc.i
                      MultivariateUniform.i MultivariateUniform_doc.i
                      MultivariateUniformFactory.i MultivariateUniformFactory_doc.i
                      TruncatedDistributionFactory.i TruncatedDistributionFactory_doc.i

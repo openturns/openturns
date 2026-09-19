@@ -1,0 +1,27 @@
+Distribution class=MultivariatePolya name=MultivariatePolya dimension=3 alpha=class=Point name=Unnamed dimension=3 values=[1,1,1] c=1 n=5
+Continuous = false
+oneRealization=class=Point name=Unnamed dimension=3 values=[1,1,3]
+oneSample first=class=Point name=Unnamed dimension=3 values=[0,1,4] last=class=Point name=Unnamed dimension=3 values=[0,2,3]
+mean=class=Point name=Unnamed dimension=3 values=[1.6375,1.6915,1.671]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2.16951,-1.08084,-1.08867,-1.08084,2.23875,-1.15791,-1.08867,-1.15791,2.24658]
+support=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=21 dimension=3 data=[[5,0,0],[4,1,0],[4,0,1],[3,2,0],[3,1,1],[3,0,2],[2,3,0],[2,2,1],[2,1,2],[2,0,3],[1,4,0],[1,3,1],[1,2,2],[1,1,3],[1,0,4],[0,5,0],[0,4,1],[0,3,2],[0,2,3],[0,1,4],[0,0,5]]
+support restricted to the interval=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[2,2,2] finite lower bound=[1,1,1] finite upper bound=[1,1,1] gives=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=3 data=[[2,2,1],[2,1,2],[1,2,2]]
+Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
+log pdf([1,1,1])=-inf
+pdf    ([1,1,1])=0
+cdf    ([1,1,1])=0
+ccdf   ([1,1,1])=1
+survival([1,1,1])=0
+quantile(0.95)=class=Point name=Unnamed dimension=3 values=[5,5,5]
+cdf(quantile)=1
+probability([0, 1]
+[1, 2]
+[2, 3])=0.142857
+mean=class=Point name=Unnamed dimension=3 values=[1.66667,1.66667,1.66667]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[2.22222,-1.11111,-1.11111,-1.11111,2.22222,-1.11111,-1.11111,-1.11111,2.22222]
+correlation=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,-0.5,-0.5,-0.5,1,-0.5,-0.5,-0.5,1]
+parameters=[[n : 5, c : 1, alpha_0 : 1],[n : 5, c : 1, alpha_1 : 1],[n : 5, c : 1, alpha_2 : 1],[n : 5, c : 1, alpha_0 : 1, alpha_1 : 1, alpha_2 : 1]]
+marginal(0)=class=FiniteDiscreteDistribution name=FiniteDiscreteDistribution dimension=1 points=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=6 dimension=1 data=[[0],[1],[2],[3],[4],[5]] probabilities=class=Point name=Unnamed dimension=6 values=[0.285714,0.238095,0.190476,0.142857,0.0952381,0.047619]
+degenerate pdf=0 multinomial pdf=0
+degenerate cdf=0.0823045 multinomial cdf=0.0823045
+1d cdf(10)=1 cdf(3)=0 pdf(4)=1
