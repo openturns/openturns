@@ -40,7 +40,7 @@ Examples
 >>> mean = ot.SymmetricMatrix([[1.0, 0.0], [0.0, 1.0]])
 >>> sigma = ot.SquareMatrix([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 >>> distribution = otexp.RiemannianGaussian(mean, sigma)
->>> estimated = factory.build(distribution.getSample(1000))
+>>> estimated = factory.build(distribution.getSample(500))
 )RAW"
 
 // ---------------------------------------------------------------------

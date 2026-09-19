@@ -12,7 +12,7 @@ for i, sigma in enumerate([0.5, 1.0, 2.0, 3.0]):
     distribution = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[sigma**2]]))
     pdf_curve = distribution.drawPDF(-1.0, 1.0, 256).getDrawable(0)
     pdf_curve.setColor(palette[i])
-    pdf_curve.setLegend(f"sigma={sigma}")
+    pdf_curve.setLegend(rf"$\sigma^2={sigma**2}$")
     pdf_graph.add(pdf_curve)
 fig = plt.figure(figsize=(10, 4))
 pdf_axis = fig.add_subplot(121)

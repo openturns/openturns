@@ -30,7 +30,7 @@ Continuous parametric distributions
     Beta
     Burr
 
-    :template: Distribution.rst_t
+    :template: classWithPlot.rst_t
     experimental.Bingham
 
     :template: Distribution.rst_t

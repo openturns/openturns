@@ -20,15 +20,6 @@ estimates the Matrix Fisher parameters using the method of moments:
    where :math:`f_i = 3s_i` when :math:`s_i < 0.5` and
    :math:`f_i = 1/(2(1-s_i))` otherwise.
 
-Notes
------
-The following :class:`openturns.ResourceMap` keys are used:
-
-- ``MatrixFisherFactory-AbsolutePrecision``: absolute precision of the
-  estimator.
-- ``MatrixFisher-OrthogonalityThreshold``: relative tolerance for the
-  validation of the orthogonality of the sampled matrices.
-
 See also
 --------
 openturns.DistributionFactory, MatrixFisher
