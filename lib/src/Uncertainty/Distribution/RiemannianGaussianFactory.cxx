@@ -156,7 +156,10 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
     for (UnsignedInteger j = 0; j <= i; ++j)
       scale += mean(i, j) * mean(i, j);
   scale = std::sqrt(scale);
-  for (UnsignedInteger iter = 0; iter < 50; ++iter)
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("RiemannianGaussianFactory-MaximumIteration");
+  const Scalar tolerance = ResourceMap::GetAsScalar("RiemannianGaussianFactory-Tolerance");
+  const Scalar stepSize = ResourceMap::GetAsScalar("RiemannianGaussianFactory-StepSize");
+  for (UnsignedInteger iter = 0; iter < maximumIteration; ++iter)
   {
     RiemannianGaussian ref(mean, identityTangent);
     SymmetricMatrix vAverage(n);
@@ -173,12 +176,12 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
         }
     }
     normV = std::sqrt(normV / static_cast<Scalar>(size));
-    if (normV <= SpecFunc::ScalarEpsilon * (1.0 + scale))
+    if (normV <= tolerance * (1.0 + scale))
       break;
     for (UnsignedInteger r = 0; r < n; ++r)
       for (UnsignedInteger c = r; c < n; ++c)
         vAverage(r, c) /= static_cast<Scalar>(size);
-    mean = ref.expMap(vAverage);
+    mean = ref.expMap(vAverage * stepSize);
   }
 
   // Step 3: Estimate covariance in tangent space at mean using simple log-Euclidean metric

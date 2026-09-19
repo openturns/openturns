@@ -46,8 +46,6 @@ The following :class:`openturns.ResourceMap` keys are used:
 
 - ``WrappedNormal-MaxLatticeTerms``: maximum number of lattice terms
   for exact sum in PDF computation (default: 100000).
-- ``WrappedNormalFactory-DefaultPeriod``: default period used by the
-  :class:`~openturns.experimental.WrappedNormalFactory` (default: :math:`2\pi`).
 
 Examples
 --------

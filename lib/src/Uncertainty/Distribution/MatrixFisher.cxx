@@ -139,7 +139,7 @@ void MatrixFisher::computeNormalization()
   // theta in [0, pi]. The trace cannot exceed the sum of the singular values
   // of F, so we integrate exp(tr - maxTrace) <= 1 to avoid overflows and
   // exponentiate the maximum back at the end.
-  const UnsignedInteger order = ResourceMap::GetAsUnsignedInteger("MatrixFisher-MaximumIteration");
+  const UnsignedInteger order = ResourceMap::GetAsUnsignedInteger("MatrixFisher-QuadratureOrder");
   const GaussLegendre quadrature(Indices(3, order));
   const Sample nodes(quadrature.getNodes());
   const Point weights(quadrature.getWeights());

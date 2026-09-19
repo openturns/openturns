@@ -20,15 +20,6 @@ a moment matching algorithm:
 
 3. Shift the concentrations so that :math:`\min_i\zeta_i = 0`.
 
-Notes
------
-The following :class:`openturns.ResourceMap` keys are used:
-
-- ``BinghamFactory-AbsolutePrecision``: absolute precision of the estimator.
-- ``Bingham-MaximumIteration``: maximum number of iterations.
-- ``Bingham-OrthogonalityThreshold``: relative tolerance for the validation
-  of the orthogonality of the basis matrix.
-
 See also
 --------
 openturns.DistributionFactory, Bingham

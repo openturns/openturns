@@ -799,32 +799,9 @@
   <Bingham-OrthogonalityThreshold value_float="1e-12"        />
   <Bingham-MaximumIteration  value_int="50" />
 
-  <!-- OT::BinghamFactory parameters -->
-  <BinghamFactory-AbsolutePrecision value_float="1e-8"        />
-
   <!-- OT::MatrixFisher parameters -->
   <MatrixFisher-OrthogonalityThreshold value_float="1e-12"        />
-  <MatrixFisher-MaximumIteration  value_int="50" />
-
-  <!-- OT::MatrixFisherFactory parameters -->
-  <MatrixFisherFactory-AbsolutePrecision value_float="1e-8"        />
-
-  <!-- OT::RiemannianGaussian parameters -->
-  <RiemannianGaussian-PositiveDefiniteThreshold value_float="1e-12" />
-
-  <!-- OT::RiemannianGaussianFactory parameters -->
-  <RiemannianGaussianFactory-StepSize value_float="0.1" />
-  <RiemannianGaussianFactory-Tolerance value_float="1e-8"        />
-  <RiemannianGaussianFactory-MaximumIteration  value_int="100" />
-<!-- OT::WrappedNormal parameters -->
-  <WrappedNormal-MaxLatticeTerms value_int="100000" />
-
-  <!-- OT::MatrixFisher parameters -->
-  <MatrixFisher-OrthogonalityThreshold value_float="1e-12"        />
-  <MatrixFisher-MaximumIteration  value_int="50" />
-
-  <!-- OT::MatrixFisherFactory parameters -->
-  <MatrixFisherFactory-AbsolutePrecision value_float="1e-8"        />
+  <MatrixFisher-QuadratureOrder  value_int="50" />
 
   <!-- OT::RiemannianGaussian parameters -->
   <RiemannianGaussian-PositiveDefiniteThreshold value_float="1e-12" />
@@ -834,6 +811,9 @@
   <RiemannianGaussianFactory-StepSize value_float="0.1" />
   <RiemannianGaussianFactory-Tolerance value_float="1e-8"        />
   <RiemannianGaussianFactory-MaximumIteration  value_int="100" />
+
+  <!-- OT::WrappedNormal parameters -->
+  <WrappedNormal-MaxLatticeTerms value_int="100000" />
 
   <!-- OT::WrappedNormalFactory parameters -->
 
