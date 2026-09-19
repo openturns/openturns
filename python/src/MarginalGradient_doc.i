@@ -1,13 +1,13 @@
 
 %feature("docstring") OT::MarginalGradient
-"Gradient restricted to a subset of input variables.
+"Gradient restricted to a subset of output components.
 
 Parameters
 ----------
 gradient : ``Gradient``
     The gradient.
 indices : :class:`~openturns.Indices`
-    The indices of the input variables to keep."
+    The indices of the output components to keep."
 
 
 
@@ -27,5 +27,5 @@ gradient : ``Gradient``
 Returns
 -------
 indices : :class:`~openturns.Indices`
-    The indices of the input variables"
+    The indices of the selected output components"
 

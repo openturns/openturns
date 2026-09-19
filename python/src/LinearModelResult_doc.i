@@ -40,7 +40,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LinearModelResult-DecompositionMethod* (``String``, default: `QR`)
+- *LinearModelResult-DecompositionMethod* (``String``, default: `QR`): The method used to decompose the design matrix. Values are 'QR', 'SVD', 'Cholesky'.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -483,8 +483,8 @@ involvesModelSelection : bool
 
 Returns
 -------
-method : str
-    The name of the least squares method used"
+method : :class:`~openturns.LeastSquaresMethod`
+    The least squares method used"
 
 
 
@@ -493,6 +493,6 @@ method : str
 
 Parameters
 ----------
-method : str
-    The name of the least squares method to use"
+method : :class:`~openturns.LeastSquaresMethod`
+    The least squares method to use"
 

@@ -32,7 +32,7 @@ functions : list of :class:`~openturns.Function`
 
 
 %feature("docstring") OT::LinearCombinationEvaluation::setFunctionsCollectionAndCoefficients
-"Accessor to the collection of functions and coefficients.
+"Set the collection of functions and coefficients.
 
 Parameters
 ----------

@@ -4,7 +4,7 @@
 
 Parameters
 ----------
-trend : :class:`~openturns.Function`
+function : :class:`~openturns.Function`
     The trend function"
 
 
@@ -14,6 +14,6 @@ trend : :class:`~openturns.Function`
 
 Returns
 -------
-trend : :class:`~openturns.Function`
+function : :class:`~openturns.Function`
     The trend function"
 

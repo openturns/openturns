@@ -3,23 +3,6 @@ R"RAW(Welch estimator of the spectral model of a stationary process.
 
 Refer to :any:`estimate_spectral_density_function`.
 
-Parameters
-----------
-window : :class:`~openturns.FilteringWindows`
-    The filtering window model.
-
-    By default, the filtering window model is the Hann model.
-blockNumber : int
-    Number of blocks. 
-
-    By default, *blockNumber=1*.
-overlap : float, :math:`0 \leq overlap \leq 0.5`.
-    Overlap rate parameter of the segments of the time series.
-
-    By default, *overlap=0.5*.
-
-Notes
------
 Let :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (*n=1*).
 
 If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^n \rightarrow \Rset^n` is :math:`\cL^1(\Rset^n)` (ie :math:`\int_{\Rset^n} |C^{stat}_{i,j}(\vect{\tau})|\di{\vect{\tau}}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`. 
@@ -36,6 +19,20 @@ where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimens
 
 The Welch estimator is a non parametric estimator based on the segmentation of the time series into *blockNumber* segments  possibly overlapping (size of overlap *overlap*). The length of each segment is deduced.
 
+Parameters
+----------
+window : :class:`~openturns.FilteringWindows`
+    The filtering window model.
+
+    By default, the filtering window model is the Hann model.
+blockNumber : int
+    Number of blocks. 
+
+    By default, *blockNumber=1*.
+overlap : float, :math:`0 \leq overlap \leq 0.5`.
+    Overlap rate parameter of the segments of the time series.
+
+    By default, *overlap=0.5*.
 
 Examples
 --------
