@@ -35,14 +35,22 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
+ * Deprecated Field.getInputDimension/getOutputDimension in favor of getMesh().getDimension()/getDimension
+ * Added Graph.setXMin/setXMax/setYMin/setYMax
+ * Added ProcessSample.split
+ * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
 
 === Documentation ===
+ * Theory: add interpolation page
+ * LeastSquaresMethod: document weights, indices and notation
 
 === Python module ===
  * Add Process sample slicing operator
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
 
 === Miscellaneous ===
+ * Added sum and difference operators between fields
+ * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow (see #1489, #1596)
 
 
 == 1.27 release (2026-04-28) == #release-1.27

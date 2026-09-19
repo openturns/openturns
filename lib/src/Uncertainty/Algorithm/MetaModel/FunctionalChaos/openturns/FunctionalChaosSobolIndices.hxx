@@ -79,6 +79,9 @@ public:
   /** Part of variance accessor */
   Point getPartOfVariance(const UnsignedInteger marginalIndex = 0) const;
 
+  /** Draw the Sobol indices */
+  Graph draw(const UnsignedInteger marginalIndex = 0) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

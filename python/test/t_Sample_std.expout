@@ -27,8 +27,6 @@ selection(id)=     [ v0 ]
   <tr><th>1</th><td>11</td><td>21</td></tr>
   <tr><th>2</th><td>1000</td><td>2000</td></tr>
 </tbody></table>
-ok
-ok
 indices =  [3,2,0,1]
 indices =  [1,0,2,3]
 <table><thead>

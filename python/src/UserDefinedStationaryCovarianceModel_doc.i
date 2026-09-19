@@ -1,12 +1,19 @@
 %feature("docstring") OT::UserDefinedStationaryCovarianceModel
 R"RAW(Stationary covariance model defined by the User.
 
+Available constructors:
+    UserDefinedStationaryCovarianceModel(*mesh, covarianceCollection*)
+
+    UserDefinedStationaryCovarianceModel(*mesh, covariance*)
+
 Parameters
 ----------
 mesh : :class:`~openturns.RegularGrid`
     Time grid of size :math:`N` associated with the process. Negative vertices are ignored.
-sample : :class:`~openturns.SquareMatrixCollection`
+covarianceCollection : :class:`~openturns.SquareMatrixCollection`
     A collection of :math:`N` :class:`~openturns.SquareMatrix` objects with the same dimension.
+covariance : :class:`~openturns.SquareMatrix`
+    A single covariance matrix used at every vertex of the mesh.
 
 Notes
 -----
@@ -24,6 +31,10 @@ The class builds a stationary covariance function :math:`C^{stat}` as a piecewis
 
 
 where :math:`k` is such that :math:`t_k` is the vertex of :math:`\cM` closest to :math:`|\tau|`.
+
+When a single matrix is provided instead of the collection, the same
+matrix is used for all the vertices: :math:`\mat{C}_k = \mat{C}` for
+every :math:`k`.
 
 Examples
 --------

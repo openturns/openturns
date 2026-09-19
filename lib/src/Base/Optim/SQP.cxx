@@ -242,13 +242,31 @@ void SQP::run()
     }
 
     residualError = (currentPoint_ + currentLambda_ * currentGradient_).norm();
-
-    stop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
+    // The stopping rule is the union of two pairs of criteria, see #1841:
+    // both the absolute and the relative errors must be small, or both the
+    // residual and the constraint errors must be small.
+    const Bool convergenceAbsRel = (absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError());
+    const Bool convergenceResidualConstraint = (residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError());
+    stop = convergenceAbsRel || convergenceResidualConstraint;
 
     // update result
     result_.setCallsNumber(evaluationNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
+
+    if (stop)
+    {
+      result_.setStatus(OptimizationResult::SUCCESS);
+      std::ostringstream message;
+      message << "SQP converged: ";
+      if (convergenceAbsRel)
+        message << "absolute error=" << absoluteError << " and relative error=" << relativeError << " below their thresholds";
+      if (convergenceAbsRel && convergenceResidualConstraint)
+        message << "; ";
+      if (convergenceResidualConstraint)
+        message << "residual error=" << residualError << " and constraint error=" << constraintError << " below their thresholds";
+      result_.setStatusMessage(message.str());
+    }
 
     if (evaluationNumber > getMaximumCallsNumber())
     {
@@ -279,6 +297,12 @@ void SQP::run()
       result_.setStatus(OptimizationResult::TIMEOUT);
       result_.setStatusMessage(OSS() << "SQP optimization timeout after " << timeDuration << "s");
     }
+  }
+
+  if (!stop && (result_.getStatus() == OptimizationResult::SUCCESS))
+  {
+    result_.setStatus(OptimizationResult::FAILURE);
+    result_.setStatusMessage(OSS() << "SQP reached the maximum iteration number " << getMaximumIterationNumber() << " without meeting any stopping criterion");
   }
 
   if (result_.getStatus() != OptimizationResult::SUCCESS)

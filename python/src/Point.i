@@ -139,4 +139,34 @@ def _Point___iter__(self):
     for i in range(self.getSize()):
         yield self[i]
 Point.__iter__ = _Point___iter__
+
+
+def _Point___add__(self, other):
+    # The SWIG wrapper swallows the C++ dimension check into a generic
+    # "unsupported operand" TypeError, and CPython drops any TypeError raised
+    # by __add__ before trying __radd__ (hence the generic message). Raise a
+    # ValueError on dimension mismatch, as NumPy does for shape mismatches, so
+    # the informative message is preserved, see issue #2432.
+    if isinstance(other, Point) and other.getDimension() != self.getDimension():
+        raise ValueError(
+            "Points of different dimensions cannot be added "
+            "(LHS dimension = %d; RHS dimension = %d)"
+            % (self.getDimension(), other.getDimension())
+        )
+    return _typ.Point___add__(self, other)
+
+
+def _Point___sub__(self, other):
+    # same rationale as _Point___add__
+    if isinstance(other, Point) and other.getDimension() != self.getDimension():
+        raise ValueError(
+            "Points of different dimensions cannot be subtracted "
+            "(LHS dimension = %d; RHS dimension = %d)"
+            % (self.getDimension(), other.getDimension())
+        )
+    return _typ.Point___sub__(self, other)
+
+
+Point.__add__ = _Point___add__
+Point.__sub__ = _Point___sub__
 %}

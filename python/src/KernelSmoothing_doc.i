@@ -569,3 +569,29 @@ Parameters
 ----------
 binNumber : int
     The bin number."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::buildWeighted
+"Build a weighted kernel smoothing.
+
+The kernel density estimate is the mixture of the kernels centered on
+the sample points, weighted by the given weights normalized to sum to
+one. This allows one to perform non parametric importance sampling.
+
+If no bandwidth has already been set, it is computed from the
+*unweighted* sample with the usual rules: the weights do not influence
+the bandwidth selection.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    The sample to fit.
+weights : sequence of non-negative floats
+    The weight of each point of the sample. Zero weights are allowed,
+    the corresponding points do not contribute to the density.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The weighted kernel smoothing of the sample."

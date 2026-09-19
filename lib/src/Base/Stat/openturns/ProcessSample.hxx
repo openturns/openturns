@@ -76,6 +76,10 @@ public:
   void erase(const UnsignedInteger index);
   void erase(const UnsignedInteger first, const UnsignedInteger last);
 
+  /*! Erase the fields at the given indices, in-place. The indices can be
+   * given in any order but must be unique and less than the sample size. */
+  void erase(const Indices & indices);
+
   /** Clear data */
   void clear();
 
@@ -159,6 +163,10 @@ public:
 
   /** Get the marginal sample corresponding to indices dimensions */
   ProcessSample getMarginal(const Indices & indices) const;
+
+  /** Method split() truncates the process sample before the index passed as argument
+   *  and returns the remainder as a new process sample */
+  ProcessSample split(const UnsignedInteger index);
 
   /** Draw a marginal */
   Graph drawMarginal(const UnsignedInteger index = 0,

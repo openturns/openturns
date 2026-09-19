@@ -3703,3 +3703,30 @@ isParallel : bool
 %enddef
 %feature("docstring") OT::DistributionImplementation::isParallel
 OT_Distribution_isParallel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeLevelSetCollectionWithThreshold_doc
+R"RAW(Compute confidence domains with minimum volume for several levels.
+
+The sampling effort is shared between the requested probabilities: a
+single sample of the -log PDF is drawn and reused to compute all the
+thresholds.
+
+Parameters
+----------
+alpha : sequence of float, :math:`\alpha_i \in [0,1]`
+    The confidence levels.
+threshold : :class:`~openturns.Point`
+    The output thresholds :math:`p_{\alpha_i}` such that the level set
+    is :math:`\{\vect{x} \, | \, p(\vect{x}) \geq p_{\alpha_i}\}`.
+
+Returns
+-------
+levelSets : collection of :class:`~openturns.LevelSet`
+    The minimum volume domains of measure *alpha*.)RAW"
+%enddef
+%feature("docstring") OT::Distribution::computeMinimumVolumeLevelSetCollectionWithThreshold
+OT_Distribution_computeMinimumVolumeLevelSetCollectionWithThreshold_doc
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSetCollectionWithThreshold
+OT_Distribution_computeMinimumVolumeLevelSetCollectionWithThreshold_doc

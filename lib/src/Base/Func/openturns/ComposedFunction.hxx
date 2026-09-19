@@ -71,7 +71,18 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Left function accessor, ie the outer function of the composition */
+  Function getLeftFunction() const;
+  void setLeftFunction(const Function & left);
+
+  /** Right function accessor, ie the inner function of the composition */
+  Function getRightFunction() const;
+  void setRightFunction(const Function & right);
+
 private:
+
+  /** Rebuild the composition from the given left and right functions */
+  void rebuild(const Function & left, const Function & right);
 
   /** The f function in fog */
   Implementation p_leftFunction_;

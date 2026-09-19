@@ -381,6 +381,10 @@ public:
   virtual LevelSet computeMinimumVolumeLevelSet(const Scalar prob) const;
   virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
 
+  /** Collection version sharing the sampling effort between the probabilities */
+  virtual Collection<LevelSet> computeMinimumVolumeLevelSetCollectionWithThreshold(const Point & prob,
+      Point & thresholdOut) const;
+
 protected:
   virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
       Scalar & thresholdOut) const;

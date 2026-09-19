@@ -136,8 +136,8 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
 {
   const UnsignedInteger dimension = levelSet.getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
-  if (field.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the field is of input dimension=" << field.getInputDimension() << ", expected input dimension=" << dimension;
-  if (field.getOutputDimension() != 1) LOGWARN(OSS() << "The field output dimension=" << field.getOutputDimension() << " is different from 1. The function defining the level set will be evaluated over the vertices of the mesh to get the values.");
+  if (field.getMesh().getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the field is of mesh dimension=" << field.getMesh().getDimension() << ", expected input dimension=" << dimension;
+  if (field.getDimension() != 1) LOGWARN(OSS() << "The field output dimension=" << field.getDimension() << " is different from 1. The function defining the level set will be evaluated over the vertices of the mesh to get the values.");
   // Extract the mesh and vertices from the field
   const Mesh boundingMesh(field.getMesh());
   Sample boundingVertices(boundingMesh.getVertices());
@@ -147,7 +147,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   // Second, keep only the simplices with a majority of vertices in the level set
   const Function function(levelSet.getFunction());
   // Use field values directly if 1D output (precomputed), otherwise evaluate the level-set function
-  const Point values(field.getOutputDimension() == 1 ? field.getValues().asPoint() : function(boundingVertices).asPoint());
+  const Point values(field.getDimension() == 1 ? field.getValues().asPoint() : function(boundingVertices).asPoint());
   const Scalar level = levelSet.getLevel();
   const ComparisonOperator comparison(levelSet.getOperator());
   Indices goodSimplices(0);

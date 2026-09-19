@@ -121,7 +121,7 @@ Scalar & Field::at (const UnsignedInteger i,
                     const UnsignedInteger j)
 {
   if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(j <= getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
   copyOnWrite();
   return (*getImplementation())(i, j);
 }
@@ -130,7 +130,7 @@ const Scalar & Field::at (const UnsignedInteger i,
                           const UnsignedInteger j) const
 {
   if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(j <= getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getDimension() << ")";
   return (*getImplementation())(i, j);
 }
 
@@ -205,6 +205,12 @@ UnsignedInteger Field::getOutputDimension() const
   return getImplementation()->getOutputDimension();
 }
 
+/* Dimension accessor of the values */
+UnsignedInteger Field::getDimension() const
+{
+  return getImplementation()->getDimension();
+}
+
 Sample Field::getValues() const
 {
   return getImplementation()->getValues();
@@ -274,6 +280,38 @@ Field Field::operator + (const Sample & translation) const
 
 /* Difference operator between field and sample */
 Field Field::operator - (const Sample & translation) const
+{
+  Field field(getImplementation());
+  field -= translation;
+  return field;
+}
+
+/* In place sum operator between fields */
+Field & Field::operator += (const Field & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(*translation.getImplementation());
+  return *this;
+}
+
+/* In place difference operator between fields */
+Field & Field::operator -= (const Field & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(*translation.getImplementation());
+  return *this;
+}
+
+/* Sum operator between fields */
+Field Field::operator + (const Field & translation) const
+{
+  Field field(getImplementation());
+  field += translation;
+  return field;
+}
+
+/* Difference operator between fields */
+Field Field::operator - (const Field & translation) const
 {
   Field field(getImplementation());
   field -= translation;

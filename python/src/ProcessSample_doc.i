@@ -24,6 +24,8 @@ OT_ProcessSample_getTimeGrid_doc
 OT_ProcessSample_getDimension_doc
 %feature("docstring") OT::ProcessSample::getMarginal
 OT_ProcessSample_getMarginal_doc
+%feature("docstring") OT::ProcessSample::split
+OT_ProcessSample_split_doc
 %feature("docstring") OT::ProcessSample::drawMarginal
 OT_ProcessSample_drawMarginal_doc
 %feature("docstring") OT::ProcessSample::draw

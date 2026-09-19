@@ -76,9 +76,21 @@ ComposedFunction::ComposedFunction(const Function & left,
   : FunctionImplementation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()),
                            new NoGradient(),
                            new NoHessian())
-  , p_leftFunction_(left.getImplementation())
-  , p_rightFunction_(right.getImplementation())
 {
+  rebuild(left, right);
+}
+
+/* Rebuild the composition from the given left and right functions */
+void ComposedFunction::rebuild(const Function & left, const Function & right)
+{
+  p_leftFunction_ = left.getImplementation();
+  p_rightFunction_ = right.getImplementation();
+  setEvaluation(new ComposedEvaluation(left.getEvaluation(), right.getEvaluation()));
+  // Reset the differentiation state before attempting to build the derivatives
+  // so that a failed construction cannot keep implementations from the previous
+  // composition
+  setGradient(new NoGradient());
+  setHessian(new NoHessian());
   try
   {
     setGradient(new ComposedGradient(left.getGradient(), right.getEvaluation(), right.getGradient()));
@@ -199,4 +211,29 @@ void ComposedFunction::load(Advocate & adv)
   p_rightFunction_ = functionValue.getImplementation();
 }
 
+/* Left function accessor */
+Function ComposedFunction::getLeftFunction() const
+{
+  return Function(p_leftFunction_);
+}
+
+/* Right function accessor */
+Function ComposedFunction::getRightFunction() const
+{
+  return Function(p_rightFunction_);
+}
+
+/* Set the left function, ie the outer function of the composition */
+void ComposedFunction::setLeftFunction(const Function & left)
+{
+  rebuild(left, getRightFunction());
+}
+
+/* Set the right function, ie the inner function of the composition */
+void ComposedFunction::setRightFunction(const Function & right)
+{
+  rebuild(getLeftFunction(), right);
+}
+
 END_NAMESPACE_OPENTURNS
+
