@@ -1,27 +1,6 @@
 %feature("docstring") OT::SpectralGaussianProcess
 R"RAW(Spectral Gaussian process.
 
-Available constructors:
-    SpectralGaussianProcess(*spectralModel, timeGrid*)
-
-    SpectralGaussianProcess(*spectralModel, maxFreq, N*)
-
-Parameters
-----------
-
-timeGrid : :class:`~openturns.RegularGrid`
-    The time grid associated to the process.
-    The algorithm is only implemented when the mesh is a regular grid.
-spectralModel : :class:`~openturns.SpectralModel`
-maxFreq : float
-    Equal to the maximal frequency minus :math:`\Delta f`.
-N : float
-    The number of points in the frequency grid, which is equal to the number of
-    time stamps of the time grid.
-
-Notes
------
-
 - In the first usage, we fix the time grid and the second order model (spectral
   density model) which implements the process. The frequency discretization is
   deduced from the time discretization by the formulas
@@ -42,6 +21,32 @@ computes :math:`N` hermitian matrices of size :math:`d \times \ d`, where
 :math:`d` is the dimension of the spectral model. These matrices are factorized
 and stored in order to be used for each call of the *getRealization* method.
 
+Available constructors:
+    SpectralGaussianProcess(*spectralModel, timeGrid*)
+
+    SpectralGaussianProcess(*spectralModel, maxFreq, N*)
+
+Parameters
+----------
+
+timeGrid : :class:`~openturns.RegularGrid`
+    The time grid associated to the process.
+    The algorithm is only implemented when the mesh is a regular grid.
+spectralModel : :class:`~openturns.SpectralModel`
+maxFreq : float
+    Equal to the maximal frequency minus :math:`\Delta f`.
+N : float
+    The number of points in the frequency grid, which is equal to the number of
+    time stamps of the time grid.
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SpectralGaussianProcess-CholeskyCacheSize* (``UnsignedInteger``, default: `16384`)
+- *SpectralGaussianProcess-MaximalScaling* (``Scalar``, default: `1e-05`)
+- *SpectralGaussianProcess-StartingScaling* (``Scalar``, default: `1e-13`)
+
 Examples
 --------
 Create a *SpectralGaussianProcess* from a spectral model and a time grid:
@@ -54,7 +59,6 @@ Create a *SpectralGaussianProcess* from a spectral model and a time grid:
 >>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)
 >>> mySpectralModel = ot.CauchyModel(scale, amplitude, spatialCorrelation)
 >>> mySpectNormProc1 = ot.SpectralGaussianProcess(mySpectralModel, myTimeGrid)
-
 )RAW"
 // ---------------------------------------------------------------------
 
@@ -131,3 +135,18 @@ Returns
 specMod : :class:`~openturns.SpectralModel`
     The spectral model defining the process.
 "
+
+
+%feature("docstring") OT::SpectralGaussianProcess::AdaptGrid
+"Adapt the frequency grid.
+
+Parameters
+----------
+grid : :class:`~openturns.RegularGrid`
+    The frequency grid to adapt.
+
+Returns
+-------
+grid : :class:`~openturns.RegularGrid`
+    The adapted frequency grid"
+

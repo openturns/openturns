@@ -1,6 +1,12 @@
 %feature("docstring") OT::Collection
 "Collection.
 
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Collection-size-visible-in-str-from* (``UnsignedInteger``, default: `10`)
+
 Examples
 --------
 >>> import openturns as ot

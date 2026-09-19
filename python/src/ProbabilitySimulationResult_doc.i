@@ -1,10 +1,15 @@
 %define OT_SimulationResult_doc
 "Probability simulation result.
 
-Notes
------
 Structure created by the method run() of a :class:`~openturns.EventSimulation`,
 and obtained thanks to the method getResult().
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *ProbabilitySimulationResult-CheckPositiveVariance* (``Bool``, default: `false`)
+- *ProbabilitySimulationResult-DefaultConfidenceLevel* (``Scalar``, default: `0.95`)
 
 Examples
 --------
@@ -46,7 +51,8 @@ R"RAW(Accessor to the block size.
 Parameters
 ----------
 blockSize : int, :math:`blockSize \geq 0`
-    Number of terms in the probability simulation estimator grouped together.)RAW"
+    Number of terms in the probability simulation estimator grouped together.
+)RAW"
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::setBlockSize
 OT_SimulationResult_setBlockSize_doc
@@ -272,3 +278,4 @@ getImportanceFactors"
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::drawImportanceFactors
 OT_SimulationResult_drawImportanceFactors_doc
+

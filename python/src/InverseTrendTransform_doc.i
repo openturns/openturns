@@ -1,14 +1,6 @@
 %feature("docstring") OT::InverseTrendTransform
 R"RAW(Inverse Trend transformation.
 
-Parameters
-----------
-myInverseTrendFunc : :class:`~openturns.Function`
-    The  inverse trend function :math:`f_{trend}^{-1}`.
-
-
-Notes
------
 A multivariate stochastic  process :math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` may write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* as follows:
 
 .. math::
@@ -23,6 +15,12 @@ We note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values of one field of t
     \vect{x}^{stat}_i = \vect{x}_i - f_{trend}(\vect{t}_i)
 
 The inverse trend transformation enables to get the :math:`X_{stat}` process or to get the :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})` field.
+
+
+Parameters
+----------
+myInverseTrendFunc : :class:`~openturns.Function`
+    The  inverse trend function :math:`f_{trend}^{-1}`.
 
 
 Examples
@@ -46,3 +44,13 @@ myTrendTransform : :class:`~openturns.TrendTransform`
     The :math:`f_{trend}` function.
 
 "
+
+
+%feature("docstring") OT::InverseTrendTransform::getTrendFunction
+"Accessor to the trend function.
+
+Returns
+-------
+trend : :class:`~openturns.Function`
+    The trend function"
+

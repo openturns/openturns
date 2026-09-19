@@ -35,6 +35,12 @@ residualsVariance : float
 See Also
 --------
 LinearModelAlgorithm
+
+Notes
+-----
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *LinearModelResult-DecompositionMethod* (``String``, default: `QR`): The method used to decompose the design matrix. Values are 'QR', 'SVD', 'Cholesky'.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -470,3 +476,23 @@ Parameters
 ----------
 involvesModelSelection : bool
     True if the method involves a model selection method."
+
+
+%feature("docstring") OT::LinearModelResult::getLeastSquaresMethod
+"Accessor to the least squares method.
+
+Returns
+-------
+method : :class:`~openturns.LeastSquaresMethod`
+    The least squares method used"
+
+
+
+%feature("docstring") OT::LinearModelResult::setLeastSquaresMethod
+"Accessor to the least squares method.
+
+Parameters
+----------
+method : :class:`~openturns.LeastSquaresMethod`
+    The least squares method to use"
+

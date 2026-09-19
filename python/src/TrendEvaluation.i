@@ -8,4 +8,5 @@ OTAutodoc(TrendEvaluation)
 
 %copyctor OT::TrendEvaluation;
 
+%include TrendEvaluation_doc.i
 %include openturns/TrendEvaluation.hxx

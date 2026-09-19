@@ -1,2 +1,40 @@
 %feature("docstring") OT::LinearGradient
-"Linear numerical math gradient implementation."
+"Linear numerical math gradient implementation.
+
+Parameters
+----------
+center : :class:`~openturns.Point`
+    The center point.
+constant : :class:`~openturns.Matrix`
+    The constant term of the gradient.
+linear : :class:`~openturns.SymmetricTensor`
+    The linear coefficients of the gradient."
+
+%feature("docstring") OT::LinearGradient::getCenter
+"Accessor to the center point.
+
+Returns
+-------
+center : :class:`~openturns.Point`
+    The center point"
+
+
+
+%feature("docstring") OT::LinearGradient::getConstant
+"Accessor to the constant term.
+
+Returns
+-------
+constant : :class:`~openturns.Matrix`
+    The constant term of the gradient"
+
+
+
+%feature("docstring") OT::LinearGradient::getLinear
+"Accessor to the linear coefficients.
+
+Returns
+-------
+linear : :class:`~openturns.SymmetricTensor`
+    The linear coefficients of the gradient"
+
