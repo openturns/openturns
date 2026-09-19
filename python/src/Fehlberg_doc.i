@@ -115,6 +115,11 @@ For :math:`p=2` we have:
 For :math:`p>2` the coefficients can be found eg in the C++ source code. For
 additional theory on these methods see [stoer1993]_, chapter 7. 
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *Fehlberg-InitialStep* (`Scalar`, default: `1e-07`)
+- *Fehlberg-MinimalStep* (`Scalar`, default: `1e-07`)
+
 See also
 --------
 ODESolver

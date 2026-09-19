@@ -46,7 +46,10 @@ here is how the derived class is selected:
   :class:`~openturns.BoundingVolumeHierarchy` algorithm is chosen, otherwise
   it is :class:`~openturns.NaiveEnclosingSimplex`.
 
-By default, the algorithm is :class:`~openturns.BoundingVolumeHierarchy`.
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon* (`Scalar`, default: `1e-12`)
+- *EnclosingSimplexAlgorithm-LargeDimension* (`UnsignedInteger`, default: `5`)
 
 See also
 --------
@@ -63,6 +66,14 @@ Examples
 >>> mesh = mesher.build(interval)
 >>> locator = ot.EnclosingSimplexAlgorithm(mesh.getVertices(), mesh.getSimplices())
 >>> simplex = locator.query([0.1, 0.2])"
+
+
+
+
+
+
+
+
 %enddef
 
 %feature("docstring") OT::EnclosingSimplexAlgorithmImplementation

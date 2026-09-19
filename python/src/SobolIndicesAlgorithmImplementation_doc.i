@@ -42,7 +42,7 @@ Corresponding confidence intervals are provided by the methods
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
 Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
 The default confidence level is stored in the :class:`~openturns.ResourceMap`
-and can be accessed with the `SobolIndicesAlgorithm-DefaultConfidenceLevel` key.
+and can be accessed with the `SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel` key.
 
 Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
 For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
@@ -141,6 +141,11 @@ then the interaction Sobol' index can be computed from the equation:
 .. math::
     S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
 
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- *SobolIndicesAlgorithm-DefaultBlockSize* (`UnsignedInteger`, default: `1`)
+- *SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel* (`Scalar`, default: `0.95`)
+
 Parameters
 ----------
 marginalIndex : int, optional
@@ -149,7 +154,9 @@ marginalIndex : int, optional
 Returns
 -------
 indices : :class:`~openturns.SymmetricMatrix`
-    Tensor containing second order Sobol indices.)RAW"
+    Tensor containing second order Sobol indices.
+
+)RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getSecondOrderIndices
 OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
