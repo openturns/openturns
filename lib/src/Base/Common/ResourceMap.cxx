@@ -1424,6 +1424,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
   // UniformOverMesh parameters //
+  addAsScalar("UniformOverMesh-OnManifoldEpsilon", 1.0e-10);
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber", 262144);
 
@@ -1445,6 +1446,33 @@ void ResourceMap::loadDefaultConfiguration()
 
   // KentFactory parameters //
   addAsScalar("KentFactory-AbsolutePrecision", 1.0e-8);
+
+  // Bingham parameters //
+  addAsScalar("Bingham-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("Bingham-MaximumIteration", 50);
+
+  // MatrixFisher parameters //
+  addAsScalar("MatrixFisher-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("MatrixFisher-QuadratureOrder", 50);
+
+  // RiemannianGaussian parameters //
+  addAsScalar("RiemannianGaussian-PositiveDefiniteThreshold", 1.0e-12);
+  addAsScalar("RiemannianGaussian-LogJacobianTaylorThreshold", 1.0e-3);
+
+  // RiemannianGaussianFactory parameters //
+  addAsScalar("RiemannianGaussianFactory-StepSize", 0.1);
+  addAsScalar("RiemannianGaussianFactory-Tolerance", 1.0e-8);
+  addAsUnsignedInteger("RiemannianGaussianFactory-MaximumIteration", 100);
+
+  // WrappedNormal parameters //
+  addAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100000);
+
+  // WrappedNormalFactory parameters //
+  addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
+
+  // UniformOverMeshFactory parameters //
+  addAsUnsignedInteger("UniformOverMeshFactory-NearestNeighbors", 12);
+  addAsScalar("UniformOverMeshFactory-MinimumAreaFactor", 1.0e-3);
 
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);

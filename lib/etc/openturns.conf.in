@@ -772,6 +772,7 @@
   <FiniteDiscreteDistribution-SmallSize value_int="10000" />
   
   <!-- OT::UniformOverMesh parameters -->
+  <UniformOverMesh-OnManifoldEpsilon value_float="1e-10" />
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
@@ -793,6 +794,34 @@
   <VonMisesFisherFactory-RelativePrecision value_float="1e-12"        />
   <VonMisesFisherFactory-ResidualPrecision value_float="1e-12"        />
   <VonMisesFisherFactory-MaximumIteration  value_int="10" />
+  
+  <!-- OT::Bingham parameters -->
+  <Bingham-OrthogonalityThreshold value_float="1e-12"        />
+  <Bingham-MaximumIteration  value_int="50" />
+
+  <!-- OT::MatrixFisher parameters -->
+  <MatrixFisher-OrthogonalityThreshold value_float="1e-12"        />
+  <MatrixFisher-QuadratureOrder  value_int="50" />
+
+  <!-- OT::RiemannianGaussian parameters -->
+  <RiemannianGaussian-PositiveDefiniteThreshold value_float="1e-12" />
+  <RiemannianGaussian-LogJacobianTaylorThreshold value_float="1e-3" />
+
+  <!-- OT::RiemannianGaussianFactory parameters -->
+  <RiemannianGaussianFactory-StepSize value_float="0.1" />
+  <RiemannianGaussianFactory-Tolerance value_float="1e-8"        />
+  <RiemannianGaussianFactory-MaximumIteration  value_int="100" />
+
+  <!-- OT::WrappedNormal parameters -->
+  <WrappedNormal-MaxLatticeTerms value_int="100000" />
+
+  <!-- OT::WrappedNormalFactory parameters -->
+
+  <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
+
+  <UniformOverMeshFactory-NearestNeighbors  value_int="12" />
+
+  <UniformOverMeshFactory-MinimumAreaFactor value_float="1e-3" />
   
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
