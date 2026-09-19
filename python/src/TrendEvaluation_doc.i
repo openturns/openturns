@@ -4,10 +4,8 @@
 
 Parameters
 ----------
-func : :class:`~openturns.Function`
-    The trend function.
-mesh : :class:`~openturns.Mesh`
-    The mesh."
+function : :class:`~openturns.Function`
+    The trend function."
 
 
 
@@ -16,6 +14,6 @@ mesh : :class:`~openturns.Mesh`
 
 Returns
 -------
-func : :class:`~openturns.Function`
+function : :class:`~openturns.Function`
     The trend function"
 

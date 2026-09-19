@@ -1,20 +1,6 @@
 %feature("docstring") OT::DatabaseEvaluation
 R"RAW(Data based math evaluation implementation.
 
-Parameters
-----------
-inputSample : 2-d sequence of float
-    Sample :math:`\cS^{in}` of size :math:`l` and dimension :math:`n`.
-outputSample : 2-d sequence of float
-    Sample :math:`\cS^{out}` of size :math:`l` and dimension :math:`p`.
-
-See also
---------
-Function, AggregatedEvaluation, DualLinearCombinationEvaluation,
-LinearFunction
-
-Notes
------
 It returns a :class:`~openturns.Function` that implements a 
 nearest-neighbor function :math:`f : \Rset^n \rightarrow \Rset^p` based on the 
 input sample :math:`S^{in}` and taking values in the outputSample :math:`S^{out}`:
@@ -26,6 +12,18 @@ where:
 
 .. math::
     i^* = \underset{ \vect{x}_i \in S^{in} }{ \argmin_{i \in \{1, \ldots, l\}} } \|\vect{x} - \vect{x}_i \|
+
+Parameters
+----------
+inputSample : 2-d sequence of float
+    Sample :math:`\cS^{in}` of size :math:`l` and dimension :math:`n`.
+outputSample : 2-d sequence of float
+    Sample :math:`\cS^{out}` of size :math:`l` and dimension :math:`p`.
+
+See also
+--------
+Function, AggregatedEvaluation, DualLinearCombinationEvaluation,
+LinearFunction
 )RAW"
 
 // ---------------------------------------------------------------------

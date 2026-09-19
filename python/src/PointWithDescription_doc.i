@@ -64,3 +64,5 @@ description : sequence of str
 
 Returns
 -------
+description : :class:`~openturns.Description`
+    Description of the components."

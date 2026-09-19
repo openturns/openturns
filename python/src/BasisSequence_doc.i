@@ -8,12 +8,12 @@ basis : a :class:`~openturns.Basis`
 
 
 %feature("docstring") OT::BasisSequence::add
-"Add a basis element.
+"Add basis elements.
 
 Parameters
 ----------
-index : int
-    Index of the basis element to add"
+indices : :class:`~openturns.Indices`
+    Indices of the basis elements to add"
 
 
 

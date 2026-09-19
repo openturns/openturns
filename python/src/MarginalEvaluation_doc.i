@@ -1,13 +1,13 @@
 
 %feature("docstring") OT::MarginalEvaluation
-"Evaluation restricted to a subset of input variables.
+"Evaluation restricted to a subset of output components.
 
 Parameters
 ----------
 evaluation : ``Evaluation``
     The evaluation.
 indices : :class:`~openturns.Indices`
-    The indices of the input variables to keep."
+    The indices of the output components to keep."
 
 
 
@@ -27,5 +27,5 @@ evaluation : ``Evaluation``
 Returns
 -------
 indices : :class:`~openturns.Indices`
-    The indices of the input variables"
+    The indices of the selected output components"
 
