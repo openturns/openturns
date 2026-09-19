@@ -71,6 +71,25 @@ public:
                         const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"),
                         const String & methodName = ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
 
+  /** Constructor with active functions */
+  LeastSquaresExpansion(const Sample & inputSample,
+                        const Point & weights,
+                        const Sample & outputSample,
+                        const Distribution & distribution,
+                        const OrthogonalBasis & basis,
+                        const UnsignedInteger basisSize,
+                        const Indices & activeFunctions,
+                        const String & methodName = ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
+
+  /** Constructor with active functions */
+  LeastSquaresExpansion(const Sample & inputSample,
+                        const Sample & outputSample,
+                        const Distribution & distribution,
+                        const OrthogonalBasis & basis,
+                        const UnsignedInteger basisSize,
+                        const Indices & activeFunctions,
+                        const String & methodName = ResourceMap::GetAsString("LeastSquaresExpansion-DecompositionMethod"));
+
   /** Virtual constructor */
   LeastSquaresExpansion * clone() const override;
 

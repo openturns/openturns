@@ -168,6 +168,16 @@ outputSample : :class:`~openturns.ProcessSample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
+"Sets the independent output component block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Independent output component block indices."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::run
 "Compute the response surfaces.
 

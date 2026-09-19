@@ -518,6 +518,43 @@ for doe in doeList:
         rtol = 1.0e-2
         atol = 1.0e-2
         ott.assert_almost_equal(err, 0.0, rtol, atol)
+    # Check the constructors with activeFunctions
+    for methodName in ["SVD", "QR", "Cholesky"]:
+        activeFunctions = condensedIndices
+        algo = ot.LeastSquaresExpansion(
+            inputSample,
+            weights,
+            outputSample,
+            distribution,
+            productBasis,
+            basisSize,
+            activeFunctions,
+            methodName,
+        )
+        algo.run()
+        assert algo.getActiveFunctions() == activeFunctions
+        result = algo.getResult()
+        coeffs = result.getCoefficients().asPoint()
+        ref = expectedCoefficientsCondensed[: coeffs.getSize()]
+        err = (coeffs - ref).norm()
+        ott.assert_almost_equal(err, 0.0, 1.0e-3, 1.0e-3)
+        if wMin == wMax:
+            algo = ot.LeastSquaresExpansion(
+                inputSample,
+                outputSample,
+                distribution,
+                productBasis,
+                basisSize,
+                activeFunctions,
+                methodName,
+            )
+            algo.run()
+            assert algo.getActiveFunctions() == activeFunctions
+            result = algo.getResult()
+            coeffs = result.getCoefficients().asPoint()
+            ref = expectedCoefficientsCondensed[: coeffs.getSize()]
+            err = (coeffs - ref).norm()
+            ott.assert_almost_equal(err, 0.0, 1.0e-3, 1.0e-3)
 
 # Check the setActiveFunctions method
 size = 10

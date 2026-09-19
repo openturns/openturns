@@ -296,8 +296,6 @@ hessian    :
 | d^2(y) / d(x2)d(x1) = (-4*(sin(x1))) 
 |    d^2(y) / d(x2)^2 = 0"
 %enddef
-%feature("docstring") OT::FunctionImplementation::getImplementation
-OT_Function_getImplementation_doc
 
 // ---------------------------------------------------------------------
 

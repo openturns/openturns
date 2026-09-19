@@ -1009,7 +1009,7 @@ Examples
 Parameters
 ----------
 description : sequence of str
-    Description of the sample's components.
+    Description of the sample components.
 
 See Also
 --------
@@ -1344,3 +1344,4 @@ Examples
 0 : [ 0 2 2 ]
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"
+
