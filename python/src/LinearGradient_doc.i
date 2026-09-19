@@ -25,7 +25,7 @@ center : :class:`~openturns.Point`
 
 Returns
 -------
-constant : :class:`~openturns.Point`
+constant : :class:`~openturns.Matrix`
     The constant term of the gradient"
 
 
@@ -35,6 +35,6 @@ constant : :class:`~openturns.Point`
 
 Returns
 -------
-linear : :class:`~openturns.Matrix`
+linear : :class:`~openturns.SymmetricTensor`
     The linear coefficients of the gradient"
 

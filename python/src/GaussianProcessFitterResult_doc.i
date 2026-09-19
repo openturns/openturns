@@ -3,6 +3,29 @@ R"RAW(Gaussian process fitter result.
 
 Refer to :any:`gaussian_process_regression`.
 
+The structure is usually created by the method :py:meth:`~openturns.GaussianProcessFitter.run` of the class
+:class:`~openturns.GaussianProcessFitter` and obtained with its method
+:py:meth:`~openturns.GaussianProcessFitter.getResult()`.
+
+Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+
+This class creates the metamodel
+:math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
+function:
+
+.. math::
+    :label: metaModelGPF
+
+    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
+       \end{array}
+     \right)
+
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
+
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample`
@@ -27,31 +50,6 @@ linAlgMethod : int
     - ot.GaussianProcessFitterResult.LAPACK or 0: using `LAPACK` to fit the model,
 
     - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model.
-
-Notes
------
-The structure is usually created by the method :py:meth:`~openturns.GaussianProcessFitter.run` of the class
-:class:`~openturns.GaussianProcessFitter` and obtained with its method
-:py:meth:`~openturns.GaussianProcessFitter.getResult()`.
-
-Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
-
-This class creates the metamodel
-:math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
-function:
-
-.. math::
-    :label: metaModelGPF
-
-    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
-
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
 Examples
 --------
@@ -293,10 +291,12 @@ The standardized output vector is defined as :math:`\mat{L}_{\vect{p}^*}^{-1}(\v
 
 
 %feature("docstring") OT::GaussianProcessFitterResult::setCholeskyFactor
-"Cholesky factor accessor.
+"Set the Cholesky factor of the covariance matrix.
 
 Parameters
 ----------
-choleskyFactor : :class:`~openturns.TriangularMatrix`
-    The Cholesky factor of the covariance matrix"
+covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
+    The Cholesky factor of the covariance matrix.
+covarianceHMatrix : :class:`~openturns.HMatrix`
+    The HMAT Cholesky factor of the covariance matrix."
 

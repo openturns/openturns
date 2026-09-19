@@ -4,10 +4,8 @@
 
 Parameters
 ----------
-gradient : ``Gradient``
-    The gradient.
-inputPositions : :class:`~openturns.Indices`
-    The positions of the parameters in the input vector."
+evaluation : :class:`~openturns.ParametricEvaluation`
+    The parametric evaluation."
 
 
 

@@ -4,10 +4,8 @@
 
 Parameters
 ----------
-hessian : ``Hessian``
-    The hessian.
-inputPositions : :class:`~openturns.Indices`
-    The positions of the parameters in the input vector."
+evaluation : :class:`~openturns.ParametricEvaluation`
+    The parametric evaluation."
 
 
 

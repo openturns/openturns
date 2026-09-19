@@ -181,3 +181,5 @@ Examples
 --------
 >>> import openturns as ot
 >>> indices = ot.Indices([3, 5, 7, 9])
+>>> print(indices.norm1())
+24"

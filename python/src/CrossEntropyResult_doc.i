@@ -68,4 +68,3 @@ Parameters
 auxiliaryDistribution : :class:`~openturns.Distribution`
     Auxiliary distribution at the final Cross Entropy algorithm step."    
 
-

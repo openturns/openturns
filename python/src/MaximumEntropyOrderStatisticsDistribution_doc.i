@@ -123,3 +123,27 @@ coll : sequence of :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::useApproximation
+"Set whether the approximation is used.
+
+Parameters
+----------
+flag : bool
+    Whether the approximation is used. Default value is ``True``."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::getApproximation
+"Accessor to the approximation.
+
+Parameters
+----------
+k : int, optional
+    Index of the marginal. Default value is 0.
+
+Returns
+-------
+approximation : :class:`~openturns.Distribution`
+    The approximation of the distribution."
+
+// ---------------------------------------------------------------------

@@ -7,7 +7,7 @@ Parameters
 evaluation : ``Evaluation``
     The evaluation.
 inputPositions : :class:`~openturns.Indices`
-    The positions of the parameters in the input vector.
+    The positions of the input variables that remain free.
 parameters : :class:`~openturns.Point`
     The parameter values."
 
@@ -29,7 +29,7 @@ evaluation : ``Evaluation``
 Returns
 -------
 positions : :class:`~openturns.Indices`
-    The positions of the parameters in the input vector"
+    The positions of the free input variables"
 
 
 

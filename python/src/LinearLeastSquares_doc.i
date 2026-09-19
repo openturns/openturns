@@ -1,15 +1,6 @@
 %feature("docstring") OT::LinearLeastSquares
 R"RAW(First order polynomial response surface by least squares.
 
-Parameters
-----------
-dataIn : 2-d sequence of float
-    Input data.
-dataOut : 2-d sequence of float
-    Output data.
-
-Notes
------
 A least squares surrogate model provides an approximation of the model which is valid over its whole domain of definition.
 
 Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model.
@@ -50,6 +41,13 @@ and to get information on the estimation of
 the matrix :math:`\mat{L} \in \cM_{\inputDim, \outputDim}`,
 the center vector :math:`\vect{b}\in \Rset^\inputDim` and
 the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
+
+Parameters
+----------
+dataIn : 2-d sequence of float
+    Input data.
+dataOut : 2-d sequence of float
+    Output data.
 
 See also
 --------

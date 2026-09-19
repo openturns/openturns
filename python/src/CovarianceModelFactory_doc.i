@@ -10,14 +10,14 @@ OT_CovarianceModelFactory_doc
 Available usages:
     build(*sample*)
 
-    build(*sample, center*)
+    build(*timeSeries*)
 
 Parameters
 ----------
-sample : :class:`~openturns.Sample`
+sample : :class:`~openturns.ProcessSample`
     The sample of a stochastic process.
-center : :class:`~openturns.Point`
-    The center of the process.
+timeSeries : :class:`~openturns.Field`
+    The time series.
 
 Returns
 -------
