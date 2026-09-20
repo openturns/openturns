@@ -7,9 +7,9 @@ The range is :math:`[\min(data), \max(data)]`.
 
 See the :meth:`~openturns.HistogramFactory.computeBandwidth` method for the bandwidth selection. 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *HistogramFactory-MaximumBinNumber* (`UnsignedInteger`, default: `1024`): maximum number of bins of the
+- ``HistogramFactory-MaximumBinNumber`` (``UnsignedInteger``, default: ``1024``): maximum number of bins of the
   computed histogram, i.e. the maximal number of bins after merging.
 
 Examples
@@ -72,7 +72,7 @@ DistributionFactory, Histogram
 "Estimate the distribution as native distribution.
 
 If the sample is constant, the range of the histogram would be zero. 
-In this case, the range is set to be a factor of the `Distribution-DefaultCDFEpsilon` 
+In this case, the range is set to be a factor of the ``Distribution-DefaultCDFEpsilon``
 key of the :class:`~openturns.ResourceMap`. 
 
 **Available usages**:
@@ -161,7 +161,7 @@ In this case, the AMISE is :math:`O(n^{-2/3})`.
 
 
 If the bandwidth is computed as zero (for example, if the sample is constant), 
-then the `Distribution-DefaultQuantileEpsilon` key 
+then the ``Distribution-DefaultQuantileEpsilon`` key 
 of the :class:`~openturns.ResourceMap` is used instead. 
 
 Parameters

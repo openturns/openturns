@@ -26,8 +26,7 @@ Returns
 maximumDistance : positive float
     Distance from the center of the standard space until which we research an
     intersection with the limit state function along each direction. By
-    default, the maximum distance is equal to the value defined through the key
-    RootStrategy-DefaultMaximumDistance of the
+    default, the maximum distance is equal to the value defined through the key ``RootStrategy-DefaultMaximumDistance`` (``Scalar``, default: ``8.0``) of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::getMaximumDistance
@@ -43,8 +42,7 @@ Parameters
 maximumDistance : positive float
     Distance from the center of the standard space until which we research an
     intersection with the limit state function along each direction. By
-    default, the maximum distance is equal to the value defined through the key
-    RootStrategy-DefaultMaximumDistance of the
+    default, the maximum distance is equal to the value defined through the key ``RootStrategy-DefaultMaximumDistance`` (``Scalar``, default: ``8.0``) of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::setMaximumDistance
@@ -111,8 +109,7 @@ Returns
 -------
 stepSize : float
     Length of each segment inside which the root research is performed. By
-    default, the step size is equal to the value defined through the key
-    RootStrategy-DefaultStepSize of the
+    default, the step size is equal to the value defined through the key ``RootStrategy-DefaultStepSize`` (``Scalar``, default: ``1.0``) of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::getStepSize
@@ -127,8 +124,7 @@ Parameters
 ----------
 stepSize : float
     Length of each segment inside which the root research is performed. By
-    default, the step size is equal to the value defined through the key
-    RootStrategy-DefaultStepSize of the
+    default, the step size is equal to the value defined through the key ``RootStrategy-DefaultStepSize`` (``Scalar``, default: ``1.0``) of the
     :class:`~openturns.ResourceMap`."
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::setStepSize

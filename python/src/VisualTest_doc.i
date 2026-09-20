@@ -97,7 +97,7 @@ n_points : int, optional
     The number of points that is used for interpolating the empirical CDF of
     the two samples (with possibly different sizes).
 
-    It will default to *Distribution-DefaultPointNumber* from
+    It will default to ``Distribution-DefaultPointNumber`` from
     the :class:`~openturns.ResourceMap`.
 
 Returns
@@ -176,7 +176,7 @@ n_points : int, optional
     The number of points that is used for interpolating the empirical CDF of
     the two samples (with possibly different sizes).
 
-    It will default to *Distribution-DefaultPointNumber* from
+    It will default to ``Distribution-DefaultPointNumber`` from
     the :class:`~openturns.ResourceMap`.
 
 Returns
@@ -537,7 +537,7 @@ graph : :class:`~openturns.GridLayout`
 
 Notes
 -----
-The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
+The point style is given by the ``Drawable-DefaultPointStyle`` key in the :class:`~openturns.ResourceMap`.
 The color is given by the first individual color in the default palette.
 
 Examples
@@ -575,7 +575,7 @@ Notes
 This method allows one to draw the relationships between the margins of two samples.
 This consists of a collection of 2-d projections of the marginals of sampleY (in lines)
 with respect to the marginals of sampleX (in columns).
-The point style is given by the 'Drawable-DefaultPointStyle' key in the :class:`~openturns.ResourceMap`.
+The point style is given by the ``Drawable-DefaultPointStyle`` key in the :class:`~openturns.ResourceMap`.
 The color is given by the first individual color in the default palette.
 
 Examples

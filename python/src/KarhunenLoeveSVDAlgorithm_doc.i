@@ -114,19 +114,11 @@ computed has to be fixed a priori.
 The following keys of :class:`~openturns.ResourceMap` allow one to select and tune
 these algorithms:
 
-- 'KarhunenLoeveSVDAlgorithm-UseRandomSVD' which triggers the use of a random
-  algorithm. By default, it is set to *False* and LAPACK is used.
-- 'KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank' which fixes the number of
-  singular values to compute. By default it is set to 1000.	
-- 'KarhunenLoeveSVDAlgorithm-RandomSVDVariant' which can be equal to either
-  'Halko2010' for [halko2010]_ (the default) or 'Halko2011' for [halko2011]_.
-  These two algorithms have very similar structures, the first one being based
-  on a random compression of both the rows and columns of :math:`\mat{Y}`, the
-  second one being based on an iterative compressed sampling of the columns of
-  :math:`\mat{Y}`.
-- 'KarhunenLoeveSVDAlgorithm-Halko2011Margin' and
-  'KarhunenLoeveSVDAlgorithm-Halko2011Iterations' to fix the parameters of the
-  'halko2011' variant. See [halko2011]_ for the details.
+- ``KarhunenLoeveSVDAlgorithm-UseRandomSVD`` (``Bool``, default: ``false``): whether a randomized algorithm is used instead of LAPACK for the singular value decomposition,
+- ``KarhunenLoeveSVDAlgorithm-RandomSVDMaximumRank`` (``UnsignedInteger``, default: ``1000``): the number of singular values to compute,
+- ``KarhunenLoeveSVDAlgorithm-RandomSVDVariant`` (``String``, default: ``Halko2010``): the variant of the randomized algorithm, ``Halko2010`` for [halko2010]_ or ``Halko2011`` for [halko2011]_. These two algorithms have very similar structures, the first one being based on a random compression of both the rows and columns of :math:`\mat{Y}`, the second one being based on an iterative compressed sampling of the columns of :math:`\mat{Y}`,
+- ``KarhunenLoeveSVDAlgorithm-Halko2011Margin`` (``UnsignedInteger``, default: ``2``): margin parameter of the ``Halko2011`` variant, see [halko2011]_ for the details,
+- ``KarhunenLoeveSVDAlgorithm-Halko2011Iterations`` (``UnsignedInteger``, default: ``2``): iteration parameter of the ``Halko2011`` variant, see [halko2011]_ for the details.
 
       
 Examples

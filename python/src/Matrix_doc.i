@@ -14,6 +14,18 @@ values : sequence of float with size :math:`n_r \times n_c`, optional
     reshaping the flat list of values.
     Default creates a zero matrix.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Matrix-size-visible-in-str-from`` (``UnsignedInteger``, default: ``5``): matrix entries are printed from this size onwards instead of the whole matrix in ``__str__``,
+- ``Matrix-DefaultSmallPivot`` (``Scalar``, default: ``1e-07``): lower bound of the ``rcond`` parameter of the LAPACK ``DGELSY`` routine used in :meth:`solveLinearSystem`,
+- ``Matrix-SymmetryThreshold`` (``Scalar``, default: ``1e-12``): threshold below which the symmetric part of a close-to-symmetric matrix is used,
+- ``Matrix-LargestEigenValueIterations`` (``UnsignedInteger``, default: ``50``): maximum number of iterations of the power method used to estimate the largest eigenvalue,
+- ``Matrix-LargestEigenValueRelativeError`` (``Scalar``, default: ``1e-04``): relative error of the power method used to estimate the largest eigenvalue,
+- ``Matrix-StartingScaling`` (``Scalar``, default: ``1e-13``): starting scaling value of the scaling algorithm,
+- ``Matrix-MaximalScaling`` (``Scalar``, default: ``1e-05``): maximal scaling value of the scaling algorithm.
+
 Examples
 --------
 Create a matrix
@@ -279,8 +291,8 @@ matrix if it has some properties that could simplify the resolution (see
 :class:`~openturns.TriangularMatrix`, :class:`~openturns.SquareMatrix`).
 
 This uses LAPACK's `DGELSY <http://www.netlib.org/lapack/lapack-3.1.1/html/dgelsy.f.html>`_.
-The `RCOND` parameter of this routine can be changed through the `Matrix-DefaultSmallPivot`
-key of the :class:`~openturns.ResourceMap`.
+The `RCOND` parameter of this routine can be changed through the
+``Matrix-DefaultSmallPivot`` (``Scalar``, default: ``1e-07``) key of the :class:`~openturns.ResourceMap`.
 
 Examples
 --------

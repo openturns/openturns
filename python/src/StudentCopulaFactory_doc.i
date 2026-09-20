@@ -7,18 +7,17 @@ It consists in inferring the correlation matrix and then estimating the
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` entries can be used to tweak
-the optimization step:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- `StudentCopulaFactory-MaximumAbsoluteError`
-- `StudentCopulaFactory-MaximumConstraintError`
-- `StudentCopulaFactory-MaximumObjectiveError`
-- `StudentCopulaFactory-MaximumRelativeError`
-- `StudentCopulaFactory-MaximumCallsNumber`
-- `StudentCopulaFactory-NuMin`
-- `StudentCopulaFactory-NuMax`
-- `StudentCopulaFactory-NuStart`
-- `StudentCopulaFactory-DefaultOptimizationAlgorithm`
+- ``StudentCopulaFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1e-10``): absolute error of the optimization,
+- ``StudentCopulaFactory-MaximumConstraintError`` (``Scalar``, default: ``1e-10``): constraint error of the optimization,
+- ``StudentCopulaFactory-MaximumObjectiveError`` (``Scalar``, default: ``1e-10``): objective error of the optimization,
+- ``StudentCopulaFactory-MaximumRelativeError`` (``Scalar``, default: ``1e-10``): relative error of the optimization,
+- ``StudentCopulaFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function,
+- ``StudentCopulaFactory-NuMin`` (``Scalar``, default: ``2.0``): lower bound of the :math:`\nu` parameter,
+- ``StudentCopulaFactory-NuMax`` (``Scalar``, default: ``1e2``): upper bound of the :math:`\nu` parameter,
+- ``StudentCopulaFactory-NuStart`` (``Scalar``, default: ``5.0``): starting value of the :math:`\nu` parameter,
+- ``StudentCopulaFactory-DefaultOptimizationAlgorithm`` (``String``, default: ``Cobyla``): name of the optimization algorithm used, among the ones recognized by :class:`~openturns.OptimizationAlgorithm`.
 
 See also
 --------

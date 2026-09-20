@@ -91,13 +91,13 @@ where :math:`m` is half the number of points of the time grid of the process sam
 
 The *BIC* criterion leads to a model that gives a better prediction. The *AIC* criterion selects the best model that fits the given data. The :math:`AIC_c` criterion improves the previous one by penalizing a too high order that would artificially fit to the data.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *WhittleFactory-DefaultMaximumCallsNumber* (`UnsignedInteger`, default: `2000`)
-- *WhittleFactory-DefaultRhoBeg* (`Scalar`, default: `0.1`)
-- *WhittleFactory-DefaultRhoEnd* (`Scalar`, default: `1e-10`)
-- *WhittleFactory-DefaultStartingPointScale* (`Scalar`, default: `1`)
-- *WhittleFactory-RootEpsilon* (`Scalar`, default: `1e-06`)
+- ``WhittleFactory-DefaultMaximumCallsNumber`` (``UnsignedInteger``, default: ``2000``): maximum number of calls of the objective function of the optimization solver.
+- ``WhittleFactory-DefaultRhoBeg`` (``Scalar``, default: ``0.1``): initial value of the radius :math:`\rho` of the trust region of the Cobyla solver.
+- ``WhittleFactory-DefaultRhoEnd`` (``Scalar``, default: ``1e-10``): final value of the radius :math:`\rho` of the trust region of the Cobyla solver.
+- ``WhittleFactory-DefaultStartingPointScale`` (``Scalar``, default: ``1``): scaling factor applied to the starting point of the optimization.
+- ``WhittleFactory-RootEpsilon`` (``Scalar``, default: ``1e-06``): tolerance used to find the roots of the characteristic polynomial.
 
 Examples
 --------

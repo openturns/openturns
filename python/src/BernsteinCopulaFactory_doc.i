@@ -9,20 +9,14 @@ Using the class :class:`~openturns.BernsteinCopulaFactory` guarantees to get a
 :class:`~openturns.EmpiricalBernsteinCopula` which is a copula and not only a core,
 i.e a multivariate distribution whose range is included in :math:`[0,1]^d` (see the documentation of the class to get more details).
 
-The keys of :class:`~openturns.ResourceMap` related to the class are:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- the keys `BernsteinCopulaFactory-MinM` and `BernsteinCopulaFactory-MaxM` that define the range of :math:`m`
-  in the optimization
-  problems computing the optimal bin number according to a specified criterion,
-- the key `BernsteinCopulaFactory-BinNumberSelectionMethod` (default: 'LogLikelihood') that defines the criterion
-  to compute the optimal bin number when it is not specified. The possible choices are 'AMISE', 'LogLikelihood',
-  'PenalizedCsiszarDivergence';
-- the key `BernsteinCopulaFactory-kFraction` (default: 2) that defines the fraction of the sample used for the
-  validation in the method :meth:`ComputeLogLikelihoodBinNumber`,
-- the key `BernsteinCopulaFactory-SamplingSize` (default: 10000) that defines the :math:`N` parameter used in the
-  method :meth:`ComputePenalizedCsiszarDivergenceBinNumber`,
-- the key `BernsteinCopulaFactory-alpha` (default: 1.0) that defines the weight of the penalization term in the
-  method :meth:`ComputePenalizedCsiszarDivergenceBinNumber`.
+- ``BernsteinCopulaFactory-MinM`` (``UnsignedInteger``, default: ``2``): the lower bound of the range of :math:`m` in the optimization problems computing the optimal bin number according to a specified criterion,
+- ``BernsteinCopulaFactory-MaxM`` (``UnsignedInteger``, default: ``1``): the upper bound of the range of :math:`m` in the optimization problems computing the optimal bin number according to a specified criterion,
+- ``BernsteinCopulaFactory-BinNumberSelectionMethod`` (``String``, default: ``LogLikelihood``): the criterion used to compute the optimal bin number when it is not specified. The possible choices are ``AMISE``, ``LogLikelihood`` and ``PenalizedCsiszarDivergence``,
+- ``BernsteinCopulaFactory-kFraction`` (``UnsignedInteger``, default: ``2``): the number of parts of the sample used for the validation in the method :meth:`ComputeLogLikelihoodBinNumber`,
+- ``BernsteinCopulaFactory-SamplingSize`` (``UnsignedInteger``, default: ``10000``): the :math:`N` parameter used in the method :meth:`ComputePenalizedCsiszarDivergenceBinNumber`,
+- ``BernsteinCopulaFactory-alpha`` (``Scalar``, default: ``1.0``): the weight of the penalization term in the method :meth:`ComputePenalizedCsiszarDivergenceBinNumber`.
 
 See also
 --------
@@ -204,7 +198,7 @@ where :math:`c_M^{\cE}` is the density function of the :class:`~openturns.Empiri
 Monte Carlo estimate of the Csiszar :math:`f` divergence, :math:`\rho_S(c^{\cE}_{M})` the exact Spearman correlation of the empirical
 Bernstein copula :math:`c^{\cE}_{M}` and :math:`\rho_S({\cE}_{M})` the empirical Spearman correlation of the sample :math:`{\cE}_{M}`.
 
-The parameter :math:`N` is controlled by the *BernsteinCopulaFactory-SamplingSize* key in :class:`~openturns.ResourceMap`.
+The parameter :math:`N` is controlled by the ``BernsteinCopulaFactory-SamplingSize`` key in :class:`~openturns.ResourceMap`.
 
 Note that this optimal :math:`m` does not necessarily divide the sample size :math:`\sampleSize`.
 )RAW"

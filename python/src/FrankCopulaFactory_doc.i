@@ -17,13 +17,13 @@ where :math:`D` is the Debye function defined as
 
     \displaystyle D(x, n)=\frac{n}{x^n}\int_0^x \frac{t^n}{e^t-1_{\strut}} dt
 
-This class uses the following entries of :class:`~openturns.ResourceMap`. All the keys drive the precision
+The following :class:`~openturns.ResourceMap` keys are used. All the keys drive the precision
 of the optimization solver involved in the estimation:
 
-- *FrankCopulaFactory-AbsolutePrecision* (`Scalar`, default: `1e-14`)
-- *FrankCopulaFactory-MaximumIteration* (`UnsignedInteger`, default: `100`)
-- *FrankCopulaFactory-RelativePrecision* (`Scalar`, default: `1e-14`)
-- *FrankCopulaFactory-ResidualPrecision* (`Scalar`, default: `1e-14`)
+- ``FrankCopulaFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-14``): absolute precision of the solver.
+- ``FrankCopulaFactory-MaximumIteration`` (``UnsignedInteger``, default: ``100``): maximum number of iterations of the solver.
+- ``FrankCopulaFactory-RelativePrecision`` (``Scalar``, default: ``1e-14``): relative precision of the solver.
+- ``FrankCopulaFactory-ResidualPrecision`` (``Scalar``, default: ``1e-14``): residual precision of the solver.
 
 See also
 --------

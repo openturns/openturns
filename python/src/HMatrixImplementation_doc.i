@@ -190,8 +190,8 @@ Notes
 The factorization embeds an automatic regularization procedure based
 on an approximation of the largest eigenvalue module. Its computation
 is done using a power iteration, controlled by the
-'HMatrix-LargestEigenValueRelativeError' and
-'HMatrix-LargestEigenValueIterations' keys in the :class:`~openturns.ResourceMap`.
+``HMatrix-LargestEigenValueRelativeError`` and
+``HMatrix-LargestEigenValueIterations`` keys in the :class:`~openturns.ResourceMap`.
 "
 %enddef
 %feature("docstring") OT::HMatrixImplementation::factorize

@@ -52,13 +52,13 @@ sample : 2-d sequence of float
 
 Notes
 -----
-If :math:`\inputDim = 1` and the `KernelMixture-EnableInterpolation` ResourceMap key is set to `True` (it is `False` by default),
+If :math:`\inputDim = 1` and the ``KernelMixture-EnableInterpolation`` ResourceMap key is set to ``True`` (it is ``False`` by default),
 then the PDF and CDF of the kernel mixture are interpolated with :class:`PiecewiseHermiteEvaluation`.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *KernelMixture-EnableInterpolation* (`Bool`, default: `false`)
-- *KernelMixture-PDFCDFDiscretization* (`UnsignedInteger`, default: `1000`)
+- ``KernelMixture-EnableInterpolation`` (``Bool``, default: ``false``): whether the PDF and the CDF are interpolated (only in the dimension :math:`\inputDim=1` case).
+- ``KernelMixture-PDFCDFDiscretization`` (``UnsignedInteger``, default: ``1000``): number of points of the discretization used by the interpolation.
 
 Examples
 --------

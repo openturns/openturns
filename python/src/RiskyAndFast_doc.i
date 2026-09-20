@@ -10,8 +10,7 @@ solver : :class:`~openturns.Solver`
 maximumDistance : positive float
     Distance from the center of the standard space until which we research an
     intersection with the limit state function along each direction. By
-    default, the maximum distance is equal to the value defined through the key
-    RootStrategy-DefaultMaximumDistance of the
+    default, the maximum distance is equal to the value defined through the key ``RootStrategy-DefaultMaximumDistance`` (``Scalar``, default: ``8.0``) of the
     :class:`~openturns.ResourceMap`.
 
 See also

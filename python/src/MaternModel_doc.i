@@ -43,10 +43,10 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = \dfrac{ 2^{1-\nu} }{\Gamma(\nu) } \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right)^{\nu} \mathrm{K}_{\nu} \left(\sqrt{2 \nu} \left\| \vect{s}- \vect{t}  \right\|_2\right), \quad \forall (\vect{s}, \vect{t}) \in \cD \times \cD
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *MaternModel-DefaultNu* (`Scalar`, default: `1.5`)
-- *MaternModel-DefaultTheta* (`Scalar`, default: `1`)
+- ``MaternModel-DefaultNu`` (``Scalar``, default: ``1.5``): default value of the regularity parameter :math:`\nu`.
+- ``MaternModel-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}`.
 
 See Also
 --------

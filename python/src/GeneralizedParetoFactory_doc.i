@@ -7,17 +7,16 @@ DistributionFactory, GeneralizedPareto
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` entries can be used to tweak
-the parameters of the optimization solver involved in the different estimators:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- `GeneralizedParetoFactory-DefaultOptimizationAlgorithm`
-- `GeneralizedParetoFactory-MaximumCallsNumber`
-- `GeneralizedParetoFactory-MaximumAbsoluteError`
-- `GeneralizedParetoFactory-MaximumRelativeError`
-- `GeneralizedParetoFactory-MaximumObjectiveError`
-- `GeneralizedParetoFactory-MaximumConstraintError`
-- `GeneralizedParetoFactory-InitializationMethod`
-- `GeneralizedParetoFactory-NormalizationMethod`
+- ``GeneralizedParetoFactory-DefaultOptimizationAlgorithm`` (``String``, default: ``Cobyla``): name of the optimization algorithm used, among the ones recognized by :class:`~openturns.OptimizationAlgorithm`,
+- ``GeneralizedParetoFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function,
+- ``GeneralizedParetoFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1e-10``): absolute error of the optimization,
+- ``GeneralizedParetoFactory-MaximumRelativeError`` (``Scalar``, default: ``1e-10``): relative error of the optimization,
+- ``GeneralizedParetoFactory-MaximumObjectiveError`` (``Scalar``, default: ``1e-10``): objective error of the optimization,
+- ``GeneralizedParetoFactory-MaximumConstraintError`` (``Scalar``, default: ``1e-10``): constraint error of the optimization,
+- ``GeneralizedParetoFactory-InitializationMethod`` (``String``, default: ``Generic``): initialization method for the optimization. Possible values are ``Static`` and ``Generic``,
+- ``GeneralizedParetoFactory-NormalizationMethod`` (``String``, default: ``MinMax``): normalization method for the optimization. Possible values are ``MinMax``, ``CenterReduce`` and ``None``.
 "
 
 // ---------------------------------------------------------------------
@@ -72,17 +71,13 @@ Notes
 In the first usage, the default :class:`~openturns.GeneralizedPareto` distribution is built.
 
 In the second usage, the chosen algorithm depends on the size of the sample compared
-to the :class:`~openturns.ResourceMap` key `GeneralizedParetoFactory-SmallSize`
+to the :class:`~openturns.ResourceMap` key ``GeneralizedParetoFactory-SmallSize``
 (see [matthys2003]_ for the theory):
 
-- If the sample size is less or equal to `GeneralizedParetoFactory-SmallSize` from :class:`~openturns.ResourceMap`, then the method of probability weighted moments is used. If it fails, the method of exponential regression is used.
+- If the sample size is less or equal to ``GeneralizedParetoFactory-SmallSize`` from :class:`~openturns.ResourceMap`, then the method of probability weighted moments is used. If it fails, the method of exponential regression is used.
 - Otherwise, the first method tried is the method of exponential regression, then the method of probability weighted moments if the first one fails.
 
 In the third usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built.
-
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *GeneralizedParetoFactory-MaximumCallsNumber* (`UnsignedInteger`, default: `1000`)
 )RAW"
 // ---------------------------------------------------------------------
 
@@ -276,9 +271,9 @@ The mean and the variance of :math:`M_n(u)` are respectively estimated by :math:
 The graph :math:`u \mapsto m_n(u)` is termed the *mean residual life plot*.
 
 The confidence level can be set using the :class:`~openturns.ResourceMap` key
-`GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel`
+``GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel`` (``Scalar``, default: ``0.95``).
 The number of threshold points in the graph can be set with the key
-`GeneralizedParetoFactory-MeanResidualLifePointNumber`.
+``GeneralizedParetoFactory-MeanResidualLifePointNumber`` (``UnsignedInteger``, default: ``100``).
 )RAW"
 
 // ----------------------------------------------------------------------------
@@ -490,9 +485,9 @@ The selected threshold is the lowest value of :math:`u` from which the estimates
 near-constant.
 
 The confidence level can be set using the :class:`~openturns.ResourceMap` key
-`GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel`
+``GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel`` (``Scalar``, default: ``0.95``).
 The number of threshold points in the graph can be set with the key
-`GeneralizedParetoFactory-ThresholdStabilityPointNumber`.
+``GeneralizedParetoFactory-ThresholdStabilityPointNumber`` (``UnsignedInteger``, default: ``100``).
 )RAW"
 
 // ----------------------------------------------------------------------------
@@ -535,12 +530,12 @@ initializationMethod : str, optional
     The initialization method for the optimization problem: *Generic* or *Static*.
 
     By default, the method *Generic* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedParetoFactory-InitializationMethod*).
+    ``GeneralizedParetoFactory-InitializationMethod``).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
     By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedParetoFactory-NormalizationMethod*).
+    ``GeneralizedParetoFactory-NormalizationMethod``).
 
 Returns
 -------
@@ -705,12 +700,12 @@ initializationMethod : str, optional
     The initialization method for the optimization problem: *Generic* or *Static*.
 
     By default, the method *Generic* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedParetoFactory-InitializationMethod*).
+    ``GeneralizedParetoFactory-InitializationMethod``).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
     By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedParetoFactory-NormalizationMethod*).
+    ``GeneralizedParetoFactory-NormalizationMethod``).
 
 Returns
 -------
