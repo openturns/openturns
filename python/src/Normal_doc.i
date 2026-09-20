@@ -62,12 +62,12 @@ Notes
 -----
 In the first usage, a scalar centered and unit-variance normal distribution is built.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *Normal-MarginalIntegrationNodesNumber* (`UnsignedInteger`, default: `16`)
-- *Normal-MaximumNumberOfPoints* (`UnsignedInteger`, default: `10000000`)
-- *Normal-MinimumCDFEpsilon* (`Scalar`, default: `0.05`)
-- *Normal-MinimumNumberOfPoints* (`UnsignedInteger`, default: `100000`)
+- ``Normal-MarginalIntegrationNodesNumber`` (``UnsignedInteger``, default: ``16``): number of points of the numerical integration used to compute the CDF in each direction.
+- ``Normal-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``): maximum number of points of the grid used to compute the CDF.
+- ``Normal-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``): relative precision of the Monte Carlo estimation of the CDF.
+- ``Normal-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``): minimum number of points of the grid used to compute the CDF.
 
 Examples
 --------
@@ -136,10 +136,10 @@ The algorithm depends on the dimension:
 - any dim, independent copula: product of the marginal CDFs;
 - dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pNormal2D`);
 - dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pNormal3D`);
-- dim 4-*Normal-SmallDimension* (default 6): tensor-product Gauss-Kronrod
+- dim 4-``Normal-SmallDimension`` (default 6): tensor-product Gauss-Kronrod
   quadrature on :math:`N^k` nodes;
-- dim > *Normal-SmallDimension*: quasi-Monte Carlo Genz algorithm with
-  *Genz-DefaultSampleSize* Sobol' realizations.
+- dim > ``Normal-SmallDimension``: quasi-Monte Carlo Genz algorithm with ``Genz-DefaultSampleSize``
+  Sobol' realizations.
 
 )RAW"
 
@@ -168,7 +168,7 @@ The algorithm depends on the dimension:
 - any dim, independent copula: product of the marginal probabilities;
 - dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pNormal2D`);
 - dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pNormal3D`);
-- dim >= 4: quasi-Monte Carlo Genz algorithm with *Genz-DefaultSampleSize*
+- dim >= 4: quasi-Monte Carlo Genz algorithm with ``Genz-DefaultSampleSize``
   Sobol' realizations.
 
 )RAW"

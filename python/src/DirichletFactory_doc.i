@@ -6,11 +6,11 @@ Notes
 The estimation is done by maximizing the likelihood of the sample,
 using the algorithm described in [minka2012]_.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *DirichletFactory-MaximumIteration* (`UnsignedInteger`, default: `10`): maximum number of iterations
+- ``DirichletFactory-MaximumIteration`` (``UnsignedInteger``, default: ``10``): maximum number of iterations
   of the fixed point algorithm used by the likelihood maximization,
-- *DirichletFactory-ParametersEpsilon* (`Scalar`, default: `1e-12`): tolerance used as a stopping criterion
+- ``DirichletFactory-ParametersEpsilon`` (``Scalar``, default: ``1e-12``): tolerance used as a stopping criterion
   of the fixed point algorithm and as a lower bound for the estimated parameters.
 
 See also

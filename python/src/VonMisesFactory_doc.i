@@ -32,13 +32,13 @@ If *circular=False*, the estimators read:
 
 Note that the last equation has no solution if the right-hand side is not positive.
 
-In both cases, the resolution of this equation defininig :math:`\Hat{\kappa}_n` can be tuned through
-`VonMisesFactory-RelativePrecision`, `VonMisesFactory-ResidualPrecision`,
-`VonMisesFactory-MaximumIteration` in :class:`~openturns.ResourceMap`
+In both cases, the resolution of this equation defininig :math:`\Hat{\kappa}_n` can be tuned
+through the following :class:`~openturns.ResourceMap` keys:
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *VonMisesFactory-AbsolutePrecision* (`Scalar`, default: `1e-12`)
+- ``VonMisesFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``): absolute precision of the solver,
+- ``VonMisesFactory-RelativePrecision`` (``Scalar``, default: ``1e-12``): relative precision of the solver,
+- ``VonMisesFactory-ResidualPrecision`` (``Scalar``, default: ``1e-12``): residual precision of the solver,
+- ``VonMisesFactory-MaximumIteration`` (``UnsignedInteger``, default: ``10``): maximum number of iterations of the solver.
 
 See also
 --------

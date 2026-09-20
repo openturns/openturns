@@ -64,21 +64,21 @@ The associated basis is built as the tensorization of the univariate polynomials
 orthonormal to the standard representative of the input marginals distribution (if not specified, the input 
 distribution is fitted on the input sample).
 The basis which is associated to the enumerate function is chosen according to
-the `FunctionalChaosAlgorithm-QNorm` parameter of the :class:`~openturns.ResourceMap`:
+the ``FunctionalChaosAlgorithm-QNorm`` parameter of the :class:`~openturns.ResourceMap`:
 
 - If this parameter is equal to 1, then the :class:`~openturns.LinearEnumerateFunction` class is used.
 - Otherwise, the :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` class is used.
 
 The first elements of the basis are used to build the approximation space. By default, the number of elements is
-defined by the keys `FunctionalChaosAlgorithm-BasisSize` and  `FunctionalChaosAlgorithm-MaximumTotalDegree`:
+defined by the keys ``FunctionalChaosAlgorithm-BasisSize`` and ``FunctionalChaosAlgorithm-MaximumTotalDegree``:
 
 - is the BasisSize is 0, then the number is computed from the total degree (using the enumerate function of the basis);
 - is the BasisSize is less than the input sample size, this value is used;
 - is the BasisSize is greater than the input sample size, the number is the input sample size.
 
-If the `FunctionalChaosAlgorithm-BasisSize` key of the :class:`~openturns.ResourceMap` is nonzero,
+If the ``FunctionalChaosAlgorithm-BasisSize`` key of the :class:`~openturns.ResourceMap` is nonzero,
 then this parameter sets the basis size.
-Otherwise, the `FunctionalChaosAlgorithm-MaximumTotalDegree` key of the
+Otherwise, the ``FunctionalChaosAlgorithm-MaximumTotalDegree`` key of the
 :class:`~openturns.ResourceMap` is used to compute the basis size using the `getBasisSizeFromTotalDegree`
 method of the orthogonal basis (with a maximum of :math:`n` terms due to the sample size).
 Finally, the :class:`~openturns.FixedStrategy` class is used.
@@ -86,17 +86,17 @@ Finally, the :class:`~openturns.FixedStrategy` class is used.
 **Default settings for the projection strategy**
 
 When the *projectionStrategy* is unspecified, the 
-`FunctionalChaosAlgorithm-Sparse` key of the :class:`~openturns.ResourceMap` is used.
+``FunctionalChaosAlgorithm-Sparse`` key of the :class:`~openturns.ResourceMap` is used.
 If it is false, then the :class:`~openturns.LeastSquaresStrategy` class is
 used, which produces a full PCE, without model selection.
 Otherwise, a :class:`~openturns.LARS` PCE is created, i.e.
 a sparse PCE is computed using model selection.
-In this case, the `FunctionalChaosAlgorithm-FittingAlgorithm`
+In this case, the ``FunctionalChaosAlgorithm-FittingAlgorithm``
 key of the :class:`~openturns.ResourceMap` is used.
 
-- If this key is equal to 'CorrectedLeaveOneOut', then the
+- If this key is equal to ``CorrectedLeaveOneOut``, then the
   :class:`~openturns.CorrectedLeaveOneOut` criteria is used.
-- If this key is equal to 'KFold', then the
+- If this key is equal to ``KFold``, then the
   :class:`~openturns.KFold` criteria is used.
 - Otherwise, an exception is produced.
 

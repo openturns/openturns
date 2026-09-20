@@ -50,9 +50,9 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = 1_{\{\vect{s}=\vect{t}\}}
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *DiracCovarianceModel-CheckUnique* (`Bool`, default: `true`): whether to check if the discretization
+- ``DiracCovarianceModel-CheckUnique`` (``Bool``, default: ``true``): whether to check if the discretization
   mesh has repeated vertices, in which case the generic discretization algorithm is used instead of the
   optimized diagonal one.
 

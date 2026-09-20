@@ -15,10 +15,10 @@ n : int
 indices : sequence of int
     Marginal indices, must be strictly increasing.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *MarginalUniformOrderStatistics-LargeCaseCDF* (`UnsignedInteger`, default: `1000`)
-- *MarginalUniformOrderStatistics-MaximumCallsNumber* (`UnsignedInteger`, default: `1000000`)
+- ``MarginalUniformOrderStatistics-LargeCaseCDF`` (``UnsignedInteger``, default: ``1000``): if the number of variables is larger than this threshold, the CDF is computed by numerical integration instead of the exact formula.
+- ``MarginalUniformOrderStatistics-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000000``): maximum number of calls of the numerical integration used to compute the CDF.
 
 See also
 --------

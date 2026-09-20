@@ -34,7 +34,7 @@ and total order indices can be estimated
 thanks to the :meth:`getFirstOrderIndicesDistribution` and
 :meth:`getTotalOrderIndicesDistribution` methods.
 This is done either through bootstrapping or using an asymptotic estimator.
-The :class:`~openturns.ResourceMap` key `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`
+The :class:`~openturns.ResourceMap` key ``SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution``
 stores a boolean that decides the default behavior,
 but it can be overridden by the method :meth:`setUseAsymptoticDistribution`.
 
@@ -42,7 +42,7 @@ Corresponding confidence intervals are provided by the methods
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
 Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
 The default confidence level is stored in the :class:`~openturns.ResourceMap`
-and can be accessed with the `SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel` key.
+and can be accessed with the ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` key.
 
 Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
 For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
@@ -383,7 +383,7 @@ OT_SobolIndicesAlgorithm_getUseAsymptoticDistribution_doc
 %define OT_SobolIndicesAlgorithm_setUseAsymptoticDistribution_doc
 "Select asymptotic or bootstrap confidence intervals.
 
-Default value is set by the `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution` key.
+Default value is set by the ``SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`` key.
 
 Parameters
 ----------

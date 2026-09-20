@@ -113,9 +113,9 @@ When the constructor from a :class:`~openturns.Gumbel`:math:`(\beta, \gamma)` di
        \xi & = & 0.0
     \end{eqnarray*}
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *GeneralizedExtremeValue-XiThreshold* (`Scalar`, default: `1e-06`)
+- ``GeneralizedExtremeValue-XiThreshold`` (``Scalar``, default: ``1e-06``): threshold on the shape parameter :math:`\xi` used to select the type of the extreme value distribution (WeibullMax, Gumbel or Frechet).
 
 Examples
 --------
@@ -310,4 +310,4 @@ graph : :class:`~openturns.Graph`
 Notes
 -----
 The return level plot bounds are defined by the :class:`~openturns.ResourceMap`
-entries `GeneralizedExtremeValue-MMin` and `GeneralizedExtremeValue-MMax`"
+entries ``GeneralizedExtremeValue-MMin`` and ``GeneralizedExtremeValue-MMax``"

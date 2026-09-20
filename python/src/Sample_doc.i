@@ -116,7 +116,7 @@ file_name : str
     Path to CSV file.
 separator : str, optional
     Separating string.
-    Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
+    Default uses ``Sample-CSVFileSeparator`` from the :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -179,7 +179,7 @@ This method allows for more permissive file formatting than :py:meth:`ImportFrom
 - Comment lines or empty ones are allowed
 - Lines can be skipped from the start of the file
 
-The comment marker is defined by the `Sample-CommentMarker` entry from :class:`~openturns.ResourceMap`.
+The comment marker is defined by the ``Sample-CommentMarker`` entry from :class:`~openturns.ResourceMap`.
 
 See Also
 --------
@@ -401,7 +401,7 @@ by David Simcha based on the paper by [knight1966]_. It actually switches
 between two implementations depending on the sample size:
 
     - The most basic implementation performing in :math:`O(m^2)` is used when
-      the sample size is less than `Sample-SmallKendallTau`
+      the sample size is less than ``Sample-SmallKendallTau``
       from the :class:`~openturns.ResourceMap`.
     - The other more complex implementation performing in :math:`O(m\log(m))`
       is used for larger samples.
@@ -829,13 +829,13 @@ file_name : str
     Path to CSV file.
 separator : str, optional
     Separating string.
-    Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
+    Default uses ``Sample-CSVFileSeparator`` from the :class:`~openturns.ResourceMap`.
 decimalSeparator : str, optional
     Decimal separator.
     Default is dot.
 precision : int, optional
     Numerical precision
-    Default takes `Sample-CSVPrecision` entry from :class:`~openturns.ResourceMap`.
+    Default takes ``Sample-CSVPrecision`` entry from :class:`~openturns.ResourceMap`.
 format : str, optional
     Floating-point formatting, one of:
 
@@ -843,7 +843,7 @@ format : str, optional
     - fixed: constant number of digits
     - defaultfloat: variable number of digits
 
-    Default takes `Sample-CSVFormat` entry from :class:`~openturns.ResourceMap`.
+    Default takes ``Sample-CSVFormat`` entry from :class:`~openturns.ResourceMap`.
 
 Notes
 -----

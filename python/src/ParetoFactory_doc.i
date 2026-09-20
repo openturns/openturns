@@ -192,9 +192,9 @@ The starting point of the optimization algorithm is:
 
     \gamma_0 = x_{(1,\sampleSize)} - \frac{|x_{(1,\sampleSize)}|}{2 + \sampleSize}.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *ParetoFactory-AlphaUpperBound* (`Scalar`, default: `1000`)
+- ``ParetoFactory-AlphaUpperBound`` (``Scalar``, default: ``1000``): upper bound of the shape parameter :math:`\alpha` in the maximum likelihood estimation.
 
 See also
 --------

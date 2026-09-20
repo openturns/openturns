@@ -22,16 +22,16 @@ sampleX, sampleY : two 2-d sequences of float of dimension 1
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *Contour-DefaultLevelsNumber*: default number of contour levels,
-- *Contour-DefaultIsFilled*: whether contour plots are filled by default,
-- *Contour-DefaultDrawLabels*: whether to draw labels on contour lines,
-- *Contour-DefaultColorMapNorm*: default color map normalization,
-- *Contour-DefaultColorMap*: default color map name,
-- *Contour-DefaultColorBarPosition*: default color bar position,
-- *Contour-DefaultExtend*: default extend mode for color bar,
-- *Contour-DefaultAlpha*: default transparency for contour plots.
+- ``Contour-DefaultLevelsNumber`` (``UnsignedInteger``, default: ``10``): default number of contour levels,
+- ``Contour-DefaultIsFilled`` (``Bool``, default: ``false``): whether contour plots are filled by default,
+- ``Contour-DefaultDrawLabels`` (``Bool``, default: ``true``): whether to draw labels on contour lines,
+- ``Contour-DefaultColorMapNorm`` (``String``, default: ``linear``): default color map normalization. The possible values are the ones returned by ``Drawable.GetValidNorms()``,
+- ``Contour-DefaultColorMap`` (``String``, default: ``viridis``): default color map name. The possible values are the ones returned by ``Drawable.GetValidColorMaps()``,
+- ``Contour-DefaultColorBarPosition`` (``String``, default: ``right``): default color bar position. The possible values are ``left``, ``right``, ``top`` and ``bottom``,
+- ``Contour-DefaultExtend`` (``String``, default: ``both``): default extend mode for color bar. The possible values are ``neither``, ``both``, ``min`` and ``max``,
+- ``Contour-DefaultAlpha`` (``Scalar``, default: ``1.0``): default transparency for contour plots.
 
 Examples
 --------
@@ -101,7 +101,7 @@ Parameters
 ----------
 n : int
     Number of levels. If not specified, the default value is taken in the
-    :class:`~openturns.ResourceMap` in the `Contour-DefaultLevelsNumber` key and :math:`n=10`.
+    :class:`~openturns.ResourceMap` in the ``Contour-DefaultLevelsNumber`` key and :math:`n=10`.
 
 Notes
 -----

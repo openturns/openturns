@@ -63,10 +63,10 @@ Multinomial
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *Dirichlet-DefaultIntegrationSize* (`UnsignedInteger`, default: `50`)
-- *Dirichlet-DefaultSamplingSize* (`UnsignedInteger`, default: `500000`)
+- ``Dirichlet-DefaultIntegrationSize`` (``UnsignedInteger``, default: ``50``): default number of points of the numerical integration.
+- ``Dirichlet-DefaultSamplingSize`` (``UnsignedInteger``, default: ``500000``): default size of the sampling used in the Monte Carlo part.
 
 Examples
 --------

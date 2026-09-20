@@ -46,14 +46,14 @@ The optimal :math:`\vect{\theta}` is searched as the solution of the optimizatio
 
     \vect{\theta}_{opt} = \argmin_{\vect{\theta} \in \Rset^K} \sum_{i=1}^K (F^{-1}_{\vect{\theta}}(p_i) - \hat{q}_i)^2
 
-This class uses the following entries of :class:`~openturns.ResourceMap`. All the keys drive the precision
+The following :class:`~openturns.ResourceMap` keys are used. All the keys drive the precision
 of the optimization solver involved in the estimation:
 
-- *QuantileMatchingFactory-MaximumAbsoluteError* (`Scalar`, default: `1e-10`)
-- *QuantileMatchingFactory-MaximumCallsNumber* (`UnsignedInteger`, default: `1000`)
-- *QuantileMatchingFactory-MaximumConstraintError* (`Scalar`, default: `1e-10`)
-- *QuantileMatchingFactory-MaximumObjectiveError* (`Scalar`, default: `1e-10`)
-- *QuantileMatchingFactory-MaximumRelativeError* (`Scalar`, default: `1e-10`)
+- ``QuantileMatchingFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1e-10``): absolute error of the optimization.
+- ``QuantileMatchingFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function.
+- ``QuantileMatchingFactory-MaximumConstraintError`` (``Scalar``, default: ``1e-10``): constraint error of the optimization.
+- ``QuantileMatchingFactory-MaximumObjectiveError`` (``Scalar``, default: ``1e-10``): objective error of the optimization.
+- ``QuantileMatchingFactory-MaximumRelativeError`` (``Scalar``, default: ``1e-10``): relative error of the optimization.
 
 See also
 --------

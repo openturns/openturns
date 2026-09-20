@@ -73,14 +73,14 @@ Simplification mechanisms to compute :eq:`condPDF` are implemented for some dist
 To know if a simplification is used, ask the method *hasSimplifiedVersion*.
 
 If the dimension of :math:`\inputRV_\cI` is greater than 1, the default integration algorithm is :class:`~openturns.CubaIntegration`
-defined in the entry *PointConditionalDistribution-CubaAlgorithm* if available and the
+defined in the entry ``PointConditionalDistribution-CubaAlgorithm`` if available and the
 :class:`~openturns.SimplicialCubature` algorithm if not. If the
 dimension of :math:`\inputRV_\cI` is 1, then the default integration algorithm is the :class:`~openturns.GaussKronrod` algorithm with its default
 quadrature formula.
 
 In the case where no simplification mechanism has been implemented for the distribution of :math:`\inputRV`, then the range of
 the conditioned distribution is computed according to one of the following strategies. The default strategy is defined in the
-:class:`~openturns.ResourceMap`, entry *PointConditionalDistribution-RangeAdaptationMethod*.
+:class:`~openturns.ResourceMap`, entry ``PointConditionalDistribution-RangeAdaptationMethod``.
 
 
 **Strategy None**: The numerical range of :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` is the same as the
@@ -152,25 +152,17 @@ We assign to :math:`\inputRV_{\overline{\cI}}|\inputRV_\cI = \vect{x}_\cI` the n
     x_{i, \max}\right]
 
 
-Several :class:`~openturns.ResourceMap` entries allow for a more fine-grained control over the distribution:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- The boolean entry *PointConditionalDistribution-UseSimplifiedVersion* decides if simplification is enabled.
-- The string entry *PointConditionalDistribution-CubaAlgorithm* defines the default Cuba algorithm used to compute the CDF when the conditioning 
-  values are mutivariate.
-- The string entry *PointConditionalDistribution-OptimizationAlgorithm* defines the default optimization algorithm name used.
-- The integer entry *PointConditionalDistribution-RatioUniformCandidateNumber* sets the number
-  of candidates to find a feasible points for the ratio of uniforms method initialization.
-- The boolean entry *PointConditionalDistribution-InitializeSampling* decides whether to initialize the ratio of uniforms method.
-- The integer entry *PointConditionalDistribution-SmallDimension* is the dimension threshold
-  from which to switch to CDF inversion sampling instead of ratio of uniforms (for continuous distributions).
-- The boolean entry *PointConditionalDistribution-InitializeTransformation* decides whether
-  to initialize the iso-probabilistic transformation.
-- The boolean entry *PointConditionalDistribution-UseGenericConditionalMethods* decides whether
-  the generic conditional methods are used (see :meth:`~openturns.Distribution.computeConditionalCDF()` for example). These methods can only be
-  used when we want to create the distribution of :math:`X_d|(X_1, \dots, X_{d-1}) = (x_1, \dots, x_{d-1})` or when :math:`\inputRV` is bivariate
-  with a symmetric copula.
-- *PointConditionalDistribution-UseFullParameters* (`Bool`, default: `false`): whether to use all the
-  parameters of the underlying distribution when computing the conditional distribution.
+- ``PointConditionalDistribution-UseSimplifiedVersion`` (``Bool``, default: ``true``): whether the simplified version of the algorithm is used,
+- ``PointConditionalDistribution-CubaAlgorithm`` (``String``, default: ``cuhre``): the default Cuba algorithm used to compute the CDF when the conditioning values are multivariate,
+- ``PointConditionalDistribution-OptimizationAlgorithm`` (``String``, default: ``Cobyla``): the name of the default optimization algorithm used,
+- ``PointConditionalDistribution-RatioUniformCandidateNumber`` (``UnsignedInteger``, default: ``10000``): the number of candidates used to find feasible points for the ratio of uniforms method initialization,
+- ``PointConditionalDistribution-InitializeSampling`` (``Bool``, default: ``true``): whether the ratio of uniforms method is initialized,
+- ``PointConditionalDistribution-SmallDimension`` (``UnsignedInteger``, default: ``6``): the dimension threshold from which the CDF inversion sampling is used instead of the ratio of uniforms (for continuous distributions),
+- ``PointConditionalDistribution-InitializeTransformation`` (``Bool``, default: ``true``): whether the iso-probabilistic transformation is initialized,
+- ``PointConditionalDistribution-UseGenericConditionalMethods`` (``Bool``, default: ``true``): whether the generic conditional methods are used (see :meth:`~openturns.Distribution.computeConditionalCDF()` for example). These methods can only be used when we want to create the distribution of :math:`X_d|(X_1, \dots, X_{d-1}) = (x_1, \dots, x_{d-1})` or when :math:`\inputRV` is bivariate with a symmetric copula,
+- ``PointConditionalDistribution-UseFullParameters`` (``Bool``, default: ``false``): whether to use all the parameters of the underlying distribution when computing the conditional distribution.
 
 Examples
 --------
@@ -243,7 +235,7 @@ algo : :class:`~openturns.IntegrationAlgorithm`
 Notes
 -----
 By default, if the dimension of :math:`\inputRV_\cI` is greater than 1, the integration algorithm is :class:`~openturns.CubaIntegration`
-defined in the entry `PointConditionalDistribution-CubaAlgorithm` if available and the :class:`~openturns.SimplicialCubature` algorithm if not. If the
+defined in the entry ``PointConditionalDistribution-CubaAlgorithm`` if available and the :class:`~openturns.SimplicialCubature` algorithm if not. If the
 dimension of :math:`\inputRV_\cI` is 1, then the integration algorithm is the :class:`~openturns.GaussKronrod` algorithm with ts default quadrature
 formula.)RAW"
 // ---------------------------------------------------------------------
