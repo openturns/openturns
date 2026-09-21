@@ -21,6 +21,7 @@ ResourceMap keys:
 - 'HODLRMatrix-ProfileFactorization' (default false)
 - 'HODLRMatrix-RegularizationFactor' (default 2.0)
 - 'HODLRMatrix-RegularizationAttempts' (default 60)
+- 'HODLRMatrix-PivotFloorFactor' (default 1.0e-4)
 - 'HODLRMatrix-RegularizationWarnThreshold' (default 1.0e-4)
 - 'HODLRMatrix-StackTruncation' (default true)
 - 'HODLRMatrix-StackTruncationFactor' (default 0.1)"

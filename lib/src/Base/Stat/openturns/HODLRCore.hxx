@@ -211,16 +211,22 @@ public:
   UnsignedInteger getNumLeaves() const { return numLeaves_; }
   size_t getNnz() const;
   void setShift(Scalar shift);
+  // Largest diagonal shift applied locally to heal a non-SPD leaf during the
+  // last factorization (0 if none was needed). Propagated up the tree so the
+  // callers can report the actual regularization used.
+  Scalar getMaxLeafShift() const { return maxLeafShift_; }
 
 private:
   UnsignedInteger lowRankApproxPartialPivot(UnsignedInteger startRow, UnsignedInteger nRows,
       UnsignedInteger startCol, UnsignedInteger nCols,
       Scalar tol, Matrix& Uout, Matrix& Vout);
   void factorizeLeafCholesky();
-  void factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections);
+  void factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+                             bool rebuildStructure = true);
   void factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1, Scalar lambda,
                                       const std::vector<HODLRCorrectedEvaluator::Correction>& corrections);  // Bypass evaluator, use dgemm correction
-  void computeCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections);
+  void computeCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+                       bool rebuildStructure = true);
   void applyInverseFactor(Matrix& x) const;  // L^{-1} * x for HODLR Cholesky factor L
   void applyInverseFactorTranspose(Matrix& x) const;  // L^{-T} * x for HODLR Cholesky factor L
 
@@ -237,6 +243,7 @@ private:
   bool isLeaf_;
   Scalar logDet_;
   Scalar shift_;
+  Scalar maxLeafShift_;
   UnsignedInteger totalRank_;
   UnsignedInteger numLeaves_;
   UnsignedInteger numStarvedBlocks_;
@@ -251,6 +258,17 @@ private:
   Matrix Sfactor_;
   Matrix leafKernel_;   // raw kernel block of a leaf, cached at construction
   Matrix W_;   // L00^{-1} * V_[0] for internal nodes
+  // W^T*W (rank_ x rank_), cached on first build: invariant w.r.t. the
+  // regularization lambda, so Schur-complement retries reuse it instead of
+  // recomputing the Gram product (and its subtree work) per attempt.
+  Matrix K_;
+  // Assembled-but-unregularized leaf matrix (kernel block minus all Schur
+  // complement correction products, WITHOUT any lambda/shift on the diagonal).
+  // Cached on first factorization. Since the parent retry loop's regularization
+  // is only a diagonal term, a retry with a larger lambda restores this copy and
+  // re-adds the diagonal terms instead of re-running every correction dgemm
+  // (avoids the O(attempts) parent rebuild cascade on near-singular kernels).
+  Matrix pristine_;
 };
 
 END_NAMESPACE_OPENTURNS

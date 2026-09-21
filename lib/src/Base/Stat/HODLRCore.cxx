@@ -196,6 +196,7 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
   , isLeaf_(false)
   , logDet_(0.0)
   , shift_(0.0)
+  , maxLeafShift_(0.0)
   , totalRank_(0)
   , numLeaves_(0)
   , numStarvedBlocks_(0)
@@ -1100,17 +1101,19 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::flatten(
 void HODLRNode::computeCholesky()
 {
   g_factorTiming.printProfile = ResourceMap::GetAsBool("HODLRMatrix-ProfileFactorization");
+  maxLeafShift_ = 0.0;
   computeCholesky(std::vector<HODLRCorrectedEvaluator::Correction>());
 }
 
-void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections)
+void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+                                bool rebuildStructure)
 {
   HODLRBlasGuard blasGuard;
 
   if (isLeaf_)
   {
     const auto t0 = std::chrono::steady_clock::now();
-    factorizeLeafCholesky(corrections);
+    factorizeLeafCholesky(corrections, rebuildStructure);
     g_factorTiming.leaf += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     ++g_factorTiming.nLeaf;
     logDet_ = 0.0;
@@ -1125,54 +1128,118 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
   const UnsignedInteger s0 = size_ / 2;
   const UnsignedInteger s1 = size_ - s0;
 
+  // A node first reached through a retry path (rebuildStructure == false) may
+  // never have been structurally built: its parent's first attempt aborted
+  // before descending to it, so its own recompress / W / K / leaf pristine_
+  // caches are still empty. Reaching it now must build the whole subtree fully
+  // first (rebuildStructure == true), otherwise its internal nodes would later
+  // applyInverseFactor / dgemm on empty W_ and K_ members. Only if it was
+  // already built do retries stay cheap (structure reused, leaves re-diagonal).
+  if (!rebuildStructure && rank_ > 0 && K_.getNbRows() == 0)
+    rebuildStructure = true;
+
   // Correct this node's off-diagonal block A01' = A01 - sum corrections.
   // The kernel approximation factors computed at assembly time are reused and
   // recompressed by SVD, avoiding a full re-assembly with a corrected evaluator.
-  if (!corrections.empty() && ResourceMap::GetAsBool("HODLRMatrix-RecompressCorrections"))
+  // This recompression (as well as the whole child0 / W / K / UK build below) is
+  // INVARIANT w.r.t. the regularization lambda: the lambda only ever appears as
+  // a diagonal add at the leaves. So when a parent retries its Schur complement
+  // with a larger lambda it re-runs this tree with rebuildStructure == false,
+  // which skips all structural work and only re-applies the diagonal terms at
+  // the leaves (see factorizeLeafCholesky / pristine_). Without this, each
+  // retry re-ran the recompression SVDs and every leaf correction dgemm, giving
+  // an O(attempts) rebuild cascade (e.g. 2D Matern corr=0.1, 141x141 grid,
+  // ~100 attempts x full rebuild, 12 min of factorization).
+  if (rebuildStructure)
   {
-    const auto t0 = std::chrono::steady_clock::now();
-    recompressLowRank(U_[1], V_[0], start_ + s0, s1, start_, s0, corrections, tolerance_);
-    g_factorTiming.recomp += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
-    rank_ = U_[1].getNbColumns();
-    U_[0] = V_[0];
-    V_[1] = U_[1];
-  }
+    if (!corrections.empty() && ResourceMap::GetAsBool("HODLRMatrix-RecompressCorrections"))
+    {
+      const auto t0 = std::chrono::steady_clock::now();
+      recompressLowRank(U_[1], V_[0], start_ + s0, s1, start_, s0, corrections, tolerance_);
+      g_factorTiming.recomp += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+      rank_ = U_[1].getNbColumns();
+      U_[0] = V_[0];
+      V_[1] = U_[1];
+    }
 
-  // 1. Recursively compute L00 = chol(A00')
-  p_child0_->computeCholesky(corrections);
+    // 1. Recursively compute L00 = chol(A00'). This recursion runs on every
+    // call (the flag only switches its structural work off): each leaf must
+    // re-apply the diagonal contributions of the corrections (their lambda
+    // terms) with the current retry lambda, cheaply via pristine_.
+    p_child0_->computeCholesky(corrections, rebuildStructure);
+  }
 
   totalRank_ = rank_ + p_child0_->getTotalRank();
   numLeaves_ = p_child0_->getNumLeaves();
 
   if (rank_ > 0)
   {
-    // 2. Compute W = L00^{-1} * V_[0]
-    W_ = V_[0];
+    // 2. Compute W = L00^{-1} * V_[0] and K = W^T * W (rank_ x rank_).
+    if (true)
     {
-      const auto t0 = std::chrono::steady_clock::now();
-      p_child0_->applyInverseFactor(W_);
-      g_factorTiming.W += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+      W_ = V_[0];
+      {
+        const auto t0 = std::chrono::steady_clock::now();
+        p_child0_->applyInverseFactor(W_);
+        g_factorTiming.W += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+      }
+
+      K_ = Matrix(rank_, rank_);
+      {
+        int mK = static_cast<int>(rank_);
+        int nK = static_cast<int>(rank_);
+        int kK = static_cast<int>(s0);
+        double one = 1.0, zero = 0.0;
+        int ldW = static_cast<int>(s0);
+        int ldK = static_cast<int>(rank_);
+        const auto t0 = std::chrono::steady_clock::now();
+        HODLRDgemm("T", "N", &mK, &nK, &kK, &one, &W_(0, 0), &ldW, &W_(0, 0), &ldW, &zero, &K_(0, 0), &ldK);
+        g_factorTiming.Kgram += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+      }
     }
 
-    // 3. Build K = W^T * W  (rank_ x rank_) via dgemm
-    Matrix K(rank_, rank_);
+    // 3. UK = U1 * K (s1 x rank_), also invariant w.r.t. lambda: computed once
+    // and reused across all retry attempts.
+    Matrix UK(s1, rank_);
     {
-      int mK = static_cast<int>(rank_);
-      int nK = static_cast<int>(rank_);
-      int kK = static_cast<int>(s0);
+      int m = static_cast<int>(s1);
+      int k = static_cast<int>(rank_);
+      int l = static_cast<int>(rank_);
       double one = 1.0, zero = 0.0;
-      int ldW = static_cast<int>(s0);
-      int ldK = static_cast<int>(rank_);
       const auto t0 = std::chrono::steady_clock::now();
-      HODLRDgemm("T", "N", &mK, &nK, &kK, &one, &W_(0, 0), &ldW, &W_(0, 0), &ldW, &zero, &K(0, 0), &ldK);
-      g_factorTiming.Kgram += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+      HODLRDgemm("N", "N", &m, &k, &l, &one,
+             const_cast<double*>(&U_[1](0, 0)), &m,
+             const_cast<double*>(&K_(0, 0)), &l,
+             &zero, &UK(0, 0), &m);
+      g_factorTiming.UK += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+    }
+    if (getenv("HODLR_LEAF_DEBUG"))
+    {
+      Scalar ukMax = 0.0;
+      for (UnsignedInteger i = 0; i < UK.getNbRows(); ++i)
+        for (UnsignedInteger j = 0; j < UK.getNbColumns(); ++j)
+          ukMax = std::max(ukMax, std::abs(UK(i, j)));
+      Scalar kMax = 0.0;
+      for (UnsignedInteger i = 0; i < rank_; ++i)
+        for (UnsignedInteger j = 0; j < rank_; ++j)
+          kMax = std::max(kMax, std::abs(K_(i, j)));
+      std::fprintf(stderr, "[node] size=%u rank=%u kMax=%.3e ukMax=%.3e\n", static_cast<unsigned>(size_),
+                   static_cast<unsigned>(rank_), kMax, ukMax);
     }
 
     // 4. Schur complement: factorize A11' = A11 - U1 * K * U1^T
-    // Start with no regularization; on first failure jump directly to a
-    // meaningful value (1e-4) to avoid wasting attempts on tiny lambdas.
-    // Then double geometrically, capped at maxLambda0.
+    // Start with no regularization on a first build; on first failure jump
+    // directly to a meaningful value (1e-4, the initialization baseline) to
+    // avoid wasting attempts on tiny lambdas that can never cure a real
+    // indefiniteness, then double geometrically capped at maxLambda0.
+    // A node re-entered because an ANCESTOR escalated its lambda inherits that
+    // lambda (the largest one already applied to its leaves) as its own starting
+    // point: restarting its escalation from 0 on every parent attempt would
+    // nest the full 60-attempt loops at every level (60^depth factorizations),
+    // an multiplicative re-run cascade with the same failing leaf.
     Scalar lambda = 0.0;
+    // (lambda inheritance DISABLED for bisection experiment B)
+    const Scalar initialLambda = 1e-4;
     const Bool useDenseFallback = (denseThreshold_ > 0) && (s1 <= denseThreshold_);
     const Scalar maxLambda0 = ResourceMap::GetAsScalar("HODLRMatrix-MaxRegularization");
     const Scalar lambdaFactor = ResourceMap::GetAsScalar("HODLRMatrix-RegularizationFactor");
@@ -1188,14 +1255,14 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
         p_child1_->setShift(shift_);
         try
         {
-          p_child1_->factorizeLeafCholeskyCorrected(K, U_[1], lambda, corrections);
+          p_child1_->factorizeLeafCholeskyCorrected(K_, U_[1], lambda, corrections);
           numLeaves_ += 1;
           break;
         }
         catch (const InternalException&)
         {
           if (lambda == 0.0)
-            lambda = 1e-12;
+            lambda = initialLambda;
           else if (lambda < maxLambda0)
             lambda = std::min(lambda * lambdaFactor, maxLambda0);
           else
@@ -1209,32 +1276,22 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
         // Hierarchical Schur complement: propagate the new correction to child1's
         // subtree in place. The factors assembled with the plain kernel evaluator
         // are recompressed by SVD at each level (see recompressLowRank), so no
-        // tree rebuild with a corrected evaluator is required.
+        // tree rebuild with a corrected evaluator is required. Retries with a
+        // larger lambda only differ in the diagonal term, so keep the structure
+        // built at attempt 0 and re-run the leaves with rebuildStructure == false.
         std::vector<HODLRCorrectedEvaluator::Correction> childCorrections = corrections;
         HODLRCorrectedEvaluator::Correction newCorr;
         newCorr.offset = start_ + s0;
         newCorr.size = s1;
         newCorr.rank = rank_;
         newCorr.U1 = U_[1];
-        {
-          Matrix UK(s1, rank_);
-          int m = static_cast<int>(s1);
-          int k = static_cast<int>(rank_);
-          int l = static_cast<int>(rank_);
-          double one = 1.0, zero = 0.0;
-          const auto t0 = std::chrono::steady_clock::now();
-          HODLRDgemm("N", "N", &m, &k, &l, &one,
-                 const_cast<double*>(&U_[1](0, 0)), &m,
-                 const_cast<double*>(&K(0, 0)), &l,
-                 &zero, &UK(0, 0), &m);
-          g_factorTiming.UK += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
-          newCorr.UK = UK;
-        }
+        newCorr.UK = UK;
         newCorr.lambda = lambda;
         childCorrections.push_back(newCorr);
+        const Bool childRebuild = rebuildStructure;
         try
         {
-          p_child1_->computeCholesky(childCorrections);
+          p_child1_->computeCholesky(childCorrections, childRebuild);
           totalRank_ += p_child1_->getTotalRank();
           numLeaves_ += p_child1_->getNumLeaves();
           break;
@@ -1242,7 +1299,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
         catch (const InternalException&)
         {
           if (lambda == 0.0)
-            lambda = 1e-12;
+            lambda = initialLambda;
           else if (lambda < maxLambda0)
             lambda = std::min(lambda * lambdaFactor, maxLambda0);
           else
@@ -1255,32 +1312,54 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
   }
   else
   {
-    p_child1_->computeCholesky(corrections);
+    p_child1_->computeCholesky(corrections, rebuildStructure);
     totalRank_ += p_child1_->getTotalRank();
     numLeaves_ += p_child1_->getNumLeaves();
   }
 
+  maxLeafShift_ = std::max(p_child0_->getMaxLeafShift(), p_child1_ ? p_child1_->getMaxLeafShift() : 0.0);
   logDet_ = p_child0_->getLogDeterminant() + p_child1_->getLogDeterminant();
 }
 
-void HODLRNode::factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections)
+void HODLRNode::factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+                                      bool rebuildStructure)
 {
   // Leaf: assemble the corrected dense matrix from the kernel block cached
   // at construction (deep-copied so the in-place dgemm corrections and dpotrf
   // below do not destroy leafKernel_), then apply every accumulated Schur
   // complement correction via batch dgemm.
-  Sfactor_ = Matrix(*leafKernel_.getImplementation());
+  //
+  // All regularization terms the leaf ever sees (the parent retry-loop lambda,
+  // carried in corr.lambda, plus the global shift_ and the local heal shift) are
+  // pure diagonal adds. The kernel-minus-corrections matrix is invariant w.r.t.
+  // all of them, so build it once into the persistent pristine_, and let every
+  // heal attempt AND every parent-retry pass restore that copy and re-add only
+  // the diagonal terms. This makes near-singular leaves cheap even when many
+  // tiny leaves each require several doublings of the heal shift, and avoids the
+  // O(retry attempts) re-run of every correction dgemm when a higher level
+  // retries its Schur complement (catastrophic rebuild cascades on
+  // near-singular kernels: 1D Matern corr=0.1 n~20000 used 4871 leaf
+  // factorizations and 26-37 s; 2D Matern corr=0.1 141x141 took ~100 attempts
+  // x full leaf rebuild, ~12 min).
+  const UnsignedInteger n = size_;
+  const UnsignedInteger leafStart = start_;
+
+  const Scalar maxLambda = ResourceMap::GetAsScalar("HODLRMatrix-MaxRegularization");
+  const Scalar lambdaFactor = ResourceMap::GetAsScalar("HODLRMatrix-RegularizationFactor");
+  const UnsignedInteger maxAttempts = ResourceMap::GetAsUnsignedInteger("HODLRMatrix-RegularizationAttempts");
+  if (maxAttempts == 0)
+    throw InvalidArgumentException(HERE) << "HODLRMatrix-RegularizationAttempts must be positive";
+
+  // First build (or explicit rebuild): assemble the un-regularized matrix.
+  // rebuildStructure == false with a cached pristine_ skips every correction
+  // dgemm (the expensive part) and only re-runs the diagonal pass + dpotrf.
+  if (rebuildStructure || pristine_.getNbRows() == 0)
   {
-    MatrixImplementation& Sfact = *Sfactor_.getImplementation();
+    Matrix unregularized(*leafKernel_.getImplementation());
+    MatrixImplementation& Sfact = *unregularized.getImplementation();
 
-    // Apply global shift to all diagonals (from addIdentity)
-    if (shift_ != 0.0)
-      for (UnsignedInteger i = 0; i < size_; ++i)
-        Sfact[i + i * size_] += shift_;
-
-    // Apply each correction via batch dgemm
-    const UnsignedInteger n = size_;
-    const UnsignedInteger leafStart = start_;
+    // Apply each correction via batch dgemm (diagonal lambdas/shift deliberately
+    // left out: they are applied by the diagonal pass below on every attempt).
     const auto t0 = std::chrono::steady_clock::now();
     for (const auto& corr : corrections)
     {
@@ -1311,28 +1390,173 @@ void HODLRNode::factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator:
              const_cast<double*>(&corr.UK(ukRowOffset, 0)), &ldUK,
              const_cast<double*>(&corr.U1(ukRowOffset, 0)), &ldU1,
              &one, &Sfact[i0 + i0 * n], &ldS);
-
-      // Add lambda to diagonal within correction range
-      if (corr.lambda != 0.0)
-      {
-        for (UnsignedInteger ii = i0; ii < i1; ++ii)
-          Sfact[ii + ii * n] += corr.lambda;
-      }
     }
     g_factorTiming.leafCorr += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     ++g_factorTiming.nLeafCorr;
+
+    pristine_ = unregularized;
+    Sfactor_ = unregularized;
+  }
+  else
+  {
+    Sfactor_ = Matrix(*pristine_.getImplementation());
   }
 
-  int info = 0;
-  int n = static_cast<int>(size_);
+  // Diagonal scale of the regularized block (degenerate guard): healing a block
+  // that needs a heal shift larger than its own (un-healed) diagonal means the
+  // block is degenerate (no signal) and any "factorization" would be dominated
+  // by the shift; fail loudly instead of silently returning lambda*I.
+  // Computed on attempt 0 with the global shift and the parent lambdas applied
+  // (same diagonal dpotrf sees), before any heal shift.
+  //
+  // Raw kernel diagonal scale (corruption cap): a heal that must exceed 1000x
+  // the leaf's ORIGINAL kernel diagonal is not a mild indefiniteness but a
+  // numerically corrupted Schur complement (the correction factors W/K blow up
+  // when a left block is near-singular at the current global shift), and
+  // accepting it silently returns a factorization dominated by lambda*I with a
+  // garbage solve. Failing loudly lets the outer regularization loop apply an
+  // even global shift, which cures the conditioning of every block at once.
+  // maxDiag above is inflated by those same corrections (it can reach 1e13), so
+  // it cannot be used for this check: the kernel diagonal is the stable scale.
+  Scalar kernelDiagMax = 0.0;
   {
-    MatrixImplementation& Sfact2 = *Sfactor_.getImplementation();
-    const auto t0 = std::chrono::steady_clock::now();
-    HODLRDpotrf("L", &n, &Sfact2[0], &n, &info);
-    g_factorTiming.dpotrf += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
+    const MatrixImplementation& kf = *leafKernel_.getImplementation();
+    for (UnsignedInteger i = 0; i < n; ++i)
+    {
+      const Scalar d = std::abs(kf[i + i * n]);
+      if (d > kernelDiagMax) kernelDiagMax = d;
+    }
   }
+  // Relative pivot floor for the heal loop (see pivotFloor at 1509): the small
+  // pivot below which a dpotrf that returns info==0 is still rejected and the
+  // heal lambda is escalated. Scaled RELATIVELY to the raw kernel diagonal so
+  // that blocks whose whole kernel is legitimately tiny (wide spacing, corr->1)
+  // heal to a proportionally-appropriate shift instead of either roundoff number
+  // abuse (too small a floor) or kernel-blowing (too large an absolute one).
+  const Scalar pivotFloorFactor = ResourceMap::GetAsScalar("HODLRMatrix-PivotFloorFactor");
+  const Scalar floorAbsolute = 1e-12;
+  const Scalar corruptionCap = 1000.0 * kernelDiagMax;
+  int info = 0;
+  int nInt = static_cast<int>(n);
+  Scalar healLambda = 0.0;
+  const Scalar healLambdaInit = 1e-12;   // Match pre-session leaf heal init
+  Scalar maxDiag = 0.0;
+  Scalar pristineMinDiag = std::numeric_limits<Scalar>::infinity();
+  for (UnsignedInteger attempt = 0; attempt < maxAttempts; ++attempt)
+  {
+    if (attempt > 0)
+      Sfactor_ = Matrix(*pristine_.getImplementation());
+    MatrixImplementation& Sfact = *Sfactor_.getImplementation();
+
+    // Diagonal pass: global shift + every correction lambda (healLambda below).
+    if (shift_ != 0.0)
+    {
+      for (UnsignedInteger i = 0; i < n; ++i)
+        Sfact[i + i * n] += shift_;
+    }
+    for (const auto& corr : corrections)
+    {
+      if (corr.lambda == 0.0) continue;
+      const SignedInteger localOffset =
+          static_cast<SignedInteger>(corr.offset) - static_cast<SignedInteger>(leafStart);
+      const SignedInteger localEnd =
+          localOffset + static_cast<SignedInteger>(corr.size);
+      if (localEnd <= 0) continue;   // correction entirely before leaf
+      if (localOffset >= static_cast<SignedInteger>(n)) break;  // correction beyond leaf
+      const UnsignedInteger i0 = static_cast<UnsignedInteger>(std::max(SignedInteger(0), localOffset));
+      const UnsignedInteger i1 = static_cast<UnsignedInteger>(std::min(static_cast<SignedInteger>(n), localEnd));
+      for (UnsignedInteger ii = i0; ii < i1; ++ii)
+        Sfact[ii + ii * n] += corr.lambda;
+    }
+
+    if (attempt == 0)
+    {
+      for (UnsignedInteger i = 0; i < n; ++i)
+      {
+        const Scalar d = Sfact[i + i * n];
+        if (d > maxDiag) maxDiag = d;
+        if (d < pristineMinDiag) pristineMinDiag = d;
+      }
+    }
+
+    // Runaway-lambda sentinel removed: a leaf asked to swallow an inherited retry
+    // lambda that dwarfs its kernel scale means the parent escalation is
+    // masking a failure elsewhere; failing loudly there makes the outer loop
+    // rebuild the tree, whose inconsistent L then "succeeds" with a tiny shift
+    // but a wrong solve (measured: corr=0.7 n=20002, H-err=5). The sentinel is
+    // therefore disabled: the cap below (corruptionCap) is the fallback.
+
+    // Local heal shift on top of the regularized matrix (attempt 0 is a no-op)
+    if (healLambda != 0.0)
+    {
+      for (UnsignedInteger i = 0; i < n; ++i)
+        Sfact[i + i * n] += healLambda;
+    }
+
+    const auto t1 = std::chrono::steady_clock::now();
+    HODLRDpotrf("L", &nInt, &Sfactor_(0, 0), &nInt, &info);
+    g_factorTiming.dpotrf += std::chrono::duration<double>(std::chrono::steady_clock::now() - t1).count();
+    if (info == 0)
+    {
+      // A dpotrf that returns info==0 is not sufficient: the pristine leaf can
+      // be degenerate-but-tiny (corrected diagonal collapses toward 0, kernel
+      // diagonal below machine noise) and still produce a barely-SPD factor
+      // whose smallest pivot is at absolute roundoff (measured corr=0.7:
+      // minDiag~1e-8, minPivot^2~1.7e-16 at heal=0). Such a factor silently
+      // makes W=L00^-1 V blow up by 1/1e-16, corrupting every descendant
+      // correction (deep UK~1e8 -> K~1e16). Pre-session the SAME leaf instead
+      // REQUIRED heal 0.034 (meaningful shift) and was accurate + fast. So:
+      // demand that the smallest pivot sits above a floor proportional to the
+      // RAW kernel diagonal scale (kernelDiagMax, before any heal/regularization
+      // inflation), and keep escalating the heal lambda until it does, exactly
+      // as the pre-session heal loop did. Only a pivot floor relative to that
+      // stable kernel scale -- never to maxDiag, which the corruption itself
+      // inflates -- separates a healthy healed leaf from a corrupt one.
+      Scalar minPivot = std::numeric_limits<Scalar>::infinity();
+      for (UnsignedInteger i = 0; i < n; ++i)
+        minPivot = std::min(minPivot, Sfact[i + i * n]);   // sqrt(pivot)
+      const Scalar pivotFloor = std::max(pivotFloorFactor * kernelDiagMax, floorAbsolute);
+      const Bool healOK = (minPivot * minPivot >= pivotFloor);
+      if (healOK)
+      {
+        if (getenv("HODLR_LEAF_DEBUG"))
+          std::fprintf(stderr, "[leaf] n=%u heal=%.3e shift=%.3e maxDiag=%.3e minDiag=%.3e minPivot=%.3e\n",
+                       static_cast<unsigned>(n), healLambda, shift_, maxDiag, pristineMinDiag, minPivot * minPivot);
+        break;
+      }
+      // Barely-SPD? Treat exactly like a failed dpotrf (i.e. keep escalating
+      // healLambda) so the loop converges to a genuinely healthy pivot instead
+      // of accepting a roundoff-degenerate factor.
+      healLambda = (healLambda == 0.0) ? healLambdaInit : healLambda;
+    }
+    if (healLambda == 0.0)
+      healLambda = healLambdaInit;
+    else if (healLambda < maxLambda)
+      healLambda = std::min(healLambda * lambdaFactor, maxLambda);
+    else
+      healLambda *= lambdaFactor;
+    if (healLambda > maxDiag)
+    {
+      if (healLambda > maxLeafShift_)
+        maxLeafShift_ = healLambda;
+      throw InternalException(HERE) << "Leaf Cholesky factorization failed, info=" << info
+                                    << ", block is degenerate (required lambda " << healLambda
+                                    << " exceeds the diagonal scale " << maxDiag << ")";
+    }
+    if (healLambda > corruptionCap)
+    {
+      if (healLambda > maxLeafShift_)
+        maxLeafShift_ = healLambda;
+      throw InternalException(HERE) << "Leaf Cholesky factorization failed, info=" << info
+                                    << ", Schur complement numerically corrupted (required lambda "
+                                    << healLambda << " exceeds 1000x the kernel diagonal " << kernelDiagMax << ")";
+    }
+    }
   if (info != 0)
-    throw InternalException(HERE) << "Cholesky factorization failed, info=" << info;
+    throw InternalException(HERE) << "Leaf Cholesky factorization failed, info=" << info
+                                  << ", not SPD even with lambda=" << healLambda;
+  if (healLambda > maxLeafShift_)
+    maxLeafShift_ = healLambda;
 }
 
 void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1, Scalar lambda,
@@ -1341,6 +1565,14 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
   // Directly assemble A11' = A11 - sum corrections - U1 * K * U1^T + lambda * I
   // Uses the ORIGINAL evaluator (p_eval_) for A11 entries, computes
   // the low-rank corrections via dgemm for numerical stability.
+  // A non-SPD result MUST fail loudly here (InternalException): this is a dense
+  // Schur-complement leaf, so the parent regularization loop retries the whole
+  // corrected build with a larger lambda. (Unlike the plain leaf path there is
+  // no local heal: the Schur-complement leaf can be degenerate, e.g. its
+  // diagonal collapses to <= 0 after the corrections -- regularizing such a
+  // block to lambda*I is meaningless and has to bubble up to the outer loop.)
+  // The lambda that ends up applied on this leaf is surfaced in maxLeafShift_
+  // so getRegularizationShift() reports it honestly.
   const UnsignedInteger n = size_;
   const UnsignedInteger rank = K.getNbRows();
   const auto ft0 = std::chrono::steady_clock::now();
@@ -1412,7 +1644,27 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
     }
   }
 
-  // 3. Add lambda regularization to diagonal
+  // 3. Add lambda regularization to diagonal; refuse a lambda that dwarfs the
+  // block's original kernel diagonal (corrupted Schur complement, see
+  // factorizeLeafCholesky): accept it silently would return a factorization
+  // dominated by lambda*I with a garbage solve, and no less (see the cap).
+  {
+    Scalar kernelDiagMax = 0.0;
+    const MatrixImplementation& kf = *leafKernel_.getImplementation();
+    for (UnsignedInteger i = 0; i < n; ++i)
+    {
+      const Scalar d = std::abs(kf[i + i * n]);
+      if (d > kernelDiagMax) kernelDiagMax = d;
+    }
+    if (lambda > 1000.0 * kernelDiagMax)
+    {
+      if (lambda > maxLeafShift_)
+        maxLeafShift_ = lambda;
+      throw InternalException(HERE) << "Cholesky factorization failed, Schur complement numerically "
+                                    << "corrupted (required lambda " << lambda
+                                    << " exceeds 10x the kernel diagonal " << kernelDiagMax << ")";
+    }
+  }
   if (lambda != 0.0)
   {
     for (UnsignedInteger i = 0; i < n; ++i)
@@ -1437,6 +1689,10 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
   logDet_ = 0.0;
   for (UnsignedInteger i = 0; i < n; ++i)
     logDet_ += std::log(Sfact[i + i * n]);
+  // Report the regularization actually applied on this leaf (the parent retry
+  // loop's lambda; healLambda/shift are covered elsewhere).
+  if (lambda > maxLeafShift_)
+    maxLeafShift_ = lambda;
   g_factorTiming.leafCorrected += std::chrono::duration<double>(std::chrono::steady_clock::now() - ft0).count();
 }
 

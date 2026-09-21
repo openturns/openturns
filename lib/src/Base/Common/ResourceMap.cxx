@@ -1768,6 +1768,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("HODLRMatrix-StackTruncation", true);
   addAsScalar("HODLRMatrix-StackTruncationFactor", 0.1);
   addAsScalar("HODLRMatrix-RegularizationFactor", 2.0);
+  addAsScalar("HODLRMatrix-PivotFloorFactor", 1.0e-4);
   addAsUnsignedInteger("HODLRMatrix-RegularizationAttempts", 60);
   addAsScalar("HODLRMatrix-Nugget", 1.0e-8);
   addAsBool("HODLRMatrix-UseSpatialOrdering", true);

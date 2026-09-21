@@ -627,6 +627,7 @@
   <HODLRMatrix-RegularizationEpsilon value_float="1.0e-7" />
   <HODLRMatrix-RegularizationWarnThreshold value_float="1.0e-4" />
   <HODLRMatrix-MaxRegularization value_float="1.0" />
+  <HODLRMatrix-PivotFloorFactor value_float="1.0e-4" />
   <HODLRMatrix-RecompressCorrections value_bool="true" />
   <HODLRMatrix-ProfileFactorization value_bool="false" />
   <HODLRMatrix-StackTruncation value_bool="true" />

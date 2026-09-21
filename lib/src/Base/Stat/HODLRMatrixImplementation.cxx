@@ -303,6 +303,18 @@ void HODLRMatrixImplementation::factorize()
         regularizationShift = regularizationEpsilon;
       else
         regularizationShift *= 2.0;
+      // Jump the geometric search with the largest heal shift any leaf needed on
+      // this attempt: a leaf whose corrected block needed a heal h is the best
+      // estimate of the global shift that cures the whole matrix, so the outer
+      // loop reaches the winning shift in ~1-2 attempts instead of the ~19
+      // doublings (1e-7 * 2^k) the pathological cases need. The value is capped
+      // so a numerically corrupted leaf cannot derail the search to an absurd
+      // lambda. A full rebuild() is required between attempts: W = L00^{-1} V
+      // depends on the left block's own factor, which changes with the shift, so
+      // the structure must be recomputed instead of reused.
+      const Scalar leafSeed = p_node_->getMaxLeafShift();
+      if (leafSeed > 0.0)
+        regularizationShift = std::max(regularizationShift, std::min(leafSeed, 0.05));
       if (iteration == maxIterations - 1)
         throw InternalException(HERE) << "HODLRMatrix::factorize failed after "
                                       << maxIterations << " regularization attempts, last shift=" << regularizationShift;
@@ -312,6 +324,11 @@ void HODLRMatrixImplementation::factorize()
 
   logDet_ = p_node_->getLogDeterminant();
   isFactorized_ = true;
+  // Leaves heal a non-SPD corrected block locally (see HODLRNode::factorizeLeafCholesky);
+  // surface the largest such shift so the reporting below covers it too.
+  const Scalar leafShift = p_node_->getMaxLeafShift();
+  if (leafShift > shiftAccumulated_)
+    shiftAccumulated_ = leafShift;
   // Warn when the accumulated regularization shift is non-negligible relative
   // to the diagonal: the factorization then approximates A + shift * I rather
   // than A, so the solve() and logDeterminant() results are for the shifted
