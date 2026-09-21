@@ -24,6 +24,7 @@
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/Interval.hxx"
 #include "openturns/Solver.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -125,6 +126,24 @@ private:
   /** Set the function and antecedent with check */
   void setFunctionAndAntecedent(const Function & function,
                                 const Distribution & antecedent);
+
+  /** Build the finite search box in the support of the antecedent used to
+      detect the preimages: the range when its bounds are finite, else
+      quantile-clipped bounds */
+  Interval buildSearchInterval() const;
+
+  /** Find all the preimages of the given point, i.e. all the roots of the
+      residual function r(u) = f(u) - point, by a damped Newton solver with
+      step control started from a decomposition of the search box: sign
+      changes and local minima of the residual in dimension one,
+      low-discrepancy multi-start in higher dimensions */
+  PointCollection findPreimages(const Function & residualFunction) const;
+
+  /** Solve r(u) = 0 by damped Newton with step control from the given
+      starting point; returns the root if converged within tolerance, an
+      empty point otherwise */
+  Point dampedNewton(const Function & residualFunction,
+                     const Point & startingPoint) const;
 
   /** The function through which the antecedent is pushed */
   Function function_;

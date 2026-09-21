@@ -25,6 +25,8 @@
 #include "openturns/LeastSquaresEquationsSolver.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Uniform.hxx"
 
@@ -183,78 +185,420 @@ void PushForwardDistribution::computeRange()
   setRange(Interval(marginedLowerBound, marginedUpperBound, finiteLowerBound, finiteUpperBound));
 }
 
+/* Build the finite search box in the support of the antecedent */
+Interval PushForwardDistribution::buildSearchInterval() const
+{
+  const UnsignedInteger dimension = antecedent_.getDimension();
+  const Interval antecedentRange(antecedent_.getRange());
+  const Interval::BoolCollection finiteLowerBound(antecedentRange.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(antecedentRange.getFiniteUpperBound());
+  // When a bound is not finite, clip it using such a quantile of the
+  // antecedent that the probability mass outside the box is negligible
+  const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  const Scalar upperQuantile = 1.0 - quantileEpsilon;
+  Point lowerBound(dimension);
+  Point upperBound(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (finiteLowerBound[i]) lowerBound[i] = antecedentRange.getLowerBound()[i];
+    else lowerBound[i] = antecedent_.computeQuantile(quantileEpsilon)[i];
+    if (finiteUpperBound[i]) upperBound[i] = antecedentRange.getUpperBound()[i];
+    else upperBound[i] = antecedent_.computeQuantile(upperQuantile)[i];
+    if (!(lowerBound[i] < upperBound[i]))
+    {
+      // Degenerate search interval: fall back to a unit interval around the mean
+      const Scalar mean_i = antecedent_.getMean()[i];
+      lowerBound[i] = mean_i - 1.0;
+      upperBound[i] = mean_i + 1.0;
+    }
+  }
+  return Interval(lowerBound, upperBound, Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, true));
+}
+
+/* Solve r(u) = 0 by damped Newton with step control from the given starting point */
+Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
+    const Point & startingPoint) const
+{
+  const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance");
+  const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations");
+  const Scalar stepReduction = ResourceMap::GetAsScalar("PushForwardDistribution-NewtonStepReduction");
+  const UnsignedInteger dimension = antecedent_.getDimension();
+  Point point(startingPoint);
+  for (UnsignedInteger iteration = 0; iteration < maximumIterations; ++iteration)
+  {
+    // Residual at the current point
+    Point residual;
+    Scalar residualNorm = -1.0;
+    try
+    {
+      residual = residualFunction(point);
+      residualNorm = residual.norm();
+    }
+    catch (...)
+    {
+      // The residual does not exist at this point
+      return Point();
+    }
+    if (residualNorm <= residualTolerance)
+    {
+      // Polish the root by a few pure Newton steps: as the Jacobian of the
+      // residual is computed analytically, the residual converges up to the
+      // machine precision and the roots found from different starting
+      // points coincide, so that they can be distinguished from the other
+      // distinct roots
+      for (UnsignedInteger polish = 0; polish < maximumIterations; ++polish)
+      {
+        const Point currentPoint(point);
+        Matrix jacobianMatrix;
+        try
+        {
+          jacobianMatrix = residualFunction.gradient(currentPoint);
+        }
+        catch (...)
+        {
+          break;
+        }
+        Point correction;
+        try
+        {
+          const SquareMatrix jacobian(*jacobianMatrix.getImplementation());
+          correction = jacobian.transpose().solveLinearSystem(residualFunction(currentPoint));
+        }
+        catch (...)
+        {
+          break;
+        }
+        const Point polishedPoint(Point(currentPoint - correction));
+        Scalar polishedResidualNorm = residualNorm;
+        try
+        {
+          polishedResidualNorm = residualFunction(polishedPoint).norm();
+        }
+        catch (...)
+        {
+          break;
+        }
+        if (!(polishedResidualNorm < residualNorm))
+          break;
+        point = polishedPoint;
+        residualNorm = polishedResidualNorm;
+      }
+      return point;
+    }
+    // Jacobian of the residual
+    Matrix gradientMatrix;
+    try
+    {
+      gradientMatrix = residualFunction.gradient(point);
+    }
+    catch (...)
+    {
+      // The residual has no computable Jacobian at this point
+      return Point();
+    }
+    if ((gradientMatrix.getNbRows() != dimension) || (gradientMatrix.getNbColumns() != dimension))
+      throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
+    // Solve J * correction = residual. As the gradient matrix returned by
+    // the function is the transpose of the Jacobian J of the residual, the
+    // Jacobian is the transpose of the gradient matrix.
+    Point correction;
+    try
+    {
+      const SquareMatrix jacobian(*gradientMatrix.getImplementation());
+      correction = jacobian.transpose().solveLinearSystem(residual);
+    }
+    catch (...)
+    {
+      // The Jacobian is not invertible at this point
+      return Point();
+    }
+    // Step control: shrink the step until the residual norm decreases
+    Scalar step = 1.0;
+    Point nextPoint(point);
+    Scalar nextResidualNorm = residualNorm;
+    for (UnsignedInteger backtracking = 0; backtracking < maximumIterations; ++backtracking)
+    {
+      nextPoint = Point(point - step * correction);
+      try
+      {
+        nextResidualNorm = residualFunction(nextPoint).norm();
+      }
+      catch (...)
+      {
+        // The residual does not exist at the trial point: keep reducing the step
+        nextResidualNorm = residualNorm;
+      }
+      if (std::isfinite(nextResidualNorm) && (nextResidualNorm < residualNorm))
+        break;
+      if (step * correction.norm() <= SpecFunc::ScalarEpsilon * std::max(1.0, point.norm()))
+        // No step can reduce the residual norm from here: no preimage reached
+        return Point();
+      step *= stepReduction;
+    }
+    if (nextResidualNorm >= residualNorm)
+      // The residual norm could not be decreased: no preimage reached
+      return Point();
+    point = nextPoint;
+  }
+  return Point();
+}
+
+/* Find all the preimages of the given point by a damped Newton solver with step control */
+DistributionImplementation::PointCollection PushForwardDistribution::findPreimages(const Function & residualFunction) const
+{
+  PointCollection preimages(0);
+  const UnsignedInteger dimension = antecedent_.getDimension();
+  const Interval searchInterval(buildSearchInterval());
+  const Point lowerBound(searchInterval.getLowerBound());
+  const Point upperBound(searchInterval.getUpperBound());
+  const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance");
+  const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize");
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << "Error: the resource map key PushForwardDistribution-PreimageSearchSampleSize must be nonzero.";
+  // Tolerance below which two preimages are considered to be the same one
+  const Scalar dedupTolerance = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, std::max(lowerBound.norm(), upperBound.norm()));
+  auto isValidRoot = [&](const Point & candidate)
+  {
+    try
+    {
+      return residualFunction(candidate).norm() <= residualTolerance;
+    }
+    catch (...)
+    {
+      return false;
+    }
+  };
+  auto addRoot = [&](const Point & candidate)
+  {
+    if (!isValidRoot(candidate))
+      return;
+    for (UnsignedInteger i = 0; i < preimages.getSize(); ++i)
+      if ((preimages[i] - candidate).norm() <= dedupTolerance)
+        return;
+    preimages.add(candidate);
+  };
+  // Refine a candidate by damped Newton, so that all the preimages are
+  // accurate up to the machine precision and can be deduplicated
+  auto addRefinedRoot = [&](const Point & startingPoint)
+  {
+    const Point refined(dampedNewton(residualFunction, startingPoint));
+    if (refined.getSize() > 0)
+      addRoot(refined);
+    else
+      addRoot(startingPoint);
+  };
+  if (dimension == 1)
+  {
+    const Scalar a = lowerBound[0];
+    const Scalar b = upperBound[0];
+    if (a >= b)
+      return preimages;
+    // Evaluate the residual on a regular grid over the search interval
+    Point gridPoints(sampleSize + 1);
+    Point residualValues(sampleSize + 1);
+    for (UnsignedInteger i = 0; i <= sampleSize; ++i)
+    {
+      const Scalar u = (i * b + (sampleSize - i) * a) / sampleSize;
+      gridPoints[i] = u;
+      try
+      {
+        residualValues[i] = residualFunction(Point(1, u))[0];
+      }
+      catch (...)
+      {
+        residualValues[i] = SpecFunc::ScalarEpsilon;
+      }
+    }
+    // Detect the preimages with an odd multiplicity through the sign
+    // changes of the residual and refine them by damped Newton starting
+    // from the middle of the sign change interval, with a bisection
+    // fallback which guarantees the convergence
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      const Scalar rA = residualValues[i];
+      const Scalar rB = residualValues[i + 1];
+      if (!std::isfinite(rA) || !std::isfinite(rB))
+        continue;
+      if (std::abs(rA) <= residualTolerance)
+        addRefinedRoot(Point(1, gridPoints[i]));
+      if (std::abs(rB) <= residualTolerance)
+        addRefinedRoot(Point(1, gridPoints[i + 1]));
+      if ((rA < 0.0) != (rB < 0.0))
+      {
+        // Refine the preimage by damped Newton from the middle of the
+        // sign change interval, with a bisection fallback which
+        // guarantees the convergence given the opposite signs of the
+        // residual at the interval ends
+        Point root(dampedNewton(residualFunction, Point(1, 0.5 * (gridPoints[i] + gridPoints[i + 1]))));
+        if (root.getSize() == 0)
+        {
+          Scalar uLow = gridPoints[i];
+          Scalar uHigh = gridPoints[i + 1];
+          Scalar rLow = rA;
+          Scalar rootValue = 0.5 * (uLow + uHigh);
+          for (UnsignedInteger bisection = 0; bisection <= 64; ++bisection)
+          {
+            rootValue = 0.5 * (uLow + uHigh);
+            Scalar rMiddle = SpecFunc::ScalarEpsilon;
+            try
+            {
+              rMiddle = residualFunction(Point(1, rootValue))[0];
+            }
+            catch (...)
+            {
+              break;
+            }
+            if (std::abs(rMiddle) <= residualTolerance)
+              break;
+            if ((rMiddle < 0.0) == (rLow < 0.0))
+            {
+              uLow = rootValue;
+              rLow = rMiddle;
+            }
+            else uHigh = rootValue;
+          }
+          root = Point(1, rootValue);
+        }
+        addRoot(root);
+      }
+    }
+    // Detect the preimages with an even multiplicity through the local
+    // minima of the absolute value of the residual
+    for (UnsignedInteger i = 1; i < sampleSize; ++i)
+    {
+      const Scalar rA = residualValues[i];
+      if (!std::isfinite(rA) || !std::isfinite(residualValues[i - 1]) || !std::isfinite(residualValues[i + 1]))
+        continue;
+      if (std::abs(rA) < std::abs(residualValues[i - 1]) && std::abs(rA) < std::abs(residualValues[i + 1]))
+      {
+        const Point root(dampedNewton(residualFunction, Point(1, gridPoints[i])));
+        if (root.getSize() > 0)
+          addRoot(root);
+      }
+    }
+  }
+  else
+  {
+    // Multi-start damped Newton from a low-discrepancy sequence over the
+    // search interval
+    const Sample startingPoints(SobolSequence(dimension).generate(sampleSize));
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      Point startingPoint(dimension);
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        startingPoint[j] = lowerBound[j] + (upperBound[j] - lowerBound[j]) * startingPoints(i, j);
+      const Point root(dampedNewton(residualFunction, startingPoint));
+      if (root.getSize() > 0)
+        addRoot(root);
+    }
+  }
+  // Whatever the dimension, also try the mean of the antecedent as a
+  // starting point, which is the natural preimage for injective functions
+  const Point mean(antecedent_.getMean());
+  if (searchInterval.contains(mean))
+  {
+    const Point root(dampedNewton(residualFunction, mean));
+    if (root.getSize() > 0)
+      addRoot(root);
+  }
+  return preimages;
+}
+
+/* Compute the numerical PDF of the distribution at the given point */
 Scalar PushForwardDistribution::computePDF(const Point & point) const
 {
   const UnsignedInteger inputDimension = antecedent_.getDimension();
   const UnsignedInteger outputDimension = function_.getOutputDimension();
   if (point.getDimension() != outputDimension)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << outputDimension << ", here dimension=" << point.getDimension();
-  // Build the residual function r(u) = f(u) - point and look for a preimage
-  // u such that r(u) = 0 using a least squares solver.
-  // Only one preimage is searched for, starting from the mean of the
-  // antecedent. This is fragile for non-monotone functions with several
-  // preimages. A Newton solver with step control is planned as an
-  // improvement.
+  // The preimages of the point are the roots of the residual function
+  // r(u) = f(u) - point
   const Function residualFunction(function_ - ConstantFunction(inputDimension, point));
   const Interval antecedentRange(antecedent_.getRange());
-  const Interval::BoolCollection finiteLowerBound(antecedentRange.getFiniteLowerBound());
-  const Interval::BoolCollection finiteUpperBound(antecedentRange.getFiniteUpperBound());
-  Bool hasFiniteBounds = true;
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-    hasFiniteBounds = hasFiniteBounds && finiteLowerBound[i] && finiteUpperBound[i];
-  Point preimage(0);
-  try
-  {
-    if (hasFiniteBounds)
-      preimage = solver_.solve(residualFunction, antecedent_.getMean(), antecedentRange);
-    else
-      preimage = solver_.solve(residualFunction, antecedent_.getMean());
-  }
-  catch (const InternalException &)
-  {
-    // No preimage found within the tolerance: the point is not in the support
-    return 0.0;
-  }
-  // Check that the solved point is an actual preimage
-  const Scalar residualNorm = (function_(preimage) - point).norm();
-  if (residualNorm > ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance"))
-    return 0.0;
-  if (!antecedentRange.contains(preimage))
-    return 0.0;
-  // Change of variables formula
-  const Scalar numerator = antecedent_.computePDF(preimage);
-  if (!(numerator > 0.0))
-    return 0.0;
-  const Matrix gradientMatrix(function_.gradient(preimage));
-  if ((gradientMatrix.getNbRows() != inputDimension) || (gradientMatrix.getNbColumns() != outputDimension))
-    throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
-  // In the square case the denominator is |det(J)|, in the intrinsic case
-  // it is sqrt(det(J^T J)) where J is the Jacobian matrix of the function.
-  // The gradient matrix returned by the function is the transpose of J.
-  Scalar determinant = 0.0;
+  // Search for the preimages of the point:
+  // - in the square case (p == n), a damped Newton solver with step control
+  //   finds all the preimages, being comprehensive in dimension one through
+  //   a decomposition of the search interval and multi-start in higher
+  //   dimensions, hence supporting non-injective functions;
+  // - in the intrinsic case (p > n), only the preimage closest to the mean
+  //   of the antecedent is searched for, through the least squares solver
+  PointCollection preimages(0);
   if (outputDimension == inputDimension)
   {
-    const SquareMatrix jacobianSquareMatrix(*gradientMatrix.getImplementation());
-    determinant = jacobianSquareMatrix.computeDeterminant();
+    preimages = findPreimages(residualFunction);
   }
   else
   {
-    // Here J^T J = gradient * gradient^T
-    SquareMatrix gramMatrix(inputDimension);
+    const Interval::BoolCollection finiteLowerBound(antecedentRange.getFiniteLowerBound());
+    const Interval::BoolCollection finiteUpperBound(antecedentRange.getFiniteUpperBound());
+    Bool hasFiniteBounds = true;
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
-      for (UnsignedInteger j = 0; j < inputDimension; ++j)
-      {
-        Scalar value = 0.0;
-        for (UnsignedInteger k = 0; k < outputDimension; ++k)
-          value += gradientMatrix(i, k) * gradientMatrix(j, k);
-        gramMatrix(i, j) = value;
-      }
-    determinant = gramMatrix.computeDeterminant();
+      hasFiniteBounds = hasFiniteBounds && finiteLowerBound[i] && finiteUpperBound[i];
+    Point preimage(0);
+    try
+    {
+      if (hasFiniteBounds)
+        preimage = solver_.solve(residualFunction, antecedent_.getMean(), antecedentRange);
+      else
+        preimage = solver_.solve(residualFunction, antecedent_.getMean());
+    }
+    catch (const InternalException &)
+    {
+      // No preimage found within the tolerance: the point is not in the support
+      return 0.0;
+    }
+    // Check that the solved point is an actual preimage
+    const Scalar residualNorm = (function_(preimage) - point).norm();
+    if (residualNorm > ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance"))
+      return 0.0;
+    if (!antecedentRange.contains(preimage))
+      return 0.0;
+    preimages.add(preimage);
   }
-  const Scalar denominator = (outputDimension == inputDimension) ? std::abs(determinant) : std::sqrt(determinant);
-  if (!std::isfinite(denominator) || !(denominator > 0.0))
-    return 0.0;
-  const Scalar pdf = numerator / denominator;
+  // Change of variables formula: the density at the point is the sum of the
+  // contributions over all its preimages
+  Scalar pdf = 0.0;
+  for (UnsignedInteger k = 0; k < preimages.getSize(); ++k)
+  {
+    const Point preimage(preimages[k]);
+    if (!antecedentRange.contains(preimage))
+      continue;
+    const Scalar numerator = antecedent_.computePDF(preimage);
+    if (!(numerator > 0.0))
+      continue;
+    const Matrix gradientMatrix(function_.gradient(preimage));
+    if ((gradientMatrix.getNbRows() != inputDimension) || (gradientMatrix.getNbColumns() != outputDimension))
+      throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
+    // In the square case the denominator is |det(J)|, in the intrinsic case
+    // it is sqrt(det(J^T J)) where J is the Jacobian matrix of the function.
+    // The gradient matrix returned by the function is the transpose of J.
+    Scalar determinant = 0.0;
+    if (outputDimension == inputDimension)
+    {
+      const SquareMatrix jacobianSquareMatrix(*gradientMatrix.getImplementation());
+      determinant = jacobianSquareMatrix.computeDeterminant();
+    }
+    else
+    {
+      // Here J^T J = gradient * gradient^T
+      SquareMatrix gramMatrix(inputDimension);
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+        for (UnsignedInteger j = 0; j < inputDimension; ++j)
+        {
+          Scalar value = 0.0;
+          for (UnsignedInteger kk = 0; kk < outputDimension; ++kk)
+            value += gradientMatrix(i, kk) * gradientMatrix(j, kk);
+          gramMatrix(i, j) = value;
+        }
+      determinant = gramMatrix.computeDeterminant();
+    }
+    const Scalar denominator = (outputDimension == inputDimension) ? std::abs(determinant) : std::sqrt(determinant);
+    if (!std::isfinite(denominator) || !(denominator > 0.0))
+      // Critical value of the function where the Jacobian is singular: the
+      // density is singular, the contribution is not evaluated
+      continue;
+    pdf += numerator / denominator;
+  }
   return pdf;
 }
 

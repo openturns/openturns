@@ -31,11 +31,25 @@ the Lebesgue measure of the tangent space:
     f_Y(y) = \frac{f_X(u)}{\sqrt{\det(J_f(u)^T J_f(u))}},
     \quad y = f(u)
 
-The preimage :math:`u = f^{-1}(y)` is sought numerically with a least
-squares solver. Only the preimage closest to the mean of the antecedent is
-found, so the density is correctly computed only when :math:`f` is
-invertible on the support of :math:`X`. A Newton solver with step control
-is planned as an improvement for the general case.
+In the square case :math:`p = n`, the preimages :math:`u = f^{-1}(y)`
+are sought numerically by a damped Newton solver with step control, which
+finds all of them: it is comprehensive in dimension one through a
+decomposition of the support of :math:`X` into sign-change intervals of the
+residual and local minima of its absolute value, and relies on a
+low-discrepancy multi-start search in higher dimensions. The density is
+then the sum of the contributions of all the preimages, so non-injective
+functions are supported:
+
+.. math::
+
+    f_Y(y) = \sum_{u : f(u) = y} \frac{f_X(u)}{|\det J_f(u)|}
+
+In the intrinsic case :math:`p > n`, the preimage :math:`u = f^{-1}(y)`
+closest to the mean of :math:`X` is sought numerically with a least
+squares solver.
+
+At critical values, where the Jacobian of :math:`f` is singular, the
+density is singular and is not evaluated.
 
 The case :math:`p < n` (co-area formula) is not implemented yet.
 
@@ -62,6 +76,17 @@ The number of Monte-Carlo realizations used to estimate the range, the mean
 and the covariance are stored in the `PushForwardDistribution-SampleSize`
 :class:`~openturns.ResourceMap` key.
 
+The number of points used to decompose the search interval and to seed the
+damped Newton solver is stored in the
+`PushForwardDistribution-PreimageSearchSampleSize`
+:class:`~openturns.ResourceMap` key.
+
+The maximum number of iterations of the damped Newton solver and the
+reduction factor applied to the step when it fails to decrease the residual
+norm are stored in the `PushForwardDistribution-NewtonMaximumIterations`
+and the `PushForwardDistribution-NewtonStepReduction`
+:class:`~openturns.ResourceMap` keys.
+
 See also
 --------
 CompositeDistribution
@@ -81,6 +106,8 @@ The distribution of :math:`Y = X^2` with :math:`X \sim \mathcal{N}(0, 1)`:
 
 >>> f = ot.SymbolicFunction(['x'], ['x^2'])
 >>> distZ = otexp.PushForwardDistribution(f, ot.Normal(0.0, 1.0))
+>>> print(distZ.computePDF([1.0]))
+0.2419707...
 
 Create the distribution of a random point following a normal distribution
 along the diagonal of :math:`\Rset^2`:

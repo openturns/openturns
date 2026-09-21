@@ -85,6 +85,61 @@ identityDistribution = otexp.PushForwardDistribution(fIdentity,
 ott.assert_almost_equal(identityDistribution.computePDF([0.5]),
                         ot.Normal(0.0, 1.0).computePDF([0.5]))
 
+# Non-injective function: Y = X^2 with X ~ Normal(0, 1).
+# The preimage of y > 0 is +/-sqrt(y), so that
+# pdf(y) = phi(sqrt(y)) / sqrt(y)
+squareFunction = ot.SymbolicFunction(["x"], ["x^2"])
+squareDistribution = otexp.PushForwardDistribution(squareFunction,
+                                                   ot.Normal(0.0, 1.0))
+for y, value in [(1.0, 0.24197072451914337),
+                 (0.25, 0.7041306535285990),
+                 (4.0, 0.02699548325659403)]:
+    pdf = squareDistribution.computePDF([y])
+    print(f"square pdf({y})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, value, 1e-4, 0.0)
+# Points outside the image have a zero density
+ott.assert_almost_equal(squareDistribution.computePDF([-1.0]), 0.0, 0.0,
+                        1e-12)
+
+# Non-injective function on a finite support: Y = X^2 with
+# X ~ Uniform(-1, 1), so that pdf(y) = 1 / (2 sqrt(y))
+boundedSquareDistribution = otexp.PushForwardDistribution(
+    squareFunction, ot.Uniform(-1.0, 1.0)
+)
+ott.assert_almost_equal(boundedSquareDistribution.computePDF([0.25]), 1.0,
+                        1e-4, 0.0)
+ott.assert_almost_equal(boundedSquareDistribution.computePDF([-0.5]), 0.0,
+                        0.0, 1e-12)
+
+# Non-injective oscillating function: Y = sin(X) with X ~ Uniform(0, 2 pi).
+# The preimages of 0.5 are pi/6 and 5 pi/6, both with |cos| = sqrt(3)/2,
+# so that pdf(0.5) = 2 / (pi sqrt(3))
+sineFunction = ot.SymbolicFunction(["x"], ["sin(x)"])
+sineDistribution = otexp.PushForwardDistribution(
+    sineFunction, ot.Uniform(0.0, 2.0 * math.pi)
+)
+sinePdf = 2.0 / (math.pi * math.sqrt(3.0))
+ott.assert_almost_equal(sineDistribution.computePDF([0.5]), sinePdf, 1e-4,
+                        0.0)
+ott.assert_almost_equal(sineDistribution.computePDF([-0.5]), sinePdf, 1e-4,
+                        0.0)
+ott.assert_almost_equal(sineDistribution.computePDF([1.5]), 0.0, 0.0, 1e-12)
+
+# Square case in dimension 2: Y = (X0^2, X1^2) with X ~ Normal(2).
+# The preimages of (1, 1) are (+/-1, +/-1), each with |det(J)| = 4,
+# so that pdf(1, 1) = phi(1)^2
+square2Function = ot.SymbolicFunction(["x0", "x1"], ["x0^2", "x1^2"])
+square2Distribution = otexp.PushForwardDistribution(square2Function,
+                                                    ot.Normal(2))
+ott.assert_almost_equal(
+    square2Distribution.computePDF([1.0, 1.0]),
+    ot.Normal(0.0, 1.0).computePDF([1.0]) ** 2,
+    1e-4,
+    0.0,
+)
+ott.assert_almost_equal(square2Distribution.computePDF([-1.0, 1.0]), 0.0,
+                        0.0, 1e-6)
+
 # Bounded support: Y = 2X with X ~ Uniform(-1, 1) is Uniform(-2, 2)
 uniformDistribution = otexp.PushForwardDistribution(
     ot.SymbolicFunction(["x"], ["2.0 * x"]), ot.Uniform(-1.0, 1.0)
