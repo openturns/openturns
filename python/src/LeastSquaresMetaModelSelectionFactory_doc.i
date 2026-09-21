@@ -20,11 +20,11 @@ it is operational only within the :class:`~openturns.FunctionalChaosAlgorithm`.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LeastSquaresMetaModelSelection-ErrorThreshold* (`Scalar`, default: `0.0`)
-- *LeastSquaresMetaModelSelection-MaximumError* (`Scalar`, default: `0.5`)
-- *LeastSquaresMetaModelSelection-MaximumErrorFactor* (`Scalar`, default: `2.0`)
-- *LeastSquaresMetaModelSelection-DecompositionMethod* (`String`, default: `SVD`)
-- *LeastSquaresMetaModelSelection-SmallBasisSize* (`UnsignedInteger`, default: `10`)
+- ``LeastSquaresMetaModelSelection-ErrorThreshold`` (``Scalar``, default: ``0.0``): threshold on the error of the selection.
+- ``LeastSquaresMetaModelSelection-MaximumError`` (``Scalar``, default: ``0.5``): maximum relative error of the selection.
+- ``LeastSquaresMetaModelSelection-MaximumErrorFactor`` (``Scalar``, default: ``2.0``): factor applied to the error of the selection.
+- ``LeastSquaresMetaModelSelection-DecompositionMethod`` (``String``, default: ``SVD``): name of the decomposition method used to solve the least squares problem. The possible values are ``SVD``, ``Cholesky`` and ``QR``.
+- ``LeastSquaresMetaModelSelection-SmallBasisSize`` (``UnsignedInteger``, default: ``10``): size below which the basis is considered small.
 
 Examples
 --------
