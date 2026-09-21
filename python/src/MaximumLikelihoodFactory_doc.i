@@ -37,7 +37,7 @@ The estimator of  :math:`\vect{\theta}` maximizes the log-likelihood:
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``MaximumLikelihoodFactory-DefaultOptimizationAlgorithm`` (``String``, default: ``TNC``): name of the optimization algorithm used to maximize the log-likelihood, among the ones recognized by :class:`~openturns.OptimizationAlgorithm`
+- ``MaximumLikelihoodFactory-DefaultOptimizationAlgorithm`` (``String``, default: ``TNC``): name of the optimization algorithm used to maximize the log-likelihood. The possible values are ``AbdoRackwitz``, ``Cobyla``, ``SQP`` and ``TNC``, plus the names returned by the method :meth:`OptimizationAlgorithm.GetAlgorithmNames`.
 - ``MaximumLikelihoodFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1.0e-10``): absolute error of the optimization
 - ``MaximumLikelihoodFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function of the optimization
 - ``MaximumLikelihoodFactory-MaximumConstraintError`` (``Scalar``, default: ``1.0e-10``): constraint error of the optimization
