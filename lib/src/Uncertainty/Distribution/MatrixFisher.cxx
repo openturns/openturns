@@ -139,7 +139,16 @@ void MatrixFisher::computeNormalization()
   // theta in [0, pi]. The trace cannot exceed the sum of the singular values
   // of F, so we integrate exp(tr - maxTrace) <= 1 to avoid overflows and
   // exponentiate the maximum back at the end.
-  const UnsignedInteger order = ResourceMap::GetAsUnsignedInteger("MatrixFisher-QuadratureOrder");
+  // The integrand concentrates on a peak of width ~ 1/sqrt(maxTrace), so
+  // the quadrature order grows with the trace from the base order.
+  Matrix singularU, singularVT;
+  Matrix singularF(F_);
+  const Point singularS = singularF.computeSVDInPlace(singularU, singularVT);
+  const Scalar traceBound = singularS[0] + singularS[1] + singularS[2];
+  const UnsignedInteger baseOrder = ResourceMap::GetAsUnsignedInteger("MatrixFisher-QuadratureOrder");
+  const Scalar growthFactor = ResourceMap::GetAsScalar("MatrixFisher-QuadratureGrowthFactor");
+  const UnsignedInteger order = std::max(baseOrder,
+      static_cast<UnsignedInteger>(std::ceil(growthFactor * std::sqrt(std::max(1.0, traceBound)))));
   const GaussLegendre quadrature(Indices(3, order));
   const Sample nodes(quadrature.getNodes());
   const Point weights(quadrature.getWeights());
@@ -227,18 +236,20 @@ void MatrixFisher::updateSampler()
 
   // Sort singular values in descending order and corresponding vectors
   // (SVD typically returns them in descending order already)
-  // But we need to ensure U and V are in SO(3) (det = +1)
-  Scalar detU = U_.computeDeterminant();
-  Scalar detV = V_.computeDeterminant();
-  if (detU < 0.0)
+  // The factors are moved to SO(3) only when a joint sign flip preserves
+  // the factorization U diag(sigma) V^T = F: flipping the last column of
+  // both factors leaves the product unchanged. When exactly one factor has
+  // determinant -1 (det F < 0), no joint flip can land both factors in SO(3)
+  // while preserving F, so the O(3) factors are kept as-is.
+  const Scalar detU = U_.computeDeterminant();
+  const Scalar detV = V_.computeDeterminant();
+  if ((detU < 0.0) && (detV < 0.0))
   {
     for (UnsignedInteger j = 0; j < 3; ++j)
+    {
       U_(j, 2) = -U_(j, 2);
-  }
-  if (detV < 0.0)
-  {
-    for (UnsignedInteger j = 0; j < 3; ++j)
       V_(j, 2) = -V_(j, 2);
+    }
   }
 
   // Maximum of tr(F^T R) = sum of the singular values of F

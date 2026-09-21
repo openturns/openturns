@@ -1475,6 +1475,9 @@ void ResourceMap::loadDefaultConfiguration()
   // MatrixFisher parameters //
   addAsScalar("MatrixFisher-OrthogonalityThreshold", 1.0e-12);
   addAsUnsignedInteger("MatrixFisher-QuadratureOrder", 50);
+  addAsScalar("MatrixFisher-QuadratureGrowthFactor", 7.0);
+  addAsScalar("MatrixFisher-MaximumConcentration", 100.0);
+  addAsUnsignedInteger("MatrixFisherFactory-MaximumIterations", 20);
 
   // RiemannianGaussian parameters //
   addAsScalar("RiemannianGaussian-PositiveDefiniteThreshold", 1.0e-12);

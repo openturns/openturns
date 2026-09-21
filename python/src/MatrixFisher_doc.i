@@ -73,6 +73,9 @@ The following :class:`openturns.ResourceMap` keys are used:
   validation of the orthogonality of the sampled matrices.
 - ``MatrixFisher-QuadratureOrder``: number of quadrature nodes per dimension
   used in the evaluation of the normalization constant.
+- ``MatrixFisher-QuadratureGrowthFactor``: the effective quadrature order is
+  the maximum of the base order and this factor times the square root of the
+  trace bound, default value ``7.0``.
 
 Examples
 --------

@@ -16,13 +16,24 @@ estimates the Matrix Fisher parameters using the method of moments:
    :math:`\mathbf{U},\mathbf{V}`.
 
 3. The concentration matrix is built as
-   :math:`\mathbf{F} = \mathbf{U}\,\mathrm{diag}(f_1,f_2,f_3)\mathbf{V}^T`
-   where :math:`f_i = 3s_i` when :math:`s_i < 0.5` and
-   :math:`f_i = 1/(2(1-s_i))` otherwise.
+   :math:`\mathbf{F} = \hat{\mathbf{R}}\,\mathrm{diag}(f_1,f_2,f_3)`
+   where :math:`\hat{\mathbf{R}}` is the proper polar mode of
+   :math:`\mathbf{M}` and the concentrations solve the moment equations
+   by damped Newton-Raphson, starting from :math:`f_i = 3s_i` when
+   :math:`s_i < 0.5` and :math:`f_i = 1/(2(1-s_i))` otherwise.
 
 See also
 --------
 openturns.DistributionFactory, MatrixFisher
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MatrixFisher-MaximumConcentration``: ceiling applied to the estimated
+  concentrations, set by quadrature feasibility, default value ``100.0``.
+- ``MatrixFisherFactory-MaximumIterations``: maximum number of
+  Newton-Raphson iterations and of step-halving steps, default value ``20``.
 
 Examples
 --------

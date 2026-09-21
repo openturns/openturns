@@ -823,6 +823,9 @@
   <!-- OT::MatrixFisher parameters -->
   <MatrixFisher-OrthogonalityThreshold value_float="1e-12"        />
   <MatrixFisher-QuadratureOrder  value_int="50" />
+  <MatrixFisher-QuadratureGrowthFactor value_float="7.0" />
+  <MatrixFisher-MaximumConcentration value_float="100.0" />
+  <MatrixFisherFactory-MaximumIterations value_int="20" />
 
   <!-- OT::RiemannianGaussian parameters -->
   <RiemannianGaussian-PositiveDefiniteThreshold value_float="1e-12" />

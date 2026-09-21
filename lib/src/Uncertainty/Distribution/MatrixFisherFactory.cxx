@@ -25,6 +25,8 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/Matrix.hxx"
+#include <algorithm>
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -108,56 +110,130 @@ MatrixFisher MatrixFisherFactory::buildAsMatrixFisher(const Sample & sample) con
   SquareMatrix V(vT.getImplementation());
   V = V.transpose(); // V^T from SVD, we need V
 
-  // Ensure U, V in SO(3)
-  if (U_sq.computeDeterminant() < 0.0)
-  {
-    for (UnsignedInteger j = 0; j < 3; ++j)
-      U_sq(j, 2) = -U_sq(j, 2);
-  }
-  if (V.computeDeterminant() < 0.0)
-  {
-    for (UnsignedInteger j = 0; j < 3; ++j)
-      V(j, 2) = -V(j, 2);
-  }
+  // Proper polar mode: the rotation closest to M. With D = diag(1, 1, det),
+  // mode = U D V^T always lies in SO(3), with no column flip breaking the
+  // factorization, including when det M < 0.
+  SquareMatrix UVt = U_sq * V.transpose();
+  const Scalar detUV = UVt.computeDeterminant();
+  const Scalar orientation = (detUV < 0.0 ? -1.0 : 1.0);
+  SquareMatrix mode(3);
+  for (UnsignedInteger r = 0; r < 3; ++r)
+    for (UnsignedInteger c = 0; c < 3; ++c)
+    {
+      mode(r, c) = U_sq(r, 0) * V(c, 0) + U_sq(r, 1) * V(c, 1) + orientation * U_sq(r, 2) * V(c, 2);
+    }
 
-  // Step 3: The singular values of M are related to the concentrations
-  // For large concentrations: s_i approx 1 - 1/(2*kappa_i)
-  // For small concentrations: s_i approx kappa_i/3
-  // We invert this relationship numerically
-
-  // Initial guess: large concentration approximation
-  Point kappa(3);
+  // Step 3: invert the moment equations E[R](f) = s by damped Newton-Raphson.
+  // For the concentrations f, E[R] = mode * diag(d(f)) by rotation equivariance,
+  // so only the diagonal moments in the mode frame are matched.
+  // 0.5 is the standard threshold in the literature (Kato & Pennec 2018)
+  // separating small concentration (s ~ kappa/3) from large concentration
+  // (s ~ 1 - 1/(2*kappa)) approximations, used for the initial guess.
+  const Scalar concentrationThreshold = 0.5;
+  const Scalar maximumConcentration = ResourceMap::GetAsScalar("MatrixFisher-MaximumConcentration");
+  Point concentration(3);
   for (UnsignedInteger i = 0; i < 3; ++i)
   {
     const Scalar si = std::max(SpecFunc::ScalarEpsilon, std::min(1.0 - SpecFunc::ScalarEpsilon, s[i]));
-    kappa[i] = 1.0 / (2.0 * (1.0 - si));
-  }
-
-  // Refine using Newton-Raphson on the moment equations
-  // This is a simplified version - full implementation would match
-  // the expected singular values of E[R] under MatrixFisher
-
-  // For now, use the singular values of M as concentrations directly
-  // (simplified estimation)
-  // 0.5 is the standard threshold in the literature (Kato & Pennec 2018)
-  // separating small concentration (s ~ kappa/3) from large concentration
-  // (s ~ 1 - 1/(2*kappa)) approximations
-  const Scalar concentrationThreshold = 0.5;
-  Point F_diag(3);
-  for (UnsignedInteger i = 0; i < 3; ++i)
-  {
-    if (s[i] < concentrationThreshold)
-      F_diag[i] = 3.0 * s[i]; // Small concentration: s ~ kappa/3
+    if (si < concentrationThreshold)
+      concentration[i] = 3.0 * si; // Small concentration: s ~ kappa/3
     else
-      F_diag[i] = 1.0 / (2.0 * (1.0 - s[i])); // Large concentration: s ~ 1 - 1/(2*kappa)
+      concentration[i] = 1.0 / (2.0 * (1.0 - si)); // Large concentration: s ~ 1 - 1/(2*kappa)
+    concentration[i] = std::min(concentration[i], maximumConcentration);
   }
 
-  // Build F = U * diag(F_diag) * V^T
+  // Diagonal moments of a candidate: (mode^T E[R])_ii through the mean matrix
+  auto diagonalMoments = [&](const Point & f)
+  {
+    SquareMatrix diagF(3);
+    for (UnsignedInteger i = 0; i < 3; ++i)
+      diagF(i, i) = f[i];
+    const MatrixFisher candidate(mode * diagF);
+    const Point meanFlat(candidate.getMean());
+    SquareMatrix meanMatrix(3);
+    for (UnsignedInteger r = 0; r < 3; ++r)
+      for (UnsignedInteger c = 0; c < 3; ++c)
+        meanMatrix(r, c) = meanFlat[r * 3 + c];
+    const SquareMatrix pulled = mode.transpose() * meanMatrix;
+    Point diagonal(3);
+    for (UnsignedInteger i = 0; i < 3; ++i)
+      diagonal[i] = pulled(i, i);
+    return diagonal;
+  };
+
+  const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("MatrixFisherFactory-MaximumIterations");
+  const Scalar residualPrecision = std::sqrt(SpecFunc::Precision);
+  for (UnsignedInteger iteration = 0; iteration < maximumIterations; ++iteration)
+  {
+    const Point moments = diagonalMoments(concentration);
+    Point residual(3);
+    Scalar residualNorm = 0.0;
+    for (UnsignedInteger i = 0; i < 3; ++i)
+    {
+      residual[i] = moments[i] - s[i];
+      residualNorm = std::max(residualNorm, std::abs(residual[i]));
+    }
+    if (residualNorm <= residualPrecision) break;
+    // Jacobian by central finite differences
+    Matrix jacobian(3, 3);
+    for (UnsignedInteger j = 0; j < 3; ++j)
+    {
+      const Scalar step = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, std::abs(concentration[j]));
+      Point fPlus(concentration);
+      Point fMinus(concentration);
+      fPlus[j] += step;
+      fMinus[j] -= step;
+      const Point momentsPlus = diagonalMoments(fPlus);
+      const Point momentsMinus = diagonalMoments(fMinus);
+      for (UnsignedInteger i = 0; i < 3; ++i)
+        jacobian(i, j) = (momentsPlus[i] - momentsMinus[i]) / (2.0 * step);
+    }
+    Point negativeResidual(3);
+    for (UnsignedInteger i = 0; i < 3; ++i)
+      negativeResidual[i] = -residual[i];
+    const Point stepDirection(jacobian.solveLinearSystem(negativeResidual));
+    // Damped update within the feasible concentrations, stop when stalled
+    Scalar damping = 1.0;
+    Bool improved = false;
+    for (UnsignedInteger halving = 0; halving < maximumIterations; ++halving)
+    {
+      Point trial(concentration);
+      for (UnsignedInteger i = 0; i < 3; ++i)
+        trial[i] = std::min(maximumConcentration, concentration[i] + damping * stepDirection[i]);
+      const Point trialMoments = diagonalMoments(trial);
+      Scalar trialNorm = 0.0;
+      for (UnsignedInteger i = 0; i < 3; ++i)
+        trialNorm = std::max(trialNorm, std::abs(trialMoments[i] - s[i]));
+      if (trialNorm < residualNorm)
+      {
+        concentration = trial;
+        improved = true;
+        break;
+      }
+      damping *= 0.5;
+    }
+    if (!improved) break;
+  }
+
+  // Canonical form: sort the concentrations in descending order, permuting
+  // the mode columns jointly so the estimated matrix is unchanged
+  for (UnsignedInteger i = 0; i < 3; ++i)
+    for (UnsignedInteger j = i + 1; j < 3; ++j)
+    {
+      if (concentration[j] > concentration[i])
+      {
+        std::swap(concentration[i], concentration[j]);
+        for (UnsignedInteger r = 0; r < 3; ++r)
+          std::swap(mode(r, i), mode(r, j));
+      }
+    }
+
+  // Build F = mode * diag(concentration)
   SquareMatrix F_diag_mat(3);
-  F_diag_mat(0,0) = F_diag[0];
-  F_diag_mat(1,1) = F_diag[1];
-  F_diag_mat(2,2) = F_diag[2];
-  SquareMatrix F = U_sq * F_diag_mat * V.transpose();
+  F_diag_mat(0, 0) = concentration[0];
+  F_diag_mat(1, 1) = concentration[1];
+  F_diag_mat(2, 2) = concentration[2];
+  SquareMatrix F = mode * F_diag_mat;
 
   MatrixFisher result(F);
   result.setDescription(sample.getDescription());

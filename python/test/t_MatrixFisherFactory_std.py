@@ -45,6 +45,26 @@ native_default = factory.buildAsMatrixFisher()
 assert ot.Distribution(native_default).getImplementation().getClassName() == \
     "MatrixFisher"
 
+# Build from identical rotations: no crash, highly concentrated estimate
+ot.RandomGenerator.SetSeed(0)
+identical = ot.Sample(
+    [[1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]] * 5
+)
+degenerate = factory.build(identical)
+assert degenerate.getDimension() == 9
+assert degenerate.computePDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]) > 0.0
+
+# Build from a concentrated sample: moment matching recovers the concentrations
+concF = ot.SquareMatrix([[8.0, 0.0, 0.0], [0.0, 5.0, 0.0], [0.0, 0.0, 2.0]])
+concRef = otexp.MatrixFisher(concF)
+ot.RandomGenerator.SetSeed(1)
+concSample = concRef.getSample(5000)
+concEst = factory.build(concSample).getImplementation().getF()
+for estimated, true in zip(
+    [concEst[0, 0], concEst[1, 1], concEst[2, 2]], [8.0, 5.0, 2.0]
+):
+    assert abs(estimated - true) < 1.0, "F=%s" % str(concEst)
+
 # Invalid samples
 with ott.assert_raises(TypeError):
     factory.build(ot.Sample([[1.0, 0.0, 0.0]] * 5))
