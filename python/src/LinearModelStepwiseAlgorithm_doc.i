@@ -38,11 +38,12 @@ and the :math:`n`-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as 
 where :math:`\epsilon` is the residual, supposed to follow the standard Normal
 distribution, :math:`\phi_i` the i-th element of the basis.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LinearModelStepwiseAlgorithm-MaximumIterationNumber* (`UnsignedInteger`, default: `1000`)
-- *LinearModelStepwiseAlgorithm-Penalty* (`Scalar`, default: `2`)
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LinearModelStepwiseAlgorithm-MaximumIterationNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of iterations of the stepwise algorithm
+- ``LinearModelStepwiseAlgorithm-Penalty`` (``Scalar``, default: ``2.0``): value of the penalty used in the criterion of the stepwise algorithm
 
 
 The following :class:`~openturns.ResourceMap` keys are used:

@@ -61,14 +61,15 @@ which is equivalent to the solution of the following optimization problem:
     \widehat{\theta} = \argmin_{\vect{\theta} \in \Rset^{d_\theta}}  \sum_{k=1}^{d_\theta} \left[ \left( g_k(\vect{\theta}) \right)^{1/k}-
     \widehat{\mu}_k^{1/k} \right]^2
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *MethodOfMomentsFactory-MaximumAbsoluteError* (`Scalar`, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumCallsNumber* (`UnsignedInteger`, default: `1000`)
-- *MethodOfMomentsFactory-MaximumConstraintError* (`Scalar`, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumObjectiveError* (`Scalar`, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumRelativeError* (`Scalar`, default: `1e-10`)
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MethodOfMomentsFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1.0e-10``): absolute error of the optimization
+- ``MethodOfMomentsFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function of the optimization
+- ``MethodOfMomentsFactory-MaximumConstraintError`` (``Scalar``, default: ``1.0e-10``): constraint error of the optimization
+- ``MethodOfMomentsFactory-MaximumObjectiveError`` (``Scalar``, default: ``1.0e-10``): objective error of the optimization
+- ``MethodOfMomentsFactory-MaximumRelativeError`` (``Scalar``, default: ``1.0e-10``): relative error of the optimization
 
 
 The following :class:`~openturns.ResourceMap` keys are used:
