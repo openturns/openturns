@@ -722,6 +722,10 @@
   <PushForwardDistribution-NewtonMaximumIterations  value_int="50" />
   <PushForwardDistribution-NewtonStepReduction      value_float="0.5" />
 
+  <!-- OT::PushForwardOverMesh parameters -->
+  <PushForwardOverMesh-OnSimplexEpsilon value_float="1.0e-10" />
+  <PushForwardOverMesh-SampleSize       value_int="10000"     />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />

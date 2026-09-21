@@ -1361,6 +1361,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations", 50);
   addAsScalar("PushForwardDistribution-NewtonStepReduction", 0.5);
 
+  // PushForwardOverMesh parameters //
+  addAsScalar("PushForwardOverMesh-OnSimplexEpsilon", 1e-10);
+  addAsUnsignedInteger("PushForwardOverMesh-SampleSize", 10000);
+
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10);

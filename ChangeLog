@@ -23,6 +23,7 @@
  * SlicedInverseRegression (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
+ * PushForwardOverMesh (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)

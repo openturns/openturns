@@ -56,6 +56,7 @@
 #include "openturns/CompoundDistribution.hxx"
 #include "openturns/PointConditionalDistribution.hxx"
 #include "openturns/PushForwardDistribution.hxx"
+#include "openturns/PushForwardOverMesh.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
 #include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/Dirac.hxx"
