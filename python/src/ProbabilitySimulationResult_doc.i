@@ -6,11 +6,11 @@ Notes
 Structure created by the method run() of a :class:`~openturns.EventSimulation`,
 and obtained thanks to the method getResult().
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *ProbabilitySimulationResult-CheckPositiveVariance* (``Bool``, default: `false`)
+- ``ProbabilitySimulationResult-CheckPositiveVariance`` (``Bool``, default: ``false``): whether the variance of the probability estimator is checked to be strictly positive
 
-- *ProbabilitySimulationResult-DefaultConfidenceLevel* (``Scalar``, default: `0.95`)
+- ``ProbabilitySimulationResult-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default confidence level used to compute the confidence interval of the probability estimator
 
 Examples
 --------

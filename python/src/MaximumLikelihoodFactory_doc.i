@@ -35,14 +35,14 @@ The estimator of  :math:`\vect{\theta}` maximizes the log-likelihood:
     \hat{\vect{\theta}} = \argmax_{\vect{\theta} \in \Theta} \log \ell (\vect{x}_1, \dots, \vect{x}_n; \vect{\theta}) 
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *MaximumLikelihoodFactory-DefaultOptimizationAlgorithm* (``String``, default: `TNC`)
-- *MaximumLikelihoodFactory-MaximumAbsoluteError* (``Scalar``, default: `1e-10`)
-- *MaximumLikelihoodFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
-- *MaximumLikelihoodFactory-MaximumConstraintError* (``Scalar``, default: `1e-10`)
-- *MaximumLikelihoodFactory-MaximumObjectiveError* (``Scalar``, default: `1e-10`)
-- *MaximumLikelihoodFactory-MaximumRelativeError* (``Scalar``, default: `1e-10`)
+- ``MaximumLikelihoodFactory-DefaultOptimizationAlgorithm`` (``String``, default: ``TNC``): name of the optimization algorithm used to maximize the log-likelihood, among the ones recognized by :class:`~openturns.OptimizationAlgorithm`
+- ``MaximumLikelihoodFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1.0e-10``): absolute error of the optimization
+- ``MaximumLikelihoodFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function of the optimization
+- ``MaximumLikelihoodFactory-MaximumConstraintError`` (``Scalar``, default: ``1.0e-10``): constraint error of the optimization
+- ``MaximumLikelihoodFactory-MaximumObjectiveError`` (``Scalar``, default: ``1.0e-10``): objective error of the optimization
+- ``MaximumLikelihoodFactory-MaximumRelativeError`` (``Scalar``, default: ``1.0e-10``): relative error of the optimization
 
 See also
 --------

@@ -76,7 +76,7 @@ Some algorithms support batch evaluation, see :meth:`setBlockSize`.
 Default parameters are available in the :class:`~openturns.ResourceMap` for
 each algorithm, refer to the correspondings keys in the Pagmo `documentation <https://esa.github.io/pagmo2/>`_.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - *Pagmo-InitialSeed* (``UnsignedInteger``, default: `0`): seed for the random number generator.
 - *Pagmo-memory* (``Bool``, default: `false`): whether to use memory in the algorithm.
@@ -250,7 +250,7 @@ seed : int
 
 Notes
 -----
-The default is set by the `Pagmo-InitialSeed` ResourceMap entry."
+The default is set by the ``Pagmo-InitialSeed`` ResourceMap entry."
 
 // ---------------------------------------------------------------------
 

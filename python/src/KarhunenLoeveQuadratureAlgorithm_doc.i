@@ -77,9 +77,9 @@ The second constructor is a short-hand to the first one, where *basis* is the te
 
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *KarhunenLoeveQuadratureAlgorithm-RegularizationFactor* (``Scalar``, default: `0`)
+- ``KarhunenLoeveQuadratureAlgorithm-RegularizationFactor`` (``Scalar``, default: ``0.0``): regularization factor used when assembling the covariance matrices of the quadrature algorithm
 
 Examples
 --------

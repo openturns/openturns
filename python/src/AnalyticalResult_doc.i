@@ -6,11 +6,11 @@ Notes
 Structure created by the method run() of the :class:`~openturns.Analytical`
 class and obtained thanks to its method getAnalyticalResult().
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *AnalyticalResult-DefaultWidth* (``Scalar``, default: `1`)
+- ``AnalyticalResult-DefaultWidth`` (``Scalar``, default: ``1.0``): default width of the sensitivity graphs
 
-- *AnalyticalResult-MeanPointIntegrationNodesNumber* (``UnsignedInteger``, default: `255`)
+- ``AnalyticalResult-MeanPointIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``): number of integration nodes used to compute the mean point of the failure domain
 
 Parameters
 ----------

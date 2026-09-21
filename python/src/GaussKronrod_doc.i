@@ -75,10 +75,10 @@ the :math:`2m+1` nodes computed by :class:`~openturns.GaussKronrodRule` in :math
 When the function :math:`f: \Rset^d \mapsto \Rset^p` with :math:`d>1`, use the iterated quadrature algorithm of the :class:`~openturns.IteratedQuadrature` class.
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *GaussKronrod-MaximumError* (``Scalar``, default: `1e-12`)
-- *GaussKronrod-MaximumSubIntervals* (``UnsignedInteger``, default: `100`)
+- ``GaussKronrod-MaximumError`` (``Scalar``, default: ``1.0e-12``): target error of the adaptive Gauss-Kronrod algorithm
+- ``GaussKronrod-MaximumSubIntervals`` (``UnsignedInteger``, default: ``100``): maximum number of sub-intervals used by the adaptive Gauss-Kronrod algorithm
 
 Examples
 --------
