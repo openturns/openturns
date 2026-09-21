@@ -15,7 +15,6 @@ xTitle : str
 yTitle : str
     Legend of the Y axe.
 
-
 Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
@@ -23,15 +22,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Graph-DefaultLegendFontSize`` (``Scalar``, default: ``10``)
 - ``Graph-DefaultHorizontalMargin`` (``Scalar``, default: ``0.05``)
 - ``Graph-DefaultVerticalMargin`` (``Scalar``, default: ``0.05``)"
-
-
-
-
-
-
-
-
-
 %enddef
 %feature("docstring") OT::GraphImplementation
 OT_Graph_doc
