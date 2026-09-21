@@ -94,7 +94,7 @@ The probability :math:`P_f` is computed from all the  :math:`q_i` probabilities.
 
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``DirectionalSampling-MeanContributionIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``)
+- ``DirectionalSampling-MeanContributionIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``): number of integration nodes used to compute the mean contribution of each direction.
 
 Examples
 --------
