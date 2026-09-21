@@ -154,7 +154,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
   Scalar scale = 0.0;
   for (UnsignedInteger i = 0; i < n; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
-      scale += mean(i, j) * mean(i, j);
+      scale += mean(i, j) * mean(i, j) * (j > i ? 2.0 : 1.0);
   scale = std::sqrt(scale);
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("RiemannianGaussianFactory-MaximumIteration");
   const Scalar tolerance = ResourceMap::GetAsScalar("RiemannianGaussianFactory-Tolerance");
@@ -172,7 +172,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
         {
           const Scalar value = v(r, c);
           vAverage(r, c) += value;
-          normV += value * value;
+          normV += value * value * (c > r ? 2.0 : 1.0);
         }
     }
     normV = std::sqrt(normV / static_cast<Scalar>(size));
@@ -184,47 +184,28 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
     mean = ref.expMap(vAverage * stepSize);
   }
 
-  // Step 3: Estimate covariance in tangent space at mean using simple log-Euclidean metric
-  // logMean(x) = log(x) - log(mean) (approximation)
+  // Step 3: estimate the covariance in the tangent space at the Frechet
+  // mean with the affine-invariant logarithmic map. The scatter uses
+  // orthonormal (Hilbert-Schmidt) coordinates, matching the convention
+  // of the RiemannianGaussian class.
+  const Scalar sqrt2 = std::sqrt(2.0);
+  RiemannianGaussian tangentRef(mean, identityTangent);
   SquareMatrix sigma(d);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // Compute log of samples[i] and mean
-    SymmetricMatrix sampleCopy(samples[i]);
-    SquareMatrix sampleEigVec(n);
-    Point sampleEig = sampleCopy.computeEVInPlace(sampleEigVec);
+    // Affine-invariant logarithmic map at the estimated mean
+    const SymmetricMatrix v = tangentRef.logMap(samples[i]);
 
-    // The eigenvectors are the columns of the eigenvector matrix, build the
-    // log-matrix through the spectral reconstruction V * diag(log(eig)) * V^T
-    SymmetricMatrix logSample(n);
-    for (UnsignedInteger r = 0; r < n; ++r)
-      for (UnsignedInteger c = 0; c <= r; ++c)
-      {
-        Scalar sum = 0.0;
-        for (UnsignedInteger k = 0; k < n; ++k)
-          sum += sampleEigVec(r, k) * std::log(std::max(SpecFunc::ScalarEpsilon, sampleEig[k])) * sampleEigVec(c, k);
-        logSample(r, c) = sum;
-      }
-
-    SymmetricMatrix logMean(n);
-    for (UnsignedInteger r = 0; r < n; ++r)
-      for (UnsignedInteger c = 0; c <= r; ++c)
-      {
-        Scalar sum = 0.0;
-        for (UnsignedInteger k = 0; k < n; ++k)
-          sum += meanEigVec(r, k) * std::log(std::max(SpecFunc::ScalarEpsilon, meanEig[k])) * meanEigVec(c, k);
-        logMean(r, c) = sum;
-      }
-
-    // Difference in log-Euclidean tangent space
-    SymmetricMatrix v = logSample - logMean;
-
-    // Flatten v
+    // Flatten v in orthonormal coordinates
     Point vVec(d);
     UnsignedInteger idx = 0;
     for (UnsignedInteger r = 0; r < n; ++r)
       for (UnsignedInteger c = r; c < n; ++c)
-        vVec[idx++] = v(r, c);
+      {
+        vVec[idx] = v(r, c);
+        if (c > r) vVec[idx] *= sqrt2;
+        ++idx;
+      }
 
     // Outer product
     for (UnsignedInteger r = 0; r < d; ++r)
@@ -242,21 +223,15 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
     for (UnsignedInteger j = 0; j <= i; ++j)
       sigma_sym(i, j) = sigma(i, j);
   SquareMatrix sigmaEigVec(d);
-  Point sEig = sigma_sym.computeEVInPlace(sigmaEigVec);
-  for (UnsignedInteger i = 0; i < d; ++i)
-    sEig[i] = std::max(sEig[i], sigmaFloor);
-  // Reconstruct using a fresh copy of eigenvectors
-  SymmetricMatrix sigmaCopy(sigma_sym);
-  SquareMatrix sigmaEigVecFresh(d);
-  Point sEigFresh = sigmaCopy.computeEVInPlace(sigmaEigVecFresh);
-  for (UnsignedInteger i = 0; i < d; ++i)
-    sEigFresh[i] = std::max(sEigFresh[i], sigmaFloor);
+  const Point sEigRaw = sigma_sym.computeEVInPlace(sigmaEigVec);
+  // sigma_sym now holds the eigenvectors: clamp the eigenvalues and
+  // reconstruct from this single, valid decomposition
   for (UnsignedInteger i = 0; i < d; ++i)
     for (UnsignedInteger j = 0; j < d; ++j)
     {
       Scalar sum = 0.0;
       for (UnsignedInteger k = 0; k < d; ++k)
-        sum += sigmaEigVecFresh(i, k) * sEigFresh[k] * sigmaEigVecFresh(j, k);
+        sum += sigmaEigVec(i, k) * std::max(sEigRaw[k], sigmaFloor) * sigmaEigVec(j, k);
       sigma(i, j) = sum;
     }
 

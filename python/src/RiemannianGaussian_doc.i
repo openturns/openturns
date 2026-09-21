@@ -26,6 +26,10 @@ logarithm map at the Frechet mean :math:`\overline{\mathbf{X}}`,
     \|\mathbf{v}\|^2_\sigma = \mathrm{vec}(\mathbf{v})^T
     \boldsymbol{\Sigma}^{-1}\mathrm{vec}(\mathbf{v})
 
+where :math:`\mathrm{vec}` flattens a tangent vector in Hilbert-Schmidt
+orthonormal coordinates: diagonal entries are kept as-is and
+off-diagonal entries are scaled by :math:`\sqrt{2}`.
+
 defined on the tangent space at the mean. In these coordinates the
 distribution is a standard Gaussian, hence the normalization constant is:
 
@@ -46,8 +50,10 @@ mean : :class:`openturns.SymmetricMatrix`
     Frechet mean of the distribution, a symmetric positive definite
     :math:`n\times n` matrix.
 sigma : :class:`openturns.SquareMatrix`
-    Covariance matrix :math:`\boldsymbol{\Sigma}` in the tangent space at
-    the mean, of dimension :math:`d = n(n+1)/2`.
+    Symmetric positive definite covariance matrix
+    :math:`\boldsymbol{\Sigma}` in the tangent space at the mean, of
+    dimension :math:`d = n(n+1)/2`, expressed in Hilbert-Schmidt
+    orthonormal coordinates.
 epsilon : float, optional
     Relative tolerance for the validation of the positive definiteness of
     the mean and covariance matrices. Default value is given by the

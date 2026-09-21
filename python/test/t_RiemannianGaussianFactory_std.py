@@ -27,6 +27,13 @@ experimental_estimated.setParameter(estimated.getParameter())
 mean_est = experimental_estimated.getMeanMatrix()
 ott.assert_almost_equal(mean_est[0, 0], 2.0, 0.5, 0.0)
 ott.assert_almost_equal(mean_est[1, 1], 1.0, 0.5, 0.0)
+
+# The estimated tangent covariance recovers the identity
+sigma_est = experimental_estimated.getSigma()
+for i in range(3):
+    ott.assert_almost_equal(sigma_est[i, i], 1.0, 0.15, 0.0)
+    for j in range(i + 1, 3):
+        ott.assert_almost_equal(sigma_est[i, j], 0.0, 0.0, 0.1)
 assert ot.Distribution(estimated).getImplementation().getClassName() == \
     "RiemannianGaussian"
 

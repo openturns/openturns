@@ -31,6 +31,24 @@ ott.assert_almost_equal(
     0.0,
 )
 
+# Off-mean log-density: preserved input gives the same value twice, and the
+# value matches the closed form (quadratic + exp-map Jacobian)
+ott.assert_almost_equal(
+    distribution.computeLogPDF([2.0, 0.0, 1.0]), -4.0567022077, 1e-8, 0.0
+)
+ott.assert_almost_equal(
+    distribution.computeLogPDF([2.0, 0.0, 1.0]),
+    distribution.computeLogPDF([2.0, 0.0, 1.0]),
+    1e-15,
+    0.0,
+)
+
+# Asymmetric sigma is rejected
+with ott.assert_raises(TypeError):
+    otexp.RiemannianGaussian(
+        mean, ot.SquareMatrix([[1.0, 0.5, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    )
+
 # PDF times the Chernov-ish volume factor drawn from exp of gaussian:
 # the realization must be a symmetric positive definite matrix
 ot.RandomGenerator.SetSeed(0)
@@ -60,6 +78,18 @@ assert sample_mean[0] > 0.0
 assert sample_mean[0] * sample_mean[2] - sample_mean[1] ** 2 > 0.0
 ott.assert_almost_equal(sample_mean[0], sample_mean[2], 0.1, 0.0)
 ott.assert_almost_equal(sample_mean[1], 0.0, 0.0, 0.05)
+
+# Second moment of the affine-invariant distance to the mean: E[d^2] = 3
+# for an isotropic unit tangent covariance (d = 3 degrees of freedom)
+ot.RandomGenerator.SetSeed(0)
+sample = distribution.getSample(5000)
+squared = 0.0
+for i in range(5000):
+    point = sample[i]
+    matrix = ot.SymmetricMatrix([[point[0], point[1]], [point[1], point[2]]])
+    eigenvalues = matrix.computeEigenValues()
+    squared += math.log(eigenvalues[0]) ** 2 + math.log(eigenvalues[1]) ** 2
+ott.assert_almost_equal(squared / 5000, 3.0, 0.1, 0.0)
 
 # Mean accessors: the flattened mean matches the upper-triangle of the matrix
 mean_matrix = distribution.getMeanMatrix()

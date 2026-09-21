@@ -83,6 +83,14 @@ RiemannianGaussian::RiemannianGaussian(const SymmetricMatrix & mean,
   if (sigma.getDimension() != d)
     throw InvalidArgumentException(HERE) << "in RiemannianGaussian: sigma must be of dimension " << d << ", got dimension=" << sigma.getDimension();
 
+  // Check sigma is symmetric: the upper triangle must match the lower one
+  Scalar asymmetry = 0.0;
+  for (UnsignedInteger i = 0; i < d; ++i)
+    for (UnsignedInteger j = i + 1; j < d; ++j)
+      asymmetry = std::max(asymmetry, std::abs(sigma(i, j) - sigma(j, i)));
+  if (asymmetry > epsilon_)
+    throw InvalidArgumentException(HERE) << "in RiemannianGaussian: sigma must be symmetric";
+
   // Check mean is positive definite
   SymmetricMatrix meanCheck(meanMatrix_);
   SquareMatrix meanEigVec(n);
@@ -397,8 +405,9 @@ void RiemannianGaussian::computeMean() const
 
 void RiemannianGaussian::computeCovariance() const
 {
-  // The covariance is measured in the tangent space at the mean, i.e. it is
-  // the covariance of the unwrapped Gaussian
+  // The covariance is measured in the tangent space at the mean in
+  // orthonormal (Hilbert-Schmidt) coordinates, i.e. it is the covariance
+  // of the unwrapped Gaussian
   CovarianceMatrix cov(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
@@ -446,13 +455,18 @@ Point RiemannianGaussian::getRealization() const
       v[i] += sigmaEigVec(i, j) * std::sqrt(sigmaEig[j]) * z[j];
   }
 
-  // Convert vector to symmetric matrix
+  // Convert the orthonormal-coordinate vector to a symmetric matrix:
+  // diagonal entries are kept as-is, off-diagonal entries are scaled
+  // back by 1/sqrt(2)
+  const Scalar invSqrt2 = 1.0 / std::sqrt(2.0);
   SymmetricMatrix vMat(n_);
   UnsignedInteger idx = 0;
   for (UnsignedInteger i = 0; i < n_; ++i)
     for (UnsignedInteger j = i; j < n_; ++j)
     {
-      vMat(i, j) = v[idx++];
+      vMat(i, j) = v[idx];
+      if (j > i) vMat(i, j) *= invSqrt2;
+      ++idx;
     }
 
   // Map to SPD manifold using exp map
@@ -493,25 +507,31 @@ Scalar RiemannianGaussian::computeLogPDF(const Point & point) const
       x(i, j) = point[idx++];
     }
 
-  // Check positive definiteness
+  // Check positive definiteness on a copy: computeEVInPlace modifies its input
+  SymmetricMatrix xCheck(x);
   SquareMatrix xEigVec(n_);
-  const Point xEig = x.computeEVInPlace(xEigVec);
+  const Point xEig = xCheck.computeEVInPlace(xEigVec);
   for (UnsignedInteger i = 0; i < n_; ++i)
   {
     if (xEig[i] <= epsilon_)
       return -SpecFunc::Infinity;
   }
 
-  // Compute log map
+  // Compute log map of the intact point
   SymmetricMatrix v = logMap(x);
 
-  // Flatten v to vector
+  // Flatten v to orthonormal (Hilbert-Schmidt) coordinates: the diagonal
+  // entries are kept as-is and the off-diagonal entries are scaled by
+  // sqrt(2), in which the covariance sigma is expressed
+  const Scalar sqrt2 = std::sqrt(2.0);
   Point vVec(dimension_);
   idx = 0;
   for (UnsignedInteger i = 0; i < n_; ++i)
     for (UnsignedInteger j = i; j < n_; ++j)
     {
-      vVec[idx++] = v(i, j);
+      vVec[idx] = v(i, j);
+      if (j > i) vVec[idx] *= sqrt2;
+      ++idx;
     }
 
   // Quadratic form: -0.5 * v^T * sigma^{-1} * v
@@ -639,6 +659,14 @@ void RiemannianGaussian::setSigma(const SquareMatrix & sigma)
   const UnsignedInteger d = dimension_;
   if (sigma.getDimension() != d)
     throw InvalidArgumentException(HERE) << "in RiemannianGaussian::setSigma: sigma must be of dimension " << d << ", got dimension=" << sigma.getDimension();
+
+  // Check sigma is symmetric: the upper triangle must match the lower one
+  Scalar asymmetry = 0.0;
+  for (UnsignedInteger i = 0; i < d; ++i)
+    for (UnsignedInteger j = i + 1; j < d; ++j)
+      asymmetry = std::max(asymmetry, std::abs(sigma(i, j) - sigma(j, i)));
+  if (asymmetry > epsilon_)
+    throw InvalidArgumentException(HERE) << "in RiemannianGaussian::setSigma: sigma must be symmetric";
 
   SymmetricMatrix sigma_sym(d);
   for (UnsignedInteger i = 0; i < d; ++i)
