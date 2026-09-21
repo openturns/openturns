@@ -15,9 +15,9 @@ evaluation : :class:`~openturns.SymbolicEvaluation`
 Parameters
 ----------
 i : int
-    Index of the output component.
-j : int
     Index of the input component.
+j : int
+    Index of the output component.
 
 Returns
 -------
