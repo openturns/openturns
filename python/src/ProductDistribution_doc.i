@@ -58,7 +58,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *ProductDistribution-LargeCharacteristicFunctionArgument* (``Scalar``, default: `10`)
+- ``ProductDistribution-LargeCharacteristicFunctionArgument`` (``Scalar``, default: ``10``)
 )RAW"
 
 // ---------------------------------------------------------------------

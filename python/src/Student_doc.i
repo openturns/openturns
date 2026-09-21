@@ -130,12 +130,12 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Student-CDFScaleFactor* (``Scalar``, default: `4`)
-- *Student-MarginalIntegrationNodesNumber* (``UnsignedInteger``, default: `16`)
-- *Student-MaximumNumberOfPoints* (``UnsignedInteger``, default: `10000000`)
-- *Student-MinimumCDFEpsilon* (``Scalar``, default: `0.05`)
-- *Student-MinimumNumberOfPoints* (``UnsignedInteger``, default: `100000`)
-- *Student-SmallDimension* (``UnsignedInteger``, default: `6`)
+- ``Student-CDFScaleFactor`` (``Scalar``, default: ``4``)
+- ``Student-MarginalIntegrationNodesNumber`` (``UnsignedInteger``, default: ``16``)
+- ``Student-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``)
+- ``Student-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``)
+- ``Student-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``)
+- ``Student-SmallDimension`` (``UnsignedInteger``, default: ``6``)
 )RAW"
 
 // ---------------------------------------------------------------------

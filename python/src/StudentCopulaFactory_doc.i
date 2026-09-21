@@ -21,7 +21,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *StudentCopulaFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
+- ``StudentCopulaFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``)
 
 See also
 --------
