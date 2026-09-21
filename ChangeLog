@@ -15,6 +15,8 @@
  * Bingham, BinghamFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
+ * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
+ * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
  * UniformOverMeshFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)

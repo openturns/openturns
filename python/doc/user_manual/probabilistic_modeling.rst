@@ -93,6 +93,7 @@ Continuous parametric distributions
     :template: Distribution.rst_t
     experimental.PushForwardDistribution
     experimental.PushForwardOverMesh
+    experimental.ManifoldMappedDistribution
     experimental.RiemannianGaussian
 
     :template: Distribution.rst_t

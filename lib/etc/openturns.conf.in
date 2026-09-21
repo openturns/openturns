@@ -785,6 +785,12 @@
   <!-- OT::FiniteDiscreteDistribution parameters -->
   <FiniteDiscreteDistribution-SmallSize value_int="10000" />
   
+  <!-- OT::Manifold parameters -->
+  <Manifold-Epsilon value_float="1e-10" />
+
+  <!-- OT::ManifoldMappedDistribution parameters -->
+  <ManifoldMappedDistribution-SampleSize value_int="10000" />
+
   <!-- OT::UniformOverMesh parameters -->
   <UniformOverMesh-OnManifoldEpsilon value_float="1e-10" />
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />

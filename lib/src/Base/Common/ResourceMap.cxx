@@ -1437,6 +1437,12 @@ void ResourceMap::loadDefaultConfiguration()
   // FiniteDiscreteDistribution parameters //
   addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
+  // Manifold parameters //
+  addAsScalar("Manifold-Epsilon", 1.0e-10);
+
+  // ManifoldMappedDistribution parameters //
+  addAsUnsignedInteger("ManifoldMappedDistribution-SampleSize", 10000);
+
   // UniformOverMesh parameters //
   addAsScalar("UniformOverMesh-OnManifoldEpsilon", 1.0e-10);
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
