@@ -1223,8 +1223,8 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
       for (UnsignedInteger i = 0; i < rank_; ++i)
         for (UnsignedInteger j = 0; j < rank_; ++j)
           kMax = std::max(kMax, std::abs(K_(i, j)));
-      std::fprintf(stderr, "[node] size=%u rank=%u kMax=%.3e ukMax=%.3e\n", static_cast<unsigned>(size_),
-                   static_cast<unsigned>(rank_), kMax, ukMax);
+      std::fprintf(stderr, "[node] size=%u start=%u rank=%u kMax=%.3e ukMax=%.3e\n", static_cast<unsigned>(size_),
+                   static_cast<unsigned>(start_), static_cast<unsigned>(rank_), kMax, ukMax);
     }
 
     // 4. Schur complement: factorize A11' = A11 - U1 * K * U1^T
@@ -1513,15 +1513,36 @@ void HODLRNode::factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator:
       // stable kernel scale -- never to maxDiag, which the corruption itself
       // inflates -- separates a healthy healed leaf from a corrupt one.
       Scalar minPivot = std::numeric_limits<Scalar>::infinity();
+      UnsignedInteger minPivotIdx = 0;
       for (UnsignedInteger i = 0; i < n; ++i)
-        minPivot = std::min(minPivot, Sfact[i + i * n]);   // sqrt(pivot)
+      {
+        const Scalar v = Sfact[i + i * n];   // sqrt(pivot)
+        if (v < minPivot) { minPivot = v; minPivotIdx = i; }
+      }
+      if (getenv("HODLR_LEAF_DEBUG"))
+        std::fprintf(stderr, "[mk] start=%u argminIdx=%u argminVal=%.6e Sfact960=%.6e sf960=%.6e ptrEqual=%d\n",
+                     static_cast<unsigned>(start_), static_cast<unsigned>(minPivotIdx), minPivot,
+                     Sfact[(n - 1) + (n - 1) * n], (*Sfactor_.getImplementation())[(size_ - 1) + (size_ - 1) * size_],
+                     static_cast<int>(&Sfact[0] == &(*Sfactor_.getImplementation())[0]));
       const Scalar pivotFloor = std::max(pivotFloorFactor * kernelDiagMax, floorAbsolute);
       const Bool healOK = (minPivot * minPivot >= pivotFloor);
       if (healOK)
       {
         if (getenv("HODLR_LEAF_DEBUG"))
-          std::fprintf(stderr, "[leaf] n=%u heal=%.3e shift=%.3e maxDiag=%.3e minDiag=%.3e minPivot=%.3e\n",
-                       static_cast<unsigned>(n), healLambda, shift_, maxDiag, pristineMinDiag, minPivot * minPivot);
+          std::fprintf(stderr, "[leaf] n=%u start=%u heal=%.3e shift=%.3e maxDiag=%.3e minDiag=%.3e minPivot=%.3e info=%d att=%u L00=%.3e L11=%.3e L22=%.3e\n",
+                       static_cast<unsigned>(n), static_cast<unsigned>(start_), healLambda, shift_, maxDiag, pristineMinDiag, minPivot * minPivot, info, static_cast<unsigned>(attempt),
+                       (*Sfactor_.getImplementation())[0], (*Sfactor_.getImplementation())[size_ + 1], (*Sfactor_.getImplementation())[2 * size_ + 2]);
+        if (getenv("HODLR_LEAF_DEBUG"))
+          std::fprintf(stderr, "[leafK] start=%u k00=%.6e k01=%.6e k11=%.6e\n",
+                       static_cast<unsigned>(start_), (*leafKernel_.getImplementation())[0], (*leafKernel_.getImplementation())[size_], (*leafKernel_.getImplementation())[size_ + 1]);
+        if (getenv("HODLR_LEAF_DEBUG"))
+        {
+          const double* sf = &(*Sfactor_.getImplementation())[0];
+          double minL = HUGE_VAL;
+          for (UnsignedInteger ii = 0; ii < n; ++ii) minL = std::min(minL, sf[ii + ii * size_]);
+          std::fprintf(stderr, "[rawL] start=%u f0=%.6e f1=%.6e f2=%.6e f32=%.6e f33=%.6e f64=%.6e f960=%.6e minLoop=%.6e\n",
+                       static_cast<unsigned>(start_), sf[0], sf[1], sf[2], sf[32], sf[33], sf[64], sf[960], minL);
+        }
         break;
       }
       // Barely-SPD? Treat exactly like a failed dpotrf (i.e. keep escalating
