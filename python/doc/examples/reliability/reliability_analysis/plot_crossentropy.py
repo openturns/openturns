@@ -180,8 +180,7 @@ marginF = ot.Normal()
 auxiliaryMarginals = [marginR, marginF]
 auxiliaryDistribution = ot.JointDistribution(auxiliaryMarginals)
 # Definition of parameters to be optimized
-activeParameters = ot.Indices(5)
-activeParameters.fill()
+activeParameters = list(range(5))
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 0.01, 0.0, 500, 20], [16, 0.2, 0.1, 1000, 70])
 initialParameters = distribution.getParameter()
@@ -229,7 +228,7 @@ auxiliaryDistribution = ot.JointDistribution(auxiliaryMarginals)
 print("Parameters of initial distribution", auxiliaryDistribution.getParameter())
 
 # Definition of parameters to be optimized
-activeParameters = ot.Indices([0, 3])
+activeParameters = [0, 3]
 # WARNING : native parameters of distribution have to be considered
 bounds = ot.Interval([14, 500], [16, 1000])
 initialParameters = [15, 750]
@@ -286,8 +285,7 @@ print(
 )
 
 # Definition of parameters to be optimized
-activeParameters = ot.Indices(6)
-activeParameters.fill()
+activeParameters = list(range(6))
 
 bounds = ot.Interval(
     [14, 0.01, 0.0, 500.0, 20.0, 0.0], [16, 0.2, 0.1, 1000.0, 70.0, 1.0]
