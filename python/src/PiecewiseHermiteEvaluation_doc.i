@@ -21,6 +21,12 @@ Thus, the approximation should not be used outside the range of the design of ex
 The possibility of extrapolation can be changed using :meth:`setEnableExtrapolation` (default value is *True*, see :class:`~openturns.ResourceMap`). 
 If this parameter is set to *False*, an error message is retrieved for evaluations outside the design of experiments.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- ``PiecewiseHermiteEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
+- ``PiecewiseHermiteEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -141,10 +147,5 @@ Returns
 enableExtrapolation : bool
     Parameter for extrapolation.
 
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``PiecewiseHermiteEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
-- ``PiecewiseHermiteEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)"
+"
 

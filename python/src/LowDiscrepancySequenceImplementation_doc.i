@@ -50,6 +50,11 @@ LowDiscrepancySequence. The sequences implemented are
 :class:`Haselgrove <openturns.HaselgroveSequence>` and
 :class:`Sobol <openturns.SobolSequence>` sequences.
 
+
+This class uses the following entries of :class:`~openturns.ResourceMap`:
+
+- ``LowDiscrepancySequence-ScramblingSeed`` (``UnsignedInteger``, default: ``0``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -192,12 +197,6 @@ Parameters
 ----------
 state : int
     The state of the LCG, defined by the recursion :math:`x_{n+1}=2862933555777941757 * x_n + 3037000493\mbox{ mod }2^{64}`.
-
-Notes
------
-The following :class:`~openturns.ResourceMap` key is used:
-
-- ``LowDiscrepancySequence-ScramblingSeed`` (``UnsignedInteger``, default: ``0``)
 
 )RAW"
 

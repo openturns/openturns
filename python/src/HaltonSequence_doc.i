@@ -15,8 +15,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *HaltonSequence-InitialSeed* (``UnsignedInteger``, default: ``1``)
-- *HaltonSequence-Scrambling* (``String``, default: ``NONE``)
+- ``HaltonSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)
+- ``HaltonSequence-Scrambling`` (``String``, default: ``NONE``)
 
 Examples
 --------

@@ -99,9 +99,9 @@ The behaviour of the reduction is controlled by the following keys in :class:`~o
 
 The following entries of :class:`~openturns.ResourceMap` control the optimization:
 
-- *GaussianProcessFitter-DefaultOptimizationNuggetLowerBound* (``Scalar``, default: ``1e-12``)
-- *GaussianProcessFitter-KeepCovariance* (``Bool``, default: ``true``)
-- *GaussianProcessFitter-OptimizeParameters* (``Bool``, default: ``true``)
+- ``GaussianProcessFitter-DefaultOptimizationNuggetLowerBound`` (``Scalar``, default: ``1e-12``)
+- ``GaussianProcessFitter-KeepCovariance`` (``Bool``, default: ``true``)
+- ``GaussianProcessFitter-OptimizeParameters`` (``Bool``, default: ``true``)
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
 implementation could be used if `hmat-oss` support has been enabled.
