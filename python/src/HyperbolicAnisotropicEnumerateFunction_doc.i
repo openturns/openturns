@@ -28,8 +28,6 @@ See also
 --------
 EnumerateFunction, LinearEnumerateFunction
 
-Notes
------
 Enumeration functions are bijections from :math:`\Nset` to :math:`\Nset^{\inputDim}` (refer to :any:`enumeration_strategy`).
 
 They can be used to enumerate a multivariate basis
@@ -38,7 +36,7 @@ built as the tensorization of univariate basis, using the indexation of each mar
 
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``HyperbolicAnisotropicEnumerateFunction-DefaultQ`` (``Scalar``, default: ``0.4``)
+- ``HyperbolicAnisotropicEnumerateFunction-DefaultQ`` (``Scalar``, default: ``0.4``): default value of the :math:`q` quasi-norm parameter.
 
 Examples
 --------
