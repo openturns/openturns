@@ -5,7 +5,7 @@ import openturns.viewer as otv
 
 # Generate sample with the given plane
 distribution = ot.JointDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
-marginalSizes = ot.Indices([3, 6])
+marginalSizes = [3, 6]
 experiment = ot.GaussProductExperiment(ot.Distribution(distribution), marginalSizes)
 
 sample = experiment.generate()

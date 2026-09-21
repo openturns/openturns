@@ -4,7 +4,7 @@ import openturns.viewer as otv
 
 
 # Define a bi dimensional mesh as a box
-indices = ot.Indices([40, 20])
+indices = [40, 20]
 mesher = ot.IntervalMesher(indices)
 lowerBound = [0.0, 0.0]
 upperBound = [2.0, 1.0]
