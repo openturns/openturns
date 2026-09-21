@@ -35,7 +35,7 @@ The following :class:`~openturns.ResourceMap` key is used:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GaussianProcess-GibbsMaximumIteration* (``UnsignedInteger``, default: ``100``)
+- ``GaussianProcess-GibbsMaximumIteration`` (``UnsignedInteger``, default: ``100``)
 
 Examples
 --------

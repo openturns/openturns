@@ -46,7 +46,7 @@ The following :class:`~openturns.ResourceMap` key is used:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SquaredExponential-DefaultTheta* (``Scalar``, default: ``1``)
+- ``SquaredExponential-DefaultTheta`` (``Scalar``, default: ``1``)
 
 See Also
 --------
