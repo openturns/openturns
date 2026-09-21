@@ -64,7 +64,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *JointDistribution-UseGenericCovarianceAlgorithm* (``Bool``, default: `false`)
+- ``JointDistribution-UseGenericCovarianceAlgorithm`` (``Bool``, default: ``false``)
 )RAW"
 
 // ---------------------------------------------------------------------

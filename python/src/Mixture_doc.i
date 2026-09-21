@@ -42,10 +42,10 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Mixture-LargeSize* (``UnsignedInteger``, default: `20`)
-- *Mixture-PDFCDFDiscretization* (``UnsignedInteger``, default: `1000`)
-- *Mixture-SmallSize* (``UnsignedInteger``, default: `50`)
-- *Mixture-SmallWeight* (``Scalar``, default: `1e-12`)
+- ``Mixture-LargeSize`` (``UnsignedInteger``, default: ``20``)
+- ``Mixture-PDFCDFDiscretization`` (``UnsignedInteger``, default: ``1000``)
+- ``Mixture-SmallSize`` (``UnsignedInteger``, default: ``50``)
+- ``Mixture-SmallWeight`` (``Scalar``, default: ``1e-12``)
 )RAW"
 
 // ---------------------------------------------------------------------

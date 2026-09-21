@@ -33,8 +33,8 @@ Three tests are performed. We note :math:`[a_i,b_i]` the range of :math:`X_i`. T
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *OrderStatisticsMarginalChecker-OptimizationEpsilon* (``Scalar``, default: `1e-07`)
-- *OrderStatisticsMarginalChecker-QuantileIteration* (``UnsignedInteger``, default: `100`)
+- ``OrderStatisticsMarginalChecker-OptimizationEpsilon`` (``Scalar``, default: ``1e-07``)
+- ``OrderStatisticsMarginalChecker-QuantileIteration`` (``UnsignedInteger``, default: ``100``)
 
 The following :class:`~openturns.ResourceMap` keys are used:
 

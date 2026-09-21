@@ -129,8 +129,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *MarginalUniformOrderStatistics-LargeCaseCDF* (``UnsignedInteger``, default: `1000`)
-- *MarginalUniformOrderStatistics-MaximumCallsNumber* (``UnsignedInteger``, default: `1000000`)"
+- ``MarginalUniformOrderStatistics-LargeCaseCDF`` (``UnsignedInteger``, default: ``1000``)
+- ``MarginalUniformOrderStatistics-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000000``)"
 
 
 

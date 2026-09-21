@@ -73,7 +73,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *TruncatedDistribution-DefaultThresholdRealization* (``Scalar``, default: `0.5`)
+- ``TruncatedDistribution-DefaultThresholdRealization`` (``Scalar``, default: ``0.5``)
 )RAW"
 
 // ---------------------------------------------------------------------
