@@ -23,7 +23,7 @@ A discrete Markov chain is a process :math:`X: \Omega \times \cD \rightarrow E`,
 
 .. math::
 
-    \forall n>0,\: \Prob{X_{t_n} \> | \> X_{t_0},...X_{t_{n-1}}}  =  \Prob{X_{t_n} \> | \> X_{t_{n-1}}}
+    \forall n>0,\: \forall j \in E,\: \Prob{X_{t_n} = j \> | \> X_{t_0},...X_{t_{n-1}}}  =  \Prob{X_{t_n} = j \> | \> X_{t_{n-1}}}
     
 The transition matrix of the process :math:`\cM = (m_{i,j})` can be defined such that:
 
