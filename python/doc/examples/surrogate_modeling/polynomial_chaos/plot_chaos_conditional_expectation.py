@@ -285,16 +285,16 @@ def meanParametricPCE(chaosResult, indices):
 
     Parameters
     ----------
-    chaosResult: ot.FunctionalChaosResult(inputDimension)
+    chaosResult : ot.FunctionalChaosResult(inputDimension)
         The polynomial chaos expansion.
-    indices: ot.Indices()
+    indices : sequence of int
         The indices of the input variables which are set to constant values.
 
     Returns
     -------
     parametricPCEFunction : ot.ParametricFunction(reducedInputDimension, outputDimension)
         The parametric PCE.
-        The reducedInputDimension is equal to inputDimension - indices.getSize().
+        The reducedInputDimension is equal to inputDimension - len(indices).
     """
     distribution = chaosResult.getDistribution()
     if not distribution.hasIndependentCopula():

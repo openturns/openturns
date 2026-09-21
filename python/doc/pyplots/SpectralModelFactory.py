@@ -54,8 +54,7 @@ for k in range(frequencyGrid.getN()):
 # Graph section
 # We build 2 curves
 # each one is function of frequency values
-ind = ot.Indices(2)
-ind.fill()
+ind = [0, 1]
 
 # Some cosmetics : labels, legend position, ...
 graph = ot.Graph(
