@@ -8,8 +8,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *ProbabilitySimulationResult-CheckPositiveVariance* (``Bool``, default: `false`)
-- *ProbabilitySimulationResult-DefaultConfidenceLevel* (``Scalar``, default: `0.95`)
+- ``ProbabilitySimulationResult-CheckPositiveVariance`` (``Bool``, default: ``false``)
+- ``ProbabilitySimulationResult-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``)
 
 Examples
 --------
