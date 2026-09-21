@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -87,3 +89,29 @@ y = ot.SpecFunc.BesselInu(-2.5, 3.0)
 ref = -0.47437040877803558955
 eps = 1e-15
 ott.assert_almost_equal(y, ref, eps, 0.0)
+
+# LogHyperGeom_1_1
+# Reference values from mpmath (50 digits)
+params = [
+    [0.5, 1.5, 1.0, 0.38025105262664983, 1e-12],
+    [0.5, 1.5, 10.0, 7.0632454586326093, 1e-12],
+    [0.5, 1.5, -7.5, -1.1283412648628479, 1e-12],
+    [2.0, 3.0, 5.0, 3.8622487864048326, 1e-12],
+    [2.0, 3.0, -30.0, -6.1092475827672663, 1e-12],
+    [0.5, 1.5, 100.0, 94.706746732979597, 1e-10],
+    [1.5, 0.5, 20.0, 23.713572066704308, 1e-10],
+    [0.5, 1.5, -1000.0, -3.5746598771263137, 1e-10],
+]
+for p1, q1, x, logref, eps in params:
+    logy = ot.SpecFunc.LogHyperGeom_1_1(p1, q1, x)
+    ott.assert_almost_equal(logy, logref, eps, 0.0)
+
+# Extended range: the logarithm stays finite far beyond the double range
+# (log of the largest double is about 709.78)
+logy = ot.SpecFunc.LogHyperGeom_1_1(0.5, 1.5, 1000.0)
+assert math.isfinite(logy) and logy > 709.78
+ott.assert_almost_equal(logy, 992.39959816700513, 1e-10, 0.0)
+
+# Degenerate cases
+ott.assert_almost_equal(ot.SpecFunc.LogHyperGeom_1_1(0.5, 1.5, 0.0), 0.0, 1e-15, 0.0)
+ott.assert_almost_equal(ot.SpecFunc.LogHyperGeom_1_1(2.0, 2.0, 3.0), 3.0, 1e-15, 0.0)
