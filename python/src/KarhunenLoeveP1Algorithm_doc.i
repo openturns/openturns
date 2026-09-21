@@ -53,9 +53,9 @@ In this case, one can set the ``KarhunenLoeveP1Algorithm-CovarianceMatrixStorage
 key in :class:`~openturns.ResourceMap` to ``HMAT`` (instead of ``DENSE``).
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *KarhunenLoeveP1Algorithm-RegularizationFactor* (``Scalar``, default: `0`)
+- ``KarhunenLoeveP1Algorithm-RegularizationFactor`` (``Scalar``, default: ``0.0``): regularization factor used when assembling the covariance matrices of the P1 algorithm
 
 Examples
 --------

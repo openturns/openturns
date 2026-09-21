@@ -36,9 +36,9 @@ emulated using a flat :class:`~openturns.Normal` centered on the `startingPoint`
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 
 The associated covariance matrix may be regularized depending on the value of the 
-key `LinearLeastSquaresCalibration-Regularization` in the :class:`~openturns.ResourceMap`. 
+key ``LinearLeastSquaresCalibration-Regularization`` in the :class:`~openturns.ResourceMap`. 
 Let us denote by :math:`\sigma_1` the largest singular value of the covariance matrix. 
-The default value of the `LinearLeastSquaresCalibration-Regularization`, zero, 
+The default value of the ``LinearLeastSquaresCalibration-Regularization``, zero, 
 ensures that the singular values of the covariance matrix are left unmodified.  
 If this parameter is set to a nonzero, relatively small, value denoted by :math:`\epsilon`, 
 then all singular values of the covariance matrix are increased by :math:`\epsilon \sigma_1`. 
@@ -53,9 +53,9 @@ is constant and is estimated with the unbiased variance estimator.
 Please read :any:`code_calibration` for more details.
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *LinearLeastSquaresCalibration-Method* (``String``, default: `QR`)
+- ``LinearLeastSquaresCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem of the linear least squares calibration. The possible values are ``SVD``, ``Cholesky`` and ``QR``
 
 See also
 --------

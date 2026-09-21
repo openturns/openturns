@@ -45,10 +45,10 @@ FORM calculus is run for each unique leaf event, there may be less items in the
 FORM results collection (returned by :meth:`~openturns.MultiFORMResult.getFORMResultCollection`) than leaf events.
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *SystemFORM-MaximalScaling* (``Scalar``, default: `1e-05`)
-- *SystemFORM-StartingScaling* (``Scalar``, default: `1e-13`)
+- ``SystemFORM-MaximalScaling`` (``Scalar``, default: ``1.0e-5``): maximal value of the scaling factor used in the computation of the system FORM
+- ``SystemFORM-StartingScaling`` (``Scalar``, default: ``1.0e-13``): starting value of the scaling factor used in the computation of the system FORM
 
 See also
 --------

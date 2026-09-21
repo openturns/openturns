@@ -25,13 +25,13 @@ The estimator :math:`\hat{\theta}` minimizes the mean square error between
     \hat{\theta} = \argmin_{\vect{\theta} \in \Theta} \sum_{i=1}^{n} \left( F_{\vect{\theta}}(\vect{x}_i) - F_{\hat{\vect{\theta}}}(\vect{x}_i) \right) ^2
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *LeastSquaresDistributionFactory-MaximumAbsoluteError* (``Scalar``, default: `1e-10`)
-- *LeastSquaresDistributionFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
-- *LeastSquaresDistributionFactory-MaximumConstraintError* (``Scalar``, default: `1e-10`)
-- *LeastSquaresDistributionFactory-MaximumObjectiveError* (``Scalar``, default: `1e-10`)
-- *LeastSquaresDistributionFactory-MaximumRelativeError* (``Scalar``, default: `1e-10`)
+- ``LeastSquaresDistributionFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1.0e-10``): absolute error of the optimization
+- ``LeastSquaresDistributionFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function of the optimization
+- ``LeastSquaresDistributionFactory-MaximumConstraintError`` (``Scalar``, default: ``1.0e-10``): constraint error of the optimization
+- ``LeastSquaresDistributionFactory-MaximumObjectiveError`` (``Scalar``, default: ``1.0e-10``): objective error of the optimization
+- ``LeastSquaresDistributionFactory-MaximumRelativeError`` (``Scalar``, default: ``1.0e-10``): relative error of the optimization
 
 See also
 --------

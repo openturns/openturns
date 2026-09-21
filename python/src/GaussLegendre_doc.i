@@ -153,9 +153,9 @@ polynomials of the vector space:
     \bigotimes_{i = 1}^\inputDim \mathcal{P}_{2 n_i - 1}^{(1)}.
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *GaussLegendre-DefaultMarginalIntegrationPointsNumber* (``UnsignedInteger``, default: `64`)
+- ``GaussLegendre-DefaultMarginalIntegrationPointsNumber`` (``UnsignedInteger``, default: ``64``): default number of integration points used on each marginal by the Gauss-Legendre quadrature
 
 See also
 --------

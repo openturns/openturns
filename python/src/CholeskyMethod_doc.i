@@ -21,9 +21,9 @@ design : 2-d sequence of float
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *CholeskyMethod-LargeCase* (``UnsignedInteger``, default: `128`)
+- ``CholeskyMethod-LargeCase`` (``UnsignedInteger``, default: ``128``): dimension above which the Cholesky method falls back to the large case algorithm
 
 See also
 --------

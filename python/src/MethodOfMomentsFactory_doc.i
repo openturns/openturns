@@ -63,13 +63,13 @@ which is equivalent to the solution of the following optimization problem:
 
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *MethodOfMomentsFactory-MaximumAbsoluteError* (``Scalar``, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumCallsNumber* (``UnsignedInteger``, default: `1000`)
-- *MethodOfMomentsFactory-MaximumConstraintError* (``Scalar``, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumObjectiveError* (``Scalar``, default: `1e-10`)
-- *MethodOfMomentsFactory-MaximumRelativeError* (``Scalar``, default: `1e-10`)
+- ``MethodOfMomentsFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1.0e-10``): absolute error of the optimization
+- ``MethodOfMomentsFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function of the optimization
+- ``MethodOfMomentsFactory-MaximumConstraintError`` (``Scalar``, default: ``1.0e-10``): constraint error of the optimization
+- ``MethodOfMomentsFactory-MaximumObjectiveError`` (``Scalar``, default: ``1.0e-10``): objective error of the optimization
+- ``MethodOfMomentsFactory-MaximumRelativeError`` (``Scalar``, default: ``1.0e-10``): relative error of the optimization
 
 See also
 --------

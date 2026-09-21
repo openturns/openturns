@@ -55,9 +55,9 @@ the more significant the coefficient.
 
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *LinearModelTest-DefaultLevel* (``Scalar``, default: `0.05`)
+- ``LinearModelTest-DefaultLevel`` (``Scalar``, default: ``0.05``): default significance level of the linear model tests
 
 Examples
 --------
@@ -207,10 +207,10 @@ breakpoint in the variances is set by default to the half of the sample. The
 p-value is estimed using simulation. If the binary quality measure is false, then
 the homoskedasticity hypothesis can be rejected with respect to the given level.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *LinearModelTest-DefaultHarrisonMcCabeBreakpoint* (``Scalar``, default: `0.5`)
-- *LinearModelTest-DefaultHarrisonMcCabeSimulationSize* (``UnsignedInteger``, default: `1000`)
+- ``LinearModelTest-DefaultHarrisonMcCabeBreakpoint`` (``Scalar``, default: ``0.5``): default value of the breakpoint parameter of the Harrison and McCabe test
+- ``LinearModelTest-DefaultHarrisonMcCabeSimulationSize`` (``UnsignedInteger``, default: ``1000``): default number of simulations performed by the Harrison and McCabe test
 
 Examples
 --------
@@ -364,9 +364,9 @@ The p-value is computed using a normal approximation based on the mean and varia
 Durbin-Watson test statistic. If the binary quality measure is false, then the
 given autocorrelation hypothesis can be rejected with respect to the given level.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *LinearModelTest-DefaultDurbinWatsonHypothesis* (``String``, default: `Equal`)
+- ``LinearModelTest-DefaultDurbinWatsonHypothesis`` (``String``, default: ``Equal``): default alternative hypothesis of the Durbin-Watson test. The possible values are ``Equal``, ``Less`` and ``Greater``
 
 Examples
 --------
