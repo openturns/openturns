@@ -46,6 +46,9 @@ The following :class:`openturns.ResourceMap` keys are used:
 
 - ``WrappedNormal-MaxLatticeTerms``: maximum number of lattice terms
   for exact sum in PDF computation (default: 100000).
+- ``WrappedNormal-GaussHermiteMaximumPoints``: maximum number of
+  Gauss-Hermite quadrature points for the entropy and the covariance
+  of the wrapped variable (default: 4096).
 
 Examples
 --------

@@ -35,6 +35,93 @@ CLASSNAMEINIT(WrappedNormal)
 
 static const Factory<WrappedNormal> Factory_WrappedNormal;
 
+namespace {
+
+// Enumerate the integer vectors m with (m - center)^T A (m - center) <= radiusSquare
+// by Cholesky recursion (Fincke-Pohst), where lower holds the lower Cholesky
+// factor of the SPD matrix A. At most budget points are collected.
+void EnumerateEllipsoidLevel(const SquareMatrix & lower,
+                             const Point & center,
+                             const Scalar radiusSquare,
+                             const UnsignedInteger budget,
+                             Point & current,
+                             const UnsignedInteger level,
+                             const Scalar doneSquare,
+                             std::vector<Point> & pointsOut,
+                             Bool & truncated)
+{
+  const UnsignedInteger d = center.getDimension();
+  if (truncated) return;
+  Scalar shift = 0.0;
+  for (UnsignedInteger k = level + 1; k < d; ++k)
+    shift += lower(k, level) * (current[k] - center[k]);
+  const Scalar remaining = radiusSquare - doneSquare;
+  if (remaining < 0.0) return;
+  const Scalar root = std::sqrt(remaining);
+  const Scalar yLow = (-root - shift) / lower(level, level);
+  const Scalar yHigh = (root - shift) / lower(level, level);
+  const long long mLow = static_cast<long long>(std::ceil(center[level] + yLow));
+  const long long mHigh = static_cast<long long>(std::floor(center[level] + yHigh));
+  for (long long m = mLow; m <= mHigh; ++m)
+  {
+    current[level] = static_cast<Scalar>(m);
+    const Scalar residual = lower(level, level) * (current[level] - center[level]) + shift;
+    if (level == 0)
+    {
+      pointsOut.push_back(current);
+      if (pointsOut.size() > budget)
+      {
+        truncated = true;
+        return;
+      }
+    }
+    else
+      EnumerateEllipsoidLevel(lower, center, radiusSquare, budget, current, level - 1, doneSquare + residual * residual, pointsOut, truncated);
+  }
+}
+
+// Log-volume of the ellipsoid {m : (m - center)^T A (m - center) <= radiusSquare}
+Scalar LogEllipsoidVolume(const UnsignedInteger d,
+                          const Scalar logDetA,
+                          const Scalar radiusSquare)
+{
+  return 0.5 * static_cast<Scalar>(d) * std::log(M_PI) - SpecFunc::LogGamma(0.5 * static_cast<Scalar>(d) + 1.0)
+         + 0.5 * static_cast<Scalar>(d) * std::log(radiusSquare) - 0.5 * logDetA;
+}
+
+// Gauss-Hermite nodes and weights for the N(0,1) expectation by Golub-Welsch:
+// the Jacobi matrix has a zero diagonal and sqrt(i) off-diagonal entries,
+// its eigenvalues are the nodes and the weights follow from the first row
+// of the eigenvector matrix
+void GaussHermiteRule(const UnsignedInteger order,
+                      Point & nodes,
+                      Point & weights)
+{
+  SymmetricMatrix jacobi(order);
+  for (UnsignedInteger i = 1; i < order; ++i)
+    jacobi(i, i - 1) = std::sqrt(static_cast<Scalar>(i));
+  SquareMatrix vectors(order);
+  const Point eigenvalues = jacobi.computeEVInPlace(vectors);
+  nodes = eigenvalues;
+  weights = Point(order);
+  for (UnsignedInteger k = 0; k < order; ++k)
+    weights[k] = std::sqrt(SpecFunc::TWOPI) * vectors(0, k) * vectors(0, k);
+}
+
+// Tensor Gauss-Hermite order from a point budget: the largest order with
+// order^dimension <= budget, at least 2, at most budget^{1/3} to keep the
+// Golub-Welsch eigendecomposition negligible
+UnsignedInteger GaussHermiteOrder(const UnsignedInteger dimension,
+                                  const UnsignedInteger budget)
+{
+  const Scalar maxOrder = std::cbrt(static_cast<Scalar>(budget));
+  const Scalar tensorOrder = std::pow(static_cast<Scalar>(budget), 1.0 / static_cast<Scalar>(dimension));
+  return std::max(static_cast<UnsignedInteger>(2),
+                  static_cast<UnsignedInteger>(std::min(maxOrder, tensorOrder)));
+}
+
+} // anonymous namespace
+
 WrappedNormal::WrappedNormal()
   : DistributionImplementation()
   , dimension_(2)
@@ -47,7 +134,6 @@ WrappedNormal::WrappedNormal()
   , sigmaDet_(1.0)
   , sigmaEigVec_(2)
   , sigmaEig_(2)
-  , maxEig_(0.0)
 {
   mu_[0] = 0.0;
   mu_[1] = 0.0;
@@ -74,7 +160,6 @@ WrappedNormal::WrappedNormal(const Point & mu,
   , sigmaDet_(1.0)
   , sigmaEigVec_(sigma.getDimension())
   , sigmaEig_(sigma.getDimension())
-  , maxEig_(0.0)
 {
   const UnsignedInteger d = dimension_;
   if (d < 1)
@@ -184,14 +269,8 @@ void WrappedNormal::computeNormalization()
   sigmaEigVec_ = SquareMatrix(d);
   sigmaEig_ = sigmaSym.computeEVInPlace(sigmaEigVec_);
   Scalar logDetSigma = 0.0;
-  maxEig_ = 0.0;
-  minEig_ = SpecFunc::MaxScalar;
   for (UnsignedInteger i = 0; i < d; ++i)
-  {
     logDetSigma += std::log(sigmaEig_[i]);
-    maxEig_ = std::max(maxEig_, sigmaEig_[i]);
-    minEig_ = std::min(minEig_, sigmaEig_[i]);
-  }
   sigmaDet_ = std::exp(logDetSigma);
   sigmaInv_ = sigma_.inverse();
 
@@ -245,50 +324,70 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
   // p(x) = sum_{k in Z^d} N(x + k*period; mu, sigma)
   // We sum over k in [-K, K]^d where K is chosen based on sigma
 
-  // Choose K such that exp(-period^2 K^2 / (2 maxEig)) < SpecFunc::Precision
-  // Using SpecFunc::Precision (2e-16) as the truncation tolerance
-  const Scalar targetLog = std::log(SpecFunc::Precision);
-  const UnsignedInteger K = std::max(static_cast<UnsignedInteger>(1),
-                                     static_cast<UnsignedInteger>(std::ceil(std::sqrt(-2.0 * maxEig_ * targetLog) / period_)));
-
-  // Compute sum of Gaussians
-  Scalar logSum = -SpecFunc::Infinity;
-
-  // For efficiency, use the full sum when the total number of terms is reasonable.
-  // The total number of lattice points is (2*K+1)^d. We use the full sum when
-  // this is <= maxLatticeTerms_, otherwise fall back to the dual Fourier series
-  // which converges quickly when sigma is large compared to the period.
-  // This handles both small d with large K and large d with small K correctly.
-  const UnsignedInteger termsPerDim = 2 * K + 1;
-  double totalTerms = 1.0;
+  // Compute sum of Gaussians over an ellipsoidal lattice set, or over the
+  // dual Fourier ellipsoid when it holds fewer points. Both truncations keep
+  // the terms above SpecFunc::Precision relative to the peak term, so the
+  // uniform fallback below only triggers when neither side is affordable.
+  const Scalar cut = -2.0 * std::log(SpecFunc::Precision);
+  Scalar logDetSigma = 0.0;
   for (UnsignedInteger i = 0; i < d; ++i)
-    totalTerms *= termsPerDim;
-
-  if (totalTerms <= static_cast<double>(maxLatticeTerms_))
+    logDetSigma += std::log(sigmaEig_[i]);
+  // Direct ellipsoid: (x - mu + k p)^T Sigma^{-1} (x - mu + k p) <= cut,
+  // i.e. (k - c)^T A (k - c) <= cut with A = p^2 Sigma^{-1}, c = (mu - x)/p
+  const Scalar logDetDirect = 2.0 * static_cast<Scalar>(d) * std::log(period_) - logDetSigma;
+  const Scalar logCountDirect = LogEllipsoidVolume(d, logDetDirect, cut);
+  // Fourier ellipsoid: (2 pi m / p)^T Sigma (2 pi m / p) <= cut
+  const Scalar logDetFourier = 2.0 * static_cast<Scalar>(d) * std::log(SpecFunc::TWOPI / period_) + logDetSigma;
+  const Scalar logCountFourier = LogEllipsoidVolume(d, logDetFourier, cut);
+  const Scalar logBudget = std::log(static_cast<Scalar>(maxLatticeTerms_));
+  if (std::min(logCountDirect, logCountFourier) > logBudget)
   {
-    // Full sum over [-K, K]^d
-    std::vector<Point> latticePoints;
-    std::function<void(UnsignedInteger, Point&)> generateLattice = [&](UnsignedInteger dim, Point& k)
-    {
-      if (dim == d)
-      {
-        latticePoints.push_back(k);
-        return;
-      }
-      for (int ki = -static_cast<int>(K); ki <= static_cast<int>(K); ++ki)
-      {
-        k[dim] = ki * period_;
-        generateLattice(dim + 1, k);
-      }
-    };
-    Point k(d);
-    generateLattice(0, k);
+    // Even the cheapest ellipsoidal sum requires too many terms: the density
+    // is essentially uniform on the torus, so use the uniform limit 1/period^d
+    // which is properly normalized.
+    OSS oss;
+    oss << "WrappedNormal: ellipsoidal lattice sums exceed WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
+    LOGWARN(oss.str());
+    return -static_cast<Scalar>(d) * std::log(period_);
+  }
 
-    for (const Point& latticePoint : latticePoints)
+  Scalar logSum = -SpecFunc::Infinity;
+  if (logCountDirect <= logCountFourier)
+  {
+    // Direct sum over the k-ellipsoid
+    SymmetricMatrix shapeSym(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        shapeSym(i, j) = period_ * period_ * sigmaInv_(i, j);
+    CovarianceMatrix shapeCov(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        shapeCov(i, j) = shapeSym(i, j);
+    const TriangularMatrix chol(shapeCov.computeCholesky());
+    SquareMatrix lower(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        lower(i, j) = chol(i, j);
+    Point center(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+      center[i] = (mu_[i] - point[i]) / period_;
+    std::vector<Point> latticePoints;
+    Point current(d);
+    Bool truncated = false;
+    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
+    if (truncated)
     {
+      OSS oss;
+      oss << "WrappedNormal: direct lattice enumeration exceeds WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
+      LOGWARN(oss.str());
+      return -static_cast<Scalar>(d) * std::log(period_);
+    }
+    for (UnsignedInteger t = 0; t < latticePoints.size(); ++t)
+    {
+      const Point latticePoint(latticePoints[t]);
       Point diff(d);
       for (UnsignedInteger i = 0; i < d; ++i)
-        diff[i] = point[i] - mu_[i] + latticePoint[i];
+        diff[i] = point[i] - mu_[i] + latticePoint[i] * period_;
 
       // Quadratic form
       Scalar quad = 0.0;
@@ -305,56 +404,60 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
   }
   else
   {
-    // The wrapped density can be rewritten by Poisson summation as the dual
-    // Fourier series p(x) = (1/period^d) sum_{m in Z^d} exp(-(2*pi*m/period)^T sigma (2*pi*m/period)/2) cos(2*pi*m.(x-mu)/period)
-    // which converges quickly when sigma is large compared to the period,
-    // i.e. exactly in the regime where the direct lattice sum is expensive.
-    // Choose M such that exp(-(2*pi/period)^2 minEig M^2 / 2) < SpecFunc::Precision
-    const UnsignedInteger M = std::max(static_cast<UnsignedInteger>(1),
-                                       static_cast<UnsignedInteger>(std::ceil(period_ * std::sqrt(-2.0 * targetLog) / (SpecFunc::TWOPI * std::sqrt(minEig_)))));
-    const double fourierTerms = std::pow(static_cast<double>(2 * M + 1), static_cast<int>(d));
-    if (fourierTerms <= static_cast<double>(maxLatticeTerms_))
+    // Dual Fourier series over the m-ellipsoid:
+    // p(x) = (1/period^d) sum_m exp(-(2*pi*m/period)^T sigma (2*pi*m/period)/2) cos(2*pi*m.(x-mu)/period)
+    SymmetricMatrix shapeSym(d);
+    const Scalar omega = SpecFunc::TWOPI / period_;
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        shapeSym(i, j) = omega * omega * sigma_(i, j);
+    CovarianceMatrix shapeCov(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        shapeCov(i, j) = shapeSym(i, j);
+    const TriangularMatrix chol(shapeCov.computeCholesky());
+    SquareMatrix lower(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        lower(i, j) = chol(i, j);
+    const Point center(d);
+    std::vector<Point> latticePoints;
+    Point current(d);
+    Bool truncated = false;
+    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
+    if (truncated)
     {
-      // Dual Fourier series over [-M, M]^d
-      const Scalar omega = SpecFunc::TWOPI / period_;
-      const Scalar omegaSquare = omega * omega;
-      Scalar sum = 0.0;
-      std::function<void(UnsignedInteger, Point&)> generateFourier = [&](UnsignedInteger dim, Point& m)
-      {
-        if (dim == d)
-        {
-          // Quadratic form m^T sigma m
-          Scalar quad = 0.0;
-          for (UnsignedInteger i = 0; i < d; ++i)
-            for (UnsignedInteger j = 0; j < d; ++j)
-              quad += static_cast<Scalar>(m[i]) * sigma_(i, j) * static_cast<Scalar>(m[j]);
-          // Phase 2*pi*m.(x-mu)/period
-          Scalar phase = 0.0;
-          for (UnsignedInteger i = 0; i < d; ++i)
-            phase += static_cast<Scalar>(m[i]) * (point[i] - mu_[i]);
-          sum += std::exp(-0.5 * omegaSquare * quad) * std::cos(omega * phase);
-          return;
-        }
-        for (int mi = -static_cast<int>(M); mi <= static_cast<int>(M); ++mi)
-        {
-          m[dim] = static_cast<Scalar>(mi);
-          generateFourier(dim + 1, m);
-        }
-      };
-      Point m(d);
-      generateFourier(0, m);
-      logSum = std::log(sum) - static_cast<Scalar>(d) * std::log(period_);
-    }
-    else
-    {
-      // Even the dual Fourier series requires too many terms: the density is
-      // essentially uniform on the torus, so use the uniform limit 1/period^d
-      // which is properly normalized.
       OSS oss;
-      oss << "WrappedNormal: number of lattice terms (" << totalTerms << ") exceeds WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
+      oss << "WrappedNormal: Fourier lattice enumeration exceeds WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
       LOGWARN(oss.str());
-      logSum = -static_cast<Scalar>(d) * std::log(period_);
+      return -static_cast<Scalar>(d) * std::log(period_);
     }
+    const Scalar omegaSquare = omega * omega;
+    Scalar sum = 0.0;
+    for (UnsignedInteger t = 0; t < latticePoints.size(); ++t)
+    {
+      const Point mode(latticePoints[t]);
+      // Quadratic form m^T sigma m
+      Scalar quad = 0.0;
+      for (UnsignedInteger i = 0; i < d; ++i)
+        for (UnsignedInteger j = 0; j < d; ++j)
+          quad += mode[i] * sigma_(i, j) * mode[j];
+      // Phase 2*pi*m.(x-mu)/period
+      Scalar phase = 0.0;
+      for (UnsignedInteger i = 0; i < d; ++i)
+        phase += mode[i] * (point[i] - mu_[i]);
+      sum += std::exp(-0.5 * omegaSquare * quad) * std::cos(omega * phase);
+    }
+    if (!(sum > 0.0))
+    {
+      // Truncation drove the alternating sum non-positive in the deep tails:
+      // the direct sum is the right tool there
+      OSS oss;
+      oss << "WrappedNormal: Fourier sum is non-positive, this point is out of scope";
+      LOGWARN(oss.str());
+      return -SpecFunc::Infinity;
+    }
+    logSum = std::log(sum) - static_cast<Scalar>(d) * std::log(period_);
   }
 
   return logSum;
@@ -369,9 +472,60 @@ void WrappedNormal::computeMean() const
 
 void WrappedNormal::computeCovariance() const
 {
-  // By convention the covariance of the wrapped variable is measured in the
-  // tangent space at the mean, i.e. the covariance of the unwrapped Gaussian
-  covariance_ = sigma_;
+  // The covariance of the wrapped variable on the fundamental domain:
+  // E[XX^T] - E[X]E[X]^T with X = wrap(Y), Y ~ N(mu, sigma), by tensor
+  // Gauss-Hermite quadrature over the standard normal antecedent
+  const UnsignedInteger d = dimension_;
+  const UnsignedInteger budget = ResourceMap::GetAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints");
+  const UnsignedInteger order = GaussHermiteOrder(d, budget);
+  Point nodes;
+  Point weights;
+  GaussHermiteRule(order, nodes, weights);
+  // Square root of sigma from the cached eigendecomposition
+  SquareMatrix root(d);
+  for (UnsignedInteger i = 0; i < d; ++i)
+    for (UnsignedInteger j = 0; j < d; ++j)
+      root(i, j) = sigmaEigVec_(i, j) * std::sqrt(sigmaEig_[j]);
+  Point mean(d, 0.0);
+  SquareMatrix second(d);
+  Scalar totalWeight = 0.0;
+  std::vector<UnsignedInteger> counter(d, 0);
+  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
+  for (UnsignedInteger t = 0; t < total; ++t)
+  {
+    Scalar weight = 1.0;
+    Point normal(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      weight *= weights[counter[i]];
+      normal[i] = nodes[counter[i]];
+    }
+    Point gaussian(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      gaussian[i] = mu_[i];
+      for (UnsignedInteger j = 0; j < d; ++j)
+        gaussian[i] += root(i, j) * normal[j];
+    }
+    const Point point(wrap(gaussian));
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      mean[i] += weight * point[i];
+      for (UnsignedInteger j = 0; j < d; ++j)
+        second(i, j) += weight * point[i] * point[j];
+    }
+    totalWeight += weight;
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      if (++counter[i] < order) break;
+      counter[i] = 0;
+    }
+  }
+  CovarianceMatrix covariance(d);
+  for (UnsignedInteger i = 0; i < d; ++i)
+    for (UnsignedInteger j = 0; j < d; ++j)
+      covariance(i, j) = second(i, j) / totalWeight - (mean[i] / totalWeight) * (mean[j] / totalWeight);
+  covariance_ = covariance;
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -546,10 +700,51 @@ UnsignedInteger WrappedNormal::getMaxLatticeTerms() const
 
 Scalar WrappedNormal::computeEntropy() const
 {
-  // Entropy approximation for wrapped normal
-  // H = 0.5 * d * (1 + log(2*pi)) + 0.5 * log|sigma| - log(sum_k exp(-1/2 k^T period^2 sigma^{-1} k))
+  // H(X) = E_{Z ~ N(0,I)}[-logPDF(wrap(mu + A Z))] with A = V sqrt(Lambda)
+  // from the cached eigendecomposition, by tensor Gauss-Hermite quadrature
   const UnsignedInteger d = dimension_;
-  return 0.5 * d * (1.0 + std::log(2.0 * M_PI)) + 0.5 * std::log(sigmaDet_);
+  const UnsignedInteger budget = ResourceMap::GetAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints");
+  const UnsignedInteger order = GaussHermiteOrder(d, budget);
+  Point nodes;
+  Point weights;
+  GaussHermiteRule(order, nodes, weights);
+  SquareMatrix root(d);
+  for (UnsignedInteger i = 0; i < d; ++i)
+    for (UnsignedInteger j = 0; j < d; ++j)
+      root(i, j) = sigmaEigVec_(i, j) * std::sqrt(sigmaEig_[j]);
+  Scalar entropy = 0.0;
+  Scalar totalWeight = 0.0;
+  std::vector<UnsignedInteger> counter(d, 0);
+  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
+  for (UnsignedInteger t = 0; t < total; ++t)
+  {
+    Scalar weight = 1.0;
+    Point normal(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      weight *= weights[counter[i]];
+      normal[i] = nodes[counter[i]];
+    }
+    Point gaussian(d);
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      gaussian[i] = mu_[i];
+      for (UnsignedInteger j = 0; j < d; ++j)
+        gaussian[i] += root(i, j) * normal[j];
+    }
+    const Scalar logPDF = computeLogPDF(wrap(gaussian));
+    if (std::isfinite(logPDF))
+    {
+      entropy -= weight * logPDF;
+      totalWeight += weight;
+    }
+    for (UnsignedInteger i = 0; i < d; ++i)
+    {
+      if (++counter[i] < order) break;
+      counter[i] = 0;
+    }
+  }
+  return entropy / totalWeight;
 }
 
 Bool WrappedNormal::isContinuous() const
@@ -560,10 +755,10 @@ Bool WrappedNormal::isContinuous() const
 void WrappedNormal::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
-  adv.saveAttribute("dimension_", dimension_);
   adv.saveAttribute("mu_", mu_);
   adv.saveAttribute("sigma_", sigma_);
   adv.saveAttribute("period_", period_);
+  adv.saveAttribute("maxLatticeTerms_", maxLatticeTerms_);
   adv.saveAttribute("logNormalization_", logNormalization_);
   adv.saveAttribute("sigmaInv_", sigmaInv_);
   adv.saveAttribute("sigmaDet_", sigmaDet_);
@@ -572,13 +767,20 @@ void WrappedNormal::save(Advocate & adv) const
 void WrappedNormal::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
-  adv.loadAttribute("dimension_", dimension_);
   adv.loadAttribute("mu_", mu_);
   adv.loadAttribute("sigma_", sigma_);
   adv.loadAttribute("period_", period_);
+  // The class shadows the base dimension_ member: restore it from mu_
+  dimension_ = mu_.getDimension();
+  if (adv.hasAttribute("maxLatticeTerms_"))
+    adv.loadAttribute("maxLatticeTerms_", maxLatticeTerms_);
+  else
+    maxLatticeTerms_ = ResourceMap::GetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms");
   adv.loadAttribute("logNormalization_", logNormalization_);
   adv.loadAttribute("sigmaInv_", sigmaInv_);
   adv.loadAttribute("sigmaDet_", sigmaDet_);
+  // Regenerate the diagonalization cache and the range
+  computeNormalization();
   computeRange();
 }
 

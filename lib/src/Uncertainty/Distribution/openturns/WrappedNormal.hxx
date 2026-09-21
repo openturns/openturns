@@ -128,8 +128,6 @@ private:
   // Cached eigendecomposition of sigma_ for efficiency
   SquareMatrix sigmaEigVec_;
   Point sigmaEig_;
-  Scalar maxEig_;
-  Scalar minEig_;
 
 }; /* class WrappedNormal */
 

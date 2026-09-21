@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import math
+import os
 
 import openturns as ot
 import openturns.experimental as otexp
@@ -119,6 +120,49 @@ ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_ter
 default = otexp.WrappedNormal()
 assert default.getDimension() == 2
 ott.assert_almost_equal(default.getPeriod(), 2.0 * math.pi, 1e-12, 0.0)
+
+# Entropy: flat case sigma^2 = 9 is close to the uniform entropy log(2 pi)
+flat = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[9.0]]))
+ott.assert_almost_equal(flat.computeEntropy(), 1.8377423, 1e-3, 0.0)
+# Peaked case sigma^2 = 0.25 matches the unwrapped Gaussian entropy
+peaked = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[0.25]]))
+ott.assert_almost_equal(
+    peaked.computeEntropy(),
+    0.5 * (1.0 + math.log(2.0 * math.pi)) + 0.5 * math.log(0.25),
+    1e-6,
+    0.0,
+)
+
+# Covariance of the wrapped variable: tangent sigma when peaked,
+# uniform-like variance pi^2/3 when flat
+ott.assert_almost_equal(peaked.getCovariance()[0, 0], 0.25, 1e-6, 0.0)
+ott.assert_almost_equal(flat.getCovariance()[0, 0], 3.31819, 1e-3, 0.0)
+
+# High dimension: ellipsoidal lattice sums avoid the premature uniform fallback
+d = 8
+cov8 = ot.CovarianceMatrix(d)
+for i in range(d):
+    cov8[i, i] = 9.0
+wide8 = otexp.WrappedNormal([0.0] * d, cov8, 2.0 * math.pi)
+uniform8 = 1.0 / (2.0 * math.pi) ** d
+ott.assert_almost_equal(wide8.computePDF([0.0] * d) / uniform8, 1.19219768, 1e-6, 0.0)
+
+# Persistence through the Study mechanism regenerates the cache
+if ot.PlatformInfo.HasFeature("libxml2"):
+    file = "study_wrapped_normal.xml"
+    study = ot.Study(file)
+    study.add("distribution", distribution)
+    study.save()
+    study = ot.Study(file)
+    study.load()
+    loaded = otexp.WrappedNormal()
+    study.fillObject("distribution", loaded)
+    assert loaded == distribution
+    ott.assert_almost_equal(
+        loaded.computePDF([0.0]), distribution.computePDF([0.0]), 1e-12, 0.0
+    )
+    assert -math.pi <= loaded.getRealization()[0] <= math.pi
+    os.remove(file)
 
 # Clone via Distribution wrapper
 dist = ot.Distribution(distribution)

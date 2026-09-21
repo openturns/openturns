@@ -1487,6 +1487,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // WrappedNormal parameters //
   addAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100000);
+  addAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints", 4096);
 
   // WrappedNormalFactory parameters //
   addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);

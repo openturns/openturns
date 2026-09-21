@@ -835,6 +835,7 @@
 
   <!-- OT::WrappedNormal parameters -->
   <WrappedNormal-MaxLatticeTerms value_int="100000" />
+  <WrappedNormal-GaussHermiteMaximumPoints value_int="4096" />
 
   <!-- OT::WrappedNormalFactory parameters -->
 
