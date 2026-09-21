@@ -26,6 +26,15 @@ Notes
 -----
 The residual function returns `model(inputObservations) - outputObservations`.
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``CalibrationResult-PriorLineStyle`` (``String``, default: ``dashed``): line style for prior visualization,
+- ``CalibrationResult-PosteriorLineStyle`` (``String``, default: ``dotdash``): line style for posterior visualization,
+- ``CalibrationResult-ObservationLineStyle`` (``String``, default: ``solid``): line style for observation visualization,
+- ``CalibrationResult-PriorPointStyle`` (``String``, default: ``circle``): point style for prior visualization,
+- ``CalibrationResult-PosteriorPointStyle`` (``String``, default: ``diamond``): point style for posterior visualization,
+- ``CalibrationResult-ObservationPointStyle`` (``String``, default: ``fsquare``): point style for observation visualization.
+
 Examples
 --------
 >>> import openturns as ot

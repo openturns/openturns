@@ -230,4 +230,14 @@ algoName : str
 Returns
 -------
 algoName : str
-    The identifier of the algorithm."
+    The identifier of the algorithm.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Dlib-DefaultInitialTrustRegionRadius`` (``Scalar``, default: ``1.0``): default radius of the initial trust region of the Dlib trust region, least squares and least squares LM algorithms
+- ``Dlib-DefaultMaxLineSearchIterations`` (``UnsignedInteger``, default: ``100``): maximum number of line search iterations at each step of the Dlib algorithms
+- ``Dlib-DefaultWolfeRho`` (``Scalar``, default: ``0.01``): default value of the wolfeRho parameter used in the line search of the Dlib algorithms, relevant for the CG, BFGS/LBFGS and more algorithms
+- ``Dlib-DefaultWolfeSigma`` (``Scalar``, default: ``0.9``): default value of the wolfeSigma parameter used in the line search of the Dlib algorithms, relevant for the CG, BFGS/LBFGS and more algorithms"
+

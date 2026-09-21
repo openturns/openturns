@@ -111,4 +111,12 @@ smooth : float
 Parameters
 ----------
 smooth : float
-    Growing factor in penalization term."
+    Growing factor in penalization term.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SQP-DefaultOmega`` (``Scalar``, default: ``1.0e-4``): default value of the relaxation parameter of the SQP algorithm
+- ``SQP-DefaultSmooth`` (``Scalar``, default: ``1.2``): default value of the smooth parameter of the SQP algorithm"
+

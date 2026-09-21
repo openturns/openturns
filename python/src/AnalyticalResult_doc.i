@@ -6,6 +6,12 @@ Notes
 Structure created by the method run() of the :class:`~openturns.Analytical`
 class and obtained thanks to its method getAnalyticalResult().
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``AnalyticalResult-DefaultWidth`` (``Scalar``, default: ``1.0``): default width of the sensitivity graphs
+
+- ``AnalyticalResult-MeanPointIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``): number of integration nodes used to compute the mean point of the failure domain
+
 Parameters
 ----------
 designPoint : sequence of float
@@ -125,7 +131,9 @@ Returns
 -------
 factors : :class:`~openturns.PointWithDescription`
     Sequence containing the importance factors with a description for each
-    component.)RAW"
+    component.
+
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -205,7 +213,6 @@ By symmetry in the standard space, the mean point in the standard event domain i
 .. math::
 
     \Expect{\vect{U}|\vect{U} \in \cD} = \Expect{\|\vect{U}\| | \|\vect{U}\| \geq \beta_{HL}}   \vect{u}^* =  \frac{1}{E(-\beta_{HL})} \left(\int_{\beta}^{+\infty} u e(u)\, \di{u} \right)\vect{u}^*
-
 
 )RAW"
     

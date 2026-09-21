@@ -158,7 +158,16 @@ roots : :class:`~openturns.ScalarCollection`
     - If :class:`~openturns.MediumSafe`:
       the real value :math:`x` such as *function(x) = value* researched the
       first segment of length *stepSize*, within *[origin, maximumDistance]*
-      where a sign changement of function has been detected.)RAW"
+      where a sign changement of function has been detected.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``RootStrategy-DefaultMaximumDistance`` (``Scalar``, default: ``8.0``): default maximum step of the root finding algorithm
+- ``RootStrategy-DefaultStepSize`` (``Scalar``, default: ``1.0``): default step size of the root finding algorithm
+
+)RAW"
 %enddef
 %feature("docstring") OT::RootStrategyImplementation::solve
 OT_RootStrategy_solve_doc

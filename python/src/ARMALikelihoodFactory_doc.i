@@ -46,6 +46,11 @@ where :math:`\vect{\beta} = (\mat{A}_{k}, \mat{B}_{l}, \mat{Q}),\ k = 1,\ldots,p
 
 No evaluation of selection criteria such as AIC or BIC is done.
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``ARMALikelihoodFactory-RootEpsilon`` (``Scalar``, default: ``1.0e-6``): tolerance used to bound the roots of the autoregressive polynomial
+
 Examples
 --------
 Create a time series from a scalar ARMA(4,2) and a normal white noise:
@@ -62,6 +67,7 @@ Estimate the ARMA process with the maximum likelihood estimator:
 
 >>> myFactory = ot.ARMALikelihoodFactory(4, 2, 1)
 >>> myARMA = myFactory.build(ot.TimeSeries(myTimeSeries))
+
 )RAW"
 
 // ---------------------------------------------------------------------

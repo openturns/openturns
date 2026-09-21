@@ -61,7 +61,7 @@ with :math:`K_T = \sum_{j=1}^d{K_j}` the total number of modes across output com
 
 Then a functional chaos decomposition is built between the input samples :math:`\vect{X}`
 and the projected modes sample :math:`\mat{Q}`.
-The :class:`~openturns.ResourceMap` string entry `PointToFieldFunctionalChaosAlgorithm-Expansion`
+The :class:`~openturns.ResourceMap` string entry ``PointToFieldFunctionalChaosAlgorithm-Expansion``
 allows one to switch between :class:`~openturns.LeastSquaresExpansion` and :class:`~openturns.FunctionalChaosAlgorithm`.
 
 .. math::

@@ -61,9 +61,14 @@ autocorrelation between Markov chain samples.
 The first event :math:`F_1` not being conditional, :math:`\delta^2_1`
 expresses as the classic Monte Carlo c.o.v.
 
-See also
---------
-EventSimulation)RAW"
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SubsetSampling-DefaultConditionalProbability`` (``Scalar``, default: ``0.1``): default conditional probability of the subset sampling algorithm
+- ``SubsetSampling-DefaultMaximumOuterSampling`` (``UnsignedInteger``, default: ``10000``): default maximum number of outer samples of the subset sampling algorithm
+
+- ``SubsetSampling-DefaultProposalRange`` (``Scalar``, default: ``2.0``): default range of the proposal distribution of the subset sampling algorithm
+
+)RAW"
 
 // ---------------------------------------------------------------------------
 

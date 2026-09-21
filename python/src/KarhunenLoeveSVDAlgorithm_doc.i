@@ -121,6 +121,12 @@ these algorithms:
 - ``KarhunenLoeveSVDAlgorithm-Halko2011Iterations`` (``UnsignedInteger``, default: ``2``): iteration parameter of the ``Halko2011`` variant, see [halko2011]_ for the details.
 
       
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``KarhunenLoeveSVDAlgorithm-Halko2011Iterations`` (``UnsignedInteger``, default: ``2``): iteration parameter of the ``Halko2011`` variant, see [halko2011]_ for the details.
+- ``KarhunenLoeveSVDAlgorithm-Halko2011Margin`` (``UnsignedInteger``, default: ``2``): margin parameter of the ``Halko2011`` variant, see [halko2011]_ for the details,
+
 Examples
 --------
 Create a Karhunen-Loeve SVD algorithm:
@@ -136,6 +142,7 @@ Run it!
 
 >>> algorithm.run()
 >>> result = algorithm.getResult()
+
 )RAW"
 
 // ---------------------------------------------------------------------

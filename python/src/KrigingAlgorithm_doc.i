@@ -66,6 +66,11 @@ with :func:`setNoise()`:
 
 .. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``KrigingAlgorithm-LinearAlgebra`` (``String``, default: ``LAPACK``): name of the linear algebra method used to solve the kriging equations. The possible values are ``LAPACK`` and ``HMAT``
+
 Examples
 --------
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
@@ -87,6 +92,7 @@ Get the resulting meta model:
 
 >>> result = algo.getResult()
 >>> metamodel = result.getMetaModel()
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -203,11 +209,11 @@ We use the same notations as in :class:`~openturns.CovarianceModel` and :class:`
 
   - Output dimension is :math:`\geq 2`. In that case, we get the **full** log-likelihood function :math:`\mathcal{L}(\vect{\theta}, \vect{\sigma})`.
 
-  - Output dimension is **1** and the `GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate` key of :class:`~openturns.ResourceMap` is set to *True*.
+  - Output dimension is **1** and the ``GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate`` key of :class:`~openturns.ResourceMap` is set to *True*.
     The amplitude parameter of the covariance model :math:`\vect{\theta}` is in the active set of parameters and thus we get the **reduced**
     log-likelihood function :math:`\mathcal{L}(\vect{\theta})`.
 
-  - Output dimension is **1** and the `GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate` key of :class:`~openturns.ResourceMap` is set to *False*.
+  - Output dimension is **1** and the ``GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate`` key of :class:`~openturns.ResourceMap` is set to *False*.
     In that case, we get the **full** log-likelihood :math:`\mathcal{L}(\vect{\theta}, \vect{\sigma})`.
 
 The reduced log-likelihood function may be useful for some pre/postprocessing: visualisation of the maximizer, use of an external optimizers to maximize the reduced log-likelihood etc.
@@ -309,5 +315,5 @@ Notes
 -----
 The setter update the implementation and require new evaluation.
 We might also use the ResourceMap key to set the method when instantiating the algorithm.
-For that purpose, we can use ResourceMap.SetAsString(`GeneralLinearModelAlgorithm-LinearAlgebra`, key)
+For that purpose, we can use ResourceMap.SetAsString(``KrigingAlgorithm-LinearAlgebra``, key)
 with `key` being `HMAT` or `LAPACK`."

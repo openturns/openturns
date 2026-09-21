@@ -374,6 +374,13 @@ Raises
 TypeError : If the distribution is not discrete or if the sample is
     multivariate.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``FittingTest-ChiSquaredCheckSample`` (``Bool``, default: ``true``): whether the points of the sample are checked to belong to the support of the distribution before running the chi-squared test
+- ``FittingTest-ChiSquaredMinimumBinCount`` (``UnsignedInteger``, default: ``5``): minimum number of points required in each bin of the chi-squared test
+
 Examples
 --------
 >>> import openturns as ot
@@ -540,19 +547,13 @@ Notes
 The distribution is estimated using the given factory based 
 on the given sample and the distribution of the test statistics is estimated 
 using a Monte Carlo approach. This algorithm is known as Lilliefors's test [Lilliefors1967]_.
-The Monte Carlo algorithm can be configured with the following keys in
-:class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *FittingTest-LillieforsMinimumSamplingSize* defining the minimum
-  number of samples to generate in order to estimate the
-  p-value. Default value is 10.
+- ``FittingTest-LillieforsMinimumSamplingSize`` (``UnsignedInteger``, default: ``10``): minimum size of the samples generated to estimate the p-value of the Lilliefors test
 
-- *FittingTest-LillieforsMaximumSamplingSize* defining the maximum
-  number of samples to generate in order to estimate the
-  p-value. Default value is 100000.
+- ``FittingTest-LillieforsMaximumSamplingSize`` (``UnsignedInteger``, default: ``100000``): maximum size of the samples generated to estimate the p-value of the Lilliefors test
 
-- *FittingTest-LillieforsPrecision* defining the target standard
-  deviation for the p-value estimate. Default value is 0.01.
+- ``FittingTest-LillieforsPrecision`` (``Scalar``, default: ``0.01``): target standard deviation of the estimated p-value of the Lilliefors test
 
 Examples
 --------
@@ -580,4 +581,5 @@ class=TestResult name=Unnamed type=Lilliefors Normal binaryQualityMeasure=true p
 >>> quality
 True
 >>> ot.ResourceMap.Reset()
+
 )RAW"

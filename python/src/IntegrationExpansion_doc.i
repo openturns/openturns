@@ -1,5 +1,5 @@
 %feature("docstring") OT::IntegrationExpansion
-"L2 approximation on an orthonormal basis using integration strategy and a fixed basis.
+R"RAW(L2 approximation on an orthonormal basis using integration strategy and a fixed basis.
 
 Available constructors:
     IntegrationExpansion(*inputSample, outputSample, distribution*)
@@ -24,16 +24,16 @@ basis : :class:`~openturns.OrthogonalBasis`, optional
     The orthonormal basis of the vector space on which the approximation is built.
     By default, a basis is built using an hyperbolic enumerate function
     :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` associated to the
-    :math:`q-` norm specified by the `FunctionalChaosAlgorithm-QNorm` key in
+    :math:`q-` norm specified by the ``FunctionalChaosAlgorithm-QNorm`` key in
     :class:`~openturns.ResourceMap`.
     The basis is obtained through a tensorization of the univariate orthonormal
     polynomial bases associated to each marginal distributions of *distribution*.
 basisSize : int, optional
     The size of the basis on which the approximation is built. If not given, it is
-    given by the `FunctionalChaosAlgorithm-BasisSize` key in
+    given by the ``FunctionalChaosAlgorithm-BasisSize`` key in
     :class:`~openturns.ResourceMap` if this value is positive, or as the cardinal
     of the set of basis functions up to a degree given by the
-    `FunctionalChaosAlgorithm-MaximumTotalDegree` key in
+    ``FunctionalChaosAlgorithm-MaximumTotalDegree`` key in
     :class:`~openturns.ResourceMap`.
 
 See also
@@ -70,7 +70,8 @@ Solves a functional least-squares approximation using a projection on an orthono
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
 >>> basisSize = 5
 >>> algo = ot.IntegrationExpansion(inSample, outSample, distribution, basis, basisSize)
->>> algo.run()"
+>>> algo.run()
+)RAW"
 
 // ---------------------------------------------------------------------
 

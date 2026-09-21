@@ -107,5 +107,14 @@ smooth : float
 Parameters
 ----------
 smooth : float
-    Growing factor in penalization term."
+    Growing factor in penalization term.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``AbdoRackwitz-DefaultOmega`` (``Scalar``, default: ``1.0e-4``): default value of the relaxation parameter of the Abdo-Rackwitz algorithm
+- ``AbdoRackwitz-DefaultSmooth`` (``Scalar``, default: ``1.2``): default value of the smooth parameter of the Abdo-Rackwitz algorithm
+- ``AbdoRackwitz-DefaultTau`` (``Scalar``, default: ``0.5``): default value of the step size of the Abdo-Rackwitz algorithm"
+
 

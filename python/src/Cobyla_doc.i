@@ -53,4 +53,11 @@ rhoBeg : float
 Parameters
 ----------
 rhoBeg : float
-    A reasonable initial change to the variables."
+    A reasonable initial change to the variables.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Cobyla-DefaultRhoBeg`` (``Scalar``, default: ``0.1``): default value of the initial trust region radius of the Cobyla algorithm"
+

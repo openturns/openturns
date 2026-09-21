@@ -147,5 +147,13 @@ flag : bool
 Returns
 -------
 name : str
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``GaussianLinearCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem of the Gaussian linear calibration. The possible values are ``SVD``, ``Cholesky`` and ``QR``
+
     Name of least-squares method used for the resolution."
+
 
