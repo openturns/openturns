@@ -19,7 +19,7 @@ description: 'OpenTURNS source and contribution conventions: Python code formatt
 - Deprecated classes Sphinx API entries are removed in favor of the new class
 
 ## C++
-- C++ code must follow rules in `python/doc/developer_guide/coding_rules.rst`
+- C++ code must follow rules in `coding_rules.rst` (symlink to `python/doc/developer_guide/coding_rules.rst`)
 - C++ tests are not necessary for APIs that can be tested in Python
 - Use const keyword wherever possible
 - Use assigment operator for simple types initizalization (bool, int, double) but copy ctor for class types initialization.
