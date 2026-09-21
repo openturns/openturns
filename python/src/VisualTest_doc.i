@@ -48,11 +48,11 @@ The Henry plot is a special case of the more general QQ-plot.
 
 This function uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *VisualTest-CloudMediumSize* (`UnsignedInteger`, default: `1000`)
-- *VisualTest-CloudSmallSize* (`UnsignedInteger`, default: `100`)
-- *VisualTest-DependenceConfidenceLevel* (`Scalar`, default: `0.95`)
-- *VisualTest-DrawPairsMarginals-AxesMargin* (`Scalar`, default: `0.1`)
-- *VisualTest-KendallPlot-MonteCarloSize* (`UnsignedInteger`, default: `100`)
+- ``VisualTest-CloudMediumSize`` (``UnsignedInteger``, default: ``1000``)
+- ``VisualTest-CloudSmallSize`` (``UnsignedInteger``, default: ``100``)
+- ``VisualTest-DependenceConfidenceLevel`` (``Scalar``, default: ``0.95``)
+- ``VisualTest-DrawPairsMarginals-AxesMargin`` (``Scalar``, default: ``0.1``)
+- ``VisualTest-KendallPlot-MonteCarloSize`` (``UnsignedInteger``, default: ``100``)
 
 See Also
 --------

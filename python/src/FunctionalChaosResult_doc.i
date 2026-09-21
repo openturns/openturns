@@ -69,9 +69,9 @@ This structure is created by the method `run()` of
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FunctionalChaosResult-PrintColumnWidth* (`UnsignedInteger`, default: `15`)
-- *FunctionalChaosResult-PrintEllipsisSize* (`UnsignedInteger`, default: `3`)
-- *FunctionalChaosResult-PrintEllipsisThreshold* (`UnsignedInteger`, default: `1000`)
+- ``FunctionalChaosResult-PrintColumnWidth`` (``UnsignedInteger``, default: ``15``)
+- ``FunctionalChaosResult-PrintEllipsisSize`` (``UnsignedInteger``, default: ``3``)
+- ``FunctionalChaosResult-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``1000``)
 )RAW"
 
 // ---------------------------------------------------------------------

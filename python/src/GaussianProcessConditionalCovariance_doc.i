@@ -34,7 +34,7 @@ The class provides services related to the conditional covariance of the Gaussia
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GaussianProcessConditionalCovariance-DefaultConfidenceLevel* (`Scalar`, default: `0.95`)
+- ``GaussianProcessConditionalCovariance-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``)
 
 Examples
 --------

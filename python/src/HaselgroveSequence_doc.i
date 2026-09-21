@@ -31,5 +31,5 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *HaselgroveSequence-InitialSeed* (`UnsignedInteger`, default: `1`)"
+- ``HaselgroveSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)"
 

@@ -18,8 +18,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SpecFunc-MaximumIteration* (`UnsignedInteger`, default: `1000`)
-- *SpecFunc-Precision* (`Scalar`, default: `2e-16`)
+- ``SpecFunc-MaximumIteration`` (``UnsignedInteger``, default: ``1000``)
+- ``SpecFunc-Precision`` (``Scalar``, default: ``2e-16``)
 )RAW"
 
 // ---------------------------------------------------------------------

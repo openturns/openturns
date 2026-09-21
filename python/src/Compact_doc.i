@@ -53,5 +53,5 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Compact-DefaultHalfMaximumSize* (`UnsignedInteger`, default: `1024`)"
+- ``Compact-DefaultHalfMaximumSize`` (``UnsignedInteger``, default: ``1024``)"
 

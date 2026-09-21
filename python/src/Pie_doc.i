@@ -75,8 +75,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Pie-HorizontalMargin* (`Scalar`, default: `0.3`)
-- *Pie-LabelEllipsisSize* (`UnsignedInteger`, default: `20`)
-- *Pie-SmallValue* (`Scalar`, default: `0.0001`)
-- *Pie-VerticalMargin* (`Scalar`, default: `0.1`)"
+- ``Pie-HorizontalMargin`` (``Scalar``, default: ``0.3``)
+- ``Pie-LabelEllipsisSize`` (``UnsignedInteger``, default: ``20``)
+- ``Pie-SmallValue`` (``Scalar``, default: ``0.0001``)
+- ``Pie-VerticalMargin`` (``Scalar``, default: ``0.1``)"
 

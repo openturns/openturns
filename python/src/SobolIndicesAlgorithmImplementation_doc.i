@@ -143,8 +143,8 @@ then the interaction Sobol' index can be computed from the equation:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SobolIndicesAlgorithm-DefaultBlockSize* (`UnsignedInteger`, default: `1`)
-- *SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel* (`Scalar`, default: `0.95`)
+- ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``)
+- ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` (``Scalar``, default: ``0.95``)
 
 Parameters
 ----------

@@ -29,7 +29,7 @@ It returns a :class:`~openturns.Function` which is the function
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *DualLinearCombinationEvaluation-SmallCoefficient* (`Scalar`, default: `0`)
+- ``DualLinearCombinationEvaluation-SmallCoefficient`` (``Scalar``, default: ``0``)
 )RAW"
 
 // ---------------------------------------------------------------------

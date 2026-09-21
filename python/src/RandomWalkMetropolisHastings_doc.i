@@ -38,12 +38,12 @@ distribution of :math:`\vect{\delta}^k` is the provided *proposal* distribution.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor* (`Scalar`, default: `1.2`)
-- *RandomWalkMetropolisHastings-DefaultAdaptationLowerBound* (`Scalar`, default: `0.117`)
-- *RandomWalkMetropolisHastings-DefaultAdaptationPeriod* (`UnsignedInteger`, default: `30`)
-- *RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor* (`Scalar`, default: `0.8`)
-- *RandomWalkMetropolisHastings-DefaultAdaptationUpperBound* (`Scalar`, default: `0.468`)
-- *RandomWalkMetropolisHastings-DefaultBurnIn* (`UnsignedInteger`, default: `1000`)
+- ``RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor`` (``Scalar``, default: ``1.2``)
+- ``RandomWalkMetropolisHastings-DefaultAdaptationLowerBound`` (``Scalar``, default: ``0.117``)
+- ``RandomWalkMetropolisHastings-DefaultAdaptationPeriod`` (``UnsignedInteger``, default: ``30``)
+- ``RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor`` (``Scalar``, default: ``0.8``)
+- ``RandomWalkMetropolisHastings-DefaultAdaptationUpperBound`` (``Scalar``, default: ``0.468``)
+- ``RandomWalkMetropolisHastings-DefaultBurnIn`` (``UnsignedInteger``, default: ``1000``)
 
 See Also
 --------

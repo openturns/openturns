@@ -53,8 +53,8 @@ This threshold can be customized using the
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FunctionalChaosSobolIndices-MaximumNumberOfOutput* (`UnsignedInteger`, default: `1000`)
-- *FunctionalChaosSobolIndices-PrintColumnWidth* (`UnsignedInteger`, default: `15`)
+- ``FunctionalChaosSobolIndices-MaximumNumberOfOutput`` (``UnsignedInteger``, default: ``1000``)
+- ``FunctionalChaosSobolIndices-PrintColumnWidth`` (``UnsignedInteger``, default: ``15``)
 
 Examples
 --------

@@ -197,7 +197,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *LowDiscrepancySequence-ScramblingSeed* (`UnsignedInteger`, default: `0`)
+- ``LowDiscrepancySequence-ScramblingSeed`` (``UnsignedInteger``, default: ``0``)
 
 )RAW"
 

@@ -105,6 +105,6 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *PiecewiseLinearEvaluation-DefaultEnableExtrapolation* (`Bool`, default: `true`)
-- *PiecewiseLinearEvaluation-EpsilonRegular* (`Scalar`, default: `1e-12`)"
+- ``PiecewiseLinearEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
+- ``PiecewiseLinearEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)"
 
