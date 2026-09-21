@@ -69,21 +69,21 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *HMatrix-ForceSequential*: force sequential computation.
-- *HMatrix-AdmissibilityFactor*: admissibility factor for H-matrix blocks.
-- *HMatrix-AssemblyEpsilon*: epsilon for matrix assembly compression.
-- *HMatrix-LargestEigenValueRelativeError*: relative error for eigenvalue computation.
-- *HMatrix-RegularizationEpsilon*: regularization epsilon.
-- *HMatrix-RecompressionEpsilon*: epsilon for recompression.
-- *HMatrix-ValidationError*: validation error threshold.
-- *HMatrix-ClusteringAlgorithm*: clustering algorithm name.
-- *HMatrix-CompressionMethod*: compression method name.
-- *HMatrix-FactorizationMethod*: factorization method name.
-- *HMatrix-FactorizationIterations*: number of factorization iterations.
-- *HMatrix-LargestEigenValueIterations*: number of eigenvalue iterations.
-- *HMatrix-MaxLeafSize*: maximum leaf size for cluster tree.
-- *HMatrix-ValidationDump*: validation dump level.
-- *HMatrix-ValidationRerun*: validation rerun count.
+- ``HMatrix-ForceSequential`` (``Bool``, default: ``false``): force sequential computation.
+- ``HMatrix-AdmissibilityFactor`` (``Scalar``, default: ``100.0``): admissibility factor for H-matrix blocks.
+- ``HMatrix-AssemblyEpsilon`` (``Scalar``, default: ``1.0e-4``): epsilon for matrix assembly compression.
+- ``HMatrix-LargestEigenValueRelativeError`` (``Scalar``, default: ``1.0e-1``): relative error for eigenvalue computation.
+- ``HMatrix-RegularizationEpsilon`` (``Scalar``, default: ``1.0e-4``): regularization epsilon.
+- ``HMatrix-RecompressionEpsilon`` (``Scalar``, default: ``1.0e-4``): epsilon for recompression.
+- ``HMatrix-ValidationError`` (``Scalar``, default: ``0.0``): validation error threshold.
+- ``HMatrix-ClusteringAlgorithm`` (``String``, default: ``median``): clustering algorithm name, among the possible values ``median``, ``geometric`` and ``hybrid``.
+- ``HMatrix-CompressionMethod`` (``String``, default: ``AcaRandom``): compression method name, among the possible values ``Svd``, ``AcaFull``, ``AcaPartial``, ``AcaPlus`` and ``AcaRandom``.
+- ``HMatrix-FactorizationMethod`` (``String``, default: ``LLt``): factorization method name, among the possible values ``LU``, ``LDLt`` and ``LLt``.
+- ``HMatrix-FactorizationIterations`` (``UnsignedInteger``, default: ``10``): number of factorization iterations.
+- ``HMatrix-LargestEigenValueIterations`` (``UnsignedInteger``, default: ``10``): number of eigenvalue iterations.
+- ``HMatrix-MaxLeafSize`` (``UnsignedInteger``, default: ``250``): maximum leaf size for cluster tree.
+- ``HMatrix-ValidationDump`` (``UnsignedInteger``, default: ``0``): validation dump level.
+- ``HMatrix-ValidationRerun`` (``UnsignedInteger``, default: ``0``): validation rerun count.
 
 See also
 --------
