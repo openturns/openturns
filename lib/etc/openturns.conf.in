@@ -715,6 +715,10 @@
   <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
+  <!-- OT::PushForwardDistribution parameters -->
+  <PushForwardDistribution-SolverResidualTolerance value_float="1.0e-5" />
+  <PushForwardDistribution-SampleSize              value_int="10000"   />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />

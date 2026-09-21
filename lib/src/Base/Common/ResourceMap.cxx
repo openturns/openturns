@@ -1354,6 +1354,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
 
+  // PushForwardDistribution parameters //
+  addAsScalar("PushForwardDistribution-SolverResidualTolerance", 1.0e-5);
+  addAsUnsignedInteger("PushForwardDistribution-SampleSize", 10000);
+
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10);

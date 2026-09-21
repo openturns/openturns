@@ -578,6 +578,7 @@ Bingham.i Bingham_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
+                     PushForwardDistribution.i PushForwardDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )

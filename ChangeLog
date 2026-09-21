@@ -22,6 +22,7 @@
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
+ * PushForwardDistribution (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)

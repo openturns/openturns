@@ -91,6 +91,7 @@ Continuous parametric distributions
     Rice
 
     :template: Distribution.rst_t
+    experimental.PushForwardDistribution
     experimental.RiemannianGaussian
 
     :template: Distribution.rst_t
