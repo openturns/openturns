@@ -1,0 +1,767 @@
+[2026-09-12 04:09:01] waiting for idle (load < 0.7 for 180s)
+[2026-09-12 05:34:43] load 0.51 below 0.7, sampling 180s window
+[2026-09-12 05:36:23] load 0.80 >= 0.7, resetting window
+[2026-09-12 05:37:03] load 0.51 below 0.7, sampling 180s window
+[2026-09-12 05:38:23] load 0.87 >= 0.7, resetting window
+[2026-09-12 05:39:03] load 0.60 below 0.7, sampling 180s window
+[2026-09-12 05:41:23] load 0.79 >= 0.7, resetting window
+[2026-09-12 05:45:03] load 0.60 below 0.7, sampling 180s window
+[2026-09-12 05:47:43] load 0.97 >= 0.7, resetting window
+[2026-09-12 05:48:23] load 0.60 below 0.7, sampling 180s window
+[2026-09-12 05:51:03] load 0.80 >= 0.7, resetting window
+[2026-09-12 05:51:43] load 0.51 below 0.7, sampling 180s window
+[2026-09-12 05:52:03] load 0.82 >= 0.7, resetting window
+[2026-09-12 05:52:23] load 0.59 below 0.7, sampling 180s window
+[2026-09-12 05:53:23] load 0.84 >= 0.7, resetting window
+[2026-09-12 05:56:03] load 0.54 below 0.7, sampling 180s window
+[2026-09-12 05:59:03] idle sustained for 180s (load 0.63); launching benchmark
+
+=== [2026-09-12 05:59:03] benchmark against the branch build ===
+
+==============================================================================================================
+  Covariance model: matern
+==============================================================================================================
+
+  1D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+.In potrf, diagonal index 1 has an invalid value -1
+.  [note] HMAT_HODLR: the ResourceMap key 'HMatrix-FactorizationMethod' does not accept '{factorization}' (enum limited to LU/LDLt/LLt); using LLt. HODLR compression is enabled through the HMatrix-Admissibility key.
+In potrf, diagonal index 1 has an invalid value -1
+..  (n~1000) .In potrf, diagonal index 1 has an invalid value -1
+.In potrf, diagonal index 1 has an invalid value -1
+..  (n~2000) .In potrf, diagonal index 1 has an invalid value -1
+.In potrf, diagonal index 1 has an invalid value -1
+..  (n~5000) .In potrf, diagonal index 1 has an invalid value -1
+.In potrf, diagonal index 1 has an invalid value -1
+..  (n~10000) .In potrf, diagonal index 1 has an invalid value -1
+.In potrf, diagonal index 1 has an invalid value -1
+..  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    20.8ms    181us    2.25s    4.9ms    212us    50.7ms    251us   37.2ms    6.8ms     61us    21.3ms    191us   29.1ms    6.7ms     67us    10.5ms    211us   26.6ms    4.1ms     93us
+   2001    2001    87.9ms    405us    6.03s    2.7ms    187us    38.8ms    542us   71.2ms    6.6ms     44us    34.9ms    369us   64.9ms    7.3ms     53us    12.0ms    328us   52.3ms    4.0ms     79us
+   5001    5001       N/A      N/A      N/A    2.4ms    190us    70.6ms    995us  146.8ms    6.6ms     42us    64.6ms    845us  144.9ms    7.0ms     80us    44.1ms    880us  134.0ms    4.2ms     64us
+  10001   10001       N/A      N/A      N/A    2.6ms    180us   152.7ms    2.2ms  316.5ms   10.3ms     67us   174.0ms    2.0ms  318.6ms    9.9ms     58us   282.4ms    2.0ms    3.57s   19.5ms    107us
+  20001   20001       N/A      N/A      N/A    5.1ms    202us   358.5ms    4.4ms  688.5ms   10.0ms     62us   338.2ms    4.4ms  672.1ms   10.1ms     60us    26.01s    3.9ms   26.39s    8.3ms    107us
+....  (n~1000) ....  (n~2000) ....  (n~5000) .In potrf, diagonal index 1 has an invalid value -1
+.In potrf, diagonal index 1 has an invalid value -1
+..  (n~10000) .In potrf, diagonal index 1 has an invalid value -1
+.In potrf, diagonal index 1 has an invalid value -1
+..  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    94.9ms    196us  698.8ms    8.0ms    212us    23.0ms    292us  166.8ms    6.3ms     61us    14.9ms    182us  155.9ms    6.1ms     54us     6.5ms    146us  147.1ms    4.1ms     86us
+   2001    2001   162.3ms    1.9ms   12.05s    8.9ms    196us    39.2ms    494us  350.5ms    6.7ms     69us    33.7ms    355us  311.3ms    6.3ms     74us    12.5ms    319us  290.1ms    4.2ms     78us
+   5001    5001       N/A      N/A      N/A    2.7ms    186us    66.6ms    1.2ms  819.7ms    6.4ms     59us    62.2ms    1.0ms  797.6ms    6.3ms     46us    30.5ms    973us  797.8ms    3.9ms     65us
+  10001   10001       N/A      N/A      N/A    5.8ms    234us   161.2ms    2.6ms    1.65s   10.0ms     84us   212.8ms    2.7ms    1.60s   10.3ms     76us   113.8ms    2.9ms    1.60s    7.5ms    113us
+  20001   20001       N/A      N/A      N/A   12.7ms    265us   389.9ms    4.6ms    2.96s    8.5ms     60us   381.7ms    4.7ms    3.01s    8.7ms     65us   195.0ms    4.7ms    3.31s   11.4ms    111us
+
+  2D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) .In potrf, diagonal index 39 has an invalid value -1
+.In potrf, diagonal index 43 has an invalid value -1
+..  (n~5000) .In potrf, diagonal index 40 has an invalid value -1
+.In potrf, diagonal index 41 has an invalid value -1
+..  (n~10000) .In potrf, diagonal index 2 has an invalid value -1
+.In potrf, diagonal index 2 has an invalid value -1
+..  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    17.3ms    264us    2.63s    3.9ms    316us    29.3ms    309us  144.1ms    6.4ms     71us    21.3ms    236us  106.7ms    5.5ms     45us    18.4ms    258us  112.0ms    6.4ms     97us
+   2116    2116    88.6ms    461us      N/A    6.6ms    248us   112.1ms    705us  242.5ms    5.8ms     52us    62.1ms    418us  186.2ms    5.1ms     48us    55.8ms    591us  232.1ms    5.1ms     89us
+   5184    5184       N/A      N/A      N/A    2.6ms    170us   238.8ms    1.2ms  498.9ms    4.5ms     45us   194.3ms    1.1ms  481.6ms    4.3ms     51us   273.1ms    2.1ms  843.8ms    5.5ms     86us
+  10201   10201       N/A      N/A      N/A    2.4ms    210us   467.8ms    3.1ms    1.13s    6.2ms     70us   525.4ms    3.1ms    1.15s    6.5ms     81us   905.2ms    4.8ms    2.18s   18.0ms    189us
+  20164   20164       N/A      N/A      N/A    5.7ms    295us     1.07s    6.1ms    2.40s    8.1ms     75us     1.03s    6.2ms    2.35s    8.1ms     72us     2.65s   10.7ms    5.59s   14.2ms    186us
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089   152.0ms    278us    3.56s   12.4ms    450us    28.5ms    381us  369.7ms    4.0ms     43us    10.5ms    180us  279.0ms    4.6ms     51us    14.5ms    233us  287.5ms    4.0ms     84us
+   2116    2116   718.4ms    2.7ms      N/A   24.7ms    453us    85.0ms    846us  726.2ms    7.8ms     50us    28.7ms    371us  642.7ms    7.8ms     51us    22.4ms    376us  698.2ms    4.4ms     77us
+   5184    5184       N/A      N/A      N/A    4.3ms    209us   157.5ms    1.1ms    2.36s    9.6ms     60us   143.0ms    1.2ms    2.42s    4.2ms     45us   151.0ms    1.8ms    3.09s    3.9ms     67us
+  10201   10201       N/A      N/A      N/A    4.1ms    169us   388.6ms    3.0ms    5.80s   10.5ms     65us   447.2ms    3.1ms    5.83s   10.7ms     68us   577.9ms    4.2ms    8.36s   11.8ms    147us
+  20164   20164       N/A      N/A      N/A    8.4ms    279us     1.86s    6.9ms   15.71s   13.0ms     84us     1.90s    7.0ms   15.91s   13.4ms    104us     2.78s   11.9ms   26.79s    8.4ms    129us
+
+  3D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    53.9ms    360us    9.05s    5.6ms    456us    91.3ms    559us  270.8ms    9.5ms    106us    40.2ms    257us  231.8ms    8.9ms     91us    57.0ms    418us  296.5ms   12.6ms    188us
+   2744    2744   462.7ms    827us      N/A    6.2ms    408us   407.0ms    857us  604.4ms    7.7ms     59us   323.7ms    857us  629.5ms    8.0ms     67us   266.4ms    1.4ms  815.5ms    8.4ms    121us
+   5832    5832       N/A      N/A      N/A    2.9ms    280us     1.67s    2.6ms    2.07s    7.5ms     46us     1.88s    2.7ms    2.07s    7.4ms     48us     2.05s    5.1ms    4.11s    8.0ms    119us
+  12167   12167       N/A      N/A      N/A    2.6ms    304us     4.18s    7.3ms    4.19s    9.6ms    110us     4.26s    7.3ms    4.22s    9.5ms    109us    14.79s   18.3ms   21.90s   36.3ms    245us
+  21952   21952       N/A      N/A      N/A    5.8ms    371us    37.52s   18.7ms   28.65s   13.2ms     93us    38.08s   18.8ms   34.24s   13.5ms    103us    53.40s   45.7ms     1.2m   24.5ms    253us
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331   467.5ms    365us    6.00s   63.4ms    476us   156.5ms    411us  346.5ms   42.3ms    104us   107.6ms    277us  337.4ms   42.1ms    102us    11.4ms    213us  306.6ms    9.6ms    113us
+   2744    2744     2.06s    784us      N/A   55.9ms    433us   329.7ms    848us  965.5ms    4.4ms     44us   233.2ms    741us  937.8ms    8.3ms     54us    18.4ms    432us  804.9ms    6.5ms     88us
+   5832    5832       N/A      N/A      N/A    8.5ms    360us   795.3ms    2.4ms    3.02s    5.7ms     82us     1.05s    2.3ms    3.10s    5.8ms     46us    42.6ms    1.0ms    1.95s    6.4ms     63us
+  12167   12167       N/A      N/A      N/A    5.0ms    172us     1.26s    5.3ms    7.61s   31.7ms    134us     1.33s    5.6ms    7.46s   30.8ms    124us   561.6ms    4.5ms    7.35s   47.8ms    209us
+  21952   21952       N/A      N/A      N/A    8.8ms    279us    22.12s   14.6ms   30.13s   14.1ms    109us    19.83s   13.5ms   33.26s   13.4ms    113us     9.72s   18.3ms   37.10s   14.8ms    186us
+
+  4D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   288.2ms    682us      N/A   10.8ms    473us   313.8ms    900us  987.3ms    7.3ms     97us   210.0ms    1.0ms    1.01s    7.5ms     86us   253.3ms    1.3ms    1.39s   10.0ms    163us
+   4096    4096   420.9ms    1.6ms      N/A    3.5ms    295us     2.33s    1.8ms    2.85s    8.4ms     39us     2.25s    1.8ms    2.76s    8.8ms     44us     1.77s    4.4ms    4.73s    8.4ms    100us
+   6561    6561       N/A      N/A      N/A    2.4ms    156us     2.12s    4.6ms    3.92s    4.8ms     43us     2.01s    4.6ms    3.93s    4.9ms     47us     6.04s    8.4ms   11.63s    7.6ms     98us
+  14641   14641       N/A      N/A      N/A    2.3ms    167us    14.04s   14.4ms   12.67s   13.4ms    119us    14.35s   14.5ms   12.76s   14.3ms    112us      1.0m   38.5ms     1.4m   27.5ms    345us
+  28561   28561       N/A      N/A      N/A    3.2ms    227us      1.2m   41.9ms   39.20s    9.9ms    111us      1.1m   42.7ms   36.88s   10.0ms    114us      5.5m  124.3ms     6.5m   24.4ms    240us
+....  (n~1000) ....  (n~2000) ./usr/local/lib/libhmat.so.4(+0x172935) [0x7fba4d2d2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fba4d2dc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fba4d2cc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fba4d224b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fba4d1f457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fba4d24fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fba4d2327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fba4d2a5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fba4d1fe51e]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x179) [0x7fba52595899]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess10initializeEv+0x36e) [0x7fba52d40c3e]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess21getRealizationHMatrixEv+0xf8) [0x7fba52d40dc8]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess14getRealizationEv+0x2f5) [0x7fba52d43535]
+/home/regis/openturns-nomade/build/install/lib64/python3.13/site-packages/openturns/_model_process.so(+0x1acc68) [0x7fb9337acc68]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fba5419a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fba5422d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fba54263819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fba542621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fba54268016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fba542674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fba5426713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fba54263cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fba5421bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fba53e372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fba53e373ab]
+python3(_start+0x25) [0x55a1be554085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+/usr/local/lib/libhmat.so.4(+0x172935) [0x7fba4d2d2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fba4d2dc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fba4d2cc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fba4d224b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fba4d1f457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fba4d24fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fba4d2327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fba4d2a5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fba4d1fe51e]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x179) [0x7fba52595899]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_6SampleERKNS_17HMatrixParametersE+0xea) [0x7fba525f47ea]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3f) [0x7fba525f444f]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15CovarianceModel17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3a) [0x7fba5260a0fa]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZN2OT24KarhunenLoeveP1Algorithm3runEv+0x117f) [0x7fba5201c10f]
+/home/regis/openturns-nomade/build/install/lib64/python3.13/site-packages/openturns/_algo.so(+0x20bddb) [0x7fb93540bddb]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fba5419a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fba5422d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fba54263819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fba542621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fba54268016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fba542674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fba5426713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fba54263cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fba5421bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fba53e372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fba53e373ab]
+python3(_start+0x25) [0x55a1be554085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+./usr/local/lib/libhmat.so.4(+0x172935) [0x7fba4d2d2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fba4d2dc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fba4d2cc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fba4d224b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fba4d1f457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fba4d24fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fba4d2327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fba4d2a5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fba4d1fe51e]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x179) [0x7fba52595899]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess10initializeEv+0x36e) [0x7fba52d40c3e]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess21getRealizationHMatrixEv+0xf8) [0x7fba52d40dc8]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess14getRealizationEv+0x2f5) [0x7fba52d43535]
+/home/regis/openturns-nomade/build/install/lib64/python3.13/site-packages/openturns/_model_process.so(+0x1acc68) [0x7fb9337acc68]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fba5419a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fba5422d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fba54263819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fba542621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fba54268016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fba542674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fba5426713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fba54263cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fba5421bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fba53e372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fba53e373ab]
+python3(_start+0x25) [0x55a1be554085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+/usr/local/lib/libhmat.so.4(+0x172935) [0x7fba4d2d2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fba4d2dc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fba4d2cc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fba4d224b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fba4d1f457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fba4d24fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fba4d250018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fba4d2327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fba4d2a5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fba4d1fe51e]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x179) [0x7fba52595899]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_6SampleERKNS_17HMatrixParametersE+0xea) [0x7fba525f47ea]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3f) [0x7fba525f444f]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZNK2OT15CovarianceModel17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3a) [0x7fba5260a0fa]
+/home/regis/openturns-nomade/build/install/lib64/libOT.so.0.29(_ZN2OT24KarhunenLoeveP1Algorithm3runEv+0x117f) [0x7fba5201c10f]
+/home/regis/openturns-nomade/build/install/lib64/python3.13/site-packages/openturns/_algo.so(+0x20bddb) [0x7fb93540bddb]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fba5419a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fba5422d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fba54263819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fba542621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fba54268016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fba542674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fba5426713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fba54263cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fba5421bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fba53e372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fba53e373ab]
+python3(_start+0x25) [0x55a1be554085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+..  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401     3.28s    1.8ms      N/A  142.9ms    708us   930.4ms   1000us    1.26s   51.3ms    107us   876.5ms    898us    1.29s   52.7ms     99us    22.0ms    387us    1.12s   13.1ms    128us
+   4096    4096    11.36s    6.4ms      N/A   41.2ms    495us     2.15s    1.7ms    3.04s    6.1ms     65us     2.39s    1.8ms    3.01s    6.1ms     47us    26.0ms    630us    2.28s   14.6ms     87us
+   6561    6561       N/A      N/A      N/A    7.3ms    469us       N/A      N/A      N/A   31.1ms     60us       N/A      N/A      N/A   31.8ms     72us    56.9ms    1.4ms    4.12s   17.0ms     86us
+  14641   14641       N/A      N/A      N/A    7.0ms    183us     4.69s   10.1ms   14.92s   25.8ms    109us     4.45s   10.3ms   15.05s   26.9ms    126us   191.6ms    3.5ms   13.17s   14.4ms    187us
+  28561   28561       N/A      N/A      N/A   59.6ms    335us    15.67s   26.5ms   48.00s   58.3ms    134us    15.10s   25.3ms   48.90s   56.2ms    143us   290.0ms    6.3ms   29.75s   18.8ms    189us
+
+==============================================================================================================
+  Covariance model: exponential
+==============================================================================================================
+
+  1D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    31.6ms    2.1ms    1.68s    3.9ms    268us    20.4ms    345us   58.4ms    9.9ms     77us    17.2ms    239us   49.3ms    8.4ms     60us     9.0ms    184us   43.6ms    4.9ms     93us
+   2001    2001    28.0ms    1.4ms    8.57s    2.6ms    178us    28.0ms    507us   90.4ms    8.0ms     57us    27.0ms    436us   78.2ms    6.8ms     62us    13.5ms    344us   71.6ms    4.5ms     91us
+   5001    5001       N/A      N/A      N/A    2.4ms    187us    37.7ms    934us  188.9ms    6.8ms     55us    37.3ms    877us  169.9ms    6.3ms     47us    29.0ms    782us  176.3ms    4.1ms     87us
+  10001   10001       N/A      N/A      N/A    2.1ms    189us    87.7ms    2.4ms  499.0ms   18.2ms    118us   155.4ms    2.7ms  439.1ms   11.7ms     76us   111.4ms    2.7ms  421.5ms   11.8ms    103us
+  20001   20001       N/A      N/A      N/A    4.2ms    221us   264.9ms    5.0ms  771.2ms   10.3ms     65us   267.0ms    5.1ms  783.7ms   10.4ms     69us   209.5ms    4.8ms  836.4ms    8.3ms    107us
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    19.4ms    189us    2.22s    6.9ms    314us    21.2ms    327us  177.7ms    5.5ms     53us    12.0ms    242us  129.6ms    4.8ms     47us     7.1ms    162us  116.0ms    6.8ms    136us
+   2001    2001    25.5ms    383us   11.81s    2.7ms    190us    31.6ms    490us  260.6ms    4.9ms     54us    22.4ms    453us  232.1ms    4.6ms     46us    12.9ms    327us  216.7ms    3.8ms     69us
+   5001    5001       N/A      N/A      N/A    2.2ms    208us    37.1ms    1.0ms  599.2ms    4.5ms     52us    35.1ms    717us  568.4ms    4.4ms     66us    31.1ms    873us  584.2ms    6.2ms     78us
+  10001   10001       N/A      N/A      N/A    2.3ms    190us    88.1ms    2.4ms    1.14s    7.1ms     63us   139.0ms    2.6ms    1.15s    7.1ms     60us   111.8ms    2.5ms    1.18s   13.2ms    149us
+  20001   20001       N/A      N/A      N/A    9.0ms    256us   280.4ms    4.9ms    2.38s    7.3ms     66us   264.9ms    4.9ms    2.38s    7.3ms     66us   210.2ms    4.6ms    2.47s   17.3ms    128us
+
+  2D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    93.2ms    301us    3.09s    3.9ms    357us    21.5ms    332us  119.3ms    5.1ms     58us    16.1ms    245us   91.3ms    4.3ms     54us    18.7ms    253us   97.4ms    6.8ms    121us
+   2116    2116    35.4ms    391us      N/A    3.8ms    238us    85.9ms    781us  208.1ms    4.0ms     52us    47.8ms    453us  162.4ms    3.7ms     54us    59.7ms    562us  221.5ms    6.4ms     89us
+   5184    5184       N/A      N/A      N/A    2.9ms    239us   248.6ms    1.3ms  458.5ms    3.9ms     62us   215.8ms    1.2ms  457.3ms    3.3ms     41us   298.0ms    2.0ms  768.9ms    6.2ms     91us
+  10201   10201       N/A      N/A      N/A    2.5ms    180us   473.0ms    3.2ms  944.4ms    5.2ms     60us   533.9ms    3.1ms  964.3ms    5.1ms     64us     1.16s    4.9ms    2.32s   15.6ms    181us
+  20164   20164       N/A      N/A      N/A    6.2ms    307us     1.37s    6.8ms    2.37s    6.8ms     78us     1.35s    7.0ms    2.28s    6.7ms     73us     4.00s   13.1ms    6.83s   21.3ms    254us
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    23.2ms    5.9ms    3.67s    4.7ms    391us    13.6ms    319us  343.0ms    2.9ms     50us     8.3ms    199us  263.5ms    2.9ms     66us     9.6ms    158us  279.2ms    5.4ms     79us
+   2116    2116    35.8ms    387us      N/A    3.4ms    254us    43.8ms    613us  710.4ms    3.1ms     48us    22.9ms    315us  633.9ms    3.0ms     58us    32.1ms    457us  715.2ms    4.5ms     78us
+   5184    5184       N/A      N/A      N/A    2.8ms    217us   125.6ms    1.3ms    1.86s    2.6ms     49us   108.3ms    1.0ms    1.83s    2.6ms     41us   142.9ms    1.6ms    2.47s    4.5ms     86us
+  10201   10201       N/A      N/A      N/A    2.5ms    218us   423.7ms    3.1ms    5.07s    3.9ms     58us   501.7ms    3.3ms    5.11s    4.8ms     88us   632.8ms    4.2ms    7.51s    8.7ms    189us
+  20164   20164       N/A      N/A      N/A    4.7ms    279us     1.60s    7.0ms   11.23s    6.0ms     75us     1.61s    6.8ms   11.20s    5.8ms     82us     2.29s   11.0ms   18.26s   11.9ms    139us
+
+  3D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    51.7ms    321us    5.03s    4.9ms    407us    61.0ms    435us  235.0ms    7.3ms    104us    43.0ms    329us  189.8ms    6.7ms     96us    68.8ms    390us  267.9ms   13.2ms    185us
+   2744    2744   123.6ms    681us      N/A    5.6ms    347us   479.6ms    901us  488.3ms   10.2ms     57us   352.8ms    787us  523.9ms   10.1ms     65us   345.0ms    1.5ms  838.9ms   10.8ms    145us
+   5832    5832       N/A      N/A      N/A    2.9ms    238us     1.80s    2.7ms    1.86s    8.1ms     66us     1.67s    2.6ms    1.86s    8.8ms     53us     2.23s    5.4ms    3.78s   10.1ms    113us
+  12167   12167       N/A      N/A      N/A    2.5ms    179us     3.56s    6.8ms    3.39s    8.5ms    104us     3.63s    7.5ms    3.36s    8.5ms     87us    13.48s   16.3ms   18.89s   18.4ms    226us
+  21952   21952       N/A      N/A      N/A    5.9ms    305us    33.56s   17.6ms   23.86s   15.2ms    121us    30.43s   17.2ms   25.36s   15.5ms    109us    54.76s   44.8ms     1.1m   21.4ms    306us
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    37.3ms    7.4ms    6.77s    4.8ms    453us    32.6ms    392us  350.9ms    7.1ms    152us    23.1ms    244us  297.4ms    6.6ms     85us    10.0ms    206us  266.4ms    5.7ms    132us
+   2744    2744   115.5ms    656us      N/A    5.2ms    335us   325.5ms    715us  810.0ms    3.2ms     40us   207.8ms    855us  834.7ms    2.9ms     43us    85.5ms    853us  828.6ms    4.5ms     86us
+   5832    5832       N/A      N/A      N/A    2.7ms    183us     1.02s    2.5ms    2.80s    2.6ms     41us   993.3ms    2.4ms    2.83s    2.5ms     50us   394.8ms    2.7ms    3.05s    4.7ms     92us
+  12167   12167       N/A      N/A      N/A    2.6ms    166us     1.29s    5.5ms    6.99s    7.3ms    102us     1.44s    5.7ms    7.26s    7.6ms    116us   828.2ms    5.4ms    8.62s   14.7ms    178us
+  21952   21952       N/A      N/A      N/A    6.4ms    331us    16.34s   13.0ms   31.35s    7.6ms    107us    18.48s   13.6ms   29.88s    8.0ms    114us     5.21s   16.3ms   27.96s   17.8ms    247us
+
+  4D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   402.0ms    3.9ms      N/A    8.8ms    639us   485.2ms    1.1ms  909.4ms    5.7ms     88us   369.4ms    1.0ms  911.9ms    5.7ms     83us   456.6ms    1.6ms    1.59s   15.9ms    210us
+   4096    4096   619.5ms    2.1ms      N/A    7.6ms    288us     2.66s    1.9ms    2.64s    9.6ms     41us     2.62s    1.9ms    2.56s   10.1ms     41us     1.96s    4.6ms    4.54s   10.9ms    116us
+   6561    6561       N/A      N/A      N/A    2.5ms    167us     3.57s    5.4ms    3.96s    3.9ms     59us     3.59s    5.3ms    3.87s    3.7ms     50us     7.34s    9.6ms   12.45s   12.0ms    146us
+  14641   14641       N/A      N/A      N/A    2.5ms    183us    22.66s   16.6ms   13.84s   13.3ms     90us    22.29s   17.0ms   13.83s   18.3ms    111us      1.2m   39.5ms     1.5m   34.3ms    319us
+  28561   28561       N/A      N/A      N/A    3.6ms    223us      1.4m   45.0ms   38.93s    9.4ms    141us      1.4m   44.4ms   38.47s    8.4ms    111us      6.6m  135.4ms     7.5m   29.3ms    310us
+....  (n~1000) ....  (n~2000) ....  (n~5000) ....  (n~10000) ....  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   350.4ms    1.8ms      N/A    8.4ms    526us   198.2ms    891us    1.30s    5.7ms     87us   123.5ms    842us    1.27s    5.8ms    109us    17.9ms    377us    1.06s    5.8ms    110us
+   4096    4096   262.3ms    2.3ms      N/A    6.0ms    339us     2.10s    1.7ms    3.66s    8.2ms     50us     2.37s    1.8ms    3.45s    8.4ms     44us    26.6ms    623us    2.24s    4.4ms     94us
+   6561    6561       N/A      N/A      N/A    2.5ms    185us   872.7ms    3.9ms    5.25s    3.8ms     47us   841.9ms    4.3ms    5.10s    3.7ms     62us    60.5ms    1.3ms    3.82s    5.4ms     88us
+  14641   14641       N/A      N/A      N/A    2.6ms    175us     4.65s   10.5ms   16.75s    8.7ms    118us     4.71s   10.8ms   16.59s   10.0ms     97us   209.6ms    3.4ms   11.22s   12.6ms    178us
+  28561   28561       N/A      N/A      N/A    3.2ms    241us    20.12s   27.2ms   43.41s    8.4ms    110us    19.96s   28.3ms   44.37s    8.9ms    134us   321.8ms    6.5ms   25.86s   15.6ms    179us
+
+DONE
+    -> /home/regis/openturns-nomade/python/test/results/results_branch.csv written
+
+=== [2026-09-12 07:13:38] benchmark against the pr3272 build ===
+
+==============================================================================================================
+  Covariance model: matern
+==============================================================================================================
+
+  1D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+..  [note] HMAT_HODLR: the ResourceMap key 'HMatrix-FactorizationMethod' does not accept '{factorization}' (enum limited to LU/LDLt/LLt); using LLt. HODLR compression is enabled through the HMatrix-Admissibility key.
+.x  [err 1D 0.1 HODLR n~1001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~1000) ...  [err 1D 0.1 HODLR n~2001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 1D 0.1 HODLR n~5001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...x  [err 1D 0.1 HODLR n~10001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 1D 0.1 HODLR n~20001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    19.8ms    182us    4.55s    5.9ms    344us    40.3ms    294us   48.7ms   11.8ms     70us    11.6ms    217us   33.4ms    4.5ms     48us       N/A      N/A      N/A      N/A      N/A
+   2001    2001    93.2ms    491us   15.76s    2.7ms    189us    48.6ms    474us   82.0ms    9.6ms     51us    20.9ms    351us   55.4ms    3.7ms     44us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    2.3ms    160us    85.4ms    1.1ms  175.6ms    8.4ms     48us    36.7ms    728us  118.6ms    3.5ms     50us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.5ms    184us   190.6ms    2.2ms  348.8ms   13.9ms     65us   137.4ms    1.9ms  289.9ms    6.4ms     56us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A    5.3ms    193us   481.2ms    4.5ms  811.2ms   18.2ms     77us   257.0ms    3.8ms  599.9ms    7.5ms     65us       N/A      N/A      N/A      N/A      N/A
+...x  [err 1D 0.01 HODLR n~1001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~1000) ...  [err 1D 0.01 HODLR n~2001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 1D 0.01 HODLR n~5001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...  [err 1D 0.01 HODLR n~10001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~10000) ...x  [err 1D 0.01 HODLR n~20001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    69.8ms    5.3ms    4.37s   15.6ms    305us    32.8ms    315us  213.9ms    8.0ms     66us     8.9ms    173us  143.9ms    3.5ms     41us       N/A      N/A      N/A      N/A      N/A
+   2001    2001   358.1ms    539us    8.83s    4.9ms    174us    47.5ms    541us  330.3ms    7.1ms     57us    17.7ms    298us  260.0ms    3.5ms     39us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    3.0ms    193us    77.0ms    1.1ms  762.5ms    7.1ms     55us    33.1ms    696us  656.8ms    3.5ms     51us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.9ms    189us   177.8ms    2.5ms    1.48s   12.4ms     73us   137.4ms    2.0ms    1.31s    6.3ms     60us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A   10.4ms    184us   447.6ms    4.8ms    3.11s   12.7ms     64us   246.9ms    3.7ms    2.73s    6.6ms     67us       N/A      N/A      N/A      N/A      N/A
+
+  2D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 2D 0.1 HODLR n~1089] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 2D 0.1 HODLR n~2116] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ..In potrf, diagonal index 31 has an invalid value -1
+.  [err 2D 0.1 HODLR n~5184] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...x  [err 2D 0.1 HODLR n~10201] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 2D 0.1 HODLR n~20164] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    20.3ms    231us    1.71s    4.0ms    288us    29.3ms    262us  129.5ms    7.7ms     53us    32.9ms    204us  100.6ms    7.8ms     59us       N/A      N/A      N/A      N/A      N/A
+   2116    2116   367.9ms    699us      N/A    7.7ms    427us   162.0ms    648us  224.7ms    6.5ms     51us    78.1ms    413us  189.5ms    6.8ms     48us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A    2.8ms    207us   255.9ms    1.3ms  500.9ms    5.6ms     46us   247.9ms    1.1ms  502.7ms    6.5ms     40us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    2.5ms    192us   502.9ms    3.2ms    1.18s   10.8ms     81us   636.6ms    2.5ms    1.15s    8.3ms     84us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A    9.3ms    269us     1.12s    6.0ms    2.42s   13.2ms     96us     1.15s    4.9ms    2.42s   13.9ms     66us       N/A      N/A      N/A      N/A      N/A
+...  [err 2D 0.01 HODLR n~1089] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...x  [err 2D 0.01 HODLR n~2116] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~2000) ...x  [err 2D 0.01 HODLR n~5184] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~5000) ...x  [err 2D 0.01 HODLR n~10201] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 2D 0.01 HODLR n~20164] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089   155.8ms    258us    2.51s   13.2ms    612us    38.6ms    330us  359.1ms    5.7ms     58us     9.9ms    162us  249.1ms    3.9ms     42us       N/A      N/A      N/A      N/A      N/A
+   2116    2116   462.4ms    674us      N/A   16.1ms    370us    90.6ms    729us  696.5ms    8.9ms     53us    32.1ms    367us  630.6ms    3.4ms     53us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A   11.0ms    230us   161.5ms    1.2ms    2.22s    5.0ms     48us   138.1ms    1.1ms    2.25s    3.0ms     45us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    4.5ms    201us   435.6ms    3.2ms    6.01s   13.9ms     98us   565.6ms    2.8ms    5.38s    5.0ms     58us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A   18.6ms    441us     2.06s    7.1ms   15.65s   17.6ms     74us     3.42s    7.3ms   17.79s    5.9ms     56us       N/A      N/A      N/A      N/A      N/A
+
+  3D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 3D 0.1 HODLR n~1331] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 3D 0.1 HODLR n~2744] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 3D 0.1 HODLR n~5832] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...  [err 3D 0.1 HODLR n~12167] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~10000) ...x  [err 3D 0.1 HODLR n~21952] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    38.4ms    330us    3.26s    7.3ms    953us   112.4ms    412us  259.9ms   11.3ms     93us    65.9ms    268us  221.2ms   26.6ms     75us       N/A      N/A      N/A      N/A      N/A
+   2744    2744   444.3ms    707us      N/A    6.4ms    349us   414.2ms    926us  647.6ms    8.8ms     57us   384.4ms    871us  615.8ms   11.0ms     53us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A    2.7ms    176us     1.75s    2.7ms    2.25s    8.4ms     47us     2.37s    2.6ms    2.48s   13.5ms     40us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    2.4ms    162us     4.24s    7.5ms    4.32s   15.0ms     94us    10.25s    7.2ms    8.85s   13.8ms    106us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A   15.6ms    414us    40.10s   18.6ms   31.11s   17.9ms    102us    40.34s   19.4ms   31.70s   29.9ms     94us       N/A      N/A      N/A      N/A      N/A
+...x  [err 3D 0.01 HODLR n~1331] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~1000) ...x  [err 3D 0.01 HODLR n~2744] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~2000) ...  [err 3D 0.01 HODLR n~5832] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...x  [err 3D 0.01 HODLR n~12167] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 3D 0.01 HODLR n~21952] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331   462.5ms    297us    7.53s   84.9ms    487us   161.6ms    350us  337.1ms   45.5ms    118us    48.1ms    279us  322.1ms   11.5ms     76us       N/A      N/A      N/A      N/A      N/A
+   2744    2744     2.37s    770us      N/A   39.9ms    638us   362.4ms    721us  888.3ms    5.0ms     47us   239.3ms    692us  881.1ms    3.8ms     43us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A   15.8ms    205us   984.6ms    2.3ms    2.86s    6.6ms     50us   791.9ms    1.9ms    2.61s    3.1ms     52us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    5.7ms    186us     1.25s    5.8ms    7.41s   36.0ms    117us     3.34s    5.0ms    8.86s    9.1ms     86us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A   12.8ms    325us    20.60s   14.1ms   29.60s   19.0ms    121us    16.66s   13.0ms   33.06s   16.7ms    117us       N/A      N/A      N/A      N/A      N/A
+
+  4D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 4D 0.1 HODLR n~2401] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...x  [err 4D 0.1 HODLR n~4096] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~2000) ...  [err 4D 0.1 HODLR n~6561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...  [err 4D 0.1 HODLR n~14641] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~10000) ...x  [err 4D 0.1 HODLR n~28561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   466.4ms    3.8ms      N/A   11.7ms    551us   349.0ms    1.1ms    1.01s    8.7ms     76us   710.5ms    916us    1.20s   25.0ms     72us       N/A      N/A      N/A      N/A      N/A
+   4096    4096   460.9ms    1.6ms      N/A    4.6ms    265us     2.40s    1.8ms    2.87s    9.6ms     57us     2.46s    1.9ms    2.84s   10.2ms     40us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A    2.6ms    182us     2.21s    4.8ms    3.91s    6.2ms     53us     6.68s    3.6ms    7.10s    7.5ms     45us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    2.5ms    183us    14.72s   15.1ms   13.28s   19.0ms    109us    47.09s   14.0ms   32.65s   45.6ms    109us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A    3.0ms    198us      1.2m   43.7ms   39.74s   15.8ms    115us      4.2m   41.1ms     2.8m   27.4ms    218us       N/A      N/A      N/A      N/A      N/A
+...  [err 4D 0.01 HODLR n~2401] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 4D 0.01 HODLR n~4096] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ./usr/local/lib/libhmat.so.4(+0x172935) [0x7fd238cd2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fd238cdc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fd238ccc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fd238c24b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fd238bf457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fd238c4fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fd238c327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fd238ca5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fd238bfe51e]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x161) [0x7fd23df6bec1]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess10initializeEv+0x2ae) [0x7fd23e6fbebe]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess21getRealizationHMatrixEv+0x108) [0x7fd23e6fc048]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess14getRealizationEv+0x2bd) [0x7fd23e6fe5dd]
+/home/regis/openturns-pr-3272/build/install/lib64/python3.13/site-packages/openturns/_model_process.so(+0x1a902c) [0x7fd11f3a902c]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fd23fb9a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fd23fc2d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fd23fc63819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fd23fc621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fd23fc68016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fd23fc674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fd23fc6713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fd23fc63cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fd23fc1bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fd23f8372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fd23f8373ab]
+python3(_start+0x25) [0x55688680c085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+/usr/local/lib/libhmat.so.4(+0x172935) [0x7fd238cd2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fd238cdc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fd238ccc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fd238c24b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fd238bf457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fd238c4fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fd238c327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fd238ca5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fd238bfe51e]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x161) [0x7fd23df6bec1]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_6SampleERKNS_17HMatrixParametersE+0xea) [0x7fd23dfcac3a]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3f) [0x7fd23dfcaa1f]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15CovarianceModel17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3a) [0x7fd23dfdce7a]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZN2OT24KarhunenLoeveP1Algorithm3runEv+0xfcf) [0x7fd23d9f289f]
+/home/regis/openturns-pr-3272/build/install/lib64/python3.13/site-packages/openturns/_algo.so(+0x20b43b) [0x7fd12100b43b]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fd23fb9a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fd23fc2d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fd23fc63819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fd23fc621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fd23fc68016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fd23fc674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fd23fc6713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fd23fc63cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fd23fc1bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fd23f8372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fd23f8373ab]
+python3(_start+0x25) [0x55688680c085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+..  [err 4D 0.01 HODLR n~6561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ./usr/local/lib/libhmat.so.4(+0x172935) [0x7fd238cd2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fd238cdc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fd238ccc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fd238c24b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fd238bf457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fd238c4fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fd238c327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fd238ca5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fd238bfe51e]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x161) [0x7fd23df6bec1]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess10initializeEv+0x2ae) [0x7fd23e6fbebe]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess21getRealizationHMatrixEv+0x108) [0x7fd23e6fc048]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15GaussianProcess14getRealizationEv+0x2bd) [0x7fd23e6fe5dd]
+/home/regis/openturns-pr-3272/build/install/lib64/python3.13/site-packages/openturns/_model_process.so(+0x1a902c) [0x7fd11f3a902c]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fd23fb9a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fd23fc2d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fd23fc63819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fd23fc621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fd23fc68016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fd23fc674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fd23fc6713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fd23fc63cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fd23fc1bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fd23f8372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fd23f8373ab]
+python3(_start+0x25) [0x55688680c085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+/usr/local/lib/libhmat.so.4(+0x172935) [0x7fd238cd2935]
+/usr/local/lib/libhmat.so.4(_ZN4hmat11ScalarArrayIdE15qrDecompositionEPS1_i+0x2dc) [0x7fd238cdc97c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8RkMatrixIdE8truncateEdii+0xbe) [0x7fd238ccc05e]
+/usr/local/lib/libhmat.so.4(_ZN4hmat8compressIdEEPNS_8RkMatrixINS_5TypesIT_E2dpEEEPKNS_20CompressionAlgorithmERKNS_8FunctionIS3_EEPKNS_11ClusterDataESH_dRKNS_18AllocationObserverE+0x6c) [0x7fd238c24b9c]
+/usr/local/lib/libhmat.so.4(_ZN4hmat16AssemblyFunctionIdNS_14SimpleFunctionEE8assembleERKNS_13LocalSettingsERKNS_11ClusterTreeES8_bRPNS_10FullMatrixIdEERPNS_8RkMatrixIdEEdRKNS_18AllocationObserverE+0x5f) [0x7fd238bf457f]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE8assembleERNS_8AssemblyIdEERKNS_18AllocationObserverE+0x12b) [0x7fd238c4fe0b]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat7HMatrixIdE17assembleSymmetricERNS_8AssemblyIdEEPS1_bRKNS_18AllocationObserverE+0xd8) [0x7fd238c50018]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13DefaultEngineIdE8assemblyERNS_8AssemblyIdEENS_12SymmetryFlagEb+0x45) [0x7fd238c327c5]
+/usr/local/lib/libhmat.so.4(_ZN4hmat13HMatInterfaceIdE8assembleERNS_8AssemblyIdEENS_12SymmetryFlagEbP20hmat_progress_structb+0x43) [0x7fd238ca5ff3]
+/usr/local/lib/libhmat.so.4(+0x9e51e) [0x7fd238bfe51e]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZN2OT21HMatrixImplementation8assembleERKNS_27HMatrixRealAssemblyFunctionERKNS_17HMatrixParametersEc+0x161) [0x7fd23df6bec1]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_6SampleERKNS_17HMatrixParametersE+0xea) [0x7fd23dfcac3a]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT29CovarianceModelImplementation17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3f) [0x7fd23dfcaa1f]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZNK2OT15CovarianceModel17discretizeHMatrixERKNS_4MeshERKNS_17HMatrixParametersE+0x3a) [0x7fd23dfdce7a]
+/home/regis/openturns-pr-3272/build/install/lib64/libOT.so.0.29(_ZN2OT24KarhunenLoeveP1Algorithm3runEv+0xfcf) [0x7fd23d9f289f]
+/home/regis/openturns-pr-3272/build/install/lib64/python3.13/site-packages/openturns/_algo.so(+0x20b43b) [0x7fd12100b43b]
+/lib64/libpython3.13.so.1.0(_PyEval_EvalFrameDefault+0x92f) [0x7fd23fb9a18f]
+/lib64/libpython3.13.so.1.0(PyEval_EvalCode+0xaa) [0x7fd23fc2d5ca]
+/lib64/libpython3.13.so.1.0(+0x263819) [0x7fd23fc63819]
+/lib64/libpython3.13.so.1.0(+0x2621da) [0x7fd23fc621da]
+/lib64/libpython3.13.so.1.0(+0x268016) [0x7fd23fc68016]
+/lib64/libpython3.13.so.1.0(+0x2674c5) [0x7fd23fc674c5]
+/lib64/libpython3.13.so.1.0(+0x26713a) [0x7fd23fc6713a]
+/lib64/libpython3.13.so.1.0(Py_RunMain+0x3db) [0x7fd23fc63cbb]
+/lib64/libpython3.13.so.1.0(Py_BytesMain+0x39) [0x7fd23fc1bda9]
+/lib64/libc.so.6(+0x262f9) [0x7fd23f8372f9]
+/lib64/libc.so.6(__libc_start_main+0x8b) [0x7fd23f8373ab]
+python3(_start+0x25) [0x55688680c085]
+
+
+[hmat] assert failure !info at /home/regis/deps_ot/hmat-oss-1.11.1/src/scalar_array.cpp:1083 void hmat::ScalarArray<T>::qrDecomposition(hmat::ScalarArray<T>*, int) [with T = double]
+..x  [err 4D 0.01 HODLR n~14641] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...  [err 4D 0.01 HODLR n~28561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401     3.18s    4.1ms      N/A  122.4ms    764us   964.2ms    964us    1.25s   53.6ms     93us   460.7ms    646us    1.36s   10.4ms     54us       N/A      N/A      N/A      N/A      N/A
+   4096    4096    12.30s    3.9ms      N/A   29.5ms    514us     1.88s    1.6ms    3.56s    7.0ms     41us     2.09s    1.9ms    3.67s   10.2ms     51us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A   12.2ms    201us       N/A      N/A      N/A   32.5ms     79us     6.31s    3.6ms    9.16s    3.6ms     39us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    9.2ms    200us       N/A      N/A      N/A   13.0ms     50us    28.90s   12.5ms   28.50s   18.6ms    106us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A   43.8ms    379us    16.46s   25.5ms   48.45s   63.2ms    155us      2.5m   35.0ms     2.4m    8.7ms     75us       N/A      N/A      N/A      N/A      N/A
+
+==============================================================================================================
+  Covariance model: exponential
+==============================================================================================================
+
+  1D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 1D 0.1 HODLR n~1001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 1D 0.1 HODLR n~2001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 1D 0.1 HODLR n~5001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...x  [err 1D 0.1 HODLR n~10001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...  [err 1D 0.1 HODLR n~20001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001     9.0ms    216us    1.47s    5.9ms    332us    23.6ms    369us   58.0ms   10.6ms     92us     6.0ms    218us   44.3ms    2.2ms     51us       N/A      N/A      N/A      N/A      N/A
+   2001    2001    36.2ms    465us   13.18s    2.6ms    187us    29.4ms    515us   87.7ms    8.3ms     64us     9.9ms    380us   67.3ms    1.8ms     47us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    2.4ms    196us    46.0ms    1.0ms  186.8ms    7.1ms     52us    16.4ms    757us  139.1ms    1.7ms     41us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.3ms    201us    88.1ms    2.5ms  369.9ms   10.9ms     73us    58.9ms    2.4ms  408.1ms    3.1ms     63us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A    3.4ms    230us   267.9ms    4.9ms  743.2ms   10.8ms     74us   127.4ms    4.4ms  662.4ms    2.9ms     61us       N/A      N/A      N/A      N/A      N/A
+...x  [err 1D 0.01 HODLR n~1001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~1000) ...  [err 1D 0.01 HODLR n~2001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...x  [err 1D 0.01 HODLR n~5001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~5000) ...x  [err 1D 0.01 HODLR n~10001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...  [err 1D 0.01 HODLR n~20001] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    10.9ms    194us    1.66s    6.2ms    330us    18.2ms    335us  166.4ms    5.6ms     70us     4.5ms    171us  113.9ms    1.7ms     42us       N/A      N/A      N/A      N/A      N/A
+   2001    2001    26.2ms    418us   14.27s    2.7ms    193us    26.8ms    469us  249.8ms    4.8ms     60us     8.5ms    313us  193.5ms    1.7ms     56us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    2.2ms    179us    37.5ms    930us  577.1ms    4.5ms     84us    15.3ms    687us  491.0ms    1.6ms     44us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.3ms    198us    87.9ms    2.7ms    1.16s    8.2ms     77us    67.4ms    2.7ms    1.06s    3.2ms     79us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A    3.5ms    221us   268.0ms    5.0ms    2.30s    8.3ms     70us   131.2ms    4.3ms    1.96s    2.7ms     55us       N/A      N/A      N/A      N/A      N/A
+
+  2D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 2D 0.1 HODLR n~1089] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 2D 0.1 HODLR n~2116] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 2D 0.1 HODLR n~5184] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...  [err 2D 0.1 HODLR n~10201] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~10000) ...x  [err 2D 0.1 HODLR n~20164] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    13.8ms    209us    1.05s    3.6ms    328us    21.3ms    314us  108.6ms    5.3ms     61us    22.5ms    239us   85.9ms    5.8ms     42us       N/A      N/A      N/A      N/A      N/A
+   2116    2116    34.2ms    422us      N/A    6.4ms    288us    96.8ms    673us  194.1ms    4.0ms     56us    53.1ms    396us  147.5ms    4.5ms     56us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A    2.8ms    202us   245.1ms    1.2ms  432.5ms    3.2ms     49us   209.8ms    1.2ms  432.1ms    4.6ms     39us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    2.3ms    205us   450.9ms    3.1ms  908.0ms    5.0ms     75us   696.1ms    2.9ms    1.05s    4.8ms     55us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A    4.1ms    220us     1.33s    6.5ms    2.25s    6.7ms     74us     1.85s    5.9ms    2.62s    8.5ms     70us       N/A      N/A      N/A      N/A      N/A
+...x  [err 2D 0.01 HODLR n~1089] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~1000) ...  [err 2D 0.01 HODLR n~2116] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...x  [err 2D 0.01 HODLR n~5184] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~5000) ...x  [err 2D 0.01 HODLR n~10201] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 2D 0.01 HODLR n~20164] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    14.5ms    2.7ms    2.27s    3.9ms    361us    14.5ms    323us  323.4ms    2.9ms     46us     8.3ms    161us  224.8ms    3.0ms     38us       N/A      N/A      N/A      N/A      N/A
+   2116    2116    35.3ms    748us      N/A    3.3ms    224us    43.0ms    616us  670.7ms    3.2ms     43us    23.5ms    391us  575.6ms    2.4ms     37us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A    2.5ms    183us   150.5ms    1.3ms    1.76s    2.7ms     49us   109.0ms    1.1ms    1.75s    2.4ms     38us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    2.5ms    153us   431.5ms    3.1ms    5.09s    7.2ms    104us   665.7ms    2.7ms    4.76s    2.5ms     65us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A    4.5ms    268us     1.62s    7.2ms   10.85s    6.0ms     74us     2.50s    7.2ms   11.78s    4.9ms     60us       N/A      N/A      N/A      N/A      N/A
+
+  3D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 3D 0.1 HODLR n~1331] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 3D 0.1 HODLR n~2744] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...x  [err 3D 0.1 HODLR n~5832] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~5000) ...x  [err 3D 0.1 HODLR n~12167] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 3D 0.1 HODLR n~21952] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    27.5ms    325us    3.31s    5.0ms    423us    66.0ms    473us  242.8ms    7.7ms    114us    97.5ms    347us  208.2ms   26.4ms     74us       N/A      N/A      N/A      N/A      N/A
+   2744    2744   448.1ms    3.9ms      N/A    7.0ms    380us   544.5ms    831us  545.8ms   10.5ms     52us   403.7ms    988us  550.9ms   17.3ms     58us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A    2.8ms    181us     1.67s    2.8ms    1.77s    8.6ms     61us     1.84s    2.5ms    1.92s   18.2ms     71us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    2.6ms    198us     3.64s    7.2ms    3.40s    8.7ms    123us     9.22s    7.0ms    8.12s   10.7ms     86us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A    8.5ms    377us    33.30s   17.7ms   24.38s   16.4ms    107us    31.36s   17.1ms   26.23s   63.6ms    139us       N/A      N/A      N/A      N/A      N/A
+...  [err 3D 0.01 HODLR n~1331] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 3D 0.01 HODLR n~2744] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 3D 0.01 HODLR n~5832] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...x  [err 3D 0.01 HODLR n~12167] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...x  [err 3D 0.01 HODLR n~21952] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    20.1ms    378us    4.62s    5.1ms    426us    34.9ms    446us  340.8ms    6.9ms    120us    44.1ms    236us  276.1ms    8.9ms     91us       N/A      N/A      N/A      N/A      N/A
+   2744    2744    59.0ms    635us      N/A    7.6ms    332us   308.9ms    773us  750.2ms    2.6ms     62us   235.0ms    824us  741.1ms    3.1ms     48us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A    2.7ms    220us     1.17s    2.5ms    2.68s    2.7ms     43us     1.07s    2.0ms    2.82s    1.9ms     41us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    2.4ms    224us     1.23s    6.0ms    7.06s    7.4ms    120us     4.70s    5.8ms    7.62s    4.7ms     88us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A    6.2ms    314us    15.91s   13.1ms   28.21s    7.8ms    110us    22.04s   13.8ms   25.66s    9.2ms     93us       N/A      N/A      N/A      N/A      N/A
+
+  4D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...  [err 4D 0.1 HODLR n~2401] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...x  [err 4D 0.1 HODLR n~4096] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~2000) ...  [err 4D 0.1 HODLR n~6561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...  [err 4D 0.1 HODLR n~14641] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~10000) ...  [err 4D 0.1 HODLR n~28561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   415.1ms    9.4ms      N/A   13.1ms    613us   481.3ms    1.1ms  916.2ms    5.7ms     78us   780.2ms    910us    1.05s   38.2ms     75us       N/A      N/A      N/A      N/A      N/A
+   4096    4096   624.4ms    3.6ms      N/A    4.6ms    253us     2.72s    2.1ms    2.55s    9.9ms     41us     2.53s    2.0ms    2.59s    9.8ms     37us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A    2.6ms    170us     3.59s    4.9ms    3.90s    3.9ms     47us     8.84s    4.2ms    6.87s   22.3ms     58us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    2.6ms    188us    22.50s   16.0ms   13.68s   18.9ms    231us      1.1m   15.3ms   43.12s   58.1ms    142us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A    2.6ms    196us      1.4m   44.5ms   39.03s    8.9ms    117us      5.9m   45.4ms     4.0m   55.3ms    128us       N/A      N/A      N/A      N/A      N/A
+...  [err 4D 0.01 HODLR n~2401] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~1000) ...  [err 4D 0.01 HODLR n~4096] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~2000) ...  [err 4D 0.01 HODLR n~6561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~5000) ...x  [err 4D 0.01 HODLR n~14641] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+  (n~10000) ...  [err 4D 0.01 HODLR n~28561] TypeError: InvalidArgumentException : Value for key 'GaussianProcessFitter-LinearAlgebra' must be one of: LAPACK, HMAT,  got 'HODLR'
+x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   265.5ms    657us      N/A    7.7ms    510us   210.9ms    968us    1.25s    5.6ms     96us   483.8ms    746us    1.36s   11.4ms     44us       N/A      N/A      N/A      N/A      N/A
+   4096    4096   194.2ms    4.9ms      N/A    6.2ms    353us     2.31s    1.7ms    3.52s    7.9ms     70us     1.92s    1.6ms    3.46s    8.1ms     41us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A    2.8ms    180us   822.3ms    3.9ms    5.31s    4.1ms     52us     5.09s    3.3ms    7.88s    2.4ms     38us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    2.4ms    184us     4.68s   11.4ms   16.07s    9.3ms    113us    37.66s   12.4ms   40.30s   27.3ms    113us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A    2.9ms    209us    19.88s   28.3ms   43.91s    9.5ms    130us      2.7m   34.2ms     3.0m    4.7ms     75us       N/A      N/A      N/A      N/A      N/A
+
+DONE
+    -> /home/regis/openturns-nomade/python/test/results/results_pr3272.csv written
+
+=== [2026-09-12 08:10:55] combining results ===
+combined 640 rows -> /home/regis/openturns-nomade/python/test/results/results_combined.csv (80 fully-failed rows)
+
+=== [2026-09-12 08:10:55] all done ===
+-rw-r--r-- 1 regis regis 39760 sept. 12 07:13 /home/regis/openturns-nomade/python/test/results/results_branch.csv
+-rw-r--r-- 1 regis regis 79598 sept. 12 08:10 /home/regis/openturns-nomade/python/test/results/results_combined.csv
+-rw-r--r-- 1 regis regis 33504 sept. 12 08:10 /home/regis/openturns-nomade/python/test/results/results_pr3272.csv
+[2026-09-12 08:10:55] run_hodlr_bench.sh finished (exit 0)

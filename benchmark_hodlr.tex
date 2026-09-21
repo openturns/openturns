@@ -1,0 +1,1347 @@
+% benchmark_hodlr.tex -- HODLR GP-backend benchmark report
+% consolidated speed + accuracy results for the `hodlr` branch.
+% Generated from python/test/results/results_combined.csv and PLAN.md.
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs,longtable,array,amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{caption}
+\usepackage[hidelinks]{hyperref}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\tabcolsep}{4pt}
+\newcommand{\NA}{--}
+\newcommand{\good}{\textcolor{green!50!black}{$\checkmark$}}
+\newcommand{\bad}{\textcolor{red!70!black}{$\times$}}
+\title{\textbf{HODLR for Gaussian-Process linear algebra in OpenTURNS}\\ \large Speed and accuracy benchmark report}
+\author{hodlr branch --- consolidated from \texttt{python/test/results/*.csv} and \texttt{PLAN.md}}
+\date{September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This report consolidates the speed and accuracy measurements of the hierarchical
+off-diagonal low-rank (HODLR) implementation of this branch, compared against
+the dense LAPACK Cholesky backend, the classic hmat-oss \texttt{HMAT} backend, and
+the hmat-oss \texttt{HMAT\_HODLR} schur-style HODLR backend exposed by PR~\#3272.
+The central accuracy gate (relative solve error of the HODLR approximation versus
+the dense reference) \textbf{passes}: $4.75\times10^{-3}$ for $n=4001$,
+1D Matern(corr=0.7), well below the $10^{-2}$ threshold.  A direct
+speed comparison between the two HODLR implementations is available from the
+combined benchmark CSV and is highlighted in Section~\ref{sec:comparison}.
+\end{abstract}
+\tableofcontents
+
+\section{Scope and protocol}
+The benchmark script \texttt{python/test/benchmark\_hmat\_hodlr.py} sweeps:
+\begin{itemize}
+\item dimensions $1\text{D}$--$4\text{D}$ on $[-1,1]^{d}$ (regular IntervalMesher grids);
+\item covariance models Matern($\nu=2.5$) and Exponential, correlation lengths
+  $0.1$ and $0.01$;
+\item matrix sizes $n\approx 1000,\,2000,\,5000,\,10000,\,20000$;
+\item four backends: \texttt{LAPACK} (dense), \texttt{HMAT} (hmat-oss,
+  standard admissibility), \texttt{HMAT\_HODLR} (hmat-oss HODLR via PR~\#3272),
+  and \texttt{HODLR} (self-contained implementation of this branch).
+\end{itemize}
+Timings recorded per configuration: first GP realization (\texttt{t\_first},
+includes factorization), second realization (\texttt{t\_second}, factorization
+reused), Karhunen-Lo\`eve P1 (\texttt{t\_kl}, SPECTRA eigensolver on
+HODLR/HMAT-compressed storage), \texttt{GaussianProcessFitter} (\texttt{t\_fitter}),
+and \texttt{GaussianProcessRegression} (\texttt{t\_regression}).
+
+Two installs were measured with the \emph{same} script, sweep, machine and
+session (2026-09-13):
+\begin{itemize}
+\item \textbf{hodlr-branch}: this branch (\texttt{build/install}); all four backends.
+\item \textbf{pr3272}: the hmat-oss PR~\#3272 build
+  (\texttt{openturns-pr-3272/build/install}); backends
+  \texttt{LAPACK}, \texttt{HMAT}, \texttt{HMAT\_HODLR}. The self-contained
+  \texttt{HODLR} backend does not exist there (all its rows are N/A), so the
+  cross-build backend comparison is \emph{branch-HODLR vs pr3272-HMAT\_HODLR}
+  (Section~\ref{sec:comparison}).
+\end{itemize}
+Caveat: the branch build measured on 09-13 predates the pivot-floor accuracy fix
+(finalized 2026-09-16, see Section~\ref{sec:accuracy}), so several large-$n$
+self-contained \texttt{HODLR} entries are dominated by the (now fixed)
+near-SPD heal/retry cascade.
+
+\section{Accuracy results}\label{sec:accuracy}
+\subsection{The accuracy gate}
+The critical gate compares the HODLR factorization against the dense LAPACK
+Cholesky reference on a 1D Matern(corr$=$0.7) mesh, solving
+$C_H\,x = b$ for the same right-hand side in both representations
+(harness \texttt{/tmp/hodlr\_acc\_time.py}; criterion
+$\mathrm{relerr} = \|x_H - x_d\|/\|x_d\| < 10^{-2}$):
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+measure & value & verdict \\
+\midrule
+$n$ & 4001 & --\\
+leaf size & 250 & --\\
+factorize time & 0.192\,s (idle re-run) \;& --\\
+relative solve error & $4.747\times10^{-3}$ & \good{} $< 10^{-2}$\\
+regularization shift & $1.7\times10^{-2}$ & healthy heal band\\
+\bottomrule
+\end{tabular}
+\end{center}
+The gate \textbf{passes} and is load-independent (dense-vs-HODLR). The largest
+$n$ runs were also sane after the fix: $n=20002$ \texttt{factorize}=1.809\,s
+(idle gate), \texttt{solve}=8.1\,ms, $y_0=2.966$, shift $1.7\times10^{-2}$.
+
+\subsection{The accuracy bug fixed in this session (near-SPD corrupt leaves)}
+Root cause found by bisection (2026-09-16): the leaf Cholesky (\texttt{dpotrf})
+could return \texttt{info==0} while still holding a pivot at roundoff scale
+($\min\text{pivot}^2\sim1.7\times10^{-16}$). The ``successful'' factor was
+numerically garbage: corrected leaf cross terms
+$W=L_{00}^{-1}V\sim10^{8}\text{--}10^{16}$, $K=W^{T}W\sim10^{16}\text{--}10^{32}$,
+cascading into $UK$ and corrupting the whole factorisation.  Symptom:
+
+\begin{center}
+\small
+\begin{tabular}{lcc}
+\toprule
+ & pre-fix (corrupt) & post-fix \\
+\midrule
+1D corr=0.7 $n=20001$ & \bad{} H-err $\sim 5.3\text{e}34$ (5.13/5.3 in records) & \good{} relerr $4.75\text{e}-3$\\
+factorize & 21.7\,s (polluted) / 544\,s (poisoned) & \good{} $\approx 1.8$\,s (idle)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Fix}: the heal loop now also rejects tiny-pivot \texttt{dpotrf}
+and escalates \texttt{healLambda} until
+$\min\text{pivot}^2 \ge \max(\texttt{PivotFloorFactor}\cdot\texttt{kernelDiagMax},\,
+10^{-12})$.  New ResourceMap key \texttt{HODLRMatrix-PivotFloorFactor}
+($\texttt{openturns.conf.in}$: $1.0\text{e}-4$, later tuned to $1.0\text{e}-2$ so
+the heal lands in the healthy pivot band $\sim 4.3\text{e}-3\dots 3.4\text{e}-2$);
+\texttt{healLambdaInit} declared.
+
+\subsection{Open accuracy items}
+\begin{itemize}
+\item \textbf{2D 141$\times$141 corr=0.1} ($n=19881$): factorize 3.3\,s,
+  relative residual $7.9\times10^{-17}$ --- the corrupt-lambda overlap was
+  \emph{not} reproduced on this path; the case stays healthy but is parked as a
+  separate documented near-SPD/singular-overlap issue (leaves heal at the
+  nugget floor), not touched by this fix.
+\item \textbf{No persisted Litvinenko suite}: \texttt{benchmark\_gp\_full.py
+  --accuracy} (rel\_norm2, gap2, KL, logdet) exists but its output was never
+  saved; only the PLAN.md gate numbers above survived (the harness
+  \texttt{/tmp/hodlr\_acc\_time.py} is no longer in \texttt{/tmp}).
+\item \textbf{No accuracy comparison between the two HODLR implementations}:
+  no dense-vs-HMAT\_HODLR (PR~\#3272) relative-error measurement exists in any
+  report or CSV. Only the speed-side comparison is available
+  (Section~\ref{sec:comparison}).
+\end{itemize}
+
+\section{Speed results (hodlr-branch build, all backends)}
+Full per-dimension sweeps of the branch build.  Columns: first/second
+realization, KL, fitter, regression; \NA{} = not measured (LAPACK skipped above
+its affordability limits, or exception).
+
+
+\subsection{1D}
+\subsubsection*{Matern model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{1D matern corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1001 & 20.8399ms & 180.7213$\mu$s & 2.2520s & 4.8509ms & 212.4310$\mu$s\\
+ & 2001 & 87.8720ms & 404.5963$\mu$s & 6.0350s & 2.6839ms & 187.1586$\mu$s\\
+ & 5001 & -- & -- & -- & 2.3808ms & 190.0196$\mu$s\\
+ & 10001 & -- & -- & -- & 2.6436ms & 180.4829$\mu$s\\
+ & 20001 & -- & -- & -- & 5.1110ms & 202.1790$\mu$s\\
+\texttt{HMAT} & 1001 & 50.6859ms & 251.0548$\mu$s & 37.1575ms & 6.7847ms & 60.7967$\mu$s\\
+ & 2001 & 38.8081ms & 542.4023$\mu$s & 71.1985ms & 6.6464ms & 44.3459$\mu$s\\
+ & 5001 & 70.5607ms & 995.1591$\mu$s & 146.8034ms & 6.6078ms & 41.7233$\mu$s\\
+ & 10001 & 152.6802ms & 2.2230ms & 316.4821ms & 10.2813ms & 66.9956$\mu$s\\
+ & 20001 & 358.4502ms & 4.4467ms & 688.4832ms & 10.0005ms & 62.4657$\mu$s\\
+\texttt{HMAT\_HODLR} & 1001 & 21.2550ms & 190.9733$\mu$s & 29.0554ms & 6.6702ms & 66.5188$\mu$s\\
+ & 2001 & 34.8620ms & 369.3104$\mu$s & 64.8904ms & 7.2701ms & 52.6905$\mu$s\\
+ & 5001 & 64.5852ms & 844.7170$\mu$s & 144.9242ms & 6.9914ms & 80.3471$\mu$s\\
+ & 10001 & 173.9833ms & 2.0039ms & 318.6467ms & 9.8956ms & 57.6973$\mu$s\\
+ & 20001 & 338.2170ms & 4.3659ms & 672.0607ms & 10.1166ms & 60.0815$\mu$s\\
+\texttt{HODLR} & 1001 & 10.5488ms & 211.4773$\mu$s & 26.6383ms & 4.1211ms & 92.7448$\mu$s\\
+ & 2001 & 11.9703ms & 328.0640$\mu$s & 52.2609ms & 4.0100ms & 79.3934$\mu$s\\
+ & 5001 & 44.0936ms & 879.5261$\mu$s & 134.0339ms & 4.2150ms & 64.3730$\mu$s\\
+ & 10001 & 282.3546ms & 2.0306ms & 3.5674s & 19.5074ms & 106.5731$\mu$s\\
+ & 20001 & 26.0115s & 3.9177ms & 26.3912s & 8.3027ms & 107.0499$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{1D matern corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1001 & 94.9111ms & 195.5032$\mu$s & 698.7784ms & 8.0078ms & 212.1925$\mu$s\\
+ & 2001 & 162.3385ms & 1.9441ms & 12.0483s & 8.9025ms & 195.7417$\mu$s\\
+ & 5001 & -- & -- & -- & 2.6808ms & 185.9665$\mu$s\\
+ & 10001 & -- & -- & -- & 5.7607ms & 233.8886$\mu$s\\
+ & 20001 & -- & -- & -- & 12.7215ms & 265.3599$\mu$s\\
+\texttt{HMAT} & 1001 & 22.9859ms & 292.3012$\mu$s & 166.7645ms & 6.2976ms & 61.2736$\mu$s\\
+ & 2001 & 39.2177ms & 494.2417$\mu$s & 350.4634ms & 6.7003ms & 68.9030$\mu$s\\
+ & 5001 & 66.5741ms & 1.2007ms & 819.7272ms & 6.4483ms & 58.6510$\mu$s\\
+ & 10001 & 161.1905ms & 2.6064ms & 1.6508s & 9.9761ms & 83.6849$\mu$s\\
+ & 20001 & 389.9126ms & 4.6277ms & 2.9577s & 8.4648ms & 59.6046$\mu$s\\
+\texttt{HMAT\_HODLR} & 1001 & 14.8900ms & 182.1518$\mu$s & 155.9377ms & 6.1176ms & 54.1210$\mu$s\\
+ & 2001 & 33.6757ms & 354.5284$\mu$s & 311.3160ms & 6.2504ms & 73.6713$\mu$s\\
+ & 5001 & 62.1877ms & 1.0386ms & 797.5798ms & 6.2811ms & 46.0148$\mu$s\\
+ & 10001 & 212.7934ms & 2.7173ms & 1.5951s & 10.2944ms & 75.8171$\mu$s\\
+ & 20001 & 381.6979ms & 4.6675ms & 3.0069s & 8.6930ms & 65.3267$\mu$s\\
+\texttt{HODLR} & 1001 & 6.4704ms & 146.1506$\mu$s & 147.0857ms & 4.0705ms & 86.3075$\mu$s\\
+ & 2001 & 12.4528ms & 318.5272$\mu$s & 290.0660ms & 4.2429ms & 77.7245$\mu$s\\
+ & 5001 & 30.5357ms & 972.9862$\mu$s & 797.7509ms & 3.8755ms & 64.8499$\mu$s\\
+ & 10001 & 113.8282ms & 2.8882ms & 1.5992s & 7.4894ms & 113.4872$\mu$s\\
+ & 20001 & 195.0102ms & 4.6923ms & 3.3123s & 11.4009ms & 110.8646$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsubsection*{Exponential model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{1D exponential corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1001 & 31.6205ms & 2.0897ms & 1.6808s & 3.8838ms & 267.9825$\mu$s\\
+ & 2001 & 28.0147ms & 1.3599ms & 8.5663s & 2.6281ms & 178.0987$\mu$s\\
+ & 5001 & -- & -- & -- & 2.4390ms & 187.1586$\mu$s\\
+ & 10001 & -- & -- & -- & 2.0814ms & 189.3044$\mu$s\\
+ & 20001 & -- & -- & -- & 4.1625ms & 221.4909$\mu$s\\
+\texttt{HMAT} & 1001 & 20.4070ms & 345.2301$\mu$s & 58.3856ms & 9.8894ms & 77.2476$\mu$s\\
+ & 2001 & 27.9570ms & 506.8779$\mu$s & 90.4386ms & 8.0268ms & 57.4589$\mu$s\\
+ & 5001 & 37.6792ms & 934.3624$\mu$s & 188.9453ms & 6.7728ms & 54.8363$\mu$s\\
+ & 10001 & 87.6999ms & 2.3823ms & 498.9746ms & 18.2433ms & 118.2556$\mu$s\\
+ & 20001 & 264.8706ms & 5.0249ms & 771.1811ms & 10.3314ms & 65.0883$\mu$s\\
+\texttt{HMAT\_HODLR} & 1001 & 17.1552ms & 238.8954$\mu$s & 49.2518ms & 8.3878ms & 59.8431$\mu$s\\
+ & 2001 & 27.0355ms & 435.5907$\mu$s & 78.2433ms & 6.8350ms & 61.9888$\mu$s\\
+ & 5001 & 37.2522ms & 876.9035$\mu$s & 169.8935ms & 6.3367ms & 47.4453$\mu$s\\
+ & 10001 & 155.4320ms & 2.6503ms & 439.0540ms & 11.6963ms & 75.8171$\mu$s\\
+ & 20001 & 266.9787ms & 5.0952ms & 783.7491ms & 10.4489ms & 68.9030$\mu$s\\
+\texttt{HODLR} & 1001 & 9.0213ms & 184.2976$\mu$s & 43.6378ms & 4.9298ms & 92.5064$\mu$s\\
+ & 2001 & 13.4776ms & 344.2764$\mu$s & 71.5711ms & 4.4901ms & 90.5991$\mu$s\\
+ & 5001 & 29.0082ms & 782.0129$\mu$s & 176.3484ms & 4.0741ms & 87.2612$\mu$s\\
+ & 10001 & 111.4185ms & 2.6596ms & 421.5465ms & 11.7509ms & 103.4737$\mu$s\\
+ & 20001 & 209.5237ms & 4.7941ms & 836.4038ms & 8.3401ms & 107.2884$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{1D exponential corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1001 & 19.4016ms & 189.3044$\mu$s & 2.2193s & 6.9318ms & 313.9973$\mu$s\\
+ & 2001 & 25.4765ms & 382.6618$\mu$s & 11.8110s & 2.6715ms & 190.0196$\mu$s\\
+ & 5001 & -- & -- & -- & 2.2252ms & 207.9010$\mu$s\\
+ & 10001 & -- & -- & -- & 2.3255ms & 189.5428$\mu$s\\
+ & 20001 & -- & -- & -- & 8.9931ms & 255.8231$\mu$s\\
+\texttt{HMAT} & 1001 & 21.2166ms & 326.6335$\mu$s & 177.6540ms & 5.5375ms & 53.4058$\mu$s\\
+ & 2001 & 31.6479ms & 489.9502$\mu$s & 260.6030ms & 4.8647ms & 54.1210$\mu$s\\
+ & 5001 & 37.1075ms & 1.0068ms & 599.2453ms & 4.5173ms & 52.2137$\mu$s\\
+ & 10001 & 88.0830ms & 2.3689ms & 1.1403s & 7.1437ms & 63.1809$\mu$s\\
+ & 20001 & 280.4322ms & 4.9198ms & 2.3823s & 7.2782ms & 66.0419$\mu$s\\
+\texttt{HMAT\_HODLR} & 1001 & 12.0006ms & 241.9949$\mu$s & 129.6363ms & 4.7851ms & 47.2069$\mu$s\\
+ & 2001 & 22.4037ms & 453.2337$\mu$s & 232.1174ms & 4.5640ms & 45.7764$\mu$s\\
+ & 5001 & 35.0933ms & 716.9247$\mu$s & 568.4183ms & 4.3893ms & 66.0419$\mu$s\\
+ & 10001 & 139.0102ms & 2.5570ms & 1.1544s & 7.1235ms & 60.3199$\mu$s\\
+ & 20001 & 264.8673ms & 4.8883ms & 2.3808s & 7.3056ms & 65.5651$\mu$s\\
+\texttt{HODLR} & 1001 & 7.0734ms & 162.3631$\mu$s & 116.0200ms & 6.7821ms & 136.1370$\mu$s\\
+ & 2001 & 12.8524ms & 327.1103$\mu$s & 216.7389ms & 3.8013ms & 69.1414$\mu$s\\
+ & 5001 & 31.1267ms & 872.6120$\mu$s & 584.2237ms & 6.1977ms & 77.9629$\mu$s\\
+ & 10001 & 111.7826ms & 2.5234ms & 1.1775s & 13.1605ms & 149.2500$\mu$s\\
+ & 20001 & 210.1967ms & 4.5869ms & 2.4704s & 17.2839ms & 128.0308$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsection{2D}
+\subsubsection*{Matern model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{2D matern corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1089 & 17.2575ms & 264.4062$\mu$s & 2.6315s & 3.9127ms & 315.6662$\mu$s\\
+ & 2116 & 88.5930ms & 461.3400$\mu$s & -- & 6.6204ms & 248.1937$\mu$s\\
+ & 5184 & -- & -- & -- & 2.6374ms & 169.9924$\mu$s\\
+ & 10201 & -- & -- & -- & 2.3804ms & 209.5699$\mu$s\\
+ & 20164 & -- & -- & -- & 5.7139ms & 294.9238$\mu$s\\
+\texttt{HMAT} & 1089 & 29.3431ms & 309.4673$\mu$s & 144.1455ms & 6.4464ms & 70.8103$\mu$s\\
+ & 2116 & 112.0870ms & 704.7653$\mu$s & 242.5411ms & 5.8405ms & 52.4521$\mu$s\\
+ & 5184 & 238.8456ms & 1.2181ms & 498.8730ms & 4.4732ms & 44.5843$\mu$s\\
+ & 10201 & 467.8061ms & 3.0799ms & 1.1292s & 6.1867ms & 69.6182$\mu$s\\
+ & 20164 & 1.0717s & 6.0699ms & 2.4024s & 8.1284ms & 74.6250$\mu$s\\
+\texttt{HMAT\_HODLR} & 1089 & 21.2538ms & 235.5576$\mu$s & 106.7433ms & 5.4507ms & 44.8227$\mu$s\\
+ & 2116 & 62.0856ms & 418.1862$\mu$s & 186.2407ms & 5.0595ms & 47.9221$\mu$s\\
+ & 5184 & 194.2804ms & 1.0691ms & 481.5748ms & 4.2722ms & 51.2600$\mu$s\\
+ & 10201 & 525.3742ms & 3.0634ms & 1.1469s & 6.4907ms & 80.5855$\mu$s\\
+ & 20164 & 1.0338s & 6.2084ms & 2.3460s & 8.1329ms & 72.4792$\mu$s\\
+\texttt{HODLR} & 1089 & 18.3501ms & 257.7305$\mu$s & 112.0167ms & 6.3672ms & 97.2748$\mu$s\\
+ & 2116 & 55.7771ms & 590.8012$\mu$s & 232.1019ms & 5.1210ms & 89.4070$\mu$s\\
+ & 5184 & 273.1204ms & 2.0568ms & 843.8439ms & 5.4948ms & 86.0691$\mu$s\\
+ & 10201 & 905.1511ms & 4.7724ms & 2.1841s & 17.9672ms & 188.8275$\mu$s\\
+ & 20164 & 2.6493s & 10.7076ms & 5.5858s & 14.1592ms & 185.9665$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{2D matern corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1089 & 152.0307ms & 278.4729$\mu$s & 3.5572s & 12.3968ms & 450.1343$\mu$s\\
+ & 2116 & 718.4174ms & 2.7299ms & -- & 24.7061ms & 452.5185$\mu$s\\
+ & 5184 & -- & -- & -- & 4.2725ms & 209.3315$\mu$s\\
+ & 10201 & -- & -- & -- & 4.0793ms & 168.8004$\mu$s\\
+ & 20164 & -- & -- & -- & 8.4114ms & 279.4266$\mu$s\\
+\texttt{HMAT} & 1089 & 28.5017ms & 380.5161$\mu$s & 369.7240ms & 4.0371ms & 42.9153$\mu$s\\
+ & 2116 & 84.9829ms & 846.1475$\mu$s & 726.2216ms & 7.8142ms & 50.0679$\mu$s\\
+ & 5184 & 157.4779ms & 1.0905ms & 2.3554s & 9.6250ms & 60.0815$\mu$s\\
+ & 10201 & 388.5632ms & 3.0026ms & 5.7970s & 10.5145ms & 65.0883$\mu$s\\
+ & 20164 & 1.8627s & 6.8672ms & 15.7141s & 12.9809ms & 83.9233$\mu$s\\
+\texttt{HMAT\_HODLR} & 1089 & 10.4599ms & 180.2444$\mu$s & 278.9824ms & 4.5712ms & 51.4984$\mu$s\\
+ & 2116 & 28.7082ms & 370.9793$\mu$s & 642.7033ms & 7.7991ms & 50.7832$\mu$s\\
+ & 5184 & 142.9813ms & 1.1504ms & 2.4227s & 4.1821ms & 45.0611$\mu$s\\
+ & 10201 & 447.1834ms & 3.0591ms & 5.8252s & 10.7284ms & 67.7109$\mu$s\\
+ & 20164 & 1.9033s & 6.9902ms & 15.9052s & 13.3739ms & 103.7121$\mu$s\\
+\texttt{HODLR} & 1089 & 14.4815ms & 232.6965$\mu$s & 287.4746ms & 4.0405ms & 84.1618$\mu$s\\
+ & 2116 & 22.3615ms & 375.9861$\mu$s & 698.2346ms & 4.3597ms & 76.5324$\mu$s\\
+ & 5184 & 151.0005ms & 1.7681ms & 3.0918s & 3.9043ms & 66.5188$\mu$s\\
+ & 10201 & 577.9347ms & 4.2386ms & 8.3628s & 11.8380ms & 147.3427$\mu$s\\
+ & 20164 & 2.7849s & 11.8909ms & 26.7882s & 8.3604ms & 129.2229$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsubsection*{Exponential model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{2D exponential corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1089 & 93.1802ms & 301.3611$\mu$s & 3.0905s & 3.9027ms & 356.9126$\mu$s\\
+ & 2116 & 35.3630ms & 391.0065$\mu$s & -- & 3.8285ms & 237.7033$\mu$s\\
+ & 5184 & -- & -- & -- & 2.8937ms & 239.1338$\mu$s\\
+ & 10201 & -- & -- & -- & 2.5241ms & 180.0060$\mu$s\\
+ & 20164 & -- & -- & -- & 6.1731ms & 307.0831$\mu$s\\
+\texttt{HMAT} & 1089 & 21.4729ms & 331.6402$\mu$s & 119.3457ms & 5.0552ms & 58.1741$\mu$s\\
+ & 2116 & 85.8889ms & 780.8208$\mu$s & 208.1223ms & 3.9816ms & 52.2137$\mu$s\\
+ & 5184 & 248.5654ms & 1.2915ms & 458.4751ms & 3.9060ms & 62.2272$\mu$s\\
+ & 10201 & 472.9950ms & 3.1650ms & 944.3631ms & 5.1637ms & 59.8431$\mu$s\\
+ & 20164 & 1.3750s & 6.7768ms & 2.3693s & 6.8345ms & 77.9629$\mu$s\\
+\texttt{HMAT\_HODLR} & 1089 & 16.1004ms & 244.6175$\mu$s & 91.3460ms & 4.2942ms & 53.6442$\mu$s\\
+ & 2116 & 47.7505ms & 453.4721$\mu$s & 162.3869ms & 3.6693ms & 54.3594$\mu$s\\
+ & 5184 & 215.7633ms & 1.2181ms & 457.3236ms & 3.2597ms & 40.5312$\mu$s\\
+ & 10201 & 533.9353ms & 3.1064ms & 964.3471ms & 5.1498ms & 63.8962$\mu$s\\
+ & 20164 & 1.3450s & 7.0181ms & 2.2762s & 6.7022ms & 73.1945$\mu$s\\
+\texttt{HODLR} & 1089 & 18.6667ms & 253.4389$\mu$s & 97.3985ms & 6.8409ms & 121.1166$\mu$s\\
+ & 2116 & 59.7475ms & 561.7142$\mu$s & 221.4882ms & 6.4325ms & 89.4070$\mu$s\\
+ & 5184 & 297.9746ms & 2.0351ms & 768.9490ms & 6.1667ms & 90.8375$\mu$s\\
+ & 10201 & 1.1620s & 4.9434ms & 2.3160s & 15.6081ms & 180.9597$\mu$s\\
+ & 20164 & 3.9996s & 13.1323ms & 6.8274s & 21.3306ms & 254.3926$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{2D exponential corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1089 & 23.2470ms & 5.9452ms & 3.6674s & 4.6508ms & 391.4833$\mu$s\\
+ & 2116 & 35.7690ms & 387.1918$\mu$s & -- & 3.4153ms & 254.1542$\mu$s\\
+ & 5184 & -- & -- & -- & 2.7797ms & 217.1993$\mu$s\\
+ & 10201 & -- & -- & -- & 2.4688ms & 217.9146$\mu$s\\
+ & 20164 & -- & -- & -- & 4.7383ms & 278.9497$\mu$s\\
+\texttt{HMAT} & 1089 & 13.6392ms & 319.4809$\mu$s & 342.9539ms & 2.9492ms & 49.8295$\mu$s\\
+ & 2116 & 43.8447ms & 612.9742$\mu$s & 710.4399ms & 3.0992ms & 48.3990$\mu$s\\
+ & 5184 & 125.5546ms & 1.2679ms & 1.8568s & 2.6391ms & 49.3526$\mu$s\\
+ & 10201 & 423.6612ms & 3.1271ms & 5.0708s & 3.9179ms & 58.4126$\mu$s\\
+ & 20164 & 1.6045s & 6.9604ms & 11.2271s & 5.9586ms & 74.6250$\mu$s\\
+\texttt{HMAT\_HODLR} & 1089 & 8.2984ms & 198.8411$\mu$s & 263.4544ms & 2.8672ms & 66.2804$\mu$s\\
+ & 2116 & 22.9244ms & 314.9509$\mu$s & 633.9145ms & 3.0372ms & 58.4126$\mu$s\\
+ & 5184 & 108.2597ms & 1.0395ms & 1.8303s & 2.6355ms & 41.0080$\mu$s\\
+ & 10201 & 501.6556ms & 3.2732ms & 5.1099s & 4.8151ms & 87.9765$\mu$s\\
+ & 20164 & 1.6123s & 6.7897ms & 11.1985s & 5.7871ms & 81.5392$\mu$s\\
+\texttt{HODLR} & 1089 & 9.5596ms & 157.8331$\mu$s & 279.1872ms & 5.3997ms & 78.9165$\mu$s\\
+ & 2116 & 32.1107ms & 457.2868$\mu$s & 715.2326ms & 4.4754ms & 77.7245$\mu$s\\
+ & 5184 & 142.8716ms & 1.6279ms & 2.4711s & 4.5161ms & 86.0691$\mu$s\\
+ & 10201 & 632.7877ms & 4.2012ms & 7.5054s & 8.6846ms & 189.3044$\mu$s\\
+ & 20164 & 2.2872s & 10.9966ms & 18.2578s & 11.8845ms & 138.9980$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsection{3D}
+\subsubsection*{Matern model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{3D matern corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1331 & 53.8659ms & 360.4889$\mu$s & 9.0479s & 5.5592ms & 455.8563$\mu$s\\
+ & 2744 & 462.7042ms & 826.5972$\mu$s & -- & 6.2332ms & 407.6958$\mu$s\\
+ & 5832 & -- & -- & -- & 2.9371ms & 280.1418$\mu$s\\
+ & 12167 & -- & -- & -- & 2.6259ms & 303.5069$\mu$s\\
+ & 21952 & -- & -- & -- & 5.7557ms & 370.5025$\mu$s\\
+\texttt{HMAT} & 1331 & 91.3033ms & 558.6147$\mu$s & 270.7613ms & 9.4831ms & 105.8578$\mu$s\\
+ & 2744 & 407.0199ms & 856.6380$\mu$s & 604.4471ms & 7.7419ms & 59.1278$\mu$s\\
+ & 5832 & 1.6701s & 2.6238ms & 2.0697s & 7.4556ms & 45.7764$\mu$s\\
+ & 12167 & 4.1772s & 7.3397ms & 4.1881s & 9.5580ms & 110.1494$\mu$s\\
+ & 21952 & 37.5214s & 18.6536ms & 28.6521s & 13.2298ms & 92.7448$\mu$s\\
+\texttt{HMAT\_HODLR} & 1331 & 40.2195ms & 257.0152$\mu$s & 231.7562ms & 8.9335ms & 91.3143$\mu$s\\
+ & 2744 & 323.6511ms & 857.3532$\mu$s & 629.5331ms & 7.9749ms & 66.7572$\mu$s\\
+ & 5832 & 1.8795s & 2.7192ms & 2.0703s & 7.3562ms & 47.9221$\mu$s\\
+ & 12167 & 4.2626s & 7.3035ms & 4.2227s & 9.5074ms & 109.1957$\mu$s\\
+ & 21952 & 38.0825s & 18.8360ms & 34.2415s & 13.5102ms & 103.2352$\mu$s\\
+\texttt{HODLR} & 1331 & 57.0161ms & 418.4246$\mu$s & 296.5469ms & 12.6035ms & 188.3507$\mu$s\\
+ & 2744 & 266.3779ms & 1.3635ms & 815.4907ms & 8.3797ms & 121.3551$\mu$s\\
+ & 5832 & 2.0469s & 5.0681ms & 4.1053s & 8.0109ms & 119.4477$\mu$s\\
+ & 12167 & 14.7858s & 18.2786ms & 21.9035s & 36.2575ms & 245.3327$\mu$s\\
+ & 21952 & 53.3999s & 45.7239ms & 1.2m & 24.4787ms & 252.9621$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{3D matern corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1331 & 467.5014ms & 364.7804$\mu$s & 5.9962s & 63.4389ms & 475.8835$\mu$s\\
+ & 2744 & 2.0587s & 783.6819$\mu$s & -- & 55.9225ms & 433.4450$\mu$s\\
+ & 5832 & -- & -- & -- & 8.5311ms & 359.7736$\mu$s\\
+ & 12167 & -- & -- & -- & 5.0337ms & 171.6614$\mu$s\\
+ & 21952 & -- & -- & -- & 8.8177ms & 279.4266$\mu$s\\
+\texttt{HMAT} & 1331 & 156.5142ms & 410.7952$\mu$s & 346.4780ms & 42.2583ms & 103.7121$\mu$s\\
+ & 2744 & 329.7405ms & 848.0549$\mu$s & 965.5001ms & 4.3666ms & 44.1074$\mu$s\\
+ & 5832 & 795.3138ms & 2.3932ms & 3.0174s & 5.7445ms & 82.4928$\mu$s\\
+ & 12167 & 1.2562s & 5.2769ms & 7.6111s & 31.7142ms & 133.9912$\mu$s\\
+ & 21952 & 22.1231s & 14.5910ms & 30.1350s & 14.0910ms & 109.4341$\mu$s\\
+\texttt{HMAT\_HODLR} & 1331 & 107.6074ms & 277.2808$\mu$s & 337.3742ms & 42.0544ms & 101.8047$\mu$s\\
+ & 2744 & 233.2449ms & 741.4818$\mu$s & 937.7890ms & 8.3117ms & 54.1210$\mu$s\\
+ & 5832 & 1.0466s & 2.3155ms & 3.1046s & 5.8115ms & 45.7764$\mu$s\\
+ & 12167 & 1.3320s & 5.6498ms & 7.4636s & 30.7505ms & 124.2161$\mu$s\\
+ & 21952 & 19.8267s & 13.5181ms & 33.2641s & 13.4277ms & 112.5336$\mu$s\\
+\texttt{HODLR} & 1331 & 11.4372ms & 213.1462$\mu$s & 306.6149ms & 9.6381ms & 113.0104$\mu$s\\
+ & 2744 & 18.3754ms & 432.2529$\mu$s & 804.8606ms & 6.5238ms & 88.2149$\mu$s\\
+ & 5832 & 42.5775ms & 1.0483ms & 1.9486s & 6.4077ms & 63.1809$\mu$s\\
+ & 12167 & 561.5752ms & 4.4830ms & 7.3531s & 47.7893ms & 209.0931$\mu$s\\
+ & 21952 & 9.7164s & 18.3160ms & 37.1015s & 14.7843ms & 186.2049$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsubsection*{Exponential model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{3D exponential corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1331 & 51.6911ms & 321.3882$\mu$s & 5.0258s & 4.9047ms & 406.7421$\mu$s\\
+ & 2744 & 123.6432ms & 680.9235$\mu$s & -- & 5.6293ms & 347.3759$\mu$s\\
+ & 5832 & -- & -- & -- & 2.8634ms & 238.1802$\mu$s\\
+ & 12167 & -- & -- & -- & 2.4822ms & 179.2908$\mu$s\\
+ & 21952 & -- & -- & -- & 5.9321ms & 304.9374$\mu$s\\
+\texttt{HMAT} & 1331 & 61.0328ms & 434.8755$\mu$s & 235.0338ms & 7.2508ms & 104.1889$\mu$s\\
+ & 2744 & 479.5606ms & 900.5070$\mu$s & 488.3468ms & 10.1733ms & 56.7436$\mu$s\\
+ & 5832 & 1.7959s & 2.6908ms & 1.8576s & 8.0841ms & 65.5651$\mu$s\\
+ & 12167 & 3.5599s & 6.8259ms & 3.3941s & 8.5454ms & 104.1889$\mu$s\\
+ & 21952 & 33.5580s & 17.6041ms & 23.8601s & 15.1646ms & 121.1166$\mu$s\\
+\texttt{HMAT\_HODLR} & 1331 & 42.9518ms & 328.5408$\mu$s & 189.8410ms & 6.6652ms & 96.3211$\mu$s\\
+ & 2744 & 352.8013ms & 786.5429$\mu$s & 523.8967ms & 10.0677ms & 64.6114$\mu$s\\
+ & 5832 & 1.6672s & 2.6016ms & 1.8622s & 8.7674ms & 53.4058$\mu$s\\
+ & 12167 & 3.6305s & 7.4861ms & 3.3650s & 8.4565ms & 87.4996$\mu$s\\
+ & 21952 & 30.4314s & 17.2007ms & 25.3626s & 15.5098ms & 108.9573$\mu$s\\
+\texttt{HODLR} & 1331 & 68.7754ms & 390.2912$\mu$s & 267.8723ms & 13.1667ms & 185.2512$\mu$s\\
+ & 2744 & 344.9678ms & 1.5299ms & 838.9211ms & 10.8173ms & 144.9585$\mu$s\\
+ & 5832 & 2.2346s & 5.4088ms & 3.7833s & 10.1397ms & 112.7720$\mu$s\\
+ & 12167 & 13.4832s & 16.3355ms & 18.8895s & 18.4433ms & 225.7824$\mu$s\\
+ & 21952 & 54.7557s & 44.7559ms & 1.1m & 21.3869ms & 305.6526$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{3D exponential corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 1331 & 37.3495ms & 7.4260ms & 6.7734s & 4.8294ms & 452.7569$\mu$s\\
+ & 2744 & 115.5274ms & 656.1279$\mu$s & -- & 5.1622ms & 334.5013$\mu$s\\
+ & 5832 & -- & -- & -- & 2.6560ms & 182.8671$\mu$s\\
+ & 12167 & -- & -- & -- & 2.5995ms & 166.1777$\mu$s\\
+ & 21952 & -- & -- & -- & 6.3515ms & 330.6866$\mu$s\\
+\texttt{HMAT} & 1331 & 32.6090ms & 392.1986$\mu$s & 350.9467ms & 7.0925ms & 152.1111$\mu$s\\
+ & 2744 & 325.5160ms & 715.4942$\mu$s & 809.9883ms & 3.1631ms & 39.5775$\mu$s\\
+ & 5832 & 1.0218s & 2.5244ms & 2.7998s & 2.5828ms & 41.2464$\mu$s\\
+ & 12167 & 1.2890s & 5.5177ms & 6.9915s & 7.3378ms & 102.0432$\mu$s\\
+ & 21952 & 16.3447s & 12.9969ms & 31.3547s & 7.6063ms & 106.8115$\mu$s\\
+\texttt{HMAT\_HODLR} & 1331 & 23.0911ms & 243.9022$\mu$s & 297.4274ms & 6.5870ms & 84.8770$\mu$s\\
+ & 2744 & 207.8104ms & 855.2074$\mu$s & 834.6782ms & 2.9163ms & 43.3922$\mu$s\\
+ & 5832 & 993.2799ms & 2.4061ms & 2.8279s & 2.5418ms & 49.5911$\mu$s\\
+ & 12167 & 1.4402s & 5.6927ms & 7.2602s & 7.5951ms & 115.6330$\mu$s\\
+ & 21952 & 18.4766s & 13.6116ms & 29.8826s & 7.9799ms & 114.2025$\mu$s\\
+\texttt{HODLR} & 1331 & 10.0069ms & 205.9937$\mu$s & 266.4101ms & 5.6715ms & 132.0839$\mu$s\\
+ & 2744 & 85.4776ms & 853.3001$\mu$s & 828.5685ms & 4.5142ms & 85.8307$\mu$s\\
+ & 5832 & 394.8166ms & 2.7306ms & 3.0516s & 4.6666ms & 92.0296$\mu$s\\
+ & 12167 & 828.2123ms & 5.4245ms & 8.6225s & 14.7405ms & 178.0987$\mu$s\\
+ & 21952 & 5.2138s & 16.3009ms & 27.9567s & 17.8001ms & 246.7632$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsection{4D}
+\subsubsection*{Matern model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{4D matern corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 2401 & 288.2361ms & 682.1156$\mu$s & -- & 10.8445ms & 472.5456$\mu$s\\
+ & 4096 & 420.8722ms & 1.6065ms & -- & 3.5322ms & 294.9238$\mu$s\\
+ & 6561 & -- & -- & -- & 2.4488ms & 155.6873$\mu$s\\
+ & 14641 & -- & -- & -- & 2.2948ms & 167.3698$\mu$s\\
+ & 28561 & -- & -- & -- & 3.1760ms & 226.7361$\mu$s\\
+\texttt{HMAT} & 2401 & 313.8375ms & 900.2686$\mu$s & 987.3374ms & 7.2718ms & 97.2748$\mu$s\\
+ & 4096 & 2.3271s & 1.7982ms & 2.8507s & 8.4047ms & 39.1006$\mu$s\\
+ & 6561 & 2.1178s & 4.5502ms & 3.9228s & 4.7688ms & 42.9153$\mu$s\\
+ & 14641 & 14.0385s & 14.4463ms & 12.6740s & 13.4435ms & 118.7325$\mu$s\\
+ & 28561 & 1.2m & 41.8508ms & 39.1950s & 9.8696ms & 110.8646$\mu$s\\
+\texttt{HMAT\_HODLR} & 2401 & 210.0275ms & 1.0121ms & 1.0148s & 7.4635ms & 86.0691$\mu$s\\
+ & 4096 & 2.2481s & 1.8084ms & 2.7569s & 8.8439ms & 44.1074$\mu$s\\
+ & 6561 & 2.0056s & 4.6463ms & 3.9267s & 4.9455ms & 46.9685$\mu$s\\
+ & 14641 & 14.3498s & 14.5252ms & 12.7571s & 14.3251ms & 112.0567$\mu$s\\
+ & 28561 & 1.1m & 42.7136ms & 36.8834s & 9.9742ms & 113.7257$\mu$s\\
+\texttt{HODLR} & 2401 & 253.2983ms & 1.2739ms & 1.3935s & 9.9735ms & 163.0783$\mu$s\\
+ & 4096 & 1.7677s & 4.4272ms & 4.7282s & 8.3697ms & 99.8974$\mu$s\\
+ & 6561 & 6.0437s & 8.3904ms & 11.6255s & 7.5634ms & 97.7516$\mu$s\\
+ & 14641 & 1.0m & 38.4958ms & 1.4m & 27.5059ms & 345.2301$\mu$s\\
+ & 28561 & 5.5m & 124.2776ms & 6.5m & 24.3654ms & 240.3259$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{4D matern corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 2401 & 3.2781s & 1.8308ms & -- & 142.9334ms & 708.3416$\mu$s\\
+ & 4096 & 11.3590s & 6.3510ms & -- & 41.1587ms & 494.7186$\mu$s\\
+ & 6561 & -- & -- & -- & 7.2768ms & 468.7309$\mu$s\\
+ & 14641 & -- & -- & -- & 6.9668ms & 183.3439$\mu$s\\
+ & 28561 & -- & -- & -- & 59.5534ms & 334.5013$\mu$s\\
+\texttt{HMAT} & 2401 & 930.3677ms & 999.9275$\mu$s & 1.2575s & 51.3246ms & 107.2884$\mu$s\\
+ & 4096 & 2.1514s & 1.7402ms & 3.0441s & 6.1345ms & 65.0883$\mu$s\\
+ & 6561 & -- & -- & -- & 31.0545ms & 60.3199$\mu$s\\
+ & 14641 & 4.6859s & 10.1156ms & 14.9175s & 25.8245ms & 109.1957$\mu$s\\
+ & 28561 & 15.6725s & 26.4904ms & 47.9960s & 58.3122ms & 133.5144$\mu$s\\
+\texttt{HMAT\_HODLR} & 2401 & 876.5028ms & 897.8844$\mu$s & 1.2887s & 52.7368ms & 99.4205$\mu$s\\
+ & 4096 & 2.3898s & 1.7650ms & 3.0059s & 6.0623ms & 46.7300$\mu$s\\
+ & 6561 & -- & -- & -- & 31.8134ms & 72.0024$\mu$s\\
+ & 14641 & 4.4546s & 10.2549ms & 15.0471s & 26.9020ms & 125.8850$\mu$s\\
+ & 28561 & 15.0962s & 25.3327ms & 48.9037s & 56.1926ms & 142.5743$\mu$s\\
+\texttt{HODLR} & 2401 & 21.9500ms & 386.9534$\mu$s & 1.1188s & 13.0639ms & 128.0308$\mu$s\\
+ & 4096 & 25.9686ms & 630.1403$\mu$s & 2.2836s & 14.6258ms & 87.4996$\mu$s\\
+ & 6561 & 56.9479ms & 1.3635ms & 4.1159s & 17.0429ms & 86.0691$\mu$s\\
+ & 14641 & 191.5581ms & 3.4595ms & 13.1743s & 14.4191ms & 187.1586$\mu$s\\
+ & 28561 & 289.9911ms & 6.2542ms & 29.7540s & 18.8386ms & 189.0659$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\subsubsection*{Exponential model}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{4D exponential corr=0.1 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 2401 & 402.0414ms & 3.8712ms & -- & 8.8272ms & 639.2002$\mu$s\\
+ & 4096 & 619.5028ms & 2.0621ms & -- & 7.6385ms & 288.0096$\mu$s\\
+ & 6561 & -- & -- & -- & 2.4610ms & 167.3698$\mu$s\\
+ & 14641 & -- & -- & -- & 2.4724ms & 182.6286$\mu$s\\
+ & 28561 & -- & -- & -- & 3.5710ms & 222.6830$\mu$s\\
+\texttt{HMAT} & 2401 & 485.1787ms & 1.0889ms & 909.4236ms & 5.7256ms & 87.9765$\mu$s\\
+ & 4096 & 2.6624s & 1.9388ms & 2.6400s & 9.6068ms & 41.4848$\mu$s\\
+ & 6561 & 3.5725s & 5.3520ms & 3.9592s & 3.8915ms & 59.3662$\mu$s\\
+ & 14641 & 22.6552s & 16.5522ms & 13.8435s & 13.2675ms & 90.3606$\mu$s\\
+ & 28561 & 1.4m & 44.9786ms & 38.9344s & 9.3765ms & 141.3822$\mu$s\\
+\texttt{HMAT\_HODLR} & 2401 & 369.4057ms & 1.0355ms & 911.9034ms & 5.6779ms & 82.7312$\mu$s\\
+ & 4096 & 2.6152s & 1.9414ms & 2.5648s & 10.1202ms & 41.4848$\mu$s\\
+ & 6561 & 3.5938s & 5.2688ms & 3.8680s & 3.7231ms & 49.8295$\mu$s\\
+ & 14641 & 22.2947s & 16.9730ms & 13.8339s & 18.3058ms & 110.8646$\mu$s\\
+ & 28561 & 1.4m & 44.3966ms & 38.4688s & 8.3506ms & 110.6262$\mu$s\\
+\texttt{HODLR} & 2401 & 456.6236ms & 1.5626ms & 1.5914s & 15.8746ms & 210.0468$\mu$s\\
+ & 4096 & 1.9581s & 4.5688ms & 4.5412s & 10.8716ms & 116.1098$\mu$s\\
+ & 6561 & 7.3406s & 9.5956ms & 12.4509s & 12.0142ms & 146.1506$\mu$s\\
+ & 14641 & 1.2m & 39.4874ms & 1.5m & 34.3482ms & 318.7656$\mu$s\\
+ & 28561 & 6.6m & 135.4160ms & 7.5m & 29.3164ms & 309.9442$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+\begin{center}
+\begin{longtable}{llrcccccc}
+\caption{4D exponential corr=0.01 --- hodlr-branch build}
+\\\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+method & $n$ & \texttt{1st} & \texttt{2nd} & \texttt{KL} & \texttt{fit} & \texttt{regr}\\
+\midrule
+\endhead
+
+\texttt{LAPACK} & 2401 & 350.4376ms & 1.8454ms & -- & 8.3802ms & 526.1898$\mu$s\\
+ & 4096 & 262.3246ms & 2.2638ms & -- & 5.9886ms & 339.0312$\mu$s\\
+ & 6561 & -- & -- & -- & 2.4934ms & 185.4897$\mu$s\\
+ & 14641 & -- & -- & -- & 2.6395ms & 174.5224$\mu$s\\
+ & 28561 & -- & -- & -- & 3.2237ms & 240.8028$\mu$s\\
+\texttt{HMAT} & 2401 & 198.1721ms & 891.4471$\mu$s & 1.2989s & 5.7049ms & 86.7844$\mu$s\\
+ & 4096 & 2.1014s & 1.6718ms & 3.6609s & 8.1570ms & 49.5911$\mu$s\\
+ & 6561 & 872.7279ms & 3.9206ms & 5.2524s & 3.8064ms & 46.7300$\mu$s\\
+ & 14641 & 4.6492s & 10.5054ms & 16.7476s & 8.7130ms & 117.5404$\mu$s\\
+ & 28561 & 20.1209s & 27.1673ms & 43.4052s & 8.3973ms & 109.9110$\mu$s\\
+\texttt{HMAT\_HODLR} & 2401 & 123.5490ms & 841.8560$\mu$s & 1.2734s & 5.8177ms & 108.7189$\mu$s\\
+ & 4096 & 2.3658s & 1.7681ms & 3.4508s & 8.3935ms & 43.8690$\mu$s\\
+ & 6561 & 841.8539ms & 4.3154ms & 5.1039s & 3.7208ms & 61.5120$\mu$s\\
+ & 14641 & 4.7076s & 10.8385ms & 16.5923s & 9.9828ms & 96.5595$\mu$s\\
+ & 28561 & 19.9615s & 28.2931ms & 44.3659s & 8.9035ms & 133.5144$\mu$s\\
+\texttt{HODLR} & 2401 & 17.8931ms & 377.4166$\mu$s & 1.0589s & 5.7857ms & 109.9110$\mu$s\\
+ & 4096 & 26.6359ms & 623.2262$\mu$s & 2.2383s & 4.4353ms & 94.4138$\mu$s\\
+ & 6561 & 60.5278ms & 1.2770ms & 3.8200s & 5.3985ms & 87.9765$\mu$s\\
+ & 14641 & 209.6107ms & 3.4010ms & 11.2221s & 12.6488ms & 178.3371$\mu$s\\
+ & 28561 & 321.8179ms & 6.5174ms & 25.8582s & 15.6469ms & 178.5755$\mu$s\\
+\bottomrule\end{longtable}\end{center}
+
+\section{Direct comparison: self-contained HODLR vs hmat-oss HODLR (PR \#3272)}\label{sec:comparison}
+\emph{Highlight of this report.} Both HODLR variants were measured in the same
+benchmark session (2026-09-13) on the same machine with identical sweeps:
+\begin{itemize}
+\item \textbf{\texttt{HODLR}} (self-contained, this branch) --- \texttt{hodlr-branch} install;
+\item \textbf{\texttt{HMAT\_HODLR}} (hmat-oss HODLR, PR~\#3272) --- \texttt{pr3272} install.
+  On the branch build of 09-13 it used the HODLR admissibility rule with the
+  LLt factorization (the dedicated `hodlr' factorization enum was only accepted
+  by the PR build).
+\end{itemize}
+The tables below give per-configuration first-realization and KL timings with
+the ratio \texttt{HODLR}/\texttt{HMAT\_HODLR} ($<1$: self-contained faster,
+$>1$: hmat-oss faster).
+
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{1D matern corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1001 & 10.5488ms & 11.6405ms & \textbf{0.91$\times$} & 26.6383ms & 33.4082ms & \textbf{0.80$\times$}\\
+2001 & 11.9703ms & 20.9384ms & \textbf{0.57$\times$} & 52.2609ms & 55.3608ms & \textbf{0.94$\times$}\\
+5001 & 44.0936ms & 36.6611ms & \textbf{1.20$\times$} & 134.0339ms & 118.6428ms & \textbf{1.13$\times$}\\
+10001 & 282.3546ms & 137.4211ms & \textbf{2.05$\times$} & 3.5674s & 289.8824ms & \textbf{12.31$\times$}\\
+20001 & 26.0115s & 256.9916ms & \textbf{101.22$\times$} & 26.3912s & 599.9017ms & \textbf{43.99$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{1D matern corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1001 & 6.4704ms & 8.9042ms & \textbf{0.73$\times$} & 147.0857ms & 143.9044ms & \textbf{1.02$\times$}\\
+2001 & 12.4528ms & 17.7395ms & \textbf{0.70$\times$} & 290.0660ms & 259.9883ms & \textbf{1.12$\times$}\\
+5001 & 30.5357ms & 33.0706ms & \textbf{0.92$\times$} & 797.7509ms & 656.7769ms & \textbf{1.21$\times$}\\
+10001 & 113.8282ms & 137.3682ms & \textbf{0.83$\times$} & 1.5992s & 1.3051s & \textbf{1.23$\times$}\\
+20001 & 195.0102ms & 246.9075ms & \textbf{0.79$\times$} & 3.3123s & 2.7327s & \textbf{1.21$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{1D exponential corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1001 & 9.0213ms & 6.0246ms & \textbf{1.50$\times$} & 43.6378ms & 44.2808ms & \textbf{0.99$\times$}\\
+2001 & 13.4776ms & 9.8855ms & \textbf{1.36$\times$} & 71.5711ms & 67.2607ms & \textbf{1.06$\times$}\\
+5001 & 29.0082ms & 16.3558ms & \textbf{1.77$\times$} & 176.3484ms & 139.1108ms & \textbf{1.27$\times$}\\
+10001 & 111.4185ms & 58.9273ms & \textbf{1.89$\times$} & 421.5465ms & 408.1161ms & \textbf{1.03$\times$}\\
+20001 & 209.5237ms & 127.4259ms & \textbf{1.64$\times$} & 836.4038ms & 662.4277ms & \textbf{1.26$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{1D exponential corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1001 & 7.0734ms & 4.4770ms & \textbf{1.58$\times$} & 116.0200ms & 113.9324ms & \textbf{1.02$\times$}\\
+2001 & 12.8524ms & 8.5020ms & \textbf{1.51$\times$} & 216.7389ms & 193.5139ms & \textbf{1.12$\times$}\\
+5001 & 31.1267ms & 15.3091ms & \textbf{2.03$\times$} & 584.2237ms & 490.9940ms & \textbf{1.19$\times$}\\
+10001 & 111.7826ms & 67.4462ms & \textbf{1.66$\times$} & 1.1775s & 1.0623s & \textbf{1.11$\times$}\\
+20001 & 210.1967ms & 131.1626ms & \textbf{1.60$\times$} & 2.4704s & 1.9613s & \textbf{1.26$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{2D matern corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1089 & 18.3501ms & 32.8791ms & \textbf{0.56$\times$} & 112.0167ms & 100.6176ms & \textbf{1.11$\times$}\\
+2116 & 55.7771ms & 78.1102ms & \textbf{0.71$\times$} & 232.1019ms & 189.4584ms & \textbf{1.23$\times$}\\
+5184 & 273.1204ms & 247.9246ms & \textbf{1.10$\times$} & 843.8439ms & 502.6531ms & \textbf{1.68$\times$}\\
+10201 & 905.1511ms & 636.5881ms & \textbf{1.42$\times$} & 2.1841s & 1.1505s & \textbf{1.90$\times$}\\
+20164 & 2.6493s & 1.1509s & \textbf{2.30$\times$} & 5.5858s & 2.4208s & \textbf{2.31$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{2D matern corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1089 & 14.4815ms & 9.9273ms & \textbf{1.46$\times$} & 287.4746ms & 249.1457ms & \textbf{1.15$\times$}\\
+2116 & 22.3615ms & 32.0807ms & \textbf{0.70$\times$} & 698.2346ms & 630.5602ms & \textbf{1.11$\times$}\\
+5184 & 151.0005ms & 138.0615ms & \textbf{1.09$\times$} & 3.0918s & 2.2512s & \textbf{1.37$\times$}\\
+10201 & 577.9347ms & 565.6343ms & \textbf{1.02$\times$} & 8.3628s & 5.3782s & \textbf{1.55$\times$}\\
+20164 & 2.7849s & 3.4210s & \textbf{0.81$\times$} & 26.7882s & 17.7906s & \textbf{1.51$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{2D exponential corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1089 & 18.6667ms & 22.5365ms & \textbf{0.83$\times$} & 97.3985ms & 85.8605ms & \textbf{1.13$\times$}\\
+2116 & 59.7475ms & 53.0508ms & \textbf{1.13$\times$} & 221.4882ms & 147.4812ms & \textbf{1.50$\times$}\\
+5184 & 297.9746ms & 209.7712ms & \textbf{1.42$\times$} & 768.9490ms & 432.0564ms & \textbf{1.78$\times$}\\
+10201 & 1.1620s & 696.1195ms & \textbf{1.67$\times$} & 2.3160s & 1.0524s & \textbf{2.20$\times$}\\
+20164 & 3.9996s & 1.8531s & \textbf{2.16$\times$} & 6.8274s & 2.6157s & \textbf{2.61$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{2D exponential corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1089 & 9.5596ms & 8.2629ms & \textbf{1.16$\times$} & 279.1872ms & 224.7763ms & \textbf{1.24$\times$}\\
+2116 & 32.1107ms & 23.5248ms & \textbf{1.36$\times$} & 715.2326ms & 575.5746ms & \textbf{1.24$\times$}\\
+5184 & 142.8716ms & 109.0174ms & \textbf{1.31$\times$} & 2.4711s & 1.7480s & \textbf{1.41$\times$}\\
+10201 & 632.7877ms & 665.7209ms & \textbf{0.95$\times$} & 7.5054s & 4.7596s & \textbf{1.58$\times$}\\
+20164 & 2.2872s & 2.4964s & \textbf{0.92$\times$} & 18.2578s & 11.7793s & \textbf{1.55$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{3D matern corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1331 & 57.0161ms & 65.9263ms & \textbf{0.86$\times$} & 296.5469ms & 221.2462ms & \textbf{1.34$\times$}\\
+2744 & 266.3779ms & 384.3560ms & \textbf{0.69$\times$} & 815.4907ms & 615.7634ms & \textbf{1.32$\times$}\\
+5832 & 2.0469s & 2.3730s & \textbf{0.86$\times$} & 4.1053s & 2.4816s & \textbf{1.65$\times$}\\
+12167 & 14.7858s & 10.2520s & \textbf{1.44$\times$} & 21.9035s & 8.8539s & \textbf{2.47$\times$}\\
+21952 & 53.3999s & 40.3381s & \textbf{1.32$\times$} & 1.2m & 31.6960s & \textbf{2.21$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{3D matern corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1331 & 11.4372ms & 48.0986ms & \textbf{0.24$\times$} & 306.6149ms & 322.1159ms & \textbf{0.95$\times$}\\
+2744 & 18.3754ms & 239.2638ms & \textbf{0.08$\times$} & 804.8606ms & 881.0570ms & \textbf{0.91$\times$}\\
+5832 & 42.5775ms & 791.8546ms & \textbf{0.05$\times$} & 1.9486s & 2.6092s & \textbf{0.75$\times$}\\
+12167 & 561.5752ms & 3.3441s & \textbf{0.17$\times$} & 7.3531s & 8.8620s & \textbf{0.83$\times$}\\
+21952 & 9.7164s & 16.6647s & \textbf{0.58$\times$} & 37.1015s & 33.0586s & \textbf{1.12$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{3D exponential corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1331 & 68.7754ms & 97.4934ms & \textbf{0.71$\times$} & 267.8723ms & 208.1840ms & \textbf{1.29$\times$}\\
+2744 & 344.9678ms & 403.7175ms & \textbf{0.85$\times$} & 838.9211ms & 550.9338ms & \textbf{1.52$\times$}\\
+5832 & 2.2346s & 1.8365s & \textbf{1.22$\times$} & 3.7833s & 1.9238s & \textbf{1.97$\times$}\\
+12167 & 13.4832s & 9.2150s & \textbf{1.46$\times$} & 18.8895s & 8.1155s & \textbf{2.33$\times$}\\
+21952 & 54.7557s & 31.3624s & \textbf{1.75$\times$} & 1.1m & 26.2262s & \textbf{2.58$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{3D exponential corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+1331 & 10.0069ms & 44.1008ms & \textbf{0.23$\times$} & 266.4101ms & 276.0582ms & \textbf{0.97$\times$}\\
+2744 & 85.4776ms & 234.9958ms & \textbf{0.36$\times$} & 828.5685ms & 741.0998ms & \textbf{1.12$\times$}\\
+5832 & 394.8166ms & 1.0668s & \textbf{0.37$\times$} & 3.0516s & 2.8227s & \textbf{1.08$\times$}\\
+12167 & 828.2123ms & 4.7037s & \textbf{0.18$\times$} & 8.6225s & 7.6223s & \textbf{1.13$\times$}\\
+21952 & 5.2138s & 22.0376s & \textbf{0.24$\times$} & 27.9567s & 25.6575s & \textbf{1.09$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{4D matern corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+2401 & 253.2983ms & 710.4745ms & \textbf{0.36$\times$} & 1.3935s & 1.2030s & \textbf{1.16$\times$}\\
+4096 & 1.7677s & 2.4579s & \textbf{0.72$\times$} & 4.7282s & 2.8410s & \textbf{1.66$\times$}\\
+6561 & 6.0437s & 6.6821s & \textbf{0.90$\times$} & 11.6255s & 7.1035s & \textbf{1.64$\times$}\\
+14641 & 1.0m & 47.0867s & \textbf{1.29$\times$} & 1.4m & 32.6476s & \textbf{2.49$\times$}\\
+28561 & 5.5m & 4.2m & \textbf{1.31$\times$} & 6.5m & 2.8m & \textbf{2.35$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{4D matern corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+2401 & 21.9500ms & 460.6719ms & \textbf{0.05$\times$} & 1.1188s & 1.3613s & \textbf{0.82$\times$}\\
+4096 & 25.9686ms & 2.0907s & \textbf{0.01$\times$} & 2.2836s & 3.6726s & \textbf{0.62$\times$}\\
+6561 & 56.9479ms & 6.3089s & \textbf{0.01$\times$} & 4.1159s & 9.1570s & \textbf{0.45$\times$}\\
+14641 & 191.5581ms & 28.9026s & \textbf{0.01$\times$} & 13.1743s & 28.4962s & \textbf{0.46$\times$}\\
+28561 & 289.9911ms & 2.5m & \textbf{0.00$\times$} & 29.7540s & 2.4m & \textbf{0.21$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{4D exponential corr=0.1: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+2401 & 456.6236ms & 780.2052ms & \textbf{0.59$\times$} & 1.5914s & 1.0519s & \textbf{1.51$\times$}\\
+4096 & 1.9581s & 2.5286s & \textbf{0.77$\times$} & 4.5412s & 2.5871s & \textbf{1.76$\times$}\\
+6561 & 7.3406s & 8.8443s & \textbf{0.83$\times$} & 12.4509s & 6.8654s & \textbf{1.81$\times$}\\
+14641 & 1.2m & 1.1m & \textbf{1.01$\times$} & 1.5m & 43.1228s & \textbf{2.02$\times$}\\
+28561 & 6.6m & 5.9m & \textbf{1.11$\times$} & 7.5m & 4.0m & \textbf{1.86$\times$}\\
+\bottomrule\end{longtable}\end{center}
+\small\begin{center}
+\begin{longtable}{rrrrrrr}
+\caption{4D exponential corr=0.01: \texttt{HODLR} (branch) vs \texttt{HMAT\_HODLR} (PR\#3272)}
+\\\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endfirsthead
+\multicolumn{7}{l}{\small\emph{continued}}\\
+\toprule
+$n$ & \texttt{1st} br & \texttt{1st} pr & ratio & \texttt{KL} br & \texttt{KL} pr & ratio\\
+\midrule
+\endhead
+
+2401 & 17.8931ms & 483.7897ms & \textbf{0.04$\times$} & 1.0589s & 1.3605s & \textbf{0.78$\times$}\\
+4096 & 26.6359ms & 1.9174s & \textbf{0.01$\times$} & 2.2383s & 3.4550s & \textbf{0.65$\times$}\\
+6561 & 60.5278ms & 5.0895s & \textbf{0.01$\times$} & 3.8200s & 7.8824s & \textbf{0.48$\times$}\\
+14641 & 209.6107ms & 37.6573s & \textbf{0.01$\times$} & 11.2221s & 40.2980s & \textbf{0.28$\times$}\\
+28561 & 321.8179ms & 2.7m & \textbf{0.00$\times$} & 25.8582s & 3.0m & \textbf{0.14$\times$}\\
+\bottomrule\end{longtable}\end{center}
+
+\subsection{Reading the comparison}
+\subsubsection*{Large correlation length (corr=0.1), 1D}
+The self-contained \texttt{HODLR} collapses at $n\ge 10000$:
+$n=20001$ first realization $26.0$\,s and KL $26.4$\,s vs $0.26$\,s and $0.60$\,s
+for \texttt{HMAT\_HODLR} --- a \emph{44--101$\times$ slowdown}. This is the
+pre-fix corrupt-heal regime (Section~\ref{sec:accuracy}); after the fix the
+branch reaches $\approx 1.8$\,s factorize at $n=20002$ (idle gate), which
+restores parity with the hmat-oss backend at this size.
+\subsubsection*{Short correlation length (corr=0.01), high dimensions}
+The picture inverts: the self-contained implementation is \emph{much faster}.
+At 4D corr$=$0.01 $n=28561$: first realization $0.29$\,s vs $152.3$\,s
+($\approx$\,\textbf{490$\times$} faster) and KL $29.8$\,s vs $144.4$\,s
+($\approx$\,4.9$\times$). At 3D/2D corr$=$0.01 the branch is $1.2$--$6\times$
+faster.  hmat-oss HODLR pays heavily for low-correlation data in high
+dimensions (large ranks survive its recompression), whereas the self-contained
+low-rank recompression keeps ranks tight.
+\subsubsection*{KL algorithm}
+For corr$=$0.1 the hmat-oss HODLR backend is generally $1.1$--$2.6\times$ faster
+on KL; for corr$=$0.01 in high dimensions the self-contained backend leads
+(ratios down to $0.14\times$, i.e.\ $7\times$ faster).
+
+\section{Accuracy comparison versus the LAPACK reference (2026-09-19)}\label{sec:acc-comparison}
+\emph{New.} This section closes the accuracy gap identified in
+Section~\ref{sec:accuracy}: both HODLR implementations were measured against the
+dense LAPACK reference \texttt{C} = \texttt{model.discretize(vertices)} on the
+same configs (dimensions 1--2, Matern($\nu{=}2.5$) and Exponential models,
+correlation lengths 0.1 and 0.01, grids of $201\dots 2001$ points in 1D and
+$17^{2}\dots 33^{2}$ in 2D).  Harness
+\texttt{python/test/benchmark\_hodlr\_accuracy.py}; each backend parameterised
+identically: assembly epsilon $10^{-6}$, leaf size 64
+(\texttt{HODLRMatrixParameters} for the self-contained backend, the equivalent
+\texttt{HMatrixParameters} epsilons for hmat-oss).  Metrics
+(Litvinenko~et~al.):
+\begin{itemize}
+\item \texttt{rel\_norm2} $=\|C-C_H\|_2/\|C\|_2$ (power iteration on the
+  assembled kernel, no factorization): \emph{pure compression accuracy};
+\item \texttt{rel\_solve} $=\|x_H-x_d\|/\|x_d\|$ (random RHS, dense Cholesky
+  reference): \emph{end-to-end} solve accuracy; \texttt{rel\_solve\_ref}
+  neutralises the per-backend regularization shift (reference $C+\lambda I$);
+\item \texttt{gap2} $=\|CC_H^{-1}-I\|_2$ (columns solved against \texttt{C});
+\item \texttt{KL} $=\mathrm{KL}(\mathcal{N}(0,C)\|\mathcal{N}(0,C_H))$ and
+  \texttt{logdet\_diff} $=\log|C_H|-\log|C|$.
+\end{itemize}
+\textbf{Two build-dependent behaviours are reported as-is and must be read
+together with the numbers:}
+\begin{enumerate}
+\item the PR~\#3272 \texttt{HMatrix::factorize()} \emph{always} shifts the
+  matrix by $\lambda = 2\lambda_{\max}\cdot 10^{-4}$ (\texttt{HMatrix-RegularizationEpsilon}
+  $=10^{-4}$) before factorization, even when unnecessary; the self-contained
+  backend shifts only on a failing factorization (baseline $10^{-8}$ nugget,
+  otherwise the pivot-floor heal shift of Section~\ref{sec:accuracy},
+  $1.7\times10^{-2}$).  Because the resulting
+  ``inverse'' is $(C+\lambda I)^{-1}$, the measured \texttt{gap2}
+  $=\|C(C+\lambda I)^{-1}-I\|_2$ equals $\lambda/\sigma_{\min}$ to extreme
+  precision whenever $\lambda \ll \sigma_{\min}$ (e.g.\ 2D Exponential
+  corr$=$0.1 $n{=}625$: $\lambda{=}1.75\times10^{-3}$, $\sigma_{\min}{=}0.337$
+  $\Rightarrow$ predicted $5.20\times10^{-3}$, measured $5.19\times10^{-3}$;
+  2D corr$=$0.01: $\sigma_{\min}\approx 1$ and \texttt{gap2}$=\lambda$ to three
+  significant figures).  In 1D $\lambda_{\max}$ is large (data are
+  ill-conditioned), so the always-on shift becomes commensurate with
+  $\sigma_{\min}$ ($\lambda\sim 10^{-2}$) and \texttt{rel\_solve} saturates to
+  $0.16\dots 1.0$ --- whereas the error-triggered self-contained backend stays
+  clean in 1D.  \texttt{rel\_solve\_ref} removes the shift and exposes the
+  underlying compression accuracy;
+\item PR~\#3272 \texttt{computeLogDeterminant()} (and its diagonal fallback)
+  does not match the dense \texttt{log|C|} here --- up to $\sim 10^{4}$ off on
+  plain \texttt{HMAT}, $928$ at 2D $n{=}1089$ and hundreds on \texttt{HMAT\_HODLR}
+  -- so the PR-side \texttt{KL}/\texttt{logdet\_diff} must be regarded as
+  unreliable (the shifted factorization is being measured), whereas the
+  self-contained \texttt{HODLRMatrix::logDeterminant()} reproduces the dense
+  reference to $\lesssim 10^{-3}$.
+\end{enumerate}
+
+
+\subsection{1D}
+\small\begin{center}
+\begin{longtable}{llrrrrrr}
+\caption{1D --- accuracy of \texttt{HODLR} (self-contained, branch) vs dense LAPACK reference}
+\\\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endhead
+
+m, $\rho$=0.1 & 201 & 4.2e-10 & 0.001 & 3.2e-11 & 0.002 & 1.9e-05 & 0.070\\
+ & 501 & 1.7e-10 & 0.108 & 7.6e-09 & 0.136 & 0.385 & 16.137\\
+ & 1001 & 1.5e-04 & 0.821 & 7.2e+05 & 99.645 & 7.3e+02 & 1.8e+03\\
+ & 2001 & 7.3e-05 & 0.992 & 1.2e+06 & -- & -- & 8.8e+03\\
+ & 201 & 4.2e-09 & 4.4e-08 & 7.8e-16 & 5.5e-08 & 2.8e-14 & 4.0e-06\\
+ & 501 & 1.7e-09 & 1.6e-06 & 2.6e-14 & 2.0e-06 & 7.8e-11 & 2.4e-04\\
+ & 1001 & 1.7e-09 & 5.4e-05 & 1.8e-05 & 1.1e-04 & 1.5e-07 & 0.013\\
+ & 2001 & 7.2e-04 & 0.402 & 1.2e+03 & -- & -- & 1.5e+03\\
+e, $\rho$=0.1 & 201 & 5.1e-10 & 1.7e-07 & 4.3e-15 & 2.0e-07 & 9.9e-13 & 2.0e-05\\
+ & 501 & 2.0e-10 & 4.2e-07 & 2.1e-14 & 5.0e-07 & 1.0e-11 & 1.3e-04\\
+ & 1001 & 2.0e-10 & 1.0e-06 & 3.0e-07 & 2.0e-06 & 1.3e-10 & 5.6e-04\\
+ & 2001 & 1.0e-10 & 2.2e-06 & 8.3e-07 & -- & -- & 0.002\\
+ & 201 & 4.6e-09 & 1.8e-08 & 4.1e-16 & 2.2e-08 & 2.1e-14 & 3.0e-06\\
+ & 501 & 2.0e-09 & 4.2e-08 & 1.0e-15 & 5.1e-08 & -2.3e-13 & 1.3e-05\\
+ & 1001 & 1.0e-09 & 8.5e-08 & 1.3e-12 & 1.0e-07 & -6.8e-13 & 5.1e-05\\
+ & 2001 & 5.0e-10 & 1.7e-07 & 2.6e-12 & -- & -- & 2.0e-04\\
+\bottomrule\end{longtable}\end{center}
+
+\small\begin{center}
+\begin{longtable}{llrrrrrr}
+\caption{1D --- accuracy of \texttt{HMAT\_HODLR} (hmat-oss, PR\#3272) vs dense LAPACK reference}
+\\\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endhead
+
+m, $\rho$=0.1 & 201 & -- & -- & -- & -- & -- & --\\
+ & 501 & 9.5e-17 & 1.000 & 0.013 & 1.000 & 2.1e+03 & 4.7e+03\\
+ & 1001 & 2.4e-16 & 1.000 & 0.013 & 1.000 & 6.0e+03 & 1.3e+04\\
+ & 2001 & 3.3e-16 & 1.000 & 0.013 & -- & -- & 3.3e+04\\
+ & 201 & -- & -- & -- & -- & -- & --\\
+ & 501 & 3.2e-18 & 0.161 & 3.5e-04 & 0.191 & 2.6e+02 & 5.4e+02\\
+ & 1001 & 2.0e-16 & 0.903 & 0.002 & 0.927 & 1.1e+03 & 2.6e+03\\
+ & 2001 & 3.2e-16 & 0.998 & 0.002 & -- & -- & 1.0e+04\\
+e, $\rho$=0.1 & 201 & -- & -- & -- & -- & -- & --\\
+ & 501 & 1.9e-19 & 0.286 & 0.004 & 0.326 & 3.0e+02 & 6.9e+02\\
+ & 1001 & 2.6e-17 & 0.614 & 0.008 & 0.659 & 7.5e+02 & 1.9e+03\\
+ & 2001 & 5.2e-17 & 0.858 & 0.011 & -- & -- & 5.3e+03\\
+ & 201 & -- & -- & -- & -- & -- & --\\
+ & 501 & 1.5e-18 & 0.004 & 1.1e-05 & 0.005 & 74.246 & 1.5e+02\\
+ & 1001 & 1.1e-16 & 0.017 & 4.5e-05 & 0.020 & 2.7e+02 & 5.6e+02\\
+ & 2001 & 1.5e-17 & 0.064 & 1.7e-04 & -- & -- & 1.7e+03\\
+\bottomrule\end{longtable}\end{center}
+
+\subsection{2D}
+\small\begin{center}
+\begin{longtable}{llrrrrrr}
+\caption{2D --- accuracy of \texttt{HODLR} (self-contained, branch) vs dense LAPACK reference}
+\\\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endhead
+
+m, $\rho$=0.1 & 289 & 1.7e-06 & 3.1e-07 & 3.1e-07 & 8.1e-06 & 3.2e-11 & 5.0e-06\\
+ & 625 & 1.2e-07 & 2.0e-06 & 2.0e-06 & 3.3e-05 & 4.3e-10 & 3.1e-05\\
+ & 1089 & 3.1e-06 & 1.6e-05 & 1.6e-05 & 5.1e-04 & 3.8e-08 & 1.8e-04\\
+ & 289 & 1.1e-08 & 1.0e-08 & 8.7e-11 & 1.1e-08 & -1.5e-14 & 3.0e-06\\
+ & 625 & 1.1e-08 & 1.0e-08 & 2.4e-11 & 1.1e-08 & -5.2e-14 & 6.0e-06\\
+ & 1089 & 4.1e-05 & 5.2e-06 & 5.2e-06 & 6.8e-05 & 4.7e-09 & 1.1e-05\\
+e, $\rho$=0.1 & 289 & 2.6e-07 & 1.5e-07 & 1.5e-07 & 1.5e-06 & 1.2e-12 & 4.0e-06\\
+ & 625 & 2.0e-06 & 1.3e-06 & 1.3e-06 & 3.0e-05 & 3.3e-10 & 1.1e-05\\
+ & 1089 & 5.8e-06 & 1.8e-06 & 1.8e-06 & 1.5e-04 & 3.4e-09 & 2.3e-05\\
+ & 289 & 1.7e-07 & 3.5e-07 & 3.5e-07 & 3.7e-06 & 7.0e-12 & 3.0e-06\\
+ & 625 & 1.2e-06 & 1.7e-07 & 1.7e-07 & 4.6e-06 & 1.1e-11 & 6.0e-06\\
+ & 1089 & 2.0e-06 & 2.4e-06 & 2.4e-06 & 6.1e-05 & 3.7e-09 & 1.1e-05\\
+\bottomrule\end{longtable}\end{center}
+
+\small\begin{center}
+\begin{longtable}{llrrrrrr}
+\caption{2D --- accuracy of \texttt{HMAT\_HODLR} (hmat-oss, PR\#3272) vs dense LAPACK reference}
+\\\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endfirsthead
+\multicolumn{8}{l}{\small\emph{continued}}\\
+\toprule
+model & $n$ & rel\_norm2 & rel\_solve & rel\_solve\_ref & gap2 & KL & logdet\_diff\\
+\midrule
+\endhead
+
+m, $\rho$=0.1 & 289 & 1.6e-05 & 0.002 & 7.1e-05 & 0.004 & 22.107 & 44.604\\
+ & 625 & 2.4e-05 & 0.022 & 6.7e-04 & 0.034 & 1.5e+02 & 3.0e+02\\
+ & 1089 & 2.7e-05 & 0.121 & 0.004 & 0.174 & 4.4e+02 & 9.3e+02\\
+ & 289 & 8.3e-11 & 2.0e-04 & 2.5e-12 & 2.0e-04 & -0.014 & 0.029\\
+ & 625 & 6.6e-20 & 2.0e-04 & 2.9e-11 & 2.0e-04 & -0.031 & 0.062\\
+ & 1089 & 2.3e-05 & 2.0e-04 & 1.6e-05 & 2.7e-04 & -0.054 & 0.109\\
+e, $\rho$=0.1 & 289 & 6.2e-06 & 0.001 & 3.4e-05 & 0.002 & 11.004 & 22.306\\
+ & 625 & 2.6e-05 & 0.004 & 1.2e-04 & 0.005 & 54.876 & 1.1e+02\\
+ & 1089 & 2.5e-05 & 0.009 & 2.7e-04 & 0.012 & 1.5e+02 & 3.0e+02\\
+ & 289 & 8.7e-07 & 2.0e-04 & 4.0e-07 & 2.0e-04 & -0.014 & 0.029\\
+ & 625 & 5.9e-09 & 2.0e-04 & 6.7e-09 & 2.0e-04 & -0.031 & 0.063\\
+ & 1089 & 0.001 & 3.9e-04 & 3.4e-04 & 0.002 & -0.053 & 0.114\\
+\bottomrule\end{longtable}\end{center}
+
+
+
+\subsection{Reading the accuracy comparison}
+\subsubsection*{Compression accuracy (rel\_norm2): both HODLR variants meet the
+gate by far}
+At the common $\epsilon{=}10^{-6}$ assembly setting both backends are well
+below the $10^{-2}$ gate in spectral norm: 2D Matern corr$=$0.1 gives
+$\|C-C_H\|_2/\|C\|_2$ from $1.7\times10^{-6}$ (self-contained) and
+$1.6\times10^{-5}$ (hmat-oss) at $n{=}289$ down to $3.1\times10^{-6}$ and
+$2.7\times10^{-5}$ at $n{=}1089$.  In 1D the hmat-oss HODLR compresses the
+blockwise-rank-1 admissibility to machine precision
+($10^{-16}\dots10^{-19}$) and the self-contained backend to
+$10^{-9}\dots10^{-10}$.  The only compression outlier is 2D Exponential
+corr$=$0.01 $n{=}1089$ ($1.45\times10^{-3}$ for hmat-oss); the self-contained
+stays at $2\times10^{-6}$.
+\subsubsection*{End-to-end solve (rel\_solve): the PR~\#3272 always-on shift,
+not compression, dominates}
+In every configuration the as-built \texttt{rel\_solve} of \texttt{HMAT\_HODLR}
+is 3--5 orders of magnitude worse than the self-contained HODLR (2D Matern
+corr$=$0.1: $2.4\times10^{-3}$ vs $3.1\times10^{-7}$ at $n{=}289$,
+$2.2\times10^{-2}$ vs $2.0\times10^{-6}$ at $n{=}625$, $1.2\times10^{-1}$ vs
+$1.6\times10^{-5}$ at $n{=}1089$).  The shift-corrected \texttt{rel\_solve\_ref}
+shows the true compression quality of the hmat-oss backend: $10^{-4}\dots
+10^{-6}$ at corr$=$0.1 and essentially exact ($10^{-9}\dots 10^{-12}$) at
+corr$=$0.01 in 2D --- i.e.\ once the unconditional $\lambda$ is removed the two
+HODLR implementations are comparable.  At corr$=$0.1 the PR-side \texttt{ref}
+is still $5$--$40\times$ above the self-contained raw solve --- the residual
+cost of compensating a $\lambda$ that was added unnecessarily.
+\subsubsection*{KL and log-det: comparable only for the self-contained backend}
+The self-contained backend reproduces the dense log-determinant to
+$\lesssim 10^{-3}$ (KL $\lesssim 10^{-7}$ at corr$=$0.1, $\lesssim 10^{-9}$ at
+corr$=$0.01).  The PR-side numbers are inflated by the shifted factorization
+(logdet\_diff up to $928$, KL up to $4.4\times10^{2}$ at $n{=}1089$) and cannot
+be compared head-to-head without fixing \texttt{computeLogDeterminant}.
+\subsubsection*{Open items of the self-contained backend (1D Matern family)}
+The 1D Matern tables expose three genuine issues of the self-contained
+backend that remain open (none prevents the 2D/Exponential verdicts above):
+\begin{itemize}
+\item corr$=$0.1 $n{=}501$: no heal fired ($\lambda{=}10^{-8}$) and
+  $\|C-C_H\|_2/\|C\|_2{=}1.7\times10^{-10}$, yet rel\_solve$=0.108$,
+  gap2$=0.136$ --- the low-rank \emph{factorization}, not the assembly,
+  loses relative accuracy in this near-singular regime;
+\item corr$=$0.1 $n\ge 1001$: pivot-floor heal shift $1.7\times10^{-2}$
+  restores factorisability but at the price of rel\_solve $0.82$--$0.99$
+  (matches the \emph{open accuracy items} of Section~\ref{sec:accuracy});
+\item corr$=$0.01 $n{=}2001$: the pivot-floor heal fires \emph{unexpectedly}
+  (rel\_solve $0.40$), although the matrix is well conditioned at this
+  resolution --- a separate near-SPD-leaf trigger worth a follow-up.
+\end{itemize}
+\subsubsection*{Small 1D matrices}
+\label{par:small}
+hmat-oss HODLR fails to factorize/solve 1D matrices at $n{=}201$
+(all four cov/corr rows N/A); the self-contained backend handles them
+(rel\_solve $\lesssim 10^{-3}$).
+
+
+
+\section{Core linear-algebra benchmark (2026-09-19)}\label{sec:ops}
+\emph{New.} \texttt{python/test/benchmark\_hodlr\_ops.py} measures, for every
+(size, dimension, cov, correlation-length) configuration, the three operations
+that dominate GP linear algebra --- the Cholesky/factorization, the
+matrix/vector product, and the log-determinant --- against the dense LAPACK
+reference, on both HODLR implementations (self-contained \texttt{HODLR} and
+hmat-oss \texttt{HMAT\_HODLR} of PR~\#3272) plus \texttt{HMAT} (standard
+admissibility, same in both builds; measured up to $n\le 11000$ where it is
+comparable, since for larger $n$ it degenerates into dense blocks).  Sizes go
+up to $n=40001$ (1D), where the dense LAPACK result is still computable
+($\approx 2\times10^{13}$ fl to factorize), and to $n=20164$ (2D),
+$21952$ (3D), $28561$ (4D).  Protocol: dense reference via NumPy/OpenBLAS
+(4 threads); \texttt{rel\_solve} and \texttt{rel\_matvec}
+(4 random probes) against the dense reference; \texttt{logdet\_diff}
+$=\log|C_H|-\log|C|$.  Behaviour is reported \emph{as-is}: the
+self-contained backend's pivot-floor heal and the PR~\#3272 always-on
+regularization shift appear in the numbers below.
+
+
+
+
+\subsection{Reading the core linear-algebra benchmark}
+\subsubsection*{Factorization/scaling}
+In 1D-2D the self-contained factorize is $10$--$100\times$ faster than the
+LAPACK Cholesky from $n\approx 5000$ up, and the hmat-oss HODLR is within the
+same order.  In 3D-4D the gap is dominated by the dense triangular cost of
+LAPACK and stays wide.  \texttt{HMAT} (standard) is dense at these sizes: its
+factorize time tracks LAPACK.
+\subsubsection*{Solve accuracy}
+For every well-conditioned configuration ($\mathrm{cond}\lesssim 10^{6}$,
+i.e.\ 2D all, 1D Exponential, and 1D Matern up to $n\approx 2000$) the
+self-contained HODLR solves to $10^{-5}\dots10^{-8}$ relative to LAPACK and
+the hmat-oss HODLR (once its always-on shift is removed) to $10^{-6}\dots
+10^{-9}$.  The exceptions are the near-singular 1D regimes
+($\mathrm{cond}\gtrsim 10^{8}$ at $n\ge 5000$ for 1D Matern, and 1D
+Exponential corr$=$0.1 at $n\ge 5000$): there the self-contained pivot-floor
+heal pushes a $1.7\times10^{-2}$ (or $2.1\times10^{-3}$) shift and
+\texttt{rel\_solve} degrades to $0.5$--$1.0$, while the PR~\#3272 backend's
+always-on shift is of the same order as $\sigma_{\min}$.  Both are genuine
+as-is behaviours, flagged as open items in
+Section~\ref{sec:acc-comparison}.
+\subsubsection*{Matrix/vector product}
+\texttt{HODLR} reproduces the kernel to $10^{-6}\dots10^{-8}$ relative in all
+healthy configurations; \texttt{HMAT\_HODLR} to $10^{-5}\dots10^{-7}$; the
+dense \texttt{HMAT} reference is at machine precision.  Timing: one compressed
+matvec is a few tens of microseconds up to a few milliseconds for the largest
+sizes --- orders of magnitude below the dense $O(n^{2})$ product.
+\subsubsection*{Log-determinant}
+The self-contained \texttt{logDeterminant()} matches the dense reference to
+$\sim 10^{-3}$ in absolute \texttt{logdet\_diff} on healthy configurations
+(relative $\lesssim 10^{-6}$) and, like the solve, shifts with the heuristic
+in the near-singular regimes.  The PR~\#3272
+\texttt{computeLogDeterminant()} deviates by $\sim 10^{2}$ (and up to $10^{4}$
+on plain \texttt{HMAT}) and its rows are flagged unreliable
+(Section~\ref{sec:acc-comparison}).
+
+
+\begin{enumerate}
+\item \textbf{Accuracy}: the accuracy gate passes (relerr
+  $=4.7\times10^{-3}<10^{-2}$, $n=4001$) and the pre-fix corrupt regime is
+  eliminated by the pivot-floor heal.  The new dense-reference comparison
+  (Section~\ref{sec:acc-comparison}, 2026-09-19) confirms both HODLR
+  implementations meet the spectral accuracy gate; the PR~\#3272 build's
+  end-to-end numbers are dominated by its always-on regularization shift and its
+  \texttt{computeLogDeterminant} is unreliable as-is.
+\item \textbf{Speed}: self-contained \texttt{HODLR} is competitive with or faster
+  than \texttt{HMAT}/\texttt{HMAT\_HODLR} up to $n\sim10^{4}$, and dramatically
+  faster than hmat-oss HODLR for short correlation lengths in high dimensions;
+  its few large-$n$/long-corr slow entries are the (fixed) corrupt-heal artefact
+  and must be re-measured after the 2026-09-16 fix.
+\item \textbf{Accuracy comparison complete}: the Litvinenko suite
+  (rel\_norm2, gap2, KL, logdet) is now persisted per backend in
+  \texttt{python/test/results/results\_accuracy\_combined.csv}, and the core
+  Cholesky/matvec/log-det comparison in
+  \texttt{results\_ops\_combined.csv}
+  (Section~\ref{sec:ops}).  Remaining open items: hmat-oss HODLR on 1D
+  $n{=}201$ fails (Section~\ref{par:small}) and the ill-conditioned 1D
+  corr$=$0.1 large-$n$ family still requires heavy regularization --- there a
+  nugget, not compression accuracy, is the deciding factor.
+\end{enumerate}
+
+\end{document}

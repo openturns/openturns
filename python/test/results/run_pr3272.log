@@ -1,0 +1,178 @@
+
+==============================================================================================================
+  Covariance model: matern
+==============================================================================================================
+
+  1D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    19.8ms    182us    4.55s    5.9ms    344us    40.3ms    294us   48.7ms   11.8ms     70us    11.6ms    217us   33.4ms    4.5ms     48us       N/A      N/A      N/A      N/A      N/A
+   2001    2001    93.2ms    491us   15.76s    2.7ms    189us    48.6ms    474us   82.0ms    9.6ms     51us    20.9ms    351us   55.4ms    3.7ms     44us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    2.3ms    160us    85.4ms    1.1ms  175.6ms    8.4ms     48us    36.7ms    728us  118.6ms    3.5ms     50us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.5ms    184us   190.6ms    2.2ms  348.8ms   13.9ms     65us   137.4ms    1.9ms  289.9ms    6.4ms     56us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A    5.3ms    193us   481.2ms    4.5ms  811.2ms   18.2ms     77us   257.0ms    3.8ms  599.9ms    7.5ms     65us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    69.8ms    5.3ms    4.37s   15.6ms    305us    32.8ms    315us  213.9ms    8.0ms     66us     8.9ms    173us  143.9ms    3.5ms     41us       N/A      N/A      N/A      N/A      N/A
+   2001    2001   358.1ms    539us    8.83s    4.9ms    174us    47.5ms    541us  330.3ms    7.1ms     57us    17.7ms    298us  260.0ms    3.5ms     39us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    3.0ms    193us    77.0ms    1.1ms  762.5ms    7.1ms     55us    33.1ms    696us  656.8ms    3.5ms     51us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.9ms    189us   177.8ms    2.5ms    1.48s   12.4ms     73us   137.4ms    2.0ms    1.31s    6.3ms     60us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A   10.4ms    184us   447.6ms    4.8ms    3.11s   12.7ms     64us   246.9ms    3.7ms    2.73s    6.6ms     67us       N/A      N/A      N/A      N/A      N/A
+
+  2D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    20.3ms    231us    1.71s    4.0ms    288us    29.3ms    262us  129.5ms    7.7ms     53us    32.9ms    204us  100.6ms    7.8ms     59us       N/A      N/A      N/A      N/A      N/A
+   2116    2116   367.9ms    699us      N/A    7.7ms    427us   162.0ms    648us  224.7ms    6.5ms     51us    78.1ms    413us  189.5ms    6.8ms     48us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A    2.8ms    207us   255.9ms    1.3ms  500.9ms    5.6ms     46us   247.9ms    1.1ms  502.7ms    6.5ms     40us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    2.5ms    192us   502.9ms    3.2ms    1.18s   10.8ms     81us   636.6ms    2.5ms    1.15s    8.3ms     84us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A    9.3ms    269us     1.12s    6.0ms    2.42s   13.2ms     96us     1.15s    4.9ms    2.42s   13.9ms     66us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089   155.8ms    258us    2.51s   13.2ms    612us    38.6ms    330us  359.1ms    5.7ms     58us     9.9ms    162us  249.1ms    3.9ms     42us       N/A      N/A      N/A      N/A      N/A
+   2116    2116   462.4ms    674us      N/A   16.1ms    370us    90.6ms    729us  696.5ms    8.9ms     53us    32.1ms    367us  630.6ms    3.4ms     53us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A   11.0ms    230us   161.5ms    1.2ms    2.22s    5.0ms     48us   138.1ms    1.1ms    2.25s    3.0ms     45us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    4.5ms    201us   435.6ms    3.2ms    6.01s   13.9ms     98us   565.6ms    2.8ms    5.38s    5.0ms     58us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A   18.6ms    441us     2.06s    7.1ms   15.65s   17.6ms     74us     3.42s    7.3ms   17.79s    5.9ms     56us       N/A      N/A      N/A      N/A      N/A
+
+  3D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    38.4ms    330us    3.26s    7.3ms    953us   112.4ms    412us  259.9ms   11.3ms     93us    65.9ms    268us  221.2ms   26.6ms     75us       N/A      N/A      N/A      N/A      N/A
+   2744    2744   444.3ms    707us      N/A    6.4ms    349us   414.2ms    926us  647.6ms    8.8ms     57us   384.4ms    871us  615.8ms   11.0ms     53us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A    2.7ms    176us     1.75s    2.7ms    2.25s    8.4ms     47us     2.37s    2.6ms    2.48s   13.5ms     40us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    2.4ms    162us     4.24s    7.5ms    4.32s   15.0ms     94us    10.25s    7.2ms    8.85s   13.8ms    106us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A   15.6ms    414us    40.10s   18.6ms   31.11s   17.9ms    102us    40.34s   19.4ms   31.70s   29.9ms     94us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331   462.5ms    297us    7.53s   84.9ms    487us   161.6ms    350us  337.1ms   45.5ms    118us    48.1ms    279us  322.1ms   11.5ms     76us       N/A      N/A      N/A      N/A      N/A
+   2744    2744     2.37s    770us      N/A   39.9ms    638us   362.4ms    721us  888.3ms    5.0ms     47us   239.3ms    692us  881.1ms    3.8ms     43us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A   15.8ms    205us   984.6ms    2.3ms    2.86s    6.6ms     50us   791.9ms    1.9ms    2.61s    3.1ms     52us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    5.7ms    186us     1.25s    5.8ms    7.41s   36.0ms    117us     3.34s    5.0ms    8.86s    9.1ms     86us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A   12.8ms    325us    20.60s   14.1ms   29.60s   19.0ms    121us    16.66s   13.0ms   33.06s   16.7ms    117us       N/A      N/A      N/A      N/A      N/A
+
+  4D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   466.4ms    3.8ms      N/A   11.7ms    551us   349.0ms    1.1ms    1.01s    8.7ms     76us   710.5ms    916us    1.20s   25.0ms     72us       N/A      N/A      N/A      N/A      N/A
+   4096    4096   460.9ms    1.6ms      N/A    4.6ms    265us     2.40s    1.8ms    2.87s    9.6ms     57us     2.46s    1.9ms    2.84s   10.2ms     40us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A    2.6ms    182us     2.21s    4.8ms    3.91s    6.2ms     53us     6.68s    3.6ms    7.10s    7.5ms     45us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    2.5ms    183us    14.72s   15.1ms   13.28s   19.0ms    109us    47.09s   14.0ms   32.65s   45.6ms    109us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A    3.0ms    198us      1.2m   43.7ms   39.74s   15.8ms    115us      4.2m   41.1ms     2.8m   27.4ms    218us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401     3.18s    4.1ms      N/A  122.4ms    764us   964.2ms    964us    1.25s   53.6ms     93us   460.7ms    646us    1.36s   10.4ms     54us       N/A      N/A      N/A      N/A      N/A
+   4096    4096    12.30s    3.9ms      N/A   29.5ms    514us     1.88s    1.6ms    3.56s    7.0ms     41us     2.09s    1.9ms    3.67s   10.2ms     51us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A   12.2ms    201us       N/A      N/A      N/A   32.5ms     79us     6.31s    3.6ms    9.16s    3.6ms     39us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    9.2ms    200us       N/A      N/A      N/A   13.0ms     50us    28.90s   12.5ms   28.50s   18.6ms    106us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A   43.8ms    379us    16.46s   25.5ms   48.45s   63.2ms    155us      2.5m   35.0ms     2.4m    8.7ms     75us       N/A      N/A      N/A      N/A      N/A
+
+==============================================================================================================
+  Covariance model: exponential
+==============================================================================================================
+
+  1D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001     9.0ms    216us    1.47s    5.9ms    332us    23.6ms    369us   58.0ms   10.6ms     92us     6.0ms    218us   44.3ms    2.2ms     51us       N/A      N/A      N/A      N/A      N/A
+   2001    2001    36.2ms    465us   13.18s    2.6ms    187us    29.4ms    515us   87.7ms    8.3ms     64us     9.9ms    380us   67.3ms    1.8ms     47us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    2.4ms    196us    46.0ms    1.0ms  186.8ms    7.1ms     52us    16.4ms    757us  139.1ms    1.7ms     41us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.3ms    201us    88.1ms    2.5ms  369.9ms   10.9ms     73us    58.9ms    2.4ms  408.1ms    3.1ms     63us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A    3.4ms    230us   267.9ms    4.9ms  743.2ms   10.8ms     74us   127.4ms    4.4ms  662.4ms    2.9ms     61us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1001    1001    10.9ms    194us    1.66s    6.2ms    330us    18.2ms    335us  166.4ms    5.6ms     70us     4.5ms    171us  113.9ms    1.7ms     42us       N/A      N/A      N/A      N/A      N/A
+   2001    2001    26.2ms    418us   14.27s    2.7ms    193us    26.8ms    469us  249.8ms    4.8ms     60us     8.5ms    313us  193.5ms    1.7ms     56us       N/A      N/A      N/A      N/A      N/A
+   5001    5001       N/A      N/A      N/A    2.2ms    179us    37.5ms    930us  577.1ms    4.5ms     84us    15.3ms    687us  491.0ms    1.6ms     44us       N/A      N/A      N/A      N/A      N/A
+  10001   10001       N/A      N/A      N/A    2.3ms    198us    87.9ms    2.7ms    1.16s    8.2ms     77us    67.4ms    2.7ms    1.06s    3.2ms     79us       N/A      N/A      N/A      N/A      N/A
+  20001   20001       N/A      N/A      N/A    3.5ms    221us   268.0ms    5.0ms    2.30s    8.3ms     70us   131.2ms    4.3ms    1.96s    2.7ms     55us       N/A      N/A      N/A      N/A      N/A
+
+  2D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    13.8ms    209us    1.05s    3.6ms    328us    21.3ms    314us  108.6ms    5.3ms     61us    22.5ms    239us   85.9ms    5.8ms     42us       N/A      N/A      N/A      N/A      N/A
+   2116    2116    34.2ms    422us      N/A    6.4ms    288us    96.8ms    673us  194.1ms    4.0ms     56us    53.1ms    396us  147.5ms    4.5ms     56us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A    2.8ms    202us   245.1ms    1.2ms  432.5ms    3.2ms     49us   209.8ms    1.2ms  432.1ms    4.6ms     39us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    2.3ms    205us   450.9ms    3.1ms  908.0ms    5.0ms     75us   696.1ms    2.9ms    1.05s    4.8ms     55us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A    4.1ms    220us     1.33s    6.5ms    2.25s    6.7ms     74us     1.85s    5.9ms    2.62s    8.5ms     70us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1089    1089    14.5ms    2.7ms    2.27s    3.9ms    361us    14.5ms    323us  323.4ms    2.9ms     46us     8.3ms    161us  224.8ms    3.0ms     38us       N/A      N/A      N/A      N/A      N/A
+   2116    2116    35.3ms    748us      N/A    3.3ms    224us    43.0ms    616us  670.7ms    3.2ms     43us    23.5ms    391us  575.6ms    2.4ms     37us       N/A      N/A      N/A      N/A      N/A
+   5184    5184       N/A      N/A      N/A    2.5ms    183us   150.5ms    1.3ms    1.76s    2.7ms     49us   109.0ms    1.1ms    1.75s    2.4ms     38us       N/A      N/A      N/A      N/A      N/A
+  10201   10201       N/A      N/A      N/A    2.5ms    153us   431.5ms    3.1ms    5.09s    7.2ms    104us   665.7ms    2.7ms    4.76s    2.5ms     65us       N/A      N/A      N/A      N/A      N/A
+  20164   20164       N/A      N/A      N/A    4.5ms    268us     1.62s    7.2ms   10.85s    6.0ms     74us     2.50s    7.2ms   11.78s    4.9ms     60us       N/A      N/A      N/A      N/A      N/A
+
+  3D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    27.5ms    325us    3.31s    5.0ms    423us    66.0ms    473us  242.8ms    7.7ms    114us    97.5ms    347us  208.2ms   26.4ms     74us       N/A      N/A      N/A      N/A      N/A
+   2744    2744   448.1ms    3.9ms      N/A    7.0ms    380us   544.5ms    831us  545.8ms   10.5ms     52us   403.7ms    988us  550.9ms   17.3ms     58us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A    2.8ms    181us     1.67s    2.8ms    1.77s    8.6ms     61us     1.84s    2.5ms    1.92s   18.2ms     71us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    2.6ms    198us     3.64s    7.2ms    3.40s    8.7ms    123us     9.22s    7.0ms    8.12s   10.7ms     86us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A    8.5ms    377us    33.30s   17.7ms   24.38s   16.4ms    107us    31.36s   17.1ms   26.23s   63.6ms    139us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1331    1331    20.1ms    378us    4.62s    5.1ms    426us    34.9ms    446us  340.8ms    6.9ms    120us    44.1ms    236us  276.1ms    8.9ms     91us       N/A      N/A      N/A      N/A      N/A
+   2744    2744    59.0ms    635us      N/A    7.6ms    332us   308.9ms    773us  750.2ms    2.6ms     62us   235.0ms    824us  741.1ms    3.1ms     48us       N/A      N/A      N/A      N/A      N/A
+   5832    5832       N/A      N/A      N/A    2.7ms    220us     1.17s    2.5ms    2.68s    2.7ms     43us     1.07s    2.0ms    2.82s    1.9ms     41us       N/A      N/A      N/A      N/A      N/A
+  12167   12167       N/A      N/A      N/A    2.4ms    224us     1.23s    6.0ms    7.06s    7.4ms    120us     4.70s    5.8ms    7.62s    4.7ms     88us       N/A      N/A      N/A      N/A      N/A
+  21952   21952       N/A      N/A      N/A    6.2ms    314us    15.91s   13.1ms   28.21s    7.8ms    110us    22.04s   13.8ms   25.66s    9.2ms     93us       N/A      N/A      N/A      N/A      N/A
+
+  4D  |  corr in [0.1, 0.01], targets in [1000, 2000, 5000, 10000, 20000]
+  ....................................................................................................
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   415.1ms    9.4ms      N/A   13.1ms    613us   481.3ms    1.1ms  916.2ms    5.7ms     78us   780.2ms    910us    1.05s   38.2ms     75us       N/A      N/A      N/A      N/A      N/A
+   4096    4096   624.4ms    3.6ms      N/A    4.6ms    253us     2.72s    2.1ms    2.55s    9.9ms     41us     2.53s    2.0ms    2.59s    9.8ms     37us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A    2.6ms    170us     3.59s    4.9ms    3.90s    3.9ms     47us     8.84s    4.2ms    6.87s   22.3ms     58us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    2.6ms    188us    22.50s   16.0ms   13.68s   18.9ms    231us      1.1m   15.3ms   43.12s   58.1ms    142us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A    2.6ms    196us      1.4m   44.5ms   39.03s    8.9ms    117us      5.9m   45.4ms     4.0m   55.3ms    128us       N/A      N/A      N/A      N/A      N/A
+...x  (n~1000) ...x  (n~2000) ...x  (n~5000) ...x  (n~10000) ...x  (n~20000) 
+      n     pts                                        LAPACK                                          HMAT                                    HMAT_HODLR                                         HODLR
+                      1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr       1st      2nd       KL      fit     regr
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   2401    2401   265.5ms    657us      N/A    7.7ms    510us   210.9ms    968us    1.25s    5.6ms     96us   483.8ms    746us    1.36s   11.4ms     44us       N/A      N/A      N/A      N/A      N/A
+   4096    4096   194.2ms    4.9ms      N/A    6.2ms    353us     2.31s    1.7ms    3.52s    7.9ms     70us     1.92s    1.6ms    3.46s    8.1ms     41us       N/A      N/A      N/A      N/A      N/A
+   6561    6561       N/A      N/A      N/A    2.8ms    180us   822.3ms    3.9ms    5.31s    4.1ms     52us     5.09s    3.3ms    7.88s    2.4ms     38us       N/A      N/A      N/A      N/A      N/A
+  14641   14641       N/A      N/A      N/A    2.4ms    184us     4.68s   11.4ms   16.07s    9.3ms    113us    37.66s   12.4ms   40.30s   27.3ms    113us       N/A      N/A      N/A      N/A      N/A
+  28561   28561       N/A      N/A      N/A    2.9ms    209us    19.88s   28.3ms   43.91s    9.5ms    130us      2.7m   34.2ms     3.0m    4.7ms     75us       N/A      N/A      N/A      N/A      N/A
+
+DONE
