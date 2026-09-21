@@ -35,6 +35,8 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
+ * Deprecated QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage(Sample) in favor of QuantileConfidence.computeUnilateralCoverage(UnsignedInteger, UnsignedInteger, Bool)
+ * Deprecated QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) in favor of computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)
 
 === Documentation ===
 
