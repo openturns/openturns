@@ -1469,7 +1469,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Bingham parameters //
   addAsScalar("Bingham-OrthogonalityThreshold", 1.0e-12);
-  addAsUnsignedInteger("Bingham-MaximumIteration", 50);
+  addAsUnsignedInteger("Bingham-MaximumIteration", 200);
+  addAsUnsignedInteger("BinghamFactory-MaximumIterations", 20);
 
   // MatrixFisher parameters //
   addAsScalar("MatrixFisher-OrthogonalityThreshold", 1.0e-12);

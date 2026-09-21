@@ -20,9 +20,20 @@ a moment matching algorithm:
 
 3. Shift the concentrations so that :math:`\min_i\zeta_i = 0`.
 
+4. Refine the concentrations by damped Newton-Raphson on the moment
+   equations :math:`E[x_i^2](\zeta) = \lambda_i`.
+
 See also
 --------
 openturns.DistributionFactory, Bingham
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``BinghamFactory-MaximumIterations``: maximum number of Newton-Raphson
+  iterations and of step-halving steps in the moment refinement,
+  default value ``20``.
 
 Examples
 --------

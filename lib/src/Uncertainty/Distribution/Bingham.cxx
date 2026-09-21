@@ -45,9 +45,9 @@ Bingham::Bingham()
   , logNormalization_(0.0)
   , optimalB_(0.0)
 {
-  zeta_[0] = 0.0;
-  zeta_[1] = -0.5;
-  zeta_[2] = -1.0;
+  zeta_[0] = 1.0;
+  zeta_[1] = 0.5;
+  zeta_[2] = 0.0;
   gamma_(0, 0) = 1.0;
   gamma_(1, 1) = 1.0;
   gamma_(2, 2) = 1.0;
@@ -171,47 +171,38 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
   };
 
   // F(zeta) = area * sum_{k>=0} S_k with
-  // S_k = Gamma(n/2)/Gamma(n/2+k) * sum_{|m|=k} prod_i (1/2)_{m_i} zeta_i^{m_i} / m_i!
+  // S_k = Gamma(n/2)/Gamma(n/2+k) * e_k and e_k = sum_{|m|=k} prod_i (1/2)_{m_i} zeta_i^{m_i} / m_i!
   // All the terms are nonnegative (canonical zeta >= 0), sum them in log-space.
   // The k = 0 block is exactly 1, so logSum starts at 0.
+  // The blocks e_k follow the Kume-Wood recurrence e_0 = 1,
+  // e_k = (1/k) sum_{r=1}^k s_r e_{k-r} with s_r = (1/2) sum_i zeta_i^r,
+  // which costs O(k*n) per block instead of the combinatorial enumeration.
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("Bingham-MaximumIteration");
   Scalar logSum = 0.0;
   Bool converged = false;
+  Point eTerms(maximumIteration + 1, 0.0);
+  eTerms[0] = 1.0;
+  Point powerSums(maximumIteration + 1, 0.0);
+  Point zetaPowers(n, 1.0);
   for (UnsignedInteger k = 1; k <= maximumIteration; ++k)
   {
-    // log of the block sum S_k
-    Scalar logBlock = -SpecFunc::Infinity;
-    // log of (1/2)_{m} zeta^m / m! = logGamma(m + 1/2) - logGamma(1/2) + m log(zeta) - logGamma(m + 1)
-    // with logGamma(1/2) = 0.5 * log(pi)
-    const Scalar logBlockFactor = SpecFunc::LogGamma(0.5 * n) - SpecFunc::LogGamma(0.5 * n + static_cast<Scalar>(k));
-    std::function<void(UnsignedInteger, UnsignedInteger, Scalar)> enumerate =
-        [&](UnsignedInteger index, UnsignedInteger remaining, Scalar logProduct)
+    // s_k = (1/2) sum_i zeta_i^k from the running powers
+    Scalar powerSum = 0.0;
+    for (UnsignedInteger i = 0; i < n; ++i)
     {
-      if (index == n - 1)
-      {
-        const UnsignedInteger mLast = remaining;
-        Scalar logTermLast = 0.0;
-        if (mLast > 0)
-          logTermLast = (cZeta[index] == 0.0) ? -SpecFunc::Infinity
-                        : SpecFunc::LogGamma(mLast + 0.5) - 0.5 * std::log(M_PI)
-                          + static_cast<Scalar>(mLast) * std::log(cZeta[index])
-                          - SpecFunc::LogGamma(mLast + 1.0);
-        const Scalar logBlockTerm = logProduct + logTermLast + logBlockFactor;
-        logBlock = logAdd(logBlock, logBlockTerm);
-        return;
-      }
-      for (UnsignedInteger mIndex = 0; mIndex <= remaining; ++mIndex)
-      {
-        Scalar logMi = 0.0;
-        if (mIndex > 0)
-          logMi = (cZeta[index] == 0.0) ? -SpecFunc::Infinity
-                  : SpecFunc::LogGamma(mIndex + 0.5) - 0.5 * std::log(M_PI)
-                    + static_cast<Scalar>(mIndex) * std::log(cZeta[index])
-                    - SpecFunc::LogGamma(mIndex + 1.0);
-        enumerate(index + 1, remaining - mIndex, logProduct + logMi);
-      }
-    };
-    enumerate(0, k, 0.0);
+      zetaPowers[i] *= cZeta[i];
+      powerSum += zetaPowers[i];
+    }
+    powerSums[k] = 0.5 * powerSum;
+    if (!std::isfinite(powerSums[k])) break;
+    Scalar eBlock = 0.0;
+    for (UnsignedInteger r = 1; r <= k; ++r)
+      eBlock += powerSums[r] * eTerms[k - r];
+    eBlock /= static_cast<Scalar>(k);
+    eTerms[k] = eBlock;
+    if (!(eBlock > 0.0)) break;
+    // log of the block sum S_k
+    const Scalar logBlock = SpecFunc::LogGamma(0.5 * n) - SpecFunc::LogGamma(0.5 * n + static_cast<Scalar>(k)) + std::log(eBlock);
     logSum = logAdd(logSum, logBlock);
     // Stop when the block contribution falls below the precision threshold
     if (logBlock < logSum + std::log(SpecFunc::Precision))
@@ -223,12 +214,27 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
 
   if (!converged)
   {
-    // The series converged too slowly: use the saddlepoint approximation
-    // log F(zeta) ~ 0.5 * sum_i log(1 + 2*zeta_i) + (n/2) log(2*pi) - log Gamma(n/2)
-    Scalar saddle = 0.0;
+    // Laplace (saddlepoint) approximation for large concentrations.
+    // The mass concentrates on the subsphere spanned by the m axes of
+    // maximal concentration: with maxZeta the maximum and
+    // gap_i = maxZeta - cZeta[i] over the remaining axes,
+    // log F ~ maxZeta + logArea(S^{m-1}) + (n-m)/2 log pi - (1/2) sum log gap_i.
+    Scalar maxZeta = cZeta[0];
+    for (UnsignedInteger i = 1; i < n; ++i)
+      maxZeta = std::max(maxZeta, cZeta[i]);
+    const Scalar gapTolerance = SpecFunc::Precision * std::max(1.0, maxZeta);
+    UnsignedInteger multiplicity = 0;
+    Scalar logGapSum = 0.0;
     for (UnsignedInteger i = 0; i < n; ++i)
-      saddle += 0.5 * std::log1p(2.0 * cZeta[i]);
-    return saddle + minZeta;
+    {
+      const Scalar gap = maxZeta - cZeta[i];
+      if (gap <= gapTolerance) ++multiplicity;
+      else logGapSum += std::log(gap);
+    }
+    const Scalar halfM = 0.5 * static_cast<Scalar>(multiplicity);
+    const Scalar logAreaMax = std::log(2.0) + halfM * std::log(M_PI) - SpecFunc::LogGamma(halfM);
+    const Scalar halfRemaining = 0.5 * static_cast<Scalar>(n - multiplicity);
+    return minZeta + maxZeta + logAreaMax + halfRemaining * std::log(M_PI) - 0.5 * logGapSum;
   }
 
   return logArea + minZeta + logSum;
@@ -242,6 +248,98 @@ void Bingham::computeNormalization()
 Point Bingham::computeSecondMoments() const
 {
   const UnsignedInteger n = dimension_;
+  // Canonical shift (adding a constant to zeta leaves the law unchanged)
+  Point cZeta(zeta_);
+  Scalar minZeta = cZeta[0];
+  for (UnsignedInteger i = 1; i < n; ++i)
+    minZeta = std::min(minZeta, cZeta[i]);
+  Scalar maxZeta = cZeta[0];
+  for (UnsignedInteger i = 0; i < n; ++i)
+  {
+    cZeta[i] -= minZeta;
+    maxZeta = std::max(maxZeta, cZeta[i]);
+  }
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("Bingham-MaximumIteration");
+  // Differentiate the Kume-Wood recurrence termwise. With the scaling
+  // f_k = e_k / M^k (M = max(1, max zeta)), all the scaled blocks and
+  // their derivatives stay bounded: f_0 = 1,
+  // f_k = (1/k) sum_{r=1}^k s_r f_{k-r} with s_r = (1/2) sum_i (zeta_i/M)^r.
+  const Scalar scaling = std::max(1.0, maxZeta);
+  const Scalar logScaling = std::log(scaling);
+  const Scalar logGammaHalfN = SpecFunc::LogGamma(0.5 * n);
+  Point scaledBlocks(maximumIteration + 1, 0.0);
+  scaledBlocks[0] = 1.0;
+  Point scaledDerivatives(n * (maximumIteration + 1), 0.0);
+  auto deriv = [&](UnsignedInteger j, UnsignedInteger k) -> Scalar& { return scaledDerivatives[j * (maximumIteration + 1) + k]; };
+  Point logBlockSums(maximumIteration + 1, 0.0);
+  logBlockSums[0] = 0.0;
+  Scalar logSum = 0.0;
+  Point scaledPowers(n, 1.0);
+  Point scaledPowerSums(maximumIteration + 1, 0.0);
+  UnsignedInteger convergedOrder = 0;
+  Bool converged = false;
+  for (UnsignedInteger k = 1; k <= maximumIteration; ++k)
+  {
+    Scalar powerSum = 0.0;
+    for (UnsignedInteger i = 0; i < n; ++i)
+    {
+      scaledPowers[i] *= cZeta[i] / scaling;
+      powerSum += scaledPowers[i];
+    }
+    scaledPowerSums[k] = 0.5 * powerSum;
+    Scalar block = 0.0;
+    for (UnsignedInteger r = 1; r <= k; ++r)
+      block += scaledPowerSums[r] * scaledBlocks[k - r];
+    block /= static_cast<Scalar>(k);
+    scaledBlocks[k] = block;
+    if (!(block > 0.0)) break;
+    for (UnsignedInteger j = 0; j < n; ++j)
+    {
+      Scalar derivative = 0.0;
+      Scalar zetaPower = 1.0 / scaling;
+      for (UnsignedInteger r = 1; r <= k; ++r)
+      {
+        // d(s_r)/d(zeta_j) = 0.5 * r * zeta_j^{r-1} / M^r
+        const Scalar dscaled = 0.5 * static_cast<Scalar>(r) * zetaPower;
+        derivative += dscaled * scaledBlocks[k - r] + scaledPowerSums[r] * deriv(j, k - r);
+        zetaPower *= cZeta[j] / scaling;
+      }
+      deriv(j, k) = derivative / static_cast<Scalar>(k);
+    }
+    const Scalar logBlock = logGammaHalfN - SpecFunc::LogGamma(0.5 * n + static_cast<Scalar>(k)) + static_cast<Scalar>(k) * logScaling + std::log(block);
+    logBlockSums[k] = logBlock;
+    if (logBlock < logSum + std::log(SpecFunc::Precision))
+    {
+      converged = true;
+      convergedOrder = k;
+      break;
+    }
+    // Log-space addition of the new block
+    if (logSum >= logBlock) logSum = logSum + std::log1p(std::exp(logBlock - logSum));
+    else logSum = logBlock + std::log1p(std::exp(logSum - logBlock));
+  }
+  if (converged)
+  {
+    // E[x_j^2] = sum_k W_k df_{kj} / sum_k W_k f_k, stabilized in log-space
+    Scalar logMax = logBlockSums[0];
+    for (UnsignedInteger k = 1; k <= convergedOrder; ++k)
+      logMax = std::max(logMax, logBlockSums[k]);
+    Point secondMoments(n, 0.0);
+    Scalar denominator = 0.0;
+    for (UnsignedInteger k = 0; k <= convergedOrder; ++k)
+    {
+      // The weight already contains f_k: E_j = sum W_k (df_{kj}/f_k) / sum W_k
+      const Scalar weight = std::exp(logBlockSums[k] - logMax);
+      denominator += weight;
+      for (UnsignedInteger j = 0; j < n; ++j)
+        secondMoments[j] += weight * deriv(j, k) / scaledBlocks[k];
+    }
+    for (UnsignedInteger j = 0; j < n; ++j)
+      secondMoments[j] /= denominator;
+    return secondMoments;
+  }
+  // The series did not converge: fall back to central finite differences
+  // of the smooth saddlepoint branch
   const Scalar delta = std::sqrt(SpecFunc::ScalarEpsilon);
   Point secondMoments(n);
   for (UnsignedInteger i = 0; i < n; ++i)

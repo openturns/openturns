@@ -114,10 +114,13 @@ ott.assert_almost_equal(range_.getUpperBound(), [1.0] * 3)
 dist = ot.Distribution(distribution)
 assert dist.getImplementation().getClassName() == "Bingham"
 
-# Default constructor
+# Default constructor: canonical form, round-trips through parameters
 default = otexp.Bingham()
 assert default.getDimension() == 3
-ott.assert_almost_equal(default.getZeta(), [0.0, -0.5, -1.0], 1e-12, 0.0)
+ott.assert_almost_equal(default.getZeta(), [1.0, 0.5, 0.0], 1e-12, 0.0)
+rebuilt = otexp.Bingham()
+rebuilt.setParameter(default.getParameter())
+assert rebuilt == default
 
 # setZeta / getZeta round-trip
 dist_setter = otexp.Bingham([0.5, 0.3, 0.0], gamma)
@@ -192,6 +195,28 @@ ott.assert_almost_equal(mean, [0.0, 0.0, 0.0], 0.0, 5e-2)
 var_sample = sample.computeCovariance()
 ott.assert_almost_equal(var_sample[0, 0], concentrated.getCovariance()[0, 0],
                         0.1, 0.0)
+
+# Normalization: E[1/pdf(X)] is the area of S^2 for a mild concentration
+ot.RandomGenerator.SetSeed(0)
+mild = otexp.Bingham([2.0, 1.0, 0.0], gamma)
+mildSample = mild.getSample(5000)
+inverseMean = sum(1.0 / mild.computePDF(x) for x in mildSample) / 5000
+ott.assert_almost_equal(inverseMean, 4.0 * math.pi, 5e-2, 0.0)
+
+# Saddlepoint branch agrees with the series on a concentrated case.
+# Forcing MaximumIteration to 0 selects the saddlepoint approximation.
+concentrated = otexp.Bingham([20.0, 5.0, 0.0], gamma)
+logSeries = concentrated.computeLogPDF([1.0, 0.0, 0.0])
+ot.ResourceMap.SetAsUnsignedInteger("Bingham-MaximumIteration", 0)
+saddle = otexp.Bingham([20.0, 5.0, 0.0], gamma)
+logSaddle = saddle.computeLogPDF([1.0, 0.0, 0.0])
+ot.ResourceMap.SetAsUnsignedInteger("Bingham-MaximumIteration", 200)
+ott.assert_almost_equal(math.exp(logSaddle - logSeries), 1.0, 0.1, 0.0)
+
+# High dimension: the series recurrence keeps the normalization tractable
+highDim = otexp.Bingham([5.0] * 9 + [0.0], ot.IdentityMatrix(10))
+assert highDim.getDimension() == 10
+assert highDim.computePDF(highDim.getRealization()) > 0.0
 
 # Distribution validation
 validation = ott.DistributionValidation(distribution)

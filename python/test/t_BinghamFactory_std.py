@@ -60,6 +60,21 @@ native_default = factory.buildAsBingham()
 assert ot.Distribution(native_default).getImplementation().getClassName() == \
     "Bingham"
 
+# Build from a concentrated sample: moment matching recovers the parameters
+reference = otexp.Bingham([2.0, 1.0, 0.0], gamma)
+ot.RandomGenerator.SetSeed(1)
+bigSample = reference.getSample(20000)
+recovered = factory.build(bigSample)
+recoveredZeta = recovered.getImplementation().getZeta()
+print("recovered zeta=", recoveredZeta)
+for estimatedZeta, trueZeta in zip(recoveredZeta, [2.0, 1.0, 0.0]):
+    assert abs(estimatedZeta - trueZeta) < 0.3, "zeta=%s" % recoveredZeta
+# The estimated second moments match the sample scatter
+recoveredMoments = [recovered.getCovariance()[i, i] for i in range(3)]
+sampleMoments = [bigSample.computeCovariance()[i, i] + bigSample.computeMean()[i] ** 2 for i in range(3)]
+for estimatedMoment, sampleMoment in zip(recoveredMoments, sampleMoments):
+    ott.assert_almost_equal(estimatedMoment, sampleMoment, 0.1, 2e-2)
+
 # Invalid samples
 with ott.assert_raises(TypeError):
     factory.build(ot.Sample([[1.0]] * 5))
