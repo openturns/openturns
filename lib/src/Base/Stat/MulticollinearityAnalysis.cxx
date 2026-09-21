@@ -562,9 +562,9 @@ PointWithDescription MulticollinearityAnalysis::computeJohnson() const
   checkOutputSample();
 
   // Compute the correlation matrix of the full sample (input + output)
-  Sample joinedSample = firstSample_;
+  Sample joinedSample(firstSample_);
   joinedSample.stack(secondSample_);
-  const CorrelationMatrix corMatrix = joinedSample.computeLinearCorrelation();
+  const CorrelationMatrix corMatrix(joinedSample.computeLinearCorrelation());
 
   // Extract needed parts of the correlation matrix
   const UnsignedInteger dimension = firstSample_.getDimension();
@@ -576,7 +576,7 @@ PointWithDescription MulticollinearityAnalysis::computeJohnson() const
 
   // Perform the eigenvalues decomposition of the corXX matrix
   SquareMatrix Phi;
-  const Point eigenvalues = corXX.computeEV(Phi);
+  const Point eigenvalues(corXX.computeEV(Phi));
 
   SquareMatrix Delta(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -586,7 +586,7 @@ PointWithDescription MulticollinearityAnalysis::computeJohnson() const
   Matrix alpha(W.solveLinearSystem(corXY));
   W.squareElements();
   alpha.squareElements();
-  const Matrix johnson = W * alpha;
+  const Matrix johnson(W * alpha);
 
   PointWithDescription result(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -603,15 +603,18 @@ PointWithDescription MulticollinearityAnalysis::computeVIF() const
   const UnsignedInteger dimension = firstSample_.getDimension();
 
   // Correlation matrix of the predictors — no dummy regression needed
-  const CorrelationMatrix R = firstSample_.computeLinearCorrelation();
-
-  // Guard against (near-)singularity
-  const Scalar detR = R.computeDeterminant();
-  if (!(detR > 0.0))
-    throw NotDefinedException(HERE) << "Error: the matrix is singular, its determinant is " << detR;
+  const CorrelationMatrix R(firstSample_.computeLinearCorrelation());
 
   // VIFs are the diagonal of the inverse correlation matrix
-  const SymmetricMatrix Rinv = R.inverse();
+  SymmetricMatrix Rinv;
+  try
+  {
+    Rinv = R.inverse();
+  }
+  catch (const NotDefinedException &)
+  {
+    throw NotDefinedException(HERE) << "Error: cannot compute VIF for a singular correlation matrix";
+  }
 
   PointWithDescription result(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
