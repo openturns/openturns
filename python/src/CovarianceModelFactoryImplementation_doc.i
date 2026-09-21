@@ -7,7 +7,7 @@ This class is an interface class for all the classes that build covariance model
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *CovarianceModel-DefaultNuggetFactor* (`Scalar`, default: `1e-12`)
+- ``CovarianceModel-DefaultNuggetFactor`` (``Scalar``, default: ``1e-12``)
 
 See also
 --------

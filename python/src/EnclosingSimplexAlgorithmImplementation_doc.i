@@ -48,8 +48,8 @@ here is how the derived class is selected:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon* (`Scalar`, default: `1e-12`)
-- *EnclosingSimplexAlgorithm-LargeDimension* (`UnsignedInteger`, default: `5`)
+- ``EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon`` (``Scalar``, default: ``1e-12``)
+- ``EnclosingSimplexAlgorithm-LargeDimension`` (``UnsignedInteger``, default: ``5``)
 
 See also
 --------

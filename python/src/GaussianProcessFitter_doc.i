@@ -386,8 +386,8 @@ Refer to :any:`gaussian_process_regression` to understand how it acts on the lik
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GaussianProcessFitter-DefaultOptimizationNuggetLowerBound* (`Scalar`, default: `1e-12`)
-- *GaussianProcessFitter-KeepCovariance* (`Bool`, default: `true`)
-- *GaussianProcessFitter-OptimizeParameters* (`Bool`, default: `true`)
+- ``GaussianProcessFitter-DefaultOptimizationNuggetLowerBound`` (``Scalar``, default: ``1e-12``)
+- ``GaussianProcessFitter-KeepCovariance`` (``Bool``, default: ``true``)
+- ``GaussianProcessFitter-OptimizeParameters`` (``Bool``, default: ``true``)
 
 )RAW"

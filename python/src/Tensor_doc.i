@@ -71,7 +71,7 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Tensor-size-visible-in-str-from* (`UnsignedInteger`, default: `5`)
+- ``Tensor-size-visible-in-str-from`` (``UnsignedInteger``, default: ``5``)
 )RAW"
 %enddef
 %feature("docstring") OT::Tensor

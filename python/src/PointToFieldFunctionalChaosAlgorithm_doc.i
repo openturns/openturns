@@ -127,7 +127,7 @@ or group of output variables.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FieldFunctionalChaosAlgorithm-DefaultRecompress* (`Bool`, default: `false`)
+- ``FieldFunctionalChaosAlgorithm-DefaultRecompress`` (``Bool``, default: ``false``)
 
 Examples
 --------

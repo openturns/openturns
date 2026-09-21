@@ -75,5 +75,5 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Text-DefaultTextSize* (`Scalar`, default: `0.75`)"
+- ``Text-DefaultTextSize`` (``Scalar``, default: ``0.75``)"
 

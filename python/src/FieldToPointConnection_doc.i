@@ -21,7 +21,7 @@ This class is a particular case  of the general class :class:`~openturns.FieldTo
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FieldToPointConnection-BlockSize* (`UnsignedInteger`, default: `256`)
+- ``FieldToPointConnection-BlockSize`` (``UnsignedInteger``, default: ``256``)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -112,6 +112,6 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *GaussianProcessRegressionCrossValidation-DefaultBlockSize* (`UnsignedInteger`, default: `100`)"
+- ``GaussianProcessRegressionCrossValidation-DefaultBlockSize`` (``UnsignedInteger``, default: ``100``)"
 
 

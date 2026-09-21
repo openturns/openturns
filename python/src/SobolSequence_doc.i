@@ -38,8 +38,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SobolSequence-InitialSeed* (`UnsignedInteger`, default: `1`)
-- *SobolSequence-Scrambling* (`String`, default: `NONE`)
+- ``SobolSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)
+- ``SobolSequence-Scrambling`` (``String``, default: ``NONE``)
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -55,5 +55,5 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *KFold-DefaultK* (`UnsignedInteger`, default: `10`)"
+- ``KFold-DefaultK`` (``UnsignedInteger``, default: ``10``)"
 

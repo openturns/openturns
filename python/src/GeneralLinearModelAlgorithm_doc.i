@@ -199,7 +199,7 @@ With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierar
 
 This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor),
 has a better complexity both in terms of memory requirements and floating point operations.
-To use it, the ``GeneralLinearModelAlgorithm-LinearAlgebra`` resource map key should be set to `HMAT`. Default value of the key is `LAPACK`.
+To use it, the ``GeneralLinearModelAlgorithm-LinearAlgebra`` resource map key should be set to ``HMAT``. Default value of the key is ``LAPACK``.
 
 A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
 with :func:`setNoise()`:

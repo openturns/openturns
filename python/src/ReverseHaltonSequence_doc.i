@@ -21,5 +21,5 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *ReverseHaltonSequence-InitialSeed* (`UnsignedInteger`, default: `1`)"
+- ``ReverseHaltonSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)"
 

@@ -102,7 +102,7 @@ key of the :class:`~openturns.ResourceMap` is used.
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FunctionalChaosAlgorithm-DefaultMaximumResidual* (`Scalar`, default: `1e-06`)
+- ``FunctionalChaosAlgorithm-DefaultMaximumResidual`` (``Scalar``, default: ``1e-06``)
 
 Examples
 --------

@@ -40,8 +40,8 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SparseMethod-ErrorThreshold* (`Scalar`, default: `0.001`)
-- *SparseMethod-MaximumErrorFactor* (`Scalar`, default: `2`)"
+- ``SparseMethod-ErrorThreshold`` (``Scalar``, default: ``0.001``)
+- ``SparseMethod-MaximumErrorFactor`` (``Scalar``, default: ``2``)"
 
 
 

@@ -21,7 +21,7 @@ This class only implements the evaluation operator and does not propose any impl
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *PointToPointEvaluation-BlockSize* (`UnsignedInteger`, default: `256`)
+- ``PointToPointEvaluation-BlockSize`` (``UnsignedInteger``, default: ``256``)
 )RAW"
 
 // ---------------------------------------------------------------------

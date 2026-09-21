@@ -21,5 +21,5 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *FaureSequence-InitialSeed* (`UnsignedInteger`, default: `1`)"
+- ``FaureSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)"
 

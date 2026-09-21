@@ -443,8 +443,8 @@ is defined by the equation:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *Evaluation-DefaultPointNumber* (`UnsignedInteger`, default: `129`)
-- *Evaluation-ParameterEpsilon* (`Scalar`, default: `1e-07`)
+- ``Evaluation-DefaultPointNumber`` (``UnsignedInteger``, default: ``129``)
+- ``Evaluation-ParameterEpsilon`` (``Scalar``, default: ``1e-07``)
 
 Examples
 --------

@@ -40,7 +40,7 @@ It is possible to directly specify the values :math:`(d_{jk})_{jk}` in the last 
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *DesignProxy-DefaultCacheSize* (`UnsignedInteger`, default: `16777216`)
+- ``DesignProxy-DefaultCacheSize`` (``UnsignedInteger``, default: ``16777216``)
 
 Examples
 --------

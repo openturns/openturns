@@ -17,10 +17,10 @@ We use the following estimator:
 
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *PolyaFactory-AbsolutePrecision* (`Scalar`, default: `1e-12`)
-- *PolyaFactory-MaximumIteration* (`UnsignedInteger`, default: `50`)
-- *PolyaFactory-RelativePrecision* (`Scalar`, default: `1e-12`)
-- *PolyaFactory-ResidualPrecision* (`Scalar`, default: `1e-12`)
+- ``PolyaFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``)
+- ``PolyaFactory-MaximumIteration`` (``UnsignedInteger``, default: ``50``)
+- ``PolyaFactory-RelativePrecision`` (``Scalar``, default: ``1e-12``)
+- ``PolyaFactory-ResidualPrecision`` (``Scalar``, default: ``1e-12``)
 
 See also
 --------
