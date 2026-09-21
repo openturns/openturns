@@ -43,9 +43,9 @@ Notes
 -----
 This class uses the following entries of :class:`~openturns.ResourceMap`:
 
-- *SpectralGaussianProcess-CholeskyCacheSize* (``UnsignedInteger``, default: `16384`)
-- *SpectralGaussianProcess-MaximalScaling* (``Scalar``, default: `1e-05`)
-- *SpectralGaussianProcess-StartingScaling* (``Scalar``, default: `1e-13`)
+- ``SpectralGaussianProcess-CholeskyCacheSize`` (``UnsignedInteger``, default: ``16384``)
+- ``SpectralGaussianProcess-MaximalScaling`` (``Scalar``, default: ``1e-05``)
+- ``SpectralGaussianProcess-StartingScaling`` (``Scalar``, default: ``1e-13``)
 
 Examples
 --------
