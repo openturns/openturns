@@ -15,11 +15,11 @@ evaluation : :class:`~openturns.SymbolicEvaluation`
 Parameters
 ----------
 i : int
-    Index of the output component.
+    Index of the first input component.
 j : int
-    Index of the first derivation.
+    Index of the second input component.
 k : int
-    Index of the second derivation.
+    Index of the output component.
 
 Returns
 -------
