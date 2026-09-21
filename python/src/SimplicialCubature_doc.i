@@ -49,6 +49,16 @@ value : :class:`~openturns.Point`
     Approximation of the integral.
 
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SimplicialCubature-DefaultMaximumAbsoluteError`` (``Scalar``, default: ``0.0``): default maximum absolute error of the simplicial cubature
+- ``SimplicialCubature-DefaultMaximumCallsNumber`` (``UnsignedInteger``, default: ``100000``): default maximum number of calls of the integrand
+- ``SimplicialCubature-DefaultMaximumRelativeError`` (``Scalar``, default: ``1.0e-5``): default maximum relative error of the simplicial cubature
+- ``SimplicialCubature-DefaultRule`` (``UnsignedInteger``, default: ``3``): rank of the integration rule used by the simplicial cubature, from 1 to 4
+- ``SimplicialCubature-MarginalDiscretizationIntervalsNumber`` (``UnsignedInteger``, default: ``1``): number of discretization intervals used on each marginal of the integration domain
+
 Examples
 --------
 >>> import openturns as ot
@@ -58,6 +68,7 @@ Examples
 >>> algo = ot.SimplicialCubature()
 >>> f = ot.SymbolicFunction(['x1', 'x2'], ['exp(x1 + x2)'])
 >>> value = algo.integrate(f, mesh)
+
 )RAW"
 
 // ---------------------------------------------------------------------

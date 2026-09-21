@@ -152,6 +152,11 @@ polynomials of the vector space:
 
     \bigotimes_{i = 1}^\inputDim \mathcal{P}_{2 n_i - 1}^{(1)}.
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``GaussLegendre-DefaultMarginalIntegrationPointsNumber`` (``UnsignedInteger``, default: ``64``): default number of integration points used on each marginal by the Gauss-Legendre quadrature
+
 See also
 --------
 GaussProductExperiment, TensorProductExperiment
@@ -202,7 +207,9 @@ polynomial with maximum possible marginal degrees.
 >>> algo = ot.GaussLegendre([3, 2, 4])
 >>> computedIntegral = algo.integrate(polynomial, bounds)
 >>> print(computedIntegral)
-[0.00520833])RAW"
+[0.00520833]
+>>> #
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::GaussLegendre::integrate

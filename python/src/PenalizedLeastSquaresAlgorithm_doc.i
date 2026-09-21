@@ -41,4 +41,10 @@ Refer to the :any:`least squares context <least_squares>` and  :any:`least_squar
 
 This class solves the least squares problem for each output marginal :math:`k \in \{1, ..., \outputDim\}` defined by equation :eq:`defA` in the :any:`least squares context <least_squares>`.
 
-The finite discrete distribution based on the input sample and the weights defines the inner product that will be used to solve the least squares problem.)RAW"
+The finite discrete distribution based on the input sample and the weights defines the inner product that will be used to solve the least squares problem.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``PenalizedLeastSquaresAlgorithm-UseNormal`` (``Bool``, default: ``false``)
+
+)RAW"

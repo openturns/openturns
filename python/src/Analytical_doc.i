@@ -85,6 +85,11 @@ where :math:`\vect{x}^*` is the design point, :math:`s` is the threshold and :ma
 is the absolute tolerance.
 The initial points are directly defined in the Physical Space through the used :class:`~openturns.OptimizationAlgorithm`.
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Analytical-LimitStateToleranceFactor`` (``Scalar``, default: ``1.15``): factor used to define the tolerance of the limit state approximation
+
 See also
 --------
 FORM, SORM, StrongMaximumTest, StandardEvent, AnalyticalResult
@@ -101,6 +106,7 @@ Examples
 >>> myOptim = ot.AbdoRackwitz()
 >>> myOptim.setStartingPoint(myDistribution.getMean())
 >>> myAlgo = ot.Analytical(myOptim, myEvent)
+
 )RAW"
 
 // ---------------------------------------------------------------------

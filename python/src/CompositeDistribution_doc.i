@@ -68,10 +68,10 @@ The following :class:`~openturns.ResourceMap` keys are used:
 The range of :math:`distY` is the interval between the minimum and the maximum
 of the values :math:`v[k]`.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *CompositeDistribution-SolverEpsilon* (`Scalar`, default: `1e-14`)
-- *CompositeDistribution-StepNumber* (`UnsignedInteger`, default: `256`)
+- ``CompositeDistribution-SolverEpsilon`` (``Scalar``, default: ``1.0e-14``): tolerance of the non linear solver used to compute the values of the distribution.
+- ``CompositeDistribution-StepNumber`` (``UnsignedInteger``, default: ``256``): number of steps of the numerical integration.
 
 Examples
 --------

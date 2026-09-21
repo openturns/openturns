@@ -137,9 +137,14 @@ stratification even more efficient and thus save some evaluations of the model.
 This 2-step algorithm can be generalized to :math:`L > 2` steps by adding more
 than one learning step. For now, only ADS-2 is implemented.
 
-See also
---------
-EventSimulation)RAW"
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``AdaptiveDirectionalStratification-DefaultGamma`` (``Scalar``, default: ``0.5``): default value of the :math:`\gamma` parameter of the adaptive directional stratification algorithm
+- ``AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension`` (``UnsignedInteger``, default: ``3``): default maximum stratification dimension of the adaptive directional stratification algorithm
+
+- ``AdaptiveDirectionalStratification-DefaultNumberOfSteps`` (``UnsignedInteger``, default: ``2``): default number of steps of the adaptive directional stratification algorithm
+
+)RAW"
 
 
 // ---------------------------------------------------------------------

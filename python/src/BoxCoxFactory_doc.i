@@ -30,6 +30,13 @@ The objective is to estimate the most likely surrogate model (general linear mod
 which links input data :math:`x` and :math:`h_{\vect{\lambda}, \vect{\alpha}}(y)`. :math:`\vect{\lambda}`
 are to be calibrated such as maximizing the general linear model's likelihood function.
 In that context, a :class:`~openturns.CovarianceModel` and a :class:`~openturns.Basis` have to be fixed
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``BoxCoxFactory-DefaultMaximumCallsNumber`` (``UnsignedInteger``, default: ``2000``): maximum number of calls of the objective function of the optimization
+- ``BoxCoxFactory-DefaultPointNumber`` (``UnsignedInteger``, default: ``201``): number of points used to discretize the :math:`\rho` parameter in the estimation of the Box-Cox transformation
+- ``BoxCoxFactory-DefaultRhoBeg`` (``Scalar``, default: ``0.1``): initial value of the step of the optimization used to estimate the Box-Cox transformation
+- ``BoxCoxFactory-DefaultRhoEnd`` (``Scalar``, default: ``1.0e-10``): final value of the step of the optimization used to estimate the Box-Cox transformation
 )RAW"
 
 // ---------------------------------------------------------------------

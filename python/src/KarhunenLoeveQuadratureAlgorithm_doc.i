@@ -76,6 +76,11 @@ OpenTURNS solves the equation :eq:`EqFinQuadGalerkin`.
 The second constructor is a short-hand to the first one, where *basis* is the tensorized Legendre basis (see :class:`~openturns.OrthogonalProductPolynomialFactory` and :class:`~openturns.LegendreFactory`), *experiment* is a tensorized Gauss-Legendre quadrature (see :class:`~openturns.GaussProductExperiment`), *basisSize* is equal to *marginalDegree* to the power the dimension of *domain* and *mustScale* is set to *True*.
 
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``KarhunenLoeveQuadratureAlgorithm-RegularizationFactor`` (``Scalar``, default: ``0.0``): regularization factor used when assembling the covariance matrices of the quadrature algorithm
+
 Examples
 --------
 Discretize the domain :math:`\cD` and create a covariance model:
@@ -105,6 +110,7 @@ Run it!
 
 >>> algorithm.run()
 >>> result = algorithm.getResult()
+
 )RAW"
 
 // ---------------------------------------------------------------------

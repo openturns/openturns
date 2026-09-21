@@ -786,10 +786,10 @@ pointNumber : :class:`~openturns.Indices`
     The number of points to draw the contours and the curves.
 withMonoDimensionalCuts : bool, optional
     withMonoDimensionalCuts indicates whether the mono dimension cuts are drawn or not
-    Default value is specified in the `CrossCuts-DefaultWithMonoDimensionalCuts` ResourceMap key.
+    Default value is specified in the ``CrossCuts-DefaultWithMonoDimensionalCuts`` ResourceMap key.
 isFilled : bool, optional
     isFilled indicates whether the contour graphs are filled or not
-    Default value is specified in the `Contour-DefaultIsFilled` ResourceMap key
+    Default value is specified in the ``Contour-DefaultIsFilled`` ResourceMap key
 vMin, vMax : float, optional
     Define the interval used to build the color map for the contours
     If not specified, these values are computed to best fit the graphs.

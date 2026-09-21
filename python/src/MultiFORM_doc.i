@@ -38,6 +38,14 @@ See also
 --------
 FORM, MultiFORMResult
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MultiFORM-DefaultDelta`` (``Scalar``, default: ``0.75``): default value of the :math:`\delta` parameter of the MultiFORM algorithm
+- ``MultiFORM-DefaultGamma`` (``Scalar``, default: ``1.1``): default value of the :math:`\gamma` parameter of the MultiFORM algorithm
+- ``MultiFORM-DefaultMaximumDesignPointsNumber`` (``UnsignedInteger``, default: ``4``): default maximum number of design points of the MultiFORM algorithm
+
 Examples
 --------
 >>> import openturns as ot
@@ -54,6 +62,7 @@ Examples
 >>> result = algo.getResult()
 >>> n_design_pts = len(result.getFORMResultCollection())
 >>> pf = result.getEventProbability()
+
 )RAW"
 
 // ---------------------------------------------------------------------

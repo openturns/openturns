@@ -42,4 +42,12 @@ index : int
 Returns
 -------
 N : int
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Last-DefaultMaximumSize`` (``UnsignedInteger``, default: ``65536``): maximum number of points kept in the cache of the simulation
+
     The maximum number of points to store."
+

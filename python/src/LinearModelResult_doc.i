@@ -35,6 +35,14 @@ residualsVariance : float
 See Also
 --------
 LinearModelAlgorithm
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LinearModelAlgorithm-DecompositionMethod`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem. The possible values are ``SVD``, ``Cholesky`` and ``QR``
+
+- ``LinearModelResult-DecompositionMethod`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem. The possible values are ``SVD``, ``Cholesky`` and ``QR``
 )RAW"
 
 // ---------------------------------------------------------------------

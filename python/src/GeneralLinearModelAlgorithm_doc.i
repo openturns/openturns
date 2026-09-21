@@ -23,7 +23,7 @@ basis : :class:`~openturns.Basis`
 
 keepCovariance : bool, optional
     Indicates whether the covariance matrix has to be stored in the result structure *GeneralLinearModelResult*.
-    Default value is set in resource map key `GeneralLinearModelAlgorithm-KeepCovariance`
+    Default value is set in resource map key ``GeneralLinearModelAlgorithm-KeepCovariance``
 
 Notes
 -----
@@ -179,7 +179,7 @@ This leads to a further reduction of the log-likelihood function where both :mat
 and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
 
 The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationAlgorithm* method.
-User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm`
+User could also change the default optimization solver by setting the ``GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm``
 resource map key to one of the :class:`~openturns.NLopt` solver names.
 
 It is also possible to proceed as follows:
@@ -199,7 +199,7 @@ With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierar
 
 This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor),
 has a better complexity both in terms of memory requirements and floating point operations.
-To use it, the `GeneralLinearModelAlgorithm-LinearAlgebra` resource map key should be set to `HMAT`. Default value of the key is `LAPACK`.
+To use it, the ``GeneralLinearModelAlgorithm-LinearAlgebra`` resource map key should be set to `HMAT`. Default value of the key is `LAPACK`.
 
 A known centered gaussian observation noise :math:`\epsilon_k` can be taken into account
 with :func:`setNoise()`:
@@ -376,18 +376,18 @@ Parameters involved by this method are:
 Lower & upper bounds are defined in resource map.
 Default lower upper bounds value for all parameters is
 :math:`10^{-2}` and defined thanks to the
-`GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound`
+``GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound``
 resource map key.
 
 For scale parameters, default upper bounds are set as :math:`2`
 times the difference between the max and min values of `X` for
 each coordinate, `X` being the (transformed) input sample.
 The value :math:`2` is defined in resource map
-(`GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor`).
+(``GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor``).
 
 Finally for other parameters (amplitude,...), default upper bound is set
 to :math:`100` (corresponding resource map key is
-`GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound`)
+``GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound``)
 "
 
 // ---------------------------------------------------------------------
@@ -418,4 +418,12 @@ R"RAW(Observation noise variance accessor.
 Parameters
 ----------
 noise : sequence of positive float
-    The noise variance :math:`\tau_k^2` of each output value.)RAW"
+    The noise variance :math:`\tau_k^2` of each output value.
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``GeneralLinearModelAlgorithm-MeanEpsilon`` (``Scalar``, default: ``1.0e-12``): tolerance used in the computation of the mean of the Gaussian process
+- ``GeneralLinearModelAlgorithm-OptimizeParameters`` (``Bool``, default: ``true``): whether the parameters of the trend and covariance models are optimized
+
+)RAW"

@@ -66,6 +66,11 @@ Its iterative principle is described by the following steps.
 
 The NAIS algorithm with the Silverman rule is implemented in the current NAIS class.
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``NAIS-DefaultQuantileLevel`` (``Scalar``, default: ``0.25``): default quantile level of the NAIS algorithm
+
 See also
 --------
 SubsetSampling
@@ -88,6 +93,7 @@ Examples
 >>> algo = ot.NAIS(myEvent, 0.1)
 >>> # Perform the simulation
 >>> algo.run()
+
 )RAW"
 
 // ---------------------------------------------------------------------------
