@@ -377,7 +377,6 @@ void Sample::erase(const Indices & indices)
       ++kept;
     }
   }
-  copyOnWrite();
   *this = select(keptIndices);
 }
 
