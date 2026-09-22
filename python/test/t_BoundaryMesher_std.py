@@ -29,3 +29,18 @@ ott.assert_almost_equal(volume, 0.194508)
 mesh2DBoundaryInside = ot.BoundaryMesher().build(mesh2D, -0.05)
 volume = mesh2DBoundaryInside.getVolume()
 ott.assert_almost_equal(volume, 0.194508)
+# Non-convex input gives non-convex boundary
+assert not mesh2D.isConvex()
+assert not mesh2DBoundary.isConvex()
+assert not mesh2DBoundaryOutside.isConvex()
+assert not mesh2DBoundaryInside.isConvex()
+# Convex input gives convex boundary, unless thickened
+box = ot.IntervalMesher([2, 2]).build(ot.Interval([0.0, 0.0], [1.0, 1.0]))
+assert box.isConvex()
+assert ot.BoundaryMesher().build(box).isConvex()
+assert not ot.BoundaryMesher().build(box, 0.05).isConvex()
+assert not ot.BoundaryMesher().build(box, -0.05).isConvex()
+# A surface mesh encloses no volume: its boundary is not convex
+surface = ot.BoundaryMesher().build(box)
+assert surface.isConvex()
+assert not ot.BoundaryMesher().build(surface).isConvex()
