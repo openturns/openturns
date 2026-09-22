@@ -50,6 +50,13 @@ For the same reason some first order indices estimates can be greater than the c
 The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
 delta method, as explained in the technical report [pmfre01116]_.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``): block size used to compute the indices,
+- ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` (``Scalar``, default: ``0.95``): confidence level of the bootstrap intervals,
+- ``SobolIndicesAlgorithm-DefaultBootstrapSize`` (``UnsignedInteger``, default: ``100``): bootstrap sample size,
+- ``SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`` (``Bool``, default: ``False``): whether the asymptotic distribution is used.
 )RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation
