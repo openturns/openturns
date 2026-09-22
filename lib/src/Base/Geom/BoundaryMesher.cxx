@@ -322,6 +322,11 @@ Mesh BoundaryMesher::build(const Mesh & mesh,
   Mesh boundary(boundaryVertices, boundarySimplices, false);
   boundary.setName(mesh.getName() + " boundary");
   boundary.setDescription(mesh.getDescription());
+  // The boundary of a full-dimensional convex mesh encloses a convex volume
+  // A thick boundary (offset != 0) is a volume shell with a hole, hence not convex
+  // A flat input (intrinsic dimension < dimension) yields no volume to enclose
+  if ((offset == 0.0) && mesh.isConvex() && (mesh.getIntrinsicDimension() == dimension) && (boundary.getSimplicesNumber() > 0))
+    boundary.setIsConvex(true);
   return boundary;
 }
 
