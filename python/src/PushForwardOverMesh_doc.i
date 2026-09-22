@@ -67,7 +67,7 @@ covariance are stored in the `PushForwardOverMesh-SampleSize`
 
 See also
 --------
-UniformOverMesh, PushForwardDistribution
+openturns.UniformOverMesh, PushForwardDistribution
 
 Examples
 --------

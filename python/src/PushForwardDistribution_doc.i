@@ -84,7 +84,7 @@ and the `PushForwardDistribution-NewtonStepReduction`
 
 See also
 --------
-CompositeDistribution
+openturns.CompositeDistribution
 
 Examples
 --------

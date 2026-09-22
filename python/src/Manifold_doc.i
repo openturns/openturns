@@ -15,7 +15,7 @@ all the geometric operations to it:
 
 See also
 --------
-ManifoldImplementation, SphereManifold, SO3Manifold
+SphereManifold, SO3Manifold
 
 Notes
 -----

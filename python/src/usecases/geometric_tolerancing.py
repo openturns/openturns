@@ -49,7 +49,7 @@ class GeometricTolerancing:
         self.location = ot.UniformOverMesh(self.plate)
 
     def nonConformityProbability(self, size=20000):
-        """Monte Carlo estimate of P(|defect| > tolerance)."""
+        """Monte Carlo estimate of the non-conformity probability."""
         sample = self.defect.getSample(size)
         count = sum(1 for i in range(size) if abs(sample[i, 2]) > self.tolerance)
         return count / size
