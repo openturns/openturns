@@ -41,8 +41,8 @@ basisSize : int, optional
     :class:`~openturns.ResourceMap`.
 activeFunctions : sequence of `int`, optional
     The indices of the basis functions to use for the approximation.
-    If not given, all functions from 0 to basisSize-1 are used.
-    Must be non-empty and all indices must be less than basisSize.
+    If not given, all functions from 0 to *basisSize*-1 are used.
+    Must be non-empty and all indices must be less than *basisSize*.
 
 See also
 --------
