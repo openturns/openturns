@@ -81,17 +81,20 @@ created this distribution.
 The next table presents this distribution depending on the
 algorithm.
 
-+------------------------------------------------------+-----------------------------------------------------------------------+
-| Class                                                | Distribution                                                          |
-+======================================================+=======================================================================+
-| :class:`~openturns.LinearLeastSquaresCalibration`    | Distribution of the parameters with respect to randomness in the data |
-+------------------------------------------------------+-----------------------------------------------------------------------+
-| :class:`~openturns.NonLinearLeastSquaresCalibration` | Distribution of the parameters with respect to randomness in the data |
-+------------------------------------------------------+-----------------------------------------------------------------------+
-| :class:`~openturns.GaussianLinearCalibration`        | Posterior distribution of the parameters given the observations       |
-+------------------------------------------------------+-----------------------------------------------------------------------+
-| :class:`~openturns.GaussianNonLinearCalibration`     | Distribution of the MAP with respect to randomness in the data        |
-+------------------------------------------------------+-----------------------------------------------------------------------+
+.. list-table::
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Class
+     - Distribution
+   * - :class:`~openturns.LinearLeastSquaresCalibration`
+     - Distribution of the parameters with respect to randomness in the data
+   * - :class:`~openturns.NonLinearLeastSquaresCalibration`
+     - Distribution of the parameters with respect to randomness in the data
+   * - :class:`~openturns.GaussianLinearCalibration`
+     - Posterior distribution of the parameters given the observations
+   * - :class:`~openturns.GaussianNonLinearCalibration`
+     - Distribution of the MAP with respect to randomness in the data
 
 **Table 1.** Content of the distribution returned by  :meth:`~openturns.CalibrationResult.getParameterPosterior()` different classes returning a :class:`~openturns.CalibrationResult`.
 
