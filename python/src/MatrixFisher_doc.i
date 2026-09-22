@@ -121,3 +121,14 @@ Returns
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
     sampled matrices.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MatrixFisher::setEpsilon
+R"RAW(Accessor to the orthogonality threshold.
+
+Parameters
+----------
+epsilon : float
+    Relative tolerance for the validation of the orthogonality of the
+    sampled matrices.)RAW"

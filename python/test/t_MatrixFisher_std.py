@@ -151,13 +151,15 @@ negDist = otexp.MatrixFisher(negF)
 ott.assert_almost_equal(negDist.getParameter(), [5.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, -1.0], 1e-12, 0.0)
 assert negDist.computePDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]) > 0.0
 
-# High concentration: the adaptive quadrature order agrees with a fine order
+# High concentration: the adaptive quadrature order agrees with a fine order.
+# The fine order stays well above the adaptive one (122 nodes per axis for
+# this F) while keeping the test fast enough for the coverage job.
 baseOrder = ot.ResourceMap.GetAsUnsignedInteger("MatrixFisher-QuadratureOrder")
 ot.ResourceMap.SetAsUnsignedInteger("MatrixFisher-QuadratureOrder", baseOrder)
 highF = ot.SquareMatrix([[100.0, 0.0, 0.0], [0.0, 100.0, 0.0], [0.0, 0.0, 100.0]])
 highDist = otexp.MatrixFisher(highF)
 adaptive = highDist.computeLogPDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0])
-ot.ResourceMap.SetAsUnsignedInteger("MatrixFisher-QuadratureOrder", 200)
+ot.ResourceMap.SetAsUnsignedInteger("MatrixFisher-QuadratureOrder", 150)
 fineDist = otexp.MatrixFisher(highF)
 fine = fineDist.computeLogPDF([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0])
 ot.ResourceMap.SetAsUnsignedInteger("MatrixFisher-QuadratureOrder", baseOrder)

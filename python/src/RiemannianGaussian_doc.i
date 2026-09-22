@@ -147,3 +147,14 @@ Returns
 epsilon : float
     Relative tolerance for the validation of the positive definiteness of
     the mean and covariance matrices.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::RiemannianGaussian::setEpsilon
+R"RAW(Accessor to the positive-definiteness threshold.
+
+Parameters
+----------
+epsilon : float
+    Relative tolerance for the validation of the positive definiteness of
+    the mean and covariance matrices.)RAW"

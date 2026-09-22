@@ -132,6 +132,11 @@ void MatrixFisher::computeRange()
 
 void MatrixFisher::computeNormalization()
 {
+  computeMoments(false);
+}
+
+void MatrixFisher::computeMoments(const Bool withSecondMoments) const
+{
   // The normalization constant a_0(F) = int_{SO(3)} exp(tr(F^T R)) dR is
   // computed by tensorized Gauss-Legendre quadrature over the ZYZ Euler
   // angles (phi, theta, psi), for which the normalized Haar measure reads
@@ -206,10 +211,13 @@ void MatrixFisher::computeNormalization()
       for (UnsignedInteger c = 0; c < 3; ++c)
       {
         sumRWeighted(r, c) += weight * R(r, c);
-        const UnsignedInteger idx = 3 * r + c;
-        for (UnsignedInteger r2 = 0; r2 < 3; ++r2)
-          for (UnsignedInteger c2 = 0; c2 < 3; ++c2)
-            sumRFlatRFlatWeighted(idx, 3 * r2 + c2) += weight * R(r, c) * R(r2, c2);
+        if (withSecondMoments)
+        {
+          const UnsignedInteger idx = 3 * r + c;
+          for (UnsignedInteger r2 = 0; r2 < 3; ++r2)
+            for (UnsignedInteger c2 = 0; c2 < 3; ++c2)
+              sumRFlatRFlatWeighted(idx, 3 * r2 + c2) += weight * R(r, c) * R(r2, c2);
+        }
       }
   }
 
@@ -218,8 +226,11 @@ void MatrixFisher::computeNormalization()
   expectedTrace_ = (4.0 * std::pow(M_PI, 3) * sumTrWeighted) / integral;
   const Matrix scaledR((4.0 * std::pow(M_PI, 3) * sumRWeighted) / integral);
   expectedMatrix_ = SquareMatrix(scaledR.getImplementation());
-  const Matrix scaledRFlatRFlat((4.0 * std::pow(M_PI, 3) * sumRFlatRFlatWeighted) / integral);
-  expectedSquaredMatrix_ = SquareMatrix(scaledRFlatRFlat.getImplementation());
+  if (withSecondMoments)
+  {
+    const Matrix scaledRFlatRFlat((4.0 * std::pow(M_PI, 3) * sumRFlatRFlatWeighted) / integral);
+    expectedSquaredMatrix_ = SquareMatrix(scaledRFlatRFlat.getImplementation());
+  }
 }
 
 void MatrixFisher::updateSampler()
@@ -459,7 +470,10 @@ void MatrixFisher::computeCovariance() const
 {
   // Cov[vec(R)] = E[vec(R)vec(R)^T] - E[vec(R)] E[vec(R)]^T,
   // both integrals evaluated by quadrature.
+  // The second moments are evaluated on demand here, as computeNormalization
+  // skips them for performance: only the covariance needs them.
   // The distribution is 9-dimensional (flattened 3x3), so covariance is 9x9
+  computeMoments(true);
   CovarianceMatrix cov(9);
   for (UnsignedInteger i = 0; i < 3; ++i)
     for (UnsignedInteger j = 0; j < 3; ++j)

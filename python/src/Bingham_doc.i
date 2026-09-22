@@ -138,3 +138,14 @@ Returns
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
     basis matrix.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bingham::setEpsilon
+R"RAW(Accessor to the orthogonality threshold.
+
+Parameters
+----------
+epsilon : float
+    Relative tolerance for the validation of the orthogonality of the
+    basis matrix.)RAW"

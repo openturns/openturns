@@ -87,6 +87,9 @@ private:
   /** Compute the normalization constant a_0(F) */
   void computeNormalization();
 
+  /** Evaluate the quadrature moments, with the second moments on demand */
+  void computeMoments(const Bool withSecondMoments) const;
+
   /** Update the sampler parameters (SVD of F) */
   void updateSampler();
 
@@ -105,13 +108,13 @@ private:
   Point singularValues_;
 
   Scalar epsilon_;
-  Scalar logNormalization_;
+  mutable Scalar logNormalization_;
   Scalar maxTrace_;
 
   /** Moments of R: expectedMatrix_ is E[R] (3x3), expectedSquaredMatrix_ is E[vec(R)vec(R)^T] (9x9), expectedTrace_ is E[tr(R)] */
-  SquareMatrix expectedMatrix_;
-  SquareMatrix expectedSquaredMatrix_;
-  Scalar expectedTrace_;
+  mutable SquareMatrix expectedMatrix_;
+  mutable SquareMatrix expectedSquaredMatrix_;
+  mutable Scalar expectedTrace_;
 
 }; /* class MatrixFisher */
 
