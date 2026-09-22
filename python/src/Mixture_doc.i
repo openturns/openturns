@@ -40,7 +40,7 @@ Create a *Mixture*:
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Mixture-LargeSize`` (``UnsignedInteger``, default: ``20``)
 - ``Mixture-PDFCDFDiscretization`` (``UnsignedInteger``, default: ``1000``)

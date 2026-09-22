@@ -128,7 +128,7 @@ distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Student-CDFScaleFactor`` (``Scalar``, default: ``4``)
 - ``Student-MarginalIntegrationNodesNumber`` (``UnsignedInteger``, default: ``16``)

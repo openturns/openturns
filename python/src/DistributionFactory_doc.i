@@ -91,7 +91,7 @@ factory : :class:`~openturns.DistributionFactory`
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``DistributionFactory-BootstrapErrorTolerance`` (``Scalar``, default: ``0.1``): admitted fraction of bootstrap resamples that fail to build an estimated distribution.
 "

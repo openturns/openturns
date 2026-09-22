@@ -21,7 +21,7 @@ legend : str, default=''
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Text-DefaultTextSize`` (``Scalar``, default: ``0.75``)
 
