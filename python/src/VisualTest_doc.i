@@ -46,7 +46,7 @@ of the empirical probabilities) on the **Henry line** whose equation reads:
 
 The Henry plot is a special case of the more general QQ-plot.
 
-This function uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``VisualTest-CloudMediumSize`` (``UnsignedInteger``, default: ``1000``)
 - ``VisualTest-CloudSmallSize`` (``UnsignedInteger``, default: ``100``)

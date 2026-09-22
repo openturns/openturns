@@ -42,7 +42,7 @@ computes :math:`N` hermitian matrices of size :math:`d \times \ d`, where
 :math:`d` is the dimension of the spectral model. These matrices are factorized
 and stored in order to be used for each call of the *getRealization* method.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SpectralGaussianProcess-CholeskyCacheSize`` (``UnsignedInteger``, default: ``16384``)
 - ``SpectralGaussianProcess-MaximalScaling`` (``Scalar``, default: ``1e-05``)

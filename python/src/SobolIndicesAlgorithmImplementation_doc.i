@@ -141,7 +141,7 @@ then the interaction Sobol' index can be computed from the equation:
 .. math::
     S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``)
 - ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` (``Scalar``, default: ``0.95``)

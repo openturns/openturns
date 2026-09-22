@@ -51,7 +51,7 @@ index : int
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Compact-DefaultHalfMaximumSize`` (``UnsignedInteger``, default: ``1024``)"
 

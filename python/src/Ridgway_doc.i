@@ -3,7 +3,7 @@ R"RAW(Base class.
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Ridgway-LowDiscrepancySequence`` (``String``, default: ``SobolSequence``): name of the low discrepancy sequence used to compute the integral; the possible values are the names of the classes derived from :class:`~openturns.LowDiscrepancySequence`, such as ``SobolSequence``, ``HaltonSequence``, ``ReverseHaltonSequence``, ``FaureSequence`` or ``HaselgroveSequence``.
 - ``Ridgway-DefaultAlpha`` (``Scalar``, default: ``0.5``): value of the alpha parameter.

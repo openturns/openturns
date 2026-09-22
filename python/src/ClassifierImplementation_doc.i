@@ -10,7 +10,7 @@ Notes
 The classifier enables to define rules that assign a vector to a particular
 class.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Classifier-Parallel`` (``Bool``, default: ``true``)"
 

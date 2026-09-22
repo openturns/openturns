@@ -643,7 +643,7 @@ Examples
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Mesh-BackfaceCulling`` (``Bool``, default: ``false``)
 - ``Mesh-LargeSize`` (``UnsignedInteger``, default: ``5000``)

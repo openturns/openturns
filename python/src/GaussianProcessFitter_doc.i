@@ -384,7 +384,7 @@ modeled by normal distribution with zero mean and a covariance matrix :math:`\ma
 
 Refer to :any:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``GaussianProcessFitter-DefaultOptimizationNuggetLowerBound`` (``Scalar``, default: ``1e-12``)
 - ``GaussianProcessFitter-KeepCovariance`` (``Bool``, default: ``true``)

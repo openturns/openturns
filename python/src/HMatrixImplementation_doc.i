@@ -67,7 +67,7 @@ be performed:
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``HMatrix-ForceSequential`` (``Bool``, default: ``false``): force sequential computation.
 - ``HMatrix-AdmissibilityFactor`` (``Scalar``, default: ``100.0``): admissibility factor for H-matrix blocks.

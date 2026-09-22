@@ -36,7 +36,7 @@ They can be used to enumerate a multivariate basis
 built as the tensorization of univariate basis, using the indexation of each marginal basis
 (refer to and :any:`enumeration_multivariate_basis`).
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``HyperbolicAnisotropicEnumerateFunction-DefaultQ`` (``Scalar``, default: ``0.4``)
 

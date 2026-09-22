@@ -84,7 +84,7 @@ experiments:
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Sample-PrintEllipsisSize`` (``UnsignedInteger``, default: ``3``)
 - ``Sample-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``1000``)

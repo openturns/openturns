@@ -36,7 +36,7 @@ Examples
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SobolSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)
 - ``SobolSequence-Scrambling`` (``String``, default: ``NONE``)

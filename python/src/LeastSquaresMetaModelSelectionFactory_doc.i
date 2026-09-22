@@ -18,7 +18,7 @@ Implementation of an approximation algorithm implementation factory which builds
 an :class:`~openturns.ApproximationAlgorithm`: this latter class is not directly usable because
 it is operational only within the :class:`~openturns.FunctionalChaosAlgorithm`.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``LeastSquaresMetaModelSelection-ErrorThreshold`` (``Scalar``, default: ``0.0``): threshold on the error of the selection.
 - ``LeastSquaresMetaModelSelection-MaximumError`` (``Scalar``, default: ``0.5``): maximum relative error of the selection.

@@ -103,7 +103,7 @@ enableExtrapolation : bool
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``PiecewiseLinearEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
 - ``PiecewiseLinearEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)"

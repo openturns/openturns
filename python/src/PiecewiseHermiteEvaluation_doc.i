@@ -143,7 +143,7 @@ enableExtrapolation : bool
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``PiecewiseHermiteEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
 - ``PiecewiseHermiteEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)"
