@@ -534,7 +534,7 @@ of freedom and :math:`R(x;p)` the solution of:
 .. math::
     \Phi(x + R) - \Phi(x - R) = p
 
-This function uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``KFactor-Precision`` (``Scalar``, default: ``1e-08``): precision of the zero-finding algorithm used to compute the tolerance factor,
 - ``KFactor-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``256``): number of nodes of the Gauss-Kronrod integration rule used to compute the tolerance factor,
@@ -575,7 +575,7 @@ means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
 This implements the standard NF ISO 16269-6. 
 
-This function uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``KFactor-Precision`` (``Scalar``, default: ``1e-08``): precision of the zero-finding algorithm used to compute the tolerance factor,
 - ``KFactor-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``256``): number of nodes of the Gauss-Kronrod integration rule used to compute the tolerance factor,
