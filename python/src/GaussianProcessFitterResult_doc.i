@@ -3,13 +3,13 @@ R"RAW(Gaussian process fitter result.
 
 Refer to :any:`gaussian_process_regression`.
 
-The structure is usually created by the method :py:meth:`~openturns.GaussianProcessFitter.run` of the class
+The structure is usually created by the method :meth:`~openturns.GaussianProcessFitter.run` of the class
 :class:`~openturns.GaussianProcessFitter` and obtained with its method
-:py:meth:`~openturns.GaussianProcessFitter.getResult()`.
+:meth:`~openturns.GaussianProcessFitter.getResult()`.
 
-Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
+Refer to :any:`gaussian_process_regression` (Step 1) for a presentation of the notation and theoretical foundations. In this section, we only discuss the concepts that are directly relevant to this class.
 
-This class creates the metamodel
+This class creates the surrogate model
 :math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
 function:
 
