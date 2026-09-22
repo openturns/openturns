@@ -2601,10 +2601,12 @@ Scalar LinearCombinationDistribution::computeProbability(const Interval & interv
       value += contribution;
       error += std::abs(contribution);
     }
-    if (kmaxCapped && (error > std::max(precision, std::abs(precision * value))))
-      LOGWARN(OSS() << "Warning! The pointwise CDF summation stopped after " << k << " blocks without reaching the requested precision=" << precision << ". Tail quantities may be inaccurate.");
     k *= 2;
-  }
+  } // while
+  // Warn if the summation stopped on the block limit without reaching the
+  // requested precision: tail quantities may be noticeably inaccurate
+  if (kmaxCapped && (error > std::max(precision, std::abs(precision * value))))
+    LOGWARN(OSS() << "Warning! The pointwise CDF summation stopped after " << k / 2 << " blocks without reaching the requested precision=" << precision << ". Tail quantities may be inaccurate.");
   // For extrem values of the argument, the computed value can be slightly outside of [0,1]. Truncate it.
   return SpecFunc::Clip01(value);
 }
