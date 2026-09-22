@@ -153,7 +153,7 @@ polynomials of the vector space:
     \bigotimes_{i = 1}^\inputDim \mathcal{P}_{2 n_i - 1}^{(1)}.
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GaussLegendre-DefaultMarginalIntegrationPointsNumber`` (``UnsignedInteger``, default: ``64``): default number of integration points used on each marginal by the Gauss-Legendre quadrature
 
