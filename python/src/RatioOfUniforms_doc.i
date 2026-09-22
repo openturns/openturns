@@ -150,7 +150,7 @@ The acceptance ratio of the rejection algorithm is defined by:
 It is computed by the *initialize* method: if :math:`c=1`, the rate is computed by :eq:`acceptRatio`.
 If not, it is estimated as :eq:`acceptRatioEstimate`.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - *RatioOfUniforms-OptimizationAlgorithm*: the optimization algorithm used to compute the bounding box of
   :math:`\tilde{A}_{f,r}`,

@@ -85,7 +85,7 @@ epsilon : float, optional
 
 Notes
 -----
-The following :class:`openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - "Kent-OrthogonalityThreshold": relative tolerance for the validation of the
   orthogonality of the basis matrix.
