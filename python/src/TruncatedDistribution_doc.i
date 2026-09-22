@@ -71,7 +71,7 @@ Draw a sample:
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``TruncatedDistribution-DefaultThresholdRealization`` (``Scalar``, default: ``0.5``)
 )RAW"

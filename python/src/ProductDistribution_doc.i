@@ -56,7 +56,7 @@ Draw a sample:
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``ProductDistribution-LargeCharacteristicFunctionArgument`` (``Scalar``, default: ``10``)
 )RAW"
