@@ -19,7 +19,7 @@ where :math:`\mat{\tau}` is the sample Kendall tau matrix and :math:`\Hat{\nu}`
 maximizes the reduced likelihood associated to :class:`~openturns.Student` with
 parameters :math:`(\Hat{\nu}, \Hat{\mu}, \hat{\sigma}(\Hat{\nu}), \Hat{\mat{R}})`.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``StudentFactory-NuMax`` (``Scalar``, default: ``1000``): upper bound of the number of degrees of freedom :math:`\nu` in the maximum likelihood estimation.
 

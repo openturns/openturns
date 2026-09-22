@@ -25,7 +25,7 @@ Poisson
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``DiscreteCompoundDistribution-DefaultEpsilon`` (``Scalar``, default: ``1e-12``): tolerance used to truncate
   the sum defining the compound distribution when computing its probabilities by discrete Fourier transform.

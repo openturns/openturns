@@ -37,7 +37,7 @@ distZ : :class:`~openturns.Distribution`, univariate
     when :math:`(X,Y)` is a random vector with independent copula
     and respective marginal distributions `distX` and `distY`.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``ProductDistribution-LargeCharacteristicFunctionArgument`` (``Scalar``, default: ``10``): if the modulus of the argument of the characteristic function is larger than this threshold, an alternative algorithm is used.
 

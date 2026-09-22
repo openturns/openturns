@@ -7,7 +7,7 @@ The range is :math:`[\min(data), \max(data)]`.
 
 See the :meth:`~openturns.HistogramFactory.computeBandwidth` method for the bandwidth selection. 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``HistogramFactory-MaximumBinNumber`` (``UnsignedInteger``, default: ``1024``): maximum number of bins of the
   computed histogram, i.e. the maximal number of bins after merging.

@@ -41,7 +41,7 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = e^{- \left\| \vect{s}- \vect{t} \right\|_{1}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``AbsoluteExponential-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}` of the covariance function.
 

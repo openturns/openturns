@@ -41,7 +41,7 @@ SklarCopula
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``JointDistribution-UseGenericCovarianceAlgorithm`` (``Bool``, default: ``false``): whether to use the generic algorithm to compute the covariance matrix even when the core is a copula.
 
