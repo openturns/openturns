@@ -125,7 +125,6 @@ void ProcessSample::erase(const Indices & indices)
   if (sortedIndices[count - 1] >= size) throw OutOfBoundException(HERE) << "Index over size. Index=" << sortedIndices[count - 1] << " size=" << size;
   for (UnsignedInteger i = 1; i < count; ++i)
     if (sortedIndices[i] == sortedIndices[i - 1]) throw InvalidArgumentException(HERE) << "Error: the indices must be unique. Duplicate index=" << sortedIndices[i];
-  copyOnWrite();
   ProcessSample result(getMesh(), size - count, getDimension());
   UnsignedInteger kept = 0;
   UnsignedInteger position = 0;
