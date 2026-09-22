@@ -19,28 +19,55 @@ Notes
 The table below presents some properties of the available algorithms from dlib.
 Details on optimization methods are available on http://dlib.net/optimization.html
 
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| Algorithm        | Description         | Problem type support | Derivatives info  | Constraint support |
-+==================+=====================+======================+===================+====================+
-| cg               | Conjugate gradient  | General              | First derivative  | Bounds             |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| bfgs             | BFGS                | General              | First derivative  | Bounds             |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| lbfgs            | Limited memory BFGS | General              | First derivative  | Bounds             |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| newton           | Newton              | General              | First and second  | Bounds             |
-|                  |                     |                      | derivatives       |                    |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| global           | Global optimization | General              | No derivative     | Bounds needed      |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| least_squares    | Least squares (best | Least squares        | First derivative  | None               |
-|                  | for large residual) |                      |                   |                    |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| least_squares_lm | Least squares LM    | Least squares        | First derivative  | None               |
-|                  | (small residual)    |                      |                   |                    |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| trust_region     | Trust region        | General              | No derivative     | None               |
-+------------------+---------------------+----------------------+-------------------+--------------------+
+.. list-table::
+   :widths: 15 30 20 20 15
+   :header-rows: 1
+
+   * - Algorithm
+     - Description
+     - Problem type support
+     - Derivatives info
+     - Constraint support
+   * - cg
+     - Conjugate gradient
+     - General
+     - First derivative
+     - Bounds
+   * - bfgs
+     - BFGS
+     - General
+     - First derivative
+     - Bounds
+   * - lbfgs
+     - Limited memory BFGS
+     - General
+     - First derivative
+     - Bounds
+   * - newton
+     - Newton
+     - General
+     - First and second derivatives
+     - Bounds
+   * - global
+     - Global optimization
+     - General
+     - No derivative
+     - Bounds needed
+   * - least_squares
+     - Least squares (best for large residual)
+     - Least squares
+     - First derivative
+     - None
+   * - least_squares_lm
+     - Least squares LM (small residual)
+     - Least squares
+     - First derivative
+     - None
+   * - trust_region
+     - Trust region
+     - General
+     - No derivative
+     - None
 
 Derivatives are managed automatically by openturns, according to the available
 data (analytical formula or finite differences computation).

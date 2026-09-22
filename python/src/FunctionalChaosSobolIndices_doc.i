@@ -25,21 +25,38 @@ using the methods presented in :any:`sensitivity_sobol_from_pce`.
 The next table presents the map from the Sobol' index to the
 corresponding method.
 
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Single variable or group            | Sensitivity Index    | Notation                           | Method                                       |
-+=====================================+======================+====================================+==============================================+
-| One single variable :math:`i`       | First order          | :math:`S_i`                        | `getSobolIndex(i)`                           |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total                | :math:`S^T_i`                      | `getSobolTotalIndex(i)`                      |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Group interaction :math:`\bdu`      | First order          | :math:`S_\bdu`                     | `getSobolIndex(variableIndices)`             |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total interaction    | :math:`S^{T,i}_\bdu`               | `getSobolTotalIndex(variableIndices)`        |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Group closed :math:`\bdu`           | First order closed   | :math:`S_\bdu^{\operatorname{cl}}` | `getSobolGroupedIndex(variableIndices)`      |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total                | :math:`S^T_\bdu`                   | `getSobolGroupedTotalIndex(variableIndices)` |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+.. list-table::
+   :widths: 30 20 20 30
+   :header-rows: 1
+
+   * - Single variable or group
+     - Sensitivity Index
+     - Notation
+     - Method
+   * - One single variable :math:`i`
+     - First order
+     - :math:`S_i`
+     - `getSobolIndex(i)`
+   * -
+     - Total
+     - :math:`S^T_i`
+     - `getSobolTotalIndex(i)`
+   * - Group interaction :math:`\bdu`
+     - First order
+     - :math:`S_\bdu`
+     - `getSobolIndex(variableIndices)`
+   * -
+     - Total interaction
+     - :math:`S^{T,i}_\bdu`
+     - `getSobolTotalIndex(variableIndices)`
+   * - Group closed :math:`\bdu`
+     - First order closed
+     - :math:`S_\bdu^{\operatorname{cl}}`
+     - `getSobolGroupedIndex(variableIndices)`
+   * -
+     - Total
+     - :math:`S^T_\bdu`
+     - `getSobolGroupedTotalIndex(variableIndices)`
 
 **Table 1.** Sobol' indices and the corresponding methods.
 
