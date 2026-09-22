@@ -51,7 +51,7 @@ LowDiscrepancySequence. The sequences implemented are
 :class:`Sobol <openturns.SobolSequence>` sequences.
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``LowDiscrepancySequence-ScramblingSeed`` (``UnsignedInteger``, default: ``0``)
 

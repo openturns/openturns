@@ -29,7 +29,7 @@ It is therefore not strictly equivalent to the naive cross-validation method,
 which consists in re-fitting the Gaussian Process Regression model on each training subset.
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GaussianProcessRegressionCrossValidation-DefaultBlockSize`` (``UnsignedInteger``, default: ``100``)
 
