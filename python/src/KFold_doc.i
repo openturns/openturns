@@ -16,7 +16,7 @@ Notes
 KFold inherits from :class:`~openturns.FittingAlgorithm`.
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``KFold-DefaultK`` (``UnsignedInteger``, default: ``10``)
 

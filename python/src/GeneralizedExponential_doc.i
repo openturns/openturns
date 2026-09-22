@@ -46,7 +46,7 @@ The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GeneralizedExponential-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}` of the covariance function.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GeneralizedExponential-DefaultTheta`` (``Scalar``, default: ``1``)
 
