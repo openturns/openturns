@@ -55,7 +55,7 @@ the more significant the coefficient.
 
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``LinearModelTest-DefaultLevel`` (``Scalar``, default: ``0.05``): default significance level of the linear model tests
 
@@ -364,7 +364,7 @@ The p-value is computed using a normal approximation based on the mean and varia
 Durbin-Watson test statistic. If the binary quality measure is false, then the
 given autocorrelation hypothesis can be rejected with respect to the given level.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``LinearModelTest-DefaultDurbinWatsonHypothesis`` (``String``, default: ``Equal``): default alternative hypothesis of the Durbin-Watson test. The possible values are ``Equal``, ``Less`` and ``Greater``
 

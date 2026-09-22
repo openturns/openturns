@@ -110,7 +110,7 @@ result : :class:`~openturns.GaussianProcessRegressionResult`
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GaussianProcessRegressionCrossValidation-DefaultBlockSize`` (``UnsignedInteger``, default: ``100``)"
 

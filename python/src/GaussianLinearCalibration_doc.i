@@ -150,7 +150,7 @@ name : str
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GaussianLinearCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem of the Gaussian linear calibration. The possible values are ``SVD``, ``Cholesky`` and ``QR``
 

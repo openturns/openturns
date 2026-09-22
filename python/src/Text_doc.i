@@ -73,7 +73,7 @@ isValid : bool
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``Text-DefaultTextSize`` (``Scalar``, default: ``0.75``)"
 

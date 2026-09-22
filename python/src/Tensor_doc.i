@@ -69,7 +69,7 @@ sheet #2
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``Tensor-size-visible-in-str-from`` (``UnsignedInteger``, default: ``5``)
 )RAW"

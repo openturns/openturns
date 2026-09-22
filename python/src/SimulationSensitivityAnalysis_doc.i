@@ -65,7 +65,7 @@ Be careful: this notion is only valid for :class:`~openturns.MonteCarloExperimen
 :class:`~openturns.LHSExperiment` sampling as the mean is evaluated from the equation
 :eq:`importance_factor` (only uniform weights over the realizations
 :math:`\vect{X}_i`).
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``SimulationSensitivityAnalysis-DefaultSampleMargin`` (``UnsignedInteger``, default: ``400``): default margin, in number of points, of the sample used to compute the simulation sensitivity indices
 

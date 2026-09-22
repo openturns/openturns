@@ -29,7 +29,7 @@ The gaussian processes may have a trend: in that case, the Gaussian
 process is the sum of the trend function
 :math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean Gaussian process.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``GaussianProcess-GibbsMaximumIteration`` (``UnsignedInteger``, default: ``100``)
 

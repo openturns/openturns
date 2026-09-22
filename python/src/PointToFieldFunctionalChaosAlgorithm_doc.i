@@ -125,7 +125,7 @@ than on all output variables at once (at the price of increased chaos decomposit
 which then makes sensitivity analysis possible for each output variable
 or group of output variables.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``FieldFunctionalChaosAlgorithm-DefaultRecompress`` (``Bool``, default: ``false``)
 

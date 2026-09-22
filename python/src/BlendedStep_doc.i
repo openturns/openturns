@@ -57,7 +57,7 @@ eta : sequence of positive float
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``BlendedStep-DefaultEta`` (``Scalar``, default: ``1.0``): default value of the :math:`\eta` parameter of the blended step)RAW"
 

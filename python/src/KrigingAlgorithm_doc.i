@@ -67,7 +67,7 @@ with :func:`setNoise()`:
 .. math:: \hat{\vect{y}}_k = \vect{y}_k + \epsilon_k, \epsilon_k \sim \mathcal{N}(0, \tau_k^2)
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``KrigingAlgorithm-LinearAlgebra`` (``String``, default: ``LAPACK``): name of the linear algebra method used to solve the kriging equations. The possible values are ``LAPACK`` and ``HMAT``
 
