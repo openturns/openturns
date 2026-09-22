@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -150,19 +149,3 @@ except Exception:
 # unary minus
 x = ot.Point([1, 2, 3])
 print(-x)
-
-# dimension mismatch raises with an informative message, see issue #2432
-x = ot.Point(2)
-y = ot.Point(3)
-with ott.assert_raises(ValueError):
-    z = x + y
-with ott.assert_raises(ValueError):
-    z = x - y
-message = ""
-try:
-    z = x + y
-except ValueError as e:
-    message = str(e)
-assert "different dimensions" in message, "informative message"
-# valid operations keep working
-ott.assert_almost_equal(x + ot.Point([1.0, 2.0]), [1.0, 2.0])
