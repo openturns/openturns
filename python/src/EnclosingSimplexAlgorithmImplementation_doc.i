@@ -46,7 +46,7 @@ here is how the derived class is selected:
   :class:`~openturns.BoundingVolumeHierarchy` algorithm is chosen, otherwise
   it is :class:`~openturns.NaiveEnclosingSimplex`.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``EnclosingSimplexAlgorithm-BarycentricCoordinatesEpsilon`` (``Scalar``, default: ``1e-12``)
 - ``EnclosingSimplexAlgorithm-LargeDimension`` (``UnsignedInteger``, default: ``5``)

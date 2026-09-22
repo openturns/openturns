@@ -57,7 +57,7 @@ and back
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``ComplexTensor-size-visible-in-str-from`` (``UnsignedInteger``, default: ``6``)
 )RAW"

@@ -3,7 +3,7 @@ R"RAW(Base class.
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Genz-LowDiscrepancySequence`` (``String``, default: ``SobolSequence``)
 - ``Genz-DefaultSampleSize`` (``UnsignedInteger``, default: ``1048576``)

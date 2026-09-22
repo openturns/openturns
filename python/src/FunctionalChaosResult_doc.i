@@ -67,7 +67,7 @@ This structure is created by the method `run()` of
 :class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the 
 `getResult()` method.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``FunctionalChaosResult-PrintColumnWidth`` (``UnsignedInteger``, default: ``15``)
 - ``FunctionalChaosResult-PrintEllipsisSize`` (``UnsignedInteger``, default: ``3``)

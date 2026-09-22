@@ -19,7 +19,7 @@ Notes
 -----
 This class is a particular case  of the general class :class:`~openturns.FieldToPointFunction`. Thus it doesn't implement the  gradient nor the hessian.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``FieldToPointConnection-BlockSize`` (``UnsignedInteger``, default: ``256``)
 )RAW"

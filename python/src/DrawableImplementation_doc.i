@@ -26,7 +26,7 @@ The different drawable elements are:
 
 - :class:`~openturns.Text`
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Drawable-AlternativePattern`` (``String``, default: ``S``)
 - ``Drawable-DefaultFillStyle`` (``String``, default: ``solid``)

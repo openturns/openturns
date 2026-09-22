@@ -92,7 +92,7 @@ The probability :math:`P_f` is computed from all the  :math:`q_i` probabilities.
 
     \widehat{P}_{f,DS} = \frac{1}{N} \sum_{i=1}^N q_i
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``DirectionalSampling-MeanContributionIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``)
 

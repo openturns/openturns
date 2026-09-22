@@ -100,7 +100,7 @@ key of the :class:`~openturns.ResourceMap` is used.
   :class:`~openturns.KFold` criteria is used.
 - Otherwise, an exception is produced.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``FunctionalChaosAlgorithm-DefaultMaximumResidual`` (``Scalar``, default: ``1e-06``)
 

@@ -16,7 +16,7 @@ result : float
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SpecFunc-MaximumIteration`` (``UnsignedInteger``, default: ``1000``)
 - ``SpecFunc-Precision`` (``Scalar``, default: ``2e-16``)

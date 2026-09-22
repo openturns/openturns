@@ -21,7 +21,7 @@ A Domain object can be created through its derived classes:
 
 - :class:`~openturns.DomainDifference`
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Domain-SmallVolume`` (``Scalar``, default: ``1e-12``)
 - ``Domain-DefaultInColor`` (``String``, default: ``prettyOrange``)

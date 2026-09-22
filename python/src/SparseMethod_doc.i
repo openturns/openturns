@@ -38,7 +38,7 @@ Examples
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SparseMethod-ErrorThreshold`` (``Scalar``, default: ``0.001``)
 - ``SparseMethod-MaximumErrorFactor`` (``Scalar``, default: ``2``)"

@@ -15,7 +15,7 @@ We use the following estimator:
       \mbox{The resolution is done using Brent's method.}
     \end{eqnarray*}
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``PolyaFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``)
 - ``PolyaFactory-MaximumIteration`` (``UnsignedInteger``, default: ``50``)

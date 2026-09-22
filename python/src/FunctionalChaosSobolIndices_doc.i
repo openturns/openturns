@@ -51,7 +51,7 @@ This threshold can be customized using the
 `FunctionalChaosSobolIndices-VariancePartThreshold` key of the
 :class:`~openturns.ResourceMap`.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``FunctionalChaosSobolIndices-MaximumNumberOfOutput`` (``UnsignedInteger``, default: ``1000``)
 - ``FunctionalChaosSobolIndices-PrintColumnWidth`` (``UnsignedInteger``, default: ``15``)
