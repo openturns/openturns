@@ -11,7 +11,7 @@ The parameter :math:`\Hat{\theta}_n` is solution of:
 
     \displaystyle \Hat{\tau}_n = \displaystyle \frac{3\theta-2}{3\theta} - \frac{2(1-\theta)^2\ln(1-\theta)}{3\theta^2}
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``AliMikhailHaqCopulaFactory-ThetaEpsilon`` (``Scalar``, default: ``1e-14``): tolerance used to solve the non linear equation defining :math:`\Hat{\theta}_n`.
 

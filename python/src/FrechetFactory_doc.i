@@ -16,7 +16,7 @@ The parameters are estimated by likelihood maximization. The starting point is o
 
 with :math:`\gamma \simeq 0.57721` as Euler's constant (not to be confused with the location parameter of the Frechet distribution!), :math:`x_{(1)}=\min_{i=1,\dots,n}x_i` and :math:`y_i=x_i-\Hat{\gamma}`.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``FrechetFactory-BoundMargin`` (``Scalar``, default: ``10``): margin used to define the lower and upper bounds
   of the likelihood maximization from the point estimates.

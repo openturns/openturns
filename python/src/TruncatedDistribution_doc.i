@@ -56,7 +56,7 @@ threshold : float, :math:`\tau \in [0, 1]`
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``TruncatedDistribution-DefaultThresholdRealization`` (``Scalar``, default: ``0.5``): default value of the threshold :math:`\tau` used to choose between the rejection method and the CDF inversion.
 
