@@ -60,11 +60,6 @@ function : :class:`~openturns.Function`, :math:`\Rset^n \rightarrow \Rset^p`
 antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`n`-dimensional
     The distribution of :math:`X`.
 
-Returns
--------
-distY : :class:`~openturns.Distribution`, dimension :math:`p`
-    The distribution of :math:`Y`.
-
 Notes
 -----
 The tolerance on the residual norm used to accept a point as a preimage of

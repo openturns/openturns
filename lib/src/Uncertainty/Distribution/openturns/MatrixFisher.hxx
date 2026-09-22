@@ -35,7 +35,7 @@ public:
 
   MatrixFisher();
 
-  MatrixFisher(const SquareMatrix & F);
+  explicit MatrixFisher(const SquareMatrix & F);
 
   using DistributionImplementation::operator ==;
   Bool operator ==(const MatrixFisher & other) const;

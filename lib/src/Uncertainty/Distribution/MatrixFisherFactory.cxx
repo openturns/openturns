@@ -142,6 +142,26 @@ MatrixFisher MatrixFisherFactory::buildAsMatrixFisher(const Sample & sample) con
     concentration[i] = std::min(concentration[i], maximumConcentration);
   }
 
+  // Extremely concentrated sample: every inverted concentration already
+  // saturates the maximum, so the moment equations have no better finite
+  // solution than the maximum concentration along the polar mode. Return it
+  // directly, as the damped Newton iteration below could only stall at the
+  // maximum while paying one full quadrature per candidate evaluation.
+  Bool saturated = true;
+  for (UnsignedInteger i = 0; i < 3; ++i)
+    if (concentration[i] < maximumConcentration) saturated = false;
+  if (saturated)
+  {
+    SquareMatrix F(3);
+    for (UnsignedInteger i = 0; i < 3; ++i)
+      F(i, i) = maximumConcentration;
+    F = mode * F;
+    MatrixFisher result(F);
+    result.setDescription(sample.getDescription());
+    adaptToKnownParameter(sample, &result);
+    return result;
+  }
+
   // Diagonal moments of a candidate: (mode^T E[R])_ii through the mean matrix
   auto diagonalMoments = [&](const Point & f)
   {
@@ -163,30 +183,48 @@ MatrixFisher MatrixFisherFactory::buildAsMatrixFisher(const Sample & sample) con
 
   const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("MatrixFisherFactory-MaximumIterations");
   const Scalar residualPrecision = std::sqrt(SpecFunc::Precision);
+  // Damped Newton-Raphson with Broyden rank-one Jacobian updates: each
+  // candidate evaluation pays one full quadrature, so the finite-difference
+  // Jacobian is evaluated once, then refreshed from the secant equation,
+  // with a fresh finite-difference evaluation on stall.
+  Point moments(3);
+  Point residual(3);
+  Scalar residualNorm = 0.0;
+  Matrix jacobian(3, 3);
+  Bool jacobianIsCurrent = false;
+  Bool jacobianFromDifferences = false;
+  Bool momentsAreCurrent = false;
   for (UnsignedInteger iteration = 0; iteration < maximumIterations; ++iteration)
   {
-    const Point moments = diagonalMoments(concentration);
-    Point residual(3);
-    Scalar residualNorm = 0.0;
-    for (UnsignedInteger i = 0; i < 3; ++i)
+    if (!momentsAreCurrent)
     {
-      residual[i] = moments[i] - s[i];
-      residualNorm = std::max(residualNorm, std::abs(residual[i]));
-    }
-    if (residualNorm <= residualPrecision) break;
-    // Jacobian by central finite differences
-    Matrix jacobian(3, 3);
-    for (UnsignedInteger j = 0; j < 3; ++j)
-    {
-      const Scalar step = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, std::abs(concentration[j]));
-      Point fPlus(concentration);
-      Point fMinus(concentration);
-      fPlus[j] += step;
-      fMinus[j] -= step;
-      const Point momentsPlus = diagonalMoments(fPlus);
-      const Point momentsMinus = diagonalMoments(fMinus);
+      moments = diagonalMoments(concentration);
+      residualNorm = 0.0;
       for (UnsignedInteger i = 0; i < 3; ++i)
-        jacobian(i, j) = (momentsPlus[i] - momentsMinus[i]) / (2.0 * step);
+      {
+        residual[i] = moments[i] - s[i];
+        residualNorm = std::max(residualNorm, std::abs(residual[i]));
+      }
+    }
+    momentsAreCurrent = false;
+    if (residualNorm <= residualPrecision) break;
+    if (!jacobianIsCurrent)
+    {
+      // Jacobian by central finite differences
+      for (UnsignedInteger j = 0; j < 3; ++j)
+      {
+        const Scalar step = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, std::abs(concentration[j]));
+        Point fPlus(concentration);
+        Point fMinus(concentration);
+        fPlus[j] += step;
+        fMinus[j] -= step;
+        const Point momentsPlus = diagonalMoments(fPlus);
+        const Point momentsMinus = diagonalMoments(fMinus);
+        for (UnsignedInteger i = 0; i < 3; ++i)
+          jacobian(i, j) = (momentsPlus[i] - momentsMinus[i]) / (2.0 * step);
+      }
+      jacobianIsCurrent = true;
+      jacobianFromDifferences = true;
     }
     Point negativeResidual(3);
     for (UnsignedInteger i = 0; i < 3; ++i)
@@ -195,24 +233,53 @@ MatrixFisher MatrixFisherFactory::buildAsMatrixFisher(const Sample & sample) con
     // Damped update within the feasible concentrations, stop when stalled
     Scalar damping = 1.0;
     Bool improved = false;
+    Point trial(concentration);
+    Point trialMoments(3);
+    Scalar trialNorm = residualNorm;
     for (UnsignedInteger halving = 0; halving < maximumIterations; ++halving)
     {
-      Point trial(concentration);
       for (UnsignedInteger i = 0; i < 3; ++i)
         trial[i] = std::min(maximumConcentration, concentration[i] + damping * stepDirection[i]);
-      const Point trialMoments = diagonalMoments(trial);
-      Scalar trialNorm = 0.0;
+      trialMoments = diagonalMoments(trial);
+      trialNorm = 0.0;
       for (UnsignedInteger i = 0; i < 3; ++i)
         trialNorm = std::max(trialNorm, std::abs(trialMoments[i] - s[i]));
       if (trialNorm < residualNorm)
       {
-        concentration = trial;
         improved = true;
         break;
       }
       damping *= 0.5;
     }
-    if (!improved) break;
+    if (!improved)
+    {
+      // On stall, retry once with a fresh finite-difference Jacobian
+      if (jacobianFromDifferences) break;
+      jacobianIsCurrent = false;
+      momentsAreCurrent = true;
+      continue;
+    }
+    // Broyden rank-one update of the Jacobian from the secant equation
+    const Point secantStep(trial - concentration);
+    const Point secantChange(trialMoments - moments);
+    if (secantStep.dot(secantStep) > SpecFunc::ScalarEpsilon)
+    {
+      Point predictedChange(3, 0.0);
+      for (UnsignedInteger i = 0; i < 3; ++i)
+        for (UnsignedInteger j = 0; j < 3; ++j)
+          predictedChange[i] += jacobian(i, j) * secantStep[j];
+      const Scalar curvature = secantStep.dot(secantStep);
+      for (UnsignedInteger i = 0; i < 3; ++i)
+        for (UnsignedInteger j = 0; j < 3; ++j)
+          jacobian(i, j) += (secantChange[i] - predictedChange[i]) * secantStep[j] / curvature;
+      jacobianFromDifferences = false;
+    }
+    concentration = trial;
+    moments = trialMoments;
+    residualNorm = trialNorm;
+    for (UnsignedInteger i = 0; i < 3; ++i)
+      residual[i] = moments[i] - s[i];
+    momentsAreCurrent = true;
   }
 
   // Canonical form: sort the concentrations in descending order, permuting

@@ -27,7 +27,7 @@ Examples
 >>> print(manifold.getIntrinsicDimension())
 2
 >>> print(manifold.getVolume())
-12.566370614359172...
+12.5663706...
 
 See also
 --------

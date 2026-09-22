@@ -48,18 +48,12 @@ The case :math:`p < n` (co-area formula) is not implemented yet.
 
 Parameters
 ----------
-antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`n`-dimensional
+antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`n`-dimensional, optional
     The distribution of :math:`X`, whose support must be the reference domain.
+    When only the field is given, the antecedent defaults to the uniform
+    distribution over the mesh of the field.
 values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^p`
     The P1 field defining the piecewise-affine map.
-mesh : :class:`~openturns.Mesh`
-    When the field is given alone, the antecedent is the uniform
-    distribution over the mesh of the field.
-
-Returns
--------
-distY : :class:`~openturns.Distribution`, dimension :math:`p`
-    The distribution of :math:`Y`.
 
 Notes
 -----

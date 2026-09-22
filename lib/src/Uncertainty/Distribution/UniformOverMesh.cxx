@@ -1,4 +1,4 @@
-//                                               -*- C++
+//                                               -*- C++ -*-
 /**
  *  @brief The UniformOverMesh distribution
  *
