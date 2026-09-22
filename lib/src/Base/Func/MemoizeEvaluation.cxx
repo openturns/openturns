@@ -53,6 +53,8 @@ MemoizeEvaluation::MemoizeEvaluation()
   , outputStrategy_(Full())
   , p_cache_(new CacheType)
 {
+  inputStrategy_.setDimension(evaluation_.getInputDimension());
+  outputStrategy_.setDimension(evaluation_.getOutputDimension());
   // We disable the cache by default
   p_cache_->disable();
 }
@@ -201,7 +203,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         }
         p_cache_->merge(tempCache);
         const Indices okIndices(failedIndices.complement(size));
-        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, okSample) << exc.what();
+        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, inSample, okSample) << exc.what();
       }
     }
     // Fill remaining output values

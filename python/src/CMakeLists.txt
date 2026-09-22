@@ -557,6 +557,7 @@ ot_add_python_module(experimental experimental_module.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      MultivariateUniform.i MultivariateUniform_doc.i
                      MultivariateUniformFactory.i MultivariateUniformFactory_doc.i
+                     PiecewiseLinearDistribution.i PiecewiseLinearDistribution_doc.i
                      TruncatedDistributionFactory.i TruncatedDistributionFactory_doc.i
                      SquaredNormalFactory.i SquaredNormalFactory_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
@@ -1056,6 +1057,8 @@ install (DIRECTORY usecases DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturn
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
+set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
+separate_arguments (SPHINX_FLAGS)
 if (SPHINX_FOUND)
 
   # exclude examples according to available dependencies
@@ -1162,9 +1165,6 @@ if (SPHINX_FOUND)
       list (APPEND sphinx_clones ${sphinx_clone})
     endif ()
   endforeach ()
-
-  set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
-  separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format
   foreach (format ${doc_formats})

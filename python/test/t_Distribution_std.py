@@ -118,3 +118,14 @@ ott.assert_almost_equal(thresholdsQMC, thresholds, 0.0, 1e-4)
 # invalid probability raises
 with ott.assert_raises(TypeError):
     distribution.computeMinimumVolumeLevelSetCollectionWithThreshold([0.5, 1.5])
+
+# DistributionCollection slicing
+dc = ot.DistributionCollection([ot.Normal(), ot.Uniform(), ot.Exponential(), ot.Gamma(2.0, 3.0)])
+sliced_dc = dc[1:3]
+assert isinstance(sliced_dc, ot.DistributionCollection)
+assert sliced_dc.getSize() == 2
+assert sliced_dc[0].getMean()[0] == ot.Uniform().getMean()[0]
+seq_dc = dc[[3, 0]]
+assert seq_dc.getSize() == 2
+dc[0:2] = ot.DistributionCollection([ot.Triangular(), ot.Beta(2.0, 2.0, 0.0, 1.0)])
+assert dc.getSize() == 4

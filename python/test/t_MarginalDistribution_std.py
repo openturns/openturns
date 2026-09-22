@@ -104,7 +104,6 @@ for nDistribution in range(len(coll)):
     validation = ott.DistributionValidation(distribution)
     validation.skipDependenceMeasures()  # slow
     validation.skipConditional()  # TRACE enabled, avoid LOGTRACE in output
-    validation.skipTransformation()  # FIXME
     validation.run()
 
 # Test computeSequentialConditionalQuantile wrapping BlockIndependentCopula

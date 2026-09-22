@@ -28,6 +28,9 @@ namespace std {
   catch (const OT::InvalidArgumentException & ex) {
     SWIG_exception(SWIG_TypeError, ex.__repr__().c_str());
   }
+  catch (const OT::InvalidDimensionException & ex) {
+    SWIG_exception(SWIG_ValueError, ex.__repr__().c_str());
+  }
   catch (const OT::OutOfBoundException & ex) {
     SWIG_exception(SWIG_IndexError, ex.__repr__().c_str());
   }
