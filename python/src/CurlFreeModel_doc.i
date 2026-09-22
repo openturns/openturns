@@ -9,20 +9,27 @@ This class builds a matrix-valued curl-free covariance model from a scalar
 covariance model :math:`C`, as described in [scheuerer2012]_.
 
 Let :math:`C: \Rset^d \times \Rset^d \rightarrow \Rset` be a scalar covariance
-model. The curl-free covariance model is defined as:
+model, and let :math:`\mat{H}(\vect{s}, \vect{t})` be the matrix of mixed
+second derivatives:
 
 .. math::
 
-    \mat{C}_{\mathrm{curl}}(\vect{s}, \vect{t})_{ij}
-        = \frac{\partial^2 C(\vect{s}, \vect{t})}{\partial s_i \partial t_j},
+    H_{ij}(\vect{s}, \vect{t}) = \frac{\partial^2 C(\vect{s}, \vect{t})}{\partial s_i \partial t_j},
         \qquad \forall i,j \in \{1, \dots, d\}
 
-For a stationary model :math:`C(\vect{s}, \vect{t}) = \phi(\vect{s} - \vect{t})`,
-this becomes:
+The curl-free covariance model is defined as:
 
 .. math::
 
-    \mat{C}_{\mathrm{curl}}(\vect{\tau})_{ij}
+    \mat{C}_{\mathrm{curl}}(\vect{s}, \vect{t})
+        = \mat{H}(\vect{s}, \vect{t})
+
+For a stationary model :math:`C(\vect{s}, \vect{t}) = \phi(\vect{s} - \vect{t})`,
+the mixed second derivatives become:
+
+.. math::
+
+    H_{ij}(\vect{\tau})
         = - \frac{\partial^2 \phi(\vect{\tau})}{\partial \tau_i \partial \tau_j}
 
 The resulting model has input and output dimension :math:`d`. If the

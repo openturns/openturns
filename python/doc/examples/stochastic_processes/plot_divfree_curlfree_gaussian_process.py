@@ -20,8 +20,6 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 
-# sphinx_gallery_thumbnail_number = 2
-
 # %%
 # Build the covariance models
 # ---------------------------
@@ -59,7 +57,7 @@ print("Number of vertices:", mesh.getVerticesNumber())
 
 # %%
 # Sample realizations of the two Gaussian processes
-# =================================================
+# -------------------------------------------------
 #
 # The sampling uses the exact dense factorization of the covariance matrix on
 # the 1764 mesh vertices, so the realization is the exact restriction of a
@@ -112,10 +110,11 @@ view = otv.View(grid)
 # Verify the divergence-free and curl-free properties
 # ---------------------------------------------------
 #
-# The divergence :math:`\mathrm{div}\ \mathbf{u} = \partial u_1/\partial x_0 +
-# \partial u_2/\partial x_1` and the (scalar) curl
+# The divergence and the (scalar) curl of each field,
+# :math:`\mathrm{div}\ \mathbf{u} = \partial u_1/\partial x_0 +
+# \partial u_2/\partial x_1` and
 # :math:`\mathrm{curl}\ \mathbf{u} = \partial u_2/\partial x_0 -
-# \partial u_1/\partial x_1` of each field are estimated by central finite
+# \partial u_1/\partial x_1`, are estimated by central finite
 # differences on the regular grid. For a divergence-free field, the finite
 # difference estimate of the divergence should be much smaller than the one of
 # the curl, and conversely for a curl-free field.

@@ -498,5 +498,4 @@ for point in extreme_points:
         for j in range(2):
             assert math.isfinite(val_extreme_tau[i, j])
 
->>>>>>> a7db2fc3f (CurlFreeModel|DivFreeModel: keep finite-difference endpoints representable)
 print("All tests passed!")
