@@ -55,7 +55,7 @@ Notes
 If :math:`\inputDim = 1` and the ``KernelMixture-EnableInterpolation`` ResourceMap key is set to ``True`` (it is ``False`` by default),
 then the PDF and CDF of the kernel mixture are interpolated with :class:`PiecewiseHermiteEvaluation`.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``KernelMixture-EnableInterpolation`` (``Bool``, default: ``false``): whether the PDF and the CDF are interpolated (only in the dimension :math:`\inputDim=1` case).
 - ``KernelMixture-PDFCDFDiscretization`` (``UnsignedInteger``, default: ``1000``): number of points of the discretization used by the interpolation.

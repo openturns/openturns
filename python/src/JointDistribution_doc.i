@@ -62,7 +62,7 @@ Use a non-copula core:
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``JointDistribution-UseGenericCovarianceAlgorithm`` (``Bool``, default: ``false``)
 )RAW"
