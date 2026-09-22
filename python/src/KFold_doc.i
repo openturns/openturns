@@ -53,7 +53,7 @@ k : int
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``KFold-DefaultK`` (``UnsignedInteger``, default: ``10``)"
 

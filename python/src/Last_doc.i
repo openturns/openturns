@@ -45,7 +45,7 @@ N : int
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``Last-DefaultMaximumSize`` (``UnsignedInteger``, default: ``65536``): maximum number of points kept in the cache of the simulation
 

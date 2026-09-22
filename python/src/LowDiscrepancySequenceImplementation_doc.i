@@ -195,7 +195,7 @@ state : int
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``LowDiscrepancySequence-ScramblingSeed`` (``UnsignedInteger``, default: ``0``)
 

@@ -53,7 +53,7 @@ is constant and is estimated with the unbiased variance estimator.
 Please read :any:`code_calibration` for more details.
 
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``LinearLeastSquaresCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem of the linear least squares calibration. The possible values are ``SVD``, ``Cholesky`` and ``QR``
 

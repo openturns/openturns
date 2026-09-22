@@ -57,7 +57,7 @@ rhoBeg : float
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``Cobyla-DefaultRhoBeg`` (``Scalar``, default: ``0.1``): default value of the initial trust region radius of the Cobyla algorithm"
 

@@ -206,7 +206,7 @@ coll : sequence
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``Collection-size-visible-in-str-from`` (``UnsignedInteger``, default: ``10``)"
 

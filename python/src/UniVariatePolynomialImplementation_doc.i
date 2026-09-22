@@ -34,7 +34,7 @@ Addition, subtraction and multiplication of univariate polynomials:
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``UniVariatePolynomial-SmallDegree`` (``UnsignedInteger``, default: ``400``)"
 

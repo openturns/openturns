@@ -29,7 +29,7 @@ Examples
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``HaselgroveSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)"
 

@@ -19,7 +19,7 @@ Notes
 -----
 This class only implements the evaluation operator and does not propose any implementation for the gradient nor the hessian of the composition.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``PointToPointEvaluation-BlockSize`` (``UnsignedInteger``, default: ``256``)
 )RAW"

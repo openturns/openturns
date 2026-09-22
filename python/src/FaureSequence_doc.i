@@ -19,7 +19,7 @@ Examples
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``FaureSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)"
 
