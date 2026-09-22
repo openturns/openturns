@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import os
 
 ot.TESTPREAMBLE()
 
@@ -52,3 +53,21 @@ for i in range(samplingGrid.getN()):
     print("frequency= %g myModel=" % cleanScalar(frequency))
     print(myModel(frequency).clean(1e-6), ", referenceModel=")
     print(referenceModel(frequency).clean(1e-6))
+
+# Save/load roundtrip: the frequency grid must survive
+if ot.PlatformInfo.HasFeature("libxml2"):
+    fname = "study_spectral.xml"
+    study = ot.Study(fname)
+    study.setStorageManager(ot.XMLStorageManager(fname))
+    study.add("myModel", myModel)
+    study.save()
+    study = ot.Study(fname)
+    study.setStorageManager(ot.XMLStorageManager(fname))
+    study.load()
+    loadedModel = ot.UserDefinedSpectralModel()
+    study.fillObject("myModel", loadedModel)
+    loadedGrid = loadedModel.getFrequencyGrid()
+    assert loadedGrid.getN() == frequencyGrid.getN()
+    assert loadedGrid.getStart() == frequencyGrid.getStart()
+    assert loadedGrid.getStep() == frequencyGrid.getStep()
+    os.remove(fname)
