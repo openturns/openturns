@@ -22,7 +22,7 @@ The possibility of extrapolation can be changed using :meth:`setEnableExtrapolat
 If this parameter is set to *False*, an error message is retrieved for evaluations outside the design of experiments.
 
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``PiecewiseHermiteEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
 - ``PiecewiseHermiteEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)

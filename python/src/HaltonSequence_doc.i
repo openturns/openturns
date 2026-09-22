@@ -13,7 +13,7 @@ scrambling : str
 
 Notes
 -----
-This class uses the following entries of :class:`~openturns.ResourceMap`:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``HaltonSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)
 - ``HaltonSequence-Scrambling`` (``String``, default: ``NONE``)
