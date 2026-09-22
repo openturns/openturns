@@ -26,13 +26,11 @@ window : :class:`~openturns.FilteringWindows`
 
     By default, the filtering window model is the Hann model.
 blockNumber : int
-    Number of blocks. 
-
-    By default, *blockNumber=1*.
+    Number of blocks. The default is 1.
 overlap : float, :math:`0 \leq overlap \leq 0.5`.
     Overlap rate parameter of the segments of the time series.
 
-    By default, *overlap=0.5*.
+    The default is 0.5.
 
 Examples
 --------
