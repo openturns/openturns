@@ -516,36 +516,37 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
     for (UnsignedInteger k = 1; k < dimension; ++k) cdf *= distributionCollection_[k].computeCDF(point[k]);
     return cdf;
   }
-  // Indices of the components to take into account in the computation
-  Indices toKeep(0);
-  Point reducedPoint(0);
+  // Cap the redundant components: if xK >= min(x_{K+1}, ub_K) the condition
+  // {XK <= xK} is implied by the remaining conditions and the order constraint,
+  // so xK can be replaced by min(x_{K+1}, ub_K) without changing the CDF value.
+  // This avoids marginalizing non-consecutive components, whose marginal is not
+  // a maximum entropy order statistics distribution.
+  Point cappedPoint(point);
   const Point lowerBound(getRange().getLowerBound());
   const Point upperBound(getRange().getUpperBound());
-  for (UnsignedInteger k = 0; k < dimension; ++ k)
+  for (UnsignedInteger k = dimension; k > 0; -- k)
   {
-    const Scalar xK = point[k];
-    // Early exit if one component is nonpositive
-    if (xK <= lowerBound[k]) return 0.0;
-    // Keep only the indices for which xK is in (xk_min, xk_max) and xK < xKp1
-    // Marginalize the others
-    const Scalar bound = k < dimension - 1 ? std::min(point[k + 1], upperBound[k]) : upperBound[k];
-    if (xK < bound)
+    if (cappedPoint[k - 1] <= lowerBound[k - 1]) return 0.0;
+    if (k < dimension)
     {
-      toKeep.add(k);
-      reducedPoint.add(xK);
+      const Scalar cap = std::min(cappedPoint[k], upperBound[k - 1]);
+      if (cappedPoint[k - 1] > cap) cappedPoint[k - 1] = cap;
     }
-  } // k
-  // If all the components are greater or equal to their marginal upper bound
-  if (toKeep.getSize() == 0)
-  {
-    return 1.0;
   }
-  // If one or more components (but not all) are greater or equal to their marginal upper bound compute a marginal CDF
-  if (toKeep.getSize() < dimension)
+  // Drop only the trailing components that are above their marginal upper bound:
+  // they correspond to a consecutive leading block, whose marginal is exact.
+  UnsignedInteger keptDimension = dimension;
+  while ((keptDimension > 0) && (cappedPoint[keptDimension - 1] >= upperBound[keptDimension - 1])) -- keptDimension;
+  if (keptDimension == 0) return 1.0;
+  if (keptDimension < dimension)
   {
-    const Scalar cdf = getMarginal(toKeep).computeCDF(reducedPoint);
-    return cdf;
+    Indices leadingBlock(keptDimension);
+    leadingBlock.fill();
+    Point reducedPoint(keptDimension);
+    for (UnsignedInteger k = 0; k < keptDimension; ++ k) reducedPoint[k] = cappedPoint[k];
+    return getMarginal(leadingBlock).computeCDF(reducedPoint);
   }
+  const Point & x = cappedPoint;
   // Else we have to do some work
   // Try to split the work into smaller pieces using potential block-independence
   const UnsignedInteger partitionSize = partition_.getSize();
@@ -559,8 +560,8 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
       Indices dependentBlockIndices(lastIndex - firstIndex);
       dependentBlockIndices.fill(firstIndex);
       const UnsignedInteger blockSize = dependentBlockIndices.getSize();
-      reducedPoint = Point(blockSize);
-      for (UnsignedInteger k = 0; k < blockSize; ++k) reducedPoint[k] = point[firstIndex + k];
+      Point reducedPoint(blockSize);
+      for (UnsignedInteger k = 0; k < blockSize; ++k) reducedPoint[k] = x[firstIndex + k];
       // The cdf is obtained by multiplying lower dimensional cdf, which are much more cheaper to compute than a full multidimensional integration
       const Distribution marginal(getMarginal(dependentBlockIndices));
       const Scalar blockCDF = marginal.computeCDF(reducedPoint);
@@ -571,7 +572,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
   }
 
   // Here we are in the full dependent case. Use Gauss-Legendre integration restricted to the support of the copula.
-  // We know that for each k, xk is in (xk_min, xk_max) and for k<dim, xk<xkp1
+  // At this stage x is nondecreasing and each component is in (xk_min, xk_max]
   Scalar cdf = 0.0;
 
   Point gaussWeights;
@@ -584,12 +585,12 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
   Indices indices(dimension, 0);
   Indices marginalIndices(dimension - 1);
   marginalIndices.fill();
-  const Scalar x = point[dimension - 1];
+  const Scalar xLast = x[dimension - 1];
   Distribution marginal(getMarginal(marginalIndices));
   for (UnsignedInteger linearIndex = 0; linearIndex < size; ++linearIndex)
   {
     Point node(dimension - 1);
-    const Scalar delta0 = 0.5 * (point[0] - lowerBound[0]);
+    const Scalar delta0 = 0.5 * (x[0] - lowerBound[0]);
     const UnsignedInteger index0 = indices[0];
     node[0] = lowerBound[0] + delta0 * (1.0 + gaussNodes[index0]);
     Scalar weight = delta0 * gaussWeights[index0];
@@ -597,11 +598,11 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
     {
       const UnsignedInteger indexJ = indices[j];
       const Scalar aJ = std::max(node[j - 1], distributionCollection_[j].getRange().getLowerBound()[0]);
-      const Scalar deltaJ = 0.5 * (point[j] - aJ);
+      const Scalar deltaJ = 0.5 * (x[j] - aJ);
       node[j] = aJ + deltaJ * (1.0 + gaussNodes[indexJ]);
       weight *= deltaJ * gaussWeights[indexJ];
     }
-    cdf += weight * marginal.computePDF(node) * computeConditionalCDF(x, node);
+    cdf += weight * marginal.computePDF(node) * computeConditionalCDF(xLast, node);
     /* Update the indices */
     ++indices[0];
     /* Propagate the remainders */
@@ -641,7 +642,11 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalPDF (const S
   // PDF(x|xKm1) = d(1-exp(-\int_{xKm1}^x\phi(s)ds)) / dx
   //             = -d(-\int_{xKm1}^x\phi(s)ds)/dx * exp(-\int_{xKm1}^x\phi(s)ds)
   //             = \phi(x) * exp(-\int_{xKm1}^x\phi(s)ds)
-  return distributionCollection_[k].computePDF(x) * computeExponentialFactor(k, xKm1, x) / (distributionCollection_[k - 1].computeCDF(xKm1) - distributionCollection_[k].computeCDF(xKm1));
+  const Scalar cdfKm1 = distributionCollection_[k - 1].computeCDF(x);
+  const Scalar cdfK = distributionCollection_[k].computeCDF(x);
+  const Scalar denominator = cdfKm1 - cdfK;
+  if (!(denominator > 0.0)) return 0.0;
+  return distributionCollection_[k].computePDF(x) * computeExponentialFactor(k, xKm1, x) / denominator;
 }
 
 
@@ -675,7 +680,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF (const S
   // If the conditioning component is greater than the argument the conditional CDF is zero
   if (!(xKm1 <= x))
   {
-    return 1.0;
+    return 0.0;
   }
   // If the conditioning component is outside of the (k-1)th marginal range
   const Scalar aKm1 = getRange().getLowerBound()[k - 1];

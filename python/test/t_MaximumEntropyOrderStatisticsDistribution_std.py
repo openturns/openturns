@@ -112,6 +112,16 @@ print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 
+# with Beta(i, n-i+1) marginals the distribution is the joint order statistics of a uniform sample
+collBeta = [ot.Beta(1.0, 3.0, 0.0, 1.0), ot.Beta(2.0, 2.0, 0.0, 1.0), ot.Beta(3.0, 1.0, 0.0, 1.0)]
+betaDist = ot.MaximumEntropyOrderStatisticsDistribution(collBeta, False)
+ott.assert_almost_equal(betaDist.computeConditionalCDF(0.5, [0.7]), 0.0)
+ott.assert_almost_equal(betaDist.computeConditionalPDF(0.5, [0.2]), 1.5625)
+ott.assert_almost_equal(
+    betaDist.computeCDF([0.2, 0.9, 0.5]), betaDist.computeCDF([0.2, 0.5, 0.5])
+)
+ott.assert_almost_equal(betaDist.computeCDF([0.2, 0.5, 0.8]), 0.242)
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
