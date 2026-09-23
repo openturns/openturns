@@ -885,6 +885,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Pagmo-nsga2-eta_c", 10.0);
   addAsScalar("Pagmo-nsga2-m", 0.01);
   addAsScalar("Pagmo-nsga2-eta_m", 50.0);
+  // nsga3
+  addAsScalar("Pagmo-nsga3-cr", 1.0);
+  addAsScalar("Pagmo-nsga3-eta_c", 30.0);
+  addAsScalar("Pagmo-nsga3-mut", 0.1);
+  addAsScalar("Pagmo-nsga3-eta_mut", 20.0);
+  addAsUnsignedInteger("Pagmo-nsga3-divisions", 12);
+  addAsUnsignedInteger("Pagmo-nsga3-divisions_inner", 0);
+  addAsBool("Pagmo-nsga3-random_mating", true);
   // moead
   addAsString("Pagmo-moead-weight_generation", "grid");
   addAsString("Pagmo-moead-decomposition", "tchebycheff");

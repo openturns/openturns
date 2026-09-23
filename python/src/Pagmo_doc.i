@@ -7,7 +7,7 @@ These algorithms start from an initial population and make it evolve to obtain
 a final population after a defined number of generations (by :meth:`setMaximumIterationNumber`).
 A few of these algorithms allow for multi-objective optimization, and in that
 case the result is not the best point among the final population but a set of
-dominant points: a pareto front.
+dominant points: a Pareto front.
 
 Parameters
 ----------
@@ -44,7 +44,7 @@ Pagmo provides the following global `heuristics <https://esa.github.io/pagmo2/ov
      - Differential Evolution
      - no
      - no
-     - no
+     - yes
    * - sade
      - Self-adaptive DE (jDE and iDE)
      - no
@@ -106,7 +106,12 @@ Pagmo provides the following global `heuristics <https://esa.github.io/pagmo2/ov
      - no
      - no
    * - nsga2
-     - Non-dominated Sorting GA
+     - Non-dominated Sorting GA 2
+     - yes
+     - yes
+     - yes
+   * - nsga3
+     - Non-dominated Sorting GA 3
      - yes
      - yes
      - yes
@@ -465,7 +470,7 @@ algoName : str
 
 Parameters
 ----------
-incrementalGeneration : bool
+incrementalEvolution : bool
     Whether to externally loop over each generation instead of evolving all generations in one go,
     allowing to continuously report the population and fronts in the result."
 
@@ -476,6 +481,6 @@ incrementalGeneration : bool
 
 Returns
 -------
-incrementalGeneration : bool
+incrementalEvolution : bool
     Whether to externally loop over each generation instead of evolving all generations in one go,
     allowing to continuously report the population and fronts in the result."
