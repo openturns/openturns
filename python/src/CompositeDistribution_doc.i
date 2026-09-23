@@ -45,11 +45,6 @@ Its first moments are obtained by numerical integration.
 The mathematical support of a CompositeDistribution is defined as the image of the numerical support of the antecedent.
 Consequently, its bounds are finite.
 
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``CompositeDistribution-SolverEpsilon`` (``Scalar``, default: ``1e-14``): tolerance of the non linear solver used to compute the values of the distribution.
-- ``CompositeDistribution-StepNumber`` (``UnsignedInteger``, default: ``256``): number of steps of the numerical integration.
-
 The two-argument constructor determines the monotonicity partition
 :math:`(a_0,\ldots,a_N)` automatically, by solving
 :math:`\model'(x)=0` on the support of :math:`distX`. The four-argument
@@ -67,12 +62,8 @@ width.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``CompositeDistribution-StepNumber``: number of subintervals of the support
-  of :math:`distX` in the regular grid on which the roots of
-  :math:`\model'` are located (``UnsignedInteger``, default: ``256``).
-- ``CompositeDistribution-SolverEpsilon``: default absolute tolerance of the
-  solver, rescaled by the antecedent range width (``Scalar``, default:
-  ``1.0e-14``).
+- ``CompositeDistribution-SolverEpsilon`` (``Scalar``, default: ``1.0e-14``): tolerance of the non linear solver used to compute the values of the distribution, rescaled by the antecedent range width.
+- ``CompositeDistribution-StepNumber`` (``UnsignedInteger``, default: ``256``): number of subintervals of the support of :math:`distX` in the regular grid on which the roots of :math:`\model'` are located.
 
 The range of :math:`distY` is the interval between the minimum and the maximum
 of the values :math:`v[k]`.
