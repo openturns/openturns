@@ -108,6 +108,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   amplitude_ = Point(outputDimension_);
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     amplitude_[i] = sqrt(covariance(i, i));
+  outputCorrelation_ = CorrelationMatrix(outputDimension_);
   if (!covariance.isDiagonal())
   {
     for(UnsignedInteger j = 0; j < outputDimension_; ++j)
