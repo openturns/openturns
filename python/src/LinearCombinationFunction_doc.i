@@ -25,7 +25,7 @@ coefficients : sequence of float
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
 - ``LinearCombinationFunction-MergeDuplicates``: when set to ``True``,
   the parameter constructor flattens nested linear combinations and sums
