@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -48,3 +49,18 @@ print("myBoxCox = ", myBoxCox)
 
 # Get the number of calls
 print("number of call(s) : ", myInverseBoxCox.getCallsNumber())
+
+# InverseBoxCoxGradient direct coverage (no prints)
+ibc = ot.InverseBoxCoxTransform([0.0, 1e-12, 0.5, 1.0])
+_ = repr(ibc.getGradient())
+_ = str(ibc.getGradient())
+assert "InverseBoxCoxGradient" in repr(ibc.getGradient())
+_ = ibc.gradient([0.5, 0.5, 0.5, 0.2])
+with ott.assert_raises(Exception):
+    ibc.gradient([0.5])
+with ott.assert_raises(Exception):
+    ibc.gradient([-30.0, 0.0, 0.0, 0.5])
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("invboxcox_tr.xml"))
+study.add("t", ibc)
+study.save()
