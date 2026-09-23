@@ -383,7 +383,7 @@ Sample IteratedQuadraturePartialFunctionWrapper::operator()(const Sample & sampl
   // per thread in order to keep the prefix-based reuse while being safe to
   // call concurrently when the original integrand allows parallel evaluation
   const IteratedQuadratureIntegratePolicy policy(*this, fullSample, sampleA, sampleB, sample, result);
-  TBBImplementation::ParallelForIf(sampleSize > 1 && TBBImplementation::GetThreadsNumber() > 1 && function_.getImplementation()->isParallel(), 0, sampleSize, policy);
+  TBBImplementation::ParallelForIf(function_.getImplementation()->isParallel(), 0, sampleSize, policy);
   return result;
 }
 
