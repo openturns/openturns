@@ -89,3 +89,36 @@ gradFD = ot.CenteredFiniteDifferenceGradient(1e-5, composed.getEvaluation()).gra
 ott.assert_almost_equal(composed.gradient(x), gradFD, 1e-4, 1e-4)
 hessFD = ot.CenteredFiniteDifferenceHessian(1e-5, composed.getEvaluation()).hessian(x)
 ott.assert_almost_equal(composed.hessian(x), hessFD, 1e-3, 1e-4)
+
+# ComposedEvaluation extra coverage (no prints to keep expout stable)
+ev = ot.ComposedEvaluation(f2.getEvaluation(), h1.getEvaluation())
+_ = repr(ev)
+_ = str(ev)
+assert ev.getInputDimension() == h1.getInputDimension()
+assert ev.getOutputDimension() == f2.getOutputDimension()
+_ = ev.getParameter()
+_ = ev.getParameterDescription()
+ev.setParameter(ev.getParameter())
+ev.setParameterDescription(ev.getParameterDescription())
+with ott.assert_raises(Exception):
+    ev.setParameter([0.0])
+with ott.assert_raises(Exception):
+    ev.setParameterDescription(["x"])
+_ = ev.getMarginal(0)
+_ = ev.getMarginal([0])
+_ = ev.getLeftEvaluation()
+_ = ev.getRightEvaluation()
+assert ev.isLinear() == (f2.isLinear() and h1.isLinear())
+_ = ev.isLinearlyDependent(0)
+ott.assert_almost_equal(ev(x), ot.ComposedFunction(f2, h1)(x), 1e-14, 1e-14)
+ott.assert_almost_equal(ev(ot.Sample([x, x])), ot.ComposedFunction(f2, h1)(ot.Sample([x, x])), 1e-14, 1e-14)
+with ott.assert_raises(Exception):
+    ev([1.0])
+with ott.assert_raises(Exception):
+    ev.getMarginal(10)
+with ott.assert_raises(Exception):
+    ot.ComposedEvaluation(f2.getEvaluation(), ot.SymbolicFunction(["a"], ["a", "2*a", "3*a"]).getEvaluation())
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("composed_eval.xml"))
+study.add("ev", ot.Function(ev))
+study.save()

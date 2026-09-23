@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -36,3 +37,24 @@ for index in range(size):
 # result of the function
 outSample = myFunction(inSample)
 print(myFunction.getName(), "( ", repr(inSample), " ) = ", repr(outSample))
+
+# Function wrapper uses finite differences; check evaluation consistency
+func = ot.Function(myFunction)
+g = func.gradient(inPoint)
+ott.assert_almost_equal(g[0, 0], 1.0 / 30.0, 1e-4, 1e-4)  # lambda=0 branch
+ott.assert_almost_equal(g[1, 1], 1.0 / (30.0**0.5), 1e-4, 1e-4)
+ott.assert_almost_equal(g[2, 2], 1.0, 1e-4, 1e-4)  # lambda=1 branch
+_ = func.hessian(inPoint)
+with ott.assert_raises(Exception):
+    myFunction([1.0])
+# parameter accessors
+_ = myFunction.getParameter()
+_ = myFunction.getParameterDescription()
+myFunction.setParameter(myFunction.getParameter())
+# marginal / save-load
+_ = myFunction.getMarginal(0)
+_ = myFunction.getMarginal([0, 2])
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("boxcox_eval.xml"))
+study.add("f", func)
+study.save()

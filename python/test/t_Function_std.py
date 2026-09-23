@@ -45,3 +45,43 @@ collection[1:3] = ot.FunctionCollection([ot.SymbolicFunction(["x"], ["9*x"]), ot
 ott.assert_almost_equal(collection[1]([2.0])[0], 18.0)
 collection[[0, 4]] = ot.FunctionCollection([ot.SymbolicFunction(["x"], ["7*x"]), ot.SymbolicFunction(["x"], ["6*x"])])
 ott.assert_almost_equal(collection[0]([1.0])[0], 7.0)
+
+# ProductEvaluation / ProductGradient coverage
+left = ot.SymbolicFunction(["x1", "x2"], ["x1 + x2"])
+right = ot.SymbolicFunction(["x1", "x2"], ["x1 - x2", "x1 * x2"])
+x = [1.0, 2.0]
+peval = ot.ProductEvaluation(left.getEvaluation(), right.getEvaluation())
+prod = ot.Function(peval)
+ott.assert_almost_equal(prod(x), [-3.0, 6.0], 1e-14, 1e-14)
+ott.assert_almost_equal(prod(ot.Sample([x, x])), [[-3.0, 6.0], [-3.0, 6.0]], 1e-14, 1e-14)
+pgrad = ot.ProductGradient(left.getEvaluation(), left.getGradient(), right.getEvaluation(), right.getGradient())
+g = pgrad.gradient(x)
+ott.assert_almost_equal(g[0, 0], 2.0, 1e-12, 1e-12)
+ott.assert_almost_equal(g[0, 1], 8.0, 1e-12, 1e-12)
+ott.assert_almost_equal(g[1, 0], -4.0, 1e-12, 1e-12)
+ott.assert_almost_equal(g[1, 1], 5.0, 1e-12, 1e-12)
+_ = repr(peval)
+_ = str(peval)
+_ = repr(pgrad)
+assert pgrad.getInputDimension() == 2
+assert pgrad.getOutputDimension() == 2
+_ = peval.getParameter()
+_ = peval.getParameterDescription()
+peval.setParameter(peval.getParameter())
+# swapped ctor branch: right has output dim 1
+peval2 = ot.ProductEvaluation(right.getEvaluation(), left.getEvaluation())
+ott.assert_almost_equal(ot.Function(peval2)(x), prod(x), 1e-14, 1e-14)
+with ott.assert_raises(Exception):
+    prod([1.0])
+with ott.assert_raises(Exception):
+    pgrad.gradient([1.0])
+with ott.assert_raises(Exception):
+    ot.ProductEvaluation(ot.SymbolicFunction(["x"], ["x", "2*x"]).getEvaluation(), ot.SymbolicFunction(["x"], ["x", "2*x"]).getEvaluation())
+with ott.assert_raises(Exception):
+    ot.ProductEvaluation(left.getEvaluation(), ot.SymbolicFunction(["y"], ["y"]).getEvaluation())
+with ott.assert_raises(Exception):
+    ot.ProductGradient(right.getEvaluation(), right.getGradient(), right.getEvaluation(), right.getGradient())
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("product_func.xml"))
+study.add("prod", prod)
+study.save()
