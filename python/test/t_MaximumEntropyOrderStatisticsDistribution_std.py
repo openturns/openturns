@@ -121,6 +121,18 @@ ott.assert_almost_equal(
     betaDist.computeCDF([0.2, 0.9, 0.5]), betaDist.computeCDF([0.2, 0.5, 0.5])
 )
 ott.assert_almost_equal(betaDist.computeCDF([0.2, 0.5, 0.8]), 0.242)
+# the marginals of the Beta case are the marginals of the uniform order statistics
+unifDist = ot.UniformOrderStatistics(3)
+for indices in ([0, 1], [0, 2], [1, 2]):
+    betaMarginal = betaDist.getMarginal(indices)
+    unifMarginal = unifDist.getMarginal(indices)
+    pointBeta = [[0.2, 0.5, 0.8][i] for i in indices]
+    ott.assert_almost_equal(
+        betaMarginal.computeCDF(pointBeta), unifMarginal.computeCDF(pointBeta)
+    )
+    ott.assert_almost_equal(
+        betaMarginal.computePDF(pointBeta), unifMarginal.computePDF(pointBeta)
+    )
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)

@@ -20,6 +20,8 @@
  */
 #include <cmath>
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
+#include "openturns/Beta.hxx"
+#include "openturns/MarginalUniformOrderStatistics.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -786,6 +788,23 @@ Distribution MaximumEntropyOrderStatisticsDistribution::getMarginal(const Indice
   if (!indices.isIncreasing()) return DistributionImplementation::getMarginal(indices);
   // Here we know that if the size is equal to the dimension, the indices are [0,...,dimension-1]
   if (size == dimension) return *this;
+  // Specific case of Beta(i + 1, n - i, 0, 1) marginals
+  Bool isUniformOrderStatistics = true;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    const Beta* p_beta = dynamic_cast<const Beta*>(distributionCollection_[i].getImplementation().get());
+    if ((p_beta == 0) || (p_beta->getAlpha() != static_cast<Scalar>(i + 1)) || (p_beta->getBeta() != static_cast<Scalar>(dimension - i)) || (p_beta->getA() != 0.0) || (p_beta->getB() != 1.0))
+    {
+      isUniformOrderStatistics = false;
+      break;
+    }
+  } // i
+  if (isUniformOrderStatistics)
+  {
+    MarginalUniformOrderStatistics exactMarginal(dimension, indices);
+    exactMarginal.setDescription(getDescription().select(indices));
+    return exactMarginal.clone();
+  }
   return getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices).clone();
 }
 
