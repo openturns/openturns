@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -56,3 +57,48 @@ print("point=", point)
 print("myFunc(point)=", myFunc(point))
 # Get the number of calls
 print("called ", myFunc.getCallsNumber(), " times")
+
+# PointToPointEvaluation extra coverage (no prints)
+evFF = ot.PointToPointEvaluation(ot.SymbolicFunction("x", "sin(x)"), ot.SymbolicFunction("x", "cos(x)"))
+_ = repr(evFF)
+_ = str(evFF)
+assert evFF.getInputDimension() == 1
+_ = evFF.getParameter()
+_ = evFF.getParameterDescription()
+evFF.setParameter(evFF.getParameter())
+evFF.setParameterDescription(evFF.getParameterDescription())
+with ott.assert_raises(Exception):
+    evFF.setParameter([0.0, 1.0])
+with ott.assert_raises(Exception):
+    evFF.setParameterDescription(["a", "b"])
+_ = evFF.getMarginal(0)
+_ = evFF.getMarginal([0])
+_ = evFF.getLeftFunction()
+_ = evFF.getRightFunction()
+_ = evFF.getPointToFieldFunction()
+_ = evFF.getFieldToPointFunction()
+ott.assert_almost_equal(evFF(ot.Sample([[0.5], [1.0]])), ot.Function(evFF)(ot.Sample([[0.5], [1.0]])), 1e-14, 1e-14)
+with ott.assert_raises(Exception):
+    evFF([1.0, 2.0])
+with ott.assert_raises(Exception):
+    evFF.getMarginal(5)
+with ott.assert_raises(Exception):
+    ot.PointToPointEvaluation(ot.SymbolicFunction(["x", "y"], ["x+y"]), ot.SymbolicFunction("x", "cos(x)"))
+# field/function composition branch: sample eval on field-based instance
+_ = myFunc(ot.Sample([[1.0] * myFunc.getInputDimension()] * 3))
+with ott.assert_raises(Exception):
+    myFunc.getMarginal(0)
+with ott.assert_raises(Exception):
+    myFunc.getMarginal(myFunc.getOutputDimension() + 1)
+with ott.assert_raises(Exception):
+    myFunc.getParameter()
+with ott.assert_raises(Exception):
+    myFunc.setParameter([0.0])
+with ott.assert_raises(Exception):
+    myFunc.getParameterDescription()
+with ott.assert_raises(Exception):
+    myFunc.setParameterDescription(["a"])
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("ptp_eval.xml"))
+study.add("f", ot.Function(evFF))
+study.save()

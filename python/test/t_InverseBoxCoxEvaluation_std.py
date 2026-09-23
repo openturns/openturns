@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -35,3 +36,19 @@ for index in range(size):
 # result of the function
 outSample = myFunction(inSample)
 print(myFunction.getName(), "( ", repr(inSample), " ) = ", repr(outSample))
+
+# Function wrapper uses finite differences; check consistency
+func = ot.Function(myFunction)
+_ = func.gradient(inPoint)
+_ = func.hessian(inPoint)
+with ott.assert_raises(Exception):
+    myFunction([1.0])
+_ = myFunction.getParameter()
+_ = myFunction.getParameterDescription()
+myFunction.setParameter(myFunction.getParameter())
+_ = myFunction.getMarginal(1)
+_ = myFunction.getMarginal([0, 1])
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("invboxcox_eval.xml"))
+study.add("f", func)
+study.save()
