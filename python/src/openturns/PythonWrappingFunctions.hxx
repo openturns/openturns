@@ -972,6 +972,87 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       PyErr_Clear();
   }
 #endif
+  // Fast path for objects exposing __array_interface__ (e.g. Sample)
+  // Sample does not expose the buffer protocol, but exposes __array_interface__
+  // so a Sample->Sample conversion would otherwise fall through to a slow
+  // per-element __getitem__ loop
+  if (PyObject_HasAttrString(pyObj, "__array_interface__"))
+  {
+    ScopedPyObjectPointer iface(PyObject_GetAttrString(pyObj, "__array_interface__"));
+    if (iface.get() && PyDict_Check(iface.get()))
+    {
+      PyObject * arrayShapeObj = PyDict_GetItemString(iface.get(), "shape");
+      PyObject * typestrObj = PyDict_GetItemString(iface.get(), "typestr");
+      PyObject * dataObj = PyDict_GetItemString(iface.get(), "data");
+      if (arrayShapeObj && typestrObj && dataObj
+          && PyTuple_Check(arrayShapeObj) && PyTuple_Size(arrayShapeObj) == 2
+          && PyTuple_Check(dataObj) && PyTuple_Size(dataObj) == 2)
+      {
+        const char * typestr = 0;
+        ScopedPyObjectPointer typestrBytes;
+        PyObject * typestrBytesObj = 0;
+        if (PyUnicode_Check(typestrObj))
+        {
+          typestrBytes = PyUnicode_AsUTF8String(typestrObj);
+          typestrBytesObj = typestrBytes.get();
+        }
+        else
+          typestrBytesObj = typestrObj;
+        if (typestrBytesObj && PyBytes_Check(typestrBytesObj))
+          typestr = PyBytes_AsString(typestrBytesObj);
+        const Bool typeOk = typestr && std::strlen(typestr) == 3 && typestr[1] == 'f' && typestr[2] == '8' && (typestr[0] == '|' || typestr[0] == '<' || typestr[0] == '>' || typestr[0] == '=');
+        if (typeOk)
+        {
+          PyObject * sizeObj = PyTuple_GetItem(arrayShapeObj, 0);
+          PyObject * dimObj = PyTuple_GetItem(arrayShapeObj, 1);
+          PyObject * addrObj = PyTuple_GetItem(dataObj, 0);
+          if (sizeObj && dimObj && addrObj)
+          {
+            PyErr_Clear();
+            const long sizeLong = PyLong_AsLong(sizeObj);
+            const long dimLong = PyLong_AsLong(dimObj);
+            void * addr = PyLong_AsVoidPtr(addrObj);
+            if (!PyErr_Occurred() && sizeLong >= 0 && dimLong >= 0 && addr)
+            {
+              const UnsignedInteger arraySize = static_cast<UnsignedInteger>(sizeLong);
+              const UnsignedInteger arrayDim = static_cast<UnsignedInteger>(dimLong);
+              // Only a C-contiguous array can be copied as a single memory chunk.
+              // A missing or None strides entry means C-contiguous, otherwise
+              // strides must match (dim * sizeof(Scalar), sizeof(Scalar)).
+              // Anything else (transpose, slice, Fortran order, ...) falls
+              // through to the strided accesses below.
+              Bool contiguous = true;
+              PyObject * stridesObj = PyDict_GetItemString(iface.get(), "strides");
+              if (stridesObj && stridesObj != Py_None)
+              {
+                contiguous = false;
+                if (PyTuple_Check(stridesObj) && PyTuple_Size(stridesObj) == 2)
+                {
+                  PyErr_Clear();
+                  const long stride0 = PyLong_AsLong(PyTuple_GetItem(stridesObj, 0));
+                  const long stride1 = PyLong_AsLong(PyTuple_GetItem(stridesObj, 1));
+                  if (!PyErr_Occurred()
+                      && stride0 == static_cast<long>(arrayDim * sizeof(Scalar))
+                      && stride1 == static_cast<long>(sizeof(Scalar)))
+                    contiguous = true;
+                }
+                PyErr_Clear();
+              }
+              if (contiguous)
+              {
+                const Scalar * arrayData = static_cast<const Scalar *>(addr);
+                Sample sample(arraySize, arrayDim);
+                if (arraySize > 0 && arrayDim > 0)
+                  std::copy(arrayData, arrayData + arraySize * arrayDim, const_cast<Scalar *>(sample.data()));
+                return sample;
+              }
+            }
+          }
+        }
+      }
+    }
+    PyErr_Clear();
+  }
   // use the same conversion function for numpy array/matrix, knowing numpy matrix is not a sequence
   if (PyObject_HasAttrString(pyObj, "shape"))
   {
