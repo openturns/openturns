@@ -349,7 +349,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     ot.LinearCombinationDistribution([ot.Normal()], ot.Matrix(1, 2))
 # dimension > 3 raises InvalidDimensionException
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(ValueError):
     ot.LinearCombinationDistribution([ot.Normal()], ot.Matrix(4, 1))
 with ott.assert_raises(TypeError):
     ot.LinearCombinationDistribution([ot.Normal([0.0, 0.0], [1.0, 1.0])])
