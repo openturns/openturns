@@ -328,6 +328,22 @@ d_disc2 = ot.CompositeDistribution(f_cube, disc2, [-2.0, -1.0, 1.0, 2.0], [-8.0,
 ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([-1.0], [-1.0])), 0.2)
 # P(Y=1) = P(X=1) = 0.2
 ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([1.0], [1.0])), 0.2)
+# Endpoint atoms must be counted exactly once (review #3311):
+# P([-8,-1]) = P(X=-2) + P(X=-1) = 0.4
+ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([-8.0], [-1.0])), 0.4)
+# P([-1,0.5]) = P(X=-1) + P(X=0) = 0.4
+ott.assert_almost_equal(d_disc2.computeProbability(ot.Interval([-1.0], [0.5])), 0.4)
+# P([0,1]) for d_disc is 1.0 from exact segment masses (no Clip01 hiding)
+ott.assert_almost_equal(d_disc.computeProbability(ot.Interval([0.0], [1.0])), 1.0)
+# Continuous endpoint: identity with explicit partition must not include the
+# full left segment when the interval starts at the shared bound
+d_id_expl2 = ot.CompositeDistribution(f_id, ot.Normal(), [-1.0, 0.0, 1.0], [-1.0, 0.0, 1.0])
+ott.assert_almost_equal(
+    d_id_expl2.computeProbability(ot.Interval([0.0], [0.5])),
+    norm.computeProbability(ot.Interval([0.0], [0.5])),
+    1e-6,
+    1e-8,
+)
 
 # computePDF at a singularity must be finite: the singularities are points
 # where the PDF is undefined/infinite, but the solver-based summation keeps

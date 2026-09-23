@@ -476,97 +476,44 @@ Scalar CompositeDistribution::computeProbability(const Interval & interval) cons
       continue;
     }
     // The contribution of the current segment [a, b] to the probability
-    // P(lo <= f(antecedent) <= hi) where f is monotonic on [a, b]
+    // P(lo <= f(antecedent) <= hi) where f is monotonic on [a, b].
+    // The antecedent mass at an interior partition bound belongs to the
+    // segment on its left, so for i > 1 the effective antecedent set is
+    // (a, b]: lower bounds use the left-limit CDF CDF(t-) and upper bounds
+    // use the right-continuous CDF CDF(t), both clamped to [pA, pB].
     if (increasing_[i - 1])
     {
       // f increasing on [a, b], image = [fA, fB]
       if (hi < fA || lo > fB) continue;
-      // Special handling for point intervals [y, y] at segment boundaries
-      // for discrete antecedents: directly use the probability mass at the preimage.
-      // The atom at an interior partition bound belongs to the segment on its left
-      // (for decreasing: right endpoint b; for increasing: right endpoint b for i=1,
-      // left endpoint a for i=1, but not for i>1 where it belongs to previous segment).
-      if (lo == hi && antecedent_.isDiscrete())
+      const Scalar pA = probabilities_[i - 1];
+      const Scalar pB = probabilities_[i];
+      const Bool discrete = antecedent_.isDiscrete();
+      Scalar pLo = pA;
+      Scalar pHi = pB;
+      if (!(lo <= fA))
       {
         if (lo == fB)
         {
-          // Point interval at right image endpoint fB: mass at b.
-          // The segment mass includes atom at b (for both increasing and decreasing).
-          const Scalar atomMass = antecedent_.computePDF(b);
-          if (atomMass > 0.0) probability += atomMass;
-          continue;
+          const Point bPoint(1, b);
+          Scalar cdfBLeft = antecedent_.computeCDF(bPoint);
+          if (discrete) cdfBLeft -= antecedent_.computePDF(bPoint);
+          pLo = std::max(pA, cdfBLeft);
         }
-        if (lo == fA && i == 1)
+        else
         {
-          // Point interval at left image endpoint fA for first segment: mass at a.
-          // First segment mass includes atom at left endpoint.
-          const Scalar atomMass = antecedent_.computePDF(a);
-          if (atomMass > 0.0) probability += atomMass;
-          continue;
-}
-      // For i>1, atom at fA belongs to previous segment, so skip.
-    }
-    // For continuous antecedents, degenerate interval ]y, y] has probability 0
-    if (lo == hi && !antecedent_.isDiscrete())
-    {
-      continue;
-    }
-    Scalar pLo = 0.0;
-      Scalar pHi = 0.0;
-      if (lo < fA)
-      {
-        pLo = probabilities_[i - 1];
-      }
-      else if (lo == fA)
-      {
-        // For discrete antecedents, the atom at the left endpoint a maps to fA.
-        // The segment mass probabilities_[i] - probabilities_[i-1] excludes this atom
-        // (it belongs to the previous segment for i>1). Include it when lo == fA.
-        pLo = probabilities_[i - 1];
-        if (i > 1 && antecedent_.isDiscrete())
-        {
-          const Scalar atomMass = antecedent_.computePDF(a);
-          if (atomMass > 0.0) pLo -= atomMass;
+          const Scalar tLo = solver_.solve(function_, lo, a, b, fA, fB);
+          const Point tLoPoint(1, tLo);
+          Scalar cdfLoLeft = antecedent_.computeCDF(tLoPoint);
+          if (discrete) cdfLoLeft -= antecedent_.computePDF(tLoPoint);
+          pLo = std::max(pA, cdfLoLeft);
         }
       }
-      else if (lo == fB)
+      if (!(hi >= fB))
       {
-        // Interval starts exactly at right endpoint fB: the atom at b maps to fB.
-        // The segment mass probabilities_[i] - probabilities_[i-1] includes this atom.
-        // Use pLo = probabilities_[i-1] so pHi - pLo gives full segment mass.
-        pLo = probabilities_[i - 1];
-      }
-      else
-      {
-        const Point t(1, solver_.solve(function_, lo, a, b, fA, fB));
-        pLo = antecedent_.computeCDF(t);
-      }
-      if (hi > fB)
-      {
-        pHi = probabilities_[i];
-      }
-      else if (hi == fB)
-      {
-        // For discrete antecedents, the atom at the right endpoint b maps to fB.
-        // The segment mass probabilities_[i] - probabilities_[i-1] includes this atom.
-        pHi = probabilities_[i];
-      }
-      else if (hi == fA)
-      {
-        // Interval ends exactly at left endpoint fA: the atom at a maps to fA.
-        // For i>1, the segment mass probabilities_[i] - probabilities_[i-1] excludes this atom.
-        // Use pHi = probabilities_[i-1] so pHi - pLo gives correct mass (0 if lo == fA).
-        pHi = probabilities_[i - 1];
-        if (i > 1 && antecedent_.isDiscrete())
-        {
-          const Scalar atomMass = antecedent_.computePDF(a);
-          if (atomMass > 0.0) pHi -= atomMass;
-        }
-      }
-      else
-      {
-        const Point t(1, solver_.solve(function_, hi, a, b, fA, fB));
-        pHi = antecedent_.computeCDF(t);
+        const Scalar tHi = solver_.solve(function_, hi, a, b, fA, fB);
+        const Point tHiPoint(1, tHi);
+        const Scalar cdfHi = antecedent_.computeCDF(tHiPoint);
+        pHi = std::max(pA, std::min(pB, cdfHi));
       }
       probability += pHi - pLo;
     } // increasing
@@ -574,74 +521,35 @@ Scalar CompositeDistribution::computeProbability(const Interval & interval) cons
     {
       // f decreasing on [a, b], image = [fB, fA]
       if (hi < fB || lo > fA) continue;
-      // Special handling for point intervals [y, y] at segment boundaries
-      // for discrete antecedents: directly use the probability mass at the preimage.
-      // Decreasing segment mass includes atom at b (maps to fB), excludes atom at a (maps to fA).
-      if (lo == hi && antecedent_.isDiscrete())
+      const Scalar pA = probabilities_[i - 1];
+      const Scalar pB = probabilities_[i];
+      const Bool discrete = antecedent_.isDiscrete();
+      Scalar pLo = pB;
+      Scalar pHi = pA;
+      if (!(lo <= fB))
       {
-        if (lo == fB)
+        const Scalar tLo = solver_.solve(function_, lo, a, b, fA, fB);
+        const Point tLoPoint(1, tLo);
+        const Scalar cdfLo = antecedent_.computeCDF(tLoPoint);
+        pLo = std::max(pA, std::min(pB, cdfLo));
+      }
+      if (!(hi >= fA))
+      {
+        if (hi == fB)
         {
-          // Point interval at lower image endpoint fB: mass at b.
-          const Scalar atomMass = antecedent_.computePDF(b);
-          if (atomMass > 0.0) probability += atomMass;
-          continue;
+          const Point bPoint(1, b);
+          Scalar cdfBLeft = antecedent_.computeCDF(bPoint);
+          if (discrete) cdfBLeft -= antecedent_.computePDF(bPoint);
+          pHi = std::max(pA, cdfBLeft);
         }
-        // For fA (upper endpoint), atom at a belongs to previous segment, so skip.
-      }
-      // For continuous antecedents, degenerate interval ]y, y] has probability 0
-      if (lo == hi && !antecedent_.isDiscrete())
-      {
-        continue;
-      }
-      Scalar pLo = 0.0;
-      Scalar pHi = 0.0;
-      if (lo < fB)
-      {
-        pLo = probabilities_[i];
-      }
-      else if (lo == fB)
-      {
-        // For discrete antecedents, the atom at the right endpoint b maps to fB.
-        // The segment mass probabilities_[i] - probabilities_[i-1] includes this atom.
-        // pLo = CDF(b) = probabilities_[i] (correct for lower bound of antecedent interval).
-        pLo = probabilities_[i];
-      }
-      else
-      {
-        const Point t(1, solver_.solve(function_, lo, a, b, fA, fB));
-        pLo = antecedent_.computeCDF(t);
-      }
-      if (hi > fA)
-      {
-        pHi = probabilities_[i - 1];
-      }
-      else if (hi == fA)
-      {
-        // For discrete antecedents, the atom at the left endpoint a maps to fA.
-        // For i>1, the segment mass probabilities_[i] - probabilities_[i-1] excludes this atom.
-        // pHi = CDF(a-) = probabilities_[i-1] - atomMass_at_a.
-        pHi = probabilities_[i - 1];
-        if (i > 1 && antecedent_.isDiscrete())
+        else
         {
-          const Scalar atomMass = antecedent_.computePDF(a);
-          if (atomMass > 0.0) pHi -= atomMass;
+          const Scalar tHi = solver_.solve(function_, hi, a, b, fA, fB);
+          const Point tHiPoint(1, tHi);
+          Scalar cdfHiLeft = antecedent_.computeCDF(tHiPoint);
+          if (discrete) cdfHiLeft -= antecedent_.computePDF(tHiPoint);
+          pHi = std::max(pA, cdfHiLeft);
         }
-      }
-      else if (hi == fB)
-      {
-        // Interval ends exactly at lower image endpoint fB: the atom at b maps to fB.
-        // pHi = CDF(b-) = probabilities_[i] - atomMass_at_b.
-        pHi = probabilities_[i];
-        if (antecedent_.isDiscrete())
-        {
-          const Scalar atomMass = antecedent_.computePDF(b);
-          if (atomMass > 0.0) pHi -= atomMass;
-        }
-      }
-      else
-      {
-        const Point t(1, solver_.solve(function_, hi, a, b, fA, fB));
-        pHi = antecedent_.computeCDF(t);
       }
       probability += pLo - pHi;
     } // decreasing
