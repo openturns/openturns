@@ -108,26 +108,22 @@ algo.setRule(3)
 algo.setMaximumRelativeError(1e-5)
 algo.setMaximumCallsNumber(50000)
 oldMaxR = ot.ResourceMap.GetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber")
-try:
-    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", 1)
-    f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(-10.0 * (x1 + x2 + x3))"])
-    value = algo.integrate(f, ot.Interval([0.0] * 3, [1.0] * 3))
-    ott.assert_almost_equal(value[0], ((1.0 - m.exp(-10.0)) / 10.0) ** 3, 1e-4, 1e-4)
-finally:
-    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", oldMaxR)
+ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", 1)
+f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(-10.0 * (x1 + x2 + x3))"])
+value = algo.integrate(f, ot.Interval([0.0] * 3, [1.0] * 3))
+ott.assert_almost_equal(value[0], ((1.0 - m.exp(-10.0)) / 10.0) ** 3, 1e-4, 1e-4)
+ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", oldMaxR)
 
-# Test the EvaluationBlockSize ResourceMap key with exception safety
+# Test the EvaluationBlockSize ResourceMap key
 oldBlockSize = ot.ResourceMap.GetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize")
-try:
-    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2)
-    f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(x1 + x2 + x3)"])
-    algo.setRule(1)
-    algo.setMaximumAbsoluteError(0.0)
-    algo.setMaximumRelativeError(1.0e-5)
-    algo.setMaximumCallsNumber(50000)
-    value = algo.integrate(f, mesh)[0]
-    ott.assert_almost_equal(value, (m.exp(1.0) - 1.0) ** 3 / 6, 1e-4, 1e-4)
-finally:
-    ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", oldBlockSize)
+ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2)
+f = ot.SymbolicFunction(["x1", "x2", "x3"], ["exp(x1 + x2 + x3)"])
+algo.setRule(1)
+algo.setMaximumAbsoluteError(0.0)
+algo.setMaximumRelativeError(1.0e-5)
+algo.setMaximumCallsNumber(50000)
+value = algo.integrate(f, mesh)[0]
+ott.assert_almost_equal(value, (m.exp(1.0) - 1.0) ** 3 / 6, 1e-4, 1e-4)
+ot.ResourceMap.SetAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", oldBlockSize)
 
 print("OK")
