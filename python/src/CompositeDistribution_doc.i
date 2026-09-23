@@ -52,17 +52,27 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 The two-argument constructor determines the monotonicity partition
 :math:`(a_0,\ldots,a_N)` automatically, by solving
-:math:`g'(x)=0` on the support of :math:`distX`. The four-argument
+:math:`\model'(x)=0` on the support of :math:`distX`. The four-argument
 constructor lets the user specify this partition, when the user knows a priori
-the monotonicity intervals of :math:`g`, or when :math:`g` is not smooth enough
-for its derivatives to be computed numerically by the automatic procedure.
+the monotonicity intervals of :math:`\model`, or when :math:`\model` is not
+smooth enough for its derivatives to be computed numerically by the automatic
+procedure.
 
-The roots of :math:`g'` are located by the solver on a regular grid of
-:math:`CompositeDistribution-StepNumber` subintervals of the support of
-:math:`distX` (defaults to 256). The solver and its tolerances can be changed
+The roots of :math:`\model'` are located by the solver on a regular grid of
+``CompositeDistribution-StepNumber`` subintervals of the support of
+:math:`distX`. The solver and its tolerances can be changed
 with :meth:`setSolver`, using as default absolute tolerance
-:math:`CompositeDistribution-SolverEpsilon` rescaled by the antecedent range
+``CompositeDistribution-SolverEpsilon`` rescaled by the antecedent range
 width.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``CompositeDistribution-StepNumber``: number of subintervals of the support
+  of :math:`distX` in the regular grid on which the roots of
+  :math:`\model'` are located (``UnsignedInteger``, default: ``256``).
+- ``CompositeDistribution-SolverEpsilon``: default absolute tolerance of the
+  solver, rescaled by the antecedent range width (``Scalar``, default:
+  ``1.0e-14``).
 
 The range of :math:`distY` is the interval between the minimum and the maximum
 of the values :math:`v[k]`.
@@ -173,7 +183,7 @@ p : float
 Notes
 -----
 This method is implemented as a segment-wise summation over the monotonicity
-intervals of :math:`g`, using the precomputed CDF values of :math:`distX` at
+intervals of :math:`\model`, using the precomputed CDF values of :math:`distX` at
 the bounds of these intervals. It therefore avoids the numerical integration
 of the PDF over the singular points located at the images of the critical
 points of :math:`g`, where the PDF is not defined, an approach that would
