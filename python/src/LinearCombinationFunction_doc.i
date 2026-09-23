@@ -27,9 +27,9 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``LinearCombinationFunction-MergeDuplicates``: when set to ``True``,
-  the parameter constructor flattens nested linear combinations and sums
-  the weights of identical atoms. Default is ``False``.
+- ``LinearCombinationFunction-MergeDuplicates`` (``Bool``, default: ``false``): when set to ``true``,
+  the constructor flattens nested linear combinations and sums
+  the weights of identical atoms.
 
 Examples
 --------
