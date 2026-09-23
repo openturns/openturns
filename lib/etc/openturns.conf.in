@@ -241,6 +241,14 @@
   <Pagmo-nsga2-eta_c value_float="10.0" />
   <Pagmo-nsga2-m value_float="0.01" />
   <Pagmo-nsga2-eta_m value_float="50.0" />
+  <!-- nsga3 -->
+  <Pagmo-nsga3-cr value_float="1.0" />
+  <Pagmo-nsga3-eta_c value_float="30.0" />
+  <Pagmo-nsga3-mut value_float="0.1" />
+  <Pagmo-nsga3-eta_mut value_float="20.0" />
+  <Pagmo-nsga3-divisions value_int="12" />
+  <Pagmo-nsga3-divisions_inner value_int="0" />
+  <Pagmo-nsga3-random_mating value_bool="true" />
   <!-- moead -->
   <Pagmo-moead-weight_generation value_str="grid" />
   <Pagmo-moead-decomposition value_str="tchebycheff" />
