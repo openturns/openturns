@@ -31,43 +31,35 @@ Use this functionality with caution:
      See :any:`functional_chaos` for more details on this topic.
 
 OpenTURNS implements the following **specific orthonormal** [#orthonormal]_
-univariate polynomial families together with their associated **distribution
-families**.
+univariate polynomial families together with their associated **standard
+distributions**.
 
-.. list-table::
-   :widths: 50 50
-   :header-rows: 1
+.. table::
 
-   * - Distribution family
-     - Polynomial
-   * - :class:`~openturns.Normal` :math:`\cN(\mu, \sigma)`
-     - :class:`~openturns.HermiteFactory`
-   * - :class:`~openturns.Uniform` :math:`\cU(a, b)`
-     - :class:`~openturns.LegendreFactory`
-   * - :class:`~openturns.Gamma` :math:`\Gamma(k, \lambda, \gamma)`
-     - :class:`~openturns.LaguerreFactory`
-   * - :class:`~openturns.Beta` :math:`{\rm B}(r, t, a, b)`
-     - :class:`~openturns.JacobiFactory`
-   * - :class:`~openturns.Poisson` :math:`\cP(\lambda)`
-     - :class:`~openturns.CharlierFactory`
-   * - :class:`~openturns.Binomial` :math:`\cB(n, p)`
-     - :class:`~openturns.KrawtchoukFactory`
-   * - :class:`~openturns.Polya` :math:`\cB^-(r, p)`
-     - :class:`~openturns.MeixnerFactory`
-
-The polynomials of each of these families are orthonormal with respect to the
-**standard representative** of the corresponding distribution family, see
-:meth:`~openturns.Distribution.getStandardRepresentative`, eg
-:math:`\cN(0, 1)` for the Normal family and :math:`\cU(-1, 1)` for the
-Uniform family: the recurrence coefficients returned by these specific
-families are exactly those of the polynomials orthonormal with respect to
-the standard representative distribution. For the continuous families, any
-other member of the family is mapped onto its standard representative by an
-**affine transformation** :math:`X = \alpha Z + \beta`, and the orthonormal
-polynomials with respect to :math:`X` are obtained from those of :math:`Z`
-by the substitution :math:`x \mapsto (x - \beta)/\alpha`. For example, if
-:math:`Z \sim \cN(0, 1)`, then :math:`X = \mu + \sigma Z \sim \cN(\mu, \sigma)`
-with :math:`\alpha = \sigma` and :math:`\beta = \mu`.
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | Standard distribution                                                 | Polynomial                            |
+    +=======================================================================+=======================================+
+    | :class:`~openturns.Normal`                                            | :class:`~openturns.HermiteFactory`    |
+    | :math:`\cN(\mu = 0, \sigma = 1)`                                      |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Uniform`                                           | :class:`~openturns.LegendreFactory`   |
+    | :math:`\cU(a = -1, b = 1)`                                            |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Gamma`                                             | :class:`~openturns.LaguerreFactory`   |
+    | :math:`\Gamma(k = k_a + 1, \lambda = 1, \gamma = 0)`                  |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Beta`                                              | :class:`~openturns.JacobiFactory`     |
+    | :math:`{\rm B}(r = \beta + 1, t = \alpha + \beta + 2, a = -1, b = 1)` |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Poisson`                                           | :class:`~openturns.CharlierFactory`   |
+    | :math:`\cP(\lambda)`                                                  |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Binomial`                                          | :class:`~openturns.KrawtchoukFactory` |
+    | :math:`\cB(n, p)`                                                     |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
+    | :class:`~openturns.Polya`                                             | :class:`~openturns.MeixnerFactory`    |
+    | :math:`\cB^-(r, p)`                                                   |                                       |
+    +-----------------------------------------------------------------------+---------------------------------------+
 
 Aside, OpenTURNS also implements generic algorithms for building orthonormal
 univariate polynomial families with respect to any arbitrary probability
