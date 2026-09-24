@@ -146,11 +146,11 @@ Examples
 This class uses the following entries of :class:`~openturns.ResourceMap`. All the keys drive the precision
 of the optimization solver involved in the estimation:
 
-- *LogNormalFactory-AbsolutePrecision* (``Scalar``, default: `1e-12`)
-- *LogNormalFactory-MaximumIteration* (``UnsignedInteger``, default: `50`)
-- *LogNormalFactory-RelativePrecision* (``Scalar``, default: `1e-12`)
-- *LogNormalFactory-ResidualPrecision* (``Scalar``, default: `1e-12`)
-- *LogNormalFactory-EstimationMethod* (``UnsignedInteger``, default: `0`): the estimation method used by
+- ``LogNormalFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``)
+- ``LogNormalFactory-MaximumIteration`` (``UnsignedInteger``, default: ``50``)
+- ``LogNormalFactory-RelativePrecision`` (``Scalar``, default: ``1e-12``)
+- ``LogNormalFactory-ResidualPrecision`` (``Scalar``, default: ``1e-12``)
+- ``LogNormalFactory-EstimationMethod`` (``UnsignedInteger``, default: ``0``): the estimation method used by
   :meth:`build`, either 0 (local likelihood maximization), 1 (modified method of moments), 2 (method of
   moments) or 3 (least squares).
 )RAW"

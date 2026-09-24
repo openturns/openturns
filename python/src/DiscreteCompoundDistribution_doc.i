@@ -42,13 +42,6 @@ This is mathematically equivalent to a Poisson distribution with parameter :math
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
-
-Notes
------
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *DiscreteCompoundDistribution-DefaultEpsilon* (``Scalar``, default: `1e-12`): tolerance used to truncate
-  the sum defining the compound distribution when computing its probabilities by discrete Fourier transform.
 )RAW"
 
 // ---------------------------------------------------------------------
