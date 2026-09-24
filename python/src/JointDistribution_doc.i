@@ -43,7 +43,7 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``JointDistribution-UseGenericCovarianceAlgorithm`` (``Bool``, default: ``false``): whether to use the generic algorithm to compute the covariance matrix even when the core is a copula.
+- ``JointDistribution-UseGenericCovarianceAlgorithm`` (``Bool``, default: ``False``): whether to use the generic algorithm to compute the covariance matrix even when the core is a copula.
 
 Examples
 --------
@@ -59,12 +59,6 @@ Use a non-copula core:
 >>> core = ot.Dirichlet([2.0, 1.5, 2.5])
 >>> instrumental_marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
 >>> distribution = ot.JointDistribution(instrumental_marginals, core)
-
-Notes
------
-The following :class:`~openturns.ResourceMap` key is used:
-
-- ``JointDistribution-UseGenericCovarianceAlgorithm`` (``Bool``, default: ``false``)
 )RAW"
 
 // ---------------------------------------------------------------------
