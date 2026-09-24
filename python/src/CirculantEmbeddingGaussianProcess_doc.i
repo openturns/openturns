@@ -43,16 +43,10 @@ discretization : sequence of int
 
 Notes
 -----
-The following keys of :class:`~openturns.ResourceMap` tune the handling of
-negative eigenvalues:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- 'CirculantEmbeddingGaussianProcess-MaximumIteration' which bounds the
-  number of successive doublings of the embedding size performed when
-  negative eigenvalues are detected. By default, it is set to 20.
-- 'Mesh-VertexEpsilon' which is the relative tolerance used to check that
-  the input mesh is a regular Cartesian grid with uniform spacing and to
-  identify coincident vertices, expressed relative to the coordinate
-  magnitude. It must be non-negative. By default, it is set to 1.0e-6.
+- ``CirculantEmbeddingGaussianProcess-MaximumIteration`` (``UnsignedInteger``, default: ``20``): bounds the number of successive doublings of the embedding size performed when negative eigenvalues are detected.
+- ``Mesh-VertexEpsilon`` (``Scalar``, default: ``1.0e-6``): relative tolerance used to check that the input mesh is a regular Cartesian grid with uniform spacing and to identify coincident vertices, expressed relative to the coordinate magnitude. It must be non-negative.
 
 Examples
 --------

@@ -346,6 +346,12 @@ with ott.assert_raises(TypeError):
     otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval, discretization)
 ot.ResourceMap.SetAsScalar("Mesh-VertexEpsilon", 1.0e-6)
 
+# Test the CirculantEmbeddingGaussianProcess-MaximumIteration key
+assert ot.ResourceMap.GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration") == 20
+ot.ResourceMap.SetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 5)
+assert ot.ResourceMap.GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration") == 5
+ot.ResourceMap.SetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 20)
+
 print("mesh validation OK")
 
 print("\nAll tests passed!")
