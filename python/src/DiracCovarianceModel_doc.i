@@ -56,10 +56,6 @@ The following :class:`~openturns.ResourceMap` key is used:
   mesh has repeated vertices, in which case the generic discretization algorithm is used instead of the
   optimized diagonal one.
 
-This class uses the following entries of :class:`~openturns.ResourceMap`:
-
-- *DiracCovarianceModel-CheckUnique* (``Bool``, default: ``true``)
-
 See Also
 --------
 CovarianceModel
