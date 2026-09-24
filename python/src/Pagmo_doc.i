@@ -79,8 +79,8 @@ each algorithm, refer to the correspondings keys in the Pagmo `documentation <ht
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Pagmo-InitialSeed`` (``UnsignedInteger``, default: ``0``): seed for the random number generator.
-- ``Pagmo-memory`` (``Bool``, default: ``false``): whether to use memory in the algorithm.
-- ``Pagmo-DefaultIncrementalEvolution`` (``Bool``, default: ``false``): default incremental evolution mode.
+- ``Pagmo-memory`` (``Bool``, default: ``False``): whether to use memory in the algorithm.
+- ``Pagmo-DefaultIncrementalEvolution`` (``Bool``, default: ``False``): default incremental evolution mode.
 - ``Pagmo-gaco-ker`` (``UnsignedInteger``, default: ``63``): number of ants to evaluate the solution.
 - ``Pagmo-gaco-q`` (``Scalar``, default: ``1.0``): input parameter for the pheromone evaluation.
 - ``Pagmo-gaco-oracle`` (``Scalar``, default: ``0.0``): oracle parameter for the GACO algorithm.
@@ -143,7 +143,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Pagmo-moead-eta_m`` (``Scalar``, default: ``20.0``): MOEAD mutation distribution index.
 - ``Pagmo-moead-realb`` (``Scalar``, default: ``0.9``): MOEAD probability of using polynomial mutation.
 - ``Pagmo-moead-limit`` (``UnsignedInteger``, default: ``2``): MOEAD maximum number of replacements.
-- ``Pagmo-moead-preserve_diversity`` (``Bool``, default: ``true``): MOEAD preserve diversity flag.
+- ``Pagmo-moead-preserve_diversity`` (``Bool``, default: ``True``): MOEAD preserve diversity flag.
 - ``Pagmo-mhaco-ker`` (``UnsignedInteger``, default: ``63``): MHACO number of ants.
 - ``Pagmo-mhaco-q`` (``Scalar``, default: ``1.0``): MHACO pheromone parameter.
 - ``Pagmo-mhaco-threshold`` (``UnsignedInteger``, default: ``1``): MHACO threshold.

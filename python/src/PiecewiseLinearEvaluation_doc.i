@@ -22,7 +22,7 @@ If this parameter is set to *False*, an error message is retrieved for evaluatio
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``PiecewiseLinearEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
+- ``PiecewiseLinearEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``True``)
 - ``PiecewiseLinearEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)
 
 Examples
