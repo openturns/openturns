@@ -31,25 +31,58 @@ int main(int, char *[])
 
   try
   {
-    {
-      LaguerreFactory laguerre(2.5, LaguerreFactory::PROBABILITY);
-      fullprint << "laguerre=" << laguerre << std::endl;
-    }
-    {
-      LaguerreFactory laguerre(2.5, LaguerreFactory::ANALYSIS);
-      fullprint << "laguerre=" << laguerre << std::endl;
-    }
+    // Standard 1-arg factory
     LaguerreFactory laguerre(2.5);
     fullprint << "laguerre=" << laguerre << std::endl;
+
+    // Build first 10 polynomials and check coefficient evaluation consistency
     for (UnsignedInteger i = 0; i < 10; ++i)
     {
-      fullprint << "laguerre(" << i << ")=" << laguerre.build(i).__str__() << std::endl;
+      auto p = laguerre.build(i);
+      fullprint << "laguerre(" << i << ")=" << p.__str__() << std::endl;
+      Point coeffs(p.getCoefficients());
+      for (Scalar x = 0.0; x <= 2.0; x += 1.0)
+      {
+        Scalar yCoeff = 0.0;
+        for (UnsignedInteger j = 0; j < coeffs.getDimension(); ++j)
+          yCoeff += coeffs[j] * std::pow(x, j);
+        assert_almost_equal(yCoeff, p(x));
+      }
     }
+
+    // Check orthonormality using Gauss quadrature
+    {
+      const UnsignedInteger degreeMax = 6;
+      const UnsignedInteger m = degreeMax + 1;
+      Point weights;
+      Point nodes = laguerre.getNodesAndWeights(m, weights);
+      for (UnsignedInteger i = 0; i <= degreeMax; ++i)
+      {
+        auto pI = laguerre.build(i);
+        for (UnsignedInteger j = 0; j <= i; ++j)
+        {
+          auto pJ = laguerre.build(j);
+          Scalar val = 0.0;
+          for (UnsignedInteger k = 0; k < m; ++k)
+            val += weights[k] * pI(nodes[k]) * pJ(nodes[k]);
+          assert_almost_equal(val, (i == j) ? 1.0 : 0.0);
+        }
+      }
+    }
+
+    // Check roots
     Point roots(laguerre.getRoots(10));
     fullprint << "laguerre(10) roots=" << roots << std::endl;
-    Point weights;
-    roots = laguerre.getNodesAndWeights(10, weights);
-    fullprint << "laguerre(10) roots=" << roots << " and weights=" << weights << std::endl;
+    assert_equal(static_cast<UnsignedInteger>(roots.getDimension()), static_cast<UnsignedInteger>(10));
+    auto p10 = laguerre.build(10);
+    for (UnsignedInteger i = 0; i < 10; ++i)
+      assert_almost_equal(p10(roots[i]), 0.0);
+
+    // Check nodes and weights
+    Point weights2;
+    roots = laguerre.getNodesAndWeights(10, weights2);
+    fullprint << "laguerre(10) nodes=" << roots << " and weights=" << weights2 << std::endl;
+    assert_equal(static_cast<UnsignedInteger>(weights2.getDimension()), static_cast<UnsignedInteger>(10));
   }
   catch (TestFailed & ex)
   {

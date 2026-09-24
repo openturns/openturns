@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -14,36 +15,41 @@ factories = [
 ]
 x = [0.5] * 2
 kMax = 5
-ot.ResourceMap.SetAsUnsignedInteger("IteratedQuadrature-MaximumSubIntervals", 2048)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "IteratedQuadrature-MaximumSubIntervals", 2048
+)
 ot.ResourceMap.SetAsScalar("IteratedQuadrature-MaximumError", 1.0e-6)
 for soize in factories:
     distribution = soize.getMeasure()
-    print("SoizeGhanem=", soize)
     functions = list()
     for k in range(kMax):
         functions.append(soize.build(k))
-        print("SoizeGhanem(", k, ")=", functions[k].getEvaluation())
-        print("SoizeGhanem(", k, ")(", x, "=", functions[k](x))
     M = ot.SymmetricMatrix(kMax)
     for m in range(kMax):
         for n in range(m + 1):
 
             def wrapper(x):
-                return functions[m](x) * functions[n](x)[0] * distribution.computePDF(x)
+                return (
+                    functions[m](x)
+                    * functions[n](x)[0]
+                    * distribution.computePDF(x)
+                )
 
             kernel = ot.PythonFunction(distribution.getDimension(), 1, wrapper)
-            value = ot.IteratedQuadrature().integrate(kernel, distribution.getRange())[
-                0
-            ]
+            value = ot.IteratedQuadrature().integrate(
+                kernel, distribution.getRange()
+            )[0]
             if abs(value) >= 1.0e-6:
                 M[m, n] = value
-    print("M=\n", M)
+    ott.assert_almost_equal(M, ot.IdentityMatrix(kMax), 1e-5, 0.0)
 
 # Test isTensorProduct(), case True
 sgTensorProduct = ot.SoizeGhanemFactory(ot.JointDistribution(marginals))
 assert sgTensorProduct.isTensorProduct()
 # Test isTensorProduct(), case False
-sgTensorProduct = ot.SoizeGhanemFactory(ot.JointDistribution(marginals, copula))
+sgTensorProduct = ot.SoizeGhanemFactory(
+    ot.JointDistribution(marginals, copula)
+)
 assert not sgTensorProduct.isTensorProduct()
 
 # Test getMarginal
