@@ -19,7 +19,9 @@ for i in range(uc.distribution.getDimension()):
     polyColl[i] = ot.StandardDistributionPolynomialFactory(
         uc.distribution.getMarginal(i)
     )
-productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+productBasis = ot.OrthogonalProductPolynomialFactory(
+    polyColl, enumerateFunction
+)
 r2 = {}
 for useDomination in [False, True]:
     algo = ot.LeastSquaresExpansion(X, Y, distribution, productBasis, indexMax)

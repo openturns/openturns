@@ -29,6 +29,7 @@
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
+ * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
 
 ==== API changes ====
@@ -59,6 +60,8 @@
  * Added Graph.setXMin/setXMax/setYMin/setYMax
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
+ * Deprecated StandardDistributionPolynomialFactory class
+ * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
 
 ==== New features ====
  * The unary subtraction operator on Function and FunctionImplementation is now available

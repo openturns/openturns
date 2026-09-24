@@ -109,6 +109,7 @@ Examples
 Create the model:
 
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> inputDimension = 1
 >>> model = ot.SymbolicFunction(['x'], ['x * sin(x)'])
@@ -118,7 +119,7 @@ Build the multivariate orthonormal basis:
 
 >>> polyColl = [0.0] * inputDimension
 >>> for i in range(distribution.getDimension()):
-...     polyColl[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+...     polyColl[i] = ot.UniVariateDistributionPolynomialFactory(distribution.getMarginal(i))
 >>> enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 >>> productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
 
@@ -192,7 +193,7 @@ to consider in the expansion, up to the total degree equal to 10.
 >>> polynomialsList = []
 >>> for i in range(inputDimension):
 ...     marginalDistribution = distribution.getMarginal(i)
-...     marginalPolynomial = ot.StandardDistributionPolynomialFactory(marginalDistribution)
+...     marginalPolynomial = ot.UniVariateDistributionPolynomialFactory(marginalDistribution)
 ...     polynomialsList.append(marginalPolynomial)
 >>> basis = ot.OrthogonalProductPolynomialFactory(polynomialsList, enumerateFunction)
 >>> adaptiveStrategy = ot.FixedStrategy(basis, totalSize)

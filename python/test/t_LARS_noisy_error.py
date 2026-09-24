@@ -45,10 +45,14 @@ outputSample = poutre(inputSample)
 dim = distribution.getDimension()
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+    polyCol[i] = ot.StandardDistributionPolynomialFactory(
+        distribution.getMarginal(i)
+    )
 
 enumerateFunction = ot.LinearEnumerateFunction(dim)
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(
+    polyCol, enumerateFunction
+)
 p = 5
 indexMax = enumerateFunction.getStrataCumulatedCardinal(p)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, indexMax)
@@ -59,7 +63,8 @@ if sparse:
     )
     regressionStrategy = ot.LeastSquaresStrategy(approximation_algorithm)
 algochaos = ot.FunctionalChaosAlgorithm(
-    inputSample, outputSample, distribution, adaptiveStrategy, regressionStrategy
+    inputSample, outputSample, distribution,
+    adaptiveStrategy, regressionStrategy
 )
 algochaos.run()
 chaosResult = algochaos.getResult()

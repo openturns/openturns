@@ -98,10 +98,14 @@ dim = 3
 enumerateFunction = ot.LinearEnumerateFunction(dim)
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+    polyCol[i] = ot.StandardDistributionPolynomialFactory(
+        distribution.getMarginal(i)
+    )
 
 # Chaos definition
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(
+    polyCol, enumerateFunction
+)
 indexMax = enumerateFunction.getStrataCumulatedCardinal(1)
 strategy = ot.FixedStrategy(multivariateBasis, indexMax)
 
@@ -117,14 +121,16 @@ chaos = ot.FunctionalChaosAlgorithm(
 )
 chaos.run()
 chaos_sparse = ot.FunctionalChaosAlgorithm(
-    input_sample, output_sample, distribution, strategy, evaluationStrategy_sparse
+    input_sample, output_sample, distribution,
+    strategy, evaluationStrategy_sparse
 )
 chaos_sparse.run()
 
 ancova = ot.ANCOVA(chaos.getResult(), input_sample)
 ancova_sparse = ot.ANCOVA(chaos_sparse.getResult(), input_sample)
 print(
-    "Indice ancova, chaos normal : {:0.3f} {:0.3f} {:0.3f}".format(*ancova.getIndices())
+    "Indice ancova, chaos normal : "
+    "{:0.3f} {:0.3f} {:0.3f}".format(*ancova.getIndices())
 )
 print(
     "Indice ancova, chaos sparse : {:0.3f} {:0.3f} {:0.3f}".format(
