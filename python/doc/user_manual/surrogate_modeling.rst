@@ -93,6 +93,8 @@ Main classes
     KrigingAlgorithm
     KrigingRandomVector
     KrigingResult
+    GeneralLinearModelAlgorithm
+    GeneralLinearModelResult
 
 Construction of the regression basis
 ------------------------------------
