@@ -258,3 +258,37 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     dist.computeProbability(ot.Interval([-1.0], [1.0], [False], [False])), 1.0
 )
+
+# rectangular probability algorithm (Genz vs Ridgway) in dimension 7
+dim = 7
+R = ot.CorrelationMatrix(dim)
+for i in range(dim):
+    for j in range(i):
+        R[i, j] = 0.3
+normal = ot.Normal([0.0] * dim, [1.0] * dim, R)
+point = [0.0] * dim
+assert ot.ResourceMap.GetAsString("Normal-RectangularProbabilityAlgorithm") == "Genz"
+ot.Log.Show(ot.Log.NONE)
+p_genz = normal.computeCDF(point)
+p_box = normal.computeProbability(ot.Interval([-10.0] * dim, point))
+ot.Log.Show(ot.Log.TRACE)
+# the CDF at the mean is far from zero (the Genz fallback used wrong bounds and returned 0.0)
+assert p_genz > 1e-3
+# consistency with computeProbability over a large finite box
+ott.assert_almost_equal(p_box, p_genz, 1e-2, 1e-3)
+# switch to Ridgway with reduced size for speed
+oldParticles = ot.ResourceMap.GetAsUnsignedInteger("Ridgway-DefaultParticleNumber")
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-DefaultParticleNumber", 500)
+ot.ResourceMap.SetAsString("Normal-RectangularProbabilityAlgorithm", "Ridgway")
+ot.RandomGenerator.SetSeed(0)
+ot.Log.Show(ot.Log.NONE)
+p_ridgway = normal.computeCDF(point)
+ot.Log.Show(ot.Log.TRACE)
+ott.assert_almost_equal(p_ridgway, p_genz, 1e-1, 5e-2)
+ot.ResourceMap.SetAsString("Normal-RectangularProbabilityAlgorithm", "Genz")
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-DefaultParticleNumber", oldParticles)
+# unknown algorithm raises at key-setting time
+ot.Log.Show(ot.Log.NONE)
+with ott.assert_raises(TypeError):
+    ot.ResourceMap.SetAsString("Normal-RectangularProbabilityAlgorithm", "Unknown")
+ot.Log.Show(ot.Log.TRACE)

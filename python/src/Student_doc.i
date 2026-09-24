@@ -81,6 +81,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Student-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``): maximum number of points of the grid used to compute the CDF.
 - ``Student-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``): relative precision of the Monte Carlo estimation of the CDF.
 - ``Student-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``): minimum number of points of the grid used to compute the CDF.
+- ``Student-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo).
 - ``Student-SmallDimension`` (``UnsignedInteger``, default: ``6``): below this dimension, the CDF is computed by numerical integration instead of Monte Carlo.
 
 Examples
@@ -150,9 +151,10 @@ The algorithm depends on the dimension:
 - dim 1: direct evaluation via the regularized incomplete beta function;
 - dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pStudent2D`);
 - dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pStudent3D`);
-- dim >= 4: quasi-Monte Carlo Genz algorithm with ``Genz-DefaultSampleSize``
-  Sobol' realizations, conditioning on the Chi-square factor of the
-  Student representation.
+- dim >= 4: rectangular probability with the algorithm selected by
+  ``Student-RectangularProbabilityAlgorithm`` (``Genz`` quasi-Monte Carlo with ``Genz-DefaultSampleSize``
+  Sobol' realizations by default, or ``Ridgway`` sequential Monte Carlo),
+  conditioning on the Chi-square factor of the Student representation.
 
 )RAW"
 
@@ -180,9 +182,10 @@ The algorithm depends on the dimension:
 - dim 1: generic 1D algorithm;
 - dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pStudent2D`);
 - dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pStudent3D`);
-- dim >= 4: quasi-Monte Carlo Genz algorithm with ``Genz-DefaultSampleSize``
-  Sobol' realizations, conditioning on the Chi-square factor of the
-  Student representation.
+- dim >= 4: rectangular probability with the algorithm selected by
+  ``Student-RectangularProbabilityAlgorithm`` (``Genz`` quasi-Monte Carlo with ``Genz-DefaultSampleSize``
+  Sobol' realizations by default, or ``Ridgway`` sequential Monte Carlo),
+  conditioning on the Chi-square factor of the Student representation.
 
 )RAW"
 

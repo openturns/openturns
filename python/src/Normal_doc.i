@@ -68,6 +68,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Normal-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``): maximum number of points of the grid used to compute the CDF.
 - ``Normal-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``): relative precision of the Monte Carlo estimation of the CDF.
 - ``Normal-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``): minimum number of points of the grid used to compute the CDF.
+- ``Normal-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo).
 
 Examples
 --------
@@ -137,9 +138,10 @@ The algorithm depends on the dimension:
 - dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pNormal2D`);
 - dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pNormal3D`);
 - dim 4-``Normal-SmallDimension`` (default 6): tensor-product Gauss-Kronrod
-  quadrature on :math:`N^k` nodes;
-- dim > ``Normal-SmallDimension``: quasi-Monte Carlo Genz algorithm with ``Genz-DefaultSampleSize``
-  Sobol' realizations.
+  quadrature on :math:`N^\inputDim` nodes;
+- dim > ``Normal-SmallDimension``: rectangular probability with the algorithm selected by
+  ``Normal-RectangularProbabilityAlgorithm`` (``Genz`` quasi-Monte Carlo with ``Genz-DefaultSampleSize``
+  Sobol' realizations by default, or ``Ridgway`` sequential Monte Carlo).
 
 )RAW"
 
@@ -168,7 +170,8 @@ The algorithm depends on the dimension:
 - any dim, independent copula: product of the marginal probabilities;
 - dim 2: specialized 2D routine (:meth:`~openturns.DistFunc.pNormal2D`);
 - dim 3: specialized 3D routine (:meth:`~openturns.DistFunc.pNormal3D`);
-- dim >= 4: quasi-Monte Carlo Genz algorithm with ``Genz-DefaultSampleSize``
-  Sobol' realizations.
+- dim >= 4: rectangular probability with the algorithm selected by
+  ``Normal-RectangularProbabilityAlgorithm`` (``Genz`` quasi-Monte Carlo with ``Genz-DefaultSampleSize``
+  Sobol' realizations by default, or ``Ridgway`` sequential Monte Carlo).
 
 )RAW"
