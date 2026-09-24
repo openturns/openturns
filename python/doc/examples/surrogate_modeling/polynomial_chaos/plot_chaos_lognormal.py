@@ -1,6 +1,6 @@
 """
-See pitfalls due to the input distribution
-==========================================
+FCE: pitfalls due to the input distribution
+===========================================
 """
 
 # %%

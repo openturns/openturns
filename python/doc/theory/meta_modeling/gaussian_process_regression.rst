@@ -190,18 +190,18 @@ On the contrary, the noise is homoscedastic.
 
 The noise is introduced during the step of the parameters estimation: in the likelihood expression defined
 in :eq:`logLikelihoodGPgen`, the covariance matrix of the process defined in :eq:`CovaMatDef` is transformed
-into the covariance matrix :math:`\mat{C}^{\text{noise}}` defined by:
+into the covariance matrix :math:`\mat{C}^{\text{noise}}_{\vect{p}}` defined by:
 
 .. math::
 
     \mat{C}^{\text{noise}}_{\vect{p}} =
-      \mat{C} + \text{diag}\left(\mat{\Sigma}_1^{\text{noise}}, \dots, \mat{\Sigma}_n^{\text{noise}}\right)
+      \mat{C}_{\vect{p}} + \text{diag}\left(\mat{\Sigma}_1^{\text{noise}}, \dots, \mat{\Sigma}_n^{\text{noise}}\right)
       \in \cS_{\outputDim \times \sampleSize}^+(\Rset)
 
 Thus the covariance matrix of the noise has been added on the bloc-diagonal of the initial covariance matrix.
 
 Note that the  noise is taken into account to estimate the parameters only. The final covariance model of the
-process is still defined by the initial covariance function :math:`\vect{C}` once the parameters have been
+process is still defined by the initial covariance function :math:`\vect{C}_{\vect{p}}` once the parameters have been
 estimated.
 
 Use the method *setNoise* of the class :class:`~openturns.GaussianProcessFitter`.
@@ -237,7 +237,7 @@ Then, :math:`\vect{Z}` is a Gaussian process, which mean is defined by:
     & = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega,
     \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_{\sampleSize}))} \vect{\gamma}
 
-where:
+where (we drop the index :math:`\vect{p}` to simplify the notation):
 
 .. math::
 

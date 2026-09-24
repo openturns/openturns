@@ -4,13 +4,12 @@ R"RAW(Polya distribution.
 
 Parameters
 ----------
-r : float, :math:`r > 0`
-    Stopping time of the Bernoulli process.
+r : float, :math:`r > 0`.
 
     Default value is 1.0.
 
-p : float, :math:`0 < p < 1`
-    Success probability of the Bernoulli trial.
+p : float, :math:`0 < p < 1`.
+    Probability parameter.
 
     Default value is 0.5.
 

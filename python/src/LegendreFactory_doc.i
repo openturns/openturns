@@ -1,7 +1,7 @@
 %feature("docstring") OT::LegendreFactory
 R"RAW(Legendre specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Uniform` distribution.
+For the :class:`~openturns.Uniform` distribution :math:`\cU(-1,1)`.
 
 Notes
 -----
@@ -10,20 +10,20 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+    P_{i + 1} & = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad  i \geq 0 \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Legendre polynomials come analytically and
-read:
+read  for :math:`i \geq 0`:
 
 .. math::
 
-    \begin{array}{rcl}
-        a_i & = & \displaystyle \frac{\sqrt{(2 i + 1) (2 i + 3)}}
+        a_i & =  \displaystyle \frac{\sqrt{(2 i + 1) (2 i + 3)}}
                                      {i + 1} \\
-        b_i & = & 0 \\
-        c_i & = & \displaystyle - \frac{i \sqrt{2 i + 3}}
+        b_i & =  0 \\
+        c_i & =  \displaystyle - \frac{i \sqrt{2 i + 3}}
                                        {(i + 1) \sqrt{2 i - 1}}
-    \end{array}, \quad 1 < i
 
 See also
 --------
@@ -37,4 +37,7 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 1.73205 * X
--1.11803 + 3.3541 * X^2)RAW"
+-1.11803 + 3.3541 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[1.93649,0,-1.11803]
+)RAW"
