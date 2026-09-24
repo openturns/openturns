@@ -68,7 +68,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Normal-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``): maximum number of points of the grid used to compute the CDF.
 - ``Normal-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``): relative precision of the Monte Carlo estimation of the CDF.
 - ``Normal-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``): minimum number of points of the grid used to compute the CDF.
-- ``Normal-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo).
+- ``Normal-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo, more robust for tail probabilities [fasano2025]_).
 
 Examples
 --------

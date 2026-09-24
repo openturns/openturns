@@ -81,7 +81,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Student-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``): maximum number of points of the grid used to compute the CDF.
 - ``Student-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``): relative precision of the Monte Carlo estimation of the CDF.
 - ``Student-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``): minimum number of points of the grid used to compute the CDF.
-- ``Student-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo).
+- ``Student-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo, more robust for tail probabilities [fasano2025]_).
 - ``Student-SmallDimension`` (``UnsignedInteger``, default: ``6``): below this dimension, the CDF is computed by numerical integration instead of Monte Carlo.
 
 Examples

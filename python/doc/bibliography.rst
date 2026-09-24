@@ -162,6 +162,10 @@ Bibliography
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
+.. [fasano2025] Fasano, A. and Denti, F. (2025). *Multivariate Gaussian cumulative
+    distribution functions as the marginal likelihood of their dual Bayesian probit models.*
+    Biometrika, 112(4), asaf060.
+    https://doi.org/10.1093/biomet/asaf060
 .. [feller1970] Feller W.,
     *An Introduction to Probability Theory and Its Application*, John Wiley \& Sons,
     2nd edition, Vol. 2.
