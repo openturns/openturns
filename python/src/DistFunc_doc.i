@@ -2303,6 +2303,16 @@ The Student-t probability is computed via the representation
 and :math:`W \sim \chi^2_\nu`, using a Sobol' quasi-Monte Carlo integration
 over the chi-squared scale factor.
 
+The outer Student samples are processed in sequential blocks, each block
+being fully parallelized. The uniform draws of each block are generated
+sequentially in advance, so no random number generation remains inside
+parallel regions. A block contains as many samples as fit in the pool
+described below.
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Ridgway-UniformPoolSize`` (``UnsignedInteger``, default: ``1048576``): maximum number of uniform draws generated sequentially in advance per block; one sample needs up to :math:`M \inputDim (\inputDim + 1) / 2 + \inputDim - 1` draws, and larger samples are rejected. The value must be strictly positive.
+
 Examples
 --------
 >>> import openturns as ot

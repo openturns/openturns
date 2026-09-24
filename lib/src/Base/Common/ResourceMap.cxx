@@ -1418,6 +1418,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Ridgway-DefaultParticleNumber", 1000);
   addAsScalar("Ridgway-DefaultAlpha", 0.5);
   addAsUnsignedInteger("Ridgway-DefaultStudentSampleSize", 1024);
+  addAsUnsignedInteger("Ridgway-UniformPoolSize", 1048576);
   addAsString("Ridgway-LowDiscrepancySequence", "SobolSequence");
 
   // FiniteDiscreteDistribution parameters //

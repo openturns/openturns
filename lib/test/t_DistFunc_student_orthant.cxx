@@ -151,6 +151,42 @@ int main(int, char *[])
       }
     }
     {
+      fullprint << "Error: UniformPoolSize = 0" << std::endl;
+      TriangularMatrix L(1);
+      L(0, 0) = 1.0;
+      const UnsignedInteger oldPoolSize = ResourceMap::GetAsUnsignedInteger("Ridgway-UniformPoolSize");
+      ResourceMap::SetAsUnsignedInteger("Ridgway-UniformPoolSize", 0);
+      try
+      {
+        DistFunc::pStudentOrthantND({-1.0}, {1.0}, L, 5.0);
+        throw TestFailed("Exception has NOT been thrown or caught!");
+      }
+      catch (const InvalidArgumentException &)
+      {
+        // expected
+      }
+      ResourceMap::SetAsUnsignedInteger("Ridgway-UniformPoolSize", oldPoolSize);
+    }
+    {
+      fullprint << "Error: UniformPoolSize too small" << std::endl;
+      TriangularMatrix L(2);
+      L(0, 0) = 1.0;
+      L(1, 0) = 0.0;
+      L(1, 1) = 1.0;
+      const UnsignedInteger oldPoolSize = ResourceMap::GetAsUnsignedInteger("Ridgway-UniformPoolSize");
+      ResourceMap::SetAsUnsignedInteger("Ridgway-UniformPoolSize", 10);
+      try
+      {
+        DistFunc::pStudentOrthantND({-1.0, -1.0}, {1.0, 1.0}, L, 5.0);
+        throw TestFailed("Exception has NOT been thrown or caught!");
+      }
+      catch (const InvalidArgumentException &)
+      {
+        // expected
+      }
+      ResourceMap::SetAsUnsignedInteger("Ridgway-UniformPoolSize", oldPoolSize);
+    }
+    {
       fullprint << "Edge: a == b" << std::endl;
       TriangularMatrix L(1);
       L(0, 0) = 1.0;

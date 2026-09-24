@@ -339,6 +339,7 @@
   <Ridgway-DefaultParticleNumber value_int="1000" />
   <Ridgway-DefaultAlpha value_float="0.5" />
   <Ridgway-DefaultStudentSampleSize value_int="1024" />
+  <Ridgway-UniformPoolSize value_int="1048576" />
   <Ridgway-LowDiscrepancySequence value_str="SobolSequence" />
 
   <!-- OT::FejerExperiment parameters -->
