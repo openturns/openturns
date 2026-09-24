@@ -19,12 +19,6 @@ indices : sequence of int
 design : 2-d sequence of float
     The known design matrix
 
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``CholeskyMethod-LargeCase`` (``UnsignedInteger``, default: ``128``): dimension above which the Cholesky method falls back to the large case algorithm
-
 See also
 --------
 LeastSquaresMethod, SVDMethod, QRMethod
