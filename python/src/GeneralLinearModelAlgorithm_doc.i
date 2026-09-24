@@ -419,6 +419,7 @@ Parameters
 ----------
 noise : sequence of positive float
     The noise variance :math:`\tau_k^2` of each output value.
+
 Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
