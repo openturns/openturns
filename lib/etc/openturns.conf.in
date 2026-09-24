@@ -683,6 +683,7 @@
   <Normal-MarginalIntegrationNodesNumber value_int="16"       />
   <Normal-MaximumNumberOfPoints          value_int="10000000" />
   <Normal-MinimumNumberOfPoints          value_int="100000"   />
+  <Normal-RectangularProbabilityAlgorithm value_str="Genz"     />
   <Normal-SmallDimension                 value_int="6"        />
 
   <!-- OT::ParetoFactory parameters -->
@@ -753,6 +754,7 @@
   <Student-MarginalIntegrationNodesNumber value_int="16"       />
   <Student-MaximumNumberOfPoints          value_int="10000000" />
   <Student-MinimumNumberOfPoints          value_int="100000"   />
+  <Student-RectangularProbabilityAlgorithm value_str="Genz"    />
   <Student-SmallDimension                 value_int="6"        />
   
   <!-- OT::StudentFactory parameters -->

@@ -263,10 +263,21 @@ Scalar Student::computeCDF(const Point & point) const
     if (sigma_[2] == 0.0) return DistFunc::pStudent2D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], R_(1, 0));
     return DistFunc::pStudent3D(nu_, (point[0] - mean_[0]) / sigma_[0], (point[1] - mean_[1]) / sigma_[1], (point[2] - mean_[2]) / sigma_[2], R_(1, 0), R_(2, 0), R_(2, 1));
   }
-  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz)
-  LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz) or a sequential Monte Carlo algorithm (Ridgway)
+  LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high.");
   const Point lowerBounds(dimension, SpecFunc::LowestScalar);
-  return DistFunc::pStudentND(lowerBounds, point, mean_, cholesky_, nu_);
+  const String algorithm(ResourceMap::GetAsString("Student-RectangularProbabilityAlgorithm"));
+  if (algorithm == "Genz")
+  {
+    LOGWARN(OSS() << "We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+    return DistFunc::pStudentND(lowerBounds, point, mean_, cholesky_, nu_);
+  }
+  if (algorithm == "Ridgway")
+  {
+    LOGWARN(OSS() << "We will use a sequential Monte Carlo method (Ridgway algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber") << " particles.");
+    return DistFunc::pStudentOrthantND(lowerBounds, point, mean_, cholesky_, nu_);
+  }
+  throw InvalidArgumentException(HERE) << "Error: unknown rectangular probability algorithm=" << algorithm << ", expected Genz or Ridgway";
 } // computeCDF
 
 Sample Student::computeCDF(const Sample & sample) const
@@ -338,8 +349,8 @@ Scalar Student::computeProbability(const Interval & interval) const
     }
     return DistFunc::pStudent3D(nu_, lower0, lower1, lower2, upper0, upper1, upper2, R_(0, 1), R_(0, 2), R_(1, 2));
   }
-  // For large dimension, use a quasi-Monte Carlo algorithm (Genz)
-  LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is large. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  // For large dimension, use a quasi-Monte Carlo algorithm (Genz) or a sequential Monte Carlo algorithm (Ridgway)
+  LOGWARN(OSS() << "Warning, in Student::computeProbability(), the dimension is large.");
   Point lowerBounds(interval.getLowerBound());
   Point upperBounds(interval.getUpperBound());
   const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
@@ -349,7 +360,18 @@ Scalar Student::computeProbability(const Interval & interval) const
     if (!finiteLower[i]) lowerBounds[i] = SpecFunc::LowestScalar;
     if (!finiteUpper[i]) upperBounds[i] = SpecFunc::MaxScalar;
   }
-  return DistFunc::pStudentND(lowerBounds, upperBounds, mean_, cholesky_, nu_);
+  const String algorithm(ResourceMap::GetAsString("Student-RectangularProbabilityAlgorithm"));
+  if (algorithm == "Genz")
+  {
+    LOGWARN(OSS() << "We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+    return DistFunc::pStudentND(lowerBounds, upperBounds, mean_, cholesky_, nu_);
+  }
+  if (algorithm == "Ridgway")
+  {
+    LOGWARN(OSS() << "We will use a sequential Monte Carlo method (Ridgway algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber") << " particles.");
+    return DistFunc::pStudentOrthantND(lowerBounds, upperBounds, mean_, cholesky_, nu_);
+  }
+  throw InvalidArgumentException(HERE) << "Error: unknown rectangular probability algorithm=" << algorithm << ", expected Genz or Ridgway";
 }
 
 /* Compute the entropy of the distribution */

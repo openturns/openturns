@@ -375,9 +375,21 @@ Scalar Normal::computeCDF(const Point & point) const
     const Scalar probability = allWeights.dot(allPDF.getImplementation()->getData());
     return probability;
   }
-  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz)
-  LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
-  return DistFunc::pNormalND(point, mean_, cholesky_);
+  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz) or a sequential Monte Carlo algorithm (Ridgway)
+  LOGWARN(OSS() << "Warning, in Normal::computeCDF(), the dimension is very high.");
+  const Point lowestBounds(dimension, SpecFunc::LowestScalar);
+  const String algorithm(ResourceMap::GetAsString("Normal-RectangularProbabilityAlgorithm"));
+  if (algorithm == "Genz")
+  {
+    LOGWARN(OSS() << "We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+    return DistFunc::pNormalND(lowestBounds, point, mean_, cholesky_);
+  }
+  if (algorithm == "Ridgway")
+  {
+    LOGWARN(OSS() << "We will use a sequential Monte Carlo method (Ridgway algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber") << " particles.");
+    return DistFunc::pNormalOrthantND(lowestBounds, point, mean_, cholesky_);
+  }
+  throw InvalidArgumentException(HERE) << "Error: unknown rectangular probability algorithm=" << algorithm << ", expected Genz or Ridgway";
 } // computeCDF
 
 Sample Normal::computeCDF(const Sample & sample) const
@@ -490,8 +502,8 @@ Scalar Normal::computeProbability(const Interval & interval) const
   if (dimension == 2) return DistFunc::pNormal2D(lower[0], lower[1], upper[0], upper[1], R_(0, 1));
   // For the tridimensional case, use specialized high precision routine
   if (dimension == 3) return DistFunc::pNormal3D(lower[0], lower[1], lower[2], upper[0], upper[1], upper[2], R_(0, 1), R_(0, 2), R_(1, 2));
-  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz)
-  LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is large. We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+  // For very large dimension, use a quasi-Monte Carlo algorithm (Genz) or a sequential Monte Carlo algorithm (Ridgway)
+  LOGWARN(OSS() << "Warning, in Normal::computeProbability(), the dimension is large.");
   Point lowerBounds(interval.getLowerBound());
   Point upperBounds(interval.getUpperBound());
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -499,7 +511,18 @@ Scalar Normal::computeProbability(const Interval & interval) const
     if (!finiteLower[i]) lowerBounds[i] = SpecFunc::LowestScalar;
     if (!finiteUpper[i]) upperBounds[i] = SpecFunc::MaxScalar;
   }
-  return DistFunc::pNormalND(lowerBounds, upperBounds, mean_, cholesky_);
+  const String algorithm(ResourceMap::GetAsString("Normal-RectangularProbabilityAlgorithm"));
+  if (algorithm == "Genz")
+  {
+    LOGWARN(OSS() << "We will use a quasi-Monte Carlo method (Genz algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Genz-DefaultSampleSize") << " Sobol' realizations.");
+    return DistFunc::pNormalND(lowerBounds, upperBounds, mean_, cholesky_);
+  }
+  if (algorithm == "Ridgway")
+  {
+    LOGWARN(OSS() << "We will use a sequential Monte Carlo method (Ridgway algorithm) for the computation with " << ResourceMap::GetAsUnsignedInteger("Ridgway-DefaultParticleNumber") << " particles.");
+    return DistFunc::pNormalOrthantND(lowerBounds, upperBounds, mean_, cholesky_);
+  }
+  throw InvalidArgumentException(HERE) << "Error: unknown rectangular probability algorithm=" << algorithm << ", expected Genz or Ridgway";
 }
 
 /* Get the CDF gradient of the distribution */

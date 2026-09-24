@@ -1322,6 +1322,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Normal-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Normal-MaximumNumberOfPoints", 10000000);
   addAsUnsignedInteger("Normal-MinimumNumberOfPoints", 100000);
+  addAsString("Normal-RectangularProbabilityAlgorithm", "Genz", {"Genz", "Ridgway"});
   addAsUnsignedInteger("Normal-SmallDimension", 6);
 
   // ParetoFactory parameters //
@@ -1392,6 +1393,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Student-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Student-MaximumNumberOfPoints", 10000000);
   addAsUnsignedInteger("Student-MinimumNumberOfPoints", 100000);
+  addAsString("Student-RectangularProbabilityAlgorithm", "Genz", {"Genz", "Ridgway"});
   addAsUnsignedInteger("Student-SmallDimension", 6);
 
   // StudentFactory parameters //

@@ -320,3 +320,40 @@ dist = ot.Student(
     ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]]),
 )
 sample = dist.getSample(10)
+
+# rectangular probability algorithm (Genz vs Ridgway) in dimension 7
+dim = 7
+R = ot.CorrelationMatrix(dim)
+for i in range(dim):
+    for j in range(i):
+        R[i, j] = 0.3
+student = ot.Student(5.0, [0.0] * dim, [1.0] * dim, R)
+point = [0.5] * dim
+assert ot.ResourceMap.GetAsString("Student-RectangularProbabilityAlgorithm") == "Genz"
+oldGenz = ot.ResourceMap.GetAsUnsignedInteger("Genz-DefaultSampleSize")
+ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", 2**12)
+ot.Log.Show(ot.Log.NONE)
+p_genz = student.computeCDF(point)
+p_box = student.computeProbability(ot.Interval([-10.0] * dim, point))
+ot.Log.Show(ot.Log.TRACE)
+ott.assert_almost_equal(p_box, p_genz, 1e-2, 1e-3)
+# switch to Ridgway with reduced sizes for speed
+oldParticles = ot.ResourceMap.GetAsUnsignedInteger("Ridgway-DefaultParticleNumber")
+oldN = ot.ResourceMap.GetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize")
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-DefaultParticleNumber", 500)
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize", 256)
+ot.ResourceMap.SetAsString("Student-RectangularProbabilityAlgorithm", "Ridgway")
+ot.RandomGenerator.SetSeed(0)
+ot.Log.Show(ot.Log.NONE)
+p_ridgway = student.computeCDF(point)
+ot.Log.Show(ot.Log.TRACE)
+ott.assert_almost_equal(p_ridgway, p_genz, 2e-1, 5e-2)
+ot.ResourceMap.SetAsString("Student-RectangularProbabilityAlgorithm", "Genz")
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-DefaultParticleNumber", oldParticles)
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-DefaultStudentSampleSize", oldN)
+# unknown algorithm raises at key-setting time
+ot.Log.Show(ot.Log.NONE)
+with ott.assert_raises(TypeError):
+    ot.ResourceMap.SetAsString("Student-RectangularProbabilityAlgorithm", "Unknown")
+ot.Log.Show(ot.Log.TRACE)
+ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", oldGenz)
