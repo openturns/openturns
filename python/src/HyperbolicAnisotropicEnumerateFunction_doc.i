@@ -28,6 +28,8 @@ See also
 --------
 EnumerateFunction, LinearEnumerateFunction
 
+Notes
+-----
 Enumeration functions are bijections from :math:`\Nset` to :math:`\Nset^{\inputDim}` (refer to :any:`enumeration_strategy`).
 
 They can be used to enumerate a multivariate basis
