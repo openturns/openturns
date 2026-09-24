@@ -29,7 +29,7 @@
 #include "openturns/FunctionalChaosAlgorithm.hxx"
 #include "openturns/LARS.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/UniVariateDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresStrategy.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"

@@ -1,5 +1,9 @@
-%feature("docstring") OT::StandardDistributionPolynomialFactory
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory
 R"RAW(Build orthonormal or orthogonal univariate polynomial families.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
 
 Parameters
 ----------
@@ -18,8 +22,8 @@ Notes
 Use this functionality with caution:
 
    - The polynomials exist if and only if the distribution admits finite
-     moments of all orders. Even if some algorithms manage to compute something, it
-     will be plain numerical noise.
+     moments of all orders. Otherwise, any result produced will be plain
+     numerical noise.
    - Even if the polynomials exist, they form a Hilbertian basis with respect to the
      dot product induced by the distribution if and only if the distribution is
      **determinate**, i.e., is characterized by its moments. For example, the
@@ -30,15 +34,14 @@ Use this functionality with caution:
      projected (see [ernst2012]_).
      See :any:`functional_chaos` for more details on this topic.
 
-OpenTURNS implements the following **specific orthonormal** [#orthonormal]_
-univariate polynomial families together with their associated **distribution
-families**.
+OpenTURNS implements the following **specific orthonormal** univariate
+polynomial families together with their associated distributions.
 
 .. list-table::
-   :widths: 50 50
+   :widths: 60 40
    :header-rows: 1
 
-   * - Distribution family
+   * - Distribution
      - Polynomial
    * - :class:`~openturns.Normal` :math:`\cN(\mu, \sigma)`
      - :class:`~openturns.HermiteFactory`
@@ -46,7 +49,7 @@ families**.
      - :class:`~openturns.LegendreFactory`
    * - :class:`~openturns.Gamma` :math:`\Gamma(k, \lambda, \gamma)`
      - :class:`~openturns.LaguerreFactory`
-   * - :class:`~openturns.Beta` :math:`{\rm B}(r, t, a, b)`
+   * - :class:`~openturns.Beta` :math:`B(\alpha, \beta, a, b)`
      - :class:`~openturns.JacobiFactory`
    * - :class:`~openturns.Poisson` :math:`\cP(\lambda)`
      - :class:`~openturns.CharlierFactory`
@@ -55,37 +58,26 @@ families**.
    * - :class:`~openturns.Polya` :math:`\cB^-(r, p)`
      - :class:`~openturns.MeixnerFactory`
 
-The polynomials of each of these families are orthonormal with respect to the
-**standard representative** of the corresponding distribution family, see
-:meth:`~openturns.Distribution.getStandardRepresentative`, eg
-:math:`\cN(0, 1)` for the Normal family and :math:`\cU(-1, 1)` for the
-Uniform family: the recurrence coefficients returned by these specific
-families are exactly those of the polynomials orthonormal with respect to
-the standard representative distribution. For the continuous families, any
-other member of the family is mapped onto its standard representative by an
-**affine transformation** :math:`X = \alpha Z + \beta`, and the orthonormal
-polynomials with respect to :math:`X` are obtained from those of :math:`Z`
-by the substitution :math:`x \mapsto (x - \beta)/\alpha`. For example, if
-:math:`Z \sim \cN(0, 1)`, then :math:`X = \mu + \sigma Z \sim \cN(\mu, \sigma)`
-with :math:`\alpha = \sigma` and :math:`\beta = \mu`.
+For a distribution which admits a standard representative in the same
+parametric family, the polynomial family is built for this **standard
+representative**. The affine transformation maps a random variable :math:`X`
+distributed according to :math:`\mu` to its standard representative
+:math:`Z = aX + b`. For example, if :math:`X \sim \cN(\mu, \sigma)`, its
+standard representative is
+:math:`Z = (X - \mu)/\sigma \sim \cN(0, 1)`. The polynomial :math:`P_n`
+orthonormal with respect to :math:`\mu` is the composition of the
+polynomial :math:`p_n` orthonormal with respect to the standard
+representative :math:`\mu_0` and of the affine transformation:
 
-In addition, OpenTURNS provides generic algorithms for building orthonormal
-univariate polynomial families with respect to an arbitrary probability
-measure, given as a :class:`~openturns.Distribution`.
-Currently, :class:`~openturns.AdaptiveStieltjesAlgorithm` is the only
-available :class:`~openturns.OrthonormalizationAlgorithm`, and it is used
-by default.
+.. math::
 
-.. [#orthonormal] A polynomial family :math:`(P_n)_{n \geq 0}` is said to be
-    orthonormal with respect to the probability measure :math:`w(z) \di{z}` if
-    and only if:
+    P_n(x)\ =\ p_n(a x + b).
 
-    .. math::
-
-        \scalarproduct{P_i}{P_j} = \int_{\supp{w}} P_i(z) P_j(z) w(z) \di{z}
-                                 = \delta_{ij}, \quad i, j = 1, \ldots, n
-
-    where :math:`\delta_{ij}` denotes Kronecker's delta.
+Aside, OpenTURNS also implements generic algorithms for building orthonormal
+univariate polynomial families with respect to any arbitrary probability
+measure (implemented as a :class:`~openturns.Distribution`).
+OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorithm`\s,
+with :class:`~openturns.AdaptiveStieltjesAlgorithm` as the default.
 
 See also
 --------
@@ -99,7 +91,7 @@ Examples
 Build the specific orthonormal polynomial factory associated to the normal
 distribution (Hermite):
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.Normal())
+>>> polynomial_factory = ot.UniVariateDistributionPolynomialFactory(ot.Normal())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
@@ -109,28 +101,35 @@ X
 Build an orthonormal polynomial factory for the WeibullMin distribution with
 the default orthonormalization algorithm:
 
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(ot.WeibullMin())
+>>> polynomial_factory = ot.UniVariateDistributionPolynomialFactory(ot.WeibullMin())
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
 -1 + X
 1 - 2 * X + 0.5 * X^2
 
-Build an orthonormal polynomial factory for the WeibullMin distribution with
+Build an orthonormal polynomial factory for the Weibull min distribution with
 adaptive Stieltjes's orthonormalization algorithm:
 
 >>> algorithm = ot.AdaptiveStieltjesAlgorithm(ot.WeibullMin())
->>> polynomial_factory = ot.StandardDistributionPolynomialFactory(algorithm)
+>>> polynomial_factory = ot.UniVariateDistributionPolynomialFactory(algorithm)
 >>> for i in range(3):
 ...     print(polynomial_factory.build(i))
 1
 -1 + X
 1 - 2 * X + 0.5 * X^2
+
+Non-standard parameters trigger an affine transformation. For example,
+a Normal distribution with :math:`\mu = 2.0` and :math:`\sigma = 3.0`:
+
+>>> polynomial_factory = ot.UniVariateDistributionPolynomialFactory(ot.Normal(2.0, 3.0))
+>>> polynomial_factory.getHasSpecificFamily()
+True
 )RAW"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StandardDistributionPolynomialFactory::getHasSpecificFamily
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory::getHasSpecificFamily
 "Accessor to the specific family boolean.
 
 Returns
@@ -140,7 +139,7 @@ hasSpecificFamily : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StandardDistributionPolynomialFactory::getOrthonormalizationAlgorithm
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory::getOrthonormalizationAlgorithm
 "Accessor to the orthonormalization algorithm.
 
 Returns
@@ -150,7 +149,7 @@ orthonormalizationAlgorithm : :class:`~openturns.OrthonormalizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StandardDistributionPolynomialFactory::getSpecificFamily
+%feature("docstring") OT::UniVariateDistributionPolynomialFactory::getSpecificFamily
 "Accessor to the specific orthonormal polynomial family.
 
 Returns
