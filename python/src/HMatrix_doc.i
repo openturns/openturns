@@ -27,6 +27,26 @@ OT_HMatrix_getNbRows_doc
 OT_HMatrix_getNbColumns_doc
 %feature("docstring") OT::HMatrix::assemble
 OT_HMatrix_assemble_doc
+%feature("docstring") OT::HMatrix::assembleReal
+"Assemble matrix.
+
+Parameters
+----------
+callable : function
+    Assembly function that takes :math:`i, j` int parameters and returns a float.
+symmetry : str
+    Symmetry flag, either :math:`N` or :math:`L`."
+%feature("docstring") OT::HMatrix::assembleTensor
+"Assemble matrix by block.
+
+Parameters
+----------
+callable : function
+    Assembly function that takes :math:`i, j` int parameters and returns a Matrix.
+outputDimension : int
+    Block dimension.
+symmetry : str
+    Symmetry flag, either :math:`N` or :math:`L`."
 %feature("docstring") OT::HMatrix::factorize
 OT_HMatrix_factorize_doc
 %feature("docstring") OT::HMatrix::solve
