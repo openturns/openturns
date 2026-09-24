@@ -12,7 +12,7 @@ Multivariate discrete distributions
 # - :class:`~openturns.experimental.MultivariatePolya` : draws with reinforcement,
 # - :class:`~openturns.FiniteDiscreteDistribution` : user-defined support.
 #
-# All three urn models share the same convention, mimicking :class:`~openturns.Multinomial`:
+# All these urn models share the same convention, mimicking :class:`~openturns.Multinomial`:
 # only a subset of the colors has to be tracked.
 # The untracked balls form an implicit rest category, so that in general
 # :math:`X_1 + \dots + X_d \leq N`.
@@ -28,25 +28,34 @@ import openturns.viewer as otv
 # Draws with replacement: the multinomial urn
 # --------------------------------------------------
 #
-# An urn holds balls in three colors with probabilities 0.2 (red), 0.3 (green)
-# and 0.5 (blue). We draw 10 balls with replacement and count how many red and
-# green balls we observe. The blue balls are the implicit rest category only when
-# the probabilities sum to less than one: here they sum to one, so we are in the
-# classical case and red + green + blue = 10.
-distribution = ot.Multinomial(10, [0.2, 0.3])
+# An urn holds balls in two colors with probabilities 0.2 (red) and 0.8 (green).
+# We draw 10 balls with replacement and count how many red and green balls we
+# observe. Both colors are tracked and the probabilities sum to one, so we are
+# in the classical case and red + green = 10.
+distribution = ot.Multinomial(10, [0.2, 0.8])
 print(distribution)
 sample = distribution.getSample(5)
 print(sample)
 graph = distribution.drawPDF()
 graph.setTitle("Multinomial urn, draws with replacement")
 view = otv.View(graph)
+view.getAxes()[0].set_aspect("equal", adjustable="box")
 
 # %%
-# If we only track the red balls, the 1D multinomial reduces to a binomial:
+# If the urn also holds blue balls with probability 0.5 that we do not track,
+# only the red and green balls are counted: red + green <= 10.
+# The 1D defective case reduces to the binomial distribution:
 # the number of red balls follows Binomial(10, 0.2).
-marginal = distribution.getMarginal(0)
+distribution_def = ot.Multinomial(10, [0.2, 0.3])
+print(distribution_def)
+marginal = distribution_def.getMarginal(0)
 print(marginal)
-print("PDF at 2 red balls:", distribution.computePDF([2, 3]), marginal.computePDF([2]))
+print("PDF at 2 red and 3 green balls:", distribution_def.computePDF([2, 3]))
+print("PDF at 2 red balls:", marginal.computePDF([2]))
+graph = distribution_def.drawPDF()
+graph.setTitle("Defective multinomial urn with untracked blue balls")
+view = otv.View(graph)
+view.getAxes()[0].set_aspect("equal", adjustable="box")
 
 # %%
 # Draws without replacement: the hypergeometric urn
@@ -62,6 +71,7 @@ print(sample)
 graph = distribution.drawPDF()
 graph.setTitle("Hypergeometric urn, draws without replacement")
 view = otv.View(graph)
+view.getAxes()[0].set_aspect("equal", adjustable="box")
 
 # %%
 # If the urn also holds 13 yellow balls that we do not track, the total population
@@ -75,6 +85,7 @@ print("PDF at 3 red balls:", distribution_def.getMarginal(0).computePDF([3]), hy
 graph = distribution_def.drawPDF()
 graph.setTitle("Defective hypergeometric urn with untracked yellow balls")
 view = otv.View(graph)
+view.getAxes()[0].set_aspect("equal", adjustable="box")
 
 # %%
 # Draws with reinforcement: the Polya urn
@@ -90,6 +101,7 @@ print(sample)
 graph = distribution.drawPDF()
 graph.setTitle("Polya urn, draws with reinforcement")
 view = otv.View(graph)
+view.getAxes()[0].set_aspect("equal", adjustable="box")
 
 # %%
 # As for the other urns, untracked colors are allowed: with a total concentration
@@ -100,6 +112,24 @@ print(marginal)
 print("support size:", distribution_def.getSupport().getSize())
 graph = distribution_def.drawPDF()
 graph.setTitle("Defective Polya urn with untracked balls")
+view = otv.View(graph)
+view.getAxes()[0].set_aspect("equal", adjustable="box")
+
+# %%
+# User-defined support: the FiniteDiscreteDistribution urn
+# ---------------------------------------------------------
+#
+# A single draw from an urn holding 6 red and 4 blue balls is a categorical
+# experiment. Encoding red by 0 and blue by 1, the draw follows a
+# :class:`~openturns.FiniteDiscreteDistribution` with weights given by the
+# ball counts (normalized automatically). It is the single-draw version of
+# the multinomial urn above.
+single = ot.FiniteDiscreteDistribution([[0], [1]], [6.0, 4.0])
+print(single)
+print("P(red) =", single.computePDF([0]))
+print("P(blue) =", single.computePDF([1]))
+graph = single.drawPDF()
+graph.setTitle("Single draw from the urn")
 view = otv.View(graph)
 
 # %%
