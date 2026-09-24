@@ -24,7 +24,7 @@ If this parameter is set to *False*, an error message is retrieved for evaluatio
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``PiecewiseHermiteEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``true``)
+- ``PiecewiseHermiteEvaluation-DefaultEnableExtrapolation`` (``Bool``, default: ``True``)
 - ``PiecewiseHermiteEvaluation-EpsilonRegular`` (``Scalar``, default: ``1e-12``)
 
 Examples
