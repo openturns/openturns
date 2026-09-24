@@ -125,17 +125,6 @@ distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5
  [ -0.5  0    1    0    0   ]
  [  0    0    0    1   -0.2 ]
  [  0    0    0   -0.2  1   ]])
-
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``Student-CDFScaleFactor`` (``Scalar``, default: ``4``)
-- ``Student-MarginalIntegrationNodesNumber`` (``UnsignedInteger``, default: ``16``)
-- ``Student-MaximumNumberOfPoints`` (``UnsignedInteger``, default: ``10000000``)
-- ``Student-MinimumCDFEpsilon`` (``Scalar``, default: ``0.05``)
-- ``Student-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``)
-- ``Student-SmallDimension`` (``UnsignedInteger``, default: ``6``)
 )RAW"
 
 // ---------------------------------------------------------------------
