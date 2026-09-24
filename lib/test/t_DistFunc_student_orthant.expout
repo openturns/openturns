@@ -7,6 +7,8 @@ Error: a > b
 Error: M = 0
 Error: L(i,i) <= 0
 Error: nu <= 0
+Error: UniformPoolSize = 0
+Error: UniformPoolSize too small
 Edge: a == b
 Edge: wide interval
 MVT orthant d=3 independent
