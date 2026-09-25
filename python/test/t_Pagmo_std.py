@@ -32,9 +32,17 @@ size = 100
 dist = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
 pop0 = dist.getSample(size)
 
-multi_obj = ["nsga2", "moead", "mhaco", "nspso"]
-if "moead_gen" in ot.Pagmo.GetAlgorithmNames():
-    multi_obj.append("moead_gen")  # pagmo>=2.19
+# retrieve multi-obj algo names depending on Pagmo version
+multi_obj = []
+f = ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "x1*x2"])
+problem = ot.OptimizationProblem(f)
+problem.setBounds(ot.Interval(2))
+for name in ot.Pagmo.GetAlgorithmNames():
+    try:
+        ot.Pagmo(problem, name)
+        multi_obj.append(name)
+    except Exception:
+        pass
 
 for name in multi_obj:
     for use_ineq in [False, True]:

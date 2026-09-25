@@ -233,4 +233,16 @@ with open(fname, "w") as f:
 aSample = ot.Sample.ImportFromCSVFile(fname)
 assert (aSample.getSize(), aSample.getDimension()) == (1, 3), "all nan"
 
+# utf-8 BOM at start of file
+with open(fname, "w", encoding="utf-8-sig") as f:
+    f.write("X1;X2\n1.0;2.0\n")
+aSample = ot.Sample.ImportFromCSVFile(fname, ";")
+assert aSample.getDescription() == ["X1", "X2"], "bom start"
+
+# utf-8 BOM within header (concatenated file artifact)
+with open(fname, "w", encoding="utf-8") as f:
+    f.write('"X1","X2","\ufeffY5"\n1.0,2.0,3.0\n')
+aSample = ot.Sample.ImportFromCSVFile(fname, ",")
+assert aSample.getDescription() == ["X1", "X2", "Y5"], "bom mid-header"
+
 os.remove(fname)

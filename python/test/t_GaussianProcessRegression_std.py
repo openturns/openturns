@@ -198,9 +198,53 @@ def test_gpr_no_opt():
     ott.assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0)
 
 
+def test_gpr_gradient():
+    # exercise GaussianProcessGradient through the metamodel
+    sampleSize = 6
+    f = ot.SymbolicFunction(["x0"], ["x0 * sin(x0)"])
+    X = ot.Sample(sampleSize, 1)
+    for i in range(sampleSize):
+        X[i, 0] = 1.0 + i
+    Y = f(X)
+    covarianceModel = ot.SquaredExponential([1.6], [4.9])
+    basis = ot.ConstantBasisFactory(1).build()
+    fit_algo = ot.GaussianProcessFitter(X, Y, covarianceModel, basis)
+    fit_algo.run()
+    algo = ot.GaussianProcessRegression(fit_algo.getResult())
+    algo.run()
+    mm = algo.getResult().getMetaModel()
+    x = [2.5]
+    grad = mm.gradient(x)
+    eps = 1e-5
+    fd = (mm([x[0] + eps])[0] - mm([x[0] - eps])[0]) / (2.0 * eps)
+    ott.assert_almost_equal(grad[0, 0], fd, 1e-4, 1e-4)
+    # repr/str, dims, calls
+    _ = repr(mm.getGradient())
+    _ = str(mm.getGradient())
+    assert mm.getGradient().getInputDimension() == 1
+    assert mm.getGradient().getOutputDimension() == 1
+    _ = mm.getGradientCallsNumber()
+    # wrong input dimension must raise
+    with ott.assert_raises(Exception):
+        mm.gradient([0.0, 0.0])
+    # save/load roundtrip covers save/load methods
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager("gpr_grad.xml"))
+    study.add("mm", mm)
+    study.save()
+    study2 = ot.Study()
+    study2.setStorageManager(ot.XMLStorageManager("gpr_grad.xml"))
+    study2.load()
+    mm2 = ot.Function()
+    study2.fillObject("mm", mm2)
+    ott.assert_almost_equal(mm2(x), mm(x), 1e-12, 1e-12)
+    ott.assert_almost_equal(mm2.gradient(x)[0, 0], grad[0, 0], 1e-10, 1e-10)
+
+
 if __name__ == "__main__":
     test_one_input_one_output()
     test_two_inputs_one_output()
     test_two_outputs()
     test_stationary_fun()
     test_gpr_no_opt()
+    test_gpr_gradient()

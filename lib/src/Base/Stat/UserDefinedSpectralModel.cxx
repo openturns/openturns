@@ -121,6 +121,7 @@ String UserDefinedSpectralModel::__str__(const String & offset) const
 void UserDefinedSpectralModel::save(Advocate & adv) const
 {
   SpectralModelImplementation::save(adv);
+  adv.saveAttribute( "frequencyGrid_", frequencyGrid_);
   adv.saveAttribute( "DSPCollection_", DSPCollection_);
 }
 
@@ -128,6 +129,8 @@ void UserDefinedSpectralModel::save(Advocate & adv) const
 void UserDefinedSpectralModel::load(Advocate & adv)
 {
   SpectralModelImplementation::load(adv);
+  if (adv.hasAttribute("frequencyGrid_"))
+    adv.loadAttribute( "frequencyGrid_", frequencyGrid_);
   adv.loadAttribute( "DSPCollection_", DSPCollection_);
 }
 

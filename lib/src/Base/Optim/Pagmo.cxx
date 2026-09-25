@@ -43,8 +43,11 @@
 #include <pagmo/algorithms/xnes.hpp>
 #endif
 #include <pagmo/algorithms/nsga2.hpp>
+#define PAGMO_VERSION_NR (PAGMO_VERSION_MAJOR * 100000 + PAGMO_VERSION_MINOR * 100 + PAGMO_VERSION_PATCH)
+#if PAGMO_VERSION_NR >= 202000
+#include <pagmo/algorithms/nsga3.hpp>
+#endif
 #include <pagmo/algorithms/moead.hpp>
-#define PAGMO_VERSION_NR PAGMO_VERSION_MAJOR * 100000 + PAGMO_VERSION_MINOR * 100 + PAGMO_VERSION_PATCH
 #if PAGMO_VERSION_NR >= 201900
 #include <pagmo/algorithms/moead_gen.hpp>
 #endif
@@ -355,7 +358,11 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Pagmo only supports bounded problems";
   if (problem.hasResidualFunction() || problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Pagmo does not support least squares or nearest point problems";
-  const Description multiObjectiveAlgorithms = {"nsga2", "moead",
+  const Description multiObjectiveAlgorithms = {"nsga2",
+#if PAGMO_VERSION_NR >= 202000
+                                                "nsga3",
+#endif
+                                                "moead",
 #if PAGMO_VERSION_NR >= 201900
                                                 "moead_gen",
 #endif
@@ -365,7 +372,11 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support multi-objective optimization";
   if ((problem.getObjective().getOutputDimension() < 2) && multiObjectiveAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " only supports multi-objective optimization";
-  const Description integerAlgorithms = {"gaco", "ihs", "sga", "nsga2", "mhaco"};
+  const Description integerAlgorithms = {"gaco", "ihs", "sga", "nsga2",
+#if PAGMO_VERSION_NR >= 202000
+                                         "nsga3",
+#endif
+                                         "mhaco"};
   if (!problem.isContinuous() && !integerAlgorithms.contains(getAlgorithmName()))
     throw InvalidArgumentException(HERE) << getAlgorithmName() << " does not support non continuous problems";
 #else
@@ -379,8 +390,8 @@ void Pagmo::run()
 {
   Sample startingSample(getStartingSample());
   UnsignedInteger size = startingSample.getSize();
-  if (!size)
-    throw InvalidArgumentException(HERE) << "Starting sample is empty";
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Starting sample size must be >=2";
   if (startingSample.getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Starting sample dimension does not match problem dimension";
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -460,7 +471,11 @@ void Pagmo::run()
     const Scalar F = ResourceMap::GetAsScalar("Pagmo-de-F");
     const Scalar CR = ResourceMap::GetAsScalar("Pagmo-de-CR");
     const UnsignedInteger variant = ResourceMap::GetAsUnsignedInteger("Pagmo-de-variant");
-    algo = pagmo::de(gen, F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
+    pagmo::de algorithm_impl(gen, F, CR, variant, getMaximumResidualError(), getMaximumAbsoluteError());
+#if PAGMO_VERSION_NR >= 202000
+    algorithm_impl.set_bfe(pagmo::bfe{});
+#endif
+    algo = algorithm_impl;
   }
   else if (algoName_ == "sade")
   {
@@ -596,6 +611,7 @@ void Pagmo::run()
 #endif
   else if (algoName_ == "nsga2")
   {
+#if PAGMO_VERSION_NR < 202000
     const UnsignedInteger reminder = size % 4;
     if (reminder)
     {
@@ -603,6 +619,7 @@ void Pagmo::run()
       size -= reminder;
       startingSample.split(size);
     }
+#endif
 
     // nsga2(unsigned gen = 1u, double cr = 0.95, double eta_c = 10., double m = 0.01, double eta_m = 50., unsigned seed = pagmo::random_device::next())
     const Scalar cr = ResourceMap::GetAsScalar("Pagmo-nsga2-cr");
@@ -619,6 +636,22 @@ void Pagmo::run()
 #endif
     algo = algorithm_impl;
   }
+#if PAGMO_VERSION_NR >= 202000
+  else if (algoName_ == "nsga3")
+  {
+    // nsga3(unsigned gen = 1u, double cr = 1.0, double eta_c = 30.0, double mut = 0.10, double eta_mut = 20.0, std::size_t divisions = 12u, std::size_t divisions_inner = 0u, bool random_mating = true, unsigned seed = pagmo::random_device::next(), bool use_memory = false);
+    const Scalar cr = ResourceMap::GetAsScalar("Pagmo-nsga3-cr");
+    const Scalar eta_c = ResourceMap::GetAsScalar("Pagmo-nsga3-eta_c");
+    const Scalar mut = ResourceMap::GetAsScalar("Pagmo-nsga3-mut");
+    const Scalar eta_mut = ResourceMap::GetAsScalar("Pagmo-nsga3-eta_mut");
+    const UnsignedInteger divisions = ResourceMap::GetAsUnsignedInteger("Pagmo-nsga3-divisions");
+    const UnsignedInteger divisions_inner = ResourceMap::GetAsUnsignedInteger("Pagmo-nsga3-divisions_inner");
+    const Bool random_mating = ResourceMap::GetAsBool("Pagmo-nsga3-random_mating");
+    pagmo::nsga3 algorithm_impl(gen, cr, eta_c, mut, eta_mut, divisions, divisions_inner, random_mating);
+    algorithm_impl.set_bfe(pagmo::bfe{});
+    algo = algorithm_impl;
+  }
+#endif
   else if (algoName_ == "moead")
   {
     // moead(unsigned gen = 1u, std::string weight_generation = "grid", std::string decomposition = "tchebycheff", population::size_type neighbours = 20u, double CR = 1.0, double F = 0.5, double eta_m = 20., double realb = 0.9, unsigned limit = 2u, bool preserve_diversity = true, unsigned seed = pagmo::random_device::next())
@@ -918,6 +951,7 @@ Sample Pagmo::getStartingSample() const
   return startingSample_;
 }
 
+/* Algorithm names accessor */
 Description Pagmo::GetAlgorithmNames()
 {
   const Description algoNames = {"gaco", "de", "sade", "de1220", "gwo", "ihs", "pso", "pso_gen", "sea",
@@ -925,8 +959,12 @@ Description Pagmo::GetAlgorithmNames()
 #ifdef PAGMO_WITH_EIGEN3
                                  "cmaes", "xnes",
 #endif
-                                 "nsga2", "moead",
-#if PAGMO_VERSION_NR >= 201900
+                                 "nsga2",
+#if defined(OPENTURNS_HAVE_PAGMO) && (PAGMO_VERSION_NR >= 202000)
+                                 "nsga3",
+#endif
+                                 "moead",
+#if defined(OPENTURNS_HAVE_PAGMO) && (PAGMO_VERSION_NR >= 201900)
                                  "moead_gen",
 #endif
                                  "mhaco", "nspso"
@@ -934,7 +972,6 @@ Description Pagmo::GetAlgorithmNames()
   return algoNames;
 }
 
-/** Accessors to Bonmin attributes */
 void Pagmo::setAlgorithmName(const String & algoName)
 {
   // Check algoName
@@ -962,6 +999,8 @@ UnsignedInteger Pagmo::getSeed() const
 /* Block size accessor */
 void Pagmo::setBlockSize(const UnsignedInteger blockSize)
 {
+  if (!blockSize)
+    throw InvalidArgumentException(HERE) << "blockSize must be non-null";
   blockSize_ = blockSize;
 }
 

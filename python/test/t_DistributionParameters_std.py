@@ -87,3 +87,35 @@ assert p1 == p2, "DP UniformMuSigma == DP UniformMuSigma"
 assert not (p1 == p3), "not DP UniformMuSigma == DP GumbelMuSigma"
 assert p1 != p3, "DP UniformMuSigma != DP GumbelMuSigma"
 assert not (p1 != p2), "not DP UniformMuSigma != DP UniformMuSigma"
+
+# DistributionParametersImplementation base-class coverage
+base = ot.DistributionParameters()
+print("base=", repr(base), str(base))
+assert base == base
+assert not (base != base)
+_ = base.clone() if hasattr(base, "clone") else None
+for method, args in [
+    ("getDistribution", ()),
+    ("gradient", ()),
+    ("__call__", ([0.0],)),
+    ("inverse", ([0.0],)),
+    ("setValues", ([0.0],)),
+    ("getValues", ()),
+    ("getDescription", ()),
+]:
+    with ott.assert_raises(Exception):
+        if method == "__call__":
+            base([0.0])
+        else:
+            getattr(base, method)(*args)
+# base evaluate() calls operator() and must raise as well
+with ott.assert_raises(Exception):
+    base.evaluate()
+# save/load of a concrete implementation
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("distparams.xml"))
+study.add("p", ot.DistributionParameters(ot.UniformMuSigma(8.4, 2.25)))
+study.save()
+study2 = ot.Study()
+study2.setStorageManager(ot.XMLStorageManager("distparams.xml"))
+study2.load()

@@ -593,3 +593,75 @@ assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]
 with_nugget = ot.SquaredExponential([1.0], [2.0])
 with_nugget.setNuggetFactor(0.1)
 assert with_nugget != ot.SquaredExponential([1.0], [2.0]), "SE!=SE nugget"
+
+# DiracCovarianceModel extra coverage
+dirac = ot.DiracCovarianceModel(1, [2.0])
+assert dirac.isStationary()
+assert abs(dirac([0.0])[0, 0] - 4.0) < 1e-8
+assert abs(dirac([1.0])[0, 0]) < 1e-12
+assert abs(dirac([0.0], [0.0])[0, 0] - 4.0) < 1e-8
+assert abs(dirac([0.0], [1.0])[0, 0]) < 1e-12
+assert abs(dirac.computeAsScalar([0.0]) - 4.0) < 1e-8
+assert abs(dirac.computeAsScalar([1.0])) < 1e-12
+assert abs(dirac.computeAsScalar([0.0], [0.0]) - 4.0) < 1e-8
+assert abs(dirac.computeAsScalar([0.0], [1.0])) < 1e-12
+assert abs(dirac.computeAsScalar(0.0) - 4.0) < 1e-8
+assert abs(dirac.computeAsScalar(1.0)) < 1e-12
+_ = dirac.partialGradient([0.0], [1.0])
+ott.assert_almost_equal(dirac.getFullParameter(), [1.0, 0.0, 2.0], 1e-12, 1e-12)
+assert len(dirac.getFullParameterDescription()) == 3
+dirac.setFullParameter([1.0, 0.0, 3.0])
+ott.assert_almost_equal(dirac.getAmplitude(), [3.0], 1e-12, 1e-12)
+with ott.assert_raises(Exception):
+    dirac.setFullParameter([1.0, 0.0])
+dirac.setScale([5.0])
+ott.assert_almost_equal(dirac.getScale(), [5.0], 1e-14, 1e-14)
+with ott.assert_raises(Exception):
+    dirac.setAmplitude([1.0, 2.0])
+with ott.assert_raises(Exception):
+    dirac.setAmplitude([-1.0])
+with ott.assert_raises(Exception):
+    dirac.setOutputCorrelation(ot.CorrelationMatrix(2))
+with ott.assert_raises(Exception):
+    dirac.computeAsScalar([0.0, 0.0])
+cov1 = ot.CovarianceMatrix(1)
+cov1[0, 0] = 4.0
+dirac2 = ot.DiracCovarianceModel(1, cov1)
+assert abs(dirac2([0.0])[0, 0] - 4.0) < 1e-8
+_ = repr(dirac)
+_ = str(dirac)
+assert dirac == dirac
+assert not (dirac != dirac)
+# discretize error branches
+with ott.assert_raises(Exception):
+    dirac.discretize(ot.Sample([[0.0, 1.0]]))
+with ott.assert_raises(Exception):
+    dirac.discretize(ot.Sample(0, 1))
+with ott.assert_raises(Exception):
+    dirac.discretizeRow(ot.Sample([[0.0, 1.0]]), 0)
+with ott.assert_raises(Exception):
+    dirac.discretizeRow(ot.Sample(0, 1), 0)
+with ott.assert_raises(Exception):
+    dirac.discretizeRow(ot.Sample([[0.0], [1.0]]), 5)
+# repeated points trigger generic path when CheckUnique is on
+ot.ResourceMap.SetAsBool("DiracCovarianceModel-CheckUnique", True)
+dup = ot.Sample([[0.0], [0.0], [1.0]])
+_ = dirac.discretize(dup)
+with ott.assert_raises(Exception):
+    dirac.discretizeAndFactorize(dup)
+_ = dirac.discretizeRow(ot.Sample([[0.0], [1.0]]), 0)
+ot.ResourceMap.SetAsBool("DiracCovarianceModel-CheckUnique", False)
+# computeAsScalar with output dim > 1 must raise
+diracMV = ot.DiracCovarianceModel(1, [1.0, 2.0])
+with ott.assert_raises(Exception):
+    diracMV.computeAsScalar([0.0])
+with ott.assert_raises(Exception):
+    diracMV.computeAsScalar([0.0], [0.0])
+with ott.assert_raises(Exception):
+    diracMV.computeAsScalar(0.0)
+# non-diagonal covariance ctor
+cov = ot.CovarianceMatrix(2)
+cov[0, 0] = 4.0
+cov[1, 1] = 9.0
+cov[1, 0] = 1.0
+_ = ot.DiracCovarianceModel(1, cov)

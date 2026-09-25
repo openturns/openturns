@@ -64,3 +64,26 @@ for name in ot.Bonmin.GetAlgorithmNames():
     neval = result.getCallsNumber()
     print(f"f(x*)={y_star} neval={neval}")
     ott.assert_almost_equal(result.getOptimalPoint(), [1, 1, 0.5, 0], 1, 1e-2)
+
+# extra coverage: accessors, repr/str, clone, error branches
+assert algo.getAlgorithmName() in list(ot.Bonmin.GetAlgorithmNames())
+_ = repr(algo)
+_ = str(algo)
+algo2 = ot.Bonmin("B-BB")
+assert algo2.getAlgorithmName() == "B-BB"
+with ott.assert_raises(Exception):
+    algo2.setAlgorithmName("unknown-solver")
+with ott.assert_raises(Exception):
+    ot.Bonmin("unknown-solver")
+# checkProblem branches: ctor with multi-objective problem must raise
+multi = ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["x", "2*x"]))
+with ott.assert_raises(Exception):
+    ot.Bonmin(multi)
+lsProblem = ot.LeastSquaresProblem(ot.SymbolicFunction(["x"], ["x^2"]))
+with ott.assert_raises(Exception):
+    ot.Bonmin(lsProblem)
+# invalid starting point dimension triggers error
+bad = ot.Bonmin(problem)
+with ott.assert_raises(Exception):
+    bad.setStartingPoint([0.0])
+    bad.run()
