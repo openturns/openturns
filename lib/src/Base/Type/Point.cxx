@@ -281,7 +281,6 @@ Point & Point::operator *=(const Scalar scalar)
 Point operator /(const Point & point,
                  const Scalar scalar)
 {
-  if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = point.getDimension();
   double alpha = 1.0 / scalar;
   Point result(point);
@@ -294,7 +293,6 @@ Point operator /(const Point & point,
 /*  In-place division operator */
 Point & Point::operator /=(const Scalar scalar)
 {
-  if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
   int n = getDimension();
   double alpha = 1.0 / scalar;
   int one = 1;
