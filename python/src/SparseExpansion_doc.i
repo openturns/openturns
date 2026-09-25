@@ -10,6 +10,13 @@ selecting basis functions using either Orthogonal Matching Pursuit (OMP)
 or Least Angle Regression (LARS), controlled by the `selectionMethod`
 parameter (default: ``"OMP"``).
 
+The sample weights define the weighted inner product
+:math:`\langle u, v \rangle_w = \sum_{s=1}^n w_s u_s v_s`
+and the associated weighted least-squares norm. Correlations, the initial
+constant term and the Gram matrix below are all weighted: the initial
+coefficient is the weighted mean of the output and the correlations read
+:math:`c_k = \langle \varphi_k, r \rangle_w$.
+
 **OMP algorithm:**
 
 At each iteration, the basis function having the largest absolute correlation
@@ -18,7 +25,7 @@ then updated by solving the least-squares problem restricted to the active
 set.
 
 For each output marginal :math:`j`, the algorithm starts with a constant
-approximation:
+approximation equal to the weighted mean of the output:
 
 .. math::
     \widehat{y}_j = \beta_0
@@ -30,9 +37,9 @@ and the initial residual:
 
 At each iteration :math:`i`:
 
-1. Find :math:`k_i = \arg\max_k |\langle \varphi_k, r \rangle|`
+1. Find :math:`k_i = \arg\max_k |\langle \varphi_k, r \rangle_w|`
 2. Add :math:`\varphi_{k_i}` to the active set
-3. Solve :math:`\beta = \arg\min \| y_j - \Phi_{\mathcal{A}} \beta \|^2`
+3. Solve :math:`\beta = \arg\min \| y_j - \Phi_{\mathcal{A}} \beta \|_w^2`
 4. Update the residual: :math:`r = y_j - \Phi_{\mathcal{A}} \beta`
 5. Compute the cross-validation error using the :class:`~openturns.FittingAlgorithm`
 
@@ -44,8 +51,9 @@ inactive function's correlation catches up. The coefficients of active
 functions change continuously along the path, unlike OMP which recomputes
 them from scratch at each step.
 
-1. Find :math:`k_i = \arg\max_k |\langle \varphi_k, r \rangle|`
+1. Find :math:`k_i = \arg\max_k |\langle \varphi_k, r \rangle_w|`
 2. Compute the equiangular direction :math:`u` in :math:`\operatorname{span}(\Phi_{\mathcal{A}})`
+   with respect to the weighted inner product (weighted Gram matrix)
 3. Determine the step size :math:`\gamma` from the catch-up condition
 4. Update the prediction: :math:`\mu \mathrel{+}= \gamma u`
 5. Compute the cross-validation error using the :class:`~openturns.FittingAlgorithm`
@@ -68,9 +76,9 @@ Available constructors:
 
     SparseExpansion(*inputSample, weights, outputSample, distribution*)
 
-    SparseExpansion(*inputSample, outputSample, distribution, basis, basisSize, methodName*)
+    SparseExpansion(*inputSample, outputSample, distribution, basis, basisSize, methodName, fittingAlgorithm*)
 
-    SparseExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, methodName*)
+    SparseExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, methodName, fittingAlgorithm*)
 
 Parameters
 ----------
@@ -102,6 +110,10 @@ methodName : str, optional
     type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
     `SparseExpansion-DecompositionMethod` key in
     :class:`~openturns.ResourceMap`.
+fittingAlgorithm : :class:`~openturns.FittingAlgorithm`, optional
+    The fitting algorithm used to compute the cross-validation error driving
+    the basis selection. By default, it is a
+    :class:`~openturns.CorrectedLeaveOneOut`.
 
 See also
 --------
@@ -111,11 +123,8 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used by this class:
 
-- *SparseExpansion-DecompositionMethod*: the default decomposition method
-  used to solve the least-squares problem (default: SVD).
-- *SparseExpansion-ConsecutiveIncreases*: the number of consecutive
-  increases in cross-validation error required before stopping the basis
-  selection (default: 2). Must be at least 1.
+- ``SparseExpansion-DecompositionMethod`` (``String``, default: ``SVD``): the default decomposition method used to solve the least-squares problem.
+- ``SparseExpansion-ConsecutiveIncreases`` (``UnsignedInteger``, default: ``2``): the number of consecutive increases in cross-validation error required before stopping the basis selection. Must be at least 1.
 
 Examples
 --------
