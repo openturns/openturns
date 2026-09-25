@@ -143,6 +143,15 @@ DivFreeModel::DivFreeModel(const UnsignedInteger inputDimension)
 }
 
 
+/* Copy constructor */
+DivFreeModel::DivFreeModel(const DivFreeModel & other)
+  : CovarianceModelImplementation(other)
+  , model_(other.model_)
+{
+  // Nothing to do
+}
+
+
 /* Parameters constructor */
 DivFreeModel::DivFreeModel(const CovarianceModel & model)
   : CovarianceModelImplementation(model.getInputDimension())

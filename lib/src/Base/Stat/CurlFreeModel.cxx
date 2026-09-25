@@ -60,6 +60,17 @@ static void CurlFreeStencil(Scalar & plus,
 
 /* Default constructor */
 CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
+/* Copy constructor */
+CurlFreeModel::CurlFreeModel(const CurlFreeModel & other)
+  : CovarianceModelImplementation(other)
+  , model_(other.model_)
+{
+  // Nothing to do
+}
+
+
+/* Default constructor */
+CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)
   , model_(SquaredExponential(Point(inputDimension, 1.0)))
 {
