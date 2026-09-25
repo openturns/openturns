@@ -55,7 +55,7 @@ Parameters
 zeta : sequence of float
     Concentration parameters of length :math:`n`, ordered so that
     :math:`\zeta_1 \ge \dots \ge \zeta_n = 0`.
-gamma : :class:`openturns.SquareMatrix`
+gamma : :class:`~openturns.SquareMatrix`
     Orthogonal matrix whose columns are the axes of the distribution.
 epsilon : float, optional
     Relative tolerance for the validation of the orthogonality of the
@@ -95,7 +95,7 @@ R"RAW(Accessor to the concentration parameters.
 
 Returns
 -------
-zeta : :class:`openturns.Point`
+zeta : :class:`~openturns.Point`
     Concentration parameters :math:`(\zeta_1,\dots,\zeta_n)`.)RAW"
 
 // ---------------------------------------------------------------------
@@ -115,7 +115,7 @@ R"RAW(Accessor to the orthogonal basis matrix.
 
 Returns
 -------
-gamma : :class:`openturns.SquareMatrix`
+gamma : :class:`~openturns.SquareMatrix`
     Orthogonal matrix whose columns are the axes of the distribution.)RAW"
 
 // ---------------------------------------------------------------------
@@ -125,7 +125,7 @@ R"RAW(Accessor to the orthogonal basis matrix.
 
 Parameters
 ----------
-gamma : :class:`openturns.SquareMatrix`
+gamma : :class:`~openturns.SquareMatrix`
     Orthogonal matrix whose columns are orthonormal basis vectors.)RAW"
 
 // ---------------------------------------------------------------------

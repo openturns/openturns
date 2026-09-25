@@ -46,10 +46,10 @@ the :math:`d`-dimensional tangent space.
 
 Parameters
 ----------
-mean : :class:`openturns.SymmetricMatrix`
+mean : :class:`~openturns.SymmetricMatrix`
     Frechet mean of the distribution, a symmetric positive definite
     :math:`n\times n` matrix.
-sigma : :class:`openturns.SquareMatrix`
+sigma : :class:`~openturns.SquareMatrix`
     Symmetric positive definite covariance matrix
     :math:`\boldsymbol{\Sigma}` in the tangent space at the mean, of
     dimension :math:`d = n(n+1)/2`, expressed in Hilbert-Schmidt
@@ -93,7 +93,7 @@ R"RAW(Accessor to the Frechet mean matrix.
 
 Parameters
 ----------
-mean : :class:`openturns.SymmetricMatrix`
+mean : :class:`~openturns.SymmetricMatrix`
     Symmetric positive definite mean matrix.)RAW"
 
 // ---------------------------------------------------------------------
@@ -103,7 +103,7 @@ R"RAW(Accessor to the Frechet mean matrix.
 
 Returns
 -------
-mean : :class:`openturns.SymmetricMatrix`
+mean : :class:`~openturns.SymmetricMatrix`
     Symmetric positive definite mean matrix.)RAW"
 
 // ---------------------------------------------------------------------
@@ -113,7 +113,7 @@ R"RAW(Accessor to the mean.
 
 Returns
 -------
-mean : :class:`openturns.Point`
+mean : :class:`~openturns.Point`
     Mean of the distribution, the upper-triangle flattened Frechet mean
     matrix.)RAW"
 
@@ -124,7 +124,7 @@ R"RAW(Accessor to the covariance matrix in the tangent space.
 
 Parameters
 ----------
-sigma : :class:`openturns.SquareMatrix`
+sigma : :class:`~openturns.SquareMatrix`
     Covariance matrix.)RAW"
 
 // ---------------------------------------------------------------------
@@ -134,7 +134,7 @@ R"RAW(Accessor to the covariance matrix in the tangent space.
 
 Returns
 -------
-sigma : :class:`openturns.SquareMatrix`
+sigma : :class:`~openturns.SquareMatrix`
     Covariance matrix.)RAW"
 
 // ---------------------------------------------------------------------

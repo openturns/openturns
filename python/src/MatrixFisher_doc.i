@@ -58,7 +58,7 @@ The **entropy** is:
 
 Parameters
 ----------
-F : :class:`openturns.SquareMatrix`
+F : :class:`~openturns.SquareMatrix`
     The :math:`3\times 3` parameter matrix.
 epsilon : float, optional
     Relative tolerance for the validation of the orthogonality of the
@@ -98,7 +98,7 @@ R"RAW(Accessor to the parameter matrix.
 
 Returns
 -------
-F : :class:`openturns.SquareMatrix`
+F : :class:`~openturns.SquareMatrix`
     The :math:`3\times 3` parameter matrix.)RAW"
 
 // ---------------------------------------------------------------------
@@ -108,7 +108,7 @@ R"RAW(Accessor to the parameter matrix.
 
 Parameters
 ----------
-F : :class:`openturns.SquareMatrix`
+F : :class:`~openturns.SquareMatrix`
     The :math:`3\times 3` parameter matrix.)RAW"
 
 // ---------------------------------------------------------------------

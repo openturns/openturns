@@ -35,7 +35,7 @@ Parameters
 ----------
 mu : sequence of float
     Mean vector, mapped onto the fundamental domain :math:`[-p/2,p/2]^n`.
-sigma : :class:`openturns.CovarianceMatrix`
+sigma : :class:`~openturns.CovarianceMatrix`
     Covariance matrix of the underlying normal distribution.
 period : float, optional
     Common period of the wrapped coordinates, by default :math:`2\pi`.
@@ -80,7 +80,7 @@ R"RAW(Accessor to the mean vector.
 
 Returns
 -------
-mu : :class:`openturns.Point`
+mu : :class:`~openturns.Point`
     Mean vector.)RAW"
 
 // ---------------------------------------------------------------------
@@ -90,7 +90,7 @@ R"RAW(Accessor to the covariance matrix.
 
 Parameters
 ----------
-sigma : :class:`openturns.CovarianceMatrix`
+sigma : :class:`~openturns.CovarianceMatrix`
     Covariance matrix of the underlying normal distribution.)RAW"
 
 // ---------------------------------------------------------------------
@@ -100,7 +100,7 @@ R"RAW(Accessor to the covariance matrix.
 
 Returns
 -------
-sigma : :class:`openturns.CovarianceMatrix`
+sigma : :class:`~openturns.CovarianceMatrix`
     Covariance matrix of the underlying normal distribution.)RAW"
 
 // ---------------------------------------------------------------------
