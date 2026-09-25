@@ -49,6 +49,10 @@ public:
   void setRecompressionEpsilon(const Scalar recompressionEpsilon);
   Scalar getRecompressionEpsilon() const;
 
+  /** accessor for clustering admissibility */
+  void setAdmissibility(const String &admissibility);
+  String getAdmissibility() const;
+
   /** accessor for admissibility factor */
   void setAdmissibilityFactor(const Scalar admissibilityFactor);
   Scalar getAdmissibilityFactor() const;
@@ -66,7 +70,6 @@ public:
   void setFactorizationMethod(const String & factorization);
   String getFactorizationMethod() const;
 
-
   /* String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
@@ -80,6 +83,7 @@ public:
 private:
   Scalar assemblyEpsilon_;
   Scalar recompressionEpsilon_;
+  String admissibility_;
   Scalar admissibilityFactor_;
   String clusteringAlgorithm_;
   String compressionMethod_;

@@ -34,6 +34,7 @@ HMatrixParameters::HMatrixParameters()
   : PersistentObject()
   , assemblyEpsilon_(ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon"))
   , recompressionEpsilon_(ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon"))
+  , admissibility_(ResourceMap::GetAsString("HMatrix-Admissibility"))
   , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
   , clusteringAlgorithm_(ResourceMap::GetAsString("HMatrix-ClusteringAlgorithm"))
   , compressionMethod_(ResourceMap::GetAsString("HMatrix-CompressionMethod"))
@@ -68,6 +69,17 @@ void HMatrixParameters::setRecompressionEpsilon(const Scalar recompressionEpsilo
 Scalar HMatrixParameters::getRecompressionEpsilon() const
 {
   return recompressionEpsilon_;
+}
+
+/** accessor for clustering admissibility */
+void HMatrixParameters::setAdmissibility(const String &admissibility)
+{
+  admissibility_ = admissibility;
+}
+
+String HMatrixParameters::getAdmissibility() const
+{
+  return admissibility_;
 }
 
 /** accessor for admissibility factor */
@@ -126,6 +138,7 @@ String HMatrixParameters::__repr__() const
   oss << "class= " << HMatrixParameters::GetClassName()
       << ", assembly epsilon= " << assemblyEpsilon_
       << ", recompression epsilon=" << recompressionEpsilon_
+      << ", admissibility=" << admissibility_
       << ", admissibility factor=" << admissibilityFactor_
       << ", clustering algorithm=" << clusteringAlgorithm_
       << ", compression method=" << compressionMethod_
@@ -157,6 +170,7 @@ void HMatrixParameters::save(Advocate & adv) const
 
   adv.saveAttribute("assemblyEpsilon_", assemblyEpsilon_);
   adv.saveAttribute("recompressionEpsilon_", recompressionEpsilon_);
+  adv.saveAttribute("admissibility_", admissibility_);
   adv.saveAttribute("admissibilityFactor_", admissibilityFactor_);
   adv.saveAttribute("clusteringAlgorithm_", clusteringAlgorithm_);
   adv.saveAttribute("compressionMethod_", compressionMethod_);
@@ -169,6 +183,7 @@ void HMatrixParameters::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("assemblyEpsilon_", assemblyEpsilon_);
   adv.loadAttribute("recompressionEpsilon_", recompressionEpsilon_);
+  adv.loadAttribute("admissibility_", admissibility_);
   adv.loadAttribute("admissibilityFactor_", admissibilityFactor_);
   adv.loadAttribute("clusteringAlgorithm_", clusteringAlgorithm_);
   adv.loadAttribute("compressionMethod_", compressionMethod_);

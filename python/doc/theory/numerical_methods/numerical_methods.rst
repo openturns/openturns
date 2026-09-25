@@ -13,6 +13,7 @@ Numerical methods
     least_squares_resolution
     interpolation
     enumeration_strategy
+    hierarchical_matrices
 
 Isoprobabilistic transformation
 -------------------------------
