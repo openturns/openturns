@@ -430,7 +430,7 @@ Bibliography
 .. [novak1999] Novak, E., & Ritter, K. (1999).
     Simple cubature formulas with high polynomial exactness.
     Constructive approximation, 15, 499-522.
-.. [papaioannou2015] Papaioannou I., Betz W., Straub D. (2015)
+.. [papaioannou2015] Papaioannou I., Betz W., Zwirglmaier K., Straub D. (2015)
     *MCMC algorithms for Subset Simulation*, Probabilistic Engineering Mechanics 41 (89-103)
     `pdf <https://mediatum.ub.tum.de/doc/1276581/1276581.pdf>`__
 .. [park1990] Byeong U. Park and J. S. Marron.
