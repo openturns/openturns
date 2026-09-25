@@ -130,6 +130,22 @@ ott.assert_almost_equal(indicesHistory.getSize(), coeffsHistory.getSize())
 ott.assert_almost_equal(errorHistory.getSize(), coeffsHistory.getSize())
 print("History consistency: OK")
 
+# Histories with an explicit output index
+ott.assert_almost_equal(result.getIndicesHistory(0).getSize(), indicesHistory.getSize())
+ott.assert_almost_equal(result.getCoefficientsHistory(0).getSize(), coeffsHistory.getSize())
+ott.assert_almost_equal(result.getErrorHistory(0), errorHistory)
+with ott.assert_raises(TypeError):
+    result.getIndicesHistory(1)
+print("History output index: OK")
+
+# Check exception: duplicate active functions are rejected at construction
+with ott.assert_raises(TypeError):
+    ot.LeastSquaresExpansion(
+        inputSample, outputSample, distribution,
+        productBasis, basisSize, [0, 1, 1]
+    )
+print("Exception duplicate active functions: OK")
+
 # Check __str__ and __repr__
 print("algo.__str__: ", algo.__str__())
 print("algo.__repr__: ", algo.__repr__())

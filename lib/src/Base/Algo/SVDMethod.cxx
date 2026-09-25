@@ -149,7 +149,11 @@ Point SVDMethod::solve(const Point & rhs)
 Point SVDMethod::solveNormal(const Point & rhs)
 {
   update(Indices(0), currentIndices_, Indices(0));
-  const UnsignedInteger basisSize = currentIndices_.getSize();
+  if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "SVDMethod::solveNormal invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
+  // To take into account possible under-determined least-squares problems
+  // We consider the number of singular values instead of the basis size
+  // It leads to the minimal norm solution in the under-determined case
+  const UnsignedInteger svdSize = singularValues_.getSize();
 
   Point b(rhs);
   {
@@ -158,11 +162,13 @@ Point SVDMethod::solveNormal(const Point & rhs)
   }
   // G^-1= V*S^-2*V^T
   Point coefficients(vT_ * b);
-  for (UnsignedInteger i = 0; i < basisSize; ++i)
+  for (UnsignedInteger i = 0; i < svdSize; ++i)
   {
     const Scalar sv = singularValues_[i];
     coefficients[i] /= (sv * sv);
   }
+  for (UnsignedInteger i = svdSize; i < coefficients.getSize(); ++i)
+    coefficients[i] = 0.0;
   return vT_.getImplementation()->genVectProd(coefficients, true);
 }
 
@@ -170,15 +176,21 @@ Point SVDMethod::solveNormal(const Point & rhs)
 Point SVDMethod::solveNormalGram(const Point & rhs)
 {
   update(Indices(0), currentIndices_, Indices(0));
-  const UnsignedInteger basisSize = currentIndices_.getSize();
+  if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "SVDMethod::solveNormalGram invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
+  // To take into account possible under-determined least-squares problems
+  // We consider the number of singular values instead of the basis size
+  // It leads to the minimal norm solution in the under-determined case
+  const UnsignedInteger svdSize = singularValues_.getSize();
   // G = V S^2 V^T, G^{-1} = V S^{-2} V^T
   // G^{-1} rhs = V S^{-2} V^T rhs, no weight multiplication on rhs
   Point coefficients(vT_ * rhs);
-  for (UnsignedInteger i = 0; i < basisSize; ++i)
+  for (UnsignedInteger i = 0; i < svdSize; ++i)
   {
     const Scalar sv = singularValues_[i];
     coefficients[i] /= (sv * sv);
   }
+  for (UnsignedInteger i = svdSize; i < coefficients.getSize(); ++i)
+    coefficients[i] = 0.0;
   return vT_.getImplementation()->genVectProd(coefficients, true);
 }
 

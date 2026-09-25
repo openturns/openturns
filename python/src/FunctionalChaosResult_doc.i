@@ -177,6 +177,12 @@ transformation : :class:`~openturns.Function`
 Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.SparseExpansion`.
 Use the *outputIndex* parameter to select the output whose history to draw.
 
+Parameters
+----------
+outputIndex : int
+    Index of the output whose history to draw, between 0 and the output
+    dimension minus one. By default, it is 0.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
@@ -189,6 +195,12 @@ graph : :class:`~openturns.Graph`
 
 Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.SparseExpansion`.
 Use the *outputIndex* parameter to select the output whose history to retrieve.
+
+Parameters
+----------
+outputIndex : int
+    Index of the output whose history to retrieve, between 0 and the output
+    dimension minus one. By default, it is 0.
 
 Returns
 -------
@@ -203,6 +215,12 @@ coefficientsHistory : 2-d sequence of float
 
 Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.SparseExpansion`.
 Use the *outputIndex* parameter to select the output whose history to retrieve.
+
+Parameters
+----------
+outputIndex : int
+    Index of the output whose history to retrieve, between 0 and the output
+    dimension minus one. By default, it is 0.
 
 Returns
 -------
@@ -374,6 +392,12 @@ conditionalPCE : :class:`~openturns.FunctionalChaosResult`
 Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.SparseExpansion`.
 Use the *outputIndex* parameter to select the output whose history to draw.
 
+Parameters
+----------
+outputIndex : int
+    Index of the output whose history to draw, between 0 and the output
+    dimension minus one. By default, it is 0.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
@@ -386,6 +410,12 @@ graph : :class:`~openturns.Graph`
 
 Available with :class:`~openturns.LARS` and :class:`~openturns.experimental.SparseExpansion`.
 Use the *outputIndex* parameter to select the output whose history to retrieve.
+
+Parameters
+----------
+outputIndex : int
+    Index of the output whose history to retrieve, between 0 and the output
+    dimension minus one. By default, it is 0.
 
 Returns
 -------
