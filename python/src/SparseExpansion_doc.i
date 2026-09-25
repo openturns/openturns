@@ -15,7 +15,7 @@ The sample weights define the weighted inner product
 and the associated weighted least-squares norm. Correlations, the initial
 constant term and the Gram matrix below are all weighted: the initial
 coefficient is the weighted mean of the output and the correlations read
-:math:`c_k = \langle \varphi_k, r \rangle_w$.
+:math:`c_k = \langle \varphi_k, r \rangle_w$`.
 
 **OMP algorithm:**
 
