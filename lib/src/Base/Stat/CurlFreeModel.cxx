@@ -58,8 +58,6 @@ static void CurlFreeStencil(Scalar & plus,
   }
 }
 
-/* Default constructor */
-CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
 /* Copy constructor */
 CurlFreeModel::CurlFreeModel(const CurlFreeModel & other)
   : CovarianceModelImplementation(other)
