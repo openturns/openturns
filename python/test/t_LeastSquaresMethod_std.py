@@ -110,7 +110,7 @@ for j in range(largeBasisSize):
 proxyUnder = ot.DesignProxy(Xsmall, phisLarge)
 fullUnder = range(largeBasisSize)
 designUnder = ot.Matrix(proxyUnder.computeDesign(fullUnder))
-ySmall = ot.Sample([[1.0], [2.0], [4.0]])
+ySmall = ot.Point([1.0, 2.0, 4.0])
 gramRhs = designUnder.transpose() * ySmall
 methodUnder = ot.SVDMethod(proxyUnder, fullUnder)
 xGram = methodUnder.solveNormalGram(gramRhs)
