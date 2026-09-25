@@ -67,6 +67,18 @@ CurlFreeModel::CurlFreeModel(const CurlFreeModel & other)
 }
 
 
+/* Copy assignment operator */
+CurlFreeModel & CurlFreeModel::operator = (const CurlFreeModel & other)
+{
+  if (this != &other)
+  {
+    CovarianceModelImplementation::operator=(other);
+    model_ = other.model_;
+  }
+  return *this;
+}
+
+
 /* Default constructor */
 CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)

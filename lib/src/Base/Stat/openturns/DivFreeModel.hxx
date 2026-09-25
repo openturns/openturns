@@ -36,6 +36,9 @@ public:
   /** Copy constructor, declared first so SWIG tries it before the CovarianceModel conversion below */
   DivFreeModel(const DivFreeModel & other);
 
+  /** Copy assignment operator */
+  DivFreeModel & operator = (const DivFreeModel & other);
+
   /** Default constructor */
   explicit DivFreeModel(const UnsignedInteger inputDimension = 2);
 

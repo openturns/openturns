@@ -36,6 +36,9 @@ public:
   /** Copy constructor, declared first so SWIG tries it before the CovarianceModel conversion below */
   CurlFreeModel(const CurlFreeModel & other);
 
+  /** Copy assignment operator */
+  CurlFreeModel & operator = (const CurlFreeModel & other);
+
   /** Default constructor */
   explicit CurlFreeModel(const UnsignedInteger inputDimension = 2);
 

@@ -152,6 +152,18 @@ DivFreeModel::DivFreeModel(const DivFreeModel & other)
 }
 
 
+/* Copy assignment operator */
+DivFreeModel & DivFreeModel::operator = (const DivFreeModel & other)
+{
+  if (this != &other)
+  {
+    CovarianceModelImplementation::operator=(other);
+    model_ = other.model_;
+  }
+  return *this;
+}
+
+
 /* Parameters constructor */
 DivFreeModel::DivFreeModel(const CovarianceModel & model)
   : CovarianceModelImplementation(model.getInputDimension())
