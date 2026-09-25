@@ -31,6 +31,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearEnumerateFunction.hxx"
+#include "PoissonFormula.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -97,6 +98,7 @@ Bool Multinomial::operator ==(const Multinomial & other) const
   return hasEqualBase(other) && (n_ == other.n_) && (p_ == other.p_);
 }
 
+/* Comparison operator */
 Bool Multinomial::equals(const DistributionImplementation & other) const
 {
   const Multinomial* p_other = dynamic_cast<const Multinomial*>(&other);
@@ -195,12 +197,13 @@ Scalar Multinomial::computePDF(const Point & point) const
 
   UnsignedInteger k = 0;
   // First, check the validity of the input
-  UnsignedInteger sumX = 0.0;
+  UnsignedInteger sumX = 0;
   Indices x(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    x[i] = static_cast< UnsignedInteger >(round(point[i]));
-    if (std::abs(x[i] - point[i]) > supportEpsilon_) return 0.0;
+    const Scalar xRounded = round(point[i]);
+    if ((xRounded < 0.0) || (std::abs(xRounded - point[i]) > supportEpsilon_)) return 0.0;
+    x[i] = static_cast< UnsignedInteger >(xRounded);
     k = x[i];
     // Early exit if the given point is not in the support of the distribution
     if (k > n_) return 0.0;
@@ -275,81 +278,21 @@ Complex Multinomial::computeGlobalPhi(const Complex & z,
   return value;
 }
 
-/* Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
+/* Compute the generating function of a truncated Poisson distribution as needed in the computeCDF() method */
 Complex Multinomial::computeLocalPhi(const Complex & z,
                                      const Scalar lambda,
                                      const UnsignedInteger a) const
 {
-  if (z == 0.0) return std::exp(-lambda);
-  const Complex u(lambda * z);
-  // Small value of a, evaluate the generating function as a polynomial
-  if (a <= smallA_)
-  {
-    Complex value(std::exp(-lambda));
-    Complex term(value);
-    for (UnsignedInteger i = 1; i <= a; ++i)
-    {
-      term *= u * (1.0 / i);
-      value += term;
-    }
-    return value;
-  } // smallA_
-  // Large a
-  Complex value(std::exp(-lambda + u));
-  UnsignedInteger i = a + 1;
-  Complex term(std::exp(-lambda + (1.0 * i) * std::log(u) - lgamma(i + 1.0)));
-  while (std::abs(term) > SpecFunc::Precision * std::abs(value))
-  {
-    value -= term;
-    ++i;
-    term *= u * (1.0 / i);
-  }
-  return value - term;
+  return PoissonFormula::localPhi0(z, PoissonFormula::PoissonKernel(lambda, z), a, smallA_);
 }
 
-/* Compute the generating function of a shifted truncated Poisson distributions as needed in the computeProbability() method */
+/* Compute the generating function of a shifted truncated Poisson distribution as needed in the computeProbability() method */
 Complex Multinomial::computeLocalPhi(const Complex & z,
                                      const Scalar lambda,
                                      const UnsignedInteger a,
                                      const UnsignedInteger b) const
 {
-  if (a == 0) return computeLocalPhi(z, lambda, b);
-  if (z == 0.0) return 0.0;
-  const Complex u(lambda * z);
-  if (b <= a + smallA_)
-  {
-    LOGDEBUG("Case b - a <= smallA_");
-    Complex value(DistFunc::dPoisson(lambda, a));
-    Complex term(value);
-    for (UnsignedInteger i = 1; i <= b - a; ++i)
-    {
-      term *= u * (1.0 / (a + i));
-      value += term;
-    }
-    return value;
-  } // smallA_
-  LOGDEBUG("Case b - a > smallA_");
-  // Large b - a
-  // Start from the non-truncated generating function
-  Complex value(std::exp(-lambda + u - (1.0 * a) * std::log(z)));
-  SignedInteger i = a;
-  Complex term(DistFunc::dPoisson(lambda, a));
-  while (i >= 0 && std::abs(term) > SpecFunc::Precision * std::abs(value))
-  {
-    term *= (1.0 * i) / u;
-    --i;
-    value -= term;
-  }
-  // And the upper terms
-  i = b;
-  term = DistFunc::dPoisson(lambda, b) * std::pow(z, 1.0 * (b - a));
-  while (std::abs(term) > SpecFunc::Precision * std::abs(value))
-  {
-    ++i;
-    term *= u * (1.0 / i);
-    value -= term;
-  }
-  return value;
+  return PoissonFormula::localPhi(z, PoissonFormula::PoissonKernel(lambda, z), a, b, smallA_);
 }
 
 /* Get the CDF of the distribution
@@ -366,6 +309,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     if (point[0] < -supportEpsilon_) return 0.0;
     if (point[0] > n_ + supportEpsilon_) return 1.0;
     const Indices kPoint(point.begin(), point.end());
+    if (p_[0] == 1.0) return (kPoint[0] >= n_ ? 1.0 : 0.0);
     return DistFunc::pBeta(n_ - kPoint[0], kPoint[0] + 1, 1.0 - p_[0]);
   }
   // First, check the boarding cases
@@ -387,7 +331,15 @@ Scalar Multinomial::computeCDF(const Point & point) const
   // If we are at the origin, CDF = probability of the zero vector
   if (allZero) return std::pow(1.0 - sumP_, static_cast<int>(n_));
   // If the atoms with non zero probability sum to N
-  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_)) return computePDF(point);
+  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
+  {
+    // Only the atom floor(point) lies inside the box, so we return
+    // PDF(floor(point)) rather than PDF(point)
+    Point integerPoint(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      integerPoint[i] = kPoint[i];
+    return computePDF(integerPoint);
+  }
   // If the point covers the whole support of the distribution, return 1.0
   const UnsignedInteger size = indices.getSize();
   if (size == 0) return 1.0;
@@ -405,32 +357,8 @@ Scalar Multinomial::computeCDF(const Point & point) const
     return Multinomial(n_, pReduced).computeCDF(xReduced);
   }
   // Evaluation of P(W=n) using Poisson's formula
-  Complex phiK(computeGlobalPhi(Complex(r_, 0.0), kPoint));
-  const Complex zetaN(std::exp(Complex(0.0, M_PI / n_)));
-  Complex phiKp1(computeGlobalPhi(r_ * zetaN, kPoint));
-  Complex delta(phiK - phiKp1);
-  Scalar value = delta.real();
-  const Scalar dv0 = std::abs(delta);
-  if (dv0 == 0.0)
-  {
-    LOGWARN("Underflow in Multinomial::computeCDF");
-    return 0.0;
-  }
-  Scalar sign = -1.0;
-  Complex t(zetaN);
-  for (UnsignedInteger k = 1; k < n_; ++k)
-  {
-    phiK = phiKp1;
-    t *= zetaN;
-    phiKp1 = computeGlobalPhi(r_ * t, kPoint);
-    delta = phiK - phiKp1;
-    value += sign * delta.real();
-    const Scalar dv = std::abs(delta);
-    if (dv < SpecFunc::Precision * dv0) break;
-    sign = -sign;
-  }
-  // Due to round-off errors, the computed CDF can be slightly below 0 or over 1.
-  return SpecFunc::Clip01(value * normalizationCDF_);
+  return PoissonFormula::computeCDF([&](const Complex & z) { return computeGlobalPhi(z, kPoint); },
+                                    n_, r_, normalizationCDF_, getClassName());
 }
 
 /* Compute the probability content of an interval */
@@ -445,9 +373,12 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
     const Scalar a = interval.getLowerBound()[0];
     const Scalar b = interval.getUpperBound()[0];
     if (p_[0] == 1.0) return (a <= static_cast<Scalar>(n_) && b >= static_cast<Scalar>(n_)) ? 1.0 : 0.0;
+    if (p_[0] == 0.0) return (a <= 0.0 && b >= 0.0) ? 1.0 : 0.0;
     if ((a > n_ + supportEpsilon_) || (b < -supportEpsilon_)) return 0.0;
     if ((a < -supportEpsilon_) && (b > n_ + supportEpsilon_)) return 1.0;
-    Scalar probability = DistFunc::pBeta(n_ - floor(b), floor(b) + 1, 1.0 - p_[0]);
+    // Clamp the upper bound to the support upper bound so that floor(b) <= n
+    const Scalar bF = SpecFunc::Clip(std::floor(b), 0.0, 1.0 * n_);
+    Scalar probability = DistFunc::pBeta(n_ - bF, bF + 1, 1.0 - p_[0]);
     if (a > 0.0)
     {
       const Scalar aFloor = std::ceil(a) - 1.0;
@@ -467,6 +398,12 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
     upper.add(n_);
     return Multinomial(n_, p).computeProbability(Interval(lower, upper));
   }
+  // The box is empty if one of its upper bounds is strictly negative or one of
+  // its lower bounds exceeds the support upper bound n_
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    if ((upper[i] < -supportEpsilon_) || (lower[i] > static_cast<Scalar>(n_) + supportEpsilon_)) return 0.0;
+  }
   // Now we have sumP_ == 1
   Indices a(dimension_);
   Indices b(dimension_);
@@ -477,7 +414,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     aP[i] = std::max(0.0, std::ceil(lower[i]));
-    bP[i] = std::min(1.0 * n_, std::floor(upper[i]));
+    bP[i] = SpecFunc::Clip(std::floor(upper[i]), 0.0, 1.0 * n_);
     a[i] = static_cast<UnsignedInteger>(aP[i]);
     b[i] = static_cast<UnsignedInteger>(bP[i]);
     if (a[i] > b[i]) return 0.0;
@@ -500,27 +437,8 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   }
   // Diametral term
   const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
-  const Scalar coefNorm = std::exp(-logCoefNorm - poisLogPDF) / (2.0 * nA);
-  Scalar value = coefNorm * computeGlobalPhi(r, a, b).real();
-  Scalar delta = SpecFunc::Infinity;
-  Scalar sign2 = -2.0 * coefNorm;
-  for (UnsignedInteger k = 1; k < nA; ++k)
-  {
-    if (std::abs(delta) <= SpecFunc::Precision * std::abs(value))
-      break;
-    const Complex zeta(r * std::exp(Complex(0.0, k * M_PI / nA)));
-    delta = sign2 * computeGlobalPhi(zeta, a, b).real();
-    value += delta;
-    sign2 = -sign2;
-  }
-  // Check if we have to take the last term into account
-  if (std::abs(delta) > SpecFunc::Precision * std::abs(value))
-  {
-    delta = coefNorm * computeGlobalPhi(-r, a, b).real();
-    if (nA % 2 == 0) value += delta;
-    else value -= delta;
-  }
-  return SpecFunc::Clip01(value);
+  return PoissonFormula::computeProbability([&](const Complex & z) { return computeGlobalPhi(z, a, b); },
+                                            nA, r, logCoefNorm, poisLogPDF);
 }
 
 /* Get the survival function of the distribution */
@@ -552,21 +470,21 @@ Scalar Multinomial::computeConditionalPDF(const Scalar x,
   if (conditioningDimension == 0) return Binomial(n_, p_[0]).computePDF(x);
   // General case
   // Check that y is a valid conditioning vector
-  UnsignedIntegerCollection intY(conditioningDimension);
   Scalar sumY = 0.0;
   Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     const Scalar yI = y[i];
-    const UnsignedInteger intYI = static_cast<UnsignedInteger>(round(yI));
-    if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
+    const Scalar yRounded = round(yI);
+    if ((yRounded < 0.0) || (std::abs(yI - yRounded) > supportEpsilon_)) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
-    intY[i] = intYI;
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
   if (sumP >= 1.0 - supportEpsilon_) return (x == 0.0 ? 1.0 : 0.0);
-  return DistFunc::dBinomial(static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / (1.0 - sumP), static_cast<UnsignedInteger>(x));
+  const Scalar xRounded = round(x);
+  if ((xRounded < 0.0) || (std::abs(x - xRounded) > supportEpsilon_)) return 0.0;
+  return DistFunc::dBinomial(static_cast<UnsignedInteger>(round(n_ - sumY)), p_[conditioningDimension] / (1.0 - sumP), static_cast<UnsignedInteger>(xRounded));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -579,20 +497,21 @@ Scalar Multinomial::computeConditionalCDF(const Scalar x,
   if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeCDF(x);
   // General case
   // Check that y is a valid conditioning vector
-  UnsignedIntegerCollection intY(conditioningDimension);
   Scalar sumY = 0.0;
   Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     const Scalar yI = y[i];
-    const UnsignedInteger intYI = static_cast<UnsignedInteger>(round(yI));
-    if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
+    const Scalar yRounded = round(yI);
+    if ((yRounded < 0.0) || (std::abs(yI - yRounded) > supportEpsilon_)) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
-    intY[i] = intYI;
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
   if (sumP >= 1.0 - supportEpsilon_) return (x >= 0.0 ? 1.0 : 0.0);
+  // External points of the conditional support
+  if (x < 0.0) return 0.0;
+  if (x >= static_cast<Scalar>(n_) - sumY) return 1.0;
   return DistFunc::pBeta(n_ - sumY - floor(x), floor(x) + 1, 1.0 - p_[conditioningDimension] / (1.0 - sumP));
 }
 
@@ -607,16 +526,14 @@ Scalar Multinomial::computeConditionalQuantile(const Scalar q,
   if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeQuantile(q)[0];
   // General case
   // Check that y is a valid conditioning vector
-  UnsignedIntegerCollection intY(conditioningDimension);
   Scalar sumY = 0.0;
   Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     const Scalar yI = y[i];
-    const UnsignedInteger intYI = static_cast<UnsignedInteger>(round(yI));
-    if (std::abs(yI - intYI) > supportEpsilon_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
+    const Scalar yRounded = round(yI);
+    if ((yRounded < 0.0) || (std::abs(yI - yRounded) > supportEpsilon_)) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
-    intY[i] = intYI;
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
@@ -784,6 +701,7 @@ Multinomial::PointWithDescriptionCollection Multinomial::getParametersCollection
 }
 
 
+/* Parameters value accessor */
 Point Multinomial::getParameter() const
 {
   Point parameter(1, n_);
@@ -791,6 +709,7 @@ Point Multinomial::getParameter() const
   return parameter;
 }
 
+/* Parameters description accessor */
 Description Multinomial::getParameterDescription() const
 {
   Description description(1, "n");
@@ -800,6 +719,7 @@ Description Multinomial::getParameterDescription() const
   return description;
 }
 
+/* Parameters value accessor */
 void Multinomial::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getDimension();
@@ -871,6 +791,7 @@ void Multinomial::setN(const UnsignedInteger n)
   }
 }
 
+/* N accessor */
 UnsignedInteger Multinomial::getN() const
 {
   return n_;
@@ -882,6 +803,7 @@ void Multinomial::setSmallA(const Scalar smallA)
   smallA_ = smallA;
 }
 
+/* SmallA accessor */
 Scalar Multinomial::getSmallA() const
 {
   return smallA_;
@@ -893,6 +815,7 @@ void Multinomial::setEta(const Scalar eta)
   eta_ = eta;
 }
 
+/* Eta accessor */
 Scalar Multinomial::getEta() const
 {
   return eta_;
