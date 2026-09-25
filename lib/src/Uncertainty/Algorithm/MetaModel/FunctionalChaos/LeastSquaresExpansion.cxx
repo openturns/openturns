@@ -129,6 +129,9 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
   if (activeFunctions.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: active functions cannot be empty";
   if (!activeFunctions.check(basisSize)) throw InvalidArgumentException(HERE) << "Error: the active functions must be distinct and have indices less than " << basisSize;
   activeFunctions_ = activeFunctions;
+  // The constant function (index 0) is always needed for the initial model
+  if (!activeFunctions_.contains(0))
+    activeFunctions_.add(0);
 }
 
 /* Constructor with active functions */
@@ -213,12 +216,18 @@ Indices LeastSquaresExpansion::getActiveFunctions() const
 
 void LeastSquaresExpansion::setActiveFunctions(const Indices & activeFunctions)
 {
+  if (activeFunctions.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: active functions cannot be empty";
+  // Distinctness is checked against a trivially satisfied bound: max + 1 always holds
+  if (!activeFunctions.check(activeFunctions.normInf() + 1)) throw InvalidArgumentException(HERE) << "Error: the active functions must be distinct";
   if (!activeFunctions.check(basisSize_))
   {
     basisSize_ = activeFunctions.normInf() + 1;
     designProxy_ = DesignProxy();
   }
   activeFunctions_ = activeFunctions;
+  // The constant function (index 0) is always needed for the initial model
+  if (!activeFunctions_.contains(0))
+    activeFunctions_.add(0);
 }
 
 

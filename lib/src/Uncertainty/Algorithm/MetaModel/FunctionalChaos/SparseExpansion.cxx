@@ -198,7 +198,8 @@ void SparseExpansion::run()
   const Scalar maximumError = std::max(0.0, ResourceMap::GetAsScalar("LeastSquaresMetaModelSelection-MaximumError"));
   const UnsignedInteger maximumNumberOfIterations = std::min(basisSize_ - 1, sampleSize - 1);
   const Scalar smallCoefficient = ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
-  const UnsignedInteger consecutiveIncreases = std::max(static_cast<UnsignedInteger>(1), ResourceMap::GetAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases"));
+  const UnsignedInteger consecutiveIncreases = ResourceMap::GetAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases");
+  if (consecutiveIncreases == 0) throw InvalidArgumentException(HERE) << "Error: SparseExpansion-ConsecutiveIncreases must be positive, here 0.";
 
   if (selectionMethod_ == "LARS")
     runLARS(functions, outputDimension, sampleSize, maximumNumberOfIterations, alpha, errorThreshold, maximumError, smallCoefficient, consecutiveIncreases);
@@ -253,6 +254,12 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
     for (UnsignedInteger s = 0; s < sampleSize; ++s)
       weightedResiduals[s] = weights_[s] * (rhs[s] - coefficients[0]);
 
+    // Full design over all the basis functions, hoisted out of the loop:
+    // it does not change across iterations, only the residuals do
+    Indices allBasisFunctions(basisSize_);
+    allBasisFunctions.fill();
+    const Matrix fullDesign(designProxy_.computeDesign(allBasisFunctions));
+
     Scalar bestCrossValidationError = crossValidationError;
     Point bestCoefficients(coefficients);
     Indices bestSelection(marginalActiveFunctions);
@@ -266,8 +273,10 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
       {
         if (flagActiveFunctions[k] == 1) continue;
         if (!isCandidate[k]) continue;
-        const Matrix currentBasisFunctionValues(designProxy_.computeDesign({k}));
-        const Scalar currentAbsoluteCorrelation = std::abs((currentBasisFunctionValues.transpose() * weightedResiduals)[0]);
+        Scalar currentCorrelation = 0.0;
+        for (UnsignedInteger s = 0; s < sampleSize; ++s)
+          currentCorrelation += fullDesign(s, k) * weightedResiduals[s];
+        const Scalar currentAbsoluteCorrelation = std::abs(currentCorrelation);
         if (currentAbsoluteCorrelation > maximumAbsoluteCorrelation)
         {
           bestBasisFunctionIndex = k;

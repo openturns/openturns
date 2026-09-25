@@ -208,5 +208,15 @@ for i in range(dimension):
 for i in range(dimension):
     s1_cpp = sobol_cpp.getSobolIndex(i)
     ott.assert_almost_equal(s1_cpp, sob_1_ref[i], 0.05, 1e-5)
+    st_cpp = sobol_cpp.getSobolTotalIndex(i)
+    ott.assert_almost_equal(st_cpp, sob_T1_ref[i], 0.05, 1e-5)
+
+# L2 error of the C++ approximation on a large independent Monte Carlo sample
+l2TestSample = distribution.getSample(10000)
+l2TestOutput = model(l2TestSample)
+l2ApproxOutput = result_cpp.getMetaModel()(l2TestSample)
+l2MeanSquare = (l2TestOutput - l2ApproxOutput).computeRawMoment(2)[0]
+ott.assert_almost_equal(l2MeanSquare, 0.0, 0.0, 0.25)
+print(f"L2 mean-square error: {l2MeanSquare:.6e}")
 
 print("OMP comparison: OK")
