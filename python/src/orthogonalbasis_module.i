@@ -47,6 +47,7 @@
 %include OrthonormalizationAlgorithm.i
 %include AdaptiveStieltjesAlgorithm.i
 %include UniVariateDistributionPolynomialFactory.i
+%include StandardDistributionPolynomialFactory.i
 %include OrthogonalFunctionFactory.i
 %include OrthogonalBasis.i
 %include OrthogonalUniVariateFunctionFactory.i

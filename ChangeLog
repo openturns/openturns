@@ -60,7 +60,7 @@
  * Added Graph.setXMin/setXMax/setYMin/setYMax
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
- * Removed StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
+ * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
 
 ==== New features ====
  * The unary subtraction operator on Function and FunctionImplementation is now available

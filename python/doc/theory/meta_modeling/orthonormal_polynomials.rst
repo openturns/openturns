@@ -64,7 +64,7 @@ to :math:`X` are obtained from those of :math:`Z` by the substitution
      - :math:`\displaystyle \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}`
      - :math:`\begin{array}{ccc} a_n & = & \frac{1}{\sqrt{n+1}} \\ b_n & = & 0 \\ c_n & = &  - \sqrt{\frac{n}{n+1}} \end{array}`
    * - Legendre
-     - :math:`\begin{array}{c} {Le}_n(x) \\ \alpha>-1 \end{array}`
+     - :math:`{Le}_n(x)`
      - :math:`\displaystyle \frac{1}{2} \times \mathbb{I}_{[-1,1]}(x)`
      - :math:`\begin{array}{ccc} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \\ b_n & = & 0 \\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} } \end{array}`
    * - Laguerre
