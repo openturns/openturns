@@ -55,19 +55,19 @@ antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`n`-d
 values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^p`
     The P1 field defining the piecewise-affine map.
 
-Notes
------
-The tolerance used when checking whether a point belongs to the image mesh
-is stored in the `PushForwardOverMesh-OnSimplexEpsilon`
-:class:`~openturns.ResourceMap` key.
-
-The number of Monte-Carlo realizations used to estimate the mean and the
-covariance are stored in the `PushForwardOverMesh-SampleSize`
-:class:`~openturns.ResourceMap` key.
-
 See also
 --------
 openturns.UniformOverMesh, PushForwardDistribution
+
+Notes
+-----
+The tolerance used when checking whether a point belongs to the image mesh
+is stored in the ``PushForwardOverMesh-OnSimplexEpsilon``
+:class:`~openturns.ResourceMap` key.
+
+The number of Monte-Carlo realizations used to estimate the mean and the
+covariance are stored in the ``PushForwardOverMesh-SampleSize``
+:class:`~openturns.ResourceMap` key.
 
 Examples
 --------

@@ -19,16 +19,6 @@ Parameters
 dimension : int, :math:`\geq 2`
     Ambient dimension :math:`n`, default value is 3.
 
-Examples
---------
->>> import openturns as ot
->>> import openturns.experimental as otexp
->>> manifold = otexp.SphereManifold(3)
->>> print(manifold.getIntrinsicDimension())
-2
->>> print(manifold.getVolume())
-12.5663706...
-
 See also
 --------
 Manifold, SO3Manifold
@@ -39,4 +29,14 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``Manifold-Epsilon``: tolerance used by :meth:`isOnManifold` and the
   projections, default value ``1e-10``.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> manifold = otexp.SphereManifold(3)
+>>> print(manifold.getIntrinsicDimension())
+2
+>>> print(manifold.getVolume())
+12.5663706...
 )RAW"

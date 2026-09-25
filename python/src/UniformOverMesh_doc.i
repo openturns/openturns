@@ -84,7 +84,7 @@ whether a point lies on the mesh is stored in the
 
 Returns
 -------
-mesh : ;class:`~openturns.Mesh`
+mesh : :class:`~openturns.Mesh`
     Mesh."
 
 // ---------------------------------------------------------------------

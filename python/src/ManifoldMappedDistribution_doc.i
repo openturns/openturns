@@ -27,6 +27,18 @@ manifold : :class:`~openturns.experimental.Manifold`
 chartCenter : sequence of float
     Chart center on the manifold.
 
+See also
+--------
+Manifold, PushForwardDistribution
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``ManifoldMappedDistribution-SampleSize``: number of Monte-Carlo
+  realizations used to estimate the range, the mean and the covariance,
+  default value ``10000``.
+
 Examples
 --------
 >>> import openturns as ot
@@ -39,18 +51,6 @@ Examples
 3
 >>> print(distribution.computePDF(chartCenter))
 0.1591549...
-
-See also
---------
-Manifold, PushForwardDistribution
-
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``ManifoldMappedDistribution-SampleSize``: number of Monte-Carlo
-  realizations used to estimate the range, the mean and the covariance,
-  default value ``10000``.
 )RAW"
 
 // ---------------------------------------------------------------------

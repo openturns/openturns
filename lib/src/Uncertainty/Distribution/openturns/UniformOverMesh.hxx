@@ -46,7 +46,7 @@ public:
   UniformOverMesh();
 
   /** Parameters constructor */
-  UniformOverMesh(const Mesh & mesh);
+  explicit UniformOverMesh(const Mesh & mesh);
 
 
   /** Comparison operator */

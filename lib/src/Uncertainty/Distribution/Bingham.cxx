@@ -250,9 +250,7 @@ Point Bingham::computeSecondMoments() const
   const UnsignedInteger n = dimension_;
   // Canonical shift (adding a constant to zeta leaves the law unchanged)
   Point cZeta(zeta_);
-  Scalar minZeta = cZeta[0];
-  for (UnsignedInteger i = 1; i < n; ++i)
-    minZeta = std::min(minZeta, cZeta[i]);
+  const Scalar minZeta = *std::min_element(cZeta.begin(), cZeta.end());
   Scalar maxZeta = cZeta[0];
   for (UnsignedInteger i = 0; i < n; ++i)
   {

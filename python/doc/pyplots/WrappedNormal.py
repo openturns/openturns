@@ -1,5 +1,6 @@
 import openturns as ot
 import openturns.experimental as otexp
+from math import pi
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
@@ -10,7 +11,7 @@ pdf_graph.setLegendPosition("upper left")
 palette = ot.Drawable.BuildDefaultPalette(4)
 for i, sigma in enumerate([0.5, 1.0, 2.0, 3.0]):
     distribution = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[sigma**2]]))
-    pdf_curve = distribution.drawPDF(-1.0, 1.0, 256).getDrawable(0)
+    pdf_curve = distribution.drawPDF(-pi, pi, 256).getDrawable(0)
     pdf_curve.setColor(palette[i])
     pdf_curve.setLegend(rf"$\sigma^2={sigma**2}$")
     pdf_graph.add(pdf_curve)

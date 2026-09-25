@@ -60,31 +60,31 @@ function : :class:`~openturns.Function`, :math:`\Rset^n \rightarrow \Rset^p`
 antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`n`-dimensional
     The distribution of :math:`X`.
 
+See also
+--------
+openturns.CompositeDistribution
+
 Notes
 -----
 The tolerance on the residual norm used to accept a point as a preimage of
 the searched point and to configure the default solver is stored in the
-`PushForwardDistribution-SolverResidualTolerance`
+``PushForwardDistribution-SolverResidualTolerance``
 :class:`~openturns.ResourceMap` key.
 
 The number of Monte-Carlo realizations used to estimate the range, the mean
-and the covariance are stored in the `PushForwardDistribution-SampleSize`
+and the covariance are stored in the ``PushForwardDistribution-SampleSize``
 :class:`~openturns.ResourceMap` key.
 
 The number of points used to decompose the search interval and to seed the
 damped Newton solver is stored in the
-`PushForwardDistribution-PreimageSearchSampleSize`
+``PushForwardDistribution-PreimageSearchSampleSize``
 :class:`~openturns.ResourceMap` key.
 
 The maximum number of iterations of the damped Newton solver and the
 reduction factor applied to the step when it fails to decrease the residual
-norm are stored in the `PushForwardDistribution-NewtonMaximumIterations`
-and the `PushForwardDistribution-NewtonStepReduction`
+norm are stored in the ``PushForwardDistribution-NewtonMaximumIterations``
+and the ``PushForwardDistribution-NewtonStepReduction``
 :class:`~openturns.ResourceMap` keys.
-
-See also
---------
-openturns.CompositeDistribution
 
 Examples
 --------
