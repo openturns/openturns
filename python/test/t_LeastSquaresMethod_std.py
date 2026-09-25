@@ -114,7 +114,6 @@ ySmall = ot.Point([1.0, 2.0, 4.0])
 gramRhs = designUnder.transpose() * ySmall
 methodUnder = ot.SVDMethod(proxyUnder, fullUnder)
 xGram = methodUnder.solveNormalGram(gramRhs)
-print("underdetermined solveNormalGram:", xGram)
 ott.assert_almost_equal(xGram.getSize(), largeBasisSize)
 assert all(m.isfinite(v) for v in xGram)
 xNormal = methodUnder.solveNormal(gramRhs)
