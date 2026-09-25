@@ -10,6 +10,10 @@ proposalRange : float, optional
 targetProbability : float, optional
     Value of :math:`P(F_i|F_{i-1})` between successive steps
 
+See also
+--------
+EventSimulation
+
 Notes
 -----
 The goal is to estimate the following probability
@@ -61,13 +65,20 @@ autocorrelation between Markov chain samples.
 The first event :math:`F_1` not being conditional, :math:`\delta^2_1`
 expresses as the classic Monte Carlo c.o.v.
 
+The variant implemented features adaptive scaling of the proposal distribution to optimize
+the acceptance rate of the Markov chains dynamically, see [papaioannou2015]_.
+
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SubsetSampling-DefaultConditionalProbability`` (``Scalar``, default: ``0.1``): default conditional probability of the subset sampling algorithm
 - ``SubsetSampling-DefaultMaximumOuterSampling`` (``UnsignedInteger``, default: ``10000``): default maximum number of outer samples of the subset sampling algorithm
-
 - ``SubsetSampling-DefaultProposalRange`` (``Scalar``, default: ``2.0``): default range of the proposal distribution of the subset sampling algorithm
-
+- ``SubsetSampling-DefaultMaximumOuterSampling``: default integer value for the maximum outer sampling
+- ``SubsetSampling-DefaultAdaptationLowerBound``: default float value for the adaptation lower bound
+- ``SubsetSampling-DefaultAdaptationUpperBound``: default float value for the adaptation upper bound
+- ``SubsetSampling-DefaultAdaptationExpansionFactor``: default float value for the adaptation expansion factor
+- ``SubsetSampling-DefaultAdaptationShrinkFactor``: default float value for the adaptation shrink factor
+- ``SubsetSampling-DefaultAdaptationPeriod``: default integer value for the adaptation period
 )RAW"
 
 // ---------------------------------------------------------------------------
@@ -257,3 +268,117 @@ Returns
 -------
 initialExperiment : :class:`~openturns.WeightedExperiment`
     Experiment for first step."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::setProposalAdaptationLowerBound
+"Adaptation lower bound accessor.
+
+Lower bound of the acceptance rate used to adapt the proposal range.
+If the acceptance rate is below this bound, the proposal range is decreased.
+
+Parameters
+----------
+lowerBound : float
+    Lower bound, must be in [0, 1]."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::getProposalAdaptationLowerBound
+"Adaptation lower bound accessor.
+
+Returns
+-------
+lowerBound : float
+    Lower bound of the acceptance rate."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::setProposalAdaptationUpperBound
+"Adaptation upper bound accessor.
+
+Upper bound of the acceptance rate used to adapt the proposal range.
+If the acceptance rate is above this bound, the proposal range is increased.
+
+Parameters
+----------
+upperBound : float
+    Upper bound, must be in [0, 1]."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::getProposalAdaptationUpperBound
+"Adaptation upper bound accessor.
+
+Returns
+-------
+upperBound : float
+    Upper bound of the acceptance rate."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::setProposalAdaptationExpansionFactor
+"Adaptation expansion factor accessor.
+
+Factor by which the proposal range is multiplied when the acceptance rate
+is above the upper bound.
+
+Parameters
+----------
+expansionFactor : float
+    Expansion factor, must be > 1."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::getProposalAdaptationExpansionFactor
+"Adaptation expansion factor accessor.
+
+Returns
+-------
+expansionFactor : float
+    Expansion factor."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::setProposalAdaptationShrinkFactor
+"Adaptation shrink factor accessor.
+
+Factor by which the proposal range is multiplied when the acceptance rate
+is below the lower bound.
+
+Parameters
+----------
+shrinkFactor : float
+    Shrink factor, must be in (0, 1)."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::getProposalAdaptationShrinkFactor
+"Adaptation shrink factor accessor.
+
+Returns
+-------
+shrinkFactor : float
+    Shrink factor."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::setProposalAdaptationPeriod
+"Adaptation period accessor.
+
+Number of candidates between successive adaptation steps.
+
+Parameters
+----------
+period : int
+    Period, must be positive."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::getProposalAdaptationPeriod
+"Adaptation period accessor.
+
+Returns
+-------
+period : int
+    Adaptation period."

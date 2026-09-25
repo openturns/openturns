@@ -7,21 +7,21 @@ CoV = 0.07070
 Limit state calls = 1000000
 ----------------------------------------------------------------------------------------------------
 SUBSET SAMPLING
-Pf estimation = 2.02700e-04
-Pf Variance estimation = 3.01140e-10
-CoV = 0.08561
-90% Confidence Interval = [0.000174156, 0.000231244]
+Pf estimation = 2.25694e-04
+Pf Variance estimation = 6.90109e-10
+CoV = 0.11640
+90% Confidence Interval = [0.000182484, 0.000268904]
 Limit state calls = 40000
 ----------------------------------------------------------------------------------------------------
 MC:     probabilityEstimate=1.000000e+00 varianceEstimate=0.000000e+00 standard deviation=-1.00e+00 coefficient of variation=-1.00e+00 confidenceLength(0.95)=0.00e+00 outerSampling=1000 blockSize=1
 SUBSET: probabilityEstimate=1.000000e+00 varianceEstimate=0.000000e+00 standard deviation=-1.00e+00 coefficient of variation=-1.00e+00 confidenceLength(0.95)=0.00e+00 outerSampling=10000 blockSize=18
 ----------------------------------------------------------------------------------------------------
 MC:     probabilityEstimate=0.000000e+00 varianceEstimate=0.000000e+00 standard deviation=-1.00e+00 coefficient of variation=-1.00e+00 confidenceLength(0.95)=0.00e+00 outerSampling=1000 blockSize=1
-SUBSET: probabilityEstimate=1.000000e-03 varianceEstimate=1.496000e-07 standard deviation=3.87e-04 coefficient of variation=3.87e-01 confidenceLength(0.95)=1.52e-03 outerSampling=1500 blockSize=1
-steps= 3
-T= [-1.39109,-2.42877,-3.33832]
+SUBSET: probabilityEstimate=4.686752e-04 varianceEstimate=4.458745e-08 standard deviation=2.11e-04 coefficient of variation=4.51e-01 confidenceLength(0.95)=8.28e-04 outerSampling=2000 blockSize=1
+steps= 4
+T= [-1.39109,-2.30276,-3.16404,-3.33832]
 ----------------------------------------------------------------------------------------------------
 MC:     probabilityEstimate=1.000000e-03 varianceEstimate=9.990000e-07 standard deviation=9.99e-04 coefficient of variation=9.99e-01 confidenceLength(0.95)=3.92e-03 outerSampling=1000 blockSize=1
-SUBSET: probabilityEstimate=1.000000e-03 varianceEstimate=1.496000e-07 standard deviation=3.87e-04 coefficient of variation=3.87e-01 confidenceLength(0.95)=1.52e-03 outerSampling=1500 blockSize=1
-steps= 3
-T= [-1.39109,-2.42877,-3.33832]
+SUBSET: probabilityEstimate=4.686752e-04 varianceEstimate=4.458745e-08 standard deviation=2.11e-04 coefficient of variation=4.51e-01 confidenceLength(0.95)=8.28e-04 outerSampling=2000 blockSize=1
+steps= 4
+T= [-1.39109,-2.30276,-3.16404,-3.33833]
