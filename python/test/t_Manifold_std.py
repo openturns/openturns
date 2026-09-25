@@ -101,7 +101,7 @@ with ott.assert_raises(TypeError):
     sphere.expMap([1.0, 0.0], [0.0, 0.0])
 
 # Ambient dimension 1 is rejected
-with ott.assert_raises(RuntimeError):
+with ott.assert_raises(ValueError):
     otexp.SphereManifold(1)
 
 # SO(3) manifold of flattened row-major 3x3 rotations
