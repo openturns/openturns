@@ -21,6 +21,7 @@
 #include <fstream>
 #include <algorithm>
 #include <deque>
+#include <set>
 
 #include "openturns/Mesh.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -105,12 +106,26 @@ UnsignedInteger Mesh::getIntrinsicDimension() const
 {
   if (!getSimplicesNumber())
     return 0;
-  UnsignedInteger verticesPerSimplex = 1;
-  UnsignedInteger lastIndex = simplices_(0, 0);
-  while ((verticesPerSimplex <= dimension_) && (simplices_(0, verticesPerSimplex) != lastIndex))
+  // Convention: the simplices of a mesh of intrinsic dimension d embedded
+  // in an ambient space of dimension D are stored with d+1 distinct leading
+  // vertex indices followed by trailing entries all equal to one of the
+  // leading vertex indices, so that the number of vertex indices per simplex
+  // is D+1. The intrinsic dimension is thus the position of the first
+  // repeated vertex index minus 1. A full dimension mesh has D+1 pairwise
+  // distinct vertex indices, in which case the intrinsic dimension is the
+  // number of vertex indices per simplex minus 1. We only need to inspect
+  // the first simplex as all the simplices share the same size (the stride
+  // of the IndicesCollection).
+  const UnsignedInteger verticesPerSimplex = simplices_.getStride();
+  if (verticesPerSimplex <= 1) return 0;
+  std::set< UnsignedInteger > indices;
+  indices.insert(simplices_(0, 0));
+  for (UnsignedInteger j = 1; j < verticesPerSimplex; ++j)
   {
-    lastIndex = simplices_(0, verticesPerSimplex);
-    ++verticesPerSimplex;
+    const UnsignedInteger vertexIndex = simplices_(0, j);
+    if (indices.find(vertexIndex) != indices.end())
+      return j - 1;
+    indices.insert(vertexIndex);
   }
   return verticesPerSimplex - 1;
 }
@@ -452,6 +467,35 @@ Point Mesh::computeSimplicesVolume() const
       } // index
     } // intrinsicDimension > 3
   } // dimension_ == intrinsicDimension + 1
+  // Other codimensions: compute the intrinsic volume of each simplex as
+  // sqrt(det(G)) / d! where G is the Gram matrix of the d edge vectors of
+  // the simplex, eg a surface when d=2 and D=3, a length when d=1 and
+  // D=2 or 3, etc.
+  else
+  {
+    if (intrinsicDimension == 0)
+      return result;
+    Scalar dFactorial = 1.0;
+    for (UnsignedInteger j = 2; j <= intrinsicDimension; ++j)
+      dFactorial *= static_cast< Scalar > (j);
+    SquareMatrix gram(intrinsicDimension);
+    for (UnsignedInteger index = 0; index < nrSimplices; ++index)
+    {
+      const Point origin(vertices_[simplices_(index, 0)]);
+      for (UnsignedInteger j = 0; j < intrinsicDimension; ++j)
+      {
+        const Point edgeJ(vertices_[simplices_(index, j + 1)] - origin);
+        for (UnsignedInteger k = j; k < intrinsicDimension; ++k)
+        {
+          const Scalar value = edgeJ.dot(vertices_[simplices_(index, k + 1)] - origin);
+          gram(j, k) = value;
+          gram(k, j) = value;
+        }
+      }
+      const Scalar determinant = gram.computeDeterminant();
+      result[index] = (determinant > 0.0) ? std::sqrt(determinant) / dFactorial : 0.0;
+    } // index
+  }
   return result;
 }
 
@@ -460,7 +504,7 @@ CovarianceMatrix Mesh::computeP1Gram() const
 {
   // If no simplex, the P1 gram matrix is null
   if (simplices_.getSize() == 0) return CovarianceMatrix(0);
-  const UnsignedInteger simplexSize = getDimension() + 1;
+  const UnsignedInteger simplexSize = getIntrinsicDimension() + 1;
   SquareMatrix elementaryGram(simplexSize, Point(simplexSize * simplexSize, 1.0 / (simplexSize * (simplexSize + 1.0))));
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const UnsignedInteger verticesSize = vertices_.getSize();
@@ -469,14 +513,13 @@ CovarianceMatrix Mesh::computeP1Gram() const
   SquareMatrix gram(verticesSize);
   for (UnsignedInteger i = 0; i < simplicesSize; ++i)
   {
-    const Indices simplex(getSimplex(i));
     const Scalar delta = simplexVolume[i];
     for (UnsignedInteger j = 0; j < simplexSize; ++j)
     {
-      const UnsignedInteger newJ = simplex[j];
+      const UnsignedInteger newJ = simplices_(i, j);
       for (UnsignedInteger k = 0; k < simplexSize; ++k)
       {
-        const UnsignedInteger newK = simplex[k];
+        const UnsignedInteger newK = simplices_(i, k);
         gram(newJ, newK) += delta * elementaryGram(j, k);
       } // Loop over second vertex
     } // Loop over first vertex
@@ -601,18 +644,20 @@ Point Mesh::computeWeights() const
   const UnsignedInteger numVertices = getVerticesNumber();
   const UnsignedInteger numSimplices = getSimplicesNumber();
   Point weights(numVertices, 0.0);
+  const UnsignedInteger verticesPerSimplex = getIntrinsicDimension() + 1;
   Point simplexVolume(computeSimplicesVolume());
   for (UnsignedInteger simplex = 0; simplex < numSimplices; ++simplex)
   {
     const Scalar weight = simplexVolume[simplex];
-    for (IndicesCollection::const_iterator cit = simplices_.cbegin_at(simplex); cit != simplices_.cend_at(simplex); ++cit)
+    for (UnsignedInteger j = 0; j < verticesPerSimplex; ++j)
     {
-      weights[*cit] += weight;
+      weights[simplices_(simplex, j)] += weight;
     }
   }
-  // Normalize the weights: each simplex has dim+1 vertices, so each vertex
-  // get 1/(dim+1) of the volume of the simplices it belongs to
-  weights /= (dimension_ + 1.0);
+  // Normalize the weights: each simplex has intrinsicDimension+1 distinct
+  // vertices, so each vertex get 1/(intrinsicDimension+1) of the volume of
+  // the simplices it belongs to
+  weights /= (verticesPerSimplex);
   return weights;
 }
 

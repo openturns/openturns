@@ -188,6 +188,11 @@ OT_API Scalar HyperGeom_2_2(const Scalar p1,
                             const Scalar q1,
                             const Scalar q2,
                             const Scalar x);
+// Natural logarithm of the hypergeometric function of type (1,1), valid over
+// the full double range through a log-space series and an asymptotic expansion
+OT_API Scalar LogHyperGeom_1_1(const Scalar p1,
+                               const Scalar q1,
+                               const Scalar x);
 // Erf function erf(x) = 2 / \sqrt(\pi) . \int_0^x \exp(-t^2) dt
 OT_API Scalar Erf(const Scalar x);
 OT_API Complex Erf(const Complex & z);

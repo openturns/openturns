@@ -715,6 +715,17 @@
   <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
+  <!-- OT::PushForwardDistribution parameters -->
+  <PushForwardDistribution-SolverResidualTolerance value_float="1.0e-5" />
+  <PushForwardDistribution-SampleSize              value_int="10000"   />
+  <PushForwardDistribution-PreimageSearchSampleSize value_int="256" />
+  <PushForwardDistribution-NewtonMaximumIterations  value_int="50" />
+  <PushForwardDistribution-NewtonStepReduction      value_float="0.5" />
+
+  <!-- OT::PushForwardOverMesh parameters -->
+  <PushForwardOverMesh-OnSimplexEpsilon value_float="1.0e-10" />
+  <PushForwardOverMesh-SampleSize       value_int="10000"     />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />
@@ -774,7 +785,14 @@
   <!-- OT::FiniteDiscreteDistribution parameters -->
   <FiniteDiscreteDistribution-SmallSize value_int="10000" />
   
+  <!-- OT::Manifold parameters -->
+  <Manifold-Epsilon value_float="1e-10" />
+
+  <!-- OT::ManifoldMappedDistribution parameters -->
+  <ManifoldMappedDistribution-SampleSize value_int="10000" />
+
   <!-- OT::UniformOverMesh parameters -->
+  <UniformOverMesh-OnManifoldEpsilon value_float="1e-10" />
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
@@ -796,6 +814,39 @@
   <VonMisesFisherFactory-RelativePrecision value_float="1e-12"        />
   <VonMisesFisherFactory-ResidualPrecision value_float="1e-12"        />
   <VonMisesFisherFactory-MaximumIteration  value_int="10" />
+  
+  <!-- OT::Bingham parameters -->
+  <Bingham-OrthogonalityThreshold value_float="1e-12"        />
+  <Bingham-MaximumIteration  value_int="200" />
+  <BinghamFactory-MaximumIterations value_int="20" />
+
+  <!-- OT::MatrixFisher parameters -->
+  <MatrixFisher-OrthogonalityThreshold value_float="1e-12"        />
+  <MatrixFisher-QuadratureOrder  value_int="50" />
+  <MatrixFisher-QuadratureGrowthFactor value_float="7.0" />
+  <MatrixFisher-MaximumConcentration value_float="100.0" />
+  <MatrixFisherFactory-MaximumIterations value_int="20" />
+
+  <!-- OT::RiemannianGaussian parameters -->
+  <RiemannianGaussian-PositiveDefiniteThreshold value_float="1e-12" />
+  <RiemannianGaussian-LogJacobianTaylorThreshold value_float="1e-3" />
+
+  <!-- OT::RiemannianGaussianFactory parameters -->
+  <RiemannianGaussianFactory-StepSize value_float="0.1" />
+  <RiemannianGaussianFactory-Tolerance value_float="1e-8"        />
+  <RiemannianGaussianFactory-MaximumIteration  value_int="100" />
+
+  <!-- OT::WrappedNormal parameters -->
+  <WrappedNormal-MaxLatticeTerms value_int="100000" />
+  <WrappedNormal-GaussHermiteMaximumPoints value_int="4096" />
+
+  <!-- OT::WrappedNormalFactory parameters -->
+
+  <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
+
+  <UniformOverMeshFactory-NearestNeighbors  value_int="12" />
+
+  <UniformOverMeshFactory-MinimumAreaFactor value_float="1e-3" />
   
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
