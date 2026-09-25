@@ -236,7 +236,7 @@ Bool DivFreeModel::isStationary() const
 void DivFreeModel::setScale(const Point & scale)
 {
   model_.setScale(scale);
-  scale_ = model_.getScale();
+  scale_ = scale;
   const SquareMatrix C0(operator()(Point(inputDimension_)));
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
