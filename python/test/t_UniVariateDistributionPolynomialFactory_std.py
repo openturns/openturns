@@ -26,7 +26,7 @@ collection = [
     ot.FiniteDiscreteDistribution([[i + 0.5] for i in range(10)]),
 ]
 for distribution in collection:
-    polynomialFactory = ot.StandardDistributionPolynomialFactory(
+    polynomialFactory = ot.UniVariateDistributionPolynomialFactory(
         ot.AdaptiveStieltjesAlgorithm(distribution)
     )
     M = ot.SymmetricMatrix(iMax)
@@ -127,9 +127,3 @@ assert (
     arc.getSpecificFamily().getImplementation().getClassName()
     == "ChebychevFactory"
 )
-
-# Verify StandardDistributionPolynomialFactory (deprecated) still works
-old_norm = ot.StandardDistributionPolynomialFactory(ot.Normal(2.0, 3.0))
-assert (
-    old_norm.getHasSpecificFamily()
-), "Deprecated Normal(2,3) should have specific family"

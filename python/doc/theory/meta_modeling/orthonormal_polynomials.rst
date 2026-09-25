@@ -68,13 +68,13 @@ to :math:`X` are obtained from those of :math:`Z` by the substitution
      - :math:`\displaystyle \frac{1}{2} \times \mathbb{I}_{[-1,1]}(x)`
      - :math:`\begin{array}{ccc} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \\ b_n & = & 0 \\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} } \end{array}`
    * - Laguerre
-     - :math:`L_n^{(\alpha)}(x)`
+     - :math:`L_n^{(k)}(x)`
      - :math:`\displaystyle \frac{x^{k-1}}{\Gamma(k)}~e^{-x} \mathbb{I}_{[0,+\infty[}(x)`
-     - :math:`\begin{array}{ccc} \omega_{n} & = & \left((n+1)(n+k+1) \right)^{-1/2} \\ a_n & = & \omega_{n} \\ b_n & = & -(2n+k+1)~\omega_{n} \\ c_n & = &  -\sqrt{(n+k)n}~\omega_{n} \end{array}`
+     - :math:`\begin{array}{ccc} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2} \\ a_n & = & \omega_{n} \\ b_n & = & -(2n+k)~\omega_{n} \\ c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n} \end{array}`
    * - Jacobi
-     - :math:`\begin{array}{c} J^{(\alpha,\beta)}_n(x) \\ \alpha,\beta>-1 \end{array}`
-     - :math:`\frac{(1-x)^{\alpha}(1+x)^{\beta}}{2^{\alpha + \beta + 1} B(\beta + 1, \alpha + 1)} \mathbb{I}_{[-1,1]}(x)`
-     - :math:`\begin{array}{ccc} K_{1,n} & = & \frac{2n+\alpha + \beta + 3}{(n+1)(n+\alpha+1)(n+\beta+1)(n+\alpha+\beta+1)} \\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta + 1) K_{1,n}} \\ a_n & = & K_{2,n}(2n+\alpha + \beta + 2) \\ b_n & = & K_{2,n}\frac{(\alpha - \beta)(\alpha + \beta)}{2n+\alpha+\beta} \\ c_n & = & - \frac{2n+\alpha+\beta + 2}{2n+\alpha+\beta} \Big[(n+\alpha)(n+\beta) \times (n+\alpha+\beta)n\frac{K_{1,n}}{2n+\alpha+\beta-1}\Big]^{1/2} \end{array}`
+     - :math:`\begin{array}{c} J^{(\alpha,\beta)}_n(x) \\ \alpha,\beta>0 \end{array}`
+     - :math:`\frac{(1-x)^{\beta-1}(1+x)^{\alpha-1}}{2^{\alpha + \beta - 1} B(\alpha, \beta)} \mathbb{I}_{[-1,1]}(x)`
+     - :math:`\begin{array}{ccc} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}} \\ a_n & = & K_{2,n}(2n+\alpha + \beta) \\ b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2} \\ c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2} \Big[(n+\alpha-1)(n+\beta-1) \times (n+\alpha+\beta-2)n\frac{K_{1,n}}{2n+\alpha+\beta-3}\Big]^{1/2} \end{array}`
 
 Furthermore, two families of orthonormal polynomials with respect to
 discrete  distribution are well-known and detailed in the Table below.

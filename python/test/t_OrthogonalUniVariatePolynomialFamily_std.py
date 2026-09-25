@@ -50,13 +50,13 @@ assert ot.MeixnerFactory(2.0, 0.5) != ot.MeixnerFactory(3.0, 0.5), (
     "Meixner!=Meixner r"
 )
 
-# StandardDistributionPolynomialFactory (deprecated, in experimental)
-sdpf1 = ot.StandardDistributionPolynomialFactory(ot.Normal())
-sdpf2 = ot.StandardDistributionPolynomialFactory(ot.Normal())
-assert sdpf1 == sdpf2, "SDPF==SDPF"
-assert sdpf1 != ot.StandardDistributionPolynomialFactory(
+# UniVariateDistributionPolynomialFactory
+udpf1 = ot.UniVariateDistributionPolynomialFactory(ot.Normal())
+udpf2 = ot.UniVariateDistributionPolynomialFactory(ot.Normal())
+assert udpf1 == udpf2, "UDPF==UDPF"
+assert udpf1 != ot.UniVariateDistributionPolynomialFactory(
     ot.Uniform()
-), "SDPF!=SDPF dist"
+), "UDPF!=UDPF dist"
 
 # Handle equality
 f1 = ot.OrthogonalUniVariatePolynomialFamily(ot.HermiteFactory())

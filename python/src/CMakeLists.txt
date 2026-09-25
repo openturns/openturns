@@ -825,7 +825,6 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i
                       AdaptiveStieltjesAlgorithm.i AdaptiveStieltjesAlgorithm_doc.i
-                      StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i
                       OrthogonalFunctionFactory.i OrthogonalFunctionFactory_doc.i
                       OrthogonalProductPolynomialFactory.i OrthogonalProductPolynomialFactory_doc.i
                       OrthogonalBasis.i OrthogonalBasis_doc.i

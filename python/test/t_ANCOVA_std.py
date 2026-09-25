@@ -98,7 +98,7 @@ dim = 3
 enumerateFunction = ot.LinearEnumerateFunction(dim)
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(
+    polyCol[i] = ot.UniVariateDistributionPolynomialFactory(
         distribution.getMarginal(i)
     )
 
