@@ -455,7 +455,14 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "errorHistory_", errorHistory_ );
     if (adv.hasAttribute("historyCutPoints_"))
       {
-	adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );	
+	adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );
+      }
+    else
+      {
+	// Legacy studies store a single unpartitioned history:
+	// mark it with a single cut point, the getters below
+	// return the whole history for output 0 in that case
+	historyCutPoints_ = Indices(1, 0);
       }
   }
   if (adv.hasAttribute("isLeastSquares_"))
@@ -470,6 +477,17 @@ void FunctionalChaosResult::load(Advocate & adv)
 Collection<Indices> FunctionalChaosResult::getIndicesHistory(const UnsignedInteger outputIndex) const
 {
   if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+  if (historyCutPoints_.getSize() == 1)
+  {
+    // Legacy unpartitioned history: return it whole for output 0
+    if (outputIndex == 0)
+    {
+      Collection<Indices> selectedIndices;
+      selectedIndices.assign(indicesHistory_.begin(), indicesHistory_.end());
+      return selectedIndices;
+    }
+    return Collection<Indices>();
+  }
   Collection<Indices> selectedIndices;
   selectedIndices.assign(indicesHistory_.begin() + historyCutPoints_[outputIndex], indicesHistory_.begin() + historyCutPoints_[outputIndex + 1]);
   return selectedIndices;
@@ -478,6 +496,17 @@ Collection<Indices> FunctionalChaosResult::getIndicesHistory(const UnsignedInteg
 Collection<Point> FunctionalChaosResult::getCoefficientsHistory(const UnsignedInteger outputIndex) const
 {
   if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+  if (historyCutPoints_.getSize() == 1)
+  {
+    // Legacy unpartitioned history: return it whole for output 0
+    if (outputIndex == 0)
+    {
+      Collection<Point> selectedCoefficients;
+      selectedCoefficients.assign(coefficientsHistory_.begin(), coefficientsHistory_.end());
+      return selectedCoefficients;
+    }
+    return Collection<Point>();
+  }
   Collection<Point> selectedCoefficients;
   selectedCoefficients.assign(coefficientsHistory_.begin() + historyCutPoints_[outputIndex], coefficientsHistory_.begin() + historyCutPoints_[outputIndex + 1]);
   return selectedCoefficients;
@@ -558,6 +587,11 @@ Point FunctionalChaosResult::getErrorHistory(const UnsignedInteger outputIndex) 
 {
   if (outputIndex >= metaModel_.getOutputDimension())
     throw InvalidArgumentException(HERE) << "Expected outputIndex=" << outputIndex << " to be less than output dimension=" << metaModel_.getOutputDimension();
+  if (historyCutPoints_.getSize() == 1)
+  {
+    // Legacy unpartitioned history: return it whole for output 0
+    return outputIndex == 0 ? errorHistory_ : Point();
+  }
   Point selectedErrorHistory;
   selectedErrorHistory.assign(errorHistory_.begin() + historyCutPoints_[outputIndex], errorHistory_.begin() + historyCutPoints_[outputIndex + 1]);
   return selectedErrorHistory;

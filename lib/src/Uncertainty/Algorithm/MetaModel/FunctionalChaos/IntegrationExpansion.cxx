@@ -117,8 +117,7 @@ IntegrationExpansion::IntegrationExpansion(const Sample & inputSample,
   if (basis.getMeasure().getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the basis must have a measure with the same dimension as the input distribution, here measure dimension=" << basis.getMeasure().getDimension() << " and distribution dimension=" << distribution.getDimension();
   if (basisSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot project on a basis of size zero";
   if (activeFunctions.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: active functions cannot be empty";
-  for (UnsignedInteger i = 0; i < activeFunctions.getSize(); ++i)
-    if (activeFunctions[i] >= basisSize) throw InvalidArgumentException(HERE) << "Error: active function index " << activeFunctions[i] << " must be less than basisSize " << basisSize;
+  if (!activeFunctions.check(basisSize)) throw InvalidArgumentException(HERE) << "Error: the active functions must be distinct and have indices less than " << basisSize;
   activeFunctions_ = activeFunctions;
 }
 
