@@ -17,6 +17,17 @@ angle of the relative rotation and the total volume is :math:`8 \pi^2`.
 The exponential and logarithmic maps are available in closed form
 through the Rodrigues formulas.
 
+See also
+--------
+Manifold, SphereManifold
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Manifold-Epsilon`` (``Scalar``, default: ``1e-10``): tolerance used by :meth:`isOnManifold` and the
+  projections.
+
 Examples
 --------
 >>> import openturns as ot
@@ -26,15 +37,4 @@ Examples
 3
 >>> print(manifold.getVolume())
 78.9568352...
-
-See also
---------
-Manifold, SphereManifold
-
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``Manifold-Epsilon``: tolerance used by :meth:`isOnManifold` and the
-  projections, default value ``1e-10``.
 )RAW"

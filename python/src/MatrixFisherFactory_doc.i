@@ -30,10 +30,10 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``MatrixFisher-MaximumConcentration``: ceiling applied to the estimated
-  concentrations, set by quadrature feasibility, default value ``100.0``.
-- ``MatrixFisherFactory-MaximumIterations``: maximum number of
-  Newton-Raphson iterations and of step-halving steps, default value ``20``.
+- ``MatrixFisher-MaximumConcentration`` (``Scalar``, default: ``100.0``): ceiling applied to the estimated
+  concentrations, set by quadrature feasibility.
+- ``MatrixFisherFactory-MaximumIterations`` (``UnsignedInteger``, default: ``20``): maximum number of
+  Newton-Raphson iterations and of step-halving steps.
 
 Examples
 --------

@@ -33,11 +33,10 @@ Manifold, PushForwardDistribution
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
-- ``ManifoldMappedDistribution-SampleSize``: number of Monte-Carlo
-  realizations used to estimate the range, the mean and the covariance,
-  default value ``10000``.
+- ``ManifoldMappedDistribution-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
+  realizations used to estimate the range, the mean and the covariance.
 
 Examples
 --------

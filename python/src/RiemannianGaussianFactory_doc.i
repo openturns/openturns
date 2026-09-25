@@ -16,21 +16,21 @@ estimates the Riemannian Gaussian parameters:
    covariance of the log-Euclidean tangent vectors
    :math:`\mathrm{vec}(\log\mathbf{X}_i - \log\overline{\mathbf{X}})`.
 
-Notes
------
-The following :class:`openturns.ResourceMap` keys are used:
-
-- ``RiemannianGaussianFactory-StepSize``: step size used by the estimator.
-- ``RiemannianGaussianFactory-Tolerance``: tolerance of the estimator.
-- ``RiemannianGaussianFactory-MaximumIteration``: maximum number of
-  iterations of the estimator.
-- ``RiemannianGaussian-PositiveDefiniteThreshold``: relative tolerance for
-  the validation of the positive definiteness of the mean and covariance
-  matrices.
-
 See also
 --------
 openturns.DistributionFactory, RiemannianGaussian
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``RiemannianGaussianFactory-StepSize`` (``Scalar``, default: ``0.1``): step size used by the estimator.
+- ``RiemannianGaussianFactory-Tolerance`` (``Scalar``, default: ``1.0e-8``): tolerance of the estimator.
+- ``RiemannianGaussianFactory-MaximumIteration`` (``UnsignedInteger``, default: ``100``): maximum number of
+  iterations of the estimator.
+- ``RiemannianGaussian-PositiveDefiniteThreshold`` (``Scalar``, default: ``1.0e-12``): relative tolerance for
+  the validation of the positive definiteness of the mean and covariance
+  matrices.
 
 Examples
 --------

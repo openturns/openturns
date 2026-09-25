@@ -67,15 +67,15 @@ epsilon : float, optional
 
 Notes
 -----
-The following :class:`openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``MatrixFisher-OrthogonalityThreshold``: relative tolerance for the
+- ``MatrixFisher-OrthogonalityThreshold`` (``Scalar``, default: ``1.0e-12``): relative tolerance for the
   validation of the orthogonality of the sampled matrices.
-- ``MatrixFisher-QuadratureOrder``: number of quadrature nodes per dimension
+- ``MatrixFisher-QuadratureOrder`` (``UnsignedInteger``, default: ``50``): number of quadrature nodes per dimension
   used in the evaluation of the normalization constant.
-- ``MatrixFisher-QuadratureGrowthFactor``: the effective quadrature order is
+- ``MatrixFisher-QuadratureGrowthFactor`` (``Scalar``, default: ``7.0``): the effective quadrature order is
   the maximum of the base order and this factor times the square root of the
-  trace bound, default value ``7.0``.
+  trace bound.
 
 Examples
 --------

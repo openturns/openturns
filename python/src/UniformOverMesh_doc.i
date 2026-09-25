@@ -32,6 +32,13 @@ See also
 --------
 TruncatedOverMesh
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``UniformOverMesh-OnManifoldEpsilon`` (``Scalar``, default: ``1e-10``): tolerance used by
+  :meth:`computePDF` and :meth:`computeLogPDF` to decide whether a point lies on the mesh.
+
 Examples
 --------
 Create a distribution over a two dimensional domain:
@@ -69,12 +76,6 @@ intrinsic dimension :math:`d` embedded in an ambient space of dimension
 :math:`n` has :math:`d+1` distinct leading vertex indices followed by
 trailing entries equal to the last distinct vertex index, so that the number
 of vertex indices per simplex is :math:`n+1`.
-
-Notes
------
-The tolerance used by :meth:`computePDF` and :meth:`computeLogPDF` to decide
-whether a point lies on the mesh is stored in the
-`UniformOverMesh-OnManifoldEpsilon` :class:`~openturns.ResourceMap` key.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -119,9 +120,9 @@ Returns
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF. Default value is
     :class:`~openturns.GaussLegendre` with a marginal integration node number
-    specified by the `UniformOverMesh-MarginalIntegrationNodesNumber` key in
+    specified by the ``UniformOverMesh-MarginalIntegrationNodesNumber`` key in
     :class:`~openturns.ResourceMap` if the total number of nodes doesn't exceed
-    a value specified by the `UniformOverMesh-MaximumIntegrationNodesNumber` key
+    a value specified by the ``UniformOverMesh-MaximumIntegrationNodesNumber`` key
     in :class:`~openturns.ResourceMap`, otherwise the marginal integration node
     number is decreased.:class:`~openturns.IteratedQuadrature`."
 
@@ -145,8 +146,8 @@ Parameters
 algo : :class:`~openturns.IntegrationAlgorithm`
     Integration algorithm used to compute the CDF. Default value is
     :class:`~openturns.GaussLegendre` with a marginal integration node number
-    specified by the `UniformOverMesh-MarginalIntegrationNodesNumber` key in
+    specified by the ``UniformOverMesh-MarginalIntegrationNodesNumber`` key in
     :class:`~openturns.ResourceMap` if the total number of nodes doesn't exceed
-    a value specified by the `UniformOverMesh-MaximumIntegrationNodesNumber` key
+    a value specified by the ``UniformOverMesh-MaximumIntegrationNodesNumber`` key
     in :class:`~openturns.ResourceMap`, otherwise the marginal integration node
     number is decreased."

@@ -16,20 +16,20 @@ dimension 2 embedded in an ambient space of dimension strictly larger than
 4. Merge the triangles of all the charts.
 5. Prune the degenerate triangles, i.e. those of negligible area.
 
-Notes
------
-The following :class:`openturns.ResourceMap` keys are used:
-
-- ``UniformOverMeshFactory-NearestNeighbors``: number of nearest neighbors
-  used to estimate each local tangent plane. It must be adjusted to the
-  sample density: the larger the sample size, the larger the value.
-- ``UniformOverMeshFactory-MinimumAreaFactor``: the degenerate triangles,
-  i.e. those whose area is lower than this factor times the maximum
-  triangle area, are removed.
-
 See also
 --------
 openturns.DistributionFactory, openturns.UniformOverMesh
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``UniformOverMeshFactory-NearestNeighbors`` (``UnsignedInteger``, default: ``12``): number of nearest neighbors
+  used to estimate each local tangent plane. It must be adjusted to the
+  sample density: the larger the sample size, the larger the value.
+- ``UniformOverMeshFactory-MinimumAreaFactor`` (``Scalar``, default: ``1.0e-3``): the degenerate triangles,
+  i.e. those whose area is lower than this factor times the maximum
+  triangle area, are removed.
 
 Examples
 --------

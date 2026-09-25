@@ -29,11 +29,10 @@ openturns.DistributionFactory, Bingham
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
-- ``BinghamFactory-MaximumIterations``: maximum number of Newton-Raphson
-  iterations and of step-halving steps in the moment refinement,
-  default value ``20``.
+- ``BinghamFactory-MaximumIterations`` (``UnsignedInteger``, default: ``20``): maximum number of Newton-Raphson
+  iterations and of step-halving steps in the moment refinement.
 
 Examples
 --------

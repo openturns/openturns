@@ -66,25 +66,18 @@ openturns.CompositeDistribution
 
 Notes
 -----
-The tolerance on the residual norm used to accept a point as a preimage of
-the searched point and to configure the default solver is stored in the
-``PushForwardDistribution-SolverResidualTolerance``
-:class:`~openturns.ResourceMap` key.
+The following :class:`~openturns.ResourceMap` keys are used:
 
-The number of Monte-Carlo realizations used to estimate the range, the mean
-and the covariance are stored in the ``PushForwardDistribution-SampleSize``
-:class:`~openturns.ResourceMap` key.
-
-The number of points used to decompose the search interval and to seed the
-damped Newton solver is stored in the
-``PushForwardDistribution-PreimageSearchSampleSize``
-:class:`~openturns.ResourceMap` key.
-
-The maximum number of iterations of the damped Newton solver and the
-reduction factor applied to the step when it fails to decrease the residual
-norm are stored in the ``PushForwardDistribution-NewtonMaximumIterations``
-and the ``PushForwardDistribution-NewtonStepReduction``
-:class:`~openturns.ResourceMap` keys.
+- ``PushForwardDistribution-SolverResidualTolerance`` (``Scalar``, default: ``1.0e-5``): tolerance on the
+  residual norm used to accept a point as a preimage of the searched point and to configure the default solver.
+- ``PushForwardDistribution-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
+  realizations used to estimate the range, the mean and the covariance.
+- ``PushForwardDistribution-PreimageSearchSampleSize`` (``UnsignedInteger``, default: ``256``): number of
+  points used to decompose the search interval and to seed the damped Newton solver.
+- ``PushForwardDistribution-NewtonMaximumIterations`` (``UnsignedInteger``, default: ``50``): maximum number
+  of iterations of the damped Newton solver.
+- ``PushForwardDistribution-NewtonStepReduction`` (``Scalar``, default: ``0.5``): reduction factor applied
+  to the step when it fails to decrease the residual norm.
 
 Examples
 --------

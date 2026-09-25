@@ -21,18 +21,18 @@ estimates the Wrapped Normal parameters:
    differences :math:`(x_{i,j}-\hat\mu_j) \mod p` mapped onto
    :math:`[-p/2,p/2]`.
 
-Notes
------
-The following :class:`openturns.ResourceMap` keys are used:
-
-- ``WrappedNormal-MaxLatticeTerms``: maximum number of lattice terms
-  for exact sum in PDF computation (default: 100000).
-- ``WrappedNormalFactory-DefaultPeriod``: default period used by the
-  factory when the sample does not specify one (default: :math:`2\pi`).
-
 See also
 --------
 openturns.DistributionFactory, WrappedNormal
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``WrappedNormal-MaxLatticeTerms`` (``UnsignedInteger``, default: ``100000``): maximum number of lattice terms
+  for exact sum in PDF computation.
+- ``WrappedNormalFactory-DefaultPeriod`` (``Scalar``, default: ``6.283185307179586``): default period used by the
+  factory when the sample does not specify one.
 
 Examples
 --------

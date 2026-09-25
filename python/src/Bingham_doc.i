@@ -64,11 +64,11 @@ epsilon : float, optional
 
 Notes
 -----
-The following :class:`openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``Bingham-OrthogonalityThreshold``: relative tolerance for the validation of
+- ``Bingham-OrthogonalityThreshold`` (``Scalar``, default: ``1.0e-12``): relative tolerance for the validation of
   the orthogonality of the basis matrix.
-- ``Bingham-MaximumIteration``: maximum number of terms in the series
+- ``Bingham-MaximumIteration`` (``UnsignedInteger``, default: ``200``): maximum number of terms in the series
   expansion of the normalization constant.
 
 Sampling uses the acceptance-rejection algorithm with an Angular Central

@@ -61,13 +61,12 @@ openturns.UniformOverMesh, PushForwardDistribution
 
 Notes
 -----
-The tolerance used when checking whether a point belongs to the image mesh
-is stored in the ``PushForwardOverMesh-OnSimplexEpsilon``
-:class:`~openturns.ResourceMap` key.
+The following :class:`~openturns.ResourceMap` keys are used:
 
-The number of Monte-Carlo realizations used to estimate the mean and the
-covariance are stored in the ``PushForwardOverMesh-SampleSize``
-:class:`~openturns.ResourceMap` key.
+- ``PushForwardOverMesh-OnSimplexEpsilon`` (``Scalar``, default: ``1e-10``): tolerance used when checking
+  whether a point belongs to the image mesh.
+- ``PushForwardOverMesh-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
+  realizations used to estimate the mean and the covariance.
 
 Examples
 --------

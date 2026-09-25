@@ -19,10 +19,10 @@ SphereManifold, SO3Manifold
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
-- ``Manifold-Epsilon``: tolerance used by :meth:`isOnManifold` and the
-  projections, default value ``1e-10``.
+- ``Manifold-Epsilon`` (``Scalar``, default: ``1e-10``): tolerance used by :meth:`isOnManifold` and the
+  projections.
 )RAW"
 
 // ---------------------------------------------------------------------

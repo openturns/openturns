@@ -42,13 +42,13 @@ period : float, optional
 
 Notes
 -----
-The following :class:`openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``WrappedNormal-MaxLatticeTerms``: maximum number of lattice terms
-  for exact sum in PDF computation (default: 100000).
-- ``WrappedNormal-GaussHermiteMaximumPoints``: maximum number of
+- ``WrappedNormal-MaxLatticeTerms`` (``UnsignedInteger``, default: ``100000``): maximum number of lattice terms
+  for exact sum in PDF computation.
+- ``WrappedNormal-GaussHermiteMaximumPoints`` (``UnsignedInteger``, default: ``4096``): maximum number of
   Gauss-Hermite quadrature points for the entropy and the covariance
-  of the wrapped variable (default: 4096).
+  of the wrapped variable.
 
 Examples
 --------
@@ -111,7 +111,7 @@ R"RAW(Accessor to the maximum number of lattice terms for exact sum.
 Parameters
 ----------
 maxTerms : int
-    Maximum number of lattice terms for exact PDF sum (default: 100000).)RAW"
+    Maximum number of lattice terms for exact PDF sum (default: ``100000``).)RAW"
 
 // ---------------------------------------------------------------------
 
