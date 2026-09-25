@@ -142,6 +142,7 @@ Evaluation functions
     MemoizeEvaluation
     NoEvaluation
     ParametricEvaluation
+    experimental.PenalizedEvaluation
 
     :template: classWithPlot.rst_t
     PiecewiseHermiteEvaluation
@@ -180,6 +181,7 @@ Gradient functions
     ParametricGradient
     ProductGradient
     MarginalGradient
+    experimental.PenalizedGradient
 
 Hessian functions
 =================
@@ -199,6 +201,7 @@ Hessian functions
     ParametricHessian
     ProductHessian
     MarginalHessian
+    experimental.PenalizedHessian
 
 Differential equation solvers
 =============================
