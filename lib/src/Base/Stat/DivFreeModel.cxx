@@ -346,6 +346,13 @@ void DivFreeModel::load(Advocate & adv)
 {
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute("model_", model_);
+  // Refresh the attributes derived from the wrapped model
+  scale_ = model_.getScale();
+  amplitude_ = Point(outputDimension_);
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
 }
 
 
