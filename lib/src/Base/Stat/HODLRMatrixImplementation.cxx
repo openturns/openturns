@@ -255,7 +255,8 @@ void HODLRMatrixImplementation::assemble(const HODLRRealAssemblyFunction& f,
   p_node_ = new HODLRNode(p_evaluator_, &diagonal_[0], 0, n_,
                         parameters.getMinLeafSize(),
                         parameters.getMaxRank(),
-                        parameters.getAssemblyEpsilon());
+                        parameters.getAssemblyEpsilon(),
+                        parameters.getRecompressionEpsilon());
 
   LOGDEBUG(OSS() << "HODLRMatrixImplementation::assemble done, n=" << n_);
 }
@@ -267,7 +268,8 @@ void HODLRMatrixImplementation::rebuild()
   p_node_ = new HODLRNode(p_evaluator_, &diagonal_[0], 0, n_,
                           parameters_.getMinLeafSize(),
                           parameters_.getMaxRank(),
-                          parameters_.getAssemblyEpsilon());
+                          parameters_.getAssemblyEpsilon(),
+                          parameters_.getRecompressionEpsilon());
 }
 
 void HODLRMatrixImplementation::factorize()

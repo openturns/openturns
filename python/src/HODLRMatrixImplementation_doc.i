@@ -10,21 +10,23 @@ Notes
 This class is experimental.
 
 The assembly, factorization and regularization behavior is controlled by the
-ResourceMap keys:
+following :class:`~openturns.ResourceMap` keys:
 
-- 'HODLRMatrix-DenseThreshold' (default 256)
-- 'HODLRMatrix-RegularizationEpsilon' (default 1.0e-7)
-- 'HODLRMatrix-FactorizationIterations' (default 20)
-- 'HODLRMatrix-Nugget' (default 1.0e-8)
-- 'HODLRMatrix-MaxRegularization' (default 1.0)
-- 'HODLRMatrix-RecompressCorrections' (default true)
-- 'HODLRMatrix-ProfileFactorization' (default false)
-- 'HODLRMatrix-RegularizationFactor' (default 2.0)
-- 'HODLRMatrix-RegularizationAttempts' (default 60)
-- 'HODLRMatrix-PivotFloorFactor' (default 1.0e-4)
-- 'HODLRMatrix-RegularizationWarnThreshold' (default 1.0e-4)
-- 'HODLRMatrix-StackTruncation' (default true)
-- 'HODLRMatrix-StackTruncationFactor' (default 0.1)"
+- ``HODLRMatrix-DenseThreshold``: leaf size below which the dense fallback is used (default ``256``).
+- ``HODLRMatrix-RegularizationEpsilon``: initial regularization shift (default ``1.0e-7``).
+- ``HODLRMatrix-FactorizationIterations``: maximum outer regularization attempts (default ``20``).
+- ``HODLRMatrix-Nugget``: extra nugget added at assembly on top of the model nugget, biasing every solve by its ratio to the smallest eigenvalue; keep at ``0.0`` unless the leaves need stabilization (default ``0.0``).
+- ``HODLRMatrix-MaxRegularization``: soft cap for the geometric shift escalation (default ``1.0``).
+- ``HODLRMatrix-RecompressCorrections``: recompress the Schur-complement corrections (default ``True``).
+- ``HODLRMatrix-CompressionMethod``: ACA variant for the off-diagonal blocks, ``AcaPartial`` (max-element pivots) or ``AcaRandom`` (hmat-oss random-pivot scheme, usually lower ranks and smaller constants) (default ``AcaPartial``).
+- ``HODLRMatrix-ParallelAssembly``: build independent child subtrees concurrently (results deterministic except with ``AcaRandom``, whose RNG draws then follow the task schedule) (default ``False``).
+- ``HODLRMatrix-ProfileFactorization``: print per-block factorization timings (default ``False``).
+- ``HODLRMatrix-RegularizationFactor``: geometric factor of the shift escalation (default ``2.0``).
+- ``HODLRMatrix-RegularizationAttempts``: maximum inner regularization attempts per node (default ``60``).
+- ``HODLRMatrix-PivotFloorFactor``: relative pivot floor for the leaf heal loop, scaled to the raw kernel diagonal; only roundoff-degenerate pivots must trip it (default ``1.0e-12``).
+- ``HODLRMatrix-RegularizationWarnThreshold``: warn when the shift reaches this fraction of the diagonal (default ``1.0e-4``).
+- ``HODLRMatrix-StackTruncation``: pre-truncate the stacked correction columns (default ``True``).
+- ``HODLRMatrix-StackTruncationFactor``: fraction of the tolerance budget for the pre-truncation (default ``0.1``)."
 %enddef
 
 %feature("docstring") OT::HODLRMatrixImplementation

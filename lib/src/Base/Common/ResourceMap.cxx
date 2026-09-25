@@ -1754,8 +1754,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
 
   // HODLRMatrix parameters //
-  addAsScalar("HODLRMatrix-AssemblyEpsilon", 1.0e-7);
-  addAsScalar("HODLRMatrix-RecompressionEpsilon", 1.0e-7);
+  addAsScalar("HODLRMatrix-AssemblyEpsilon", 1e-10);
+  addAsScalar("HODLRMatrix-RecompressionEpsilon", 1.0e-6);
+  addAsString("HODLRMatrix-CompressionMethod", "AcaPartial", {"AcaPartial", "AcaRandom"});
+  addAsBool("HODLRMatrix-ParallelAssembly", false);
   addAsUnsignedInteger("HODLRMatrix-MinLeafSize", 250);
   addAsUnsignedInteger("HODLRMatrix-MaxRank", 0);
   addAsUnsignedInteger("HODLRMatrix-FactorizationIterations", 20);
@@ -1768,9 +1770,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("HODLRMatrix-StackTruncation", true);
   addAsScalar("HODLRMatrix-StackTruncationFactor", 0.1);
   addAsScalar("HODLRMatrix-RegularizationFactor", 2.0);
-  addAsScalar("HODLRMatrix-PivotFloorFactor", 1.0e-4);
+  addAsScalar("HODLRMatrix-PivotFloorFactor", 1.0e-12);
   addAsUnsignedInteger("HODLRMatrix-RegularizationAttempts", 60);
-  addAsScalar("HODLRMatrix-Nugget", 1.0e-8);
+  addAsScalar("HODLRMatrix-Nugget", 0.0);
   addAsBool("HODLRMatrix-UseSpatialOrdering", true);
 
   // GaussianProcess parameters //

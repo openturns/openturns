@@ -22,7 +22,13 @@
 #include "openturns/Lapack.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/RandomGenerator.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/TBBImplementation.hxx"
+#ifdef OPENTURNS_HAVE_TBB
+#include <tbb/task_group.h>
+#include <tbb/task_arena.h>
+#endif
 
 #include <algorithm>
 #include <cmath>
@@ -181,6 +187,7 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
                      UnsignedInteger minLeafSize,
                      UnsignedInteger maxRank,
                      Scalar tolerance,
+                     Scalar recompressionTolerance,
                      SignedInteger direction,
                      HODLRNode* parent)
   : p_diag_(diag)
@@ -193,6 +200,12 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
   , minLeafSize_(minLeafSize)
   , denseThreshold_(0)
   , tolerance_(tolerance)
+  // The factor-stage recompression must never truncate tighter than the
+  // assembly: the base approximation already carries assembly-level error,
+  // so a tighter recompression can only preserve numerical noise in the
+  // factor. Clamp here so every node of the tree shares the same floor.
+  , recompressionTolerance_(std::max(recompressionTolerance, tolerance))
+  , useRandomPivots_(ResourceMap::GetAsString("HODLRMatrix-CompressionMethod") == "AcaRandom")
   , isLeaf_(false)
   , logDet_(0.0)
   , shift_(0.0)
@@ -245,8 +258,41 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
 
     totalRank_ = rank_;
 
-    p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, 0, this);
-    p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, 1, this);
+    // The two child subtrees are fully independent (disjoint index ranges,
+    // private storage): build them concurrently when parallel assembly is
+    // enabled. The root runs its group inside an arena sized by
+    // TBB-ThreadsNumber so the OT thread setting is honored (the default
+    // arena would ignore it); nested groups inherit that arena. Results are
+    // deterministic except with AcaRandom, whose RNG draws then depend on
+    // the task schedule.
+#ifdef OPENTURNS_HAVE_TBB
+    if (ResourceMap::GetAsBool("HODLRMatrix-ParallelAssembly"))
+    {
+      if (parent == nullptr)
+      {
+        tbb::task_arena assemblyArena(static_cast<int>(TBBImplementation::GetThreadsNumber()));
+        assemblyArena.execute([&]
+        {
+          tbb::task_group tasks;
+          tasks.run([&] { p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this); });
+          tasks.run([&] { p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this); });
+          tasks.wait();
+        });
+      }
+      else
+      {
+        tbb::task_group tasks;
+        tasks.run([&] { p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this); });
+        tasks.run([&] { p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this); });
+        tasks.wait();
+      }
+    }
+    else
+#endif
+    {
+      p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this);
+      p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this);
+    }
 
     // Count the blocks that had to be stored at full rank (dense fallback
     // above): the HODLR low-rank assumption does not hold for them at the
@@ -301,6 +347,102 @@ HODLRBlasGuard::~HODLRBlasGuard()
   openblas_set_num_threads(savedNumThreads_);
 #endif
 }
+
+// Fused ACA residual row: bCol[j] = A(pivotRow, j) - sum_l U[l][pivotRow] * V[l][j].
+// Columns are independent (no reduction across j), so the range splits across
+// threads with results bit-identical to the serial loops.
+struct ACAResidualRowPolicy
+{
+  const HODLREntryEvaluator* p_evaluator_;
+  UnsignedInteger startRow_;
+  UnsignedInteger pivotRow_;
+  UnsignedInteger startCol_;
+  UnsignedInteger nCols_;
+  UnsignedInteger nRows_;
+  UnsignedInteger rank_;
+  const Scalar* Udata_;
+  const Scalar* Vdata_;
+  Scalar* bCol_;
+  ACAResidualRowPolicy(const HODLREntryEvaluator* p_evaluator,
+                       UnsignedInteger startRow,
+                       UnsignedInteger pivotRow,
+                       UnsignedInteger startCol,
+                       UnsignedInteger nCols,
+                       UnsignedInteger nRows,
+                       UnsignedInteger rank,
+                       const Scalar* Udata,
+                       const Scalar* Vdata,
+                       Scalar* bCol)
+    : p_evaluator_(p_evaluator)
+    , startRow_(startRow)
+    , pivotRow_(pivotRow)
+    , startCol_(startCol)
+    , nCols_(nCols)
+    , nRows_(nRows)
+    , rank_(rank)
+    , Udata_(Udata)
+    , Vdata_(Vdata)
+    , bCol_(bCol)
+  {
+  }
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+  {
+    for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
+    {
+      Scalar value = (*p_evaluator_)(startRow_ + pivotRow_, startCol_ + j);
+      for (UnsignedInteger l = 0; l < rank_; ++l)
+        value -= Udata_[l * nRows_ + pivotRow_] * Vdata_[l * nCols_ + j];
+      bCol_[j] = value;
+    }
+  }
+}; /* end struct ACAResidualRowPolicy */
+
+// Fused ACA residual column: aCol[i] = A(i, pivotCol) - sum_l U[i][l] * V[pivotCol][l].
+struct ACAResidualColumnPolicy
+{
+  const HODLREntryEvaluator* p_evaluator_;
+  UnsignedInteger startRow_;
+  UnsignedInteger nRows_;
+  UnsignedInteger startCol_;
+  UnsignedInteger pivotCol_;
+  UnsignedInteger nCols_;
+  UnsignedInteger rank_;
+  const Scalar* Udata_;
+  const Scalar* Vdata_;
+  Scalar* aCol_;
+  ACAResidualColumnPolicy(const HODLREntryEvaluator* p_evaluator,
+                          UnsignedInteger startRow,
+                          UnsignedInteger nRows,
+                          UnsignedInteger startCol,
+                          UnsignedInteger pivotCol,
+                          UnsignedInteger nCols,
+                          UnsignedInteger rank,
+                          const Scalar* Udata,
+                          const Scalar* Vdata,
+                          Scalar* aCol)
+    : p_evaluator_(p_evaluator)
+    , startRow_(startRow)
+    , nRows_(nRows)
+    , startCol_(startCol)
+    , pivotCol_(pivotCol)
+    , nCols_(nCols)
+    , rank_(rank)
+    , Udata_(Udata)
+    , Vdata_(Vdata)
+    , aCol_(aCol)
+  {
+  }
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      Scalar value = (*p_evaluator_)(startRow_ + i, startCol_ + pivotCol_);
+      for (UnsignedInteger l = 0; l < rank_; ++l)
+        value -= Udata_[l * nRows_ + i] * Vdata_[l * nCols_ + pivotCol_];
+      aCol_[i] = value;
+    }
+  }
+}; /* end struct ACAResidualColumnPolicy */
 
 UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, UnsignedInteger nRows,
     UnsignedInteger startCol, UnsignedInteger nCols,
@@ -405,19 +547,42 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     return 0;
   }
 
+  // Random pivot pool (hmat-oss AcaRandom scheme): pre-sample max(nRows,nCols)
+  // raw entries. Each iteration compares the largest pool entry against the
+  // max-element pivot of the residual row and restarts from the random row
+  // when it wins; accepted pivots update every pool value so they keep
+  // tracking the true residuals. Random pivots avoid the adversarial
+  // stagnation of pure max-element pivoting and usually reach the tolerance
+  // at a lower rank with smaller constants.
+  std::vector<UnsignedInteger> poolRow;
+  std::vector<UnsignedInteger> poolCol;
+  std::vector<Scalar> poolVal;
+  if (useRandomPivots_)
+  {
+    const UnsignedInteger nSamples = std::max(nRows, nCols);
+    poolRow.reserve(nSamples);
+    poolCol.reserve(nSamples);
+    poolVal.reserve(nSamples);
+    for (UnsignedInteger s = 0; s < nSamples; ++s)
+    {
+      const UnsignedInteger rr = RandomGenerator::IntegerGenerate(nRows);
+      const UnsignedInteger cc = RandomGenerator::IntegerGenerate(nCols);
+      poolRow.push_back(rr);
+      poolCol.push_back(cc);
+      poolVal.push_back((*p_eval_)(startRow + rr, startCol + cc));
+    }
+  }
+
+  // Threading gate for the residual loops below: read once per block (a map
+  // lookup per ACA iteration would cost more than it guards).
+  const Bool parallelAssembly = ResourceMap::GetAsBool("HODLRMatrix-ParallelAssembly");
+
   while (rank < maxRank)
   {
-    // Residual row at the pivot row: A(pivotRow, :) - sum_l U[pivotRow, l] * V[:, l]
-    for (UnsignedInteger j = 0; j < nCols; ++j)
-      bCol[j] = (*p_eval_)(startRow + pivotRow, startCol + j);
-    for (UnsignedInteger l = 0; l < rank; ++l)
-    {
-      const Scalar uval = Udata[l * nRows + pivotRow];
-      Scalar* const b = bCol.data();
-      const Scalar* const vptr = Vdata.data() + l * nCols;
-      for (UnsignedInteger j = 0; j < nCols; ++j)
-        b[j] -= uval * vptr[j];
-    }
+    // Residual row at the pivot row: A(pivotRow, :) - sum_l U[pivotRow, l] * V[:, l],
+    // evaluated and downdated in one fused pass (see ACAResidualRowPolicy).
+    const ACAResidualRowPolicy rowPolicy(p_eval_.get(), startRow, pivotRow, startCol, nCols, nRows, rank, Udata.data(), Vdata.data(), bCol.data());
+    TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowPolicy);
     Scalar maxVal = 0.0;
     for (UnsignedInteger j = 0; j < nCols; ++j)
     {
@@ -429,6 +594,29 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
       }
     }
     rowFree[pivotRow] = 0;
+
+    if (useRandomPivots_ && !poolVal.empty())
+    {
+      // Best pre-sampled entry against the residual-row maximum above: a
+      // strictly larger random entry restarts the iteration from its row,
+      // exactly as hmat-oss doCompressionAcaPartial with useRandomPivots.
+      UnsignedInteger best = 0;
+      Scalar bestVal = 0.0;
+      for (UnsignedInteger s = 0; s < poolVal.size(); ++s)
+      {
+        const Scalar absVal = std::abs(poolVal[s]);
+        if (absVal > bestVal)
+        {
+          bestVal = absVal;
+          best = s;
+        }
+      }
+      if ((poolRow[best] != pivotRow) && (bestVal > maxVal))
+      {
+        pivotRow = poolRow[best];
+        continue;
+      }
+    }
 
     if (maxVal <= cutoff)
     {
@@ -443,22 +631,24 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
       break;
     }
 
-    // Residual column at the pivot column: A(:, pivotCol) - sum_l U[:, l] * V[pivotCol, l]
-    for (UnsignedInteger i = 0; i < nRows; ++i)
-      aCol[i] = (*p_eval_)(startRow + i, startCol + pivotCol);
-    for (UnsignedInteger l = 0; l < rank; ++l)
-    {
-      const Scalar vval = Vdata[l * nCols + pivotCol];
-      Scalar* const a = aCol.data();
-      const Scalar* const uptr = Udata.data() + l * nRows;
-      for (UnsignedInteger i = 0; i < nRows; ++i)
-        a[i] -= vval * uptr[i];
-    }
+    // Residual column at the pivot column: A(:, pivotCol) - sum_l U[:, l] * V[pivotCol, l],
+    // evaluated and downdated in one fused pass (see ACAResidualColumnPolicy).
+    const ACAResidualColumnPolicy columnPolicy(p_eval_.get(), startRow, nRows, startCol, pivotCol, nCols, rank, Udata.data(), Vdata.data(), aCol.data());
+    TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnPolicy);
     colFree[pivotCol] = 0;
 
     // Same scaling convention as the full-pivoting variant: the pivot column
     // is stored unscaled in U, the pivot row divided by the pivot in V.
     const Scalar pivot = bCol[pivotCol];
+    if (useRandomPivots_ && !poolVal.empty())
+    {
+      // Keep the pre-sampled entries tracking the true residuals: subtract
+      // the accepted rank-1 term with the same scaling as the residual
+      // downdates above (unscaled column factor times pivot-scaled row).
+      const Scalar invPivotUpd = 1.0 / pivot;
+      for (UnsignedInteger s = 0; s < poolVal.size(); ++s)
+        poolVal[s] -= aCol[poolRow[s]] * (bCol[poolCol[s]] * invPivotUpd);
+    }
     ensureBuffer(rank + 1);
     Scalar uNorm2 = 0.0;
     {
@@ -1155,7 +1345,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
     if (!corrections.empty() && ResourceMap::GetAsBool("HODLRMatrix-RecompressCorrections"))
     {
       const auto t0 = std::chrono::steady_clock::now();
-      recompressLowRank(U_[1], V_[0], start_ + s0, s1, start_, s0, corrections, tolerance_);
+      recompressLowRank(U_[1], V_[0], start_ + s0, s1, start_, s0, corrections, recompressionTolerance_);
       g_factorTiming.recomp += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
       rank_ = U_[1].getNbColumns();
       U_[0] = V_[0];
@@ -1251,7 +1441,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
       if (useDenseFallback)
       {
         p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + s0, s1,
-                                  s1 + 1, maxRank_, tolerance_, 1, this);
+                                  s1 + 1, maxRank_, tolerance_, recompressionTolerance_, 1, this);
         p_child1_->setShift(shift_);
         try
         {

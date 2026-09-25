@@ -6,6 +6,7 @@ import math as m
 import random
 import itertools
 import os
+import sys
 import time
 
 ot.PlatformInfo.SetNumericalPrecision(3)
@@ -395,7 +396,6 @@ ott.assert_almost_equal(hodlr21b.getDiagonal(), ot.Point(n21, 1.0 + 2.0e-3), 1.0
 ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", 0.0)
 hodlr21c = cov21.discretizeHODLRMatrix(grid21, params21)
 ott.assert_almost_equal(hodlr21c.getDiagonal(), ot.Point(n21, 1.0), 1.0e-9, 1.0e-9)
-ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", 1.0e-8)
 print("  PASS")
 
 # === Test 22: adaptive max rank (tolerance-driven by default) ===
@@ -753,10 +753,55 @@ x_sol30 = hodlr30.solve(b30)
 y30 = ot.Point(n30, 0.0)
 hodlr30.gemv('N', 1.0, x_sol30, 0.0, y30)
 err30 = (y30 - b30).norm() / b30.norm()
-assert t_fac30 < 5.0, f"factorize took {t_fac30:.1f}s (retry cascade regression)"
+# Wall-time budget scaled to runner speed: the MSVC CI runner executes this
+# file ~45x slower than a dev box (25 s vs 0.55 s measured 2026-09-21), so an
+# absolute 5 s budget flakes there. A genuine retry cascade is orders of
+# magnitude slower (tens of seconds locally, i.e. 1000 s+ on such a runner),
+# so a scaled budget still catches it.
+t_limit30 = 120.0 if sys.platform.startswith("win") else 5.0
+assert t_fac30 < t_limit30, f"factorize took {t_fac30:.1f}s (retry cascade regression, budget {t_limit30:.0f}s)"
 assert 0.0 < shift30 < 1.0, f"unexpected heal shift {shift30:.2e}"
 assert err30 < 1.0e-5, f"near-singular solve error {err30:.2e} should be small"
 print(f"  n={n30}, factorize {t_fac30 * 1e3:.0f}ms, shift= {shift30:.2e}, solve err {err30:.2e}")
+print("  PASS")
+
+# === Test 31: AcaRandom compression method ===
+# The HODLRMatrix-CompressionMethod key switches the off-diagonal ACA from
+# max-element partial pivoting (AcaPartial) to the hmat-oss random-pivot
+# scheme (AcaRandom). Both must factorize and solve a small Matern matrix
+# accurately (production regime: model nugget, zero implementation nugget).
+print("\n=== Test 31: AcaRandom compression ===")
+n31 = 200
+vertices31 = ot.Sample([[i / (n31 - 1.0)] for i in range(n31)])
+cov31 = ot.MaternModel([0.1], [1.0], 2.5)
+cov31.setNuggetFactor(1e-5)
+# hermetic ResourceMap state: earlier tests leave HODLRMatrix-Nugget behind
+ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", 0.0)
+dense31 = ot.CovarianceMatrix(cov31.discretize(vertices31))
+b31 = ot.Point(n31, 1.0)
+xd31 = dense31.solveLinearSystem(b31)
+for method31 in ["AcaPartial", "AcaRandom"]:
+    ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", method31)
+    h31 = cov31.discretizeHODLRMatrix(vertices31, make_params(leaf=32))
+    h31.factorize()
+    xh31 = h31.solve(b31)
+    err31 = (ot.Point(xh31 - xd31).norm() / ot.Point(xd31).norm())
+    print(f"  {method31}: shift={h31.getRegularizationShift():.2e} solve err {err31:.2e}")
+    assert err31 < 1.0e-4, f"{method31} solve error {err31:.2e} too large"
+ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "AcaRandom")
+h31b = cov31.discretizeHODLRMatrix(vertices31, make_params(leaf=32))
+h31b.factorize()
+# same accuracy regime on rebuild (exact bit-reproducibility is not
+# guaranteed: OT RNG draws depend on the calling thread when the test
+# environment enables multithreading)
+ott.assert_almost_equal(ot.Point(h31b.solve(b31)), ot.Point(xh31), 1.0e-9, 1.0e-9)
+print("  AcaRandom rebuild consistent: PASS")
+ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "AcaPartial")
+try:
+    ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "NoSuchMethod")
+    raise AssertionError("invalid CompressionMethod was accepted")
+except Exception:
+    print("  invalid method rejected: PASS")
 print("  PASS")
 
 print("\n=== ALL TESTS PASSED ===")

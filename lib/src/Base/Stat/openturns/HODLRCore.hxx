@@ -185,6 +185,7 @@ public:
             UnsignedInteger minLeafSize,
             UnsignedInteger maxRank,
             Scalar tolerance,
+            Scalar recompressionTolerance,
             SignedInteger direction = 0,
             HODLRNode* parent = nullptr);
 
@@ -240,6 +241,17 @@ private:
   UnsignedInteger minLeafSize_;
   UnsignedInteger denseThreshold_;
   Scalar tolerance_;
+  // Truncation tolerance for the factor-stage SVD recompression of the
+  // Schur-complement corrections (recompressLowRank). Kept looser than the
+  // assembly tolerance on purpose: the corrections carry numerical noise
+  // from the ACA and the triangular solves, and truncating them back to the
+  // assembly tolerance preserves that noise in the factor, which then loses
+  // positive-definiteness. Mirrors HMatrix-RecompressionEpsilon usage.
+  Scalar recompressionTolerance_;
+  // Random pivot selection for the partial-pivot ACA (hmat-oss AcaRandom
+  // scheme): each iteration also considers pre-sampled random entries and
+  // restarts from the random row when it beats the max-element pivot.
+  Bool useRandomPivots_;
   bool isLeaf_;
   Scalar logDet_;
   Scalar shift_;

@@ -7,13 +7,13 @@ Notes
 -----
 This class is experimental.
 
-The default values of the attributes are read from the ResourceMap keys:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- 'HODLRMatrix-AssemblyEpsilon' (default 1.0e-7)
-- 'HODLRMatrix-RecompressionEpsilon' (default 1.0e-7)
-- 'HODLRMatrix-MinLeafSize' (default 250)
-- 'HODLRMatrix-MaxRank' (default 0)
-- 'HODLRMatrix-UseSpatialOrdering' (default true)"
+- ``HODLRMatrix-AssemblyEpsilon``: assembly epsilon for ACA compression (default ``1e-10``).
+- ``HODLRMatrix-RecompressionEpsilon``: truncation tolerance for the factor-stage SVD recompression of the Schur-complement corrections, never applied tighter than the assembly epsilon (default ``1.0e-6``).
+- ``HODLRMatrix-MinLeafSize``: minimum leaf size (default ``250``).
+- ``HODLRMatrix-MaxRank``: maximum rank, adaptive when ``0`` (default ``0``).
+- ``HODLRMatrix-UseSpatialOrdering``: use spatial ordering (default ``True``)."
 
 %feature("docstring") OT::HODLRMatrixParameters::getAssemblyEpsilon
 "Return the assembly epsilon.
