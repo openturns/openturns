@@ -183,6 +183,7 @@ Sample CSVParser::load() const
   if (haveHeaders)
   {
     Description description(doc.GetColumnCount());
+    static const std::string utf8BOM("\xef\xbb\xbf");
     for (UnsignedInteger j = 0; j < doc.GetColumnCount(); ++ j)
     {
       try
@@ -193,6 +194,12 @@ Sample CSVParser::load() const
       {
         // line may be incomplete
       }
+
+      // strip UTF-8 BOM if present
+      String::size_type pos = 0;
+      while ((pos = description[j].find(utf8BOM, pos)) != String::npos)
+        description[j].erase(pos, utf8BOM.size());
+
       // avoid empty components
       if (description[j].empty())
         description[j] = OSS() << "Unnamed_" << j;
