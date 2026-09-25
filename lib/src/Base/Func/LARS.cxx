@@ -84,10 +84,10 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if (!(sampleSize > 0)) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  // LARS only supports uniform weights: correlations and solves below use the
-  // unweighted design, so non-uniform (eg quadrature) weights are rejected here
-  // (uniform weights are stored as a single value, see LeastSquaresMethod::getWeight)
-  if (method.getWeight().getSize() > 1) throw InvalidArgumentException( HERE ) << "Error: LARS only supports uniform weights, here the least-squares method has non-uniform weights.";
+  // Quadrature weights of the least-squares method: uniform weights are
+  // stored as a single value, see LeastSquaresMethod::getWeight
+  const Point methodWeights(method.getWeight());
+  const Bool useUniformWeights = (methodWeights.getSize() == 1);
   //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
 
   // get y as as point
@@ -117,7 +117,12 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     UnsignedInteger candidatePredictor = 0;
     // find the predictor most correlated with the current residual only after
     // the constant function has been introduced
-    const Point cC(mPsiX_.getImplementation()->genVectProd(mY - mu_, true));
+    // Weighted correlations c = Phi^T W (y - mu), the discretization of
+    // <phi, r>_mu with the quadrature weights of the method
+    Point weightedResidual(sampleSize);
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightedResidual[i] = (useUniformWeights ? methodWeights[0] : methodWeights[i]) * (mY[i] - mu_[i]);
+    const Point cC(mPsiX_.getImplementation()->genVectProd(weightedResidual, true));
     Scalar cMax = -1.0;
     if (iterations == 0)
     {
@@ -162,7 +167,8 @@ void LARS::updateBasis(LeastSquaresMethod & method,
 
     LOGDEBUG(OSS() << "matrix of elements of the active set built.");
 
-    const Point ga1(method.solveNormal(sC));
+    // Solve the weighted Gram system G_A g_A = sC, with G_A = Phi_A^T W Phi_A
+    const Point ga1(method.solveNormalGram(sC));
     LOGDEBUG(OSS() << "Solved normal equation.");
 
     // normalization coefficient, bail out on degenerate active set
@@ -173,7 +179,11 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     // descent direction
     const Point descentDirectionAk(cNorm * ga1);
     const Point u(mPsiAk * descentDirectionAk);
-    const Point d2(mPsiX_.getImplementation()->genVectProd(u, true));
+    // Weighted direction correlations d = Phi^T W u
+    Point weightedU(sampleSize);
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightedU[i] = (useUniformWeights ? methodWeights[0] : methodWeights[i]) * u[i];
+    const Point d2(mPsiX_.getImplementation()->genVectProd(weightedU, true));
     Point d;
     for (UnsignedInteger j = 0; j < basisSize; ++ j)
       if (!inPredictors_[j]) d.add(d2[j]);

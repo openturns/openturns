@@ -74,7 +74,33 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
 
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  const Scalar variance = y.computeVariance()[0];
+  // Output variance: the legacy unbiased estimator for uniform weights,
+  // the weighted variance otherwise. Uniform weights are stored as one value
+  const Point methodWeights(method.getWeight());
+  const Bool useUniformWeights = (methodWeights.getSize() == 1);
+  // Total weight mass, used to normalize the weighted empirical error below
+  Scalar weightSum = 0.0;
+  if (useUniformWeights)
+    weightSum = methodWeights[0] * sampleSize;
+  else
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightSum += methodWeights[i];
+  Scalar variance = 0.0;
+  if (useUniformWeights)
+    variance = y.computeVariance()[0];
+  else
+  {
+    Scalar weightedMean = 0.0;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightedMean += methodWeights[i] * y(i, 0);
+    weightedMean /= weightSum;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      const Scalar delta = y(i, 0) - weightedMean;
+      variance += methodWeights[i] * delta * delta;
+    }
+    variance /= weightSum;
+  }
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
   if (!(sampleSize >= basisSize)) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
@@ -100,8 +126,9 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
     const Scalar ns = (y(i, 0) - yHat[i]) / (1.0 - h[i]);
-    empiricalError += ns * ns / sampleSize;
+    empiricalError += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * ns * ns;
   }
+  empiricalError /= weightSum;
   LOGINFO(OSS() << "Empirical error=" << empiricalError);
 
   LOGINFO("Compute the correcting factor");
@@ -123,7 +150,9 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
     const Matrix gramPhi(phiAk.transpose() * phiAk);
     const UnsignedInteger gramSize = gramPhi.getNbRows();
     const Matrix invGramPhi(gramPhi.solveLinearSystem(IdentityMatrix(gramSize)));
-    traceInverse = invGramPhi.computeTrace();
+    traceInverse = 0.0;
+    for (UnsignedInteger d = 0; d < gramSize; ++d)
+      traceInverse += invGramPhi(d, d);
   }
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);

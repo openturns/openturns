@@ -132,10 +132,10 @@ protected:
   /** Proxy to the input sample and the basis */
   DesignProxy proxy_;
 
-  /** Weights for the least-squares norm. The size is positive if and only if the weights are not uniform. */
+  /** Weights for the least-squares norm, stored as a single value when uniform */
   Point weight_;
 
-  /** Square-roots of the weights for the least-squares norm. The size is positive if and only if the weights are not uniform. */
+  /** Square-roots of the weights, stored as a single value when uniform */
   Point weightSqrt_;
 
   /** Flag to tell if the points have uniform weights */

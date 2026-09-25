@@ -118,9 +118,11 @@ void CholeskyMethod::update(const Indices & addedIndices,
     // reused information and the size of the new information.
     if (conservedIndices.getSize() == 0)
     {
+      Indices previousRowFilter(proxy_.getRowFilter());
       proxy_.setRowFilter(addedIndices);
       const Matrix mPsiAk(computeWeightedDesign()); // current design
       l_ = mPsiAk.computeGram(true).getImplementation()->computeCholesky();
+      proxy_.setRowFilter(previousRowFilter);
       return;
     }
     // Here we know that some rows have been preserved, so l_ must have been initialized
@@ -181,14 +183,14 @@ void CholeskyMethod::update(const Indices & addedIndices,
     // Update decomposition
     if (addedIndices.getSize() > 0)
     {
-      // Do incremental update only if the matrix size is large enough
+      // Do incremental update only if a single column is added and the matrix
+      // size is large enough; otherwise use full factorization
       static const UnsignedInteger LargeCase = ResourceMap::GetAsUnsignedInteger("CholeskyMethod-LargeCase");
-      if (newBasis.getSize() >= LargeCase)
+      if ((newBasis.getSize() >= LargeCase) && (addedIndices.getSize() == 1))
       {
         Matrix mPsiAk(computeWeightedDesign());// old design
 
         currentIndices_ = newBasis;
-        if (addedIndices.getSize() != 1) throw InvalidArgumentException(HERE) << " in CholeskyMethod::update addedIndices.getSize() != 1";
         const UnsignedInteger basisSize = currentIndices_.getSize();
 
         // update the cholesky decomposition of the Gram matrix
@@ -249,10 +251,13 @@ Point CholeskyMethod::solve(const Point & rhs)
   Point b(rhs);
   {
     const UnsignedInteger size = rhs.getSize();
-    if (!hasUniformWeight_ && size != weightSqrt_.getSize())
+    // With an active row filter (eg KFold folds) rhs holds the filtered rows
+    const Bool useRowFilter = proxy_.hasRowFilter();
+    const Indices rowFilter(proxy_.getRowFilter());
+    if (!hasUniformWeight_ && size != (useRowFilter ? rowFilter.getSize() : weightSqrt_.getSize()))
       throw InvalidArgumentException(HERE) << "CholeskyMethod::solve invalid rhs size=" << rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i)
-      b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
+      b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : (useRowFilter ? rowFilter[i] : i)];
   }
   const Matrix psiAk(computeWeightedDesign());
   const Point c(psiAk.getImplementation()->genVectProd(b, true));
@@ -268,6 +273,10 @@ Point CholeskyMethod::solveNormal(const Point & rhs)
   const UnsignedInteger basisSize = currentIndices_.getSize();
 
   if (rhs.getDimension() != basisSize) throw InvalidArgumentException(HERE) << "CholeskyMethod::solve invalid rhs!";
+
+  // solveNormal is only meaningful for uniform weights: the weight
+  // premultiplication below addresses sample weights by basis position
+  if (!hasUniformWeight_) throw InvalidArgumentException(HERE) << "Error: CholeskyMethod::solveNormal only supports uniform weights.";
 
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.

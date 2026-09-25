@@ -174,8 +174,10 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   penalizedLeastSquaresAlgorithm.run(proxy);
   const Point optimalBasisCoefficients(penalizedLeastSquaresAlgorithm.getCoefficients());
   const Scalar optimalResidual = penalizedLeastSquaresAlgorithm.getResidual();
-  // New relative error based on cross-validation error
-  const Scalar optimalRelativeError = minimumError / y_.getSize();
+  // New relative error based on cross-validation error: minimumError is
+  // already relative (the fitting criterion normalizes by the variance),
+  // so it is used directly without further normalization
+  const Scalar optimalRelativeError = minimumError;
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
   Point optimalCoefficients( currentIndices_.getSize() );

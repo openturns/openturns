@@ -243,15 +243,40 @@ void PenalizedLeastSquaresAlgorithm::run(const DesignProxy & proxy)
   if (penalizationFactor_ > 0.0)
     for (UnsignedInteger i = sampleSize; i < residuals.getSize(); ++i)
       residuals[i] = 0.0;
+  // Normalization mass: sample size for uniform weights (legacy),
+  // total weight mass otherwise. Uniform weights are stored as one value
+  Scalar normalizationMass = sampleSize;
+  if (!hasUniformWeight_)
+  {
+    normalizationMass = 0.0;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      normalizationMass += weight_[i];
+  }
   const Scalar quadraticResidual = residuals.normSquare();
   // The residual is the mean L2 norm of the fitting
-  setResidual(std::sqrt(quadraticResidual) / sampleSize);
+  setResidual(std::sqrt(quadraticResidual) / normalizationMass);
 
-  const Scalar empiricalError = quadraticResidual / sampleSize;
+  const Scalar empiricalError = quadraticResidual / normalizationMass;
 
-  // The relative error
-  const Scalar yVariance = y_.computeVariance()[0];
-  const Scalar relativeError = (yVariance > 0.0 ? empiricalError / yVariance : -1.0);
+  // The relative error against the output variance: the legacy unbiased
+  // estimator for uniform weights, the weighted variance otherwise
+  Scalar yVariance = 0.0;
+  if (hasUniformWeight_)
+    yVariance = y_.computeVariance()[0];
+  else
+  {
+    Scalar weightedMean = 0.0;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightedMean += weight_[i] * y_(i, 0);
+    weightedMean /= normalizationMass;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      const Scalar delta = y_(i, 0) - weightedMean;
+      yVariance += weight_[i] * delta * delta;
+    }
+    yVariance /= normalizationMass;
+  }
+  const Scalar relativeError = (!(yVariance > 0.0) ? -1.0 : empiricalError / yVariance);
   setRelativeError(relativeError);
 }
 

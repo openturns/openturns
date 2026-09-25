@@ -176,7 +176,11 @@ void IntegrationStrategy::computeCoefficients(const Function & function,
   TBBImplementation::ParallelFor( 0, addedSize, policy );
   alpha.add(addedAlpha);
   alpha_k_p_ = alpha;
-  // The residual is the mean squared error between the model and the meta model
+  // The residual is the mean squared error between the model and the meta model.
+  // NOTE: this legacy formula ignores the quadrature weights and normalizes
+  // by the sample size; with normalized weights the true weighted residual
+  // is larger by about the sample size. Kept as is to preserve the reported
+  // quantities; revisit when redefining the residual convention.
   residual_p_ = 0.0;
   const Point values(designMatrix * alpha_k_p_);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)

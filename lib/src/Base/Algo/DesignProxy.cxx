@@ -204,7 +204,8 @@ DesignProxy::FunctionCollection DesignProxy::getBasis(const Indices & indices) c
 /* Row filter accessor */
 void DesignProxy::setRowFilter(const Indices & rowFilter)
 {
-  rowFilter.check(designCache_.getNbRows());
+  if (!rowFilter.check(designCache_.getNbRows()))
+    throw InvalidArgumentException(HERE) << "Requested row filter exceeds design size (" << designCache_.getNbRows() << ")";
   rowFilter_ = rowFilter;
 }
 
