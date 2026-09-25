@@ -45,7 +45,7 @@ outputSample = poutre(inputSample)
 dim = distribution.getDimension()
 polyCol = [0.0] * dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(
+    polyCol[i] = ot.UniVariateDistributionPolynomialFactory(
         distribution.getMarginal(i)
     )
 

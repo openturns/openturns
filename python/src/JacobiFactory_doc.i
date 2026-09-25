@@ -29,9 +29,9 @@ read:
 .. math::
 
     \begin{array}{rcl}
-    a_i & = & \displaystyle K_{2,i} (2 i + \alpha + \beta + 2) \\
-    b_i & = & \displaystyle K_{2,i} \frac{(\alpha - \beta)(\alpha + \beta)}{2 i + \alpha + \beta} \\
-    c_i & = & \displaystyle - \frac{2 i + \alpha + \beta + 2}{2 i + \alpha + \beta} \left[(i + \alpha) (i + \beta) (i + \alpha + \beta) i \frac{K_{1,i}}{2 i + \alpha + \beta - 1}\right]^{1/2}
+    a_i & = & \displaystyle K_{2,i} (2 i + \alpha + \beta) \\
+    b_i & = & \displaystyle K_{2,i} \frac{(\beta - \alpha)(\alpha + \beta - 2)}{2 i + \alpha + \beta - 2} \\
+    c_i & = & \displaystyle - \frac{2 i + \alpha + \beta}{2 i + \alpha + \beta - 2} \left[(i + \alpha - 1) (i + \beta - 1) (i + \alpha + \beta - 2) i \frac{K_{1,i}}{2 i + \alpha + \beta - 3}\right]^{1/2}
     \end{array}, \quad 1 < i
 
 where :math:`\alpha` and :math:`\beta` are the shape parameters
@@ -40,8 +40,8 @@ of the :class:`~openturns.Beta` distribution, and:
 .. math::
 
     \begin{array}{rcl}
-    K_{1,i} & = & \displaystyle \frac{2 i + \alpha + \beta + 3}{(i + 1) (i + \alpha + 1) (i + \beta + 1) (i + \alpha + \beta + 1)} \\
-    K_{2,i} & = & \displaystyle \frac{1}{2} \sqrt{(2 i + \alpha + \beta + 1) K_{1,i}}
+    K_{1,i} & = & \displaystyle \frac{2 i + \alpha + \beta + 1}{(i + 1) (i + \alpha) (i + \beta) (i + \alpha + \beta - 1)} \\
+    K_{2,i} & = & \displaystyle \frac{1}{2} \sqrt{(2 i + \alpha + \beta - 1) K_{1,i}}
     \end{array}, \quad i > 1
 
 See also
