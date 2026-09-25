@@ -166,7 +166,7 @@ String OrthogonalProductPolynomialFactory::getMarginalPolynomialName(const Unsig
   String className;
   const OrthogonalUniVariatePolynomialFamily univariatePolynomial(coll_[marginalIndex]);
   const String basicClassName(univariatePolynomial.getImplementation()->getClassName());
-  if (basicClassName == "UniVariateDistributionPolynomialFactory")
+  if (basicClassName == "UniVariateDistributionPolynomialFactory" || basicClassName == "StandardDistributionPolynomialFactory")
   {
     const UniVariateDistributionPolynomialFactory* p_factory = dynamic_cast<const UniVariateDistributionPolynomialFactory*>(univariatePolynomial.getImplementation().get());
     if (p_factory)
