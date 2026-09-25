@@ -22,6 +22,7 @@
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
 
 ==== New classes ====
+ * CurlFreeModel, DivFreeModel (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
