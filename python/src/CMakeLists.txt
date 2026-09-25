@@ -184,6 +184,7 @@ ot_add_python_module(algo algo_module.i
                       FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i
                       FittingAlgorithm.i FittingAlgorithm_doc.i
                       CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i
+                      LeaveOneOut.i LeaveOneOut_doc.i
                       NearestNeighbourAlgorithmImplementation.i NearestNeighbourAlgorithmImplementation_doc.i
                       NearestNeighbourAlgorithm.i NearestNeighbourAlgorithm_doc.i
                       KDTree.i KDTree_doc.i

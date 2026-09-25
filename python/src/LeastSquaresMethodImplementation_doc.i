@@ -158,7 +158,11 @@ OT_LeastSquaresMethod_solve_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_solveNormal_doc
-R"RAW( Solve the least-squares problem using normal equation.
+R"RAW(Solve the least-squares problem using normal equation.
+
+Only meaningful for uniform weights: the method rejects non-uniform
+weights with an exception. Use :any:`solveNormalGram` for the general
+weighted case.
 
 .. math::
 
@@ -234,17 +238,27 @@ OT_LeastSquaresMethod_getGramInverseTrace_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getH_doc
-R"RAW(Get the symmetric WLS kernel H.
+R"RAW(Get the symmetric weighted hat matrix H.
+
+With :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` the weight-scaled
+design and :math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}`
+the weighted Gram matrix:
 
 .. math::
 
-    \mat{H} = \mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal
+    \mat{H} = \mat{\Psi}_w \mat{G}^{-1} \mat{\Psi}_w^\intercal
+
+Its diagonal holds the leverages
+:math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`.
+The fitted values are
+:math:`\hat{\vect{y}} = \mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal \mat{W} \vect{b}`.
+For uniform weights this reduces to the classical hat matrix, independent
+of the common weight value.
 
 Returns
 -------
 h : :class:`~openturns.SymmetricMatrix`
-    The symmetric WLS kernel H. For non-unit weights, the fitted values
-    are :math:`\mat{H}\mat{W}\vect{b}`.)RAW"
+    The symmetric weighted hat matrix H.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getH
 OT_LeastSquaresMethod_getH_doc
@@ -252,17 +266,23 @@ OT_LeastSquaresMethod_getH_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getHDiag_doc
-R"RAW(Get the diagonal of the symmetric WLS kernel H.
+R"RAW(Get the diagonal of the symmetric weighted hat matrix H.
 
 .. math::
 
-    \mathrm{diag}(\mat{H}) = \mathrm{diag}\left(\mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal\right)
+    \mathrm{diag}(\mat{H}) = \mathrm{diag}\left(\mat{\Psi}_w \mat{G}^{-1} \mat{\Psi}_w^\intercal\right)
+
+with :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` and
+:math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}`.
+Each entry is the leverage
+:math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`,
+used by the analytical leave-one-out residual :math:`r_i/(1-h_i)`
+(Allen, 1974).
 
 Returns
 -------
 diagH : :class:`~openturns.Point`
-    The diagonal of the symmetric WLS kernel H. For non-unit weights, the
-    fitted values are :math:`\mat{H}\mat{W}\vect{b}`.)RAW"
+    The leverages, ie the diagonal of the symmetric weighted hat matrix.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag
 OT_LeastSquaresMethod_getHDiag_doc

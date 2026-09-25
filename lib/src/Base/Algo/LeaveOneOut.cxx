@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Corrected implicit leave-one-out cross validation
+ *  @brief Implicit leave-one-out cross validation
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -20,66 +20,87 @@
  */
 
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/CorrectedLeaveOneOut.hxx"
-#include "openturns/SVDMethod.hxx"
+#include "openturns/LeaveOneOut.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(CorrectedLeaveOneOut)
+CLASSNAMEINIT(LeaveOneOut)
 
-static const Factory<CorrectedLeaveOneOut> Factory_CorrectedLeaveOneOut;
+static const Factory<LeaveOneOut> Factory_LeaveOneOut;
 
 /* Default constructor */
-CorrectedLeaveOneOut::CorrectedLeaveOneOut()
+LeaveOneOut::LeaveOneOut()
   : FittingAlgorithmImplementation()
 {
   // Nothing to do
 }
 
 /* Virtual constructor */
-CorrectedLeaveOneOut * CorrectedLeaveOneOut::clone() const
+LeaveOneOut * LeaveOneOut::clone() const
 {
-  return new CorrectedLeaveOneOut( *this );
+  return new LeaveOneOut( *this );
 }
 
 /* String converter */
-String CorrectedLeaveOneOut::__repr__() const
+String LeaveOneOut::__repr__() const
 {
   return OSS() << "class=" << GetClassName();
 }
 
 /* Perform cross-validation */
-Scalar CorrectedLeaveOneOut::run(const Sample & x,
-                                 const Sample & y,
-                                 const Point & weight,
-                                 const FunctionCollection & basis,
-                                 const Indices & indices) const
+Scalar LeaveOneOut::run(const Sample & x,
+                        const Sample & y,
+                        const Point & weight,
+                        const FunctionCollection & basis,
+                        const Indices & indices) const
 {
   return FittingAlgorithmImplementation::run(x, y, weight, basis, indices);
 }
 
 
-Scalar CorrectedLeaveOneOut::run(const Sample & y,
-                                 const Point & weight,
-                                 const Indices & indices,
-                                 const DesignProxy & proxy) const
+Scalar LeaveOneOut::run(const Sample & y,
+                        const Point & weight,
+                        const Indices & indices,
+                        const DesignProxy & proxy) const
 {
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) const
+
+Scalar LeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) const
 {
   const Sample x(method.getInputSample());
   const UnsignedInteger sampleSize = x.getSize();
 
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  // The Chapelle correction behind this score is only established for
-  // uniform weights: reject weighted designs, use LeaveOneOut or KFold
-  // for the general case. Uniform weights are stored as one value
+  // Weights of the least-squares method: a single value means uniform
+  // weights, otherwise one value per sample point
   const Point methodWeights(method.getWeight());
-  if (methodWeights.getSize() != 1) throw InvalidArgumentException(HERE) << "CorrectedLeaveOneOut only supports uniform weights, use LeaveOneOut or KFold for weighted designs.";
-  const Scalar variance = y.computeVariance()[0];
+  const Bool useUniformWeights = (methodWeights.getSize() == 1);
+  if (!useUniformWeights && (methodWeights.getSize() != sampleSize)) throw InvalidArgumentException(HERE) << "Non-uniform weights size (" << methodWeights.getSize() << ") should match the sample size (" << sampleSize << ").";
+  // Total weight mass, used to normalize the error and variance below so
+  // that they converge to their continuous counterparts when the sample
+  // size goes to infinity. For uniform weights it is w * n.
+  Scalar weightSum = 0.0;
+  if (useUniformWeights)
+    weightSum = methodWeights[0] * sampleSize;
+  else
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightSum += methodWeights[i];
+  if (!(weightSum > 0.0)) throw InvalidArgumentException(HERE) << "Weights must have a positive sum, here sum=" << weightSum;
+  // Weighted output variance around the weighted mean
+  Scalar weightedMean = 0.0;
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    weightedMean += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * y(i, 0);
+  weightedMean /= weightSum;
+  Scalar variance = 0.0;
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    const Scalar delta = y(i, 0) - weightedMean;
+    variance += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * delta * delta;
+  }
+  variance /= weightSum;
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
   if (!(sampleSize >= basisSize)) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
@@ -95,41 +116,37 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   // Use the equivalence between SampleImplementation::data_ and Point
   const Point coefficients(method.solve(y.getImplementation()->getData()));
 
-  // Compute the empirical error
-  LOGINFO("Compute the empirical error");
+  // Compute the leave-one-out error through the PRESS residuals
+  LOGINFO("Compute the leave-one-out error");
 
   const Point yHat(psiAk * coefficients);
 
+  // Weighted leverages: dropping an observation is a rank-one downdate of
+  // the weighted normal equations, so the leave-one-out residual is
+  // r_i / (1 - h_i) for any weights
   const Point h(method.getHDiag());
   Scalar looError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
     const Scalar ns = (y(i, 0) - yHat[i]) / (1.0 - h[i]);
-    looError += methodWeights[0] * ns * ns;
+    looError += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * ns * ns;
   }
-  looError /= (methodWeights[0] * sampleSize);
+  looError /= weightSum;
   LOGINFO(OSS() << "LOO error=" << looError);
 
-  LOGINFO("Compute the correcting factor");
-  // G = Psi^T*Psi where Psi = sqrt(W)*Phi, so G^{-1} = (Phi^T*W*Phi)^{-1}
-  // For uniform weights w: G = w*Phi^T*Phi, hence the CLOO formula needs
-  // tr((Phi^T*Phi)^{-1}) = tr(G^{-1}) * w
-  const Scalar traceInverse = method.getGramInverseTrace() * methodWeights[0];
-
-  const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * looError / variance);
+  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : looError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }
 
 /* Method save() stores the object through the StorageManager */
-void CorrectedLeaveOneOut::save(Advocate & adv) const
+void LeaveOneOut::save(Advocate & adv) const
 {
   FittingAlgorithmImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void CorrectedLeaveOneOut::load(Advocate & adv)
+void LeaveOneOut::load(Advocate & adv)
 {
   FittingAlgorithmImplementation::load(adv);
 }

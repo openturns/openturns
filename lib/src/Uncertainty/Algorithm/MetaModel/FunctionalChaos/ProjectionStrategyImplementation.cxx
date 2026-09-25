@@ -244,6 +244,7 @@ Sample ProjectionStrategyImplementation::getOutputSample() const
 /* Weights accessor */
 void ProjectionStrategyImplementation::setWeights(const Point & weights)
 {
+  if ((inputSample_.getSize() > 0) && (weights.getSize() != inputSample_.getSize())) throw InvalidArgumentException(HERE) << "Error: the weights size=" << weights.getSize() << " must match the input sample size=" << inputSample_.getSize();
   weights_ = weights;
 }
 
@@ -292,12 +293,28 @@ void ProjectionStrategyImplementation::computeCoefficients(const Function &,
 void ProjectionStrategyImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
+  adv.saveAttribute("measure_", measure_);
+  adv.saveAttribute("weightedExperiment_", weightedExperiment_);
+  adv.saveAttribute("inputSample_", inputSample_);
+  adv.saveAttribute("weights_", weights_);
+  adv.saveAttribute("outputSample_", outputSample_);
+  adv.saveAttribute("alpha_k_p_", alpha_k_p_);
+  adv.saveAttribute("residual_p_", residual_p_);
+  adv.saveAttribute("relativeError_p_", relativeError_p_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProjectionStrategyImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+  adv.loadAttribute("measure_", measure_);
+  adv.loadAttribute("weightedExperiment_", weightedExperiment_);
+  adv.loadAttribute("inputSample_", inputSample_);
+  adv.loadAttribute("weights_", weights_);
+  adv.loadAttribute("outputSample_", outputSample_);
+  adv.loadAttribute("alpha_k_p_", alpha_k_p_);
+  adv.loadAttribute("residual_p_", residual_p_);
+  adv.loadAttribute("relativeError_p_", relativeError_p_);
 }
 
 Collection<Indices> ProjectionStrategyImplementation::getSelectionHistory(Collection<Point> & /*coefficientsHistory*/) const

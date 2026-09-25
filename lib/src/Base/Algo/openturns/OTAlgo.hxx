@@ -62,6 +62,7 @@
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LeaveOneOut.hxx"
 #include "openturns/CholeskyMethod.hxx"
 #include "openturns/QRMethod.hxx"
 #include "openturns/SVDMethod.hxx"

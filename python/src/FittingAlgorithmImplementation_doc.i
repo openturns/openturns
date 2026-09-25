@@ -50,7 +50,8 @@ x : 2-d sequence of float
 y : 2-d sequence of float
     Output sample
 weight : sequence of float
-    Weights associated to the outputs
+    Quadrature weights :math:`w_i` of the least-squares inner product,
+    of size equal to the size of the input sample
 psi : sequence of :class:`~openturns.Function`
     Basis
 indices : sequence of int

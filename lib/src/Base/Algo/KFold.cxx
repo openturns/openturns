@@ -74,7 +74,30 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
 {
   const Sample x(method.getInputSample());
   const UnsignedInteger sampleSize = x.getSize();
-  const Scalar variance = y.computeVariance()[0];
+  // Output variance: the legacy unbiased estimator for uniform weights,
+  // the weighted variance otherwise. Uniform weights are stored as one value
+  const Point methodWeights(method.getWeight());
+  const Bool useUniformWeights = (methodWeights.getSize() == 1);
+  Scalar variance = 0.0;
+  if (useUniformWeights)
+    variance = y.computeVariance()[0];
+  else
+  {
+    Scalar weightSum = 0.0;
+    Scalar weightedMean = 0.0;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      weightSum += methodWeights[i];
+      weightedMean += methodWeights[i] * y(i, 0);
+    }
+    weightedMean /= weightSum;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      const Scalar delta = y(i, 0) - weightedMean;
+      variance += methodWeights[i] * delta * delta;
+    }
+    variance /= weightSum;
+  }
 
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
@@ -89,7 +112,7 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
 
   // We build the test sample by selecting one over k points of the given samples up to the test size, with a varying initial index
   // i is the initial index
-  UnsignedInteger totalTestSize = 0;
+  Scalar totalTestWeight = 0.0;
   for (UnsignedInteger i = 0; i < k_; ++ i)
   {
     LOGINFO(OSS() << "Sub-sample " << i << " over " << k_ - 1);
@@ -134,15 +157,21 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
     const Point yHatTest(psiAk * coefficients);
     LOGINFO("Compute the residual");
 
-    // The empirical error is the normalized L2 error
-    totalTestSize += yTest.getSize();
-    quadraticResidual += (yTest - yHatTest).normSquare();
+    // The empirical error is the normalized weighted L2 error: the test
+    // residuals are scaled by the weights of the test rows
+    const Point testDiff(yTest - yHatTest);
+    for (UnsignedInteger t = 0; t < yTest.getSize(); ++t)
+    {
+      const Scalar testWeight = (useUniformWeights ? methodWeights[0] : methodWeights[inverseRowFilter[t]]);
+      quadraticResidual += testWeight * testDiff[t] * testDiff[t];
+      totalTestWeight += testWeight;
+    }
 
     LOGINFO(OSS() << "Cumulated residual=" << quadraticResidual);
   }
   // Restore the row filter
   method.getImplementation()->proxy_.setRowFilter(initialRowFilter);
-  const Scalar empiricalError = quadraticResidual / totalTestSize;
+  const Scalar empiricalError = quadraticResidual / totalTestWeight;
 
   const Scalar relativeError = (!(variance > 0.0) ? 0.0 : empiricalError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);

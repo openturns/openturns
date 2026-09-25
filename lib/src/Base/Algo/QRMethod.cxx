@@ -118,7 +118,12 @@ Point QRMethod::solve(const Point & rhs)
   Point b(rhs);
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
+    // With an active row filter (eg KFold folds) rhs holds the filtered rows
+    const Bool useRowFilter = proxy_.hasRowFilter();
+    const Indices rowFilter(proxy_.getRowFilter());
+    if (!hasUniformWeight_ && size != (useRowFilter ? rowFilter.getSize() : weightSqrt_.getSize()))
+      throw InvalidArgumentException(HERE) << "QRMethod::solve invalid rhs size=" << rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : (useRowFilter ? rowFilter[i] : i)];
   }
   // compute c = Q^t b
   const Point c(q_.getImplementation()->genVectProd(b, true)); // transpose
@@ -133,6 +138,9 @@ Point QRMethod::solveNormal(const Point & rhs)
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
   if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "QRMethod::solveNormal invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
+  // solveNormal is only meaningful for uniform weights: the weight
+  // premultiplication below addresses sample weights by basis position
+  if (!hasUniformWeight_) throw InvalidArgumentException(HERE) << "Error: QRMethod::solveNormal only supports uniform weights.";
   Point b(rhs);
   {
     const UnsignedInteger size = rhs.getSize();
@@ -158,9 +166,12 @@ Point QRMethod::getHDiag() const
 {
   const UnsignedInteger dimension = q_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
+  // In the under-determined case the economic factor has fewer columns
+  // than the basis size; the available columns span the same image
+  const UnsignedInteger factorSize = std::min(basisSize, q_.getNbColumns());
   Point diag(dimension);
   MatrixImplementation::const_iterator q_iterator(q_.getImplementation()->begin());
-  for (UnsignedInteger j = 0; j < basisSize; ++ j)
+  for (UnsignedInteger j = 0; j < factorSize; ++ j)
   {
     for (MatrixImplementation::iterator diag_iterator = diag.begin(); diag_iterator != diag.end(); ++ diag_iterator)
     {

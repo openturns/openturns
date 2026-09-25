@@ -652,7 +652,7 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
     }
   }
 
-  const FunctionalChaosResult marginalPCE(
+  const FunctionalChaosResult marginalPCEBase(
     inputSample_,
     marginalOutputSample,
     distribution_,
@@ -663,6 +663,28 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
     nonzeroCoefficients,
     nonzeroFunctions
   );
+  FunctionalChaosResult marginalPCE(marginalPCEBase);
+  // Slice the selection and error histories for the marginal outputs
+  Collection<Indices> marginalIndicesHistory;
+  Collection<Point> marginalCoefficientsHistory;
+  Point marginalErrorHistory;
+  Indices marginalCutPoints(1, 0);
+  for (UnsignedInteger m = 0; m < indicesOutput.getSize(); ++m)
+  {
+    const UnsignedInteger outputIndex = indicesOutput[m];
+    const Collection<Indices> outputIndicesHistory(getIndicesHistory(outputIndex));
+    for (UnsignedInteger i = 0; i < outputIndicesHistory.getSize(); ++i)
+      marginalIndicesHistory.add(outputIndicesHistory[i]);
+    const Collection<Point> outputCoefficientsHistory(getCoefficientsHistory(outputIndex));
+    for (UnsignedInteger i = 0; i < outputCoefficientsHistory.getSize(); ++i)
+      marginalCoefficientsHistory.add(outputCoefficientsHistory[i]);
+    const Point outputErrorHistory(getErrorHistory(outputIndex));
+    for (UnsignedInteger i = 0; i < outputErrorHistory.getSize(); ++i)
+      marginalErrorHistory.add(outputErrorHistory[i]);
+    marginalCutPoints.add(marginalIndicesHistory.getSize());
+  }
+  marginalPCE.setSelectionHistory(marginalIndicesHistory, marginalCoefficientsHistory, marginalCutPoints);
+  marginalPCE.setErrorHistory(marginalErrorHistory, marginalCutPoints);
   return marginalPCE;
 }
 

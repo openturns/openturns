@@ -135,7 +135,12 @@ Point SVDMethod::solve(const Point & rhs)
   Point b(rhs);
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : i];
+    // With an active row filter (eg KFold folds) rhs holds the filtered rows
+    const Bool useRowFilter = proxy_.hasRowFilter();
+    const Indices rowFilter(proxy_.getRowFilter());
+    if (!hasUniformWeight_ && size != (useRowFilter ? rowFilter.getSize() : weightSqrt_.getSize()))
+      throw InvalidArgumentException(HERE) << "SVDMethod::solve invalid rhs size=" << rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : (useRowFilter ? rowFilter[i] : i)];
   }
   const Point c(u_.getImplementation()->genVectProd(b, true));
   // Second step
@@ -150,6 +155,9 @@ Point SVDMethod::solveNormal(const Point & rhs)
 {
   update(Indices(0), currentIndices_, Indices(0));
   if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "SVDMethod::solveNormal invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
+  // solveNormal is only meaningful for uniform weights: the weight
+  // premultiplication below addresses sample weights by basis position
+  if (!hasUniformWeight_) throw InvalidArgumentException(HERE) << "Error: SVDMethod::solveNormal only supports uniform weights.";
   // To take into account possible under-determined least-squares problems
   // We consider the number of singular values instead of the basis size
   // It leads to the minimal norm solution in the under-determined case
@@ -161,14 +169,13 @@ Point SVDMethod::solveNormal(const Point & rhs)
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[hasUniformWeight_ ? 0 : i];
   }
   // G^-1= V*S^-2*V^T
+  // With the economic SVD the factor has exactly svdSize columns
   Point coefficients(vT_ * b);
   for (UnsignedInteger i = 0; i < svdSize; ++i)
   {
     const Scalar sv = singularValues_[i];
     coefficients[i] /= (sv * sv);
   }
-  for (UnsignedInteger i = svdSize; i < coefficients.getSize(); ++i)
-    coefficients[i] = 0.0;
   return vT_.getImplementation()->genVectProd(coefficients, true);
 }
 
@@ -183,14 +190,13 @@ Point SVDMethod::solveNormalGram(const Point & rhs)
   const UnsignedInteger svdSize = singularValues_.getSize();
   // G = V S^2 V^T, G^{-1} = V S^{-2} V^T
   // G^{-1} rhs = V S^{-2} V^T rhs, no weight multiplication on rhs
+  // With the economic SVD the factor has exactly svdSize columns
   Point coefficients(vT_ * rhs);
   for (UnsignedInteger i = 0; i < svdSize; ++i)
   {
     const Scalar sv = singularValues_[i];
     coefficients[i] /= (sv * sv);
   }
-  for (UnsignedInteger i = svdSize; i < coefficients.getSize(); ++i)
-    coefficients[i] = 0.0;
   return vT_.getImplementation()->genVectProd(coefficients, true);
 }
 
@@ -244,10 +250,13 @@ Point SVDMethod::getHDiag() const
   // H = U1 * U1.transpose()
   const UnsignedInteger sampleSize = u_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
+  // In the under-determined case the economic factor has fewer columns
+  // than the basis size; the available columns span the same image
+  const UnsignedInteger factorSize = std::min(basisSize, u_.getNbColumns());
   Point h(sampleSize);
   // matrices are stored by columns
   MatrixImplementation::const_iterator u_iterator(u_.getImplementation()->begin());
-  for (UnsignedInteger j = 0; j < basisSize; ++ j)
+  for (UnsignedInteger j = 0; j < factorSize; ++ j)
   {
     for (MatrixImplementation::iterator h_iterator = h.begin(); h_iterator != h.end(); ++ h_iterator)
     {

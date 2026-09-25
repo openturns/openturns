@@ -64,6 +64,7 @@
 %include BoundingVolumeHierarchy.i
 %include KFold.i
 %include CorrectedLeaveOneOut.i
+%include LeaveOneOut.i
 %include SparseMethod.i
 %include LeastSquaresMetaModelSelection.i
 %include LeastSquaresMetaModelSelectionFactory.i

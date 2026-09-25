@@ -1,5 +1,17 @@
 %feature("docstring") OT::KFold
-"K-fold.
+R"RAW(K-fold model selection score.
+
+Each fold refits the weighted least squares on the training rows and
+scores the held-out rows with the design weights: the test residuals
+are accumulated as :math:`\sum w_t r_t^2` and normalized by the total
+test weight mass :math:`\sum w_t`, relative to the output variance
+(unbiased sample variance for uniform weights, weight-mass normalized
+variance otherwise). This follows the survey-weighted cross-validation
+practice of using the sampling weights both in the training fits and in
+the test loss (Wieczorek et al., 2022), with the importance-weighted
+validation of Sugiyama et al. (2007) as the covariate-shift analogue.
+The folds partition the row indices round-robin; the weights enter the
+scores but not the partitioning.
 
 Parameters
 ----------
@@ -34,7 +46,7 @@ Examples
 >>> indices = [0]
 >>> fittingAlgo = ot.KFold()
 >>> result = fittingAlgo.run(x, y, w, basis, indices)
-"
+)RAW"
 
 // ---------------------------------------------------------------------
 
