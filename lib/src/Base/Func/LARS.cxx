@@ -86,7 +86,8 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   // LARS only supports uniform weights: correlations and solves below use the
   // unweighted design, so non-uniform (eg quadrature) weights are rejected here
-  if (method.getImplementation()->weight_.getSize() > 1) throw InvalidArgumentException( HERE ) << "Error: LARS only supports uniform weights, here the least-squares method has non-uniform weights.";
+  // (uniform weights are stored as a single value, see LeastSquaresMethod::getWeight)
+  if (method.getWeight().getSize() > 1) throw InvalidArgumentException( HERE ) << "Error: LARS only supports uniform weights, here the least-squares method has non-uniform weights.";
   //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
 
   // get y as as point
