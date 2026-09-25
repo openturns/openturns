@@ -1,0 +1,100 @@
+%feature("docstring") OT::MulticollinearityAnalysis
+"Multicollinearity analysis methods.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+
+Provides sensitivity analysis methods to determine the influence of each
+component of a random vector over a single one-dimensional variable,
+in the case where the components are correlated.
+Refer to :any:`regression_importance_indices`.
+
+Parameters
+----------
+firstSample : 2-d list of float
+    Values taken by a random vector.
+secondSample : 2-d list of float, optional
+    Values taken by a single one-dimensional random variable.
+    This sample is used to compute the LMG, PMVD and Johnson indices; the VIF metric ignores it.
+    If it is not provided, then LMG, PMVD and Johnson indices are unavailable.
+
+See also
+--------
+:class:`~openturns.CorrelationAnalysis`
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> ot.RandomGenerator.SetSeed(0)
+>>> corMatrix = ot.CorrelationMatrix(3, [1.0, 0.5, 0.5, 0.5, 1.0, 0.5, 0.5, 0.5, 1.0])
+>>> distribution = ot.Normal([0.0] * 3, [1.0] * 3, corMatrix)
+>>> firstSample = distribution.getSample(100)
+>>> model = ot.SymbolicFunction(['x', 'y', 'z'], ['x + 3 * y - 5 * z'])
+>>> secondSample = model(firstSample)
+>>> analysis = otexp.MulticollinearityAnalysis(firstSample, secondSample)
+>>> lmg, pmvd = analysis.computeLMGAndPMVD()
+>>> johnson = analysis.computeJohnson()
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MulticollinearityAnalysis::computeJohnson
+"Johnson index.
+
+Returns
+-------
+johnson : :class:`~openturns.PointWithDescription`
+    The Johnson index for each component of *firstSample*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MulticollinearityAnalysis::computeLMGAndPMVD
+"LMG and PMVD indices.
+
+Returns
+-------
+lmg : :class:`~openturns.PointWithDescription`
+    The LMG index for each component of *firstSample*.
+pmvd : :class:`~openturns.PointWithDescription`
+    The PMVD index for each component of *firstSample*.
+
+Notes
+-----
+This function uses the `MulticollinearityAnalysis-MaximumInputDimensionForLMGAndPMVD` and
+`MulticollinearityAnalysis-DimensionThresholdForLMGAndPMVDParallelization` keys of the
+:class:`~openturns.ResourceMap` class. The former is the maximum dimension allowed for
+the input sample; the latter is the dimension which triggers a parallelized computation.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MulticollinearityAnalysis::computeVIF
+"VIF metric.
+
+Returns
+-------
+vif : :class:`~openturns.PointWithDescription`
+    The VIF metric for each component of *firstSample*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MulticollinearityAnalysis::computeLMGAndPMVDMonteCarlo
+"Estimated LMG and PMVD indices.
+
+Parameters
+----------
+iterations : int
+    The number of Monte Carlo iterations to use.
+
+Returns
+-------
+lmg : :class:`~openturns.PointWithDescription`
+    The estimated LMG index for each component of *firstSample*.
+pmvd : :class:`~openturns.PointWithDescription`
+    The estimated PMVD index for each component of *firstSample*.
+"

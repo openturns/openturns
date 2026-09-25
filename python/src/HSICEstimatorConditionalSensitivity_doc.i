@@ -20,7 +20,7 @@ weightFunction : :class:`~openturns.Function`
 
 See also
 --------
-:class:`~openturns.HSICEstimatorGlobalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`
+HSICEstimatorGlobalSensitivity, HSICEstimatorTargetSensitivity
 
 Notes
 -----

@@ -1,0 +1,188 @@
+"""
+Compute sensitivity indices in a multicollinear context
+=======================================================
+"""
+
+# %%
+# Introduction
+# ~~~~~~~~~~~~
+#
+# In this example, we are interested in the computation of several quantities that are relevant when predictors are correlated:
+#
+# - LMG index
+# - PMVD index
+# - Johnson index
+# - VIF metric
+#
+# We will use the :class:`~openturns.experimental.MulticollinearityAnalysis` class.
+
+import openturns as ot
+import openturns.viewer as otv
+import openturns.experimental as otexp
+from openturns.usecases import ames_housing
+
+# %%
+# We will take the X and Y samples from the :ref:`Ames Housing<use-case-ames-housing>` dataset
+# (which contains data about houses in the city of Ames):
+
+data = ames_housing.AmesHousing().data
+Y = data[:, 0]  # Extract the sale price
+X = data[:, 1 : data.getDimension()]  # Extract the other features
+
+# %%
+# We fit a linear regression model to predict Y, e.g. sale prices from the other features, and we compute the R² score to check that the model is relevant:
+
+regression = ot.LinearModelAlgorithm(X, Y).getResult()
+r2 = otexp.LinearModelValidation(regression).computeR2Score()
+print(f"R² score: {r2[0]}")
+
+# %%
+# The R² score is relatively close to 1, which means that the linear regression model is relevant.
+# We can now compute the LMG and PMVD indices, the Johnson index and the VIF metric.
+
+# %%
+# We will also perform bootstraps and plot the results, so we start by defining some helper functions.
+# First, we define one that computes the desired quantity:
+
+
+def compute_collinearity_metric(X, Y, kind):
+    """
+    Compute a quantity for the given dataset
+
+    Parameters
+    - X: the input sample
+    - Y: the output sample
+    - kind: the type of quantity to compute ("LMG_PMVD", "Johnson" or "VIF")
+    """
+    analysis = otexp.MulticollinearityAnalysis(X, Y)
+    if kind == "LMG_PMVD":
+        return analysis.computeLMGAndPMVD()
+    elif kind == "Johnson":
+        return analysis.computeJohnson()
+    elif kind == "VIF":
+        return analysis.computeVIF()
+    else:
+        raise Exception(f"Invalid kind: {kind}")
+
+
+# %%
+# Then we add a function that builds a graph:
+
+
+def create_graph(title, names, mean, interval):
+    dimension = mean.getDimension()
+    palette = ot.Drawable.BuildDefaultPalette(2)
+    graph = ot.Graph(title, "", "")
+
+    # Confidence bounds
+    lb = interval.getLowerBound()
+    ub = interval.getUpperBound()
+    for i in range(dimension):
+        curve = ot.Curve([1 + i, 1 + i], [lb[i], ub[i]])
+        curve.setLineWidth(2.0)
+        curve.setColor(palette[1])
+        graph.add(curve)
+
+    # Means
+    data = ot.Sample(0, 2)
+    for i in range(dimension):
+        data.add([i + 1, mean[i]])
+    cloud = ot.Cloud(data, palette[0], "circle")
+    graph.add(cloud)
+
+    box = graph.getBoundingBox()
+    box.setLowerBound([0.8, 0.0])
+    graph.setBoundingBox(box)
+    axes_kw = {"xticks": range(1, dimension + 1), "xticklabels": names}
+    view = otv.View(graph, axes_kw=axes_kw, figure_kw={"figsize": (10.0, 4.8)})
+    view.getAxes()[0].tick_params(
+        axis="x", labelsize=8.0
+    )  # reduce the font size of the X labels
+
+
+# %%
+# And finally, a function that performs a bootstrap and creates a graph with the results:
+
+
+def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
+    """
+    Perform a bootstrap on the provided sample and create a graph with the means and confidence intervals
+
+    Parameters
+    - X: the input sample
+    - Y: the output sample
+    - kind: the type of quantity to compute ("LMG_PMVD", "Johnson" or "VIF")
+    - alpha: the confidence level
+    - bootstrap_size: the number of points in the experiment
+    """
+
+    # Perform a bootstrap
+    sample_size = X.getSize()
+    boot = ot.Sample(bootstrap_size, X.getDimension())
+    if kind == "LMG_PMVD":
+        boot_pmvd = ot.Sample(bootstrap_size, X.getDimension())
+    for i in range(bootstrap_size):
+        selection = ot.BootstrapExperiment.GenerateSelection(sample_size, sample_size)
+        X_boot = X[selection]
+        Y_boot = Y[selection]
+        if kind == "LMG_PMVD":
+            boot[i, :], boot_pmvd[i, :] = compute_collinearity_metric(
+                X_boot, Y_boot, kind
+            )
+        else:
+            boot[i, :] = compute_collinearity_metric(X_boot, Y_boot, kind)
+
+    # Create a graph with the mean values and confidence intervals computed from the bootstrap
+    mean = boot.computeMean()
+    lb = boot.computeQuantilePerComponent((1.0 - alpha) / 2.0)
+    ub = boot.computeQuantilePerComponent(1.0 - (1.0 - alpha) / 2.0)
+    interval = ot.Interval(lb, ub)
+
+    if kind == "LMG_PMVD":
+        create_graph("LMG", X.getDescription(), mean, interval)
+        pmvd_mean = boot_pmvd.computeMean()
+        pmvd_lb = boot_pmvd.computeQuantilePerComponent((1.0 - alpha) / 2.0)
+        pmvd_ub = boot_pmvd.computeQuantilePerComponent(1.0 - (1.0 - alpha) / 2.0)
+        pmvd_interval = ot.Interval(pmvd_lb, pmvd_ub)
+        create_graph("PMVD", X.getDescription(), pmvd_mean, pmvd_interval)
+    else:
+        create_graph(kind, X.getDescription(), mean, interval)
+
+
+# %%
+# LMG and PMVD indices:
+
+analysis = otexp.MulticollinearityAnalysis(X, Y)
+lmg, pmvd = analysis.computeLMGAndPMVD()
+print("LMG indices: ", lmg)
+print("PMVD indices: ", pmvd)
+
+# %%
+bootstrap(X, Y, "LMG_PMVD")
+
+# %%
+# Johnson index:
+
+analysis = otexp.MulticollinearityAnalysis(X, Y)
+johnson = analysis.computeJohnson()
+print("Johnson indices: ", johnson)
+
+# %%
+bootstrap(X, Y, "Johnson")
+
+# %%
+# We notice that the Johnson indices are close to the LMG ones, (note that in two-dimensional cases, they are proven to be strictly equal).
+#
+# VIF metric:
+
+analysis = otexp.MulticollinearityAnalysis(X)
+vif = analysis.computeVIF()
+print("VIF: ", vif)
+
+# %%
+bootstrap(X, Y, "VIF")
+
+# %%
+# Display all graphs:
+
+otv.View.ShowAll()

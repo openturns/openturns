@@ -23,7 +23,7 @@ filterFunction : :class:`~openturns.Function`
 
 See also
 --------
-:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorGlobalSensitivity`
+HSICEstimatorConditionalSensitivity, HSICEstimatorGlobalSensitivity
 
 Examples
 --------
