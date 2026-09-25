@@ -81,12 +81,12 @@ algo = otexp.SparseExpansion(
     productBasis, basisSize, methodName
 )
 algo.setActiveFunctions(ot.Indices(range(3)))
-ott.assert_almost_equal(algo.getActiveFunctions(), ot.Indices([0, 1, 2]))
+assert algo.getActiveFunctions() == ot.Indices([0, 1, 2])
 print("setActiveFunctions/getActiveFunctions: OK")
 
 # Check setActiveFunctions ensures index 0 is always present
-algo.setActiveFunctions(ot.Indices([1, 2, 3]))
-ott.assert_almost_equal(algo.getActiveFunctions(), ot.Indices([1, 2, 3, 0]))
+algo.setActiveFunctions([1, 2, 3])
+assert algo.getActiveFunctions() == ot.Indices([1, 2, 3, 0])
 print("setActiveFunctions ensures index 0: OK")
 
 # Check constructor with active functions
@@ -126,13 +126,13 @@ errorHistory = result.getErrorHistory()
 print("Error history size: ", errorHistory.getSize())
 
 # History sizes must be consistent
-ott.assert_almost_equal(indicesHistory.getSize(), coeffsHistory.getSize())
-ott.assert_almost_equal(errorHistory.getSize(), coeffsHistory.getSize())
+assert indicesHistory.getSize() == coeffsHistory.getSize()
+assert errorHistory.getSize() == coeffsHistory.getSize()
 print("History consistency: OK")
 
 # Histories with an explicit output index
-ott.assert_almost_equal(result.getIndicesHistory(0).getSize(), indicesHistory.getSize())
-ott.assert_almost_equal(result.getCoefficientsHistory(0).getSize(), coeffsHistory.getSize())
+assert result.getIndicesHistory(0).getSize() == indicesHistory.getSize()
+assert result.getCoefficientsHistory(0).getSize() == coeffsHistory.getSize()
 ott.assert_almost_equal(result.getErrorHistory(0), errorHistory)
 with ott.assert_raises(TypeError):
     result.getIndicesHistory(1)
@@ -141,6 +141,11 @@ print("History output index: OK")
 # Check exception: duplicate active functions are rejected at construction
 with ott.assert_raises(TypeError):
     ot.LeastSquaresExpansion(
+        inputSample, outputSample, distribution,
+        productBasis, basisSize, [0, 1, 1]
+    )
+with ott.assert_raises(TypeError):
+    otexp.SparseExpansion(
         inputSample, outputSample, distribution,
         productBasis, basisSize, [0, 1, 1]
     )

@@ -131,7 +131,7 @@ Returns
 -------
 indices : :class:`~openturns.Indices`
     Indices :math:`\set{J}^P_s` of the elements of the multivariate basis used in the decomposition.
-    Each integer in this list is the input argument of the :class:`~.openturns.EnumerateFunction`.
+    Each integer in this list is the input argument of the :class:`~openturns.EnumerateFunction`.
     If a model selection method such as :class:`~.openturns.LARS` is used,
     these indices are not contiguous.)RAW"
 

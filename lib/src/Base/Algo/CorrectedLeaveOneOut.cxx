@@ -20,6 +20,7 @@
  */
 
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/IdentityMatrix.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/SVDMethod.hxx"
 
@@ -106,8 +107,24 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   LOGINFO("Compute the correcting factor");
   // G = Psi^T*Psi where Psi = sqrt(W)*Phi, so G^{-1} = (Phi^T*W*Phi)^{-1}
   // For uniform weights w: G = w*Phi^T*Phi, G^{-1} = (1/w)*(Phi^T*Phi)^{-1}
-  // The CLOO formula needs tr((Phi^T*Phi)^{-1}) = tr(G^{-1}) * w
-  const Scalar traceInverse = method.getGramInverseTrace() * method.getImplementation()->weight_[0];
+  // The CLOO formula needs tr((Phi^T*Phi)^{-1}) = tr(G^{-1}) * w.
+  // For non-uniform (eg quadrature) weights this identity fails, so the
+  // trace is computed from the unweighted design of the active functions.
+  Scalar traceInverse = 0.0;
+  if (method.getImplementation()->weight_.getSize() == 1)
+  {
+    // Uniform weights, stored as a single value
+    traceInverse = method.getGramInverseTrace() * method.getImplementation()->weight_[0];
+  }
+  else
+  {
+    // Non-uniform weights: unweighted Gram matrix Gt = Phi^T*Phi
+    const Matrix phiAk(method.computeDesign());
+    const Matrix gramPhi(phiAk.transpose() * phiAk);
+    const UnsignedInteger gramSize = gramPhi.getNbRows();
+    const Matrix invGramPhi(gramPhi.solveLinearSystem(IdentityMatrix(gramSize)));
+    traceInverse = invGramPhi.computeTrace();
+  }
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
   const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * empiricalError / variance);

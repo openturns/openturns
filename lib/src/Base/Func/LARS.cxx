@@ -84,6 +84,9 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if (!(sampleSize > 0)) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
+  // LARS only supports uniform weights: correlations and solves below use the
+  // unweighted design, so non-uniform (eg quadrature) weights are rejected here
+  if (method.getImplementation()->weight_.getSize() > 1) throw InvalidArgumentException( HERE ) << "Error: LARS only supports uniform weights, here the least-squares method has non-uniform weights.";
   //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";
 
   // get y as as point
@@ -161,8 +164,10 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     const Point ga1(method.solveNormal(sC));
     LOGDEBUG(OSS() << "Solved normal equation.");
 
-    // normalization coefficient
-    const Scalar cNorm = 1.0 / sqrt(sC.dot(ga1));
+    // normalization coefficient, bail out on degenerate active set
+    const Scalar sCdotGa1 = sC.dot(ga1);
+    if (!(sCdotGa1 > 0.0)) return;
+    const Scalar cNorm = 1.0 / sqrt(sCdotGa1);
 
     // descent direction
     const Point descentDirectionAk(cNorm * ga1);

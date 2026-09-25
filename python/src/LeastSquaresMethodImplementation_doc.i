@@ -313,7 +313,7 @@ OT_LeastSquaresMethod_computeDesign_doc
 %define OT_LeastSquaresMethod_solveNormalGram_doc
 R"RAW(Solve the Gram system :math:`G x = \mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
 
-Unlike :meth:`solveNormal`, this method does not apply weight multiplication
+Unlike :any:`solveNormal`, this method does not apply weight multiplication
 to the right-hand side.
 
 Parameters

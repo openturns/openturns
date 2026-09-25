@@ -132,6 +132,7 @@ Point QRMethod::solveNormal(const Point & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
+  if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "QRMethod::solveNormal invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
   Point b(rhs);
   {
     const UnsignedInteger size = rhs.getSize();
@@ -147,6 +148,7 @@ Point QRMethod::solveNormalGram(const Point & rhs)
   // G=R^T*R, G x = rhs
   // Solve R^T y = rhs then R x = y, no weight multiplication on rhs
   update(Indices(0), currentIndices_, Indices(0));
+  if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "QRMethod::solveNormalGram invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
   const Point c(r_.getImplementation()->solveLinearSystemTri(rhs, false, true)); // rhs, lower, transpose
   const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, false, false)); // rhs, lower, transpose
   return coefficients;

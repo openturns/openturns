@@ -80,6 +80,10 @@ Available constructors:
 
     SparseExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, methodName, fittingAlgorithm*)
 
+    SparseExpansion(*inputSample, outputSample, distribution, basis, basisSize, activeFunctions, methodName, fittingAlgorithm*)
+
+    SparseExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, activeFunctions, methodName, fittingAlgorithm*)
+
 Parameters
 ----------
 inputSample : 2-d sequence of float of size :math:`n>0`
@@ -110,6 +114,10 @@ methodName : str, optional
     type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
     `SparseExpansion-DecompositionMethod` key in
     :class:`~openturns.ResourceMap`.
+activeFunctions : sequence of `int`, optional
+    The indices of the basis functions to use for the approximation.
+    If not given, all functions from 0 to basisSize-1 are used.
+    Must be non-empty and all indices must be less than basisSize.
 fittingAlgorithm : :class:`~openturns.FittingAlgorithm`, optional
     The fitting algorithm used to compute the cross-validation error driving
     the basis selection. By default, it is a
