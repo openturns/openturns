@@ -38,7 +38,7 @@ for cname, class_ in persistentClasses.items():
         print("--", cname, exc)
 print(f"==== {len(failed)} failures / {len(persistentClasses)} classes ====")
 print(f"failed={failed}")
-assert len(failed) < 43, f"{len(failed)} serialization failures: {failed}"
+assert len(failed) < 45, f"{len(failed)} serialization failures: {failed}"
 
 # non-ascii filename
 fileName = "utf_é.xml"

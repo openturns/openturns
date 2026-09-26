@@ -84,31 +84,33 @@ Bool GeneralizedExponential::equals(const CovarianceModelImplementation & other)
 Scalar GeneralizedExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Scalar tauOverThetaNorm = 0.0;
+  Scalar tauOverTheta2 = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
   {
     const Scalar dx = tau[i] / scale_[i];
-    tauOverThetaNorm += dx * dx;
+    tauOverTheta2 += dx * dx;
   }
-  tauOverThetaNorm = sqrt(tauOverThetaNorm);
   const CovarianceMatrix & outputCovariance = outputCovariance_;
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-pow(tauOverThetaNorm, p_));
+  if (tauOverTheta2 <= SpecFunc::ScalarEpsilon * SpecFunc::ScalarEpsilon) return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  const Scalar tauOverThetaNorm = sqrt(tauOverTheta2);
+  return outputCovariance(0, 0) * computeCovarianceValue(tauOverThetaNorm, tauOverTheta2);
 }
 
 Scalar GeneralizedExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
-  Scalar tauOverThetaNorm = 0;
+  Scalar tauOverTheta2 = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
   Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = (*s_it - *t_it) / scale_[i];
-    tauOverThetaNorm += dx * dx;
+    tauOverTheta2 += dx * dx;
   }
-  tauOverThetaNorm = sqrt(tauOverThetaNorm);
   const CovarianceMatrix & outputCovariance = outputCovariance_;
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-pow(tauOverThetaNorm, p_));
+  if (tauOverTheta2 <= SpecFunc::ScalarEpsilon * SpecFunc::ScalarEpsilon) return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  const Scalar tauOverThetaNorm = sqrt(tauOverTheta2);
+  return outputCovariance(0, 0) * computeCovarianceValue(tauOverThetaNorm, tauOverTheta2);
 }
 
 Scalar GeneralizedExponential::computeAsScalar(const Scalar tau) const
@@ -118,9 +120,23 @@ Scalar GeneralizedExponential::computeAsScalar(const Scalar tau) const
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
 
-  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  const Scalar tauOverTheta2 = tau * tau / (scale_[0] * scale_[0]);
   const CovarianceMatrix & outputCovariance = outputCovariance_;
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-pow(tauOverThetaNorm, p_));
+  if (tauOverTheta2 <= SpecFunc::ScalarEpsilon * SpecFunc::ScalarEpsilon) return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  return outputCovariance(0, 0) * computeCovarianceValue(tauOverThetaNorm, tauOverTheta2);
+}
+
+// Exact value of the covariance factor for the scaled distance norm =
+// ||tau / scale||. For the exponents p = 1 and p = 2 the covariance reduces
+// to exp(-s) and exp(-s^2), which are cheaper and numerically more stable
+// than the general formula relying on std::pow (hidden log + exp).
+Scalar GeneralizedExponential::computeCovarianceValue(const Scalar norm,
+    const Scalar normSquare) const
+{
+  if (p_ == 1.0) return std::exp(-norm);
+  if (p_ == 2.0) return std::exp(-normSquare);
+  return std::exp(-std::pow(norm, p_));
 }
 
 /* Gradient wrt s */

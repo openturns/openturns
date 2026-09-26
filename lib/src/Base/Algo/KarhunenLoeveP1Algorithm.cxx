@@ -27,6 +27,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SparseMatrix.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/HODLRMatrix.hxx"
 #include <algorithm>
 #ifdef OPENTURNS_HAVE_SPECTRA
 #include <Spectra/GenEigsSolver.h>
@@ -178,6 +179,62 @@ public:
 
 private:
   HMatrix C_;
+  SparseMatrix G_;
+  int rows_;
+  int cols_;
+};
+
+/** Defining class KLMatProdHODLR **/
+class KLMatProdHODLR
+  : public KLGenMatProd
+{
+public:
+
+  KLMatProdHODLR(const HODLRMatrix & C,
+                 const SparseMatrix & G)
+    : C_(C)
+    , G_(G)
+    , rows_(C_.getNbRows())
+    , cols_(C_.getNbColumns())
+  {
+    // Nothing to do
+  }
+
+  int rows() const override
+  {
+    return rows_;
+  }
+
+  int cols() const override
+  {
+    return cols_;
+  }
+
+  // Matrix/vector product operator
+  void perform_op(const Scalar * x_in, Scalar * y_out) const override
+  {
+    // Convert double array to Point
+    Point u(rows_);
+    std::copy(x_in, x_in + rows_, u.begin());
+
+    // Compute product with sparse matrix G
+    Point v(G_ * u);
+
+    // Compute product with HODLR matrix C: y = C * v
+    Point w(rows_);
+    C_.gemv('N', 1.0, v, 0.0, w);
+
+    // Output double array
+    std::copy(w.begin(), w.end(), y_out);
+  }
+
+  CovarianceMatrix getC() const override
+  {
+    throw NotYetImplementedException(HERE) << "KLMatProdHODLR::getC() not available";
+  }
+
+private:
+  HODLRMatrix C_;
   SparseMatrix G_;
   int rows_;
   int cols_;
@@ -361,6 +418,12 @@ void KarhunenLoeveP1Algorithm::run()
       HMatrix C(covariance_.discretizeHMatrix(mesh_, HMatrixParameters()));
       op = new KLMatProdHMat(C, G);
     }
+    else if (covarianceMatrixStorage == "HODLR")
+    {
+      HODLRMatrix C(covariance_.discretizeHODLRMatrix(mesh_, HODLRMatrixParameters()));
+      C.factorize();
+      op = new KLMatProdHODLR(C, G);
+    }
     else
       throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
 
@@ -390,9 +453,11 @@ void KarhunenLoeveP1Algorithm::run()
   }
   else if (eigenValuesSolver == "LAPACK")
   {
-    // LAPACK cannot solve EV problem based on HMatrix
+    // LAPACK cannot solve EV problem based on HMatrix or HODLR
     if (covarianceMatrixStorage == "HMAT")
       throw NotYetImplementedException(HERE) << "LAPACK cannot solve EV problem based on HMAT matrix storage";
+    else if (covarianceMatrixStorage == "HODLR")
+      throw NotYetImplementedException(HERE) << "LAPACK cannot solve EV problem based on HODLR matrix storage";
     else if (covarianceMatrixStorage != "DENSE")
       throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
 

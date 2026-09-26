@@ -29,6 +29,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/HODLRMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,7 +46,7 @@ class OT_API GaussianProcessFitterResult
 
 public:
 
-  enum LinearAlgebra { LAPACK, HMAT };
+  enum LinearAlgebra { LAPACK, HMAT, HODLR };
 
   typedef Collection<Point> PointCollection;
   typedef PersistentCollection<Point> PointPersistentCollection;
@@ -100,8 +101,10 @@ public:
   /** Accessor to the Cholesky factor */
   TriangularMatrix getCholeskyFactor() const; // lapack
   HMatrix getHMatCholeskyFactor() const; // hmat
+  HODLRMatrix getHODLRCholeskyFactor() const; // hodlr
   void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
-                         const HMatrix & covarianceHMatrix);
+                         const HMatrix & covarianceHMatrix,
+                         const HODLRMatrix & covarianceHODLRMatrix);
 
   /** rho accessor */
   void setStandardizedOutput(const Point & rho);
@@ -134,7 +137,7 @@ private:
   Scalar optimalLogLikelihood_ = 0.0;
 
   /** Linear algebra method */
-  LinearAlgebra linearAlgebraMethod_;
+  LinearAlgebra linearAlgebraMethod_ = LAPACK;
 
   /** Boolean for Cholesky. */
   Bool hasCholeskyFactor_ = false;
@@ -144,6 +147,9 @@ private:
 
   /** Cholesky factor when using hmat-oss/hmat */
   HMatrix covarianceHMatrix_;
+
+  /** Cholesky factor when using HODLR */
+  HODLRMatrix covarianceHODLRMatrix_;
 
   /** Noise on the output sample */
   PersistentCollection<CovarianceMatrix> noise_;

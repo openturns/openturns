@@ -1,8 +1,11 @@
 #! /usr/bin/env python
 
+import os
+import tempfile
+from math import sqrt
+
 import openturns as ot
 import openturns.testing as ott
-from math import sqrt
 
 ot.TESTPREAMBLE()
 
@@ -593,3 +596,61 @@ assert ot.SquaredExponential([1.0], [2.0]) == ot.SquaredExponential([1.0], [2.0]
 with_nugget = ot.SquaredExponential([1.0], [2.0])
 with_nugget.setNuggetFactor(0.1)
 assert with_nugget != ot.SquaredExponential([1.0], [2.0]), "SE!=SE nugget"
+
+# --- Reduced state of the evaluation kernels survives a save/load round trip ---
+# The scalar evaluation entry points of the models cache reduced quantities (the
+# closed form selected by the Matern smoothness, the inverse scales of the
+# exponential model). They are rebuilt by the constructors, by the setters and
+# by load(); a forgotten refresh silently evaluates a wrong kernel afterwards.
+# The check goes through a HODLR assembly because that is the path which uses
+# the reduced state, and compares the solves with the ones of a freshly built
+# model.
+# Short correlation lengths on the unit square, so that the assembled problem
+# stays well conditioned and the comparison of the solves is meaningful
+models = [
+    ot.MaternModel([0.1, 0.15], [2.0], 2.5),
+    ot.MaternModel([0.1, 0.15], [2.0], 1.5),
+    ot.MaternModel([0.1, 0.15], [2.0], 0.5),
+    ot.MaternModel([0.1, 0.15], [2.0], 3.7),  # general (Bessel) form
+    ot.ExponentialModel([0.1, 0.15], [2.0]),
+    ot.IsotropicCovarianceModel(ot.MaternModel([0.12], [2.0], 2.5), 2),
+    ot.SquaredExponential([0.3, 0.35], [2.0]),
+]
+vertices = ot.IntervalMesher([15, 15]).build(ot.Interval([0.0, 0.0], [1.0, 1.0])).getVertices()
+parameters = ot.HODLRMatrixParameters()
+parameters.setMinLeafSize(32)
+rhs = ot.Point(vertices.getSize())
+for i in range(vertices.getSize()):
+    rhs[i] = 1.0 + 0.01 * i
+for model in models:
+    for nugget in [0.0, 1e-6]:
+        model.setNuggetFactor(nugget)
+        reference = ot.CovarianceModel(model)
+        with tempfile.TemporaryDirectory() as directory:
+            fileName = os.path.join(directory, "model.xml")
+            study = ot.Study()
+            study.setStorageManager(ot.XMLStorageManager(fileName))
+            study.add("model", model)
+            study.save()
+            study = ot.Study()
+            study.setStorageManager(ot.XMLStorageManager(fileName))
+            study.load()
+            loaded = ot.CovarianceModel()
+            study.fillObject("model", loaded)
+        assert loaded == reference, "reduced kernel state lost by save/load"
+        hodlrLoaded = reference.discretizeHODLRMatrix(vertices, parameters)
+        hodlrLoaded.factorize()
+        hodlrReference = loaded.discretizeHODLRMatrix(vertices, parameters)
+        hodlrReference.factorize()
+        assert hodlrLoaded.getRegularizationShift() == hodlrReference.getRegularizationShift()
+        if nugget > 0.0:
+            # The comparison below is only meaningful on a well conditioned
+            # problem, i.e. without a large healing shift
+            assert hodlrLoaded.getRegularizationShift() < 1.0e-3, hodlrLoaded.getRegularizationShift()
+        ott.assert_almost_equal(
+            ot.Point(hodlrReference.solve(rhs)),
+            ot.Point(hodlrLoaded.solve(rhs)),
+            1.0e-12,
+            1.0e-12,
+        )
+print("Study round trip of the reduced kernel state: PASS")

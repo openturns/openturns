@@ -126,6 +126,21 @@ public:
   virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
       const HMatrixParameters & parameters) const;
 
+  /** Discretize the covariance function on a given TimeGrid/Mesh using HODLRMatrix */
+  virtual HODLRMatrix discretizeHODLRMatrix(const RegularGrid & timeGrid,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeHODLRMatrix(const Mesh & mesh,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeHODLRMatrix(const Sample & vertices,
+      const HODLRMatrixParameters & parameters) const;
+
+  /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HODLRMatrix */
+  virtual HODLRMatrix discretizeAndFactorizeHODLRMatrix(const RegularGrid & timeGrid,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeAndFactorizeHODLRMatrix(const Mesh & mesh,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeAndFactorizeHODLRMatrix(const Sample & vertices,
+      const HODLRMatrixParameters & parameters) const;
 
   /** Amplitude accessors */
   Point getAmplitude() const;

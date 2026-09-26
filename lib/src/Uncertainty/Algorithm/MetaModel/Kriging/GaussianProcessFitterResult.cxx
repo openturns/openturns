@@ -26,6 +26,8 @@
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/HMatrixParameters.hxx"
+#include "openturns/HODLRMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -150,7 +152,8 @@ void GaussianProcessFitterResult::setStandardizedOutput(const Point & rho)
 }
 
 void GaussianProcessFitterResult::setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
-    const HMatrix & covarianceHMatrix)
+    const HMatrix & covarianceHMatrix,
+    const HODLRMatrix & covarianceHODLRMatrix)
 {
   const UnsignedInteger size = getInputSample().getSize();
   const UnsignedInteger outputDimension = getMetaModel().getOutputDimension();
@@ -165,12 +168,19 @@ void GaussianProcessFitterResult::setCholeskyFactor(const TriangularMatrix & cov
   }
   covarianceCholeskyFactor_ = covarianceCholeskyFactor;
   covarianceHMatrix_ = covarianceHMatrix;
+  covarianceHODLRMatrix_ = covarianceHODLRMatrix;
 }
 
 /* Method that returns the covariance factor - hmat */
 HMatrix GaussianProcessFitterResult::getHMatCholeskyFactor() const
 {
   return covarianceHMatrix_;
+}
+
+/* Method that returns the covariance factor - hodlr */
+HODLRMatrix GaussianProcessFitterResult::getHODLRCholeskyFactor() const
+{
+  return covarianceHODLRMatrix_;
 }
 
 /* Output sample noise accessor */
@@ -220,6 +230,18 @@ void GaussianProcessFitterResult::load(Advocate & adv)
   adv.loadAttribute("covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   if (adv.hasAttribute("noise_"))
     adv.loadAttribute("noise_", noise_ );
+
+  // The HMAT/HODLR Cholesky factors live outside the object graph (hmat-oss
+  // stores them in native structures), so they are not serialized. They are
+  // rebuilt from the stored optimized covariance model and input sample; the
+  // factorization method reads the same ResourceMap keys as the fitter.
+  if (linearAlgebraMethod_ != LAPACK && inputSample_.getSize() > 0)
+  {
+    if (linearAlgebraMethod_ == HODLR)
+      covarianceHODLRMatrix_ = covarianceModel_.discretizeAndFactorizeHODLRMatrix(inputSample_, HODLRMatrixParameters());
+    else
+      covarianceHMatrix_ = covarianceModel_.discretizeAndFactorizeHMatrix(inputSample_, HMatrixParameters());
+  }
 }
 
 

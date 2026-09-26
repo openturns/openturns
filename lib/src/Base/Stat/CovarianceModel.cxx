@@ -21,6 +21,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/ExponentialModel.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/HODLRMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -228,6 +229,44 @@ HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Sample & vertices,
     const HMatrixParameters & parameters) const
 {
   return getImplementation()->discretizeAndFactorizeHMatrix(vertices, parameters);
+}
+
+/** Discretize the covariance function on a given TimeGrid/Mesh using HODLRMatrix */
+HODLRMatrix CovarianceModel::discretizeHODLRMatrix(const RegularGrid & timeGrid,
+    const HODLRMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeHODLRMatrix(timeGrid, parameters);
+}
+
+HODLRMatrix CovarianceModel::discretizeHODLRMatrix(const Mesh & mesh,
+    const HODLRMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeHODLRMatrix(mesh, parameters);
+}
+
+HODLRMatrix CovarianceModel::discretizeHODLRMatrix(const Sample & vertices,
+    const HODLRMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeHODLRMatrix(vertices, parameters);
+}
+
+/** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HODLRMatrix */
+HODLRMatrix CovarianceModel::discretizeAndFactorizeHODLRMatrix(const RegularGrid & timeGrid,
+    const HODLRMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeAndFactorizeHODLRMatrix(timeGrid, parameters);
+}
+
+HODLRMatrix CovarianceModel::discretizeAndFactorizeHODLRMatrix(const Mesh & mesh,
+    const HODLRMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeAndFactorizeHODLRMatrix(mesh, parameters);
+}
+
+HODLRMatrix CovarianceModel::discretizeAndFactorizeHODLRMatrix(const Sample & vertices,
+    const HODLRMatrixParameters & parameters) const
+{
+  return getImplementation()->discretizeAndFactorizeHODLRMatrix(vertices, parameters);
 }
 
 /* Amplitude accessor */
