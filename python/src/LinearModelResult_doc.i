@@ -1,6 +1,13 @@
 %feature("docstring") OT::LinearModelResult
 R"RAW(Result of a LinearModelAlgorithm.
 
+The quality indicators of the fit, such as the coefficient of determination,
+are built from unnormalized empirical moments of the output sample, and
+this class does not accept weights. They are therefore implicitly
+restricted to output samples obtained with uniform weights, e.g. Monte
+Carlo simulation: a sample coming from a quadrature rule leads to
+mis-scaled sums of squares.
+
 Parameters
 ----------
 inputSample : 2-d sequence of float

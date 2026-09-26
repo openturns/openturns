@@ -1,6 +1,13 @@
 %feature("docstring") OT::RankSobolSensitivityAlgorithm
 R"RAW(Sensitivity analysis using rank-based method.
 
+The reference variance which scales the indices is estimated through
+unweighted empirical moments of the output sample, and this class does not
+accept weights. It is therefore implicitly restricted to input / output
+samples obtained with uniform weights, e.g. Monte Carlo simulation: a
+sample coming from a quadrature rule leads to a mis-scaled reference
+variance.
+
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
