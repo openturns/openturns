@@ -44,7 +44,7 @@ class PythonLARS:
         for s in range(self.sample_size):
             self.weightSqrt[s] = sqrt(weight[s])
 
-    def run(self, iterations=None):
+    def run(self):
         transformation = ot.DistributionTransformation(
             self.distribution, self.basis.getMeasure()
         )
@@ -90,10 +90,11 @@ class PythonLARS:
                 for j in range(self.basisSize):
                     weightedFullX[s, j] = self.weightSqrt[s] * fullX[s, j]
 
-            number_of_iterations = (
-                self.basisSize - 1 if iterations is None else iterations
-            )
-            for iteration in range(number_of_iterations):
+            # The reference runs the whole path, without any cross-validation
+            # stopping, and stops on its own criterion: the largest remaining
+            # correlation below roundoff, ie a model that has captured
+            # everything the design can resolve
+            for iteration in range(self.basisSize - 1):
                 # Stop if active set would exceed sample size (LS becomes rank-deficient)
                 if len(marginal_selection) >= sample_size:
                     break
@@ -412,9 +413,9 @@ assert list(result_cpp_weighted.getIndices()) != cpp_indices
 print(f"C++ active indices with quadrature weights: {sorted(result_cpp_weighted.getIndices())}")
 
 # Assert C++ LARS produces reasonable Sobol indices.
-# The C++ implementation uses cross-validation stopping, while the Python reference
-# runs all iterations, so active sets may differ. With only 7 active functions
-# selected by CV, the Sobol indices can differ from the full-model reference.
+# The C++ implementation uses cross-validation stopping, while the Python
+# reference runs the whole path, so the two active sets differ. The
+# cross-validated model is a sparse approximation, so the bounds are loose.
 for i in range(dimension):
     s1_cpp = sobol_cpp.getSobolIndex(i)
     print(f"X{i + 1} S1: C++={s1_cpp:.6f}, ref={sob_1_ref[i]:.6f}")
