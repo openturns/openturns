@@ -8,15 +8,6 @@ samples obtained with uniform weights, e.g. Monte Carlo simulation: a
 sample coming from a quadrature rule leads to a mis-scaled reference
 variance.
 
-Parameters
-----------
-inputDesign : :class:`~openturns.Sample`
-    The input sample used for the Sobol' sensitivity analysis
-outputDesign : :class:`~openturns.Sample`
-    The output sample used for the Sobol' sensitivity analysis
-
-Notes
------
 This method allows one to compute the first order Sobol' indices given some input / output samples [gamboa2022]_. It is not yet extended to higher order indices as well as total order indices.
 
 Considering the input random vector :math:`\vect{X} = (X_1,\dots,X_{n_X})` and let :math:`\vect{Y} = (Y_1,\dots,Y_{n_Y})` be the output of the physical model:
@@ -59,6 +50,13 @@ where the permutation is defined such that :math:`Y_{(k,N+1)} = Y_{(k,1)}`.
 
 Confidence intervals are obtained via bootstrap without replacement. 
 
+
+Parameters
+----------
+inputDesign : :class:`~openturns.Sample`
+    The input sample used for the Sobol' sensitivity analysis
+outputDesign : :class:`~openturns.Sample`
+    The output sample used for the Sobol' sensitivity analysis
 
 Examples
 --------
