@@ -81,14 +81,12 @@ Usage:
 
 Draw the aggregated first order Sobol' indices.
 
+If number of bootstrap sampling is greater than 1, the graph includes confidence interval plots in the first usage. This is defined in the ``SobolIndicesAlgorithm-DefaultBootstrapSize`` ResourceMap key.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    A graph containing the aggregated first and total order indices.
-
-Notes
------
-If number of bootstrap sampling is greater than 1, the graph includes confidence interval plots in the first usage. This is defined in the ``SobolIndicesAlgorithm-DefaultBootstrapSize`` ResourceMap key."
+    A graph containing the aggregated first and total order indices."
 
 // ---------------------------------------------------------------------------
 
