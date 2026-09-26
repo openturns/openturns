@@ -45,6 +45,7 @@ FunctionalChaosResult::FunctionalChaosResult()
   , I_(0)
   , alpha_k_(0, 0)
   , Psi_k_(0)
+  , weights_(1, 1.0)
 {
   // Nothing to do
 }
@@ -68,6 +69,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , I_(I)
   , alpha_k_(alpha_k)
   , Psi_k_(Psi_k)
+  , weights_(1, 1.0)
 {
   if (Psi_k.getSize() > 0)
   {
@@ -433,6 +435,7 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
   adv.saveAttribute( "useDomination_", useDomination_);
+  adv.saveAttribute( "weights_", weights_ );
 }
 
 
@@ -472,6 +475,11 @@ void FunctionalChaosResult::load(Advocate & adv)
   }
   if (adv.hasAttribute("useDomination_"))
     adv.loadAttribute("useDomination_", useDomination_);
+  if (adv.hasAttribute("weights_"))
+    adv.loadAttribute("weights_", weights_);
+  else
+    // Studies saved before the design weights were stored are uniform
+    weights_ = Point(1, 1.0);
 }
 
 Collection<Indices> FunctionalChaosResult::getIndicesHistory(const UnsignedInteger outputIndex) const
@@ -685,6 +693,8 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
   }
   marginalPCE.setSelectionHistory(marginalIndicesHistory, marginalCoefficientsHistory, marginalCutPoints);
   marginalPCE.setErrorHistory(marginalErrorHistory, marginalCutPoints);
+  // The marginal shares the input sample, hence its design weights
+  marginalPCE.setWeights(weights_);
   return marginalPCE;
 }
 
@@ -697,6 +707,28 @@ void FunctionalChaosResult::setUseDomination(const Bool useDomination)
 Bool FunctionalChaosResult::getUseDomination() const
 {
   return useDomination_;
+}
+
+/* Design weights accessor */
+void FunctionalChaosResult::setWeights(const Point & weights)
+{
+  const UnsignedInteger sampleSize = inputSample_.getSize();
+  if (weights.getSize() == 1)
+  {
+    if (!(weights[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the uniform design weight must be positive, here w=" << weights[0];
+  }
+  else
+  {
+    if (weights.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Error: the design weights size=" << weights.getSize() << " must match the input sample size=" << sampleSize << " or be a single uniform value";
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      if (!(weights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the design weights must be positive, here w[" << i << "]=" << weights[i];
+  }
+  weights_ = weights;
+}
+
+Point FunctionalChaosResult::getWeights() const
+{
+  return weights_;
 }
 
 END_NAMESPACE_OPENTURNS

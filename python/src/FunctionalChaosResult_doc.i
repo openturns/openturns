@@ -553,3 +553,30 @@ Returns
 useDomination : bool
     Whether to use the domination method.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::setWeights
+"Design weights accessor.
+
+The weights are the quadrature weights of the design used to fit the
+expansion, stored as a single value when uniform. They drive the exact
+weighted cross-validation of :class:`~openturns.FunctionalChaosValidation`.
+
+Parameters
+----------
+weights : sequence of float
+    Either a single positive uniform value or one positive value per
+    point of the input sample.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosResult::getWeights
+"Design weights accessor.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The design weights, stored as a single value when uniform.
+"

@@ -413,6 +413,11 @@ void FunctionalChaosAlgorithm::run()
   result_.setUseDomination(useDomination_);
   result_.setSelectionHistory(flatIndicesHistory, flatCoefficientsHistory, historyCutPoints);
   result_.setErrorHistory(flatErrorHistory, historyCutPoints);
+  // Store the design weights for exact weighted cross-validation: the
+  // projection strategy holds the weights of the fitted sample
+  const Point strategyWeights(projectionStrategy_.getWeights());
+  if (strategyWeights.getSize() > 0)
+    result_.setWeights(strategyWeights);
 
 }
 

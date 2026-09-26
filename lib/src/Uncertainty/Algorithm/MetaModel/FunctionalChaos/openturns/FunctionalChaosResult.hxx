@@ -140,6 +140,11 @@ public:
   void setUseDomination(const Bool useDomination);
   Bool getUseDomination() const;
 
+  /** Design weights accessor: single value for uniform weights,
+      one positive value per input point otherwise */
+  void setWeights(const Point & weights);
+  Point getWeights() const;
+
 protected:
 
   /** The input vector distribution */
@@ -184,6 +189,9 @@ protected:
 
   /** Use domination ? */
   Bool useDomination_ = false;
+
+  /** Weights of the design used to fit the expansion: uniform by default */
+  Point weights_;
 
 } ; /* class FunctionalChaosResult */
 
