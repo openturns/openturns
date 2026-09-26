@@ -1,16 +1,6 @@
 %feature("docstring") OT::MetaModelValidation
 "Scores a metamodel in order to perform its validation.
 
-Parameters
-----------
-outputSample : 2-d sequence of float
-    The output validation sample, not used during the learning step.
-
-metamodelPredictions: 2-d sequence of float
-    The output prediction sample from the metamodel.
-
-Notes
------
 A `MetaModelValidation` object is used for the validation of a metamodel.
 For that purpose, a dataset independent of the learning step, is used to score the surrogate model.
 Its main functionalities are :
@@ -21,6 +11,17 @@ Its main functionalities are :
   the model observations.
 
 More details on this topic are presented in :any:`cross_validation`.
+
+The scores are weighted by the validation weights, which are uniform by
+default. See :meth:`setWeights`.
+
+Parameters
+----------
+outputSample : 2-d sequence of float
+    The output validation sample, not used during the learning step.
+
+metamodelPredictions: 2-d sequence of float
+    The output prediction sample from the metamodel.
 
 Examples
 --------
@@ -76,13 +77,6 @@ outputSample : :class:`~openturns.Sample`
 %feature("docstring") OT::MetaModelValidation::computeR2Score
 R"RAW(Compute the R2 score.
 
-Returns
--------
-r2Score : :class:`~openturns.Point`
-    The coefficient of determination R2
-
-Notes
------
 The coefficient of determination :math:`R^2` is the fraction of the
 variance of the output explained by the metamodel.
 It is defined as:
@@ -96,7 +90,7 @@ where :math:`\operatorname{FVU}` is the fraction of unexplained variance:
     \operatorname{FVU} = \frac{\operatorname{MSE}(\tilde{g}) }{\Var{Y}}
 
 where :math:`Y = g(\bdX)` is the output of the physical model :math:`g`,
-:math:`\Var{Y}` is the variance of the output and :math:`\operatorname{MSE}` is the 
+:math:`\Var{Y}` is the variance of the output and :math:`\operatorname{MSE}` is the
 mean squared error of the metamodel:
 
 .. math::
@@ -105,33 +99,32 @@ mean squared error of the metamodel:
 The sample :math:`R^2` is:
 
 .. math::
-    \hat{R}^2 = 1 - \frac{\frac{1}{n} \sum_{j=1}^{n} \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2}{\hat{\sigma}^2_Y}
+    \hat{R}^2 = 1 - \frac{\frac{1}{\sum_{j=1}^n w_j} \sum_{j=1}^{n} w_j \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2}{\hat{\sigma}^2_Y}
 
 where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel,
 :math:`\left\{\bdx^{(j)} \in \Rset^{n_X}\right\}_{j = 1, ..., n}` is the input experimental design,
-:math:`\left\{y^{(j)} \in \Rset\right\}_{j = 1, ..., n}` is the output of the model and
+:math:`\left\{y^{(j)} \in \Rset\right\}_{j = 1, ..., n}` is the output of the model,
+:math:`\{w_j\}_{j = 1, ..., n}` are the validation weights, uniform by default, and
 :math:`\hat{\sigma}^2_Y` is the sample variance of the output:
 
 .. math::
-    \hat{\sigma}^2_Y = \frac{1}{n - 1} \sum_{j=1}^{n} \left(y^{(j)} - \overline{y}\right)^2
+    \hat{\sigma}^2_Y = \frac{1}{\sum_{j=1}^n w_j} \sum_{j=1}^{n} w_j \left(y^{(j)} - \overline{y}\right)^2
 
-where :math:`\overline{y}` is the output sample mean:
+where :math:`\overline{y}` is the weighted output sample mean:
 
 .. math::
-    \overline{y} = \frac{1}{n} \sum_{j=1}^{n} y^{(j)}.)RAW"
+    \overline{y} = \frac{1}{\sum_{j=1}^n w_j} \sum_{j=1}^{n} w_j y^{(j)}.
+
+Returns
+-------
+r2Score : :class:`~openturns.Point`
+    The coefficient of determination R2)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MetaModelValidation::getResidualSample
 R"RAW(Compute the residual sample.
 
-Returns
--------
-residual : :class:`~openturns.Sample`
-    The residual sample.
-
-Notes
------
 The residual sample is given by :
 
 .. math::
@@ -143,13 +136,20 @@ for :math:`j = 1, ..., n` where :math:`n \in \Nset` is the sample size,
 :math:`\tilde{g}` is the metamodel and :math:`\vect{x}^{(j)}` is the :math:`j`-th input observation.
 
 If the output is multi-dimensional, the residual sample has dimension :math:`n_y \in \Nset`,
-where :math:`n_y` is the output dimension.)RAW"
+where :math:`n_y` is the output dimension.
+
+Returns
+-------
+residual : :class:`~openturns.Sample`
+    The residual sample.)RAW"
 
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MetaModelValidation::getResidualDistribution
 "Compute the non parametric distribution of the residual sample.
+
+The residual distribution is built thanks to :class:`~openturns.KernelSmoothing` if `smooth` argument is true. Otherwise, an histogram distribution is returned, thanks to :class:`~openturns.HistogramFactory`.
 
 Parameters
 ----------
@@ -160,11 +160,7 @@ smooth : bool
 Returns
 -------
 residualDistribution : :class:`~openturns.Distribution`
-    The residual distribution.
-
-Notes
------
-The residual distribution is built thanks to :class:`~openturns.KernelSmoothing` if `smooth` argument is true. Otherwise, an histogram distribution is returned, thanks to :class:`~openturns.HistogramFactory`."
+    The residual distribution."
 
 
 // ---------------------------------------------------------------------
@@ -172,34 +168,25 @@ The residual distribution is built thanks to :class:`~openturns.KernelSmoothing`
 %feature("docstring") OT::MetaModelValidation::drawValidation
 R"RAW(Plot a model vs metamodel graph for visual validation.
 
-Returns
--------
-graph : :class:`~openturns.GridLayout`
-    The visual validation graph.
-
-Notes
------
-The plot presents the metamodel predictions depending on the model observations. 
-If the points are close to the diagonal line of the plot, then the 
-metamodel validation is satisfactory. 
-Points which are far away from the diagonal represent outputs 
+The plot presents the metamodel predictions depending on the model observations.
+If the points are close to the diagonal line of the plot, then the
+metamodel validation is satisfactory.
+Points which are far away from the diagonal represent outputs
 for which the metamodel is not accurate.
 
 If the output is multi-dimensional, the graph has 1 row and :math:`n_y \in \Nset`
-columns, where :math:`n_y` is the output dimension.)RAW"
+columns, where :math:`n_y` is the output dimension.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The visual validation graph.)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MetaModelValidation::computeMeanSquaredError
 R"RAW(Accessor to the mean squared error.
 
-Returns
--------
-meanSquaredError : :class:`~openturns.Point`
-    The mean squared error of each marginal output dimension.
-
-Notes
------
 The sample mean squared error is:
 
 .. math::
@@ -213,7 +200,12 @@ where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel
 
 If the output is multi-dimensional, the same calculations are repeated separately for
 each output marginal :math:`k` for :math:`k = 1, ..., n_y` where :math:`n_y \in \Nset`
-is the output dimension.)RAW"
+is the output dimension.
+
+Returns
+-------
+meanSquaredError : :class:`~openturns.Point`
+    The mean squared error of each marginal output dimension.)RAW"
 
 // ---------------------------------------------------------------------
 

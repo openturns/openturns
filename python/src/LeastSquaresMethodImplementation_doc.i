@@ -1,6 +1,25 @@
 %define OT_LeastSquaresMethod_doc
 R"RAW(Base class for least square solvers.
 
+Solve the weighted least-squares problem:
+
+.. math::
+
+    \vect{a}  = \argmin_{\vect{b} \in \Rset^P}
+    \left\|\mat{W}^{1/2} \left(\vect{y} - \mat{\Psi}(\mat{U}) \vect{b}\right)\right\|_2^2
+
+where:
+
+- :math:`\vect{y} \in \Rset^n` is the output sample,
+- :math:`\mat{U}` is the input sample of :math:`n` points
+  :math:`\vect{u}_i`,
+- :math:`\mat{\Psi}(\mat{U})` is the design matrix: its element of row
+  :math:`i` and column :math:`j` is :math:`\psi_j(\vect{u}_i)`,
+- :math:`\mat{W} = \mathrm{diag}(w_1, \dots, w_n)` is the diagonal matrix
+  built from the *weights*,
+- the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
+  selected basis terms.
+
 Available constructors:
     LeastSquaresMethod(*proxy, weight, indices*)
 
@@ -27,27 +46,6 @@ design : 2-d sequence of float
 See also
 --------
 CholeskyMethod, SVDMethod, QRMethod
-
-Notes
------
-Solve the weighted least-squares problem:
-
-.. math::
-
-    \vect{a}  = \argmin_{\vect{b} \in \Rset^P}
-    \left\|\mat{W}^{1/2} \left(\vect{y} - \mat{\Psi}(\mat{U}) \vect{b}\right)\right\|_2^2
-
-where:
-
-- :math:`\vect{y} \in \Rset^n` is the output sample,
-- :math:`\mat{U}` is the input sample of :math:`n` points
-  :math:`\vect{u}_i`,
-- :math:`\mat{\Psi}(\mat{U})` is the design matrix: its element of row
-  :math:`i` and column :math:`j` is :math:`\psi_j(\vect{u}_i)`,
-- :math:`\mat{W} = \mathrm{diag}(w_1, \dots, w_n)` is the diagonal matrix
-  built from the *weights*,
-- the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
-  selected basis terms.
 
 Examples
 --------

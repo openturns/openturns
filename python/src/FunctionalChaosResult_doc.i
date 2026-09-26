@@ -5,6 +5,39 @@ Returned by functional chaos algorithms, see :class:`~openturns.FunctionalChaosA
 
 Refer to :any:`functional_chaos` to get more details on functional chaos expansion.
 
+Let :math:`\sampleSize \in \Nset` be the sample size.
+Let :math:`\outputDim \in \Nset` be the dimension of the output of the model.
+For any :math:`j = 1, ..., \sampleSize` and any :math:`i = 1, ..., \outputDim`,
+let :math:`y_{j, i} \in \Rset` be the output of the
+model and let :math:`\hat{y}_{j, i} \in \Rset` be the output of the meta model.
+For any :math:`i = 1, ..., \outputDim`, let :math:`\outputRV_i \in \Rset^\sampleSize` be
+the sample output and let :math:`\widehat{\outputRV}_i \in \Rset^\sampleSize` be the
+output predicted by the metamodel.
+The marginal residual is:
+
+.. math::
+
+    \hat{r}_i = \frac{\sqrt{SS_i}}{\sampleSize}
+
+for :math:`i = 1, ..., \outputDim`, where :math:`SS_i` is the marginal sum of squares:
+
+.. math::
+
+    SS_i = \sum_{j = 1}^\sampleSize (y_{j, i} - \hat{y}_{j, i})^2.
+
+The marginal relative error is:
+
+.. math::
+
+    \widehat{re}_i = \frac{\hat{r}_i / \sampleSize}{\hat{s}_{Y, i}^2}
+
+for :math:`i = 1, ..., \outputDim`, where :math:`\hat{s}_{Y, i}^2` is the unbiased
+sample variance of the :math:`i`-th output.
+
+This structure is created by the method `run()` of
+:class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the
+`getResult()` method.
+
 Parameters
 ----------
 sampleX : 2-d sequence of float
@@ -14,7 +47,7 @@ sampleY : 2-d sequence of float
 distribution : :class:`~openturns.Distribution`
     Distribution of the random vector :math:`\inputRV`
 transformation : :class:`~openturns.Function`
-    The function that maps the input :math:`\inputRV` to the 
+    The function that maps the input :math:`\inputRV` to the
     standardized input :math:`\standardRV`.
 inverseTransformation : :class:`~openturns.Function`
     The function that maps the standardized input :math:`\standardRV` to
@@ -34,39 +67,6 @@ isModelSelection : bool
 
 Notes
 -----
-Let :math:`\sampleSize \in \Nset` be the sample size.
-Let :math:`\outputDim \in \Nset` be the dimension of the output of the model.
-For any :math:`j = 1, ..., \sampleSize` and any :math:`i = 1, ..., \outputDim`,
-let :math:`y_{j, i} \in \Rset` be the output of the
-model and let :math:`\hat{y}_{j, i} \in \Rset` be the output of the meta model.
-For any :math:`i = 1, ..., \outputDim`, let :math:`\outputRV_i \in \Rset^\sampleSize` be
-the sample output and let :math:`\widehat{\outputRV}_i \in \Rset^\sampleSize` be the
-output predicted by the metamodel.
-The marginal residual is:
-
-.. math::
-
-    \hat{r}_i = \frac{\sqrt{SS_i}}{\sampleSize} 
-
-for :math:`i = 1, ..., \outputDim`, where :math:`SS_i` is the marginal sum of squares:
-
-.. math::
-
-    SS_i = \sum_{j = 1}^\sampleSize (y_{j, i} - \hat{y}_{j, i})^2.
-
-The marginal relative error is:
-
-.. math::
-
-    \widehat{re}_i = \frac{\hat{r}_i / \sampleSize}{\hat{s}_{Y, i}^2}
-
-for :math:`i = 1, ..., \outputDim`, where :math:`\hat{s}_{Y, i}^2` is the unbiased 
-sample variance of the :math:`i`-th output.
-
-This structure is created by the method `run()` of
-:class:`~openturns.FunctionalChaosAlgorithm`, and obtained thanks to the 
-`getResult()` method.
-
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``FunctionalChaosResult-PrintColumnWidth`` (``UnsignedInteger``, default: ``15``)
@@ -527,17 +527,15 @@ marginalPCE : :class:`~openturns.FunctionalChaosResult`
 %feature("docstring") OT::FunctionalChaosResult::setUseDomination
 "Domination method flag accessor.
 
-Parameters
-----------
-useDomination : bool
-    Whether to use the domination method.
-
-Notes
------
 The domination method consists in using the basis defined in the argument *adaptiveStrategy*. No
 isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
 the *inputDistribution*. As a result, the coefficients can be computed with a least squares method only
 (:math:`isLeastSquares` must be *True*) and the Sobol' indices will not be computed.
+
+Parameters
+----------
+useDomination : bool
+    Whether to use the domination method.
 "
 
 // ---------------------------------------------------------------------
@@ -545,15 +543,13 @@ the *inputDistribution*. As a result, the coefficients can be computed with a le
 %feature("docstring") OT::FunctionalChaosResult::getUseDomination
 "Domination method flag accessor.
 
-Returns
--------
-useDomination : bool
-    Whether to use the domination method.
-
-Notes
------
 The domination method consists in using the basis defined in the argument *adaptiveStrategy*. No
 isoprobabilistic transformation is used. This basis it is not necessarily orthonormal with respect to
 the *inputDistribution*. As a result, the coefficients must have been computed with a least squares method only
 (:meth:`isLeastSquares` must be *True*) and the Sobol' indices will not be computed.
+
+Returns
+-------
+useDomination : bool
+    Whether to use the domination method.
 "
