@@ -103,7 +103,7 @@ implementation could be used if `hmat-oss` support has been enabled.
 This implementation, which is based on a compressed representation of an approximated covariance matrix
 (and its Cholesky factor), has a better complexity both in terms of memory requirements
 and floating point operations. To use it, the entry `GaussianProcessFitter-LinearAlgebra` of the
-:class:`openturns.ResourceMap` class should be
+:class:`~openturns.ResourceMap` class should be
 instancied to `HMAT`. Default value of the key is `LAPACK`.
 
 Examples
@@ -383,4 +383,11 @@ modeled by normal distribution with zero mean and a covariance matrix :math:`\ma
 :any:`gaussian_process_regression`.
 
 Refer to :any:`gaussian_process_regression` to understand how it acts on the likelihood of the Gaussian process.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``GaussianProcessFitter-DefaultOptimizationNuggetLowerBound`` (``Scalar``, default: ``1e-12``)
+- ``GaussianProcessFitter-KeepCovariance`` (``Bool``, default: ``true``)
+- ``GaussianProcessFitter-OptimizeParameters`` (``Bool``, default: ``true``)
+
 )RAW"

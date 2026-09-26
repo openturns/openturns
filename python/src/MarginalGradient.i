@@ -8,4 +8,5 @@ OTAutodoc(MarginalGradient)
 
 %copyctor OT::MarginalGradient;
 
+%include MarginalGradient_doc.i
 %include openturns/MarginalGradient.hxx

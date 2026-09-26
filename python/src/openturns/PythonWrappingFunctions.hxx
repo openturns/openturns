@@ -78,60 +78,6 @@ private:
   PyObject* pyObj_;
 };
 
-/** InternalException that preserves the original Python exception type/value/traceback
-    so the SWIG handler can reconstruct the original exception (e.g. a custom subclass). */
-class PythonInternalException : public InternalException
-{
-public:
-  PythonInternalException(PyObject * type, PyObject * value, PyObject * traceback)
-    : InternalException(HERE)
-    , type_(type)
-    , value_(value)
-    , traceback_(traceback)
-  {
-    Py_XINCREF(type_);
-    Py_XINCREF(value_);
-    Py_XINCREF(traceback_);
-  }
-
-  PythonInternalException(const PythonInternalException & other)
-    : InternalException(other)
-    , type_(other.type_)
-    , value_(other.value_)
-    , traceback_(other.traceback_)
-  {
-    Py_XINCREF(type_);
-    Py_XINCREF(value_);
-    Py_XINCREF(traceback_);
-  }
-
-  ~PythonInternalException() noexcept
-  {
-    Py_XDECREF(type_);
-    Py_XDECREF(value_);
-    Py_XDECREF(traceback_);
-  }
-
-  void restore() const
-  {
-#if PY_VERSION_HEX >= 0x030c0000
-    if (traceback_)
-      PyException_SetTraceback(value_, traceback_);
-    PyErr_SetObject(type_, value_);
-#else
-    Py_INCREF(type_);
-    Py_INCREF(value_);
-    Py_XINCREF(traceback_);
-    PyErr_Restore(type_, value_, traceback_);
-#endif
-  }
-
-private:
-  PyObject * type_ = NULL;
-  PyObject * value_ = NULL;
-  PyObject * traceback_ = NULL;
-};
-
 // some macros cannot be used in limited API mode; redirect to the stable abi symbols
 #ifdef Py_LIMITED_API
 // Py_LIMITED_API >= 0x03070000 is required for PySlice_Unpack
@@ -849,29 +795,132 @@ convert<_PySequence_, Collection<Complex> >(PyObject * pyObj)
   return Collection<Complex>(*ptr);
 }
 
+
+/** InternalException that preserves the original Python exception type/value/traceback
+    so the SWIG handler can reconstruct the original exception (e.g. a custom subclass). */
+class PythonInternalException : public InternalException
+{
+public:
+  PythonInternalException(PyObject * type, PyObject * value, PyObject * traceback)
+    : InternalException(HERE)
+    , type_(type)
+    , value_(value)
+    , traceback_(traceback)
+  {
+    Py_XINCREF(type_);
+    Py_XINCREF(value_);
+    Py_XINCREF(traceback_);
+    String exceptionMessage;
+    ScopedPyObjectPointer valueString(PyObject_Str(value_ ? value_ : Py_None));
+    if (valueString.isNull())
+      throw InternalException(HERE) << "cannot retrieve value";
+    exceptionMessage = convert< _PyString_, String >(valueString.get());
+
+    // traceback
+    ScopedPyObjectPointer tracebackModule(PyImport_ImportModule("traceback"));
+    if (tracebackModule.isNull())
+      throw InternalException(HERE) << "cannot import traceback module";
+
+    ScopedPyObjectPointer tbexcClass(PyObject_GetAttrString(tracebackModule.get(), "TracebackException"));
+    if (tbexcClass.isNull())
+      throw InternalException(HERE) << "cannot get TracebackException";
+
+    ScopedPyObjectPointer tbexcInstance(PyObject_CallFunctionObjArgs(tbexcClass.get(),
+                                        type_ ? type_ : Py_None,
+                                        value_ ? value_  : Py_None,
+                                        traceback_ ? traceback_ : Py_None,
+                                        NULL));
+    if (tbexcInstance.isNull())
+      throw InternalException(HERE) << "cannot get traceback instance";
+
+    ScopedPyObjectPointer formatMethod(PyObject_GetAttrString(tbexcInstance.get(), "format"));
+    if (formatMethod.isNull())
+      throw InternalException(HERE) << "cannot get format method";
+
+    ScopedPyObjectPointer formatIterator(PyObject_CallObject(formatMethod.get(), NULL));
+    if (formatIterator.isNull())
+      throw InternalException(HERE) << "cannot call format";
+
+    PyObject *line = nullptr;
+    exceptionMessage += "\n";
+    while ((line = PyIter_Next(formatIterator.get())))
+    {
+      exceptionMessage += convert< _PyString_, String >(line);
+      Py_DECREF(line);
+    }
+    *this << exceptionMessage;
+  }
+
+  PythonInternalException(const PythonInternalException & other)
+    : InternalException(other)
+    , type_(other.type_)
+    , value_(other.value_)
+    , traceback_(other.traceback_)
+  {
+    PyGILState_STATE gstate = PyGILState_Ensure();
+    Py_XINCREF(type_);
+    Py_XINCREF(value_);
+    Py_XINCREF(traceback_);
+    PyGILState_Release(gstate);
+  }
+
+  ~PythonInternalException() noexcept
+  {
+    PyGILState_STATE gstate = PyGILState_Ensure();
+    Py_XDECREF(type_);
+    Py_XDECREF(value_);
+    Py_XDECREF(traceback_);
+    PyGILState_Release(gstate);
+  }
+
+  void restore() const
+  {
+    PyGILState_STATE gstate = PyGILState_Ensure();
+#if PY_VERSION_HEX >= 0x030c0000
+    if (traceback_ && value_)
+      PyException_SetTraceback(value_, traceback_);
+    PyErr_SetObject(type_ ? type_ : PyExc_Exception, value_ ? value_ : Py_None);
+#else
+    Py_XINCREF(type_);
+    Py_XINCREF(value_);
+    Py_XINCREF(traceback_);
+    PyErr_Restore(type_ ? type_ : PyExc_Exception, value_ ? value_ : Py_None, traceback_);
+    if (!type_) Py_INCREF(PyExc_Exception);
+    if (!value_) Py_INCREF(Py_None);
+#endif
+    PyGILState_Release(gstate);
+  }
+
+private:
+  PyObject * type_ = NULL;
+  PyObject * value_ = NULL;
+  PyObject * traceback_ = NULL;
+};
+
+
 inline
 void handleException()
 {
   if (!PyErr_Occurred())
     return;
 
-  // retrieve error and clear indicator
-  PyObject *type = NULL, *value = NULL, *traceback = NULL;
+  // retrieve error, clear indicator and throw
 #if (PY_VERSION_HEX >= 0x030c0000) && (!defined(Py_LIMITED_API) || Py_LIMITED_API+0 >= 0x030c0000)
-  ScopedPyObjectPointer exception(PyErr_GetRaisedException());
-  if (exception.isNull())
+  ScopedPyObjectPointer exceptionGuard(PyErr_GetRaisedException());
+  if (exceptionGuard.isNull())
     throw InternalException(HERE) << "handleException: cannot access exception";
-  ScopedPyObjectPointer typeRef(PyObject_Type(exception.get()));
-  type = typeRef.get();
-  value = exception.get();
-  ScopedPyObjectPointer tracebackRef(PyException_GetTraceback(exception.get()));
-  traceback = tracebackRef.get();
+  ScopedPyObjectPointer typeGuard(PyObject_Type(exceptionGuard.get()));
+  ScopedPyObjectPointer tracebackGuard(PyException_GetTraceback(exceptionGuard.get()));
+  throw PythonInternalException(typeGuard.get(), exceptionGuard.get(), tracebackGuard.get());
 #else
-  PyErr_Fetch(&type, &value, &traceback);
+  PyObject *type = NULL, *value = NULL, *traceback = NULL;
+  PyErr_Fetch(&type, &value, &traceback); // new ref
   PyErr_NormalizeException(&type, &value, &traceback);
-#endif
-
+  ScopedPyObjectPointer typeGuard(type);
+  ScopedPyObjectPointer valueGuard(value);
+  ScopedPyObjectPointer tracebackGuard(traceback);
   throw PythonInternalException(type, value, traceback);
+#endif
 }
 
 

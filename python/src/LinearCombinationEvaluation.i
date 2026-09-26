@@ -8,4 +8,5 @@ OTAutodoc(LinearCombinationEvaluation)
 
 %copyctor OT::LinearCombinationEvaluation;
 
+%include LinearCombinationEvaluation_doc.i
 %include openturns/LinearCombinationEvaluation.hxx

@@ -19,6 +19,12 @@ position : str, default='top'
 legend : str, default=''
     Legend of the Text.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Text-DefaultTextSize`` (``Scalar``, default: ``0.75``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -69,4 +75,5 @@ pos : str
 Returns
 -------
 isValid : bool
-    Whether the position is a valid identifier"
+    Whether the position is a valid identifier."
+

@@ -51,4 +51,12 @@ scrambling : str
 Parameters
 ----------
 scrambling : str
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``HaltonSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)
+
     Name of the scrambling method. Possible values are 'NONE', 'REVERSE' and 'RANDOM'."
+

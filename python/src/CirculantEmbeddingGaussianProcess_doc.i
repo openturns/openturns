@@ -8,24 +8,13 @@ R"RAW(Circulant embedding Gaussian process.
 Available constructor:
     CirculantEmbeddingGaussianProcess(*covarianceModel, interval, discretization*)
 
-Parameters
-----------
-covarianceModel : :class:`~openturns.CovarianceModel`
-    Stationary covariance model :math:`C`.
-    Supports scalar or vector-valued output (output dimension >= 1).
-interval : :class:`~openturns.Interval`
-    Spatial domain :math:`\cD` of dimension d.
-discretization : sequence of int
-    Number of cells per dimension. Each entry must be at least 1.
-
-Notes
------
-CirculantEmbeddingGaussianProcess implements the fast and exact simulation
-of stationary Gaussian processes using the circulant embedding method,
-also known as the Davies-Harte algorithm [davies1987]_, [wood1994]_. The extension
-to d-dimensional domains follows [coeurjolly2016]_.
-[graham2018a]_ proves that for a sufficiently large embedding domain,
-the circulant matrix is guaranteed to be positive definite.
+CirculantEmbeddingGaussianProcess implements a stationary Gaussian process
+on a regular mesh. It takes advantage of the circulant embedding method to
+simulate it: this method is fast and generates exact simulations
+[davies1987]_, [wood1994]_. The extension to d-dimensional domains follows
+[coeurjolly2016]_. [graham2018a]_ proves that for a sufficiently large
+embedding domain, the circulant matrix is guaranteed to be positive
+definite.
 
 An :class:`~openturns.IntervalMesher` is used internally to build a regular
 mesh from the given interval and discretization.
@@ -44,6 +33,23 @@ via Cholesky at each frequency.
 If the circulant matrix has negative eigenvalues, the embedding domain
 is automatically increased until all eigenvalues are non-negative,
 following the iterative strategy of [pichot2022]_.
+
+Parameters
+----------
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Stationary covariance model :math:`C`.
+    Supports scalar or vector-valued output (output dimension >= 1).
+interval : :class:`~openturns.Interval`
+    Spatial domain :math:`\cD` of dimension d.
+discretization : sequence of int
+    Number of cells per dimension. Each entry must be at least 1.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``CirculantEmbeddingGaussianProcess-MaximumIteration`` (``UnsignedInteger``, default: ``20``): bounds the number of successive doublings of the embedding size performed when negative eigenvalues are detected.
+- ``Mesh-VertexEpsilon`` (``Scalar``, default: ``1.0e-6``): relative tolerance used to check that the input mesh is a regular Cartesian grid with uniform spacing and to identify coincident vertices, expressed relative to the coordinate magnitude. It must be non-negative.
 
 Examples
 --------
@@ -100,9 +106,9 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 %feature("docstring") OT::CirculantEmbeddingGaussianProcess::getCircularSize
 "Get the size of the circulant matrix per dimension.
 
-Returns the user-defined circular size if it has been set with
-:meth:`setCircularSize`, otherwise returns the automatically computed
-size (empty until a realization is generated).
+Returns the size actually used once the process is initialized, the
+user-defined size if set with :meth:`setCircularSize`, or the automatically
+computed size otherwise (empty until a realization is generated).
 
 Returns
 -------

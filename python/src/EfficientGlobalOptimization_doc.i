@@ -73,6 +73,13 @@ with starting points uniformly sampled in the optimization problem bounds,
 see :func:`setMultiStartExperimentSize` and :func:`setMultiStartNumber`.
 This behavior can be overridden by using another solver with :func:`setOptimizationAlgorithm`.
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``EfficientGlobalOptimization-DefaultAEITradeoff`` (``Scalar``, default: ``1.0``): default value of the tradeoff coefficient of the AEI criterion balancing exploration and exploitation
+- ``EfficientGlobalOptimization-DefaultCorrelationLengthFactor`` (``Scalar``, default: ``1.0``): factor used to scale the bounds of the correlation lengths when building the initial experiment of the multiple starts
+- ``EfficientGlobalOptimization-DefaultOptimizationAlgorithm`` (``String``, default: ``Cobyla``): name of the optimization algorithm used for the inner maximization of the expected improvement, among the ones recognized by :class:`~openturns.OptimizationAlgorithm`
+
 Examples
 --------
 >>> import openturns as ot
@@ -101,6 +108,7 @@ Examples
 >>> updatedGPRResult = algo.getGaussianProcessRegressionResult()
 >>> updatedOutputSample = updatedGPRResult.getOutputSample()
 >>> yMin = updatedOutputSample.getMin()
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -134,7 +142,7 @@ multiStartExperimentSize : int
     The size of the Monte Carlo design from which to select the best starting
     points.
     The default number can be tweaked with the
-    `EfficientGlobalOptimization-DefaultMultiStartExperimentSize` key from
+    ``EfficientGlobalOptimization-DefaultMultiStartExperimentSize`` key from
     :class:`~openturns.ResourceMap`."
 
 // ---------------------------------------------------------------------
@@ -158,7 +166,7 @@ Parameters
 multiStartNumber : int
     The number of starting points for the criterion optimization.
     The default number can be tweaked with the
-    `EfficientGlobalOptimization-DefaultMultiStartNumber` key from
+    ``EfficientGlobalOptimization-DefaultMultiStartNumber`` key from
     :class:`~openturns.ResourceMap`."
 
 // ---------------------------------------------------------------------
@@ -182,7 +190,7 @@ period : int
     The number of iterations between covariance parameters re-learn.
     Default is 1 (each iteration). Can be set to 0 (never).
     The default number can be tweaked with the
-    `EfficientGlobalOptimization-DefaultParameterEstimationPeriod` key from
+    ``EfficientGlobalOptimization-DefaultParameterEstimationPeriod`` key from
     :class:`~openturns.ResourceMap`."
 
 // ---------------------------------------------------------------------

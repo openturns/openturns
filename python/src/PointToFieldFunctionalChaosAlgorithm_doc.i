@@ -61,7 +61,7 @@ with :math:`K_T = \sum_{j=1}^d{K_j}` the total number of modes across output com
 
 Then a functional chaos decomposition is built between the input samples :math:`\vect{X}`
 and the projected modes sample :math:`\mat{Q}`.
-The :class:`~openturns.ResourceMap` string entry `PointToFieldFunctionalChaosAlgorithm-Expansion`
+The :class:`~openturns.ResourceMap` string entry ``PointToFieldFunctionalChaosAlgorithm-Expansion``
 allows one to switch between :class:`~openturns.LeastSquaresExpansion` and :class:`~openturns.FunctionalChaosAlgorithm`.
 
 .. math::
@@ -125,6 +125,10 @@ than on all output variables at once (at the price of increased chaos decomposit
 which then makes sensitivity analysis possible for each output variable
 or group of output variables.
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``FieldFunctionalChaosAlgorithm-DefaultRecompress`` (``Bool``, default: ``false``)
+
 Examples
 --------
 >>> import openturns as ot
@@ -165,6 +169,17 @@ Returns
 -------
 outputSample : :class:`~openturns.ProcessSample`
     Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PointToFieldFunctionalChaosAlgorithm::setBlockIndices
+"Accessor to the output block indices.
+
+Parameters
+----------
+blockIndices : 2-d sequence of int
+    Blocks of output component indices. The flattened indices must contain
+    exactly the output dimension and satisfy the index validation requirements."
 
 // ---------------------------------------------------------------------
 

@@ -8,4 +8,5 @@ OTAutodoc(BoxCoxEvaluation)
 
 %copyctor OT::BoxCoxEvaluation;
 
+%include BoxCoxEvaluation_doc.i
 %include openturns/BoxCoxEvaluation.hxx

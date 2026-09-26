@@ -61,6 +61,13 @@ See Also
 --------
 Multinomial
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Dirichlet-DefaultIntegrationSize`` (``UnsignedInteger``, default: ``50``): default number of points of the numerical integration.
+- ``Dirichlet-DefaultSamplingSize`` (``UnsignedInteger``, default: ``500000``): default size of the sampling used in the Monte Carlo part.
+
 Examples
 --------
 Create a distribution of dimension :math:`\inputDim = 2`:

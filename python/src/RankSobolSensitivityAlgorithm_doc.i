@@ -8,16 +8,6 @@ inputDesign : :class:`~openturns.Sample`
 outputDesign : :class:`~openturns.Sample`
     The output sample used for the Sobol' sensitivity analysis
 
-Examples
---------
->>> import openturns as ot
->>> from openturns.usecases import ishigami_function
->>> im = ishigami_function.IshigamiModel()
->>> x = im.distribution.getSample(100)
->>> y = im.model(x)
->>> algo = ot.RankSobolSensitivityAlgorithm(x, y)
->>> indices = algo.getFirstOrderIndices()
-
 Notes
 -----
 This method allows one to compute the first order Sobol' indices given some input / output samples [gamboa2022]_. It is not yet extended to higher order indices as well as total order indices.
@@ -62,7 +52,18 @@ where the permutation is defined such that :math:`Y_{(k,N+1)} = Y_{(k,1)}`.
 
 Confidence intervals are obtained via bootstrap without replacement. 
 
-The ratio of the bootstrap's sample size with respect to the total size of the input sample is fixed in the `RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio` ResourceMap key.)RAW"
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.usecases import ishigami_function
+>>> im = ishigami_function.IshigamiModel()
+>>> x = im.distribution.getSample(100)
+>>> y = im.model(x)
+>>> algo = ot.RankSobolSensitivityAlgorithm(x, y)
+>>> indices = algo.getFirstOrderIndices()
+
+The ratio of the bootstrap's sample size with respect to the total size of the input sample is fixed in the ``RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio`` ResourceMap key.)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RankSobolSensitivityAlgorithm::draw
@@ -80,7 +81,7 @@ graph : :class:`~openturns.Graph`
 
 Notes
 -----
-If number of bootstrap sampling is greater than 1, the graph includes confidence interval plots in the first usage. This is defined in the `SobolIndicesAlgorithm-DefaultBootstrapSize` ResourceMap key."
+If number of bootstrap sampling is greater than 1, the graph includes confidence interval plots in the first usage. This is defined in the ``SobolIndicesAlgorithm-DefaultBootstrapSize`` ResourceMap key."
 
 // ---------------------------------------------------------------------------
 

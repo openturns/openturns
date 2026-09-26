@@ -88,14 +88,14 @@ protected:
   /** Test of random walk model ==> run a part of strategy */
   TestResult runRandomWalkModelStrategyTest(const Scalar level = 0.05);
 
-  /** Estimate the coefficients of a model with drift and linear trend */
-  void estimateDriftAndLinearTrendModel();
+  /** Compute the coefficients of a model with drift and linear trend */
+  void computeDriftAndLinearTrendModel();
 
-  /** Estimate the coefficients of a model with drift */
-  void estimateDriftModel();
+  /** Compute the coefficients of a model with drift */
+  void computeDriftModel();
 
-  /** Estimate the coefficients of an AR1 model */
-  void estimateAR1Model();
+  /** Compute the coefficients of an AR1 model */
+  void computeAR1Model();
 
 private:
 

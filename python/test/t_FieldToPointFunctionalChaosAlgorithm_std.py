@@ -102,6 +102,11 @@ algo.setBlockIndices(blockIndices)
 algo.run()
 result = algo.getResult()
 
+# base class accessors store the block indices without validation
+baseAlgo = ot.FieldFunctionalChaosAlgorithm()
+baseAlgo.setBlockIndices(blockIndices)
+assert baseAlgo.getBlockIndices() == ot.IndicesCollection(blockIndices)
+
 # test MSE
 resultFCE = result.getFCEResult()
 xFCE = resultFCE.getInputSample()

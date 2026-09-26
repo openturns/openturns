@@ -36,6 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The implementation of the Gaussian process class
  * using circulant embedding (Davies-Harte algorithm)
+ * for stationary covariance models on regular Cartesian meshes
  */
 class OT_API CirculantEmbeddingGaussianProcess
   : public ProcessImplementation

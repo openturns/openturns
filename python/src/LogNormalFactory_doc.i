@@ -127,6 +127,14 @@ And the remaining parameters are estimated with:
     \hat{\sigma}_l &= \frac{1}{a_1}\\
     \hat{\mu}_l &= -a_0 \hat{\sigma}_l
 
+The following :class:`~openturns.ResourceMap` keys are used. All the keys drive the precision
+of the optimization solver involved in the estimation:
+
+- ``LogNormalFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``): absolute precision of the solver.
+- ``LogNormalFactory-MaximumIteration`` (``UnsignedInteger``, default: ``50``): maximum number of iterations of the solver.
+- ``LogNormalFactory-RelativePrecision`` (``Scalar``, default: ``1e-12``): relative precision of the solver.
+- ``LogNormalFactory-ResidualPrecision`` (``Scalar``, default: ``1e-12``): residual precision of the solver.
+
 Examples
 --------
 
@@ -134,6 +142,17 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.LogNormal(1.5, 2.5, -1.5).getSample(1000)
 >>> estimated = ot.LogNormalFactory().build(sample)
+
+This class uses the following entries of :class:`~openturns.ResourceMap`. All the keys drive the precision
+of the optimization solver involved in the estimation:
+
+- ``LogNormalFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``)
+- ``LogNormalFactory-MaximumIteration`` (``UnsignedInteger``, default: ``50``)
+- ``LogNormalFactory-RelativePrecision`` (``Scalar``, default: ``1e-12``)
+- ``LogNormalFactory-ResidualPrecision`` (``Scalar``, default: ``1e-12``)
+- ``LogNormalFactory-EstimationMethod`` (``UnsignedInteger``, default: ``0``): the estimation method used by
+  :meth:`build`, either 0 (local likelihood maximization), 1 (modified method of moments), 2 (method of
+  moments) or 3 (least squares).
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -163,7 +182,7 @@ method : int
     - 2 : Method of moment estimator
     - 3 : Least squares method.
 
-    The default value is 0. It is stored in :class:`~openturns.ResourceMap`, key *LogNormalFactory-EstimationMethod*. 
+    The default value is 0. It is stored in :class:`~openturns.ResourceMap`, key ``LogNormalFactory-EstimationMethod``. 
 
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
@@ -273,7 +292,15 @@ sample : 2-d sequence of float, of dimension 1
 Returns
 -------
 dist : :class:`~openturns.LogNormal`
-    The built distribution."
+    The built distribution.
+
+Notes
+-----
+The moment equations are solved on the *initial* data, ie the sample is
+used as such. Estimating the parameters on the log-transformed data
+instead (as :func:`buildMethodOfLeastSquares` does) optimizes a different
+criterion, and both estimators generally produce different values,
+especially for small samples."
 
 // ---------------------------------------------------------------------
 
@@ -290,4 +317,12 @@ gamma : float, optional
 Returns
 -------
 dist : :class:`~openturns.LogNormal`
-    The built distribution.)RAW"
+    The built distribution.
+
+Notes
+-----
+The parameters are adjusted by linear regression on the
+*log-transformed* data. Because this criterion differs from matching the
+moments of the initial data (see :func:`buildMethodOfMoments`), both
+methods generally yield different estimates, especially for small
+samples.)RAW"

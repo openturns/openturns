@@ -1,15 +1,6 @@
 %feature("docstring") OT::QuadraticLeastSquares
 R"RAW(Second order polynomial response surface by least squares.
 
-Parameters
-----------
-dataIn : 2-d sequence of float
-    Input data.
-dataOut : 2-d sequence of float
-    Output data.
-
-Notes
------
 A least squares surrogate model provides an approximation of the model which is valid over its whole domain of definition.
 
 Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model.
@@ -52,6 +43,13 @@ the symmetric tensor :math:`\tens{M} \in \Rset^{\outputDim \times \inputDim \tim
 the matrix :math:`\mat{L} \in \cM_{\inputDim, \outputDim}`,
 the center vector :math:`\vect{b}\in \Rset^\inputDim` and
 the constant vector :math:`\vect{c} \in \Rset^\outputDim`.
+
+Parameters
+----------
+dataIn : 2-d sequence of float
+    Input data.
+dataOut : 2-d sequence of float
+    Output data.
 
 See also
 --------
@@ -191,3 +189,23 @@ To get the surrogate model :math:`\metaModel` defined in :eq:`QuadraticLeastSqua
 
 %feature("docstring") OT::QuadraticLeastSquares::run
 "Perform the least squares approximation."
+
+
+%feature("docstring") OT::QuadraticLeastSquares::getDataIn
+"Accessor to the input data.
+
+Returns
+-------
+dataIn : :class:`~openturns.Sample`
+    The input sample"
+
+
+
+%feature("docstring") OT::QuadraticLeastSquares::getDataOut
+"Accessor to the output data.
+
+Returns
+-------
+dataOut : :class:`~openturns.Sample`
+    The output sample"
+

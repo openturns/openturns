@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
+
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ExpectationSimulationAlgorithm.hxx"
 #include "openturns/Log.hxx"
@@ -238,10 +240,7 @@ Scalar ExpectationSimulationAlgorithm::computeCriterion(const String & criterion
   }
   else if (criterionType == "MAX")
   {
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      criterion = std::max(criterion, values[j]);
-    }
+    if (dimension > 0) criterion = std::max(criterion, *std::max_element(values.begin(), values.end()));
   }
   else if (criterionType == "NORM1")
   {

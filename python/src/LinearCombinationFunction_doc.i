@@ -23,6 +23,14 @@ functionCollection : sequence of :class:`~openturns.Function`
 coefficients : sequence of float
     Collection of scalar weights.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``LinearCombinationFunction-MergeDuplicates`` (``Bool``, default: ``False``): when set to ``True``,
+  the constructor flattens nested linear combinations and sums
+  the weights of identical atoms.
+
 Examples
 --------
 

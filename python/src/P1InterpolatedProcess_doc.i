@@ -5,8 +5,8 @@ R"RAW(P1-interpolated process.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Available constructor:
-    P1InterpolatedProcess(*compoundProcess, mesh*)
+It is created with the empty constructor or with
+``P1InterpolatedProcess(*compoundProcess, mesh*)``.
 
 Parameters
 ----------

@@ -3,6 +3,24 @@
 %{
 #include "openturns/Distribution.hxx"
 #include "openturns/PythonDistribution.hxx"
+
+namespace OT {
+
+template <>
+inline PyObject * convert< OT::Distribution, _PyObject_ >(OT::Distribution val)
+{
+  return SWIG_NewPointerObj(new OT::Distribution(val), SWIG_TypeQuery("OT::Distribution *"), SWIG_POINTER_OWN);
+}
+
+template <>
+inline OT::Collection<OT::Distribution> convert< _PySequence_, OT::Collection<OT::Distribution> >(PyObject * pyObj)
+{
+  OT::Pointer< OT::Collection<OT::Distribution> > ptr = OT::buildCollectionFromPySequence< OT::Distribution >(pyObj);
+  return *ptr;
+}
+
+} // namespace OT
+
 %}
 
 %include Distribution_doc.i
@@ -11,6 +29,11 @@
 
 OTTypedInterfaceObjectHelper(Distribution)
 OTTypedCollectionInterfaceObjectHelper(Distribution)
+
+%extend OT::Collection<OT::Distribution> {
+  OT_COLLECTION_GETITEM(OT::Collection<OT::Distribution>, OT::Distribution)
+  OT_COLLECTION_SETITEM(OT::Collection<OT::Distribution>, OT::Distribution)
+}
 
 %ignore OT::Distribution::pow;
 %ignore OT::Distribution::setWeight;

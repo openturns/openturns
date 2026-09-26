@@ -65,6 +65,26 @@ be performed:
    sensibly from standard dense representation (for instance when computing a
    Cholesky or LU decomposition).
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``HMatrix-ForceSequential`` (``Bool``, default: ``false``): force sequential computation.
+- ``HMatrix-AdmissibilityFactor`` (``Scalar``, default: ``100.0``): admissibility factor for H-matrix blocks.
+- ``HMatrix-AssemblyEpsilon`` (``Scalar``, default: ``1.0e-4``): epsilon for matrix assembly compression.
+- ``HMatrix-LargestEigenValueRelativeError`` (``Scalar``, default: ``1.0e-1``): relative error for eigenvalue computation.
+- ``HMatrix-RegularizationEpsilon`` (``Scalar``, default: ``1.0e-4``): regularization epsilon.
+- ``HMatrix-RecompressionEpsilon`` (``Scalar``, default: ``1.0e-4``): epsilon for recompression.
+- ``HMatrix-ValidationError`` (``Scalar``, default: ``0.0``): validation error threshold.
+- ``HMatrix-ClusteringAlgorithm`` (``String``, default: ``median``): clustering algorithm name, among the possible values ``median``, ``geometric`` and ``hybrid``.
+- ``HMatrix-CompressionMethod`` (``String``, default: ``AcaRandom``): compression method name, among the possible values ``Svd``, ``AcaFull``, ``AcaPartial``, ``AcaPlus`` and ``AcaRandom``.
+- ``HMatrix-FactorizationMethod`` (``String``, default: ``LLt``): factorization method name, among the possible values ``LU``, ``LDLt`` and ``LLt``.
+- ``HMatrix-FactorizationIterations`` (``UnsignedInteger``, default: ``10``): number of factorization iterations.
+- ``HMatrix-LargestEigenValueIterations`` (``UnsignedInteger``, default: ``10``): number of eigenvalue iterations.
+- ``HMatrix-MaxLeafSize`` (``UnsignedInteger``, default: ``250``): maximum leaf size for cluster tree.
+- ``HMatrix-ValidationDump`` (``UnsignedInteger``, default: ``0``): validation dump level.
+- ``HMatrix-ValidationRerun`` (``UnsignedInteger``, default: ``0``): validation rerun count.
+
 See also
 --------
 HMatrixFactory, HMatrixParameters"
@@ -145,38 +165,6 @@ OT_HMatrix_assemble_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_HMatrix_assembleReal_doc
-"Assemble matrix.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a float
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleReal
-OT_HMatrix_assembleReal_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_HMatrix_assembleTensor_doc
-"Assemble matrix by block.
-
-Parameters
-----------
-f : assembly function
-    Callable that takes i,j int parameters and returns a Matrix
-outputDimension : int
-    Block dimension
-symmetry : str
-    Symmetry flag, either N or L"
-%enddef
-%feature("docstring") OT::HMatrixImplementation::assembleTensor
-OT_HMatrix_assembleTensor_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_HMatrix_factorize_doc
 "Factorize matrix.
 
@@ -190,8 +178,8 @@ Notes
 The factorization embeds an automatic regularization procedure based
 on an approximation of the largest eigenvalue module. Its computation
 is done using a power iteration, controlled by the
-'HMatrix-LargestEigenValueRelatveError' and
-'HMatrix-LargestEigenValueIterations' keys in the :class:`~openturns.ResourceMap`.
+``HMatrix-LargestEigenValueRelativeError`` and
+``HMatrix-LargestEigenValueIterations`` keys in the :class:`~openturns.ResourceMap`.
 "
 %enddef
 %feature("docstring") OT::HMatrixImplementation::factorize

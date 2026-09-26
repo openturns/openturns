@@ -313,10 +313,45 @@ processUser.getRealization()
 ott.assert_almost_equal(processUser.getCircularSize()[0], 256, 0.0, 0.0)
 
 # A user-defined circular size below the minimum is rejected at initialization
-with ott.assert_raises(Exception):
+with ott.assert_raises(TypeError):
     processUser.setCircularSize([64])
     processUser.getRealization()
 
 print("circular size override OK")
+
+# Test that a non-stationary covariance model is rejected
+print("\n" + "=" * 60)
+print("Test non-stationary covariance model rejection")
+print("=" * 60)
+nonStationary = ot.UserDefinedCovarianceModel(
+    ot.IntervalMesher(ot.Indices([10])).build(ot.Interval(0.0, 10.0)),
+    ot.CovarianceMatrix(11),
+)
+assert not nonStationary.isStationary()
+with ott.assert_raises(TypeError):
+    otexp.CirculantEmbeddingGaussianProcess(nonStationary, interval, discretization)
+
+# Test that a non-uniform mesh is rejected
+print("\n" + "=" * 60)
+print("Test non-uniform mesh rejection")
+print("=" * 60)
+nonUniform = ot.Mesh(ot.Sample([[0.0], [0.3], [1.0], [1.1], [1.2], [1.3], [1.4], [1.5], [1.6], [1.7], [1.8]]))
+processNonUniform = otexp.CirculantEmbeddingGaussianProcess(covarianceModel, ot.Interval(0.0, 1.8), [10])
+with ott.assert_raises(TypeError):
+    processNonUniform.setMesh(nonUniform)
+
+# Test that a negative Mesh-VertexEpsilon is rejected
+ot.ResourceMap.SetAsScalar("Mesh-VertexEpsilon", -1.0)
+with ott.assert_raises(TypeError):
+    otexp.CirculantEmbeddingGaussianProcess(covarianceModel, interval, discretization)
+ot.ResourceMap.SetAsScalar("Mesh-VertexEpsilon", 1.0e-6)
+
+# Test the CirculantEmbeddingGaussianProcess-MaximumIteration key
+assert ot.ResourceMap.GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration") == 20
+ot.ResourceMap.SetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 5)
+assert ot.ResourceMap.GetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration") == 5
+ot.ResourceMap.SetAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 20)
+
+print("mesh validation OK")
 
 print("\nAll tests passed!")

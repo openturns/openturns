@@ -8,4 +8,5 @@ OTAutodoc(InverseTrendEvaluation)
 
 %copyctor OT::InverseTrendEvaluation;
 
+%include InverseTrendEvaluation_doc.i
 %include openturns/InverseTrendEvaluation.hxx

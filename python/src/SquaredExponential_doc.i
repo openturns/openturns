@@ -40,6 +40,9 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = e^{-\frac{1}{2}  \left\| \vect{s}- \vect{t} \right\|_{2}^{2}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``SquaredExponential-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}` of the covariance function.
 
 See Also
 --------

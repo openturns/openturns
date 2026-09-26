@@ -53,3 +53,23 @@ Returns
 -------
 graph : a :class:`~openturns.Graph`
     View of the bipartite graph as a set of red nodes linked to black nodes."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BipartiteGraph::getSize
+"Accessor to the number of red nodes.
+
+Returns
+-------
+size : int
+    The number of red nodes in the graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BipartiteGraph::getStride
+"Accessor to the maximum number of black nodes per red node.
+
+Returns
+-------
+stride : int
+    The maximum number of black nodes connected to any red node."

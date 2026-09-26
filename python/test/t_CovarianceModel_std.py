@@ -234,7 +234,7 @@ myModel.setRadius(1.5)
 ott.assert_almost_equal(myModel.getRadius(), 1.5, 0, 0)
 
 # 7) FractionalBrownianMotionModel
-myModel = ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25)
+myModel = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])
 test_model(myModel)
 
 # 8) DiracCovarianceModel
@@ -315,7 +315,7 @@ basis = ot.Basis(
 covarianceModel = ot.TensorizedCovarianceModel(
     [ot.SquaredExponential([1.0]) for _ in range(output_dimension)]
 )
-algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
+algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
 lh = algo.getReducedLogLikelihoodFunction()
 # Using 1d graph we get the optimum around 1.5625
 max_lh = lh([1.5625])
@@ -542,8 +542,8 @@ assert ot.SphericalModel([1.0], [2.0], 3.0) == ot.SphericalModel([1.0], [2.0], 3
 assert ot.SphericalModel([1.0], [2.0], 3.0) != ot.SphericalModel([1.0], [2.0], 4.0), "SM!=SM radius"
 
 # FractionalBrownianMotionModel
-assert ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25) == ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25), "FBMM==FBMM"
-assert ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25) != ot.FractionalBrownianMotionModel(3.0, 3.0, 0.25), "FBMM!=FBMM scale"
+assert ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]) == ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]), "FBMM==FBMM"
+assert ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25]) != ot.FractionalBrownianMotionModel([3.0], [3.0], [0.25]), "FBMM!=FBMM scale"
 
 # DiracCovarianceModel
 assert ot.DiracCovarianceModel(2, [1.0, 2.0]) == ot.DiracCovarianceModel(2, [1.0, 2.0]), "DCM==DCM"

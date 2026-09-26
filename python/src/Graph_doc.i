@@ -92,6 +92,38 @@ OT_Graph_setBoundingBox_doc
 OT_Graph_getAutomaticBoundingBox_doc
 %feature("docstring") OT::Graph::setAutomaticBoundingBox
 OT_Graph_setAutomaticBoundingBox_doc
+%feature("docstring") OT::Graph::setXMin
+"Set the minimal value on the X axis.
+
+Parameters
+----------
+xMin : float
+    New lower bound of the X range.
+    This switches off the automatic bounding box."
+%feature("docstring") OT::Graph::setXMax
+"Set the maximal value on the X axis.
+
+Parameters
+----------
+xMax : float
+    New upper bound of the X range.
+    This switches off the automatic bounding box."
+%feature("docstring") OT::Graph::setYMin
+"Set the minimal value on the Y axis.
+
+Parameters
+----------
+yMin : float
+    New lower bound of the Y range.
+    This switches off the automatic bounding box."
+%feature("docstring") OT::Graph::setYMax
+"Set the maximal value on the Y axis.
+
+Parameters
+----------
+yMax : float
+    New upper bound of the Y range.
+    This switches off the automatic bounding box."
 %feature("docstring") OT::Graph::add
 OT_Graph_add_doc
 %feature("docstring") OT::Graph::erase

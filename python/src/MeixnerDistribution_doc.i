@@ -44,6 +44,16 @@ gamma : float
     
     Default value is 0.0.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MeixnerDistribution-CDFDiscretization`` (``UnsignedInteger``, default: ``10000``): number of points of the discretization grid used to compute the CDF.
+- ``MeixnerDistribution-MaximumAbsoluteError`` (``Scalar``, default: ``1e-12``): absolute error of the optimization.
+- ``MeixnerDistribution-MaximumConstraintError`` (``Scalar``, default: ``1e-12``): constraint error of the optimization.
+- ``MeixnerDistribution-MaximumObjectiveError`` (``Scalar``, default: ``1e-12``): objective error of the optimization.
+- ``MeixnerDistribution-MaximumRelativeError`` (``Scalar``, default: ``1e-12``): relative error of the optimization.
+
 Examples
 --------
 Create a distribution:

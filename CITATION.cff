@@ -1,21 +1,74 @@
-cff-version: 1.2.0
-title: OpenTURNS
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
-type: software
+cff-version: "1.2.0"
 authors:
-  - name: Airbus
-  - name: EDF
-  - name: IMACS
-  - name: ONERA
-  - name: Phimeca
-repository-code: 'https://github.com/openturns/openturns'
-url: 'https://openturns.github.io/www/'
-abstract: Uncertainty treatment library
-keywords:
-  - probability
-  - uncertainty
-  - reliability
-license: LGPL-3.0-or-later
-doi: 10.1007/978-3-319-11259-6_64-1
+- family-names: Baudin
+  given-names: Michaël
+  orcid: "https://orcid.org/0000-0002-0450-7947"
+- family-names: Dutfoy
+  given-names: Anne
+  orcid: "https://orcid.org/0000-0002-5139-106X"
+- family-names: Lebrun
+  given-names: Régis
+  orcid: "https://orcid.org/0000-0003-3089-4642"
+- family-names: Schueller
+  given-names: Julien
+  orcid: "https://orcid.org/0009-0006-2452-7861"
+- family-names: Haddad
+  given-names: Sofiane
+  orcid: "https://orcid.org/0009-0006-5573-2534"
+- family-names: Brevault
+  given-names: Loïc
+  orcid: "https://orcid.org/0000-0001-8081-6082"
+- family-names: Balesdent
+  given-names: Mathieu
+  orcid: "https://orcid.org/0000-0003-4064-3361"
+- family-names: Pelamatti
+  given-names: Julien
+  orcid: "https://orcid.org/0000-0002-1769-2715"
+- family-names: Muré
+  given-names: Joseph
+  orcid: "https://orcid.org/0000-0003-4147-1143"
+doi: 10.5281/zenodo.21060713
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Baudin
+    given-names: Michaël
+    orcid: "https://orcid.org/0000-0002-0450-7947"
+  - family-names: Dutfoy
+    given-names: Anne
+    orcid: "https://orcid.org/0000-0002-5139-106X"
+  - family-names: Lebrun
+    given-names: Régis
+    orcid: "https://orcid.org/0000-0003-3089-4642"
+  - family-names: Schueller
+    given-names: Julien
+    orcid: "https://orcid.org/0009-0006-2452-7861"
+  - family-names: Haddad
+    given-names: Sofiane
+    orcid: "https://orcid.org/0009-0006-5573-2534"
+  - family-names: Brevault
+    given-names: Loïc
+    orcid: "https://orcid.org/0000-0001-8081-6082"
+  - family-names: Balesdent
+    given-names: Mathieu
+    orcid: "https://orcid.org/0000-0003-4064-3361"
+  - family-names: Pelamatti
+    given-names: Julien
+    orcid: "https://orcid.org/0000-0002-1769-2715"
+  - family-names: Muré
+    given-names: Joseph
+    orcid: "https://orcid.org/0000-0003-4147-1143"
+  date-published: 2026-09-02
+  doi: 10.21105/joss.10484
+  issn: 2475-9066
+  issue: 125
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 10484
+  title: "OpenTURNS: A Python package for uncertainty quantification"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.10484"
+  volume: 11
+title: "OpenTURNS: A Python package for uncertainty quantification"

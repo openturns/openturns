@@ -33,7 +33,6 @@ CLASSNAMEINIT(PythonEvaluation)
 static const Factory<PythonEvaluation> Factory_PythonEvaluation;
 
 
-
 /* Default constructor */
 PythonEvaluation::PythonEvaluation()
   : EvaluationImplementation()
@@ -465,7 +464,16 @@ Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 /* Is it safe to call in parallel? */
 Bool PythonEvaluation::isParallel() const
 {
+  // A Python-based evaluation cannot run on TBB worker threads: the workers
+  // would block on the Python GIL while the main thread holds it and waits for
+  // them, which would deadlock. This only applies to the standard GIL builds:
+  // free-threaded builds (Py_GIL_DISABLED) have no GIL, so the evaluation is
+  // safe to parallelize there
+#ifdef Py_GIL_DISABLED
+  return true;
+#else
   return false;
+#endif
 }
 
 /* Method save() stores the object through the StorageManager */
