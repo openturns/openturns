@@ -107,10 +107,10 @@ class PythonLARS:
                 for j in range(self.basisSize):
                     weightedFullX[s, j] = self.weightSqrt[s] * fullX[s, j]
 
-            # The reference runs the whole path, without any cross-validation
-            # stopping, and stops on its own criterion: the largest remaining
-            # correlation below roundoff, ie a model that has captured
-            # everything the design can resolve
+            # This implementation runs the whole path, without any
+            # cross-validation stopping, and stops on its own criterion: the
+            # largest remaining correlation below roundoff, ie a model that
+            # has captured everything the design can resolve
             for iteration in range(self.basisSize - 1):
                 # Stop if active set would exceed sample size (LS becomes rank-deficient)
                 if len(marginal_selection) >= sample_size:
