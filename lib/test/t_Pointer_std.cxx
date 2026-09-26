@@ -82,8 +82,6 @@ int main(int, char *[])
   String name1("One");
   String name2("Two");
   String name3("Three");
-  String name4("Four");
-
   /** Check constructor */
   Pointer<TestClass> p1(new TestClass(name1));
   printPointee(p1);
@@ -103,11 +101,6 @@ int main(int, char *[])
   p3 = p1;
   printPointee(p3);
   printPointer(p3);
-
-
-
-  /** We try to access pointee by const methods */
-  String p3OldName = p3->getName();
 
 
 

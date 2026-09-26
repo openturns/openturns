@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 # ot.Log.Show(ot.Log.ALL)
@@ -94,3 +95,29 @@ for method in methods:
 
     d = method.getGramInverseTrace()
     print("getGramInverseTrace: %.5g" % d)
+
+# Regression test: solveNormal/solveNormalGram on an underdetermined design
+# (more basis functions than sample points) must return the minimum-norm
+# solution instead of reading past the singular values
+smallSampleSize = 3
+largeBasisSize = 5
+Xsmall = ot.Sample(smallSampleSize, 1)
+for i in range(smallSampleSize):
+    Xsmall[i, 0] = i + 1.0
+phisLarge = []
+for j in range(largeBasisSize):
+    phisLarge.append(ot.SymbolicFunction(["x"], ["x^" + str(j)]))
+proxyUnder = ot.DesignProxy(Xsmall, phisLarge)
+fullUnder = range(largeBasisSize)
+designUnder = ot.Matrix(proxyUnder.computeDesign(fullUnder))
+ySmall = ot.Point([1.0, 2.0, 4.0])
+gramRhs = designUnder.transpose() * ySmall
+methodUnder = ot.SVDMethod(proxyUnder, fullUnder)
+xGram = methodUnder.solveNormalGram(gramRhs)
+ott.assert_almost_equal(xGram.getSize(), largeBasisSize)
+assert all(m.isfinite(v) for v in xGram)
+xNormal = methodUnder.solveNormal(gramRhs)
+ott.assert_almost_equal(xNormal, xGram)
+with ott.assert_raises(TypeError):
+    methodUnder.solveNormalGram(ot.Point(largeBasisSize + 1))
+print("underdetermined solveNormalGram: OK")

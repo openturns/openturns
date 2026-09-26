@@ -29,20 +29,30 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
 
-  const UnsignedInteger size = 100;
-  Uniform xuniform(0.9, 1.1);
-  Sample x( xuniform.getSample(size) );
-  Uniform yuniform(1.9, 2.1);
-  Sample y( yuniform.getSample(size) );
-  SymbolicFunction f( Description(1, "x"), Description(1, "2.0*x") );
-  Collection<Function> basis(1, f);
-  Indices indices(basis.getSize());
+  try
+  {
+    const UnsignedInteger size = 100;
+    Uniform xuniform(0.9, 1.1);
+    Sample x( xuniform.getSample(size) );
+    Uniform yuniform(1.9, 2.1);
+    Sample y( yuniform.getSample(size) );
+    SymbolicFunction f( Description(1, "x"), Description(1, "2.0*x") );
+    Collection<Function> basis(1, f);
+    Indices indices(basis.getSize());
 
-  FittingAlgorithm fittingAlgo = KFold();
+    FittingAlgorithm fittingAlgo = KFold();
 
-  Scalar result = fittingAlgo.run(x, y, basis, indices);
+    Scalar result = fittingAlgo.run(x, y, basis, indices);
 
-  fullprint << "result = " << result << std::endl;
+    fullprint << "result = " << result << std::endl;
+    assert_almost_equal(result, 5.4167, 1e-5, 1e-5);
+  }
+
+  catch (TestFailed & ex)
+  {
+    std::cerr << ex << std::endl;
+    return ExitCode::Error;
+  }
 
   return ExitCode::Success;
 }

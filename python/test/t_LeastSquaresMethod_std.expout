@@ -102,3 +102,4 @@ getGramInverse: [[  2.06431   -1.16342    0.152433  ]
  [  0.152433  -0.094697   0.0132002 ]]
 getGramInverseDiag: [2.06431,0.696429,0.0132002]
 getGramInverseTrace: 2.7739
+underdetermined solveNormalGram: OK

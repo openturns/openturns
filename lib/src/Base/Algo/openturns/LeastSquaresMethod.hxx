@@ -94,6 +94,9 @@ public:
   /** Solve normal equation M^T*M*x=M^T*b */
   Point solveNormal(const Point & rhs);
 
+  /** Solve Gram system G*x=rhs where G = M^T W M, without weight multiplication on rhs */
+  Point solveNormalGram(const Point & rhs);
+
   /** Get the diagonal of H */
   Point getHDiag() const;
   SymmetricMatrix getH() const;
@@ -115,6 +118,9 @@ public:
 
   /** Build the Gram matrix */
   Matrix computeWeightedDesign(const Bool whole = false) const;
+
+  /** Build the raw design matrix without weight scaling */
+  Matrix computeDesign(const Bool whole = false) const;
 
   /** Build a method instance from its name */
   static LeastSquaresMethod Build(const String name,

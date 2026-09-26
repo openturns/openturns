@@ -43,5 +43,12 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``SparseMethod-ErrorThreshold`` (``Scalar``, default: ``0.001``)
 - ``SparseMethod-MaximumErrorFactor`` (``Scalar``, default: ``2``)"
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::SparseMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc

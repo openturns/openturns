@@ -1,6 +1,10 @@
 %feature("docstring") OT::CholeskyMethod
 "Least squares solver using Cholesky decomposition.
 
+This method implements a method to solve the least squares problem  using the Cholesky method.
+
+Refer to :any:`least_squares` to get all the notations.
+
 Available constructors:
     CholeskyMethod(*proxy, weight, indices*)
 
@@ -25,10 +29,6 @@ LeastSquaresMethod, SVDMethod, QRMethod
 
 Notes
 -----
-This method implements a method to solve the least squares problem  using the Cholesky method.
-
-Refer to :any:`least_squares` to get all the notations.
-
 The following :class:`~openturns.ResourceMap` key is used:
 
 - ``CholeskyMethod-LargeCase`` (``UnsignedInteger``, default: ``128``): dimension above which the Cholesky method falls back to the large case algorithm.
@@ -44,4 +44,14 @@ Solves a linear least squares problem with Cholesky method:
 >>> A = method.solve(y)
 >>> print(A)
 [3.5,1.4]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CholeskyMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CholeskyMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc
 

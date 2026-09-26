@@ -58,6 +58,7 @@ public:
              const Point & weight,
              const FunctionCollection & basis,
              const Indices & indices) const override;
+
   Scalar run(const Sample & y,
              const Point & weight,
              const Indices & indices,

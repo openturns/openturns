@@ -85,3 +85,24 @@ seq = factory.build(u, y, basis, list(range(basisSize)))
 first = 20
 if seq.getSize() >= first:
     print("first ", first, " indices = ", seq.getIndices(first - 1))
+
+# Weighted legacy LARS through LeastSquaresStrategy: explicit uniform weights
+# must reproduce the default-weights selection, non-uniform weights run through
+smallBasisSize = 20
+smallAdaptive = ot.FixedStrategy(productBasis, smallBasisSize)
+smallExperiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 40)
+smallX = smallExperiment.generate()
+smallY = model(smallX)
+selectionFactory = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())
+algoRef = ot.FunctionalChaosAlgorithm(smallX, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactory))
+algoRef.run()
+refIndices = algoRef.getResult().getIndices()
+assert refIndices.getSize() > 0
+wUniform = ot.Point(40, 0.5)
+algoUniform = ot.FunctionalChaosAlgorithm(smallX, wUniform, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactory))
+algoUniform.run()
+assert algoUniform.getResult().getIndices() == refIndices
+wQuad = ot.Point([0.5 + 0.1 * (i % 5) for i in range(40)])
+algoQuad = ot.FunctionalChaosAlgorithm(smallX, wQuad, smallY, distribution, smallAdaptive, ot.LeastSquaresStrategy(selectionFactory))
+algoQuad.run()
+assert algoQuad.getResult().getIndices().getSize() > 0

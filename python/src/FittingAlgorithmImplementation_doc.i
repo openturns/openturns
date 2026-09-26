@@ -1,6 +1,10 @@
 %define OT_FittingAlgorithm_doc
 "Fitting algorithm.
 
+FittingAlgorithm is the interface of the FittingAlgorithmImplementation.
+This class is not usable because it has sense only within the
+:class:`~openturns.FunctionalChaosAlgorithm`.
+
 Available constructors:
     FittingAlgorithm(*fittingAlgoImp*)
 
@@ -12,13 +16,7 @@ fittingAlgoImp : a FittingAlgorithmImplementation
 
 See also
 --------
-CorrectedLeaveOneOut, KFold
-
-Notes
------
-FittingAlgorithm is the interface of the FittingAlgorithmImplementation.
-This class is not usable because it has sense only within the
-:class:`~openturns.FunctionalChaosAlgorithm`."
+CorrectedLeaveOneOut, KFold"
 %enddef
 %feature("docstring") OT::FittingAlgorithmImplementation
 OT_FittingAlgorithm_doc
@@ -35,7 +33,7 @@ Usage:
 
   run(*y, weight, indices, proxy*)
 
-  run(*y, indices, indices*)
+  run(*y, indices, proxy*)
 
   run(method, y*)
 

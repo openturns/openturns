@@ -1,17 +1,12 @@
 %feature("docstring") OT::LinearModelAnalysis
 "Analyse a linear model.
 
-Parameters
-----------
-linearModelResult : :class:`~openturns.LinearModelResult`
-    A linear model result.
+The statistics derived from the sums of squares, such as the F test, use
+unnormalized empirical moments of the output sample, and this class does
+not accept weights. They are therefore implicitly restricted to output
+samples obtained with uniform weights, e.g. Monte Carlo simulation: a
+sample coming from a quadrature rule leads to mis-scaled sums of squares.
 
-See Also
---------
-LinearModelResult
-
-Notes
------
 This class relies on a linear model result structure and analyses the results.
 
 By default, on graphs, labels of the 3 most significant points are displayed.
@@ -55,6 +50,15 @@ The goodness-of-fit tests for normality are presented in
 :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`, and
 :ref:`anderson_darling_test`.
 
+Parameters
+----------
+linearModelResult : :class:`~openturns.LinearModelResult`
+    A linear model result.
+
+See Also
+--------
+LinearModelResult
+
 Examples
 --------
 >>> import openturns as ot
@@ -83,13 +87,6 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 %feature("docstring") OT::LinearModelAnalysis::getCoefficientsTScores
 R"RAW(Accessor to the coefficients of linear expansion over their standard error.
 
-Returns
--------
-tScores : :class:`~openturns.Point`
-   The Student score of each coefficient estimate :math:`\hat{\vect{a}}`.
-
-Notes
------
 The T-test checks if the coefficient :math:`\hat{a}_k` is statistically different from zero and is used under the Gaussian assumption of the error :math:`\varepsilon`. See [rawlings2001]_ (section 4.5.2 *Special cases of the general form* page 122) for more details.
 
 For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`t_k` is computed as: 
@@ -102,6 +99,13 @@ For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`t
 where :math:`\sigma(a_k)` is the standard deviation of the distribution of the estimator :math:`\hat{a}_k`
 defined in :eq:`std_dev_estim`.
 
+Returns
+-------
+tScores : :class:`~openturns.Point`
+   The Student score of each coefficient estimate :math:`\hat{\vect{a}}`.
+
+Notes
+-----
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``LinearModelAnalysis-MinimumSigma`` (``Scalar``, default: ``1.0e-5``): lower bound of the standard deviation of the residuals used when printing the linear model analysis
@@ -115,13 +119,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 %feature("docstring") OT::LinearModelAnalysis::getCoefficientsPValues
 R"RAW(Accessor to the coefficients of the p values.
 
-Returns
--------
-pValues : :class:`~openturns.Point`
-    Student P-values of the coefficient estimates.
-
-Notes
------
 The T-test checks if the coefficient :math:`\hat{a}_k` is statistically different from zero  and is used under the Gaussian assumption of the error :math:`\varepsilon`.
 
 The p-values of each coefficient estimate is computed from the t-scores defined in :eq:`tScores` with
@@ -133,6 +130,12 @@ reject the hypothesis that this coefficient is zero. If the p-value is close to 
 accept the hypothesis that this coefficient is zero.
 
 If the residuals are not Gaussian, this test is not appropriate and should not be used.
+
+Returns
+-------
+pValues : :class:`~openturns.Point`
+    Student P-values of the coefficient estimates.
+
 )RAW"
 // ---------------------------------------------------------------------
 
@@ -140,18 +143,6 @@ If the residuals are not Gaussian, this test is not appropriate and should not b
 R"RAW(Accessor to the confidence interval of level :math:`\alpha` for the coefficients
 of the linear expansion.
 
-Parameters
-----------
-alpĥa : float, :math:`0 \leq \alpha \leq 1`
-    The confidence level :math:`\alpha`.
-
-Returns
--------
-confidenceInterval : :class:`~openturns.Interval`
-    The confidence interval.
-
-Notes
------
 Under the Gaussian assumption of the error, the confidence interval of the coefficient :math:`a_k` of level :math:`\alpha` is defined by:
 
 .. math::
@@ -166,6 +157,17 @@ where:
 The interval returned is multivariate and contains the intervals of all the coefficients.
 
 If the residuals are not Gaussian, this test is not appropriate and should not be used.
+
+Parameters
+----------
+alpĥa : float, :math:`0 \leq \alpha \leq 1`
+    The confidence level :math:`\alpha`.
+
+Returns
+-------
+confidenceInterval : :class:`~openturns.Interval`
+    The confidence interval.
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -173,24 +175,26 @@ If the residuals are not Gaussian, this test is not appropriate and should not b
 %feature("docstring") OT::LinearModelAnalysis::getCoefficientsDistribution
 R"RAW(Accessor to the asymptotic distribution of the coefficients.
 
-Returns
--------
-distribution : :class:`~openturns.Normal`
-    The asymptotic distribution of the coefficients.
-
-Notes
------
 The distribution is given by :eq:`linRegCoefDist` where:
 
 - the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
 - the variance :math:`\sigma^2` of the residuals is approximated by
   its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The asymptotic distribution of the coefficients.
+
 )RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getVarianceDistribution
 R"RAW(Accessor to the asymptotic distribution of the variance of the residuals.
+
+Depending on the value of `gaussian`, the distribution is given by either :eq:`linRegVarDist1` or :eq:`linRegVarDist2`,
+where :math:`\sigma^2` is approximated by its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 
 Parameters
 ----------
@@ -202,16 +206,18 @@ Returns
 distribution : :class:`~openturns.Distribution`
     The asymptotic distribution of the variance. It can be either :class:`~openturns.Gamma` or :class:`~openturns.Normal`.
 
-Notes
------
-Depending on the value of `gaussian`, the distribution is given by either :eq:`linRegVarDist1` or :eq:`linRegVarDist2`,
-where :math:`\sigma^2` is approximated by its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getPredictionDistribution
 R"RAW(Accessor to the asymptotic distribution of a prediction.
+
+The distribution is given by :eq:`linRegPredictDist` where:
+
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
+- the variance :math:`\sigma^2` of the residuals is approximated by
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 
 Parameters
 ----------
@@ -223,19 +229,18 @@ Returns
 distribution : :class:`~openturns.Normal`
     The asymptotic distribution of the prediction.
 
-Notes
------
-The distribution is given by :eq:`linRegPredictDist` where:
-
-- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
-- the variance :math:`\sigma^2` of the residuals is approximated by
-  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getOutputObservationDistribution
 R"RAW(Accessor to the asymptotic distribution of an observation.
+
+The distribution is based on :eq:`linRegPredictDist` and :eq:`linRegOutputDist` where:
+
+- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
+- the variance :math:`\sigma^2` of the residuals is approximated by
+  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 
 Parameters
 ----------
@@ -247,13 +252,6 @@ Returns
 distribution : :class:`~openturns.Normal`
     The asymptotic distribution of the observation.
 
-Notes
------
-The distribution is based on :eq:`linRegPredictDist` and :eq:`linRegOutputDist` where:
-
-- the coefficients :math:`\vect{a}` are approximated by their estimator :math:`\vect{\hat{a}}` defined in :eq:`linRegCoef`,
-- the variance :math:`\sigma^2` of the residuals is approximated by
-  its unbiased estimator :math:`\hat{\sigma}^2` defined in :eq:`estimSigma2Noise`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -261,13 +259,6 @@ The distribution is based on :eq:`linRegPredictDist` and :eq:`linRegOutputDist` 
 %feature("docstring") OT::LinearModelAnalysis::getFisherScore
 R"RAW(Accessor to the Fisher statistics.
 
-Returns
--------
-fisherScore : float
-    The Fisher score of the model.
-
-Notes
------
 The Fisher-test tests if all the coefficients are simultaneously equal to zero  and is used under the Gaussian assumption of the error :math:`\varepsilon`.
 
 The Fisher score is computed as follows. Let be :math:`dofM` the degrees of freedom of the model, equal to the number of coefficients to estimate (:math:`p+1` of :math:`p'`). If the basis contains an intercept, then we subtract 1 from :math:`dofM`.
@@ -301,6 +292,12 @@ Then, the Fisher score :math:`f` is defined by:
    :label: FisherScore
 
    f = \dfrac{SSM/dofM}{SSE/dof}
+
+Returns
+-------
+fisherScore : float
+    The Fisher score of the model.
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -308,13 +305,6 @@ Then, the Fisher score :math:`f` is defined by:
 %feature("docstring") OT::LinearModelAnalysis::getFisherPValue
 R"RAW(Accessor to the Fisher p-values.
 
-Returns
--------
-fisherPValue : float
-    Fisher P-value of the model estimate.
-
-Notes
------
 The F-test tests if all the coefficients are simultaneously equal to zero  and is used under the Gaussian assumption of the error :math:`\varepsilon`.
 
 The Fisher p-value of each coefficient estimate is computed from the Fisher score defined in :eq:`FisherScore` with
@@ -326,23 +316,29 @@ respect to the :class:`~openturns.FisherSnedecor` distribution parameterized by 
 This p-value is used under the Gaussian assumption of the error :math:`\varepsilon`. It tests
 if all the coefficients are statistically useful to the model. If the p-value is close to zero, then we can reject this hypothesis: *there is at least one nonzero coefficient*.
 
-If the residuals are not Gaussian, this test is not appropriate and should not be used.)RAW" 
+If the residuals are not Gaussian, this test is not appropriate and should not be used.
+
+Returns
+-------
+fisherPValue : float
+    Fisher P-value of the model estimate.
+
+)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getResidualsStandardError
 R"RAW(Accessor to the standard error of the residuals.
 
+The standard error is also called the *root mean squared error* or the *standard error of regression*. It is
+the residual standard deviation :math:`\hat{\sigma}` defined in :eq:`estimSigma2Noise` which is the unbiaised
+residuals variance.
+
 Returns
 -------
 stdError : float
     The residuals standard deviation estimate.
 
-Notes
------
-The standard error is also called the *root mean squared error* or the *standard error of regression*. It is
-the residual standard deviation :math:`\hat{\sigma}` defined in :eq:`estimSigma2Noise` which is the unbiaised
-residuals variance.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -350,18 +346,17 @@ residuals variance.
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultChiSquared
 "Performs Chi-Square test.
 
-Returns
--------
-testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-Notes
------
 The Chi-Square test is a goodness of fit test which objective is to check the
 normality assumption (null hypothesis) of residuals (and thus the model).
 
 Usually, Chi-Square test applies for discrete distributions. Here we rely on
 the :meth:`~openturns.FittingTest.ChiSquared` to check the normality.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Test result class.
+
 "
 
 // ---------------------------------------------------------------------
@@ -369,72 +364,62 @@ the :meth:`~openturns.FittingTest.ChiSquared` to check the normality.
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov
 "Performs Kolmogorov test.
 
+We check if the residuals are Gaussian  thanks to :meth:`~openturns.FittingTest.Kolmogorov`.
+
 Returns
 -------
 testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-Notes
------
-We check if the residuals are Gaussian  thanks to :meth:`~openturns.FittingTest.Kolmogorov`."
+    Test result class."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultAndersonDarling
 "Performs Anderson-Darling test.
 
+We check if the residuals are Gaussian  thanks to :meth:`~openturns.NormalityTest.AndersonDarlingNormal`.
+
 Returns
 -------
 testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-
-Notes
------
-We check if the residuals are Gaussian  thanks to :meth:`~openturns.NormalityTest.AndersonDarlingNormal`."
+    Test result class."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestCramerVonMises
 "Performs Cramer-Von Mises test.
 
+We check if the residuals are Gaussian thanks to :meth:`~openturns.NormalityTest.CramerVonMisesNormal`.
+
 Returns
 -------
 testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-
-Notes
------
-We check if the residuals are Gaussian thanks to :meth:`~openturns.NormalityTest.CramerVonMisesNormal`."
+    Test result class."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::drawModelVsFitted
 R"RAW(Accessor to plot of model versus fitted values.
 
+The graph plots the sample :math:`(Y_i, \hat{Y}_i)` where :math:`Y_i` is the real value of experience :math:`i`
+and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
 
-Notes
------
-The graph plots the sample :math:`(Y_i, \hat{Y}_i)` where :math:`Y_i` is the real value of experience :math:`i`
-and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
 )RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::LinearModelAnalysis::drawResidualsVsFitted
 R"RAW(Accessor to plot of residuals versus fitted values.
 
+The graph plots the sample :math:`(\varepsilon_i, \hat{Y}_i)` where :math:`\varepsilon_i` is the residual of experience :math:`i` defined in :eq:`residualDef`
+and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
 
-Notes
------
-The graph plots the sample :math:`(\varepsilon_i, \hat{Y}_i)` where :math:`\varepsilon_i` is the residual of experience :math:`i` defined in :eq:`residualDef`
-and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -442,14 +427,13 @@ and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`f
 %feature("docstring") OT::LinearModelAnalysis::drawScaleLocation
 R"RAW(Accessor to a Scale-Location plot of sqrt(abs(standardized residuals)) versus fitted values.
 
+The graph plots the sample :math:`(\hat{Y}_i, \sqrt{|\varepsilon_i^{st}|})` where :math:`\varepsilon_i^{st}` is the standardized residual of experience :math:`i` defined in :eq:`stdRes`
+and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
 
-Notes
------
-The graph plots the sample :math:`(\hat{Y}_i, \sqrt{|\varepsilon_i^{st}|})` where :math:`\varepsilon_i^{st}` is the standardized residual of experience :math:`i` defined in :eq:`stdRes`
-and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`fittedValue` or :eq:`fittedValue2`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -457,14 +441,13 @@ and :math:`\hat{Y}_i` is the value fitted by the linear model, defined in :eq:`f
 %feature("docstring") OT::LinearModelAnalysis::drawQQplot
 "Accessor to plot a Normal quantiles-quantiles plot of standardized residuals.
 
+The graph plots the empirical quantiles of the standardized residuals defined in :eq:`stdRes` versus
+the quantiles of the Normal distribution with zero mean and unit variance.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
 
-Notes
------
-The graph plots the empirical quantiles of the standardized residuals defined in :eq:`stdRes` versus
-the quantiles of the Normal distribution with zero mean and unit variance.
 "
 
 // ---------------------------------------------------------------------
@@ -472,38 +455,34 @@ the quantiles of the Normal distribution with zero mean and unit variance.
 %feature("docstring") OT::LinearModelAnalysis::drawCookDistance
 "Accessor to plot of Cook's distances versus row labels.
 
+The graph plots the Cook distance of each experience :math:`i` is defined in :eq:`cookDef`.
+The Cook's distance measures the impact of every individual data point on the linear regression. See [rawlings2001]_ (section 11.2.1, *Cook's D* page 362) for more details.
+
 Returns
 -------
 graph : :class:`~openturns.Graph`
 
-Notes
------
-The graph plots the Cook distance of each experience :math:`i` is defined in :eq:`cookDef`.
-The Cook's distance measures the impact of every individual data point on the linear regression. See [rawlings2001]_ (section 11.2.1, *Cook's D* page 362) for more details."
+"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::drawResidualsVsLeverages
 R"RAW(Accessor to plot of residuals versus leverages that adds bands corresponding to Cook's distances of 0.5 and 1.
 
+This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef` and the leverage :math:`\ell_i`  of experience :math:`i` defined in :eq:`leverageDef`.
+
 Returns
 -------
-graph : :class:`~openturns.Graph`
-
-Notes
------
-This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef` and the leverage :math:`\ell_i`  of experience :math:`i` defined in :eq:`leverageDef`.)RAW"
+graph : :class:`~openturns.Graph`)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::drawCookVsLeverages
-R"RAW(Accessor to plot of Cook's distances versus leverage/(1-leverage). 
+R"RAW(Accessor to plot of Cook's distances versus leverage/(1-leverage).
+
+This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :math:`\ell_i/(1-\ell_i)` where :math:`\ell_i` is the leverage of experience :math:`i` defined in :eq:`leverageDef`.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-
-Notes
------
-This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :math:`\ell_i/(1-\ell_i)` where :math:`\ell_i` is the leverage of experience :math:`i` defined in :eq:`leverageDef`.)RAW"
+graph : :class:`~openturns.Graph`)RAW"
 

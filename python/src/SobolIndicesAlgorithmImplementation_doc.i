@@ -2,8 +2,14 @@
 R"RAW(
 Sensitivity analysis.
 
-Notes
------
+The reference variance which scales the indices, as well as the centering
+of the output, are estimated through unweighted empirical moments of the
+output sample. When the design is built from a :class:`WeightedExperiment`,
+only the generated points are used: the weights do not enter the
+estimation. The indices are therefore calibrated for designs sampled with
+uniform weights, e.g. Monte Carlo simulation, and a design coming from a
+quadrature rule yields a mis-scaled reference variance.
+
 This method measures the influence of each component of an input random vector
 :math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on an output random vector
 :math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
@@ -51,6 +57,8 @@ The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
 delta method, as explained in the technical report [pmfre01116]_.
 
+Notes
+-----
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``): block size used to compute the indices,
@@ -126,8 +134,6 @@ OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
 %define OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 R"RAW(Get second order Sobol indices.
 
-Notes
------
 Let :math:`n_X \in \Nset` be the input dimension of the random vector.
 For any pair of indices :math:`i, j \in \{1, ..., n_x\}` such that :math:`i \neq j`,
 this method computes the Sobol' interaction index between :math:`i` and :math:`j`:
@@ -148,6 +154,8 @@ then the interaction Sobol' index can be computed from the equation:
 .. math::
     S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
 
+Notes
+-----
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``)
@@ -267,6 +275,9 @@ Usage:
 With the first usage, draw the aggregated first and total order indices.
 With the second usage, draw the first and total order indices of a specific marginal in case of vectorial output
 
+If number of bootstrap sampling is not 0, and confidence level associated > 0,
+the graph includes confidence interval plots in the first usage.
+
 Parameters
 ----------
 marginalIndex: int
@@ -277,10 +288,7 @@ Returns
 graph : :class:`~openturns.Graph`
     A graph containing the aggregated first and total order indices.
 
-Notes
------
-If number of bootstrap sampling is not 0, and confidence level associated > 0,
-the graph includes confidence interval plots in the first usage."
+"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::draw
 OT_SobolIndicesAlgorithm_draw_doc

@@ -20,6 +20,7 @@
  */
 
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/IdentityMatrix.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
 #include "openturns/SVDMethod.hxx"
 
@@ -73,7 +74,33 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
 
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  const Scalar variance = y.computeVariance()[0];
+  // Output variance: the legacy unbiased estimator for uniform weights,
+  // the weighted variance otherwise. Uniform weights are stored as one value
+  const Point methodWeights(method.getWeight());
+  const Bool useUniformWeights = (methodWeights.getSize() == 1);
+  // Total weight mass, used to normalize the weighted empirical error below
+  Scalar weightSum = 0.0;
+  if (useUniformWeights)
+    weightSum = methodWeights[0] * sampleSize;
+  else
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightSum += methodWeights[i];
+  Scalar variance = 0.0;
+  if (useUniformWeights)
+    variance = y.computeVariance()[0];
+  else
+  {
+    Scalar weightedMean = 0.0;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      weightedMean += methodWeights[i] * y(i, 0);
+    weightedMean /= weightSum;
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+    {
+      const Scalar delta = y(i, 0) - weightedMean;
+      variance += methodWeights[i] * delta * delta;
+    }
+    variance /= weightSum;
+  }
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
   if (!(sampleSize >= basisSize)) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
@@ -81,7 +108,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   // Build the design of experiments
   LOGINFO("Build the design matrix");
 
-  const Matrix psiAk(method.computeWeightedDesign());
+  const Matrix psiAk(method.computeDesign());
 
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
@@ -95,19 +122,41 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   const Point yHat(psiAk * coefficients);
 
   const Point h(method.getHDiag());
-  Scalar empiricalError = 0.0;
+  Scalar looError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
     const Scalar ns = (y(i, 0) - yHat[i]) / (1.0 - h[i]);
-    empiricalError += ns * ns / sampleSize;
+    looError += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * ns * ns;
   }
-  LOGINFO(OSS() << "Empirical error=" << empiricalError);
+  looError /= weightSum;
+  LOGINFO(OSS() << "LOO error=" << looError);
 
   LOGINFO("Compute the correcting factor");
-  const Scalar traceInverse = method.getGramInverseTrace();
+  // G = Psi^T*Psi where Psi = sqrt(W)*Phi, so G^{-1} = (Phi^T*W*Phi)^{-1}
+  // For uniform weights w: G = w*Phi^T*Phi, G^{-1} = (1/w)*(Phi^T*Phi)^{-1}
+  // The CLOO formula needs tr((Phi^T*Phi)^{-1}) = tr(G^{-1}) * w.
+  // For non-uniform (eg quadrature) weights this identity fails, so the
+  // trace is computed from the unweighted design of the active functions.
+  Scalar traceInverse = 0.0;
+  if (method.getImplementation()->weight_.getSize() == 1)
+  {
+    // Uniform weights, stored as a single value
+    traceInverse = method.getGramInverseTrace() * method.getImplementation()->weight_[0];
+  }
+  else
+  {
+    // Non-uniform weights: unweighted Gram matrix Gt = Phi^T*Phi
+    const Matrix phiAk(method.computeDesign());
+    const Matrix gramPhi(phiAk.transpose() * phiAk);
+    const UnsignedInteger gramSize = gramPhi.getNbRows();
+    const Matrix invGramPhi(gramPhi.solveLinearSystem(IdentityMatrix(gramSize)));
+    traceInverse = 0.0;
+    for (UnsignedInteger d = 0; d < gramSize; ++d)
+      traceInverse += invGramPhi(d, d);
+  }
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * empiricalError / variance);
+  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * looError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }
