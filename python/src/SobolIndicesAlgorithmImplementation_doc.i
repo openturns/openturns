@@ -34,7 +34,7 @@ and total order indices can be estimated
 thanks to the :meth:`getFirstOrderIndicesDistribution` and
 :meth:`getTotalOrderIndicesDistribution` methods.
 This is done either through bootstrapping or using an asymptotic estimator.
-The :class:`~openturns.ResourceMap` key `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`
+The :class:`~openturns.ResourceMap` key ``SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution``
 stores a boolean that decides the default behavior,
 but it can be overridden by the method :meth:`setUseAsymptoticDistribution`.
 
@@ -42,7 +42,7 @@ Corresponding confidence intervals are provided by the methods
 :meth:`getFirstOrderIndicesInterval` and :meth:`getTotalOrderIndicesInterval`.
 Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
 The default confidence level is stored in the :class:`~openturns.ResourceMap`
-and can be accessed with the `SobolIndicesAlgorithm-DefaultConfidenceLevel` key.
+and can be accessed with the ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` key.
 
 Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
 For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
@@ -50,6 +50,13 @@ For the same reason some first order indices estimates can be greater than the c
 The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
 delta method, as explained in the technical report [pmfre01116]_.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``): block size used to compute the indices,
+- ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` (``Scalar``, default: ``0.95``): confidence level of the bootstrap intervals,
+- ``SobolIndicesAlgorithm-DefaultBootstrapSize`` (``UnsignedInteger``, default: ``100``): bootstrap sample size,
+- ``SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`` (``Bool``, default: ``False``): whether the asymptotic distribution is used.
 )RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation
@@ -141,6 +148,11 @@ then the interaction Sobol' index can be computed from the equation:
 .. math::
     S_{\{i, j\}} = S_{\{i, j\}}^{\operatorname{cl}} - S_i - S_j.
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SobolIndicesAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``)
+- ``SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel`` (``Scalar``, default: ``0.95``)
+
 Parameters
 ----------
 marginalIndex : int, optional
@@ -149,7 +161,9 @@ marginalIndex : int, optional
 Returns
 -------
 indices : :class:`~openturns.SymmetricMatrix`
-    Tensor containing second order Sobol indices.)RAW"
+    Tensor containing second order Sobol indices.
+
+)RAW"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::getSecondOrderIndices
 OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
@@ -278,9 +292,9 @@ OT_SobolIndicesAlgorithm_draw_doc
  As correlation coefficients are considered, values might be positive or negative.
 
 Available usages:
-    DrawCorrelationCoefficients(*correlationCoefficients, title='Correlation coefficients'*)
+    DrawCorrelationCoefficients(*correlationCoefficients, title='Correlation coefficients', yLabel='correlation coefficient'*)
 
-    DrawCorrelationCoefficients(*values, names, title='Correlation coefficients'*)
+    DrawCorrelationCoefficients(*values, names, title='Correlation coefficients', yLabel='correlation coefficient'*)
 
 Parameters
 ----------
@@ -294,6 +308,9 @@ names : sequence of str
     Variables' names used to build labels for the created the graph.
 title : str
     Title of the graph.
+yLabel : str
+    Y-axis label of the graph, which allows one to adapt it to other kinds of
+    coefficients such as SRC indices.
 
 Returns
 -------
@@ -380,7 +397,7 @@ OT_SobolIndicesAlgorithm_getUseAsymptoticDistribution_doc
 %define OT_SobolIndicesAlgorithm_setUseAsymptoticDistribution_doc
 "Select asymptotic or bootstrap confidence intervals.
 
-Default value is set by the `SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution` key.
+Default value is set by the ``SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution`` key.
 
 Parameters
 ----------

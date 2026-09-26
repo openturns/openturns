@@ -26,6 +26,13 @@ This class distinguishes two naming layers:
 
 These two layers may differ.
 
+The evaluation of the formulas is thread-safe: the pointwise evaluations are
+serialized with an internal mutex and the batch evaluations use one parser
+instance per thread, so a given :class:`~openturns.SymbolicEvaluation` can be
+evaluated concurrently from several threads (or from the parallel regions of
+:class:`~openturns.TBB`-based algorithms), and its ``isParallel`` method
+returns ``True``.
+
 See also
 --------
 SymbolicFunction, Evaluation, EvaluationImplementation

@@ -81,12 +81,12 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
   }
   const Sample realizedInputSample(inputSample.select(realizedIndices));
   // If the event occurred, the value is p_initial(x[i]) / p_importance(x[i])
-  const Sample p_initial(standardDistribution_.computePDF(realizedInputSample));
-  const Sample p_importance(standardDistribution_.computePDF(realizedInputSample - standardSpaceDesignPoint));
+  const Sample logPInitial(standardDistribution_.computeLogPDF(realizedInputSample));
+  const Sample logPImportance(standardDistribution_.computeLogPDF(realizedInputSample - standardSpaceDesignPoint));
 
   for (UnsignedInteger i = 0; i < realizedIndices.getSize(); ++i)
   {
-    blockSample(realizedIndices[i], 0) = p_initial(i, 0) / p_importance(i, 0);
+    blockSample(realizedIndices[i], 0) = std::exp(logPInitial(i, 0) - logPImportance(i, 0));
   }
   return blockSample;
 }

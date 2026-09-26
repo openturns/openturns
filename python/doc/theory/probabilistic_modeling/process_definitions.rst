@@ -52,13 +52,13 @@ We recall here some useful definitions.
 Spatial (temporal) and Stochastic Mean
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The *spatial mean* of the process :math:`X` is the function
-:math:`m: \Omega \rightarrow \Rset^{\inputDim}` defined by:
+The *spatial mean* of the process :math:`X` is the random variable
+:math:`\overline{X}: \Omega \rightarrow \Rset^{\inputDim}` defined by:
 
 .. math::
   :label: spatMean
 
-    \displaystyle m(\omega)=\frac{1}{|\cD|} \int_{\cD} X(\omega)(\vect{t})\, d\vect{t}
+    \displaystyle \overline{X}(\omega)=\frac{1}{|\cD|} \int_{\cD} X(\omega)(\vect{t})\, d\vect{t}
 
 If :math:`n=1` and if the mesh is a regular grid
 :math:`(t_0, \dots, t_{N-1})`, then the spatial mean corresponds to the
@@ -67,17 +67,18 @@ If :math:`n=1` and if the mesh is a regular grid
 .. math::
   :label: tempMean
 
-    m(\omega) =  \frac{1}{t_{N-1} - t_0} \int_{t_0}^{t_{N-1}}X(\omega)(t) \, dt
+    \overline{X}(\omega) =  \frac{1}{t_{N-1} - t_0} \int_{t_0}^{t_{N-1}}X(\omega)(t) \, dt
 
 The spatial mean is estimated from one realization of the process (see
 the use case on Field or Time series).
-The *stochastic mean* of the process :math:`X` is the function
-:math:`g: \cD \rightarrow \Rset^{\inputDim}` defined by:
+The *stochastic mean* of the process :math:`X` is its mean function
+:math:`m : \cD \rightarrow \Rset^{\inputDim}` introduced in the
+notations section:
 
 .. math::
   :label: stocMean
 
-    \displaystyle g(\vect{t}) = \Expect{X_{\vect{t}}}
+    \displaystyle m(\vect{t}) = \Expect{X_{\vect{t}}}
 
 The stochastic mean is estimated from a sample of realizations of the
 process (see the use case on the Process sample).
@@ -88,7 +89,12 @@ equal and constant (equal to the constant vector noted
 .. math::
   :label: ergodic
 
-    \forall \omega\in \Omega, \, \forall \vect{t} \in \cM, \, m(\omega)=  g(\vect{t})  = \vect{c}
+    \forall \omega\in \Omega, \, \forall \vect{t} \in \cD, \, \overline{X}(\omega)=  m(\vect{t})  = \vect{c}
+
+These definitions follow the classical framework of second order
+processes, see for example A. Papoulis and S. U. Pillai, *Probability,
+Random Variables and Stochastic Processes*, 4th edition, McGraw-Hill
+(2002).
 
 Normal process
 ~~~~~~~~~~~~~~

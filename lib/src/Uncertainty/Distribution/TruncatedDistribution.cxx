@@ -36,6 +36,7 @@
 #include "openturns/Mixture.hxx"
 #include "openturns/Dirichlet.hxx"
 #include "openturns/Beta.hxx"
+#include "openturns/PiecewiseLinearDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -61,22 +62,6 @@ TruncatedDistribution::TruncatedDistribution()
   setDimension(1);
   // Adjust the truncation interval and the distribution range
   computeRange();
-}
-
-/* Parameters constructor to use when the two bounds are finite */
-TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
-    const Scalar lowerBound,
-    const Scalar upperBound,
-    const Scalar thresholdRealization)
-  : DistributionImplementation()
-  , bounds_(Point(distribution.getDimension(), lowerBound), Point(distribution.getDimension(), upperBound))
-{
-  if (std::isnan(lowerBound)) throw InvalidArgumentException(HERE) << "The lower bound parameter is NaN";
-  if (std::isnan(upperBound)) throw InvalidArgumentException(HERE) << "The upper bound parameter is NaN";
-  setName("TruncatedDistribution");
-  // This call also set the range
-  setDistribution(distribution);
-  setThresholdRealization(thresholdRealization);
 }
 
 /* Parameters constructor to use when one of the bounds is not finite */
@@ -244,8 +229,6 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
     const UnsignedInteger size = sample.getSize();
     Collection<Distribution> atoms(0);
     Point weights(0);
-    const Point lb(bounds_.getLowerBound());
-    const Point ub(bounds_.getUpperBound());
     Collection<Distribution> components(dimension_);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
@@ -268,7 +251,7 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
         Scalar wI = normalizationFactor_;
         for (UnsignedInteger j = 0; j < dimension_; ++j)
         {
-          const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), lb[j], ub[j]);
+          const TruncatedDistribution componentJ(KernelMixture(kernel, Point(1, bandwidth[j]), Sample(1, Point(1, sample(i, j)))), bounds_.getMarginal(j));
           wI /= componentJ.normalizationFactor_;
           components[j] = componentJ.getSimplifiedVersion();
         }
@@ -354,6 +337,67 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
       const Dirichlet * dirichlet(dynamic_cast< const Dirichlet * >(localDistribution.getImplementation().get()));
       const Point theta(dirichlet->getTheta());
       simplified = Beta(theta[0], theta[1], alpha, beta);
+      return true;
+    }
+    if (kind == "PiecewiseLinearDistribution")
+    {
+      const PiecewiseLinearDistribution * pwd(dynamic_cast< const PiecewiseLinearDistribution * >(localDistribution.getImplementation().get()));
+      const Point xOld(pwd->getX());
+      const Point yOld(pwd->getY());
+      const Scalar xLow = xOld[0];
+      const Scalar xUp = xOld[xOld.getSize() - 1];
+      // Collect x and y values within [alpha, beta], interpolating at boundaries
+      Point xNew;
+      Point yNew;
+      // Interpolate at alpha if it falls inside the original support
+      if (alpha >= xLow)
+      {
+        // Find the segment containing alpha
+        for (UnsignedInteger i = 0; i < xOld.getSize() - 1; ++i)
+        {
+          if (alpha >= xOld[i] && alpha <= xOld[i + 1])
+          {
+            const Scalar dx = xOld[i + 1] - xOld[i];
+            const Scalar localT = (dx > 0.0) ? (alpha - xOld[i]) / dx : 0.0;
+            const Scalar yAlpha = yOld[i] + (yOld[i + 1] - yOld[i]) * localT;
+            xNew.add(alpha);
+            yNew.add(yAlpha);
+            break;
+          }
+        }
+      }
+      // Add interior points
+      for (UnsignedInteger i = 0; i < xOld.getSize(); ++i)
+      {
+        if (xOld[i] > alpha && xOld[i] < beta)
+        {
+          xNew.add(xOld[i]);
+          yNew.add(yOld[i]);
+        }
+      }
+      // Interpolate at beta if it falls inside the original support
+      if (beta <= xUp)
+      {
+        for (UnsignedInteger i = 0; i < xOld.getSize() - 1; ++i)
+        {
+          if (beta >= xOld[i] && beta <= xOld[i + 1])
+          {
+            const Scalar dx = xOld[i + 1] - xOld[i];
+            const Scalar localT = (dx > 0.0) ? (beta - xOld[i]) / dx : 0.0;
+            const Scalar yBeta = yOld[i] + (yOld[i + 1] - yOld[i]) * localT;
+            xNew.add(beta);
+            yNew.add(yBeta);
+            break;
+          }
+        }
+      }
+      // Need at least 2 points
+      if (xNew.getSize() < 2)
+      {
+        xNew = Point({alpha, beta});
+        yNew = Point({0.5, 0.5});
+      }
+      simplified = PiecewiseLinearDistribution(xNew, yNew);
       return true;
     }
   }

@@ -50,7 +50,7 @@ graph = drawFamily(jacobiFamily)
 view = otv.View(graph)
 
 # %%
-laguerreFamily = ot.LaguerreFactory(2.75, 1)
+laguerreFamily = ot.LaguerreFactory(2.75)
 graph = drawFamily(laguerreFamily)
 view = otv.View(graph)
 

@@ -18,7 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
 #include <cmath>
+#include <vector>
 
 #include "openturns/CompositeDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -29,6 +31,7 @@
 #include "openturns/Brent.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -103,13 +106,8 @@ CompositeDistribution::CompositeDistribution(const Function & function,
   // Compute the variations
   for (UnsignedInteger i = 0; i < size - 1; ++i) increasing_[i] = values_[i + 1] > values[i];
   // Compute the range
-  Scalar xMin = values[0];
-  Scalar xMax = xMin;
-  for (UnsignedInteger i = 1; i < size; ++i)
-  {
-    xMin = std::min(xMin, values[i]);
-    xMax = std::max(xMax, values[i]);
-  }
+  const Scalar xMin = *std::min_element(values.begin(), values.end());
+  const Scalar xMax = *std::max_element(values.begin(), values.end());
   // Range based on interval arithmetic
   setRange(Interval(xMin, xMax));
 }
@@ -121,8 +119,21 @@ void CompositeDistribution::setFunctionAndAntecedent(const Function & function,
   if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to 1, here input dimension=" << function.getInputDimension();
   if (function.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the function must have an output dimension equal to 1, here input dimension=" << function.getOutputDimension();
   if (antecedent.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the antecedent must have dimension 1. Here dimension=" << antecedent.getDimension();
+  // If the antecedent is itself a composite distribution, compose the two
+  // functions so that the antecedent remains non composite, see issue #1479
+  const CompositeDistribution * compositeAntecedent = dynamic_cast<const CompositeDistribution *>(antecedent.getImplementation().get());
+  if (compositeAntecedent)
+  {
+    setFunctionAndAntecedent(Function(new ComposedFunction(function, compositeAntecedent->getFunction())), compositeAntecedent->getAntecedent());
+    return;
+  }
   function_ = function;
   antecedent_ = antecedent;
+  // When the antecedent is a composite distribution, it has been flattened
+  // above: the range of the actual antecedent may differ a lot from the range
+  // used to initialize the solver, so restart the solver on this range, see #1479
+  const Scalar rangeLength = antecedent.getRange().getUpperBound()[0] - antecedent.getRange().getLowerBound()[0];
+  solver_ = Brent(ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon") * rangeLength, ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"), ResourceMap::GetAsScalar("CompositeDistribution-SolverEpsilon"));
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   setParallel(function.getImplementation()->isParallel() && antecedent.getImplementation()->isParallel());
@@ -181,8 +192,6 @@ void CompositeDistribution::update()
   if (!std::isfinite(values_[0])) throw NotDefinedException(HERE) << "Error: cannot evaluate the function at x=" << xMin;
   probabilities_ = Point(1, antecedent_.computeCDF(xMin));
   increasing_ = Indices(0);
-  Scalar fMin = values_[0];
-  Scalar fMax = values_[0];
   const UnsignedInteger n = ResourceMap::GetAsUnsignedInteger("CompositeDistribution-StepNumber");
   const Function derivative(new CompositeDistributionDerivativeEvaluation(function_));
   Scalar a = xMin;
@@ -229,8 +238,6 @@ void CompositeDistribution::update()
       increasing_.add(value > values_[values_.getSize() - 1]);
       values_.add(value);
       probabilities_.add(antecedent_.computeCDF(root));
-      fMin = std::min(value, fMin);
-      fMax = std::max(value, fMax);
     }
     catch(...)
     {
@@ -251,8 +258,8 @@ void CompositeDistribution::update()
   increasing_.add(value > values_[values_.getSize() - 1]);
   values_.add(value);
   probabilities_.add(Point(1, antecedent_.computeCDF(xMax)));
-  fMin = std::min(value, fMin);
-  fMax = std::max(value, fMax);
+  const Scalar fMin = *std::min_element(values_.begin(), values_.end());
+  const Scalar fMax = *std::max_element(values_.begin(), values_.end());
   setRange(Interval(fMin, fMax));
 }
 
@@ -440,6 +447,116 @@ Scalar CompositeDistribution::computeCDF(const Point & point) const
   return cdf;
 }
 
+/* Get the probability content of an interval */
+Scalar CompositeDistribution::computeProbability(const Interval & interval) const
+{
+  if (interval.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension 1, here dimension=" << interval.getDimension();
+  Scalar probability = 0.0;
+  const Scalar lo = interval.getLowerBound()[0];
+  const Scalar hi = interval.getUpperBound()[0];
+  if (hi < lo) return probability;
+  Scalar a = bounds_[0];
+  Scalar fA = values_[0];
+  Scalar b = a;
+  Scalar fB = fA;
+  const UnsignedInteger size = bounds_.getSize();
+  for (UnsignedInteger i = 1; i < size; ++i)
+  {
+    a = b;
+    fA = fB;
+    b = bounds_[i];
+    fB = values_[i];
+    // A constant segment maps all its antecedent mass to the single value fA,
+    // which is an atom of the distribution: it is taken into account when the
+    // interval contains this value.
+    if (fA == fB)
+    {
+      LOGDEBUG(OSS() << "constant segment, i=" << i << ", a=" << a << ", fA=" << fA << ", x=" << hi << ", b=" << b << ", fB=" << fB);
+      if ((lo <= fA) && (fA <= hi)) probability += probabilities_[i] - probabilities_[i - 1];
+      continue;
+    }
+    // The contribution of the current segment [a, b] to the probability
+    // P(lo <= f(antecedent) <= hi) where f is monotonic on [a, b].
+    // The antecedent mass at an interior partition bound belongs to the
+    // segment on its left, so for i > 1 the effective antecedent set is
+    // (a, b]: lower bounds use the left-limit CDF CDF(t-) and upper bounds
+    // use the right-continuous CDF CDF(t), both clamped to [pA, pB].
+    if (increasing_[i - 1])
+    {
+      // f increasing on [a, b], image = [fA, fB]
+      if (hi < fA || lo > fB) continue;
+      const Scalar pA = probabilities_[i - 1];
+      const Scalar pB = probabilities_[i];
+      const Bool discrete = antecedent_.isDiscrete();
+      Scalar pLo = pA;
+      Scalar pHi = pB;
+      if (!(lo <= fA))
+      {
+        if (lo == fB)
+        {
+          const Point bPoint(1, b);
+          Scalar cdfBLeft = antecedent_.computeCDF(bPoint);
+          if (discrete) cdfBLeft -= antecedent_.computePDF(bPoint);
+          pLo = std::max(pA, cdfBLeft);
+        }
+        else
+        {
+          const Scalar tLo = solver_.solve(function_, lo, a, b, fA, fB);
+          const Point tLoPoint(1, tLo);
+          Scalar cdfLoLeft = antecedent_.computeCDF(tLoPoint);
+          if (discrete) cdfLoLeft -= antecedent_.computePDF(tLoPoint);
+          pLo = std::max(pA, cdfLoLeft);
+        }
+      }
+      if (!(hi >= fB))
+      {
+        const Scalar tHi = solver_.solve(function_, hi, a, b, fA, fB);
+        const Point tHiPoint(1, tHi);
+        const Scalar cdfHi = antecedent_.computeCDF(tHiPoint);
+        pHi = std::max(pA, std::min(pB, cdfHi));
+      }
+      probability += pHi - pLo;
+    } // increasing
+    else
+    {
+      // f decreasing on [a, b], image = [fB, fA]
+      if (hi < fB || lo > fA) continue;
+      const Scalar pA = probabilities_[i - 1];
+      const Scalar pB = probabilities_[i];
+      const Bool discrete = antecedent_.isDiscrete();
+      Scalar pLo = pB;
+      Scalar pHi = pA;
+      if (!(lo <= fB))
+      {
+        const Scalar tLo = solver_.solve(function_, lo, a, b, fA, fB);
+        const Point tLoPoint(1, tLo);
+        const Scalar cdfLo = antecedent_.computeCDF(tLoPoint);
+        pLo = std::max(pA, std::min(pB, cdfLo));
+      }
+      if (!(hi >= fA))
+      {
+        if (hi == fB)
+        {
+          const Point bPoint(1, b);
+          Scalar cdfBLeft = antecedent_.computeCDF(bPoint);
+          if (discrete) cdfBLeft -= antecedent_.computePDF(bPoint);
+          pHi = std::max(pA, cdfBLeft);
+        }
+        else
+        {
+          const Scalar tHi = solver_.solve(function_, hi, a, b, fA, fB);
+          const Point tHiPoint(1, tHi);
+          Scalar cdfHiLeft = antecedent_.computeCDF(tHiPoint);
+          if (discrete) cdfHiLeft -= antecedent_.computePDF(tHiPoint);
+          pHi = std::max(pA, cdfHiLeft);
+        }
+      }
+      probability += pLo - pHi;
+    } // decreasing
+  } // i
+  return SpecFunc::Clip01(probability);
+}
+
 /** Get the product minimum volume interval containing a given probability of the distribution */
 Interval CompositeDistribution::computeMinimumVolumeIntervalWithMarginalProbability(const Scalar prob, Scalar & marginalProb) const
 {
@@ -466,14 +583,37 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
 /* Get the PDF singularities inside of the range - 1D only */
 Point CompositeDistribution::getSingularities() const
 {
-  if (values_.getSize() == 2) return Point(1, 0);
-  // The singularities are at the extrema of f
-  Point singularities(values_);
+  // The singularities are at the images of the points where the monotonicity
+  // of g changes, ie at interior values where the increasing flag differs
+  // from the previous segment, or where the derivative is zero (stationary
+  // points). Points which are not critical (eg refinement points inside a
+  // monotonic region of the explicit partition with nonzero derivative) are
+  // excluded.
+  const UnsignedInteger size = values_.getSize();
+  if (size <= 2) return Point(0);
+  std::vector<Scalar> singularities;
+  for (UnsignedInteger i = 1; i < size - 1; ++i)
+  {
+    Bool isDirectionChange = (increasing_[i - 1] != increasing_[i]);
+    Bool isStationary = false;
+    try
+    {
+      const Point bound(1, bounds_[i]);
+      const Matrix gradient = function_.gradient(bound);
+      if (gradient.getNbRows() == 1 && gradient.getNbColumns() == 1)
+      {
+        const Scalar deriv = gradient(0, 0);
+        if (std::abs(deriv) < SpecFunc::ScalarEpsilon) isStationary = true;
+      }
+    }
+    catch (...)
+    {
+      // If gradient cannot be computed, fall back to direction change only
+    }
+    if (isDirectionChange || isStationary) singularities.push_back(values_[i]);
+  }
   std::sort(singularities.begin(), singularities.end());
-  // Remove the end points
-  singularities.erase(UnsignedInteger(0));
-  singularities.erase(singularities.getSize() - 1);
-  return singularities;
+  return Point(singularities.begin(), singularities.end());
 }
 
 /* Parameters value and description accessor */

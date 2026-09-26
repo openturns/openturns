@@ -141,6 +141,64 @@ Point GaussKronrod::integrate(const Function & function,
 Point GaussKronrod::integrate(const Function & function,
                               const Scalar a,
                               const Scalar b,
+                              Scalar & error,
+                              Point & ai,
+                              Point & bi,
+                              Sample & fi,
+                              Point & ei,
+                              Sample & x,
+                              Sample & y) const
+{
+  if (function.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can integrate only 1D function, here input dimension=" << function.getInputDimension();
+  const UnsignedInteger outputDimension = function.getOutputDimension();
+  if (!(outputDimension > 0)) throw InvalidArgumentException(HERE) << "Error: can integrate only non-zero output dimension function, here outputDimension = " << outputDimension;
+  // Grow the containers only when needed, so that their capacity is kept
+  // between successive calls and no allocation is performed here. The entries
+  // beyond the number of used sub-intervals are overwritten before being read
+  if (ai.getSize() < maximumSubIntervals_) ai.resize(maximumSubIntervals_);
+  ai[0] = a;
+  if (bi.getSize() < maximumSubIntervals_) bi.resize(maximumSubIntervals_);
+  bi[0] = b;
+  if (fi.getSize() < maximumSubIntervals_ || fi.getDimension() != outputDimension) fi = Sample(maximumSubIntervals_, outputDimension);
+  if (ei.getSize() < maximumSubIntervals_) ei.resize(maximumSubIntervals_);
+  Point result(outputDimension);
+  UnsignedInteger ip = 0;
+  UnsignedInteger im = 0;
+  error = maximumError_;
+  while ((error > 0.25 * maximumError_) && (im < maximumSubIntervals_ - 1))
+  {
+    ++im;
+    bi[im] = bi[ip];
+    ai[im] = 0.5 * (ai[ip] + bi[ip]);
+    bi[ip] = ai[im];
+    fi[ip] = computeRule(function, ai[ip], bi[ip], ei[ip], x, y);
+    fi[im] = computeRule(function, ai[im], bi[im], ei[im], x, y);
+    UnsignedInteger iErrorMax = 0;
+    Scalar errorMax = 0.0;
+    error = 0.0;
+    result = Point(outputDimension);
+    for (UnsignedInteger i = 0; i <= im; ++i)
+    {
+      const Scalar localError = ei[i];
+      for (UnsignedInteger j = 0; j < outputDimension; ++j) result[j] += fi(i, j);
+      error += localError * localError;
+      // Add a test on the integration interval length to avoid too short intervals
+      if ((localError > errorMax) && (bi[i] - ai[i] > maximumError_))
+      {
+        errorMax = localError;
+        iErrorMax = i;
+      }
+    }
+    ip = iErrorMax;
+    error = sqrt(error);
+  } // while (error >...)
+  if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
+  return result;
+}
+
+Point GaussKronrod::integrate(const Function & function,
+                              const Scalar a,
+                              const Scalar b,
                               Point & error,
                               Point & ai,
                               Point & bi,
@@ -158,10 +216,26 @@ Point GaussKronrod::computeRule(const Function & function,
                                 const Scalar b,
                                 Scalar & localError) const
 {
+  Sample x(2 * rule_.order_ + 1, 1);
+  Sample y;
+  return computeRule(function, a, b, localError, x, y);
+}
+
+/* Compute the local GaussKronrod rule over [a, b], reusing the given scratch
+   samples in order to limit the allocations in the inner loop of an iterated
+   integration. */
+Point GaussKronrod::computeRule(const Function & function,
+                                const Scalar a,
+                                const Scalar b,
+                                Scalar & localError,
+                                Sample & x,
+                                Sample & y) const
+{
   const Scalar width = 0.5 * (b - a);
   const Scalar center = 0.5 * (a + b);
   // Generate the set of points
-  Sample x(2 * rule_.order_ + 1, 1);
+  const UnsignedInteger size = 2 * rule_.order_ + 1;
+  if (x.getSize() != size) x = Sample(size, 1);
   x(0, 0) = center;
   for (UnsignedInteger i = 0; i < rule_.order_; ++i)
   {
@@ -170,7 +244,7 @@ Point GaussKronrod::computeRule(const Function & function,
     x(2 * i + 2, 0) = center + t;
   }
   // Use possible parallelization of the evaluation
-  const Sample y(function(x));
+  y = function(x);
   Point value(y[0]);
   Point resultGauss(value * rule_.zeroGaussWeight_);
   Point resultGaussKronrod(value * rule_.zeroKronrodWeight_);

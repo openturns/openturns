@@ -6,6 +6,21 @@ Notes
 This is a reimplementation of the method described in [genz2003]_.
 The original matlab file can be found at https://www.math.wsu.edu/faculty/genz/software/software.html.
 
+The keys of :class:`~openturns.ResourceMap` related to the class are:
+
+- the key `SimplicialCubature-DefaultMaximumAbsoluteError` that defines the default maximum absolute error,
+- the key `SimplicialCubature-DefaultMaximumRelativeError` that defines the default maximum relative error,
+- the key `SimplicialCubature-DefaultMaximumCallsNumber` that defines the default maximum calls number,
+- the key `SimplicialCubature-DefaultRule` that defines the default integration rule,
+- the key `SimplicialCubature-EvaluationBlockSize` that defines the number of simplices over which the integrand is evaluated in a single batch, keeping the memory usage bounded,
+- the key `SimplicialCubature-MarginalDiscretizationIntervalsNumber` that defines the number of discretization intervals used along each marginal of the integration interval.
+
+The rule points of the simplices are built and the rule is contracted over
+the function values with :class:`~openturns.TBB` when the integrand function
+allows parallel evaluation and more than one thread is available. The
+refinement sequence itself is serial, so the result does not depend on the
+number of threads.
+
 Examples
 --------
 >>> import openturns as ot
@@ -34,6 +49,16 @@ value : :class:`~openturns.Point`
     Approximation of the integral.
 
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SimplicialCubature-DefaultMaximumAbsoluteError`` (``Scalar``, default: ``0.0``): default maximum absolute error of the simplicial cubature
+- ``SimplicialCubature-DefaultMaximumCallsNumber`` (``UnsignedInteger``, default: ``100000``): default maximum number of calls of the integrand
+- ``SimplicialCubature-DefaultMaximumRelativeError`` (``Scalar``, default: ``1.0e-5``): default maximum relative error of the simplicial cubature
+- ``SimplicialCubature-DefaultRule`` (``UnsignedInteger``, default: ``3``): rank of the integration rule used by the simplicial cubature, from 1 to 4
+- ``SimplicialCubature-MarginalDiscretizationIntervalsNumber`` (``UnsignedInteger``, default: ``1``): number of discretization intervals used on each marginal of the integration domain
+
 Examples
 --------
 >>> import openturns as ot
@@ -43,6 +68,7 @@ Examples
 >>> algo = ot.SimplicialCubature()
 >>> f = ot.SymbolicFunction(['x1', 'x2'], ['exp(x1 + x2)'])
 >>> value = algo.integrate(f, mesh)
+
 )RAW"
 
 // ---------------------------------------------------------------------

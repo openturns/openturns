@@ -12,3 +12,7 @@ OT_OrthogonalUniVariatePolynomialFactory_getNodesAndWeights_doc
 OT_OrthogonalUniVariatePolynomialFactory_getRecurrenceCoefficients_doc
 %feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getRoots
 OT_OrthogonalUniVariatePolynomialFactory_getRoots_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getA
+OT_OrthogonalUniVariatePolynomialFactory_getA_doc
+%feature("docstring") OT::OrthogonalUniVariatePolynomialFamily::getB
+OT_OrthogonalUniVariatePolynomialFactory_getB_doc

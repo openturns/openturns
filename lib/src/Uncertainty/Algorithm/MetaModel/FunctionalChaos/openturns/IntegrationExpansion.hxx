@@ -71,6 +71,23 @@ public:
                        const OrthogonalBasis & basis,
                        const UnsignedInteger basisSize = ResourceMap::GetAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize"));
 
+  /** Constructor with active functions */
+  IntegrationExpansion(const Sample & inputSample,
+                       const Point & weights,
+                       const Sample & outputSample,
+                       const Distribution & distribution,
+                       const OrthogonalBasis & basis,
+                       const UnsignedInteger basisSize,
+                       const Indices & activeFunctions);
+
+  /** Constructor with active functions */
+  IntegrationExpansion(const Sample & inputSample,
+                       const Sample & outputSample,
+                       const Distribution & distribution,
+                       const OrthogonalBasis & basis,
+                       const UnsignedInteger basisSize,
+                       const Indices & activeFunctions);
+
   /** Virtual constructor */
   IntegrationExpansion * clone() const override;
 

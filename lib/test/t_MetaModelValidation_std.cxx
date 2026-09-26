@@ -104,23 +104,20 @@ int main(int, char *[])
     fullprint << "R2 = " << std::setprecision(PlatformInfo::GetNumericalPrecision()) << std::fixed << metaModelValidationSPC.computeR2Score() << std::endl;
     fullprint << "Residual sample = " << metaModelValidationSPC.getResidualSample() << std::endl;
 
-    // 2) Kriging algorithm
-    // KrigingAlgorithm
+    // 2) GPR algorithm
     Basis basis(QuadraticBasisFactory(dimension).build());
     // model computed
-    Point scale(3);
-    scale[0] = 3.52;
-    scale[1] = 2.15;
-    scale[2] = 2.99;
+    const Point scale = {3.52, 2.15, 2.99};
     Point amplitude(1, 11.41);
     CovarianceModel covarianceModel = GeneralizedExponential(scale, amplitude, 2.0);
 
+    GaussianProcessFitter fitter(inputSample, outputSample, covarianceModel, basis);
+    fitter.setOptimizeParameters(false);
+    fitter.run();
 
-    KrigingAlgorithm algo2(inputSample, outputSample, covarianceModel, basis);
-    algo2.setOptimizeParameters(false);
+    GaussianProcessRegression algo2(fitter.getResult());
     algo2.run();
-
-    KrigingResult result2 = algo2.getResult();
+    GaussianProcessRegressionResult result2 = algo2.getResult();
 
     // MetaModelValidation - KG
     Function metamodel2(result2.getMetaModel());

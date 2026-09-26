@@ -120,10 +120,12 @@ public:
 
   static Graph DrawCorrelationCoefficients(const Point & values,
       const Description & names,
-      const String & title);
+      const String & title,
+      const String & yLabel = "correlation coefficient");
 
   static Graph DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
-      const String & title);
+      const String & title,
+      const String & yLabel = "correlation coefficient");
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;

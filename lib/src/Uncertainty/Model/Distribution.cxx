@@ -728,6 +728,12 @@ LevelSet Distribution::computeMinimumVolumeLevelSetWithThreshold(const Scalar pr
   return getImplementation()->computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
 }
 
+/* Collection version of the minimum volume level set computation */
+Collection<LevelSet> Distribution::computeMinimumVolumeLevelSetCollectionWithThreshold(const Point & prob, Point & thresholdOut) const
+{
+  return getImplementation()->computeMinimumVolumeLevelSetCollectionWithThreshold(prob, thresholdOut);
+}
+
 /* Compute the quantile over a regular grid */
 Sample Distribution::computeQuantile(const Scalar qMin,
                                      const Scalar qMax,

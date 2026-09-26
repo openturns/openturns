@@ -46,6 +46,15 @@ The optimal :math:`\vect{\theta}` is searched as the solution of the optimizatio
 
     \vect{\theta}_{opt} = \argmin_{\vect{\theta} \in \Rset^K} \sum_{i=1}^K (F^{-1}_{\vect{\theta}}(p_i) - \hat{q}_i)^2
 
+The following :class:`~openturns.ResourceMap` keys are used. All the keys drive the precision
+of the optimization solver involved in the estimation:
+
+- ``QuantileMatchingFactory-MaximumAbsoluteError`` (``Scalar``, default: ``1e-10``): absolute error of the optimization.
+- ``QuantileMatchingFactory-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of calls of the objective function.
+- ``QuantileMatchingFactory-MaximumConstraintError`` (``Scalar``, default: ``1e-10``): constraint error of the optimization.
+- ``QuantileMatchingFactory-MaximumObjectiveError`` (``Scalar``, default: ``1e-10``): objective error of the optimization.
+- ``QuantileMatchingFactory-MaximumRelativeError`` (``Scalar``, default: ``1e-10``): relative error of the optimization.
+
 See also
 --------
 DistributionFactory
@@ -86,7 +95,8 @@ An example with 4 parameters:
 >>> sample = distribution.getSample(10)
 >>> distribution = ot.Beta()
 >>> factory = ot.QuantileMatchingFactory(distribution, [0.01, 1/3, 2/3, 0.99])
->>> inf_distribution = factory.build(sample)  # doctest: +SKIP)RAW"
+>>> inf_distribution = factory.build(sample)  # doctest: +SKIP
+)RAW"
 
 // ---------------------------------------------------------------------
 

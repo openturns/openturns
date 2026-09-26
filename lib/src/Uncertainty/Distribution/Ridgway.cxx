@@ -25,6 +25,8 @@
  *
  */
 #include <cmath>
+#include <cstdint>
+#include <limits>
 #include <vector>
 #include <algorithm>
 
@@ -59,8 +61,11 @@ Scalar truncatedNormalDraw(const Scalar lower, const Scalar upper, const Scalar 
 
 // Systematic resampling (Algorithm 4 in the paper)
 // Given normalized weights (summing to 1), returns ancestor indices
+// The uniform draw u is passed explicitly so that no RNG call remains
+// inside parallel regions; the sequential overload below pre-draws it
 void systematicResampling(const Point& normWeights,
-                          std::vector<UnsignedInteger>& indices)
+                          std::vector<UnsignedInteger>& indices,
+                          const Scalar u)
 {
   const UnsignedInteger M = normWeights.getSize();
   Point cumulative(M);
@@ -69,17 +74,18 @@ void systematicResampling(const Point& normWeights,
     cumulative[i] = cumulative[i - 1] + normWeights[i];
 
   const Scalar step = 1.0 / M;
-  const Scalar u = RandomGenerator::Generate() * step;
+  const Scalar u0 = u * step;
 
   UnsignedInteger j = 0;
   for (UnsignedInteger i = 0; i < M; ++i)
   {
-    const Scalar threshold = u + i * step;
+    const Scalar threshold = u0 + i * step;
     while (cumulative[j] < threshold && j < M - 1)
       ++j;
     indices[i] = j;
   }
 }
+
 
 // One Gibbs sweep for particle eta at time t (Section 4.3.1)
 // Updates all components 0..t-1 of eta in place
@@ -142,6 +148,49 @@ Scalar logSumExp(const Point& logWeights)
   return maxVal + std::log(sum);
 }
 
+// Convert a uniform-draw count to a pool size, rejecting absurd values
+// instead of truncating them
+UnsignedInteger checkedPoolSize(const uint64_t count)
+{
+  if (count > std::numeric_limits<UnsignedInteger>::max())
+    throw InvalidArgumentException(HERE) << "Number of uniform draws " << count << " exceeds the maximum pool size";
+  return static_cast<UnsignedInteger>(count);
+}
+
+// Uniform source abstraction for the SMC core below: bulk takes are always
+// performed sequentially, outside parallel regions, so no RNG call remains
+// inside parallel code
+struct GeneratingUniformSource
+{
+  Point take(const UnsignedInteger n)
+  {
+    Point slice(n);
+    for (UnsignedInteger i = 0; i < n; ++i)
+      slice[i] = RandomGenerator::Generate();
+    return slice;
+  }
+};
+
+// Pre-filled pool source for the Student outer blocks: each outer sample owns
+// a disjoint slice, consumed by a single worker, so variable takes within a
+// slice stay thread-safe as long as takes never exceed the reservation
+struct PooledUniformSource
+{
+  const Point& pool_;
+  UnsignedInteger cursor_;
+  PooledUniformSource(const Point& pool, const UnsignedInteger cursor)
+    : pool_(pool)
+    , cursor_(cursor) {}
+  Point take(const UnsignedInteger n)
+  {
+    Point slice(n);
+    for (UnsignedInteger i = 0; i < n; ++i)
+      slice[i] = pool_[cursor_ + i];
+    cursor_ += n;
+    return slice;
+  }
+};
+
 } // anonymous namespace
 
 namespace
@@ -160,11 +209,49 @@ LowDiscrepancySequence GetRidgwaySequence(const UnsignedInteger dimension)
 }
 } // anonymous namespace
 
+// Core Gaussian orthant SMC defined below, shared by the direct and Student paths
+template <typename UniformSource>
+Scalar mvnOrthantProbabilityCore(
+    const Point& a, const Point& b,
+    const Point& mu, const TriangularMatrix& L,
+    const UnsignedInteger M,
+    const Scalar alpha,
+    UniformSource& source);
+
 Scalar mvn_orthant_probability(
     const Point& a, const Point& b,
     const Point& mu, const TriangularMatrix& L,
     const UnsignedInteger M,
     const Scalar alpha)
+{
+  // Direct path: draws are generated on demand, sequentially, outside parallel regions
+  GeneratingUniformSource source;
+  return mvnOrthantProbabilityCore(a, b, mu, L, M, alpha, source);
+}
+
+Scalar mvn_orthant_probability(
+    const Point& a, const Point& b,
+    const TriangularMatrix& L,
+    const UnsignedInteger M,
+    const Scalar alpha)
+{
+  const UnsignedInteger d = L.getDimension();
+  return mvn_orthant_probability(a, b, Point(d, 0.0), L, M, alpha);
+}
+
+// Core Gaussian orthant SMC (Algorithm 3 in the paper), shared by the direct
+// and Student paths: uniform draws are taken sequentially in bulk through the
+// source, outside parallel regions, so no RandomGenerator::Generate() call
+// remains in parallel code. Takes never exceed M + (d - 1) * (1 + M)
+// + M * d * (d - 1) / 2 draws per call: M initial draws, then per dimension
+// at most 1 resampling + M extension + M * t Gibbs draws.
+template <typename UniformSource>
+Scalar mvnOrthantProbabilityCore(
+    const Point& a, const Point& b,
+    const Point& mu, const TriangularMatrix& L,
+    const UnsignedInteger M,
+    const Scalar alpha,
+    UniformSource& source)
 {
   const UnsignedInteger d = L.getDimension();
 
@@ -219,10 +306,8 @@ Scalar mvn_orthant_probability(
                         - DistFunc::pNormal(a0[0] / L(0, 0));
   if (!(initProb > 0.0)) return 0.0;
   Scalar logZ = std::log(initProb);
-  // Pre-generate random numbers for thread safety with TBB
-  Point initU(M);
-  for (UnsignedInteger i = 0; i < M; ++i)
-    initU[i] = RandomGenerator::Generate();
+  // Take the M initial draws sequentially, outside parallel regions
+  const Point initU(source.take(M));
   struct InitParticlesFunctor {
     std::vector<Point>& particles_;
     const TriangularMatrix& L_;
@@ -270,9 +355,9 @@ Scalar mvn_orthant_probability(
       for (UnsignedInteger i = 0; i < M; ++i)
         normWeights[i] = std::exp(logWeights[i] - logSum);
 
-      // Systematic resampling
+      // Systematic resampling with a sequentially pre-taken draw
       std::vector<UnsignedInteger> ancestors(M);
-      systematicResampling(normWeights, ancestors);
+      systematicResampling(normWeights, ancestors, source.take(1)[0]);
 
       // Copy resampled particles
       std::vector<Point> newParticles(M, Point(d, 0.0));
@@ -283,12 +368,8 @@ Scalar mvn_orthant_probability(
       // Reset weights
       std::fill(logWeights.begin(), logWeights.end(), 0.0);
 
-      // Gibbs moves to rejuvenate particles
-      // Pre-generate t*M random numbers (at most t draws per particle)
-      const UnsignedInteger totalGibbsU = M * t;
-      Point gibbsU(totalGibbsU);
-      for (UnsignedInteger i = 0; i < totalGibbsU; ++i)
-        gibbsU[i] = RandomGenerator::Generate();
+      // Gibbs moves to rejuvenate particles, using sequentially pre-taken draws
+      const Point gibbsU(source.take(M * t));
       struct GibbsMoveFunctor {
         std::vector<Point>& particles_;
         const TriangularMatrix& L_;
@@ -313,11 +394,8 @@ Scalar mvn_orthant_probability(
       TBBImplementation::ParallelFor(0, M, GibbsMoveFunctor(particles, L, a0, b0, t, gibbsU));
     }
 
-    // Extend to dimension t (Algorithm 3 inner loop)
-    // Pre-generate M random numbers for thread safety
-    Point extendU(M);
-    for (UnsignedInteger i = 0; i < M; ++i)
-      extendU[i] = RandomGenerator::Generate();
+    // Extend to dimension t (Algorithm 3 inner loop), one pre-taken draw per particle
+    const Point extendU(source.take(M));
     struct ExtendDimensionFunctor {
       std::vector<Point>& particles_;
       Point& logWeights_;
@@ -360,16 +438,6 @@ Scalar mvn_orthant_probability(
   return SpecFunc::Clip01(std::exp(logResult));
 }
 
-Scalar mvn_orthant_probability(
-    const Point& a, const Point& b,
-    const TriangularMatrix& L,
-    const UnsignedInteger M,
-    const Scalar alpha)
-{
-  const UnsignedInteger d = L.getDimension();
-  return mvn_orthant_probability(a, b, Point(d, 0.0), L, M, alpha);
-}
-
 Scalar mvt_orthant_probability(
     const Point& a, const Point& b,
     const Point& mu, const TriangularMatrix& L,
@@ -399,6 +467,16 @@ Scalar mvt_orthant_probability(
     throw InvalidArgumentException(HERE) << "ESS threshold must be positive, here alpha=" << alpha;
   if (N == 0)
     throw InvalidArgumentException(HERE) << "Number of Student samples must be positive, here N=0";
+  const UnsignedInteger poolBudget = ResourceMap::GetAsUnsignedInteger("Ridgway-UniformPoolSize");
+  if (poolBudget == 0)
+    throw InvalidArgumentException(HERE) << "Uniform pool size must be positive, here Ridgway-UniformPoolSize=0";
+  // Worst-case draws of one inner call: M initial draws, then per dimension
+  // at most 1 resampling + M extension + M * t Gibbs draws, i.e.
+  // M * d * (d + 1) / 2 + (d - 1) uniforms. Larger samples are rejected
+  // before any allocation so a block never exceeds the pool budget.
+  const uint64_t drawsPerSample = static_cast<uint64_t>(M) * d * (d + 1) / 2 + (d - 1);
+  if (drawsPerSample > poolBudget)
+    throw InvalidArgumentException(HERE) << "One Student outer sample needs up to " << drawsPerSample << " uniform draws, exceeding Ridgway-UniformPoolSize=" << poolBudget << "; increase the pool size or reduce the particle number";
 
   for (UnsignedInteger i = 0; i < d; ++i)
   {
@@ -429,6 +507,13 @@ Scalar mvt_orthant_probability(
   const LowDiscrepancySequence seq(GetRidgwaySequence(1));
   const Sample sobolPoints(seq.generate(N));
 
+  // The inner SMC calls used to consume the thread-unsafe global RNG from
+  // within the parallel outer loop. All their uniform draws are now generated
+  // sequentially in advance: the outer loop runs sequentially over blocks,
+  // each block owning a disjoint pool slice, and each block is fully
+  // parallelized without any RandomGenerator::Generate() call inside.
+  const uint64_t blockSamples = poolBudget / drawsPerSample;
+
   struct Reduce
   {
     const Sample& sobolPoints_;
@@ -439,11 +524,15 @@ Scalar mvt_orthant_probability(
     const Scalar alpha_;
     const UnsignedInteger d_;
     const Scalar nu_;
+    const Point& pool_;
+    const uint64_t drawsPerSample_;
+    const UnsignedInteger first_;
     Scalar sum_;
 
     Reduce(const Sample& sobolPoints, const Point& a0, const Point& b0,
            const TriangularMatrix& L, const UnsignedInteger M, const Scalar alpha,
-           const UnsignedInteger d, const Scalar nu)
+           const UnsignedInteger d, const Scalar nu,
+           const Point& pool, const uint64_t drawsPerSample, const UnsignedInteger first)
       : sobolPoints_(sobolPoints)
       , a0_(a0)
       , b0_(b0)
@@ -452,6 +541,9 @@ Scalar mvt_orthant_probability(
       , alpha_(alpha)
       , d_(d)
       , nu_(nu)
+      , pool_(pool)
+      , drawsPerSample_(drawsPerSample)
+      , first_(first)
       , sum_(0.0) {}
 
     Reduce(const Reduce& other, TBBImplementation::Split)
@@ -463,6 +555,9 @@ Scalar mvt_orthant_probability(
       , alpha_(other.alpha_)
       , d_(other.d_)
       , nu_(other.nu_)
+      , pool_(other.pool_)
+      , drawsPerSample_(other.drawsPerSample_)
+      , first_(other.first_)
       , sum_(0.0) {}
 
     void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r)
@@ -476,16 +571,29 @@ Scalar mvt_orthant_probability(
           a_s[i] = a0_[i] * s;
           b_s[i] = b0_[i] * s;
         }
-        sum_ += mvn_orthant_probability(a_s, b_s, L_, M_, alpha_);
+        // Disjoint pool slice for this outer sample, takes stay within the reservation
+        PooledUniformSource source(pool_, static_cast<UnsignedInteger>((static_cast<uint64_t>(k) - first_) * drawsPerSample_));
+        sum_ += mvnOrthantProbabilityCore(a_s, b_s, Point(d_, 0.0), L_, M_, alpha_, source);
       }
     }
 
     void join(const Reduce& other) { sum_ += other.sum_; }
   };
 
-  Reduce body(sobolPoints, a0, b0, L, M, alpha, d, nu);
-  TBBImplementation::ParallelReduce(0, N, body);
-  return SpecFunc::Clip01(body.sum_ / static_cast<Scalar>(N));
+  Scalar sum = 0.0;
+  for (uint64_t first = 0; first < N;)
+  {
+    const uint64_t last = std::min(first + blockSamples, static_cast<uint64_t>(N));
+    const UnsignedInteger blockSize = static_cast<UnsignedInteger>(last - first);
+    Point pool(checkedPoolSize(blockSize * drawsPerSample));
+    for (UnsignedInteger i = 0; i < pool.getSize(); ++i)
+      pool[i] = RandomGenerator::Generate();
+    Reduce body(sobolPoints, a0, b0, L, M, alpha, d, nu, pool, drawsPerSample, static_cast<UnsignedInteger>(first));
+    TBBImplementation::ParallelReduce(static_cast<UnsignedInteger>(first), static_cast<UnsignedInteger>(last), body);
+    sum += body.sum_;
+    first = last;
+  }
+  return SpecFunc::Clip01(sum / static_cast<Scalar>(N));
 }
 
 Scalar mvt_orthant_probability(

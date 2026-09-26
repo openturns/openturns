@@ -25,6 +25,9 @@
 #include "openturns/SymbolicParserImplementation.hxx"
 #include "openturns/Pointer.hxx"
 
+#include <memory>
+#include <mutex>
+
 // Forward declaration
 namespace exprtk
 {
@@ -42,6 +45,35 @@ class SymbolicParserExprTk
 public:
   /** Default constructor */
   SymbolicParserExprTk();
+
+  /** Copy constructor: each clone gets its own mutex */
+  SymbolicParserExprTk(const SymbolicParserExprTk & other)
+    : SymbolicParserImplementation(other)
+    , expressions_(other.expressions_)
+    , stack_(other.stack_)
+    , threadExpressions_(other.threadExpressions_)
+    , threadStack_(other.threadStack_)
+    , mutex_(std::make_shared<std::mutex>())
+    , outputVariablesNames_(other.outputVariablesNames_)
+    , smallSize_(other.smallSize_)
+  {}
+
+  /** Copy assignment: each clone gets its own mutex */
+  SymbolicParserExprTk & operator=(const SymbolicParserExprTk & other)
+  {
+    if (this != &other)
+    {
+      SymbolicParserImplementation::operator=(other);
+      expressions_ = other.expressions_;
+      stack_ = other.stack_;
+      threadExpressions_ = other.threadExpressions_;
+      threadStack_ = other.threadStack_;
+      mutex_ = std::make_shared<std::mutex>();
+      outputVariablesNames_ = other.outputVariablesNames_;
+      smallSize_ = other.smallSize_;
+    }
+    return *this;
+  }
 
   /** Constructor with parameter */
   explicit SymbolicParserExprTk(const Description & outputVariablesNames);
@@ -71,6 +103,11 @@ private:
   // one expression per thread for batch evaluation
   mutable Collection<ExpressionCollection> threadExpressions_;
   mutable Collection<Point> threadStack_;
+
+  // guards the lazy initialization of threadExpressions_ and the point
+  // evaluation which uses the shared expressions_, so that the parser can be
+  // evaluated concurrently from several threads
+  mutable std::shared_ptr<std::mutex> mutex_ = std::make_shared<std::mutex>();
 
   Description outputVariablesNames_;
 

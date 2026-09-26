@@ -144,7 +144,7 @@ print("max sample = ", input_train.getMax()[0])
 # the value of the surrogate model in the vicinity of :math:`x = 0` will be obtained as the sum of real
 # values with opposite signs and large magnitudes. As such, it will be prone to cancellation.
 basis_LN = ot.OrthogonalProductPolynomialFactory(
-    [ot.StandardDistributionPolynomialFactory(ot.LogNormal())]
+    [ot.UniVariateDistributionPolynomialFactory(ot.LogNormal())]
 )
 basis_size_LN = 6
 chaos_algo_LN = ot.LeastSquaresExpansion(
@@ -271,7 +271,7 @@ view = otv.View(graph_LN)
 #
 # We construct the surrogate model as before, using only the polynomials up to degree 5.
 basis_N = ot.OrthogonalProductPolynomialFactory(
-    [ot.StandardDistributionPolynomialFactory(ot.Normal())]
+    [ot.HermiteFactory()]
 )
 basis_size_N = 6
 chaos_algo_N = ot.LeastSquaresExpansion(

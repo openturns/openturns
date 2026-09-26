@@ -86,4 +86,13 @@ name : str
 Returns
 -------
 factory : :class:`~openturns.DistributionFactory`
-    An instance of the desired class."
+
+    An instance of the desired class.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``DistributionFactory-BootstrapErrorTolerance`` (``Scalar``, default: ``0.1``): admitted fraction of bootstrap resamples that fail to build an estimated distribution.
+"
+

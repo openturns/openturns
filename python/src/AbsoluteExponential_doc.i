@@ -41,6 +41,13 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = e^{- \left\| \vect{s}- \vect{t} \right\|_{1}}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``AbsoluteExponential-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}` of the covariance function.
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``AbsoluteExponential-DefaultTheta`` (``Scalar``, default: ``1``)
 
 See Also
 --------
@@ -68,4 +75,5 @@ Create an absolute exponential covariance function specifying only the scale vec
 Create an absolute exponential covariance function specifying the scale vector and the amplitude :
 
 >>> covModel3 = ot.AbsoluteExponential([1.5, 2.5], [3.5])
+
 )RAW"

@@ -36,20 +36,23 @@ static const Factory<PostAnalyticalSimulation> Factory_PostAnalyticalSimulation;
 
 /* Constructor with parameters */
 PostAnalyticalSimulation::PostAnalyticalSimulation()
-  : EventSimulation()
-  , controlProbability_(0.)
+  : EventSimulationImplementation()
+  , controlProbability_(0.0)
 {
+  // Nothing to do
 }
 
 /* Constructor with parameters */
 PostAnalyticalSimulation::PostAnalyticalSimulation(const AnalyticalResult & analyticalResult)
-  : EventSimulation(analyticalResult.getLimitStateVariable())
+  : EventSimulationImplementation(analyticalResult.getLimitStateVariable())
   , analyticalResult_(analyticalResult)
   , standardEvent_(StandardEvent(getEvent()))
   , standardDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
 {
   // Compute the probability associated to the analytical result
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult.getHasoferReliabilityIndex());
+  if (analyticalResult_.getIsStandardPointOriginInFailureSpace())
+    controlProbability_ = 1.0 - controlProbability_;
 }
 
 /* Virtual constructor */
@@ -83,18 +86,20 @@ String PostAnalyticalSimulation::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void PostAnalyticalSimulation::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("analyticalResult_", analyticalResult_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void PostAnalyticalSimulation::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("analyticalResult_", analyticalResult_);
   standardEvent_ = StandardEvent(getEvent());
   standardDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult_.getHasoferReliabilityIndex());
+  if (analyticalResult_.getIsStandardPointOriginInFailureSpace())
+    controlProbability_ = 1.0 - controlProbability_;
 }
 
 END_NAMESPACE_OPENTURNS

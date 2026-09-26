@@ -92,6 +92,15 @@ Then the model response :math:`Y` is evaluated using a sample
 the several indices are computed using the model response and its component
 functions that have been identified on the polynomial chaos.
 
+.. warning::
+   Unlike Sobol' indices computed with independent inputs, ANCOVA indices
+   are not restricted to the :math:`[0,1]` interval and do not necessarily
+   sum to 1. The *correlated* contribution :math:`S_u^C` is a covariance,
+   which can be negative, and strong correlations between the inputs can
+   make their total contributions overlap. This is expected behaviour,
+   which reflects the way correlations share the variance between the
+   inputs.
+
 Examples
 --------
 >>> import openturns as ot

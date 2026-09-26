@@ -7,7 +7,7 @@ The Dickey-Fuller test checks the stationarity of a scalar time series using one
 
 Parameters
 ----------
-series : `~openturns.TimeSeries`
+series : :class:`~openturns.TimeSeries`
     Time series to consider
 
 Examples
