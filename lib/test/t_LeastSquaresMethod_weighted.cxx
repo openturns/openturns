@@ -52,7 +52,8 @@ void checkMethodResults(const String & name,
   assert_almost_equal(gramInverseDiag, refGramInverseDiag, 1e-10, 1e-10);
 }
 
-void checkSolveNormalThrows(LeastSquaresMethod & method,
+template <typename Method>
+void checkSolveNormalThrows(Method & method,
                             UnsignedInteger dimension)
 {
   // solveNormal is uniform-weights only and must reject non-uniform weights
