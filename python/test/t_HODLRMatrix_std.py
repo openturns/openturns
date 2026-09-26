@@ -780,23 +780,37 @@ ot.ResourceMap.SetAsScalar("HODLRMatrix-Nugget", 0.0)
 dense31 = ot.CovarianceMatrix(cov31.discretize(vertices31))
 b31 = ot.Point(n31, 1.0)
 xd31 = dense31.solveLinearSystem(b31)
+solves31 = {}
 for method31 in ["AcaPartial", "AcaRandom"]:
     ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", method31)
     h31 = cov31.discretizeHODLRMatrix(vertices31, make_params(leaf=32))
     h31.factorize()
     xh31 = h31.solve(b31)
+    solves31[method31] = ot.Point(xh31)
     err31 = (ot.Point(xh31 - xd31).norm() / ot.Point(xd31).norm())
     print(f"  {method31}: shift={h31.getRegularizationShift():.2e} solve err {err31:.2e}")
     assert err31 < 1.0e-4, f"{method31} solve error {err31:.2e} too large"
 ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "AcaRandom")
 h31b = cov31.discretizeHODLRMatrix(vertices31, make_params(leaf=32))
 h31b.factorize()
-# same accuracy regime on rebuild (exact bit-reproducibility is not
-# guaranteed: OT RNG draws depend on the calling thread when the test
-# environment enables multithreading)
-ott.assert_almost_equal(ot.Point(h31b.solve(b31)), ot.Point(xh31), 1.0e-9, 1.0e-9)
-print("  AcaRandom rebuild consistent: PASS")
+# AcaRandom draws its pivot pool from the global OT generator, so two builds
+# agree only up to the pivot choices: with parallel assembly the draw order
+# follows the task schedule (see HODLRCore.cxx), hence the 1e-6 here and not
+# the 1e-9 the other cases use. What must hold on every platform is the
+# accuracy of the rebuild.
+xb31 = ot.Point(h31b.solve(b31))
+ott.assert_almost_equal(xb31, solves31["AcaRandom"], 1.0e-6, 1.0e-6)
+err31b = (xb31 - ot.Point(xd31)).norm() / ot.Point(xd31).norm()
+assert err31b < 1.0e-4, f"AcaRandom rebuild solve error {err31b:.2e} too large"
+print(f"  AcaRandom rebuild: consistent within 1e-6, solve err {err31b:.2e}: PASS")
+# The deterministic scheme must not drift at all from one build to the next
 ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "AcaPartial")
+h31c = cov31.discretizeHODLRMatrix(vertices31, make_params(leaf=32))
+h31c.factorize()
+ott.assert_almost_equal(
+    ot.Point(h31c.solve(b31)), solves31["AcaPartial"], 1.0e-15, 1.0e-15
+)
+print("  AcaPartial rebuild reproducible: PASS")
 try:
     ot.ResourceMap.SetAsString("HODLRMatrix-CompressionMethod", "NoSuchMethod")
     raise AssertionError("invalid CompressionMethod was accepted")
