@@ -22,6 +22,24 @@ Its main functionalities are :
 
 More details on this topic are presented in :any:`cross_validation`.
 
+The scores are weighted by the validation weights, which are uniform by
+default. See :meth:`setWeights`. Every average is normalized by the
+weight mass :math:`\sum w_j`, never by the sample size, so that the
+scores converge to their continuous counterparts when the validation
+size grows (quadrature weights of a density sum to 1). For uniform
+weights this reduces to the legacy :math:`1/n` averages. When the
+predictions are leave-one-out or K-Fold predictions at the training
+points of a weighted design, reuse the design weights as validation
+weights to obtain scores consistent with the fitted inner product.
+
+Parameters
+----------
+outputSample : 2-d sequence of float
+    The output validation sample, not used during the learning step.
+
+metamodelPredictions: 2-d sequence of float
+    The output prediction sample from the metamodel.
+
 Examples
 --------
 In this example, we introduce the sinus model and approximate it with a least
@@ -203,12 +221,13 @@ Notes
 The sample mean squared error is:
 
 .. math::
-    \widehat{\operatorname{MSE}} 
-    = \frac{1}{n} \sum_{j=1}^{n} \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2
+    \widehat{\operatorname{MSE}}
+    = \frac{1}{\sum_{j=1}^n w_j} \sum_{j=1}^{n} w_j \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2
 
 where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel,
-:math:`\{\bdx^{(j)} \in \Rset^{n_X}\}_{j = 1, ..., n}` is the input experimental design and
-:math:`\{y^{(j)} \in \Rset\}_{j = 1, ..., n}` is the output of the model.
+:math:`\{\bdx^{(j)} \in \Rset^{n_X}\}_{j = 1, ..., n}` is the input experimental design,
+:math:`\{y^{(j)} \in \Rset\}_{j = 1, ..., n}` is the output of the model and
+:math:`\{w_j\}_{j = 1, ..., n}` are the validation weights, uniform by default.
 
 If the output is multi-dimensional, the same calculations are repeated separately for
 each output marginal :math:`k` for :math:`k = 1, ..., n_y` where :math:`n_y \in \Nset`
@@ -223,3 +242,29 @@ Returns
 -------
 outputMetamodelSample : :class:`~openturns.Sample`
     Output sample of the metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getWeights
+"Accessor to the weights of the validation sample.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The validation weights, stored as a single value when uniform."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::setWeights
+"Accessor to the weights of the validation sample.
+
+The weights define the discrete inner product of the scores: use the
+quadrature weights of the validation design when they are known, so
+that :meth:`computeR2Score` and :meth:`computeMeanSquaredError`
+converge to the continuous :math:`R^2` and MSE.
+
+Parameters
+----------
+weights : sequence of float
+    The validation weights, either a single uniform value or one
+    non-negative value per validation point with a positive sum."
