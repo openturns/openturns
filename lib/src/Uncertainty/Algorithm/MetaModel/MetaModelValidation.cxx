@@ -230,6 +230,9 @@ Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
   // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
+  // Exact for any weights: dropping an observation is a rank-one downdate of
+  // the weighted normal equations, so ri/(1-hi) is the leave-one-out residual
+  // with hi the weighted leverage returned by LeastSquaresMethod::getHDiag.
   const UnsignedInteger sampleSize = outputSample.getSize();
   const UnsignedInteger outputDimension = outputSample.getDimension();
   if (residual.getSize() != sampleSize)
@@ -274,6 +277,13 @@ Sample MetaModelValidation::ComputeMetamodelKFoldPredictions(
   // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
+  // Exact for uniform weights only. Solving (I - P_TT) u = r_T on the test
+  // rows relies on the hat matrix being idempotent, which holds for
+  // H = Psi.(Psi^T Psi)^-1.Psi^T but not for the weighted
+  // H = Psi.(Psi^T W Psi)^-1.Psi^T.W unless W is idempotent. With
+  // non-uniform weights the predictions below are wrong by an amount of the
+  // order of the residuals. The weights are not available here, so this
+  // cannot be detected: see the FunctionalChaosValidation documentation.
   const UnsignedInteger sampleSize = outputSample.getSize();
   const UnsignedInteger outputDimension = outputSample.getDimension();
   if (residual.getSize() != sampleSize)
