@@ -37,6 +37,7 @@ static const Factory<MetaModelValidation> Factory_MetaModelValidation;
 /* Default constructor */
 MetaModelValidation::MetaModelValidation()
   : PersistentObject()
+  , weights_(1, 1.0)
 {
   // Nothing to do
 }
@@ -48,6 +49,7 @@ MetaModelValidation::MetaModelValidation(
   : PersistentObject()
   , outputSample_(outputSample)
   , metaModelPredictions_(metamodelPredictions)
+  , weights_(1, 1.0)
 {
   if (outputSample_.getSize() != metaModelPredictions_.getSize())
     throw InvalidArgumentException(HERE) << "Output sample size (" << outputSample_.getSize() << ")"
@@ -85,14 +87,45 @@ void MetaModelValidation::initialize() const
   // We compute first the residual sample
   // This last one is stored and returned by getResidualSample method
   // From this, it derives also the predictive factor i.e. 1 - RSS/SS,
-  // RSS = Residual Sum of Squares, SS = Sum of Squares
+  // RSS = Residual Sum of Squares, SS = Sum of Squares.
+  // Both sums are weighted by the validation weights normalized by the
+  // weight mass, so that they converge to their continuous counterpart
+  // when the validation size goes to infinity. Uniform weights are
+  // stored as a single value.
   residual_ = outputSample_ - metaModelPredictions_;
-  meanSquaredError_ = residual_.computeRawMoment(2);
+  const UnsignedInteger size = outputSample_.getSize();
   const UnsignedInteger outputDimension = outputSample_.getDimension();
-  const Point sampleVariance(outputSample_.computeCentralMoment(2));
-  Point r2Score(outputDimension);
-  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+  const Bool useUniformWeights = (weights_.getSize() == 1);
+  Scalar weightSum = 0.0;
+  if (useUniformWeights) weightSum = weights_[0] * size;
+  else for (UnsignedInteger i = 0; i < size; ++i) weightSum += weights_[i];
+  if (!(weightSum > 0.0)) throw InvalidArgumentException(HERE) << "Validation weights must have a positive sum, here sum=" << weightSum;
+  Point weightedMean(outputDimension, 0.0);
+  meanSquaredError_ = Point(outputDimension, 0.0);
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
+    const Scalar w = useUniformWeights ? weights_[0] : weights_[i];
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+    {
+      weightedMean[j] += w * outputSample_(i, j);
+      meanSquaredError_[j] += w * residual_(i, j) * residual_(i, j);
+    }
+  }
+  Point sampleVariance(outputDimension, 0.0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar w = useUniformWeights ? weights_[0] : weights_[i];
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+    {
+      const Scalar delta = outputSample_(i, j) - weightedMean[j] / weightSum;
+      sampleVariance[j] += w * delta * delta;
+    }
+  }
+  Point r2Score(outputDimension);
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
+  {
+    meanSquaredError_[j] /= weightSum;
+    sampleVariance[j] /= weightSum;
     if (std::abs(sampleVariance[j]) == 0.0)
       throw NotDefinedException(HERE) << "R2 cannot be computed on constant output component index " << j;
     r2Score[j] = 1.0 - meanSquaredError_[j] / sampleVariance[j];
@@ -108,6 +141,21 @@ Sample MetaModelValidation::getOutputSample() const
 Sample MetaModelValidation::getMetamodelPredictions() const
 {
   return metaModelPredictions_;
+}
+
+Point MetaModelValidation::getWeights() const
+{
+  return weights_;
+}
+
+void MetaModelValidation::setWeights(const Point & weights)
+{
+  const UnsignedInteger size = outputSample_.getSize();
+  if ((weights.getSize() != size) && (weights.getSize() != 1)) throw InvalidArgumentException(HERE) << "Validation weights size (" << weights.getSize() << ") should match the validation sample size (" << size << ") or be a single uniform value";
+  for (UnsignedInteger i = 0; i < weights.getSize(); ++i)
+    if (!(weights[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Validation weights must be non-negative, got " << weights[i] << " at index " << i;
+  weights_ = weights;
+  initialize();
 }
 
 Point MetaModelValidation::computeR2Score() const
@@ -279,6 +327,7 @@ void MetaModelValidation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "metaModelPredictions_", metaModelPredictions_ );
+  adv.saveAttribute( "weights_", weights_ );
   adv.saveAttribute( "residual_", residual_ );
   adv.saveAttribute( "r2Score_", r2Score_ );
   adv.saveAttribute( "meanSquaredError_", meanSquaredError_ );
@@ -290,6 +339,8 @@ void MetaModelValidation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "residual_", residual_ );
+  if (adv.hasAttribute("weights_")) adv.loadAttribute( "weights_", weights_ );
+  else weights_ = Point(1, 1.0);
   if (adv.hasAttribute("metaModelPredictions_") &&
       adv.hasAttribute("meanSquaredError_") &&
       adv.hasAttribute("r2Score_"))

@@ -203,12 +203,13 @@ Notes
 The sample mean squared error is:
 
 .. math::
-    \widehat{\operatorname{MSE}} 
-    = \frac{1}{n} \sum_{j=1}^{n} \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2
+    \widehat{\operatorname{MSE}}
+    = \frac{1}{\sum_{j=1}^n w_j} \sum_{j=1}^{n} w_j \left(y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right)^2
 
 where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel,
-:math:`\{\bdx^{(j)} \in \Rset^{n_X}\}_{j = 1, ..., n}` is the input experimental design and
-:math:`\{y^{(j)} \in \Rset\}_{j = 1, ..., n}` is the output of the model.
+:math:`\{\bdx^{(j)} \in \Rset^{n_X}\}_{j = 1, ..., n}` is the input experimental design,
+:math:`\{y^{(j)} \in \Rset\}_{j = 1, ..., n}` is the output of the model and
+:math:`\{w_j\}_{j = 1, ..., n}` are the validation weights, uniform by default.
 
 If the output is multi-dimensional, the same calculations are repeated separately for
 each output marginal :math:`k` for :math:`k = 1, ..., n_y` where :math:`n_y \in \Nset`
@@ -223,3 +224,24 @@ Returns
 -------
 outputMetamodelSample : :class:`~openturns.Sample`
     Output sample of the metamodel."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::getWeights
+"Accessor to the weights of the validation sample.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The validation weights, stored as a single value when uniform."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::setWeights
+"Accessor to the weights of the validation sample.
+
+Parameters
+----------
+weights : sequence of float
+    The validation weights, either a single uniform value or one
+    non-negative value per validation point with a positive sum."
