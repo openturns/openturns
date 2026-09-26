@@ -184,7 +184,11 @@ degree = 10
 basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
 print("basisSize =", basisSize)
 
-fittingAlgorithm = ot.CorrectedLeaveOneOut()
+fittingAlgorithm = ot.KFold()
+# LARS cross-validation error oscillates along the equiangular path, so the
+# default 2 consecutive increases stop the selection prematurely (7 active
+# functions, poor L2 error). Use 5 consecutive increases instead.
+ot.ResourceMap.SetAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases", 5)
 
 # --- C++ SparseExpansion LARS ---
 print("=" * 60)

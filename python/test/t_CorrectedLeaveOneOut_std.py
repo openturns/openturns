@@ -54,6 +54,8 @@ hDiag = methodW.getHDiag()
 wSum = sum(wNonUniform[s] for s in range(size))
 wMean = sum(wNonUniform[s] * y[s, 0] for s in range(size)) / wSum
 varianceW = sum(wNonUniform[s] * (y[s, 0] - wMean) ** 2 for s in range(size)) / wSum
+# Leave-one-out residuals through the diagonal of the weighted hat matrix
+hDiag = methodW.getHDiag()
 empiricalError = (
     sum(
         wNonUniform[s] * ((y[s, 0] - yHat[s]) / (1.0 - hDiag[s])) ** 2

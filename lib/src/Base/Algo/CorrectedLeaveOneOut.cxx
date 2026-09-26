@@ -122,14 +122,14 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   const Point yHat(psiAk * coefficients);
 
   const Point h(method.getHDiag());
-  Scalar empiricalError = 0.0;
+  Scalar looError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
     const Scalar ns = (y(i, 0) - yHat[i]) / (1.0 - h[i]);
-    empiricalError += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * ns * ns;
+    looError += (useUniformWeights ? methodWeights[0] : methodWeights[i]) * ns * ns;
   }
-  empiricalError /= weightSum;
-  LOGINFO(OSS() << "Empirical error=" << empiricalError);
+  looError /= weightSum;
+  LOGINFO(OSS() << "LOO error=" << looError);
 
   LOGINFO("Compute the correcting factor");
   // G = Psi^T*Psi where Psi = sqrt(W)*Phi, so G^{-1} = (Phi^T*W*Phi)^{-1}
@@ -156,7 +156,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   }
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * empiricalError / variance);
+  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * looError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

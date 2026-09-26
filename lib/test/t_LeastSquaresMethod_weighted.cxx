@@ -36,17 +36,35 @@ void checkMethodResults(const String & name,
                         const CovarianceMatrix & refGramInverse,
                         const Point & refHDiag,
                         Scalar refGramInverseTrace,
-                        const Point & refGramInverseDiag)
+                        const Point & refGramInverseDiag,
+                        const Bool checkSolveNormal = true)
 {
   OStream fullprint(std::cout);
   fullprint << name << std::endl;
 
   assert_almost_equal(solve, refSolve, 1e-10, 1e-10);
-  assert_almost_equal(solveNormal, refSolveNormal, 1e-10, 1e-10);
+  // solveNormal is uniform-weights only: skipped for non-uniform weights,
+  // where the rejection itself is checked by checkSolveNormalThrows
+  if (checkSolveNormal) assert_almost_equal(solveNormal, refSolveNormal, 1e-10, 1e-10);
   assert_almost_equal(gramInverse, refGramInverse, 1e-10, 1e-10);
   assert_almost_equal(hDiag, refHDiag, 1e-10, 1e-10);
   assert_almost_equal(gramInverseTrace, refGramInverseTrace, 1e-10, 1e-10);
   assert_almost_equal(gramInverseDiag, refGramInverseDiag, 1e-10, 1e-10);
+}
+
+void checkSolveNormalThrows(LeastSquaresMethod & method,
+                            UnsignedInteger dimension)
+{
+  // solveNormal is uniform-weights only and must reject non-uniform weights
+  try
+  {
+    (void) method.solveNormal(Point(dimension, 1.0));
+  }
+  catch (const InvalidArgumentException &)
+  {
+    return;
+  }
+  throw TestFailed("solveNormal should reject non-uniform weights");
 }
 
 template <typename Method>
@@ -125,18 +143,18 @@ int main(int, char *[])
 
     // Save uniform-weight reference for cross-checking with non-uniform
     const Point uniformSolve(refSolve);
-    const Point uniformSolveNormal(refSolveNormal);
     const CovarianceMatrix uniformGramInverse(refGramInverse);
     const Scalar uniformGramInverseTrace(refGramInverseTrace);
 
-    // Test non-uniform weights: perturbation should barely change results
+    // Test non-uniform weights: perturbation should barely change results.
+    // solveNormal is uniform-weights only: its rejection is checked instead.
     fullprint << std::endl << "Non-uniform weights" << std::endl << std::endl;
     weights[0] += 1.e-10;
     {
       QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
       refSolve = qrMethod.solve(Point(size, 1.0));
-      refSolveNormal = qrMethod.solveNormal(Point(dimension, 1.0));
+      checkSolveNormalThrows(qrMethod, dimension);
       refGramInverse = qrMethod.getGramInverse();
       refHDiag = qrMethod.getHDiag();
       refGramInverseTrace = qrMethod.getGramInverseTrace();
@@ -145,26 +163,28 @@ int main(int, char *[])
     {
       QRMethod qrMethod(proxy, weights, indices);
       qrMethod.update(Indices(0), indices, Indices(0));
-      checkMethodResults("QR", qrMethod.solve(Point(size, 1.0)), qrMethod.solveNormal(Point(dimension, 1.0)), qrMethod.getGramInverse(), qrMethod.getHDiag(), qrMethod.getGramInverseTrace(), qrMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkSolveNormalThrows(qrMethod, dimension);
+      checkMethodResults("QR", qrMethod.solve(Point(size, 1.0)), Point(), qrMethod.getGramInverse(), qrMethod.getHDiag(), qrMethod.getGramInverseTrace(), qrMethod.getGramInverseDiag(), refSolve, Point(), refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag, false);
       checkMethodH(qrMethod, size);
     }
     {
       SVDMethod svdMethod(proxy, weights, indices);
       svdMethod.update(Indices(0), indices, Indices(0));
-      checkMethodResults("SVD", svdMethod.solve(Point(size, 1.0)), svdMethod.solveNormal(Point(dimension, 1.0)), svdMethod.getGramInverse(), svdMethod.getHDiag(), svdMethod.getGramInverseTrace(), svdMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkSolveNormalThrows(svdMethod, dimension);
+      checkMethodResults("SVD", svdMethod.solve(Point(size, 1.0)), Point(), svdMethod.getGramInverse(), svdMethod.getHDiag(), svdMethod.getGramInverseTrace(), svdMethod.getGramInverseDiag(), refSolve, Point(), refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag, false);
       checkMethodH(svdMethod, size);
     }
     {
       CholeskyMethod choleskyMethod(proxy, weights, indices);
       choleskyMethod.update(Indices(0), indices, Indices(0));
-      checkMethodResults("Cholesky", choleskyMethod.solve(Point(size, 1.0)), choleskyMethod.solveNormal(Point(dimension, 1.0)), choleskyMethod.getGramInverse(), choleskyMethod.getHDiag(), choleskyMethod.getGramInverseTrace(), choleskyMethod.getGramInverseDiag(), refSolve, refSolveNormal, refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag);
+      checkSolveNormalThrows(choleskyMethod, dimension);
+      checkMethodResults("Cholesky", choleskyMethod.solve(Point(size, 1.0)), Point(), choleskyMethod.getGramInverse(), choleskyMethod.getHDiag(), choleskyMethod.getGramInverseTrace(), choleskyMethod.getGramInverseDiag(), refSolve, Point(), refGramInverse, refHDiag, refGramInverseTrace, refGramInverseDiag, false);
       checkMethodH(choleskyMethod, size);
     }
 
     // Non-uniform results should be nearly identical to uniform
     // (perturbation is only 1e-10)
     assert_almost_equal(refSolve, uniformSolve, 1e-4, 1e-4);
-    assert_almost_equal(refSolveNormal, uniformSolveNormal, 1e-4, 1e-4);
     assert_almost_equal(refGramInverse, uniformGramInverse, 1e-4, 1e-4);
     assert_almost_equal(refGramInverseTrace, uniformGramInverseTrace, 1e-4, 1e-4);
   }
