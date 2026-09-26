@@ -133,7 +133,7 @@ void DickeyFullerTest::computeTrendCharacteristics()
 
 
 /* Compute the coefficients of a model with trend and constant */
-void DickeyFullerTest::estimateDriftAndLinearTrendModel()
+void DickeyFullerTest::computeDriftAndLinearTrendModel()
 {
   // Linear system (of dimension 3) is solved
   // We recall the analytical expression of the matrix
@@ -197,7 +197,7 @@ void DickeyFullerTest::estimateDriftAndLinearTrendModel()
 }
 
 /* Compute the coefficients of a model with a constant */
-void DickeyFullerTest::estimateDriftModel()
+void DickeyFullerTest::computeDriftModel()
 {
   if (lastModel_ != 2)
   {
@@ -246,7 +246,7 @@ void DickeyFullerTest::estimateDriftModel()
 }
 
 /* Compute the coefficients of a model with a constant */
-void DickeyFullerTest::estimateAR1Model()
+void DickeyFullerTest::computeAR1Model()
 {
   if (lastModel_ != 1)
   {
@@ -257,7 +257,7 @@ void DickeyFullerTest::estimateAR1Model()
 
     computeNoConstantCharacteristics();
     if (!(sum_squared_yt_minus_one_ > 0.0))
-      throw InvalidArgumentException(HERE) << "Cannot estimate AR1 model: null sum_squared_yt_minus_one_";
+      throw InvalidArgumentException(HERE) << "Cannot compute AR1 model: null sum_squared_yt_minus_one_";
 
     // The rho value is the simplest ratio
     rho_ = sum_yt_yt_minus_one_ / sum_squared_yt_minus_one_;
@@ -282,7 +282,7 @@ void DickeyFullerTest::estimateAR1Model()
 TestResult DickeyFullerTest::testUnitRootInDriftAndLinearTrendModel(const Scalar level)
 {
   // compute the coefficients of trend model
-  estimateDriftAndLinearTrendModel();
+  computeDriftAndLinearTrendModel();
   const Scalar statistic ((rho_ - 1.0) / sigmaRho_);
   // Statistical test : the null hypothesis is that there is a unit root
   const Scalar pValue = DistFunc::pDickeyFullerTrend(statistic);
@@ -293,7 +293,7 @@ TestResult DickeyFullerTest::testUnitRootInDriftAndLinearTrendModel(const Scalar
 TestResult DickeyFullerTest::testUnitRootInDriftModel(const Scalar level)
 {
   // compute the coefficients of the model
-  estimateDriftModel();
+  computeDriftModel();
   // Writing the expression of the statistic
   const Scalar statistic = (rho_ - 1.0) / sigmaRho_;
 
@@ -305,7 +305,7 @@ TestResult DickeyFullerTest::testUnitRootInDriftModel(const Scalar level)
 /* Test H0: there is a unit root in an AR1 model */
 TestResult DickeyFullerTest::testUnitRootInAR1Model(const Scalar level)
 {
-  estimateAR1Model();
+  computeAR1Model();
   const Scalar statistic = (rho_ - 1.0) / sigmaRho_;
   // We get now the statistic of the test and compare it with the critical value of the DF test
   const Scalar pValue = DistFunc::pDickeyFullerNoConstant(statistic);
@@ -455,14 +455,14 @@ TestResult DickeyFullerTest::testUnitRootAndNoLinearTrendInDriftAndLinearTrendMo
     LOGWARN("The model has no unit root. The result test may have no sense. The statistical \"testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel\" test is suggested ");
   }
 
-  const Scalar c = (timeSeries_(T_, 1) - timeSeries_(0, 1)) / T_;
+  const Scalar c = (timeSeries_(T_, 0) - timeSeries_(0, 0)) / T_;
   Scalar SCR3c = 0.0;
   Scalar SCR3 = 0.0;
 
   const RegularGrid timeGrid(timeSeries_.getTimeGrid());
   for (UnsignedInteger t = 0; t < T_; ++t)
   {
-    const Scalar deltaX = timeSeries_(t + 1, 1) - timeSeries_(t, 1);
+    const Scalar deltaX = timeSeries_(t + 1, 0) - timeSeries_(t, 0);
     const Scalar epsilon_t = deltaX - c;
     SCR3c += epsilon_t * epsilon_t;
     // Perform since it is computed previously
@@ -541,7 +541,7 @@ TestResult DickeyFullerTest::testUnitRootAndNoDriftInDriftModel(const Scalar lev
 
   for (UnsignedInteger t = 0; t < T_; ++ t)
   {
-    const Scalar epsilon_t = timeSeries_(t + 1, 1) - timeSeries_(t, 1);
+    const Scalar epsilon_t = timeSeries_(t + 1, 0) - timeSeries_(t, 0);
     SCR2c += epsilon_t * epsilon_t;
     // Perform since it is computed previously
     const Scalar X = timeSeries_.getValueAtIndex(t)[0];

@@ -32,7 +32,17 @@ Examples
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
 3 : [ 0.375 0.375 ]
-4 : [ 0.875 0.875 ])RAW"
+4 : [ 0.875 0.875 ]
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SobolSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``): initial seed of the sequence.
+- ``SobolSequence-Scrambling`` (``String``, default: ``NONE``): scrambling method used, among the possible values ``NONE`` and ``MULTIDIGIT``.
+- ``SobolSequence-MultidigitBits`` (``UnsignedInteger``, default: ``31``): number of bits of the multi-digit scrambling method.
+- ``SobolSequence-MultidigitMultiplier`` (``UnsignedInteger``, default: ``16807``): multiplier of the multi-digit scrambling method.
+)RAW"
 
 // ---------------------------------------------------------------------
 

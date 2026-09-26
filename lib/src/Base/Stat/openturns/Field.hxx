@@ -108,9 +108,14 @@ public:
   /** Size accessor */
   UnsignedInteger getSize() const;
 
-  /** Dimension accessor */
-  UnsignedInteger getInputDimension() const;
-  UnsignedInteger getOutputDimension() const;
+  /** Dimension accessor @deprecated use getDimension instead */
+  UnsignedInteger getInputDimension() const; // @deprecated
+
+  /** Dimension accessor @deprecated use getDimension instead */
+  UnsignedInteger getOutputDimension() const; // @deprecated
+
+  /** Dimension accessor of the values */
+  UnsignedInteger getDimension() const;
 
   /** Return the values stored in the field as a sample */
   Sample getValues() const;
@@ -147,12 +152,16 @@ public:
   Field & operator -= (const Sample & translation);
   Field & operator += (const Point & translation);
   Field & operator -= (const Point & translation);
+  Field & operator += (const Field & translation);
+  Field & operator -= (const Field & translation);
 
   /** Translate realizations */
   Field operator + (const Sample & translation) const;
   Field operator - (const Sample & translation) const;
   Field operator + (const Point & translation) const;
   Field operator - (const Point & translation) const;
+  Field operator + (const Field & translation) const;
+  Field operator - (const Field & translation) const;
 
 }; /* class Field */
 

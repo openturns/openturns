@@ -49,7 +49,7 @@ The class provides several methods that compute asymptotic distributions: :meth:
 :meth:`getPredictionDistribution` and :meth:`getOutputObservationDistribution`. They assume that the sample size is at least equal to 20 (that number
 can be changed by modifying the :class:`~openturns.ResourceMap` key ``LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions``).
 
-Regression theory is introduced in :ref:`regression_analysis`.
+Regression theory is introduced in :ref:`linear_regression`.
 The goodness-of-fit tests for normality are presented in
 :ref:`graphical_fitting_test`, :ref:`chi2_fitting_test`,
 :ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`, and
@@ -101,6 +101,13 @@ For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`t
 
 where :math:`\sigma(a_k)` is the standard deviation of the distribution of the estimator :math:`\hat{a}_k`
 defined in :eq:`std_dev_estim`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LinearModelAnalysis-MinimumSigma`` (``Scalar``, default: ``1.0e-5``): lower bound of the standard deviation of the residuals used when printing the linear model analysis
+
+- ``LinearModelAnalysis-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``20``): maximum number of coefficients printed before an ellipsis is used when printing the linear model analysis
+
 )RAW"
 
 // ---------------------------------------------------------------------

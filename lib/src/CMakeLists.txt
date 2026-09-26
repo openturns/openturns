@@ -109,9 +109,16 @@ include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
 add_library (OT ${SOURCEFILES} ${HEADERFILES})
 set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-target_compile_definitions(OT PRIVATE ${OPENTURNS_DEFINITIONS})
+if (MSVC OR WINTEL)
+  target_compile_definitions(OT PRIVATE _USE_MATH_DEFINES)
+endif ()
+
 if (NOT BUILD_SHARED_LIBS)
   target_compile_definitions (OT PUBLIC "OT_STATIC")
+endif ()
+
+if (HDF5_FOUND AND DEFINED HDF5_CXX_DEFINITIONS)
+  target_compile_options(OT PRIVATE ${HDF5_CXX_DEFINITIONS})
 endif ()
 
 # soversion

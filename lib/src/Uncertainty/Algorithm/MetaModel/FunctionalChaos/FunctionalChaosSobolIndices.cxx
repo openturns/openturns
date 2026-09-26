@@ -24,6 +24,7 @@
 #include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/EnumerateFunction.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/SobolIndicesAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -458,6 +459,22 @@ void FunctionalChaosSobolIndices::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute( "functionalChaosResult_", functionalChaosResult_ );
+}
+
+/* Draw the Sobol indices */
+Graph FunctionalChaosSobolIndices::draw(const UnsignedInteger marginalIndex) const
+{
+  const Distribution inputDistribution(functionalChaosResult_.getDistribution());
+  const UnsignedInteger inputDimension = inputDistribution.getDimension();
+  const Description inputDescription(inputDistribution.getDescription());
+  Point firstOrder(inputDimension);
+  Point totalOrder(inputDimension);
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+  {
+    firstOrder[i] = getSobolIndex(i, marginalIndex);
+    totalOrder[i] = getSobolTotalIndex(i, marginalIndex);
+  }
+  return SobolIndicesAlgorithm::DrawSobolIndices(inputDescription, firstOrder, totalOrder);
 }
 
 END_NAMESPACE_OPENTURNS

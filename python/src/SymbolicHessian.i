@@ -8,4 +8,5 @@ OTAutodoc(SymbolicHessian)
 
 %copyctor OT::SymbolicHessian;
 
+%include SymbolicHessian_doc.i
 %include openturns/SymbolicHessian.hxx

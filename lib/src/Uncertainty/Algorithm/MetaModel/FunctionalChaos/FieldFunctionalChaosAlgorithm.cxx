@@ -90,6 +90,11 @@ Collection<Indices> FieldFunctionalChaosAlgorithm::getBlockIndices() const
   return blockIndices_;
 }
 
+void FieldFunctionalChaosAlgorithm::setBlockIndices(const Collection<Indices> & blockIndices)
+{
+  blockIndices_ = blockIndices;
+}
+
 /* Result accessor */
 FieldFunctionalChaosResult FieldFunctionalChaosAlgorithm::getResult() const
 {

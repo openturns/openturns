@@ -35,6 +35,7 @@
 #include "openturns/PostAnalyticalControlledImportanceSampling.hxx"
 #include "openturns/PostAnalyticalImportanceSampling.hxx"
 #include "openturns/PostAnalyticalSimulation.hxx"
+#include "openturns/EventSimulationImplementation.hxx"
 #include "openturns/EventSimulation.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"

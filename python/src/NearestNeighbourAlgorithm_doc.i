@@ -10,5 +10,3 @@ OT_NearestNeighbourAlgorithm_setSample_doc
 OT_NearestNeighbourAlgorithm_query_doc
 %feature("docstring") OT::NearestNeighbourAlgorithm::queryK
 OT_NearestNeighbourAlgorithm_queryK_doc
-%feature("docstring") OT::NearestNeighbourAlgorithm::queryRadius
-OT_NearestNeighbourAlgorithm_queryRadius_doc

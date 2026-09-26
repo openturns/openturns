@@ -15,6 +15,11 @@ n : int
 indices : sequence of int
     Marginal indices, must be strictly increasing.
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MarginalUniformOrderStatistics-LargeCaseCDF`` (``UnsignedInteger``, default: ``1000``): if the number of variables is larger than this threshold, the CDF is computed by numerical integration instead of the exact formula.
+- ``MarginalUniformOrderStatistics-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000000``): maximum number of calls of the numerical integration used to compute the CDF.
+
 See also
 --------
 openturns.UniformOrderStatistics
@@ -118,5 +123,14 @@ Returns
 flag : bool
     Flag telling if the marginal PDF is computed using an integration
     of the PDF of the underlying uniformOrderStatistics or if it is computed
-    using finite differences of the underlying CDF."
+    using finite differences of the underlying CDF.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MarginalUniformOrderStatistics-LargeCaseCDF`` (``UnsignedInteger``, default: ``1000``)
+- ``MarginalUniformOrderStatistics-MaximumCallsNumber`` (``UnsignedInteger``, default: ``1000000``)"
+
+
 

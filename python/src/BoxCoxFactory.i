@@ -7,6 +7,9 @@
 %typemap(in, numinputs=0) OT::GeneralLinearModelResult & generalLinearModelResult ($*ltype temp) %{ temp = OT::GeneralLinearModelResult(); $1 = &temp; %}
 %typemap(argout) OT::GeneralLinearModelResult & generalLinearModelResult %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::GeneralLinearModelResult(*$1), SWIG_TypeQuery("OT::GeneralLinearModelResult *"),  SWIG_POINTER_OWN)); %}
 
+%typemap(in, numinputs=0) OT::GaussianProcessFitterResult & gaussianProcessFitterResult ($*ltype temp) %{ temp = OT::GaussianProcessFitterResult(); $1 = &temp; %}
+%typemap(argout) OT::GaussianProcessFitterResult & gaussianProcessFitterResult %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::GaussianProcessFitterResult(*$1), SWIG_TypeQuery("OT::GaussianProcessFitterResult *"),  SWIG_POINTER_OWN)); %}
+
 %typemap(in, numinputs=0) OT::Graph & graph ($*ltype temp) %{ temp = OT::Graph(); $1 = &temp; %}
 %typemap(argout) OT::Graph & graph %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj(new OT::Graph(*$1), SWIG_TypeQuery("OT::Graph *"),  SWIG_POINTER_OWN)); %}
 

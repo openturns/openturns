@@ -40,5 +40,3 @@ OT_MetropolisHastings_getCovariates_doc
 OT_RandomVector_getDimension_doc
 %feature("docstring") OT::MetropolisHastings::getRealization
 OT_RandomVector_getRealization_doc
-%feature("docstring") OT::MetropolisHastings::getSample
-OT_RandomVector_getSample_doc

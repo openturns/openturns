@@ -202,5 +202,12 @@ indices : sequence of int
 Returns
 -------
 coll : sequence
-    Sub-collection of values at the selection indices."
+    Sub-collection of values at the selection indices.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Collection-size-visible-in-str-from`` (``UnsignedInteger``, default: ``10``)"
+
 

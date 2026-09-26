@@ -92,6 +92,10 @@ The probability :math:`P_f` is computed from all the  :math:`q_i` probabilities.
 
     \widehat{P}_{f,DS} = \frac{1}{N} \sum_{i=1}^N q_i
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``DirectionalSampling-MeanContributionIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``): number of integration nodes used to compute the mean contribution of each direction.
+
 Examples
 --------
 >>> import openturns as ot
@@ -121,7 +125,8 @@ Run the algorithm and extract the estimated probability:
 
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.169716)RAW"
+Probability estimate=0.169716
+)RAW"
 
 // ---------------------------------------------------------------------
 

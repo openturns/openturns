@@ -15,10 +15,16 @@ ApproximationAlgorithm, PenalizedLeastSquaresAlgorithmFactory
 Notes
 -----
 Implementation of an approximation algorithm implementation factory which builds
-an :class:`~openturns.ApproximationAlgorithm`.
+an :class:`~openturns.ApproximationAlgorithm`: this latter class is not directly usable because
+it is operational only within the :class:`~openturns.FunctionalChaosAlgorithm`.
 
-This class is not usable because it is operational only within the
-:class:`~openturns.FunctionalChaosAlgorithm`.
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LeastSquaresMetaModelSelection-ErrorThreshold`` (``Scalar``, default: ``0.0``): threshold on the error of the selection.
+- ``LeastSquaresMetaModelSelection-MaximumError`` (``Scalar``, default: ``0.5``): maximum relative error of the selection.
+- ``LeastSquaresMetaModelSelection-MaximumErrorFactor`` (``Scalar``, default: ``2.0``): factor applied to the error of the selection.
+- ``LeastSquaresMetaModelSelection-DecompositionMethod`` (``String``, default: ``SVD``): name of the decomposition method used to solve the least squares problem. The possible values are ``SVD``, ``Cholesky`` and ``QR``.
+- ``LeastSquaresMetaModelSelection-SmallBasisSize`` (``UnsignedInteger``, default: ``10``): size below which the basis is considered small.
 
 Examples
 --------

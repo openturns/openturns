@@ -12,7 +12,7 @@ Notes
 -----
 KrigingRandomVector helps to create Gaussian random vector, :math:`Y: \Rset^n \mapsto \Rset^d`, with stationary covariance function  :math:`\cC^{stat}: \Rset^n \mapsto \cM_{d \times d}(\Rset)`, conditionally to some observations.
 
-Let :math:`Y(x=x_1)=y_1,\cdots,Y(x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.KrigingAlgorithm`:
+Let :math:`Y(x=x_1)=y_1,\cdots,Y(x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.GaussianProcessFitter`:
 
 .. math::
 
@@ -24,7 +24,7 @@ with :math:`\Tr{\vect{f}(\vect{x})} \vect{\beta}` a general linear model, :math:
 
     \mathbb{E}[Z(\vect{x}), Z(\vect{\tilde{x}})] = \sigma^2 \cC^{stat}_{\theta}(\vect{x} - \vect{\tilde{x}})
 
-The objective is to generate realizations of the random vector :math:`Y`, on new points :math:`\vect{\tilde{x}}`, conditionally to these observations. For that purpose, :class:`~openturns.KrigingAlgorithm` build such a prior and stores results in a :class:`~openturns.KrigingResult` structure on a first step. This structure is given as input argument.
+The objective is to generate realizations of the random vector :math:`Y`, on new points :math:`\vect{\tilde{x}}`, conditionally to these observations. For that purpose, :class:`~openturns.GaussianProcessFitter` builds such a prior and stores results in a :class:`~openturns.KrigingResult` structure on a first step. This structure is given as input argument.
 
 Then, in a second step, both the prior and the covariance on input points :math:`\vect{\tilde{x}}`, conditionally to the previous observations, are evaluated (respectively :math:`Y(\vect{\tilde{x}})` and :math:`\cC^{stat}_{\theta}(\vect{\tilde{x}})`).
 

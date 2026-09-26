@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 
 # We create an empty ot.Sample
@@ -67,3 +68,15 @@ print("sample*=v:", sample5)
 
 sample5 /= v
 print("sample/=v:", sample5)
+
+# dimension mismatch keeps informative message
+bad_point = ot.Point(3, 1.0)
+with ott.assert_raises(ValueError):
+    sample5 += bad_point
+try:
+    sample5 += bad_point
+except ValueError as e:
+    assert "dimension" in str(e), "informative message, got " + str(e)
+bad_sample = ot.Sample(3, 3)
+with ott.assert_raises(ValueError):
+    sample5 += bad_sample

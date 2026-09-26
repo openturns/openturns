@@ -45,6 +45,26 @@ OT_RandomVector_getParameterDescription_doc
 %feature("docstring") OT::RandomVector::isEvent
 OT_RandomVector_isEvent_doc
 %feature("docstring") OT::RandomVector::intersect
-OT_RandomVector_intersect_doc
+"Intersection of two events.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    A composite event
+
+Returns
+-------
+event : :class:`~openturns.RandomVector`
+    Intersection event"
 %feature("docstring") OT::RandomVector::join
-OT_RandomVector_join_doc
+"Union of two events.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    A composite event
+
+Returns
+-------
+event : :class:`~openturns.RandomVector`
+    Union event"

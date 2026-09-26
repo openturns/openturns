@@ -30,7 +30,13 @@ Addition, subtraction and multiplication of univariate polynomials:
 >>> print(f'({P}) - ({Q}) = {P - Q}')
 (1 + 2 * X + 3 * X^2) - (1 + 2 * X) = 3 * X^2
 >>> print(f'({P}) * ({Q}) = {P * Q}')
-(1 + 2 * X + 3 * X^2) * (1 + 2 * X) = 1 + 4 * X + 7 * X^2 + 6 * X^3"
+(1 + 2 * X + 3 * X^2) * (1 + 2 * X) = 1 + 4 * X + 7 * X^2 + 6 * X^3
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``UniVariatePolynomial-SmallDegree`` (``UnsignedInteger``, default: ``400``): degree below which the polynomials are considered as small."
 %enddef
 %feature("docstring") OT::UniVariatePolynomialImplementation
 OT_UniVariatePolynomial_doc

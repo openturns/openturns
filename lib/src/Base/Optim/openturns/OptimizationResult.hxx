@@ -77,18 +77,22 @@ public:
   UnsignedInteger getIterationNumber() const;
 
   /** Absolute error accessor */
+  void setAbsoluteError(const Scalar absoluteError);
   Scalar getAbsoluteError() const;
   Sample getAbsoluteErrorHistory() const;
 
   /** Relative error accessor */
+  void setRelativeError(const Scalar relativeError);
   Scalar getRelativeError() const;
   Sample getRelativeErrorHistory() const;
 
   /** Residual error accessor */
+  void setResidualError(const Scalar residualError);
   Scalar getResidualError() const;
   Sample getResidualErrorHistory() const;
 
   /** Constraint error accessor */
+  void setConstraintError(const Scalar constraintError);
   Scalar getConstraintError() const;
   Sample getConstraintErrorHistory() const;
 
@@ -143,23 +147,6 @@ public:
   /** Elapsed time accessor */
   void setTimeDuration(const Scalar time);
   Scalar getTimeDuration() const;
-
-protected:
-  /** Absolute error accessor */
-  void setAbsoluteError(const Scalar absoluteError);
-  void setAbsoluteErrorHistory(const Sample & absoluteError);
-
-  /** Relative error accessor */
-  void setRelativeError(const Scalar relativeError);
-  void setRelativeErrorHistory(const Sample & relativeError);
-
-  /** Residual error accessor */
-  void setResidualError(const Scalar residualError);
-  void setResidualErrorHistory(const Sample & residualError);
-
-  /** Constraint error accessor */
-  void setConstraintError(const Scalar constraintError);
-  void setConstraintErrorHistory(const Sample & constraintError);
 
 private:
   Point optimalPoint_;

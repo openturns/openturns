@@ -12,7 +12,15 @@ x : float
 
 Returns
 -------
-result : float)RAW"
+result : float
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SpecFunc-MaximumIteration`` (``UnsignedInteger``, default: ``1000``)
+- ``SpecFunc-Precision`` (``Scalar``, default: ``2e-16``)
+)RAW"
 
 // ---------------------------------------------------------------------
 

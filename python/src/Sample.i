@@ -907,6 +907,7 @@ UnsignedInteger index(const Point & value)
 
 Bool __eq__(const Sample & other) { return (*self) == other; }
 
+#if SWIG_VERSION >= 0x040200
 Sample __iadd__(const Scalar value)
 {
   *self += value;
@@ -942,6 +943,48 @@ Sample __isub__(const Sample & other)
   *self -= other;
   return *self;
 }
+#else
+// Fallback for SWIG<4.2: slot wrappers (__iadd__, ...) turn any exception
+// into NotImplemented, losing the dimension message. Expose
+// the operations under non-slot names (normal wrappers propagate) and
+// alias them to the dunders in %pythoncode below. The slot then calls the
+// builtin directly, so there is no per-call Python overhead.
+Sample _iadd(const Scalar value)
+{
+  *self += value;
+  return *self;
+}
+
+Sample _iadd(const Point & pt)
+{
+  *self += pt;
+  return *self;
+}
+
+Sample _iadd(const Sample & other)
+{
+  *self += other;
+  return *self;
+}
+
+Sample _isub(const Scalar value)
+{
+  *self -= value;
+  return *self;
+}
+
+Sample _isub(const Point & pt)
+{
+  *self -= pt;
+  return *self;
+}
+
+Sample _isub(const Sample & other)
+{
+  *self -= other;
+  return *self;
+}
+#endif
 
 Sample __rmul__(Scalar s)
 {
@@ -950,4 +993,12 @@ Sample __rmul__(Scalar s)
 
 } // %extend
 } // namespace OT
+
+#if SWIG_VERSION < 0x040200
+%pythoncode %{
+# Fallback for SWIG<4.2, see dimension note above
+Sample.__iadd__ = Sample._iadd
+Sample.__isub__ = Sample._isub
+%}
+#endif
 

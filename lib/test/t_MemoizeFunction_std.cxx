@@ -77,7 +77,7 @@ public:
       }
     }
     if (failedIndices.getSize())
-      throw BatchFailedException(HERE, failedIndices, errors, okIndices, result.select(okIndices)) << "operator(Sample) partial fail";
+      throw BatchFailedException(HERE, failedIndices, errors, okIndices, inS, result.select(okIndices)) << "operator(Sample) partial fail";
     return result;
   }
 };

@@ -339,6 +339,7 @@
   <Ridgway-DefaultParticleNumber value_int="1000" />
   <Ridgway-DefaultAlpha value_float="0.5" />
   <Ridgway-DefaultStudentSampleSize value_int="1024" />
+  <Ridgway-UniformPoolSize value_int="1048576" />
   <Ridgway-LowDiscrepancySequence value_str="SobolSequence" />
 
   <!-- OT::FejerExperiment parameters -->
@@ -682,6 +683,7 @@
   <Normal-MarginalIntegrationNodesNumber value_int="16"       />
   <Normal-MaximumNumberOfPoints          value_int="10000000" />
   <Normal-MinimumNumberOfPoints          value_int="100000"   />
+  <Normal-RectangularProbabilityAlgorithm value_str="Genz"     />
   <Normal-SmallDimension                 value_int="6"        />
 
   <!-- OT::ParetoFactory parameters -->
@@ -752,6 +754,7 @@
   <Student-MarginalIntegrationNodesNumber value_int="16"       />
   <Student-MaximumNumberOfPoints          value_int="10000000" />
   <Student-MinimumNumberOfPoints          value_int="100000"   />
+  <Student-RectangularProbabilityAlgorithm value_str="Genz"    />
   <Student-SmallDimension                 value_int="6"        />
   
   <!-- OT::StudentFactory parameters -->
@@ -814,8 +817,13 @@
   <LinearCombinationDistribution-DefaultPDFEpsilon              value_float="1.0e-10"         />
   <LinearCombinationDistribution-DefaultBlockMax                value_int="16"    />
   <LinearCombinationDistribution-DefaultBlockMin                value_int="3"     />
-  <LinearCombinationDistribution-DefaultMaxSize                 value_int="65536" />
+  <LinearCombinationDistribution-DefaultMaxSize                 value_int="16777216" />
   <LinearCombinationDistribution-MaximumSupportSize             value_int="2048"  />
+  <LinearCombinationDistribution-MaximumPDFLevel                value_int="100"   />
+  <LinearCombinationDistribution-BetaAdaptation                value_bool="true"  />
+  <LinearCombinationDistribution-BetaAdaptationEpsilon         value_float="1.0e-6" />
+  <LinearCombinationDistribution-MaximumBeta                   value_float="64.0" />
+  <LinearCombinationDistribution-BandwidthConvergenceEpsilon   value_float="1.0e-9" />
   <LinearCombinationDistribution-ProjectionDefaultSize          value_int="25"    />
   <LinearCombinationDistribution-SmallSize                      value_int="100"   />
 
@@ -828,6 +836,9 @@
 
   <!-- OT::LinearCombinationEvaluation parameters -->
   <LinearCombinationEvaluation-SmallCoefficient value_float="0.0" />
+
+  <!-- OT::LinearCombinationFunction parameters -->
+  <LinearCombinationFunction-MergeDuplicates value_bool="false" />
 
   <!-- OT::DistFunc parameters -->
   <DistFunc-Precision        value_float="1.0e-14"        />
@@ -1208,7 +1219,12 @@
   <SimplicialCubature-DefaultMaximumRelativeError value_float="1.0e-5" />
   <SimplicialCubature-DefaultMaximumCallsNumber   value_int="100000" />
   <SimplicialCubature-DefaultRule value_int="3" />
+  <SimplicialCubature-EvaluationBlockSize value_int="2048" />
+  <SimplicialCubature-MaximumRefinementNumber value_int="2048" />
   <SimplicialCubature-MarginalDiscretizationIntervalsNumber value_int="1" />
+
+  <!-- OT::SlicedInverseRegression parameters -->
+  <SlicedInverseRegression-DefaultSliceNumber value_int="10" />
 
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-ErrorThreshold     value_float="1.0e-3" />
