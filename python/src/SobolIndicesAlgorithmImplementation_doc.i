@@ -2,6 +2,14 @@
 R"RAW(
 Sensitivity analysis.
 
+The reference variance which scales the indices, as well as the centering
+of the output, are estimated through unweighted empirical moments of the
+output sample. When the design is built from a :class:`WeightedExperiment`,
+only the generated points are used: the weights do not enter the
+estimation. The indices are therefore calibrated for designs sampled with
+uniform weights, e.g. Monte Carlo simulation, and a design coming from a
+quadrature rule yields a mis-scaled reference variance.
+
 Notes
 -----
 This method measures the influence of each component of an input random vector

@@ -1,6 +1,12 @@
 %feature("docstring") OT::LinearModelAnalysis
 "Analyse a linear model.
 
+The statistics derived from the sums of squares, such as the F test, use
+unnormalized empirical moments of the output sample, and this class does
+not accept weights. They are therefore implicitly restricted to output
+samples obtained with uniform weights, e.g. Monte Carlo simulation: a
+sample coming from a quadrature rule leads to mis-scaled sums of squares.
+
 Parameters
 ----------
 linearModelResult : :class:`~openturns.LinearModelResult`
