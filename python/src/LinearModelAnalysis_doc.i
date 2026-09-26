@@ -375,44 +375,36 @@ the :meth:`~openturns.FittingTest.ChiSquared` to check the normality.
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov
 "Performs Kolmogorov test.
 
+We check if the residuals are Gaussian  thanks to :meth:`~openturns.FittingTest.Kolmogorov`.
+
 Returns
 -------
 testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-Notes
------
-We check if the residuals are Gaussian  thanks to :meth:`~openturns.FittingTest.Kolmogorov`."
+    Test result class."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultAndersonDarling
 "Performs Anderson-Darling test.
 
+We check if the residuals are Gaussian  thanks to :meth:`~openturns.NormalityTest.AndersonDarlingNormal`.
+
 Returns
 -------
 testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-
-Notes
------
-We check if the residuals are Gaussian  thanks to :meth:`~openturns.NormalityTest.AndersonDarlingNormal`."
+    Test result class."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestCramerVonMises
 "Performs Cramer-Von Mises test.
 
+We check if the residuals are Gaussian thanks to :meth:`~openturns.NormalityTest.CramerVonMisesNormal`.
+
 Returns
 -------
 testResult : :class:`~openturns.TestResult`
-    Test result class.
-
-
-Notes
------
-We check if the residuals are Gaussian thanks to :meth:`~openturns.NormalityTest.CramerVonMisesNormal`."
+    Test result class."
 
 // ---------------------------------------------------------------------
 
@@ -492,24 +484,20 @@ The Cook's distance measures the impact of every individual data point on the li
 %feature("docstring") OT::LinearModelAnalysis::drawResidualsVsLeverages
 R"RAW(Accessor to plot of residuals versus leverages that adds bands corresponding to Cook's distances of 0.5 and 1.
 
+This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef` and the leverage :math:`\ell_i`  of experience :math:`i` defined in :eq:`leverageDef`.
+
 Returns
 -------
-graph : :class:`~openturns.Graph`
-
-Notes
------
-This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef` and the leverage :math:`\ell_i`  of experience :math:`i` defined in :eq:`leverageDef`.)RAW"
+graph : :class:`~openturns.Graph`)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::drawCookVsLeverages
-R"RAW(Accessor to plot of Cook's distances versus leverage/(1-leverage). 
+R"RAW(Accessor to plot of Cook's distances versus leverage/(1-leverage).
+
+This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :math:`\ell_i/(1-\ell_i)` where :math:`\ell_i` is the leverage of experience :math:`i` defined in :eq:`leverageDef`.
 
 Returns
 -------
-graph : :class:`~openturns.Graph`
-
-Notes
------
-This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :math:`\ell_i/(1-\ell_i)` where :math:`\ell_i` is the leverage of experience :math:`i` defined in :eq:`leverageDef`.)RAW"
+graph : :class:`~openturns.Graph`)RAW"
 

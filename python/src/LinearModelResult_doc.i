@@ -156,40 +156,34 @@ where:
 %feature("docstring") OT::LinearModelResult::getFormula
 "Accessor to the formula.
 
+This formula gives access to the linear model.
+
 Returns
 -------
-condensedFormula : str
-
-Notes
------
-This formula gives access to the linear model."
+condensedFormula : str"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelResult::getCoefficientsNames
 "Accessor to the coefficients names.
 
+The name of the coefficient :math:`a_k` is the name of the regressor :math:`X_k`.
+
 Returns
 -------
-coefficientsNames : :class:`~openturns.Description`
-
-Notes
------
-The name of the coefficient :math:`a_k` is the name of the regressor :math:`X_k`."
+coefficientsNames : :class:`~openturns.Description`"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelResult::getSampleResiduals
 R"RAW(Accessor to the residuals.
 
+The residuals sample is :math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}` defined in :eq:`residualDef`.
+
 Returns
 -------
 sampleResiduals : :class:`~openturns.Sample`
-    The sample of the residuals.
-
-Notes
------
-The residuals sample is :math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}` defined in :eq:`residualDef`.)RAW"
+    The sample of the residuals.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -449,14 +443,12 @@ where :math:`dof` is the degrees of freedom of the model defined in :eq:`dofNoBa
 %feature("docstring") OT::LinearModelResult::buildMethod
 "Accessor to the least squares method.
 
+The least squares method used to estimate the coefficients is precised in the :class:`~openturns.ResourceMap` class, entry *LinearModelAlgorithm-DecompositionMethod*.
+
 Returns
 -------
 leastSquaresMethod: :class:`~openturns.LeastSquaresMethod`
-    The least squares method.
-
-Notes
------
-The least squares method used to estimate the coefficients is precised in the :class:`~openturns.ResourceMap` class, entry *LinearModelAlgorithm-DecompositionMethod*."
+    The least squares method."
 
 // ---------------------------------------------------------------------
 
