@@ -78,6 +78,8 @@ void MaternModel::computeSqrt2nuOverTheta()
 {
   // Compute useful scaling factor
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+  // The closed form of the covariance value only depends on nu
+  updateClosedForm();
 }
 
 /* Virtual constructor */
@@ -125,11 +127,35 @@ Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s
     scaledPoint += dx * dx;
   }
   scaledPoint = sqrt(scaledPoint);
-  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  // The diagonal of the output covariance is the squared amplitude by
+  // construction (see CovarianceModelImplementation::updateOutputCovariance);
+  // reading amplitude_ avoids a matrix access in the evaluation paths.
+  const Scalar amplitudeSquare = amplitude_[0] * amplitude_[0];
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+    return amplitudeSquare * (1.0 + nuggetFactor_);
   else
-    return outputCovariance(0, 0) * computeCovarianceValue(scaledPoint);
+    return amplitudeSquare * computeCovarianceValue(scaledPoint);
+}
+
+// Entry point for the bulk evaluations of the compressed matrix assemblies:
+// same operations, in the same order, as the iterator based version above,
+// with nothing to build and no virtual call below this one.
+Scalar MaternModel::computeAsScalar(const Scalar * s, const Scalar * t) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error: in MaternModel::computeAsScalar(s, t), the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
+  Scalar scaledPoint = 0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) * sqrt2nuOverTheta_[i];
+    scaledPoint += dx * dx;
+  }
+  scaledPoint = std::sqrt(scaledPoint);
+  const Scalar amplitudeSquare = amplitude_[0] * amplitude_[0];
+  if (scaledPoint <= SpecFunc::ScalarEpsilon)
+    return amplitudeSquare * (1.0 + nuggetFactor_);
+  else
+    return amplitudeSquare * computeCovarianceValue(scaledPoint);
 }
 
 Scalar MaternModel::computeAsScalar(const Scalar tau) const
@@ -139,28 +165,44 @@ Scalar MaternModel::computeAsScalar(const Scalar tau) const
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
   const Scalar scaledPoint = std::abs(tau * sqrt2nuOverTheta_[0]);
-  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  const Scalar amplitudeSquare = amplitude_[0] * amplitude_[0];
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+    return amplitudeSquare * (1.0 + nuggetFactor_);
   else
-    return outputCovariance(0, 0) * computeCovarianceValue(scaledPoint);
+    return amplitudeSquare * computeCovarianceValue(scaledPoint);
+}
+
+// Select the closed form once and for all: the evaluation paths only test
+// closedForm_, which is set whenever a parameter changes, instead of comparing
+// nu_ against the half-integer values on every call.
+void MaternModel::updateClosedForm()
+{
+  if (nu_ == 0.5)
+    closedForm_ = 1;
+  else if (nu_ == 1.5)
+    closedForm_ = 2;
+  else if (nu_ == 2.5)
+    closedForm_ = 3;
+  else
+    closedForm_ = 0;
 }
 
 // Exact value of the Matern covariance for the scaled distance scaledPoint =
 // sqrt(2 nu) * ||tau|| / scale. For the half-integer smoothness nu = p + 1/2
 // the modified Bessel function K_nu reduces to exp(-s) times a polynomial of
 // degree p in s, which is cheaper and numerically more stable than the
-// general formula in terms of log and LogBesselK.
+// general formula in terms of log and LogBesselK. Which form applies has
+// already been decided by updateClosedForm().
 Scalar MaternModel::computeCovarianceValue(const Scalar scaledPoint) const
 {
-  if (nu_ == 0.5)
+  if (closedForm_ == 1)
     return std::exp(-scaledPoint);
-  if (nu_ == 1.5)
+  if (closedForm_ == 2)
   {
     const Scalar s = scaledPoint;
     return std::exp(-s) * (1.0 + s);
   }
-  if (nu_ == 2.5)
+  if (closedForm_ == 3)
   {
     const Scalar s = scaledPoint;
     return std::exp(-s) * (1.0 + s * (1.0 + s / 3.0));
@@ -312,6 +354,8 @@ void MaternModel::load(Advocate & adv)
   adv.loadAttribute("nu_", nu_);
   adv.loadAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.loadAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);
+  // The closed form is derived from nu_, it is not stored
+  updateClosedForm();
 }
 
 END_NAMESPACE_OPENTURNS

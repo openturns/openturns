@@ -100,17 +100,6 @@ private:
   const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
   const UnsignedInteger size_;
-  // Fast Matern kernel evaluation path: when the covariance model is a
-  // MaternModel (or an IsotropicCovarianceModel wrapping one) with unit
-  // output dimension and half-integer smoothness, the kernel is evaluated
-  // directly from the raw coordinates to avoid the virtual dispatch and
-  // bounds-checked accesses of the generic computeAsScalar path. These
-  // members are set once in the constructor and read-only afterwards.
-  Point fastSqrt2nuOverTheta_;
-  Scalar fastAmplitudeSquare_;
-  Scalar fastNuggetFactor_;
-  Scalar fastNu_;
-  bool useFastMatern_;
 };
 
 /**

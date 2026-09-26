@@ -91,6 +91,18 @@ public:
   // Special case for 1D model
   virtual Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
                                  const Collection<Scalar>::const_iterator & t_begin) const;
+
+  /** Fast entry point for bulk evaluation (HODLR/HMatrix assembly, row
+      discretizations, ...), taking the coordinates of the two points as
+      contiguous buffers of getInputDimension() scalars, as stored in a
+      Sample. It returns exactly what computeAsScalar(s, t) returns, but lets
+      a model evaluate without any Point or iterator handling and with the
+      constants it needs already reduced (see e.g. MaternModel). Models are
+      free to override it: the default implementation is always correct, so a
+      new model needs no change here to profit from the call, and a change in
+      a model only touches that model. */
+  virtual Scalar computeAsScalar(const Scalar * s,
+                                 const Scalar * t) const;
 #endif
 
   virtual SquareMatrix operator() (const Scalar tau) const;

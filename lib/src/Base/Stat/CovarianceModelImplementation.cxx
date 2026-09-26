@@ -224,6 +224,18 @@ Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
 
+/* Bulk entry point on contiguous coordinates. The generic fallback builds the
+   shift and delegates to the Point entry point, so it is valid for every
+   model. Models with a hot kernel (e.g. MaternModel) override it to avoid the
+   temporary and to reuse reduced constants. */
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar * s,
+    const Scalar * t) const
+{
+  Point tau(inputDimension_);
+  for (UnsignedInteger d = 0; d < inputDimension_; ++d) tau[d] = s[d] - t[d];
+  return computeAsScalar(tau);
+}
+
 Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
 {
   if (outputDimension_ != 1)

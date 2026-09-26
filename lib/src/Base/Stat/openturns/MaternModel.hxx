@@ -60,6 +60,8 @@ public:
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
                          const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Scalar * s,
+                         const Scalar * t) const override;
 #endif
 
   Scalar computeAsScalar(const Scalar tau) const override;
@@ -99,6 +101,9 @@ private:
   // Private methods to set internal parameters
   void computeLogNormalizationFactor();
   void computeSqrt2nuOverTheta();
+  // Select the closed form of the covariance value once, when the parameters
+  // are set, so that the evaluation paths do not test nu_ per call
+  void updateClosedForm();
 
   // Exact covariance value for a scaled distance, using the closed forms of
   // the half-integer smoothness cases to avoid the Bessel function.
@@ -112,6 +117,10 @@ private:
 
   // Scaling factor
   Point sqrt2nuOverTheta_;
+
+  // Closed form selected by updateClosedForm(): 0 for the general (Bessel)
+  // case, 1, 2, 3 for nu = 1/2, 3/2, 5/2
+  UnsignedInteger closedForm_ = 0;
 
   Bool equals(const CovarianceModelImplementation & other) const override;
 

@@ -21,9 +21,6 @@
 #include "openturns/HODLRMatrixImplementation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/IsotropicCovarianceModel.hxx"
-#include "openturns/MaternModel.hxx"
-#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -711,11 +708,6 @@ HODLRCovarianceAssemblyFunction::HODLRCovarianceAssemblyFunction(
   , inputDimension_(vertices.getDimension())
   , covarianceDimension_(covarianceModel.getOutputDimension())
   , size_(vertices.getSize())
-  , fastSqrt2nuOverTheta_()
-  , fastAmplitudeSquare_(1.0)
-  , fastNuggetFactor_(0.0)
-  , fastNu_(0.0)
-  , useFastMatern_(false)
 {
   // The scalar assembly path calls the iterator-based computeAsScalar(), which
   // does not validate the point dimension, so a dimension mismatch used to
@@ -727,67 +719,17 @@ HODLRCovarianceAssemblyFunction::HODLRCovarianceAssemblyFunction(
                                          << inputDimension_ << " while the covariance model has input dimension="
                                          << modelInputDimension;
 
-  // Try to set up the fast Matern evaluation path for the common
-  // IsotropicCovarianceModel(MaternModel) / MaternModel configurations.
-  const MaternModel* matern = nullptr;
-  bool isotropicWrapper = false;
-  if (const IsotropicCovarianceModel* iso = dynamic_cast<const IsotropicCovarianceModel*>(implementation_.get()))
-  {
-    matern = dynamic_cast<const MaternModel*>(iso->getKernel().getImplementation().get());
-    isotropicWrapper = true;
-  }
-  else if (const MaternModel* direct = dynamic_cast<const MaternModel*>(implementation_.get()))
-  {
-    matern = direct;
-  }
-  if (matern && covarianceDimension_ == 1)
-  {
-    const Scalar nu = matern->getNu();
-    if (nu == 0.5 || nu == 1.5 || nu == 2.5)
-    {
-      const Point scale = matern->getScale();
-      const Scalar sqrt2nu = std::sqrt(2.0 * nu);
-      // An IsotropicCovarianceModel wraps a 1D kernel: the norm is applied
-      // before the kernel, so the single scale applies to every coordinate.
-      const Scalar scaledSqrt2nuOverTheta = sqrt2nu / scale[0];
-      fastSqrt2nuOverTheta_.resize(inputDimension_);
-      for (UnsignedInteger d = 0; d < inputDimension_; ++d)
-        fastSqrt2nuOverTheta_[d] = isotropicWrapper ? scaledSqrt2nuOverTheta : sqrt2nu / scale[d];
-      const Scalar amplitude = matern->getAmplitude()[0];
-      fastAmplitudeSquare_ = amplitude * amplitude;
-      fastNuggetFactor_ = matern->getNuggetFactor();
-      fastNu_ = nu;
-      useFastMatern_ = true;
-    }
-  }
 }
 
 Scalar HODLRCovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedInteger j) const
 {
   if (covarianceDimension_ == 1)
   {
-    if (useFastMatern_)
-    {
-      const Scalar* s = &verticesBegin_[i * inputDimension_];
-      const Scalar* t = &verticesBegin_[j * inputDimension_];
-      Scalar scaledPointSquare = 0.0;
-      for (UnsignedInteger d = 0; d < inputDimension_; ++d)
-      {
-        const Scalar dx = (s[d] - t[d]) * fastSqrt2nuOverTheta_[d];
-        scaledPointSquare += dx * dx;
-      }
-      const Scalar scaledPoint = std::sqrt(scaledPointSquare);
-      if (scaledPoint <= SpecFunc::ScalarEpsilon)
-        return fastAmplitudeSquare_ * (1.0 + fastNuggetFactor_);
-      if (fastNu_ == 0.5)
-        return fastAmplitudeSquare_ * std::exp(-scaledPoint);
-      if (fastNu_ == 1.5)
-        return fastAmplitudeSquare_ * std::exp(-scaledPoint) * (1.0 + scaledPoint);
-      // nu == 2.5: (1 + s + s^2 / 3) exp(-s)
-      return fastAmplitudeSquare_ * std::exp(-scaledPoint) * (1.0 + scaledPoint * (1.0 + scaledPoint / 3.0));
-    }
-    return implementation_->computeAsScalar(
-        verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_);
+    // The model evaluates its own kernel on the two coordinate buffers, with
+    // whatever specialization it provides: the assembly knows nothing about the
+    // covariance model beyond its interface.
+    return implementation_->computeAsScalar(&verticesBegin_[i * inputDimension_],
+                                            &verticesBegin_[j * inputDimension_]);
   }
 
   const UnsignedInteger rowIndex = i / covarianceDimension_;

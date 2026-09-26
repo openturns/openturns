@@ -37,6 +37,7 @@ ExponentialModel::ExponentialModel(const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)
 {
   isStationary_ = true;
+  updateInvScale();
 }
 
 /** Standard constructor with scale and amplitude parameters parameters */
@@ -45,6 +46,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
   : CovarianceModelImplementation(scale, amplitude)
 {
   isStationary_ = true;
+  updateInvScale();
 }
 
 /** Standard constructor with scale, amplitude and spatial correlation parameters parameters */
@@ -54,6 +56,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
   : CovarianceModelImplementation(scale, amplitude, spatialCorrelation)
 {
   isStationary_ = true;
+  updateInvScale();
 }
 
 /** Standard constructor with scale and spatial covariance parameters parameters */
@@ -62,6 +65,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
   : CovarianceModelImplementation(scale, spatialCovariance)
 {
   isStationary_ = true;
+  updateInvScale();
 }
 
 /* Virtual constructor */
@@ -147,6 +151,40 @@ Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterato
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
   return (tauOverThetaNorm == 0.0 ? amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * amplitude_[0] * exp(-tauOverThetaNorm));
+}
+
+// Entry point for the bulk evaluations of the compressed matrix assemblies:
+// same operations, in the same order, as the iterator based version above,
+// with the inverse scales already reduced and no virtual call below this one.
+Scalar ExponentialModel::computeAsScalar(const Scalar * s, const Scalar * t) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(s, t) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  Scalar tauOverThetaNorm = 0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) * invScale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = std::sqrt(tauOverThetaNorm);
+  return (tauOverThetaNorm == 0.0 ? amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * amplitude_[0] * std::exp(-tauOverThetaNorm));
+}
+
+// The inverse scales, reduced once per parameter change
+void ExponentialModel::updateInvScale()
+{
+  invScale_.resize(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) invScale_[i] = 1.0 / scale_[i];
+}
+
+// Reimplement the setScale method
+void ExponentialModel::setScale(const Point & scale)
+{
+  // First set scale
+  CovarianceModelImplementation::setScale(scale);
+  // Update the reduced scales
+  updateInvScale();
 }
 
 Scalar ExponentialModel::computeAsScalar(const Scalar tau) const
@@ -298,6 +336,9 @@ void ExponentialModel::save(Advocate & adv) const
 void ExponentialModel::load(Advocate & adv)
 {
   CovarianceModelImplementation::load(adv);
+  // scale_ has been reloaded without going through setScale, and so has
+  // inputDimension_: the reduced scales must follow both
+  updateInvScale();
 }
 
 END_NAMESPACE_OPENTURNS
