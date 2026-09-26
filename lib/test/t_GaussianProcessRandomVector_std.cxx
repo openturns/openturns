@@ -84,7 +84,8 @@ int main(int, char *[])
     const CovarianceMatrix var(gpcc.getConditionalCovariance(inputSample));
 
     // assert_almost_equal could not be applied to matrices
-    Point covariancePoint(*var.getImplementation());
+    const MatrixImplementation & var_impl(*var.getImplementation());
+    Point covariancePoint(var_impl.begin(), var_impl.end());
     assert_almost_equal(covariancePoint, Point(covariancePoint.getSize()), 1e-6, 1e-6);
 
     // Random vector evaluation

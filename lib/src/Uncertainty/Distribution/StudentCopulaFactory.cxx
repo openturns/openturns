@@ -85,7 +85,7 @@ StudentCopula StudentCopulaFactory::buildAsStudentCopula(const Sample & sample) 
 
   // freeze all other parameters
   Point values(model.getParameter());
-  values.erase(0);
+  values.erase(UnsignedInteger(0));
   Indices indices(values.getSize());
   indices.fill(1);
   factory.setKnownParameter(indices, values);

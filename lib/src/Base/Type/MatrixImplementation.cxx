@@ -40,21 +40,47 @@ static const Factory<MatrixImplementation> Factory_MatrixImplementation;
 // All the pivots with a magnitude less than this threshold are considered as zero
 /* Default constructor */
 MatrixImplementation::MatrixImplementation()
-  : PersistentCollection<Scalar>()
+  : PersistentObject()
   , nbRows_(0)
   , nbColumns_(0)
+  , data_()
 {
   // Nothing to do
 }
+
+#ifndef SWIG
+/* Copy constructor */
+MatrixImplementation::MatrixImplementation(const MatrixImplementation & other)
+  : PersistentObject(other)
+  , nbRows_(other.nbRows_)
+  , nbColumns_(other.nbColumns_)
+  , data_(other.data_)
+{
+}
+
+/* Assignment operator */
+MatrixImplementation & MatrixImplementation::operator = (const MatrixImplementation & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    nbRows_ = other.nbRows_;
+    nbColumns_ = other.nbColumns_;
+    data_ = other.data_;
+  }
+  return *this;
+}
+#endif
 
 /* Constructor with size (rowDim and colDim) */
 /* The MatrixImplementation is made up of a collection of rowDim*colDim elements */
 /* The MatrixImplementation is viewed as a set of column vectors read one after another */
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<Scalar>(rowDim * colDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim, colDim, 0.0)
 {
   // Nothing to do
 }
@@ -63,9 +89,10 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<Scalar> & elementsValues)
-  : PersistentCollection<Scalar>(rowDim * colDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim, colDim, 0.0)
 {
   const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   std::copy(elementsValues.begin(), elementsValues.begin() + matrixSize, begin());
@@ -78,6 +105,18 @@ MatrixImplementation * MatrixImplementation::clone() const
 }
 
 
+namespace
+{
+String matrixValuesToString(const MatrixImplementation & matrix)
+{
+  OSS oss(true);
+  oss << "[";
+  std::copy( matrix.begin(), matrix.end(), OSS_iterator<Scalar>(oss, ",") );
+  oss << "]";
+  return String(oss);
+}
+}
+
 /* String converter */
 String MatrixImplementation::__repr__() const
 {
@@ -85,7 +124,7 @@ String MatrixImplementation::__repr__() const
          << " name=" << getName()
          << " rows=" << nbRows_
          << " columns=" << nbColumns_
-         << " values=" << PersistentCollection<Scalar>::__repr__();
+         << " values=" << matrixValuesToString(*this);
 }
 
 String MatrixImplementation::__str__(const String & offset) const
@@ -183,37 +222,34 @@ MatrixImplementation MatrixImplementation::transpose() const
 void MatrixImplementation::resize(const UnsignedInteger newRowDim,
                                   const UnsignedInteger newColDim)
 {
-  if (newRowDim < nbRows_)
-  {
-    for (UnsignedInteger j = 1; j < nbColumns_; ++ j)
-      std::copy(data() + j * nbRows_, data() + j * nbRows_ + newRowDim, const_cast<Scalar*>(data()) + j * newRowDim);
-    std::fill(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, const_cast<Scalar*>(data()) + nbColumns_ * newRowDim + (nbRows_ - newRowDim + 1), 0.0);
-  }
-  resize(newRowDim * newColDim);
-  if (newRowDim > nbRows_)
-  {
-    const UnsignedInteger minCol = std::min(nbColumns_, newColDim);
-    for (SignedInteger j = (minCol - 1); (j >= 0); -- j)
-    {
-      std::copy(data() + j * nbRows_, data() + (j + 1) * nbRows_, const_cast<Scalar*>(data()) + j * newRowDim);
-      std::fill(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, const_cast<Scalar*>(data()) + (j + 1) * newRowDim, 0.0);
-    }
-  }
+  // Preserve the leading (minRows x minCols) submatrix, zero-fill the rest
+  MatrixImplementation tmp(newRowDim, newColDim);
+  const UnsignedInteger minRows = std::min(nbRows_, newRowDim);
+  const UnsignedInteger minCols = std::min(nbColumns_, newColDim);
+  for (UnsignedInteger j = 0; j < minCols; ++j)
+    std::copy(data() + j * nbRows_, data() + j * nbRows_ + minRows, tmp.data() + j * newRowDim);
   nbRows_ = newRowDim;
   nbColumns_ = newColDim;
+  data_ = tmp.data_;
 }
 
 /* MatrixImplementation reshape */
 MatrixImplementation MatrixImplementation::reshape(const UnsignedInteger newRowDim,
     const UnsignedInteger newColDim) const
 {
-  return MatrixImplementation(newRowDim, newColDim, *this);
+  return MatrixImplementation(newRowDim, newColDim, begin(), end());
 }
 
 void MatrixImplementation::reshapeInPlace(const UnsignedInteger newRowDim,
     const UnsignedInteger newColDim)
 {
-  if (newRowDim * newColDim != getSize()) resize(newRowDim * newColDim);
+  if (newRowDim * newColDim != getSize())
+  {
+    MatrixImplementation tmp(newRowDim, newColDim);
+    const UnsignedInteger size = std::min(getSize(), tmp.getSize());
+    std::copy(begin(), begin() + size, tmp.begin());
+    data_ = tmp.data_;
+  }
   nbRows_ = newRowDim;
   nbColumns_ = newColDim;
 }
@@ -626,7 +662,7 @@ MatrixImplementation MatrixImplementation::symPower(const UnsignedInteger n) con
 /* Empty returns true if there is no element in the MatrixImplementation */
 Bool MatrixImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<Scalar>::isEmpty()));
+  return ((nbRows_ == 0)  || (nbColumns_ == 0));
 }
 
 /* Returns true if triangular lower or upper */
@@ -650,9 +686,7 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & other) cons
   Bool equality = true;
   if (this != &other)
   {
-    const Collection<Scalar> & refLhs(*this);
-    const Collection<Scalar> & refRhs(other);
-    equality = (nbRows_ == other.nbRows_ && nbColumns_ == other.nbColumns_ && (refLhs == refRhs));
+    equality = (nbRows_ == other.nbRows_ && nbColumns_ == other.nbColumns_ && std::equal(begin(), end(), other.begin()));
   }
   return equality;
 }
@@ -792,8 +826,9 @@ Point MatrixImplementation::solveLinearSystemRectInPlace(const Point & b)
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemRectInPlace(MatrixImplementation(m, 1, b));
+  MatrixImplementation B(m, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemRectInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemRect(const Point & b) const
@@ -854,8 +889,9 @@ Point MatrixImplementation::solveLinearSystemTriInPlace(const Point & b,
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemTriInPlace(MatrixImplementation(m, 1, b), lower, transposed);
+  MatrixImplementation B(m, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemTriInPlace(B, lower, transposed));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemTri(const Point & b,
@@ -919,8 +955,9 @@ Point MatrixImplementation::solveLinearSystemSquareInPlace(const Point & b)
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemSquareInPlace(MatrixImplementation(m, 1, b));
+  MatrixImplementation B(m, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemSquareInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemSquare(const Point & b) const
@@ -967,9 +1004,9 @@ Point MatrixImplementation::solveLinearSystemSymInPlace(const Point & b)
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  MatrixImplementation B(dimension, 1, b);
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemSymInPlace(B);
+  MatrixImplementation B(dimension, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemSymInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemSym(const Point & b) const
@@ -1008,9 +1045,9 @@ Point MatrixImplementation::solveLinearSystemCovInPlace(const Point & b)
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  MatrixImplementation B(dimension, 1, b);
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemCovInPlace(B);
+  MatrixImplementation B(dimension, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemCovInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemCov(const Point & b) const
@@ -1691,17 +1728,13 @@ MatrixImplementation MatrixImplementation::computeQRInPlace(MatrixImplementation
   if (fullQR && (m > n))
   {
     // Here we must copy Q into a larger matrix to get the desired mxm Q factor before the call to dorgqr
-    resize(m * m);
-    nbRows_ = m;
-    nbColumns_ = m;
+    resize(m, m);
   }
   dorgqr_(&m, &p, &k, &(*this)[0], &lda, &tau[0], &work[0], &lwork, &info);
   if (m < n)
   {
     // Here we must copy Q into a smaller matrix to get the desired mxm Q factor after the call to dorgqr
-    resize(m * m);
-    nbRows_ = m;
-    nbColumns_ = m;
+    resize(m, m);
   }
   if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
   setName("");
@@ -1711,7 +1744,17 @@ MatrixImplementation MatrixImplementation::computeQRInPlace(MatrixImplementation
 /* Method save() stores the object through the StorageManager */
 void MatrixImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<Scalar>::save(adv);
+  PersistentObject::save(adv);
+  // Same layout as the former PersistentCollection<Scalar>: a size attribute
+  // followed by the values, so existing studies remain readable.
+  adv.saveAttribute("size", getSize());
+  AdvocateIterator<Scalar> adv_it(adv);
+  const Scalar * pData = data();
+  const UnsignedInteger totalSize = getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
   adv.saveAttribute( "nbRows_",    nbRows_);
   adv.saveAttribute( "nbColumns_", nbColumns_);
 }
@@ -1719,9 +1762,18 @@ void MatrixImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MatrixImplementation::load(Advocate & adv)
 {
-  PersistentCollection<Scalar>::load(adv);
+  PersistentObject::load(adv);
+  UnsignedInteger size = 0;
+  adv.loadAttribute("size", size);
   adv.loadAttribute( "nbRows_",    nbRows_);
   adv.loadAttribute( "nbColumns_", nbColumns_);
+  data_ = DataContainer(nbRows_, nbColumns_, 0.0);
+  AdvocateIterator<Scalar> adv_it(adv);
+  Scalar * pData = data();
+  for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+  {
+    pData[i] = adv_it();
+  }
 }
 
 UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
@@ -1731,6 +1783,35 @@ UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
     stride *= nbRows_;
   return stride;
 }
+
+/* Convert to DataContainer (column-major) */
+DataContainer MatrixImplementation::toDataContainer() const
+{
+  if (nbRows_ == 0 || nbColumns_ == 0) return DataContainer();
+  return data_;
+}
+
+/* Construct a MatrixImplementation from a DataContainer (column-major) */
+MatrixImplementation MatrixImplementation::FromDataContainer(const DataContainer & dc,
+    UnsignedInteger nbRows,
+    UnsignedInteger nbColumns)
+{
+  const UnsignedInteger expectedSize = nbRows * nbColumns;
+  if (dc.isEmpty() && expectedSize == 0)
+    return MatrixImplementation(0, 0);
+  if (dc.getSize() * dc.getDimension() != expectedSize)
+    throw InvalidArgumentException(HERE)
+        << "DataContainer size " << dc.getSize() * dc.getDimension()
+        << " does not match matrix dimensions " << nbRows << "x" << nbColumns;
+  return MatrixImplementation(nbRows, nbColumns, dc.data(), dc.data() + expectedSize);
+}
+
+/* Size in bytes of one element */
+UnsignedInteger MatrixImplementation::elementSize() const
+{
+  return sizeof(Scalar);
+}
+
 
 /** Diagonal extraction */
 MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) const

@@ -27,6 +27,8 @@
 %include Indices.i
 %include IndicesCollectionImplementation.i
 %include IndicesCollection.i
+%include DataContainer.i
+%include AlgebraEngine.i
 %include Point.i
 %include PointWithDescription.i
 %include MatrixImplementation.i

@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
+
 #include "openturns/OrthogonalUniVariatePolynomial.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
@@ -45,8 +47,11 @@ OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial()
 /* Constructor from recurrence coefficients */
 OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & recurrenceCoefficients)
   : UniVariatePolynomialImplementation()
-  , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData())
+  , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData().getSize())
 {
+  const Point data(recurrenceCoefficients.getImplementation()->getData());
+  std::copy(data.begin(), data.end(), recurrenceCoefficients_.data());
+  // Build the coefficients using the recurrence coefficients
   coefficients_ = buildCoefficients();
 }
 
@@ -56,10 +61,12 @@ OrthogonalUniVariatePolynomial::OrthogonalUniVariatePolynomial(const Sample & re
                                                                const Scalar a,
                                                                const Scalar b)
   : UniVariatePolynomialImplementation()
-  , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData())
+  , recurrenceCoefficients_(recurrenceCoefficients.getImplementation()->getData().getSize())
   , a_(a)
   , b_(b)
 {
+  const Point data(recurrenceCoefficients.getImplementation()->getData());
+  std::copy(data.begin(), data.end(), recurrenceCoefficients_.data());
   if (a == 0.0) throw InvalidArgumentException(HERE) << "Error: the affine coefficient a=0 should be nonzero.";
   coefficients_ = buildCoefficients();
 }
@@ -154,7 +161,7 @@ Scalar OrthogonalUniVariatePolynomial::operator() (const Scalar x) const
 Sample OrthogonalUniVariatePolynomial::getRecurrenceCoefficients() const
 {
   SampleImplementation result(recurrenceCoefficients_.getSize() / 3, 3);
-  result.setData(recurrenceCoefficients_);
+  result.setData(Collection<Scalar>(recurrenceCoefficients_.data(), recurrenceCoefficients_.data() + recurrenceCoefficients_.getSize()));
   return result;
 }
 
@@ -220,7 +227,7 @@ void OrthogonalUniVariatePolynomial::setA(const Scalar a)
     coefficients_ = buildCoefficients();
   }
 }
-  
+
 Scalar OrthogonalUniVariatePolynomial::getB() const
 {
   return b_;
@@ -239,7 +246,9 @@ void OrthogonalUniVariatePolynomial::setB(const Scalar b)
 void OrthogonalUniVariatePolynomial::save(Advocate & adv) const
 {
   UniVariatePolynomialImplementation::save(adv);
-  adv.saveAttribute( "recurrenceCoefficients_", recurrenceCoefficients_ );
+  // Stored as a nested collection so that the study format is unchanged
+  const PersistentCollection<Scalar> recurrenceCoefficientsColl(recurrenceCoefficients_.data(), recurrenceCoefficients_.data() + recurrenceCoefficients_.getSize());
+  adv.saveAttribute( "recurrenceCoefficients_", recurrenceCoefficientsColl );
   adv.saveAttribute( "a_", a_ );
   adv.saveAttribute( "b_", b_ );
 }
@@ -251,13 +260,18 @@ void OrthogonalUniVariatePolynomial::load(Advocate & adv)
   // recurrenceCoefficients_ changed type from PersistentCollection<Coefficients> to PersistentCollection<Scalar> in 1.19
   // without backward compatibility, see https://github.com/openturns/openturns/pull/1961
   if (adv.getStudyVersion() >= 102000)
-    adv.loadAttribute("recurrenceCoefficients_", recurrenceCoefficients_);
+  {
+    PersistentCollection<Scalar> recurrenceCoefficientsColl;
+    adv.loadAttribute("recurrenceCoefficients_", recurrenceCoefficientsColl);
+    recurrenceCoefficients_.resize(recurrenceCoefficientsColl.getSize());
+    std::copy(recurrenceCoefficientsColl.begin(), recurrenceCoefficientsColl.end(), recurrenceCoefficients_.data());
+  }
   else
   {
     PersistentCollection<Coefficients> coefficientsColl;
     adv.loadAttribute("recurrenceCoefficients_", coefficientsColl);
     const UnsignedInteger size = coefficientsColl.getSize();
-    recurrenceCoefficients_ = PersistentCollection<Scalar>(3 * size);
+    recurrenceCoefficients_.resize(3 * size);
     for (UnsignedInteger i = 0; i < size; ++ i)
       for (UnsignedInteger j = 0; j < 3; ++j)
         recurrenceCoefficients_[3 * i + j] = coefficientsColl[i][j];

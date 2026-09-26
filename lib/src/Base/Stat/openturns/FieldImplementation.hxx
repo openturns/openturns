@@ -176,6 +176,7 @@ public:
 
 protected:
 
+  friend class ProcessSampleImplementation;
   /** Check that the given field is compatible for arithmetic operations */
   void checkArithmeticCompatibility(const FieldImplementation & other) const;
 

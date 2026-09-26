@@ -114,7 +114,11 @@ public:
     const Point residualModel(localModel(inputObservations_).getImplementation()->getData() - outputObservations_.getImplementation()->getData());
     Point result;
     if (globalErrorInverseCholesky_) result = errorInverseCholesky_ * residualModel;
-    else result = errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), Collection<Scalar>(residualModel)));
+    else
+    {
+      const MatrixImplementation tmp(errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), residualModel.begin(), residualModel.end())));
+      result.assign(tmp.begin(), tmp.end());
+    }
     result.add(parameterInverseCholesky_ * (point - parameterMean_));
     return result;
   }

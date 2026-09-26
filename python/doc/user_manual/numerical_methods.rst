@@ -85,6 +85,15 @@ Integration
 
     IteratedQuadrature
 
+Linear algebra
+==============
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    AlgebraEngine
+
 Transformations
 ===============
 

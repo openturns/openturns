@@ -178,7 +178,7 @@ ProcessSample FieldFunctionImplementation::operator() (const ProcessSample & inP
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
   for (UnsignedInteger i = 0; i < size; ++i)
-    outSample[i] = operator()(inPS[i]);
+    outSample.setField(i, operator()(inPS.getField(i).getValues()));
   return outSample;
 }
 

@@ -361,7 +361,7 @@ void KarhunenLoeveSVDAlgorithm::run()
     MatrixImplementation a(eigenModesValues.getColumn(k));
     if (a[0] < 0.0) a *= -1.0;
     // Store the eigen modes in two forms
-    values.setData(a);
+    values.setData(Collection<Scalar>(a.begin(), a.end()));
     modesAsProcessSample.add(values);
     if (meshDimension == 1)
     {

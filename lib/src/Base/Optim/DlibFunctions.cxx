@@ -47,9 +47,11 @@ DlibMatrix DlibGradient::operator() (const DlibMatrix & inP) const
   Matrix gradientAsOTMatrix(gradient(inPoint));
 
   // Conversion to DlibMatrix
-  PersistentCollection<Scalar> gradientAsCollection(*gradientAsOTMatrix.getImplementation());
+  const MatrixImplementation & gradientAsImpl(*gradientAsOTMatrix.getImplementation());
+  const Scalar * gradientBegin(gradientAsImpl.begin());
+  const Scalar * gradientEnd(gradientAsImpl.end());
   DlibMatrix gradientAsDlibMatrix(inputDimension, 1);
-  std::copy(gradientAsCollection.begin(), gradientAsCollection.end(), gradientAsDlibMatrix.begin());
+  std::copy(gradientBegin, gradientEnd, gradientAsDlibMatrix.begin());
 
   return minimization_ ? gradientAsDlibMatrix : -gradientAsDlibMatrix;
 }
@@ -102,12 +104,11 @@ DlibMatrix DlibHessian::operator() (const DlibMatrix & inP) const
   std::copy(inP.begin(), inP.end(), inPoint.begin());
 
   // Call to OT function
-  SymmetricTensor hessianAsOTTensor(hessian(inPoint));
+  const SymmetricTensor hessianAsOTTensor(hessian(inPoint));
 
   // Conversion to DlibMatrix
-  PersistentCollection<Scalar> hessianAsCollection(*hessianAsOTTensor.getImplementation());
   DlibMatrix hessianAsDlibMatrix(inputDimension, inputDimension);
-  std::copy(hessianAsCollection.begin(), hessianAsCollection.end(), hessianAsDlibMatrix.begin());
+  std::copy(hessianAsOTTensor.getImplementation()->begin(), hessianAsOTTensor.getImplementation()->end(), hessianAsDlibMatrix.begin());
 
   return hessianAsDlibMatrix;
 }

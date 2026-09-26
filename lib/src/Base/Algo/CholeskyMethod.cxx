@@ -192,7 +192,9 @@ void CholeskyMethod::update(const Indices & addedIndices,
         const UnsignedInteger basisSize = currentIndices_.getSize();
 
         // update the cholesky decomposition of the Gram matrix
-        const Point xk(*computeWeightedDesign(addedIndices).getImplementation());
+        const Matrix xk_matrix(computeWeightedDesign(addedIndices));
+        const MatrixImplementation & xk_impl(*xk_matrix.getImplementation());
+        const Point xk(xk_impl.begin(), xk_impl.end());
         const Scalar diagk = xk.normSquare();
 
         // solve lower triangular system L*rk=xk'*A to get the extra line panel

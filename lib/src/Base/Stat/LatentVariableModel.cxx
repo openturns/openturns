@@ -97,12 +97,12 @@ Scalar LatentVariableModel::computeAsScalar(const Point & z1, const Point & z2) 
 }
 
 /* Computation of the covariance  function */
-Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iterator & z1_begin,
-    const Collection<Scalar>::const_iterator & z2_begin) const
+Scalar LatentVariableModel::computeAsScalar(const Scalar * z1_begin,
+    const Scalar * z2_begin) const
 {
 
-  Collection<Scalar>::const_iterator z1_it = z1_begin;
-  Collection<Scalar>::const_iterator z2_it = z2_begin;
+  const Scalar * z1_it = z1_begin;
+  const Scalar * z2_it = z2_begin;
 
   return computeAsScalar(*z1_it, *z2_it);
 }

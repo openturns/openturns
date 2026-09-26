@@ -97,14 +97,14 @@ Scalar UserDefinedCovarianceModel::computeAsScalar(const Point &s,
   return covariance_(i, j);
 }
 
-Scalar UserDefinedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar UserDefinedCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : UserDefinedCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
 
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   Point s(inputDimension_);
   Point t(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
@@ -190,7 +190,9 @@ Sample UserDefinedCovarianceModel::discretizeRow(const Sample & vertices,
   SampleImplementation result(size, 1);
   if (vertices == p_mesh_->getVertices())
   {
-    result.setData(*covariance_.getRow(p).getImplementation());
+    const Matrix covRowMatrix(covariance_.getRow(p));
+    const MatrixImplementation & covRow(*covRowMatrix.getImplementation());
+    result.setData(Collection<Scalar>(covRow.begin(), covRow.end()));
     return result;
   }
   const Indices nearestIndex(nearestNeighbour_.query(vertices));

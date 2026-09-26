@@ -258,14 +258,14 @@ Scalar ProductCovarianceModel::computeAsScalar(const Point & tau) const
   return rho;
 }
 
-Scalar ProductCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar ProductCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   Scalar rho = amplitude_[0] * amplitude_[0];
   Scalar squareNorm = 0.0;
   UnsignedInteger start = 0;
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = (*s_it - *t_it);

@@ -213,7 +213,7 @@ public:
 private:
   const CovarianceModel covarianceModel_;
   const Sample vertices_;
-  const Collection<Scalar>::const_iterator verticesBegin_;
+  const SampleImplementation::data_const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
 };
@@ -231,7 +231,7 @@ public:
 private:
   const CovarianceModel covarianceModel_;
   const Sample vertices_;
-  const Collection<Scalar>::const_iterator verticesBegin_;
+  const SampleImplementation::data_const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
 };
 
