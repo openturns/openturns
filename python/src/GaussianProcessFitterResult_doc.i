@@ -3,6 +3,29 @@ R"RAW(Gaussian process fitter result.
 
 Refer to :any:`gaussian_process_regression`.
 
+The structure is usually created by the method :meth:`~openturns.GaussianProcessFitter.run` of the class
+:class:`~openturns.GaussianProcessFitter` and obtained with its method
+:meth:`~openturns.GaussianProcessFitter.getResult()`.
+
+Refer to :any:`gaussian_process_regression` (Step 1) for a presentation of the notation and theoretical foundations. In this section, we only discuss the concepts that are directly relevant to this class.
+
+This class creates the surrogate model
+:math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
+function:
+
+.. math::
+    :label: metaModelGPF
+
+    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
+      \begin{array}{l}
+        \mu_1(\vect{x}) \\
+        \vdots  \\
+        \mu_\outputDim(\vect{x})
+       \end{array}
+     \right)
+
+with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
+
 Parameters
 ----------
 inputSample, outputSample : :class:`~openturns.Sample`
@@ -29,31 +52,6 @@ linAlgMethod : int
     - ot.GaussianProcessFitterResult.HMAT or 1: using `HMAT` to fit the model,
 
     - ot.GaussianProcessFitterResult.HODLR or 2: using `HODLR` to fit the model.
-
-Notes
------
-The structure is usually created by the method :py:meth:`~openturns.GaussianProcessFitter.run` of the class
-:class:`~openturns.GaussianProcessFitter` and obtained with its method
-:py:meth:`~openturns.GaussianProcessFitter.getResult()`.
-
-Refer to :any:`gaussian_process_regression` (Step 1) to get all the notations and the theoretical aspects. We only detail here the notions related to the class.
-
-This class creates the metamodel
-:math:`\metaModel: \Rset^{\inputDim} \rightarrow \Rset^{\outputDim}` defined by the estimated trend
-function:
-
-.. math::
-    :label: metaModelGPF
-
-    \metaModel(\vect{x}) = \vect{\mu}(\vect{x}) = \left(
-      \begin{array}{l}
-        \mu_1(\vect{x}) \\
-        \vdots  \\
-        \mu_\outputDim(\vect{x})
-       \end{array}
-     \right)
-
-with :math:`\mu_\ell(\vect{x}) = \sum_{j=1}^{b} \beta_j^\ell \varphi_j(\vect{x})` and :math:`\varphi_j: \Rset^\inputDim \rightarrow \Rset` the trend functions for :math:`1 \leq j \leq b` and :math:`1 \leq \ell \leq \outputDim`.
 
 Examples
 --------
@@ -224,12 +222,24 @@ R"RAW(Accessor to the trend coefficients.
 Returns
 -------
 trendCoef : :class:`~openturns.Point`
-    The trend coefficients vectors :math:`(\vect{\beta}^1, \dots, \vect{\beta}^{\outputDim})` as a :class:`~openturns.Point`.
+    The trend coefficients stored as a flat vector of dimension :math:`b \times \outputDim`.
 
 Notes
 -----
-As the same basis is used for each marginal output, each :math:`\vect{\beta}^\ell` vector is of dimension
-:math:`b`, the size of the functional basis.)RAW"
+The same basis :math:`(\varphi_j)_{1 \leq j \leq b}` is used for each of the :math:`\outputDim` marginal outputs.
+The coefficients are stored **interleaved by basis function**. For each basis function :math:`\varphi_j`
+(:math:`1 \leq j \leq b`), the coefficients for all output marginals are stored consecutively:
+
+.. math::
+
+    \vect{\beta} = (\beta_1^1, \dots, \beta_1^{\outputDim}, \beta_2^1, \dots, \beta_2^{\outputDim}, \dots, \beta_b^1, \dots, \beta_b^{\outputDim})
+
+where :math:`\beta_j^\ell` is the coefficient of the :math:`j`-th basis function
+for the :math:`\ell`-th output marginal.
+
+The coefficient of the :math:`j`-th basis function for the :math:`\ell`-th output marginal
+is located at position :math:`j \times \outputDim + \ell` in the flat vector
+(with 0-based indices :math:`0 \leq j < b` and :math:`0 \leq \ell < \outputDim`).)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -309,3 +319,15 @@ rho : sequence of float
 Notes
 -----
 The standardized output vector is defined as :math:`\mat{L}_{\vect{p}^*}^{-1}(\vect{y} - \vect{m}_{\vect{\beta}^*(\vect{p}^*)})`.)RAW"
+
+
+%feature("docstring") OT::GaussianProcessFitterResult::setCholeskyFactor
+"Set the Cholesky factor of the covariance matrix.
+
+Parameters
+----------
+covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
+    The Cholesky factor of the covariance matrix.
+covarianceHMatrix : :class:`~openturns.HMatrix`
+    The HMAT Cholesky factor of the covariance matrix."
+

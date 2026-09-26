@@ -177,9 +177,9 @@ view = otv.View(grid)
 # - when the Hurst exponent is equal to 1/2, the trajectory is Brownian motion (Wiener process),
 # - when the Hurst exponent is close to 0, the process tends to a White noise process.
 #
-scale = 0.01
-amplitude = 1.5
-hurst_exponent = 0.75
+scale = [0.01]
+amplitude = [1.5]
+hurst_exponent = [0.75]
 cov_model = ot.FractionalBrownianMotionModel(scale, amplitude, hurst_exponent)
 mesh = ot.IntervalMesher([1000]).build(ot.Interval(0.0, 1.0))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
@@ -202,7 +202,7 @@ view = otv.View(grid)
 grid = ot.GridLayout(1, 3)
 hurst_exponent_list = [0.99, 0.50, 0.001]
 for index, hurst_exponent in enumerate(hurst_exponent_list):
-    cov_model = ot.FractionalBrownianMotionModel(scale, amplitude, hurst_exponent)
+    cov_model = ot.FractionalBrownianMotionModel(scale, amplitude, [hurst_exponent])
     normal_proc = ot.GaussianProcess(cov_model, mesh)
     field = normal_proc.getRealization()
     g = field.drawMarginal(0, True)

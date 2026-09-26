@@ -25,21 +25,38 @@ using the methods presented in :any:`sensitivity_sobol_from_pce`.
 The next table presents the map from the Sobol' index to the
 corresponding method.
 
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Single variable or group            | Sensitivity Index    | Notation                           | Method                                       |
-+=====================================+======================+====================================+==============================================+
-| One single variable :math:`i`       | First order          | :math:`S_i`                        | `getSobolIndex(i)`                           |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total                | :math:`S^T_i`                      | `getSobolTotalIndex(i)`                      |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Group interaction :math:`\bdu`      | First order          | :math:`S_\bdu`                     | `getSobolIndex(variableIndices)`             |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total interaction    | :math:`S^{T,i}_\bdu`               | `getSobolTotalIndex(variableIndices)`        |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-| Group closed :math:`\bdu`           | First order closed   | :math:`S_\bdu^{\operatorname{cl}}` | `getSobolGroupedIndex(variableIndices)`      |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
-|                                     | Total                | :math:`S^T_\bdu`                   | `getSobolGroupedTotalIndex(variableIndices)` |
-+-------------------------------------+----------------------+------------------------------------+----------------------------------------------+
+.. list-table::
+   :widths: 30 20 20 30
+   :header-rows: 1
+
+   * - Single variable or group
+     - Sensitivity Index
+     - Notation
+     - Method
+   * - One single variable :math:`i`
+     - First order
+     - :math:`S_i`
+     - `getSobolIndex(i)`
+   * -
+     - Total
+     - :math:`S^T_i`
+     - `getSobolTotalIndex(i)`
+   * - Group interaction :math:`\bdu`
+     - First order
+     - :math:`S_\bdu`
+     - `getSobolIndex(variableIndices)`
+   * -
+     - Total interaction
+     - :math:`S^{T,i}_\bdu`
+     - `getSobolTotalIndex(variableIndices)`
+   * - Group closed :math:`\bdu`
+     - First order closed
+     - :math:`S_\bdu^{\operatorname{cl}}`
+     - `getSobolGroupedIndex(variableIndices)`
+   * -
+     - Total
+     - :math:`S^T_\bdu`
+     - `getSobolGroupedTotalIndex(variableIndices)`
 
 **Table 1.** Sobol' indices and the corresponding methods.
 
@@ -50,6 +67,11 @@ threshold, it is not printed.
 This threshold can be customized using the
 `FunctionalChaosSobolIndices-VariancePartThreshold` key of the
 :class:`~openturns.ResourceMap`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``FunctionalChaosSobolIndices-MaximumNumberOfOutput`` (``UnsignedInteger``, default: ``1000``)
+- ``FunctionalChaosSobolIndices-PrintColumnWidth`` (``UnsignedInteger``, default: ``15``)
 
 Examples
 --------
@@ -269,7 +291,7 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getPartOfVariance
-"Get the part of variance corresponding to each multi-index.
+R"RAW(Get the part of variance corresponding to each multi-index.
 
 Parameters
 ----------
@@ -288,4 +310,22 @@ partOfVariance : :class:`~openturns.Point`
     the part of the variance explained by the corresponding function.
     The sum of part of variances is equal to 1.
     If the corresponding multi-index has total degree equal to 0,
-    then the corresponding part of variance is equal to zero."
+    then the corresponding part of variance is equal to zero.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::draw
+R"RAW(Draw the Sobol indices.
+
+The first and total order indices are drawn as bars, one per input.
+
+Parameters
+----------
+marginalIndex : int, :math:`0 \leq i < d`, optional
+    Index of the model's marginal used to estimate the indices.
+    By default, marginalIndex is equal to 0.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of the Sobol' indices.)RAW"

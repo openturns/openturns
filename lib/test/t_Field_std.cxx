@@ -81,7 +81,7 @@ int main(int, char *[])
     Field field(mesh3D, values);
     KDTree tree(vertices);
     fullprint << "field=" << field << std::endl;
-    fullprint << "input dim=" << field.getInputDimension() << std::endl;
+    fullprint << "input dim=" << field.getMesh().getDimension() << std::endl;
     fullprint << "value[4]=" << field.getValueAtIndex(4) << std::endl;
     fullprint << "value[4, 0]=" << field(4, 0) << std::endl;
     fullprint << "nearest[2]=" << field.getValueAtIndex(tree.query(field[2])) << std::endl;

@@ -91,6 +91,22 @@ Bool UserDefinedStationaryCovarianceModel::equals(const CovarianceModelImplement
   return p_other && (*this == *p_other);
 }
 
+/* Constructor from a unique covariance matrix */
+UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
+    const SquareMatrix & covariance)
+  : CovarianceModelImplementation()
+  , covarianceCollection_(0)
+  , mesh_(mesh)
+  , nearestNeighbour_(mesh)
+{
+  isStationary_ = true;
+  const UnsignedInteger size = mesh.getVerticesNumber();
+  inputDimension_ = mesh.getDimension();
+  outputDimension_ = covariance.getDimension();
+  // The same covariance matrix is used at each vertex of the mesh
+  covarianceCollection_ = SquareMatrixCollection(size, covariance);
+}
+
 Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) const
 {
   if (outputDimension_ > 1)

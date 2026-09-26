@@ -8,4 +8,8 @@
 
 %copyctor OT::LinearCombinationFunction;
 
+%ignore OT::LinearCombinationFunction::mergeLinearCombination;
+%ignore OT::LinearCombinationFunction::add;
+%ignore OT::LinearCombinationFunction::negate;
+
 %include openturns/LinearCombinationFunction.hxx

@@ -42,6 +42,36 @@ distY : :class:`~openturns.Distribution`, univariate
 Notes
 -----
 Its first moments are obtained by numerical integration.
+The mathematical support of a CompositeDistribution is defined as the image of the numerical support of the antecedent.
+Consequently, its bounds are finite.
+
+The two-argument constructor determines the monotonicity partition
+:math:`(a_0,\ldots,a_N)` automatically, by solving
+:math:`\model'(x)=0` on the support of :math:`distX`. The four-argument
+constructor lets the user specify this partition, when the user knows a priori
+the monotonicity intervals of :math:`\model`, or when :math:`\model` is not
+smooth enough for its derivatives to be computed numerically by the automatic
+procedure.
+
+The roots of :math:`\model'` are located by the solver on a regular grid of
+``CompositeDistribution-StepNumber`` subintervals of the support of
+:math:`distX`. The solver and its tolerances can be changed
+with :meth:`setSolver`, using as default absolute tolerance
+``CompositeDistribution-SolverEpsilon`` rescaled by the antecedent range
+width.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``CompositeDistribution-SolverEpsilon`` (``Scalar``, default: ``1.0e-14``): tolerance of the non linear solver used to compute the values of the distribution, rescaled by the antecedent range width.
+- ``CompositeDistribution-StepNumber`` (``UnsignedInteger``, default: ``256``): number of subintervals of the support of :math:`distX` in the regular grid on which the roots of :math:`\model'` are located.
+
+The range of :math:`distY` is the interval between the minimum and the maximum
+of the values :math:`v[k]`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``CompositeDistribution-SolverEpsilon`` (``Scalar``, default: ``1.0e-14``): tolerance of the non linear solver used to compute the values of the distribution.
+- ``CompositeDistribution-StepNumber`` (``UnsignedInteger``, default: ``256``): number of steps of the numerical integration.
 
 Examples
 --------
@@ -130,3 +160,61 @@ Returns
 solver : :class:`~openturns.Solver`
     The solver used for PDF/CDF computations.
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::computeProbability
+R"RAW(Compute the interval probability.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    An interval in :math:`\Rset`.
+
+Returns
+-------
+p : float
+    The probability of *interval*.
+
+Notes
+-----
+This method is implemented as a segment-wise summation over the monotonicity
+intervals of :math:`\model`, using the precomputed CDF values of :math:`distX` at
+the bounds of these intervals. It therefore avoids the numerical integration
+of the PDF over the singular points located at the images of the critical
+points of :math:`g`, where the PDF is not defined, an approach that would
+otherwise diverge.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distX = ot.Normal()
+>>> distY = ot.CompositeDistribution(ot.SymbolicFunction(['x'], ['x^2']), distX)
+>>> distY.computeProbability(ot.Interval([0.0], [1.0]))  # doctest: +SKIP
+0.6826894921370856
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CompositeDistribution::getSingularities
+R"RAW(Accessor to the PDF singularities.
+
+Returns
+-------
+singularities : :class:`~openturns.Point`
+    The singularities of the PDF of the distribution, sorted in ascending order.
+
+Notes
+-----
+The PDF of :math:`g(distX)` is not defined at the images of the critical
+points of :math:`g`, i.e. at the points :math:`g(x)` where
+:math:`g'(x)=0`. These points are returned by this method. A monotonic
+function :math:`g` has no such singularity, and the returned Point is empty.
+
+Examples
+--------
+>>> import openturns as ot
+>>> distY = ot.CompositeDistribution(ot.SymbolicFunction(['x'], ['x^2']), ot.Normal())
+>>> distY.getSingularities()  # doctest: +SKIP
+class=Point name=Unnamed dimension=1 values=[0]
+)RAW"

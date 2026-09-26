@@ -1,9 +1,42 @@
 %define OT_Distribution_doc
-"Base class for probability distributions.
+R"RAW(Base class for probability distributions.
 
 Notes
 -----
-In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution*."
+In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution*.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Distribution-MinimumVolumeLevelSetBySampling`` (``Bool``, default: ``false``): Whether to use sampling for minimum volume level set computation.
+- ``Distribution-Parallel`` (``Bool``, default: ``true``): Whether distribution computations are parallelized.
+- ``Distribution-ScaleColorsDiscretePDF`` (``Bool``, default: ``true``): Whether to scale colors for discrete PDF plots.
+- ``Distribution-ShowSupportDiscretePDF`` (``Bool``, default: ``true``): Whether to show support points in discrete PDF plots.
+- ``Distribution-UseCovarianceAdaptiveAlgorithm`` (``Bool``, default: ``true``): Whether to use adaptive algorithm for covariance computation.
+- ``Distribution-QMin`` (``Scalar``, default: ``0.15``): Lower quantile for plot range.
+- ``Distribution-QMax`` (``Scalar``, default: ``0.85``): Upper quantile for plot range.
+- ``Distribution-DefaultQuantileEpsilon`` (``Scalar``, default: ``1.0e-12``): Precision for quantile computation.
+- ``Distribution-DefaultPDFEpsilon`` (``Scalar``, default: ``1.0e-14``): Precision for PDF computation.
+- ``Distribution-DefaultCDFEpsilon`` (``Scalar``, default: ``1.0e-14``): Precision for CDF computation.
+- ``Distribution-DiscreteDrawPDFScaling`` (``Scalar``, default: ``0.25``): Scaling factor for discrete PDF bar plots.
+- ``Distribution-TailDependenceEpsilon`` (``Scalar``, default: ``1.0e-12``): Precision for tail dependence coefficient computation.
+- ``Distribution-TailDependenceMargin`` (``Scalar``, default: ``1.0e-3``): Margin for tail dependence computation.
+- ``Distribution-SupportEpsilon`` (``Scalar``, default: ``1.0e-14``): Precision for support detection.
+- ``Distribution-EntropySamplingMethod`` (``String``, default: ``MonteCarlo``): Method for entropy computation by sampling.
+- ``Distribution-RoughnessSamplingMethod`` (``String``, default: ``MonteCarlo``): Method for roughness computation by sampling.
+- ``Distribution-SupportPointStyleDiscretePDF`` (``String``, default: ``dot``): Point style for discrete PDF support points.
+- ``Distribution-CharacteristicFunctionNMax`` (``UnsignedInteger``, default: ``1000000``): Maximum number of points for characteristic function inversion.
+- ``Distribution-DefaultCDFIteration`` (``UnsignedInteger``, default: ``10000``): Maximum number of iterations for CDF inversion.
+- ``Distribution-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``): Default number of integration nodes.
+- ``Distribution-DefaultLevelNumber`` (``UnsignedInteger``, default: ``10``): Default number of contour levels.
+- ``Distribution-DefaultPointNumber`` (``UnsignedInteger``, default: ``129``): Default number of points for function plots.
+- ``Distribution-DefaultQuantileIteration`` (``UnsignedInteger``, default: ``100``): Maximum number of iterations for quantile computation.
+- ``Distribution-EntropySamplingSize`` (``UnsignedInteger``, default: ``524288``): Sample size for entropy computation.
+- ``Distribution-MinimumVolumeLevelSetSamplingSize`` (``UnsignedInteger``, default: ``16384``): Sample size for minimum volume level set computation.
+- ``Distribution-SmallDimensionEntropy`` (``UnsignedInteger``, default: ``3``): Dimension threshold for using analytical entropy.
+- ``Distribution-RoughnessSamplingSize`` (``UnsignedInteger``, default: ``524288``): Sample size for roughness computation.
+- ``Distribution-SmallDimensionRoughness`` (``UnsignedInteger``, default: ``3``): Dimension threshold for using analytical roughness.
+- ``Distribution-SmallSupport`` (``UnsignedInteger``, default: ``10``): Threshold for considering support as small.
+)RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation
 OT_Distribution_doc
@@ -48,7 +81,7 @@ distribution and can be used by actual distributions:
   CDF and the directions pointing toward :math:`-\infty`. The size of
   the boxes is controlled by a parameter set by the actual distribution
   and the maximum number of cells to explore is controlled by the
-  *Distribution-DefaultCDFIteration* entry of :class:`~openturns.ResourceMap`
+  ``Distribution-DefaultCDFIteration`` entry of :class:`~openturns.ResourceMap`
 
 )RAW"
 %enddef
@@ -931,14 +964,14 @@ Parameters
 xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMin`` from the :class:`~openturns.ResourceMap`.
 xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMax`` from the :class:`~openturns.ResourceMap`.
 pointNumber : int
     The number of points that is used for meshing each axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    Defaults uses ``Distribution-DefaultPointNumber`` from the
     :class:`~openturns.ResourceMap`.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -1675,14 +1708,14 @@ Parameters
 xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMin`` from the :class:`~openturns.ResourceMap`.
 xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMax`` from the :class:`~openturns.ResourceMap`.
 pointNumber : int
     The number of points that is used for meshing each axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    Defaults uses ``Distribution-DefaultPointNumber`` from the
     :class:`~openturns.ResourceMap`.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -1748,14 +1781,14 @@ Parameters
 xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMin`` from the :class:`~openturns.ResourceMap`.
 xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMax`` from the :class:`~openturns.ResourceMap`.
 pointNumber : int
     The number of points that is used for meshing each axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    Defaults uses ``Distribution-DefaultPointNumber`` from the
     :class:`~openturns.ResourceMap`.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -1819,7 +1852,7 @@ qmax : float, in :math:`[0,1]`
     The max value of the mesh of the x-axis.
 nPoints : int, optional
     The number of points that is used for meshing the quantile curve.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    Defaults uses ``Distribution-DefaultPointNumber`` from the
     :class:`~openturns.ResourceMap`.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -2739,9 +2772,11 @@ std_repr_dist : :class:`~openturns.Distribution`
 Notes
 -----
 The standard representative distribution is defined on a distribution-by-distribution basis, most of the time by
-scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (ie zero mean, unit variance) the
-distributions with unbounded support. It is the member of the family for which orthonormal polynomials will be built using
-generic algorithms of orthonormalization (see :class:`~openturns.StandardDistributionPolynomialFactory`)."
+scaling the distribution with bounded support to :math:`[0,1]` or by standardizing (i.e. zero mean, unit variance) the
+distributions with unbounded support. It is the member of the family for which the recurrence coefficients of the
+orthonormal polynomial family are computed. The orthonormal polynomials of the given distribution are then deduced from
+those of its standard representative by composition with the affine transformation which maps the given distribution to
+its standard representative (see :class:`~openturns.UniVariateDistributionPolynomialFactory`)."
 %enddef
 %feature("docstring") OT::DistributionImplementation::getStandardRepresentative
 OT_Distribution_getStandardRepresentative_doc
@@ -3247,14 +3282,14 @@ Parameters
 xMin : float, optional
     The min-value of the mesh of the x-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMin`` from the :class:`~openturns.ResourceMap`.
 xMax : float, optional, *xMax > xMin*
     The max-value of the mesh of the y-axis.
     Defaults uses the quantile associated to the probability level
-    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
+    ``Distribution-QMax`` from the :class:`~openturns.ResourceMap`.
 pointNumber : int
     The number of points that is used for meshing each axis.
-    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    Defaults uses ``Distribution-DefaultPointNumber`` from the
     :class:`~openturns.ResourceMap`.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -3703,3 +3738,30 @@ isParallel : bool
 %enddef
 %feature("docstring") OT::DistributionImplementation::isParallel
 OT_Distribution_isParallel_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeMinimumVolumeLevelSetCollectionWithThreshold_doc
+R"RAW(Compute confidence domains with minimum volume for several levels.
+
+The sampling effort is shared between the requested probabilities: a
+single sample of the -log PDF is drawn and reused to compute all the
+thresholds.
+
+Parameters
+----------
+alpha : sequence of float, :math:`\alpha_i \in [0,1]`
+    The confidence levels.
+threshold : :class:`~openturns.Point`
+    The output thresholds :math:`p_{\alpha_i}` such that the level set
+    is :math:`\{\vect{x} \, | \, p(\vect{x}) \geq p_{\alpha_i}\}`.
+
+Returns
+-------
+levelSets : collection of :class:`~openturns.LevelSet`
+    The minimum volume domains of measure *alpha*.)RAW"
+%enddef
+%feature("docstring") OT::Distribution::computeMinimumVolumeLevelSetCollectionWithThreshold
+OT_Distribution_computeMinimumVolumeLevelSetCollectionWithThreshold_doc
+%feature("docstring") OT::DistributionImplementation::computeMinimumVolumeLevelSetCollectionWithThreshold
+OT_Distribution_computeMinimumVolumeLevelSetCollectionWithThreshold_doc

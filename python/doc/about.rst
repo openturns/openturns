@@ -70,27 +70,21 @@ Presentations can be found `here <https://github.com/openturns/presentation/>`_ 
 
 Citing OpenTURNS
 ----------------
-If you use OpenTURNS in a scientific publication, we would appreciate citations to the following paper:
+If you use OpenTURNS in a scientific publication, we would appreciate citation to the following paper:
 
-.. code-block:: bash
+.. code-block:: bibtex
 
-    @Inbook{Baudin2016,
-    author="Baudin, Micha{\"e}l
-    and Dutfoy, Anne
-    and Iooss, Bertrand
-    and Popelin, Anne-Laure",
-    editor="Ghanem, Roger
-    and Higdon, David
-    and Owhadi, Houman",
-    title="OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation",
-    bookTitle="Handbook of Uncertainty Quantification",
-    year="2016",
-    publisher="Springer International Publishing",
-    address="Cham",
-    pages="1--38",
-    isbn="978-3-319-11259-6",
-    doi="10.1007/978-3-319-11259-6_64-1",
-    url="https://doi.org/10.1007/978-3-319-11259-6_64-1"
+    @article{Baudin2026,
+    author = {Baudin, Micha\"{e}l and Dutfoy, Anne and Lebrun, R\'{e}gis and Schueller, Julien and Haddad, Sofiane and Brevault, Lo\"{i}c and Balesdent, Mathieu and Pelamatti, Julien and Mur\'{e}, Joseph},
+    title = {OpenTURNS: A Python package for uncertainty quantification},
+    journal = {Journal of Open Source Software},
+    year = {2026},
+    publisher = {The Open Journal},
+    volume = {11},
+    number = {125},
+    pages = {10484},
+    doi = {10.21105/joss.10484},
+    url = {https://doi.org/10.21105/joss.10484}
     }
 
 

@@ -28,6 +28,11 @@ Conditional sensitivity analysis relies on the :class:`~openturns.HSICVStat` est
 asymptotic estimate of the p-values thus the generic methods `getPValuesAsymptotic` and `drawPValuesAsymptotic`
 throws an exception in that case.
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``HSICEstimator-ParallelPValues`` (``Bool``, default: ``true``)
+- ``HSICEstimator-PermutationSize`` (``UnsignedInteger``, default: ``100``)
+
 Examples
 --------
 >>> import openturns as ot

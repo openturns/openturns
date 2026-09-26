@@ -196,3 +196,56 @@ condPDF = mixture.computeConditionalPDF(1.0, [2.0])
 print("conditional PDF (bivariate mixture)=%.6f" % condPDF)
 seqCondPDF = mixture.computeSequentialConditionalPDF([2.0, 1.0])
 print("sequential conditional PDF=", seqCondPDF)
+
+# Mixed continuous/discrete drawing, see issue #1489
+mixed = ot.Mixture([ot.Dirac(-3.0), ot.Normal()], [0.5, 0.5])
+graph = mixed.drawPDF(-6.0, 6.0)
+drawables = graph.getDrawables()
+# one curve, one shaft, one arrow head and one text label
+assert drawables.getSize() == 4, "expected curve plus shaft, head and text"
+shaft = drawables[1].getData()
+ott.assert_almost_equal(shaft[0], [-3.0, 0.0])
+assert shaft[1][0] == -3.0, "atom abscissa"
+assert shaft[1][1] > 0.0, "atom shaft height"
+head = drawables[2]
+head_class = head.getImplementation().getClassName()
+assert head_class == "Polygon", "arrow head expected"
+headData = head.getData()
+assert headData.getSize() == 3, "triangle head"
+assert headData[0][0] == -3.0, "apex abscissa"
+assert headData[0][1] > shaft[1][1], "head points up"
+# a text label gives the probability of the atom above its arrow
+label = drawables[3]
+assert label.getImplementation().getClassName() == "Text", "text label expected"
+annotations = label.getTextAnnotations()
+assert len(annotations) == 1, "one annotation expected"
+ott.assert_almost_equal(float(annotations[0]), 0.5, 1e-8, 1e-8)
+# the arrow height matches the peak of the weighted continuous density
+peak = ot.Normal().computePDF([0.0])
+half = ot.Mixture([ot.Dirac(-3.0), ot.Normal()], [0.25, 0.75])
+h1 = mixed.drawPDF(-6.0, 6.0).getDrawable(1).getData()[1, 1]
+h2 = half.drawPDF(-6.0, 6.0).getDrawable(1).getData()[1, 1]
+ott.assert_almost_equal(h1, 0.5 * peak, 1e-6, 1e-6)
+ott.assert_almost_equal(h2, 0.75 * peak, 1e-6, 1e-6)
+# log scale is applied to the mixed drawing as well, see #1489
+assert mixed.drawPDF(-6.0, 6.0, 129, True).getLogScale() == ot.GraphImplementation.LOGX
+# several atoms
+mixed3 = ot.Mixture(
+    [ot.Dirac(-3.0), ot.Dirac(3.0), ot.Normal()], [0.25, 0.25, 0.5]
+)
+n_drawables = mixed3.drawPDF(-6.0, 6.0).getDrawables().getSize()
+assert n_drawables == 6, "two arrows and their text label expected"
+# purely continuous mixtures keep the generic drawing
+continuous = ot.Mixture(
+    [ot.Normal(-1.0, 1.0), ot.Normal(1.0, 1.0)], [0.5, 0.5]
+)
+n_drawables = continuous.drawPDF(-6.0, 6.0).getDrawables().getSize()
+assert n_drawables == 1, "no atom expected"
+
+# generic discrete components also get arrows, see issue #1596
+geometric = ot.Geometric(0.1)
+mixedGeo = ot.Mixture([geometric, ot.Normal(3.0, 1.0)], [0.7, 0.3])
+ggeo = mixedGeo.drawPDF(-2.0, 10.0)
+supportInRange = geometric.getSupport(ot.Interval([-2.0], [10.0]))
+expected = 2 + 2 * supportInRange.getSize()
+assert ggeo.getDrawables().getSize() == expected, "one arrow per support point"

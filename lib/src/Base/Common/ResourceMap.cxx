@@ -1322,6 +1322,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Normal-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Normal-MaximumNumberOfPoints", 10000000);
   addAsUnsignedInteger("Normal-MinimumNumberOfPoints", 100000);
+  addAsString("Normal-RectangularProbabilityAlgorithm", "Genz", {"Genz", "Ridgway"});
   addAsUnsignedInteger("Normal-SmallDimension", 6);
 
   // ParetoFactory parameters //
@@ -1392,6 +1393,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Student-MarginalIntegrationNodesNumber", 16);
   addAsUnsignedInteger("Student-MaximumNumberOfPoints", 10000000);
   addAsUnsignedInteger("Student-MinimumNumberOfPoints", 100000);
+  addAsString("Student-RectangularProbabilityAlgorithm", "Genz", {"Genz", "Ridgway"});
   addAsUnsignedInteger("Student-SmallDimension", 6);
 
   // StudentFactory parameters //
@@ -1418,6 +1420,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Ridgway-DefaultParticleNumber", 1000);
   addAsScalar("Ridgway-DefaultAlpha", 0.5);
   addAsUnsignedInteger("Ridgway-DefaultStudentSampleSize", 1024);
+  addAsUnsignedInteger("Ridgway-UniformPoolSize", 1048576);
   addAsString("Ridgway-LowDiscrepancySequence", "SobolSequence");
 
   // FiniteDiscreteDistribution parameters //
@@ -1466,8 +1469,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("LinearCombinationDistribution-DefaultPDFEpsilon", 1.0e-10);
   addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMax", 16);
   addAsUnsignedInteger("LinearCombinationDistribution-DefaultBlockMin", 3);
-  addAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 65536);
+  addAsUnsignedInteger("LinearCombinationDistribution-DefaultMaxSize", 16777216);
   addAsUnsignedInteger("LinearCombinationDistribution-MaximumSupportSize", 2048);
+  addAsUnsignedInteger("LinearCombinationDistribution-MaximumPDFLevel", 100);
+  addAsBool("LinearCombinationDistribution-BetaAdaptation", true);
+  addAsScalar("LinearCombinationDistribution-BetaAdaptationEpsilon", 1.0e-6);
+  addAsScalar("LinearCombinationDistribution-MaximumBeta", 64.0);
+  addAsScalar("LinearCombinationDistribution-BandwidthConvergenceEpsilon", 1.0e-9);
   addAsUnsignedInteger("LinearCombinationDistribution-ProjectionDefaultSize", 25);
   addAsUnsignedInteger("LinearCombinationDistribution-SmallSize", 100);
 
@@ -1480,6 +1488,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearCombinationEvaluation //
   addAsScalar("LinearCombinationEvaluation-SmallCoefficient", 0.0);
+
+  // LinearCombinationFunction //
+  addAsBool("LinearCombinationFunction-MergeDuplicates", false);
 
   // DistFunc parameters //
   addAsScalar("DistFunc-Precision", 1.0e-14);
@@ -1865,6 +1876,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SimplicialCubature-DefaultMaximumRelativeError", 1.0e-5);
   addAsUnsignedInteger("SimplicialCubature-DefaultMaximumCallsNumber", 100000);
   addAsUnsignedInteger("SimplicialCubature-DefaultRule", 3);
+  addAsUnsignedInteger("SimplicialCubature-EvaluationBlockSize", 2048);
+  addAsUnsignedInteger("SimplicialCubature-MaximumRefinementNumber", 2048);
   addAsUnsignedInteger("SimplicialCubature-MarginalDiscretizationIntervalsNumber", 1);
 
   // SparseMethod parameters //

@@ -34,9 +34,8 @@ make install
 find ~/.local/share/doc/openturns/html -name "*.zip" | xargs rm
 if test -n "${UID_GID}"
 then
-  cp -r ~/.local/share/doc/openturns/html .
-  zip -r openturns-doc.zip html/*
-  sudo chown ${UID_GID} openturns-doc.zip && sudo cp -p openturns-doc.zip ${source_dir}
+  tar -czf openturns-doc.tar.gz -C ~/.local/share/doc/openturns/ html/
+  sudo chown ${UID_GID} openturns-doc.tar.gz && sudo cp -p openturns-doc.tar.gz ${source_dir}
 fi
 if test "${CIRCLE_BRANCH}" = "master"
 then

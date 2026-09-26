@@ -237,10 +237,10 @@ public:
   Matrix getWeights() const;
 
   /** Get a position indicator for a 1D distribution */
-  Scalar getPositionIndicator() const;
+  Scalar getPositionIndicator() const override;
 
   /** Get a dispersion indicator for a 1D distribution */
-  Scalar getDispersionIndicator() const;
+  Scalar getDispersionIndicator() const override;
 
   /** BlockMin accessor */
   void setBlockMin(const UnsignedInteger blockMin);
@@ -321,6 +321,7 @@ private:
   Scalar computeEquivalentNormalCDFSum(const Scalar s, const Scalar t) const;
 
   friend struct EquivalentNormalPDFSumPolicy;
+  friend struct DeltaContributionAccumulator;
   Scalar computeEquivalentNormalPDFSum(const Point & y, const Point & gridStep,
                                        UnsignedInteger imax, UnsignedInteger & levelMax) const;
 public:
@@ -342,8 +343,22 @@ private:
 
   /** Compute the reference bandwidth. It is defined as the maximum bandwidth
       that allow a precise computation of the PDF over the range
-      [positionIndicator_ +/- beta * dispersionIndicator_] */
-  void computeReferenceBandwidth();
+      [positionIndicator_ +/- bandBeta * dispersionIndicator_] */
+  void computeReferenceBandwidth(const Bool recycleCache = false);
+
+  /** Number of blocks allowed at the current adaptation stage */
+  UnsignedInteger effectiveKmax(const UnsignedInteger kmax) const;
+
+  /** Adapt the confidence band by doubling beta until the mass outside the
+      band [positionIndicator_ +/- beta * dispersionIndicator_] is negligible */
+  void adaptBand();
+
+  /** Carry over the characteristic function values of the previous lattice
+      into the current one when the previous lattice is included in the
+      current one */
+  void recycleCharacteristicValues(const SphereUniformNorm & oldMesher,
+                                   const Point & oldBandwidth,
+                                   const UnsignedInteger oldStoredSize);
 
   /** Compute the equivalent normal distribution, i.e. with the same mean and
       the same standard deviation */
@@ -404,6 +419,16 @@ private:
 
   /** Distance from the boundary of the a priori range at which the PDF is negligible */
   Scalar beta_;
+
+  /** Effective distance from the position indicator at which the PDF is
+      negligible, after the adaptation of the confidence band */
+  Scalar bandBeta_;
+
+  /** Center of the confidence band, per axis */
+  Point bandCenter_;
+
+  /** Scale of the confidence band, per axis */
+  Point bandScale_;
 
   /** Requested precision for PDF computation */
   mutable Scalar pdfPrecision_;

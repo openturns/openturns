@@ -124,6 +124,9 @@ Point SymbolicParserMuParser::operator() (const Point & inP) const
   if (inP.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Invalid input dimension (" << inP.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Point();
+  // muParser is not thread-safe: the point evaluation is serialized so that it
+  // can be used concurrently from several threads
+  const std::lock_guard<std::mutex> lock(*mutex_);
   initialize();
   std::copy(inP.begin(), inP.end(), stack_.begin());
   Point result(outputDimension);
@@ -202,21 +205,30 @@ Sample SymbolicParserMuParser::operator() (const Sample & inS) const
   if (inS.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Error: invalid input dimension (" << inS.getDimension() << ") expected " << inputDimension;
   if (outputDimension == 0) return Sample(inS.getSize(), 0);
-  initialize();
+  // The lazy initialization is protected by a mutex so that the first batch
+  // evaluation can be performed concurrently from several threads
+  {
+    const std::lock_guard<std::mutex> lock(*mutex_);
+    initialize();
+  }
   const UnsignedInteger size = inS.getSize();
   Sample result(size, outputDimension);
   if (size < smallSize_)
   {
-    // account for the penalty on small samples
+    // account for the penalty on small samples; each point evaluation is
+    // serialized internally so that it is safe to call from several threads
     for (UnsignedInteger i = 0; i < size; ++ i)
       result[i] = operator()(inS[i]);
   }
   else
   {
-    if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
     {
-      threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
-      threadStack_.resize(TBBImplementation::GetThreadsNumber());
+      const std::lock_guard<std::mutex> lock(*mutex_);
+      if (threadExpressions_.getSize() != TBBImplementation::GetThreadsNumber())
+      {
+        threadExpressions_.resize(TBBImplementation::GetThreadsNumber());
+        threadStack_.resize(TBBImplementation::GetThreadsNumber());
+      }
     }
     const SymbolicParserMuParserPolicy policy(inS, result, *this);
     TBBImplementation::ParallelFor(0, size, policy, smallSize_);

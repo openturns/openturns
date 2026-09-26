@@ -138,6 +138,10 @@ public:
              const UnsignedInteger last);
   void erase(const UnsignedInteger index);
 
+  /*! Erase the points at the given indices, in-place. The indices can be
+   * given in any order but must be unique and less than the sample size. */
+  void erase(const Indices & indices);
+
   /** erase the whole sample */
   void clear();
 

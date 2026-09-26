@@ -29,6 +29,10 @@ This method implements a method to solve the least squares problem  using the Ch
 
 Refer to :any:`least_squares` to get all the notations.
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``CholeskyMethod-LargeCase`` (``UnsignedInteger``, default: ``128``): dimension above which the Cholesky method falls back to the large case algorithm.
+
 Examples
 --------
 Solves a linear least squares problem with Cholesky method:

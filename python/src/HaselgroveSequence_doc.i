@@ -25,4 +25,11 @@ Examples
 1 : [ 0.828427  0.464102  ]
 2 : [ 0.242641  0.196152  ]
 3 : [ 0.656854  0.928203  ]
-4 : [ 0.0710678 0.660254  ]"
+4 : [ 0.0710678 0.660254  ]
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``HaselgroveSequence-InitialSeed`` (``UnsignedInteger``, default: ``1``)"
+
