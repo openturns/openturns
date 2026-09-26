@@ -127,6 +127,20 @@ void HODLRDgemm(const char* transa, const char* transb, int* m, int* n, int* k,
          a, lda, b, ldb, beta, c, ldc, &ltransa, &ltransb);
 }
 
+// Matrix-vector product used to downdate an ACA residual row or column against
+// the accumulated low rank factors: y <- alpha * a * x + beta * y, where a is
+// the (rank x n) row-major buffer of the factors. LAPACK reads column-major, so
+// the buffer is the (n x rank) matrix of a plain (non transposed) product: the
+// reduction over the rank then runs along the contiguous direction of the
+// buffer, and the tuned BLAS kernel replaces a strided scalar loop.
+void HODLRDgemv(const char* trans, int* m, int* n,
+                double* alpha, double* a, int* lda, double* x, int* incx,
+                double* beta, double* y, int* incy)
+{
+  int ltrans = 1;
+  dgemv_(const_cast<char*>(trans), m, n, alpha, a, lda, x, incx, beta, y, incy, &ltrans);
+}
+
 void HODLRDtrsm(const char* side, const char* uplo, const char* transa, const char* diag,
                 int* m, int* n, double* alpha, double* a, int* lda,
                 double* b, int* ldb)
@@ -348,9 +362,13 @@ HODLRBlasGuard::~HODLRBlasGuard()
 #endif
 }
 
-// Fused ACA residual row: bCol[j] = A(pivotRow, j) - sum_l U[l][pivotRow] * V[l][j].
-// Columns are independent (no reduction across j), so the range splits across
-// threads with results bit-identical to the serial loops.
+// ACA residual row, evaluation part: bCol[j] = A(pivotRow, j).
+// The downdate against the accumulated factors is a single matrix-vector
+// product (see HODLRDgemv): keeping it out of this loop is what makes the
+// reduction run along the contiguous direction of V instead of striding by the
+// block width once per factor. Columns are independent (no reduction across
+// j), so the range splits across threads with results bit-identical to the
+// serial loop.
 struct ACAResidualRowPolicy
 {
   const HODLREntryEvaluator* p_evaluator_;
@@ -358,46 +376,30 @@ struct ACAResidualRowPolicy
   UnsignedInteger pivotRow_;
   UnsignedInteger startCol_;
   UnsignedInteger nCols_;
-  UnsignedInteger nRows_;
-  UnsignedInteger rank_;
-  const Scalar* Udata_;
-  const Scalar* Vdata_;
   Scalar* bCol_;
   ACAResidualRowPolicy(const HODLREntryEvaluator* p_evaluator,
                        UnsignedInteger startRow,
                        UnsignedInteger pivotRow,
                        UnsignedInteger startCol,
                        UnsignedInteger nCols,
-                       UnsignedInteger nRows,
-                       UnsignedInteger rank,
-                       const Scalar* Udata,
-                       const Scalar* Vdata,
                        Scalar* bCol)
     : p_evaluator_(p_evaluator)
     , startRow_(startRow)
     , pivotRow_(pivotRow)
     , startCol_(startCol)
     , nCols_(nCols)
-    , nRows_(nRows)
-    , rank_(rank)
-    , Udata_(Udata)
-    , Vdata_(Vdata)
     , bCol_(bCol)
   {
   }
   inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger j = r.begin(); j != r.end(); ++j)
-    {
-      Scalar value = (*p_evaluator_)(startRow_ + pivotRow_, startCol_ + j);
-      for (UnsignedInteger l = 0; l < rank_; ++l)
-        value -= Udata_[l * nRows_ + pivotRow_] * Vdata_[l * nCols_ + j];
-      bCol_[j] = value;
-    }
+      bCol_[j] = (*p_evaluator_)(startRow_ + pivotRow_, startCol_ + j);
   }
 }; /* end struct ACAResidualRowPolicy */
 
-// Fused ACA residual column: aCol[i] = A(i, pivotCol) - sum_l U[i][l] * V[pivotCol][l].
+// ACA residual column, evaluation part: aCol[i] = A(i, pivotCol). The downdate
+// is a single matrix-vector product against U, see ACAResidualRowPolicy.
 struct ACAResidualColumnPolicy
 {
   const HODLREntryEvaluator* p_evaluator_;
@@ -405,42 +407,25 @@ struct ACAResidualColumnPolicy
   UnsignedInteger nRows_;
   UnsignedInteger startCol_;
   UnsignedInteger pivotCol_;
-  UnsignedInteger nCols_;
-  UnsignedInteger rank_;
-  const Scalar* Udata_;
-  const Scalar* Vdata_;
   Scalar* aCol_;
   ACAResidualColumnPolicy(const HODLREntryEvaluator* p_evaluator,
                           UnsignedInteger startRow,
                           UnsignedInteger nRows,
                           UnsignedInteger startCol,
                           UnsignedInteger pivotCol,
-                          UnsignedInteger nCols,
-                          UnsignedInteger rank,
-                          const Scalar* Udata,
-                          const Scalar* Vdata,
                           Scalar* aCol)
     : p_evaluator_(p_evaluator)
     , startRow_(startRow)
     , nRows_(nRows)
     , startCol_(startCol)
     , pivotCol_(pivotCol)
-    , nCols_(nCols)
-    , rank_(rank)
-    , Udata_(Udata)
-    , Vdata_(Vdata)
     , aCol_(aCol)
   {
   }
   inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      Scalar value = (*p_evaluator_)(startRow_ + i, startCol_ + pivotCol_);
-      for (UnsignedInteger l = 0; l < rank_; ++l)
-        value -= Udata_[l * nRows_ + i] * Vdata_[l * nCols_ + pivotCol_];
-      aCol_[i] = value;
-    }
+      aCol_[i] = (*p_evaluator_)(startRow_ + i, startCol_ + pivotCol_);
   }
 }; /* end struct ACAResidualColumnPolicy */
 
@@ -579,10 +564,28 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
 
   while (rank < maxRank)
   {
-    // Residual row at the pivot row: A(pivotRow, :) - sum_l U[pivotRow, l] * V[:, l],
-    // evaluated and downdated in one fused pass (see ACAResidualRowPolicy).
-    const ACAResidualRowPolicy rowPolicy(p_eval_.get(), startRow, pivotRow, startCol, nCols, nRows, rank, Udata.data(), Vdata.data(), bCol.data());
+    // Residual row at the pivot row: A(pivotRow, :) - sum_l U[pivotRow, l] * V[l, :].
+    // The entries are evaluated first, then downdated in one matrix-vector
+    // product: the reduction over the rank is the dominant cost of the whole
+    // assembly (callgrind, 4D n=1296: half of the instructions), and the
+    // matrix-vector form walks the factors along their contiguous direction
+    // instead of striding once per factor.
+    const ACAResidualRowPolicy rowPolicy(p_eval_.get(), startRow, pivotRow, startCol, nCols, bCol.data());
     TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowPolicy);
+    if (rank > 0)
+    {
+      // Gather the pivot row of U, the vector the product reduces against
+      std::vector<Scalar> uRow(rank);
+      for (UnsignedInteger l = 0; l < rank; ++l) uRow[l] = Udata[l * nRows + pivotRow];
+      int nColsInt = static_cast<int>(nCols);
+      int rankInt = static_cast<int>(rank);
+      int one = 1;
+      double minusOne = -1.0;
+      double accumulate = 1.0;
+      // bCol(nCols) -= V(rank x nCols) * uRow(rank), V seen column-major
+      HODLRDgemv("N", &nColsInt, &rankInt, &minusOne, Vdata.data(), &nColsInt,
+                 uRow.data(), &one, &accumulate, bCol.data(), &one);
+    }
     Scalar maxVal = 0.0;
     for (UnsignedInteger j = 0; j < nCols; ++j)
     {
@@ -631,10 +634,24 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
       break;
     }
 
-    // Residual column at the pivot column: A(:, pivotCol) - sum_l U[:, l] * V[pivotCol, l],
-    // evaluated and downdated in one fused pass (see ACAResidualColumnPolicy).
-    const ACAResidualColumnPolicy columnPolicy(p_eval_.get(), startRow, nRows, startCol, pivotCol, nCols, rank, Udata.data(), Vdata.data(), aCol.data());
+    // Residual column at the pivot column: A(:, pivotCol) - sum_l U[l, :] * V[pivotCol, l],
+    // same split as the row: evaluation first, then one matrix-vector product
+    // against U.
+    const ACAResidualColumnPolicy columnPolicy(p_eval_.get(), startRow, nRows, startCol, pivotCol, aCol.data());
     TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnPolicy);
+    if (rank > 0)
+    {
+      std::vector<Scalar> vCol(rank);
+      for (UnsignedInteger l = 0; l < rank; ++l) vCol[l] = Vdata[l * nCols + pivotCol];
+      int nRowsInt = static_cast<int>(nRows);
+      int rankInt = static_cast<int>(rank);
+      int one = 1;
+      double minusOne = -1.0;
+      double accumulate = 1.0;
+      // aCol(nRows) -= U(rank x nRows) * vCol(rank), U seen column-major
+      HODLRDgemv("N", &nRowsInt, &rankInt, &minusOne, Udata.data(), &nRowsInt,
+                 vCol.data(), &one, &accumulate, aCol.data(), &one);
+    }
     colFree[pivotCol] = 0;
 
     // Same scaling convention as the full-pivoting variant: the pivot column
