@@ -1,8 +1,11 @@
 #! /usr/bin/env python
 
+import os
+import tempfile
+from math import sqrt
+
 import openturns as ot
 import openturns.testing as ott
-from math import sqrt
 
 ot.TESTPREAMBLE()
 
@@ -602,12 +605,6 @@ assert with_nugget != ot.SquaredExponential([1.0], [2.0]), "SE!=SE nugget"
 # The check goes through a HODLR assembly because that is the path which uses
 # the reduced state, and compares the solves with the ones of a freshly built
 # model.
-import os
-import tempfile
-
-import openturns as ot
-import openturns.testing as ott
-
 # Short correlation lengths on the unit square, so that the assembled problem
 # stays well conditioned and the comparison of the solves is meaningful
 models = [
