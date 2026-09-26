@@ -1,6 +1,13 @@
 %feature("docstring") OT::FunctionalChaosValidation
 "Validate a functional chaos metamodel.
 
+The scores of the validation, the R2 score and the mean squared error,
+are weighted by the validation weights, uniform by default. When the
+expansion has been built from a weighted design, pass these weights with
+:meth:`setWeights` to obtain scores that converge to their continuous
+counterparts; the weights of the design are given by
+:meth:`MetaModelAlgorithm.getWeights`.
+
 Parameters
 ----------
 result : :class:`~openturns.FunctionalChaosResult`

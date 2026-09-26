@@ -279,3 +279,34 @@ print("Naive LOO MSE = ", mseLOOnaive)
 rtolLOO = 1.0e-1  # We cannot have more accuracy, as the MSE estimator is then biased
 atolLOO = 0.0
 assert_almost_equal(mseLOOAnalytical, mseLOOnaive, rtolLOO, atolLOO)
+
+# Weighted validation: the scores of a derived validation class follow the
+# weights given to setWeights, and coincide with the weighted recomputation
+# of the mean squared error
+validationWeighted = ot.FunctionalChaosValidation(chaosResult, splitterLOO)
+validationWeighted.setWeights(
+    [1.0 + 0.5 * (i % 3) for i in range(chaosResult.getOutputSample().getSize())]
+)
+residual = validationWeighted.getResidualSample()
+predictions = validationWeighted.getMetamodelPredictions()
+weights = validationWeighted.getWeights()
+weightSum = sum(weights)
+expectedMSE = (
+    sum(
+        w * (residual[i, 0]) ** 2
+        for i, w in enumerate(weights)
+    )
+    / weightSum
+)
+assert_almost_equal(
+    validationWeighted.computeMeanSquaredError()[0], expectedMSE, 1.0e-12, 1.0e-12
+)
+# A uniform weight equal to one reproduces the unweighted score
+validationUniform = ot.FunctionalChaosValidation(chaosResult, splitterLOO)
+validationUniform.setWeights([2.0] * chaosResult.getOutputSample().getSize())
+assert_almost_equal(
+    validationUniform.computeMeanSquaredError(),
+    validationLOO.computeMeanSquaredError(),
+    1.0e-12,
+    1.0e-12,
+)
