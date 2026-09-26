@@ -1,10 +1,27 @@
 #!/usr/bin/env python
 """
-Test case 2: Compare C++ SparseExpansion LARS with a Python LARS reference
-implementation.
+Test case 2: C++ SparseExpansion LARS, checked against the defining
+conditions and compared with a second, independent implementation.
 
 Uses the same Ishigami sparse problem as test case 1 (100 samples, max degree 3).
 Compares selection paths, active sets, and Sobol indices.
+
+The two kinds of check play different roles and must not be confused.
+
+* A defining condition decides on its own. At every state the LARS
+  recursion records, the coefficients are the minimizer of the weighted
+  least squares problem restricted to the active set, hence
+  Phi_A^T W (y - Phi_A c) = 0 with the weights the caller asked for. That
+  is checked here, on the states the C++ recorded, with no second
+  implementation involved. It is the instrument that separates a correct
+  weighted fit from one that ignored the weights: 1.6e-15 against 1.2e-1.
+
+* The comparison with the Python implementation below is consistency
+  evidence, not proof. A divergence means a defect in one of the two, and
+  the defining condition above is what tells which; agreement only means
+  that no shared defect has been found. The Python implementation is used
+  because it makes the comparison cheap and legible, not because it is
+  authoritative.
 """
 
 import openturns as ot
@@ -16,13 +33,13 @@ ot.TESTPREAMBLE()
 
 
 class PythonLARS:
-    """Minimal Python LARS for comparison with C++ SparseExpansion.
+    """Second implementation of the LARS recursion, for comparison only.
 
-    Implements the same recursion as LARS::updateBasis with quadrature
-    weights w: the correlations are c = Phi^T W (y - mu), the active Gram
-    matrix is G_A = Phi_A^T W Phi_A, and the direction correlations are
-    d = Phi^T W u. The default weights are the uniform ones, 1/n, so the
-    reference then also covers the unweighted case.
+    Implements the same recursion as SparseExpansion::runLARS with
+    quadrature weights w: the correlations are c = Phi^T W (y - mu), the
+    active Gram matrix is G_A = Phi_A^T W Phi_A, and the direction
+    correlations are d = Phi^T W u. The default weights are the uniform
+    ones, 1/n, so it also covers the unweighted case.
     """
 
     def __init__(self, input_sample, output_sample, distribution, basis,
@@ -199,6 +216,58 @@ class PythonLARS:
         )
 
 
+def designMatrix(input_sample, basis, basis_size, distribution):
+    """Rows of the basis evaluated on the standardized input sample."""
+    transformation = ot.DistributionTransformation(
+        distribution, basis.getMeasure()
+    )
+    proxy = ot.DesignProxy(
+        transformation(input_sample),
+        [basis.build(i) for i in range(basis_size)],
+    )
+    return ot.Matrix(proxy.computeDesign(ot.Indices(range(basis_size))))
+
+
+def checkStatesAreMinimizers(label, phi, output, weight, indices_history,
+                             coefficients_history, tolerance=1.0e-12):
+    """At each recorded state, the coefficients minimize the weighted problem.
+
+    The LARS recursion records, at every step, the least squares solution
+    on the active set, hence Phi_A^T W (y - Phi_A c) = 0 with the weights
+    the caller asked for. This is the defining condition of that state, so
+    it holds whatever produced the state: a solver that dropped or
+    misread the weights fails it by orders of magnitude, while the same
+    solver evaluated with the weights it was given always passes.
+    """
+    size = output.getSize()
+    values = output.asPoint()
+    worst = 0.0
+    for k in range(len(indices_history)):
+        active = list(indices_history[k])
+        coefficients = ot.Point(coefficients_history[k])
+        scale = 0.0
+        for i in range(size):
+            residual = values[i] - sum(
+                phi[i, active[j]] * coefficients[j] for j in range(len(active))
+            )
+            scale = max(scale, abs(weight[i] * residual))
+        for j in range(len(active)):
+            accumulator = 0.0
+            for i in range(size):
+                residual = values[i] - sum(
+                    phi[i, active[m]] * coefficients[m]
+                    for m in range(len(active))
+                )
+                accumulator += phi[i, active[j]] * weight[i] * residual
+            worst = max(worst, abs(accumulator) / (scale * len(active)))
+    print(f"{label}: normal equations residual over "
+          f"{len(indices_history)} states = {worst:.3e}")
+    assert worst < tolerance, (
+        f"{label}: the recorded states are not the minimizers of the weighted "
+        f"least squares problem, residual={worst:.3e}"
+    )
+
+
 # --- Ishigami sparse test case (from PR #2987) ---
 dimension = 3
 a = 7.0
@@ -261,10 +330,23 @@ for i in range(dimension):
     st = sobol_cpp.getSobolTotalIndex(i)
     print(f"  X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}), ST={st:.6f} (ref={sob_T1_ref[i]:.6f})")
 
-# --- Python LARS reference ---
+# --- defining condition of the recorded states, uniform weights ---
+# Checked on the C++ history alone: at every state it records, the
+# coefficients must minimize the uniform least squares problem on the
+# active set. No second implementation takes part in this verdict.
+cppHistory = result_cpp.getIndicesHistory()
+cppCoefficients = result_cpp.getCoefficientsHistory()
+uniformWeight = ot.Point(samplingSize, 1.0 / samplingSize)
+checkStatesAreMinimizers(
+    "C++ LARS, uniform weights",
+    designMatrix(inputSample, productBasis, basisSize, distribution),
+    outputSample, uniformWeight, cppHistory, cppCoefficients,
+)
+
+# --- second implementation, for comparison ---
 print()
 print("=" * 60)
-print("Python LARS reference implementation")
+print("Python LARS, second implementation")
 print("=" * 60)
 algo_py = PythonLARS(
     inputSample, outputSample, distribution,
@@ -298,49 +380,51 @@ for i in range(dimension):
     print(f"X{i + 1} S1: C++={s1_cpp:.6f}, Python={s1_py:.6f}, diff={abs(s1_cpp - s1_py):.6e}")
 
 # --- Selection path, uniform weights ---
-# Every state of the path is compared: the active set and the coefficients.
-# The two runs stop for different reasons, the C++ one on the
-# cross-validation criterion, the reference one when the largest remaining
-# correlation falls below roundoff, ie when the model has captured
-# everything the design can resolve. The states they have in common are the
-# ones to compare.
-cppHistory = result_cpp.getIndicesHistory()
-cppCoefficients = result_cpp.getCoefficientsHistory()
-algo_py.run()
+# Consistency between the two implementations: every state they have in
+# common is compared, the active set and the coefficients. The two runs
+# stop for different reasons, the C++ one on the cross-validation
+# criterion, the Python one when the largest remaining correlation falls
+# below roundoff, ie when the model has captured everything the design can
+# resolve. Agreement here is evidence, not proof: the defining condition
+# checked above is what certifies the states.
 compared = min(len(cppHistory), len(algo_py.selection_history))
 print(f"C++ recorded {len(cppHistory) - 1} LARS iterations, "
-      f"the reference {len(algo_py.selection_history) - 1}, comparing {compared - 1}")
+      f"Python {len(algo_py.selection_history) - 1}, comparing {compared - 1}")
 assert compared > 5
 assert algo_py.selection_history[0] == [0]
 for k in range(1, compared):
     assert algo_py.selection_history[k] == list(cppHistory[k]), (
-        f"iteration {k}: {algo_py.selection_history[k]} != {list(cppHistory[k])}"
+        f"iteration {k}: {algo_py.selection_history[k]} != {list(cppHistory[k])}; "
+        f"the defining condition checked above says which one is wrong"
     )
     ott.assert_almost_equal(
         algo_py.coefficient_history[k], cppCoefficients[k], 1.0e-9, 1.0e-9
     )
 print(f"Uniform-weight LARS path: {compared - 1} iterations agree")
 
-# --- Selection path, quadrature weights ---
-# Same comparison on a genuine quadrature design. The design is chosen so that
-# the Gauss product rule integrates every product of basis functions exactly:
-# with 5 nodes per direction, the Legendre basis of total degree 4 is
-# orthogonal for those weights, so the weighted Gram matrix of the full basis
-# is the identity. The weighted least squares problem is then perfectly
-# conditioned and any mishandling of the weights shows up immediately.
-# (A coarser rule, eg 3 nodes in the first direction with a degree 10 basis,
-# cannot resolve the high degree terms: its Gram matrix is singular.)
-quadratureDegree = 4
+# --- Quadrature weights on a genuine quadrature design ---
+# The design is chosen so that the Gauss product rule integrates every
+# product of basis functions exactly: with 7 nodes per direction, the
+# Legendre basis of total degree 6 is orthogonal for those weights, so the
+# weighted Gram matrix of the full basis is the identity and the weighted
+# least squares problem is perfectly conditioned. (A coarser rule, eg 3
+# nodes in the first direction with a degree 10 basis, cannot resolve the
+# high degree terms: its Gram matrix is singular, and no comparison on such
+# a design would mean anything.)
+quadratureDegree = 6
 quadratureBasisSize = enumerateFunction.getStrataCumulatedCardinal(quadratureDegree)
 quadratureInput, quadratureWeight = ot.GaussProductExperiment(
-    distribution, (5, 5, 5)
+    distribution, (7, 7, 7)
 ).generateWithWeights()
 print(f"quadrature design: size={quadratureInput.getSize()} basisSize={quadratureBasisSize}"
       f" weight ratio={max(quadratureWeight) / min(quadratureWeight):.1f}")
+# the weights are the quadrature weights of a density, they sum to 1
 ott.assert_almost_equal(sum(quadratureWeight), 1.0, 1.0e-12, 0.0)
-transformation = ot.DistributionTransformation(distribution, productBasis.getMeasure())
+quadratureTransformation = ot.DistributionTransformation(
+    distribution, productBasis.getMeasure()
+)
 quadratureProxy = ot.DesignProxy(
-    transformation(quadratureInput),
+    quadratureTransformation(quadratureInput),
     [productBasis.build(i) for i in range(quadratureBasisSize)],
 )
 quadratureMethod = ot.LeastSquaresMethod.Build(
@@ -358,6 +442,9 @@ for i in range(quadratureBasisSize):
     )
 print("Weighted Gram matrix of the full basis is the identity")
 quadratureOutput = model(quadratureInput)
+quadraturePhi = designMatrix(
+    quadratureInput, productBasis, quadratureBasisSize, distribution
+)
 algo_cpp_weighted = otexp.SparseExpansion(
     quadratureInput, quadratureWeight, quadratureOutput, distribution,
     productBasis, quadratureBasisSize, "QR", fittingAlgorithm
@@ -367,6 +454,19 @@ algo_cpp_weighted.run()
 result_cpp_weighted = algo_cpp_weighted.getResult()
 weightedHistory = result_cpp_weighted.getIndicesHistory()
 weightedCoefficients = result_cpp_weighted.getCoefficientsHistory()
+
+# --- defining condition of the recorded states, quadrature weights ---
+# The instrument that decides: with the weights the caller asked for, the
+# coefficients recorded at every state must minimize the weighted least
+# squares problem on the active set. Ignoring the weights gives 1.2e-1
+# here, so the margin is about eleven orders of magnitude.
+checkStatesAreMinimizers(
+    "C++ LARS, quadrature weights",
+    quadraturePhi, quadratureOutput, quadratureWeight,
+    weightedHistory, weightedCoefficients,
+)
+
+# --- consistency with the second implementation, quadrature weights ---
 algo_py_weighted = PythonLARS(
     quadratureInput, quadratureOutput, distribution,
     productBasis, quadratureBasisSize, fittingAlgorithm, "QR", quadratureWeight
@@ -374,22 +474,23 @@ algo_py_weighted = PythonLARS(
 algo_py_weighted.run()
 weightedCompared = min(len(weightedHistory), len(algo_py_weighted.selection_history))
 print(f"C++ recorded {len(weightedHistory) - 1} LARS iterations with quadrature "
-      f"weights, the reference {len(algo_py_weighted.selection_history) - 1}, "
+      f"weights, Python {len(algo_py_weighted.selection_history) - 1}, "
       f"comparing {weightedCompared - 1}")
 assert weightedCompared > 3
 for k in range(1, weightedCompared):
     assert algo_py_weighted.selection_history[k] == list(weightedHistory[k]), (
         f"iteration {k}: {algo_py_weighted.selection_history[k]}"
-        f" != {list(weightedHistory[k])}"
+        f" != {list(weightedHistory[k])}; the defining condition checked above "
+        f"says which one is wrong"
     )
     ott.assert_almost_equal(
         algo_py_weighted.coefficient_history[k], weightedCoefficients[k], 1.0e-9, 1.0e-9
     )
 print(f"Weighted LARS path: {weightedCompared - 1} iterations agree")
 
-# The comparison above would also hold if the weights were ignored, since the
-# design is orthogonal either way. The reference run with uniform weights on
-# the same nodes must therefore depart from the weighted path right away.
+# The comparison is sensitive to the weights, so it is not vacuous here: the
+# same implementation on the same nodes with uniform weights departs from
+# the weighted path almost immediately.
 algo_py_uniform_on_quadrature = PythonLARS(
     quadratureInput, quadratureOutput, distribution,
     productBasis, quadratureBasisSize, fittingAlgorithm, "QR"
@@ -414,7 +515,7 @@ print(f"C++ active indices with quadrature weights: {sorted(result_cpp_weighted.
 
 # Assert C++ LARS produces reasonable Sobol indices.
 # The C++ implementation uses cross-validation stopping, while the Python
-# reference runs the whole path, so the two active sets differ. The
+# implementation runs the whole path, so the two active sets differ. The
 # cross-validated model is a sparse approximation, so the bounds are loose.
 for i in range(dimension):
     s1_cpp = sobol_cpp.getSobolIndex(i)
@@ -424,6 +525,53 @@ for i in range(dimension):
     ott.assert_almost_equal(s1_cpp, sob_1_ref[i], 0.5, 0.1)
     st_cpp = sobol_cpp.getSobolTotalIndex(i)
     ott.assert_almost_equal(st_cpp, sob_T1_ref[i], 0.5, 0.1)
+
+# --- quality of the weighted approximation and of its by-products ---
+# Absolute criteria, not a comparison: the weights are the quadrature
+# weights of a density and sum to 1, so the weighted sum of squares of the
+# residuals estimates the L2 error over the distribution, and it can be
+# compared with the variance the same way estimates it.
+quadratureValues = quadratureOutput.asPoint()
+quadratureSize = quadratureInput.getSize()
+weightSum = sum(quadratureWeight)
+weightedMean = sum(
+    quadratureWeight[i] * quadratureValues[i] for i in range(quadratureSize)
+) / weightSum
+quadratureVariance = sum(
+    quadratureWeight[i] * (quadratureValues[i] - weightedMean) ** 2
+    for i in range(quadratureSize)
+)
+weightedResiduals = quadratureValues - result_cpp_weighted.getMetaModel()(
+    quadratureInput
+).asPoint()
+quadratureL2 = sum(
+    quadratureWeight[i] * weightedResiduals[i] ** 2 for i in range(quadratureSize)
+)
+relativeL2 = quadratureL2 / quadratureVariance
+print(f"weighted L2 error^2 = {quadratureL2:.6e}, variance = {quadratureVariance:.6f},"
+      f" relative = {relativeL2:.4e}")
+# the sparse weighted model explains more than 95% of the variance
+assert relativeL2 < 0.05
+
+# and its by-products are close to the analytical Ishigami values. The model
+# keeps 10 terms out of 84, so the indices are only approximate: the measured
+# errors are 0.020 and 0.045 for S1, 0.045 for ST.
+sobolWeighted = ot.FunctionalChaosSobolIndices(result_cpp_weighted)
+for i in range(dimension):
+    s1 = sobolWeighted.getSobolIndex(i)
+    st = sobolWeighted.getSobolTotalIndex(i)
+    print(f"  weighted X{i + 1}: S1={s1:.6f} (ref={sob_1_ref[i]:.6f}),"
+          f" ST={st:.6f} (ref={sob_T1_ref[i]:.6f})")
+    ott.assert_almost_equal(s1, sob_1_ref[i], 0.15, 0.05)
+    ott.assert_almost_equal(st, sob_T1_ref[i], 0.15, 0.05)
+# the second variable enters additively, so its total index equals its main
+# index; the third one only through an interaction, so the expansion must not
+# invent a main effect for it
+ott.assert_almost_equal(
+    sobolWeighted.getSobolTotalIndex(1), sobolWeighted.getSobolIndex(1),
+    1.0e-12, 1.0e-12,
+)
+ott.assert_almost_equal(sobolWeighted.getSobolIndex(2), 0.0, 1.0e-12, 1.0e-12)
 
 # L2 error of the C++ approximation on a large independent Monte Carlo sample.
 # The CV-selected model is coarse by design, the measured error is about 0.39
