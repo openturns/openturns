@@ -126,14 +126,16 @@ protected:
 
 private:
 
-  // Helper class to compute the reduced log-likelihood function of the model
+  // Helper class to compute the reduced log-likelihood function of the model.
+  // Owns a clone of the algorithm so that the returned Function can outlive the
+  // original algorithm without creating a dangling reference.
   class ReducedLogLikelihoodEvaluation: public EvaluationImplementation
   {
   public:
     // Constructor from a GLM algorithm
     ReducedLogLikelihoodEvaluation(GeneralLinearModelAlgorithm & algorithm)
       : EvaluationImplementation()
-      , algorithm_(algorithm)
+      , algorithm_(algorithm.clone())
     {
       // Nothing to do
     }
@@ -146,13 +148,13 @@ private:
     // It is a simple call to the computeReducedLogLikelihood() of the algo
     Point operator() (const Point & point) const override
     {
-      const Point value(algorithm_.computeReducedLogLikelihood(point));
+      const Point value(algorithm_->computeReducedLogLikelihood(point));
       return value;
     }
 
     UnsignedInteger getInputDimension() const override
     {
-      return algorithm_.getReducedCovarianceModel().getParameter().getDimension();
+      return algorithm_->getReducedCovarianceModel().getParameter().getDimension();
     }
 
     UnsignedInteger getOutputDimension() const override
@@ -162,7 +164,7 @@ private:
 
     Description getInputDescription() const override
     {
-      return algorithm_.getReducedCovarianceModel().getParameterDescription();
+      return algorithm_->getReducedCovarianceModel().getParameterDescription();
     }
 
     Description getOutputDescription() const override
@@ -188,11 +190,12 @@ private:
     String __str__(const String & offset = "") const override
     {
       // Don't print algorithm_ here as it will result in an infinite loop!
-      return OSS() << offset << __repr__();
+      OSS oss;
+      return oss << offset << __repr__();
     }
 
   private:
-    GeneralLinearModelAlgorithm & algorithm_;
+    mutable Pointer<GeneralLinearModelAlgorithm> algorithm_;
   }; // ReducedLogLikelihoodEvaluation
 
   /** Covariance model accessor */

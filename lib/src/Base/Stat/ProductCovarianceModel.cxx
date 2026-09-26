@@ -333,6 +333,61 @@ Matrix ProductCovarianceModel::partialGradient(const Point & s,
   return gradient * amplitude_[0] * amplitude_[0];
 }
 
+/* Gradient wrt the parameters */
+Matrix ProductCovarianceModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+
+  const Point tau(s - t);
+  const Scalar k = computeAsScalar(s, t);
+  const UnsignedInteger scaleSize = getScale().getSize();
+  const UnsignedInteger fullSize = getFullParameter().getSize();
+  Point fullGradient(fullSize, 0.0);
+
+  // Gradient wrt the parameters of the marginal models
+  UnsignedInteger scaleStart = 0;
+  UnsignedInteger pointStart = 0;
+  UnsignedInteger extraStart = scaleSize + 2;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  {
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    const UnsignedInteger localScaleSize = collection_[i].getScale().getSize();
+    const UnsignedInteger scaleStop = scaleStart + localScaleSize;
+    Point localS(localInputDimension);
+    std::copy(s.begin() + pointStart, s.begin() + pointStart + localInputDimension, localS.begin());
+    Point localT(localInputDimension);
+    std::copy(t.begin() + pointStart, t.begin() + pointStart + localInputDimension, localT.begin());
+    const Scalar corr = collection_[i](localS, localT)(0, 0);
+    if (corr != 0.0)
+    {
+      // Get the gradient of the marginal wrt all its parameters
+      CovarianceModel localModel(collection_[i]);
+      Indices allActive(localModel.getFullParameter().getSize());
+      for (UnsignedInteger j = 0; j < allActive.getSize(); ++j) allActive[j] = j;
+      localModel.setActiveParameter(allActive);
+      const Matrix localGradient(localModel.parameterGradient(localS, localT));
+      const Scalar factor = k / corr;
+      for (UnsignedInteger j = 0; j < localScaleSize; ++j)
+        fullGradient[scaleStart + j] = localGradient(j, 0) * factor;
+      // The local amplitude and nugget factor are fixed to 1 and 0 respectively
+      for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
+        fullGradient[extraStart + j] = localGradient(localScaleSize + 2 + j, 0) * factor;
+    }
+    scaleStart = scaleStop;
+    pointStart += localInputDimension;
+    extraStart += extraParameterNumber_[i];
+  }
+  // Gradient wrt the nugget factor
+  if (tau.norm() <= SpecFunc::ScalarEpsilon)
+    fullGradient[scaleSize] = k / (1.0 + getNuggetFactor());
+  // Gradient wrt the amplitude
+  fullGradient[scaleSize + 1] = 2.0 * k / amplitude_[0];
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* Parameters accessor */
 void ProductCovarianceModel::setFullParameter(const Point & parameter)
 {
@@ -538,6 +593,78 @@ void ProductCovarianceModel::load(Advocate & adv)
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute("collection_", collection_);
   adv.loadAttribute("extraParameterNumber_", extraParameterNumber_);
+}
+
+/** Hessian wrt s */
+SymmetricMatrix ProductCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+
+  const UnsignedInteger size = collection_.getSize();
+  if (size == 0) return CovarianceModelImplementation::partialHessian(s, t);
+  Point localCovariances(size);
+  Collection<Matrix> localGradients(size);
+  Collection<SymmetricMatrix> localHessians(size);
+  UnsignedInteger start = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    const UnsignedInteger stop = start + localInputDimension;
+    Point localS(localInputDimension);
+    std::copy(s.begin() + start, s.begin() + stop, localS.begin());
+    Point localT(localInputDimension);
+    std::copy(t.begin() + start, t.begin() + stop, localT.begin());
+    localCovariances[i] = collection_[i](localS, localT)(0, 0);
+    localGradients[i] = collection_[i].partialGradient(localS, localT);
+    localHessians[i] = collection_[i].partialHessian(localS, localT);
+    start = stop;
+  }
+  // Compute prefix and suffix products to avoid division by zero
+  Point prefix(size + 1, 1.0);
+  Point suffix(size + 1, 1.0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    prefix[i + 1] = prefix[i] * localCovariances[i];
+  for (UnsignedInteger i = size; i > 0; --i)
+    suffix[i - 1] = suffix[i] * localCovariances[i - 1];
+  SymmetricMatrix hessian(inputDimension_);
+  start = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    const UnsignedInteger stop = start + localInputDimension;
+    // product of all covariances except i
+    const Scalar outerScale = prefix[i] * suffix[i + 1];
+    for (UnsignedInteger a = 0; a < localInputDimension; ++a)
+    {
+      for (UnsignedInteger b = 0; b <= a; ++b)
+        hessian(start + a, start + b) += outerScale * localHessians[i](a, b);
+    }
+    start = stop;
+  }
+  // Cross-block terms, once per unordered pair of blocks
+  start = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    const UnsignedInteger stop = start + localInputDimension;
+    UnsignedInteger startJ = 0;
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      const UnsignedInteger localInputDimensionJ = collection_[j].getInputDimension();
+      // product of all covariances except i and j
+      Scalar crossScale = 1.0;
+      for (UnsignedInteger k = 0; k < size; ++k)
+        if (k != i && k != j) crossScale *= localCovariances[k];
+      for (UnsignedInteger a = 0; a < localInputDimension; ++a)
+        for (UnsignedInteger b = 0; b < localInputDimensionJ; ++b)
+          hessian(start + a, startJ + b) += crossScale * localGradients[i](a, 0) * localGradients[j](b, 0);
+      startJ += localInputDimensionJ;
+    }
+    start = stop;
+  }
+  return hessian * amplitude_[0] * amplitude_[0];
 }
 
 END_NAMESPACE_OPENTURNS

@@ -137,6 +137,43 @@ Matrix IsotropicCovarianceModel::partialGradient(const Point & s,
   return Matrix(inputDimension_, 1, normGradient) * kernelPartialGradient(0, 0);
 }
 
+/** Hessian wrt s */
+SymmetricMatrix IsotropicCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const Point tau(s - t);
+  const Scalar tauNorm = tau.norm();
+  // At zero norm the Hessian is not defined: fall back to the finite-difference implementation
+  if (tauNorm == 0.0) return CovarianceModelImplementation::partialHessian(s, t);
+  // k(s, t) = K(z) with z = ||tau||
+  // d^2 k / ds_a ds_b = tau_a tau_b (K''(z) z - K'(z)) / z^3 + delta_ab K'(z) / z
+  const Scalar kPrime = kernel_.partialGradient(Point(1, tauNorm), Point(1))(0, 0);
+  const Scalar kDoublePrime = kernel_.partialHessian(Point(1, tauNorm), Point(1))(0, 0);
+  const Scalar factor = (kDoublePrime * tauNorm - kPrime) / (tauNorm * tauNorm * tauNorm);
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    for (UnsignedInteger b = 0; b < a; ++b)
+      hessian(a, b) = factor * tau[a] * tau[b];
+    hessian(a, a) = factor * tau[a] * tau[a] + kPrime / tauNorm;
+  }
+  return hessian;
+}
+
+/* Gradient wrt the parameters */
+Matrix IsotropicCovarianceModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // The isotropic model is a 1D kernel evaluated at the norm of the shift;
+  // its parameters and active parameters coincide with the kernel's ones.
+  const Scalar tauNorm = (s - t).norm();
+  return kernel_.parameterGradient(Point(1, tauNorm), Point(1));
+}
+
 void IsotropicCovarianceModel::setFullParameter(const Point & parameter)
 {
   // First update the parameters of kernel_

@@ -193,6 +193,132 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   return gradient;
 }
 
+/** Hessian wrt s, for the first output component */
+SymmetricMatrix ExponentialModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialHessian, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
+  if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialHessian, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
+
+  Scalar norm = 0.0;
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) / scale_[i];
+    norm += dx * dx;
+  }
+  norm = std::sqrt(norm);
+  // At zero norm the Hessian is not defined: fall back to the finite-difference implementation
+  if (norm == 0.0) return CovarianceModelImplementation::partialHessian(s, t);
+  // k_00(s, t) = C_00 * exp(-z) with z = ||tau/scale||
+  // d^2 k / ds_a ds_b = C_00 * u_a u_b (z + 1) exp(-z) / z^3
+  //   - delta_ab C_00 exp(-z) / (scale_a^2 z), with u_i = tau_i / scale_i^2
+  const Scalar z = norm;
+  const Scalar coefficient = outputCovariance_(0, 0);
+  const Scalar exponent = std::exp(-z);
+  const Scalar factor = coefficient * (z + 1.0) * exponent / (z * z * z);
+  const Scalar diagonalFactor = -coefficient * exponent / z;
+  Point u(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) u[i] = (s[i] - t[i]) / (scale_[i] * scale_[i]);
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    for (UnsignedInteger b = 0; b < a; ++b)
+      hessian(a, b) = factor * u[a] * u[b];
+    hessian(a, a) = factor * u[a] * u[a] + diagonalFactor / (scale_[a] * scale_[a]);
+  }
+  return hessian;
+}
+
+/* Gradient wrt the parameters */
+Matrix ExponentialModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::parameterGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
+  if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::parameterGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
+
+  const Point tau(s - t);
+  Scalar norm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    norm += dx * dx;
+  }
+  norm = std::sqrt(norm);
+  const Bool isZero = (norm <= SpecFunc::ScalarEpsilon);
+
+  if (outputDimension_ == 1)
+  {
+    const Scalar k = computeAsScalar(s, t);
+    Point fullGradient(inputDimension_ + 2, 0.0);
+    if (!isZero)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        fullGradient[i] = k * tau[i] * tau[i] / (norm * scale_[i] * scale_[i] * scale_[i]);
+    else
+      fullGradient[inputDimension_] = outputCovariance_(0, 0);
+    fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+    return filterActiveParameterGradient(fullGradient);
+  }
+
+  // Multivariate case: C(i,j) = amplitude_i * R_ij * amplitude_j * rho(tau)
+  const Scalar rho = isZero ? 1.0 + nuggetFactor_ : std::exp(-norm);
+  // Scalar derivative of rho wrt the scales
+  // d(log rho)/dscale_i = tau_i^2 / (norm * scale_i^3), so that the rho factor
+  // cancels analytically when multiplying covariance(i,j) * d(rho)/dscale_i
+  Point logRhoScaleGradient(inputDimension_, 0.0);
+  if (!isZero)
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      logRhoScaleGradient[i] = tau[i] * tau[i] / (norm * scale_[i] * scale_[i] * scale_[i]);
+  const SquareMatrix covariance(operator()(s, t));
+  // Full gradient wrt all the parameters, one row per parameter
+  const UnsignedInteger fullSize = inputDimension_ + 1 + outputDimension_ + outputDimension_ * (outputDimension_ - 1) / 2;
+  Matrix fullGradient(fullSize, outputDimension_ * outputDimension_);
+  // Gradient wrt the scale parameters
+  for (UnsignedInteger k = 0; k < inputDimension_; ++k)
+  {
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+        fullGradient(k, index) = covariance(i, j) * logRhoScaleGradient[k];
+  }
+  // Gradient wrt the nugget factor
+  if (isZero)
+  {
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+        fullGradient(inputDimension_, index) = outputCovariance_(i, j);
+  }
+  // Gradient wrt the amplitude parameters
+  for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+  {
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+      {
+        if (i == k) fullGradient(inputDimension_ + 1 + k, index) = covariance(i, j) / amplitude_[k];
+        if (j == k) fullGradient(inputDimension_ + 1 + k, index) += covariance(i, j) / amplitude_[k];
+      }
+  }
+  // Gradient wrt the output correlation parameters (lower triangle)
+  if (outputDimension_ > 1)
+  {
+    UnsignedInteger correlationIndex = 0;
+    for (UnsignedInteger i = 1; i < outputDimension_; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j, ++correlationIndex)
+      {
+        const Scalar derivative = amplitude_[i] * amplitude_[j] * rho;
+        UnsignedInteger index = 0;
+        for (UnsignedInteger q = 0; q < outputDimension_; ++q)
+          for (UnsignedInteger p = 0; p < outputDimension_; ++p, ++index)
+          {
+            if (p == i && q == j) fullGradient(inputDimension_ + 1 + outputDimension_ + correlationIndex, index) = derivative;
+            if (p == j && q == i) fullGradient(inputDimension_ + 1 + outputDimension_ + correlationIndex, index) = derivative;
+          }
+      }
+  }
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) const
 {

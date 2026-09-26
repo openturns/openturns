@@ -370,6 +370,12 @@ void GeneralLinearModelAlgorithm::run()
   }
 
   // return optimized covmodel with the original active parameters (see analyticalAmplitude_)
+  // Here reducedCovarianceModel_ holds the optimized parameters, including the
+  // analytical amplitude when analyticalAmplitude_ is true.  The covariance
+  // model stored in the result must keep this amplitude so that it remains
+  // consistent with the Cholesky factor scaled below (both encode sigma^2 R)
+  // and with the standardized output consumed by GaussianProcessRegression,
+  // GaussianProcessConditionalCovariance & friends.
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
   reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
 
@@ -411,8 +417,11 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   // Early exit if the parameters are known
   if (noNumericalOptimization)
   {
-    // We only need to compute the log-likelihood function at the initial parameters in order to get the Cholesky factor and the trend coefficients
-    const Scalar initialReducedLogLikelihood = reducedLogLikelihoodFunction(initialParameters)[0];
+    // Call computeReducedLogLikelihood() directly on *this to get the Cholesky
+    // factor and the trend coefficients.  The function wrapper is bypassed
+    // because the cache provides no benefit for a single evaluation, and the
+    // direct call makes the side-effect intent explicit (defense in depth).
+    const Scalar initialReducedLogLikelihood = computeReducedLogLikelihood(initialParameters)[0];
     LOGDEBUG("No covariance parameter to optimize");
     LOGDEBUG(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
     return initialReducedLogLikelihood;
@@ -444,13 +453,11 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   const UnsignedInteger callsNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
   // see if the by-products (Cholesky factor etc) are correct
-  if (lastReducedLogLikelihood_ != optimalLogLikelihood)
-  {
-    LOGDEBUG(OSS(false) << "Need to evaluate the objective function one more time because the last computed reduced log-likelihood value=" << lastReducedLogLikelihood_ << " is different from the optimal one=" << optimalLogLikelihood);
-    (void) computeReducedLogLikelihood(optimalParameters);
-  }
-  // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
-  // No additional cost since the cache mechanism is activated
+  // Always refresh the by-products on *this: the optimizer evaluates the
+  // objective through a clone-based wrapper, so beta_, rho_ and the Cholesky
+  // factor of *this* are only correct if computeReducedLogLikelihood() is
+  // called here at least once with the optimal parameters.
+  (void) computeReducedLogLikelihood(optimalParameters);
   LOGDEBUG(OSS() << callsNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
 
   return optimalLogLikelihood;
@@ -665,7 +672,9 @@ void GeneralLinearModelAlgorithm::setNoise(const Point & noise)
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise must be positive";
   noise_ = noise;
-  // If we update noise, we need to reset
+  // Re-evaluate analyticalAmplitude_ and optimization bounds, since the
+  // presence/absence of noise changes which parameters are optimised.
+  setCovarianceModel(covarianceModel_);
   reset();
 }
 

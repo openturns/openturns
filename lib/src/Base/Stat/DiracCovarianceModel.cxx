@@ -389,6 +389,59 @@ Matrix DiracCovarianceModel::partialGradient(const Point & s,
   return gradient;
 }
 
+/** Hessian */
+SymmetricMatrix DiracCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // The Dirac kernel is zero almost everywhere, so is its Hessian
+  return SymmetricMatrix(inputDimension_);
+}
+
+/* Gradient wrt the parameters */
+Matrix DiracCovarianceModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const Bool isSamePoint = ((s - t).norm() <= SpecFunc::ScalarEpsilon);
+  const UnsignedInteger fullSize = inputDimension_ + 1 + outputDimension_;
+  if (outputDimension_ == 1)
+  {
+    Point fullGradient(fullSize, 0.0);
+    if (isSamePoint)
+    {
+      fullGradient[inputDimension_] = outputCovariance_(0, 0) / (1.0 + nuggetFactor_);
+      fullGradient[inputDimension_ + 1] = 2.0 * outputCovariance_(0, 0) / amplitude_[0];
+    }
+    return filterActiveParameterGradient(fullGradient);
+  }
+  // Multivariate case: full gradient, one row per full parameter
+  const SquareMatrix covariance(operator()(s, t));
+  Matrix fullGradient(fullSize, outputDimension_ * outputDimension_);
+  if (isSamePoint)
+  {
+    // Gradient wrt the nugget factor: only the diagonal is affected
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+        fullGradient(inputDimension_, index) = (i == j) ? amplitude_[i] * amplitude_[i] : 0.0;
+    // Gradient wrt the amplitude parameters
+    for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+    {
+      index = 0;
+      for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+        for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+        {
+          if (i == k) fullGradient(inputDimension_ + 1 + k, index) = covariance(i, j) / amplitude_[k];
+          if (j == k) fullGradient(inputDimension_ + 1 + k, index) += covariance(i, j) / amplitude_[k];
+        }
+    }
+  }
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* Parameters accessor */
 void DiracCovarianceModel::setFullParameter(const Point & parameters)
 {

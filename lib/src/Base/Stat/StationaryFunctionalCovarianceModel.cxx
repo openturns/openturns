@@ -128,8 +128,77 @@ Matrix StationaryFunctionalCovarianceModel::partialGradient(const Point & s,
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i) tauOverTheta[i] = std::abs(tau[i]) / scale_[i];
   Matrix grad(amplitude_[0] * amplitude_[0] * rho_.gradient(tauOverTheta));
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
+  {
     if (tau[i] < 0.0) grad(i, 0) *= -1.0;
+    grad(i, 0) /= scale_[i];
+  }
   return grad;
+}
+
+/** Hessian wrt s */
+SymmetricMatrix StationaryFunctionalCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected to match the input dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected to match the input dimension=" << inputDimension_;
+  const Point tau(s - t);
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
+  {
+    tauOverTheta[i] = std::abs(tau[i]) / scale_[i];
+    // On the axes the Hessian is not defined: fall back to the finite-difference implementation
+    if (tauOverTheta[i] == 0.0) return CovarianceModelImplementation::partialHessian(s, t);
+  }
+  // k(s, t) = amplitude^2 rho(u) with u_i = |tau_i| / scale_i
+  // d^2 k / ds_a ds_b = amplitude^2 d^2 rho / du_a du_b sign(tau_a) sign(tau_b) / (scale_a scale_b)
+  const SymmetricTensor hessRho(rho_.hessian(tauOverTheta));
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++ a)
+  {
+    const Scalar signA = (tau[a] < 0.0) ? -1.0 : 1.0;
+    for (UnsignedInteger b = 0; b <= a; ++ b)
+    {
+      const Scalar signB = (tau[b] < 0.0) ? -1.0 : 1.0;
+      hessian(a, b) = amplitude_[0] * amplitude_[0] * hessRho(a, b, 0) * signA * signB / (scale_[a] * scale_[b]);
+    }
+  }
+  return hessian;
+}
+
+/* Gradient wrt the parameters */
+Matrix StationaryFunctionalCovarianceModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected to match the input dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected to match the input dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Point tau(s - t);
+  Point tauOverTheta(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  const Scalar tauOverThetaNorm = tauOverTheta.norm();
+  const Bool isZero = (tauOverThetaNorm <= SpecFunc::ScalarEpsilon);
+  const Scalar k = computeAsScalar(s, t);
+  const UnsignedInteger rhoParameterSize = rho_.getParameter().getSize();
+  Point fullGradient(inputDimension_ + 1 + outputDimension_ + rhoParameterSize, 0.0);
+  if (!isZero)
+  {
+    // Gradient wrt the scale parameters: x = tau/scale, dk/dscale_i = amplitude^2 drho/dx_i dx_i/dscale_i
+    const Matrix rhoGradient(rho_.gradient(tauOverTheta));
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      fullGradient[i] = amplitude_[0] * amplitude_[0] * rhoGradient(i, 0) * (-tau[i] / (scale_[i] * scale_[i]));
+    // Gradient wrt the parameters of the correlation function
+    const Matrix rhoParameterGradient(rho_.parameterGradient(tauOverTheta));
+    for (UnsignedInteger i = 0; i < rhoParameterSize; ++i)
+      fullGradient[inputDimension_ + 1 + outputDimension_ + i] = amplitude_[0] * amplitude_[0] * rhoParameterGradient(i, 0);
+  }
+  else
+  {
+    // The nugget factor is the only parameter that affects the value at tau=0
+    fullGradient[inputDimension_] = outputCovariance_(0, 0);
+  }
+  // Amplitude: k = amplitude^2 * rho
+  fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+  return filterActiveParameterGradient(fullGradient);
 }
 
 /* Correlation function accessor */
