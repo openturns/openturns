@@ -10,13 +10,25 @@ problem : :class:`~openturns.OptimizationProblem`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setAbsoluteError
+R"RAW(Accessor to the absolute error.
+
+Parameters
+----------
+absoluteError : float
+    Absolute error of the input point :math:`\vect{x}`, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}`
+    where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getAbsoluteError
 R"RAW(Accessor to the absolute error.
 
 Returns
 -------
 absoluteError : float
-    Absolute error of the input point :math:`\vect{x}`, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum.)RAW"
+    Absolute error of the input point :math:`\vect{x}`, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}`
+    where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -30,13 +42,27 @@ absoluteErrorHistory : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setConstraintError
+R"RAW(Accessor to the constraint error.
+
+Parameters
+----------
+constraintError : float
+    Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}`
+    where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function
+    that gathers all the equality and inequality constraints (violated values only).)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getConstraintError
 R"RAW(Accessor to the constraint error.
 
 Returns
 -------
 constraintError : float
-    Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gathers all the equality and inequality constraints (violated values only).)RAW"
+    Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}`
+    where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function
+    that gathers all the equality and inequality constraints (violated values only).)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -90,13 +116,29 @@ iterationNumber : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setRelativeError
+R"RAW(Accessor to the relative error.
+
+Parameters
+----------
+relativeError : float
+    Relative error of the input point :math:`\vect{x}`.
+    If :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, then the relative error is :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}`
+    where :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` is the absolute error.
+    Otherwise, the relative error is :math:`\epsilon^r_n=-1`.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getRelativeError
 R"RAW(Accessor to the relative error.
 
 Returns
 -------
 relativeError : float
-    Relative error of the input point :math:`\vect{x}`. If :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, then the relative error is :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` where :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` is the absolute error. Otherwise, the relative error is :math:`\epsilon^r_n=-1`.)RAW"
+    Relative error of the input point :math:`\vect{x}`.
+    If :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, then the relative error is :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}`
+    where :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` is the absolute error.
+    Otherwise, the relative error is :math:`\epsilon^r_n=-1`.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -110,13 +152,25 @@ relativeErrorHistory : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setResidualError
+R"RAW(Accessor to the residual error.
+
+Parameters
+----------
+residualError : float
+    Relative error, defined by :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}`
+    if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::getResidualError
 R"RAW(Accessor to the residual error.
 
 Returns
 -------
 residualError : float
-    Relative error, defined by :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}` if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
+    Relative error, defined by :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}`
+    if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`.)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -71,19 +71,6 @@ Post-processing
 
     experimental.LinearModelValidation
 
-Generalized Linear Model algorithm
-==================================
-
-.. autosummary::
-    :toctree: _generated/
-    :template: classWithPlot.rst_t
-
-    GeneralLinearModelAlgorithm
-
-    :template: class.rst_t
-    GeneralLinearModelResult
-
-
 Gaussian Process Regression
 ===========================
 
@@ -103,6 +90,11 @@ Main classes
     experimental.GaussianProcessRegressionCrossValidation
     GaussianProcessConditionalCovariance
     GaussianProcessRandomVector
+    KrigingAlgorithm
+    KrigingRandomVector
+    KrigingResult
+    GeneralLinearModelAlgorithm
+    GeneralLinearModelResult
 
 Construction of the regression basis
 ------------------------------------

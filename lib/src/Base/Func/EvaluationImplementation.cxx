@@ -201,7 +201,7 @@ Sample EvaluationImplementation::operator() (const Sample & inSample) const
 Field EvaluationImplementation::operator() (const Field & inField) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if (inField.getOutputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given time series has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inField.getOutputDimension();
+  if (inField.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given time series has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inField.getDimension();
   return Field(inField.getMesh(), operator()(inField.getValues()));
 }
 

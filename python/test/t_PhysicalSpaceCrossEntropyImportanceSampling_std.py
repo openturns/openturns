@@ -42,3 +42,31 @@ outputEventSample = algo.getOutputSample(stepsNumber - 1, algo.EVENT1)
 outputG = model(inputEventSample)
 diffSample = outputG - outputEventSample
 assert_almost_equal(diffSample.computeMean(), [0.0])
+
+# Test setter of event
+ot.RandomGenerator.SetSeed(0)
+X = ot.RandomVector(ot.Normal())
+Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
+event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
+aux_distribution = ot.Normal()
+active_parameters = [0, 1]
+bounds = ot.Interval([-2.0, 0.5], [2.0, 2.0])
+initial_theta = [0.0, 1.0]
+algo = ot.PhysicalSpaceCrossEntropyImportanceSampling(
+    event, aux_distribution, active_parameters, initial_theta, bounds, 0.3
+)
+algo.setMaximumOuterSampling(100000)
+algo.run()
+result = algo.getResult()
+assert_almost_equal(
+    result.getProbabilityEstimate(), ot.Normal().computeCDF(-2), 1.0e-2, 0.0
+)
+ot.RandomGenerator.SetSeed(0)
+Y2 = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["2 * X"]), X)
+event2 = ot.ThresholdEvent(Y2, ot.Less(), -2.0)
+algo.setEvent(event2)
+algo.run()
+result2 = algo.getResult()
+assert_almost_equal(
+    result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-2, 0.0
+)

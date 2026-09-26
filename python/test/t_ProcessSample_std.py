@@ -191,3 +191,45 @@ for i in range(2):
 processSample[[1, 3]] = fill2
 ott.assert_almost_equal(processSample[1], fill2[0])
 ott.assert_almost_equal(processSample[3], fill2[1])
+
+# split
+nvertices = mesh.getVerticesNumber()
+psampleA = ot.ProcessSample(mesh, 5, outputDimension)
+for i in range(5):
+    psampleA[i] = ot.Normal(outputDimension).getSample(nvertices)
+ref = psampleA[2]
+rest = psampleA.split(2)
+ott.assert_almost_equal(psampleA.getSize(), 2)
+ott.assert_almost_equal(rest.getSize(), 3)
+ott.assert_almost_equal(rest.getMesh().getVerticesNumber(), nvertices)
+ott.assert_almost_equal(rest.getDimension(), outputDimension)
+ott.assert_almost_equal(rest[0], ref)
+
+# splitting at the full size keeps the sample and returns an empty one
+psampleB = ot.ProcessSample(mesh, 3, outputDimension)
+for i in range(3):
+    psampleB[i] = ot.Normal(outputDimension).getSample(nvertices)
+empty = psampleB.split(3)
+ott.assert_almost_equal(psampleB.getSize(), 3)
+ott.assert_almost_equal(empty.getSize(), 0)
+
+# splitting at index 0 returns everything
+all_ = psampleB.split(0)
+ott.assert_almost_equal(all_.getSize(), 3)
+ott.assert_almost_equal(psampleB.getSize(), 0)
+
+with ott.assert_raises(IndexError):
+    psampleA.split(psampleA.getSize() + 1)
+
+# erase a set of indices, see issue #1730
+psampleC = ot.ProcessSample(mesh, 5, outputDimension)
+for i in range(5):
+    psampleC[i] = ot.Normal(outputDimension).getSample(nvertices)
+kept = [psampleC[0], psampleC[2], psampleC[4]]
+psampleC.erase([1, 3])
+assert psampleC.getSize() == 3, "erase size"
+ott.assert_almost_equal(psampleC[0], kept[0])
+ott.assert_almost_equal(psampleC[1], kept[1])
+ott.assert_almost_equal(psampleC[2], kept[2])
+with ott.assert_raises(IndexError):
+    psampleC.erase([psampleC.getSize()])

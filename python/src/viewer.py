@@ -538,7 +538,7 @@ class View:
                     "ftriangleup": "^",
                     "fdiamond": "d",
                     "bullet": ".",
-                    "dot": ",",
+                    "dot": ".",
                     "none": "None",
                 }
                 # we still accept R markers

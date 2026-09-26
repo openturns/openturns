@@ -40,7 +40,7 @@ method of moments [kent1982]_:
 
 Notes
 -----
-The following :class:`openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``KentFactory-AbsolutePrecision``: absolute precision for the Newton-Raphson
   solver.

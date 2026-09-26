@@ -279,6 +279,7 @@ public:
   virtual Scalar computeProbabilityGeneral(const Interval & interval) const;
   /** Generic implementation for 1D continuous distributions */
   virtual Scalar computeProbabilityGeneral1D(const Scalar a, const Scalar b) const;
+  virtual Scalar computeProbabilityGeneral1D(const Interval & interval) const;
   /** Generic implementation for continuous distribution by integration of the PDF */
   virtual Scalar computeProbabilityContinuous(const Interval & interval) const;
   /** Generic implementation for 1D continuous distribution by integration of the PDF */
@@ -380,6 +381,10 @@ public:
   /** Get the minimum volume level set containing a given probability of the distribution */
   virtual LevelSet computeMinimumVolumeLevelSet(const Scalar prob) const;
   virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
+
+  /** Collection version sharing the sampling effort between the probabilities */
+  virtual Collection<LevelSet> computeMinimumVolumeLevelSetCollectionWithThreshold(const Point & prob,
+      Point & thresholdOut) const;
 
 protected:
   virtual LevelSet computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
@@ -792,10 +797,10 @@ public:
   Scalar getCDFEpsilon() const;
 
   /** Get a position indicator for a 1D distribution */
-  Scalar getPositionIndicator() const;
+  virtual Scalar getPositionIndicator() const;
 
   /** Get a dispersion indicator for a 1D distribution */
-  Scalar getDispersionIndicator() const;
+  virtual Scalar getDispersionIndicator() const;
 
   /** Is it safe to compute PDF/CDF etc in parallel? */
   Bool isParallel() const;
@@ -977,6 +982,11 @@ public:
       return Description(1, "pdf");
     }
 
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1059,6 +1069,11 @@ public:
     Description getOutputDescription() const override
     {
       return Description(1, "logpdf");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
     }
 
     String __repr__() const override
@@ -1155,6 +1170,11 @@ public:
       return Description(1, "cdf");
     }
 
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1244,6 +1264,11 @@ protected:
       return p_distribution_->getDescription();
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1328,6 +1353,11 @@ protected:
       return Description(1, "survival function");
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1379,6 +1409,11 @@ protected:
     UnsignedInteger getOutputDimension() const override
     {
       return 1;
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
   private:
@@ -1433,6 +1468,11 @@ protected:
     Description getOutputDescription() const override
     {
       return Description(1, "-logPDF");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
     Description getDescription() const override
@@ -1582,6 +1622,11 @@ protected:
       return Description(1, "c");
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1647,6 +1692,11 @@ protected:
     UnsignedInteger getOutputDimension() const override
     {
       return 1;
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
     String __repr__() const override
@@ -1825,6 +1875,11 @@ protected:
       return Description(1, "entropyKernel");
     }
 
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
+    }
+
     String __repr__() const override
     {
       OSS oss;
@@ -1891,6 +1946,11 @@ protected:
     Description getOutputDescription() const override
     {
       return Description(1, "pdfSquared");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_distribution_->isParallel();
     }
 
     String __repr__() const override

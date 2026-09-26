@@ -58,6 +58,7 @@
 %include SimulationResult.i
 %include ProbabilitySimulationResult.i
 %include SimulationAlgorithm.i
+%include EventSimulationImplementation.i
 %include EventSimulation.i
 %include ProbabilitySimulationAlgorithm.i
 %include PostAnalyticalSimulation.i

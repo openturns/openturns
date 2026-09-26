@@ -54,6 +54,12 @@ Create an openturns tensor from a numpy 3d-array:
 and back
 
 >>> np_tensor = np.array(ot_tensor)
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``ComplexTensor-size-visible-in-str-from`` (``UnsignedInteger``, default: ``6``)
 )RAW"
 
 // ---------------------------------------------------------------------

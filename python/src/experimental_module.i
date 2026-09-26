@@ -35,6 +35,10 @@
 %include LinearProblem.i
 %include HiGHS.i
 
+/* Base/Algo */
+%include SlicedInverseRegressionResult.i
+%include SlicedInverseRegression.i
+
 /* Uncertainty/Distribution */
 %import model_copula_module.i
 %import dist_bundle2_module.i
@@ -65,6 +69,7 @@
 %include MarginalUniformOrderStatistics.i
 %include MultivariateUniform.i
 %include MultivariateUniformFactory.i
+%include PiecewiseLinearDistribution.i
 %include TruncatedDistributionFactory.i
 %include SquaredNormalFactory.i
 %include InverseGammaFactory.i

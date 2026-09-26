@@ -37,7 +37,7 @@ The  *spherical*  function is defined on the sphere which ray is :math:`a`:
 
     C(\vect{s}, \vect{t}) = \sigma^2  \left[1 - \frac{1}{2a} \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2  \left(3 -  \frac{1}{a^2}\left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2^2\right) \right], \quad \forall (\vect{s}, \vect{t}), \left\|\dfrac{\vect{s}-\vect{t}}{\vect{\theta}}\right\|_2 \leq a
 
-The function is equal to zero outside the sphere.
+The function is equal to zero outside the sphere, see [journel1978]_.
 
 The correlation function :math:`\rho` writes:
 
@@ -47,6 +47,11 @@ The correlation function :math:`\rho` writes:
 
 and is equal to zero outside the sphere.
 
+The spherical covariance function is positive definite for spatial dimensions
+:math:`n \leq 3`. For :math:`n \geq 4`, it is generally *not* positive definite,
+so covariance matrices built from it may fail to be factored. See
+[stein1999]_ for a discussion of the positive definiteness of covariance
+functions.
 
 See Also
 --------

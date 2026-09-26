@@ -25,7 +25,7 @@ Let :math:`\mat{A} \in \cM_{N+1, \outputDim}` and :math:`\vect{\Psi(\vect{x})} \
     :label: defAPsi
 
     \mat{A} & = \Tr{(\vect{a}_0 | \dots | \vect{a}_N)}\\
-    \vect{\Psi(\vect{x})} & = \Tr{(\Psi_0(\vect{x}), \dots, \Psi_N(\vect{x})}
+    \vect{\Psi(\vect{x})} & = \Tr{(\Psi_0(\vect{x}), \dots, \Psi_N(\vect{x}))}
 
 Then the meta model :eq:`LSMetaModel` can be written as:
 
@@ -89,6 +89,9 @@ ill-conditionned. Hence, the best method is not necessarily to invert the Gram m
 because the solution may be particularly sensitive to rounding errors.
 The least-squares problem is rather solved using more robust numerical methods
 such as the *singular value decomposition* (SVD) or the *QR-decomposition*.
+
+Refer to :any:`least_squares_resolution` to get some numerical methods that can be used in order to
+solve least squares problems.
 
 Particular case 1: The functional basis is composed of polynomials with degree less or equal to 1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 mesh = ot.RegularGrid(0.0, 0.1, 11)
 
@@ -97,3 +98,36 @@ print("myFunc input dimension=", myFunc.getInputDimension())
 print("myFunc output dimension=", myFunc.getOutputDimension())
 print("myFunc input dimension=", myFunc.getInputMesh().getDimension())
 print("called ", myFunc.getCallsNumber(), " times")
+
+assert ot.FieldToPointFunction(myFunc) == myFunc
+
+with ott.assert_raises(Exception):
+    myFunc(ot.Sample(mesh3D.getVerticesNumber(), in_dim + 1))
+with ott.assert_raises(Exception):
+    myFunc(ot.Sample(1, in_dim))
+
+
+class BadFieldToPointFunction(ot.OpenTURNSPythonFieldToPointFunction):
+    def __init__(self):
+        super().__init__(mesh, 2, 2)
+
+    def _exec(self, X):
+        return [1.0] * 5
+
+
+with ott.assert_raises(Exception):
+    ot.FieldToPointFunction(BadFieldToPointFunction())(ot.Normal(2).getSample(11))
+
+
+class NonSequenceFieldToPointFunction(ot.OpenTURNSPythonFieldToPointFunction):
+    def __init__(self):
+        super().__init__(mesh, 2, 2)
+
+    def _exec(self, X):
+        return 42
+
+
+with ott.assert_raises(Exception):
+    ot.FieldToPointFunction(NonSequenceFieldToPointFunction())(
+        ot.Normal(2).getSample(11)
+    )

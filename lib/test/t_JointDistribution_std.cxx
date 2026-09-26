@@ -245,7 +245,7 @@ int main(int, char *[])
     marginalU.setDescription(componentU);
     aCollection2.add(marginalU);
     aCollection2[1].setName("Second");
-    TruncatedDistribution marginalTN(Normal(2.0, 1.5), 1.0, 4.0);
+    TruncatedDistribution marginalTN(Normal(2.0, 1.5), Interval(1.0, 4.0));
     marginalTN.setName("Third");
     Description componentTN(1);
     componentTN[0] = "Three";

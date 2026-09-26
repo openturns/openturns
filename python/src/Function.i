@@ -39,6 +39,11 @@ OTTypedInterfaceObjectHelper(Function)
 %template(FunctionCollection) OT::Collection<OT::Function>;
 %template(_FunctionPersistentCollection) OT::PersistentCollection<OT::Function>;
 
+%extend OT::Collection<OT::Function> {
+  OT_COLLECTION_GETITEM(OT::Collection<OT::Function>, OT::Function)
+  OT_COLLECTION_SETITEM(OT::Collection<OT::Function>, OT::Function)
+}
+
 
 %include Function_doc.i
 
@@ -68,6 +73,16 @@ Function(PyObject * pyObj)
 Function(const Function & other)
 {
   return new OT::Function( other );
+}
+
+Function __neg__()
+{
+  return -*self;
+}
+
+Function __rmul__(double scalar)
+{
+  return *self * scalar;
 }
 
 

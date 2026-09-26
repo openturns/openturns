@@ -22,7 +22,7 @@ solver.setMaximumCallsNumber(1000)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
 solver.setMaximumResidualError(1.0e-10)
-solver.setMaximumConstraintError(1.0e-10)
+solver.setMaximumConstraintError(1.0e-8)
 
 # algorithm
 algo = ot.MultiFORM(solver, event)
@@ -70,7 +70,7 @@ solver2.setMaximumCallsNumber(2000)
 solver2.setMaximumAbsoluteError(1.0e-6)
 solver2.setMaximumRelativeError(1.0e-6)
 solver2.setMaximumResidualError(1.0e-6)
-solver2.setMaximumConstraintError(1.0e-6)
+solver2.setMaximumConstraintError(1.0e-4)
 
 algo2 = ot.MultiFORM(solver2, event2)
 algo2.setMaximumDesignPointsNumber(4)

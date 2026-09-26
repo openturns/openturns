@@ -20,6 +20,19 @@ sampleX, sampleY : two 2-d sequences of float of dimension 1
     First and second coordinates. If not specified the points are equally
     spaced in :math:`[0, 1]` along the :math:`X` and :math:`Y`-directions.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Contour-DefaultLevelsNumber`` (``UnsignedInteger``, default: ``10``): default number of contour levels,
+- ``Contour-DefaultIsFilled`` (``Bool``, default: ``false``): whether contour plots are filled by default,
+- ``Contour-DefaultDrawLabels`` (``Bool``, default: ``true``): whether to draw labels on contour lines,
+- ``Contour-DefaultColorMapNorm`` (``String``, default: ``linear``): default color map normalization. The possible values are the ones returned by ``Drawable.GetValidNorms()``,
+- ``Contour-DefaultColorMap`` (``String``, default: ``viridis``): default color map name. The possible values are the ones returned by ``Drawable.GetValidColorMaps()``,
+- ``Contour-DefaultColorBarPosition`` (``String``, default: ``right``): default color bar position. The possible values are ``left``, ``right``, ``top`` and ``bottom``,
+- ``Contour-DefaultExtend`` (``String``, default: ``both``): default extend mode for color bar. The possible values are ``neither``, ``both``, ``min`` and ``max``,
+- ``Contour-DefaultAlpha`` (``Scalar``, default: ``1.0``): default transparency for contour plots.
+
 Examples
 --------
 
@@ -88,7 +101,7 @@ Parameters
 ----------
 n : int
     Number of levels. If not specified, the default value is taken in the
-    :class:`~openturns.ResourceMap` in the `Contour-DefaultLevelsNumber` key and :math:`n=10`.
+    :class:`~openturns.ResourceMap` in the ``Contour-DefaultLevelsNumber`` key and :math:`n=10`.
 
 Notes
 -----

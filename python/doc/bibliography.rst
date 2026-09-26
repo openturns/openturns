@@ -162,6 +162,10 @@ Bibliography
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
+.. [fasano2025] Fasano, A. and Denti, F. (2025). *Multivariate Gaussian cumulative
+    distribution functions as the marginal likelihood of their dual Bayesian probit models.*
+    Biometrika, 112(4), asaf060.
+    https://doi.org/10.1093/biomet/asaf060
 .. [feller1970] Feller W.,
     *An Introduction to Probability Theory and Its Application*, John Wiley \& Sons,
     2nd edition, Vol. 2.
@@ -249,6 +253,8 @@ Bibliography
     constructing optimal design of computer experiments.*
     Journal of Statistical Planning and Inference, 134 :268-287, 2005.
     `pdf <https://openturns.github.io/openturns/papers/jin2005.pdf>`__
+.. [journel1978] Journel A.G., Huijbregts C.J., *Mining Geostatistics*,
+    Academic Press, London, 1978.
 .. [johnson1990] Johnson M, Moore L and Ylvisaker D (1990).
     *Minimax and maximin distance design.*
     Journal of Statistical Planning and Inference 26(2): 131-148.
@@ -303,6 +309,9 @@ Bibliography
 .. [koutsourelakis2004] Koutsourelakis, H. Pradlwarter, G. Schueller,
     *Reliability of structures in high dimensions, part i: algorithms and applications*,
     Probabilistic Engineering Mechanics 19 (4) (2004) 409–417
+.. [li1991] Li, K C. *Sliced Inverse Regression for Dimension Reduction*,
+    Journal of the American Statistical Association, 86, 316-342, 1991.
+    `pdf <https://escholarship.org/content/qt3mw1p0mb/qt3mw1p0mb.pdf>`__
 .. [lebrun2009a] Lebrun, R. & Dutfoy, A. *An innovating analysis of the Nataf
     transformation from the copula viewpoint.* Prob. Eng. Mech., 2009, 24,
     312-320.
@@ -546,6 +555,8 @@ Bibliography
     `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
 .. [stein1987] Stein, M. (1987). *Large sample properties of simulations using Latin hypercube sampling.*
     Technometrics, 29(2), 143-151.
+.. [stein1999] Stein, M. L. (1999). *Interpolation of Spatial Data: Some Theory for Kriging.*
+    Springer, New York.
 .. [stone1974] Stone, M. (1974). *Cross‐validatory choice and assessment of statistical predictions.*
     Journal of the royal statistical society: Series B (Methodological), 36 (2), 111-133.
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical

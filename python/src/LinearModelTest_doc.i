@@ -11,7 +11,6 @@ R"RAW(Test the nullity of the linear regression model coefficients.
 
     LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModelResult, level*)
 
-
 Parameters
 ----------
 firstSample : 2-d sequence of float
@@ -50,7 +49,15 @@ where :math:`\epsilon` is the residual, supposed to follow the standard Normal
 distribution.
 
 The LinearModelFisher test checks the nullity of the regression linear model
-coefficients (Fisher distribution is used).
+coefficients (Fisher distribution is used).  The hypothesis is rejected when the  *p*-value
+is less than a given threshold (typically 5% or 10%). Thus, the lower the *p*-value,
+the more significant the coefficient.
+
+
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``LinearModelTest-DefaultLevel`` (``Scalar``, default: ``0.05``): default significance level of the linear model tests
 
 Examples
 --------
@@ -64,6 +71,7 @@ Examples
 >>> test_result = ot.LinearModelTest.LinearModelFisher(firstSample, secondSample)
 >>> print(test_result.getPValue())
 5.1...e-12
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -198,6 +206,11 @@ The Harrison-McCabe test checks the heteroskedasticity of the residuals. The
 breakpoint in the variances is set by default to the half of the sample. The
 p-value is estimed using simulation. If the binary quality measure is false, then
 the homoskedasticity hypothesis can be rejected with respect to the given level.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LinearModelTest-DefaultHarrisonMcCabeBreakpoint`` (``Scalar``, default: ``0.5``): default value of the breakpoint parameter of the Harrison and McCabe test
+- ``LinearModelTest-DefaultHarrisonMcCabeSimulationSize`` (``UnsignedInteger``, default: ``1000``): default number of simulations performed by the Harrison and McCabe test
 
 Examples
 --------
@@ -350,6 +363,10 @@ to test is the autocorrelation is equal to 0.
 The p-value is computed using a normal approximation based on the mean and variance of the
 Durbin-Watson test statistic. If the binary quality measure is false, then the
 given autocorrelation hypothesis can be rejected with respect to the given level.
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``LinearModelTest-DefaultDurbinWatsonHypothesis`` (``String``, default: ``Equal``): default alternative hypothesis of the Durbin-Watson test. The possible values are ``Equal``, ``Less`` and ``Greater``
 
 Examples
 --------

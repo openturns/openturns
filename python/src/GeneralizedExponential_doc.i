@@ -42,6 +42,13 @@ The correlation function :math:`\rho` writes:
 
     \rho(\vect{s}, \vect{t}) = e^{-\left\| \vect{s}-\vect{t} \right\||_{2}^p}, \quad \forall (\vect{s}, \vect{t}) \in \cD
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``GeneralizedExponential-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}` of the covariance function.
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``GeneralizedExponential-DefaultTheta`` (``Scalar``, default: ``1``)
 
 See Also
 --------
@@ -69,6 +76,7 @@ Create a  generalized exponential covariance function specifying the scale vecto
 Create a  generalized exponential covariance function specifying the scale vector, the amplitude and p:
 
 >>> covModel3 = ot.GeneralizedExponential([1.5, 2.5], [3.5], 1.5)
+
 )RAW"
 
 

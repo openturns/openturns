@@ -20,12 +20,18 @@
  */
 #include <cmath>
 #include <set>
+#include <utility>
+#include <vector>
 #include "openturns/Mixture.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/GraphImplementation.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/Polygon.hxx"
+#include "openturns/Text.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -730,6 +736,137 @@ Bool Mixture::isDiscrete() const
   const UnsignedInteger size = distributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) if (!distributionCollection_[i].isDiscrete()) return false;
   return true;
+}
+
+/* Draw the PDF of the mixture, handling components of both natures */
+Graph Mixture::drawPDF(const UnsignedInteger pointNumber,
+                       const Bool logScale) const
+{
+  // Purely continuous or discrete mixtures use the generic implementation
+  if (isContinuous() || isDiscrete()) return DistributionImplementation::drawPDF(pointNumber, logScale);
+  // Mixed mixtures: compute the bounds then use the dedicated drawing
+  Scalar xMin = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+  Scalar xMax = computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+  const Scalar delta = 2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax") - ResourceMap::GetAsScalar("Distribution-QMin")));
+  return drawPDF(xMin - delta, xMax + delta, pointNumber, logScale);
+}
+
+Graph Mixture::drawPDF(const Scalar xMin,
+                       const Scalar xMax,
+                       const UnsignedInteger pointNumber,
+                       const Bool logScale) const
+{
+  if (getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a PDF only if dimension equals 1, here dimension=" << getDimension();
+  if (!(xMin < xMax)) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax <= xMin, here xmin=" << xMin << " and xmax=" << xMax;
+  if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with a point number < 2";
+  // Purely continuous or discrete mixtures use the generic implementation
+  if (isContinuous() || isDiscrete()) return DistributionImplementation::drawPDF(xMin, xMax, pointNumber, logScale);
+  // Mixtures with components of both natures are drawn as the PDF of their
+  // continuous part plus vertical bars for the atoms of the Dirac
+  // components, see #1489
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Sample data(pointNumber, 2);
+  const Scalar step = (xMax - xMin) / (pointNumber - 1.0);
+  // Maximal weighted density of the continuous components, used to scale
+  // the atoms so that the tallest arrow matches the peak of the continuous
+  // part, see #1489 and #1596
+  Scalar maxPdf = 0.0;
+  for (UnsignedInteger i = 0; i < pointNumber; ++i)
+  {
+    const Scalar x = xMin + i * step;
+    data(i, 0) = x;
+    Scalar pdfValue = 0.0;
+    for (UnsignedInteger j = 0; j < size; ++j)
+      if (!distributionCollection_[j].isDiscrete())
+      {
+        const Scalar value = distributionCollection_[j].computePDF(Point(1, x));
+        pdfValue += p_[j] * value;
+        maxPdf = std::max(maxPdf, p_[j] * value);
+      }
+    data(i, 1) = pdfValue;
+  }
+  Graph graphPDF("");
+  Curve curve(data);
+  const String title(OSS() << getDescription()[0] << " PDF");
+  curve.setLegend(title);
+  curve.setLineWidth(2);
+  graphPDF.add(curve);
+  // Vertical arrows for the discrete components: each support point of a
+  // discrete component gets an arrow with height proportional to its
+  // weighted probability mass, the scale being normalized so that over all
+  // the discrete components the tallest arrow equals the peak of the
+  // weighted continuous density, see #1489 and #1596
+  const UnsignedInteger smallSupport = ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport");
+  const Interval drawingInterval(Point(1, xMin), Point(1, xMax));
+  Scalar maxMass = 0.0;
+  typedef std::vector< std::pair< UnsignedInteger, Point > > AtomCollection; // (component index, point)
+  AtomCollection atoms;
+  for (UnsignedInteger j = 0; j < size; ++j)
+  {
+    if (!distributionCollection_[j].isDiscrete()) continue;
+    Sample support(distributionCollection_[j].getSupport(drawingInterval));
+    if (support.getSize() == 0 || support.getSize() > smallSupport) continue;
+    for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+    {
+      const Scalar mass = distributionCollection_[j].computePDF(support[i]);
+      if (!(mass > 0.0)) continue;
+      atoms.push_back(std::make_pair(j, support[i]));
+      maxMass = std::max(maxMass, p_[j] * mass);
+    }
+  }
+  if (maxMass > 0.0 && maxPdf > 0.0)
+  {
+    const Scalar scale = maxPdf / maxMass;
+    const Scalar headHalfWidth = (xMax - xMin) / 100.0;
+    for (AtomCollection::const_iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+      const Scalar atom = (*it).second[0];
+      const Scalar height = p_[(*it).first] * distributionCollection_[(*it).first].computePDF((*it).second) * scale;
+      // Shaft
+      Sample shaftData(2, 2);
+      shaftData(0, 0) = atom;
+      shaftData(0, 1) = 0.0;
+      shaftData(1, 0) = atom;
+      shaftData(1, 1) = height;
+      Curve shaft(shaftData);
+      shaft.setLineWidth(2);
+      shaft.setColor(curve.getColor());
+      graphPDF.add(shaft);
+      // Head, drawn as a filled triangle pointing up
+      const Scalar headHeight = std::min(0.3 * height, 0.05 * maxPdf);
+      Sample headData(3, 2);
+      headData(0, 0) = atom;
+      headData(0, 1) = height + headHeight;
+      headData(1, 0) = atom - headHalfWidth;
+      headData(1, 1) = height;
+      headData(2, 0) = atom + headHalfWidth;
+      headData(2, 1) = height;
+      Polygon head(headData);
+      head.setColor(curve.getColor());
+      graphPDF.add(head);
+    }
+    // Text labels showing the probability of each atom above its arrow,
+    // see #1489
+    Sample atomsData(atoms.size(), 2);
+    Description texts(atoms.size());
+    for (UnsignedInteger i = 0; i < atoms.size(); ++i)
+    {
+      const Scalar atom = atoms[i].second[0];
+      const Scalar height = p_[atoms[i].first] * distributionCollection_[atoms[i].first].computePDF(atoms[i].second) * scale;
+      const Scalar headHeight = std::min(0.3 * height, 0.05 * maxPdf);
+      atomsData(i, 0) = atom;
+      atomsData(i, 1) = height + headHeight;
+      texts[i] = OSS() << p_[atoms[i].first] * distributionCollection_[atoms[i].first].computePDF(atoms[i].second);
+    }
+    Text labels(atomsData, texts);
+    labels.setColor(curve.getColor());
+    graphPDF.add(labels);
+  }
+  graphPDF.setXTitle(getDescription()[0]);
+  graphPDF.setYTitle("PDF");
+  graphPDF.setLegendPosition("topright");
+  graphPDF.setLogScale(logScale ? GraphImplementation::LOGX : GraphImplementation::NONE);
+  return graphPDF;
 }
 
 /* Check if the distribution is integral */

@@ -74,6 +74,26 @@ public:
                   Sample & fi,
                   Point & ei) const;
 
+  // This method computes the integral while reusing the given scratch
+  // containers across successive calls, in order to limit the number of
+  // allocations in the inner loop of an iterated integration. The containers
+  // are grown to their maximum size on the first call and keep their capacity
+  // afterwards, so they must not be shared between concurrent calls. The
+  // scratch samples x and y are reused by the local rules.
+  // Contrary to the overload above, ai, bi, ei and fi are not truncated to
+  // the number of used sub-intervals: they keep maximumSubIntervals_ entries
+  // and only the leading entries are meaningful
+  Point integrate(const Function & function,
+                  const Scalar a,
+                  const Scalar b,
+                  Scalar & error,
+                  Point & ai,
+                  Point & bi,
+                  Sample & fi,
+                  Point & ei,
+                  Sample & x,
+                  Sample & y) const;
+
 #endif
   // This method allows one to get the estimated integration error as a Point,
   // needed by Python
@@ -129,6 +149,14 @@ private:
                     const Scalar a,
                     const Scalar b,
                     Scalar & localError) const;
+
+  /** Compute the local GaussKronrod rule over [a, b], reusing the given scratch samples */
+  Point computeRule(const Function & function,
+                    const Scalar a,
+                    const Scalar b,
+                    Scalar & localError,
+                    Sample & x,
+                    Sample & y) const;
 
   Scalar computeScalarRule(const UniVariateFunction & function,
                            const Scalar a,

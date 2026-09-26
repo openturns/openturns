@@ -105,10 +105,18 @@ UnsignedInteger FieldImplementation::getSize() const
 /* Dimension accessor */
 UnsignedInteger FieldImplementation::getInputDimension() const
 {
+  LOGWARN("FieldImplementation::getInputDimension is deprecated, use getMesh().getDimension()");
   return mesh_.getDimension();
 }
 
 UnsignedInteger FieldImplementation::getOutputDimension() const
+{
+  LOGWARN("FieldImplementation::getOutputDimension is deprecated, use getDimension()");
+  return values_.getDimension();
+}
+
+/* Dimension accessor of the values */
+UnsignedInteger FieldImplementation::getDimension() const
 {
   return values_.getDimension();
 }
@@ -176,7 +184,7 @@ Scalar & FieldImplementation::at (const UnsignedInteger i,
                                   const UnsignedInteger j)
 {
   if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (!(j < getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  if (!(j < getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
   isAlreadyComputedInputMean_ = false;
   return values_(i, j);
 }
@@ -185,7 +193,7 @@ const Scalar & FieldImplementation::at (const UnsignedInteger i,
                                         const UnsignedInteger j) const
 {
   if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (!(j < getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getOutputDimension() << ")";
+  if (!(j < getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is not less than dimension (" << getDimension() << ")";
   return values_(i, j);
 }
 
@@ -218,7 +226,7 @@ FieldImplementation FieldImplementation::getMarginal(const Indices & indices) co
 /* Description Accessor */
 void FieldImplementation::setDescription(const Description & description)
 {
-  if (description.getSize() != (getInputDimension() + getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given description does not match the field input+output dimension.";
+  if (description.getSize() != (mesh_.getDimension() + getDimension())) throw InvalidArgumentException(HERE) << "Error: the given description does not match the field input+output dimension.";
   description_ = description;
 }
 
@@ -295,6 +303,47 @@ FieldImplementation FieldImplementation::operator - (const Point & translation) 
   return fieldImplementation;
 }
 
+/* Check that the given field is compatible for arithmetic operations */
+void FieldImplementation::checkArithmeticCompatibility(const FieldImplementation & other) const
+{
+  if (!(mesh_ == other.mesh_)) throw InvalidArgumentException(HERE) << "Error: the two fields must be defined on the same mesh.";
+  if (getDimension() != other.getDimension()) throw InvalidArgumentException(HERE) << "Error: the two fields must have the same dimension. Here dimension=" << getDimension() << " and dimension=" << other.getDimension();
+}
+
+/* In place sum operator between fields */
+FieldImplementation & FieldImplementation::operator += (const FieldImplementation & translation)
+{
+  checkArithmeticCompatibility(translation);
+  values_ += translation.values_;
+  return *this;
+}
+
+/* In place difference operator between fields */
+FieldImplementation & FieldImplementation::operator -= (const FieldImplementation & translation)
+{
+  checkArithmeticCompatibility(translation);
+  values_ -= translation.values_;
+  return *this;
+}
+
+/* Sum operator between fields */
+FieldImplementation FieldImplementation::operator + (const FieldImplementation & translation) const
+{
+  checkArithmeticCompatibility(translation);
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation += translation;
+  return fieldImplementation;
+}
+
+/* Difference operator between fields */
+FieldImplementation FieldImplementation::operator - (const FieldImplementation & translation) const
+{
+  checkArithmeticCompatibility(translation);
+  FieldImplementation fieldImplementation(*this);
+  fieldImplementation -= translation;
+  return fieldImplementation;
+}
+
 
 /* String converter */
 String FieldImplementation::__repr__() const
@@ -322,15 +371,15 @@ struct FieldInputMeanFunctor
   Point accumulator_;
 
   FieldInputMeanFunctor(const Point & volumes, const FieldImplementation & field)
-    : volumes_(volumes), field_(field), accumulator_(field.getOutputDimension(), 0.0) {}
+    : volumes_(volumes), field_(field), accumulator_(field.getDimension(), 0.0) {}
 
   FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBBImplementation::Split)
-    : volumes_(other.volumes_), field_(other.field_), accumulator_(other.field_.getOutputDimension(), 0.0) {}
+    : volumes_(other.volumes_), field_(other.field_), accumulator_(other.field_.getDimension(), 0.0) {}
 
   void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
-    const UnsignedInteger meshDimension = field_.getInputDimension();
-    const UnsignedInteger dimension = field_.getOutputDimension();
+    const UnsignedInteger meshDimension = field_.mesh_.getDimension();
+    const UnsignedInteger dimension = field_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       const Indices simplex(field_.mesh_.getSimplex(i));
@@ -408,11 +457,11 @@ Sample FieldImplementation::asSample() const
 Mesh FieldImplementation::asDeformedMesh(const Indices & verticesPadding,
     const Indices & valuesPadding) const
 {
-  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger inputDimension = mesh_.getDimension();
   const UnsignedInteger verticesPaddingSize = verticesPadding.getSize();
   const UnsignedInteger augmentedInputDimension = inputDimension + verticesPaddingSize;
   if (!verticesPadding.check(augmentedInputDimension)) throw InvalidArgumentException(HERE) << "Error: the given indices=" << verticesPadding << " of null coordinates for padding have ties or leave gaps in the augmented coordinates.";
-  const UnsignedInteger outputDimension = getOutputDimension();
+  const UnsignedInteger outputDimension = getDimension();
   const UnsignedInteger valuesPaddingSize = valuesPadding.getSize();
   const UnsignedInteger augmentedOutputDimension = outputDimension + valuesPaddingSize;
   if (!valuesPadding.check(augmentedOutputDimension)) throw InvalidArgumentException(HERE) << "Error: the given indices=" << valuesPadding << " of null values for padding have ties or leave gaps in the augmented values.";
@@ -457,7 +506,7 @@ Mesh FieldImplementation::asDeformedMesh(const Indices & verticesPadding,
 Graph FieldImplementation::draw() const
 {
   // Specific drawing method for bidimensional fields indexed by a scalar
-  if ((getInputDimension() == 1) && (getOutputDimension() == 2))
+  if ((mesh_.getDimension() == 1) && (getDimension() == 2))
   {
     const String title(OSS() << getName());
     Graph graph(title, description_[0], description_[1]);
@@ -466,7 +515,7 @@ Graph FieldImplementation::draw() const
     return graph;
   }
   // Specific drawing method for bidimensional fields indexed by a 2d-point
-  if ((getInputDimension() == 2) && (getOutputDimension() == 2))
+  if ((mesh_.getDimension() == 2) && (getDimension() == 2))
   {
     const String title(OSS() << getName());
     Graph graph(title, description_[0], description_[1]);
@@ -543,8 +592,8 @@ Graph FieldImplementation::draw() const
 Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
                                         const Bool interpolate) const
 {
-  if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
-  const UnsignedInteger meshDimension = getInputDimension();
+  if (!(index < getDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
+  const UnsignedInteger meshDimension = mesh_.getDimension();
   if (!(meshDimension <= 3)) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 3.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
@@ -700,8 +749,8 @@ Graph FieldImplementation::draw3D(const UnsignedInteger index,
                                   const Scalar rho,
                                   const Description & palette) const
 {
-  if (!(index < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getOutputDimension() - 1 << "]";
-  if (getInputDimension() != 3) throw InvalidArgumentException(HERE) << "Error: draw3D is for 3D fields only";
+  if (!(index < getDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be between [0, " << getDimension() - 1 << "]";
+  if (mesh_.getDimension() != 3) throw InvalidArgumentException(HERE) << "Error: draw3D is for 3D fields only";
   if (palette.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: palette should contain at least one color";
   // Compute the mean marginal value for each simplex
   const UnsignedInteger simplicesNumber = mesh_.getSimplicesNumber();
@@ -713,7 +762,7 @@ Graph FieldImplementation::draw3D(const UnsignedInteger index,
   const Scalar alpha = Drawable::ConvertToRGBA(Drawable::ConvertFromName(palette[0]))[3] / 255.0;
   const Description colors(Drawable::ConvertValuesToColors(meanValues, palette, alpha));
   Graph graph(mesh_.draw3D(drawEdge, rotation, shading, rho, colors));
-  graph.setTitle(OSS() << getName() << " " << description_[getInputDimension() + index]);
+  graph.setTitle(OSS() << getName() << " " << description_[mesh_.getDimension() + index]);
   return graph;
 }
 
@@ -756,9 +805,9 @@ void FieldImplementation::exportToVTKFile(const String & fileName) const
   PlatformInfo::SetNumericalPrecision(16);
   file << content << "\nPOINT_DATA " << getSize() << "\n";
 
-  for (UnsignedInteger i = 0; i < getOutputDimension(); ++i)
+  for (UnsignedInteger i = 0; i < getDimension(); ++i)
   {
-    String fieldName(getDescription()[getInputDimension() + i]);
+    String fieldName(getDescription()[mesh_.getDimension() + i]);
     replace(fieldName.begin(), fieldName.end(), ' ', '~');
     if (fieldName.size() == 0) fieldName = String(OSS() << "v_" << i);
     file << "SCALARS " << fieldName << " float\nLOOKUP_TABLE default\n";

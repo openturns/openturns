@@ -76,6 +76,9 @@ Continuous parametric distributions
     :template: classWithPlot.rst_t
     NormalGamma
 
+    :template: classWithPlot.rst_t
+    experimental.PiecewiseLinearDistribution
+
     :template: Distribution.rst_t
     Pareto
     Rayleigh
@@ -327,6 +330,7 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
+    DistFunc.dNonCentralStudentAlt0
     DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
@@ -420,3 +424,18 @@ Refer to :ref:`isoprobabilistic_transformation`.
     NatafEllipticalDistributionHessian
     InverseRosenblattEvaluation
     RosenblattEvaluation
+
+Deprecated distribution aliases
+================================
+
+.. currentmodule:: openturns
+
+.. autosummary::
+    :toctree: _generated/
+    :template: function.rst_t
+
+    dist.BayesDistribution
+    dist.MixedHistogramUserDefined
+    dist.RandomMixture
+    dist.UserDefined
+    dist.UserDefinedFactory

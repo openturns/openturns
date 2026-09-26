@@ -169,6 +169,78 @@ FunctionImplementation FunctionImplementation::operator * (const Implementation 
   return ProductFunction(clone(), p_right);
 }
 
+/* Multiplication operator between a function implementation and a function with the same input dimension and 1D output dimension */
+FunctionImplementation FunctionImplementation::operator * (const Function & right) const
+{
+  return Function(*this) * right;
+}
+
+/* Multiplication operator between a function implementation and a scalar */
+FunctionImplementation FunctionImplementation::operator * (const Scalar & scalar) const
+{
+  return *(Function(*this) * scalar).getImplementation();
+}
+
+/* Division operator between two function implementations with the same input dimension; right must have 1D output */
+FunctionImplementation FunctionImplementation::operator / (const FunctionImplementation & right) const
+{
+  return *this / Function(right);
+}
+
+/* Division operator between two functions with the same input dimension; right must have 1D output */
+FunctionImplementation FunctionImplementation::operator / (const Implementation & p_right) const
+{
+  return *this / *p_right;
+}
+
+/* Division operator between a function implementation and a function with the same input dimension; right must have 1D output */
+FunctionImplementation FunctionImplementation::operator / (const Function & right) const
+{
+  return *(Function(*this) / right).getImplementation();
+}
+
+/* Addition operator between two functions with the same input dimension and output dimension */
+FunctionImplementation FunctionImplementation::operator + (const FunctionImplementation & right) const
+{
+  return *(Function(*this) + Function(right)).getImplementation();
+}
+
+/* Addition operator between two functions with the same input dimension and output dimension */
+FunctionImplementation FunctionImplementation::operator + (const Implementation & p_right) const
+{
+  return *this + *p_right;
+}
+
+/* Soustraction operator between two functions with the same input dimension and output dimension */
+FunctionImplementation FunctionImplementation::operator - (const FunctionImplementation & right) const
+{
+  return *(Function(*this) - Function(right)).getImplementation();
+}
+
+/* Soustraction operator between two functions with the same input dimension and output dimension */
+FunctionImplementation FunctionImplementation::operator - (const Implementation & p_right) const
+{
+  return *this - *p_right;
+}
+
+/* Addition operator between two functions with the same input dimension and output dimension (Function on right) */
+FunctionImplementation FunctionImplementation::operator + (const Function & right) const
+{
+  return *(Function(*this) + right).getImplementation();
+}
+
+/* Soustraction operator between two functions with the same input dimension and output dimension (Function on right) */
+FunctionImplementation FunctionImplementation::operator - (const Function & right) const
+{
+  return *(Function(*this) - right).getImplementation();
+}
+
+/* Negation operator */
+FunctionImplementation FunctionImplementation::operator - () const
+{
+  return *(-(Function(*this))).getImplementation();
+}
+
 /* Function implementation accessors */
 void FunctionImplementation::setEvaluation(const Evaluation & evaluation)
 {

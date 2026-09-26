@@ -80,7 +80,16 @@ experiments:
 >>> print(sample - sample[0, 0])
 0 : [ 0 1 ]
 1 : [ 2 3 ]
-2 : [ 4 5 ])RAW"
+2 : [ 4 5 ]
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Sample-PrintEllipsisSize`` (``UnsignedInteger``, default: ``3``)
+- ``Sample-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``1000``)
+- ``Sample-SmallKendallTau`` (``UnsignedInteger``, default: ``23``)
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +125,7 @@ file_name : str
     Path to CSV file.
 separator : str, optional
     Separating string.
-    Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
+    Default uses ``Sample-CSVFileSeparator`` from the :class:`~openturns.ResourceMap`.
 
 Returns
 -------
@@ -179,7 +188,7 @@ This method allows for more permissive file formatting than :py:meth:`ImportFrom
 - Comment lines or empty ones are allowed
 - Lines can be skipped from the start of the file
 
-The comment marker is defined by the `Sample-CommentsMarker` entry from :class:`~openturns.ResourceMap`.
+The comment marker is defined by the ``Sample-CommentMarker`` entry from :class:`~openturns.ResourceMap`.
 
 See Also
 --------
@@ -401,7 +410,7 @@ by David Simcha based on the paper by [knight1966]_. It actually switches
 between two implementations depending on the sample size:
 
     - The most basic implementation performing in :math:`O(m^2)` is used when
-      the sample size is less than `SampleImplementation-SmallKendallTau`
+      the sample size is less than ``Sample-SmallKendallTau``
       from the :class:`~openturns.ResourceMap`.
     - The other more complex implementation performing in :math:`O(m\log(m))`
       is used for larger samples.
@@ -785,6 +794,13 @@ Examples
 %feature("docstring") OT::Sample::erase
 R"RAW(Erase point(s) at or between index(es) (in-place).
 
+Available usages:
+    erase(*f*)
+
+    erase(*f, l*)
+
+    erase(*indices*)
+
 Parameters
 ----------
 f : int, :math:`0 \leq f < m`
@@ -792,6 +808,8 @@ f : int, :math:`0 \leq f < m`
 l : int, :math:`f < l \leq m`, optional
     The index after the last point to erase.
     Default uses `l = f + 1` and only removes `sample[f]`.
+indices : sequence of int
+    The indices of the points to erase, in any order but unique.
 
 Examples
 --------
@@ -820,13 +838,13 @@ file_name : str
     Path to CSV file.
 separator : str, optional
     Separating string.
-    Default uses `Sample-CSVFileSeparator` from the :class:`~openturns.ResourceMap`.
+    Default uses ``Sample-CSVFileSeparator`` from the :class:`~openturns.ResourceMap`.
 decimalSeparator : str, optional
     Decimal separator.
     Default is dot.
 precision : int, optional
     Numerical precision
-    Default takes `Sample-CSVPrecision` entry from :class:`~openturns.ResourceMap`.
+    Default takes ``Sample-CSVPrecision`` entry from :class:`~openturns.ResourceMap`.
 format : str, optional
     Floating-point formatting, one of:
 
@@ -834,7 +852,7 @@ format : str, optional
     - fixed: constant number of digits
     - defaultfloat: variable number of digits
 
-    Default takes `Sample-CSVFormat` entry from :class:`~openturns.ResourceMap`.
+    Default takes ``Sample-CSVFormat`` entry from :class:`~openturns.ResourceMap`.
 
 Notes
 -----
@@ -1009,7 +1027,7 @@ Examples
 Parameters
 ----------
 description : sequence of str
-    Description of the sample's components.
+    Description of the sample components.
 
 See Also
 --------
@@ -1344,3 +1362,4 @@ Examples
 0 : [ 0 2 2 ]
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"
+

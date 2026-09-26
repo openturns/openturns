@@ -557,6 +557,7 @@ ot_add_python_module(experimental experimental_module.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
                      MultivariateUniform.i MultivariateUniform_doc.i
                      MultivariateUniformFactory.i MultivariateUniformFactory_doc.i
+                     PiecewiseLinearDistribution.i PiecewiseLinearDistribution_doc.i
                      TruncatedDistributionFactory.i TruncatedDistributionFactory_doc.i
                      SquaredNormalFactory.i SquaredNormalFactory_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
@@ -564,12 +565,15 @@ ot_add_python_module(experimental experimental_module.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
-FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                     FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                     UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
-                       QROrthonormalizationAlgorithm.i QROrthonormalizationAlgorithm_doc.i
-                       GaussLPQuadrature.i GaussLPQuadrature_doc.i
-                       FiniteOrthonormalFunctionFactory.i FiniteOrthonormalFunctionFactory_doc.i
+                     SlicedInverseRegression.i SlicedInverseRegression_doc.i
+                     SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
+                     QROrthonormalizationAlgorithm.i QROrthonormalizationAlgorithm_doc.i
+                     GaussLPQuadrature.i GaussLPQuadrature_doc.i
+                     FiniteOrthonormalFunctionFactory.i FiniteOrthonormalFunctionFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i
@@ -666,6 +670,7 @@ ot_add_python_module(simulation simulation_module.i
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
                       SimulationResult.i SimulationResult_doc.i
                       SimulationAlgorithm.i SimulationAlgorithm_doc.i
+                      EventSimulationImplementation.i EventSimulationImplementation_doc.i
                       EventSimulation.i EventSimulation_doc.i
                       ProbabilitySimulationAlgorithm.i ProbabilitySimulationAlgorithm_doc.i
                       PostAnalyticalSimulation.i PostAnalyticalSimulation_doc.i
@@ -1056,6 +1061,8 @@ install (DIRECTORY usecases DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturn
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
+set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
+separate_arguments (SPHINX_FLAGS)
 if (SPHINX_FOUND)
 
   # exclude examples according to available dependencies
@@ -1162,9 +1169,6 @@ if (SPHINX_FOUND)
       list (APPEND sphinx_clones ${sphinx_clone})
     endif ()
   endforeach ()
-
-  set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
-  separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format
   foreach (format ${doc_formats})

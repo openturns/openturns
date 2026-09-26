@@ -57,8 +57,8 @@ Refer to :ref:`orthonormal_polynomials`.
 
     OrthogonalUniVariatePolynomial
     OrthogonalUniVariatePolynomialFamily
-    StandardDistributionPolynomialFactory
     OrthogonalUniVariatePolynomialFactory
+    UniVariateDistributionPolynomialFactory
     UniVariateFunctionFamily
 
 .. autosummary::

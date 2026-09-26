@@ -39,7 +39,7 @@ public:
     Point difference(pt1 - pt2);
     return exp(-std::abs(difference.norm()) / scaling_);
   }
-  Scalar operator() (UnsignedInteger i, UnsignedInteger j) const
+  Scalar operator() (UnsignedInteger i, UnsignedInteger j) const override
   {
     return operator()(vertices_[i], vertices_[j]);
   }

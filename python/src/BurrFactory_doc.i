@@ -12,9 +12,12 @@ The parameter :math:`\Hat{c}_n` is the solution of the following non linear equa
 where :math:`\displaystyle SR = \displaystyle \sum_{i=1}^n \frac{ \log(x_i)}{1+x_i^c}`
 and :math:`\displaystyle SSR = \displaystyle \sum_{i=1}^n \frac{ x_i^c\log(x_i)}{1+x_i^c}`
 
-The resolution of this equation can be tuned through
-`BurrFactory-RelativePrecision`, `BurrFactory-ResidualPrecision`,
-`BurrFactory-MaximumIteration` in :class:`~openturns.ResourceMap`
+The resolution of this equation can be tuned through the following keys in :class:`~openturns.ResourceMap`:
+
+- ``BurrFactory-RelativePrecision`` (``Scalar``, default: ``1e-12``): relative precision of the resolver,
+- ``BurrFactory-ResidualPrecision`` (``Scalar``, default: ``1e-12``): residual precision of the resolver,
+- ``BurrFactory-MaximumIteration`` (``UnsignedInteger``, default: ``10``): maximum number of iterations of the resolver,
+- ``BurrFactory-AbsolutePrecision`` (``Scalar``, default: ``1e-12``): absolute precision of the resolver.
 
 Then
 
@@ -24,7 +27,8 @@ Then
 
 See also
 --------
-DistributionFactory, Burr)RAW"
+DistributionFactory, Burr
+)RAW"
 
 // ---------------------------------------------------------------------
 

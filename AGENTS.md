@@ -1,47 +1,52 @@
 # AGENTS.md
 
-## Configure
-```bash
-cmake --preset=linux-debug  # only if build/ folder does not exist
-```
+This file provides guidance to AI agents such as OpenCode when working with code in this repository.
+
+## Project skill files - read these first
+
+A number of short `SKILL.md` files under `.agents/skills/` are the canonical references for the most common tasks an AI agent performs in this repo. Open the matching file **before** improvising; each is one or two pages and contains the specific commands, flags, and conventions that AGENTS.md only summarises:
+
+- **`.agents/skills/openturns-conventions/SKILL.md`** — source and contribution conventions: code formatting, C++/Python style, commit message style.  Read before writing or editing `lib/` or `python/` code, comments, or commit messages.
+- **`.agents/skills/openturns-test/SKILL.md`** — the canonical way to run the test suite and individual test cases. Read before running any test.
+- **`.agents/skills/openturns-doc/SKILL.md`** — editing Python docstrings or HTML Sphinx documentation. Read before any change to `python/doc/` or `python/src/*_doc.i`.
+- **`.agents/skills/openturns-debug/SKILL.md`** — debugging the C++ or SWIG layer, debug flags, gdb commands.
+- **`.agents/skills/openturns-review/SKILL.md`** — the elements necessary for code review when reviewing pull requests and code changes.
+- **`.agents/skills/openturns-ci-repro/SKILL.md`** — reproducing a GitHub Actions Linux CI failure locally when it does not happen on your machine. Read before chasing a failure that only shows up in CI.
+
+## What is OpenTURNS
+
+At its core it is an object-oriented C++ and Python library dedicated to advanced probabilistic modelling
+(distribution algebra, copulas dependence modelling with copulas, non-parametric distributions, distribution transformations, etc),
+and with a second layer of statistical and uncertainty quantification capabilities
+(functional modelling, sensitivity analysis, reliability analysis, surrogate modelling, etc).
 
 ## Build
+The library is built using CMake build system, to configure and build:
 ```bash
+cmake --preset=linux-debug  # only if build/ folder does not exist
 cmake --build build --target install --parallel $(( $(nproc) / 2 ))
 ```
 
-## Library
-- C++ library is located into lib/src
-- Mention new classes into the ChangeLog file
+## C++ library
+- C++ library is located into lib/src/
+- The subfolders lib/src/Base/ and lib/src/Uncertainty/ mark the distinction between non-stochastic and stochastic layers
+
+See **`.agents/skills/openturns-conventions/SKILL.md`** for more details.
 
 ## Python bindings
-- SWIG files entries must be created into python/src/*.i
-- New classes must be attached to experimental_module.i
+- The C++ library is exposed into Python via SWIG generation tool
+- SWIG files entries for each class live in python/src/*.i
+- Docstring documentation files python/src/*_doc.i are part of the Python bindings
+- Python tests are located in python/test/
+
+See **`.agents/skills/openturns-conventions/SKILL.md`** for more details.
 
 ## Tests
-- C++ tests in `lib/test/`, Python tests in `python/test/`
-- If a test has a corresponding `.expout` file; then the test output diffs against it
-- Testcases must be added in the Python folder preferably, new C++ tests are not necessary but existing ones must keep passing
-- Build a specific C++test: `cmake --build --target t_Axial_std $(( $(nproc) / 2 ))`
-- Run a specific C++ test: `ctest -R cppcheck_Axial_std -V`
-- Run a specific Python test: `ctest -R pyinstallcheck_Axial_std -V`
-- Tests use `ott.assert_almost_equal` for floating-point numeric assertions
-- Tests use `with ott.assert_raises(...)` for exception checks
+Tests are run from the build folder with CTest utility
+
+See **`.agents/skills/openturns-test/SKILL.md`** for more details.
 
 ## Documentation
-- Docstring API documentation is located in python/src/*_doc.i files with SWIG directives
-- Use R"RAW(...)RAW" delimiters in docstrings when backslashes are needed (ie latex formulas)
-- Use latex macros from python/doc/math_notations.sty wherever possible to uniformize notations
-- New classes documentation must contain the preamble warning: "This class is experimental..."
-- Sphinx documentation is located in python/doc
-- For new classes API entries need to be added in python/doc/user_manual
-- The "Notes" numpydoc section will appear after the methods list,
-  so only use it for specific elements like ResourceMap keys, corner cases etc
-  to avoid important elements to be separated from the main documentation body.
+The HTML documentation is built using Sphinx-doc generator from python/doc
 
-## Conventions
-- Use `<Classname|Area>: <Short task overview>` as commit title template if possible
-- Commit message can end with `Closes #<issue number>` if it must reference a GH issue
-- Avoid unicode characters in source, commit messages
-- Add Python testcases for numeric issues
-- Python files are linted with flake8, see `utils/lint.sh`
+See **`.agents/skills/openturns-doc/SKILL.md`** for more details.

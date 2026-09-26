@@ -39,7 +39,7 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 
 /* Default constructor */
 SubsetSampling::SubsetSampling()
-  : EventSimulation()
+  : EventSimulationImplementation()
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
 {
 }
@@ -49,17 +49,14 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : EventSimulation(event.getImplementation()->asComposedEvent())
+  : EventSimulationImplementation()
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
 {
-  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
-  UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
-  if (outputDimension > 1)
-    throw InvalidArgumentException(HERE) << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension=" << outputDimension;
-  setInitialExperiment(MonteCarloExperiment());
+  initialExperiment_ = MonteCarloExperiment();
+  setEvent(event);
 }
 
 
@@ -67,6 +64,22 @@ SubsetSampling::SubsetSampling(const RandomVector & event,
 SubsetSampling * SubsetSampling::clone() const
 {
   return new SubsetSampling(*this);
+}
+
+/*  Event accessor */
+void SubsetSampling::setEvent(const RandomVector & event)
+{
+  if (!event.isEvent() || !event.isComposite())
+    throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
+  const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
+  const UnsignedInteger outputDimension = composedEvent.getFunction().getOutputDimension();
+  if (outputDimension > 1)
+    throw InvalidArgumentException(HERE)
+      << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
+      << outputDimension;
+
+  EventSimulationImplementation::setEvent(composedEvent);
+  setInitialExperiment(initialExperiment_);
 }
 
 /* Setter for MaximumCoefficientOfVariation. */
@@ -581,7 +594,7 @@ String SubsetSampling::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulation::__repr__()
+      << " derived from " << EventSimulationImplementation::__repr__()
       << " proposalRange=" << proposalRange_
       << " conditionalProbability=" << conditionalProbability_
       << " keepSample_=" << keepSample_;
@@ -592,7 +605,7 @@ String SubsetSampling::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SubsetSampling::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("proposalRange_", proposalRange_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
@@ -613,7 +626,7 @@ void SubsetSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SubsetSampling::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
   adv.loadAttribute("minimumProbability_", minimumProbability_);

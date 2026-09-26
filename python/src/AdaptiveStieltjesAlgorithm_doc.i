@@ -28,4 +28,11 @@ coefficients of the three-terms recurrence relation that defines :math:`P_n`
     a_n = 1/\sqrt{\beta_{n+1}}\quad b_n = -\alpha_n/\sqrt{\beta_{n+1}}\quad c_n = -\sqrt{\beta_n/\beta_{n+1}}
 
 where :math:`\alpha_n = S_n / R_n`, :math:`\beta_n  = R_n / R_{n-1}`, :math:`n>0` and :math:`\beta_0 = 0`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``AdaptiveStieltjesAlgorithm-MaximumError`` (``Scalar``, default: ``1.0e-12``): target error of the quadrature used to compute the recurrence coefficients
+
+- ``AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots`` (``UnsignedInteger``, default: ``64``): maximum number of sub-intervals between two roots of the polynomial in the adaptive Stieltjes algorithm
+
 )RAW"

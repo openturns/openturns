@@ -165,83 +165,121 @@ External dependencies
 
 The tools chosen for the development of the platform are:
 
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| **Category**                          | **Name**                                                                        | **Version**       |
-+=======================================+=================================================================================+===================+
-| Configuration                         | `CMake <https://cmake.org/>`_                                                   | 3.18              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| C/C++ compiler (C99/C++17)            | `GCC <https://gcc.gnu.org/>`_                                                   | 8                 |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Linear algebra                        | `BLAS <https://www.netlib.org/blas/>`_                                          | 3.0               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Linear algebra                        | `LAPACK <https://www.netlib.org/lapack/>`_                                      | 3.0               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Linear algebra (optional, GPL)        | `HMat <https://github.com/jeromerobert/hmat-oss>`_                              | 1.7               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Linear algebra (optional)             | `Spectra <https://spectralib.org/>`_                                            | 1.0.0             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Legacy analytical parser (optional)   | `muParser <https://beltoforion.de/en/muparser/>`_                               | 2.2.3             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Prime numbers (optional)              | `primesieve <https://primesieve.org/>`_                                         | 7.5               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Special functions (optional)          | `Boost <https://www.boost.org/>`_                                               | 1.70              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Special functions (optional)          | `MPFR <https://www.mpfr.org/>`_                                                 | 4.0.0             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Special functions (optional)          | `MPC <https://www.multiprecision.org/mpc>`_                                     | 1.1.0             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `NLopt <https://nlopt.readthedocs.io/en/latest/>`_                              | 2.6               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `CMinpack <http://devernay.free.fr/hacks/cminpack/>`_                           | 1.3               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Ceres Solver <http://ceres-solver.org>`_                                       | 1.11              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Dlib <https://dlib.net/>`_                                                     | 19.8              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Bonmin <https://projects.coin-or.org/Bonmin>`_                                 | 1.8.7             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `HiGHS <https://highs.dev/>`_                                                   | 1.10              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Ipopt <https://coin-or.github.io/Ipopt/>`_                                     | 3.11.9            |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Optimization (optional)               | `Pagmo <https://esa.github.io/pagmo2/>`_                                        | 2.12.0            |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Integration (optional)                | `Cuba <https://feynarts.de/cuba/>`_                                             | 4.2.2             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| XML support (optional)                | `LibXml2 <http://xmlsoft.org/>`_                                                | 2.9.4             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| HDF5 support (optional)               | `hdf5 <https://github.com/HDFGroup/hdf5>`_                                      | 1.10              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Multithreading (optional)             | `TBB <https://www.threadingbuildingblocks.org/>`_                               | 2017              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Nearest neighbor search (optional)    | `nanoflann <https://github.com/jlblancoc/nanoflann>`_                           | 1.3.2             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Python support                        | `Python <https://www.python.org/>`_                                             | 3.8               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Plotting library (optional)           | `Matplotlib <https://matplotlib.org/>`_                                         | 3.0               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | 0.3.5             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| C++/Python wrapper                    | `SWIG <https://www.swig.org/>`_                                                 | 4.0               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Version control                       | `Git <https://git-scm.com/>`_                                                   | 2.5               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| ReSt to HTML (optional for doc)       | `Sphinx <https://sphinx-doc.org/>`_                                             | 1.8               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_                                | 0.9.0             |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.17              |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_      | 0.5               |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| LaTeX (optional for doc)              | `texlive <https://tug.org/texlive/>`_                                           | 2018              |
-|                                       |                                                                                 |                   |
-|                                       | - texlive-latex-recommended                                                     |                   |
-|                                       | - texlive-latex-extra                                                           |                   |
-|                                       | - texlive-science                                                               |                   |
-+---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+.. list-table::
+   :widths: 30 55 15
+   :header-rows: 1
+
+   * - **Category**
+     - **Name**
+     - **Version**
+   * - Configuration
+     - `CMake <https://cmake.org/>`_
+     - 3.18
+   * - C/C++ compiler (C99/C++17)
+     - `GCC <https://gcc.gnu.org/>`_
+     - 8
+   * - Linear algebra
+     - `BLAS <https://www.netlib.org/blas/>`_
+     - 3.0
+   * - Linear algebra
+     - `LAPACK <https://www.netlib.org/lapack/>`_
+     - 3.0
+   * - Linear algebra (optional, GPL)
+     - `HMat <https://github.com/jeromerobert/hmat-oss>`_
+     - 1.7
+   * - Linear algebra (optional)
+     - `Spectra <https://spectralib.org/>`_
+     - 1.0.0
+   * - Legacy analytical parser (optional)
+     - `muParser <https://beltoforion.de/en/muparser/>`_
+     - 2.2.3
+   * - Prime numbers (optional)
+     - `primesieve <https://primesieve.org/>`_
+     - 7.5
+   * - Special functions (optional)
+     - `Boost <https://www.boost.org/>`_
+     - 1.70
+   * - Special functions (optional)
+     - `MPFR <https://www.mpfr.org/>`_
+     - 4.0.0
+   * - Special functions (optional)
+     - `MPC <https://www.multiprecision.org/mpc>`_
+     - 1.1.0
+   * - Optimization (optional)
+     - `NLopt <https://nlopt.readthedocs.io/en/latest/>`_
+     - 2.6
+   * - Optimization (optional)
+     - `CMinpack <http://devernay.free.fr/hacks/cminpack/>`_
+     - 1.3
+   * - Optimization (optional)
+     - `Ceres Solver <http://ceres-solver.org>`_
+     - 2.0.0
+   * - Optimization (optional)
+     - `Dlib <https://dlib.net/>`_
+     - 19.8
+   * - Optimization (optional)
+     - `Bonmin <https://projects.coin-or.org/Bonmin>`_
+     - 1.8.7
+   * - Optimization (optional)
+     - `HiGHS <https://highs.dev/>`_
+     - 1.10
+   * - Optimization (optional)
+     - `Ipopt <https://coin-or.github.io/Ipopt/>`_
+     - 3.11.9
+   * - Optimization (optional)
+     - `Pagmo <https://esa.github.io/pagmo2/>`_
+     - 2.12.0
+   * - Integration (optional)
+     - `Cuba <https://feynarts.de/cuba/>`_
+     - 4.2.2
+   * - XML support (optional)
+     - `LibXml2 <http://xmlsoft.org/>`_
+     - 2.9.4
+   * - HDF5 support (optional)
+     - `hdf5 <https://github.com/HDFGroup/hdf5>`_
+     - 1.10
+   * - Multithreading (optional)
+     - `TBB <https://www.threadingbuildingblocks.org/>`_
+     - 2017
+   * - Nearest neighbor search (optional)
+     - `nanoflann <https://github.com/jlblancoc/nanoflann>`_
+     - 1.3.2
+   * - Python support
+     - `Python <https://www.python.org/>`_
+     - 3.8
+   * - Plotting library (optional)
+     - `Matplotlib <https://matplotlib.org/>`_
+     - 3.0
+   * - dill (optional for serialization)
+     - `dill <https://github.com/uqfoundation/dill/>`_
+     - 0.3.5
+   * - psutil (optional for coupling)
+     - `psutil <https://github.com/giampaolo/psutil/>`_
+     - N/A
+   * - C++/Python wrapper
+     - `SWIG <https://www.swig.org/>`_
+     - 4.0
+   * - Version control
+     - `Git <https://git-scm.com/>`_
+     - 2.5
+   * - ReSt to HTML (optional for doc)
+     - `Sphinx <https://sphinx-doc.org/>`_
+     - 1.8
+   * - Sphinx extension (optional for doc)
+     - `Numpydoc <https://github.com/numpy/numpydoc/>`_
+     - 0.9.0
+   * - Sphinx extension (optional for doc)
+     - `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_
+     - 0.17
+   * - Sphinx extension (optional for doc)
+     - `Sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_
+     - 0.5
+   * - LaTeX (optional for doc)
+     - `texlive <https://tug.org/texlive/>`_
+       - texlive-latex-recommended
+       - texlive-latex-extra
+       - texlive-science
+     - 2018
 
 The versions given here are only meant as indications of minimum version and newer ones may be used.
 
@@ -251,29 +289,32 @@ Internal dependencies
 
 We would like to acknowledge the following codes that are included into the library:
 
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Optimization                          | `COBYLA <https://www.zhangzk.net/software.html>`_                                               |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Mersenne twister RNG                  | `DSFMT <http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/>`_                                |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Differenciation                       | `Ev3 <http://www.lix.polytechnique.fr/~liberti/academic.html>`_                                 |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Symbolic parser                       | `ExprTk <https://www.partow.net/programming/exprtk/index.html>`_                                |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Faddeeva function                     | `Fadeeva <http://ab-initio.mit.edu/Faddeeva>`_                                                  |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Kendall Tau                           | `Kendall <https://afni.nimh.nih.gov/pub/dist/src/ktaub.c>`_                                     |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| FFT                                   | `KissFFT <https://github.com/mborgerding/kissfft>`_                                             |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| KS distribution                       | `Cephes <https://github.com/scipy/scipy/blob/main/scipy/special/special/cephes/kolmogorov.h>`_  |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Optimization                          | `TNC <http://js2007.free.fr/code/index.html#TNC>`_                                              |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| Quadrature                            | `FastGL <https://sourceforge.net/projects/fastgausslegendrequadrature/>`_                       |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
-| CSV parser                            | `Rapidcsv <https://github.com/d99kris/rapidcsv>`_                                               |
-+---------------------------------------+-------------------------------------------------------------------------------------------------+
+.. list-table::
+   :widths: 30 70
+   :header-rows: 0
+
+   * - Optimization
+     - `COBYLA <https://www.zhangzk.net/software.html>`_
+   * - Mersenne twister RNG
+     - `DSFMT <http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/>`_
+   * - Differenciation
+     - `Ev3 <http://www.lix.polytechnique.fr/~liberti/academic.html>`_
+   * - Symbolic parser
+     - `ExprTk <https://www.partow.net/programming/exprtk/index.html>`_
+   * - Faddeeva function
+     - `Fadeeva <http://ab-initio.mit.edu/Faddeeva>`_
+   * - Kendall Tau
+     - `Kendall <https://afni.nimh.nih.gov/pub/dist/src/ktaub.c>`_
+   * - FFT
+     - `KissFFT <https://github.com/mborgerding/kissfft>`_
+   * - KS distribution
+     - `Cephes <https://github.com/scipy/scipy/blob/main/scipy/special/special/cephes/kolmogorov.h>`_
+   * - Optimization
+     - `TNC <http://js2007.free.fr/code/index.html#TNC>`_
+   * - Quadrature
+     - `FastGL <https://sourceforge.net/projects/fastgausslegendrequadrature/>`_
+   * - CSV parser
+     - `Rapidcsv <https://github.com/d99kris/rapidcsv>`_
 
 Compilation infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

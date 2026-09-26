@@ -20,6 +20,15 @@ weights : sequence of float, optional
     taken equal to 1. The weights are automatically normalized so that their
     sum is equal to 1.
 
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Mixture-LargeSize`` (``UnsignedInteger``, default: ``20``): the PDF and the CDF are computed by interpolation if the number of atoms is smaller than this threshold.
+- ``Mixture-PDFCDFDiscretization`` (``UnsignedInteger``, default: ``1000``): number of points of the discretization used by the interpolation.
+- ``Mixture-SmallSize`` (``UnsignedInteger``, default: ``50``): the PDF and the CDF are computed by interpolation if the number of atoms is greater than this threshold.
+- ``Mixture-SmallWeight`` (``Scalar``, default: ``1e-12``): an atom with relative weight smaller than this threshold is neglected.
+
 Examples
 --------
 Create a *Mixture*:

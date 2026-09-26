@@ -35,6 +35,23 @@ namespace OT {
 
   template <>
   inline
+  PyObject *
+  convert< OT::Function, _PyObject_ >(OT::Function val)
+  {
+    return SWIG_NewPointerObj(new OT::Function(val), SWIG_TypeQuery("OT::Function *"), SWIG_POINTER_OWN);
+  }
+
+  template <>
+  inline
+  OT::Collection<OT::Function>
+  convert< _PySequence_, OT::Collection<OT::Function> >(PyObject * pyObj)
+  {
+    OT::Pointer< OT::Collection<OT::Function> > ptr = OT::buildCollectionFromPySequence< OT::Function >(pyObj);
+    return *ptr;
+  }
+
+  template <>
+  inline
   OT::Function
   convert< _PyObject_, OT::Function >(PyObject * pyObj)
   {
