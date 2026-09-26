@@ -49,6 +49,13 @@
 %import UncertaintyOrthogonalBasisTemplateDefs.i
 %include FiniteOrthogonalFunctionFactory.i
 
+/* Base/Algo fast Gauss quadrature */
+%include FastGaussQuadrature.i
+%include FastHermite.i
+%include FastJacobi.i
+%include FastLaguerre.i
+%include FastLegendre.i
+
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i

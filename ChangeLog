@@ -22,6 +22,7 @@
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
 
 ==== New classes ====
+ * FastGaussQuadrature, FastHermite, FastJacobi, FastLaguerre, FastLegendre (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -56,6 +57,8 @@
  * LOLAVoronoi moved out of experimental
  * Deprecated GaussianProcessConditionalCovariance::operator() for getMarginalDistribution
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
+ * Deprecated StandardDistributionPolynomialFactory class
+ * UniVariateDistributionPolynomialFactory moved to experimental
  * Deprecated Field.getInputDimension/getOutputDimension in favor of getMesh().getDimension()/getDimension
  * Added Graph.setXMin/setXMax/setYMin/setYMax
  * Added ProcessSample.split
