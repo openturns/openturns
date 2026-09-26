@@ -259,7 +259,7 @@ int main(int, char *[])
 
     // 7) FractionalBrownianMotionModel
     {
-      FractionalBrownianMotionModel myModel(2.0, 3.0, 0.25);
+      FractionalBrownianMotionModel myModel(Point(1, 2.0), Point(1, 3.0), Point(1, 0.25));
       test_model(myModel);
     }
 

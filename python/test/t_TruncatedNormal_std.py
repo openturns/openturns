@@ -139,3 +139,18 @@ ott.assert_almost_equal(t2.computeCDF(-10.1), 0.36248854971435807, 1e-12)
 t3 = ot.TruncatedNormal(-52.0658, 1.56137, -2.22475e-05, 0.1408)
 ott.assert_almost_equal(t3.computeScalarQuantile(0.5), 0.030153711943197572, 1e-12)
 ott.assert_almost_equal(t3.computeCDF(0.0), 0.00049999351035801, 1e-12)
+
+# Half-normal: TruncatedNormal(0, 1, 0, +inf)
+t4 = ot.TruncatedNormal(0.0, 1.0, 0.0, ot.SpecFunc.Infinity)
+ott.assert_almost_equal(t4.getMean()[0], 0.7978845608028654, 1e-12)
+ott.assert_almost_equal(t4.getStandardDeviation()[0], 0.6028102749890869, 1e-12)
+ott.assert_almost_equal(t4.getCovariance()[0, 0], 0.36338022763241865, 1e-12)
+# Symmetric left-tail case: skewness should be negated
+t5 = ot.TruncatedNormal(0.0, 1.0, -ot.SpecFunc.Infinity, 0.0)
+ott.assert_almost_equal(t5.getStandardDeviation()[0], 0.6028102749890869, 1e-12)
+ott.assert_almost_equal(t5.getSkewness()[0], -t4.getSkewness()[0], 1e-12)
+# Both bounds infinite: should be standard normal
+t6 = ot.TruncatedNormal(0.0, 1.0, -ot.SpecFunc.Infinity, ot.SpecFunc.Infinity)
+ott.assert_almost_equal(t6.getStandardDeviation()[0], 1.0, 1e-12)
+ott.assert_almost_equal(t6.getSkewness()[0], 0.0, 1e-12)
+ott.assert_almost_equal(t6.getKurtosis()[0], 3.0, 1e-12)

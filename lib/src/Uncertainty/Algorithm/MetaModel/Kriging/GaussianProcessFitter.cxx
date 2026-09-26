@@ -308,6 +308,8 @@ void GaussianProcessFitter::run()
     // If no basis ==> zero function
     metaModel = ConstantFunction(covarianceModel_.getInputDimension(), Point(covarianceModel_.getOutputDimension(), 0.0));
   }
+  metaModel.setInputDescription(inputSample_.getDescription());
+  metaModel.setOutputDescription(outputSample_.getDescription());
 
   // return optimized covmodel with the original active parameters (see analyticalAmplitude_)
   CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);

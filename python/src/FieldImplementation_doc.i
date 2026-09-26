@@ -29,15 +29,12 @@ where the :math:`(\vect{t}_i)_{1 \leq i \leq N}` are the vertices of a mesh of t
 
 Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^d)^N` where :math:`N` is the number of vertices of the mesh :math:`\cM_N` of the domain :math:`\cD \subset \Rset^n`.
 
-When the field is defined on :math:`\cD \in \Rset^2` and when its values are vectors of dimension 2, the following keys of the :class:`~openturns.ResourceMap` can be used to parameterize its drawing:
+The following :class:`~openturns.ResourceMap` keys are used:
 
-- *Field-ArrowRatio* defines the proportion of the arrow head with respect to the arrow length: to get a greater
-  arrow head, increase the default value equal to 0.01;
-- *Field-ArrowScaling*    defines the length of the arrow: to get a
-  longer arrow, increase the default value equal to 1;
-- *Field-AutomaticScaling* is a bool that indicates whether the arrow is automatically scaled
-  from to the range of the mesh and the range of the output values. The default value is True;
-- *Field-LevelNumber* defines the number of levels used to draw the iso-lines of the marginal output values.
+- ``Field-ArrowRatio`` (``Scalar``, default: ``0.01``): defines the proportion of the arrow head with respect to the arrow length: to get a greater arrow head, increase the default value equal to 0.01;
+- ``Field-ArrowScaling`` (``Scalar``, default: ``1.0``): defines the length of the arrow: to get a longer arrow, increase the default value equal to 1;
+- ``Field-AutomaticScaling`` (``Bool``, default: ``true``): whether the arrows of the field are automatically scaled when drawing it
+- ``Field-LevelNumber`` (``UnsignedInteger``, default: ``10``): number of levels used to draw the iso-lines of the marginal values of the field
 
 Examples
 --------
@@ -96,8 +93,8 @@ graph : :class:`~openturns.Graph`
       mesh as a curvilinear parameter.
     - If the dimension of the mesh is :math:`n=2` and the dimension of the
       values is :math:`d=2`: it draws the field as a field of arrows. The
-      graph is controlled by the `Field-AutomaticScaling`, `Field-ArrowRatio`
-      and `Field-ArrowScaling` keys in :class:`~openturns.ResourceMap`.
+      graph is controlled by the ``Field-AutomaticScaling``, ``Field-ArrowRatio``
+      and ``Field-ArrowScaling`` keys in :class:`~openturns.ResourceMap`.
 
 See also
 --------
@@ -211,6 +208,9 @@ OT_Field_getDescription_doc
 %define OT_Field_getOutputDimension_doc
 "Get the dimension :math:`d` of the values.
 
+.. deprecated:: 1.28
+   Use :func:`getDimension` instead.
+
 Returns
 -------
 d : int
@@ -218,6 +218,18 @@ d : int
 %enddef
 %feature("docstring") OT::FieldImplementation::getOutputDimension
 OT_Field_getOutputDimension_doc
+
+// ---------------------------------------------------------------------
+%define OT_Field_getDimension_doc
+"Get the dimension :math:`d` of the values.
+
+Returns
+-------
+d : int
+    Dimension of the field values: :math:`d`."
+%enddef
+%feature("docstring") OT::FieldImplementation::getDimension
+OT_Field_getDimension_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_getMesh_doc
@@ -230,20 +242,6 @@ mesh : :class:`~openturns.Mesh`
 %enddef
 %feature("docstring") OT::FieldImplementation::getMesh
 OT_Field_getMesh_doc
-
-// ---------------------------------------------------------------------
-%define OT_Field_getSample_doc
-"Get the values of the field.
-
-Returns
--------
-values : :class:`~openturns.Sample`
-    Values associated to the mesh. The size of the sample is the number of
-    vertices of the mesh and the dimension is the dimension of the values
-    (:math:`d`)."
-%enddef
-%feature("docstring") OT::FieldImplementation::getSample
-OT_Field_getSample_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_getSize_doc
@@ -260,6 +258,9 @@ OT_Field_getSize_doc
 // ---------------------------------------------------------------------
 %define OT_Field_getInputDimension_doc
 R"RAW(Get the dimension of the domain :math:`\cD`.
+
+.. deprecated:: 1.28
+   Use ``getMesh().getDimension()`` instead.
 
 Returns
 -------

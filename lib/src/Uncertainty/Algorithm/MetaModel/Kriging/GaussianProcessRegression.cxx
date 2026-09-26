@@ -149,6 +149,8 @@ void GaussianProcessRegression::run()
   metaModel.setEvaluation(new GaussianProcessEvaluation(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
   metaModel.setGradient(new GaussianProcessGradient(basis_, inputSample, conditionalCovarianceModel, beta_, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
+  metaModel.setInputDescription(inputSample.getDescription());
+  metaModel.setOutputDescription(outputSample.getDescription());
 
   result_ = GaussianProcessRegressionResult(gaussianProcessFitterResult_, covarianceCoefficients);
   result_.setMetaModel(metaModel);

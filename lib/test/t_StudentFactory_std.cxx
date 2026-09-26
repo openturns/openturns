@@ -28,7 +28,6 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  PlatformInfo::SetNumericalPrecision(3);
   try
   {
     Collection<Student> distributions;
@@ -60,11 +59,14 @@ int main(int, char *[])
       Distribution estimatedDistribution(factory.build(sample));
       fullprint << "Distribution          =" << distribution << std::endl;
       fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+      assert_almost_equal(estimatedDistribution.getParameter(), distribution.getParameter(), 0.2, 0.1);
     }
     Distribution estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
+    assert_almost_equal(estimatedDistribution.getParameter(), {3.0, 0.0, 1.0});
     Student estimatedStudent = factory.buildAsStudent();
     fullprint << "Default student=" << estimatedStudent << std::endl;
+    assert_almost_equal(estimatedStudent.getParameter(), {3.0, 0.0, 1.0});
   }
   catch (TestFailed & ex)
   {

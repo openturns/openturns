@@ -534,6 +534,12 @@ of freedom and :math:`R(x;p)` the solution of:
 .. math::
     \Phi(x + R) - \Phi(x - R) = p
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``KFactor-Precision`` (``Scalar``, default: ``1e-08``): precision of the zero-finding algorithm used to compute the tolerance factor,
+- ``KFactor-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``256``): number of nodes of the Gauss-Kronrod integration rule used to compute the tolerance factor,
+- ``KFactor-MaximumIteration`` (``UnsignedInteger``, default: ``32``): maximum number of iterations of the zero-finding algorithm.
+
 Examples
 --------
 >>> import openturns as ot
@@ -568,6 +574,12 @@ Normal sample of size :math:`n` with unknown
 means :math:`\mu_i` and unknown common variance :math:`\sigma^2`. It
 is equivalent to the pooled version with :math:`m=1`.
 This implements the standard NF ISO 16269-6. 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``KFactor-Precision`` (``Scalar``, default: ``1e-08``): precision of the zero-finding algorithm used to compute the tolerance factor,
+- ``KFactor-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``256``): number of nodes of the Gauss-Kronrod integration rule used to compute the tolerance factor,
+- ``KFactor-MaximumIteration`` (``UnsignedInteger``, default: ``32``): maximum number of iterations of the zero-finding algorithm.
 
 Examples
 --------
@@ -2303,6 +2315,16 @@ The Student-t probability is computed via the representation
 and :math:`W \sim \chi^2_\nu`, using a Sobol' quasi-Monte Carlo integration
 over the chi-squared scale factor.
 
+The outer Student samples are processed in sequential blocks, each block
+being fully parallelized. The uniform draws of each block are generated
+sequentially in advance, so no random number generation remains inside
+parallel regions. A block contains as many samples as fit in the pool
+described below.
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Ridgway-UniformPoolSize`` (``UnsignedInteger``, default: ``1048576``): maximum number of uniform draws generated sequentially in advance per block; one sample needs up to :math:`M \inputDim (\inputDim + 1) / 2 + \inputDim - 1` draws, and larger samples are rejected. The value must be strictly positive.
+
 Examples
 --------
 >>> import openturns as ot
@@ -2391,4 +2413,35 @@ Examples
 >>> L = ot.TriangularMatrix(1)
 >>> L[0, 0] = 1.0
 >>> p = ot.DistFunc.pStudentND([-1.0], [1.0], L, 5.0)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dNonCentralStudentAlt0
+R"RAW(PDF of the non-central Student distribution for :math:`\nu = 0`.
+
+This is an alternative algorithm used when the degrees of freedom
+parameter is zero.
+
+Parameters
+----------
+nu : float
+    Degrees of freedom. Must be 0 for this method.
+delta : float
+    Non-centrality parameter.
+x : float
+    Location at which to evaluate the PDF.
+precision : float, optional
+    Precision of the integration. Default is 1e-12.
+maximumIteration : int, optional
+    Maximum number of iterations. Default is 50.
+
+Returns
+-------
+pdf : float
+    The value of the PDF.
+
+See Also
+--------
+:meth:`~openturns.DistFunc.dNonCentralStudent`
 )RAW"

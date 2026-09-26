@@ -12,8 +12,6 @@ OT_Function_getGradientCallsNumber_doc
 OT_Function_getHessianCallsNumber_doc
 %feature("docstring") OT::Function::getMarginal
 OT_Function_getMarginal_doc
-%feature("docstring") OT::Function::getImplementation
-OT_Function_getImplementation_doc
 %feature("docstring") OT::Function::getEvaluation
 OT_Function_getEvaluation_doc
 %feature("docstring") OT::Function::getGradient
@@ -68,5 +66,3 @@ OT_Function_isLinear_doc
 OT_Function_isLinearlyDependent_doc
 %feature("docstring") OT::Function::setStopCallback
 OT_Function_setStopCallback_doc
-%feature("docstring") OT::Function::isParallel
-OT_Function_isParallel_doc

@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
+
 #include "openturns/SmolyakExperiment.hxx"
 #include "openturns/TensorProductExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -112,10 +114,7 @@ Sample SmolyakExperiment::generate() const
 /* Compute the minimum of a multiindex */
 UnsignedInteger SmolyakExperiment::indicesMinimum(const Indices & indices) const
 {
-  const UnsignedInteger dimension = indices.getSize();
-  UnsignedInteger multiIndexMin = indices[0];
-  for (UnsignedInteger j = 1; j < dimension; ++ j) multiIndexMin = std::min(indices[j], multiIndexMin);
-  return multiIndexMin;
+  return *std::min_element(indices.begin(), indices.end());
 }
 
 /* Compute multiindex set for combination rule*/

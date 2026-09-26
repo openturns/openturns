@@ -32,6 +32,10 @@ where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y
 
 The class provides services related to the conditional covariance of the Gaussian process regression :math:`\vect{Z}`.
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``GaussianProcessConditionalCovariance-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``)
+
 Examples
 --------
 Create the model :math:`g: \Rset \mapsto \Rset` and the samples:

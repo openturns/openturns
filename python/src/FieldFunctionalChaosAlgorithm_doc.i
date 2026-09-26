@@ -18,7 +18,7 @@ result : :class:`openturns.FieldFunctionalChaosResult`
 
 Parameters
 ----------
-blockIndices : 2-d sequence of int
+blockIndices : :class:`~openturns.IndicesCollection`
     Independent output components indices."
 
 // ---------------------------------------------------------------------

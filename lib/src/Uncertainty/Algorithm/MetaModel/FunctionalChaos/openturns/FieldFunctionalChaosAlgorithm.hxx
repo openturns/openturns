@@ -46,7 +46,8 @@ public:
   FieldFunctionalChaosAlgorithm * clone() const override;
 
   /** Block indices accessors */
-  Collection<Indices> getBlockIndices() const;
+  virtual Collection<Indices> getBlockIndices() const;
+  virtual void setBlockIndices(const Collection<Indices> & blockIndices);
 
   /** Threshold accessors */
   Scalar getThreshold() const;

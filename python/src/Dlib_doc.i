@@ -19,28 +19,55 @@ Notes
 The table below presents some properties of the available algorithms from dlib.
 Details on optimization methods are available on http://dlib.net/optimization.html
 
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| Algorithm        | Description         | Problem type support | Derivatives info  | Constraint support |
-+==================+=====================+======================+===================+====================+
-| cg               | Conjugate gradient  | General              | First derivative  | Bounds             |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| bfgs             | BFGS                | General              | First derivative  | Bounds             |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| lbfgs            | Limited memory BFGS | General              | First derivative  | Bounds             |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| newton           | Newton              | General              | First and second  | Bounds             |
-|                  |                     |                      | derivatives       |                    |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| global           | Global optimization | General              | No derivative     | Bounds needed      |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| least_squares    | Least squares (best | Least squares        | First derivative  | None               |
-|                  | for large residual) |                      |                   |                    |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| least_squares_lm | Least squares LM    | Least squares        | First derivative  | None               |
-|                  | (small residual)    |                      |                   |                    |
-+------------------+---------------------+----------------------+-------------------+--------------------+
-| trust_region     | Trust region        | General              | No derivative     | None               |
-+------------------+---------------------+----------------------+-------------------+--------------------+
+.. list-table::
+   :widths: 15 30 20 20 15
+   :header-rows: 1
+
+   * - Algorithm
+     - Description
+     - Problem type support
+     - Derivatives info
+     - Constraint support
+   * - cg
+     - Conjugate gradient
+     - General
+     - First derivative
+     - Bounds
+   * - bfgs
+     - BFGS
+     - General
+     - First derivative
+     - Bounds
+   * - lbfgs
+     - Limited memory BFGS
+     - General
+     - First derivative
+     - Bounds
+   * - newton
+     - Newton
+     - General
+     - First and second derivatives
+     - Bounds
+   * - global
+     - Global optimization
+     - General
+     - No derivative
+     - Bounds needed
+   * - least_squares
+     - Least squares (best for large residual)
+     - Least squares
+     - First derivative
+     - None
+   * - least_squares_lm
+     - Least squares LM (small residual)
+     - Least squares
+     - First derivative
+     - None
+   * - trust_region
+     - Trust region
+     - General
+     - No derivative
+     - None
 
 Derivatives are managed automatically by openturns, according to the available
 data (analytical formula or finite differences computation).
@@ -230,4 +257,14 @@ algoName : str
 Returns
 -------
 algoName : str
-    The identifier of the algorithm."
+    The identifier of the algorithm.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Dlib-DefaultInitialTrustRegionRadius`` (``Scalar``, default: ``1.0``): default radius of the initial trust region of the Dlib trust region, least squares and least squares LM algorithms
+- ``Dlib-DefaultMaxLineSearchIterations`` (``UnsignedInteger``, default: ``100``): maximum number of line search iterations at each step of the Dlib algorithms
+- ``Dlib-DefaultWolfeRho`` (``Scalar``, default: ``0.01``): default value of the wolfeRho parameter used in the line search of the Dlib algorithms, relevant for the CG, BFGS/LBFGS and more algorithms
+- ``Dlib-DefaultWolfeSigma`` (``Scalar``, default: ``0.9``): default value of the wolfeSigma parameter used in the line search of the Dlib algorithms, relevant for the CG, BFGS/LBFGS and more algorithms"
+

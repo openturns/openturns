@@ -74,15 +74,18 @@ We note:
     \Phi_k(t) = \exp\left(-\int_{a_{k}}^{t} \phi_k(s)\di{s}\right)
 
 The exponential factor :math:`\Phi_k(t)` might be expensive to compute at any value
-:math:`t`. It can be replaced by a piecewise Hermite approximation using the
-following keys in :class:`~openturns.ResourceMap`:
-
-* 'MaximumEntropyOrderStatisticsDistribution-UseApproximation': if set to *True*, the approximation is built. The default value is *False*;
-* 'MaximumEntropyOrderStatisticsDistribution-SupportShift': a shift to avoid the discontinuities in :math:`\Phi_k(t)`. Its default value is *1e-15*;
-* 'MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization': the maximum size of the adaptive discretization used to detect discontinuities using a 7/15 points Gauss-Kronrod integration method. Default value is *100*, which should give an absolute error of order *1e-8* for the approximation with no subdivision.
-* 'MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision': each interval of the adapted grid is subdivided into a regular grid of this size to improve the accuracy. Default value is *2*, giving an absolute error of order *1e-9*.
+:math:`t`. It can be replaced by a piecewise Hermite approximation.
 
 The approximation should be used *with caution*. There is no easy quantitative criterion to guide the choice, but either it works with a high degree of precision, or it fails producing negative values for the exponential factor. It occurs when two marginal distributions have almost the same range, eg two uniform distributions with range [0,1] and [0.038, 1.038].
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``MaximumEntropyOrderStatisticsDistribution-UseApproximation`` (``Bool``, default: ``false``): if set to ``true``, the approximation is built,
+- ``MaximumEntropyOrderStatisticsDistribution-SupportShift`` (``Scalar``, default: ``1e-15``): a shift to avoid the discontinuities in :math:`\Phi_k(t)`,
+- ``MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization`` (``UnsignedInteger``, default: ``100``): the maximum size of the adaptive discretization used to detect discontinuities using a 7/15 points Gauss-Kronrod integration method. The default value of 100 should give an absolute error of order ``1e-8`` for the approximation with no subdivision,
+- ``MaximumEntropyOrderStatisticsDistribution-MaximumApproximationSubdivision`` (``UnsignedInteger``, default: ``2``): each interval of the adapted grid is subdivided into a regular grid of this size to improve the accuracy. The default value of 2 gives an absolute error of order ``1e-9``,
+- ``MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber`` (``UnsignedInteger``, default: ``16``): number of points of the numerical integration used to compute the CDF,
+- ``MaximumEntropyOrderStatisticsDistribution-MaximumQuantileIteration`` (``UnsignedInteger``, default: ``10``): maximum number of iterations of the algorithm used to compute the quantiles.
 
 Examples
 --------
@@ -95,6 +98,7 @@ Create a distribution which components are ordered almost surely:
 Draw a sample:
 
 >>> sample = distribution.getSample(5)
+
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -119,3 +123,27 @@ coll : sequence of :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::useApproximation
+"Set whether the approximation is used.
+
+Parameters
+----------
+flag : bool
+    Whether the approximation is used. Default value is ``True``."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MaximumEntropyOrderStatisticsDistribution::getApproximation
+"Accessor to the approximation.
+
+Parameters
+----------
+k : int, optional
+    Index of the marginal. Default value is 0.
+
+Returns
+-------
+approximation : :class:`~openturns.Distribution`
+    The approximation of the distribution."
+
+// ---------------------------------------------------------------------

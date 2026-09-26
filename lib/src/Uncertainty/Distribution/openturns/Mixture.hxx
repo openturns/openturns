@@ -64,6 +64,15 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
+  /** Draw the PDF of the mixture, handling components of both natures */
+  using DistributionImplementation::drawPDF;
+  Graph drawPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                const Bool logScale = false) const override;
+  Graph drawPDF(const Scalar xMin,
+                const Scalar xMax,
+                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                const Bool logScale = false) const override;
+
 
   /** Distribution collection accessor */
   void setDistributionCollection(const DistributionCollection & coll);

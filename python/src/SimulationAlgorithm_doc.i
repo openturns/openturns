@@ -37,6 +37,13 @@ of available CPUs to benefit from parallel execution (multithreading, multiproce
 except for the Directional Sampling, where we recommend to set it to 1.
 It also decides the frequency of the stopping criteria and progress callbacks update
 as they are called once the whole block of function evaluations is completed.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SimulationAlgorithm-DefaultBlockSize`` (``UnsignedInteger``, default: ``1``): default block size of the simulation algorithms
+
+- ``SimulationAlgorithm-DefaultMaximumTimeDuration`` (``Scalar``, default: ``-1.0``): default maximum duration, in seconds, of the simulation algorithms
+
 )RAW"
 %enddef
 %feature("docstring") OT::SimulationAlgorithm::setBlockSize

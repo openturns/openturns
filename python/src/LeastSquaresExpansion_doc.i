@@ -1,5 +1,5 @@
 %feature("docstring") OT::LeastSquaresExpansion
-"L2 approximation on an orthonormal basis using least-squares and a fixed basis.
+R"RAW(L2 approximation on an orthonormal basis using least-squares and a fixed basis.
 
 Available constructors:
     LeastSquaresExpansion(*inputSample, outputSample, distribution*)
@@ -9,6 +9,10 @@ Available constructors:
     LeastSquaresExpansion(*inputSample, outputSample, distribution, basis, basisSize, methodName*)
 
     LeastSquaresExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, methodName*)
+
+    LeastSquaresExpansion(*inputSample, outputSample, distribution, basis, basisSize, activeFunctions, methodName*)
+
+    LeastSquaresExpansion(*inputSample, weights, outputSample, distribution, basis, basisSize, activeFunctions, methodName*)
 
 Parameters
 ----------
@@ -24,21 +28,25 @@ basis : :class:`~openturns.OrthogonalBasis`, optional
     The orthonormal basis of the vector space on which the approximation is built.
     By default, a basis is built using an hyperbolic enumerate function
     :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` associated to the
-    :math:`q-` norm specified by the `FunctionalChaosAlgorithm-QNorm` key in
+    :math:`q-` norm specified by the ``FunctionalChaosAlgorithm-QNorm`` key in
     :class:`~openturns.ResourceMap`.
     The basis is obtained through a tensorization of the univariate orthonormal
     polynomial bases associated to each marginal distributions of *distribution*.
 basisSize : int, optional
     The size of the basis on which the approximation is built. If not given, it is
-    given by the `FunctionalChaosAlgorithm-BasisSize` key in
+    given by the ``FunctionalChaosAlgorithm-BasisSize`` key in
     :class:`~openturns.ResourceMap` if this value is positive, or as the cardinal
     of the set of basis functions up to a degree given by the
-    `FunctionalChaosAlgorithm-MaximumTotalDegree` key in
+    ``FunctionalChaosAlgorithm-MaximumTotalDegree`` key in
     :class:`~openturns.ResourceMap`.
+activeFunctions : sequence of `int`, optional
+    The indices of the basis functions to use for the approximation.
+    If not given, all functions from 0 to basisSize-1 are used.
+    Must be non-empty and all indices must be less than basisSize.
 methodName : str, optional
     The decomposition method used to solve the least-squares problem, of
     type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
-    `LeastSquaresExpansion-DecompositionMethod` key in
+    ``LeastSquaresExpansion-DecompositionMethod`` key in
     :class:`~openturns.ResourceMap`.
 
 See also
@@ -69,7 +77,8 @@ Solves a functional linear least squares approximation using residual minimizati
 >>> basis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()])
 >>> basisSize = 5
 >>> algo = ot.LeastSquaresExpansion(inSample, outSample, distribution, basis, basisSize, 'QR')
->>> algo.run()"
+>>> algo.run()
+)RAW"
 
 // ---------------------------------------------------------------------
 

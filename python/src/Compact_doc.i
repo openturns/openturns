@@ -47,4 +47,11 @@ N : int
 Returns
 -------
 index : int
-    The number of the stored points."
+    The number of the stored points.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Compact-DefaultHalfMaximumSize`` (``UnsignedInteger``, default: ``1024``)"
+

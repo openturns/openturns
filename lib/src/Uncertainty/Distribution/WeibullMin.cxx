@@ -271,7 +271,7 @@ Scalar WeibullMin::computeProbability(const Interval & interval) const
 {
   if (interval.getDimension() != 1)
     throw InvalidArgumentException(HERE) << "computeProbability expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
-  return computeProbabilityGeneral1D(interval.getLowerBound()[0], interval.getUpperBound()[0]);
+  return computeProbabilityGeneral1D(interval);
 }
 
 /* compute the mean of the distribution */

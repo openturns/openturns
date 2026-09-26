@@ -101,6 +101,13 @@ For each coefficient estimate :math:`\hat{\vect{a}}`, the Student score :math:`t
 
 where :math:`\sigma(a_k)` is the standard deviation of the distribution of the estimator :math:`\hat{a}_k`
 defined in :eq:`std_dev_estim`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LinearModelAnalysis-MinimumSigma`` (``Scalar``, default: ``1.0e-5``): lower bound of the standard deviation of the residuals used when printing the linear model analysis
+
+- ``LinearModelAnalysis-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``20``): maximum number of coefficients printed before an ellipsis is used when printing the linear model analysis
+
 )RAW"
 
 // ---------------------------------------------------------------------

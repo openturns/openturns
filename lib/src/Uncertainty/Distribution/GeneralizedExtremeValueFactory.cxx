@@ -18,6 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
+
 #include "openturns/GeneralizedExtremeValueFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionFactory.hxx"
@@ -428,13 +430,8 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   // 1+xi(zi-mu)/sigma > 0 for all order statistics taken into account
   const Point allZMin = sample.getMin();
   const Point allZMax = sample.getMax();
-  Scalar zMin = SpecFunc::Infinity;
-  Scalar zMax = -SpecFunc::Infinity;
-  for (UnsignedInteger i = 0; i < r; ++i)
-  {
-    zMin = std::min(zMin, allZMin[i]);
-    zMax = std::max(zMax, allZMax[i]);
-  }
+  const Scalar zMin = *std::min_element(allZMin.begin(), allZMin.begin() + r);
+  const Scalar zMax = *std::max_element(allZMax.begin(), allZMax.begin() + r);
   const Sample sample0(r == 1 ? sample : sample.getMarginal(0));
   const Scalar mean = sample0.computeMean()[0];
   Description formulas(2);

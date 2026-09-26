@@ -38,6 +38,10 @@ to select the algorithm used for the resolution of linear least-squares problems
 
 It is possible to directly specify the values :math:`(d_{jk})_{jk}` in the last constructor.
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``DesignProxy-DefaultCacheSize`` (``UnsignedInteger``, default: ``16777216``)
+
 Examples
 --------
 >>> import openturns as ot

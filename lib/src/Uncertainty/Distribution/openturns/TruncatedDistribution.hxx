@@ -42,19 +42,13 @@ public:
   /** Default constructor */
   TruncatedDistribution();
 
-  /** Parameters constructor to use when the two bounds are finite */
-  TruncatedDistribution(const Distribution & distribution,
-                        const Scalar lowerBound,
-                        const Scalar upperBound,
-                        const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
-
   /** Parameters constructor to use when one of the bounds is not finite */
   TruncatedDistribution(const Distribution & distribution,
                         const Scalar bound,
                         const BoundSide side = LOWER,
                         const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
 
-  /** Parameters constructor to use when the two bounds are finite */
+  /** Parameters constructor with truncation interval */
   TruncatedDistribution(const Distribution & distribution,
                         const Interval & truncationInterval,
                         const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));

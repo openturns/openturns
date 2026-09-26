@@ -1,3 +1,4 @@
+%include ComparisonOperatorImplementation_doc.i
 // SWIG file ComparisonOperatorImplementation.i
 
 %{
