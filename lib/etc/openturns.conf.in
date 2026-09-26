@@ -1125,6 +1125,9 @@
   <SpectralGaussianProcess-StartingScaling   value_float="1.0e-13"         />
   <SpectralGaussianProcess-CholeskyCacheSize value_int="16384" />
 
+  <!-- OT::CirculantEmbeddingGaussianProcess parameters -->
+  <CirculantEmbeddingGaussianProcess-MaximumIteration value_int="20" />
+
   <!-- OT::WhittleFactory parameters -->
   <WhittleFactory-DefaultRhoBeg             value_float="0.1"            />
   <WhittleFactory-DefaultRhoEnd             value_float="1.0e-10"        />

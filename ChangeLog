@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * Speeding up Gaussian field simulation on large grids with the FFT-based circulant embedding method and the P1 interpolation of the simulated trajectories (new CirculantEmbeddingGaussianProcess and P1InterpolatedProcess, openturns.experimental). It addresses part of the HPC probabilistic modelling roadmap (issue #3305), building on the preliminary work of Valentin Abongo (@Proteidore).
 
  * LinearCombinationDistribution: fuse opposite-weight Poisson atoms into a weighted Skellam atom
  * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
@@ -29,6 +30,8 @@
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
+ * CirculantEmbeddingGaussianProcess (openturns.experimental)
+ * P1InterpolatedProcess (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
 
@@ -38,6 +41,7 @@
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
+ * Removed FFT.transform2D/transform3D/inverseTransform2D/inverseTransform3D; use the N-D transforms of flat data instead
  * Removed deprecated SpecFunc.IsNormal
  * Removed deprecated ResourceMap.Reload
  * Removed deprecated Wilks class
