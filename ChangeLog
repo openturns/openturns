@@ -32,11 +32,13 @@
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
+ * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
+ * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed FFT.transform2D/transform3D/inverseTransform2D/inverseTransform3D; use the N-D transforms of flat data instead
@@ -62,6 +64,7 @@
  * Added Graph.setXMin/setXMax/setYMin/setYMax
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
+ * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
 
 ==== New features ====
  * The unary subtraction operator on Function and FunctionImplementation is now available

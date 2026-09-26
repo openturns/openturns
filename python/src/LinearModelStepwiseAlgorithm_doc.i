@@ -45,6 +45,12 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``LinearModelStepwiseAlgorithm-MaximumIterationNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of iterations of the stepwise algorithm
 - ``LinearModelStepwiseAlgorithm-Penalty`` (``Scalar``, default: ``2.0``): value of the penalty used in the criterion of the stepwise algorithm
 
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LinearModelStepwiseAlgorithm-MaximumIterationNumber`` (``UnsignedInteger``, default: ``1000``): maximum number of iterations of the stepwise algorithm
+- ``LinearModelStepwiseAlgorithm-Penalty`` (``Scalar``, default: ``2.0``): value of the penalty used in the criterion of the stepwise algorithm
+
 Examples
 --------
 Definition of the data set

@@ -16,7 +16,12 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``GeneralizedParetoFactory-MaximumObjectiveError`` (``Scalar``, default: ``1e-10``): objective error of the optimization,
 - ``GeneralizedParetoFactory-MaximumConstraintError`` (``Scalar``, default: ``1e-10``): constraint error of the optimization,
 - ``GeneralizedParetoFactory-InitializationMethod`` (``String``, default: ``Generic``): initialization method for the optimization. Possible values are ``Static`` and ``Generic``,
-- ``GeneralizedParetoFactory-NormalizationMethod`` (``String``, default: ``MinMax``): normalization method for the optimization. Possible values are ``MinMax``, ``CenterReduce`` and ``None``.
+- ``GeneralizedParetoFactory-NormalizationMethod`` (``String``, default: ``MinMax``): normalization method for the optimization. Possible values are ``MinMax``, ``CenterReduce`` and ``None``,
+- ``GeneralizedParetoFactory-MeanResidualLifeConfidenceLevel`` (``Scalar``, default: ``0.95``): confidence level of the mean residual life plot,
+- ``GeneralizedParetoFactory-ThresholdStabilityConfidenceLevel`` (``Scalar``, default: ``0.95``): confidence level of the threshold stability plot,
+- ``GeneralizedParetoFactory-MeanResidualLifePointNumber`` (``UnsignedInteger``, default: ``100``): number of points of the mean residual life plot,
+- ``GeneralizedParetoFactory-ThresholdStabilityPointNumber`` (``UnsignedInteger``, default: ``100``): number of points of the threshold stability plot,
+- ``GeneralizedParetoFactory-SmallSize`` (``UnsignedInteger``, default: ``20``): sample size used by the factory to decide between the different estimation methods.
 "
 
 // ---------------------------------------------------------------------

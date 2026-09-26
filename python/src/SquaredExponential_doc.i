@@ -44,6 +44,10 @@ The following :class:`~openturns.ResourceMap` key is used:
 
 - ``SquaredExponential-DefaultTheta`` (``Scalar``, default: ``1``): default value of the scale parameter :math:`\vect{\theta}` of the covariance function.
 
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``SquaredExponential-DefaultTheta`` (``Scalar``, default: ``1``)
+
 See Also
 --------
 CovarianceModel
@@ -70,4 +74,5 @@ Create a squared exponential covariance function specifying the scale vector (am
 Create a  squared exponential covariance function specifying the scale vector and the amplitude :
 
 >>> covModel3 = ot.SquaredExponential([1.5, 2.5], [3.5])
+
 )RAW"

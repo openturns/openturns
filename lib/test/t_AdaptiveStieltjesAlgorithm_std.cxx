@@ -24,17 +24,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-Point clean(Point in)
-{
-  UnsignedInteger dim = in.getDimension();
-  for(UnsignedInteger i = 0; i < dim; i++)
-  {
-    if (std::abs(in[i]) < 1.e-10) in[i] = 0.0;
-    in[i] = 1.0e-4 * round(1.0e4 * in[i]);
-  }
-  return in;
-}
-
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -43,28 +32,36 @@ int main(int, char *[])
   try
   {
     const UnsignedInteger iMax = 5;
+
+    // Test 1: Uniform -> LegendreFactory (centered, symmetric case)
     {
       Uniform distribution;
-      LegendreFactory algo0;
-      AdaptiveStieltjesAlgorithm algo1(distribution);
-      fullprint << algo1 << std::endl;
-      // Centered case
+      LegendreFactory reference;
+      AdaptiveStieltjesAlgorithm ada(distribution);
+      fullprint << ada << std::endl;
       for (UnsignedInteger i = 0; i < iMax; ++i)
       {
-        fullprint << distribution.getClassName() << " Reference(" << i << ")=" << clean(algo0.getRecurrenceCoefficients(i)) << std::endl;
-        fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << clean(algo1.getRecurrenceCoefficients(i)) << std::endl;
+        Point refCoeff(reference.getRecurrenceCoefficients(i));
+        Point adaCoeff(ada.getRecurrenceCoefficients(i));
+        fullprint << distribution.getClassName() << " Reference(" << i << ")=" << refCoeff << std::endl;
+        fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << adaCoeff << std::endl;
+        assert_almost_equal(adaCoeff, refCoeff);
       }
     }
+
+    // Test 2: Beta(0.5, 2.5, -1, 1) -> JacobiFactory (non-centered case)
     {
-      // Non-centered case
       Beta distribution(0.5, 2.5, -1.0, 1.0);
-      JacobiFactory algo0(-0.5, 1.5);
-      AdaptiveStieltjesAlgorithm algo1(distribution);
-      fullprint << algo1 << std::endl;
+      JacobiFactory reference(0.5, 2.5);
+      AdaptiveStieltjesAlgorithm ada(distribution);
+      fullprint << ada << std::endl;
       for (UnsignedInteger i = 0; i < iMax; ++i)
       {
-        fullprint << distribution.getClassName() << " Reference(" << i << ")=" << clean(algo0.getRecurrenceCoefficients(i)) << std::endl;
-        fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << clean(algo1.getRecurrenceCoefficients(i)) << std::endl;
+        Point refCoeff(reference.getRecurrenceCoefficients(i));
+        Point adaCoeff(ada.getRecurrenceCoefficients(i));
+        fullprint << distribution.getClassName() << " Reference(" << i << ")=" << refCoeff << std::endl;
+        fullprint << distribution.getClassName() << " AdaStielj(" << i << ")=" << adaCoeff << std::endl;
+        assert_almost_equal(adaCoeff, refCoeff);
       }
     }
   }

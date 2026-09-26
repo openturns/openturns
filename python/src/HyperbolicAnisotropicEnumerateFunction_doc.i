@@ -38,7 +38,7 @@ built as the tensorization of univariate basis, using the indexation of each mar
 
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``HyperbolicAnisotropicEnumerateFunction-DefaultQ`` (``Scalar``, default: ``0.4``)
+- ``HyperbolicAnisotropicEnumerateFunction-DefaultQ`` (``Scalar``, default: ``0.4``): default value of the :math:`q` quasi-norm parameter.
 
 Examples
 --------

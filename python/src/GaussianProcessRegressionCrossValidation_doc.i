@@ -28,6 +28,11 @@ Note that this method relies on linear algebra, and therefore uses the covarianc
 It is therefore not strictly equivalent to the naive cross-validation method,
 which consists in re-fitting the Gaussian Process Regression model on each training subset.
 
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``GaussianProcessRegressionCrossValidation-DefaultBlockSize`` (``UnsignedInteger``, default: ``100``)
+
 Examples
 --------
 Create a Gaussian Process Regression surroagate for the Ishigami function.
@@ -108,10 +113,5 @@ Returns
 result : :class:`~openturns.GaussianProcessRegressionResult`
     The result provided.
 
-Notes
------
-The following :class:`~openturns.ResourceMap` key is used:
-
-- ``GaussianProcessRegressionCrossValidation-DefaultBlockSize`` (``UnsignedInteger``, default: ``100``)"
-
+"
 

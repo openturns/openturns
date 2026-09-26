@@ -36,14 +36,7 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``UniVariatePolynomial-SmallDegree`` (``UnsignedInteger``, default: ``400``)"
-
-
-
-
-
-
-
+- ``UniVariatePolynomial-SmallDegree`` (``UnsignedInteger``, default: ``400``): degree below which the polynomials are considered as small."
 %enddef
 %feature("docstring") OT::UniVariatePolynomialImplementation
 OT_UniVariatePolynomial_doc

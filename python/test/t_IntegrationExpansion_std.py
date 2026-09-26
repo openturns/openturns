@@ -501,3 +501,26 @@ for doe in doeList:
         rtol = 1.0e-2
         atol = 1.0e-2
         ott.assert_almost_equal(err, 0.0, rtol, atol)
+    # Check the constructors with activeFunctions
+    activeFunctions = list(range(min(basisSize, 20)))
+    algo = ot.IntegrationExpansion(
+        inputSample, weights, outputSample, distribution, productBasis, basisSize, activeFunctions
+    )
+    algo.run()
+    assert algo.getActiveFunctions() == activeFunctions
+    result = algo.getResult()
+    coeffs = result.getCoefficients().asPoint()
+    ref = expectedCoefficientsLinear[: coeffs.getSize()]
+    err = (coeffs - ref).norm()
+    ott.assert_almost_equal(err, 0.0, rtol, atol)
+    if wMin == wMax:
+        algo = ot.IntegrationExpansion(
+            inputSample, outputSample, distribution, productBasis, basisSize, activeFunctions
+        )
+        algo.run()
+        assert algo.getActiveFunctions() == activeFunctions
+        result = algo.getResult()
+        coeffs = result.getCoefficients().asPoint()
+        ref = expectedCoefficientsLinear[: coeffs.getSize()]
+        err = (coeffs - ref).norm()
+        ott.assert_almost_equal(err, 0.0, rtol, atol)
