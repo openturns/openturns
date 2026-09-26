@@ -16,10 +16,17 @@ ot.TESTPREAMBLE()
 
 
 class PythonLARS:
-    """Minimal Python LARS for comparison with C++ SparseExpansion."""
+    """Minimal Python LARS for comparison with C++ SparseExpansion.
+
+    Implements the same recursion as LARS::updateBasis with quadrature
+    weights w: the correlations are c = Phi^T W (y - mu), the active Gram
+    matrix is G_A = Phi_A^T W Phi_A, and the direction correlations are
+    d = Phi^T W u. The default weights are the uniform ones, 1/n, so the
+    reference then also covers the unweighted case.
+    """
 
     def __init__(self, input_sample, output_sample, distribution, basis,
-                 basisSize, fittingAlgorithm, methodName="SVD"):
+                 basisSize, fittingAlgorithm, methodName="SVD", weight=None):
         self.input_sample = input_sample
         self.output_sample = output_sample
         self.distribution = distribution
@@ -28,9 +35,16 @@ class PythonLARS:
         self.fittingAlgorithm = fittingAlgorithm
         self.methodName = methodName
         self.sample_size = input_sample.getSize()
-        self.wX = ot.Point(self.sample_size, 1.0 / self.sample_size)
+        if weight is None:
+            weight = ot.Point(self.sample_size, 1.0 / self.sample_size)
+        assert weight.getSize() == self.sample_size
+        self.weight = weight
+        # Psi = sqrt(W) Phi, so that Psi^T (sqrt(W) v) = Phi^T W v
+        self.weightSqrt = ot.Point(self.sample_size)
+        for s in range(self.sample_size):
+            self.weightSqrt[s] = sqrt(weight[s])
 
-    def run(self):
+    def run(self, iterations=None):
         transformation = ot.DistributionTransformation(
             self.distribution, self.basis.getMeasure()
         )
@@ -43,33 +57,56 @@ class PythonLARS:
 
         self.coefficients_map = {}
         self.selection_history = []
+        self.coefficient_history = []
 
         for output_index in range(output_dimension):
             marginal_output = self.output_sample.getMarginal(output_index)
             marginal_selection = [0]
 
             leastSquaresMethod = ot.LeastSquaresMethod.Build(
-                self.methodName, designProxy, self.wX, marginal_selection
+                self.methodName, designProxy, self.weight, marginal_selection
             )
             rhs = marginal_output.asPoint()
-            marginal_output_mean = marginal_output.computeMean()[0]
+            # weighted mean of the marginal output
+            weight_sum = 0.0
+            weighted_sum = 0.0
+            for s in range(sample_size):
+                weight_sum += self.weight[s]
+                weighted_sum += self.weight[s] * rhs[s]
+            marginal_output_mean = weighted_sum / weight_sum
             coefficients = [marginal_output_mean]
 
             # Current prediction mu
             mu = ot.Point(sample_size, marginal_output_mean)
 
-            # Build full weighted design for correlations
-            fullX = designProxy.computeDesign(range(self.basisSize))
+            # The constant function alone is the first state of the path
+            self.selection_history.append([0])
+            self.coefficient_history.append(ot.Point([marginal_output_mean]))
 
-            for iteration in range(self.basisSize - 1):
+            # Full design, raw and weighted by sqrt(w), for the correlations
+            fullX = designProxy.computeDesign(range(self.basisSize))
+            weightedFullX = ot.Matrix(sample_size, self.basisSize)
+            for s in range(sample_size):
+                for j in range(self.basisSize):
+                    weightedFullX[s, j] = self.weightSqrt[s] * fullX[s, j]
+
+            number_of_iterations = (
+                self.basisSize - 1 if iterations is None else iterations
+            )
+            for iteration in range(number_of_iterations):
                 # Stop if active set would exceed sample size (LS becomes rank-deficient)
                 if len(marginal_selection) >= sample_size:
                     break
                 # Compute residual
                 residual = rhs - mu
 
-                # Weighted correlations c = Phi^T * residual (uniform weights)
-                correlations = fullX.getImplementation().genVectProd(residual, True) / sample_size
+                # Weighted correlations c = Phi^T W (y - mu)
+                weightedResidual = ot.Point(sample_size)
+                for s in range(sample_size):
+                    weightedResidual[s] = self.weightSqrt[s] * residual[s]
+                correlations = weightedFullX.getImplementation().genVectProd(
+                    weightedResidual, True
+                )
 
                 # Find max absolute correlation among inactive
                 cMax = -1.0
@@ -94,16 +131,29 @@ class PythonLARS:
                 for j in range(len(marginal_selection)):
                     sC[j] = 1.0 if correlations[marginal_selection[j]] >= 0.0 else -1.0
 
-                # Solve normal equation for active set: G_A * g = sC
-                psiAk = designProxy.computeDesign(marginal_selection)
-                GA = psiAk.transpose() * psiAk
+                # Solve the weighted normal equation: G_A g = sC with
+                # G_A = Phi_A^T W Phi_A
+                psiAk = ot.Matrix(sample_size, len(marginal_selection))
+                psiAkW = ot.Matrix(sample_size, len(marginal_selection))
+                for s in range(sample_size):
+                    for j in range(len(marginal_selection)):
+                        psiAk[s, j] = fullX[s, marginal_selection[j]]
+                        psiAkW[s, j] = self.weightSqrt[s] * fullX[s, marginal_selection[j]]
+                GA = psiAkW.transpose() * psiAkW
                 g = GA.solveLinearSystem(sC)
 
                 cNorm = 1.0 / sqrt(sC.dot(g))
                 u = psiAk * (cNorm * g)
 
-                # Compute d = Phi^T * u / n
-                d = fullX.getImplementation().genVectProd(u, True) / sample_size
+                # Direction correlations d = Phi^T W u
+                weightedU = ot.Point(sample_size)
+                for s in range(sample_size):
+                    weightedU[s] = self.weightSqrt[s] * u[s]
+                dFull = weightedFullX.getImplementation().genVectProd(weightedU, True)
+                d = ot.Point(self.basisSize)
+                for k in range(self.basisSize):
+                    if k not in marginal_selection:
+                        d[k] = dFull[k]
 
                 # Compute step size
                 step = cMax / cNorm
@@ -125,14 +175,14 @@ class PythonLARS:
 
                 # Solve LS for coefficients
                 coefficients = leastSquaresMethod.solve(rhs)
+                self.coefficient_history.append(ot.Point(coefficients))
+                self.selection_history.append(marginal_selection.copy())
 
             for j in range(len(marginal_selection)):
                 idx = marginal_selection[j]
                 if idx not in self.coefficients_map:
                     self.coefficients_map[idx] = ot.Point(output_dimension, 0.0)
                 self.coefficients_map[idx][output_index] = coefficients[j]
-
-            self.selection_history.append(marginal_selection.copy())
 
         sorted_indices = sorted(self.coefficients_map.keys())
         self.active_indices = ot.Indices(sorted_indices)
@@ -246,6 +296,121 @@ for i in range(dimension):
     s1_py = sobol_py.getSobolIndex(i)
     print(f"X{i + 1} S1: C++={s1_cpp:.6f}, Python={s1_py:.6f}, diff={abs(s1_cpp - s1_py):.6e}")
 
+# --- Selection path, uniform weights ---
+# Every state of the path is compared: the active set and the coefficients.
+# The two runs stop for different reasons, the C++ one on the
+# cross-validation criterion, the reference one when the largest remaining
+# correlation falls below roundoff, ie when the model has captured
+# everything the design can resolve. The states they have in common are the
+# ones to compare.
+cppHistory = result_cpp.getIndicesHistory()
+cppCoefficients = result_cpp.getCoefficientsHistory()
+algo_py.run()
+compared = min(len(cppHistory), len(algo_py.selection_history))
+print(f"C++ recorded {len(cppHistory) - 1} LARS iterations, "
+      f"the reference {len(algo_py.selection_history) - 1}, comparing {compared - 1}")
+assert compared > 5
+assert algo_py.selection_history[0] == [0]
+for k in range(1, compared):
+    assert algo_py.selection_history[k] == list(cppHistory[k]), (
+        f"iteration {k}: {algo_py.selection_history[k]} != {list(cppHistory[k])}"
+    )
+    ott.assert_almost_equal(
+        algo_py.coefficient_history[k], cppCoefficients[k], 1.0e-9, 1.0e-9
+    )
+print(f"Uniform-weight LARS path: {compared - 1} iterations agree")
+
+# --- Selection path, quadrature weights ---
+# Same comparison on a genuine quadrature design. The design is chosen so that
+# the Gauss product rule integrates every product of basis functions exactly:
+# with 5 nodes per direction, the Legendre basis of total degree 4 is
+# orthogonal for those weights, so the weighted Gram matrix of the full basis
+# is the identity. The weighted least squares problem is then perfectly
+# conditioned and any mishandling of the weights shows up immediately.
+# (A coarser rule, eg 3 nodes in the first direction with a degree 10 basis,
+# cannot resolve the high degree terms: its Gram matrix is singular.)
+quadratureDegree = 4
+quadratureBasisSize = enumerateFunction.getStrataCumulatedCardinal(quadratureDegree)
+quadratureInput, quadratureWeight = ot.GaussProductExperiment(
+    distribution, (5, 5, 5)
+).generateWithWeights()
+print(f"quadrature design: size={quadratureInput.getSize()} basisSize={quadratureBasisSize}"
+      f" weight ratio={max(quadratureWeight) / min(quadratureWeight):.1f}")
+ott.assert_almost_equal(sum(quadratureWeight), 1.0, 1.0e-12, 0.0)
+transformation = ot.DistributionTransformation(distribution, productBasis.getMeasure())
+quadratureProxy = ot.DesignProxy(
+    transformation(quadratureInput),
+    [productBasis.build(i) for i in range(quadratureBasisSize)],
+)
+quadratureMethod = ot.LeastSquaresMethod.Build(
+    "QR", quadratureProxy, quadratureWeight,
+    ot.Indices(range(quadratureBasisSize)),
+)
+quadratureMethod.update([], ot.Indices(range(quadratureBasisSize)), [])
+orthogonalDesign = quadratureMethod.computeWeightedDesign()
+gramOfBasis = ot.Matrix(orthogonalDesign.transpose() * orthogonalDesign)
+for i in range(quadratureBasisSize):
+    ott.assert_almost_equal(
+        [gramOfBasis[i, j] for j in range(quadratureBasisSize)],
+        [1.0 if i == j else 0.0 for j in range(quadratureBasisSize)],
+        1.0e-12, 1.0e-12,
+    )
+print("Weighted Gram matrix of the full basis is the identity")
+quadratureOutput = model(quadratureInput)
+algo_cpp_weighted = otexp.SparseExpansion(
+    quadratureInput, quadratureWeight, quadratureOutput, distribution,
+    productBasis, quadratureBasisSize, "QR", fittingAlgorithm
+)
+algo_cpp_weighted.setSelectionMethod("LARS")
+algo_cpp_weighted.run()
+result_cpp_weighted = algo_cpp_weighted.getResult()
+weightedHistory = result_cpp_weighted.getIndicesHistory()
+weightedCoefficients = result_cpp_weighted.getCoefficientsHistory()
+algo_py_weighted = PythonLARS(
+    quadratureInput, quadratureOutput, distribution,
+    productBasis, quadratureBasisSize, fittingAlgorithm, "QR", quadratureWeight
+)
+algo_py_weighted.run()
+weightedCompared = min(len(weightedHistory), len(algo_py_weighted.selection_history))
+print(f"C++ recorded {len(weightedHistory) - 1} LARS iterations with quadrature "
+      f"weights, the reference {len(algo_py_weighted.selection_history) - 1}, "
+      f"comparing {weightedCompared - 1}")
+assert weightedCompared > 3
+for k in range(1, weightedCompared):
+    assert algo_py_weighted.selection_history[k] == list(weightedHistory[k]), (
+        f"iteration {k}: {algo_py_weighted.selection_history[k]}"
+        f" != {list(weightedHistory[k])}"
+    )
+    ott.assert_almost_equal(
+        algo_py_weighted.coefficient_history[k], weightedCoefficients[k], 1.0e-9, 1.0e-9
+    )
+print(f"Weighted LARS path: {weightedCompared - 1} iterations agree")
+
+# The comparison above would also hold if the weights were ignored, since the
+# design is orthogonal either way. The reference run with uniform weights on
+# the same nodes must therefore depart from the weighted path right away.
+algo_py_uniform_on_quadrature = PythonLARS(
+    quadratureInput, quadratureOutput, distribution,
+    productBasis, quadratureBasisSize, fittingAlgorithm, "QR"
+)
+algo_py_uniform_on_quadrature.run()
+firstDifference = next(
+    (
+        k
+        for k in range(1, min(len(algo_py_uniform_on_quadrature.selection_history), len(weightedHistory)))
+        if algo_py_uniform_on_quadrature.selection_history[k] != list(weightedHistory[k])
+    ),
+    None,
+)
+assert firstDifference is not None and firstDifference <= 3, (
+    f"the weighted and the uniform paths agree up to iteration {firstDifference}"
+)
+print(f"The weighted path departs from the uniform one at iteration {firstDifference}")
+# The weighted selection must differ from the uniform-weights selection of the
+# Monte Carlo design above
+assert list(result_cpp_weighted.getIndices()) != cpp_indices
+print(f"C++ active indices with quadrature weights: {sorted(result_cpp_weighted.getIndices())}")
+
 # Assert C++ LARS produces reasonable Sobol indices.
 # The C++ implementation uses cross-validation stopping, while the Python reference
 # runs all iterations, so active sets may differ. With only 7 active functions
@@ -260,12 +425,12 @@ for i in range(dimension):
     ott.assert_almost_equal(st_cpp, sob_T1_ref[i], 0.5, 0.1)
 
 # L2 error of the C++ approximation on a large independent Monte Carlo sample.
-# Loose bound: the CV-selected 7-term model is coarse by design (about 2.4 here)
+# The CV-selected model is coarse by design, the measured error is about 0.39
 l2TestSample = distribution.getSample(10000)
 l2TestOutput = model(l2TestSample)
 l2ApproxOutput = result_cpp.getMetaModel()(l2TestSample)
 l2MeanSquare = (l2TestOutput - l2ApproxOutput).computeRawMoment(2)[0]
-ott.assert_almost_equal(l2MeanSquare, 0.0, 0.0, 4.0)
+ott.assert_almost_equal(l2MeanSquare, 0.0, 0.0, 0.6)
 print(f"L2 mean-square error: {l2MeanSquare:.6e}")
 
 print("LARS comparison: OK")
