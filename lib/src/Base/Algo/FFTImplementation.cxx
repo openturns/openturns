@@ -144,64 +144,32 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const C
   throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & collection, const UnsignedInteger first, const UnsignedInteger step, const UnsignedInteger last) const";
 }
 
-/** FFT 2D transformation on complex */
-ComplexMatrix FFTImplementation::transform2D(const ComplexMatrix & ) const
+/* FFT ND transformation on real data */
+FFTImplementation::ComplexCollection FFTImplementation::transform(const Point &,
+    const Indices & ) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const ComplexMatrix & complexMatrix) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const Point & data, const Indices & dimensions) const";
 }
 
-/** FFT 2D transformation on real matrix */
-ComplexMatrix FFTImplementation::transform2D(const Matrix & ) const
+/* FFT ND transformation on complex data */
+FFTImplementation::ComplexCollection FFTImplementation::transform(const ComplexCollection &,
+    const Indices & ) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const Matrix & matrix) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform(const ComplexCollection & data, const Indices & dimensions) const";
 }
 
-/** FFT 2D transformation on sample */
-ComplexMatrix FFTImplementation::transform2D(const Sample & ) const
+/* IFFT ND transformation on real data */
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const Point &,
+    const Indices & ) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform2D(const Sample & sample) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const Point & data, const Indices & dimensions) const";
 }
 
-/** FFT 3D transformation on complex */
-ComplexTensor FFTImplementation::transform3D(const ComplexTensor & ) const
+/* IFFT ND transformation on complex data */
+FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const ComplexCollection &,
+    const Indices & ) const
 {
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform3D(const ComplexTensor & tensor) const";
-}
-
-/* FFT 3D transformation on real data */
-ComplexTensor FFTImplementation::transform3D(const Tensor & ) const
-{
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::transform3D(const Tensor & tensor) const";
-}
-
-/** IFFT 2D transformation on complex */
-ComplexMatrix FFTImplementation::inverseTransform2D(const ComplexMatrix & ) const
-{
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const ComplexMatrix & complexMatrix) const";
-}
-
-/** IFFT 2D transformation on real matrix */
-ComplexMatrix FFTImplementation::inverseTransform2D(const Matrix & ) const
-{
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const Matrix & matrix) const";
-}
-
-/** IFFT 2D transformation on sample */
-ComplexMatrix FFTImplementation::inverseTransform2D(const Sample & ) const
-{
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform2D(const Sample & sample) const";
-}
-
-/** IFFT 3D transformation on complex */
-ComplexTensor FFTImplementation::inverseTransform3D(const ComplexTensor & ) const
-{
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform3D(const ComplexTensor & tensor) const";
-}
-
-/** IFFT 3D transformation on complex */
-ComplexTensor FFTImplementation::inverseTransform3D(const Tensor & ) const
-{
-  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform3D(const Tensor & tensor) const";
+  throw NotYetImplementedException(HERE) << "In FFTImplementation::inverseTransform(const ComplexCollection & data, const Indices & dimensions) const";
 }
 
 /* String converter */
