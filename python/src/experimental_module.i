@@ -59,6 +59,7 @@
 
 /* Uncertainty/Process */
 %import model_process_module.i
+%include P1InterpolatedProcess.i
 
 /* Uncertainty/Distribution */
 %include Kent.i
