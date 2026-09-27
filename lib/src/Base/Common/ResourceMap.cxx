@@ -1771,6 +1771,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SpectralGaussianProcess-MaximalScaling", 1.0e-5);
   addAsUnsignedInteger("SpectralGaussianProcess-CholeskyCacheSize", 16384);
 
+  // CirculantEmbeddingGaussianProcess parameters //
+  addAsUnsignedInteger("CirculantEmbeddingGaussianProcess-MaximumIteration", 20);
+
   // WhittleFactory parameters //
   addAsScalar("WhittleFactory-DefaultRhoBeg", 0.1);
   addAsScalar("WhittleFactory-DefaultRhoEnd", 1.0e-10);
