@@ -41,5 +41,6 @@
 #include "openturns/ConditionedGaussianProcess.hxx"
 #include "openturns/KarhunenLoeveQuadratureAlgorithm.hxx"
 #include "openturns/KarhunenLoeveSVDAlgorithm.hxx"
+#include "openturns/P1InterpolatedProcess.hxx"
 
 #endif /* OPENTURNS_OTPROCESS_HXX */
