@@ -62,35 +62,21 @@ public:
                                      const UnsignedInteger first,
                                      const UnsignedInteger size) const override;
 
-  /** FFT 2D transformation on complex */
-  ComplexMatrix transform2D(const ComplexMatrix & complexMatrix) const override;
+  /** FFT ND transformation on data stored as a flat array */
+  ComplexCollection transform(const Point & data,
+                              const Indices & dimensions) const override;
 
-  /** FFT 2D transformation on real matrix */
-  ComplexMatrix transform2D(const Matrix & matrix) const override;
+  /** FFT ND transformation on complex data stored as a flat array */
+  ComplexCollection transform(const ComplexCollection & data,
+                              const Indices & dimensions) const override;
 
-  /** FFT 2D transformation on sample */
-  ComplexMatrix transform2D(const Sample & sample) const override;
+  /** IFFT ND transformation on data stored as a flat array */
+  ComplexCollection inverseTransform(const Point & data,
+                                     const Indices & dimensions) const override;
 
-  /** IFFT 2D transformation on complex */
-  ComplexMatrix inverseTransform2D(const ComplexMatrix & complexMatrix) const override;
-
-  /** IFFT 2D transformation on real matrix */
-  ComplexMatrix inverseTransform2D(const Matrix & matrix) const override;
-
-  /** IFFT 2D transformation on sample */
-  ComplexMatrix inverseTransform2D(const Sample & sample) const override;
-
-  /** FFT 3D transformation */
-  ComplexTensor transform3D(const ComplexTensor & tensor) const override;
-
-  /** FFT 3D transformation on real data */
-  ComplexTensor transform3D(const Tensor & tensor) const override;
-
-  /** IFFT 3D transformation */
-  ComplexTensor inverseTransform3D(const ComplexTensor & tensor) const override;
-
-  /** IFFT 3D transformation */
-  ComplexTensor inverseTransform3D(const Tensor & tensor) const override;
+  /** IFFT ND transformation on complex data stored as a flat array */
+  ComplexCollection inverseTransform(const ComplexCollection & data,
+                                     const Indices & dimensions) const override;
 
   /** String converter */
   String __repr__() const override;
@@ -100,8 +86,9 @@ public:
 
 private:
 
-  ComplexMatrix fft2D(const ComplexMatrix & complexMatrix, const Bool isIFFT) const;
-  ComplexTensor fft3D(const ComplexTensor & tensor, const Bool isIFFT) const;
+  ComplexCollection fftND(const ComplexCollection & data,
+                          const Indices & dimensions,
+                          const Bool isIFFT) const;
 
 } ; /* class KissFFT */
 
