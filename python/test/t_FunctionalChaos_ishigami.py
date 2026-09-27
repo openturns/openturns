@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
@@ -201,3 +202,41 @@ for adaptiveStrategyIndex in range(len(listAdaptiveStrategy)):
                 )
         # Print summary
         print(sensitivity)
+
+# Regression test: unsorted active functions without the constant term.
+# The constant is appended internally, so the stored indices are not sorted
+# with 0 first; the mean and the Sobol indices are keyed on the index
+# values, not on the storage positions, hence both constructions agree.
+smallBasisSize = enumerateFunction.getBasisSizeFromTotalDegree(2)
+unsortedActive = ot.Indices([7, 4, 2])
+sortedActive = ot.Indices([0, 2, 4, 7])
+algoUnsorted = ot.LeastSquaresExpansion(
+    X, Y, distribution, productBasis, smallBasisSize, unsortedActive
+)
+algoUnsorted.run()
+algoSorted = ot.LeastSquaresExpansion(
+    X, Y, distribution, productBasis, smallBasisSize, sortedActive
+)
+algoSorted.run()
+resultUnsorted = algoUnsorted.getResult()
+resultSorted = algoSorted.getResult()
+vectorUnsorted = ot.FunctionalChaosRandomVector(resultUnsorted)
+vectorSorted = ot.FunctionalChaosRandomVector(resultSorted)
+ott.assert_almost_equal(
+    vectorUnsorted.getMean()[0], vectorSorted.getMean()[0], 1.0e-10, 1.0e-10
+)
+sensitivityUnsorted = ot.FunctionalChaosSobolIndices(resultUnsorted)
+sensitivitySorted = ot.FunctionalChaosSobolIndices(resultSorted)
+for i in range(dimension):
+    ott.assert_almost_equal(
+        sensitivityUnsorted.getSobolIndex(i),
+        sensitivitySorted.getSobolIndex(i),
+        1.0e-10,
+        1.0e-10,
+    )
+    ott.assert_almost_equal(
+        sensitivityUnsorted.getSobolTotalIndex(i),
+        sensitivitySorted.getSobolTotalIndex(i),
+        1.0e-10,
+        1.0e-10,
+    )

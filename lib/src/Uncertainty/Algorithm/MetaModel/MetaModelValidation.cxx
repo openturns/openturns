@@ -154,6 +154,12 @@ void MetaModelValidation::setWeights(const Point & weights)
   if ((weights.getSize() != size) && (weights.getSize() != 1)) throw InvalidArgumentException(HERE) << "Validation weights size (" << weights.getSize() << ") should match the validation sample size (" << size << ") or be a single uniform value";
   for (UnsignedInteger i = 0; i < weights.getSize(); ++i)
     if (!(weights[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Validation weights must be non-negative, got " << weights[i] << " at index " << i;
+  // Check the total mass before committing: initialize() rejects a null sum,
+  // and the weights must not be stored if the scores cannot be recomputed
+  Scalar weightSum = 0.0;
+  if (weights.getSize() == 1) weightSum = weights[0] * size;
+  else for (UnsignedInteger i = 0; i < size; ++i) weightSum += weights[i];
+  if (!(weightSum > 0.0)) throw InvalidArgumentException(HERE) << "Validation weights must have a positive sum, here sum=" << weightSum;
   weights_ = weights;
   initialize();
 }
@@ -230,9 +236,12 @@ Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
   // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
-  // Exact for any weights: dropping an observation is a rank-one downdate of
-  // the weighted normal equations, so ri/(1-hi) is the leave-one-out residual
-  // with hi the weighted leverage returned by LeastSquaresMethod::getHDiag.
+  // Exact for uniform weights only: dropping an observation is a rank-one
+  // downdate of the normal equations, so ri/(1-hi) is the leave-one-out
+  // residual with hi the leverage returned by LeastSquaresMethod::getHDiag.
+  // With non-uniform weights hi must be the weighted leverage, i.e. the
+  // internal least squares method must carry the weights, otherwise the
+  // predictions are an approximation.
   const UnsignedInteger sampleSize = outputSample.getSize();
   const UnsignedInteger outputDimension = outputSample.getDimension();
   if (residual.getSize() != sampleSize)
@@ -277,13 +286,13 @@ Sample MetaModelValidation::ComputeMetamodelKFoldPredictions(
   // The residual is ri = g(xi) - tilde{g}(xi) where g is the model
   // and tilde(g) is the metamodel.
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
-  // Exact for uniform weights only. Solving (I - P_TT) u = r_T on the test
-  // rows relies on the hat matrix being idempotent, which holds for
-  // H = Psi.(Psi^T Psi)^-1.Psi^T but not for the weighted
-  // H = Psi.(Psi^T W Psi)^-1.Psi^T.W unless W is idempotent. With
-  // non-uniform weights the predictions below are wrong by an amount of the
-  // order of the residuals. The weights are not available here, so this
-  // cannot be detected: see the FunctionalChaosValidation documentation.
+  // Exact for uniform weights only. The block formula solves (I - P_TT) u = r_T
+  // on the test rows, which is the ordinary least-squares downdate. For weighted
+  // least squares the exact downdate inverts (W_T^-1 - X_T G^-1 X_T^T) with
+  // G = Psi^T W Psi, which coincides with (I - P_TT) only when the test-block
+  // weights are all 1. With non-uniform weights the predictions below are wrong
+  // by an amount of the order of the residuals. The weights are not available
+  // here, so this cannot be detected: see the FunctionalChaosValidation documentation.
   const UnsignedInteger sampleSize = outputSample.getSize();
   const UnsignedInteger outputDimension = outputSample.getDimension();
   if (residual.getSize() != sampleSize)

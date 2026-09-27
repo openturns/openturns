@@ -4,8 +4,8 @@ Test case 1: Compare C++ SparseExpansion OMP with the Python OMP reference
 implementation from mbaudin47 (PR #2987).
 
 The Python reference implements Algorithm B.1 from Luthen et al. 2021.
-Both implementations solve the Ishigami sparse problem with 100 samples,
-max degree 3, using CLOO fitting.
+Both implementations solve the Ishigami sparse problem with 75 samples,
+max degree 10, using CLOO fitting.
 """
 
 import openturns as ot
@@ -83,7 +83,9 @@ class PythonOMP:
                 )
                 marginal_selection.append(best_basis_function_index)
                 coefficients = leastSquaresMethod.solve(rightHandSide)
-                designMatrix = leastSquaresMethod.computeWeightedDesign()
+                # Unweighted design: the residual lives in the output space,
+                # while computeWeightedDesign() returns sqrt(W).Phi
+                designMatrix = leastSquaresMethod.computeDesign()
                 residuals = rightHandSide - designMatrix * coefficients
 
             for j in range(len(marginal_selection)):

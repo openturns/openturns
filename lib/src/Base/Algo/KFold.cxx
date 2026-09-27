@@ -74,10 +74,14 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
 {
   const Sample x(method.getInputSample());
   const UnsignedInteger sampleSize = x.getSize();
+  if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
+  if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
+  if (!(k_ < sampleSize)) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
   // Output variance: the legacy unbiased estimator for uniform weights,
   // the weighted variance otherwise. Uniform weights are stored as one value
   const Point methodWeights(method.getWeight());
   const Bool useUniformWeights = (methodWeights.getSize() == 1);
+  if (!useUniformWeights && (methodWeights.getSize() != sampleSize)) throw InvalidArgumentException( HERE ) << "Non-uniform weights size (" << methodWeights.getSize() << ") should match the sample size (" << sampleSize << ").";
   Scalar variance = 0.0;
   if (useUniformWeights)
     variance = y.computeVariance()[0];
@@ -98,10 +102,6 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
     }
     variance /= weightSum;
   }
-
-  if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
-  if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  if (!(k_ < sampleSize)) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
 
   // the size of a subsample
   const UnsignedInteger testSize = sampleSize / k_;

@@ -687,8 +687,13 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
     for (UnsignedInteger i = 0; i < outputCoefficientsHistory.getSize(); ++i)
       marginalCoefficientsHistory.add(outputCoefficientsHistory[i]);
     const Point outputErrorHistory(getErrorHistory(outputIndex));
-    for (UnsignedInteger i = 0; i < outputErrorHistory.getSize(); ++i)
-      marginalErrorHistory.add(outputErrorHistory[i]);
+    // Align the error slice with the indices slice: legacy unpartitioned
+    // histories may differ in size. Missing entries carry the last measured
+    // error forward instead of a fabricated 0.0, which would assert a
+    // perfect prediction
+    const Scalar fillValue = outputErrorHistory.getSize() > 0 ? outputErrorHistory[outputErrorHistory.getSize() - 1] : 0.0;
+    for (UnsignedInteger i = 0; i < outputIndicesHistory.getSize(); ++i)
+      marginalErrorHistory.add(i < outputErrorHistory.getSize() ? outputErrorHistory[i] : fillValue);
     marginalCutPoints.add(marginalIndicesHistory.getSize());
   }
   marginalPCE.setSelectionHistory(marginalIndicesHistory, marginalCoefficientsHistory, marginalCutPoints);

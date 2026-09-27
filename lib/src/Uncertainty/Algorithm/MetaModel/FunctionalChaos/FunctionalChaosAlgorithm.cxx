@@ -363,9 +363,14 @@ void FunctionalChaosAlgorithm::run()
       flatErrorHistory.add(marginalErrorHistory[i]);
     }
     // Pad error history for this marginal to match indices count,
-    // ensuring correct alignment with historyCutPoints
+    // ensuring correct alignment with historyCutPoints.
+    // Missing entries carry the last measured error of this marginal
+    // forward: a fabricated 0.0 would assert a perfect prediction
     while (flatErrorHistory.getSize() < flatIndicesHistory.getSize())
-      flatErrorHistory.add(0.0);
+    {
+      const Scalar fillValue = marginalErrorHistory.getSize() > 0 ? marginalErrorHistory[marginalErrorHistory.getSize() - 1] : 0.0;
+      flatErrorHistory.add(fillValue);
+    }
     historyCutPoints.add(flatIndicesHistory.getSize());
     for (UnsignedInteger j = 0; j < marginalIndices.getSize(); ++j)
     {

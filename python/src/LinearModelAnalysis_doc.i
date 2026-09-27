@@ -160,7 +160,7 @@ If the residuals are not Gaussian, this test is not appropriate and should not b
 
 Parameters
 ----------
-alpĥa : float, :math:`0 \leq \alpha \leq 1`
+alpha : float, :math:`0 \leq \alpha \leq 1`
     The confidence level :math:`\alpha`.
 
 Returns
