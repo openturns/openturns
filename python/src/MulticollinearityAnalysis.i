@@ -6,6 +6,8 @@
 
 %include MulticollinearityAnalysis_doc.i
 
+%copyctor OT::MulticollinearityAnalysis;
+
 %typemap(in, numinputs=0) OT::PointWithDescription & lmgOut ($*ltype temp) %{ $1 = &temp; %}
 %typemap(argout) OT::PointWithDescription & lmgOut %{ $result = OT::AppendOutput($result, SWIG_NewPointerObj($1->clone(), SWIG_TypeQuery("OT::PointWithDescription *"), SWIG_POINTER_OWN)); %};
 
