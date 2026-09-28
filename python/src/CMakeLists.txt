@@ -98,7 +98,7 @@ ot_add_python_module(func func_module.i
                       Hessian.i Hessian_doc.i
                       DualLinearCombinationEvaluation.i DualLinearCombinationEvaluation_doc.i
                       LinearCombinationFunction.i LinearCombinationFunction_doc.i
-                      LinearCombinationEvaluation.i
+                      LinearCombinationEvaluation.i LinearCombinationEvaluation_doc.i
                       ParametricFunction.i ParametricFunction_doc.i
                       FunctionImplementation.i FunctionImplementation_doc.i
                       ProductFunction.i ProductFunction_doc.i
@@ -146,7 +146,7 @@ ot_add_python_module(func func_module.i
                       IndicatorEvaluation.i
                       DistanceToDomainEvaluation.i
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i
-                      ParametricEvaluation.i
+                      ParametricEvaluation.i ParametricEvaluation_doc.i
                       BasisImplementation.i BasisImplementation_doc.i
                       Basis.i Basis_doc.i
                       BasisSequenceImplementation.i
@@ -235,7 +235,7 @@ ot_add_python_module(typ typ_module.i
                       Interval.i Interval_doc.i
                       Indices.i Indices_doc.i
                       IndicesCollection.i IndicesCollection_doc.i
-                      IndicesCollectionImplementation.i
+                      IndicesCollectionImplementation.i IndicesCollectionImplementation_doc.i
                       MatrixImplementation.i
                       Matrix.i Matrix_doc.i
                       SquareMatrix.i SquareMatrix_doc.i
@@ -441,17 +441,17 @@ ot_add_python_module(func2 func2_module.i
                       MarginalHessian.i
                       NoHessian.i
                       NullHessian.i
-                      ParametricHessian.i
+                      ParametricHessian.i ParametricHessian_doc.i
                       ProductHessian.i
-                      SymbolicHessian.i
+                      SymbolicHessian.i SymbolicHessian_doc.i
                       ComposedGradient.i
                       ConstantGradient.i ConstantGradient_doc.i
                       DualLinearCombinationGradient.i DualLinearCombinationGradient_doc.i
                       LinearCombinationGradient.i
-                      MarginalGradient.i
-                      ParametricGradient.i
+                      MarginalGradient.i MarginalGradient_doc.i
+                      ParametricGradient.i ParametricGradient_doc.i
                       ProductGradient.i
-                      SymbolicGradient.i
+                      SymbolicGradient.i SymbolicGradient_doc.i
                       NoGradient.i
                       NoEvaluation.i
                       TranslationEvaluation.i TranslationEvaluation_doc.i
@@ -464,15 +464,15 @@ ot_add_python_module(func2 func2_module.i
                       PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i
                       IndicatorFunction.i IndicatorFunction_doc.i
                       DistanceToDomainFunction.i DistanceToDomainFunction_doc.i
-                      MarginalEvaluation.i
+                      MarginalEvaluation.i MarginalEvaluation_doc.i
                       BasisFactory.i BasisFactory_doc.i
                       ConstantBasisFactory.i ConstantBasisFactory_doc.i
                       LinearBasisFactory.i LinearBasisFactory_doc.i
                       QuadraticBasisFactory.i QuadraticBasisFactory_doc.i
-                      TrendEvaluation.i
-                      InverseTrendEvaluation.i
-                      BoxCoxEvaluation.i
-                      InverseBoxCoxEvaluation.i
+                      TrendEvaluation.i TrendEvaluation_doc.i
+                      InverseTrendEvaluation.i InverseTrendEvaluation_doc.i
+                      BoxCoxEvaluation.i BoxCoxEvaluation_doc.i
+                      InverseBoxCoxEvaluation.i InverseBoxCoxEvaluation_doc.i
 )
 ot_add_python_module(metamodel metamodel_module.i
                       MetaModelResult.i MetaModelResult_doc.i
@@ -961,7 +961,7 @@ ot_add_python_module(common common_module.i
                       Path.i Path_doc.i
                       Catalog.i
                       ResourceMap.i ResourceMap_doc.i
-                      ComparisonOperatorImplementation.i
+                      ComparisonOperatorImplementation.i ComparisonOperatorImplementation_doc.i
                       ComparisonOperator.i ComparisonOperator_doc.i
                       Equal.i Equal_doc.i
                       Greater.i Greater_doc.i
