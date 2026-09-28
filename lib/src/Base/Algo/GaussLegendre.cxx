@@ -116,16 +116,17 @@ void GaussLegendre::generateNodesAndWeights()
     } // For j
   } // For i
   // Now, generate the nD rule over [0, 1]^n
-  IndicesCollection allTuples(Tuples(discretization_).generate());
-  const UnsignedInteger size = allTuples.getSize();
+  Tuples generator(discretization_);
+  const UnsignedInteger size = generator.getSize();
   nodes_ = Sample(size, dimension);
   weights_ = Point(size, 1.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    const Indices tuple(generator.generateNext());
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      nodes_(i, j) = marginalNodes[j][allTuples(i, j)];
-      weights_[i] *= marginalWeights[j][allTuples(i, j)];
+      nodes_(i, j) = marginalNodes[j][tuple[j]];
+      weights_[i] *= marginalWeights[j][tuple[j]];
     }
   } // tuples
 }

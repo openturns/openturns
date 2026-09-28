@@ -128,7 +128,12 @@ struct LVLOLAScorePolicy
     } // Large combination number
     else
     {
-      candidateCombinations_ = Combinations(m, k - 1).generate();
+      Combinations generator(m, k - 1);
+      const UnsignedInteger combinationsSize = generator.getSize();
+      Collection<Indices> coll(combinationsSize);
+      for (UnsignedInteger i = 0; i < combinationsSize; ++i)
+        coll[i] = generator.generateNext();
+      candidateCombinations_ = IndicesCollection(coll);
     }
 
     k_ = std::min(lola_.x_.getSize(), m + lola_.neighbourhoodCandidatesNumber_ + 1);

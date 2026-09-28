@@ -48,10 +48,19 @@ public:
   /** Virtual constructor */
   KPermutations * clone() const override;
 
-  /** Experiment plane generation :
+  /** Next k-permutation generation, stateful iteration like SplitterImplementation :
    *  all the kPermutations of k elements amongst {0, ..., n-1}
    */
-  IndicesCollection generate() const override;
+  Indices generateNext() const override;
+
+  /** Number of k-permutations accessor */
+  UnsignedInteger getSize() const override;
+
+  /** Dimension of the generated k-permutations accessor */
+  UnsignedInteger getDimension() const override;
+
+  /** Restart the combinatorial sequence */
+  void restart() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -72,6 +81,15 @@ private:
 
   /** Size of the set */
   UnsignedInteger n_;
+
+  /** Current combination for stateful iteration */
+  mutable Indices currentCombination_;
+
+  /** Current permutation of the combination for stateful iteration */
+  mutable Indices currentPermutation_;
+
+  /** Number of k-permutations already generated */
+  mutable UnsignedInteger currentIndex_ = 0;
 
 }; /* class KPermutations */
 

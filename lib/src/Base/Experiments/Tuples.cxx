@@ -31,7 +31,7 @@ Tuples::Tuples()
   : CombinatorialGeneratorImplementation()
   , bounds_(1)
 {
-  // Nothing to do
+  restart();
 }
 
 /* Constructor with parameters */
@@ -39,7 +39,7 @@ Tuples::Tuples(const Indices & bounds)
   : CombinatorialGeneratorImplementation()
   , bounds_(bounds)
 {
-  // Nothing to do
+  restart();
 }
 
 /* Virtual constructor */
@@ -48,38 +48,58 @@ Tuples * Tuples::clone() const
   return new Tuples(*this);
 }
 
-/* Experiment plane generation :
- *  all the tuples taking values in {0,...,bounds[0]-1}x...x{0,...,bounds[n-1]-1}
- */
-IndicesCollection Tuples::generate() const
+/* Next tuple generation, stateful iteration like SplitterImplementation */
+Indices Tuples::generateNext() const
+{
+  const UnsignedInteger size = getSize();
+  if (currentIndex_ >= size)
+    throw OutOfBoundException(HERE) << "No more tuples to generate";
+  const Indices result(current_);
+  ++currentIndex_;
+  if (currentIndex_ < size)
+  {
+    const UnsignedInteger dimension = bounds_.getSize();
+    /* Update the indices */
+    ++current_[0];
+    /* Propagate the remainders */
+    for (UnsignedInteger i = 0; i < dimension - 1; ++i) current_[i + 1] += (current_[i] == bounds_[i]);
+    /* Correction of the indices. The last index cannot overflow. */
+    for (UnsignedInteger i = 0; i < dimension - 1; ++i) current_[i] = current_[i] % bounds_[i];
+  }
+  return result;
+}
+
+/* Number of tuples accessor */
+UnsignedInteger Tuples::getSize() const
 {
   /* Dimension of the realizations */
   const UnsignedInteger dimension = bounds_.getSize();
-  /* Size of the sample to be generated: levels[0] * ... * levels[dimension-1] */
+  /* Size of the sample to be generated: bounds[0] * ... * bounds[dimension-1] */
   UnsignedInteger size = std::min(1UL, dimension);
   const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const UnsignedInteger bI = bounds_[i];
+    if (bI == 0) return 0;
     if (size > maxUInt / bI)
       throw InvalidArgumentException(HERE) << "Tuples size would overflow integer limit " << maxUInt;
     size *= bI;
   }
-  IndicesCollection allTuples(size, dimension);
-  /* Indices would have stored the indices of the nested loops if we were able to code "dimension" nested loops dynamically */
-  Indices indices(dimension);
-  for (UnsignedInteger flatIndex = 0; flatIndex < size; ++flatIndex)
-  {
-    std::copy(indices.begin(), indices.end(), allTuples.begin_at(flatIndex));
-    /* Update the indices */
-    ++indices[0];
-    /* Propagate the remainders */
-    for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i + 1] += (indices[i] == bounds_[i]);
-    /* Correction of the indices. The last index cannot overflow. */
-    for (UnsignedInteger i = 0; i < dimension - 1; ++i) indices[i] = indices[i] % bounds_[i];
-  }
-  return allTuples;
-} // generate()
+  return size;
+}
+
+/* Dimension of the generated tuples accessor */
+UnsignedInteger Tuples::getDimension() const
+{
+  return bounds_.getSize();
+}
+
+/* Restart the combinatorial sequence */
+void Tuples::restart() const
+{
+  current_ = Indices(bounds_.getSize());
+  currentIndex_ = 0;
+}
 
 /* String converter */
 String Tuples::__repr__() const
@@ -95,6 +115,7 @@ String Tuples::__repr__() const
 void Tuples::setBounds(const Indices & bounds)
 {
   bounds_ = bounds;
+  restart();
 }
 
 Indices Tuples::getBounds() const

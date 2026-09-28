@@ -249,8 +249,8 @@ Sample KPermutationsDistribution::getSupport(const Interval & interval) const
 {
   if (interval.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
   // Convert int values into float
-  const IndicesCollection intResult(KPermutations(k_, n_).generate());
-  const UnsignedInteger size = intResult.getSize();
+  KPermutations generator(k_, n_);
+  const UnsignedInteger size = generator.getSize();
   if (size == 0) return Sample(0, getDimension());
   const Interval inter(interval.intersect(range_));
   // Common case: get the full support
@@ -258,16 +258,20 @@ Sample KPermutationsDistribution::getSupport(const Interval & interval) const
   {
     Sample result(size, dimension_);
     for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Indices tuple(generator.generateNext());
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        result(i, j) = intResult(i, j);
+        result(i, j) = tuple[j];
+    }
     return result;
   }
   Sample result(0, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    const Indices tuple(generator.generateNext());
     Point point(dimension_);
     for (UnsignedInteger j = 0; j < dimension_; ++j)
-      point[j] = intResult(i, j);
+      point[j] = tuple[j];
     if (inter.contains(point))
       result.add(point);
   }

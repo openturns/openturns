@@ -107,17 +107,18 @@ Sample FejerExperiment::generateWithWeights(Point & weightsOut) const
   } /* end switch */
   // Now we have marginal nodes & weights,
   // we generate the nD rule over [0, 1]^n
-  IndicesCollection allTuples(Tuples(discretization_).generate());
-  const UnsignedInteger size = allTuples.getSize();
+  Tuples generator(discretization_);
+  const UnsignedInteger size = generator.getSize();
   Sample nodes(size, dimension);
   weightsOut = Point(size, 1.0);
 
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    const Indices tuple(generator.generateNext());
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
-      nodes(i, j) = marginalNodes[j][allTuples(i, j)];
-      weightsOut[i] *= marginalWeights[j][allTuples(i, j)];
+      nodes(i, j) = marginalNodes[j][tuple[j]];
+      weightsOut[i] *= marginalWeights[j][tuple[j]];
     }
   } // tuples
 

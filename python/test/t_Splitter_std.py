@@ -30,6 +30,10 @@ for splitter in splitters:
         size += 1
     assert size == splitter.getSize(), "wrong size"
 
+# iterate over a temporary: the iterator must not depend on its lifetime
+assert sum(1 for _ in ot.KFoldSplitter(N, 3)) == 3, "wrong temp iteration"
+assert sum(1 for _ in ot.LeaveOneOutSplitter(N)) == N, "wrong temp iteration"
+
 # try selection
 indices = [8, 0]
 sample = ot.Normal().getSample(N)

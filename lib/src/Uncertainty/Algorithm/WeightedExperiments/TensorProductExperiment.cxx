@@ -150,21 +150,21 @@ void TensorProductExperiment::computeNodesAndWeights() const
   LOGDEBUG(OSS() << "marginalSizeIndices = " << marginalSizeIndices);
   // Create index set
   LOGDEBUG(OSS() << "Create index set");
-  Tuples tuples(marginalSizeIndices);
-  const IndicesCollection indicesCollection(tuples.generate());
+  Tuples generator(marginalSizeIndices);
   // Compute nodes and weights
   LOGDEBUG(OSS() << "Compute nodes and weights");
-  const UnsignedInteger size = indicesCollection.getSize();
+  const UnsignedInteger size = generator.getSize();
   LOGDEBUG(OSS() << "Total size = " << size);
   weights_ = Point(size);
   nodes_ = Sample(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    const Indices tuple(generator.generateNext());
     weights_[i] = 1.0;
     UnsignedInteger marginalExperimentIndex = 0;
     for (UnsignedInteger j = 0; j < numberOfMarginalExperiments; ++j)
     {
-      const UnsignedInteger marginalIndex = indicesCollection(i, j);
+      const UnsignedInteger marginalIndex = tuple[j];
       const Point marginalWeights(marginalWeightsCollection[j]);
       weights_[i] *= marginalWeights[marginalIndex];
       const Sample marginalNodes(marginalNodesCollection[j]);

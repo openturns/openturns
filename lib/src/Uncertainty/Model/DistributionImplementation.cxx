@@ -901,11 +901,12 @@ Scalar DistributionImplementation::computeSurvivalFunction(const Point & point) 
   for (UnsignedInteger i = 1; i < dimension_; ++ i)
   {
     Scalar contribution = 0.0;
-    IndicesCollection indices(Combinations(i, dimension_).generate());
+    Combinations generator(i, dimension_);
+    const UnsignedInteger combinationsSize = generator.getSize();
     Point subPoint(i);
-    for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
+    for (UnsignedInteger j = 0; j < combinationsSize; ++j)
     {
-      const Indices marginalJ(indices.cbegin_at(j), indices.cend_at(j));
+      const Indices marginalJ(generator.generateNext());
       for (UnsignedInteger k = 0; k < i; ++k) subPoint[k] = point[marginalJ[k]];
       contribution += getMarginal(marginalJ).computeCDF(subPoint);
     }
@@ -1835,11 +1836,14 @@ Sample DistributionImplementation::computePDF(const Point & xMin,
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
-  IndicesCollection indices(Tuples(pointNumber).generate());
-  const UnsignedInteger size = indices.getSize();
-  Sample inputSample(indices.getSize(), dimension_);
+  Tuples generator(pointNumber);
+  const UnsignedInteger size = generator.getSize();
+  Sample inputSample(size, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + indices(i, j) * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  {
+    const Indices tuple(generator.generateNext());
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + tuple[j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  }
   grid = inputSample;
   return computePDF(inputSample);
 }
@@ -1864,11 +1868,14 @@ Sample DistributionImplementation::computeLogPDF(const Point & xMin,
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
-  IndicesCollection indices(Tuples(pointNumber).generate());
-  const UnsignedInteger size = indices.getSize();
-  Sample inputSample(indices.getSize(), dimension_);
+  Tuples generator(pointNumber);
+  const UnsignedInteger size = generator.getSize();
+  Sample inputSample(size, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + indices(i, j) * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  {
+    const Indices tuple(generator.generateNext());
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + tuple[j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  }
   grid = inputSample;
   return computeLogPDF(inputSample);
 }
@@ -1893,11 +1900,14 @@ Sample DistributionImplementation::computeCDF(const Point & xMin,
   if (dimension_ != pointNumber.getSize()) throw InvalidArgumentException(HERE) << "Error: the discretization must match the distribution dimension. Here, dim(discretization)=" << pointNumber.getSize() << " and distribution dimension=" << dimension_;
   for (UnsignedInteger j = 0; j < dimension_; ++j)
     if (pointNumber[j] <= 1) throw InvalidArgumentException(HERE) << "Error: each discretization must be > 1";
-  IndicesCollection indices(Tuples(pointNumber).generate());
-  const UnsignedInteger size = indices.getSize();
-  Sample inputSample(indices.getSize(), dimension_);
+  Tuples generator(pointNumber);
+  const UnsignedInteger size = generator.getSize();
+  Sample inputSample(size, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + indices(i, j) * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  {
+    const Indices tuple(generator.generateNext());
+    for (UnsignedInteger j = 0; j < dimension_; ++j) inputSample(i, j) = xMin[j] + tuple[j] * (xMax[j] - xMin[j]) / (pointNumber[j] - 1.0);
+  }
   grid = inputSample;
   return computeCDF(inputSample);
 }

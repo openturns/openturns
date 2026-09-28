@@ -17,10 +17,14 @@
 
 namespace OT { %extend SplitterImplementation {
 
+// Return an owning clone so that iterating a temporary is safe:
+// the iterator lifetime does not depend on the iterated object
+%newobject __iter__;
 SplitterImplementation * __iter__()
 {
-  self->reset();
-  return self;
+  OT::SplitterImplementation * p_iter = self->clone();
+  p_iter->reset();
+  return p_iter;
 }
 
 PyObject* __next__()

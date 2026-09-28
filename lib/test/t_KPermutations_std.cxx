@@ -37,14 +37,26 @@ int main(int, char *[])
       // Classical permutations
       KPermutations myGenerator(k);
       fullprint << "myGenerator = " << myGenerator << std::endl;
-      IndicesCollection kPermutations(myGenerator.generate());
+      const UnsignedInteger size = myGenerator.getSize();
+      IndicesCollection kPermutations(size, myGenerator.getK());
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        const Indices kPermutation(myGenerator.generateNext());
+        for (UnsignedInteger j = 0; j < myGenerator.getK(); ++j) kPermutations(i, j) = kPermutation[j];
+      }
       fullprint << "kPermutations = " << kPermutations << std::endl;
     }
     {
       // K permutations
       KPermutations myGenerator(k, n);
       fullprint << "myGenerator = " << myGenerator << std::endl;
-      IndicesCollection kPermutations(myGenerator.generate());
+      const UnsignedInteger size = myGenerator.getSize();
+      IndicesCollection kPermutations(size, myGenerator.getK());
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        const Indices kPermutation(myGenerator.generateNext());
+        for (UnsignedInteger j = 0; j < myGenerator.getK(); ++j) kPermutations(i, j) = kPermutation[j];
+      }
       fullprint << "kPermutations = " << kPermutations << std::endl;
     }
   }

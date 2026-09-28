@@ -52,10 +52,22 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  /** @deprecated Sample generation, loop over generateNext() */
+  virtual IndicesCollection generate() const;
+
   /* Here is the interface that all derived class must implement */
 
-  /** Sample generation */
-  virtual IndicesCollection generate() const;
+  /** Next combination generation, stateful iteration like SplitterImplementation */
+  virtual Indices generateNext() const;
+
+  /** Number of combinations accessor */
+  virtual UnsignedInteger getSize() const;
+
+  /** Dimension of the generated combinations accessor */
+  virtual UnsignedInteger getDimension() const;
+
+  /** Restart the combinatorial sequence */
+  virtual void restart() const;
 
 protected:
 

@@ -26,17 +26,24 @@ import openturns as ot
 # %%
 # Tuples
 # ------
+# The number of tuples is available without building the collection:
 experiment = ot.Tuples([2, 3, 5])
-print(experiment.generate())
+print(experiment.getSize())
+for indices in experiment:
+    print(indices)
 
 # %%
 # K-permutations
 # --------------
 experiment = ot.KPermutations(3, 4)
-print(experiment.generate())
+print(experiment.getSize())
+for indices in experiment:
+    print(indices)
 
 # %%
 # Combinations
 # ------------
 experiment = ot.Combinations(4, 6)
-print(experiment.generate())
+print(experiment.getSize())
+for indices in experiment:
+    print(indices)

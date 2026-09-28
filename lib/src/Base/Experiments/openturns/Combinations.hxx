@@ -46,10 +46,19 @@ public:
   /** Virtual constructor */
   Combinations * clone() const override;
 
-  /** Experiment plane generation :
+  /** Next combination generation, stateful iteration like SplitterImplementation :
    *  all the combinations of k elements amongst {0, ..., n-1}
    */
-  IndicesCollection generate() const override;
+  Indices generateNext() const override;
+
+  /** Number of combinations accessor */
+  UnsignedInteger getSize() const override;
+
+  /** Dimension of the generated combinations accessor */
+  UnsignedInteger getDimension() const override;
+
+  /** Restart the combinatorial sequence */
+  void restart() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -70,6 +79,12 @@ private:
 
   /** Size of the set */
   UnsignedInteger n_;
+
+  /** Current combination for stateful iteration */
+  mutable Indices current_;
+
+  /** Number of combinations already generated */
+  mutable UnsignedInteger currentIndex_ = 0;
 
 }; /* class Combinations */
 
