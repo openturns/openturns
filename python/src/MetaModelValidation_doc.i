@@ -1,5 +1,5 @@
 %feature("docstring") OT::MetaModelValidation
-"Scores a metamodel in order to perform its validation.
+R"RAW(Scores a metamodel in order to perform its validation.
 
 A `MetaModelValidation` object is used for the validation of a metamodel.
 For that purpose, a dataset independent of the learning step, is used to score the surrogate model.
@@ -67,7 +67,8 @@ Then we validate this metamodel using a test sample.
 >>> # Get the histogram of residuals
 >>> histoResidual = val.getResidualDistribution(False)
 >>> # Draw the validation graph
->>> graph = val.drawValidation()"
+>>> graph = val.drawValidation()
+)RAW"
 
 // ---------------------------------------------------------------------
 

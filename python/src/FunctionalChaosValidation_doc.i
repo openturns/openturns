@@ -1,5 +1,5 @@
 %feature("docstring") OT::FunctionalChaosValidation
-"Validate a functional chaos metamodel.
+R"RAW(Validate a functional chaos metamodel.
 
 The scores of the validation, the R2 score and the mean squared error,
 are weighted by the design weights stored in the result, uniform by
@@ -156,7 +156,8 @@ and set the :math:`k` parameter.
 
 Draw the validation graph.
 
->>> graph = validation.drawValidation()"
+>>> graph = validation.drawValidation()
+)RAW"
 
 // ---------------------------------------------------------------------
 
