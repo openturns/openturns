@@ -22,7 +22,6 @@ OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 20
 #OPENTURNS_NUM_THREADS=2 ctest -R cppcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 
 # coverage
-gcov `find lib/src/ -name "*.gcno"`
 time lcov --capture --directory . --output-file coverage.info --include "*.cxx" --exclude "*_wrap.cxx" -j 4
 genhtml --output-directory coverage coverage.info
 cp -v coverage.info coverage
