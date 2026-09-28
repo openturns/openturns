@@ -48,10 +48,40 @@ String CombinatorialGeneratorImplementation::__repr__() const
   return oss;
 }
 
-/* Sample generation */
+/* Sample generation, loop over generateNext() without altering the current state */
 IndicesCollection CombinatorialGeneratorImplementation::generate() const
 {
-  throw NotYetImplementedException(HERE) << "In CombinatorialGeneratorImplementation::generate()";
+  const Implementation p_generator(clone());
+  p_generator->restart();
+  const UnsignedInteger size = p_generator->getSize();
+  Collection<Indices> coll(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    coll[i] = p_generator->generateNext();
+  return IndicesCollection(coll);
+}
+
+/* Next combination generation */
+Indices CombinatorialGeneratorImplementation::generateNext() const
+{
+  throw NotYetImplementedException(HERE) << "In CombinatorialGeneratorImplementation::generateNext()";
+}
+
+/* Number of combinations accessor */
+UnsignedInteger CombinatorialGeneratorImplementation::getSize() const
+{
+  throw NotYetImplementedException(HERE) << "In CombinatorialGeneratorImplementation::getSize()";
+}
+
+/* Dimension of the generated combinations accessor */
+UnsignedInteger CombinatorialGeneratorImplementation::getDimension() const
+{
+  throw NotYetImplementedException(HERE) << "In CombinatorialGeneratorImplementation::getDimension()";
+}
+
+/* Restart the combinatorial sequence */
+void CombinatorialGeneratorImplementation::restart() const
+{
+  // Nothing to do: stateless base implementation
 }
 
 END_NAMESPACE_OPENTURNS

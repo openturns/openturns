@@ -302,8 +302,8 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
     const UnsignedInteger modulo = bootstrapSize_ % blockSize;
     const UnsignedInteger lastBlockSize = modulo == 0 ? blockSize : modulo;
 
-    // Use of KPermutations to perform bootstrap without replication
-    Distribution KPermutation = KPermutationsDistribution(bootstrapSampleSize, size_);
+    // perform bootstrap without replication
+    const KPermutationsDistribution kPermutation(bootstrapSampleSize, size_);
 
     for(UnsignedInteger outerSampling = 0; outerSampling < maximumOuterSampling; ++outerSampling)
     {
@@ -312,12 +312,11 @@ void RankSobolSensitivityAlgorithm::computeBootstrapDistribution() const
 
       Sample bsFOpartial(effectiveBlockSize, inputDimension);
 
-      const Sample randomIndices = KPermutation.getSample(effectiveBlockSize);
+      const Sample randomIndices(kPermutation.getSample(effectiveBlockSize));
 
-      const RankSobolBootstrapPolicy policy( *this, randomIndices, bsFOpartial );
-      TBBImplementation::ParallelFor( 0, effectiveBlockSize, policy );
+      const RankSobolBootstrapPolicy policy(*this, randomIndices, bsFOpartial);
+      TBBImplementation::ParallelFor(0, effectiveBlockSize, policy);
       bsFO.add(bsFOpartial);
-
     }
 
     const KernelSmoothing factory;

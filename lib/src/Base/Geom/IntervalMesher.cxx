@@ -550,22 +550,23 @@ Mesh IntervalMesher::build(const Interval & interval,
     for (UnsignedInteger i = 0; i < dimension; ++i)
       verticesDiscretization[i] = discretization_[i] + 1;
     // Generate vertices
-    const IndicesCollection allVerticesTuples(Tuples(verticesDiscretization).generate());
-    const UnsignedInteger numVertices = allVerticesTuples.getSize();
+    Tuples verticesGenerator(verticesDiscretization);
+    const UnsignedInteger numVertices = verticesGenerator.getSize();
     Sample vertices(numVertices, dimension);
     for (UnsignedInteger i = 0; i < numVertices; ++i)
     {
+      const Indices tuple(verticesGenerator.generateNext());
       for (UnsignedInteger j = 0; j < dimension; ++j)
       {
-        const Scalar s = (1.0 * allVerticesTuples(i, j)) / discretization_[j];
+        const Scalar s = (1.0 * tuple[j]) / discretization_[j];
         vertices(i, j) = lowerBound[j] * (1.0 - s) + upperBound[j] * s;
       } // j
     } // i
     // Generate simplices:
-    const IndicesCollection allHypercubesTuples(Tuples(discretization_).generate());
-    const UnsignedInteger numHypercubes = allHypercubesTuples.getSize();
-    const IndicesCollection allSimplicesPermutations(KPermutations(dimension, dimension).generate());
-    const UnsignedInteger numSimplicesPermutations = allSimplicesPermutations.getSize();
+    Tuples hypercubesGenerator(discretization_);
+    const UnsignedInteger numHypercubes = hypercubesGenerator.getSize();
+    KPermutations permutationsGenerator(dimension, dimension);
+    const UnsignedInteger numSimplicesPermutations = permutationsGenerator.getSize();
     const UnsignedInteger numSimplices = numHypercubes * numSimplicesPermutations;
     IndicesCollection simplices(numSimplices, dimension + 1);
     // Reference simplex
@@ -588,13 +589,14 @@ Mesh IntervalMesher::build(const Interval & interval,
     }
     for (UnsignedInteger i = 0; i < numSimplicesPermutations; ++i)
     {
+      const Indices permutation(permutationsGenerator.generateNext());
       for (UnsignedInteger j = 0; j <= dimension; ++j)
       {
         // Translate these sequences into integers using the mixed base verticesDiscretization
         UnsignedInteger component = standardSimplex[j];
         for (UnsignedInteger k = 0; k < dimension; ++k)
         {
-          referenceSimplices(i, j) += (component % 2) * base[allSimplicesPermutations(i, k)];
+          referenceSimplices(i, j) += (component % 2) * base[permutation[k]];
           component /= 2;
         } // k
       } // j
@@ -604,10 +606,11 @@ Mesh IntervalMesher::build(const Interval & interval,
     UnsignedInteger simplexIndex = 0;
     for (UnsignedInteger i = 0; i < numHypercubes; ++i)
     {
+      const Indices hypercubeTuple(hypercubesGenerator.generateNext());
       // Compute the translation associated to this hypercube
       UnsignedInteger translation = 0;
       for (UnsignedInteger k = 0; k < dimension; ++k)
-        translation += allHypercubesTuples(i, k) * base[k];
+        translation += hypercubeTuple[k] * base[k];
       for (UnsignedInteger j = 0; j < numSimplicesPermutations; ++j)
       {
         for (UnsignedInteger k = 0; k <= dimension; ++k)

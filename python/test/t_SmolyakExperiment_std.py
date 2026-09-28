@@ -402,9 +402,9 @@ ot.Log.Show(ot.Log.NONE)
 # Test different polynomials, up to the maximum
 # Polynomial exactness space = P5 x P1 + P3 x P3 + P1 x P5
 level = 3
-marginalDegreesList = [v for v in ot.Tuples([6, 2]).generate()]
-marginalDegreesList += [v for v in ot.Tuples([4, 4]).generate()]
-marginalDegreesList += [v for v in ot.Tuples([2, 6]).generate()]
+marginalDegreesList = [v for v in ot.Tuples([6, 2])]
+marginalDegreesList += [v for v in ot.Tuples([4, 4])]
+marginalDegreesList += [v for v in ot.Tuples([2, 6])]
 print(marginalDegreesList)
 for i in range(len(marginalDegreesList)):
     marginalDegrees = marginalDegreesList[i]

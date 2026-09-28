@@ -106,8 +106,7 @@ for factory in factories:
     t0 = time.time()
     for k in range(n):
         # Generate all the combinations of known parameter
-        combinations = ot.Combinations(k, n).generate()
-        for combination in combinations:
+        for combination in ot.Combinations(k, n):
             indices = [int(x) for x in combination]
             values = [refParameter[i] for i in indices]
             factory.setKnownParameter(indices, values)

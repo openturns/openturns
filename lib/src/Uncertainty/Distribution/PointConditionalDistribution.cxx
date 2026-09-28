@@ -714,13 +714,15 @@ Sample PointConditionalDistribution::getSupport(const Interval & interval) const
     marginalSupport[j] = distribution_.getMarginal(nonConditioningIndices_[j]).getSupport(interval.getMarginal(j));
     marginalSize[j] = marginalSupport[j].getSize();
   }
-  IndicesCollection tuples(Tuples(marginalSize).generate());
+  Tuples generator(marginalSize);
+  const UnsignedInteger tuplesSize = generator.getSize();
   Sample support(0, getDimension());
-  for (UnsignedInteger i = 0; i < tuples.getSize(); ++ i)
+  for (UnsignedInteger i = 0; i < tuplesSize; ++ i)
   {
+    const Indices tuple(generator.generateNext());
     Point x(getDimension());
     for (UnsignedInteger j = 0; j < getDimension(); ++ j)
-      x[j] = marginalSupport[j](tuples(i, j), 0);
+      x[j] = marginalSupport[j](tuple[j], 0);
     if (computePDF(x) > 0.0)
       support.add(x);
   }

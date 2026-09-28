@@ -18,14 +18,9 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include <cmath>
 #include <algorithm>
-#include <iterator>
 #include "openturns/OTprivate.hxx"
 #include "openturns/KPermutations.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/Combinations.hxx"
-#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -37,7 +32,7 @@ KPermutations::KPermutations()
   , k_(1)
   , n_(1)
 {
-  // Nothing to do
+  restart();
 }
 
 /* Constructor with parameters */
@@ -46,7 +41,7 @@ KPermutations::KPermutations(const UnsignedInteger n)
   , k_(n)
   , n_(n)
 {
-  // Nothing to do
+  restart();
 }
 
 KPermutations::KPermutations(const UnsignedInteger k,
@@ -55,7 +50,7 @@ KPermutations::KPermutations(const UnsignedInteger k,
   , k_(k)
   , n_(n)
 {
-  // Nothing to do
+  restart();
 }
 
 /* Virtual constructor */
@@ -64,46 +59,68 @@ KPermutations * KPermutations::clone() const
   return new KPermutations(*this);
 }
 
-/* Experiment plane generation :
- *  all the kPermutations of k elements amongst {0, ..., n-1}
- */
-IndicesCollection KPermutations::generate() const
+/* Next k-permutation generation, stateful iteration like SplitterImplementation */
+Indices KPermutations::generateNext() const
 {
-  /* Quick return for trivial cases */
-  if (k_ > n_) return IndicesCollection(0, k_);
-  if (k_ == 0) return IndicesCollection(1, 0);
-  Indices indices(k_);
-  indices.fill();
-  /* Size of the sample to be generated: A(k, n) */
-  const UnsignedInteger size = static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1))));
-  IndicesCollection allKPermutations(size, k_);
-  /* First, generate all the permutations of k integers */
-  IndicesCollection allPermutations(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(k_ + 1)))), k_);
-  std::copy(indices.begin(), indices.end(), allPermutations.begin_at(0));
-  UnsignedInteger flatIndex = 1;
-  while (std::next_permutation(indices.begin(), indices.end()))
+  const UnsignedInteger size = getSize();
+  if (currentIndex_ >= size)
+    throw OutOfBoundException(HERE) << "No more k-permutations to generate";
+  Indices result(k_);
+  for (UnsignedInteger j = 0; j < k_; ++j) result[j] = currentCombination_[currentPermutation_[j]];
+  ++currentIndex_;
+  if (currentIndex_ < size)
   {
-    std::copy(indices.begin(), indices.end(), allPermutations.begin_at(flatIndex));
-    ++flatIndex;
-  }
-  /* Quick return if k == n */
-  if (k_ == n_) return allPermutations;
-  /* Second, generate all the combinations of k out of n elements */
-  IndicesCollection allCombinations(Combinations(k_, n_).generate());
-  flatIndex = 0;
-  const UnsignedInteger combinationSize = allCombinations.getSize();
-  const UnsignedInteger permutationSize = allPermutations.getSize();
-  for (UnsignedInteger i = 0; i < combinationSize; ++i)
-  {
-    /* Generate all the permutations of the base combination */
-    for (UnsignedInteger j = 0; j < permutationSize; ++j)
+    if (!std::next_permutation(currentPermutation_.begin(), currentPermutation_.end()))
     {
-      for (UnsignedInteger k = 0; k < k_; ++k) allKPermutations(flatIndex, k) = allCombinations(i, allPermutations(j, k));
-      ++flatIndex;
+      /* All the permutations of the current combination have been generated, move to the next combination */
+      currentPermutation_.fill();
+      UnsignedInteger t = k_ - 1;
+      while ((t != 0) && (currentCombination_[t] == n_ + t - k_)) --t;
+      ++currentCombination_[t];
+      for (UnsignedInteger i = t + 1; i < k_; ++i) currentCombination_[i] = currentCombination_[i - 1] + 1;
     }
   }
-  return allKPermutations;
-} // generate()
+  return result;
+}
+
+/* Number of k-permutations accessor: A(n, k) = n! / (n - k)! */
+UnsignedInteger KPermutations::getSize() const
+{
+  if (k_ > n_) return 0;
+  if (k_ == 0) return 1;
+  const UnsignedInteger maxUInt = std::numeric_limits<UnsignedInteger>::max();
+  UnsignedInteger size = 1;
+  for (UnsignedInteger i = 0; i < k_; ++i)
+  {
+    const UnsignedInteger factor = n_ - i;
+    if (size > maxUInt / factor)
+      throw InvalidArgumentException(HERE) << "KPermutations size would overflow integer limit " << maxUInt;
+    size *= factor;
+  }
+  return size;
+}
+
+/* Dimension of the generated k-permutations accessor */
+UnsignedInteger KPermutations::getDimension() const
+{
+  return k_;
+}
+
+/* Restart the combinatorial sequence */
+void KPermutations::restart() const
+{
+  currentIndex_ = 0;
+  if (k_ > n_)
+  {
+    currentCombination_.clear();
+    currentPermutation_.clear();
+    return;
+  }
+  currentCombination_.resize(k_);
+  currentCombination_.fill();
+  currentPermutation_.resize(k_);
+  currentPermutation_.fill();
+}
 
 /* String converter */
 String KPermutations::__repr__() const
@@ -120,6 +137,7 @@ String KPermutations::__repr__() const
 void KPermutations::setK(const UnsignedInteger k)
 {
   k_ = k;
+  restart();
 }
 
 UnsignedInteger KPermutations::getK() const
@@ -131,6 +149,7 @@ UnsignedInteger KPermutations::getK() const
 void KPermutations::setN(const UnsignedInteger n)
 {
   n_ = n;
+  restart();
 }
 
 UnsignedInteger KPermutations::getN() const

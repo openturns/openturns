@@ -51,8 +51,20 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Sample generation */
+  /** @deprecated Sample generation */
   virtual IndicesCollection generate() const;
+
+  /** Next combination generation, stateful iteration like SplitterImplementation */
+  virtual Indices generateNext() const;
+
+  /** Number of combinations accessor */
+  virtual UnsignedInteger getSize() const;
+
+  /** Dimension of the generated combinations accessor */
+  virtual UnsignedInteger getDimension() const;
+
+  /** Restart the combinatorial sequence */
+  virtual void restart() const;
 
 }; /* class CombinatorialGenerator */
 

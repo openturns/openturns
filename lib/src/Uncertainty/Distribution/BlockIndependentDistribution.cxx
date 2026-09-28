@@ -993,13 +993,15 @@ Sample BlockIndependentDistribution::getSupport(const Interval & interval) const
     marginalSupport[j] = distributionCollection_[j].getSupport(interval.getMarginal(marginalIndices));
     marginalSize[j] = marginalSupport[j].getSize();
   }
-  IndicesCollection tuples(Tuples(marginalSize).generate());
+  Tuples generator(marginalSize);
+  const UnsignedInteger tuplesSize = generator.getSize();
   Sample support(0, getDimension());
-  for (UnsignedInteger i = 0; i < tuples.getSize(); ++ i)
+  for (UnsignedInteger i = 0; i < tuplesSize; ++ i)
   {
+    const Indices tuple(generator.generateNext());
     Point x;
     for (UnsignedInteger j = 0; j < size; ++ j)
-      x.add(marginalSupport[j][tuples(i, j)]);
+      x.add(marginalSupport[j][tuple[j]]);
     if (computePDF(x) > 0.0)
       support.add(x);
   }

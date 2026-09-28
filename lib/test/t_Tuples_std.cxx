@@ -36,7 +36,13 @@ int main(int, char *[])
     bounds[1] = 10;
     Tuples myGenerator(bounds);
     fullprint << "myGenerator = " << myGenerator << std::endl;
-    IndicesCollection tuples(myGenerator.generate());
+    const UnsignedInteger size = myGenerator.getSize();
+    IndicesCollection tuples(size, bounds.getSize());
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Indices tuple(myGenerator.generateNext());
+      for (UnsignedInteger j = 0; j < bounds.getSize(); ++j) tuples(i, j) = tuple[j];
+    }
     fullprint << "tuples = " << tuples << std::endl;
   }
   catch (TestFailed & ex)

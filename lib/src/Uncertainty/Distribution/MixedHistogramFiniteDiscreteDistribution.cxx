@@ -90,7 +90,12 @@ MixedHistogramFiniteDiscreteDistribution::MixedHistogramFiniteDiscreteDistributi
   for (UnsignedInteger i = 0; i < dimension; ++i)
     // Here, kind[i] == 0 <-> kind[i] is false <-> i is discrete
     discretization[i] = ticksCollection_[i].getSize() - kind_[i];
-  allIndices_ = Tuples(discretization).generate();
+  Tuples generator(discretization);
+  const UnsignedInteger tuplesSize = generator.getSize();
+  Collection<Indices> coll(tuplesSize);
+  for (UnsignedInteger i = 0; i < tuplesSize; ++i)
+    coll[i] = generator.generateNext();
+  allIndices_ = IndicesCollection(coll);
   for (UnsignedInteger j = 0; j < dimension; ++ j)
     if (kind_[j] == DISCRETE)
       discreteIndices_.add(j);
@@ -409,7 +414,6 @@ Distribution MixedHistogramFiniteDiscreteDistribution::getMarginal(const Indices
     discretization.add((kind_[index] == DISCRETE) ? size : size - 1);
     marginalTotalSize *= discretization[j];
   }
-  IndicesCollection marginalAllIndices(Tuples(discretization).generate());
   Point marginalProbabilityTable(marginalTotalSize);
   const UnsignedInteger totalSize = probabilityTable_.getSize();
 

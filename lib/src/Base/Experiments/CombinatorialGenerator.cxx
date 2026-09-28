@@ -62,4 +62,28 @@ IndicesCollection CombinatorialGenerator::generate() const
   return getImplementation()->generate();
 }
 
+/* Next combination generation */
+Indices CombinatorialGenerator::generateNext() const
+{
+  return getImplementation()->generateNext();
+}
+
+/* Number of combinations accessor */
+UnsignedInteger CombinatorialGenerator::getSize() const
+{
+  return getImplementation()->getSize();
+}
+
+/* Dimension of the generated combinations accessor */
+UnsignedInteger CombinatorialGenerator::getDimension() const
+{
+  return getImplementation()->getDimension();
+}
+
+/* Restart the combinatorial sequence */
+void CombinatorialGenerator::restart() const
+{
+  getImplementation()->restart();
+}
+
 END_NAMESPACE_OPENTURNS

@@ -33,7 +33,13 @@ int main(int, char *[])
   {
     Combinations myGenerator(3, 5);
     fullprint << "myGenerator = " << myGenerator << std::endl;
-    IndicesCollection combinations(myGenerator.generate());
+    const UnsignedInteger size = myGenerator.getSize();
+    IndicesCollection combinations(size, myGenerator.getK());
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Indices combination(myGenerator.generateNext());
+      for (UnsignedInteger j = 0; j < myGenerator.getK(); ++j) combinations(i, j) = combination[j];
+    }
     fullprint << "combinations = " << combinations << std::endl;
   }
   catch (TestFailed & ex)

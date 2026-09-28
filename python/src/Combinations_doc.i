@@ -38,8 +38,20 @@ Examples
 --------
 >>> import openturns as ot
 >>> tuples = ot.Combinations(2, 5)
->>> print(tuples.generate())
-[[0,1],[0,2],[0,3],[0,4],[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]#10
+>>> print(tuples.getSize())
+10
+>>> for indices in tuples:
+...     print(indices)
+[0,1]
+[0,2]
+[0,3]
+[0,4]
+[1,2]
+[1,3]
+[1,4]
+[2,3]
+[2,4]
+[3,4]
 )RAW"
 
 // ---------------------------------------------------------------------

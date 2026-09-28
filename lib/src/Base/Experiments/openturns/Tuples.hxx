@@ -45,10 +45,19 @@ public:
   /** Virtual constructor */
   Tuples * clone() const override;
 
-  /** Experiment plane generation :
+  /** Next tuple generation, stateful iteration like SplitterImplementation :
    *  all the tuples taking values in {0,...,bounds[0]-1}x...x{0,...,bounds[n-1]-1}
    */
-  IndicesCollection generate() const override;
+  Indices generateNext() const override;
+
+  /** Number of tuples accessor */
+  UnsignedInteger getSize() const override;
+
+  /** Dimension of the generated tuples accessor */
+  UnsignedInteger getDimension() const override;
+
+  /** Restart the combinatorial sequence */
+  void restart() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -61,6 +70,12 @@ public:
 private:
   /** Bounds on the marginal values of the tuple */
   Indices bounds_;
+
+  /** Current tuple for stateful iteration */
+  mutable Indices current_;
+
+  /** Number of tuples already generated */
+  mutable UnsignedInteger currentIndex_ = 0;
 
 }; /* class Tuples */
 
