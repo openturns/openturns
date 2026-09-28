@@ -264,8 +264,28 @@ def bugfix_optim_no_feasible():
     ott.assert_almost_equal(squared_epsilon, [7.248e-06, 298.4, 0.9051], 5e-1, 1e-3)
 
 
-if __name__ == "__main__":
+def bugfix_loglikelihood_exception_issue_1328():
+    """
+    This function tests the reduced log-likelihood function of the GaussianProcessFitter
+    to ensure it returns -inf in degenerate cases.
+    """
+    sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
+    sampleY = [[1.0], [1.0], [1.0], [1.0], [1.0], [1.0], [1.0], [1.0]]
 
+    basis = ot.ConstantBasisFactory(1).build()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = ot.GaussianProcessFitter(sampleX, sampleY, covarianceModel, basis)
+    algo.run()
+    rll = algo.getReducedLogLikelihoodFunction()
+    rll_value = rll([0.1])[0]
+    assert (
+        rll_value < 300.0
+    ), f"Log-likelihood should theoretically be [-inf], and is tolerated to be < [300.0], but is {rll_value}"
+    surrogate_model_value = algo.getResult().getMetaModel()([4.5])[0]
+    ott.assert_almost_equal(surrogate_model_value, 1.0, 1e-15, 0.0)
+
+
+if __name__ == "__main__":
     ot.RandomGenerator.SetSeed(0)
     sampleSize = 40
     inputDimension = 1
@@ -294,3 +314,5 @@ if __name__ == "__main__":
     use_case_8(X, Y)
     # fix https://github.com/openturns/openturns/issues/2953
     bugfix_optim_no_feasible()
+    # fix https://github.com/openturns/openturns/issues/1328
+    bugfix_loglikelihood_exception_issue_1328()
