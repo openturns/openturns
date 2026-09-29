@@ -101,6 +101,8 @@ private:
   void generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights) const;
   // Generate nodes and weights for Fejer Type 2
   void generateNodesAndWeightsFejerType2(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights) const;
+  // Update the distribution to match discretization and bounds
+  void updateDistribution();
 
   /* Discretization of the tensorized rule */
   Indices discretization_;

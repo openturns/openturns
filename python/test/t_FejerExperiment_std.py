@@ -23,7 +23,7 @@ for rule in all_rules:
         assert len(weights) == N
         assert experiment.hasUniformWeights() == (N < 2)
         ott.assert_almost_equal(nodes.computeMean(), [4.5])
-        ott.assert_almost_equal(sum(weights), 2.0)
+        ott.assert_almost_equal(sum(weights), 1.0)
 
 # check nesting
 mapN = {otexp.FejerExperiment.FEJERTYPE2: lambda n: 2**n - 1}

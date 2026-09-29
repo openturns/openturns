@@ -8,7 +8,8 @@ R"RAW(Fejer experiment.
 This class computes Fejer and Clenshaw–Curtis quadrature,
 `see also here <https://en.wikipedia.org/wiki/Clenshaw%E2%80%93Curtis_quadrature>`_
 
-For any :math:`k=0,1,...,n-1`, let :math:`\theta_k = \dfrac{k\pi}{n}`.
+For any :math:`k=0,1,...,n-1`, let :math:`\theta_k = \dfrac{k\pi}{n-1}`,
+where :math:`n` is the number of nodes of the considered dimension.
 The Clenshaw-Curtis nodes are:
 
 .. math::
@@ -19,7 +20,7 @@ for any :math:`k=0,1,...,n-1` and its associated weights are:
 
 .. math::
 
-    w_k = \dfrac{c_k}{n}\left(1-\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{b_j}{4j^2-1}\cos\left(2j\theta_k\right)\right)
+    w_k = \dfrac{c_k}{2(n-1)}\left(1-\sum_{j=1}^{\lfloor (n-1)/2\rfloor}\dfrac{b_j}{4j^2-1}\cos\left(2j\theta_k\right)\right)
 
 where:
 
@@ -27,7 +28,7 @@ where:
 
     b_j =
     \begin{cases}
-    2 & \textrm{ if } j < n/2, \\
+    2 & \textrm{ if } j < \lfloor (n-1)/2\rfloor, \\
     1 & \textrm{ otherwise},
     \end{cases}
 
@@ -41,25 +42,30 @@ and:
     2 & \textrm{ otherwise}.
     \end{cases}
 
+The single node case :math:`n = 1` is handled separately, with :math:`x_0 = 0`
+and :math:`w_0 = 1`.
+
 The type-1 Fejer quadrature rule uses the nodes:
 
 .. math::
 
-    x_k = \cos(\theta_{k + 1/2})
+    x_k = \cos(\phi_k)
 
+with :math:`\phi_k = \left(k+\tfrac{1}{2}\right)\dfrac{\pi}{n}`
 for any :math:`k=0,1,...,n-1` and the associated weights are:
 
 .. math::
 
-    w_k = \dfrac{2}{n}\left(1-2\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{1}{4j^2-1}\cos\left(j\theta_{2k+1}\right)\right)
+    w_k = \dfrac{1}{n}\left(1-2\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{1}{4j^2-1}\cos\left(2j\phi_k\right)\right)
 
 Finally, the type-2 Fejer quadrature rule is very close to the Clenshaw-Curtis rule. The two methods share the same
 nodes (except the endpoints that are set to `0` within the `Fejer` method).  The weights of the type-2 Fejer quadrature rule are:
 
 .. math::
 
-    w_k=\dfrac{4}{n+1}\sin\theta_k\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{\sin\left((2j-1)\theta_k\right)}{2j-1}
+    w_k=\dfrac{2}{n+1}\sin\psi_k\sum_{j=1}^{\lfloor (n+1)/2\rfloor}\dfrac{\sin\left((2j-1)\psi_k\right)}{2j-1}
 
+with :math:`\psi_k = \dfrac{(k+1)\pi}{n+1}`,
 for any :math:`k=0,1,...,n-1`.
 
 Parameters

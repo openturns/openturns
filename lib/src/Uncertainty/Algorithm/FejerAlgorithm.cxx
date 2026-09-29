@@ -91,7 +91,7 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
   // Compute the integral
   for (UnsignedInteger i = 0; i < values.getSize(); ++i)
     integral += values[i] * weights_[i];
-  return std::pow(0.5, 1.0 * inputDimension) * integral * volume;
+  return integral * volume;
 }
 
 /* Generate nodes and weights */
