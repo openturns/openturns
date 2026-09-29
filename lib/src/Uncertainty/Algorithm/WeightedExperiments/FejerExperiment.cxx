@@ -21,6 +21,7 @@
 #include "openturns/FejerExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Tuples.hxx"
+#include "openturns/MultivariateUniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,6 +44,7 @@ FejerExperiment::FejerExperiment(const Indices & discretization,
 {
   if (!discretization.getSize())
     throw InvalidArgumentException(HERE) << "FejerExperiment discretization dimension cannot be zero.";
+  updateDistribution();
 }
 
 /* Virtual constructor */
@@ -238,6 +240,7 @@ void FejerExperiment::load(Advocate & adv)
   ruleType_ = static_cast<RuleType>(ruleType);
   adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("useNestedLevels_", useNestedLevels_);
+  updateDistribution();
 }
 
 
@@ -255,7 +258,7 @@ void FejerExperiment::generateNodesAndWeightsClenshawCurtis(Collection<Point> & 
     if (integrationNodesNumber == 1)
     {
       marginalNodes[i] = Point({0.0});
-      marginalWeights[i] = Point({2.0});
+      marginalWeights[i] = Point({1.0});
       continue;
     }
 
@@ -294,7 +297,7 @@ void FejerExperiment::generateNodesAndWeightsClenshawCurtis(Collection<Point> & 
         Scalar ck = 2.0;
         if (k == 0 || k == (integrationNodesNumber - 1))
           ck = 1.0;
-        mwi[k] = ck / (integrationNodesNumber - 1) * term;
+        mwi[k] = 0.5 * ck / (integrationNodesNumber - 1) * term;
       }
       marginalNodes[i] = mni;
       marginalWeights[i] = mwi;
@@ -340,7 +343,7 @@ void FejerExperiment::generateNodesAndWeightsFejerType1(Collection<Point> & marg
         {
           term += (1.0 / (4.0 * j * j - 1.0)) * std::cos(2.0 * j * theta_k);
         }
-        mwi[k] = (2.0 / integrationNodesNumber) * (1.0 - 2.0 * term);
+        mwi[k] = (1.0 / integrationNodesNumber) * (1.0 - 2.0 * term);
       }
       marginalNodes[i] = mni;
       marginalWeights[i] = mwi;
@@ -387,7 +390,7 @@ void FejerExperiment::generateNodesAndWeightsFejerType2(Collection<Point> & marg
         for (UnsignedInteger j = 1; j <= halfNodesNumber; ++j)
           sum_sinus += std::sin((2.0 * j - 1.0) * theta_k) / (2.0 * j - 1.0);
         // Weights
-        mwi[k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
+        mwi[k] = 2.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
       }
       marginalNodes[i] = mni;
       marginalWeights[i] = mwi;
@@ -401,6 +404,7 @@ void FejerExperiment::setDiscretization(const Indices & discretization)
   if (!discretization.getSize())
     throw InvalidArgumentException(HERE) << "FejerExperiment discretization dimension cannot be zero.";
   discretization_ = discretization;
+  updateDistribution();
 }
 
 Indices FejerExperiment::getDiscretization() const
@@ -414,6 +418,17 @@ void FejerExperiment::setBounds(const Interval & bounds)
   if (bounds.getDimension() && discretization_.getSize() != bounds.getDimension())
     throw InvalidArgumentException(HERE) << "FejerExperiment discretization and bounds dimension do not match.";
   bounds_ = bounds;
+  updateDistribution();
+}
+
+void FejerExperiment::updateDistribution()
+{
+  const UnsignedInteger dimension = discretization_.getSize();
+  if (!dimension) return;
+  if (bounds_.getDimension() == dimension)
+    WeightedExperimentImplementation::setDistribution(MultivariateUniform(bounds_.getLowerBound(), bounds_.getUpperBound()));
+  else
+    WeightedExperimentImplementation::setDistribution(MultivariateUniform(Point(dimension, -1.0), Point(dimension, 1.0)));
 }
 
 Interval FejerExperiment::getBounds() const

@@ -50,4 +50,4 @@ for n in range(1, 8):
         if n == 1 and rule == ot.FejerAlgorithm.CLENSHAWCURTIS:
             ott.assert_almost_equal(nodes, [0.0])
         if n == 2 and rule == ot.FejerAlgorithm.FEJERTYPE2:
-            ott.assert_almost_equal(weights, [1.0] * 2)
+            ott.assert_almost_equal(weights, [0.5] * 2)
