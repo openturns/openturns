@@ -820,6 +820,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
   addAsBool("OptimizationAlgorithm-DefaultCheckStatus", true);
 
+  // SCIP parameters //
+  addAsUnsignedInteger("SCIP-DefaultMaximumIterationNumber", 10000);
+
   // Pagmo parameters //
   addAsUnsignedInteger("Pagmo-InitialSeed", 0);
   addAsString("Pagmo-UnconstrainMethod", "death penalty");

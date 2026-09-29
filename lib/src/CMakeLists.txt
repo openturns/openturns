@@ -59,6 +59,10 @@ if (highs_FOUND)
   set_source_files_properties (Base/Optim/HiGHS.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
+if (SCIP_FOUND)
+  set_source_files_properties (Base/Optim/SCIP.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # Exclude LibXML sources
 if (LIBXML2_FOUND)
   set_source_files_properties (Base/Common/XMLStorageManager.cxx Base/Common/XMLToolbox.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)

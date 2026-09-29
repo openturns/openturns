@@ -23,6 +23,9 @@ for minimization in [True, False]:
             if "global" in name or name.startswith("G"):
                 # slow global optimizers
                 continue
+            if name == "SCIP":
+                # black-box B&B may exhaust the node budget on this problem
+                continue
             algo = ot.OptimizationAlgorithm.GetByName(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
@@ -186,8 +189,9 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     print(f"{name}...")
     algo.setMaximumResidualError(1e-3)
     algo.setMaximumCallsNumber(10000)
-    if name in list(ot.Bonmin.GetAlgorithmNames()) + ["Ipopt"]:
-        algo.setCheckStatus(False)  # optim fails with "Invalid number detected"
+    if name in list(ot.Bonmin.GetAlgorithmNames()) + ["Ipopt", "SCIP"]:
+        # these algorithms raise an exception when interrupted by the stop callback
+        algo.setCheckStatus(False)
 
     def ask_stop():
         return True

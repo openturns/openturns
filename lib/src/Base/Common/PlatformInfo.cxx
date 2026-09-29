@@ -98,6 +98,12 @@ Description PlatformInfo::GetFeatures()
     Features_["bonmin"] = false;
 #endif
 
+#ifdef OPENTURNS_HAVE_SCIP
+    Features_["scip"] = true;
+#else
+    Features_["scip"] = false;
+#endif
+
 #ifdef OPENTURNS_HAVE_CMINPACK
     Features_["cminpack"] = true;
 #else

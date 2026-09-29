@@ -247,6 +247,7 @@ ot_add_python_module(experimental experimental_module.i
                      ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
                      LinearProgrammingProblem.i LinearProgrammingProblem_doc.i
                      QuadraticProgrammingProblem.i QuadraticProgrammingProblem_doc.i
+                     SCIP.i SCIP_doc.i
                      SparseMatrix.i SparseMatrix_doc.i
                      BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i
                      GaussLPQuadrature.i GaussLPQuadrature_doc.i

@@ -226,9 +226,12 @@ The tools chosen for the development of the platform are:
    * - Optimization (optional)
      - `Ipopt <https://coin-or.github.io/Ipopt/>`_
      - 3.11.9
-   * - Optimization (optional)
-     - `Pagmo <https://esa.github.io/pagmo2/>`_
-     - 2.12.0
+    * - Optimization (optional)
+      - `Pagmo <https://esa.github.io/pagmo2/>`_
+      - 2.12.0
+    * - Optimization (optional)
+      - `SCIP <https://scipopt.org/>`_
+      - 9.0
    * - Integration (optional)
      - `Cuba <https://feynarts.de/cuba/>`_
      - 4.2.2
