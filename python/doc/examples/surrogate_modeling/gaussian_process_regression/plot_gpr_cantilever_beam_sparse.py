@@ -7,7 +7,7 @@ Sparse Gaussian Process Regression : cantilever beam model
 # In this example, we create a sparse Gaussian Process Regression (GPR) metamodel (refer to
 # :ref:`gaussian_process_regression`) of the :ref:`cantilever beam <use-case-cantilever-beam>`.
 # We use a squared exponential covariance kernel for the Gaussian process. In order to estimate
-# the hyper-parameters, we use a design of experiments of size 200 and 30 inducing points.
+# the hyper-parameters, we use a design of experiments of size 100 and 15 inducing points.
 #
 # The sparse Gaussian process, also known as sparse variational Gaussian process (SVGP),
 # relies on a variational approximation of the posterior, based on a reduced set of :math:`m`
@@ -54,7 +54,7 @@ myDistribution = cb.distribution
 #
 # We perturb the outputs with a Gaussian noise of standard deviation 0.005 cm, in order to
 # illustrate the noise model handled by the sparse Gaussian process.
-sampleSize_train = 200
+sampleSize_train = 100
 X_train = myDistribution.getSample(sampleSize_train)
 noise_std = 0.005
 Y_train = model(X_train) + ot.Normal(0.0, noise_std).getSample(sampleSize_train)
@@ -93,7 +93,7 @@ covarianceModel = ot.SquaredExponential(cb.dim)
 # hyperparameters and the noise variance by maximizing the collapsed variational bound (ELBO).
 # The inducing points are not optimized by default: this is controlled by the
 # :meth:`~openturns.experimental.SparseGaussianProcessFitter.setOptimizeInducingPoints` method.
-m = 30
+m = 15
 fitter_algo = SparseGaussianProcessFitter(X_train_std, Y_train, covarianceModel, m)
 fitter_algo.run()
 fitter_result = fitter_algo.getResult()
@@ -131,8 +131,8 @@ print(conditionalVariance)
 # Validate the metamodel
 # ----------------------
 #
-# We finally want to validate the sparse GPR metamodel. This is why we generate a validation sample with size 100 and we evaluate the output of the model on this sample.
-sampleSize_test = 100
+# We finally want to validate the sparse GPR metamodel. This is why we generate a validation sample with size 50 and we evaluate the output of the model on this sample.
+sampleSize_test = 50
 X_test = myDistribution.getSample(sampleSize_test)
 Y_test = model(X_test)
 

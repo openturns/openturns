@@ -268,6 +268,32 @@ def test_descriptions():
     assert metaModel.getOutputDescription() == ["Y0"]
 
 
+# The Sample overloads must match the Point overloads
+def test_sample_evaluation():
+    ot.RandomGenerator.SetSeed(0)
+    X, Y, covarianceModel = _data()
+    fit_algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    fit_algo.setNoiseStdDev(1e-2)
+    fit_algo.setOptimizeNoiseStdDev(False)
+    fit_algo.run()
+    algo = SparseGaussianProcessRegression(fit_algo.getResult())
+    algo.run()
+    result = algo.getResult()
+    metaModel = result.getMetaModel()
+    smp = ot.Sample([[1.5], [4.0], [7.5]])
+    values = metaModel(smp)
+    assert values.getSize() == 3
+    for i in range(3):
+        ott.assert_almost_equal(values[i], metaModel(smp[i]), 1e-14, 1e-14)
+    variance = result.getConditionalVariance(smp)
+    assert len(variance) == 3
+    for i in range(3):
+        ott.assert_almost_equal(
+            variance[i], result.getConditionalVariance(smp[i]), 1e-14, 1e-14
+        )
+        assert variance[i] > 0.0
+
+
 # setMethod must reject values outside the LAPACK/HMAT enumeration
 def test_set_method_invalid():
     X, Y, covarianceModel = _data()
@@ -285,6 +311,7 @@ if __name__ == "__main__":
     test_gradient()
     test_save_load()
     test_descriptions()
+    test_sample_evaluation()
     test_method_accessor()
     test_set_method_invalid()
     test_regression_repr_str()
