@@ -149,7 +149,7 @@ void ProcessSample::erase(const Indices & indices)
       ++position;
     else
     {
-      result[kept] = getImplementation()->operator[](i);
+      result.setField(kept, getImplementation()->getField(i));
       ++kept;
     }
   }

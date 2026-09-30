@@ -651,12 +651,12 @@ ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const Indic
  * and returns the remainder as a new process sample */
 ProcessSampleImplementation ProcessSampleImplementation::split(const UnsignedInteger index)
 {
-  const UnsignedInteger size = data_.getSize();
+  const UnsignedInteger size = getSize();
   // We first check that the index is in the sample's range
   if (!(index <= size)) throw OutOfBoundException(HERE) << "Index over size. Index=" << index << " size=" << size;
   // Build the remainder
   ProcessSampleImplementation result(mesh_, size - index, getDimension());
-  for (UnsignedInteger i = index; i < size; ++i) result[i - index] = data_[i];
+  for (UnsignedInteger i = index; i < size; ++i) result.setField(i - index, getField(i));
   // Truncate the current process sample
   if (index < size) erase(index, size);
   return result;
