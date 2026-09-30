@@ -59,7 +59,8 @@ namespace {
   {
     const UnsignedInteger rows = mat.getNbRows();
     const UnsignedInteger cols = mat.getNbColumns();
-    const ComplexCollection& flat = *mat.getImplementation();
+    const ComplexMatrixImplementation & implRef = *mat.getImplementation();
+    const ComplexCollection flat(implRef.begin(), implRef.end());
     ComplexCollection resultFlat = algo.transform(flat, {rows, cols});
     ComplexMatrixImplementation impl(rows, cols, resultFlat.begin(), resultFlat.end());
     return ComplexMatrix(impl);
@@ -70,7 +71,8 @@ namespace {
     const UnsignedInteger rows = tensor.getNbRows();
     const UnsignedInteger cols = tensor.getNbColumns();
     const UnsignedInteger sheets = tensor.getNbSheets();
-    const ComplexCollection& flat = *tensor.getImplementation();
+    const ComplexTensorImplementation & implRef = *tensor.getImplementation();
+    const ComplexCollection flat(implRef.begin(), implRef.end());
     ComplexCollection resultFlat = algo.transform(flat, {rows, cols, sheets});
     return ComplexTensor(rows, cols, sheets, resultFlat.begin(), resultFlat.end());
   }
