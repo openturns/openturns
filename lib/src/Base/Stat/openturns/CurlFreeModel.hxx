@@ -36,11 +36,17 @@ public:
   /** Default constructor */
   explicit CurlFreeModel(const UnsignedInteger inputDimension = 2);
 
+  /** Copy constructor */
+  CurlFreeModel(const CurlFreeModel & other);
+
   /** Parameters constructor */
   explicit CurlFreeModel(const CovarianceModel & model);
 
   /** Virtual copy constructor */
   CurlFreeModel * clone() const override;
+
+  /** Assignment operator */
+  CurlFreeModel & operator=(const CurlFreeModel & rhs);
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();

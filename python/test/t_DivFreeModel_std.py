@@ -252,6 +252,26 @@ curl_default = otexp.CurlFreeModel(2)
 assert_curl_div_relation(curl_default, div_default, [0.5, 0.3], [0.1, 0.2])
 
 # ====================================================================
+# Copy constructor (same-type argument must copy, not convert)
+# ====================================================================
+print("=" * 60)
+print("Test copy constructor")
+print("=" * 60)
+div_copy = otexp.DivFreeModel(divFree)
+assert div_copy.getInputDimension() == 2
+assert div_copy.getOutputDimension() == 2
+assert div_copy.getClassName() == "DivFreeModel"
+val_copy = div_copy(s, t)
+ott.assert_almost_equal(val_copy[0, 0], value[0, 0])
+ott.assert_almost_equal(val_copy[0, 1], value[0, 1])
+ott.assert_almost_equal(val_copy[1, 0], value[1, 0])
+ott.assert_almost_equal(val_copy[1, 1], value[1, 1])
+# same-type copy of the default instance (t_Object_std scenario)
+div_default_copy = otexp.DivFreeModel(otexp.DivFreeModel(2))
+assert div_default_copy.getInputDimension() == 2
+assert div_default_copy.getOutputDimension() == 2
+
+# ====================================================================
 # Exception cases
 # ====================================================================
 print("=" * 60)
@@ -270,8 +290,8 @@ with ott.assert_raises(TypeError):
 print("=" * 60)
 print("Test non-stationary model")
 print("=" * 60)
-fbm1 = ot.FractionalBrownianMotionModel(1.0, 1.0, 0.8)
-fbm2 = ot.FractionalBrownianMotionModel(2.0, 1.0, 0.6)
+fbm1 = ot.FractionalBrownianMotionModel([1.0], [1.0], [0.8])
+fbm2 = ot.FractionalBrownianMotionModel([2.0], [1.0], [0.6])
 nonStatModel = ot.ProductCovarianceModel([fbm1, fbm2])
 print("Non-stationary model stationary?", nonStatModel.isStationary())
 assert not nonStatModel.isStationary()

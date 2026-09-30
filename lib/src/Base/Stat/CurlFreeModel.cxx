@@ -50,6 +50,27 @@ CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
 }
 
 
+/* Copy constructor */
+CurlFreeModel::CurlFreeModel(const CurlFreeModel & other)
+  : CovarianceModelImplementation(other)
+  , model_(other.model_)
+{
+  // Nothing to do
+}
+
+
+/* Assignment operator */
+CurlFreeModel & CurlFreeModel::operator=(const CurlFreeModel & rhs)
+{
+  if (this != &rhs)
+  {
+    CovarianceModelImplementation::operator=(rhs);
+    model_ = rhs.model_;
+  }
+  return *this;
+}
+
+
 /* Parameters constructor */
 CurlFreeModel::CurlFreeModel(const CovarianceModel & model)
   : CovarianceModelImplementation(model.getInputDimension())

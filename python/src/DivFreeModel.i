@@ -4,6 +4,8 @@
 #include "openturns/DivFreeModel.hxx"
 %}
 
+%ignore OT::DivFreeModel::operator=(const DivFreeModel &);
+
 %include DivFreeModel_doc.i
 
 %copyctor OT::DivFreeModel;

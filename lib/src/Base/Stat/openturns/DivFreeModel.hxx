@@ -36,11 +36,17 @@ public:
   /** Default constructor */
   explicit DivFreeModel(const UnsignedInteger inputDimension = 2);
 
+  /** Copy constructor */
+  DivFreeModel(const DivFreeModel & other);
+
   /** Parameters constructor */
   explicit DivFreeModel(const CovarianceModel & model);
 
   /** Virtual copy constructor */
   DivFreeModel * clone() const override;
+
+  /** Assignment operator */
+  DivFreeModel & operator=(const DivFreeModel & rhs);
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
