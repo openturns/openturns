@@ -3,7 +3,7 @@
 
 See also
 --------
-FFT
+openturns.FFT
 
 Notes
 -----

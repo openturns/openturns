@@ -19,6 +19,29 @@ inducing points and :math:`\vect{m}_w` is the whitened variational posterior mea
 The conditional variance can be obtained thanks to the :meth:`getConditionalVariance`
 method.
 
+Parameters
+----------
+covarianceModel : :class:`~openturns.CovarianceModel`
+    Covariance model of the sparse Gaussian process.
+
+inducingPoints : :class:`~openturns.Sample`
+    The inducing points :math:`(\vect{z}_j)_{1 \leq j \leq m}`.
+
+whiteningFactor : :class:`~openturns.TriangularMatrix`
+    The lower Cholesky factor of the covariance matrix discretized on the inducing points.
+
+posteriorMean : :class:`~openturns.Point`
+    The mean of the whitened variational posterior distribution.
+
+posteriorCovariance : :class:`~openturns.CovarianceMatrix`
+    The covariance of the whitened variational posterior distribution.
+
+whiteningFactorHMatrix : :class:`~openturns.HMatrix`
+    The Cholesky factor in ``HMAT`` form, used when the linear algebra method is ``HMAT``.
+
+linearAlgebraMethod : int
+    The linear algebra method, either ``LAPACK`` or ``HMAT``.
+
 See also
 --------
 openturns.experimental.SparseGaussianProcessRegression, openturns.experimental.SparseGaussianProcessFitter
@@ -37,6 +60,10 @@ Examples
 >>> algo.run()
 >>> result = algo.getResult()
 >>> metaModel = result.getMetaModel()
+>>> print(metaModel([1.5]))
+[0.036...]
+>>> print(result.getConditionalVariance([1.5]))
+0.9877...
 )RAW"
 
 // ---------------------------------------------------------------------

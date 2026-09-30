@@ -543,6 +543,8 @@ def test_covariance_model_accessor():
     ott.assert_almost_equal(cov.getAmplitude(), covarianceModel.getAmplitude(), 0, 0)
     reduced = algo.getReducedCovarianceModel()
     assert reduced.getInputDimension() == 1
+    ott.assert_almost_equal(reduced.getScale(), covarianceModel.getScale(), 0, 0)
+    ott.assert_almost_equal(reduced.getAmplitude(), covarianceModel.getAmplitude(), 0, 0)
 
 
 # SparseGaussianProcessFitterResult accessors: getNoiseStdDev,
@@ -928,6 +930,134 @@ def test_resource_map_linear_algebra_hmat():
         )
 
 
+# The integer ctor must subsample the inducing points and run
+def test_integer_ctor_success():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, 3)
+    assert algo.getInducingPoints().getSize() == 3
+    algo.setOptimizeParameters(False)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.setNoiseStdDev(0.1)
+    algo.run()
+    assert algo.getResult().getOptimalELBO() < 0.0
+
+
+# getNoiseStdDev on the fitter must return the value set by setNoiseStdDev
+def test_fitter_noise_accessor():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo.setNoiseStdDev(0.3)
+    ott.assert_almost_equal(algo.getNoiseStdDev(), 0.3, 1e-14, 1e-14)
+
+
+# Save / load must preserve the fitter through a Study
+def test_fitter_save_load():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo.setNoiseStdDev(0.1)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.run()
+    filename = "test_sparse_gp_fitter.xml"
+    study = ot.Study(filename)
+    study.add("algo", algo)
+    study.save()
+    study2 = ot.Study(filename)
+    study2.load()
+    algo2 = SparseGaussianProcessFitter()
+    study2.fillObject("algo", algo2)
+    ott.assert_almost_equal(
+        algo.getResult().getOptimalELBO(),
+        algo2.getResult().getOptimalELBO(),
+        1e-10,
+        1e-10,
+    )
+    ott.assert_almost_equal(algo.getInducingPoints(), algo2.getInducingPoints(), 0, 0)
+    os.remove(filename)
+
+
+# The default LAPACK method must be reported and carry an empty H-matrix factor
+def test_result_lapack_method():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo.setNoiseStdDev(0.1)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.run()
+    result = algo.getResult()
+    assert result.getLinearAlgebraMethod() == SparseGaussianProcessFitterResult.LAPACK
+    assert result.getWhiteningFactorHMatrix().getNbRows() == 0
+    assert result.getWhiteningFactorHMatrix().getNbColumns() == 0
+
+
+# The Evaluation / Gradient / Hessian classes must match the metamodel
+def test_direct_evaluation_gradient_hessian():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:3]
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseStdDev(0.3)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.run()
+    result = algo.getResult()
+    metaModel = result.getMetaModel()
+    x = ot.Point([1.5])
+    smp = ot.Sample([[1.5], [4.0]])
+    evaluation = SparseGaussianProcessEvaluation(
+        result.getCovarianceModel(),
+        result.getInducingPoints(),
+        result.getWhiteningFactor(),
+        result.getPosteriorMean(),
+        result.getPosteriorCovariance(),
+    )
+    assert evaluation.getInputDimension() == 1
+    assert evaluation.getOutputDimension() == 1
+    ott.assert_almost_equal(evaluation(x), metaModel(x), 1e-8, 1e-8)
+    ott.assert_almost_equal(evaluation(smp), metaModel(smp), 1e-8, 1e-8)
+    ott.assert_almost_equal(
+        evaluation.getConditionalVariance(smp),
+        result.getConditionalVariance(smp),
+        1e-8,
+        1e-8,
+    )
+    assert len(str(evaluation)) > 0
+    assert len(repr(evaluation)) > 0
+    gradient = SparseGaussianProcessGradient(
+        result.getCovarianceModel(),
+        result.getInducingPoints(),
+        result.getWhiteningFactor(),
+        result.getPosteriorMean(),
+    )
+    assert gradient.getInputDimension() == 1
+    assert gradient.getOutputDimension() == 1
+    ott.assert_almost_equal(gradient.gradient(x), metaModel.gradient(x), 1e-8, 1e-8)
+    assert len(str(gradient)) > 0
+    hessian = SparseGaussianProcessHessian(
+        result.getCovarianceModel(),
+        result.getInducingPoints(),
+        result.getWhiteningFactor(),
+        result.getPosteriorMean(),
+    )
+    assert hessian.getInputDimension() == 1
+    assert hessian.getOutputDimension() == 1
+    ott.assert_almost_equal(hessian.hessian(x), metaModel.hessian(x), 1e-5, 1e-5)
+    assert len(str(hessian)) > 0
+    # save / load roundtrip on the evaluation
+    filename = "test_sparse_gp_evaluation.xml"
+    study = ot.Study(filename)
+    study.add("ev", evaluation)
+    study.save()
+    study2 = ot.Study(filename)
+    study2.load()
+    evaluation2 = SparseGaussianProcessEvaluation()
+    study2.fillObject("ev", evaluation2)
+    ott.assert_almost_equal(evaluation(x), evaluation2(x), 1e-8, 1e-8)
+    os.remove(filename)
+
+
 if __name__ == "__main__":
     test_elbo_matches_exact_log_likelihood()
     test_elbo_matches_reference_for_sparse()
@@ -979,3 +1109,8 @@ if __name__ == "__main__":
     test_resource_map_default_optimization_algorithm_invalid()
     test_resource_map_optimization_normalization_disabled()
     test_resource_map_linear_algebra_hmat()
+    test_integer_ctor_success()
+    test_fitter_noise_accessor()
+    test_fitter_save_load()
+    test_result_lapack_method()
+    test_direct_evaluation_gradient_hessian()

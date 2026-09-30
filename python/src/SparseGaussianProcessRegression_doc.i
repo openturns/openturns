@@ -85,6 +85,16 @@ result : :class:`~openturns.experimental.SparseGaussianProcessFitterResult`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SparseGaussianProcessRegression::run
+"Compute the response surface.
+
+Notes
+-----
+It computes the response surface and creates a
+:class:`~openturns.experimental.SparseGaussianProcessFitterResult` structure containing all the results."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SparseGaussianProcessRegression::getMethod
 "Accessor to the linear algebra method.
 
