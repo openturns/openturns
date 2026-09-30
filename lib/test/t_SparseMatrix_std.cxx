@@ -103,6 +103,36 @@ int main(int, char *[])
   fullprint << "sparse*dense=" << res2.__str__() << std::endl;
   fullprint << "same=" << (res2 == matrix1.asDenseMatrix() * dense1) << std::endl;
 
+  // multiply with a dense matrix given as left operand
+  Matrix dense2(6, 4);
+  for(UnsignedInteger i = 0; i < dense2.getNbRows(); ++ i)
+    for(UnsignedInteger j = 0; j < dense2.getNbColumns(); ++ j)
+      dense2(i, j) = i + j * 10;
+
+  Matrix res3(matrix1.multiplyByDenseOnLeft(dense2));
+  fullprint << "dense*sparse=" << res3.__str__() << std::endl;
+  fullprint << "same=" << (res3 == dense2 * matrix1.asDenseMatrix()) << std::endl;
+
+  // a SymmetricMatrix only stores its lower triangle: the symmetric overload
+  // must read its coefficients through the symmetric accessor, and give the
+  // same result as the dense overload applied to the symmetrized matrix
+  SymmetricMatrix sym(4);
+  sym(0, 0) = 2.0;
+  sym(1, 1) = 3.0;
+  sym(2, 2) = 4.0;
+  sym(3, 3) = 5.0;
+  sym(1, 0) = 1.0;
+  sym(2, 0) = 2.0;
+  sym(3, 0) = 3.0;
+  sym(2, 1) = 4.0;
+  sym(3, 1) = 5.0;
+  sym(3, 2) = 6.0;
+  Matrix denseSym(sym);
+  Matrix resSym(matrix1.multiplyBySymmetricOnLeft(sym));
+  fullprint << "symmetric*sparse=" << resSym.__str__() << std::endl;
+  fullprint << "same=" << (resSym == denseSym * matrix1.asDenseMatrix()) << std::endl;
+  fullprint << "same=" << (resSym == matrix1.multiplyByDenseOnLeft(denseSym)) << std::endl;
+
   /** triplet ctor */
   Indices rowIndices;
   Indices columnIndices;
@@ -145,6 +175,12 @@ int main(int, char *[])
   fullprint << "matrix5=" << matrix5 << std::endl;
   fullprint << "matrix5 as dense = " << matrix5.asDenseMatrix().__str__() << std::endl;
   fullprint << "ptResult = " << matrix5*pt << std::endl;
+
+  // transposition sums the values at duplicate indices
+  const SparseMatrix matrix5T(matrix5.transpose());
+  fullprint << "matrix5T=" << matrix5T << std::endl;
+  fullprint << "matrix5T(4, 2)=" << matrix5T(4, 2) << std::endl;
+  fullprint << "matrix5T as dense = " << matrix5T.asDenseMatrix().__str__() << std::endl;
 
   return ExitCode::Success;
 }

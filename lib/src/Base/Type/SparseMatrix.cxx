@@ -182,11 +182,37 @@ UnsignedInteger SparseMatrix::getNbNonZeros() const
 /* Transposition */
 SparseMatrix SparseMatrix::transpose() const
 {
-  SparseMatrix output(getNbColumns(), getNbRows());
+  // Filling the result one coefficient at a time would be quadratic, as each
+  // insertion shifts the stored coefficients and fixes all the following
+  // column pointers. The transposed coefficients are gathered in triplets and
+  // handed over to the constructor, which lays them out in a single pass. As the
+  // stored coefficients are visited in increasing column then increasing row
+  // order, the transposed triplets are already sorted by (column, row), hence
+  // duplicates can be coalesced by comparing with the previous triplet.
+  Indices rowIndices;
+  Indices columnIndices;
+  Point values;
+  UnsignedInteger previousRow = 0;
+  UnsignedInteger previousColumn = 0;
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
     for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
-      output(j, rowIndex_[k]) += values_[k];
-  return output;
+    {
+      // the row and the column of the stored coefficients are swapped
+      const UnsignedInteger row = j;
+      const UnsignedInteger column = rowIndex_[k];
+      const Scalar value = values_[k];
+      if (values.getSize() && (previousRow == row) && (previousColumn == column))
+      {
+        values[values.getSize() - 1] += value;
+        continue;
+      }
+      rowIndices.add(row);
+      columnIndices.add(column);
+      values.add(value);
+      previousRow = row;
+      previousColumn = column;
+    }
+  return SparseMatrix(nbColumns_, nbRows_, rowIndices, columnIndices, values);
 }
 
 /* Sparse / dense conversions */
@@ -209,6 +235,46 @@ Matrix SparseMatrix::operator * (const Matrix & m) const
     for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
       for (UnsignedInteger p = 0; p < m.getNbColumns(); ++ p)
         result(rowIndex_[k], p) += values_[k] * m(j, p);
+  return result;
+}
+
+/* Multiplication by a dense matrix given as left operand */
+Matrix SparseMatrix::multiplyByDenseOnLeft(const Matrix & m) const
+{
+  if (m.getNbColumns() != getNbRows())
+    throw InvalidDimensionException(HERE) << "SparseMatrix multiplication expected column dimension " << getNbRows();
+  const UnsignedInteger nbRowsOfResult = m.getNbRows();
+  Matrix result(nbRowsOfResult, nbColumns_);
+  // Each column j of the result is the combination of the columns of m
+  // selected by the non-zero coefficients of column j of the sparse matrix
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+    {
+      const Scalar value = values_[k];
+      const UnsignedInteger i = rowIndex_[k];
+      for (UnsignedInteger p = 0; p < nbRowsOfResult; ++ p)
+        result(p, j) += value * m(p, i);
+    }
+  return result;
+}
+
+/* Multiplication by a symmetric matrix given as left operand */
+Matrix SparseMatrix::multiplyBySymmetricOnLeft(const SymmetricMatrix & m) const
+{
+  if (m.getNbColumns() != getNbRows())
+    throw InvalidDimensionException(HERE) << "SparseMatrix multiplication expected column dimension " << getNbRows();
+  const UnsignedInteger nbRowsOfResult = m.getNbRows();
+  Matrix result(nbRowsOfResult, nbColumns_);
+  // Here m(p, i) is read through the symmetric accessor, which is valid
+  // although only the lower triangle of m is actually stored
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+    {
+      const Scalar value = values_[k];
+      const UnsignedInteger i = rowIndex_[k];
+      for (UnsignedInteger p = 0; p < nbRowsOfResult; ++ p)
+        result(p, j) += value * m(p, i);
+    }
   return result;
 }
 

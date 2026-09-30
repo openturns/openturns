@@ -22,6 +22,7 @@
 #define OPENTURNS_SPARSEMATRIX_HXX
 
 #include "openturns/Matrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 #include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -81,6 +82,20 @@ public:
 
   /** Multiplication with dense matrix */
   Matrix operator * (const Matrix & m) const;
+
+  /** Multiplication by a dense matrix given as left operand.
+      This avoids the densification of the sparse matrix, iterating
+      over its non-zero coefficients only.
+  */
+  Matrix multiplyByDenseOnLeft(const Matrix & m) const;
+
+  /** Multiplication by a symmetric matrix given as left operand.
+      Same as multiplyByDenseOnLeft(const Matrix &), except that the
+      left operand is not copied into a dense matrix: its coefficients
+      are read through the symmetric accessor, as a symmetric matrix
+      only stores its lower triangle.
+  */
+  Matrix multiplyBySymmetricOnLeft(const SymmetricMatrix & m) const;
 
   /** String converter */
   String __repr__() const override;
