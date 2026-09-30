@@ -14,7 +14,6 @@ Refer to :ref:`sensitivity_sobol`.
     :template: class.rst_t
 
     CorrelationAnalysis
-    experimental.MulticollinearityAnalysis
     TaylorExpansionMoments
     ANCOVA
     FAST

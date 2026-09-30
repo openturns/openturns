@@ -37,7 +37,6 @@
 #include "openturns/KroneckerCovarianceModel.hxx"
 #include "openturns/LowDiscrepancySequence.hxx"
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
-#include "openturns/MulticollinearityAnalysis.hxx"
 #include "openturns/Null.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/SampleImplementation.hxx"

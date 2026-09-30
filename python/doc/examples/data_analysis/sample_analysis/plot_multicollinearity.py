@@ -14,7 +14,7 @@ Compute sensitivity indices in a multicollinear context
 # - Johnson index
 # - VIF metric
 #
-# We will use the :class:`~openturns.experimental.MulticollinearityAnalysis` class.
+# We will use the :class:`~openturns.CorrelationAnalysis` class.
 
 import openturns as ot
 import openturns.viewer as otv
@@ -54,13 +54,13 @@ def compute_collinearity_metric(X, Y, kind):
     - Y: the output sample
     - kind: the type of quantity to compute ("LMG_PMVD", "Johnson" or "VIF")
     """
-    analysis = otexp.MulticollinearityAnalysis(X, Y)
+    analysis = ot.CorrelationAnalysis(X, Y)
     if kind == "LMG_PMVD":
         return analysis.computeLMGAndPMVD()
     elif kind == "Johnson":
         return analysis.computeJohnson()
     elif kind == "VIF":
-        return analysis.computeVIF()
+        return ot.CorrelationAnalysis.ComputeVIF(X)
     else:
         raise Exception(f"Invalid kind: {kind}")
 
@@ -152,7 +152,7 @@ def bootstrap(X, Y, kind, alpha=0.95, bootstrap_size=100):
 # %%
 # LMG and PMVD indices:
 
-analysis = otexp.MulticollinearityAnalysis(X, Y)
+analysis = ot.CorrelationAnalysis(X, Y)
 lmg, pmvd = analysis.computeLMGAndPMVD()
 print("LMG indices: ", lmg)
 print("PMVD indices: ", pmvd)
@@ -163,7 +163,7 @@ bootstrap(X, Y, "LMG_PMVD")
 # %%
 # Johnson index:
 
-analysis = otexp.MulticollinearityAnalysis(X, Y)
+analysis = ot.CorrelationAnalysis(X, Y)
 johnson = analysis.computeJohnson()
 print("Johnson indices: ", johnson)
 
@@ -175,8 +175,7 @@ bootstrap(X, Y, "Johnson")
 #
 # VIF metric:
 
-analysis = otexp.MulticollinearityAnalysis(X)
-vif = analysis.computeVIF()
+vif = ot.CorrelationAnalysis.ComputeVIF(X)
 print("VIF: ", vif)
 
 # %%

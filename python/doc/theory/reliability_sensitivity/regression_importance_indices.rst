@@ -155,7 +155,7 @@ linear regression models.
 
 .. topic:: API:
 
-    - See :class:`~openturns.experimental.MulticollinearityAnalysis`
+    - See :class:`~openturns.CorrelationAnalysis`
 
 .. topic:: References:
 

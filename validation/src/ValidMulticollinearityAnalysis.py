@@ -12,7 +12,7 @@ def compute_measure(X, Y, type):
     - Y: the output sample
     - type: the measure type ("LMG", "PMVD", "Johnson" or "VIF")
     """
-    analysis = ot.MulticollinearityAnalysis(X, Y)
+    analysis = ot.CorrelationAnalysis(X, Y)
     if type == "LMG":
         lmg, _ = analysis.computeLMGAndPMVD()
         return lmg
@@ -22,7 +22,7 @@ def compute_measure(X, Y, type):
     elif type == "Johnson":
         return analysis.computeJohnson()
     elif type == "VIF":
-        return analysis.computeVIF()
+        return ot.CorrelationAnalysis.ComputeVIF(X)
     else:
         raise Exception(f"Invalid type: {type}")
 

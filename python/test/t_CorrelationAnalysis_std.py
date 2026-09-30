@@ -81,3 +81,46 @@ graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(
     pointWithDescription, "SRC indices", "SRC index"
 )
 assert graph.getYTitle() == "SRC index", "custom y label (PWD)"
+
+# Check collinearity indices on correlated inputs
+beta1 = 2.5
+beta2 = 0.3
+sigma1 = 1.6
+sigma2 = 0.8
+sigmaEps = 0.1
+r = 0.5
+
+b1 = beta1 * sigma1
+b2 = beta2 * sigma2
+a = b1 * b1 * (1 - r * r)
+c = b2 * b2 * (1 - r * r)
+b = (b1 * b1 * r * r) + (2 * b1 * b2 * r) + (b2 * b2 * r * r)
+lmg1 = (a + b / 2) / (a + b + c + sigmaEps * sigmaEps)
+lmg2 = (c + b / 2) / (a + b + c + sigmaEps * sigmaEps)
+pmvd1 = a * (1 + b / (a + c)) / (a + b + c + sigmaEps * sigmaEps)
+pmvd2 = c * (1 + b / (a + c)) / (a + b + c + sigmaEps * sigmaEps)
+vif12 = 1 / (1 - r * r)
+
+correlatedSampleSize = 100000
+ot.RandomGenerator.SetSeed(0)
+corMatrix = ot.CorrelationMatrix(2, [1.0, r, r, 1.0])
+inputDistribution = ot.Normal([0.0, 0.0], [sigma1, sigma2], corMatrix)
+correlatedInputSample = inputDistribution.getSample(correlatedSampleSize)
+linearFunction = ot.LinearFunction([0.0, 0.0], [0.0], ot.Matrix(1, 2, [beta1, beta2]))
+noiseDistribution = ot.Normal(0.0, sigmaEps)
+noiseSample = noiseDistribution.getSample(correlatedSampleSize)
+correlatedOutputSample = linearFunction(correlatedInputSample) + noiseSample
+
+analysis = ot.CorrelationAnalysis(correlatedInputSample, correlatedOutputSample)
+lmg_computed, pmvd_computed = analysis.computeLMGAndPMVD()
+lmg_estimated, pmvd_estimated = analysis.computeLMGAndPMVDMonteCarlo(1000)
+ott.assert_almost_equal(lmg_computed, [lmg1, lmg2], 2e-3, 0.0)
+ott.assert_almost_equal(lmg_estimated, lmg_computed, 6e-3, 0.0)
+ott.assert_almost_equal(pmvd_computed, [pmvd1, pmvd2], 2e-3, 0.0)
+ott.assert_almost_equal(pmvd_estimated, pmvd_computed, 4e-3, 0.0)
+
+johnson_computed = analysis.computeJohnson()
+ott.assert_almost_equal(johnson_computed, lmg_computed, 1e-10, 0.0)
+
+vif_computed = ot.CorrelationAnalysis.ComputeVIF(correlatedInputSample)
+ott.assert_almost_equal(vif_computed, [vif12, vif12], 7e-4, 0.0)

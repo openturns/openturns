@@ -29,10 +29,6 @@
 /* Base/Func */
 %include BaseFuncCollection.i
 %import base_module.i
-%import func_module.i
-
-/* Base/Stat */
-%import statistics_module.i
 
 /* Base/Optim */
 %import optim_module.i
@@ -81,7 +77,6 @@
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
-%include MulticollinearityAnalysis.i
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 
