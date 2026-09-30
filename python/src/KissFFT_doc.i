@@ -5,7 +5,7 @@ This is a wrapper on the KissFFT library and implements the :class:`~openturns.F
 
 See also
 --------
-FFT
+openturns.FFT
 
 Examples
 --------

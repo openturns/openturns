@@ -311,6 +311,26 @@ inducingPoints : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SparseGaussianProcessFitter::getCovarianceModel
+R"RAW(Accessor to the covariance model.
+
+Returns
+-------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model of the sparse Gaussian process.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::getReducedCovarianceModel
+R"RAW(Accessor to the reduced covariance model.
+
+Returns
+-------
+covModel : :class:`~openturns.CovarianceModel`
+    The covariance model restricted to its active parameters.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SparseGaussianProcessFitter::getMethod
 "Accessor to the linear algebra method.
 
