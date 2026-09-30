@@ -126,10 +126,10 @@ public:
   }
 
 private:
-  CovarianceMatrix C_;
-  SparseMatrix G_;
-  int rows_;
-  int cols_;
+  const CovarianceMatrix C_;
+  const SparseMatrix G_;
+  const int rows_;
+  const int cols_;
 };
 
 /** Defining class KLMatProdHMat **/
@@ -177,10 +177,10 @@ public:
   }
 
 private:
-  HMatrix C_;
-  SparseMatrix G_;
-  int rows_;
-  int cols_;
+  const HMatrix C_;
+  const SparseMatrix G_;
+  const int rows_;
+  const int cols_;
 };
 
 
@@ -275,8 +275,8 @@ static void ComputeEVWithSpectra(const UnsignedInteger augmentedDimension,
 
   LOGINFO("Post-process the eigenvalue problem");
 
-  Eigen::VectorXd eigenValuesEigen = solver.eigenvalues().real();
-  Eigen::MatrixXd eigenVectorsEigen = solver.eigenvectors().real();
+  const Eigen::VectorXd eigenValuesEigen = solver.eigenvalues().real();
+  const Eigen::MatrixXd eigenVectorsEigen = solver.eigenvectors().real();
 
   // Post-process eigenvalues and eigenvectors
   std::copy(eigenValuesEigen.data(), eigenValuesEigen.data() + nev, eigenvalues.begin());
@@ -353,12 +353,12 @@ void KarhunenLoeveP1Algorithm::run()
 
     if (covarianceMatrixStorage == "DENSE")
     {
-      CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
+      const CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
       op = new KLMatProdLapack(C, G);
     }
     else if (covarianceMatrixStorage == "HMAT")
     {
-      HMatrix C(covariance_.discretizeHMatrix(mesh_, HMatrixParameters()));
+      const HMatrix C(covariance_.discretizeHMatrix(mesh_, HMatrixParameters()));
       op = new KLMatProdHMat(C, G);
     }
     else
@@ -401,12 +401,13 @@ void KarhunenLoeveP1Algorithm::run()
 
     // Discretize covariance model
     LOGINFO("Discretize the covariance model");
-    CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
+    const CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
 
-    // Prepare matrix M = C*G, compute EV
-    SquareMatrix denseG(G.asDenseMatrix().getImplementation());
-    SquareMatrix M(C * denseG);
-    SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEVInPlace(eigenVectorsComplex));
+    // Prepare matrix M = C*G, compute EV. The sparse P1 gram matrix is not
+    // densified, only its non-zero coefficients are involved in the product.
+    const Matrix MCG(G.multiplyBySymmetricOnLeft(C));
+    SquareMatrix M(MCG.getImplementation());
+    const SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEVInPlace(eigenVectorsComplex));
 
     // Format results, sort eigenvalues by decreasing order
     LOGINFO("Post-process the eigenvalue problem");
