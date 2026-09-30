@@ -28,6 +28,11 @@ namespace OT {
 
 %extend DataContainer {
 
+DataContainer(const DataContainer & other)
+{
+  return new OT::DataContainer(other);
+}
+
 String __repr__() const
 {
   std::ostringstream oss;
