@@ -44,6 +44,11 @@ public:
   /** Default constructor without parameters */
   IteratedQuadrature();
 
+#ifdef SWIG
+  /** Dummy copy ctor to fix overload precedence */
+  IteratedQuadrature(const IteratedQuadrature & other);
+#endif
+
   /** Parameter constructor */
   IteratedQuadrature(const IntegrationAlgorithm & algorithm);
 

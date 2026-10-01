@@ -44,6 +44,11 @@ public:
   /** Default constructor */
   SklarCopula();
 
+#ifdef SWIG
+  /** Dummy copy ctor to fix overload precedence */
+  SklarCopula(const SklarCopula & other);
+#endif
+
   /** Parameters constructor */
   explicit SklarCopula(const Distribution & distribution);
 
