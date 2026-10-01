@@ -34,7 +34,7 @@ static const Factory<LineSampling> Factory_LineSampling;
 
 /* Default constructor */
 LineSampling::LineSampling()
-  : EventSimulationImplementation()
+  : EventSimulation()
 {
 }
 
@@ -43,7 +43,7 @@ LineSampling::LineSampling()
 LineSampling::LineSampling(const RandomVector & event,
                            const Point & initialAlpha,
                            const RootStrategy & rootStrategy)
-  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , initialAlpha_(initialAlpha)
   , rootStrategy_(rootStrategy)
   , searchOppositeDirection_(ResourceMap::GetAsBool("LineSampling-DefaultSearchOppositeDirection"))
@@ -68,15 +68,15 @@ LineSampling * LineSampling::clone() const
 void LineSampling::setEvent(const RandomVector & event)
 {
   if (!(event.isEvent() && event.isComposite())) throw InvalidArgumentException(HERE) << "LineSampling requires a composite event";
-  const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
-  const UnsignedInteger outputDimension = composedEvent.getFunction().getOutputDimension();
-  const UnsignedInteger inputDimension = composedEvent.getAntecedent().getDistribution().getDimension();
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
+  
+  const UnsignedInteger inputDimension = getEvent().getAntecedent().getDistribution().getDimension();
   if (initialAlpha_.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Got a direction of dimension=" << initialAlpha_.getDimension();
 
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE) << "Output dimension for LineSampling cannot be greater than 1, here output dimension=" << outputDimension;
-  EventSimulationImplementation::setEvent(composedEvent);
   standardEvent_ = StandardEvent(getEvent());
 }
 
@@ -93,7 +93,7 @@ void LineSampling::run()
   rootPointsHistory_.clear();
   rootValuesHistory_.clear();
 
-  EventSimulationImplementation::run();
+  EventSimulation::run();
 }
 
 
@@ -262,7 +262,7 @@ String LineSampling::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulationImplementation::__repr__()
+      << " derived from " << EventSimulation::__repr__()
       << " initialAlpha=" << initialAlpha_
       << " rootStrategy=" << rootStrategy_
       << " searchOppositeDirection=" << searchOppositeDirection_
@@ -274,7 +274,7 @@ String LineSampling::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void LineSampling::save(Advocate & adv) const
 {
-  EventSimulationImplementation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("initialAlpha_", initialAlpha_);
   adv.saveAttribute("rootStrategy_", rootStrategy_);
   adv.saveAttribute("searchOppositeDirection_", searchOppositeDirection_);
@@ -289,7 +289,7 @@ void LineSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LineSampling::load(Advocate & adv)
 {
-  EventSimulationImplementation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("initialAlpha_", initialAlpha_);
   adv.loadAttribute("rootStrategy_", rootStrategy_);
   adv.loadAttribute("searchOppositeDirection_", searchOppositeDirection_);

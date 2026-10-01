@@ -22,6 +22,7 @@
 #define OPENTURNS_ADAPTIVEDIRECTIONALSTRATIFICATION_HXX
 
 #include "openturns/EventSimulation.hxx"
+#include "openturns/EventSimulationImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/RootStrategy.hxx"
@@ -34,7 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * AdaptiveDirectionalStratification
  */
 class OT_API AdaptiveDirectionalStratification
-  : public EventSimulationImplementation
+  : public EventSimulation
 {
   CLASSNAME
 

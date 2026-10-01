@@ -36,7 +36,7 @@ static const Factory<NAIS> Factory_NAIS;
 
 // Default constructor
 NAIS::NAIS()
-  : EventSimulationImplementation()
+  : EventSimulation()
 {
   // Nothing TO DO
 }
@@ -45,7 +45,7 @@ NAIS::NAIS()
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
            const Scalar quantileLevel)
-  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
   const Interval range(getEvent().getAntecedent().getDistribution().getRange());
@@ -64,17 +64,17 @@ NAIS * NAIS::clone() const
 /*  Event accessor */
 void NAIS::setEvent(const RandomVector & event)
 {
-  const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
-  const Interval range(composedEvent.getAntecedent().getDistribution().getRange());
+
+  const Bool previousDirection = getEvent().getOperator()(0, 1);
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  const Interval range(getEvent().getAntecedent().getDistribution().getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
   for (UnsignedInteger i = 0; i < rangeUpper.getSize(); ++i)
     if (rangeUpper[i] || rangeLower[i])
       throw InvalidArgumentException(HERE) << "Current version of NAIS is only adapted to unbounded distribution";
 
-  const Bool previousDirection = getEvent().getOperator()(0, 1);
-  const Bool newDirection = composedEvent.getOperator()(0, 1);
-  EventSimulationImplementation::setEvent(composedEvent);
+  const Bool newDirection = getEvent().getOperator()(0, 1);
   if (previousDirection != newDirection)
     quantileLevel_ = 1.0 - quantileLevel_;
 }
@@ -85,11 +85,6 @@ void NAIS::setKeepSample(const Bool keepSample)
   keepSample_ = keepSample;
 }
 
-/* Setter for MaximumCoefficientOfVariation. */
-void NAIS::setMaximumCoefficientOfVariation(const Scalar)
-{
-  throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm.";
-}
 
 // Get quantileLevel
 Scalar NAIS::getQuantileLevel() const
@@ -167,7 +162,6 @@ Point NAIS::computeWeights(const Sample & sample,
 // Main function that computes the failure probability
 void NAIS::run()
 {
-
   // First, initialize some parameters
   inputSample_.clear();
   outputSample_.clear();
@@ -334,6 +328,10 @@ void NAIS::run()
   naisResult_.setOuterSampling(getMaximumOuterSampling() * numberOfSteps_);
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
+  // Mirror the estimates into the base result: readers through a generic
+  // Pointer<EventSimulation> only see the base getResult(), which is hidden
+  // (not overridden) by NAIS::getResult()
+  setResult(naisResult_);
 
 }
 
@@ -347,6 +345,14 @@ Sample NAIS::getInputSample(const UnsignedInteger step, const UnsignedInteger se
   if (select > 2)
     throw InvalidArgumentException(HERE) << "NAIS select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+Sample NAIS::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "NAIS keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
 }
 
 Sample NAIS::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const
@@ -383,9 +389,16 @@ UnsignedInteger NAIS::getStepsNumber() const
 
 
 // Accessor to naisResult_s
+
 NAISResult NAIS::getResult() const
 {
   return naisResult_;
+}
+
+/* Current result with full dynamic type */
+GenericSimulationResult NAIS::getHistoryResult() const
+{
+  return GenericSimulationResult(naisResult_);
 }
 
 
@@ -394,7 +407,7 @@ String NAIS::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulationImplementation::__repr__()
+      << " derived from " << EventSimulation::__repr__()
       << " quantileLevel=" << quantileLevel_;
   return oss;
 }
@@ -403,7 +416,7 @@ String NAIS::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void NAIS::save(Advocate & adv) const
 {
-  EventSimulationImplementation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("quantileLevel_", quantileLevel_);
   adv.saveAttribute("naisResult_", naisResult_);
 
@@ -419,7 +432,7 @@ void NAIS::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NAIS::load(Advocate & adv)
 {
-  EventSimulationImplementation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("quantileLevel_", quantileLevel_);
   adv.loadAttribute("naisResult_", naisResult_);
 
