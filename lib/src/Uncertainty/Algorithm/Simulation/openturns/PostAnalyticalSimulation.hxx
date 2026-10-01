@@ -23,6 +23,7 @@
 #define OPENTURNS_POSTANALYTICALSIMULATION_HXX
 
 #include "openturns/EventSimulation.hxx"
+#include "openturns/EventSimulationImplementation.hxx"
 #include "openturns/AnalyticalResult.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/Distribution.hxx"

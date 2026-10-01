@@ -107,6 +107,7 @@ algo = ot.NAIS(event, 0.2)
 # NOTE: keep this budget: the estimates below use a 1e-2 *relative*
 # tolerance, which already needs ~10000 samples to pass
 algo.setMaximumOuterSampling(10000)
+algo.setMaximumCoefficientOfVariation(-1.0)
 algo.run()
 result = algo.getResult()
 assert_almost_equal(
