@@ -38,6 +38,7 @@ algo.setMaximumIterations(budget)
 algo.setConvergenceCriterion(algo.ACTIVE_LEARNING)
 algo.setSimulationAlgorithmSeed(0)
 assert algo.getMaximumIterations() == budget
+assert algo.getCandidatePoolSize() > 0
 assert "ActiveLearningReliabilityAlgorithm" in algo.__repr__()
 
 # the design, surrogate specification and event are sourced from the
@@ -61,6 +62,8 @@ with ott.assert_raises(TypeError):
     algo.setSimulationBudget(0)
 with ott.assert_raises(TypeError):
     algo.setMaximumIterations(0)
+with ott.assert_raises(TypeError):
+    algo.setCandidatePoolSize(0)
 with ott.assert_raises(TypeError):
     algo.setConvergenceCriterionThreshold(-1.0)
 with ott.assert_raises(TypeError):
