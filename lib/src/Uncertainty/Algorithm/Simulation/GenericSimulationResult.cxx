@@ -63,11 +63,8 @@ GenericSimulationResult::GenericSimulationResult(ProbabilitySimulationResult * p
 String GenericSimulationResult::__repr__() const
 {
   OSS oss;
-  oss << "class=" << getClassName();
-  if (getImplementation())
-    oss << " wrapped=" << getImplementation()->__repr__();
-  else
-    oss << " wrapped=null";
+  oss << "class=" << getClassName()
+      << " wrapped=" << getImplementation()->__repr__();
   return oss;
 }
 
@@ -75,11 +72,7 @@ String GenericSimulationResult::__str__(const String & offset) const
 {
   OSS oss;
   oss << offset << getClassName() << "(";
-  if (getImplementation())
-    oss << getImplementation()->__str__(offset);
-  else
-    oss << "null";
-  oss << ")";
+  oss << getImplementation()->__str__(offset) << ")";
   return oss;
 }
 
