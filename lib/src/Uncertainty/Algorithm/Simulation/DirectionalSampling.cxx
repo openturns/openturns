@@ -38,7 +38,7 @@ static const Factory<DirectionalSampling> Factory_DirectionalSampling;
 
 /* Constructor with parameters */
 DirectionalSampling::DirectionalSampling()
-  : EventSimulationImplementation()
+  : EventSimulation()
   , standardFunction_(standardEvent_.getImplementation()->getFunction())
   , inputDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
 {
@@ -49,10 +49,13 @@ DirectionalSampling::DirectionalSampling()
 DirectionalSampling::DirectionalSampling(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulationImplementation()
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , rootStrategy_(rootStrategy)
 {
-  setEvent(event);
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  standardEvent_ = StandardEvent(getEvent());
+  standardFunction_ = standardEvent_.getImplementation()->getFunction();
+  inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
   setSamplingStrategy(samplingStrategy);
 }
 
@@ -65,8 +68,8 @@ DirectionalSampling * DirectionalSampling::clone() const
 /*  Event accessor */
 void DirectionalSampling::setEvent(const RandomVector & event)
 {
-  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
-  EventSimulationImplementation::setEvent(event.getImplementation()->asComposedEvent());
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
   standardEvent_ = StandardEvent(getEvent());
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
   inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
@@ -262,14 +265,14 @@ String DirectionalSampling::__repr__() const
   oss << "class=" << DirectionalSampling::GetClassName()
       << " rootStrategy=" << rootStrategy_.__repr__()
       << " samplingStrategy=" << samplingStrategy_.__repr__()
-      << " derived from " << EventSimulationImplementation::__repr__();
+      << " derived from " << EventSimulation::__repr__();
   return oss;
 }
 
 /* Method save() stores the object through the StorageManager */
 void DirectionalSampling::save(Advocate & adv) const
 {
-  EventSimulationImplementation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("rootStrategy_", rootStrategy_);
   adv.saveAttribute("samplingStrategy_", samplingStrategy_);
 }
@@ -277,7 +280,7 @@ void DirectionalSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void DirectionalSampling::load(Advocate & adv)
 {
-  EventSimulationImplementation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("rootStrategy_", rootStrategy_);
   adv.loadAttribute("samplingStrategy_", samplingStrategy_);
   standardEvent_ = StandardEvent(event_);

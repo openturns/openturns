@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NAIS is some nais type to illustrate how to add some classes in OpenTURNS
  */
 class OT_API NAIS
-  : public EventSimulationImplementation
+  : public EventSimulation
 {
 
   CLASSNAME
@@ -61,6 +61,9 @@ public:
   /** Accessor to results */
   NAISResult getResult() const;
 
+  /** Current result with full dynamic type */
+  GenericSimulationResult getHistoryResult() const override;
+
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
 
@@ -72,8 +75,9 @@ public:
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
-  using EventSimulationImplementation::getInputSample;
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getInputSample() const override;
+    
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
   /** Method save() stores the object through the StorageManager */
@@ -81,13 +85,10 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
-
+  
   /** Event accessor */
   void setEvent(const RandomVector & event) override;
-
-  /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const Scalar) override;
-
+  
 private:
 
   /** Function computing the auxiliary distribution as a function of current samples and associated weights */

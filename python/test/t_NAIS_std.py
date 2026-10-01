@@ -105,6 +105,7 @@ Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
 event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
 algo = ot.NAIS(event, 0.2)
 algo.setMaximumOuterSampling(10000)
+algo.setMaximumCoefficientOfVariation(-1.0)
 algo.run()
 result = algo.getResult()
 assert_almost_equal(

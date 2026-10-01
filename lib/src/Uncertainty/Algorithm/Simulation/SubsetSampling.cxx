@@ -39,7 +39,7 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 
 /* Default constructor */
 SubsetSampling::SubsetSampling()
-  : EventSimulationImplementation()
+  : EventSimulation()
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
 {
 }
@@ -49,14 +49,17 @@ SubsetSampling::SubsetSampling()
 SubsetSampling::SubsetSampling(const RandomVector & event,
                                const Scalar proposalRange,
                                const Scalar conditionalProbability)
-  : EventSimulationImplementation()
+  : EventSimulation(event.getImplementation()->asComposedEvent())
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
 {
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "SubsetSampling requires a composite event";
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
-  initialExperiment_ = MonteCarloExperiment();
-  setEvent(event);
+  UnsignedInteger outputDimension = getEvent().getFunction().getOutputDimension();
+  if (outputDimension > 1)
+    throw InvalidArgumentException(HERE) << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension=" << outputDimension;
+  setInitialExperiment(MonteCarloExperiment());
 }
 
 
@@ -78,16 +81,9 @@ void SubsetSampling::setEvent(const RandomVector & event)
       << "Output dimension for SubsetSampling cannot be greater than 1, here output dimension="
       << outputDimension;
 
-  EventSimulationImplementation::setEvent(composedEvent);
+  EventSimulation::setEvent(composedEvent);
   setInitialExperiment(initialExperiment_);
 }
-
-/* Setter for MaximumCoefficientOfVariation. */
-void SubsetSampling::setMaximumCoefficientOfVariation(const Scalar)
-{
-  throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm.";
-}
-
 
 /* Performs the actual computation. */
 void SubsetSampling::run()
@@ -109,6 +105,9 @@ void SubsetSampling::run()
   const UnsignedInteger N = maximumOuterSampling * blockSize;
   const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
   const Function uToX(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation());
+
+  if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
+    LOGWARN(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
 
   seedNumber_ = static_cast<UnsignedInteger>(conditionalProbability_ * N);
   if (seedNumber_ < 1)
@@ -533,6 +532,14 @@ Point SubsetSampling::getThresholdPerStep() const
   return thresholdPerStep_;
 }
 
+/* Current result with full dynamic type: rebuild the concrete result from
+   the mirrored base fields, preserving the coefficient of variation */
+GenericSimulationResult SubsetSampling::getHistoryResult() const
+{
+  const ProbabilitySimulationResult result(getResult());
+  return GenericSimulationResult(SubsetSamplingResult(result.getEvent(), result.getProbabilityEstimate(), result.getVarianceEstimate(), result.getOuterSampling(), result.getBlockSize(), result.getCoefficientOfVariation()));
+}
+
 
 /* Keep event sample */
 void SubsetSampling::setKeepSample(const Bool keepSample)
@@ -561,6 +568,15 @@ Sample SubsetSampling::getOutputSample(const UnsignedInteger step, const Unsigne
   if (select > 2)
     throw InvalidArgumentException(HERE) << "SubsetSampling select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? outputSample_[step] : outputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+
+Sample SubsetSampling::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "SubsetSampling keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
 }
 
 Indices SubsetSampling::getSampleIndices(const UnsignedInteger step, const Bool status) const
@@ -594,7 +610,7 @@ String SubsetSampling::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulationImplementation::__repr__()
+      << " derived from " << EventSimulation::__repr__()
       << " proposalRange=" << proposalRange_
       << " conditionalProbability=" << conditionalProbability_
       << " keepSample_=" << keepSample_;
@@ -605,7 +621,7 @@ String SubsetSampling::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SubsetSampling::save(Advocate & adv) const
 {
-  EventSimulationImplementation::save(adv);
+  EventSimulation::save(adv);
   adv.saveAttribute("proposalRange_", proposalRange_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
@@ -626,7 +642,7 @@ void SubsetSampling::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SubsetSampling::load(Advocate & adv)
 {
-  EventSimulationImplementation::load(adv);
+  EventSimulation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
   adv.loadAttribute("minimumProbability_", minimumProbability_);
