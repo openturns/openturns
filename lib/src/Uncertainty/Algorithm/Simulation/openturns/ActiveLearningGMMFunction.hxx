@@ -78,6 +78,7 @@ protected :
   Sample operator()(const Sample & inputSample, const Sample & inputDoE) const override;
 
   Distribution inputDistribution_;
+
   Scalar outputQuantileLevel_ = 0.5;
 } ; /* class ActiveLearningGMMFunction */
 
