@@ -42,6 +42,11 @@ public:
   /** Default constructor */
   DomainComplement();
 
+#ifdef SWIG
+  /** Dummy copy ctor to fix overload precedence */
+  DomainComplement(const DomainComplement & other);
+#endif
+
   /** Default constructor */
   explicit DomainComplement(const Domain & domain);
 

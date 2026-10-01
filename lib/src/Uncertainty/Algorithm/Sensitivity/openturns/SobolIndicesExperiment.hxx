@@ -43,6 +43,11 @@ public:
   /** Default constructor */
   SobolIndicesExperiment();
 
+#ifdef SWIG
+  /** Dummy copy ctor to fix overload precedence */
+  SobolIndicesExperiment(const SobolIndicesExperiment & other);
+#endif
+
   /** Parameters constructor */
   explicit SobolIndicesExperiment(const WeightedExperiment & experiment,
                                   const Bool computeSecondOrder = false);

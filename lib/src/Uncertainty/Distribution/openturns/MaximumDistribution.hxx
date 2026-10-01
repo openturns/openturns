@@ -49,6 +49,11 @@ public:
   /** Default constructor */
   MaximumDistribution();
 
+#ifdef SWIG
+  /** Dummy copy ctor to fix SWIG overload precedence */
+  MaximumDistribution(const MaximumDistribution & other);
+#endif
+
   /** Parameters constructor */
   explicit MaximumDistribution(const Distribution & distribution);
 
