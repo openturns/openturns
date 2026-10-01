@@ -50,6 +50,13 @@ Simulation algorithm
     ProbabilitySimulationResult
     ExpectationSimulationAlgorithm
     ExpectationSimulationResult
+    GenericSimulationResult
+    experimental.ActiveLearningReliabilityFunction
+    experimental.ActiveLearningUFunction
+    experimental.ActiveLearningGMMFunction
+    experimental.ActiveLearningEFFFunction
+    experimental.ActiveLearningReliabilityAlgorithm
+    experimental.ActiveLearningReliabilityResult
 
 Directional Sampling
 ====================

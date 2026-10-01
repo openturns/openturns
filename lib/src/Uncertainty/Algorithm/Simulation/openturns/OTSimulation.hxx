@@ -39,6 +39,7 @@
 #include "openturns/EventSimulation.hxx"
 #include "openturns/SimulationResult.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/GenericSimulationResult.hxx"
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include "openturns/SubsetSamplingResult.hxx"
 #include "openturns/SubsetSampling.hxx"
@@ -55,5 +56,11 @@
 #include "openturns/CrossEntropyImportanceSampling.hxx"
 #include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
 #include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
+#include "openturns/ActiveLearningReliabilityFunction.hxx"
+#include "openturns/ActiveLearningUFunction.hxx"
+#include "openturns/ActiveLearningEFFFunction.hxx"
+#include "openturns/ActiveLearningGMMFunction.hxx"
+#include "openturns/ActiveLearningReliabilityAlgorithm.hxx"
+#include "openturns/ActiveLearningReliabilityResult.hxx"
 
 #endif /* OPENTURNS_OTSIMULATION_HXX */

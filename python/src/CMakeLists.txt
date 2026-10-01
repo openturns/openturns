@@ -563,6 +563,12 @@ ot_add_python_module(experimental experimental_module.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
+                     ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
+                     ActiveLearningUFunction.i ActiveLearningUFunction_doc.i
+                     ActiveLearningEFFFunction.i ActiveLearningEFFFunction_doc.i
+                     ActiveLearningGMMFunction.i ActiveLearningGMMFunction_doc.i
+                     ActiveLearningReliabilityAlgorithm.i ActiveLearningReliabilityAlgorithm_doc.i
+                     ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
@@ -701,7 +707,8 @@ ot_add_python_module(simulation simulation_module.i
                       StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i
                       PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i
                       LineSampling.i LineSampling_doc.i
-                    )
+                      GenericSimulationResult.i GenericSimulationResult_doc.i
+                     )
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i
                       Drawable.i Drawable_doc.i

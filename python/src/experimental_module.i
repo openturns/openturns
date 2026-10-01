@@ -57,6 +57,15 @@
 /* Uncertainty */
 %import metamodel_module.i
 
+/* Base/Func (Basis, Function, Sample) */
+%import func_module.i
+
+/* Uncertainty/Statistic (CovarianceModel) */
+%import statistics_module.i
+
+/* Uncertainty/Algorithm/Simulation (EventSimulation, ProbabilitySimulationResult) */
+%import simulation_module.i
+
 /* Uncertainty/Process */
 %import model_process_module.i
 %include CirculantEmbeddingGaussianProcess.i
@@ -79,4 +88,13 @@
 %include LinearModelValidation.i
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
+
+/* Uncertainty/Algorithm/Simulation (experimental active-learning reliability) */
+%import simulation_module.i
+%include ActiveLearningReliabilityFunction.i
+%include ActiveLearningUFunction.i
+%include ActiveLearningEFFFunction.i
+%include ActiveLearningGMMFunction.i
+%include ActiveLearningReliabilityResult.i
+%include ActiveLearningReliabilityAlgorithm.i
 
