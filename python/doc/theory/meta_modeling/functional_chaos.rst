@@ -388,7 +388,7 @@ In that case, the Sobol' indices can easily be deduced from the coefficients
 
 **Conditional expectation** : we still assume that the input distribution :math:`\mu_{\inputRV}` has
 independent marginals and that the basis :math:`\left(\psi_k\right)_{k \in I_n}`  is orthonormal
-with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate basis
+with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate bases
 orthonormal with respect to  the marginal distributions.
 
 The objective is to the functional chaos result corresponding to the conditional
