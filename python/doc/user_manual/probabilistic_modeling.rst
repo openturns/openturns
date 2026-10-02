@@ -131,9 +131,9 @@ Discrete parametric distributions
     FiniteDiscreteDistribution
     Geometric
     Hypergeometric
-    Multinomial
 
     :template: classWithPlot.rst_t
+    Multinomial
     experimental.MultivariateHypergeometric
     experimental.MultivariatePolya
     Polya
