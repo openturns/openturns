@@ -94,6 +94,13 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     MultinomialFactory
+
+    :template: DistributionFactory.rst_t
+
+    experimental.MultivariateHypergeometricFactory
+
+    :template: DistributionFactory.rst_t
+
     PolyaFactory
     NormalFactory
     ParetoFactory

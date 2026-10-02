@@ -75,6 +75,8 @@
 %include MarginalUniformOrderStatistics.i
 %include MultivariateUniform.i
 %include MultivariateUniformFactory.i
+%include MultivariateHypergeometric.i
+%include MultivariateHypergeometricFactory.i
 %include PiecewiseLinearDistribution.i
 %include TruncatedDistributionFactory.i
 %include SquaredNormalFactory.i
