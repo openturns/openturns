@@ -77,6 +77,8 @@
 %include MultivariateUniformFactory.i
 %include MultivariateHypergeometric.i
 %include MultivariateHypergeometricFactory.i
+%include MultivariatePolya.i
+%include MultivariatePolyaFactory.i
 %include PiecewiseLinearDistribution.i
 %include TruncatedDistributionFactory.i
 %include SquaredNormalFactory.i
