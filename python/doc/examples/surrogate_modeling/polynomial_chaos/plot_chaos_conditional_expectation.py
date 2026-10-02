@@ -10,7 +10,7 @@ Reduce the dimension of a model
 #
 # - simply fix some components to given values, using the :class:`~openturns.ParametricFunction`
 #   class,
-# - from a Functional Chaos Expansion, compute the mean of the meta model with respect to the free values,
+# - from a :any:`functional_chaos`, compute the mean of the meta model with respect to the free values,
 #   using the :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation` method
 #   of the :class:`~openturns.FunctionalChaosResult` class. This case is valid only of the input random
 #   vector has independent marginals.
