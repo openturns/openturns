@@ -184,6 +184,7 @@ ot_add_python_module(algo algo_module.i
                       FittingAlgorithmImplementation.i FittingAlgorithmImplementation_doc.i
                       FittingAlgorithm.i FittingAlgorithm_doc.i
                       CorrectedLeaveOneOut.i CorrectedLeaveOneOut_doc.i
+                      LeaveOneOut.i LeaveOneOut_doc.i
                       NearestNeighbourAlgorithmImplementation.i NearestNeighbourAlgorithmImplementation_doc.i
                       NearestNeighbourAlgorithm.i NearestNeighbourAlgorithm_doc.i
                       KDTree.i KDTree_doc.i
@@ -573,6 +574,7 @@ ot_add_python_module(experimental experimental_module.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
                      P1InterpolatedProcess.i P1InterpolatedProcess_doc.i
+                     SparseExpansion.i SparseExpansion_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i

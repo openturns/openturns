@@ -122,6 +122,7 @@ Main classes
     FunctionalChaosAlgorithm
     LeastSquaresExpansion
     IntegrationExpansion
+    experimental.SparseExpansion
 
 Construction of the truncated multivariate orthogonal basis
 -----------------------------------------------------------
@@ -180,6 +181,7 @@ Model selection criteria
 
     FittingAlgorithm
     CorrectedLeaveOneOut
+    LeaveOneOut
     KFold
 
 .. _least_squares_methods:

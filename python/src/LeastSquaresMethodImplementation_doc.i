@@ -1,6 +1,25 @@
 %define OT_LeastSquaresMethod_doc
 R"RAW(Base class for least square solvers.
 
+Solve the weighted least-squares problem:
+
+.. math::
+
+    \vect{a}  = \argmin_{\vect{b} \in \Rset^P}
+    \left\|\mat{W}^{1/2} \left(\vect{y} - \mat{\Psi}(\mat{U}) \vect{b}\right)\right\|_2^2
+
+where:
+
+- :math:`\vect{y} \in \Rset^n` is the output sample,
+- :math:`\mat{U}` is the input sample of :math:`n` points
+  :math:`\vect{u}_i`,
+- :math:`\mat{\Psi}(\mat{U})` is the design matrix: its element of row
+  :math:`i` and column :math:`j` is :math:`\psi_j(\vect{u}_i)`,
+- :math:`\mat{W} = \mathrm{diag}(w_1, \dots, w_n)` is the diagonal matrix
+  built from the *weights*,
+- the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
+  selected basis terms.
+
 Available constructors:
     LeastSquaresMethod(*proxy, weight, indices*)
 
@@ -27,27 +46,6 @@ design : 2-d sequence of float
 See also
 --------
 CholeskyMethod, SVDMethod, QRMethod
-
-Notes
------
-Solve the weighted least-squares problem:
-
-.. math::
-
-    \vect{a}  = \argmin_{\vect{b} \in \Rset^P}
-    \left\|\mat{W}^{1/2} \left(\vect{y} - \mat{\Psi}(\mat{U}) \vect{b}\right)\right\|_2^2
-
-where:
-
-- :math:`\vect{y} \in \Rset^n` is the output sample,
-- :math:`\mat{U}` is the input sample of :math:`n` points
-  :math:`\vect{u}_i`,
-- :math:`\mat{\Psi}(\mat{U})` is the design matrix: its element of row
-  :math:`i` and column :math:`j` is :math:`\psi_j(\vect{u}_i)`,
-- :math:`\mat{W} = \mathrm{diag}(w_1, \dots, w_n)` is the diagonal matrix
-  built from the *weights*,
-- the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
-  selected basis terms.
 
 Examples
 --------
@@ -158,7 +156,11 @@ OT_LeastSquaresMethod_solve_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_solveNormal_doc
-R"RAW( Solve the least-squares problem using normal equation.
+R"RAW(Solve the least-squares problem using normal equation.
+
+Only meaningful for uniform weights: the method rejects non-uniform
+weights with an exception. Use :any:`solveNormalGram` for the general
+weighted case.
 
 .. math::
 
@@ -234,17 +236,27 @@ OT_LeastSquaresMethod_getGramInverseTrace_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getH_doc
-R"RAW(Get the symmetric WLS kernel H.
+R"RAW(Get the symmetric weighted hat matrix H.
+
+With :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` the weight-scaled
+design and :math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}`
+the weighted Gram matrix:
 
 .. math::
 
-    \mat{H} = \mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal
+    \mat{H} = \mat{\Psi}_w \mat{G}^{-1} \mat{\Psi}_w^\intercal
+
+Its diagonal holds the leverages
+:math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`.
+The fitted values are
+:math:`\hat{\vect{y}} = \mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal \mat{W} \vect{b}`.
+For uniform weights this reduces to the classical hat matrix, independent
+of the common weight value.
 
 Returns
 -------
 h : :class:`~openturns.SymmetricMatrix`
-    The symmetric WLS kernel H. For non-unit weights, the fitted values
-    are :math:`\mat{H}\mat{W}\vect{b}`.)RAW"
+    The symmetric weighted hat matrix H.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getH
 OT_LeastSquaresMethod_getH_doc
@@ -252,17 +264,23 @@ OT_LeastSquaresMethod_getH_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getHDiag_doc
-R"RAW(Get the diagonal of the symmetric WLS kernel H.
+R"RAW(Get the diagonal of the symmetric weighted hat matrix H.
 
 .. math::
 
-    \mathrm{diag}(\mat{H}) = \mathrm{diag}\left(\mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal\right)
+    \mathrm{diag}(\mat{H}) = \mathrm{diag}\left(\mat{\Psi}_w \mat{G}^{-1} \mat{\Psi}_w^\intercal\right)
+
+with :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` and
+:math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}`.
+Each entry is the leverage
+:math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`,
+used by the analytical leave-one-out residual :math:`r_i/(1-h_i)`
+(Allen, 1974).
 
 Returns
 -------
 diagH : :class:`~openturns.Point`
-    The diagonal of the symmetric WLS kernel H. For non-unit weights, the
-    fitted values are :math:`\mat{H}\mat{W}\vect{b}`.)RAW"
+    The leverages, ie the diagonal of the symmetric weighted hat matrix.)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag
 OT_LeastSquaresMethod_getHDiag_doc
@@ -289,6 +307,45 @@ psiAk : :class:`~openturns.Matrix`
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::computeWeightedDesign
 OT_LeastSquaresMethod_computeWeightedDesign_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_computeDesign_doc
+"Build the raw design matrix without weight scaling.
+
+Parameters
+----------
+whole : bool, defaults to False
+    Whether to use the initial indices instead of the current indices
+
+Returns
+-------
+design : :class:`~openturns.Matrix`
+    The raw design matrix."
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LeastSquaresMethod_solveNormalGram_doc
+R"RAW(Solve the Gram system :math:`G x = \mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
+
+Unlike :any:`solveNormal`, this method does not apply weight multiplication
+to the right-hand side.
+
+Parameters
+----------
+rhs : sequence of float
+    Right-hand side of the equation.
+
+Returns
+-------
+x : :class:`~openturns.Point`
+    The solution.)RAW"
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc
 
 // ---------------------------------------------------------------------
 

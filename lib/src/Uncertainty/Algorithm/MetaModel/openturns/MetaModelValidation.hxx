@@ -57,6 +57,11 @@ public:
   virtual Sample getOutputSample() const;
   virtual Sample getMetamodelPredictions() const;
 
+  /** Weights accessors: a single value for uniform weights,
+      one value per validation point otherwise */
+  Point getWeights() const;
+  void setWeights(const Point & weights);
+
   /** Compute R2 score */
   Point computeR2Score() const;
 
@@ -87,6 +92,9 @@ protected:
 
   /** The meta model */
   Sample metaModelPredictions_;
+
+  /** The weights of the validation sample, stored as a single value when uniform */
+  Point weights_;
 
   /** Residual sample */
   mutable Sample residual_;

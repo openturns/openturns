@@ -1,6 +1,10 @@
 %define OT_FittingAlgorithm_doc
 "Fitting algorithm.
 
+FittingAlgorithm is the interface of the FittingAlgorithmImplementation.
+This class is not usable because it has sense only within the
+:class:`~openturns.FunctionalChaosAlgorithm`.
+
 Available constructors:
     FittingAlgorithm(*fittingAlgoImp*)
 
@@ -12,13 +16,7 @@ fittingAlgoImp : a FittingAlgorithmImplementation
 
 See also
 --------
-CorrectedLeaveOneOut, KFold
-
-Notes
------
-FittingAlgorithm is the interface of the FittingAlgorithmImplementation.
-This class is not usable because it has sense only within the
-:class:`~openturns.FunctionalChaosAlgorithm`."
+CorrectedLeaveOneOut, KFold"
 %enddef
 %feature("docstring") OT::FittingAlgorithmImplementation
 OT_FittingAlgorithm_doc
@@ -35,7 +33,7 @@ Usage:
 
   run(*y, weight, indices, proxy*)
 
-  run(*y, indices, indices*)
+  run(*y, indices, proxy*)
 
   run(method, y*)
 
@@ -50,7 +48,8 @@ x : 2-d sequence of float
 y : 2-d sequence of float
     Output sample
 weight : sequence of float
-    Weights associated to the outputs
+    Quadrature weights :math:`w_i` of the least-squares inner product,
+    of size equal to the size of the input sample
 psi : sequence of :class:`~openturns.Function`
     Basis
 indices : sequence of int

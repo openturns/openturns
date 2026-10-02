@@ -69,10 +69,16 @@ Scalar CorrectedLeaveOneOut::run(const Sample & y,
 
 Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) const
 {
-  const UnsignedInteger sampleSize = y.getSize();
+  const Sample x(method.getInputSample());
+  const UnsignedInteger sampleSize = x.getSize();
 
   if (y.getDimension() != 1) throw InvalidArgumentException(HERE) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
+  // The Chapelle correction behind this score is only established for
+  // uniform weights: reject weighted designs, use LeaveOneOut or KFold
+  // for the general case. Uniform weights are stored as one value
+  const Point methodWeights(method.getWeight());
+  if (methodWeights.getSize() != 1) throw InvalidArgumentException(HERE) << "CorrectedLeaveOneOut only supports uniform weights, use LeaveOneOut or KFold for weighted designs.";
   const Scalar variance = y.computeVariance()[0];
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
@@ -81,7 +87,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   // Build the design of experiments
   LOGINFO("Build the design matrix");
 
-  const Matrix psiAk(method.computeWeightedDesign());
+  const Matrix psiAk(method.computeDesign());
 
   // Solve the least squares problem argmin ||psiAk * coefficients - b||^2 using this decomposition
   LOGINFO("Solve the least squares problem");
@@ -95,19 +101,23 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) 
   const Point yHat(psiAk * coefficients);
 
   const Point h(method.getHDiag());
-  Scalar empiricalError = 0.0;
+  Scalar looError = 0.0;
   for (UnsignedInteger i = 0; i < sampleSize; ++ i)
   {
     const Scalar ns = (y(i, 0) - yHat[i]) / (1.0 - h[i]);
-    empiricalError += ns * ns / sampleSize;
+    looError += methodWeights[0] * ns * ns;
   }
-  LOGINFO(OSS() << "Empirical error=" << empiricalError);
+  looError /= (methodWeights[0] * sampleSize);
+  LOGINFO(OSS() << "LOO error=" << looError);
 
   LOGINFO("Compute the correcting factor");
-  const Scalar traceInverse = method.getGramInverseTrace();
+  // G = Psi^T*Psi where Psi = sqrt(W)*Phi, so G^{-1} = (Phi^T*W*Phi)^{-1}
+  // For uniform weights w: G = w*Phi^T*Phi, hence the CLOO formula needs
+  // tr((Phi^T*Phi)^{-1}) = tr(G^{-1}) * w
+  const Scalar traceInverse = method.getGramInverseTrace() * methodWeights[0];
 
   const Scalar correctingFactor = (1.0 * sampleSize) / (sampleSize - basisSize) * (1.0 + traceInverse);
-  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * empiricalError / variance);
+  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : correctingFactor * looError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }

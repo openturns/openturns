@@ -118,6 +118,12 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   const String methodName(ResourceMap::GetAsString("LeastSquaresMetaModelSelection-DecompositionMethod"));
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, weight_, currentIndices_));
 
+  // CorrectedLeaveOneOut has no extension to weighted designs: reject the
+  // combination up front rather than after the first scoring iteration.
+  // Use LeaveOneOut or KFold as fitting algorithm for weighted designs.
+  if ((fittingAlgorithm_.getImplementation()->getClassName() == "CorrectedLeaveOneOut") && (method.getWeight().getSize() != 1))
+    throw InvalidArgumentException(HERE) << "LeastSquaresMetaModelSelection with CorrectedLeaveOneOut only supports uniform weights, use LeaveOneOut or KFold as fitting algorithm for weighted designs.";
+
   Indices optimalBasisIndices;
   UnsignedInteger iterations = 0;
 
@@ -174,8 +180,10 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   penalizedLeastSquaresAlgorithm.run(proxy);
   const Point optimalBasisCoefficients(penalizedLeastSquaresAlgorithm.getCoefficients());
   const Scalar optimalResidual = penalizedLeastSquaresAlgorithm.getResidual();
-  // New relative error based on cross-validation error
-  const Scalar optimalRelativeError = minimumError / y_.getSize();
+  // New relative error based on cross-validation error: minimumError is
+  // already relative (the fitting criterion normalizes by the variance),
+  // so it is used directly without further normalization
+  const Scalar optimalRelativeError = minimumError;
 
   // compute the coefficients in the master basis from the ones in the optimal sub-basis
   Point optimalCoefficients( currentIndices_.getSize() );

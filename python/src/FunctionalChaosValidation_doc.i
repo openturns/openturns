@@ -1,21 +1,14 @@
 %feature("docstring") OT::FunctionalChaosValidation
-"Validate a functional chaos metamodel.
+R"RAW(Validate a functional chaos metamodel.
 
-Parameters
-----------
-result : :class:`~openturns.FunctionalChaosResult`
-    A functional chaos result obtained from a polynomial chaos expansion.
-
-splitter : :class:`~openturns.SplitterImplementation`, optional
-    The cross-validation method.
-    The default is :class:`~openturns.LeaveOneOutSplitter`.
-
-See also
---------
-FunctionalChaosAlgorithm, FunctionalChaosResult
-
-Notes
------
+The scores of the validation, the R2 score and the mean squared error,
+are weighted by the design weights stored in the result, uniform by
+default for studies saved before the weights were stored. The
+predictions sit on the training points, so the design weights are the
+right validation weights: they are applied automatically, and
+:math:`R^2` and MSE converge to their continuous counterparts when the
+design is a quadrature of the input distribution. An explicit
+:meth:`setWeights` call overrides them.
 A `FunctionalChaosValidation` object is used for the validation of a functional chaos expansion.
 It is based on the fast (analytical) leave-one-out and fast K-Fold
 cross-validation methods presented in :any:`cross_validation`.
@@ -70,12 +63,25 @@ the :meth:`~openturns.FunctionalChaosValidation.getResidualSample` method.
 The :meth:`~openturns.FunctionalChaosValidation.drawValidation` method performs
 similarly.
 
-If the weights of the observations are not equal, the analytical method
-may not necessarily provide an accurate estimator of the mean squared error (MSE).
-This is because LOO and K-Fold cross-validation do not take the weights
-into account.
-Since the :class:`~openturns.FunctionalChaosResult` object does not know
-if the weights are equal, no exception can be generated.
+The exactness of the two analytical methods differs when the design carries
+non-uniform weights, for instance the quadrature weights of a density.
+Both rebuild a weighted least-squares method from the design weights
+stored in the :class:`~openturns.FunctionalChaosResult`, so both are
+exact for any positive weights:
+
+- the leave-one-out residual is :math:`r_i/(1-h_i)` with the weighted
+  leverage :math:`h_i = w_i \psi(\vect{u}_i)^\intercal (\mat{\Psi}^\intercal \mat{W} \mat{\Psi})^{-1} \psi(\vect{u}_i)`
+  returned by :meth:`~openturns.LeastSquaresMethod.getHDiag`
+  (PRESS statistic of Allen, 1974);
+- the K-Fold prediction on a test block :math:`T` solves
+  :math:`(\mat{I}-\mat{A}\mat{W}_T)\vect{u} = \vect{r}_T` with
+  :math:`\mat{A} = \mat{X}_T \mat{G}^{-1} \mat{X}_T^\intercal` and
+  :math:`\mat{G}=\mat{\Psi}^\intercal \mat{W} \mat{\Psi}`, the downdate
+  of the weighted normal equations, which reduces to the
+  :math:`(\mat{I}-\mat{P}_{TT})` formula for uniform weights.
+
+Results saved before the design weights were stored validate as
+uniform designs.
 
 If the sample was not produced from Monte Carlo, then the leave-one-out
 cross-validation method may not necessarily provide an accurate estimator
@@ -88,6 +94,20 @@ not necessarily provide an accurate estimate of the MSE, because the
 internal structure of the QMC is broken by the different splits:
 the elementary volumes are not filled as expected anymore and the
 space-filling properties of the sequence are lost.
+
+
+Parameters
+----------
+result : :class:`~openturns.FunctionalChaosResult`
+    A functional chaos result obtained from a polynomial chaos expansion.
+
+splitter : :class:`~openturns.SplitterImplementation`, optional
+    The cross-validation method.
+    The default is :class:`~openturns.LeaveOneOutSplitter`.
+
+See also
+--------
+FunctionalChaosAlgorithm, FunctionalChaosResult
 
 Examples
 --------
@@ -136,7 +156,8 @@ and set the :math:`k` parameter.
 
 Draw the validation graph.
 
->>> graph = validation.drawValidation()"
+>>> graph = validation.drawValidation()
+)RAW"
 
 // ---------------------------------------------------------------------
 

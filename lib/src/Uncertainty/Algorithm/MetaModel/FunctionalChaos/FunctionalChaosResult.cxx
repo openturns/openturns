@@ -45,6 +45,7 @@ FunctionalChaosResult::FunctionalChaosResult()
   , I_(0)
   , alpha_k_(0, 0)
   , Psi_k_(0)
+  , weights_(1, 1.0)
 {
   // Nothing to do
 }
@@ -68,6 +69,7 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
   , I_(I)
   , alpha_k_(alpha_k)
   , Psi_k_(Psi_k)
+  , weights_(1, 1.0)
 {
   if (Psi_k.getSize() > 0)
   {
@@ -88,6 +90,8 @@ FunctionalChaosResult::FunctionalChaosResult(const Sample & inputSample,
     metaModel_ = ComposedFunction(composedMetaModel_, transformation);
   metaModel_.setInputDescription(inputSample.getDescription());
   metaModel_.setOutputDescription(outputSample.getDescription());
+  // Initialize history cut points with the right size to avoid OOB access
+  historyCutPoints_ = Indices(outputSample.getDimension() + 1, 0);
 }
 
 /* Virtual constructor */
@@ -427,9 +431,11 @@ void FunctionalChaosResult::save(Advocate & adv) const
   adv.saveAttribute( "indicesHistory_", indicesHistory_ );
   adv.saveAttribute( "coefficientsHistory_", coefficientsHistory_ );
   adv.saveAttribute( "errorHistory_", errorHistory_ );
+  adv.saveAttribute( "historyCutPoints_", historyCutPoints_ );
   adv.saveAttribute( "isLeastSquares_", isLeastSquares_ );
   adv.saveAttribute( "involvesModelSelection_", involvesModelSelection_ );
   adv.saveAttribute( "useDomination_", useDomination_);
+  adv.saveAttribute( "weights_", weights_ );
 }
 
 
@@ -450,6 +456,17 @@ void FunctionalChaosResult::load(Advocate & adv)
     adv.loadAttribute( "indicesHistory_", indicesHistory_ );
     adv.loadAttribute( "coefficientsHistory_", coefficientsHistory_ );
     adv.loadAttribute( "errorHistory_", errorHistory_ );
+    if (adv.hasAttribute("historyCutPoints_"))
+      {
+	adv.loadAttribute( "historyCutPoints_", historyCutPoints_ );
+      }
+    else
+      {
+	// Legacy studies store a single unpartitioned history:
+	// mark it with a single cut point, the getters below
+	// return the whole history for output 0 in that case
+	historyCutPoints_ = Indices(1, 0);
+      }
   }
   if (adv.hasAttribute("isLeastSquares_"))
   {
@@ -458,36 +475,75 @@ void FunctionalChaosResult::load(Advocate & adv)
   }
   if (adv.hasAttribute("useDomination_"))
     adv.loadAttribute("useDomination_", useDomination_);
+  if (adv.hasAttribute("weights_"))
+    adv.loadAttribute("weights_", weights_);
+  else
+    // Studies saved before the design weights were stored are uniform
+    weights_ = Point(1, 1.0);
 }
 
-IndicesCollection FunctionalChaosResult::getIndicesHistory() const
+Collection<Indices> FunctionalChaosResult::getIndicesHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "getIndicesHistory is only available for 1-d output dimension "
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  return IndicesCollection(indicesHistory_);
+  if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+  if (historyCutPoints_.getSize() == 1)
+  {
+    // Legacy unpartitioned history: return it whole for output 0
+    if (outputIndex == 0)
+    {
+      Collection<Indices> selectedIndices;
+      selectedIndices.assign(indicesHistory_.begin(), indicesHistory_.end());
+      return selectedIndices;
+    }
+    return Collection<Indices>();
+  }
+  Collection<Indices> selectedIndices;
+  selectedIndices.assign(indicesHistory_.begin() + historyCutPoints_[outputIndex], indicesHistory_.begin() + historyCutPoints_[outputIndex + 1]);
+  return selectedIndices;
 }
 
-Collection<Point> FunctionalChaosResult::getCoefficientsHistory() const
+Collection<Point> FunctionalChaosResult::getCoefficientsHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "getCoefficientsHistory is only available for 1-d output dimension "
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  return coefficientsHistory_;
+  if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+  if (historyCutPoints_.getSize() == 1)
+  {
+    // Legacy unpartitioned history: return it whole for output 0
+    if (outputIndex == 0)
+    {
+      Collection<Point> selectedCoefficients;
+      selectedCoefficients.assign(coefficientsHistory_.begin(), coefficientsHistory_.end());
+      return selectedCoefficients;
+    }
+    return Collection<Point>();
+  }
+  Collection<Point> selectedCoefficients;
+  selectedCoefficients.assign(coefficientsHistory_.begin() + historyCutPoints_[outputIndex], coefficientsHistory_.begin() + historyCutPoints_[outputIndex + 1]);
+  return selectedCoefficients;
 }
 
-void FunctionalChaosResult::setSelectionHistory(Collection<Indices> & indicesHistory, Collection<Point> & coefficientsHistory)
+void FunctionalChaosResult::setSelectionHistory(const Collection<Indices> & indicesHistory, const Collection<Point> & coefficientsHistory, const Indices & historyCutPoints)
 {
+  if (indicesHistory.getSize() != coefficientsHistory.getSize()) throw InvalidArgumentException(HERE) << "Error: the given indices history size=" << indicesHistory.getSize() << " differs from coefficients history size=" << coefficientsHistory.getSize();
+  if (historyCutPoints.getSize() != metaModel_.getOutputDimension() + 1) throw InvalidArgumentException(HERE) << "Error: the given history cut points size=" << historyCutPoints.getSize() << " must be equal to " << metaModel_.getOutputDimension() + 1;
+  if (!historyCutPoints.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the given history cut points must be non-decreasing";
+  if (historyCutPoints.getSize() > 0)
+    {
+      const UnsignedInteger lastCutPoint = historyCutPoints[historyCutPoints.getSize() - 1];
+    if (indicesHistory.getSize() != lastCutPoint) throw InvalidArgumentException(HERE) << "Error: the total number of history entries=" << indicesHistory.getSize() << " must equal the last cut point=" << lastCutPoint;
+    }
   indicesHistory_ = indicesHistory;
   coefficientsHistory_ = coefficientsHistory;
+  historyCutPoints_ = historyCutPoints;
 }
 
-Graph FunctionalChaosResult::drawSelectionHistory() const
+Graph FunctionalChaosResult::drawSelectionHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "drawSelectionHistory is only available for 1-d output dimension"
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  const UnsignedInteger size = indicesHistory_.getSize();
+  if (outputIndex >= metaModel_.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output index=" << outputIndex << " should be less than " << metaModel_.getOutputDimension();
+
+  // extract the relevant part of the histories
+  const Collection<Indices> outputIndicesHistory(getIndicesHistory(outputIndex));
+  const Collection<Point> outputCoefficientsHistory(getCoefficientsHistory(outputIndex));
+  
+  const UnsignedInteger size = outputIndicesHistory.getSize();
   if (!size)
     throw InvalidArgumentException(HERE) << "No selection history available";
 
@@ -496,22 +552,21 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
   UnsignedInteger coefId = 0;
   Indices uniqueBasisIndices;
   for (UnsignedInteger i = 0; i < size; ++ i)
-    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
-      if (indicesMap.find(indicesHistory_[i][j]) == indicesMap.end())
+    for (UnsignedInteger j = 0; j < outputIndicesHistory[i].getSize(); ++ j)
+      if (indicesMap.find(outputIndicesHistory[i][j]) == indicesMap.end())
       {
-        indicesMap[indicesHistory_[i][j]] = coefId;
+        indicesMap[outputIndicesHistory[i][j]] = coefId;
         ++ coefId;
-        uniqueBasisIndices.add(indicesHistory_[i][j]);
+        uniqueBasisIndices.add(outputIndicesHistory[i][j]);
       }
   Sample valuesY(size + 1, coefId);
   Sample valuesX(size + 1, 1);
   for (UnsignedInteger i = 0; i < size + 1; ++ i)
     valuesX(i, 0) = i;
   for (UnsignedInteger i = 0; i < size; ++ i)
-    for (UnsignedInteger j = 0; j < indicesHistory_[i].getSize(); ++ j)
-      valuesY(i + 1, indicesMap[indicesHistory_[i][j]]) = coefficientsHistory_[i][j];
-  Graph result("Selection history", "iteration", "coefficient");
-  result.setLegendPosition("upper right");
+    for (UnsignedInteger j = 0; j < outputIndicesHistory[i].getSize(); ++ j)
+      valuesY(i + 1, indicesMap[outputIndicesHistory[i][j]]) = outputCoefficientsHistory[i][j];
+  Graph result("Selection history", "iteration", "coefficient", true, "upper right");
   for (UnsignedInteger i = 0; i < coefId; ++ i)
   {
     Curve curve(valuesX, valuesY.getMarginal(i));
@@ -523,22 +578,37 @@ Graph FunctionalChaosResult::drawSelectionHistory() const
 }
 
 /* Error history accessor */
-void FunctionalChaosResult::setErrorHistory(const Point & errorHistory)
+void FunctionalChaosResult::setErrorHistory(const Point & errorHistory, const Indices & historyCutPoints)
 {
+  if (historyCutPoints.getSize() != metaModel_.getOutputDimension() + 1) throw InvalidArgumentException(HERE) << "Error: the given history cut points size=" << historyCutPoints.getSize() << " must be equal to " << metaModel_.getOutputDimension() + 1;
+  if (!historyCutPoints.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the given history cut points must be non-decreasing";
+  if (historyCutPoints.getSize() > 0)
+  {
+    const UnsignedInteger lastCutPoint = historyCutPoints[historyCutPoints.getSize() - 1];
+    if (errorHistory.getSize() != lastCutPoint) throw InvalidArgumentException(HERE) << "Error: the total number of history entries=" << errorHistory.getSize() << " must equal the last cut point=" << lastCutPoint;
+  }
   errorHistory_ = errorHistory;
+  historyCutPoints_ = historyCutPoints;
 }
 
-Point FunctionalChaosResult::getErrorHistory() const
+Point FunctionalChaosResult::getErrorHistory(const UnsignedInteger outputIndex) const
 {
-  return errorHistory_;
+  if (outputIndex >= metaModel_.getOutputDimension())
+    throw InvalidArgumentException(HERE) << "Expected outputIndex=" << outputIndex << " to be less than output dimension=" << metaModel_.getOutputDimension();
+  if (historyCutPoints_.getSize() == 1)
+  {
+    // Legacy unpartitioned history: return it whole for output 0
+    return outputIndex == 0 ? errorHistory_ : Point();
+  }
+  Point selectedErrorHistory;
+  selectedErrorHistory.assign(errorHistory_.begin() + historyCutPoints_[outputIndex], errorHistory_.begin() + historyCutPoints_[outputIndex + 1]);
+  return selectedErrorHistory;
 }
 
-Graph FunctionalChaosResult::drawErrorHistory() const
+Graph FunctionalChaosResult::drawErrorHistory(const UnsignedInteger outputIndex) const
 {
-  if (metaModel_.getOutputDimension() > 1)
-    throw NotYetImplementedException(HERE) << "drawErrorHistory is only available for 1-d output dimension"
-                                           << "but the current output dimension is " << metaModel_.getOutputDimension();
-  const UnsignedInteger size = errorHistory_.getSize();
+  const Point errorHistory(getErrorHistory(outputIndex));
+  const UnsignedInteger size = errorHistory.getSize();
   if (!size)
     throw InvalidArgumentException(HERE) << "No error history available";
 
@@ -546,7 +616,7 @@ Graph FunctionalChaosResult::drawErrorHistory() const
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     values(i, 0) = i;
-    values(i, 1) = errorHistory_[i];
+    values(i, 1) = errorHistory[i];
   }
   Graph result("Error history", "iteration", "error");
   result.setLegendPosition("upper right");
@@ -590,7 +660,7 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
     }
   }
 
-  const FunctionalChaosResult marginalPCE(
+  const FunctionalChaosResult marginalPCEBase(
     inputSample_,
     marginalOutputSample,
     distribution_,
@@ -601,6 +671,35 @@ FunctionalChaosResult FunctionalChaosResult::getMarginal(const Indices & indices
     nonzeroCoefficients,
     nonzeroFunctions
   );
+  FunctionalChaosResult marginalPCE(marginalPCEBase);
+  // Slice the selection and error histories for the marginal outputs
+  Collection<Indices> marginalIndicesHistory;
+  Collection<Point> marginalCoefficientsHistory;
+  Point marginalErrorHistory;
+  Indices marginalCutPoints(1, 0);
+  for (UnsignedInteger m = 0; m < indicesOutput.getSize(); ++m)
+  {
+    const UnsignedInteger outputIndex = indicesOutput[m];
+    const Collection<Indices> outputIndicesHistory(getIndicesHistory(outputIndex));
+    for (UnsignedInteger i = 0; i < outputIndicesHistory.getSize(); ++i)
+      marginalIndicesHistory.add(outputIndicesHistory[i]);
+    const Collection<Point> outputCoefficientsHistory(getCoefficientsHistory(outputIndex));
+    for (UnsignedInteger i = 0; i < outputCoefficientsHistory.getSize(); ++i)
+      marginalCoefficientsHistory.add(outputCoefficientsHistory[i]);
+    const Point outputErrorHistory(getErrorHistory(outputIndex));
+    // Align the error slice with the indices slice: legacy unpartitioned
+    // histories may differ in size. Missing entries carry the last measured
+    // error forward instead of a fabricated 0.0, which would assert a
+    // perfect prediction
+    const Scalar fillValue = outputErrorHistory.getSize() > 0 ? outputErrorHistory[outputErrorHistory.getSize() - 1] : 0.0;
+    for (UnsignedInteger i = 0; i < outputIndicesHistory.getSize(); ++i)
+      marginalErrorHistory.add(i < outputErrorHistory.getSize() ? outputErrorHistory[i] : fillValue);
+    marginalCutPoints.add(marginalIndicesHistory.getSize());
+  }
+  marginalPCE.setSelectionHistory(marginalIndicesHistory, marginalCoefficientsHistory, marginalCutPoints);
+  marginalPCE.setErrorHistory(marginalErrorHistory, marginalCutPoints);
+  // The marginal shares the input sample, hence its design weights
+  marginalPCE.setWeights(weights_);
   return marginalPCE;
 }
 
@@ -613,6 +712,28 @@ void FunctionalChaosResult::setUseDomination(const Bool useDomination)
 Bool FunctionalChaosResult::getUseDomination() const
 {
   return useDomination_;
+}
+
+/* Design weights accessor */
+void FunctionalChaosResult::setWeights(const Point & weights)
+{
+  const UnsignedInteger sampleSize = inputSample_.getSize();
+  if (weights.getSize() == 1)
+  {
+    if (!(weights[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the uniform design weight must be positive, here w=" << weights[0];
+  }
+  else
+  {
+    if (weights.getSize() != sampleSize) throw InvalidArgumentException(HERE) << "Error: the design weights size=" << weights.getSize() << " must match the input sample size=" << sampleSize << " or be a single uniform value";
+    for (UnsignedInteger i = 0; i < sampleSize; ++i)
+      if (!(weights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the design weights must be positive, here w[" << i << "]=" << weights[i];
+  }
+  weights_ = weights;
+}
+
+Point FunctionalChaosResult::getWeights() const
+{
+  return weights_;
 }
 
 END_NAMESPACE_OPENTURNS

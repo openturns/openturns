@@ -139,6 +139,11 @@ Point LeastSquaresMethodImplementation::solveNormal(const Point & )
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
 }
 
+Point LeastSquaresMethodImplementation::solveNormalGram(const Point & )
+{
+  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormalGram";
+}
+
 CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::getGramInverse";
@@ -221,18 +226,27 @@ Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole)
 Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Indices & indices) const
 {
   MatrixImplementation design(*proxy_.computeDesign(indices).getImplementation());
-  if (hasUniformWeight_) return design;
-  // Here we take the weights into account
+  // Scale each row by sqrt(w_i), including sqrt(1/n) for uniform weights.
+  // With an active row filter, design row i is original row rowFilter_[i],
+  // so it must be scaled by the weight of that original row.
+  const Bool useRowFilter = proxy_.hasRowFilter();
+  const Indices rowFilter(proxy_.getRowFilter());
   UnsignedInteger flatIndex = 0;
   const UnsignedInteger basisDimension = design.getNbColumns();
   const UnsignedInteger sampleSize = design.getNbRows();
   for (UnsignedInteger j = 0; j < basisDimension; ++j)
     for (UnsignedInteger i = 0; i < sampleSize; ++i)
     {
-      design[flatIndex] *= weightSqrt_[i];
+      design[flatIndex] *= weightSqrt_[hasUniformWeight_ ? 0 : (useRowFilter ? rowFilter[i] : i)];
       ++flatIndex;
     }
   return design;
+}
+
+Matrix LeastSquaresMethodImplementation::computeDesign(const Bool whole) const
+{
+  if (whole) return proxy_.computeDesign(initialIndices_);
+  return proxy_.computeDesign(currentIndices_);
 }
 
 

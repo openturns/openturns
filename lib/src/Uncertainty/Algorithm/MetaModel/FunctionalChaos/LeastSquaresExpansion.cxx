@@ -127,9 +127,11 @@ LeastSquaresExpansion::LeastSquaresExpansion(const Sample & inputSample,
   if (basis.getMeasure().getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the basis must have a measure with the same dimension as the input distribution, here measure dimension=" << basis.getMeasure().getDimension() << " and distribution dimension=" << distribution.getDimension();
   if (basisSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot project on a basis of size zero";
   if (activeFunctions.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: active functions cannot be empty";
-  for (UnsignedInteger i = 0; i < activeFunctions.getSize(); ++i)
-    if (activeFunctions[i] >= basisSize) throw InvalidArgumentException(HERE) << "Error: active function index " << activeFunctions[i] << " must be less than basisSize " << basisSize;
+  if (!activeFunctions.check(basisSize)) throw InvalidArgumentException(HERE) << "Error: the active functions must be distinct and have indices less than " << basisSize;
   activeFunctions_ = activeFunctions;
+  // The constant function (index 0) is always needed for the initial model
+  if (!activeFunctions_.contains(0))
+    activeFunctions_.add(0);
 }
 
 /* Constructor with active functions */
@@ -192,6 +194,8 @@ void LeastSquaresExpansion::run()
   result_.setIsLeastSquares(true);
   result_.setInvolvesModelSelection(false);
   result_.setUseDomination(useDomination_);
+  result_.setSelectionHistory(Collection<Indices>(), Collection<Point>(), Indices(outputDimension + 1, 0));
+  result_.setErrorHistory(Point(), Indices(outputDimension + 1, 0));
 }
 
 /* Domination flag accessor */
@@ -212,12 +216,18 @@ Indices LeastSquaresExpansion::getActiveFunctions() const
 
 void LeastSquaresExpansion::setActiveFunctions(const Indices & activeFunctions)
 {
+  if (activeFunctions.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: active functions cannot be empty";
+  // Distinctness is checked against a trivially satisfied bound: max + 1 always holds
+  if (!activeFunctions.check(activeFunctions.normInf() + 1)) throw InvalidArgumentException(HERE) << "Error: the active functions must be distinct";
   if (!activeFunctions.check(basisSize_))
   {
     basisSize_ = activeFunctions.normInf() + 1;
     designProxy_ = DesignProxy();
   }
   activeFunctions_ = activeFunctions;
+  // The constant function (index 0) is always needed for the initial model
+  if (!activeFunctions_.contains(0))
+    activeFunctions_.add(0);
 }
 
 

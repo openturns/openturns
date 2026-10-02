@@ -60,6 +60,7 @@ public:
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
   Point solve(const Point & rhs) override;
   Point solveNormal(const Point & rhs) override;
+  Point solveNormalGram(const Point & rhs) override;
 
   CovarianceMatrix getGramInverse() const override;
 

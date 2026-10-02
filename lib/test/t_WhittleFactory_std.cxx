@@ -58,14 +58,8 @@ int main(int, char *[])
       WhittleFactory factory(p, q);
       fullprint << "factory=" << factory << std::endl;
       Point informationCriteria;
-      Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
-      // Commented due to a bug in the cobyla algorithm
-      //fullprint << "Estimated ARMA=" << result.__str__() << std::endl;
-      //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
-      Process result2(factory.buildWithCriteria(sample, informationCriteria));
-      // Commented due to a bug in the cobyla algorithm
-      //fullprint << "Estimated ARMA=" << result2.__str__() << std::endl;
-      //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
+      factory.buildWithCriteria(timeSeries, informationCriteria);
+      factory.buildWithCriteria(sample, informationCriteria);
     }
 
     /* Second, build the best ARMA based on a given range of order using the WhittleFactory */
@@ -76,16 +70,8 @@ int main(int, char *[])
     WhittleFactory factory(pIndices, qIndices);
     fullprint << "factory=" << factory << std::endl;
     Point informationCriteria;
-    Process result(factory.buildWithCriteria(timeSeries, informationCriteria));
-    // Commented due to a bug in the cobyla algorithm
-    //fullprint << "Estimated ARMA=" << result.__str__() << std::endl;
-    //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
-    //fullprint << "History=" << factory.getHistory().__str__()  << std::endl;
-    Process result2(factory.buildWithCriteria(sample, informationCriteria));
-    // Commented due to a bug in the cobyla algorithm
-    //fullprint << "Estimated ARMA=" << result2.__str__() << std::endl;
-    //fullprint << "Information criteria=" << informationCriteria.__str__() << std::endl;
-    //fullprint << "History=" << factory.getHistory().__str__()  << std::endl;
+    factory.buildWithCriteria(timeSeries, informationCriteria);
+    factory.buildWithCriteria(sample, informationCriteria);
 
   }
   catch (TestFailed & ex)

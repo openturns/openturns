@@ -66,7 +66,14 @@ String FunctionalChaosRandomVector::__repr__() const
 /* Mean accessor */
 Point FunctionalChaosRandomVector::getMean() const
 {
-  return functionalChaosResult_.getCoefficients()[0];
+  // The mean is the coefficient of the constant term, identified by its
+  // basis index value (0) rather than by its storage position, as
+  // active-functions expansions may store the indices in any order
+  const Indices indices(functionalChaosResult_.getIndices());
+  const Sample coefficients(functionalChaosResult_.getCoefficients());
+  for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+    if (indices[i] == 0) return coefficients[i];
+  return Point(getDimension(), 0.0);
 }
 
 /* Covariance accessor */

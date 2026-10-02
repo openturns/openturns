@@ -35,3 +35,12 @@ result3 = fittingAlgo.run(y, indices, proxy)
 ott.assert_almost_equal(result, result3, 1e-5, 1e-5)
 result4 = fittingAlgo.run(method, y)
 ott.assert_almost_equal(result, result4, 1e-5, 1e-5)
+
+# Non-uniform weights are rejected: the Chapelle correction behind
+# CorrectedLeaveOneOut has no extension to weighted designs, use
+# LeaveOneOut or KFold instead
+wNonUniform = ot.Point([0.5 + (i % 4) * 0.25 for i in range(size)])
+proxyW = ot.DesignProxy(x, basis)
+methodW = ot.QRMethod(proxyW, wNonUniform, indices)
+with ott.assert_raises(TypeError):
+    fittingAlgo.run(methodW, y)

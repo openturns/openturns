@@ -24,6 +24,12 @@ The sparse least squares approaches may be employed instead. Eventually a sparse
 PC representation is obtained, that is an approximation which only contains a
 small number of active basis functions.
 
+With a weighted least-squares method the selection uses the weighted
+correlations :math:`\vect{c} = \mat{\Phi}^\intercal \mat{W} \vect{r}` and
+the weighted Gram system :math:`\mat{G}_A = \mat{\Phi}_A^\intercal \mat{W} \mat{\Phi}_A`,
+ie the discretization of the :math:`L^2` inner product with the quadrature
+weights of the method.
+
 Examples
 --------
 >>> import openturns as ot

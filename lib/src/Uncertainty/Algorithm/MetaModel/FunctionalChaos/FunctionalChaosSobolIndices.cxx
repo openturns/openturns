@@ -265,9 +265,12 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variables
   const UnsignedInteger size = coefficients.getSize();
   Scalar covarianceVariables = 0.0;
   const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
-  // Sum the contributions to all the coefficients associated to a basis vector involving at least the variable i
+  // Sum the contributions to all the coefficients associated to a basis vector involving at least the variable i.
+  // The loop starts at 0: the constant term is excluded by its index value
+  // (coefficientIndices[i] > 0) below, not by its storage position, as
+  // active-functions expansions may store the indices in any order
   Scalar totalVariance = 0.0;
-  for (UnsignedInteger i = 1; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     if (coefficientIndices[i] > 0)
     {

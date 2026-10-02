@@ -1,6 +1,12 @@
 %feature("docstring") OT::QRMethod
 "Least squares solver using the QR decomposition.
 
+This method implements a method to solve the least squares problem using the QR method.
+
+Refer to :any:`least_squares` to get all the notations.
+
+Refer to :any:`least_squares_resolution` to get details on the numerical method.
+
 Available constructors:
     QRMethod(*proxy, weight, indices*)
 
@@ -23,15 +29,6 @@ See also
 --------
 LeastSquaresMethod, CholeskyMethod, SVDMethod
 
-Notes
------
-This method implements a method to solve the least squares problem using the QR method.
-
-Refer to :any:`least_squares` to get all the notations.
-
-Refer to :any:`least_squares_resolution` to get details on the numerical method.
-
-
 Examples
 --------
 Solves a linear least squares problem with SVD method:
@@ -45,3 +42,12 @@ Solves a linear least squares problem with SVD method:
 [3.5,1.4]"
 
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QRMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QRMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc

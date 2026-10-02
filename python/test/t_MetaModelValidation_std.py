@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 from math import pi
 
 ot.TESTPREAMBLE()
@@ -77,6 +78,44 @@ print("")
 print("Sparse chaos scoring")
 print("R2 = ", metaModelValidationSPC.computeR2Score())
 print("Residual sample = ", repr(metaModelValidationSPC.getResidualSample()))
+
+# Weighted validation: scores against a brute-force recomputation
+validationWeights = [0.5 + (i % 4) * 0.25 for i in range(validationSize)]
+weightedValidation = ot.MetaModelValidation(outputValidation, metamodelPredictions)
+weightedValidation.setWeights(validationWeights)
+ott.assert_almost_equal(weightedValidation.getWeights(), validationWeights)
+yValues = [outputValidation[i, 0] for i in range(validationSize)]
+yHatValues = [metamodelPredictions[i, 0] for i in range(validationSize)]
+weightSum = sum(validationWeights)
+weightedMean = (
+    sum(w * y for w, y in zip(validationWeights, yValues)) / weightSum
+)
+expectedVariance = (
+    sum(w * (y - weightedMean) ** 2 for w, y in zip(validationWeights, yValues))
+    / weightSum
+)
+expectedMSE = (
+    sum(w * (y - yh) ** 2 for w, y, yh in zip(validationWeights, yValues, yHatValues))
+    / weightSum
+)
+ott.assert_almost_equal(
+    weightedValidation.computeMeanSquaredError()[0], expectedMSE, 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    weightedValidation.computeR2Score()[0], 1.0 - expectedMSE / expectedVariance, 1e-12, 1e-12
+)
+# Uniform weights reproduce the unweighted scores
+uniformValidation = ot.MetaModelValidation(outputValidation, metamodelPredictions)
+uniformValidation.setWeights([2.0] * validationSize)
+ott.assert_almost_equal(
+    uniformValidation.computeR2Score(), metaModelValidationSPC.computeR2Score(), 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    uniformValidation.computeMeanSquaredError(),
+    metaModelValidationSPC.computeMeanSquaredError(),
+    1e-12,
+    1e-12,
+)
 
 # 2) GPR algorithm
 basis = ot.QuadraticBasisFactory(dimension).build()

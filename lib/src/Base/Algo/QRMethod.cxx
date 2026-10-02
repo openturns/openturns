@@ -116,10 +116,14 @@ Point QRMethod::solve(const Point & rhs)
   // x = R^{-1}(Q^t b)
   update(Indices(0), currentIndices_, Indices(0));
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
+    // With an active row filter (eg KFold folds) rhs holds the filtered rows
+    const Bool useRowFilter = proxy_.hasRowFilter();
+    const Indices rowFilter(proxy_.getRowFilter());
+    if (!hasUniformWeight_ && size != (useRowFilter ? rowFilter.getSize() : weightSqrt_.getSize()))
+      throw InvalidArgumentException(HERE) << "QRMethod::solve invalid rhs size=" << rhs.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[hasUniformWeight_ ? 0 : (useRowFilter ? rowFilter[i] : i)];
   }
   // compute c = Q^t b
   const Point c(q_.getImplementation()->genVectProd(b, true)); // transpose
@@ -133,13 +137,27 @@ Point QRMethod::solveNormal(const Point & rhs)
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
   update(Indices(0), currentIndices_, Indices(0));
+  if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "QRMethod::solveNormal invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
+  // solveNormal is only meaningful for uniform weights: the weight
+  // premultiplication below addresses sample weights by basis position
+  if (!hasUniformWeight_) throw InvalidArgumentException(HERE) << "Error: QRMethod::solveNormal only supports uniform weights.";
   Point b(rhs);
-  if (!hasUniformWeight_)
   {
     const UnsignedInteger size = rhs.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[i];
+    for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weight_[hasUniformWeight_ ? 0 : i];
   }
   const Point c(r_.getImplementation()->solveLinearSystemTri(b, false, true)); // rhs, lower, transpose
+  const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, false, false)); // rhs, lower, transpose
+  return coefficients;
+}
+
+Point QRMethod::solveNormalGram(const Point & rhs)
+{
+  // G=R^T*R, G x = rhs
+  // Solve R^T y = rhs then R x = y, no weight multiplication on rhs
+  update(Indices(0), currentIndices_, Indices(0));
+  if (rhs.getSize() != currentIndices_.getSize()) throw InvalidArgumentException(HERE) << "QRMethod::solveNormalGram invalid rhs size=" << rhs.getSize() << ", expected " << currentIndices_.getSize();
+  const Point c(r_.getImplementation()->solveLinearSystemTri(rhs, false, true)); // rhs, lower, transpose
   const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, false, false)); // rhs, lower, transpose
   return coefficients;
 }
@@ -148,9 +166,12 @@ Point QRMethod::getHDiag() const
 {
   const UnsignedInteger dimension = q_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
+  // In the under-determined case the economic factor has fewer columns
+  // than the basis size; the available columns span the same image
+  const UnsignedInteger factorSize = std::min(basisSize, q_.getNbColumns());
   Point diag(dimension);
   MatrixImplementation::const_iterator q_iterator(q_.getImplementation()->begin());
-  for (UnsignedInteger j = 0; j < basisSize; ++ j)
+  for (UnsignedInteger j = 0; j < factorSize; ++ j)
   {
     for (MatrixImplementation::iterator diag_iterator = diag.begin(); diag_iterator != diag.end(); ++ diag_iterator)
     {

@@ -1,6 +1,12 @@
 %feature("docstring") OT::SVDMethod
 "Least squares solver using SVD decomposition.
 
+This method implements a method to solve the least squares problem specified in using the SVD method.
+
+Refer to :any:`least_squares` to get all the notations.
+
+Refer to :any:`least_squares_resolution` to get details on the numerical method.
+
 Available constructors:
     SVDMethod(*proxy, weight, indices*)
 
@@ -23,14 +29,6 @@ See also
 --------
 LeastSquaresMethod, CholeskyMethod, QRMethod
 
-Notes
------
-This method implements a method to solve the least squares problem specified in using the SVD method.
-
-Refer to :any:`least_squares` to get all the notations.
-
-Refer to :any:`least_squares_resolution` to get details on the numerical method.
-
 Examples
 --------
 Solves a linear least squares problem with SVD method:
@@ -44,3 +42,12 @@ Solves a linear least squares problem with SVD method:
 [3.5,1.4]"
 
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SVDMethod::computeDesign
+OT_LeastSquaresMethod_computeDesign_doc
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SVDMethod::solveNormalGram
+OT_LeastSquaresMethod_solveNormalGram_doc

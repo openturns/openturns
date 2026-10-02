@@ -2,7 +2,7 @@
 
 import openturns as ot
 from openturns.usecases import ishigami_function
-from openturns.testing import assert_almost_equal
+from openturns.testing import assert_almost_equal, assert_raises
 
 
 def computeMSENaiveLOO(
@@ -279,3 +279,144 @@ print("Naive LOO MSE = ", mseLOOnaive)
 rtolLOO = 1.0e-1  # We cannot have more accuracy, as the MSE estimator is then biased
 atolLOO = 0.0
 assert_almost_equal(mseLOOAnalytical, mseLOOnaive, rtolLOO, atolLOO)
+
+# Weighted validation: the scores of a derived validation class follow the
+# weights given to setWeights, and coincide with the weighted recomputation
+# of the mean squared error
+validationWeighted = ot.FunctionalChaosValidation(chaosResult, splitterLOO)
+validationWeighted.setWeights(
+    [1.0 + 0.5 * (i % 3) for i in range(chaosResult.getOutputSample().getSize())]
+)
+residual = validationWeighted.getResidualSample()
+predictions = validationWeighted.getMetamodelPredictions()
+weights = validationWeighted.getWeights()
+weightSum = sum(weights)
+expectedMSE = (
+    sum(
+        w * (residual[i, 0]) ** 2
+        for i, w in enumerate(weights)
+    )
+    / weightSum
+)
+assert_almost_equal(
+    validationWeighted.computeMeanSquaredError()[0], expectedMSE, 1.0e-12, 1.0e-12
+)
+# A uniform weight equal to one reproduces the unweighted score
+validationUniform = ot.FunctionalChaosValidation(chaosResult, splitterLOO)
+validationUniform.setWeights([2.0] * chaosResult.getOutputSample().getSize())
+assert_almost_equal(
+    validationUniform.computeMeanSquaredError(),
+    validationLOO.computeMeanSquaredError(),
+    1.0e-12,
+    1.0e-12,
+)
+
+#
+print("4. Weighted design: analytical LOO and KFold are exact")
+weightedDegree = 3
+weightedBasisSize = enumerateFunction.getBasisSizeFromTotalDegree(weightedDegree)
+weightedAdaptive = ot.FixedStrategy(productBasis, weightedBasisSize)
+weightedSelection = ot.PenalizedLeastSquaresAlgorithmFactory()
+weightedProjection = ot.LeastSquaresStrategy(weightedSelection)
+weightedSize = 60
+weightedInput = im.distribution.getSample(weightedSize)
+weightedOutput = im.model(weightedInput)
+# Non-uniform design weights, as produced by a quadrature rule
+designWeights = [0.5 + 0.25 * (i % 5) for i in range(weightedSize)]
+weightedAlgo = ot.FunctionalChaosAlgorithm(
+    weightedInput,
+    designWeights,
+    weightedOutput,
+    im.distribution,
+    weightedAdaptive,
+    weightedProjection,
+)
+weightedAlgo.run()
+weightedResult = weightedAlgo.getResult()
+# The result carries the design weights
+assert_almost_equal(
+    weightedResult.getWeights(), ot.Point(designWeights), 1.0e-12, 1.0e-12
+)
+
+# Brute-force weighted LOO: refit without each point
+weightedSplitterLOO = ot.LeaveOneOutSplitter(weightedSize)
+weightedValidationLOO = ot.FunctionalChaosValidation(
+    weightedResult, weightedSplitterLOO
+)
+press = 0.0
+weightSum = sum(designWeights)
+for i in range(weightedSize):
+    train = ot.Indices([j for j in range(weightedSize) if j != i])
+    algoRefit = ot.FunctionalChaosAlgorithm(
+        weightedInput[train],
+        [designWeights[j] for j in train],
+        weightedOutput[train],
+        im.distribution,
+        weightedAdaptive,
+        ot.LeastSquaresStrategy(weightedSelection),
+    )
+    algoRefit.run()
+    prediction = algoRefit.getResult().getMetaModel()(weightedInput[i])
+    press += designWeights[i] * (weightedOutput[i, 0] - prediction[0]) ** 2
+press /= weightSum
+assert_almost_equal(
+    weightedValidationLOO.computeMeanSquaredError()[0], press, 1.0e-10, 1.0e-12
+)
+
+# Brute-force weighted KFold: refit without each fold
+kWeighted = 5
+weightedSplitterKF = ot.KFoldSplitter(weightedSize, kWeighted)
+weightedValidationKF = ot.FunctionalChaosValidation(
+    weightedResult, weightedSplitterKF
+)
+kfoldError = 0.0
+for indicesTrain, indicesTest in weightedSplitterKF:
+    algoRefit = ot.FunctionalChaosAlgorithm(
+        weightedInput[indicesTrain],
+        [designWeights[j] for j in indicesTrain],
+        weightedOutput[indicesTrain],
+        im.distribution,
+        weightedAdaptive,
+        ot.LeastSquaresStrategy(weightedSelection),
+    )
+    algoRefit.run()
+    predictions = algoRefit.getResult().getMetaModel()(
+        weightedInput[indicesTest]
+    )
+    for t in range(indicesTest.getSize()):
+        kfoldError += (
+            designWeights[indicesTest[t]]
+            * (weightedOutput[indicesTest[t], 0] - predictions[t, 0]) ** 2
+        )
+kfoldError /= weightSum
+assert_almost_equal(
+    weightedValidationKF.computeMeanSquaredError()[0], kfoldError, 1.0e-10, 1.0e-12
+)
+
+# Weighted R2 against the weighted variance
+weightedMean = (
+    sum(designWeights[i] * weightedOutput[i, 0] for i in range(weightedSize))
+    / weightSum
+)
+weightedVariance = (
+    sum(
+        designWeights[i] * (weightedOutput[i, 0] - weightedMean) ** 2
+        for i in range(weightedSize)
+    )
+    / weightSum
+)
+assert_almost_equal(
+    weightedValidationLOO.computeR2Score()[0],
+    1.0 - press / weightedVariance,
+    1.0e-10,
+    1.0e-12,
+)
+
+# CorrectedLeaveOneOut rejects the weighted design, LeaveOneOut accepts it
+weightedBasis = ot.Basis([productBasis.build(i) for i in range(weightedBasisSize)])
+proxyW = ot.DesignProxy(weightedInput, weightedBasis)
+methodW = ot.QRMethod(proxyW, ot.Point(designWeights), list(range(weightedBasisSize)))
+with assert_raises(TypeError):
+    ot.CorrectedLeaveOneOut().run(methodW, weightedOutput.getMarginal(0))
+scoreW = ot.LeaveOneOut().run(methodW, weightedOutput.getMarginal(0))
+assert scoreW >= 0.0

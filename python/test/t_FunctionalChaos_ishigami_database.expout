@@ -34,7 +34,7 @@ class=CleaningStrategy maximum size=20 significance factor=1e-06 derived from cl
 ProjectionStrategyImplementation
 - coefficients: dimension=10
 - residual: 0.031185
-- relative error: 8.89613e-05
+- relative error: 0.0222403
 - measure: Distribution
 - weighted experiment: WeightedExperiment
 - input sample: size= 250 x dimension= 3
@@ -127,7 +127,7 @@ class=FixedStrategy derived from class=AdaptiveStrategyImplementation maximumDim
 ProjectionStrategyImplementation
 - coefficients: dimension=84
 - residual: 0.0295638
-- relative error: 8.25367e-05
+- relative error: 0.0206342
 - measure: Distribution
 - weighted experiment: WeightedExperiment
 - input sample: size= 250 x dimension= 3

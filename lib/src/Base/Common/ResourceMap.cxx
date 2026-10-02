@@ -1586,7 +1586,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-BasisSize", 0);
   addAsBool("FunctionalChaosAlgorithm-Sparse", false);
-  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold"});
+  addAsString("FunctionalChaosAlgorithm-FittingAlgorithm", "CorrectedLeaveOneOut", {"CorrectedLeaveOneOut", "KFold", "LeaveOneOut"});
+
+  // SparseExpansion parameters //
+  addAsString("SparseExpansion-DecompositionMethod", "SVD", {"SVD", "Cholesky", "QR"});
+  addAsUnsignedInteger("SparseExpansion-ConsecutiveIncreases", 2);
 
   // LeastSquaresExpansion parameters //
   addAsString("LeastSquaresExpansion-DecompositionMethod", "QR", {"SVD", "Cholesky", "QR"});
