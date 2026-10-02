@@ -36,17 +36,16 @@ public:
   /** Default constructor */
   explicit DivFreeModel(const UnsignedInteger inputDimension = 2);
 
-  /** Copy constructor */
+#ifdef SWIG
+  /** Dummy copy ctor to fix overload precedence */
   DivFreeModel(const DivFreeModel & other);
+#endif
 
   /** Parameters constructor */
   explicit DivFreeModel(const CovarianceModel & model);
 
   /** Virtual copy constructor */
   DivFreeModel * clone() const override;
-
-  /** Assignment operator */
-  DivFreeModel & operator=(const DivFreeModel & rhs);
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
@@ -66,6 +65,13 @@ public:
 
   /** Scale accessor */
   void setScale(const Point & scale) override;
+
+  /** Parameter accessor, forwarded to the underlying model */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+  Description getParameterDescription() const override;
+  Indices getActiveParameter() const override;
+  void setActiveParameter(const Indices & active) override;
 
   /** String converter */
   String __repr__() const override;

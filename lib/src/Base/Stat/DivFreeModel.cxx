@@ -106,27 +106,6 @@ DivFreeModel::DivFreeModel(const UnsignedInteger inputDimension)
 }
 
 
-/* Copy constructor */
-DivFreeModel::DivFreeModel(const DivFreeModel & other)
-  : CovarianceModelImplementation(other)
-  , model_(other.model_)
-{
-  // Nothing to do
-}
-
-
-/* Assignment operator */
-DivFreeModel & DivFreeModel::operator=(const DivFreeModel & rhs)
-{
-  if (this != &rhs)
-  {
-    CovarianceModelImplementation::operator=(rhs);
-    model_ = rhs.model_;
-  }
-  return *this;
-}
-
-
 /* Parameters constructor */
 DivFreeModel::DivFreeModel(const CovarianceModel & model)
   : CovarianceModelImplementation(model.getInputDimension())
@@ -220,11 +199,46 @@ Bool DivFreeModel::isStationary() const
 void DivFreeModel::setScale(const Point & scale)
 {
   model_.setScale(scale);
+  scale_ = scale;
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
+}
+
+
+Point DivFreeModel::getParameter() const
+{
+  return model_.getParameter();
+}
+
+
+void DivFreeModel::setParameter(const Point & parameter)
+{
+  model_.setParameter(parameter);
   scale_ = model_.getScale();
   const SquareMatrix C0(operator()(Point(inputDimension_)));
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
+}
+
+
+Description DivFreeModel::getParameterDescription() const
+{
+  return model_.getParameterDescription();
+}
+
+
+Indices DivFreeModel::getActiveParameter() const
+{
+  return model_.getActiveParameter();
+}
+
+
+void DivFreeModel::setActiveParameter(const Indices & active)
+{
+  model_.setActiveParameter(active);
 }
 
 

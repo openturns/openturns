@@ -50,27 +50,6 @@ CurlFreeModel::CurlFreeModel(const UnsignedInteger inputDimension)
 }
 
 
-/* Copy constructor */
-CurlFreeModel::CurlFreeModel(const CurlFreeModel & other)
-  : CovarianceModelImplementation(other)
-  , model_(other.model_)
-{
-  // Nothing to do
-}
-
-
-/* Assignment operator */
-CurlFreeModel & CurlFreeModel::operator=(const CurlFreeModel & rhs)
-{
-  if (this != &rhs)
-  {
-    CovarianceModelImplementation::operator=(rhs);
-    model_ = rhs.model_;
-  }
-  return *this;
-}
-
-
 /* Parameters constructor */
 CurlFreeModel::CurlFreeModel(const CovarianceModel & model)
   : CovarianceModelImplementation(model.getInputDimension())
@@ -169,11 +148,46 @@ Bool CurlFreeModel::isStationary() const
 void CurlFreeModel::setScale(const Point & scale)
 {
   model_.setScale(scale);
+  scale_ = scale;
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
+}
+
+
+Point CurlFreeModel::getParameter() const
+{
+  return model_.getParameter();
+}
+
+
+void CurlFreeModel::setParameter(const Point & parameter)
+{
+  model_.setParameter(parameter);
   scale_ = model_.getScale();
   const SquareMatrix C0(operator()(Point(inputDimension_)));
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
+}
+
+
+Description CurlFreeModel::getParameterDescription() const
+{
+  return model_.getParameterDescription();
+}
+
+
+Indices CurlFreeModel::getActiveParameter() const
+{
+  return model_.getActiveParameter();
+}
+
+
+void CurlFreeModel::setActiveParameter(const Indices & active)
+{
+  model_.setActiveParameter(active);
 }
 
 
