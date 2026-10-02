@@ -283,7 +283,7 @@ Refer to :any:`functional_chaos` to get details on the mathematical aspects and 
 Let :math:`\inputRV \in \Rset^{\inputDim}` be the input random vector distributed according
 to :math:`\mu_{\inputRV}`. It is assumed to have independent marginals. We assume that the functional
 chaos result has been built within the basis :math:`\left(\psi_k\right)_{k \in I_n}`  which is orthonormal
-with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate basis
+with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate bases
 orthonormal with respect to  the marginal distributions.
 
 Let :math:`\vect{u} \subseteq \{1, ..., \inputDim\}`

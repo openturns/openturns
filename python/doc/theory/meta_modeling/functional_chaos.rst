@@ -363,7 +363,7 @@ This equation can be used to simulate independent random observations
 from the functional chaos expansion: see the :class:`~openturns.FunctionalChaosRandomVector`
 class for more details on this topic.
 
-**Sensitivity analysis** : this exploitation assumes that the input distribution :math:`\mu_{\inputRV}` has
+**Sensitivity analysis**: this exploitation assumes that the input distribution :math:`\mu_{\inputRV}` has
 independent
 marginals and that the basis :math:`\left(\psi_k\right)_{k \in I_n}` is orthonormal
 with respect
@@ -386,12 +386,12 @@ In that case, the Sobol' indices can easily be deduced from the coefficients
 :class:`~openturns.FunctionalChaosSobolIndices`.
 
 
-**Conditional expectation** : we still assume that the input distribution :math:`\mu_{\inputRV}` has
+**Conditional expectation**: we still assume that the input distribution :math:`\mu_{\inputRV}` has
 independent marginals and that the basis :math:`\left(\psi_k\right)_{k \in I_n}`  is orthonormal
 with respect to  :math:`\mu_{\inputRV}`. This basis is built as the tensorization of univariate bases
 orthonormal with respect to  the marginal distributions.
 
-The objective is to the functional chaos result corresponding to the conditional
+The objective is to obtain the functional chaos result corresponding to the conditional
 expectation of the output given an input vector. An example is provided in
 :doc:`/auto_surrogate_modeling/polynomial_chaos/plot_chaos_conditional_expectation`, using the method
 :meth:`~openturns.FunctionalChaosResult.getConditionalExpectation`.
@@ -420,7 +420,7 @@ This function returns the functional chaos expansion of:
 
 for any :math:`\inputReal_{\vect{u}} \in \Rset^{|\vect{u}|}`.
 
-Given the tensorized structure of the basis :math:`(\psi_k)_{k \in I_n}`, we can write is as follows:
+Given the tensorized structure of the basis :math:`(\psi_k)_{k \in I_n}`, we can write it as follows:
 
 .. math::
     :label: tensBasis
@@ -442,7 +442,7 @@ expressed as:
     a_{\vect{\alpha}} \psi_{\vect{\alpha}}(\inputReal)
 
 Let :math:`\set{J}_{\vect{u}}^{\operatorname{ce}} \subseteq \set{J}^P` be the
-set of multi-indices having zero components when the marginal multi-index
+set of multi-indices having zero component when the marginal multi-index
 is not in :math:`\vect{u}`:
 
 .. math::
@@ -451,7 +451,7 @@ is not in :math:`\vect{u}`:
     = \left\{\vect{\alpha} \in \set{J}^P \; | \;
     \alpha_i = 0 \textrm{ if } i \not \in \vect{u}, \; i = 1, ..., \inputDim\right\}.
 
-This set of multi-indices defines the functions that depends on the
+This set of multi-indices defines the function that depends on the
 variables in the group :math:`\vect{u}` and *only* them.
 For any :math:`\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}`, let
 :math:`\psi_{\vect{\alpha}}^{\operatorname{ce}}` be the orthogonal polynomial defined by:
@@ -468,7 +468,7 @@ For any :math:`\vect{\alpha} \in \set{J}_{\vect{u}}^{\operatorname{ce}}`, let
     \end{cases}
 
 
-Therefore :
+Therefore:
 
 .. math::
 
