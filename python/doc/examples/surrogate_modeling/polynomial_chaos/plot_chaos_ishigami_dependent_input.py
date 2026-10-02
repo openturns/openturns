@@ -146,7 +146,7 @@ view = otv.View(graph)
 
 
 # %%
-# Meta model 2: No transformation method
+# Meta model 2: No use of transformation
 # --------------------------------------
 # Now, we do not want to use any transformation, which means that the basis created by the
 # adaptive strategy is used to project the model. This basis is not orthonormal to
