@@ -28,6 +28,7 @@
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
+ * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
  * SparseExpansion (openturns.experimental)
