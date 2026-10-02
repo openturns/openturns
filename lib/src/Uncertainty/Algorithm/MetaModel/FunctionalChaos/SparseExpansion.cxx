@@ -361,7 +361,7 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
   result_.setInvolvesModelSelection(true);
   result_.setSelectionHistory(allIndicesHistory, allCoefficientsHistory, historyCutPoints);
   result_.setErrorHistory(allErrorHistory, historyCutPoints);
-  result_.setUseDomination(useDomination_);
+  result_.setUseTransformation(useTransformation_);
 }
 
 
@@ -609,7 +609,7 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
   result_.setInvolvesModelSelection(true);
   result_.setSelectionHistory(allIndicesHistory, allCoefficientsHistory, historyCutPoints);
   result_.setErrorHistory(allErrorHistory, historyCutPoints);
-  result_.setUseDomination(useDomination_);
+  result_.setUseTransformation(useTransformation_);
 }
 
 /* Method to get/set the active functions */

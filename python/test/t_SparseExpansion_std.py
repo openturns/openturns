@@ -228,16 +228,16 @@ with ott.assert_raises(TypeError):
     algo.setActiveFunctions(ot.Indices([basisSize + 1]))
 print("Exception active functions out of range: OK")
 
-# Check useDomination
+# Check useTransformation
 algo = otexp.SparseExpansion(
     inputSample, outputSample, distribution,
     productBasis, basisSize, methodName
 )
-algo.setUseDomination(True)
-assert algo.getUseDomination()
-algo.setUseDomination(False)
-assert not algo.getUseDomination()
-print("useDomination accessor: OK")
+algo.setUseTransformation(True)
+assert algo.getUseTransformation()
+algo.setUseTransformation(False)
+assert not algo.getUseTransformation()
+print("useTransformation accessor: OK")
 
 # Check SparseExpansion-ConsecutiveIncreases
 # k=1: stop on first increase (more aggressive)
