@@ -21,7 +21,9 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+    P_{i + 1}(x) & = (a_i x + b_i) P_i(x) + c_i P_{i - 1}(x), \quad  i \geq 0 \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Jacobi polynomials come analytically and
 read:
