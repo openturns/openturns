@@ -279,6 +279,9 @@ ott.assert_almost_equal(val_copy[1, 1], value[1, 1])
 div_default_copy = otexp.DivFreeModel(otexp.DivFreeModel(2))
 assert div_default_copy.getInputDimension() == 2
 assert div_default_copy.getOutputDimension() == 2
+assert divFree == divFree
+assert divFree == otexp.DivFreeModel(model)
+assert not divFree == otexp.DivFreeModel(ot.SquaredExponential([3.0, 4.0], [1.0]))
 
 # ====================================================================
 # Exception cases

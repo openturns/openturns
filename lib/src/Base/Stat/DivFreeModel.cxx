@@ -242,6 +242,21 @@ void DivFreeModel::setActiveParameter(const Indices & active)
 }
 
 
+/* Comparison operator */
+Bool DivFreeModel::operator ==(const DivFreeModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (model_ == other.model_);
+}
+
+
+Bool DivFreeModel::equals(const CovarianceModelImplementation & other) const
+{
+  const DivFreeModel * p_other = dynamic_cast<const DivFreeModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
+
 /* String converter */
 String DivFreeModel::__repr__() const
 {

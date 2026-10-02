@@ -191,6 +191,21 @@ void CurlFreeModel::setActiveParameter(const Indices & active)
 }
 
 
+/* Comparison operator */
+Bool CurlFreeModel::operator ==(const CurlFreeModel & other) const
+{
+  if (this == &other) return true;
+  return hasEqualBase(other) && (model_ == other.model_);
+}
+
+
+Bool CurlFreeModel::equals(const CovarianceModelImplementation & other) const
+{
+  const CurlFreeModel * p_other = dynamic_cast<const CurlFreeModel *>(&other);
+  return p_other && (*this == *p_other);
+}
+
+
 /* String converter */
 String CurlFreeModel::__repr__() const
 {

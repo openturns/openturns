@@ -73,6 +73,10 @@ public:
   Indices getActiveParameter() const override;
   void setActiveParameter(const Indices & active) override;
 
+  /** Comparison operator */
+  using CovarianceModelImplementation::operator ==;
+  Bool operator ==(const DivFreeModel & other) const;
+
   /** String converter */
   String __repr__() const override;
 
@@ -89,6 +93,8 @@ public:
   void load(Advocate & adv) override;
 
 private:
+
+  Bool equals(const CovarianceModelImplementation & other) const override;
 
   /** The underlying scalar covariance model */
   CovarianceModel model_;

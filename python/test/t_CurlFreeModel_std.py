@@ -252,6 +252,9 @@ ott.assert_almost_equal(val_copy[1, 1], value[1, 1])
 curl_default_copy = otexp.CurlFreeModel(otexp.CurlFreeModel(2))
 assert curl_default_copy.getInputDimension() == 2
 assert curl_default_copy.getOutputDimension() == 2
+assert curlFree == curlFree
+assert curlFree == otexp.CurlFreeModel(model)
+assert not curlFree == otexp.CurlFreeModel(ot.SquaredExponential([3.0, 4.0], [1.0]))
 
 # ====================================================================
 # Exception cases
