@@ -76,7 +76,12 @@ to :math:`X` are obtained from those of :math:`Z` by the substitution
      - :math:`\frac{(1-x)^{\beta-1}(1+x)^{\alpha-1}}{2^{\alpha + \beta - 1} B(\alpha, \beta)} \mathbb{I}_{[-1,1]}(x)`
      - :math:`\begin{array}{ccc} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}} \\ a_n & = & K_{2,n}(2n+\alpha + \beta) \\ b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2} \\ c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2} \Big[(n+\alpha-1)(n+\beta-1) \times (n+\alpha+\beta-2)n\frac{K_{1,n}}{2n+\alpha+\beta-3}\Big]^{1/2} \end{array}`
 
-Furthermore, two families of orthonormal polynomials with respect to
+   * - Chebychev
+     - :math:`T_n(x)`
+     - :math:`\displaystyle \frac{1}{\pi \sqrt{1-x^2}} \mathbb{I}_{[-1,1]}(x)`
+     - :math:`\begin{array}{ccc} a_0 = \sqrt{2}, a_n = 2 \; (n \geq 1) \\ b_n = 0 \\ c_0 = 0, c_1 = -\sqrt{2}, c_n = -1 \; (n \geq 2) \end{array}`
+
+Furthermore, three families of orthonormal polynomials with respect to
 discrete  distribution are well-known and detailed in the Table below.
 
 .. list-table::
@@ -95,6 +100,10 @@ discrete  distribution are well-known and detailed in the Table below.
      - :math:`Kr^{(m,p)}_n(x), \ m \in \Nset, \ p \in [0,1]`
      - :math:`\displaystyle{\binom{m}{k}p^k (1-p)^{m-k}}, \ k=0,1,2,\dots`
      - :math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \\ b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \end{array}`
+   * - Meixner
+     - :math:`M^{(r,p)}_n(x), \ r>0, \ p \in [0,1]`
+     - :math:`\displaystyle{\frac{\Gamma(k+r)}{\Gamma(r)\Gamma(k+1)}p^k(1-p)^r}, \ k=0,1,2,\dots`
+     - :math:`\begin{array}{ccc} a_n & = & \frac{p-1}{\sqrt{p(n+1)(n+r)}} \\ b_n & = & \frac{p(n+r)+n}{\sqrt{p(n+1)(n+r)}} \\ c_n & = & - \frac{\sqrt{pn(n+r-1)}}{\sqrt{p(n+1)(n+r)}} \end{array}`
 
 Notice that the Krawtchouk polynomials are only defined up to the
 degree :math:`m-1`. Indeed, for the degree :math:`n=m`, some
@@ -127,6 +136,10 @@ The Table below sums up the available polynomials sequences and the distribution
      - :math:`(a,b)`
      - Jacobi
      - :class:`~openturns.JacobiFactory`
+   * - Arcsine :math:`\cA(a,b)`
+     - :math:`[a,b]`
+     - Chebychev
+     - :class:`~openturns.ChebychevFactory`
    * - Poisson :math:`\cP(\lambda)`
      - :math:`\Nset`
      - Charlier
