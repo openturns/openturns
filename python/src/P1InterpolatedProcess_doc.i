@@ -51,7 +51,7 @@ on a finer mesh:
 >>> fineMesh = ot.RegularGrid(0.0, 0.1, 51)
 >>> process = otexp.P1InterpolatedProcess(gaussianProcess, fineMesh)
 >>> realization = process.getRealization()
->>> print(realization.getOutputDimension())
+>>> print(realization.getDimension())
 1
 >>> print(realization.getMesh().getVerticesNumber())
 51
