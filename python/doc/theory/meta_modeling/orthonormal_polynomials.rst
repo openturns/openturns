@@ -87,7 +87,7 @@ discrete  distributions are well-known and detailed in the Table below.
    * - Charlier
      - Poisson :math:`\cP(\lambda), \; \lambda>0`
      - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}}\quad \forall n \geq 0 \\ b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \quad \forall n \geq 0\\ c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \quad \forall n \geq 0\end{array}\right.`
-   * - Krawtchouk :math:`^{\dagger}`
+   * - Krawtchouk
      - Binomial :math:`\cB(m,p), \; m \in \Nset, \; 0 \leq p \leq 1`
      - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\ b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \quad \forall n, \; 0 \leq n < m\end{array}\right.`
    * - Meixner
