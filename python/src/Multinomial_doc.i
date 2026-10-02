@@ -43,10 +43,28 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X_i} & = & N p_i, \quad i = 1, \ldots, n \\
-        \Var{X_i} & = & N p_i (1 - p_i), \quad i = 1, \ldots, n \\
-        \Cov{X_i, X_j} & = & - N p_i p_j, \quad i, j = 1, \ldots, n, i \neq j
+        \Expect{X_i} & = & N p_i, \quad i = 1, \ldots, d \\
+        \Var{X_i} & = & N p_i (1 - p_i), \quad i = 1, \ldots, d \\
+        \Cov{X_i, X_j} & = & - N p_i p_j, \quad i, j = 1, \ldots, d, i \neq j
     \end{eqnarray*}
+
+The rectangular probabilities :math:`\Prob{\vect{X} \in B}`, i.e. the CDF and
+the probability of an interval, are computed using the Poisson summation-based
+generating function approach [lebrun2013]_. Their accuracy is controlled by two
+parameters:
+
+- *eta*, the maximum absolute error of the Poisson summation-based
+  computation;
+
+- *a_min*, the threshold below which the generating function of a truncated
+  Poisson distribution is computed with its polynomial form rather than as a
+  correction of the untruncated generating function.
+
+Those two parameters can be tuned through the :class:`~openturns.ResourceMap`
+keys:
+
+- ``Multinomial-eta``, default :math:`1.0e-9`;
+- ``Multinomial-smallA``, default :math:`10.0`.
 
 See Also
 --------
@@ -58,6 +76,18 @@ Create a distribution:
 
 >>> import openturns as ot
 >>> distribution = ot.Multinomial(1, [0.5])
+
+Evaluate the PDF and the CDF at a point:
+
+>>> distribution.computePDF([1])
+0.5
+>>> distribution.computeCDF([0])
+0.5
+
+Compute the probability of an interval:
+
+>>> distribution.computeProbability(ot.Interval([0.5], [1.5]))
+0.5
 
 Draw a sample:
 
@@ -112,37 +142,22 @@ P : sequence of float, :math:`0 \leq p_i, i = 1, \ldots, n` and :math:`\sum_{i =
 Returns
 -------
 eta : float
-    The maximum absolute error in the Poisson summation-based CDF computation."
+    The maximum absolute error in the Poisson summation-based CDF computation.
+
+The default value comes from the ``Multinomial-eta`` :class:`~openturns.ResourceMap`
+key, equal to :math:`1.0e-9`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Multinomial::setEta
-"Accessor to the maximum absolute error in CDF computation.
+R"RAW(Accessor to the maximum absolute error in CDF computation.
 
 Parameters
 ----------
-eta : float
-    The maximum absolute error in the Poisson summation-based CDF computation."
+eta : float, :math:`0 \leq eta < 1`
+    The maximum absolute error in the Poisson summation-based CDF computation.
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Multinomial::getEta
-"Accessor to the maximum absolute error in CDF computation.
-
-Returns
--------
-eta : float
-    The maximum absolute error in the Poisson summation-based CDF computation."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Multinomial::setEta
-"Accessor to the maximum absolute error in CDF computation.
-
-Parameters
-----------
-eta : float
-    The maximum absolute error in the Poisson summation-based CDF computation."
+A value of 0 turns the error control off.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -161,13 +176,16 @@ smallA : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Multinomial::setSmallA
-"Accessor to the threshold in generating function computation.
+R"RAW(Accessor to the threshold in generating function computation.
 
 Parameters
 ----------
-smallA : float
+smallA : float, :math:`smallA \geq 0`
     The threshold triggering the algorithm for the computation of the generating
     function of a truncated Poisson distribution. If the argument of the
     generating function is smaller than *smallA* the computation is done using
     the polynomial form of the generating function, otherwise it is done as a
-    correction of the generating function of the untruncated Poisson distribution."
+    correction of the generating function of the untruncated Poisson distribution.
+
+The default value comes from the ``Multinomial-smallA`` :class:`~openturns.ResourceMap`
+key, equal to :math:`10.0`.)RAW"
