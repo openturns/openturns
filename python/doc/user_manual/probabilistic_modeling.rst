@@ -135,6 +135,7 @@ Discrete parametric distributions
 
     :template: classWithPlot.rst_t
     experimental.MultivariateHypergeometric
+    experimental.MultivariatePolya
     Polya
     KPermutationsDistribution
 

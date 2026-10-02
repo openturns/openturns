@@ -29,6 +29,7 @@
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
+ * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
  * SparseExpansion (openturns.experimental)

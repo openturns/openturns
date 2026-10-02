@@ -1315,6 +1315,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("MultivariateHypergeometric-eta", 1.0e-9);
   addAsScalar("MultivariateHypergeometric-smallA", 10.0);
 
+  // MultivariatePolya parameters //
+  addAsScalar("MultivariatePolya-eta", 1.0e-9);
+  addAsScalar("MultivariatePolya-smallA", 10.0);
+
   // PolyaFactory parameters //
   addAsScalar("PolyaFactory-AbsolutePrecision", 1.0e-12);
   addAsScalar("PolyaFactory-RelativePrecision", 1.0e-12);

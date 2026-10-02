@@ -136,6 +136,8 @@
 #include "openturns/MultinomialFactory.hxx"
 #include "openturns/MultivariateHypergeometric.hxx"
 #include "openturns/MultivariateHypergeometricFactory.hxx"
+#include "openturns/MultivariatePolya.hxx"
+#include "openturns/MultivariatePolyaFactory.hxx"
 #include "openturns/MultivariateUniform.hxx"
 #include "openturns/MultivariateUniformFactory.hxx"
 #include "openturns/Polya.hxx"
