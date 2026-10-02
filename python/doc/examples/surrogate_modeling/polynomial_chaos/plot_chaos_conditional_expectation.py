@@ -106,7 +106,7 @@ Reduce the dimension of a model
 # Conditional expectation of a FCE
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# The previous parametric FCE fixes some components to some given values. It is also possible to
+# The previous parametric FCE assigns some components to some given values. It is also possible to
 # compute the mean of the model :eq:`ModelFCE_ex` with respect to these components. In that case, we
 # get a FCE which is expressed in the free components. The resulting FCE is:
 #
