@@ -135,7 +135,7 @@ The Table below sums up the available polynomials sequences and the distribution
      - :class:`~openturns.CharlierFactory`
    * - Binomial :math:`\cB(m,p)`
      - :math:`\{0,\dots,m\}`
-     - Krawtchouk\ :math:`^{\dagger}`
+     - Krawtchouk`
      - :class:`~openturns.KrawtchoukFactory`
    * - Negative Binomial :math:`\cN \cB(m,p)`
      - :math:`\Nset`
