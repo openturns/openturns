@@ -23,8 +23,17 @@
  * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
+ * ChristoffelDistribution-OptimizationAlgorithm: optimization algorithm of the exact stability factor search and of the internal ratio-of-uniforms sampler (default is TNC, using the gradient of the log-objective; Cobyla remains available as the gradient-free alternative)
+ * ChristoffelDistribution-RatioUniformCandidateNumber: number of candidate points of the internal ratio-of-uniforms sampler (default is 10000)
+ * ChristoffelDistribution-RatioUniformMaxDimension: input dimension above which sampling does not attempt the ratio-of-uniforms sampler and uses crude rejection (default is 5); within this guard, and whenever its setup succeeds, sampling picks the branch with the larger acceptance rate, rejection accepting at exactly size/kn, and a setup failure at any dimension falls back to rejection
+ * ChristoffelDistribution-KnSamplingSize: size of the candidate pool of the stability factor search (default is 100000)
+ * ChristoffelDistribution-ExactKn: refine the stability factor by a multi-start bounded maximization of the log-objective over the numerical range instead of keeping the Monte-Carlo pool maximum (default is true)
+ * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
+ * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
+ * ChristoffelDistribution-SliceGridSize: grid size of the univariate slice maxima in sequential conditional sampling (default is 1000)
 
 ==== New classes ====
+ * ChristoffelDistribution (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
