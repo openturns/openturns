@@ -573,6 +573,14 @@
   <ChristoffelDistribution-KnSafetyFactor value_float="1.1" />
   <ChristoffelDistribution-SliceGridSize value_int="1000" />
 
+  <!-- OT::ChristoffelSubsampleExperiment parameters -->
+  <ChristoffelSubsampleExperiment-Gamma value_float="9.242343873386666" />
+  <ChristoffelSubsampleExperiment-PoolOversamplingFactor value_float="2.0" />
+  <ChristoffelSubsampleExperiment-FrameTolerance value_float="0.5" />
+  <ChristoffelSubsampleExperiment-ThinningMethod value_str="Removal" />
+  <ChristoffelSubsampleExperiment-BarrierStep value_float="1.0" />
+  <ChristoffelSubsampleExperiment-BarrierRegularization value_float="1.0e-8" />
+
   <!-- OT::JointDistribution parameters -->
   <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 

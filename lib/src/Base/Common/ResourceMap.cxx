@@ -1212,6 +1212,15 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ChristoffelDistribution-KnSafetyFactor", 1.1);
   addAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 1000);
 
+  // ChristoffelSubsampleExperiment parameters //
+  // gamma = (3/2*log(3/2)-1/2)^-1, Theorem 2.3 of Cohen-Dolbeault
+  addAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666);
+  addAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0);
+  addAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5);
+  addAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal", {"Barrier", "Removal"});
+  addAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0);
+  addAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1.0e-8);
+
   // JointDistribution parameters //
   addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
 
