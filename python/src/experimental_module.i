@@ -71,6 +71,7 @@
 %include DivFreeModel.i
 
 /* Uncertainty/Distribution */
+%include ChristoffelDistribution.i
 %include Kent.i
 %include KentFactory.i
 %include MarginalUniformOrderStatistics.i
