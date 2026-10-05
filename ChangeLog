@@ -80,6 +80,7 @@
  * The division operator between functions with the same input dimension is now available; the right operand must have 1D output, the left operand can have any output dimension
  * Adding, subtracting or negating functions whose implementations are linear combinations now returns a flattened linear combination: the weights of identical atoms are summed and nested linear combinations are flattened
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
+ * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
 
 === Documentation ===
  * Theory: add interpolation page

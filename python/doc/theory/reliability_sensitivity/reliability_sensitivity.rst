@@ -35,6 +35,7 @@ Sensitivity analysis
     sensitivity_ancova
     sensitivity_fast
     importance_form
+    regression_importance_indices
     sensitivity_form
     sensitivity_hsic
 

@@ -25,6 +25,9 @@ Examples
 >>> secondSample = model(firstSample)
 >>> correlationAnalysis = ot.CorrelationAnalysis(firstSample, secondSample)
 >>> cor = correlationAnalysis.computeLinearCorrelation()
+>>> lmg, pmvd = correlationAnalysis.computeLMGAndPMVD()
+>>> johnson = correlationAnalysis.computeJohnson()
+>>> vif = ot.CorrelationAnalysis.ComputeVIF(firstSample)
 "
 
 // ---------------------------------------------------------------------
@@ -135,3 +138,68 @@ Returns
 coef : :class:`~openturns.Point`
     The squared SRC evaluated between the *secondSample*
     and each coordinate of the *firstSample*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeJohnson
+"Johnson indices.
+
+Returns
+-------
+johnson : :class:`~openturns.PointWithDescription`
+    The Johnson index for each component of *firstSample*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeLMGAndPMVD
+"LMG and PMVD indices.
+
+Returns
+-------
+lmg : :class:`~openturns.PointWithDescription`
+    The LMG index for each component of *firstSample*.
+pmvd : :class:`~openturns.PointWithDescription`
+    The PMVD index for each component of *firstSample*.
+
+Notes
+-----
+This function uses the `CorrelationAnalysis-MaximumInputDimensionForLMGAndPMVD` and
+`CorrelationAnalysis-DimensionThresholdForLMGAndPMVDParallelization` keys of the
+:class:`~openturns.ResourceMap` class. The former is the maximum dimension allowed for
+the input sample; the latter is the dimension which triggers a parallelized computation.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::computeLMGAndPMVDMonteCarlo
+"Estimated LMG and PMVD indices.
+
+Parameters
+----------
+iterations : int
+    The number of Monte Carlo iterations to use.
+
+Returns
+-------
+lmg : :class:`~openturns.PointWithDescription`
+    The estimated LMG index for each component of *firstSample*.
+pmvd : :class:`~openturns.PointWithDescription`
+    The estimated PMVD index for each component of *firstSample*.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::ComputeVIF
+"VIF metric.
+
+Parameters
+----------
+inputSample : :class:`~openturns.Sample`
+    Values taken by the input variables.
+
+Returns
+-------
+vif : :class:`~openturns.PointWithDescription`
+    The VIF metric for each component of *inputSample*.
+"

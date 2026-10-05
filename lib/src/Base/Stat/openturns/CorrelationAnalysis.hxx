@@ -26,6 +26,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -77,6 +78,18 @@ public:
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
   Point computePRCC() const;
 
+  /** Compute LMG and PMVD indices */
+  void computeLMGAndPMVD(PointWithDescription & lmgOut, PointWithDescription & pmvdOut) const;
+
+  /** Estimate LMG and PMVD indices via a Monte Carlo method */
+  void computeLMGAndPMVDMonteCarlo(PointWithDescription & lmgOut, PointWithDescription & pmvdOut, const UnsignedInteger iterations) const;
+
+  /** Compute Johnson index */
+  PointWithDescription computeJohnson() const;
+
+  /** Compute VIF metric */
+  static PointWithDescription ComputeVIF(const Sample & inputSample);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -97,6 +110,13 @@ protected:
   static Point ComputeSRC(const Sample & firstSample,
                           const Sample & secondSample);
 private:
+
+  void checkInputSample() const;
+
+  void checkOutputSample() const;
+
+  /** Compute the covariance matrix of the full sample (input + output) */
+  CovarianceMatrix computeCovariance() const;
 
   Sample firstSample_;
   Sample secondSample_;

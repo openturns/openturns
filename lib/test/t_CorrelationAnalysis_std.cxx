@@ -89,6 +89,51 @@ int main(int, char *[])
 
     Point kendalltau(corr_analysis.computeKendallTau());
     assert_almost_equal(kendalltau, Point({0.79, 0.20}), 0.0, 1e-2);
+
+    // Check collinearity indices on correlated inputs
+    const Scalar beta1 = 2.5;
+    const Scalar beta2 = 0.3;
+    const Scalar sigma1 = 1.6;
+    const Scalar sigma2 = 0.8;
+    const Scalar sigmaEps = 0.1;
+    const Scalar r = 0.5;
+    const Scalar b1 = beta1 * sigma1;
+    const Scalar b2 = beta2 * sigma2;
+    const Scalar a = b1 * b1 * (1 - r * r);
+    const Scalar c = b2 * b2 * (1 - r * r);
+    const Scalar b = (b1 * b1 * r * r) + (2 * b1 * b2 * r) + (b2 * b2 * r * r);
+    const Scalar lmg1 = (a + b / 2) / (a + b + c + sigmaEps * sigmaEps);
+    const Scalar lmg2 = (c + b / 2) / (a + b + c + sigmaEps * sigmaEps);
+    const Scalar pmvd1 = a * (1 + b / (a + c)) / (a + b + c + sigmaEps * sigmaEps);
+    const Scalar pmvd2 = c * (1 + b / (a + c)) / (a + b + c + sigmaEps * sigmaEps);
+    const Scalar vif12 = 1 / (1 - r * r);
+
+    const UnsignedInteger correlatedSampleSize = 100000;
+    RandomGenerator::SetSeed(0);
+    const CorrelationMatrix corMatrix(2, {1.0, r, r, 1.0});
+    const Normal inputDistribution(Point({0.0, 0.0}), Point({sigma1, sigma2}), corMatrix);
+    const Sample correlatedInputSample(inputDistribution.getSample(correlatedSampleSize));
+    const LinearFunction linearFunction(Point({0.0, 0.0}), Point({0.0}), Matrix(1, 2, {beta1, beta2}));
+    const Normal noiseDistribution(0.0, sigmaEps);
+    const Sample noiseSample(noiseDistribution.getSample(correlatedSampleSize));
+    const Sample correlatedOutputSample(linearFunction(correlatedInputSample) + noiseSample);
+
+    CorrelationAnalysis analysis(correlatedInputSample, correlatedOutputSample);
+
+    PointWithDescription lmg_computed, pmvd_computed;
+    analysis.computeLMGAndPMVD(lmg_computed, pmvd_computed);
+    PointWithDescription lmg_estimated, pmvd_estimated;
+    analysis.computeLMGAndPMVDMonteCarlo(lmg_estimated, pmvd_estimated, 1000);
+    assert_almost_equal(lmg_computed, Point({lmg1, lmg2}), 2e-3, 0.0);
+    assert_almost_equal(lmg_estimated, lmg_computed, 6e-3, 0.0);
+    assert_almost_equal(pmvd_computed, Point({pmvd1, pmvd2}), 2e-3, 0.0);
+    assert_almost_equal(pmvd_estimated, pmvd_computed, 4e-3, 0.0);
+
+    const PointWithDescription johnson_computed(analysis.computeJohnson());
+    assert_almost_equal(johnson_computed, lmg_computed, 1e-10, 0.0);
+
+    const PointWithDescription vif_computed(CorrelationAnalysis::ComputeVIF(correlatedInputSample));
+    assert_almost_equal(vif_computed, Point({vif12, vif12}), 7e-4, 0.0);
   }
   catch (TestFailed & ex)
   {
