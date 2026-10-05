@@ -15,9 +15,10 @@ description: 'OpenTURNS testing guidelines: ctest syntax, expout files. Read bef
 - C++ tests in `lib/test/`, Python tests in `python/test/`
 - Each test is enabled from the macro entry `ot_*_test(...)` in the corresponding CMakeLists.txt
 - If a test has a corresponding `.expout` file and is not marked IGNOREOUT in CMakeLists; then this test output is tested against the content of the `.expout` file
-- New tests should not use IGNOREOUT/.expout files
-- Testcases must be added in the Python folder preferably, new C++ tests are not necessary but existing ones must keep passing
-- Python coverage must be sufficient, typically around 90%
+- New tests should use IGNOREOUT and no .expout files
+- Testcases must be added in the Python folder
+- no new C++ tests but existing ones must keep passing
+- Python coverage must be typically above 90%
 
 ## C++ tests
 - C++ tests are executables linking against the main library
