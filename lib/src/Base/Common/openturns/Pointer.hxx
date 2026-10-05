@@ -103,7 +103,6 @@ public:
   {
   }
 
-#ifndef SWIG
   /**
    * Equality operator adds one more reference
    * on the underlying object so its reference counter is
@@ -115,7 +114,6 @@ public:
     ptr_ = ref.ptr_;
     return *this;
   }
-#endif
 
   /**
    * Method to cast objects passed as base class into
