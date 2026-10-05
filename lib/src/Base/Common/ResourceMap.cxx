@@ -1483,6 +1483,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Bingham-MaximumIteration", 200);
   addAsUnsignedInteger("BinghamFactory-MaximumIterations", 20);
 
+  // MatrixFisher parameters //
+  addAsScalar("MatrixFisher-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("MatrixFisher-QuadratureOrder", 50);
+  addAsScalar("MatrixFisher-QuadratureGrowthFactor", 7.0);
+  addAsScalar("MatrixFisher-MaximumConcentration", 100.0);
+  addAsUnsignedInteger("MatrixFisherFactory-MaximumIterations", 20);
+
   // RiemannianGaussian parameters //
   addAsScalar("RiemannianGaussian-PositiveDefiniteThreshold", 1.0e-12);
   addAsScalar("RiemannianGaussian-LogJacobianTaylorThreshold", 1.0e-3);

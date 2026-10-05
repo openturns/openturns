@@ -68,6 +68,9 @@ Continuous parametric distributions
     LogUniform
     MeixnerDistribution
 
+    :template: Distribution.rst_t
+    experimental.MatrixFisher
+
     :template: classWithPlot.rst_t
     experimental.MultivariateUniform
 

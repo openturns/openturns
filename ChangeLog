@@ -29,6 +29,7 @@
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
+ * MatrixFisher, MatrixFisherFactory (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)

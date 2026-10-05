@@ -576,6 +576,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
                      Bingham.i Bingham_doc.i
                      BinghamFactory.i BinghamFactory_doc.i
+                     MatrixFisher.i MatrixFisher_doc.i
+                     MatrixFisherFactory.i MatrixFisherFactory_doc.i
                      RiemannianGaussian.i RiemannianGaussian_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
