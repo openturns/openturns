@@ -70,6 +70,35 @@ intersphinx_mapping = {
 
 if "@USE_SPHINX_EXT_MATHJAX@" == "ON":
     extensions.append("sphinx.ext.mathjax")
+
+    def _load_mathjax_macros():
+        # Mirror python/doc/math_notations.sty for client-side rendering:
+        # imgmath gets the .sty through the latex preamble, mathjax needs
+        # the same macros in its configuration. Parsed here so the .sty
+        # stays the single source of truth.
+        import re
+        macros = {}
+        newcommand = re.compile(r"\\newcommand\{\\([A-Za-z]+)\}\s*(?:\[(\d)\])?\s*\{(.*)\}\s*(?:%.*)?$")
+        operator = re.compile(r"\\DeclareMathOperator(\*?)\{\\([A-Za-z]+)\}\{(.+)\}\s*(?:%.*)?$")
+        sty = Path(__file__).resolve().parent / "math_notations.sty"
+        for raw in sty.read_text(encoding="utf-8").splitlines():
+            line = raw.strip()
+            if not line or line.startswith(("%", "\\NeedsTeXFormat", "\\ProvidesPackage",
+                                            "\\usepackage", "\\DeclareSIUnit")):
+                continue
+            found = newcommand.match(line)
+            if found:
+                name, nargs, body = found.groups()
+                macros[name] = [body.strip(), int(nargs)] if nargs else body.strip()
+                continue
+            found = operator.match(line)
+            if found:
+                star, name, text = found.groups()
+                template = "\\operatorname*{%s}" if star else "\\operatorname{%s}"
+                macros[name] = template % text.strip()
+        return macros
+
+    mathjax3_config = {"tex": {"macros": _load_mathjax_macros()}}
 else:
     extensions.append("sphinx.ext.imgmath")
     mnpkg = Path(__file__).resolve().parent / "math_notations"
