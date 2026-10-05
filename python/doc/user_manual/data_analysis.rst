@@ -36,6 +36,11 @@ Building distributions from samples
     BernoulliFactory
     BetaFactory
     BinomialFactory
+
+    :template: DistributionFactory.rst_t
+    experimental.BinghamFactory
+
+    :template: DistributionFactory.rst_t
     BurrFactory
     ChiFactory
     ChiSquareFactory

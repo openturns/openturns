@@ -1478,6 +1478,10 @@ void ResourceMap::loadDefaultConfiguration()
   // KentFactory parameters //
   addAsScalar("KentFactory-AbsolutePrecision", 1.0e-8);
 
+  // Bingham parameters //
+  addAsScalar("Bingham-OrthogonalityThreshold", 1.0e-12);
+  addAsUnsignedInteger("Bingham-MaximumIteration", 200);
+  addAsUnsignedInteger("BinghamFactory-MaximumIterations", 20);
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 

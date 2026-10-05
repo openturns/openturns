@@ -25,3 +25,4 @@ Use cases from the usecases module
     usecases.wingweight_function.WingWeightModel
     usecases.oscillator.Oscillator
     usecases.stiffened_panel.StiffenedPanel
+    usecases.crystal_texture.CrystalTexture

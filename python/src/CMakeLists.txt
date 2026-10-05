@@ -574,6 +574,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
+                     Bingham.i Bingham_doc.i
+                     BinghamFactory.i BinghamFactory_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i

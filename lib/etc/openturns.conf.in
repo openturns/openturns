@@ -826,6 +826,10 @@
   <VonMisesFisherFactory-ResidualPrecision value_float="1e-12"        />
   <VonMisesFisherFactory-MaximumIteration  value_int="10" />
   
+  <!-- OT::Bingham parameters -->
+  <Bingham-OrthogonalityThreshold value_float="1e-12"        />
+  <Bingham-MaximumIteration  value_int="200" />
+  <BinghamFactory-MaximumIterations value_int="20" />
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
 

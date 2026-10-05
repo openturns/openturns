@@ -85,6 +85,8 @@
 %include InverseGammaFactory.i
 %include VonMisesFisher.i
 %include VonMisesFisherFactory.i
+%include Bingham.i
+%include BinghamFactory.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i

@@ -36,6 +36,8 @@
 #include "openturns/BetaMuSigma.hxx"
 #include "openturns/Binomial.hxx"
 #include "openturns/BinomialFactory.hxx"
+#include "openturns/Bingham.hxx"
+#include "openturns/BinghamFactory.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
 #include "openturns/Burr.hxx"
 #include "openturns/BurrFactory.hxx"
