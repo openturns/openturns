@@ -8,6 +8,7 @@ ot_add_source_file (BetaFunctions.cxx)
 ot_add_source_file (ExponentialIntegralFunctions.cxx)
 ot_add_source_file (Faddeeva.cc)
 ot_add_source_file (GammaFunctions.cxx)
+ot_add_source_file (HyperGeom.cxx)
 ot_add_source_file (SpecFunc.cxx)
 ot_add_source_file (incgam.cxx)
 
