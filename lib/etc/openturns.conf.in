@@ -830,6 +830,14 @@
   <Bingham-OrthogonalityThreshold value_float="1e-12"        />
   <Bingham-MaximumIteration  value_int="200" />
   <BinghamFactory-MaximumIterations value_int="20" />
+
+  <!-- OT::WrappedNormal parameters -->
+  <WrappedNormal-MaxLatticeTerms value_int="100000" />
+  <WrappedNormal-GaussHermiteMaximumPoints value_int="4096" />
+
+  <!-- OT::WrappedNormalFactory parameters -->
+
+  <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
 

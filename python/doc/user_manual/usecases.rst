@@ -26,3 +26,4 @@ Use cases from the usecases module
     usecases.oscillator.Oscillator
     usecases.stiffened_panel.StiffenedPanel
     usecases.crystal_texture.CrystalTexture
+    usecases.wind_rose.WindRose

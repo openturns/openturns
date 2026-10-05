@@ -87,6 +87,8 @@
 %include VonMisesFisherFactory.i
 %include Bingham.i
 %include BinghamFactory.i
+%include WrappedNormal.i
+%include WrappedNormalFactory.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
