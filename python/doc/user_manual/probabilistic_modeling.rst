@@ -30,6 +30,9 @@ Continuous parametric distributions
     Beta
     Burr
 
+    :template: classWithPlot.rst_t
+    experimental.Bingham
+
     :template: Distribution.rst_t
     Chi
     ChiSquare
