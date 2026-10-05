@@ -266,17 +266,6 @@ size_history = len(probability_history)
 graph_history.add(ot.Curve(range(size_history), probability_history))
 _ = otv.View(graph_history)
 
-# %%
-# The per-iteration inner simulation results kept in the result also provide
-# the coefficient of variation trajectory along the active learning process.
-graph_cov = ot.Graph("Coefficient of variation history", "iterations", "CoV")
-graph_cov.setGrid(True)
-cov_history = [
-    results_active_MonteCarlo.getSimulationResults()[i].getCoefficientOfVariation()
-    for i in range(size_history)
-]
-graph_cov.add(ot.Curve(range(size_history), cov_history))
-_ = otv.View(graph_cov)
 
 # %%
 # We can also plot the limit state provided by the true function and compare with the one estimated by the refined metamodel.

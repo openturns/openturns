@@ -63,7 +63,6 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   , simulationBudget_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
   , convergenceCriterionThreshold_(0.1)
   , maximumIterations_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
-  , candidatePoolSize_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize"))
   , hasConverged_(false)
   , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
@@ -107,7 +106,6 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   , simulationBudget_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
   , convergenceCriterionThreshold_(0.1)
   , maximumIterations_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
-  , candidatePoolSize_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize"))
   , hasConverged_(false)
   , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
@@ -124,6 +122,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   p_defaultSimulationAlgorithm_ = simulation.clone();
   p_simulationAlgorithm_ = simulation.clone();
   p_activeLearningFunction = criterion.clone();
+  p_simulationAlgorithm_->setKeepSample(true);
+  p_defaultSimulationAlgorithm_->setKeepSample(true);
+   
 }
 
 /* Virtual constructor */
@@ -139,7 +140,6 @@ String ActiveLearningReliabilityAlgorithm::__repr__() const
   oss << "class=" << getClassName()
       << " derived from " << EventSimulation::__repr__()
       << " maximumIterations=" << maximumIterations_
-      << " candidatePoolSize=" << candidatePoolSize_
       << " functionCallNumber=" << functionCallNumber_
       << " hasConverged=" << (hasConverged_ ? "true" : "false");
   return oss;
@@ -390,20 +390,6 @@ UnsignedInteger ActiveLearningReliabilityAlgorithm::getMaximumIterations() const
   return maximumIterations_;
 }
 
-void ActiveLearningReliabilityAlgorithm::setCandidatePoolSize(const UnsignedInteger candidatePoolSize)
-{
-  if (candidatePoolSize < 1)
-  {
-    throw InvalidArgumentException(HERE) << "candidatePoolSize (" << candidatePoolSize << ") must be greater than 1";
-  }
-  candidatePoolSize_ = candidatePoolSize;
-}
-
-UnsignedInteger ActiveLearningReliabilityAlgorithm::getCandidatePoolSize() const
-{
-  return candidatePoolSize_;
-}
-
 Pointer<EventSimulation> ActiveLearningReliabilityAlgorithm::getSimulationAlgorithm() const
 {
   return p_simulationAlgorithm_;
@@ -536,11 +522,9 @@ UnsignedInteger ActiveLearningReliabilityAlgorithm::getBlockSize() const
 
 
 
-/* Run of the algorithm: fit GPR, run inner sim on the surrogate event,
-   score the fixed candidate pool, enrich until the learning criterion converges
+/* Run of the algorithm: fit GPR,  enrich until the learning criterion converges
    or the iteration budget is exhausted. Budget exhaustion exits with
-   hasConverged()=false. The candidate pool is drawn once per run (Echard's
-   fixed population); each inner run resets to the run seed under a
+   hasConverged()=false. The candidate pool is drawn once per run; each inner run resets to the run seed under a
    process-wide mutex so every iteration consumes the exact same stream,
    and the ambient generator state is restored on exit. */
 void ActiveLearningReliabilityAlgorithm::run()
@@ -549,8 +533,6 @@ void ActiveLearningReliabilityAlgorithm::run()
   const Function model(defaultEvent_.getFunction());
   // Single seeding point of the run, restored on exit even on exception
   const RandomGeneratorSeedGuard seedGuard(simulationAlgorithmSeed_);
-  // Fixed candidate population for the whole run
-  const Sample candidatePool(inputDistribution.getSample(candidatePoolSize_));
 
   Bool convergenceStatus = false;
   hasConverged_ = false;
@@ -579,7 +561,8 @@ void ActiveLearningReliabilityAlgorithm::run()
       // Reseat the pointer instead of assigning through it: assigning the
       // pointed-to objects would slice if the dynamic types ever differed
       p_simulationAlgorithm_ = p_currentSimulationAlgorithm;
-
+      Sample candidatePool = p_currentSimulationAlgorithm->getInputSample();
+      
       // Compute active learning values on the fixed candidate pool
       p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
       Sample activeLearningValues = (*p_activeLearningFunction)(candidatePool, inputDoE_);
@@ -718,7 +701,6 @@ void ActiveLearningReliabilityAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("reliabilityIndexHistory_", reliabilityIndexHistory_);
   adv.saveAttribute("convergenceCriterion_", convergenceCriterion_);
   adv.saveAttribute("maximumIterations_", maximumIterations_);
-  adv.saveAttribute("candidatePoolSize_", candidatePoolSize_);
   adv.saveAttribute("hasConverged_", hasConverged_);
   adv.saveAttribute("convergenceCriterionThreshold_", convergenceCriterionThreshold_);
   adv.saveAttribute("convergenceUncertaintyFactor_", convergenceUncertaintyFactor_);
@@ -797,10 +779,6 @@ void ActiveLearningReliabilityAlgorithm::load(Advocate & adv)
   adv.loadAttribute("convergenceCriterion_", convergenceCriterion_);
   adv.loadAttribute("maximumIterations_", maximumIterations_);
   simulationBudget_ = maximumIterations_;
-  if (adv.hasAttribute("candidatePoolSize_"))
-    adv.loadAttribute("candidatePoolSize_", candidatePoolSize_);
-  else
-    candidatePoolSize_ = ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize");
   if (adv.hasAttribute("hasConverged_"))
     adv.loadAttribute("hasConverged_", hasConverged_);
   adv.loadAttribute("convergenceCriterionThreshold_", convergenceCriterionThreshold_);

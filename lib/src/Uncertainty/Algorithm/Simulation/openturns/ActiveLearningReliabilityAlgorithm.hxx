@@ -99,10 +99,6 @@ public:
   void setMaximumIterations(const UnsignedInteger maximumIterations);
   UnsignedInteger getMaximumIterations() const;
 
-  /** Maximum size of the candidate pool scored at each iteration */
-  void setCandidatePoolSize(const UnsignedInteger candidatePoolSize);
-  UnsignedInteger getCandidatePoolSize() const;
-
   void setSimulationAlgorithmSeed(const UnsignedInteger seed);
 
   UnsignedInteger getSimulationAlgorithmSeed() const;
@@ -165,7 +161,6 @@ protected:
   UnsignedInteger simulationBudget_ = 0;
   Scalar convergenceCriterionThreshold_ = 0.0;
   UnsignedInteger maximumIterations_ = 0;
-  UnsignedInteger candidatePoolSize_ = 0;
   Bool hasConverged_ = false;
 
   Scalar convergenceUncertaintyFactor_ = 0.0;
