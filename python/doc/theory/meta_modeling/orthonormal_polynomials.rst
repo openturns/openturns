@@ -63,10 +63,10 @@ to :math:`X` are obtained from those of :math:`Z` by the substitution
      - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{1}{\sqrt{n+1}} \quad \forall n \geq 0\\ b_n & = & 0 \quad \forall n \geq 0\\ c_n & = &  - \sqrt{\frac{n}{n+1}} \quad \forall n \geq 0 \end{array}\right.`
    * - Legendre
      - Uniform :math:`\cU(-1,1)`
-     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \quad  \forall n \geq 1\\ b_n & = & 0 \quad  \forall n \geq 1\\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} }\quad  \forall n \geq 1 \end{array}\right. `
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \quad  \forall n \geq 1\\ b_n & = & 0 \quad  \forall n \geq 1\\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} }\quad  \forall n \geq 1 \end{array}\right.`
    * - Laguerre
      - Gamma :math:`\Gamma(k,1,0)`
-     - :math:`\left\{\begin{array}{lcl} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2}\quad \forall n \geq 0 \\ a_n & = & \omega_{n} \quad \forall n \geq 0\\ b_n & = & -(2n+k)~\omega_{n}\quad \forall n \geq 0 \\ c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n}\quad \forall n \geq 0 \end{array}\right. `
+     - :math:`\left\{\begin{array}{lcl} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2}\quad \forall n \geq 0 \\ a_n & = & \omega_{n} \quad \forall n \geq 0\\ b_n & = & -(2n+k)~\omega_{n}\quad \forall n \geq 0 \\ c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n}\quad \forall n \geq 0 \end{array}\right.`
    * - Jacobi
      - Beta :math:`B(\alpha,\beta,-1,1), \; \alpha,\beta>0`
      - :math:`\left\{\begin{array}{lcl} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \quad \forall n \geq 2\\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}}  \quad \forall n \geq 2\\ a_n & = & K_{2,n}(2n+\alpha + \beta) \quad \forall n \geq 2\\ b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2}  \quad \forall n \geq 2\\ c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2} \Big[K_{1,n}\frac{n(n+\alpha-1)(n+\beta-1)(n+\alpha+\beta-2)}{2n+\alpha+\beta-3}\Big]^{1/2}\, \forall n \geq 2 \end{array}\right.`
