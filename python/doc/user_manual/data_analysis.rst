@@ -120,6 +120,9 @@ Building distributions from samples
 
     RayleighFactory
 
+    :template: DistributionFactory.rst_t
+    experimental.RiemannianGaussianFactory
+
     :template: class.rst_t
 
     RiceFactory

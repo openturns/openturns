@@ -87,6 +87,8 @@
 %include VonMisesFisherFactory.i
 %include Bingham.i
 %include BinghamFactory.i
+%include RiemannianGaussian.i
+%include RiemannianGaussianFactory.i
 %include WrappedNormal.i
 %include WrappedNormalFactory.i
 
