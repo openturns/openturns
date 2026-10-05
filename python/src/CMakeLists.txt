@@ -583,6 +583,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      CurlFreeModel.i CurlFreeModel_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
+                     WrappedNormal.i WrappedNormal_doc.i
+                     WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i

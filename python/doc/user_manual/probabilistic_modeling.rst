@@ -110,6 +110,7 @@ Continuous parametric distributions
 
     :template: classWithPlot.rst_t
     experimental.VonMisesFisher
+    experimental.WrappedNormal
     WeibullMin
     WeibullMax
 

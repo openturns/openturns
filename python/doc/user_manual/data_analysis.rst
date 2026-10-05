@@ -144,6 +144,7 @@ Building distributions from samples
     VonMisesFactory
     experimental.VonMisesFisherFactory
     experimental.MultivariateUniformFactory
+    experimental.WrappedNormalFactory
     WeibullMinFactory
     WeibullMaxFactory
 

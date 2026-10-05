@@ -1482,6 +1482,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Bingham-OrthogonalityThreshold", 1.0e-12);
   addAsUnsignedInteger("Bingham-MaximumIteration", 200);
   addAsUnsignedInteger("BinghamFactory-MaximumIterations", 20);
+
+  // WrappedNormal parameters //
+  addAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100000);
+  addAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints", 4096);
+
+  // WrappedNormalFactory parameters //
+  addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 
