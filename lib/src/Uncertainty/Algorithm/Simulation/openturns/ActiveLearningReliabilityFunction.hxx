@@ -99,8 +99,8 @@ protected:
 
   virtual Scalar computeAsScalar(const Point & x) const;
   
-  Scalar reliabilityThreshold_;
-  Scalar learningThreshold_;
+  Scalar reliabilityThreshold_ = 0.0;
+  Scalar learningThreshold_ = 0.0;
   GaussianProcessRegressionResult gprResult_;
   GaussianProcessConditionalCovariance gprCov_;
 

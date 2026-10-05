@@ -37,6 +37,8 @@ static const Factory<ActiveLearningReliabilityFunction> Factory_ActiveLearningRe
 // Default constructor
 ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction()
   : EvaluationImplementation()
+  , reliabilityThreshold_(0.0)
+  , learningThreshold_(0.0)
 {
   // Nothing to do
 }
