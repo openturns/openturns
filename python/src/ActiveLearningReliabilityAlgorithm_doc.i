@@ -35,23 +35,21 @@ The main usage of :class:`~openturns.experimental.ActiveLearningReliabilityAlgor
 
 0 - Define a Design of Experiments (DoE) and evaluate the simulation code
 
-1 - Draw once the fixed candidate pool from the input distribution
+1 - Train a Gaussian Process Regressor (GPR) on the current DoE
 
-2 - Train a Gaussian Process Regressor (GPR) on the current DoE
+2 - Perform a probability simulation on the GPR
 
-3 - Perform a probability simulation on the GPR
+3 - Evaluate the candidate sample on an infill criterion
 
-4 - Evaluate the fixed candidate pool on an infill criterion
+4 - Select the most informative sample based on the infill criterion
 
-5 - Select the most informative sample based on the infill criterion
+5 - Evaluate the simulation code on this sample
 
-6 - Evaluate the simulation code on this sample
+6 - Update the DoE and retrain the GPR
 
-7 - Update the DoE and retrain the GPR
+7 - Check a convergence criterion
 
-8 - Check a convergence criterion
-
-The steps 2 to 8 are repeated until convergence.
+The steps 1 to 7 are repeated until convergence.
 
 Different stopping criteria have been implemented. The first one is based on the simulation budget (maximal number of calls of the simulation code). The second one is based on the infill criterion (see :class:`~openturns.experimental.ActiveLearningUFunction`, :class:`~openturns.experimental.ActiveLearningEFFFunction` or :class:`~openturns.experimental.ActiveLearningGMMFunction`). The third one is based on the uncertainty of probability (or reliability index) due to the use of the GPR. The fourth one is based on the stability of the probability estimate (or reliability index) between two iterations of the active learning reliability algorithm. The convergence criterion can be set with the `setConvergenceCriterion` method, with dedicated flags:
 
@@ -98,7 +96,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed`` (``UnsignedInteger``, default: ``0``): seed of the random generator used before each inner simulation run.
 - ``ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor`` (``Scalar``, default: ``2.0``): multiplicative factor of the Gaussian process standard deviation used to build the confidence interval of the probability estimate.
 - ``ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations`` (``UnsignedInteger``, default: ``100``): default enrichment budget.
-- ``ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize`` (``UnsignedInteger``, default: ``100000``): size of the fixed candidate pool drawn once per run.
 )RAW"
 
 // ---------------------------------------------------------------------------
@@ -177,26 +174,6 @@ maximumIterations : int
 "
 
 // ---------------------------------------------------------------------------
-%feature("docstring") OT::ActiveLearningReliabilityAlgorithm::setCandidatePoolSize
-"Accessor to the size of the fixed candidate pool drawn once per run. The default value is set to the ``ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize`` entry from :class:`~openturns.ResourceMap`.
-
-Parameters
-----------
-candidatePoolSize : int
-   Maximum size of the candidate pool
-"
-
-// ---------------------------------------------------------------------------
-%feature("docstring") OT::ActiveLearningReliabilityAlgorithm::getCandidatePoolSize
-"Accessor to the size of the fixed candidate pool drawn once per run.
-
-Returns
--------
-candidatePoolSize : int
-   Size of the fixed candidate pool
-"
-
-// ---------------------------------------------------------------------------
 %feature("docstring") OT::ActiveLearningReliabilityAlgorithm::setSimulationAlgorithmSeed
 "Accessor to random generator seed for the simulation algorithm. The default value is set to the ``ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed`` entry from :class:`~openturns.ResourceMap`.
 
@@ -207,8 +184,7 @@ seed : int
 
 Notes
 -----
-The seed is applied at the beginning of run() for the fixed
-candidate pool draw and reset before each inner simulation run under a
+The seed is applied at the beginning of run() and reset before each inner simulation run under a
 process-wide mutex, so every iteration consumes the exact same stream;
 the ambient generator state is saved beforehand and restored on exit,
 even on exception. Reproducibility holds in single-threaded use:
