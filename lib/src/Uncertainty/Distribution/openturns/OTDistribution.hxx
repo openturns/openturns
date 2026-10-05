@@ -169,6 +169,8 @@
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/Rice.hxx"
 #include "openturns/RiceFactory.hxx"
+#include "openturns/RiemannianGaussian.hxx"
+#include "openturns/RiemannianGaussianFactory.hxx"
 #include "openturns/Skellam.hxx"
 #include "openturns/SkellamFactory.hxx"
 #include "openturns/SmoothedUniform.hxx"

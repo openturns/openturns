@@ -1483,6 +1483,16 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Bingham-MaximumIteration", 200);
   addAsUnsignedInteger("BinghamFactory-MaximumIterations", 20);
 
+  // RiemannianGaussian parameters //
+  addAsScalar("RiemannianGaussian-PositiveDefiniteThreshold", 1.0e-12);
+  addAsScalar("RiemannianGaussian-LogJacobianTaylorThreshold", 1.0e-3);
+  addAsUnsignedInteger("RiemannianGaussian-GaussHermiteMaximumPoints", 4096);
+
+  // RiemannianGaussianFactory parameters //
+  addAsScalar("RiemannianGaussianFactory-StepSize", 0.1);
+  addAsScalar("RiemannianGaussianFactory-Tolerance", 1.0e-8);
+  addAsUnsignedInteger("RiemannianGaussianFactory-MaximumIteration", 100);
+
   // WrappedNormal parameters //
   addAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100000);
   addAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints", 4096);
