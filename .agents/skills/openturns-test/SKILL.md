@@ -20,11 +20,17 @@ description: 'OpenTURNS testing guidelines: ctest syntax, expout files. Read bef
 - no new C++ tests but existing ones must keep passing
 - Python coverage must be typically above 90%
 
+## How to run
+- Run tests through ctest utility
+- Use parallelism (-j) when running several tests eg all Python tests: `ctest -j $(( $(nproc) / 2 )) -R pyinstallcheck`
+
 ## C++ tests
 - C++ tests are executables linking against the main library
 - Build a specific C++test: `cmake --build --target t_Axial_std -j $(( $(nproc) / 2 ))`
 - Run a specific C++ test: `ctest -R cppcheck_Axial_std --output-on-failure -V`
 - C++ tests are not built by default, but if you need to run all first build them all with `make tests -j $(( $(nproc) / 2 ))`
+- Make sure to rebuilt C++ tests targets prior to running corresponding tests
+- If you ever need to rebuild all C++ tests: `cmake --build --target tests -j $(( $(nproc) / 2 ))`
 
 ## Python tests
 - Python tests need the SWIG bindings to be fully built: `cmake --build build --target install -j $(( $(nproc) / 2 ))`
