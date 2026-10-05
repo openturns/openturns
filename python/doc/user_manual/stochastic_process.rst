@@ -34,6 +34,8 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
 
     :template: CovarianceModel.rst_t
     AbsoluteExponential
+    experimental.CurlFreeModel
+    experimental.DivFreeModel
     DiracCovarianceModel
     ExponentialModel
     ExponentiallyDampedCosineModel
