@@ -744,6 +744,17 @@
   <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
+  <!-- OT::PushForwardDistribution parameters -->
+  <PushForwardDistribution-SolverResidualTolerance value_float="1.0e-5" />
+  <PushForwardDistribution-SampleSize              value_int="10000"   />
+  <PushForwardDistribution-PreimageSearchSampleSize value_int="256" />
+  <PushForwardDistribution-NewtonMaximumIterations  value_int="50" />
+  <PushForwardDistribution-NewtonStepReduction      value_float="0.5" />
+
+  <!-- OT::PushForwardOverMesh parameters -->
+  <PushForwardOverMesh-OnSimplexEpsilon value_float="1.0e-10" />
+  <PushForwardOverMesh-SampleSize       value_int="10000"     />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />
@@ -808,7 +819,9 @@
 
   <!-- OT::ManifoldMappedDistribution parameters -->
   <ManifoldMappedDistribution-SampleSize value_int="10000" />
+
   <!-- OT::UniformOverMesh parameters -->
+  <UniformOverMesh-OnManifoldEpsilon value_float="1e-10" />
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
@@ -860,6 +873,11 @@
   <!-- OT::WrappedNormalFactory parameters -->
 
   <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
+
+  <UniformOverMeshFactory-NearestNeighbors  value_int="12" />
+
+  <UniformOverMeshFactory-MinimumAreaFactor value_float="1e-3" />
+
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
 

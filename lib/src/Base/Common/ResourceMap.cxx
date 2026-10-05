@@ -1383,6 +1383,17 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
 
+  // PushForwardDistribution parameters //
+  addAsScalar("PushForwardDistribution-SolverResidualTolerance", 1.0e-5);
+  addAsUnsignedInteger("PushForwardDistribution-SampleSize", 10000);
+  addAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize", 256);
+  addAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations", 50);
+  addAsScalar("PushForwardDistribution-NewtonStepReduction", 0.5);
+
+  // PushForwardOverMesh parameters //
+  addAsScalar("PushForwardOverMesh-OnSimplexEpsilon", 1e-10);
+  addAsUnsignedInteger("PushForwardOverMesh-SampleSize", 10000);
+
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10);
@@ -1460,7 +1471,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // ManifoldMappedDistribution parameters //
   addAsUnsignedInteger("ManifoldMappedDistribution-SampleSize", 10000);
+
   // UniformOverMesh parameters //
+  addAsScalar("UniformOverMesh-OnManifoldEpsilon", 1.0e-10);
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber", 262144);
 
@@ -1511,6 +1524,11 @@ void ResourceMap::loadDefaultConfiguration()
 
   // WrappedNormalFactory parameters //
   addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
+
+  // UniformOverMeshFactory parameters //
+  addAsUnsignedInteger("UniformOverMeshFactory-NearestNeighbors", 12);
+  addAsScalar("UniformOverMeshFactory-MinimumAreaFactor", 1.0e-3);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 

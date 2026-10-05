@@ -31,3 +31,4 @@ Use cases from the usecases module
     usecases.satellite_attitude.SatelliteAttitude
     usecases.brain_diffusion.BrainDiffusion
     usecases.wind_rose.WindRose
+    usecases.geometric_tolerancing.GeometricTolerancing
