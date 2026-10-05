@@ -57,6 +57,7 @@ static const Factory<ActiveLearningReliabilityAlgorithm> Factory_ActiveLearningR
   /** Default constructor */
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   : EventSimulation()
+  , defaultEvent_(getEvent())
   , functionCallNumber_(0)
   , convergenceCriterion_(2)
   , simulationBudget_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
@@ -67,7 +68,10 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
-    // Nothing to do
+    // Default members must be valid for Study save/load of a default instance
+    p_defaultSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(defaultEvent_);
+    p_simulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+    p_activeLearningFunction = new ActiveLearningReliabilityFunction();
   }
 
 /** Extract the surrogate specification from a fitter. Only the fitter
@@ -412,6 +416,7 @@ void ActiveLearningReliabilityAlgorithm::setCriterion(const ActiveLearningReliab
 
 ActiveLearningReliabilityFunction ActiveLearningReliabilityAlgorithm::getCriterion() const
 {
+  if (!p_activeLearningFunction) throw InternalException(HERE) << "ActiveLearningReliabilityAlgorithm has null learning criterion";
   return *p_activeLearningFunction;
 }
 
@@ -700,6 +705,8 @@ void ActiveLearningReliabilityAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("defaultEvent_", defaultEvent_);
   // Polymorphic simulator: the dynamic class name drives the compact table
   // dispatch in load(); the object itself carries the full derived state
+  if (!p_defaultSimulationAlgorithm_) throw InternalException(HERE) << "Cannot save ActiveLearningReliabilityAlgorithm with null simulation algorithm";
+  if (!p_activeLearningFunction) throw InternalException(HERE) << "Cannot save ActiveLearningReliabilityAlgorithm with null learning criterion";
   adv.saveAttribute("simulationClassName_", p_defaultSimulationAlgorithm_->getClassName());
   adv.saveAttribute("simulation_", *p_defaultSimulationAlgorithm_);
   // Polymorphic criterion: travels through its Evaluation handle, which
