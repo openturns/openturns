@@ -92,6 +92,8 @@ Building distributions from samples
 
     MeixnerDistributionFactory
 
+    :template: DistributionFactory.rst_t
+    experimental.MatrixFisherFactory
     :template: class.rst_t
 
     MethodOfMomentsFactory
