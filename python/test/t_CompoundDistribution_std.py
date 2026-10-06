@@ -200,3 +200,24 @@ print("mean=", post.getMean())
 print("covariance=", post.getCovariance())
 mean = post.getMean()
 print("CDF(mean)=%.12g" % post.computeCDF(mean))
+
+# DistributionValidation on the 1D continuous/continuous case
+# Sampling sizes are tuned and slow/inapplicable checks skipped to stay fast:
+# - gradients: Mixture gradients are inconsistent with Compound parameters
+# - entropy: generic adaptive quadrature stalls on the discretized mixture
+atoms = ot.DistributionCollection(0)
+atoms.add(ot.Uniform(0.0, 1.0))
+atoms.add(ot.Uniform(1.0, 2.0))
+validation_distribution = ot.CompoundDistribution(
+    ot.Normal(), ot.JointDistribution(atoms)
+)
+validation = ott.DistributionValidation(validation_distribution)
+validation.setMomentsSamplingSize(100000)
+validation.setMeanTolerance(2e-2)
+validation.setStandardDeviationTolerance(2e-2)
+validation.setDomainSamplingSize(1000)
+validation.setFittingSamplingSize(1000)
+validation.skipGradient()
+validation.skipEntropy()
+validation.skipMinimumVolumeLevelSet()  # slow optimizer on the mixture
+validation.run()
