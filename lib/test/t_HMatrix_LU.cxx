@@ -76,6 +76,10 @@ int main(int, char *[])
     HMatrix hmat(hmatrixFactory.build(vertices, 1, false, hmatrixParameters));
     hmat.assemble(simpleAssembly, 'N');
 
+    // This slow-decay covariance is nearly singular, so the LU factorization
+    // requires an explicit regularization, otherwise the solve is inaccurate
+    hmat.addIdentity(0.05);
+
     hmat.factorize("LU");
 
     Point mean(vertices.computeMean());
