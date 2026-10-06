@@ -248,21 +248,30 @@ Summary
 
 The next table presents the multi-indices involved in each Sobol' index.
 
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
-| Single variable or group           | Sensitivity Index   | Multi-indices                                                                                                             |
-+====================================+=====================+===========================================================================================================================+
-| One single variable :math:`i`      | First order         | :math:`\alpha_j > 0 \textrm{ if } j = i, \textrm{ and } \alpha_j = 0 \textrm{ if } j \neq i, \quad j=1, \ldots, \inputDim`|
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
-|                                    | Total               | :math:`\alpha_i > 0`                                                                                                      |
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
-| Interaction of a group :math:`\bdu`| First order         | :math:`\alpha_i > 0 \textrm{ if } i \in \bdu, \quad \alpha_i = 0 \textrm{ if } i \not \in \bdu`                           |
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
-|                                    | Total interaction   | :math:`\alpha_i >0 \textrm{ if } i \in \bdu`                                                                              |
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
-| Group (closed) :math:`\bdu`        | First order (closed)| :math:`\alpha_i = 0 \textrm{ if } i \not\in \bdu, \quad i = 1, \ldots, \inputDim`                                         |
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
-|                                    | Total               | :math:`\exists i\in\{1,\ldots, \inputDim\} \quad \textrm{s.t.} \quad i \in \bdu \textrm{ and } \alpha_i > 0`              |
-+------------------------------------+---------------------+---------------------------------------------------------------------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+
+   * - Single variable or group
+     - Sensitivity Index
+     - Multi-indices
+   * - One single variable :math:`i`
+     - First order
+     - :math:`\alpha_j > 0 \textrm{ if } j = i, \textrm{ and } \alpha_j = 0 \textrm{ if } j \neq i, \quad j=1, \ldots, \inputDim`
+   * -
+     - Total
+     - :math:`\alpha_i > 0`
+   * - Interaction of a group :math:`\bdu`
+     - First order
+     - :math:`\alpha_i > 0 \textrm{ if } i \in \bdu, \quad \alpha_i = 0 \textrm{ if } i \not \in \bdu`
+   * -
+     - Total interaction
+     - :math:`\alpha_i >0 \textrm{ if } i \in \bdu`
+   * - Group (closed) :math:`\bdu`
+     - First order (closed)
+     - :math:`\alpha_i = 0 \textrm{ if } i \not\in \bdu, \quad i = 1, \ldots, \inputDim`
+   * -
+     - Total
+     - :math:`\exists i\in\{1,\ldots, \inputDim\} \quad \textrm{s.t.} \quad i \in \bdu \textrm{ and } \alpha_i > 0`
 
 **Table 1.** Multi-indices involved in the first order and total Sobol' indices of a single variable :math:`i` or a group :math:`\bdu`.
 

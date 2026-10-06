@@ -44,7 +44,8 @@ The formulation of SS proposed by Au and Beck (2001) is
 derived in the :math:`\mathbf{u}` -space (standard space) and is the one presented hereafter.
 
 
-Let :math:`E = \{ \overset{\circ}{g}(u) \leq 0 \}` denote a failure event sufficiently rare, where :math:`\overset{\circ}{g}` is the *limit state function* (LSF) in the standard space.
+Let :math:`E = \{ \overset{\circ}{g}(u) \leq 0 \}` denote a failure event sufficiently rare,
+where :math:`\overset{\circ}{g}` is the *limit state function* (LSF) in the standard space.
 
 
 One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s = 1, \hdots, m` such that :math:`E = E_m \subset E_{m-1} \subset \hdots \subset E_2 \subset E_1`.
