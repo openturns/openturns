@@ -1264,6 +1264,420 @@ def test_heteroscedastic_save_load():
     os.remove(filename)
 
 
+def _log_variance_function(a=-3.0, b=0.2):
+    base = ot.SymbolicFunction(["x", "a", "b"], ["a + b * x"])
+    return ot.ParametricFunction(base, [1, 2], [a, b])
+
+
+def _log_variances(X, a=-3.0, b=0.2):
+    return [a + b * x[0] for x in X]
+
+
+# A constant log-variance function must reproduce the homoscedastic fit
+def test_variance_function_constant_matches_homoscedastic():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:4]
+    logVar = -2.0
+    sigma = math.sqrt(math.exp(logVar))
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseStdDev(sigma)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.run()
+    reference = algo.getResult()
+    g = ot.SymbolicFunction(["x"], [str(logVar)])
+    algo2 = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo2.setVarianceFunction(g)
+    assert algo2.getOptimizeNoiseStdDev() is False
+    assert algo2.getOptimizeVarianceFunction() is True
+    algo2.run()
+    result = algo2.getResult()
+    ott.assert_almost_equal(
+        result.getOptimalELBO(), reference.getOptimalELBO(), 1e-8, 1e-9
+    )
+    ott.assert_almost_equal(
+        np.array(result.getPosteriorMean()),
+        np.array(reference.getPosteriorMean()),
+        1e-9,
+        1e-7,
+    )
+    x_test = ot.Point([1.5])
+    ott.assert_almost_equal(
+        result.getMetaModel()(x_test), reference.getMetaModel()(x_test), 1e-9, 1e-7
+    )
+    ott.assert_almost_equal(
+        result.getVarianceFunction()(x_test), [logVar], 1e-14, 1e-14
+    )
+
+
+# The log-variance function ELBO with M=N and Z=X must equal the exact GP
+# log marginal likelihood with diagonal noise exp(g(X))
+def test_variance_function_matches_exact():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    N = X.getSize()
+    Xn = np.array(X)
+    Yn = np.array(Y).ravel()
+    g = _log_variance_function()
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    algo.setVarianceFunction(g)
+    algo.setOptimizeVarianceFunction(False)
+    algo.run()
+    elbo = algo.getResult().getOptimalELBO()
+    D = np.exp(np.array(_log_variances(Xn)))
+    Kff = np.array(
+        [[covarianceModel.computeAsScalar(Xn[i], Xn[j]) for j in range(N)] for i in range(N)]
+    )
+    Knp = Kff + np.diag(D)
+    sign, logdet = np.linalg.slogdet(Knp)
+    assert sign > 0.0
+    exact = -0.5 * (
+        N * np.log(2.0 * np.pi)
+        + logdet
+        + Yn.dot(np.linalg.solve(Knp, Yn))
+    )
+    ott.assert_almost_equal(elbo, exact, 1e-6, 1e-9)
+
+
+# The log-variance function ELBO for M<N must match the reference formula
+def test_variance_function_matches_reference_sparse():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:4]
+    g = _log_variance_function()
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setVarianceFunction(g)
+    algo.setOptimizeVarianceFunction(False)
+    algo.run()
+    elbo = algo.getResult().getOptimalELBO()
+    D = np.exp(np.array(_log_variances(np.array(X))))
+    reference = _numpy_elbo_hetero(
+        np.array(X), np.array(Y).ravel(), np.array(Z), D, covarianceModel
+    )
+    ott.assert_almost_equal(elbo, reference, 1e-6, 1e-8)
+
+
+# The analytic ELBO gradient with a log-variance function must match a
+# centered finite difference, including the function parameter block
+def test_variance_function_gradient():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setParameter([1.5, 2.0])
+    Z = X[0:3]
+    g = _log_variance_function(a=-2.5, b=0.1)
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setVarianceFunction(g)
+    algo.setOptimizeInducingPoints(True)
+    objective = algo.getObjectiveFunction()
+    parameter = ot.Point([1.5, 2.0, -2.5, 0.1])
+    for i in range(len(Z)):
+        parameter.add(Z[i][0])
+    assert len(parameter) == objective.getInputDimension()
+    epsilon = 1e-5
+    for i in range(len(parameter)):
+        pointPlus = ot.Point(parameter)
+        pointMinus = ot.Point(parameter)
+        pointPlus[i] += epsilon
+        pointMinus[i] -= epsilon
+        fd = (objective(pointPlus)[0] - objective(pointMinus)[0])
+        fd /= (2.0 * epsilon)
+        analytic = objective.getGradient().gradient(parameter)[i, 0]
+        ott.assert_almost_equal(analytic, fd, 1e-3, 1e-4)
+    # same check when the number of inducing points equals the training size
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    algo.setVarianceFunction(_log_variance_function(a=-2.5, b=0.1))
+    algo.setOptimizeInducingPoints(True)
+    objective = algo.getObjectiveFunction()
+    parameter = ot.Point([1.5, 2.0, -2.5, 0.1])
+    for i in range(len(X)):
+        parameter.add(X[i][0])
+    for i in range(len(parameter)):
+        pointPlus = ot.Point(parameter)
+        pointMinus = ot.Point(parameter)
+        pointPlus[i] += epsilon
+        pointMinus[i] -= epsilon
+        fd = (objective(pointPlus)[0] - objective(pointMinus)[0])
+        fd /= (2.0 * epsilon)
+        analytic = objective.getGradient().gradient(parameter)[i, 0]
+        ott.assert_almost_equal(analytic, fd, 1e-3, 1e-4)
+
+
+# The joint optimization of the covariance and log-variance parameters
+# must improve the ELBO
+def test_variance_function_optimization_improves_elbo():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
+    algo.setVarianceFunction(_log_variance_function(a=-1.0, b=0.0))
+    algo.run()
+    optimized_elbo = algo.getResult().getOptimalELBO()
+    optimized = list(algo.getResult().getVarianceFunction().getParameter())
+    assert all(math.isfinite(v) for v in optimized)
+    algo2 = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
+    algo2.setVarianceFunction(_log_variance_function(a=-1.0, b=0.0))
+    algo2.setOptimizeParameters(False)
+    algo2.setOptimizeVarianceFunction(False)
+    algo2.run()
+    fixed_elbo = algo2.getResult().getOptimalELBO()
+    assert optimized_elbo >= fixed_elbo, "optimization degrades the ELBO"
+
+
+# Disabling the variance function optimization must leave its parameters untouched
+def test_variance_function_optimize_flag_off():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo.setVarianceFunction(_log_variance_function(a=-2.0, b=0.3))
+    algo.setOptimizeVarianceFunction(False)
+    assert algo.getOptimizeVarianceFunction() is False
+    objective = algo.getObjectiveFunction()
+    # no variance parameter in the optimization vector, hence empty here
+    assert objective.getInputDimension() == 0
+    algo.run()
+    ott.assert_almost_equal(
+        algo.getResult().getVarianceFunction().getParameter(), [-2.0, 0.3], 0, 0
+    )
+
+
+# setVarianceFunction must reject dimension mismatches, and the scalar noise
+# optimization must stay disabled with a log-variance function
+def test_variance_function_invalid():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    wrongInput = ot.SymbolicFunction(["x1", "x2"], ["x1 + x2"])
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setVarianceFunction(wrongInput)
+    wrongOutput = ot.SymbolicFunction(["x"], ["x", "2 * x"])
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setVarianceFunction(wrongOutput)
+    algo.setVarianceFunction(_log_variance_function())
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setOptimizeNoiseStdDev(True)
+
+
+# The log-variance function and the fixed variances are mutually exclusive
+def test_variance_function_mode_exclusion():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    # function then variances: fixed mode wins with identical ELBO
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo.setVarianceFunction(_log_variance_function())
+    algo.setNoiseVariances(_hetero_variances())
+    assert algo.getNoiseVariances().getSize() == X.getSize()
+    algo.run()
+    switched = algo.getResult().getOptimalELBO()
+    algo2 = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo2.setNoiseVariances(_hetero_variances())
+    algo2.run()
+    ott.assert_almost_equal(
+        switched, algo2.getResult().getOptimalELBO(), 1e-10, 1e-10
+    )
+    # variances then function: function mode wins, variances are cleared
+    algo3 = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo3.setNoiseVariances(_hetero_variances())
+    algo3.setVarianceFunction(_log_variance_function())
+    assert algo3.getNoiseVariances().getSize() == 0
+    assert algo3.getOptimizeNoiseStdDev() is False
+    # back to scalar: empty variances clear the function mode
+    algo3.setNoiseVariances(ot.Point())
+    algo3.setOptimizeNoiseStdDev(True)
+    assert algo3.getOptimizeNoiseStdDev() is True
+    algo3.setNoiseStdDev(0.1)
+    algo3.setOptimizeNoiseStdDev(False)
+    algo3.run()
+    result3 = algo3.getResult()
+    ott.assert_almost_equal(
+        result3.getPredictiveVariance(ot.Point([1.5])),
+        result3.getConditionalVariance(ot.Point([1.5])) + 0.01,
+        1e-12,
+        1e-12,
+    )
+
+
+# The predictive variance must combine the conditional variance with the
+# noise variance in each likelihood mode
+def test_predictive_variance():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:4]
+    x_test = ot.Point([1.5])
+    sample_test = ot.Sample([[1.5], [4.0]])
+    # homoscedastic: conditional variance plus scalar noise variance
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseStdDev(0.1)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.run()
+    result = algo.getResult()
+    ott.assert_almost_equal(
+        result.getPredictiveVariance(x_test),
+        result.getConditionalVariance(x_test) + 0.01,
+        1e-12,
+        1e-12,
+    )
+    predictive = result.getPredictiveVariance(sample_test)
+    assert len(predictive) == 2
+    for i in range(2):
+        ott.assert_almost_equal(
+            predictive[i], result.getPredictiveVariance(sample_test[i]), 1e-14, 1e-14
+        )
+    # log-variance function: conditional variance plus exp(g(x))
+    g = _log_variance_function()
+    algo2 = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo2.setVarianceFunction(g)
+    algo2.setOptimizeVarianceFunction(False)
+    algo2.run()
+    result2 = algo2.getResult()
+    ott.assert_almost_equal(
+        result2.getPredictiveVariance(x_test),
+        result2.getConditionalVariance(x_test) + math.exp(g(x_test)[0]),
+        1e-12,
+        1e-12,
+    )
+    # fixed variances: predictive variance is undefined away from training data
+    algo3 = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo3.setNoiseVariances(_hetero_variances())
+    algo3.run()
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo3.getResult().getPredictiveVariance(x_test)
+
+
+# Save / load must preserve the log-variance function fit through a Study
+def test_variance_function_save_load():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
+    algo.setVarianceFunction(_log_variance_function())
+    algo.setOptimizeVarianceFunction(False)
+    algo.run()
+    result = algo.getResult()
+    filename = "test_sparse_gp_varfunc_result.xml"
+    study = ot.Study(filename)
+    study.add("result", result)
+    study.save()
+    study2 = ot.Study(filename)
+    study2.load()
+    result2 = SparseGaussianProcessFitterResult()
+    study2.fillObject("result", result2)
+    ott.assert_almost_equal(result.getOptimalELBO(), result2.getOptimalELBO(), 1e-10, 1e-10)
+    ott.assert_almost_equal(
+        result.getVarianceFunction()(ot.Point([1.5])),
+        result2.getVarianceFunction()(ot.Point([1.5])),
+        1e-14,
+        1e-14,
+    )
+    ott.assert_almost_equal(
+        result.getPredictiveVariance(ot.Point([1.5])),
+        result2.getPredictiveVariance(ot.Point([1.5])),
+        1e-10,
+        1e-10,
+    )
+    os.remove(filename)
+    filename = "test_sparse_gp_varfunc_fitter.xml"
+    study = ot.Study(filename)
+    study.add("algo", algo)
+    study.save()
+    study2 = ot.Study(filename)
+    study2.load()
+    algo2 = SparseGaussianProcessFitter()
+    study2.fillObject("algo", algo2)
+    ott.assert_almost_equal(
+        algo.getResult().getOptimalELBO(),
+        algo2.getResult().getOptimalELBO(),
+        1e-10,
+        1e-10,
+    )
+    ott.assert_almost_equal(
+        algo.getResult().getVarianceFunction().getParameter(),
+        algo2.getResult().getVarianceFunction().getParameter(),
+        1e-14,
+        1e-14,
+    )
+    os.remove(filename)
+
+
+def test_resource_map_variance_bounds_inverted():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    original_lo = ot.ResourceMap.GetAsScalar(
+        "SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound"
+    )
+    original_hi = ot.ResourceMap.GetAsScalar(
+        "SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound"
+    )
+    ot.ResourceMap.SetAsScalar(
+        "SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound", 5.0
+    )
+    ot.ResourceMap.SetAsScalar(
+        "SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound", -5.0
+    )
+    try:
+        with ott.assert_raises((TypeError, RuntimeError)):
+            algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+            algo.setVarianceFunction(_log_variance_function())
+    finally:
+        ot.ResourceMap.SetAsScalar(
+            "SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound", original_lo
+        )
+        ot.ResourceMap.SetAsScalar(
+            "SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound", original_hi
+        )
+
+
+# Literature-style heteroscedastic validation with known log-linear noise
+# (Goldberg / hetGP setup): the noise trend must be recovered, the
+# heteroscedastic fit must beat its homoscedastic counterpart, and the
+# predictive intervals must cover the true function. Fully deterministic.
+def test_variance_function_literature_synthetic():
+    N, M = 30, 6
+    X = ot.Sample(N, 1)
+    for i in range(N):
+        X[i, 0] = 8.0 * i / (N - 1)
+    aTrue, bTrue = -3.0, 0.3
+    Y = ot.Sample(N, 1)
+    for i in range(N):
+        var = math.exp(aTrue + bTrue * X[i, 0])
+        pattern = math.sin(6.0 * math.pi * i / N + 1.0)
+        Y[i, 0] = X[i, 0] * math.sin(X[i, 0]) + math.sqrt(var) * pattern
+    Z = ot.Sample([[8.0 * i / (N - 1)] for i in range(0, N, N // M)])
+    assert Z.getSize() == M
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setVarianceFunction(_log_variance_function(a=-1.0, b=0.0))
+    algo.run()
+    result = algo.getResult()
+    aOpt, bOpt = result.getVarianceFunction().getParameter()
+    # the increasing noise trend must be recovered
+    assert math.isfinite(aOpt) and math.isfinite(bOpt)
+    assert bOpt > 0.0
+    hetero_elbo = result.getOptimalELBO()
+    # the heteroscedastic fit must beat its homoscedastic counterpart
+    covarianceHomo = ot.SquaredExponential([1.0])
+    algoHomo = SparseGaussianProcessFitter(X, Y, covarianceHomo, Z)
+    algoHomo.setNoiseStdDev(0.2)
+    algoHomo.run()
+    assert hetero_elbo > algoHomo.getResult().getOptimalELBO()
+    # the 95% predictive intervals must cover the true function
+    grid = 20
+    confidence = 0
+    for k in range(grid):
+        x = 8.0 * k / (grid - 1)
+        point = ot.Point([x])
+        mean = result.getMetaModel()(point)[0]
+        var = result.getPredictiveVariance(point)
+        assert var > result.getConditionalVariance(point)
+        if abs(mean - x * math.sin(x)) <= 1.96 * math.sqrt(var):
+            confidence += 1
+    assert confidence / grid >= 0.8
+
+
 if __name__ == "__main__":
     test_elbo_matches_exact_log_likelihood()
     test_elbo_matches_reference_for_sparse()
@@ -1324,3 +1738,15 @@ if __name__ == "__main__":
     test_noise_variances_optimization_flag()
     test_heteroscedastic_optimization_improves_elbo()
     test_heteroscedastic_save_load()
+    test_variance_function_constant_matches_homoscedastic()
+    test_variance_function_matches_exact()
+    test_variance_function_matches_reference_sparse()
+    test_variance_function_gradient()
+    test_variance_function_optimization_improves_elbo()
+    test_variance_function_optimize_flag_off()
+    test_variance_function_invalid()
+    test_variance_function_mode_exclusion()
+    test_predictive_variance()
+    test_variance_function_save_load()
+    test_resource_map_variance_bounds_inverted()
+    test_variance_function_literature_synthetic()

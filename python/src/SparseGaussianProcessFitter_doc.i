@@ -81,6 +81,7 @@ The behaviour of the algorithm is controlled by the following flags:
 
 - :meth:`setOptimizeParameters` controls the optimization of the active covariance model parameters (default True),
 - :meth:`setOptimizeNoiseStdDev` controls the optimization of the noise standard deviation (default True),
+- :meth:`setOptimizeVarianceFunction` controls the optimization of the log-variance function parameters (default True),
 - :meth:`setOptimizeInducingPoints` controls the optimization of the inducing points (default False).
 
 When the number of inducing points :math:`m` equals the number of observations :math:`n` and
@@ -95,6 +96,16 @@ its analytic gradient generalize by replacing :math:`\sigma^2 \mat{I}_n` with :m
 (equivalently, by working on the :math:`\mat{D}^{-1/2}`-scaled observations and
 whitened cross-covariance with unit noise). The fixed variances take precedence over the
 scalar noise standard deviation, which is then neither used nor optimized.
+
+A parametric alternative is the log-variance function set through
+:meth:`setVarianceFunction`: a :class:`~openturns.Function`
+:math:`g: \Rset^\inputDim \mapsto \Rset` such that
+:math:`\sigma^2(\vect{x}) = \exp(g(\vect{x}))`. The per-observation variances are then
+:math:`\sigma^2_i = \exp(g(\vect{x}_i))` and the parameters of :math:`g`, if any, are
+estimated jointly with the other hyperparameters through the analytic ELBO gradient.
+The log-variance function and the fixed variances are mutually exclusive: setting one
+clears the other. Either of them takes precedence over the scalar noise standard
+deviation, which is then neither used nor optimized.
 
 The optimization of the hyperparameters relies on a local optimizer
 (:class:`~openturns.TNC` by default) and can converge to a degenerate optimum when the
@@ -131,6 +142,8 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``SparseGaussianProcessFitter-DefaultNoiseStdDev`` (``Scalar``, default: ``1.0e-3``): the default noise standard deviation.
 - ``SparseGaussianProcessFitter-DefaultNoiseStdDevLowerBound`` (``Scalar``, default: ``1.0e-12``): the default lower bound for the noise standard deviation.
 - ``SparseGaussianProcessFitter-DefaultNoiseStdDevUpperBound`` (``Scalar``, default: ``1.0e8``): the default upper bound for the noise standard deviation.
+- ``SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound`` (``Scalar``, default: ``-30.0``): the default lower bound for the log-variance function parameters.
+- ``SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound`` (``Scalar``, default: ``30.0``): the default upper bound for the log-variance function parameters.
 - ``SparseGaussianProcessFitter-OptimizationNormalization`` (``Bool``, default: ``True``): whether to internally scale the hyperparameters during the optimization using a min-max transformation.
 - ``SparseGaussianProcessFitter-LinearAlgebra`` (``String``, default: ``"LAPACK"``): the default linear algebra method, either ``"LAPACK"`` or ``"HMAT"``.
 
@@ -189,7 +202,8 @@ Returns
 elbo : :class:`~openturns.Function`
     The collapsed ELBO as a function of the optimized parameters (active covariance model
     parameters, logarithm of the noise standard deviation unless fixed per-observation
-    noise variances are set, and inducing points).
+    noise variances or a log-variance function are set, log-variance function parameters
+    when optimized, and inducing points).
 
 Notes
 -----
@@ -267,7 +281,8 @@ Parameters
 optimizeNoiseStdDev : bool
     Whether to optimize the noise standard deviation.
     Cannot be set to True while fixed per-observation noise variances are set
-    through :meth:`setNoiseVariances`, as fixed variances are not optimized."
+    through :meth:`setNoiseVariances` or a log-variance function is set through
+    :meth:`setVarianceFunction`, as neither is optimized through the scalar noise."
 
 // ---------------------------------------------------------------------
 
@@ -312,13 +327,15 @@ Parameters
 ----------
 noiseVariances : sequence of float
     The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, one positive
-    value per observation. An empty sequence clears the variances and restores the
-    homoscedastic likelihood driven by the scalar noise standard deviation.
+    value per observation. An empty sequence clears the variances; setting any value
+    (empty or not) also clears the log-variance function, as both heteroscedastic
+    modes are mutually exclusive.
 
 Notes
 -----
 Setting non-empty variances disables the optimization of the scalar noise standard
-deviation: fixed variances are not optimized. Use an empty sequence to clear them.)RAW"
+deviation: fixed variances are not optimized. Use an empty sequence to clear them
+and restore the homoscedastic likelihood.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -329,7 +346,56 @@ Returns
 -------
 noiseVariances : :class:`~openturns.Point`
     The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, or an empty
-    point when the homoscedastic likelihood is used.)RAW"
+    point when the homoscedastic likelihood or a log-variance function is used.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::setVarianceFunction
+R"RAW(Accessor to the log-variance function.
+
+Parameters
+----------
+varianceFunction : :class:`~openturns.Function`
+    The log-variance function :math:`g: \Rset^\inputDim \mapsto \Rset`, such that the
+    noise variance at :math:`\vect{x}` is :math:`\sigma^2(\vect{x}) = \exp(g(\vect{x}))`.
+    The function must have output dimension 1. Its parameters, if any, are estimated
+    jointly with the other hyperparameters when the optimization flag is set.
+
+Notes
+-----
+Setting a log-variance function clears the fixed per-observation noise variances:
+both heteroscedastic modes are mutually exclusive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::getVarianceFunction
+R"RAW(Accessor to the log-variance function.
+
+Returns
+-------
+varianceFunction : :class:`~openturns.Function`
+    The log-variance function :math:`g`, such that the noise variance at
+    :math:`\vect{x}` is :math:`\sigma^2(\vect{x}) = \exp(g(\vect{x}))`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::setOptimizeVarianceFunction
+"Accessor to the log-variance function parameters optimization flag.
+
+Parameters
+----------
+optimizeVarianceFunction : bool
+    Whether to optimize the parameters of the log-variance function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::getOptimizeVarianceFunction
+"Accessor to the log-variance function parameters optimization flag.
+
+Returns
+-------
+optimizeVarianceFunction : bool
+    Whether to optimize the parameters of the log-variance function."
 
 // ---------------------------------------------------------------------
 

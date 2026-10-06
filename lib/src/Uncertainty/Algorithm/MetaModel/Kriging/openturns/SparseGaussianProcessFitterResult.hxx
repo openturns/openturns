@@ -24,6 +24,7 @@
 #include "openturns/MetaModelResult.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/HMatrix.hxx"
@@ -99,12 +100,20 @@ public:
   Point getNoiseVariances() const;
   void setNoiseVariances(const Point & noiseVariances);
 
+  /** Log-variance function accessor (parametric heteroscedastic likelihood) */
+  Function getVarianceFunction() const;
+  void setVarianceFunction(const Function & varianceFunction);
+
   /** optimal ELBO value */
   Scalar getOptimalELBO() const;
 
   /** Conditional variance accessor */
   Scalar getConditionalVariance(const Point & point) const;
   Point getConditionalVariance(const Sample & sample) const;
+
+  /** Predictive variance accessor (conditional variance plus noise variance) */
+  Scalar getPredictiveVariance(const Point & point) const;
+  Point getPredictiveVariance(const Sample & sample) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -140,6 +149,10 @@ private:
 
   /** The fixed per-observation noise variances (empty means homoscedastic) */
   Point noiseVariances_;
+
+  /** The log-variance function D(x) = exp(g(x)) (unset means homoscedastic) */
+  Function varianceFunction_;
+  Bool hasVarianceFunction_ = false;
 
   /** optimal ELBO value */
   Scalar optimalELBO_ = 0.0;
