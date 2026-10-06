@@ -58,3 +58,7 @@ Maginal checking
 Is marginal 0 a copula ? --> True
 Is marginal 1 a copula ? --> True
 
+Default build= Distribution
+AMISE build= Distribution
+LogLikelihood build= Distribution
+PenalizedCsiszarDivergence build= Distribution
