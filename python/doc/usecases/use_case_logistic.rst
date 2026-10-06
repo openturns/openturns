@@ -69,8 +69,10 @@ We want to see the solution of the ordinary differential equation when uncertain
 - the initial U.S. population :math:`y_0`,
 - the parameters :math:`a` and :math:`b`.
 
-Indeed, Pearl and Reed [2] estimated the parameters :math:`a` and :math:`b` using the U.S. census data from 1790 to 1910 while we have the data up to 2000.
-Moreover, the method used by Pearl and Reed to estimate the parameters could be improved; they only used 3 dates to estimate the parameters instead of using least squares, for example.
+Indeed, Pearl and Reed [2] estimated the parameters :math:`a` and :math:`b` using the U.S.
+census data from 1790 to 1910 while we have the data up to 2000.
+Moreover, the method used by Pearl and Reed to estimate the parameters could be improved;
+they only used 3 dates to estimate the parameters instead of using least squares, for example.
 Finally, Pearl and Reed did not provide confidence intervals for the parameters :math:`a` and :math:`b`.
 
 Normalizing the data
