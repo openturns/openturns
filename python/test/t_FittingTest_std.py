@@ -221,6 +221,31 @@ test_result = ot.FittingTest.Kolmogorov(sample, distribution, level)
 threshold = test_result.getThreshold()
 assert threshold == level
 
+# Anderson-Darling test : case with known parameters
+print("Anderson-Darling test : case with known parameters")
+# Same data as the Kolmogorov test above
+distribution = ot.Normal()
+sample = ot.Sample([[x] for x in data])
+mean = sample.computeMean()
+sample = sample - mean
+test_result = ot.FittingTest.AndersonDarling(sample, distribution)
+p_exact = 0.41788155715033426
+pvalue = test_result.getPValue()
+ott.assert_almost_equal(pvalue, p_exact)
+A2 = test_result.getStatistic()
+A2_exact = 0.8925768786590638
+ott.assert_almost_equal(A2, A2_exact)
+quality = test_result.getBinaryQualityMeasure()
+assert quality
+threshold = test_result.getThreshold()
+assert threshold == 0.05
+
+# Anderson-Darling test : reject a wrong model
+print("Anderson-Darling test : reject a wrong model")
+wrong_distribution = ot.Uniform(0.0, 1.0)
+test_result = ot.FittingTest.AndersonDarling(sample, wrong_distribution)
+assert not test_result.getBinaryQualityMeasure()
+
 # Kolmogorov adequation
 resultKolmogorov = ot.SquareMatrix(continuousDistributionNumber)
 for i in range(continuousDistributionNumber):

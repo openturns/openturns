@@ -6,6 +6,8 @@ resultBIC= class=SquareMatrix dimension=16 implementation=class=MatrixImplementa
 Lilliefors test : case with estimated parameters
 Kolmogorov test : case with known parameters
 Kolmogorov test : case with known parameters, set the level
+Anderson-Darling test : case with known parameters
+Anderson-Darling test : reject a wrong model
 resultKolmogorov= class=SquareMatrix dimension=11 implementation=class=MatrixImplementation name=Unnamed rows=11 columns=11 values=[2.1305,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 resultChiSquared= class=SquareMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 R example p-value=0.040594

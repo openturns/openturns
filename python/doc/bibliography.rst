@@ -394,6 +394,10 @@ Bibliography
     ACM Transactions  on Mathematical Software, Vol. 26, No. 3, September 2000, Pages
     363-372
     https://dl.acm.org/doi/10.1145/358407.358414
+.. [marsaglia2004] Marsaglia G. and Marsaglia J.
+    *Evaluating the Anderson-Darling Distribution*,
+    Journal of Statistical Software, Vol. 9, No. 2, 2004.
+    https://doi.org/10.18637/jss.v009.i02
 .. [martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
     Presentation in the meeting of GdR Ondes and GdR MASCOT-NUM,
     January, 13th, 2011, Institut Henri Poincare, Paris, France

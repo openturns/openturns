@@ -126,6 +126,11 @@ OT_API TestResult Kolmogorov(const Sample & sample,
                              const Distribution & distribution,
                              const Scalar level = 0.05);
 
+/** Anderson-Darling fitting test for continuous distributions */
+OT_API TestResult AndersonDarling(const Sample & sample,
+                                  const Distribution & distribution,
+                                  const Scalar level = 0.05);
+
 /** Lilliefors fitting test for continuous distributions */
 OT_API TestResult Lilliefors(const Sample & sample,
                              const DistributionFactory & factory,
