@@ -83,11 +83,17 @@ Main classes
 
     GaussianProcessRegression
     GaussianProcessFitter
+    experimental.SparseGaussianProcessRegression
+    experimental.SparseGaussianProcessFitter
+    experimental.SparseGaussianProcessHessian
 
     :template: class.rst_t
     GaussianProcessRegressionResult
     GaussianProcessFitterResult
+    experimental.SparseGaussianProcessFitterResult
     experimental.GaussianProcessRegressionCrossValidation
+    experimental.SparseGaussianProcessEvaluation
+    experimental.SparseGaussianProcessGradient
     GaussianProcessConditionalCovariance
     GaussianProcessRandomVector
     KrigingAlgorithm

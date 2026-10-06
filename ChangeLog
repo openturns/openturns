@@ -16,15 +16,21 @@
    ExponentialModel, ExponentiallyDampedCosineModel, SphericalModel,
    IsotropicCovarianceModel, FractionalBrownianMotionModel, DiracCovarianceModel,
    ProductCovarianceModel, StationaryFunctionalCovarianceModel)
+ * Analytic ELBO gradient for SparseGaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
+ * Analytic reduced log-likelihood gradient for GaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
  * Analytic partialHessian implementation for the 12 covariance models
-   listed above (the finite-difference hessian is replaced by an exact one)
+   listed above, and analytic metamodel hessian for SparseGaussianProcessRegression
+   (the finite-difference hessian is replaced by an exact one)
  * Analytic partialHessian for KroneckerCovarianceModel and TensorizedCovarianceModel,
    analytic partialGradient and partialHessian for RankMCovarianceModel
  * Analytic partialGradient for SphericalModel and ExponentiallyDampedCosineModel
    (finite-difference gradients replaced by exact ones, so that every analytic
    partialHessian covariance model now also has an analytic partialGradient)
- * Analytic reduced log-likelihood gradient for GaussianProcessFitter
-   (the finite-difference gradient is replaced by an exact one)
+ * HMAT linear algebra method for SparseGaussianProcessFitter and
+   SparseGaussianProcessRegression (ELBO computation and metamodel evaluation),
+   the ELBO gradient and its optimization remain LAPACK-only
 
 ==== New ResourceMap keys ====
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
@@ -54,6 +60,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
+ * SparseGaussianProcessFitter, SparseGaussianProcessFitterResult, SparseGaussianProcessRegression (openturns.experimental)
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
