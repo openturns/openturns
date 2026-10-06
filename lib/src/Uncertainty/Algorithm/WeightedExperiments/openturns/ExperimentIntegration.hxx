@@ -62,6 +62,9 @@ public:
   /** Compute the weighted L2 norm of the function */
   Point computeL2Norm(const Function & function) const;
 
+  /** Weighted experiment accessor */
+  WeightedExperiment getWeightedExperiment() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

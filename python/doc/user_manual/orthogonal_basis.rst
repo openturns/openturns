@@ -45,6 +45,7 @@ Orthonormalization algorithms
 
     OrthonormalizationAlgorithm
     AdaptiveStieltjesAlgorithm
+    experimental.BasisOrthonormalizationAlgorithm
 
 Orthogonal univariate polynomial families
 -----------------------------------------
@@ -101,6 +102,7 @@ Orthogonal multivariate functions
     :template: class.rst_t
 
     experimental.FiniteOrthogonalFunctionFactory
+    experimental.BasisOrthonormalizationFactory
 
 Making orthogonal multivariate functions from orthogonal univariate functions
 -----------------------------------------------------------------------------

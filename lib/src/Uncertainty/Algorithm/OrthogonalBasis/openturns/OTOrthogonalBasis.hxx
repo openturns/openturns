@@ -50,5 +50,8 @@
 #include "openturns/OrthogonalProductFunctionFactory.hxx"
 #include "openturns/SoizeGhanemFactory.hxx"
 #include "openturns/FiniteOrthogonalFunctionFactory.hxx"
+#include "openturns/BasisOrthonormalizationAlgorithm.hxx"
+#include "openturns/GaussLPQuadrature.hxx"
+#include "openturns/BasisOrthonormalizationFactory.hxx"
 
 #endif /* OPENTURNS_OTORTHOGONALBASIS_HXX */

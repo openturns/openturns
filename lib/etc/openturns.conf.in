@@ -299,6 +299,9 @@
   <!-- OT::Dlib parameters -->
   <Dlib-DefaultInitialTrustRegionRadius value_float="1.0"     />
   <Dlib-DefaultWolfeRho                 value_float="0.01"    />
+
+  <!-- OT::HiGHS parameters -->
+  <HiGHS-solver value_str="choose" />
   <Dlib-DefaultWolfeSigma               value_float="0.9"     />
   <Dlib-DefaultMaxLineSearchIterations  value_int="100"       />
   <Dlib-InitialSeed                     value_int="0"         />
@@ -1374,6 +1377,16 @@
 
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
+
+  <!-- OT::BasisOrthonormalizationAlgorithm parameters -->
+  <BasisOrthonormalizationAlgorithm-DefaultDiscretization value_int="128" />
+  <BasisOrthonormalizationAlgorithm-Epsilon               value_float="1.0e-11" />
+
+  <!-- OT::GaussLPQuadrature parameters -->
+  <GaussLPQuadrature-AlphaS  value_int="100" />
+  <GaussLPQuadrature-Ngauss  value_int="100" />
+  <GaussLPQuadrature-Epsilon value_float="1.0e-5" />
+  <GaussLPQuadrature-FallbackSolver value_str="ipm" />
 
   <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>

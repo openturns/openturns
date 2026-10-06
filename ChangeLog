@@ -56,6 +56,7 @@
  * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
 
 ==== New classes ====
+ * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature (openturns.experimental)
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)

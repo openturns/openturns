@@ -927,6 +927,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
   addAsUnsignedInteger("Dlib-InitialSeed", 0);
 
+  // HiGHS parameters //
+  addAsString("HiGHS-solver", "choose");
+
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
   addAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
@@ -1027,6 +1030,16 @@ void ResourceMap::loadDefaultConfiguration()
   // AdaptiveStieltjesAlgorithm parameters //
   addAsScalar("AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12);
   addAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64);
+
+  // BasisOrthonormalizationAlgorithm parameters //
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-DefaultDiscretization", 128);
+  addAsScalar("BasisOrthonormalizationAlgorithm-Epsilon", 1.0e-11);
+
+  // GaussLPQuadrature parameters //
+  addAsUnsignedInteger("GaussLPQuadrature-AlphaS", 100);
+  addAsUnsignedInteger("GaussLPQuadrature-Ngauss", 100);
+  addAsScalar("GaussLPQuadrature-Epsilon", 1.0e-5);
+  addAsString("GaussLPQuadrature-FallbackSolver", "ipm");
 
   // LinearModelTest parameters //
   addAsScalar("LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5);
