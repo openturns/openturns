@@ -245,4 +245,21 @@ with open(fname, "w", encoding="utf-8") as f:
 aSample = ot.Sample.ImportFromCSVFile(fname, ",")
 assert aSample.getDescription() == ["X1", "X2", "Y5"], "bom mid-header"
 
+# utf-16 LE file with BOM
+with open(fname, "w", encoding="utf-16") as f:
+    f.write("X1;X2\n1.0;2.0\n3.0;4.0\n")
+aSample = ot.Sample.ImportFromCSVFile(fname, ";")
+assert (aSample.getSize(), aSample.getDimension()) == (2, 2), "utf16 le"
+assert aSample.getDescription() == ["X1", "X2"], "utf16 le desc"
+assert aSample[0, 0] == 1.0 and aSample[1, 1] == 4.0, "utf16 le values"
+
+# utf-16 BE file with BOM
+with open(fname, "wb") as f:
+    f.write(b"\xfe\xff")
+    f.write("X1;X2\n1.0;2.0\n".encode("utf-16-be"))
+aSample = ot.Sample.ImportFromCSVFile(fname, ";")
+assert (aSample.getSize(), aSample.getDimension()) == (1, 2), "utf16 be"
+assert aSample.getDescription() == ["X1", "X2"], "utf16 be desc"
+assert aSample[0, 1] == 2.0, "utf16 be values"
+
 os.remove(fname)
