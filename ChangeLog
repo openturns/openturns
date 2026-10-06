@@ -24,6 +24,8 @@
  * Analytic partialGradient for SphericalModel and ExponentiallyDampedCosineModel
    (finite-difference gradients replaced by exact ones, so that every analytic
    partialHessian covariance model now also has an analytic partialGradient)
+ * Analytic reduced log-likelihood gradient for GaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
