@@ -63,6 +63,11 @@ public:
   /** Is it a stationary covariance model ? */
   Bool isStationary() const override;
 
+  /** Is it a diagonal covariance model ? Always false: the curl couples the
+      output components, so the output blocks are full. The base flag is left
+      untouched on purpose (outputCorrelation framework owned by upstream). */
+  Bool isDiagonal() const override;
+
   /** Scale accessor */
   void setScale(const Point & scale) override;
 

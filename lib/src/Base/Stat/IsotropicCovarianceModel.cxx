@@ -123,6 +123,21 @@ Scalar IsotropicCovarianceModel::computeAsScalar(const Collection<Scalar>::const
   return kernel_.computeAsScalar(std::sqrt(tauNormSquare));
 }
 
+// Entry point for the bulk evaluations of the compressed matrix assemblies:
+// the isotropic reduction is the same as in the iterator based version above,
+// the kernel is still evaluated by the kernel itself, so that the model stays
+// the only place where its own formula lives.
+Scalar IsotropicCovarianceModel::computeAsScalar(const Scalar * s, const Scalar * t) const
+{
+  Scalar tauNormSquare = 0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = s[i] - t[i];
+    tauNormSquare += dx * dx;
+  }
+  return kernel_.computeAsScalar(std::sqrt(tauNormSquare));
+}
+
 /* Gradient */
 Matrix IsotropicCovarianceModel::partialGradient(const Point & s,
     const Point & t) const
