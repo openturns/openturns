@@ -564,6 +564,23 @@ protected:
   /** Gauss nodes and weights accessor */
   Point getGaussNodesAndWeights(Point & weights) const;
 
+  /** Get the support and the probability of each of its atoms if the
+      distribution is discrete with a small enough enumerable support */
+  Bool getEnumerableDiscreteSupport(Sample & support,
+                                    Point & probabilities) const;
+
+  /** Get the Spearman correlation of a discrete distribution from the support
+      and the probability of each of its atoms */
+  static CorrelationMatrix computeDiscreteSpearmanCorrelation(const Sample & support,
+      const Point & probabilities,
+      const Scalar epsilon);
+
+  /** Get the Kendall tau of a discrete distribution from the support and the
+      probability of each of its atoms */
+  static CorrelationMatrix computeDiscreteKendallTau(const Sample & support,
+      const Point & probabilities,
+      const Scalar epsilon);
+
 public:
   /** Draw the PDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
