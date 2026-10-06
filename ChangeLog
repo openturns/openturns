@@ -130,6 +130,8 @@
  * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
  * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
  * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
+ * Analytic reduced log-likelihood gradient for GaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
 
 === Documentation ===
  * Theory: add interpolation page
