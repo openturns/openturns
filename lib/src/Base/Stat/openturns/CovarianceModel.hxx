@@ -87,6 +87,10 @@ public:
   virtual Matrix partialGradient(const Point & s,
                                  const Point & t) const;
 
+  /** Hessian */
+  virtual SymmetricMatrix partialHessian(const Point & s,
+                                         const Point & t) const;
+
   /** Gradient wrt parameters */
   virtual Matrix parameterGradient (const Point & s,
                                     const Point & t) const;
