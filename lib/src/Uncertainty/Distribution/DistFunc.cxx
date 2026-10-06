@@ -868,6 +868,58 @@ Scalar DistFunc::pKolmogorov(const UnsignedInteger n,
   return KolmogorovFunctions::_kolmogn(n, x, !tail);
 }
 
+/****************************/
+/* Anderson-Darling distribution. */
+/****************************/
+/* CDF of the Anderson-Darling statistics for a fully specified distribution.
+// The algorithms and the selection strategy is described in:
+// Marsaglia, G. and Marsaglia, J. "Evaluating the Anderson-Darling Distribution",
+// Journal of Statistical Software, 9(2), 2004.
+*/
+Scalar DistFunc::pAndersonDarling(const UnsignedInteger n,
+                                  const Scalar x,
+                                  const Bool tail)
+{
+  if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: the sample size must be positive to compute the Anderson-Darling p-value.";
+  if (x <= 0.0) return tail ? 1.0 : 0.0;
+  // Asymptotic CDF of the Anderson-Darling statistics
+  Scalar asymptoticCDF = 0.0;
+  if (x < 2.0)
+  {
+    const Scalar polynomial = 2.00012 + (0.247105 - (0.0649821 - (0.0347962 - (0.011672 - 0.00168691 * x) * x) * x) * x) * x;
+    asymptoticCDF = std::exp(-1.2337141 / x) / std::sqrt(x) * polynomial;
+  }
+  else
+  {
+    const Scalar exponent = 1.0776 - (2.30695 - (0.43424 - (0.082433 - (0.008056 - 0.0003146 * x) * x) * x) * x) * x;
+    asymptoticCDF = std::exp(-std::exp(exponent));
+  }
+  // Finite sample correction
+  Scalar cdf = asymptoticCDF;
+  if (asymptoticCDF > 0.8)
+  {
+    const Scalar correction = -130.2137 + (745.2337 - (1705.091 - (1950.646 - (1116.360 - 255.7844 * asymptoticCDF) * asymptoticCDF) * asymptoticCDF) * asymptoticCDF) * asymptoticCDF;
+    cdf = asymptoticCDF + correction / n;
+  }
+  else
+  {
+    const Scalar threshold = 0.01265 + 0.1757 / n;
+    if (asymptoticCDF < threshold)
+    {
+      const Scalar ratio = asymptoticCDF / threshold;
+      const Scalar correction = std::sqrt(ratio) * (1.0 - ratio) * (49.0 * ratio - 102.0);
+      cdf = asymptoticCDF + correction * (0.0037 / (n * n) + 0.00078 / n + 0.00006) / n;
+    }
+    else
+    {
+      const Scalar ratio = (asymptoticCDF - threshold) / (0.8 - threshold);
+      const Scalar correction = -0.00022633 + (6.54034 - (14.6538 - (14.458 - (8.259 - 1.91864 * ratio) * ratio) * ratio) * ratio) * ratio;
+      cdf = asymptoticCDF + correction * (0.04213 + 0.01365 / n) / n;
+    }
+  }
+  return SpecFunc::Clip01(cdf, tail);
+}
+
 /***************************************************************************************************************/
 /* Normalized NonCentralChiSquare distribution, i.e. with a PDF equals to (eq. 31.15 p.516 of the reference):  */
 /* exp(-delta^2 / 2) * (nu / (nu + x^2)) ^ ((nu + 1) / 2) / (sqrt(nu * Pi) * Gamma(nu / 2)) * SUM              */

@@ -1781,6 +1781,45 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::pAndersonDarling
+R"RAW(Cumulative distribution function of an Anderson-Darling distribution.
+
+Parameters
+----------
+n : int
+    The number of the iid observations.
+x : float
+    Location.
+tail : bool, optional
+    Tail flag.
+    Default value is False.
+    If True, the complementary CDF is computed.
+
+Returns
+-------
+p : float
+    The CDF or the complementary CDF at x.
+
+Notes
+-----
+The Anderson-Darling distribution is the distribution of the Anderson-Darling
+statistics for a fully specified continuous distribution.
+
+We use the algorithm described in [marsaglia2004]_.
+
+See Also
+--------
+openturns.FittingTest.AndersonDarling
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.pAndersonDarling(29, 0.89, True)
+)RAW"
+
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::pSpearmanCorrelation
 R"RAW(Cumulative distribution function  of a the Spearman correlation distribution.
 

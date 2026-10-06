@@ -98,6 +98,55 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::FittingTest::AndersonDarling
+R"RAW(Perform an Anderson-Darling goodness-of-fit test for 1-d continuous distributions.
+
+Refer to :any:`anderson_darling_test`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.Distribution`.
+level : float, :math:`0 \leq \alpha \leq 1`, optional (default level = 0.05).
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Notes
+-----
+The distribution is supposed to be fully specified, i.e. no parameter
+has been estimated from the given sample.
+The p-value is computed from the asymptotic distribution of the
+Anderson-Darling statistics with a finite sample correction,
+following the algorithm described in [marsaglia2004]_.
+Unlike the :meth:`~openturns.FittingTest.Kolmogorov` test, the
+Anderson-Darling test gives more weight to the tails of the distribution.
+
+See Also
+--------
+openturns.FittingTest.Kolmogorov
+openturns.NormalityTest.AndersonDarlingNormal
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> distribution = ot.Normal()
+>>> sample = ot.Sample([[-1.2], [-0.6], [-0.2], [0.1], [0.5], [0.8], [1.1], [1.5]])
+>>> test_result = ot.FittingTest.AndersonDarling(sample, distribution)
+>>> test_result.getStatistic()
+0.4051...
+>>> test_result.getPValue()
+0.8396...
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::FittingTest::BestModelAIC
 "Select the best model according to the Akaike information criterion.
 

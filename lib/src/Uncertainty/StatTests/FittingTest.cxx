@@ -605,6 +605,49 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   return result;
 }
 
+/* Anderson-Darling statistics computation */
+namespace {
+Scalar ComputeAndersonDarlingStatistics(const Sample & sample,
+                                        const Distribution & distribution)
+{
+  const UnsignedInteger size = sample.getSize();
+  const Sample cdfValues(distribution.computeCDF(sample.sort(0)));
+  Scalar sum = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar cdfValue = cdfValues(i, 0);
+    const Scalar complementaryCDFValue = 1.0 - cdfValues(size - 1 - i, 0);
+    // A sample point outside the support of the distribution (or too far in
+    // its tail for the CDF to be representable) makes the statistics infinite:
+    // the sample is impossible under the tested distribution
+    if ((cdfValue <= 0.0) || (complementaryCDFValue <= 0.0)) return SpecFunc::Infinity;
+    sum += (2.0 * i + 1.0) * (std::log(cdfValue) + std::log(complementaryCDFValue));
+  }
+  return -Scalar(size) - sum / size;
+}
+} // anonymous namespace
+
+/* Anderson-Darling test */
+TestResult FittingTest::AndersonDarling(const Sample & sample,
+                                        const Distribution & distribution,
+                                        const Scalar level)
+{
+  if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Anderson-Darling test works only with 1D samples";
+  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
+  if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Anderson-Darling test can be applied only to a continuous distribution";
+  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Anderson-Darling test works only with 1D distribution";
+  const Scalar statistics = ComputeAndersonDarlingStatistics(sample, distribution);
+  // An infinite statistics means that a sample point lies outside of the support
+  // of the distribution: the sample is impossible under the tested distribution
+  Scalar pValue = 0.0;
+  if (statistics < SpecFunc::Infinity) pValue = DistFunc::pAndersonDarling(sample.getSize(), statistics, true);
+  TestResult result(OSS(false) << "AndersonDarling " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
+  return result;
+}
+
 /* Chi-squared test */
 TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const DistributionFactory & factory,

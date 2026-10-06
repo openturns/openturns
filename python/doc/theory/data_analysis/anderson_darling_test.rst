@@ -4,7 +4,12 @@ Anderson-Darling test
 ---------------------
 
 The Anderson-Darling test is a statistical test of whether a given sample of data is drawn from a given
-probability distribution. The library only provides the Anderson-Darling test for normal distributions.
+probability distribution. The library provides the Anderson-Darling test for any fully specified
+continuous distribution (see :py:func:`~openturns.FittingTest.AndersonDarling`) as well as for
+normal distributions with parameters estimated from the sample
+(see :py:func:`~openturns.NormalityTest.AndersonDarlingNormal`).
+The general case of a fully specified distribution is described first, then the
+special case of the normality test.
 
 Let :math:`\left\{ x_1,\ldots,x_{\sampleSize} \right\}` be a sample of dimension 1 drawn from the (unknown) cumulative distribution function :math:`F` assumed to be continuous.
 We want to test  whether the sample is drawn from a normal distribution ie whether
@@ -63,6 +68,7 @@ it to :math:`\alpha`):
 
 .. topic:: API:
 
+    - See :py:func:`~openturns.FittingTest.AndersonDarling`
     - See :py:func:`~openturns.NormalityTest.AndersonDarlingNormal`
 
 .. topic:: Examples:
@@ -71,6 +77,7 @@ it to :math:`\alpha`):
 
 .. topic:: References:
 
+    - [marsaglia2004]_
     - [saporta1990]_
     - [dixon1983]_
     - [nisthandbook]_

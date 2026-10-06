@@ -84,6 +84,7 @@
  * Deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in favor of set/getBoundingOption
 
 ==== New features ====
+ * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * The unary subtraction operator on Function and FunctionImplementation is now available
  * The multiplication of a function by a scalar is now available
  * The division operator between functions with the same input dimension is now available; the right operand must have 1D output, the left operand can have any output dimension

@@ -194,6 +194,11 @@ OT_API Scalar pKolmogorov(const UnsignedInteger n,
                           const Scalar x,
                           const Bool tail = false);
 
+// For Anderson-Darling distribution (fully specified distribution, Marsaglia & Marsaglia 2004)
+OT_API Scalar pAndersonDarling(const UnsignedInteger n,
+                               const Scalar x,
+                               const Bool tail = false);
+
 // For NonCentralChiSquare distribution
 OT_API Scalar dNonCentralChiSquare(const Scalar nu,
                                    const Scalar lambda,

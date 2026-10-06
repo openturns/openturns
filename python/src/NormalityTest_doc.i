@@ -19,6 +19,7 @@ testResult : :class:`~openturns.TestResult`
 See Also
 --------
 openturns.NormalityTest.CramerVonMisesNormal
+openturns.FittingTest.AndersonDarling
 
 Notes
 -----
