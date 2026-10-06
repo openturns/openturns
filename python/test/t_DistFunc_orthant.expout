@@ -6,6 +6,9 @@ Error: dimension mismatch
 Error: a > b
 Error: M = 0
 Error: L(i,i) <= 0
+Error: alpha <= 0
+Error: mu dimension mismatch
+Error: dimension 0
 Edge: a == b
 Edge: wide interval
 MVN orthant d=3 independent

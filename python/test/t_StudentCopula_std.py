@@ -79,3 +79,17 @@ validation = ott.DistributionValidation(copula)
 validation.setCDFTolerance(1e-4)
 validation.skipGradient()  # Too costly
 validation.run()
+
+copula.setNu(4.5)
+print("nu=", copula.getNu())
+R = ot.CorrelationMatrix(dim)
+R[0, 1] = 0.5
+R[0, 2] = 0.25
+copula.setR(R)
+print("R=", copula.getR())
+print("parameter=", copula.getParameter())
+print("parameterDescription=", copula.getParameterDescription())
+with ott.assert_raises(TypeError):
+    copula.setParameter([1.0, 2.0, 3.0])
+with ott.assert_raises(TypeError):
+    copula.setR(ot.CorrelationMatrix(2))

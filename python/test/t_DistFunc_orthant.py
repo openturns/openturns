@@ -67,6 +67,20 @@ L[0, 0] = 0.0
 with ott.assert_raises(TypeError):
     ot.DistFunc.pNormalOrthantND([-1.0], [1.0], L)
 
+print("Error: alpha <= 0")
+L = ot.TriangularMatrix(1)
+L[0, 0] = 1.0
+with ott.assert_raises(TypeError):
+    ot.DistFunc.pNormalOrthantND([-1.0], [1.0], L, 100, 0.0)
+
+print("Error: mu dimension mismatch")
+with ott.assert_raises(ValueError):
+    ot.DistFunc.pNormalOrthantND([-1.0], [1.0], [0.0, 0.0], L, 100)
+
+print("Error: dimension 0")
+with ott.assert_raises(ValueError):
+    ot.DistFunc.pNormalOrthantND([], [], ot.TriangularMatrix(0))
+
 print("Edge: a == b")
 L = ot.TriangularMatrix(1)
 L[0, 0] = 1.0

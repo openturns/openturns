@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -98,3 +99,44 @@ quantile = ot.Point(margins.computeQuantile(0.95))
 print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
+
+# Dependence measures in the three regimes
+print("kendall=", copula.getKendallTau())
+print("spearman=", copula.getSpearmanCorrelation())
+ott.assert_almost_equal(copula.getKendallTau()[1, 0], 1.0 / 3.0)
+ott.assert_almost_equal(copula.getSpearmanCorrelation()[1, 0], 3.0 / 7.0)
+independent_copula = ot.MarshallOlkinCopula(0.0, 0.5)
+print("independent kendall=", independent_copula.getKendallTau())
+print("independent spearman=", independent_copula.getSpearmanCorrelation())
+ott.assert_almost_equal(independent_copula.getKendallTau()[1, 0], 0.0)
+ott.assert_almost_equal(independent_copula.getSpearmanCorrelation()[1, 0], 0.0)
+print("independent=", independent_copula.hasIndependentCopula())
+min_copula = ot.MarshallOlkinCopula(1.0, 1.0)
+print("min kendall=", min_copula.getKendallTau())
+print("min spearman=", min_copula.getSpearmanCorrelation())
+ott.assert_almost_equal(min_copula.getKendallTau()[1, 0], 1.0)
+ott.assert_almost_equal(min_copula.getSpearmanCorrelation()[1, 0], 1.0)
+
+# Realizations in the three regimes stay within the unit square
+for reg in [copula, independent_copula, min_copula]:
+    realization = reg.getRealization()
+    assert 0.0 <= realization[0] <= 1.0 and 0.0 <= realization[1] <= 1.0
+    print("realization=", repr(realization))
+
+# Continuity
+print("continuous=", copula.isContinuous())
+print("continuous(0, 0)=", ot.MarshallOlkinCopula(0.0, 0.0).isContinuous())
+
+# CDF on the boundary
+ott.assert_almost_equal(copula.computeCDF([0.0, 0.5]), 0.0)
+ott.assert_almost_equal(copula.computeCDF([0.0, 0.0]), 0.0)
+
+# Error cases
+with ott.assert_raises(TypeError):
+    copula.setParameter([0.5])
+with ott.assert_raises(TypeError):
+    ot.MarshallOlkinCopula(2.0, 0.5)
+with ott.assert_raises(TypeError):
+    copula.setAlpha(2.0)
+with ott.assert_raises(TypeError):
+    copula.setBeta(-0.1)
