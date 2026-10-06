@@ -79,5 +79,56 @@ validation = ott.DistributionValidation(distribution)
 validation.skipParameters()  # probabilities are renormalized so not independent
 validation.run()
 
+# Spearman correlation & Kendall tau of a discrete distribution, see #2845.
+# The atoms are tied in the first component and of unequal probability, so both
+# coefficients depend on how the ties are resolved. Check them against MC
+# sampling via DistributionValidation. The generic implementation, which
+# integrates the PDF over the range of the distribution, used to return -1
+# here (ie 4 * 0 - 1)
+ties = ot.FiniteDiscreteDistribution(
+    [[0.0, 0.0], [0.0, 1.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0],
+     [1.0, 1.0], [2.0, 2.0], [2.0, 2.0], [3.0, 1.0]],
+    [0.05, 0.1, 0.15, 0.2, 0.05, 0.1, 0.15, 0.1, 0.1],
+)
+# probabilities are renormalized so not independent
+tiesValidation = ott.DistributionValidation(ties)
+tiesValidation.skipParameters()
+tiesValidation.skipConditional()
+tiesValidation.run()
+
+# A distribution with distinct atom coordinates, as in the bug report
+ot.RandomGenerator.SetSeed(0)
+sample = ot.Normal(2).getSample(20)
+pdf = ot.Normal(2).computePDF(sample).asPoint()
+distinct = ot.FiniteDiscreteDistribution(sample, pdf)
+distinctValidation = ott.DistributionValidation(distinct)
+distinctValidation.skipParameters()
+distinctValidation.skipConditional()
+distinctValidation.run()
+
+# Comonotonic and countermonotonic atoms
+ott.assert_almost_equal(
+    ot.FiniteDiscreteDistribution([[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]).getKendallTau()[0, 1], 1.0
+)
+ott.assert_almost_equal(
+    ot.FiniteDiscreteDistribution([[0.0, 3.0], [1.0, 2.0], [2.0, 1.0]]).getKendallTau()[0, 1], -1.0
+)
+
+# A stored support above Distribution-MaximumSupportSizeForRankCorrelation
+# still uses the exact mid-rank correlation, see #2845
+spearmanLimit = ot.ResourceMap.GetAsUnsignedInteger(
+    "Distribution-MaximumSupportSizeForRankCorrelation"
+)
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-MaximumSupportSizeForRankCorrelation", 2)
+ott.assert_almost_equal(
+    ot.FiniteDiscreteDistribution(
+        [[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]
+    ).getSpearmanCorrelation()[0, 1],
+    1.0,
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "Distribution-MaximumSupportSizeForRankCorrelation", spearmanLimit
+)
+
 # alias
 distribution = ot.UserDefined(x, p)

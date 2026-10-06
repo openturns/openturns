@@ -21,6 +21,7 @@
 #include <cmath>
 #include <algorithm>
 #include <limits>
+#include <vector>
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/DistributionImplementation.hxx"
@@ -3652,6 +3653,18 @@ CorrelationMatrix DistributionImplementation::getPearsonCorrelation() const
 CorrelationMatrix DistributionImplementation::getSpearmanCorrelation() const
 {
   if (isCopula()) return getCorrelation();
+  // Independent marginals have null rank correlation
+  if (hasIndependentCopula()) return CorrelationMatrix(dimension_);
+  // For a discrete law the probability transform is a step function, so the
+  // ranks of the tied atoms must be resolved with mid-ranks. The generic
+  // computation below relies on a PDF, which is null outside of the atoms
+  if (isDiscrete())
+  {
+    Sample support;
+    Point probabilities;
+    if (getEnumerableDiscreteSupport(support, probabilities))
+      return computeDiscreteSpearmanCorrelation(support, probabilities, supportEpsilon_);
+  }
   return getCopula().getSpearmanCorrelation();
 }
 
@@ -3702,7 +3715,17 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
   // First special case: independent marginals
   if (hasIndependentCopula())
     return tau;
-  // Second special case: elliptical distribution
+  // Second special case: discrete law with an enumerable support. The general
+  // case below integrates a PDF, which is null outside of the atoms, so the
+  // atoms must be enumerated instead
+  if (isDiscrete())
+  {
+    Sample support;
+    Point probabilities;
+    if (getEnumerableDiscreteSupport(support, probabilities))
+      return computeDiscreteKendallTau(support, probabilities, supportEpsilon_);
+  }
+  // Third special case: elliptical distribution
   if (hasEllipticalCopula())
   {
     const CorrelationMatrix shape(getShapeMatrix());
@@ -3733,6 +3756,328 @@ CorrelationMatrix DistributionImplementation::getKendallTau() const
   } // loop over row indices
   return tau;
 }
+
+/* Sort the atoms of a discrete distribution by the value of one of the
+   components. Two atoms sharing the same value for this component are said to
+   be tied, and they are gathered into a group. This is the discrete counterpart
+   of the rank transform of a sample, the ties being resolved with mid-ranks. */
+struct DistributionImplementationSortedComponent
+{
+  DistributionImplementationSortedComponent(const Sample & points,
+      const Point & probabilities,
+      const UnsignedInteger component,
+      const Scalar epsilon)
+    : order_(points.getSize())
+    , group_(points.getSize())
+    , groupMass_(0)
+    , midRank_(points.getSize())
+    , tiedMass_(0.0)
+  {
+    const UnsignedInteger size = points.getSize();
+    // Sort the indices of the support by increasing value of the component
+    order_ = Indices(size);
+    for (UnsignedInteger k = 0; k < size; ++k) order_[k] = k;
+    std::stable_sort(order_.begin(), order_.end(), [&points, component](const UnsignedInteger a, const UnsignedInteger b)
+    {
+      return points(a, component) < points(b, component);
+    });
+    // Gather the atoms sharing the same value into a tie group
+    UnsignedInteger first = 0;
+    while (first < size)
+    {
+      UnsignedInteger last = first;
+      Scalar mass = 0.0;
+      Scalar squaredMass = 0.0;
+      while (last < size)
+      {
+        if ((last > first) && (std::abs(points(order_[last], component) - points(order_[first], component)) > epsilon)) break;
+        const Scalar p = probabilities[order_[last]];
+        mass += p;
+        squaredMass += p * p;
+        ++last;
+      }
+      const UnsignedInteger currentGroup = groupMass_.getSize();
+      groupMass_.add(mass);
+      for (UnsignedInteger k = first; k < last; ++k) group_[order_[k]] = currentGroup;
+      // Probability of the pairs of atoms tied for this component
+      tiedMass_ += 0.5 * (mass * mass - squaredMass);
+      first = last;
+    }
+    // The cumulative probability mass gives the mid-rank of each atom, ie the
+    // probability of being below its value plus half of the mass of its group.
+    // As the atoms of a group share the same mid-rank, the whole group must be
+    // gathered in the cumulative mass before assigning it to its atoms
+    Scalar cumulativeMass = 0.0;
+    UnsignedInteger k = 0;
+    while (k < size)
+    {
+      const UnsignedInteger group = group_[order_[k]];
+      UnsignedInteger last = k;
+      while ((last < size) && (group_[order_[last]] == group))
+      {
+        cumulativeMass += probabilities[order_[last]];
+        ++last;
+      }
+      const Scalar midRank = cumulativeMass - 0.5 * groupMass_[group];
+      for (UnsignedInteger l = k; l < last; ++l) midRank_[order_[l]] = midRank;
+      k = last;
+    }
+  }
+
+  /** Get the index of the k-th atom in increasing order of the component */
+  UnsignedInteger operator[](const UnsignedInteger k) const
+  {
+    return order_[k];
+  }
+
+  /** Get the tie group of an atom */
+  UnsignedInteger getGroup(const UnsignedInteger k) const
+  {
+    return group_[k];
+  }
+
+  /** Get the mid-rank of an atom */
+  Scalar getMidRank(const UnsignedInteger k) const
+  {
+    return midRank_[k];
+  }
+
+  /** Get the number of tie groups */
+  UnsignedInteger getGroupNumber() const
+  {
+    return groupMass_.getSize();
+  }
+
+  /** Get the probability of the pairs of atoms tied for this component */
+  Scalar getTiedMass() const
+  {
+    return tiedMass_;
+  }
+
+  /** The indices of the atoms sorted by increasing value of the component */
+  Indices order_;
+  /** The tie group of each atom */
+  Indices group_;
+  /** The probability mass of each tie group */
+  Point groupMass_;
+  /** The mid-rank of each atom */
+  Point midRank_;
+  /** The probability of the pairs of atoms tied for this component */
+  Scalar tiedMass_;
+}; // struct DistributionImplementationSortedComponent
+
+/* Accumulate the probability mass of the atoms of a discrete distribution,
+   gathered by tie group as in the structure above, in order to evaluate in a
+   logarithmic time the mass of the atoms of the tie groups less than a given
+   one. This is a binary indexed tree (Fenwick tree), the tie groups being
+   numbered from 0 whereas the tree is indexed from 1 */
+struct DistributionImplementationMassTree
+{
+  explicit DistributionImplementationMassTree(const UnsignedInteger size)
+    : partialSum_(size + 1, 0.0)
+    , size_(size)
+  {
+    // Nothing to do
+  }
+
+  /** Add the given mass to the atoms of the given tie group */
+  void add(const UnsignedInteger group,
+           const Scalar mass)
+  {
+    for (UnsignedInteger index = group + 1; index <= size_; index += index & (~index + 1)) partialSum_[index] += mass;
+  }
+
+  /** Get the mass of the atoms of the tie groups less than the given one */
+  Scalar getLowerMass(const UnsignedInteger group) const
+  {
+    Scalar mass = 0.0;
+    for (UnsignedInteger index = group; index > 0; index -= index & (~index + 1)) mass += partialSum_[index];
+    return mass;
+  }
+
+  /** The partial sums, the i-th one gathering the masses of the tie groups
+      from the lowest set bit of i to the last one */
+  Point partialSum_;
+  /** The number of tie groups */
+  UnsignedInteger size_;
+}; // struct DistributionImplementationMassTree
+
+/* Get the support and the probability of each of its atoms if the distribution
+   is discrete with a small enough enumerable support */
+Bool DistributionImplementation::getEnumerableDiscreteSupport(Sample & support,
+    Point & probabilities) const
+{
+  support = Sample(0, getDimension());
+  probabilities = Point(0);
+  if (!isDiscrete()) return false;
+  const UnsignedInteger maximumSupportSize = ResourceMap::GetAsUnsignedInteger("Distribution-MaximumSupportSizeForRankCorrelation");
+  try
+  {
+    // Bound the support size from the marginal supports before enumerating
+    // the joint support, which may be their Cartesian product
+    UnsignedInteger supportSizeUpperBound = 1;
+    for (UnsignedInteger i = 0; i < getDimension(); ++ i)
+    {
+      const UnsignedInteger marginalSize = getMarginal(i).getSupport().getSize();
+      if (marginalSize == 0) return false;
+      if (supportSizeUpperBound > maximumSupportSize / marginalSize) return false;
+      supportSizeUpperBound *= marginalSize;
+    }
+    support = getSupport();
+    probabilities = getProbabilities();
+  }
+  catch (Exception &)
+  {
+    return false;
+  }
+  // The support must describe the atoms of the law, and be small enough for the
+  // quadratic-like cost of the rank based computations to stay reasonable
+  if (support.getSize() != probabilities.getSize()) return false;
+  if (support.getSize() > maximumSupportSize) return false;
+  return true;
+} // getEnumerableDiscreteSupport
+
+/* Compute the mid-ranks of a discrete distribution, ie the probability transform
+   of its atoms based on the mid-ranks of its marginal distributions, which is
+   the exact continuous limit of the rank transform of a sample */
+static Sample ComputeDiscreteMidRanks(const Sample & support,
+                                      const Point & probabilities,
+                                      const Scalar epsilon)
+{
+  const UnsignedInteger size = support.getSize();
+  const UnsignedInteger dimension = support.getDimension();
+  Sample midRanks(size, dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    const DistributionImplementationSortedComponent sortedComponent(support, probabilities, i, epsilon);
+    for (UnsignedInteger k = 0; k < size; ++k) midRanks(k, i) = sortedComponent.getMidRank(k);
+  }
+  return midRanks;
+} // ComputeDiscreteMidRanks
+
+/* Compute the Spearman correlation of a discrete distribution, ie the
+   correlation of the mid-ranks of its marginal distributions */
+CorrelationMatrix DistributionImplementation::computeDiscreteSpearmanCorrelation(const Sample & support,
+    const Point & probabilities,
+    const Scalar epsilon)
+{
+  const UnsignedInteger size = support.getSize();
+  const UnsignedInteger dimension = support.getDimension();
+  const Sample midRanks(ComputeDiscreteMidRanks(support, probabilities, epsilon));
+  // Mean of the mid-ranks
+  Point meanRank(dimension);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const Scalar pK = probabilities[k];
+    for (UnsignedInteger i = 0; i < dimension; ++i) meanRank[i] += pK * midRanks(k, i);
+  }
+  // Then, the covariance of the mid-ranks. Beware that a CorrelationMatrix is
+  // initialized to the identity matrix, hence the use of a plain Matrix here
+  Matrix covariance(dimension, dimension);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const Scalar pK = probabilities[k];
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const Scalar weightedDifference = pK * (midRanks(k, i) - meanRank[i]);
+      for (UnsignedInteger j = 0; j <= i; ++j) covariance(i, j) += weightedDifference * (midRanks(k, j) - meanRank[j]);
+    }
+  } // k
+  // Then, the correlation
+  CorrelationMatrix spearman(dimension);
+  Point std(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i) std[i] = std::sqrt(covariance(i, i));
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      // A constant component gives an undefined correlation, as for a sample
+      if ((std[i] > 0.0) && (std[j] > 0.0)) spearman(i, j) = covariance(i, j) / (std[i] * std[j]);
+    }
+  }
+  return spearman;
+} // computeDiscreteSpearmanCorrelation
+
+/* Compute the Kendall concordance of a discrete distribution, ie the tie
+   corrected probability of the concordant pairs minus that of the discordant
+   ones, as in SampleImplementation::computeKendallTau() */
+CorrelationMatrix DistributionImplementation::computeDiscreteKendallTau(const Sample & support,
+    const Point & probabilities,
+    const Scalar epsilon)
+{
+  const UnsignedInteger size = support.getSize();
+  const UnsignedInteger dimension = support.getDimension();
+  CorrelationMatrix tau(dimension);
+  // Probability of a pair of distinct atoms
+  Scalar sumSquares = 0.0;
+  for (UnsignedInteger k = 0; k < size; ++k) sumSquares += probabilities[k] * probabilities[k];
+  const Scalar pairMass = 0.5 * (1.0 - sumSquares);
+  if (!(pairMass > 0.0)) return tau;
+  // Sort the support by increasing value of each component
+  std::vector<DistributionImplementationSortedComponent> sortedComponents;
+  sortedComponents.reserve(dimension);
+  Point untiedMass(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    sortedComponents.push_back(DistributionImplementationSortedComponent(support, probabilities, i, epsilon));
+    // The atoms tied for a given component do not contribute to the numerator,
+    // but they are removed from the denominators, as in the tie-corrected
+    // Kendall tau of SampleImplementation::computeKendallTau()
+    untiedMass[i] = pairMass - sortedComponents[i].getTiedMass();
+    if (!(untiedMass[i] > 0.0)) untiedMass[i] = pairMass;
+  }
+  for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+  {
+    for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+    {
+      const DistributionImplementationSortedComponent & sortedRow = sortedComponents[rowIndex];
+      const DistributionImplementationSortedComponent & sortedColumn = sortedComponents[columnIndex];
+      const UnsignedInteger groupNumber = sortedColumn.getGroupNumber();
+      // Tree accumulating the mass of the atoms already visited, indexed by
+      // their tie group for the column component
+      DistributionImplementationMassTree massTree(groupNumber);
+      // Mass of the atoms already visited, per tie group and in total
+      Point tiedMass(groupNumber, 0.0);
+      Scalar totalMass = 0.0;
+      Scalar concordance = 0.0;
+      // Walk through the atoms by increasing value of the row component. A tie
+      // group is entirely read before being inserted, so that only strictly
+      // smaller values of the row component contribute to the concordance
+      UnsignedInteger first = 0;
+      while (first < size)
+      {
+        const UnsignedInteger group = sortedRow.getGroup(sortedRow[first]);
+        UnsignedInteger last = first;
+        while ((last < size) && (sortedRow.getGroup(sortedRow[last]) == group)) ++last;
+        // The atoms tied for the column component are neither concordant nor
+        // discordant, hence their exclusion from the concordance
+        for (UnsignedInteger k = first; k < last; ++k)
+        {
+          const UnsignedInteger atom = sortedRow[k];
+          const UnsignedInteger columnGroup = sortedColumn.getGroup(atom);
+          // Mass of the inserted atoms with a lower or a higher value for the
+          // column component, ie strictly lower and strictly higher
+          const Scalar lowerMass = massTree.getLowerMass(columnGroup);
+          const Scalar higherMass = totalMass - lowerMass - tiedMass[columnGroup];
+          concordance += probabilities[atom] * (lowerMass - higherMass);
+        } // k
+        // Then insert the atoms of the tie group
+        for (UnsignedInteger k = first; k < last; ++k)
+        {
+          const UnsignedInteger atom = sortedRow[k];
+          const UnsignedInteger columnGroup = sortedColumn.getGroup(atom);
+          const Scalar p = probabilities[atom];
+          massTree.add(columnGroup, p);
+          tiedMass[columnGroup] += p;
+          totalMass += p;
+        } // k
+        first = last;
+      } // tie group
+      tau(rowIndex, columnIndex) = concordance / std::sqrt(untiedMass[rowIndex] * untiedMass[columnIndex]);
+    } // columnIndex
+  } // rowIndex
+  return tau;
+} // computeDiscreteKendallTau
 
 /* Get the shape matrix of the distribution, ie the correlation matrix
    of its copula if it is elliptical */

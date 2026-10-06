@@ -1745,6 +1745,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
   addAsUnsignedInteger("Distribution-SmallSupport", 10);
   addAsScalar("Distribution-SupportEpsilon", 1.0e-14);
+  addAsUnsignedInteger("Distribution-MaximumSupportSizeForRankCorrelation", 100000);
 
   // DiscreteMarkovChain parameters //
   addAsString("DiscreteMarkovChain-DOTArcColor", "black");

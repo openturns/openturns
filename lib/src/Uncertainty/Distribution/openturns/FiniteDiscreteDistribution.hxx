@@ -143,9 +143,6 @@ public:
   /** Get the Spearman correlation of the distribution */
   CorrelationMatrix getSpearmanCorrelation() const override;
 
-  /** Get the Kendall concordance of the distribution */
-  CorrelationMatrix getKendallTau() const override;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
