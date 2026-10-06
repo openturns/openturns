@@ -16,7 +16,7 @@ Then the sequence :math:`(P_n)_{n \in \Nset}` verifies the relation:
 
 .. math::
 
-    P_{n+1}\ =\ (a_nx+b_n)\ P_n\ +\ c_n\ P_{n-1}
+    P_{n+1}(x)\ =\ (a_nx+b_n)\ P_n(x)\ +\ c_n\ P_{n-1}(x)
 
 where for all :math:`n`, :math:`a_n \geq 0` and :math:`c_n < 0`.
 
@@ -52,49 +52,47 @@ to :math:`X` are obtained from those of :math:`Z` by the substitution
 :math:`x \mapsto (x - \beta)/\alpha`.
 
 .. list-table::
-   :widths: 15 30 30 25
+   :widths: 20 30 50
    :header-rows: 1
 
-   * - Ortho. poly.
-     - :math:`P_n(x)`
-     - Weight :math:`w(x)`
+   * - Family
+     - Standard distribution
      - Recurrence coefficients :math:`(a_n, b_n, c_n)`
    * - Hermite
-     - :math:`{He}_n(x)`
-     - :math:`\displaystyle \frac{1}{\sqrt{2 \pi}} e^{-\frac{x^2}{2}}`
-     - :math:`\begin{array}{ccc} a_n & = & \frac{1}{\sqrt{n+1}} \\ b_n & = & 0 \\ c_n & = &  - \sqrt{\frac{n}{n+1}} \end{array}`
+     - Normal :math:`\cN(0,1)`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{1}{\sqrt{n+1}} \quad \forall n \geq 0\\ b_n & = & 0 \quad \forall n \geq 0\\ c_n & = &  - \sqrt{\frac{n}{n+1}} \quad \forall n \geq 0 \end{array}\right.`
    * - Legendre
-     - :math:`{Le}_n(x)`
-     - :math:`\displaystyle \frac{1}{2} \times \mathbb{I}_{[-1,1]}(x)`
-     - :math:`\begin{array}{ccc} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \\ b_n & = & 0 \\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} } \end{array}`
+     - Uniform :math:`\cU(-1,1)`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \quad  \forall n \geq 1\\ b_n & = & 0 \quad  \forall n \geq 1\\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} }\quad  \forall n \geq 1 \end{array}\right.`
    * - Laguerre
-     - :math:`L_n^{(k)}(x)`
-     - :math:`\displaystyle \frac{x^{k-1}}{\Gamma(k)}~e^{-x} \mathbb{I}_{[0,+\infty[}(x)`
-     - :math:`\begin{array}{ccc} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2} \\ a_n & = & \omega_{n} \\ b_n & = & -(2n+k)~\omega_{n} \\ c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n} \end{array}`
+     - Gamma :math:`\Gamma(k,1,0)`
+     - :math:`\left\{\begin{array}{lcl} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2}\quad \forall n \geq 0 \\ a_n & = & \omega_{n} \quad \forall n \geq 0\\ b_n & = & -(2n+k)~\omega_{n}\quad \forall n \geq 0 \\ c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n}\quad \forall n \geq 0 \end{array}\right.`
    * - Jacobi
-     - :math:`\begin{array}{c} J^{(\alpha,\beta)}_n(x) \\ \alpha,\beta>0 \end{array}`
-     - :math:`\frac{(1-x)^{\beta-1}(1+x)^{\alpha-1}}{2^{\alpha + \beta - 1} B(\alpha, \beta)} \mathbb{I}_{[-1,1]}(x)`
-     - :math:`\begin{array}{ccc} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}} \\ a_n & = & K_{2,n}(2n+\alpha + \beta) \\ b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2} \\ c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2} \Big[(n+\alpha-1)(n+\beta-1) \times (n+\alpha+\beta-2)n\frac{K_{1,n}}{2n+\alpha+\beta-3}\Big]^{1/2} \end{array}`
+     - Beta :math:`B(\alpha,\beta,-1,1), \; \alpha,\beta>0`
+     - :math:`\left\{\begin{array}{lcl} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \quad \forall n \geq 2\\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}}  \quad \forall n \geq 2\\ a_n & = & K_{2,n}(2n+\alpha + \beta) \quad \forall n \geq 2\\ b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2}  \quad \forall n \geq 2\\ c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2} \Big[K_{1,n}\frac{n(n+\alpha-1)(n+\beta-1)(n+\alpha+\beta-2)}{2n+\alpha+\beta-3}\Big]^{1/2}\, \forall n \geq 2 \end{array}\right.`
+   * - Chebychev
+     - Beta :math:`B(1/2,1/2,-1,1)`
+     - :math:`\left\{\begin{array}{l} a_0 = \sqrt{2}, \, a_n = 2 \quad \forall n \geq 1 \\ b_n = 0 \quad \forall n \geq 0 \\ c_0 = 0, \, c_1 = -\sqrt{2}, \, c_n = -1 \quad \forall n \geq 2 \end{array}\right.`
 
-Furthermore, two families of orthonormal polynomials with respect to
-discrete  distribution are well-known and detailed in the Table below.
+Furthermore, three families of orthonormal polynomials with respect to
+discrete  distributions are well-known and detailed in the Table below.
 
 .. list-table::
-   :widths: 20 30 30 20
+   :widths: 20 30 50
    :header-rows: 1
 
-   * - Ortho. poly.
-     - :math:`P_n(x)`
-     - Probability mass function
+   * - Family
+     - Distribution
      - Recurrence coefficients :math:`(a_n, b_n, c_n)`
    * - Charlier
-     - :math:`Ch^{(\lambda)}_n(x), \ \lambda>0`
-     - :math:`\displaystyle{\frac{\lambda^k}{k!}~e^{-\lambda}}, \ k=0,1,2,\dots`
-     - :math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}} \\ b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \\ c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \end{array}`
-   * - Krawtchouk\ :math:`^{\dagger}`
-     - :math:`Kr^{(m,p)}_n(x), \ m \in \Nset, \ p \in [0,1]`
-     - :math:`\displaystyle{\binom{m}{k}p^k (1-p)^{m-k}}, \ k=0,1,2,\dots`
-     - :math:`\begin{array}{ccc} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \\ b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \end{array}`
+     - Poisson :math:`\cP(\lambda), \; \lambda>0`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}}\quad \forall n \geq 0 \\ b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \quad \forall n \geq 0\\ c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \quad \forall n \geq 0\end{array}\right.`
+   * - Krawtchouk
+     - Binomial :math:`\cB(m,p), \; m \in \Nset, \; 0 \leq p \leq 1`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\ b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \quad \forall n, \; 0 \leq n < m\end{array}\right.`
+   * - Meixner
+     - Polya :math:`\cP(r,p), \; r>0, \; 0 \leq p \leq 1`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{p-1}{\sqrt{p(n+1)(n+r)}}  \quad \forall n \geq 0\\ b_n & = & \frac{p(n+r)+n}{\sqrt{p(n+1)(n+r)}}  \quad \forall n \geq 0\\ c_n & = & - \frac{\sqrt{pn(n+r-1)}}{\sqrt{p(n+1)(n+r)}} \quad \forall n \geq 0 \end{array}\right.`
 
 Notice that the Krawtchouk polynomials are only defined up to the
 degree :math:`m-1`. Indeed, for the degree :math:`n=m`, some
@@ -127,13 +125,17 @@ The Table below sums up the available polynomials sequences and the distribution
      - :math:`(a,b)`
      - Jacobi
      - :class:`~openturns.JacobiFactory`
+   * - Arcsine :math:`\cA(a,b)`
+     - :math:`[a,b]`
+     - Chebychev
+     - :class:`~openturns.ChebychevFactory`
    * - Poisson :math:`\cP(\lambda)`
      - :math:`\Nset`
      - Charlier
      - :class:`~openturns.CharlierFactory`
    * - Binomial :math:`\cB(m,p)`
      - :math:`\{0,\dots,m\}`
-     - Krawtchouk\ :math:`^{\dagger}`
+     - Krawtchouk`
      - :class:`~openturns.KrawtchoukFactory`
    * - Negative Binomial :math:`\cN \cB(m,p)`
      - :math:`\Nset`

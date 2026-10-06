@@ -193,19 +193,19 @@ void LeastSquaresExpansion::run()
   result_ = FunctionalChaosResult(inputSample_, outputSample_, distribution_, transformation_, inverseTransformation_, basis_, activeFunctions_, coefficients, designProxy_.getBasis(activeFunctions_));
   result_.setIsLeastSquares(true);
   result_.setInvolvesModelSelection(false);
-  result_.setUseDomination(useDomination_);
+  result_.setUseTransformation(useTransformation_);
   result_.setSelectionHistory(Collection<Indices>(), Collection<Point>(), Indices(outputDimension + 1, 0));
   result_.setErrorHistory(Point(), Indices(outputDimension + 1, 0));
 }
 
-/* Domination flag accessor */
-void LeastSquaresExpansion::setUseDomination(const Bool useDomination)
+/* Transformation flag accessor */
+void LeastSquaresExpansion::setUseTransformation(const Bool useTransformation)
 {
-  if (useDomination != useDomination_)
+  if (useTransformation != useTransformation_)
   {
     designProxy_ = DesignProxy();
   }
-  FunctionalChaosAlgorithm::setUseDomination(useDomination);
+  FunctionalChaosAlgorithm::setUseTransformation(useTransformation);
 }
 
 /* Method to get/set the active functions */

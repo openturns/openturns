@@ -48,6 +48,10 @@ Returns
 coefficients : :class:`~openturns.Point`
     Coefficients of the requested orthogonal univariate polynomial.
 
+Notes
+-----
+The polynomial is decomposed in the canonical polynomial basis.
+
 Examples
 --------
 >>> import openturns as ot

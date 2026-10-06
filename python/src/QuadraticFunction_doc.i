@@ -19,7 +19,7 @@ This class implements a quadratic function :math:`f` defined as:
 .. math::
 
     f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
-        & \vect{c} + \Tr{\mat{A}} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}
+        & \vect{x} \rightarrow \vect{c} + \Tr{\mat{A}} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}
         \tens{M}( \vect{x} - \vect{b} )
 
 where:

@@ -1,7 +1,7 @@
 %feature("docstring") OT::LegendreFactory
 R"RAW(Legendre specific orthonormal univariate polynomial family.
 
-For the :class:`~openturns.Uniform` distribution.
+For the :class:`~openturns.Uniform` distribution :math:`\cU(-1,1)`.
 
 Parameters
 ----------
@@ -17,7 +17,9 @@ three consecutive polynomials as follows:
 
 .. math::
 
-    P_{i + 1} = (a_i x + b_i) P_i + c_i P_{i - 1}, \quad 1 < i
+    P_{i + 1}(x) & = (a_i x + b_i) P_i(x) + c_i P_{i - 1}(x), \quad  i \geq 0 \\
+    P_{-1} & = 0 \\
+    P_0 & = 1
 
 The recurrence coefficients for the Legendre polynomials come analytically and
 read:
@@ -46,6 +48,8 @@ Examples
 1
 1.73205 * X
 -1.11803 + 3.3541 * X^2
+>>> print(polynomial_factory.getRecurrenceCoefficients(1))
+[1.93649,0,-1.11803]
 
 >>> polynomial_factory = ot.LegendreFactory(0.0, 2.0)
 >>> for i in range(3):
