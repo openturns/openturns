@@ -97,4 +97,7 @@
 %include SparseGaussianProcessHessian.i
 %include SparseGaussianProcessFitter.i
 %include SparseGaussianProcessRegression.i
+%include HeteroscedasticSparseGaussianProcessFitterResult.i
+%include HeteroscedasticSparseGaussianProcessFitter.i
+%include HeteroscedasticSparseGaussianProcessRegression.i
 

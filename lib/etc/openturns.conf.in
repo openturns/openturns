@@ -1038,6 +1038,12 @@
   <SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound value_float="-30.0" />
   <SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound value_float="30.0" />
   <SparseGaussianProcessFitter-LinearAlgebra                      value_str="LAPACK"  />
+  <HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationLowerBound      value_float="1.0e-2"  />
+  <HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationUpperBound      value_float="1.0e2"   />
+  <HeteroscedasticSparseGaussianProcessFitter-OptimizationLowerBoundScaleFactor  value_float="1.0e-3" />
+  <HeteroscedasticSparseGaussianProcessFitter-OptimizationUpperBoundScaleFactor  value_float="2.0" />
+  <HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationAlgorithm       value_str="TNC"     />
+  <HeteroscedasticSparseGaussianProcessFitter-VariationalBoundFactor              value_float="10.0" />
 
   <!-- OT::GaussianProcessRegressionCrossValidation parameters -->
   <GaussianProcessRegressionCrossValidation-DefaultBlockSize value_int="100"   />

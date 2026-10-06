@@ -37,6 +37,10 @@
  * Parametric log-variance function for SparseGaussianProcessFitter and
    SparseGaussianProcessFitterResult (heteroscedastic likelihood with jointly
    optimized function parameters and predictive variance)
+ * Automatic replicate detection with sufficient-statistics likelihood and
+   ALM/IMSPE sequential design criteria for
+   HeteroscedasticSparseGaussianProcessFitter and
+   HeteroscedasticSparseGaussianProcessFitterResult
 
 ==== New ResourceMap keys ====
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
@@ -67,6 +71,7 @@
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
  * SparseGaussianProcessFitter, SparseGaussianProcessFitterResult, SparseGaussianProcessRegression (openturns.experimental)
+ * HeteroscedasticSparseGaussianProcessFitter, HeteroscedasticSparseGaussianProcessFitterResult, HeteroscedasticSparseGaussianProcessRegression (openturns.experimental)
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
