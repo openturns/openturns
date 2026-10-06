@@ -574,6 +574,10 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
+                     PenalizedEvaluation.i PenalizedEvaluation_doc.i
+                     PenalizedGradient.i PenalizedGradient_doc.i
+                     PenalizedHessian.i PenalizedHessian_doc.i
+		     PenalizedProblem.i PenalizedProblem_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
@@ -1086,7 +1090,7 @@ if (SPHINX_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)")
   endif ()
   if (NOT Pagmo_FOUND)
-    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)")
+    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)|(optimization_penalized)")
   endif ()
   if (NOT PANDAS_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")

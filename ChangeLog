@@ -33,6 +33,7 @@
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
  * SparseExpansion (openturns.experimental)
+ * PenalizedEvaluation, PenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)

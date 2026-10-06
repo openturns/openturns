@@ -92,3 +92,11 @@
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
 
+/* Base/Func */
+%include PenalizedEvaluation.i
+%include PenalizedGradient.i
+%include PenalizedHessian.i
+
+/* Base/Optim */
+%include PenalizedProblem.i
+
