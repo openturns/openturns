@@ -15,6 +15,7 @@
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
+ * HeteroscedasticSparseGaussianProcessFitter, HeteroscedasticSparseGaussianProcessFitterResult, HeteroscedasticSparseGaussianProcessRegression (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -146,6 +147,10 @@
  * Parametric log-variance function for SparseGaussianProcessFitter and
    SparseGaussianProcessFitterResult (heteroscedastic likelihood with jointly
    optimized function parameters and predictive variance)
+ * Automatic replicate detection with sufficient-statistics likelihood and
+   ALM/IMSPE sequential design criteria for
+   HeteroscedasticSparseGaussianProcessFitter and
+   HeteroscedasticSparseGaussianProcessFitterResult
 
 === Documentation ===
  * Theory: add interpolation page
