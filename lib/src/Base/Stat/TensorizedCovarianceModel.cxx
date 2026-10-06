@@ -219,6 +219,16 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
   return gradient;
 }
 
+/** Hessian wrt s, for the first output component */
+SymmetricMatrix TensorizedCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // The covariance matrix is diagonal, so the (0,0) entry involves the first model only
+  return collection_[0].partialHessian(s, t);
+}
+
 /* Parameters accessor */
 void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
 {

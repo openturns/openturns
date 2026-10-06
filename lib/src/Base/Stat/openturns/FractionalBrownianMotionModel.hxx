@@ -75,6 +75,14 @@ public:
   virtual Matrix partialGradient(const Point & s,
                                  const Point & t) const override;
 
+  /** Hessian */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Gradient wrt parameters */
+  Matrix parameterGradient(const Point & s,
+                           const Point & t) const override;
+
   /** Exponent accessor */
   void setExponentEtaRho(const Point & exponent,
                          const SquareMatrix & eta,

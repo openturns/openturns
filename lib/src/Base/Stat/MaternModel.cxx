@@ -179,6 +179,86 @@ Matrix MaternModel::partialGradient(const Point & s,
   return Matrix(inputDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];
 }
 
+/* Hessian */
+SymmetricMatrix MaternModel::partialHessian(const Point & s,
+                                            const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const Point tau(s - t);
+  Point scaledTau(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
+  const Scalar z = scaledTau.norm();
+  // At zero distance the Hessian of the smooth part is not radial:
+  // fall back to the finite-difference implementation
+  if (z == 0.0) return CovarianceModelImplementation::partialHessian(s, t);
+  // k(s, t) = amplitude^2 * rho(z), z = ||scaledTau||,
+  // rho(z) = exp(logNormalizationFactor_ + nu * log(z)) K_nu(z)
+  // d^2 k / ds_a ds_b = u_a u_b [rho''(z) z - rho'(z)] / z^3
+  //   + delta_ab rho'(z) alpha_a^2 / z, with u_i = tau_i * sqrt2nuOverTheta_i^2
+  const Scalar z2 = z * z;
+  const Scalar e = std::exp(logNormalizationFactor_ + nu_ * std::log(z));
+  const Scalar k = SpecFunc::BesselK(nu_, z);
+  const Scalar kPrime = SpecFunc::BesselKDerivative(nu_, z);
+  // [rho''(z) z - rho'(z)] / e = (2 nu - 2) K'(z) + K(z) (z^2 + 2 nu^2 - 2 nu) / z
+  const Scalar factor = amplitude_[0] * amplitude_[0] * e * ((2.0 * nu_ - 2.0) * kPrime + (z2 + 2.0 * nu_ * nu_ - 2.0 * nu_) * k / z) / (z2 * z);
+  // rho'(z) / z = e (nu K(z) / z + K'(z)) / z
+  const Scalar diagonalFactor = amplitude_[0] * amplitude_[0] * e * (nu_ * k / z + kPrime) / z;
+  Point u(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) u[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
+  SymmetricMatrix hessian(inputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    for (UnsignedInteger b = 0; b < a; ++b)
+      hessian(a, b) = factor * u[a] * u[b];
+    hessian(a, a) = factor * u[a] * u[a] + diagonalFactor * sqrt2nuOverTheta_[a] * sqrt2nuOverTheta_[a];
+  }
+  return hessian;
+}
+
+/* Gradient wrt the parameters */
+Matrix MaternModel::parameterGradient(const Point & s,
+                                      const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Point tau(s - t);
+  Point scaledTau(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
+  const Scalar scaledPoint = scaledTau.norm();
+  const Scalar k = computeAsScalar(s, t);
+  Point fullGradient(inputDimension_ + 3, 0.0);
+  if (scaledPoint > SpecFunc::ScalarEpsilon)
+  {
+    // d log(rho)/dz with z = |scaledTau| and rho the standard representative
+    const Scalar logRhoDerivative = nu_ / scaledPoint + SpecFunc::BesselKDerivative(nu_, scaledPoint) / SpecFunc::BesselK(nu_, scaledPoint);
+    // dz/dscale_i = -scaledTau_i^2 / (z * scale_i)
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    {
+      const Scalar scaledTauI = scaledTau[i];
+      fullGradient[i] = k * logRhoDerivative * (-scaledTauI * scaledTauI / (scaledPoint * scale_[i]));
+    }
+  }
+  else
+  {
+    // The nugget factor is the only parameter that affects the value at tau=0
+    fullGradient[inputDimension_] = outputCovariance_(0, 0);
+  }
+  // Amplitude: k = amplitude^2 * rho
+  fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+  // No analytic derivative of the modified Bessel function wrt its order nu:
+  // compute the component of the gradient wrt nu by finite differences
+  const Point parameter(getFullParameter());
+  Pointer<CovarianceModelImplementation> p_implementation(clone());
+  Point parameterP(parameter);
+  const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+  parameterP[inputDimension_ + 2] += epsilon;
+  p_implementation->setFullParameter(parameterP);
+  fullGradient[inputDimension_ + 2] = (p_implementation->computeAsScalar(s, t) - k) / epsilon;
+  return filterActiveParameterGradient(fullGradient);
+}
+
 void MaternModel::setScale(const Point & scale)
 {
   // First set scale

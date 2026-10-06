@@ -24,19 +24,21 @@
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/ConstantFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/LinearFunction.hxx"
+#include "openturns/CholAdjoint.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(GaussianProcessFitter)
 
 static const Factory<GaussianProcessFitter> Factory_GaussianProcessFitter;
+
+
 
 /* Default constructor */
 GaussianProcessFitter::GaussianProcessFitter()
@@ -355,8 +357,13 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
   // Early exit if the parameters are known
   if (noNumericalOptimization)
   {
-    // We only need to compute the log-likelihood function at the initial parameters in order to get the Cholesky factor and the trend coefficients
-    const Scalar initialReducedLogLikelihood = reducedLogLikelihoodFunction(initialParameters)[0];
+    // Call computeReducedLogLikelihood() directly on *this (not through the
+    // function wrapper, whose evaluation owns a clone of the algorithm) in
+    // order to get the Cholesky factor and the trend coefficients beta_:
+    // the function wrapper is bypassed because the cache provides no benefit
+    // for a single evaluation, and the direct call makes the side-effect
+    // intent explicit (defense in depth, see SparseGaussianProcessFitter).
+    const Scalar initialReducedLogLikelihood = computeReducedLogLikelihood(initialParameters)[0];
     LOGDEBUG("No covariance parameter to optimize");
     LOGDEBUG(OSS() << "initial parameters=" << initialParameters << ", log-likelihood=" << initialReducedLogLikelihood);
     return initialReducedLogLikelihood;
@@ -496,6 +503,149 @@ Point GaussianProcessFitter::computeReducedLogLikelihood(const Point & parameter
   return Point(1, lastReducedLogLikelihood_);
 }
 
+
+/* Compute the gradient of the reduced log-likelihood wrt the optimization parameters */
+Point GaussianProcessFitter::computeReducedLogLikelihoodGradient(const Point & parameters)
+{
+  // Check that the parameters have a size compatible with the covariance model
+  if (parameters.getSize() != reducedCovarianceModel_.getParameter().getSize())
+    throw InvalidArgumentException(HERE) << "In GaussianProcessFitter::computeReducedLogLikelihoodGradient, could not compute the reduced log-likelihood gradient,"
+                                         << " covariance model requires an argument of size " << reducedCovarianceModel_.getParameter().getSize()
+                                         << " but here we got " << parameters.getSize();
+  if (method_ != GaussianProcessFitterResult::LAPACK)
+    throw NotYetImplementedException(HERE) << "In GaussianProcessFitter::computeReducedLogLikelihoodGradient, the HMAT method is not supported";
+
+  const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger outputDimension = reducedCovarianceModel_.getOutputDimension();
+  const UnsignedInteger totalSize = size * outputDimension;
+  const UnsignedInteger covarianceParameterSize = reducedCovarianceModel_.getParameter().getSize();
+  // If the amplitude is deduced from the other parameters, work with
+  // the correlation function. Save model state to restore after the sweep.
+  const Point savedParameter(reducedCovarianceModel_.getParameter());
+  const Point savedAmplitude(reducedCovarianceModel_.getAmplitude());
+  if (analyticalAmplitude_) reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
+  reducedCovarianceModel_.setParameter(parameters);
+
+  // Forward sweep, as in computeLapackLogDeterminantCholesky()
+  CovarianceMatrix C(reducedCovarianceModel_.discretize(inputSample_));
+  if (noise_.getSize() > 0)
+  {
+    UnsignedInteger shift = 0;
+    for (UnsignedInteger k = 0; k < size; ++k)
+    {
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        for (UnsignedInteger i = j; i < outputDimension; ++i)
+          C(shift + i, shift + j) += noise_[k](i, j);
+      shift += outputDimension;
+    }
+  }
+  const TriangularMatrix L(C.computeRegularizedCholesky());
+  const Point y(outputSample_.getImplementation()->getData());
+  Point rho0(L.solveLinearSystem(y));
+  // If trend to estimate: use a local variable, do not mutate beta_
+  Matrix Phi;
+  Point rho(rho0);
+  Point beta;
+  if (basis_.getSize() > 0)
+  {
+    Phi = L.solveLinearSystem(F_);
+    beta = Phi.solveLinearSystem(rho0);
+    rho = rho0 - Phi * beta;
+  }
+  // Squared norm of the residual. In the analytical amplitude case, this is
+  // s = ||rho||^2 (before the scaling by sigma) and the weight of the
+  // quadratic term is w = N/s, see the reverse sweep below.
+  const Scalar s = rho.normSquare();
+  if (analyticalAmplitude_ && s == 0.0)
+  {
+    // The trend perfectly fits the data: the gradient is zero for all parameters.
+    reducedCovarianceModel_.setParameter(savedParameter);
+    reducedCovarianceModel_.setAmplitude(savedAmplitude);
+    return Point(covarianceParameterSize, 0.0);
+  }
+  const Scalar w = analyticalAmplitude_ ? static_cast<Scalar>(size) / s : 1.0;
+
+  // Reverse sweep
+  // LBar from the log-determinant term: diag += 2/L_ii
+  Matrix LBar(totalSize, totalSize);
+  for (UnsignedInteger i = 0; i < totalSize; ++i)
+    LBar(i, i) = 2.0 / L(i, i);
+  // LBar from the quadratic term rho^T rho, weighted by w
+  const Point rhoBar(rho * (2.0 * w));
+  if (basis_.getSize() > 0)
+  {
+    const UnsignedInteger basisSize = beta.getSize();
+    // PhiBar = -rhoBar beta^T
+    Matrix PhiBar(totalSize, basisSize);
+    for (UnsignedInteger i = 0; i < totalSize; ++i)
+      for (UnsignedInteger j = 0; j < basisSize; ++j)
+        PhiBar(i, j) = -rhoBar[i] * beta[j];
+    // betaBar = -Phi^T rhoBar, then z = S^{-1} betaBar with S = Phi^T Phi
+    const Point betaBar(-1.0 * (Phi.transpose() * rhoBar));
+    const Matrix S(Phi.transpose() * Phi);
+    const Point z(S.solveLinearSystem(betaBar));
+    // SBar = -z beta^T
+    Matrix SBar(basisSize, basisSize);
+    for (UnsignedInteger i = 0; i < basisSize; ++i)
+      for (UnsignedInteger j = 0; j < basisSize; ++j)
+        SBar(i, j) = -z[i] * beta[j];
+    // PhiBar += rho0 z^T
+    for (UnsignedInteger i = 0; i < totalSize; ++i)
+      for (UnsignedInteger j = 0; j < basisSize; ++j)
+        PhiBar(i, j) += rho0[i] * z[j];
+    // rho0Bar = rhoBar + Phi z
+    Point rho0Bar(rhoBar + Phi * z);
+    // PhiBar += Phi (SBar + SBar^T)
+    PhiBar = PhiBar + Phi * (SBar + SBar.transpose());
+    // Phi = L^{-1} F: LBar += -L^{-T} PhiBar Phi^T
+    const Matrix PhiBarTmp(L.transpose().solveLinearSystem(PhiBar));
+    LBar = LBar - PhiBarTmp * Phi.transpose();
+    // rho0 = L^{-1} y: LBar += -L^{-T} rho0Bar rho0^T
+    const Point rho0BarTmp(L.transpose().solveLinearSystem(rho0Bar));
+    for (UnsignedInteger i = 0; i < totalSize; ++i)
+      for (UnsignedInteger j = 0; j < totalSize; ++j)
+        LBar(i, j) -= rho0BarTmp[i] * rho0[j];
+  }
+  else
+  {
+    // rho0 = L^{-1} y: LBar += -L^{-T} rhoBar rho^T
+    const Point rho0BarTmp(L.transpose().solveLinearSystem(rhoBar));
+    for (UnsignedInteger i = 0; i < totalSize; ++i)
+      for (UnsignedInteger j = 0; j < totalSize; ++j)
+        LBar(i, j) -= rho0BarTmp[i] * rho0[j];
+  }
+  // CB = cholAdjoint(L, LBar), then the gradient is
+  // -0.5 * tr(CB dC/dtheta) summed over the lower triangle of C
+  const Matrix CB(cholAdjoint(L, LBar));
+
+  // Gradient wrt the active covariance parameters
+  Point gradient(covarianceParameterSize, 0.0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      const Matrix dk(reducedCovarianceModel_.parameterGradient(inputSample_[i], inputSample_[j]));
+      for (UnsignedInteger a = 0; a < outputDimension; ++a)
+      {
+        const UnsignedInteger maxB = (i == j) ? a : outputDimension - 1;
+        for (UnsignedInteger b = 0; b <= maxB; ++b)
+        {
+          const Scalar coef = -0.5 * CB(i * outputDimension + a, j * outputDimension + b);
+          if (coef != 0.0)
+          {
+            const UnsignedInteger column = b * outputDimension + a;
+            for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
+              gradient[k] += coef * dk(k, column);
+          }
+        }
+      }
+    }
+  }
+  // Restore model state that was temporarily changed for the sweep
+  reducedCovarianceModel_.setParameter(savedParameter);
+  reducedCovarianceModel_.setAmplitude(savedAmplitude);
+  return gradient;
+}
 
 Scalar GaussianProcessFitter::computeLapackLogDeterminantCholesky()
 {
@@ -681,9 +831,10 @@ Function GaussianProcessFitter::getReducedLogLikelihoodFunction()
 {
   computeF();
   MemoizeFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));
-  // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
-  const Scalar finiteDifferenceEpsilon = ResourceMap::GetAsScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" );
-  logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(finiteDifferenceEpsilon, logLikelihood.getEvaluation()).clone());
+  // The analytic gradient is only implemented for the LAPACK backend.
+  // With HMAT, rely on the default finite-difference gradient.
+  if (method_ == GaussianProcessFitterResult::LAPACK)
+    logLikelihood.setGradient(ReducedLogLikelihoodGradient(*this).clone());
   logLikelihood.enableCache();
   return logLikelihood;
 }
@@ -720,8 +871,9 @@ void GaussianProcessFitter::setMethod(const LinearAlgebra method)
   // First update only if method has changed. It avoids useless reset
   if (method != method_)
   {
-    if (method > 1)
-      throw InvalidArgumentException(HERE) << "Expecting 0 (LAPACK) or 1 (HMAT)";
+    if (method != GaussianProcessFitterResult::LAPACK &&
+        method != GaussianProcessFitterResult::HMAT)
+      throw InvalidArgumentException(HERE) << "In GaussianProcessFitter::setMethod, expecting LAPACK or HMAT, got " << static_cast<UnsignedInteger>(method);
     // Set new method
     method_ = method;
     // reset for new computation
