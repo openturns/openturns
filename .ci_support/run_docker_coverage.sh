@@ -21,8 +21,8 @@ OPENTURNS_NUM_THREADS=1 ctest -R pyinstallcheck --output-on-failure --timeout 20
 #make tests
 #OPENTURNS_NUM_THREADS=2 ctest -R cppcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 
-# coverage
-time lcov --capture --directory . --output-file coverage.info --include "*.cxx" --exclude "*_wrap.cxx" -j 4
+# coverage, excluding SWIG wrappers and vendored third-party code
+time lcov --capture --directory . --output-file coverage.info --include "*.cxx" --exclude "*_wrap.cxx" --exclude "*/Base/Diff/Ev3/*" -j 4
 genhtml --output-directory coverage coverage.info
 cp -v coverage.info coverage
 
