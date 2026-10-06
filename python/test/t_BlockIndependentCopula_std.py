@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -237,3 +238,21 @@ print(copula.getMarginal([3, 2, 1, 0]))
 d1 = ot.BlockIndependentCopula([ot.FrankCopula(3.0), ot.ClaytonCopula(2.0)])
 d2 = ot.BlockIndependentCopula([ot.IndependentCopula(2), d1, ot.NormalCopula(2)])
 assert len(d2.getCopulaCollection()) == 4
+
+# setParameter round-trip and all-or-reject size check
+paramCopula = ot.BlockIndependentCopula([ot.FrankCopula(3.0), ot.ClaytonCopula(2.0)])
+reference = paramCopula.getParameter()
+assert paramCopula.getParameterDescription() == [
+    "copula_0_theta",
+    "copula_1_theta",
+]
+paramCopula.setParameter([4.0, 5.0])
+ott.assert_almost_equal(paramCopula.getParameter(), [4.0, 5.0])
+with ott.assert_raises(Exception):
+    paramCopula.setParameter([4.0])
+assert list(paramCopula.getParameter()) == [4.0, 5.0]
+with ott.assert_raises(Exception):
+    paramCopula.setParameter([4.0, 5.0, 6.0])
+assert list(paramCopula.getParameter()) == [4.0, 5.0]
+paramCopula.setParameter(reference)
+ott.assert_almost_equal(paramCopula.getParameter(), reference)

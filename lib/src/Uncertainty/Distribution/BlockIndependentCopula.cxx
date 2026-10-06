@@ -928,6 +928,49 @@ void BlockIndependentCopula::setParametersCollection(const PointCollection & par
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
 }
 
+Point BlockIndependentCopula::getParameter() const
+{
+  const UnsignedInteger size = copulaCollection_.getSize();
+  Point point;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    point.add(copulaCollection_[i].getParameter());
+  return point;
+}
+
+Description BlockIndependentCopula::getParameterDescription() const
+{
+  const UnsignedInteger size = copulaCollection_.getSize();
+  Description description;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Description atomDescription(copulaCollection_[i].getParameterDescription());
+    for (UnsignedInteger j = 0; j < atomDescription.getSize(); ++j)
+      description.add(OSS() << "copula_" << i << "_" << atomDescription[j]);
+  }
+  return description;
+}
+
+void BlockIndependentCopula::setParameter(const Point & parameter)
+{
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: the parameter size=" << parameter.getSize() << " does not match the expected dimension=" << getParameterDimension();
+  const UnsignedInteger size = copulaCollection_.getSize();
+  DistributionCollection newCopulas(size);
+  UnsignedInteger globalIndex = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Work on a copy: thanks to copy-on-write the stored copula is left unchanged if a later copula rejects its slice
+    Distribution copula(copulaCollection_[i]);
+    const UnsignedInteger parametersSize = copula.getParameterDimension();
+    Point newParameters(parametersSize);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
+    copula.setParameter(newParameters);
+    newCopulas[i] = copula;
+    globalIndex += parametersSize;
+  }
+  // All slices accepted: commit the staged updates
+  setCopulaCollection(newCopulas);
+}
+
 /* Tell if the distribution has elliptical copula */
 Bool BlockIndependentCopula::hasEllipticalCopula() const
 {
