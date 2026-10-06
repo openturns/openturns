@@ -60,4 +60,27 @@ tree = ot.KDTree(sample)
 x = sample[1]
 indices = tree.queryK(x, 6, True)
 print(indices)
-assert indices == [1, 5, 3, 0, 2, 4]
+assert sorted(indices) == [0, 1, 2, 3, 4, 5], "queryK(6) must return all the indices"
+if not ot.PlatformInfo.HasFeature("nanoflann"):
+    # deterministic order of the built-in kd-tree, see the tie-break fix
+    assert indices == [1, 5, 3, 0, 2, 4]
+
+# space-filling ordering
+order = tree.getOrdering()
+assert order.getSize() == tree.getSample().getSize()
+sorted_order = sorted(order)
+assert sorted_order == list(range(order.getSize())), "not a permutation"
+# inverse is identity
+inverse = [0] * order.getSize()
+for i, j in enumerate(order):
+    inverse[j] = i
+assert [order[inverse[j]] for j in range(order.getSize())] == list(
+    range(order.getSize())
+), "inverse not a valid round-trip"
+# deterministic
+tree2 = ot.KDTree(tree.getSample())
+assert tree2.getOrdering() == order
+# single point
+tree3 = ot.KDTree([[1.0, 2.0]])
+assert tree3.getOrdering() == [0]
+print("order=", order)

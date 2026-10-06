@@ -15,6 +15,7 @@
 #include "openturns/OTMetaModel.hxx"
 #include "openturns/OTSimulation.hxx"
 #include "openturns/OTSolver.hxx"
+#include "openturns/OTStat.hxx"
 %}
 
 %include typemaps.i
@@ -93,6 +94,15 @@
 %include RiemannianGaussianFactory.i
 %include WrappedNormal.i
 %include WrappedNormalFactory.i
+
+/* Base/Stat */
+%import statistics_module.i
+// HODLR wrappers live in the statistics module (like HMatrix) so that
+// CovarianceModel/GaussianProcessFitter methods using HODLR types compile;
+// re-export them here to keep the openturns.experimental API.
+%pythoncode %{
+from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters
+%}
 
 /* Uncertainty/Algorithm/Metamodel */
 %include LinearModelValidation.i
