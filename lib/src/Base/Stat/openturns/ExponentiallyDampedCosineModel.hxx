@@ -100,6 +100,9 @@ private :
   Scalar frequency_;
   Bool equals(const CovarianceModelImplementation & other) const override;
 
+  /** Cached value of 2 * pi * frequency_, updated by setFrequency */
+  Scalar twoPiFrequency_;
+
 } ; /* class ExponentiallyDampedCosineModel */
 
 END_NAMESPACE_OPENTURNS

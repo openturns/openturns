@@ -77,8 +77,14 @@ public:
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
                          const Collection<Scalar>::const_iterator &t_begin) const override;
+  Scalar computeAsScalar(const Scalar * s,
+                         const Scalar * t) const override;
 #endif
   Scalar computeAsScalar(const Scalar tau) const override;
+
+  // Reimplement the setScale method
+  using CovarianceModelImplementation::setScale;
+  void setScale(const Point & scale) override;
 
   /** Gradient */
   using CovarianceModelImplementation::partialGradient;
@@ -102,6 +108,14 @@ public:
 
 private :
   Bool equals(const CovarianceModelImplementation & other) const override;
+
+  // Inverse of scale_, kept in sync by the constructors, setScale() and load(),
+  // so that the evaluation paths do not divide once per coordinate and per
+  // call
+  void updateInvScale();
+
+  // The inverse scales
+  Point invScale_;
 
 } ; /* class ExponentialModel */
 

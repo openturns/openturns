@@ -195,6 +195,14 @@ Bool DivFreeModel::isStationary() const
   return model_.isStationary();
 }
 
+/* The divergence couples the output components, so the discretized blocks are
+   full and the diagonal fast paths of discretize()/computeCrossCovariance()
+   must not apply. See the header for why the base flag is left as is. */
+Bool DivFreeModel::isDiagonal() const
+{
+  return false;
+}
+
 
 void DivFreeModel::setScale(const Point & scale)
 {
