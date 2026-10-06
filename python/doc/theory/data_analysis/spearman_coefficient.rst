@@ -64,6 +64,12 @@ We sum up some interesting features of the coefficient:
 
 - If :math:`X` and :math:`Y` are independent, then :math:`\rho_S(X,Y)=0`.
 
+When the variables are discrete, the atoms tied with each other share their
+rank, defined as the mid-rank :math:`F_X(x^-) + \Prob{X = x}/2` where
+:math:`F_X(x^-) = \Prob{X < x}`, ie the probability of being below the value
+plus half the probability of the tied atoms. The mid-ranks replace the
+probability transform in the definition of :math:`\rho_S`.
+
 - If :math:`\rho_S(X,Y)=0`, it does not imply the independence of the variables
   :math:`X` and :math:`Y`. It may only means that the relation between both variables
   is not monotonic.
