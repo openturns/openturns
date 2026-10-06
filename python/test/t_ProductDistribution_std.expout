@@ -27,3 +27,11 @@ right= Normal(mu = 1, sigma = 2)
 distribution= ProductDistribution(ProductDistribution(Uniform(a = -1, b = 1) * Uniform(a = -1, b = 1)) * Uniform(a = -1, b = 1))
 mean= [0]
 standard deviation= [0.19245]
+pdf(5)=0.287682
+pdf(-5)=0.287682
+pdf(5)=0.287682
+pdf(-5)=0.287682
+pdf(2)=0.095894
+pdf(-2)=0.095894
+pdf(1)=0.212168
+pdf(-1)=0.212168

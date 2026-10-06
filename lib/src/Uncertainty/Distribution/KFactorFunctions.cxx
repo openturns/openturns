@@ -45,7 +45,6 @@ public:
     , nu_(nu)
     , p_(p)
     , x_(1.0)
-    , n_(n)
     , sigma_(1.0 / std::sqrt(n))
     , chiSquare_(nu)
   {
@@ -78,38 +77,10 @@ public:
     return 1;
   }
 
-  String __repr__() const override
-  {
-    OSS oss(true);
-    oss << "class=KernelFunction"
-        << " nu=" << nu_
-        << " p=" << p_
-        << " x=" << x_
-        << " n=" << n_
-        << " chiSquare=" << chiSquare_
-        << " sigma=" << sigma_;
-    return oss;
-  }
-
-  String __str__(const String & ) const override
-  {
-    OSS oss(false);
-    oss << "KernelFunction("
-        << "nu=" << nu_
-        << ", p=" << p_
-        << ", x=" << n_
-        << ", n=" << n_
-        << ", chiSquare=" << chiSquare_
-        << ", sigma=" << sigma_
-        << ")";
-    return oss;
-  }
-
 private:
   Scalar nu_;
   Scalar p_;
   Scalar x_;
-  Scalar n_;
   Scalar sigma_;
   ChiSquare chiSquare_;
 }; // KernelFunction
@@ -121,8 +92,6 @@ public:
                      const Scalar p,
                      const Scalar n)
     : EvaluationImplementation()
-    , nu_(nu)
-    , p_(p)
     , n_(n)
     , kernel_(nu, p, n)
   {
@@ -151,32 +120,7 @@ public:
     return 1;
   }
 
-  String __repr__() const override
-  {
-    OSS oss(true);
-    oss << "class=ConstraintFunction"
-        << " nu=" << nu_
-        << " p=" << p_
-        << " n=" << n_
-        << " kernel=" << kernel_;
-    return oss;
-  }
-
-  String __str__(const String & ) const override
-  {
-    OSS oss(false);
-    oss << "ConstraintFunction("
-        << "nu=" << nu_
-        << ", p=" << p_
-        << ", n=" << n_
-        << ", kernel=" << kernel_
-        << ")";
-    return oss;
-  }
-
 private:
-  Scalar nu_;
-  Scalar p_;
   Scalar n_;
   mutable KernelFunction kernel_;
 }; // ConstraintFunction

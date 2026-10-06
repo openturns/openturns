@@ -11,3 +11,17 @@ ddf     = [0,0]
 log pdf=0.70956
 pdf     =2.0331
 cdf=0.354
+1D realization= [1.13714]
+1D sample= 0 : [ 2.75447  ]
+1 : [ 1.92906  ]
+2 : [ 0.773856 ]
+1D pdf=0.25
+3D realization= [-0.487931,0.266767,-0.461214]
+3D sample= 0 : [ -0.632411   0.745218   0.039606  ]
+1 : [ -0.603366  -0.924996  -0.0976711 ]
+2 : [ -0.0752104 -0.0472316  0.19358   ]
+3D pdf=0.125
+mesh= 278 vertices
+integrationAlgorithm= IntegrationAlgorithm
+proba(empty)=0
+proba(range)=1
