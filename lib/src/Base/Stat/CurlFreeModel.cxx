@@ -144,6 +144,14 @@ Bool CurlFreeModel::isStationary() const
   return model_.isStationary();
 }
 
+/* The curl couples the output components, so the discretized blocks are
+   full and the diagonal fast paths of discretize()/computeCrossCovariance()
+   must not apply. See the header for why the base flag is left as is. */
+Bool CurlFreeModel::isDiagonal() const
+{
+  return false;
+}
+
 
 void CurlFreeModel::setScale(const Point & scale)
 {

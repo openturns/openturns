@@ -37,6 +37,7 @@ static const Factory<ExponentiallyDampedCosineModel> Factory_ExponentiallyDamped
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)
   , frequency_(1.0)
+  , twoPiFrequency_(2.0 * M_PI)
 {
   isStationary_ = true;
 }
@@ -47,6 +48,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & sca
     const Scalar frequency)
   : CovarianceModelImplementation(scale, amplitude)
   , frequency_(0.0)
+  , twoPiFrequency_(0.0)
 {
   isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
@@ -96,7 +98,7 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
   absTau = sqrt(absTau);
   if (absTau <= SpecFunc::ScalarEpsilon)
     return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
-  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(twoPiFrequency_ * absTau);
 }
 
 Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
@@ -113,7 +115,7 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>:
   absTau = sqrt(absTau);
   if (absTau <= SpecFunc::ScalarEpsilon)
     return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
-  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(twoPiFrequency_ * absTau);
 }
 
 Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Scalar tau) const
@@ -157,6 +159,7 @@ void ExponentiallyDampedCosineModel::setFrequency(const Scalar frequency)
 {
   if (!(frequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the frequency must be positive.";
   frequency_ = frequency;
+  twoPiFrequency_ = 2.0 * M_PI * frequency_;
 }
 
 Scalar ExponentiallyDampedCosineModel::getFrequency() const
@@ -200,6 +203,7 @@ void ExponentiallyDampedCosineModel::load(Advocate & adv)
 {
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "frequency_", frequency_);
+  twoPiFrequency_ = 2.0 * M_PI * frequency_;
 }
 
 END_NAMESPACE_OPENTURNS
