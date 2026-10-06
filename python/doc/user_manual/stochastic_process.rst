@@ -45,6 +45,7 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     :template: class.rst_t
     IsotropicCovarianceModel
     KroneckerCovarianceModel
+    experimental.LinearCombinationCovarianceModel
 
     :template: CovarianceModel.rst_t
     MaternModel
