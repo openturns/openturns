@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -48,3 +49,45 @@ otherConstant[0, 0, 0] = 42.0
 h2 = ot.ConstantHessian(otherConstant)
 assert not (h1 == h2), "different constant should not be equal"
 assert h1 != h2, "different constant should be different"
+
+# Alternate constructors and accessors
+defaultHessian = ot.ConstantHessian()
+assert defaultHessian.getInputDimension() == 0
+assert defaultHessian.getOutputDimension() == 0
+_ = str(defaultHessian)
+_ = repr(defaultHessian)
+ott.assert_almost_equal(myHessian.getConstant(), constant)
+assert myHessian.getInputDimension() == inputDimension
+assert myHessian.getOutputDimension() == outputDimension
+ott.assert_almost_equal(outTensor, constant)
+_ = str(myHessian)
+_ = repr(myHessian)
+assert myHessian.isActualImplementation()
+assert myHessian == myHessian
+assert not (myHessian == "dummy")
+assert myHessian != "dummy"
+assert not (
+    myHessian == ot.ConstantGradient(ot.Matrix(inputDimension, outputDimension))
+)
+callsBefore = myHessian.getCallsNumber()
+ott.assert_almost_equal(myHessian.hessian(inPoint), constant)
+assert myHessian.getCallsNumber() == callsBefore + 1
+assert myHessian.getParameter().getDimension() == 0
+myHessian.setParameter([1.0])
+assert myHessian.getParameter() == ot.Point([1.0])
+myHessian.setParameter(ot.Point())
+marginalHessian = myHessian.getMarginal(1)
+assert marginalHessian.getOutputDimension() == 1
+assert marginalHessian.hessian(inPoint).getNbSheets() == 1
+assert marginalHessian.hessian(inPoint).getNbRows() == inputDimension
+ott.assert_almost_equal(marginalHessian.hessian(inPoint)[0, 0, 0], -7.0)
+fullMarginal = myHessian.getMarginal([0, 1])
+assert fullMarginal == myHessian
+with ott.assert_raises(Exception):
+    myHessian.getMarginal(5)
+with ott.assert_raises(Exception):
+    myHessian.getMarginal([0, 0])
+with ott.assert_raises(Exception):
+    myHessian.hessian(ot.Point(inputDimension + 1))
+with ott.assert_raises(Exception):
+    myHessian.hessian(ot.Point(inputDimension - 1))
