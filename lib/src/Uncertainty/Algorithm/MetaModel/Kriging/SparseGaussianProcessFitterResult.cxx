@@ -74,6 +74,7 @@ String SparseGaussianProcessFitterResult::__repr__() const
          << ", covariance model=" << covarianceModel_
          << ", inducing points=" << inducingPoints_
          << ", noiseStdDev=" << noiseStdDev_
+         << ", noiseVariancesSize=" << noiseVariances_.getSize()
          << ", optimal ELBO=" << optimalELBO_;
 }
 
@@ -142,6 +143,26 @@ Scalar SparseGaussianProcessFitterResult::getNoiseStdDev() const
   return noiseStdDev_;
 }
 
+/* Per-observation noise variances accessor */
+Point SparseGaussianProcessFitterResult::getNoiseVariances() const
+{
+  return noiseVariances_;
+}
+
+void SparseGaussianProcessFitterResult::setNoiseVariances(const Point & noiseVariances)
+{
+  const UnsignedInteger size = getInputSample().getSize();
+  if (noiseVariances.getSize() != 0)
+  {
+    if (noiseVariances.getSize() != size)
+      throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitterResult::setNoiseVariances, the number of noise variances (" << noiseVariances.getSize() << ") should match the number of observations (" << size << "), or be zero for the homoscedastic likelihood";
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (!(noiseVariances[i] > 0.0))
+        throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitterResult::setNoiseVariances, the noise variances should be positive, got " << noiseVariances[i] << " at index " << i;
+  }
+  noiseVariances_ = noiseVariances;
+}
+
 /* optimal ELBO accessor */
 Scalar SparseGaussianProcessFitterResult::getOptimalELBO() const
 {
@@ -195,6 +216,7 @@ void SparseGaussianProcessFitterResult::save(Advocate & adv) const
   adv.saveAttribute("posteriorMean_", posteriorMean_);
   adv.saveAttribute("posteriorCovariance_", posteriorCovariance_);
   adv.saveAttribute("noiseStdDev_", noiseStdDev_);
+  adv.saveAttribute("noiseVariances_", noiseVariances_);
   adv.saveAttribute("optimalELBO_", optimalELBO_);
 }
 
@@ -217,6 +239,8 @@ void SparseGaussianProcessFitterResult::load(Advocate & adv)
   adv.loadAttribute("posteriorMean_", posteriorMean_);
   adv.loadAttribute("posteriorCovariance_", posteriorCovariance_);
   adv.loadAttribute("noiseStdDev_", noiseStdDev_);
+  if (adv.hasAttribute("noiseVariances_"))
+    adv.loadAttribute("noiseVariances_", noiseVariances_);
   adv.loadAttribute("optimalELBO_", optimalELBO_);
 }
 

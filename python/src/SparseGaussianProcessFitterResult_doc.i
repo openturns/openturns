@@ -6,7 +6,8 @@ R"RAW(Structure which contains the results of the sparse Gaussian process fittin
     To use it, import the ``openturns.experimental`` submodule.
 
 This structure stores the results of the variational inference of a sparse Gaussian process:
-the inducing points, the (fixed) noise standard deviation, the optimal ELBO value as well as the
+the inducing points, the noise standard deviation (or the fixed per-observation noise
+variances when a heteroscedastic likelihood is used), the optimal ELBO value as well as the
 by-products of the collapsed variational bound, namely the whitening factor, the variational
 posterior mean and the variational posterior covariance in the whitened parametrisation.
 Refer to :class:`~openturns.experimental.SparseGaussianProcessFitter` for the mathematical details.
@@ -92,7 +93,31 @@ R"RAW(Get the noise standard deviation.
 Returns
 -------
 noiseStdDev : float
-    The noise standard deviation :math:`\sigma` of the sparse Gaussian process.)RAW"
+    The noise standard deviation :math:`\sigma` of the sparse Gaussian process.
+    When fixed per-observation noise variances are used (see :meth:`getNoiseVariances`),
+    they take precedence over this scalar value.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitterResult::getNoiseVariances
+R"RAW(Get the fixed per-observation noise variances.
+
+Returns
+-------
+noiseVariances : :class:`~openturns.Point`
+    The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, or an empty
+    point when the homoscedastic likelihood is used.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitterResult::setNoiseVariances
+R"RAW(Set the fixed per-observation noise variances.
+
+Parameters
+----------
+noiseVariances : sequence of float
+    The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, one positive
+    value per observation. An empty sequence restores the homoscedastic likelihood.)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -31,6 +31,9 @@
  * HMAT linear algebra method for SparseGaussianProcessFitter and
    SparseGaussianProcessRegression (ELBO computation and metamodel evaluation),
    the ELBO gradient and its optimization remain LAPACK-only
+ * Fixed per-observation noise variances for SparseGaussianProcessFitter and
+   SparseGaussianProcessFitterResult (heteroscedastic likelihood with analytic
+   ELBO and ELBO gradient, first step toward a latent variance process)
 
 ==== New ResourceMap keys ====
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
