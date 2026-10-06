@@ -226,3 +226,112 @@ class RVBadCovariance(ot.PythonRandomVector):
 
 with ott.assert_raises(Exception):
     ot.RandomVector(RVBadCovariance()).getCovariance()
+
+
+class RVFailingRealization(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getRealization(self):
+        raise RuntimeError("no realization")
+
+
+with ott.assert_raises(Exception):
+    ot.RandomVector(RVFailingRealization()).getRealization()
+
+
+class RVFailingMean(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getRealization(self):
+        return [0.1, 0.2]
+
+    def getMean(self):
+        raise RuntimeError("no mean")
+
+
+with ott.assert_raises(Exception):
+    ot.RandomVector(RVFailingMean()).getMean()
+
+
+class RVFailingCovariance(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getRealization(self):
+        return [0.1, 0.2]
+
+    def getCovariance(self):
+        raise RuntimeError("no covariance")
+
+
+with ott.assert_raises(Exception):
+    ot.RandomVector(RVFailingCovariance()).getCovariance()
+
+
+class RVFailingEvent(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getRealization(self):
+        return [0.1, 0.2]
+
+    def isEvent(self):
+        raise RuntimeError("no event")
+
+
+with ott.assert_raises(Exception):
+    ot.RandomVector(RVFailingEvent()).isEvent()
+
+
+class RVFailingParameter(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getRealization(self):
+        return [0.1, 0.2]
+
+    def getParameter(self):
+        raise RuntimeError("no parameter")
+
+    def setParameter(self, parameter):
+        raise RuntimeError("no parameter")
+
+    def getParameterDescription(self):
+        raise RuntimeError("no parameter")
+
+
+rvFailingParameter = ot.RandomVector(RVFailingParameter())
+with ott.assert_raises(Exception):
+    rvFailingParameter.getParameter()
+with ott.assert_raises(Exception):
+    rvFailingParameter.setParameter([1.0])
+with ott.assert_raises(Exception):
+    rvFailingParameter.getParameterDescription()
+
+
+class RVBadDimension(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getDimension(self):
+        raise RuntimeError("no dimension")
+
+
+with ott.assert_raises(Exception):
+    ot.RandomVector(RVBadDimension())
+
+
+class RVBadDescription(ot.PythonRandomVector):
+    def __init__(self):
+        super().__init__(2)
+
+    def getRealization(self):
+        return [0.1, 0.2]
+
+    def getDescription(self):
+        return ["a", "b", "c"]
+
+
+assert ot.RandomVector(RVBadDescription()).getDescription() == ["x0", "x1"]
