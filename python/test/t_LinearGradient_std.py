@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -50,3 +51,56 @@ inPoint[2] = 9.0
 outMatrix = myGradient.gradient(inPoint)
 print("myGradient=", repr(myGradient))
 print(myGradient.getName(), "( ", repr(inPoint), " ) = ", repr(outMatrix))
+
+# Alternate constructors and accessors
+defaultGradient = ot.LinearGradient()
+assert defaultGradient.getInputDimension() == 0
+assert defaultGradient.getOutputDimension() == 0
+_ = str(defaultGradient)
+_ = repr(defaultGradient)
+assert myGradient.getCenter() == center
+ott.assert_almost_equal(myGradient.getConstant(), constant)
+ott.assert_almost_equal(myGradient.getLinear(), linear)
+assert myGradient.getInputDimension() == inputDimension
+assert myGradient.getOutputDimension() == outputDimension
+expectedGradient = ot.Matrix(inputDimension, outputDimension)
+expectedGradient[0, 0] = 189.0
+expectedGradient[1, 0] = 229.0
+expectedGradient[2, 0] = 255.5
+expectedGradient[0, 1] = -181.0
+expectedGradient[1, 1] = -218.0
+expectedGradient[2, 1] = -247.5
+ott.assert_almost_equal(outMatrix, expectedGradient)
+_ = str(myGradient)
+_ = repr(myGradient)
+assert myGradient.isActualImplementation()
+assert myGradient == myGradient
+assert not (myGradient == "dummy")
+assert myGradient != "dummy"
+with ott.assert_raises(Exception):
+    myGradient == ot.ConstantGradient()
+callsBefore = myGradient.getCallsNumber()
+ott.assert_almost_equal(myGradient.gradient(inPoint), expectedGradient)
+assert myGradient.getCallsNumber() == callsBefore + 1
+assert myGradient.getParameter().getDimension() == 0
+myGradient.setParameter([1.0])
+assert myGradient.getParameter() == ot.Point([1.0])
+myGradient.setParameter(ot.Point())
+marginalGradient = myGradient.getMarginal(0)
+assert marginalGradient.getOutputDimension() == 1
+ott.assert_almost_equal(
+    marginalGradient.gradient(inPoint), ot.Matrix([[189.0], [229.0], [255.5]])
+)
+assert myGradient.getMarginal([0, 1]) == myGradient
+with ott.assert_raises(Exception):
+    myGradient.getMarginal(5)
+with ott.assert_raises(Exception):
+    myGradient.getMarginal([0, 0])
+with ott.assert_raises(Exception):
+    myGradient.gradient(ot.Point(inputDimension + 1))
+with ott.assert_raises(Exception):
+    myGradient.gradient(ot.Point(inputDimension - 1))
+with ott.assert_raises(Exception):
+    ot.LinearGradient(center, ot.Matrix(2, outputDimension), linear)
+with ott.assert_raises(Exception):
+    ot.LinearGradient(ot.Point(inputDimension + 1), constant, linear)

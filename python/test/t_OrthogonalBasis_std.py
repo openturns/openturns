@@ -62,3 +62,57 @@ print("basisFactory=")
 print(basisFactory3)
 print(basisFactory3.__repr_markdown__())
 print(basisFactory3._repr_html_())
+
+# Exercise ProductUniVariateFunctionEvaluation/Gradient/Hessian via basis2
+for i in range(5):
+    f = basis2.build(i)
+    point = ot.Point(x2)
+    value = f(point)
+    ott.assert_almost_equal(f(x2), value)
+    sample = ot.Sample([x2, x2])
+    ott.assert_almost_equal(f(sample), ot.Sample([value, value]))
+    evaluation = f.getEvaluation()
+    ott.assert_almost_equal(evaluation(point), value)
+    ott.assert_almost_equal(evaluation(sample), ot.Sample([value, value]))
+    assert evaluation.getInputDimension() == dim2
+    assert evaluation.getOutputDimension() == 1
+    assert "ProductUniVariateFunctionEvaluation" in repr(evaluation)
+    str(evaluation)
+    gradient = f.getGradient()
+    ott.assert_almost_equal(f.gradient(point), gradient.gradient(point))
+    assert gradient.getInputDimension() == dim2
+    assert gradient.getOutputDimension() == 1
+    assert "Gradient" in repr(gradient)
+    hessian = f.getHessian()
+    ott.assert_almost_equal(f.hessian(point), hessian.hessian(point))
+    assert hessian.getInputDimension() == dim2
+    assert hessian.getOutputDimension() == 1
+    assert "Hessian" in repr(hessian)
+    assert f == f
+    assert not (f != f)
+    # build from multi-index agrees with build from index
+    ott.assert_almost_equal(basis2.build(enum2(i))(x2), value)
+    with ott.assert_raises(Exception):
+        f([0.5])
+    with ott.assert_raises(Exception):
+        f(ot.Sample([[0.5] * (dim2 + 1)] * 2))
+    with ott.assert_raises(Exception):
+        evaluation([0.5])
+    with ott.assert_raises(Exception):
+        evaluation(ot.Sample([[0.5] * (dim2 + 1)] * 2))
+    with ott.assert_raises(Exception):
+        f.gradient([0.5])
+    with ott.assert_raises(Exception):
+        f.hessian([0.5])
+    with ott.assert_raises(Exception):
+        gradient.gradient([0.5])
+    with ott.assert_raises(Exception):
+        hessian.hessian([0.5])
+assert basis2.build(0) != basis2.build(1)
+
+# Zero-product branch: Haar factor vanishes outside [0, 1]
+fZero = basis2.build(3)
+zeroPoint = [0.5, 2.0, 0.5]
+ott.assert_almost_equal(fZero(zeroPoint), [0.0])
+fZero.gradient(zeroPoint)
+fZero.hessian(zeroPoint)

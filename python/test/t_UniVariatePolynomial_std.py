@@ -71,3 +71,32 @@ x = [[1.0], [2.0], [3.0], [4.0], [5.0]]
 y = P2(x)
 yRef = [[-0.2], [-0.3], [-2.8], [-7.7], [-15.0]]
 ott.assert_almost_equal(y, yRef)
+
+# Single-factor ProductPolynomialEvaluation (size == 1 __str__ branch)
+singleFactory = ot.OrthogonalProductPolynomialFactory(
+    [ot.LegendreFactory()], ot.LinearEnumerateFunction(1)
+)
+for i in range(3):
+    f = singleFactory.build(i)
+    value = f([point])
+    sample = ot.Sample([[point], [point]])
+    ott.assert_almost_equal(f(sample), ot.Sample([value, value]))
+    evaluation = f.getEvaluation()
+    ott.assert_almost_equal(evaluation(ot.Point([point])), value)
+    assert evaluation.getInputDimension() == 1
+    assert evaluation.getOutputDimension() == 1
+    assert "ProductPolynomialEvaluation" in repr(evaluation)
+    str(evaluation)
+    ott.assert_almost_equal(f.gradient([point]), f.getGradient().gradient([point]))
+    ott.assert_almost_equal(f.hessian([point]), f.getHessian().hessian([point]))
+    assert f == f
+    assert not (f != f)
+    with ott.assert_raises(Exception):
+        f([point, point])
+    with ott.assert_raises(Exception):
+        evaluation(ot.Sample([[point, point]]))
+    with ott.assert_raises(Exception):
+        f.gradient([point, point])
+    with ott.assert_raises(Exception):
+        f.hessian([point, point])
+assert singleFactory.build(0) != singleFactory.build(1)

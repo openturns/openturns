@@ -81,6 +81,272 @@ with ott.assert_raises(Exception):
     ot.ProductEvaluation(left.getEvaluation(), ot.SymbolicFunction(["y"], ["y"]).getEvaluation())
 with ott.assert_raises(Exception):
     ot.ProductGradient(right.getEvaluation(), right.getGradient(), right.getEvaluation(), right.getGradient())
+# MarginalEvaluation / MarginalGradient / MarginalHessian coverage
+baseFunc = ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "x1*x2", "x1-x2"])
+marginalEval = ot.MarginalEvaluation(
+    baseFunc.getEvaluation().getImplementation(), [0, 2]
+)
+marginalFunc = ot.Function(marginalEval)
+assert list(marginalEval.getIndices()) == [0, 2]
+assert marginalEval.getInputDimension() == 2
+assert marginalEval.getOutputDimension() == 2
+assert marginalEval.getEvaluation().getClassName() == "SymbolicEvaluation"
+ott.assert_almost_equal(marginalFunc(x), [3.0, -1.0], 1e-14, 1e-14)
+ott.assert_almost_equal(
+    marginalFunc(ot.Sample([x, x])), [[3.0, -1.0], [3.0, -1.0]], 1e-14, 1e-14
+)
+ott.assert_almost_equal(
+    marginalFunc.getGradient().gradient(x),
+    ot.Matrix([[1.0, 1.0], [1.0, -1.0]]),
+    1e-7,
+    1e-7,
+)
+assert list(marginalEval.getParameter()) == []
+marginalEval.setParameter(marginalEval.getParameter())
+marginalEval.setParameterDescription(marginalEval.getParameterDescription())
+assert marginalEval.parameterGradient(x).getNbRows() == 0
+marginalEval.setCheckOutput(True)
+assert marginalEval.getCheckOutput()
+_ = repr(marginalEval)
+_ = str(marginalFunc)
+assert marginalEval == marginalEval
+assert marginalEval != ot.MarginalEvaluation(
+    baseFunc.getEvaluation().getImplementation(), [0, 1]
+)
+assert marginalFunc.getEvaluationCallsNumber() > 0
+_ = marginalEval.getCallsNumber()
+marginalGrad = ot.MarginalGradient(
+    baseFunc.getGradient().getImplementation(), [2, 0]
+)
+assert list(marginalGrad.getIndices()) == [2, 0]
+assert marginalGrad.getGradient().getClassName() == "SymbolicGradient"
+assert marginalGrad.getInputDimension() == 2
+assert marginalGrad.getOutputDimension() == 2
+ott.assert_almost_equal(
+    marginalGrad.gradient(x),
+    ot.Matrix([[1.0, 1.0], [-1.0, 1.0]]),
+    1e-12,
+    1e-12,
+)
+_ = repr(marginalGrad)
+assert marginalGrad == marginalGrad
+assert marginalGrad != ot.MarginalGradient(
+    baseFunc.getGradient().getImplementation(), [0]
+)
+_ = marginalGrad.getCallsNumber()
+marginalHess = ot.MarginalHessian(
+    baseFunc.getHessian().getImplementation(), [1]
+)
+assert marginalHess.getInputDimension() == 2
+assert marginalHess.getOutputDimension() == 1
+ott.assert_almost_equal(
+    marginalHess.hessian(x).getSheet(0),
+    ot.Matrix([[0.0, 1.0], [1.0, 0.0]]),
+    1e-12,
+    1e-12,
+)
+_ = repr(marginalHess)
+assert marginalHess == marginalHess
+assert marginalHess != ot.MarginalHessian(
+    baseFunc.getHessian().getImplementation(), [0]
+)
+_ = marginalHess.getCallsNumber()
+with ott.assert_raises(Exception):
+    ot.MarginalEvaluation(
+        baseFunc.getEvaluation().getImplementation(), [0, 0]
+    )
+with ott.assert_raises(Exception):
+    ot.MarginalEvaluation(
+        baseFunc.getEvaluation().getImplementation(), [0, 5]
+    )
+with ott.assert_raises(Exception):
+    marginalEval([1.0])
+with ott.assert_raises(Exception):
+    marginalEval([[1.0], [2.0]])
+with ott.assert_raises(Exception):
+    marginalFunc([1.0])
+with ott.assert_raises(Exception):
+    marginalFunc([[1.0], [2.0]])
+with ott.assert_raises(Exception):
+    marginalFunc.getGradient().gradient([1.0])
+with ott.assert_raises(Exception):
+    marginalFunc.getHessian().hessian([1.0])
+with ott.assert_raises(Exception):
+    ot.MarginalGradient(baseFunc.getGradient().getImplementation(), [1, 1])
+with ott.assert_raises(Exception):
+    ot.MarginalGradient(baseFunc.getGradient().getImplementation(), [7])
+with ott.assert_raises(Exception):
+    ot.MarginalGradient(
+        baseFunc.getGradient().getImplementation(), [0]
+    ).gradient([1.0])
+with ott.assert_raises(Exception):
+    ot.MarginalHessian(baseFunc.getHessian().getImplementation(), [2, 2])
+with ott.assert_raises(Exception):
+    ot.MarginalHessian(
+        baseFunc.getHessian().getImplementation(), [0]
+    ).hessian([1.0])
+with ott.assert_raises(Exception):
+    baseFunc.getMarginal(5)
+with ott.assert_raises(Exception):
+    baseFunc.getMarginal([0, 0])
+with ott.assert_raises(Exception):
+    baseFunc.getMarginal([0, 7])
+
+# ProductHessian coverage
+solo = ot.SymbolicFunction(["x"], ["x"])
+phess = ot.ProductHessian(
+    left.getEvaluation(),
+    left.getGradient(),
+    left.getHessian(),
+    right.getEvaluation(),
+    right.getGradient(),
+    right.getHessian(),
+)
+assert phess.getInputDimension() == 2
+assert phess.getOutputDimension() == 2
+ott.assert_almost_equal(
+    phess.hessian(x).getSheet(0),
+    ot.Matrix([[2.0, 0.0], [0.0, -2.0]]),
+    1e-12,
+    1e-12,
+)
+ott.assert_almost_equal(
+    phess.hessian(x).getSheet(1),
+    ot.Matrix([[4.0, 6.0], [6.0, 2.0]]),
+    1e-12,
+    1e-12,
+)
+_ = repr(phess)
+assert phess == phess
+assert phess == ot.ProductHessian(
+    left.getEvaluation(),
+    left.getGradient(),
+    left.getHessian(),
+    right.getEvaluation(),
+    right.getGradient(),
+    right.getHessian(),
+)
+assert phess != ot.ProductHessian(
+    solo.getEvaluation(),
+    solo.getGradient(),
+    solo.getHessian(),
+    solo.getEvaluation(),
+    solo.getGradient(),
+    solo.getHessian(),
+)
+_ = phess.getCallsNumber()
+prod.setGradient(pgrad)
+prod.setHessian(phess)
+ott.assert_almost_equal(
+    prod.getHessian().hessian(x).getSheet(1),
+    ot.Matrix([[4.0, 6.0], [6.0, 2.0]]),
+    1e-12,
+    1e-12,
+)
+assert prod.getHessianCallsNumber() > 0
+with ott.assert_raises(Exception):
+    phess.hessian([1.0])
+with ott.assert_raises(Exception):
+    ot.ProductHessian(
+        right.getEvaluation(),
+        right.getGradient(),
+        right.getHessian(),
+        right.getEvaluation(),
+        right.getGradient(),
+        right.getHessian(),
+    )
+with ott.assert_raises(Exception):
+    ot.ProductHessian(
+        left.getEvaluation(),
+        left.getGradient(),
+        left.getHessian(),
+        solo.getEvaluation(),
+        solo.getGradient(),
+        solo.getHessian(),
+    )
+with ott.assert_raises(Exception):
+    ot.ProductHessian(
+        left.getEvaluation(),
+        right.getGradient(),
+        left.getHessian(),
+        right.getEvaluation(),
+        right.getGradient(),
+        right.getHessian(),
+    )
+with ott.assert_raises(Exception):
+    ot.ProductHessian(
+        left.getEvaluation(),
+        left.getGradient(),
+        right.getHessian(),
+        right.getEvaluation(),
+        right.getGradient(),
+        right.getHessian(),
+    )
+
+# ProductEvaluation / ProductGradient extra coverage
+assert peval == peval
+assert peval == peval2
+assert peval.getInputDimension() == 2
+assert peval.getOutputDimension() == 2
+_ = peval.getCallsNumber()
+assert pgrad == pgrad
+_ = pgrad.getCallsNumber()
+with ott.assert_raises(Exception):
+    prod([[1.0], [2.0]])
+with ott.assert_raises(Exception):
+    ot.ProductGradient(
+        left.getEvaluation(),
+        left.getGradient(),
+        solo.getEvaluation(),
+        solo.getGradient(),
+    )
+with ott.assert_raises(Exception):
+    ot.ProductGradient(
+        left.getEvaluation(),
+        solo.getGradient(),
+        left.getEvaluation(),
+        left.getGradient(),
+    )
+
+# ProductFunction coverage
+productFunc = left * right
+assert productFunc.getInputDimension() == 2
+assert productFunc.getOutputDimension() == 2
+ott.assert_almost_equal(productFunc(x), [-3.0, 6.0], 1e-14, 1e-14)
+ott.assert_almost_equal(
+    productFunc(ot.Sample([x, x])), [[-3.0, 6.0], [-3.0, 6.0]], 1e-14, 1e-14
+)
+ott.assert_almost_equal(
+    productFunc.getGradient().gradient(x),
+    ot.Matrix([[2.0, 8.0], [-4.0, 5.0]]),
+    1e-12,
+    1e-12,
+)
+ott.assert_almost_equal(
+    productFunc.getHessian().hessian(x).getSheet(0),
+    ot.Matrix([[2.0, 0.0], [0.0, -2.0]]),
+    1e-12,
+    1e-12,
+)
+_ = str(productFunc)
+_ = repr(productFunc)
+assert productFunc == left * right
+ott.assert_almost_equal(
+    productFunc.getMarginal([0])(x), [-3.0], 1e-14, 1e-14
+)
+_ = productFunc.parameterGradient(x)
+assert productFunc.getCallsNumber() > 0
+assert productFunc.getEvaluationCallsNumber() > 0
+assert productFunc.getGradientCallsNumber() > 0
+assert productFunc.getHessianCallsNumber() > 0
+with ott.assert_raises(Exception):
+    productFunc([1.0])
+with ott.assert_raises(Exception):
+    productFunc([[1.0], [2.0]])
+with ott.assert_raises(Exception):
+    productFunc.getGradient().gradient([1.0])
+with ott.assert_raises(Exception):
+    productFunc.getHessian().hessian([1.0])
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("product_func.xml"))
 study.add("prod", prod)
