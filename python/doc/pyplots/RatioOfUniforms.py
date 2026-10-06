@@ -18,7 +18,7 @@ size = 100000
 sample = ratioAlgo.getSample(size)
 
 ks_algo = ot.KernelSmoothing()
-ks_algo.setBoundaryCorrection(True)
+ks_algo.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks_algo.setLowerBound(-pi / 2.0)
 ks_algo.setUpperBound(pi / 2.0)
 ks_pdf = ks_algo.build(sample)
