@@ -95,6 +95,10 @@ public:
   /** Noise variance accessor */
   Scalar getNoiseStdDev() const;
 
+  /** Per-observation noise variances accessor (heteroscedastic likelihood) */
+  Point getNoiseVariances() const;
+  void setNoiseVariances(const Point & noiseVariances);
+
   /** optimal ELBO value */
   Scalar getOptimalELBO() const;
 
@@ -133,6 +137,9 @@ private:
 
   /** The noise standard deviation */
   Scalar noiseStdDev_ = 1.0;
+
+  /** The fixed per-observation noise variances (empty means homoscedastic) */
+  Point noiseVariances_;
 
   /** optimal ELBO value */
   Scalar optimalELBO_ = 0.0;

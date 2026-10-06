@@ -93,6 +93,10 @@ public:
   Scalar getNoiseStdDev() const;
   void setNoiseStdDev(const Scalar noiseStdDev);
 
+  /** Per-observation noise variances accessor (heteroscedastic likelihood) */
+  Point getNoiseVariances() const;
+  void setNoiseVariances(const Point & noiseVariances);
+
   /** Inducing points accessor */
   Sample getInducingPoints() const;
   void setInducingPoints(const Sample & inducingPoints);
@@ -125,8 +129,31 @@ protected:
   Point computeELBOGradient(const Point & parameters);
 
   // Compute the collapsed ELBO for the given inducing points and noise standard deviation
+  // When per-observation noise variances are set they take precedence over noiseStdDev
   Scalar computeELBOValue(const Sample & inducingPoints,
                           const Scalar noiseStdDev);
+
+  // Whether fixed per-observation noise variances are set
+  Bool hasNoiseVariances() const;
+
+  // Project the cross- and self-covariance adjoints onto the active covariance
+  // parameters and the inducing points. tightCoefficients holds the per-observation
+  // coefficient of k(x_i, x_i) from the trace regularization (zero when M == N).
+  void accumulateGradient(const Matrix & KfuBar,
+                          const Matrix & KuuBar,
+                          const Point & tightCoefficients,
+                          const Sample & inducingPoints,
+                          Point & covarianceGradient,
+                          Point & inducingPointsGradient) const;
+
+  // Compute the collapsed ELBO with fixed per-observation noise variances.
+  // crossFactor holds the whitened cross-covariance A = K_fu L_uu^{-T}.
+  Scalar computeHeteroscedasticELBOValue(const Sample & inducingPoints,
+                                        const Matrix & crossFactor,
+                                        const TriangularMatrix & whiteningFactor);
+
+  // Compute the gradient of the heteroscedastic collapsed ELBO
+  Point computeHeteroscedasticELBOGradient(const Point & parameters);
 
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
@@ -298,6 +325,9 @@ private:
 
   // The noise standard deviation
   Scalar noiseStdDev_;
+
+  // The fixed per-observation noise variances (empty means homoscedastic)
+  Point noiseVariances_;
 
   // The optimization algorithm used for the meta-parameters estimation
   OptimizationAlgorithm solver_;

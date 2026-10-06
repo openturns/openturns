@@ -69,6 +69,57 @@ def _numpy_posterior(X, Y, Z, sigma, cov):
     return m_w, S_ww
 
 
+def _hetero_variances():
+    return ot.Point([0.01, 0.04, 0.02, 0.09, 0.05, 0.16])
+
+
+def _numpy_elbo_hetero(X, Y, Z, variances, cov):
+    N, M = len(X), len(Z)
+    D = np.array(variances)
+    Kff = np.array([[cov.computeAsScalar(X[i], X[j]) for j in range(N)] for i in range(N)])
+    Kuu = np.array([[cov.computeAsScalar(Z[i], Z[j]) for j in range(M)] for i in range(M)])
+    Kfu = np.array([[cov.computeAsScalar(X[i], Z[j]) for j in range(M)] for i in range(N)])
+    Luu = np.linalg.cholesky(Kuu)
+    A = Kfu.dot(np.linalg.inv(Luu).T)
+    s = 1.0 / np.sqrt(D)
+    As = A * s[:, None]
+    Ys = Y * s
+    G = As.T.dot(As)
+    B = G + np.eye(M)
+    Lb = np.linalg.cholesky(B)
+    Atys = As.T.dot(Ys)
+    logdetB = 2.0 * np.sum(np.log(np.diag(Lb)))
+    w = np.linalg.solve(G, Atys)
+    u = np.linalg.solve(Lb, w)
+    yperp = Ys - As.dot(w)
+    quadratic = w.dot(w) - u.dot(u) + yperp.dot(yperp)
+    resid = np.maximum(np.diag(Kff) - np.sum(A * A, axis=1), 0.0)
+    log_term = 0.5 * np.sum(np.log1p(resid / D))
+    elbo = -0.5 * (
+        N * np.log(2.0 * np.pi)
+        + np.sum(np.log(D))
+        + logdetB
+        + quadratic
+    ) - log_term
+    return elbo
+
+
+def _numpy_posterior_hetero(X, Y, Z, variances, cov):
+    M = len(Z)
+    D = np.array(variances)
+    Kuu = np.array([[cov.computeAsScalar(Z[i], Z[j]) for j in range(M)] for i in range(M)])
+    Kfu = np.array([[cov.computeAsScalar(X[i], Z[j]) for j in range(M)] for i in range(len(X))])
+    Luu = np.linalg.cholesky(Kuu)
+    A = Kfu.dot(np.linalg.inv(Luu).T)
+    s = 1.0 / np.sqrt(D)
+    As = A * s[:, None]
+    Ys = Y * s
+    B = As.T.dot(As) + np.eye(M)
+    m_w = np.linalg.solve(B, As.T.dot(Ys))
+    S_ww = np.linalg.inv(B)
+    return m_w, S_ww
+
+
 # The collapsed ELBO with M=N and Z=X must equal the exact GP log marginal likelihood
 def test_elbo_matches_exact_log_likelihood():
     X, Y = _sample()
@@ -928,6 +979,291 @@ def test_resource_map_linear_algebra_hmat():
         )
 
 
+# Constant per-observation variances must reproduce the homoscedastic fit
+def test_heteroscedastic_constant_matches_homoscedastic():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:4]
+    sigma = 0.25
+    # homoscedastic reference
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseStdDev(sigma)
+    algo.setOptimizeNoiseStdDev(False)
+    algo.run()
+    reference = algo.getResult()
+    # heteroscedastic with constant variances
+    algo2 = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo2.setNoiseVariances(ot.Point([sigma * sigma] * X.getSize()))
+    assert algo2.getOptimizeNoiseStdDev() is False
+    algo2.run()
+    result = algo2.getResult()
+    ott.assert_almost_equal(
+        result.getOptimalELBO(), reference.getOptimalELBO(), 1e-8, 1e-9
+    )
+    ott.assert_almost_equal(
+        np.array(result.getPosteriorMean()),
+        np.array(reference.getPosteriorMean()),
+        1e-9,
+        1e-7,
+    )
+    ott.assert_almost_equal(
+        np.array(result.getPosteriorCovariance()),
+        np.array(reference.getPosteriorCovariance()),
+        1e-9,
+        1e-7,
+    )
+    x_test = ot.Point([1.5])
+    ott.assert_almost_equal(
+        result.getMetaModel()(x_test), reference.getMetaModel()(x_test), 1e-9, 1e-7
+    )
+    ott.assert_almost_equal(
+        result.getConditionalVariance(x_test),
+        reference.getConditionalVariance(x_test),
+        1e-9,
+        1e-7,
+    )
+    # the M=N case must agree as well
+    algo3 = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    algo3.setNoiseVariances(ot.Point([sigma * sigma] * X.getSize()))
+    algo3.run()
+    algo4 = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    algo4.setNoiseStdDev(sigma)
+    algo4.setOptimizeNoiseStdDev(False)
+    algo4.run()
+    ott.assert_almost_equal(
+        algo3.getResult().getOptimalELBO(),
+        algo4.getResult().getOptimalELBO(),
+        1e-8,
+        1e-9,
+    )
+
+
+# The heteroscedastic ELBO with M=N and Z=X must equal the exact GP log
+# marginal likelihood with diagonal noise
+def test_heteroscedastic_elbo_matches_exact():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    N = X.getSize()
+    Xn = np.array(X)
+    Yn = np.array(Y).ravel()
+    variances = _hetero_variances()
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    algo.setNoiseVariances(variances)
+    algo.run()
+    elbo = algo.getResult().getOptimalELBO()
+    Kff = np.array(
+        [[covarianceModel.computeAsScalar(Xn[i], Xn[j]) for j in range(N)] for i in range(N)]
+    )
+    Knp = Kff + np.diag(np.array(variances))
+    sign, logdet = np.linalg.slogdet(Knp)
+    assert sign > 0.0
+    exact = -0.5 * (
+        N * np.log(2.0 * np.pi)
+        + logdet
+        + Yn.dot(np.linalg.solve(Knp, Yn))
+    )
+    ott.assert_almost_equal(elbo, exact, 1e-6, 1e-9)
+
+
+# The heteroscedastic ELBO for M<N must match the reference formula
+def test_heteroscedastic_elbo_matches_reference_sparse():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:4]
+    variances = _hetero_variances()
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseVariances(variances)
+    algo.run()
+    elbo = algo.getResult().getOptimalELBO()
+    reference = _numpy_elbo_hetero(
+        np.array(X), np.array(Y).ravel(), np.array(Z), variances, covarianceModel
+    )
+    ott.assert_almost_equal(elbo, reference, 1e-6, 1e-8)
+
+
+# The heteroscedastic variational posterior must match the reference posterior
+def test_heteroscedastic_posterior_matches_reference():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    Z = X[0:4]
+    variances = _hetero_variances()
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseVariances(variances)
+    algo.run()
+    result = algo.getResult()
+    m_w, S_ww = _numpy_posterior_hetero(
+        np.array(X), np.array(Y).ravel(), np.array(Z), variances, covarianceModel
+    )
+    ott.assert_almost_equal(np.array(result.getPosteriorMean()), m_w, 1e-6, 1e-9)
+    ott.assert_almost_equal(np.array(result.getPosteriorCovariance()), S_ww, 1e-6, 1e-9)
+    # predictions and conditional variance must match the posterior moments
+    x_test = ot.Point([1.5])
+    kz = np.array(
+        [covarianceModel.computeAsScalar(x_test, Z[j]) for j in range(4)]
+    )
+    Luu = np.linalg.cholesky(
+        np.array(
+            [
+                [covarianceModel.computeAsScalar(Z[i], Z[j]) for j in range(4)]
+                for i in range(4)
+            ]
+        )
+    )
+    a = np.linalg.solve(Luu, kz)
+    mean = a.dot(m_w)
+    var = covarianceModel.computeAsScalar(x_test, x_test) - a.dot(a) + a.dot(S_ww).dot(a)
+    ott.assert_almost_equal(result.getMetaModel()(x_test), [float(mean)], 1e-6, 1e-9)
+    ott.assert_almost_equal(result.getConditionalVariance(x_test), float(var), 1e-6, 1e-9)
+
+
+# The analytic heteroscedastic ELBO gradient must match a centered finite difference
+def test_heteroscedastic_elbo_gradient():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setParameter([1.5, 2.0])
+    Z = X[0:3]
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, Z)
+    algo.setNoiseVariances(_hetero_variances())
+    algo.setOptimizeInducingPoints(True)
+    objective = algo.getObjectiveFunction()
+    parameter = ot.Point([1.5, 2.0])
+    for i in range(len(Z)):
+        parameter.add(Z[i][0])
+    # no noise parameter in the optimization vector with fixed variances
+    assert len(parameter) == objective.getInputDimension()
+    epsilon = 1e-5
+    for i in range(len(parameter)):
+        pointPlus = ot.Point(parameter)
+        pointMinus = ot.Point(parameter)
+        pointPlus[i] += epsilon
+        pointMinus[i] -= epsilon
+        fd = (objective(pointPlus)[0] - objective(pointMinus)[0])
+        fd /= (2.0 * epsilon)
+        analytic = objective.getGradient().gradient(parameter)[i, 0]
+        ott.assert_almost_equal(analytic, fd, 1e-3, 1e-4)
+    # same check when the number of inducing points equals the training size
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X)
+    algo.setNoiseVariances(_hetero_variances())
+    algo.setOptimizeInducingPoints(True)
+    objective = algo.getObjectiveFunction()
+    parameter = ot.Point([1.5, 2.0])
+    for i in range(len(X)):
+        parameter.add(X[i][0])
+    for i in range(len(parameter)):
+        pointPlus = ot.Point(parameter)
+        pointMinus = ot.Point(parameter)
+        pointPlus[i] += epsilon
+        pointMinus[i] -= epsilon
+        fd = (objective(pointPlus)[0] - objective(pointMinus)[0])
+        fd /= (2.0 * epsilon)
+        analytic = objective.getGradient().gradient(parameter)[i, 0]
+        ott.assert_almost_equal(analytic, fd, 1e-3, 1e-4)
+
+
+# setNoiseVariances must reject mismatched sizes and non-positive values
+def test_noise_variances_invalid():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setNoiseVariances(ot.Point([0.1, 0.2]))
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setNoiseVariances(ot.Point([0.1, 0.0, -0.2, 0.1, 0.1, 0.1]))
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setNoiseVariances(ot.Point([0.0] * X.getSize()))
+
+
+# Enabling the noise optimization with fixed variances must raise,
+# and clearing the variances must restore the homoscedastic likelihood
+def test_noise_variances_optimization_flag():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
+    algo.setNoiseVariances(_hetero_variances())
+    assert algo.getOptimizeNoiseStdDev() is False
+    ott.assert_almost_equal(algo.getNoiseVariances(), _hetero_variances(), 0, 0)
+    with ott.assert_raises((TypeError, RuntimeError)):
+        algo.setOptimizeNoiseStdDev(True)
+    algo.setNoiseVariances(ot.Point())
+    assert algo.getNoiseVariances().getSize() == 0
+
+
+# The optimization must improve the heteroscedastic ELBO
+def test_heteroscedastic_optimization_improves_elbo():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
+    algo.setNoiseVariances(_hetero_variances())
+    algo.run()
+    optimized_elbo = algo.getResult().getOptimalELBO()
+    ott.assert_almost_equal(
+        algo.getResult().getNoiseVariances(), _hetero_variances(), 0, 0
+    )
+    algo2 = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
+    algo2.setNoiseVariances(_hetero_variances())
+    algo2.setOptimizeParameters(False)
+    algo2.run()
+    fixed_elbo = algo2.getResult().getOptimalELBO()
+    assert optimized_elbo >= fixed_elbo, "optimization degrades the ELBO"
+
+
+# Save / load must preserve the heteroscedastic result through a Study
+def test_heteroscedastic_save_load():
+    X, Y = _sample()
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
+    algo.setNoiseVariances(_hetero_variances())
+    algo.run()
+    result = algo.getResult()
+    filename = "test_sparse_gp_hetero_result.xml"
+    study = ot.Study(filename)
+    study.add("result", result)
+    study.save()
+    study2 = ot.Study(filename)
+    study2.load()
+    result2 = SparseGaussianProcessFitterResult()
+    study2.fillObject("result", result2)
+    ott.assert_almost_equal(result.getOptimalELBO(), result2.getOptimalELBO(), 1e-10, 1e-10)
+    ott.assert_almost_equal(
+        result.getNoiseVariances(), result2.getNoiseVariances(), 1e-14, 1e-14
+    )
+    ott.assert_almost_equal(
+        result.getMetaModel()(ot.Point([1.5])),
+        result2.getMetaModel()(ot.Point([1.5])),
+        1e-10,
+        1e-10,
+    )
+    os.remove(filename)
+    # the fitter itself must round-trip as well
+    filename = "test_sparse_gp_hetero_fitter.xml"
+    study = ot.Study(filename)
+    study.add("algo", algo)
+    study.save()
+    study2 = ot.Study(filename)
+    study2.load()
+    algo2 = SparseGaussianProcessFitter()
+    study2.fillObject("algo", algo2)
+    ott.assert_almost_equal(
+        algo.getResult().getOptimalELBO(),
+        algo2.getResult().getOptimalELBO(),
+        1e-10,
+        1e-10,
+    )
+    ott.assert_almost_equal(
+        algo.getResult().getNoiseVariances(),
+        algo2.getResult().getNoiseVariances(),
+        1e-14,
+        1e-14,
+    )
+    assert algo2.getOptimizeNoiseStdDev() is False
+    os.remove(filename)
+
+
 if __name__ == "__main__":
     test_elbo_matches_exact_log_likelihood()
     test_elbo_matches_reference_for_sparse()
@@ -979,3 +1315,12 @@ if __name__ == "__main__":
     test_resource_map_default_optimization_algorithm_invalid()
     test_resource_map_optimization_normalization_disabled()
     test_resource_map_linear_algebra_hmat()
+    test_heteroscedastic_constant_matches_homoscedastic()
+    test_heteroscedastic_elbo_matches_exact()
+    test_heteroscedastic_elbo_matches_reference_sparse()
+    test_heteroscedastic_posterior_matches_reference()
+    test_heteroscedastic_elbo_gradient()
+    test_noise_variances_invalid()
+    test_noise_variances_optimization_flag()
+    test_heteroscedastic_optimization_improves_elbo()
+    test_heteroscedastic_save_load()
