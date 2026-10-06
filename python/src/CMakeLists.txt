@@ -600,6 +600,12 @@ ot_add_python_module(experimental experimental_module.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     SparseGaussianProcessFitterResult.i SparseGaussianProcessFitterResult_doc.i
+                     SparseGaussianProcessEvaluation.i SparseGaussianProcessEvaluation_doc.i
+                     SparseGaussianProcessGradient.i SparseGaussianProcessGradient_doc.i
+                     SparseGaussianProcessHessian.i SparseGaussianProcessHessian_doc.i
+                     SparseGaussianProcessFitter.i SparseGaussianProcessFitter_doc.i
+                     SparseGaussianProcessRegression.i SparseGaussianProcessRegression_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )
