@@ -1035,6 +1035,8 @@
   <SparseGaussianProcessFitter-DefaultNoiseStdDev               value_float="1.0e-3" />
   <SparseGaussianProcessFitter-DefaultNoiseStdDevLowerBound     value_float="1.0e-12" />
   <SparseGaussianProcessFitter-DefaultNoiseStdDevUpperBound     value_float="1.0e8" />
+  <SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound value_float="-30.0" />
+  <SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound value_float="30.0" />
   <SparseGaussianProcessFitter-LinearAlgebra                      value_str="LAPACK"  />
 
   <!-- OT::GaussianProcessRegressionCrossValidation parameters -->

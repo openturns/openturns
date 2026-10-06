@@ -34,6 +34,9 @@
  * Fixed per-observation noise variances for SparseGaussianProcessFitter and
    SparseGaussianProcessFitterResult (heteroscedastic likelihood with analytic
    ELBO and ELBO gradient, first step toward a latent variance process)
+ * Parametric log-variance function for SparseGaussianProcessFitter and
+   SparseGaussianProcessFitterResult (heteroscedastic likelihood with jointly
+   optimized function parameters and predictive variance)
 
 ==== New ResourceMap keys ====
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)

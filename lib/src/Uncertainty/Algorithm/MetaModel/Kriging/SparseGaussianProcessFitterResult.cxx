@@ -75,6 +75,7 @@ String SparseGaussianProcessFitterResult::__repr__() const
          << ", inducing points=" << inducingPoints_
          << ", noiseStdDev=" << noiseStdDev_
          << ", noiseVariancesSize=" << noiseVariances_.getSize()
+         << ", hasVarianceFunction=" << hasVarianceFunction_
          << ", optimal ELBO=" << optimalELBO_;
 }
 
@@ -163,6 +164,22 @@ void SparseGaussianProcessFitterResult::setNoiseVariances(const Point & noiseVar
   noiseVariances_ = noiseVariances;
 }
 
+/* Log-variance function accessor */
+Function SparseGaussianProcessFitterResult::getVarianceFunction() const
+{
+  return varianceFunction_;
+}
+
+void SparseGaussianProcessFitterResult::setVarianceFunction(const Function & varianceFunction)
+{
+  if (varianceFunction.getInputDimension() != getInputSample().getDimension())
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitterResult::setVarianceFunction, the log-variance function input dimension (" << varianceFunction.getInputDimension() << ") should match the input sample dimension (" << getInputSample().getDimension() << ")";
+  if (varianceFunction.getOutputDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitterResult::setVarianceFunction, the log-variance function should have output dimension 1, got " << varianceFunction.getOutputDimension();
+  varianceFunction_ = varianceFunction;
+  hasVarianceFunction_ = true;
+}
+
 /* optimal ELBO accessor */
 Scalar SparseGaussianProcessFitterResult::getOptimalELBO() const
 {
@@ -204,6 +221,26 @@ Point SparseGaussianProcessFitterResult::getConditionalVariance(const Sample & s
   return result;
 }
 
+/* Predictive variance accessor */
+Scalar SparseGaussianProcessFitterResult::getPredictiveVariance(const Point & point) const
+{
+  const Scalar conditionalVariance = getConditionalVariance(point);
+  if (hasVarianceFunction_)
+    return conditionalVariance + std::exp(varianceFunction_(point)[0]);
+  if (noiseVariances_.getSize() != 0)
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitterResult::getPredictiveVariance, the predictive variance is undefined away from the training data with fixed per-observation noise variances, set a log-variance function instead";
+  return conditionalVariance + noiseStdDev_ * noiseStdDev_;
+}
+
+Point SparseGaussianProcessFitterResult::getPredictiveVariance(const Sample & sample) const
+{
+  const UnsignedInteger size = sample.getSize();
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result[i] = getPredictiveVariance(sample[i]);
+  return result;
+}
+
 /* Method save() stores the object through the StorageManager */
 void SparseGaussianProcessFitterResult::save(Advocate & adv) const
 {
@@ -217,6 +254,8 @@ void SparseGaussianProcessFitterResult::save(Advocate & adv) const
   adv.saveAttribute("posteriorCovariance_", posteriorCovariance_);
   adv.saveAttribute("noiseStdDev_", noiseStdDev_);
   adv.saveAttribute("noiseVariances_", noiseVariances_);
+  adv.saveAttribute("varianceFunction_", varianceFunction_);
+  adv.saveAttribute("hasVarianceFunction_", hasVarianceFunction_);
   adv.saveAttribute("optimalELBO_", optimalELBO_);
 }
 
@@ -241,6 +280,10 @@ void SparseGaussianProcessFitterResult::load(Advocate & adv)
   adv.loadAttribute("noiseStdDev_", noiseStdDev_);
   if (adv.hasAttribute("noiseVariances_"))
     adv.loadAttribute("noiseVariances_", noiseVariances_);
+  if (adv.hasAttribute("varianceFunction_"))
+    adv.loadAttribute("varianceFunction_", varianceFunction_);
+  if (adv.hasAttribute("hasVarianceFunction_"))
+    adv.loadAttribute("hasVarianceFunction_", hasVarianceFunction_);
   adv.loadAttribute("optimalELBO_", optimalELBO_);
 }
 

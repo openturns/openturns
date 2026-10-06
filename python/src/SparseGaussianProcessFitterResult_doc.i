@@ -7,7 +7,8 @@ R"RAW(Structure which contains the results of the sparse Gaussian process fittin
 
 This structure stores the results of the variational inference of a sparse Gaussian process:
 the inducing points, the noise standard deviation (or the fixed per-observation noise
-variances when a heteroscedastic likelihood is used), the optimal ELBO value as well as the
+variances, or the log-variance function when a parametric heteroscedastic likelihood is
+used), the optimal ELBO value as well as the
 by-products of the collapsed variational bound, namely the whitening factor, the variational
 posterior mean and the variational posterior covariance in the whitened parametrisation.
 Refer to :class:`~openturns.experimental.SparseGaussianProcessFitter` for the mathematical details.
@@ -106,7 +107,49 @@ Returns
 -------
 noiseVariances : :class:`~openturns.Point`
     The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, or an empty
-    point when the homoscedastic likelihood is used.)RAW"
+    point when the homoscedastic likelihood or a log-variance function is used.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitterResult::getVarianceFunction
+R"RAW(Get the log-variance function.
+
+Returns
+-------
+varianceFunction : :class:`~openturns.Function`
+    The log-variance function :math:`g`, such that the noise variance at
+    :math:`\vect{x}` is :math:`\sigma^2(\vect{x}) = \exp(g(\vect{x}))`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitterResult::setVarianceFunction
+R"RAW(Set the log-variance function.
+
+Parameters
+----------
+varianceFunction : :class:`~openturns.Function`
+    The log-variance function :math:`g: \Rset^\inputDim \mapsto \Rset`, such that the
+    noise variance at :math:`\vect{x}` is :math:`\sigma^2(\vect{x}) = \exp(g(\vect{x}))`.
+    The function must have output dimension 1.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitterResult::getPredictiveVariance
+R"RAW(Get the predictive variance of the sparse Gaussian process.
+
+Parameters
+----------
+x : sequence of float, or :class:`~openturns.Sample`
+    The point(s) where to compute the predictive variance.
+
+Returns
+-------
+variance : float, or :class:`~openturns.Point`
+    The predictive variance :math:`\Var(Y(\vect{x}) \mid \vect{y})` of the observed output at the given point(s):
+    the conditional variance of the latent process plus the noise variance, namely the
+    scalar noise variance for the homoscedastic likelihood and :math:`\exp(g(\vect{x}))`
+    for the log-variance function likelihood. It is undefined away from the training
+    data with fixed per-observation noise variances.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -142,7 +185,7 @@ x : sequence of float, or :class:`~openturns.Sample`
 Returns
 -------
 variance : float, or :class:`~openturns.Point`
-    The conditional variance :math:`\Var(Y(\vect{x}) \mid \vect{y})` at the given point(s).)RAW"
+    The conditional variance :math:`\Var(f(\vect{x}) \mid \vect{y})` of the latent process at the given point(s).)RAW"
 
 // ---------------------------------------------------------------------
 

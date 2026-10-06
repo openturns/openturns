@@ -1687,6 +1687,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SparseGaussianProcessFitter-DefaultNoiseStdDev", 1.0e-3);
   addAsScalar("SparseGaussianProcessFitter-DefaultNoiseStdDevLowerBound", 1.0e-12);
   addAsScalar("SparseGaussianProcessFitter-DefaultNoiseStdDevUpperBound", 1.0e8);
+  addAsScalar("SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound", -30.0);
+  addAsScalar("SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound", 30.0);
   addAsString("SparseGaussianProcessFitter-LinearAlgebra", "LAPACK", {"LAPACK", "HMAT"});
 
   // GaussianProcessRegressionCrossValidation- parameters //
