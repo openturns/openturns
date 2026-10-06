@@ -214,6 +214,10 @@ Bibliography
     *Fast calculation of Gaussian Process Multiple-Fold Cross-Validation Residuals and their Covariances*,
     Journal of Computational and Graphical Statistics, 34:1, 1-14.
     `pdf <https://www.tandfonline.com/doi/pdf/10.1080/10618600.2024.2353633>`__
+.. [gal2014] Gal, Y. & van der Wilk, M. *Variational inference in sparse Gaussian process
+    regression and latent variable models - a gentle tutorial*,
+    arXiv:1402.1412 [stat.ML], 2014.
+    `pdf <https://arxiv.org/pdf/1402.1412>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -338,6 +342,10 @@ Bibliography
     *Metamodel-based sensitivity analysis: polynomial chaos expansions and
     Gaussian processes.* In Handbook of uncertainty quantification
     1289-1325. Springer, Cham.
+.. [leibfried2020] Leibfried, F., Dutordoir, V., John, S. T. & Durrande, N.
+    *A tutorial on sparse Gaussian processes and variational inference*,
+    arXiv:2012.13962 [cs.LG], 2020.
+    `pdf <https://arxiv.org/pdf/2012.13962>`__
 .. [lecuyer2005] L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized
     Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds)
     Modeling Uncertainty. International Series in Operations Research &
@@ -577,6 +585,13 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [titsias2009] Titsias, M. K. *Variational learning of inducing variables in sparse Gaussian processes*,
+    Proceedings of the 12th International Conference on Artificial Intelligence and Statistics (AISTATS),
+    pp. 567-574, 2009.
+    `pdf <http://proceedings.mlr.press/v5/titsias09a/titsias09a.pdf>`__
+.. [titsias2025] Titsias, M. K. *New bounds for sparse variational Gaussian processes*,
+    arXiv:2502.08730 [cs.LG], 2025.
+    `pdf <https://arxiv.org/pdf/2502.08730>`__
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*

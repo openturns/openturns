@@ -186,6 +186,18 @@ Matrix KroneckerCovarianceModel::partialGradient(const Point &s, const Point &t)
   return gradient;
 }
 
+/** Hessian wrt s, for the first output component */
+SymmetricMatrix KroneckerCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "KroneckerCovarianceModel::partialHessian, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
+  if (t.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "KroneckerCovarianceModel::partialHessian, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
+  // C_00(s, t) = outputCovariance_(0, 0) * rho(s, t)
+  return rho_.partialHessian(s, t) * outputCovariance_(0, 0);
+}
+
 /* Is it safe to compute discretize in parallel? */
 Bool KroneckerCovarianceModel::isParallel() const
 {
