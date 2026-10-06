@@ -76,6 +76,10 @@ public:
   /** Gradient */
   Matrix partialGradient(const Point & s, const Point & t) const override;
 
+  /** Hessian wrt s */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
   /** Collection accessor */
   CovarianceModelCollection getCollection() const;
 

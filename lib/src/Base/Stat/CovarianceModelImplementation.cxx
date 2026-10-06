@@ -30,6 +30,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TBBImplementation.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -314,6 +315,44 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   return gradient;
 }
 
+/* Hessian */
+SymmetricMatrix CovarianceModelImplementation::partialHessian (const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const Scalar valueST = (outputDimension_ == 1) ? computeAsScalar(s, t) : operator()(s, t)(0, 0);
+  SymmetricMatrix hessian(inputDimension_);
+  // Optimal epsilon for a central second finite difference
+  const Scalar epsilon = std::pow(SpecFunc::ScalarEpsilon, 0.25);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    Point currentPoint(s);
+    // Diagonal term
+    currentPoint[i] += epsilon;
+    const Scalar valuePlus = (outputDimension_ == 1) ? computeAsScalar(currentPoint, t) : operator()(currentPoint, t)(0, 0);
+    currentPoint[i] -= 2.0 * epsilon;
+    const Scalar valueMinus = (outputDimension_ == 1) ? computeAsScalar(currentPoint, t) : operator()(currentPoint, t)(0, 0);
+    hessian(i, i) = (valuePlus - 2.0 * valueST + valueMinus) / (epsilon * epsilon);
+    // Cross terms
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      currentPoint = s;
+      currentPoint[i] += epsilon;
+      currentPoint[j] += epsilon;
+      const Scalar valuePP = (outputDimension_ == 1) ? computeAsScalar(currentPoint, t) : operator()(currentPoint, t)(0, 0);
+      currentPoint[j] -= 2.0 * epsilon;
+      const Scalar valuePM = (outputDimension_ == 1) ? computeAsScalar(currentPoint, t) : operator()(currentPoint, t)(0, 0);
+      currentPoint[i] -= 2.0 * epsilon;
+      const Scalar valueMM = (outputDimension_ == 1) ? computeAsScalar(currentPoint, t) : operator()(currentPoint, t)(0, 0);
+      currentPoint[j] += 2.0 * epsilon;
+      const Scalar valueMP = (outputDimension_ == 1) ? computeAsScalar(currentPoint, t) : operator()(currentPoint, t)(0, 0);
+      hessian(i, j) = (valuePP - valuePM - valueMP + valueMM) / (4.0 * epsilon * epsilon);
+    }
+  }
+  return hessian;
+}
+
 /* Gradient */
 Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
     const Point & t) const
@@ -358,6 +397,25 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
       }
     }
   }
+  return gradient;
+}
+
+/* Filter a gradient computed wrt all the full parameters down to the active ones */
+Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Point & fullGradient) const
+{
+  return filterActiveParameterGradient(Matrix(fullGradient.getSize(), 1, fullGradient));
+}
+
+Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Matrix & fullGradient) const
+{
+  const UnsignedInteger activeSize = activeParameter_.getSize();
+  const UnsignedInteger fullParameterSize = getFullParameter().getSize();
+  if (fullGradient.getNbRows() < fullParameterSize)
+    throw InvalidArgumentException(HERE) << "Error: the fullGradient matrix has " << fullGradient.getNbRows() << " rows, but the full parameter set requires " << fullParameterSize << " rows.";
+  Matrix gradient(activeSize, fullGradient.getNbColumns());
+  for (UnsignedInteger j = 0; j < fullGradient.getNbColumns(); ++j)
+    for (UnsignedInteger i = 0; i < activeSize; ++i)
+      gradient(i, j) = fullGradient(activeParameter_[i], j);
   return gradient;
 }
 

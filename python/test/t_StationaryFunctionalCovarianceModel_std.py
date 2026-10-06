@@ -40,6 +40,26 @@ X = ot.Uniform(1, 2).getSample(10)
 C = cov.discretize(X)
 assert C.getNbRows() == 10, "wrong size"
 
+# parameterGradient wrt the scale must use |tau| like partialGradient/partialHessian:
+# swapping s and t must leave the scale derivative unchanged
+rho_even = ot.SymbolicFunction(["tau"], ["exp(-tau*tau)"])
+cov_even = ot.StationaryFunctionalCovarianceModel([2.0], [1.5], rho_even)
+cov_even.setActiveParameter([0])
+s = ot.Point([1.0])
+t = ot.Point([3.0])
+grad_st = cov_even.parameterGradient(s, t)[0, 0]
+grad_ts = cov_even.parameterGradient(t, s)[0, 0]
+print("parameterGradient(s, t)=", grad_st)
+print("parameterGradient(t, s)=", grad_ts)
+ott.assert_almost_equal(grad_st, grad_ts, 1e-12, 1e-12)
+assert grad_st > 0.0, "scale derivative must be positive for tau != 0"
+# check against a centered finite difference on the scale
+h = 1e-6
+cov_plus = ot.StationaryFunctionalCovarianceModel([2.0 + h], [1.5], rho_even)
+cov_minus = ot.StationaryFunctionalCovarianceModel([2.0 - h], [1.5], rho_even)
+fd = (cov_plus.computeAsScalar(s, t) - cov_minus.computeAsScalar(s, t)) / (2.0 * h)
+ott.assert_almost_equal(grad_st, fd, 1e-6, 1e-6)
+
 # thread-safety test
 for i in range(1000):
 
