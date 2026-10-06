@@ -143,30 +143,6 @@ public:
     return 1;
   }
 
-  Description getInputDescription() const override
-  {
-    return Description(1, "m");
-  }
-
-  Description getOutputDescription() const override
-  {
-    return Description(1, "LogLikelihoodObjective");
-  }
-
-  String __repr__() const override
-  {
-    OSS oss;
-    oss << "LogLikelihoodObjective(" << learningSamples_.__str__() << ", " << validationSamples_.__str__() << ")";
-    return oss;
-  }
-
-  String __str__(const String & ) const override
-  {
-    OSS oss;
-    oss << "LogLikelihoodObjective(" << learningSamples_.__str__() << ", " << validationSamples_.__str__() << ")";
-    return oss;
-  }
-
 private:
   const Collection<Sample> & learningSamples_;
   const Collection<Sample> & validationSamples_;
@@ -233,30 +209,6 @@ public:
   UnsignedInteger getOutputDimension() const override
   {
     return 1;
-  }
-
-  Description getInputDescription() const override
-  {
-    return Description(1, "m");
-  }
-
-  Description getOutputDescription() const override
-  {
-    return Description(1, "PenalizedCsiszarDivergenceObjective");
-  }
-
-  String __repr__() const override
-  {
-    OSS oss;
-    oss << "PenalizedCsiszarDivergenceObjective(" << sample_.__str__() << ", " << objective_.__str__() << ")";
-    return oss;
-  }
-
-  String __str__(const String & ) const override
-  {
-    OSS oss;
-    oss << "PenalizedCsiszarDivergenceObjective(" << sample_.__str__() << ", " << objective_.__str__() << ")";
-    return oss;
   }
 
 private:

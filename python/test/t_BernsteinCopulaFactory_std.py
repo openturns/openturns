@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
@@ -64,3 +65,22 @@ for i, ref_copula in enumerate(coll):
     print("Max. error=%.5f" % max_error)
     check_bernstein_copula(est_copula)
     print("")
+
+# Test the build method dispatch for all criteria
+factory = ot.BernsteinCopulaFactory()
+small_sample = ot.GumbelCopula(3.0).getSample(30)
+print("Default build=", factory.build(small_sample).getClassName())
+print("AMISE build=", factory.build(small_sample, "AMISE").getClassName())
+print(
+    "LogLikelihood build=",
+    factory.build(small_sample, "LogLikelihood").getClassName(),
+)
+f = ot.SymbolicFunction("t", "-log(t)")
+m_csiszar = factory.build(
+    small_sample, "PenalizedCsiszarDivergence", f
+).getClassName()
+print("PenalizedCsiszarDivergence build=", m_csiszar)
+with ott.assert_raises(TypeError):
+    factory.build(small_sample, "UnknownMethod")
+with ott.assert_raises(ValueError):
+    factory.build(small_sample, 0)
