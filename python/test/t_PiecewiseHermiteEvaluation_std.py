@@ -68,3 +68,102 @@ for x in [0.0, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0]:
     d = eval_2d.derivate([x])
     d_ref = [2 * x, 3 * x**2]
     ott.assert_almost_equal(d, d_ref, 1e-14, 0.0)
+
+# Alternate ctor with Sample values, accessors, comparison, setters
+locationsH = [0.0, 1.0, 2.0]
+valuesH = [[0.0], [1.0], [8.0]]
+derivativesH = [[0.0], [2.0], [8.0]]
+evaluationH = ot.PiecewiseHermiteEvaluation(
+    locationsH, valuesH, derivativesH
+)
+assert evaluationH.getInputDimension() == 1
+assert evaluationH.getOutputDimension() == 1
+assert list(evaluationH.getLocations()) == locationsH
+ott.assert_almost_equal(evaluationH.getValues(), valuesH, 1e-14, 1e-14)
+ott.assert_almost_equal(
+    evaluationH.getDerivatives(), derivativesH, 1e-14, 1e-14
+)
+assert evaluationH.getEnableExtrapolation()
+ott.assert_almost_equal(evaluationH([0.5]), [0.25], 1e-14, 1e-14)
+ott.assert_almost_equal(
+    evaluationH([[0.5], [1.5]]), [[0.25], [3.75]], 1e-14, 1e-14
+)
+ott.assert_almost_equal(evaluationH.derivate([0.5]), [1.0], 1e-12, 1e-12)
+evaluationH.setEnableExtrapolation(True)
+ott.assert_almost_equal(evaluationH([-1.0]), [0.0], 1e-14, 1e-14)
+ott.assert_almost_equal(evaluationH.derivate([-1.0]), [0.0], 1e-14, 1e-14)
+ott.assert_almost_equal(
+    evaluationH([[10.0]]), [[8.0]], 1e-14, 1e-14
+)
+evaluationH.setEnableExtrapolation(False)
+assert not evaluationH.getEnableExtrapolation()
+_ = repr(evaluationH)
+_ = str(evaluationH)
+assert evaluationH == evaluationH
+assert evaluationH != evaluation_der
+_ = evaluationH.getCallsNumber()
+with ott.assert_raises(Exception):
+    evaluationH([1.0, 2.0])
+with ott.assert_raises(Exception):
+    evaluationH([[1.0, 2.0]])
+with ott.assert_raises(Exception):
+    evaluationH.derivate([1.0, 2.0])
+with ott.assert_raises(Exception):
+    evaluationH([-1.0])
+with ott.assert_raises(Exception):
+    evaluationH([5.0])
+with ott.assert_raises(Exception):
+    evaluationH([[5.0]])
+with ott.assert_raises(Exception):
+    evaluationH([[-1.0]])
+with ott.assert_raises(Exception):
+    evaluationH.derivate([-1.0])
+with ott.assert_raises(Exception):
+    evaluationH.derivate([5.0])
+with ott.assert_raises(Exception):
+    ot.PiecewiseHermiteEvaluation([0.0], [1.0, 2.0], [1.0])
+with ott.assert_raises(Exception):
+    ot.PiecewiseHermiteEvaluation([0.0, 0.0], [1.0, 1.0], [0.0, 0.0])
+with ott.assert_raises(Exception):
+    ot.PiecewiseHermiteEvaluation(
+        [0.0, 1.0], [[1.0], [2.0]], [[1.0], [2.0], [3.0]]
+    )
+with ott.assert_raises(Exception):
+    evaluationH.setDerivatives([])
+with ott.assert_raises(Exception):
+    evaluationH.setDerivatives([[1.0], [2.0]])
+with ott.assert_raises(Exception):
+    evaluationH.setLocations([0.0])
+with ott.assert_raises(Exception):
+    evaluationH.setLocations([0.0, 0.0, 1.0])
+with ott.assert_raises(Exception):
+    evaluationH.setValues([[1.0]])
+with ott.assert_raises(Exception):
+    evaluationH.setLocationsValuesAndDerivatives([], [[]], [[]])
+with ott.assert_raises(Exception):
+    evaluationH.setLocationsValuesAndDerivatives(
+        [0.0, 1.0], [[1.0], [2.0]], [[1.0, 2.0], [3.0, 4.0]]
+    )
+# setLocations reorders values and derivatives along sorted locations
+evaluationH.setLocations([2.0, 0.0, 1.0])
+assert list(evaluationH.getLocations()) == [0.0, 1.0, 2.0]
+ott.assert_almost_equal(
+    evaluationH.getValues(), [[1.0], [8.0], [0.0]], 1e-14, 1e-14
+)
+ott.assert_almost_equal(
+    evaluationH.getDerivatives(), [[2.0], [8.0], [0.0]], 1e-14, 1e-14
+)
+evaluationH.setValues([[1.0], [8.0], [0.0]])
+evaluationH.setDerivatives([[2.0], [8.0], [0.0]])
+evaluationH.setLocationsValuesAndDerivatives(
+    [0.0, 1.0], [[1.0], [2.0]], [[1.0], [1.0]]
+)
+assert list(evaluationH.getLocations()) == [0.0, 1.0]
+ott.assert_almost_equal(evaluationH([0.5]), [1.5], 1e-14, 1e-14)
+# Single-location shortcut returns the stored value everywhere
+singleH = ot.PiecewiseHermiteEvaluation([1.0], [2.0], [3.0])
+ott.assert_almost_equal(singleH([5.0]), [2.0], 1e-14, 1e-14)
+ott.assert_almost_equal(
+    singleH([[0.0], [5.0]]), [[2.0], [2.0]], 1e-14, 1e-14
+)
+ott.assert_almost_equal(singleH.derivate([0.5]), [0.0], 1e-14, 1e-14)
