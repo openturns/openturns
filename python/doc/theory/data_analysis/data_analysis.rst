@@ -54,6 +54,7 @@ Analysis of the goodness of fit of a parametric model
     kolmogorov_test
     cramer_vonmises_test
     anderson_darling_test
+    copula_test
     aic
     bic
 

@@ -202,6 +202,8 @@ Goodness-of-fit metrics & tests
     FittingTest.BIC
     FittingTest.ChiSquared
     FittingTest.ComputeKolmogorovStatistics
+    FittingTest.CopulaCramerVonMises
+    FittingTest.CopulaKolmogorov
     FittingTest.Kolmogorov
     FittingTest.Lilliefors
     NormalityTest.AndersonDarlingNormal

@@ -141,6 +141,28 @@ OT_API TestResult Lilliefors(const Sample & sample,
 OT_API Scalar ComputeKolmogorovStatistics(const Sample & sample,
     const Distribution & distribution);
 
+/** Copula Cramer-von Mises goodness-of-fit test for fully specified copula */
+OT_API TestResult CopulaCramerVonMises(const Sample & sample,
+                                       const Distribution & distribution,
+                                       const Scalar level = 0.05);
+
+/** Copula Cramer-von Mises goodness-of-fit test with estimated copula */
+OT_API TestResult CopulaCramerVonMises(const Sample & sample,
+                                       const DistributionFactory & factory,
+                                       Distribution & estimatedDistribution,
+                                       const Scalar level = 0.05);
+
+/** Copula Kolmogorov goodness-of-fit test for fully specified copula */
+OT_API TestResult CopulaKolmogorov(const Sample & sample,
+                                   const Distribution & distribution,
+                                   const Scalar level = 0.05);
+
+/** Copula Kolmogorov goodness-of-fit test with estimated copula */
+OT_API TestResult CopulaKolmogorov(const Sample & sample,
+                                   const DistributionFactory & factory,
+                                   Distribution & estimatedDistribution,
+                                   const Scalar level = 0.05);
+
 /** ChiSquared fitting test for discrete distributions */
 OT_API TestResult ChiSquared(const Sample & sample,
                              const Distribution & distribution,

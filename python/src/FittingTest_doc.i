@@ -563,6 +563,132 @@ Normal(mu = -0.0944924, sigma = 0.989808)"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::FittingTest::CopulaCramerVonMises
+R"RAW(Perform a Cramer-von Mises goodness-of-fit test for a copula.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample of dimension strictly greater than 1.
+    The test is rank-based, so the sample can either be a sample from
+    the copula (values in :math:`[0, 1]^\inputDim`) or a raw observations sample:
+    pseudo-observations are computed internally from the ranks.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested copula (:meth:`~openturns.Distribution.isCopula` must be true,
+    the factory must build a copula).
+level : float, :math:`0 < \alpha < 1`, optional (default level = 0.05).
+    Risk of committing a Type I error, that is an incorrect rejection
+    of a true null hypothesis.
+
+Returns
+-------
+fitted_dist : :class:`~openturns.Distribution`
+    Estimated copula (if model is of type :class:`~openturns.DistributionFactory`).
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Notes
+-----
+Refer to :any:`copula_test` for notations.
+
+Given a copula :math:`C_{\vect{\theta}_n}` (fully specified, or estimated
+with the given factory), the Cramer-von Mises statistic is
+
+.. math::
+    S_n = \sum_{i=1}^n \left[C_n(\hat{\vect{U}}_i)
+        - C_{\vect{\theta}_n}(\hat{\vect{U}}_i)\right]^2.
+
+Large values of :math:`S_n` lead to rejection of the null hypothesis.
+The p-value is estimated with a parametric bootstrap, see :any:`copula_test`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``FittingTest-CopulaMinimumSamplingSize`` (``UnsignedInteger``, default: ``10``): minimum number of bootstrap replications
+- ``FittingTest-CopulaMaximumSamplingSize`` (``UnsignedInteger``, default: ``1000``): maximum number of bootstrap replications
+- ``FittingTest-CopulaPrecision`` (``Scalar``, default: ``0.01``): target standard deviation of the estimated p-value
+
+See Also
+--------
+openturns.FittingTest.CopulaKolmogorov
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> copula = ot.GumbelCopula(3.0)
+>>> sample = copula.getSample(100)
+>>> ot.ResourceMap.SetAsUnsignedInteger('FittingTest-CopulaMaximumSamplingSize', 100)
+>>> test_result = ot.FittingTest.CopulaCramerVonMises(sample, copula)
+>>> test_result.getBinaryQualityMeasure()
+True
+>>> ot.ResourceMap.Reset()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::CopulaKolmogorov
+R"RAW(Perform a Kolmogorov-Smirnov goodness-of-fit test for a copula.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample of dimension strictly greater than 1.
+    The test is rank-based, so the sample can either be a sample from
+    the copula (values in :math:`[0, 1]^\inputDim`) or a raw observations sample:
+    pseudo-observations are computed internally from the ranks.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested copula (:meth:`~openturns.Distribution.isCopula` must be true,
+    the factory must build a copula).
+level : float, :math:`0 < \alpha < 1`, optional (default level = 0.05).
+    Risk of committing a Type I error, that is an incorrect rejection
+    of a true null hypothesis.
+
+Returns
+-------
+fitted_dist : :class:`~openturns.Distribution`
+    Estimated copula (if model is of type :class:`~openturns.DistributionFactory`).
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Notes
+-----
+Refer to :any:`copula_test` for notations.
+
+With the notations of :any:`copula_test`,
+the Kolmogorov-Smirnov statistic is
+
+.. math::
+    T_n = \max_{i=1, \dots, n} \left|C_n(\hat{\vect{U}}_i)
+        - C_{\vect{\theta}_n}(\hat{\vect{U}}_i)\right|.
+
+Large values of :math:`T_n` lead to rejection of the null hypothesis.
+The p-value is estimated with a parametric bootstrap, see :any:`copula_test`.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``FittingTest-CopulaMinimumSamplingSize`` (``UnsignedInteger``, default: ``10``): minimum number of bootstrap replications
+- ``FittingTest-CopulaMaximumSamplingSize`` (``UnsignedInteger``, default: ``1000``): maximum number of bootstrap replications
+- ``FittingTest-CopulaPrecision`` (``Scalar``, default: ``0.01``): target standard deviation of the estimated p-value
+
+See Also
+--------
+openturns.FittingTest.CopulaCramerVonMises
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> copula = ot.GumbelCopula(3.0)
+>>> sample = copula.getSample(100)
+>>> ot.ResourceMap.SetAsUnsignedInteger('FittingTest-CopulaMaximumSamplingSize', 100)
+>>> test_result = ot.FittingTest.CopulaKolmogorov(sample, copula)
+>>> test_result.getBinaryQualityMeasure()
+True
+>>> ot.ResourceMap.Reset()
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::FittingTest::Lilliefors
 R"RAW(Perform a Lilliefors goodness-of-fit test for 1-d continuous distributions.
 

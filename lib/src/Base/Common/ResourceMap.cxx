@@ -1904,6 +1904,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount", 5);
   addAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize", 10);
   addAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100000);
+  addAsScalar("FittingTest-CopulaPrecision", 0.01);
+  addAsUnsignedInteger("FittingTest-CopulaMinimumSamplingSize", 10);
+  addAsUnsignedInteger("FittingTest-CopulaMaximumSamplingSize", 1000);
 
   // PenalizedLeastSquaresAlgorithm parameters //
   addAsBool("PenalizedLeastSquaresAlgorithm-UseNormal", false);
