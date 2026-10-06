@@ -229,7 +229,7 @@ See the effect of the boundary correction:
 >>> sample = ot.Exponential(1.0).getSample(1000)
 >>> smoother = ot.KernelSmoothing()
 >>> fittedDistNoCorr = smoother.build(sample)
->>> smoother.setBoundaryCorrection(True)
+>>> smoother.setBoundingOption(ot.KernelSmoothing.BOTH)
 >>> fittedDistWithCorr = smoother.build(sample)
 
 Compare the PDFs:
@@ -262,48 +262,6 @@ kernel : :class:`~openturns.Distribution`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KernelSmoothing::getBoundaryCorrection
-"Accessor to the boundary correction flag.
-
-Returns
--------
-boundaryCorrection : bool
-    Flag to tell if the boundary correction is activated.
-
-Notes
------
-This treatment is available in dimension 1 only."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KernelSmoothing::setBoundaryCorrection
-"Accessor to the boundary correction flag.
-
-Parameters
-----------
-boundaryCorrection : bool
-    Activates the boundary correction using the mirroring technique.
-
-Notes
------
-This treatment is available in dimension 1 only. See [jones1993]_ to get more details.
-The *reflection* or *mirroring* method
-is used: the boundaries are automatically detected from the sample
-(with the :meth:`Sample.getMin` and :meth:`Sample.getMax` functions) and the kernel smoothed distribution
-is corrected in the boundary areas to remain within the boundaries,
-according to the mirroring technique:
-
-- the Scott bandwidth is evaluated from the sample: *h*
-- two sub-samples are extracted from the initial sample,
-  containing all the points within the range :math:`[min, min + h[` and  :math:`]max-h, max]`,
-- both sub-samples are transformed into their symmetric samples with respect their respective boundary:
-  its results two samples within the range :math:`]min-h, min]` and :math:`[max, max+h[`,
-- a kernel smoothed PDF is built from the new sample composed with
-  the initial one and the two new ones, with the previous bandwidth *h*,
-- this last kernel smoothed PDF is truncated within the initial range :math:`[min, max]` (conditional PDF)."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::KernelSmoothing::setBoundingOption
 "Accessor to the boundary correction option.
 
@@ -323,7 +281,36 @@ The possible values for the bounding option are:
 
 This treatment is available in dimension 1 only. Each bound can be defined by the user or computed
 automatically from the sample, see :meth:`setLowerBound`, :meth:`setUpperBound`,
-:meth:`setAutomaticLowerBound`, :meth:`setAutomaticUpperBound`."
+:meth:`setAutomaticLowerBound`, :meth:`setAutomaticUpperBound`.
+
+The *reflection* or *mirroring* method is used, see [jones1993]_ for more details.
+By default the bounds are automatically detected from the sample
+(with the :meth:`Sample.getMin` and :meth:`Sample.getMax` functions).
+The kernel smoothed distribution is corrected in the boundary areas to remain
+within the selected bounds, according to the mirroring technique, with
+:math:`bound_L` and :math:`bound_U` denoting the configured lower and upper bounds:
+
+- the bandwidth is evaluated from the sample: *h*
+- sub-samples are extracted from the initial sample,
+  containing all the points within the range :math:`[bound_L, bound_L + h[`
+  and/or :math:`]bound_U - h, bound_U]`, depending on the selected bounds,
+- these sub-samples are transformed into their symmetric samples with respect to their respective bound:
+  it results in samples within the range :math:`]bound_L - h, bound_L]`
+  and/or :math:`[bound_U, bound_U + h[`,
+- a kernel smoothed PDF is built from the new sample composed of
+  the initial one and the mirrored ones, with the previous bandwidth *h*,
+- this last kernel smoothed PDF is truncated to the selected bounds
+  (conditional PDF)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::getBoundingOption
+"Accessor to the boundary correction option.
+
+Returns
+-------
+boundingOption : int
+    The boundary correction option, see :meth:`setBoundingOption` for details."
 
 // ---------------------------------------------------------------------
 

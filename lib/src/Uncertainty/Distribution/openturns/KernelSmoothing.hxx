@@ -88,12 +88,14 @@ public:
   /** Kernel accessor */
   Distribution getKernel() const;
 
-  /** Boundary correction accessor, shortcut for setBoundingOption(NONE) or setBoundingOption(BOTH) */
+  /** Boundary correction accessor, shortcut for setBoundingOption(NONE) or setBoundingOption(BOTH) @deprecated use setBoundingOption instead */
   void setBoundaryCorrection(const Bool boundaryCorrection);
+  /** @deprecated use getBoundingOption instead */
   Bool getBoundaryCorrection() const;
 
-  /** Boundary correction accessor */
+  /** Bounding option accessors */
   void setBoundingOption(const BoundingOption boundingOption);
+  BoundingOption getBoundingOption() const;
 
   /** Boundary accessor */
   void setLowerBound(const Scalar lowerBound);
