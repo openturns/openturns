@@ -60,19 +60,33 @@ to :math:`X` are obtained from those of :math:`Z` by the substitution
      - Recurrence coefficients :math:`(a_n, b_n, c_n)`
    * - Hermite
      - Normal :math:`\cN(0,1)`
-     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{1}{\sqrt{n+1}} \quad \forall n \geq 0\\ b_n & = & 0 \quad \forall n \geq 0\\ c_n & = &  - \sqrt{\frac{n}{n+1}} \quad \forall n \geq 0 \end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{1}{\sqrt{n+1}} \quad \forall n \geq 0\\
+       b_n & = & 0 \quad \forall n \geq 0\\
+       c_n & = &  - \sqrt{\frac{n}{n+1}} \quad \forall n \geq 0 \end{array}\right.`
    * - Legendre
      - Uniform :math:`\cU(-1,1)`
-     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \quad  \forall n \geq 1\\ b_n & = & 0 \quad  \forall n \geq 1\\ c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} }\quad  \forall n \geq 1 \end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{\sqrt{(2n+1)(2n+3)}}{n+1} \quad  \forall n \geq 1\\
+       b_n & = & 0 \quad  \forall n \geq 1\\
+       c_n & = &  -\frac{ n \sqrt{2n+3} }{ (n+1)\sqrt{2n-1} }\quad  \forall n \geq 1 \end{array}\right.`
    * - Laguerre
      - Gamma :math:`\Gamma(k,1,0)`
-     - :math:`\left\{\begin{array}{lcl} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2}\quad \forall n \geq 0 \\ a_n & = & \omega_{n} \quad \forall n \geq 0\\ b_n & = & -(2n+k)~\omega_{n}\quad \forall n \geq 0 \\ c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n}\quad \forall n \geq 0 \end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} \omega_{n} & = & \left((n+1)(n+k) \right)^{-1/2}\quad \forall n \geq 0 \\
+       a_n & = & \omega_{n} \quad \forall n \geq 0\\
+       b_n & = & -(2n+k)~\omega_{n}\quad \forall n \geq 0 \\
+       c_n & = &  -\sqrt{(n+k-1)n}~\omega_{n}\quad \forall n \geq 0 \end{array}\right.`
    * - Jacobi
      - Beta :math:`B(\alpha,\beta,-1,1), \; \alpha,\beta>0`
-     - :math:`\left\{\begin{array}{lcl} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \quad \forall n \geq 2\\ K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}}  \quad \forall n \geq 2\\ a_n & = & K_{2,n}(2n+\alpha + \beta) \quad \forall n \geq 2\\ b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2}  \quad \forall n \geq 2\\ c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2} \Big[K_{1,n}\frac{n(n+\alpha-1)(n+\beta-1)(n+\alpha+\beta-2)}{2n+\alpha+\beta-3}\Big]^{1/2}\, \forall n \geq 2 \end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} K_{1,n} & = & \frac{2n+\alpha + \beta + 1}{(n+1)(n+\alpha)(n+\beta)(n+\alpha+\beta-1)} \quad \forall n \geq 2\\
+       K_{2,n} & = & \frac{1}{2} \sqrt{(2n + \alpha + \beta - 1) K_{1,n}}  \quad \forall n \geq 2\\
+       a_n & = & K_{2,n}(2n+\alpha + \beta) \quad \forall n \geq 2\\
+       b_n & = & K_{2,n}\frac{(\beta - \alpha)(\alpha + \beta - 2)}{2n+\alpha+\beta-2}  \quad \forall n \geq 2\\
+       c_n & = & - \frac{2n+\alpha+\beta}{2n+\alpha+\beta-2}
+       \Big[K_{1,n}\frac{n(n+\alpha-1)(n+\beta-1)(n+\alpha+\beta-2)}{2n+\alpha+\beta-3}\Big]^{1/2}\, \forall n \geq 2 \end{array}\right.`
    * - Chebychev
      - Beta :math:`B(1/2,1/2,-1,1)`
-     - :math:`\left\{\begin{array}{l} a_0 = \sqrt{2}, \, a_n = 2 \quad \forall n \geq 1 \\ b_n = 0 \quad \forall n \geq 0 \\ c_0 = 0, \, c_1 = -\sqrt{2}, \, c_n = -1 \quad \forall n \geq 2 \end{array}\right.`
+     - :math:`\left\{\begin{array}{l} a_0 = \sqrt{2}, \, a_n = 2 \quad \forall n \geq 1 \\
+       b_n = 0 \quad \forall n \geq 0 \\
+       c_0 = 0, \, c_1 = -\sqrt{2}, \, c_n = -1 \quad \forall n \geq 2 \end{array}\right.`
 
 Furthermore, three families of orthonormal polynomials with respect to
 discrete  distributions are well-known and detailed in the Table below.
@@ -86,13 +100,19 @@ discrete  distributions are well-known and detailed in the Table below.
      - Recurrence coefficients :math:`(a_n, b_n, c_n)`
    * - Charlier
      - Poisson :math:`\cP(\lambda), \; \lambda>0`
-     - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}}\quad \forall n \geq 0 \\ b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \quad \forall n \geq 0\\ c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \quad \forall n \geq 0\end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{\lambda (n+1)}}\quad \forall n \geq 0 \\
+       b_n & = & \frac{n+\lambda}{\sqrt{\lambda (n+1)}} \quad \forall n \geq 0\\
+       c_n & = &  - \sqrt{1 - \frac{1}{n+1}} \quad \forall n \geq 0\end{array}\right.`
    * - Krawtchouk
      - Binomial :math:`\cB(m,p), \; m \in \Nset, \; 0 \leq p \leq 1`
-     - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\ b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\ c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \quad \forall n, \; 0 \leq n < m\end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & - \frac{1}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\
+       b_n & = & \frac{p(m-n)+n(1-p)}{\sqrt{(n+1)(m-n)p(1-p)}} \quad \forall n, \; 0 \leq n < m\\
+       c_n & = &  - \sqrt{(1 - \frac{1}{n+1})(1+\frac{1}{m-n})} \quad \forall n, \; 0 \leq n < m\end{array}\right.`
    * - Meixner
      - Polya :math:`\cP(r,p), \; r>0, \; 0 \leq p \leq 1`
-     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{p-1}{\sqrt{p(n+1)(n+r)}}  \quad \forall n \geq 0\\ b_n & = & \frac{p(n+r)+n}{\sqrt{p(n+1)(n+r)}}  \quad \forall n \geq 0\\ c_n & = & - \frac{\sqrt{pn(n+r-1)}}{\sqrt{p(n+1)(n+r)}} \quad \forall n \geq 0 \end{array}\right.`
+     - :math:`\left\{\begin{array}{lcl} a_n & = & \frac{p-1}{\sqrt{p(n+1)(n+r)}}  \quad \forall n \geq 0\\
+       b_n & = & \frac{p(n+r)+n}{\sqrt{p(n+1)(n+r)}}  \quad \forall n \geq 0\\
+       c_n & = & - \frac{\sqrt{pn(n+r-1)}}{\sqrt{p(n+1)(n+r)}} \quad \forall n \geq 0 \end{array}\right.`
 
 Notice that the Krawtchouk polynomials are only defined up to the
 degree :math:`m-1`. Indeed, for the degree :math:`n=m`, some
