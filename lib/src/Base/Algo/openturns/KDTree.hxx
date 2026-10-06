@@ -67,6 +67,9 @@ public:
   using NearestNeighbourAlgorithmImplementation::query;
   UnsignedInteger query(const Point & x) const override;
 
+  /** Get a space-filling ordering of the points */
+  Indices getOrdering() const;
+
   /** Get the indices of the k nearest neighbours of the given point */
   Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const override;
 
@@ -87,6 +90,11 @@ private:
               const UnsignedInteger index,
               const UnsignedInteger activeDimension);
 
+  /** Recursively order the points by a balanced kd-tree split */
+  void computeOrdering(Indices & buffer,
+                       const UnsignedInteger lo,
+                       const UnsignedInteger hi);
+
   /** Get the index of the nearest neighbour of the given point */
   virtual UnsignedInteger getNearestNeighbourIndex(const UnsignedInteger inode,
       const Point & x,
@@ -103,6 +111,9 @@ private:
 
   /** The tree, stored as a list of tuples (index, leftNode, rightNode) */
   Indices tree_;
+
+  /** Space-filling ordering of the points (a permutation of [0, size)) */
+  Indices ordering_;
 
   Pointer<KDTreeImplementation> p_implementation_;
 }; /* class KDTree */

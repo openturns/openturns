@@ -107,7 +107,9 @@ Available parameters are :
 
   * 1 (GaussianProcess.HMAT) : H-Matrix method (if H-Mat available)
 
-  * 2 (GaussianProcess.GALLIGAOGIBBS) : Gibbs method (in dimension 1 only)
+   * 2 (GaussianProcess.GALLIGAOGIBBS) : Gibbs method (in dimension 1 only)
+
+   * 3 (GaussianProcess.HODLR) : HODLR Cholesky method
 
 "
 
@@ -123,6 +125,8 @@ Available parameters are :
   * 1 (GaussianProcess.HMAT) : H-Matrix method (if H-Mat available)
 
   * 2 (GaussianProcess.GALLIGAOGIBBS) : Gibbs method (in dimension 1 only)
+
+  * 3 (GaussianProcess.HODLR) : HODLR Cholesky method
 
 Parameters
 ----------
