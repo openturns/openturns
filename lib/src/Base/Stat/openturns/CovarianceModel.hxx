@@ -189,6 +189,15 @@ public:
   /** Marginal accessor */
   CovarianceModel getMarginal(const Indices & indices) const;
 
+  /** Addition of two covariance models with the same input/output dimensions */
+  virtual CovarianceModel operator +(const CovarianceModel & right) const;
+
+  /** Addition of a covariance model and a covariance model implementation */
+  virtual CovarianceModel operator +(const CovarianceModelImplementation & right) const;
+
+  /** Multiplication of a covariance model by a positive scalar */
+  virtual CovarianceModel operator *(const Scalar scalar) const;
+
 } ; /* class CovarianceModel */
 
 END_NAMESPACE_OPENTURNS
