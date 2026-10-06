@@ -14,6 +14,10 @@ OT_CovarianceModel_discretizeAndFactorize_doc
 OT_CovarianceModel_discretizeAndFactorizeHMatrix_doc
 %feature("docstring") OT::CovarianceModel::discretizeHMatrix
 OT_CovarianceModel_discretizeHMatrix_doc
+%feature("docstring") OT::CovarianceModel::discretizeHODLRMatrix
+OT_CovarianceModel_discretizeHODLRMatrix_doc
+%feature("docstring") OT::CovarianceModel::discretizeAndFactorizeHODLRMatrix
+OT_CovarianceModel_discretizeAndFactorizeHODLRMatrix_doc
 %feature("docstring") OT::CovarianceModel::discretizeRow
 OT_CovarianceModel_discretizeRow_doc
 %feature("docstring") OT::CovarianceModel::draw
