@@ -125,6 +125,12 @@ Point HMatrix::getDiagonal() const
   return getImplementation()->getDiagonal();
 }
 
+/** Get the regularization shift applied during the last factorization */
+Scalar HMatrix::getRegularizationShift() const
+{
+  return getImplementation()->getRegularizationShift();
+}
+
 void HMatrix::addIdentity(OT::Scalar alpha)
 {
   copyOnWrite();
@@ -154,6 +160,12 @@ Point HMatrix::solveLower(const Point& b, Bool trans) const
 Matrix HMatrix::solveLower(const Matrix& m, Bool trans) const
 {
   return getImplementation()->solveLower(m, trans);
+}
+
+/** Compute y = L * x where L is the lower-triangular Cholesky factor */
+void HMatrix::applyFactor(Point& y, const Point& x) const
+{
+  getImplementation()->applyFactor(y, x);
 }
 
 /** Get number of HMatrix elements in compressed and uncompressed forms */

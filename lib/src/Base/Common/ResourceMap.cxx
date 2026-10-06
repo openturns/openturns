@@ -1776,6 +1776,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);
   addAsScalar("HMatrix-RegularizationEpsilon", 1.0e-4);
+  addAsScalar("HMatrix-RegularizationWarnThreshold", 1.0e-4);
   addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
   addAsString("HMatrix-ClusteringAlgorithm", "median", {"median", "geometric", "hybrid"});
