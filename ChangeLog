@@ -25,6 +25,7 @@
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
 
 ==== New classes ====
+ * FiniteOrthonormalFunctionFactory, GaussLPQuadrature, FiniteOrthonormalizationAlgorithm (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut

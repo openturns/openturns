@@ -51,6 +51,9 @@
 %import orthogonalbasis_module.i
 %import UncertaintyOrthogonalBasisTemplateDefs.i
 %include FiniteOrthogonalFunctionFactory.i
+%include FiniteOrthonormalizationAlgorithm.i
+%include GaussLPQuadrature.i
+%include FiniteOrthonormalFunctionFactory.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
 %import weightedexperiment_module.i
