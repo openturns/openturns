@@ -125,6 +125,9 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include SparseGaussianProcessHessian.i
 %include SparseGaussianProcessFitter.i
 %include SparseGaussianProcessRegression.i
+%include HeteroscedasticSparseGaussianProcessFitterResult.i
+%include HeteroscedasticSparseGaussianProcessFitter.i
+%include HeteroscedasticSparseGaussianProcessRegression.i
 
 /* Base/Func */
 %include ExceptionPenalizedEvaluation.i

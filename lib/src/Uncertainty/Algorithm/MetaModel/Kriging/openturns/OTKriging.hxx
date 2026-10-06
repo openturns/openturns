@@ -42,5 +42,8 @@
 #include "openturns/SparseGaussianProcessHessian.hxx"
 #include "openturns/SparseGaussianProcessFitter.hxx"
 #include "openturns/SparseGaussianProcessRegression.hxx"
+#include "openturns/HeteroscedasticSparseGaussianProcessFitterResult.hxx"
+#include "openturns/HeteroscedasticSparseGaussianProcessFitter.hxx"
+#include "openturns/HeteroscedasticSparseGaussianProcessRegression.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */
