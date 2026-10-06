@@ -119,6 +119,12 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
+%include SparseGaussianProcessFitterResult.i
+%include SparseGaussianProcessEvaluation.i
+%include SparseGaussianProcessGradient.i
+%include SparseGaussianProcessHessian.i
+%include SparseGaussianProcessFitter.i
+%include SparseGaussianProcessRegression.i
 
 /* Base/Func */
 %include ExceptionPenalizedEvaluation.i
