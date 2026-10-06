@@ -88,6 +88,14 @@ the inducing points equal the observations, the ELBO reduces to the exact margin
 log-likelihood of the Gaussian process model and the predictions coincide with the ones of a
 :class:`~openturns.GaussianProcessRegression`.
 
+Fixed per-observation noise variances can be supplied through :meth:`setNoiseVariances`:
+the likelihood becomes :math:`p(y \mid f) = \cN(y \mid f, \mat{D})` with
+:math:`\mat{D} = \mathrm{diag}(\sigma^2_1, \dots, \sigma^2_n)`. The collapsed bound and
+its analytic gradient generalize by replacing :math:`\sigma^2 \mat{I}_n` with :math:`\mat{D}`
+(equivalently, by working on the :math:`\mat{D}^{-1/2}`-scaled observations and
+whitened cross-covariance with unit noise). The fixed variances take precedence over the
+scalar noise standard deviation, which is then neither used nor optimized.
+
 The optimization of the hyperparameters relies on a local optimizer
 (:class:`~openturns.TNC` by default) and can converge to a degenerate optimum when the
 initial inducing points are not informative enough, e.g. when they are too few or clustered:
@@ -180,7 +188,8 @@ Returns
 -------
 elbo : :class:`~openturns.Function`
     The collapsed ELBO as a function of the optimized parameters (active covariance model
-    parameters, logarithm of the noise standard deviation and inducing points).
+    parameters, logarithm of the noise standard deviation unless fixed per-observation
+    noise variances are set, and inducing points).
 
 Notes
 -----
@@ -256,7 +265,9 @@ optimizeInducingPoints : bool
 Parameters
 ----------
 optimizeNoiseStdDev : bool
-    Whether to optimize the noise standard deviation."
+    Whether to optimize the noise standard deviation.
+    Cannot be set to True while fixed per-observation noise variances are set
+    through :meth:`setNoiseVariances`, as fixed variances are not optimized."
 
 // ---------------------------------------------------------------------
 
@@ -276,7 +287,9 @@ optimizeNoiseStdDev : bool
 Parameters
 ----------
 noiseStdDev : float
-    The noise standard deviation :math:`\\sigma` of the sparse Gaussian process."
+    The noise standard deviation :math:`\\sigma` of the sparse Gaussian process.
+    When fixed per-observation noise variances are set through :meth:`setNoiseVariances`,
+    they take precedence over this scalar value."
 
 // ---------------------------------------------------------------------
 
@@ -286,7 +299,37 @@ noiseStdDev : float
 Returns
 -------
 noiseStdDev : float
-    The noise standard deviation :math:`\\sigma` of the sparse Gaussian process."
+    The noise standard deviation :math:`\\sigma` of the sparse Gaussian process.
+    When fixed per-observation noise variances are set through :meth:`setNoiseVariances`,
+    they take precedence over this scalar value."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::setNoiseVariances
+R"RAW(Accessor to the fixed per-observation noise variances.
+
+Parameters
+----------
+noiseVariances : sequence of float
+    The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, one positive
+    value per observation. An empty sequence clears the variances and restores the
+    homoscedastic likelihood driven by the scalar noise standard deviation.
+
+Notes
+-----
+Setting non-empty variances disables the optimization of the scalar noise standard
+deviation: fixed variances are not optimized. Use an empty sequence to clear them.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::getNoiseVariances
+R"RAW(Accessor to the fixed per-observation noise variances.
+
+Returns
+-------
+noiseVariances : :class:`~openturns.Point`
+    The fixed noise variances :math:`(\sigma^2_1, \dots, \sigma^2_n)`, or an empty
+    point when the homoscedastic likelihood is used.)RAW"
 
 // ---------------------------------------------------------------------
 

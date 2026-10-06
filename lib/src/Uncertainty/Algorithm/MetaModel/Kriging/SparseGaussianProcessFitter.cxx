@@ -117,6 +117,7 @@ String SparseGaussianProcessFitter::__repr__() const
       << ", reducedCovarianceModel=" << reducedCovarianceModel_
       << ", inducingPoints=" << inducingPoints_
       << ", noiseStdDev=" << noiseStdDev_
+      << ", noiseVariancesSize=" << noiseVariances_.getSize()
       << ", solver=" << solver_
       << ", optimizeParameters=" << optimizeParameters_
       << ", optimizeInducingPoints=" << optimizeInducingPoints_
@@ -146,6 +147,7 @@ void SparseGaussianProcessFitter::run()
   metaModel.setHessian(new SparseGaussianProcessHessian(reducedCovarianceModelCopy, inducingPoints_, whiteningFactor_, posteriorMean_, whiteningFactorHMatrix_, method_));
 
   result_ = SparseGaussianProcessFitterResult(inputSample_, outputSample_, reducedCovarianceModelCopy, inducingPoints_, whiteningFactor_, posteriorMean_, posteriorCovariance_, noiseStdDev_, optimalELBO, metaModel, method_);
+  result_.setNoiseVariances(noiseVariances_);
   result_.setWhiteningFactorHMatrix(whiteningFactorHMatrix_);
   hasRun_ = true;
 }
@@ -221,6 +223,8 @@ Bool SparseGaussianProcessFitter::getOptimizeNoiseStdDev() const
 
 void SparseGaussianProcessFitter::setOptimizeNoiseStdDev(const Bool optimizeNoiseStdDev)
 {
+  if (optimizeNoiseStdDev && hasNoiseVariances())
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setOptimizeNoiseStdDev, the noise standard deviation cannot be optimized when per-observation noise variances are set, as they are fixed";
   if (optimizeNoiseStdDev != optimizeNoiseStdDev_)
   {
     optimizeNoiseStdDev_ = optimizeNoiseStdDev;
@@ -244,6 +248,40 @@ void SparseGaussianProcessFitter::setNoiseStdDev(const Scalar noiseStdDev)
     noiseStdDev_ = noiseStdDev;
     reset();
   }
+}
+
+/* Per-observation noise variances accessor */
+Point SparseGaussianProcessFitter::getNoiseVariances() const
+{
+  return noiseVariances_;
+}
+
+void SparseGaussianProcessFitter::setNoiseVariances(const Point & noiseVariances)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (noiseVariances.getSize() != 0)
+  {
+    if (noiseVariances.getSize() != size)
+      throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setNoiseVariances, the number of noise variances (" << noiseVariances.getSize() << ") should match the number of observations (" << size << "), or be zero to use the homoscedastic likelihood";
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (!(noiseVariances[i] > 0.0))
+        throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setNoiseVariances, the noise variances should be positive, got " << noiseVariances[i] << " at index " << i;
+  }
+  if (noiseVariances != noiseVariances_)
+  {
+    noiseVariances_ = noiseVariances;
+    // Fixed variances are not optimized: the scalar noise parameter leaves
+    // the optimization problem while the variances are set
+    if (hasNoiseVariances()) optimizeNoiseStdDev_ = false;
+    reset();
+    buildOptimizationBounds();
+  }
+}
+
+/* Whether fixed per-observation noise variances are set */
+Bool SparseGaussianProcessFitter::hasNoiseVariances() const
+{
+  return noiseVariances_.getSize() != 0;
 }
 
 /* Inducing points accessor */
@@ -485,11 +523,122 @@ Point SparseGaussianProcessFitter::computeELBO(const Point & parameters)
   return Point(1, lastELBO_);
 }
 
+/* Project the cross- and self-covariance adjoints onto the active covariance
+ * parameters and the inducing points */
+void SparseGaussianProcessFitter::accumulateGradient(const Matrix & KfuBar,
+    const Matrix & KuuBar,
+    const Point & tightCoefficients,
+    const Sample & inducingPoints,
+    Point & covarianceGradient,
+    Point & inducingPointsGradient) const
+{
+  const UnsignedInteger N = KfuBar.getNbRows();
+  const UnsignedInteger M = KfuBar.getNbColumns();
+  const UnsignedInteger dimension = inducingPoints.getDimension();
+  const UnsignedInteger covarianceParameterSize = reducedCovarianceModel_.getParameter().getSize();
+  // Gradient wrt the active covariance parameters
+  covarianceGradient = Point(covarianceParameterSize, 0.0);
+  for (UnsignedInteger i = 0; i < N; ++i)
+  {
+    for (UnsignedInteger j = 0; j < M; ++j)
+    {
+      const Scalar coef = KfuBar(i, j);
+      if (coef != 0.0)
+      {
+        const Matrix dk(reducedCovarianceModel_.parameterGradient(inputSample_[i], inducingPoints[j]));
+        for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
+          covarianceGradient[k] += coef * dk(k, 0);
+      }
+    }
+  }
+  for (UnsignedInteger p = 0; p < M; ++p)
+  {
+    for (UnsignedInteger q = 0; q < M; ++q)
+    {
+      const Scalar coef = KuuBar(p, q);
+      if (coef != 0.0)
+      {
+        const Matrix dk(reducedCovarianceModel_.parameterGradient(inducingPoints[p], inducingPoints[q]));
+        for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
+          covarianceGradient[k] += coef * dk(k, 0);
+      }
+    }
+  }
+  for (UnsignedInteger i = 0; i < N; ++i)
+  {
+    const Scalar coefficient = tightCoefficients[i];
+    if (coefficient != 0.0)
+    {
+      const Matrix dk(reducedCovarianceModel_.parameterGradient(inputSample_[i], inputSample_[i]));
+      for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
+        covarianceGradient[k] += coefficient * dk(k, 0);
+    }
+  }
+
+  // Gradient wrt the inducing points, dk(s, t) / ds
+  inducingPointsGradient = Point(M * dimension, 0.0);
+  if (optimizeInducingPoints_)
+  {
+    for (UnsignedInteger j = 0; j < M; ++j)
+    {
+      Point gradD(dimension, 0.0);
+      for (UnsignedInteger i = 0; i < N; ++i)
+      {
+        const Scalar coef = KfuBar(i, j);
+        if (coef != 0.0)
+        {
+          const Matrix pg(reducedCovarianceModel_.partialGradient(inducingPoints[j], inputSample_[i]));
+          for (UnsignedInteger d = 0; d < dimension; ++d)
+            gradD[d] += coef * pg(d, 0);
+        }
+      }
+      for (UnsignedInteger q = 0; q < M; ++q)
+      {
+        if (q == j) continue;
+        const Scalar coef = KuuBar(j, q);
+        if (coef != 0.0)
+        {
+          const Matrix pg(reducedCovarianceModel_.partialGradient(inducingPoints[j], inducingPoints[q]));
+          for (UnsignedInteger d = 0; d < dimension; ++d)
+            gradD[d] += coef * pg(d, 0);
+        }
+      }
+      for (UnsignedInteger p = 0; p < M; ++p)
+      {
+        if (p == j) continue;
+        const Scalar coef = KuuBar(p, j);
+        if (coef != 0.0)
+        {
+          const Matrix pg(reducedCovarianceModel_.partialGradient(inducingPoints[j], inducingPoints[p]));
+          for (UnsignedInteger d = 0; d < dimension; ++d)
+            gradD[d] += coef * pg(d, 0);
+        }
+      }
+      // Diagonal contribution: d/dz_j Kuu(j,j) = 2 * partialGradient(z_j, z_j).
+      // For stationary models partialGradient at coincident points is zero, so
+      // this term only contributes for nonstationary covariance models.
+      {
+        const Scalar coef = KuuBar(j, j);
+        if (coef != 0.0)
+        {
+          const Matrix pg(reducedCovarianceModel_.partialGradient(inducingPoints[j], inducingPoints[j]));
+          for (UnsignedInteger d = 0; d < dimension; ++d)
+            gradD[d] += 2.0 * coef * pg(d, 0);
+        }
+      }
+      for (UnsignedInteger d = 0; d < dimension; ++d)
+        inducingPointsGradient[j * dimension + d] = gradD[d];
+    }
+  }
+}
+
 /* Compute the gradient of the collapsed ELBO wrt the optimization parameters */
 Point SparseGaussianProcessFitter::computeELBOGradient(const Point & parameters)
 {
   if (method_ == SparseGaussianProcessFitterResult::HMAT)
     throw NotYetImplementedException(HERE) << "In SparseGaussianProcessFitter::computeELBOGradient, the analytic ELBO gradient is LAPACK-only for now, setMethod(LAPACK) to use it";
+  if (hasNoiseVariances())
+    return computeHeteroscedasticELBOGradient(parameters);
   const UnpackedParameters unpacked = unpackParameters(parameters);
   reducedCovarianceModel_.setParameter(unpacked.covarianceParameters);
   // Save member state that the gradient computation temporarily modifies,
@@ -609,103 +758,14 @@ Point SparseGaussianProcessFitter::computeELBOGradient(const Point & parameters)
   const Matrix KuuBar(cholAdjoint(Luu, LuuBar));
   // Tighter regularization: per-point coefficient -w_i / 2 on k_ii, only when M < N
 
-  // Gradient wrt the active covariance parameters
-  Point covarianceGradient(covarianceParameterSize, 0.0);
-  for (UnsignedInteger i = 0; i < N; ++i)
-  {
-    for (UnsignedInteger j = 0; j < M; ++j)
-    {
-      const Scalar coef = KfuBar(i, j);
-      if (coef != 0.0)
-      {
-        const Matrix dk(reducedCovarianceModel_.parameterGradient(inputSample_[i], unpacked.inducingPoints[j]));
-        for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
-          covarianceGradient[k] += coef * dk(k, 0);
-      }
-    }
-  }
-  for (UnsignedInteger p = 0; p < M; ++p)
-  {
-    for (UnsignedInteger q = 0; q < M; ++q)
-    {
-      const Scalar coef = KuuBar(p, q);
-      if (coef != 0.0)
-      {
-        const Matrix dk(reducedCovarianceModel_.parameterGradient(unpacked.inducingPoints[p], unpacked.inducingPoints[q]));
-        for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
-          covarianceGradient[k] += coef * dk(k, 0);
-      }
-    }
-  }
+  // Project the adjoints onto the active covariance parameters and the inducing points
+  Point tightCoefficients(N, 0.0);
   if (hasTrace)
-  {
     for (UnsignedInteger i = 0; i < N; ++i)
-    {
-      const Scalar coefficient = -0.5 * tightWeights[i];
-      if (coefficient != 0.0)
-      {
-        const Matrix dk(reducedCovarianceModel_.parameterGradient(inputSample_[i], inputSample_[i]));
-        for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
-          covarianceGradient[k] += coefficient * dk(k, 0);
-      }
-    }
-  }
-
-  // Gradient wrt the inducing points, dk(s, t) / ds
-  Point zGradient(M * dimension, 0.0);
-  if (optimizeInducingPoints_)
-  {
-    for (UnsignedInteger j = 0; j < M; ++j)
-    {
-      Point gradD(dimension, 0.0);
-      for (UnsignedInteger i = 0; i < N; ++i)
-      {
-        const Scalar coef = KfuBar(i, j);
-        if (coef != 0.0)
-        {
-          const Matrix pg(reducedCovarianceModel_.partialGradient(unpacked.inducingPoints[j], inputSample_[i]));
-          for (UnsignedInteger d = 0; d < dimension; ++d)
-            gradD[d] += coef * pg(d, 0);
-        }
-      }
-      for (UnsignedInteger q = 0; q < M; ++q)
-      {
-        if (q == j) continue;
-        const Scalar coef = KuuBar(j, q);
-        if (coef != 0.0)
-        {
-          const Matrix pg(reducedCovarianceModel_.partialGradient(unpacked.inducingPoints[j], unpacked.inducingPoints[q]));
-          for (UnsignedInteger d = 0; d < dimension; ++d)
-            gradD[d] += coef * pg(d, 0);
-        }
-      }
-      for (UnsignedInteger p = 0; p < M; ++p)
-      {
-        if (p == j) continue;
-        const Scalar coef = KuuBar(p, j);
-        if (coef != 0.0)
-        {
-          const Matrix pg(reducedCovarianceModel_.partialGradient(unpacked.inducingPoints[j], unpacked.inducingPoints[p]));
-          for (UnsignedInteger d = 0; d < dimension; ++d)
-            gradD[d] += coef * pg(d, 0);
-        }
-      }
-      // Diagonal contribution: d/dz_j Kuu(j,j) = 2 * partialGradient(z_j, z_j).
-      // For stationary models partialGradient at coincident points is zero, so
-      // this term only contributes for nonstationary covariance models.
-      {
-        const Scalar coef = KuuBar(j, j);
-        if (coef != 0.0)
-        {
-          const Matrix pg(reducedCovarianceModel_.partialGradient(unpacked.inducingPoints[j], unpacked.inducingPoints[j]));
-          for (UnsignedInteger d = 0; d < dimension; ++d)
-            gradD[d] += 2.0 * coef * pg(d, 0);
-        }
-      }
-      for (UnsignedInteger d = 0; d < dimension; ++d)
-        zGradient[j * dimension + d] = gradD[d];
-    }
-  }
+      tightCoefficients[i] = -0.5 * tightWeights[i];
+  Point covarianceGradient;
+  Point zGradient;
+  accumulateGradient(KfuBar, KuuBar, tightCoefficients, unpacked.inducingPoints, covarianceGradient, zGradient);
 
   // Assemble the gradient in the optimization parameter layout
   Point gradient(getOptimizationParameterSize(), 0.0);
@@ -725,6 +785,151 @@ Point SparseGaussianProcessFitter::computeELBOGradient(const Point & parameters)
   }
   // Restore member state to the values before this gradient call
   noiseStdDev_ = savedNoiseStdDev;
+  inducingPoints_ = savedInducingPoints;
+  return gradient;
+}
+
+/* Compute the gradient of the heteroscedastic collapsed ELBO wrt the optimization parameters.
+ * The fixed noise variances carry no gradient: with D = diag(noiseVariances) the bound is
+ * differentiated through the scaled quantities tildeA = D^{-1/2} A and tildeY = D^{-1/2} y,
+ * on which the likelihood is homoscedastic with unit noise. */
+Point SparseGaussianProcessFitter::computeHeteroscedasticELBOGradient(const Point & parameters)
+{
+  const UnpackedParameters unpacked = unpackParameters(parameters);
+  reducedCovarianceModel_.setParameter(unpacked.covarianceParameters);
+  // Save member state that the gradient computation temporarily modifies,
+  // so that the optimizer can evaluate the objective and gradient at
+  // different parameter points without leaving the fitter in an
+  // inconsistent state.
+  const Sample savedInducingPoints(inducingPoints_);
+  if (optimizeInducingPoints_) inducingPoints_ = unpacked.inducingPoints;
+
+  const UnsignedInteger N = inputSample_.getSize();
+  const UnsignedInteger M = unpacked.inducingPoints.getSize();
+  const UnsignedInteger dimension = unpacked.inducingPoints.getDimension();
+  const UnsignedInteger covarianceParameterSize = reducedCovarianceModel_.getParameter().getSize();
+  const Bool hasTrace = (M < N);
+
+  // Inverse noise scales s_i = 1 / sqrt(D_i)
+  Point inverseScales(N);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    inverseScales[i] = 1.0 / std::sqrt(noiseVariances_[i]);
+
+  // Forward sweep, as in computeHeteroscedasticELBOValue()
+  const TriangularMatrix Luu(reducedCovarianceModel_.discretize(unpacked.inducingPoints).computeRegularizedCholesky());
+  const Matrix Kfu(reducedCovarianceModel_.computeCrossCovariance(inputSample_, unpacked.inducingPoints));
+  const Matrix Kuf(Kfu.transpose());
+  const Matrix LuuInvKuf(Luu.solveLinearSystem(Kuf));
+  const Matrix A(LuuInvKuf.transpose());
+  const Point y(outputSample_.getImplementation()->getData());
+  Matrix scaledA(N, M);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      scaledA(i, j) = inverseScales[i] * A(i, j);
+  Point scaledY(N);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    scaledY[i] = inverseScales[i] * y[i];
+  const Matrix scaledAtA(scaledA.transpose() * scaledA);
+  CovarianceMatrix G(M);
+  CovarianceMatrix B(M);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      G(i, j) = scaledAtA(i, j);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      B(i, j) = G(i, j);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    B(i, i) += 1.0;
+  const TriangularMatrix Lb(B.computeRegularizedCholesky());
+  const Point scaledAty(scaledA.transpose() * scaledY);
+  const TriangularMatrix Lg(G.computeRegularizedCholesky());
+  const Point w(Lg.transpose().solveLinearSystem(Lg.solveLinearSystem(scaledAty)));
+  const Point u(Lb.solveLinearSystem(w));
+  const Point scaledYperp(scaledY - scaledA * w);
+  // Tighter-bound weights w_i = 1 / (D_i + r_i) with r_i = k_ii - q_ii >= 0,
+  // q_ii the squared norm of row i of the UNSCALED factor A. Only needed when M < N.
+  Point tightWeights(N, 0.0);
+  if (hasTrace)
+  {
+    for (UnsignedInteger i = 0; i < N; ++i)
+    {
+      Scalar qii = 0.0;
+      for (UnsignedInteger j = 0; j < M; ++j)
+        qii += A(i, j) * A(i, j);
+      const Scalar kii = reducedCovarianceModel_.computeAsScalar(inputSample_[i], inputSample_[i]);
+      const Scalar residual = std::max(kii - qii, 0.0);
+      tightWeights[i] = 1.0 / (noiseVariances_[i] + residual);
+    }
+  }
+
+  // Reverse sweep on the scaled (unit noise) problem
+  // wBar = -w + tildeA^T tildeYperp + Lb^{-T} u
+  Point wBar(-w);
+  wBar += scaledA.transpose() * scaledYperp;
+  wBar += Lb.transpose().solveLinearSystem(u);
+  // LbBar = -(Lb^{-T} u) u^T, with diagonal terms -1 / Lb_ii
+  const Point LbInvTu(Lb.transpose().solveLinearSystem(u));
+  Matrix LbBar(M, M);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      LbBar(i, j) = -LbInvTu[i] * u[j];
+  for (UnsignedInteger i = 0; i < M; ++i)
+    LbBar(i, i) += -1.0 / Lb(i, i);
+  // tBar = G^{-1} wBar, GBar = -tBar w^T
+  const Point tBar(Lg.transpose().solveLinearSystem(Lg.solveLinearSystem(wBar)));
+  Matrix GBar(M, M);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      GBar(i, j) = -tBar[i] * w[j];
+  // tildeABar = tildeY tBar^T + tildeYperp w^T
+  Matrix scaledABar(N, M);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      scaledABar(i, j) = scaledY[i] * tBar[j] + scaledYperp[i] * w[j];
+  // BBar = cholAdjoint(Lb, LbBar), GBar += BBar
+  const Matrix BBar(cholAdjoint(Lb, LbBar));
+  GBar = GBar + BBar;
+  // tildeABar += tildeA (GBar + GBar^T)
+  scaledABar = scaledABar + scaledA * (GBar + GBar.transpose());
+  // Chain rule back to the unscaled factor: ABar = D^{-1/2} tildeABar, plus the
+  // tighter regularization term w_i * a_i on the unscaled rows, only when M < N
+  Matrix ABar(N, M);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      ABar(i, j) = inverseScales[i] * scaledABar(i, j);
+  if (hasTrace)
+    for (UnsignedInteger i = 0; i < N; ++i)
+      for (UnsignedInteger j = 0; j < M; ++j)
+        ABar(i, j) += tightWeights[i] * A(i, j);
+  // KfuBar = ABar Luu^{-1}, LuuBar = -Luu^{-T} (ABar^T Kfu) Luu^{-T}
+  const Matrix LuuInv(Luu.solveLinearSystem(IdentityMatrix(M)));
+  const Matrix KfuBar(ABar * LuuInv);
+  const Matrix LuuInvT(Luu.transpose().solveLinearSystem(IdentityMatrix(M)));
+  const Matrix LuuBar(-1.0 * (LuuInvT * (ABar.transpose() * Kfu)) * LuuInvT);
+  const Matrix KuuBar(cholAdjoint(Luu, LuuBar));
+
+  // Project the adjoints onto the covariance parameters and inducing points.
+  // The tighter regularization acts on k(x_i, x_i) with coefficient -w_i / 2.
+  Point tightCoefficients(N, 0.0);
+  if (hasTrace)
+    for (UnsignedInteger i = 0; i < N; ++i)
+      tightCoefficients[i] = -0.5 * tightWeights[i];
+  Point covarianceGradient;
+  Point zGradient;
+  accumulateGradient(KfuBar, KuuBar, tightCoefficients, unpacked.inducingPoints, covarianceGradient, zGradient);
+
+  // Assemble the gradient in the optimization parameter layout (no noise parameter)
+  Point gradient(getOptimizationParameterSize(), 0.0);
+  UnsignedInteger offset = 0;
+  for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
+    gradient[offset + k] = covarianceGradient[k];
+  offset += covarianceParameterSize;
+  if (optimizeInducingPoints_)
+  {
+    for (UnsignedInteger i = 0; i < M * dimension; ++i)
+      gradient[offset + i] = zGradient[i];
+  }
+  // Restore member state to the values before this gradient call
   inducingPoints_ = savedInducingPoints;
   return gradient;
 }
@@ -765,6 +970,8 @@ Scalar SparseGaussianProcessFitter::computeELBOValue(const Sample & inducingPoin
     A = whiteningFactorHMatrix_.solveLower(Kuf).transpose();
   else
     A = Luu.solveLinearSystem(Kuf).transpose();
+  if (hasNoiseVariances())
+    return computeHeteroscedasticELBOValue(inducingPoints, A, Luu);
   // B = noise^2 * I + A^T A
   const Matrix AtA(A.transpose() * A);
   CovarianceMatrix G(M);
@@ -840,6 +1047,107 @@ Scalar SparseGaussianProcessFitter::computeELBOValue(const Sample & inducingPoin
     whiteningFactor_ = TriangularMatrix();
   else
     whiteningFactor_ = Luu;
+  posteriorMean_ = mw;
+  posteriorCovariance_ = Sww;
+  lastELBO_ = value;
+  LOGDEBUG(OSS(false) << "ELBO=" << value);
+  return value;
+}
+
+/* Compute the collapsed ELBO with fixed per-observation noise variances D = diag(noiseVariances).
+ * With tildeA = D^{-1/2} A and tildeY = D^{-1/2} y the bound reads as in the homoscedastic
+ * case with unit noise on the scaled problem: B = tildeA^T tildeA + I_m, m_w = B^{-1} tildeA^T tildeY,
+ * S_ww = B^{-1}, and the tighter regularization sums 1/2 log(1 + (k_ii - q_ii) / D_i) with q_ii
+ * from the UNSCALED rows of A. */
+Scalar SparseGaussianProcessFitter::computeHeteroscedasticELBOValue(const Sample & inducingPoints,
+    const Matrix & crossFactor,
+    const TriangularMatrix & whiteningFactor)
+{
+  const UnsignedInteger N = inputSample_.getSize();
+  const UnsignedInteger M = inducingPoints.getSize();
+  LOGDEBUG(OSS(false) << "Compute the heteroscedastic ELBO for M=" << M << " inducing points");
+  // Inverse noise scales s_i = 1 / sqrt(D_i) and log-determinant of D
+  Point inverseScales(N);
+  Scalar logDetNoise = 0.0;
+  for (UnsignedInteger i = 0; i < N; ++i)
+  {
+    inverseScales[i] = 1.0 / std::sqrt(noiseVariances_[i]);
+    logDetNoise += std::log(noiseVariances_[i]);
+  }
+  // Scaled quantities tildeA = D^{-1/2} A, tildeY = D^{-1/2} y
+  Matrix scaledA(N, M);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      scaledA(i, j) = inverseScales[i] * crossFactor(i, j);
+  const Point y(outputSample_.getImplementation()->getData());
+  Point scaledY(N);
+  for (UnsignedInteger i = 0; i < N; ++i)
+    scaledY[i] = inverseScales[i] * y[i];
+  // B = I + tildeA^T tildeA
+  const Matrix scaledAtA(scaledA.transpose() * scaledA);
+  CovarianceMatrix G(M);
+  CovarianceMatrix B(M);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      G(i, j) = scaledAtA(i, j);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      B(i, j) = G(i, j);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    B(i, i) += 1.0;
+  // Lb = chol(B)
+  const TriangularMatrix Lb(B.computeRegularizedCholesky());
+  // tildeA^T tildeY
+  const Point scaledAty(scaledA.transpose() * scaledY);
+  // c = Lb^{-1} (tildeA^T tildeY)
+  const Point c(Lb.solveLinearSystem(scaledAty));
+  // m_w = Lb^{-T} c
+  const Point mw(Lb.transpose().solveLinearSystem(c));
+  // S_ww = B^{-1} = (Lb^{-1})^T (Lb^{-1})
+  const Matrix LbInv(Lb.solveLinearSystem(IdentityMatrix(M)));
+  const Matrix S(LbInv.transpose() * LbInv);
+  CovarianceMatrix Sww(M);
+  for (UnsignedInteger i = 0; i < M; ++i)
+    for (UnsignedInteger j = 0; j < M; ++j)
+      Sww(i, j) = S(i, j);
+
+  LOGDEBUG("Compute the heteroscedastic ELBO value");
+  // log det(B) = 2 * sum_i log(Lb(i, i))
+  Scalar logDetB = 0.0;
+  for (UnsignedInteger i = 0; i < M; ++i)
+    logDetB += 2.0 * std::log(Lb(i, i));
+  // Stable evaluation of tildeY^T (tildeA tildeA^T + I)^{-1} tildeY, as in computeELBOValue()
+  const TriangularMatrix Lg(G.computeRegularizedCholesky());
+  const Point w(Lg.transpose().solveLinearSystem(Lg.solveLinearSystem(scaledAty)));
+  const Point u(Lb.solveLinearSystem(w));
+  const Point scaledYperp(scaledY - scaledA * w);
+  const Scalar quadratic = w.normSquare() - u.normSquare() + scaledYperp.normSquare();
+  // Tighter collapsed bound: 1/2 sum_i log(1 + (k_ii - q_ii) / D_i), q_ii the
+  // squared norm of row i of the UNSCALED factor. Skipped when M == N, as in
+  // computeELBOValue().
+  Scalar regularizationTerm = 0.0;
+  if (M < N)
+  {
+    // Only the diagonal of Kff is needed here, evaluate it pointwise
+    // instead of discretizing the full matrix
+    for (UnsignedInteger i = 0; i < N; ++i)
+    {
+      Scalar qii = 0.0;
+      for (UnsignedInteger j = 0; j < M; ++j)
+        qii += crossFactor(i, j) * crossFactor(i, j);
+      const Scalar kii = reducedCovarianceModel_.computeAsScalar(inputSample_[i], inputSample_[i]);
+      const Scalar residual = std::max(kii - qii, 0.0);
+      regularizationTerm += 0.5 * std::log1p(residual / noiseVariances_[i]);
+    }
+  }
+  const Scalar value = -0.5 * (2.0 * N * SpecFunc::LOGSQRT2PI + logDetNoise + logDetB + quadratic)
+                       - regularizationTerm;
+
+  // Store the by-products of the ELBO evaluation
+  if (method_ == SparseGaussianProcessFitterResult::HMAT)
+    whiteningFactor_ = TriangularMatrix();
+  else
+    whiteningFactor_ = whiteningFactor;
   posteriorMean_ = mw;
   posteriorCovariance_ = Sww;
   lastELBO_ = value;
@@ -991,6 +1299,7 @@ void SparseGaussianProcessFitter::save(Advocate & adv) const
   adv.saveAttribute("reducedCovarianceModel_", reducedCovarianceModel_);
   adv.saveAttribute("inducingPoints_", inducingPoints_);
   adv.saveAttribute("noiseStdDev_", noiseStdDev_);
+  adv.saveAttribute("noiseVariances_", noiseVariances_);
   adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
   adv.saveAttribute("optimizeParameters_", optimizeParameters_);
@@ -1014,6 +1323,9 @@ void SparseGaussianProcessFitter::load(Advocate & adv)
   adv.loadAttribute("reducedCovarianceModel_", reducedCovarianceModel_);
   adv.loadAttribute("inducingPoints_", inducingPoints_);
   adv.loadAttribute("noiseStdDev_", noiseStdDev_);
+  if (adv.hasAttribute("noiseVariances_"))
+    adv.loadAttribute("noiseVariances_", noiseVariances_);
+  if (hasNoiseVariances()) optimizeNoiseStdDev_ = false;
   adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
   adv.loadAttribute("optimizeParameters_", optimizeParameters_);
