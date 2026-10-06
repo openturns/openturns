@@ -23,6 +23,8 @@
  * Analytic partialGradient for SphericalModel and ExponentiallyDampedCosineModel
    (finite-difference gradients replaced by exact ones, so that every analytic
    partialHessian covariance model now also has an analytic partialGradient)
+ * Analytic reduced log-likelihood gradient for GaussianProcessFitter
+   (the finite-difference gradient is replaced by an exact one)
 
 ==== New ResourceMap keys ====
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
