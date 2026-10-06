@@ -89,7 +89,12 @@ for i in range(kernels.getSize()):
     smoother = ot.KernelSmoothing(kernel)
     for j in range(2):
         for corr in [False, True]:
-            smoother.setBoundaryCorrection(corr)
+            smoother.setBoundingOption(
+                ot.KernelSmoothing.BOTH if corr else ot.KernelSmoothing.NONE
+            )
+            assert smoother.getBoundingOption() == (
+                ot.KernelSmoothing.BOTH if corr else ot.KernelSmoothing.NONE
+            ), "wrong bounding option"
             smoothed = smoother.build(sampleCollection[j])
             print(
                 "Bounded underlying distribution? ",
@@ -111,6 +116,18 @@ for i in range(kernels.getSize()):
                 " cdf(smoothed)=  %.6g" % pointCDF,
                 " cdf(exact)= %.6g" % distributionCollection[j].computeCDF(point),
             )
+
+# bounding option accessor round-trips all values, default is NONE
+smoother = ot.KernelSmoothing()
+assert smoother.getBoundingOption() == ot.KernelSmoothing.NONE, "wrong default"
+for option in [
+    ot.KernelSmoothing.NONE,
+    ot.KernelSmoothing.LOWER,
+    ot.KernelSmoothing.UPPER,
+    ot.KernelSmoothing.BOTH,
+]:
+    smoother.setBoundingOption(option)
+    assert smoother.getBoundingOption() == option, "wrong bounding option"
 
 sample = ot.Normal().getSample(5000)
 ks1 = ot.KernelSmoothing(ot.Normal(), True, 64).build(sample)

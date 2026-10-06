@@ -231,7 +231,7 @@ estimated1 = kernel1.build(sample)
 # %%
 # The second kernel with the boundary corrections.
 kernel2 = ot.KernelSmoothing()
-kernel2.setBoundaryCorrection(True)
+kernel2.setBoundingOption(ot.KernelSmoothing.BOTH)
 estimated2 = kernel2.build(sample)
 
 
