@@ -52,4 +52,4 @@ x : sequence of float, or :class:`~openturns.Sample`
 Returns
 -------
 variance : float, or :class:`~openturns.Point`
-    The conditional variance :math:`\Var(Y(\vect{x}) \mid \vect{y})` at the given point(s).)RAW"
+    The conditional variance :math:`\Var(f(\vect{x}) \mid \vect{y})` of the latent process at the given point(s).)RAW"

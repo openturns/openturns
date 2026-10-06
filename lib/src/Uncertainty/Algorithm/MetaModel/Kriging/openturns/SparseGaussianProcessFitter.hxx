@@ -23,6 +23,7 @@
 
 #include "openturns/MetaModelAlgorithm.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Interval.hxx"
@@ -88,6 +89,8 @@ public:
   void setOptimizeInducingPoints(const Bool optimizeInducingPoints);
   Bool getOptimizeNoiseStdDev() const;
   void setOptimizeNoiseStdDev(const Bool optimizeNoiseStdDev);
+  Bool getOptimizeVarianceFunction() const;
+  void setOptimizeVarianceFunction(const Bool optimizeVarianceFunction);
 
   /** Noise standard deviation accessor */
   Scalar getNoiseStdDev() const;
@@ -96,6 +99,10 @@ public:
   /** Per-observation noise variances accessor (heteroscedastic likelihood) */
   Point getNoiseVariances() const;
   void setNoiseVariances(const Point & noiseVariances);
+
+  /** Log-variance function accessor (parametric heteroscedastic likelihood) */
+  Function getVarianceFunction() const;
+  void setVarianceFunction(const Function & varianceFunction);
 
   /** Inducing points accessor */
   Sample getInducingPoints() const;
@@ -136,6 +143,13 @@ protected:
   // Whether fixed per-observation noise variances are set
   Bool hasNoiseVariances() const;
 
+  // Whether a log-variance function is set
+  Bool hasVarianceFunction() const;
+
+  // Effective per-observation noise variances for the current parameters:
+  // exp of the log-variance function, fixed variances, or scalar broadcast
+  Point computeNoiseVariances() const;
+
   // Project the cross- and self-covariance adjoints onto the active covariance
   // parameters and the inducing points. tightCoefficients holds the per-observation
   // coefficient of k(x_i, x_i) from the trace regularization (zero when M == N).
@@ -150,7 +164,8 @@ protected:
   // crossFactor holds the whitened cross-covariance A = K_fu L_uu^{-T}.
   Scalar computeHeteroscedasticELBOValue(const Sample & inducingPoints,
                                         const Matrix & crossFactor,
-                                        const TriangularMatrix & whiteningFactor);
+                                        const TriangularMatrix & whiteningFactor,
+                                        const Point & noiseVariances);
 
   // Compute the gradient of the heteroscedastic collapsed ELBO
   Point computeHeteroscedasticELBOGradient(const Point & parameters);
@@ -164,11 +179,12 @@ protected:
 private:
 
   // Unpack the optimization parameter vector into covariance parameters, noise
-  // standard deviation and inducing points.
+  // standard deviation, log-variance function parameters and inducing points.
   struct UnpackedParameters
   {
     Point covarianceParameters;
     Scalar noiseStdDev;
+    Point varianceFunctionParameters;
     Sample inducingPoints;
   };
   UnpackedParameters unpackParameters(const Point & parameters) const;
@@ -329,6 +345,10 @@ private:
   // The fixed per-observation noise variances (empty means homoscedastic)
   Point noiseVariances_;
 
+  // The log-variance function D(x) = exp(g(x)) (unset means homoscedastic)
+  Function varianceFunction_;
+  Bool hasVarianceFunction_ = false;
+
   // The optimization algorithm used for the meta-parameters estimation
   OptimizationAlgorithm solver_;
 
@@ -339,6 +359,7 @@ private:
   Bool optimizeParameters_ = true;
   Bool optimizeInducingPoints_ = false;
   Bool optimizeNoiseStdDev_ = true;
+  Bool optimizeVarianceFunction_ = true;
 
   // Boolean argument to tell if optimization has run
   Bool hasRun_ = false;

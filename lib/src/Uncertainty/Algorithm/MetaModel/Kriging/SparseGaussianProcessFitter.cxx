@@ -118,10 +118,12 @@ String SparseGaussianProcessFitter::__repr__() const
       << ", inducingPoints=" << inducingPoints_
       << ", noiseStdDev=" << noiseStdDev_
       << ", noiseVariancesSize=" << noiseVariances_.getSize()
+      << ", hasVarianceFunction=" << hasVarianceFunction_
       << ", solver=" << solver_
       << ", optimizeParameters=" << optimizeParameters_
       << ", optimizeInducingPoints=" << optimizeInducingPoints_
-      << ", optimizeNoiseStdDev=" << optimizeNoiseStdDev_;
+      << ", optimizeNoiseStdDev=" << optimizeNoiseStdDev_
+      << ", optimizeVarianceFunction=" << optimizeVarianceFunction_;
   return oss;
 }
 
@@ -148,6 +150,7 @@ void SparseGaussianProcessFitter::run()
 
   result_ = SparseGaussianProcessFitterResult(inputSample_, outputSample_, reducedCovarianceModelCopy, inducingPoints_, whiteningFactor_, posteriorMean_, posteriorCovariance_, noiseStdDev_, optimalELBO, metaModel, method_);
   result_.setNoiseVariances(noiseVariances_);
+  if (hasVarianceFunction_) result_.setVarianceFunction(varianceFunction_);
   result_.setWhiteningFactorHMatrix(whiteningFactorHMatrix_);
   hasRun_ = true;
 }
@@ -223,11 +226,27 @@ Bool SparseGaussianProcessFitter::getOptimizeNoiseStdDev() const
 
 void SparseGaussianProcessFitter::setOptimizeNoiseStdDev(const Bool optimizeNoiseStdDev)
 {
-  if (optimizeNoiseStdDev && hasNoiseVariances())
-    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setOptimizeNoiseStdDev, the noise standard deviation cannot be optimized when per-observation noise variances are set, as they are fixed";
+  if (optimizeNoiseStdDev && (hasNoiseVariances() || hasVarianceFunction()))
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setOptimizeNoiseStdDev, the noise standard deviation cannot be optimized when per-observation noise variances or a log-variance function are set, as they are fixed";
   if (optimizeNoiseStdDev != optimizeNoiseStdDev_)
   {
     optimizeNoiseStdDev_ = optimizeNoiseStdDev;
+    reset();
+    buildOptimizationBounds();
+  }
+}
+
+/* Optimize log-variance function flag accessor */
+Bool SparseGaussianProcessFitter::getOptimizeVarianceFunction() const
+{
+  return optimizeVarianceFunction_;
+}
+
+void SparseGaussianProcessFitter::setOptimizeVarianceFunction(const Bool optimizeVarianceFunction)
+{
+  if (optimizeVarianceFunction != optimizeVarianceFunction_)
+  {
+    optimizeVarianceFunction_ = optimizeVarianceFunction;
     reset();
     buildOptimizationBounds();
   }
@@ -270,9 +289,19 @@ void SparseGaussianProcessFitter::setNoiseVariances(const Point & noiseVariances
   if (noiseVariances != noiseVariances_)
   {
     noiseVariances_ = noiseVariances;
+    // Mutually exclusive heteroscedastic modes: fixed variances clear the
+    // log-variance function
+    hasVarianceFunction_ = false;
     // Fixed variances are not optimized: the scalar noise parameter leaves
     // the optimization problem while the variances are set
     if (hasNoiseVariances()) optimizeNoiseStdDev_ = false;
+    reset();
+    buildOptimizationBounds();
+  }
+  // An empty vector also clears the log-variance function mode, if set
+  if (noiseVariances.getSize() == 0 && hasVarianceFunction_)
+  {
+    hasVarianceFunction_ = false;
     reset();
     buildOptimizationBounds();
   }
@@ -282,6 +311,50 @@ void SparseGaussianProcessFitter::setNoiseVariances(const Point & noiseVariances
 Bool SparseGaussianProcessFitter::hasNoiseVariances() const
 {
   return noiseVariances_.getSize() != 0;
+}
+
+/* Log-variance function accessor */
+Function SparseGaussianProcessFitter::getVarianceFunction() const
+{
+  return varianceFunction_;
+}
+
+void SparseGaussianProcessFitter::setVarianceFunction(const Function & varianceFunction)
+{
+  if (varianceFunction.getInputDimension() != inputSample_.getDimension())
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setVarianceFunction, the log-variance function input dimension (" << varianceFunction.getInputDimension() << ") should match the input sample dimension (" << inputSample_.getDimension() << ")";
+  if (varianceFunction.getOutputDimension() != 1)
+    throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter::setVarianceFunction, the log-variance function should have output dimension 1, got " << varianceFunction.getOutputDimension();
+  varianceFunction_ = varianceFunction;
+  hasVarianceFunction_ = true;
+  // Mutually exclusive heteroscedastic modes: the function clears the fixed variances
+  noiseVariances_ = Point();
+  if (optimizeNoiseStdDev_) optimizeNoiseStdDev_ = false;
+  reset();
+  buildOptimizationBounds();
+}
+
+/* Whether a log-variance function is set */
+Bool SparseGaussianProcessFitter::hasVarianceFunction() const
+{
+  return hasVarianceFunction_;
+}
+
+/* Effective per-observation noise variances for the current parameters */
+Point SparseGaussianProcessFitter::computeNoiseVariances() const
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (hasVarianceFunction_)
+  {
+    const Sample logVariances(varianceFunction_(inputSample_));
+    Point noiseVariances(size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      noiseVariances[i] = std::exp(logVariances(i, 0));
+    return noiseVariances;
+  }
+  if (hasNoiseVariances()) return noiseVariances_;
+  const Scalar sigma2 = noiseStdDev_ * noiseStdDev_;
+  return Point(size, sigma2);
 }
 
 /* Inducing points accessor */
@@ -482,7 +555,8 @@ SparseGaussianProcessFitter::UnpackedParameters SparseGaussianProcessFitter::unp
 {
   UnsignedInteger offset = 0;
   const UnsignedInteger covarianceParameterSize = reducedCovarianceModel_.getParameter().getSize();
-  const UnsignedInteger expectedSize = covarianceParameterSize + (optimizeNoiseStdDev_ ? 1 : 0) + (optimizeInducingPoints_ ? inducingPoints_.getSize() * inducingPoints_.getDimension() : 0);
+  const UnsignedInteger varianceParameterSize = (optimizeVarianceFunction_ && hasVarianceFunction_) ? varianceFunction_.getParameterDimension() : 0;
+  const UnsignedInteger expectedSize = covarianceParameterSize + (optimizeNoiseStdDev_ ? 1 : 0) + varianceParameterSize + (optimizeInducingPoints_ ? inducingPoints_.getSize() * inducingPoints_.getDimension() : 0);
   if (parameters.getSize() != expectedSize)
     throw InvalidArgumentException(HERE) << "In SparseGaussianProcessFitter, the parameter vector should be of size " << expectedSize
                                          << " but here we got " << parameters.getSize();
@@ -497,6 +571,10 @@ SparseGaussianProcessFitter::UnpackedParameters SparseGaussianProcessFitter::unp
     unpacked.noiseStdDev = std::exp(parameters[offset]);
     offset += 1;
   }
+  unpacked.varianceFunctionParameters = Point(varianceParameterSize);
+  for (UnsignedInteger i = 0; i < varianceParameterSize; ++i)
+    unpacked.varianceFunctionParameters[i] = parameters[offset + i];
+  offset += varianceParameterSize;
   unpacked.inducingPoints = Sample(inducingPoints_);
   if (optimizeInducingPoints_)
   {
@@ -515,6 +593,8 @@ Point SparseGaussianProcessFitter::computeELBO(const Point & parameters)
   LOGDEBUG(OSS(false) << "Compute ELBO for parameters=" << parameters);
   const UnpackedParameters unpacked = unpackParameters(parameters);
   reducedCovarianceModel_.setParameter(unpacked.covarianceParameters);
+  if (optimizeVarianceFunction_ && hasVarianceFunction_ && varianceFunction_.getParameterDimension() > 0)
+    varianceFunction_.setParameter(unpacked.varianceFunctionParameters);
   // Store the unpacked values into the members so that they are consistent
   // with the last computed ELBO (see also run())
   if (optimizeNoiseStdDev_) noiseStdDev_ = unpacked.noiseStdDev;
@@ -637,7 +717,7 @@ Point SparseGaussianProcessFitter::computeELBOGradient(const Point & parameters)
 {
   if (method_ == SparseGaussianProcessFitterResult::HMAT)
     throw NotYetImplementedException(HERE) << "In SparseGaussianProcessFitter::computeELBOGradient, the analytic ELBO gradient is LAPACK-only for now, setMethod(LAPACK) to use it";
-  if (hasNoiseVariances())
+  if (hasNoiseVariances() || hasVarianceFunction())
     return computeHeteroscedasticELBOGradient(parameters);
   const UnpackedParameters unpacked = unpackParameters(parameters);
   reducedCovarianceModel_.setParameter(unpacked.covarianceParameters);
@@ -797,6 +877,8 @@ Point SparseGaussianProcessFitter::computeHeteroscedasticELBOGradient(const Poin
 {
   const UnpackedParameters unpacked = unpackParameters(parameters);
   reducedCovarianceModel_.setParameter(unpacked.covarianceParameters);
+  if (optimizeVarianceFunction_ && hasVarianceFunction_ && varianceFunction_.getParameterDimension() > 0)
+    varianceFunction_.setParameter(unpacked.varianceFunctionParameters);
   // Save member state that the gradient computation temporarily modifies,
   // so that the optimizer can evaluate the objective and gradient at
   // different parameter points without leaving the fitter in an
@@ -808,12 +890,15 @@ Point SparseGaussianProcessFitter::computeHeteroscedasticELBOGradient(const Poin
   const UnsignedInteger M = unpacked.inducingPoints.getSize();
   const UnsignedInteger dimension = unpacked.inducingPoints.getDimension();
   const UnsignedInteger covarianceParameterSize = reducedCovarianceModel_.getParameter().getSize();
+  const UnsignedInteger varianceParameterSize = (optimizeVarianceFunction_ && hasVarianceFunction_) ? varianceFunction_.getParameterDimension() : 0;
   const Bool hasTrace = (M < N);
+  // Effective noise variances for the current parameters
+  const Point noiseVariances(computeNoiseVariances());
 
   // Inverse noise scales s_i = 1 / sqrt(D_i)
   Point inverseScales(N);
   for (UnsignedInteger i = 0; i < N; ++i)
-    inverseScales[i] = 1.0 / std::sqrt(noiseVariances_[i]);
+    inverseScales[i] = 1.0 / std::sqrt(noiseVariances[i]);
 
   // Forward sweep, as in computeHeteroscedasticELBOValue()
   const TriangularMatrix Luu(reducedCovarianceModel_.discretize(unpacked.inducingPoints).computeRegularizedCholesky());
@@ -858,7 +943,7 @@ Point SparseGaussianProcessFitter::computeHeteroscedasticELBOGradient(const Poin
         qii += A(i, j) * A(i, j);
       const Scalar kii = reducedCovarianceModel_.computeAsScalar(inputSample_[i], inputSample_[i]);
       const Scalar residual = std::max(kii - qii, 0.0);
-      tightWeights[i] = 1.0 / (noiseVariances_[i] + residual);
+      tightWeights[i] = 1.0 / (noiseVariances[i] + residual);
     }
   }
 
@@ -908,6 +993,41 @@ Point SparseGaussianProcessFitter::computeHeteroscedasticELBOGradient(const Poin
   const Matrix LuuBar(-1.0 * (LuuInvT * (ABar.transpose() * Kfu)) * LuuInvT);
   const Matrix KuuBar(cholAdjoint(Luu, LuuBar));
 
+  // Gradient wrt the log-variance function parameters: dL/dD_i = -(s_i / 2D_i) * E_i
+  // + direct_i, where E_i combines the adjoints through the scaled row and observation
+  // and direct_i holds the log-determinant and the explicit D_i dependence of the
+  // tighter regularization. The tighter residual r_i = k_ii - ||a_i||^2 uses the
+  // unscaled rows and carries no D_i dependence beyond the explicit /D_i in the
+  // logarithm. Projected onto the function parameters through D_i = exp(g(x_i)).
+  // Fixed variances carry no gradient: the block below only runs for the function
+  // mode when optimized.
+  Point varianceGradient(varianceParameterSize, 0.0);
+  if (varianceParameterSize > 0)
+  {
+    // Adjoint of the scaled observations: yBar = tildeA tBar - tildeYperp
+    const Point yBar(scaledA * tBar - scaledYperp);
+    for (UnsignedInteger i = 0; i < N; ++i)
+    {
+      Scalar Ei = yBar[i] * y[i];
+      for (UnsignedInteger j = 0; j < M; ++j)
+        Ei += scaledABar(i, j) * A(i, j);
+      Scalar direct = -0.5 / noiseVariances[i];
+      if (hasTrace)
+      {
+        const Scalar residual = 1.0 / tightWeights[i] - noiseVariances[i];
+        direct += 0.5 * residual * tightWeights[i] / noiseVariances[i];
+      }
+      const Scalar dLdD = Ei * (-0.5 * inverseScales[i] / noiseVariances[i]) + direct;
+      const Scalar coef = dLdD * noiseVariances[i];
+      if (coef != 0.0)
+      {
+        const Matrix pg(varianceFunction_.parameterGradient(inputSample_[i]));
+        for (UnsignedInteger k = 0; k < varianceParameterSize; ++k)
+          varianceGradient[k] += coef * pg(k, 0);
+      }
+    }
+  }
+
   // Project the adjoints onto the covariance parameters and inducing points.
   // The tighter regularization acts on k(x_i, x_i) with coefficient -w_i / 2.
   Point tightCoefficients(N, 0.0);
@@ -924,6 +1044,9 @@ Point SparseGaussianProcessFitter::computeHeteroscedasticELBOGradient(const Poin
   for (UnsignedInteger k = 0; k < covarianceParameterSize; ++k)
     gradient[offset + k] = covarianceGradient[k];
   offset += covarianceParameterSize;
+  for (UnsignedInteger k = 0; k < varianceParameterSize; ++k)
+    gradient[offset + k] = varianceGradient[k];
+  offset += varianceParameterSize;
   if (optimizeInducingPoints_)
   {
     for (UnsignedInteger i = 0; i < M * dimension; ++i)
@@ -970,8 +1093,8 @@ Scalar SparseGaussianProcessFitter::computeELBOValue(const Sample & inducingPoin
     A = whiteningFactorHMatrix_.solveLower(Kuf).transpose();
   else
     A = Luu.solveLinearSystem(Kuf).transpose();
-  if (hasNoiseVariances())
-    return computeHeteroscedasticELBOValue(inducingPoints, A, Luu);
+  if (hasNoiseVariances() || hasVarianceFunction())
+    return computeHeteroscedasticELBOValue(inducingPoints, A, Luu, computeNoiseVariances());
   // B = noise^2 * I + A^T A
   const Matrix AtA(A.transpose() * A);
   CovarianceMatrix G(M);
@@ -1061,7 +1184,8 @@ Scalar SparseGaussianProcessFitter::computeELBOValue(const Sample & inducingPoin
  * from the UNSCALED rows of A. */
 Scalar SparseGaussianProcessFitter::computeHeteroscedasticELBOValue(const Sample & inducingPoints,
     const Matrix & crossFactor,
-    const TriangularMatrix & whiteningFactor)
+    const TriangularMatrix & whiteningFactor,
+    const Point & noiseVariances)
 {
   const UnsignedInteger N = inputSample_.getSize();
   const UnsignedInteger M = inducingPoints.getSize();
@@ -1071,8 +1195,8 @@ Scalar SparseGaussianProcessFitter::computeHeteroscedasticELBOValue(const Sample
   Scalar logDetNoise = 0.0;
   for (UnsignedInteger i = 0; i < N; ++i)
   {
-    inverseScales[i] = 1.0 / std::sqrt(noiseVariances_[i]);
-    logDetNoise += std::log(noiseVariances_[i]);
+    inverseScales[i] = 1.0 / std::sqrt(noiseVariances[i]);
+    logDetNoise += std::log(noiseVariances[i]);
   }
   // Scaled quantities tildeA = D^{-1/2} A, tildeY = D^{-1/2} y
   Matrix scaledA(N, M);
@@ -1137,7 +1261,7 @@ Scalar SparseGaussianProcessFitter::computeHeteroscedasticELBOValue(const Sample
         qii += crossFactor(i, j) * crossFactor(i, j);
       const Scalar kii = reducedCovarianceModel_.computeAsScalar(inputSample_[i], inputSample_[i]);
       const Scalar residual = std::max(kii - qii, 0.0);
-      regularizationTerm += 0.5 * std::log1p(residual / noiseVariances_[i]);
+      regularizationTerm += 0.5 * std::log1p(residual / noiseVariances[i]);
     }
   }
   const Scalar value = -0.5 * (2.0 * N * SpecFunc::LOGSQRT2PI + logDetNoise + logDetB + quadratic)
@@ -1183,6 +1307,12 @@ Point SparseGaussianProcessFitter::buildOptimizationParameters() const
   Point parameters(reducedCovarianceModel_.getParameter());
   if (optimizeNoiseStdDev_)
     parameters.add(std::log(noiseStdDev_));
+  if (optimizeVarianceFunction_ && hasVarianceFunction_)
+  {
+    const Point varianceParameters(varianceFunction_.getParameter());
+    for (UnsignedInteger i = 0; i < varianceParameters.getSize(); ++i)
+      parameters.add(varianceParameters[i]);
+  }
   if (optimizeInducingPoints_)
   {
     const UnsignedInteger M = inducingPoints_.getSize();
@@ -1248,6 +1378,20 @@ void SparseGaussianProcessFitter::buildOptimizationBounds()
     lowerBound.add(std::log(noiseLowerBound));
     upperBound.add(std::log(noiseUpperBound));
   }
+  // Bounds for the log-variance function parameters
+  if (optimizeVarianceFunction_ && hasVarianceFunction_ && varianceFunction_.getParameterDimension() > 0)
+  {
+    const Scalar varianceLowerBound = ResourceMap::GetAsScalar("SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound");
+    const Scalar varianceUpperBound = ResourceMap::GetAsScalar("SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound");
+    if (!(varianceLowerBound < varianceUpperBound))
+      throw InvalidArgumentException(HERE) << "SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound (" << varianceLowerBound << ") must be strictly lower than SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound (" << varianceUpperBound << ")";
+    const UnsignedInteger varianceParameterSize = varianceFunction_.getParameterDimension();
+    for (UnsignedInteger i = 0; i < varianceParameterSize; ++i)
+    {
+      lowerBound.add(varianceLowerBound);
+      upperBound.add(varianceUpperBound);
+    }
+  }
   // Bounds for the inducing points
   if (optimizeInducingPoints_)
   {
@@ -1272,6 +1416,12 @@ Description SparseGaussianProcessFitter::buildOptimizationParameterDescription()
   Description description(reducedCovarianceModel_.getParameterDescription());
   if (optimizeNoiseStdDev_)
     description.add("logNoiseStdDev");
+  if (optimizeVarianceFunction_ && hasVarianceFunction_)
+  {
+    const Description varianceDescription(varianceFunction_.getParameterDescription());
+    for (UnsignedInteger i = 0; i < varianceDescription.getSize(); ++i)
+      description.add(varianceDescription[i]);
+  }
   if (optimizeInducingPoints_)
   {
     const UnsignedInteger M = inducingPoints_.getSize();
@@ -1288,6 +1438,7 @@ UnsignedInteger SparseGaussianProcessFitter::getOptimizationParameterSize() cons
 {
   return reducedCovarianceModel_.getParameter().getSize()
          + (optimizeNoiseStdDev_ ? 1 : 0)
+         + ((optimizeVarianceFunction_ && hasVarianceFunction_) ? varianceFunction_.getParameterDimension() : 0)
          + (optimizeInducingPoints_ ? inducingPoints_.getSize() * inducingPoints_.getDimension() : 0);
 }
 
@@ -1300,11 +1451,14 @@ void SparseGaussianProcessFitter::save(Advocate & adv) const
   adv.saveAttribute("inducingPoints_", inducingPoints_);
   adv.saveAttribute("noiseStdDev_", noiseStdDev_);
   adv.saveAttribute("noiseVariances_", noiseVariances_);
+  adv.saveAttribute("varianceFunction_", varianceFunction_);
+  adv.saveAttribute("hasVarianceFunction_", hasVarianceFunction_);
   adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("optimizationBounds_", optimizationBounds_);
   adv.saveAttribute("optimizeParameters_", optimizeParameters_);
   adv.saveAttribute("optimizeInducingPoints_", optimizeInducingPoints_);
   adv.saveAttribute("optimizeNoiseStdDev_", optimizeNoiseStdDev_);
+  adv.saveAttribute("optimizeVarianceFunction_", optimizeVarianceFunction_);
   adv.saveAttribute("hasRun_", hasRun_);
   adv.saveAttribute("lastELBO_", lastELBO_);
   adv.saveAttribute("whiteningFactor_", whiteningFactor_);
@@ -1325,12 +1479,18 @@ void SparseGaussianProcessFitter::load(Advocate & adv)
   adv.loadAttribute("noiseStdDev_", noiseStdDev_);
   if (adv.hasAttribute("noiseVariances_"))
     adv.loadAttribute("noiseVariances_", noiseVariances_);
-  if (hasNoiseVariances()) optimizeNoiseStdDev_ = false;
+  if (adv.hasAttribute("varianceFunction_"))
+    adv.loadAttribute("varianceFunction_", varianceFunction_);
+  if (adv.hasAttribute("hasVarianceFunction_"))
+    adv.loadAttribute("hasVarianceFunction_", hasVarianceFunction_);
+  if (hasNoiseVariances() || hasVarianceFunction_) optimizeNoiseStdDev_ = false;
   adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("optimizationBounds_", optimizationBounds_);
   adv.loadAttribute("optimizeParameters_", optimizeParameters_);
   adv.loadAttribute("optimizeInducingPoints_", optimizeInducingPoints_);
   adv.loadAttribute("optimizeNoiseStdDev_", optimizeNoiseStdDev_);
+  if (adv.hasAttribute("optimizeVarianceFunction_"))
+    adv.loadAttribute("optimizeVarianceFunction_", optimizeVarianceFunction_);
   adv.loadAttribute("hasRun_", hasRun_);
   adv.loadAttribute("lastELBO_", lastELBO_);
   adv.loadAttribute("whiteningFactor_", whiteningFactor_);
