@@ -1332,6 +1332,78 @@ private:
       }
     }
 
+    // check ordering versions of sequential conditional PDF/CDF/Quantile
+    {
+      const UnsignedInteger dim = distribution_.getDimension();
+      Indices identity(dim);
+      identity.fill();
+      LOGTRACE(OSS() << "checking sequential conditional with identity ordering...");
+      const Point seqPDFIdentity(distribution_.computeSequentialConditionalPDF(point, identity));
+      LOGTRACE(OSS() << "sequential conditional PDF (identity)=" << seqPDFIdentity.__str__());
+      assert_almost_equal(seqPDFIdentity, seqPDF, pdfTolerance_, pdfTolerance_, "seq PDF identity ordering " + distribution_.__repr__());
+      const Point seqCDFIdentity(distribution_.computeSequentialConditionalCDF(point, identity));
+      LOGTRACE(OSS() << "sequential conditional CDF (identity)=" << seqCDFIdentity.__str__());
+      assert_almost_equal(seqCDFIdentity, seqCDF, cdfTolerance_, cdfTolerance_, "seq CDF identity ordering " + distribution_.__repr__());
+      const Point qVec(dim, p);
+      const Point seqQIdentity(distribution_.computeSequentialConditionalQuantile(qVec, identity));
+      LOGTRACE(OSS() << "sequential conditional quantile (identity)=" << seqQIdentity.__str__());
+      assert_almost_equal(seqQIdentity, seqQ, quantileTolerance_, quantileTolerance_, "seq quantile identity ordering " + distribution_.__repr__());
+
+      if (dim >= 2)
+      {
+        // partial single-component ordering to cover n < blockDim paths
+        {
+          const Indices part1 = {0};
+          const Point xPart1 = {point[0]};
+          LOGTRACE(OSS() << "checking sequential conditional with partial ordering [0]...");
+          const Distribution reordered(distribution_.getMarginal(part1));
+          const Point pdfPart(distribution_.computeSequentialConditionalPDF(xPart1, part1));
+          LOGTRACE(OSS() << "sequential conditional PDF (partial)=" << pdfPart.__str__());
+          assert_almost_equal(pdfPart, reordered.computeSequentialConditionalPDF(xPart1), pdfTolerance_, pdfTolerance_, "seq PDF partial ordering " + distribution_.__repr__());
+          const Point cdfPart(distribution_.computeSequentialConditionalCDF(xPart1, part1));
+          LOGTRACE(OSS() << "sequential conditional CDF (partial)=" << cdfPart.__str__());
+          assert_almost_equal(cdfPart, reordered.computeSequentialConditionalCDF(xPart1), cdfTolerance_, cdfTolerance_, "seq CDF partial ordering " + distribution_.__repr__());
+          const Point qPart = {p};
+          const Point quantilePart(distribution_.computeSequentialConditionalQuantile(qPart, part1));
+          LOGTRACE(OSS() << "sequential conditional quantile (partial)=" << quantilePart.__str__());
+          assert_almost_equal(quantilePart, reordered.computeSequentialConditionalQuantile(qPart), quantileTolerance_, quantileTolerance_, "seq quantile partial ordering " + distribution_.__repr__());
+        }
+        // Adjacent reversed pairs to exercise both within-block and cross-block
+        // paths including fallback. Non-increasing orderings build upon generic
+        // marginals which are unsupported (eg order statistics constrain the
+        // marginal indices to be increasing) or arbitrarily expensive, hence
+        // they are only exercised when supported by the distribution.
+        const Bool useGeneralOrdering = distribution_.getImplementation()->getClassName().find("OrderStatistics") == String::npos;
+        if (useGeneralOrdering)
+        {
+          for (UnsignedInteger i = 0; i + 1 < dim; ++i)
+          {
+            const Indices rev2 = {i + 1, i};
+            const Point xRev2 = {point[i + 1], point[i]};
+            LOGTRACE(OSS() << "checking sequential conditional with ordering=" << rev2.__str__() << "...");
+            try
+            {
+              const Distribution reordered(distribution_.getMarginal(rev2));
+              const Point pdfRev(distribution_.computeSequentialConditionalPDF(xRev2, rev2));
+              LOGTRACE(OSS() << "sequential conditional PDF (ordering)=" << pdfRev.__str__());
+              assert_almost_equal(pdfRev, reordered.computeSequentialConditionalPDF(xRev2), pdfTolerance_, pdfTolerance_, "seq PDF ordering " + distribution_.__repr__());
+              const Point cdfRev(distribution_.computeSequentialConditionalCDF(xRev2, rev2));
+              LOGTRACE(OSS() << "sequential conditional CDF (ordering)=" << cdfRev.__str__());
+              assert_almost_equal(cdfRev, reordered.computeSequentialConditionalCDF(xRev2), cdfTolerance_, cdfTolerance_, "seq CDF ordering " + distribution_.__repr__());
+              const Point qRev = {p, p};
+              const Point quantileRev(distribution_.computeSequentialConditionalQuantile(qRev, rev2));
+              LOGTRACE(OSS() << "sequential conditional quantile (ordering)=" << quantileRev.__str__());
+              assert_almost_equal(quantileRev, reordered.computeSequentialConditionalQuantile(qRev), quantileTolerance_, quantileTolerance_, "seq quantile ordering " + distribution_.__repr__());
+            }
+            catch (const InvalidArgumentException &)
+            {
+              LOGTRACE(OSS() << "unsupported ordering=" << rev2.__str__() << " for " << distribution_.__repr__());
+            }
+          }
+        }
+      }
+    }
+
   }
 
   void checkTransformation() const
