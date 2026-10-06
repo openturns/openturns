@@ -313,8 +313,6 @@ We would like to acknowledge the following codes that are included into the libr
      - `TNC <http://js2007.free.fr/code/index.html#TNC>`_
    * - Quadrature
      - `FastGL <https://sourceforge.net/projects/fastgausslegendrequadrature/>`_
-   * - CSV parser
-     - `Rapidcsv <https://github.com/d99kris/rapidcsv>`_
 
 Compilation infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
