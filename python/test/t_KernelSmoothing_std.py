@@ -317,3 +317,53 @@ for prob in (0.25, 0.5, 0.75):
     ott.assert_almost_equal(
         fittedLog.computeCDF([quantile]), fittedPlain.computeCDF([quantile]), 1e-3, 2e-2
     )
+
+# invalid calls raise
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing(ot.Normal(2))
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing(ot.Normal(), True, 1)
+ot.ResourceMap.SetAsUnsignedInteger("KernelSmoothing-BinNumber", 1)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing()
+ot.ResourceMap.SetAsUnsignedInteger("KernelSmoothing-BinNumber", 1024)
+
+# bandwidth helpers on invalid samples
+sample2d = ot.Normal(2).getSample(20)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing().computePluginBandwidth(sample2d)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing().computeMixedBandwidth(sample2d)
+with ott.assert_raises(RuntimeError):
+    ot.KernelSmoothing().computePluginBandwidth(ot.Sample(20, [1.0]))
+
+# bandwidth/sample dimension mismatch
+with ott.assert_raises(ValueError):
+    ot.KernelSmoothing().build(sample2d, [0.1])
+
+# binning is not available in dimension > 2
+sample3d = ot.Normal(3).getSample(20)
+with ott.assert_raises(RuntimeError):
+    ot.KernelSmoothing().buildWeightedAsMixture(
+        sample3d, [1.0] * 20, [0.1] * 3
+    )
+
+# boundary correction on multidimensional samples
+ks2d = ot.KernelSmoothing(ot.Normal(), False)
+ks2d.setBoundingOption(ot.KernelSmoothing.LOWER)
+with ott.assert_raises(RuntimeError):
+    ks2d.buildWeighted(sample2d, [1.0] * 20)
+
+# user bound inconsistent with the sample
+ksb = ot.KernelSmoothing(ot.Normal(), False)
+ksb.setBoundingOption(ot.KernelSmoothing.LOWER)
+ksb.setLowerBound(5.0)
+ksb.setAutomaticLowerBound(False)
+with ott.assert_raises(TypeError):
+    ksb.build(ot.Normal().getSample(20))
+
+# boundary correction on a constant sample
+ksc = ot.KernelSmoothing(ot.Normal(), False)
+ksc.setBoundingOption(ot.KernelSmoothing.LOWER)
+with ott.assert_raises(RuntimeError):
+    ksc.build(ot.Sample(20, [1.0]))

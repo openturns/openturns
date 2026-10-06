@@ -52,3 +52,46 @@ validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.run()
+
+# 1D mesh: segment sampling branch
+distribution1d = ot.UniformOverMesh(ot.RegularGrid(0.0, 1.0, 5))
+print("1D realization=", distribution1d.getRealization())
+print("1D sample=", distribution1d.getSample(3))
+print("1D pdf=%.5g" % distribution1d.computePDF([0.5]))
+
+# 3D mesh: tetrahedron sampling branch
+mesher3d = ot.IntervalMesher([2] * 3)
+mesh3d = mesher3d.build(ot.Interval([-1.0] * 3, [1.0] * 3))
+distribution3d = ot.UniformOverMesh(mesh3d)
+print("3D realization=", distribution3d.getRealization())
+print("3D sample=", distribution3d.getSample(3))
+print("3D pdf=%.5g" % distribution3d.computePDF([0.0] * 3))
+
+# Accessors
+print("mesh=", distribution.getMesh().getVerticesNumber(), "vertices")
+distribution.setIntegrationAlgorithm(ot.GaussLegendre([5] * 2))
+print(
+    "integrationAlgorithm=",
+    distribution.getIntegrationAlgorithm().getClassName(),
+)
+
+# Probability edge cases
+print(
+    "proba(empty)=%.5g"
+    % distribution.computeProbability(ot.Interval([10.0] * 2, [11.0] * 2))
+)
+print(
+    "proba(range)=%.5g" % distribution.computeProbability(distribution.getRange())
+)
+with ott.assert_raises(TypeError):
+    distribution.computeProbability(ot.Interval([0.0], [1.0]))
+
+# Error cases
+with ott.assert_raises(TypeError):
+    distribution.setParameter([1.0])
+with ott.assert_raises(TypeError):
+    ot.UniformOverMesh(ot.Mesh())
+vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]])
+simplices = ot.IndicesCollection([[0, 1, 2]])
+with ott.assert_raises(TypeError):
+    ot.UniformOverMesh(ot.Mesh(vertices, simplices))
