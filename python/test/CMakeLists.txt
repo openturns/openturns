@@ -892,6 +892,7 @@ ot_pyinstallcheck_test (HypothesisTest_std)
 ot_pyinstallcheck_test (HypothesisTest_spearman)
 ot_pyinstallcheck_test (DickeyFullerTest_std)
 ot_pyinstallcheck_test (FittingTest_std)
+ot_pyinstallcheck_test (FittingTest_copula IGNOREOUT)
 ot_pyinstallcheck_test (NormalityTest_std)
 
 ## Waarts

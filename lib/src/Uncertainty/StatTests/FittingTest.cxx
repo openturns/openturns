@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include <fstream>
+#include <functional>
 #include "openturns/FittingTest.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Description.hxx"
@@ -758,6 +759,191 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   TestResult result(OSS(false) << "ChiSquared " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, testStatistics);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
+  return result;
+}
+
+/* Copula goodness-of-fit tests based on the empirical copula.
+ * S_n (Cramer-von Mises) and T_n (Kolmogorov-Smirnov) statistics, with
+ * parametric bootstrap p-value, following Genest, Remillard & Beaudoin (2009).
+ * Goodness-of-fit tests for copulas: a review and a power study. */
+
+namespace
+{
+void CheckCopulaTestInput(const Sample & sample,
+                          const Distribution & distribution)
+{
+  const UnsignedInteger size = sample.getSize();
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: copula tests work only with nonempty samples";
+  if (sample.getDimension() < 2) throw InvalidArgumentException(HERE) << "Error: copula tests work only with multivariate samples of dimension at least 2, here dimension=" << sample.getDimension();
+  if (sample.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample dimension=" << sample.getDimension() << " and the distribution dimension=" << distribution.getDimension() << " must be equal";
+  if (!distribution.isCopula()) throw InvalidArgumentException(HERE) << "Error: copula tests can be applied only to a copula, here distribution=" << distribution;
+}
+
+void CheckCopulaTestLevel(const Scalar level)
+{
+  if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
+}
+
+// Parametric bootstrap p-value with adaptive sampling, as in Lilliefors test.
+// getStatistic is a callable Sample x Distribution -> Scalar for the
+// fully specified case, or Sample x factory -> (statistic, estimatedDistribution)
+// handled by the caller through the bootstrapGenerator callable that
+// returns the bootstrapped statistic.
+Scalar ComputeCopulaPValue(const Scalar statistics,
+                           const UnsignedInteger refSize,
+                           const std::function<Scalar()> & bootstrapStatisticGenerator)
+{
+  // Silence unused warning when generator captures everything
+  (void) refSize;
+  const UnsignedInteger minimumSamplingSize = ResourceMap::GetAsUnsignedInteger("FittingTest-CopulaMinimumSamplingSize");
+  const UnsignedInteger maximumSamplingSize = ResourceMap::GetAsUnsignedInteger("FittingTest-CopulaMaximumSamplingSize");
+  const Scalar precision = ResourceMap::GetAsScalar("FittingTest-CopulaPrecision");
+  const Scalar varianceThreshold = precision * precision;
+  Scalar pValue = 0.0;
+  UnsignedInteger totalIterations = 0;
+  // First batch size: honor the minimum sampling size, unless the requested
+  // precision is zero, in which case run the maximum budget at once
+  UnsignedInteger minimumIterations = (varianceThreshold > 0.0 ? std::min(minimumSamplingSize, maximumSamplingSize) : maximumSamplingSize);
+  Bool go = true;
+  while (go)
+  {
+    const UnsignedInteger previousIterations = totalIterations;
+    const UnsignedInteger iterations = minimumIterations - previousIterations;
+    Sample bootstrappedStatistics(iterations, 1);
+    for (UnsignedInteger i = 0; i < iterations; ++i)
+      bootstrappedStatistics(i, 0) = bootstrapStatisticGenerator();
+    const Scalar pValueMonteCarlo = bootstrappedStatistics.computeEmpiricalCDF(Point(1, statistics), true);
+    totalIterations = previousIterations + iterations;
+    pValue = (pValue * previousIterations + pValueMonteCarlo * iterations) / totalIterations;
+    const Scalar varianceMonteCarlo = std::max(pValue * (1.0 - pValue) / totalIterations, 1.0 / (totalIterations * totalIterations));
+    go = (varianceMonteCarlo > varianceThreshold) && (totalIterations < maximumSamplingSize);
+    if (go)
+      minimumIterations = std::min(maximumSamplingSize, static_cast<UnsignedInteger>(totalIterations * varianceMonteCarlo / varianceThreshold) + 1);
+  }
+  return pValue;
+}
+} // anonymous namespace
+
+Scalar ComputeCopulaCramerVonMisesStatistics(const Sample & sample,
+    const Distribution & distribution)
+{
+  CheckCopulaTestInput(sample, distribution);
+  // Pseudo-observations in ]0, 1[^d from ranks: (R + 1) / (n + 1)
+  const Sample pseudo((sample.rank() + 1.0) / (sample.getSize() + 1.0));
+  const Sample theoreticalCopula(distribution.computeCDF(pseudo));
+  const UnsignedInteger size = sample.getSize();
+  Scalar sum = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Empirical copula value at the i-th pseudo-observation: Cn(U_i) = #{j : U_j <= U_i} / n
+    const Scalar diff = pseudo.computeEmpiricalCDF(pseudo[i]) - theoreticalCopula(i, 0);
+    sum += diff * diff;
+  }
+  return sum;
+}
+
+Scalar ComputeCopulaKolmogorovStatistics(const Sample & sample,
+    const Distribution & distribution)
+{
+  CheckCopulaTestInput(sample, distribution);
+  // Pseudo-observations in ]0, 1[^d from ranks: (R + 1) / (n + 1)
+  const Sample pseudo((sample.rank() + 1.0) / (sample.getSize() + 1.0));
+  const Sample theoreticalCopula(distribution.computeCDF(pseudo));
+  const UnsignedInteger size = sample.getSize();
+  Scalar sup = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    // Empirical copula value at the i-th pseudo-observation: Cn(U_i) = #{j : U_j <= U_i} / n
+    sup = std::max(sup, std::abs(pseudo.computeEmpiricalCDF(pseudo[i]) - theoreticalCopula(i, 0)));
+  return sup;
+}
+
+TestResult FittingTest::CopulaCramerVonMises(const Sample & sample,
+    const Distribution & distribution,
+    const Scalar level)
+{
+  CheckCopulaTestLevel(level);
+  CheckCopulaTestInput(sample, distribution);
+  const UnsignedInteger size = sample.getSize();
+  const Scalar statistics = ComputeCopulaCramerVonMisesStatistics(sample, distribution);
+  const Scalar pValue = ComputeCopulaPValue(statistics, size, [&]()
+  {
+    const Sample bootstrapSample(distribution.getSample(size));
+    return ComputeCopulaCramerVonMisesStatistics(bootstrapSample, distribution);
+  });
+  TestResult result(OSS(false) << "CopulaCramerVonMises " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
+  return result;
+}
+
+TestResult FittingTest::CopulaCramerVonMises(const Sample & sample,
+    const DistributionFactory & factory,
+    Distribution & estimatedDistribution,
+    const Scalar level)
+{
+  CheckCopulaTestLevel(level);
+  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: copula tests work only with nonempty samples";
+  if (sample.getDimension() < 2) throw InvalidArgumentException(HERE) << "Error: copula tests work only with multivariate samples of dimension at least 2, here dimension=" << sample.getDimension();
+  const Distribution distribution(factory.build(sample));
+  if (!distribution.isCopula()) throw InvalidArgumentException(HERE) << "Error: copula tests can be applied only to a copula, here estimated distribution=" << distribution;
+  if (distribution.getDimension() != sample.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample dimension=" << sample.getDimension() << " and the estimated distribution dimension=" << distribution.getDimension() << " must be equal";
+  const UnsignedInteger size = sample.getSize();
+  const Scalar statistics = ComputeCopulaCramerVonMisesStatistics(sample, distribution);
+  const Scalar pValue = ComputeCopulaPValue(statistics, size, [&]()
+  {
+    const Sample bootstrapSample(distribution.getSample(size));
+    const Distribution bootstrapDistribution(factory.build(bootstrapSample));
+    return ComputeCopulaCramerVonMisesStatistics(bootstrapSample, bootstrapDistribution);
+  });
+  TestResult result(OSS(false) << "CopulaCramerVonMises " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
+  estimatedDistribution = distribution;
+  return result;
+}
+
+TestResult FittingTest::CopulaKolmogorov(const Sample & sample,
+    const Distribution & distribution,
+    const Scalar level)
+{
+  CheckCopulaTestLevel(level);
+  CheckCopulaTestInput(sample, distribution);
+  const UnsignedInteger size = sample.getSize();
+  const Scalar statistics = ComputeCopulaKolmogorovStatistics(sample, distribution);
+  const Scalar pValue = ComputeCopulaPValue(statistics, size, [&]()
+  {
+    const Sample bootstrapSample(distribution.getSample(size));
+    return ComputeCopulaKolmogorovStatistics(bootstrapSample, distribution);
+  });
+  TestResult result(OSS(false) << "CopulaKolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
+  return result;
+}
+
+TestResult FittingTest::CopulaKolmogorov(const Sample & sample,
+    const DistributionFactory & factory,
+    Distribution & estimatedDistribution,
+    const Scalar level)
+{
+  CheckCopulaTestLevel(level);
+  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: copula tests work only with nonempty samples";
+  if (sample.getDimension() < 2) throw InvalidArgumentException(HERE) << "Error: copula tests work only with multivariate samples of dimension at least 2, here dimension=" << sample.getDimension();
+  const Distribution distribution(factory.build(sample));
+  if (!distribution.isCopula()) throw InvalidArgumentException(HERE) << "Error: copula tests can be applied only to a copula, here estimated distribution=" << distribution;
+  if (distribution.getDimension() != sample.getDimension()) throw InvalidArgumentException(HERE) << "Error: the sample dimension=" << sample.getDimension() << " and the estimated distribution dimension=" << distribution.getDimension() << " must be equal";
+  const UnsignedInteger size = sample.getSize();
+  const Scalar statistics = ComputeCopulaKolmogorovStatistics(sample, distribution);
+  const Scalar pValue = ComputeCopulaPValue(statistics, size, [&]()
+  {
+    const Sample bootstrapSample(distribution.getSample(size));
+    const Distribution bootstrapDistribution(factory.build(bootstrapSample));
+    return ComputeCopulaKolmogorovStatistics(bootstrapSample, bootstrapDistribution);
+  });
+  TestResult result(OSS(false) << "CopulaKolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
+  result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
+  LOGDEBUG(OSS() << result);
+  estimatedDistribution = distribution;
   return result;
 }
 

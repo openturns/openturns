@@ -195,6 +195,8 @@ Bibliography
     *Orthogonal polynomials: computation and approximation.* OUP Oxford.
 .. [genest2003] Genest, C. & Boies, JC. *Detecting Dependence with Kendall Plots.*
     The American Statistician 57(4): 275-284, 2003.
+.. [genest2009] Genest, C., Remillard, B. & Beaudoin, D. *Goodness-of-fit tests for copulas: a review and a power study.*
+    Insurance: Mathematics and Economics 44: 199-213, 2009.
 .. [genz2003] Genz A., Cools R., *An adaptive numerical cubature algorithm for simplices*,
     ACM Transactions on Mathematical Software 29(3):297-308, September 2003.
     `pdf <https://www.researchgate.net/publication/220492882_An_adaptive_numerical_cubature_algorithm_for_simplices>`__

@@ -1259,6 +1259,9 @@
   <FittingTest-ChiSquaredMinimumBinCount     value_int="5"      />
   <FittingTest-LillieforsMinimumSamplingSize value_int="10"     />
   <FittingTest-LillieforsMaximumSamplingSize value_int="100000" />
+  <FittingTest-CopulaPrecision               value_float="0.01" />
+  <FittingTest-CopulaMinimumSamplingSize     value_int="10"     />
+  <FittingTest-CopulaMaximumSamplingSize     value_int="1000"   />
 
   <!-- OT::PenalizedLeastSquaresAlgorithm parameters -->
   <PenalizedLeastSquaresAlgorithm-UseNormal  value_bool="false" />
