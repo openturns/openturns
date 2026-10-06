@@ -458,6 +458,7 @@ void ResourceMap::set(const String & key, const String & value)
         iss >> boolValue;
       }
       it->second = boolValue;
+      return;
     }
   }
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap.";
