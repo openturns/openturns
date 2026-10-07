@@ -23,6 +23,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``GaussLPQuadrature-AlphaS`` (``UnsignedInteger``, default: ``100``): multiplier for the number of LP candidate points.
 - ``GaussLPQuadrature-Ngauss`` (``UnsignedInteger``, default: ``100``): number of 1D Gauss-Legendre nodes for moment computation.
 - ``GaussLPQuadrature-Epsilon`` (``Scalar``, default: ``1.0e-5``): tolerance for quadrature residual.
+- ``GaussLPQuadrature-Solver`` (``String``, default: ``choose``): HiGHS solver used for the linear programming solve.
 - ``GaussLPQuadrature-FallbackSolver`` (``String``, default: ``ipm``): HiGHS solver used when the first linear programming solve fails; an empty value disables the retry.
 
 Parameters
