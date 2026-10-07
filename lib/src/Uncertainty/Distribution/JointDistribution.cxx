@@ -1416,25 +1416,38 @@ Point JointDistribution::getParameter() const
 
 void JointDistribution::setParameter(const Point & parameter)
 {
+  // Check the size before updating any distribution: no partial update on error,
+  // and no silently ignored extra values
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameterDimension() << " values, got " << parameter.getSize();
   const UnsignedInteger dimension = getDimension();
+  DistributionCollection newMarginals(dimension);
   UnsignedInteger globalIndex = 0;
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++ marginalIndex)
   {
-    const UnsignedInteger parametersSize = distributionCollection_[marginalIndex].getParameterDimension();
-    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for marginal " << marginalIndex;
+    // Work on a copy: thanks to copy-on-write the stored distribution is left unchanged if a later distribution rejects its slice
+    Distribution marginal(distributionCollection_[marginalIndex]);
+    const UnsignedInteger parametersSize = marginal.getParameterDimension();
     Point newParameters(parametersSize);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
-    distributionCollection_[marginalIndex].setParameter(newParameters);
+    marginal.setParameter(newParameters);
+    newMarginals[marginalIndex] = marginal;
     globalIndex += parametersSize;
   }
+  Distribution newCore(core_);
   if (dimension > 1)
   {
-    const UnsignedInteger parametersSize = core_.getParameterDimension();
-    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for " << (core_.isCopula() ? "copula" : "core");
+    const UnsignedInteger parametersSize = newCore.getParameterDimension();
     Point newParameters(parametersSize);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
-    core_.setParameter(newParameters);
+    newCore.setParameter(newParameters);
   }
+  // All slices accepted: commit the staged updates
+  // setDistributionCollection rebuilds the description from the marginals: save/restore it,
+  // before setCore so the core receives the original description
+  const Description description(getDescription());
+  setDistributionCollection(newMarginals);
+  setDescription(description);
+  if (dimension > 1) setCore(newCore);
 }
 
 Description JointDistribution::getParameterDescription() const
