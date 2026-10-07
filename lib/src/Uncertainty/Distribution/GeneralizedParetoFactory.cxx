@@ -352,11 +352,17 @@ class GeneralizedParetoLikelihoodEvaluation : public EvaluationImplementation
 public:
   GeneralizedParetoLikelihoodEvaluation(const Sample & sample, const Scalar u)
     : EvaluationImplementation()
-    , sample_(sample)
-    , m_(sample.getSize())
-    , u_(u)
   {
-    // Nothing to do
+    // Only the exceedances (x > u) contribute to the likelihood: prefilter them
+    // once so each evaluation loops over n << m points instead of the full sample
+    const UnsignedInteger m = sample.getSize();
+    for (UnsignedInteger i = 0; i < m; ++ i)
+    {
+      const Scalar zi = sample(i, 0) - u;
+      if (zi > 0.0)
+        z_.add(zi);
+    }
+    m_ = z_.getSize();
   }
 
   GeneralizedParetoLikelihoodEvaluation * clone() const override
@@ -381,37 +387,30 @@ public:
     if (sigma <= 0.0)
       return {-SpecFunc::LogMaxScalar};
     Scalar ll = 0.0;
-    UnsignedInteger n = 0;// count the number of x>u
-    for (UnsignedInteger i = 0; i < m_; ++ i)
+    if (std::abs(xi) < SpecFunc::Precision)
     {
-      const Scalar zi = sample_(i, 0) - u_;
-      if (zi > 0.0)
+      for (UnsignedInteger i = 0; i < m_; ++ i)
+        ll += - z_[i] / sigma;
+    }
+    else
+    {
+      const Scalar invXi = 1.0 / xi;
+      const Scalar coef = -invXi - 1.0;
+      for (UnsignedInteger i = 0; i < m_; ++ i)
       {
-        if (std::abs(xi) < SpecFunc::Precision)
-        {
-          ll += - 1.0 * zi / sigma;
-        }
-        else
-        {
-          const Scalar c1 = xi * zi / sigma;
-          if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
-          {
-            ll += -SpecFunc::LogMaxScalar;
-            continue;
-          }
-          ll += (-1.0 / xi - 1.0) * std::log1p(c1);
-        }
-        ++ n;
+        const Scalar c1 = xi * z_[i] / sigma;
+        if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
+          return {-SpecFunc::LogMaxScalar};
+        ll += coef * std::log1p(c1);
       }
     }
-    ll += - 1.0 * n * std::log(sigma);
+    ll += - static_cast<Scalar>(m_) * std::log(sigma);
     return {ll};
   }
 
 private:
-  Sample sample_;
+  Collection<Scalar> z_;
   UnsignedInteger m_ = 0;
-  Scalar u_ = 0.0;
 };
 
 
@@ -506,12 +505,22 @@ public:
       const OptimizationAlgorithm & solver,
       const Scalar u)
     : EvaluationImplementation()
-    , sample_(sample)
     , solver_(solver)
     , u_(u)
   {
     zMin_ = zMin;
     zMax_ = zMax;
+    // Prefilter the exceedances once instead of rescanning the full sample
+    // at each outer iteration; the reference sigma0 is constant as well
+    Sample z(0, 1);
+    const UnsignedInteger size = sample.getSize();
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      if (sample(i, 0) > u_)
+        z.add(Point(1, sample(i, 0) - u_));
+    z_ = z;
+    likelihood_ = Function(GeneralizedParetoLikelihoodEvaluation(sample, u_).clone());
+    if (z_.getSize() >= 2)
+      sigma0_ = std::sqrt(6.0 * z_.computeCovariance()(0, 0)) / M_PI;
   }
 
   GeneralizedParetoProfileLikelihoodEvaluation * clone() const override
@@ -537,10 +546,11 @@ public:
   Point operator() (const Point & parameter) const override
   {
     const Scalar xi0 = parameter[0];
+    if (z_.getSize() < 2)
+      return {-SpecFunc::LogMaxScalar};
 
-    const Function likelihood(GeneralizedParetoLikelihoodEvaluation(sample_, u_).clone());
     // only sigma remains to be optimized out of (sigma, xi, u)
-    const ParametricFunction objective(likelihood, {1}, {xi0});
+    const ParametricFunction objective(likelihood_, {1}, {xi0});
     OptimizationProblem problem(objective);
     problem.setMinimization(false);
 
@@ -558,20 +568,10 @@ public:
     const SymbolicFunction constraint(Description({"sigma"}), formulas);
     problem.setInequalityConstraint(constraint);
 
-    Sample z(0, 1);
-    for (UnsignedInteger i = 0; i < sample_.getSize(); ++ i)
-      if (sample_(i, 0) > u_)
-        z.add(Point(1, sample_(i, 0) - u_));
-
-    if (z.getSize() < 2)
-      return {-SpecFunc::LogMaxScalar};
-
-    const Scalar sigma0 = std::sqrt(6.0 * z.computeCovariance()(0, 0)) / M_PI;
-
-    // solve optimization problem
+    // solve optimization problem, warm-started from the previous optimum if any
     OptimizationAlgorithm solver(solver_);
     solver.setProblem(problem);
-    solver.setStartingPoint({sigma0});
+    solver.setStartingPoint(optimalPoint_.getSize() == 1 ? optimalPoint_ : Point({sigma0_}));
     try
     {
       solver.run();
@@ -591,7 +591,9 @@ public:
   }
 
 private:
-  Sample sample_;
+  Sample z_;
+  Function likelihood_;
+  Scalar sigma0_ = 0.0;
   Scalar zMin_ = 0.0;
   Scalar zMax_ = 0.0;
   mutable Point optimalPoint_;
@@ -769,17 +771,33 @@ public:
       const Function & xiLink,
       const Scalar startingValue)
     : EvaluationImplementation()
-    , sample_(sample)
     , u_(u)
-    , sigmaCovariates_(sigmaCovariates)
-    , xiCovariates_(xiCovariates)
     , sigmaLink_(sigmaLink.getEvaluation().getImplementation()->isActualImplementation() ? sigmaLink : IdentityFunction(1))
     , xiLink_(xiLink.getEvaluation().getImplementation()->isActualImplementation() ? xiLink : IdentityFunction(1))
     , sigmaDim_(sigmaCovariates.getNbColumns())
     , xiDim_(xiCovariates.getNbColumns())
     , startingValue_(startingValue)
   {
-    // Nothing to do
+    // Only the exceedances (x > u) contribute to the likelihood: prefilter them
+    // once (observations and matching covariate rows) so each evaluation loops
+    // over n << m points instead of the full sample
+    const UnsignedInteger m = sample.getSize();
+    Collection<UnsignedInteger> exceedanceIndices;
+    for (UnsignedInteger i = 0; i < m; ++ i)
+      if (sample(i, 0) > u_)
+        exceedanceIndices.add(i);
+    const UnsignedInteger n = exceedanceIndices.getSize();
+    sigmaCovariates_ = Matrix(n, sigmaDim_);
+    xiCovariates_ = Matrix(n, xiDim_);
+    for (UnsignedInteger k = 0; k < n; ++ k)
+    {
+      const UnsignedInteger i = exceedanceIndices[k];
+      z_.add(sample(i, 0) - u_);
+      for (UnsignedInteger j = 0; j < sigmaDim_; ++ j)
+        sigmaCovariates_(k, j) = sigmaCovariates(i, j);
+      for (UnsignedInteger j = 0; j < xiDim_; ++ j)
+        xiCovariates_(k, j) = xiCovariates(i, j);
+    }
   }
 
   GeneralizedParetoCovariatesLikelihoodEvaluation * clone() const override
@@ -799,49 +817,52 @@ public:
 
   Point operator() (const Point & beta) const override
   {
+    const UnsignedInteger n = z_.getSize();
     // Sigma
     Point betaSigma(sigmaDim_);
     std::copy(beta.begin(), beta.begin() + sigmaDim_, betaSigma.begin());
     const Sample sigmaT(Sample::BuildFromPoint(sigmaCovariates_ * betaSigma));
+    const Sample sigmaS(sigmaLink_(sigmaT));
     UnsignedInteger shift = sigmaDim_;
     // Xi
     Point betaXi(xiDim_);
     std::copy(beta.begin() + shift, beta.begin() + shift + xiDim_, betaXi.begin());
     const Sample xiT(Sample::BuildFromPoint(xiCovariates_ * betaXi));
+    const Sample xiS(xiLink_(xiT));
     shift += xiDim_;
 
     Scalar ll = startingValue_;
     Scalar minSigma = SpecFunc::MaxScalar;
     Scalar minC1 = SpecFunc::MaxScalar;
-    for (UnsignedInteger i = 0; i < sample_.getSize(); ++ i)
+    for (UnsignedInteger i = 0; i < n; ++ i)
     {
-      const Scalar sigma = sigmaLink_(sigmaT[i])[0];
-      const Scalar xi = xiLink_(xiT[i])[0];
+      const Scalar sigma = sigmaS(i, 0);
+      const Scalar xi = xiS(i, 0);
+      const Scalar zi = z_[i];
       minSigma = std::min(minSigma, sigma);
-      const Scalar zi = sample_(i, 0) - u_;
       LOGDEBUG(OSS() << "i=" << i << ", u=" << u_ << ", sigma=" << sigma << ", xi=" << xi << ", zi=" << zi);
-      if (zi > 0.0)
+      if (std::abs(xi) < SpecFunc::Precision)
       {
-        if (std::abs(xi) < SpecFunc::Precision)
-        {
-          ll += - 1.0 * zi / sigma;
-        }
-        else
-        {
-          const Scalar c1 = xi * zi / sigma;
-          minC1 = std::min(minC1, 1.0 + c1);
-          if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
-          {
-            ll += -SpecFunc::LogMaxScalar;
-            continue;
-          }
-          ll += (-1.0 / xi - 1.0) * std::log1p(c1);
-        }
-        ll -= std::log(sigma);
+        ll += - zi / sigma;
+        minC1 = std::min(minC1, 1.0);
       }
+      else
+      {
+        const Scalar c1 = xi * zi / sigma;
+        minC1 = std::min(minC1, 1.0 + c1);
+        if (c1 <= SpecFunc::Precision - 1.0) // can be slightly off
+          return { -SpecFunc::LogMaxScalar, minSigma, minC1 };
+        ll += (-1.0 / xi - 1.0) * std::log1p(c1);
+      }
+      ll -= std::log(sigma);
     }
     LOGTRACE(OSS(false) << "covariates log-likelihood beta=" << beta << ", log-likelihood=" << ll << ", min_t sigma(t)=" << minSigma << ", min_t c1(t)=" << minC1);
     return {ll, minSigma, minC1};
+  }
+
+  UnsignedInteger getExceedanceSize() const
+  {
+    return z_.getSize();
   }
 
   void setStartingValue(const Scalar startingValue)
@@ -850,7 +871,7 @@ public:
   }
 
 private:
-  Sample sample_;
+  Collection<Scalar> z_;
   Scalar u_ = 0.0;
   Matrix sigmaCovariates_;
   Matrix xiCovariates_;
@@ -1175,9 +1196,16 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
   try
   {
     // estimate parameter distribution via the Fisher information matrix
-    Matrix fisher(nP, nP);
+    // only the exceedances carry information about the beta coefficients
+    Collection<UnsignedInteger> exceedanceIndices;
     for (UnsignedInteger i = 0; i < size; ++ i)
+      if (sample(i, 0) > u)
+        exceedanceIndices.add(i);
+    const UnsignedInteger exceedanceSize = exceedanceIndices.getSize();
+    Matrix fisher(nP, nP);
+    for (UnsignedInteger k = 0; k < exceedanceSize; ++ k)
     {
+      const UnsignedInteger i = exceedanceIndices[k];
       // set the location through a global variable
       GeneralizedParetoPDFEvaluation::SetX(sample[i]);
 
@@ -1185,7 +1213,7 @@ CovariatesResult GeneralizedParetoFactory::buildCovariates(const Sample & sample
       const Matrix dpdfi(yToPDF.parameterGradient(covariates[i]));
       fisher = fisher + dpdfi.computeGram(false);
     }
-    const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP) / size).getImplementation());
+    const CovarianceMatrix covariance(SymmetricMatrix(fisher.getImplementation()).solveLinearSystem(IdentityMatrix(nP) / exceedanceSize).getImplementation());
     parameterDistribution = Normal(optimalBeta, covariance);
   }
   catch (const Exception &)
@@ -1397,14 +1425,12 @@ public:
       const Scalar m,
       const OptimizationAlgorithm & solver)
     : EvaluationImplementation()
-    , sample_(sample)
-    , u_(u)
     , xi0_(xi0)
-    , zeta_(zeta)
-    , m_(m)
     , solver_(solver)
+    , objective_(new GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2(sample, u, m, zeta))
   {
-    // Nothing to do
+    // The inner objective is built once: it prefilters the exceedances,
+    // each outer iteration only freezes zm through a ParametricFunction
   }
 
   GeneralizedParetoReturnLevelProfileLikelihoodEvaluation1 * clone() const override
@@ -1429,17 +1455,14 @@ public:
 
   Point operator() (const Point & parameter) const override
   {
-    const Function objective(new GeneralizedParetoReturnLevelProfileLikelihoodEvaluation2(sample_, u_, m_, zeta_));
-    const ParametricFunction objectiveZm(objective, Indices({0}), parameter);
+    const ParametricFunction objectiveZm(objective_, Indices({0}), parameter);
     OptimizationProblem problem(objectiveZm);
     problem.setMinimization(false);
 
-    const Point x0({xi0_});
-
-    // solve optimization problem
+    // solve optimization problem, warm-started from the previous optimum if any
     OptimizationAlgorithm solver(solver_);
     solver.setProblem(problem);
-    solver.setStartingPoint(x0);
+    solver.setStartingPoint(optimalPoint_.getSize() == 1 ? optimalPoint_ : Point({xi0_}));
     try
     {
       solver.run();
@@ -1459,13 +1482,10 @@ public:
   }
 
 private:
-  Sample sample_;
-  Scalar u_ = 0.0;
   Scalar xi0_ = 0.0;
-  Scalar zeta_ = 0.0;
-  Scalar m_ = 0.0;
   mutable Point optimalPoint_;
   OptimizationAlgorithm solver_;
+  Function objective_;
 };
 
 ProfileLikelihoodResult GeneralizedParetoFactory::buildReturnLevelProfileLikelihoodEstimator(const Sample & sample, const Scalar u,
