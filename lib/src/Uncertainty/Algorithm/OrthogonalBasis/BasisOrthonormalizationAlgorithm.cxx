@@ -204,9 +204,8 @@ void BasisOrthonormalizationAlgorithm::run()
     pulledBack[i] = ComposedFunction(initialFunctions_[i], mapping_);
   }
   Matrix RinvMatrix;
-  const Scalar epsilon = ResourceMap::HasKey("BasisOrthonormalizationAlgorithm-Epsilon")
-    ? ResourceMap::GetAsScalar("BasisOrthonormalizationAlgorithm-Epsilon")
-    : 1.0e-11;
+  const Scalar epsilon = ResourceMap::GetAsScalar("BasisOrthonormalizationAlgorithm-Epsilon");
+  if (!(epsilon >= 0.0)) throw InvalidArgumentException(HERE) << "Error: BasisOrthonormalizationAlgorithm-Epsilon must be >= 0";
   const ExperimentIntegration * experimentRule = dynamic_cast<const ExperimentIntegration *>(effectiveIntegration.getImplementation().get());
   if (experimentRule == nullptr)
   {
@@ -418,9 +417,8 @@ Function BasisOrthonormalizationAlgorithm::buildMapping() const
 IntegrationAlgorithm BasisOrthonormalizationAlgorithm::buildDefaultIntegration(const Distribution & distribution)
 {
   const UnsignedInteger dimension = distribution.getDimension();
-  const UnsignedInteger Ndiscretization = ResourceMap::HasKey("BasisOrthonormalizationAlgorithm-DefaultDiscretization")
-    ? ResourceMap::GetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-DefaultDiscretization")
-    : 128;
+  const UnsignedInteger Ndiscretization = ResourceMap::GetAsUnsignedInteger("BasisOrthonormalizationAlgorithm-DefaultDiscretization");
+  if (Ndiscretization == 0) throw InvalidArgumentException(HERE) << "Error: BasisOrthonormalizationAlgorithm-DefaultDiscretization must be > 0";
   const Indices marginalSizes(dimension, Ndiscretization);
   if (distribution.hasIndependentCopula())
   {

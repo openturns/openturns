@@ -262,23 +262,18 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
   {
     orthoFunctions[k] = orthonormalFunctions_[k];
   }
-  const UnsignedInteger alphaS = ResourceMap::HasKey("GaussLPQuadrature-AlphaS")
-    ? ResourceMap::GetAsUnsignedInteger("GaussLPQuadrature-AlphaS")
-    : 100;
-  const UnsignedInteger Ngauss = ResourceMap::HasKey("GaussLPQuadrature-Ngauss")
-    ? ResourceMap::GetAsUnsignedInteger("GaussLPQuadrature-Ngauss")
-    : 100;
-  const Scalar epsilon = ResourceMap::HasKey("GaussLPQuadrature-Epsilon")
-    ? ResourceMap::GetAsScalar("GaussLPQuadrature-Epsilon")
-    : 1.0e-5;
+  const UnsignedInteger alphaS = ResourceMap::GetAsUnsignedInteger("GaussLPQuadrature-AlphaS");
+  if (alphaS == 0) throw InvalidArgumentException(HERE) << "Error: GaussLPQuadrature-AlphaS must be > 0";
+  const UnsignedInteger Ngauss = ResourceMap::GetAsUnsignedInteger("GaussLPQuadrature-Ngauss");
+  if (Ngauss == 0) throw InvalidArgumentException(HERE) << "Error: GaussLPQuadrature-Ngauss must be > 0";
+  const Scalar epsilon = ResourceMap::GetAsScalar("GaussLPQuadrature-Epsilon");
+  if (!(epsilon > 0.0)) throw InvalidArgumentException(HERE) << "Error: GaussLPQuadrature-Epsilon must be > 0";
   // HiGHS solvers are selected per instance (see HiGHS::setAlgorithmName):
-  // the ResourceMap is only read, never modified.
-  const String primarySolver = ResourceMap::HasKey("GaussLPQuadrature-Solver")
-    ? ResourceMap::GetAsString("GaussLPQuadrature-Solver")
-    : "choose";
-  const String fallbackSolver = ResourceMap::HasKey("GaussLPQuadrature-FallbackSolver")
-    ? ResourceMap::GetAsString("GaussLPQuadrature-FallbackSolver")
-    : "ipm";
+  // the ResourceMap is only read, never modified. An empty fallback disables
+  // the retry; non-empty solver names are validated by HiGHS itself.
+  const String primarySolver = ResourceMap::GetAsString("GaussLPQuadrature-Solver");
+  if (primarySolver.empty()) throw InvalidArgumentException(HERE) << "Error: GaussLPQuadrature-Solver must be non-empty";
+  const String fallbackSolver = ResourceMap::GetAsString("GaussLPQuadrature-FallbackSolver");
   const Interval support(measure_.getRange());
   const Point a(support.getLowerBound());
   const Point b(support.getUpperBound());
