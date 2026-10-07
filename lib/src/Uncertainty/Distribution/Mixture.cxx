@@ -694,23 +694,25 @@ Description Mixture::getParameterDescription() const
 
 void Mixture::setParameter(const Point & parameter)
 {
+  // Check the size before updating any distribution: no partial update on error,
+  // and no silently ignored extra values
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameterDimension() << " values, got " << parameter.getSize();
   // Get the atom parameters
   const UnsignedInteger size = distributionCollection_.getSize();
   Collection<Distribution> newAtoms(size);
   UnsignedInteger shift = 0;
-  const UnsignedInteger parameterSize = parameter.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
+    // Work on a copy: thanks to copy-on-write the stored distribution is left unchanged if a later distribution rejects its slice
     Distribution atom(distributionCollection_[i]);
-    Point atomParameter(atom.getParameter());
-    const UnsignedInteger atomParameterSize = atomParameter.getSize();
-    if (shift + atomParameterSize > parameterSize) throw InvalidArgumentException(HERE) << "Error: expected at least a parameter of size=" << shift + atomParameterSize << ", got size=" << parameterSize;
-    // Update the current atom parameter
+    const UnsignedInteger atomParameterSize = atom.getParameterDimension();
+    Point atomParameter(atomParameterSize);
     std::copy(parameter.begin() + shift, parameter.begin() + shift + atomParameterSize, atomParameter.begin());
     atom.setParameter(atomParameter);
     newAtoms[i] = atom;
     shift += atomParameterSize;
   }
+  // All slices accepted: commit the staged updates
   setDistributionCollectionWithWeights(newAtoms, Point(p_));
 }
 
