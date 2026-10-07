@@ -1193,9 +1193,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("PosteriorDistribution-OptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("PosteriorDistribution-RatioUniformCandidateNumber", 10000);
 
-  // JointDistribution parameters //
-  addAsBool("JointDistribution-UseGenericCovarianceAlgorithm", false);
-
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
