@@ -55,9 +55,9 @@ and bound constraints:
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> cost = [1.1, 1.0]
->>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30])
+>>> bounds = ot.Interval([0.0, 1.0], [4.0, 1e30], [True, True], [True, False])
 >>> A = ot.Matrix([[0.0, 1.0], [1.0, 2.0], [3.0, 2.0]])
->>> lcb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9])
+>>> lcb = ot.Interval([-1e9, 5.0, 6.0], [7.0, 15.0, 1e9], [False, True, True], [True, True, False])
 >>> problem = otexp.LinearProblem(cost, bounds, A, lcb)
 >>> problem.setVariablesType([ot.OptimizationProblemImplementation.INTEGER, ot.OptimizationProblemImplementation.CONTINUOUS])
 )RAW"
