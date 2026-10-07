@@ -1041,103 +1041,10 @@ void JointDistribution::computeCovariance() const
           covariance_(rowIndex, columnIndex) = shape(rowIndex, columnIndex) * std::sqrt(covariance_(rowIndex, rowIndex) * covariance_(columnIndex, columnIndex));
       return;
     }
-    if (!core_.isCopula() || ResourceMap::GetAsBool("JointDistribution-UseGenericCovarianceAlgorithm"))
-    {
-      LOGINFO("JointDistribution: using the generic covariance algorithm");
-      DistributionImplementation::computeCovariance();
-      return;
-    }
-    LOGINFO("JointDistribution: using the specific covariance algorithm");
-    // Here we use the following expression of the covariance \Sigma_{i,j}:
-    // \Sigma_{i,j}=\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_{i,j}(x_i,x_j)dx_idx_j
-    //             =\int_{\R^2}(x_i-\mu_i)(x_j-\mu_j)p_i(x_i)p_j(x_j}c_{i,j}(F_i(x_i),F_j(x_j))dx_idx_j
-    // Let u_i=F_i(x_i) and u_j=F_j(u_j) so du_idu_j=p_i(x_i)p_j(x_j)dx_idx_j
-    // \Sigma_{i,j}=\int_{[0,1]^2}(F_i^{-1}(u_i)-\mu_i)(F_j^{-1}(u_j)-\mu_j)c_{i,j}(u_i,u_j)du_idu_j
-
-    // To ensure that the mean is up to date
-    mean_ = getMean();
-    // Compute the weights and nodes of the 1D gauss quadrature over [-1, 1]
-    // Generate only the square-root of integrationNodesNumber_ 1D nodes in
-    // order to have a total workload of integrationNodesNumber_
-    const UnsignedInteger oldIntegrationNodesNumber = integrationNodesNumber_;
-    integrationNodesNumber_ = static_cast<UnsignedInteger>(std::ceil(std::sqrt(1.0 * integrationNodesNumber_)));
-    Point gaussWeights;
-    Point gaussNodes(getGaussNodesAndWeights(gaussWeights));
-    integrationNodesNumber_ = oldIntegrationNodesNumber;
-    // Convert the nodes and weights for the interval [0, 1]
-    for (UnsignedInteger i = 0; i < gaussWeights.getSize(); ++i)
-    {
-      gaussNodes[i] = 0.5 * (gaussNodes[i] + 1.0);
-      gaussWeights[i] *= 0.5;
-    }
-    // Compute the marginal quantiles at the nodes
-    Sample marginalQuantiles(gaussWeights.getSize(), dimension);
-    Sample marginalPDF(gaussWeights.getSize(), dimension);
-    for(UnsignedInteger component = 0; component < dimension; ++component)
-    {
-      const Distribution marginalDistribution(getMarginal(component));
-      for(UnsignedInteger nodeIndex = 0; nodeIndex < gaussWeights.getSize(); ++nodeIndex)
-      {
-        const Scalar node = gaussNodes[nodeIndex];
-        const Point q(marginalDistribution.computeQuantile(node));
-        marginalQuantiles(nodeIndex, component) = q[0];
-        marginalPDF(nodeIndex, component) = marginalDistribution.computePDF(q);
-      }
-    }
-    // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
-    // We simply use a product gauss quadrature
-    // We first loop over the coeeficients because the most expensive task is to get the 2D marginal copulas
-    Indices indices(2);
-    // Prepare the 2D integration nodes and weights in order to use potential parallelism in 2D marginal pdf computation
-    Sample nodes2D(gaussWeights.getSize() * gaussWeights.getSize(), 2);
-    Point weights2D(gaussWeights.getSize() * gaussWeights.getSize());
-    UnsignedInteger index = 0;
-    for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < gaussWeights.getSize(); ++rowNodeIndex)
-    {
-      const Scalar nodeI = gaussNodes[rowNodeIndex];
-      const Scalar weightI = gaussWeights[rowNodeIndex];
-      for (UnsignedInteger columnNodeIndex = 0; columnNodeIndex < gaussWeights.getSize(); ++columnNodeIndex)
-      {
-        const Scalar nodeJ = gaussNodes[columnNodeIndex];
-        const Scalar weightJ = gaussWeights[columnNodeIndex];
-        nodes2D(index, 0) = nodeI;
-        nodes2D(index, 1) = nodeJ;
-        weights2D[index] = weightI * weightJ;
-        ++index;
-      } // loop over J integration nodes
-    } // loop over I integration nodes
-    // Now perform the integration for each component of the covariance matrix
-    for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
-    {
-      indices[0] = rowIndex;
-      const Scalar muI = mean_[rowIndex];
-      // We must fill the upper triangle of the covariance matrix in order to access the 2D marginal distributions
-      // of the copula in the correct order for the BlockIndependentCopula
-      for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
-      {
-        indices[1] = columnIndex;
-        const Scalar muJ = mean_[columnIndex];
-        const Distribution marginalCopula(core_.getMarginal(indices));
-        if (!marginalCopula.hasIndependentCopula())
-        {
-          LOGINFO(OSS() << "Compute covariance(" << rowIndex << ", " << columnIndex << ")");
-          const Point pdf2D(marginalCopula.computePDF(nodes2D).getImplementation()->getData());
-          Scalar covarianceIJ = 0.0;
-          // Then we loop over the integration points
-          index = 0;
-          for (UnsignedInteger rowNodeIndex = 0; rowNodeIndex < gaussWeights.getSize(); ++rowNodeIndex)
-          {
-            for (UnsignedInteger columnNodeIndex = 0; columnNodeIndex < gaussWeights.getSize(); ++columnNodeIndex)
-            {
-              covarianceIJ += weights2D[index] * (marginalQuantiles(rowNodeIndex, rowIndex) - muI) * (marginalQuantiles(columnNodeIndex, columnIndex) - muJ) * pdf2D[index];
-              ++index;
-            } // loop over J integration nodes
-          } // loop over I integration nodes
-          LOGINFO(OSS() << "Covariance(" << rowIndex << ", " << columnIndex << ")=" << covarianceIJ);
-          covariance_(rowIndex, columnIndex) = covarianceIJ;
-        }
-      } // loop over column indices
-    } // loop over row indices
+    // The covariance is computed by numerical integration over the range
+    // of the distribution, see DistributionImplementation::computeCovariance()
+    DistributionImplementation::computeCovariance();
+    return;
   } // if !hasIndependentCopula
   isAlreadyComputedCovariance_ = true;
 } // computeCovariance
