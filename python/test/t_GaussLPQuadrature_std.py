@@ -65,10 +65,12 @@ for k in range(n1d):
         ott.assert_almost_equal(integral, 0.0, 1e-3, 1e-3)
 
 # LP solver fallback: an invalid primary solver fails over to the fallback solver
-ot.ResourceMap.SetAsString('HiGHS-solver', 'nonsense')
+ot.ResourceMap.SetAsString('GaussLPQuadrature-Solver', 'nonsense')
 nodesFb, weightsFb = factory1d.buildQuadrature(n1d)
 ott.assert_almost_equal(sum(weightsFb), 1.0, 1e-3, 1e-3)
-assert ot.ResourceMap.GetAsString('HiGHS-solver') == 'nonsense'
+# The ResourceMap is never modified to switch solvers
+assert ot.ResourceMap.GetAsString('GaussLPQuadrature-Solver') == 'nonsense'
+assert ot.ResourceMap.GetAsString('GaussLPQuadrature-FallbackSolver') == 'ipm'
 # An empty fallback disables the retry and surfaces the original error
 ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', '')
 with ott.assert_raises(TypeError):
@@ -77,5 +79,5 @@ with ott.assert_raises(TypeError):
 ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', 'nonsense')
 with ott.assert_raises(TypeError):
     factory1d.buildQuadrature(n1d)
-ot.ResourceMap.SetAsString('HiGHS-solver', 'choose')
+ot.ResourceMap.SetAsString('GaussLPQuadrature-Solver', 'choose')
 ot.ResourceMap.SetAsString('GaussLPQuadrature-FallbackSolver', 'ipm')

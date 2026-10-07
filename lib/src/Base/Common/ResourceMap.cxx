@@ -924,9 +924,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
 
-  // HiGHS parameters //
-  addAsString("HiGHS-solver", "choose");
-
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
   addAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
@@ -1027,6 +1024,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("GaussLPQuadrature-AlphaS", 100);
   addAsUnsignedInteger("GaussLPQuadrature-Ngauss", 100);
   addAsScalar("GaussLPQuadrature-Epsilon", 1.0e-5);
+  addAsString("GaussLPQuadrature-Solver", "choose");
   addAsString("GaussLPQuadrature-FallbackSolver", "ipm");
 
   // LinearModelTest parameters //

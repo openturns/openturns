@@ -271,6 +271,14 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
   const Scalar epsilon = ResourceMap::HasKey("GaussLPQuadrature-Epsilon")
     ? ResourceMap::GetAsScalar("GaussLPQuadrature-Epsilon")
     : 1.0e-5;
+  // HiGHS solvers are selected per instance (see HiGHS::setAlgorithmName):
+  // the ResourceMap is only read, never modified.
+  const String primarySolver = ResourceMap::HasKey("GaussLPQuadrature-Solver")
+    ? ResourceMap::GetAsString("GaussLPQuadrature-Solver")
+    : "choose";
+  const String fallbackSolver = ResourceMap::HasKey("GaussLPQuadrature-FallbackSolver")
+    ? ResourceMap::GetAsString("GaussLPQuadrature-FallbackSolver")
+    : "ipm";
   const Interval support(measure_.getRange());
   const Point a(support.getLowerBound());
   const Point b(support.getUpperBound());
@@ -323,7 +331,7 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
   Point alpha;
   try
   {
-    HiGHS highs(lpProblem);
+    HiGHS highs(lpProblem, primarySolver);
     highs.run();
     alpha = highs.getResult().getOptimalPoint();
   }
@@ -331,30 +339,13 @@ Sample GaussLPQuadrature::build(const UnsignedInteger n,
   {
     // The first attempt failed (e.g. ill-conditioned LP): retry once with the
     // fallback solver, usually an interior point method more robust than simplex
-    // on degenerate problems. An empty fallback disables the retry. The global
-    // solver option is restored before returning.
-    const String fallbackSolver = ResourceMap::HasKey("GaussLPQuadrature-FallbackSolver")
-      ? ResourceMap::GetAsString("GaussLPQuadrature-FallbackSolver")
-      : "ipm";
-    const String solverKey("HiGHS-solver");
-    const String currentSolver = ResourceMap::HasKey(solverKey)
-      ? ResourceMap::GetAsString(solverKey)
-      : "choose";
-    if (fallbackSolver.empty() || (fallbackSolver == currentSolver)) throw;
-    LOGWARN(OSS() << "GaussLPQuadrature: HiGHS solve failed with solver=" << currentSolver << ", retrying with solver=" << fallbackSolver);
-    ResourceMap::SetAsString(solverKey, fallbackSolver);
-    try
-    {
-      HiGHS highsFallback(lpProblem);
-      highsFallback.run();
-      alpha = highsFallback.getResult().getOptimalPoint();
-    }
-    catch (...)
-    {
-      ResourceMap::SetAsString(solverKey, currentSolver);
-      throw;
-    }
-    ResourceMap::SetAsString(solverKey, currentSolver);
+    // on degenerate problems. An empty fallback disables the retry. Solvers are
+    // selected per HiGHS instance, the ResourceMap is never modified.
+    if (fallbackSolver.empty() || (fallbackSolver == primarySolver)) throw;
+    LOGWARN(OSS() << "GaussLPQuadrature: HiGHS solve failed with solver=" << primarySolver << ", retrying with solver=" << fallbackSolver);
+    HiGHS highsFallback(lpProblem, fallbackSolver);
+    highsFallback.run();
+    alpha = highsFallback.getResult().getOptimalPoint();
   }
   UnsignedInteger nSupport = 0;
   for (UnsignedInteger i = 0; i < S; ++i)
