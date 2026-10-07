@@ -111,7 +111,6 @@ for distribution in [
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipCharacteristicFunction()
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
     if (
