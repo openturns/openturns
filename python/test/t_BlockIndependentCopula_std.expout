@@ -66,7 +66,7 @@ margins PDF=3.086065
 margins CDF=0.005401
 margins quantile= class=Point name=Unnamed dimension=5 values=[0.989493,0.989493,0.989493,0.989493,0.989493]
 margins CDF(quantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=5 values=[0.66202,0.528162,0.684545,0.181369,0.289273]
+margins realization= class=Point name=Unnamed dimension=5 values=[0.0152169,0.116204,0.222761,0.652773,0.345761]
 isoprobabilistic transformation (general normal)= [(RosenblattEvaluation(FrankCopula(theta = 3)->Normal(2)))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(NatafEllipticalCopulaEvaluation(Copula(inverseCholesky=[[  1         0         0        ]
  [ -0.57735   1.1547    0        ]
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
