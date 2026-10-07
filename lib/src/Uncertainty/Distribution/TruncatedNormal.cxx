@@ -359,28 +359,71 @@ LevelSet TruncatedNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex TruncatedNormal::computeCharacteristicFunction(const Scalar x) const
 {
-  if (normalizationFactorIsLog_)
-    return std::exp(computeLogCharacteristicFunction(x));
-  const Scalar iSigma2 = 1.0 / (sigma_ * std::sqrt(2.0));
-  const Scalar alpha = (a_ - mu_) * iSigma2;
-  const Scalar beta = (b_ - mu_) * iSigma2;
-  const Scalar t = x * sigma_ / std::sqrt(2.0);
-  const Complex w1(SpecFunc::Faddeeva(Complex(-t, -alpha)));
-  const Complex w2(SpecFunc::Faddeeva(Complex(-t, -beta)));
-  return 0.5 * std::exp(Complex(0.0, x * mu_)) * (w2 * std::exp(Complex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(Complex(-alpha * alpha, 2.0 * alpha * t))) * normalizationFactor_;
+  return std::exp(computeLogCharacteristicFunction(x));
 }
 
+/* Log-characteristic function, with phi(u) = exp(I*mu*u - sigma^2*u^2/2) * (Phi(zb) - Phi(za)) / (Phi(bNorm) - Phi(aNorm)),
+ * where za = aNorm - I*sigma*u and zb = bNorm - I*sigma*u.
+ * Both numerator and denominator are evaluated in log-scale: the lower tail Phi is used
+ * when both bounds sit on the left, the upper tail 1 - Phi when they sit on the right,
+ * so no direct subtraction of nearly equal CDFs occurs. */
 Complex TruncatedNormal::computeLogCharacteristicFunction(const Scalar x) const
 {
-  const Scalar iSigma2 = 1.0 / (sigma_ * std::sqrt(2.0));
-  const Scalar alpha = (a_ - mu_) * iSigma2;
-  const Scalar beta = (b_ - mu_) * iSigma2;
-  const Scalar t = x * sigma_ / std::sqrt(2.0);
-  const Complex w1(SpecFunc::Faddeeva(Complex(-t, -alpha)));
-  const Complex w2(SpecFunc::Faddeeva(Complex(-t, -beta)));
-  if (normalizationFactorIsLog_)
-    throw NotYetImplementedException(HERE) << "In TruncatedNormal::computeLogCharacteristicFunction(const Scalar x)";
-  return Complex(0.0, x * mu_) + std::log(w2 * std::exp(Complex(-beta * beta, 2.0 * beta * t)) - w1 * std::exp(Complex(-alpha * alpha, 2.0 * alpha * t))) + std::log(0.5 * normalizationFactor_);
+  if (x == 0.0) return Complex(0.0, 0.0);
+  const Scalar s = x * sigma_;
+  const Complex za(aNorm_, -s);
+  const Complex zb(bNorm_, -s);
+  const Scalar iSqrt2 = 1.0 / std::sqrt(2.0);
+  const Complex half(0.5, 0.0);
+  const Complex one(1.0, 0.0);
+  // log(Phi(z)) for complex z, stable for large |Re(z)|
+  auto logPhi = [&](const Complex & z) -> Complex
+  {
+    const Complex w = -z * iSqrt2;
+    if (w.real() > 0.0)
+      return std::log(half * SpecFunc::ErfCX(w)) - w * w;
+    const Complex tail = half * SpecFunc::ErfC(-w);
+    return std::log(one - tail);
+  };
+  // log(1 - Phi(z)) for complex z, stable for large |Re(z)|
+  auto logTail = [&](const Complex & z) -> Complex
+  {
+    const Complex w = -z * iSqrt2;
+    const Complex v = -w;
+    if (v.real() > 0.0)
+      return std::log(half * SpecFunc::ErfCX(v)) - v * v;
+    const Complex phi = half * SpecFunc::ErfC(w);
+    return std::log(one - phi);
+  };
+  // log(1 - exp(d)) for complex d with Re(d) <= 0, stable for d close to 0
+  auto log1mexp = [&](const Complex & d) -> Complex
+  {
+    const Complex e = std::exp(d);
+    if (e == one) return std::log(-d);
+    return std::log(one - e);
+  };
+  // log(Phi(b) - Phi(a)) in the real case, stable for small denominators
+  // Use the log-scale CDF/tail values as the direct difference PhiB - PhiA
+  // suffers from cancellation when both bounds are in the same far tail.
+  Scalar logDenominator;
+  if (bNorm_ < 0.0)
+    logDenominator = DistFunc::logpNormal(bNorm_) + std::log(-std::expm1(DistFunc::logpNormal(aNorm_) - DistFunc::logpNormal(bNorm_)));
+  else
+    logDenominator = DistFunc::logpNormal(aNorm_, true) + std::log(-std::expm1(DistFunc::logpNormal(bNorm_, true) - DistFunc::logpNormal(aNorm_, true)));
+  Complex logDelta;
+  if (bNorm_ < 0.0)
+  {
+    const Complex logFa = logPhi(za);
+    const Complex logFb = logPhi(zb);
+    logDelta = logFb + log1mexp(logFa - logFb);
+  }
+  else
+  {
+    const Complex logSa = logTail(za);
+    const Complex logSb = logTail(zb);
+    logDelta = logSa + log1mexp(logSb - logSa);
+  }
+  return Complex(-0.5 * s * s, x * mu_) + logDelta - logDenominator;
 }
 
 /* Get the PDFGradient of the distribution */
