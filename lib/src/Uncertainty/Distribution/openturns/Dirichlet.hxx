@@ -42,7 +42,7 @@ public:
   Dirichlet();
 
   /** Parameters constructor */
-  Dirichlet(const Point & theta);
+  explicit Dirichlet(const Point & theta);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
@@ -132,12 +132,6 @@ public:
 
   /** Tell if the distribution has an elliptical copula */
   Bool hasEllipticalCopula() const override;
-
-  /** Get the Spearman correlation of the distribution */
-  CorrelationMatrix getSpearmanCorrelation() const override;
-
-  /** Get the Kendall concordance of the distribution */
-  CorrelationMatrix getKendallTau() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
