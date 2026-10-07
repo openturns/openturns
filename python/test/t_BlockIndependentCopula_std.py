@@ -126,6 +126,11 @@ print(
     copula.computeSequentialConditionalQuantile(resCDF),
 )
 
+ot.Log.Show(ot.Log.TRACE)
+validation = ott.DistributionValidation(copula)
+validation.skipGradient()
+validation.run()
+
 # Specific to this copula
 
 # Extract a 5-D marginal
