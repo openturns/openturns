@@ -498,20 +498,28 @@ Point OrdinalSumCopula::getParameter() const
 
 void OrdinalSumCopula::setParameter(const Point & parameter)
 {
-  UnsignedInteger globalIndex = 0;
+  // Check the size before updating any copula: no partial update on error,
+  // and no silently ignored extra values
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameterDimension() << " values, got " << parameter.getSize();
   const UnsignedInteger size = copulaCollection_.getSize();
+  DistributionCollection newCopulas(size);
+  UnsignedInteger globalIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    // All distributions, including copulas, must output a collection of Point of size at least 1,
-    // even if the Point are empty
-    const UnsignedInteger atomParametersDimension = copulaCollection_[i].getParameterDimension();
-    if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
-    // ith copula parameters
+    // Work on a copy: thanks to copy-on-write the stored copula is left unchanged if a later copula rejects its slice
+    Distribution copula(copulaCollection_[i]);
+    const UnsignedInteger atomParametersDimension = copula.getParameterDimension();
     Point newParameter(atomParametersDimension);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
+    copula.setParameter(newParameter);
+    newCopulas[i] = copula;
     globalIndex += atomParametersDimension;
-    copulaCollection_[i].setParameter(newParameter);
   } // atoms
+  // All slices accepted: commit the staged updates
+  // setCopulaCollection overwrites the description from the first copula: save/restore it
+  const Description description(getDescription());
+  setCopulaCollection(newCopulas);
+  setDescription(description);
 }
 
 Description OrdinalSumCopula::getParameterDescription() const
