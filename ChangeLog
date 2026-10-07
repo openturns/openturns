@@ -73,6 +73,8 @@
  * Deprecated ProcessSample.setField(Field, int) in favor ProcessSample.setField(int, Field)
  * Deprecated Field.getInputDimension/getOutputDimension in favor of getMesh().getDimension()/getDimension
  * Added Graph.setXMin/setXMax/setYMin/setYMax
+ * Added HiGHS.GetAlgorithmNames/setAlgorithmName/getAlgorithmName to select the LP solver (openturns.experimental)
+ * Added HiGHS.getDualPoint/getReducedCosts/getConstraintValues to expose the dual solution (openturns.experimental)
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
