@@ -103,7 +103,6 @@ cores.append(ot.Mixture(atoms, [0.25, 0.75]))
 cores.append(ot.UniformOrderStatistics(dim))
 # With a core which support is strictly included in the unit cube
 cores.append(ot.KernelMixture(ot.Beta(2.0, 3.0, 0.2, 0.8), [1.0] * dim, [[0.0] * dim]))
-ot.ResourceMap.SetAsBool("JointDistribution-UseGenericCovarianceAlgorithm", True)
 for nCore in range(len(cores)):
     print("\n\n")
     # Instantiate one distribution object
