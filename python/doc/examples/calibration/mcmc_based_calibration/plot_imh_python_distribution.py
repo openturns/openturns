@@ -120,7 +120,7 @@ size = 500
 sample = newDist_generic.getSample(size)
 
 ks_algo = ot.KernelSmoothing()
-ks_algo.setBoundaryCorrection(True)
+ks_algo.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks_algo.setLowerBound(lower_bound)
 ks_algo.setUpperBound(upper_bound)
 ks_pdf_GS = ks_algo.build(sample)
@@ -217,7 +217,7 @@ size = 100000
 sample = ratio_algo.getSample(size)
 
 ks_algo = ot.KernelSmoothing()
-ks_algo.setBoundaryCorrection(True)
+ks_algo.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks_algo.setLowerBound(lower_bound)
 ks_algo.setUpperBound(upper_bound)
 ks_pdf = ks_algo.build(sample)
@@ -238,7 +238,7 @@ size2 = 500
 sample = ratio_algo.getSample(size2)
 
 ks_algo = ot.KernelSmoothing()
-ks_algo.setBoundaryCorrection(True)
+ks_algo.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks_algo.setLowerBound(lower_bound)
 ks_algo.setUpperBound(upper_bound)
 ks_pdf_RoU = ks_algo.build(sample)
@@ -309,7 +309,7 @@ sample_IMH = independent_IMH.getSample(sample_Size)
 # %%
 # Plot the PDF of the sample to compare it to the target density
 ks_algo = ot.KernelSmoothing()
-ks_algo.setBoundaryCorrection(True)
+ks_algo.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks_algo.setLowerBound(0.0)
 ks_algo.setUpperBound(2.0 * pi)
 posterior_IMH = ks_algo.build(sample_IMH)
@@ -346,7 +346,7 @@ sample_RWMH = randomwalk_MH.getSample(sample_Size)
 # Plot the PDF of the sample to compare it to the target density
 
 ks_algo = ot.KernelSmoothing()
-ks_algo.setBoundaryCorrection(True)
+ks_algo.setBoundingOption(ot.KernelSmoothing.BOTH)
 ks_algo.setLowerBound(0.0)
 ks_algo.setUpperBound(2.0 * pi)
 posterior_RWMH = ks_algo.build(sample_RWMH)

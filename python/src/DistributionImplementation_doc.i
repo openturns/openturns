@@ -2244,6 +2244,15 @@ The Kendall coefficients matrix is defined as:
                                 X_i > x_i \cap X_j < x_j},
                       \quad i,j = 1, \ldots, n\Big]
 
+For a discrete distribution the atoms may be tied, hence the coefficients are
+corrected for ties as in :py:meth:`~openturns.Sample.computeKendallTau`, ie
+divided by the square root of the probability of the pairs of atoms untied in
+each component.
+
+The exact enumeration of the atoms is only used when the support holds less
+than *Distribution-MaximumSupportSizeForRankCorrelation* atoms from the
+:class:`~openturns.ResourceMap`, otherwise a generic integration is performed.
+
 See Also
 --------
 getSpearmanCorrelation)RAW"
@@ -2709,6 +2718,14 @@ of the copula (ie that of the uniform margins):
     \mat{\rho_S} = \left[\frac{\Cov{F_{X_i}(X_i), F_{X_j}(X_j)}}
                               {\sqrt{\Var{F_{X_i}(X_i)} \Var{F_{X_j}(X_j)}}},
                          \quad i,j = 1, \ldots, d\right]
+
+For a discrete distribution, where :math:`F_{X_i}` has jumps, the tied values
+share their mid-rank, ie the probability of being below their value plus half
+of the probability of the atoms tied with them.
+
+The exact enumeration of the atoms is only used when the support holds less
+than *Distribution-MaximumSupportSizeForRankCorrelation* atoms from the
+:class:`~openturns.ResourceMap`, otherwise a generic integration is performed.
 
 See Also
 --------

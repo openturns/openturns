@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 import sys
 
 ot.TESTPREAMBLE()
@@ -318,6 +319,101 @@ def bad_hess_sheet(X):
 
 with ott.assert_raises(Exception):
     ot.PythonFunction(2, 1, a_exec, hessian=bad_hess_sheet).hessian([1.0, 2.0])
+
+print("gradient input dimension error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, gradient=a_grad).gradient([1.0])
+
+
+def raising_grad(X):
+    raise RuntimeError("no gradient")
+
+
+print("gradient python error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, gradient=raising_grad).gradient([1.0, 2.0])
+
+
+def row_grad(X):
+    return [[1.0], [2.0], [3.0]]
+
+
+print("gradient row error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, gradient=row_grad).gradient([1.0, 2.0])
+
+print("hessian input dimension error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=a_hess).hessian([1.0])
+
+
+def raising_hess(X):
+    raise RuntimeError("no hessian")
+
+
+print("hessian python error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=raising_hess).hessian([1.0, 2.0])
+
+
+def row_hess(X):
+    return [[[0.1]], [[0.2]], [[0.3]]]
+
+
+print("hessian row error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=row_hess).hessian([1.0, 2.0])
+
+
+def col_hess(X):
+    return [[[0.1], [0.2], [0.3]], [[0.4], [0.5], [0.6]]]
+
+
+print("hessian column error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=col_hess).hessian([1.0, 2.0])
+
+
+def sheet_hess(X):
+    return [[[0.1, 0.2], [0.3, 0.4]], [[0.5, 0.6], [0.7, 0.8]]]
+
+
+print("hessian sheet error")
+with ott.assert_raises(Exception):
+    ot.PythonFunction(2, 1, a_exec, hessian=sheet_hess).hessian([1.0, 2.0])
+
+
+class GFUNC(ot.OpenTURNSPythonFunction):
+    def __init__(self):
+        super(GFUNC, self).__init__(2, 1)
+
+    def _exec(self, X):
+        return [X[0] + X[1]]
+
+    def _gradient(self, X):
+        return [[1.0], [1.0]]
+
+    def _hessian(self, X):
+        return [[[0.0], [0.0]], [[0.0], [0.0]]]
+
+
+print("gradient/hessian from class")
+gfunc = ot.Function(GFUNC())
+ott.assert_almost_equal(gfunc.gradient([1.0, 2.0]), ot.Matrix([[1.0], [1.0]]))
+print(gfunc.hessian([1.0, 2.0]))
+
+print("gradient/hessian save/load")
+gstudy = ot.Study()
+gstudy.setStorageManager(ot.XMLStorageManager("pygrad.xml"))
+gstudy.add("gfunc", gfunc)
+gstudy.save()
+gloaded = ot.Function()
+greloader = ot.Study()
+greloader.setStorageManager(ot.XMLStorageManager("pygrad.xml"))
+greloader.load()
+greloader.fillObject("gfunc", gloaded)
+ott.assert_almost_equal(gloaded.gradient([1.0, 2.0]), ot.Matrix([[1.0], [1.0]]))
+os.remove("pygrad.xml")
 
 print("copy and descriptions")
 funcCopy = ot.Function(copyFunc)

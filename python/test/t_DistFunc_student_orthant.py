@@ -72,6 +72,33 @@ L[0, 0] = 1.0
 with ott.assert_raises(TypeError):
     ot.DistFunc.pStudentOrthantND([-1.0], [1.0], L, 0.0)
 
+print("Error: N = 0")
+with ott.assert_raises(TypeError):
+    ot.DistFunc.pStudentOrthantND([-1.0], [1.0], L, 5.0, 100, 0.5, 0)
+
+print("Error: alpha <= 0")
+with ott.assert_raises(TypeError):
+    ot.DistFunc.pStudentOrthantND([-1.0], [1.0], L, 5.0, 100, 0.0, 100)
+
+print("Error: dimension 0")
+with ott.assert_raises(ValueError):
+    ot.DistFunc.pStudentOrthantND([], [], ot.TriangularMatrix(0), 5.0)
+
+print("Error: null uniform pool size")
+L2 = ot.TriangularMatrix(2)
+L2[0, 0] = 1.0
+L2[1, 1] = 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-UniformPoolSize", 0)
+with ott.assert_raises(TypeError):
+    ot.DistFunc.pStudentOrthantND([-1.0, -1.0], [1.0, 1.0], L2, 5.0, 10, 0.5, 10)
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-UniformPoolSize", 1048576)
+
+print("Error: uniform pool size too small")
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-UniformPoolSize", 300)
+with ott.assert_raises(TypeError):
+    ot.DistFunc.pStudentOrthantND([-1.0, -1.0], [1.0, 1.0], L2, 5.0, 100, 0.5, 10)
+ot.ResourceMap.SetAsUnsignedInteger("Ridgway-UniformPoolSize", 1048576)
+
 print("Edge: a == b")
 L = ot.TriangularMatrix(1)
 L[0, 0] = 1.0

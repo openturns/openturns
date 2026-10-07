@@ -39,3 +39,21 @@ margins CDF=0.125000
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.966383,0.966383]
 margins CDF(qantile)=0.950000
 margins realization= class=Point name=Unnamed dimension=2 values=[0.29664,0.868128]
+kendall= [[ 1        0.333333 ]
+ [ 0.333333 1        ]]
+spearman= [[ 1        0.428571 ]
+ [ 0.428571 1        ]]
+independent kendall= [[ 1 0 ]
+ [ 0 1 ]]
+independent spearman= [[ 1 0 ]
+ [ 0 1 ]]
+independent= True
+min kendall= [[ 1 1 ]
+ [ 1 1 ]]
+min spearman= [[ 1 1 ]
+ [ 1 1 ]]
+realization= class=Point name=Unnamed dimension=2 values=[0.950718,0.843097]
+realization= class=Point name=Unnamed dimension=2 values=[0.351756,0.616394]
+realization= class=Point name=Unnamed dimension=2 values=[0.41785,0.41785]
+continuous= False
+continuous(0, 0)= True

@@ -115,7 +115,6 @@ int main(int, char *[])
     // With a core which support is strictly included in the unit cube
     cores.add(KernelMixture(Beta(2.0, 3.0, 0.2, 0.8), Point(dim, 1.0), Sample(1, dim)));
 
-    ResourceMap::SetAsBool("JointDistribution-UseGenericCovarianceAlgorithm", true);
     for (UnsignedInteger nCore = 0; nCore < cores.getSize(); ++nCore)
     {
       std::cout << "\n\n" << std::endl;

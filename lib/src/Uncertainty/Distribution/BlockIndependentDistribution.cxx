@@ -128,6 +128,7 @@ void BlockIndependentDistribution::setDistributionCollection(const DistributionC
   }
   distributionCollection_ = coll2;
   setParallel(parallel);
+  isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   // One MUST set the dimension BEFORE the description, else an error occurs
   setDimension(dimension);
@@ -411,7 +412,12 @@ Point BlockIndependentDistribution::computeSequentialConditionalPDF(const Point 
   const UnsignedInteger dim = ordering.getSize();
   if (x.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from ordering dimension=" << dim;
   if (hasIndependentCopula())
-    return computeSequentialConditionalPDF(x);
+  {
+    Point result(dim);
+    for (UnsignedInteger i = 0; i < dim; ++i)
+      result[i] = getMarginal(ordering[i]).computePDF(x[i]);
+    return result;
+  }
   const auto distCollection = distributionCollection_;
   const UnsignedInteger blockCount = distCollection.getSize();
 
@@ -521,7 +527,12 @@ Point BlockIndependentDistribution::computeSequentialConditionalCDF(const Point 
   const UnsignedInteger dim = ordering.getSize();
   if (x.getDimension() != dim) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from ordering dimension=" << dim;
   if (hasIndependentCopula())
-    return computeSequentialConditionalCDF(x);
+  {
+    Point result(dim);
+    for (UnsignedInteger i = 0; i < dim; ++i)
+      result[i] = getMarginal(ordering[i]).computeCDF(x[i]);
+    return result;
+  }
   const auto distCollection = distributionCollection_;
   const UnsignedInteger blockCount = distCollection.getSize();
 
@@ -944,17 +955,23 @@ Description BlockIndependentDistribution::getParameterDescription() const
 
 void BlockIndependentDistribution::setParameter(const Point & parameter)
 {
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: the parameter size=" << parameter.getSize() << " does not match the expected dimension=" << getParameterDimension();
   const UnsignedInteger size = distributionCollection_.getSize();
+  DistributionCollection newDistributions(size);
   UnsignedInteger globalIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const UnsignedInteger parametersSize = distributionCollection_[i].getParameterDimension();
-    if (globalIndex + parametersSize > parameter.getSize()) throw InvalidArgumentException(HERE) << "Not enough values (" << parameter.getSize() << "), needed " << globalIndex + parametersSize << " for block " << i;
+    // Work on a copy: thanks to copy-on-write the stored distribution is left unchanged if a later distribution rejects its slice
+    Distribution distribution(distributionCollection_[i]);
+    const UnsignedInteger parametersSize = distribution.getParameterDimension();
     Point newParameters(parametersSize);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
-    distributionCollection_[i].setParameter(newParameters);
+    distribution.setParameter(newParameters);
+    newDistributions[i] = distribution;
     globalIndex += parametersSize;
   }
+  // All slices accepted: commit the staged updates
+  setDistributionCollection(newDistributions);
 }
 
 void BlockIndependentDistribution::computeRange()

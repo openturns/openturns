@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 
 class RandomExp:
@@ -40,3 +41,27 @@ class BadGenerate:
 
 with ott.assert_raises(Exception):
     ot.Experiment(BadGenerate()).generate()
+
+
+class FailingGenerate:
+    def generate(self):
+        raise RuntimeError("cannot generate")
+
+
+with ott.assert_raises(Exception):
+    ot.Experiment(FailingGenerate()).generate()
+
+assert "PythonExperiment" in repr(experiment)
+
+# save/load
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("pyexp.xml"))
+study.add("experiment", experiment)
+study.save()
+loaded = ot.Experiment()
+reloader = ot.Study()
+reloader.setStorageManager(ot.XMLStorageManager("pyexp.xml"))
+reloader.load()
+reloader.fillObject("experiment", loaded)
+assert loaded.generate().getSize() == 10
+os.remove("pyexp.xml")

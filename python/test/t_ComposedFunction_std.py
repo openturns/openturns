@@ -122,3 +122,129 @@ study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("composed_eval.xml"))
 study.add("ev", ot.Function(ev))
 study.save()
+
+# ComposedGradient direct coverage
+cfRef = ot.ComposedFunction(f2, h1)
+cg = ot.ComposedGradient(f2.getGradient(), h1.getEvaluation(), h1.getGradient())
+_ = repr(cg)
+_ = str(cg)
+assert cg.getInputDimension() == h1.getInputDimension()
+assert cg.getOutputDimension() == f2.getOutputDimension()
+assert cg.isActualImplementation()
+_ = cg.getParameter()
+_ = cg.getCallsNumber()
+ott.assert_almost_equal(cg.gradient(x), cfRef.gradient(x), 1e-12, 1e-12)
+ott.assert_almost_equal(cfRef.getGradient().gradient(x), cfRef.gradient(x), 1e-12, 1e-12)
+_ = str(cfRef.getGradient())
+assert cfRef.getGradient() == cfRef.getGradient()
+assert not (cfRef.getGradient() != cfRef.getGradient())
+_ = cfRef.getGradient().getCallsNumber()
+with ott.assert_raises(Exception):
+    cg.gradient(ot.Point([1.0]))
+with ott.assert_raises(Exception):
+    ot.ComposedGradient(ot.SymbolicFunction(["a", "b", "c"], ["a"]).getGradient(), h1.getEvaluation(), h1.getGradient())
+with ott.assert_raises(Exception):
+    ot.ComposedGradient(f2.getGradient(), ot.SymbolicFunction(["a", "b", "c"], ["a", "b"]).getEvaluation(), h1.getGradient())
+with ott.assert_raises(Exception):
+    ot.ComposedGradient(f2.getGradient(), ot.SymbolicFunction(["x1", "x2"], ["a", "b", "c"]).getEvaluation(), h1.getGradient())
+
+# ComposedHessian direct coverage
+ch = ot.ComposedHessian(f2.getGradient(), f2.getHessian(), h1.getEvaluation(), h1.getGradient(), h1.getHessian())
+_ = repr(ch)
+_ = str(ch)
+assert ch.getInputDimension() == h1.getInputDimension()
+assert ch.getOutputDimension() == f2.getOutputDimension()
+assert ch.isActualImplementation()
+_ = ch.getParameter()
+_ = ch.getCallsNumber()
+ott.assert_almost_equal(ch.hessian(x), cfRef.hessian(x), 1e-12, 1e-12)
+ott.assert_almost_equal(cfRef.getHessian().hessian(x), cfRef.hessian(x), 1e-12, 1e-12)
+_ = str(cfRef.getHessian())
+assert cfRef.getHessian() == cfRef.getHessian()
+assert not (cfRef.getHessian() != cfRef.getHessian())
+_ = cfRef.getHessian().getCallsNumber()
+with ott.assert_raises(Exception):
+    ch.hessian(ot.Point([1.0]))
+badRight = ot.SymbolicFunction(["a", "b", "c"], ["a", "b"]).getEvaluation()
+with ott.assert_raises(Exception):
+    ot.ComposedHessian(f2.getGradient(), f2.getHessian(), badRight, h1.getGradient(), h1.getHessian())
+badLeftGrad = ot.SymbolicFunction(["a", "b", "c"], ["a"]).getGradient()
+with ott.assert_raises(Exception):
+    ot.ComposedHessian(badLeftGrad, f2.getHessian(), h1.getEvaluation(), h1.getGradient(), h1.getHessian())
+badLeftHess = ot.SymbolicFunction(["a", "b", "c"], ["a"]).getHessian()
+with ott.assert_raises(Exception):
+    ot.ComposedHessian(badLeftGrad, badLeftHess, h1.getEvaluation(), h1.getGradient(), h1.getHessian())
+
+# ComposedFunction indirect paths
+_ = repr(cfRef)
+_ = str(cfRef)
+assert cfRef == cfRef
+assert not (cfRef != cfRef)
+_ = cfRef.getCallsNumber()
+_ = cfRef.getEvaluation().getCallsNumber()
+ott.assert_almost_equal(cfRef(x), f2(h1(x)), 1e-12, 1e-12)
+ott.assert_almost_equal(cfRef(ot.Sample([x, x])), ot.Sample([cfRef(x), cfRef(x)]), 1e-12, 1e-12)
+ott.assert_almost_equal(cfRef.getEvaluation()(x), cfRef(x), 1e-12, 1e-12)
+ott.assert_almost_equal(cfRef.getEvaluation()(ot.Sample([x, x])), cfRef(ot.Sample([x, x])), 1e-12, 1e-12)
+_ = cfRef.getMarginal(0)(x)
+with ott.assert_raises(Exception):
+    cfRef(ot.Point([1.0]))
+with ott.assert_raises(Exception):
+    cfRef.getEvaluation()(ot.Point([1.0]))
+with ott.assert_raises(Exception):
+    ot.ComposedFunction(f2, ot.SymbolicFunction(["a"], ["a", "2*a", "3*a"]))
+
+# ComposedEvaluation extra paths
+_ = ev._repr_html_()
+assert ev.isActualImplementation()
+_ = ev.getCallsNumber()
+_ = ev.parameterGradient(x)
+_ = ev.getMarginal([])
+assert ev == ot.ComposedEvaluation(f2.getEvaluation(), h1.getEvaluation())
+assert not (ev != ot.ComposedEvaluation(f2.getEvaluation(), h1.getEvaluation()))
+with ott.assert_raises(Exception):
+    ev.getMarginal([0, 0])
+with ott.assert_raises(Exception):
+    ev.getMarginal([0, 5])
+with ott.assert_raises(Exception):
+    ev(ot.Sample([[1.0]]))
+
+# NoEvaluation / NoGradient / NoHessian direct coverage
+ne = ot.NoEvaluation()
+_ = repr(ne)
+_ = str(ne)
+assert ne.getInputDimension() == 0
+assert ne.getOutputDimension() == 0
+assert not ne.isActualImplementation()
+assert ne == ot.NoEvaluation()
+assert not (ne != ot.NoEvaluation())
+_ = ne.getCallsNumber()
+_ = ne.getParameter()
+_ = ne.getParameterDescription()
+_ = ne(ot.Point())
+with ott.assert_raises(Exception):
+    ne(ot.Point([1.0]))
+with ott.assert_raises(Exception):
+    ne.getMarginal(0)
+ng = ot.NoGradient()
+_ = repr(ng)
+_ = str(ng)
+assert ng.getInputDimension() == 0
+assert ng.getOutputDimension() == 0
+assert not ng.isActualImplementation()
+assert ng == ot.NoGradient()
+assert not (ng != ot.NoGradient())
+_ = ng.getCallsNumber()
+with ott.assert_raises(Exception):
+    ng.gradient(ot.Point())
+nh = ot.NoHessian()
+_ = repr(nh)
+_ = str(nh)
+assert nh.getInputDimension() == 0
+assert nh.getOutputDimension() == 0
+assert not nh.isActualImplementation()
+assert nh == ot.NoHessian()
+assert not (nh != ot.NoHessian())
+_ = nh.getCallsNumber()
+with ott.assert_raises(Exception):
+    nh.hessian(ot.Point())

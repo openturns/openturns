@@ -554,9 +554,6 @@
   <PosteriorDistribution-OptimizationAlgorithm value_str="Cobyla" />
   <PosteriorDistribution-RatioUniformCandidateNumber value_int="10000" />
 
-  <!-- OT::JointDistribution parameters -->
-  <JointDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
-
   <!-- OT::CompositeDistribution parameters -->
   <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />
   <CompositeDistribution-StepNumber    value_int="256" />
@@ -1096,6 +1093,7 @@
   <Distribution-RoughnessSamplingSize             value_int="524288"  />
   <Distribution-SmallDimensionRoughness           value_int="3"       />
   <Distribution-SmallSupport                      value_int="10"      />
+  <Distribution-MaximumSupportSizeForRankCorrelation value_int="100000" />
   <Distribution-SupportEpsilon                    value_float="1.0e-14" />
   <Distribution-TailDependenceEpsilon             value_float="1.0e-12"/>
   <Distribution-TailDependenceMargin              value_float="1.0e-3"/>

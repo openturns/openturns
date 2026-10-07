@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -89,7 +90,12 @@ for i in range(kernels.getSize()):
     smoother = ot.KernelSmoothing(kernel)
     for j in range(2):
         for corr in [False, True]:
-            smoother.setBoundaryCorrection(corr)
+            smoother.setBoundingOption(
+                ot.KernelSmoothing.BOTH if corr else ot.KernelSmoothing.NONE
+            )
+            assert smoother.getBoundingOption() == (
+                ot.KernelSmoothing.BOTH if corr else ot.KernelSmoothing.NONE
+            ), "wrong bounding option"
             smoothed = smoother.build(sampleCollection[j])
             print(
                 "Bounded underlying distribution? ",
@@ -111,6 +117,18 @@ for i in range(kernels.getSize()):
                 " cdf(smoothed)=  %.6g" % pointCDF,
                 " cdf(exact)= %.6g" % distributionCollection[j].computeCDF(point),
             )
+
+# bounding option accessor round-trips all values, default is NONE
+smoother = ot.KernelSmoothing()
+assert smoother.getBoundingOption() == ot.KernelSmoothing.NONE, "wrong default"
+for option in [
+    ot.KernelSmoothing.NONE,
+    ot.KernelSmoothing.LOWER,
+    ot.KernelSmoothing.UPPER,
+    ot.KernelSmoothing.BOTH,
+]:
+    smoother.setBoundingOption(option)
+    assert smoother.getBoundingOption() == option, "wrong bounding option"
 
 sample = ot.Normal().getSample(5000)
 ks1 = ot.KernelSmoothing(ot.Normal(), True, 64).build(sample)
@@ -317,3 +335,152 @@ for prob in (0.25, 0.5, 0.75):
     ott.assert_almost_equal(
         fittedLog.computeCDF([quantile]), fittedPlain.computeCDF([quantile]), 1e-3, 2e-2
     )
+
+# invalid calls raise
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing(ot.Normal(2))
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing(ot.Normal(), True, 1)
+ot.ResourceMap.SetAsUnsignedInteger("KernelSmoothing-BinNumber", 1)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing()
+ot.ResourceMap.SetAsUnsignedInteger("KernelSmoothing-BinNumber", 1024)
+
+# bandwidth helpers on invalid samples
+sample2d = ot.Normal(2).getSample(20)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing().computePluginBandwidth(sample2d)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing().computeMixedBandwidth(sample2d)
+with ott.assert_raises(RuntimeError):
+    ot.KernelSmoothing().computePluginBandwidth(ot.Sample(20, [1.0]))
+
+# bandwidth/sample dimension mismatch
+with ott.assert_raises(ValueError):
+    ot.KernelSmoothing().build(sample2d, [0.1])
+
+# binning is not available in dimension > 2
+sample3d = ot.Normal(3).getSample(20)
+with ott.assert_raises(RuntimeError):
+    ot.KernelSmoothing().buildWeightedAsMixture(
+        sample3d, [1.0] * 20, [0.1] * 3
+    )
+
+# boundary correction on multidimensional samples
+ks2d = ot.KernelSmoothing(ot.Normal(), False)
+ks2d.setBoundingOption(ot.KernelSmoothing.LOWER)
+with ott.assert_raises(RuntimeError):
+    ks2d.buildWeighted(sample2d, [1.0] * 20)
+
+# user bound inconsistent with the sample
+ksb = ot.KernelSmoothing(ot.Normal(), False)
+ksb.setBoundingOption(ot.KernelSmoothing.LOWER)
+ksb.setLowerBound(5.0)
+ksb.setAutomaticLowerBound(False)
+with ott.assert_raises(TypeError):
+    ksb.build(ot.Normal().getSample(20))
+
+# boundary correction on a constant sample
+ksc = ot.KernelSmoothing(ot.Normal(), False)
+ksc.setBoundingOption(ot.KernelSmoothing.LOWER)
+with ott.assert_raises(RuntimeError):
+    ksc.build(ot.Sample(20, [1.0]))
+
+# bounding option round-trip, including the legacy constructor flag
+ks = ot.KernelSmoothing()
+assert ks.getBoundingOption() == ot.KernelSmoothing.NONE
+ks.setBoundingOption(ot.KernelSmoothing.LOWER)
+assert ks.getBoundingOption() == ot.KernelSmoothing.LOWER
+ks.setBoundingOption(ot.KernelSmoothing.UPPER)
+assert ks.getBoundingOption() == ot.KernelSmoothing.UPPER
+legacy = ot.KernelSmoothing(ot.Normal(), False, 64, True)
+assert legacy.getBoundingOption() == ot.KernelSmoothing.BOTH
+
+# binning/kernel/log-transform accessors
+ks = ot.KernelSmoothing()
+assert ks.getBinning()
+assert ks.getBinNumber() == 1024
+ks.setBinning(False)
+assert not ks.getBinning()
+ks.setBinNumber(64)
+assert ks.getBinNumber() == 64
+with ott.assert_raises(TypeError):
+    ks.setBinNumber(1)
+assert ks.getKernel().getName() == "Normal"
+assert not ks.getUseLogTransform()
+
+# 2D binning path
+ot.RandomGenerator.SetSeed(0)
+sample = ot.Normal(2).getSample(5000)
+binned2d = ot.KernelSmoothing(ot.Normal(), True, 32).build(sample)
+ott.assert_almost_equal(binned2d.getMean(), [0.0, 0.0], 0.05, 0.05)
+
+# constant and partially degenerate weighted builds
+constant = ot.Sample(10, [7.0])
+flat = ot.KernelSmoothing().buildWeighted(constant, [1.0] * 10, [0.5])
+assert "Dirac" in repr(flat)
+ott.assert_almost_equal(flat.getMean(), [7.0])
+joint = ot.JointDistribution([ot.Dirac(-7.0), ot.Normal()])
+jsample = joint.getSample(50)
+jsmooth = ot.KernelSmoothing().buildWeighted(jsample, [1.0] * 50)
+assert jsmooth.getDimension() == 2
+
+# weighted log-transform on left-skewed data
+sample = ot.WeibullMax(1.0, 0.9, 0.0).getSample(500)
+ks = ot.KernelSmoothing()
+ks.setUseLogTransform(True)
+assert ks.getUseLogTransform()
+fitted = ks.buildWeighted(sample, [1.0] * 500)
+ott.assert_almost_equal(fitted.computeCDF(1e8), 1.0, 1e-6)
+ott.assert_almost_equal(fitted.computeCDF(-1e8), 0.0, 1e-6)
+
+# user upper bound inconsistent with the sample
+ksu = ot.KernelSmoothing(ot.Normal(), False)
+ksu.setBoundingOption(ot.KernelSmoothing.UPPER)
+ksu.setUpperBound(-5.0)
+ksu.setAutomaticUpperBound(False)
+with ott.assert_raises(TypeError):
+    ksu.build(ot.Normal().getSample(20))
+
+# truncated build on a constant sample
+ksc = ot.KernelSmoothing(ot.Normal(), False)
+ksc.setBoundingOption(ot.KernelSmoothing.BOTH)
+with ott.assert_raises(TypeError):
+    ksc.buildAsTruncatedDistribution(ot.Sample(10, [1.0]), [0.5])
+
+# binned truncated build
+sample = ot.Uniform(-1.0, 1.0).getSample(500)
+bins = ot.KernelSmoothing(ot.Normal(), True, 32)
+bins.setBoundingOption(ot.KernelSmoothing.BOTH)
+fitted = bins.build(sample)
+ott.assert_almost_equal(fitted.computeCDF(0.0), 0.5, 0.1, 0.1)
+
+# silverman bandwidth with zero interquartile range falls back to std
+ties = ot.Sample([[0.0]] * 80 + [[1.0]] * 20)
+h = ot.KernelSmoothing().computeSilvermanBandwidth(ties)
+assert h[0] > 0.0
+ott.assert_almost_equal(ot.KernelSmoothing().build(ties).getMean(), [0.2])
+
+# dimension mismatch in direct builders
+with ott.assert_raises(ValueError):
+    ot.KernelSmoothing().buildAsKernelMixture(sample2d, [0.1])
+with ott.assert_raises(ValueError):
+    ot.KernelSmoothing().buildAsMixture(sample2d, [0.1])
+
+# save/load round-trip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("ks.xml"))
+factory = ot.KernelSmoothing(ot.Normal(), True, 64)
+factory.setBoundingOption(ot.KernelSmoothing.BOTH)
+factory.setUseLogTransform(True)
+study.add("factory", factory)
+study.save()
+loaded = ot.KernelSmoothing()
+reloader = ot.Study()
+reloader.setStorageManager(ot.XMLStorageManager("ks.xml"))
+reloader.load()
+reloader.fillObject("factory", loaded)
+assert loaded.getBoundingOption() == ot.KernelSmoothing.BOTH
+assert loaded.getUseLogTransform()
+assert loaded.getBinNumber() == 64
+os.remove("ks.xml")

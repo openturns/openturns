@@ -205,6 +205,9 @@ Point BlockIndependentCopula::computeDDF(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  // If one component is outside of the support, the DDF is null
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+    if ((point[k] <= 0.0) || (point[k] >= 1.0)) return Point(dimension);
   Point DDF(getDimension());
   const UnsignedInteger size = copulaCollection_.getSize();
   Point copulaPDF(size);
@@ -214,8 +217,6 @@ Point BlockIndependentCopula::computeDDF(const Point & point) const
   // First, compute the several elements
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // If one component is outside of the support, the PDF is null
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return Point(dimension);
     const Distribution copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
     Point component(copulaDimension);
@@ -250,13 +251,14 @@ Scalar BlockIndependentCopula::computePDF(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (isIndependent_) return IndependentCopula(dimension).computePDF(point);
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  // If one component is outside of the support, the PDF is null
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+    if ((point[k] <= 0.0) || (point[k] >= 1.0)) return 0.0;
   const UnsignedInteger size = copulaCollection_.getSize();
   Scalar productPDF = 1.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // If one component is outside of the support, the PDF is null
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
@@ -274,15 +276,16 @@ Scalar BlockIndependentCopula::computeLogPDF(const Point & point) const
 {
   /* PDF = PDF_copula1x...xPDF_copula_n */
   const UnsignedInteger dimension = getDimension();
-  if (isIndependent_) return IndependentCopula(dimension).computePDF(point);
+  if (isIndependent_) return IndependentCopula(dimension).computeLogPDF(point);
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  // If one component is outside of the support, the PDF is null
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+    if ((point[k] <= 0.0) || (point[k] >= 1.0)) return SpecFunc::LowestScalar;
   const UnsignedInteger size = copulaCollection_.getSize();
   Scalar sumLogPDF = 0.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // If one component is outside of the support, the PDF is null
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return SpecFunc::LowestScalar;
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
@@ -303,13 +306,14 @@ Scalar BlockIndependentCopula::computeCDF(const Point & point) const
   if (isIndependent_) return IndependentCopula(dimension).computeCDF(point);
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  // If one component is at the left of the support, the CDF is null
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+    if (point[k] <= 0.0) return 0.0;
   const UnsignedInteger size = copulaCollection_.getSize();
   Scalar productCDF = 1.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // If one component is at the left of the support of its marginal distribution, the CDF is null
-    if (point[i] <= 0.0) return 0.0;
     // If the component is inside of the support, update the CDF value
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     Point component(copulaDimension);
@@ -339,6 +343,7 @@ Scalar BlockIndependentCopula::computeProbability(const Interval & interval) con
   const Point upperIntersect(intersect.getUpperBound());
   const UnsignedInteger size = copulaCollection_.getSize();
   Scalar value = 1.0;
+  UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Distribution copula(copulaCollection_[i]);
@@ -347,9 +352,10 @@ Scalar BlockIndependentCopula::computeProbability(const Interval & interval) con
     Point upper(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
     {
-      lower[j] = lowerIntersect[j];
-      upper[j] = upperIntersect[j];
+      lower[j] = lowerIntersect[shift + j];
+      upper[j] = upperIntersect[shift + j];
     }
+    shift += copulaDimension;
     value *= copula.computeProbability(Interval(lower, upper));
   }
   return value;
@@ -363,13 +369,14 @@ Scalar BlockIndependentCopula::computeSurvivalFunction(const Point & point) cons
   if (isIndependent_) return IndependentCopula(dimension).computeSurvivalFunction(point);
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
+  // If one component is at the right of the support, the survival is null
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+    if (point[k] >= 1.0) return 0.0;
   const UnsignedInteger size = copulaCollection_.getSize();
   Scalar productSurvival = 1.0;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    // If one component is at the left of the support of its marginal distribution, the Survival is null
-    if (point[i] >= 1.0) return 0.0;
     // If the component is inside of the support, update the Survival value
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     Point component(copulaDimension);
@@ -451,18 +458,20 @@ Scalar BlockIndependentCopula::computeConditionalPDF(const Scalar x, const Point
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return ((x >= 0.0 && x < 1.0) ? 1.0 : 0.0);
-  // General case
+  // General case: locate the block containing Xi (index == conditioningDimension)
   UnsignedInteger copulaIndex = 0;
-  UnsignedInteger partialDimension = copulaCollection_[copulaIndex].getDimension();
-  while (partialDimension < conditioningDimension)
+  UnsignedInteger blockStart = 0;
+  UnsignedInteger blockEnd = copulaCollection_[copulaIndex].getDimension();
+  while (blockEnd <= conditioningDimension)
   {
+    blockStart = blockEnd;
     ++copulaIndex;
-    partialDimension += copulaCollection_[copulaIndex].getDimension();
+    blockEnd += copulaCollection_[copulaIndex].getDimension();
   }
-  // Extract the relevant part of the conditioning
-  const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
+  // Number of conditioning variables within the same block
+  const UnsignedInteger conditioningSize = conditioningDimension - blockStart;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[blockStart + i];
   return copulaCollection_[copulaIndex].computeConditionalPDF(x, conditioningVector);
 }
 
@@ -571,18 +580,20 @@ Scalar BlockIndependentCopula::computeConditionalCDF(const Scalar x, const Point
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
-  // General case
+  // General case: locate the block containing Xi (index == conditioningDimension)
   UnsignedInteger copulaIndex = 0;
-  UnsignedInteger partialDimension = copulaCollection_[copulaIndex].getDimension();
-  while (partialDimension < conditioningDimension)
+  UnsignedInteger blockStart = 0;
+  UnsignedInteger blockEnd = copulaCollection_[copulaIndex].getDimension();
+  while (blockEnd <= conditioningDimension)
   {
+    blockStart = blockEnd;
     ++copulaIndex;
-    partialDimension += copulaCollection_[copulaIndex].getDimension();
+    blockEnd += copulaCollection_[copulaIndex].getDimension();
   }
-  // Extract the relevant part of the conditioning
-  const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
+  // Number of conditioning variables within the same block
+  const UnsignedInteger conditioningSize = conditioningDimension - blockStart;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[blockStart + i];
   return copulaCollection_[copulaIndex].computeConditionalCDF(x, conditioningVector);
 }
 
@@ -694,20 +705,22 @@ Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar q, const 
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
   if (conditioningDimension == 0) return q;
-  // General case
+  // General case: locate the block containing Xi (index == conditioningDimension)
   UnsignedInteger copulaIndex = 0;
-  UnsignedInteger partialDimension = copulaCollection_[copulaIndex].getDimension();
-  while (partialDimension < conditioningDimension)
+  UnsignedInteger blockStart = 0;
+  UnsignedInteger blockEnd = copulaCollection_[copulaIndex].getDimension();
+  while (blockEnd <= conditioningDimension)
   {
+    blockStart = blockEnd;
     ++copulaIndex;
-    partialDimension += copulaCollection_[copulaIndex].getDimension();
+    blockEnd += copulaCollection_[copulaIndex].getDimension();
   }
-  // Extract the relevant part of the conditioning
-  const UnsignedInteger conditioningSize = partialDimension - conditioningDimension;
+  // Number of conditioning variables within the same block
+  const UnsignedInteger conditioningSize = conditioningDimension - blockStart;
   Point conditioningVector(conditioningSize);
   for (UnsignedInteger i = 0; i < conditioningSize; ++i)
   {
-    conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
+    conditioningVector[i] = y[blockStart + i];
   }
   return copulaCollection_[copulaIndex].computeConditionalQuantile(q, conditioningVector);
 }
@@ -926,6 +939,49 @@ void BlockIndependentCopula::setParametersCollection(const PointCollection & par
     copulaCollection_[i].setParametersCollection(PointCollection(1, point));
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
+}
+
+Point BlockIndependentCopula::getParameter() const
+{
+  const UnsignedInteger size = copulaCollection_.getSize();
+  Point point;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    point.add(copulaCollection_[i].getParameter());
+  return point;
+}
+
+Description BlockIndependentCopula::getParameterDescription() const
+{
+  const UnsignedInteger size = copulaCollection_.getSize();
+  Description description;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Description atomDescription(copulaCollection_[i].getParameterDescription());
+    for (UnsignedInteger j = 0; j < atomDescription.getSize(); ++j)
+      description.add(OSS() << "copula_" << i << "_" << atomDescription[j]);
+  }
+  return description;
+}
+
+void BlockIndependentCopula::setParameter(const Point & parameter)
+{
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: the parameter size=" << parameter.getSize() << " does not match the expected dimension=" << getParameterDimension();
+  const UnsignedInteger size = copulaCollection_.getSize();
+  DistributionCollection newCopulas(size);
+  UnsignedInteger globalIndex = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Work on a copy: thanks to copy-on-write the stored copula is left unchanged if a later copula rejects its slice
+    Distribution copula(copulaCollection_[i]);
+    const UnsignedInteger parametersSize = copula.getParameterDimension();
+    Point newParameters(parametersSize);
+    std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
+    copula.setParameter(newParameters);
+    newCopulas[i] = copula;
+    globalIndex += parametersSize;
+  }
+  // All slices accepted: commit the staged updates
+  setCopulaCollection(newCopulas);
 }
 
 /* Tell if the distribution has elliptical copula */

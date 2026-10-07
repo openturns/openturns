@@ -95,7 +95,7 @@ int main(int, char *[])
         fullprint << "Silverman's bandwidth=" << std::setprecision(4) << hSilverman << " plugin bandwidth=" << std::setprecision(4) << hPlugin << " mixed bandwidth=" << std::setprecision(4) << hMixed << std::endl;
         for (UnsignedInteger k = 0; k < 2; ++k)
         {
-          smoother.setBoundaryCorrection(k == 1);
+          smoother.setBoundingOption(k == 1 ? KernelSmoothing::BOTH : KernelSmoothing::NONE);
           Distribution smoothed(smoother.build(sampleCollection[j]));
           fullprint << "Bounded underlying distribution? " << (j == 0 ? "False" : "True") << " bounded reconstruction? " << (k == 0 ? "False" : "True") << std::endl;
           // Define a point

@@ -346,21 +346,30 @@ Summary of Sobol' indices
 The next table presents a summary of the 6 different Sobol' indices that
 we have presented.
 
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Single variable or group             | Sensitivity Index    | Formula                                                                                                                  |
-+======================================+======================+==========================================================================================================================+
-| One single variable :math:`i`        | First order          | :math:`S_i = \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}= \frac{V_i}{\Var{Y}}`                                                  |
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                                      | Total                | :math:`S^T_i = \sum_{\bdu \ni i} S_\bdu = 1 - S_{\overline{\{i\}}}^{\operatorname{cl}}`                                  |
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Interaction of a group :math:`\bdu`  | First order          | :math:`S_\bdu = \frac{V_\bdu}{\Var{Y}}`                                                                                  |
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                                      | Total interaction    | :math:`S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}`                                                               |
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-| Group (closed) :math:`\bdu`          | First order closed   | :math:`S_\bdu^{\operatorname{cl}} = \frac{\Var{\Expect{Y|\bdX_\bdu}}}{\Var{Y}} = \sum_{\bdv \subseteq \bdu} S_\bdv`      |
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
-|                                      | Total                | :math:`S^T_\bdu = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} V_\bdv}{\Var{Y}} = 1 - S_{\overline{\bdu}}^{\operatorname{cl}}` |
-+--------------------------------------+----------------------+--------------------------------------------------------------------------------------------------------------------------+
+.. list-table::
+   :header-rows: 1
+
+   * - Single variable or group
+     - Sensitivity Index
+     - Formula
+   * - One single variable :math:`i`
+     - First order
+     - :math:`S_i = \frac{\Var{\Expect{Y|X_i}}}{\Var{Y}}= \frac{V_i}{\Var{Y}}`
+   * -
+     - Total
+     - :math:`S^T_i = \sum_{\bdu \ni i} S_\bdu = 1 - S_{\overline{\{i\}}}^{\operatorname{cl}}`
+   * - Interaction of a group :math:`\bdu`
+     - First order
+     - :math:`S_\bdu = \frac{V_\bdu}{\Var{Y}}`
+   * -
+     - Total interaction
+     - :math:`S^{T,i}_\bdu = \sum_{\bdv \supseteq \bdu} S_{\bdv}`
+   * - Group (closed) :math:`\bdu`
+     - First order closed
+     - :math:`S_\bdu^{\operatorname{cl}} = \frac{\Var{\Expect{Y|\bdX_\bdu}}}{\Var{Y}} = \sum_{\bdv \subseteq \bdu} S_\bdv`
+   * -
+     - Total
+     - :math:`S^T_\bdu = \frac{\sum_{\bdv\cap\bdu\neq\emptyset} V_\bdv}{\Var{Y}} = 1 - S_{\overline{\bdu}}^{\operatorname{cl}}`
 
 **Table 1.** First order and total Sobol' indices of a single variable :math:`i` or a group :math:`\bdu`.
 
@@ -521,7 +530,8 @@ The estimator :math:`\widehat{V}_{i,j}` of :math:`V_{i,j}` is the same for all t
 
 .. math::
 
-    \widehat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \widehat{V}_i - \widehat{V}_j.
+    \widehat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{g}(\vect{E}_k^i) \tilde{g}(\vect{C}_k^j)
+    - \frac{1}{N} \sum_{k=1}^{N} \tilde{g}(\vect{A}_k) \tilde{g}(\vect{B}_k) - \widehat{V}_i - \widehat{V}_j.
 
 Notice that the value of the second order conditional variance depends on the estimators :math:`\widehat{V}_i` and :math:`\widehat{V}_j` which are method-dependent.
 This implies that the value of the second order indices may depend on the specific Sobol' estimator we use.

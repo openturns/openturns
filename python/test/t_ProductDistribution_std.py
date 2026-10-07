@@ -77,3 +77,47 @@ distribution = ot.Uniform() * ot.Uniform() * ot.Uniform()
 print("distribution=", distribution)
 print("mean=", distribution.getMean())
 print("standard deviation=", distribution.getStandardDeviation())
+
+# Exercise all the support sign patterns of computePDF
+patterns = [
+    (ot.Uniform(1.0, 2.0), ot.Uniform(3.0, 4.0), 5.0),  # Q1
+    (ot.Uniform(-2.0, -1.0), ot.Uniform(3.0, 4.0), -5.0),  # Q2
+    (ot.Uniform(-2.0, -1.0), ot.Uniform(-4.0, -3.0), 5.0),  # Q3
+    (ot.Uniform(1.0, 2.0), ot.Uniform(-4.0, -3.0), -5.0),  # Q4
+    (ot.Uniform(-1.0, 2.0), ot.Uniform(3.0, 4.0), 2.0),  # Q1 U Q2
+    (ot.Uniform(-1.0, 2.0), ot.Uniform(-4.0, -3.0), -2.0),  # Q3 U Q4
+    (ot.Uniform(1.0, 2.0), ot.Normal(), 1.0),  # Q1 U Q4
+    (ot.Uniform(-2.0, -1.0), ot.Normal(), -1.0),  # Q2 U Q3
+]
+for left, right, x in patterns:
+    pattern_dist = ot.ProductDistribution(left, right)
+    pdf = pattern_dist.computePDF([x])
+    print("pdf(%g)=%.6g" % (x, pdf))
+    assert pdf > 0.0
+    ott.assert_almost_equal(
+        pattern_dist.computeCDF(pattern_dist.getRange().getUpperBound()), 1.0
+    )
+
+# Error cases
+distribution = ot.ProductDistribution(
+    ot.Uniform(-1.0, 2.0), ot.Normal(1.0, 2.0)
+)
+with ott.assert_raises(TypeError):
+    distribution.computePDF([1.0, 2.0])
+with ott.assert_raises(TypeError):
+    distribution.computeCDF([1.0, 2.0])
+with ott.assert_raises(TypeError):
+    distribution.setParameter([1.0])
+with ott.assert_raises(TypeError):
+    distribution.setLeft(ot.Normal(2))
+with ott.assert_raises(TypeError):
+    distribution.setLeft(ot.Poisson(2.0))
+with ott.assert_raises(TypeError):
+    distribution.setRight(ot.Normal(2))
+
+validation = ott.DistributionValidation(distribution)
+validation.setMomentsSamplingSize(100000)
+validation.setEntropySamplingSize(10000)
+validation.setDomainSamplingSize(10000)
+validation.setFittingSamplingSize(1000)
+validation.run()

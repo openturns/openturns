@@ -72,3 +72,52 @@ inf_dist = factory.build(sample)
 ott.assert_almost_equal(
     inf_dist.getParameter(), distribution.getParameter(), 1e-2, 1e-2
 )
+
+# Error cases: empty sample, sample of dimension other than 1
+factory = ot.QuantileMatchingFactory(ot.Normal(), [0.01, 0.99])
+with ott.assert_raises(TypeError):
+    factory.build(ot.Sample(0, 1))
+with ott.assert_raises(TypeError):
+    factory.build(ot.Normal(2).getSample(10))
+
+# Error cases: inconsistent quantiles
+with ott.assert_raises(TypeError):
+    factory.buildFromQuantiles([0.0])
+with ott.assert_raises(TypeError):
+    factory.buildFromQuantiles([1.0, 0.0])
+
+# Error cases: invalid probability levels
+with ott.assert_raises(TypeError):
+    ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.5, 0.75, 0.9, 0.99])
+with ott.assert_raises(TypeError):
+    ot.QuantileMatchingFactory(ot.Beta(), [0.99, 0.01])
+with ott.assert_raises(TypeError):
+    ot.QuantileMatchingFactory(ot.Beta(), [-0.01, 0.99])
+
+# Error case: probabilities + known parameters mismatch parameter dimension
+factory = ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.99])
+factory.setKnownParameter([0], [2.3])
+with ott.assert_raises(TypeError):
+    factory.buildFromQuantiles([-0.8, 0.8])
+
+# Error case: optimization bounds dimension mismatch
+factory = ot.QuantileMatchingFactory(ot.Beta(), [0.01, 0.99])
+factory.setOptimizationBounds(ot.Interval([0.0], [1.0]))
+with ott.assert_raises(TypeError):
+    factory.buildFromQuantiles([-0.8, 0.8])
+
+# All parameters known: direct return without optimization
+factory = ot.QuantileMatchingFactory(ot.Beta(), [])
+factory.setKnownParameter([0, 1, 2, 3], [2.3, 2.2, -1.0, 1.0])
+inf_dist = factory.buildFromQuantiles([])
+print("estimated distribution (all known)=", inf_dist)
+ott.assert_almost_equal(inf_dist.getParameter(), [2.3, 2.2, -1.0, 1.0])
+
+# Build overloads and accessors
+factory = ot.QuantileMatchingFactory(ot.Normal(), [0.01, 0.99])
+print("default build=", factory.build())
+print("parametric build=", factory.build([0.0, 1.0]))
+print("bounds=", factory.getOptimizationBounds())
+solver = factory.getOptimizationAlgorithm()
+factory.setOptimizationAlgorithm(solver)
+print("solver=", factory.getOptimizationAlgorithm().getClassName())

@@ -994,18 +994,25 @@ Distribution KernelSmoothing::getKernel() const
 /* Boundary management */
 void KernelSmoothing::setBoundaryCorrection(const Bool boundaryCorrection)
 {
+  LOGWARN("KernelSmoothing::setBoundaryCorrection is deprecated, use setBoundingOption");
   boundingOption_ = (boundaryCorrection ? BOTH : NONE);
 }
 
 Bool KernelSmoothing::getBoundaryCorrection() const
 {
+  LOGWARN("KernelSmoothing::getBoundaryCorrection is deprecated, use getBoundingOption");
   return (boundingOption_ != NONE);
 }
 
-/* Boundary correction accessor */
+/* Bounding option accessors */
 void KernelSmoothing::setBoundingOption(const BoundingOption boundingOption)
 {
   boundingOption_ = boundingOption;
+}
+
+KernelSmoothing::BoundingOption KernelSmoothing::getBoundingOption() const
+{
+  return boundingOption_;
 }
 
 /* Boundary accessor */

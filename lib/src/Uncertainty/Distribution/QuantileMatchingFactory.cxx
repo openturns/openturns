@@ -188,6 +188,9 @@ private:
 
 Distribution QuantileMatchingFactory::build(const Point & parameter) const
 {
+  const UnsignedInteger parameterDimension = distribution_.getParameterDimension();
+  if (parameter.getSize() != parameterDimension)
+    throw InvalidArgumentException(HERE) << "Error: expected " << parameterDimension << " parameter values, got " << parameter.getSize();
   Distribution result(distribution_);
   Point parameter2(parameter);
   // set known values

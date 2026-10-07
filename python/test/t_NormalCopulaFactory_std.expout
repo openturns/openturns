@@ -14,3 +14,5 @@ Estimated normalCopula= NormalCopula(R = [[ 1        0.313268 0.490701 ]
  [ 0.490701 0.487274 1        ]])
 Default normalCopula= NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]])
+Fallback estimate= [[ 1 1 ]
+ [ 1 1 ]]
