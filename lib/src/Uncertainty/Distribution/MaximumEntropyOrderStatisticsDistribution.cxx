@@ -978,21 +978,28 @@ Point MaximumEntropyOrderStatisticsDistribution::getParameter() const
 
 void MaximumEntropyOrderStatisticsDistribution::setParameter(const Point & parameter)
 {
-  UnsignedInteger globalIndex = 0;
+  // Check the size before updating any distribution: no partial update on error,
+  // and no silently ignored extra values
+  if (parameter.getSize() != getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameterDimension() << " values, got " << parameter.getSize();
   const UnsignedInteger size = distributionCollection_.getSize();
+  DistributionCollection newDistributions(size);
+  UnsignedInteger globalIndex = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    // All distributions, including copulas, must output a collection of Point of size at least 1,
-    // even if the Point are empty
-    const UnsignedInteger atomParametersDimension = distributionCollection_[i].getParameterDimension();
-    if (globalIndex + atomParametersDimension > parameter.getSize()) throw InvalidArgumentException(HERE) << "Error: there are too few dependence parameters";
-    // ith copula parameters
+    // Work on a copy: thanks to copy-on-write the stored distribution is left unchanged if a later distribution rejects its slice
+    Distribution distribution(distributionCollection_[i]);
+    const UnsignedInteger atomParametersDimension = distribution.getParameterDimension();
     Point newParameter(atomParametersDimension);
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + atomParametersDimension, newParameter.begin());
     globalIndex += atomParametersDimension;
-    distributionCollection_[i].setParameter(newParameter);
+    distribution.setParameter(newParameter);
+    newDistributions[i] = distribution;
   } // atoms
-  setDistributionCollection(distributionCollection_);
+  // All slices accepted: commit the staged updates
+  // setDistributionCollection rebuilds the description from the marginals: save/restore it
+  const Description description(getDescription());
+  setDistributionCollection(newDistributions);
+  setDescription(description);
 }
 
 Description MaximumEntropyOrderStatisticsDistribution::getParameterDescription() const
