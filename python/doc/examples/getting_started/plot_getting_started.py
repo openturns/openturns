@@ -122,7 +122,10 @@ _ = otv.View(graph)
 
 # %%
 # For simplicity we can use a method that does not impose special requirements on the design of experiments
-sobol_x = distribution.getSample(5000)
+# 2000 points are enough: F is clearly the most influential variable and
+# the indices plot (whose construction cost grows with the sample size)
+# looks identical
+sobol_x = distribution.getSample(2000)
 sobol_y = metamodel(sobol_x)
 algo = ot.RankSobolSensitivityAlgorithm(sobol_x, sobol_y)
 print(algo.getFirstOrderIndices())

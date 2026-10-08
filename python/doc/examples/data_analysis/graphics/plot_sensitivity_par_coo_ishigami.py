@@ -50,7 +50,9 @@ output = ot.CompositeRandomVector(model, inputVector)
 
 # %%
 # We generate an input sample of size :math:`N` :
-N = 1000
+# 500 lines are enough for the parallel coordinates plots below, which
+# look the same with twice as many lines
+N = 500
 X = inputVector.getSample(N)
 
 # %%

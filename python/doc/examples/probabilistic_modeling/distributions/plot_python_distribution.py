@@ -159,6 +159,12 @@ distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
 # We can validate the distribution with :class:`openturns.testing.DistributionValidation`
 # It automatically checks the consistency of most services and allows one to check for errors.
 checker = ott.DistributionValidation(distribution)
+# The distribution services are implemented in Python, so use smaller
+# samples than the 1e6 defaults to keep the validation fast
+checker.setMomentsSamplingSize(100000)
+checker.setEntropySamplingSize(10000)
+checker.setDomainSamplingSize(100000)
+checker.setFittingSamplingSize(10000)
 checker.run()
 
 # %%

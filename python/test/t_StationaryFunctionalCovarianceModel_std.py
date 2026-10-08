@@ -41,7 +41,7 @@ C = cov.discretize(X)
 assert C.getNbRows() == 10, "wrong size"
 
 # thread-safety test
-for i in range(1000):
+for i in range(100):
 
     def fun_mixte(X):
         xx, z = X

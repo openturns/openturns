@@ -239,6 +239,9 @@ for dim in range(1, 5):
     if dim > 2:
         validation.skipMoments()  # slow
         validation.skipCorrelation()  # slow
+    # NOTE: do not reduce the validation sampling sizes here: dims 2+
+    # print random realizations drawn from the RNG stream left by the
+    # previous dims' validations, so any size change alters stdout
     validation.run()
 
 # non-spd cov

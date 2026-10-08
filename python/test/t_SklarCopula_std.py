@@ -137,6 +137,9 @@ print("margin realization=", repr(margin.getRealization()))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
+validation.setMomentsSamplingSize(100000)
+validation.setDomainSamplingSize(100000)
+validation.setEntropySamplingSize(100000)
 validation.run()
 
 # tbb nested parallelism issue

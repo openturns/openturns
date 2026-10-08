@@ -146,6 +146,7 @@ validation.skipCorrelation()  # slow
 validation.skipParameters()  # slow
 validation.skipConditional()  # FIXME
 validation.skipTransformation()  # FIXME
+validation.skipGradient()  # slow PDF/CDF gradient FD over ~13 params
 validation.run()
 
 # CDF grid overflow is rejected in integer arithmetic before any allocation

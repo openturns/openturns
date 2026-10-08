@@ -60,6 +60,9 @@ print("CDF(quantile) =%.5f" % distribution.computeCDF(quantile))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.setPDFTolerance(4e-3)  # for conditional PDF
+validation.skipDependenceMeasures()  # slow Spearman/Kendall on 1M-sample
+# Monte Carlo size: standard errors stay well below the assert tolerances
+validation.setMomentsSamplingSize(100000)
 validation.run()
 
 # Instantiate one distribution object

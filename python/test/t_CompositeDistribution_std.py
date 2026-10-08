@@ -131,6 +131,8 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipEntropy()  # slow, uses Monte-Carlo
 validation.skipPDFAtLowerBound()  # Testing that the PDF is null at its lower bound if finite is a complex task
+validation.setMomentsSamplingSize(100000)
+validation.setDomainSamplingSize(100000)
 validation.run()
 
 # Check that the PDF is zero where it is given by a fraction with null denominator

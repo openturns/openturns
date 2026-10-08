@@ -90,12 +90,13 @@ for docstring_file in docstring_files:
         docstring_lines += f.read().splitlines()
 
 # count undocumented keys
+# Search in a single blob rather than line by line: keys contain no
+# newline, so a key matches the blob iff it matches one of the lines
+docstring_blob = "\n".join(docstring_lines)
 undoc_keys = dict(resourcemap_content)
 for key in resourcemap_content:
-    for line in docstring_lines:
-        if key in line:
-            del undoc_keys[key]
-            break
+    if key in docstring_blob:
+        del undoc_keys[key]
 
 for key in undoc_keys:
     print(key)

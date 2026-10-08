@@ -396,6 +396,14 @@ def plotDistributionGridPDF(distribution):
         The grid of plots.
 
     """
+    # Draw the grid with fewer points: the 300-point default set above for
+    # the spiky residual densities would make these 9 PDF plots (called 4
+    # times in this example) needlessly expensive, while smooth iso-PDF
+    # contours look identical with a coarser grid
+    defaultPointNumber = ot.ResourceMap.GetAsUnsignedInteger(
+        "Distribution-DefaultPointNumber"
+    )
+    ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 50)
     dimension = distribution.getDimension()
     grid = ot.GridLayout(dimension, dimension)
     for i in range(dimension):
@@ -417,6 +425,9 @@ def plotDistributionGridPDF(distribution):
                 graph.setYTitle("")
             grid.setGraph(i, j, graph)
     grid.setTitle("Iso-PDF values")
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "Distribution-DefaultPointNumber", defaultPointNumber
+    )
     return grid
 
 

@@ -349,7 +349,8 @@ sampler.setDescription(mu_desc + sigma_square_desc + x_desc)
 # Run this Metropolis-within-Gibbs algorithm and check the acceptance rates
 # for the Random walk Metropolis-Hastings samplers.
 
-samples = sampler.getSample(2000)
+# a smaller sample is enough to illustrate the posterior distributions
+samples = sampler.getSample(500)
 acceptance = [
     sampler.getMetropolisHastingsCollection()[i].getAcceptanceRate()
     for i in range(6, len(samplers))
@@ -473,7 +474,8 @@ rv_models = [ot.CompositeRandomVector(model, rv_normal_mixture) for model in mod
 # Get a Monte-Carlo estimate of the median, 0.05 quantile and 0.95 quantile
 # of these push-forward distributions.
 
-predictions = [rv.getSample(200) for rv in rv_models]
+# 50 push-forward draws are enough for the median/quantile error bars below
+predictions = [rv.getSample(50) for rv in rv_models]
 prediction_medians = [sam.computeMedian()[0] for sam in predictions]
 prediction_lb = [sam.computeQuantile(0.05)[0] for sam in predictions]
 prediction_ub = [sam.computeQuantile(0.95)[0] for sam in predictions]
@@ -520,7 +522,8 @@ prior = ot.JointDistribution(
         ),
     ]
 )
-prior_sample = prior.getSample(2000)
+# a smaller prior sample is enough for the predictive error bars below
+prior_sample = prior.getSample(500)
 
 # As before, build a mixture of truncated normal distributions from the sample.
 normal_collection_prior = [
@@ -536,7 +539,7 @@ rv_models_prior = [
     ot.CompositeRandomVector(model, rv_normal_mixture_prior) for model in models
 ]
 
-predictions_prior = [rv.getSample(100) for rv in rv_models_prior]
+predictions_prior = [rv.getSample(50) for rv in rv_models_prior]
 prediction_medians_prior = [sam.computeMedian()[0] for sam in predictions_prior]
 prediction_lb_prior = [sam.computeQuantile(0.05)[0] for sam in predictions_prior]
 prediction_ub_prior = [sam.computeQuantile(0.95)[0] for sam in predictions_prior]

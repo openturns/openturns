@@ -52,7 +52,10 @@ print("Outputs:", dt.model.getOutputDescription())
 # We create a sample out of our input distribution :
 
 # %%
-sampleSize = 100
+# 50 observations are enough: the observation noise is tiny, so the
+# parameters are accurately estimated while the calibration
+# optimization (linear in the sample size) runs twice as fast
+sampleSize = 50
 inputSample = dt.distribution.getSample(sampleSize)
 inputSample[0:5]
 
