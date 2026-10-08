@@ -33,6 +33,7 @@
 #include "openturns/PolygonArray.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/KDTree.hxx"
 #include "openturns/PlatformInfo.hxx"
 
 #ifdef OPENTURNS_HAVE_BOOST
@@ -1203,13 +1204,53 @@ Mesh Mesh::intersect(const Mesh & other) const
   // set clockwise=false for consistency with what IntervalMesher returns
   typedef boost::geometry::model::polygon<point_t, false> polygon_t;
 
+  const UnsignedInteger simplicesNumber = getSimplicesNumber();
+  const UnsignedInteger otherSimplicesNumber = other.getSimplicesNumber();
+  // Precompute triangle bounding boxes to reject disjoint pairs without overlay
+  Sample lower1(simplicesNumber, 2);
+  Sample upper1(simplicesNumber, 2);
+  for (UnsignedInteger i1 = 0; i1 < simplicesNumber; ++ i1)
+  {
+    Point minTri(2, SpecFunc::Infinity);
+    Point maxTri(2, -SpecFunc::Infinity);
+    for (UnsignedInteger j1 = 0; j1 < 3; ++ j1)
+    {
+      const Point vertex(vertices_[simplices_(i1, j1)]);
+      for (UnsignedInteger k = 0; k < 2; ++ k)
+      {
+        minTri[k] = std::min(minTri[k], vertex[k]);
+        maxTri[k] = std::max(maxTri[k], vertex[k]);
+      }
+    }
+    lower1[i1] = minTri;
+    upper1[i1] = maxTri;
+  }
+  Sample lower2(otherSimplicesNumber, 2);
+  Sample upper2(otherSimplicesNumber, 2);
+  for (UnsignedInteger i2 = 0; i2 < otherSimplicesNumber; ++ i2)
+  {
+    Point minTri(2, SpecFunc::Infinity);
+    Point maxTri(2, -SpecFunc::Infinity);
+    for (UnsignedInteger j2 = 0; j2 < 3; ++ j2)
+    {
+      const Point vertex(other.vertices_[other.simplices_(i2, j2)]);
+      for (UnsignedInteger k = 0; k < 2; ++ k)
+      {
+        minTri[k] = std::min(minTri[k], vertex[k]);
+        maxTri[k] = std::max(maxTri[k], vertex[k]);
+      }
+    }
+    lower2[i2] = minTri;
+    upper2[i2] = maxTri;
+  }
+
   Sample vertices(0, 2);
   Collection<Indices> simplices;
   // compute the intersection as union of intersection of triangle combinations from each mesh
-  for (UnsignedInteger i1 = 0; i1 < getSimplicesNumber(); ++ i1)
+  for (UnsignedInteger i1 = 0; i1 < simplicesNumber; ++ i1)
   {
     polygon_t tri1;
-    for(UnsignedInteger j1 = 0; j1 < 4; ++ j1)
+    for (UnsignedInteger j1 = 0; j1 < 4; ++ j1)
     {
       // the first vertex is repeated at the end
       const Point pj1(vertices_[simplices_(i1, j1 % 3)]);
@@ -1220,10 +1261,14 @@ Mesh Mesh::intersect(const Mesh & other) const
     if (boost::geometry::area(tri1) < 0.0)
       boost::geometry::correct(tri1);
 
-    for (UnsignedInteger i2 = 0; i2 < other.getSimplicesNumber(); ++ i2)
+    for (UnsignedInteger i2 = 0; i2 < otherSimplicesNumber; ++ i2)
     {
+      // bounding-box reject: touching boxes (shared edge/vertex) are kept
+      if ((upper1[i1][0] < lower2[i2][0]) || (upper2[i2][0] < lower1[i1][0])
+       || (upper1[i1][1] < lower2[i2][1]) || (upper2[i2][1] < lower1[i1][1]))
+        continue;
       polygon_t tri2;
-      for(UnsignedInteger j2 = 0; j2 < 4; ++ j2)
+      for (UnsignedInteger j2 = 0; j2 < 4; ++ j2)
       {
         // the first vertex is repeated at the end
         const Point pj2(other.vertices_[other.simplices_(i2, j2 % 3)]);
@@ -1257,11 +1302,109 @@ Mesh Mesh::intersect(const Mesh & other) const
       } // poly
     } // i2
   } // i1
-  IndicesCollection simplices2(simplices.getSize(), 3);
+  const UnsignedInteger fullSize = vertices.getSize();
+  if (!fullSize)
+  {
+    const IndicesCollection simplices2(0, 3);
+    return Mesh(vertices, simplices2);
+  }
+  // Weld coincident vertices: shared input edges produce duplicated points,
+  // one per intersecting pair, which must be merged (transitive closure).
+  Indices parent(fullSize);
+  parent.fill();
+  // iterative find with full path compression
+  auto find = [&](UnsignedInteger x) -> UnsignedInteger
+  {
+    UnsignedInteger root = x;
+    while (root != parent[root])
+      root = parent[root];
+    while (x != root)
+    {
+      const UnsignedInteger next = parent[x];
+      parent[x] = root;
+      x = next;
+    }
+    return root;
+  };
+  const KDTree tree(vertices);
+  const Scalar tolerance = SpecFunc::Precision * vertices.computeRange().norm();
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+  {
+    Point distance;
+    const Indices nearest(tree.queryRadius(vertices[i], tolerance, distance));
+    for (UnsignedInteger k = 0; k < nearest.getSize(); ++ k)
+    {
+      const UnsignedInteger j = nearest[k];
+      if (j == i)
+        continue;
+      const UnsignedInteger rootI = find(i);
+      const UnsignedInteger rootJ = find(j);
+      if (rootI != rootJ)
+        parent[rootI] = rootJ;
+    }
+  }
+  Indices compressedVertexMap(fullSize, fullSize);
+  UnsignedInteger nRoots = 0;
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+  {
+    const UnsignedInteger r = find(i);
+    if (compressedVertexMap[r] >= fullSize)
+    {
+      compressedVertexMap[r] = nRoots;
+      ++ nRoots;
+    }
+  }
+  Sample verticesCompressed(nRoots, 2);
+  Indices sizes(nRoots, 0);
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+  {
+    const UnsignedInteger idx = compressedVertexMap[find(i)];
+    for (UnsignedInteger d = 0; d < 2; ++ d)
+      verticesCompressed[idx][d] += vertices[i][d];
+    sizes[idx] += 1;
+  }
+  for (UnsignedInteger i = 0; i < nRoots; ++ i)
+  {
+    const Scalar invSize = 1.0 / sizes[i];
+    for (UnsignedInteger d = 0; d < 2; ++ d)
+      verticesCompressed[i][d] *= invSize;
+  }
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+    compressedVertexMap[i] = compressedVertexMap[find(i)];
+  // remap simplices, dropping degenerate ones created by the merge
+  Collection<Indices> weldedSimplices;
   for (UnsignedInteger i = 0; i < simplices.getSize(); ++ i)
+  {
+    const UnsignedInteger v0 = compressedVertexMap[simplices[i][0]];
+    const UnsignedInteger v1 = compressedVertexMap[simplices[i][1]];
+    const UnsignedInteger v2 = compressedVertexMap[simplices[i][2]];
+    if ((v0 == v1) || (v1 == v2) || (v0 == v2))
+      continue;
+    Indices simplex(3);
+    simplex[0] = v0;
+    simplex[1] = v1;
+    simplex[2] = v2;
+    weldedSimplices.add(simplex);
+  }
+  // compact vertices left unused by degenerate removal
+  Indices usedVertex(nRoots, 0);
+  for (UnsignedInteger i = 0; i < weldedSimplices.getSize(); ++ i)
     for (UnsignedInteger j = 0; j < 3; ++ j)
-      simplices2(i, j) = simplices[i][j];
-  return Mesh(vertices, simplices2);
+      usedVertex[weldedSimplices[i][j]] = 1;
+  Indices compactMap(nRoots, nRoots);
+  UnsignedInteger compactSize = 0;
+  for (UnsignedInteger i = 0; i < nRoots; ++ i)
+    if (usedVertex[i])
+      compactMap[i] = compactSize++;
+  Sample compactVertices(compactSize, 2);
+  for (UnsignedInteger i = 0; i < nRoots; ++ i)
+    if (usedVertex[i])
+      compactVertices[compactMap[i]] = verticesCompressed[i];
+  IndicesCollection simplices2(weldedSimplices.getSize(), 3);
+  for (UnsignedInteger i = 0; i < weldedSimplices.getSize(); ++ i)
+    for (UnsignedInteger j = 0; j < 3; ++ j)
+      simplices2(i, j) = compactMap[weldedSimplices[i][j]];
+  return Mesh(compactVertices, simplices2);
 #else
   throw NotYetImplementedException(HERE) << "No boost support";
 #endif
