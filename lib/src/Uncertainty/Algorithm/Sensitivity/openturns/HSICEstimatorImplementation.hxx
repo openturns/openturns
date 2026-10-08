@@ -143,6 +143,9 @@ protected:
   /* Accessor to input covariance matrix */
   CovarianceMatrix getInputCovarianceMatrix(const UnsignedInteger j) const;
 
+  /* Accessor to all the input covariance matrices at once */
+  CovarianceMatrixCollection getInputCovarianceMatrices() const;
+
   /** Compute p-value with permutation */
   virtual void computePValuesPermutationSequential() const;
 

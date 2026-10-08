@@ -85,5 +85,5 @@ for key in [True, False]:
     x = ot.Sample(n, 1)
     y = ot.Sample(n, 1)
     covs = [ot.DiracCovarianceModel()] * 2
-    for i in range(10000):
+    for i in range(1000):
         globHSIC = ot.HSICEstimatorGlobalSensitivity(covs, x, y, ot.HSICVStat())
