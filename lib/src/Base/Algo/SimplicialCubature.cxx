@@ -23,6 +23,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/TBBImplementation.hxx"
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -923,8 +924,7 @@ Indices SimplicialCubature::initializeBasicRule(const UnsignedInteger dimension,
     // recopy W without some columns on left and right
     Matrix Wkr(WTS, K - 1);
     for (UnsignedInteger j = 0; j < K - 1; ++ j)
-      for (UnsignedInteger i = 0; i < WTS; ++ i)
-        Wkr(i, j) = W(i, j + 1);
+      std::copy(W.getImplementation()->begin() + (j + 1) * WTS, W.getImplementation()->begin() + (j + 2) * WTS, Wkr.getImplementation()->begin() + j * WTS);
 
     Point wpts(WTS);
     for (UnsignedInteger i = 0; i < WTS; ++ i)

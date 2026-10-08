@@ -20,6 +20,7 @@
  */
 #include <functional>
 #include <numeric>
+#include <algorithm>
 
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
@@ -756,8 +757,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRectInPlace(const Ma
   int q = b.nbColumns_;
   MatrixImplementation B(p, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
-    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(m); ++i)
-      B(i, j) = b(i, j);
+    std::copy(b.begin() + j * m, b.begin() + j * m + m, B.begin() + j * p);
   int nrhs = q;
   int lwork = -1;
   double lwork_d = -1.;

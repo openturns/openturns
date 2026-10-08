@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include <functional>
+#include <algorithm>
 #include "openturns/Collection.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/MultivariateHypergeometric.hxx"
@@ -383,8 +384,7 @@ Scalar MultivariateHypergeometric::computeCDF(const Point & point) const
     // Only the atom floor(point) lies inside the box, so we return
     // PDF(floor(point)) rather than PDF(point)
     Point integerPoint(dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      integerPoint[i] = kPoint[i];
+    std::copy(kPoint.begin(), kPoint.end(), integerPoint.begin());
     return computePDF(integerPoint);
   }
   // If the box upper bounds sum to less than n_, no atom of the simplex lies inside the box

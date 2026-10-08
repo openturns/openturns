@@ -23,6 +23,7 @@
 #include "openturns/TNC.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/SpecFunc.hxx"
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -177,8 +178,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   startingPoint[0] = nu0;
   if (d <= reducedDimThreshold)
   {
-    for (UnsignedInteger j = 0; j < d; ++ j)
-      startingPoint[1 + j] = sigmaTip[j];
+    std::copy(sigmaTip.begin(), sigmaTip.end(), startingPoint.begin() + 1);
   }
 
   TNC solver(problem);
@@ -189,8 +189,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   Point optimalSigma(d);
   if (d <= reducedDimThreshold)
   {
-    for (UnsignedInteger j = 0; j < d; ++ j)
-      optimalSigma[j] = optimalParameter[1 + j];
+    std::copy(optimalParameter.begin() + 1, optimalParameter.begin() + 1 + d, optimalSigma.begin());
   }
   else
   {
