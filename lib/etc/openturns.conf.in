@@ -121,6 +121,7 @@
 
   <!-- OT::LevelSetMesher parameters -->
   <LevelSetMesher-SolveEquation value_bool="true" />
+  <LevelSetMesher-Algorithm value_str="Legacy" />
 
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />

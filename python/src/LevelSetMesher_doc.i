@@ -37,10 +37,25 @@ The meshing algorithm is based either on a :class:`~openturns.Field` or on the
 
       * If the *project* flag is *True*, then the projection is refined using first
         a nonlinear equation solver :class:`~openturns.Brent` depending on the
-        `LevelSetMesher-SolveEquation` key in :class:`~openturns.ResourceMap` class.
+        ``LevelSetMesher-SolveEquation`` key in :class:`~openturns.ResourceMap` class.
         If this key is set to *False* or if the solver fails, then the projection is
         done using the provided optimization algorithm.
         If it fails then the :class:`~openturns.Cobyla` optimization algorithm is used.
+
+  * The ``LevelSetMesher-Algorithm`` key selects the vertex placement used for
+    the projection, either ``Legacy`` (default) or ``QEF``. With ``QEF``,
+    tangent planes from Brent crossings and function gradients are combined
+    in one quadratic error function per cut cell or moved vertex, so sharp
+    edges and corners are recovered instead of chamfered. The following
+    :class:`~openturns.ResourceMap` key is used:
+
+    - ``LevelSetMesher-Algorithm`` (``String``, default: ``Legacy``): vertex placement algorithm, either ``Legacy`` or ``QEF``.
+
+  * A collection of level sets can be meshed as well: the meshed domain is
+    then the intersection of the level sets. Each level function is assumed
+    smooth, so per-constraint crossings and gradients stay reliable across
+    sharp junctions (see the ``QEF`` placement above). When a field is
+    provided, its values must have one column per level set.
 
 
 
@@ -69,11 +84,21 @@ Create a mesh:
 
     build(*levelSet, field, project*)
 
+    build(*collection, project*)
+
+    build(*collection, boundingBox, project*)
+
+    build(*collection, field, project*)
+
 Parameters
 ----------
 levelSet : :class:`~openturns.LevelSet`
     The level set to be meshed, of dimension equal to the dimension
     of `discretization`.
+collection : sequence of :class:`~openturns.LevelSet`
+    The level sets to be meshed, through their intersection. All level sets
+    must share the same dimension, equal to the dimension of `discretization`.
+    Each level function is assumed smooth.
 boundingBox : :class:`~openturns.Interval`
     The bounding box used to mesh the level set. It is automatically computed
     if not provided.

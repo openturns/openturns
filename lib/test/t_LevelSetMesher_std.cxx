@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <cmath>
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
 
@@ -95,6 +96,41 @@ int main(int, char *[])
     ResourceMap::SetAsBool("LevelSetMesher-SolveEquation", true);
     Mesh mesh4D = mesher4D.build(levelSet4D, Interval(Point(4, -0.5), Point(4, 0.5)));
     fullprint << "mesh4D=" << mesh4D << std::endl;
+
+    // Collection of level sets = intersection: lens of two unit disks
+    SymbolicFunction disk1(Description::BuildDefault(2, "x"), Description(1, "(x0+0.5)^2+x1^2"));
+    SymbolicFunction disk2(Description::BuildDefault(2, "x"), Description(1, "(x0-0.5)^2+x1^2"));
+    Collection<LevelSet> lens(0);
+    lens.add(LevelSet(disk1, LessOrEqual(), 1.0));
+    lens.add(LevelSet(disk2, LessOrEqual(), 1.0));
+    LevelSetMesher lensMesher(Indices(2, 16));
+    Interval lensBox(Point(2, -1.6), Point(2, 1.6));
+    ResourceMap::SetAsString("LevelSetMesher-Algorithm", "Legacy");
+    Mesh lensLegacy = lensMesher.build(lens, lensBox);
+    ResourceMap::SetAsString("LevelSetMesher-Algorithm", "QEF");
+    Mesh lensQEF = lensMesher.build(lens, lensBox);
+    ResourceMap::SetAsString("LevelSetMesher-Algorithm", "Legacy");
+    const Scalar lensExact = 2.0 * std::acos(0.5) - 0.5 * std::sqrt(3.0);
+    assert_almost_equal(lensQEF.getVolume(), lensExact, 1.0e-2, 1.0e-2, "wrong QEF lens volume");
+    if (!(std::abs(lensQEF.getVolume() - lensExact) <= std::abs(lensLegacy.getVolume() - lensExact)))
+      throw TestFailed("QEF lens must be at least as accurate as legacy lens");
+    // 1-element collection parity with single build
+    Collection<LevelSet> singleton(0);
+    singleton.add(levelSet2D);
+    Mesh singleMesh = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)), false);
+    Mesh collectionMesh = mesher2D.build(singleton, Interval(Point(2, -10.0), Point(2, 10.0)), false);
+    assert_almost_equal(singleMesh.getVolume(), collectionMesh.getVolume(), 1.0e-12, 1.0e-12, "wrong singleton volume");
+    assert_almost_equal(singleMesh.getVertices(), collectionMesh.getVertices(), 1.0e-12, 1.0e-12, "wrong singleton vertices");
+    // Empty collection raises
+    try
+    {
+      mesher2D.build(Collection<LevelSet>(0), Interval(Point(2, -10.0), Point(2, 10.0)));
+      throw TestFailed("empty collection must raise");
+    }
+    catch (const InvalidArgumentException &)
+    {
+      // expected
+    }
   }
   catch (TestFailed & ex)
   {
