@@ -190,9 +190,12 @@ R = ot.Normal(mu_R, sigma_R)
 
 covariance = ot.SquaredExponential([ll / sqrt(2)], [sigma_S])
 
+# 16 time steps are enough to picture the trend: the Monte Carlo
+# estimates are single-event-count noisy anyway, and the FORM curve
+# (computed at each step) carries the shape of the outcrossing rate
 t0 = 0.0
 t1 = 50.0
-N = 26
+N = 16
 
 # Get all the time steps t
 times = ot.RegularGrid(t0, (t1 - t0) / (N - 1.0), N).getVertices()

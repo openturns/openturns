@@ -4,7 +4,9 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-size = 10000
+# 2000 points are enough: only the drawable counts are asserted below,
+# and the diagnostic plots sort the sample (quadratic cost)
+size = 2000
 distribution = ot.GeneralizedPareto(1.5, -0.2, 0.5)
 sample = distribution.getSample(size)
 # fake result

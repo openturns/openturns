@@ -20,7 +20,7 @@ Elliptical distribution=  False
 Continuous =  True
 Elliptical =  False
 Independent =  False
-oneRealization= [-0.877312,-0.87746,0.69751,2.27139,2.52837,0.152066,1.60952]
+oneRealization= [0.529927,-0.538176,2.60591,2.31043,1.33962,0.102969,3.37955]
 Point=  [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
 ddf     = [-0.000161544,-0.000161544,4.80573e-05,0.000108129,0.000120143,-0.000877177,-0.000877177]
 pdf     =0.00076
@@ -47,7 +47,7 @@ margins PDF=0.01057
 margins CDF=0.00675
 margins quantile= [2.30912,5.61824,5.61824,4.55939,4.55939]
 margins CDF(quantile)=0.95000
-margins realization= [-0.42058,2.80782,6.41388,0.234171,0.323429]
+margins realization= [0.530542,-2.07255,-1.37933,1.12598,0.930393]
 isoprobabilistic transformation (general normal)= [((RosenblattEvaluation(AliMikhailHaqCopula(theta = 0.5)->Normal(2)))o(| y0 = Normal(mu = 0, sigma = 1) -> y0 : Uniform(a = 0, b = 1)
 | y1 = Normal(mu = 0, sigma = 1) -> y1 : Uniform(a = 0, b = 1)
 ))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(RosenblattEvaluation(Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]

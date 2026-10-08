@@ -78,4 +78,5 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.setCDFTolerance(1e-4)
 validation.skipGradient()  # Too costly
+validation.setMomentsSamplingSize(100000)
 validation.run()

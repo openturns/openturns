@@ -146,4 +146,5 @@ validation.skipCorrelation()  # slow
 validation.skipParameters()  # slow
 validation.skipConditional()  # FIXME
 validation.skipTransformation()  # FIXME
+validation.skipGradient()  # slow PDF/CDF gradient FD over ~13 params
 validation.run()

@@ -118,7 +118,7 @@ func.setDescription(["$s$", "$t$", "$cov$"])
 
 # %%
 # Then we can draw the function with default options.
-cov_graph = func.draw([-a] * 2, [a] * 2, [512] * 2)
+cov_graph = func.draw([-a] * 2, [a] * 2, [256] * 2)
 cov_graph.setLegendPosition("")
 view = otv.View(cov_graph)
 
@@ -127,7 +127,7 @@ view = otv.View(cov_graph)
 # We can draw the function in a filled contour graph.
 # sphinx_gallery_thumbnail_number = 3
 cov_graph = func.draw(
-    0, 1, 0, [0] * 2, [-a] * 2, [a] * 2, [512] * 2, ot.GraphImplementation.NONE, True
+    0, 1, 0, [0] * 2, [-a] * 2, [a] * 2, [256] * 2, ot.GraphImplementation.NONE, True
 )
 view = otv.View(cov_graph)
 

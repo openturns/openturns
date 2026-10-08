@@ -48,7 +48,6 @@ beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-1.48948] upper bound=class=Point name=Unnamed dimension=1 values=[5] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=1.92725
-entropy (MC)=1.92747
 mean=class=Point name=Unnamed dimension=1 values=[1.5]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.84222]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3.39378]
@@ -61,11 +60,11 @@ Distribution class=TruncatedNormal name=TruncatedNormal dimension=1 mu=50 sigma=
 Distribution TruncatedNormal(mu = 50, sigma = 1, a = 3, b = 4)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[3.99377]
-oneSample first=class=Point name=Unnamed dimension=1 values=[3.99137] last=class=Point name=Unnamed dimension=1 values=[3.96181]
-mean=class=Point name=Unnamed dimension=1 values=[3.97817]
-covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.000487139]
-Kolmogorov test for the generator, sample size=100 is rejected
+oneRealization=class=Point name=Unnamed dimension=1 values=[3.97053]
+oneSample first=class=Point name=Unnamed dimension=1 values=[3.99371] last=class=Point name=Unnamed dimension=1 values=[3.97978]
+mean=class=Point name=Unnamed dimension=1 values=[3.97803]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.000488568]
+Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[3.5]
 ddf     =class=Point name=Unnamed dimension=1 values=[1.93801e-07]
@@ -98,7 +97,6 @@ beta=0.95
 Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[3.93495] upper bound=class=Point name=Unnamed dimension=1 values=[4] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=-2.82958
-entropy (MC)=-2.83014
 mean=class=Point name=Unnamed dimension=1 values=[3.97828]
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.0217084]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.000471255]

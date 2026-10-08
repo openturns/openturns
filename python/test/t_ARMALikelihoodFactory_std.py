@@ -11,7 +11,7 @@ dim = 2
 # Make a realization of an ARMA model
 # Tmin , Tmax and N points for TimeGrid
 dt = 1.0
-size = 400
+size = 100
 timeGrid = ot.RegularGrid(0.0, dt, size)
 
 # white noise
@@ -49,6 +49,11 @@ for k in range(q):
             alpha[i, j] = 0.01 * ot.DistFunc.rNormal()
     ma[k] = ma[k] + alpha
 
+# Cap the likelihood optimization budget: the estimates are only checked
+# for finiteness below, so full convergence is unnecessary
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ARMALikelihoodFactory-DefaultMaximumCallsNumber", 2000
+)
 factory = ot.ARMALikelihoodFactory(p, q, dim)
 print("factory=", factory)
 factory.setInitialConditions(ar, ma, cov)
@@ -58,6 +63,10 @@ print("original process = ", myARMA)
 # print('Estimated ARMA= ', result)
 
 # Indices-based constructor (p and q as Indices) should produce finite coefficients
+# tighter budget for the 2nd fit: result only checked finite, same code path as above
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ARMALikelihoodFactory-DefaultMaximumCallsNumber", 500
+)
 factory2 = ot.ARMALikelihoodFactory([p], [q], dim)
 factory2.setInitialConditions(ar, ma, cov)
 result2 = ot.ARMA(factory2.build(timeSeries))

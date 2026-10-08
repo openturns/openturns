@@ -104,6 +104,8 @@ X = ot.RandomVector(ot.Normal())
 Y = ot.CompositeRandomVector(ot.SymbolicFunction(["X"], ["X"]), X)
 event = ot.ThresholdEvent(Y, ot.Less(), -2.0)
 algo = ot.NAIS(event, 0.2)
+# NOTE: keep this budget: the estimates below use a 1e-2 *relative*
+# tolerance, which already needs ~10000 samples to pass
 algo.setMaximumOuterSampling(10000)
 algo.run()
 result = algo.getResult()

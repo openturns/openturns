@@ -225,6 +225,8 @@ ot.RandomGenerator.SetSeed(2)
 validation = ott.DistributionValidation(distribution)
 validation.skipEntropy()  # slow
 validation.skipMinimumVolumeLevelSet()  # slow
+validation.setMomentsSamplingSize(100000)
+validation.setDomainSamplingSize(100000)
 validation.run()
 # 3D test case
 ot.RandomGenerator.SetSeed(2)

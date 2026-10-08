@@ -31,12 +31,12 @@ copy dist parameter= [0.5,1]
 pyDist= PythonDistribution -> #2
 myDist= class=PythonDistribution name=UniformNdPy description=[X0,X1]
 dimension= 2
-realization= [0.412967,0.584915]
-sample= 0 : [ 0.507654  0.6998    ]
-1 : [ 0.880077  0.22552   ]
-2 : [ 0.0939358 0.462153  ]
-3 : [ 0.21479   0.728932  ]
-4 : [ 0.302963  0.203248  ]
+realization= [0.98919,0.220983]
+sample= 0 : [ 0.184862  0.684807  ]
+1 : [ 0.342     0.171264  ]
+2 : [ 0.101584  0.52855   ]
+3 : [ 0.128131  0.960588  ]
+4 : [ 0.758512  0.0535513 ]
 pdf= 1.0
 cdf= 0.04
 roughness= 42.0

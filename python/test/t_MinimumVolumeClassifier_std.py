@@ -9,6 +9,9 @@ ot.ResourceMap.SetAsBool("Distribution-MinimumVolumeLevelSetBySampling", True)
 ot.ResourceMap.SetAsUnsignedInteger(
     "Distribution-MinimumVolumeLevelSetSamplingSize", 500
 )
+# Finer contour grids only affect the drawn graphs below (not printed nor
+# asserted): use a coarser grid to speed up drawContour/drawContourAndSample
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 50)
 
 # 1-d test
 dists = [ot.Normal(-1.0, 1.0), ot.Normal(2.0, 1.5)]

@@ -61,8 +61,9 @@ Compare frequentist and Bayesian estimation
 import openturns as ot
 import openturns.viewer as otv
 
+# Fewer integration nodes: 256 evals/PDF instead of 1024, smooth integrand
 ot.ResourceMap.SetAsUnsignedInteger(
-    "CompoundDistribution-MarginalIntegrationNodesNumber", 32
+    "CompoundDistribution-MarginalIntegrationNodesNumber", 16
 )
 ot.ResourceMap.SetAsString(
     "CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct"
@@ -145,7 +146,7 @@ interval_Bay, beta = (
 print("Beta =", beta)
 print("Condifence interval Bay =\n", interval_Bay)
 print("Volume =", interval_Bay.getVolume())
-sample = model_Bay.getSample(10000)
+sample = model_Bay.getSample(2000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
@@ -179,7 +180,7 @@ interval_ML, beta = (
 print("Beta =", beta)
 print("Condifence interval ML =\n", interval_ML)
 print("Volume =", interval_ML.getVolume())
-sample = model_ML.getSample(10000)
+sample = model_ML.getSample(2000)
 dist_KL = (
     model_ML.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()
@@ -336,7 +337,8 @@ conditioning = ot.JointDistribution([ot.Triangular(-1.0, 0.0, 1.0)] * 2)
 conditioning.setDescription(["Y0", "Y1"])
 compound = ot.CompoundDistribution(conditioned, conditioning, linkFunction)
 posterior_Y = ot.PosteriorDistribution(compound, observations)
-sample_posterior = linkFunction(posterior_Y.getSample(10000)).getMarginal([1, 3])
+# 2000 draws are enough for the KDE contours below, visually identical
+sample_posterior = linkFunction(posterior_Y.getSample(2000)).getMarginal([1, 3])
 dist_estimateur_Bay = ot.KernelSmoothing().build(sample_posterior)
 
 theta_Bay = linkFunction(computeMode(posterior_Y))
@@ -350,7 +352,7 @@ interval_Bay, beta = (
 print("Beta =", beta)
 print("Condifence interval Bay =\n", interval_Bay)
 print("Volume =", interval_Bay.getVolume())
-sample = model_Bay.getSample(10000)
+sample = model_Bay.getSample(2000)
 dist_Bay = (
     model_Bay.computeLogPDF(sample) - conditioned.computeLogPDF(sample)
 ).computeMean()

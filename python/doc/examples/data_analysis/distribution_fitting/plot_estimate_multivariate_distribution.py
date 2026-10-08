@@ -29,7 +29,7 @@ marginals = [
     ot.Triangular(100.0, 150.0, 300.0),
 ]
 distribution = ot.JointDistribution(marginals, copula)
-sample = distribution.getSample(10000).getMarginal([0, 2, 3, 1])
+sample = distribution.getSample(5000).getMarginal([0, 2, 3, 1])
 
 # %%
 # Estimate marginals

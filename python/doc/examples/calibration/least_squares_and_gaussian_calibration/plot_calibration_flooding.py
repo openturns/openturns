@@ -330,6 +330,10 @@ print(jacobianMatrix.computeSingularValues())
 # between the predictions and the observations.
 
 # %%
+# Use a null bootstrap size to select the linearized posterior instead of
+# the kernel-smoothed bootstrap posterior: the MAP is unchanged, but the
+# posterior shape as well as its width may change. It avoids ~100 repeat optimizations
+ot.ResourceMap.SetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize", 0)
 algo = ot.NonLinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior)
 
 # %%
@@ -442,6 +446,12 @@ def plotDistributionGridPDF(distribution):
         The grid of plots.
 
     """
+    # Draw the grid with fewer points: smooth iso-PDF contours look
+    # identical with a coarser grid (cf. plot_calibration_chaboche.py)
+    defaultPointNumber = ot.ResourceMap.GetAsUnsignedInteger(
+        "Distribution-DefaultPointNumber"
+    )
+    ot.ResourceMap.SetAsUnsignedInteger("Distribution-DefaultPointNumber", 50)
     dimension = distribution.getDimension()
     grid = ot.GridLayout(dimension, dimension)
     for i in range(dimension):
@@ -460,6 +470,9 @@ def plotDistributionGridPDF(distribution):
                 graph.setYTitle("")
             grid.setGraph(i, j, graph)
     grid.setTitle("Iso-PDF values")
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "Distribution-DefaultPointNumber", defaultPointNumber
+    )
     return grid
 
 
@@ -600,6 +613,11 @@ plt.subplots_adjust(wspace=1.0, hspace=0.5)
 # ------------------------------
 # The :class:`~openturns.GaussianNonLinearCalibration` class performs Gaussian
 # nonlinear calibration.
+# Use a null bootstrap size here as well (cf. above): it selects the
+# linearized posterior instead of the kernel-smoothed bootstrap posterior.
+# The MAP is unchanged, but the posterior shape as well as its width may
+# change, while the ~100 bootstrap optimizations are skipped
+ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 algo = ot.GaussianNonLinearCalibration(
     mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )

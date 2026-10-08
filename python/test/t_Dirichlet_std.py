@@ -157,6 +157,9 @@ for dim in range(1, 2):
     validation.skipCDF()
     validation.skipGradient()
     validation.skipMoments()
+    validation.setMomentsSamplingSize(100000)
+    validation.setDomainSamplingSize(100000)
+    validation.setEntropySamplingSize(100000)
     validation.run()
 
 # Use small integration/sampling sizes to keep the test fast

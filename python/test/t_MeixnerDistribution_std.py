@@ -112,4 +112,7 @@ print("kurtosis=", kurtosis)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.setMomentsSamplingSize(100000)
+validation.setDomainSamplingSize(100000)
+validation.setEntropySamplingSize(100000)
 validation.run()

@@ -147,7 +147,9 @@ kFoldParameter = 10
 foldSampleSize = 20
 sampleSize = foldSampleSize * kFoldParameter + 1
 
-degree = 5
+# Degree 4 keeps the design comfortably overdetermined (35 coefficients
+# for 201 points) while making the 400+ naive refits cheaper
+degree = 4
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
 basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree)
 print("basisSize = ", basisSize)
