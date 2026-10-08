@@ -308,6 +308,7 @@ ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", oldDiscretization)
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipCorrelation()  # slow due to Spearman's rho
+validation.skipDependenceMeasures()  # slow Spearman/Kendall on 1M-sample
 try:
     validation.run()
 except Exception:

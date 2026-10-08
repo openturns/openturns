@@ -41,8 +41,9 @@ int main(int, char *[])
 
     // Make a realization of an ARMA model
     // Tmin , Tmax and N points for TimeGrid
+    // small grid: likelihood cost is linear in size, estimate only smoke-tested
     const Scalar dt = 1.0;
-    const UnsignedInteger size = 400;
+    const UnsignedInteger size = 100;
     RegularGrid timeGrid(0.0, dt, size);
 
     // Fixing the distributions for the WhiteNoise
@@ -115,6 +116,8 @@ int main(int, char *[])
       theta[k] = theta[k] + alpha;
     }
 
+    // Cap the likelihood optimization budget (cf. python test): result only smoke-tested
+    ResourceMap::SetAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumCallsNumber", 2000);
     ARMALikelihoodFactory factory(p, q, dimension);
     fullprint << "factory=" << factory << std::endl;
     factory.setInitialConditions(phi, theta, cov);

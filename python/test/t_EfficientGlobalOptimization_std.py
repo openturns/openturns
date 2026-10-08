@@ -121,7 +121,9 @@ fitter.run()
 gpr = ot.GaussianProcessRegression(fitter.getResult())
 gpr.run()
 algo = otexp.EfficientGlobalOptimization(problem, gpr.getResult())
-algo.setMaximumCallsNumber(10)
+# The minimization result is unused (only checked for successful completion),
+# so fewer calls suffice here; the maximization below keeps the full budget
+algo.setMaximumCallsNumber(5)
 algo.run()
 result = algo.getResult()
 

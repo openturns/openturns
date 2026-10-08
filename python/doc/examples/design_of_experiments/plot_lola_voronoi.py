@@ -137,7 +137,10 @@ def runMetaModel(x, y, tag):
 
 # %%
 # Generate a large validation sample by Monte Carlo
-nRef = int(1e6)
+# 1e5 points are enough: the LOLA/Sobol error gap is orders of magnitude
+# larger than the Monte Carlo noise, and the metamodel evaluation cost is
+# linear in the sample size
+nRef = int(1e5)
 xRef = distribution.getSample(nRef)
 yRef = f1(xRef)
 

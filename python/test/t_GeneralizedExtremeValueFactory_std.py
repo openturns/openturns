@@ -6,6 +6,9 @@ from openturns.usecases import coles
 
 ot.TESTPREAMBLE()
 ot.Log.Show(ot.Log.INFO)
+# Coarser function draw grids: the profile likelihood plots below evaluate
+# a costly function per point and the graphs are not asserted
+ot.ResourceMap.SetAsUnsignedInteger("Evaluation-DefaultPointNumber", 40)
 
 size = 10000
 distribution = ot.GeneralizedExtremeValue(2.0, 1.5, -0.15)

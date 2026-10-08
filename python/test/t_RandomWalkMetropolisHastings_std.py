@@ -80,7 +80,8 @@ posterior_density = ot.PythonFunction(2, 1, post_den)
 # approximate the posterior distribution
 # NB: to get a good view of the mode of the posterior distribution, use:
 # posterior_density.draw([14.0, -0.25], [16.0, -0.22], [100, 100])
-mesher = ot.IntervalMesher([100, 100])
+# a coarse grid is enough for the 0.2 tolerance below
+mesher = ot.IntervalMesher([50, 50])
 lowerBound = [-2.5, -0.53]
 upperBound = [34.0, 0.03]
 box = ot.Interval(lowerBound, upperBound)
@@ -161,7 +162,8 @@ mh_coll = [
 for mh in mh_coll:
     mh.setLikelihood(likelihood, obs)
 sampler = ot.Gibbs(mh_coll)
-parameters_sample = sampler.getSample(2000)
+# smoke test only, the sample is not asserted
+parameters_sample = sampler.getSample(500)
 
 
 # Trick RandomWalkMetropolisHastings into being a simple random walk

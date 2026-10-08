@@ -317,11 +317,15 @@ def drawTensorizedGaussQuadrature(n_max):
 # %%
 # We can finally create the graph.
 
-level_max = 14
+# The largest levels/numbers of nodes only add points on the already
+# settled convergence lines, at a steep cost (each tensorized level
+# multiplies the number of function evaluations): keep enough points
+# to fit the slopes, not more.
+level_max = 12
 graph = ot.Graph("Exponential problem", "$n$", "$e_{abs}$")
 curve = drawSmolyakQuadrature(level_max)
 graph.add(curve)
-n_max = 11
+n_max = 9
 curve = drawTensorizedGaussQuadrature(n_max)
 graph.add(curve)
 graph.setLogScale(ot.GraphImplementation.LOGXY)

@@ -28,7 +28,9 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
 
     eps = 1e-3
 
-    mesh = ot.IntervalMesher([7] * inputDimension).build(
+    # a coarse mesh is enough: all the checks below are cross-method
+    # consistency checks, independent of the mesh size
+    mesh = ot.IntervalMesher([3] * inputDimension).build(
         ot.Interval([-10] * inputDimension, [10] * inputDimension)
     )
 

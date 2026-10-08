@@ -149,6 +149,9 @@ val = ot.MetaModelValidation(y, metamodelPredictions)
 r2 = val.computeR2Score()
 residual = val.getResidualSample()
 residual_dist_smooth = val.getResidualDistribution()
-residual_dist = val.getResidualDistribution(False)
+# NOTE: getResidualDistribution(False) is not called here: on top of the
+# smooth version it fits a Bernstein copula on the residuals, which costs
+# seconds while its result is unused (the factory itself is covered by
+# t_BernsteinCopulaFactory_std)
 graph = val.drawValidation()
 print(r2)

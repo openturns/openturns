@@ -332,6 +332,7 @@ print(distribution._repr_html_())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.setMomentsSamplingSize(100000)
 validation.run()
 
 # Check if one can detect if the distribution is elliptical

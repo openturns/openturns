@@ -89,7 +89,7 @@ rho2 = 0.15
 f2 = [[1.0, 0.0], rho2 * ot.IdentityMatrix(2)]
 f_i = [f1, f2]
 graph, s = drawIFS(
-    f_i, skip=100, iterations=100000, batch_size=1, name="Spiral", color="blue"
+    f_i, skip=100, iterations=50000, batch_size=1, name="Spiral", color="blue"
 )
 print("Box counting dimension=%.3f" % s)
 view = otv.View(graph)
@@ -102,7 +102,7 @@ f3 = [[0.0, 1.6], ot.SquareMatrix(2, [0.2, -0.26, 0.23, 0.22])]
 f4 = [[0.0, 0.44], ot.SquareMatrix(2, [-0.15, 0.28, 0.26, 0.24])]
 f_i = [f1, f2, f3, f4]
 graph, s = drawIFS(
-    f_i, skip=100, iterations=100000, batch_size=1, name="Fern", color="green"
+    f_i, skip=100, iterations=50000, batch_size=1, name="Fern", color="green"
 )
 print("Box counting dimension=%.3f" % s)
 # sphinx_gallery_thumbnail_number = 2
@@ -114,7 +114,7 @@ f1 = [[0.0, 0.0], ot.SquareMatrix(2, [0.5, -0.5, 0.5, 0.5])]
 f2 = [[1.0, 0.0], ot.SquareMatrix(2, [-0.5, -0.5, 0.5, -0.5])]
 f_i = [f1, f2]
 graph, s = drawIFS(
-    f_i, skip=100, iterations=100000, batch_size=1, name="Dragon", color="red"
+    f_i, skip=100, iterations=50000, batch_size=1, name="Dragon", color="red"
 )
 print("Box counting dimension=%.3f" % s)
 view = otv.View(graph)
@@ -128,7 +128,7 @@ f_i = [f1, f2, f3]
 graph, s = drawIFS(
     f_i,
     skip=100,
-    iterations=100000,
+    iterations=50000,
     batch_size=1,
     name="Sierpinski's triangle",
     color="magenta",

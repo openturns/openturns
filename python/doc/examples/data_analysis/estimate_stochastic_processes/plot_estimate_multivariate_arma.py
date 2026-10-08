@@ -43,7 +43,7 @@ dim = 2
 
 # Tmin , Tmax and N points for TimeGrid
 dt = 1.0
-size = 400
+size = 100
 timeGrid = ot.RegularGrid(0.0, dt, size)
 
 # white noise
@@ -68,6 +68,11 @@ timeSeries = ot.TimeSeries(arma.getRealization())
 
 # %%
 # Estimate the process from the previous realization
+# Cap the likelihood optimization budget: with starting conditions at the
+# true coefficients, fewer evaluations still produce a sensible estimate
+ot.ResourceMap.SetAsUnsignedInteger(
+    "ARMALikelihoodFactory-DefaultMaximumCallsNumber", 2000
+)
 factory = ot.ARMALikelihoodFactory(p, q, dim)
 factory.setInitialConditions(ar, ma, cov)
 

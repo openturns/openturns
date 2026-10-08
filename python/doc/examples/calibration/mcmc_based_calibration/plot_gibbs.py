@@ -129,7 +129,9 @@ gibbs = ot.Gibbs([sampler0, sampler1, sampler2])
 # %%
 # Run the Gibbs algorithm
 
-s = gibbs.getSample(10000)
+# 2000 draws are enough for the KDE contour plot below, which is
+# visually identical with fewer points
+s = gibbs.getSample(2000)
 
 # %%
 # Extract the relevant marginals: the first (:math:`mu_0`) and the second (:math:`\mu_1`).

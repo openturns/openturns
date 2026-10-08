@@ -60,7 +60,7 @@ def draw(dist, Y):
     g = ot.Graph()
     g.setAxes(True)
     g.setGrid(True)
-    c = ot.Cloud(dist.getSample(10000))
+    c = ot.Cloud(dist.getSample(2000))
     c.setColor("red")
     c.setPointStyle("bullet")
     g.add(c)

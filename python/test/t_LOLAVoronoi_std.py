@@ -62,8 +62,10 @@ for i in range(5):
 ot.ResourceMap.SetAsString("LOLAVoronoi-NonLinearityAggregationMethod", "Maximum")
 f2 = ot.SymbolicFunction(["x0", "x1"], ["2 * x0 + 3 * x1 + 8"])
 y0 = f2(x0)
+# Fewer iterations suffice here: the assertions below (null LOLA score,
+# star discrepancy) are qualitative, unlike the exact batch means above
 algo = ot.LOLAVoronoi(x0, y0, distribution)
-for i in range(10):
+for i in range(6):
     x = algo.generate(20)
     y = f2(x)
     algo.update(x, y)
@@ -80,7 +82,7 @@ f3 = ot.SymbolicFunction(["x0", "x1"], ["sin(10 * x0) + cos(10 * x1)"])
 x0 = ot.Box([8, 8]).generate()
 y0 = f3(x0)
 algo = ot.LOLAVoronoi(x0, y0, distribution)
-for i in range(10):
+for i in range(6):
     x = algo.generate(20)
     y = f3(x)
     algo.update(x, y)
