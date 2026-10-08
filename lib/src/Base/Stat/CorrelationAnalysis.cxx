@@ -174,8 +174,8 @@ Point CorrelationAnalysis::ComputePCC(const Sample & firstSample,
     // Build the truncated sample
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger j = 0; j < index; ++j) truncatedInput(i, j) = firstSample(i, j);
-      for (UnsignedInteger j = index + 1; j < dimension; ++j) truncatedInput(i, j - 1) = firstSample(i, j);
+      std::copy(firstSample.getImplementation()->data_begin() + i * dimension, firstSample.getImplementation()->data_begin() + i * dimension + index, truncatedInput.getImplementation()->data_begin() + i * (dimension - 1));
+      std::copy(firstSample.getImplementation()->data_begin() + i * dimension + index + 1, firstSample.getImplementation()->data_begin() + (i + 1) * dimension, truncatedInput.getImplementation()->data_begin() + i * (dimension - 1) + index);
       remainingInput(i, 0) = firstSample(i, index);
     }
     // Build the linear models

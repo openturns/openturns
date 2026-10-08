@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include <algorithm>
 #include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -475,9 +476,9 @@ FiniteDiscreteDistribution::PointWithDescriptionCollection FiniteDiscreteDistrib
   // Loop over the size to extract the probabilities, seen as the dependence parameters
   PointWithDescription point(size);
   Description description(size);
+  std::copy(probabilities_.begin(), probabilities_.end(), point.begin());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    point[i] = probabilities_[i];
     OSS oss;
     oss << "probabilities_" << i;
     description[i] = oss;
@@ -501,10 +502,7 @@ Point FiniteDiscreteDistribution::getParameter() const
       point[i * size + j] = points_(j, i);
     }
   }
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    point[dimension * size + i] = probabilities_[i];
-  }
+  std::copy(probabilities_.begin(), probabilities_.end(), point.begin() + dimension * size);
   return point;
 }
 
@@ -592,7 +590,7 @@ void FiniteDiscreteDistribution::setData(const Sample & sample,
   Sample weightedData(size, dimension + 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < dimension; ++j) weightedData(i, j) = sample(i, j);
+    std::copy(sample.getImplementation()->data_begin() + i * dimension, sample.getImplementation()->data_begin() + (i + 1) * dimension, weightedData.getImplementation()->data_begin() + i * (dimension + 1));
     weightedData(i, dimension) = weights[i];
   }
   // Sort the pairs
@@ -620,7 +618,7 @@ void FiniteDiscreteDistribution::setData(const Sample & sample,
   probabilities_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < dimension; ++j) points_(i, j) = weightedData(i, j);
+    std::copy(weightedData.getImplementation()->data_begin() + i * (dimension + 1), weightedData.getImplementation()->data_begin() + i * (dimension + 1) + dimension, points_.getImplementation()->data_begin() + i * dimension);
     probabilities_[i] = SpecFunc::Clip01(weightedData(i, dimension));
   }
   base_ = Point(0);

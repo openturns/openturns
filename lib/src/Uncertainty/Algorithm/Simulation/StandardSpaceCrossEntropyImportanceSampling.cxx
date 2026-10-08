@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include <algorithm>
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -71,10 +72,7 @@ Function StandardSpaceCrossEntropyImportanceSampling::getLimitState() const
 void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(const Point & auxiliaryDistributionParameters)
 {
   Point temporaryParameters = auxiliaryDistribution_.getParameter();
-  for (UnsignedInteger i = 0; i < auxiliaryDistributionParameters.getDimension(); ++i)
-  {
-    temporaryParameters[i] = auxiliaryDistributionParameters[i];
-  }
+  std::copy(auxiliaryDistributionParameters.begin(), auxiliaryDistributionParameters.end(), temporaryParameters.begin());
   auxiliaryDistribution_.setParameter(temporaryParameters);
 }
 

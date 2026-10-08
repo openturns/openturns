@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include <algorithm>
 #include "openturns/Collection.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/KPermutations.hxx"
@@ -270,8 +271,7 @@ Sample KPermutationsDistribution::getSupport(const Interval & interval) const
   {
     const Indices tuple(generator.generateNext());
     Point point(dimension_);
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-      point[j] = tuple[j];
+    std::copy(tuple.begin(), tuple.end(), point.begin());
     if (inter.contains(point))
       result.add(point);
   }

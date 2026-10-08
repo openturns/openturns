@@ -184,8 +184,7 @@ struct PooledUniformSource
   Point take(const UnsignedInteger n)
   {
     Point slice(n);
-    for (UnsignedInteger i = 0; i < n; ++i)
-      slice[i] = pool_[cursor_ + i];
+    std::copy(pool_.begin() + cursor_, pool_.begin() + cursor_ + n, slice.begin());
     cursor_ += n;
     return slice;
   }

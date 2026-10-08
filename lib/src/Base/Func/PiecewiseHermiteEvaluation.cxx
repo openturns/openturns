@@ -168,7 +168,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     {
       if (enableExtrapolation_)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+        std::copy(values_.getImplementation()->data_begin(), values_.getImplementation()->data_begin() + dimension, output.getImplementation()->data_begin() + i * dimension);
         continue;
       }
       else
@@ -181,7 +181,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     {
       if (enableExtrapolation_)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+        std::copy(values_.getImplementation()->data_begin() + iRight * dimension, values_.getImplementation()->data_begin() + (iRight + 1) * dimension, output.getImplementation()->data_begin() + i * dimension);
         continue;
       }
       else
@@ -288,11 +288,9 @@ void PiecewiseHermiteEvaluation::setLocations(const Point & locations)
     const Sample oldDerivatives(derivatives_);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      {
-        values_(i, j) = oldValues(locationAndIndex[i].second, j);
-        derivatives_(i, j) = oldDerivatives(locationAndIndex[i].second, j);
-      }
+      const UnsignedInteger srcRow = locationAndIndex[i].second;
+      std::copy(oldValues.getImplementation()->data_begin() + srcRow * outputDimension, oldValues.getImplementation()->data_begin() + (srcRow + 1) * outputDimension, values_.getImplementation()->data_begin() + i * outputDimension);
+      std::copy(oldDerivatives.getImplementation()->data_begin() + srcRow * outputDimension, oldDerivatives.getImplementation()->data_begin() + (srcRow + 1) * outputDimension, derivatives_.getImplementation()->data_begin() + i * outputDimension);
     }
   }
   isRegular_ = PiecewiseLinearEvaluation::IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseHermiteEvaluation-EpsilonRegular"));

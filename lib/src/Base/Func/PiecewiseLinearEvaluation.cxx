@@ -205,7 +205,7 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
     {
       if (enableExtrapolation_)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+        std::copy(values_.getImplementation()->data_begin(), values_.getImplementation()->data_begin() + dimension, output.getImplementation()->data_begin() + i * dimension);
         continue;
       }
       else
@@ -219,7 +219,7 @@ Sample PiecewiseLinearEvaluation::operator () (const Sample & inSample) const
     {
       if (enableExtrapolation_)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+        std::copy(values_.getImplementation()->data_begin() + iRight * dimension, values_.getImplementation()->data_begin() + (iRight + 1) * dimension, output.getImplementation()->data_begin() + i * dimension);
         continue;
       }
       else
@@ -278,8 +278,8 @@ void PiecewiseLinearEvaluation::setLocations(const Point & locations)
     const Sample oldValues(values_);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        values_(i, j) = oldValues(locationAndIndex[i].second, j);
+      const UnsignedInteger srcRow = locationAndIndex[i].second;
+      std::copy(oldValues.getImplementation()->data_begin() + srcRow * dimension, oldValues.getImplementation()->data_begin() + (srcRow + 1) * dimension, values_.getImplementation()->data_begin() + i * dimension);
     }
   }
   isRegular_ = IsRegular(locations_, ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular"));
