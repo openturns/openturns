@@ -20,6 +20,7 @@
  */
 
 #include "openturns/LinearProblem.hxx"
+#include <algorithm>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/QuadraticFunction.hxx"
@@ -132,8 +133,7 @@ LinearProblem LinearProblem::Linearize(const OptimizationProblem & problem, cons
     const Matrix eqGrad0(problem.getEqualityConstraint().gradient(location).transpose());
     A.getImplementation()->resize(A.getNbRows() + eqDim, problemDimension);
     for (UnsignedInteger j = 0; j < problemDimension; ++ j)
-      for (UnsignedInteger i = 0; i < eqDim; ++ i)
-        A(startRow + i, j) = eqGrad0(i, j);
+      std::copy(eqGrad0.getImplementation()->begin() + j * eqDim, eqGrad0.getImplementation()->begin() + (j + 1) * eqDim, A.getImplementation()->begin() + j * A.getNbRows() + startRow);
     lb.add(-1.0 * eq0);
     ub.add(- 1.0 * eq0);
   }

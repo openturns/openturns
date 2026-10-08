@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include <algorithm>
 
 #include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -350,11 +351,8 @@ Scalar BlockIndependentCopula::computeProbability(const Interval & interval) con
     const UnsignedInteger copulaDimension = copula.getDimension();
     Point lower(copulaDimension);
     Point upper(copulaDimension);
-    for (UnsignedInteger j = 0; j < copulaDimension; ++j)
-    {
-      lower[j] = lowerIntersect[shift + j];
-      upper[j] = upperIntersect[shift + j];
-    }
+    std::copy(lowerIntersect.begin() + shift, lowerIntersect.begin() + shift + copulaDimension, lower.begin());
+    std::copy(upperIntersect.begin() + shift, upperIntersect.begin() + shift + copulaDimension, upper.begin());
     shift += copulaDimension;
     value *= copula.computeProbability(Interval(lower, upper));
   }
@@ -763,8 +761,7 @@ Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point &
   if (hasIndependentCopula())
   {
     Point result(dim);
-    for (UnsignedInteger i = 0; i < dim; ++i)
-      result[i] = q[i];
+    std::copy(q.begin(), q.begin() + dim, result.begin());
     return result;
   }
   const auto copulaCollection = copulaCollection_;

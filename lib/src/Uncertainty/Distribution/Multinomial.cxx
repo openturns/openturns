@@ -20,6 +20,7 @@
  *
  */
 #include <cmath>
+#include <algorithm>
 #include "openturns/Collection.hxx"
 #include "openturns/Multinomial.hxx"
 #include "openturns/Binomial.hxx"
@@ -336,8 +337,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     // Only the atom floor(point) lies inside the box, so we return
     // PDF(floor(point)) rather than PDF(point)
     Point integerPoint(dimension);
-    for (UnsignedInteger i = 0; i < dimension; ++i)
-      integerPoint[i] = kPoint[i];
+    std::copy(kPoint.begin(), kPoint.end(), integerPoint.begin());
     return computePDF(integerPoint);
   }
   // If the point covers the whole support of the distribution, return 1.0

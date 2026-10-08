@@ -20,6 +20,7 @@
  */
 
 #include "openturns/ComplexMatrixImplementation.hxx"
+#include <algorithm>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Lapack.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -109,8 +110,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRectIn
   int q(b.nbColumns_);
   ComplexMatrixImplementation B(p, q);
   for(UnsignedInteger j = 0; j < static_cast<UnsignedInteger>(q); ++j)
-    for (UnsignedInteger i = 0; i < static_cast<UnsignedInteger>(m); ++i)
-      B(i, j) = b(i, j);
+    std::copy(b.begin() + j * m, b.begin() + j * m + m, B.begin() + j * p);
   int nrhs(q);
   int lwork(-1);
   ComplexCollection work(1);

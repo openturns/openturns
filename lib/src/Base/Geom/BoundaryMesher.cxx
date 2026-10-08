@@ -19,6 +19,7 @@
  *
  */
 #include <unordered_map>
+#include <algorithm>
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/BoundaryMesher.hxx"
@@ -287,8 +288,7 @@ Mesh BoundaryMesher::build(const Mesh & mesh,
         if (oldToNewIndices[oldVertexIndex] == nbVertices)
         {
           boundaryFaces[i][j] = newVertexIndex;
-          for (UnsignedInteger k = 0; k < dimension; ++k)
-            boundaryVertices(newVertexIndex, k) = vertices(oldVertexIndex, k);
+          std::copy(vertices.getImplementation()->data_begin() + oldVertexIndex * dimension, vertices.getImplementation()->data_begin() + (oldVertexIndex + 1) * dimension, boundaryVertices.getImplementation()->data_begin() + newVertexIndex * dimension);
           oldToNewIndices[oldVertexIndex] = newVertexIndex;
           ++newVertexIndex;
         }

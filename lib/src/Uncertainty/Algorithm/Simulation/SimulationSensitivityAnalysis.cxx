@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/SimulationSensitivityAnalysis.hxx"
+#include <algorithm>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/MemoizeFunction.hxx"
@@ -218,7 +219,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   UnsignedInteger good = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    for (UnsignedInteger j = 0; j < inputDimension; ++j) mergedSample(i, j) = inputSample_(i, j);
+    std::copy(inputSample_.getImplementation()->data_begin() + i * inputDimension, inputSample_.getImplementation()->data_begin() + (i + 1) * inputDimension, mergedSample.getImplementation()->data_begin() + i * (inputDimension + 1));
     mergedSample[i][inputDimension] = outputSample_(i, 0);
     good += getComparisonOperator()(outputSample_(i, 0), getThreshold());
   }

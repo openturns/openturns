@@ -168,7 +168,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     {
       if (enableExtrapolation_)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
+        std::copy(values_.getImplementation()->data_begin(), values_.getImplementation()->data_begin() + dimension, output.getImplementation()->data_begin() + i * dimension);
         continue;
       }
       else
@@ -181,7 +181,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     {
       if (enableExtrapolation_)
       {
-        for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
+        std::copy(values_.getImplementation()->data_begin() + iRight * dimension, values_.getImplementation()->data_begin() + (iRight + 1) * dimension, output.getImplementation()->data_begin() + i * dimension);
         continue;
       }
       else
