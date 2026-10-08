@@ -581,6 +581,8 @@ class View:
 
             elif drawableKind == "PolygonArray":
                 polygonsNumber = len(drawable.getPalette())
+                if polygonsNumber == 0:
+                    continue
                 verticesNumber = len(drawable.getData()) // polygonsNumber
                 if (
                     "facecolors" not in polygoncollection_kw_default
