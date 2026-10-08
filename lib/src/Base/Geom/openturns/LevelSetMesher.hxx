@@ -73,6 +73,16 @@ public:
   virtual Mesh build(const LevelSet & levelSet,
                      const Field & field,
                      const Bool project = true) const;
+  /** Build the mesh of the intersection of a collection of level sets.
+   * Each level function is assumed smooth (see Notes). */
+  virtual Mesh build(const Collection<LevelSet> & collection,
+                     const Bool project = true) const;
+  virtual Mesh build(const Collection<LevelSet> & collection,
+                     const Interval & boundingBox,
+                     const Bool project = true) const;
+  virtual Mesh build(const Collection<LevelSet> & collection,
+                     const Field & field,
+                     const Bool project = true) const;
 
 protected:
 
