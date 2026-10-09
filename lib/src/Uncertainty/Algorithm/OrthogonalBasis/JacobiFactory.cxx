@@ -21,6 +21,7 @@
 #include "openturns/JacobiFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Beta.hxx"
+#include "openturns/FastJacobi.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -146,6 +147,32 @@ String JacobiFactory::__repr__() const
          << " alpha=" << alpha_
          << " beta=" << beta_
          << " measure=" << measure_;
+}
+
+
+/* Roots of the polynomial of degree n */
+Point JacobiFactory::getRoots(const UnsignedInteger n) const
+{
+  if (n == 0) return Point(0);
+  Point weights(0);
+  return getNodesAndWeights(n, weights);
+}
+
+/* Nodes and weights of the polynomial of degree n */
+Point JacobiFactory::getNodesAndWeights(const UnsignedInteger n,
+    Point & weightsOut) const
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
+  Point nodes(n);
+  weightsOut = Point(n);
+  // alpha_ and beta_ are the Beta shape parameters (A, B): the Jacobi
+  // exponents are alpha = B - 1 = beta_ - 1 and beta = A - 1 = alpha_ - 1
+  FastJacobi::ComputeNodesAndWeights(n, beta_ - 1.0, alpha_ - 1.0, &nodes[0], &weightsOut[0]);
+  // Map the standard Beta(alpha_, beta_, -1, 1) nodes to the actual
+  // Beta(alpha_, beta_, a, b) measure: x = (z - b_) / a_
+  for (UnsignedInteger i = 0; i < n; ++i)
+    nodes[i] = (nodes[i] - b_) / a_;
+  return nodes;
 }
 
 

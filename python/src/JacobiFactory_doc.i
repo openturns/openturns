@@ -3,27 +3,8 @@ R"RAW(Jacobi specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Beta` distribution.
 
-Parameters
-----------
-alpha : float
-    Shape parameter :math:`\alpha > 0` of the :class:`~openturns.Beta` distribution.
-beta : float
-    Shape parameter :math:`\beta > 0` of the :class:`~openturns.Beta` distribution.
-a : float, optional
-    Lower bound :math:`a` of the :class:`~openturns.Beta` distribution.
-    Defaults to -1.0.
-b : float, optional
-    Upper bound :math:`b` of the :class:`~openturns.Beta` distribution.
-    Defaults to 1.0.
-
-Any sequence of orthogonal polynomials has a recurrence formula relating any
-three consecutive polynomials as follows:
-
-.. math::
-
-    P_{i + 1}(x) & = (a_i x + b_i) P_i(x) + c_i P_{i - 1}(x), \quad  i \geq 0 \\
-    P_{-1} & = 0 \\
-    P_0 & = 1
+Any sequence of orthogonal polynomials follows the three-term recurrence
+formula detailed in :ref:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Jacobi polynomials come analytically and
 read:
@@ -46,9 +27,40 @@ of the :class:`~openturns.Beta` distribution, and:
     K_{2,i} & = & \displaystyle \frac{1}{2} \sqrt{(2 i + \alpha + \beta - 1) K_{1,i}}
     \end{array}, \quad i > 1
 
+The nodes and weights of the associated Gauss-Jacobi quadrature rule
+are computed by the fast Jacobi rule mapped to the measure: polished
+eigensolver below 100 nodes (see [golub1969]_), Hale-Townsend asymptotic
+expansions above (see [hale2013]_).
+At or above 100 nodes the rule reaches a relative accuracy better than
+``5e-13`` and is faster than the generic solver.
+
+Parameters
+----------
+alpha : float
+    Shape parameter :math:`\alpha > 0` of the :class:`~openturns.Beta` distribution.
+beta : float
+    Shape parameter :math:`\beta > 0` of the :class:`~openturns.Beta` distribution.
+a : float, optional
+    Lower bound :math:`a` of the :class:`~openturns.Beta` distribution.
+    Defaults to -1.0.
+b : float, optional
+    Upper bound :math:`b` of the :class:`~openturns.Beta` distribution.
+    Defaults to 1.0.
+
 See also
 --------
 UniVariateDistributionPolynomialFactory
+
+Notes
+-----
+The following
+:class:`~openturns.ResourceMap` key is used:
+
+- ``FastJacobi-AsymptoticThreshold`` (``UnsignedInteger``, default:
+  ``100``): number of nodes from which the asymptotic expansions are
+  used. Set it to a large number to force the generic polished
+  eigensolver: improved accuracy beyond ``5e-13`` at the price of a much
+  larger CPU effort.
 
 Examples
 --------

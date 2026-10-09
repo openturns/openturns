@@ -4,7 +4,7 @@ Univariate orthonormal polynomials
 ----------------------------------
 
 This page provides mathematical details on sequences of univariate
-polynomials which are orthonornal with respect to a distribution :math:`\mu`.
+polynomials which are orthonormal with respect to a distribution :math:`\mu`.
 
 These sequences are used to
 build multivariate polynomial basis by tensorization in the polynomial chaos expansion (refer to

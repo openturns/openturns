@@ -76,6 +76,7 @@
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
+ * Added SpecFunc.BesselJ and SpecFunc.BesselJDerivative
 
 ==== New features ====
  * The unary subtraction operator on Function and FunctionImplementation is now available
@@ -84,6 +85,8 @@
  * Adding, subtracting or negating functions whose implementations are linear combinations now returns a flattened linear combination: the weights of identical atoms are summed and nested linear combinations are flattened
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
+ * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
+
 
 === Documentation ===
  * Theory: add interpolation page

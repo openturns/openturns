@@ -986,6 +986,9 @@ void ResourceMap::loadDefaultConfiguration()
   // FastHermite parameters //
   addAsUnsignedInteger("FastHermite-AsymptoticThreshold", 256);
 
+  // FastJacobi parameters //
+  addAsUnsignedInteger("FastJacobi-AsymptoticThreshold", 100);
+
   // FastLaguerre parameters //
   addAsUnsignedInteger("FastLaguerre-IterativeThreshold", 8);
 
