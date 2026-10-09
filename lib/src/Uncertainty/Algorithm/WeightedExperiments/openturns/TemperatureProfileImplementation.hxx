@@ -49,7 +49,7 @@ public:
   TemperatureProfileImplementation * clone() const override;
 
   /** Compute temperature T(i) */
-  virtual Scalar operator()(UnsignedInteger i) const;
+  virtual Scalar operator()(const UnsignedInteger i) const;
 
   /** get T0 */
   virtual Scalar getT0() const;

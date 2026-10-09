@@ -58,7 +58,7 @@ TemperatureProfile::TemperatureProfile(TemperatureProfileImplementation * p_impl
 }
 
 /** Compute temperature */
-Scalar TemperatureProfile::operator()(UnsignedInteger i) const
+Scalar TemperatureProfile::operator()(const UnsignedInteger i) const
 {
   return getImplementation()->operator()(i);
 }

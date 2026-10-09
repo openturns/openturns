@@ -70,8 +70,8 @@ public:
   String __repr__() const override;
 
   /** Compute criterion when performing an elementary perturbation */
-  Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+  Scalar perturbLHS(const Sample & oldDesign, const Scalar oldCriterion,
+                    const UnsignedInteger row1, const UnsignedInteger row2, const UnsignedInteger column) const;
 
 }; /* class SpaceFilling */
 

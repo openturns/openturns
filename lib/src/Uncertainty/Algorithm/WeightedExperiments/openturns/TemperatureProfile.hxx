@@ -56,7 +56,7 @@ public:
 #endif
 
   /** Compute temperature */
-  Scalar operator()(UnsignedInteger i) const;
+  Scalar operator()(const UnsignedInteger i) const;
 
   /** get T0 */
   Scalar getT0() const;
