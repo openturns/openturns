@@ -66,6 +66,9 @@ public:
   using SpectralModelImplementation::computeStandardRepresentative;
   Complex computeStandardRepresentative(const Scalar frequency) const override;
 
+  /** Scale accessor */
+  void setScale(const Point & scale) override;
+
   /** String converter */
   String __repr__() const override;
 
