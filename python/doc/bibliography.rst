@@ -54,6 +54,9 @@ Bibliography
 .. [blatman2011] Blatman, G., and Sudret, B..
     *Adaptive sparse polynomial chaos expansion based on least angle regression.*
     Journal of Computational Physics 230 (2011) 2345–2367.
+.. [bogaert2014] Bogaert, I. (2014).
+    *Iteration-free computation of Gauss-Legendre quadrature nodes and weights.*
+    SIAM Journal on Scientific Computing, 36(3), A1008-A1026.
 .. [borgonovo2017] Borgonovo, E. (2017).
     *Sensitivity analysis.*
     *An Introduction for the Management Scientist.* International Series in
@@ -206,8 +209,14 @@ Bibliography
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
+.. [gil2019] Gil, A., Segura, J., Temme, N. M. (2019).
+    *Fast, reliable and unrestricted iterative computation of Gauss-Hermite and Gauss-Laguerre quadratures.*
+    Numerische Mathematik, 143(3).
 .. [gobet2016] Gobet, E., 2016, *Monte-Carlo Methods and Stochastic Processes: From Linear to Non-Linear*,
     Chapman \& Hall/CRC.
+.. [golub1969] Golub, G. H., Welsch, J. H. (1969).
+    *Calculation of Gauss quadrature rules.*
+    Mathematics of Computation, 23(106), 221-230.
 .. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
     Wiley StatsRef: Statistics Reference Online, Wiley
 .. [ginsbourger2025] Ginsbouger, D., & Schärer, C. (2025).
@@ -220,6 +229,9 @@ Bibliography
 .. [hahn2005] Thomas Hahn, *Cuba - a library for multidimensional numerical integration*
     Computer Physics Communications, 168(2), 78-95.
     `pdf <https://arxiv.org/pdf/hep-ph/0404043>`__
+.. [hale2013] Hale, N., Townsend, A. (2013).
+    *Fast and accurate computation of Gauss-Legendre and Gauss-Jacobi quadrature nodes and weights.*
+    SIAM Journal on Scientific Computing, 35(2), A652-A674.
 .. [halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
     structure with randomness: Probabilistic algorithms for constructing
     approximate matrix decompositions*,
@@ -577,6 +589,9 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [townsend2016] Townsend, A., Trogdon, T., Olver, S. (2016).
+    *Fast computation of Gauss quadrature nodes and weights on the whole real line.*
+    IMA Journal of Numerical Analysis, 36(2), 802-824.
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*

@@ -9,7 +9,7 @@ log pdf=-2.168831
 pdf     =0.114311
 cdf=0.825615
 ccdf=0.174385
-characteristic function= (0.74087680493-0.0157786395662j)
+characteristic function= (0.74087680493-0.0157786395661j)
 pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.0714046,-0.00930299,0.12381]
 cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.171467,-0.16066,-0.114311]
 quantile= class=Point name=Unnamed dimension=1 values=[3.83742]
