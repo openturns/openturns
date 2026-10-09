@@ -111,7 +111,7 @@ for distribution in [
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipCharacteristicFunction()
+    validation.skipCharacteristicFunction()  # log characteristic function not implemented for far truncation
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
     if (

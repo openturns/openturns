@@ -1157,7 +1157,7 @@ private:
       LOGTRACE(OSS() << "parameter2=" << parameter2);
       Point parameter3(distribution2.getParameter());
       LOGTRACE(OSS() << "parameter3=" << parameter3);
-      assert_almost_equal(parameter3, parameter2);
+      assert_almost_equal(parameter3, parameter2, parameterTolerance_, parameterTolerance_, "parameter roundtrip " + distribution_.__repr__());
     }
 
     const Distribution::PointWithDescriptionCollection parameters(distribution_.getParametersCollection());

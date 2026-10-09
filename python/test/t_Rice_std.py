@@ -96,7 +96,6 @@ print("kurtosis=", repr(kurtosis))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipProbability()
 validation.skipEntropy()  # slow
 validation.skipMinimumVolumeLevelSet()  # slow
 validation.run()
