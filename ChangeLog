@@ -40,6 +40,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
+ * ScaledCovarianceModel, SumCovarianceModel (openturns.experimental)
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant

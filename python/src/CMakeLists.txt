@@ -580,6 +580,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      P1InterpolatedProcess.i P1InterpolatedProcess_doc.i
                      CurlFreeModel.i CurlFreeModel_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
+                     SumCovarianceModel.i SumCovarianceModel_doc.i
+                     ScaledCovarianceModel.i ScaledCovarianceModel_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i

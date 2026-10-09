@@ -165,6 +165,9 @@ Bibliography
 .. [dubourg2011] Dubourg, V. *Adaptative surrogate models for reliability and reliability-based design optimization*,
     University Blaise Pascal - Clermont II, 2011.
     `pdf <https://tel.archives-ouvertes.fr/tel-00697026v2/document>`__
+.. [duvenaud2013] Duvenaud, D., Lloyd, J. R., Grosse, R., Tenenbaum, J. B. and Ghahramani, Z. (2013).
+    *Structure discovery in nonparametric regression through compositional kernel search.*
+    Proceedings of the 30th International Conference on Machine Learning, PMLR 28, 1166-1174.
 .. [ernst2012] Ernst, O. G., Mugler, A., Starkloff, H. J., & Ullmann, E. (2012).
     *On the convergence of generalized polynomial chaos expansions.*
     ESAIM: Mathematical Modelling and Numerical Analysis, 46(2), 317-339.
@@ -377,6 +380,9 @@ Bibliography
     Reliability Engineering & System Safety, 95(5), 550-564.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <https://www.r-project.org/doc/reports/CLoader-dbinom-2002.pdf>`__
+.. [lloyd2014] Lloyd, J. R., Duvenaud, D., Grosse, R., Tenenbaum, J. B. and Ghahramani, Z. (2014).
+    *Automatic construction and natural-language description of nonparametric regression models.*
+    Proceedings of the 28th AAAI Conference on Artificial Intelligence, 1242-1250.
 .. [luke] Luke Gustafson. The Spearman Rho null distribution. https://www.luke-g.com/math/spearman/index.html
 .. [luo2018] Zhendong Luo, Goong Chen
     *Proper Orthogonal Decomposition Methods for Partial Differential Equations.*

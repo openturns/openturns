@@ -29,6 +29,8 @@
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
+#include "openturns/SumCovarianceModel.hxx"
+#include "openturns/ScaledCovarianceModel.hxx"
 #include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -66,6 +68,28 @@ Bool CovarianceModelImplementation::hasEqualBase(const CovarianceModelImplementa
          && (isDiagonal_ == other.isDiagonal_)
          && (isStationary_ == other.isStationary_)
          && (nuggetFactor_ == other.nuggetFactor_);
+}
+
+/* Addition of two covariance models with the same input/output dimensions */
+CovarianceModel CovarianceModelImplementation::operator +(const CovarianceModelImplementation & right) const
+{
+  return CovarianceModel(*this) + CovarianceModel(right);
+}
+
+CovarianceModel CovarianceModelImplementation::operator +(const Implementation & p_right) const
+{
+  return *this + *p_right;
+}
+
+CovarianceModel CovarianceModelImplementation::operator +(const CovarianceModel & right) const
+{
+  return CovarianceModel(*this) + right;
+}
+
+/* Multiplication of a covariance model by a positive scalar */
+CovarianceModel CovarianceModelImplementation::operator *(const Scalar scalar) const
+{
+  return CovarianceModel(*this) * scalar;
 }
 
 /* Dimension-based constructor */

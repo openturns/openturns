@@ -68,6 +68,8 @@
 /* Base/Stat */
 %include CurlFreeModel.i
 %include DivFreeModel.i
+%include SumCovarianceModel.i
+%include ScaledCovarianceModel.i
 
 /* Uncertainty/Distribution */
 %include Kent.i

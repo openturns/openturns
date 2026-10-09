@@ -21,6 +21,8 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/ExponentialModel.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/SumCovarianceModel.hxx"
+#include "openturns/ScaledCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -385,6 +387,25 @@ CovarianceModel CovarianceModel::getMarginal(const UnsignedInteger index) const
 CovarianceModel CovarianceModel::getMarginal(const Indices & indices) const
 {
   return getImplementation()->getMarginal(indices);
+}
+
+/* Addition of two covariance models with the same input/output dimensions */
+CovarianceModel CovarianceModel::operator +(const CovarianceModel & right) const
+{
+  return SumCovarianceModel::add(*this, right);
+}
+
+/* Addition of a covariance model and a covariance model implementation */
+CovarianceModel CovarianceModel::operator +(const CovarianceModelImplementation & right) const
+{
+  return SumCovarianceModel::add(*this, CovarianceModel(right));
+}
+
+/* Multiplication of a covariance model by a positive scalar */
+CovarianceModel CovarianceModel::operator *(const Scalar scalar) const
+{
+  if (scalar == 1.0) return *this;
+  return ScaledCovarianceModel(*this, scalar);
 }
 
 
