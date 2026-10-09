@@ -166,7 +166,7 @@ Scalar LogUniform::computeEntropy() const
 Complex LogUniform::computeCharacteristicFunction(const Scalar x) const
 {
   Complex result;
-  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = Complex((bLog_ - aLog_) / (bLog_ + aLog_), (b_ - a_) * x / (bLog_ - aLog_));
+  if (std::abs(x) <= 1.0e-8 * (b_ - a_)) result = Complex(1.0, (b_ - a_) * x / (bLog_ - aLog_));
   else
   {
     result = (SpecFunc::Ei(Complex(0.0, x * b_)) - SpecFunc::Ei(Complex(0.0, x * a_))) / (bLog_ - aLog_);
