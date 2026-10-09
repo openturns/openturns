@@ -51,3 +51,15 @@ for n in range(5):
     p_nstd = laguerre_nonstd.build(n)
     for x in [gam, gam + 0.5, gam + 2.0]:
         ott.assert_almost_equal(p_nstd(x), p_std(lam * (x - gam)))
+
+# Iterative Gil-Segura-Temme path (threshold 8): extreme shape parameters
+# fall back to the polished solver when a sweep is invalid, so the rule
+# stays increasing with positive weights summing to one
+for kk in [0.1, 20.0]:
+    nodes, weights = ot.LaguerreFactory(kk).getNodesAndWeights(10)
+    assert len(nodes) == 10
+    for j in range(10):
+        assert weights[j] >= 0.0
+        if j > 0:
+            assert nodes[j] > nodes[j - 1]
+    ott.assert_almost_equal(sum(weights), 1.0, 1e-12)

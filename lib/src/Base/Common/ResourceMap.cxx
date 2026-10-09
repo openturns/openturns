@@ -986,6 +986,9 @@ void ResourceMap::loadDefaultConfiguration()
   // FastHermite parameters //
   addAsUnsignedInteger("FastHermite-AsymptoticThreshold", 256);
 
+  // FastLaguerre parameters //
+  addAsUnsignedInteger("FastLaguerre-IterativeThreshold", 8);
+
   // FejerExperiment parameters //
   addAsUnsignedInteger("FejerExperiment-DefaultMarginalNodesNumber", 64);
 
