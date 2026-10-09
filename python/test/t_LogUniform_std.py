@@ -115,7 +115,6 @@ assert standard.getImplementation().getClassName() == "LogUniform"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipCharacteristicFunction()  # FIXME
 validation.run()
 
 # --- LogUniform: characteristic function at zero, DDF at the atom ---
