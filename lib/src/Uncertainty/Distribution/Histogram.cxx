@@ -224,14 +224,91 @@ Complex Histogram::computeCharacteristicFunction(const Scalar x) const
 Point Histogram::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  return DistributionImplementation::computePDFGradient(point);
+  const UnsignedInteger size = width_.getSize();
+  Point gradient(1 + 2 * size, 0.0);
+  const Scalar x = point[0] - first_;
+  // Outside the support the PDF is locally constant
+  if ((x <= 0.0) || (x >= cumulatedWidth_[size - 1])) return gradient;
+  // Find the bin index by bisection, as in computePDF
+  UnsignedInteger k = 0;
+  if (x >= cumulatedWidth_[0])
+  {
+    UnsignedInteger iMin = 0;
+    UnsignedInteger iMax = size - 1;
+    while (iMax > iMin + 1)
+    {
+      const UnsignedInteger i = (iMin + iMax) / 2;
+      if (x < cumulatedWidth_[i]) iMax = i;
+      else iMin = i;
+    }
+    k = iMax;
+  }
+  // The stored heights are normalized to unit surface and setParameter
+  // renormalizes its input, so with A the input surface the PDF reads
+  // height[k]/A at unit surface (A=1): dPDF/dfirst=0,
+  // dPDF/dwidth[j]=-height[k]*height[j]/A^2,
+  // dPDF/dheight[j]=(delta(k,j)*A-height[k]*width[j])/A^2
+  const Scalar hK = height_[k];
+  for (UnsignedInteger j = 0; j < size; ++j)
+  {
+    gradient[2 * j + 1] = -hK * height_[j];
+    gradient[2 * j + 2] = (j == k ? 1.0 : 0.0) - hK * width_[j];
+  }
+  return gradient;
 }
 
 /* Get the CDFGradient of the distribution */
 Point Histogram::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-  return DistributionImplementation::computeCDFGradient(point);
+  const UnsignedInteger size = width_.getSize();
+  Point gradient(1 + 2 * size, 0.0);
+  const Scalar x = point[0] - first_;
+  // Outside the support the CDF is locally constant
+  if ((x <= 0.0) || (x >= cumulatedWidth_[size - 1])) return gradient;
+  // Find the bin index by bisection, as in computeCDF
+  UnsignedInteger k = 0;
+  if (x >= cumulatedWidth_[0])
+  {
+    UnsignedInteger iMin = 0;
+    UnsignedInteger iMax = size - 1;
+    while (iMax > iMin + 1)
+    {
+      const UnsignedInteger i = (iMin + iMax) / 2;
+      if (x < cumulatedWidth_[i]) iMax = i;
+      else iMin = i;
+    }
+    k = iMax;
+  }
+  // Same unit-surface remark as in computePDFGradient with
+  // CDF=(sum_{i<k} height[i]*width[i]+(x-cK)*height[k])/A, cK the lower
+  // edge of bin k relative to first: dCDF/dfirst=-height[k],
+  // dCDF/dwidth[j]=((height[j]-height[k])*A-CDF*height[j]*A)/A^2 for j<k
+  // and -CDF*height[j]/A for j>=k, dCDF/dheight[j]=width[j]*(1-CDF)/A
+  // for j<k, ((x-cK)-CDF*width[k])/A for j=k and -CDF*width[j]/A for j>k
+  const Scalar hK = height_[k];
+  const Scalar cdf = computeCDF(point);
+  gradient[0] = -hK;
+  const Scalar cK = (k == 0 ? 0.0 : cumulatedWidth_[k - 1]);
+  for (UnsignedInteger j = 0; j < size; ++j)
+  {
+    if (j < k)
+    {
+      gradient[2 * j + 1] = (height_[j] - hK) - cdf * height_[j];
+      gradient[2 * j + 2] = width_[j] * (1.0 - cdf);
+    }
+    else if (j == k)
+    {
+      gradient[2 * j + 1] = -cdf * hK;
+      gradient[2 * j + 2] = (x - cK) - cdf * width_[k];
+    }
+    else
+    {
+      gradient[2 * j + 1] = -cdf * height_[j];
+      gradient[2 * j + 2] = -cdf * width_[j];
+    }
+  }
+  return gradient;
 }
 
 /* Get the quantile of the distribution */
