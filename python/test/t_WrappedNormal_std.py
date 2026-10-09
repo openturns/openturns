@@ -116,6 +116,13 @@ for d in (1, 2, 4):
     ott.assert_almost_equal(wide.computeLogPDF([0.0] * d), math.log(uniform), 0.0, 1e-9)
 ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
 
+# Unaffordable Gauss-Hermite grids throw instead of hanging (2^13 > budget)
+big = otexp.WrappedNormal([0.0] * 13, ot.CovarianceMatrix(13))
+with ott.assert_raises(RuntimeError):
+    big.getCovariance()
+with ott.assert_raises(RuntimeError):
+    big.computeEntropy()
+
 # Default constructor: dimension 2 on the torus
 default = otexp.WrappedNormal()
 assert default.getDimension() == 2

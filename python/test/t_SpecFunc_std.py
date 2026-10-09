@@ -160,3 +160,7 @@ ott.assert_almost_equal(logy, 992.39959816700513, 1e-10, 0.0)
 # Degenerate cases
 ott.assert_almost_equal(ot.SpecFunc.LogHyperGeom_1_1(0.5, 1.5, 0.0), 0.0, 1e-15, 0.0)
 ott.assert_almost_equal(ot.SpecFunc.LogHyperGeom_1_1(2.0, 2.0, 3.0), 3.0, 1e-15, 0.0)
+
+# Nonpositive 1F1 has no real logarithm and must throw
+with ott.assert_raises(TypeError):
+    ot.SpecFunc.LogHyperGeom_1_1(-0.5, 1.0, 1000.0)

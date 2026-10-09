@@ -904,8 +904,8 @@ R"RAW(Natural logarithm of the hypergeometric function of type (1,1).
     \log {}_1F_1(p_1, q_1, x)
 
 The value is computed through optimally-truncated asymptotic expansions
-for large :math:`|x|` and a log-space series otherwise, so it remains
-valid over the full double range where :func:`HyperGeom_1_1` overflows.
+for large :math:`|x|` and the logarithm of the direct series otherwise.
+It requires :math:`{}_1F_1(p_1, q_1, x) > 0`.
 
 Parameters
 ----------
