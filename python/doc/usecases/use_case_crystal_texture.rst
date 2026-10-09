@@ -5,8 +5,9 @@ The Crystal Texture model
 
 This use case collects crystal orientation axes, which enjoy antipodal
 symmetry (:math:`x` and :math:`-x` are equivalent) and are modelled by a
-Bingham distribution on :math:`\mathcal{S}^2`. Two reduced stand-in datasets
-are provided (see e.g. Mardia et al., "Protein Bioinformatics and Mixtures of
+Bingham distribution on :math:`\mathcal{S}^2`. Two reduced synthetic
+stand-in datasets are provided, both drawn with
+:class:`~openturns.experimental.Bingham` (see e.g. Mardia et al., "Protein Bioinformatics and Mixtures of
 Bivariate von Mises Distributions for Angular Data", Biometrics, 2008):
 
 - ``ti6al4v``: 300 :math:`c`-axes of rolled Ti-6Al-4V as measured by EBSD
@@ -22,8 +23,8 @@ Workflow
 --------
 
 - Fit :class:`~openturns.experimental.BinghamFactory` on each dataset.
-- Draw the pole figures and compare them with the MTEX ones; run the
-  Rayleigh uniformity test against the uniform case.
+- Suggested next steps: draw the pole figures and compare them with the
+  MTEX ones; run the Rayleigh uniformity test against the uniform case.
 
 References
 ----------

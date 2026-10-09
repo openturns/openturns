@@ -186,7 +186,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
   Scalar scale = 0.0;
   for (UnsignedInteger i = 0; i < n; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)
-      scale += mean(i, j) * mean(i, j) * (j > i ? 2.0 : 1.0);
+      scale += mean(i, j) * mean(i, j) * (j < i ? 2.0 : 1.0);
   scale = std::sqrt(scale);
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("RiemannianGaussianFactory-MaximumIteration");
   const Scalar tolerance = ResourceMap::GetAsScalar("RiemannianGaussianFactory-Tolerance");
@@ -195,24 +195,22 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
   {
     RiemannianGaussian ref(mean, identityTangent);
     SymmetricMatrix vAverage(n);
-    Scalar normV = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const SymmetricMatrix v = ref.logMap(samples[i]);
       for (UnsignedInteger r = 0; r < n; ++r)
         for (UnsignedInteger c = r; c < n; ++c)
-        {
-          const Scalar value = v(r, c);
-          vAverage(r, c) += value;
-          normV += value * value * (c > r ? 2.0 : 1.0);
-        }
+          vAverage(r, c) += v(r, c);
     }
-    normV = std::sqrt(normV / static_cast<Scalar>(size));
-    if (normV <= tolerance * (1.0 + scale))
-      break;
+    Scalar normV = 0.0;
     for (UnsignedInteger r = 0; r < n; ++r)
       for (UnsignedInteger c = r; c < n; ++c)
+      {
         vAverage(r, c) /= static_cast<Scalar>(size);
+        normV += vAverage(r, c) * vAverage(r, c) * (c > r ? 2.0 : 1.0);
+      }
+    if (std::sqrt(normV) <= tolerance * (1.0 + scale))
+      break;
     mean = ref.expMap(vAverage * stepSize);
   }
 

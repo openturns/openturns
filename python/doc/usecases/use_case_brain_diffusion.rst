@@ -11,7 +11,8 @@ The tensors are modelled by a Riemannian Gaussian on SPD(3) following Said
 et al., "Gaussian Distributions on Riemannian Symmetric Spaces: Statistical
 Learning with Structured Covariance Matrices", IEEE Trans. Inf. Theory, 2017.
 
-The dataset is a reduced stand-in (400 tensors): the reference Frechet mean
+The dataset is a reduced synthetic stand-in (400 tensors drawn with
+:class:`~openturns.experimental.RiemannianGaussian`): the reference Frechet mean
 is ``[[1.1, 0.1, 0.0], [0.1, 0.9, 0.05], [0.0, 0.05, 1.0]]`` with unit tangent
 covariance.
 

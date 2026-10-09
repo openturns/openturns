@@ -9,12 +9,15 @@ Given a sample of symmetric positive definite matrices
 :math:`\mathbf{X}_1,\dots,\mathbf{X}_N` of dimension :math:`n(n+1)/2`,
 estimates the Riemannian Gaussian parameters:
 
-1. The mean is initialized with the arithmetic mean of the sample and
-   projected onto the set of symmetric positive definite matrices.
+1. The mean is initialized with the arithmetic mean of the sample,
+   projected onto the set of symmetric positive definite matrices, then
+   refined into the Fréchet (Karcher) mean by damped gradient iterations
+   :math:`\mathbf{M} \leftarrow \exp_{\mathbf{M}}(s\,\overline{\log_{\mathbf{M}}\mathbf{X}_i})`.
 
 2. The covariance :math:`\boldsymbol{\Sigma}` is estimated as the empirical
-   covariance of the log-Euclidean tangent vectors
-   :math:`\mathrm{vec}(\log\mathbf{X}_i - \log\overline{\mathbf{X}})`.
+   second moment of the affine-invariant tangent vectors
+   :math:`\log_{\mathbf{M}}\mathbf{X}_i` in orthonormal (Hilbert-Schmidt)
+   coordinates.
 
 See also
 --------
@@ -28,9 +31,9 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``RiemannianGaussianFactory-Tolerance`` (``Scalar``, default: ``1.0e-8``): tolerance of the estimator.
 - ``RiemannianGaussianFactory-MaximumIteration`` (``UnsignedInteger``, default: ``100``): maximum number of
   iterations of the estimator.
-- ``RiemannianGaussian-PositiveDefiniteThreshold`` (``Scalar``, default: ``1.0e-12``): relative tolerance for
-  the validation of the positive definiteness of the mean and covariance
-  matrices.
+- ``RiemannianGaussian-PositiveDefiniteThreshold`` (``Scalar``, default: ``1.0e-12``): absolute threshold on
+  the eigenvalues for the validation of the positive definiteness of the mean
+  and covariance matrices.
 
 Examples
 --------

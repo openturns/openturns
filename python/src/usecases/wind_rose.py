@@ -9,7 +9,7 @@ import openturns as ot
 
 class WindRose:
     """
-    Hourly wind directions at 100 m (reduced synthetic stand-in).
+    Daily wind directions at 100 m (reduced synthetic stand-in).
 
     Circular data mimicking one year of daily wind headings derived from
     ERA5 reanalysis (Copernicus CDS) ``(u, v)`` components converted to

@@ -21,6 +21,7 @@
 #include <cmath>
 
 #include "openturns/SpecFunc.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 
 #ifdef OPENTURNS_HAVE_BOOST
@@ -351,15 +352,20 @@ Scalar SpecFunc::LogHyperGeom_1_1(const Scalar p1,
   if (x > 0.0)
   {
     const Scalar logPrefactor = LogGamma(q1) - LogGamma(p1);
+    // lgamma returns log|Gamma|: the asymptotic form is only valid in
+    // log-space when Gamma(q1) / Gamma(p1) > 0
+    const Bool positivePrefactor = (std::tgamma(q1) > 0.0) == (std::tgamma(p1) > 0.0);
     Scalar minModulus = 1.0;
     const Scalar expansion = AsymptoticExpansion(q1 - p1, 1.0 - p1, x, minModulus);
     // Beyond-all-orders Stokes contribution, of relative order
     // exp(-x) x^{2p-q} Gamma(p)/Gamma(q-p): the expansion is only accepted
     // when both the formal error and this contribution are negligible
     const Scalar logStokes = -x + (2.0 * p1 - q1) * std::log(x) + LogGamma(p1) - LogGamma(q1 - p1);
-    if (std::isfinite(logPrefactor) && (expansion > 0.0) && (minModulus <= Precision) && (logStokes <= std::log(Precision)))
+    if (positivePrefactor && std::isfinite(logPrefactor) && (expansion > 0.0) && (minModulus <= Precision) && (logStokes <= std::log(Precision)))
       return x + (p1 - q1) * std::log(x) + logPrefactor + std::log(expansion);
-    return std::log(HyperGeom_1_1(p1, q1, x));
+    const Scalar value = HyperGeom_1_1(p1, q1, x);
+    if (!(value > 0.0)) throw InvalidArgumentException(HERE) << "Error: LogHyperGeom_1_1 requires a positive 1F1 value, got 1F1(" << p1 << ";" << q1 << ";" << x << ")=" << value;
+    return std::log(value);
   }
   // Kummer transform, exact: 1F1(p;q;x) = exp(x) 1F1(q-p;q;-x), evaluated in
   // log-space through the positive-argument path above, free of overflow

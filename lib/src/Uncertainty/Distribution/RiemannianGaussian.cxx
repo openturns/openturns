@@ -430,7 +430,10 @@ void RiemannianGaussian::computeNormalization()
   // Log normalization of the Gaussian density in exp-normal coordinates:
   // the density of the image of a centered tangent-space Gaussian through the
   // exponential map is the Gaussian density evaluated at the log-map image.
-  logNormalization_ = 0.5 * d * std::log(2.0 * M_PI) + 0.5 * logDetSigma;
+  // Points store raw upper-triangle entries while sigma_ is expressed in
+  // orthonormal (Hilbert-Schmidt) coordinates (off-diagonal entries scaled
+  // by sqrt(2)): account for the coordinate Jacobian |det D| = 2^{n(n-1)/4}.
+  logNormalization_ = 0.5 * d * std::log(2.0 * M_PI) + 0.5 * logDetSigma - 0.25 * n_ * (n_ - 1.0) * std::log(2.0);
 }
 
 void RiemannianGaussian::computeMean() const
@@ -749,8 +752,9 @@ void RiemannianGaussian::setEpsilon(const Scalar epsilon)
 Scalar RiemannianGaussian::computeEntropy() const
 {
   const UnsignedInteger d = dimension_;
-  // Gaussian entropy in the tangent space at the mean
-  const Scalar gaussianEntropy = 0.5 * d * (1.0 + std::log(2.0 * M_PI)) + 0.5 * std::log(sigmaDet_);
+  // Gaussian entropy in the tangent space at the mean, transported to raw
+  // upper-triangle coordinates (subtract the HS coordinate Jacobian)
+  const Scalar gaussianEntropy = 0.5 * d * (1.0 + std::log(2.0 * M_PI)) + 0.5 * std::log(sigmaDet_) - 0.25 * n_ * (n_ - 1.0) * std::log(2.0);
   // Expected log-Jacobian of the exponential map: with X = exp(V) and
   // V ~ N(0, sigma), H(X) = H(V) + E[log|det(d exp(V))|]. The expectation
   // is evaluated by tensor Gauss-Hermite quadrature from the cached

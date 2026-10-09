@@ -4,11 +4,12 @@ The Satellite Attitude model
 ============================
 
 This use case quantifies the orientation uncertainty of a spacecraft after a
-Wahba attitude-estimation problem. A set of star-tracker attitude estimates
-(published-type noise, 10-60 arcsec) is modelled by a Matrix-Fisher
+Wahba attitude-estimation problem. A set of 250 rotations drawn with
+:class:`~openturns.experimental.MatrixFisher`, mimicking star-tracker attitude estimates
+(published-type noise) is modelled by a Matrix-Fisher
 distribution on SO(3). Each row is a rotation stored as its 9 row-major
 components ``r11, ..., r33``. The reference parameter matrix is
-``F = diag(8, 5, 2)`` (250 rotations). This use case complements the attitude
+``F = diag(8, 5, 2)``. This use case complements the attitude
 and control discipline of the
 :ref:`fire satellite use case <use-case-fire-satellite>`.
 

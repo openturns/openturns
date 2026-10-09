@@ -4,17 +4,18 @@ The Wind Rose model
 ===================
 
 This use case collects wind headings at 100 m for wind-energy siting studies.
-The headings derive from ERA5 reanalysis (Copernicus CDS, hourly) ``(u, v)``
-components converted to compass headings. Each row is a heading in radians in
+The headings mimic daily means derived from ERA5 reanalysis (Copernicus CDS)
+``(u, v)`` components converted to compass headings. Each row is a heading in radians in
 ``[0, 2 pi)``. The headings are modelled by a wrapped normal distribution.
 
-The dataset is a reduced stand-in (365 daily headings): the reference
+The dataset is a reduced synthetic stand-in (365 daily headings drawn with
+:class:`~openturns.experimental.WrappedNormal`): the reference
 parameters are ``mu = 2.6`` rad and ``sigma^2 = 0.8``.
 
 Workflow
 --------
 
-- Fit :class:`~openturns.experimental.WrappedNormalFactory` per season.
+- Fit :class:`~openturns.experimental.WrappedNormalFactory` on the annual series.
 - Run the Rayleigh test against the uniform distribution and forecast the
   modal direction for turbine yaw alignment.
 

@@ -483,6 +483,8 @@ void WrappedNormal::computeCovariance() const
   const UnsignedInteger d = dimension_;
   const UnsignedInteger budget = ResourceMap::GetAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints");
   const UnsignedInteger order = GaussHermiteOrder(d, budget);
+  if (static_cast<Scalar>(d) * std::log(static_cast<Scalar>(order)) > std::log(static_cast<Scalar>(budget)))
+    throw NotYetImplementedException(HERE) << "WrappedNormal::computeCovariance: the Gauss-Hermite grid exceeds WrappedNormal-GaussHermiteMaximumPoints=" << budget << " in dimension " << d;
   Point nodes;
   Point weights;
   GaussHermiteRule(order, nodes, weights);
@@ -712,6 +714,8 @@ Scalar WrappedNormal::computeEntropy() const
   const UnsignedInteger d = dimension_;
   const UnsignedInteger budget = ResourceMap::GetAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints");
   const UnsignedInteger order = GaussHermiteOrder(d, budget);
+  if (static_cast<Scalar>(d) * std::log(static_cast<Scalar>(order)) > std::log(static_cast<Scalar>(budget)))
+    throw NotYetImplementedException(HERE) << "WrappedNormal::computeEntropy: the Gauss-Hermite grid exceeds WrappedNormal-GaussHermiteMaximumPoints=" << budget << " in dimension " << d;
   Point nodes;
   Point weights;
   GaussHermiteRule(order, nodes, weights);

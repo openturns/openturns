@@ -23,18 +23,19 @@ assert distribution.isContinuous()
 assert distribution.getDimension() == 3
 
 # The normalized log-density at the mean is -0.5 d log(2 pi) - 0.5 log|Sigma|
+# plus the Hilbert-Schmidt coordinate Jacobian 0.25 n (n - 1) log 2 (n = 2)
 d = distribution.getDimension()
 ott.assert_almost_equal(
     distribution.computeLogPDF([1.0, 0.0, 1.0]),
-    -0.5 * d * math.log(2.0 * math.pi) - 0.5 * math.log(1.0),
+    -0.5 * d * math.log(2.0 * math.pi) - 0.5 * math.log(1.0) + 0.5 * math.log(2.0),
     1e-12,
     0.0,
 )
 
-# Off-mean log-density: value matches the closed form (quadratic + exp-map Jacobian),
-# and PDF is the exponential of the log-PDF
+# Off-mean log-density: value matches the closed form (quadratic + exp-map
+# Jacobian + HS coordinate Jacobian), and PDF is the exponential of the log-PDF
 ott.assert_almost_equal(
-    distribution.computeLogPDF([2.0, 0.0, 1.0]), -4.0567022077, 1e-8, 0.0
+    distribution.computeLogPDF([2.0, 0.0, 1.0]), -3.7101286174, 1e-8, 0.0
 )
 ott.assert_almost_equal(
     distribution.computePDF([2.0, 0.0, 1.0]),
