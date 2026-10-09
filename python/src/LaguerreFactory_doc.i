@@ -3,25 +3,8 @@ R"RAW(Laguerre specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Gamma` distribution.
 
-Parameters
-----------
-k : float
-    Shape parameter :math:`k > 0` of the :class:`~openturns.Gamma` distribution.
-lambda : float, optional
-    Rate parameter :math:`\lambda > 0` of the :class:`~openturns.Gamma`
-    distribution. Defaults to 1.0.
-gamma : float, optional
-    Location parameter :math:`\gamma` of the :class:`~openturns.Gamma`
-    distribution. Defaults to 0.0.
-
-Any sequence of orthogonal polynomials has a recurrence formula relating any
-three consecutive polynomials as follows:
-
-.. math::
-
-    P_{i + 1}(x) & = (a_i x + b_i) P_i(x) + c_i P_{i - 1}(x), \quad  i \geq 0 \\
-    P_{-1} & = 0 \\
-    P_0 & = 1
+Any sequence of orthogonal polynomials follows the three-term recurrence
+formula detailed in :ref:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Laguerre polynomials come analytically and
 read:
@@ -41,9 +24,38 @@ where :math:`k` is the shape parameter of the
 
     \omega_i = \frac{1}{\sqrt{(i + 1) (i + k)}} , \quad 1 < i
 
+The nodes and weights of the associated Gauss-Laguerre quadrature rule
+are computed by the fast Laguerre rule mapped to the measure:
+polished eigensolver below 8 nodes (see [golub1969]_), Gil-Segura-Temme
+iterative sweeps above (see [gil2019]_).
+At or above 8 nodes the rule reaches a relative accuracy better than
+``5e-13`` and is faster than the generic solver.
+
+Parameters
+----------
+k : float
+    Shape parameter :math:`k > 0` of the :class:`~openturns.Gamma` distribution.
+lambda : float, optional
+    Rate parameter :math:`\lambda > 0` of the :class:`~openturns.Gamma`
+    distribution. Defaults to 1.0.
+gamma : float, optional
+    Location parameter :math:`\gamma` of the :class:`~openturns.Gamma`
+    distribution. Defaults to 0.0.
+
 See also
 --------
 UniVariateDistributionPolynomialFactory
+
+Notes
+-----
+The following
+:class:`~openturns.ResourceMap` key is used:
+
+- ``FastLaguerre-IterativeThreshold`` (``UnsignedInteger``, default:
+  ``8``): number of nodes from which the iterative sweeps are used.
+  Set it to a large number to force the generic polished eigensolver:
+  improved accuracy beyond ``5e-13`` at the price of a much larger CPU
+  effort.
 
 Examples
 --------

@@ -61,6 +61,7 @@
 #include "openturns/FastGaussQuadrature.hxx"
 #include "openturns/FastHermite.hxx"
 #include "openturns/FastLegendre.hxx"
+#include "openturns/FastLaguerre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"

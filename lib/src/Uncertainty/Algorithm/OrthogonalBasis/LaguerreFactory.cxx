@@ -21,6 +21,7 @@
 #include "openturns/LaguerreFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Gamma.hxx"
+#include "openturns/FastLaguerre.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -118,6 +119,31 @@ String LaguerreFactory::__repr__() const
   return OSS() << "class=" << getClassName()
          << " k=" << k_
          << " measure=" << measure_;
+}
+
+
+/* Roots of the polynomial of degree n */
+Point LaguerreFactory::getRoots(const UnsignedInteger n) const
+{
+  if (n == 0) return Point(0);
+  Point weights(0);
+  return getNodesAndWeights(n, weights);
+}
+
+/* Nodes and weights of the polynomial of degree n */
+Point LaguerreFactory::getNodesAndWeights(const UnsignedInteger n,
+    Point & weightsOut) const
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
+  Point nodes(n);
+  weightsOut = Point(n);
+  // k_ is the Gamma shape parameter: FastLaguerre integrates Gamma(k_, 1)
+  FastLaguerre::ComputeNodesAndWeights(n, k_, &nodes[0], &weightsOut[0]);
+  // Map the standard Gamma(k_, 1, 0) nodes to the actual
+  // Gamma(k_, lambda, gamma) measure: x = (z - b_) / a_
+  for (UnsignedInteger i = 0; i < n; ++i)
+    nodes[i] = (nodes[i] - b_) / a_;
+  return nodes;
 }
 
 
