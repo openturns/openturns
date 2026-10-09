@@ -122,6 +122,7 @@
   <!-- OT::LevelSetMesher parameters -->
   <LevelSetMesher-SolveEquation value_bool="true" />
   <LevelSetMesher-UseQEF value_bool="false" />
+  <LevelSetMesher-MaxRefinementLevels value_int="0" />
 
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />

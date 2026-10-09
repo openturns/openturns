@@ -90,6 +90,16 @@ public:
 
 protected:
 
+  /* Core meshing on given background values, with optional marking of
+   * dropped facet-neighbours of kept simplices for adaptive background
+   * refinement */
+  Mesh buildCore(const Collection<LevelSet> & collection,
+                 const Mesh & boundingMesh,
+                 const Sample & values,
+                 const Bool project,
+                 const Bool collectMarks,
+                 Indices & markedSimplices) const;
+
 private:
 
   /* Discretization in each dimension */
