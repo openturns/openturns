@@ -91,7 +91,7 @@ OT_Distribution_computeCDF_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computeCDFGradient_doc
-R"RAW(Compute the gradient of the cumulative distribution function.
+R"RAW(Compute the gradient of the CDF wrt the parameters.
 
 Parameters
 ----------
@@ -102,7 +102,17 @@ Returns
 -------
 dFdtheta : :class:`~openturns.Point`
     Partial derivatives of the CDF with respect to the distribution
-    parameters at *x*.)RAW"
+    parameters at *x*.
+
+Notes
+-----
+Let :math:`\vect{\theta}` be the vector of parameters of the distribution. Then
+the gradient of the cumulative distribution function :math:`F_{\vect{X}}` is defined by:
+
+.. math::
+
+    \left(\frac{\partial F_{\vect{X}}(\vect{x})}{\partial \theta_1}, \dots, \frac{\partial F_{\vect{X}}(\vect{x})}{\partial \theta_p}\right)
+)RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDFGradient
 OT_Distribution_computeCDFGradient_doc
@@ -706,7 +716,7 @@ OT_Distribution_computePDF_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_computePDFGradient_doc
-R"RAW(Compute the gradient of the probability density function.
+R"RAW(Compute the gradient of the PDF wrt the parameters.
 
 Parameters
 ----------
@@ -726,7 +736,7 @@ the gradient of the probability density function :math:`f_{\vect{X}}` is defined
 
 .. math::
 
-    \left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_1}, \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_d}\right)
+    \left(\frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_1}, \dots, \frac{\partial f_{\vect{X}}(\vect{x})}{\partial \theta_p}\right)
 )RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDFGradient
