@@ -128,6 +128,6 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
-validation.skipConditional()  # FIXME
-validation.skipTransformation()  # FIXME
+validation.skipConditional()  # slow: numerical integration over the network
+validation.skipTransformation()  # slow: transformation via conditional quantiles
 validation.run()

@@ -64,8 +64,6 @@ distribution.setParameter(parameter)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipMoments()
-validation.skipCorrelation()
 validation.run()
 
 # Test conditional PDF/CDF/quantile with correct denominator (1.0 - sumP)

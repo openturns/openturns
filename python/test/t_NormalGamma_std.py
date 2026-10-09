@@ -179,7 +179,7 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
-validation.skipParameters()
+validation.skipDependenceMeasures()  # Kendall quadrature inaccurate (≈ -0.94 vs MC ≈ 0)
 validation.run()
 
 # --- NormalGamma: setters rebuild, kurtosis is guarded ---

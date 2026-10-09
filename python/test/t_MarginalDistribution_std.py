@@ -103,7 +103,7 @@ for nDistribution in range(len(coll)):
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
     validation.skipDependenceMeasures()  # slow
-    validation.skipConditional()  # TRACE enabled, avoid LOGTRACE in output
+    validation.skipConditional()  # slow
     validation.run()
 
 # Test computeSequentialConditionalQuantile wrapping BlockIndependentCopula

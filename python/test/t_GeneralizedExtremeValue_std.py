@@ -123,5 +123,5 @@ for i in range(len(all_cases)):
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipMinimumVolumeLevelSet()
+    validation.skipMinimumVolumeLevelSet()  # over-covers for heavy right tail (xi > 0)
     validation.run()
