@@ -33,6 +33,7 @@ timeGrid : :class:`~openturns.RegularGrid`
     The time grid associated to the process.
     The algorithm is only implemented when the mesh is a regular grid.
 spectralModel : :class:`~openturns.SpectralModel`
+    The spectral model must have input dimension 1.
 maxFreq : float
     Equal to the maximal frequency minus :math:`\Delta f`.
 N : float
@@ -53,7 +54,7 @@ Create a *SpectralGaussianProcess* from a spectral model and a time grid:
 
 >>> import openturns as ot
 >>> amplitude = [1.0, 2.0]
->>> scale = [4.0, 5.0]
+>>> scale = [4.0]
 >>> spatialCorrelation = ot.CorrelationMatrix(2)
 >>> spatialCorrelation[0,1] = 0.8
 >>> myTimeGrid =  ot.RegularGrid(0.0, 0.1, 20)

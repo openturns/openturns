@@ -37,13 +37,11 @@ print(
 # Default dimension parameter to evaluate the model
 highDimension = 3
 
-# Reallocation of adequate sizes
+# Reallocation of adequate sizes: scale stays 1D (input dimension), amplitude is output dimension
 amplitude.resize(highDimension)
-scale.resize(highDimension)
 spatialCorrelation = ot.CorrelationMatrix(highDimension)
 for index in range(highDimension):
     amplitude[index] = 1.0
-    scale[index] = (index + 1.0) / (defaultDimension * defaultDimension)
     if index > 0:
         spatialCorrelation[index, index - 1] = 1.0 / (index * index)
 
