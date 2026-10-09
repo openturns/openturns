@@ -36,8 +36,9 @@ BEGIN_NAMESPACE_OPENTURNS
  * Weighted experiment drawing size_ points from the Christoffel
  * distribution associated to the first spaceDimension_ functions
  * of an orthogonal basis, with weights w = m / k_m. The space
- * dimension m is deduced from the target size n by
- * n = gamma * m * log(m).
+ * dimension m = n-k is the largest dimension supplied by the basis:
+ * k=0 with an inexhaustible basis, and k=1,2,... is tried until
+ * the basis supplies m functions.
  */
 class OT_API ChristoffelSubsampleExperiment
   : public WeightedExperimentImplementation

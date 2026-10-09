@@ -38,11 +38,11 @@ assert distribution.getOrthogonalBasis() == basis
 # Christoffel function: k_3(0.5) = 1 + 3*0.5**2 + 5*P_2(0.5)**2
 # with P_2(0.5) = -0.125 (orthonormal Legendre: L_2 = sqrt(5)*P_2),
 # hence k_3(0.5) = 1.828125
-ott.assert_almost_equal(distribution.computeChristoffel([0.5]), 1.828125)
-ott.assert_almost_equal(distribution.computeChristoffel(ot.Sample([[0.5]]))[0, 0], 1.828125)
+ott.assert_almost_equal(distribution.computeChristoffelFunction([0.5]), 1.828125)
+ott.assert_almost_equal(distribution.computeChristoffelFunction(ot.Sample([[0.5]]))[0, 0], 1.828125)
 # the stable logarithm agrees with the logarithm of the direct value on tame points
-ott.assert_almost_equal(distribution.computeLogChristoffel([0.5]), math.log(1.828125))
-ott.assert_almost_equal(distribution.computeLogChristoffel(ot.Sample([[0.5]]))[0, 0], math.log(1.828125))
+ott.assert_almost_equal(distribution.computeLogChristoffelFunction([0.5]), math.log(1.828125))
+ott.assert_almost_equal(distribution.computeLogChristoffelFunction(ot.Sample([[0.5]]))[0, 0], math.log(1.828125))
 
 # PDF: 0.5 * 1.828125 / 3
 ott.assert_almost_equal(distribution.computePDF([0.5]), 0.3046875)
@@ -171,7 +171,7 @@ assert distributionC.computePDF([0.1, -0.2]) >= 0.0
 sampleC = distributionC.getSample(5)
 assert sampleC.getSize() == 5
 # trace identity: mean of k_3 under mu is 3 by orthonormality
-knVals = distributionC.computeChristoffel(measureC.getSample(2000))
+knVals = distributionC.computeChristoffelFunction(measureC.getSample(2000))
 assert 2.5 < knVals.computeMean()[0] < 3.5
 
 # sampling stays available when RoU is disabled by the dimension key
@@ -215,7 +215,7 @@ try:
     replay = []
     while len(replay) < 5:
         proposal = measureC.getRealization()
-        if ot.RandomGenerator.Generate() * envelope1 <= float(dist1.computeChristoffel(proposal)):
+        if ot.RandomGenerator.Generate() * envelope1 <= float(dist1.computeChristoffelFunction(proposal)):
             replay.append(proposal)
     assert pinned.getSize() == 5
     assert [list(point) for point in pinned] == [list(point) for point in replay]
