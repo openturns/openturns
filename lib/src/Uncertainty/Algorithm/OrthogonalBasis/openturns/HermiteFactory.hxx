@@ -58,6 +58,14 @@ public:
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
+  /** Roots of the polynomial of degree n, from the fast Hermite rule */
+  Point getRoots(const UnsignedInteger n) const override;
+
+  /** Nodes and weights of the polynomial of degree n, from the fast
+      Hermite rule mapped to the measure */
+  Point getNodesAndWeights(const UnsignedInteger n,
+                           Point & weightsOut) const override;
+
   /** String converter */
   String __repr__() const override;
 

@@ -50,3 +50,17 @@ for n in range(5):
     p_nstd = hermite_nonstd.build(n)
     for x in [mu - sigma, mu, mu + sigma]:
         ott.assert_almost_equal(p_nstd(x), p_std((x - mu) / sigma))
+
+# Asymptotic Airy path (threshold 256): odd/even rules stay symmetric,
+# increasing, with positive weights summing to one
+for n in [257, 258]:
+    nodes, weights = ot.HermiteFactory().getNodesAndWeights(n)
+    assert len(nodes) == n
+    assert len(weights) == n
+    for k in range(n):
+        assert weights[k] >= 0.0
+        if k > 0:
+            assert nodes[k] > nodes[k - 1]
+        ott.assert_almost_equal(nodes[k] + nodes[n - 1 - k], 0.0, 1e-12, 1e-12)
+        ott.assert_almost_equal(weights[k], weights[n - 1 - k], 1e-12, 1e-12)
+    ott.assert_almost_equal(sum(weights), 1.0, 1e-12)

@@ -983,6 +983,9 @@ void ResourceMap::loadDefaultConfiguration()
   // GaussLegendre parameters //
   addAsUnsignedInteger("GaussLegendre-DefaultMarginalIntegrationPointsNumber", 64);
 
+  // FastHermite parameters //
+  addAsUnsignedInteger("FastHermite-AsymptoticThreshold", 256);
+
   // FejerExperiment parameters //
   addAsUnsignedInteger("FejerExperiment-DefaultMarginalNodesNumber", 64);
 

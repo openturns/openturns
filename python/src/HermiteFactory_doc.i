@@ -3,14 +3,8 @@ R"RAW(Hermite specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Normal` distribution :math:`\cN(0,1)`.
 
-Any sequence of orthogonal polynomials has a recurrence formula relating any
-three consecutive polynomials as follows:
-
-.. math::
-
-    P_{i + 1}(x) & = (a_i x + b_i) P_i(x) + c_i P_{i - 1}(x), \quad  i \geq 0 \\
-    P_{-1} & = 0 \\
-    P_0 & = 1
+Any sequence of orthogonal polynomials follows the three-term recurrence
+formula detailed in :ref:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Hermite polynomials come analytically and
 read for :math:`i \geq 0`:
@@ -22,12 +16,26 @@ read for :math:`i \geq 0`:
         c_i & =  \displaystyle - \sqrt{\frac{i}{i + 1}}
 
 The nodes and weights of the associated Gauss-Hermite quadrature rule are
-computed using the Golub-Welsch algorithm via the symmetric
-tridiagonal Jacobi matrix.
+computed by the fast Hermite rule mapped to the measure: polished
+eigensolver below 256 nodes (see [golub1969]_), Townsend-Trogdon-Olver
+Airy expansion above (see [townsend2016]_).
+At or above 256 nodes the rule reaches a relative accuracy better than
+``5e-13`` and is faster than the generic solver.
 
 See also
 --------
 UniVariateDistributionPolynomialFactory
+
+Notes
+-----
+The following
+:class:`~openturns.ResourceMap` key is used:
+
+- ``FastHermite-AsymptoticThreshold`` (``UnsignedInteger``, default:
+  ``256``): number of nodes from which the asymptotic expansion is used.
+  Set it to a large number to force the generic polished eigensolver:
+  improved accuracy beyond ``5e-13`` at the price of a much larger CPU
+  effort.
 
 Examples
 --------
