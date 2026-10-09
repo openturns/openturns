@@ -113,12 +113,15 @@ boxFunction2D = ot.PythonFunction(2, 1, lambda X: [max(abs(X[0]), abs(X[1])) - 0
 boxLevelSet2D = ot.LevelSet(boxFunction2D, ot.LessOrEqual(), 0.0)
 boxBB2D = ot.Interval([-1.0] * 2, [1.0] * 2)
 boxMesher2D = ot.LevelSetMesher([6] * 2)
+assert not boxMesher2D.getUseQEF(), "QEF must be off by default"
 # equation projection required: QEF aims rays at features, Brent lands on them
 ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
 boxLegacy2D = boxMesher2D.build(boxLevelSet2D, boxBB2D)
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "QEF")
+boxMesher2D.setUseQEF(True)
+assert boxMesher2D.getUseQEF(), "accessor round-trip failed"
 boxQEF2D = boxMesher2D.build(boxLevelSet2D, boxBB2D)
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "Legacy")
+boxMesher2D.setUseQEF(False)
+assert not boxMesher2D.getUseQEF(), "accessor round-trip failed"
 ott.assert_almost_equal(boxQEF2D.getVolume(), 1.0, 1e-9, 1e-9)
 assert boxQEF2D.getVolume() >= boxLegacy2D.getVolume(), "QEF must not lose volume here"
 cornerDistance = min((v - [0.5, 0.5]).norm() for v in boxQEF2D.getVertices())
@@ -131,9 +134,9 @@ lens = [ot.LevelSet(disk1, ot.LessOrEqual(), 1.0), ot.LevelSet(disk2, ot.LessOrE
 lensBB = ot.Interval([-1.6] * 2, [1.6] * 2)
 lensMesher = ot.LevelSetMesher([16] * 2)
 lensLegacy = lensMesher.build(lens, lensBB)
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "QEF")
+lensMesher.setUseQEF(True)
 lensQEF = lensMesher.build(lens, lensBB)
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "Legacy")
+lensMesher.setUseQEF(False)
 lensExact = 2.0 * m.pi / 3.0 - m.sqrt(3.0) / 2.0
 assert abs(lensQEF.getVolume() - lensExact) <= abs(lensLegacy.getVolume() - lensExact), "QEF must be at least as accurate"
 ott.assert_almost_equal(lensQEF.getVolume(), lensExact, 1e-2, 1e-2)
@@ -158,10 +161,19 @@ stacked = ot.Sample(supportVertices.getSize(), 2)
 for i in range(supportVertices.getSize()):
     stacked[i, 0] = values1[i]
     stacked[i, 1] = values2[i]
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "QEF")
+lensMesher.setUseQEF(True)
 lensFieldMesh = lensMesher.build(lens, ot.Field(supportMesh, stacked))
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "Legacy")
+lensMesher.setUseQEF(False)
 ott.assert_almost_equal(lensFieldMesh.getVertices(), lensQEF.getVertices(), 1e-4, 1e-4)
+
+# default value read in ResourceMap: on enables QEF at construction
+ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", True)
+defaultOnMesher = ot.LevelSetMesher([6] * 2)
+assert defaultOnMesher.getUseQEF(), "default must follow the ResourceMap key"
+defaultOnMesh = defaultOnMesher.build(boxLevelSet2D, boxBB2D)
+ott.assert_almost_equal(defaultOnMesh.getVolume(), 1.0, 1e-9, 1e-9)
+ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", False)
+assert not ot.LevelSetMesher([6] * 2).getUseQEF(), "default must follow the ResourceMap key"
 
 # Empty collection and dimension mismatch raise
 with ott.assert_raises(Exception):

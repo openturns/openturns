@@ -63,6 +63,10 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** QEF sharp-edge recovery accessor */
+  void setUseQEF(const Bool useQEF);
+  Bool getUseQEF() const;
+
   /* Here is the interface that all derived class must implement */
   /** Build a mesh based on a domain */
   virtual Mesh build(const LevelSet & levelSet,
@@ -93,6 +97,9 @@ private:
 
   /* Optimization solver used to project the vertices */
   OptimizationAlgorithm solver_;
+
+  /* QEF sharp-edge recovery (alternative vertex placement) */
+  Bool useQEF_ = false;
 
 }; /* class LevelSetMesher */
 

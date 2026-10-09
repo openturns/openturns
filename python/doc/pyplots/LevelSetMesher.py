@@ -18,10 +18,9 @@ mesh = mesher.build(set, ot.Interval([-1.0] * 2, [1.0] * 2))
 disk1 = ot.SymbolicFunction(["x", "y"], ["(x+0.5)^2+y^2"])
 disk2 = ot.SymbolicFunction(["x", "y"], ["(x-0.5)^2+y^2"])
 lens = [ot.LevelSet(disk1, ot.LessOrEqual(), 1.0), ot.LevelSet(disk2, ot.LessOrEqual(), 1.0)]
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "QEF")
 lensMesher = ot.LevelSetMesher([20] * 2)
+lensMesher.setUseQEF(True)
 lensMesh = lensMesher.build(lens, ot.Interval([-1.6] * 2, [1.6] * 2))
-ot.ResourceMap.SetAsString("LevelSetMesher-Algorithm", "Legacy")
 
 # Draw both meshes
 graph = mesh.draw()
