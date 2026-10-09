@@ -14,8 +14,13 @@ Uniform
   <li>weight=1</li>
   <li>range=[-100, 1.1e+03]</li>
   <li>description=[v0]</li>
+  <li>parameter=[-100,1.1e+03]</li>
+  <li>parameterDescription=[a,b]</li>
   <li>isParallel=true</li>
   <li>isCopula=false</li>
+  <li>isContinuous=true</li>
+  <li>isDiscrete=false</li>
+  <li>isIntegral=false</li>
 </ul>
 
 distribution (Markdown)
@@ -25,6 +30,11 @@ Uniform
 - weight=1
 - range=[-100, 1.1e+03]
 - description=[v0]
+- parameter=[-100,1.1e+03]
+- parameterDescription=[a,b]
 - isParallel=true
 - isCopula=false
+- isContinuous=true
+- isDiscrete=false
+- isIntegral=false
 
