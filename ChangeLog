@@ -31,7 +31,6 @@
  * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
  * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
  * ChristoffelDistribution-SliceGridSize: grid size of the univariate slice maxima in sequential conditional sampling (default is 1000)
- * ChristoffelSubsampleExperiment-Gamma: gamma constant of the sizing rule between target size and space dimension, (3/2*log(3/2)-1/2)^-1 from the budget theorem (default is 9.242343873386666)
  * ChristoffelSubsampleExperiment-PoolOversamplingFactor: pool size as a multiple of the target size before greedy thinning (default is 2.0)
  * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
  * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)

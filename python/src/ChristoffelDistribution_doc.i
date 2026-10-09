@@ -12,6 +12,7 @@ is the probability measure :math:`\sigma` defined by
 .. math::
     \mathrm{d}\sigma(x) = \frac{k_m(x)}{m} \, \mathrm{d}\mu(x),
     \quad k_m(x) = \sum_{j=1}^m L_j(x)^2,
+    \quad x \in D,
 
 where :math:`k_m` is the Christoffel function and :math:`\mu` is the
 reference measure embedded in the basis. When :math:`\mu` is absolutely
@@ -19,6 +20,26 @@ continuous with density :math:`p_\mu`, the density of :math:`\sigma` is
 
 .. math::
     p(x) = p_\mu(x) \, \frac{k_m(x)}{m}.
+
+Orthonormality with respect to :math:`\mu` is a precondition, and the
+class does not check it. It is what makes :math:`k_m / m` a density.
+The stability factor and the sampling acceptance rates rely on it.
+A cheap numerical check is the trace identity
+:math:`\int k_m \, \mathrm{d}\mu = m`, ie the empirical mean of
+:meth:`computeChristoffelFunction` over a sample of :math:`\mu`.
+For a correlated :math:`\mu`, compose tensor-orthonormal functions with
+a whitening map of :math:`\mu`. For a multivariate normal, use
+:math:`x \mapsto L^{-1} x` with :math:`L` the Cholesky factor of the
+correlation. This construction is needed because
+:class:`~openturns.experimental.FiniteOrthogonalFunctionFactory` stores
+the given functions as given and only checks their dimensions.
+
+When the reference measure factorizes, sampling uses the tensor
+sequential path. Otherwise the class compares two samplers at the first
+draw, once :meth:`computeKn` is known, and keeps the one with the larger
+measured acceptance rate. The candidates are the internal
+ratio-of-uniforms sampler and rejection from the reference under the
+stability factor envelope.
 
 Available constructors:
     ChristoffelDistribution(*basis, size*)
@@ -38,24 +59,6 @@ openturns.Distribution
 
 Notes
 -----
-Orthonormality with respect to :math:`\mu` is a precondition the class does not
-check: it is what makes :math:`k_m / m` a density, what the stability factor and
-the sampling acceptance rates assume, and its cheap numerical check is the trace
-identity :math:`\int k_m \, \mathrm{d}\mu = m`, ie the empirical mean of
-:meth:`computeChristoffel` over a sample of :math:`\mu`. For a correlated
-:math:`\mu` an orthonormal basis is typically obtained by composing
-tensor-orthonormal functions with a whitening map of :math:`\mu` (for a
-multivariate normal, :math:`x \mapsto L^{-1} x` with :math:`L` the Cholesky
-factor of the correlation), because
-:class:`openturns.experimental.FiniteOrthogonalFunctionFactory` stores the
-given functions as given and only checks their dimensions.
-
-Sampling dispatch: the tensor sequential path when the reference factorizes,
-otherwise the sampler with the larger measured acceptance rate between the
-internal ratio-of-uniforms sampler and rejection from the reference under the
-stability factor envelope. The comparison runs at the first draw, once
-:meth:`computeKn` is known.
-
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``ChristoffelDistribution-OptimizationAlgorithm`` (``String``, default: ``TNC``): optimization algorithm of the exact stability factor search and of the internal ratio-of-uniforms sampler. ``TNC`` uses the gradient of the log-objective (three-term recurrence for tensor polynomial bases, centered differences otherwise) and converges with an order of magnitude fewer evaluations than the gradient-free ``Cobyla``, which remains available through this key.
@@ -77,7 +80,9 @@ Examples
 >>> print(distribution.getSize())
 3
 >>> print(f"{distribution.computePDF([0.5]):.6f}")
-0.304688)RAW"
+0.304688
+>>> print(distribution.computePDF([0.5]) == distribution.computePDF([-0.5]))
+True)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -138,7 +143,7 @@ basis : :class:`~openturns.Basis`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ChristoffelDistribution::computeChristoffel
+%feature("docstring") OT::ChristoffelDistribution::computeChristoffelFunction
 "Evaluate the Christoffel function.
 
 Parameters
@@ -153,7 +158,7 @@ values : float or :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ChristoffelDistribution::computeLogChristoffel
+%feature("docstring") OT::ChristoffelDistribution::computeLogChristoffelFunction
 "Stable natural logarithm of the Christoffel function.
 
 Parameters
@@ -166,7 +171,7 @@ Returns
 values : float or :class:`~openturns.Sample`
     Natural logarithm of the sum of the squared basis functions, computed
     by factoring out the largest square. Unlike the logarithm of
-    :meth:`computeChristoffel` it neither overflows nor underflows when
+    :meth:`computeChristoffelFunction` it neither overflows nor underflows when
     single basis functions are extreme, so it is the recommended entry
     point in the tails."
 

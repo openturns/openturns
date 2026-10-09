@@ -50,12 +50,12 @@ BEGIN_NAMESPACE_OPENTURNS
 class ChristoffelTensorSliceEvaluation: public EvaluationImplementation
 {
 public:
-  ChristoffelTensorSliceEvaluation(const ChristoffelDistribution * p_distribution,
+  ChristoffelTensorSliceEvaluation(const ChristoffelDistribution & distribution,
                                    const Point & partialProducts,
                                    const UnsignedInteger index)
     : EvaluationImplementation()
-    , p_distribution_(p_distribution)
-    , marginal_(p_distribution->getMeasure().getMarginal(index))
+    , distribution_(distribution)
+    , marginal_(distribution.getMeasure().getMarginal(index))
     , partialProducts_(partialProducts)
     , index_(index)
   {
@@ -71,7 +71,7 @@ public:
   {
     const Scalar density = marginal_.computePDF(Point(1, point[0]));
     if (density == 0.0) return Point(1, 0.0);
-    return Point(1, density * p_distribution_->computePartialChristoffel(partialProducts_, index_, point[0]));
+    return Point(1, density * distribution_.computePartialChristoffel(partialProducts_, index_, point[0]));
   }
 
   UnsignedInteger getInputDimension() const override
@@ -85,7 +85,7 @@ public:
   }
 
 private:
-  const ChristoffelDistribution * p_distribution_;
+  const ChristoffelDistribution & distribution_;
   // fixed per slice: built once instead of at every quadrature node
   Distribution marginal_;
   Point partialProducts_;
@@ -235,12 +235,12 @@ Scalar ChristoffelDistribution::computeChristoffelCore(const Point & point) cons
 }
 
 /* Christoffel function evaluation on a point */
-Scalar ChristoffelDistribution::computeChristoffel(const Point & point) const
+Scalar ChristoffelDistribution::computeChristoffelFunction(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << getDimension() << ", got dimension=" << point.getDimension();
   Sample sample(1, getDimension());
   sample[0] = point;
-  return computeChristoffel(sample)(0, 0);
+  return computeChristoffelFunction(sample)(0, 0);
 }
 
 struct ComputeChristoffelPolicy
@@ -266,13 +266,13 @@ struct ComputeChristoffelPolicy
 }; /* end struct ComputeChristoffelPolicy */
 
 /* Christoffel function evaluation on a sample, parallel over points when large */
-Sample ChristoffelDistribution::computeChristoffel(const Sample & sample) const
+Sample ChristoffelDistribution::computeChristoffelFunction(const Sample & sample) const
 {
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
   const ComputeChristoffelPolicy policy(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel() && sampleSize > 2048, 0, sampleSize, policy, 1024);
+  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy);
   return values;
 }
 
@@ -314,8 +314,8 @@ public:
     // infeasible points), where the polynomial products overflow to infinity and the
     // resulting ±inf objective stalls the progress tests of the solvers.
     Point clipped(point);
-    for (UnsignedInteger i = 0; i < clipped.getDimension(); ++i) clipped[i] = std::min(std::max(clipped[i], lowerBound_[i]), upperBound_[i]);
-    const Scalar value(p_distribution_->computeLogChristoffel(clipped));
+    for (UnsignedInteger i = 0; i < clipped.getDimension(); ++i) clipped[i] = std::clamp(clipped[i], lowerBound_[i], upperBound_[i]);
+    const Scalar value(p_distribution_->computeLogChristoffelFunction(clipped));
     // whatever happens, the objective stays finite: an optimizer never terminates on ±inf
     if (std::isnan(value)) return {-SpecFunc::LogMaxScalar};
     return {std::min(std::max(value, -SpecFunc::LogMaxScalar), SpecFunc::LogMaxScalar)};
@@ -506,7 +506,7 @@ Scalar ChristoffelDistribution::computeKn() const
     const UnsignedInteger samplingSize = ResourceMap::GetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize");
     if (samplingSize == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive Kn sampling size.";
     const Sample candidates(generateKnCandidates(samplingSize));
-    const Sample values(computeChristoffel(candidates));
+    const Sample values(computeChristoffelFunction(candidates));
     Scalar knMax = 0.0;
     for (UnsignedInteger i = 0; i < values.getSize(); ++i) knMax = std::max(knMax, values(i, 0));
     // Optional exact refinement: bounded maximization of the log-Christoffel function over the numerical range, multi-started from the best candidates as in RatioOfUniforms::initialize(). The multi-start is a coverage argument only: a local optimum may be missed, hence the safety factor below.
@@ -557,8 +557,8 @@ Scalar ChristoffelDistribution::computeKn() const
             const Point lowerBound(range.getLowerBound());
             const Point upperBound(range.getUpperBound());
             for (UnsignedInteger j = 0; j < optimalPoint.getDimension(); ++j)
-              optimalPoint[j] = std::min(std::max(optimalPoint[j], lowerBound[j]), upperBound[j]);
-            const Scalar knOptimal = computeChristoffel(optimalPoint);
+              optimalPoint[j] = std::clamp(optimalPoint[j], lowerBound[j], upperBound[j]);
+            const Scalar knOptimal = computeChristoffelFunction(optimalPoint);
             if (std::isfinite(knOptimal)) knMax = std::max(knMax, knOptimal);
           }
         }
@@ -602,7 +602,7 @@ Scalar ChristoffelDistribution::computeLogPDF(const Point & point) const
 }
 
 /* Stable log of the Christoffel function on a point */
-Scalar ChristoffelDistribution::computeLogChristoffel(const Point & point) const
+Scalar ChristoffelDistribution::computeLogChristoffelFunction(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << getDimension() << ", got dimension=" << point.getDimension();
   // direct core call: the sample wrapper would build a one-point sample for nothing
@@ -632,13 +632,13 @@ struct ComputeLogChristoffelPolicy
 }; /* end struct ComputeLogChristoffelPolicy */
 
 /* Stable log of the Christoffel function on a sample, parallel over points when large */
-Sample ChristoffelDistribution::computeLogChristoffel(const Sample & sample) const
+Sample ChristoffelDistribution::computeLogChristoffelFunction(const Sample & sample) const
 {
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a sample of dimension=" << getDimension() << ", got dimension=" << sample.getDimension();
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
   const ComputeLogChristoffelPolicy policy(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel() && sampleSize > 2048, 0, sampleSize, policy, 1024);
+  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy);
   return values;
 }
 
@@ -718,7 +718,7 @@ Scalar ChristoffelDistribution::computeConditionalCDF(const Scalar x,
   Scalar normalizer = 0.0;
   for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex) normalizer += partial[basisIndex];
   if (!(normalizer > 0.0)) return 0.0;
-  const Function slice(ChristoffelTensorSliceEvaluation(this, partial, j));
+  const Function slice(ChristoffelTensorSliceEvaluation(*this, partial, j));
   Scalar error = -1.0;
   Point ai;
   Point bi;
@@ -904,17 +904,6 @@ Sample ChristoffelDistribution::getSample(const UnsignedInteger size) const
   if (size_ != 0 && !isTensorProduct_ && preferRatioOfUniforms())
     return sampler_.getSample(size);
   return DistributionImplementation::getSample(size);
-}
-
-/* Continuity flags */
-Bool ChristoffelDistribution::isContinuous() const
-{
-  return true;
-}
-
-Bool ChristoffelDistribution::isDiscrete() const
-{
-  return false;
 }
 
 /* Parameters accessors: no parametric representation */

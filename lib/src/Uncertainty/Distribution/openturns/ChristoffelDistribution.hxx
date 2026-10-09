@@ -87,12 +87,12 @@ public:
   Basis getBasis() const;
 
   /** Christoffel function evaluation */
-  Scalar computeChristoffel(const Point & point) const;
-  Sample computeChristoffel(const Sample & sample) const;
+  Scalar computeChristoffelFunction(const Point & point) const;
+  Sample computeChristoffelFunction(const Sample & sample) const;
 
   /** Stable log of the Christoffel function, for extreme tails */
-  Scalar computeLogChristoffel(const Point & point) const;
-  Sample computeLogChristoffel(const Sample & sample) const;
+  Scalar computeLogChristoffelFunction(const Point & point) const;
+  Sample computeLogChristoffelFunction(const Sample & sample) const;
 
   /** Stability factor estimate, ie sup of the Christoffel function */
   Scalar computeKn() const;
@@ -115,9 +115,6 @@ public:
   Point getRealization() const override;
   Sample getSample(const UnsignedInteger size) const override;
 
-  /** Continuity flags */
-  Bool isContinuous() const override;
-  Bool isDiscrete() const override;
   /** Parameters accessors (no parametric representation) */
   PointWithDescriptionCollection getParametersCollection() const override;
   void setParametersCollection(const PointCollection & parametersCollection) override;

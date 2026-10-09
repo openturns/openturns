@@ -145,14 +145,11 @@ void ChristoffelSubsampleExperiment::setDistribution(const Distribution &)
   throw InvalidArgumentException(HERE) << "Error: the reference distribution of a ChristoffelSubsampleExperiment is embedded in its basis, use setOrthogonalBasis() instead.";
 }
 
-/* Deduce the space dimension m from the target size n by n = gamma * m * log(m) */
+/* Largest space dimension m = n-k for the target size n with an inexhaustible
+   basis (k=0): the basis capacity trial needs the basis itself, see update() */
 UnsignedInteger ChristoffelSubsampleExperiment::DeduceSpaceDimension(const UnsignedInteger size)
 {
-  const Scalar gamma = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-Gamma");
-  if (!(gamma > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive gamma, here value=" << gamma;
-  UnsignedInteger spaceDimension = 1;
-  while (gamma * (spaceDimension + 1) * std::log(spaceDimension + 1) <= size) ++spaceDimension;
-  return spaceDimension;
+  return size;
 }
 
 /* Uniform weights ? */
@@ -626,10 +623,25 @@ void ChristoffelSubsampleExperiment::update()
     spaceDimension_ = 0;
     return;
   }
-  spaceDimension_ = DeduceSpaceDimension(size_);
-  const ChristoffelDistribution christoffel(basis_, spaceDimension_);
+  // Largest approximation dimension m = n-k: try k=0,1,2,... until the basis
+  // supplies m functions (finite bases throw beyond their capacity)
+  UnsignedInteger dimension = DeduceSpaceDimension(size_);
+  while (dimension > 1)
+  {
+    try
+    {
+      basis_.build(dimension - 1);
+      break;
+    }
+    catch (const InvalidArgumentException &)
+    {
+      --dimension;
+    }
+  }
+  const ChristoffelDistribution christoffel(basis_, dimension);
   christoffelDistribution_ = christoffel;
   distribution_ = christoffel.getMeasure();
+  spaceDimension_ = dimension;
 }
 
 /* Method save() stores the object through the StorageManager: only the basis

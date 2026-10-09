@@ -6,24 +6,27 @@ R"RAW(Christoffel subsample experiment.
     To use it, import the ``openturns.experimental`` submodule.
 
 Given an orthonormal basis of :math:`L^2(D, \mu)` and a target size
-:math:`n`, the experiment draws a pool of points from the
-:class:`~openturns.experimental.ChristoffelDistribution` associated to the
-first :math:`m` basis functions, where :math:`m` is deduced from
-
-.. math::
-    n = \gamma \, m \, \log m,
-
-with :math:`\gamma = \left(3/2 \log(3/2) - 1/2\right)^{-1} = 9.242343873386666`
-by default, the constant of Theorem 2.3 of Cohen-Dolbeault, then greedily thins
-the pool down to
-:math:`n` points. The default ``Removal`` method drops pool points while
-keeping the largest smallest Gramian eigenvalue and no reweighting; the
-``Barrier`` method is a forward barrier greedy selection with reweighting,
-clamped strictly inside the current spectrum so rank-deficient steps stay
-well-defined. Each kept point :math:`x_i` carries a weight proportional
+:math:`n`, the experiment works with the first :math:`m` basis functions,
+where :math:`m = n - k` is the largest dimension supplied by the basis:
+:math:`k = 0` with an inexhaustible basis, and :math:`k = 1, 2, \dots` is
+tried until the basis supplies :math:`m` functions. It draws a pool of points
+from the :class:`~openturns.experimental.ChristoffelDistribution` associated to
+these :math:`m` functions, sized by
+``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` times :math:`n`,
+then greedily thins the pool down to :math:`n` points. The default ``Removal``
+method drops pool points while keeping the largest smallest Gramian eigenvalue
+and no reweighting; the ``Barrier`` method is a forward barrier greedy selection
+with reweighting, clamped strictly inside the current spectrum so rank-deficient
+steps stay well-defined. Each kept point :math:`x_i` carries a weight proportional
 to :math:`m / k_m(x_i)`, the density ratio of the reference measure
 over the Christoffel distribution, times the barrier weight for the
 ``Barrier`` method.
+
+The sizing follows the budget theorem: from :math:`\gamma m \log m`
+Christoffel draws with :math:`\gamma \approx 9.242` (Theorem 2.3 of Cohen
+and Dolbeault [cohendolbeault2020]_) one extracts :math:`m + k` points
+with a good approximation; the pool above is the practical pool, used at
+the price of weaker guarantees.
 
 Available constructors:
     ChristoffelSubsampleExperiment(*basis, size*)
@@ -39,12 +42,12 @@ size : positive int
 See Also
 --------
 openturns.WeightedExperiment
+openturns.experimental.ChristoffelDistribution
 
 Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``ChristoffelSubsampleExperiment-Gamma`` (``Scalar``, default: ``9.242343873386666``): gamma constant :math:`\gamma` of the sizing rule. The value :math:`\gamma \approx 9.242` is the one in Theorem 2.3 of Cohen-Dolbeault; smaller values are used in practice at the price of weaker guarantees.
 - ``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` (``Scalar``, default: ``2.0``): candidate pool size as a multiple of the target size.
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1.
 - ``ChristoffelSubsampleExperiment-ThinningMethod`` (``String``, default: ``Removal``): greedy thinning method. Possible values: ``Barrier``, ``Removal``.
@@ -60,7 +63,7 @@ Examples
 >>> basis = ot.OrthogonalBasis(factory)
 >>> experiment = otexp.ChristoffelSubsampleExperiment(basis, 60)
 >>> print(experiment.getSpaceDimension())
-4
+60
 >>> sample, weights = experiment.generateWithWeights()
 >>> print(len(sample), len(weights))
 60 60)RAW"
@@ -143,6 +146,10 @@ eigenvalues : :class:`~openturns.Point`
 %feature("docstring") OT::ChristoffelSubsampleExperiment::DeduceSpaceDimension
 R"RAW(Deduce the space dimension from a target size.
 
+With an inexhaustible basis the dimension is the target size
+(:math:`k = 0` in :math:`m = n - k`); the constructors try
+:math:`k = 1, 2, \dots` until the basis supplies :math:`m` functions.
+
 Parameters
 ----------
 size : positive int
@@ -151,10 +158,7 @@ size : positive int
 Returns
 -------
 spaceDimension : positive int
-    Largest integer with gamma times spaceDimension times
-    log(spaceDimension) not larger than size, where
-    :math:`\gamma \approx 9.242`
-    is the default of the ``ChristoffelSubsampleExperiment-Gamma`` key.)RAW"
+    The target size itself.)RAW"
 
 // ---------------------------------------------------------------------
 
