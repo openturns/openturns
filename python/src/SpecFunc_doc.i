@@ -18,8 +18,8 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``SpecFunc-MaximumIteration`` (``UnsignedInteger``, default: ``1000``)
-- ``SpecFunc-Precision`` (``Scalar``, default: ``2e-16``)
+- ``SpecFunc-MaximumIteration`` (``UnsignedInteger``, default: ``1000``).
+- ``SpecFunc-Precision`` (``Scalar``, default: ``2e-16``).
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -889,6 +889,27 @@ R"RAW(Hypergeometric function of type (2,2).
 Parameters
 ----------
 p1, p2, q1, q2, x : float
+
+Returns
+-------
+result : float)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogHyperGeom_1_1
+R"RAW(Natural logarithm of the hypergeometric function of type (1,1).
+
+.. math::
+
+    \log {}_1F_1(p_1, q_1, x)
+
+The value is computed through optimally-truncated asymptotic expansions
+for large :math:`|x|` and the logarithm of the direct series otherwise.
+It requires :math:`{}_1F_1(p_1, q_1, x) > 0`.
+
+Parameters
+----------
+p1, q1, x : float
 
 Returns
 -------

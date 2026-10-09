@@ -23,23 +23,35 @@
  * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
+ * UniformOverMesh now accepts meshes embedded in an ambient space of
+   dimension larger than their intrinsic dimension, and exposes
+   getIntrinsicDimension() and getVolume() accessors.
 
 ==== New classes ====
+ * Bingham, BinghamFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
+ * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
+ * ManifoldMappedDistribution (openturns.experimental)
+ * MatrixFisher, MatrixFisherFactory (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
+ * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
+ * PushForwardDistribution (openturns.experimental)
+ * PushForwardOverMesh (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
+ * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
+ * WrappedNormal, WrappedNormalFactory (openturns.experimental)
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant

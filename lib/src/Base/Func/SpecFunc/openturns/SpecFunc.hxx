@@ -193,6 +193,12 @@ OT_API Scalar HyperGeom_2_2(const Scalar p1,
                             const Scalar q1,
                             const Scalar q2,
                             const Scalar x);
+// Natural logarithm of the hypergeometric function of type (1,1). Uses the
+// optimally-truncated DLMF 13.7.1 asymptotic expansion for large |x| and the
+// logarithm of the direct series otherwise. Requires 1F1(p1;q1;x) > 0.
+OT_API Scalar LogHyperGeom_1_1(const Scalar p1,
+                               const Scalar q1,
+                               const Scalar x);
 // Erf function erf(x) = 2 / \sqrt(\pi) . \int_0^x \exp(-t^2) dt
 OT_API Scalar Erf(const Scalar x);
 OT_API Complex Erf(const Complex & z);

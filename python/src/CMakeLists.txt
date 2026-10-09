@@ -574,6 +574,18 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
+                     Bingham.i Bingham_doc.i
+                     BinghamFactory.i BinghamFactory_doc.i
+                     ManifoldImplementation.i ManifoldImplementation_doc.i
+                     Manifold.i Manifold_doc.i
+                     ManifoldMappedDistribution.i ManifoldMappedDistribution_doc.i
+                     SphereManifold.i SphereManifold_doc.i
+                     SO3Manifold.i SO3Manifold_doc.i
+                     MatrixFisher.i MatrixFisher_doc.i
+                     MatrixFisherFactory.i MatrixFisherFactory_doc.i
+                     UniformOverMeshFactory.i UniformOverMeshFactory_doc.i
+                     RiemannianGaussian.i RiemannianGaussian_doc.i
+                     RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
@@ -581,6 +593,10 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      CurlFreeModel.i CurlFreeModel_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
+                     PushForwardDistribution.i PushForwardDistribution_doc.i
+                     PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     WrappedNormal.i WrappedNormal_doc.i
+                     WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i

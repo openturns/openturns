@@ -39,6 +39,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
+>>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.SquaredNormal(1.0, 2.0)
 >>> sample = distribution.getSample(30)
 >>> factory = otexp.SquaredNormalFactory()
