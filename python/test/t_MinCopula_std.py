@@ -76,7 +76,17 @@ print("margins quantile=", quantile)
 print("margins CDF(quantile)=", margins.computeCDF(quantile))
 print("margins realization=", margins.getRealization())
 
+# 1D MinCopula is Uniform(0, 1)
+assert ot.MinCopula(1).computePDF([0.6]) == 1.0
+# Sequential vs pointwise conditional PDF must agree
+point = ot.Point(dim, 0.6)
+seqPDF = copula.computeSequentialConditionalPDF(point)
+for i in range(dim):
+    assert copula.computeConditionalPDF(point[i], point[:i]) == seqPDF[i]
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
-validation.skipConditional()  # FIXME
+# Skip conditional quantile checks: MinCopula is singular, its conditionals
+# are Dirac so CDF(quantile) != p by construction
+validation.skipConditional()
 validation.run()

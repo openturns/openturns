@@ -104,6 +104,8 @@ Scalar MinCopula::computePDF(const Point & point) const
 
   const Scalar u = point[0];
   if ((u <= 0.0) || (u > 1.0)) return 0.0;
+  // 1D MinCopula is the Uniform(0, 1) distribution
+  if (dimension == 1) return 1.0;
   for (UnsignedInteger i = 1; i < dimension; ++i) if (u != point[i]) return 0.0;
   return u;
 }
