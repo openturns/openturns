@@ -14,9 +14,10 @@ description: 'OpenTURNS documentation guidelines: Docstrings, RST structure.'
 - The Sphinx HTML documentation in `python/doc` covers all other parts of the generated HTML documentation
 
 ## Docstring documentation
-- Docstring API documentation is located in python/src/*_doc.i files with SWIG directives
+- Docstring API documentation is located in `python/src/*_doc.i` files with SWIG directives
 - New classes documentation docstring must contain the preamble warning: "This class is experimental...", see other existing classes in experimental_module.i
 - Use R"RAW(...)RAW" verbatim delimiters in docstrings when backslashes are needed (ie latex formulas)
+- Always put the closing `)RAW"` delimiter on its own line: never let docstring content ending in `)` share the terminator line (ie `...))RAW"`)
 - Use latex macros from python/doc/math_notations.sty wherever possible to uniformize notations
 - Use :any: instead of :ref: directives inside docstrings only, to ensure valid links in third-party Sphinx documentations.
 - Docstrings follow numpydoc conventions (Parameters/Notes/Examples sections, formatting, etc).
