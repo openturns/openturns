@@ -43,3 +43,13 @@ check_coefficients(legendre_bounded, [0.0, 1.0, 2.0, 3.0])
 # Affine map from [0, 3] to standard [-1, 1]: a_=2/3, b_=-1
 ott.assert_almost_equal(legendre_bounded.getA(), 2.0 / 3.0)
 ott.assert_almost_equal(legendre_bounded.getB(), -1.0)
+
+# Iteration-free Bogaert path: large rule stays increasing with positive
+# weights summing to one (standard measure has total mass 1)
+nodes, weights = ot.LegendreFactory().getNodesAndWeights(50)
+assert len(nodes) == 50
+for k in range(50):
+    assert weights[k] >= 0.0
+    if k > 0:
+        assert nodes[k] > nodes[k - 1]
+ott.assert_almost_equal(sum(weights), 1.0, 1e-12)
