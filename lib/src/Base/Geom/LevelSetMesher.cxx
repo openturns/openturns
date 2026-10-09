@@ -33,7 +33,6 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Matrix.hxx"
-#include "openturns/SymmetricMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include <map>
 #include <vector>
@@ -57,9 +56,10 @@ static Bool IsInsideIntersection(const Collection<ComparisonOperator> & operator
 }
 
 /* QEF minimizer from Hermite planes: false unless the planes constrain all
- * directions (at least dimension planes, well-conditioned normal equations).
- * Matrix::solveLinearSystem uses least squares and never throws on singular
- * systems, so the eigen gate below is mandatory, not optional. */
+ * directions (at least dimension planes, non-singular normal equations).
+ * ATA is a SquareMatrix so solveLinearSystem throws on singular systems;
+ * the least-squares Matrix variant must not be used here as it silently
+ * returns a minimum-norm solution instead. */
 static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
                                 const Collection<Point> & crossings,
                                 const Collection<Point> & normals,
@@ -68,7 +68,7 @@ static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
 {
   if (planes.getSize() < dimension)
     return false;
-  Matrix ATA(dimension, dimension);
+  SquareMatrix ATA(dimension, dimension);
   Point ATb(dimension);
   for (UnsignedInteger p = 0; p < planes.getSize(); ++ p)
   {
@@ -82,23 +82,15 @@ static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
         ATA(r, c) += normal[r] * normal[c];
     }
   }
-  SymmetricMatrix symATA(dimension, dimension);
-  for (UnsignedInteger r = 0; r < dimension; ++ r)
-    for (UnsignedInteger c = 0; c < dimension; ++ c)
-      symATA(r, c) = ATA(r, c);
-  const Point eigen(symATA.computeEigenValues());
-  Scalar eMin = eigen[0];
-  Scalar eMax = eigen[0];
-  for (UnsignedInteger k = 1; k < dimension; ++ k)
+  try
   {
-    eMin = std::min(eMin, eigen[k]);
-    eMax = std::max(eMax, eigen[k]);
+    minimizer = ATA.solveLinearSystem(ATb);
   }
-  if (!(eMax > 0.0) || !(eMin > std::sqrt(SpecFunc::Precision) * eMax))
+  catch (const Exception &)
   {
+    // singular system (locally smooth boundary): no QEF placement
     return false;
   }
-  minimizer = ATA.solveLinearSystem(ATb);
   return true;
 }
 
