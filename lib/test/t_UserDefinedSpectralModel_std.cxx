@@ -59,18 +59,18 @@ int main(int, char *[])
 
     /* Default dimension parameter to evaluate the model */
     const UnsignedInteger dimension = 2;
+    const UnsignedInteger inputDimension = 1;
 
     /* Amplitude values */
     Point amplitude(dimension);
     /* Scale values */
-    Point scale(dimension);
+    Point scale(inputDimension, 1.0);
     /* Spatial correclation */
     CorrelationMatrix spatialCorrelation(dimension);
     for (UnsignedInteger index = 0 ; index < dimension; ++index)
     {
       // constant amplitude
-      amplitude[index] = 1.0 ;
-      scale[index] = (index + 1.0) / dimension ;
+      amplitude[index] = (index + 1.0) / dimension ;
       if (index > 0) spatialCorrelation(index, index - 1) = 1.0 / index;
     }
 

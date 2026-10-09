@@ -19,12 +19,12 @@ import openturns as ot
 # %%
 # 1. Define a spectral density function from correlation matrix
 amplitude = [1.0, 2.0, 3.0]
-scale = [4.0, 5.0, 6.0]
+scale = [4.0]
 spatialCorrelation = ot.CorrelationMatrix(3)
 spatialCorrelation[0, 1] = 0.8
 spatialCorrelation[0, 2] = 0.6
 spatialCorrelation[1, 2] = 0.1
-spectralModel_Corr = ot.CauchyModel(amplitude, scale, spatialCorrelation)
+spectralModel_Corr = ot.CauchyModel(scale, amplitude, spatialCorrelation)
 spectralModel_Corr
 
 # %%
