@@ -21,9 +21,8 @@
 #include "openturns/OrthogonalUniVariatePolynomialFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OSS.hxx"
-#include "openturns/SquareMatrix.hxx"
+#include "openturns/FastGaussQuadrature.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/Lapack.hxx"
 #include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -162,46 +161,34 @@ Point OrthogonalUniVariatePolynomialFactory::getRoots(const UnsignedInteger n) c
   return roots;
 }
 
-/* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix and the square
-   of the first component of the associated normalized eigenvectors */
+/* Nodes and weights of the polynomial of degree n as the eigenvalues of the associated Jacobi matrix,
+   refined by Newton iterations, with the Christoffel weights from the three-term recurrence */
 Point OrthogonalUniVariatePolynomialFactory::getNodesAndWeights(const UnsignedInteger n,
     Point & weights) const
 {
   if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
-  // gauss integration rule
-  char jobz('V');
-  int ljobz(1);
-  Point d(n);
-  Point e(n - 1);
+  // Gauss integration rule, polished Golub-Welsch: the diagonal (gamma) and
+  // off-diagonal (b) of the symmetric Jacobi matrix built from the recurrence
+  // coefficients feed the eigenvalues-only solver with Newton refinement and
+  // Christoffel weight recovery, avoiding the O(n^3) eigenvector computation
   Coefficients recurrenceCoefficientsI(getRecurrenceCoefficients(0));
   Scalar alphaPrec = recurrenceCoefficientsI[0];
-  d[0] = -recurrenceCoefficientsI[1] / alphaPrec;
-  if (n == 1)
-  {
-    weights = Point(1, 1.0);
-    d[0] = (d[0] - b_) / a_;
-    return d;
-  }
+  Point gamma(n);
+  Point b(n, 0.0);
+  gamma[0] = -recurrenceCoefficientsI[1] / alphaPrec;
   for (UnsignedInteger i = 1; i < n; ++i)
   {
     recurrenceCoefficientsI = getRecurrenceCoefficients(i);
-    d[i]     = -recurrenceCoefficientsI[1] / recurrenceCoefficientsI[0];
-    e[i - 1] = sqrt(-recurrenceCoefficientsI[2] / (recurrenceCoefficientsI[0] * alphaPrec));
+    gamma[i] = -recurrenceCoefficientsI[1] / recurrenceCoefficientsI[0];
+    b[i]     = sqrt(-recurrenceCoefficientsI[2] / (recurrenceCoefficientsI[0] * alphaPrec));
     alphaPrec = recurrenceCoefficientsI[0];
   }
-  int ldz(n);
-  SquareMatrix z(n);
-  Point work(2 * n - 2);
-  int info;
-  dstev_(&jobz, &ldz, &d[0], &e[0], &z(0, 0), &ldz, &work[0], &info, &ljobz);
-  if (info != 0) throw InternalException(HERE) << "Lapack DSTEV: error code=" << info;
+  Point nodes(n);
   weights = Point(n);
+  FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, &nodes[0], &weights[0]);
   for (UnsignedInteger i = 0; i < n; ++i)
-  {
-    weights[i] = z(0, i) * z(0, i);
-    d[i] = (d[i] - b_) / a_;
-  }
-  return d;
+    nodes[i] = (nodes[i] - b_) / a_;
+  return nodes;
 }
 
 /* Affine coefficients accessors */
