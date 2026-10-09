@@ -119,5 +119,5 @@ for n in range(len(allDistributions)):
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipMinimumVolumeLevelSet()
+    validation.skipMinimumVolumeLevelSet()  # level set over-covers heavy right tail
     validation.run()

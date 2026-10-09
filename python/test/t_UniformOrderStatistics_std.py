@@ -119,8 +119,8 @@ assert standard.getImplementation().getClassName() == "UniformOrderStatistics"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipCorrelation()
-validation.skipMoments()
+validation.skipCorrelation()  # slow
+validation.skipMoments()  # slow
 validation.run()
 
 # --- UniformOrderStatistics: CDF is one above the support ---

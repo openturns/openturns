@@ -100,7 +100,6 @@ print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
-validation.skipTransformation()  # FIXME
 validation.run()
 
 # CDF near theta=1 must use correct first-order expansion

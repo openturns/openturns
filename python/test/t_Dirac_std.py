@@ -180,9 +180,8 @@ assert standard.getImplementation().getClassName() == "Dirac"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipMoments()
-validation.skipCorrelation()
-validation.skipConditional()  # FIXME
+validation.skipMoments()  # constant sample: skewness/kurtosis undefined
+validation.skipCorrelation()  # constant sample: correlation undefined
 validation.run()
 
 # --- Dirac integrality follows the atom ---

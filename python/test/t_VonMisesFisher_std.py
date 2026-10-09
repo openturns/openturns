@@ -90,24 +90,24 @@ ott.assert_almost_equal(distUniform.computeEntropy(), 2.531024, 1e-5, 0.0)
 uniPoint = ot.Point([1.0, 0.0, 0.0])
 ott.assert_almost_equal(distUniform.computePDF(uniPoint), 0.079577, 1e-5, 0.0)
 
-# Distribution validation
+# Distribution validation: experimental distribution, many methods unimplemented
 validation = ott.DistributionValidation(distribution)
-validation.skipCDF()
-validation.skipCorrelation()
-validation.skipDependenceMeasures()
-validation.skipGradient()
-validation.skipMoments()
-validation.skipDDF()
-validation.skipQuantile()
-validation.skipProbability()
-validation.skipMinimumVolumeLevelSet()
-validation.skipMinimumVolumeInterval()
-validation.skipConfidenceInterval()
-validation.skipInverseSurvival()
-validation.skipComplementaryCDF()
-validation.skipConditional()
-validation.skipTransformation()
-validation.skipParameters()
+validation.skipCDF()  # not implemented
+validation.skipCorrelation()  # not implemented
+validation.skipDependenceMeasures()  # not implemented
+validation.skipGradient()  # not implemented
+validation.skipMoments()  # not implemented
+validation.skipDDF()  # not implemented
+validation.skipQuantile()  # not implemented
+validation.skipProbability()  # not implemented
+validation.skipMinimumVolumeLevelSet()  # not implemented
+validation.skipMinimumVolumeInterval()  # not implemented
+validation.skipConfidenceInterval()  # not implemented
+validation.skipInverseSurvival()  # not implemented
+validation.skipComplementaryCDF()  # not implemented
+validation.skipConditional()  # not implemented
+validation.skipTransformation()  # not implemented
+validation.skipParameters()  # not implemented
 validation.run()
 
 # __repr__ and __str__

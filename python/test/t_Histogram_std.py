@@ -101,6 +101,8 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipParameters()
-validation.skipMinimumVolumeLevelSet()
+# Width/height changes renormalize heights, so the parameter roundtrip holds to ~1e-2;
+# flat density pieces over-cover level sets
+validation.setParameterTolerance(5e-2)
+validation.setDomainTolerance(5e-2)
 validation.run()
