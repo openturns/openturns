@@ -73,8 +73,8 @@ Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
-                                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
+Scalar SpaceFillingPhiP::perturbLHS(const Sample & oldDesign, const OT::Scalar oldCriterion,
+                                    const UnsignedInteger row1, const UnsignedInteger row2, const UnsignedInteger column) const
 {
   if (row1 == row2) return oldCriterion;
   if (p_ > 5) return SpaceFillingImplementation::perturbLHS(oldDesign, oldCriterion, row1, row2, column);
@@ -85,8 +85,8 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
 
   Scalar result = (oldCriterion <= 0.0 ? 0.0 : std::exp(p_ * std::log(oldCriterion)));
   Scalar oldSum = 0.0;
-  Scalar* pt1 = const_cast<Scalar*>(oldDesign.getImplementation()->data()) + dimension * row1;
-  Scalar* pt2 = const_cast<Scalar*>(oldDesign.getImplementation()->data()) + dimension * row2;
+  const Scalar* pt1 = addr_sample + dimension * row1;
+  const Scalar* pt2 = addr_sample + dimension * row2;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     if (i == row1 || i == row2) continue;
@@ -102,8 +102,7 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
     }
     oldSum += std::exp(-0.5 * p_ * std::log(d1)) + std::exp(-0.5 * p_ * std::log(d2));
   }
-  // Swap coordinates
-  std::swap(pt1[column], pt2[column]);
+  // Compute new contributions with row1/row2 column coordinates swapped, without modifying oldDesign
   Scalar newSum = 0.0;
   for(UnsignedInteger i = 0; i < size; ++i)
   {
@@ -113,15 +112,15 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
     Scalar d2 = 0.0;
     for(UnsignedInteger d = 0; d < dimension; ++d)
     {
-      const Scalar delta1(pt1[d] - ptI[d]);
+      const Scalar v1 = (d == column ? pt2[d] : pt1[d]);
+      const Scalar v2 = (d == column ? pt1[d] : pt2[d]);
+      const Scalar delta1(v1 - ptI[d]);
       d1 += delta1 * delta1;
-      const Scalar delta2(pt2[d] - ptI[d]);
+      const Scalar delta2(v2 - ptI[d]);
       d2 += delta2 * delta2;
     }
     newSum += std::exp(-0.5 * p_ * std::log(d1)) + std::exp(-0.5 * p_ * std::log(d2));
   }
-  // Swap coordinates to restore original sample
-  std::swap(pt1[column], pt2[column]);
 
   result += newSum - oldSum;
   if (result <= 0.0) return 0.0;

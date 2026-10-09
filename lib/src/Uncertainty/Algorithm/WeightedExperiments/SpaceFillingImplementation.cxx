@@ -52,15 +52,14 @@ Scalar SpaceFillingImplementation::evaluate(const Sample & ) const
 }
 
 /** Compute criterion when performing an elementary perturbation */
-Scalar SpaceFillingImplementation::perturbLHS(Sample& oldDesign, Scalar,
-    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const
+Scalar SpaceFillingImplementation::perturbLHS(const Sample & oldDesign, const Scalar,
+    const UnsignedInteger row1, const UnsignedInteger row2, const UnsignedInteger column) const
 {
   // Default method uses O(N*N) computations
+  Sample newDesign(oldDesign);
   // Swap coordinates
-  std::swap(oldDesign(row1, column), oldDesign(row2, column));
-  const Scalar criterion = evaluate(oldDesign);
-  // Swap coordinates to restore original sample
-  std::swap(oldDesign(row1, column), oldDesign(row2, column));
+  std::swap(newDesign(row1, column), newDesign(row2, column));
+  const Scalar criterion = evaluate(newDesign);
   // Return criterion
   return criterion;
 }
