@@ -21,6 +21,7 @@
 #include "openturns/HermiteFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/FastHermite.hxx"
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -97,6 +98,30 @@ String HermiteFactory::__repr__() const
 {
   return OSS() << "class=" << getClassName()
          << " measure=" << measure_;
+}
+
+
+/* Roots of the polynomial of degree n */
+Point HermiteFactory::getRoots(const UnsignedInteger n) const
+{
+  if (n == 0) return Point(0);
+  Point weights(0);
+  return getNodesAndWeights(n, weights);
+}
+
+/* Nodes and weights of the polynomial of degree n */
+Point HermiteFactory::getNodesAndWeights(const UnsignedInteger n,
+    Point & weightsOut) const
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the roots and weights of a constant polynomial.";
+  Point nodes(n);
+  weightsOut = Point(n);
+  FastHermite::ComputeNodesAndWeights(n, &nodes[0], &weightsOut[0]);
+  // Map the standard N(0, 1) nodes to the actual Normal(mu, sigma) measure:
+  // x = (z - b_) / a_ with z = a_ * x + b_
+  for (UnsignedInteger i = 0; i < n; ++i)
+    nodes[i] = (nodes[i] - b_) / a_;
+  return nodes;
 }
 
 

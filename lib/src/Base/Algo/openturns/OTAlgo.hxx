@@ -59,6 +59,7 @@
 #include "openturns/GaussKronrodRule.hxx"
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/FastGaussQuadrature.hxx"
+#include "openturns/FastHermite.hxx"
 #include "openturns/FastLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/DesignProxy.hxx"
