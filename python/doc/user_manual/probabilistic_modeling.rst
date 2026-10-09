@@ -89,6 +89,8 @@ Continuous parametric distributions
     Pareto
     Rayleigh
     Rice
+
+    :template: class.rst_t
     experimental.RiemannianGaussian
 
     :template: Distribution.rst_t

@@ -150,9 +150,7 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
 
   // The density depends on zeta up to an additive constant: shift so that
   // the smallest entry is zero, then F(zeta) = exp(minZeta) * F(zeta - minZeta)
-  Scalar minZeta = cZeta[0];
-  for (UnsignedInteger i = 1; i < n; ++i)
-    minZeta = std::min(minZeta, cZeta[i]);
+  const Scalar minZeta = *std::min_element(cZeta.begin(), cZeta.end());
   for (UnsignedInteger i = 0; i < n; ++i)
     cZeta[i] -= minZeta;
 

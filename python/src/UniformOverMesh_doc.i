@@ -64,7 +64,7 @@ algo : :class:`~openturns.IntegrationAlgorithm`
     :class:`~openturns.ResourceMap` if the total number of nodes doesn't exceed
     a value specified by the `UniformOverMesh-MaximumIntegrationNodesNumber` key
     in :class:`~openturns.ResourceMap`, otherwise the marginal integration node
-    number is decreased.:class:`~openturns.IteratedQuadrature`."
+    number is decreased. :class:`~openturns.IteratedQuadrature`."
 
 // ---------------------------------------------------------------------
 
