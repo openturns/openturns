@@ -48,5 +48,6 @@
 #include "openturns/LeaveOneOutSplitter.hxx"
 #include "openturns/TensorProductExperiment.hxx"
 #include "openturns/SmolyakExperiment.hxx"
+#include "openturns/ChristoffelSubsampleExperiment.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */

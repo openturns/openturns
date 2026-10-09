@@ -33,6 +33,7 @@ Continuous parametric distributions
     :template: Distribution.rst_t
     Chi
     ChiSquare
+    experimental.ChristoffelDistribution
 
     :template: classWithPlot.rst_t
     Dirichlet

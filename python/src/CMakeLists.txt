@@ -553,6 +553,7 @@ ot_add_python_module(model_copula2 model_copula2_module.i
 )
 
 ot_add_python_module(experimental experimental_module.i
+                     ChristoffelDistribution.i ChristoffelDistribution_doc.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
@@ -567,6 +568,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      SquaredNormalFactory.i SquaredNormalFactory_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
+                     ChristoffelSubsampleExperiment.i ChristoffelSubsampleExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
