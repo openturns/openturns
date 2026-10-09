@@ -571,6 +571,9 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                     FiniteOrthonormalizationAlgorithm.i FiniteOrthonormalizationAlgorithm_doc.i
+                     GaussLPQuadrature.i GaussLPQuadrature_doc.i
+                     FiniteOrthonormalFunctionFactory.i FiniteOrthonormalFunctionFactory_doc.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i

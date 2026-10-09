@@ -1266,5 +1266,16 @@
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
 
+  <!-- OT::FiniteOrthonormalizationAlgorithm parameters -->
+  <FiniteOrthonormalizationAlgorithm-DefaultDiscretization value_int="128" />
+  <FiniteOrthonormalizationAlgorithm-Epsilon               value_float="1.0e-11" />
+
+  <!-- OT::GaussLPQuadrature parameters -->
+  <GaussLPQuadrature-AlphaS  value_int="100" />
+  <GaussLPQuadrature-Ngauss  value_int="100" />
+  <GaussLPQuadrature-Epsilon value_float="1.0e-5" />
+  <GaussLPQuadrature-Solver value_str="choose" />
+  <GaussLPQuadrature-FallbackSolver value_str="ipm" />
+
   <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>
