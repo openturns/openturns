@@ -273,7 +273,8 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeFactor(const UnsignedIn
   const Scalar beta = distributionCollection_[k - 1].getRange().getUpperBound()[0];
   if (x >= beta)
   {
-    const Scalar value = std::log(distributionCollection_[k].computeComplementaryCDF(y) / distributionCollection_[k].computeComplementaryCDF(x));
+    // Same convention as computeExponentialFactor: factor = -log(exponentialFactor)
+    const Scalar value = -std::log(distributionCollection_[k].computeComplementaryCDF(y) / distributionCollection_[k].computeComplementaryCDF(x));
     return value;
   }
   if (useApproximation_)
@@ -424,29 +425,23 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computePDF(const Point & point
   Scalar productPDF = distributionCollection_[0].computePDF(point[0]);
   for (UnsignedInteger k = 1; k < dimension; ++k)
   {
-    if (!partition_.contains(k - 1))
+    if (partition_.contains(k - 1))
+    {
+      // Independent block boundary: multiply by the marginal PDF
+      productPDF *= distributionCollection_[k].computePDF(point[k]);
+      continue;
+    }
     {
       // Compute the lower bound of the integral. The integrand is zero outside of the range of the kth distribution
       const Scalar xMin = std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]);
-      // Compute the upper bound of the integral. The integral has a closed form outside of the range of the (k-1)th distribution, but we have still to compute the integral on the intersection with this range
       const Scalar xK = point[k];
-      const Scalar bKm1 = distributionCollection_[k - 1].getRange().getUpperBound()[0];
-      Scalar xMax = 0.0;
-      Scalar cdfKm1 = 0.0;
-      if (bKm1 < xK)
-      {
-        xMax = bKm1;
-        cdfKm1 = 1.0;
-      }
-      else
-      {
-        xMax = xK;
-        cdfKm1 = distributionCollection_[k - 1].computeCDF(xMax);
-      }
-      Scalar cdfK = distributionCollection_[k].computeCDF(xMax);
+      const Scalar cdfKm1 = distributionCollection_[k - 1].computeCDF(xK);
+      const Scalar cdfK = distributionCollection_[k].computeCDF(xK);
+      const Scalar denominator = cdfKm1 - cdfK;
+      if (!(denominator > 0.0)) return 0.0;
       const Scalar pdfK = distributionCollection_[k].computePDF(point[k]);
-      const Scalar exponentialFactor = computeExponentialFactor(k, xMin, xMax);
-      productPDF *=  pdfK * exponentialFactor / (cdfKm1 - cdfK);
+      const Scalar exponentialFactor = computeExponentialFactor(k, xMin, xK);
+      productPDF *=  pdfK * exponentialFactor / denominator;
     } // Partition
   } // Loop over k
   return productPDF;
@@ -477,29 +472,23 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const Point & po
   Scalar sumLogPDF = distributionCollection_[0].computeLogPDF(point[0]);
   for (UnsignedInteger k = 1; k < dimension; ++k)
   {
-    if (!partition_.contains(k - 1))
+    if (partition_.contains(k - 1))
+    {
+      // Independent block boundary: add the marginal log-PDF
+      sumLogPDF += distributionCollection_[k].computeLogPDF(point[k]);
+      continue;
+    }
     {
       // Compute the lower bound of the integral. The integrand is zero outside of the range of the kth distribution
       const Scalar xMin = std::max(point[k - 1], distributionCollection_[k].getRange().getLowerBound()[0]);
-      // Compute the upper bound of the integral. The integral has a closed form outside of the range of the (k-1)th distribution, but we have still to compute the integral on the intersection with this range
       const Scalar xK = point[k];
-      const Scalar bKm1 = distributionCollection_[k - 1].getRange().getUpperBound()[0];
-      Scalar xMax = 0.0;
-      Scalar cdfKm1 = 0.0;
-      if (bKm1 < xK)
-      {
-        xMax = bKm1;
-        cdfKm1 = 1.0;
-      }
-      else
-      {
-        xMax = xK;
-        cdfKm1 = distributionCollection_[k - 1].computeCDF(xMax);
-      }
-      Scalar cdfK = distributionCollection_[k].computeCDF(xMax);
+      const Scalar cdfKm1 = distributionCollection_[k - 1].computeCDF(xK);
+      const Scalar cdfK = distributionCollection_[k].computeCDF(xK);
+      const Scalar denominator = cdfKm1 - cdfK;
+      if (!(denominator > 0.0)) return SpecFunc::LowestScalar;
       const Scalar logPDFK = distributionCollection_[k].computeLogPDF(point[k]);
-      const Scalar factor = computeFactor(k, xMin, xMax);
-      sumLogPDF +=  logPDFK - factor - std::log(cdfKm1 - cdfK);
+      const Scalar factor = computeFactor(k, xMin, xK);
+      sumLogPDF +=  logPDFK - factor - std::log(denominator);
     } // Partition
   } // Loop over k
   return sumLogPDF;

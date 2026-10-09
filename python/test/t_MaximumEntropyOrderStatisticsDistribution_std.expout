@@ -5,9 +5,9 @@ oneSample first= class=Point name=Unnamed dimension=4 values=[-1.01206,3.29988,4
 mean= class=Point name=Unnamed dimension=4 values=[-0.690223,3.00869,4.17387,4.90804]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.403946,-0.00036587,0.000932395,-5.81027e-05,-0.00036587,0.0300943,0.00129843,-2.28507e-05,0.000932395,0.00129843,0.183603,0.00207535,-5.81027e-05,-2.28507e-05,0.00207535,0.00865565]
 Point=  [0,3.2,4.2,5]
-ddf     = class=Point name=Unnamed dimension=4 values=[-0.645398,0.107242,0.537832,-4.84052]
-log pdf=-0.437888
-pdf     =0.645398
+ddf     = class=Point name=Unnamed dimension=4 values=[-1.00843,-0.14757,0.840362,-7.56332]
+log pdf=0.008399
+pdf     =1.008435
 condPDF     =0.000000
 cdf=0.272530
 ccdf=0.727470

@@ -17,9 +17,9 @@ covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImpleme
 skewness=class=Point name=Unnamed dimension=4 values=[0.3364,0.07714,-0.4349,0.2198]
 kurtosis=class=Point name=Unnamed dimension=4 values=[2.384,1.809,2.408,2.405]
 Point= class=Point name=Unnamed dimension=4 values=[0,3.2,4.2,5]
-ddf     =class=Point name=Unnamed dimension=4 values=[-0.6454,0.1072,0.5378,-4.841]
-log pdf=-0.437888
-pdf     =0.645398
+ddf     =class=Point name=Unnamed dimension=4 values=[-1.008,-0.1476,0.8404,-7.563]
+log pdf=0.0083993
+pdf     =1.00843
 cdf=0.27253
 ccdf=0.72747
 quantile=class=Point name=Unnamed dimension=4 values=[0.7199,3.312,4.887,5.115]
