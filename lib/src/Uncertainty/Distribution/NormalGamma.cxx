@@ -127,6 +127,14 @@ void NormalGamma::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
+/* Get the Kendall concordance of the distribution */
+CorrelationMatrix NormalGamma::getKendallTau() const
+{
+  // Conditionally on (tau1, tau2), X1 - X2 is symmetric around 0,
+  // so concordance has probability 1/2 and Kendall's tau is 0
+  return CorrelationMatrix(2);
+}
+
 /* Get the PDF of the distribution */
 Scalar NormalGamma::computePDF(const Point & point) const
 {
