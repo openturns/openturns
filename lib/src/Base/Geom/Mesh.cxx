@@ -1264,8 +1264,8 @@ Mesh Mesh::intersect(const Mesh & other) const
     for (UnsignedInteger i2 = 0; i2 < otherSimplicesNumber; ++ i2)
     {
       // bounding-box reject: touching boxes (shared edge/vertex) are kept
-      if ((upper1[i1][0] < lower2[i2][0]) || (upper2[i2][0] < lower1[i1][0])
-       || (upper1[i1][1] < lower2[i2][1]) || (upper2[i2][1] < lower1[i1][1]))
+      if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
+       || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
         continue;
       polygon_t tri2;
       for (UnsignedInteger j2 = 0; j2 < 4; ++ j2)
@@ -1360,14 +1360,14 @@ Mesh Mesh::intersect(const Mesh & other) const
   {
     const UnsignedInteger idx = compressedVertexMap[find(i)];
     for (UnsignedInteger d = 0; d < 2; ++ d)
-      verticesCompressed[idx][d] += vertices[i][d];
+      verticesCompressed(idx, d) += vertices(i, d);
     sizes[idx] += 1;
   }
   for (UnsignedInteger i = 0; i < nRoots; ++ i)
   {
     const Scalar invSize = 1.0 / sizes[i];
     for (UnsignedInteger d = 0; d < 2; ++ d)
-      verticesCompressed[i][d] *= invSize;
+      verticesCompressed(i, d) *= invSize;
   }
   for (UnsignedInteger i = 0; i < fullSize; ++ i)
     compressedVertexMap[i] = compressedVertexMap[find(i)];
