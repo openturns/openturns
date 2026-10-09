@@ -45,7 +45,6 @@ namespace OT {
 %template(LevelSetCollection) OT::Collection<OT::LevelSet>;
 
 %typemap(in) const OT::Collection<OT::LevelSet> & (OT::Pointer<OT::Collection<OT::LevelSet> > temp) {
-  void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From collection object, ok
   } else {
