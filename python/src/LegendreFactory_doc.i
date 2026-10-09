@@ -3,23 +3,8 @@ R"RAW(Legendre specific orthonormal univariate polynomial family.
 
 For the :class:`~openturns.Uniform` distribution :math:`\cU(-1,1)`.
 
-Parameters
-----------
-a : float, optional
-    Lower bound :math:`a` of the :class:`~openturns.Uniform` distribution.
-    Defaults to -1.0.
-b : float, optional
-    Upper bound :math:`b` of the :class:`~openturns.Uniform` distribution.
-    Defaults to 1.0.
-
-Any sequence of orthogonal polynomials has a recurrence formula relating any
-three consecutive polynomials as follows:
-
-.. math::
-
-    P_{i + 1}(x) & = (a_i x + b_i) P_i(x) + c_i P_{i - 1}(x), \quad  i \geq 0 \\
-    P_{-1} & = 0 \\
-    P_0 & = 1
+Any sequence of orthogonal polynomials follows the three-term recurrence
+formula detailed in :ref:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Legendre polynomials come analytically and
 read:
@@ -33,7 +18,17 @@ read:
     \end{array}, \quad 1 < i
 
 The nodes and weights of the associated Gauss-Legendre quadrature rule are
-computed using the symmetric tridiagonal Jacobi matrix approach.
+computed using the symmetric tridiagonal Jacobi matrix approach
+(see [golub1969]_) with the iteration-free formulas (see [bogaert2014]_).
+
+Parameters
+----------
+a : float, optional
+    Lower bound :math:`a` of the :class:`~openturns.Uniform` distribution.
+    Defaults to -1.0.
+b : float, optional
+    Upper bound :math:`b` of the :class:`~openturns.Uniform` distribution.
+    Defaults to 1.0.
 
 See also
 --------

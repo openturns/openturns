@@ -416,8 +416,11 @@ void test_7()
   assert_equal(dimensionBis, 3);
   assert_equal(weightDimensionBis, 83);
   ResourceMap::SetAsBool("SmolyakExperiment-MergeQuadrature", true);
-#if defined(__x86_64__) || defined(_M_X64) // fails on aarch64/ppc64el/s390x
+#if defined(__x86_64__) || defined(_M_X64) // exact merge count is arch-sensitive
   // Test 3 : Set tolerances to zero
+  // The Gauss-Legendre rules produce bitwise-identical center nodes
+  // (fastgl tabulated theta pi/2 gives exactly 0.5), so the 14 duplicated
+  // nodes still merge at zero tolerance: 69 nodes, not 83
   Scalar defaultRelativeEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-MergeRelativeEpsilon"));
   Scalar defaultAbsoluteEpsilon(ResourceMap::GetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon"));
   ResourceMap::SetAsScalar("SmolyakExperiment-MergeRelativeEpsilon", 0.0);
@@ -427,14 +430,14 @@ void test_7()
   printNodesAndWeights(nodesTer, weightsTer);
   const int experimentSizeTer = experiment.getSize();
   fullprint << "experimentSizeTer = " << experimentSizeTer << std::endl;
-  assert_equal(experimentSizeTer, 83);
+  assert_equal(experimentSizeTer, 69);
   //
   const int sizeTer(nodesTer.getSize());
   const int dimensionTer(nodesTer.getDimension());
   const int weightDimensionTer(weightsTer.getDimension());
-  assert_equal(sizeTer, 83);
+  assert_equal(sizeTer, 69);
   assert_equal(dimensionTer, 3);
-  assert_equal(weightDimensionTer, 83);
+  assert_equal(weightDimensionTer, 69);
   ResourceMap::SetAsScalar("SmolyakExperiment-MergeRelativeEpsilon", defaultRelativeEpsilon);
   ResourceMap::SetAsScalar("SmolyakExperiment-MergeAbsoluteEpsilon", defaultAbsoluteEpsilon);
 #endif
