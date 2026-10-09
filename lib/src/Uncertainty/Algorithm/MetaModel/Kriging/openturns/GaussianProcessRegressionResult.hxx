@@ -108,6 +108,9 @@ protected:
   /** Method that returns the covariance factor - hmat */
   HMatrix getHMatCholeskyFactor() const;
 
+  /** Method that returns the covariance factor - hodlr */
+  HODLRMatrix getHODLRCholeskyFactor() const;
+
 private:
 
   /** GaussianProcessFitterResult */

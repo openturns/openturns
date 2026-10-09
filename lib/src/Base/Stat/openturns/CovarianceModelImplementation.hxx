@@ -27,10 +27,12 @@
 #include "openturns/RegularGrid.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/HMatrixParameters.hxx"
+#include "openturns/HODLRMatrixParameters.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 class HMatrix;
+class HODLRMatrix;
 class CovarianceModel;
 
 /**
@@ -89,6 +91,18 @@ public:
   // Special case for 1D model
   virtual Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
                                  const Collection<Scalar>::const_iterator & t_begin) const;
+
+  /** Fast entry point for bulk evaluation (HODLR/HMatrix assembly, row
+      discretizations, ...), taking the coordinates of the two points as
+      contiguous buffers of getInputDimension() scalars, as stored in a
+      Sample. It returns exactly what computeAsScalar(s, t) returns, but lets
+      a model evaluate without any Point or iterator handling and with the
+      constants it needs already reduced (see e.g. MaternModel). Models are
+      free to override it: the default implementation is always correct, so a
+      new model needs no change here to profit from the call, and a change in
+      a model only touches that model. */
+  virtual Scalar computeAsScalar(const Scalar * s,
+                                 const Scalar * t) const;
 #endif
 
   virtual SquareMatrix operator() (const Scalar tau) const;
@@ -137,6 +151,22 @@ public:
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
       const HMatrixParameters & parameters) const;
+
+  /** Discretize the covariance function on a given TimeGrid/Mesh using HODLR */
+  virtual HODLRMatrix discretizeHODLRMatrix(const RegularGrid & timeGrid,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeHODLRMatrix(const Mesh & mesh,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeHODLRMatrix(const Sample & vertices,
+      const HODLRMatrixParameters & parameters) const;
+
+  /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HODLR */
+  virtual HODLRMatrix discretizeAndFactorizeHODLRMatrix(const RegularGrid & timeGrid,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeAndFactorizeHODLRMatrix(const Mesh & mesh,
+      const HODLRMatrixParameters & parameters) const;
+  virtual HODLRMatrix discretizeAndFactorizeHODLRMatrix(const Sample & vertices,
+      const HODLRMatrixParameters & parameters) const;
 
   /** Is it a stationary covariance model ? */
   virtual Bool isStationary() const;

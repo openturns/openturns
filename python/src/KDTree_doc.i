@@ -26,3 +26,22 @@ Examples
 >>> sample = ot.Normal(2).getSample(10)
 >>> tree = ot.KDTree(sample)
 >>> neighbour = sample[tree.query([0.1, 0.2])]"
+
+%feature("docstring") OT::KDTree::getOrdering
+"Get a space-filling ordering of the points.
+
+Returns
+-------
+ordering : :class:`~openturns.Indices`
+    The indices of the points sorted along a balanced kd-tree split
+    of the longest-extent axis, i.e. a permutation of ``[0, ..., n-1]``
+    where ``n`` is the sample size. The first element is the index of
+    the first point in the space-filling order."
+
+%feature("docstring") OT::KDTree::setSample
+"Set the sample.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Points."

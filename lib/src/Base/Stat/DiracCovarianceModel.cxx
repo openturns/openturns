@@ -115,6 +115,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
       for(UnsignedInteger i = j; i < outputDimension_; ++i)
         outputCorrelation_(i, j) = covariance(i, j) / (amplitude_[i] * amplitude_[j]);
   }
+  isDiagonal_ = covariance.isDiagonal();
   // Copy covariance
   outputCovariance_ = covariance;
 
@@ -194,11 +195,12 @@ Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_ite
   Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
-    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    const Scalar dx = *s_it - *t_it;
     tauNorm += dx * dx;
   }
-  tauNorm = sqrt(tauNorm);
-  if (tauNorm <= SpecFunc::ScalarEpsilon)
+  // Dirac covariance is scale independent, only the raw shift norm matters,
+  // as in the Point overload
+  if (tauNorm <= SpecFunc::ScalarEpsilon * SpecFunc::ScalarEpsilon)
     return outputCovariance_.getImplementation()->operator()(0, 0);
   else
     return 0.0;
@@ -454,6 +456,7 @@ void DiracCovarianceModel::setOutputCorrelation(const CorrelationMatrix & correl
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setOutputCorrelation, correlation matrix should be of dimension " << outputDimension_
                                          << ", here, matrix's dimension = " << correlation.getDimension();
   outputCorrelation_ = correlation;
+  isDiagonal_ = outputCorrelation_.isDiagonal();
   computeCovariance();
 }
 

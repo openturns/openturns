@@ -82,6 +82,9 @@ class OT_API HMatrix :
   /** Get the diagonal */
   Point getDiagonal() const;
 
+  /** Get the regularization shift applied during the last factorization */
+  Scalar getRegularizationShift() const;
+
   /** Bump the diagonal by an additive factor alpha */
   void addIdentity(Scalar alpha);
 
@@ -96,6 +99,9 @@ class OT_API HMatrix :
 
   /** Solve system op(L)*X = m */
   Matrix solveLower(const Matrix& m, Bool trans = false) const;
+
+  /** Compute y = L * x where L is the lower-triangular Cholesky factor */
+  void applyFactor(Point& y, const Point& x) const;
 
   /** Get number of HMatrix elements in compressed and uncompressed forms */
   std::pair<size_t, size_t> compressionRatio() const;

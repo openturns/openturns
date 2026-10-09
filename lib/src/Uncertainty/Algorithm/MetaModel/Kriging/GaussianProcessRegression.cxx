@@ -119,6 +119,12 @@ Point GaussianProcessRegression::computeGamma() const
   {
     return gaussianProcessFitterResult_.getHMatCholeskyFactor().solveLower(rho, true);
   }
+  else if (algebraMethod == GaussianProcessFitterResult::HODLR)
+  {
+    // For HODLR, rho_ is the raw residual (y - F*beta), not standardized.
+    // We need gamma = C^{-1} * (y - F*beta). solve() gives C^{-1}*b.
+    return gaussianProcessFitterResult_.getHODLRCholeskyFactor().solve(rho);
+  }
   else
   {
     // Arguments are keepIntact=true, matrix_lower=true & solving_transposed=true

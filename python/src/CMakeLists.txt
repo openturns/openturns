@@ -654,9 +654,13 @@ ot_add_python_module(statistics statistics_module.i
                       FractionalBrownianMotionModel.i FractionalBrownianMotionModel_doc.i
                       TensorizedCovarianceModel.i TensorizedCovarianceModel_doc.i
                       HMatrixParameters.i HMatrixParameters_doc.i
+                      HODLRMatrixParameters.i HODLRMatrixParameters_doc.i
                       HMatrixFactory.i HMatrixFactory_doc.i
                       HMatrix.i HMatrix_doc.i
                       HMatrixImplementation.i HMatrixImplementation_doc.i
+                      HODLRMatrixFactory.i HODLRMatrixFactory_doc.i
+                      HODLRMatrixImplementation.i HODLRMatrixImplementation_doc.i
+                      HODLRMatrix.i HODLRMatrix_doc.i
                       BaseStatisticsTemplateDefs.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i
                       CorrelationAnalysis.i CorrelationAnalysis_doc.i

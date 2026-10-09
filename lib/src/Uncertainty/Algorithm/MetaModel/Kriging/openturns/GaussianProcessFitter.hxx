@@ -26,6 +26,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/KrigingResult.hxx"
 #include "openturns/HMatrix.hxx"
+#include "openturns/HODLRMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/GaussianProcessFitterResult.hxx"
@@ -111,6 +112,7 @@ protected:
   Point computeReducedLogLikelihood(const Point & parameters);
   Scalar computeLapackLogDeterminantCholesky();
   Scalar computeHMatLogDeterminantCholesky();
+  Scalar computeHODLRLogDeterminantCholesky();
 
   // Compute the design matrix on the input sample
   void computeF();
@@ -232,6 +234,9 @@ private:
   /** Cholesky factor when using hmat-oss */
   HMatrix covarianceCholeskyFactorHMatrix_;
 
+  /** Cholesky factor when using HODLR */
+  HODLRMatrix covarianceCholeskyFactorHODLR_;
+
   /** Boolean argument for keep covariance */
   Bool keepCholeskyFactor_ = ResourceMap::GetAsBool("GaussianProcessFitter-KeepCovariance");
 
@@ -250,6 +255,9 @@ private:
 
   /** Cache of the last computed reduced log-likelihood */
   Scalar lastReducedLogLikelihood_ = SpecFunc::LowestScalar;
+
+  /** Cache of the last computed quadratic form (for HODLR) */
+  Scalar lastQuadraticForm_ = 0.0;
 
   /** Noise on the output sample */
   PersistentCollection<CovarianceMatrix> noise_;
