@@ -1508,22 +1508,48 @@ Mesh Mesh::intersect(const Mesh & other) const
     }
     return root;
   };
-  const KDTree tree(vertices);
   const Scalar tolerance = SpecFunc::Precision * vertices.computeRange().norm();
-  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+  // radius neighbours via nanoflann when available, brute force otherwise
+  // (minimal configurations build without nanoflann, where queryRadius
+  // throws NotYetImplementedException)
+  if (PlatformInfo::HasFeature("nanoflann"))
   {
-    Point distance;
-    const Indices nearest(tree.queryRadius(vertices[i], tolerance, distance));
-    for (UnsignedInteger k = 0; k < nearest.getSize(); ++ k)
+    const KDTree tree(vertices);
+    for (UnsignedInteger i = 0; i < fullSize; ++ i)
     {
-      const UnsignedInteger j = nearest[k];
-      if (j == i)
-        continue;
-      const UnsignedInteger rootI = find(i);
-      const UnsignedInteger rootJ = find(j);
-      if (rootI != rootJ)
-        parent[rootI] = rootJ;
+      Point distance;
+      const Indices nearest(tree.queryRadius(vertices[i], tolerance, distance));
+      for (UnsignedInteger k = 0; k < nearest.getSize(); ++ k)
+      {
+        const UnsignedInteger j = nearest[k];
+        if (j == i)
+          continue;
+        const UnsignedInteger rootI = find(i);
+        const UnsignedInteger rootJ = find(j);
+        if (rootI != rootJ)
+          parent[rootI] = rootJ;
+      }
     }
+  }
+  else
+  {
+    for (UnsignedInteger i = 0; i < fullSize; ++ i)
+      for (UnsignedInteger j = i + 1; j < fullSize; ++ j)
+      {
+        Scalar squaredDistance = 0.0;
+        for (UnsignedInteger k = 0; k < 2; ++ k)
+        {
+          const Scalar delta = vertices(i, k) - vertices(j, k);
+          squaredDistance += delta * delta;
+        }
+        if (squaredDistance <= tolerance * tolerance)
+        {
+          const UnsignedInteger rootI = find(i);
+          const UnsignedInteger rootJ = find(j);
+          if (rootI != rootJ)
+            parent[rootI] = rootJ;
+        }
+      }
   }
   Indices compressedVertexMap(fullSize, fullSize);
   UnsignedInteger nRoots = 0;
