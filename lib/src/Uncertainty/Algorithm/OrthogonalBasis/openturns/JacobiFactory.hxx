@@ -64,6 +64,14 @@ public:
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
   Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
+  /** Roots of the polynomial of degree n, from the fast Jacobi rule */
+  Point getRoots(const UnsignedInteger n) const override;
+
+  /** Nodes and weights of the polynomial of degree n, from the fast
+      Jacobi rule mapped to the measure */
+  Point getNodesAndWeights(const UnsignedInteger n,
+                           Point & weightsOut) const override;
+
   /** Alpha accessor */
   Scalar getAlpha() const;
 

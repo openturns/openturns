@@ -342,6 +342,9 @@
   <!-- OT::FastHermite parameters -->
   <FastHermite-AsymptoticThreshold value_int="256" />
 
+  <!-- OT::FastJacobi parameters -->
+  <FastJacobi-AsymptoticThreshold value_int="100" />
+
   <!-- OT::FastLaguerre parameters -->
   <FastLaguerre-IterativeThreshold value_int="8" />
 
