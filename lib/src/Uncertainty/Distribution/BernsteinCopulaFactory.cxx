@@ -222,7 +222,9 @@ public:
     const Scalar rHat = computeMC(copula, copula.getSample(N_));
     const Scalar rTilde = computeMC(copula, sample_);
     const Scalar delta = rHat - rTilde;
-    return delta * delta + alpha_ * Point(rhoS_ - rhoM).normSquare() / std::pow(copula.getDimension(), 2.0);
+    const MatrixImplementation diff(rhoS_ - rhoM);
+    const Point diffPoint(diff.begin(), diff.end());
+    return delta * delta + alpha_ * diffPoint.normSquare() / std::pow(copula.getDimension(), 2.0);
   }
 
   UnsignedInteger getInputDimension() const override

@@ -213,13 +213,13 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
   // Return the scalar value
   // Even if model is stationary we do not create a new Point tau
   // We prefer relying on the iterator method
-  return computeAsScalar(s.begin(), t.begin());
+  return computeAsScalar(&*s.begin(), &*t.begin());
 }
 
-Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator &,
-    const Collection<Scalar>::const_iterator & ) const
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar * ,
+    const Scalar * ) const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar * s_begin, const Scalar * t_begin) const";
 }
 
 Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
@@ -297,7 +297,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   // Convert result into MatrixImplementation to symmetrize & get the collection
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
   covarianceSTImplementation.symmetrize();
-  const Point centralValue(covarianceSTImplementation);
+  const Point centralValue(covarianceSTImplementation.begin(), covarianceSTImplementation.end());
   const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
   // Loop over the shifted points
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
@@ -307,7 +307,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
     SquareMatrix localCovariance(operator()(currentPoint, t));
     MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
     localCovarianceImplementation.symmetrize();
-    const Point currentValue(localCovarianceImplementation);
+    const Point currentValue(localCovarianceImplementation.begin(), localCovarianceImplementation.end());
     for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
       gradient(i, j) = (currentValue[j] - centralValue[j]) / epsilon;
   }
@@ -640,7 +640,7 @@ struct CrossCovariancePointFunctor1D
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       output_(i, 0) = model_.computeAsScalar(sample_.data_begin() + (i * inputDimension),
-                                             point_.begin());
+                                             &*point_.begin());
     }
   } // operator()
 };
@@ -762,7 +762,7 @@ struct CovarianceModelScalarDiscretizeRowPolicy
   inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-      output_(i, 0) = model_.computeAsScalar(p_.begin(), input_.data_begin() + (i * model_.getInputDimension()));
+      output_(i, 0) = model_.computeAsScalar(&*p_.begin(), input_.data_begin() + (i * model_.getInputDimension()));
   }
 
 }; /* end struct CovarianceModelScalarDiscretizeRowPolicy */
@@ -1272,7 +1272,10 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   Sample data(pointNumber * pointNumber, 1);
   // Here we extract the relevant data for multidimensional output models
   if (outputDimension_ == 1)
-    data.getImplementation()->setData(*matrix.getImplementation());
+    {
+      const MatrixImplementation & matrix_impl(*matrix.getImplementation());
+      data.getImplementation()->setData(Collection<Scalar>(matrix_impl.begin(), matrix_impl.end()));
+    }
   else
   {
     UnsignedInteger sampleIndex = 0;

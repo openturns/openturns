@@ -109,12 +109,12 @@ Scalar IsotropicCovarianceModel::computeAsScalar(const Scalar tau) const
   return kernel_.computeAsScalar(tau);
 }
 
-Scalar IsotropicCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar IsotropicCovarianceModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   Scalar tauNormSquare = 0;
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = *s_it - *t_it;

@@ -54,8 +54,8 @@ public:
   using CovarianceModelImplementation::computeAsScalar;
 
 #ifndef SWIG
-  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                         const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Scalar * s_begin,
+                         const Scalar * t_begin) const override;
 #endif
   Scalar computeAsScalar(const Point & tau) const override;
   Scalar computeAsScalar(const Scalar tau) const override;

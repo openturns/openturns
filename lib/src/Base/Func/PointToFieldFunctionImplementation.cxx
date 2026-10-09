@@ -154,7 +154,10 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls
   for (UnsignedInteger i = 0; i < size; ++i)
-    outSample[i] = operator()(inS[i]);
+    {
+      const Sample row(operator()(inS[i]));
+      outSample.setField(i, row);
+    }
   return outSample;
 }
 

@@ -2,6 +2,10 @@
 
 %ignore OT::Point::at; // Use __getitem__ instead
 %ignore OT::Point::getCollection;
+%ignore OT::Point::begin;
+%ignore OT::Point::end;
+%ignore OT::Point::data;
+%ignore OT::Point::toStdVector;
 
 %{
 #include "openturns/Point.hxx"

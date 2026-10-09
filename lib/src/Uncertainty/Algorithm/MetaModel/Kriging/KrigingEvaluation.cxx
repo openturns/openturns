@@ -166,7 +166,7 @@ struct KrigingEvaluationPointFunctor1D
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      accumulator_ += evaluation_.covarianceModel_.getImplementation()->computeAsScalar(input_.begin(), evaluation_.inputSample_.getImplementation()->data_begin() + i * input_.getDimension()) * evaluation_.gamma_(i, 0);
+      accumulator_ += evaluation_.covarianceModel_.getImplementation()->computeAsScalar(&*input_.begin(), evaluation_.inputSample_.getImplementation()->data_begin() + i * input_.getDimension()) * evaluation_.gamma_(i, 0);
     }
   } // operator()
 

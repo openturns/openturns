@@ -165,7 +165,7 @@ String DiscreteMarkovChain::__str__(const String & offset) const
 {
   OSS oss;
   oss << "DiscreteMarkovChain(origin=" << origin_.__str__(offset)
-      << ", transition=" << PersistentCollection<Scalar>(*transitionMatrix_.transpose().getImplementation()).__str__(offset)
+      << ", transition=" << transitionMatrix_.transpose().getImplementation()->__str__(offset)
       << ")";
   return oss;
 }
