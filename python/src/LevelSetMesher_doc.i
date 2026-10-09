@@ -42,14 +42,16 @@ The meshing algorithm is based either on a :class:`~openturns.Field` or on the
         done using the provided optimization algorithm.
         If it fails then the :class:`~openturns.Cobyla` optimization algorithm is used.
 
-  * The ``LevelSetMesher-Algorithm`` key selects the vertex placement used for
-    the projection, either ``Legacy`` (default) or ``QEF``. With ``QEF``,
-    tangent planes from Brent crossings and function gradients are combined
-    in one quadratic error function per cut cell or moved vertex, so sharp
-    edges and corners are recovered instead of chamfered. The following
-    :class:`~openturns.ResourceMap` key is used:
+  * The ``LevelSetMesher-UseQEF`` flag selects the vertex placement used for
+    the projection: ``False`` (default) keeps the legacy placement, ``True``
+    enables the QEF placement. With QEF, tangent planes from Brent crossings
+    and function gradients are combined in one quadratic error function per
+    cut cell or moved vertex, so sharp edges and corners are recovered
+    instead of chamfered. The flag defaults to the following
+    :class:`~openturns.ResourceMap` key, and can be changed per instance
+    with :meth:`setUseQEF`:
 
-    - ``LevelSetMesher-Algorithm`` (``String``, default: ``Legacy``): vertex placement algorithm, either ``Legacy`` or ``QEF``.
+    - ``LevelSetMesher-UseQEF`` (``Bool``, default: ``False``): enable the QEF sharp-edge recovery.
 
   * A collection of level sets can be meshed as well: the meshed domain is
     then the intersection of the level sets. Each level function is assumed
@@ -151,3 +153,23 @@ Parameters
 ----------
 solver : :class:`~openturns.OptimizationAlgorithm`
     The optimization solver used to project vertices onto the level set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSetMesher::getUseQEF
+"Accessor to the QEF sharp-edge recovery flag.
+
+Returns
+-------
+useQEF : bool
+    Whether the QEF vertex placement is used on top of the projection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSetMesher::setUseQEF
+"Accessor to the QEF sharp-edge recovery flag.
+
+Parameters
+----------
+useQEF : bool
+    Whether the QEF vertex placement is used on top of the projection."

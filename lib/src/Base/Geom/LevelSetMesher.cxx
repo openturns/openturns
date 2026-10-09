@@ -100,6 +100,7 @@ LevelSetMesher::LevelSetMesher()
   : PersistentObject()
   , discretization_(0)
   , solver_(AbdoRackwitz())
+  , useQEF_(ResourceMap::GetAsBool("LevelSetMesher-UseQEF"))
 {
   // Nothing to do
 }
@@ -110,6 +111,7 @@ LevelSetMesher::LevelSetMesher(const Indices & discretization,
   : PersistentObject()
   , discretization_(discretization)
   , solver_(solver)
+  , useQEF_(ResourceMap::GetAsBool("LevelSetMesher-UseQEF"))
 {
   // Check if the discretization is valid
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
@@ -146,6 +148,17 @@ void LevelSetMesher::setOptimizationAlgorithm(const OptimizationAlgorithm & solv
 OptimizationAlgorithm LevelSetMesher::getOptimizationAlgorithm() const
 {
   return solver_;
+}
+
+/* QEF sharp-edge recovery accessor */
+void LevelSetMesher::setUseQEF(const Bool useQEF)
+{
+  useQEF_ = useQEF;
+}
+
+Bool LevelSetMesher::getUseQEF() const
+{
+  return useQEF_;
 }
 
 
@@ -308,7 +321,7 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
   Indices simplicesToCheck(0);
   UnsignedInteger goodSimplicesNumber = 0;
   const Bool solveEquation = ResourceMap::GetAsBool("LevelSetMesher-SolveEquation");
-  const Bool useQEF = project && (ResourceMap::GetAsString("LevelSetMesher-Algorithm") == "QEF");
+  const Bool useQEF = project && useQEF_;
   typedef std::pair<UnsignedInteger, UnsignedInteger> EdgeKey;
   std::vector< std::map<EdgeKey, UnsignedInteger> > edgePlaneIndices(constraintNumber);
   Collection<Gradient> gradients(0);

@@ -121,7 +121,7 @@
 
   <!-- OT::LevelSetMesher parameters -->
   <LevelSetMesher-SolveEquation value_bool="true" />
-  <LevelSetMesher-Algorithm value_str="Legacy" />
+  <LevelSetMesher-UseQEF value_bool="false" />
 
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />
@@ -483,6 +483,7 @@
   <!-- OT::Mesh parameters -->
   <Mesh-BackfaceCulling      value_bool="false"    />
   <Mesh-CheckValidity        value_bool="false"    />
+  <Mesh-GridThreshold        value_int="1024"         />
   <Mesh-AmbientFactor        value_float="0.1"     />
   <Mesh-DiffuseFactor        value_float="0.7"     />
   <Mesh-Shininess            value_float="100.0"   />

@@ -105,11 +105,14 @@ int main(int, char *[])
     lens.add(LevelSet(disk2, LessOrEqual(), 1.0));
     LevelSetMesher lensMesher(Indices(2, 16));
     Interval lensBox(Point(2, -1.6), Point(2, 1.6));
-    ResourceMap::SetAsString("LevelSetMesher-Algorithm", "Legacy");
+    if (lensMesher.getUseQEF())
+      throw TestFailed("QEF must be off by default");
     Mesh lensLegacy = lensMesher.build(lens, lensBox);
-    ResourceMap::SetAsString("LevelSetMesher-Algorithm", "QEF");
+    lensMesher.setUseQEF(true);
+    if (!lensMesher.getUseQEF())
+      throw TestFailed("accessor round-trip failed");
     Mesh lensQEF = lensMesher.build(lens, lensBox);
-    ResourceMap::SetAsString("LevelSetMesher-Algorithm", "Legacy");
+    lensMesher.setUseQEF(false);
     const Scalar lensExact = 2.0 * std::acos(0.5) - 0.5 * std::sqrt(3.0);
     assert_almost_equal(lensQEF.getVolume(), lensExact, 1.0e-2, 1.0e-2, "wrong QEF lens volume");
     if (!(std::abs(lensQEF.getVolume() - lensExact) <= std::abs(lensLegacy.getVolume() - lensExact)))
@@ -121,6 +124,15 @@ int main(int, char *[])
     Mesh collectionMesh = mesher2D.build(singleton, Interval(Point(2, -10.0), Point(2, 10.0)), false);
     assert_almost_equal(singleMesh.getVolume(), collectionMesh.getVolume(), 1.0e-12, 1.0e-12, "wrong singleton volume");
     assert_almost_equal(singleMesh.getVertices(), collectionMesh.getVertices(), 1.0e-12, 1.0e-12, "wrong singleton vertices");
+    // Default value read in ResourceMap: on enables QEF at construction
+    ResourceMap::SetAsBool("LevelSetMesher-UseQEF", true);
+    LevelSetMesher defaultOnMesher(Indices(2, 16));
+    if (!defaultOnMesher.getUseQEF())
+      throw TestFailed("default must follow the ResourceMap key");
+    ResourceMap::SetAsBool("LevelSetMesher-UseQEF", false);
+    LevelSetMesher defaultOffMesher(Indices(2, 16));
+    if (defaultOffMesher.getUseQEF())
+      throw TestFailed("default must follow the ResourceMap key");
     // Empty collection raises
     try
     {
