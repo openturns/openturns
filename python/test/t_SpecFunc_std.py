@@ -87,3 +87,49 @@ y = ot.SpecFunc.BesselInu(-2.5, 3.0)
 ref = -0.47437040877803558955
 eps = 1e-15
 ott.assert_almost_equal(y, ref, eps, 0.0)
+
+# Test BesselJ/BesselJDerivative
+# Reference values from scipy
+for nu, x, ref, refprime in [
+    [0.5, 3.0, 0.06500818287737592, -0.4668835179408628],
+    [1.5, 10.0, 0.19798249275589247, -0.16696110966843367],
+    [2.0, 5.0, 0.04656511627775229, -0.34620518410256607],
+    [0.0, 1.0, 0.7651976865579666, -0.44005058574493355],
+    [2.5, 0.5, 0.009236407819379731, 0.045519660528752726],
+    [10.5, 25.0, -0.14462968429758666, 0.08015496250377363],
+]:
+    y = ot.SpecFunc.BesselJ(nu, x)
+    ott.assert_almost_equal(y, ref, 1e-14, 0.0)
+    yp = ot.SpecFunc.BesselJDerivative(nu, x)
+    ott.assert_almost_equal(yp, refprime, 1e-14, 0.0)
+
+# Integer reflections: J_2(-5) == J_2(5), J_{-3}(4) == -J_3(4)
+y = ot.SpecFunc.BesselJ(2.0, -5.0)
+ott.assert_almost_equal(y, 0.04656511627775229, 1e-14, 0.0)
+y = ot.SpecFunc.BesselJ(-3.0, 4.0)
+ott.assert_almost_equal(y, -0.43017147387562193, 1e-14, 0.0)
+yp = ot.SpecFunc.BesselJDerivative(2.0, -5.0)
+ott.assert_almost_equal(yp, 0.34620518410256607, 1e-14, 0.0)
+
+# Non-finite inputs must throw instead of hanging in boost
+for bad_nu, bad_x in [
+    (float("inf"), 1.0),
+    (float("nan"), 1.0),
+    (0.0, float("inf")),
+    (0.0, float("nan")),
+]:
+    with ott.assert_raises(TypeError):
+        ot.SpecFunc.BesselJ(bad_nu, bad_x)
+    with ott.assert_raises(TypeError):
+        ot.SpecFunc.BesselJDerivative(bad_nu, bad_x)
+
+# Noninteger order with negative argument has no real value and must throw;
+# huge integer orders overflow UnsignedInteger and must throw
+for bad_nu, bad_x in [
+    (0.5, -1.0),
+    (2.5, -0.5),
+]:
+    with ott.assert_raises(TypeError):
+        ot.SpecFunc.BesselJ(bad_nu, bad_x)
+    with ott.assert_raises(TypeError):
+        ot.SpecFunc.BesselJDerivative(bad_nu, bad_x)

@@ -227,6 +227,8 @@ as Python functions.
     SpecFunc.BesselI0
     SpecFunc.BesselI1
     SpecFunc.BesselInu
+    SpecFunc.BesselJ
+    SpecFunc.BesselJDerivative
     SpecFunc.BesselK
     SpecFunc.BesselKDerivative
     SpecFunc.Beta

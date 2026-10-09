@@ -246,6 +246,101 @@ Scalar SpecFunc::BesselInu(const Scalar x, const Scalar nu)
   return std::exp(LogBesselInu(x, nu));
 }
 
+// First kind Bessel function of order nu: BesselJ(nu, x)=J_\nu(x)=\sum_{m=0}^\infty (-1)^m (x/2)^{2m+\nu}/(m!\Gamma(m+\nu+1))
+Scalar SpecFunc::BesselJ(const Scalar nu,
+                         const Scalar x)
+{
+  if (!std::isfinite(nu)) throw InvalidArgumentException(HERE) << "Expected a finite value for nu, got nu=" << nu;
+  if (!std::isfinite(x)) throw InvalidArgumentException(HERE) << "Expected a finite value for x, got x=" << x;
+  // Integer order: reflection formulas extend to negative x and negative nu,
+  // J_{-k}(x) = (-1)^k J_k(x) and J_k(-x) = (-1)^k J_k(x)
+  const Scalar nearestInteger = std::round(nu);
+  Scalar nn = nu;
+  Scalar xx = x;
+  Scalar sign = 1.0;
+  if (nu == nearestInteger)
+  {
+    const Scalar absNearest = std::abs(nearestInteger);
+    if (!(absNearest <= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max()))) throw InvalidArgumentException(HERE) << "Error: |nu|=" << absNearest << " is too large for an integer order";
+    const UnsignedInteger order = static_cast<UnsignedInteger>(absNearest);
+    if (xx < 0.0)
+    {
+      xx = -xx;
+      if (order % 2 == 1) sign = -sign;
+    }
+    if ((nearestInteger < 0.0) && (order % 2 == 1)) sign = -sign;
+    nn = static_cast<Scalar>(order);
+  }
+  else
+  {
+    if (!(xx >= 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be nonnegative for noninteger nu=" << nu << ", here x=" << x;
+  }
+#ifdef OPENTURNS_HAVE_BOOST
+  return sign * boost::math::cyl_bessel_j(nn, xx);
+#else
+  // Ascending power series, convergent for all xx >= 0 (slower for large xx)
+  if (xx == 0.0)
+  {
+    if (nn == 0.0) return sign;
+    return (nn > 0.0) ? 0.0 : sign * Infinity;
+  }
+  const Scalar logHalfX = std::log(0.5 * xx);
+  Scalar term = std::exp(nn * logHalfX - LogGamma(nn + 1.0));
+  Scalar sum = term;
+  Bool converged = false;
+  for (UnsignedInteger m = 1; m < 10000; ++m)
+  {
+    term *= -(0.25 * xx * xx) / (m * (m + nn));
+    sum += term;
+    if (std::abs(term) <= ScalarEpsilon * std::abs(sum))
+    {
+      converged = true;
+      break;
+    }
+  }
+  if (!converged) throw InternalException(HERE) << "Error: BesselJ series did not converge for nu=" << nu << ", x=" << x;
+  return sign * sum;
+#endif
+}
+
+// First kind Bessel derivative function of order nu: BesselJDerivative(nu, x)=dBesselJ(nu, x) / dx
+Scalar SpecFunc::BesselJDerivative(const Scalar nu,
+                                   const Scalar x)
+{
+  if (!std::isfinite(nu)) throw InvalidArgumentException(HERE) << "Expected a finite value for nu, got nu=" << nu;
+  if (!std::isfinite(x)) throw InvalidArgumentException(HERE) << "Expected a finite value for x, got x=" << x;
+  // J_{-k}(x) = (-1)^k J_k(x) gives J'_{-k}(x) = (-1)^k J'_k(x), and
+  // J_k(-x) = (-1)^k J_k(x) gives J'_k(-x) = (-1)^{k+1} J'_k(x)
+  const Scalar nearestInteger = std::round(nu);
+  Scalar nn = nu;
+  Scalar xx = x;
+  Scalar sign = 1.0;
+  if (nu == nearestInteger)
+  {
+    const Scalar absNearest = std::abs(nearestInteger);
+    if (!(absNearest <= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max()))) throw InvalidArgumentException(HERE) << "Error: |nu|=" << absNearest << " is too large for an integer order";
+    const UnsignedInteger order = static_cast<UnsignedInteger>(absNearest);
+    if (xx < 0.0)
+    {
+      xx = -xx;
+      if (order % 2 == 0) sign = -sign;
+    }
+    if ((nearestInteger < 0.0) && (order % 2 == 1)) sign = -sign;
+    nn = static_cast<Scalar>(order);
+  }
+  else
+  {
+    if (!(xx >= 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be nonnegative for noninteger nu=" << nu << ", here x=" << x;
+  }
+#ifdef OPENTURNS_HAVE_BOOST
+  return sign * boost::math::cyl_bessel_j_prime(nn, xx);
+#else
+  // Recurrence J'_nu = (J_{nu-1} - J_{nu+1}) / 2, exact for integer orders
+  // through the reflection formulas above
+  return sign * 0.5 * (BesselJ(nn - 1.0, xx) - BesselJ(nn + 1.0, xx));
+#endif
+}
+
 // Evaluate the logarithm of the first kind modified Bessel function
 // using the algorithm described in https://arxiv.org/html/2409.08729v1
 // Andreas Plesner, Hans Henrik Brandenborg Sørensen, Søren Hauberg,

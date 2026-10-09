@@ -76,6 +76,11 @@ OT_API Scalar LogBesselI1(const Scalar x);
 // Modified first kind Bessel function of order nu: BesselInu(x) = \sum_{m=0}\infty(x/2)^{\nu+2m}/(m!Gamma(\nu+m+1))
 OT_API Scalar BesselInu(const Scalar x, const Scalar nu);
 OT_API Scalar LogBesselInu(const Scalar x, const Scalar nu);
+// First kind Bessel function of order nu: BesselJ(nu, x)=J_\nu(x)=\sum_{m=0}^\infty (-1)^m (x/2)^{2m+\nu}/(m!\Gamma(m+\nu+1))
+OT_API Scalar BesselJ(const Scalar nu,
+                      const Scalar x);
+OT_API Scalar BesselJDerivative(const Scalar nu,
+                                const Scalar x);
 // Difference between the logarithms of BesselI1 and BesselI0:
 OT_API Scalar DeltaLogBesselI10(const Scalar x);
 // Modified second kind Bessel function of order nu: BesselK(nu, x)=\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}}

@@ -128,6 +128,52 @@ result : float)RAW"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::BesselJ
+R"RAW(First kind Bessel function of order nu.
+
+.. math::
+
+    \mathrm{J}_\nu(x) = \sum_{m=0}^\infty\frac{(-1)^m}{m!\Gamma(m+1+\nu)}\left(\frac{x}{2}\right)^{2m+\nu}
+
+Parameters
+----------
+nu : float
+    Order, finite. Integer orders accept any finite *x* by reflection;
+    noninteger orders require *x* nonnegative.
+x : float
+    Argument, finite; must be nonnegative when *nu* is not an integer.
+
+Returns
+-------
+result : float)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::BesselJDerivative
+R"RAW(Derivative of the first kind Bessel function of order nu.
+
+.. math::
+
+    \frac{\partial \mathrm{J}_\nu}{\partial x}(x) = \frac{\mathrm{J}_{\nu-1}(x) - \mathrm{J}_{\nu+1}(x)}{2}
+
+See also
+--------
+openturns.SpecFunc.BesselJ
+
+Parameters
+----------
+nu : float
+    Order, finite. Integer orders accept any finite *x* by reflection;
+    noninteger orders require *x* nonnegative.
+x : float
+    Argument, finite; must be nonnegative when *nu* is not an integer.
+
+Returns
+-------
+result : float)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::BesselK
 R"RAW(Modified second kind Bessel function of order :math:`\nu`.
 
