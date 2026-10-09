@@ -148,12 +148,18 @@ if ot.PlatformInfo.HasFeature("boost"):
     mesh1 = ot.Mesh(vertices1, simplices1)
     mesh2 = ot.IntervalMesher([2] * 2).build(ot.Interval([-1.0] * 2, [1.0] * 2))
     intersection = mesh1.intersect(mesh2)
-    # welded output: shared vertices merged, 4 vertices and 2 simplices
-    vertices3 = [[0, 1], [0, 0], [1, 0], [1, 0.5]]
-    simplices3 = [[0, 1, 2], [0, 2, 3]]
-    mesh3 = ot.Mesh(vertices3, simplices3)
-    assert intersection == mesh3, "wrong intersection"
+    # welded output: shared vertices merged, 4 vertices and 2 simplices.
+    # Vertex order depends on the weld union-find/nanoflann traversal, so
+    # compare the sorted vertex sets instead of exact equality.
     ott.assert_almost_equal(intersection.getVolume(), 0.75)
+    assert intersection.getVerticesNumber() == 4, "vertices not welded"
+    assert intersection.getSimplicesNumber() == 2, "wrong simplices number"
+    ott.assert_almost_equal(
+        sorted([list(v) for v in intersection.getVertices()]),
+        sorted([[0, 1], [0, 0], [1, 0], [1, 0.5]]),
+        1e-12,
+        1e-12,
+    )
     assert intersection.getVerticesNumber() == 4, "vertices not welded"
     assert intersection.getSimplicesNumber() == 2, "wrong simplices number"
     # disjoint boxes: empty intersection
