@@ -33,6 +33,7 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/Matrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include <map>
 #include <vector>
@@ -57,9 +58,11 @@ static Bool IsInsideIntersection(const Collection<ComparisonOperator> & operator
 
 /* QEF minimizer from Hermite planes: false unless the planes constrain all
  * directions (at least dimension planes, non-singular normal equations).
- * ATA is a SquareMatrix so solveLinearSystem throws on singular systems;
- * the least-squares Matrix variant must not be used here as it silently
- * returns a minimum-norm solution instead. */
+ * ATA is a SquareMatrix so solveLinearSystem throws on singular systems
+ * (symmetric LU). The least-squares Matrix variant must not be used here
+ * as it silently returns a minimum-norm solution instead; the SymmetricMatrix
+ * Cholesky variant was tried and diverged on ill-conditioned Hermite
+ * systems (lens volume 1.525 vs 1.218), so LU stays. */
 static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
                                 const Collection<Point> & crossings,
                                 const Collection<Point> & normals,
@@ -68,7 +71,7 @@ static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
 {
   if (planes.getSize() < dimension)
     return false;
-  SquareMatrix ATA(dimension, dimension);
+  SquareMatrix ATA(dimension);
   Point ATb(dimension);
   for (UnsignedInteger p = 0; p < planes.getSize(); ++ p)
   {
@@ -261,6 +264,78 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
   return build(collection, Field(boundingMesh, values), project);
 }
 
+/* Longest-edge bisection of marked background simplices (adaptive mesh
+ * refinement primitive, valid in any dimension). Marked tetrahedra split in
+ * two at their longest-edge midpoint; new vertices are evaluated on all
+ * level functions. Unmarked simplices are copied unchanged. */
+static void BisectMarkedSimplices(const Mesh & mesh,
+                                  const Sample & values,
+                                  const Indices & marked,
+                                  const Collection<Function> & functions,
+                                  Mesh & refinedMesh,
+                                  Sample & refinedValues)
+{
+  const UnsignedInteger dimension = mesh.getDimension();
+  const UnsignedInteger constraintNumber = functions.getSize();
+  const UnsignedInteger numSimplices = mesh.getSimplicesNumber();
+  const IndicesCollection simplices(mesh.getSimplices());
+  Indices isMarked(numSimplices, 0);
+  for (UnsignedInteger m = 0; m < marked.getSize(); ++ m)
+    if (marked[m] < numSimplices)
+      isMarked[marked[m]] = 1;
+  Sample newVertices(mesh.getVertices());
+  Sample newValues(values);
+  Indices newSimplices(0);
+  for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+  {
+    Indices simplex(dimension + 1);
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+      simplex[j] = simplices(i, j);
+    if (!isMarked[i])
+    {
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        newSimplices.add(simplex[j]);
+      continue;
+    }
+    // longest edge by squared norm
+    UnsignedInteger edgeA = simplex[0];
+    UnsignedInteger edgeB = simplex[1];
+    Scalar longest = -1.0;
+    for (UnsignedInteger j1 = 0; j1 <= dimension; ++ j1)
+      for (UnsignedInteger j2 = j1 + 1; j2 <= dimension; ++ j2)
+      {
+        const Point difference(newVertices[simplex[j1]] - newVertices[simplex[j2]]);
+        const Scalar squared = difference.normSquare();
+        if (squared > longest)
+        {
+          longest = squared;
+          edgeA = simplex[j1];
+          edgeB = simplex[j2];
+        }
+      }
+    const Point midpoint((newVertices[edgeA] + newVertices[edgeB]) / 2.0);
+    Point midValues(constraintNumber);
+    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+      midValues[k] = functions[k](midpoint)[0];
+    const UnsignedInteger midIndex = newVertices.getSize();
+    newVertices.add(midpoint);
+    newValues.add(midValues);
+    Indices first(dimension + 1);
+    Indices second(dimension + 1);
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+    {
+      first[j] = (simplex[j] == edgeA) ? midIndex : simplex[j];
+      second[j] = (simplex[j] == edgeB) ? midIndex : simplex[j];
+    }
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+      newSimplices.add(first[j]);
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+      newSimplices.add(second[j]);
+  }
+  refinedMesh = Mesh(newVertices, IndicesCollection(newSimplices.getSize() / (dimension + 1), dimension + 1, newSimplices), false);
+  refinedValues = newValues;
+}
+
 Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
                            const Field & field,
                            const Bool project) const
@@ -271,6 +346,56 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (field.getMesh().getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the field is of mesh dimension=" << field.getMesh().getDimension() << ", expected input dimension=" << dimension;
   Collection<Function> functions(0);
+  for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+  {
+    if (collection[k].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected level sets of dimension=" << dimension << ", here dimension=" << collection[k].getDimension();
+    functions.add(collection[k].getFunction());
+  }
+  const Mesh backgroundMesh(field.getMesh());
+  Sample backgroundVertices(backgroundMesh.getVertices());
+  const UnsignedInteger numVertices = backgroundVertices.getSize();
+  Sample values(numVertices, constraintNumber);
+  if (field.getDimension() == constraintNumber)
+    values = field.getValues();
+  else
+  {
+    LOGWARN(OSS() << "The field output dimension=" << field.getDimension() << " is different from the collection size=" << constraintNumber << ". The functions defining the level sets will be evaluated over the vertices of the mesh to get the values.");
+    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+    {
+      const Sample valuesK(functions[k](backgroundVertices));
+      for (UnsignedInteger i = 0; i < numVertices; ++ i)
+        values(i, k) = valuesK(i, 0);
+    }
+  }
+  const UnsignedInteger maxLevels = ResourceMap::GetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels");
+  Mesh currentMesh(backgroundMesh);
+  Sample currentValues(values);
+  Mesh result;
+  for (UnsignedInteger level = 0; ; ++ level)
+  {
+    Indices marks(0);
+    result = buildCore(collection, currentMesh, currentValues, project, level < maxLevels, marks);
+    if ((level >= maxLevels) || !marks.getSize())
+      break;
+    BisectMarkedSimplices(currentMesh, currentValues, marks, functions, currentMesh, currentValues);
+  }
+  return result;
+}
+
+
+Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
+                               const Mesh & boundingMesh,
+                               const Sample & values,
+                               const Bool project,
+                               const Bool collectMarks,
+                               Indices & markedSimplices) const
+{
+  const UnsignedInteger constraintNumber = collection.getSize();
+  if (!constraintNumber) throw InvalidArgumentException(HERE) << "Error: expected a non-empty collection of level sets";
+  const UnsignedInteger dimension = collection[0].getDimension();
+  if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
+  if (boundingMesh.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh dimension=" << boundingMesh.getDimension() << ", expected input dimension=" << dimension;
+  Collection<Function> functions(0);
   Collection<ComparisonOperator> operators(0);
   Point levels(constraintNumber);
   for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
@@ -280,27 +405,10 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
     operators.add(collection[k].getOperator());
     levels[k] = collection[k].getLevel();
   }
-  // Extract the mesh and vertices from the field
-  const Mesh boundingMesh(field.getMesh());
   Sample boundingVertices(boundingMesh.getVertices());
   const UnsignedInteger numVertices = boundingVertices.getSize();
   const IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
-  // Values of each level function at the background vertices: field columns
-  // when they match the collection, fresh evaluations otherwise
-  Sample values(numVertices, constraintNumber);
-  if (field.getDimension() == constraintNumber)
-    values = field.getValues();
-  else
-  {
-    LOGWARN(OSS() << "The field output dimension=" << field.getDimension() << " is different from the collection size=" << constraintNumber << ". The functions defining the level sets will be evaluated over the vertices of the mesh to get the values.");
-    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
-    {
-      const Sample valuesK(functions[k](boundingVertices));
-      for (UnsignedInteger i = 0; i < numVertices; ++ i)
-        values(i, k) = valuesK(i, 0);
-    }
-  }
   Indices goodSimplices(0);
   Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
@@ -320,6 +428,7 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
   Collection<Point> localValues(dimension + 1, Point(constraintNumber));
   Indices simplicesToCheck(0);
   UnsignedInteger goodSimplicesNumber = 0;
+  Indices keptBackground(0);
   const Bool solveEquation = ResourceMap::GetAsBool("LevelSetMesher-SolveEquation");
   const Bool useQEF = project && useQEF_;
   typedef std::pair<UnsignedInteger, UnsignedInteger> EdgeKey;
@@ -413,6 +522,7 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
     {
       goodSimplices.add(Collection<UnsignedInteger>(boundingSimplices.cbegin_at(i), boundingSimplices.cend_at(i)));
       ++goodSimplicesNumber;
+      keptBackground.add(i);
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
@@ -673,6 +783,49 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
   SquareMatrix matrix(dimension + 1);
   for (UnsignedInteger i = 0; i < simplicesToCheck.getSize(); ++i)
     result.fixOrientation(simplicesToCheck[i], matrix);
+  // Marking for adaptive refinement: dropped simplices sharing a facet with
+  // a kept one (boundary band). Cut simplices are deliberately not refined:
+  // they already cover maximally, and bisecting them promotes interior grid
+  // vertices to fake boundaries while outside children get dropped over the
+  // domain. Skipped when the driver runs the legacy single pass.
+  if (collectMarks)
+  {
+    Indices isKept(numSimplices, 0);
+    for (UnsignedInteger m = 0; m < keptBackground.getSize(); ++ m)
+      isKept[keptBackground[m]] = 1;
+    // vertex to kept-simplices incidence for candidate lookup
+    std::vector< std::vector<UnsignedInteger> > incidence(numVertices);
+    for (UnsignedInteger m = 0; m < keptBackground.getSize(); ++ m)
+    {
+      const UnsignedInteger simplexIndex = keptBackground[m];
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        incidence[boundingSimplices(simplexIndex, j)].push_back(simplexIndex);
+    }
+    for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+    {
+      if (isKept[i])
+        continue;
+      // dropped simplex: shares a facet (d common vertices) with a kept one?
+      Bool sharesFacet = false;
+      for (UnsignedInteger j = 0; (j <= dimension) && !sharesFacet; ++ j)
+      {
+        const UnsignedInteger vertex = boundingSimplices(i, j);
+        for (UnsignedInteger c = 0; (c < incidence[vertex].size()) && !sharesFacet; ++ c)
+        {
+          const UnsignedInteger other = incidence[vertex][c];
+          UnsignedInteger common = 0;
+          for (UnsignedInteger a = 0; a <= dimension; ++ a)
+            for (UnsignedInteger b = 0; b <= dimension; ++ b)
+              if (boundingSimplices(i, a) == boundingSimplices(other, b))
+                ++ common;
+          if (common >= dimension)
+            sharesFacet = true;
+        }
+      }
+      if (sharesFacet)
+        markedSimplices.add(i);
+    }
+  }
   return result;
 }
 

@@ -53,6 +53,8 @@ The meshing algorithm is based either on a :class:`~openturns.Field` or on the
 
     - ``LevelSetMesher-UseQEF`` (``Bool``, default: ``False``): enable the QEF sharp-edge recovery.
 
+    - ``LevelSetMesher-MaxRefinementLevels`` (``UnsignedInteger``, default: ``0``): maximum adaptive background refinement levels; each level bisects dropped neighbours of the kept domain at longest edges, recovering dropped-cell strips (0 keeps the legacy single pass). Cut simplices are not bisected: they already cover maximally. Volume is non-decreasing across levels on convex domains.
+
   * A collection of level sets can be meshed as well: the meshed domain is
     then the intersection of the level sets. Each level function is assumed
     smooth, so per-constraint crossings and gradients stay reliable across

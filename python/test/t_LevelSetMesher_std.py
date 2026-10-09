@@ -183,3 +183,19 @@ with ott.assert_raises(Exception):
     ot.LevelSetMesher([4] * 2).build([lens[0], badLevelSet], lensBB)
 
 ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
+
+# Adaptive background refinement: 3D box, dropped-cell strips recovered
+refBoxFunction = ot.PythonFunction(3, 1, lambda X: [max(abs(X[0]), abs(X[1]), abs(X[2])) - 0.5])
+refBoxLevelSet = ot.LevelSet(refBoxFunction, ot.LessOrEqual(), 0.0)
+refBoxBB = ot.Interval([-1.0] * 3, [1.0] * 3)
+refBoxMesher = ot.LevelSetMesher([6] * 3)
+refVolumes = []
+for levels in [0, 1, 2]:
+    ot.ResourceMap.SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", levels)
+    refMesh = refBoxMesher.build(refBoxLevelSet, refBoxBB)
+    refVolumes.append(refMesh.getVolume())
+ot.ResourceMap.SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 0)
+ott.assert_almost_equal(refVolumes[0], 0.925926, 1e-4, 1e-4)
+assert refVolumes[1] > refVolumes[0], "one refinement level must recover volume"
+ott.assert_almost_equal(refVolumes[1], 0.977623, 1e-4, 1e-4)
+ott.assert_almost_equal(refVolumes[2], refVolumes[1], 1e-12, 1e-12)

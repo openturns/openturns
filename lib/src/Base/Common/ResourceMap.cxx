@@ -766,6 +766,7 @@ void ResourceMap::loadDefaultConfiguration()
   // LevelSetMesher parameters //
   addAsBool("LevelSetMesher-SolveEquation", true);
   addAsBool("LevelSetMesher-UseQEF", false);
+  addAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 0);
 
   // PointToPointEvaluation parameters //
   addAsUnsignedInteger("PointToPointEvaluation-BlockSize", 256);

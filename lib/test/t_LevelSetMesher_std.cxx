@@ -124,6 +124,20 @@ int main(int, char *[])
     Mesh collectionMesh = mesher2D.build(singleton, Interval(Point(2, -10.0), Point(2, 10.0)), false);
     assert_almost_equal(singleMesh.getVolume(), collectionMesh.getVolume(), 1.0e-12, 1.0e-12, "wrong singleton volume");
     assert_almost_equal(singleMesh.getVertices(), collectionMesh.getVertices(), 1.0e-12, 1.0e-12, "wrong singleton vertices");
+    // Adaptive background refinement on a smooth disk: error must not grow
+    SymbolicFunction diskFunction(Description::BuildDefault(2, "x"), Description(1, "x0^2+x1^2"));
+    LevelSet diskLevelSet(diskFunction, LessOrEqual(), 1.0);
+    LevelSetMesher diskMesher(Indices(2, 16));
+    const Interval diskBox(Point(2, -1.5), Point(2, 1.5));
+    const Scalar diskExact = 4.0 * std::atan(1.0);
+    ResourceMap::SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 0);
+    const Scalar diskVolume0 = diskMesher.build(diskLevelSet, diskBox).getVolume();
+    ResourceMap::SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 1);
+    const Scalar diskVolume1 = diskMesher.build(diskLevelSet, diskBox).getVolume();
+    ResourceMap::SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 0);
+    assert_almost_equal(diskVolume1, diskExact, 1.0e-2, 1.0e-2, "wrong refined disk volume");
+    if (!(std::abs(diskVolume1 - diskExact) <= std::abs(diskVolume0 - diskExact)))
+      throw TestFailed("refinement must not degrade the disk volume");
     // Default value read in ResourceMap: on enables QEF at construction
     ResourceMap::SetAsBool("LevelSetMesher-UseQEF", true);
     LevelSetMesher defaultOnMesher(Indices(2, 16));
