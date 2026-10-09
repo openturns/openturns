@@ -64,12 +64,13 @@ static Bool IsInsideIntersection(const Collection<ComparisonOperator> & operator
  * Cholesky variant was tried and diverged on ill-conditioned Hermite
  * systems (lens volume 1.525 vs 1.218), so LU stays. */
 static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
+                                const UnsignedInteger minimumPlanes,
                                 const Collection<Point> & crossings,
                                 const Collection<Point> & normals,
                                 const Indices & planes,
                                 Point & minimizer)
 {
-  if (planes.getSize() < dimension)
+  if (planes.getSize() < minimumPlanes)
     return false;
   SquareMatrix ATA(dimension);
   Point ATb(dimension);
@@ -85,15 +86,30 @@ static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
         ATA(r, c) += normal[r] * normal[c];
     }
   }
+  Point solution(dimension);
   try
   {
-    minimizer = ATA.solveLinearSystem(ATb);
+    solution = ATA.solveLinearSystem(ATb);
   }
   catch (const Exception &)
   {
     // singular system (locally smooth boundary): no QEF placement
     return false;
   }
+  // plane-agreement gate: consistent Hermite planes (true feature) meet at
+  // the solution up to FD noise; inconsistent kink-averaged planes do not.
+  // Tolerance ~1e-6 relative: well above FD noise (~1e-9), far below kink
+  // inconsistency (~local mesh size).
+  Scalar residual = 0.0;
+  for (UnsignedInteger p = 0; p < planes.getSize(); ++ p)
+  {
+    const Point delta(solution - crossings[planes[p]]);
+    const Scalar distance = normals[planes[p]].dot(delta);
+    residual += distance * distance;
+  }
+  if (!(residual <= 1.0e-12 * (1.0 + solution.normSquare())))
+    return false;
+  minimizer = solution;
   return true;
 }
 
@@ -490,8 +506,12 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
               Point normal(dimension);
               for (UnsignedInteger d = 0; d < dimension; ++ d)
                 normal[d] = gradMatrix(d, 0);
-              if (!(normal.norm() > 0.0))
+              const Scalar normalNorm = normal.norm();
+              if (!(normalNorm > 0.0))
                 continue;
+              // unit normals: pure geometry (no gradient-magnitude skew) and
+              // a scale-free agreement residual below
+              normal /= normalNorm;
               edgePlaneIndices[k][key] = crossings.getSize();
               crossings.add(crossing);
               normals.add(normal);
@@ -566,8 +586,31 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
               }
             }
           Point qefTarget(dimension);
-          if (ComputeQEFMinimizer(dimension, crossings, normals, simplexPlanes, qefTarget))
+          if (ComputeQEFMinimizer(dimension, dimension, crossings, normals, simplexPlanes, qefTarget))
           {
+            // sub-cell gate: the feature must lie within one cell diameter
+            // of the inside mean; kink-averaged planes otherwise aim rays
+            // across the domain (measured up to 6x max edge)
+            Scalar squaredDistance = 0.0;
+            for (UnsignedInteger k = 0; k < dimension; ++ k)
+            {
+              const Scalar gap = qefTarget[k] - center[k];
+              squaredDistance += gap * gap;
+            }
+            Scalar squaredEdge = 0.0;
+            for (UnsignedInteger j1 = 0; j1 <= dimension; ++ j1)
+              for (UnsignedInteger j2 = j1 + 1; j2 <= dimension; ++ j2)
+              {
+                Scalar squaredLength = 0.0;
+                for (UnsignedInteger k = 0; k < dimension; ++ k)
+                {
+                  const Scalar edge = localVertices[j1][k] - localVertices[j2][k];
+                  squaredLength += edge * edge;
+                }
+                squaredEdge = std::max(squaredEdge, squaredLength);
+              }
+            if (squaredDistance <= squaredEdge)
+            {
             // use the feature point if inside the intersection or numerically
             // on its boundary (QEF targets carry finite-difference noise)
             try
@@ -593,6 +636,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
             catch (const Exception &)
             {
               // keep the legacy center
+            }
             }
           }
         }
@@ -729,7 +773,10 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
       } // numGood <= dimension
     } // numGood > 0
   } // i < numSimplices
-  // Per-vertex QEF override over all constraints (max-gap fit)
+  // Per-vertex QEF override: strictly over-determined plane sets only
+  // (residual gate meaningful), inside the background patch (no
+  // teleporting), and no worse level fit than legacy. Restores junction
+  // detail (lens) that ray targets alone miss.
   if (useQEF && (flagMovedVertices.getSize() > 0))
   {
     std::map<UnsignedInteger, Indices> vertexPlanes;
@@ -739,13 +786,25 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
         vertexPlanes[it->first.first].add(it->second);
         vertexPlanes[it->first.second].add(it->second);
       }
+    std::vector< std::vector<UnsignedInteger> > vertexSimplices(numVertices);
+    for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        vertexSimplices[boundingSimplices(i, j)].push_back(i);
     for (UnsignedInteger m = 0; m < flagMovedVertices.getSize(); ++ m)
     {
       const std::map<UnsignedInteger, Indices>::const_iterator it = vertexPlanes.find(flagMovedVertices[m]);
       if (it == vertexPlanes.end())
         continue;
       Point candidate(dimension);
-      if (!ComputeQEFMinimizer(dimension, crossings, normals, it->second, candidate))
+      if (!ComputeQEFMinimizer(dimension, dimension + 1, crossings, normals, it->second, candidate))
+        continue;
+      Bool inPatch = false;
+      const std::vector<UnsignedInteger> & incident = vertexSimplices[flagMovedVertices[m]];
+      Point coordinates(0);
+      for (UnsignedInteger s = 0; (s < incident.size()) && !inPatch; ++ s)
+        if (boundingMesh.checkPointInSimplexWithCoordinates(candidate, incident[s], coordinates))
+          inPatch = true;
+      if (!inPatch)
         continue;
       try
       {
