@@ -179,7 +179,6 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
-validation.skipDependenceMeasures()  # Kendall quadrature inaccurate (≈ -0.94 vs MC ≈ 0)
 validation.run()
 
 # --- NormalGamma: setters rebuild, kurtosis is guarded ---
@@ -200,3 +199,5 @@ ott.assert_almost_equal(
 )
 with ott.assert_raises(Exception):
     ot.NormalGamma(0.0, 1.0, 1.5, 1.0).getKurtosis()
+# Kendall's tau is 0: X|tau is symmetric, so concordance has probability 1/2
+ott.assert_almost_equal(distribution.getKendallTau(), ot.CorrelationMatrix(2))
