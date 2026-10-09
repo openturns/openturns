@@ -472,8 +472,22 @@ String DistributionImplementation::_repr_html_() const
   oss << "  <li>weight=" << weight_ << "</li>\n";
   oss << "  <li>range=" << range_ << "</li>\n";
   oss << "  <li>description=" << description_ << "</li>\n";
+  try
+  {
+    const Point parameter(getParameter());
+    const Description parameterDescription(getParameterDescription());
+    oss << "  <li>parameter=" << parameter << "</li>\n";
+    oss << "  <li>parameterDescription=" << parameterDescription << "</li>\n";
+  }
+  catch (const NotYetImplementedException &)
+  {
+    // Some distributions do not implement getParameter()
+  }
   oss << "  <li>isParallel=" << isParallel_ << "</li>\n";
   oss << "  <li>isCopula=" << isCopula_ << "</li>\n";
+  oss << "  <li>isContinuous=" << isContinuous() << "</li>\n";
+  oss << "  <li>isDiscrete=" << isDiscrete() << "</li>\n";
+  oss << "  <li>isIntegral=" << isIntegral() << "</li>\n";
   oss << "</ul>\n";
   return oss;
 }
@@ -487,8 +501,22 @@ String DistributionImplementation::__repr_markdown__() const
   oss << "- weight=" << weight_ << "\n";
   oss << "- range=" << range_ << "\n";
   oss << "- description=" << description_ << "\n";
+  try
+  {
+    const Point parameter(getParameter());
+    const Description parameterDescription(getParameterDescription());
+    oss << "- parameter=" << parameter << "\n";
+    oss << "- parameterDescription=" << parameterDescription << "\n";
+  }
+  catch (const NotYetImplementedException &)
+  {
+    // Some distributions do not implement getParameter()
+  }
   oss << "- isParallel=" << isParallel_ << "\n";
   oss << "- isCopula=" << isCopula_ << "\n";
+  oss << "- isContinuous=" << isContinuous() << "\n";
+  oss << "- isDiscrete=" << isDiscrete() << "\n";
+  oss << "- isIntegral=" << isIntegral() << "\n";
   return oss;
 }
 
