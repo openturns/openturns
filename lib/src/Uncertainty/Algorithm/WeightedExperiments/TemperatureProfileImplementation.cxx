@@ -56,7 +56,7 @@ TemperatureProfileImplementation * TemperatureProfileImplementation::clone() con
 }
 
 /** Compute temperature T(i) */
-Scalar TemperatureProfileImplementation::operator()(UnsignedInteger ) const
+Scalar TemperatureProfileImplementation::operator()(const UnsignedInteger ) const
 {
   throw NotYetImplementedException(HERE);
 }

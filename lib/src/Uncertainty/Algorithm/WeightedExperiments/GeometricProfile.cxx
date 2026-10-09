@@ -48,7 +48,7 @@ GeometricProfile * GeometricProfile::clone() const
 }
 
 /** Compute temperature T(i) */
-Scalar GeometricProfile::operator()(UnsignedInteger i) const
+Scalar GeometricProfile::operator()(const UnsignedInteger i) const
 {
   return T0_ * std::exp(i * logc_);
 }
