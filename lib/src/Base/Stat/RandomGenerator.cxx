@@ -82,6 +82,7 @@ void RandomGenerator::SetState(const RandomGeneratorState & state)
 /* Seed accessor */
 RandomGeneratorState RandomGenerator::GetState()
 {
+  Initialize();
   const UnsignedInteger size = (UnsignedInteger)(Generator_.get_state_length_32());
   // Create the state and get the index at the same time
   RandomGeneratorState state(Indices(size, 0), (UnsignedInteger)(Generator_.get_index()));
