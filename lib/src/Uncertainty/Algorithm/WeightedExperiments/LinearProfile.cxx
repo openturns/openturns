@@ -47,7 +47,7 @@ LinearProfile * LinearProfile::clone() const
 }
 
 /** Compute temperature T(i) */
-Scalar LinearProfile::operator()(UnsignedInteger i) const
+Scalar LinearProfile::operator()(const UnsignedInteger i) const
 {
   if (i >= iMax_) return 0.0;
 

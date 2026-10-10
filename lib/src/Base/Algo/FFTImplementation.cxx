@@ -21,6 +21,7 @@
 #include "openturns/FFTImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -50,7 +51,7 @@ FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCo
 {
   const UnsignedInteger size = collection.getSize();
   ComplexCollection coll(size);
-  for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[i];
+  std::copy(collection.begin(), collection.end(), coll.begin());
   return transform(coll);
 }
 
@@ -60,7 +61,7 @@ FFTImplementation::ComplexCollection FFTImplementation::transform(const ScalarCo
     const UnsignedInteger size) const
 {
   ComplexCollection coll(size);
-  for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[first + i];
+  std::copy(collection.begin() + first, collection.begin() + first + size, coll.begin());
   return transform(coll);
 }
 
@@ -108,7 +109,7 @@ FFTImplementation::ComplexCollection FFTImplementation::inverseTransform(const S
     const UnsignedInteger size) const
 {
   ComplexCollection coll(size);
-  for (UnsignedInteger i = 0; i < size; ++i) coll[i] = collection[first + i];
+  std::copy(collection.begin() + first, collection.begin() + first + size, coll.begin());
   return inverseTransform(coll);
 }
 

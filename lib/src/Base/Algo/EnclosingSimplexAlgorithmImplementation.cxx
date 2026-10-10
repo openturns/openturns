@@ -23,6 +23,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include <algorithm>
 #include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -317,8 +318,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
     simplexMatrix(dimension, j) = 1.0;
   }
   Point v(dimension + 1, 1.0);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    v[i] = point[i];
+  std::copy(point.begin(), point.begin() + dimension, v.begin());
   const Point coordinates(simplexMatrix.solveLinearSystemInPlace(v));
   for (UnsignedInteger i = 0; i <= dimension; ++i)
     if (!(coordinates[i] >= -barycentricCoordinatesEpsilon_ && coordinates[i] <= 1.0 + barycentricCoordinatesEpsilon_))

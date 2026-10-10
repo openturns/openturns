@@ -72,6 +72,6 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
-validation.skipCorrelation()
-validation.skipMoments()
+validation.skipCorrelation()  # slow
+validation.skipMoments()  # slow
 validation.run()

@@ -19,6 +19,7 @@
  *
  */
 #include <numeric>
+#include <algorithm>
 
 #include "openturns/UniformOverMesh.hxx"
 #include "openturns/RegularGrid.hxx"
@@ -124,8 +125,7 @@ Point UniformOverMesh::getRealization() const
   for (UnsignedInteger i = 0; i <= dimension; ++i)
   {
     const UnsignedInteger vertexIndex = simplices_(index, i);
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      vertices(i, j) = vertices_(vertexIndex, j);
+    std::copy(vertices_.getImplementation()->data_begin() + vertexIndex * dimension, vertices_.getImplementation()->data_begin() + (vertexIndex + 1) * dimension, vertices.getImplementation()->data_begin() + i * dimension);
   } // i
   DistFunc::rUniformSimplex(&vertices(0, 0), dimension, dimension + 1, &result[0]);
   return result;
@@ -172,8 +172,7 @@ Sample UniformOverMesh::getSample(const UnsignedInteger size) const
     for (UnsignedInteger i = 0; i <= dimension; ++i)
     {
       const UnsignedInteger vertexIndex = simplices_(index, i);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        vertices(i, j) = vertices_(vertexIndex, j);
+      std::copy(vertices_.getImplementation()->data_begin() + vertexIndex * dimension, vertices_.getImplementation()->data_begin() + (vertexIndex + 1) * dimension, vertices.getImplementation()->data_begin() + i * dimension);
     } // i
     DistFunc::rUniformSimplex(&vertices(0, 0), dimension, dimension + 1, &result(n, 0));
   } // n

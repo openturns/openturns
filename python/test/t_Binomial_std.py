@@ -68,6 +68,15 @@ assert distribution.computeSurvivalFunction(10.0) == 0.0
 distribution = ot.Binomial(3, 0.5)
 assert distribution.computeScalarQuantile(0.9, True) == 0
 
+# degenerate cases, see #2605
+for p, q in [(0.0, 0.0), (1.0, 10.0)]:
+    distribution = ot.Binomial(10, p)
+    assert distribution.computeQuantile(0.05)[0] == q
+    assert distribution.computeQuantile(0.95)[0] == q
+    assert distribution.computeQuantile(0.05, True)[0] == q
+    assert distribution.computeQuantile(0.95, True)[0] == q
+    distribution.drawPDF()
+
 # %%
 print("Check on dataset")
 separator = ","
@@ -113,9 +122,9 @@ for i in range(sample_size):
     )
     ott.assert_almost_equal(computed_surv, computed_ccdf, rtol, atol)
     # Check quantile
-    if pr == 0.0 and x < n:
-        # The function is not invertible
-        # for this particular input.
+    if pr == 0.0 or pr == 1.0:
+        # Degenerate Dirac distribution, not invertible
+        # (covered by explicit degenerate checks above)
         continue
     elif expected_cdfp < expected_cdfq:
         computed_x = int(distribution.computeQuantile(computed_cdf)[0])

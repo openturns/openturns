@@ -48,6 +48,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   : ProcessImplementation()
   , spectralModel_(spectralModel)
 {
+  if (spectralModel.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: SpectralGaussianProcess is only defined for spectral models with input dimension 1, here input dimension=" << spectralModel.getInputDimension();
   setTimeGrid(timeGrid);
   setOutputDimension(spectralModel.getOutputDimension());
   setDescription(Description::BuildDefault(getOutputDimension(), "x"));
@@ -63,6 +64,7 @@ SpectralGaussianProcess::SpectralGaussianProcess(const SpectralModel & spectralM
   , maximalFrequency_(maximalFrequency)
   , nFrequency_(nFrequency)
 {
+  if (spectralModel.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: SpectralGaussianProcess is only defined for spectral models with input dimension 1, here input dimension=" << spectralModel.getInputDimension();
   if (!(maximalFrequency > 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximal frequency must be positive, here maximalFrequency=" << maximalFrequency;
   if (nFrequency < 1) throw InvalidArgumentException(HERE) << "Error: the number of frequency points in the positive domain must be at least 1.";
   frequencyStep_ = maximalFrequency_ / nFrequency_;
@@ -388,6 +390,7 @@ void SpectralGaussianProcess::load(Advocate & adv)
 {
   ProcessImplementation::load(adv);
   adv.loadAttribute("spectralModel_", spectralModel_);
+  if (spectralModel_.getInputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: SpectralGaussianProcess is only defined for spectral models with input dimension 1, here input dimension=" << spectralModel_.getInputDimension();
   adv.loadAttribute("maximalFrequency_", maximalFrequency_);
   adv.loadAttribute("nFrequency_", nFrequency_);
   adv.loadAttribute("choleskyFactorsCache_", choleskyFactorsCache_);

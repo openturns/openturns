@@ -68,8 +68,8 @@ public:
   void load(Advocate & adv) override;
 
   /** Compute criterion when performing an elementary perturbation */
-  virtual Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-                            UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+  virtual Scalar perturbLHS(const Sample & oldDesign, const Scalar oldCriterion,
+                            const UnsignedInteger row1, const UnsignedInteger row2, const UnsignedInteger column) const;
 
 protected:
   /** Normalize argument before computing criterion */

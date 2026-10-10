@@ -21,6 +21,7 @@
 #include "openturns/FilonQuadrature.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -138,10 +139,8 @@ Point FilonQuadrature::integrate(const Function & function,
   } // sin(t*x) or exp(I*t*x)
   // Here we know that we integrate wrt exp(I*t*x)
   Point value(2 * outputDimension);
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-    value[i] = valueCos[i];
-  for (UnsignedInteger i = 0; i < outputDimension; ++i)
-    value[outputDimension + i] = valueSin[i];
+  std::copy(valueCos.begin(), valueCos.end(), value.begin());
+  std::copy(valueSin.begin(), valueSin.end(), value.begin() + outputDimension);
   return value;
 }
 

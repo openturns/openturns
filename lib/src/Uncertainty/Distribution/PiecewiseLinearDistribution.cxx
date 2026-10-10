@@ -581,8 +581,7 @@ Point PiecewiseLinearDistribution::getSingularities() const
   const UnsignedInteger n = x_.getSize();
   if (n <= 2) return Point(0);
   Point singularities(n - 2);
-  for (UnsignedInteger i = 1; i < n - 1; ++i)
-    singularities[i - 1] = x_[i];
+  std::copy(x_.begin() + 1, x_.end() - 1, singularities.begin());
   return singularities;
 }
 

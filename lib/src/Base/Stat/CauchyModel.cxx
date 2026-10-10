@@ -45,7 +45,7 @@ CauchyModel::CauchyModel(const Point & scale,
                          const Point & amplitude)
   : SpectralModelImplementation(scale, amplitude)
 {
-  // Nothing to do
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: CauchyModel is only defined for input dimension 1, here scale dimension=" << scale.getDimension();
 }
 
 CauchyModel::CauchyModel(const Point & scale,
@@ -53,14 +53,14 @@ CauchyModel::CauchyModel(const Point & scale,
                          const CorrelationMatrix & spatialCorrelation)
   : SpectralModelImplementation(scale, amplitude, spatialCorrelation)
 {
-  // Nothing to do
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: CauchyModel is only defined for input dimension 1, here scale dimension=" << scale.getDimension();
 }
 
 CauchyModel::CauchyModel(const Point & scale,
                          const CovarianceMatrix & spatialCovariance)
   : SpectralModelImplementation(scale, spatialCovariance)
 {
-  // Nothing to do
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: CauchyModel is only defined for input dimension 1, here scale dimension=" << scale.getDimension();
 }
 
 /* Virtual constructor */
@@ -73,14 +73,18 @@ CauchyModel * CauchyModel::clone() const
 Complex CauchyModel::computeStandardRepresentative(const Scalar frequency) const
 
 {
-  Complex value = 1.0;
-  for (UnsignedInteger k = 0; k < inputDimension_; ++k)
-  {
-    const Scalar scaledFrequency = 2.0 * M_PI * scale_[k] * std::abs(frequency);
-    const Scalar scaledFrequencySquared = scaledFrequency * scaledFrequency;
-    value *= (2.0 * scale_[k]) / (1.0 + scaledFrequencySquared);
-  }
+  if (inputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: CauchyModel is only defined for input dimension 1, here input dimension=" << inputDimension_;
+  const Scalar scaledFrequency = 2.0 * M_PI * scale_[0] * std::abs(frequency);
+  const Scalar scaledFrequencySquared = scaledFrequency * scaledFrequency;
+  const Complex value = (2.0 * scale_[0]) / (1.0 + scaledFrequencySquared);
   return value;
+}
+
+/* Scale accessor */
+void CauchyModel::setScale(const Point & scale)
+{
+  if (scale.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: CauchyModel is only defined for input dimension 1, here scale dimension=" << scale.getDimension();
+  SpectralModelImplementation::setScale(scale);
 }
 
 /* String converter */
@@ -119,6 +123,7 @@ void CauchyModel::save(Advocate & adv) const
 void CauchyModel::load(Advocate & adv)
 {
   SpectralModelImplementation::load(adv);
+  if (inputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: CauchyModel is only defined for input dimension 1, here input dimension=" << inputDimension_;
 }
 
 END_NAMESPACE_OPENTURNS

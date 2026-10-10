@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include <algorithm>
 #include "openturns/Collection.hxx"
 #include "openturns/CombinationsDistribution.hxx"
 #include "openturns/FiniteDiscreteDistribution.hxx"
@@ -130,8 +131,7 @@ Point CombinationsDistribution::getRealization() const
   // The realization must be sorted in ascending order
   std::sort(integralRealization.begin(), integralRealization.end());
   Point realization(k_);
-  for (UnsignedInteger i = 0; i < k_; ++i)
-    realization[i] = integralRealization[i];
+  std::copy(integralRealization.begin(), integralRealization.end(), realization.begin());
   return realization;
 }
 
@@ -326,8 +326,7 @@ Sample CombinationsDistribution::getSupport(const Interval & interval) const
   {
     const Indices tuple(generator.generateNext());
     Point point(dimension_);
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-      point[j] = tuple[j];
+    std::copy(tuple.begin(), tuple.end(), point.begin());
     if (inter.contains(point))
       result.add(point);
   }

@@ -179,5 +179,7 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
-validation.skipParameters()
 validation.run()
+
+# Kendall's tau is 0: X|tau is symmetric, so concordance has probability 1/2
+ott.assert_almost_equal(distribution.getKendallTau(), ot.CorrelationMatrix(2))

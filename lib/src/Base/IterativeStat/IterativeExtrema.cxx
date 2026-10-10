@@ -23,6 +23,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Point.hxx"
+#include <algorithm>
 #include "openturns/IterativeExtrema.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -99,11 +100,8 @@ void IterativeExtrema::increment(const Point & newData)
   }
   else
   {
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      maxData_[i] = newData[i];
-      minData_[i] = newData[i];
-    } // loop over the dimensions
+    std::copy(newData.begin(), newData.end(), maxData_.begin());
+    std::copy(newData.begin(), newData.end(), minData_.begin());
   }
 }
 

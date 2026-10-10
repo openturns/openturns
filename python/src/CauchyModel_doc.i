@@ -13,8 +13,8 @@ Available constructors:
 Parameters
 ----------
 theta : sequence of float
-    Vector :math:`\theta`
-    Vector of size n
+    Scale :math:`\theta`
+    Vector of size 1
 sigma : sequence of float
     Amplitude vector :math:`\vect{\sigma}`
     Vector of size d
@@ -25,23 +25,25 @@ spatialCovariance : :class:`~openturns.CovarianceMatrix`
 
 Notes
 -----
-The spectral density function of input dimension **n** and output dimension **d** writes:
+The spectral density function of input dimension 1 and output dimension **d** writes:
 
 .. math::
 
-    \forall f \geq 0, \forall (i,j) \in [0,d-1]^2, S_{i,j}(f) =  2 \mat{C}^{spatial}_{i,j} \prod_{k=1}^{n} \frac{\theta_k}{1 + (2\pi \theta_k f)^2}
+    \forall f \geq 0, \forall (i,j) \in [0,d-1]^2, S_{i,j}(f) =  2 \mat{C}^{spatial}_{i,j} \frac{\theta}{1 + (2\pi \theta f)^2}
+
+It is the spectral density associated to the :class:`~openturns.AbsoluteExponential` covariance model in dimension 1.
 
 
 Examples
 --------
 >>> import openturns as ot
->>> spectralModel = ot.CauchyModel([3.0, 2.0], [2.0])
+>>> spectralModel = ot.CauchyModel([3.0], [2.0])
 >>> f = 0.3
 >>> print(spectralModel(f))
-[[ (0.191364,0) ]]
+[[ (0.727769,0) ]]
 >>> f = 10
 >>> print(spectralModel(f))
-[[ (1.71084e-07,0) ]])RAW"
+[[ (0.000675456,0) ]])RAW"
 
 // ---------------------------------------------------------------------
 
@@ -64,9 +66,8 @@ Using definitions in :class:`~openturns.SpectralModel`: the standard representat
 
 .. math::
 
-  \forall \vect{f} \in \Rset^n, \rho(\vect{f} \odot \vect{\theta}) =  \prod_{k=1}^{n} \frac{1}{1 + (2\pi \theta_k f)^2}
-
-where :math:`(\vect{f} \odot \vect{\theta})_k = \vect{f}_k \vect{\theta}_k`)RAW"
+  \forall f \in \Rset, \rho(f) = \frac{2\theta}{1 + (2\pi \theta f)^2}
+)RAW"
 %enddef
 %feature("docstring") OT::CauchyModel::computeStandardRepresentative
 OT_CauchyModel_computeStandardRepresentative_doc

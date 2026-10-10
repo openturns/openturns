@@ -154,9 +154,9 @@ for dim in range(1, 2):
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipCDF()
-    validation.skipGradient()
-    validation.skipMoments()
+    validation.skipCDF()  # 1D Dirichlet is degenerate (constant 1)
+    validation.skipGradient()  # 1D Dirichlet is degenerate (constant 1)
+    validation.skipMoments()  # 1D Dirichlet is degenerate (constant 1)
     validation.run()
 
 # check Dirichlet computeCDF has no global sample cache

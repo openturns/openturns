@@ -25,6 +25,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 
 #include <limits>
+#include <algorithm>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -154,8 +155,7 @@ TruncatedDistribution TruncatedDistributionFactory::buildAsTruncatedDistribution
       for (UnsignedInteger k = 0; k < nTruncationParam; ++k)
         knownIndices[k] = nNativeParameter + k;
       Point knownParameterValues(nTruncationParam);
-      for (UnsignedInteger k = 0; k < nTruncationParam; ++k)
-        knownParameterValues[k] = knownValues[nNativeParameter + k];
+      std::copy(knownValues.begin() + nNativeParameter, knownValues.begin() + nNativeParameter + nTruncationParam, knownParameterValues.begin());
       factory.setKnownParameter(knownIndices, knownParameterValues);
       candidate = factory.build(sample);
       nEstimated = nNativeParameter;

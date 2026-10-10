@@ -44,7 +44,7 @@ public:
   LinearProfile * clone() const override;
 
   /** Compute temperature T(i) */
-  Scalar operator()(UnsignedInteger i) const override;
+  Scalar operator()(const UnsignedInteger i) const override;
 
   /** String converter */
   String __repr__() const override;

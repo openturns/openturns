@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KPermutationsDistribution.hxx"
 #include "openturns/ResourceMap.hxx"
+#include <algorithm>
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -101,8 +102,7 @@ void KFoldSplitter::setRandomize(const Bool randomize)
     const KPermutationsDistribution permutationDistribution(N_, N_);
     const Point shuffleP(permutationDistribution.getRealization());
     shuffle_ = Indices(N_);
-    for (UnsignedInteger i = 0; i < N_; ++ i)
-      shuffle_[i] = shuffleP[i];
+    std::copy(shuffleP.begin(), shuffleP.end(), shuffle_.begin());
   }
   else
     shuffle_.clear();

@@ -139,6 +139,4 @@ validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.skipParameters()  # slow
-validation.skipConditional()  # FIXME
-validation.skipTransformation()  # FIXME
 validation.run()
