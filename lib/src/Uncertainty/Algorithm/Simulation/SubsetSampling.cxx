@@ -41,7 +41,18 @@ static const Factory<SubsetSampling> Factory_SubsetSampling;
 SubsetSampling::SubsetSampling()
   : EventSimulationImplementation()
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
+  , proposalAdaptationLowerBound_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationLowerBound"))
+  , proposalAdaptationUpperBound_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationUpperBound"))
+  , proposalAdaptationExpansionFactor_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationExpansionFactor"))
+  , proposalAdaptationShrinkFactor_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationShrinkFactor"))
+  , proposalAdaptationPeriod_(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultAdaptationPeriod"))
 {
+  // validate adaptation parameters loaded from ResourceMap
+  setProposalAdaptationLowerBound(proposalAdaptationLowerBound_);
+  setProposalAdaptationUpperBound(proposalAdaptationUpperBound_);
+  setProposalAdaptationExpansionFactor(proposalAdaptationExpansionFactor_);
+  setProposalAdaptationShrinkFactor(proposalAdaptationShrinkFactor_);
+  setProposalAdaptationPeriod(proposalAdaptationPeriod_);
 }
 
 
@@ -53,7 +64,18 @@ SubsetSampling::SubsetSampling(const RandomVector & event,
   , proposalRange_(proposalRange)
   , conditionalProbability_(conditionalProbability)
   , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
+  , proposalAdaptationLowerBound_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationLowerBound"))
+  , proposalAdaptationUpperBound_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationUpperBound"))
+  , proposalAdaptationExpansionFactor_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationExpansionFactor"))
+  , proposalAdaptationShrinkFactor_(ResourceMap::GetAsScalar("SubsetSampling-DefaultAdaptationShrinkFactor"))
+  , proposalAdaptationPeriod_(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultAdaptationPeriod"))
 {
+  // validate adaptation parameters loaded from ResourceMap
+  setProposalAdaptationLowerBound(proposalAdaptationLowerBound_);
+  setProposalAdaptationUpperBound(proposalAdaptationUpperBound_);
+  setProposalAdaptationExpansionFactor(proposalAdaptationExpansionFactor_);
+  setProposalAdaptationShrinkFactor(proposalAdaptationShrinkFactor_);
+  setProposalAdaptationPeriod(proposalAdaptationPeriod_);
   setMaximumOuterSampling(ResourceMap::GetAsUnsignedInteger("SubsetSampling-DefaultMaximumOuterSampling"));// override simulation default outersampling
   initialExperiment_ = MonteCarloExperiment();
   setEvent(event);
@@ -403,8 +425,13 @@ void SubsetSampling::generatePoints(Scalar threshold)
 {
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
-  const Distribution randomWalk(MultivariateUniform(Point(dimension_, -0.5 * proposalRange_), Point(dimension_, 0.5 * proposalRange_)));
   const UnsignedInteger Nc = seedNumber_;
+  const UnsignedInteger N = maximumOuterSampling * blockSize;
+  const Scalar halfRange = 0.5 * proposalRange_;
+  Scalar currentHalfRange = halfRange;
+
+  UnsignedInteger totalCandidates = 0;
+  UnsignedInteger periodAcceptedComponents = 0;
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
@@ -420,10 +447,13 @@ void SubsetSampling::generatePoints(Scalar threshold)
 
       // generate a new point
       Point oldPoint(currentPointSample_[i * blockSize + j]);
-      Point newPoint(oldPoint + randomWalk.getRealization());
+      Point newPoint(oldPoint);
+      for (UnsignedInteger k = 0; k < dimension_; ++ k)
+        newPoint[k] += (RandomGenerator::Generate() - 0.5) * 2.0 * currentHalfRange;
 
       // 1. accept / reject new components
       Point uniform(RandomGenerator::Generate(dimension_));
+      UnsignedInteger localAccepted = 0;
       for (UnsignedInteger k = 0; k < dimension_; ++ k)
       {
         // compute ratio
@@ -432,6 +462,23 @@ void SubsetSampling::generatePoints(Scalar threshold)
         // accept new point with probability ratio
         if (ratio < uniform[k])
           newPoint[k] = oldPoint[k];
+        else
+          ++ localAccepted;
+      }
+
+      periodAcceptedComponents += localAccepted;
+      ++ totalCandidates;
+
+      // adaptation step: acceptance rate over the latest adaptation period
+      if ((totalCandidates < N) && ((totalCandidates % proposalAdaptationPeriod_) == 0))
+      {
+        const Scalar rho = 1.0 * periodAcceptedComponents / (1.0 * proposalAdaptationPeriod_ * dimension_);
+        if (rho < proposalAdaptationLowerBound_)
+          currentHalfRange *= proposalAdaptationShrinkFactor_;
+        else if (rho > proposalAdaptationUpperBound_)
+          currentHalfRange *= proposalAdaptationExpansionFactor_;
+        LOGDEBUG(OSS() << "SubsetSampling adaptation: rho=" << rho << " halfRange=" << currentHalfRange);
+        periodAcceptedComponents = 0;
       }
 
       inputSample[j] = newPoint;
@@ -460,6 +507,8 @@ void SubsetSampling::generatePoints(Scalar threshold)
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InterruptionException(HERE) << "User stopped simulation";
   }
+  // NOTE: adapted range is local to each subset level, proposalRange_ is left unchanged
+  // so that successive levels and later run() calls start from the configured range
 }
 
 
@@ -475,6 +524,75 @@ Scalar SubsetSampling::getProposalRange() const
   return proposalRange_;
 }
 
+
+/* Adaptation lower bound accessor */
+void SubsetSampling::setProposalAdaptationLowerBound(const Scalar lowerBound)
+{
+  if (!(lowerBound >= 0.0) || !(lowerBound <= 1.0))
+    throw InvalidArgumentException(HERE) << "Adaptation lower bound should be in [0, 1]";
+  if (lowerBound > proposalAdaptationUpperBound_)
+    throw InvalidArgumentException(HERE) << "Adaptation lower bound (" << lowerBound << ") should be <= upper bound (" << proposalAdaptationUpperBound_ << ")";
+  proposalAdaptationLowerBound_ = lowerBound;
+}
+
+Scalar SubsetSampling::getProposalAdaptationLowerBound() const
+{
+  return proposalAdaptationLowerBound_;
+}
+
+/* Adaptation upper bound accessor */
+void SubsetSampling::setProposalAdaptationUpperBound(const Scalar upperBound)
+{
+  if (!(upperBound >= 0.0) || !(upperBound <= 1.0))
+    throw InvalidArgumentException(HERE) << "Adaptation upper bound should be in [0, 1]";
+  if (upperBound < proposalAdaptationLowerBound_)
+    throw InvalidArgumentException(HERE) << "Adaptation upper bound (" << upperBound << ") should be >= lower bound (" << proposalAdaptationLowerBound_ << ")";
+  proposalAdaptationUpperBound_ = upperBound;
+}
+
+Scalar SubsetSampling::getProposalAdaptationUpperBound() const
+{
+  return proposalAdaptationUpperBound_;
+}
+
+/* Adaptation expansion factor accessor */
+void SubsetSampling::setProposalAdaptationExpansionFactor(const Scalar expansionFactor)
+{
+  if (!(expansionFactor > 1.0))
+    throw InvalidArgumentException(HERE) << "Adaptation expansion factor should be > 1, here expansionFactor=" << expansionFactor;
+  proposalAdaptationExpansionFactor_ = expansionFactor;
+}
+
+Scalar SubsetSampling::getProposalAdaptationExpansionFactor() const
+{
+  return proposalAdaptationExpansionFactor_;
+}
+
+/* Adaptation shrink factor accessor */
+void SubsetSampling::setProposalAdaptationShrinkFactor(const Scalar shrinkFactor)
+{
+  if (!(shrinkFactor > 0.0) || !(shrinkFactor < 1.0))
+    throw InvalidArgumentException(HERE) << "Adaptation shrink factor should be in (0, 1), here shrinkFactor=" << shrinkFactor;
+  proposalAdaptationShrinkFactor_ = shrinkFactor;
+}
+
+Scalar SubsetSampling::getProposalAdaptationShrinkFactor() const
+{
+  return proposalAdaptationShrinkFactor_;
+}
+
+/* Adaptation period accessor */
+void SubsetSampling::setProposalAdaptationPeriod(const UnsignedInteger period)
+{
+  if (!period)
+    throw InvalidArgumentException(HERE) << "Adaptation period must be positive.";
+  proposalAdaptationPeriod_ = period;
+}
+
+UnsignedInteger SubsetSampling::getProposalAdaptationPeriod() const
+{
+  return proposalAdaptationPeriod_;
+}
 
 /* Ratio accessor */
 void SubsetSampling::setConditionalProbability(Scalar conditionalProbability)
@@ -597,7 +715,12 @@ String SubsetSampling::__repr__() const
       << " derived from " << EventSimulationImplementation::__repr__()
       << " proposalRange=" << proposalRange_
       << " conditionalProbability=" << conditionalProbability_
-      << " keepSample_=" << keepSample_;
+      << " keepSample_=" << keepSample_
+      << " adaptationLowerBound=" << proposalAdaptationLowerBound_
+      << " adaptationUpperBound=" << proposalAdaptationUpperBound_
+      << " adaptationExpansionFactor=" << proposalAdaptationExpansionFactor_
+      << " adaptationShrinkFactor=" << proposalAdaptationShrinkFactor_
+      << " adaptationPeriod=" << proposalAdaptationPeriod_;
   return oss;
 }
 
@@ -610,6 +733,12 @@ void SubsetSampling::save(Advocate & adv) const
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
   adv.saveAttribute("minimumProbability_", minimumProbability_);
   adv.saveAttribute("initialExperiment_", initialExperiment_);
+
+  adv.saveAttribute("proposalAdaptationLowerBound_", proposalAdaptationLowerBound_);
+  adv.saveAttribute("proposalAdaptationUpperBound_", proposalAdaptationUpperBound_);
+  adv.saveAttribute("proposalAdaptationExpansionFactor_", proposalAdaptationExpansionFactor_);
+  adv.saveAttribute("proposalAdaptationShrinkFactor_", proposalAdaptationShrinkFactor_);
+  adv.saveAttribute("proposalAdaptationPeriod_", proposalAdaptationPeriod_);
 
   adv.saveAttribute("numberOfSteps_", numberOfSteps_);
   adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
@@ -632,6 +761,21 @@ void SubsetSampling::load(Advocate & adv)
   adv.loadAttribute("minimumProbability_", minimumProbability_);
   if (adv.hasAttribute("initialExperiment_"))
     adv.loadAttribute("initialExperiment_", initialExperiment_);
+
+  if (adv.hasAttribute("proposalAdaptationLowerBound_"))
+  {
+    adv.loadAttribute("proposalAdaptationLowerBound_", proposalAdaptationLowerBound_);
+    adv.loadAttribute("proposalAdaptationUpperBound_", proposalAdaptationUpperBound_);
+    adv.loadAttribute("proposalAdaptationExpansionFactor_", proposalAdaptationExpansionFactor_);
+    adv.loadAttribute("proposalAdaptationShrinkFactor_", proposalAdaptationShrinkFactor_);
+    adv.loadAttribute("proposalAdaptationPeriod_", proposalAdaptationPeriod_);
+    // validate restored adaptation parameters (same invariants as setters)
+    setProposalAdaptationLowerBound(proposalAdaptationLowerBound_);
+    setProposalAdaptationUpperBound(proposalAdaptationUpperBound_);
+    setProposalAdaptationExpansionFactor(proposalAdaptationExpansionFactor_);
+    setProposalAdaptationShrinkFactor(proposalAdaptationShrinkFactor_);
+    setProposalAdaptationPeriod(proposalAdaptationPeriod_);
+  }
 
   adv.loadAttribute("numberOfSteps_", numberOfSteps_);
   adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);
