@@ -30,7 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSampling
-  : public EventSimulationImplementation
+  : public EventSimulation
 {
   CLASSNAME
 public:
@@ -72,16 +72,13 @@ public:
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
-  using EventSimulationImplementation::getInputSample;
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getInputSample() const override;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
   /** Experiment for first step */
   void setInitialExperiment(const WeightedExperiment & initialExperiment);
   WeightedExperiment getInitialExperiment() const;
-
-  /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const Scalar) override;
 
   /** Performs the actual computation. */
   void run() override;
@@ -98,6 +95,9 @@ public:
   /** Event accessor */
   void setEvent(const RandomVector & event) override;
 
+  /** Current result with full dynamic type */
+  GenericSimulationResult getHistoryResult() const override;
+  
 private:
   /** Compute the block sample */
   Sample computeBlockSample() override;

@@ -27,7 +27,11 @@ static OT::Bool EventSimulation_StopCallback(void * data) {
 %ignore OT::EventSimulation::setProgressCallback(ProgressCallback callBack, void * data);
 %ignore OT::EventSimulation::setStopCallback(StopCallback callBack, void * data);
 
-OTTypedInterfaceObjectHelper(EventSimulation)
+// EventSimulation is a concrete base class, not a TypedInterfaceObject
+// handle: the generic implementation-conversion typemap (which needs an
+// EventSimulation(const EventSimulationImplementation &) constructor)
+// does not apply. Derived-to-base conversions use the default SWIG
+// pointer conversion through the %included inheritance chain.
 
 %copyctor OT::EventSimulation;
 %include openturns/EventSimulation.hxx

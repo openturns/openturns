@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ProbabilitySimulationAlgorithm
  */
 
-class OT_API ProbabilitySimulationAlgorithm : public EventSimulationImplementation
+class OT_API ProbabilitySimulationAlgorithm : public EventSimulation
 {
 
   CLASSNAME
@@ -76,7 +76,7 @@ public:
 
   /** Event accessor */
   void setEvent(const RandomVector & event) override;
-
+  
 protected:
 
   /** Compute the block sample and the points that realized the event */

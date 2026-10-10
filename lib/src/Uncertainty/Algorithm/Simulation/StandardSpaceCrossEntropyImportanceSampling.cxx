@@ -78,6 +78,19 @@ void StandardSpaceCrossEntropyImportanceSampling::updateAuxiliaryDistribution(co
   auxiliaryDistribution_.setParameter(temporaryParameters);
 }
 
+/* Event input/output sample accessor in physical space*/
+Sample StandardSpaceCrossEntropyImportanceSampling::getInputSample(const UnsignedInteger step, const UnsignedInteger select) const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "StandardSpaceCrossEntropy keepSample was not set";
+  if (step >= getStepsNumber())
+    throw InvalidArgumentException(HERE) << "StandardSpaceCrossEntropy step index (" << step << ") should be < " << getStepsNumber();
+  if (select > 2)
+    throw InvalidArgumentException(HERE) << "StandardSpaceCrossEntropy select flag (" << select << ") must be in [0-2]";
+    
+  return (select == 2) ? getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(inputSample_[step]) : getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(inputSample_[step].select(getSampleIndices(step, (select == EVENT1))));
+}
+
 // Reset auxiliary distribution
 void StandardSpaceCrossEntropyImportanceSampling::resetAuxiliaryDistribution()
 {

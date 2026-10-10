@@ -13,6 +13,8 @@
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
 
 ==== New ResourceMap keys ====
+ * ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations: default enrichment budget (default is 100)
+ * ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize: size of the fixed candidate pool drawn once per run (default is 100000)
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
  * LinearCombinationDistribution-BetaAdaptationEpsilon: target for the estimated mass outside the confidence band (default is 1e-6)
  * LinearCombinationDistribution-MaximumBeta: upper bound on the confidence band parameter reached by the adaptation (default is 64.0)
@@ -40,6 +42,8 @@
  * P1InterpolatedProcess (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
+ * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction (openturns.experimental)
+ * GenericSimulationResult
 
 ==== API changes ====
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant

@@ -96,6 +96,7 @@ void CrossEntropyResult::save(Advocate & adv) const
   ProbabilitySimulationResult::save(adv);
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.saveAttribute("sample_", auxiliaryInputSample_);
+  adv.saveAttribute("auxiliaryOutputSample_", auxiliaryOutputSample_);
 }
 
 // Method load() reloads the object from the StorageManager
@@ -104,6 +105,9 @@ void CrossEntropyResult::load(Advocate & adv)
   ProbabilitySimulationResult::load(adv);
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.loadAttribute("sample_", auxiliaryInputSample_);
+  // Attribute added after 1.28: keep old studies loadable
+  if (adv.hasAttribute("auxiliaryOutputSample_"))
+    adv.loadAttribute("auxiliaryOutputSample_", auxiliaryOutputSample_);
 }
 
 

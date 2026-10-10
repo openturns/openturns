@@ -22,9 +22,14 @@
 #ifndef OPENTURNS_EVENTSIMULATION_HXX
 #define OPENTURNS_EVENTSIMULATION_HXX
 
-#include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/EventSimulationImplementation.hxx"
 #include "openturns/SimulationAlgorithm.hxx"
+#include "openturns/HistoryStrategy.hxx"
+#include "openturns/Compact.hxx"
+#include "openturns/Last.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/GenericSimulationResult.hxx"
+#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,85 +38,73 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API EventSimulation
-  : public TypedInterfaceObject<EventSimulationImplementation>
+  : public SimulationAlgorithm
 {
 
   CLASSNAME
 public:
 
-  typedef Pointer<EventSimulationImplementation> Implementation;
-  typedef SimulationAlgorithm::ProgressCallback ProgressCallback;
-  typedef SimulationAlgorithm::StopCallback StopCallback;
-
-  /** Default constructor */
-  EventSimulation();
-
   /** Constructor with parameters */
   explicit EventSimulation(const RandomVector & event,
                            const HistoryStrategy & convergenceStrategy = Compact());
 
-  /** Constructor from implementation */
-  EventSimulation(const EventSimulationImplementation & implementation);
-
-  /** Constructor from implementation pointer */
-  EventSimulation(const Implementation & p_implementation);
-
   /** Virtual constructor */
-  EventSimulation * clone() const;
+  EventSimulation * clone() const override;
 
   /** Event accessor */
   RandomVector getEvent() const;
   
   /** Event accessor */
-  void setEvent(const RandomVector & event);
+  virtual void setEvent(const RandomVector & event);
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
+
+  /** Current result with full dynamic type, for per-iteration histories.
+      The default implementation wraps the base result; simulators with an
+      extended result type override it. Future simulators inherit a working
+      base view and opt into full detail with a one-line override. */
+  virtual GenericSimulationResult getHistoryResult() const;
 
   /** String converter */
   String __repr__() const override;
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   /** Draw the probability convergence at the given level */
   Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
   /** Input accessor */
-  Sample getInputSample() const;
+  virtual Sample getInputSample() const;
   
   /** Setter keep sample */
-  void setKeepSample(const Bool);
+  virtual void setKeepSample(const Bool);
+    
+protected:
 
-  /** Maximum iterations number accessor */
-  void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
-  UnsignedInteger getMaximumOuterSampling() const;
+  /** Result accessor */
+  void setResult(const ProbabilitySimulationResult & result);
+  
+  /** Compute the block sample and the points that realized the event */
+  virtual Sample computeBlockSample();
 
-  /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const Scalar maximumCoefficientOfVariation);
-  Scalar getMaximumCoefficientOfVariation() const;
+  /** For save/load mechanism*/
+  EventSimulation(const HistoryStrategy & convergenceStrategy = Compact());
 
-  /** Maximum standard deviation accessor */
-  void setMaximumStandardDeviation(const Scalar maximumStandardDeviation);
-  Scalar getMaximumStandardDeviation() const;
+  friend class Factory<EventSimulation>;
 
-  /** Block size accessor */
-  void setBlockSize(const UnsignedInteger blockSize);
-  UnsignedInteger getBlockSize() const;
+  // The event we are computing the probability of
+  RandomVector event_;
 
-  /** Convergence strategy accessor */
-  void setConvergenceStrategy(const HistoryStrategy & convergenceStrategy);
-  HistoryStrategy getConvergenceStrategy() const;
-
-  /** Maximum time accessor */
-  void setMaximumTimeDuration(const Scalar maximumTimeDuration);
-  Scalar getMaximumTimeDuration() const;
-
-  /** Progress callback */
-  void setProgressCallback(ProgressCallback callBack, void * state = nullptr);
-
-  /** Stop callback */
-  void setStopCallback(StopCallback callBack, void * state = nullptr);
+  // Result of the simulation
+  ProbabilitySimulationResult result_;
 
 } ; /* class EventSimulation */
 
