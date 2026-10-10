@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import math as m
 
 ot.TESTPREAMBLE()
 
@@ -106,3 +107,95 @@ mesh2 = ot.LevelSetMesher([16] * 2).build(levelSet, ot.Field(mesh, values))
 
 # Check that the two meshes are identical
 ott.assert_almost_equal(mesh1.getVertices(), mesh2.getVertices(), 1e-4, 1e-4)
+
+# QEF sharp-edge recovery: 2D box, corner inside a cell (discretization 6)
+boxFunction2D = ot.PythonFunction(2, 1, lambda X: [max(abs(X[0]), abs(X[1])) - 0.5])
+boxLevelSet2D = ot.LevelSet(boxFunction2D, ot.LessOrEqual(), 0.0)
+boxBB2D = ot.Interval([-1.0] * 2, [1.0] * 2)
+boxMesher2D = ot.LevelSetMesher([6] * 2)
+assert not boxMesher2D.getUseQEF(), "QEF must be off by default"
+# equation projection required: QEF aims rays at features, Brent lands on them
+ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
+boxLegacy2D = boxMesher2D.build(boxLevelSet2D, boxBB2D)
+boxMesher2D.setUseQEF(True)
+assert boxMesher2D.getUseQEF(), "accessor round-trip failed"
+boxQEF2D = boxMesher2D.build(boxLevelSet2D, boxBB2D)
+boxMesher2D.setUseQEF(False)
+assert not boxMesher2D.getUseQEF(), "accessor round-trip failed"
+ott.assert_almost_equal(boxQEF2D.getVolume(), 1.0, 1e-9, 1e-9)
+assert boxQEF2D.getVolume() >= boxLegacy2D.getVolume(), "QEF must not lose volume here"
+cornerDistance = min((v - [0.5, 0.5]).norm() for v in boxQEF2D.getVertices())
+assert cornerDistance < 1e-6, "QEF must recover the box corner"
+
+# Collection of level sets = intersection: lens of two unit disks
+disk1 = ot.SymbolicFunction(["x", "y"], ["(x+0.5)^2+y^2"])
+disk2 = ot.SymbolicFunction(["x", "y"], ["(x-0.5)^2+y^2"])
+lens = [ot.LevelSet(disk1, ot.LessOrEqual(), 1.0), ot.LevelSet(disk2, ot.LessOrEqual(), 1.0)]
+lensBB = ot.Interval([-1.6] * 2, [1.6] * 2)
+lensMesher = ot.LevelSetMesher([16] * 2)
+lensLegacy = lensMesher.build(lens, lensBB)
+lensMesher.setUseQEF(True)
+lensQEF = lensMesher.build(lens, lensBB)
+lensMesher.setUseQEF(False)
+lensExact = 2.0 * m.pi / 3.0 - m.sqrt(3.0) / 2.0
+assert abs(lensQEF.getVolume() - lensExact) <= abs(lensLegacy.getVolume() - lensExact), "QEF must be at least as accurate"
+ott.assert_almost_equal(lensQEF.getVolume(), lensExact, 1e-2, 1e-2)
+tipDistance = min((v - [0.0, m.sqrt(3.0) / 2.0]).norm() for v in lensQEF.getVertices())
+assert tipDistance < 1e-4, "lens tip must be recovered"
+
+# Single level set vs 1-element collection parity
+singleMesh = ot.LevelSetMesher([16] * 2).build(
+    ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x^2+y^2"]), ot.LessOrEqual(), 1.0),
+    ot.Interval([-1.5] * 2, [1.5] * 2),
+)
+circleCollection = [ot.LevelSet(ot.SymbolicFunction(["x", "y"], ["x^2+y^2"]), ot.LessOrEqual(), 1.0)]
+collectionMesh = ot.LevelSetMesher([16] * 2).build(circleCollection, ot.Interval([-1.5] * 2, [1.5] * 2))
+assert collectionMesh == singleMesh, "1-element collection must match single build"
+
+# Collection built from a field with one column per level set
+supportMesh = ot.IntervalMesher([16] * 2).build(lensBB)
+supportVertices = supportMesh.getVertices()
+values1 = disk1(supportVertices).asPoint()
+values2 = disk2(supportMesh.getVertices()).asPoint()
+stacked = ot.Sample(supportVertices.getSize(), 2)
+for i in range(supportVertices.getSize()):
+    stacked[i, 0] = values1[i]
+    stacked[i, 1] = values2[i]
+lensMesher.setUseQEF(True)
+lensFieldMesh = lensMesher.build(lens, ot.Field(supportMesh, stacked))
+lensMesher.setUseQEF(False)
+ott.assert_almost_equal(lensFieldMesh.getVertices(), lensQEF.getVertices(), 1e-4, 1e-4)
+
+# default value read in ResourceMap: on enables QEF at construction
+ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", True)
+defaultOnMesher = ot.LevelSetMesher([6] * 2)
+assert defaultOnMesher.getUseQEF(), "default must follow the ResourceMap key"
+defaultOnMesh = defaultOnMesher.build(boxLevelSet2D, boxBB2D)
+ott.assert_almost_equal(defaultOnMesh.getVolume(), 1.0, 1e-9, 1e-9)
+ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", False)
+assert not ot.LevelSetMesher([6] * 2).getUseQEF(), "default must follow the ResourceMap key"
+
+# Empty collection and dimension mismatch raise
+with ott.assert_raises(Exception):
+    ot.LevelSetMesher([4] * 2).build([], lensBB)
+with ott.assert_raises(Exception):
+    badLevelSet = ot.LevelSet(ot.SymbolicFunction(["x", "y", "z"], ["x^2+y^2+z^2"]), ot.LessOrEqual(), 1.0)
+    ot.LevelSetMesher([4] * 2).build([lens[0], badLevelSet], lensBB)
+
+ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
+
+# Adaptive background refinement: 3D box, dropped-cell strips recovered
+refBoxFunction = ot.PythonFunction(3, 1, lambda X: [max(abs(X[0]), abs(X[1]), abs(X[2])) - 0.5])
+refBoxLevelSet = ot.LevelSet(refBoxFunction, ot.LessOrEqual(), 0.0)
+refBoxBB = ot.Interval([-1.0] * 3, [1.0] * 3)
+refBoxMesher = ot.LevelSetMesher([6] * 3)
+refVolumes = []
+for levels in [0, 1, 2]:
+    ot.ResourceMap.SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", levels)
+    refMesh = refBoxMesher.build(refBoxLevelSet, refBoxBB)
+    refVolumes.append(refMesh.getVolume())
+ot.ResourceMap.SetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 0)
+ott.assert_almost_equal(refVolumes[0], 0.925926, 1e-4, 1e-4)
+assert refVolumes[1] > refVolumes[0], "one refinement level must recover volume"
+ott.assert_almost_equal(refVolumes[1], 0.977623, 1e-4, 1e-4)
+ott.assert_almost_equal(refVolumes[2], refVolumes[1], 1e-12, 1e-12)

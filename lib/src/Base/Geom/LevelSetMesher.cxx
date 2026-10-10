@@ -32,11 +32,86 @@
 #include "openturns/NLopt.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/Matrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+#include "openturns/SpecFunc.hxx"
+#include <map>
+#include <vector>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LevelSetMesher)
 static const Factory<LevelSetMesher> Factory_LevelSetMesher;
+
+/* Inside test for the intersection of a collection of level sets */
+static Bool IsInsideIntersection(const Collection<ComparisonOperator> & operators,
+                                 const Point & levels,
+                                 const Sample & values,
+                                 const UnsignedInteger vertexIndex)
+{
+  const UnsignedInteger size = operators.getSize();
+  for (UnsignedInteger k = 0; k < size; ++ k)
+    if (!operators[k](values(vertexIndex, k), levels[k]))
+      return false;
+  return true;
+}
+
+/* QEF minimizer from Hermite planes: false unless the planes constrain all
+ * directions (at least dimension planes, non-singular normal equations).
+ * ATA is a SquareMatrix so solveLinearSystem throws on singular systems
+ * (symmetric LU). The least-squares Matrix variant must not be used here
+ * as it silently returns a minimum-norm solution instead; the SymmetricMatrix
+ * Cholesky variant was tried and diverged on ill-conditioned Hermite
+ * systems (lens volume 1.525 vs 1.218), so LU stays. */
+static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
+                                const UnsignedInteger minimumPlanes,
+                                const Collection<Point> & crossings,
+                                const Collection<Point> & normals,
+                                const Indices & planes,
+                                Point & minimizer)
+{
+  if (planes.getSize() < minimumPlanes)
+    return false;
+  SquareMatrix ATA(dimension);
+  Point ATb(dimension);
+  for (UnsignedInteger p = 0; p < planes.getSize(); ++ p)
+  {
+    const Point crossing(crossings[planes[p]]);
+    const Point normal(normals[planes[p]]);
+    const Scalar rhs = normal.dot(crossing);
+    for (UnsignedInteger r = 0; r < dimension; ++ r)
+    {
+      ATb[r] += rhs * normal[r];
+      for (UnsignedInteger c = 0; c < dimension; ++ c)
+        ATA(r, c) += normal[r] * normal[c];
+    }
+  }
+  Point solution(dimension);
+  try
+  {
+    solution = ATA.solveLinearSystem(ATb);
+  }
+  catch (const Exception &)
+  {
+    // singular system (locally smooth boundary): no QEF placement
+    return false;
+  }
+  // plane-agreement gate: consistent Hermite planes (true feature) meet at
+  // the solution up to FD noise; inconsistent kink-averaged planes do not.
+  // Tolerance ~1e-6 relative: well above FD noise (~1e-9), far below kink
+  // inconsistency (~local mesh size).
+  Scalar residual = 0.0;
+  for (UnsignedInteger p = 0; p < planes.getSize(); ++ p)
+  {
+    const Point delta(solution - crossings[planes[p]]);
+    const Scalar distance = normals[planes[p]].dot(delta);
+    residual += distance * distance;
+  }
+  if (!(residual <= 1.0e-12 * (1.0 + solution.normSquare())))
+    return false;
+  minimizer = solution;
+  return true;
+}
 
 
 /* Default constructor */
@@ -44,6 +119,7 @@ LevelSetMesher::LevelSetMesher()
   : PersistentObject()
   , discretization_(0)
   , solver_(AbdoRackwitz())
+  , useQEF_(ResourceMap::GetAsBool("LevelSetMesher-UseQEF"))
 {
   // Nothing to do
 }
@@ -54,6 +130,7 @@ LevelSetMesher::LevelSetMesher(const Indices & discretization,
   : PersistentObject()
   , discretization_(discretization)
   , solver_(solver)
+  , useQEF_(ResourceMap::GetAsBool("LevelSetMesher-UseQEF"))
 {
   // Check if the discretization is valid
   for (UnsignedInteger i = 0; i < discretization.getSize(); ++i)
@@ -90,6 +167,17 @@ void LevelSetMesher::setOptimizationAlgorithm(const OptimizationAlgorithm & solv
 OptimizationAlgorithm LevelSetMesher::getOptimizationAlgorithm() const
 {
   return solver_;
+}
+
+/* QEF sharp-edge recovery accessor */
+void LevelSetMesher::setUseQEF(const Bool useQEF)
+{
+  useQEF_ = useQEF;
+}
+
+Bool LevelSetMesher::getUseQEF() const
+{
+  return useQEF_;
 }
 
 
@@ -134,22 +222,209 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
                            const Field & field,
                            const Bool project) const
 {
-  const UnsignedInteger dimension = levelSet.getDimension();
+  // Single level set: delegate to the collection (intersection) core,
+  // which coincides with the scalar algorithm for one constraint
+  Collection<LevelSet> collection(0);
+  collection.add(levelSet);
+  return build(collection, field, project);
+}
+
+/* Intersection of a collection of level sets: bounds overloads first */
+
+Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
+                           const Bool project) const
+{
+  const UnsignedInteger size = collection.getSize();
+  if (!size) throw InvalidArgumentException(HERE) << "Error: expected a non-empty collection of level sets";
+  const UnsignedInteger dimension = collection[0].getDimension();
+  if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
+  Point lower(collection[0].getLowerBound());
+  Point upper(collection[0].getUpperBound());
+  for (UnsignedInteger i = 1; i < size; ++ i)
+  {
+    if (collection[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected level sets of dimension=" << dimension << ", here dimension=" << collection[i].getDimension();
+    const Point lowI(collection[i].getLowerBound());
+    const Point uppI(collection[i].getUpperBound());
+    for (UnsignedInteger k = 0; k < dimension; ++ k)
+    {
+      lower[k] = std::max(lower[k], lowI[k]);
+      upper[k] = std::min(upper[k], uppI[k]);
+    }
+  }
+  for (UnsignedInteger k = 0; k < dimension; ++ k)
+    if (!(lower[k] <= upper[k]))
+      return Mesh(Sample(0, dimension));
+  return build(collection, Interval(lower, upper), project);
+}
+
+Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
+                           const Interval & boundingBox,
+                           const Bool project) const
+{
+  const UnsignedInteger size = collection.getSize();
+  if (!size) throw InvalidArgumentException(HERE) << "Error: expected a non-empty collection of level sets";
+  const UnsignedInteger dimension = collection[0].getDimension();
+  if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
+  if (boundingBox.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the bounding box is of dimension=" << boundingBox.getDimension() << ", expected dimension=" << dimension;
+  const Mesh boundingMesh(IntervalMesher(discretization_).build(boundingBox));
+  const Sample boundingVertices(boundingMesh.getVertices());
+  const UnsignedInteger numVertices = boundingVertices.getSize();
+  Sample values(numVertices, size);
+  for (UnsignedInteger k = 0; k < size; ++ k)
+  {
+    if (collection[k].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected level sets of dimension=" << dimension << ", here dimension=" << collection[k].getDimension();
+    const Sample valuesK(collection[k].getFunction()(boundingVertices));
+    for (UnsignedInteger i = 0; i < numVertices; ++ i)
+      values(i, k) = valuesK(i, 0);
+  }
+  return build(collection, Field(boundingMesh, values), project);
+}
+
+/* Longest-edge bisection of marked background simplices (adaptive mesh
+ * refinement primitive, valid in any dimension). Marked tetrahedra split in
+ * two at their longest-edge midpoint; new vertices are evaluated on all
+ * level functions. Unmarked simplices are copied unchanged. */
+static void BisectMarkedSimplices(const Mesh & mesh,
+                                  const Sample & values,
+                                  const Indices & marked,
+                                  const Collection<Function> & functions,
+                                  Mesh & refinedMesh,
+                                  Sample & refinedValues)
+{
+  const UnsignedInteger dimension = mesh.getDimension();
+  const UnsignedInteger constraintNumber = functions.getSize();
+  const UnsignedInteger numSimplices = mesh.getSimplicesNumber();
+  const IndicesCollection simplices(mesh.getSimplices());
+  Indices isMarked(numSimplices, 0);
+  for (UnsignedInteger m = 0; m < marked.getSize(); ++ m)
+    if (marked[m] < numSimplices)
+      isMarked[marked[m]] = 1;
+  Sample newVertices(mesh.getVertices());
+  Sample newValues(values);
+  Indices newSimplices(0);
+  for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+  {
+    Indices simplex(dimension + 1);
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+      simplex[j] = simplices(i, j);
+    if (!isMarked[i])
+    {
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        newSimplices.add(simplex[j]);
+      continue;
+    }
+    // longest edge by squared norm
+    UnsignedInteger edgeA = simplex[0];
+    UnsignedInteger edgeB = simplex[1];
+    Scalar longest = -1.0;
+    for (UnsignedInteger j1 = 0; j1 <= dimension; ++ j1)
+      for (UnsignedInteger j2 = j1 + 1; j2 <= dimension; ++ j2)
+      {
+        const Point difference(newVertices[simplex[j1]] - newVertices[simplex[j2]]);
+        const Scalar squared = difference.normSquare();
+        if (squared > longest)
+        {
+          longest = squared;
+          edgeA = simplex[j1];
+          edgeB = simplex[j2];
+        }
+      }
+    const Point midpoint((newVertices[edgeA] + newVertices[edgeB]) / 2.0);
+    Point midValues(constraintNumber);
+    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+      midValues[k] = functions[k](midpoint)[0];
+    const UnsignedInteger midIndex = newVertices.getSize();
+    newVertices.add(midpoint);
+    newValues.add(midValues);
+    Indices first(dimension + 1);
+    Indices second(dimension + 1);
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+    {
+      first[j] = (simplex[j] == edgeA) ? midIndex : simplex[j];
+      second[j] = (simplex[j] == edgeB) ? midIndex : simplex[j];
+    }
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+      newSimplices.add(first[j]);
+    for (UnsignedInteger j = 0; j <= dimension; ++ j)
+      newSimplices.add(second[j]);
+  }
+  refinedMesh = Mesh(newVertices, IndicesCollection(newSimplices.getSize() / (dimension + 1), dimension + 1, newSimplices), false);
+  refinedValues = newValues;
+}
+
+Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
+                           const Field & field,
+                           const Bool project) const
+{
+  const UnsignedInteger constraintNumber = collection.getSize();
+  if (!constraintNumber) throw InvalidArgumentException(HERE) << "Error: expected a non-empty collection of level sets";
+  const UnsignedInteger dimension = collection[0].getDimension();
   if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
   if (field.getMesh().getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the field is of mesh dimension=" << field.getMesh().getDimension() << ", expected input dimension=" << dimension;
-  if (field.getDimension() != 1) LOGWARN(OSS() << "The field output dimension=" << field.getDimension() << " is different from 1. The function defining the level set will be evaluated over the vertices of the mesh to get the values.");
-  // Extract the mesh and vertices from the field
-  const Mesh boundingMesh(field.getMesh());
+  Collection<Function> functions(0);
+  for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+  {
+    if (collection[k].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected level sets of dimension=" << dimension << ", here dimension=" << collection[k].getDimension();
+    functions.add(collection[k].getFunction());
+  }
+  const Mesh backgroundMesh(field.getMesh());
+  Sample backgroundVertices(backgroundMesh.getVertices());
+  const UnsignedInteger numVertices = backgroundVertices.getSize();
+  Sample values(numVertices, constraintNumber);
+  if (field.getDimension() == constraintNumber)
+    values = field.getValues();
+  else
+  {
+    LOGWARN(OSS() << "The field output dimension=" << field.getDimension() << " is different from the collection size=" << constraintNumber << ". The functions defining the level sets will be evaluated over the vertices of the mesh to get the values.");
+    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+    {
+      const Sample valuesK(functions[k](backgroundVertices));
+      for (UnsignedInteger i = 0; i < numVertices; ++ i)
+        values(i, k) = valuesK(i, 0);
+    }
+  }
+  const UnsignedInteger maxLevels = ResourceMap::GetAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels");
+  Mesh currentMesh(backgroundMesh);
+  Sample currentValues(values);
+  Mesh result;
+  for (UnsignedInteger level = 0; ; ++ level)
+  {
+    Indices marks(0);
+    result = buildCore(collection, currentMesh, currentValues, project, level < maxLevels, marks);
+    if ((level >= maxLevels) || !marks.getSize())
+      break;
+    BisectMarkedSimplices(currentMesh, currentValues, marks, functions, currentMesh, currentValues);
+  }
+  return result;
+}
+
+
+Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
+                               const Mesh & boundingMesh,
+                               const Sample & values,
+                               const Bool project,
+                               const Bool collectMarks,
+                               Indices & markedSimplices) const
+{
+  const UnsignedInteger constraintNumber = collection.getSize();
+  if (!constraintNumber) throw InvalidArgumentException(HERE) << "Error: expected a non-empty collection of level sets";
+  const UnsignedInteger dimension = collection[0].getDimension();
+  if (discretization_.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh factory is for levelSets of dimension=" << discretization_.getSize() << ", here dimension=" << dimension;
+  if (boundingMesh.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the mesh dimension=" << boundingMesh.getDimension() << ", expected input dimension=" << dimension;
+  Collection<Function> functions(0);
+  Collection<ComparisonOperator> operators(0);
+  Point levels(constraintNumber);
+  for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+  {
+    if (collection[k].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected level sets of dimension=" << dimension << ", here dimension=" << collection[k].getDimension();
+    functions.add(collection[k].getFunction());
+    operators.add(collection[k].getOperator());
+    levels[k] = collection[k].getLevel();
+  }
   Sample boundingVertices(boundingMesh.getVertices());
   const UnsignedInteger numVertices = boundingVertices.getSize();
   const IndicesCollection boundingSimplices(boundingMesh.getSimplices());
   const UnsignedInteger numSimplices = boundingSimplices.getSize();
-  // Second, keep only the simplices with a majority of vertices in the level set
-  const Function function(levelSet.getFunction());
-  // Use field values directly if 1D output (precomputed), otherwise evaluate the level-set function
-  const Point values(field.getDimension() == 1 ? field.getValues().asPoint() : function(boundingVertices).asPoint());
-  const Scalar level = levelSet.getLevel();
-  const ComparisonOperator comparison(levelSet.getOperator());
   Indices goodSimplices(0);
   Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
@@ -158,24 +433,105 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   Sample movedVertices(0, dimension);
   // Flag for the vertices that have moved
   Indices flagMovedVertices(0);
+  // QEF target flag and moved-vertex positions (QEF re-move rule)
+  Indices flagQEFTarget(numVertices, 0);
+  Indices movedPosition(numVertices, numVertices);
   // Prepare the optimization problem for the projection
   TranslationFunction shiftFunction((Point(dimension)));
   NearestPointProblem problem;
-  problem.setLevelValue(level);
   // Create once some objects that will be reused a lot
   Sample localVertices(dimension + 1, dimension);
-  Point localValues(dimension + 1);
+  Collection<Point> localValues(dimension + 1, Point(constraintNumber));
   Indices simplicesToCheck(0);
   UnsignedInteger goodSimplicesNumber = 0;
+  Indices keptBackground(0);
   const Bool solveEquation = ResourceMap::GetAsBool("LevelSetMesher-SolveEquation");
+  const Bool useQEF = project && useQEF_;
+  typedef std::pair<UnsignedInteger, UnsignedInteger> EdgeKey;
+  std::vector< std::map<EdgeKey, UnsignedInteger> > edgePlaneIndices(constraintNumber);
+  Collection<Gradient> gradients(0);
+  for (UnsignedInteger k = 0; k < constraintNumber; ++ k) gradients.add(Gradient());
+  Collection<Point> crossings;
+  Collection<Point> normals;
+  if (useQEF)
+  {
+    // Hermite data on cut edges, one cache per (smooth) level function
+    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+    {
+      try
+      {
+        gradients[k] = functions[k].getGradient();
+      }
+      catch (const Exception &)
+      {
+        const Scalar epsilon = std::sqrt(SpecFunc::Precision);
+        gradients[k] = Gradient(CenteredFiniteDifferenceGradient(epsilon, functions[k].getEvaluation()));
+      }
+    }
+    for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+    {
+      UnsignedInteger numGood = 0;
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        if (IsInsideIntersection(operators, levels, values, boundingSimplices(i, j)))
+          ++ numGood;
+      if ((numGood == 0) || (numGood > dimension))
+        continue;
+      for (UnsignedInteger j1 = 0; j1 <= dimension; ++ j1)
+        for (UnsignedInteger j2 = j1 + 1; j2 <= dimension; ++ j2)
+        {
+          const UnsignedInteger globalA = boundingSimplices(i, j1);
+          const UnsignedInteger globalB = boundingSimplices(i, j2);
+          const EdgeKey key(std::min(globalA, globalB), std::max(globalA, globalB));
+          for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+          {
+            const Bool aInside = operators[k](values(globalA, k), levels[k]);
+            if (aInside == operators[k](values(globalB, k), levels[k]))
+              continue;
+            if (edgePlaneIndices[k].find(key) != edgePlaneIndices[k].end())
+              continue;
+            const Point edgeA(boundingVertices[globalA]);
+            const Point edgeB(boundingVertices[globalB]);
+            const Point base(aInside ? edgeA : edgeB);
+            const Point edgeShift(aInside ? edgeB - base : edgeA - base);
+            const LinearFunction tToEdge(Point(1), base, Matrix(dimension, 1, edgeShift));
+            const ComposedFunction edgeConstraint(functions[k], tToEdge);
+            Brent brent;
+            try
+            {
+              const Scalar t = brent.solve(edgeConstraint, levels[k], 0.0, 1.0);
+              const Point crossing(tToEdge(Point(1, t)));
+              const Matrix gradMatrix(gradients[k].gradient(crossing));
+              if (gradMatrix.getNbColumns() != 1)
+                continue;
+              Point normal(dimension);
+              for (UnsignedInteger d = 0; d < dimension; ++ d)
+                normal[d] = gradMatrix(d, 0);
+              const Scalar normalNorm = normal.norm();
+              if (!(normalNorm > 0.0))
+                continue;
+              // unit normals: pure geometry (no gradient-magnitude skew) and
+              // a scale-free agreement residual below
+              normal /= normalNorm;
+              edgePlaneIndices[k][key] = crossings.getSize();
+              crossings.add(crossing);
+              normals.add(normal);
+            }
+            catch (const Exception &)
+            {
+              // no Hermite data on this edge for this constraint
+            }
+          } // k
+        } // edges
+    } // simplices
+  }
   for (UnsignedInteger i = 0; i < numSimplices; ++i)
   {
     UnsignedInteger numGood = 0;
-    // Count the vertices in the level set
+    // Count the vertices in the intersection
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
       const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
-      if (comparison(values[globalVertexIndex], level))
+      if (IsInsideIntersection(operators, levels, values, globalVertexIndex))
       {
         ++numGood;
         ++flagGoodVertices[globalVertexIndex];
@@ -186,6 +542,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     {
       goodSimplices.add(Collection<UnsignedInteger>(boundingSimplices.cbegin_at(i), boundingSimplices.cend_at(i)));
       ++goodSimplicesNumber;
+      keptBackground.add(i);
       // Check if we have to move some vertices
       if (numGood <= dimension)
       {
@@ -195,98 +552,278 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         {
           const UnsignedInteger index = boundingSimplices(i, j);
           localVertices[j] = boundingVertices[index];
-          localValues[j] = values[index];
+          for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+            localValues[j][k] = values(index, k);
         }
         Point center(dimension);
-        Scalar centerValue = 0.0;
+        Point centerValues(constraintNumber);
+        Bool simplexHasQEF = false;
         // First pass: compute the center of the good points
         for (UnsignedInteger j = 0; j <= dimension; ++j)
-          if (comparison(localValues[j], level))
+          if (IsInsideIntersection(operators, levels, values, boundingSimplices(i, j)))
           {
             center += localVertices[j];
-            centerValue += localValues[j];
+            for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+              centerValues[k] += localValues[j][k];
           }
         center /= numGood;
-        centerValue /= numGood;
-        // Second pass, move the vertices that are outside of the level set
+        centerValues /= 1.0 * numGood;
+        // QEF ray target over all constraints (each level function is smooth)
+        if (useQEF)
+        {
+          Indices simplexPlanes;
+          for (UnsignedInteger j1 = 0; j1 <= dimension; ++ j1)
+            for (UnsignedInteger j2 = j1 + 1; j2 <= dimension; ++ j2)
+            {
+              const UnsignedInteger globalA = boundingSimplices(i, j1);
+              const UnsignedInteger globalB = boundingSimplices(i, j2);
+              const EdgeKey key(std::min(globalA, globalB), std::max(globalA, globalB));
+              for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+              {
+                const std::map<EdgeKey, UnsignedInteger>::const_iterator it = edgePlaneIndices[k].find(key);
+                if (it != edgePlaneIndices[k].end())
+                  simplexPlanes.add(it->second);
+              }
+            }
+          Point qefTarget(dimension);
+          if (ComputeQEFMinimizer(dimension, dimension, crossings, normals, simplexPlanes, qefTarget))
+          {
+            // sub-cell gate: the feature must lie within one cell diameter
+            // of the inside mean; kink-averaged planes otherwise aim rays
+            // across the domain (measured up to 6x max edge)
+            Scalar squaredDistance = 0.0;
+            for (UnsignedInteger k = 0; k < dimension; ++ k)
+            {
+              const Scalar gap = qefTarget[k] - center[k];
+              squaredDistance += gap * gap;
+            }
+            Scalar squaredEdge = 0.0;
+            for (UnsignedInteger j1 = 0; j1 <= dimension; ++ j1)
+              for (UnsignedInteger j2 = j1 + 1; j2 <= dimension; ++ j2)
+              {
+                Scalar squaredLength = 0.0;
+                for (UnsignedInteger k = 0; k < dimension; ++ k)
+                {
+                  const Scalar edge = localVertices[j1][k] - localVertices[j2][k];
+                  squaredLength += edge * edge;
+                }
+                squaredEdge = std::max(squaredEdge, squaredLength);
+              }
+            if (squaredDistance <= squaredEdge)
+            {
+            // use the feature point if inside the intersection or numerically
+            // on its boundary (QEF targets carry finite-difference noise)
+            try
+            {
+              Bool qefInside = true;
+              Bool qefOnBoundary = true;
+              for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+              {
+                const Scalar qefValue = functions[k](qefTarget)[0];
+                const Scalar boundaryTolerance = std::sqrt(SpecFunc::Precision) * (1.0 + std::abs(levels[k]));
+                if (!operators[k](qefValue, levels[k]) && (std::abs(qefValue - levels[k]) > boundaryTolerance))
+                  qefInside = false;
+                if (std::abs(qefValue - levels[k]) > boundaryTolerance)
+                  qefOnBoundary = false;
+                centerValues[k] = qefValue;
+              }
+              if (qefInside || qefOnBoundary)
+              {
+                center = qefTarget;
+                simplexHasQEF = true;
+              }
+            }
+            catch (const Exception &)
+            {
+              // keep the legacy center
+            }
+            }
+          }
+        }
+        // Second pass, move the vertices that are outside of the intersection
         // using a linear interpolation between the center and the vertex
         for (UnsignedInteger j = 0; j <= dimension; ++j)
         {
           const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
-          // If the vertex has to be moved
-          if ((flagGoodVertices[globalVertexIndex] == 0) && (!comparison(localValues[j], level)))
+          // If the vertex has to be moved (same re-move rule as scalar build)
+          const Bool neverSeen = (flagGoodVertices[globalVertexIndex] == 0);
+          const Bool qefRemove = useQEF && simplexHasQEF && !neverSeen && !flagQEFTarget[globalVertexIndex] && (movedPosition[globalVertexIndex] < flagMovedVertices.getSize());
+          if (!(neverSeen || qefRemove))
+            continue;
+          Indices violated(0);
+          for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+            if (!operators[k](localValues[j][k], levels[k]))
+              violated.add(k);
+          if (!violated.getSize())
+            continue;
+          const Point currentVertex(boundingVertices[globalVertexIndex]);
+          const Point shift(center - currentVertex);
+          // linear guess dominated by the most violated constraint
+          Scalar rho = 0.0;
+          Bool rayValid = false;
+          UnsignedInteger mostViolated = violated[0];
+          Scalar largestGap = -SpecFunc::Infinity;
+          for (UnsignedInteger v = 0; v < violated.getSize(); ++ v)
           {
-            // C(v*) [inside], M(level) [on], B(v) [outside]
-            // (M-C)/(B-C) = (level-v*)/(v-v*) = a
-            // M-B=(v-level)/(v-v*)(C-B)
-            const Point currentVertex(boundingVertices[globalVertexIndex]);
-            const Point shift(center - currentVertex);
-            const Scalar rho = (localValues[j] - level) / (localValues[j] - centerValue);
-            const Point delta(shift * rho);
-            flagMovedVertices.add(globalVertexIndex);
-            // If no projection, just add the linear correction
-            if (!project) movedVertices.add(currentVertex + delta);
-            else
+            const UnsignedInteger k = violated[v];
+            const Scalar gap = std::abs(localValues[j][k] - levels[k]);
+            if (gap > largestGap)
             {
-              Bool minimizeDistance = !solveEquation;
-              if (solveEquation)
+              largestGap = gap;
+              mostViolated = k;
+            }
+            const Scalar denom = localValues[j][k] - centerValues[k];
+            if (denom != 0.0)
+            {
+              rayValid = true;
+              rho = std::max(rho, (localValues[j][k] - levels[k]) / denom);
+            }
+          }
+          const Bool isRemove = !neverSeen;
+          if (!isRemove)
+          {
+            movedPosition[globalVertexIndex] = flagMovedVertices.getSize();
+            flagMovedVertices.add(globalVertexIndex);
+          }
+          if (simplexHasQEF)
+            flagQEFTarget[globalVertexIndex] = 1;
+          // append slot for a first move, in-place slot for a QEF re-move
+          const UnsignedInteger moveSlot = isRemove ? movedPosition[globalVertexIndex] : movedVertices.getSize();
+          const Point delta(shift * rho);
+          // If no projection, just add the linear correction
+          if (!project)
+          {
+            const Point newPosition(currentVertex + delta);
+            if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+          }
+          else
+          {
+            Bool minimizeDistance = !solveEquation || !rayValid;
+            Scalar tStar = 0.0;
+            if (solveEquation && rayValid)
+            {
+              const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
+              // feasible point along the ray: largest root over violated constraints
+              for (UnsignedInteger v = 0; v < violated.getSize(); ++ v)
               {
-                const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
-                const ComposedFunction constraint(function, tToPoint);
+                const UnsignedInteger k = violated[v];
+                const ComposedFunction constraint(functions[k], tToPoint);
                 Brent brent;
                 try
                 {
-                  const Scalar t = brent.solve(constraint, level, 0.0, 1.0);
-                  LOGDEBUG(OSS() << "Projection of " << currentVertex << " gives t=" << t);
-                  movedVertices.add(tToPoint(Point(1, t)));
+                  const Scalar t = brent.solve(constraint, levels[k], 0.0, 1.0);
+                  LOGDEBUG(OSS() << "Projection of " << currentVertex << " gives t=" << t << " for constraint " << v);
+                  tStar = std::max(tStar, t);
                 }
                 catch (const Exception &)
                 {
-                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << brent << ", using minimization for the projection");
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with equation solver=" << brent << " for constraint " << v << ", using minimization for the projection");
                   minimizeDistance = true;
+                  break;
                 }
-              } // solveEquation
-              if (minimizeDistance)
+              }
+            } // solveEquation
+            if (!minimizeDistance)
+            {
+              const LinearFunction tToPoint(Point(1), currentVertex, Matrix(currentVertex.getDimension(), 1, shift));
+              const Point newPosition(tToPoint(Point(1, tStar)));
+              if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+            }
+            else
+            {
+              // Project on the boundary of the most violated constraint:
+              // argmin ||x - x_0||^2 such that level - f(x) >= 0
+              shiftFunction.setConstant(currentVertex);
+              ComposedFunction levelFunction(functions[mostViolated], shiftFunction);
+              problem.setLevelFunction(levelFunction);
+              problem.setLevelValue(levels[mostViolated]);
+              OptimizationAlgorithm solver(solver_);
+              solver.setStartingPoint(delta);
+              solver.setProblem(problem);
+              // Here we have to catch exceptions raised by the algorithm (may be due to e.g the gradient)
+              try
               {
-                // Project the vertices not in the level set on the boundary of the level set
-                // Build the optimization problem argmin ||x - x_0||^2 such that level - f(x) >= 0, where x_0 is the current vertex
-                shiftFunction.setConstant(currentVertex);
-                ComposedFunction levelFunction(function, shiftFunction);
-                problem.setLevelFunction(levelFunction);
-                OptimizationAlgorithm solver(solver_);
-                solver.setStartingPoint(delta);
-                solver.setProblem(problem);
-                // Here we have to catch exceptions raised by the algorithm (may be due to e.g the gradient)
+                solver.run();
+                const Point newPosition(currentVertex + solver.getResult().getOptimalPoint());
+                if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+              }
+              catch (const Exception &)
+              {
+                // There is a problem with this vertex. Try a gradient-free solver
+                Cobyla cobyla(solver.getProblem());
+                cobyla.setStartingPoint(delta);
+                LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << cobyla);
                 try
                 {
-                  solver.run();
-                  movedVertices.add(currentVertex + solver.getResult().getOptimalPoint());
+                  cobyla.run();
+                  const Point newPosition(currentVertex + cobyla.getResult().getOptimalPoint());
+                  if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
                 }
                 catch (const Exception &)
                 {
-                  // There is a problem with this vertex. Try a gradient-free solver
-                  Cobyla cobyla(solver.getProblem());
-                  cobyla.setStartingPoint(delta);
-                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << solver << " and finite differences for gradient, switching to solver=" << cobyla);
-                  try
-                  {
-                    cobyla.run();
-                    movedVertices.add(currentVertex + cobyla.getResult().getOptimalPoint());
-                  }
-                  catch (const Exception &)
-                  {
-                    LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
-                    movedVertices.add(currentVertex + delta);
-                  }
-                } // User-defined solver failed ?
-              } // minimizeDistance
-            } // project
-            ++flagGoodVertices[globalVertexIndex];
-          } // localValue[j] > level
+                  LOGDEBUG(OSS() << "Problem to project point=" << currentVertex << " with solver=" << cobyla << ", use basic linear interpolation");
+                  const Point newPosition(currentVertex + delta);
+                  if (isRemove) movedVertices[moveSlot] = newPosition; else movedVertices.add(newPosition);
+                }
+              } // User-defined solver failed ?
+            } // minimizeDistance
+          } // project
+          ++flagGoodVertices[globalVertexIndex];
         } // j = 0; j <= dimension; ++j
       } // numGood <= dimension
     } // numGood > 0
   } // i < numSimplices
+  // Per-vertex QEF override: strictly over-determined plane sets only
+  // (residual gate meaningful), inside the background patch (no
+  // teleporting), and no worse level fit than legacy. Restores junction
+  // detail (lens) that ray targets alone miss.
+  if (useQEF && (flagMovedVertices.getSize() > 0))
+  {
+    std::map<UnsignedInteger, Indices> vertexPlanes;
+    for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+      for (std::map<EdgeKey, UnsignedInteger>::const_iterator it = edgePlaneIndices[k].begin(); it != edgePlaneIndices[k].end(); ++ it)
+      {
+        vertexPlanes[it->first.first].add(it->second);
+        vertexPlanes[it->first.second].add(it->second);
+      }
+    std::vector< std::vector<UnsignedInteger> > vertexSimplices(numVertices);
+    for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        vertexSimplices[boundingSimplices(i, j)].push_back(i);
+    for (UnsignedInteger m = 0; m < flagMovedVertices.getSize(); ++ m)
+    {
+      const std::map<UnsignedInteger, Indices>::const_iterator it = vertexPlanes.find(flagMovedVertices[m]);
+      if (it == vertexPlanes.end())
+        continue;
+      Point candidate(dimension);
+      if (!ComputeQEFMinimizer(dimension, dimension + 1, crossings, normals, it->second, candidate))
+        continue;
+      Bool inPatch = false;
+      const std::vector<UnsignedInteger> & incident = vertexSimplices[flagMovedVertices[m]];
+      Point coordinates(0);
+      for (UnsignedInteger s = 0; (s < incident.size()) && !inPatch; ++ s)
+        if (boundingMesh.checkPointInSimplexWithCoordinates(candidate, incident[s], coordinates))
+          inPatch = true;
+      if (!inPatch)
+        continue;
+      try
+      {
+        Scalar legacyGap = 0.0;
+        Scalar candidateGap = 0.0;
+        for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
+        {
+          legacyGap = std::max(legacyGap, std::abs(functions[k](movedVertices[m])[0] - levels[k]));
+          candidateGap = std::max(candidateGap, std::abs(functions[k](candidate)[0] - levels[k]));
+        }
+        if (candidateGap <= legacyGap)
+          movedVertices[m] = candidate;
+      }
+      catch (const Exception &)
+      {
+        // keep legacy position
+      }
+    }
+  }
   // Insert the vertices that have moved
   for (UnsignedInteger i = 0; i < flagMovedVertices.getSize(); ++i)
     boundingVertices[flagMovedVertices[i]] = movedVertices[i];
@@ -305,6 +842,49 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   SquareMatrix matrix(dimension + 1);
   for (UnsignedInteger i = 0; i < simplicesToCheck.getSize(); ++i)
     result.fixOrientation(simplicesToCheck[i], matrix);
+  // Marking for adaptive refinement: dropped simplices sharing a facet with
+  // a kept one (boundary band). Cut simplices are deliberately not refined:
+  // they already cover maximally, and bisecting them promotes interior grid
+  // vertices to fake boundaries while outside children get dropped over the
+  // domain. Skipped when the driver runs the legacy single pass.
+  if (collectMarks)
+  {
+    Indices isKept(numSimplices, 0);
+    for (UnsignedInteger m = 0; m < keptBackground.getSize(); ++ m)
+      isKept[keptBackground[m]] = 1;
+    // vertex to kept-simplices incidence for candidate lookup
+    std::vector< std::vector<UnsignedInteger> > incidence(numVertices);
+    for (UnsignedInteger m = 0; m < keptBackground.getSize(); ++ m)
+    {
+      const UnsignedInteger simplexIndex = keptBackground[m];
+      for (UnsignedInteger j = 0; j <= dimension; ++ j)
+        incidence[boundingSimplices(simplexIndex, j)].push_back(simplexIndex);
+    }
+    for (UnsignedInteger i = 0; i < numSimplices; ++ i)
+    {
+      if (isKept[i])
+        continue;
+      // dropped simplex: shares a facet (d common vertices) with a kept one?
+      Bool sharesFacet = false;
+      for (UnsignedInteger j = 0; (j <= dimension) && !sharesFacet; ++ j)
+      {
+        const UnsignedInteger vertex = boundingSimplices(i, j);
+        for (UnsignedInteger c = 0; (c < incidence[vertex].size()) && !sharesFacet; ++ c)
+        {
+          const UnsignedInteger other = incidence[vertex][c];
+          UnsignedInteger common = 0;
+          for (UnsignedInteger a = 0; a <= dimension; ++ a)
+            for (UnsignedInteger b = 0; b <= dimension; ++ b)
+              if (boundingSimplices(i, a) == boundingSimplices(other, b))
+                ++ common;
+          if (common >= dimension)
+            sharesFacet = true;
+        }
+      }
+      if (sharesFacet)
+        markedSimplices.add(i);
+    }
+  }
   return result;
 }
 

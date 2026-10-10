@@ -20,7 +20,9 @@
  */
 #include <fstream>
 #include <algorithm>
+#include <cstdint>
 #include <deque>
+#include <vector>
 
 #include "openturns/Mesh.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -33,19 +35,9 @@
 #include "openturns/PolygonArray.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/KDTree.hxx"
 #include "openturns/PlatformInfo.hxx"
 
-#ifdef OPENTURNS_HAVE_BOOST
-#if BOOST_VERSION < 107500
-#define BOOST_ALLOW_DEPRECATED_HEADERS
-#endif
-#include <boost/geometry/algorithms/append.hpp>
-#include <boost/geometry/algorithms/correct.hpp>
-#include <boost/geometry/algorithms/intersection.hpp>
-#include <boost/geometry/strategies/strategies.hpp>
-#include <boost/geometry/geometries/point_xy.hpp>
-#include <boost/geometry/geometries/polygon.hpp>
-#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -1194,77 +1186,433 @@ Mesh Mesh::intersect(const Mesh & other) const
 {
   if (getDimension() != other.getDimension())
     throw InvalidArgumentException(HERE) << "Expected a mesh of dimension " << getDimension() << " got " << other.getDimension();
-#ifdef OPENTURNS_HAVE_BOOST
   if (getDimension() != 2)
     throw NotYetImplementedException(HERE) << "Cannot compute intersection of a Mesh of dimension != 2";
 
-  typedef boost::geometry::model::d2::point_xy<Scalar> point_t;
+  // Sutherland-Hodgman clip of a convex subject polygon by the half-planes
+  // of a CCW clip triangle, on raw doubles (no allocation in the hot loop).
+  // Points on the boundary are kept. Used as an alternative to the per-pair
+  // convex triangle clip. A triangle clipped by three
+  // half-planes keeps at most 6 vertices.
+  struct TriangleClipper
+  {
+    static Scalar cross(Scalar ax, Scalar ay, Scalar bx, Scalar by, Scalar px, Scalar py)
+    {
+      return (bx - ax) * (py - ay) - (by - ay) * (px - ax);
+    }
 
-  // set clockwise=false for consistency with what IntervalMesher returns
-  typedef boost::geometry::model::polygon<point_t, false> polygon_t;
+    // clip n-vertex convex polygon (sx, sy) by the left of edge a->b.
+    // Returns the output vertex count, at most n + 1.
+    static UnsignedInteger clipHalfPlane(const Scalar * sx, const Scalar * sy,
+                                         const UnsignedInteger n,
+                                         Scalar ax, Scalar ay, Scalar bx, Scalar by,
+                                         Scalar * ox, Scalar * oy)
+    {
+      if (!n)
+        return 0;
+      UnsignedInteger m = 0;
+      Scalar previousX = sx[n - 1];
+      Scalar previousY = sy[n - 1];
+      Scalar previousSide = cross(ax, ay, bx, by, previousX, previousY);
+      for (UnsignedInteger i = 0; i < n; ++ i)
+      {
+        const Scalar currentX = sx[i];
+        const Scalar currentY = sy[i];
+        const Scalar currentSide = cross(ax, ay, bx, by, currentX, currentY);
+        if (currentSide >= 0.0)
+        {
+          if (previousSide < 0.0)
+          {
+            // entering: add the crossing (linear interpolation)
+            const Scalar fraction = previousSide / (previousSide - currentSide);
+            ox[m] = previousX + fraction * (currentX - previousX);
+            oy[m] = previousY + fraction * (currentY - previousY);
+            ++ m;
+          }
+          ox[m] = currentX;
+          oy[m] = currentY;
+          ++ m;
+        }
+        else if (previousSide >= 0.0)
+        {
+          // exiting: add the crossing only
+          const Scalar fraction = previousSide / (previousSide - currentSide);
+          ox[m] = previousX + fraction * (currentX - previousX);
+          oy[m] = previousY + fraction * (currentY - previousY);
+          ++ m;
+        }
+        previousX = currentX;
+        previousY = currentY;
+        previousSide = currentSide;
+      }
+      return m;
+    }
+  };
 
+  const UnsignedInteger simplicesNumber = getSimplicesNumber();
+  const UnsignedInteger otherSimplicesNumber = other.getSimplicesNumber();
+  // Precompute triangle bounding boxes to reject disjoint pairs without overlay
+  Sample lower1(simplicesNumber, 2);
+  Sample upper1(simplicesNumber, 2);
+  for (UnsignedInteger i1 = 0; i1 < simplicesNumber; ++ i1)
+  {
+    Point minTri(2, SpecFunc::Infinity);
+    Point maxTri(2, -SpecFunc::Infinity);
+    for (UnsignedInteger j1 = 0; j1 < 3; ++ j1)
+    {
+      const Point vertex(vertices_[simplices_(i1, j1)]);
+      for (UnsignedInteger k = 0; k < 2; ++ k)
+      {
+        minTri[k] = std::min(minTri[k], vertex[k]);
+        maxTri[k] = std::max(maxTri[k], vertex[k]);
+      }
+    }
+    lower1[i1] = minTri;
+    upper1[i1] = maxTri;
+  }
+  Sample lower2(otherSimplicesNumber, 2);
+  Sample upper2(otherSimplicesNumber, 2);
+  for (UnsignedInteger i2 = 0; i2 < otherSimplicesNumber; ++ i2)
+  {
+    Point minTri(2, SpecFunc::Infinity);
+    Point maxTri(2, -SpecFunc::Infinity);
+    for (UnsignedInteger j2 = 0; j2 < 3; ++ j2)
+    {
+      const Point vertex(other.vertices_[other.simplices_(i2, j2)]);
+      for (UnsignedInteger k = 0; k < 2; ++ k)
+      {
+        minTri[k] = std::min(minTri[k], vertex[k]);
+        maxTri[k] = std::max(maxTri[k], vertex[k]);
+      }
+    }
+    lower2[i2] = minTri;
+    upper2[i2] = maxTri;
+  }
+
+  // Candidate triangle pairs: dense product below the grid threshold, AABB
+  // uniform-grid candidates above (exact overlap re-test, sort-unique
+  // dedup). Grouped by first index for cache locality.
+  const UnsignedInteger toDoSize = simplicesNumber * otherSimplicesNumber;
+  const UnsignedInteger gridThreshold = ResourceMap::GetAsUnsignedInteger("Mesh-GridThreshold");
+  Collection<Indices> pairs(0);
+  if (toDoSize > gridThreshold)
+  {
+    Point globalLower(2, SpecFunc::Infinity);
+    Point globalUpper(2, -SpecFunc::Infinity);
+    for (UnsignedInteger i1 = 0; i1 < simplicesNumber; ++ i1)
+      for (UnsignedInteger k = 0; k < 2; ++ k)
+      {
+        globalLower[k] = std::min(globalLower[k], lower1(i1, k));
+        globalUpper[k] = std::max(globalUpper[k], upper1(i1, k));
+      }
+    for (UnsignedInteger i2 = 0; i2 < otherSimplicesNumber; ++ i2)
+      for (UnsignedInteger k = 0; k < 2; ++ k)
+      {
+        globalLower[k] = std::min(globalLower[k], lower2(i2, k));
+        globalUpper[k] = std::max(globalUpper[k], upper2(i2, k));
+      }
+    UnsignedInteger cellsPerSide = static_cast<UnsignedInteger>(std::ceil(std::sqrt(std::sqrt(1.0 * toDoSize))));
+    cellsPerSide = std::max(cellsPerSide, static_cast<UnsignedInteger>(1));
+    UnsignedInteger totalCells = cellsPerSide * cellsPerSide;
+    while ((totalCells > 16384) && (cellsPerSide > 1))
+    {
+      cellsPerSide /= 2;
+      totalCells = cellsPerSide * cellsPerSide;
+    }
+    Point cellSize(2);
+    for (UnsignedInteger k = 0; k < 2; ++ k)
+    {
+      cellSize[k] = (globalUpper[k] - globalLower[k]) / cellsPerSide;
+      if (!(cellSize[k] > 0.0))
+        cellSize[k] = 1.0;
+    }
+    std::vector< std::vector<uint64_t> > grid(totalCells);
+    std::vector<UnsignedInteger> global1(0);
+    std::vector<UnsignedInteger> global2(0);
+    for (UnsignedInteger pass = 0; pass < 2; ++ pass)
+    {
+      const Sample & lower = pass ? lower2 : lower1;
+      const Sample & upper = pass ? upper2 : upper1;
+      const UnsignedInteger count = pass ? otherSimplicesNumber : simplicesNumber;
+      std::vector<UnsignedInteger> & globals = pass ? global2 : global1;
+      for (UnsignedInteger i = 0; i < count; ++ i)
+      {
+        UnsignedInteger x0 = static_cast<UnsignedInteger>((lower(i, 0) - globalLower[0]) / cellSize[0]);
+        UnsignedInteger x1 = static_cast<UnsignedInteger>((upper(i, 0) - globalLower[0]) / cellSize[0]);
+        UnsignedInteger y0 = static_cast<UnsignedInteger>((lower(i, 1) - globalLower[1]) / cellSize[1]);
+        UnsignedInteger y1 = static_cast<UnsignedInteger>((upper(i, 1) - globalLower[1]) / cellSize[1]);
+        x0 = std::min(x0, cellsPerSide - 1);
+        x1 = std::min(x1, cellsPerSide - 1);
+        y0 = std::min(y0, cellsPerSide - 1);
+        y1 = std::min(y1, cellsPerSide - 1);
+        if ((x1 - x0 + 1) * (y1 - y0 + 1) > 64)
+        {
+          globals.push_back(i);
+          continue;
+        }
+        for (UnsignedInteger cx = x0; cx <= x1; ++ cx)
+          for (UnsignedInteger cy = y0; cy <= y1; ++ cy)
+            grid[cx + cy * cellsPerSide].push_back((static_cast<uint64_t>(pass) << 56) | i);
+      }
+    }
+    std::vector<uint64_t> keys(0);
+    for (UnsignedInteger g = 0; g < global1.size(); ++ g)
+      for (UnsignedInteger j = 0; j < otherSimplicesNumber; ++ j)
+        keys.push_back((static_cast<uint64_t>(global1[g]) << 32) | j);
+    for (UnsignedInteger g = 0; g < global2.size(); ++ g)
+      for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
+        keys.push_back((static_cast<uint64_t>(i) << 32) | global2[g]);
+    for (UnsignedInteger cell = 0; cell < totalCells; ++ cell)
+    {
+      const std::vector<uint64_t> & content = grid[cell];
+      for (UnsignedInteger a = 0; a < content.size(); ++ a)
+      {
+        if (content[a] >> 56)
+          continue;
+        const UnsignedInteger i1 = static_cast<UnsignedInteger>(content[a] & 0x00ffffffffffffffULL);
+        for (UnsignedInteger b = 0; b < content.size(); ++ b)
+        {
+          if (!(content[b] >> 56))
+            continue;
+          const UnsignedInteger i2 = static_cast<UnsignedInteger>(content[b] & 0x00ffffffffffffffULL);
+          // exact overlap re-test: sharing a cell is not sufficient
+          if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
+           || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
+            continue;
+          keys.push_back((static_cast<uint64_t>(i1) << 32) | i2);
+        }
+      }
+    }
+    std::sort(keys.begin(), keys.end());
+    keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
+    LOGDEBUG(OSS() << "Mesh::intersect grid filter: " << toDoSize << " pairs -> " << keys.size() << " candidates");
+    for (UnsignedInteger q = 0; q < keys.size(); ++ q)
+    {
+      Indices pair(2);
+      pair[0] = static_cast<UnsignedInteger>(keys[q] >> 32);
+      pair[1] = static_cast<UnsignedInteger>(keys[q] & 0xffffffffu);
+      pairs.add(pair);
+    }
+  }
+  else
+  {
+    for (UnsignedInteger i1 = 0; i1 < simplicesNumber; ++ i1)
+      for (UnsignedInteger i2 = 0; i2 < otherSimplicesNumber; ++ i2)
+      {
+        Indices pair(2);
+        pair[0] = i1;
+        pair[1] = i2;
+        pairs.add(pair);
+      }
+  }
   Sample vertices(0, 2);
   Collection<Indices> simplices;
   // compute the intersection as union of intersection of triangle combinations from each mesh
-  for (UnsignedInteger i1 = 0; i1 < getSimplicesNumber(); ++ i1)
+  UnsignedInteger cursor = 0;
+  while (cursor < pairs.getSize())
   {
-    polygon_t tri1;
-    for(UnsignedInteger j1 = 0; j1 < 4; ++ j1)
+    const UnsignedInteger i1 = pairs[cursor][0];
     {
-      // the first vertex is repeated at the end
-      const Point pj1(vertices_[simplices_(i1, j1 % 3)]);
-      boost::geometry::append(tri1.outer(), point_t(pj1[0], pj1[1]));
-    }
-
-    // fix orientation
-    if (boost::geometry::area(tri1) < 0.0)
-      boost::geometry::correct(tri1);
-
-    for (UnsignedInteger i2 = 0; i2 < other.getSimplicesNumber(); ++ i2)
-    {
-      polygon_t tri2;
-      for(UnsignedInteger j2 = 0; j2 < 4; ++ j2)
+      for (; (cursor < pairs.getSize()) && (pairs[cursor][0] == i1); ++ cursor)
       {
-        // the first vertex is repeated at the end
-        const Point pj2(other.vertices_[other.simplices_(i2, j2 % 3)]);
-        boost::geometry::append(tri2.outer(), point_t(pj2[0], pj2[1]));
-      }
-
-      // fix orientation
-      if (boost::geometry::area(tri2) < 0.0)
-        boost::geometry::correct(tri2);
-
-      std::deque<polygon_t> output;
-      boost::geometry::intersection(tri1, tri2, output);
-      for (const polygon_t & poly : output)
-      {
-        const UnsignedInteger offset = vertices.getSize();
-        // take into account the repeated vertex at the end
-        for (UnsignedInteger j3 = 0; j3 < poly.outer().size() - 1; ++ j3)
+        const UnsignedInteger i2 = pairs[cursor][1];
+        // bounding-box reject: touching boxes (shared edge/vertex) are kept
+        if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
+         || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
+          continue;
         {
-          const point_t & pj3 = poly.outer()[j3];
-          vertices.add(Point({pj3.x(), pj3.y()}));
+          // convex triangle clip
+
+          const Point s0(vertices_[simplices_(i1, 0)]);
+          const Point s1(vertices_[simplices_(i1, 1)]);
+          const Point s2(vertices_[simplices_(i1, 2)]);
+          Scalar subjectX[3] = {s0[0], s1[0], s2[0]};
+          Scalar subjectY[3] = {s0[1], s1[1], s2[1]};
+          if ((s1[0] - s0[0]) * (s2[1] - s0[1]) - (s1[1] - s0[1]) * (s2[0] - s0[0]) < 0.0)
+          {
+            subjectX[1] = s2[0];
+            subjectY[1] = s2[1];
+            subjectX[2] = s1[0];
+            subjectY[2] = s1[1];
+          }
+          const Point c0(other.vertices_[other.simplices_(i2, 0)]);
+          const Point c1(other.vertices_[other.simplices_(i2, 1)]);
+          const Point c2(other.vertices_[other.simplices_(i2, 2)]);
+          Scalar bufferX[2][7];
+          Scalar bufferY[2][7];
+          UnsignedInteger count = 3;
+          if ((c1[0] - c0[0]) * (c2[1] - c0[1]) - (c1[1] - c0[1]) * (c2[0] - c0[0]) >= 0.0)
+          {
+            count = TriangleClipper::clipHalfPlane(subjectX, subjectY, 3, c0[0], c0[1], c1[0], c1[1], bufferX[0], bufferY[0]);
+            count = TriangleClipper::clipHalfPlane(bufferX[0], bufferY[0], count, c1[0], c1[1], c2[0], c2[1], bufferX[1], bufferY[1]);
+            count = TriangleClipper::clipHalfPlane(bufferX[1], bufferY[1], count, c2[0], c2[1], c0[0], c0[1], bufferX[0], bufferY[0]);
+          }
+          else
+          {
+            count = TriangleClipper::clipHalfPlane(subjectX, subjectY, 3, c0[0], c0[1], c2[0], c2[1], bufferX[0], bufferY[0]);
+            count = TriangleClipper::clipHalfPlane(bufferX[0], bufferY[0], count, c2[0], c2[1], c1[0], c1[1], bufferX[1], bufferY[1]);
+            count = TriangleClipper::clipHalfPlane(bufferX[1], bufferY[1], count, c1[0], c1[1], c0[0], c0[1], bufferX[0], bufferY[0]);
+          }
+          // drop zero-area slivers from touching contacts (same output as
+          // the overlay dropping empty results); threshold relative to the
+          // input triangles so true thin overlaps are kept
+          Scalar outputArea2 = 0.0;
+          if (count >= 3)
+          {
+            for (UnsignedInteger j3 = 0; j3 < count; ++ j3)
+            {
+              const UnsignedInteger j4 = (j3 + 1) % count;
+              outputArea2 += bufferX[0][j3] * bufferY[0][j4] - bufferX[0][j4] * bufferY[0][j3];
+            }
+          }
+          const Scalar subjectArea = std::abs((s1[0] - s0[0]) * (s2[1] - s0[1]) - (s1[1] - s0[1]) * (s2[0] - s0[0]));
+          const Scalar clipArea = std::abs((c1[0] - c0[0]) * (c2[1] - c0[1]) - (c1[1] - c0[1]) * (c2[0] - c0[0]));
+          if ((count >= 3) && (std::abs(outputArea2) > SpecFunc::Precision * (subjectArea + clipArea)))
+          {
+            const UnsignedInteger offset = vertices.getSize();
+            for (UnsignedInteger j3 = 0; j3 < count; ++ j3)
+              vertices.add(Point({bufferX[0][j3], bufferY[0][j3]}));
+            for (UnsignedInteger j3 = 0; j3 < count - 2; ++ j3)
+            {
+              Indices simplex(3, offset);
+              simplex[1] += j3 + 1;
+              simplex[2] += j3 + 2;
+              simplices.add(simplex);
+            }
+          }
         }
-        // take into account the repeated vertex at the end
-        for (UnsignedInteger j3 = 0; j3 < poly.outer().size() - 3; ++ j3)
+      } // pairs of i1
+    } // current i1
+  } // pairs
+  const UnsignedInteger fullSize = vertices.getSize();
+  if (!fullSize)
+  {
+    const IndicesCollection simplices2(0, 3);
+    return Mesh(vertices, simplices2);
+  }
+  // Weld coincident vertices: shared input edges produce duplicated points,
+  // one per intersecting pair, which must be merged (transitive closure).
+  Indices parent(fullSize);
+  parent.fill();
+  // iterative find with full path compression
+  auto find = [&](UnsignedInteger x) -> UnsignedInteger
+  {
+    UnsignedInteger root = x;
+    while (root != parent[root])
+      root = parent[root];
+    while (x != root)
+    {
+      const UnsignedInteger next = parent[x];
+      parent[x] = root;
+      x = next;
+    }
+    return root;
+  };
+  const Scalar tolerance = SpecFunc::Precision * vertices.computeRange().norm();
+  // radius neighbours via nanoflann when available, brute force otherwise
+  // (minimal configurations build without nanoflann, where queryRadius
+  // throws NotYetImplementedException)
+  if (PlatformInfo::HasFeature("nanoflann"))
+  {
+    const KDTree tree(vertices);
+    for (UnsignedInteger i = 0; i < fullSize; ++ i)
+    {
+      Point distance;
+      const Indices nearest(tree.queryRadius(vertices[i], tolerance, distance));
+      for (UnsignedInteger k = 0; k < nearest.getSize(); ++ k)
+      {
+        const UnsignedInteger j = nearest[k];
+        if (j == i)
+          continue;
+        const UnsignedInteger rootI = find(i);
+        const UnsignedInteger rootJ = find(j);
+        if (rootI != rootJ)
+          parent[rootI] = rootJ;
+      }
+    }
+  }
+  else
+  {
+    for (UnsignedInteger i = 0; i < fullSize; ++ i)
+      for (UnsignedInteger j = i + 1; j < fullSize; ++ j)
+      {
+        Scalar squaredDistance = 0.0;
+        for (UnsignedInteger k = 0; k < 2; ++ k)
         {
-          // [0,1,2], [0,2,3], [0,3,4], [0,4,5] depending on number of intersection edges ([3-6])
-          Indices simplex(3, offset);
-          simplex[1] += j3 + 1;
-          simplex[2] += j3 + 2;
-          simplices.add(simplex);
-        } // j3
-      } // poly
-    } // i2
-  } // i1
-  IndicesCollection simplices2(simplices.getSize(), 3);
+          const Scalar delta = vertices(i, k) - vertices(j, k);
+          squaredDistance += delta * delta;
+        }
+        if (squaredDistance <= tolerance * tolerance)
+        {
+          const UnsignedInteger rootI = find(i);
+          const UnsignedInteger rootJ = find(j);
+          if (rootI != rootJ)
+            parent[rootI] = rootJ;
+        }
+      }
+  }
+  Indices compressedVertexMap(fullSize, fullSize);
+  UnsignedInteger nRoots = 0;
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+  {
+    const UnsignedInteger r = find(i);
+    if (compressedVertexMap[r] >= fullSize)
+    {
+      compressedVertexMap[r] = nRoots;
+      ++ nRoots;
+    }
+  }
+  Sample verticesCompressed(nRoots, 2);
+  Indices sizes(nRoots, 0);
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+  {
+    const UnsignedInteger idx = compressedVertexMap[find(i)];
+    for (UnsignedInteger d = 0; d < 2; ++ d)
+      verticesCompressed(idx, d) += vertices(i, d);
+    sizes[idx] += 1;
+  }
+  for (UnsignedInteger i = 0; i < nRoots; ++ i)
+  {
+    const Scalar invSize = 1.0 / sizes[i];
+    for (UnsignedInteger d = 0; d < 2; ++ d)
+      verticesCompressed(i, d) *= invSize;
+  }
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+    compressedVertexMap[i] = compressedVertexMap[find(i)];
+  // remap simplices, dropping degenerate ones created by the merge
+  Collection<Indices> weldedSimplices;
   for (UnsignedInteger i = 0; i < simplices.getSize(); ++ i)
+  {
+    const UnsignedInteger v0 = compressedVertexMap[simplices[i][0]];
+    const UnsignedInteger v1 = compressedVertexMap[simplices[i][1]];
+    const UnsignedInteger v2 = compressedVertexMap[simplices[i][2]];
+    if ((v0 == v1) || (v1 == v2) || (v0 == v2))
+      continue;
+    Indices simplex(3);
+    simplex[0] = v0;
+    simplex[1] = v1;
+    simplex[2] = v2;
+    weldedSimplices.add(simplex);
+  }
+  // compact vertices left unused by degenerate removal
+  Indices usedVertex(nRoots, 0);
+  for (UnsignedInteger i = 0; i < weldedSimplices.getSize(); ++ i)
     for (UnsignedInteger j = 0; j < 3; ++ j)
-      simplices2(i, j) = simplices[i][j];
-  return Mesh(vertices, simplices2);
-#else
-  throw NotYetImplementedException(HERE) << "No boost support";
-#endif
+      usedVertex[weldedSimplices[i][j]] = 1;
+  Indices compactMap(nRoots, nRoots);
+  UnsignedInteger compactSize = 0;
+  for (UnsignedInteger i = 0; i < nRoots; ++ i)
+    if (usedVertex[i])
+      compactMap[i] = compactSize++;
+  Sample compactVertices(compactSize, 2);
+  for (UnsignedInteger i = 0; i < nRoots; ++ i)
+    if (usedVertex[i])
+      compactVertices[compactMap[i]] = verticesCompressed[i];
+  IndicesCollection simplices2(weldedSimplices.getSize(), 3);
+  for (UnsignedInteger i = 0; i < weldedSimplices.getSize(); ++ i)
+    for (UnsignedInteger j = 0; j < 3; ++ j)
+      simplices2(i, j) = compactMap[weldedSimplices[i][j]];
+  return Mesh(compactVertices, simplices2);
 }
 
 Mesh Mesh::getSubMesh(const Indices & simplicesIndices) const

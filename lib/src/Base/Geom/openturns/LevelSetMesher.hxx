@@ -63,6 +63,10 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** QEF sharp-edge recovery accessor */
+  void setUseQEF(const Bool useQEF);
+  Bool getUseQEF() const;
+
   /* Here is the interface that all derived class must implement */
   /** Build a mesh based on a domain */
   virtual Mesh build(const LevelSet & levelSet,
@@ -73,8 +77,28 @@ public:
   virtual Mesh build(const LevelSet & levelSet,
                      const Field & field,
                      const Bool project = true) const;
+  /** Build the mesh of the intersection of a collection of level sets.
+   * Each level function is assumed smooth (see Notes). */
+  virtual Mesh build(const Collection<LevelSet> & collection,
+                     const Bool project = true) const;
+  virtual Mesh build(const Collection<LevelSet> & collection,
+                     const Interval & boundingBox,
+                     const Bool project = true) const;
+  virtual Mesh build(const Collection<LevelSet> & collection,
+                     const Field & field,
+                     const Bool project = true) const;
 
 protected:
+
+  /* Core meshing on given background values, with optional marking of
+   * dropped facet-neighbours of kept simplices for adaptive background
+   * refinement */
+  Mesh buildCore(const Collection<LevelSet> & collection,
+                 const Mesh & boundingMesh,
+                 const Sample & values,
+                 const Bool project,
+                 const Bool collectMarks,
+                 Indices & markedSimplices) const;
 
 private:
 
@@ -83,6 +107,9 @@ private:
 
   /* Optimization solver used to project the vertices */
   OptimizationAlgorithm solver_;
+
+  /* QEF sharp-edge recovery (alternative vertex placement) */
+  Bool useQEF_ = false;
 
 }; /* class LevelSetMesher */
 
