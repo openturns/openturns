@@ -272,7 +272,7 @@ Sample ChristoffelDistribution::computeChristoffelFunction(const Sample & sample
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
   const ComputeChristoffelPolicy policy(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy, 1024);
   return values;
 }
 
@@ -638,7 +638,7 @@ Sample ChristoffelDistribution::computeLogChristoffelFunction(const Sample & sam
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
   const ComputeLogChristoffelPolicy policy(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy, 1024);
   return values;
 }
 
