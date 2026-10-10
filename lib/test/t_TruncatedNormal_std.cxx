@@ -98,16 +98,10 @@ int main(int, char *[])
       Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
       fullprint << "Inverse survival=" << InverseSurvival << std::endl;
       fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
-      try
-      {
-        Complex CF = distribution.computeCharacteristicFunction( point[0] );
-        fullprint << "characteristic function=" << CF << std::endl;
-        Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
-        fullprint << "log characteristic function=" << LCF << std::endl;
-      }
-      catch (...)
-      {
-      }
+      Complex CF = distribution.computeCharacteristicFunction( point[0] );
+      fullprint << "characteristic function=" << CF << std::endl;
+      Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+      fullprint << "log characteristic function=" << LCF << std::endl;
       Point PDFgr = distribution.computePDFGradient( point );
       fullprint << "pdf gradient     =" << PDFgr << std::endl;
       Point PDFgrFD(4);
@@ -163,7 +157,6 @@ int main(int, char *[])
       fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
       fullprint << "beta=" << beta << std::endl;
       fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
-      fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
       Point mean = distribution.getMean();
       fullprint << "mean=" << mean << std::endl;
       Point standardDeviation = distribution.getStandardDeviation();

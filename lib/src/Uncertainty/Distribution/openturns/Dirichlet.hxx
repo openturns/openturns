@@ -42,7 +42,7 @@ public:
   Dirichlet();
 
   /** Parameters constructor */
-  Dirichlet(const Point & theta);
+  explicit Dirichlet(const Point & theta);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;

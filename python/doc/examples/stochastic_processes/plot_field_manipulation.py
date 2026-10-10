@@ -30,7 +30,7 @@ import openturns.viewer as otv
 # The domain :math:`\cD` is discretized by a regular grid, using the class
 # :class:`~openturns.IntervalMesher`.
 cov_model = ot.TensorizedCovarianceModel([ot.MaternModel([0.1] * 2, [0.01], 2.5)] * 2)
-mesh = ot.IntervalMesher([30] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
+mesh = ot.IntervalMesher([20] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
 field = normal_proc.getRealization()
 
@@ -85,7 +85,7 @@ view = otv.View(grid)
 # covariance function which is a :class:`~openturns.MaternModel`.
 # The domain :math:`\cD` is discretized by a regular grid, using the class :class:`~openturns.IntervalMesher`.
 cov_model = ot.MaternModel([0.15] * 2, [0.01], 2.5)
-mesh = ot.IntervalMesher([35] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
+mesh = ot.IntervalMesher([25] * 2).build(ot.Interval([0.0] * 2, [1.0] * 2))
 normal_proc = ot.GaussianProcess(cov_model, mesh)
 field = normal_proc.getRealization()
 

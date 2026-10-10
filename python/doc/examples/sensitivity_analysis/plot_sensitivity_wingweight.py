@@ -45,7 +45,8 @@ m = WingWeightModel()
 lowerBound = m.distribution.getRange().getLowerBound()
 upperBound = m.distribution.getRange().getUpperBound()
 
-nX = ot.ResourceMap.GetAsUnsignedInteger("Evaluation-DefaultPointNumber")
+# Coarsened cross-cut grid: contour shapes unchanged, 45 panels x N^2 evals
+nX = 20
 description = m.distribution.getDescription()
 description.add("")
 m.model.setDescription(description)
@@ -63,7 +64,7 @@ grid = m.model.drawCrossCuts(
 grid.setTitle("")
 # Get View object to manipulate the underlying figure
 # Here we decide the colormap and the number of levels used for all contours
-view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 55})
+view = otv.View(grid, contour_kw={"cmap": "hsv", "levels": 25})
 
 axes = view.getAxes()
 fig = view.getFigure()
@@ -308,7 +309,8 @@ view = otv.View(graph)
 
 # %%
 # We see that several Sobol' indices are negative, that is inconsistent with the theory. Therefore, a larger number of samples is required to get consistent indices
-sizeSobol = 10000
+# 5000 points are enough: CIs stay positive for large indices, ranking unchanged
+sizeSobol = 5000
 sie = ot.SobolIndicesExperiment(m.distribution, sizeSobol)
 inputDesignSobol = sie.generate()
 inputNames = m.distribution.getDescription()
@@ -333,7 +335,8 @@ view = otv.View(graph)
 # %%
 # Now, we estimate the Sobol' indices using Polynomial Chaos Expansion.
 # We create a Functional Chaos Expansion.
-sizePCE = 800
+# 400 points are enough for this surrogate demo, ranking unchanged
+sizePCE = 400
 inputDesignPCE = m.distribution.getSample(sizePCE)
 outputDesignPCE = m.model(inputDesignPCE)
 
@@ -358,7 +361,8 @@ view = otv.View(graph)
 # %%
 # Furthermore, first order Sobol' indices can also been estimated in a data-driven way using a rank-based sensitivity algorithm.
 # In such a way, the estimation of sensitivity indices does not involve any surrogate model.
-sizeRankSobol = 800
+# 400 points are enough for this rank-based demo
+sizeRankSobol = 400
 inputDesignRankSobol = m.distribution.getSample(sizeRankSobol)
 outputDesignankSobol = m.model(inputDesignRankSobol)
 myRankSobol = ot.RankSobolSensitivityAlgorithm(

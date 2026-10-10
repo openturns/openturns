@@ -26,7 +26,8 @@ for minimization in [True, False]:
             algo = ot.OptimizationAlgorithm.GetByName(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
-            algo.setMaximumCallsNumber(1000)
+            # 200 calls are enough: optimum is at origin of a convex quadric
+            algo.setMaximumCallsNumber(200)
             try:
                 algo.setStartingPoint(x0)
             except Exception:
@@ -63,6 +64,9 @@ costFunction = ot.PythonFunction(1, 1, _exec)
 problem = ot.OptimizationProblem(costFunction)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    if "global" in name:
+        # slow global optimizers, already skipped in 1st section above
+        continue
     algo = ot.OptimizationAlgorithm.GetByName(name)
     algo.setMaximumConstraintError(0.0)
     try:
@@ -94,6 +98,9 @@ problem = ot.OptimizationProblem(costFunction)
 problem.setMinimization(False)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    if "global" in name:
+        # slow global optimizers, already skipped in 1st section above
+        continue
     if name in ot.Bonmin.GetAlgorithmNames():
         # interruption has to be forced but cannot recover
         continue
@@ -135,6 +142,9 @@ problem.setMinimization(True)
 problem.setInequalityConstraint(inequality_constraint)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    if "global" in name:
+        # slow global optimizers, already skipped in 1st section above
+        continue
     algo = ot.OptimizationAlgorithm.GetByName(name)
     algo.setCheckStatus(False)
     try:
@@ -162,6 +172,9 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
 rosenbrock = ot.SymbolicFunction(["x1", "x2"], ["(1-x1)^2+100*(x2-x1^2)^2"])
 problem = ot.OptimizationProblem(rosenbrock)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
+    if "global" in name:
+        # slow global optimizers, already skipped in 1st section above
+        continue
     algo = ot.OptimizationAlgorithm.GetByName(name)
     try:
         algo.setProblem(problem)

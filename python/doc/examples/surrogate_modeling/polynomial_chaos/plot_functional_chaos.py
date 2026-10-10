@@ -211,10 +211,12 @@ view = otv.View(graph)
 ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree")
 
 # %%
-# This is why we explore the values from 1 to 10.
+# This is why we explore the values from 1 to 6: degrees 1-6 already show
+# the full story (underfit -> plateau -> overfit drop), higher degrees only
+# extend the settled lines at steep cost (one full chaos fit per degree).
 
 # %%
-maximumDegree = 11
+maximumDegree = 7
 degrees = range(1, maximumDegree)
 r2Score = ot.Sample(len(degrees), outputDimension)
 for maximumDegree in degrees:

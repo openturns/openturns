@@ -134,6 +134,11 @@ for indices in ([0, 1], [0, 2], [1, 2]):
         betaMarginal.computePDF(pointBeta), unifMarginal.computePDF(pointBeta)
     )
 
+# check setParameter preserves custom description
+distribution.setDescription(["z0", "z1", "z2", "z3"])
+distribution.setParameter(distribution.getParameter())
+assert distribution.getDescription() == ["z0", "z1", "z2", "z3"], "description lost by setParameter"
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
@@ -141,4 +146,5 @@ validation.skipCorrelation()  # slow
 validation.skipParameters()  # slow
 validation.skipConditional()  # FIXME
 validation.skipTransformation()  # FIXME
+validation.skipGradient()  # slow PDF/CDF gradient FD over ~13 params
 validation.run()

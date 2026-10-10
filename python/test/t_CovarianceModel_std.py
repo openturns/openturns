@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 from math import sqrt
 
 ot.TESTPREAMBLE()
@@ -27,7 +28,9 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
 
     eps = 1e-3
 
-    mesh = ot.IntervalMesher([7] * inputDimension).build(
+    # a coarse mesh is enough: all the checks below are cross-method
+    # consistency checks, independent of the mesh size
+    mesh = ot.IntervalMesher([3] * inputDimension).build(
         ot.Interval([-10] * inputDimension, [10] * inputDimension)
     )
 
@@ -113,6 +116,29 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
         ott.assert_almost_equal(
             grad, gradfd, 1e-5, 1e-5, "in " + myModel.getClassName() + " grad"
         )
+
+    assert len(repr(myModel)) > 0
+    assert len(str(myModel)) > 0
+    assert myModel == myModel
+    assert not myModel != myModel
+    fullParameter = myModel.getFullParameter()
+    assert len(myModel.getFullParameterDescription()) == len(fullParameter)
+    myModel.setFullParameter(fullParameter)
+    ott.assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0)
+    activeParameter = myModel.getActiveParameter()
+    parameter = myModel.getParameter()
+    assert len(parameter) == len(activeParameter)
+    if len(activeParameter) > 0:
+        myModel.setParameter(parameter)
+        ott.assert_almost_equal(myModel.getParameter(), parameter, 0, 0)
+    if dimension == 1:
+        with ott.assert_raises(Exception):
+            myModel.computeAsScalar(ot.Point(inputDimension + 1))
+    if inputDimension != 1:
+        with ott.assert_raises(Exception):
+            myModel.computeAsScalar(1.0)
+        with ott.assert_raises(Exception):
+            myModel.computeAsScalar(1.0, 2.0)
 
 
 def test_scalar_model(myModel, x1=None, x2=None):
@@ -232,6 +258,83 @@ ott.assert_almost_equal(myModel.getRadius(), 4.5, 0, 0)
 test_model(myModel)
 myModel.setRadius(1.5)
 ott.assert_almost_equal(myModel.getRadius(), 1.5, 0, 0)
+
+defaultModel = ot.SphericalModel()
+ott.assert_almost_equal(defaultModel.getScale(), [1.0], 0, 0)
+ott.assert_almost_equal(defaultModel.getAmplitude(), [1.0], 0, 0)
+ott.assert_almost_equal(defaultModel.getRadius(), 1.0, 0, 0)
+assert defaultModel != ot.SquaredExponential([1.0], [1.0])
+assert ot.SquaredExponential([1.0], [1.0]) != defaultModel
+assert not defaultModel == ot.SquaredExponential([1.0], [1.0])
+with ott.assert_raises(Exception):
+    ot.SphericalModel([2.0], [3.0], 0.0)
+with ott.assert_raises(Exception):
+    ot.SphericalModel([2.0], [3.0], -1.0)
+with ott.assert_raises(Exception):
+    ot.SphericalModel([2.0], [3.0], 4.5).setRadius(0.0)
+with ott.assert_raises(Exception):
+    ot.SphericalModel([2.0], [3.0], 4.5).setRadius(-2.0)
+refModel = ot.SphericalModel([2.0], [3.0], 4.5)
+refModel.setNuggetFactor(0.0)
+ott.assert_almost_equal(refModel.computeAsScalar([0.0]), 9.0, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar(0.0), 9.0, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar([4.5]), 2.8125, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar(4.5), 2.8125, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar([9.0]), 0.0, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar(20.0), 0.0, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar([2.0], [2.0]), 9.0, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar(2.0, -8.0), 0.0, 1e-14, 1e-14)
+ott.assert_almost_equal(refModel.computeAsScalar([2.0], [-2.5]), 2.8125, 1e-14, 1e-14)
+nuggetModel = ot.SphericalModel([2.0], [3.0], 4.5)
+nuggetModel.setNuggetFactor(0.5)
+ott.assert_almost_equal(nuggetModel.computeAsScalar([0.0]), 13.5, 1e-14, 1e-14)
+ott.assert_almost_equal(nuggetModel.computeAsScalar(0.0), 13.5, 1e-14, 1e-14)
+ott.assert_almost_equal(nuggetModel.computeAsScalar([0.0], [0.0]), 13.5, 1e-14, 1e-14)
+model2d = ot.SphericalModel([2.0, 2.0], [3.0], 4.5)
+model2d.setNuggetFactor(0.0)
+ott.assert_almost_equal(model2d.computeAsScalar([0.0, 0.0]), 9.0, 1e-14, 1e-14)
+ott.assert_almost_equal(model2d.computeAsScalar([0.0, 0.0], [0.0, 0.0]), 9.0, 1e-14, 1e-14)
+ott.assert_almost_equal(model2d.computeAsScalar([20.0, 20.0]), 0.0, 1e-14, 1e-14)
+fp = refModel.getFullParameter()
+ott.assert_almost_equal(fp, [2.0, 0.0, 3.0, 4.5], 0, 0)
+assert refModel.getFullParameterDescription() == ["scale_0", "nuggetFactor", "amplitude_0", "radius"]
+refModel.setFullParameter([1.0, 0.1, 2.0, 3.0])
+ott.assert_almost_equal(refModel.getScale(), [1.0], 0, 0)
+ott.assert_almost_equal(refModel.getAmplitude(), [2.0], 0, 0)
+ott.assert_almost_equal(refModel.getRadius(), 3.0, 0, 0)
+ott.assert_almost_equal(refModel.getNuggetFactor(), 0.1, 0, 0)
+ott.assert_almost_equal(refModel.getFullParameter(), [1.0, 0.1, 2.0, 3.0], 0, 0)
+with ott.assert_raises(Exception):
+    refModel.setFullParameter([1.0, 0.1, 2.0, 0.0])
+with ott.assert_raises(Exception):
+    refModel.setFullParameter([1.0, 0.1, 2.0, -1.0])
+model2dfp = ot.SphericalModel([2.0, 3.0], [4.0], 5.0)
+ott.assert_almost_equal(model2dfp.getFullParameter(), [2.0, 3.0, 1e-12, 4.0, 5.0], 1e-14, 1e-14)
+assert model2dfp.getFullParameterDescription() == ["scale_0", "scale_1", "nuggetFactor", "amplitude_0", "radius"]
+model2dfp.setFullParameter([2.5, 3.5, 0.01, 4.5, 5.5])
+ott.assert_almost_equal(model2dfp.getFullParameter(), [2.5, 3.5, 0.01, 4.5, 5.5], 0, 0)
+ott.assert_almost_equal(model2dfp.getRadius(), 5.5, 0, 0)
+paramModel = ot.SphericalModel([2.0], [3.0], 4.5)
+ott.assert_almost_equal(paramModel.getParameter(), [2.0, 3.0], 0, 0)
+assert paramModel.getParameterDescription() == ["scale_0", "amplitude_0"]
+paramModel.setParameter([1.0, 2.0])
+ott.assert_almost_equal(paramModel.getFullParameter(), [1.0, 1e-12, 2.0, 4.5], 0, 0)
+paramModel.setActiveParameter([0, 1, 2, 3])
+ott.assert_almost_equal(paramModel.getParameter(), [1.0, 1e-12, 2.0, 4.5], 0, 0)
+paramModel.setParameter([1.0, 0.02, 2.0, 3.0])
+ott.assert_almost_equal(paramModel.getFullParameter(), [1.0, 0.02, 2.0, 3.0], 0, 0)
+storage = ot.XMLStorageManager("t_CovarianceModel_std_Spherical.xml")
+study = ot.Study()
+study.setStorageManager(storage)
+study.add("model", ot.CovarianceModel(paramModel))
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("t_CovarianceModel_std_Spherical.xml"))
+loadedStudy.load()
+loadedModel = ot.CovarianceModel()
+loadedStudy.fillObject("model", loadedModel)
+assert loadedModel == ot.CovarianceModel(paramModel)
+os.remove("t_CovarianceModel_std_Spherical.xml")
 
 # 7) FractionalBrownianMotionModel
 myModel = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])

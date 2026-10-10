@@ -15,7 +15,6 @@ quantile= class=Point name=Unnamed dimension=1 values=[4.48948]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[-1.48948]
 Survival(inverseSurvival)=0.950000
-entropy=1.927246
 Minimum volume interval= [-1.73303, 4.73303]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.3194} with f=
@@ -35,7 +34,7 @@ Standard representative= TruncatedNormal(mu = 0, sigma = 0.857143, a = -1, b = 1
 Distribution  TruncatedNormal(mu = 50, sigma = 1, a = 3, b = 4)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[3.96641]
+oneRealization= class=Point name=Unnamed dimension=1 values=[3.99466]
 Point=  class=Point name=Unnamed dimension=1 values=[3.5]
 ddf     = class=Point name=Unnamed dimension=1 values=[1.93801e-07]
 log pdf=-19.295887
@@ -49,7 +48,6 @@ quantile= class=Point name=Unnamed dimension=1 values=[3.99889]
 cdf(quantile)=0.950000
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[3.93495]
 Survival(inverseSurvival)=0.950000
-entropy=-2.829585
 Minimum volume interval= [3.93495, 4]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= -0.834793} with f=

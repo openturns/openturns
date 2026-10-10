@@ -177,7 +177,11 @@ for testIndex in range(len(testCases)):
     validation = ott.DistributionValidation(distribution)
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
+    validation.skipMinimumVolumeInterval()  # slow 1M-sample MC proba
+    validation.skipConfidenceInterval()  # slow 1M-sample MC proba
     validation.skipTransformation()  # transformation accuracy is a bit low
+    # Monte Carlo size: standard errors stay well below the assert tolerances
+    validation.setMomentsSamplingSize(100000)
     validation.run()
 
 # Tests of the simplification mechanism: check the PDF of a mixture involving

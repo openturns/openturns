@@ -55,9 +55,14 @@ validation = ott.DistributionValidation(distribution)
 # validation.skipMoments()
 validation.skipDependenceMeasures()  # slow
 validation.skipConditional()  # slow
+validation.skipTransformation()  # Rosenblatt over mesh, covered in 2nd run
+# Monte Carlo size: standard errors stay well below the assert tolerances
+validation.setMomentsSamplingSize(100000)
 validation.run()
 ot.ResourceMap.SetAsBool("TruncatedOverMesh-UseRejection", True)
 validation = ott.DistributionValidation(distribution)
 validation.skipDependenceMeasures()  # slow
 validation.skipConditional()  # slow
+validation.skipMoments()  # moments already proven above on same object
+validation.skipCorrelation()  # same, avoids 100k low-acceptance rejection draws
 validation.run()

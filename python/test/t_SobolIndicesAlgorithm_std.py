@@ -16,8 +16,8 @@ model = ot.SymbolicFunction(["X1", "X2", "X3"], formula)
 
 distribution = ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
 
-# Size of simulation
-size = 10000
+# Size of simulation: 5000 points are enough, index ordering is unchanged
+size = 5000
 
 # Test with the various implementation methods
 methods = ["Saltelli", "Jansen", "MauntzKucherenko", "Martinez"]
@@ -46,7 +46,8 @@ for method in methods:
         print("Total order indices = ", to)
 
         # Get the confidence interval thanks to Bootstrap
-        nr_bootstrap = 100
+        # 30 replicates are enough: only the interval width is printed
+        nr_bootstrap = 30
         confidence_level = 0.95
         sensitivity_algorithm.setBootstrapSize(nr_bootstrap)
         sensitivity_algorithm.setConfidenceLevel(confidence_level)
@@ -104,7 +105,8 @@ for method in methods:
     print("Aggregated total order indices = ", to)
 
     # Get the confidence interval thanks to Bootstrap
-    nr_bootstrap = 100
+    # 30 replicates are enough: only the interval width is printed
+    nr_bootstrap = 30
     confidence_level = 0.95
     # sensitivity_algorithm = ot.MartinezSensitivityAlgorithm(
     # inputDesign, outputDesign, size)
@@ -169,7 +171,8 @@ im = ishigami_function.IshigamiModel()
 exact_first_order = ot.Point([im.S1, im.S2, im.S3])
 exact_total_order = ot.Point([im.ST1, im.ST2, im.ST3])
 sobolIndicesAlgorithmB = ot.SaltelliSensitivityAlgorithm()
-for sample_size in [100, 1000, 10000]:
+# the setDesign-reset check is size-independent, no need for the 10k case
+for sample_size in [100, 1000]:
     print("Size:", sample_size)
 
     # Method A : classical

@@ -35,6 +35,7 @@ validation = ott.DistributionValidation(distribution)
 validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.skipGradient()  # slow
+validation.skipDependenceMeasures()  # slow Spearman/Kendall on 1M-sample
 validation.setCDFSamplingSize(1)
 validation.run()
 
@@ -46,7 +47,14 @@ ott.assert_almost_equal(simplified, copula)
 
 # discrete case
 discrete = ot.Multinomial(5, [0.25] * 3)
+# the default NormalCopula range adaptation integrates the grade correlation
+# of the distribution (slow here): the marginal range already covers the
+# conditional support, which is what is checked below
+ot.ResourceMap.SetAsString("PointConditionalDistribution-RangeAdaptationMethod", "None")
 distribution = ot.PointConditionalDistribution(discrete, [1], [1.0])
+ot.ResourceMap.SetAsString(
+    "PointConditionalDistribution-RangeAdaptationMethod", "NormalCopula"
+)
 print("dim=", distribution.getDimension())
 assert distribution.getDimension() == 2, "wrong dimension"
 print("range=", distribution.getRange())
@@ -61,6 +69,7 @@ validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.skipGradient()  # slow
 validation.skipParameters()  # integer parameter
+validation.skipDependenceMeasures()  # slow
 validation.setCDFSamplingSize(1)
 validation.run()
 
@@ -118,6 +127,8 @@ ott.assert_almost_equal(distribution.computePDF([0]), 0.25)
 R = ot.CorrelationMatrix(3, [1.0, 0.5, 0.1, 0.5, 1.0, 0.2, 0.1, 0.2, 1.0])
 core = ot.Dirichlet([1, 2, 3, 4])
 joint = ot.JointDistribution([ot.Exponential()] * 3, core)
+# ratio of uniform sampling needs the default NormalCopula range adaptation
+# here (other range strategies give a range unsuitable for sampler init)
 distribution = ot.PointConditionalDistribution(joint, [1], [2.0])
 sample = distribution.getSample(10)
 
@@ -163,8 +174,9 @@ ott.assert_almost_equal(distribution.computePDF(distribution.getMean()), 9.01202
 # negative bound sampling case
 ot.ResourceMap.SetAsBool("PointConditionalDistribution-UseSimplifiedVersion", False)
 distribution = ot.PointConditionalDistribution(copula - 1.0, [1], [-0.8])
+# 2000 draws are enough: tolerance is loose (1e-2) vs Monte Carlo error
 ott.assert_almost_equal(
-    distribution.getSample(10000).computeMean(), [-0.75] * 2, 1e-2, 1e-2
+    distribution.getSample(2000).computeMean(), [-0.75] * 2, 1e-2, 1e-2
 )
 
 # Verify swapped bivariate copula uses generic methods

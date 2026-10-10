@@ -64,7 +64,7 @@ for distribution in [
         "Survival(inverseSurvival)=%.6f"
         % distribution.computeSurvivalFunction(inverseSurvival)
     )
-    print("entropy=%.6f" % distribution.computeEntropy())
+    # NOTE: entropy is covered by DistributionValidation below, no manual check needed
 
     # Confidence regions
     (
@@ -111,9 +111,12 @@ for distribution in [
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
-    validation.skipCharacteristicFunction()
-    validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
+    validation.skipMinimumVolumeInterval()  # slow 1M-sample MC proba
+    validation.skipConfidenceInterval()  # slow 3x 1M-sample MC proba
+    # Monte Carlo sizes: standard errors stay well below the assert tolerances
+    validation.setMomentsSamplingSize(100000)
+    validation.setEntropySamplingSize(100000)
     if (
         ot.Normal(distribution.getMu(), distribution.getSigma()).computeProbability(
             distribution.getRange()

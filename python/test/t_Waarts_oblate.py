@@ -157,6 +157,8 @@ myStandardEvent = ot.StandardEvent(myEvent)
 experiment = ot.ImportanceSamplingExperiment(myImportanceSE)
 myISS = ot.ProbabilitySimulationAlgorithm(myStandardEvent, experiment)
 myISS.setMaximumOuterSampling(1000000)
+# NOTE: keep BlockSize(1): larger blocks change the sample stream of
+# ImportanceSamplingExperiment and break the PFISS reference value below
 myISS.setBlockSize(1)
 myISS.setMaximumCoefficientOfVariation(0.1)
 myISS.run()

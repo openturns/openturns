@@ -100,7 +100,9 @@ def generateKSSampleKnownParameters(nrepeat, samplesize):
 # Generate a sample of KS distances.
 
 # %%
-nrepeat = 10000  # Size of the KS distances sample
+# 5000 repetitions are enough for the histogram and kernel smoothing
+# estimates below, which look identical with twice as many points
+nrepeat = 5000  # Size of the KS distances sample
 sampleD = generateKSSampleKnownParameters(nrepeat, samplesize)
 
 

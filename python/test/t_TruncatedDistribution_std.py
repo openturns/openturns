@@ -202,6 +202,11 @@ for testCase in range(len(distribution)):
     ot.RandomGenerator.SetSeed(1)
     validation = ott.DistributionValidation(distribution[testCase])
     validation.skipMinimumVolumeLevelSet()  # slow
+    validation.skipTransformation()  # deterministic Rosenblatt+FD, no RNG consumed
+    validation.skipConditional()  # deterministic chain, no RNG consumed
+    # NOTE: do not reduce the validation sampling sizes here: the
+    # hard-coded reference values below (KernelMixture mean/covariance)
+    # depend on the exact RNG stream left by these validations
     validation.run()
 
 # Check simplification

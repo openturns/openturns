@@ -184,7 +184,7 @@ proposal = ot.JointDistribution(proposal)
 
 sampler = ot.RandomWalkMetropolisHastings(prior, initialState, proposal)
 sampler.setLikelihood(conditional, x)
-sampleSize = 10000
+sampleSize = 5000
 sample = sampler.getSample(sampleSize)
 # compute acceptance rate
 print("Acceptance rate: %s" % (sampler.getAcceptanceRate()))

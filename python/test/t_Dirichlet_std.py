@@ -157,8 +157,20 @@ for dim in range(1, 2):
     validation.skipCDF()
     validation.skipGradient()
     validation.skipMoments()
+    validation.setMomentsSamplingSize(100000)
+    validation.setDomainSamplingSize(100000)
+    validation.setEntropySamplingSize(100000)
     validation.run()
 
+# Use small integration/sampling sizes to keep the test fast
+defaultIntegrationSize = ot.ResourceMap.GetAsUnsignedInteger(
+    "Dirichlet-DefaultIntegrationSize"
+)
+defaultSamplingSize = ot.ResourceMap.GetAsUnsignedInteger(
+    "Dirichlet-DefaultSamplingSize"
+)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize", 6)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-DefaultSamplingSize", 1000)
 # check Dirichlet computeCDF has no global sample cache
 theta1 = [2.0, 6.0, 3.0, 4.0, 5.0]
 d1 = ot.Dirichlet(theta1)
@@ -168,3 +180,123 @@ point = [0.15] * 4
 cdf1 = d1.computeCDF(point)
 cdf2 = d2.computeCDF(point)
 assert abs(cdf1 - cdf2) > 1e-8, "Dirichlet CDF should differ for different theta"
+
+# --- Extended coverage: multi-dimensional paths, edge cases and setters ---
+d1d = ot.Dirichlet([0.25, 0.5])
+assert d1d.computeCDF([0.0]) == 0.0
+assert d1d.computeCDF([1.0]) == 1.0
+with ott.assert_raises(Exception):
+    d1d.computePDF([0.5, 0.5])
+with ott.assert_raises(Exception):
+    d1d.computeLogPDF([0.5, 0.5])
+with ott.assert_raises(Exception):
+    d1d.computeCDF([0.5, 0.5])
+with ott.assert_raises(Exception):
+    d1d.computeQuantile(-0.1)
+
+# ctor / setTheta errors
+with ott.assert_raises(Exception):
+    ot.Dirichlet([1.0])
+with ott.assert_raises(Exception):
+    ot.Dirichlet([1.0, -0.5])
+with ott.assert_raises(Exception):
+    ot.Dirichlet([1.0, 0.0])
+d = ot.Dirichlet([1.0, 2.0, 3.0])
+with ott.assert_raises(Exception):
+    d.setTheta([1.0])
+with ott.assert_raises(Exception):
+    d.setTheta([1.0, -2.0])
+with ott.assert_raises(Exception):
+    d.setParametersCollection([])
+with ott.assert_raises(Exception):
+    d.setParametersCollection([ot.Point(1, 1.0)])
+# setParameter round-trip, preserves description
+d.setDescription(["a", "b"])
+d.setParameter([2.0, 3.0, 4.0])
+ott.assert_almost_equal(d.getParameter(), [2.0, 3.0, 4.0])
+assert d.getDescription() == ["a", "b"]
+with ott.assert_raises(Exception):
+    d.setParameter([1.0])
+with ott.assert_raises(Exception):
+    d.setParameter([1.0, -1.0, 2.0])
+assert list(d.getParameter()) == [2.0, 3.0, 4.0]
+assert d.getParameterDescription() == ["theta_0", "theta_1", "theta_2"]
+assert len(d.getParametersCollection()) == 2
+
+for theta in ([1.0, 2.0, 3.0], [2.0, 6.0, 3.0, 4.0], [2.0, 6.0, 3.0, 4.0, 5.0]):
+    dd = ot.Dirichlet(theta)
+    dim = dd.getDimension()
+    dd.getMean()
+    dd.getCovariance()
+    dd.getStandardDeviation()
+    dd.getSkewness()
+    dd.getKurtosis()
+    dd.computeEntropy()
+    dd.getRealization()
+    assert dd.hasIndependentCopula() == (dim == 1)
+    assert dd.hasEllipticalCopula() == (dim == 1)
+    if dim == 2:
+        dd.getSpearmanCorrelation()
+        dd.getKendallTau()
+    dd.getParametersCollection()
+    # PDF edges: wrong dimension, non-positive component, sum >= 1
+    with ott.assert_raises(Exception):
+        dd.computePDF(ot.Point(dim + 1, 0.1))
+    assert dd.computePDF(ot.Point(dim, -0.1)) == 0.0
+    assert dd.computePDF(ot.Point(dim, 0.9)) == 0.0
+    # CDF branches: negative component -> 0, all >= 1 -> 1
+    assert dd.computeCDF(ot.Point(dim, -0.1)) == 0.0
+    assert dd.computeCDF(ot.Point(dim, 2.0)) == 1.0
+    # inside simplex -> Gauss integration
+    dd.computeCDF(ot.Point(dim, 0.1))
+    # first sorted-sum branch (dim > 1): e.g. [0.6, 0.6, ...]
+    dd.computeCDF(ot.Point(dim, 0.6))
+    # marginals: 1D Beta and multi-D Dirichlet, invalid indices
+    dd.getMarginal(0)
+    with ott.assert_raises(Exception):
+        dd.getMarginal([dim])
+    if dim >= 2:
+        dd.getMarginal([1, 0])
+        # second sorted-sum branch (dim > 2): [0.4, 0.4, ...]
+        dd.computeCDF(ot.Point(dim, 0.4))
+    # conditionals: error paths and out-of-simplex early returns
+    with ott.assert_raises(Exception):
+        dd.computeConditionalPDF(0.5, ot.Point(dim, 0.1))
+    with ott.assert_raises(Exception):
+        dd.computeConditionalCDF(0.5, ot.Point(dim, 0.1))
+    with ott.assert_raises(Exception):
+        dd.computeConditionalQuantile(0.5, ot.Point(dim, 0.1))
+    with ott.assert_raises(Exception):
+        dd.computeConditionalQuantile(0.5, ot.Point(0, 0.0))
+    with ott.assert_raises(Exception):
+        dd.computeConditionalQuantile(-0.1, ot.Point(0, 0.0))
+    with ott.assert_raises(Exception):
+        dd.computeConditionalQuantile(0.5, [-0.1])
+    with ott.assert_raises(Exception):
+        dd.computeSequentialConditionalPDF(ot.Point(dim + 1, 0.1))
+    with ott.assert_raises(Exception):
+        dd.computeSequentialConditionalCDF(ot.Point(dim + 1, 0.1))
+    with ott.assert_raises(Exception):
+        dd.computeSequentialConditionalQuantile(ot.Point(dim + 1, 0.1))
+    assert dd.computeConditionalPDF(0.5, [2.0]) == 0.0
+    assert dd.computeConditionalPDF(0.5, [-0.5]) == 0.0
+    assert dd.computeConditionalCDF(0.5, [-0.5]) == 0.0
+    assert dd.computeConditionalCDF(0.5, [2.0]) == 1.0
+    dd.computeConditionalPDF(0.2, [0.1] * (dim - 1) if dim > 1 else [])
+    dd.computeConditionalCDF(0.2, [0.1] * (dim - 1) if dim > 1 else [])
+    dd.computeConditionalQuantile(0.5, [0.1] * (dim - 1) if dim > 1 else [])
+    pt = ot.Point(dim, 0.15)
+    dd.computeSequentialConditionalPDF(pt)
+    dd.computeSequentialConditionalCDF(pt)
+    dd.computeSequentialConditionalQuantile(ot.Point(dim, 0.5))
+
+# Monte-Carlo CDF fallback (dim >= 4, total sum > 1 but 3 smallest sum < 1)
+dmc = ot.Dirichlet([2.0, 6.0, 3.0, 4.0, 5.0])
+mcCDF = dmc.computeCDF([0.3, 0.3, 0.3, 0.3])
+assert 0.0 <= mcCDF <= 1.0
+ot.ResourceMap.SetAsUnsignedInteger(
+    "Dirichlet-DefaultIntegrationSize", defaultIntegrationSize
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "Dirichlet-DefaultSamplingSize", defaultSamplingSize
+)

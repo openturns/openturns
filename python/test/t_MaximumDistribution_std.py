@@ -91,6 +91,9 @@ for index, distribution in enumerate(coll):
     validation = ott.DistributionValidation(distribution)
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
+    # Monte Carlo sizes: standard errors stay well below the 1e-2 tolerances
+    validation.setMomentsSamplingSize(100000)
+    validation.setDomainSamplingSize(100000)
     validation.run()
 
 # Issue #1643

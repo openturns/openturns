@@ -601,40 +601,12 @@ Bool Dirichlet::hasEllipticalCopula() const
 CorrelationMatrix Dirichlet::getSpearmanCorrelation() const
 {
   return DistributionImplementation::getSpearmanCorrelation();
-#ifdef NEW_IMPLEMENTATION
-  const UnsignedInteger dimension = getDimension();
-  CorrelationMatrix rho(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const UnsignedInteger nI = integrationNodes_[i].getSize();
-    for (UnsignedInteger j = 0; j < i; ++j)
-    {
-      const UnsignedInteger nJ = integrationNodes_[j].getSize();
-      // Perform the numerical integration of the (i,j) correlation
-      Scalar rhoIJ = 0.0;
-      for (UnsignedLong indexU = 0; indexU < nI; ++indexU)
-      {
-        const Scalar u = 0.5 * (integrationNodes_(j, indexU) + 1.0);
-        for (UnsignedLong indexV = 0; indexV < nJ; ++indexV)
-        {
-          Scalar v = 0.5 * (integrationNodes_(j, indexU) + 1.0) * (1.0 - u);
-        } // indexV
-      } // indexU
-    } // j
-  } // i
-  return rho;
-#endif
 }
 
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix Dirichlet::getKendallTau() const
 {
   return DistributionImplementation::getKendallTau();
-#ifdef NEW_IMPLEMENTATION
-  CorrelationMatrix tau(2);
-  tau(0, 1) = 1.0 + 4.0 * (SpecFunc::Debye(theta_, 1) - 1.0) / theta_;
-  return tau;
-#endif
 }
 
 DistributionImplementation::PointWithDescriptionCollection Dirichlet::getParametersCollection() const
@@ -682,9 +654,7 @@ Point Dirichlet::getParameter() const
 
 void Dirichlet::setParameter(const Point & parameter)
 {
-  const Scalar w = getWeight();
-  *this = Dirichlet(parameter);
-  setWeight(w);
+  setTheta(parameter);
 }
 
 Description Dirichlet::getParameterDescription() const

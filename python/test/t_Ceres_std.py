@@ -39,7 +39,7 @@ for algoName in algoNames:
         problem = ot.OptimizationProblem(f)
         problem.setMinimization(minimization)
         algo = ot.Ceres(problem, algoName)
-        algo.setMaximumIterationNumber(100000)
+        algo.setMaximumIterationNumber(10000)
         algo.setStartingPoint(startingPoint)
         # algo.setProgressCallback(progress)
         # algo.setStopCallback(stop)

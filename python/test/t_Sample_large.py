@@ -39,13 +39,10 @@ except Exception:
     pass
 
 # We create a big Sample
-sample = ot.Sample(1000000, 2)
+# Build from a Python sequence so the conversion loop runs in C++:
+# filling element-wise from Python is much slower (see issue #2926)
+sample = ot.Sample([[i, i] for i in range(1000000)])
 sample.setName("BigSample")
-
-# We populate the sample
-for i in range(sample.getSize()):
-    sample[i, 0] = i
-    sample[i, 1] = i
 
 print("sample first point=", repr(sample[0]))
 print("sample last  point=", repr(sample[sample.getSize() - 1]))

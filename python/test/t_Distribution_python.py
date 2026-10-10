@@ -214,6 +214,8 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.0] * 2, [1.0] * 2)]:
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
     validation.skipCharacteristicFunction()  # undefined
+    # Monte Carlo size: standard errors stay well below the assert tolerances
+    validation.setMomentsSamplingSize(100000)
     validation.run()
 
     param = myDist.getParameter()

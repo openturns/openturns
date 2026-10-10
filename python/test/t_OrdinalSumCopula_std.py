@@ -128,6 +128,14 @@ print(
     copula.computeSequentialConditionalQuantile(resCDF),
 )
 
+# check setParameter preserves custom description
+copula.setDescription(["p0", "p1"])
+copula.setParameter(copula.getParameter())
+assert copula.getDescription() == ["p0", "p1"], "description lost by setParameter"
+
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
+validation.setMomentsSamplingSize(100000)
+validation.setDomainSamplingSize(100000)
+validation.setEntropySamplingSize(100000)
 validation.run()
