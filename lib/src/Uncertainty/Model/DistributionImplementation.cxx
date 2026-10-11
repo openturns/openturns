@@ -2072,7 +2072,8 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
       newParameters[i] = initialParameters[i] + eps2;
       cloneDistribution->setParameter(newParameters);
       rightPDF = cloneDistribution->computePDF(point);
-      delta += eps2;
+      // The step is now from the center point to the recomputed right point
+      delta = eps2;
       // And the left point will be the center point
       newParameters[i] = initialParameters[i];
       cloneDistribution->setParameter(newParameters);
@@ -2239,7 +2240,8 @@ Point DistributionImplementation::computeCDFGradient(const Point & point) const
       newParameters[i] = initialParameters[i] + eps2;
       cloneDistribution->setParameter(newParameters);
       rightCDF = cloneDistribution->computeCDF(point);
-      delta += eps2;
+      // The step is now from the center point to the recomputed right point
+      delta = eps2;
       // And the left point will be the center point
       newParameters[i] = initialParameters[i];
       cloneDistribution->setParameter(newParameters);
