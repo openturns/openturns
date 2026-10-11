@@ -1216,6 +1216,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DiscreteCompoundDistribution parameters //
   addAsScalar("DiscreteCompoundDistribution-DefaultEpsilon", 1.0e-12);
+  addAsUnsignedInteger("DiscreteCompoundDistribution-MaximumSize", 1048576);
 
   // ExtremeValueCopula parameters //
   addAsBool("ExtremeValueCopula-CheckPickandFunction", true);
