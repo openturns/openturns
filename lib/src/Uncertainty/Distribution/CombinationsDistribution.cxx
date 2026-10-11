@@ -200,7 +200,6 @@ Scalar CombinationsDistribution::computeCDF(const Point & point) const
 
   Point sortedPoint(k_);
   Scalar oldX = n_ - 1.0;
-  if (sortedPoint[k_ - 1] < -supportEpsilon_) return 0.0;
   for (SignedInteger i = k_ - 1; i >= 0; --i)
   {
     const Scalar x = std::min(oldX, floor(point[i] + supportEpsilon_));
@@ -347,14 +346,14 @@ void CombinationsDistribution::computeMean() const
 void CombinationsDistribution::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    covariance_(i, i) = getMarginal(i).getCovariance()(0, 0);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
     for (UnsignedInteger i = 0; i < j; ++i)
     {
       const CovarianceMatrix covIJ(getMarginal({i, j}).getCovariance());
       covariance_(i, j) = covIJ(0, 1);
-      covariance_(j, j) = covIJ(1, 1);
-      covariance_(i, i) = covIJ(0, 0);
     }
   }
   isAlreadyComputedCovariance_ = true;
