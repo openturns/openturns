@@ -236,6 +236,8 @@ UnsignedInteger BernsteinCopulaFactory::FindBestBinNumberSequential(const Functi
       bestMValue = mValue;
       bestM = m;
     }
+    // Stop at mMax: the increment below would wrap a maximal mMax to zero
+    if (m == mMax) break;
   } // m
   return bestM;
 }
