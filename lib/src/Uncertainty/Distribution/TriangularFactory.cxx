@@ -60,19 +60,20 @@ Distribution TriangularFactory::build(const Point & parameters) const
 
 Triangular TriangularFactory::buildAsTriangular(const Sample & sample) const
 {
-  const Scalar size = sample.getSize();
+  const UnsignedInteger size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Triangular distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
 
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   const Scalar mean = sample.computeMean()[0];
-  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a Triangular distribution if data contains NaN or Inf";
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Triangular distribution from a constant sample.";
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
   const Scalar m = 3.0 * sample.computeMean()[0] - a - b;
+  if (!(m >= a) || !(m <= b)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Triangular distribution from this sample by the method of moments, the estimated mode m=" << m << " lies outside [a, b]=[" << a << ", " << b << "]";
   Triangular result(a, m, b);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);
