@@ -540,7 +540,10 @@ void ChristoffelSubsampleExperiment::barrierSelection(const Sample & pool,
     // Re-validate the current levels after growth, then advance inside the spectrum
     lower = std::min(lower, minEig - regularization);
     upper = std::max(upper, maxEig + regularization);
-    const Scalar nextLower = std::min(lower + barrierStep, minEig - regularization);
+    // Cap the step at half the remaining gap: a barrierStep larger than the
+    // gap would stall nextLower on lower, freeze the lower potential and
+    // skip every candidate. The midpoint stays strictly inside (lower, minEig).
+    const Scalar nextLower = std::min(lower + barrierStep, lower + 0.5 * (minEig - lower));
     const Scalar nextUpper = std::max(upper + barrierStep, maxEig + regularization);
     SymmetricMatrix lowerBase(current);
     SymmetricMatrix lowerCurrent(current);

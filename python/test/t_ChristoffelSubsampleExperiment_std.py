@@ -86,6 +86,19 @@ try:
 finally:
     ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
 
+# Barrier with a step larger than the early spectral gap: the lower barrier
+# is capped at half the remaining gap instead of stalling on its level
+ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 2.0)
+try:
+    bigStepSample, bigStepWeights = experiment.generateWithWeights()
+    assert bigStepSample.getSize() == 50
+    assert len(bigStepWeights) == 50
+    assert all(w > 0.0 for w in bigStepWeights)
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0)
+    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
+
 # small space dimension (m=15): barrier schedule stays inside the spectrum
 smallExperiment = otexp.ChristoffelSubsampleExperiment(basis, 15)
 assert smallExperiment.getSpaceDimension() == 15
