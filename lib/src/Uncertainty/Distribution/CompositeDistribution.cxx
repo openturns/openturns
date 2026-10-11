@@ -180,6 +180,7 @@ void CompositeDistribution::update()
   // First, compute the roots of the gradient
   const Scalar xMin = antecedent_.getRange().getLowerBound()[0] + ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   const Scalar xMax = antecedent_.getRange().getUpperBound()[0] - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  if (!std::isfinite(xMin) || !std::isfinite(xMax)) throw NotDefinedException(HERE) << "Error: cannot build a CompositeDistribution over an antecedent with infinite range bounds";
   bounds_ = Point(1, xMin);
   try
   {
