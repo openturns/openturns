@@ -23,7 +23,7 @@ description: 'OpenTURNS source and contribution conventions: Python code formatt
 - C++ tests are not necessary for APIs that can be tested in Python
 - Use const keyword wherever possible
 - Use assigment operator for simple types initizalization (bool, int, double) but copy ctor for class types initialization.
-- Use explicit keyword for class ctors that reduces to a single argument (With or without optional arguments).
+- Use explicit keyword for class ctors that reduces to a single argument (With or without optional arguments), except when inheriting TypedInterfaceObject.
 - Initizalize simple types class attributes from header files (with assigment operator)
 
 ## Python
