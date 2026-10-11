@@ -181,6 +181,9 @@ private:
   /** Compute safe products x^n * phi(x) for moment formulas */
   void computeBoundProducts();
 
+  /** Recompute all the derived quantities after a parameter change */
+  void update();
+
   /** The main parameter set of the distribution */
   Scalar mu_ = 0.0;
   Scalar sigma_ = 0.0;

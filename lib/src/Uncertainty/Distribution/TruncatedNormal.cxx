@@ -36,6 +36,7 @@ static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
   : DistributionImplementation()
+  , mu_(0.0)
   , sigma_(1.0)
   , a_(-1.0)
   , b_(1.0)
@@ -70,41 +71,9 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
   setName("TruncatedNormal");
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with sigma <=0. Here, sigma=" << sigma;
   if (!(a < b)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution with a >= b. Here, a=" << a << " and b=" << b;
-  setSigma(sigma);
+  sigma_ = sigma;
   setDimension(1);
-  const Scalar iSigma = 1.0 / sigma_;
-  aNorm_ = (a_ - mu_) * iSigma;
-  bNorm_ = (b_ - mu_) * iSigma;
-  PhiANorm_ = DistFunc::pNormal(aNorm_);
-  PhiBNorm_ = DistFunc::pNormal(bNorm_);
-  const Scalar denominator = PhiBNorm_ - PhiANorm_;
-  // A positive denominator, i.e.  PhiANorm_ < PhiBNorm_, will switch all the methods to the classical implementations,
-  // otherwise we use a log-scale approach, less accurate but with a wider range.
-  if (!(denominator <= 0.0))
-  {
-    normalizationFactor_ = 1.0 / denominator;
-    normalizationFactorIsLog_ = false;
-  }
-  else
-  {
-    if ((bNorm_ < 0.0) || (std::abs(aNorm_) >= std::abs(bNorm_)))
-    {
-      const Scalar logCDFA = DistFunc::logpNormal(aNorm_);
-      const Scalar logCDFB = DistFunc::logpNormal(bNorm_);
-      normalizationFactor_ = -(logCDFB + log1p(-std::exp(logCDFA - logCDFB)));
-    }
-    else
-    {
-      const Scalar logComplementaryCDFA = DistFunc::logpNormal(aNorm_, true);
-      const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
-      normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
-    }
-    normalizationFactorIsLog_ = true;
-  }
-  phiANorm_ = DistFunc::dNormal(aNorm_);
-  phiBNorm_ = DistFunc::dNormal(bNorm_);
-  computeBoundProducts();
-  computeRange();
+  update();
 }
 
 
@@ -611,8 +580,7 @@ void TruncatedNormal::setMu(const Scalar mu)
   if (mu != mu_)
   {
     mu_ = mu;
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
+    update();
   }
 }
 
@@ -629,8 +597,7 @@ void TruncatedNormal::setSigma(const Scalar sigma)
   if (sigma != sigma_)
   {
     sigma_ = sigma;
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
+    update();
   }
 }
 
@@ -727,6 +694,46 @@ void TruncatedNormal::setB(const Scalar b)
 Scalar TruncatedNormal::getB() const
 {
   return b_;
+}
+
+/* Recompute all the derived quantities after a parameter change */
+void TruncatedNormal::update()
+{
+  const Scalar iSigma = 1.0 / sigma_;
+  aNorm_ = (a_ - mu_) * iSigma;
+  bNorm_ = (b_ - mu_) * iSigma;
+  PhiANorm_ = DistFunc::pNormal(aNorm_);
+  PhiBNorm_ = DistFunc::pNormal(bNorm_);
+  const Scalar denominator = PhiBNorm_ - PhiANorm_;
+  // A positive denominator, i.e.  PhiANorm_ < PhiBNorm_, will switch all the methods to the classical implementations,
+  // otherwise we use a log-scale approach, less accurate but with a wider range.
+  if (!(denominator <= 0.0))
+  {
+    normalizationFactor_ = 1.0 / denominator;
+    normalizationFactorIsLog_ = false;
+  }
+  else
+  {
+    if ((bNorm_ < 0.0) || (std::abs(aNorm_) >= std::abs(bNorm_)))
+    {
+      const Scalar logCDFA = DistFunc::logpNormal(aNorm_);
+      const Scalar logCDFB = DistFunc::logpNormal(bNorm_);
+      normalizationFactor_ = -(logCDFB + log1p(-std::exp(logCDFA - logCDFB)));
+    }
+    else
+    {
+      const Scalar logComplementaryCDFA = DistFunc::logpNormal(aNorm_, true);
+      const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
+      normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
+    }
+    normalizationFactorIsLog_ = true;
+  }
+  phiANorm_ = DistFunc::dNormal(aNorm_);
+  phiBNorm_ = DistFunc::dNormal(bNorm_);
+  computeBoundProducts();
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
+  computeRange();
 }
 
 /* Method save() stores the object through the StorageManager */

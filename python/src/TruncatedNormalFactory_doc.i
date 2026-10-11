@@ -58,7 +58,7 @@ where :math:`\bar{u}` is the sample mean of the scaled sample and
 
 Then the likelihood maximization optimization algorithm is used to fit the 
 scaled truncated normal distribution. 
-The `TruncatedNormalFactory-SigmaLowerBound` key in the :class:`~openturns.ResourceMap` 
+The ``TruncatedNormalFactory-SigmaLowerBound`` key in the :class:`~openturns.ResourceMap`
 is used as a lower bound for the scaled standard deviation. 
 
 Let :math:`\epsilon` be computed from the sample size:
