@@ -181,8 +181,11 @@ void JoeCopula::setPsi2(const Scalar psi2)
 {
   if (!(psi2 >= 0.0) || !(psi2 <= 1.0))
     throw InvalidArgumentException(HERE) << "Psi2 must be in [0, 1]";
-  psi2_ = psi2;
-  updatePickandFunction();
+  if (psi2 != psi2_)
+  {
+    psi2_ = psi2;
+    updatePickandFunction();
+  }
 }
 
 /* Method save() stores the object through the StorageManager */
