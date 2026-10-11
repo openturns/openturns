@@ -315,6 +315,7 @@ void FisherSnedecor::load(Advocate & adv)
   adv.loadAttribute( "d1_", d1_ );
   adv.loadAttribute( "d2_", d2_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
+  update();
   computeRange();
 }
 

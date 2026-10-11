@@ -15,7 +15,7 @@ estimator.
 The optimization sets lower bounds for the :math:`d_1` and :math:`d_2` parameters 
 in order to ensure that :math:`d_1>0` and :math:`d_2>0`. 
 The default values for these lower bounds are from the :class:`~openturns.ResourceMap` 
-keys `FisherSnedecorFactory-D1LowerBound` and `FisherSnedecorFactory-D2LowerBound`. 
+keys ``FisherSnedecorFactory-D1LowerBound`` and ``FisherSnedecorFactory-D2LowerBound``.
 
 **Moment based estimator:**
 
