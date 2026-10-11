@@ -32,7 +32,7 @@ def check_bernstein_copula(est_copula):
     assert est_copula.isCopula()
     dimension = est_copula.getDimension()
     for d in range(dimension):
-        assert est_copula.isCopula()
+        assert est_copula.getMarginal(d).isCopula()
 
 
 # reference selections and errors, seeded run
@@ -89,3 +89,14 @@ with ott.assert_raises(TypeError):
     factory.build(small_sample, "UnknownMethod")
 with ott.assert_raises(ValueError):
     factory.build(small_sample, 0)
+
+# Single-candidate search: MinM == MaxM evaluates once and stops
+ot.ResourceMap.SetAsUnsignedInteger("BernsteinCopulaFactory-MinM", 3)
+ot.ResourceMap.SetAsUnsignedInteger("BernsteinCopulaFactory-MaxM", 3)
+try:
+    ot.RandomGenerator.SetSeed(0)
+    singleSample = ot.GumbelCopula(3.0).getSample(size)
+    assert ot.BernsteinCopulaFactory.ComputeLogLikelihoodBinNumber(singleSample) == 3
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("BernsteinCopulaFactory-MinM", 2)
+    ot.ResourceMap.SetAsUnsignedInteger("BernsteinCopulaFactory-MaxM", 1)
