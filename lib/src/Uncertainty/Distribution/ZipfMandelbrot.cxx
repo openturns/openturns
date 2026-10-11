@@ -240,6 +240,7 @@ void ZipfMandelbrot::setQ(const Scalar q)
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;
+    computeHarmonicNumbers();
   }
 }
 
@@ -258,6 +259,7 @@ void ZipfMandelbrot::setS(const Scalar s)
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;
+    computeHarmonicNumbers();
   }
 }
 
@@ -276,6 +278,7 @@ void ZipfMandelbrot::setN(const UnsignedInteger n)
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;
+    computeHarmonicNumbers();
     computeRange();
   }
 }
