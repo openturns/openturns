@@ -621,7 +621,14 @@ Scalar FiniteDiscreteDistribution::computeScalarQuantile(const Scalar prob,
   UnsignedInteger index = tail ? cumulativeProbabilities_.getSize() - 1 : 0;
   const Scalar p = tail ? 0.5 - (prob - 0.5) : prob;
   if (tail)
-    while (p < 1.0 && index > 0 && cumulativeProbabilities_[index] > p) --index;
+  {
+    // Allow for a small tolerance when comparing probabilities: tail levels
+    // are often obtained as p = 1 - q with q itself resulting from a
+    // complementary probability, which introduces roundoff errors of a few
+    // ulps around the jumps of the CDF that must not change the returned atom
+    const Scalar epsilon = 32.0 * SpecFunc::ScalarEpsilon;
+    while (index > 0 && cumulativeProbabilities_[index - 1] + epsilon >= p) --index;
+  }
   else
     while (cumulativeProbabilities_[index] < p) ++index;
   return points_(index, 0);

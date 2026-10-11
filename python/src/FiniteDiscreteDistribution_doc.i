@@ -99,10 +99,10 @@ and adding their weights.
 Notes
 -----
 The :math:`\varepsilon` has a default value associated to the
-:class:`~openturns.ResourceMap` key *Distribution-SupportEpsilon*.
+:class:`~openturns.ResourceMap` key ``Distribution-SupportEpsilon``.
 
 The method is always used for any univariate distributions and for upper
 dimensions, it is only used when the number of points defining the support is
 less than a limit specified by the :class:`~openturns.ResourceMap` key
-*FiniteDiscreteDistribution-SmallSize*. By default, the size limit is equal to :math:`1e4`.
+``FiniteDiscreteDistribution-SmallSize``. By default, the size limit is equal to :math:`1e4`.
 )RAW"

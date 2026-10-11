@@ -9,26 +9,30 @@ ot.TESTPREAMBLE()
 x = [[1.0], [2.0], [3.0], [3.0]]
 p = [0.3, 0.1, 0.6, 0.6]
 distribution = ot.FiniteDiscreteDistribution(x, p)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "FiniteDiscreteDistribution"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert not distribution.isContinuous()
 
 # Has this distribution an independent copula ?
-print("Has independent copula = ", distribution.hasIndependentCopula())
+assert distribution.hasIndependentCopula()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [3.0], 0.0, 0.0)
 
 # Test for sampling
 size = 10
 oneSample = distribution.getSample(size)
-print("oneSample=Ok", repr(oneSample))
+ott.assert_almost_equal(
+    oneSample,
+    [[1.0], [3.0], [3.0], [1.0], [3.0], [3.0], [1.0], [3.0], [3.0], [3.0]],
+    0.0,
+    0.0,
+)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 2.0)
@@ -36,20 +40,32 @@ point = ot.Point(distribution.getDimension(), 2.0)
 # Show PDF and CDF of a point
 pointPDF = distribution.computePDF(point)
 pointCDF = distribution.computeCDF(point)
-print("point= ", repr(point), " pdf= %.12g" % pointPDF, " cdf=", pointCDF)
+ott.assert_almost_equal(point, [2.0], 0.0, 0.0)
+ott.assert_almost_equal(pointPDF, 0.0625, 1e-12, 0.0)
+ott.assert_almost_equal(pointCDF, 0.25, 1e-12, 0.0)
 
 # Get 95% quantile
 quantile = distribution.computeQuantile(0.95)
-print("Quantile=", repr(quantile))
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(quantile, [3.0], 0.0, 0.0)
+ott.assert_almost_equal(distribution.computeEntropy(), 0.702919, 1e-6, 0.0)
 
-print("Standard representative=", distribution.getStandardRepresentative())
-print("parameter=", distribution.getParameter())
-print("parameterDescription=", distribution.getParameterDescription())
+standard = distribution.getStandardRepresentative()
+assert standard.getImplementation().getClassName() == "FiniteDiscreteDistribution"
 parameter = distribution.getParameter()
+ott.assert_almost_equal(parameter, [1.0, 2.0, 3.0, 0.1875, 0.0625, 0.75], 1e-12, 0.0)
+assert list(distribution.getParameterDescription()) == [
+    "X^0_0",
+    "X^0_1",
+    "X^0_2",
+    "probabilities_0",
+    "probabilities_1",
+    "probabilities_2",
+]
 parameter[-1] = 0.3
 distribution.setParameter(parameter)
-print("parameter=", distribution.getParameter())
+ott.assert_almost_equal(
+    distribution.getParameter(), [1.0, 2.0, 3.0, 0.340909, 0.113636, 0.545455], 1e-5, 0.0
+)
 
 # To prevent automatic compaction
 ot.ResourceMap.SetAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 5)
@@ -59,13 +75,18 @@ for i in range(4):
         sample[i, j] = 10 * (i // 3 + 1) + 0.1 * (j + 1)
 
 multivariateUserDefined = ot.FiniteDiscreteDistribution(sample)
-print("Multivariate FiniteDiscreteDistribution=", multivariateUserDefined)
 
 # Has this distribution an independent copula ?
-print("Has independent copula = ", multivariateUserDefined.hasIndependentCopula())
+assert not multivariateUserDefined.hasIndependentCopula()
 
-print("Marginal 0=", multivariateUserDefined.getMarginal(0))
-print("Marginal (2, 0)=", multivariateUserDefined.getMarginal([2, 0]))
+margin0 = multivariateUserDefined.getMarginal(0)
+ott.assert_almost_equal(margin0.computePDF([0.0]), 0.9, 1e-12, 0.0)
+ott.assert_almost_equal(margin0.computePDF([10.1]), 0.075, 1e-12, 0.0)
+ott.assert_almost_equal(margin0.computePDF([20.1]), 0.025, 1e-12, 0.0)
+margins20 = multivariateUserDefined.getMarginal([2, 0])
+ott.assert_almost_equal(margins20.computePDF([0.0, 0.0]), 0.9, 1e-12, 0.0)
+ott.assert_almost_equal(margins20.computePDF([10.3, 10.1]), 0.075, 1e-12, 0.0)
+ott.assert_almost_equal(margins20.computePDF([20.3, 20.1]), 0.025, 1e-12, 0.0)
 
 # cdf bug
 loi_UD = ot.FiniteDiscreteDistribution(
