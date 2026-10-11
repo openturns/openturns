@@ -146,7 +146,7 @@ Scalar KPermutationsDistribution::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar k = point[i];
-    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LowestScalar;
+    if ((k < -supportEpsilon_) || (k > n_ - 1.0 + supportEpsilon_)) return SpecFunc::LowestScalar;
     const UnsignedInteger ik = static_cast< UnsignedInteger > (round(k));
     if (std::abs(k - ik) > supportEpsilon_) return SpecFunc::LowestScalar;
     x[i] = ik;
@@ -356,6 +356,7 @@ void KPermutationsDistribution::setK(const UnsignedInteger k)
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;
+    computeRange();
   }
 }
 
