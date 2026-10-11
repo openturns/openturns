@@ -54,5 +54,5 @@ Parameters
 A : :class:`~openturns.Function`
     The Pickand function of the copula. It must be a convex function :math:`A` such that :math:`\forall t\in[0,1],\:\max(t, 1-t)\leq A(t)\leq 1`.
 check : bool
-    Flag to tell if the properties of a Pickand function are verified by the given function. Default value is *True*, given by the *ExtremeValueCopula-CheckPickandFunction* entry in the :class:`~openturns.ResourceMap`, and the test is done pointwise on a regular grid of size given by the *ExtremeValueCopula-CheckGridSize* entry in the :class:`~openturns.ResourceMap`.
+    Flag to tell if the properties of a Pickand function are verified by the given function. Default value is *True*, given by the ``ExtremeValueCopula-CheckPickandFunction`` entry in the :class:`~openturns.ResourceMap`, and the test is done pointwise on a regular grid of size given by the ``ExtremeValueCopula-CheckGridSize`` entry in the :class:`~openturns.ResourceMap`.
 )RAW"

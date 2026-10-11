@@ -131,7 +131,10 @@ Scalar ExtremeValueCopula::computePDF(const Point & point) const
   const Scalar A = pickandFunction_(ratio)[0];
   const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
-  return ((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]) * std::exp(logUV * A) / (logUV * logUV * u * v);
+  // The numerator is mathematically nonnegative for a valid Pickands function, roundoff or an invalid function can make it negative
+  const Scalar numerator = ((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]);
+  if (!(numerator > 0.0)) return 0.0;
+  return numerator * std::exp(logUV * A) / (logUV * logUV * u * v);
 }
 
 /* Get the log-PDF of the distribution */
@@ -157,7 +160,9 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   if (!std::isfinite(dA)) return SpecFunc::LowestScalar;
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
   if (!std::isfinite(d2A)) return SpecFunc::LowestScalar;
-  return logUV * A - 2.0 * std::log(-logUV) - logUV + std::log((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]);
+  const Scalar numerator = (A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0];
+  if (!(numerator > 0.0)) return SpecFunc::LowestScalar;
+  return logUV * A - 2.0 * std::log(-logUV) - logUV + std::log(numerator);
 }
 
 /* Get the CDF of the distribution */
