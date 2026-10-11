@@ -68,6 +68,21 @@ assert distribution.computeSurvivalFunction(10.0) == 0.0
 distribution = ot.Binomial(3, 0.5)
 assert distribution.computeScalarQuantile(0.9, True) == 0
 
+# degenerate distributions return their single atom at every level
+assert ot.Binomial(3, 0.0).computeScalarQuantile(0.0, True) == 0.0
+assert ot.Binomial(3, 0.0).computeScalarQuantile(0.0, False) == 0.0
+assert ot.Binomial(3, 0.0).computeScalarQuantile(0.7, True) == 0.0
+assert ot.Binomial(3, 1.0).computeScalarQuantile(0.0, False) == 3.0
+assert ot.Binomial(3, 1.0).computeScalarQuantile(0.0, True) == 3.0
+assert ot.Binomial(3, 1.0).computeScalarQuantile(0.7, False) == 3.0
+
+# first parameter range excludes 2^64 and NaN
+degenerate = ot.Binomial(3, 0.5)
+with ott.assert_raises(TypeError):
+    degenerate.setParameter([1.8446744073709552e19, 0.5])
+with ott.assert_raises(TypeError):
+    degenerate.setParameter([float("nan"), 0.5])
+
 # %%
 print("Check on dataset")
 separator = ","
