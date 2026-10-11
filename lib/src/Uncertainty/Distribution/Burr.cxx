@@ -140,7 +140,10 @@ Scalar Burr::computeLogPDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return SpecFunc::LowestScalar;
   const Scalar logX = std::log(x);
-  return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
+  const Scalar y = c_ * logX;
+  // Stable evaluation of log1p(exp(y)): use y + log1p(exp(-y)) for y > 0 to avoid overflow
+  const Scalar log1pExpY = (y <= 0.0 ? log1p(std::exp(y)) : y + log1p(std::exp(-y)));
+  return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1pExpY;
 }
 
 /* Get the CDF of the distribution */
@@ -150,7 +153,9 @@ Scalar Burr::computeCDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return -expm1(-k_ * log1p(std::exp(c_ * std::log(x))));
+  const Scalar y = c_ * std::log(x);
+  const Scalar log1pExpY = (y <= 0.0 ? log1p(std::exp(y)) : y + log1p(std::exp(-y)));
+  return -expm1(-k_ * log1pExpY);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -240,6 +245,7 @@ void Burr::computeCovariance() const
 /* Get the moments of the standardized distribution */
 Point Burr::getStandardMoment(const UnsignedInteger n) const
 {
+  if (!(k_ > 1.0 * n / c_)) throw NotDefinedException(HERE) << "Error: the standard moment of order " << n << " is defined only for k > n / c, here k=" << k_ << ", c=" << c_ << " and n=" << n;
   return Point(1, std::exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
 }
 
