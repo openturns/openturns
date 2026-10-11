@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <cmath>
 #include "openturns/GumbelFactory.hxx"
 #include "openturns/GumbelMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -69,6 +70,8 @@ Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (!std::isfinite(mu) || !std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Gumbel distribution if data contains NaN or Inf";
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Gumbel distribution from a constant sample.";
   const Point parameters = {mu, sigma};
   Gumbel result(buildAsGumbel(GumbelMuSigma()(parameters)));
   result.setDescription(sample.getDescription());

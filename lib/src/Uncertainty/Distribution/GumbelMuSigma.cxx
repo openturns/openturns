@@ -140,6 +140,7 @@ Point GumbelMuSigma::inverse(const Point & inP) const
 void GumbelMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  if (!(inP[1] > 0.0)) throw InvalidArgumentException(HERE) << "Sigma must be > 0, here sigma=" << inP[1];
   mu_ = inP[0];
   sigma_ = inP[1];
 }
