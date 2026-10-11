@@ -78,7 +78,7 @@ Bool Dirac::isDiscrete() const
 /* Tell if the distribution is integer valued */
 Bool Dirac::isIntegral() const
 {
-  return true;
+  return point_[0] == std::floor(point_[0]);
 }
 
 /* Comparison operator */
