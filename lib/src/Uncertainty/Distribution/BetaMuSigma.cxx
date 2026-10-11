@@ -124,6 +124,9 @@ Point BetaMuSigma::operator () (const Point & inP) const
   const Scalar b = inP[3];
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+  if (!(mu > a)) throw InvalidArgumentException(HERE) << "mu must be greater than a, here mu=" << mu << " and a=" << a;
+  if (!(mu < b)) throw InvalidArgumentException(HERE) << "mu must be less than b, here mu=" << mu << " and b=" << b;
+  if (!(sigma * sigma < (mu - a) * (b - mu))) throw InvalidArgumentException(HERE) << "sigma is too large, must satisfy sigma^2 < (mu - a) * (b - mu), here sigma=" << sigma << ", mu=" << mu << ", a=" << a << ", b=" << b;
 
   const Scalar alpha = ((mu - a) / (b - a)) * (((b - mu) * (mu - a)) / (sigma * sigma) - 1.0);
   const Scalar beta = (((b - mu) * (mu - a)) / (sigma * sigma) - 1.0) * ((b - mu) / (b - a));
@@ -161,10 +164,18 @@ Point BetaMuSigma::inverse(const Point & inP) const
 void BetaMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
-  mu_ = inP[0];
-  sigma_ = inP[1];
-  a_ = inP[2];
-  b_ = inP[3];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
+  const Scalar a = inP[2];
+  const Scalar b = inP[3];
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  if (!(mu > a)) throw InvalidArgumentException(HERE) << "mu must be greater than a, here mu=" << mu << " and a=" << a;
+  if (!(mu < b)) throw InvalidArgumentException(HERE) << "mu must be less than b, here mu=" << mu << " and b=" << b;
+  if (!(sigma * sigma < (mu - a) * (b - mu))) throw InvalidArgumentException(HERE) << "sigma is too large, must satisfy sigma^2 < (mu - a) * (b - mu), here sigma=" << sigma << ", mu=" << mu << ", a=" << a << ", b=" << b;
+  mu_ = mu;
+  sigma_ = sigma;
+  a_ = a;
+  b_ = b;
 
 }
 

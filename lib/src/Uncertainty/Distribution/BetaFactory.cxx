@@ -74,6 +74,8 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
 
   const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (!std::isfinite(mu) || !std::isfinite(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
+  if (!(sigma * sigma < (mu - a) * (b - mu))) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution from the given sample by the method of moments, the sample is over-dispersed for the estimated bounds";
   Beta result(buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate()));
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);
