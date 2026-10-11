@@ -18,6 +18,8 @@ assert not distribution.isContinuous()
 # Non-integer atoms are not integral
 assert not distribution.isIntegral()
 assert ot.Dirac(2.0).isIntegral()
+assert ot.Dirac([2.0, 3.0]).isIntegral()
+assert not ot.Dirac([2.0, 2.3]).isIntegral()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
