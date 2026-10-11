@@ -7,57 +7,58 @@ ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 distribution = ot.Geometric(0.7)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "Geometric"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert not distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [1.0], 0.0, 0.0)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 3.0)
-print("Point= ", repr(point))
+ott.assert_almost_equal(point, [3.0], 0.0, 0.0)
 
 # Show PDF and CDF of point
 eps = 1e-5
 # PDF value
 PDF = distribution.computePDF(point)
-print("pdf     =%.6f" % PDF)
+ott.assert_almost_equal(PDF, 0.063, 1e-6, 0.0)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
-print("cdf=%.6f" % CDF)
+ott.assert_almost_equal(CDF, 0.973, 1e-6, 0.0)
 PDFgr = distribution.computePDFGradient(point)
-print("pdf gradient     =", repr(PDFgr))
+ott.assert_almost_equal(PDFgr, [-0.33], 1e-12, 0.0)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
-print("cdf gradient     =", repr(CDFgr))
+ott.assert_almost_equal(CDFgr, [0.27], 1e-12, 0.0)
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(quantile, [3.0], 0.0, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 0.973, 1e-6, 0.0)
+ott.assert_almost_equal(distribution.computeEntropy(), 0.872663, 1e-6, 0.0)
 mean = distribution.getMean()
-print("mean=", repr(mean))
+ott.assert_almost_equal(mean, [1.42857], 1e-5, 0.0)
 standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", repr(standardDeviation))
+ott.assert_almost_equal(standardDeviation, [0.782461], 1e-6, 0.0)
 skewness = distribution.getSkewness()
-print("skewness=", repr(skewness))
+ott.assert_almost_equal(skewness, [2.37346], 1e-5, 0.0)
 kurtosis = distribution.getKurtosis()
-print("kurtosis=", repr(kurtosis))
+ott.assert_almost_equal(kurtosis, [10.6333], 1e-4, 0.0)
 covariance = distribution.getCovariance()
-print("covariance=", repr(covariance))
+ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.612245]), 1e-6, 0.0)
 parameters = distribution.getParametersCollection()
-print("parameters=", repr(parameters))
-print("Standard representative=", distribution.getStandardRepresentative())
+assert len(parameters) == 1
+ott.assert_almost_equal(parameters[0], [0.7], 0.0, 0.0)
+standard = distribution.getStandardRepresentative()
+assert standard.getImplementation().getClassName() == "Geometric"
 
 # computeProbability regression test for discrete distributions
 p = ot.Geometric(0.5).computeProbability(ot.Interval(2, 6))
