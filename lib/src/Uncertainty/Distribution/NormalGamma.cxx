@@ -381,9 +381,9 @@ void NormalGamma::setMu(const Scalar mu)
 {
   if (mu != mu_)
   {
-    mu_ = mu;
-    computeLogNormalization();
-    isAlreadyComputedMean_ = false;
+    const Scalar w = getWeight();
+    *this = NormalGamma(mu, kappa_, alpha_, beta_);
+    setWeight(w);
   }
 }
 
@@ -398,10 +398,9 @@ void NormalGamma::setKappa(const Scalar kappa)
 {
   if (kappa != kappa_)
   {
-    if (!(kappa > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
-    kappa_ = kappa;
-    computeLogNormalization();
-    isAlreadyComputedCovariance_ = false;
+    const Scalar w = getWeight();
+    *this = NormalGamma(mu_, kappa, alpha_, beta_);
+    setWeight(w);
   }
 }
 
@@ -415,11 +414,9 @@ void NormalGamma::setAlpha(const Scalar alpha)
 {
   if (!(alpha == alpha_))
   {
-    if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
-    alpha_ = alpha;
-    computeLogNormalization();
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
+    const Scalar w = getWeight();
+    *this = NormalGamma(mu_, kappa_, alpha, beta_);
+    setWeight(w);
   }
 }
 
@@ -433,11 +430,9 @@ void NormalGamma::setBeta(const Scalar beta)
 {
   if (!(beta == beta_))
   {
-    if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
-    beta_ = beta;
-    computeLogNormalization();
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
+    const Scalar w = getWeight();
+    *this = NormalGamma(mu_, kappa_, alpha_, beta);
+    setWeight(w);
   }
 }
 
@@ -457,6 +452,7 @@ Point NormalGamma::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point NormalGamma::getKurtosis() const
 {
+  if (!(alpha_ > 2.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is not defined for a NormalGamma distribution with alpha<=2, here alpha=" << alpha_;
   Point kurtosis(2);
   kurtosis[0] = 3.0 * (alpha_ + 2.0) / alpha_;
   kurtosis[1] = 3.0 * (alpha_ - 1.0) / (alpha_ - 2.0);
