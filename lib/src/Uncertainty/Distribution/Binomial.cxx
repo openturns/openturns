@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include <limits>
 #include "openturns/Binomial.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
@@ -244,6 +245,7 @@ void Binomial::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Binomial expected 2 parameters, got " << parameter.getSize();
   if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Binomial first parameter n must be an integer, got " << parameter[0];
+  if (!(parameter[0] >= 0.0) || !(parameter[0] <= 1.0 * std::numeric_limits<UnsignedInteger>::max())) throw InvalidArgumentException(HERE) << "the Binomial first parameter n must be nonnegative and finite, got " << parameter[0];
   const Scalar w = getWeight();
   *this = Binomial(parameter[0], parameter[1]);
   setWeight(w);
@@ -319,6 +321,9 @@ Scalar Binomial::computeScalarQuantile(const Scalar prob,
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   if (prob == 0.0) return (tail ? n_ : 0.0);
   if (prob == 1.0) return (tail ? 0.0 : n_);
+  // Degenerate cases: the quantile is the single atom whatever the level
+  if (p_ == 0.0) return 0.0;
+  if (p_ == 1.0) return n_;
   // Initialization by the Cornish-Fisher expansion
   Scalar qNorm = DistFunc::qNormal(prob, tail);
   Scalar gamma1 = getSkewness()[0];
