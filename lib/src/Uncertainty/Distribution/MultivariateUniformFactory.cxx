@@ -61,7 +61,7 @@ Distribution MultivariateUniformFactory::build() const
 
 MultivariateUniform MultivariateUniformFactory::buildAsMultivariateUniform(const Sample & sample) const
 {
-  const Scalar size = sample.getSize();
+  const UnsignedInteger size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a MultivariateUniform distribution from a sample of size < 2";
   const UnsignedInteger dimension = sample.getDimension();
   const Point xMin(sample.getMin());
