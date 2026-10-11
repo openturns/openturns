@@ -123,7 +123,7 @@ Point Pareto::computeDDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
   Point result(1);
-  if (x < beta_) return result;
+  if (x <= beta_) return result;
   result[0] = -alpha_ * (1.0 + alpha_) / (beta_ * beta_) * std::pow(beta_ / x, 2.0 + alpha_);
   return result;
 }
@@ -193,7 +193,7 @@ Point Pareto::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   Point result(3);
   const Scalar x = point[0] - gamma_;
-  if (x < beta_) return result;
+  if (x <= beta_) return result;
   result[0] = alpha_ * alpha_ * std::pow(beta_, alpha_ - 1.0) * std::pow(x, -alpha_ - 1.0);
   result[1] = std::pow(beta_, alpha_) * std::pow(x, -alpha_ - 1.0) * (alpha_ * std::log(beta_) - alpha_ * std::log(x) + 1);
   result[2] = alpha_ * std::pow(beta_, alpha_) * (alpha_ + 1.0) * std::pow(x, -alpha_ - 2.0);
@@ -207,7 +207,7 @@ Point Pareto::computeCDFGradient(const Point & point) const
 
   Point result(3);
   const Scalar x = point[0] - gamma_;
-  if (x < beta_) return result;
+  if (x <= beta_) return result;
   result[0] =  - alpha_ * std::pow(beta_ / x, alpha_) / beta_;
   result[1] = - std::pow(beta_ / x, alpha_) * std::log(beta_ / x);
   result[2] = -alpha_ * std::pow(beta_ / x, alpha_) / x;

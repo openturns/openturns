@@ -100,6 +100,7 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sca
 Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sample & sortedSample, const Scalar gamma) const
 {
   const UnsignedInteger size = sample.getSize();
+  if (!(gamma < sample.getMin()[0])) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution with a shift gamma greater or equal to the sample minimum";
   Sample y(size, 1);
   Sample z(size, 1);
   if (sortedSample.getSize() < size)
