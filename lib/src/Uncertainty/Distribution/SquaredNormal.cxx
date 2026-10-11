@@ -104,6 +104,7 @@ Sample SquaredNormal::getSample(const UnsignedInteger size) const
 /* Get the CDF of the distribution */
 Scalar SquaredNormal::computeCDF(const Point & point) const
 {
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   return 0.5 * (SpecFunc::Erf((std::sqrt(x) + mu_) / (M_SQRT2 * sigma_)) + SpecFunc::Erf((std::sqrt(x) - mu_) / (M_SQRT2 * sigma_)));
@@ -112,6 +113,7 @@ Scalar SquaredNormal::computeCDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar SquaredNormal::computePDF(const Point & point) const
 {
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   Scalar sqrtX = std::sqrt(x);
@@ -149,7 +151,7 @@ void SquaredNormal::computeCovariance() const
 
 void SquaredNormal::computeRange()
 {
-  setRange(Interval(Point(1, 0.0), Point(1, std::pow(mu_ + 8.5 * sigma_, 2.0)),
+  setRange(Interval(Point(1, 0.0), Point(1, std::pow(std::abs(mu_) + 8.5 * sigma_, 2.0)),
                     Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
 }
 
