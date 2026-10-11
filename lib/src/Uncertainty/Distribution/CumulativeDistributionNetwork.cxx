@@ -136,7 +136,7 @@ void CumulativeDistributionNetwork::setDistributionCollection(const Distribution
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const UnsignedInteger nodeSize = graph_.cend_at(i) - graph_.cbegin_at(i);
-    if (coll[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the distribution " << i << " has a dimension=" << size << " which is different from the number of links=" << nodeSize << " starting from red node " << i;
+    if (coll[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the distribution " << i << " has a dimension=" << coll[i].getDimension() << " which is different from the number of links=" << nodeSize << " starting from red node " << i;
     parallel = parallel && coll[i].getImplementation()->isParallel();
   }
   setParallel(parallel);
@@ -157,14 +157,19 @@ void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   // Check the number of distributions
-  if (size != graph.getRedNodes().getSize()) throw InvalidArgumentException(HERE) << "Error: the given graph has a number of red nodes=" << graph_.getRedNodes().getSize() << " different from the collection of distributions size=" << size;
+  if (size != graph.getRedNodes().getSize()) throw InvalidArgumentException(HERE) << "Error: the given graph has a number of red nodes=" << graph.getRedNodes().getSize() << " different from the collection of distributions size=" << size;
   // Check the dimension of the distributions
+  Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger nodeSize = graph.cend_at(i) - graph.cbegin_at(i);
-    if (distributionCollection_[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the number of links=" << nodeSize << " starting from red node " << i << " is different from distribution " << i << " dimension=" << size;
+    if (distributionCollection_[i].getDimension() != nodeSize) throw InvalidArgumentException(HERE) << "Error: the number of links=" << nodeSize << " starting from red node " << i << " is different from distribution " << i << " dimension=" << distributionCollection_[i].getDimension();
+    parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
   }
+  setParallel(parallel);
   graph_ = graph;
+  setDimension(graph_.getBlackNodes().getSize());
+  computeRange();
 }
 
 /* Graph accessor */
