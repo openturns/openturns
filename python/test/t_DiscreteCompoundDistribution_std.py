@@ -62,3 +62,7 @@ validation = ott.DistributionValidation(distribution)
 validation.skipParameters()  # see FiniteDiscreteDistribution
 validation.skipInverseSurvival()  # numerical artifact ?
 validation.run()
+
+# Oversized range products are rejected before conversion
+with ott.assert_raises(TypeError):
+    ot.DiscreteCompoundDistribution(ot.Binomial(2**40), ot.Binomial(2**40))
