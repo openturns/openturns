@@ -186,8 +186,8 @@ Scalar UniformOrderStatistics::computeCDF(const Point & point) const
     if (xReduced[i - 1] <= 0.0)
       return 0.0;
     // If all the components are equal to one, which is equivalent to the
-    // last reduced component being equal to one, then the CDF is one
-    if (xReduced[0] == 1.0)
+    // last reduced component being at least equal to one, then the CDF is one
+    if (xReduced[0] >= 1.0)
       return 1.0;
   }
   // Explore the tree describing the domain of integration
@@ -226,7 +226,7 @@ Point UniformOrderStatistics::computeSequentialConditionalPDF(const Point & x) c
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a sequential conditional PDF at a point of dimension=" << x.getDimension() << " not equal to the distribution dimension=" << dimension_;
   Point result(dimension_);
-  if (!(x[0] >= 0.0) && (x[0] < 1)) return result;
+  if (!((x[0] >= 0.0) && (x[0] < 1.0))) return result;
   result[0] = std::pow(1.0 - x[0], dimension_ - 1.0) / dimension_;
   for (UnsignedInteger k = 1; k < dimension_; ++k)
   {
@@ -269,7 +269,7 @@ Point UniformOrderStatistics::computeSequentialConditionalCDF(const Point & x) c
     const Scalar xKm1 = x[k - 1];
     if (!(x[k] > xKm1)) return result;
     if (!(x[k] < 1.0)) result[k] = 1.0;
-    result[k] = 1.0 - std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k);
+    else result[k] = 1.0 - std::pow((1.0 - x[k]) / (1.0 - xKm1), dimension_ - k);
   }
   return result;
 }
