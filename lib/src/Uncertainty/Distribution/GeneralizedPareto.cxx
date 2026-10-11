@@ -193,7 +193,7 @@ Scalar GeneralizedPareto::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = (point[0] - u_) / sigma_;
   if (z <= 0.0) return 1.0;
-  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
+  if (std::abs(xi_ * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 0.0;
   return std::exp(-log1p(xi_ * z) / xi_);
 }
