@@ -8,61 +8,87 @@ ot.TESTPREAMBLE()
 # Instantiate one distribution object
 dim = 2
 copula = ot.MarshallOlkinCopula()
-
-print("Copula ", repr(copula))
-print("Copula ", copula)
-print("Mean ", repr(copula.getMean()))
-print("Covariance ", repr(copula.getCovariance()))
+assert copula.getClassName() == "MarshallOlkinCopula"
+ott.assert_almost_equal(copula.getMean(), [0.5, 0.5], 0.0, 0.0)
+ott.assert_almost_equal(
+    copula.getCovariance(),
+    ot.CovarianceMatrix(2, [0.0833333, 0.0357144, 0.0357144, 0.0833333]),
+    1e-6,
+    0.0,
+)
 
 # Is this copula an elliptical distribution?
-print("Elliptical distribution= ", copula.isElliptical())
+assert not copula.isElliptical()
 
 # Is this copula elliptical ?
-print("Elliptical copula= ", copula.hasEllipticalCopula())
+assert not copula.hasEllipticalCopula()
 
 # Is this copula independent ?
-print("Independent copula= ", copula.hasIndependentCopula())
+assert not copula.hasIndependentCopula()
+assert not copula.isContinuous()
 
 # Test for specific accessors
-print("alpha=", copula.getAlpha())
-print("beta=", copula.getBeta())
+ott.assert_almost_equal(copula.getAlpha(), 0.5, 0.0, 0.0)
+ott.assert_almost_equal(copula.getBeta(), 0.5, 0.0, 0.0)
 
 # Test for realization of distribution
 oneRealization = copula.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [0.396744, 0.779345], 1e-4, 0.0)
 
 # Test for sampling
 size = 10
 oneSample = copula.getSample(size)
-print("oneSample=", repr(oneSample))
+ott.assert_almost_equal(
+    oneSample,
+    [
+        [0.939781, 0.939781],
+        [0.847651, 0.253049],
+        [0.146966, 0.510342],
+        [0.780578, 0.780578],
+        [0.67373, 0.862132],
+        [0.468643, 0.685629],
+        [0.91154, 0.346468],
+        [0.0442859, 0.436561],
+        [0.175493, 0.175493],
+        [0.964012, 0.913177],
+    ],
+    1e-4,
+    0.0,
+)
 
 # Test for sampling
 size = 10000
 anotherSample = copula.getSample(size)
-print("anotherSample mean=", repr(anotherSample.computeMean()))
-print("anotherSample covariance=", repr(anotherSample.computeCovariance()))
+ott.assert_almost_equal(anotherSample.computeMean(), [0.502468, 0.500984], 1e-4, 0.0)
+ott.assert_almost_equal(
+    anotherSample.computeCovariance(),
+    ot.CovarianceMatrix(2, [0.0842064, 0.0362275, 0.0362275, 0.0843318]),
+    1e-4,
+    0.0,
+)
 
 # Define a point
 point = ot.Point(dim, 0.2)
 
 # Show CDF of point
 pointCDF = copula.computeCDF(point)
-print("Point = ", repr(point), " cdf=%.6f" % pointCDF)
+ott.assert_almost_equal(point, [0.2, 0.2], 0.0, 0.0)
+ott.assert_almost_equal(pointCDF, 0.089442719099991602, 1e-12, 0.0)
 
 # Get 50% quantile
 quantile = copula.computeQuantile(0.5)
-print("Quantile=", repr(quantile))
-print("CDF(quantile)=%.6f" % copula.computeCDF(quantile))
+ott.assert_almost_equal(quantile, [0.629961, 0.629961], 1e-6, 0.0)
+ott.assert_almost_equal(copula.computeCDF(quantile), 0.5, 1e-6, 0.0)
 
 # Get 5% quantile
 quantile = copula.computeQuantile(0.95, True)
-print("Quantile=", repr(quantile))
+ott.assert_almost_equal(quantile, [0.135721, 0.135721], 1e-6, 0.0)
 
 # Get 95% survival function
 inverseSurvival = ot.Point(copula.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f" % copula.computeSurvivalFunction(inverseSurvival)
+ott.assert_almost_equal(inverseSurvival, [0.027249037839104637, 0.027249037839104637], 1e-6, 0.0)
+ott.assert_almost_equal(
+    copula.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 0.0
 )
 # Confidence regions
 """
@@ -72,33 +98,40 @@ interval, threshold = copula.computeMinimumVolumeIntervalWithMarginalProbability
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
     0.95, False
 )
-print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.0, 0.0], 0.0, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [0.966383, 0.966383], 1e-6, 0.0)
+ott.assert_almost_equal(beta, 0.966383, 1e-6, 0.0)
 interval, beta = copula.computeUnilateralConfidenceIntervalWithMarginalProbability(
     0.95, True
 )
-print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.027249037839104637, 0.027249037839104637], 1e-6, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [1.0, 1.0], 0.0, 0.0)
+ott.assert_almost_equal(beta, 0.972751, 1e-6, 0.0)
 
 # Extract the marginals
 for i in range(dim):
     margin = copula.getMarginal(i)
-    print("margin=", repr(margin))
-    print("margin PDF=%.6f" % margin.computePDF(ot.Point(1, 0.25)))
-    print("margin CDF=%.6f" % margin.computeCDF(ot.Point(1, 0.25)))
-    print("margin quantile=", repr(margin.computeQuantile(0.95)))
-    print("margin realization=", repr(margin.getRealization()))
+    assert margin.getImplementation().getClassName() == "IndependentCopula"
+    ott.assert_almost_equal(margin.computePDF(ot.Point(1, 0.25)), 1.0, 0.0, 0.0)
+    ott.assert_almost_equal(margin.computeCDF(ot.Point(1, 0.25)), 0.25, 0.0, 0.0)
+    ott.assert_almost_equal(margin.computeQuantile(0.95), [0.95], 0.0, 0.0)
+
+margin0Realization = copula.getMarginal(0).getRealization()
+ott.assert_almost_equal(margin0Realization, [0.0998232], 1e-6, 0.0)
+margin1Realization = copula.getMarginal(1).getRealization()
+ott.assert_almost_equal(margin1Realization, [0.33856], 1e-6, 0.0)
 
 # Extract a 2-D marginal
 indices = [1, 0]
-print("indices=", repr(indices))
+assert indices == [1, 0]
 margins = copula.getMarginal(indices)
-print("margins=", repr(margins))
-print("margins CDF=%.6f" % margins.computeCDF(ot.Point(2, 0.25)))
+assert margins.getImplementation().getClassName() == "MarginalDistribution"
+ott.assert_almost_equal(margins.computeCDF(ot.Point(2, 0.25)), 0.125, 1e-12, 0.0)
 quantile = ot.Point(margins.computeQuantile(0.95))
-print("margins quantile=", repr(quantile))
-print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
-print("margins realization=", repr(margins.getRealization()))
+ott.assert_almost_equal(quantile, [0.966383, 0.966383], 1e-6, 0.0)
+ott.assert_almost_equal(margins.computeCDF(quantile), 0.95, 1e-6, 0.0)
+marginsRealization = margins.getRealization()
+ott.assert_almost_equal(marginsRealization, [0.29664, 0.868128], 1e-5, 0.0)
 
 # Dependence measures in the three regimes
 print("kendall=", copula.getKendallTau())
