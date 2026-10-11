@@ -212,7 +212,10 @@ Complex WeibullMax::computeCharacteristicFunction(const Scalar x) const
     value += term;
     increasing = norm > oldNorm;
   }
-  value *= std::exp(Complex(0.0, x * gamma_));
+  // X = gamma - beta * W with W a standard Weibull variable, hence the
+  // characteristic function is the location phase times the conjugate of
+  // the standard one, unlike WeibullMin which needs no conjugation
+  value = std::exp(Complex(0.0, x * gamma_)) * std::conj(value);
   return value;
 }
 
