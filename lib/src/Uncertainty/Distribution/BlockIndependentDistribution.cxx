@@ -1006,9 +1006,10 @@ Sample BlockIndependentDistribution::getSupport(const Interval & interval) const
   {
     const UnsignedInteger marginalDimension = distributionCollection_[j].getDimension();
     Indices marginalIndices(marginalDimension);
-    marginalIndices.fill(shift);
+    for (UnsignedInteger k = 0; k < marginalDimension; ++k) marginalIndices[k] = shift + k;
     marginalSupport[j] = distributionCollection_[j].getSupport(interval.getMarginal(marginalIndices));
     marginalSize[j] = marginalSupport[j].getSize();
+    shift += marginalDimension;
   }
   Tuples generator(marginalSize);
   const UnsignedInteger tuplesSize = generator.getSize();
