@@ -102,7 +102,7 @@ PiecewiseLinearDistribution::PiecewiseLinearDistribution(const Point & x,
 Bool PiecewiseLinearDistribution::operator ==(const PiecewiseLinearDistribution & other) const
 {
   if (this == &other) return true;
-  return (x_ == other.x_) && (y_ == other.y_);
+  return hasEqualBase(other) && (x_ == other.x_) && (y_ == other.y_);
 }
 
 Bool PiecewiseLinearDistribution::equals(const DistributionImplementation & other) const
