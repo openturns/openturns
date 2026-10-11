@@ -8,49 +8,50 @@ ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 distribution = ot.Bernoulli(0.7)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "Bernoulli"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert not distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [1.0], 0.0, 0.0)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 0.0)
-print("Point= ", repr(point))
+ott.assert_almost_equal(point, [0.0], 0.0, 0.0)
 
 # PDF value
 PDF = distribution.computePDF(point)
-print("pdf     =%.6f" % PDF)
+ott.assert_almost_equal(PDF, 0.3, 1e-6, 0.0)
 
-# derivative of the PDF with regards the parameters of the distribution
+# CDF value
 CDF = distribution.computeCDF(point)
-print("cdf=%.6f" % CDF)
+ott.assert_almost_equal(CDF, 0.3, 1e-6, 0.0)
+
 # quantile
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(quantile, [1.0], 0.0, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 1.0, 1e-6, 0.0)
+ott.assert_almost_equal(distribution.computeEntropy(), 0.610864, 1e-6, 0.0)
 mean = distribution.getMean()
-print("mean=", repr(mean))
+ott.assert_almost_equal(mean, [0.7], 0.0, 0.0)
 standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", repr(standardDeviation))
+ott.assert_almost_equal(standardDeviation, [0.458258], 1e-6, 0.0)
 skewness = distribution.getSkewness()
-print("skewness=", repr(skewness))
+ott.assert_almost_equal(skewness, [-0.872872], 1e-6, 0.0)
 kurtosis = distribution.getKurtosis()
-print("kurtosis=", repr(kurtosis))
+ott.assert_almost_equal(kurtosis, [1.761905], 1e-6, 0.0)
 covariance = distribution.getCovariance()
-print("covariance=", repr(covariance))
+ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.21]), 1e-12, 0.0)
 parameters = distribution.getParametersCollection()
-print("parameters=", repr(parameters))
-print("Standard representative=", distribution.getStandardRepresentative())
-print("probabilities=", distribution.getProbabilities())
+assert len(parameters) == 1
+ott.assert_almost_equal(parameters[0], [0.7], 0.0, 0.0)
+assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Bernoulli"
+ott.assert_almost_equal(distribution.getProbabilities(), [0.3, 0.7], 1e-12, 0.0)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)

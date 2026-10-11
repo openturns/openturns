@@ -220,7 +220,7 @@ Point Bernoulli::getSkewness() const
 Point Bernoulli::getKurtosis() const
 {
   if ((p_ == 0.0) || (p_ == 1.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is not defined for the Bernoulli distribution when p is zero or one.";
-  return Point(1, 3.0 + (6.0 * p_ * (1.0 - p_) + 1.0) / (p_ * (1.0 - p_)));
+  return Point(1, 3.0 + (1.0 - 6.0 * p_ * (1.0 - p_)) / (p_ * (1.0 - p_)));
 }
 
 /* Compute the covariance of the distribution */
@@ -312,6 +312,7 @@ void Bernoulli::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
   adv.loadAttribute( "p_", p_ );
+  computeRange();
 }
 
 END_NAMESPACE_OPENTURNS
