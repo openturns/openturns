@@ -160,7 +160,7 @@ Scalar Hypergeometric::computeCDF(const Point & point) const
   const Scalar k = point[0];
   if (k < (k_ + m_ > n_ ? k_ + m_ - n_ : 0.0) - supportEpsilon_) return 0.0;
   if (k > std::min(k_, m_) + supportEpsilon_) return 1.0;
-  return DistFunc::pHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(round(k)), false);
+  return DistFunc::pHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(std::floor(k)), false);
 }
 
 Scalar Hypergeometric::computeComplementaryCDF(const Point & point) const
@@ -170,7 +170,7 @@ Scalar Hypergeometric::computeComplementaryCDF(const Point & point) const
   const Scalar k = point[0];
   if (k < (k_ + m_ > n_ ? k_ + m_ - n_ : 0.0) - supportEpsilon_) return 1.0;
   if (k > std::min(k_, m_) + supportEpsilon_) return 0.0;
-  return DistFunc::pHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(round(k)), true);
+  return DistFunc::pHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(std::floor(k)), true);
 }
 
 /* Get the PDF gradient of the distribution */
@@ -347,7 +347,7 @@ UnsignedInteger Hypergeometric::getM() const
 void Hypergeometric::computeRange()
 {
   if (k_ + m_ > n_) setRange(Interval(k_ + m_ - n_, std::min(k_, m_)));
-  setRange(Interval(0.0, std::min(k_, m_)));
+  else setRange(Interval(0.0, std::min(k_, m_)));
 }
 
 /* Compute the probability table of the distribution */
