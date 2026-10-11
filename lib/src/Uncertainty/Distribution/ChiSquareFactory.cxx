@@ -72,6 +72,7 @@ ChiSquare ChiSquareFactory::buildAsChiSquare(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a ChiSquare distribution from a constant sample.";
+  if (xMin < 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a ChiSquare distribution from a sample with negative values, here min=" << xMin;
   ChiSquare result(mean);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);

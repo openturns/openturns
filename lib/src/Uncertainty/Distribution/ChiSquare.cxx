@@ -223,7 +223,8 @@ Point ChiSquare::computeCDFGradient(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return cdfGradient;
   Scalar eps = std::cbrt(cdfEpsilon_);
-  cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + eps), 0.5 * x) - DistFunc::pGamma(0.5 * (nu_ - eps), 0.5 * x)) / (2.0 * eps);
+  const Scalar epsNu = std::min(eps, 0.5 * nu_);
+  cdfGradient[0] = (DistFunc::pGamma(0.5 * (nu_ + epsNu), 0.5 * x) - DistFunc::pGamma(0.5 * (nu_ - epsNu), 0.5 * x)) / (2.0 * epsNu);
   return cdfGradient;
 }
 
@@ -318,6 +319,7 @@ void ChiSquare::load(Advocate & adv)
   DistributionImplementation::load(adv);
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
+  update();
   computeRange();
 }
 
