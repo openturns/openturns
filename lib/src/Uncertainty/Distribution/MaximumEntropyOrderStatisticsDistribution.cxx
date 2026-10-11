@@ -19,6 +19,7 @@
  *
  */
 #include <cmath>
+#include <limits>
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"
 #include "openturns/Beta.hxx"
 #include "openturns/MarginalUniformOrderStatistics.hxx"
@@ -99,7 +100,7 @@ MaximumEntropyOrderStatisticsDistribution::MaximumEntropyOrderStatisticsDistribu
 Bool MaximumEntropyOrderStatisticsDistribution::operator ==(const MaximumEntropyOrderStatisticsDistribution & other) const
 {
   if (this == &other) return true;
-  return hasEqualBase(other) && (distributionCollection_ == other.distributionCollection_);
+  return hasEqualBase(other) && (distributionCollection_ == other.distributionCollection_) && (partition_ == other.partition_) && (useApproximation_ == other.useApproximation_);
 }
 
 Bool MaximumEntropyOrderStatisticsDistribution::equals(const DistributionImplementation & other) const
@@ -583,6 +584,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
   // There are N^{d-1} integration points to compute:
   // I = \int_{lb_1}^{x_1}\int_{\max(t_1, lb_2)}^{x_2}\dots\int_{\max(t_{d-2}, lb_{d-1})}^{x_{d-1}}F(x_d|t_1,\dots,t_{d-1})pdf(t_1,\dots,t_{d-1})dt_1\dots dt_{d-1}
   const UnsignedInteger marginalNodesNumber = getIntegrationNodesNumber();
+  if (1.0 * (dimension - 1) * std::log(1.0 * marginalNodesNumber) > std::log(1.0 * std::numeric_limits<UnsignedInteger>::max())) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
   const UnsignedInteger size = std::pow(static_cast< Scalar > (marginalNodesNumber), static_cast< Scalar > (dimension - 1));
   Indices indices(dimension, 0);
   Indices marginalIndices(dimension - 1);
