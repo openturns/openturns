@@ -159,7 +159,9 @@ Bool ArchimedeanCopula::hasEllipticalCopula() const
 /* Tell if the distribution has independent copula */
 Bool ArchimedeanCopula::hasIndependentCopula() const
 {
-  throw NotYetImplementedException(HERE) << "In ArchimedeanCopula::hasIndependentCopula() const";
+  // The generic case is not independent; subclasses modeling independence
+  // (Clayton, Frank, Gumbel, AliMikhailHaq) override this method
+  return false;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
