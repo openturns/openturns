@@ -142,3 +142,18 @@ validation.skipParameters()  # slow
 validation.skipConditional()  # FIXME
 validation.skipTransformation()  # FIXME
 validation.run()
+
+# CDF grid overflow is rejected in integer arithmetic before any allocation
+highDim = ot.MaximumEntropyOrderStatisticsDistribution(
+    [ot.Uniform(0.0, float(i + 1)) for i in range(17)]
+)
+ot.ResourceMap.SetAsBool(
+    "MaximumEntropyOrderStatisticsDistribution-UseApproximation", False
+)
+try:
+    with ott.assert_raises(TypeError):
+        highDim.computeCDF([0.1 * (i + 1) for i in range(17)])
+finally:
+    ot.ResourceMap.SetAsBool(
+        "MaximumEntropyOrderStatisticsDistribution-UseApproximation", True
+    )

@@ -584,8 +584,20 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeCDF(const Point & point
   // There are N^{d-1} integration points to compute:
   // I = \int_{lb_1}^{x_1}\int_{\max(t_1, lb_2)}^{x_2}\dots\int_{\max(t_{d-2}, lb_{d-1})}^{x_{d-1}}F(x_d|t_1,\dots,t_{d-1})pdf(t_1,\dots,t_{d-1})dt_1\dots dt_{d-1}
   const UnsignedInteger marginalNodesNumber = getIntegrationNodesNumber();
-  if (1.0 * (dimension - 1) * std::log(1.0 * marginalNodesNumber) > std::log(1.0 * std::numeric_limits<UnsignedInteger>::max())) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
-  const UnsignedInteger size = std::pow(static_cast< Scalar > (marginalNodesNumber), static_cast< Scalar > (dimension - 1));
+  // Grid size N^(d-1) in integer arithmetic: check each multiplication
+  // against max / N first. The floating-point comparison could accept 2^64
+  // (max rounds up to it) and so could the pow() conversion below it.
+  // A null nodes number gives an empty grid, as the pow() form did.
+  UnsignedInteger size = 0;
+  if ((dimension <= 1) || (marginalNodesNumber > 0))
+  {
+    size = 1;
+    for (UnsignedInteger k = 1; k < dimension; ++k)
+    {
+      if (size > std::numeric_limits<UnsignedInteger>::max() / marginalNodesNumber) throw InvalidArgumentException(HERE) << "Error: the CDF computation requires " << marginalNodesNumber << "^" << dimension - 1 << " integration points, more than supported";
+      size *= marginalNodesNumber;
+    }
+  }
   Indices indices(dimension, 0);
   Indices marginalIndices(dimension - 1);
   marginalIndices.fill();
