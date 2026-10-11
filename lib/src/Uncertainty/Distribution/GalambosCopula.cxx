@@ -137,7 +137,8 @@ void GalambosCopula::setTheta(const Scalar theta)
 /* Tell if the distribution has independent copula */
 Bool GalambosCopula::hasIndependentCopula() const
 {
-  return (theta_ == 0.0);
+  // The parameter is strictly positive, the independent case is never reached
+  return false;
 }
 
 /* Method save() stores the object through the StorageManager */
