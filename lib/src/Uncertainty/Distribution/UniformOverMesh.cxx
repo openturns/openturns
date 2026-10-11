@@ -145,6 +145,7 @@ Sample UniformOverMesh::getSample(const UnsignedInteger size) const
       const UnsignedInteger index = indices[n];
       DistFunc::rUniformSegment(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), dimension, &result(n, 0));
     } // n
+    result.setDescription(getDescription());
     return result;
   } // dimension == 1
   if (dimension == 2)
@@ -154,6 +155,7 @@ Sample UniformOverMesh::getSample(const UnsignedInteger size) const
       const UnsignedInteger index = indices[n];
       DistFunc::rUniformTriangle(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), dimension, &result(n, 0));
     }
+    result.setDescription(getDescription());
     return result;
   } // dimension == 2
   if (dimension == 3)
@@ -163,6 +165,7 @@ Sample UniformOverMesh::getSample(const UnsignedInteger size) const
       const UnsignedInteger index = indices[n];
       DistFunc::rUniformTetrahedron(&vertices_(simplices_(index, 0), 0), &vertices_(simplices_(index, 1), 0), &vertices_(simplices_(index, 2), 0), &vertices_(simplices_(index, 3), 0), dimension, &result(n, 0));
     }
+    result.setDescription(getDescription());
     return result;
   } // dimension == 3
   Sample vertices(dimension + 1, dimension);
