@@ -204,7 +204,7 @@ void FrankCopula::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(2);
   covariance_(0, 0) = 1.0 / 12.0;
-  covariance_(0, 1) = (theta_ < 1.0e-3 ? theta_ / 72.0 * (1.0 - theta_ * theta_ / 75.0) : 1.0 / 12.0 + (SpecFunc::Debye(theta_, 2) - SpecFunc::Debye(theta_, 1)) / theta_);
+  covariance_(0, 1) = (std::abs(theta_) < 1.0e-3 ? theta_ / 72.0 * (1.0 - theta_ * theta_ / 75.0) : 1.0 / 12.0 + (SpecFunc::Debye(theta_, 2) - SpecFunc::Debye(theta_, 1)) / theta_);
   covariance_(1, 1) = 1.0 / 12.0;
   isAlreadyComputedCovariance_ = true;
 }
@@ -382,6 +382,9 @@ Description FrankCopula::getParameterDescription() const
 /* Compute the entropy of the distribution */
 Scalar FrankCopula::computeEntropy() const
 {
+  // The closed form below is valid only for a nonnegative theta,
+  // for a negative theta use the generic quadrature
+  if (theta_ < 0.0) return DistributionImplementation::computeEntropy();
   // To insure full relative precision in double precision
   const Scalar theta2 = theta_ * theta_;
   if (theta_ < 0.01636160042996688)
