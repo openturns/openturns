@@ -130,10 +130,15 @@ VonMisesFisher VonMisesFisherFactory::buildAsVonMisesFisher(const Sample & sampl
   Scalar kappa = 0.0;
   const Scalar muNorm = mu.norm();
   // In the case where the empirical mean is exactly zero, the sample
-  // is supposed to be uniformly distributed over the hypersphere so the
-  // current values of mu and kappa are correct.
+  // is supposed to be uniformly distributed over the hypersphere: use an
+  // arbitrary direction with a null concentration.
+  if (muNorm == 0.0)
+  {
+    mu = Point(mu.getDimension(), 0.0);
+    mu[0] = 1.0;
+  }
   // Otherwise estimate them
-  if (muNorm > 0.0)
+  else
   {
     mu /= muNorm;
     LOGDEBUG(OSS() << "mu=" << mu);
@@ -145,15 +150,20 @@ VonMisesFisher VonMisesFisherFactory::buildAsVonMisesFisher(const Sample & sampl
     Scalar b = 2.0;
     Scalar fA = f(Point(1, a))[0];
     Scalar fB = f(Point(1, b))[0];
+    const Scalar largeValue = std::sqrt(SpecFunc::MaxScalar);
+    const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("VonMisesFisherFactory-MaximumIteration");
+    UnsignedInteger iteration = 0;
     // While f has the same sign at the two bounds, update the interval
-    while (fA * fB > 0.0)
+    while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
       {
         a = 0.5 * a;
         fA = f(Point(1, a))[0];
         if (fA * fB <= 0.0) break;
         b = 2.0 * b;
         fB = f(Point(1, b))[0];
+        ++iteration;
       }
+    if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMisesFisher distribution from the given sample";
     // Solve the constraint equation
     Brent solver(ResourceMap::GetAsScalar( "VonMisesFisherFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "VonMisesFisherFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "VonMisesFisherFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "VonMisesFisherFactory-MaximumIteration" ));
     // Kappa estimate

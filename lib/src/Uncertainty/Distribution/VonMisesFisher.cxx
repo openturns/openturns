@@ -266,10 +266,9 @@ void VonMisesFisher::setParameter(const Point & parameter)
 {
   const UnsignedInteger size = parameter.getSize();
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: the given parameter cannot be converted into a location vector and a shape parameter of a VonMisesFisher distribution of dimension greater or equal to 2.";
-  setDimension(size - 1);
-  Point mu(dimension_);
-  std::copy(parameter.begin(), parameter.begin() + dimension_, mu.begin());
-  const Scalar kappa = parameter[dimension_];
+  Point mu(size - 1);
+  std::copy(parameter.begin(), parameter.begin() + size - 1, mu.begin());
+  const Scalar kappa = parameter[size - 1];
   const Scalar w = getWeight();
   *this = VonMisesFisher(mu, kappa);
   setWeight(w);
@@ -326,12 +325,12 @@ void VonMisesFisher::setMuKappa(const Point & mu, const Scalar kappa)
 {
   const UnsignedInteger dimension = mu.getDimension();
   if (dimension < 2) throw InvalidArgumentException(HERE) << "Error: mu has a dimension=" << dimension << ". It should be greater or equal to 2.";
-  setDimension(dimension);
   if (!(kappa >= 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be nonnegative";
-  kappa_ = kappa;
   const Scalar normMu = mu.norm();
   if (normMu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu is null, it should be a unit vector.";
   if (std::abs(normMu - 1.0) > SpecFunc::Precision) LOGWARN(OSS() << "Mu has a norm=" << normMu << " not equal to 1, it will be normalized.");
+  setDimension(dimension);
+  kappa_ = kappa;
   mu_ = mu / normMu;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -379,6 +378,7 @@ void VonMisesFisher::load(Advocate & adv)
   adv.loadAttribute( "b_", b_ );
   adv.loadAttribute( "x0_", x0_ );
   adv.loadAttribute( "c_", c_ );
+  update();
   computeRange();
 }
 
