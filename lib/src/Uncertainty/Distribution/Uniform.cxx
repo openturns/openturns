@@ -215,7 +215,7 @@ Point Uniform::computePDFGradient(const Point & point) const
 
   const Scalar x = point[0];
   Point pdfGradient(2, 0.0);
-  if ((x < a_) || (x > b_)) return pdfGradient;
+  if ((x <= a_) || (x > b_)) return pdfGradient;
   const Scalar iAB = 1.0 / (b_ - a_);
   const Scalar iAB2 = iAB * iAB;
   pdfGradient[0] = iAB2;
