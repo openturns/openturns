@@ -25,10 +25,13 @@ Poisson
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` key is used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``DiscreteCompoundDistribution-DefaultEpsilon`` (``Scalar``, default: ``1e-12``): tolerance used to truncate
   the sum defining the compound distribution when computing its probabilities by discrete Fourier transform.
+- ``DiscreteCompoundDistribution-MaximumSize`` (``UnsignedInteger``, default: ``1048576``): maximum number
+  of probability masses of the compound distribution, used to reject combinations of base and compound
+  distributions with unbounded or disproportionate ranges before allocating the Fourier transform.
 
 Examples
 --------

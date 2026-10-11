@@ -162,7 +162,11 @@ void DiscreteCompoundDistribution::setBaseAndCompoundDistributions(const Distrib
   compoundDistribution_ = compoundDistribution;
 
   // include last value
-  const UnsignedInteger m = computeIntegerUpperBound() + 1;
+  const Scalar upperBound = computeIntegerUpperBound();
+  if (!std::isfinite(upperBound)) throw InvalidArgumentException(HERE) << "Error: the upper bound of the compound distribution is not finite, the base or compound distribution has an infinite range";
+  const UnsignedInteger maximumSize = ResourceMap::GetAsUnsignedInteger("DiscreteCompoundDistribution-MaximumSize");
+  if (!(upperBound + 1.0 <= 1.0 * maximumSize)) throw InvalidArgumentException(HERE) << "Error: the compound distribution requires " << upperBound + 1.0 << " probability masses, more than the maximum size=" << maximumSize;
+  const UnsignedInteger m = static_cast<UnsignedInteger>(upperBound) + 1;
 
   const Point weights(computeProbabilities(m));
   Sample points(m, 1);

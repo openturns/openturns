@@ -577,6 +577,7 @@
 
   <!-- OT::DiscreteCompoundDistribution parameters -->
   <DiscreteCompoundDistribution-DefaultEpsilon value_float="1.0e-12" />
+  <DiscreteCompoundDistribution-MaximumSize value_int="1048576" />
 
   <!-- OT::ExtremeValueCopula parameters -->
   <ExtremeValueCopula-CheckPickandFunction value_bool="true"           />
