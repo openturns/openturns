@@ -411,7 +411,7 @@ void InverseWishart::setParameter(const Point & parameter)
 
 Description InverseWishart::getParameterDescription() const
 {
-  const UnsignedInteger p = getDimension();
+  const UnsignedInteger p = getV().getDimension();
   Description description((p * (p + 1)) / 2 + 1);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < p; ++i)
