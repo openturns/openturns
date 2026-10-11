@@ -160,6 +160,8 @@ Scalar Hypergeometric::computeCDF(const Point & point) const
   const Scalar k = point[0];
   if (k < (k_ + m_ > n_ ? k_ + m_ - n_ : 0.0) - supportEpsilon_) return 0.0;
   if (k > std::min(k_, m_) + supportEpsilon_) return 1.0;
+  // A negative input would floor to -1, whose conversion is undefined
+  if (k < 0.0) return 0.0;
   return DistFunc::pHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(std::floor(k)), false);
 }
 
@@ -170,6 +172,8 @@ Scalar Hypergeometric::computeComplementaryCDF(const Point & point) const
   const Scalar k = point[0];
   if (k < (k_ + m_ > n_ ? k_ + m_ - n_ : 0.0) - supportEpsilon_) return 1.0;
   if (k > std::min(k_, m_) + supportEpsilon_) return 0.0;
+  // A negative input would floor to -1, whose conversion is undefined
+  if (k < 0.0) return 1.0;
   return DistFunc::pHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(std::floor(k)), true);
 }
 
