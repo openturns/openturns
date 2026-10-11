@@ -71,6 +71,7 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   // If sample with constant null data, build an approximation of Dirac(0) by hand
   if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Exponential distribution from a constant sample.";
   const Scalar lambda = 1.0 / (mean - gamma);
+  if (!(lambda > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution from the given sample, the estimated rate is not positive";
   Exponential result(lambda, gamma);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);

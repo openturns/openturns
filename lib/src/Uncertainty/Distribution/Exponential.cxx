@@ -196,7 +196,7 @@ Point Exponential::computePDFGradient(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   Point pdfGradient(2, 0.0);
-  if (x < 0.0) return pdfGradient;
+  if (x <= 0.0) return pdfGradient;
   const Scalar expX = std::exp(-lambda_ * x);
   pdfGradient[0] = (1.0 - lambda_ * x) * expX;
   pdfGradient[1] = lambda_ * lambda_ * expX;
@@ -210,7 +210,7 @@ Point Exponential::computeCDFGradient(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   Point cdfGradient(2, 0.0);
-  if (x < 0.0) return cdfGradient;
+  if (x <= 0.0) return cdfGradient;
   const Scalar expX = std::exp(-lambda_ * x);
   cdfGradient[0] = x * expX;
   cdfGradient[1] = -lambda_ * expX;
