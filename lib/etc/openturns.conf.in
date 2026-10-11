@@ -901,6 +901,7 @@
 
   <!-- OT::KFactor parameters -->
   <KFactor-Precision                     value_float="1.0e-8"        />
+  <KFactor-RMax                          value_float="8.5"           />
   <KFactor-DefaultIntegrationNodesNumber value_int="256" />
   <KFactor-MaximumIteration              value_int="32"  />
 
