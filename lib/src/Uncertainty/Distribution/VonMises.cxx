@@ -270,6 +270,7 @@ void VonMises::load(Advocate & adv)
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "kappa_", kappa_ );
   update();
+  computeRange();
 }
 
 END_NAMESPACE_OPENTURNS
