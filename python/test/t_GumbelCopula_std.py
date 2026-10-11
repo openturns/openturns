@@ -155,3 +155,13 @@ validation.run()
 # Verify upper tail dependence: lambda_U = 2 - 2^(1/theta)
 chi = copula.computeUpperTailDependenceMatrix()[0, 1]
 ott.assert_almost_equal(chi, 2.0 - 2.0 ** (1.0 / 2.5), 1e-5, 1e-5)
+
+# Conditional quantiles at the endpoints return the endpoints
+ott.assert_almost_equal(copula.computeConditionalQuantile(0.0, [0.3]), 0.0, 0.0, 0.0)
+ott.assert_almost_equal(copula.computeConditionalQuantile(1.0, [0.3]), 1.0, 0.0, 0.0)
+ott.assert_almost_equal(copula.computeConditionalQuantile(0.0, []), 0.0, 0.0, 0.0)
+ott.assert_almost_equal(copula.computeConditionalQuantile(1.0, []), 1.0, 0.0, 0.0)
+with ott.assert_raises(TypeError):
+    copula.computeConditionalQuantile(2.0, [0.3])
+with ott.assert_raises(TypeError):
+    copula.computeConditionalQuantile(-0.5, [0.3])
