@@ -224,6 +224,8 @@ Point GumbelCopula::computePDFGradient(const Point & point) const
   // A copula has a null PDF gradient outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
   const Scalar epsilon = std::cbrt(ResourceMap::GetAsScalar("DistFunc-Precision"));
+  if (theta_ - epsilon < 1.0)
+    return Point(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - computePDF(point)) / epsilon);
   return Point(1, (GumbelCopula(theta_ + epsilon).computePDF(point) - GumbelCopula(theta_ - epsilon).computePDF(point)) / (2.0 * epsilon));
 }
 
@@ -267,9 +269,10 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) cons
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   const Scalar u = y[0];
-  if ((u <= 0.0) || (u > 1.0)) return 0.0;
   const Scalar v = x;
   if (v <= 0.0) return 0.0;
+  if (v >= 1.0) return 1.0;
+  if ((u <= 0.0) || (u >= 1.0)) return 0.0;
   // If we are in the support
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
@@ -283,9 +286,7 @@ Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y)
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q > 0.0) && (q < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  if (q == 0.0) return 0.0;
-  if (q == 1.0) return 1.0;
+  if (!((q > 0.0) && (q < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of ]0, 1[";
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
