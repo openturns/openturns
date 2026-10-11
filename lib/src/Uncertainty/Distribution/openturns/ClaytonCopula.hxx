@@ -70,6 +70,10 @@ public:
   using ArchimedeanCopula::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Get the log-PDF of the distribution */
+  using ArchimedeanCopula::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
+
   /** Get the CDF of the distribution */
   using ArchimedeanCopula::computeCDF;
   Scalar computeCDF(const Point & point) const override;

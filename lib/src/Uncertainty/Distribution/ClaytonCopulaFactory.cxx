@@ -64,7 +64,9 @@ ClaytonCopula ClaytonCopulaFactory::buildAsClaytonCopula(const Sample & sample) 
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample of dimension not equal to 2";
   Scalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample with Kendall tau equal to 1";
-  ClaytonCopula result(2.0 * tau / (1.0 - tau));
+  const Scalar theta = 2.0 * tau / (1.0 - tau);
+  if (!std::isfinite(theta)) throw InvalidArgumentException(HERE) << "Error: cannot build a ClaytonCopula distribution from a sample with non-finite or too large Kendall tau, here tau=" << tau;
+  ClaytonCopula result(theta);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);
   return result;
