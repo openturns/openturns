@@ -51,6 +51,8 @@ PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDis
   , observations_(observations)
 {
   setName("PosteriorDistribution");
+  if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a posterior distribution with no observation.";
+  if (observations.getDimension() != conditionedDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the compound distribution must have the same dimension as the observations.";
   setCompoundDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution));
 }
 
@@ -63,6 +65,8 @@ PosteriorDistribution::PosteriorDistribution(const Distribution & conditionedDis
   , observations_(observations)
 {
   setName("PosteriorDistribution");
+  if (observations.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a posterior distribution with no observation.";
+  if (observations.getDimension() != conditionedDistribution.getDimension()) throw InvalidArgumentException(HERE) << "Error: the conditioned distribution defining the compound distribution must have the same dimension as the observations.";
   setCompoundDistribution(CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction));
 }
 
