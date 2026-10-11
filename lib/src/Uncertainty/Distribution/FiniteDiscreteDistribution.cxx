@@ -620,6 +620,9 @@ Scalar FiniteDiscreteDistribution::computeScalarQuantile(const Scalar prob,
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   UnsignedInteger index = tail ? cumulativeProbabilities_.getSize() - 1 : 0;
   const Scalar p = tail ? 0.5 - (prob - 0.5) : prob;
+  // Zero tail probability returns the maximum support value explicitly:
+  // the tolerance below could otherwise move off a tiny final atom
+  if (tail && (prob == 0.0)) return points_(points_.getSize() - 1, 0);
   if (tail)
   {
     // Allow for a small tolerance when comparing probabilities: tail levels

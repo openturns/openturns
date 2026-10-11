@@ -153,3 +153,9 @@ ot.ResourceMap.SetAsUnsignedInteger(
 
 # alias
 distribution = ot.UserDefined(x, p)
+
+# Zero tail probability returns the maximum support value explicitly
+thin_tail = ot.FiniteDiscreteDistribution(
+    [[0.0], [1.0], [2.0]], [0.5, 0.5 - 1e-15, 1e-15]
+)
+ott.assert_almost_equal(thin_tail.computeQuantile(0.0, True), [2.0], 0.0, 0.0)
