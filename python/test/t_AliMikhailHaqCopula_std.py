@@ -101,3 +101,23 @@ print("margins realization=", repr(margins.getRealization()))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.run()
+
+# Theta setter rejects NaN and out-of-range values, accepts endpoints
+probe = ot.AliMikhailHaqCopula(0.5)
+with ott.assert_raises(TypeError):
+    probe.setTheta(float("nan"))
+with ott.assert_raises(TypeError):
+    probe.setTheta(-1.5)
+with ott.assert_raises(TypeError):
+    probe.setTheta(1.5)
+probe.setTheta(1.0)
+ott.assert_almost_equal(probe.getTheta(), 1.0, 0.0, 0.0)
+
+# Theta=1 is the uv/(u+v-uv) copula, of generator 1/t-1
+unitCopula = ot.AliMikhailHaqCopula(1.0)
+ott.assert_almost_equal(unitCopula.computeCDF([0.2, 0.2]), 1.0 / 9.0, 1e-12, 0.0)
+ott.assert_almost_equal(unitCopula.computePDF([0.2, 0.2]), 1.71467764, 1e-6, 0.0)
+ott.assert_almost_equal(unitCopula.computeArchimedeanGenerator(0.5), 1.0, 0.0, 0.0)
+ott.assert_almost_equal(unitCopula.computeInverseArchimedeanGenerator(1.0), 0.5, 0.0, 0.0)
+ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorDerivative(0.5), -4.0, 0.0, 0.0)
+ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 16.0, 0.0, 0.0)

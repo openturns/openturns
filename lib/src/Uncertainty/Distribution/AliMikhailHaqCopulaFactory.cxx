@@ -100,7 +100,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
   }
   // Bisection
   Scalar thetaEpsilon = ResourceMap::GetAsScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" );
-  if (!(thetaEpsilon > 0.0)) thetaEpsilon = SpecFunc::Precision;
+  if (!(thetaEpsilon > 0.0) || !std::isfinite(thetaEpsilon)) thetaEpsilon = SpecFunc::Precision;
   while (maxTheta - minTheta > thetaEpsilon)
   {
     theta = 0.5 * (maxTheta + minTheta);

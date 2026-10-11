@@ -335,6 +335,8 @@ Scalar AliMikhailHaqCopula::computeArchimedeanGenerator(const Scalar t) const
 {
   // The independent copula has generator -log(t)
   if (theta_ == 0.0) return -std::log(t);
+  // At theta=1 the copula is uv/(u+v-uv), of generator 1/t-1
+  if (theta_ == 1.0) return 1.0 / t - 1.0;
   return log1p(-theta_ * (1.0 - t)) / t;
 }
 
@@ -344,6 +346,7 @@ Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) c
   // The independent copula has inverse generator exp(-t)
   if (theta_ == 0.0) return std::exp(-t);
   if (t == 0.0) return 1.0;
+  if (theta_ == 1.0) return 1.0 / (1.0 + t);
   const Scalar y = t * (theta_ - 1.0) / theta_;
   return (y - SpecFunc::LambertW(-t * std::exp(y) / theta_)) / t;
 }
@@ -351,6 +354,7 @@ Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) c
 /* Compute the derivative of the density generator */
 Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
+  if (theta_ == 1.0) return -1.0 / (t * t);
   const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (theta_ / u - std::log(u) / t) / t;
 }
@@ -358,6 +362,7 @@ Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t
 /* Compute the seconde derivative of the density generator */
 Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
+  if (theta_ == 1.0) return 2.0 / (t * t * t);
   const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * std::log(u) / (t * t)) / t;
 }
@@ -402,7 +407,7 @@ Bool AliMikhailHaqCopula::hasIndependentCopula() const
 /* Theta accessor */
 void AliMikhailHaqCopula::setTheta(const Scalar theta)
 {
-  if ((theta < -1.0) || (theta > 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1], here theta=" << theta;
+  if (!(theta >= -1.0 && theta <= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1], here theta=" << theta;
   if (theta != theta_)
   {
     theta_ = theta;
