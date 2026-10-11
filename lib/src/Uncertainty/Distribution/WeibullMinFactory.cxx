@@ -61,7 +61,7 @@ Distribution WeibullMinFactory::build() const
 
 WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
 {
-  const Scalar size = sample.getSize();
+  const UnsignedInteger size = sample.getSize();
   if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a WeibullMin distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];

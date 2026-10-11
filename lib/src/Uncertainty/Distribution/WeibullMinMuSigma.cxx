@@ -224,6 +224,7 @@ void WeibullMinMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   if (!(inP[1] > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << inP[1];
+  if (inP[0] <= inP[2]) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << inP[0] << " and gamma=" << inP[2];
   mu_ = inP[0];
   sigma_ = inP[1];
   gamma_ = inP[2];
