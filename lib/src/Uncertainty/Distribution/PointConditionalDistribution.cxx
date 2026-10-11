@@ -20,6 +20,7 @@
  */
 
 #include <cmath>
+#include "openturns/Exception.hxx"
 #include "openturns/PointConditionalDistribution.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/ParametricFunction.hxx"
@@ -196,91 +197,6 @@ PointConditionalDistribution * PointConditionalDistribution::clone() const
   return new PointConditionalDistribution(*this);
 }
 
-class PointConditionalDistributionUBoundEvaluation : public EvaluationImplementation
-{
-public:
-  PointConditionalDistributionUBoundEvaluation(const Distribution & distribution, const Scalar r)
-    : EvaluationImplementation()
-    , distribution_(distribution)
-    , r_(r)
-  {
-    // Nothing to do
-  }
-
-  PointConditionalDistributionUBoundEvaluation * clone() const override
-  {
-    return new PointConditionalDistributionUBoundEvaluation(*this);
-  }
-
-  UnsignedInteger getInputDimension() const override
-  {
-    return distribution_.getDimension();
-  }
-
-  UnsignedInteger getOutputDimension() const override
-  {
-    return 1;
-  }
-
-  Point operator()(const Point & inP) const override
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    Scalar result = distribution_.computeLogPDF(inP) / (1.0 + r_ * dimension);
-    result = std::max(-SpecFunc::LogMaxScalar, result);
-    return {result};
-  }
-
-private:
-  Distribution distribution_;
-  Scalar r_ = 0.0;
-
-};
-
-class PointConditionalDistributionVBoundEvaluation : public EvaluationImplementation
-{
-public:
-  PointConditionalDistributionVBoundEvaluation(const Distribution & distribution, const Scalar r)
-    : EvaluationImplementation()
-    , distribution_(distribution)
-    , r_(r)
-  {
-    // Nothing to do
-  }
-
-  PointConditionalDistributionVBoundEvaluation * clone() const override
-  {
-    return new PointConditionalDistributionVBoundEvaluation(*this);
-  }
-
-  UnsignedInteger getInputDimension() const override
-  {
-    return distribution_.getDimension();
-  }
-
-  UnsignedInteger getOutputDimension() const override
-  {
-    return distribution_.getDimension();
-  }
-
-  Point operator()(const Point & inP) const override
-  {
-    const UnsignedInteger dimension = distribution_.getDimension();
-    const Scalar value = distribution_.computeLogPDF(inP) * r_ / (1.0 + r_ * dimension);
-    Point result(dimension, value);
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      result[i] += std::log(std::abs(inP[i]));
-      result[i] = std::max(-SpecFunc::LogMaxScalar, result[i]);
-    }
-    return result;
-  }
-
-private:
-  Distribution distribution_;
-  Scalar r_ = 0.0;
-
-};
-
 
 void PointConditionalDistribution::dispatchConditioning(const Collection<Distribution> & distributions, Distribution & simplified) const
 {
@@ -302,9 +218,9 @@ void PointConditionalDistribution::dispatchConditioning(const Collection<Distrib
     while (conditioningIndex >= endBlock)
     {
       ++ blockCounter;
-      // Should never go there
+      // Should never go there as conditioning indices are checked at construction time
       if (blockCounter == distributions.getSize())
-        break;
+        throw InternalException(HERE) << "Error: conditioning index " << conditioningIndex << " matches no block of the distribution";
       beginBlock = endBlock;
       endBlock += distributions[blockCounter].getDimension();
     }
@@ -357,6 +273,8 @@ void PointConditionalDistribution::update()
   {
     if (conditioningIndices_.getSize())
       logNormalizationFactor_ = distribution_.getMarginal(conditioningIndices_).computeLogPDF(conditioningValues_);
+    else
+      logNormalizationFactor_ = 0.0;
     if (!std::isfinite(logNormalizationFactor_))
       throw InvalidArgumentException(HERE) << "Conditioning vector log PDF value is too low (" << logNormalizationFactor_ << ")";
   }
@@ -470,7 +388,13 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
       const Student *p_student = dynamic_cast<Student *>(distribution_.getImplementation().get());
       const Scalar nu = p_student->getNu();
       const UnsignedInteger py = conditioningIndices_.getSize();
-      C = CovarianceMatrix((C * std::sqrt((nu + dy) / (nu + py))).getImplementation());
+      // The conditional covariance is (nu + beta) / (nu + py - 2) times the
+      // Schur complement of the scale matrix, with beta the Mahalanobis
+      // distance for the scale matrix. Here C holds s times the scale Schur
+      // complement and dy holds beta / s with s = nu / (nu - 2), hence the
+      // factor below. The square root form is wrong: the scaling is linear.
+      const Scalar s = nu / (nu - 2.0);
+      C = CovarianceMatrix((C * ((nu + s * dy) / (s * (nu + py - 2.0)))).getImplementation());
       simplified = Student(nu + py, mu, C);
       return true;
     } // Student case
@@ -496,6 +420,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         newAtoms.add(atom.getSimplifiedVersion());
       }
     } // for i
+    if (newAtoms.isEmpty()) return false;
     simplified = Mixture(newAtoms, newWeights);
     return true;
   }
@@ -568,6 +493,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         atoms.add(JointDistribution(atomComponents));
       } // isNormal
     } // i
+    if (atoms.isEmpty()) return false;
     simplified = Mixture(atoms, weights);
     return true;
   }
@@ -663,6 +589,7 @@ void PointConditionalDistribution::computeRange()
         const Interval normalConditionedRange(conditionedNormal.getRange());
         conditionedRange.setLowerBound(normalConditionedRange.getLowerBound());
         conditionedRange.setUpperBound(normalConditionedRange.getUpperBound());
+        setRange(conditionedRange);
       } // Strategy = Normal
       // Third strategy
       else
@@ -755,7 +682,7 @@ Sample PointConditionalDistribution::getSample(const UnsignedInteger size) const
   if (useSimplifiedVersion_)
     return simplifiedVersion_.getSample(size);
 
-  if (isDiscrete())
+  if (isDiscrete() && !useGenericConditionalMethods_)
   {
     const Indices indices(DistFunc::rDiscrete(base_, alias_, size));
     return support_.select(indices);
@@ -825,7 +752,15 @@ Scalar PointConditionalDistribution::computeProbability(const Interval & interva
   if (useSimplifiedVersion_)
     return simplifiedVersion_.computeProbability(interval);
   if (useGenericConditionalMethods_)
-    return distribution_.computeConditionalCDF(interval.getUpperBound()[0], conditioningValues_) - distribution_.computeConditionalCDF(interval.getLowerBound()[0], conditioningValues_);
+  {
+    if (interval.getDimension() != getDimension())
+      throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << getDimension() << ", here dimension=" << interval.getDimension();
+    const Interval intersection(interval.intersect(getRange()));
+    if (intersection.isEmpty()) return 0.0;
+    if (intersection == getRange()) return 1.0;
+    const Scalar probability = distribution_.computeConditionalCDF(intersection.getUpperBound()[0], conditioningValues_) - distribution_.computeConditionalCDF(intersection.getLowerBound()[0], conditioningValues_);
+    return SpecFunc::Clip01(probability);
+  }
 
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension)
@@ -1041,6 +976,14 @@ void PointConditionalDistribution::setParameter(const Point & parameter)
     }
     // then conditioning values
     std::copy(parameter.begin() + conditionedParameter.getSize(), parameter.end(), conditioningValues_.begin());
+  }
+  // Re-validate as the constructor does: the conditioning values must stay
+  // within the range of the (possibly new) conditioning marginals
+  if (conditioningIndices_.getSize())
+  {
+    const Interval conditioningRange(distribution_.getMarginal(conditioningIndices_).getRange());
+    if (!conditioningRange.contains(conditioningValues_))
+      throw InvalidArgumentException(HERE) << "Conditioning vector (" << conditioningValues_ << ") not in conditioning range (" << conditioningRange << ")";
   }
   update();
 }
@@ -1265,6 +1208,7 @@ void PointConditionalDistribution::save(Advocate & adv) const
   adv.saveAttribute("distribution_", distribution_);
   adv.saveAttribute("conditioningIndices_", conditioningIndices_);
   adv.saveAttribute("conditioningValues_", conditioningValues_);
+  adv.saveAttribute("integrationAlgorithm_", integrationAlgorithm_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -1274,6 +1218,7 @@ void PointConditionalDistribution::load(Advocate & adv)
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("conditioningIndices_", conditioningIndices_);
   adv.loadAttribute("conditioningValues_", conditioningValues_);
+  adv.loadAttribute("integrationAlgorithm_", integrationAlgorithm_);
   update();
 }
 
