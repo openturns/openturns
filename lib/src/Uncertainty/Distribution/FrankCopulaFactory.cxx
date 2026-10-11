@@ -69,6 +69,14 @@ FrankCopula FrankCopulaFactory::buildAsFrankCopula(const Sample & sample) const
   Scalar tau = sample.computeKendallTau().operator()(0, 1);
   if (tau == 1.0) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample with Kendall tau equal to 1";
   if (tau == -1.0) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample with Kendall tau equal to -1";
+  if (!std::isfinite(tau)) throw InvalidArgumentException(HERE) << "Error: cannot build a FrankCopula distribution from a sample with non-finite Kendall tau";
+  if (tau == 0.0)
+  {
+    FrankCopula result(0.0);
+    result.setDescription(sample.getDescription());
+    adaptToKnownParameter(sample, &result);
+    return result;
+  }
   // Search the value of the Frank copula parameter by numerically inverting the relation between Kendall's tau and Frank copula's parameter
   const Bool isTauNegative = tau < 0.0;
   tau = std::abs(tau);
