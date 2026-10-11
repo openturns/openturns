@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 
 ot.TESTPREAMBLE()
@@ -25,3 +27,15 @@ estimatedAliMikhailHaqCopula = factory.buildAsAliMikhailHaqCopula(
     distribution.getParameter()
 )
 print("AliMikhailHaqCopula from parameters=", estimatedAliMikhailHaqCopula)
+
+# A non-finite bisection tolerance falls back to the default precision
+ot.RandomGenerator.SetSeed(0)
+toleranceSample = ot.AliMikhailHaqCopula(0.5).getSample(200)
+ot.ResourceMap.SetAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", float("inf"))
+try:
+    fallbackEstimated = factory.buildAsAliMikhailHaqCopula(toleranceSample)
+    theta = fallbackEstimated.getTheta()
+    assert math.isfinite(theta)
+    assert -1.0 <= theta <= 1.0
+finally:
+    ot.ResourceMap.SetAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14)
