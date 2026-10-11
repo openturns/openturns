@@ -159,7 +159,7 @@ Scalar Arcsine::computeComplementaryCDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= a_) return 1.0;
-  if (x > b_) return 0.0;
+  if (x >= b_) return 0.0;
   const Scalar value = std::asin((x - 0.5 * (a_ + b_)) / (0.5 * (b_ - a_))) / M_PI;
   return 0.5 - value;
 }
@@ -260,12 +260,7 @@ Point Arcsine::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point Arcsine::getKurtosis() const
 {
-  Scalar standardDeviation4 = getStandardDeviation()[0];
-  standardDeviation4 *= standardDeviation4;
-  standardDeviation4 *= standardDeviation4;
-  Scalar a4 = 0.5 * (b_ - a_) * 0.5 * (b_ - a_);
-  a4 *= a4;
-  return Point(1, (3.0 / 8.0) * a4 / standardDeviation4);
+  return Point(1, 1.5);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -344,16 +339,6 @@ void Arcsine::setB(const Scalar b)
 Scalar Arcsine::getB() const
 {
   return b_;
-}
-
-void Arcsine::setAB(const Scalar a,
-                    const Scalar b)
-{
-  if (a >= b)
-    throw InvalidArgumentException(HERE) << "in Arcsine : a must be smaller than b";
-  a_ = a;
-  b_ = b;
-  computeRange();
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -106,8 +106,9 @@ Point ArcsineMuSigma::operator () (const Point & inP) const
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
 
-  const Scalar a = mu - sigma * sqrt(2.0);
-  const Scalar b = mu + sigma * sqrt(2.0);
+  const Scalar sqrt2 = std::sqrt(2.0);
+  const Scalar a = mu - sigma * sqrt2;
+  const Scalar b = mu + sigma * sqrt2;
 
   Point nativeParameters(inP);
   nativeParameters[0] = a;
@@ -140,8 +141,11 @@ Point ArcsineMuSigma::inverse(const Point & inP) const
 void ArcsineMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  mu_ = inP[0];
-  sigma_ = inP[1];
+  const Scalar mu = inP[0];
+  const Scalar sigma = inP[1];
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
+  mu_ = mu;
+  sigma_ = sigma;
 }
 
 Point ArcsineMuSigma::getValues() const

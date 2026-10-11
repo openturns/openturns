@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <cmath>
 #include "openturns/ArcsineFactory.hxx"
 #include "openturns/ArcsineMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -71,6 +72,8 @@ Arcsine ArcsineFactory::buildAsArcsine(const Sample & sample) const
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Arcsine distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar mean = sample.computeMean()[0];
   Scalar standardDeviation = sample.computeStandardDeviation()[0];
+  if (!std::isfinite(mean) || !std::isfinite(standardDeviation)) throw InvalidArgumentException(HERE) << "Error: cannot build a Arcsine distribution if data contains NaN or Inf";
+  if (standardDeviation == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Arcsine distribution from a constant sample.";
   Point parameters(2);
   parameters[0] = mean;
   parameters[1] = standardDeviation;

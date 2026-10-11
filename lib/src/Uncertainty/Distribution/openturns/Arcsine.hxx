@@ -152,9 +152,6 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
-  /** set both parameters */
-  void setAB(const Scalar a, const Scalar b);
-
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
