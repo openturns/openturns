@@ -188,7 +188,6 @@ void MarginalUniformOrderStatistics::load(Advocate & adv)
   MarginalDistribution::load(adv);
   adv.loadAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.loadAttribute("simplex_", simplex_);
-  computeRange();
 }
 
 
