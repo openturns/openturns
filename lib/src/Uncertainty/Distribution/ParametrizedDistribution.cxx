@@ -191,6 +191,9 @@ Point ParametrizedDistribution::getParameter() const
 void ParametrizedDistribution::setParameter(const Point & parameter)
 {
   distribution_.setParameter(distributionParameters_(parameter));
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
+  computeRange();
 }
 
 Description ParametrizedDistribution::getParameterDescription() const
