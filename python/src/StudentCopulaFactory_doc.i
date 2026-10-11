@@ -46,13 +46,13 @@ Parameters
 sample : 2-d sequence of float
     Data.
 param : sequence of float
-    The parameters of the :class:`openturns.StudentCopula`.
+    The parameters of the :class:`~openturns.StudentCopula`.
 
 Returns
 -------
 dist : :class:`~openturns.Uniform`
-    The estimated distribution as a :class:`openturns.StudentCopula`.
-    In the first usage, the default :class:`openturns.StudentCopula` distribution is built."
+    The estimated distribution as a :class:`~openturns.StudentCopula`.
+    In the first usage, the default :class:`~openturns.StudentCopula` distribution is built."
 
 // ---------------------------------------------------------------------
 
