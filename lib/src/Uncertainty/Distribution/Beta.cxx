@@ -138,7 +138,7 @@ Point Beta::computeDDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  if ((x <= a_) || (x >= b_)) return Point(1, 0.0);
   return Point(1, ((alpha_ - 1.0) / (x - a_) - (beta_ - 1.0) / (b_ - x)) * computePDF(point));
 }
 
@@ -147,7 +147,7 @@ Point Beta::computeDDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar Beta::computePDF(const Scalar x) const
 {
-  if ((x == b_) && (beta_ == 1.0)) return 1.0;
+  if ((x == b_) && (beta_ == 1.0)) return alpha_ / (b_ - a_);
   if ((x <= a_) || (x >= b_)) return 0.0;
   return std::exp(computeLogPDF(x));
 }
@@ -161,7 +161,7 @@ Scalar Beta::computePDF(const Point & point) const
 
 Scalar Beta::computeLogPDF(const Scalar x) const
 {
-  if ((x == b_) && (beta_ == 1.0)) return 0.0;
+  if ((x == b_) && (beta_ == 1.0)) return std::log(alpha_ / (b_ - a_));
   if ((x <= a_) || (x >= b_)) return SpecFunc::LowestScalar;
   return normalizationFactor_ + (alpha_ - 1.0) * std::log(x - a_) + (beta_ - 1.0) * std::log(b_ - x);
 }
@@ -217,16 +217,19 @@ Point Beta::computeCDFGradient(const Point & point) const
 
   Point cdfGradient(4, 0.0);
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return cdfGradient;
+  if ((x <= a_) || (x >= b_)) return cdfGradient;
   const Scalar cdf = computeCDF(point);
   const Scalar iBA = 1.0 / (b_ - a_);
+  const Scalar eps = std::cbrt(cdfEpsilon_);
+  const Scalar epsAlpha = std::min(eps, 0.5 * alpha_);
+  const Scalar epsBeta = std::min(eps, 0.5 * beta_);
+  cdfGradient[0] = 0.5 / epsAlpha * (DistFunc::pBeta(alpha_ + epsAlpha, beta_, (x - a_) / (b_ - a_)) - DistFunc::pBeta(alpha_ - epsAlpha, beta_, (x - a_) / (b_ - a_)));
+  cdfGradient[1] = 0.5 / epsBeta * (DistFunc::pBeta(alpha_, beta_ + epsBeta, (x - a_) / (b_ - a_)) - DistFunc::pBeta(alpha_, beta_ - epsBeta, (x - a_) / (b_ - a_)));
+  // The closed form below requires beta > 1, fall back to the generic finite differences otherwise
+  if (!(beta_ > 1.0)) return DistributionImplementation::computeCDFGradient(point);
   const Scalar cdfShift = DistFunc::pBeta(alpha_ + 1.0, beta_ - 1.0, (x - a_) * iBA);
   const Scalar cdfDiff = cdfShift - cdf;
   const Scalar factor = alpha_ * iBA;
-  const Scalar eps = std::cbrt(cdfEpsilon_);
-  const Scalar i2Eps = 0.5 / eps;
-  cdfGradient[0] = i2Eps * (DistFunc::pBeta(alpha_ + eps, beta_, (x - a_) / (b_ - a_)) - DistFunc::pBeta(alpha_ - eps, beta_, (x - a_) / (b_ - a_)));
-  cdfGradient[1] = i2Eps * (DistFunc::pBeta(alpha_, beta_ + eps, (x - a_) / (b_ - a_)) - DistFunc::pBeta(alpha_, beta_ - eps, (x - a_) / (b_ - a_)));
   cdfGradient[3] = factor * cdfDiff;
   cdfGradient[2] = cdfGradient[3] * (b_ - x) / (x - a_);
   return cdfGradient;
@@ -268,6 +271,7 @@ Complex Beta::computeCharacteristicFunction(const Scalar x) const
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar Beta::getRoughness() const
 {
+  if ((alpha_ <= 0.5) || (beta_ <= 0.5)) throw NotDefinedException(HERE) << "Error: the roughness is not defined for alpha or beta <= 0.5.";
   const Scalar den = SpecFunc::Beta(alpha_, beta_);
   return SpecFunc::Beta(2.0 * alpha_ - 1.0, 2.0 * beta_ - 1.0) / (den * den * (b_ - a_));
 }
@@ -322,7 +326,7 @@ Distribution Beta::getStandardRepresentative() const
     standard.setDescription(getDescription());
     return standard;
   }
-  if (alpha_ == -0.5 && beta_ == -0.5)
+  if (alpha_ == 0.5 && beta_ == 0.5)
   {
     Arcsine standard(-1.0, 1.0);
     standard.setDescription(getDescription());
