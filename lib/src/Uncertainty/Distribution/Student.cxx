@@ -99,6 +99,11 @@ Student::Student(const Scalar nu,
   const UnsignedInteger dimension = mean.getDimension();
   if (C.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "The mean vector and the covariance matrix have incompatible dimensions";
+  // C is the covariance matrix: the elliptical scale parameters are obtained
+  // by dividing out the covariance scaling factor, which requires nu > 2
+  if (!(nu > 2.0))
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from a covariance matrix with nu <= 2, here nu=" << nu;
+  const Scalar inverseScalingFactor = (nu - 2.0) / nu;
   Point sigma(dimension);
   CorrelationMatrix R(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -106,11 +111,15 @@ Student::Student(const Scalar nu,
     const Scalar cii = C(i, i);
     if (!(cii >= 0.0))
       throw InvalidArgumentException(HERE) << "Diagonal elements of covariance matrix must be non-negative";
+    // Correlations are scale invariant: use the natural deviations here,
+    // the scaling factor is applied to sigma below
     sigma[i] = std::sqrt(cii);
     for (UnsignedInteger j = 0; j < i; ++ j)
       if ((sigma[i] > 0.0) && (sigma[j] > 0.0))
         R(i, j) = C(i, j) / (sigma[i] * sigma[j]);
   }
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    sigma[i] *= std::sqrt(inverseScalingFactor);
   *this = Student(nu, mean, sigma, R);
 }
 
@@ -924,6 +933,7 @@ Description Student::getParameterDescription() const
 /* Nu accessor */
 void Student::setNu(const Scalar nu)
 {
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: nu must be positive, here nu=" << nu;
   if (nu <= 2.0) LOGWARN(OSS() << "As nu <= 2, the covariance of the distribution will not be defined");
   const UnsignedInteger dimension = getDimension();
   nu_ = nu;
