@@ -67,6 +67,7 @@ Chi ChiFactory::buildAsChi(const Sample & sample) const
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
   if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Chi distribution from a constant sample.";
+  if (xMin < 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build a Chi distribution from a sample with negative values, here min=" << xMin;
   Scalar sumSquares = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
