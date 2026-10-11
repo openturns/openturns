@@ -397,10 +397,10 @@ void LogNormal::setMuLogSigmaLog(const Scalar muLog,
     sigmaLog_ = sigmaLog;
     // Check if the parameters values are not crazy
     static const Interval range(Normal().getRange());
-    const Scalar rMin = muLog_ + range.getUpperBound()[0] * sigmaLog_;
-    const Scalar rMax = muLog_ + range.getLowerBound()[0] * sigmaLog_;
-    if ((rMin >= SpecFunc::LogMaxScalar) ||
-        (rMax <= SpecFunc::LogMinScalar)) throw InvalidArgumentException(HERE) << "MuLog=" << muLog_ << " and SigmaLog=" << sigmaLog_ << " lead to a LogNormal distribution with a too much wide range";
+    const Scalar rMax = muLog_ + range.getUpperBound()[0] * sigmaLog_;
+    const Scalar rMin = muLog_ + range.getLowerBound()[0] * sigmaLog_;
+    if ((rMax >= SpecFunc::LogMaxScalar) ||
+        (rMin <= SpecFunc::LogMinScalar)) throw InvalidArgumentException(HERE) << "MuLog=" << muLog_ << " and SigmaLog=" << sigmaLog_ << " lead to a LogNormal distribution with a too much wide range";
     normalizationFactor_ = 1.0 / (sigmaLog_ * SpecFunc::SQRT2PI);
     H_ = M_PI * M_PI / (8.0 * sigmaLog_ * sigmaLog_);
     isAlreadyComputedMean_ = false;

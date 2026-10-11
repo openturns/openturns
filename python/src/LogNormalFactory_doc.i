@@ -224,7 +224,7 @@ method : int
     - 2 : Method of moment estimator
     - 3 : Least squares method.
 
-    Default value is 0. It is stored in  :class:`~openturns.ResourceMap`, key `LogNormalFactory-EstimationMethod`. 
+    Default value is 0. It is stored in  :class:`~openturns.ResourceMap`, key ``LogNormalFactory-EstimationMethod``.
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 

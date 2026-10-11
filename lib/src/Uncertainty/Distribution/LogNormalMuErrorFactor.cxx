@@ -130,9 +130,14 @@ Point LogNormalMuErrorFactor::inverse(const Point & inP) const
 void LogNormalMuErrorFactor::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  muLog_ = inP[0];
-  ef_ = inP[1];
-  gamma_ = inP[2];
+  const Scalar mu = inP[0];
+  const Scalar ef = inP[1];
+  const Scalar gamma = inP[2];
+  if (!(ef > 1.0)) throw InvalidArgumentException(HERE) << "EF must be > 1, here EF=" << ef;
+  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  muLog_ = mu;
+  ef_ = ef;
+  gamma_ = gamma;
 }
 
 Point LogNormalMuErrorFactor::getValues() const
