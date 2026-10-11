@@ -138,7 +138,12 @@ Point ClaytonCopula::getRealization() const
     realization[1] = u2 * (1.0 - logU2 * theta_ * (1.0 + logU1 - 0.5 * theta_ * ((1.0 + logU2) * logU1 * logU1 + (2.0 + logU2) * (1.0 + logU1))));
     return realization;
   }
-  if (theta_ < 1.0e8) realization[1] = u1 * std::pow(std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_), -1.0 / theta_);
+  if (theta_ < 1.0e8)
+  {
+    const Scalar base = std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_);
+    // For a negative theta the base is mathematically nonnegative but roundoff can make it slightly negative
+    realization[1] = u1 * std::pow(base > 0.0 ? base : 0.0, -1.0 / theta_);
+  }
   else realization[1] = u1 * (1.0 - (log1p(-u2) + std::log(u2)) / theta_);
   return realization;
 }
@@ -271,6 +276,48 @@ Scalar ClaytonCopula::computePDF(const Point & point) const
   return (1.0 + theta_) * std::exp(theta_ * logUOverV - logV - (1.0 / theta_ + 2.0) * log1p(factor));
 }
 
+/* Get the log-PDF of the distribution */
+Scalar ClaytonCopula::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
+  Scalar u = point[0];
+  Scalar v = point[1];
+  // A copula has a null PDF outside of ]0, 1[^2
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return SpecFunc::LowestScalar;
+  // We can impose u <= v as the copula is symmetric in (u, v)
+  if (u > v) std::swap(u, v);
+  // W case (Frechet lower bound)
+  if (theta_ == -1.0)
+  {
+    if (u == 1.0 - v) return SpecFunc::Infinity;
+    return SpecFunc::LowestScalar;
+  }
+  // Independent case
+  if (theta_ == 0.0) return 0.0;
+  // Nearly independent cases, same truncated series as computePDF
+  if (std::abs(theta_) < 1.0e-8)
+  {
+    const Scalar logU = std::log(u);
+    const Scalar logV = std::log(v);
+    if ((theta_ < 0.0) && (theta_ * ((logU + logV) - 0.5 * theta_ * (logU * logU + logV * logV)) >= 1.0)) return SpecFunc::LowestScalar;
+    const Scalar pdf = 1.0 + theta_ * (1.0 + logU + logV + logU * logV + theta_ * (logU + logV + 0.5 * (logU * logU + logV * logV + logU * logV * (8.0 + 3.0 * (logU + logV) + logU * logV))));
+    if (!(pdf > 0.0)) return SpecFunc::LowestScalar;
+    return std::log(pdf);
+  }
+  // General case, same cancellation-free form as computePDF in log domain
+  Scalar factor = -1.0;
+  const Scalar logU = std::log(u);
+  const Scalar logV = std::log(v);
+  const Scalar logUOverV = std::log(u / v);
+  if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
+  // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
+  else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
+  if (factor <= -1.0) return SpecFunc::LowestScalar;
+  return std::log(1.0 + theta_) + theta_ * logUOverV - logV - (1.0 / theta_ + 2.0) * log1p(factor);
+}
+
 /* Get the CDF of the distribution */
 Scalar ClaytonCopula::computeCDF(const Point & point) const
 {
@@ -331,6 +378,8 @@ Point ClaytonCopula::computePDFGradient(const Point & point) const
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
+  // The independent and Frechet-bound cases have null gradients almost everywhere
+  if ((theta_ == 0.0) || (theta_ == -1.0)) return Point(1, 0.0);
   const Scalar t1 = std::pow(u, -theta_);
   const Scalar t2 = std::pow(v, -theta_);
   const Scalar t3 = t1 + t2 - 1.0;
@@ -372,6 +421,8 @@ Point ClaytonCopula::computeCDFGradient(const Point & point) const
   if (u >= 1.0) return Point(1, 0.0);
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return Point(1, 0.0);
+  // The independent and Frechet-bound cases have null gradients almost everywhere
+  if ((theta_ == 0.0) || (theta_ == -1.0)) return Point(1, 0.0);
   // If we are in the support
   const Scalar powUMinusTheta = std::pow(u, -theta_);
   const Scalar powVMinusTheta = std::pow(v, -theta_);
@@ -432,7 +483,9 @@ Scalar ClaytonCopula::computeConditionalQuantile(const Scalar q, const Point & y
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const Scalar z = y[0];
   if (!((z >= 0.0) && (z <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
-  return SpecFunc::Clip01(z * std::pow(std::pow(q, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(z, theta_), -1.0 / theta_));
+  const Scalar base = std::pow(q, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(z, theta_);
+  if (!(base > 0.0)) return 0.0;
+  return SpecFunc::Clip01(z * std::pow(base, -1.0 / theta_));
 }
 
 /* Tell if the distribution has independent copula */
