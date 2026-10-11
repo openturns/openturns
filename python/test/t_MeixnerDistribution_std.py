@@ -14,101 +14,116 @@ ot.ResourceMap.SetAsScalar("MeixnerDistribution-MaximumObjectiveError", 1.0e-6)
 
 # Instantiate one distribution object
 distribution = ot.MeixnerDistribution(1.5, 0.5, 2.5, -0.5)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "MeixnerDistribution"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", oneRealization)
+ott.assert_almost_equal(oneRealization, [2.06954], 1e-5, 0.0)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
-print("Point= ", point)
+ott.assert_almost_equal(point, [1.0], 0.0, 0.0)
 
 # Show PDF and CDF of point
 LPDF = distribution.computeLogPDF(point)
-print("log pdf=%.6f" % LPDF)
+ott.assert_almost_equal(LPDF, -1.517348, 1e-6, 0.0)
 PDF = distribution.computePDF(point)
-print("pdf     =%.6f" % PDF)
+ott.assert_almost_equal(PDF, 0.21929265894623332, 1e-12, 0.0)
 
-print("PDF gradient=", distribution.computePDFGradient(point))
+ott.assert_almost_equal(
+    distribution.computePDFGradient(point),
+    [-0.0855978, 0.0793061, -0.0152517, 0.0605973],
+    1e-6,
+    0.0,
+)
 CDF = distribution.computeCDF(point)
-print("cdf=%.6f" % CDF)
-print("CDF gradient=", distribution.computeCDFGradient(point))
+ott.assert_almost_equal(CDF, 0.640774, 1e-6, 0.0)
+ott.assert_almost_equal(
+    distribution.computeCDFGradient(point),
+    [-0.219293, -0.4305, -0.1123, -0.219293],
+    1e-4,
+    0.0,
+)
 CCDF = distribution.computeComplementaryCDF(point)
-print("ccdf=%.6f" % CCDF)
+ott.assert_almost_equal(CCDF, 0.359226, 1e-6, 0.0)
 CF = distribution.computeCharacteristicFunction(point[0])
-print("characteristic function=(%.12g%+.12gj)" % (CF.real, CF.imag))
+ott.assert_almost_equal([CF.real], [0.245823021921], 1e-10, 0.0)
+ott.assert_almost_equal([CF.imag], [0.0770940595934], 1e-10, 0.0)
 LCF = distribution.computeLogCharacteristicFunction(point[0])
-print("log characteristic function=(%.12g%+.12gj)" % (LCF.real, LCF.imag))
+ott.assert_almost_equal([LCF.real], [-1.35623659307], 1e-10, 0.0)
+ott.assert_almost_equal([LCF.imag], [0.303901355916], 1e-10, 0.0)
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", quantile)
-print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+ott.assert_almost_equal(quantile, [3.39477], 1e-5, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-6, 0.0)
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
+ott.assert_almost_equal(inverseSurvival, [-2.27095], 1e-5, 0.0)
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 0.0
 )
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(distribution.computeEntropy(), 1.961981, 1e-6, 0.0)
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
     0.95
 )
-print("Minimum volume interval=", interval)
-print("threshold=", ot.Point(1, threshold))
+ott.assert_almost_equal(interval.getLowerBound(), [-2.90577], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [3.94843], 1e-5, 0.0)
+ott.assert_almost_equal(threshold, 0.95, 1e-12, 0.0)
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-print("Minimum volume level set=", levelSet)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(beta, 0.030032538327191351, 1e-12, 0.0)
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )
-print("Bilateral confidence interval=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [-2.80555], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [4.06095], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [-18.5819], 1e-4, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [3.39477], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [-2.27095], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [24.6896], 1e-4, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
 
 mean = distribution.getMean()
-print("mean=", mean)
+ott.assert_almost_equal(mean, [0.457532], 1e-6, 0.0)
 covariance = distribution.getCovariance()
-print("covariance=", covariance)
+ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [2.99587]), 1e-5, 0.0)
 parameters = distribution.getParametersCollection()
-print("parameters=", parameters)
-print("Standard representative=", distribution.getStandardRepresentative())
+assert len(parameters) == 1
+ott.assert_almost_equal(parameters[0], [1.5, 0.5, 2.5, -0.5], 0.0, 0.0)
+standard = distribution.getStandardRepresentative()
+ott.assert_almost_equal(standard.getParameter(), [1.0, 0.5, 2.5, 0.0], 0.0, 0.0)
 
 # Specific to this distribution
 alpha = distribution.getAlpha()
-print("alpha=%.6f" % alpha)
+ott.assert_almost_equal(alpha, 0.5, 1e-12, 0.0)
 beta = distribution.getBeta()
-print("beta=%.6f" % beta)
+ott.assert_almost_equal(beta, 1.5, 1e-12, 0.0)
 delta = distribution.getDelta()
-print("delta=%.6f" % delta)
+ott.assert_almost_equal(delta, 2.5, 1e-12, 0.0)
 gamma = distribution.getGamma()
-print("gamma=%.6f" % gamma)
+ott.assert_almost_equal(gamma, -0.5, 1e-12, 0.0)
 standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", standardDeviation)
+ott.assert_almost_equal(standardDeviation, [1.73086], 1e-5, 0.0)
 skewness = distribution.getSkewness()
-print("skewness=", skewness)
+ott.assert_almost_equal(skewness, [0.221285], 1e-6, 0.0)
 kurtosis = distribution.getKurtosis()
-print("kurtosis=", kurtosis)
+ott.assert_almost_equal(kurtosis, [3.44897], 1e-5, 0.0)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)

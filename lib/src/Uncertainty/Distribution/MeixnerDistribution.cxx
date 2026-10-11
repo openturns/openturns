@@ -535,7 +535,7 @@ Complex MeixnerDistribution::computeCharacteristicFunction(const Scalar x) const
 
 Complex MeixnerDistribution::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return Complex(2.0 * delta_ * std::log(std::cos(0.5 * alpha_)), gamma_ * x) - 2.0 * delta_ * std::log(std::cosh(Complex(0.5 * beta_ * x, -0.5 * gamma_)));
+  return Complex(2.0 * delta_ * std::log(std::cos(0.5 * alpha_)), gamma_ * x) - 2.0 * delta_ * std::log(std::cosh(Complex(0.5 * beta_ * x, -0.5 * alpha_)));
 }
 
 /* Compute the mean of the distribution */
