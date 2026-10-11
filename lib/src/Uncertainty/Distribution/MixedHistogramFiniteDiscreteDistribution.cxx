@@ -426,16 +426,13 @@ Distribution MixedHistogramFiniteDiscreteDistribution::getMarginal(const Indices
 
   for (UnsignedInteger i = 0; i < totalSize; ++i)
   {
-    for (UnsignedInteger j = 0; j < indices.getSize(); ++j)
+    // find the global marginal index
+    UnsignedInteger marginalProbabilityTableIndex = 0;
+    for (UnsignedInteger k = 0; k < indices.getSize(); ++k)
     {
-      // find the global marginal index
-      UnsignedInteger marginalProbabilityTableIndex = 0;
-      for (UnsignedInteger k = 0; k < indices.getSize(); ++k)
-      {
-        marginalProbabilityTableIndex += allIndices_(i, indices[k]) * productDiscretization[k];
-      }
-      marginalProbabilityTable[marginalProbabilityTableIndex] += probabilityTable_[i];
+      marginalProbabilityTableIndex += allIndices_(i, indices[k]) * productDiscretization[k];
     }
+    marginalProbabilityTable[marginalProbabilityTableIndex] += probabilityTable_[i];
   }
 
   MixedHistogramFiniteDiscreteDistribution marginal(marginalTicksCollection, marginalKind, marginalProbabilityTable);
@@ -707,6 +704,29 @@ void MixedHistogramFiniteDiscreteDistribution::load(Advocate & adv)
   adv.loadAttribute( "ticksCollection_", ticksCollection_ );
   adv.loadAttribute( "kind_", kind_ );
   adv.loadAttribute( "probabilityTable_", probabilityTable_ );
+  // Rebuild the derived data cached by the constructors
+  const UnsignedInteger dimension = kind_.getSize();
+  Indices discretization(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    discretization[i] = ticksCollection_[i].getSize() - kind_[i];
+  Tuples generator(discretization);
+  const UnsignedInteger tuplesSize = generator.getSize();
+  Collection<Indices> coll(tuplesSize);
+  for (UnsignedInteger i = 0; i < tuplesSize; ++i)
+    coll[i] = generator.generateNext();
+  allIndices_ = IndicesCollection(coll);
+  discreteIndices_.clear();
+  continuousIndices_.clear();
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (kind_[j] == DISCRETE)
+      discreteIndices_.add(j);
+    else
+      continuousIndices_.add(j);
+  Scalar weightSum = 0.0;
+  for (UnsignedInteger i = 0; i < probabilityTable_.getSize(); ++ i)
+    weightSum += probabilityTable_[i];
+  normalizedProbabilityTable_ = probabilityTable_ / weightSum;
+  DistFunc::rDiscreteSetup(normalizedProbabilityTable_, base_, alias_);
   computeRange();
 }
 
