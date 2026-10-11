@@ -267,9 +267,11 @@ public:
     problem.setInequalityConstraint(constraint);
 
     // heuristic for the starting point, see fit.gev function from R mev package
-    const Scalar gamma1mXi0 = (xi0 < 1.0) ? SpecFunc::Gamma(1.0 - xi0) : 10.0;
-    const Scalar sigma0 = -(2.0 * bpwm1_ - mean_) * xi0 / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0)));
-    const Scalar mu0 = mean_ - sigma0 * (gamma1mXi0 - 1.0) / xi0;
+    // Nudge a null shape away from zero, the starting point formulas divide by xi0
+    const Scalar xi0Safe = (std::abs(xi0) < SpecFunc::Precision ? SpecFunc::Precision : xi0);
+    const Scalar gamma1mXi0 = (xi0Safe < 1.0) ? SpecFunc::Gamma(1.0 - xi0Safe) : 10.0;
+    const Scalar sigma0 = -(2.0 * bpwm1_ - mean_) * xi0Safe / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0Safe)));
+    const Scalar mu0 = mean_ - sigma0 * (gamma1mXi0 - 1.0) / xi0Safe;
     Point x0({mu0, sigma0});
 
     // Adapt mu
@@ -446,9 +448,11 @@ DistributionFactoryLikelihoodResult GeneralizedExtremeValueFactory::buildMethodO
   const Scalar bpwm2 = GeneralizedExtremeValueFactoryPWM(sorted, 2);
   const Scalar kst = (2.0 * bpwm1 - mean) / (3.0 * bpwm2 - mean) - std::log(2.0) / std::log(3.0);
   const Scalar xi0 = -(7.859 + 2.9554 * kst) * kst;
-  const Scalar gamma1mXi0 = SpecFunc::Gamma(1.0 - xi0);
-  const Scalar sigma0 = -(2.0 * bpwm1 - mean) * xi0 / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0)));
-  const Scalar mu0 = mean - sigma0 * (gamma1mXi0 - 1.0) / xi0;
+  // Nudge a null shape away from zero, the starting point formulas divide by xi0
+  const Scalar xi0Safe = (std::abs(xi0) < SpecFunc::Precision ? SpecFunc::Precision : xi0);
+  const Scalar gamma1mXi0 = (xi0Safe < 1.0) ? SpecFunc::Gamma(1.0 - xi0Safe) : 10.0;
+  const Scalar sigma0 = -(2.0 * bpwm1 - mean) * xi0Safe / (gamma1mXi0 * (1.0 - std::pow(2.0, xi0Safe)));
+  const Scalar mu0 = mean - sigma0 * (gamma1mXi0 - 1.0) / xi0Safe;
   const Point x0({mu0, sigma0, xi0});
 
   // solve optimization problem

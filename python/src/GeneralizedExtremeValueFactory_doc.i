@@ -13,14 +13,14 @@ are proposed. The details are given in the methods documentation.
 The following :class:`~openturns.ResourceMap` entries can be used to tweak
 the parameters of the optimization solver involved in the different estimators:
 
-- `GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm`
-- `GeneralizedExtremeValueFactory-MaximumCallsNumber`
-- `GeneralizedExtremeValueFactory-MaximumAbsoluteError`
-- `GeneralizedExtremeValueFactory-MaximumRelativeError`
-- `GeneralizedExtremeValueFactory-MaximumObjectiveError`
-- `GeneralizedExtremeValueFactory-MaximumConstraintError`
-- `GeneralizedExtremeValueFactory-InitializationMethod`
-- `GeneralizedExtremeValueFactory-NormalizationMethod`
+- ``GeneralizedExtremeValueFactory-DefaultOptimizationAlgorithm``
+- ``GeneralizedExtremeValueFactory-MaximumCallsNumber``
+- ``GeneralizedExtremeValueFactory-MaximumAbsoluteError``
+- ``GeneralizedExtremeValueFactory-MaximumRelativeError``
+- ``GeneralizedExtremeValueFactory-MaximumObjectiveError``
+- ``GeneralizedExtremeValueFactory-MaximumConstraintError``
+- ``GeneralizedExtremeValueFactory-InitializationMethod``
+- ``GeneralizedExtremeValueFactory-NormalizationMethod``
 "
 
 // ---------------------------------------------------------------------
@@ -292,12 +292,12 @@ initializationMethod : str, optional
     The initialization method for the optimization problem: *Gumbel* or *Static*.
 
     By default, the method *Gumbel* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedExtremeValueFactory-InitializationMethod*).
+    ``GeneralizedExtremeValueFactory-InitializationMethod``).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
     By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedExtremeValueFactory-NormalizationMethod*).
+    ``GeneralizedExtremeValueFactory-NormalizationMethod``).
 
 Returns
 -------
@@ -473,12 +473,12 @@ initializationMethod : str, optional
     The initialization method for the optimization problem: *Gumbel* or *Static*.
 
     By default, the method *Gumbel* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedExtremeValueFactory-InitializationMethod*).
+    ``GeneralizedExtremeValueFactory-InitializationMethod``).
 normalizationMethod : str, optional
     The data normalization method: *CenterReduce*, *MinMax* or *None*.
 
     By default, the method *MinMax* (see :class:`~openturns.ResourceMap`, key
-    *GeneralizedExtremeValueFactory-NormalizationMethod*).
+    ``GeneralizedExtremeValueFactory-NormalizationMethod``).
 
 Returns
 -------
