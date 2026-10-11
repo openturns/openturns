@@ -211,7 +211,7 @@ void Epanechnikov::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = 0.2;
-  isAlreadyComputedCovariance_ = 0;
+  isAlreadyComputedCovariance_ = true;
 }
 
 /* Check if the distribution is elliptical */
