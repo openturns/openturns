@@ -193,6 +193,7 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   const Scalar phi4 = PluginConstraint(sample, 1.0, 4).computePhi(g1);
   const Scalar phi6 = PluginConstraint(sample, 1.0, 6).computePhi(g2);
   const Scalar K = SpecFunc::IRoot(-6.0 * std::sqrt(2.0) * phi4 / phi6, 7);
+  if (!(K > 0.0)) throw NotDefinedException(HERE) << "Cannot compute the plugin bandwidth, the pilot functional estimate has an inconsistent sign";
   PluginConstraint constraint(sample, K, 4);
   const Function f(bindMethod<PluginConstraint, Point, Point>(constraint, &PluginConstraint::computeBandwidthConstraint, 1, 1));
   // Find a bracketing interval
@@ -200,15 +201,20 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   Scalar b = g2;
   Scalar fA = f(Point(1, a))[0];
   Scalar fB = f(Point(1, b))[0];
+  const Scalar largeValue = std::sqrt(SpecFunc::MaxScalar);
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-MaximumIteration");
+  UnsignedInteger iteration = 0;
   // While f has the same sign at the two bounds, update the interval
-  while ((fA * fB > 0.0))
+  while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
   {
     a = 0.5 * a;
     fA = f(Point(1, a))[0];
     if (fA * fB <= 0.0) break;
     b = 2.0 * b;
     fB = f(Point(1, b))[0];
+    ++iteration;
   }
+  if ((fA * fB > 0.0) && ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration))) throw NotDefinedException(HERE) << "Cannot bracket the plugin bandwidth constraint";
   // Solve loosely the constraint equation
   Brent solver(ResourceMap::GetAsScalar( "KernelSmoothing-AbsolutePrecision" ), ResourceMap::GetAsScalar( "KernelSmoothing-RelativePrecision" ), ResourceMap::GetAsScalar( "KernelSmoothing-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-MaximumIteration" ));
   return Point(1, solver.solve(f, 0.0, a, b, fA, fB) / kernel_.getStandardDeviation()[0]);
@@ -237,7 +243,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   buffer.fill();
   for (UnsignedInteger i = 0; i < smallSize; ++i)
   {
-    const UnsignedInteger index = i + static_cast<UnsignedInteger>((size - i) * sobol.generate()[0]);
+    const UnsignedInteger index = std::min(i + static_cast<UnsignedInteger>((size - i) * sobol.generate()[0]), size - 1);
     smallSample(i, 0) = sample(buffer[index], 0);
     buffer[index] = buffer[i];
   }
@@ -245,6 +251,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   {
     const Scalar h1 = computePluginBandwidth(smallSample)[0];
     const Scalar h2 = computeSilvermanBandwidth(smallSample)[0];
+    if (!(h2 > 0.0) || !std::isfinite(h1)) return computeSilvermanBandwidth(sample);
     return computeSilvermanBandwidth(sample) * (h1 / h2);
   }
   catch (const NotDefinedException &)
@@ -324,9 +331,16 @@ Distribution KernelSmoothing::buildWeighted(const Sample & sample,
     throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  {
+    if (!std::isfinite(xmin[j]) || !std::isfinite(xmax[j])) throw InvalidArgumentException(HERE) << "Error: cannot build a kernel smoothing estimate from a sample with non-finite values";
+    // The bandwidth is only used on non-degenerate marginals
+    if ((xmax[j] > xmin[j]) && !(bandwidth[j] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the given bandwidth must have positive components, here bandwidth[" << j << "]=" << bandwidth[j];
+  }
   // Check the degenerate case of constant sample
   if (xmin == xmax)
   {
+    bandwidth_ = bandwidth;
     Dirac result(xmin);
     result.setDescription(sample.getDescription());
     return result;
@@ -379,7 +393,9 @@ Distribution KernelSmoothing::buildWeighted(const Sample & sample,
         ++ degenerateCount;
       }
     }
-    return BlockIndependentDistribution(coll).getMarginal(marginalIndices);
+    Distribution result(BlockIndependentDistribution(coll).getMarginal(marginalIndices));
+    bandwidth_ = bandwidth;
+    return result;
   }
   // Check if we have to perform boundary correction
   if (boundingOption_ != NONE) return buildWeightedAsTruncatedDistribution(sample, weights, bandwidth);
@@ -466,38 +482,20 @@ Mixture KernelSmoothing::buildWeightedAsMixture(const Sample & sample,
         if ((indexY < binNumber_) && (gridY[indexY + 1] < y)) ++indexY;
       }
       const Scalar wRight  = (x - gridX[indexX]) / deltaX;
-      const Scalar wLeft   = 1.0 - wRight;
       const Scalar wTop    = (y - gridY[indexY]) / deltaY;
-      const Scalar wBottom = 1.0 - wTop;
-      if ((indexX > 0) && (indexX < binNumber_))
-      {
-        // Fully inside of a patch
-        if ((indexY > 0) && (indexY < binNumber_))
-        {
-          gridWeights[indexX     + indexY * (binNumber_ + 1)]       += weights[i] * wLeft  * wBottom;
-          gridWeights[indexX + 1 + indexY * (binNumber_ + 1)]       += weights[i] * wRight * wBottom;
-          gridWeights[indexX     + (indexY + 1) * (binNumber_ + 1)] += weights[i] * wLeft  * wTop;
-          gridWeights[indexX + 1 + (indexY + 1) * (binNumber_ + 1)] += weights[i] * wRight * wTop;
-        } // Fully inside of a patch
-        else
-        {
-          gridWeights[indexX     + indexY * (binNumber_ + 1)] += weights[i] * wLeft;
-          gridWeights[indexX + 1 + indexY * (binNumber_ + 1)] += weights[i] * wRight;
-        } // On an y boundary
-      } // Fully inside of the columns
-      else
-      {
-        // Fully inside of y
-        if ((indexY > 0) && (indexY < binNumber_))
-        {
-          gridWeights[indexX     + indexY * (binNumber_ + 1)]       += weights[i] * wBottom;
-          gridWeights[indexX     + (indexY + 1) * (binNumber_ + 1)] += weights[i] * wTop;
-        } // Fully inside of a patch
-        else
-        {
-          gridWeights[indexX     + indexY * (binNumber_ + 1)] += weights[i];
-        } // On a corner
-      } // On an x-boundary
+      // Bilinear splitting clamped onto the grid: on an edge the whole mass
+      // stays on the boundary nodes, inside a patch all four nodes are used,
+      // including in the first and last strips
+      const UnsignedInteger indexXRight = (indexX < binNumber_ ? indexX + 1 : indexX);
+      const UnsignedInteger indexYTop = (indexY < binNumber_ ? indexY + 1 : indexY);
+      const Scalar wXRight = (indexXRight == indexX ? 0.0 : wRight);
+      const Scalar wXLeft = 1.0 - wXRight;
+      const Scalar wYTop = (indexYTop == indexY ? 0.0 : wTop);
+      const Scalar wYBottom = 1.0 - wYTop;
+      gridWeights[indexX         + indexY * (binNumber_ + 1)] += weights[i] * wXLeft  * wYBottom;
+      gridWeights[indexXRight    + indexY * (binNumber_ + 1)] += weights[i] * wXRight * wYBottom;
+      gridWeights[indexX         + indexYTop * (binNumber_ + 1)] += weights[i] * wXLeft  * wYTop;
+      gridWeights[indexXRight    + indexYTop * (binNumber_ + 1)] += weights[i] * wXRight * wYTop;
     }
     Collection< Distribution > atoms;
     Point weights2;
@@ -675,9 +673,14 @@ Distribution KernelSmoothing::build(const Sample & sample,
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
-
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  {
+    if (!std::isfinite(xmin[j]) || !std::isfinite(xmax[j])) throw InvalidArgumentException(HERE) << "Error: cannot build a kernel smoothing estimate from a sample with non-finite values";
+    // The bandwidth is only used on non-degenerate marginals
+    if ((xmax[j] > xmin[j]) && !(bandwidth[j] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the given bandwidth must have positive components, here bandwidth[" << j << "]=" << bandwidth[j];
+  }
   // Check the degenerate case of constant sample
   if (xmin == xmax)
   {
@@ -817,38 +820,20 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
         if ((indexY < binNumber_) && (gridY[indexY + 1] < y)) ++indexY;
       }
       const Scalar wRight  = (x - gridX[indexX]) / deltaX;
-      const Scalar wLeft   = 1.0 - wRight;
       const Scalar wTop    = (y - gridY[indexY]) / deltaY;
-      const Scalar wBottom = 1.0 - wTop;
-      if ((indexX > 0) && (indexX < binNumber_))
-      {
-        // Fully inside of a patch
-        if ((indexY > 0) && (indexY < binNumber_))
-        {
-          weights[indexX     + indexY * (binNumber_ + 1)]       += wLeft  * wBottom;
-          weights[indexX + 1 + indexY * (binNumber_ + 1)]       += wRight * wBottom;
-          weights[indexX     + (indexY + 1) * (binNumber_ + 1)] += wLeft  * wTop;
-          weights[indexX + 1 + (indexY + 1) * (binNumber_ + 1)] += wRight * wTop;
-        } // Fully inside of a patch
-        else
-        {
-          weights[indexX     + indexY * (binNumber_ + 1)] += wLeft;
-          weights[indexX + 1 + indexY * (binNumber_ + 1)] += wRight;
-        } // On an y boundary
-      } // Fully inside of the columns
-      else
-      {
-        // Fully inside of y
-        if ((indexY > 0) && (indexY < binNumber_))
-        {
-          weights[indexX     + indexY * (binNumber_ + 1)]       += wBottom;
-          weights[indexX     + (indexY + 1) * (binNumber_ + 1)] += wTop;
-        } // Fully inside of a patch
-        else
-        {
-          weights[indexX     + indexY * (binNumber_ + 1)] += 1.0;
-        } // On a corner
-      } // On an x-boundary
+      // Bilinear splitting clamped onto the grid: on an edge the whole mass
+      // stays on the boundary nodes, inside a patch all four nodes are used,
+      // including in the first and last strips
+      const UnsignedInteger indexXRight = (indexX < binNumber_ ? indexX + 1 : indexX);
+      const UnsignedInteger indexYTop = (indexY < binNumber_ ? indexY + 1 : indexY);
+      const Scalar wXRight = (indexXRight == indexX ? 0.0 : wRight);
+      const Scalar wXLeft = 1.0 - wXRight;
+      const Scalar wYTop = (indexYTop == indexY ? 0.0 : wTop);
+      const Scalar wYBottom = 1.0 - wYTop;
+      weights[indexX         + indexY * (binNumber_ + 1)] += wXLeft  * wYBottom;
+      weights[indexXRight    + indexY * (binNumber_ + 1)] += wXRight * wYBottom;
+      weights[indexX         + indexYTop * (binNumber_ + 1)] += wXLeft  * wYTop;
+      weights[indexXRight    + indexYTop * (binNumber_ + 1)] += wXRight * wYTop;
     }
     Collection< Distribution > atoms;
     Point weights2;
