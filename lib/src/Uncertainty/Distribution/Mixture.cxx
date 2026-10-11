@@ -90,7 +90,7 @@ Mixture::Mixture(const DistributionCollection & coll,
 Bool Mixture::operator ==(const Mixture & other) const
 {
   if (this == &other) return true;
-  return hasEqualBase(other) && distributionCollection_ == other.distributionCollection_;
+  return hasEqualBase(other) && distributionCollection_ == other.distributionCollection_ && p_ == other.p_;
 }
 
 Bool Mixture::equals(const DistributionImplementation & other) const
@@ -938,9 +938,11 @@ Point Mixture::getSingularities() const
   // 1) Sort the values to put the lower bound at the first position and the upper
   //    bound at the last position
   std::sort(singularities.begin(), singularities.end());
+  if (singularities.getSize() <= 1) return Point(0);
   // 2) Remove the duplicates and the upper bound in a unique pass
   singularities.erase(std::unique(singularities.begin(), singularities.end()) - 1, singularities.end());
   // 3) Remove the lower bound
+  if (singularities.getSize() == 0) return Point(0);
   singularities.erase(singularities.begin(), singularities.begin() + 1);
   return singularities;
 }
