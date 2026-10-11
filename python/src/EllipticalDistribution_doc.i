@@ -193,7 +193,7 @@ R"RAW(Accessor to the :math:`\mat{R}` matrix.
 
 Returns
 -------
-R : :class:`openturns.CorrelationMatrix`
+R : :class:`~openturns.CorrelationMatrix`
     The matrix :math:`\mat{R}`.
 
 Notes
