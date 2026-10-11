@@ -21,6 +21,7 @@
 #include <cmath>
 
 #include "openturns/AliMikhailHaqCopulaFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -65,6 +66,7 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from an empty sample";
   if (sample.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample of dimension not equal to 2";
   Scalar tau = sample.computeKendallTau().operator()(0, 1);
+  if (!std::isfinite(tau)) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample with non-finite Kendall tau";
   if ((tau < (5.0 - 8.0 * std::log(2.0)) / 3.0) || (tau > 1.0 / 3.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a AliMikhailHaqCopula distribution from a sample with Kendall tau not in [(5-8ln(2))/3 ~ -0.182, 1/3~0.333]. Here tau=" << tau;
   // Search the value of the AliMikhailHaq copula parameter by numerically inverting the relation:
   // between Kendall's tau and AliMikhailHaq copula's parameter
@@ -97,7 +99,8 @@ AliMikhailHaqCopula AliMikhailHaqCopulaFactory::buildAsAliMikhailHaqCopula(const
     maxTheta = theta;
   }
   // Bisection
-  const Scalar thetaEpsilon = ResourceMap::GetAsScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" );
+  Scalar thetaEpsilon = ResourceMap::GetAsScalar( "AliMikhailHaqCopulaFactory-ThetaEpsilon" );
+  if (!(thetaEpsilon > 0.0)) thetaEpsilon = SpecFunc::Precision;
   while (maxTheta - minTheta > thetaEpsilon)
   {
     theta = 0.5 * (maxTheta + minTheta);

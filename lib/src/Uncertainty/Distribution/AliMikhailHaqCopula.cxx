@@ -104,7 +104,8 @@ Point AliMikhailHaqCopula::getRealization() const
   const Scalar b = -theta_ * (2.0 * a * v + 1.0) + 2.0 * theta2 * a * a * v + 1.0;
   const Scalar delta = 4.0 * v * (a - 1.0);
   const Scalar c = theta2 * (a * delta + 1.0) - theta_ * (delta + 2.0) + 1.0;
-  realization[1] = 2.0 * v * std::pow(a * theta_ - 1.0, 2) / (b + std::sqrt(c));
+  // The discriminant is mathematically nonnegative but roundoff can make it slightly negative
+  realization[1] = 2.0 * v * std::pow(a * theta_ - 1.0, 2) / (b + std::sqrt(std::max(0.0, c)));
   return realization;
 }
 
@@ -332,12 +333,17 @@ Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar q, const Poi
  */
 Scalar AliMikhailHaqCopula::computeArchimedeanGenerator(const Scalar t) const
 {
+  // The independent copula has generator -log(t)
+  if (theta_ == 0.0) return -std::log(t);
   return log1p(-theta_ * (1.0 - t)) / t;
 }
 
 /* Compute the inverse of the archimedean generator */
 Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
+  // The independent copula has inverse generator exp(-t)
+  if (theta_ == 0.0) return std::exp(-t);
+  if (t == 0.0) return 1.0;
   const Scalar y = t * (theta_ - 1.0) / theta_;
   return (y - SpecFunc::LambertW(-t * std::exp(y) / theta_)) / t;
 }
@@ -396,7 +402,7 @@ Bool AliMikhailHaqCopula::hasIndependentCopula() const
 /* Theta accessor */
 void AliMikhailHaqCopula::setTheta(const Scalar theta)
 {
-  if ((theta <= -1.0) || (theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in (-1, 1), here theta=" << theta;
+  if ((theta < -1.0) || (theta > 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1], here theta=" << theta;
   if (theta != theta_)
   {
     theta_ = theta;
