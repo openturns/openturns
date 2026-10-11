@@ -842,7 +842,13 @@ Description ProductDistribution::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool ProductDistribution::isElliptical() const
 {
-  return (p_left_->isElliptical() && (std::abs(p_left_->getRange().getLowerBound()[0] + p_left_->getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))) || (p_right_->isElliptical() && (std::abs(p_right_->getRange().getLowerBound()[0] + p_right_->getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")));
+  // The product of two independent 1D distributions is elliptical only in very special cases,
+  // e.g. two centered Normal distributions which form a spherical Normal distribution.
+  // Centeredness of a single factor is not sufficient.
+  const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
+  const Bool leftOk = (p_left_->getClassName() == "Normal") && (std::abs(p_left_->getRange().getLowerBound()[0] + p_left_->getRange().getUpperBound()[0]) < epsilon);
+  const Bool rightOk = (p_right_->getClassName() == "Normal") && (std::abs(p_right_->getRange().getLowerBound()[0] + p_right_->getRange().getUpperBound()[0]) < epsilon);
+  return leftOk && rightOk;
 }
 
 /* Left accessor */
