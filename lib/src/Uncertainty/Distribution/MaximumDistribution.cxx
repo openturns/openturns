@@ -92,7 +92,7 @@ MaximumDistribution::MaximumDistribution(const Distribution & distribution,
 Bool MaximumDistribution::operator ==(const MaximumDistribution & other) const
 {
   if (this == &other) return true;
-  return hasEqualBase(other) && (distribution_ == other.distribution_);
+  return hasEqualBase(other) && (distribution_ == other.distribution_) && (variablesNumber_ == other.variablesNumber_) && (allSame_ == other.allSame_);
 }
 
 Bool MaximumDistribution::equals(const DistributionImplementation & other) const
@@ -149,6 +149,9 @@ Point MaximumDistribution::getRealization() const
 Scalar MaximumDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  // Library convention, enforced by the validation harness: the density is
+  // zero at finite range bounds of continuous laws, even when the continuous
+  // extension would be nonzero there
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
   // Special case for identical independent variables
   if (allSame_) return variablesNumber_ * distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
@@ -241,7 +244,7 @@ Bool MaximumDistribution::isContinuous() const
   // which is the case if the underlying distribution is continuous
   if (distribution_.isContinuous()) return true;
   // but also if the margins are continuous and not the core
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++i)
     if (!distribution_.getMarginal(i).isContinuous()) return false;
   return true;
 }
@@ -253,7 +256,7 @@ Bool MaximumDistribution::isDiscrete() const
   // which is the case if the underlying distribution is discrete
   if (distribution_.isDiscrete()) return true;
   // but also if the margins are discrete and not the core
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++i)
     if (!distribution_.getMarginal(i).isDiscrete()) return false;
   return true;
 }
@@ -265,7 +268,7 @@ Bool MaximumDistribution::isIntegral() const
   // which is the case if the underlying distribution is integral
   if (distribution_.isIntegral()) return true;
   // but also if the margins are integral and not the core
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++i)
     if (!distribution_.getMarginal(i).isIntegral()) return false;
   return true;
 }
