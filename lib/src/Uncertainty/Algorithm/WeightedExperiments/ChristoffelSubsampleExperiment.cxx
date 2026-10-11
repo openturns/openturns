@@ -239,55 +239,77 @@ Point ChristoffelSubsampleExperiment::computeDesignEigenvalues(const Sample & sa
   return gramian.computeEigenValues();
 }
 
-/* Thin a pool to size_, weigh and frame-check the design */
+/* Thin a pool to size_, weigh and frame-check the design, growing a
+   numerically unusable pool up to the cap */
 Sample ChristoffelSubsampleExperiment::finalizeDesign(const Sample & pool,
     const Point & poolWeights,
     Point & weightsOut) const
 {
-  Indices kept;
-  Point selectionWeights(pool.getSize(), 1.0);
-  // finite basis evaluations shared by the thinning step and the frame check below
-  const Matrix poolFeatures(computePoolFeatures(pool));
-  const String thinningMethod = ResourceMap::GetAsString("ChristoffelSubsampleExperiment-ThinningMethod");
-  if (thinningMethod == "Barrier")
+  const Scalar maxFactor = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor");
+  if (!(maxFactor > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive pool maximum oversampling factor, here factor=" << maxFactor;
+  // Cap the adaptive growth, never below the incoming pool: both overloads
+  // hand over at least poolSize() >= 1 points, so the growth below progresses
+  const UnsignedInteger poolCap = std::max(pool.getSize(), static_cast<UnsignedInteger>(std::ceil(maxFactor * size_)));
+  Sample grownPool(pool);
+  Point grownWeights(poolWeights);
+  while (true)
   {
-    Point barrierWeights;
-    barrierSelection(pool, poolWeights, poolFeatures, kept, barrierWeights);
-    Scalar totalWeight = 0.0;
-    for (UnsignedInteger k = 0; k < size_; ++k) totalWeight += barrierWeights[kept[k]] * poolWeights[kept[k]];
-    if (!(totalWeight > 0.0)) throw InternalException(HERE) << "Error: null total barrier weight.";
-    for (UnsignedInteger k = 0; k < size_; ++k) selectionWeights[kept[k]] = size_ * barrierWeights[kept[k]] / totalWeight;
+    Indices kept;
+    Point selectionWeights(grownPool.getSize(), 1.0);
+    // finite basis evaluations shared by the thinning step and the frame check below
+    const Matrix poolFeatures(computePoolFeatures(grownPool));
+    const String thinningMethod = ResourceMap::GetAsString("ChristoffelSubsampleExperiment-ThinningMethod");
+    if (thinningMethod == "Barrier")
+    {
+      Point barrierWeights;
+      barrierSelection(grownPool, grownWeights, poolFeatures, kept, barrierWeights);
+      Scalar totalWeight = 0.0;
+      for (UnsignedInteger k = 0; k < size_; ++k) totalWeight += barrierWeights[kept[k]] * grownWeights[kept[k]];
+      if (!(totalWeight > 0.0)) throw InternalException(HERE) << "Error: null total barrier weight.";
+      for (UnsignedInteger k = 0; k < size_; ++k) selectionWeights[kept[k]] = size_ * barrierWeights[kept[k]] / totalWeight;
+    }
+    else if (thinningMethod == "Removal")
+    {
+      kept = thinIndices(grownPool, grownWeights, poolFeatures);
+    }
+    else throw InvalidArgumentException(HERE) << "Error: unknown thinning method=" << thinningMethod << ", expected Barrier or Removal.";
+    Sample sample(size_, distribution_.getDimension());
+    sample.setDescription(distribution_.getDescription());
+    weightsOut = Point(size_);
+    for (UnsignedInteger k = 0; k < size_; ++k) weightsOut[k] = selectionWeights[kept[k]] * grownWeights[kept[k]];
+    // Bulk row copy through the contiguous storage
+    const UnsignedInteger inputDimension = distribution_.getDimension();
+    auto poolBegin = grownPool.getImplementation()->data_begin();
+    auto sampleBegin = sample.getImplementation()->data_begin();
+    for (UnsignedInteger k = 0; k < size_; ++k)
+      std::copy(poolBegin + kept[k] * inputDimension, poolBegin + (kept[k] + 1) * inputDimension, sampleBegin + k * inputDimension);
+    // Frame check on the thinned design, reusing the pool evaluations above
+    Point designWeights(grownPool.getSize());
+    for (UnsignedInteger i = 0; i < grownPool.getSize(); ++i) designWeights[i] = selectionWeights[i] * grownWeights[i];
+    const Point eigenValues(ComputeGramian(poolFeatures, designWeights, kept).computeEigenValues());
+    Scalar minEigenvalue = eigenValues[0];
+    Scalar maxEigenvalue = eigenValues[0];
+    for (UnsignedInteger k = 1; k < eigenValues.getSize(); ++k)
+    {
+      minEigenvalue = std::min(minEigenvalue, eigenValues[k]);
+      maxEigenvalue = std::max(maxEigenvalue, eigenValues[k]);
+    }
+    const Bool usable = (minEigenvalue > SpecFunc::Precision);
+    const Bool capped = (grownPool.getSize() >= poolCap);
+    if (usable || capped)
+    {
+      const Scalar tolerance = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance");
+      if (minEigenvalue < 1.0 - tolerance || maxEigenvalue > 1.0 + tolerance)
+        LOGWARN(OSS() << "Warning: the thinned design misses the frame bounds [" << 1.0 - tolerance << ", " << 1.0 + tolerance << "], got [" << minEigenvalue << ", " << maxEigenvalue << "]");
+      return sample;
+    }
+    // Degenerate pool (eg duplicates): top up with fresh draws, keeping the
+    // existing points so no evaluation is wasted, and thin again
+    const UnsignedInteger grownSize = std::min(2 * grownPool.getSize(), poolCap);
+    const Sample fresh(drawPool(grownSize - grownPool.getSize()));
+    for (UnsignedInteger i = 0; i < fresh.getSize(); ++i) grownPool.add(fresh[i]);
+    grownWeights = computePoolWeights(grownPool);
   }
-  else if (thinningMethod == "Removal")
-  {
-    kept = thinIndices(pool, poolWeights, poolFeatures);
-  }
-  else throw InvalidArgumentException(HERE) << "Error: unknown thinning method=" << thinningMethod << ", expected Barrier or Removal.";
-  Sample sample(size_, distribution_.getDimension());
-  sample.setDescription(distribution_.getDescription());
-  weightsOut = Point(size_);
-  for (UnsignedInteger k = 0; k < size_; ++k) weightsOut[k] = selectionWeights[kept[k]] * poolWeights[kept[k]];
-  // Bulk row copy through the contiguous storage
-  const UnsignedInteger inputDimension = distribution_.getDimension();
-  auto poolBegin = pool.getImplementation()->data_begin();
-  auto sampleBegin = sample.getImplementation()->data_begin();
-  for (UnsignedInteger k = 0; k < size_; ++k)
-    std::copy(poolBegin + kept[k] * inputDimension, poolBegin + (kept[k] + 1) * inputDimension, sampleBegin + k * inputDimension);
-  // Frame check on the thinned design, reusing the pool evaluations above
-  Point designWeights(pool.getSize());
-  for (UnsignedInteger i = 0; i < pool.getSize(); ++i) designWeights[i] = selectionWeights[i] * poolWeights[i];
-  const Point eigenValues(ComputeGramian(poolFeatures, designWeights, kept).computeEigenValues());
-  Scalar minEigenvalue = eigenValues[0];
-  Scalar maxEigenvalue = eigenValues[0];
-  for (UnsignedInteger k = 1; k < eigenValues.getSize(); ++k)
-  {
-    minEigenvalue = std::min(minEigenvalue, eigenValues[k]);
-    maxEigenvalue = std::max(maxEigenvalue, eigenValues[k]);
-  }
-  const Scalar tolerance = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance");
-  if (minEigenvalue < 1.0 - tolerance || maxEigenvalue > 1.0 + tolerance)
-    LOGWARN(OSS() << "Warning: the thinned design misses the frame bounds [" << 1.0 - tolerance << ", " << 1.0 + tolerance << "], got [" << minEigenvalue << ", " << maxEigenvalue << "]");
-  return sample;
 }
 
 /* Identity index set of given size */

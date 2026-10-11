@@ -117,7 +117,8 @@ protected:
   /** Density ratios of pool points, reference over Christoffel law */
   Point computePoolWeights(const Sample & pool) const;
 
-  /** Thin a pool to size_, weigh and frame-check the design */
+  /** Thin a pool to size_, weigh and frame-check the design, growing a
+      numerically unusable pool up to the cap */
   Sample finalizeDesign(const Sample & pool,
                         const Point & poolWeights,
                         Point & weightsOut) const;

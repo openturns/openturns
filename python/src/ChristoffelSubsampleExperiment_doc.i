@@ -13,7 +13,11 @@ tried until the basis supplies :math:`m` functions. It draws a pool of points
 from the :class:`~openturns.experimental.ChristoffelDistribution` associated to
 these :math:`m` functions, sized by
 ``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` times :math:`n`,
-then greedily thins the pool down to :math:`n` points. The default ``Removal``
+then greedily thins the pool down to :math:`n` points. When the thinned
+design is numerically unusable, the pool is doubled with fresh draws,
+keeping the existing points, up to
+``ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor`` times
+:math:`n`, and thinned again. The default ``Removal``
 method drops pool points while keeping the largest smallest Gramian eigenvalue
 and no reweighting; the ``Barrier`` method is a forward barrier greedy selection
 with reweighting, clamped strictly inside the current spectrum so rank-deficient
@@ -49,6 +53,7 @@ Notes
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` (``Scalar``, default: ``2.0``): candidate pool size as a multiple of the target size.
+- ``ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor`` (``Scalar``, default: ``16.0``): cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool.
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1.
 - ``ChristoffelSubsampleExperiment-ThinningMethod`` (``String``, default: ``Removal``): greedy thinning method. Possible values: ``Barrier``, ``Removal``.
 - ``ChristoffelSubsampleExperiment-BarrierStep`` (``Scalar``, default: ``1.0``): barrier advance per selection step of the ``Barrier`` method.

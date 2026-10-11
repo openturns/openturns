@@ -74,6 +74,7 @@ ott.assert_almost_equal(weightsA, weightsB)
 # the sizing rule needs no gamma key anymore: m = n-k is deduced by trial
 assert not ot.ResourceMap.HasKey("ChristoffelSubsampleExperiment-Gamma")
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor"), 2.0)
+ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor"), 16.0)
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance"), 0.5)
 
 # Barrier method: non-trivial reweighting, smoke only (no frame bounds)
@@ -182,6 +183,36 @@ try:
         experiment.generateWithWeights()
 finally:
     ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0)
+
+# a non-positive pool maximum factor is rejected
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 0.0)
+try:
+    with ott.assert_raises(TypeError):
+        experiment.generateWithWeights()
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
+
+# adaptive pool: a degenerate pool of duplicates grows with fresh draws
+# until the thinned design is usable, keeping the existing points
+degeneratePool = ot.Sample(100, [0.5])
+ot.RandomGenerator.SetSeed(3)
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 2.0)
+try:
+    cappedSample, cappedWeights = experiment.generateWithWeights(degeneratePool)
+    cappedEigenvalues = experiment.computeDesignEigenvalues(cappedSample, cappedWeights)
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 4.0)
+try:
+    ot.RandomGenerator.SetSeed(3)
+    grownSample, grownWeights = experiment.generateWithWeights(degeneratePool)
+    assert grownSample.getSize() == 50
+    assert len(grownWeights) == 50
+    assert all(w > 0.0 for w in grownWeights)
+    grownEigenvalues = experiment.computeDesignEigenvalues(grownSample, grownWeights)
+    assert min(grownEigenvalues) > min(cappedEigenvalues)
+    assert min(grownEigenvalues) > 0.0
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
 
 # the barrier schedule rejects non-positive controls
 ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
