@@ -123,7 +123,7 @@ Scalar Exponential::computePDF(const Point & point) const
 Scalar Exponential::computePDF(const Scalar u) const
 {
   const Scalar x = u - gamma_;
-  if (x <= 0.0) return 0.0;
+  if (x < 0.0) return 0.0;
   return lambda_ * std::exp(-lambda_ * x);
 }
 
@@ -137,7 +137,7 @@ Scalar Exponential::computeLogPDF(const Point & point) const
 Scalar Exponential::computeLogPDF(const Scalar u) const
 {
   const Scalar x = u - gamma_;
-  if (x <= 0.0) return SpecFunc::LowestScalar;
+  if (x < 0.0) return SpecFunc::LowestScalar;
   return std::log(lambda_) - lambda_ * x;
 }
 

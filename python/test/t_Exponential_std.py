@@ -37,6 +37,13 @@ print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
 
+# Density at the support boundary equals lambda, not zero (see #3066)
+ott.assert_almost_equal(ot.Exponential().computePDF(0.0), 1.0, 0.0, 0.0)
+ott.assert_almost_equal(ot.Exponential().computeLogPDF(0.0), 0.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.Exponential(2.5, -0.5).computePDF([-0.5]), 2.5, 0.0, 0.0
+)
+
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
 print("cdf=%.6f" % CDF)
@@ -107,4 +114,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the density is lambda at the finite lower bound, see #3066
 validation.run()
