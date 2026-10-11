@@ -322,7 +322,7 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
 {
   const UnsignedInteger dimension = mesh.getDimension();
   if (dimension != distribution_.getDimension())
-    throw InvalidArgumentException(HERE) << "Error: expected a mesh of dimension " << distribution_.getDimension();
+    throw InvalidArgumentException(HERE) << "Error: expected a mesh of dimension " << distribution_.getDimension() << ", got dimension " << dimension;
   setDimension(dimension);
   mesh_ = mesh;
   meshDomain_ = MeshDomain(mesh);
@@ -336,7 +336,9 @@ void TruncatedOverMesh::setMesh(const Mesh & mesh)
     const Mesh simplexMesh(mesh.getSubMesh({i}));
     probabilities_[i] = integrationAlgorithm.integrate(distribution_.getPDF(), simplexMesh)[0];
   }
-  normalizationFactor_ = 1.0 / std::accumulate(probabilities_.begin(), probabilities_.end(), 0.0);
+  const Scalar totalMass = std::accumulate(probabilities_.begin(), probabilities_.end(), 0.0);
+  if (!(totalMass > 0.0)) throw InvalidArgumentException(HERE) << "Error: the mesh has a null probability mass under the distribution, it must intersect the support of the distribution";
+  normalizationFactor_ = 1.0 / totalMass;
   probabilities_ *= normalizationFactor_;
   if (!ResourceMap::GetAsBool("TruncatedOverMesh-UseRejection"))
   {
