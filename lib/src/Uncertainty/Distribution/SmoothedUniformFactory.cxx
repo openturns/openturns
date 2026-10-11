@@ -61,11 +61,11 @@ Distribution SmoothedUniformFactory::build() const
 
 SmoothedUniform SmoothedUniformFactory::buildAsSmoothedUniform(const Sample & sample) const
 {
-  const Scalar size = sample.getSize();
-  if (size < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a SmoothedUniform distribution from a sample of size < 2";
+  const UnsignedInteger size = sample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a SmoothedUniform distribution from a sample of size < 3";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a SmoothedUniform distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mean = sample.computeMean()[0];
-  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an FiniteDiscreteDistribution distribution if data contains NaN or Inf";
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a SmoothedUniform distribution if data contains NaN or Inf";
   // method of moments
   const Scalar variance = sample.computeVariance()[0];
   if (!(variance > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a SmoothedUniform distribution from a constant sample.";
@@ -74,6 +74,7 @@ SmoothedUniform SmoothedUniformFactory::buildAsSmoothedUniform(const Sample & sa
   const Scalar delta = std::pow(120.0 * variance * variance * (3.0 - kurtosis), 0.25);
   const Scalar a = mean - 0.5 * delta;
   const Scalar b = mean + 0.5 * delta;
+  if (!(variance - delta * delta / 12.0 > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a SmoothedUniform distribution from a sample with kurtosis=" << kurtosis << ", the uniform part would have a negative variance";
   const Scalar sigma = std::sqrt(variance - delta * delta / 12.0);
   const SmoothedUniform initial(a, b, sigma);
   // finish the job with MLE
