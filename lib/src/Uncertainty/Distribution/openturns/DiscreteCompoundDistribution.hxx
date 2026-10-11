@@ -140,7 +140,7 @@ protected:
 
 private:
   /** Get upper bound of distribution */
-  UnsignedInteger computeIntegerUpperBound();
+  Scalar computeIntegerUpperBound();
 
   /** Get table of probabilities */
   Point computeProbabilities(const UnsignedInteger m) const;

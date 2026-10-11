@@ -147,7 +147,7 @@ Point DiscreteCompoundDistribution::computeProbabilities(const UnsignedInteger m
 }
 
 
-UnsignedInteger DiscreteCompoundDistribution::computeIntegerUpperBound()
+Scalar DiscreteCompoundDistribution::computeIntegerUpperBound()
 {
   return compoundDistribution_.getRange().getUpperBound()[0] * baseDistribution_.getRange().getUpperBound()[0];
 }
