@@ -71,6 +71,7 @@ FarlieGumbelMorgensternCopula FarlieGumbelMorgensternCopulaFactory::buildAsFarli
     theta = 3.0 * sample.computeSpearmanCorrelation().operator()(0, 1);
     if (!(std::abs(theta) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula from Spearman's rho either: it leads to theta=" << theta;
   }
+  if (!(std::abs(theta) <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a FarlieGumbelMorgensternCopula distribution from the given sample";
   FarlieGumbelMorgensternCopula result(theta);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);

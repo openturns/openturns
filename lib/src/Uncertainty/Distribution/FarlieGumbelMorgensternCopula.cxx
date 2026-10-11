@@ -102,7 +102,8 @@ Point FarlieGumbelMorgensternCopula::getRealization() const
   const Scalar u = RandomGenerator::Generate();
   const Scalar t = RandomGenerator::Generate();
   const Scalar a = 1.0 + theta_ * (1.0 - 2.0 * u);
-  const Scalar b = std::sqrt(a * a - 4.0 * (a - 1.0) * t);
+  // The discriminant is mathematically nonnegative but roundoff can make it slightly negative
+  const Scalar b = std::sqrt(std::max(0.0, a * a - 4.0 * (a - 1.0) * t));
   realization[0] = u;
   realization[1] = 2.0 * t / (a + b);
   return realization;
@@ -189,8 +190,8 @@ Point FarlieGumbelMorgensternCopula::computePDFGradient(const Point & point) con
 
   const Scalar u = point[0];
   const Scalar v = point[1];
-  // A copula has a null PDF outside of [0, 1[^2
-  if (!((u >= 0.0) && (u < 1.0) && (v >= 0.0) && (v < 1.0)))
+  // A copula has a null PDF outside of ]0, 1[^2
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
     return Point(1, 0.0);
   }
@@ -205,7 +206,8 @@ Point FarlieGumbelMorgensternCopula::computeCDFGradient(const Point & point) con
 
   const Scalar u = point[0];
   const Scalar v = point[1];
-  if (!((u >= 0.0) && (u < 1.0) && (v >= 0.0) && (v < 1.0)))
+  // A copula has a null CDF outside of ]0, 1[^2
+  if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
     return Point(1, 0.0);
   }
