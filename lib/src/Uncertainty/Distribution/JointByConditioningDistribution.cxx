@@ -230,6 +230,8 @@ Scalar JointByConditioningDistribution::computeCDF(const Point & point) const
   Point x(conditionedDistribution_.getDimension());
   std::copy(point.begin() + y.getSize(), point.end(), x.begin());
   Point lowerY(conditioningDistribution_.getRange().getLowerBound());
+  for (UnsignedInteger i = 0; i < y.getSize(); ++i)
+    if (y[i] < lowerY[i]) return 0.0;
   const Function kernel(JointByConditioningCDFKernel(conditionedDistribution_, conditioningDistribution_, linkFunction_, x));
   const Scalar cdf = IteratedQuadrature().integrate(kernel, Interval(lowerY, y))[0];
   return SpecFunc::Clip01(cdf);
@@ -520,7 +522,7 @@ Scalar JointByConditioningDistribution::computeConditionalPDF(const Scalar x,
   std::copy(y.begin(), y.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
   Distribution conditioned(conditionedDistribution_);
   conditioned.setParameter(linkFunction_(fixedConditioningPart));
-  Point fixedConditionedPart(conditioningDistributionDimension - conditioningDistributionDimension);
+  Point fixedConditionedPart(conditioningDimension - conditioningDistributionDimension);
   if (fixedConditionedPart.getDimension() > 0)
     std::copy(y.begin() + conditioningDistributionDimension, y.end(), fixedConditionedPart.begin());
   return conditioned.computeConditionalPDF(x, fixedConditionedPart);
