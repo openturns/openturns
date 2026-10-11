@@ -49,6 +49,6 @@ Returns
 distribution : :class:`~openturns.InverseNormal`
     The estimated distribution as a :class:`~openturns.InverseNormal`.
     
-    In the first usage, the default :class:`openturns.InverseNormal` distribution is built."
+    In the first usage, the default :class:`~openturns.InverseNormal` distribution is built."
     
 
