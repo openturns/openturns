@@ -159,6 +159,7 @@ Point NonCentralStudent::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point NonCentralStudent::getSkewness() const
 {
+  if (!(nu_ > 3.0)) throw NotDefinedException(HERE) << "Error: the skewness is defined only for nu > 3 for a non central Student distribution";
   Scalar mup1 = getMean()[0] - gamma_;
   Scalar mu2 = getCovariance().operator()(0, 0);
   return Point(1, mup1 * (nu_ * (2.0 * nu_ - 3.0 + delta_ * delta_) / ((nu_ - 2.0) * (nu_ - 3.0)) - 2.0 * mu2) * std::pow(mu2, -1.5));
@@ -167,6 +168,7 @@ Point NonCentralStudent::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point NonCentralStudent::getKurtosis() const
 {
+  if (!(nu_ > 4.0)) throw NotDefinedException(HERE) << "Error: the kurtosis is defined only for nu > 4 for a non central Student distribution";
   Scalar mup1 = getMean()[0] - gamma_;
   Scalar mu2 = getCovariance().operator()(0, 0);
   Scalar delta2 = delta_ * delta_;
