@@ -184,6 +184,7 @@ void Rice::computeMean() const
   const Scalar E = std::exp(-t);
   const Scalar L = ((1.0 + 2.0 * t) * B0 + 2.0 * t * B1) * E;
   mean_ = Point(1, beta_ * 1.253314137315500251207882 * L);
+  isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
