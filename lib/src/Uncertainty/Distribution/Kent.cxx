@@ -286,7 +286,7 @@ void Kent::computeNormalization()
     }
     factor += delta;
     ++j;
-    if (delta < epsilon_ * factor) go = false;
+    if (delta < SpecFunc::ScalarEpsilon * factor) go = false;
     if (j >= maximumIteration) go = false;
   }
   logNormalization_ = std::log(2.0 * M_PI) + kappa_ + std::log(factor);
