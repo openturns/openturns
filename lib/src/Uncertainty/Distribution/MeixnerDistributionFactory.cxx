@@ -71,7 +71,7 @@ MeixnerDistribution MeixnerDistributionFactory::buildAsMeixnerDistribution(const
   const Scalar s2 = sample.computeVariance()[0];
   const Scalar delta = 1.0 / (gamma2 - gamma1 * gamma1 - 3.0);
   const Scalar alpha = ((0.0 < gamma1) - (gamma1 < 0.0)) * std::acos(std::max(-1.0, std::min(1.0, 2.0 - delta * (gamma2 - 3.0))));
-  const Scalar beta = cbrt(s2 * (std::cos(alpha) + 1.0));
+  const Scalar beta = std::sqrt(s2 * (std::cos(alpha) + 1.0) / delta);
   const Scalar mu = m - beta * delta * std::tan(0.5 * alpha);
   MeixnerDistribution result(beta, alpha, delta, mu);
   result.setDescription(sample.getDescription());
