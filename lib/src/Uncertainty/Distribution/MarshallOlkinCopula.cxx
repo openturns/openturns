@@ -107,6 +107,7 @@ Scalar MarshallOlkinCopula::computePDF(const Point &) const
 /* Get the CDF of the distribution */
 Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
 {
+  if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
   const Scalar u = point[0];
   const Scalar v = point[1];
   const Scalar ualpha = (u == 0.0) ? 1.0 : std::pow(u, alpha_);
@@ -157,8 +158,11 @@ Scalar MarshallOlkinCopula::getAlpha() const
 void MarshallOlkinCopula::setBeta(const Scalar beta)
 {
   if (!(beta >= 0.0) || !(beta <= 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
-  beta_ = beta;
-  isAlreadyComputedCovariance_ = false;
+  if (beta != beta_)
+  {
+    beta_ = beta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Beta accessor */
@@ -263,7 +267,7 @@ Point MarshallOlkinCopula::getRealization() const
 
 Bool MarshallOlkinCopula::isContinuous() const
 {
-  return (alpha_ == 0.0) && (beta_ == 0.0);
+  return (alpha_ == 0.0) || (beta_ == 0.0);
 }
 
 
