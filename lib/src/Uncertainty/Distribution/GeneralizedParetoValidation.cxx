@@ -133,6 +133,7 @@ GridLayout GeneralizedParetoValidation::drawDiagnosticPlot() const
 
 void GeneralizedParetoValidation::setConfidenceLevel(const Scalar confidenceLevel)
 {
+  if (!((confidenceLevel >= 0.0) && (confidenceLevel <= 1.0))) throw InvalidArgumentException(HERE) << "Error: the confidence level must belong to [0, 1], here confidenceLevel=" << confidenceLevel;
   confidenceLevel_ = confidenceLevel;
 }
 
@@ -152,6 +153,7 @@ void GeneralizedParetoValidation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("sample_", sample_);
   adv.saveAttribute("result_", result_);
+  adv.saveAttribute("confidenceLevel_", confidenceLevel_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -160,6 +162,7 @@ void GeneralizedParetoValidation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("sample_", sample_);
   adv.loadAttribute("result_", result_);
+  adv.loadAttribute("confidenceLevel_", confidenceLevel_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -147,7 +147,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   const Scalar stddev = sample.computeStandardDeviation()[0];
   if (stddev == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution from a constant sample.";
   const Scalar xi = -0.5 * (std::pow(mean / stddev, 2.0) - 1.0);
-  // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
+  // The moment estimator is valid only if the estimated xi parameter is smaller than 1/4
   if (xi >= 0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is greater than 0.25";
   const Scalar sigma = 0.5 * mean * (std::pow(mean / stddev, 2) + 1.0);
   GeneralizedPareto result(sigma, xi, u);
@@ -243,6 +243,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   Scalar m = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample(i, 0);
   m /= size * size;
+  if (!((mean - 2.0 * m) > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution from the given sample, the probability weighted moment estimate is inconsistent";
   const Scalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
   GeneralizedPareto result(sigma, xi, u);
   result.setDescription(sample.getDescription());
