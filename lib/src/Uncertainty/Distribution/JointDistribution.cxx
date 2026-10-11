@@ -108,7 +108,7 @@ Bool JointDistribution::operator ==(const JointDistribution & other) const
   // Store the result of hasIndependentCopula() as it may be costly.
   const Bool hasIndependent = hasIndependentCopula();
   // One of the copulas is the independent one, not the other
-  if (!hasIndependent == other.hasIndependentCopula()) return false;
+  if (hasIndependent != other.hasIndependentCopula()) return false;
   // None of the copulas is the independent one, and the two copulas are different
   if (!hasIndependent && !(core_ == other.getCore())) return false;
   // Then the marginals
@@ -134,7 +134,7 @@ Bool JointDistribution::equals(const DistributionImplementation & other) const
   // Store the result of hasIndependentCopula() as it may be costly.
   const Bool hasIndependent = hasIndependentCopula();
   // One of the copulas is the independent one, not the other
-  if (!hasIndependent == other.hasIndependentCopula()) return false;
+  if (hasIndependent != other.hasIndependentCopula()) return false;
   // None of the copulas is the independent one, and the two copulas are different
   if (!hasIndependent && !(getCopula() == other.getCopula())) return false;
   // Then the marginals
