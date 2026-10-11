@@ -83,7 +83,10 @@ InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) 
   }
   // Moments estimation
   else
+  {
+    if (sample.getMin()[0] <= 0.0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample with non positive values";
     lambda = std::pow(mu, 3) / (sigma * sigma);
+  }
   InverseNormal result(mu, lambda);
   result.setDescription(sample.getDescription());
   adaptToKnownParameter(sample, &result);

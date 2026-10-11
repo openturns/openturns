@@ -140,7 +140,7 @@ Scalar InverseNormal::computeCDF(const Point & point) const
   // InverseNormal CDF is greater than pNormal()
   if (phiArg1 > 8.24) return 1.0;
   const Scalar phiArg2 = -lx * ( x / mu_ + 1.0);
-  return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
+  return SpecFunc::Clip01(DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2))));
 }
 
 Scalar InverseNormal::computeProbability(const Interval & interval) const
