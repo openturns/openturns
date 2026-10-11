@@ -352,7 +352,7 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
     s -= r;
     r = theta_[conditioningDimension];
     z = x[conditioningDimension] / (1.0 - sumY);
-    if (!((z > 0.0) & (z < 1.0))) break;
+    if (!((z > 0.0) && (z < 1.0))) break;
     result[conditioningDimension] = std::exp(- SpecFunc::LogBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
   }
   return result;
@@ -434,7 +434,7 @@ Point Dirichlet::computeSequentialConditionalQuantile(const Point & q) const
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
   {
     sumY += result[conditioningDimension - 1];
-    if (!((sumY > 0.0) & (sumY < 1.0))) return result;
+    if (!((sumY > 0.0) && (sumY < 1.0))) return result;
     s -= r;
     r = theta_[conditioningDimension];
     result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);
@@ -467,7 +467,7 @@ Point Dirichlet::getStandardDeviation() const
   const UnsignedInteger dimension = getDimension();
   Point sigma(dimension);
   Scalar factor = 1.0 / (sumTheta_ * std::sqrt(1.0 + sumTheta_));
-  for (UnsignedInteger i = 0; i < dimension; ++i) sigma[i] = theta_[i] * (sumTheta_ - theta_[i]) * factor;
+  for (UnsignedInteger i = 0; i < dimension; ++i) sigma[i] = std::sqrt(theta_[i] * (sumTheta_ - theta_[i])) * factor;
   return sigma;
 }
 

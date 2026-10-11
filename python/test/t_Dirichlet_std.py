@@ -17,103 +17,104 @@ for dim in range(1, 2):
         oss = "Marginal " + str(j)
         description[j - 1] = oss
     distribution.setDescription(description)
-    print("Distribution ", repr(distribution))
-    print("Distribution ", distribution)
+    assert distribution.getClassName() == "Dirichlet"
 
     # Is this distribution elliptical ?
-    print("Elliptical = ", distribution.isElliptical())
+    assert not distribution.isElliptical()
 
     # Is this distribution continuous ?
-    print("Continuous = ", distribution.isContinuous())
+    assert distribution.isContinuous()
 
     # Test for realization of distribution
     oneRealization = distribution.getRealization()
-    print("oneRealization=", repr(oneRealization))
+    ott.assert_almost_equal(oneRealization, [0.168034], 1e-6, 0.0)
 
     # Define a point
     point = ot.Point(distribution.getDimension(), 0.5 / distribution.getDimension())
-    print("Point= ", repr(point))
+    ott.assert_almost_equal(point, [0.5], 0.0, 0.0)
 
     # Show PDF and CDF of point
     LPDF = distribution.computeLogPDF(point)
-    print("log pdf= %.8g" % LPDF)
+    ott.assert_almost_equal(LPDF, -0.79067254, 1e-7, 0.0)
     PDF = distribution.computePDF(point)
-    print("pdf     = %.8g" % PDF)
+    ott.assert_almost_equal(PDF, 0.45353967, 1e-7, 0.0)
     CDF = distribution.computeCDF(point)
-    print("cdf= %.8g" % CDF)
+    ott.assert_almost_equal(CDF, 0.6831129, 1e-7, 0.0)
     quantile = distribution.computeQuantile(0.95)
-    print("quantile=", repr(quantile))
-    print("cdf(quantile)= %.6f" % distribution.computeCDF(quantile))
+    ott.assert_almost_equal(quantile, [0.982959], 1e-6, 0.0)
+    ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-6, 0.0)
     # Get 95% survival function
     inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-    print("InverseSurvival=", repr(inverseSurvival))
-    print(
-        "Survival(inverseSurvival)=%.6f"
-        % distribution.computeSurvivalFunction(inverseSurvival)
+    ott.assert_almost_equal(inverseSurvival, [1.8464e-05], 1e-6, 1e-12)
+    ott.assert_almost_equal(
+        distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 0.0
     )
-    print("entropy=%.6f" % distribution.computeEntropy())
+    ott.assert_almost_equal(distribution.computeEntropy(), -1.137913, 1e-6, 0.0)
 
     # Confidence regions
     (
         interval,
         threshold,
     ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
-    print("threshold=", ot.Point(1, threshold))
+    ott.assert_almost_equal(interval.getLowerBound(), [0.0], 0.0, 0.0)
+    ott.assert_almost_equal(interval.getUpperBound(), [0.982959], 1e-6, 0.0)
+    ott.assert_almost_equal(threshold, 0.95, 1e-12, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-    print("Minimum volume level set=", levelSet)
-    print("beta=", ot.Point(1, beta))
+    ott.assert_almost_equal(beta, 0.445853, 1e-6, 0.0)
     (
         interval,
         beta,
     ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-    print("Bilateral confidence interval=", interval)
-    print("beta=", ot.Point(1, beta))
+    ott.assert_almost_equal(interval.getLowerBound(), [1.1540077688761149e-06], 1e-12, 0.0)
+    ott.assert_almost_equal(interval.getUpperBound(), [0.995712], 1e-6, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
     (
         interval,
         beta,
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, False
     )
-    print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    ott.assert_almost_equal(interval.getLowerBound(), [0.0], 0.0, 0.0)
+    ott.assert_almost_equal(interval.getUpperBound(), [0.982959], 1e-6, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
     (
         interval,
         beta,
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, True
     )
-    print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    ott.assert_almost_equal(interval.getLowerBound(), [1.8464e-05], 1e-6, 1e-12)
+    ott.assert_almost_equal(interval.getUpperBound(), [1.0], 0.0, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-12, 0.0)
 
     mean = distribution.getMean()
-    print("mean=", repr(mean))
+    ott.assert_almost_equal(mean, [1.0 / 3.0], 1e-12, 0.0)
     standardDeviation = distribution.getStandardDeviation()
-    print("standard deviation=", repr(standardDeviation))
+    ott.assert_almost_equal(standardDeviation, [0.356348], 1e-6, 0.0)
     skewness = distribution.getSkewness()
-    print("skewness=", repr(skewness))
+    ott.assert_almost_equal(skewness, [0.680301], 1e-6, 0.0)
     kurtosis = distribution.getKurtosis()
-    print("kurtosis=", repr(kurtosis))
+    ott.assert_almost_equal(kurtosis, [1.90909], 1e-5, 0.0)
     covariance = distribution.getCovariance()
-    print("covariance=", repr(covariance))
+    ott.assert_almost_equal(
+        covariance, ot.CovarianceMatrix(1, [0.12698412698412698]), 1e-12, 0.0
+    )
 
     x = 0.6
     y = [0.2] * (dim - 1)
-    print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
-    print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+    ott.assert_almost_equal(distribution.computeConditionalPDF(x, y), 0.442267, 1e-6, 0.0)
+    ott.assert_almost_equal(distribution.computeConditionalCDF(x, y), 0.727715, 1e-6, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeConditionalQuantile(x, y), 0.329133, 1e-6, 0.0
+    )
     pt = ot.Point([0.1 * i + 0.15 for i in range(dim)])
-    print(
-        "sequential conditional PDF=",
-        distribution.computeSequentialConditionalPDF(point),
+    ott.assert_almost_equal(
+        distribution.computeSequentialConditionalPDF(point), [0.45354], 1e-5, 0.0
     )
     resCDF = distribution.computeSequentialConditionalCDF(pt)
-    print("sequential conditional CDF(", pt, ")=", resCDF)
-    print(
-        "sequential conditional quantile(",
-        resCDF,
-        ")=",
-        distribution.computeSequentialConditionalQuantile(resCDF),
+    ott.assert_almost_equal(resCDF, [0.482299], 1e-6, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeSequentialConditionalQuantile(resCDF), [0.15], 1e-12, 0.0
     )
 
     # Ticket #2306
@@ -134,23 +135,19 @@ for dim in range(1, 2):
     # Extract the marginals
     for i in range(dim):
         margin = distribution.getMarginal(i)
-        print("margin=", margin)
-        print("margin PDF= %.8g" % margin.computePDF(ot.Point(1, 0.5)))
-        print("margin CDF= %.8g" % margin.computeCDF(ot.Point(1, 0.5)))
-        print("margin quantile=", repr(margin.computeQuantile(0.95)))
-        print("margin realization=", repr(margin.getRealization()))
+        ott.assert_almost_equal(margin.computePDF(ot.Point(1, 0.5)), 0.45353967, 1e-7, 0.0)
+        ott.assert_almost_equal(margin.computeCDF(ot.Point(1, 0.5)), 0.6831129, 1e-7, 0.0)
+        ott.assert_almost_equal(margin.computeQuantile(0.95), [0.982959], 1e-6, 0.0)
+        ott.assert_almost_equal(margin.getRealization(), [0.2406935108379952], 1e-12, 0.0)
     if dim >= 2:
         # Extract a 2-D marginal
         indices = [1, 0]
-        print("indices=", indices)
         margins = distribution.getMarginal(indices)
-        print("margins=", margins)
-        print("margins PDF=", margins.computePDF(ot.Point(2, 0.5)))
-        print("margins CDF= %.8g" % margins.computeCDF(ot.Point(2, 0.5)))
+        ott.assert_almost_equal(margins.computePDF(ot.Point(2, 0.5)), 0.45353967, 1e-7, 0.0)
+        ott.assert_almost_equal(margins.computeCDF(ot.Point(2, 0.5)), 0.6831129, 1e-7, 0.0)
         quantile = margins.computeQuantile(0.95)
-        print("margins quantile=", repr(quantile))
-        print("margins CDF(quantile)= %.6f" % margins.computeCDF(quantile))
-        print("margins realization=", repr(margins.getRealization()))
+        ott.assert_almost_equal(quantile, [0.982959], 1e-6, 0.0)
+        ott.assert_almost_equal(margins.computeCDF(quantile), 0.95, 1e-6, 0.0)
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)

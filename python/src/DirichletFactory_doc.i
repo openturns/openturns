@@ -40,10 +40,10 @@ param : sequence of float
 Returns
 -------
 dist : :class:`~openturns.Dirichlet`
-    The estimated distribution as a :class:`openturns.Dirichlet`.
+    The estimated distribution as a :class:`~openturns.Dirichlet`.
     
 
-    In the first usage, the default :class:`openturns.Dirichlet` distribution is built."
+    In the first usage, the default :class:`~openturns.Dirichlet` distribution is built."
 
 
 
