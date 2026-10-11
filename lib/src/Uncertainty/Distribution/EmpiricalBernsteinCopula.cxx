@@ -516,7 +516,7 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x)
         Scalar conditionalPDF = 0.0;
         for (UnsignedInteger i = 0; i < size; ++i)
           conditionalPDF += SpecFunc::RegularizedIncompleteBeta(logFactors_(i, j), binNumber_ - logFactors_(i, j) + 1.0, x[j]);
-        result[j] = conditionalPDF;
+        result[j] = SpecFunc::Clip01(conditionalPDF / size);
       } // 0 < x[j] < 1
     } // j
     return result;
