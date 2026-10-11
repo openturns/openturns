@@ -134,9 +134,15 @@ Point LogNormalMuSigmaOverMu::inverse(const Point & inP) const
 void LogNormalMuSigmaOverMu::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  mu_ = inP[0];
-  sigmaOverMu_ = inP[1];
-  gamma_ =  inP[2];
+  const Scalar mu = inP[0];
+  const Scalar sigmaOverMu = inP[1];
+  const Scalar gamma = inP[2];
+  if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu * mu;
+  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  mu_ = mu;
+  sigmaOverMu_ = sigmaOverMu;
+  gamma_ = gamma;
 }
 
 Point LogNormalMuSigmaOverMu::getValues() const

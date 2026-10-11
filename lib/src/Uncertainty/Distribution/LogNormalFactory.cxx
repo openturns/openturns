@@ -299,6 +299,7 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
     const Scalar gamma) const
 {
   const UnsignedInteger size = sample.getSize();
+  if (!(gamma < sample.getMin()[0])) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution with a shift gamma greater or equal to the sample minimum";
   Sample dataIn(size, 1);
   Sample dataOut(size, 1);
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -326,6 +327,7 @@ public:
   LogNormalFactoryResidualEvaluation(const Sample & sample)
     : EvaluationImplementation()
     , sample_(sample)
+    , xMin_(sample.getMin()[0])
   {
     const UnsignedInteger size = sample.getSize();
     dataOut_ = Sample(size, 1);
@@ -371,6 +373,9 @@ public:
   {
     const Scalar gamma = parameter[0];
     const UnsignedInteger size = sample_.getSize();
+    // Early exit for incompatible values of gamma
+    if (gamma >= xMin_)
+      return Point(size, std::sqrt(SpecFunc::MaxScalar / (10.0 * size)));
     Sample dataIn(size, 1);
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
@@ -384,6 +389,7 @@ public:
 
 private:
   Sample sample_;
+  Scalar xMin_;
   Sample dataOut_;
 };
 
