@@ -148,7 +148,7 @@ Scalar MultivariateUniform::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar x = point[i];
-    if ((x < a_[i]) || (x > b_[i])) return SpecFunc::LowestScalar;
+    if ((x <= a_[i]) || (x > b_[i])) return SpecFunc::LowestScalar;
   }
   return logNormalizationFactor_;
 }

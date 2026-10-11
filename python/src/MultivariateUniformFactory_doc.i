@@ -55,6 +55,6 @@ param : sequence of float
 Returns
 -------
 dist : :class:`~openturns.experimental.MultivariateUniform`
-    The estimated distribution as a :class:`openturns.experimental.MultivariateUniform`.
+    The estimated distribution as a :class:`~openturns.experimental.MultivariateUniform`.
     
-    In the first usage, the default :class:`openturns.experimental.MultivariateUniform` distribution is built."
+    In the first usage, the default :class:`~openturns.experimental.MultivariateUniform` distribution is built."
