@@ -318,6 +318,8 @@ Scalar OrdinalSumCopula::computeCDF(const Point & point) const
 /* Compute the probability content of an interval */
 Scalar OrdinalSumCopula::computeProbability(const Interval & interval) const
 {
+  // If there is only one copula
+  if (copulaCollection_.getSize() == 1) return copulaCollection_[0].computeProbability(interval);
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
