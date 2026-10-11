@@ -138,7 +138,7 @@ void CompoundDistribution::setParameter(const Point & parameter)
   conditioningDistribution.setParameter(parameter);
   const Scalar w = getWeight();
   Distribution conditionedDistribution(conditionedDistribution_);
-  *this = CompoundDistribution(conditionedDistribution, conditioningDistribution);
+  *this = CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction_);
   setWeight(w);
 }
 
