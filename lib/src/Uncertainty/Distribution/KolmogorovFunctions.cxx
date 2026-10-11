@@ -440,9 +440,6 @@ Scalar _kolmogn(const UnsignedInteger n, const Scalar x, const Bool cdf)
     {
       prob = _kolmogn_Pomeranz(n, x, true);
       return _select_and_clip_prob(prob, 1.0 - prob, cdf);
-      // Now use Miller approximation of 2*smirnov
-      prob = 2 * special::cephes::smirnov(n, x);
-      return _select_and_clip_prob(1.0 - prob, prob, cdf);
     }
   }
   // Split CDF and SF as they have different cutoffs on nxsquared.
