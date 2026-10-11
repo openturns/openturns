@@ -34,4 +34,4 @@ Returns
 dist : :class:`~openturns.FiniteDiscreteDistribution`
     The estimated distribution as a FiniteDiscreteDistribution.
     
-    In the first usage, the default :class:`openturns.FiniteDiscreteDistribution` distribution is built."
+    In the first usage, the default :class:`~openturns.FiniteDiscreteDistribution` distribution is built."
