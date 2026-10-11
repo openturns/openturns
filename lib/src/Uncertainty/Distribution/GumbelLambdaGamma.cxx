@@ -127,6 +127,7 @@ Point GumbelLambdaGamma::inverse(const Point & inP) const
 void GumbelLambdaGamma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
+  if (!(inP[0] > 0.0)) throw InvalidArgumentException(HERE) << "lambda must be > 0, here lambda=" << inP[0];
   lambda_ = inP[0];
   gamma_ = inP[1];
 }
@@ -159,7 +160,7 @@ String GumbelLambdaGamma::__repr__() const
 String GumbelLambdaGamma::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(a = " << lambda_ << ", b = " << gamma_ << ")";
+  oss << getClassName() << "(lambda = " << lambda_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 
