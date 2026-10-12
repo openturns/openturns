@@ -7,8 +7,6 @@ import cmath
 import math as m
 import os
 
-import numpy as np
-
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
@@ -551,9 +549,9 @@ os.remove(studyFile)
 # --- WeibullMax/Min: characteristic function matches Monte Carlo ---
 ot.RandomGenerator.SetSeed(11)
 for weibull in [ot.WeibullMax(2.0, 1.0, 0.0), ot.WeibullMin(2.0, 1.0, 0.0)]:
-    mcSample = np.array(weibull.getSample(500000)).ravel()
+    mcSample = weibull.getSample(500000)
     u = 0.5
-    mcCF = np.mean(np.exp(1j * u * mcSample))
+    mcCF = sum(cmath.exp(1j * u * x[0]) for x in mcSample) / mcSample.getSize()
     gotCF = weibull.computeCharacteristicFunction(u)
     ott.assert_almost_equal([gotCF.real], [mcCF.real], 5e-3, 0.0)
     ott.assert_almost_equal([gotCF.imag], [mcCF.imag], 5e-3, 0.0)
