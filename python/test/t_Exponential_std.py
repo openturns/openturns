@@ -116,3 +116,8 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipPDFAtLowerBound()  # the density is lambda at the finite lower bound, see #3066
 validation.run()
+
+# Right-sided derivatives at the support boundary
+edge = ot.Exponential(2.5, -0.5)
+ott.assert_almost_equal(edge.computePDFGradient([-0.5]), [1.0, 6.25], 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeDDF([-0.5]), [-6.25], 1e-12, 0.0)
