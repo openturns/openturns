@@ -128,6 +128,7 @@ R : :class:`~openturns.CorrelationMatrix`
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
-    Shape matrix :math:`\mat{R}` given to the constructor. It differs
-    from the Pearson correlation matrix returned by :meth:`getCorrelation`."
+    Shape matrix :math:`\mat{R}` given to the constructor. It generally
+    differs from the Pearson correlation matrix returned by
+    :meth:`getCorrelation` (they coincide for the identity matrix)."
 
