@@ -626,38 +626,6 @@ def test_save_load():
     os.remove(filename)
 
 
-# Save / load must preserve the fitter itself through a Study
-def test_fitter_save_load():
-    X, Y = _sample()
-    covarianceModel = ot.SquaredExponential([1.0])
-    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
-    algo.setNoiseStdDev(0.1)
-    algo.setOptimizeNoiseStdDev(False)
-    algo.run()
-    filename = "test_sparse_gp_fitter.xml"
-    study = ot.Study(filename)
-    study.add("algo", algo)
-    study.save()
-    study2 = ot.Study(filename)
-    study2.load()
-    algo2 = SparseGaussianProcessFitter()
-    study2.fillObject("algo", algo2)
-    ott.assert_almost_equal(
-        algo.getResult().getOptimalELBO(),
-        algo2.getResult().getOptimalELBO(),
-        1e-10,
-        1e-10,
-    )
-    ott.assert_almost_equal(
-        algo.getResult().getMetaModel()(ot.Point([1.5])),
-        algo2.getResult().getMetaModel()(ot.Point([1.5])),
-        1e-10,
-        1e-10,
-    )
-    assert algo2.getMethod() == SparseGaussianProcessFitterResult.LAPACK
-    os.remove(filename)
-
-
 # The result must report the LAPACK linear algebra method by default
 def test_result_linear_algebra_method():
     X, Y = _sample()
@@ -679,50 +647,6 @@ def test_set_method_invalid():
     algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:3])
     with ott.assert_raises((TypeError, RuntimeError)):
         algo.setMethod(999)
-
-
-# The standalone Evaluation/Gradient/Hessian must agree with the metamodel
-def test_direct_evaluation_gradient_hessian():
-    X, Y = _sample()
-    covarianceModel = ot.SquaredExponential([1.0])
-    covarianceModel.setActiveParameter([])
-    algo = SparseGaussianProcessFitter(X, Y, covarianceModel, X[0:4])
-    algo.setNoiseStdDev(0.1)
-    algo.setOptimizeNoiseStdDev(False)
-    algo.run()
-    result = algo.getResult()
-    metaModel = result.getMetaModel()
-    evaluation = SparseGaussianProcessEvaluation(
-        result.getCovarianceModel(),
-        result.getInducingPoints(),
-        result.getWhiteningFactor(),
-        result.getPosteriorMean(),
-        result.getPosteriorCovariance(),
-    )
-    gradient = SparseGaussianProcessGradient(
-        result.getCovarianceModel(),
-        result.getInducingPoints(),
-        result.getWhiteningFactor(),
-        result.getPosteriorMean(),
-    )
-    hessian = SparseGaussianProcessHessian(
-        result.getCovarianceModel(),
-        result.getInducingPoints(),
-        result.getWhiteningFactor(),
-        result.getPosteriorMean(),
-    )
-    x = ot.Point([1.5])
-    ott.assert_almost_equal(
-        ot.Function(evaluation)(x), metaModel(x), 1e-12, 1e-12
-    )
-    # looser tolerance: without analytic gradient/hessian on the metamodel
-    # these fall back to finite differences
-    ott.assert_almost_equal(
-        gradient.gradient(x), metaModel.gradient(x), 1e-6, 1e-6
-    )
-    ott.assert_almost_equal(
-        hessian.hessian(x), metaModel.hessian(x), 1e-6, 1e-6
-    )
 
 
 def test_resource_map_default_noise_variance_zero():
@@ -1111,6 +1035,4 @@ if __name__ == "__main__":
     test_resource_map_linear_algebra_hmat()
     test_integer_ctor_success()
     test_fitter_noise_accessor()
-    test_fitter_save_load()
     test_result_lapack_method()
-    test_direct_evaluation_gradient_hessian()

@@ -5,6 +5,8 @@ R"RAW(Sparse Gaussian process evaluation.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+Refer to :any:`sparse_gaussian_process_regression` for the notations.
+
 This class evaluates the mean of the sparse Gaussian process prediction at a given point
 :math:`\vect{x} \in \Rset^{\inputDim}`:
 

@@ -34,6 +34,7 @@ Gaussian Process Regression
     :maxdepth: 1
 
     gaussian_process_regression
+    sparse_gaussian_process_regression
 
 
 Functional chaos
