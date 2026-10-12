@@ -784,18 +784,222 @@ rm = ot.StatisticsEngine.ComputeRawMoment(sample, 2)
 print("RawMoment(2):", rm[0], rm[1])
 print("ComputeRawMoment: OK")
 
+# RawMoment of order 0 is ones (mean of x**0)
+rm0 = ot.StatisticsEngine.ComputeRawMoment(sample, 0)
+ott.assert_almost_equal(rm0[0], 1.0)
+ott.assert_almost_equal(rm0[1], 1.0)
+ott.assert_almost_equal(rm[0], 21.0)
+ott.assert_almost_equal(rm[1], 30.0)
+print("ComputeRawMoment(0): OK")
+
 # CentralMoment
 cm = ot.StatisticsEngine.ComputeCentralMoment(sample, 2)
 assert abs(cm[0] - 20.0 / 4.0) < 1e-12
 print("ComputeCentralMoment: OK")
 
-# Skewness
+# Skewness (both columns are symmetric: zero in both modes)
 sk = ot.StatisticsEngine.ComputeSkewness(sample)
+ott.assert_almost_equal(sk[0], 0.0)
+ott.assert_almost_equal(sk[1], 0.0)
+skRaw = ot.StatisticsEngine.ComputeSkewness(sample, False)
+ott.assert_almost_equal(skRaw[0], 0.0)
+ott.assert_almost_equal(skRaw[1], 0.0)
 print("ComputeSkewness: OK")
 
-# Kurtosis
+# Kurtosis: G2 (adjusted) vs b2 (raw) on {1,3,5,7}: S2=20, S4=164
 ku = ot.StatisticsEngine.ComputeKurtosis(sample)
+ott.assert_almost_equal(ku[0], 1.8)
+ott.assert_almost_equal(ku[1], 1.8)
+kuRaw = ot.StatisticsEngine.ComputeKurtosis(sample, False)
+ott.assert_almost_equal(kuRaw[0], 1.64)
+ott.assert_almost_equal(kuRaw[1], 1.64)
 print("ComputeKurtosis: OK")
+
+# Skewness/Kurtosis on a skewed column {1,2,3,10}: m2=12.5, m3=45, m4=348.5
+skewed = ot.DataContainer(4, 1, 0.0, ot.DataContainer.ROW_MAJOR)
+skewed[0] = 1.0
+skewed[1] = 2.0
+skewed[2] = 3.0
+skewed[3] = 10.0
+g1 = 45.0 / (12.5 * math.sqrt(12.5))
+b2 = (1394.0 / 4.0) / (12.5 * 12.5)
+G1 = math.sqrt(4.0 * 3.0) / 2.0 * g1
+G2 = (15.0 / 2.0) * b2 - 21.0 / 2.0
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeSkewness(skewed)[0], G1)
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeSkewness(skewed, False)[0], g1)
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeKurtosis(skewed)[0], G2)
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeKurtosis(skewed, False)[0], b2)
+print("ComputeSkewness/Kurtosis skewed column: OK")
+
+# Sample-level delegation: same values through the Sample API
+otSample = ot.Sample([[1.0], [2.0], [3.0], [10.0]])
+ott.assert_almost_equal(otSample.computeSkewness()[0], G1)
+ott.assert_almost_equal(otSample.computeSkewness(False)[0], g1)
+ott.assert_almost_equal(otSample.computeKurtosis()[0], G2)
+ott.assert_almost_equal(otSample.computeKurtosis(False)[0], b2)
+ott.assert_almost_equal(otSample.computeRawMoment(0)[0], 1.0)
+print("Sample computeSkewness/computeKurtosis delegation: OK")
+
+# Historical guards are preserved: size 2 -> 0 skew, size 3 -> 0 kurt,
+# constant component raises
+ott.assert_almost_equal(ot.Sample([[1.0], [2.0]]).computeSkewness()[0], 0.0)
+ott.assert_almost_equal(ot.Sample([[1.0], [2.0], [3.0]]).computeKurtosis()[0], 0.0)
+with ott.assert_raises(Exception):
+    ot.Sample([[5.0], [5.0], [5.0], [5.0]]).computeSkewness()
+with ott.assert_raises(Exception):
+    ot.Sample([[5.0], [5.0], [5.0], [5.0]]).computeKurtosis()
+print("Sample skewness/kurtosis guards: OK")
+
+# Quantile methods: historical rule (default) vs Hyndman-Fan Type-7,
+# on the skewed column {1, 2, 3, 10}
+levels = ot.DataContainer(1, 4, 0.0, ot.DataContainer.ROW_MAJOR)
+levels[0] = 0.25
+levels[1] = 0.5
+levels[2] = 0.75
+levels[3] = 0.9
+qh = ot.StatisticsEngine.ComputeQuantile(skewed, levels)
+ott.assert_almost_equal(qh[0], 1.5)
+ott.assert_almost_equal(qh[1], 2.5)
+ott.assert_almost_equal(qh[2], 6.5)
+ott.assert_almost_equal(qh[3], 10.0)
+qt = ot.StatisticsEngine.ComputeQuantile(skewed, levels, True)
+ott.assert_almost_equal(qt[0], 1.75)
+ott.assert_almost_equal(qt[1], 2.5)
+ott.assert_almost_equal(qt[2], 4.75)
+ott.assert_almost_equal(qt[3], 7.9)
+# Scalar path matches the vector path level by level
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeQuantile(skewed, 0.25)[0], 1.5)
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeQuantile(skewed, 0.25, True)[0], 1.75)
+print("ComputeQuantile methods: OK")
+
+# Sample delegation, both modes and both arities; input order preserved
+qSample = ot.Sample([[1.0], [2.0], [3.0], [10.0]])
+ott.assert_almost_equal(qSample.computeQuantilePerComponent(0.75)[0], 6.5)
+ott.assert_almost_equal(qSample.computeQuantilePerComponent(0.75, False, True)[0], 4.75)
+ott.assert_almost_equal(qSample.computeQuantile(0.25)[0], 1.5)
+ott.assert_almost_equal(qSample.computeQuantile(0.25, False, True)[0], 1.75)
+qVec = qSample.computeQuantilePerComponent(ot.Point([0.9, 0.25]))
+assert qVec.getSize() == 2
+ott.assert_almost_equal(qVec[0, 0], 10.0)
+ott.assert_almost_equal(qVec[1, 0], 1.5)
+qVec7 = qSample.computeQuantilePerComponent(ot.Point([0.9, 0.25]), False, True)
+ott.assert_almost_equal(qVec7[0, 0], 7.9)
+ott.assert_almost_equal(qVec7[1, 0], 1.75)
+ott.assert_almost_equal(qSample.computeQuantile(ot.Point([0.9]))[0, 0], 10.0)
+with ott.assert_raises(Exception):
+    qSample.computeQuantilePerComponent(1.5)
+with ott.assert_raises(Exception):
+    ot.Sample(0, 1).computeQuantilePerComponent(0.5)
+print("Sample quantile delegation: OK")
+
+# Bulk delegation: Sample statistics match hand values and engine outputs
+dSample = ot.Sample([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0], [7.0, 8.0]])
+ott.assert_almost_equal(dSample.computeMean()[0], 4.0)
+ott.assert_almost_equal(dSample.computeMean()[1], 5.0)
+ott.assert_almost_equal(dSample.computeVariance()[0], 20.0 / 3.0)
+ott.assert_almost_equal(dSample.computeVariance()[1], 20.0 / 3.0)
+ott.assert_almost_equal(dSample.computeStandardDeviation()[0], math.sqrt(20.0 / 3.0))
+ott.assert_almost_equal(dSample.computeCovariance()[0, 0], 20.0 / 3.0)
+ott.assert_almost_equal(dSample.computeCovariance()[0, 1], 20.0 / 3.0)
+ott.assert_almost_equal(dSample.computeCovariance()[1, 1], 20.0 / 3.0)
+ott.assert_almost_equal(dSample.computeLinearCorrelation()[0, 1], 1.0)
+ott.assert_almost_equal(dSample.getMin()[0], 1.0)
+ott.assert_almost_equal(dSample.getMin()[1], 2.0)
+ott.assert_almost_equal(dSample.getMax()[0], 7.0)
+ott.assert_almost_equal(dSample.getMax()[1], 8.0)
+ott.assert_almost_equal(dSample.computeRange()[0], 6.0)
+ott.assert_almost_equal(dSample.computeMedian()[0], 4.0)
+ott.assert_almost_equal(dSample.computeCentralMoment(3)[0], 0.0)
+ott.assert_almost_equal(dSample.computeCentralMoment(2)[0], 5.0)
+ott.assert_almost_equal(dSample.computeRawMoment(1)[0], 4.0)
+ott.assert_almost_equal(dSample.computeRawMoment(2)[0], 21.0)
+# Engine agreement on the same data
+ott.assert_almost_equal(dSample.computeMean()[0], mean[0])
+ott.assert_almost_equal(dSample.computeVariance()[0], var[0])
+ott.assert_almost_equal(dSample.getMin()[0], mn[0])
+print("Sample bulk delegation: OK")
+
+# Kendall tau: perfect (anti-)correlation
+perf = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i in range(4):
+    perf[2 * i] = 1.0 + i
+    perf[2 * i + 1] = 1.0 + i
+kt = ot.StatisticsEngine.ComputeKendallTau(perf)
+ott.assert_almost_equal(kt[0], 1.0)
+ott.assert_almost_equal(kt[1], 1.0)
+ott.assert_almost_equal(kt[2], 1.0)
+ott.assert_almost_equal(kt[3], 1.0)
+anti = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i in range(4):
+    anti[2 * i] = 1.0 + i
+    anti[2 * i + 1] = 4.0 - i
+kta = ot.StatisticsEngine.ComputeKendallTau(anti)
+ott.assert_almost_equal(kta[1], -1.0)
+ott.assert_almost_equal(kta[2], -1.0)
+print("ComputeKendallTau: OK")
+
+# Sample Kendall delegation, incl. tied data and guards
+tied = ot.Sample([[1.0, 0.0], [2.0, 3.0], [2.0, 2.0], [5.0, 1.0]])
+ktied = tied.computeKendallTau()
+ott.assert_almost_equal(ktied[0, 0], 1.0)
+ott.assert_almost_equal(ktied[1, 1], 1.0)
+ott.assert_almost_equal(ktied[0, 1], ktied[1, 0])
+tiedDC = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i, v in enumerate([1.0, 0.0, 2.0, 3.0, 2.0, 2.0, 5.0, 1.0]):
+    tiedDC[i] = v
+ke = ot.StatisticsEngine.ComputeKendallTau(tiedDC)
+ott.assert_almost_equal(ktied[0, 1], ke[1])
+ott.assert_almost_equal(ot.Sample([[1.0], [2.0]]).computeKendallTau()[0, 0], 1.0)
+with ott.assert_raises(Exception):
+    ot.Sample(0, 2).computeKendallTau()
+print("Sample Kendall delegation: OK")
+
+# Empirical CDF, plain and tail
+eSample = ot.Sample([[1.0], [2.0], [3.0], [10.0]])
+ott.assert_almost_equal(eSample.computeEmpiricalCDF(ot.Point([2.5])), 0.5)
+ott.assert_almost_equal(eSample.computeEmpiricalCDF(ot.Point([10.0])), 1.0)
+ott.assert_almost_equal(eSample.computeEmpiricalCDF(ot.Point([2.5]), True), 0.5)
+ott.assert_almost_equal(eSample.computeEmpiricalCDF(ot.Point([0.0]), True), 1.0)
+eDC = ot.DataContainer(4, 1, 0.0, ot.DataContainer.ROW_MAJOR)
+for i, v in enumerate([1.0, 2.0, 3.0, 10.0]):
+    eDC[i] = v
+loc = ot.DataContainer(1, 1, 2.5, ot.DataContainer.ROW_MAJOR)
+ott.assert_almost_equal(ot.StatisticsEngine.ComputeEmpiricalCDF(eDC, loc, False), 0.5)
+with ott.assert_raises(Exception):
+    eSample.computeEmpiricalCDF(ot.Point([1.0, 2.0]))
+print("Sample ECDF delegation: OK")
+
+# sortAccordingToAComponent delegation, incl. tied keys
+tSort = ot.Sample([[1.0, 0.0], [2.0, 3.0], [5.0, 1.0], [2.0, 2.0]])
+sBy0 = tSort.sortAccordingToAComponent(0)
+ott.assert_almost_equal([sBy0[0, 0], sBy0[1, 0], sBy0[2, 0], sBy0[3, 0]], [1.0, 2.0, 2.0, 5.0])
+ott.assert_almost_equal(sorted([sBy0[1, 1], sBy0[2, 1]]), [2.0, 3.0])
+sBy0b = ot.Sample(tSort)
+sBy0b.sortAccordingToAComponentInPlace(0)
+for i in range(4):
+    ott.assert_almost_equal(sBy0b[i, 0], sBy0[i, 0])
+    ott.assert_almost_equal(sBy0b[i, 1], sBy0[i, 1])
+print("sortAccordingToAComponent delegation: OK")
+
+# Lexicographic sort, unique and in-place variants
+lexS = ot.Sample([[2.0, 1.0], [1.0, 9.0], [2.0, 0.0], [1.0, 9.0]])
+lexS.setDescription(["a", "b"])
+sLex = lexS.sort()
+ott.assert_almost_equal([sLex[0, 0], sLex[0, 1]], [1.0, 9.0])
+ott.assert_almost_equal([sLex[1, 0], sLex[1, 1]], [1.0, 9.0])
+ott.assert_almost_equal([sLex[2, 0], sLex[2, 1]], [2.0, 0.0])
+ott.assert_almost_equal([sLex[3, 0], sLex[3, 1]], [2.0, 1.0])
+assert sLex.getDescription()[0] == "a"
+assert sLex.getDescription()[1] == "b"
+sUniq = lexS.sortUnique()
+assert sUniq.getSize() == 3
+ott.assert_almost_equal([sUniq[0, 0], sUniq[1, 0], sUniq[2, 0]], [1.0, 2.0, 2.0])
+lexInPlace = ot.Sample(lexS)
+lexInPlace.sortInPlace()
+for i in range(4):
+    ott.assert_almost_equal(lexInPlace[i, 0], sLex[i, 0])
+    ott.assert_almost_equal(lexInPlace[i, 1], sLex[i, 1])
+print("Lexicographic sort delegation: OK")
 
 # Blockwise methods
 meanBlock = ot.StatisticsEngine.ComputeMeanBlockwise(sample)

@@ -674,12 +674,12 @@ public:
   /**
    * Gives the skewness of the sample (by component)
    */
-  virtual Point computeSkewness() const;
+  virtual Point computeSkewness(Bool adjusted = true) const;
 
   /**
    * Gives the kurtosis of the sample (by component)
    */
-  virtual Point computeKurtosis() const;
+  virtual Point computeKurtosis(Bool adjusted = true) const;
 
   /**
    * Gives the central moment of order k of the sample (by component)
@@ -700,9 +700,11 @@ public:
    * a new implementation below (rank, sort, getMarginal, select).
    */
   virtual Point computeQuantilePerComponent(const Scalar prob,
-      const Bool tail = false) const;
+      const Bool tail = false,
+      const Bool type7 = false) const;
   virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob,
-      const Bool tail = false) const;
+      const Bool tail = false,
+      const Bool type7 = false) const;
 
   /**
    * Gives the super-quantile (expected shortfall) per component of the sample
@@ -713,9 +715,11 @@ public:
    * Gives the N-dimension quantile of the sample
    */
   Point computeQuantile(const Scalar prob,
-                        const Bool tail = false) const;
+                        const Bool tail = false,
+                        const Bool type7 = false) const;
   Pointer<SampleImplementation> computeQuantile(const Point & prob,
-      const Bool tail = false) const;
+      const Bool tail = false,
+      const Bool type7 = false) const;
 
   /**
    * Get the empirical CDF of the sample
