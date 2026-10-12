@@ -163,7 +163,7 @@ VonMisesFisher VonMisesFisherFactory::buildAsVonMisesFisher(const Sample & sampl
         fB = f(Point(1, b))[0];
         ++iteration;
       }
-    if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMisesFisher distribution from the given sample";
+    if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (fA * fB > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMisesFisher distribution from the given sample";
     // Solve the constraint equation
     Brent solver(ResourceMap::GetAsScalar( "VonMisesFisherFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "VonMisesFisherFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "VonMisesFisherFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "VonMisesFisherFactory-MaximumIteration" ));
     // Kappa estimate

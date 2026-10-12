@@ -173,7 +173,7 @@ VonMises VonMisesFactory::buildAsVonMises(const Sample & sample) const
     fB = f(Point(1, b))[0];
     ++iteration;
   }
-  if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMises distribution from the given sample";
+  if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (fA * fB > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMises distribution from the given sample";
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsScalar( "VonMisesFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "VonMisesFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "VonMisesFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "VonMisesFactory-MaximumIteration" ));
   // Kappa estimate
