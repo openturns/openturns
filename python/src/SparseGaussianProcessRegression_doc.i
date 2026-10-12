@@ -5,6 +5,11 @@ R"RAW(Sparse Gaussian process regression.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+Available constructors:
+    SparseGaussianProcessRegression(*result*)
+
+    SparseGaussianProcessRegression(*inputSample, outputSample, covarianceModel, inducingPoints*)
+
 This class builds the metamodel associated to a sparse Gaussian process. Given the
 optimized inducing inputs :math:`\mat{Z}`, the variational mean :math:`\vect{m}_w` and
 the Cholesky factor :math:`\mat{L}_{uu}` of the inducing-point covariance matrix
@@ -29,9 +34,7 @@ method of the resulting
 Parameters
 ----------
 result : :class:`~openturns.experimental.SparseGaussianProcessFitterResult`
-    A sparse Gaussian process fitter result.
-
-    Or
+    The result class built by :class:`~openturns.experimental.SparseGaussianProcessFitter`.
 
 inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq \sampleSize} \in \Rset^\inputDim` and
@@ -46,6 +49,19 @@ inducingPoints : :class:`~openturns.Sample`
 See also
 --------
 openturns.experimental.SparseGaussianProcessFitter, openturns.GaussianProcessRegression
+
+Notes
+-----
+The underlying sparse Gaussian process can be specified in two different ways:
+
+* Within the first constructor: the sparse Gaussian process has already been
+  calibrated using the class :class:`~openturns.experimental.SparseGaussianProcessFitter`;
+* Within the second constructor: all the elements defining the sparse Gaussian process
+  are specified separately: the data set, the covariance model and the inducing points.
+
+In all cases, no estimation of the underlying sparse Gaussian process is performed.
+Refer to :any:`sparse_gaussian_process_regression` for the notations
+and the theoretical aspects.
 
 Examples
 --------
