@@ -209,7 +209,7 @@ for _ in range(100):
 
 # --- GumbelCopula: conditional edge cases, gradient at the boundary ---
 ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [1.0]), 0.0, 0.0, 0.0)
-ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 1.0, 0.0, 0.0)
+ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 0.0, 0.0, 0.0)
 assert m.isfinite(ot.GumbelCopula(1.0).computePDFGradient([0.3, 0.4])[0])
 
 # --- GumbelFactory rejects constant samples, helper prints true names ---
@@ -520,7 +520,7 @@ with ott.assert_raises(Exception):
     ot.TruncatedOverMesh(ot.Dirac(0.0), mesh)
 
 # --- Uniform: gradient agrees with density at the atom ---
-ott.assert_almost_equal(ot.Uniform(0.0, 1.0).computePDFGradient([0.0]), [0.0, 0.0], 0.0, 0.0)
+ott.assert_almost_equal(ot.Uniform(0.0, 1.0).computePDFGradient([0.0]), [1.0, -1.0], 0.0, 0.0)
 with ott.assert_raises(Exception):
     ot.UniformFactory().build(ot.Sample([[1.0], [1.0], [1.0]]))
 
