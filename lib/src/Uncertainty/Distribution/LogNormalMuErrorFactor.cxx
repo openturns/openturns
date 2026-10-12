@@ -46,7 +46,7 @@ LogNormalMuErrorFactor::LogNormalMuErrorFactor(const Scalar mu, const Scalar ef,
   , gamma_(gamma)
 {
   if (!(ef > 1.0)) throw InvalidArgumentException(HERE) << "EF must be > 1, here EF=" << ef;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
 /* Virtual constructor */
@@ -134,7 +134,7 @@ void LogNormalMuErrorFactor::setValues(const Point & inP)
   const Scalar ef = inP[1];
   const Scalar gamma = inP[2];
   if (!(ef > 1.0)) throw InvalidArgumentException(HERE) << "EF must be > 1, here EF=" << ef;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
   muLog_ = mu;
   ef_ = ef;
   gamma_ = gamma;

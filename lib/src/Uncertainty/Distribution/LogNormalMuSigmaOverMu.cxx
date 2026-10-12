@@ -139,7 +139,7 @@ void LogNormalMuSigmaOverMu::setValues(const Point & inP)
   const Scalar gamma = inP[2];
   if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
   if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu * mu;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
   mu_ = mu;
   sigmaOverMu_ = sigmaOverMu;
   gamma_ = gamma;
