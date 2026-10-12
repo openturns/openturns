@@ -107,7 +107,7 @@ Point Exponential::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  if (point[0] <= gamma_) return Point(1, 0.0);
+  if (point[0] < gamma_) return Point(1, 0.0);
   return Point(1, -lambda_ * computePDF(point));
 }
 
@@ -196,7 +196,7 @@ Point Exponential::computePDFGradient(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   Point pdfGradient(2, 0.0);
-  if (x <= 0.0) return pdfGradient;
+  if (x < 0.0) return pdfGradient;
   const Scalar expX = std::exp(-lambda_ * x);
   pdfGradient[0] = (1.0 - lambda_ * x) * expX;
   pdfGradient[1] = lambda_ * lambda_ * expX;
