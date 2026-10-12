@@ -790,7 +790,11 @@ Scalar PointConditionalDistribution::computeProbability(const Interval & interva
       probability = integrationAlgorithm_.integrate(kernel, intersection)[0] / std::exp(logNormalizationFactor_);
     }
     else
-      probability = computeProbabilityDiscrete(intersection) / std::exp(logNormalizationFactor_);
+      // computeProbabilityDiscrete sums the already-normalized computePDF
+      // values, so no division by exp(logNormalizationFactor_) here
+      // (unlike the continuous kernel above, which integrates the
+      // unnormalized joint PDF)
+      probability = computeProbabilityDiscrete(intersection);
   }
   return SpecFunc::Clip01(probability);
 }
