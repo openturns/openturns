@@ -1318,17 +1318,21 @@ private:
     }
 
     // check consistency between computeConditionalQuantile and computeConditionalCDF
-    for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
+    // Only for continuous distributions: with atoms F(Q(p)) > p, e.g. Dirac
+    if (distribution_.isContinuous())
     {
-      Point y(i);
-      std::copy(seqQ.begin(), seqQ.begin() + i, y.begin());
-      for (UnsignedInteger j = 1; j < 10; ++j)
+      for (UnsignedInteger i = 0; i < distribution_.getDimension(); ++ i)
       {
-        const Scalar pj = 0.1 * j;
-        const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
-        const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
-        LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
-        assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
+        Point y(i);
+        std::copy(seqQ.begin(), seqQ.begin() + i, y.begin());
+        for (UnsignedInteger j = 1; j < 10; ++j)
+        {
+          const Scalar pj = 0.1 * j;
+          const Scalar condQuantile = distribution_.computeConditionalQuantile(pj, y);
+          const Scalar condCDF = distribution_.computeConditionalCDF(condQuantile, y);
+          LOGTRACE(OSS() << "i=" << i << " y=" << y << " pj=" << pj << " conditional quantile=" << condQuantile << " condCDF=" << condCDF);
+          assert_almost_equal(condCDF, pj, cdfTolerance_, cdfTolerance_, "cond. quantile vs cond. cdf " + distribution_.__repr__());
+        }
       }
     }
 
