@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -105,3 +107,8 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Density at the support lower bound for alpha = 1: 1 / beta
+edge = ot.WeibullMin(2.0, 1.0, -0.5)
+ott.assert_almost_equal(edge.computePDF(-0.5), 0.5, 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(-0.5), -math.log(2.0), 1e-12, 0.0)

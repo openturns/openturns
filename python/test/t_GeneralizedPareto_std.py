@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import cmath
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -115,7 +117,12 @@ for xi in [-0.2, 0.0, 0.2]:
     ot.Log.Show(ot.Log.TRACE)
     ot.RandomGenerator.SetSeed(1)
     validation = ott.DistributionValidation(distribution)
+    validation.skipPDFAtLowerBound()  # the density is 1 / sigma at the finite lower bound
     validation.run()
+
+# Density at the finite lower bound u: 1 / sigma
+ott.assert_almost_equal(distribution.computePDF(0.5), 1.0 / 1.5, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computeLogPDF(0.5), -math.log(1.5), 1e-12, 0.0)
 
 # Test computeCharacteristicFunction with xi=0 (regression test for missing sigma/u)
 gpd = ot.GeneralizedPareto(1.5, 0.0, 0.5)

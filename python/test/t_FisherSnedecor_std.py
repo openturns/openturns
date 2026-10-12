@@ -112,3 +112,8 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Density at the support lower bound for d1 = 2: 1
+edge = ot.FisherSnedecor(2.0, 5.0)
+ott.assert_almost_equal(edge.computePDF(0.0), 1.0, 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(0.0), 0.0, 1e-12, 1e-12)

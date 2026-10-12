@@ -134,3 +134,7 @@ for distribution in coll:
         ot.Log.Show(ot.Log.TRACE)
         validation = ott.DistributionValidation(distribution)
         validation.run()
+
+# Density at the support edges in degenerate cases: plateau height
+ott.assert_almost_equal(ot.Trapezoidal(0.0, 0.0, 1.0, 2.0).computePDF(0.0), 2.0 / 3.0, 1e-12, 0.0)
+ott.assert_almost_equal(ot.Trapezoidal(0.0, 1.0, 2.0, 2.0).computePDF(2.0), 2.0 / 3.0, 1e-12, 0.0)

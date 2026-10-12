@@ -101,6 +101,15 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the density is the first bin height at the finite lower bound
 validation.skipParameters()
 validation.skipMinimumVolumeLevelSet()
 validation.run()
+
+# Density at the support edges: first and last bin heights
+lower = distribution.getRange().getLowerBound()[0]
+upper = distribution.getRange().getUpperBound()[0]
+ott.assert_almost_equal(distribution.computePDF(lower), distribution.computePDF(lower + 0.1), 1e-12, 0.0)
+assert distribution.computePDF(lower) > 0.0
+ott.assert_almost_equal(distribution.computePDF(upper), distribution.computePDF(upper - 0.1), 1e-12, 0.0)
+assert distribution.computePDF(upper) > 0.0

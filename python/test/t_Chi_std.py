@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -102,3 +104,8 @@ print("kurtosis=", repr(kurtosis))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Density at the support lower bound for nu = 1: sqrt(2 / pi)
+edge = ot.Chi(1.0)
+ott.assert_almost_equal(edge.computePDF(0.0), math.sqrt(2.0 / math.pi), 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(0.0), math.log(math.sqrt(2.0 / math.pi)), 1e-12, 0.0)

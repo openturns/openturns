@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -123,3 +125,8 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
     validation.run()
+
+# Density at the support lower bound for k = 1: lambda
+edge = ot.Gamma(1.0, 2.0)
+ott.assert_almost_equal(edge.computePDF(0.0), 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(0.0), math.log(2.0), 1e-12, 0.0)

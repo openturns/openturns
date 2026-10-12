@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -101,7 +103,13 @@ print("kurtosis=", repr(kurtosis))
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the density is infinite at the finite lower bound for nu < 2
 validation.run()
+
+# Density at the support lower bound for nu = 2: 1 / 2
+edge = ot.ChiSquare(2.0)
+ott.assert_almost_equal(edge.computePDF(0.0), 0.5, 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(0.0), -math.log(2.0), 1e-12, 0.0)
 
 # Check range upper bound for various nu
 for nu in [0.5, 1.0, 2.0, 5.0, 10.0]:

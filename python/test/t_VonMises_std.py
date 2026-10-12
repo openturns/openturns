@@ -157,7 +157,14 @@ assert cv < 1.0
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the periodic density is nonzero at the cut point
 validation.run()
+
+# Density at the cut point: periodic, nonzero on both sides
+ott.assert_almost_equal(
+    distribution.computePDF(-0.5 + math.pi), distribution.computePDF(-0.5 - math.pi), 1e-12, 0.0
+)
+assert distribution.computePDF(-0.5 + math.pi) > 0.0
 
 # Additional coverage: multiple parameter combinations
 print("")

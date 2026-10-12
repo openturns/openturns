@@ -157,10 +157,16 @@ for distribution in coll:
 # Test PDF and DDF at support boundaries for all cases (incl. degenerate)
 for a, m, b in [(-0.5, 1.5, 2.5), (-0.5, -0.5, 2.5), (-0.5, 2.5, 2.5)]:
     dist = ot.Triangular(a, m, b)
-    # PDF and DDF at left boundary
-    ott.assert_almost_equal(dist.computePDF(a), 0.0)
-    ott.assert_almost_equal(dist.computeDDF(a), 0.0)
-    # PDF and DDF at right boundary
-    ott.assert_almost_equal(dist.computePDF(b), 0.0)
+    # PDF and DDF at left boundary: right-sided values, nonzero for m == a
+    if m == a:
+        ott.assert_almost_equal(dist.computePDF(a), 2.0 / (b - a), 1e-12, 0.0)
+        ott.assert_almost_equal(dist.computeDDF(a), -2.0 / (b - a) / (b - a), 1e-12, 0.0)
+    else:
+        ott.assert_almost_equal(dist.computePDF(a), 0.0)
+        ott.assert_almost_equal(dist.computeDDF(a), 2.0 / (b - a) / (m - a), 1e-12, 0.0)
+    # PDF and DDF at right boundary: left-sided values, nonzero for m == b
     if m == b:
-        ott.assert_almost_equal(dist.computeDDF(b), 0.0)
+        ott.assert_almost_equal(dist.computePDF(b), 2.0 / (b - a), 1e-12, 0.0)
+        ott.assert_almost_equal(dist.computeDDF(b), 2.0 / (b - a) / (b - a), 1e-12, 0.0)
+    else:
+        ott.assert_almost_equal(dist.computePDF(b), 0.0)

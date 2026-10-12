@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -99,4 +101,9 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the density is alpha / beta at the finite lower bound
 validation.run()
+
+# Density at the finite lower bound: alpha / beta
+ott.assert_almost_equal(distribution.computePDF(-2.0), 7.5 / 5.0, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computeLogPDF(-2.0), math.log(7.5 / 5.0), 1e-12, 0.0)
