@@ -102,6 +102,7 @@
 === Python module ===
  * Add Process sample slicing operator
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
+ * Deprecated coupling_tools.execute method (use subprocess.run)
 
 === Bug fixes ===
 

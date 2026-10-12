@@ -35,6 +35,7 @@ import os
 import shlex
 import subprocess
 import sys
+import warnings
 
 debug = False
 default_encoding = sys.getdefaultencoding()
@@ -170,7 +171,7 @@ def execute(
     env=None,
 ):
     """
-    Launch an external process.
+    Launch an external process (deprecated).
 
     Parameters
     ----------
@@ -214,6 +215,8 @@ def execute(
     >>> cp.stdout.strip()
     b'42'
     """
+
+    warnings.warn("-- openturns.coupling_tools.execute is deprecated, use subprocess.run")
 
     # split cmd if not in a shell before passing it to os.execvp()
     process_args = cmd
