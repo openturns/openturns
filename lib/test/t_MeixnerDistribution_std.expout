@@ -17,8 +17,8 @@ ccdf=0.359226
 survival=0.359226
 Inverse survival=class=Point name=Unnamed dimension=1 values=[-2.27095]
 Survival(inverse survival)=0.95
-characteristic function=(0.0679463,-0.248507)
-log characteristic function=(-1.35624,-1.3039)
+characteristic function=(0.245823,0.0770941)
+log characteristic function=(-1.35624,0.303901)
 quantile=class=Point name=Unnamed dimension=1 values=[3.39477]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-2.90577] upper bound=class=Point name=Unnamed dimension=1 values=[3.94843] finite lower bound=[1] finite upper bound=[1]

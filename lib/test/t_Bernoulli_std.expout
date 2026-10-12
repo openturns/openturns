@@ -33,7 +33,7 @@ entropy (MC)=0.610962
 mean=class=Point name=Unnamed dimension=1 values=[0.7]
 standard deviation=class=Point name=Unnamed dimension=1 values=[0.458258]
 skewness=class=Point name=Unnamed dimension=1 values=[-0.872872]
-kurtosis=class=Point name=Unnamed dimension=1 values=[13.7619]
+kurtosis=class=Point name=Unnamed dimension=1 values=[1.7619]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.21]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
