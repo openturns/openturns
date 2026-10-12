@@ -56,8 +56,7 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     factory.buildAsNormalCopula([2.0])
 
-# Rank-deficient samples fall back to a regularized linear correlation
-ot.RandomGenerator.SetSeed(0)
+# Rank-deficient samples fall back to the sample linear correlation
 collinearSample = ot.Sample(
     [
         [0.05 * i, 0.05 * i + 0.01 * math.sin(i), -0.05 * i + 0.005 * math.cos(3 * i)]
