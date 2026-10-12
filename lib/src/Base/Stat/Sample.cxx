@@ -531,17 +531,17 @@ Point Sample::computeVariance() const
 /*
  * Method computeSkewness() gives the skewness of the sample (by component)
  */
-Point Sample::computeSkewness() const
+Point Sample::computeSkewness(Bool adjusted) const
 {
-  return getImplementation()->computeSkewness();
+  return getImplementation()->computeSkewness(adjusted);
 }
 
 /*
  * Method computeKurtosis() gives the kurtosis of the sample (by component)
  */
-Point Sample::computeKurtosis() const
+Point Sample::computeKurtosis(Bool adjusted) const
 {
-  return getImplementation()->computeKurtosis();
+  return getImplementation()->computeKurtosis(adjusted);
 }
 
 /*
@@ -564,30 +564,34 @@ Point Sample::computeRawMoment(const UnsignedInteger k) const
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
 Point Sample::computeQuantilePerComponent(const Scalar prob,
-    const Bool tail) const
+    const Bool tail,
+    const Bool type7) const
 {
-  return getImplementation()->computeQuantilePerComponent(prob, tail);
+  return getImplementation()->computeQuantilePerComponent(prob, tail, type7);
 }
 
 Sample Sample::computeQuantilePerComponent(const Point & prob,
-    const Bool tail) const
+    const Bool tail,
+    const Bool type7) const
 {
-  return getImplementation()->computeQuantilePerComponent(prob, tail);
+  return getImplementation()->computeQuantilePerComponent(prob, tail, type7);
 }
 
 /*
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
 Point Sample::computeQuantile(const Scalar prob,
-    const Bool tail) const
+    const Bool tail,
+    const Bool type7) const
 {
-  return getImplementation()->computeQuantile(prob, tail);
+  return getImplementation()->computeQuantile(prob, tail, type7);
 }
 
 Sample Sample::computeQuantile(const Point & prob,
-                               const Bool tail) const
+                               const Bool tail,
+                               const Bool type7) const
 {
-  return getImplementation()->computeQuantile(prob, tail);
+  return getImplementation()->computeQuantile(prob, tail, type7);
 }
 
 Point Sample::computeSuperQuantile(const Scalar prob) const
