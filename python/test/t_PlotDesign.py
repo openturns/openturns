@@ -2,10 +2,11 @@
 
 from matplotlib import pyplot as plt
 
-from openturns.viewer import PlotDesign
+from openturns.viewer import PlotDesign, View
 import openturns as ot
 
 samplesize = 12
+
 
 # Plot 2D - basic
 distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
@@ -63,3 +64,19 @@ bounds = distribution.getRange()
 design = distribution.getSample(samplesize)
 fig = plt.figure()
 fig = PlotDesign(design, figure=fig)
+
+# New API: DrawPairsWithGrid + View with Grid drawable
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2)
+bounds = distribution.getRange()
+design = distribution.getSample(samplesize)
+grid = ot.VisualTest.DrawPairsWithGrid(design, bounds, [10, 10])
+view = View(grid)
+view.getFigure().set_size_inches(12, 12)
+
+distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
+bounds = distribution.getRange()
+design = distribution.getSample(samplesize)
+grid = ot.VisualTest.DrawPairsWithGrid(design, bounds, [10, 10, 10])
+view = View(grid)
+view.getFigure().set_size_inches(12, 12)
+plt.close("all")

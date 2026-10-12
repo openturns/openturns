@@ -325,6 +325,30 @@ void Drawable::setTextSize(const Scalar size)
   getImplementation()->setTextSize(size);
 }
 
+/* Accessor for bounds */
+Interval Drawable::getBounds() const
+{
+  return getImplementation()->getBounds();
+}
+
+void Drawable::setBounds(const Interval & bounds)
+{
+  copyOnWrite();
+  getImplementation()->setBounds(bounds);
+}
+
+/* Accessor for subdivisions */
+Indices Drawable::getSubdivisions() const
+{
+  return getImplementation()->getSubdivisions();
+}
+
+void Drawable::setSubdivisions(const Indices & subdivisions)
+{
+  copyOnWrite();
+  getImplementation()->setSubdivisions(subdivisions);
+}
+
 /* Accessor for data */
 Sample Drawable::getData() const
 {

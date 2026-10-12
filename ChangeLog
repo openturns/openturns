@@ -114,6 +114,8 @@
  * Deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in favor of set/getBoundingOption
  * Deprecated QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage(Sample) in favor of QuantileConfidence.computeUnilateralCoverage(UnsignedInteger, UnsignedInteger, Bool)
  * Deprecated QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) in favor of computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)
+ * Added VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions) returning a GridLayout of Cloud+Grid pairs
+ * Deprecated viewer.PlotDesign in favor of VisualTest.DrawPairsWithGrid
 
 ==== New features ====
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)

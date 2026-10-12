@@ -8,4 +8,5 @@ bounds = distribution.getRange()
 lhs = ot.LHSExperiment(distribution, size)
 sample = lhs.generate()
 subdivisions = [size] * dim
-fig = otv.PlotDesign(sample, bounds, subdivisions)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions)
+view = otv.View(grid)

@@ -282,6 +282,7 @@ ot_pyinstallcheck_test (Polygon_std)
 ot_pyinstallcheck_test (PolygonArray_std)
 ot_pyinstallcheck_test (Staircase_std)
 ot_pyinstallcheck_test (Text_std)
+ot_pyinstallcheck_test (Grid_std IGNOREOUT)
 ot_pyinstallcheck_test (GridLayout_std IGNOREOUT)
 
 ## Diff
