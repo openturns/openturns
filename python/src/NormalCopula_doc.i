@@ -120,3 +120,14 @@ R : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R}` of the normal copula evaluated from
     the Spearman correlation matrix :math:`S`.)RAW"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NormalCopula::getShapeMatrix
+"Accessor to the shape matrix.
+
+Returns
+-------
+R : :class:`~openturns.CorrelationMatrix`
+    Shape matrix :math:`\mat{R}` given to the constructor. It differs
+    from the Pearson correlation matrix returned by :meth:`getCorrelation`."
+
