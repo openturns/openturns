@@ -713,6 +713,9 @@
   <Normal-RectangularProbabilityAlgorithm value_str="Genz"     />
   <Normal-SmallDimension                 value_int="6"        />
 
+  <!-- OT::NormalCopulaFactory parameters -->
+  <NormalCopulaFactory-RegularizationEpsilon value_float="1.0e-12" />
+
   <!-- OT::ParetoFactory parameters -->
   <ParetoFactory-AlphaUpperBound value_float="1000.0" />
 

@@ -1352,6 +1352,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Normal-RectangularProbabilityAlgorithm", "Genz", {"Genz", "Ridgway"});
   addAsUnsignedInteger("Normal-SmallDimension", 6);
 
+  // NormalCopulaFactory parameters //
+  addAsScalar("NormalCopulaFactory-RegularizationEpsilon", 1.0e-12);
+
   // ParetoFactory parameters //
   addAsScalar("ParetoFactory-AlphaUpperBound", 1000.0);
 

@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -53,3 +55,20 @@ with ott.assert_raises(TypeError):
 # Invalid parameters
 with ott.assert_raises(TypeError):
     factory.buildAsNormalCopula([2.0])
+
+# Rank-deficient samples fall back to a regularized linear correlation
+ot.RandomGenerator.SetSeed(0)
+collinearSample = ot.Sample(
+    [
+        [0.05 * i, 0.05 * i + 0.01 * math.sin(i), -0.05 * i + 0.005 * math.cos(3 * i)]
+        for i in range(60)
+    ]
+)
+regularized = factory.build(collinearSample)
+assert regularized.isCopula()
+regularizedR = regularized.getCorrelation()
+assert regularizedR.getDimension() == 3
+for i in range(3):
+    assert regularizedR[i, i] == 1.0
+    for j in range(3):
+        assert -1.0 <= regularizedR[i, j] <= 1.0

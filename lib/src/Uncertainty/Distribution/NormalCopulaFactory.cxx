@@ -21,6 +21,8 @@
 #include <cmath>
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,13 +77,49 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
     }
     catch (const NotSymmetricDefinitePositiveException &)
     {
-      throw InvalidArgumentException(HERE) << "Unable to build a NormalCopula using Spearman's rho";
+      LOGWARN(OSS() << "Unable to build a NormalCopula using Spearman's rho, regularizing the sample linear correlation instead, see #3321.");
+      R = sample.computeLinearCorrelation();
     }
   }
-  NormalCopula result(R);
-  result.setDescription(sample.getDescription());
-  adaptToKnownParameter(sample, &result);
-  return result;
+  try
+  {
+    NormalCopula result(R);
+    result.setDescription(sample.getDescription());
+    adaptToKnownParameter(sample, &result);
+    return result;
+  }
+  catch (const NotSymmetricDefinitePositiveException &)
+  {
+    LOGWARN(OSS() << "The sample correlation matrix is not positive definite, regularizing it, see #3321.");
+  }
+  // Last resort: (R + eps I) / (1 + eps) with doubling eps. The unit
+  // diagonal is preserved, so the result stays a correlation matrix, and
+  // the loop exits at eps = 1 at the latest; beyond that point only
+  // non-finite entries can still fail, and they throw below.
+  Scalar regularization = ResourceMap::GetAsScalar("NormalCopulaFactory-RegularizationEpsilon");
+  if (!(regularization > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive regularization epsilon, here epsilon=" << regularization;
+  const UnsignedInteger dimension = R.getNbRows();
+  for (; regularization <= 1.0; regularization *= 2.0)
+  {
+    SymmetricMatrix regularizedR(R);
+    const Scalar factor = 1.0 / (1.0 + regularization);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        regularizedR(i, j) *= factor;
+    try
+    {
+      const CorrelationMatrix regularizedCorrelation(regularizedR);
+      NormalCopula result(regularizedCorrelation);
+      result.setDescription(sample.getDescription());
+      adaptToKnownParameter(sample, &result);
+      return result;
+    }
+    catch (const NotSymmetricDefinitePositiveException &)
+    {
+      // Retry with a larger epsilon
+    }
+  }
+  throw InvalidArgumentException(HERE) << "Unable to build a NormalCopula, even regularized.";
 }
 
 NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Point & parameters) const
