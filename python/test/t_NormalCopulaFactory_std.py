@@ -39,7 +39,8 @@ singular_sample = ot.Sample(
 )
 print("Fallback estimate=", factory.build(singular_sample).getCorrelation())
 
-# Neither Kendall nor Spearman estimates are definite positive
+# Neither Kendall nor Spearman estimates are definite positive:
+# fall back to the regularized sample linear correlation (see #3321)
 bad_sample = ot.Sample(
     [
         [49.0, 11.0, 6.0],
@@ -49,8 +50,14 @@ bad_sample = ot.Sample(
         [42.0, 19.0, 18.0],
     ]
 )
-with ott.assert_raises(TypeError):
-    factory.build(bad_sample)
+regularizedBad = factory.build(bad_sample)
+assert regularizedBad.isCopula()
+regularizedBadR = regularizedBad.getCorrelation()
+assert regularizedBadR.getDimension() == 3
+for i in range(3):
+    assert regularizedBadR[i, i] == 1.0
+    for j in range(3):
+        assert -1.0 <= regularizedBadR[i, j] <= 1.0
 
 # Invalid parameters
 with ott.assert_raises(TypeError):
