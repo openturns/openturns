@@ -758,6 +758,15 @@ Scalar PointConditionalDistribution::computeProbability(const Interval & interva
     const Interval intersection(interval.intersect(getRange()));
     if (intersection.isEmpty()) return 0.0;
     if (intersection == getRange()) return 1.0;
+    // The CDF subtraction below excludes an atom at the lower endpoint,
+    // so discrete conditionals sum the conditional PMF over the intersection instead
+    if (!marginalConditionedDistribution_.isContinuous())
+    {
+      const Sample support(marginalConditionedDistribution_.getSupport(intersection));
+      Scalar probability = 0.0;
+      for (UnsignedInteger i = 0; i < support.getSize(); ++i) probability += distribution_.computeConditionalPDF(support[i][0], conditioningValues_);
+      return SpecFunc::Clip01(probability);
+    }
     const Scalar probability = distribution_.computeConditionalCDF(intersection.getUpperBound()[0], conditioningValues_) - distribution_.computeConditionalCDF(intersection.getLowerBound()[0], conditioningValues_);
     return SpecFunc::Clip01(probability);
   }
@@ -968,22 +977,28 @@ void PointConditionalDistribution::setParameter(const Point & parameter)
   Point conditionedParameter;
   if (parameter != currentParameter)
   {
+    // Stage on a copy: failed validation must leave *this unchanged,
+    // while the check below throws after partial mutation otherwise
+    Distribution stagedDistribution(*distribution_.getImplementation());
     if (ResourceMap::GetAsBool("PointConditionalDistribution-UseFullParameters"))
     {
-      conditionedParameter = Point(distribution_.getParameter().getSize());
+      conditionedParameter = Point(stagedDistribution.getParameter().getSize());
       std::copy(parameter.begin(), parameter.begin() + conditionedParameter.getSize(), conditionedParameter.begin());
-      distribution_.setParameter(conditionedParameter);
+      stagedDistribution.setParameter(conditionedParameter);
     }
     // then conditioning values
-    std::copy(parameter.begin() + conditionedParameter.getSize(), parameter.end(), conditioningValues_.begin());
-  }
-  // Re-validate as the constructor does: the conditioning values must stay
-  // within the range of the (possibly new) conditioning marginals
-  if (conditioningIndices_.getSize())
-  {
-    const Interval conditioningRange(distribution_.getMarginal(conditioningIndices_).getRange());
-    if (!conditioningRange.contains(conditioningValues_))
-      throw InvalidArgumentException(HERE) << "Conditioning vector (" << conditioningValues_ << ") not in conditioning range (" << conditioningRange << ")";
+    Point stagedConditioningValues(conditioningValues_);
+    std::copy(parameter.begin() + conditionedParameter.getSize(), parameter.end(), stagedConditioningValues.begin());
+    // Re-validate as the constructor does: the conditioning values must stay
+    // within the range of the (possibly new) conditioning marginals
+    if (conditioningIndices_.getSize())
+    {
+      const Interval conditioningRange(stagedDistribution.getMarginal(conditioningIndices_).getRange());
+      if (!conditioningRange.contains(stagedConditioningValues))
+        throw InvalidArgumentException(HERE) << "Conditioning vector (" << stagedConditioningValues << ") not in conditioning range (" << conditioningRange << ")";
+    }
+    distribution_ = stagedDistribution;
+    conditioningValues_ = stagedConditioningValues;
   }
   update();
 }

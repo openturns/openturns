@@ -194,3 +194,22 @@ q = ot.Point([0.6])
 ott.assert_almost_equal(pcd.computeSequentialConditionalCDF(q, [0]), pcd.computeSequentialConditionalCDF(q), 1e-5, 1e-5)
 ott.assert_almost_equal(pcd.computeSequentialConditionalPDF(q, [0]), pcd.computeSequentialConditionalPDF(q), 1e-5, 1e-5)
 ott.assert_almost_equal(pcd.computeSequentialConditionalQuantile(q, [0]), pcd.computeSequentialConditionalQuantile(q), 1e-5, 1e-5)
+
+# Generic path with a discrete conditional: the lower-bound atom is included
+joint = ot.JointDistribution([ot.Poisson(1.0), ot.Poisson(1.0)], ot.FrankCopula(3.0))
+cond = ot.PointConditionalDistribution(joint, [1], [0.0])
+# P(X0 in [0, 1] | X1 = 0) sums the conditional PMF over both atoms
+expected = (joint.computePDF([0.0, 0.0]) + joint.computePDF([1.0, 0.0])) / joint.getMarginal(1).computePDF(0.0)
+ott.assert_almost_equal(cond.computeProbability(ot.Interval([-1.0], [1.0])), expected, 1e-12, 0.0)
+
+# Failed setParameter leaves the distribution unchanged
+joint = ot.JointDistribution([ot.Normal(), ot.Uniform()])
+cond = ot.PointConditionalDistribution(joint, [1], [0.0])
+before = cond.getParameter()
+pdfBefore = cond.computePDF([0.0])
+bad = ot.Point(before)
+bad[bad.getSize() - 1] = 5.0
+with ott.assert_raises(TypeError):
+    cond.setParameter(bad)
+ott.assert_almost_equal(cond.getParameter(), before, 0.0, 0.0)
+ott.assert_almost_equal(cond.computePDF([0.0]), pdfBefore, 0.0, 0.0)
