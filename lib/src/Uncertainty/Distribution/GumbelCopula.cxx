@@ -269,10 +269,10 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) cons
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
   const Scalar u = y[0];
+  if ((u <= 0.0) || (u >= 1.0)) return 0.0;
   const Scalar v = x;
   if (v <= 0.0) return 0.0;
   if (v >= 1.0) return 1.0;
-  if ((u <= 0.0) || (u >= 1.0)) return 0.0;
   // If we are in the support
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
