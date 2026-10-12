@@ -32,7 +32,7 @@ beta : float
     
     Default value is 1.0.
 gamma : float
-    position parameter :math:`\gamma`.
+    location parameter :math:`\gamma`.
     
     Default value is 0.0.
 
@@ -80,7 +80,7 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gumbel::getGamma
-R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
+R"RAW(Accessor to the distribution's location parameter :math:`\gamma`.
 
 Returns
 -------
@@ -100,7 +100,7 @@ beta : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Gumbel::setGamma
-R"RAW(Accessor to the distribution's position parameter :math:`\gamma`.
+R"RAW(Accessor to the distribution's location parameter :math:`\gamma`.
 
 Parameters
 ----------

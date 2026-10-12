@@ -112,3 +112,8 @@ ott.assert_almost_equal(distribution.computeCDFGradient(far_left), [0.0, 0.0])
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# Single-parameter constructor defaults the location to zero, see #2509
+single = ot.Gumbel(1.0)
+assert single == ot.Gumbel(1.0, 0.0)
+ott.assert_almost_equal(single.getParameter(), [1.0, 0.0], 0.0, 0.0)
