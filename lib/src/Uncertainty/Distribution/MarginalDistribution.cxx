@@ -499,6 +499,21 @@ Point MarginalDistribution::computeSequentialConditionalQuantile(const Point & q
   return distribution_.computeSequentialConditionalQuantile(q, indices_);
 }
 
+/* Compute the quantile of Xi | X1, ..., Xi-1, with custom variable ordering */
+Point MarginalDistribution::computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const
+{
+  if (!ordering.check(getDimension())) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (q.getDimension() != ordering.getSize()) throw InvalidArgumentException(HERE) << "Cannot compute sequential conditional quantile from an argument of dimension=" << q.getDimension() << ", expected " << ordering.getSize();
+  // Compose the ordering with our indices to get an ordering for the underlying distribution
+  Indices mappedOrdering(ordering.getSize());
+  for (UnsignedInteger i = 0; i < ordering.getSize(); ++i)
+    mappedOrdering[i] = indices_[ordering[i]];
+  // If we are back to the natural ordering of the underlying distribution, use the fast 1-arg version
+  if ((mappedOrdering.getSize() == distribution_.getDimension()) && mappedOrdering.isIncreasing() && (mappedOrdering[0] == 0))
+    return distribution_.computeSequentialConditionalQuantile(q);
+  return distribution_.computeSequentialConditionalQuantile(q, mappedOrdering);
+}
+
 /* Compute the PDF of Xi | X1, ..., Xi-1 */
 Point MarginalDistribution::computeSequentialConditionalPDF(const Point & x) const
 {
@@ -509,6 +524,21 @@ Point MarginalDistribution::computeSequentialConditionalPDF(const Point & x) con
   return distribution_.computeSequentialConditionalPDF(x, indices_);
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1, with custom variable ordering */
+Point MarginalDistribution::computeSequentialConditionalPDF(const Point & x, const Indices & ordering) const
+{
+  if (!ordering.check(getDimension())) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (x.getDimension() != ordering.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << ordering.getSize() << ", got dimension=" << x.getDimension();
+  // Compose the ordering with our indices to get an ordering for the underlying distribution
+  Indices mappedOrdering(ordering.getSize());
+  for (UnsignedInteger i = 0; i < ordering.getSize(); ++i)
+    mappedOrdering[i] = indices_[ordering[i]];
+  // If we are back to the natural ordering of the underlying distribution, use the fast 1-arg version
+  if ((mappedOrdering.getSize() == distribution_.getDimension()) && mappedOrdering.isIncreasing() && (mappedOrdering[0] == 0))
+    return distribution_.computeSequentialConditionalPDF(x);
+  return distribution_.computeSequentialConditionalPDF(x, mappedOrdering);
+}
+
 /* Compute the CDF of Xi | X1, ..., Xi-1 */
 Point MarginalDistribution::computeSequentialConditionalCDF(const Point & x) const
 {
@@ -517,6 +547,21 @@ Point MarginalDistribution::computeSequentialConditionalCDF(const Point & x) con
     throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << x.getDimension();
   // Dispatch to the underlying distribution's 2-arg SCCDF with our indices as ordering
   return distribution_.computeSequentialConditionalCDF(x, indices_);
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1, with custom variable ordering */
+Point MarginalDistribution::computeSequentialConditionalCDF(const Point & x, const Indices & ordering) const
+{
+  if (!ordering.check(getDimension())) throw InvalidArgumentException(HERE) << "The ordering must contain distinct values in [0, dim-1]";
+  if (x.getDimension() != ordering.getSize()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << ordering.getSize() << ", got dimension=" << x.getDimension();
+  // Compose the ordering with our indices to get an ordering for the underlying distribution
+  Indices mappedOrdering(ordering.getSize());
+  for (UnsignedInteger i = 0; i < ordering.getSize(); ++i)
+    mappedOrdering[i] = indices_[ordering[i]];
+  // If we are back to the natural ordering of the underlying distribution, use the fast 1-arg version
+  if ((mappedOrdering.getSize() == distribution_.getDimension()) && mappedOrdering.isIncreasing() && (mappedOrdering[0] == 0))
+    return distribution_.computeSequentialConditionalCDF(x);
+  return distribution_.computeSequentialConditionalCDF(x, mappedOrdering);
 }
 
 

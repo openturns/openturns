@@ -9,8 +9,7 @@ dimension = 5
 indices = [2, 0, 1]
 coll = [ot.Normal(dimension), ot.Multinomial(10, [1.0 / (dimension + 2)] * dimension)]
 
-for nDistribution in range(len(coll)):
-    fullDistribution = coll[nDistribution]
+for fullDistribution in coll:
     distribution = ot.MarginalDistribution(fullDistribution, indices)
     # To check if indices accessors are correct
     otherDistribution = distribution
