@@ -191,7 +191,7 @@ Point VonMises::computeDDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (std::abs(x - mu_) >= M_PI) return Point(1, 0.0);
+  if (std::abs(x - mu_) > M_PI) return Point(1, 0.0);
   return Point(1, -kappa_ * std::sin(x - mu_) * computePDF(point));
 }
 
