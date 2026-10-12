@@ -484,3 +484,13 @@ assert loaded.getBoundingOption() == ot.KernelSmoothing.BOTH
 assert loaded.getUseLogTransform()
 assert loaded.getBinNumber() == 64
 os.remove("ks.xml")
+
+# Non-finite bandwidths are rejected on non-degenerate marginals
+ot.RandomGenerator.SetSeed(0)
+bandwidthSample = ot.Normal().getSample(20)
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing().build(bandwidthSample, [float("inf")])
+with ott.assert_raises(TypeError):
+    ot.KernelSmoothing().buildWeighted(
+        bandwidthSample, [1.0] * 20, [float("inf")]
+    )
