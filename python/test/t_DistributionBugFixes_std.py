@@ -153,7 +153,7 @@ seqCDF = ebc.computeSequentialConditionalCDF([0.5, 0.5])
 assert all(0.0 <= v <= 1.0 for v in seqCDF)
 
 # --- Exponential: gradients agree with density at the atom ---
-ott.assert_almost_equal(ot.Exponential().computePDFGradient([0.0]), [0.0, 0.0], 0.0, 0.0)
+ott.assert_almost_equal(ot.Exponential().computePDFGradient([0.0]), [1.0, 1.0], 0.0, 0.0)
 ott.assert_almost_equal(ot.Exponential().computeCDFGradient([0.0]), [0.0, 0.0], 0.0, 0.0)
 
 # --- ExtremeValueCopula: density is nonnegative ---

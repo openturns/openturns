@@ -236,7 +236,7 @@ ott.assert_almost_equal(newMixture.computePDF(2.5), 0.135652911626, 1e-9, 0.0)
 assert len(newMixture.getDistributionCollection()) == 2
 assert newMixture.getClassName() == "Mixture"
 for atom in newMixture.getDistributionCollection():
-    assert atom.getClassName() == "Normal"
+    assert atom.getImplementation().getClassName() == "Normal"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
