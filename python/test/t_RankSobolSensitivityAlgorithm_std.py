@@ -35,10 +35,11 @@ mySobol2.setDesign(sampleX, sampleY, sampleX.getSize())
 indices2 = mySobol2.getFirstOrderIndices()
 interval2 = mySobol2.getFirstOrderIndicesInterval()
 
-assert_almost_equal(indices2, indices, 0, ot.SpecFunc.ScalarEpsilon)
+# Same design through both entry points: identical up to parallel-reduction rounding
+assert_almost_equal(indices2, indices, 1.0e-13, ot.SpecFunc.ScalarEpsilon)
 assert_almost_equal(
-    interval2.getLowerBound(), interval.getLowerBound(), 0, ot.SpecFunc.ScalarEpsilon
+    interval2.getLowerBound(), interval.getLowerBound(), 1.0e-13, ot.SpecFunc.ScalarEpsilon
 )
 assert_almost_equal(
-    interval2.getUpperBound(), interval.getUpperBound(), 0, ot.SpecFunc.ScalarEpsilon
+    interval2.getUpperBound(), interval.getUpperBound(), 1.0e-13, ot.SpecFunc.ScalarEpsilon
 )

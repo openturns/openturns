@@ -429,13 +429,6 @@ Examples
 %feature("docstring") OT::Sample::computeKurtosis
 R"RAW(Estimate the componentwise kurtosis (4th order central normalized moment).
 
-Returns
--------
-kurtosis : :class:`~openturns.Point`
-    Componentwise kurtosis estimated from the sample.
-
-Notes
------
 The componentwise kurtosis are estimated as follows:
 
 .. math::
@@ -446,12 +439,25 @@ The componentwise kurtosis are estimated as follows:
                                              {\left(\sum_{j=1}^m
                                                     \left(x_i^{(j)} - \widehat{\mu}_i\right)^2
                                               \right)^2}
-                                        - 3 \frac{3 (m-5)}{(m-2) (m-3)},
+                                        - 3 \frac{3m-5}{(m-2) (m-3)},
                                         \quad i = 1, \ldots, n\right)}
 
 where :math:`\vect{\widehat{\mu}}` is the estimate of the mean.
 
-This estimator is unbiased.
+With the default ``adjusted`` set to True, this unbiased excess
+kurtosis estimator is used. With ``adjusted`` set to False, the raw
+moment ratio is returned instead.
+
+Parameters
+----------
+adjusted : bool, optional
+    Whether to apply the Fisher bias correction (excess kurtosis).
+    Default is True.
+
+Returns
+-------
+kurtosis : :class:`~openturns.Point`
+    Componentwise kurtosis estimated from the sample.
 
 Examples
 --------
@@ -552,6 +558,9 @@ Parameters
 prob : float, :math:`0 \leq p \leq 1`, or sequence of float
     Input probability level. In the mathematical notation, this quantity is
     denoted by :math:`p`.
+type7 : bool, optional
+    Interpolation method (see :meth:`computeQuantilePerComponent`).
+    Default is False.
 
 Returns
 -------
@@ -585,6 +594,8 @@ Parameters
 prob : float, :math:`0 \leq p \leq 1`, or sequence of float
     Input probability level. In the mathematical notation, this quantity is
     denoted by :math:`p`.
+type7 : bool, optional
+    Interpolation method, as described below. Default is False.
 
 Returns
 -------
@@ -602,6 +613,10 @@ empirical quantiles (:math:`\widehat{x}_i^-` and :math:`\widehat{x}_i^+`):
     \widehat{q}_i = \alpha \widehat{x}_i^- + (1 - \alpha) \widehat{x}_i^+
 
 where :math:`\alpha = p m - 0.5`.
+
+With ``type7`` set to True, the Hyndman-Fan Type-7 interpolation is used
+instead (knots at :math:`k/(m-1)`, as in R and NumPy default settings).
+The default False keeps the historical rule above.
 
 Examples
 --------
@@ -672,13 +687,6 @@ Examples
 %feature("docstring") OT::Sample::computeSkewness
 R"RAW(Estimate the componentwise skewness (3rd order central normalized moment).
 
-Returns
--------
-skewness : :class:`~openturns.Point`
-    Componentwise skewness estimated from the sample.
-
-Notes
------
 The componentwise skewnesses are estimated as follows:
 
 .. math::
@@ -693,7 +701,20 @@ The componentwise skewnesses are estimated as follows:
 
 where :math:`\vect{\widehat{\mu}}` is the estimate of the mean.
 
-This is an unbiased estimator.
+With the default ``adjusted`` set to True, this is the bias-corrected
+Fisher-Pearson estimator. With ``adjusted`` set to False, the raw
+moment ratio is returned instead.
+
+Parameters
+----------
+adjusted : bool, optional
+    Whether to apply the Fisher bias correction.
+    Default is True.
+
+Returns
+-------
+skewness : :class:`~openturns.Point`
+    Componentwise skewness estimated from the sample.
 
 Examples
 --------
@@ -1074,6 +1095,7 @@ Examples
 1 : [ -0.438266  1.20548  ]
 2 : [  0.608202 -1.26617  ]
 >>> print(sample.sort(1))
+    [ X1        ]
 0 : [ -1.26617  ]
 1 : [  0.350042 ]
 2 : [  1.20548  ]

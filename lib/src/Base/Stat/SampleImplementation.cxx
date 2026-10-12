@@ -36,11 +36,9 @@
 #include "openturns/Exception.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/StatisticsEngine.hxx"
 #include "openturns/Lapack.hxx"
 #include "openturns/CSVParser.hxx"
-
-#include "kendall.h"
-
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -748,32 +746,6 @@ SampleImplementation & SampleImplementation::stack(const SampleImplementation & 
   return *this;
 }
 
-template <typename OP>
-struct ReductionFunctor
-{
-  const SampleImplementation & nsi_;
-  const OP & op_;
-  typename OP::value_type accumulator_;
-
-  ReductionFunctor(const SampleImplementation & nsi, const OP & op = OP())
-    : nsi_(nsi), op_(op), accumulator_(OP::GetInvariant(nsi_)) {}
-
-  ReductionFunctor(const ReductionFunctor & other, TBBImplementation::Split)
-    : nsi_(other.nsi_), op_(other.op_), accumulator_(OP::GetInvariant(nsi_)) {}
-
-  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
-  {
-    NSI_const_iterator it = nsi_.begin() + r.begin();
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++it) op_.inplace_op( accumulator_, *it );
-  }
-
-  void join(const ReductionFunctor & other)
-  {
-    op_.inplace_op( accumulator_, other.accumulator_ );
-  }
-
-}; /* end struct ReductionFunctor */
-
 
 template <typename OP>
 class ParallelFunctor
@@ -799,23 +771,10 @@ public:
 Point SampleImplementation::computeMean() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
-  Point accumulated(dimension_);
-
-  data_const_iterator it(data_begin());
-  const data_const_iterator guard(data_end());
-  while (it != guard)
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)
-    {
-      accumulated[i] += *it;
-    }
-  }
-
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    accumulated[i] *= (1.0 / size_);
-  }
-  return accumulated;
+  const DataContainer result(StatisticsEngine::ComputeMean(toDataContainer()));
+  Point mean(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) mean[i] = result[i];
+  return mean;
 }
 
 /*
@@ -827,34 +786,12 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
   // Special case for a sample of size 1
   if (size_ == 1) return CovarianceMatrix(dimension_, Point(dimension_ * dimension_));
 
-  const Point mean(computeMean());
+  const DataContainer result(StatisticsEngine::ComputeCovariance(toDataContainer()));
   const UnsignedInteger squaredDim(dimension_ * dimension_);
   Point accumulated(squaredDim);
-
-  data_const_iterator it(data_begin());
-  const data_const_iterator guard(data_end());
-  while (it != guard)
-  {
-    UnsignedInteger baseIndex = 0;
-    for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar deltaI = *(it + i) - mean[i];
-      for (UnsignedInteger j = i; j < dimension_; ++j)
-      {
-        const Scalar deltaJ = *(it + j) - mean[j];
-        accumulated[baseIndex + j] += deltaI * deltaJ;
-      }
-      baseIndex += dimension_;
-    }
-    it += dimension_;
-  }
-
-  for (UnsignedInteger i = 0; i < squaredDim; ++i)
-  {
-    accumulated[i] /= (size_ - 1);
-  }
-  CovarianceMatrix result(dimension_, accumulated);
-  return result;
+  for (UnsignedInteger i = 0; i < squaredDim; ++i) accumulated[i] = result[i];
+  CovarianceMatrix matrix(dimension_, accumulated);
+  return matrix;
 }
 
 /*
@@ -879,25 +816,10 @@ Point SampleImplementation::computeVariance() const
   // Special case for a sample of size 1
   if (size_ == 1) return Point(dimension_, 0.0);
 
-  const Point mean( computeMean() );
-  Point accumulated(dimension_);
-
-  data_const_iterator it(data_begin());
-  const data_const_iterator guard(data_end());
-  while (it != guard)
-  {
-    for (UnsignedInteger i = 0; i < dimension_; ++i, ++it)
-    {
-      const Scalar val = *it - mean[i];
-      accumulated[i] += val * val;
-    }
-  }
-
-  for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    accumulated[i] /= (size_ - 1);
-  }
-  return accumulated;
+  const DataContainer result(StatisticsEngine::ComputeVariance(toDataContainer()));
+  Point variance(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) variance[i] = result[i];
+  return variance;
 
 }
 
@@ -911,15 +833,9 @@ CorrelationMatrix SampleImplementation::computeLinearCorrelation() const
   CorrelationMatrix correlation(dimension_);
   if (dimension_ == 1) return correlation;
 
-  const CovarianceMatrix covariance(computeCovariance());
-  Point sd(dimension_);
+  const DataContainer result(StatisticsEngine::ComputePearsonCorrelation(toDataContainer()));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-  {
-    sd[i] = sqrt( covariance(i, i) );
-    if (sd[i] != 0.0)
-      for (UnsignedInteger j = 0; j < i; ++j)
-        if (sd[j] != 0.0) correlation(i, j) = covariance(i, j) / (sd[i] * sd[j]);
-  }
+    for (UnsignedInteger j = 0; j < dimension_; ++j) correlation(i, j) = result(i, j);
 
   return correlation;
 }
@@ -1025,55 +941,12 @@ Pointer<SampleImplementation> SampleImplementation::rank(const UnsignedInteger i
   return getMarginal(index)->rank();
 }
 
-struct NSI_Sortable
-{
-  const SampleImplementation * p_nsi_;
-  UnsignedInteger index_;
-  NSI_Sortable(const SampleImplementation * nsi, UnsignedInteger index) : p_nsi_(nsi), index_(index) {}
-  NSI_Sortable() : p_nsi_(NULL), index_(0) {}
-  Bool operator < (const NSI_Sortable & other) const
-  {
-    return p_nsi_->operator[](index_) < other.p_nsi_->operator[](other.index_);
-  }
-  operator NSI_const_point() const
-  {
-    return NSI_const_point(p_nsi_, index_);
-  }
-  inline UnsignedInteger getDimension() const
-  {
-    return p_nsi_->getDimension();
-  }
-
-  inline NSI_const_point::const_iterator begin()
-  {
-    return &NSI_const_point(p_nsi_, index_).operator[](0);
-  }
-  inline NSI_const_point::const_iterator end()
-  {
-    return &NSI_const_point(p_nsi_, index_).operator[](0) + getDimension();
-  }
-
-};
-
 /* Sorted sample, component by component */
 Pointer<SampleImplementation> SampleImplementation::sort() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
-  Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
-  // Special case for 1D sample
-  if (dimension_ == 1)
-  {
-    Point sortedData(data_);
-    TBBImplementation::ParallelSort(sortedData.begin(), sortedData.end());
-    sortedSample->setData(sortedData);
-    return sortedSample;
-  }
-  // The nD samples
-  Collection<NSI_Sortable> sortables(size_);
-  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(this, i);
-  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
-  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample->operator[](i) = sortables[i];
+  Pointer<SampleImplementation> sortedSample = SampleImplementation::FromDataContainer(StatisticsEngine::SortLexicographic(toDataContainer()));
   if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
   return sortedSample;
 }
@@ -1082,18 +955,9 @@ void SampleImplementation::sortInPlace()
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
-  // Special case for 1D sample
-  if (dimension_ == 1)
-  {
-    TBBImplementation::ParallelSort(data_.data(), data_.data() + size_ * dimension_);
-    return;
-  }
-  // The nD samples
-  Collection<NSI_Sortable> sortables(size_);
-  SampleImplementation work(*this);
-  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(&work, i);
-  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
-  for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] = sortables[i];
+  // Sort a copy, then write back in place to preserve view sharing
+  const DataContainer sorted(StatisticsEngine::SortLexicographic(toDataContainer()));
+  std::copy(sorted.data(), sorted.data() + size_ * dimension_, data_.data());
 }
 
 /* Sorted sample, one component */
@@ -1107,34 +971,13 @@ Pointer<SampleImplementation> SampleImplementation::sort(const UnsignedInteger i
 }
 
 
-struct Sortable
-{
-  Point values_;
-  UnsignedInteger index_ = 0;
-  Sortable() : values_(1, 0.0), index_(0) {}
-  Sortable(const Point & values, const UnsignedInteger index) : values_(values), index_(index) {}
-  Bool operator < (const Sortable & other) const
-  {
-    return values_[index_] < other.values_[index_];
-  }
-};
-
 /* Sorted according a component */
 Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(const UnsignedInteger index) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
   if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
-  Collection<Sortable> sortables(size_);
-  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
-  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
-  Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
-  UnsignedInteger shift = 0;
-  for (UnsignedInteger i = 0; i < size_; ++i)
-  {
-    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample->data_.data() + shift);
-    shift += dimension_;
-  }
+  Pointer<SampleImplementation> sortedSample = SampleImplementation::FromDataContainer(StatisticsEngine::Sort(toDataContainer(), index));
   if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
   return sortedSample;
 }
@@ -1145,16 +988,9 @@ void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedIntege
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
   if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
-  Collection<Sortable> sortables(size_);
-  SampleImplementation work(*this);
-  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable(work[i], index);
-  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
-  UnsignedInteger shift = 0;
-  for (UnsignedInteger i = 0; i < size_; ++i)
-  {
-    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), data_.data() + shift);
-    shift += dimension_;
-  }
+  // Sort a copy, then write back in place to preserve view sharing
+  const DataContainer sorted(StatisticsEngine::Sort(toDataContainer(), index));
+  std::copy(sorted.data(), sorted.data() + size_ * dimension_, data_.data());
 }
 
 /* Sort and remove duplicated points */
@@ -1233,85 +1069,15 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
 /*
  * Gives the Kendall tau matrix of the sample, including ties correction
  */
-
-struct ComputeKendallPolicy
-{
-  const SampleImplementation & input_;
-  Point & output_;
-  const Indices & indicesX_;
-  const Indices & indicesY_;
-  const Bool smallCase_;
-
-  ComputeKendallPolicy( const SampleImplementation & input,
-                        Point & output,
-                        const Indices & indicesX,
-                        const Indices & indicesY,
-                        const Bool smallCase)
-    : input_(input)
-    , output_(output)
-    , indicesX_(indicesX)
-    , indicesY_(indicesY)
-    , smallCase_(smallCase)
-  {}
-
-  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
-  {
-    const UnsignedInteger size = input_.getSize();
-    Point x(size);
-    Point y(size);
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
-    {
-      const UnsignedInteger indX = indicesX_[i];
-      const UnsignedInteger indY = indicesY_[i];
-      for (UnsignedInteger k = 0; k < size; ++k)
-      {
-        x[k] = input_(k, indX);
-        y[k] = input_(k, indY);
-      }
-      if (smallCase_) output_[i] = kendallSmallN(&x[0], &y[0], size);
-      else output_[i] = kendallNlogN(&x[0], &y[0], size);
-    }
-  }
-
-}; /* end struct ComputeKendallPolicy */
-
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
   if (dimension_ < 2) return CorrelationMatrix(dimension_);
 
-  // Use external efficient C implementation of the O(Nlog(N)) or O(N^2) Kendall tau computation depending on the sample size
-  const Bool smallCase = size_ < ResourceMap::GetAsUnsignedInteger("Sample-SmallKendallTau");
-  const UnsignedInteger caseNumber = (dimension_ * (dimension_ - 1)) / 2;
-  Indices indX(caseNumber);
-  Indices indY(caseNumber);
-  // The resulting matrix
+  const DataContainer result(StatisticsEngine::ComputeKendallTau(toDataContainer()));
   CorrelationMatrix tau(dimension_);
-  UnsignedInteger index = 0;
-  for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
-  {
-    for (UnsignedInteger j = i + 1; j < dimension_; ++j)
-    {
-      LOGINFO(OSS() << "in SampleImplementation::computeKendallTau(), computing tau[" << i << ", " << j << "]");
-      indX[index] = i;
-      indY[index] = j;
-      ++index;
-    } // end for j
-  } // end for i
-  // Now the computation
-  Point result(caseNumber);
-  const ComputeKendallPolicy policy( *this, result, indX, indY, smallCase );
-  TBBImplementation::ParallelFor( 0, caseNumber, policy );
-  index = 0;
-  for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
-  {
-    for (UnsignedInteger j = i + 1; j < dimension_; ++j)
-    {
-      tau(i, j) = result[index];
-      ++index;
-    } // end for j
-  } // end for i
-
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    for (UnsignedInteger j = 0; j < dimension_; ++j) tau(i, j) = result(i, j);
   return tau;
 }
 
@@ -1336,63 +1102,42 @@ Point SampleImplementation::computeMedian() const
 /*
  * Gives the skewness of the sample (by component)
  */
-Point SampleImplementation::computeSkewness() const
+Point SampleImplementation::computeSkewness(Bool adjusted) const
 {
   if (!(size_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
 
   if (size_ == 2) return Point(dimension_, 0.0);
 
-  const Point mean(computeMean());
-  Point centeredMoments(2 * dimension_);
-  for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-    {
-      const Scalar val = operator()(i, j) - mean[j];
-      const Scalar val2 = val * val;
-      centeredMoments[j] += val2;
-      centeredMoments[j + dimension_] += val2 * val;
-    }
-  }
-  Point skewness(dimension_);
-  const Scalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
+  // Preserve the historical guard: the skewness is not defined on a constant component
+  const Point variance(computeVariance());
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (!(centeredMoments[i] < 0.0 || centeredMoments[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
-    skewness[i] = factor * centeredMoments[i + dimension_] / pow(centeredMoments[i], 1.5);
+    if (!(variance[i] < 0.0 || variance[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
   }
+  const DataContainer result(StatisticsEngine::ComputeSkewness(toDataContainer(), adjusted));
+  Point skewness(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) skewness[i] = result[i];
   return skewness;
 }
 
 /*
  * Gives the kurtosis of the sample (by component)
  */
-Point SampleImplementation::computeKurtosis() const
+Point SampleImplementation::computeKurtosis(Bool adjusted) const
 {
   if (!(size_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
 
   if (size_ == 3) return Point(dimension_, 0.0);
 
-  const Point mean(computeMean());
-  Point centeredMoments(2 * dimension_);
-  for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-    {
-      const Scalar val = operator()(i, j) - mean[j];
-      const Scalar val2 = val * val;
-      centeredMoments[j] += val2;
-      centeredMoments[j + dimension_] += val2 * val2;
-    }
-  }
-  Point kurtosis(dimension_);
-  const Scalar factor1 = (size_ + 1.0) * size_ * (size_ - 1.0) / ((size_ - 2.0) * (size_ - 3.0));
-  const Scalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
+  // Preserve the historical guard: the kurtosis is not defined on a constant component
+  const Point variance(computeVariance());
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (!(centeredMoments[i] < 0.0 || centeredMoments[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
-    kurtosis[i] = factor1 * centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i]) + factor2;
+    if (!(variance[i] < 0.0 || variance[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
   }
+  const DataContainer result(StatisticsEngine::ComputeKurtosis(toDataContainer(), adjusted));
+  Point kurtosis(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) kurtosis[i] = result[i];
   return kurtosis;
 }
 
@@ -1410,19 +1155,10 @@ Point SampleImplementation::computeCentralMoment(const UnsignedInteger k) const
   // Special case: order 2, return biased variance estimator
   if (k == 2) return computeVariance() * (size_ - 1.0) / size_;
   // General case
-  const Point mean(computeMean());
-
+  const DataContainer result(StatisticsEngine::ComputeCentralMoment(toDataContainer(), k));
   Point centeredMoment(dimension_);
-  const int intK = static_cast<int>(k);
-  for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-    {
-      const Scalar val = operator()(i, j) - mean[j];
-      centeredMoment[j] += pow(val, intK);
-    }
-  }
-  return centeredMoment / size_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j) centeredMoment[j] = result[j];
+  return centeredMoment;
 }
 
 /*
@@ -1432,69 +1168,33 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 {
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute centered moments on an empty sample";
 
-  // Special case: order 0, return (size,...,size)
+  // Special case: order 0, return (1,...,1)
   if (k == 0) return Point(dimension_, 1.0);
 
+  const DataContainer result(StatisticsEngine::ComputeRawMoment(toDataContainer(), k));
   Point moment(dimension_);
-  const int intK = static_cast<int>(k);
-  for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-    {
-      moment[j] += pow(operator()(i, j), intK);
-    }
-  }
-  return moment / size_;
+  for (UnsignedInteger j = 0; j < dimension_; ++j) moment[j] = result[j];
+  return moment;
 }
 
 /*
  * Gives the quantile per component of the sample
  */
-Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
+Point SampleImplementation::computeQuantilePerComponent(const Scalar prob, Bool type7) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
-  // Special case for extremum cases
-  const Scalar scalarIndex = prob * size_ - 0.5;
-  if (scalarIndex >= size_ - 1) return getMax();
-  // Special case for prob <= 0.0
-  if (scalarIndex <= 0.0) return getMin();
-
-  const UnsignedInteger index = static_cast<UnsignedInteger>( floor( scalarIndex) );
-  const Scalar beta = scalarIndex - index;
-  const Scalar alpha = 1.0 - beta;
+  const DataContainer result(StatisticsEngine::ComputeQuantile(toDataContainer(), prob, type7));
   Point quantile(dimension_);
-  Point component(size_);
-  for (UnsignedInteger j = 0; j < dimension_; ++j)
-  {
-    for (UnsignedInteger i = 0; i < size_; ++i)
-      component[i] = operator()(i, j);
-
-    // Find index-th and (index+1)-th elements.
-    // We call nth_element twice, and select the right order so that second
-    // call operates on the smallest subset.
-    if (2 * index > size_)
-    {
-      std::nth_element(component.begin(), component.begin() + index, component.end());
-      std::nth_element(component.begin() + index, component.begin() + index + 1, component.end());
-    }
-    else
-    {
-      std::nth_element(component.begin(), component.begin() + index + 1, component.end());
-      std::nth_element(component.begin(), component.begin() + index, component.begin() + index + 1);
-    }
-    // Interpolation between the two adjacent empirical quantiles
-    quantile[j] = alpha * component[index] + beta * component[index + 1];
-  } // end for
-
+  for (UnsignedInteger j = 0; j < dimension_; ++j) quantile[j] = result[j];
   return quantile;
 }
 
 /*
  * Gives the quantile per component of the sample
  */
-Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob) const
+Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob, Bool type7) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   const UnsignedInteger probSize = prob.getSize();
@@ -1504,147 +1204,36 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(
   for (UnsignedInteger p = 0; p < probSize; ++p)
     if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
-  // Sort prob in ascending order
-  Collection< std::pair<Scalar, UnsignedInteger> > probPairs(probSize);
-  for (UnsignedInteger i = 0; i < probSize; ++i)
-    probPairs[i] = std::pair<Scalar, UnsignedInteger>(prob[i], i);
-  std::sort(probPairs.begin(), probPairs.end());
-  Bool sorted = true;
-  Indices indices(probSize);
-  for (UnsignedInteger i = 0; i < probSize; ++i)
-  {
-    if (probPairs[i].second != i) sorted = false;
-    indices[probPairs[i].second] = i;
-  }
-
-  // Compute the list of pivots and coefficients
-  Indices pivots(probSize);
-  Point betas(probSize);
-  for (UnsignedInteger p = 0; p < probSize; ++p)
-  {
-    const Scalar scalarIndex = probPairs[p].first * size_ - 0.5;
-    // Must check bounds before casting to UnsignedInteger to avoid UB
-    if (scalarIndex <= 0.0)
-    {
-      pivots[p] = 0;
-      betas[p] = 0.0;
-    }
-    else if (scalarIndex >= size_ - 1)
-    {
-      pivots[p] = size_ - 1;
-      betas[p] = 0.0;
-    }
-    else
-    {
-      const UnsignedInteger index = static_cast<UnsignedInteger>(scalarIndex);
-      pivots[p] = index;
-      betas[p] = scalarIndex - index;
-    }
-  }
+  DataContainer levels(1, probSize, 0.0, DataContainer::ROW_MAJOR);
+  for (UnsignedInteger p = 0; p < probSize; ++p) levels[p] = prob[p];
+  const DataContainer result(StatisticsEngine::ComputeQuantile(toDataContainer(), levels, type7));
 
   Pointer<SampleImplementation> quantile = new SampleImplementation(probSize, dimension_);
-  quantile->setDescription(Description::BuildDefault(dimension_, "q"));
-  Point component(size_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
-  {
-    for (UnsignedInteger i = 0; i < size_; ++i)
-      component[i] = operator()(i, j);
-
-    UnsignedInteger lastIndex = 0;
     for (UnsignedInteger p = 0; p < probSize; ++p)
-    {
-      // Find index-th and (index+1)-th elements.
-      // We call nth_element twice, and select the right order so that second
-      // call operates on the smallest subset.
-      const UnsignedInteger index = pivots[p];
-      const Scalar beta = betas[p];
-      const Scalar alpha = 1.0 - beta;
-      if (beta == 0.0)
-      {
-        // We use a special case here to avoid using an indefinite value if index is the last element
-        std::nth_element(component.begin() + lastIndex, component.begin() + index, component.end());
-        quantile->operator()(p, j) = component[index];
-      }
-      else if (lastIndex == index && p > 0)
-      {
-        // Same index, but alpha and beta may have changed
-        quantile->operator()(p, j) = alpha * component[index] + beta * component[index + 1];
-      }
-      else if (2 * index > size_ + lastIndex)
-      {
-        std::nth_element(component.begin() + lastIndex, component.begin() + index, component.end());
-        std::nth_element(component.begin() + index, component.begin() + index + 1, component.end());
-        // Interpolation between the two adjacent empirical quantiles
-        quantile->operator()(p, j) = alpha * component[index] + beta * component[index + 1];
-      }
-      else
-      {
-        std::nth_element(component.begin() + lastIndex, component.begin() + index + 1, component.end());
-        std::nth_element(component.begin() + lastIndex, component.begin() + index, component.begin() + index + 1);
-        // Interpolation between the two adjacent empirical quantiles
-        quantile->operator()(p, j) = alpha * component[index] + beta * component[index + 1];
-      }
-      lastIndex = index;
-    }
-  }
-
-  return sorted ? quantile : quantile->select(indices);
+      quantile->operator()(p, j) = result(p, j);
+  quantile->setDescription(Description::BuildDefault(dimension_, "q"));
+  return quantile;
 }
 
 /*
  * Gives the N-dimension quantile of the sample
  */
-Point SampleImplementation::computeQuantile(const Scalar prob) const
+Point SampleImplementation::computeQuantile(const Scalar prob, Bool type7) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
-  if (getDimension() == 1) return computeQuantilePerComponent(prob);
+  if (getDimension() == 1) return computeQuantilePerComponent(prob, type7);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
 }
 
-Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob) const
+Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob, Bool type7) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
-  if (getDimension() == 1) return computeQuantilePerComponent(prob);
+  if (getDimension() == 1) return computeQuantilePerComponent(prob, type7);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
 }
-
-struct CDFPolicy
-{
-  typedef Scalar value_type;
-
-  const Point & point_;
-  const Bool tail_;
-  const UnsignedInteger dimension_;
-
-  CDFPolicy( const SampleImplementation & nsi,
-             const Point & point,
-             const Bool tail )
-    : point_(point), tail_(tail), dimension_(nsi.getDimension()) {}
-
-  static inline value_type GetInvariant(const SampleImplementation &)
-  {
-    return value_type(0);
-  }
-
-  inline value_type & inplace_op( value_type & a,
-                                  const value_type & other ) const
-  {
-    return a += other;
-  }
-
-  template <typename T>
-  inline value_type & inplace_op( value_type & a,
-                                  const T & pt ) const
-  {
-    UnsignedInteger j = 0;
-    while ( (j < dimension_) && (tail_ ^ (pt[j] <= point_[j])) ) ++j;
-    if (j == dimension_) ++a;
-    return a;
-  }
-
-}; /* end struct CDFPolicy */
 
 /*
  * Get the empirical CDF of the sample
@@ -1656,10 +1245,9 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & x,
   if (getDimension() != x.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
         << x.getDimension() << ". Expected " << getDimension();
 
-  const CDFPolicy policy( *this, x, survival );
-  ReductionFunctor<CDFPolicy> functor( *this, policy );
-  TBBImplementation::ParallelReduce(0, size_, functor, 1024);
-  return static_cast < Scalar > (functor.accumulator_) / size_;
+  DataContainer location(1, dimension_, 0.0, DataContainer::ROW_MAJOR);
+  for (UnsignedInteger j = 0; j < dimension_; ++j) location[j] = x[j];
+  return StatisticsEngine::ComputeEmpiricalCDF(toDataContainer(), location, survival);
 }
 
 
@@ -1668,16 +1256,9 @@ Point SampleImplementation::getMax() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
-  Point maxPoint(dimension_, - SpecFunc::Infinity);
-  for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-    {
-      const Scalar val = operator()(i, j);
-      if (val > maxPoint[j])
-        maxPoint[j] = val;
-    }
-  }
+  const DataContainer result(StatisticsEngine::ComputeMax(toDataContainer()));
+  Point maxPoint(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) maxPoint[i] = result[i];
   return maxPoint;
 }
 
@@ -1686,16 +1267,9 @@ Point SampleImplementation::getMin() const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
-  Point minPoint(dimension_, SpecFunc::Infinity);
-  for(UnsignedInteger i = 0; i < size_; ++i)
-  {
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-    {
-      const Scalar val = operator()(i, j);
-      if (val < minPoint[j])
-        minPoint[j] = val;
-    }
-  }
+  const DataContainer result(StatisticsEngine::ComputeMin(toDataContainer()));
+  Point minPoint(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) minPoint[i] = result[i];
   return minPoint;
 }
 
@@ -2041,7 +1615,7 @@ void SampleImplementation::exportToCSVFile(const FileName & fileName,
 /* Convert to DataContainer (row-major) */
 DataContainer SampleImplementation::toDataContainer() const
 {
-  if (size_ == 0 || dimension_ == 0) return DataContainer();
+  // Always row-major, even empty: engine kernels check the layout first
   DataContainer dc(size_, dimension_, 0.0, DataContainer::ROW_MAJOR);
   std::copy(data_begin(), data_end(), dc.data());
   return dc;

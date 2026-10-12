@@ -60,11 +60,23 @@ public:
   /** Compute Spearman rank correlation matrix. Returns dimension x dimension. */
   static DataContainer ComputeSpearmanCorrelation(const DataContainer & sample);
 
-  /** Compute quantiles of each column. q is in [0,1]. Returns 1 x dimension. */
-  static DataContainer ComputeQuantile(const DataContainer & sample, Scalar q);
+  /** Compute Kendall rank correlation matrix. Returns dimension x dimension. */
+  static DataContainer ComputeKendallTau(const DataContainer & sample);
+
+  /** Compute quantiles of each column. q is in [0,1]. Returns 1 x dimension. If type7, use the Hyndman-Fan Type-7 interpolation; otherwise use the historical Sample rule (default). */
+  static DataContainer ComputeQuantile(const DataContainer & sample, Scalar q, Bool type7 = false);
+
+  /** Compute quantiles of each column at multiple probability levels. Levels are read in flat storage order of probabilities. Returns levels x dimension. Same type7 convention as the single-level variant. */
+  static DataContainer ComputeQuantile(const DataContainer & sample, const DataContainer & probabilities, Bool type7 = false);
+
+  /** Compute the empirical CDF (or survival function if tail) at a location. Coordinates are read in flat storage order of location. */
+  static Scalar ComputeEmpiricalCDF(const DataContainer & sample, const DataContainer & location, Bool tail);
 
   /** Sort sample by a given column index (returns sorted copy). */
   static DataContainer Sort(const DataContainer & sample, UnsignedInteger columnIndex = 0);
+
+  /** Sort sample rows in lexicographic order (returns sorted copy). */
+  static DataContainer SortLexicographic(const DataContainer & sample);
 
   /** Compute element-wise minimum across rows. Returns 1 x dimension. */
   static DataContainer ComputeMin(const DataContainer & sample);
@@ -81,11 +93,11 @@ public:
   /** Compute central moment of order k for each column. Returns 1 x dimension. */
   static DataContainer ComputeCentralMoment(const DataContainer & sample, UnsignedInteger k);
 
-  /** Compute skewness of each column. Returns 1 x dimension. */
-  static DataContainer ComputeSkewness(const DataContainer & sample);
+  /** Compute skewness of each column. Returns 1 x dimension. If adjusted (default), apply the Fisher bias correction; otherwise return the raw moment ratio. */
+  static DataContainer ComputeSkewness(const DataContainer & sample, Bool adjusted = true);
 
-  /** Compute kurtosis of each column. Returns 1 x dimension. */
-  static DataContainer ComputeKurtosis(const DataContainer & sample);
+  /** Compute kurtosis of each column. Returns 1 x dimension. If adjusted (default), apply the Fisher bias correction (excess kurtosis); otherwise return the raw moment ratio. */
+  static DataContainer ComputeKurtosis(const DataContainer & sample, Bool adjusted = true);
 
   /**
    * Block-based statistics for out-of-core processing.

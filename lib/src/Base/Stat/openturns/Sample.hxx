@@ -239,12 +239,12 @@ public:
   /**
    * Method computeSkewness() gives the skewness of the sample (by component)
    */
-  Point computeSkewness() const;
+  Point computeSkewness(Bool adjusted = true) const;
 
   /**
    * Method computeKurtosis() gives the kurtosis of the sample (by component)
    */
-  Point computeKurtosis() const;
+  Point computeKurtosis(Bool adjusted = true) const;
 
   /**
    * Gives the central moment of order k of the sample (by component)
@@ -259,14 +259,14 @@ public:
   /**
    * Method computeQuantilePerComponent() gives the quantile per component of the sample
    */
-  Point computeQuantilePerComponent(const Scalar prob) const;
-  Sample computeQuantilePerComponent(const Point & prob) const;
+  Point computeQuantilePerComponent(const Scalar prob, Bool type7 = false) const;
+  Sample computeQuantilePerComponent(const Point & prob, Bool type7 = false) const;
 
   /**
    * Method computeQuantile() gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const Scalar prob) const;
-  Sample computeQuantile(const Point & prob) const;
+  Point computeQuantile(const Scalar prob, Bool type7 = false) const;
+  Sample computeQuantile(const Point & prob, Bool type7 = false) const;
 
   /**
    * Get the empirical CDF of the sample

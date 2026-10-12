@@ -101,20 +101,61 @@ correlation : DataContainer
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::StatisticsEngine::ComputeQuantile
-"Compute quantiles of each column.
+%feature("docstring") OT::StatisticsEngine::ComputeKendallTau
+"Compute Kendall rank correlation matrix (with ties correction).
 
 Parameters
 ----------
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
-q : float
-    Quantile level in [0, 1].
+
+Returns
+-------
+correlation : DataContainer
+    Kendall correlation matrix of size d x d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeQuantile
+"Compute quantiles of each column, at one or several probability levels.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+q : float or DataContainer
+    Quantile level in [0, 1], or levels read in flat storage order.
+type7 : bool, optional
+    Interpolation method. If False (default), use the historical rule
+    with knots at (k + 1/2) / n clamped to the sample range. If True,
+    use the Hyndman-Fan Type-7 rule with knots at k / (n - 1), as in R
+    and NumPy default settings.
 
 Returns
 -------
 quantile : DataContainer
-    Quantile vector of size d."
+    Quantile vector of size d (single level), or levels x d matrix
+    (several levels)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeEmpiricalCDF
+"Compute the empirical CDF (or survival function) at a location.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+location : DataContainer
+    Evaluation point, coordinates read in flat storage order.
+tail : bool
+    If False, count the points with all coordinates below or equal.
+    If True, count the points with all coordinates strictly above.
+
+Returns
+-------
+cdf : float
+    Empirical probability at the location."
 
 // ---------------------------------------------------------------------
 
@@ -127,6 +168,21 @@ sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
 columnIndex : int, optional
     Column to sort by. Default is 0.
+
+Returns
+-------
+sorted : DataContainer
+    Sorted copy of the sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::SortLexicographic
+"Sort sample rows in lexicographic order.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
 
 Returns
 -------
@@ -221,6 +277,9 @@ Parameters
 ----------
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
+adjusted : bool, optional
+    Whether to apply the Fisher bias correction.
+    Default is True. If False, return the raw moment ratio.
 
 Returns
 -------
@@ -236,6 +295,9 @@ Parameters
 ----------
 sample : DataContainer
     Input sample (ROW_MAJOR, n x d).
+adjusted : bool, optional
+    Whether to apply the Fisher bias correction (excess kurtosis).
+    Default is True. If False, return the raw moment ratio.
 
 Returns
 -------

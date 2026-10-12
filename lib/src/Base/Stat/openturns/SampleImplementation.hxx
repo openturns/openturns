@@ -669,12 +669,12 @@ public:
   /**
    * Gives the skewness of the sample (by component)
    */
-  virtual Point computeSkewness() const;
+  virtual Point computeSkewness(Bool adjusted = true) const;
 
   /**
    * Gives the kurtosis of the sample (by component)
    */
-  virtual Point computeKurtosis() const;
+  virtual Point computeKurtosis(Bool adjusted = true) const;
 
   /**
    * Gives the central moment of order k of the sample (by component)
@@ -689,14 +689,14 @@ public:
   /**
    * Gives the quantile per component of the sample
    */
-  virtual Point computeQuantilePerComponent(const Scalar prob) const;
-  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob) const;
+  virtual Point computeQuantilePerComponent(const Scalar prob, Bool type7 = false) const;
+  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob, Bool type7 = false) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const Scalar prob) const;
-  Pointer<SampleImplementation> computeQuantile(const Point & prob) const;
+  Point computeQuantile(const Scalar prob, Bool type7 = false) const;
+  Pointer<SampleImplementation> computeQuantile(const Point & prob, Bool type7 = false) const;
 
   /**
    * Get the empirical CDF of the sample
