@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -249,3 +251,19 @@ ggeo = mixedGeo.drawPDF(-2.0, 10.0)
 supportInRange = geometric.getSupport(ot.Interval([-2.0], [10.0]))
 expected = 2 + 2 * supportInRange.getSize()
 assert ggeo.getDrawables().getSize() == expected, "one arrow per support point"
+
+# Junction value of adjacent components, see #2928: the density at the
+# shared endpoint sums both sides, with the uniform edge at full height
+beta = math.log(10.0)
+mc = 5.5
+delta = 0.9
+junction = ot.Mixture(
+    [
+        ot.TruncatedDistribution(
+            ot.Exponential(beta), mc, ot.TruncatedDistribution.UPPER
+        ),
+        ot.Uniform(mc, 7.5),
+    ],
+    [delta, 1.0 - delta],
+)
+ott.assert_almost_equal(junction.computePDF(mc), 0.05, 0.0, 1e-4)
