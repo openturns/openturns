@@ -17,7 +17,7 @@ cdf(quantile)=0.95
 entropy=-0.041475
 entropy (MC)=-0.041557
 mean=class=Point name=Unnamed dimension=1 values=[0.454545]
-standard deviation=class=Point name=Unnamed dimension=1 values=[0.352089]
+standard deviation=class=Point name=Unnamed dimension=1 values=[0.25713]
 skewness=class=Point name=Unnamed dimension=1 values=[0.148865]
 kurtosis=class=Point name=Unnamed dimension=1 values=[1.98398]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0661157]
@@ -52,7 +52,7 @@ cdf(quantile)=0.95
 entropy=-0.82087
 entropy (MC)=-0.82062
 mean=class=Point name=Unnamed dimension=2 values=[0.277778,0.333333]
-standard deviation=class=Point name=Unnamed dimension=2 values=[0.384946,0.426401]
+standard deviation=class=Point name=Unnamed dimension=2 values=[0.190987,0.201008]
 skewness=class=Point name=Unnamed dimension=2 values=[0.71603,0.51025]
 kurtosis=class=Point name=Unnamed dimension=2 values=[2.86651,2.53846]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0364759,-0.016835,-0.016835,0.040404]
