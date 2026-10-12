@@ -22,7 +22,6 @@ Link to a computer code with coupling tools
 # The main features of the `coupling_tools` module are:
 #
 # * `replace`: writes a file based on a file template, by replacing tokens with values,
-# * `execute`: executes an external computer code,
 # * `get` (and `get_line_col`): reads values from a file.
 #
 # Moreover, the `coupling_tools` module can be useful outside the library, for example to evaluate a design of experiments on a cluster.
@@ -50,7 +49,8 @@ Link to a computer code with coupling tools
 
 # %%
 import openturns as ot
-import openturns.coupling_tools as ct
+import openturns.coupling_tools as otct
+import subprocess
 import sys
 
 
@@ -131,23 +131,22 @@ f.close()
 # The simulator is implemented this way:
 #
 # * we first use the `replace` function in order to generate the actual input file,
-# * then we evaluate the external computer code with a system command with the `execute` function,
+# * then we evaluate the external computer code with a system command,
 # * and we read the output file with the `get` function.
 
 
 # %%
 def mySimulator(X):
     # 1. Create input file
-    infile = "input_template.txt"
-    outfile = "input.txt"
+    tplfile = "input_template.txt"
+    infile = "input.txt"
     tokens = ["@X0@", "@X1@", "@X2@"]
-    ct.replace(infile, outfile, tokens, X)
-    # 2. Compute
-    program = sys.executable + " external_program.py"
-    cmd = program + " " + outfile
-    ct.execute(cmd)
+    otct.replace(tplfile, infile, tokens, X)
+    # 2. Run program with input file
+    cmd = [sys.executable, "external_program.py", infile]
+    subprocess.run(cmd, check=True)
     # 3. Parse output file
-    Y = ct.get("output.txt", tokens=["Y0=", "Y1="])
+    Y = otct.get("output.txt", tokens=["Y0=", "Y1="])
     return Y
 
 
@@ -182,16 +181,16 @@ print(Y)
 
 # %%
 X = [1.2, 45, 91.8]
-infile = "input_template.txt"
-outfile = "input.txt"
+tplfile = "input_template.txt"
+infile = "input.txt"
 tokens = ["@X0@", "@X1@", "@X2@"]
-ct.replace(infile, outfile, tokens, X)
+otct.replace(tplfile, infile, tokens, X)
 
 # %%
 # To see the change, let us look at the `input.txt` file.
 
 # %%
-f = open("input.txt", "r")
+f = open(infile, "r")
 print(f.read())
 
 # %%
@@ -234,5 +233,5 @@ f.close()
 # We want to read the number `9`.
 
 # %%
-Y = ct.get_value("results.txt", skip_line=1, skip_col=2)
+Y = otct.get_value("results.txt", skip_line=1, skip_col=2)
 Y

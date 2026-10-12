@@ -77,20 +77,23 @@ Here is a simple example of wrapper where compute is made in an external
 program with the help of openturns.coupling\_tools module::
 
     import openturns as ot
-    import openturns.coupling_tools as ct
+    import openturns.coupling_tools as otct
+    import subprocess
+    import sys
 
     external_program = 'python external_program.py'
 
     def exec(X):
         # create input file
         in_file = 'input.py'
-        ct.replace('input_template.py', in_file, ['@E', '@F'], X)
+        otct.replace('input_template.py', in_file, ['@E', '@F'], X)
 
         # compute
-        ct.execute(external_program + ' ' + in_file)
+        cmd = [sys.executable, 'external_program.py', in_file]
+        subprocess.run(cmd, check=True)
 
         # parse output file
-        Y = ct.get('output.py', tokens=['Z='])
+        Y = otct.get('output.py', tokens=['Z='])
 
         return Y
 
@@ -107,7 +110,7 @@ Some explanations of the code :
    file. ``X[0]`` value will replace ``'@E'`` token and ``X[1]`` will
    replace ``'@F'`` token.
 
--  The external program is launched with :py:meth:`~openturns.coupling_tools.execute`.
+-  The external program is launched with `subprocess.run`.
    The input filename is passed by parameters to the program.
 
 -  :py:meth:`~openturns.coupling_tools.get` get the value following ``'Z='`` token in
@@ -187,10 +190,6 @@ Solution to overlapping tokens: put longest tokens first:
       tokens=["@EE", "@E"],
       values=[2, 1])
       # => prgm_data.in = 'E=1 EE=2')
-
-The :py:meth:`~openturns.coupling_tools.execute` function
-can launch an external code.
-
 
 The :py:meth:`~openturns.coupling_tools.get_value` function
 can deal with several type of output file.

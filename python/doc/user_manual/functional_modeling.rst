@@ -310,7 +310,6 @@ These methods are dedicated to coupling external codes by means of text files.
     :template: function.rst_t
 
     coupling_tools.replace
-    coupling_tools.execute
     coupling_tools.get_value
     coupling_tools.get_line_col
     coupling_tools.get_regex
