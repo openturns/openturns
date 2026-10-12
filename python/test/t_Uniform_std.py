@@ -45,6 +45,8 @@ edge = ot.Uniform(2.0, 4.0)
 ott.assert_almost_equal(edge.computePDF(2.0), 0.5, 0.0, 0.0)
 ott.assert_almost_equal(edge.computePDF(4.0), 0.5, 0.0, 0.0)
 ott.assert_almost_equal(edge.computeLogPDF(2.0), math.log(0.5), 1e-12, 0.0)
+ott.assert_almost_equal(edge.computePDFGradient(2.0), [0.25, -0.25], 1e-12, 0.0)
+ott.assert_almost_equal(edge.computePDFGradient(4.0), [0.25, -0.25], 1e-12, 0.0)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
