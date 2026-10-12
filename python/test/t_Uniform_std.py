@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -37,6 +39,12 @@ LPDF = distribution.computeLogPDF(point)
 print("log pdf=%.6f" % LPDF)
 PDF = distribution.computePDF(point)
 print("pdf     =%.6f" % PDF)
+
+# Density at the support edges, see #2928 (mixture junction values)
+edge = ot.Uniform(2.0, 4.0)
+ott.assert_almost_equal(edge.computePDF(2.0), 0.5, 0.0, 0.0)
+ott.assert_almost_equal(edge.computePDF(4.0), 0.5, 0.0, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(2.0), math.log(0.5), 1e-12, 0.0)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
@@ -106,4 +114,5 @@ print("Standard representative=", distribution.getStandardRepresentative())
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the density is 1/(b-a) at the finite lower bound, see #2928
 validation.run()

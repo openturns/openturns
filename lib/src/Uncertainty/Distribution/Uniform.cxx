@@ -131,7 +131,7 @@ Point Uniform::computeDDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar Uniform::computePDF(const Scalar x) const
 {
-  if ((x <= a_) || (x > b_)) return 0.0;
+  if ((x < a_) || (x > b_)) return 0.0;
   return 1.0 / (b_ - a_);
 }
 
