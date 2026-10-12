@@ -134,7 +134,9 @@ Scalar KFactor(const Scalar n,
   if (!((alpha >= 0.0) && (alpha <= 1.0))) throw InvalidArgumentException(HERE) << "Error: alpha must be in [0, 1], here alpha=" << alpha;
   const ConstraintFunction constraint(nu, p, n);
   const Brent solver(ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsScalar("KFactor-Precision"), ResourceMap::GetAsUnsignedInteger("KFactor-MaximumIteration"));
-  return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::ScalarEpsilon, ResourceMap::GetAsScalar("KFactor-RMax"));
+  const Scalar rMax = ResourceMap::GetAsScalar("KFactor-RMax");
+  if (!(rMax > 0.0) || !std::isfinite(rMax)) throw InvalidArgumentException(HERE) << "Error: KFactor-RMax must be positive and finite, here rMax=" << rMax;
+  return solver.solve(constraint, 0.5 * (1.0 - alpha), SpecFunc::ScalarEpsilon, rMax);
 }
 
 } // KFactorFunctions

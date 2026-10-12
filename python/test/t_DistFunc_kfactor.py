@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 nMin = 2
 nMax = 4
@@ -30,3 +31,19 @@ for n in range(nMin, nMax):
                     "kFactorPooled(%d, %.12g, %.12g, %.12g)=%.6g"
                     % (2 * n, m, p, alpha, kF)
                 )
+
+# Non-positive RMax is rejected before bracketing
+ot.ResourceMap.SetAsScalar("KFactor-RMax", 0.0)
+try:
+    with ott.assert_raises(TypeError):
+        ot.DistFunc.kFactor(4, 0.5, 0.5)
+finally:
+    ot.ResourceMap.SetAsScalar("KFactor-RMax", 8.5)
+
+# Non-finite RMax is rejected the same way
+ot.ResourceMap.SetAsScalar("KFactor-RMax", float("inf"))
+try:
+    with ott.assert_raises(TypeError):
+        ot.DistFunc.kFactor(4, 0.5, 0.5)
+finally:
+    ot.ResourceMap.SetAsScalar("KFactor-RMax", 8.5)
