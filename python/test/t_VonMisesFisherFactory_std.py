@@ -64,3 +64,9 @@ with ott.assert_raises(TypeError):
     factory.build([0.0, 0.0, 1.0])
 with ott.assert_raises(TypeError):
     factory.build([1.0])
+
+# Highly concentrated samples need bracket expansion past b = 2048
+ot.RandomGenerator.SetSeed(0)
+concentrated = otexp.VonMisesFisher(ot.Point([1.0, 0.0]), 5000.0).getSample(2000)
+concentratedEstimate = otexp.VonMisesFisherFactory().build(concentrated)
+assert concentratedEstimate.getKappa() > 2048.0

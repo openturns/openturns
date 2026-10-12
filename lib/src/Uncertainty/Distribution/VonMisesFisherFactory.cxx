@@ -151,17 +151,14 @@ VonMisesFisher VonMisesFisherFactory::buildAsVonMisesFisher(const Sample & sampl
     Scalar fA = f(Point(1, a))[0];
     Scalar fB = f(Point(1, b))[0];
     const Scalar largeValue = std::sqrt(SpecFunc::MaxScalar);
-    const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("VonMisesFisherFactory-MaximumIteration");
-    UnsignedInteger iteration = 0;
     // While f has the same sign at the two bounds, update the interval
-    while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue) && (iteration < maximumIteration))
+    while ((fA * fB > 0.0) && (std::abs(fA) < largeValue) && (std::abs(fB) < largeValue) && (b < largeValue))
       {
         a = 0.5 * a;
         fA = f(Point(1, a))[0];
         if (fA * fB <= 0.0) break;
         b = 2.0 * b;
         fB = f(Point(1, b))[0];
-        ++iteration;
       }
     if ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (fA * fB > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a VonMisesFisher distribution from the given sample";
     // Solve the constraint equation
