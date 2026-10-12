@@ -45,7 +45,7 @@ LogNormalMuSigma::LogNormalMuSigma(const Scalar mu, const Scalar sigma, const Sc
   , gamma_(gamma)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
 /* Virtual constructor */
@@ -123,7 +123,7 @@ Point LogNormalMuSigma::operator () (const Point & inP) const
   const Scalar gamma = inP[2];
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
   Point nativeParameters(inP);
   Scalar sigmalog = sqrt(log(1 + sigma * sigma / ((mu - gamma) * (mu - gamma))));
@@ -164,7 +164,7 @@ void LogNormalMuSigma::setValues(const Point & inP)
   const Scalar sigma = inP[1];
   const Scalar gamma = inP[2];
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
   mu_ = mu;
   sigma_ = sigma;
   gamma_ = gamma;

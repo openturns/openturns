@@ -118,3 +118,11 @@ point = [1.0]
 dist.setSigmaLog(2.0)
 dist_fresh = ot.LogNormal(0.0, 2.0, 0.0)
 ott.assert_almost_equal(dist.computePDF(point), dist_fresh.computePDF(point))
+
+# NaN location parameters are rejected in all native parameter sets
+with ott.assert_raises(TypeError):
+    ot.LogNormalMuSigma(float("nan"), 3.3, -0.5)
+with ott.assert_raises(TypeError):
+    ot.LogNormalMuSigmaOverMu(float("nan"), 5.24, -0.5)
+with ott.assert_raises(TypeError):
+    ot.LogNormalMuErrorFactor(float("nan"), 1.5, -0.5)
