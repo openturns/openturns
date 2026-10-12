@@ -2342,6 +2342,12 @@ Point DistributionImplementation::computeSequentialConditionalPDF(const Point & 
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << x.getDimension();
   Point result(dimension_);
+  // Special case for independent copula: conditional distributions are the marginals
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i).computePDF(x[i]);
+    return result;
+  }
   // Special case for bidimensional copulas (most copulas)
   if (isCopula() && (dimension_ == 2))
   {
@@ -2455,6 +2461,12 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << x.getDimension();
   Point result(dimension_);
+  // Special case for independent copula: conditional distributions are the marginals
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i) result[i] = getMarginal(i).computeCDF(x[i]);
+    return result;
+  }
   // Special case for bidimensional copulas (most copulas)
   if (isCopula() && (dimension_ == 2))
   {
