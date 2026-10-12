@@ -134,7 +134,9 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
     fB = f(Point(1, b))[0];
     ++iteration;
   }
-  if ((fA * fB > 0.0) && ((std::abs(fA) > largeValue) || (std::abs(fB) > largeValue) || (std::abs(b) > largeValue) || (iteration == maximumIteration))) throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Burr distribution from the given sample";
+  if (!std::isfinite(fA) || !std::isfinite(fB) ||
+      (fA > 0.0 && fB > 0.0) || (fA < 0.0 && fB < 0.0))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate parameters of a Burr distribution from the given sample";
   // Solve the constraint equation
   Brent solver(ResourceMap::GetAsScalar( "BurrFactory-AbsolutePrecision" ), ResourceMap::GetAsScalar( "BurrFactory-RelativePrecision" ), ResourceMap::GetAsScalar( "BurrFactory-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "BurrFactory-MaximumIteration" ));
   // C estimate
