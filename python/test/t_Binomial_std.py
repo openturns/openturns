@@ -128,9 +128,9 @@ for i in range(sample_size):
     )
     ott.assert_almost_equal(computed_surv, computed_ccdf, rtol, atol)
     # Check quantile
-    if pr == 0.0 and x < n:
-        # The function is not invertible
-        # for this particular input.
+    if pr == 0.0 or pr == 1.0:
+        # Degenerate distribution: not invertible, the quantile is the
+        # single atom everywhere (see dedicated asserts above)
         continue
     elif expected_cdfp < expected_cdfq:
         computed_x = int(distribution.computeQuantile(computed_cdf)[0])
