@@ -68,7 +68,7 @@ assert distribution.computeSurvivalFunction(10.0) == 0.0
 distribution = ot.Binomial(3, 0.5)
 assert distribution.computeScalarQuantile(0.9, True) == 0
 
-# degenerate distributions return their single atom at every level
+# degenerate distributions return their single atom at every level, see #2605
 assert ot.Binomial(3, 0.0).computeScalarQuantile(0.0, True) == 0.0
 assert ot.Binomial(3, 0.0).computeScalarQuantile(0.0, False) == 0.0
 assert ot.Binomial(3, 0.0).computeScalarQuantile(0.7, True) == 0.0
