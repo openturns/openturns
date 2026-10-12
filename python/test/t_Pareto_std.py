@@ -11,99 +11,99 @@ ot.TESTPREAMBLE()
 # Instantiate one distribution object
 distribution = ot.Pareto(7.5, 5.0, -7.0)
 
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "Pareto"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [2.14939], 1e-5, 0.0)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
-print("Point= ", repr(point))
-print("range= ", distribution.getRange())
+ott.assert_almost_equal(point, [1.0], 0.0, 0.0)
+ott.assert_almost_equal(distribution.getRange().getLowerBound(), [0.5], 1e-5, 0.0)
 
 # Show PDF and CDF of point
 DDF = distribution.computeDDF(point)
-print("ddf     =", repr(DDF))
+ott.assert_almost_equal(DDF, [-0.339467], 1e-5, 0.0)
 
 PDF = distribution.computePDF(point)
-print("pdf     = %.12g" % PDF)
+ott.assert_almost_equal(PDF, 0.452622771263, 1e-9, 0.0)
 
 CDF = distribution.computeCDF(point)
-print("cdf= %.12g" % CDF)
-# CF = distribution.computeCharacteristicFunction( point[0] )
-# print "characteristic function=", CF
+ott.assert_almost_equal(CDF, 0.275803565979, 1e-9, 0.0)
 PDFgr = distribution.computePDFGradient(point)
-print("pdf gradient     =", repr(PDFgr))
+ott.assert_almost_equal(PDFgr, [0.301749, 0.0613129, 0.339467], 1e-5, 0.0)
 
 CDFgr = distribution.computeCDFGradient(point)
-print("cdf gradient     =", repr(CDFgr))
+ott.assert_almost_equal(CDFgr, [-0.482798, 0.0467386, -0.452623], 1e-5, 0.0)
 
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=", distribution.computeCDF(quantile))
+ott.assert_almost_equal(quantile, [6.65423], 1e-5, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-9, 0.0)
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
+ott.assert_almost_equal(inverseSurvival, [0.577336], 1e-5, 0.0)
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 0.0
 )
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(distribution.computeEntropy(), 1.605465, 1e-6, 0.0)
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
     0.95
 )
-print("Minimum volume interval=", interval)
-print("threshold=", ot.Point(1, threshold))
+ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [6.65423], 1e-5, 0.0)
+ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-print("Minimum volume level set=", levelSet)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(beta, 0.0183093, 1e-5, 0.0)
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )
-print("Bilateral confidence interval=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.538073], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [8.68459], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [6.65423], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.577336], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [10126.8], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 
 mean = distribution.getMean()
-print("mean=", repr(mean))
+ott.assert_almost_equal(mean, [2.375], 1e-5, 0.0)
 standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", repr(standardDeviation))
+ott.assert_almost_equal(standardDeviation, [2.42061], 1e-5, 0.0)
 skewness = distribution.getSkewness()
-print("skewness=", repr(skewness))
+ott.assert_almost_equal(skewness, [4.64758], 1e-5, 0.0)
 kurtosis = distribution.getKurtosis()
-print("kurtosis=", repr(kurtosis))
+ott.assert_almost_equal(kurtosis, [73.8], 1e-5, 0.0)
 covariance = distribution.getCovariance()
-print("covariance=", repr(covariance))
+ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [5.85938]), 1e-5, 0.0)
 parameters = distribution.getParametersCollection()
-print("parameters=", repr(parameters))
-print("Standard representative=", distribution.getStandardRepresentative())
+assert len(parameters) == 1
+ott.assert_almost_equal(parameters[0], [7.5, 5.0, -7.0], 0.0, 0.0)
+assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Pareto"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipPDFAtLowerBound()  # the density is alpha / beta at the finite lower bound
 validation.run()
 
-# Density at the finite lower bound: alpha / beta
-ott.assert_almost_equal(distribution.computePDF(-2.0), 7.5 / 5.0, 1e-12, 0.0)
-ott.assert_almost_equal(distribution.computeLogPDF(-2.0), math.log(7.5 / 5.0), 1e-12, 0.0)
+# Density at the finite lower bound gamma + beta: alpha / beta
+ott.assert_almost_equal(distribution.computePDF(0.5), 5.0 / 7.5, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computeLogPDF(0.5), math.log(5.0 / 7.5), 1e-12, 0.0)

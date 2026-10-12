@@ -15,89 +15,92 @@ for i in range(len(ll)):
     t.append(t[i] + ll[i])
     f.append(h[i] * ll[i])
 distribution = ot.Histogram(t, f)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "Histogram"
 distribution = ot.Histogram(first, ll, h)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "Histogram"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [1.19686], 1e-5, 0.0)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
-print("Point= ", repr(point))
+ott.assert_almost_equal(point, [1.0], 0.0, 0.0)
 
 # derivative of PDF with regards its arguments
 DDF = distribution.computeDDF(point)
-print("ddf     =", repr(DDF))
+ott.assert_almost_equal(DDF, [0.0], 1e-12, 0.0)
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
-print("log pdf=%.6f" % LPDF)
+ott.assert_almost_equal(LPDF, -0.826679, 1e-6, 1e-6)
 PDF = distribution.computePDF(point)
-print("pdf     =%.6f" % PDF)
+ott.assert_almost_equal(PDF, 0.437500, 1e-6, 1e-6)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDF = distribution.computeCDF(point)
-print("cdf=%.6f" % CDF)
+ott.assert_almost_equal(CDF, 0.543750, 1e-6, 1e-6)
 CCDF = distribution.computeComplementaryCDF(point)
-print("ccdf=%.6f" % CCDF)
+ott.assert_almost_equal(CCDF, 0.456250, 1e-6, 1e-6)
 
 # quantile
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+ott.assert_almost_equal(quantile, [2.14], 1e-5, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-6, 1e-6)
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
+ott.assert_almost_equal(inverseSurvival, [-0.7], 1e-5, 0.0)
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 1e-6
 )
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(distribution.computeEntropy(), 1.154139, 1e-6, 1e-6)
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
     0.95
 )
-print("Minimum volume interval=", interval)
-print("threshold=", ot.Point(1, threshold))
+ott.assert_almost_equal(interval.getLowerBound(), [-0.7], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [2.3], 1e-5, 0.0)
+ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-print("Minimum volume level set=", levelSet)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(beta, [0.0625], 1e-5, 0.0)
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )
-print("Bilateral confidence interval=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [-1.1], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [2.22], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [-1.5], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [2.14], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [-0.7], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [2.3], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 
 mean = distribution.getMean()
-print("mean=", repr(mean))
+ott.assert_almost_equal(mean, [0.858125], 1e-5, 0.0)
 covariance = distribution.getCovariance()
-print("covariance=", repr(covariance))
+ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.720205]), 1e-5, 0.0)
 parameters = distribution.getParametersCollection()
-print("parameters=", repr(parameters))
-print("Standard representative=", distribution.getStandardRepresentative())
+assert len(parameters) == 1
+ott.assert_almost_equal(
+    parameters[0], [-1.5, 1.0, 0.0625, 0.7, 0.1875, 1.2, 0.4375, 0.9, 0.3125], 1e-12, 0.0
+)
+assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Histogram"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
@@ -109,7 +112,7 @@ validation.run()
 # Density at the support edges: first and last bin heights
 lower = distribution.getRange().getLowerBound()[0]
 upper = distribution.getRange().getUpperBound()[0]
-ott.assert_almost_equal(distribution.computePDF(lower), distribution.computePDF(lower + 0.1), 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computePDF(lower), 0.0625, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computePDF(upper), 0.3125, 1e-12, 0.0)
 assert distribution.computePDF(lower) > 0.0
-ott.assert_almost_equal(distribution.computePDF(upper), distribution.computePDF(upper - 0.1), 1e-12, 0.0)
 assert distribution.computePDF(upper) > 0.0

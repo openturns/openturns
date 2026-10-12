@@ -10,104 +10,169 @@ for distribution in [
     ot.TruncatedNormal(1.5, 3.0, -2.0, 5.0),
     ot.TruncatedNormal(50.0, 1.0, 3.0, 4.0),
 ]:
-    print("Distribution ", distribution)
+    assert distribution.getClassName() == "TruncatedNormal"
 
     # Is this distribution elliptical ?
-    print("Elliptical = ", distribution.isElliptical())
+    if distribution.getMu()[0] == 1.5:
+        assert distribution.isElliptical()
+    else:
+        assert not distribution.isElliptical()
 
     # Is this distribution continuous ?
-    print("Continuous = ", distribution.isContinuous())
+    assert distribution.isContinuous()
 
     # Test for realization of distribution
     oneRealization = distribution.getRealization()
-    print("oneRealization=", repr(oneRealization))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(oneRealization, [3.3246], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(oneRealization, [3.96641], 1e-5, 0.0)
 
     # Define a point
     point = ot.Point(distribution.getDimension(), 3.5)
-    print("Point= ", repr(point))
+    ott.assert_almost_equal(point, [3.5], 0.0, 0.0)
 
     # derivative of PDF with regards its arguments
     DDF = distribution.computeDDF(point)
-    print("ddf     =", repr(DDF))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(DDF, [-0.0312729], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(DDF, [1.93801e-07], 1e-5, 0.0)
 
     # PDF value
     LPDF = distribution.computeLogPDF(point)
-    print("log pdf=%.6f" % LPDF)
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(LPDF, -1.960925, 1e-6, 1e-6)
+    else:
+        ott.assert_almost_equal(LPDF, -19.295887, 1e-6, 1e-6)
     PDF = distribution.computePDF(point)
-    print("pdf     =%.6f" % PDF)
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(PDF, 0.140728, 1e-6, 1e-6)
+    else:
+        ott.assert_almost_equal(PDF, 0.0, 0.0, 1e-6)
 
     # derivative of the PDF with regards the parameters of the distribution
     CDF = distribution.computeCDF(point)
-    print("cdf=%.6f" % CDF)
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(CDF, 0.827107, 1e-6, 1e-6)
+    else:
+        ott.assert_almost_equal(CDF, 0.0, 0.0, 1e-6)
     CCDF = distribution.computeComplementaryCDF(point)
-    print("ccdf=%.6f" % CCDF)
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(CCDF, 0.172893, 1e-6, 1e-6)
+    else:
+        ott.assert_almost_equal(CCDF, 1.0, 1e-6, 1e-6)
 
     PDFgr = distribution.computePDFGradient(point)
-    print("pdf gradient     =", repr(PDFgr))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(PDFgr, [0.0312729, 0.0031597, 0.0125231, -0.0125231], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(PDFgr, [-1.99336e-09, 1.84427e-07, 0.0, -1.91808e-07], 1e-5, 0.0)
 
     # derivative of the logPDF with regards the parameters of the distribution
     logPDFgr = distribution.computeLogPDFGradient(point)
-    print("log-pdf gradient     =", repr(logPDFgr))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(logPDFgr, [0.222222, 0.0224525, 0.0889876, -0.0889876], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(logPDFgr, [-0.478281, 44.2509, 0.0, -46.0217], 1e-5, 0.0)
 
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
-    print("cdf gradient     =", repr(CDFgr))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(CDFgr, [-0.0517406, -0.0258989, -0.0153853, -0.0736023], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(CDFgr, [-4.47731e-11, 4.14344e-09, -2.95456e-19, -4.12299e-09], 1e-5, 0.0)
 
     # quantile
     quantile = distribution.computeQuantile(0.95)
-    print("quantile=", repr(quantile))
-    print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(quantile, [4.48948], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(quantile, [3.99889], 1e-5, 0.0)
+    ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-6, 1e-6)
     # Get 95% survival function
     inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-    print("InverseSurvival=", repr(inverseSurvival))
-    print(
-        "Survival(inverseSurvival)=%.6f"
-        % distribution.computeSurvivalFunction(inverseSurvival)
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(inverseSurvival, [-1.48948], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(inverseSurvival, [3.93495], 1e-5, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 1e-6
     )
-    print("entropy=%.6f" % distribution.computeEntropy())
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(distribution.computeEntropy(), 1.927246, 1e-6, 1e-6)
+    else:
+        ott.assert_almost_equal(distribution.computeEntropy(), -2.829585, 1e-6, 1e-6)
 
     # Confidence regions
-    (
-        interval,
-        threshold,
-    ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
-    print("threshold=", ot.Point(1, threshold))
+    interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
+        0.95
+    )
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(interval.getLowerBound(), [-1.73303], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.73303], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [3.93495], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.0], 1e-5, 0.0)
+    ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-    print("Minimum volume level set=", levelSet)
-    print("beta=", ot.Point(1, beta))
-    (
-        interval,
-        beta,
-    ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-    print("Bilateral confidence interval=", interval)
-    print("beta=", ot.Point(1, beta))
-    (
-        interval,
-        beta,
-    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(beta, [0.0983328], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(beta, [2.30434], 1e-5, 0.0)
+    interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+        0.95
+    )
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(interval.getLowerBound(), [-1.73303], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.73303], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [3.91991], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [3.99945], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, False
     )
-    print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", ot.Point(1, beta))
-    (
-        interval,
-        beta,
-    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(interval.getLowerBound(), [-2.0], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.48948], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [3.0], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [3.99889], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
+    interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, True
     )
-    print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(interval.getLowerBound(), [-1.48948], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [5.0], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [3.93495], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.0], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 
     mean = distribution.getMean()
-    print("mean=", repr(mean))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(mean, [1.5], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(mean, [3.97828], 1e-5, 0.0)
     standardDeviation = distribution.getStandardDeviation()
-    print("standard deviation=", repr(standardDeviation))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(standardDeviation, [1.84222], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(standardDeviation, [0.0217084], 1e-5, 0.0)
     covariance = distribution.getCovariance()
-    print("covariance=", repr(covariance))
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [3.39378]), 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.000471255]), 1e-5, 0.0)
     parameters = distribution.getParametersCollection()
-    print("parameters=", repr(parameters))
-    print("Standard representative=", distribution.getStandardRepresentative())
+    assert len(parameters) == 1
+    if distribution.getMu()[0] == 1.5:
+        ott.assert_almost_equal(parameters[0], [1.5, 3.0, -2.0, 5.0], 0.0, 0.0)
+    else:
+        ott.assert_almost_equal(parameters[0], [50.0, 1.0, 3.0, 4.0], 0.0, 0.0)
+    assert distribution.getStandardRepresentative().getImplementation().getClassName() == "TruncatedNormal"
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
