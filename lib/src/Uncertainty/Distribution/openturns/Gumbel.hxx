@@ -42,7 +42,7 @@ public:
 
   /** Parameters constructor */
   Gumbel(const Scalar beta,
-         const Scalar gamma);
+         const Scalar gamma = 0.0);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
