@@ -138,6 +138,14 @@ public:
   Scalar getTextSize() const;
   void setTextSize(const Scalar size);
 
+  /** Accessor for bounds */
+  Interval getBounds() const;
+  void setBounds(const Interval & bounds);
+
+  /** Accessor for subdivisions */
+  Indices getSubdivisions() const;
+  void setSubdivisions(const Indices & subdivisions);
+
   /** Accessor for data */
   Sample getData() const;
 

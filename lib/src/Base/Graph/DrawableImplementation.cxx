@@ -1634,6 +1634,26 @@ void DrawableImplementation::setTextSize(const Scalar /*size*/)
   throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();
 }
 
+Interval DrawableImplementation::getBounds() const
+{
+  throw NotDefinedException(HERE) << "Error: no bounds in " << getClassName();
+}
+
+void DrawableImplementation::setBounds(const Interval &)
+{
+  throw NotDefinedException(HERE) << "Error: no bounds in " << getClassName();
+}
+
+Indices DrawableImplementation::getSubdivisions() const
+{
+  throw NotDefinedException(HERE) << "Error: no subdivisions in " << getClassName();
+}
+
+void DrawableImplementation::setSubdivisions(const Indices &)
+{
+  throw NotDefinedException(HERE) << "Error: no subdivisions in " << getClassName();
+}
+
 /* Build default palette */
 Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger size)
 {
