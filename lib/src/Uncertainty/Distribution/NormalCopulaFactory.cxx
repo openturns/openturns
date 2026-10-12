@@ -97,7 +97,7 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
   // the loop exits at eps = 1 at the latest; beyond that point only
   // non-finite entries can still fail, and they throw below.
   Scalar regularization = ResourceMap::GetAsScalar("NormalCopulaFactory-RegularizationEpsilon");
-  if (!(regularization > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive regularization epsilon, here epsilon=" << regularization;
+  if (!(regularization > 0.0 && regularization <= 1.0)) throw InvalidArgumentException(HERE) << "Error: expected a regularization epsilon in ]0, 1], here epsilon=" << regularization;
   const UnsignedInteger dimension = R.getNbRows();
   for (; regularization <= 1.0; regularization *= 2.0)
   {
