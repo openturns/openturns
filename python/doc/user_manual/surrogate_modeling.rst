@@ -90,10 +90,7 @@ Main classes
     :template: class.rst_t
     GaussianProcessRegressionResult
     GaussianProcessFitterResult
-    experimental.SparseGaussianProcessFitterResult
     experimental.GaussianProcessRegressionCrossValidation
-    experimental.SparseGaussianProcessEvaluation
-    experimental.SparseGaussianProcessGradient
     GaussianProcessConditionalCovariance
     GaussianProcessRandomVector
     KrigingAlgorithm
@@ -101,6 +98,9 @@ Main classes
     KrigingResult
     GeneralLinearModelAlgorithm
     GeneralLinearModelResult
+    experimental.SparseGaussianProcessFitterResult
+    experimental.SparseGaussianProcessEvaluation
+    experimental.SparseGaussianProcessGradient
 
 Construction of the regression basis
 ------------------------------------

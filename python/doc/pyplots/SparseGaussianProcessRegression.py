@@ -13,7 +13,7 @@ algo.run()
 result = algo.getResult()
 
 metaModel = result.getMetaModel()
-graph = ot.Graph("Sparse GP metamodel", "x", "y", True, "upper left")
+graph = ot.Graph("y(x)=x + x*sin(x), 5 inducing points", "x", "y", True, "upper left")
 curveMetamodel = metaModel.draw(0.5, 8.5, 200).getDrawable(0)
 curveMetamodel.setLineStyle("solid")
 curveMetamodel.setLineWidth(2)

@@ -5,7 +5,8 @@ R"RAW(Fit sparse Gaussian process models.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Refer to the theory of the sparse Gaussian process, based on the variational inference of
+Refer to :any:`sparse_gaussian_process_regression` for the theory of the sparse
+Gaussian process, based on the variational inference of
 Titsias [titsias2009]_ (see also [gal2014]_ for the full derivations as implemented in code
 and [leibfried2020]_ for the whitened parametrisation).
 
