@@ -335,7 +335,7 @@ Distribution KernelSmoothing::buildWeighted(const Sample & sample,
   {
     if (!std::isfinite(xmin[j]) || !std::isfinite(xmax[j])) throw InvalidArgumentException(HERE) << "Error: cannot build a kernel smoothing estimate from a sample with non-finite values";
     // The bandwidth is only used on non-degenerate marginals
-    if ((xmax[j] > xmin[j]) && !(bandwidth[j] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the given bandwidth must have positive components, here bandwidth[" << j << "]=" << bandwidth[j];
+    if ((xmax[j] > xmin[j]) && (!(bandwidth[j] > 0.0) || !std::isfinite(bandwidth[j]))) throw InvalidArgumentException(HERE) << "Error: the given bandwidth must have positive finite components, here bandwidth[" << j << "]=" << bandwidth[j];
   }
   // Check the degenerate case of constant sample
   if (xmin == xmax)
@@ -679,7 +679,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
   {
     if (!std::isfinite(xmin[j]) || !std::isfinite(xmax[j])) throw InvalidArgumentException(HERE) << "Error: cannot build a kernel smoothing estimate from a sample with non-finite values";
     // The bandwidth is only used on non-degenerate marginals
-    if ((xmax[j] > xmin[j]) && !(bandwidth[j] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the given bandwidth must have positive components, here bandwidth[" << j << "]=" << bandwidth[j];
+    if ((xmax[j] > xmin[j]) && (!(bandwidth[j] > 0.0) || !std::isfinite(bandwidth[j]))) throw InvalidArgumentException(HERE) << "Error: the given bandwidth must have positive finite components, here bandwidth[" << j << "]=" << bandwidth[j];
   }
   // Check the degenerate case of constant sample
   if (xmin == xmax)
