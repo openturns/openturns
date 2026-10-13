@@ -107,6 +107,54 @@ distribution : :class:`~openturns.Histogram`
     
     In the first usage, the default Histogram distribution is built."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::buildWeighted
+"Build a weighted histogram.
+
+The histogram estimate gives each sample point the mass of its
+normalized weight instead of a uniform mass. This allows one to
+perform non parametric importance sampling.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+weights : sequence of non-negative floats
+    The weight of each point of the sample. Zero weights are allowed,
+    but their sum must be positive.
+
+Returns
+-------
+distribution : :class:`~openturns.Histogram`
+    The estimated distribution as a Histogram."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::buildWeightedAsHistogram
+"Estimate the distribution as native distribution from a weighted sample.
+
+**Available usages**:
+
+    buildWeightedAsHistogram(*sample*, *weights*)
+
+    buildWeightedAsHistogram(*sample*, *bandwidth*, *weights*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data.
+bandwidth : float
+    The width of each class.
+weights : sequence of non-negative floats
+    The weight of each point of the sample. Zero weights are allowed,
+    but their sum must be positive.
+
+Returns
+-------
+distribution : :class:`~openturns.Histogram`
+    The estimated distribution as a Histogram."
+
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::HistogramFactory::computeBandwidth
@@ -168,14 +216,39 @@ Parameters
 ----------
 sample : :class:`~openturns.Sample`
     Data
+useQuantile : bool, optional (default=`True`)
+    If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule.
+    Otherwise, use the optimal bandwidth estimator based on Scott's rule.
 
 Returns
 -------
 bandwidth : float
-    The estimated bandwidth.
+    The estimated bandwidth.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HistogramFactory::computeBandwidthWeighted
+R"RAW(Compute the bandwidth of a weighted sample.
+
+The sample size in the Scott and Freedman-Diaconis rules is replaced
+by the Kish effective sample size :math:`n_{eff} = (\sum w)^2 / \sum w^2`,
+and the dispersion by its weighted counterpart.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+weights : sequence of non-negative floats
+    The weight of each point of the sample. Zero weights are allowed,
+    but their sum must be positive.
 useQuantile : bool, optional (default=`True`)
-    If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule. 
-    Otherwise, use the optimal bandwidth estimator based on Scott's rule.)RAW"
+    If `True`, then use the robust bandwidth estimator based on Freedman and Diaconis rule.
+    Otherwise, use the optimal bandwidth estimator based on Scott's rule.
+
+Returns
+-------
+bandwidth : float
+    The estimated bandwidth.)RAW"
 
 // ---------------------------------------------------------------------
 
