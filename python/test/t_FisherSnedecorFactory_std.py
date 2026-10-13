@@ -46,8 +46,8 @@ exact_mu = sample.computeMean()[0]
 exact_sigma2 = sample.computeCovariance()[0, 0]
 computed_mu = estimatedTN.getMean()[0]
 computed_sigma2 = estimatedTN.getCovariance()[0, 0]
-ott.assert_almost_equal(exact_mu, computed_mu, 1.0e-13, 0.0)
-ott.assert_almost_equal(exact_sigma2, computed_sigma2, 1.0e-13, 0.0)
+ott.assert_almost_equal(exact_mu, computed_mu, 1.0e-15, 0.0)
+ott.assert_almost_equal(exact_sigma2, computed_sigma2, 1.0e-15, 0.0)
 
 # Build method of likelihood maximization
 print("Build method of likelihood maximization")

@@ -136,6 +136,9 @@
  * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
  * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
  * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
+ * AlgebraEngine-DefaultBlockSize: number of rows and columns per block for out-of-core blockwise linear algebra (default is 384)
+ * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
+ * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
 
 === Documentation ===
  * Theory: add interpolation page
