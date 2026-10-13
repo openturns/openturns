@@ -89,6 +89,8 @@ divFree = otexp.DivFreeModel(model)
 assert divFree.getInputDimension() == 2
 assert divFree.getOutputDimension() == 2
 assert divFree.isStationary()
+# divergence-free kernels have full off-diagonal blocks, see issue #3324
+assert not divFree.isDiagonal()
 ott.assert_almost_equal(divFree.getScale(), scale)
 s = [0.5, 0.3]
 t = [0.1, 0.2]
@@ -253,6 +255,8 @@ div_default = otexp.DivFreeModel(2)
 assert div_default.getInputDimension() == 2
 assert div_default.getOutputDimension() == 2
 assert div_default.isStationary()
+# see issue #3324
+assert not div_default.isDiagonal()
 val_def = div_default([0.5, 0.3], [0.1, 0.2])
 assert val_def.getNbRows() == 2
 assert val_def.getNbColumns() == 2
