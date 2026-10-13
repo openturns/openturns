@@ -22,6 +22,7 @@
 #define OPENTURNS_HDF5BACKEND_HXX
 
 #include "openturns/DataContainer.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,7 +63,7 @@ public:
   HDF5Backend(const FileName & fileName,
               const String & dataSetName,
               UnsignedInteger n,
-              UnsignedInteger compressionLevel = 0);
+              UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultCompressionLevel"));
 
   /**
    * Factory: open an existing HDF5 dataset for reading.
