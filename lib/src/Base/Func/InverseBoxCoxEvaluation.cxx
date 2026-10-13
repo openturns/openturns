@@ -202,7 +202,8 @@ void InverseBoxCoxEvaluation::load(Advocate & adv)
 
 Bool InverseBoxCoxEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const InverseBoxCoxEvaluation &>(other);
+  const InverseBoxCoxEvaluation * p_other = dynamic_cast<const InverseBoxCoxEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

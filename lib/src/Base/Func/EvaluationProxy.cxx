@@ -78,7 +78,8 @@ void EvaluationProxy::setDescription(const Description & description)
 
 Bool EvaluationProxy::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const EvaluationProxy &>(other);
+  const EvaluationProxy * p_other = dynamic_cast<const EvaluationProxy *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 

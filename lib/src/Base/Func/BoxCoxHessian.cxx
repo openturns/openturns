@@ -150,7 +150,8 @@ void BoxCoxHessian::load(Advocate & adv)
 
 Bool BoxCoxHessian::equals(const HessianImplementation & other) const
 {
-  return *this == dynamic_cast<const BoxCoxHessian &>(other);
+  const BoxCoxHessian * p_other = dynamic_cast<const BoxCoxHessian *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -104,7 +104,8 @@ void ExpertMixture::setExperts(const FunctionCollection & experts)
 
 Bool ExpertMixture::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const ExpertMixture &>(other);
+  const ExpertMixture * p_other = dynamic_cast<const ExpertMixture *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 ExpertMixture::FunctionCollection ExpertMixture::getExperts() const

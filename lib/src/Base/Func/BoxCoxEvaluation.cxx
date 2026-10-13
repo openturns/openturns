@@ -204,7 +204,8 @@ void BoxCoxEvaluation::load(Advocate & adv)
 
 Bool BoxCoxEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const BoxCoxEvaluation &>(other);
+  const BoxCoxEvaluation * p_other = dynamic_cast<const BoxCoxEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

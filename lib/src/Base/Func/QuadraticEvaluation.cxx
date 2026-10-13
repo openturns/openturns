@@ -220,7 +220,8 @@ void QuadraticEvaluation::load(Advocate & adv)
 
 Bool QuadraticEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const QuadraticEvaluation &>(other);
+  const QuadraticEvaluation * p_other = dynamic_cast<const QuadraticEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS
