@@ -80,7 +80,7 @@ HDF5Backend::HDF5Backend(const FileName & fileName,
     h5Dataspace_ = p_dspace;
 
     // Create dataset with chunking and optional compression
-    hsize_t chunkDims[1] = { std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(4096)) };
+    hsize_t chunkDims[1] = { std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultChunkSize"))) };
     H5::DSetCreatPropList prop;
     prop.setChunk(1, chunkDims);
     if (compressionLevel > 0)

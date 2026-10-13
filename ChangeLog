@@ -26,6 +26,8 @@
  * AlgebraEngine-DefaultBlockSize: number of rows and columns per block for out-of-core blockwise linear algebra (default is 384)
  * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
  * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
+ * HDF5Backend-DefaultChunkSize: number of elements per chunk for HDF5-backed storage (default is 4096)
+ * HDF5Backend-DefaultCompressionLevel: deflate compression level for HDF5-backed storage, 0 disables compression (default is 0)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)

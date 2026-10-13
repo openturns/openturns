@@ -59,7 +59,7 @@ ComplexHDF5Backend::ComplexHDF5Backend(const FileName & fileName,
     H5::DataSpace * p_dspace = new H5::DataSpace(1, dims, maxdims);
     h5Dataspace_ = p_dspace;
 
-    hsize_t chunkDims[1] = { std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(4096)) };
+    hsize_t chunkDims[1] = { std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultChunkSize"))) };
     H5::DSetCreatPropList prop;
     prop.setChunk(1, chunkDims);
     if (compressionLevel > 0)

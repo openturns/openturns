@@ -1042,6 +1042,10 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("StatisticsEngine-DefaultBlockSize", 4096);
   addAsUnsignedInteger("StatisticsEngine-ParallelThreshold", 100000);
 
+  // HDF5Backend parameters //
+  addAsUnsignedInteger("HDF5Backend-DefaultChunkSize", 4096);
+  addAsUnsignedInteger("HDF5Backend-DefaultCompressionLevel", 0);
+
   // Compact parameters //
   addAsUnsignedInteger("Compact-DefaultHalfMaximumSize", 1024);
 
