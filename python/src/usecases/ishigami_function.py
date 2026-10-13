@@ -197,7 +197,7 @@ class IshigamiModel:
             -4.06875638545441148e-12,
             2.13045013046006517e-16,
         ]
-        if index >= len(coefficients):
+        if index < -len(coefficients) or index >= len(coefficients):
             raise ValueError(
                 "Index out of range for polynomial chaos expansion coefficients."
             )
@@ -252,7 +252,7 @@ class IshigamiModel:
             [0, 24, 0],
             [21, 0, 4],
         ]
-        if index >= len(multiIndices):
+        if index < -len(multiIndices) or index >= len(multiIndices):
             raise ValueError(
                 "Index out of range for polynomial chaos expansion indices."
             )
