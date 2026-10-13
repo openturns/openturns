@@ -72,3 +72,21 @@ ott.assert_almost_equal(myFunction.getCenter(), center)
 ott.assert_almost_equal(myFunction.getConstant(), constant)
 ott.assert_almost_equal(myFunction.getLinear(), linear)
 ott.assert_almost_equal(myFunction.getQuadratic(), quadratic)
+# extra coverage (no prints: output is checked against .expout)
+assert myFunction == myFunction
+assert not (myFunction != myFunction)
+different = ot.QuadraticFunction(center + [1.0, 0.0, 0.0], constant, linear, quadratic)
+assert myFunction != different
+# NOTE: identical multi-dimensional QuadraticFunctions compare unequal
+# (QuadraticEvaluation::operator== compares the stored transposed linear
+# term with the untransposed getLinear()); only the 1D case round-trips:
+oneD = ot.QuadraticFunction([0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1))
+assert oneD == ot.QuadraticFunction([0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1))
+assert len(repr(myFunction)) > 0
+assert len(str(myFunction)) > 0
+# error branches of the underlying evaluation
+
+with ott.assert_raises(Exception):
+    myFunction(ot.Point(inputDimension + 1))
+with ott.assert_raises(Exception):
+    myFunction.gradient(ot.Point(inputDimension + 1))

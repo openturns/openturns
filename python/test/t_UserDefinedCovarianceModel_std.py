@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -59,3 +61,56 @@ print(graph)
 # Test the drawing method as a nonstationary model, in the correlation range
 graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, True)
 print(graph)
+
+# Extra coverage: accessors, error branches, save/load (no prints to keep expout stable)
+
+assert isinstance(repr(myModel), str)
+assert isinstance(str(myModel), str)
+assert myModel == myModel
+assert not (myModel != myModel)
+assert myModel == ot.UserDefinedCovarianceModel(timeGrid, covariance)
+assert myModel != myDefaultModel
+assert myModel.getMesh().getVerticesNumber() == size
+assert myModel.getTimeGrid().getN() == size
+# discretize on the defining mesh returns the full covariance
+assert myModel.discretize(timeGrid) == covariance
+# discretize on other vertices projects on nearest neighbours
+otherVertices = ot.Sample([[0.05], [0.15]])
+assert myModel.discretize(otherVertices).getDimension() == 2
+assert myModel.discretizeRow(otherVertices, 0).getSize() == 2
+assert myModel.discretizeAndFactorize(timeGrid.getVertices()).getDimension() == size
+# single-vertex mesh takes the N == 1 branch
+singleGrid = ot.RegularGrid(0.0, 0.1, 1)
+singleModel = ot.UserDefinedCovarianceModel(singleGrid, ot.CovarianceMatrix(1))
+ott.assert_almost_equal(singleModel.computeAsScalar([0.0], [0.0]), 1.0, 1e-12, 1e-12)
+assert singleModel([0.0], [0.0]).getDimension() == 1
+# error branches
+with ott.assert_raises(Exception):
+    ot.UserDefinedCovarianceModel(timeGrid, ot.CovarianceMatrix(7))
+with ott.assert_raises(Exception):
+    myModel.computeAsScalar([0.0, 1.0], [0.0])
+with ott.assert_raises(Exception):
+    myModel.computeAsScalar([0.0], [0.0, 1.0])
+with ott.assert_raises(Exception):
+    myModel([0.0, 1.0], [0.0])
+# multi-output model: scalar and row accessors must raise
+bigCovariance = ot.CovarianceMatrix(2 * 3)
+for i in range(6):
+    bigCovariance[i, i] = 1.0
+multiModel = ot.UserDefinedCovarianceModel(ot.Mesh(ot.RegularGrid(0.0, 0.1, 3)), bigCovariance)
+assert multiModel.getOutputDimension() == 2
+with ott.assert_raises(Exception):
+    multiModel.computeAsScalar([0.0], [0.1])
+with ott.assert_raises(Exception):
+    multiModel.discretizeRow(multiModel.getMesh().getVertices(), 0)
+# save/load round-trip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("userdefinedcovariancemodel.xml"))
+study.add("model", myModel)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("userdefinedcovariancemodel.xml"))
+loadedStudy.load()
+assert loadedStudy.hasObject("model")
+
+os.remove("userdefinedcovariancemodel.xml")

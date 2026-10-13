@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -26,3 +28,33 @@ assert indicator_at_point2 == ot.Point([0.0])
 
 sample = ot.Sample([point1, point2])
 assert indicator(sample) == ot.Sample([[1.0], [0.0]])
+
+# extra coverage: default ctor, comparison, string converters
+
+default = ot.IndicatorFunction()
+assert default == default
+assert indicator == indicator
+assert not (indicator != indicator)
+assert indicator == ot.IndicatorFunction(box)
+assert indicator != ot.IndicatorFunction(ot.Interval([0.0, 0.0], [1.0, 1.0]))
+assert len(repr(indicator)) > 0
+assert len(str(indicator)) > 0
+assert len(repr(default)) > 0
+# gradient/hessian are not implemented
+with ott.assert_raises(Exception):
+    indicator.gradient(point1)
+with ott.assert_raises(Exception):
+    indicator.hessian(point1)
+# save/load
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("indicator.xml"))
+study.add("f", indicator)
+study.save()
+loaded_study = ot.Study()
+loaded_study.setStorageManager(ot.XMLStorageManager("indicator.xml"))
+loaded_study.load()
+loaded = ot.Function()
+loaded_study.fillObject("f", loaded)
+assert loaded == indicator
+
+os.remove("indicator.xml")
