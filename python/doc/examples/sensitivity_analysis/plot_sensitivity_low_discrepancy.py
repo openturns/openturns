@@ -18,6 +18,7 @@ Sobol' sensitivity indices using a low-discrepancy sequence
 # We load the Ishigami model from the usecases module.
 
 # %%
+import matplotlib.pyplot as plt
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import ishigami_function
@@ -90,7 +91,7 @@ print("  Total-order indices:", algo_lhs.getTotalOrderIndices())
 #    \epsilon(S_i) = |S_i - S_i^*|, \quad \epsilon(ST_i) = |ST_i - ST_i^*|
 #
 # We compare powers of two from :math:`2^4 = 16` up to :math:`2^{11} = 2048`.
-num_iterations = 8
+num_iterations = 16
 sample_sizes = ot.Sample(num_iterations, 1)
 err_fo_lds = ot.Sample(num_iterations, dim)
 err_to_lds = ot.Sample(num_iterations, dim)
@@ -130,15 +131,23 @@ for i in range(num_iterations):
 # Display convergence graph
 # -------------------------
 #
-# We plot the absolute errors for each variable and order on a single graph in
+# We plot the absolute errors for each variable for both first and total orders in
 # logarithmic scales. Solid lines represent the Sobol' sequence and dashed lines
 # represent LHS, with matching colors per sensitivity index.
-graph = ot.Graph(
-    "Sensitivity convergence per variable: Sobol' sequence vs LHS",
+graph_first = ot.Graph(
+    "First-order indices",
     "Sample size",
     "Absolute error",
     True,
 )
+
+graph_total = ot.Graph(
+    "Total-order indices",
+    "Sample size",
+    "Absolute error",
+    True,
+)
+
 
 palette = ot.Drawable.BuildTableauPalette(2 * dim)
 
@@ -148,33 +157,41 @@ for k in range(dim):
     curve_lds.setLegend(f"S{k + 1} (Sobol')")
     curve_lds.setColor(palette[k])
     curve_lds.setLineWidth(2)
-    graph.add(curve_lds)
+    graph_first.add(curve_lds)
 
     curve_lhs = ot.Curve(sample_sizes, err_fo_lhs[:, k])
     curve_lhs.setLegend(f"S{k + 1} (LHS)")
     curve_lhs.setColor(palette[k])
     curve_lhs.setLineWidth(2)
     curve_lhs.setLineStyle("dashed")
-    graph.add(curve_lhs)
+    graph_first.add(curve_lhs)
 
 # Total order indices
 for k in range(dim):
     curve_lds = ot.Curve(sample_sizes, err_to_lds[:, k])
     curve_lds.setLegend(f"ST{k + 1} (Sobol')")
-    curve_lds.setColor(palette[dim + k])
+    curve_lds.setColor(palette[k])
     curve_lds.setLineWidth(2)
-    graph.add(curve_lds)
+    graph_total.add(curve_lds)
 
     curve_lhs = ot.Curve(sample_sizes, err_to_lhs[:, k])
     curve_lhs.setLegend(f"ST{k + 1} (LHS)")
-    curve_lhs.setColor(palette[dim + k])
+    curve_lhs.setColor(palette[k])
     curve_lhs.setLineWidth(2)
     curve_lhs.setLineStyle("dashed")
-    graph.add(curve_lhs)
+    graph_total.add(curve_lhs)
 
-graph.setLogScale(ot.GraphImplementation.LOGXY)
-graph.setLegendPosition("topright")
-view = otv.View(graph)
+graph_first.setLogScale(ot.GraphImplementation.LOGXY)
+graph_first.setLegendPosition("bottomleft")
+
+graph_total.setLogScale(ot.GraphImplementation.LOGXY)
+graph_total.setLegendPosition("bottomleft")
+
+grid = ot.GridLayout(1, 2)
+grid.setTitle("Sensitivity convergence per variable: Sobol' sequence vs LHS")
+grid.setGraph(0, 0, graph_first)
+grid.setGraph(0, 1, graph_total)
+view = otv.View(grid)
 
 # %%
 # The quasi-Monte Carlo approach using the Sobol' low-discrepancy sequence
