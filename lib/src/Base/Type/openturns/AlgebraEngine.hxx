@@ -67,6 +67,9 @@ public:
   /** Symmetric matrix-vector product: result = A * x (column-major symmetric A) */
   static DataContainer SymMatrixPointProduct(const DataContainer & A, const DataContainer & x);
 
+  /** Triangular matrix-vector product: result = op(A) * x (column-major A) */
+  static DataContainer TriangularPointProduct(const DataContainer & A, const DataContainer & x, char uplo = 'L', Bool transpose = false);
+
   /* ===== BLAS Level 3 operations ===== */
 
   /** Matrix multiplication: result = A * B (column-major) */
@@ -94,17 +97,23 @@ public:
 
   /* ===== Linear solvers ===== */
 
-  /** Solve Ax = b for square non-singular A */
+  /** Solve AX = B for square non-singular A, one or several right-hand sides */
   static DataContainer SolveLinearSystem(const DataContainer & A, const DataContainer & b);
 
-  /** Solve Ax = b for symmetric positive definite A */
+  /** Solve AX = B for symmetric positive definite A, one or several right-hand sides */
   static DataContainer SolveLinearSystemSPD(const DataContainer & A, const DataContainer & b);
 
-  /** Solve Ax = b for triangular A */
+  /** Solve AX = B for symmetric (possibly indefinite) A, one or several right-hand sides */
+  static DataContainer SolveLinearSystemSymmetric(const DataContainer & A, const DataContainer & b);
+
+  /** Solve AX = B for triangular A, one or several right-hand sides */
   static DataContainer SolveLinearSystemTriangular(const DataContainer & A, const DataContainer & b, Bool lower = true, Bool transpose = false);
 
-  /** Solve rectangular system via least-squares (pseudoinverse) */
+  /** Solve rectangular system via least-squares (pseudoinverse), one or several right-hand sides */
   static DataContainer SolveLinearSystemRectangular(const DataContainer & A, const DataContainer & b);
+
+  /** Solve rectangular system via least-squares with explicit pivot threshold, one or several right-hand sides */
+  static DataContainer SolveLinearSystemRectangular(const DataContainer & A, const DataContainer & b, Scalar rcond);
 
   /* ===== Matrix properties ===== */
 
