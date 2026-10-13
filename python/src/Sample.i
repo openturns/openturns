@@ -124,6 +124,72 @@ Sample.BuildFromDataFrame = __Sample_BuildFromDataFrame
 
 
 
+def __Sample_describe(self, percentiles=None):
+    """
+    Descriptive statistics of the sample.
+
+    Parameters
+    ----------
+    percentiles : sequence of float, optional
+        Probabilities in ]0, 1[ of the additional quantiles.
+        Default quantiles are 0.25, 0.5 and 0.75.
+
+    Returns
+    -------
+    stats : dict
+        Mapping of statistic names ('count', 'mean', 'std', 'min',
+        'max' and 'XX%' quantiles) to :class:`~openturns.Point` values
+        (the count is stored as a float).
+    """
+    if percentiles is None:
+        percentiles = [0.25, 0.5, 0.75]
+    for prob in percentiles:
+        if not 0.0 < prob < 1.0:
+            raise ValueError(f"Percentile {prob} is outside ]0, 1[.")
+    stats = dict()
+    stats["count"] = openturns.Point(
+        self.getDimension(), float(self.getSize())
+    )
+    stats["mean"] = self.computeMean()
+    stats["std"] = self.computeStandardDeviation()
+    stats["min"] = self.getMin()
+    for prob in percentiles:
+        # :g keys collide for closely spaced probabilities, fall back to
+        # the full-precision value so no result is overwritten
+        key = f"{100.0 * prob:g}%"
+        if key in stats:
+            key = f"{100.0 * prob!r}%"
+        stats[key] = self.computeQuantilePerComponent(prob)
+    stats["max"] = self.getMax()
+    return stats
+Sample.describe = __Sample_describe
+
+def __Sample_printSummary(self, percentiles=None):
+    """
+    Print descriptive statistics of the sample.
+
+    Parameters
+    ----------
+    percentiles : sequence of float, optional
+        Probabilities in ]0, 1[ of the additional quantiles.
+        Default quantiles are 0.25, 0.5 and 0.75.
+    """
+    stats = self.describe(percentiles)
+    names = list(self.getDescription())
+    if not names or any(not name for name in names):
+        names = [f"X{i}" for i in range(self.getDimension())]
+    width = max([8] + [len(name) for name in stats])
+    header = f'{"":>{width}}' + "".join(f"{name:>12}" for name in names)
+    print(header)
+    for name, values in stats.items():
+        print(
+            f"{name:>{width}}"
+            + "".join(f"{value:>12.6g}" for value in values)
+        )
+Sample.printSummary = __Sample_printSummary
+
+
+
 def __Sample_repr_html(self):
     """Get HTML representation."""
     desc = self.getDescription()

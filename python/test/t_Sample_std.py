@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+import contextlib
+import io
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -164,3 +167,40 @@ for bad in ([10], [-1], [2, 2]):
     sample = ot.Sample([[float(x)] for x in range(10)])
     with ott.assert_raises(Exception):
         sample.erase(bad)
+
+# Descriptive statistics, see issue #3079
+descSample = ot.Sample([[1.0, 10.0], [2.0, 20.0], [3.0, 30.0], [4.0, 40.0]])
+descSample.setDescription(["x", "y"])
+stats = descSample.describe()
+assert list(stats["count"]) == [4.0, 4.0]
+ott.assert_almost_equal(stats["mean"], descSample.computeMean())
+ott.assert_almost_equal(stats["std"], descSample.computeStandardDeviation())
+ott.assert_almost_equal(stats["min"], descSample.getMin())
+ott.assert_almost_equal(stats["max"], descSample.getMax())
+ott.assert_almost_equal(
+    stats["25%"], descSample.computeQuantilePerComponent(0.25)
+)
+ott.assert_almost_equal(
+    stats["50%"], descSample.computeQuantilePerComponent(0.5)
+)
+ott.assert_almost_equal(
+    stats["75%"], descSample.computeQuantilePerComponent(0.75)
+)
+custom = descSample.describe([0.1, 0.9])
+ott.assert_almost_equal(
+    custom["10%"], descSample.computeQuantilePerComponent(0.1)
+)
+with ott.assert_raises(ValueError):
+    descSample.describe([1.5])
+# Closely spaced percentiles keep distinct results
+closeStats = descSample.describe([0.12345671, 0.12345672])
+percentileKeys = [key for key in closeStats if "%" in key]
+assert len(percentileKeys) == 2
+assert percentileKeys[0] != percentileKeys[1]
+# printSummary writes the same values in a table, capture it for the expout
+buffer = io.StringIO()
+with contextlib.redirect_stdout(buffer):
+    descSample.printSummary()
+summary = buffer.getvalue()
+assert "mean" in summary and "50%" in summary
+
