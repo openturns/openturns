@@ -37,6 +37,7 @@
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/StatisticsEngine.hxx"
+#include "openturns/AlgebraEngine.hxx"
 #include "openturns/Lapack.hxx"
 #include "openturns/CSVParser.hxx"
 
@@ -1365,10 +1366,9 @@ SampleImplementation & SampleImplementation::operator += (const SampleImplementa
 {
   if (translation.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidDimensionException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  int size = size_ * dimension_;
-  double alpha = 1.0;
-  int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(translation.data()), &one, const_cast<double*>(data()), &one);
+  // Write back in place to preserve view sharing
+  const DataContainer work(AlgebraEngine::Axpy(1.0, translation.data_, data_));
+  std::copy(work.data(), work.data() + size_ * dimension_, data_.data());
   return *this;
 }
 
@@ -1386,10 +1386,9 @@ SampleImplementation & SampleImplementation::operator -= (const SampleImplementa
 {
   if (translation.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidDimensionException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  int size = size_ * dimension_;
-  double alpha = -1.0;
-  int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(translation.data()), &one, const_cast<double*>(data()), &one);
+  // Write back in place to preserve view sharing
+  const DataContainer work(AlgebraEngine::Axpy(-1.0, translation.data_, data_));
+  std::copy(work.data(), work.data() + size_ * dimension_, data_.data());
   return *this;
 }
 
