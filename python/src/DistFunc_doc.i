@@ -538,6 +538,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``KFactor-Precision`` (``Scalar``, default: ``1e-08``): precision of the zero-finding algorithm used to compute the tolerance factor,
 - ``KFactor-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``256``): number of nodes of the Gauss-Kronrod integration rule used to compute the tolerance factor,
+- ``KFactor-RMax`` (``Scalar``, default: ``8.5``): upper bound of the bracketing interval explored by the zero-finding algorithm to compute the tolerance factor,
 - ``KFactor-MaximumIteration`` (``UnsignedInteger``, default: ``32``): maximum number of iterations of the zero-finding algorithm.
 
 Examples
@@ -579,6 +580,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``KFactor-Precision`` (``Scalar``, default: ``1e-08``): precision of the zero-finding algorithm used to compute the tolerance factor,
 - ``KFactor-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``256``): number of nodes of the Gauss-Kronrod integration rule used to compute the tolerance factor,
+- ``KFactor-RMax`` (``Scalar``, default: ``8.5``): upper bound of the bracketing interval explored by the zero-finding algorithm to compute the tolerance factor,
 - ``KFactor-MaximumIteration`` (``UnsignedInteger``, default: ``32``): maximum number of iterations of the zero-finding algorithm.
 
 Examples

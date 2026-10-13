@@ -266,6 +266,20 @@ The following :class:`~openturns.ResourceMap` keys are used:
      - NSGA2 mutation probability.
    * - ``Pagmo-nsga2-eta_m`` (``Scalar``, default: ``50.0``)
      - NSGA2 mutation distribution index.
+   * - ``Pagmo-nsga3-cr`` (``Scalar``, default: ``1.0``)
+     - NSGA3 crossover probability.
+   * - ``Pagmo-nsga3-eta_c`` (``Scalar``, default: ``30.0``)
+     - NSGA3 crossover distribution index.
+   * - ``Pagmo-nsga3-mut`` (``Scalar``, default: ``0.1``)
+     - NSGA3 mutation probability.
+   * - ``Pagmo-nsga3-eta_mut`` (``Scalar``, default: ``20.0``)
+     - NSGA3 mutation distribution index.
+   * - ``Pagmo-nsga3-divisions`` (``UnsignedInteger``, default: ``12``)
+     - NSGA3 number of reference directions of the outer layer.
+   * - ``Pagmo-nsga3-divisions_inner`` (``UnsignedInteger``, default: ``0``)
+     - NSGA3 number of reference directions of the inner layer, 0 to disable it.
+   * - ``Pagmo-nsga3-random_mating`` (``Bool``, default: ``true``)
+     - NSGA3 random mating flag.
    * - ``Pagmo-moead-weight_generation`` (``String``, default: ``grid``)
      - MOEAD weight generation method.
    * - ``Pagmo-moead-decomposition`` (``String``, default: ``tchebycheff``)
