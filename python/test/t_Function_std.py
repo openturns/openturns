@@ -357,6 +357,18 @@ study.save()
 
 with ott.assert_raises(Exception):
     productFunc.parameterGradient([1.0])
+# parameterGradient values with asymmetric parameter dims (regression:
+# 2nd loop used left dim -> OOB, and left/right scalings were swapped)
+pLeft = ot.ParametricFunction(
+    ot.SymbolicFunction(["x0", "x1", "a", "b"], ["a*x0+b"]), [2, 3], [2.0, 3.0]
+)
+pRight = ot.ParametricFunction(
+    ot.SymbolicFunction(["x0", "x1", "c"], ["c*x1"]), [2], [4.0]
+)
+pProd = pLeft * pRight
+ott.assert_almost_equal(
+    pProd.parameterGradient([1.0, 2.0]), ot.Matrix([[8.0], [8.0], [10.0]]), 1e-12, 1e-12
+)
 persistenceStudy = ot.Study()
 persistenceStudy.setStorageManager(ot.XMLStorageManager("product_function.xml"))
 persistenceStudy.add("productFunc", productFunc)
