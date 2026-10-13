@@ -51,8 +51,8 @@ assert parametric.getFunction() == function
 assert parametric.getParameter() == [5.0]
 parametric.setParameter([6.0])
 assert parametric.getParameter() == [6.0]
-assert "PointToFieldFunction" in repr(parametric)
-assert "PointToFieldFunction" in str(parametric)
+assert "ParametricPointToFieldFunction" in repr(parametric)
+assert "ParametricPointToFieldFunction" in str(parametric)
 defaultParametric = ot.ParametricPointToFieldFunction()
 assert defaultParametric.getInputDimension() == 0
 with ott.assert_raises(Exception):
