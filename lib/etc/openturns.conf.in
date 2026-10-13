@@ -301,6 +301,7 @@
   <Dlib-DefaultWolfeRho                 value_float="0.01"    />
   <Dlib-DefaultWolfeSigma               value_float="0.9"     />
   <Dlib-DefaultMaxLineSearchIterations  value_int="100"       />
+  <Dlib-InitialSeed                     value_int="0"         />
 
   <!-- OT::SolverImplementation parameters -->
   <Solver-DefaultAbsoluteError             value_float="1.0e-5"        />
