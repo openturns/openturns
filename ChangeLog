@@ -54,6 +54,9 @@
  * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
  * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
  * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
+ * AlgebraEngine-DefaultBlockSize: number of rows and columns per block for out-of-core blockwise linear algebra (default is 384)
+ * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
+ * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)

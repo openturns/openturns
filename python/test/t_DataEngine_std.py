@@ -227,6 +227,21 @@ assert abs(rs[0] - 6.0) < 1e-12  # 4*1 + 1*2
 assert abs(rs[1] - 7.0) < 1e-12  # 1*1 + 3*2
 print("SymMatrixPointProduct: OK")
 
+# TriangularPointProduct (L lower, column-major)
+Ltri2 = ot.DataContainer(2, 2, 0.0)
+Ltri2[0] = 2.0
+Ltri2[1] = 3.0
+Ltri2[3] = 4.0
+xt2 = ot.DataContainer(2, 1.0)
+xt2[1] = 2.0
+rt = ot.AlgebraEngine.TriangularPointProduct(Ltri2, xt2)
+assert abs(rt[0] - 2.0) < 1e-12  # 2*1
+assert abs(rt[1] - 11.0) < 1e-12  # 3*1 + 4*2
+rtT = ot.AlgebraEngine.TriangularPointProduct(Ltri2, xt2, "L", True)
+assert abs(rtT[0] - 8.0) < 1e-12  # 2*1 + 3*2
+assert abs(rtT[1] - 8.0) < 1e-12  # 4*2
+print("TriangularPointProduct: OK")
+
 # MatrixProduct
 A2 = ot.DataContainer(2, 2, 0.0)
 A2[0] = 1.0
@@ -333,6 +348,45 @@ x = ot.AlgebraEngine.SolveLinearSystemSPD(spd, b)
 assert abs(x[0] - 3.0 / 16.0) < 1e-12
 assert abs(x[1] - 2.0 / 16.0) < 1e-12
 print("SolveLinearSystemSPD: OK")
+
+# SolveLinearSystem multi-RHS: A X = I -> X = inv(A)
+Bid = ot.DataContainer(2, 2, 0.0)
+Bid[0] = 1.0
+Bid[3] = 1.0
+X2 = ot.AlgebraEngine.SolveLinearSystem(spd, Bid)
+assert X2.getSize() == 2 and X2.getDimension() == 2
+assert abs(X2[0] - 5.0 / 16.0) < 1e-12
+assert abs(X2[1] - (-2.0 / 16.0)) < 1e-12
+assert abs(X2[2] - (-2.0 / 16.0)) < 1e-12
+assert abs(X2[3] - 4.0 / 16.0) < 1e-12
+X2spd = ot.AlgebraEngine.SolveLinearSystemSPD(spd, Bid)
+assert abs(X2spd[0] - 5.0 / 16.0) < 1e-12
+assert abs(X2spd[3] - 4.0 / 16.0) < 1e-12
+print("SolveLinearSystem(+SPD) multi-RHS: OK")
+
+# SolveLinearSystemSymmetric on indefinite [[0,1],[1,0]]: S*[1,1] = [1,1]
+indef = ot.DataContainer(2, 2, 0.0)
+indef[1] = 1.0
+indef[2] = 1.0
+xsym = ot.AlgebraEngine.SolveLinearSystemSymmetric(indef, b)
+assert abs(xsym[0] - 1.0) < 1e-12
+assert abs(xsym[1] - 1.0) < 1e-12
+xsym2 = ot.AlgebraEngine.SolveLinearSystemSymmetric(spd, Bid)
+assert abs(xsym2[0] - 5.0 / 16.0) < 1e-12
+assert abs(xsym2[3] - 4.0 / 16.0) < 1e-12
+print("SolveLinearSystemSymmetric: OK")
+
+# SolveLinearSystemTriangular multi-RHS: L=[[2,0],[3,4]] X = I
+Lt2 = ot.DataContainer(2, 2, 0.0)
+Lt2[0] = 2.0
+Lt2[1] = 3.0
+Lt2[3] = 4.0
+Xt = ot.AlgebraEngine.SolveLinearSystemTriangular(Lt2, Bid)
+assert abs(Xt[0] - 0.5) < 1e-12
+assert abs(Xt[1] - (-0.375)) < 1e-12
+assert abs(Xt[2] - 0.0) < 1e-12
+assert abs(Xt[3] - 0.25) < 1e-12
+print("SolveLinearSystemTriangular multi-RHS: OK")
 
 # Inverse
 inv = ot.AlgebraEngine.Inverse(spd)
@@ -564,6 +618,19 @@ assert abs(xrect[1] - 1.0) < 1e-10
 xrectB = ot.AlgebraEngine.SolveLinearSystemRectangularBlockwise(Arect, brect, 1)
 assert abs(xrectB[1] - 1.0) < 1e-10
 print("SolveLinearSystemRectangular(+Blockwise): OK")
+
+# Rectangular rcond: tiny column kept with Precision, dropped with 1e-7
+Arank = ot.DataContainer(3, 2, 0.0)
+Arank[0] = 1.0
+Arank[4] = 1.0e-12
+brank = ot.DataContainer(3, 1.0)
+xkeep = ot.AlgebraEngine.SolveLinearSystemRectangular(Arank, brank)
+assert abs(xkeep[0] - 1.0) < 1e-10
+assert abs(xkeep[1] - 1.0e12) / 1.0e12 < 1e-10
+xdrop = ot.AlgebraEngine.SolveLinearSystemRectangular(Arank, brank, 1.0e-7)
+assert abs(xdrop[0] - 1.0) < 1e-10
+assert abs(xdrop[1] - 0.0) < 1e-10
+print("SolveLinearSystemRectangular rcond: OK")
 
 # SolveLinearSystemTriangular
 tri = ot.DataContainer(2, 2, 0.0)
