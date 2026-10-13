@@ -263,3 +263,58 @@ assert (
 ott.assert_almost_equal(
     pcdR.computePDF([0.0]), pcd.computePDF([0.0]), 1e-12, 0.0
 )
+
+# --- Coverage: validation, predicates, accessors, simplified paths ---
+with ott.assert_raises(Exception):
+    ot.PointConditionalDistribution(ot.Normal(2), [0], [0.0, 0.0])
+with ott.assert_raises(Exception):
+    ot.PointConditionalDistribution(ot.Normal(2), [5], [0.0])
+jmix_cov = ot.JointDistribution([ot.Poisson(2.0), ot.Normal(), ot.Uniform()])
+with ott.assert_raises(Exception):
+    ot.PointConditionalDistribution(jmix_cov, [1], [0.0])
+u2_cov = ot.JointDistribution([ot.Uniform(), ot.Uniform()])
+with ott.assert_raises(Exception):
+    ot.PointConditionalDistribution(u2_cov, [0], [5.0])
+n_cov = ot.Normal([0.0] * 3, ot.CorrelationMatrix(3))
+pcd_cov = ot.PointConditionalDistribution(n_cov, [1], [0.5])
+assert pcd_cov.isContinuous()
+assert not pcd_cov.isDiscrete()
+assert pcd_cov.isElliptical()
+assert pcd_cov.hasEllipticalCopula()
+assert pcd_cov.getStandardDeviation().getSize() == 2
+assert pcd_cov.getSkewness().getSize() == 2
+assert pcd_cov.getKurtosis().getSize() == 2
+assert pcd_cov.getMarginal(0).getDimension() == 1
+assert pcd_cov.getMarginal([0]).getDimension() == 1
+assert pcd_cov.getConditioningValues() == [0.5]
+assert list(pcd_cov.getConditioningIndices()) == [1]
+assert pcd_cov.getDistribution().getClassName() != ""
+ot.ResourceMap.SetAsString("PointConditionalDistribution-RangeAdaptationMethod", "Normal")
+assert pcd_cov.getRange().getDimension() == 2
+ot.ResourceMap.SetAsString("PointConditionalDistribution-RangeAdaptationMethod", "NormalCopula")
+assert pcd_cov == pcd_cov
+assert pcd_cov == ot.PointConditionalDistribution(n_cov, [1], [0.5])
+assert pcd_cov.computeQuantile(0.5).getSize() == 2
+pcd1d_cov = ot.PointConditionalDistribution(ot.Normal(2), [1], [0.5])
+assert isinstance(pcd1d_cov.computeScalarQuantile(0.5), float)
+assert pcd_cov.computePDFGradient([0.0, 0.0]).getSize() >= 1
+assert pcd_cov.computeCDFGradient([0.0, 0.0]).getSize() >= 1
+assert pcd_cov.getIsoProbabilisticTransformation()(pcd_cov.getMean()).getSize() == 2
+assert pcd_cov.getInverseIsoProbabilisticTransformation()([0.0, 0.0]).getSize() == 2
+assert pcd_cov.computeDDF(pcd_cov.getMean()).getSize() == 2
+assert isinstance(pcd_cov.computeLogPDF(pcd_cov.getMean()), float)
+ot.ResourceMap.SetAsBool("PointConditionalDistribution-UseSimplifiedVersion", False)
+try:
+    dempty_cov = ot.PointConditionalDistribution(ot.NormalCopula(ot.CorrelationMatrix(2)), [], [])
+except Exception:
+    pass
+else:
+    assert dempty_cov.getDimension() == 2
+ot.ResourceMap.SetAsBool("PointConditionalDistribution-UseSimplifiedVersion", True)
+n2_cov = ot.Normal(2)
+jbern_cov = ot.JointDistribution(
+    [ot.Normal(), ot.Normal()], ot.EmpiricalBernsteinCopula(n2_cov.getSample(10), 3)
+)
+pbern_cov = ot.PointConditionalDistribution(jbern_cov, [1], [0.0])
+assert pbern_cov.getDimension() == 1
+assert pbern_cov.computeProbability(ot.Interval([-10.0], [10.0])) >= 0.0

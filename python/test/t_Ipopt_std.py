@@ -3,6 +3,7 @@
 import openturns as ot
 import openturns.testing as ott
 import sys
+import os
 
 
 def progress(percent):
@@ -38,3 +39,32 @@ print(" -- Optimal point = " + result.getOptimalPoint().__str__())
 print(" -- Optimal value = " + result.getOptimalValue().__str__())
 print(" -- Evaluation number = " + result.getInputSample().getSize().__str__())
 ott.assert_almost_equal(result.getOptimalPoint(), [1.0, 0.0], 1e-5, 1e-4)
+
+# extra coverage: accessors, repr/str, save/load, error branches
+assert isinstance(repr(algo), str)
+assert isinstance(str(algo), str)
+defaultAlgo = ot.Ipopt()
+assert isinstance(repr(defaultAlgo), str)
+assert isinstance(str(defaultAlgo), str)
+with ott.assert_raises(Exception):
+    ot.Ipopt(ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["x", "2*x"])))
+with ott.assert_raises(Exception):
+    ot.Ipopt(ot.LeastSquaresProblem(ot.SymbolicFunction(["x"], ["x^2"])))
+nonContinuous = ot.OptimizationProblem(f)
+nonContinuous.setVariablesType([ot.OptimizationProblemImplementation.INTEGER] * 2)
+with ott.assert_raises(Exception):
+    ot.Ipopt(nonContinuous)
+badStart = ot.Ipopt(problem)
+badStart.setStartingPoint([0.0])
+with ott.assert_raises(Exception):
+    badStart.run()
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("ipopt.xml"))
+study.add("algo", algo)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("ipopt.xml"))
+loadedStudy.load()
+assert loadedStudy.hasObject("algo")
+
+os.remove("ipopt.xml")

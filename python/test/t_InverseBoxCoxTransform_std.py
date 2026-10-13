@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -117,3 +118,26 @@ assert shiftedGradient == ot.InverseBoxCoxTransform(
 assert shiftedGradient != ot.InverseBoxCoxTransform(
     [0.0, 1.0], [0.0, 0.0]
 ).getGradient()
+
+# Scalar (lambda, shift) constructor (no prints)
+scalarShifted = ot.InverseBoxCoxTransform(0.5, 1.0)
+assert scalarShifted.getInputDimension() == 1
+assert scalarShifted.getLambda() == ot.Point([0.5])
+assert scalarShifted.getShift() == ot.Point([1.0])
+ott.assert_almost_equal(scalarShifted([0.5]), [0.5625])
+assert scalarShifted.getInverse().getLambda() == ot.Point([0.5])
+assert scalarShifted.getInverse().getShift() == ot.Point([1.0])
+# roundtrip with zero shift is an identity
+ott.assert_almost_equal(
+    ot.InverseBoxCoxTransform(0.5).getInverse()([1.5625]), [0.5]
+)
+assert "InverseBoxCox" in repr(scalarShifted)
+assert "InverseBoxCox" in str(scalarShifted)
+pointShifted = ot.InverseBoxCoxTransform([0.5], [1.0])
+assert scalarShifted.getEvaluation() == pointShifted.getEvaluation()
+studyScalar = ot.Study()
+studyScalar.setStorageManager(ot.XMLStorageManager("invboxcox_scalar.xml"))
+studyScalar.add("t", scalarShifted)
+studyScalar.save()
+
+os.remove("invboxcox_scalar.xml")

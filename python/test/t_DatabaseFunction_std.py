@@ -72,3 +72,18 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     ot.DatabaseEvaluation(inputSample, outputSample).setOutputSample(ot.Sample([[1.0]]))
 _ = repr(ot.DatabaseEvaluation())
+
+# Extra DatabaseFunction coverage: default ctor, comparison, string converters (no prints to keep expout stable)
+defaultDatabase = ot.DatabaseFunction()
+assert isinstance(repr(defaultDatabase), str)
+assert isinstance(str(defaultDatabase), str)
+assert database == database
+assert not (database != database)
+assert database == ot.DatabaseFunction(inputSample, outputSample)
+otherOutput = ot.Sample([[6.0], [7.0]])
+assert database != ot.DatabaseFunction(inputSample, otherOutput)
+assert isinstance(repr(database), str)
+assert isinstance(str(database), str)
+ott.assert_almost_equal(
+    ot.DatabaseFunction(inputSample, outputSample)(x), database(x), 1e-12, 1e-12
+)

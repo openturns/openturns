@@ -2,6 +2,8 @@
 
 import openturns as ot
 import math as m
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -34,3 +36,37 @@ print("output time series = ")
 print(myInverseTrendFunc(ts))
 # Get the number of calls
 print("called ", myInverseTrendFunc.getCallsNumber(), " times")
+
+# Extra coverage: default ctor, other ctors, accessors, save/load (no prints to keep expout stable)
+
+defaultTransform = ot.InverseTrendTransform()
+assert isinstance(repr(defaultTransform), str)
+assert isinstance(str(defaultTransform), str)
+with ott.assert_raises(Exception):
+    defaultTransform.getTrendFunction()
+# constructors from Evaluation and EvaluationImplementation
+fromEval = ot.InverseTrendTransform(myFunc.getEvaluation(), tg)
+ott.assert_almost_equal(fromEval.getTrendFunction()([0.0]), myFunc([0.0]), 1e-12, 1e-12)
+fromImpl = ot.InverseTrendTransform(myFunc.getEvaluation().getImplementation(), tg)
+ott.assert_almost_equal(fromImpl.getTrendFunction()([0.0]), myFunc([0.0]), 1e-12, 1e-12)
+# clone, repr/str, inverse accessors
+cloned = ot.InverseTrendTransform(myInverseTrendFunc)
+assert isinstance(repr(myInverseTrendFunc), str)
+assert isinstance(str(myInverseTrendFunc), str)
+ott.assert_almost_equal(
+    cloned.getTrendFunction()([0.0]), myFunc([0.0]), 1e-12, 1e-12
+)
+inverse = myInverseTrendFunc.getInverse()
+assert inverse.getInputDimension() == myInverseTrendFunc.getInputDimension()
+ott.assert_almost_equal(myInverseTrendFunc.getTrendFunction()([0.5]), myFunc([0.5]), 1e-12, 1e-12)
+# save/load round-trip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("testInverseTrendTransform.xml"))
+study.add("transform", myInverseTrendFunc)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("testInverseTrendTransform.xml"))
+loadedStudy.load()
+assert loadedStudy.hasObject("transform")
+
+os.remove("testInverseTrendTransform.xml")
