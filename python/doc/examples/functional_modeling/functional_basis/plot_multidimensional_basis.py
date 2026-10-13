@@ -98,7 +98,7 @@ hermite_builder = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()] * 
 
 # Generate the multivariate functions f_i (quadratic)
 total_deg = 2
-basis_size = ot.LinearEnumerateFunction(d).getStrataCumulatedCardinal(total_deg)
+basis_size = ot.LinearEnumerateFunction(d).getBasisSizeFromTotalDegree(total_deg)
 basis = []
 for i in range(basis_size):
     f_i = ot.AggregatedFunction([legendre_builder.build(i), hermite_builder.build(i)])

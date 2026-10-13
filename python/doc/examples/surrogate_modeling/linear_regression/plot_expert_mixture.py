@@ -66,7 +66,7 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
     [ot.LegendreFactory()] * dimension, enumerateFunction
 )
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(degree)
+    productBasis, enumerateFunction.getBasisSizeFromTotalDegree(degree)
 )
 
 # %%

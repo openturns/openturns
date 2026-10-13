@@ -21,7 +21,7 @@ approximationAlgorithm = ot.LeastSquaresMetaModelSelectionFactory(
     ot.LARS(), ot.CorrectedLeaveOneOut()
 )
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(totalDegree)
+    productBasis, enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 )
 projectionStrategy = ot.LeastSquaresStrategy(approximationAlgorithm)
 algo = ot.FunctionalChaosAlgorithm(

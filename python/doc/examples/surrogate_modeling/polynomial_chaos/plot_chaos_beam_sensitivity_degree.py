@@ -122,7 +122,7 @@ def computeSparsityRate(multivariateBasis, totalDegree, chaosResult):
     """Compute the sparsity rate, assuming a FixedStrategy."""
     # Get basisSize, the number of candidate coefficients
     enumfunc = multivariateBasis.getEnumerateFunction()
-    basisSize = enumfunc.getStrataCumulatedCardinal(totalDegree)
+    basisSize = enumfunc.getBasisSizeFromTotalDegree(totalDegree)
     # Get number of coefficients in the selection
     indices = chaosResult.getIndices()
     nbcoeffs = indices.getSize()

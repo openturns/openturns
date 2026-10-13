@@ -21,7 +21,7 @@ projectionStrategy = ot.LeastSquaresStrategy(
 )
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
-P = enumfunc.getStrataCumulatedCardinal(totalDegree)
+P = enumfunc.getBasisSizeFromTotalDegree(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 chaosalgo = ot.FunctionalChaosAlgorithm(
     inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy
