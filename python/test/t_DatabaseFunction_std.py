@@ -82,6 +82,9 @@ assert not (database != database)
 assert database == ot.DatabaseFunction(inputSample, outputSample)
 otherOutput = ot.Sample([[6.0], [7.0]])
 assert database != ot.DatabaseFunction(inputSample, otherOutput)
+# cross-implementation comparison (regression: raised std::bad_cast)
+assert defaultDatabase != database
+assert database != ot.SymbolicFunction(["x"], ["x"])
 assert isinstance(repr(database), str)
 assert isinstance(str(database), str)
 ott.assert_almost_equal(

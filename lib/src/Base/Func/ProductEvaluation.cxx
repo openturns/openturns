@@ -140,7 +140,8 @@ void ProductEvaluation::setParameter(const Point & parameter)
 
 Bool ProductEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const ProductEvaluation &>(other);
+  const ProductEvaluation * p_other = dynamic_cast<const ProductEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 

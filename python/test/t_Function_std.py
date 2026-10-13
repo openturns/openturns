@@ -380,3 +380,9 @@ loadedFunc = ot.Function()
 loadedStudy.fillObject("productFunc", loadedFunc)
 ott.assert_almost_equal(loadedFunc(x), [-3.0, 6.0], 1e-14, 1e-14)
 os.remove("product_function.xml")
+
+# cross-implementation comparison returns False instead of raising bad_cast
+assert ot.Function() != ot.SymbolicFunction(["x"], ["x"])
+assert not (ot.Function() == ot.SymbolicFunction(["x"], ["x"]))
+assert ot.SymbolicFunction(["x"], ["x"]) != ot.SymbolicFunction(["x"], ["2*x"])
+assert ot.DatabaseFunction() != ot.SymbolicFunction(["x"], ["x"])

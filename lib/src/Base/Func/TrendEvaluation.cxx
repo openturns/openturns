@@ -131,7 +131,8 @@ void TrendEvaluation::load(Advocate & adv)
 
 Bool TrendEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const TrendEvaluation &>(other);
+  const TrendEvaluation * p_other = dynamic_cast<const TrendEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

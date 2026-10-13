@@ -151,7 +151,8 @@ void BoxCoxGradient::load(Advocate & adv)
 
 Bool BoxCoxGradient::equals(const GradientImplementation & other) const
 {
-  return *this == dynamic_cast<const BoxCoxGradient &>(other);
+  const BoxCoxGradient * p_other = dynamic_cast<const BoxCoxGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

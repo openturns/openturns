@@ -124,7 +124,8 @@ void MarginalEvaluation::load(Advocate & adv)
 
 Bool MarginalEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const MarginalEvaluation &>(other);
+  const MarginalEvaluation * p_other = dynamic_cast<const MarginalEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Operator () */

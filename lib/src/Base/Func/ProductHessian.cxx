@@ -167,7 +167,8 @@ void ProductHessian::load(Advocate & adv)
 
 Bool ProductHessian::equals(const HessianImplementation & other) const
 {
-  return *this == dynamic_cast<const ProductHessian &>(other);
+  const ProductHessian * p_other = dynamic_cast<const ProductHessian *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS
