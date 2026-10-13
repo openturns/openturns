@@ -321,9 +321,7 @@ Point operator + (const Point & lhs,
 
   // We create a Point of the same dimension as both points for holding the result
   Point result(lhs);
-  double alpha = 1.0;
-  int one = 1;
-  daxpy_(&n, &alpha, const_cast<double*>(&rhs[0]), &one, &result[0], &one);
+  result += rhs;
   return result;
 }
 
@@ -339,10 +337,9 @@ Point & Point::operator +=(const Point & other)
         << n
         << "; RHS dimension = "
         << other.getDimension();
-  double alpha = 1.0;
-  int one = 1;
-  if (n > 0)
-    daxpy_(&n, &alpha, const_cast<double*>(&other[0]), &one, &(*this)[0], &one);
+  // Write back in place to preserve view sharing
+  const DataContainer work(AlgebraEngine::Axpy(1.0, other.data_, data_));
+  std::copy(work.data(), work.data() + n, data_.data());
   return *this;
 }
 
@@ -361,10 +358,7 @@ Point operator - (const Point & lhs, const Point & rhs)
 
   // We create a Point of the same dimension as both points for holding the result
   Point result(lhs);
-  double alpha = -1.0;
-  int one = 1;
-  if (n > 0)
-    daxpy_(&n, &alpha, const_cast<double*>(&rhs[0]), &one, &result[0], &one);
+  result -= rhs;
   return result;
 }
 
@@ -389,10 +383,9 @@ Point & Point::operator -=(const Point & other)
         << "; RHS dimension = " <<
         other.getDimension();
 
-  double alpha = -1.0;
-  int one = 1;
-  if (n > 0)
-    daxpy_(&n, &alpha, const_cast<double*>(&other[0]), &one, &(*this)[0], &one);
+  // Write back in place to preserve view sharing
+  const DataContainer work(AlgebraEngine::Axpy(-1.0, other.data_, data_));
+  std::copy(work.data(), work.data() + n, data_.data());
   return *this;
 }
 
@@ -402,35 +395,25 @@ Point & Point::operator -=(const Point & other)
 Point operator *(const Point & point,
                  const Scalar scalar)
 {
-  int n = point.getDimension();
-  double alpha = scalar;
   Point result(point);
-  int one = 1;
-  if (n > 0)
-    dscal_(&n, &alpha, &result[0], &one);
+  result *= scalar;
   return result;
 }
 
 Point operator *(const Scalar scalar,
                  const Point & point)
 {
-  int n = point.getDimension();
-  double alpha = scalar;
   Point result(point);
-  int one = 1;
-  if (n > 0)
-    dscal_(&n, &alpha, &result[0], &one);
+  result *= scalar;
   return result;
 }
 
 /*  In-place product operator */
 Point & Point::operator *=(const Scalar scalar)
 {
-  int n = getDimension();
-  double alpha = scalar;
-  int one = 1;
-  if (n > 0)
-    dscal_(&n, &alpha, &(*this)[0], &one);
+  // Write back in place to preserve view sharing
+  const DataContainer work(AlgebraEngine::Scale(data_, scalar));
+  std::copy(work.data(), work.data() + getDimension(), data_.data());
   return *this;
 }
 
@@ -439,12 +422,8 @@ Point operator /(const Point & point,
                  const Scalar scalar)
 {
   if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
-  int n = point.getDimension();
-  double alpha = 1.0 / scalar;
   Point result(point);
-  int one = 1;
-  if (n > 0)
-    dscal_(&n, &alpha, &result[0], &one);
+  result /= scalar;
   return result;
 }
 
@@ -452,11 +431,9 @@ Point operator /(const Point & point,
 Point & Point::operator /=(const Scalar scalar)
 {
   if (!(scalar > 0.0 || scalar < 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot divide by 0.";
-  int n = getDimension();
-  double alpha = 1.0 / scalar;
-  int one = 1;
-  if (n > 0)
-    dscal_(&n, &alpha, &(*this)[0], &one);
+  // Write back in place to preserve view sharing
+  const DataContainer work(AlgebraEngine::Scale(data_, 1.0 / scalar));
+  std::copy(work.data(), work.data() + getDimension(), data_.data());
   return *this;
 }
 
@@ -472,11 +449,7 @@ Scalar Point::dot(const Point & rhs) const
         << "; RHS dimension = "
         << rhs.getDimension();
 
-  int one = 1;
-  if (n > 0)
-    return ddot_(&n, const_cast<double*>(&(*this)[0]), &one, const_cast<double*>(&rhs[0]), &one);
-  else
-    return 0.0;
+  return AlgebraEngine::Dot(data_, rhs.data_);
 }
 
 
@@ -504,33 +477,19 @@ Bool operator <(const Point & lhs,
 /*  Norm */
 Scalar Point::norm() const
 {
-  int n = getDimension();
-  int one(1);
-  if (n > 0)
-    return dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
-  else
-    return 0.0;
+  return AlgebraEngine::Norm(data_);
 }
 
 /* l1-norm */
 Scalar Point::norm1() const
 {
-  int n = getDimension();
-  int one(1);
-  if (n > 0)
-    return dasum_(&n, const_cast<double*>(&(*this)[0]), &one);
-  else
-    return 0.0;
+  return AlgebraEngine::Norm1(data_);
 }
 
 /* linf-norm */
 Scalar Point::normInf() const
 {
-  const UnsignedInteger dimension = getDimension();
-  if (dimension == 0) return 0.0;
-  const Scalar minValue = *std::min_element(begin(), end());
-  const Scalar maxValue = *std::max_element(begin(), end());
-  return std::max(maxValue, -minValue);
+  return AlgebraEngine::NormInf(data_);
 }
 
 /*  Norm^2 */
