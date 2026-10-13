@@ -50,6 +50,15 @@ with ott.assert_raises(Exception):
     ot.Fehlberg(phi, 1e-10, 5)
 # empty grid returns an empty sample
 assert solver.solve(initialState, []).getSize() == 0
+# decreasing time grid solves backward (regression: infinite loop)
+t0 = 0.5
+y0 = [
+    -1.0 + t0 + 2.0 * m.exp(-t0),
+    -2.0 - 2.0 * t0 - t0 * t0 + m.exp(t0),
+]
+decResult = ot.Fehlberg(phi, 1e-8, 4).solve(y0, [0.5, 0.25, 0.0])
+assert decResult.getSize() == 3
+ott.assert_almost_equal(decResult[2], [1.0, -1.0], 1e-4, 1e-4)
 with ott.assert_raises(Exception):
     solver.solve([1.0], [0.0, 1.0])
 with ott.assert_raises(Exception):
