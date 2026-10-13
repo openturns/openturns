@@ -50,6 +50,10 @@ public:
   /** Constructor from a collection */
   PointWithDescription(const Collection<Scalar> & coll);
 
+  /** Constructor from values and description */
+  PointWithDescription(const Point & point,
+                       const Description & description);
+
   /** Constructor from a base class */
   PointWithDescription(const Pointer<Point> & p_base);
 

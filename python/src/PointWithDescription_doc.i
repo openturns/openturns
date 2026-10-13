@@ -6,6 +6,8 @@ Available constructors:
 
     PointWithDescription(*sequence*)
 
+    PointWithDescription(*point, description*)
+
 Parameters
 ----------
 size : int, :math:`size \geq 0`
@@ -14,6 +16,10 @@ value : float
     Value set to the *size* elements.
 sequence : sequence of pair (string, float)
     Components of the vector.
+point : sequence of float
+    Components of the vector.
+description : sequence of str
+    Description of the components.
 
 Examples
 --------
@@ -45,7 +51,15 @@ Use some functionalities:
 [C1 : 2, C2 : 7.1, C3 : 4.5]
 >>> vector.add(6.2)
 >>> print(vector)
-[C1 : 2, C2 : 7.1, C3 : 4.5,  : 6.2])RAW"
+[C1 : 2, C2 : 7.1, C3 : 4.5,  : 6.2]
+
+Use the third constructor:
+
+>>> vector = ot.PointWithDescription([1.0, 2.0], ['a', 'b'])
+>>> print(vector)
+[a : 1, b : 2]
+>>> print(vector.getDescription())
+[a,b])RAW"
 
 // ---------------------------------------------------------------------
  

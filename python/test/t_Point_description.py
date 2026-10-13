@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -25,3 +26,17 @@ point1.setDescription(description)
 
 print("point1.getDescription() = ", repr(point1.getDescription()))
 print("point2.getDescription() = ", repr(point2.getDescription()))
+
+# Constructor from values and description, see issue #3094
+point3 = ot.PointWithDescription(ot.Point([1.0, 2.0]), ot.Description(["a", "b"]))
+assert list(point3.getDescription()) == ["a", "b"]
+assert list(point3) == [1.0, 2.0]
+# plain Python sequences are accepted as well
+point4 = ot.PointWithDescription([1.0, 2.0], ["a", "b"])
+assert point4 == point3
+# mismatched sizes raise
+with ott.assert_raises(TypeError):
+    ot.PointWithDescription([1.0, 2.0], ["only_one"])
+# setDescription accepts a plain Python list
+point1.setDescription(["x", "y"])
+assert list(point1.getDescription()) == ["x", "y"]

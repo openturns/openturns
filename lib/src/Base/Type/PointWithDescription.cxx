@@ -56,6 +56,17 @@ PointWithDescription::PointWithDescription(const Collection<Scalar> & coll)
   // Nothing to do
 }
 
+/* Constructor from values and description */
+PointWithDescription::PointWithDescription(const Point & point,
+    const Description & description)
+  : Point(point)
+  , description_(description)
+{
+  if (description.getSize() != getDimension())
+    throw InvalidArgumentException(HERE) << "Description has incorrect dimension (" << description.getSize()
+                                         << "). Expected " << getDimension();
+}
+
 /* Constructor from a base class */
 PointWithDescription::PointWithDescription(const Pointer<Point> & p_base)
   : Point(*p_base)
