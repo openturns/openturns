@@ -201,6 +201,8 @@ refer to `gradient solver options <http://ceres-solver.org/gradient_solver.html#
 | Ceres-minimizer_progress_to_stdout                         | bool  |
 +------------------------------------------------------------+-------+
 
+The methods :meth:`~openturns.Ceres.setMaximumAbsoluteError` and :meth:`~openturns.Ceres.setMaximumCallsNumber` have no effect on Ceres solvers.
+
 See also
 --------
 AbdoRackwitz, Cobyla, CMinpack, NLopt, SQP, TNC
