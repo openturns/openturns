@@ -20,6 +20,8 @@ General mathematical functions
     :template: class.rst_t
     ConstantFunction
     TranslationFunction
+    experimental.MuSigmaScaling
+    experimental.MinMaxScaling
 
     :template: classWithPlot.rst_t
     LinearFunction

@@ -586,6 +586,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      P1InterpolatedProcess.i P1InterpolatedProcess_doc.i
                      CurlFreeModel.i CurlFreeModel_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
+                     MinMaxScaling.i MinMaxScaling_doc.i
+                     MuSigmaScaling.i MuSigmaScaling_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
