@@ -64,8 +64,8 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
   spaceFilling_ = spaceFilling;
   if (initialDesign.getSize() == 0) throw InvalidArgumentException(HERE) << "Initial design must not be empty";
   if (initialDesign.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Initial design dimension " << initialDesign.getDimension() << " does not match distribution dimension " << distribution.getDimension();
-  // dummy lhs, only distribution is needed
-  setLHS(LHSExperiment(distribution, 1));
+  // dummy lhs, only distribution is needed, but size must match initial design for consistency
+  setLHS(LHSExperiment(distribution, initialDesign.getSize()));
   // Transform the initial design into a standard design
   // transformation_ is TO (standard->original), we need the FROM direction here
   {
@@ -100,8 +100,26 @@ Bool SimulatedAnnealingLHS::equals(const WeightedExperimentImplementation & othe
 /* Generate design method */
 Sample SimulatedAnnealingLHS::generateWithWeights(Point & weights) const
 {
-  weights = Point(size_, 1.0 / size_);
-  return generateWithRestart(0);
+  const Sample design(generateWithRestart(0));
+  weights = Point(design.getSize(), 1.0 / design.getSize());
+  return design;
+}
+
+void SimulatedAnnealingLHS::setDistribution(const Distribution & distribution)
+{
+  OptimalLHSExperiment::setDistribution(distribution);
+  // standard initial design lives in [0,1]^d, it stays valid on distribution change
+  // unless the dimension changes, in which case it must be discarded
+  if ((standardInitialDesign_.getSize() > 0) && (standardInitialDesign_.getDimension() != distribution.getDimension()))
+    standardInitialDesign_ = Sample(0, 0);
+}
+
+void SimulatedAnnealingLHS::setSize(const UnsignedInteger size)
+{
+  OptimalLHSExperiment::setSize(size);
+  // a size change invalidates a user-provided initial design of different size
+  if ((standardInitialDesign_.getSize() > 0) && (standardInitialDesign_.getSize() != size))
+    standardInitialDesign_ = Sample(0, 0);
 }
 
 Sample SimulatedAnnealingLHS::generateWithRestart(const UnsignedInteger nRestart) const
