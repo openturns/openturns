@@ -240,3 +240,12 @@ for i in range(dimension):
         1.0e-10,
         1.0e-10,
     )
+
+# Mismatched sample and distribution are rejected, see issue #3144
+distribution2 = ot.JointDistribution([ot.Uniform(1.0, 2.0)] * dimension)
+sample2 = distribution.getSample(10)
+output2 = model(sample2)
+with ott.assert_raises(TypeError):
+    ot.FunctionalChaosAlgorithm(
+        sample2, output2, distribution2, listAdaptiveStrategy[0]
+    )

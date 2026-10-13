@@ -108,6 +108,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   , projectionStrategy_()
   , maximumResidual_(ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual"))
 {
+  checkInputSampleSupport();
   const UnsignedInteger inputDimension = inputSample.getDimension();
   Collection< OrthogonalUniVariatePolynomialFamily > polynomials(inputDimension);
   for (UnsignedInteger i = 0; i < inputDimension; ++ i)
@@ -171,7 +172,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   , projectionStrategy_(LeastSquaresStrategy(inputSample, weights, outputSample))
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
-  // Nothing to do
+  checkInputSampleSupport();
 }
 
 
@@ -198,6 +199,7 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   , projectionStrategy_(projectionStrategy)
   , maximumResidual_(ResourceMap::GetAsScalar( "FunctionalChaosAlgorithm-DefaultMaximumResidual" ))
 {
+  checkInputSampleSupport();
   // Overwrite the content of the projection strategy with the given data
   projectionStrategy_.setMeasure(distribution);
   projectionStrategy_.setExperiment(FixedExperiment(inputSample));
@@ -206,6 +208,21 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
   projectionStrategy_.setOutputSample(outputSample);
 }
 
+
+/* Check that the input sample is consistent with the distribution */
+void FunctionalChaosAlgorithm::checkInputSampleSupport() const
+{
+  // A sample point outside of the distribution range cannot come from the
+  // distribution (#3144). The range test uses closed bounds so that edge
+  // atoms of fitted laws (e.g. histogram bounds) are accepted.
+  const Interval range(getDistribution().getRange());
+  const Sample inputSample(getInputSample());
+  for (UnsignedInteger i = 0; i < inputSample.getSize(); ++i)
+  {
+    if (!range.contains(inputSample[i]))
+      throw InvalidArgumentException(HERE) << "In FunctionalChaosAlgorithm constructor, input sample #" << i << " is outside of the distribution range.";
+  }
+}
 
 /* Virtual constructor */
 FunctionalChaosAlgorithm * FunctionalChaosAlgorithm::clone() const
