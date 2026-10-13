@@ -59,7 +59,7 @@ ComplexHDF5Backend::ComplexHDF5Backend(const FileName & fileName,
     H5::DataSpace * p_dspace = new H5::DataSpace(1, dims, maxdims);
     h5Dataspace_ = p_dspace;
 
-    hsize_t chunkDims[1] = { std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultChunkSize"))) };
+    hsize_t chunkDims[1] = { std::max(static_cast<hsize_t>(1), std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultChunkSize")))) };
     H5::DSetCreatPropList prop;
     prop.setChunk(1, chunkDims);
     if (compressionLevel > 0)
@@ -230,7 +230,7 @@ Pointer<ComplexDataContainer::StorageBackend> ComplexHDF5Backend::clone() const
 void ComplexHDF5Backend::flush()
 {
 #ifndef OPENTURNS_HAVE_HDF5
-  throw NotYetImplementedException(HERE) << "ComplexHDF5Backend requires HDF5 support";
+  return;
 #else
   if (readOnly_) return;
   try
