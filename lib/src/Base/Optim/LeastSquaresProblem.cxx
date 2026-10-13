@@ -244,6 +244,9 @@ void LeastSquaresProblem::setResidualFunction(const Function & residualFunction)
 
 Bool LeastSquaresProblem::hasResidualFunction() const
 {
+  // A LeastSquaresProblem is a least-squares problem by kind, even with no
+  // residual function set (mirrors NearestPointProblem::hasLevelFunction).
+  // This ensures OptimizationAlgorithm::Build selects a least-squares solver.
   return true;
 }
 

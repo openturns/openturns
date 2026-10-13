@@ -11,7 +11,10 @@ residual = ot.SymbolicFunction(["a", "b"], ["a + b", "a - b"])
 
 # default ctor
 default = ot.LeastSquaresProblem()
+# a LeastSquaresProblem always reports a residual function (by kind), but the
+# default one carries no residual data
 assert default.hasResidualFunction()
+assert default.getResidualFunction().getOutputDimension() == 0
 assert default.getDimension() == 0
 
 # residual ctor
