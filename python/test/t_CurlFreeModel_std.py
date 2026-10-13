@@ -75,6 +75,8 @@ curlFree = otexp.CurlFreeModel(model)
 assert curlFree.getInputDimension() == 2
 assert curlFree.getOutputDimension() == 2
 assert curlFree.isStationary()
+# curl-free kernels have full off-diagonal blocks, see issue #3324
+assert not curlFree.isDiagonal()
 ott.assert_almost_equal(curlFree.getScale(), scale)
 s = [0.5, 0.3]
 t = [0.1, 0.2]
@@ -228,6 +230,8 @@ curl_default = otexp.CurlFreeModel(2)
 assert curl_default.getInputDimension() == 2
 assert curl_default.getOutputDimension() == 2
 assert curl_default.isStationary()
+# see issue #3324
+assert not curl_default.isDiagonal()
 val_def = curl_default([0.5, 0.3], [0.1, 0.2])
 assert val_def.getNbRows() == 2
 assert val_def.getNbColumns() == 2

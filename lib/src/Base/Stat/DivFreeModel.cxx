@@ -98,6 +98,10 @@ DivFreeModel::DivFreeModel(const UnsignedInteger inputDimension)
   outputDimension_ = inputDimension;
   isStationary_ = model_.isStationary();
   activeParameter_ = model_.getActiveParameter();
+  // The lag-0 correlation is the identity, as C(0) is diagonal; the
+  // kernel still has full off-diagonal blocks at non-zero lag, hence
+  // isDiagonal() is overridden to return false (see issue #3324)
+  outputCorrelation_ = CorrelationMatrix(outputDimension_);
   amplitude_ = Point(outputDimension_);
   const SquareMatrix C0(operator()(Point(inputDimension_)));
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
@@ -121,6 +125,8 @@ DivFreeModel::DivFreeModel(const CovarianceModel & model)
   scale_ = model.getScale();
   isStationary_ = model.isStationary();
   activeParameter_ = model.getActiveParameter();
+  // See default constructor above: lag-0 correlation is the identity
+  outputCorrelation_ = CorrelationMatrix(outputDimension_);
   amplitude_ = Point(outputDimension_);
   const SquareMatrix C0(operator()(Point(inputDimension_)));
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
@@ -193,6 +199,14 @@ SquareMatrix DivFreeModel::operator()(const Point & tau) const
 Bool DivFreeModel::isStationary() const
 {
   return model_.isStationary();
+}
+
+
+Bool DivFreeModel::isDiagonal() const
+{
+  // C(0) is diagonal but C(s, t) has full off-diagonal blocks for
+  // s != t (see operator() above), so the model is never diagonal
+  return false;
 }
 
 

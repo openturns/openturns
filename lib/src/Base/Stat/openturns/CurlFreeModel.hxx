@@ -63,6 +63,10 @@ public:
   /** Is it a stationary covariance model ? */
   Bool isStationary() const override;
 
+  /** Is it a diagonal covariance model ? Always false: the kernel has
+      full off-diagonal blocks at non-zero lag (see issue #3324) */
+  Bool isDiagonal() const override;
+
   /** Scale accessor */
   void setScale(const Point & scale) override;
 
