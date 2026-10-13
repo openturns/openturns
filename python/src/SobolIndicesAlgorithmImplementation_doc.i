@@ -11,10 +11,10 @@ uniform weights, e.g. Monte Carlo simulation, and a design coming from a
 quadrature rule yields a mis-scaled reference variance.
 
 This method measures the influence of each component of an input random vector
-:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on an output random vector
-:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see [sobol1993]_).
-It computes, for every output random variable :math:`Y_k` (:math:`1 \leqslant k \leqslant n_Y`),
-the part of its variance due to each input component :math:`X_i` (:math:`1 \leqslant i \leqslant n_X`) of :math:`\vect{X}`.
+:math:`\vect{X} = \left( X_1, \ldots, X_{\inputDim} \right)` on an output random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{\outputDim} \right)` by computing Sobol' indices (see [sobol1993]_).
+It computes, for every output random variable :math:`Y_k` (:math:`1 \leqslant k \leqslant \outputDim`),
+the part of its variance due to each input component :math:`X_i` (:math:`1 \leqslant i \leqslant \inputDim`) of :math:`\vect{X}`.
 Sobol' indices are introduced in :any:`sensitivity_sobol`.
 
 Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided by the :class:`SobolIndicesAlgorithm` implementations:
@@ -27,7 +27,7 @@ Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided
 Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{V}_i^T` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
 
 
-For multivariate outputs i.e. when :math:`n_Y>1`, we compute the Sobol' indices with respect to each output variable. 
+For multivariate outputs i.e. when :math:`\outputDim>1`, we compute the Sobol' indices with respect to each output variable. 
 In this case, the methods :meth:`getFirstOrderIndices` and 
 :meth:`getTotalOrderIndices` return the Sobol' indices of the first output, 
 but the index of the output can be specified as input argument.
@@ -134,15 +134,16 @@ OT_SobolIndicesAlgorithm_getAggregatedTotalOrderIndices_doc
 %define OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 R"RAW(Get second order Sobol indices.
 
-Let :math:`n_X \in \Nset` be the input dimension of the random vector.
-For any pair of indices :math:`i, j \in \{1, ..., n_x\}` such that :math:`i \neq j`,
+Let :math:`\inputDim \in \Nset` be the input dimension of the random vector.
+For any pair of indices :math:`i, j \in \{1, ..., \inputDim\}` such that :math:`i \neq j`,
 this method computes the Sobol' interaction index between :math:`i` and :math:`j`:
 
 .. math::
     S_{\{i, j\}} = \frac{V_{\{i,j\}}}{\Var{Y}}
 
 The second order Sobol' index :math:`S_{i,j}`  measures the part of
-the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
+the variance of :math:`Y` explained by the interaction of both variables
+:math:`X_i` and :math:`X_j`.
 Hence, the closed Sobol' index of the group :math:`\{i, j\}` is:
 
 .. math::
