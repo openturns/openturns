@@ -44,11 +44,13 @@ study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("lifting_test.xml"))
 study.add("lifting", lifting)
 study.save()
-study2 = ot.Study()
-study2.setStorageManager(ot.XMLStorageManager("lifting_test.xml"))
-study2.load()
-loaded = ot.KarhunenLoeveLifting()
-study2.fillObject("lifting", loaded)
-assert ot.PointToFieldFunction(loaded) == ot.PointToFieldFunction(lifting)
-
-os.remove("lifting_test.xml")
+try:
+    study2 = ot.Study()
+    study2.setStorageManager(ot.XMLStorageManager("lifting_test.xml"))
+    study2.load()
+    loaded = ot.KarhunenLoeveLifting()
+    study2.fillObject("lifting", loaded)
+    assert ot.PointToFieldFunction(loaded) == ot.PointToFieldFunction(lifting)
+    assert loaded == lifting
+finally:
+    os.remove("lifting_test.xml")

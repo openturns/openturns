@@ -1,6 +1,7 @@
 import openturns as ot
 import unittest
 import openturns.testing as ott
+import os
 
 
 class CheckKarhunenLoeveReduce(unittest.TestCase):
@@ -71,6 +72,7 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         klreduce = ot.KarhunenLoeveReduction(klresult)
         assert klreduce == ot.KarhunenLoeveReduction(klresult)
         assert default == ot.KarhunenLoeveReduction()
+        assert default != klreduce
         assert len(repr(klreduce)) > 0
         assert len(str(klreduce)) > 0
         # setTrend / trend constructor
@@ -95,15 +97,15 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         study.setStorageManager(ot.XMLStorageManager("klreduce_test.xml"))
         study.add("klreduce", klreduce)
         study.save()
-        study2 = ot.Study()
-        study2.setStorageManager(ot.XMLStorageManager("klreduce_test.xml"))
-        study2.load()
-        loaded = ot.KarhunenLoeveReduction()
-        study2.fillObject("klreduce", loaded)
-        assert loaded == klreduce
-        import os
-
-        os.remove("klreduce_test.xml")
+        try:
+            study2 = ot.Study()
+            study2.setStorageManager(ot.XMLStorageManager("klreduce_test.xml"))
+            study2.load()
+            loaded = ot.KarhunenLoeveReduction()
+            study2.fillObject("klreduce", loaded)
+            assert loaded == klreduce
+        finally:
+            os.remove("klreduce_test.xml")
 
     def test_trend(self):
         N = 100
