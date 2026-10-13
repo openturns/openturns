@@ -109,12 +109,12 @@ Matrix ProductFunction::parameterGradient(const Point & inP) const
   Scalar leftValue = p_leftFunction_->operator()(inP)[0];
   Scalar rightValue = p_rightFunction_->operator()(inP)[0];
   // Parameters gradient of the functions scaled by the value of there product term
-  Matrix upper(p_leftFunction_->parameterGradient(inP) * leftValue);
-  Matrix lower(p_rightFunction_->parameterGradient(inP) * rightValue);
+  const Matrix upper(p_leftFunction_->parameterGradient(inP) * rightValue);
+  const Matrix lower(p_rightFunction_->parameterGradient(inP) * leftValue);
   // Fill-in the result
   UnsignedInteger leftParametersDimension = upper.getNbRows();
   UnsignedInteger rightParametersDimension = lower.getNbRows();
-  Matrix grad(rightParametersDimension + leftParametersDimension, 1);
+  Matrix grad(leftParametersDimension + rightParametersDimension, 1);
   UnsignedInteger rowIndex = 0;
   // Gradient according to left parameters
   for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
@@ -123,7 +123,7 @@ Matrix ProductFunction::parameterGradient(const Point & inP) const
     ++ rowIndex;
   }
   // Gradient according to right parameters
-  for (UnsignedInteger i = 0; i < leftParametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < rightParametersDimension; ++i)
   {
     grad(rowIndex, 0) = lower(i, 0);
     ++ rowIndex;
