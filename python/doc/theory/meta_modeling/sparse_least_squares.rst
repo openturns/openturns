@@ -126,7 +126,7 @@ Least Angle Regression
 
 *Least Angle Regression* (LAR) may be viewed as a version of forward
 stagewise that uses mathematical derivations to speed up the
-computations. Indeed, instead of taking many small steps with the basis
+computations. Instead of taking many small steps with the basis
 term most correlated with current residual :math:`\vect{R}`, the
 related coefficient is directly increased up to the point where some
 other basis predictor has as much correlation with
