@@ -901,6 +901,12 @@ os.remove("t_CovarianceModel_std_Kronecker.xml")
 # TensorizedCovarianceModel extra coverage: constructors and error branches
 tensorizedDefault = ot.TensorizedCovarianceModel(1)
 assert tensorizedDefault.getOutputDimension() == 1
+tensorized2 = ot.TensorizedCovarianceModel(2)
+assert tensorized2.getOutputDimension() == 2
+assert tensorized2.getAmplitude() == [1.0, 1.0]
+assert tensorized2.getCollection().getSize() == 2
+tensorized3 = ot.TensorizedCovarianceModel(3)
+assert tensorized3.getOutputDimension() == 3
 assert tensorizedDefault.isStationary()
 assert tensorizedDefault.isDiagonal()
 assert tensorizedDefault.isParallel()
