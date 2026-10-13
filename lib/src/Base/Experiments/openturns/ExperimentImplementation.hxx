@@ -56,6 +56,10 @@ public:
   /** Sample generation */
   virtual Sample generate() const;
 
+  /** Sample generation with weights. The default implementation calls
+      generate() and returns uniform weights. */
+  virtual Sample generateWithWeights(Point & weights) const;
+
 protected:
 
 private:

@@ -56,6 +56,9 @@ public:
   /** Sample generation */
   virtual Sample generate() const;
 
+  /** Sample generation with weights */
+  virtual Sample generateWithWeights(Point & weights) const;
+
 }; /* class Experiment */
 
 

@@ -87,7 +87,7 @@ public:
   Sample generate() const override;
 
   /** Sample generation with weights*/
-  virtual Sample generateWithWeights(Point & weights) const;
+  Sample generateWithWeights(Point & weights) const override;
 
   /** Return isRandom flag */
   virtual Bool isRandom() const;
