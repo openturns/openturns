@@ -266,7 +266,7 @@ MatrixImplementation MatrixImplementation::operator+ (const MatrixImplementation
   int size(nbRows_ * nbColumns_);
   double alpha(1.0);
   int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(&((*this)[0])), &one, &result[0], &one);
+  daxpy_(&size, &alpha, const_cast<double*>(data()), &one, &result[0], &one);
 
   return result;
 }
@@ -280,7 +280,7 @@ MatrixImplementation & MatrixImplementation::operator+= (const MatrixImplementat
   int size(nbRows_ * nbColumns_);
   double alpha(1.0);
   int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &(*this)[0], &one);
+  daxpy_(&size, &alpha, const_cast<double*>(matrix.data()), &one, &(*this)[0], &one);
 
   return *this;
 }
@@ -294,7 +294,7 @@ MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation
   int size(nbRows_ * nbColumns_);
   double alpha(-1.0);
   int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &result[0], &one);
+  daxpy_(&size, &alpha, const_cast<double*>(matrix.data()), &one, &result[0], &one);
 
   return result;
 }
@@ -308,7 +308,7 @@ MatrixImplementation & MatrixImplementation::operator-= (const MatrixImplementat
   int size(nbRows_ * nbColumns_);
   double alpha(-1.0);
   int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(&(matrix[0])), &one, &(*this)[0], &one);
+  daxpy_(&size, &alpha, const_cast<double*>(matrix.data()), &one, &(*this)[0], &one);
 
   return *this;
 }
@@ -340,7 +340,7 @@ MatrixImplementation MatrixImplementation::genProd (const MatrixImplementation &
   int ltransb(1);
   int lda(nbRows_);
   int ldb(matrix.nbRows_);
-  dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(matrix[0])), &ldb, &beta, &mult[0], &m, &ltransa, &ltransb);
+  dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(data()), &lda, const_cast<double*>(matrix.data()), &ldb, &beta, &mult[0], &m, &ltransa, &ltransb);
 
   return mult;
 }
@@ -368,7 +368,7 @@ MatrixImplementation MatrixImplementation::symProd (const MatrixImplementation &
   double beta = 0.0;
   int lside = 1;
   int luplo = 1;
-  dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(matrix[0])), &ldb, &beta, &mult[0], &m, &lside, &luplo);
+  dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(data()), &lda, const_cast<double*>(matrix.data()), &ldb, &beta, &mult[0], &m, &lside, &luplo);
   return mult;
 }
 
@@ -389,7 +389,7 @@ Point MatrixImplementation::genVectProd (const Point & pt, const Bool transposed
   int m = nbRows_;
   int n = nbColumns_;
 
-  dgemv_(&trans, &m, &n, &alpha, const_cast<double*>(&((*this)[0])), &m, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
+  dgemv_(&trans, &m, &n, &alpha, const_cast<double*>(data()), &m, const_cast<double*>(pt.data()), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -426,7 +426,7 @@ Sample MatrixImplementation::genSampleProd (const Sample & sample, const Bool tr
     int k = matrixColumns;
     int lda = (transa == 'N' ? m : k);
     int ldb = (transb == 'N' ? k : n);
-    dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&(sample(0, 0))), &lda, const_cast<double*>(&((*this)[0])), &ldb, &beta, &prod(0, 0), &m, &ltransa, &ltransb);
+    dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&(sample(0, 0))), &lda, const_cast<double*>(data()), &ldb, &beta, &prod(0, 0), &m, &ltransa, &ltransb);
   }
   else
   {
@@ -435,7 +435,7 @@ Sample MatrixImplementation::genSampleProd (const Sample & sample, const Bool tr
     int k = matrixRows;
     int lda = (transb == 'N' ? m : k);
     int ldb = (transa == 'N' ? k : n);
-    dgemm_(&transb, &transa, &m, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(sample(0, 0))), &ldb, &beta, &prod(0, 0), &m, &ltransb, &ltransa);
+    dgemm_(&transb, &transa, &m, &n, &k, &alpha, const_cast<double*>(data()), &lda, const_cast<double*>(&(sample(0, 0))), &ldb, &beta, &prod(0, 0), &m, &ltransb, &ltransa);
   }
 
   return prod;
@@ -454,7 +454,7 @@ Point MatrixImplementation::symVectProd (const Point & pt) const
   double alpha(1.0);
   double beta(0.0);
   int luplo = 1;
-  dsymv_(&uplo, &n, &alpha, const_cast<double*>(&((*this)[0])), &n, const_cast<double*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
+  dsymv_(&uplo, &n, &alpha, const_cast<double*>(data()), &n, const_cast<double*>(pt.data()), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -473,7 +473,7 @@ MatrixImplementation MatrixImplementation::computeGram (const Bool transposed) c
   MatrixImplementation C(n, n);
   int ldc = n;
   int one = 1;
-  dsyrk_(&uplo, &trans, &n, &k, &alpha, const_cast<double*>(&((*this)[0])), &lda, &beta, &C[0], &ldc, &one, &one);
+  dsyrk_(&uplo, &trans, &n, &k, &alpha, const_cast<double*>(data()), &lda, &beta, &C[0], &ldc, &one, &one);
 
   return C;
 }
@@ -556,7 +556,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
   Scalar alpha = 1.0;
 
   // Lapack routine
-  dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<double*>(&((*this)[0])),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
+  dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<double*>(data()),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
   return mult;
 }
 
@@ -1466,7 +1466,7 @@ MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(
   ScalarCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
-  dtrmv_(&uplo, &trans, &diag, &n, const_cast<double*>(&((*this)[0])), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  dtrmv_(&uplo, &trans, &diag, &n, const_cast<double*>(data()), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -1909,7 +1909,7 @@ Scalar MatrixImplementation::frobeniusNorm() const
   int one = 1;
   Scalar norm = 0.0;
   if (n > 0)
-    norm = dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
+    norm = dnrm2_(&n, const_cast<double*>(data()), &one);
   return norm;
 }
 

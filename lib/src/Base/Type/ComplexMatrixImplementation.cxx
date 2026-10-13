@@ -406,7 +406,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Compl
   Complex alpha(1.0, 0.0);
   int one = 1;
   // Lapack routine
-  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &result[0], &one);
+  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(data()), &one, &result[0], &one);
 
   return result;
 }
@@ -421,7 +421,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator + (const Matri
   Complex alpha(1.0, 0.0);
   int one = 1;
   // Lapack routine
-  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &one, &result[0], &one);
+  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(data()), &one, &result[0], &one);
 
   return result;
 }
@@ -436,7 +436,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator - (const Compl
   Complex alpha(-1.0, 0.0);
   int one = 1;
 
-  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(&(matrix)[0]), &one, &result[0], &one);
+  zaxpy_(&size, &alpha, const_cast<std::complex<double>*>(matrix.data()), &one, &result[0], &one);
 
   return result;
 }
@@ -494,7 +494,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::genProd(const ComplexMa
   int ltransb(1);
 
   //Lapack routine
-  zgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &ltransa, &ltransb);
+  zgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<std::complex<double>*>(data()), &m, const_cast<std::complex<double>*>(matrix.data()), &k, &beta, &mult[0], &m, &ltransa, &ltransb);
   return mult;
 }
 
@@ -519,7 +519,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::symProd (const ComplexM
   int luplo(1);
 
   // Lapack routine
-  zsymm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
+  zsymm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(data()), &m, const_cast<std::complex<double>*>(matrix.data()), &k, &beta, &mult[0], &m, &lside, &luplo);
 
   return mult;
 }
@@ -545,8 +545,8 @@ ComplexMatrixImplementation ComplexMatrixImplementation::hermProd(const ComplexM
   int luplo(1);
 
   // Lapack routine
-  if (hermSide == 'L') zhemm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m, const_cast<std::complex<double>*>(&(matrix[0])), &k, &beta, &mult[0], &m, &lside, &luplo);
-  else zhemm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(&(matrix[0])), &k, const_cast<std::complex<double>*>(&((*this)[0])), &m, &beta, &mult[0], &m, &lside, &luplo);
+  if (hermSide == 'L') zhemm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(data()), &m, const_cast<std::complex<double>*>(matrix.data()), &k, &beta, &mult[0], &m, &lside, &luplo);
+  else zhemm_(&side, &uplo, &m, &n, &alpha, const_cast<std::complex<double>*>(matrix.data()), &k, const_cast<std::complex<double>*>(data()), &m, &beta, &mult[0], &m, &lside, &luplo);
 
   return mult;
 }
@@ -580,7 +580,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::triangularProd(const Co
   Complex alpha(1.0);
 
   // Lapack routine
-  ztrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside, &luplo, &ltrans,  &ldiag);
+  ztrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<std::complex<double>*>(data()),  &m, const_cast<std::complex<double>*>(&(mult[0])), &m, &lside, &luplo, &ltrans,  &ldiag);
   return mult;
 }
 
@@ -695,7 +695,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genV
   Complex beta(0.0, 0.0);
   int ltrans(1);
 
-  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &ltrans);
+  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(data()), &m_, const_cast<std::complex<double>*>(pt.data()), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -717,7 +717,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genV
   Complex beta(0.0, 0.0);
   int ltrans(1);
 
-  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
+  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(data()), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -739,7 +739,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::genV
   Complex beta(0.0, 0.0);
   int ltrans(1);
 
-  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
+  zgemv_(&trans, &m_, &n_, &alpha, const_cast<std::complex<double>*>(data()), &m_, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &ltrans);
 
   return prod;
 }
@@ -757,7 +757,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::herm
   Complex alpha(1.0, 0.0);
   Complex beta(0.0, 0.0);
   int luplo(1);
-  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(pt[0])), &one, &beta, &prod[0], &one, &luplo);
+  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(data()), &n, const_cast<std::complex<double>*>(pt.data()), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -777,7 +777,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::herm
   Complex alpha(1.0, 0.0);
   Complex beta(0.0, 0.0);
   int luplo(1);
-  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
+  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(data()), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -797,7 +797,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::herm
   Complex alpha(1.0, 0.0);
   Complex beta(0.0, 0.0);
   int luplo(1);
-  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(&((*this)[0])), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
+  zhemv_(&uplo, &n, &alpha, const_cast<std::complex<double>*>(data()), &n, const_cast<std::complex<double>*>(&(copyPoint[0])), &one, &beta, &prod[0], &one, &luplo);
 
   return prod;
 }
@@ -826,7 +826,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::tria
   int one(1);
 
   ComplexCollection x(pt);
-  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(data()), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -854,7 +854,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::tria
   ComplexCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
-  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(data()), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
@@ -882,7 +882,7 @@ ComplexMatrixImplementation::ComplexCollection ComplexMatrixImplementation::tria
   ComplexCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
 
-  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(&((*this)[0])), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
+  ztrmv_(&uplo, &trans, &diag, &n, const_cast<std::complex<double>*>(data()), &lda, const_cast<std::complex<double>*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
   return x;
 }
 
