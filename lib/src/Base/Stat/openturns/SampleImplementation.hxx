@@ -680,14 +680,18 @@ public:
   /**
    * Gives the quantile per component of the sample
    */
-  virtual Point computeQuantilePerComponent(const Scalar prob) const;
-  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob) const;
+  virtual Point computeQuantilePerComponent(const Scalar prob,
+      const Bool tail = false) const;
+  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob,
+      const Bool tail = false) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const Scalar prob) const;
-  Pointer<SampleImplementation> computeQuantile(const Point & prob) const;
+  Point computeQuantile(const Scalar prob,
+                        const Bool tail = false) const;
+  Pointer<SampleImplementation> computeQuantile(const Point & prob,
+      const Bool tail = false) const;
 
   /**
    * Get the empirical CDF of the sample

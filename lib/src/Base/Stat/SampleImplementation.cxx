@@ -1426,13 +1426,16 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 /*
  * Gives the quantile per component of the sample
  */
-Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
+Point SampleImplementation::computeQuantilePerComponent(const Scalar prob,
+    const Bool tail) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
+  // Tail flag orders 1-p instead of p, which stays accurate when p is close to 1
+  const Scalar effectiveProb = tail ? 1.0 - prob : prob;
   // Special case for extremum cases
-  const Scalar scalarIndex = prob * size_ - 0.5;
+  const Scalar scalarIndex = effectiveProb * size_ - 0.5;
   if (scalarIndex >= size_ - 1) return getMax();
   // Special case for prob <= 0.0
   if (scalarIndex <= 0.0) return getMin();
@@ -1470,20 +1473,25 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
 /*
  * Gives the quantile per component of the sample
  */
-Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob) const
+Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob,
+    const Bool tail) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   const UnsignedInteger probSize = prob.getSize();
   if (!(probSize > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component with an empty argument.";
 
+  // Tail flag orders 1-p instead of p
+  Point effectiveProb(probSize);
+  for (UnsignedInteger i = 0; i < probSize; ++i) effectiveProb[i] = tail ? 1.0 - prob[i] : prob[i];
+
   // Check that prob is inside bounds
   for (UnsignedInteger p = 0; p < probSize; ++p)
-    if (!(prob[p] >= 0.0) || !(prob[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
+    if (!(effectiveProb[p] >= 0.0) || !(effectiveProb[p] <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
   // Sort prob in ascending order
   Collection< std::pair<Scalar, UnsignedInteger> > probPairs(probSize);
   for (UnsignedInteger i = 0; i < probSize; ++i)
-    probPairs[i] = std::pair<Scalar, UnsignedInteger>(prob[i], i);
+    probPairs[i] = std::pair<Scalar, UnsignedInteger>(effectiveProb[i], i);
   std::sort(probPairs.begin(), probPairs.end());
   Bool sorted = true;
   Indices indices(probSize);
@@ -1570,19 +1578,21 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(
 /*
  * Gives the N-dimension quantile of the sample
  */
-Point SampleImplementation::computeQuantile(const Scalar prob) const
+Point SampleImplementation::computeQuantile(const Scalar prob,
+    const Bool tail) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
-  if (getDimension() == 1) return computeQuantilePerComponent(prob);
+  if (getDimension() == 1) return computeQuantilePerComponent(prob, tail);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
 }
 
-Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob) const
+Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob,
+    const Bool tail) const
 {
   if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
-  if (getDimension() == 1) return computeQuantilePerComponent(prob);
+  if (getDimension() == 1) return computeQuantilePerComponent(prob, tail);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
 }
 
