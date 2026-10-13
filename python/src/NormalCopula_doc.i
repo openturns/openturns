@@ -29,6 +29,7 @@ as follows:
 
   .. math ::
       :label: SpearmanToShape
+
       \mat{R}_{ij} = 2 \sin \left( \frac{\pi}{6}\rho_{ij}^S \right)
 
 
