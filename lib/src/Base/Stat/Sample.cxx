@@ -555,27 +555,31 @@ Point Sample::computeRawMoment(const UnsignedInteger k) const
 /*
  * Method computeQuantilePerComponent() gives the quantile per component of the sample
  */
-Point Sample::computeQuantilePerComponent(const Scalar prob) const
+Point Sample::computeQuantilePerComponent(const Scalar prob,
+    const Bool tail) const
 {
-  return getImplementation()->computeQuantilePerComponent(prob);
+  return getImplementation()->computeQuantilePerComponent(prob, tail);
 }
 
-Sample Sample::computeQuantilePerComponent(const Point & prob) const
+Sample Sample::computeQuantilePerComponent(const Point & prob,
+    const Bool tail) const
 {
-  return getImplementation()->computeQuantilePerComponent(prob);
+  return getImplementation()->computeQuantilePerComponent(prob, tail);
 }
 
 /*
  * Method computeQuantile() gives the N-dimension quantile of the sample
  */
-Point Sample::computeQuantile(const Scalar prob) const
+Point Sample::computeQuantile(const Scalar prob,
+    const Bool tail) const
 {
-  return getImplementation()->computeQuantile(prob);
+  return getImplementation()->computeQuantile(prob, tail);
 }
 
-Sample Sample::computeQuantile(const Point & prob) const
+Sample Sample::computeQuantile(const Point & prob,
+                               const Bool tail) const
 {
-  return getImplementation()->computeQuantile(prob);
+  return getImplementation()->computeQuantile(prob, tail);
 }
 
 /*

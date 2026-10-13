@@ -204,3 +204,25 @@ with contextlib.redirect_stdout(buffer):
 summary = buffer.getvalue()
 assert "mean" in summary and "50%" in summary
 
+# Quantile with tail flag, see issue #3130
+tailSample = ot.Normal(1).getSample(50)
+for prob in [0.05, 0.5, 0.95]:
+    ott.assert_almost_equal(
+        tailSample.computeQuantile(prob, True),
+        tailSample.computeQuantile(1.0 - prob),
+    )
+    ott.assert_almost_equal(
+        tailSample.computeQuantilePerComponent(prob, True),
+        tailSample.computeQuantilePerComponent(1.0 - prob),
+    )
+# sequence version
+probs = [0.05, 0.95]
+ott.assert_almost_equal(
+    tailSample.computeQuantile(probs, True),
+    tailSample.computeQuantile([1.0 - p for p in probs]),
+)
+# tail improves accuracy close to 1 (no catastrophic 1-p in user code)
+ott.assert_almost_equal(
+    tailSample.computeQuantile(1.0e-9, True),
+    tailSample.computeQuantile(1.0 - 1.0e-9),
+)
