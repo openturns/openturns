@@ -21,7 +21,7 @@ normal distribution with zero mean, unit marginal variances and correlation :mat
 
 
 The shape matrix :math:`\mat{R}` can be computed from the Spearman correlation
-matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}` as well as the the
+matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}` as well as the
 Kendall concordance matrix :math:`\left( \tau_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`
 as follows:
 
@@ -35,17 +35,10 @@ as follows:
 - From the Kendall concordance matrix:
 
   .. math::
+      :label: KendallToShape
 
       \mat{R}_{ij} = \sin \left( \frac{\pi}{2} \tau_{ij} \right)
 
-  with
-
-  .. math::
-      :label: KendallToShape
-
-      \tau_{ij} = \tau(X_i,X_j)
-                = \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) > 0} -
-                  \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) < 0}
 
 
 Available constructor:
