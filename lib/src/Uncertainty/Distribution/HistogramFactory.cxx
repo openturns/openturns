@@ -22,12 +22,66 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include <algorithm>
+#include <cmath>
+#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HistogramFactory)
 
 static const Factory<HistogramFactory> Factory_HistogramFactory;
+
+/* Check weights and return their sum */
+static Scalar CheckWeights(const Sample & sample,
+                           const Point & weights)
+{
+  const UnsignedInteger size = sample.getSize();
+  if (weights.getDimension() != size)
+    throw InvalidArgumentException(HERE) << "Error: the number of weights=" << weights.getDimension() << " does not match the sample size=" << size;
+  Scalar totalWeight = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // An infinite weight would propagate NaN through the normalized heights
+    if (!(weights[i] >= 0.0) || !std::isfinite(weights[i]))
+      throw InvalidArgumentException(HERE) << "Error: the weights must be finite and non negative, here weight[" << i << "]=" << weights[i];
+    totalWeight += weights[i];
+  }
+  if (!std::isfinite(totalWeight) || !(totalWeight > 0.0))
+    throw InvalidArgumentException(HERE) << "Error: the sum of the weights must be positive, here sum=" << totalWeight;
+  return totalWeight;
+}
+
+/* Weighted quantile of a 1D sample by linear interpolation of the cumulative weights */
+static Scalar ComputeWeightedQuantile(const Sample & sample,
+                                      const Point & weights,
+                                      const Scalar prob)
+{
+  const UnsignedInteger size = sample.getSize();
+  // Sort the values with their weights in ascending order
+  Collection< std::pair<Scalar, UnsignedInteger> > sortedPairs(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    sortedPairs[i] = std::pair<Scalar, UnsignedInteger>(sample(i, 0), i);
+  std::sort(sortedPairs.begin(), sortedPairs.end());
+  Scalar totalWeight = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i) totalWeight += weights[i];
+  const Scalar threshold = prob * totalWeight;
+  Scalar cumulativeWeight = 0.0;
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const UnsignedInteger i = sortedPairs[k].second;
+    cumulativeWeight += weights[i];
+    if (cumulativeWeight >= threshold)
+    {
+      if (k == 0) return sample(i, 0);
+      // Interpolate between the two bracketing values
+      const Scalar previousWeight = cumulativeWeight - weights[i];
+      const Scalar alpha = (threshold - previousWeight) / weights[i];
+      return (1.0 - alpha) * sample(sortedPairs[k - 1].second, 0) + alpha * sample(i, 0);
+    }
+  }
+  return sample(sortedPairs[size - 1].second, 0);
+}
 
 /* Default constructor */
 HistogramFactory::HistogramFactory()
@@ -189,6 +243,54 @@ Histogram HistogramFactory::buildAsHistogram() const
   return Histogram();
 }
 
+Distribution HistogramFactory::buildWeighted(const Sample & sample,
+    const Point & weights) const
+{
+  return buildWeightedAsHistogram(sample, weights).clone();
+}
+
+Histogram HistogramFactory::buildWeightedAsHistogram(const Sample & sample,
+    const Point & weights) const
+{
+  return buildWeightedAsHistogram(sample, computeBandwidthWeighted(sample, weights), weights);
+}
+
+Histogram HistogramFactory::buildWeightedAsHistogram(const Sample & sample,
+    const Scalar bandwidth,
+    const Point & weights) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (!(bandwidth > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive bandwidth, got bandwidth=" << bandwidth;
+  const Scalar totalWeight = CheckWeights(sample, weights);
+  // Construct the histogram
+  const Scalar mean = sample.computeMean()[0];
+  if (!std::isfinite(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  // It will extends from min to max.
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
+  const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / bandwidth + 0.5));
+  // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
+  const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (xMax - xMin);
+  const Scalar hOpt = ((xMax - xMin) + delta) / binNumber;
+  Point heights(binNumber, 0.0);
+  const Scalar step = 1.0 / hOpt;
+  // Aggregate the weighted realizations into the bins
+  for(UnsignedInteger i = 0; i < size; ++i)
+  {
+    // The index takes values in [[0, binNumber-1]] because min <= sample(i, 0) <= max and step < binNumber / (max - min)
+    const UnsignedInteger index = static_cast<UnsignedInteger>(floor((sample(i, 0) - xMin) * step));
+    heights[index] += weights[i];
+  }
+  const Scalar inverseArea = 1.0 / (hOpt * totalWeight);
+  Histogram result(xMin, Point(binNumber, hOpt), heights * inverseArea);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
 /* Compute the bandwidth according to Scott or Freedman and Diaconis rule */
 Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Bool useQuantile) const
@@ -226,6 +328,96 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Scalar sigma = sample.computeStandardDeviation()[0];
     hOpt = sigma * std::cbrt(24.0 * std::sqrt(M_PI) / size);
     binNumber = static_cast<UnsignedInteger>(ceil((xMax - xMin) / hOpt + 0.5));
+  }
+
+  // cap the bin number
+  const UnsignedInteger maximumBinNumber = ResourceMap::GetAsUnsignedInteger("HistogramFactory-MaximumBinNumber");
+  if (binNumber > maximumBinNumber)
+    hOpt = (xMax - xMin) / maximumBinNumber;
+
+  return hOpt;
+}
+
+/* Compute the bandwidth of a weighted sample, using the Kish effective
+   sample size in place of the sample size (see issue #3164) */
+Scalar HistogramFactory::computeBandwidthWeighted(const Sample & sample,
+    const Point & weights,
+    const Bool useQuantile) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size < 2)
+    throw InvalidArgumentException(HERE) << "Cannot build a Histogram distribution from a sample of size < 2";
+
+  const Scalar totalWeight = CheckWeights(sample, weights);
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (!(xMax > xMin))
+    throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample, here max value is " << xMax << " and min value is " << xMin;
+
+  // Uniform weights reproduce the unweighted bandwidth exactly
+  Bool uniformWeights = true;
+  for (UnsignedInteger i = 1; i < size; ++i)
+    if (weights[i] != weights[0])
+    {
+      uniformWeights = false;
+      break;
+    }
+  if (uniformWeights) return computeBandwidth(sample, useQuantile);
+
+  // Kish effective sample size, accumulated on normalized weights
+  // to avoid overflow/underflow of the squared weights
+  Scalar sumSquaredNormalizedWeights = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar normalizedWeight = weights[i] / totalWeight;
+    sumSquaredNormalizedWeights += normalizedWeight * normalizedWeight;
+  }
+  const Scalar effectiveSize = 1.0 / sumSquaredNormalizedWeights;
+
+  Scalar hOpt = 0.0;
+  UnsignedInteger binNumber = 0;
+
+  if (useQuantile)
+  {
+    // We use the robust estimation of dispersion based on inter-quartile
+    hOpt = (ComputeWeightedQuantile(sample, weights, 0.75) - ComputeWeightedQuantile(sample, weights, 0.25)) * std::cbrt(24.0 * std::sqrt(M_PI) / effectiveSize) / (2.0 * DistFunc::qNormal(0.75));
+
+    // If the resulting bandwidth is zero it is because a majority of values are repeated in the sample
+    if (hOpt == 0.0)
+    {
+      LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based bandwidth.");
+    }
+    else
+    {
+      const Scalar computedBinNumber = std::ceil((xMax - xMin) / hOpt + 0.5);
+      if (!std::isfinite(hOpt) || !std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < 1.0 * std::numeric_limits<UnsignedInteger>::max()))
+        throw InvalidArgumentException(HERE) << "Error: cannot estimate a finite bandwidth from the weighted sample";
+      binNumber = static_cast<UnsignedInteger>(computedBinNumber);
+    }
+  }
+
+  // Here hOpt == 0.0 either because we asked for the standard deviation based bandwidth or because the quantile based bandwidth is zero
+  if (hOpt == 0.0)
+  {
+    // We use the weighted standard deviation
+    Scalar weightedMean = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i) weightedMean += weights[i] * sample(i, 0);
+    weightedMean /= totalWeight;
+    Scalar weightedVariance = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar delta = sample(i, 0) - weightedMean;
+      weightedVariance += weights[i] * delta * delta;
+    }
+    weightedVariance /= totalWeight;
+    const Scalar sigma = std::sqrt(weightedVariance);
+    if (!(sigma > 0.0) || !std::isfinite(sigma))
+      throw InvalidArgumentException(HERE) << "Error: cannot estimate a finite bandwidth from the weighted sample";
+    hOpt = sigma * std::cbrt(24.0 * std::sqrt(M_PI) / effectiveSize);
+    const Scalar computedBinNumber = std::ceil((xMax - xMin) / hOpt + 0.5);
+    if (!std::isfinite(hOpt) || !std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < 1.0 * std::numeric_limits<UnsignedInteger>::max()))
+      throw InvalidArgumentException(HERE) << "Error: cannot estimate a finite bandwidth from the weighted sample";
+    binNumber = static_cast<UnsignedInteger>(computedBinNumber);
   }
 
   // cap the bin number

@@ -126,6 +126,7 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
+ * HistogramFactory.buildWeighted(), buildWeightedAsHistogram() and computeBandwidthWeighted() for importance-weighted histograms
 
 === Documentation ===
  * Theory: add interpolation page
