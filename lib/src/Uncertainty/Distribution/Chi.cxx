@@ -154,7 +154,7 @@ Scalar Chi::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return 0.0;
+  if (x < 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -163,8 +163,9 @@ Scalar Chi::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LowestScalar;
-  return normalizationFactor_ + (nu_ - 1) * std::log(x) - 0.5 * x * x;
+  if (x < 0.0) return SpecFunc::LowestScalar;
+  // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for nu_ == 1
+  return normalizationFactor_ + ((nu_ == 1.0) ? 0.0 : (nu_ - 1.0) * std::log(x)) - 0.5 * x * x;
 }
 
 

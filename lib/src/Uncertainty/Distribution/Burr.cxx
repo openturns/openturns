@@ -129,7 +129,7 @@ Scalar Burr::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return 0.0;
+  if (x < 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -138,12 +138,13 @@ Scalar Burr::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LowestScalar;
+  if (x < 0.0) return SpecFunc::LowestScalar;
   const Scalar logX = std::log(x);
   const Scalar y = c_ * logX;
   // Stable evaluation of log1p(exp(y)): use y + log1p(exp(-y)) for y > 0 to avoid overflow
   const Scalar log1pExpY = (y <= 0.0 ? log1p(std::exp(y)) : y + log1p(std::exp(-y)));
-  return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1pExpY;
+  // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for c_ == 1
+  return std::log(c_ * k_) + ((c_ == 1.0) ? 0.0 : (c_ - 1.0) * logX) - (k_ + 1.0) * log1pExpY;
 }
 
 /* Get the CDF of the distribution */

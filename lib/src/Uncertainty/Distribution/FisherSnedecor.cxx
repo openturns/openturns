@@ -128,7 +128,7 @@ Scalar FisherSnedecor::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return 0.0;
+  if (x < 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -137,8 +137,9 @@ Scalar FisherSnedecor::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LowestScalar;
-  return normalizationFactor_ + (0.5 * d1_ - 1.0) * std::log(x) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
+  if (x < 0.0) return SpecFunc::LowestScalar;
+  // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for d1_ == 2
+  return normalizationFactor_ + ((d1_ == 2.0) ? 0.0 : (0.5 * d1_ - 1.0) * std::log(x)) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
 }
 
 Point FisherSnedecor::computeLogPDFGradient(const Point & point) const

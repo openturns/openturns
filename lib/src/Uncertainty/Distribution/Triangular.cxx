@@ -120,10 +120,10 @@ Point Triangular::computeDDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  if ((x < a_) || (x > b_)) return Point(1, 0.0);
   const Scalar ddf = 2.0 / (b_ - a_);
   if (x < m_) return Point(1, ddf / (m_ - a_));
-  if (m_ == b_) return Point(1, 0.0);
+  if (m_ == b_) return Point(1, ddf / (m_ - a_));
   return Point(1, ddf / (m_ - b_));
 }
 
@@ -131,10 +131,10 @@ Point Triangular::computeDDF(const Point & point) const
 /* Get the PDF of the distribution */
 Scalar Triangular::computePDF(const Scalar x) const
 {
-  if ((x <= a_) || (x > b_)) return 0.0;
+  if ((x < a_) || (x > b_)) return 0.0;
   const Scalar pdf = 2.0 / (b_ - a_);
   if (x < m_) return pdf * (x - a_) / (m_ - a_);
-  if (m_ == b_ && x == b_) return 0.0;
+  if (m_ == b_ && x == b_) return pdf;
   return pdf * (x - b_) / (m_ - b_);
 }
 
