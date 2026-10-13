@@ -121,6 +121,18 @@ assert len(str(myModel)) > 0
 discretized = modelSingle.discretize(ot.Sample([[0.0], [0.5]]))
 assert discretized.getDimension() == 4
 ott.assert_almost_equal(discretized[0, 0], covariance[0, 0], 1e-12, 1e-12)
+# 1D discretize uses the scalar-lag overload (regression: NotYetImplemented)
+grid1d = ot.RegularGrid(0.0, 0.5, 4)
+coll1d = ot.SquareMatrixCollection(4)
+for i in range(4):
+    m1d = ot.SquareMatrix(1)
+    m1d[0, 0] = 1.0 / (1 + i)
+    coll1d[i] = m1d
+model1d = ot.UserDefinedStationaryCovarianceModel(grid1d, coll1d)
+disc1d = model1d.discretize(ot.Sample([[0.0], [0.5]]))
+assert disc1d.getDimension() == 2
+ott.assert_almost_equal(disc1d[0, 0], 1.0, 1e-12, 1e-12)
+ott.assert_almost_equal(disc1d[0, 1], 0.5, 1e-12, 1e-12)
 study = ot.Study()
 study.setStorageManager(
     ot.XMLStorageManager("t_UserDefinedStationaryCovarianceModel_std_tmp.xml")
