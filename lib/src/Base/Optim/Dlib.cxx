@@ -23,6 +23,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OSS.hxx"
+#include <cmath>
 
 #ifdef OPENTURNS_HAVE_DLIB
 #include "openturns/DlibFunctions.hxx"
@@ -393,6 +394,7 @@ Dlib::Dlib()
   , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
   , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
   , initialTrustRegionRadius_(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"))
+  , seed_(ResourceMap::GetAsUnsignedInteger("Dlib-InitialSeed"))
 {
 }
 
@@ -404,6 +406,7 @@ Dlib::Dlib(const String & algoName)
   , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
   , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
   , initialTrustRegionRadius_(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"))
+  , seed_(ResourceMap::GetAsUnsignedInteger("Dlib-InitialSeed"))
 {
   setAlgorithmName(algoName);
 }
@@ -416,6 +419,7 @@ Dlib::Dlib(const OptimizationProblem & problem,
   , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
   , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
   , initialTrustRegionRadius_(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"))
+  , seed_(ResourceMap::GetAsUnsignedInteger("Dlib-InitialSeed"))
 {
   setAlgorithmName(algoName);
   checkProblem(problem);
@@ -503,6 +507,16 @@ void Dlib::setInitialTrustRegionRadius(const Scalar radius)
   if (!(radius > 0.0))
     throw InvalidArgumentException(HERE) << "Error: trust region radius must be positive.";
   initialTrustRegionRadius_ = radius;
+}
+
+void Dlib::setSeed(const UnsignedInteger seed)
+{
+  seed_ = seed;
+}
+
+UnsignedInteger Dlib::getSeed() const
+{
+  return seed_;
 }
 
 /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
@@ -648,61 +662,115 @@ void Dlib::run()
   else if (algoName_ == "global")
   {
     DlibFunction objectiveDlibFunction(getProblem().getObjective());
+    const Bool minimization = getProblem().isMinimization();
 
-    // Declare result and lambda function
-    dlib::function_evaluation globalOptimResult;
-    auto objectiveLambdaFunction = [&](dlib::matrix<double, 0, 1> input)
-    {
-      return objectiveDlibFunction(input);
-    };
-
-    std::chrono::nanoseconds max_runtime = dlib::FOREVER;
-    if (getMaximumTimeDuration() > 0.0)
-      max_runtime = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::duration<Scalar, std::ratio<1> >(getMaximumTimeDuration()));
-
+    // Use global_function_search directly instead of the find_min_global/find_max_global
+    // convenience overloads: these run an internal loop which adapts the Monte Carlo sample
+    // size from wall-clock timings, making results vary across machines and loads.
+    // A seeded search with fixed parameters is fully deterministic.
+    // Reproduce the log-scale transformation of find_min_global/find_max_global:
+    // a continuous variable with positive bounds spanning a factor >= 1000
+    // is searched on a log scale, points are converted back before evaluation.
     const std::vector<bool> is_integer_variable(dimension, false);
-    if (getProblem().isMinimization())
-      globalOptimResult = dlib::find_min_global(objectiveLambdaFunction,
-                          lb,
-                          ub,
-                          is_integer_variable,
-                          dlib::max_function_calls(getMaximumCallsNumber()),
-                          max_runtime,
-                          getMaximumAbsoluteError());
+    std::vector<bool> logScale(dimension, false);
+    DlibVector lbLog(lb);
+    DlibVector ubLog(ub);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      if (lb(j) > 0.0 && ub(j) / lb(j) >= 1000.0)
+      {
+        logScale[j] = true;
+        lbLog(j) = std::log(lb(j));
+        ubLog(j) = std::log(ub(j));
+      }
+    }
+    const dlib::function_spec spec(lbLog, ubLog, is_integer_variable);
+    dlib::global_function_search optimizer(std::vector<dlib::function_spec>(1, spec));
+    optimizer.set_seed(static_cast<time_t>(seed_));
+    optimizer.set_solver_epsilon(getMaximumAbsoluteError());
+
+    const UnsignedInteger maxCalls = getMaximumCallsNumber();
+    Bool interrupted = false;
+    for (UnsignedInteger i = 0; i < maxCalls; ++ i)
+    {
+      const Scalar elapsed = std::chrono::duration<Scalar>(std::chrono::steady_clock::now() - t0).count();
+      if ((getMaximumTimeDuration() > 0.0) && (elapsed > getMaximumTimeDuration()))
+        break;
+      if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      {
+        interrupted = true;
+        break;
+      }
+      // global_function_search maximizes: negate the objective for minimization problems
+      auto request = optimizer.get_next_x();
+      DlibVector xLog(request.x());
+      DlibVector xOrig(xLog);
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+        if (logScale[j])
+          xOrig(j) = std::exp(xLog(j));
+      const double y = objectiveDlibFunction(xOrig);
+      request.set(minimization ? -y : y);
+    }
+    if (objectiveDlibFunction.getCallsNumber() == 0)
+    {
+      // No evaluation (stop requested, timeout or zero max calls):
+      // get_best_function_eval is undefined and history is empty,
+      // return a defined stopped result instead.
+      result_.setOptimalPoint(startingPoint);
+      result_.setCallsNumber(0);
+      if (interrupted)
+      {
+        result_.setStatus(OptimizationResult::INTERRUPTION);
+        result_.setStatusMessage("Dlib optimization interrupted by user before first evaluation");
+      }
+      else if (maxCalls == 0)
+      {
+        result_.setStatus(OptimizationResult::MAXIMUMCALLS);
+        result_.setStatusMessage("Dlib optimization reached maximum calls number (0) before first evaluation");
+      }
+      // timeout before first evaluation is reported by the common timeout handling below
+    }
     else
-      globalOptimResult = dlib::find_max_global(objectiveLambdaFunction,
-                          lb,
-                          ub,
-                          is_integer_variable,
-                          dlib::max_function_calls(getMaximumCallsNumber()),
-                          max_runtime,
-                          getMaximumAbsoluteError());
+    {
+      DlibVector bestX;
+      double bestY = 0.0;
+      size_t bestFunction = 0;
+      optimizer.get_best_function_eval(bestX, bestY, bestFunction);
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+        if (logScale[j])
+          bestX(j) = std::exp(bestX(j));
 
-    // Reconstruction of OptimizationResult
-    Sample inputHistory(objectiveDlibFunction.getInputHistory());
-    Sample outputHistory(objectiveDlibFunction.getOutputHistory());
+      // Reconstruction of OptimizationResult
+      Sample inputHistory(objectiveDlibFunction.getInputHistory());
+      Sample outputHistory(objectiveDlibFunction.getOutputHistory());
 
-    Point optimalPoint(dimension);
-    std::copy(globalOptimResult.x.begin(), globalOptimResult.x.end(), optimalPoint.begin());
+      Point optimalPoint(dimension);
+      std::copy(bestX.begin(), bestX.end(), optimalPoint.begin());
 
-    result_.store(inputHistory[0],
-                  outputHistory[0],
-                  0.0,
-                  0.0,
-                  0.0,
-                  0.0);
+      result_.store(inputHistory[0],
+                    outputHistory[0],
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0);
 
-    for (UnsignedInteger i = 1; i < objectiveDlibFunction.getCallsNumber(); ++ i) // Iterations 2 to last
-      result_.store(  inputHistory[i],
-                      outputHistory[i],
-                      (inputHistory[i] - inputHistory[i - 1]).norm(),
-                      (inputHistory[i] - inputHistory[i - 1]).norm() / Point(inputHistory[i]).norm(),
-                      (outputHistory[i] - outputHistory[i - 1]).norm(),
-                      0.0);
+      for (UnsignedInteger i = 1; i < objectiveDlibFunction.getCallsNumber(); ++ i) // Iterations 2 to last
+        result_.store(  inputHistory[i],
+                        outputHistory[i],
+                        (inputHistory[i] - inputHistory[i - 1]).norm(),
+                        (inputHistory[i] - inputHistory[i - 1]).norm() / Point(inputHistory[i]).norm(),
+                        (outputHistory[i] - outputHistory[i - 1]).norm(),
+                        0.0);
 
-    result_.setOptimalPoint(optimalPoint);
-    result_.setOptimalValue(Point(1, globalOptimResult.y));
-    result_.setCallsNumber(objectiveDlibFunction.getCallsNumber());
+      result_.setOptimalPoint(optimalPoint);
+      result_.setOptimalValue(Point(1, minimization ? -bestY : bestY));
+      result_.setCallsNumber(objectiveDlibFunction.getCallsNumber());
+      if (interrupted)
+      {
+        result_.setStatus(OptimizationResult::INTERRUPTION);
+        result_.setStatusMessage("Dlib optimization interrupted by user");
+      }
+    }
   }
   else if (algoName_ == "least_squares")
   {
@@ -849,6 +917,7 @@ void Dlib::save(Advocate & adv) const
   adv.saveAttribute("maxLineSearchIterations_", maxLineSearchIterations_);
   adv.saveAttribute("maxSize_", maxSize_);
   adv.saveAttribute("initialTrustRegionRadius_", initialTrustRegionRadius_);
+  adv.saveAttribute("seed_", seed_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -861,6 +930,8 @@ void Dlib::load(Advocate & adv)
   adv.loadAttribute("maxLineSearchIterations_", maxLineSearchIterations_);
   adv.loadAttribute("maxSize_", maxSize_);
   adv.loadAttribute("initialTrustRegionRadius_", initialTrustRegionRadius_);
+  if (adv.hasAttribute("seed_"))
+    adv.loadAttribute("seed_", seed_);
 }
 
 END_NAMESPACE_OPENTURNS

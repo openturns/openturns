@@ -923,6 +923,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
+  addAsUnsignedInteger("Dlib-InitialSeed", 0);
 
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
