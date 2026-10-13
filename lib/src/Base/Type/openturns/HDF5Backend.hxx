@@ -67,7 +67,9 @@ public:
 
   /**
    * Factory: open an existing HDF5 dataset for reading.
-   * The dataset must already exist in the file.
+   * The dataset must already exist in the file. The backend is read-only:
+   * resize() and writeBlock() throw, flush() is a no-op, and any mutation
+   * through data() stays in memory and is dropped (never written back).
    */
   static Pointer<HDF5Backend> Open(const FileName & fileName,
                                    const String & dataSetName);
