@@ -317,6 +317,8 @@ DataContainer::Layout DataContainer::getLayout() const
 /* Set dimension */
 void DataContainer::setDimension(UnsignedInteger dimension)
 {
+  // Metadata-only reinterpret: size_ (rows) is preserved and the backend
+  // is not resized, per the established contract (t_DataEngine_std.py).
   dimension_ = dimension;
 }
 
@@ -385,6 +387,9 @@ void DataContainer::erase(UnsignedInteger firstFlat, UnsignedInteger lastFlat)
   if (lastFlat < totalSize)
     std::memmove(d + firstFlat, d + lastFlat, (totalSize - lastFlat) * sizeof(Scalar));
   const UnsignedInteger newTotal = totalSize - count;
+  // Rows are the storage unit: a partial row would desynchronize size_ and dimension_
+  if (dimension_ > 0 && newTotal % dimension_ != 0)
+    throw InvalidArgumentException(HERE) << "erase range [" << firstFlat << ", " << lastFlat << ") leaves " << newTotal << " elements, not a multiple of dimension " << dimension_;
   size_ = (dimension_ > 0) ? newTotal / dimension_ : 0;
   backend_->resize(newTotal);
   refreshCache();
@@ -427,6 +432,10 @@ DataContainer DataContainer::subView(UnsignedInteger startRow, UnsignedInteger n
     throw InvalidArgumentException(HERE) << "subView range [" << startRow << ", " << startRow + nrows << ") exceeds size " << size_;
   if (dimension_ == 0)
     throw InvalidArgumentException(HERE) << "Cannot create subView of container with dimension 0";
+  // Views are contiguous: only row-major rows are contiguous in memory,
+  // column-major rows are strided and cannot be represented by ViewBackend
+  if (layout_ != ROW_MAJOR)
+    throw InvalidArgumentException(HERE) << "Cannot create subView of a column-major container (rows are strided)";
   // Compute the byte offset for row-major layout: row i starts at i * dimension_
   const UnsignedInteger offset = startRow * dimension_;
   return DataContainer(data() + offset, nrows, dimension_, layout_);
