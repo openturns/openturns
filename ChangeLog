@@ -106,6 +106,9 @@
  * HMatrix-ParallelSolver : Select the HMatrix parallel backend StarPU or ToyRT when both are available. Default value is starpu
  * HMatrix-Admissibility : select the admissibility criterion to assemble an HMatrix. Use the standard one (Hackbusch in the literature) or HODLR. Default is standard.
  * CumulativeDistributionNetwork-MaximumTerms: maximum number of derivative assignments, free-variable table entries (continuous) or binary elimination-table entries (integral) enumerated by the density and conditional algorithms before a NotYetImplementedException is raised (default is 1000000)
+ * AlgebraEngine-DefaultBlockSize: number of rows and columns per block for out-of-core blockwise linear algebra (default is 384)
+ * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
+ * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)

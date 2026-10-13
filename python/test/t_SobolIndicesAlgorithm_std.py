@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import openturns as ot
-import openturns.testing as ott
 from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
@@ -195,5 +194,5 @@ for sample_size in [100, 1000]:
     total_error = computed_total_orderB - exact_total_order
     print("Method B :", first_error, total_error)
     # Same design through both entry points: identical up to parallel-reduction rounding
-    ott.assert_almost_equal(computed_first_orderB, computed_first_orderA, 1.0e-13, 0.0, "wrong first")
-    ott.assert_almost_equal(computed_total_orderB, computed_total_orderA, 1.0e-13, 0.0, "wrong total")
+    assert computed_first_orderB == computed_first_orderA, "wrong first"
+    assert computed_total_orderB == computed_total_orderA, "wrong total"

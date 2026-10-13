@@ -7,7 +7,14 @@ StatisticsEngine provides static methods for statistical operations
 on DataContainer objects, using TBBImplementation for parallelism.
 
 Sample convention: row = observation, column = variable.
-Input data must be in ROW_MAJOR layout."
+Input data must be in ROW_MAJOR layout.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``StatisticsEngine-DefaultBlockSize`` (``UnsignedInteger``, default: ``4096``): number of rows per block for out-of-core blockwise statistics.
+- ``StatisticsEngine-ParallelThreshold`` (``UnsignedInteger``, default: ``100000``): minimum row count for parallel reductions; smaller inputs use serial reductions for bitwise reproducibility."
 
 // ---------------------------------------------------------------------
 
