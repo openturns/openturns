@@ -22,6 +22,7 @@
 #define OPENTURNS_COMPLEXHDF5BACKEND_HXX
 
 #include "openturns/ComplexDataContainer.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,7 +42,7 @@ public:
   ComplexHDF5Backend(const FileName & fileName,
                      const String & dataSetName,
                      UnsignedInteger n,
-                     UnsignedInteger compressionLevel = 0);
+                     UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultCompressionLevel"));
 
   /** Factory: open existing re/im datasets (read-only) */
   static Pointer<ComplexHDF5Backend> Open(const FileName & fileName,
