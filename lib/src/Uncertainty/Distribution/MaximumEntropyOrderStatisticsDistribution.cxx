@@ -721,29 +721,28 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalCDF (const S
 
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar MaximumEntropyOrderStatisticsDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
 
-  if (conditioningDimension == 0) return distributionCollection_[0].computeQuantile(q)[0];
+  if (conditioningDimension == 0) return distributionCollection_[0].computeQuantile(p)[0];
   const UnsignedInteger k = conditioningDimension;
   if (partition_.contains(k - 1))
   {
-    return distributionCollection_[k].computeQuantile(q)[0];
+    return distributionCollection_[k].computeQuantile(p)[0];
   }
   // We have to solve:
   // 1 - exp(-\int_{xKm1}^x\phi(s)ds) = q
   // <->
   // Phi(x) - Phi(xKm1) = -log(1 - q)
   // Factor(x, xKm1) = -log(1 - q)
-  const Scalar xKm1 = y[k - 1];
-  if (q == 0.0) return xKm1;
+  const Scalar xKm1 = xcond[k - 1];
+  if (p == 0.0) return xKm1;
   Scalar b = getRange().getUpperBound()[k];
-  if (q == 1.0) return b;
-  const Scalar logU = log1p(-q);
+  if (p == 1.0) return b;
+  const Scalar logU = log1p(-p);
   // First, try Newton iterations:
   // Factor(xKm1, x+dx) = -log(1 - q) = Factor(xKm1, x) + f_k(x) / (F_{k-1}(x) - F_k(x)) dk
   // -> dx = (log(1 - q) + Factor(xKm1, x))(F_k(x) - F_{k-1}(x)) / f_k(x)

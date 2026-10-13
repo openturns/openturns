@@ -300,49 +300,46 @@ Point SklarCopula::computeQuantile(const Scalar prob,
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar SklarCopula::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar SklarCopula::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return (x < 0.0 ? 0.0 : (x > 1.0 ? 0.0 : 1.0));
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return (xj < 0.0 ? 0.0 : (xj > 1.0 ? 0.0 : 1.0));
   // General case
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
-  const Scalar ux = marginalCollection_[conditioningDimension].computeQuantile(x)[0];
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(xcond[i])[0];
+  const Scalar ux = marginalCollection_[conditioningDimension].computeQuantile(xj)[0];
   const Scalar pdf = marginalCollection_[conditioningDimension].computePDF(ux);
   if (pdf == 0.0) return 0.0;
   return distribution_.computeConditionalPDF(ux, u) / pdf;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar SklarCopula::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar SklarCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(xj);
   // General case
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
-  return distribution_.computeConditionalCDF(marginalCollection_[conditioningDimension].computeQuantile(x)[0], u);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(xcond[i])[0];
+  return distribution_.computeConditionalCDF(marginalCollection_[conditioningDimension].computeQuantile(xj)[0], u);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar SklarCopula::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar SklarCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return q;
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return p;
   // General case
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(y[i])[0];
-  return marginalCollection_[conditioningDimension].computeCDF(distribution_.computeConditionalQuantile(q, u));
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = marginalCollection_[i].computeQuantile(xcond[i])[0];
+  return marginalCollection_[conditioningDimension].computeCDF(distribution_.computeConditionalQuantile(p, u));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

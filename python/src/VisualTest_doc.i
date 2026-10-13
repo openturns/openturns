@@ -7,7 +7,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Tested (univariate) sample.
-normal_distribution : :class:`~openturns.Normal`, optional
+normal : :class:`~openturns.Normal`, optional
     Tested (univariate) normal distribution.
 
     If not given, this will build a :class:`~openturns.Normal` distribution
@@ -328,13 +328,13 @@ inputSample : 2-d sequence of float of dimension :math:`n`
     Input sample :math:`\vect{X}`.
 outputSample : 2-d sequence of float of dimension :math:`1`
     Output sample :math:`Y`.
-Ymin, Ymax : float such that *Ymax > Ymin*
+minValue, maxValue : float such that *maxValue > minValue*
     Values to select lines which will colore in *color*. Must be in
     :math:`[0,1]` if *quantileScale=True*.
 color : str
     Color of the specified curves.
 quantileScale : bool
-    Flag indicating the scale of the *Ymin* and *Ymax*. If
+    Flag indicating the scale of the *minValue* and *maxValue*. If
     *quantileScale=True*, they are expressed in the rank based scale;
     otherwise, they are expressed in the :math:`Y`-values scale.
 
@@ -365,10 +365,10 @@ empirical distribution.
 
 It is interesting to select, among those lines, the ones which correspond to a
 specific range of the output variable. These particular lines selected are
-colored differently in *color*. This specific range is defined with *Ymin* and
-*Ymax* in the quantile based scale of :math:`Y` or in its specific scale. In
-that second case, the range is automatically converted into a quantile based
-scale range.
+colored differently in *color*. This specific range is defined with *minValue*
+and *maxValue* in the quantile based scale of :math:`Y` or in its specific
+scale. In that second case, the range is automatically converted into a
+quantile based scale range.
 
 Examples
 --------
@@ -643,7 +643,7 @@ The function is defined in :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
-sample : 2-d sequence of float
+data : 2-d sequence of float
     Bivariate sample
 
 Returns
@@ -667,7 +667,7 @@ The function is defined in :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
-sample : 2-d sequence of float
+data : 2-d sequence of float
     Bivariate sample.
 
 Returns
@@ -691,7 +691,7 @@ The function is defined in :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
-sample : 2-d sequence of float
+data : 2-d sequence of float
     Bivariate sample
 
 Returns
@@ -715,7 +715,7 @@ The function is defined in  :any:`tail_dependence`. It is estimated from data.
 
 Parameters
 ----------
-sample : 2-d sequence of float
+data : 2-d sequence of float
     Bivariate sample
 
 Returns

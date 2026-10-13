@@ -149,7 +149,7 @@ fftAlgo : :class:`~openturns.FFT`
 
 Parameters
 ----------
-fftAlgo : :class:`~openturns.FFT`
+fft : :class:`~openturns.FFT`
     FFT algorithm that will be used to generate realizations."
 // ---------------------------------------------------------------------
 

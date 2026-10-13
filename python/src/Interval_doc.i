@@ -314,14 +314,14 @@ Examples
 
 Parameters
 ----------
-otherInterval : :class:`~openturns.Interval`
+other : :class:`~openturns.Interval`
     Interval of the same dimension.
 
 Returns
 -------
 interval : :class:`~openturns.Interval`
     An interval corresponding to the intersection of the current interval with
-    *otherInterval*.
+    *other*.
 
 Examples
 --------
@@ -339,14 +339,14 @@ Examples
 
 Parameters
 ----------
-otherInterval : :class:`~openturns.Interval`
+other : :class:`~openturns.Interval`
     Interval of the same dimension.
 
 Returns
 -------
 interval : :class:`~openturns.Interval`
     Smallest interval containing both the current interval and
-    *otherInterval*.
+    *other*.
 
 Examples
 --------

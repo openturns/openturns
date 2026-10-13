@@ -104,21 +104,20 @@ Scalar ArchimedeanCopula::computeProbability(const Interval & interval) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ArchimedeanCopula::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar ArchimedeanCopula::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // If x is outside of the range of the marginal distribution
-  if ((x <= 0.0) || (x >= 1.0)) return 0.0;
+  if ((xj <= 0.0) || (xj >= 1.0)) return 0.0;
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return 1.0;
-  const Scalar z = y[0];
+  const Scalar z = xcond[0];
   // If the conditioning variable is outside of the range of the marginal distribution
   if ((z <= 0.0) || (z >= 1.0)) return 0.0;
   Point point(2);
   point[0] = z;
-  point[1] = x;
+  point[1] = xj;
   return computePDF(point);
 }
 

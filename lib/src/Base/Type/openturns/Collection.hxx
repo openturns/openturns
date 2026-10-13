@@ -231,12 +231,12 @@ public:
   }
 
   inline
-  Collection<T> select(const Collection<UnsignedInteger> & marginalIndices) const
+  Collection<T> select(const Collection<UnsignedInteger> & indices) const
   {
-    Collection<T> marginalCollection(marginalIndices.getSize());
-    for (UnsignedInteger i = 0; i < marginalIndices.getSize(); ++ i)
+    Collection<T> marginalCollection(indices.getSize());
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++ i)
     {
-      const UnsignedInteger index = marginalIndices[i];
+      const UnsignedInteger index = indices[i];
       if (index >= coll__.size())
         throw OutOfBoundException(HERE) << "Selection index is out of range (" << index << ") as size=" << coll__.size();
       marginalCollection[i] = coll__[index];
@@ -279,16 +279,16 @@ public:
 
   /** At() gives access to the elements of the collection but throws an exception if bounds are overcome */
   inline
-  virtual T & at(const UnsignedInteger i)
+  virtual T & at(const UnsignedInteger index)
   {
-    return coll__.at(i);
+    return coll__.at(index);
   }
 
   /** At() gives access to the elements of the const collection but throws an exception if bounds are overcome */
   inline
-  virtual const T & at(const UnsignedInteger i) const
+  virtual const T & at(const UnsignedInteger index) const
   {
-    return coll__.at(i);
+    return coll__.at(index);
   }
 
   /** Method add() appends an element to the collection */

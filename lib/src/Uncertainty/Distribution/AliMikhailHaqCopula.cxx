@@ -286,15 +286,15 @@ Point AliMikhailHaqCopula::computeQuantile(const Scalar prob,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar AliMikhailHaqCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar AliMikhailHaqCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
-  const Scalar u = y[0];
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(xj);
+  const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u < 1.0))) return 0.0;
-  const Scalar v = x;
+  const Scalar v = xj;
   if (!(v > 0.0)) return 0.0;
   if (!(v < 1.0)) return 1.0;
   // If we are in the support
@@ -302,22 +302,22 @@ Scalar AliMikhailHaqCopula::computeConditionalCDF(const Scalar x, const Point & 
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar AliMikhailHaqCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  if (q == 0.0) return 0.0;
-  if (q == 1.0) return 1.0;
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return 1.0;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
   // Optimized code given by Maple 13
-  const Scalar u = y[0];
+  const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
-  const Scalar qTheta = q * theta_;
+  const Scalar qTheta = p * theta_;
   const Scalar theta2 = theta_ * theta_;
-  const Scalar qTheta2 = q * theta2;
+  const Scalar qTheta2 = p * theta2;
   const Scalar u2 = u * u;
   const Scalar qTheta2U2 = qTheta2 * u2;
   const Scalar qThetaU = qTheta * u;

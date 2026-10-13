@@ -70,8 +70,7 @@ public:
   Scalar computeProbability(const Interval & interval) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  Scalar computeConditionalPDF(const Scalar x,
-                               const Point & y) const override;
+  Scalar computeConditionalPDF(const Scalar xj, const Point & xcond) const override;
 
   /** Compute the archimedean generator of the archimedean copula, i.e.
    *  the function phi such that the CDF of the copula can

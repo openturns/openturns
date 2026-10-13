@@ -113,7 +113,7 @@ Examples
 
 Parameters
 ----------
-algorithm : :class:`~openturns.OptimizationAlgorithm`"
+solver : :class:`~openturns.OptimizationAlgorithm`"
 
 
 
@@ -125,7 +125,7 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`"
 
 Returns
 -------
-algorithm : :class:`~openturns.OptimizationAlgorithm`"
+solver : :class:`~openturns.OptimizationAlgorithm`"
 
 
 

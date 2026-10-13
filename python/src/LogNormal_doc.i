@@ -103,7 +103,7 @@ R"RAW(Accessor to the distribution's location parameter :math:`\mu_\ell`.
 
 Returns
 -------
-mu_log : float
+muLog : float
     Location parameter :math:`\mu_\ell`.)RAW"
 
 // ---------------------------------------------------------------------
@@ -113,7 +113,7 @@ R"RAW(Accessor to the distribution's scale parameter :math:`\sigma_\ell`.
 
 Returns
 -------
-sigma_log : float
+sigmaLog : float
     Scale parameter :math:`\sigma_\ell`.)RAW"
 
 // ---------------------------------------------------------------------
@@ -133,7 +133,7 @@ R"RAW(Accessor to the distribution's location parameter :math:`\mu_\ell`.
 
 Parameters
 ----------
-mu_log : float, :math:`\mu_\ell \in \Rset`
+muLog : float, :math:`\mu_\ell \in \Rset`
     Location parameter :math:`\mu_\ell`.)RAW"
 
 // ---------------------------------------------------------------------
@@ -143,5 +143,5 @@ R"RAW(Accessor to the distribution's scale parameter :math:`\sigma_\ell`.
 
 Parameters
 ----------
-sigma_log : float, :math:`\sigma_\ell > 0`
+sigmaLog : float, :math:`\sigma_\ell > 0`
     Scale parameter :math:`\sigma_\ell`.)RAW"

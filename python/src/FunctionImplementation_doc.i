@@ -410,7 +410,7 @@ OT_Function_getHessian_doc
 
 Parameters
 ----------
-function : :class:`~openturns.EvaluationImplementation`
+evaluation : :class:`~openturns.EvaluationImplementation`
     The evaluation function."
 %enddef
 %feature("docstring") OT::FunctionImplementation::setEvaluation
@@ -423,7 +423,7 @@ OT_Function_setEvaluation_doc
 
 Parameters
 ----------
-gradient_function : :class:`~openturns.GradientImplementation`
+gradient : :class:`~openturns.GradientImplementation`
     The gradient function.
 
 Examples
@@ -445,7 +445,7 @@ OT_Function_setGradient_doc
 
 Parameters
 ----------
-hessian_function : :class:`~openturns.HessianImplementation`
+hessian : :class:`~openturns.HessianImplementation`
     The Hessian function.
 
 Examples
@@ -467,13 +467,13 @@ R"RAW(Return the Jacobian transposed matrix of the function at a point.
 
 Parameters
 ----------
-point : sequence of float
+inP : sequence of float
     Point where the Jacobian transposed matrix is calculated.
 
 Returns
 -------
 gradient : :class:`~openturns.Matrix`
-    The Jacobian transposed matrix of the function at *point*.
+    The Jacobian transposed matrix of the function at *inP*.
 
 Notes
 -----
@@ -510,13 +510,13 @@ R"RAW(Return the Hessian of the function at a point.
 
 Parameters
 ----------
-point : sequence of float
+inP : sequence of float
     Point where the Hessian of the function is calculated.
 
 Returns
 -------
 hessian : :class:`~openturns.SymmetricTensor`
-    Hessian of the function at *point*.
+    Hessian of the function at *inP*.
 
 Notes
 -----
@@ -596,7 +596,7 @@ OT_Function_setDescription_doc
 
 Parameters
 ----------
-description : :class:`~openturns.Description`
+inputDescription : :class:`~openturns.Description`
     Description of the input vector."
 %enddef
 %feature("docstring") OT::FunctionImplementation::setInputDescription
@@ -630,7 +630,7 @@ OT_Function_getInputDescription_doc
 
 Parameters
 ----------
-description : :class:`~openturns.Description`
+outputDescription : :class:`~openturns.Description`
     Description of the output vector."
 %enddef
 %feature("docstring") OT::FunctionImplementation::setOutputDescription
@@ -926,7 +926,7 @@ OT_Function_setParameter_doc
 
 Returns
 -------
-parameter : :class:`~openturns.Description`
+description : :class:`~openturns.Description`
     The parameter description."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getParameterDescription
@@ -939,7 +939,7 @@ OT_Function_getParameterDescription_doc
 
 Parameters
 ----------
-parameter : :class:`~openturns.Description`
+description : :class:`~openturns.Description`
     The parameter description."
 %enddef
 %feature("docstring") OT::FunctionImplementation::setParameterDescription

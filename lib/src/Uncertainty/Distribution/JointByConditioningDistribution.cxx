@@ -508,24 +508,23 @@ void JointByConditioningDistribution::computeCovariance() const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar JointByConditioningDistribution::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar JointByConditioningDistribution::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for a conditioning only in the conditioning part
   const UnsignedInteger conditioningDistributionDimension = conditioningDistribution_.getDimension();
   if ((conditioningDimension < conditioningDistributionDimension))
-    return conditioningDistribution_.computeConditionalPDF(x, y);
+    return conditioningDistribution_.computeConditionalPDF(xj, xcond);
   // The conditioning part is fully conditioned, let's evaluate the link function
   Point fixedConditioningPart(conditioningDistributionDimension);
-  std::copy(y.begin(), y.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
+  std::copy(xcond.begin(), xcond.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
   Distribution conditioned(conditionedDistribution_);
   conditioned.setParameter(linkFunction_(fixedConditioningPart));
   Point fixedConditionedPart(conditioningDimension - conditioningDistributionDimension);
   if (fixedConditionedPart.getDimension() > 0)
-    std::copy(y.begin() + conditioningDistributionDimension, y.end(), fixedConditionedPart.begin());
-  return conditioned.computeConditionalPDF(x, fixedConditionedPart);
+    std::copy(xcond.begin() + conditioningDistributionDimension, xcond.end(), fixedConditionedPart.begin());
+  return conditioned.computeConditionalPDF(xj, fixedConditionedPart);
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -548,24 +547,23 @@ Point JointByConditioningDistribution::computeSequentialConditionalPDF(const Poi
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar JointByConditioningDistribution::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar JointByConditioningDistribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for a conditioning only in the conditioning part
   const UnsignedInteger conditioningDistributionDimension = conditioningDistribution_.getDimension();
   if ((conditioningDimension < conditioningDistributionDimension))
-    return conditioningDistribution_.computeConditionalCDF(x, y);
+    return conditioningDistribution_.computeConditionalCDF(xj, xcond);
   // The conditioning part is fully conditioned, let's evaluate the link function
   Point fixedConditioningPart(conditioningDistributionDimension);
-  std::copy(y.begin(), y.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
+  std::copy(xcond.begin(), xcond.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
   Distribution conditioned(conditionedDistribution_);
   conditioned.setParameter(linkFunction_(fixedConditioningPart));
   Point fixedConditionedPart(conditioningDimension - conditioningDistributionDimension);
   if (fixedConditionedPart.getDimension() > 0)
-    std::copy(y.begin() + conditioningDistributionDimension, y.end(), fixedConditionedPart.begin());
-  return conditioned.computeConditionalCDF(x, fixedConditionedPart);
+    std::copy(xcond.begin() + conditioningDistributionDimension, xcond.end(), fixedConditionedPart.begin());
+  return conditioned.computeConditionalCDF(xj, fixedConditionedPart);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -588,25 +586,24 @@ Point JointByConditioningDistribution::computeSequentialConditionalCDF(const Poi
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar JointByConditioningDistribution::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar JointByConditioningDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for a conditioning only in the conditioning part
   const UnsignedInteger conditioningDistributionDimension = conditioningDistribution_.getDimension();
   if ((conditioningDimension < conditioningDistributionDimension))
-    return conditioningDistribution_.computeConditionalQuantile(q, y);
+    return conditioningDistribution_.computeConditionalQuantile(p, xcond);
   // The conditioning part is fully conditioned, let's evaluate the link function
   Point fixedConditioningPart(conditioningDistributionDimension);
-  std::copy(y.begin(), y.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
+  std::copy(xcond.begin(), xcond.begin() + conditioningDistributionDimension, fixedConditioningPart.begin());
   Distribution conditioned(conditionedDistribution_);
   conditioned.setParameter(linkFunction_(fixedConditioningPart));
   Point fixedConditionedPart(conditioningDimension - conditioningDistributionDimension);
   if (fixedConditionedPart.getDimension() > 0)
-    std::copy(y.begin() + conditioningDistributionDimension, y.end(), fixedConditionedPart.begin());
-  return conditioned.computeConditionalQuantile(q, fixedConditionedPart);
+    std::copy(xcond.begin() + conditioningDistributionDimension, xcond.end(), fixedConditionedPart.begin());
+  return conditioned.computeConditionalQuantile(p, fixedConditionedPart);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

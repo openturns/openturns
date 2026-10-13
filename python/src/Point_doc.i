@@ -343,7 +343,7 @@ Examples
 
 Parameters
 ----------
-point : sequence of float
+rhs : sequence of float
     Scalar product second argument
 
 Returns

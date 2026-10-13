@@ -506,7 +506,7 @@ OT_Evaluation_isLinearlyDependent_doc
 
 Parameters
 ----------
-check_output : bool
+checkOutput : bool
     Whether to check return values for nan or inf."
 %enddef
 %feature("docstring") OT::EvaluationImplementation::setCheckOutput
@@ -519,7 +519,7 @@ OT_Evaluation_setCheckOutput_doc
 
 Returns
 -------
-check_output : bool
+checkOutput : bool
     Whether to check return values for nan or inf."
 %enddef
 %feature("docstring") OT::EvaluationImplementation::getCheckOutput

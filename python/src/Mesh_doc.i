@@ -744,7 +744,7 @@ upper_bound : :class:`~openturns.Point`
 
 Parameters
 ----------
-mesh : :class:`~openturns.Mesh`
+other : :class:`~openturns.Mesh`
     Another mesh.
 
 Returns

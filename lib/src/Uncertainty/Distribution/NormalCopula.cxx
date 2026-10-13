@@ -392,23 +392,22 @@ Point NormalCopula::computeCDFGradient(const Point & point) const
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
    The conditional normal copula is the copula of this conditional normal distribution
 */
-Scalar NormalCopula::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar NormalCopula::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return (x >= 0.0 && x < 1.0 ? 1.0 : 0.0);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return (xj >= 0.0 && xj < 1.0 ? 1.0 : 0.0);
   // General case
   const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
   Scalar meanRos = 0.0;
   const Scalar sigmaRos = 1.0 / inverseCholesky(conditioningDimension, conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    meanRos += inverseCholesky(conditioningDimension, i) * DistFunc::qNormal(y[i]);
+    meanRos += inverseCholesky(conditioningDimension, i) * DistFunc::qNormal(xcond[i]);
   }
   meanRos *= -sigmaRos;
-  const Scalar z = DistFunc::qNormal(x);
+  const Scalar z = DistFunc::qNormal(xj);
   const Scalar u = (z - meanRos) / sigmaRos;
   return std::exp(-0.5 * (u * u - z * z)) / sigmaRos;
 }
@@ -470,22 +469,21 @@ Point NormalCopula::computeSequentialConditionalPDF(const Point & x) const
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar NormalCopula::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar NormalCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
-    return (!(x > 0.0) ? 0.0 : !(x < 1.0) ? 1.0 : x);
+    return (!(xj > 0.0) ? 0.0 : !(xj < 1.0) ? 1.0 : xj);
   // General case
   const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
   Scalar meanRos = 0.0;
   const Scalar sigmaRos = 1.0 / inverseCholesky(conditioningDimension, conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    meanRos += inverseCholesky(conditioningDimension, i) * DistFunc::qNormal(y[i]);
+    meanRos += inverseCholesky(conditioningDimension, i) * DistFunc::qNormal(xcond[i]);
   meanRos *= -sigmaRos;
-  return DistFunc::pNormal((DistFunc::qNormal(x) - meanRos) / sigmaRos);
+  return DistFunc::pNormal((DistFunc::qNormal(xj) - meanRos) / sigmaRos);
 }
 
 Point NormalCopula::computeSequentialConditionalCDF(const Point & x) const
@@ -502,26 +500,25 @@ Point NormalCopula::computeSequentialConditionalCDF(const Point & x) const
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar NormalCopula::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar NormalCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (!((y[i] >= 0.0) && (y[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
+    if (!((xcond[i] >= 0.0) && (xcond[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
   // Special case when no contitioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
   // General case
   const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
   Scalar meanRos = 0.0;
   const Scalar sigmaRos = 1.0 / inverseCholesky(conditioningDimension, conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    meanRos += inverseCholesky(conditioningDimension, i) * DistFunc::qNormal(y[i]);
+    meanRos += inverseCholesky(conditioningDimension, i) * DistFunc::qNormal(xcond[i]);
   }
   meanRos *= - sigmaRos;
-  return DistFunc::pNormal(meanRos + sigmaRos * DistFunc::qNormal(q));
+  return DistFunc::pNormal(meanRos + sigmaRos * DistFunc::qNormal(p));
 }
 
 Point NormalCopula::computeSequentialConditionalQuantile(const Point & q) const

@@ -51,7 +51,7 @@ distributions : list of distributions
 
 Parameters
 ----------
-distributions : list of distributions
+coll : list of distributions
     The collection of distributions to be merged."
 
 

@@ -17,7 +17,7 @@ SystemFORM"
 
 Parameters
 ----------
-probability : positive float
+eventProbability : positive float
     The FORM failure probability :math:`P_f`."
 
 // ---------------------------------------------------------------------

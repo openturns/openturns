@@ -581,10 +581,10 @@ Sample Sample::computeQuantile(const Point & prob) const
 /*
  * Get the empirical CDF of the sample
  */
-Scalar Sample::computeEmpiricalCDF(const Point & point,
-                                   const Bool tail) const
+Scalar Sample::computeEmpiricalCDF(const Point & x,
+                                   const Bool survival) const
 {
-  return getImplementation()->computeEmpiricalCDF(point, tail);
+  return getImplementation()->computeEmpiricalCDF(x, survival);
 }
 
 /*

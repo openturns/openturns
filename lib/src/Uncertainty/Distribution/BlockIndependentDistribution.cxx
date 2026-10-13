@@ -363,20 +363,20 @@ UnsignedInteger BlockIndependentDistribution::computePartialDimension(const Unsi
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar BlockIndependentDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar BlockIndependentDistribution::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(y.getDimension()).computePDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(xcond.getDimension()).computePDF(xj);
   // General case
   UnsignedInteger distributionIndex;
   const UnsignedInteger partialDimension = computePartialDimension(conditioningDimension, distributionIndex);
   // Extract the relevant part of the conditioning
   const UnsignedInteger conditioningSize = conditioningDimension - partialDimension;
   Point conditioningVector(conditioningSize);
-  std::copy(y.end() - conditioningSize, y.end(), conditioningVector.begin());
-  return distributionCollection_[distributionIndex].computeConditionalPDF(x, conditioningVector);
+  std::copy(xcond.end() - conditioningSize, xcond.end(), conditioningVector.begin());
+  return distributionCollection_[distributionIndex].computeConditionalPDF(xj, conditioningVector);
 }
 
 Point BlockIndependentDistribution::computeSequentialConditionalPDF(const Point & x) const
@@ -478,20 +478,20 @@ Point BlockIndependentDistribution::computeSequentialConditionalPDF(const Point 
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar BlockIndependentDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar BlockIndependentDistribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(y.getDimension()).computeCDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(xcond.getDimension()).computeCDF(xj);
   // General case
   UnsignedInteger distributionIndex;
   const UnsignedInteger partialDimension = computePartialDimension(conditioningDimension, distributionIndex);
   // Extract the relevant part of the conditioning
   const UnsignedInteger conditioningSize = conditioningDimension - partialDimension;
   Point conditioningVector(conditioningSize);
-  std::copy(y.end() - conditioningSize, y.end(), conditioningVector.begin());
-  return distributionCollection_[distributionIndex].computeConditionalCDF(x, conditioningVector);
+  std::copy(xcond.end() - conditioningSize, xcond.end(), conditioningVector.begin());
+  return distributionCollection_[distributionIndex].computeConditionalCDF(xj, conditioningVector);
 }
 
 Point BlockIndependentDistribution::computeSequentialConditionalCDF(const Point & x) const
@@ -593,22 +593,22 @@ Point BlockIndependentDistribution::computeSequentialConditionalCDF(const Point 
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar BlockIndependentDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar BlockIndependentDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  if (q == 0.0) return getRange().getLowerBound()[y.getDimension()];
-  if (q == 1.0) return getRange().getUpperBound()[y.getDimension()];
-  if (conditioningDimension == 0) return getMarginal(0).computeQuantile(q)[0];
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (p == 0.0) return getRange().getLowerBound()[xcond.getDimension()];
+  if (p == 1.0) return getRange().getUpperBound()[xcond.getDimension()];
+  if (conditioningDimension == 0) return getMarginal(0).computeQuantile(p)[0];
   // General case
   UnsignedInteger distributionIndex;
   const UnsignedInteger partialDimension = computePartialDimension(conditioningDimension, distributionIndex);
   // Extract the relevant part of the conditioning
   const UnsignedInteger conditioningSize = conditioningDimension - partialDimension;
   Point conditioningVector(conditioningSize);
-  std::copy(y.end() - conditioningSize, y.end(), conditioningVector.begin());
-  return distributionCollection_[distributionIndex].computeConditionalQuantile(q, conditioningVector);
+  std::copy(xcond.end() - conditioningSize, xcond.end(), conditioningVector.begin());
+  return distributionCollection_[distributionIndex].computeConditionalQuantile(p, conditioningVector);
 }
 
 Point BlockIndependentDistribution::computeSequentialConditionalQuantile(const Point & q) const

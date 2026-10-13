@@ -773,8 +773,8 @@ R"RAW(Compute the quantile function.
 
 Parameters
 ----------
-p : float (or sequence of float), :math:`p \in [0, 1]`
-    A probability.
+prob : float (or sequence of float), :math:`p \in [0, 1]`
+    A probability. In the mathematical notation, this is denoted by :math:`p`.
 tail : bool, optional
     `True` indicates that the order considered is :math:`1-p`.
     Default value is `False`.
@@ -854,8 +854,8 @@ R"RAW(Compute the quantile function for univariate distributions.
 
 Parameters
 ----------
-p : float, :math:`p \in [0; 1]`
-    A probability.
+prob : float, :math:`p \in [0; 1]`
+    A probability. In the mathematical notation, this is denoted by :math:`p`.
 
 Returns
 -------
@@ -926,8 +926,8 @@ R"RAW(Compute the inverse survival function.
 
 Parameters
 ----------
-p : float, :math:`p \in [0; 1]`
-    Value of the survival function.
+prob : float, :math:`p \in [0; 1]`
+    Value of the survival function. In the mathematical notation, this is denoted by :math:`p`.
 
 Returns
 -------
@@ -1029,13 +1029,13 @@ R"RAW(Draw the cumulative distribution function of a margin.
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq d`
+marginalIndex : int, :math:`0 \leq i < d`
     The index of the margin of interest.
 xMin : float
     The starting value that is used for meshing the x-axis.
 xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-nPoints : int
+pointNumber : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -1073,7 +1073,7 @@ R"RAW(Compute the confidence domain with minimum volume.
 
 Parameters
 ----------
-alpha : float, :math:`\alpha \in [0,1]`
+prob : float, :math:`\alpha \in [0,1]`
     The confidence level.
 
 Returns
@@ -1178,7 +1178,7 @@ R"RAW(Compute the confidence interval with minimum volume.
 
 Parameters
 ----------
-alpha : float, :math:`\alpha \in [0,1]`
+prob : float, :math:`\alpha \in [0,1]`
     The confidence level.
 
 Returns
@@ -1286,7 +1286,7 @@ R"RAW(Compute a bilateral confidence interval.
 
 Parameters
 ----------
-alpha : float, :math:`\alpha \in [0,1]`
+prob : float, :math:`\alpha \in [0,1]`
     The confidence level.
 
 Returns
@@ -1477,13 +1477,13 @@ R"RAW(Draw the probability density function of a margin.
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq d`
+marginalIndex : int, :math:`0 \leq i < d`
     The index of the margin of interest.
 xMin : float
     The starting value that is used for meshing the x-axis.
 xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-nPoints : int
+pointNumber : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale.
@@ -1519,13 +1519,13 @@ R"RAW(Draw the log-probability density function of a margin.
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq d`
+marginalIndex : int, :math:`0 \leq i < d`
     The index of the margin of interest.
 xMin : float
     The starting value that is used for meshing the x-axis.
 xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-nPoints : int
+pointNumber : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -1560,15 +1560,15 @@ R"RAW(Draw the cumulative distribution function of a couple of margins.
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq d`
+firstMarginal : int, :math:`0 \leq i < d`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq d`
+secondMarginal : int, :math:`0 \leq i \neq j < d`
     The index of the second margin of interest.
 xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
 xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-nPoints : list of 2 ints
+pointNumber : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
@@ -1606,15 +1606,15 @@ R"RAW(Draw the probability density function of a couple of margins.
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq d`
+firstMarginal : int, :math:`0 \leq i < d`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq d`
+secondMarginal : int, :math:`0 \leq i \neq j < d`
     The index of the second margin of interest.
 xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
 xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-nPoints : list of 2 ints
+pointNumber : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
@@ -1652,15 +1652,15 @@ R"RAW(Draw the log-probability density function of a couple of margins.
 
 Parameters
 ----------
-i : int, :math:`1 \leq i \leq d`
+firstMarginal : int, :math:`0 \leq i < d`
     The index of the first margin of interest.
-j : int, :math:`1 \leq i \neq j \leq d`
+secondMarginal : int, :math:`0 \leq i \neq j < d`
     The index of the second margin of interest.
 xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
 xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-nPoints : list of 2 ints
+pointNumber : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
@@ -3362,13 +3362,13 @@ R"RAW(Draw the cumulative distribution function of a margin.
 
 Parameters
 ----------
-i : int, :math:`0 \leq i < d`
+marginalIndex : int, :math:`0 \leq i < d`
     The index of the margin of interest.
 xMin : float
     The starting value that is used for meshing the x-axis.
 xMax : float, *xMax > xMin*
     The ending value that is used for meshing the x-axis.
-nPoints : int
+pointNumber : int
     The number of points that is used for meshing the x-axis.
 logScale : bool
     Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
@@ -3406,15 +3406,15 @@ R"RAW(Draw the cumulative distribution function of a couple of margins.
 
 Parameters
 ----------
-i : int, :math:`0 \leq i < d`
+firstMarginal : int, :math:`0 \leq i < d`
     The index of the first margin of interest.
-j : int, :math:`0 \leq i \neq j < d`
+secondMarginal : int, :math:`0 \leq i \neq j < d`
     The index of the second margin of interest.
 xMin : list of 2 floats
     The starting values that are used for meshing the x- and y- axes.
 xMax : list of 2 floats, *xMax > xMin*
     The ending values that are used for meshing the x- and y- axes.
-nPoints : list of 2 ints
+pointNumber : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
 logScaleX : bool
     Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.

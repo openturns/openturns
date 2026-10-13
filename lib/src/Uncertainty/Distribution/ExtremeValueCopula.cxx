@@ -274,28 +274,28 @@ private:
 };  // class conditionalCDF
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ExtremeValueCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar ExtremeValueCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  return ConditionalCDF(pickandFunction_, y[0])(Point(1, x))[0];
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return xj;
+  return ConditionalCDF(pickandFunction_, xcond[0])(Point(1, xj))[0];
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar ExtremeValueCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar ExtremeValueCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  if (q == 0.0) return 0.0;
-  if (q == 1.0) return 1.0;
+  if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return 1.0;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no conditioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  if (y[0] <= 0.0) return q;
-  const Scalar res = Brent(SpecFunc::ScalarEpsilon, SpecFunc::ScalarEpsilon, SpecFunc::ScalarEpsilon, 53).solve(ConditionalCDF(pickandFunction_, y[0]), q, SpecFunc::ScalarEpsilon, 1.0 - SpecFunc::ScalarEpsilon);
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
+  if (xcond[0] <= 0.0) return p;
+  const Scalar res = Brent(SpecFunc::ScalarEpsilon, SpecFunc::ScalarEpsilon, SpecFunc::ScalarEpsilon, 53).solve(ConditionalCDF(pickandFunction_, xcond[0]), p, SpecFunc::ScalarEpsilon, 1.0 - SpecFunc::ScalarEpsilon);
   return res;
 }
 

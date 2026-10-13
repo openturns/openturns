@@ -289,9 +289,9 @@ void ParametrizedDistribution::computeRange()
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ParametrizedDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar ParametrizedDistribution::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  return distribution_.computeConditionalPDF(x, y);
+  return distribution_.computeConditionalPDF(xj, xcond);
 }
 
 Point ParametrizedDistribution::computeSequentialConditionalPDF(const Point & x) const
@@ -300,9 +300,9 @@ Point ParametrizedDistribution::computeSequentialConditionalPDF(const Point & x)
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar ParametrizedDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar ParametrizedDistribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  return distribution_.computeConditionalCDF(x, y);
+  return distribution_.computeConditionalCDF(xj, xcond);
 }
 
 Point ParametrizedDistribution::computeSequentialConditionalCDF(const Point & x) const
@@ -310,9 +310,9 @@ Point ParametrizedDistribution::computeSequentialConditionalCDF(const Point & x)
   return distribution_.computeSequentialConditionalCDF(x);
 }
 
-Scalar ParametrizedDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar ParametrizedDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  return distribution_.computeConditionalQuantile(q, y);
+  return distribution_.computeConditionalQuantile(p, xcond);
 }
 
 Point ParametrizedDistribution::computeSequentialConditionalQuantile(const Point & q) const

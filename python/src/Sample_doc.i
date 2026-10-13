@@ -549,8 +549,9 @@ R"RAW(Estimate the quantile of the joint distribution underlying the sample.
 
 Parameters
 ----------
-p : float, :math:`0 \leq p \leq 1`, or sequence of float
-    Input probability level.
+prob : float, :math:`0 \leq p \leq 1`, or sequence of float
+    Input probability level. In the mathematical notation, this quantity is
+    denoted by :math:`p`.
 
 Returns
 -------
@@ -581,8 +582,9 @@ R"RAW(Estimate the componentwise quantiles.
 
 Parameters
 ----------
-p : float, :math:`0 \leq p \leq 1`, or sequence of float
-    Input probability level.
+prob : float, :math:`0 \leq p \leq 1`, or sequence of float
+    Input probability level. In the mathematical notation, this quantity is
+    denoted by :math:`p`.
 
 Returns
 -------
@@ -989,7 +991,7 @@ R"RAW(Compute the sample (componentwise) ranks.
 
 Parameters
 ----------
-marginal_index : int, :math:`0 \leq i < n`, optional
+index : int, :math:`0 \leq i < n`, optional
     The component whose ranks are wanted.
     Default computes the ranks of all the components.
 
@@ -1044,11 +1046,11 @@ according to lexicographic order.
 
 Parameters
 ----------
-marginal_index : int, :math:`0 \leq i < n`, optional
+index : int, :math:`0 \leq i < n`, optional
     The index of the component to sort.
     Default sorts the whole sample, i.e. the returned sorted sample has 
     the same dimension as the input sample.
-    If `marginal_index` is provided, then the returned sorted sample has dimension 1: 
+    If `index` is provided, then the returned sorted sample has dimension 1: 
     the corresponding marginal sample is sorted and returned.
 
 Returns
@@ -1128,7 +1130,7 @@ R"RAW(Sort the sample according to the given component.
 
 Parameters
 ----------
-marginal_index : int, :math:`0 \leq i < n`
+index : int, :math:`0 \leq i < n`
     The component to use for sorting the sample.
 
 Returns
@@ -1159,7 +1161,7 @@ R"RAW(Sort the sample in place according to the given component.
 
 Parameters
 ----------
-marginal_index : int, :math:`0 \leq i < n`
+index : int, :math:`0 \leq i < n`
     The component to use for sorting the sample.
 
 Examples
