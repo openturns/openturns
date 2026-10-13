@@ -417,6 +417,25 @@ OT_CovarianceModel_partialGradient_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_partialHessian_doc
+R"RAW(Compute the Hessian of the covariance function.
+
+Parameters
+----------
+s, t : floats or sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricMatrix`
+    Hessian of the covariance function with respect to :math:`\vect{s}`
+    for the first output component.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::partialHessian
+OT_CovarianceModel_partialHessian_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_parameterGradient_doc
 R"RAW(Compute the gradient according to the parameters.
 
@@ -661,7 +680,7 @@ tMin : float
 tMax : float
     The upper bound of the range over which the model is plotted. Default value is *CovarianceModel-DefaultTMax* in :class:`~openturns.ResourceMap`.
 pointNumber : int, :math:`pointNumber \geq 2`
-    The discretization of the range :math:`[tMin,tMax]` over which the model is plotted. Default value is *CovarianceModel-DefaultPointNumber* in  class:`~openturns.ResourceMap`.
+    The discretization of the range :math:`[tMin,tMax]` over which the model is plotted. Default value is *CovarianceModel-DefaultPointNumber* in :class:`~openturns.ResourceMap`.
 asStationary : bool
     Flag to tell if the model has to be plotted as a stationary model, ie as a function of the lag :math:`\tau=t-s` if equals to *True*, or as a non-stationary model, ie as a function of :math:`(s,t)` if equals to *False*. Default value is *True*.
 correlationFlag : bool

@@ -61,7 +61,11 @@ public:
   SquareMatrix operator() (const Point & s, const Point & t) const override;
 
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
+
+  /** Hessian wrt s */
+  SymmetricMatrix partialHessian(const Point & s,
                                  const Point & t) const override;
 
   /** Covariance accessor */

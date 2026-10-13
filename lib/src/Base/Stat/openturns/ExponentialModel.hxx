@@ -84,6 +84,13 @@ public:
   using CovarianceModelImplementation::partialGradient;
   Matrix partialGradient(const Point & s, const Point & t) const override;
 
+  /** Hessian */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Gradient wrt parameters */
+  Matrix parameterGradient(const Point & s, const Point & t) const override;
+
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const RegularGrid & regularGrid) const override;

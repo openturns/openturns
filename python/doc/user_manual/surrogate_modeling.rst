@@ -83,6 +83,9 @@ Main classes
 
     GaussianProcessRegression
     GaussianProcessFitter
+    experimental.SparseGaussianProcessRegression
+    experimental.SparseGaussianProcessFitter
+    experimental.SparseGaussianProcessHessian
 
     :template: class.rst_t
     GaussianProcessRegressionResult
@@ -95,6 +98,9 @@ Main classes
     KrigingResult
     GeneralLinearModelAlgorithm
     GeneralLinearModelResult
+    experimental.SparseGaussianProcessFitterResult
+    experimental.SparseGaussianProcessEvaluation
+    experimental.SparseGaussianProcessGradient
 
 Construction of the regression basis
 ------------------------------------
