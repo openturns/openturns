@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -51,3 +53,49 @@ for i in range(4):
     graph.setLogScale(i)
 
 print("graph = ", graph)
+
+# Extra coverage: constructors, edge color, FillBetween, persistence
+
+defaultPolygon = ot.Polygon("default legend")
+assert len(repr(defaultPolygon)) > 0
+assert len(str(defaultPolygon)) > 0
+samplePolygon = ot.Polygon(data1, "sample legend")
+assert samplePolygon.getEdgeColor() == samplePolygon.getColor()
+xyPolygon = ot.Polygon(data1[:, 0], data1[:, 1], "xy legend")
+ott.assert_almost_equal(xyPolygon.getData(), data1, 1e-14, 1e-14)
+pointPolygon = ot.Polygon(ot.Point([0.0, 1.0]), ot.Point([2.0, 3.0]), "point legend")
+ott.assert_almost_equal(
+    pointPolygon.getData(), [[0.0, 2.0], [1.0, 3.0]], 1e-14, 1e-14
+)
+oneDPolygon = ot.Polygon(ot.Sample([[1.0], [2.0], [3.0]]), "red", "blue", "1d legend")
+ott.assert_almost_equal(
+    oneDPolygon.getData(), [[0.0, 1.0], [1.0, 2.0], [2.0, 3.0]], 1e-14, 1e-14
+)
+assert oneDPolygon.getEdgeColor() == "blue"
+clonePolygon = ot.Polygon(polygon1)
+ott.assert_almost_equal(clonePolygon.getData(), polygon1.getData(), 1e-14, 1e-14)
+with ott.assert_raises(Exception):
+    ot.Polygon(ot.Sample([[0.0], [1.0]]), ot.Sample([[0.0]]))
+with ott.assert_raises(Exception):
+    ot.Polygon(ot.Point([0.0]), ot.Point([0.0, 1.0]))
+with ott.assert_raises(Exception):
+    ot.Polygon(ot.Sample([[1.0, 2.0, 3.0]]))
+with ott.assert_raises(Exception):
+    polygon1.setEdgeColor("invalid-color")
+fillPoint = ot.Polygon.FillBetween(
+    ot.Point([0.0, 1.0]), ot.Point([0.0, 1.0]), ot.Point([1.0, 2.0])
+)
+assert fillPoint.getData().getSize() == 4
+with ott.assert_raises(Exception):
+    ot.Polygon.FillBetween(ot.Point([0.0]), ot.Point([0.0, 1.0]), ot.Point([0.0]))
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("t_Polygon_std_tmp.xml"))
+study.add("poly", polygon1)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("t_Polygon_std_tmp.xml"))
+loadedStudy.load()
+loadedPoly = ot.Polygon()
+loadedStudy.fillObject("poly", loadedPoly)
+assert loadedPoly.getEdgeColor() == polygon1.getEdgeColor()
+os.remove("t_Polygon_std_tmp.xml")

@@ -126,3 +126,31 @@ validation.run()
 assert ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Normal(0.0, 2.0)).isElliptical()
 assert not ot.ProductDistribution(ot.Laplace(), ot.Laplace()).isElliptical()
 assert not ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Laplace()).isElliptical()
+
+# --- Coverage: equality, characteristic function, quadrant PDF sweeps, moments ---
+l_cov = ot.Uniform(-1.0, 2.0)
+r_cov = ot.Normal(1.0, 2.0)
+d1p_cov = ot.ProductDistribution(l_cov, r_cov)
+assert d1p_cov == d1p_cov
+assert d1p_cov == ot.ProductDistribution(l_cov, r_cov)
+assert d1p_cov.computePDF(0.1) > 0.0
+d2p_cov = ot.ProductDistribution(ot.Normal(), ot.Normal())
+assert d2p_cov.computeCharacteristicFunction(1e-12) is not None
+assert d2p_cov.computeCharacteristicFunction(1e6) is not None
+assert d2p_cov.computeCharacteristicFunction(0.5) is not None
+assert d2p_cov.getMoment(1).getSize() == 1
+assert d2p_cov.getMoment(2).getSize() == 1
+dq1_cov = ot.ProductDistribution(ot.Uniform(2.0, 3.0), ot.Uniform(3.0, 10.0))
+for xv in [7.0, 15.0, 25.0]:
+    assert dq1_cov.computePDF([xv]) > 0.0
+dq2_cov = ot.ProductDistribution(ot.Uniform(-2.0, -1.0), ot.Uniform(3.0, 4.0))
+for xv in [-7.0, -5.0, -3.5]:
+    assert dq2_cov.computePDF([xv]) > 0.0
+dq3_cov = ot.ProductDistribution(ot.Uniform(-2.0, -1.0), ot.Uniform(-4.0, -3.0))
+assert dq3_cov.computePDF([5.0]) > 0.0
+dq3b_cov = ot.ProductDistribution(ot.Uniform(-2.0, -1.0), ot.Uniform(-4.0, 0.0))
+assert dq3b_cov.computePDF([1.0]) > 0.0
+dq4_cov = ot.ProductDistribution(ot.Uniform(1.0, 2.0), ot.Uniform(-4.0, -3.0))
+assert dq4_cov.computePDF([-5.0]) > 0.0
+dq4b_cov = ot.ProductDistribution(ot.Uniform(1.0, 2.0), ot.Uniform(-4.0, 0.0))
+assert dq4b_cov.computePDF([-1.0]) > 0.0

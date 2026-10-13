@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -69,3 +71,33 @@ myStaircase2 = ot.Staircase(data2, "red", "dashed", "S", "eCDF2, pat=S")
 
 # Add it to the graph and draw everything
 myGraph.add(myStaircase2)
+
+# Extra coverage: constructors, pattern accessor, converters, persistence
+
+defaultStaircase = ot.Staircase()
+assert len(repr(defaultStaircase)) > 0
+assert len(str(defaultStaircase)) > 0
+fullStaircase = ot.Staircase(data1, "red", "dashed", 2.0, "S", "full")
+assert fullStaircase.getPattern() == "S"
+ott.assert_almost_equal(fullStaircase.getLineWidth(), 2.0, 0, 0)
+oldStaircase = ot.Staircase(data1, "red", "dashed", "s", "old")
+assert oldStaircase.getPattern() == "s"
+cloneStaircase = ot.Staircase(myStaircase1)
+assert cloneStaircase.getPattern() == myStaircase1.getPattern()
+assert len(repr(myStaircase1)) > 0
+assert len(str(myStaircase1)) > 0
+with ott.assert_raises(Exception):
+    myStaircase1b.setPattern("invalid-pattern")
+with ott.assert_raises(Exception):
+    ot.Staircase(ot.Sample(3, 3))
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("t_Staircase_std_tmp.xml"))
+study.add("stairs", myStaircase1b)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("t_Staircase_std_tmp.xml"))
+loadedStudy.load()
+loadedStairs = ot.Staircase()
+loadedStudy.fillObject("stairs", loadedStairs)
+assert loadedStairs.getPattern() == myStaircase1b.getPattern()
+os.remove("t_Staircase_std_tmp.xml")
