@@ -43,8 +43,8 @@
 %include ClassifierImplementation.i
 %include Classifier.i
 %include DesignProxy.i
-%include LeastSquaresMethodImplementation.i
-%include LeastSquaresMethod.i
+%include LinearLeastSquaresMethodImplementation.i
+%include LinearLeastSquaresMethod.i
 %include CholeskyMethod.i
 %include QRMethod.i
 %include SVDMethod.i

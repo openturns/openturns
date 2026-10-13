@@ -27,7 +27,7 @@ design : 2-d sequence of float
 
 See also
 --------
-LeastSquaresMethod, CholeskyMethod, QRMethod
+LinearLeastSquaresMethod, CholeskyMethod, QRMethod
 
 Examples
 --------
@@ -45,9 +45,9 @@ Solves a linear least squares problem with SVD method:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SVDMethod::computeDesign
-OT_LeastSquaresMethod_computeDesign_doc
+OT_LinearLeastSquaresMethod_computeDesign_doc
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SVDMethod::solveNormalGram
-OT_LeastSquaresMethod_solveNormalGram_doc
+OT_LinearLeastSquaresMethod_solveNormalGram_doc

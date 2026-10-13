@@ -36,7 +36,7 @@ static const Factory<CholeskyMethod> Factory_CholeskyMethod;
 
 /* Default constructor */
 CholeskyMethod::CholeskyMethod()
-  : LeastSquaresMethodImplementation()
+  : LinearLeastSquaresMethodImplementation()
   , l_(0)
 {
   // Nothing to do
@@ -46,7 +46,7 @@ CholeskyMethod::CholeskyMethod()
 CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
                                const Point & weight,
                                const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, weight, indices)
+  : LinearLeastSquaresMethodImplementation(proxy, weight, indices)
   , l_(0)
 {
   // Nothing to do
@@ -56,7 +56,7 @@ CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
 /* Parameters constructor */
 CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
                                const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, indices)
+  : LinearLeastSquaresMethodImplementation(proxy, indices)
   , l_(0)
 {
   // Nothing to do
@@ -65,7 +65,7 @@ CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
 
 /* Parameters constructor */
 CholeskyMethod::CholeskyMethod(const Matrix & matrix)
-  : LeastSquaresMethodImplementation(matrix)
+  : LinearLeastSquaresMethodImplementation(matrix)
   , l_(0)
 {
   // Nothing to do
@@ -392,14 +392,14 @@ void CholeskyMethod::trashDecomposition()
 /* Method save() stores the object through the StorageManager */
 void CholeskyMethod::save(Advocate & adv) const
 {
-  LeastSquaresMethodImplementation::save(adv);
+  LinearLeastSquaresMethodImplementation::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void CholeskyMethod::load(Advocate & adv)
 {
-  LeastSquaresMethodImplementation::load(adv);
+  LinearLeastSquaresMethodImplementation::load(adv);
 }
 
 

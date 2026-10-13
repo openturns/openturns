@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class LeastSquaresMethod for the standard methods
+ *  @brief The test file of class LinearLeastSquaresMethod for the standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -64,7 +64,7 @@ int main(int, char *[])
 
     for (UnsignedInteger k = 0; k < 3; ++k)
     {
-      LeastSquaresMethod algo(LeastSquaresMethod::Build(methods[k], proxy, indices));
+      LinearLeastSquaresMethod algo(LinearLeastSquaresMethod::Build(methods[k], proxy, indices));
       algo.update(Indices(0), indices, Indices(0));
 
       fullprint << methods[k] << std::endl;
@@ -110,7 +110,7 @@ int main(int, char *[])
     Matrix design(proxy.computeDesign(indices));
     for (UnsignedInteger k = 0; k < 3; ++k)
     {
-      LeastSquaresMethod algo(LeastSquaresMethod::Build(methods[k], design));
+      LinearLeastSquaresMethod algo(LinearLeastSquaresMethod::Build(methods[k], design));
       algo.update(Indices(0), indices, Indices(0));
 
       const Point solve(algo.solve(Point(size, 1.0)));

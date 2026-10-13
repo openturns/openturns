@@ -67,7 +67,7 @@ Scalar CorrectedLeaveOneOut::run(const Sample & y,
   return FittingAlgorithmImplementation::run(y, weight, indices, proxy);
 }
 
-Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) const
+Scalar CorrectedLeaveOneOut::run(LinearLeastSquaresMethod & method, const Sample & y) const
 {
   const Sample x(method.getInputSample());
   const UnsignedInteger sampleSize = x.getSize();

@@ -110,7 +110,7 @@ void LinearLeastSquaresCalibration::run()
   }
 
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
-  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
+  LinearLeastSquaresMethod method(LinearLeastSquaresMethod::Build(methodName_, gradientObservations_));
   const Point deltaTheta(method.solve(deltaY));
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
     if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";

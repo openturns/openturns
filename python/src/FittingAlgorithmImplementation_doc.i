@@ -56,7 +56,7 @@ indices : sequence of int
     Indices of the basis
 proxy : :class:`~openturns.DesignProxy`
     The design proxy
-method : :class:`~openturns.LeastSquaresMethod`
+method : :class:`~openturns.LinearLeastSquaresMethod`
     Least square method (QR, SVD or Cholesky)
 
 Returns

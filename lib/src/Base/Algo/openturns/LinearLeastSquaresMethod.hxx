@@ -18,56 +18,56 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LEASTSQUARESMETHOD_HXX
-#define OPENTURNS_LEASTSQUARESMETHOD_HXX
+#ifndef OPENTURNS_LINEARLEASTSQUARESMETHOD_HXX
+#define OPENTURNS_LINEARLEASTSQUARESMETHOD_HXX
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class LeastSquaresMethod
+ * @class LinearLeastSquaresMethod
  *
  * LeastSquares solving algorithm interface
  */
-class OT_API LeastSquaresMethod
-  : public TypedInterfaceObject<LeastSquaresMethodImplementation>
+class OT_API LinearLeastSquaresMethod
+  : public TypedInterfaceObject<LinearLeastSquaresMethodImplementation>
 {
   CLASSNAME
 
 public:
 
   /* Some typedefs for easy reading */
-  typedef Pointer<LeastSquaresMethodImplementation> Implementation;
+  typedef Pointer<LinearLeastSquaresMethodImplementation> Implementation;
   typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
-  LeastSquaresMethod();
+  LinearLeastSquaresMethod();
 
   /** Parameters constructor */
-  LeastSquaresMethod (const DesignProxy & proxy,
+  LinearLeastSquaresMethod (const DesignProxy & proxy,
                       const Point & weight,
                       const Indices & indices);
 
   /** Parameters constructor */
-  LeastSquaresMethod (const DesignProxy & proxy,
+  LinearLeastSquaresMethod (const DesignProxy & proxy,
                       const Indices & indices);
 
   /** Parameters constructor */
-  explicit LeastSquaresMethod (const Matrix & matrix);
+  explicit LinearLeastSquaresMethod (const Matrix & matrix);
 
   /** Constructor from implementation */
-  LeastSquaresMethod(const Implementation & p_implementation);
+  LinearLeastSquaresMethod(const Implementation & p_implementation);
 
   /** Constructor from implementation */
-  LeastSquaresMethod(const LeastSquaresMethodImplementation & implementation);
+  LinearLeastSquaresMethod(const LinearLeastSquaresMethodImplementation & implementation);
 
 #ifndef SWIG
   /** Constructor from implementation pointer */
-  LeastSquaresMethod(LeastSquaresMethodImplementation * p_implementation);
+  LinearLeastSquaresMethod(LinearLeastSquaresMethodImplementation * p_implementation);
 #endif
   /** String converter */
   String __repr__() const override;
@@ -123,22 +123,27 @@ public:
   Matrix computeDesign(const Bool whole = false) const;
 
   /** Build a method instance from its name */
-  static LeastSquaresMethod Build(const String name,
+  static LinearLeastSquaresMethod Build(const String name,
                                   const DesignProxy & proxy,
                                   const Point & weight,
                                   const Indices & indices);
 
-  static LeastSquaresMethod Build(const String name,
+  static LinearLeastSquaresMethod Build(const String name,
                                   const DesignProxy & proxy,
                                   const Indices & indices);
 
-  static LeastSquaresMethod Build(const String name,
+  static LinearLeastSquaresMethod Build(const String name,
                                   const Matrix & matrix);
 protected:
 
-}; /* class LeastSquaresMethod */
+}; /* class LinearLeastSquaresMethod */
+
+#ifndef SWIG
+/** Deprecated alias kept for backward compatibility, see issue #3254 */
+using LeastSquaresMethod = LinearLeastSquaresMethod;
+#endif
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LEASTSQUARESMETHOD_HXX */
+#endif /* OPENTURNS_LINEARLEASTSQUARESMETHOD_HXX */

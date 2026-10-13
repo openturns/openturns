@@ -20,23 +20,23 @@
  */
 
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LeastSquaresMethodImplementation)
+CLASSNAMEINIT(LinearLeastSquaresMethodImplementation)
 
-static const Factory<LeastSquaresMethodImplementation> Factory_LeastSquaresMethodImplementation;
+static const Factory<LinearLeastSquaresMethodImplementation> Factory_LinearLeastSquaresMethodImplementation;
 
 /* Default constructor */
-LeastSquaresMethodImplementation::LeastSquaresMethodImplementation()
+LinearLeastSquaresMethodImplementation::LinearLeastSquaresMethodImplementation()
   : PersistentObject()
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignProxy & proxy,
+LinearLeastSquaresMethodImplementation::LinearLeastSquaresMethodImplementation(const DesignProxy & proxy,
     const Point & weight,
     const Indices & indices)
   : PersistentObject()
@@ -57,7 +57,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
 }
 
 /* Parameters constructor */
-LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignProxy & proxy,
+LinearLeastSquaresMethodImplementation::LinearLeastSquaresMethodImplementation(const DesignProxy & proxy,
     const Indices & indices)
   : PersistentObject()
   , proxy_(proxy)
@@ -72,7 +72,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
 }
 
 /* Parameters constructor */
-LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const Matrix & matrix)
+LinearLeastSquaresMethodImplementation::LinearLeastSquaresMethodImplementation(const Matrix & matrix)
   : PersistentObject()
   , proxy_(matrix)
   , weight_(1, 1.0)
@@ -89,7 +89,7 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const Matrix 
 }
 
 /* Weight accessor */
-void LeastSquaresMethodImplementation::setWeight(const Point & weight)
+void LinearLeastSquaresMethodImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
   // First, check for uniformity
@@ -118,38 +118,38 @@ void LeastSquaresMethodImplementation::setWeight(const Point & weight)
   }
 }
 
-Point LeastSquaresMethodImplementation::getWeight() const
+Point LinearLeastSquaresMethodImplementation::getWeight() const
 {
   return weight_;
 }
 
 /* Virtual constructor */
-LeastSquaresMethodImplementation * LeastSquaresMethodImplementation::clone() const
+LinearLeastSquaresMethodImplementation * LinearLeastSquaresMethodImplementation::clone() const
 {
-  return new LeastSquaresMethodImplementation(*this);
+  return new LinearLeastSquaresMethodImplementation(*this);
 }
 
-Point LeastSquaresMethodImplementation::solve(const Point & )
+Point LinearLeastSquaresMethodImplementation::solve(const Point & )
 {
-  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solve";
+  throw NotYetImplementedException(HERE) << " in LinearLeastSquaresMethodImplementation::solve";
 }
 
-Point LeastSquaresMethodImplementation::solveNormal(const Point & )
+Point LinearLeastSquaresMethodImplementation::solveNormal(const Point & )
 {
-  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormal";
+  throw NotYetImplementedException(HERE) << " in LinearLeastSquaresMethodImplementation::solveNormal";
 }
 
-Point LeastSquaresMethodImplementation::solveNormalGram(const Point & )
+Point LinearLeastSquaresMethodImplementation::solveNormalGram(const Point & )
 {
-  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::solveNormalGram";
+  throw NotYetImplementedException(HERE) << " in LinearLeastSquaresMethodImplementation::solveNormalGram";
 }
 
-CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
+CovarianceMatrix LinearLeastSquaresMethodImplementation::getGramInverse() const
 {
-  throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::getGramInverse";
+  throw NotYetImplementedException(HERE) << " in LinearLeastSquaresMethodImplementation::getGramInverse";
 }
 
-SymmetricMatrix LeastSquaresMethodImplementation::getH() const
+SymmetricMatrix LinearLeastSquaresMethodImplementation::getH() const
 {
   const MatrixImplementation psiAk(*computeWeightedDesign().getImplementation());
   // H = Psi.G^{-1}.Psi^T
@@ -157,7 +157,7 @@ SymmetricMatrix LeastSquaresMethodImplementation::getH() const
 }
 
 
-Point LeastSquaresMethodImplementation::getHDiag() const
+Point LinearLeastSquaresMethodImplementation::getHDiag() const
 {
   const SymmetricMatrix H(getH());
   const UnsignedInteger dimension = H.getDimension();
@@ -168,7 +168,7 @@ Point LeastSquaresMethodImplementation::getHDiag() const
 }
 
 
-Point LeastSquaresMethodImplementation::getGramInverseDiag() const
+Point LinearLeastSquaresMethodImplementation::getGramInverseDiag() const
 {
   const CovarianceMatrix G(getGramInverse());
   const UnsignedInteger dimension = G.getDimension();
@@ -179,14 +179,14 @@ Point LeastSquaresMethodImplementation::getGramInverseDiag() const
 }
 
 
-Scalar LeastSquaresMethodImplementation::getGramInverseTrace() const
+Scalar LinearLeastSquaresMethodImplementation::getGramInverseTrace() const
 {
   // subclasses better override this
   return getGramInverse().getImplementation()->computeTrace();
 }
 
 /* String converter */
-String LeastSquaresMethodImplementation::__repr__() const
+String LinearLeastSquaresMethodImplementation::__repr__() const
 {
   return OSS() << "class=" << GetClassName()
          << ", proxy=" << proxy_
@@ -197,33 +197,33 @@ String LeastSquaresMethodImplementation::__repr__() const
          << ", initialIndices=" << initialIndices_;
 }
 
-LeastSquaresMethodImplementation::FunctionCollection LeastSquaresMethodImplementation::getBasis() const
+LinearLeastSquaresMethodImplementation::FunctionCollection LinearLeastSquaresMethodImplementation::getBasis() const
 {
   return proxy_.getBasis();
 }
 
-Indices LeastSquaresMethodImplementation::getCurrentIndices() const
+Indices LinearLeastSquaresMethodImplementation::getCurrentIndices() const
 {
   return currentIndices_;
 }
 
-Indices LeastSquaresMethodImplementation::getInitialIndices() const
+Indices LinearLeastSquaresMethodImplementation::getInitialIndices() const
 {
   return initialIndices_;
 }
 
-Sample LeastSquaresMethodImplementation::getInputSample() const
+Sample LinearLeastSquaresMethodImplementation::getInputSample() const
 {
   return proxy_.getInputSample();
 }
 
-Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole) const
+Matrix LinearLeastSquaresMethodImplementation::computeWeightedDesign(const Bool whole) const
 {
   if (whole) return computeWeightedDesign(initialIndices_);
   return computeWeightedDesign(currentIndices_);
 }
 
-Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Indices & indices) const
+Matrix LinearLeastSquaresMethodImplementation::computeWeightedDesign(const Indices & indices) const
 {
   MatrixImplementation design(*proxy_.computeDesign(indices).getImplementation());
   // Scale each row by sqrt(w_i), including sqrt(1/n) for uniform weights.
@@ -243,7 +243,7 @@ Matrix LeastSquaresMethodImplementation::computeWeightedDesign(const Indices & i
   return design;
 }
 
-Matrix LeastSquaresMethodImplementation::computeDesign(const Bool whole) const
+Matrix LinearLeastSquaresMethodImplementation::computeDesign(const Bool whole) const
 {
   if (whole) return proxy_.computeDesign(initialIndices_);
   return proxy_.computeDesign(currentIndices_);
@@ -253,7 +253,7 @@ Matrix LeastSquaresMethodImplementation::computeDesign(const Bool whole) const
 // Update the decomposition and the by-products when the given indices
 // are added and removed from the current indices.
 // We always must have conservedIndices + removedIndices == currentIndices
-void LeastSquaresMethodImplementation::update(const Indices & addedIndices,
+void LinearLeastSquaresMethodImplementation::update(const Indices & addedIndices,
     const Indices & conservedIndices,
     const Indices & removedIndices,
     const Bool )
@@ -268,20 +268,20 @@ void LeastSquaresMethodImplementation::update(const Indices & addedIndices,
 
 
 /* Destroy the internal decomposition of the design matrix */
-void LeastSquaresMethodImplementation::trashDecomposition()
+void LinearLeastSquaresMethodImplementation::trashDecomposition()
 {
   throw NotYetImplementedException(HERE);
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void LeastSquaresMethodImplementation::save(Advocate & adv) const
+void LinearLeastSquaresMethodImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void LeastSquaresMethodImplementation::load(Advocate & adv)
+void LinearLeastSquaresMethodImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
 }

@@ -1,4 +1,4 @@
-%define OT_LeastSquaresMethod_doc
+%define OT_LinearLeastSquaresMethod_doc
 R"RAW(Base class for least square solvers.
 
 Solve the weighted least-squares problem:
@@ -21,11 +21,11 @@ where:
   selected basis terms.
 
 Available constructors:
-    LeastSquaresMethod(*proxy, weight, indices*)
+    LinearLeastSquaresMethod(*proxy, weight, indices*)
 
-    LeastSquaresMethod(*proxy, indices*)
+    LinearLeastSquaresMethod(*proxy, indices*)
 
-    LeastSquaresMethod(*design*)
+    LinearLeastSquaresMethod(*design*)
 
 Parameters
 ----------
@@ -52,18 +52,18 @@ Examples
 >>> import openturns as ot
 >>> A = ot.Matrix([[1, 1], [1, 2], [1, 3], [1, 4]])
 >>> y = [6, 5, 7, 10]
->>> method = ot.LeastSquaresMethod(A)
+>>> method = ot.LinearLeastSquaresMethod(A)
 >>> x = method.solve(y)
 >>> print(x)
 [3.5,1.4]
 )RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation
-OT_LeastSquaresMethod_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation
+OT_LinearLeastSquaresMethod_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getInputSample_doc
+%define OT_LinearLeastSquaresMethod_getInputSample_doc
 "Input sample accessor.
 
 Returns
@@ -71,12 +71,12 @@ Returns
 inputSample : :class:`~openturns.Sample`
     Input sample."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getInputSample
-OT_LeastSquaresMethod_getInputSample_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getInputSample
+OT_LinearLeastSquaresMethod_getInputSample_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getWeight_doc
+%define OT_LinearLeastSquaresMethod_getWeight_doc
 "Accessor to the weights.
 
 Returns
@@ -84,12 +84,12 @@ Returns
 weight : :class:`~openturns.Point`
     Weights."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getWeight
-OT_LeastSquaresMethod_getWeight_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getWeight
+OT_LinearLeastSquaresMethod_getWeight_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getBasis_doc
+%define OT_LinearLeastSquaresMethod_getBasis_doc
 "Accessor to the basis.
 
 Returns
@@ -97,12 +97,12 @@ Returns
 basis : collection of :class:`~openturns.Function`
     Basis."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getBasis
-OT_LeastSquaresMethod_getBasis_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getBasis
+OT_LinearLeastSquaresMethod_getBasis_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getCurrentIndices_doc
+%define OT_LinearLeastSquaresMethod_getCurrentIndices_doc
 "Current indices accessor.
 
 Returns
@@ -110,12 +110,12 @@ Returns
 indices : :class:`~openturns.Indices`
     Indices of the current decomposition in the global basis."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getCurrentIndices
-OT_LeastSquaresMethod_getCurrentIndices_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getCurrentIndices
+OT_LinearLeastSquaresMethod_getCurrentIndices_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getInitialIndices_doc
+%define OT_LinearLeastSquaresMethod_getInitialIndices_doc
 "Initial indices accessor.
 
 Returns
@@ -123,12 +123,12 @@ Returns
 indices : :class:`~openturns.Indices`
     Initial indices of the terms in the global basis."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getInitialIndices
-OT_LeastSquaresMethod_getInitialIndices_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getInitialIndices
+OT_LinearLeastSquaresMethod_getInitialIndices_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_solve_doc
+%define OT_LinearLeastSquaresMethod_solve_doc
 R"RAW(Solve the least-squares problem.
 
 The returned vector minimizes the weighted norm of the residual with
@@ -150,12 +150,12 @@ Returns
 a : :class:`~openturns.Point`
     The solution.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::solve
-OT_LeastSquaresMethod_solve_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::solve
+OT_LinearLeastSquaresMethod_solve_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_solveNormal_doc
+%define OT_LinearLeastSquaresMethod_solveNormal_doc
 R"RAW(Solve the least-squares problem using normal equation.
 
 Only meaningful for uniform weights: the method rejects non-uniform
@@ -177,12 +177,12 @@ Returns
 x : :class:`~openturns.Point`
     The solution.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::solveNormal
-OT_LeastSquaresMethod_solveNormal_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::solveNormal
+OT_LinearLeastSquaresMethod_solveNormal_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getGramInverse_doc
+%define OT_LinearLeastSquaresMethod_getGramInverse_doc
 R"RAW(Get the inverse Gram matrix of the input sample.
 
 The weighted Gram matrix is defined as:
@@ -196,12 +196,12 @@ Returns
 gramInverse : :class:`~openturns.CovarianceMatrix`
     The inverse :math:`\mat{G}^{-1}` of the weighted Gram matrix.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverse
-OT_LeastSquaresMethod_getGramInverse_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getGramInverse
+OT_LinearLeastSquaresMethod_getGramInverse_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getGramInverseDiag_doc
+%define OT_LinearLeastSquaresMethod_getGramInverseDiag_doc
 R"RAW(Get the diagonal of the inverse Gram matrix.
 
 .. math::
@@ -213,12 +213,12 @@ Returns
 diagGramInverse : :class:`~openturns.Point`
     The diagonal of the inverse of the weighted Gram matrix.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseDiag
-OT_LeastSquaresMethod_getGramInverseDiag_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getGramInverseDiag
+OT_LinearLeastSquaresMethod_getGramInverseDiag_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getGramInverseTrace_doc
+%define OT_LinearLeastSquaresMethod_getGramInverseTrace_doc
 R"RAW(Get the trace of the inverse Gram matrix.
 
 .. math::
@@ -230,12 +230,12 @@ Returns
 trace : float
     The trace of the inverse of the weighted Gram matrix.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseTrace
-OT_LeastSquaresMethod_getGramInverseTrace_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getGramInverseTrace
+OT_LinearLeastSquaresMethod_getGramInverseTrace_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getH_doc
+%define OT_LinearLeastSquaresMethod_getH_doc
 R"RAW(Get the symmetric weighted hat matrix H.
 
 With :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` the weight-scaled
@@ -258,12 +258,12 @@ Returns
 h : :class:`~openturns.SymmetricMatrix`
     The symmetric weighted hat matrix H.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getH
-OT_LeastSquaresMethod_getH_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getH
+OT_LinearLeastSquaresMethod_getH_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_getHDiag_doc
+%define OT_LinearLeastSquaresMethod_getHDiag_doc
 R"RAW(Get the diagonal of the symmetric weighted hat matrix H.
 
 .. math::
@@ -282,12 +282,12 @@ Returns
 diagH : :class:`~openturns.Point`
     The leverages, ie the diagonal of the symmetric weighted hat matrix.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag
-OT_LeastSquaresMethod_getHDiag_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::getHDiag
+OT_LinearLeastSquaresMethod_getHDiag_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_computeWeightedDesign_doc
+%define OT_LinearLeastSquaresMethod_computeWeightedDesign_doc
 R"RAW(Build the design matrix.
 
 The element of row :math:`i` and column :math:`j` of the returned matrix
@@ -305,12 +305,12 @@ Returns
 psiAk : :class:`~openturns.Matrix`
     The design matrix)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::computeWeightedDesign
-OT_LeastSquaresMethod_computeWeightedDesign_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::computeWeightedDesign
+OT_LinearLeastSquaresMethod_computeWeightedDesign_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_computeDesign_doc
+%define OT_LinearLeastSquaresMethod_computeDesign_doc
 "Build the raw design matrix without weight scaling.
 
 Parameters
@@ -323,12 +323,12 @@ Returns
 design : :class:`~openturns.Matrix`
     The raw design matrix."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::computeDesign
-OT_LeastSquaresMethod_computeDesign_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::computeDesign
+OT_LinearLeastSquaresMethod_computeDesign_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_solveNormalGram_doc
+%define OT_LinearLeastSquaresMethod_solveNormalGram_doc
 R"RAW(Solve the Gram system :math:`G x = \mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
 
 Unlike :any:`solveNormal`, this method does not apply weight multiplication
@@ -344,20 +344,20 @@ Returns
 x : :class:`~openturns.Point`
     The solution.)RAW"
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::solveNormalGram
-OT_LeastSquaresMethod_solveNormalGram_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::solveNormalGram
+OT_LinearLeastSquaresMethod_solveNormalGram_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_trashDecomposition_doc
+%define OT_LinearLeastSquaresMethod_trashDecomposition_doc
 "Drop the current decomposition."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::trashDecomposition
-OT_LeastSquaresMethod_trashDecomposition_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::trashDecomposition
+OT_LinearLeastSquaresMethod_trashDecomposition_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LeastSquaresMethod_update_doc
+%define OT_LinearLeastSquaresMethod_update_doc
 "Update the current decomposition.
 
 Parameters
@@ -369,7 +369,7 @@ conservedIndices : sequence of int
 removedIndices : sequence of int
     Indices of removed basis terms."
 %enddef
-%feature("docstring") OT::LeastSquaresMethodImplementation::update
-OT_LeastSquaresMethod_update_doc
+%feature("docstring") OT::LinearLeastSquaresMethodImplementation::update
+OT_LinearLeastSquaresMethod_update_doc
 
 

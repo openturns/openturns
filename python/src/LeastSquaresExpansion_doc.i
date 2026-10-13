@@ -55,13 +55,13 @@ activeFunctions : sequence of `int`, optional
     Must be non-empty and all indices must be less than basisSize.
 methodName : str, optional
     The decomposition method used to solve the least-squares problem, of
-    type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
+    type :class:`~openturns.LinearLeastSquaresMethod`. If not given, it is given by the
     ``LeastSquaresExpansion-DecompositionMethod`` key in
     :class:`~openturns.ResourceMap`.
 
 See also
 --------
-IntegrationExpansion, FunctionalChaosAlgorithm, LeastSquaresMethod
+IntegrationExpansion, FunctionalChaosAlgorithm, LinearLeastSquaresMethod
 
 Examples
 --------

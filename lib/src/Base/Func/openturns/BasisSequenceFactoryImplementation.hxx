@@ -25,7 +25,7 @@
 #include "openturns/BasisSequence.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/DesignProxy.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -63,11 +63,11 @@ public:
                               const Indices & indices,
                               const DesignProxy & proxy);
 
-  virtual BasisSequence build(LeastSquaresMethod & method,
+  virtual BasisSequence build(LinearLeastSquaresMethod & method,
                               const Sample & y);
 
   virtual void initialize();
-  virtual void updateBasis(LeastSquaresMethod & method,
+  virtual void updateBasis(LinearLeastSquaresMethod & method,
                            const Sample & y);
 #endif
 

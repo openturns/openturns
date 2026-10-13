@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_QRMETHOD_HXX
 #define OPENTURNS_QRMETHOD_HXX
 
-#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * QR-decomposition based LS solver
  */
 class OT_API QRMethod
-  : public LeastSquaresMethodImplementation
+  : public LinearLeastSquaresMethodImplementation
 {
   CLASSNAME
 public:

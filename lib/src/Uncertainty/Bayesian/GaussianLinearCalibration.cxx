@@ -182,7 +182,7 @@ void GaussianLinearCalibration::run()
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
       ybar[i * outputDimension + j + parameterDimension] = invLRz[i * outputDimension + j];
   // Solve the linear least squares problem
-  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
+  LinearLeastSquaresMethod method(LinearLeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
   for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
     if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";

@@ -6,7 +6,7 @@ with the weighted least-squares fit :math:`\hat{\vect{y}}`, the residual
 :math:`r_i = y_i - \hat{y}_i` and the weighted leverage
 :math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`
 with :math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \mat{\Psi}` returned by
-:meth:`~openturns.LeastSquaresMethod.getHDiag`,
+:meth:`~openturns.LinearLeastSquaresMethod.getHDiag`,
 
 .. math::
     \mathrm{Err}_{\mathrm{LOO}} =

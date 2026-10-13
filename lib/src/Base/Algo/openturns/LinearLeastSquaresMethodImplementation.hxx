@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX
-#define OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX
+#ifndef OPENTURNS_LINEARLEASTSQUARESMETHODIMPLEMENTATION_HXX
+#define OPENTURNS_LINEARLEASTSQUARESMETHODIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
@@ -30,11 +30,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LeastSquaresMethodImplementation
+ * @class LinearLeastSquaresMethodImplementation
  *
  * LeastSquares solving algorithm implementation
  */
-class OT_API LeastSquaresMethodImplementation
+class OT_API LinearLeastSquaresMethodImplementation
   : public PersistentObject
 {
   friend class KFold;
@@ -47,22 +47,22 @@ public:
   typedef Collection<Function> FunctionCollection;
 
   /** Default constructor */
-  LeastSquaresMethodImplementation();
+  LinearLeastSquaresMethodImplementation();
 
   /** Parameters constructor */
-  LeastSquaresMethodImplementation(const DesignProxy & proxy,
+  LinearLeastSquaresMethodImplementation(const DesignProxy & proxy,
                                    const Point & weight,
                                    const Indices & indices);
 
   /** Parameters constructor */
-  LeastSquaresMethodImplementation(const DesignProxy & proxy,
+  LinearLeastSquaresMethodImplementation(const DesignProxy & proxy,
                                    const Indices & indices);
 
   /** Parameters constructor */
-  explicit LeastSquaresMethodImplementation(const Matrix & matrix);
+  explicit LinearLeastSquaresMethodImplementation(const Matrix & matrix);
 
   /** Virtual constructor */
-  LeastSquaresMethodImplementation * clone() const override;
+  LinearLeastSquaresMethodImplementation * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -148,9 +148,14 @@ protected:
   /** Initial indices */
   Indices initialIndices_;
 
-}; /* class LeastSquaresMethodImplementation */
+}; /* class LinearLeastSquaresMethodImplementation */
+
+#ifndef SWIG
+/** Deprecated alias kept for backward compatibility, see issue #3254 */
+using LeastSquaresMethodImplementation = LinearLeastSquaresMethodImplementation;
+#endif
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LEASTSQUARESMETHODIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_LINEARLEASTSQUARESMETHODIMPLEMENTATION_HXX */

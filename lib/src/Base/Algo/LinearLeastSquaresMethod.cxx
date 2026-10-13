@@ -19,8 +19,8 @@
  *
  */
 
-#include "openturns/LeastSquaresMethod.hxx"
-#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
 #include "openturns/SVDMethod.hxx"
 #include "openturns/CholeskyMethod.hxx"
 #include "openturns/QRMethod.hxx"
@@ -29,112 +29,112 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(LeastSquaresMethod)
+CLASSNAMEINIT(LinearLeastSquaresMethod)
 
 /* Default constructor */
-LeastSquaresMethod::LeastSquaresMethod()
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new LeastSquaresMethodImplementation())
+LinearLeastSquaresMethod::LinearLeastSquaresMethod()
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(new LinearLeastSquaresMethodImplementation())
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
+LinearLeastSquaresMethod::LinearLeastSquaresMethod (const DesignProxy & proxy,
                                         const Point & weight,
                                         const Indices & indices)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, weight, indices))
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(new SVDMethod(proxy, weight, indices))
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
+LinearLeastSquaresMethod::LinearLeastSquaresMethod (const DesignProxy & proxy,
                                         const Indices & indices)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(proxy, indices))
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(new SVDMethod(proxy, indices))
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-LeastSquaresMethod::LeastSquaresMethod (const Matrix & matrix)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(matrix))
+LinearLeastSquaresMethod::LinearLeastSquaresMethod (const Matrix & matrix)
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(new SVDMethod(matrix))
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-LeastSquaresMethod::LeastSquaresMethod(const Implementation & p_implementation)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(p_implementation)
+LinearLeastSquaresMethod::LinearLeastSquaresMethod(const Implementation & p_implementation)
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /* Constructor from implementation */
-LeastSquaresMethod::LeastSquaresMethod(const LeastSquaresMethodImplementation & implementation)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(implementation.clone())
+LinearLeastSquaresMethod::LinearLeastSquaresMethod(const LinearLeastSquaresMethodImplementation & implementation)
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
 /* Constructor from implementation pointer */
-LeastSquaresMethod::LeastSquaresMethod(LeastSquaresMethodImplementation * p_implementation)
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>(p_implementation)
+LinearLeastSquaresMethod::LinearLeastSquaresMethod(LinearLeastSquaresMethodImplementation * p_implementation)
+  : TypedInterfaceObject<LinearLeastSquaresMethodImplementation>(p_implementation)
 {
   // Nothing to do
 }
 
 /* String converter */
-String LeastSquaresMethod::__repr__() const
+String LinearLeastSquaresMethod::__repr__() const
 {
   return getImplementation()->__repr__();
 }
 
-String LeastSquaresMethod::__str__(const String & offset) const
+String LinearLeastSquaresMethod::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
 }
 
-Point LeastSquaresMethod::solve(const Point & rhs)
+Point LinearLeastSquaresMethod::solve(const Point & rhs)
 {
   return getImplementation()->solve(rhs);
 }
 
-Point LeastSquaresMethod::solveNormal(const Point & rhs)
+Point LinearLeastSquaresMethod::solveNormal(const Point & rhs)
 {
   return getImplementation()->solveNormal(rhs);
 }
 
-Point LeastSquaresMethod::solveNormalGram(const Point & rhs)
+Point LinearLeastSquaresMethod::solveNormalGram(const Point & rhs)
 {
   return getImplementation()->solveNormalGram(rhs);
 }
 
-Point LeastSquaresMethod::getHDiag() const
+Point LinearLeastSquaresMethod::getHDiag() const
 {
   return getImplementation()->getHDiag();
 }
 
-SymmetricMatrix LeastSquaresMethod::getH() const
+SymmetricMatrix LinearLeastSquaresMethod::getH() const
 {
   return getImplementation()->getH();
 }
 
-CovarianceMatrix LeastSquaresMethod::getGramInverse() const
+CovarianceMatrix LinearLeastSquaresMethod::getGramInverse() const
 {
   return getImplementation()->getGramInverse();
 }
 
-Point LeastSquaresMethod::getGramInverseDiag() const
+Point LinearLeastSquaresMethod::getGramInverseDiag() const
 {
   return getImplementation()->getGramInverseDiag();
 }
 
-Scalar LeastSquaresMethod::getGramInverseTrace() const
+Scalar LinearLeastSquaresMethod::getGramInverseTrace() const
 {
   return getImplementation()->getGramInverseTrace();
 }
 
-void LeastSquaresMethod::update(const Indices& addedIndices,
+void LinearLeastSquaresMethod::update(const Indices& addedIndices,
                                 const Indices& conservedIndices,
                                 const Indices& removedIndices,
                                 const Bool row)
@@ -142,42 +142,42 @@ void LeastSquaresMethod::update(const Indices& addedIndices,
   getImplementation()->update(addedIndices, conservedIndices, removedIndices, row);
 }
 
-LeastSquaresMethod::FunctionCollection LeastSquaresMethod::getBasis() const
+LinearLeastSquaresMethod::FunctionCollection LinearLeastSquaresMethod::getBasis() const
 {
   return getImplementation()->getBasis();
 }
 
-Indices LeastSquaresMethod::getCurrentIndices() const
+Indices LinearLeastSquaresMethod::getCurrentIndices() const
 {
   return getImplementation()->getCurrentIndices();
 }
 
-Indices LeastSquaresMethod::getInitialIndices() const
+Indices LinearLeastSquaresMethod::getInitialIndices() const
 {
   return getImplementation()->getInitialIndices();
 }
 
-Sample LeastSquaresMethod::getInputSample() const
+Sample LinearLeastSquaresMethod::getInputSample() const
 {
   return getImplementation()->getInputSample();
 }
 
-Point LeastSquaresMethod::getWeight() const
+Point LinearLeastSquaresMethod::getWeight() const
 {
   return getImplementation()->getWeight();
 }
 
-Matrix LeastSquaresMethod::computeWeightedDesign(bool whole) const
+Matrix LinearLeastSquaresMethod::computeWeightedDesign(bool whole) const
 {
   return getImplementation()->computeWeightedDesign(whole);
 }
 
-Matrix LeastSquaresMethod::computeDesign(bool whole) const
+Matrix LinearLeastSquaresMethod::computeDesign(bool whole) const
 {
   return getImplementation()->computeDesign(whole);
 }
 
-LeastSquaresMethod LeastSquaresMethod::Build(const String name,
+LinearLeastSquaresMethod LinearLeastSquaresMethod::Build(const String name,
     const DesignProxy & proxy,
     const Point & weight,
     const Indices & indices)
@@ -186,11 +186,11 @@ LeastSquaresMethod LeastSquaresMethod::Build(const String name,
   else if (name == "Cholesky") return CholeskyMethod(proxy, weight, indices);
   else if (name == "QR")       return QRMethod(proxy, weight, indices);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
-  return LeastSquaresMethod();
+  return LinearLeastSquaresMethod();
 }
 
 
-LeastSquaresMethod LeastSquaresMethod::Build(const String name,
+LinearLeastSquaresMethod LinearLeastSquaresMethod::Build(const String name,
     const DesignProxy & proxy,
     const Indices & indices)
 {
@@ -198,17 +198,17 @@ LeastSquaresMethod LeastSquaresMethod::Build(const String name,
   else if (name == "Cholesky") return CholeskyMethod(proxy, indices);
   else if (name == "QR")       return QRMethod(proxy, indices);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
-  return LeastSquaresMethod();
+  return LinearLeastSquaresMethod();
 }
 
-LeastSquaresMethod LeastSquaresMethod::Build(const String name,
+LinearLeastSquaresMethod LinearLeastSquaresMethod::Build(const String name,
     const Matrix & matrix)
 {
   if      (name == "SVD")      return SVDMethod(matrix);
   else if (name == "Cholesky") return CholeskyMethod(matrix);
   else if (name == "QR")       return QRMethod(matrix);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
-  return LeastSquaresMethod();
+  return LinearLeastSquaresMethod();
 }
 
 END_NAMESPACE_OPENTURNS

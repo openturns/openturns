@@ -27,7 +27,7 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Normal.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -89,8 +89,8 @@ public:
   virtual Basis getBasis() const;
   virtual Sample getFittedSample() const;
   virtual Matrix getDesign() const;
-  virtual LeastSquaresMethod getLeastSquaresMethod() const;
-  virtual void setLeastSquaresMethod(const LeastSquaresMethod & leastSquaresMethod);
+  virtual LinearLeastSquaresMethod getLinearLeastSquaresMethod() const;
+  virtual void setLinearLeastSquaresMethod(const LinearLeastSquaresMethod & leastSquaresMethod);
 
   /** Coefficients accessor */
   virtual Point getCoefficients() const;
@@ -135,7 +135,7 @@ public:
   Scalar getAdjustedRSquared() const;
 
   /** @deprecated Least squares method accessor */
-  virtual LeastSquaresMethod buildMethod() const;
+  virtual LinearLeastSquaresMethod buildMethod() const;
 
   /** involvesModelSelection accessor */
   virtual Bool involvesModelSelection() const;
@@ -161,7 +161,7 @@ private:
   Matrix design_;
 
   /** Least squares method */
-  LeastSquaresMethod leastSquaresMethod_;
+  LinearLeastSquaresMethod leastSquaresMethod_;
 
   /** Coefficients */
   Point coefficients_;

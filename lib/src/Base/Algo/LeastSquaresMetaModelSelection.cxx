@@ -116,7 +116,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
   Scalar minimumError = SpecFunc::Infinity;
 
   const String methodName(ResourceMap::GetAsString("LeastSquaresMetaModelSelection-DecompositionMethod"));
-  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, proxy, weight_, currentIndices_));
+  LinearLeastSquaresMethod method(LinearLeastSquaresMethod::Build(methodName, proxy, weight_, currentIndices_));
 
   // CorrectedLeaveOneOut has no extension to weighted designs: reject the
   // combination up front rather than after the first scoring iteration.

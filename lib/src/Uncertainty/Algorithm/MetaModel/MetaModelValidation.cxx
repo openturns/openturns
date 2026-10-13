@@ -283,7 +283,7 @@ Sample MetaModelValidation::ComputeMetamodelLeaveOneOutPredictions(
   // Hence the metamodel prediction is tilde{g}(xi) = yi - ri.
   // Exact for uniform weights only: dropping an observation is a rank-one
   // downdate of the normal equations, so ri/(1-hi) is the leave-one-out
-  // residual with hi the leverage returned by LeastSquaresMethod::getHDiag.
+  // residual with hi the leverage returned by LinearLeastSquaresMethod::getHDiag.
   // With non-uniform weights hi must be the weighted leverage, i.e. the
   // internal least squares method must carry the weights, otherwise the
   // predictions are an approximation.

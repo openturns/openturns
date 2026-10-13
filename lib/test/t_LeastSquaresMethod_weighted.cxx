@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class LeastSquaresMethod for the standard methods
+ *  @brief The test file of class LinearLeastSquaresMethod for the standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

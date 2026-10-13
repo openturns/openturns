@@ -22,7 +22,7 @@
 #define OPENTURNS_SVDMETHOD_HXX
 
 #include "openturns/Matrix.hxx"
-#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * SVD-decomposition based LS solver
  */
 class OT_API SVDMethod
-  : public LeastSquaresMethodImplementation
+  : public LinearLeastSquaresMethodImplementation
 {
   CLASSNAME
 public:

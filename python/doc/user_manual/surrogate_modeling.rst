@@ -195,7 +195,7 @@ Refer to :ref:`least_squares`.
     :toctree: _generated/
     :template: class.rst_t
 
-    LeastSquaresMethod
+    LinearLeastSquaresMethod
     CholeskyMethod
     SVDMethod
     QRMethod

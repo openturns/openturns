@@ -61,7 +61,7 @@ public:
              const Indices & indices,
              const DesignProxy & proxy) const override;
 
-  Scalar run(LeastSquaresMethod & method,
+  Scalar run(LinearLeastSquaresMethod & method,
              const Sample & y) const override;
 
   /** Method save() stores the object through the StorageManager */

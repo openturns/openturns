@@ -256,7 +256,7 @@ def computeRegressionConfidenceInterval(
 
     Parameters
     ----------
-    lsqMethod: ot.LeastSquaresMethod
+    lsqMethod: ot.LinearLeastSquaresMethod
         The linear least squares method (e.g. QR or Cholesky).
     betaHat : ot.Point(parameterDimension)
         The solution of the least squares problem.

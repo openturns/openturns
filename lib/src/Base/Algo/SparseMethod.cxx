@@ -35,16 +35,16 @@ static const Factory<SparseMethod> Factory_SparseMethod;
 
 /* Default constructor */
 SparseMethod::SparseMethod()
-  : LeastSquaresMethodImplementation()
+  : LinearLeastSquaresMethodImplementation()
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-SparseMethod::SparseMethod(const LeastSquaresMethod & method,
+SparseMethod::SparseMethod(const LinearLeastSquaresMethod & method,
                            const BasisSequenceFactory & basisSequenceFactory,
                            const FittingAlgorithm & fittingAlgorithm)
-  : LeastSquaresMethodImplementation(DesignProxy(), method.getCurrentIndices())
+  : LinearLeastSquaresMethodImplementation(DesignProxy(), method.getCurrentIndices())
   , method_(method)
   , basisSequenceFactory_(basisSequenceFactory)
   , fittingAlgorithm_(fittingAlgorithm)
@@ -188,14 +188,14 @@ Matrix SparseMethod::computeWeightedDesign(const Bool whole) const
 /* Method save() stores the object through the StorageManager */
 void SparseMethod::save(Advocate & adv) const
 {
-  LeastSquaresMethodImplementation::save(adv);
+  LinearLeastSquaresMethodImplementation::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void SparseMethod::load(Advocate & adv)
 {
-  LeastSquaresMethodImplementation::load(adv);
+  LinearLeastSquaresMethodImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -8,7 +8,7 @@ Available constructors:
 
 Parameters
 ----------
-method : :class:`~openturns.LeastSquaresMethod`
+method : :class:`~openturns.LinearLeastSquaresMethod`
     Least squares resolution method
 basisSequenceFactory : :class:`~openturns.BasisSequenceFactory`
     Basis enumeration algorithm
@@ -17,7 +17,7 @@ fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
 
 See also
 --------
-LeastSquaresMethod
+LinearLeastSquaresMethod
 
 Examples
 --------
@@ -46,9 +46,9 @@ The following :class:`~openturns.ResourceMap` keys are used:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SparseMethod::computeDesign
-OT_LeastSquaresMethod_computeDesign_doc
+OT_LinearLeastSquaresMethod_computeDesign_doc
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::SparseMethod::solveNormalGram
-OT_LeastSquaresMethod_solveNormalGram_doc
+OT_LinearLeastSquaresMethod_solveNormalGram_doc

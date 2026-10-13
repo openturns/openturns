@@ -369,7 +369,7 @@ void GaussianNonLinearCalibration::run()
 
     // Compute the inverse Gram of the design matrix
     const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
-    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
+    LinearLeastSquaresMethod method(LinearLeastSquaresMethod::Build(methodName, Abar));
     // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
     (void) method.solve(Point(Abar.getNbRows()));
     const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());

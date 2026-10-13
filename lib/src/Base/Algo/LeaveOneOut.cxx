@@ -67,7 +67,7 @@ Scalar LeaveOneOut::run(const Sample & y,
 }
 
 
-Scalar LeaveOneOut::run(LeastSquaresMethod & method, const Sample & y) const
+Scalar LeaveOneOut::run(LinearLeastSquaresMethod & method, const Sample & y) const
 {
   const Sample x(method.getInputSample());
   const UnsignedInteger sampleSize = x.getSize();

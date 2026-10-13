@@ -9,7 +9,7 @@ The leave-one-out error is the PRESS statistic (Allen, 1974): with the
 least-squares fit :math:`\hat{\vect{y}}`, the residual
 :math:`r_i = y_i - \hat{y}_i` and the leverage
 :math:`h_i = \psi(\vect{u}_i)^\intercal (\mat{\Psi}^\intercal \mat{\Psi})^{-1} \psi(\vect{u}_i)`
-returned by :meth:`~openturns.LeastSquaresMethod.getHDiag`,
+returned by :meth:`~openturns.LinearLeastSquaresMethod.getHDiag`,
 
 .. math::
     \mathrm{Err}_{\mathrm{LOO}} =

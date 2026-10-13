@@ -111,7 +111,7 @@ basisSize : int, optional
     :class:`~openturns.ResourceMap`.
 methodName : str, optional
     The decomposition method used to solve the least-squares problem, of
-    type :class:`~openturns.LeastSquaresMethod`. If not given, it is given by the
+    type :class:`~openturns.LinearLeastSquaresMethod`. If not given, it is given by the
     `SparseExpansion-DecompositionMethod` key in
     :class:`~openturns.ResourceMap`.
 activeFunctions : sequence of `int`, optional
@@ -125,7 +125,7 @@ fittingAlgorithm : :class:`~openturns.FittingAlgorithm`, optional
 
 See also
 --------
-openturns.LeastSquaresExpansion, openturns.IntegrationExpansion, openturns.FunctionalChaosAlgorithm, openturns.LeastSquaresMethod
+openturns.LeastSquaresExpansion, openturns.IntegrationExpansion, openturns.FunctionalChaosAlgorithm, openturns.LinearLeastSquaresMethod
 
 Notes
 -----

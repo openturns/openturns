@@ -74,7 +74,7 @@ void LARS::initialize()
 }
 
 /* Method to create new BasisSequence objects */
-void LARS::updateBasis(LeastSquaresMethod & method,
+void LARS::updateBasis(LinearLeastSquaresMethod & method,
                        const Sample & y)
 {
   Sample x(method.getInputSample());
@@ -85,7 +85,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
   // Quadrature weights of the least-squares method: uniform weights are
-  // stored as a single value, see LeastSquaresMethod::getWeight
+  // stored as a single value, see LinearLeastSquaresMethod::getWeight
   const Point methodWeights(method.getWeight());
   const Bool useUniformWeights = (methodWeights.getSize() == 1);
   //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";

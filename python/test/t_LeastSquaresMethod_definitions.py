@@ -23,7 +23,7 @@
 #    That is why it comes second, and why the deciding instrument is the
 #    set of conditions above.
 #
-# The C++ test t_LeastSquaresMethod_weighted only checks that the three
+# The C++ test t_LinearLeastSquaresMethod_weighted only checks that the three
 # solvers agree with each other, which is the weaker form of item 2.
 
 import openturns as ot
@@ -136,7 +136,7 @@ indices = ot.Indices(range(inputDimension))
 rhs = ot.Point([1.0 + i for i in range(inputDimension)])
 
 for methodName in ("SVD", "QR", "Cholesky"):
-    method = ot.LeastSquaresMethod.Build(methodName, proxy, weight, indices)
+    method = ot.LinearLeastSquaresMethod.Build(methodName, proxy, weight, indices)
     method.update([], indices, [])
 
     # --- conditions that decide on their own ---

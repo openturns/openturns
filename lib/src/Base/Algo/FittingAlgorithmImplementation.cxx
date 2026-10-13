@@ -67,7 +67,7 @@ Scalar FittingAlgorithmImplementation::run(const Sample & y,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
-  LeastSquaresMethod method(proxy, weight, indices);
+  LinearLeastSquaresMethod method(proxy, weight, indices);
   return run(method, y);
 }
 
@@ -75,11 +75,11 @@ Scalar FittingAlgorithmImplementation::run(const Sample & y,
     const Indices & indices,
     const DesignProxy & proxy) const
 {
-  LeastSquaresMethod method(proxy, indices);
+  LinearLeastSquaresMethod method(proxy, indices);
   return run(method, y);
 }
 
-Scalar FittingAlgorithmImplementation::run(LeastSquaresMethod &, const Sample & ) const
+Scalar FittingAlgorithmImplementation::run(LinearLeastSquaresMethod &, const Sample & ) const
 {
   throw NotYetImplementedException(HERE);
 }

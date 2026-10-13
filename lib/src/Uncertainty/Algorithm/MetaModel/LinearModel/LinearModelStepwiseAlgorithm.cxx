@@ -577,11 +577,11 @@ void LinearModelStepwiseAlgorithm::run()
   Indices addedIndices(basisSize);
   addedIndices.fill();
   const String methodName(ResourceMap::GetAsString("LinearModelResult-DecompositionMethod"));
-  LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName, designProxy, addedIndices);
+  LinearLeastSquaresMethod leastSquaresMethod = LinearLeastSquaresMethod::Build(methodName, designProxy, addedIndices);
   Indices conservedIndices(0);
   Indices removedIndices(0);
   leastSquaresMethod.update(addedIndices, conservedIndices, removedIndices);
-  result_.setLeastSquaresMethod(leastSquaresMethod);
+  result_.setLinearLeastSquaresMethod(leastSquaresMethod);
   hasRun_ = true;
 }
 

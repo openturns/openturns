@@ -73,7 +73,7 @@ public:
                      const Indices & indices,
                      const DesignProxy & proxy) const;
 
-  virtual Scalar run(LeastSquaresMethod & method,
+  virtual Scalar run(LinearLeastSquaresMethod & method,
                      const Sample & y) const;
 
   /** Method save() stores the object through the StorageManager */

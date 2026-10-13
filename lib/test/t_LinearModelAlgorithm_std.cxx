@@ -89,7 +89,7 @@ int main(int, char *[])
         leverageFirstElements[i] = leverages[i];
       assert_almost_equal(leverageFirstElements, leverages_reference, 1e-6, 0.0);
 
-      LeastSquaresMethod lsMethod(result.getLeastSquaresMethod());
+      LinearLeastSquaresMethod lsMethod(result.getLinearLeastSquaresMethod());
       SymmetricMatrix projectionMatrix(lsMethod.getH());
       assert_equal(projectionMatrix.getNbRows(), size);
       assert_equal(projectionMatrix.getNbColumns(), size);

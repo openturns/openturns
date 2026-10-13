@@ -33,7 +33,7 @@ The class builds the matrix :math:`\mat{D} = (d_{jk})_{jk} \in \Rset^{\sampleSiz
 
 The matrix columns are effectively built when the *computeDesign* method is activated. The values are stored in a cache.
 This can be useful for an iterative
-least squares problem resolution or in interaction with :class:`~openturns.LeastSquaresMethod`
+least squares problem resolution or in interaction with :class:`~openturns.LinearLeastSquaresMethod`
 to select the algorithm used for the resolution of linear least-squares problems.
 
 It is possible to directly specify the values :math:`(d_{jk})_{jk}` in the last constructor.

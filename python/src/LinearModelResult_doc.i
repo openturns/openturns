@@ -445,7 +445,7 @@ The least squares method used to estimate the coefficients is precised in the :c
 
 Returns
 -------
-leastSquaresMethod: :class:`~openturns.LeastSquaresMethod`
+leastSquaresMethod: :class:`~openturns.LinearLeastSquaresMethod`
     The least squares method."
 
 // ---------------------------------------------------------------------

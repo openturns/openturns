@@ -37,7 +37,7 @@
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/DesignProxy.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/LinearBasisFactory.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 
@@ -331,7 +331,7 @@ public:
     const DesignProxy proxy(inputSample_, basis_);
 
     // Compute using a least squares method
-    algo_ = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), proxy, indices);
+    algo_ = LinearLeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), proxy, indices);
   }
   BoxCoxLMOptimizationEvaluation *clone() const override
   {
@@ -394,7 +394,7 @@ private:
   Sample shiftedOutputSample_;
   Basis basis_;
   Scalar sumLog_;
-  mutable LeastSquaresMethod algo_;
+  mutable LinearLeastSquaresMethod algo_;
 };
 
 /* Constructor with parameters */

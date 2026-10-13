@@ -288,7 +288,7 @@ void NonLinearLeastSquaresCalibration::run()
       shift += skip;
     }
     const String methodName(ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
-    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, gradientObservations.transpose()));
+    LinearLeastSquaresMethod method(LinearLeastSquaresMethod::Build(methodName, gradientObservations.transpose()));
     // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
     (void) method.solve(Point(gradientObservations.getNbColumns()));
     CovarianceMatrix gramInverse(method.getGramInverse());

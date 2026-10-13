@@ -171,8 +171,8 @@ ot_add_python_module(algo algo_module.i
                       ApproximationAlgorithmImplementationFactory.i ApproximationAlgorithmImplementationFactory_doc.i
                       ApproximationAlgorithm.i ApproximationAlgorithm_doc.i
                       DesignProxy.i DesignProxy_doc.i
-                      LeastSquaresMethodImplementation.i LeastSquaresMethodImplementation_doc.i
-                      LeastSquaresMethod.i LeastSquaresMethod_doc.i
+                      LinearLeastSquaresMethodImplementation.i LinearLeastSquaresMethodImplementation_doc.i
+                      LinearLeastSquaresMethod.i LinearLeastSquaresMethod_doc.i
                       CholeskyMethod.i CholeskyMethod_doc.i
                       QRMethod.i QRMethod_doc.i
                       SVDMethod.i SVDMethod_doc.i

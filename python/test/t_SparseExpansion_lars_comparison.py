@@ -80,7 +80,7 @@ class PythonLARS:
             marginal_output = self.output_sample.getMarginal(output_index)
             marginal_selection = [0]
 
-            leastSquaresMethod = ot.LeastSquaresMethod.Build(
+            leastSquaresMethod = ot.LinearLeastSquaresMethod.Build(
                 self.methodName, designProxy, self.weight, marginal_selection
             )
             rhs = marginal_output.asPoint()
@@ -427,7 +427,7 @@ quadratureProxy = ot.DesignProxy(
     quadratureTransformation(quadratureInput),
     [productBasis.build(i) for i in range(quadratureBasisSize)],
 )
-quadratureMethod = ot.LeastSquaresMethod.Build(
+quadratureMethod = ot.LinearLeastSquaresMethod.Build(
     "QR", quadratureProxy, quadratureWeight,
     ot.Indices(range(quadratureBasisSize)),
 )

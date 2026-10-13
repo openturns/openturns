@@ -33,7 +33,7 @@ static const Factory<QRMethod> Factory_QRMethod;
 
 /* Default constructor */
 QRMethod::QRMethod()
-  : LeastSquaresMethodImplementation()
+  : LinearLeastSquaresMethodImplementation()
 {
   // Nothing to do
 }
@@ -42,7 +42,7 @@ QRMethod::QRMethod()
 QRMethod::QRMethod(const DesignProxy & proxy,
                    const Point & weight,
                    const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, weight, indices)
+  : LinearLeastSquaresMethodImplementation(proxy, weight, indices)
 {
   // Nothing to do
 }
@@ -50,14 +50,14 @@ QRMethod::QRMethod(const DesignProxy & proxy,
 /* Parameters constructor */
 QRMethod::QRMethod(const DesignProxy & proxy,
                    const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, indices)
+  : LinearLeastSquaresMethodImplementation(proxy, indices)
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
 QRMethod::QRMethod(const Matrix & matrix)
-  : LeastSquaresMethodImplementation(matrix)
+  : LinearLeastSquaresMethodImplementation(matrix)
 {
   // Nothing to do
 }
@@ -195,7 +195,7 @@ SymmetricMatrix QRMethod::getH() const
     return q_.getImplementation()->genProd(*q_.getImplementation(), false, true);
 
   }
-  return LeastSquaresMethodImplementation::getH();
+  return LinearLeastSquaresMethodImplementation::getH();
 
 }
 
@@ -257,14 +257,14 @@ void QRMethod::trashDecomposition()
 /* Method save() stores the object through the StorageManager */
 void QRMethod::save(Advocate & adv) const
 {
-  LeastSquaresMethodImplementation::save(adv);
+  LinearLeastSquaresMethodImplementation::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void QRMethod::load(Advocate & adv)
 {
-  LeastSquaresMethodImplementation::load(adv);
+  LinearLeastSquaresMethodImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

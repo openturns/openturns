@@ -71,11 +71,11 @@ BasisSequence BasisSequenceFactoryImplementation::build(const Sample & y,
     const Indices & indices,
     const DesignProxy & proxy)
 {
-  LeastSquaresMethod method(proxy, indices);
+  LinearLeastSquaresMethod method(proxy, indices);
   return build(method, y);
 }
 
-BasisSequence BasisSequenceFactoryImplementation::build(LeastSquaresMethod & method,
+BasisSequence BasisSequenceFactoryImplementation::build(LinearLeastSquaresMethod & method,
     const Sample & y)
 {
   BasisSequence basisSequence(method.getBasis());
@@ -99,7 +99,7 @@ void BasisSequenceFactoryImplementation::initialize()
 }
 
 
-void BasisSequenceFactoryImplementation::updateBasis(LeastSquaresMethod &, const Sample & )
+void BasisSequenceFactoryImplementation::updateBasis(LinearLeastSquaresMethod &, const Sample & )
 {
   throw NotYetImplementedException(HERE) << " in BasisSequenceFactoryImplementation::updateBasis";
 }

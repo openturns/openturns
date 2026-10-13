@@ -23,7 +23,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/SampleImplementation.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -55,7 +55,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   : MetaModelResult(inputSample, outputSample, metaModel)
   , basis_(basis)
   , design_(design)
-  , leastSquaresMethod_(LeastSquaresMethod(design))
+  , leastSquaresMethod_(LinearLeastSquaresMethod(design))
   , coefficients_(coefficients)
   , condensedFormula_(formula)
   , coefficientsNames_(coefficientsNames)
@@ -209,12 +209,12 @@ String LinearModelResult::__repr__() const
          << " leastSquaresMethod=" << leastSquaresMethod_;
 }
 
-LeastSquaresMethod LinearModelResult::getLeastSquaresMethod() const
+LinearLeastSquaresMethod LinearModelResult::getLinearLeastSquaresMethod() const
 {
   return leastSquaresMethod_;
 }
 
-void LinearModelResult::setLeastSquaresMethod(const LeastSquaresMethod & leastSquaresMethod)
+void LinearModelResult::setLinearLeastSquaresMethod(const LinearLeastSquaresMethod & leastSquaresMethod)
 {
   leastSquaresMethod_ = leastSquaresMethod;
 }
@@ -351,7 +351,7 @@ Point LinearModelResult::getCoefficientsStandardErrors() const
 }
 
 /* @deprecated */
-LeastSquaresMethod LinearModelResult::buildMethod() const
+LinearLeastSquaresMethod LinearModelResult::buildMethod() const
 {
   return leastSquaresMethod_;
 }
@@ -414,7 +414,7 @@ void LinearModelResult::load(Advocate & adv)
   if (adv.hasAttribute("leastSquaresMethod_"))
     adv.loadAttribute( "leastSquaresMethod_", leastSquaresMethod_ );
   else
-    leastSquaresMethod_ = LeastSquaresMethod(design_);
+    leastSquaresMethod_ = LinearLeastSquaresMethod(design_);
   checkIntercept();
 }
 

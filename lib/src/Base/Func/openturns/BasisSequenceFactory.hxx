@@ -24,7 +24,7 @@
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/BasisSequence.hxx"
 #include "openturns/BasisSequenceFactoryImplementation.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -65,11 +65,11 @@ public:
                       const Indices & indices,
                       const DesignProxy & proxy);
 
-  BasisSequence build(LeastSquaresMethod & method,
+  BasisSequence build(LinearLeastSquaresMethod & method,
                       const Sample & y);
 
   void initialize();
-  void updateBasis(LeastSquaresMethod & method,
+  void updateBasis(LinearLeastSquaresMethod & method,
                    const Sample & y);
 
 #endif

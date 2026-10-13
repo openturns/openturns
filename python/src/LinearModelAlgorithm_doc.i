@@ -95,7 +95,7 @@ Here are a few guidelines to choose the appropriate decomposition method:
   the condition number.
 - Selecting the decomposition method can also be based on the sample size.
 
-Please read the :meth:`~openturns.LeastSquaresMethod.Build` help page
+Please read the :meth:`~openturns.LinearLeastSquaresMethod.Build` help page
 for details on this topic.
 
 The :class:`~openturns.LinearModelAnalysis` class can be used for a detailed
@@ -128,7 +128,7 @@ Examples
 
 In order to access the projection matrix, we build the least squares method.
 
->>> lsMethod = result.getLeastSquaresMethod()
+>>> lsMethod = result.getLinearLeastSquaresMethod()
 >>> projectionMatrix = lsMethod.getH()
 )RAW"
 

@@ -25,7 +25,7 @@
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 

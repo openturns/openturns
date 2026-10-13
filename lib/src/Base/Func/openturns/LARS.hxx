@@ -56,7 +56,7 @@ public:
 //                               const DesignProxy & proxy);
 
   void initialize() override;
-  void updateBasis(LeastSquaresMethod & method, const Sample & y) override;
+  void updateBasis(LinearLeastSquaresMethod & method, const Sample & y) override;
 #endif
   /** String converter */
   String __repr__() const override;

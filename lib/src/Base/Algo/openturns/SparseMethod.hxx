@@ -21,8 +21,8 @@
 #ifndef OPENTURNS_SPARSEMETHOD_HXX
 #define OPENTURNS_SPARSEMETHOD_HXX
 
-#include "openturns/LeastSquaresMethodImplementation.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/BasisSequenceFactory.hxx"
 #include "openturns/FittingAlgorithm.hxx"
 #include "openturns/LARS.hxx"
@@ -36,17 +36,17 @@ BEGIN_NAMESPACE_OPENTURNS
  * Sparse approximation LS solver
  */
 class OT_API SparseMethod
-  : public LeastSquaresMethodImplementation
+  : public LinearLeastSquaresMethodImplementation
 {
   CLASSNAME
 public:
-  typedef LeastSquaresMethodImplementation::FunctionCollection FunctionCollection;
+  typedef LinearLeastSquaresMethodImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
   SparseMethod();
 
   /** Parameters constructor */
-  SparseMethod(const LeastSquaresMethod & method,
+  SparseMethod(const LinearLeastSquaresMethod & method,
                const BasisSequenceFactory & basisSequenceFactory = LARS(),
                const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
@@ -98,7 +98,7 @@ public:
 
 protected:
 
-  LeastSquaresMethod method_;
+  LinearLeastSquaresMethod method_;
 
   /** Algorithm that builds the BasisSequence */
   BasisSequenceFactory basisSequenceFactory_;

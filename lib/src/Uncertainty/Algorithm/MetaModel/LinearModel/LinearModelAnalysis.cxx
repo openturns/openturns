@@ -271,7 +271,7 @@ Normal LinearModelAnalysis::getCoefficientsDistribution() const
   checkSampleSize();
 
   const Point beta(linearModelResult_.getCoefficients());
-  const SymmetricMatrix gramInverse(linearModelResult_.getLeastSquaresMethod().getGramInverse());
+  const SymmetricMatrix gramInverse(linearModelResult_.getLinearLeastSquaresMethod().getGramInverse());
   const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
   const CovarianceMatrix covariance(residualsVariance * gramInverse);
   return Normal(beta, covariance);
@@ -320,7 +320,7 @@ Normal LinearModelAnalysis::computeDistributionForPredictionOrObservation(const 
 
   const Point prediction(x.transpose() * linearModelResult_.getCoefficients());
   // M = X^T.G^{-1}.X
-  const SymmetricMatrix gramInverse(linearModelResult_.getLeastSquaresMethod().getGramInverse());
+  const SymmetricMatrix gramInverse(linearModelResult_.getLinearLeastSquaresMethod().getGramInverse());
   const Matrix m = x.getImplementation()->genProd(*gramInverse.getImplementation(), true, false).symProd(*x.getImplementation(), 'L');
   const Scalar residualsVariance = linearModelResult_.getResidualsVariance();
   Scalar sigma2 = m(0, 0) * residualsVariance;

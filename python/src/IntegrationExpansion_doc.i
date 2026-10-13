@@ -46,7 +46,7 @@ activeFunctions : sequence of `int`, optional
 
 See also
 --------
-LeastSquaresExpansion, FunctionalChaosAlgorithm, LeastSquaresMethod
+LeastSquaresExpansion, FunctionalChaosAlgorithm, LinearLeastSquaresMethod
 
 Notes
 -----

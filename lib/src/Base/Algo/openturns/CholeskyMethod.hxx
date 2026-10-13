@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CHOLESKYMETHOD_HXX
 #define OPENTURNS_CHOLESKYMETHOD_HXX
 
-#include "openturns/LeastSquaresMethodImplementation.hxx"
+#include "openturns/LinearLeastSquaresMethodImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * Cholesky decomposition based LS solver
  */
 class OT_API CholeskyMethod
-  : public LeastSquaresMethodImplementation
+  : public LinearLeastSquaresMethodImplementation
 {
   CLASSNAME
 public:

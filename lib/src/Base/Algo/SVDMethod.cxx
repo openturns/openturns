@@ -34,7 +34,7 @@ static const Factory<SVDMethod> Factory_SVDMethod;
 
 /* Default constructor */
 SVDMethod::SVDMethod()
-  : LeastSquaresMethodImplementation()
+  : LinearLeastSquaresMethodImplementation()
 {
   // Nothing to do
 }
@@ -44,7 +44,7 @@ SVDMethod::SVDMethod()
 SVDMethod::SVDMethod(const DesignProxy & proxy,
                      const Point & weight,
                      const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, weight, indices)
+  : LinearLeastSquaresMethodImplementation(proxy, weight, indices)
 {
   // Nothing to do
 }
@@ -53,7 +53,7 @@ SVDMethod::SVDMethod(const DesignProxy & proxy,
 /* Default constructor */
 SVDMethod::SVDMethod(const DesignProxy & proxy,
                      const Indices & indices)
-  : LeastSquaresMethodImplementation(proxy, indices)
+  : LinearLeastSquaresMethodImplementation(proxy, indices)
 {
   // Nothing to do
 }
@@ -61,7 +61,7 @@ SVDMethod::SVDMethod(const DesignProxy & proxy,
 
 /* Default constructor */
 SVDMethod::SVDMethod(const Matrix & matrix)
-  : LeastSquaresMethodImplementation(matrix)
+  : LinearLeastSquaresMethodImplementation(matrix)
 {
   // Nothing to do
 }
@@ -296,14 +296,14 @@ Point SVDMethod::getGramInverseDiag() const
 /* Method save() stores the object through the StorageManager */
 void SVDMethod::save(Advocate & adv) const
 {
-  LeastSquaresMethodImplementation::save(adv);
+  LinearLeastSquaresMethodImplementation::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void SVDMethod::load(Advocate & adv)
 {
-  LeastSquaresMethodImplementation::load(adv);
+  LinearLeastSquaresMethodImplementation::load(adv);
 }
 
 

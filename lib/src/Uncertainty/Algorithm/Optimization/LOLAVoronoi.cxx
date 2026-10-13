@@ -27,7 +27,7 @@
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/Combinations.hxx"
 #include "openturns/CombinationsDistribution.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/TruncatedDistribution.hxx"
 
 #include <numeric>
@@ -228,7 +228,7 @@ struct LVLOLAScorePolicy
         for (UnsignedInteger j = 0; j < d; ++ j)
           p(ti, j) = prtx[j] - prx[j];
       }
-      LeastSquaresMethod leastSquares = LeastSquaresMethod::Build(methodName_, p);
+      LinearLeastSquaresMethod leastSquares = LinearLeastSquaresMethod::Build(methodName_, p);
       Scalar eprAgg = 0.0;
       for (UnsignedInteger k = 0; k < lola_.y_.getDimension(); ++ k)
       {

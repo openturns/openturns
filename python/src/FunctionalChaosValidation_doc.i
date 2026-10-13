@@ -71,7 +71,7 @@ exact for any positive weights:
 
 - the leave-one-out residual is :math:`r_i/(1-h_i)` with the weighted
   leverage :math:`h_i = w_i \psi(\vect{u}_i)^\intercal (\mat{\Psi}^\intercal \mat{W} \mat{\Psi})^{-1} \psi(\vect{u}_i)`
-  returned by :meth:`~openturns.LeastSquaresMethod.getHDiag`
+  returned by :meth:`~openturns.LinearLeastSquaresMethod.getHDiag`
   (PRESS statistic of Allen, 1974);
 - the K-Fold prediction on a test block :math:`T` solves
   :math:`(\mat{I}-\mat{A}\mat{W}_T)\vect{u} = \vect{r}_T` with

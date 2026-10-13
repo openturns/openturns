@@ -27,7 +27,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/DistributionTransformation.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -229,7 +229,7 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
     Indices marginalActiveFunctions(1, 0);
     Indices flagActiveFunctions(basisSize_, 0);
     flagActiveFunctions[0] = 1;
-    LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
+    LinearLeastSquaresMethod leastSquaresMethod = LinearLeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
     std::vector<bool> isCandidate(basisSize_, false);
     for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
       isCandidate[activeFunctions_[idx]] = true;
@@ -377,7 +377,7 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
 {
   // Precompute full weighted design matrix PhiW = sqrt(W) * Phi
   // Create a temporary least squares method with all active indices to get the full weighted design
-  LeastSquaresMethod fullMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
+  LinearLeastSquaresMethod fullMethod = LinearLeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
   const Matrix PhiW = fullMethod.computeWeightedDesign(true);
 
   // Build global-to-active column mapping for PhiW
@@ -397,7 +397,7 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
     Indices marginalActiveFunctions(1, 0);
     Indices flagActiveFunctions(basisSize_, 0);
     flagActiveFunctions[0] = 1;
-    LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
+    LinearLeastSquaresMethod leastSquaresMethod = LinearLeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
     std::vector<bool> isCandidate(basisSize_, false);
     for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
       isCandidate[activeFunctions_[idx]] = true;

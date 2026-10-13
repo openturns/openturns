@@ -21,7 +21,7 @@
 #include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/DesignProxy.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -111,8 +111,8 @@ void LinearModelAlgorithm::run()
   DesignProxy proxy(inputSample_, basis_);
 
   // Compute using a least squares method
-  LeastSquaresMethod algo;
-  algo = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), proxy, indices);
+  LinearLeastSquaresMethod algo;
+  algo = LinearLeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), proxy, indices);
 
   // Solve linear system
   const Point coefficients(algo.solve(outputSample_.asPoint()));
@@ -157,7 +157,7 @@ void LinearModelAlgorithm::run()
                               coefficients, residualSample,
                               standardizedResiduals, diagonalGramInverse,
                               leverages, cookDistances, sigma2);
-  result_.setLeastSquaresMethod(algo);
+  result_.setLinearLeastSquaresMethod(algo);
 
   hasRun_ = true;
 }

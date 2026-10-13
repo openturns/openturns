@@ -75,7 +75,7 @@ public:
              const Indices & indices,
              const DesignProxy & proxy) const;
 
-  Scalar run(LeastSquaresMethod & method,
+  Scalar run(LinearLeastSquaresMethod & method,
              const Sample & y) const;
 
 }; /* class FittingAlgorithm */

@@ -26,7 +26,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/DistributionTransformation.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/LinearLeastSquaresMethod.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/FixedStrategy.hxx"
@@ -176,7 +176,7 @@ void LeastSquaresExpansion::run()
     designProxy_ = DesignProxy(transformedInputSample, functions);
   } // Design proxy and transformation initialization
   // Now build the design proxy and the least-squares method
-  LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
+  LinearLeastSquaresMethod leastSquaresMethod = LinearLeastSquaresMethod::Build(methodName_, designProxy_, weights_, activeFunctions_);
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   SampleImplementation coefficients(activeFunctions_.getSize(), outputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++j)

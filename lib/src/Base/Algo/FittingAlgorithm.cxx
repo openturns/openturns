@@ -93,7 +93,7 @@ Scalar FittingAlgorithm::run(const Sample & y,
 }
 
 
-Scalar FittingAlgorithm::run(LeastSquaresMethod & method,
+Scalar FittingAlgorithm::run(LinearLeastSquaresMethod & method,
                              const Sample & y) const
 {
   return getImplementation()->run(method, y);

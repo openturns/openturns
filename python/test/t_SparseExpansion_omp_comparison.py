@@ -50,7 +50,7 @@ class PythonOMP:
             marginal_output = self.output_sample.getMarginal(output_index)
             marginal_selection = [0]
 
-            leastSquaresMethod = ot.LeastSquaresMethod.Build(
+            leastSquaresMethod = ot.LinearLeastSquaresMethod.Build(
                 self.methodName, designProxy, self.wX, marginal_selection
             )
             rightHandSide = marginal_output.asPoint()
