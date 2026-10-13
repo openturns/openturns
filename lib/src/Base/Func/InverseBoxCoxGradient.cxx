@@ -150,7 +150,8 @@ void InverseBoxCoxGradient::load(Advocate & adv)
 
 Bool InverseBoxCoxGradient::equals(const GradientImplementation & other) const
 {
-  return *this == dynamic_cast<const InverseBoxCoxGradient &>(other);
+  const InverseBoxCoxGradient * p_other = dynamic_cast<const InverseBoxCoxGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -124,7 +124,8 @@ void IndicatorEvaluation::load(Advocate & adv)
 
 Bool IndicatorEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const IndicatorEvaluation &>(other);
+  const IndicatorEvaluation * p_other = dynamic_cast<const IndicatorEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

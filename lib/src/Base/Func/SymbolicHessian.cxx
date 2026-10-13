@@ -303,7 +303,8 @@ void SymbolicHessian::load(Advocate & adv)
 
 Bool SymbolicHessian::equals(const HessianImplementation & other) const
 {
-  return *this == dynamic_cast<const SymbolicHessian &>(other);
+  const SymbolicHessian * p_other = dynamic_cast<const SymbolicHessian *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

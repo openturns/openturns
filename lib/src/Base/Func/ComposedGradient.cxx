@@ -117,7 +117,8 @@ void ComposedGradient::load(Advocate & adv)
 
 Bool ComposedGradient::equals(const GradientImplementation & other) const
 {
-  return *this == dynamic_cast<const ComposedGradient &>(other);
+  const ComposedGradient * p_other = dynamic_cast<const ComposedGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS
