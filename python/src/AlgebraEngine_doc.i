@@ -6,7 +6,13 @@ This class is experimental and likely to be modified in future releases.
 AlgebraEngine provides static methods for linear algebra operations
 on DataContainer objects, delegating to LAPACK/BLAS routines.
 All methods operate on raw pointers from DataContainer::data(),
-enabling zero-copy interoperability between different container types."
+enabling zero-copy interoperability between different container types.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``AlgebraEngine-DefaultBlockSize`` (``UnsignedInteger``, default: ``384``): number of rows and columns per block for out-of-core blockwise linear algebra."
 
 // ---------------------------------------------------------------------
 
@@ -142,6 +148,27 @@ result : DataContainer
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::AlgebraEngine::TriangularPointProduct
+"Compute triangular matrix-vector product.
+
+Parameters
+----------
+A : DataContainer
+    Triangular matrix (column-major, n x n).
+x : DataContainer
+    Vector of size n.
+uplo : char, optional
+    'L' (default) if A is lower triangular, 'U' otherwise.
+transpose : bool, optional
+    If True, compute :math:`A^T x`.
+
+Returns
+-------
+result : DataContainer
+    :math:`A x` (or :math:`A^T x`) of size n."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::AlgebraEngine::MatrixProduct
 "Compute matrix multiplication.
 
@@ -263,19 +290,19 @@ U : DataContainer
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::AlgebraEngine::SolveLinearSystem
-"Solve linear system Ax = b.
+"Solve linear system AX = B.
 
 Parameters
 ----------
 A : DataContainer
     Square non-singular matrix (column-major, n x n).
 b : DataContainer
-    Right-hand side vector of size n.
+    Right-hand side vector of size n, or matrix with n rows.
 
 Returns
 -------
 x : DataContainer
-    Solution vector of size n."
+    Solution vector of size n, or matrix with n rows."
 
 // ---------------------------------------------------------------------
 
@@ -287,12 +314,29 @@ Parameters
 A : DataContainer
     Symmetric positive definite matrix.
 b : DataContainer
-    Right-hand side vector.
+    Right-hand side vector, or matrix with matching row count.
 
 Returns
 -------
 x : DataContainer
-    Solution vector."
+    Solution vector or matrix."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AlgebraEngine::SolveLinearSystemSymmetric
+"Solve linear system for symmetric A (possibly indefinite).
+
+Parameters
+----------
+A : DataContainer
+    Symmetric matrix.
+b : DataContainer
+    Right-hand side vector, or matrix with matching row count.
+
+Returns
+-------
+x : DataContainer
+    Solution vector or matrix."
 
 // ---------------------------------------------------------------------
 
@@ -304,7 +348,7 @@ Parameters
 A : DataContainer
     Triangular matrix.
 b : DataContainer
-    Right-hand side vector.
+    Right-hand side vector, or matrix with matching row count.
 lower : bool, optional
     If True (default), A is lower triangular.
 transpose : bool, optional
@@ -313,7 +357,7 @@ transpose : bool, optional
 Returns
 -------
 x : DataContainer
-    Solution vector."
+    Solution vector or matrix."
 
 // ---------------------------------------------------------------------
 
@@ -325,12 +369,14 @@ Parameters
 A : DataContainer
     Rectangular matrix (m x n, m >= n).
 b : DataContainer
-    Right-hand side vector of size m.
+    Right-hand side vector of size m, or matrix with m rows.
+rcond : float, optional
+    Pivot threshold for rank decisions. Default is SpecFunc.Precision.
 
 Returns
 -------
 x : DataContainer
-    Least-squares solution of size n."
+    Least-squares solution of size n, or matrix with n rows."
 
 // ---------------------------------------------------------------------
 
