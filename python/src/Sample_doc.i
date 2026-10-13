@@ -86,9 +86,9 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``Sample-PrintEllipsisSize`` (``UnsignedInteger``, default: ``3``)
-- ``Sample-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``1000``)
-- ``Sample-SmallKendallTau`` (``UnsignedInteger``, default: ``23``)
+- ``Sample-PrintEllipsisSize`` (``UnsignedInteger``, default: ``3``): size below which the sample is printed in full.
+- ``Sample-PrintEllipsisThreshold`` (``UnsignedInteger``, default: ``1000``): size above which the sample is printed with an ellipsis.
+- ``Sample-SmallKendallTau`` (``UnsignedInteger``, default: ``23``): size below which Kendall's tau is computed exactly.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -552,6 +552,9 @@ Parameters
 prob : float, :math:`0 \leq p \leq 1`, or sequence of float
     Input probability level. In the mathematical notation, this quantity is
     denoted by :math:`p`.
+tail : bool, optional
+    `True` indicates that the order considered is :math:`1-p`.
+    Default value is `False`.
 
 Returns
 -------
@@ -585,6 +588,9 @@ Parameters
 prob : float, :math:`0 \leq p \leq 1`, or sequence of float
     Input probability level. In the mathematical notation, this quantity is
     denoted by :math:`p`.
+tail : bool, optional
+    `True` indicates that the order considered is :math:`1-p`.
+    Default value is `False`.
 
 Returns
 -------
