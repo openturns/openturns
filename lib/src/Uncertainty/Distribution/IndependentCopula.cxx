@@ -257,33 +257,33 @@ Scalar IndependentCopula::computeConditionalDDF(const Scalar, const Point & ) co
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar IndependentCopula::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar IndependentCopula::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!(x >= 0.0) || !(x < 1.0)) return 0.0;
+  if (!(xj >= 0.0) || !(xj < 1.0)) return 0.0;
   return 1.0;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar IndependentCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar IndependentCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (!((y[i] >= 0.0) && (y[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << y << " is not in [0, 1]";
-  return SpecFunc::Clip01(x);
+    if (!((xcond[i] >= 0.0) && (xcond[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << xcond << " is not in [0, 1]";
+  return SpecFunc::Clip01(xj);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar IndependentCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar IndependentCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if ((p < 0.0) || (p > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    if (!((y[i] >= 0.0) && (y[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << y << " is not in [0, 1]";
-  return SpecFunc::Clip01(q);
+    if (!((xcond[i] >= 0.0) && (xcond[i] <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile when the conditioning point y=" << xcond << " is not in [0, 1]";
+  return SpecFunc::Clip01(p);
 }
 
 /* Get the isoprobabilist transformation */

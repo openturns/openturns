@@ -98,7 +98,7 @@ rule : int in [1, 4]
 
 Parameters
 ----------
-maxEval : int
+maximumCallsNumber : int
     The maximum function calls number."
 
 // ---------------------------------------------------------------------
@@ -108,7 +108,7 @@ maxEval : int
 
 Returns
 -------
-maxEval : int
+maximumCallsNumber : int
     The maximum function calls number."
 
 // ---------------------------------------------------------------------
@@ -118,7 +118,7 @@ maxEval : int
 
 Parameters
 ----------
-maxAbsError : float
+maximumAbsoluteError : float
     The maximum absolute error."
 
 // ---------------------------------------------------------------------
@@ -128,7 +128,7 @@ maxAbsError : float
 
 Returns
 -------
-maxAbsError : float
+maximumAbsoluteError : float
     The maximum absolute error."
 
 // ---------------------------------------------------------------------
@@ -138,7 +138,7 @@ maxAbsError : float
 
 Parameters
 ----------
-maxRelError : float
+maximumRelativeError : float
     The maximum relative error."
 
 // ---------------------------------------------------------------------
@@ -148,5 +148,5 @@ maxRelError : float
 
 Returns
 -------
-maxRelError : float
+maximumRelativeError : float
     The maximum relative error."

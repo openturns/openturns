@@ -3,7 +3,7 @@ R"RAW(Wishart distribution.
 
 Parameters
 ----------
-V : 2-d sequence of float
+v : 2-d sequence of float
     Scale matrix, positive definite of size :math:`p`.
 
     Default value is [[1.0]].
@@ -77,7 +77,7 @@ nu : float, :math:`\nu > 0`
 
 Returns
 -------
-V : :class:`~openturns.CovarianceMatrix`
+v : :class:`~openturns.CovarianceMatrix`
     Scale matrix, positive definite of size :math:`p`."
 
 // ---------------------------------------------------------------------
@@ -87,7 +87,7 @@ V : :class:`~openturns.CovarianceMatrix`
 
 Parameters
 ----------
-V : 2-d sequence of float
+v : 2-d sequence of float
     Scale matrix, positive definite of size :math:`p`."
 
 // ---------------------------------------------------------------------
@@ -97,5 +97,5 @@ V : 2-d sequence of float
 
 Returns
 -------
-V : :class:`~openturns.CovarianceMatrix`
+v : :class:`~openturns.CovarianceMatrix`
     A realization as a matrix"

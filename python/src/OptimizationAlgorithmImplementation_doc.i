@@ -216,7 +216,7 @@ OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
 
 Parameters
 ----------
-maximumEvaluationNumber : int
+maximumCallsNumber : int
     Maximum allowed number of direct objective function calls through the `()` operator.
     Does not take into account eventual indirect calls through finite difference gradient calls."
 %enddef

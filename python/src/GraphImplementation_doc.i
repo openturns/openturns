@@ -345,7 +345,7 @@ OT_Graph_getLegendCorner_doc
 
 Returns
 -------
-axes : bool
+showAxes : bool
     *True* if the axes are drawn, *False* if they are hidden."
 %enddef
 %feature("docstring") OT::GraphImplementation::getAxes
@@ -358,7 +358,7 @@ OT_Graph_getAxes_doc
 
 Parameters
 ----------
-axes : bool
+showAxes : bool
     *True* to draw the axes, *False* to hide the axes."
 %enddef
 %feature("docstring") OT::GraphImplementation::setAxes
@@ -371,7 +371,7 @@ OT_Graph_setAxes_doc
 
 Parameters
 ----------
-loc : int
+tickLocation : int
     Indicates the ticks location:
 
     - ot.GraphImplementation.TICKNONE: no ticks,
@@ -392,7 +392,7 @@ OT_Graph_setTickLocation_doc
 
 Returns
 -------
-loc : int
+tickLocation : int
     Indicates the ticks location."
 %enddef
 %feature("docstring") OT::GraphImplementation::getTickLocation
@@ -457,7 +457,7 @@ OT_Graph_getIntegerYTick_doc
 
 Returns
 -------
-scale : int
+logScale : int
     Indicates the type of the axes's scale:
 
     - 0: no log scale is used,
@@ -478,7 +478,7 @@ OT_Graph_getLogScale_doc
 
 Parameters
 ----------
-scale : int
+logScale : int
     Indicates the type of the axes's scale:
 
     - ot.GraphImplementation.NONE or 0: no log scale is used,
@@ -630,7 +630,7 @@ OT_Graph_setGrid_doc
 
 Returns
 -------
-gridColor : str
+color : str
     Color of the grid. By default the grid is gray."
 %enddef
 %feature("docstring") OT::GraphImplementation::getGridColor
@@ -643,7 +643,7 @@ OT_Graph_getGridColor_doc
 
 Parameters
 ----------
-gridColor : str
+color : str
     Color of the grid. By default the grid is gray."
 %enddef
 %feature("docstring") OT::GraphImplementation::setGridColor
@@ -717,7 +717,7 @@ OT_Graph_setBoundingBox_doc
 
 Returns
 -------
-autoBoundingBox : bool
+automaticBoundingBox : bool
     Indicates if the bounding box is automatically created or not.
     The bounding box of the drawable element is a rectangle determined
     by its range along X and its range along Y."
@@ -732,7 +732,7 @@ OT_Graph_getAutomaticBoundingBox_doc
 
 Parameters
 ----------
-autoBoundingBox : bool
+automaticBoundingBox : bool
     Indicates if the bounding box is automatically created or not.
     The bounding box of the drawable element is a rectangle determined
     by its range along X and its range along Y."

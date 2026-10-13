@@ -116,19 +116,19 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
-  Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  Scalar computeConditionalPDF(const Scalar xj, const Point & xcond) const override;
   Point computeSequentialConditionalPDF(const Point & x) const override;
   Point computeSequentialConditionalPDF(const Point & x, const Indices & ordering) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalCDF;
-  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  Scalar computeConditionalCDF(const Scalar xj, const Point & xcond) const override;
   Point computeSequentialConditionalCDF(const Point & x) const override;
   Point computeSequentialConditionalCDF(const Point & x, const Indices & ordering) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalQuantile;
-  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
+  Scalar computeConditionalQuantile(const Scalar p, const Point & xcond) const override;
   Point computeSequentialConditionalQuantile(const Point & q) const override;
   Point computeSequentialConditionalQuantile(const Point & q, const Indices & ordering) const override;
 

@@ -238,54 +238,54 @@ Point PlackettCopula::computeQuantile(const Scalar prob,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar PlackettCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar PlackettCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  const Scalar u = y[0];
-  const Scalar v = x;
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return xj;
+  const Scalar u = xcond[0];
+  const Scalar v = xj;
   return SpecFunc::Clip01(0.5 * (1.0 + (2.0 * v + thetaMinus1_ * (v - u) - 1.0) / std::sqrt(1.0 + std::pow(thetaMinus1_ * (u - v), 2.0) + thetaMinus1_ * (2.0 * v + u * (2.0 - 4.0 * v)))));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar PlackettCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar PlackettCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  if (q == 0.0) return 0.0;
-  if (q == 1.0) return 1.0;
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return 1.0;
   // Special case when no contitioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  const Scalar u = y[0];
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
+  const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u < 1.0))) return 0.0;
   const Scalar a = thetaMinus1_;
   const Scalar t1 = a * a;
-  const Scalar t2 = q * q;
+  const Scalar t2 = p * p;
   const Scalar t3 = t1 * t2;
-  const Scalar t4 = t1 * q;
+  const Scalar t4 = t1 * p;
   const Scalar t8 = t3 * u;
   const Scalar t10 = t4 * u;
   const Scalar t12 = a * t2;
-  const Scalar t16 = q * a;
+  const Scalar t16 = p * a;
   const Scalar t22 = t1 * a;
   const Scalar t23 = t2 * t2;
   const Scalar t24 = t22 * t23;
   const Scalar t25 = u * u;
-  const Scalar t30 = t2 * q;
+  const Scalar t30 = t2 * p;
   const Scalar t31 = t22 * t30;
   const Scalar t34 = t1 * t23;
   const Scalar t39 = t22 * t2;
   const Scalar t44 = t1 * t30;
-  const Scalar t49 = t22 * q;
+  const Scalar t49 = t22 * p;
   const Scalar t56 = 16.0 * t24 * t25 - 16.0 * t24 * u + 20.0 * t3 * t25 - 32.0 * t31 * t25 + 16.0 * t34 * t25 + 20.0 * t39 * t25 - 32.0 * t44 * t25 - 4.0 * t49 * t25 + 32.0 * t31 * u - 16.0 * t34 * u - 20.0 * t39 * u + 32.0 * t44 * u;
-  const Scalar t70 = -4.0 * t4 * t25 + 4.0 * t49 * u + 2.0 * a - 4.0 * q + t1 + 4.0 * t10 + 0.8e1 * t12 - 0.8e1 * t16 + 4.0 * t2 + 4.0 * t3 - 4.0 * t4 - 20.0 * t8 + 1.0;
+  const Scalar t70 = -4.0 * t4 * t25 + 4.0 * t49 * u + 2.0 * a - 4.0 * p + t1 + 4.0 * t10 + 0.8e1 * t12 - 0.8e1 * t16 + 4.0 * t2 + 4.0 * t3 - 4.0 * t4 - 20.0 * t8 + 1.0;
   const Scalar A = 0.5 / (t3 - t4 - a - 1.0);
   const Scalar B = (4.0 * t12 * u - 4.0 * t16 * u - a - 2.0 * t10 - 2.0 * t12 + 2.0 * t16 + 2.0 * t8 - 1.0);
   const Scalar C = std::sqrt(t56 + t70);
-  if (q <= 0.5)
+  if (p <= 0.5)
     return SpecFunc::Clip01(A * (B + C));
   return SpecFunc::Clip01(A * (B - C));
 }

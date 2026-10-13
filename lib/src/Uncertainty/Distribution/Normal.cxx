@@ -561,22 +561,21 @@ Scalar Normal::computeScalarQuantile(const Scalar prob,
    This expression simplifies if we use the inverse of the Cholesky factor of the covariance matrix.
    See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
 */
-Scalar Normal::computeConditionalPDF(const Scalar x,
-                                     const Point & y) const
+Scalar Normal::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
   if (sigma_[conditioningDimension] == 0.0) return 0.0;
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
-    const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
+    const Scalar z = (xj - mean_[conditioningDimension]) / sigma_[conditioningDimension];
     // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z/2)
     return DistFunc::dNormal(z) / sigma_[conditioningDimension];
   }
   // General case: use Cholesky factor L, solve L_YY * z = y - mean_y
-  Point z(y);
+  Point z(xcond);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     if (sigma_[i] == 0.0)
@@ -594,7 +593,7 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   Scalar meanRos = mean_[conditioningDimension];
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
     meanRos += cholesky_(conditioningDimension, i) * z[i];
-  const Scalar scaledX = (x - meanRos) / sigmaRos;
+  const Scalar scaledX = (xj - meanRos) / sigmaRos;
   return DistFunc::dNormal(scaledX) / sigmaRos;
 }
 
@@ -637,23 +636,22 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar Normal::computeConditionalCDF(const Scalar x,
-                                     const Point & y) const
+Scalar Normal::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
-  if (sigma_[conditioningDimension] == 0.0) return (x >= mean_[conditioningDimension] ? 1.0 : 0.0);
+  if (sigma_[conditioningDimension] == 0.0) return (xj >= mean_[conditioningDimension] ? 1.0 : 0.0);
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
-    return DistFunc::pNormal((x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
+    return DistFunc::pNormal((xj - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
   // General case: use Cholesky factor L, solve L_YY * z = y - mean_y
-  Point z(y);
+  Point z(xcond);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     if (sigma_[i] == 0.0)
     {
-      if (z[i] != mean_[i]) return (x >= mean_[conditioningDimension] ? 1.0 : 0.0);
+      if (z[i] != mean_[i]) return (xj >= mean_[conditioningDimension] ? 1.0 : 0.0);
       z[i] = 0.0;
       continue;
     }
@@ -666,7 +664,7 @@ Scalar Normal::computeConditionalCDF(const Scalar x,
   Scalar meanRos = mean_[conditioningDimension];
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
     meanRos += cholesky_(conditioningDimension, i) * z[i];
-  return DistFunc::pNormal((x - meanRos) / sigmaRos);
+  return DistFunc::pNormal((xj - meanRos) / sigmaRos);
 }
 
 Point Normal::computeSequentialConditionalCDF(const Point & x) const
@@ -697,22 +695,20 @@ Point Normal::computeSequentialConditionalCDF(const Point & x) const
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar Normal::computeConditionalQuantile(const Scalar q,
-
-    const Point & y) const
+Scalar Normal::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 
 {
 
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
 
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Degenerate conditional dimension: Dirac at mean_[conditioningDimension]
   if (sigma_[conditioningDimension] == 0.0) return mean_[conditioningDimension];
   // Special case when no conditioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(q);
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qNormal(p);
   // General case: use Cholesky factor L, solve L_YY * z = y - mean_y
-  Point z(y);
+  Point z(xcond);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
     if (sigma_[i] == 0.0)
@@ -730,7 +726,7 @@ Scalar Normal::computeConditionalQuantile(const Scalar q,
   Scalar meanRos = mean_[conditioningDimension];
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
     meanRos += cholesky_(conditioningDimension, i) * z[i];
-  return meanRos + sigmaRos * DistFunc::qNormal(q);
+  return meanRos + sigmaRos * DistFunc::qNormal(p);
 }
 
 Point Normal::computeSequentialConditionalQuantile(const Point & q) const

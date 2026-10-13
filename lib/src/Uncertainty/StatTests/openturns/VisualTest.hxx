@@ -82,16 +82,16 @@ OT_API GridLayout DrawPairsXY(const Sample & sampleX, const Sample & sampleY);
 OT_API GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
 
 /** Draw the visual test for a 1D LinearModel */
-OT_API Graph DrawLinearModel(const Sample & sample1,
-                             const Sample & sample2,
+OT_API Graph DrawLinearModel(const Sample & inputSample,
+                             const Sample & outputSample,
                              const LinearModelResult & linearModelResult);
 
 /** Draw the visual test for a 1D LinearModel using the training Samples **/
 OT_API Graph DrawLinearModel(const LinearModelResult & linearModelResult);
 
 /** Draw the visual test for a 1D LinearModel's residuals */
-OT_API Graph DrawLinearModelResidual(const Sample & sample1,
-                                     const Sample & sample2,
+OT_API Graph DrawLinearModelResidual(const Sample & inputSample,
+                                     const Sample & outputSample,
                                      const LinearModelResult & linearModelResult);
 
 /** Draw the visual test for a 1D LinearModel's residuals using the training Samples */

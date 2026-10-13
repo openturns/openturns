@@ -461,76 +461,73 @@ Scalar Multinomial::computeScalarQuantile(const Scalar prob,
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
    For Multinomial distribution, the conditional distribution is Binomial
 */
-Scalar Multinomial::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar Multinomial::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if (conditioningDimension == 0) return Binomial(n_, p_[0]).computePDF(x);
+  if (conditioningDimension == 0) return Binomial(n_, p_[0]).computePDF(xj);
   // General case
   // Check that y is a valid conditioning vector
   Scalar sumY = 0.0;
   Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    const Scalar yI = y[i];
+    const Scalar yI = xcond[i];
     const Scalar yRounded = round(yI);
     if ((yRounded < 0.0) || (std::abs(yI - yRounded) > supportEpsilon_)) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  if (sumP >= 1.0 - supportEpsilon_) return (x == 0.0 ? 1.0 : 0.0);
-  const Scalar xRounded = round(x);
-  if ((xRounded < 0.0) || (std::abs(x - xRounded) > supportEpsilon_)) return 0.0;
+  if (sumP >= 1.0 - supportEpsilon_) return (xj == 0.0 ? 1.0 : 0.0);
+  const Scalar xRounded = round(xj);
+  if ((xRounded < 0.0) || (std::abs(xj - xRounded) > supportEpsilon_)) return 0.0;
   return DistFunc::dBinomial(static_cast<UnsignedInteger>(round(n_ - sumY)), p_[conditioningDimension] / (1.0 - sumP), static_cast<UnsignedInteger>(xRounded));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar Multinomial::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar Multinomial::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeCDF(x);
+  if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeCDF(xj);
   // General case
   // Check that y is a valid conditioning vector
   Scalar sumY = 0.0;
   Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    const Scalar yI = y[i];
+    const Scalar yI = xcond[i];
     const Scalar yRounded = round(yI);
     if ((yRounded < 0.0) || (std::abs(yI - yRounded) > supportEpsilon_)) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  if (sumP >= 1.0 - supportEpsilon_) return (x >= 0.0 ? 1.0 : 0.0);
+  if (sumP >= 1.0 - supportEpsilon_) return (xj >= 0.0 ? 1.0 : 0.0);
   // External points of the conditional support
-  if (x < 0.0) return 0.0;
-  if (x >= static_cast<Scalar>(n_) - sumY) return 1.0;
-  return DistFunc::pBeta(n_ - sumY - floor(x), floor(x) + 1, 1.0 - p_[conditioningDimension] / (1.0 - sumP));
+  if (xj < 0.0) return 0.0;
+  if (xj >= static_cast<Scalar>(n_) - sumY) return 1.0;
+  return DistFunc::pBeta(n_ - sumY - floor(xj), floor(xj) + 1, 1.0 - p_[conditioningDimension] / (1.0 - sumP));
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar Multinomial::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar Multinomial::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case when no contitioning or independent copula
-  if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeQuantile(q)[0];
+  if (conditioningDimension == 0) return Binomial(n_, p_[0]).computeQuantile(p)[0];
   // General case
   // Check that y is a valid conditioning vector
   Scalar sumY = 0.0;
   Scalar sumP = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    const Scalar yI = y[i];
+    const Scalar yI = xcond[i];
     const Scalar yRounded = round(yI);
     if ((yRounded < 0.0) || (std::abs(yI - yRounded) > supportEpsilon_)) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has non-integer values";
     sumY += yI;
@@ -541,7 +538,7 @@ Scalar Multinomial::computeConditionalQuantile(const Scalar q,
   const Scalar condP = p_[conditioningDimension] / (1.0 - sumP);
   if (condP <= 0.0) return 0.0;
   if (condP >= 1.0) return static_cast<Scalar>(round(n_ - sumY));
-  return Binomial(static_cast<UnsignedInteger>(round(n_ - sumY)), condP).computeQuantile(q)[0];
+  return Binomial(static_cast<UnsignedInteger>(round(n_ - sumY)), condP).computeQuantile(p)[0];
 }
 
 /* Get the i-th marginal distribution */

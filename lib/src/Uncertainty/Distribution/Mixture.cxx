@@ -399,13 +399,12 @@ Point Mixture::computeCDFGradient(const Point & point) const
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
 */
-Scalar Mixture::computeConditionalPDF(const Scalar x,
-                                      const Point & y) const
+Scalar Mixture::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(xj);
   // Build the conditional mixture weights
   const UnsignedInteger size = distributionCollection_.getSize();
   Scalar conditionedPDF = 0.0;
@@ -414,11 +413,11 @@ Scalar Mixture::computeConditionalPDF(const Scalar x,
   conditioningIndices.fill();
   Indices conditionedIndices(conditioningIndices);
   conditionedIndices.add(conditioningDimension);
-  Point z(y);
-  z.add(x);
+  Point z(xcond);
+  z.add(xj);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar weightedMarginalAtomPDF = p_[i] * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
+    const Scalar weightedMarginalAtomPDF = p_[i] * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(xcond);
     conditioningPDF += weightedMarginalAtomPDF;
     if (weightedMarginalAtomPDF > 0.0)
       conditionedPDF += p_[i] * distributionCollection_[i].getMarginal(conditionedIndices).computePDF(z);
@@ -453,13 +452,12 @@ Point Mixture::computeSequentialConditionalPDF(const Point & x) const
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar Mixture::computeConditionalCDF(const Scalar x,
-                                      const Point & y) const
+Scalar Mixture::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(xj);
   // Build the conditional mixture weights
   const UnsignedInteger size = distributionCollection_.getSize();
   Scalar conditionedCDF = 0.0;
@@ -468,14 +466,14 @@ Scalar Mixture::computeConditionalCDF(const Scalar x,
   conditioningIndices.fill();
   Indices conditionedIndices(conditioningIndices);
   conditionedIndices.add(conditioningDimension);
-  Point z(y);
-  z.add(x);
+  Point z(xcond);
+  z.add(xj);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar weightedMarginalAtomPDF = p_[i] * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
+    const Scalar weightedMarginalAtomPDF = p_[i] * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(xcond);
     conditioningPDF += weightedMarginalAtomPDF;
     if (weightedMarginalAtomPDF > 0.0)
-      conditionedCDF += distributionCollection_[i].computeConditionalCDF(x, y) * weightedMarginalAtomPDF;
+      conditionedCDF += distributionCollection_[i].computeConditionalCDF(xj, xcond) * weightedMarginalAtomPDF;
   }
   if (!(conditioningPDF > 0.0)) return 0.0;
   // No need to normalize by 1/h as it simplifies

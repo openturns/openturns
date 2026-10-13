@@ -835,9 +835,9 @@ Distribution Distribution::getCopula() const
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar Distribution::computeConditionalDDF(const Scalar x, const Point & y) const
+Scalar Distribution::computeConditionalDDF(const Scalar xj, const Point & xcond) const
 {
-  return getImplementation()->computeConditionalDDF(x, y);
+  return getImplementation()->computeConditionalDDF(xj, xcond);
 }
 
 Point Distribution::computeSequentialConditionalDDF(const Point & x) const
@@ -846,9 +846,9 @@ Point Distribution::computeSequentialConditionalDDF(const Point & x) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar Distribution::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar Distribution::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  return getImplementation()->computeConditionalPDF(x, y);
+  return getImplementation()->computeConditionalPDF(xj, xcond);
 }
 
 Point Distribution::computeSequentialConditionalPDF(const Point & x) const
@@ -867,9 +867,9 @@ Point Distribution::computeConditionalPDF(const Point & x, const Sample & y) con
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar Distribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar Distribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  return getImplementation()->computeConditionalCDF(x, y);
+  return getImplementation()->computeConditionalCDF(xj, xcond);
 }
 
 Point Distribution::computeSequentialConditionalCDF(const Point & x) const
@@ -888,9 +888,9 @@ Point Distribution::computeConditionalCDF(const Point & x, const Sample & y) con
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar Distribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar Distribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  return getImplementation()->computeConditionalQuantile(q, y);
+  return getImplementation()->computeConditionalQuantile(p, xcond);
 }
 
 Point Distribution::computeSequentialConditionalQuantile(const Point & q) const

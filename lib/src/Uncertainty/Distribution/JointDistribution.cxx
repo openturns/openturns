@@ -795,19 +795,19 @@ Point JointDistribution::computeQuantile(const Scalar prob,
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar JointDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar JointDistribution::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computePDF(x);
+  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computePDF(xj);
   // General case
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
-  const Scalar pdfX = distributionCollection_[conditioningDimension].computePDF(x);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(xcond[i]);
+  const Scalar pdfX = distributionCollection_[conditioningDimension].computePDF(xj);
   if (pdfX == 0.0)
     return 0.0;
-  const Scalar corePDF = core_.computeConditionalPDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
+  const Scalar corePDF = core_.computeConditionalPDF(distributionCollection_[conditioningDimension].computeCDF(xj), u);
   return pdfX * corePDF;
 }
 
@@ -833,16 +833,16 @@ Point JointDistribution::computeSequentialConditionalPDF(const Point & x) const
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar JointDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar JointDistribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeCDF(x);
+  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeCDF(xj);
   // General case$
   Point u(conditioningDimension);
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(y[i]);
-  return core_.computeConditionalCDF(distributionCollection_[conditioningDimension].computeCDF(x), u);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) u[i] = distributionCollection_[i].computeCDF(xcond[i]);
+  return core_.computeConditionalCDF(distributionCollection_[conditioningDimension].computeCDF(xj), u);
 }
 
 Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
@@ -860,21 +860,20 @@ Point JointDistribution::computeSequentialConditionalCDF(const Point & x) const
 /* Fk|1,...,k-1(x_k|x_1,...,x_{k-1})=Ck|1,...,k-1(F_k(x_k)|u_1=F_1(x_1),...,u_{k-1}=F_{k-1}(x_{k-1}))
    Fk|1,...,k-1(Qk|1,...,k-1(q)|x_1,...,x_{k-1})=Ck|1,...,k-1(u_k=F_k(x_k)|u_1=F_1(x_1),...,u_{k-1}=F_{k-1}(x_{k-1}))
 */
-Scalar JointDistribution::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar JointDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeScalarQuantile(q);
+  if (core_.isCopula() && ((conditioningDimension == 0) || hasIndependentCopula())) return distributionCollection_[conditioningDimension].computeScalarQuantile(p);
   // General case
   Point u(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
   {
-    if (!((y[i] >= range_.getLowerBound()[i]) && (y[i] <= range_.getUpperBound()[i]))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
-    u[i] = distributionCollection_[i].computeCDF(y[i]);
+    if (!((xcond[i] >= range_.getLowerBound()[i]) && (xcond[i] <= range_.getUpperBound()[i]))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning point outside of the conditioning distribution range";
+    u[i] = distributionCollection_[i].computeCDF(xcond[i]);
   }
-  return distributionCollection_[conditioningDimension].computeScalarQuantile(core_.computeConditionalQuantile(q, u));
+  return distributionCollection_[conditioningDimension].computeScalarQuantile(core_.computeConditionalQuantile(p, u));
 }
 
 Point JointDistribution::computeSequentialConditionalQuantile(const Point & q) const

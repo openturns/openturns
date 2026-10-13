@@ -393,29 +393,29 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
 
 
 /* Draw the visual test for a 1D LinearModel */
-Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+Graph VisualTest::DrawLinearModel(const Sample & inputSample, const Sample & outputSample, const LinearModelResult & linearModelResult)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
-  if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
+  if (inputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << inputSample.getDimension();
+  if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << outputSample.getDimension();
+  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << inputSample.getSize() << " and sample 2 size=" << outputSample.getSize();
 
   const Function fHat(linearModelResult.getMetaModel());
-  const Sample y(fHat(sample1));
+  const Sample y(fHat(inputSample));
 
-  const UnsignedInteger size = sample1.getSize();
+  const UnsignedInteger size = inputSample.getSize();
   Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point point = {sample1(i, 0), y(i, 0)};
+    const Point point = {inputSample(i, 0), y(i, 0)};
     sample2D[i] = point;
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
   curveLinearModelTest.setLegend("regression");
-  Cloud cloudLinearModelTest(sample1, sample2);
+  Cloud cloudLinearModelTest(inputSample, outputSample);
   cloudLinearModelTest.setPointStyle("fsquare");
   cloudLinearModelTest.setLegend("sample");
 
-  Graph graph("Linear model visual test", sample1.getDescription()[0], sample2.getDescription()[0]);
+  Graph graph("Linear model visual test", inputSample.getDescription()[0], outputSample.getDescription()[0]);
   graph.setLegendPosition("topright");
   graph.add(cloudLinearModelTest);
   graph.add(curveLinearModelTest);
@@ -425,23 +425,23 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2
 /* Draw the visual test for a 1D LinearModel using the training Samples **/
 Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
 {
-  const Sample & sample1 = linearModelResult.getInputSample();
-  const Sample & sample2 = linearModelResult.getOutputSample();
-  return VisualTest::DrawLinearModel(sample1, sample2, linearModelResult);
+  const Sample & inputSample = linearModelResult.getInputSample();
+  const Sample & outputSample = linearModelResult.getOutputSample();
+  return VisualTest::DrawLinearModel(inputSample, outputSample, linearModelResult);
 }
 
 /* Draw the visual test for a 1D LinearModel's residuals */
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+Graph VisualTest::DrawLinearModelResidual(const Sample & inputSample, const Sample & outputSample, const LinearModelResult & linearModelResult)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
-  if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
+  if (inputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << inputSample.getDimension();
+  if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << outputSample.getDimension();
+  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << inputSample.getSize() << " and sample 2 size=" << outputSample.getSize();
 
   const Function fHat(linearModelResult.getMetaModel());
-  const Sample yHat(fHat(sample1));
-  const Sample y(sample2 - yHat);
+  const Sample yHat(fHat(inputSample));
+  const Sample y(outputSample - yHat);
 
-  const UnsignedInteger size = sample1.getSize();
+  const UnsignedInteger size = inputSample.getSize();
   Sample data(size - 1, 2);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
   {
@@ -450,7 +450,7 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample &
   }
 
   OSS oss;
-  oss << sample1.getDescription()[0] << " LinearModel residual Test";
+  oss << inputSample.getDescription()[0] << " LinearModel residual Test";
   Cloud cloudLinearModelRTest(data, oss);
   cloudLinearModelRTest.setPointStyle("fsquare");
 
@@ -463,9 +463,9 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample &
 /* Draw the visual test for a 1D LinearModel's residuals using the training Samples */
 Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelResult)
 {
-  const Sample sample1(linearModelResult.getInputSample());
-  const Sample sample2(linearModelResult.getOutputSample());
-  return VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult);
+  const Sample inputSample(linearModelResult.getInputSample());
+  const Sample outputSample(linearModelResult.getOutputSample());
+  return VisualTest::DrawLinearModelResidual(inputSample, outputSample, linearModelResult);
 }
 
 /* Draw the parallel coordinates visual test */

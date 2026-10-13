@@ -1067,16 +1067,16 @@ Point PointConditionalDistribution::computeCDFGradient(const Point & point) cons
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar PointConditionalDistribution::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar PointConditionalDistribution::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
   if (useSimplifiedVersion_)
-    return simplifiedVersion_.computeConditionalPDF(x, y);
+    return simplifiedVersion_.computeConditionalPDF(xj, xcond);
 
   if (!conditioningCDF_.getSize())
     throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
-  xCond.add(y);
-  return reorderedDistribution_.computeConditionalPDF(x, xCond);
+  xCond.add(xcond);
+  return reorderedDistribution_.computeConditionalPDF(xj, xCond);
 }
 
 Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point & x) const
@@ -1117,16 +1117,16 @@ Point PointConditionalDistribution::computeSequentialConditionalPDF(const Point 
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar PointConditionalDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar PointConditionalDistribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
   if (useSimplifiedVersion_)
-    return simplifiedVersion_.computeConditionalCDF(x, y);
+    return simplifiedVersion_.computeConditionalCDF(xj, xcond);
 
   if (!conditioningCDF_.getSize())
     throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
-  xCond.add(y);
-  return reorderedDistribution_.computeConditionalCDF(x, xCond);
+  xCond.add(xcond);
+  return reorderedDistribution_.computeConditionalCDF(xj, xCond);
 }
 
 Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point & y) const
@@ -1166,16 +1166,16 @@ Point PointConditionalDistribution::computeSequentialConditionalCDF(const Point 
   return result;
 }
 
-Scalar PointConditionalDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar PointConditionalDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
   if (useSimplifiedVersion_)
-    return simplifiedVersion_.computeConditionalQuantile(q, y);
+    return simplifiedVersion_.computeConditionalQuantile(p, xcond);
 
   if (!conditioningCDF_.getSize())
     throw InvalidArgumentException(HERE) << "Transformation was not initialized";
   Point xCond(conditioningValues_);
-  xCond.add(y);
-  return reorderedDistribution_.computeConditionalQuantile(q, xCond);
+  xCond.add(xcond);
+  return reorderedDistribution_.computeConditionalQuantile(p, xCond);
 }
 
 Point PointConditionalDistribution::computeSequentialConditionalQuantile(const Point & q) const

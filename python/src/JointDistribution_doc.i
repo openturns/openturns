@@ -77,7 +77,7 @@ the resulting distribution."
 
 Parameters
 ----------
-distributions : list of :class:`~openturns.Distribution`
+coll : list of :class:`~openturns.Distribution`
     List of the instrumental marginals of the distribution.
 
 Notes

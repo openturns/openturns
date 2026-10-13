@@ -521,43 +521,43 @@ Point MarginalDistribution::computeSequentialConditionalCDF(const Point & x) con
 
 
 /* Compute the CDF of Xi | X1, ..., Xi-1, x = Xi, y = (X1,...,Xi-1) */
-Scalar MarginalDistribution::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar MarginalDistribution::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (conditioningDimension == 0)
-    return distribution_.getMarginal(indices_[conditioningDimension]).computeCDF(x);
+    return distribution_.getMarginal(indices_[conditioningDimension]).computeCDF(xj);
   if (hasIndependentCopula())
-    return distribution_.getMarginal(indices_[conditioningDimension]).computeCDF(x);
+    return distribution_.getMarginal(indices_[conditioningDimension]).computeCDF(xj);
   // Build the marginal over indices[0..k]
   Indices targetIndices(conditioningDimension + 1);
   for (UnsignedInteger i = 0; i <= conditioningDimension; ++i) targetIndices[i] = indices_[i];
   Distribution marg(distribution_.getMarginal(targetIndices));
   // If getMarginal returned a MarginalDistribution avoid infinite recursion
   if (dynamic_cast<const MarginalDistribution*>(marg.getImplementation().get()))
-    return DistributionImplementation::computeConditionalCDF(x, y);
-  return marg.computeConditionalCDF(x, y);
+    return DistributionImplementation::computeConditionalCDF(xj, xcond);
+  return marg.computeConditionalCDF(xj, xcond);
 }
 
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar MarginalDistribution::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar MarginalDistribution::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << p << " outside of [0, 1]";
   if (conditioningDimension == 0)
-    return distribution_.getMarginal(indices_[conditioningDimension]).computeScalarQuantile(q);
+    return distribution_.getMarginal(indices_[conditioningDimension]).computeScalarQuantile(p);
   if (hasIndependentCopula())
-    return distribution_.getMarginal(indices_[conditioningDimension]).computeScalarQuantile(q);
+    return distribution_.getMarginal(indices_[conditioningDimension]).computeScalarQuantile(p);
   // Build the marginal over indices[0..k]
   Indices targetIndices(conditioningDimension + 1);
   for (UnsignedInteger i = 0; i <= conditioningDimension; ++i) targetIndices[i] = indices_[i];
   Distribution marg(distribution_.getMarginal(targetIndices));
   // If getMarginal returned a MarginalDistribution avoid infinite recursion
   if (dynamic_cast<const MarginalDistribution*>(marg.getImplementation().get()))
-    return DistributionImplementation::computeConditionalQuantile(q, y);
-  return marg.computeConditionalQuantile(q, y);
+    return DistributionImplementation::computeConditionalQuantile(p, xcond);
+  return marg.computeConditionalQuantile(p, xcond);
 }
 
 

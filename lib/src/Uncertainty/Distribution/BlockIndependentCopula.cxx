@@ -452,12 +452,12 @@ Point BlockIndependentCopula::computeCDFGradient(const Point & point) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar BlockIndependentCopula::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar BlockIndependentCopula::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return ((x >= 0.0 && x < 1.0) ? 1.0 : 0.0);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return ((xj >= 0.0 && xj < 1.0) ? 1.0 : 0.0);
   // General case: locate the block containing Xi (index == conditioningDimension)
   UnsignedInteger copulaIndex = 0;
   UnsignedInteger blockStart = 0;
@@ -471,8 +471,8 @@ Scalar BlockIndependentCopula::computeConditionalPDF(const Scalar x, const Point
   // Number of conditioning variables within the same block
   const UnsignedInteger conditioningSize = conditioningDimension - blockStart;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[blockStart + i];
-  return copulaCollection_[copulaIndex].computeConditionalPDF(x, conditioningVector);
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = xcond[blockStart + i];
+  return copulaCollection_[copulaIndex].computeConditionalPDF(xj, conditioningVector);
 }
 
 Point BlockIndependentCopula::computeSequentialConditionalPDF(const Point & x) const
@@ -574,12 +574,12 @@ Point BlockIndependentCopula::computeSequentialConditionalPDF(const Point & x, c
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar BlockIndependentCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar BlockIndependentCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(xj);
   // General case: locate the block containing Xi (index == conditioningDimension)
   UnsignedInteger copulaIndex = 0;
   UnsignedInteger blockStart = 0;
@@ -593,8 +593,8 @@ Scalar BlockIndependentCopula::computeConditionalCDF(const Scalar x, const Point
   // Number of conditioning variables within the same block
   const UnsignedInteger conditioningSize = conditioningDimension - blockStart;
   Point conditioningVector(conditioningSize);
-  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[blockStart + i];
-  return copulaCollection_[copulaIndex].computeConditionalCDF(x, conditioningVector);
+  for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = xcond[blockStart + i];
+  return copulaCollection_[copulaIndex].computeConditionalCDF(xj, conditioningVector);
 }
 
 Point BlockIndependentCopula::computeSequentialConditionalCDF(const Point & x) const
@@ -696,15 +696,15 @@ Point BlockIndependentCopula::computeSequentialConditionalCDF(const Point & x, c
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
-  if (conditioningDimension == 0) return q;
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
+  if (conditioningDimension == 0) return p;
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << q << " outside of [0, 1]";
-  if (q == 0.0) return 0.0;
-  if (q == 1.0) return 1.0;
-  if (conditioningDimension == 0) return q;
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << p << " outside of [0, 1]";
+  if (p == 0.0) return 0.0;
+  if (p == 1.0) return 1.0;
+  if (conditioningDimension == 0) return p;
   // General case: locate the block containing Xi (index == conditioningDimension)
   UnsignedInteger copulaIndex = 0;
   UnsignedInteger blockStart = 0;
@@ -720,9 +720,9 @@ Scalar BlockIndependentCopula::computeConditionalQuantile(const Scalar q, const 
   Point conditioningVector(conditioningSize);
   for (UnsignedInteger i = 0; i < conditioningSize; ++i)
   {
-    conditioningVector[i] = y[blockStart + i];
+    conditioningVector[i] = xcond[blockStart + i];
   }
-  return copulaCollection_[copulaIndex].computeConditionalQuantile(q, conditioningVector);
+  return copulaCollection_[copulaIndex].computeConditionalQuantile(p, conditioningVector);
 }
 
 Point BlockIndependentCopula::computeSequentialConditionalQuantile(const Point & q) const

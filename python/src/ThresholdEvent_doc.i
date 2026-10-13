@@ -7,7 +7,7 @@ Parameters
 ----------
 antecedent : :class:`~openturns.RandomVector` of dimension 1
     Output variable of interest.
-comparisonOperator : :class:`~openturns.ComparisonOperator`
+op : :class:`~openturns.ComparisonOperator`
     Comparison operator used to compare *antecedent* with *threshold*.
 threshold : float
     *threshold* we want to compare to *antecedent*.

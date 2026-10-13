@@ -262,15 +262,15 @@ Point GumbelCopula::computeQuantile(const Scalar prob,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar GumbelCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return x;
-  const Scalar u = y[0];
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return xj;
+  const Scalar u = xcond[0];
   if ((u <= 0.0) || (u >= 1.0)) return 0.0;
-  const Scalar v = x;
+  const Scalar v = xj;
   if (v <= 0.0) return 0.0;
   if (v >= 1.0) return 1.0;
   // If we are in the support
@@ -282,21 +282,21 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) cons
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar GumbelCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if ((q == 0.0) || (q == 1.0)) return q;
-  if (!((q > 0.0) && (q < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if ((p == 0.0) || (p == 1.0)) return p;
+  if (!((p > 0.0) && (p < 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  const Scalar u = y[0];
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
+  const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
   const Scalar inverseThetaMinusOne = 1.0 / (theta_ - 1.0);
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
-  const Scalar factor = minusLogUPowTheta / (u * q * minusLogU);
+  const Scalar factor = minusLogUPowTheta / (u * p * minusLogU);
   return SpecFunc::Clip01(std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_)));
 }
 

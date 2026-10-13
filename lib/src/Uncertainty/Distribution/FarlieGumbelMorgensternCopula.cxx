@@ -215,16 +215,15 @@ Point FarlieGumbelMorgensternCopula::computeCDFGradient(const Point & point) con
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(x);
-  const Scalar u = y[0];
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return SpecFunc::Clip01(xj);
+  const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u < 1.0))) return 0.0;
-  const Scalar v = x;
+  const Scalar v = xj;
   if (!(v >= 0.0)) return 0.0;
   if (!(v < 1.0)) return 1.0;
   // If we are in the support
@@ -232,22 +231,21 @@ Scalar FarlieGumbelMorgensternCopula::computeConditionalCDF(const Scalar x,
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar FarlieGumbelMorgensternCopula::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar FarlieGumbelMorgensternCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (!((q >= 0.0) && (q <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   // Special case for no conditioning or independent copula
-  if ((q == 0.0) || (q == 1.0)) return q;
+  if ((p == 0.0) || (p == 1.0)) return p;
   // Initialize the conditional quantile with the quantile of the i-th marginal distribution
   // Special case when no contitioning or independent copula
-  if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
-  const Scalar u = y[0];
+  if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
+  const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
   const Scalar alpha = theta_ * (1.0 - 2.0 * u);
   const Scalar alpha1 = 1.0 + alpha;
-  return SpecFunc::Clip01(2.0 * q / (alpha1 + std::sqrt(alpha1 * alpha1 - 4.0 * q * alpha)));
+  return SpecFunc::Clip01(2.0 * p / (alpha1 + std::sqrt(alpha1 * alpha1 - 4.0 * p * alpha)));
 }
 
 /* Tell if the distribution has an elliptical copula */

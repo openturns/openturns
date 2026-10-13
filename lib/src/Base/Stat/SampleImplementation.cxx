@@ -1625,14 +1625,14 @@ struct CDFPolicy
 /*
  * Get the empirical CDF of the sample
  */
-Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
-    const Bool tail) const
+Scalar SampleImplementation::computeEmpiricalCDF(const Point & x,
+    const Bool survival) const
 {
   if (!(size_ > 0)) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
-  if (getDimension() != point.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
-        << point.getDimension() << ". Expected " << getDimension();
+  if (getDimension() != x.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
+        << x.getDimension() << ". Expected " << getDimension();
 
-  const CDFPolicy policy( *this, point, tail );
+  const CDFPolicy policy( *this, x, survival );
   ReductionFunctor<CDFPolicy> functor( *this, policy );
   TBBImplementation::ParallelReduce(0, size_, functor, 1024);
   return static_cast < Scalar > (functor.accumulator_) / size_;

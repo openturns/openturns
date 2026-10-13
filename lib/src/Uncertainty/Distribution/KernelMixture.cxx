@@ -498,13 +498,12 @@ Point KernelMixture::computeCDFGradient(const Point & point) const
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
 */
-Scalar KernelMixture::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar KernelMixture::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(xj);
   // Build the conditional mixture weights
   const UnsignedInteger size = sample_.getSize();
   Scalar jointPDF = 0.0;
@@ -513,9 +512,9 @@ Scalar KernelMixture::computeConditionalPDF(const Scalar x,
   {
     Scalar marginalAtomPDF = 1.0;
     for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
-      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) * bandwidthInverse_[j]);
+      marginalAtomPDF *= p_kernel_->computePDF((xcond[j] - sample_(i, j)) * bandwidthInverse_[j]);
     marginalPDF += marginalAtomPDF;
-    jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
+    jointPDF += marginalAtomPDF * p_kernel_->computePDF((xj - sample_(i, conditioningDimension)) * bandwidthInverse_[conditioningDimension]);
   }
   if (!(marginalPDF > 0.0)) return 0.0;
   return bandwidthInverse_[conditioningDimension] * jointPDF / marginalPDF;
@@ -553,13 +552,12 @@ Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar KernelMixture::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar KernelMixture::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(xj);
   // Build the conditional mixture weights
   const UnsignedInteger size = sample_.getSize();
   Scalar jointCDF = 0.0;
@@ -567,11 +565,11 @@ Scalar KernelMixture::computeConditionalCDF(const Scalar x,
   Scalar h = bandwidth_[conditioningDimension];
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar marginalAtomPDF = p_kernel_->computePDF((y[0] - sample_(i, 0)) / bandwidth_[0]);
+    Scalar marginalAtomPDF = p_kernel_->computePDF((xcond[0] - sample_(i, 0)) / bandwidth_[0]);
     for (UnsignedInteger j = 1; j < conditioningDimension; ++j)
-      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
+      marginalAtomPDF *= p_kernel_->computePDF((xcond[j] - sample_(i, j)) / bandwidth_[j]);
     marginalPDF += marginalAtomPDF;
-    jointCDF += marginalAtomPDF * p_kernel_->computeCDF((x - sample_(i, conditioningDimension)) / h);
+    jointCDF += marginalAtomPDF * p_kernel_->computeCDF((xj - sample_(i, conditioningDimension)) / h);
   }
   if (!(marginalPDF > 0.0)) return 0.0;
   // No need to normalize by 1/h as it simplifies

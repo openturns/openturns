@@ -692,8 +692,8 @@ public:
   /**
    * Get the empirical CDF of the sample
    */
-  Scalar computeEmpiricalCDF(const Point & point,
-                             const Bool tail = false) const;
+  Scalar computeEmpiricalCDF(const Point & x,
+                             const Bool survival = false) const;
 
   /** Maximum accessor */
   virtual Point getMax() const;

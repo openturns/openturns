@@ -404,21 +404,21 @@ CorrelationMatrix OrdinalSumCopula::getKendallTau() const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  return DistributionImplementation::computeConditionalPDF(x, y);
+  return DistributionImplementation::computeConditionalPDF(xj, xcond);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  return DistributionImplementation::computeConditionalCDF(x, y);
+  return DistributionImplementation::computeConditionalCDF(xj, xcond);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
+Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  return DistributionImplementation::computeConditionalQuantile(q, y);
+  return DistributionImplementation::computeConditionalQuantile(p, xcond);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

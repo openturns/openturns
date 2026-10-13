@@ -273,7 +273,7 @@ experiments : list of :class:`~openturns.WeightedExperiment`
 
 Parameters
 ----------
-experiments : list of :class:`~openturns.WeightedExperiment`
+coll : list of :class:`~openturns.WeightedExperiment`
     List of the marginals of the experiment."
 
 // ---------------------------------------------------------------------

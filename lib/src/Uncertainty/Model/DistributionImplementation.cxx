@@ -2297,7 +2297,7 @@ Collection<PiecewiseHermiteEvaluation> DistributionImplementation::interpolatePD
 Scalar DistributionImplementation::computeConditionalDDF(const Scalar,
     const Point & ) const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeConditionalDDF(const Scalar x, const Point & y) const";
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeConditionalDDF(const Scalar xj, const Point & xcond) const";
 }
 
 /* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -2307,23 +2307,22 @@ Point DistributionImplementation::computeSequentialConditionalDDF(const Point & 
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar DistributionImplementation::computeConditionalPDF(const Scalar x,
-    const Point & y) const
+Scalar DistributionImplementation::computeConditionalPDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(xj);
   // General case
   Indices conditioning(conditioningDimension);
   conditioning.fill();
   Indices conditioned(conditioning);
   conditioned.add(conditioningDimension);
   const Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
-  const Scalar pdfConditioning = conditioningDistribution->computePDF(y);
+  const Scalar pdfConditioning = conditioningDistribution->computePDF(xcond);
   if (pdfConditioning <= 0.0) return 0.0;
-  Point z(y);
-  z.add(x);
+  Point z(xcond);
+  z.add(xj);
   const Implementation conditionedDistribution(getMarginal(conditioned).getImplementation());
   const Scalar pdfConditioned = conditionedDistribution->computePDF(z);
   return pdfConditioned / pdfConditioning;
@@ -2415,31 +2414,30 @@ Point DistributionImplementation::computeConditionalPDF(const Point & x,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar DistributionImplementation::computeConditionalCDF(const Scalar x,
-    const Point & y) const
+Scalar DistributionImplementation::computeConditionalCDF(const Scalar xj, const Point & xcond) const
 {
-  const UnsignedInteger conditioningDimension = y.getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
   if (conditioningDimension >= dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(x);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(xj);
   // General case
   Indices conditioning(conditioningDimension);
   conditioning.fill();
   Indices conditioned(conditioning);
   conditioned.add(conditioningDimension);
   const Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
-  const Scalar pdfConditioning = conditioningDistribution->computePDF(y);
+  const Scalar pdfConditioning = conditioningDistribution->computePDF(xcond);
   if (pdfConditioning <= 0.0) return 0.0;
   const Implementation conditionedDistribution(getMarginal(conditioned).getImplementation());
   const Scalar xMin = conditionedDistribution->range_.getLowerBound()[conditioningDimension];
-  if (x <= xMin) return 0.0;
+  if (xj <= xMin) return 0.0;
   const Scalar xMax = conditionedDistribution->range_.getUpperBound()[conditioningDimension];
-  if (x >= xMax) return 1.0;
+  if (xj >= xMax) return 1.0;
   // Numerical integration with respect to x
   Pointer<ConditionalPDFWrapper> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
-  p_conditionalPDFWrapper->setParameter(y);
+  p_conditionalPDFWrapper->setParameter(xcond);
   GaussKronrod algo;
-  const Scalar value = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, x);
+  const Scalar value = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, xj);
   return SpecFunc::Clip01(value / pdfConditioning);
 }
 
@@ -2557,11 +2555,10 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar DistributionImplementation::computeConditionalQuantile(const Scalar q,
-    const Point & y) const
+Scalar DistributionImplementation::computeConditionalQuantile(const Scalar p, const Point & xcond) const
 {
-  if (y.getDimension() == 0 || hasIndependentCopula()) return getMarginal(y.getDimension()).computeScalarQuantile(q);
-  return computeConditionalQuantile(Point(1, q), Sample(1, y))[0];
+  if (xcond.getDimension() == 0 || hasIndependentCopula()) return getMarginal(xcond.getDimension()).computeScalarQuantile(p);
+  return computeConditionalQuantile(Point(1, p), Sample(1, xcond))[0];
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
