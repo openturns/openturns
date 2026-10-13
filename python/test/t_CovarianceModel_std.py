@@ -1107,8 +1107,9 @@ ott.assert_almost_equal(fbm2.getExponent(), [0.3, 0.2])
 ott.assert_almost_equal(fbm2.getEta(), eta)
 ott.assert_almost_equal(fbm2.getRho(), rho)
 assert len(str(fbm2)) > 0
-# NOTE: operator() only fills the diagonal and lower triangle, so the
-# symmetry-based generic test_model cannot be used for output dim > 1.
+# NOTE: operator() is not symmetric for output dim > 1 when eta is nonzero,
+# the correct relation is C(s,t)^T == C(t,s), so the symmetry-based generic
+# test_model cannot be used here.
 # Check the diagonal against its closed form instead.
 ott.assert_almost_equal(
     fbm2([0.5], [1.5])[0, 0],
@@ -1122,8 +1123,24 @@ ott.assert_almost_equal(
     1e-12,
     1e-12,
 )
-# lower triangle holds the correlation + dissymmetry terms
+# the asymmetry term changes sign between (i, j) and (j, i), so that
+# C(s,t)^T == C(t,s) (regression: upper triangle stayed 0 or was mirrored)
 assert abs(fbm2([0.5], [1.5])[1, 0]) > 0.0
+assert abs(fbm2([0.5], [1.5])[0, 1]) > 0.0
+ott.assert_almost_equal(
+    fbm2([0.5], [1.5])[0, 1], fbm2([1.5], [0.5])[1, 0], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    fbm2([0.5], [1.5])[1, 0], fbm2([1.5], [0.5])[0, 1], 1e-12, 1e-12
+)
+# symmetric case (eta=0): C(s,t) == C(t,s)^T
+fbmSym = ot.FractionalBrownianMotionModel(
+    [1.0], [1.0, 2.0], [0.3, 0.2], ot.SquareMatrix(2), ot.CorrelationMatrix(2)
+)
+cst = fbmSym([0.5], [1.5])
+cts = fbmSym([1.5], [0.5])
+ott.assert_almost_equal(cst[0, 1], cts[1, 0], 1e-12, 1e-12)
+ott.assert_almost_equal(cst[1, 0], cst[0, 1], 1e-12, 1e-12)
 assert abs(fbm2([-0.5], [1.0])[1, 0]) > 0.0
 # multivariate evaluation: sign/zero/abs branches and Hij == 1 branch
 _ = fbm2([-0.5], [1.0])
