@@ -30,6 +30,7 @@
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
+ * MinMaxScaling, MuSigmaScaling (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
