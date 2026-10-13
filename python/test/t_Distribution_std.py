@@ -1,4 +1,8 @@
+import cmath
+import math
+
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 
 # comparison via implementation
@@ -129,3 +133,33 @@ ott.assert_almost_equal(thresholdsQMC, thresholds, 0.0, 1e-4)
 # invalid probability raises
 with ott.assert_raises(TypeError):
     distribution.computeMinimumVolumeLevelSetCollectionWithThreshold([0.5, 1.5])
+
+# characteristic function, see issue #3205
+# The triangular-mimic PiecewiseLinearDistribution goes through the generic
+# DistributionImplementation path (Uniform and Triangular override it
+# analytically). Both integration branches are covered explicitly:
+# - Filon branch (default keys): powers of 2 from 1 to 2**23 plus 1e7
+# - Gauss branch (large NMax): smooth truncated exponential at low x
+triangular = ot.Triangular(-1.0, 0.0, 2.0)
+mimic = otexp.PiecewiseLinearDistribution([-1.0, 0.0, 2.0], [0.0, 1.0, 0.0])
+texp = ot.TruncatedDistribution(ot.Exponential(1.0), ot.Interval([0.0], [5.0]))
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 255)
+try:
+    for x in [2.0**k for k in range(24)] + [1.0e7]:
+        cf = mimic.computeCharacteristicFunction(x)
+        cf_ref = triangular.computeCharacteristicFunction(x)
+        ott.assert_almost_equal(cf, cf_ref, 1e-4, 1e-4)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "Distribution-CharacteristicFunctionNMax", 1000000
+    )
+    for x in [1.0, 2.0, 4.0, 8.0, 16.0, 32.0]:
+        cf = texp.computeCharacteristicFunction(x)
+        # closed form (lam / (lam - i*x)) * (1 - exp(-(lam - i*x) * b)) / norm
+        lam, b = 1.0, 5.0
+        norm = 1.0 - math.exp(-lam * b)
+        cf_ref = (lam / complex(lam, -x)) * (1.0 - cmath.exp(complex(-lam * b, x * b))) / norm
+        ott.assert_almost_equal(cf, cf_ref, 1e-6, 1e-6)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "Distribution-CharacteristicFunctionNMax", 1000000
+    )

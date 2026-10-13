@@ -72,6 +72,8 @@
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussLegendre.hxx"
+#include "openturns/FastLegendre.hxx"
+#include "openturns/FilonQuadrature.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/SimplicialCubature.hxx"
 #include "openturns/CubaIntegration.hxx"
@@ -1386,35 +1388,12 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     }
     else
     {
-      const Scalar a = range_.getLowerBound()[0];
-      const Scalar b = range_.getUpperBound()[0];
-      const Scalar T = 0.5 * (b - a);
-      const Scalar c = 0.5 * (a + b);
-      const Scalar dt = T / N;
-
-      const Sample locations(Box(Indices({2 * N - 1}), range_).generate());
-      const Point pdfGrid(computePDF(locations).getImplementation()->getData());
-
-      const Scalar omegaDt = x * dt;
-      const Scalar omegaDt2 = omegaDt * omegaDt;
-      const Scalar cosOmegaDt = std::cos(omegaDt);
-      const Scalar sinOmegaDt = std::sin(omegaDt);
-      // The bound 4.3556e-4 is such that we get full double precision
-      const Complex wM(std::abs(omegaDt) < 4.3556e-4 ? Complex(0.5 - omegaDt2 / 24.0, omegaDt / 6.0 * (1.0 - omegaDt2 / 40.0)) : Complex((1.0 - cosOmegaDt) / omegaDt2, (omegaDt - sinOmegaDt) / omegaDt2));
-      const Complex wP(std::abs(omegaDt) < 4.3556e-4 ? Complex(0.5 - omegaDt2 / 24.0, -omegaDt / 6.0 * (1.0 - omegaDt2 / 40.0)) : Complex((1.0 - cosOmegaDt) / omegaDt2, (-omegaDt + sinOmegaDt) / omegaDt2));
-      const Scalar cosNOmegaDt = std::cos(N * omegaDt);
-      const Scalar sinNOmegaDt = std::sin(N * omegaDt);
-      // The bound 4.3556e-4 is such that we get full double precision
-      const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? 1.0 - omegaDt2 / 12.0 : std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2);
-      //      value = pdfGrid[N] * w + pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
-      value = pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
-      for (UnsignedInteger n = 1; n < N; ++n)
-      {
-        const Scalar cosN = std::cos(n * omegaDt);
-        const Scalar sinN = std::sin(n * omegaDt);
-        value += Complex(w * cosN * (pdfGrid[N + n - 1] + pdfGrid[N - n]), w * sinN * (pdfGrid[N + n - 1] - pdfGrid[N - n]));
-      }
-      return dt * value * Complex(std::cos(x * c), std::sin(x * c));
+      // Highly oscillatory regime: delegate to the Filon quadrature, which
+      // interpolates the PDF by parabolas (fourth-order) instead of the
+      // linear Filon-trapezoidal rule previously inlined here
+      const FilonQuadrature filon(N, x, 2);
+      const Point cf(filon.integrate(getPDF(), range_));
+      return Complex(cf[0], cf[1]);
     }
   } // Continuous
   else
@@ -4106,11 +4085,9 @@ TriangularMatrix DistributionImplementation::getInverseCholesky() const
 /* Compute the nodes and weights for a 1D gauss quadrature over [-1, 1] with respect to the Lebesgue measure */
 void DistributionImplementation::computeGaussNodesAndWeights() const
 {
-  const GaussLegendre integrator(Indices(1, integrationNodesNumber_));
-  // Nodes
-  gaussNodes_ = integrator.getNodes().getImplementation()->getData() * 2.0 - Point(integrationNodesNumber_, 1.0);
-  // Weights
-  gaussWeights_ = integrator.getWeights() * 2.0;
+  gaussNodes_ = Point(integrationNodesNumber_);
+  gaussWeights_ = Point(integrationNodesNumber_);
+  if (integrationNodesNumber_ > 0) FastLegendre::ComputeNodesAndWeights(integrationNodesNumber_, &gaussNodes_[0], &gaussWeights_[0]);
   isAlreadyComputedGaussNodesAndWeights_ = true;
 }
 
