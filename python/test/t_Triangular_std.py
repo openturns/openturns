@@ -113,7 +113,7 @@ for i, distribution in enumerate(coll):
     ott.assert_almost_equal(interval.getUpperBound(), [expectedMVUpper[i]], 1e-5, 0.0)
     ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-    ott.assert_almost_equal(beta, [expectedMVBeta[i]], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, expectedMVBeta[i], 1e-5, 0.0)
     interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
         0.95
     )

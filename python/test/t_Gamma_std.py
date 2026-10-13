@@ -118,9 +118,9 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
     ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     if distribution.getK() == 1.5:
-        ott.assert_almost_equal(beta, [0.111942], 1e-5, 0.0)
+        ott.assert_almost_equal(beta, 0.111942, 1e-5, 0.0)
     else:
-        ott.assert_almost_equal(beta, [0.037943], 1e-5, 0.0)
+        ott.assert_almost_equal(beta, 0.037943, 1e-5, 0.0)
     (
         interval,
         beta,

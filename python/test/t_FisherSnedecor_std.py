@@ -71,7 +71,7 @@ ott.assert_almost_equal(interval.getLowerBound(), [0.03856], 0.0, 1e-4)
 ott.assert_almost_equal(interval.getUpperBound(), [3.21723], 0.0, 1e-4)
 ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-ott.assert_almost_equal(beta, [0.0429883], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.0429883, 1e-5, 0.0)
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )

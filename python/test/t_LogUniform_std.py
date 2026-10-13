@@ -126,5 +126,5 @@ a = math.exp(-0.5)
 ott.assert_almost_equal(distribution.computePDF(a), math.exp(0.5) / 2.0, 1e-12, 0.0)
 ott.assert_almost_equal(distribution.computeLogPDF(a), -math.log(2.0) + 0.5, 1e-12, 0.0)
 ott.assert_almost_equal(
-    distribution.computePDFGradient(a), [math.exp(0.5) / 4.0, -math.exp(0.5) / 4.0], 1e-12, 0.0
+    distribution.computePDFGradient([a]), [math.exp(0.5) / 4.0, -math.exp(0.5) / 4.0], 1e-12, 0.0
 )

@@ -139,11 +139,11 @@ for xi in [-0.2, 0.0, 0.2]:
     ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
     if xi == -0.2:
-        ott.assert_almost_equal(beta, [0.0606855], 1e-5, 0.0)
+        ott.assert_almost_equal(beta, 0.0606855, 1e-5, 0.0)
     elif xi == 0.0:
-        ott.assert_almost_equal(beta, [0.0333333], 1e-5, 0.0)
+        ott.assert_almost_equal(beta, 0.0333333, 1e-5, 0.0)
     else:
-        ott.assert_almost_equal(beta, [0.0183093], 1e-5, 0.0)
+        ott.assert_almost_equal(beta, 0.0183093, 1e-5, 0.0)
     (
         interval,
         beta,
