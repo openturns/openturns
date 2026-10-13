@@ -1063,6 +1063,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // StatisticsEngine parameters //
   addAsUnsignedInteger("StatisticsEngine-DefaultBlockSize", 4096);
+  addAsUnsignedInteger("StatisticsEngine-ParallelThreshold", 100000);
 
   // Compact parameters //
   addAsUnsignedInteger("Compact-DefaultHalfMaximumSize", 1024);

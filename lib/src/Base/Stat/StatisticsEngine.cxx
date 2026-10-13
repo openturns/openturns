@@ -117,7 +117,8 @@ DataContainer StatisticsEngine::ComputeSum(const DataContainer & sample)
   };
 
   SumBody body(pData, dimension);
-  TBBImplementation::ParallelReduce(0, size, body);
+  // Serial below the threshold: bitwise reproducibility with serial code
+  TBBImplementation::ParallelReduceIf(size >= ResourceMap::GetAsUnsignedInteger("StatisticsEngine-ParallelThreshold"), 0, size, body);
 
   DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
   for (UnsignedInteger j = 0; j < dimension; ++j)
@@ -161,7 +162,8 @@ DataContainer StatisticsEngine::ComputeMean(const DataContainer & sample)
   };
 
   MeanBody body(pData, dimension);
-  TBBImplementation::ParallelReduce(0, size, body);
+  // Serial below the threshold: bitwise reproducibility with serial code
+  TBBImplementation::ParallelReduceIf(size >= ResourceMap::GetAsUnsignedInteger("StatisticsEngine-ParallelThreshold"), 0, size, body);
 
   const Scalar invN = 1.0 / static_cast<Scalar>(size);
   DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
@@ -212,7 +214,8 @@ DataContainer StatisticsEngine::ComputeVariance(const DataContainer & sample)
   };
 
   VarBody body(pData, dimension, mean.data());
-  TBBImplementation::ParallelReduce(0, size, body);
+  // Serial below the threshold: bitwise reproducibility with serial code
+  TBBImplementation::ParallelReduceIf(size >= ResourceMap::GetAsUnsignedInteger("StatisticsEngine-ParallelThreshold"), 0, size, body);
 
   const Scalar invNm1 = 1.0 / static_cast<Scalar>(size - 1);
   DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
@@ -279,7 +282,8 @@ DataContainer StatisticsEngine::ComputeCovariance(const DataContainer & sample)
   };
 
   CovBody body(pData, dimension, mean.data());
-  TBBImplementation::ParallelReduce(0, size, body);
+  // Serial below the threshold: bitwise reproducibility with serial code
+  TBBImplementation::ParallelReduceIf(size >= ResourceMap::GetAsUnsignedInteger("StatisticsEngine-ParallelThreshold"), 0, size, body);
 
   const Scalar invNm1 = 1.0 / static_cast<Scalar>(size - 1);
   DataContainer result(dimension, dimension, 0.0, DataContainer::ROW_MAJOR);
@@ -730,7 +734,8 @@ DataContainer StatisticsEngine::ComputeRawMoment(const DataContainer & sample, U
   };
 
   MomentBody body(pData, dimension, k);
-  TBBImplementation::ParallelReduce(0, size, body);
+  // Serial below the threshold: bitwise reproducibility with serial code
+  TBBImplementation::ParallelReduceIf(size >= ResourceMap::GetAsUnsignedInteger("StatisticsEngine-ParallelThreshold"), 0, size, body);
 
   const Scalar invN = 1.0 / static_cast<Scalar>(size);
   DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
@@ -787,7 +792,8 @@ DataContainer StatisticsEngine::ComputeCentralMoment(const DataContainer & sampl
   };
 
   CentMomBody body(pData, dimension, k, mean.data());
-  TBBImplementation::ParallelReduce(0, size, body);
+  // Serial below the threshold: bitwise reproducibility with serial code
+  TBBImplementation::ParallelReduceIf(size >= ResourceMap::GetAsUnsignedInteger("StatisticsEngine-ParallelThreshold"), 0, size, body);
 
   const Scalar invN = 1.0 / static_cast<Scalar>(size);
   DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
