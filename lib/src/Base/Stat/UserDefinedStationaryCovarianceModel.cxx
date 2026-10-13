@@ -107,6 +107,15 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   covarianceCollection_ = SquareMatrixCollection(size, covariance);
 }
 
+Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+  if (inputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(tau) with scalar lag should be only used if input dimension is 1. Here, input dimension = " << inputDimension_;
+  return computeAsScalar(Point(1, tau));
+}
+
 Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) const
 {
   if (outputDimension_ > 1)
