@@ -77,9 +77,9 @@ assert myFunction == myFunction
 assert not (myFunction != myFunction)
 different = ot.QuadraticFunction(center + [1.0, 0.0, 0.0], constant, linear, quadratic)
 assert myFunction != different
-# NOTE: identical multi-dimensional QuadraticFunctions compare unequal
-# (QuadraticEvaluation::operator== compares the stored transposed linear
-# term with the untransposed getLinear()); only the 1D case round-trips:
+same = ot.QuadraticFunction(center, constant, linear, quadratic)
+assert myFunction == same
+assert not (myFunction != same)
 oneD = ot.QuadraticFunction([0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1))
 assert oneD == ot.QuadraticFunction([0.0], [0.0], ot.Matrix(1, 1), ot.SymmetricTensor(1, 1))
 assert len(repr(myFunction)) > 0
