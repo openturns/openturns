@@ -340,3 +340,15 @@ junction = ot.Mixture(
     [delta, 1.0 - delta],
 )
 ott.assert_almost_equal(junction.computePDF(mc), 0.05, 0.0, 1e-4)
+
+# --- Mixture: equality sees weights, singularities of atoms are safe ---
+assert ot.Mixture([ot.Normal(), ot.Normal()], [0.3, 0.7]) != ot.Mixture(
+    [ot.Normal(), ot.Normal()], [0.6, 0.4]
+)
+assert ot.Mixture([ot.Normal(), ot.Normal()], [0.3, 0.7]) == ot.Mixture(
+    [ot.Normal(), ot.Normal()], [0.3, 0.7]
+)
+assert list(ot.Mixture([ot.Dirac(1.0), ot.Dirac(1.0)], [0.5, 0.5]).getSingularities()) == []
+assert list(
+    ot.Mixture([ot.Dirac(1.0), ot.Uniform(0.0, 3.0)], [0.5, 0.5]).getSingularities()
+) == [1.0]

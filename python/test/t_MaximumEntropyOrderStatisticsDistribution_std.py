@@ -163,3 +163,11 @@ finally:
     ot.ResourceMap.SetAsBool(
         "MaximumEntropyOrderStatisticsDistribution-UseApproximation", True
     )
+
+# --- MaximumEntropyOrderStatisticsDistribution: equality sees its flags ---
+coll = [ot.Uniform(0.0, 1.0), ot.Uniform(2.0, 3.0)]
+m1 = ot.MaximumEntropyOrderStatisticsDistribution(coll, False)
+m2 = ot.MaximumEntropyOrderStatisticsDistribution(coll, False)
+m3 = ot.MaximumEntropyOrderStatisticsDistribution(coll, True)
+assert m1 == m2
+assert m1 != m3

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import openturns as ot
 import openturns.testing as ott
 
@@ -56,3 +57,18 @@ ott.assert_almost_equal(distribution.getProbabilities(), [0.3, 0.7], 1e-12, 0.0)
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Bernoulli: kurtosis sign, load recomputes range ---
+ott.assert_almost_equal(ot.Bernoulli(0.7).getKurtosis(), [1.761904761904762], 1e-12, 0.0)
+ott.assert_almost_equal(ot.Bernoulli(0.5).getKurtosis(), [1.0], 1e-12, 0.0)
+studyFile = "myStudyBugFixBernoulli.xml"
+study = ot.Study(studyFile)
+study.add("bernoulli", ot.Bernoulli(0.0))
+study.save()
+study2 = ot.Study(studyFile)
+study2.load()
+reloaded = ot.Bernoulli()
+study2.fillObject("bernoulli", reloaded)
+os.remove(studyFile)
+ott.assert_almost_equal(reloaded.getRange().getLowerBound(), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(reloaded.getRange().getUpperBound(), [0.0], 0.0, 0.0)

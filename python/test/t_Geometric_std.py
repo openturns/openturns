@@ -81,3 +81,10 @@ ott.assert_almost_equal(support, ot.Sample([[1.0], [2.0], [3.0]]))
 dist_p1 = ot.Geometric(1.0)
 pdf_grad = dist_p1.computePDFGradient([1.0])
 assert not any(map(lambda x: x != x, pdf_grad)), "PDF gradient should not be NaN at p=1"
+
+# --- Geometric: quantile endpoints and realization support ---
+ott.assert_almost_equal(ot.Geometric(0.3).computeScalarQuantile(0.0), 1.0, 0.0, 0.0)
+assert ot.Geometric(0.3).computeScalarQuantile(1.0) == ot.SpecFunc.Infinity
+ot.RandomGenerator.SetSeed(3)
+for _ in range(100):
+    assert ot.Geometric(0.3).getRealization()[0] >= 1.0

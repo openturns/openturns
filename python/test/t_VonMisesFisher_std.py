@@ -152,3 +152,12 @@ with ott.assert_raises(TypeError):
     distribution.computePDF(point3D)
 with ott.assert_raises(TypeError):
     distribution.computeLogPDF(point3D)
+
+# --- VonMisesFisher: uniform samples give a null concentration ---
+symmetric = ot.Sample([[1.0, 0.0], [-1.0, 0.0], [0.0, 1.0], [0.0, -1.0]])
+vmf = otexp.VonMisesFisherFactory().build(symmetric)
+ott.assert_almost_equal(vmf.getParameter()[-1], 0.0, 0.0, 0.0)
+fisher = otexp.VonMisesFisher([1.0, 0.0], 1.0)
+with ott.assert_raises(Exception):
+    fisher.setParameter([1.0, 0.0, -1.0])
+assert fisher.getDimension() == 2

@@ -66,3 +66,8 @@ validation.skipConditional()  # slow
 validation.skipMoments()  # moments already proven above on same object
 validation.skipCorrelation()  # same, avoids 100k low-acceptance rejection draws
 validation.run()
+
+# --- TruncatedOverMesh rejects disjoint meshes ---
+with ott.assert_raises(Exception):
+    mesh = ot.Mesh([[10.0], [11.0]], [[0, 1]])
+    ot.TruncatedOverMesh(ot.Dirac(0.0), mesh)

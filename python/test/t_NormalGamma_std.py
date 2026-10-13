@@ -181,3 +181,22 @@ validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.skipParameters()
 validation.run()
+
+# --- NormalGamma: setters rebuild, kurtosis is guarded ---
+ng = ot.NormalGamma(0.0, 1.0, 2.0, 3.0)
+ng.setMu(1.0)
+ott.assert_almost_equal(
+    ng.computePDF([0.5, 0.2]),
+    ot.NormalGamma(1.0, 1.0, 2.0, 3.0).computePDF([0.5, 0.2]),
+    1e-12,
+    0.0,
+)
+ng.setKappa(2.0)
+ott.assert_almost_equal(
+    ng.computePDF([0.5, 0.2]),
+    ot.NormalGamma(1.0, 2.0, 2.0, 3.0).computePDF([0.5, 0.2]),
+    1e-12,
+    0.0,
+)
+with ott.assert_raises(Exception):
+    ot.NormalGamma(0.0, 1.0, 1.5, 1.0).getKurtosis()

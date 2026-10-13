@@ -95,3 +95,13 @@ vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [2.0, 0.0]])
 simplices = ot.IndicesCollection([[0, 1, 2]])
 with ott.assert_raises(TypeError):
     ot.UniformOverMesh(ot.Mesh(vertices, simplices))
+
+# --- UniformOverMesh: sampling keeps the description ---
+mesher = ot.LevelSetMesher([9] * 2)
+fn2 = ot.SymbolicFunction(["x0", "x1"], ["x0^2+x1^2-1"])
+mesh2 = mesher.build(
+    ot.LevelSet(fn2, ot.LessOrEqual(), 0.0), ot.Interval([-1.0, -1.0], [1.0, 1.0]), False
+)
+uom = ot.UniformOverMesh(mesh2)
+uom.setDescription(["a", "b"])
+assert list(uom.getSample(5).getDescription()) == ["a", "b"]

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import openturns as ot
 import openturns.testing as ott
 
@@ -112,3 +113,16 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- FisherSnedecor: persistence round-trip ---
+studyFile = "myStudyBugFixFisher.xml"
+study = ot.Study(studyFile)
+study.add("fisher", ot.FisherSnedecor(4.0, 5.0))
+study.save()
+study2 = ot.Study(studyFile)
+study2.load()
+r = ot.FisherSnedecor(1.0, 1.0)
+study2.fillObject("fisher", r)
+ott.assert_almost_equal(r.getParameter(), [4.0, 5.0], 0.0, 0.0)
+ott.assert_almost_equal(r.computePDF([1.0]), ot.FisherSnedecor(4.0, 5.0).computePDF([1.0]), 1e-12, 0.0)
+os.remove(studyFile)

@@ -173,3 +173,9 @@ with ott.assert_raises(TypeError):
     copula.setAlpha(2.0)
 with ott.assert_raises(TypeError):
     copula.setBeta(-0.1)
+
+# --- MarshallOlkinCopula: continuity matches independence ---
+assert ot.MarshallOlkinCopula(0.0, 0.5).isContinuous()
+assert not ot.MarshallOlkinCopula(0.5, 0.5).isContinuous()
+with ott.assert_raises(Exception):
+    ot.MarshallOlkinCopula(0.5, 0.5).computeCDF([0.5])

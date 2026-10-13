@@ -117,3 +117,12 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipCharacteristicFunction()  # FIXME
 validation.run()
+
+# --- LogUniform: characteristic function at zero, DDF at the atom ---
+ott.assert_almost_equal(
+    [ot.LogUniform(1.0, 2.0).computeCharacteristicFunction(0.0).real],
+    [1.0],
+    0.0,
+    0.0,
+)
+ott.assert_almost_equal(ot.LogUniform(1.0, 2.0).computeDDF([1.0]), [0.0], 0.0, 0.0)

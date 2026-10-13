@@ -108,3 +108,7 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Frechet: wrong-dimension inputs are rejected ---
+with ott.assert_raises(Exception):
+    ot.Frechet().computePDF([0.5, 0.5])

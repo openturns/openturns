@@ -122,3 +122,8 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.skipPDFAtLowerBound()  # the density is 1/(b-a) at the finite lower bound, see #2928
 validation.run()
+
+# --- Uniform: gradient agrees with density at the atom ---
+ott.assert_almost_equal(ot.Uniform(0.0, 1.0).computePDFGradient([0.0]), [1.0, -1.0], 0.0, 0.0)
+with ott.assert_raises(Exception):
+    ot.UniformFactory().build(ot.Sample([[1.0], [1.0], [1.0]]))

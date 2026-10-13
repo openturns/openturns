@@ -27,3 +27,7 @@ estimatedSmoothedUniform = factory.buildAsSmoothedUniform()
 print("Default uniform=", estimatedSmoothedUniform)
 estimatedSmoothedUniform = factory.buildAsSmoothedUniform(distribution.getParameter())
 print("SmoothedUniform from parameters=", estimatedSmoothedUniform)
+
+# --- SmoothedUniformFactory guards a vanishing uniform part ---
+with ott.assert_raises(Exception):
+    ot.SmoothedUniformFactory().build(ot.Sample([[-10.0]] * 10 + [[10.0]] * 10))

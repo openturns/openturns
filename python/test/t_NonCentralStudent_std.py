@@ -103,3 +103,12 @@ validation.setMomentsSamplingSize(100000)
 validation.setDomainSamplingSize(100000)
 validation.setEntropySamplingSize(100000)
 validation.run()
+
+# --- NonCentralStudent: higher moments are guarded ---
+d = ot.NonCentralStudent(5.0, 0.5, 0.0)
+d.setNu(2.5)
+with ott.assert_raises(Exception):
+    d.getSkewness()
+d.setNu(3.5)
+with ott.assert_raises(Exception):
+    d.getKurtosis()

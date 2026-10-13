@@ -497,3 +497,11 @@ validation = ott.DistributionValidation(distribution)
 validation.run()
 
 print("All tests passed!")
+
+# --- PiecewiseLinearDistribution: equality sees its base ---
+x = [0.0, 1.0, 2.0]
+y = [0.5, 1.0, 0.5]
+assert otexp.PiecewiseLinearDistribution(x, y) == otexp.PiecewiseLinearDistribution(x, y)
+assert otexp.PiecewiseLinearDistribution(
+    x, y
+) != otexp.PiecewiseLinearDistribution(x, [0.5, 2.0, 0.5])

@@ -157,3 +157,20 @@ t6 = ot.TruncatedNormal(0.0, 1.0, -ot.SpecFunc.Infinity, ot.SpecFunc.Infinity)
 ott.assert_almost_equal(t6.getStandardDeviation()[0], 1.0, 1e-12)
 ott.assert_almost_equal(t6.getSkewness()[0], 0.0, 1e-12)
 ott.assert_almost_equal(t6.getKurtosis()[0], 3.0, 1e-12)
+
+# --- TruncatedNormal: setters recompute everything ---
+tn = ot.TruncatedNormal(0.0, 1.0, -1.0, 1.0)
+tn.setMu(0.5)
+ott.assert_almost_equal(
+    tn.computePDF([0.0]),
+    ot.TruncatedNormal(0.5, 1.0, -1.0, 1.0).computePDF([0.0]),
+    1e-12,
+    0.0,
+)
+tn.setSigma(2.0)
+ott.assert_almost_equal(
+    tn.computePDF([0.0]),
+    ot.TruncatedNormal(0.5, 2.0, -1.0, 1.0).computePDF([0.0]),
+    1e-12,
+    0.0,
+)

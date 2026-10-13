@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -139,3 +140,8 @@ validation.setMomentsSamplingSize(100000)
 validation.setDomainSamplingSize(100000)
 validation.setEntropySamplingSize(100000)
 validation.run()
+
+# --- OrdinalSumCopula: single-copula probability ---
+osc = ot.OrdinalSumCopula([ot.ClaytonCopula(2.0)], [])
+pOsc = osc.computeProbability(ot.Interval([0.2, 0.3], [0.8, 0.9]))
+assert 0.0 <= pOsc <= 1.0 and m.isfinite(pOsc)

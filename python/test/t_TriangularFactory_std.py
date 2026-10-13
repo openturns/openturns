@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+import openturns.testing as ott
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
@@ -23,3 +24,7 @@ estimatedTriangular = factory.buildAsTriangular()
 print("Default triangular=", estimatedTriangular)
 estimatedTriangular = factory.buildAsTriangular(distribution.getParameter())
 print("Triangular from parameters=", estimatedTriangular)
+
+# --- TriangularFactory: out-of-range moment modes are reported ---
+with ott.assert_raises(Exception):
+    ot.TriangularFactory().build(ot.Sample([[0.0], [0.0], [0.0], [0.0], [10.0]]))

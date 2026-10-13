@@ -85,3 +85,14 @@ sample = ot.Sample([[ot.DistFunc.rHypergeometric(n, k, m)] for _ in range(N)])
 distribution = ot.Hypergeometric(n, k, m)
 result = ot.FittingTest.ChiSquared(sample, distribution, 0.01)
 assert result.getBinaryQualityMeasure()
+
+# --- Hypergeometric: range lower bound and stepwise CDF ---
+ott.assert_almost_equal(
+    ot.Hypergeometric(10, 4, 7).getRange().getLowerBound(), [1.0], 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.Hypergeometric(10, 4, 7).computeCDF(2.6),
+    ot.Hypergeometric(10, 4, 7).computeCDF(2.0),
+    0.0,
+    0.0,
+)

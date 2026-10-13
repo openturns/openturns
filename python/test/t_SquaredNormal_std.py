@@ -104,3 +104,10 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- SquaredNormal: dimension checks and absolute range ---
+with ott.assert_raises(Exception):
+    ot.SquaredNormal().computePDF([0.5, 0.5])
+ott.assert_almost_equal(
+    ot.SquaredNormal(-10.0, 1.0).getRange().getUpperBound(), [342.25], 1e-9, 0.0
+)

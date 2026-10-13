@@ -122,3 +122,17 @@ validation = ott.DistributionValidation(distribution)
 validation.skipCorrelation()
 validation.skipMoments()
 validation.run()
+
+# --- UniformOrderStatistics: CDF is one above the support ---
+ott.assert_almost_equal(
+    ot.UniformOrderStatistics(3).computeCDF([1.5, 2.0, 2.5]), 1.0, 0.0, 0.0
+)
+
+# --- UniformOrderStatistics: out-of-range sequential conditionals ---
+uos = ot.UniformOrderStatistics(3)
+ott.assert_almost_equal(
+    uos.computeSequentialConditionalCDF([0.5, 1.5, 2.0]), [0.875, 1.0, 1.0], 1e-12, 0.0
+)
+ott.assert_almost_equal(
+    uos.computeSequentialConditionalPDF([2.0, 2.5, 3.0]), [0.0, 0.0, 0.0], 0.0, 0.0
+)

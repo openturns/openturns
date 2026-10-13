@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 
@@ -27,3 +28,7 @@ estimatedArcsine = factory.buildAsArcsine()
 print("Default Arcsine=", estimatedArcsine)
 estimatedArcsine = factory.buildAsArcsine(distribution.getParameter())
 print("Arcsine from parameters=", estimatedArcsine)
+
+# --- ArcsineFactory: clean errors on bad samples ---
+with ott.assert_raises(Exception):
+    ot.ArcsineFactory().build(ot.Sample([[1.0], [1.0], [1.0]]))

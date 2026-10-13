@@ -121,3 +121,8 @@ validation.setEntropySamplingSize(10000)
 validation.setDomainSamplingSize(10000)
 validation.setFittingSamplingSize(1000)
 validation.run()
+
+# --- ProductDistribution: only centered Normal products are elliptical ---
+assert ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Normal(0.0, 2.0)).isElliptical()
+assert not ot.ProductDistribution(ot.Laplace(), ot.Laplace()).isElliptical()
+assert not ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Laplace()).isElliptical()

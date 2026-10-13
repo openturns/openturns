@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import cmath
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -131,3 +133,16 @@ validation.setMomentsSamplingSize(100000)
 validation.setDomainSamplingSize(100000)
 validation.setEntropySamplingSize(100000)
 validation.run()
+
+# --- MeixnerDistribution: log-characteristic function uses the asymmetry ---
+# parameter order is (beta=scale, alpha=asymmetry, delta, gamma=location)
+s, a, d, mu, x = 1.5, 0.5, 2.5, -0.5, 1.0
+meix = ot.MeixnerDistribution(s, a, d, mu)
+expectedLog = (
+    2.0 * d * cmath.log(m.cos(0.5 * a))
+    + 1j * mu * x
+    - 2.0 * d * cmath.log(cmath.cosh(complex(0.5 * s * x, -0.5 * a)))
+)
+gotLog = meix.computeLogCharacteristicFunction(x)
+ott.assert_almost_equal([gotLog.real], [expectedLog.real], 1e-12, 0.0)
+ott.assert_almost_equal([gotLog.imag], [expectedLog.imag], 1e-12, 0.0)

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import openturns as ot
 import openturns.testing as ott
 
@@ -109,3 +110,16 @@ for nu in [0.5, 1.0, 2.0, 5.0, 10.0]:
     # range upper bound should be > 0.99 quantile
     q = d.computeQuantile(0.99)[0]
     assert d.getRange().getUpperBound()[0] > q, "Range too small for nu=%s" % nu
+
+# --- ChiSquare: persistence round-trip ---
+studyFile = "myStudyBugFixChiSquare.xml"
+study = ot.Study(studyFile)
+study.add("chisquare", ot.ChiSquare(3.0))
+study.save()
+study2 = ot.Study(studyFile)
+study2.load()
+r = ot.ChiSquare(1.0)
+study2.fillObject("chisquare", r)
+ott.assert_almost_equal(r.getParameter(), [3.0], 0.0, 0.0)
+ott.assert_almost_equal(r.computePDF([2.0]), ot.ChiSquare(3.0).computePDF([2.0]), 1e-12, 0.0)
+os.remove(studyFile)

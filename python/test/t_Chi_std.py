@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -102,3 +103,12 @@ print("kurtosis=", repr(kurtosis))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Chi family: gradients valid for small shapes ---
+assert m.isfinite(ot.Chi(0.01).computeCDFGradient([0.5])[0])
+assert m.isfinite(ot.ChiSquare(0.01).computeCDFGradient([0.5])[0])
+assert m.isfinite(ot.NonCentralChiSquare(0.01, 0.0).computePDFGradient([0.5])[0])
+with ott.assert_raises(Exception):
+    ot.ChiFactory().build(ot.Sample([[1.0], [-2.0], [3.0]]))
+with ott.assert_raises(Exception):
+    ot.ChiSquareFactory().build(ot.Sample([[1.0], [-2.0], [3.0]]))

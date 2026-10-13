@@ -109,3 +109,8 @@ validation.setMomentsSamplingSize(100000)
 validation.setDomainSamplingSize(100000)
 validation.setEntropySamplingSize(100000)
 validation.run()
+
+# --- Wishart families: label count matches parameter count ---
+for cls in [ot.Wishart, ot.InverseWishart]:
+    dist = cls(ot.CovarianceMatrix(2, [1.0, 0.2, 0.2, 1.0]), 5.0)
+    assert len(dist.getParameterDescription()) == len(dist.getParameter()) == 4

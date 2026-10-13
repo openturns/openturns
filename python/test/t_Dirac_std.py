@@ -184,3 +184,7 @@ validation.skipMoments()
 validation.skipCorrelation()
 validation.skipConditional()  # FIXME
 validation.run()
+
+# --- Dirac integrality follows the atom ---
+assert ot.Dirac(2.0).isIntegral()
+assert not ot.Dirac(0.5).isIntegral()

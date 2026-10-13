@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -91,3 +92,13 @@ print("margins realization=", margins.getRealization())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.run()
+
+# --- FarlieGumbelMorgensternCopula: gradients agree with density at atoms ---
+ott.assert_almost_equal(
+    ot.FarlieGumbelMorgensternCopula(0.5).computePDFGradient([0.0, 0.5]), [0.0], 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.FarlieGumbelMorgensternCopula(0.5).computeCDFGradient([0.0, 0.5]), [0.0], 0.0, 0.0
+)
+ot.RandomGenerator.SetSeed(2)
+assert all(m.isfinite(v) for v in ot.FarlieGumbelMorgensternCopula(1.0).getRealization())

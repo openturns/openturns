@@ -100,3 +100,12 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Pareto: gradients vanish at the atom ---
+ott.assert_almost_equal(
+    ot.Pareto(1.0, 1.0, 0.0).computePDFGradient([1.0]), [0.0, 0.0, 0.0], 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.Pareto(1.0, 1.0, 0.0).computeCDFGradient([1.0]), [0.0, 0.0, 0.0], 0.0, 0.0
+)
+ott.assert_almost_equal(ot.Pareto(1.0, 1.0, 0.0).computeDDF([1.0]), [0.0], 0.0, 0.0)
