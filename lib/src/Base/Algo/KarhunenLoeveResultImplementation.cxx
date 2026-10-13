@@ -73,6 +73,13 @@ KarhunenLoeveResultImplementation * KarhunenLoeveResultImplementation::clone() c
   return new KarhunenLoeveResultImplementation(*this);
 }
 
+/* Comparison operator */
+Bool KarhunenLoeveResultImplementation::operator ==(const KarhunenLoeveResultImplementation & other) const
+{
+  if (this == &other) return true;
+  return (covariance_ == other.covariance_) && (threshold_ == other.threshold_) && (eigenvalues_ == other.eigenvalues_) && (modes_ == other.modes_) && (modesAsProcessSample_ == other.modesAsProcessSample_) && (projection_ == other.projection_) && (selectionRatio_ == other.selectionRatio_);
+}
+
 /* Threshold accessor */
 Scalar KarhunenLoeveResultImplementation::getThreshold() const
 {
