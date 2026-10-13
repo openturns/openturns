@@ -43,7 +43,7 @@ print(
 ot.RandomGenerator.SetSeed(0)
 size = 1024
 
-experiment_mc = ot.SobolIndicesExperiment(distribution, size, True)
+experiment_mc = ot.SobolIndicesExperiment(distribution, size, False)
 input_design_mc = experiment_mc.generate()
 output_design_mc = model(input_design_mc)
 
@@ -178,9 +178,11 @@ view = otv.View(graph)
 
 # %%
 # The quasi-Monte Carlo approach using the Sobol' low-discrepancy sequence
-# converges more rapidly and provides lower error bounds across individual
-# indices than the standard Latin Hypercube Sampling strategy.
+# converges more rapidly across individual indices than the standard Latin 
+# Hypercube Sampling strategy.
 
 # %%
 # Display all figures
 otv.View.ShowAll()
+
+# %%
