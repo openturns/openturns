@@ -68,6 +68,12 @@ public:
   /** Compute mean squared error */
   Point computeMeanSquaredError() const;
 
+  /** Compute root mean squared error */
+  Point computeRootMeanSquaredError() const;
+
+  /** Compute mean absolute error */
+  Point computeMeanAbsoluteError() const;
+
   /** Get residual sample */
   Sample getResidualSample() const;
 
@@ -76,6 +82,9 @@ public:
 
   /** Draw model vs metamodel validation graph */
   GridLayout drawValidation() const;
+
+  /** Draw residuals vs model graph */
+  GridLayout drawResiduals() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -101,6 +110,12 @@ protected:
 
   /** Mean squared error  */
   mutable Point meanSquaredError_;
+
+  /** Root mean squared error  */
+  mutable Point rootMeanSquaredError_;
+
+  /** Mean absolute error  */
+  mutable Point meanAbsoluteError_;
 
   /** R2 score */
   mutable Point r2Score_;
