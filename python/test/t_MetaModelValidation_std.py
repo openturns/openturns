@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 from math import pi
@@ -101,6 +103,20 @@ expectedMSE = (
 ott.assert_almost_equal(
     weightedValidation.computeMeanSquaredError()[0], expectedMSE, 1e-12, 1e-12
 )
+expectedMAE = (
+    sum(abs(y - yh) * w for w, y, yh in zip(validationWeights, yValues, yHatValues))
+    / weightSum
+)
+ott.assert_almost_equal(
+    weightedValidation.computeMeanAbsoluteError()[0], expectedMAE, 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    weightedValidation.computeRootMeanSquaredError()[0], math.sqrt(expectedMSE), 1e-12, 1e-12
+)
+# residuals drawing runs (see issue #3118)
+residualsLayout = weightedValidation.drawResiduals()
+assert residualsLayout.getNbRows() == 1
+assert residualsLayout.getNbColumns() == outputValidation.getDimension()
 ott.assert_almost_equal(
     weightedValidation.computeR2Score()[0], 1.0 - expectedMSE / expectedVariance, 1e-12, 1e-12
 )
