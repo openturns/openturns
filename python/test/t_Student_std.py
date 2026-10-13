@@ -362,3 +362,7 @@ with ott.assert_raises(TypeError):
     ot.ResourceMap.SetAsString("Student-RectangularProbabilityAlgorithm", "Unknown")
 ot.Log.Show(ot.Log.TRACE)
 ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", oldGenz)
+
+# --- Student: nonpositive degrees of freedom are rejected ---
+with ott.assert_raises(Exception):
+    ot.Student(5.0, 0.0, 1.0).setNu(-1.0)

@@ -255,3 +255,9 @@ assert support.getSize() == 9
 d1 = ot.BlockIndependentDistribution([ot.Uniform(), ot.Gumbel()])
 d2 = ot.BlockIndependentDistribution([ot.Triangular(), d1, ot.Trapezoidal()])
 assert len(d2.getDistributionCollection()) == 4
+
+# --- BlockIndependentDistribution: multi-block support ---
+bid = ot.BlockIndependentDistribution([ot.Binomial(3, 0.5), ot.Binomial(2, 0.5)])
+support = bid.getSupport()
+assert support.getSize() == 12
+assert set(p[1] for p in support) == {0.0, 1.0, 2.0}

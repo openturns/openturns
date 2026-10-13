@@ -100,3 +100,15 @@ for index, distribution in enumerate(coll):
 coll = [ot.Uniform(), ot.Normal()]
 distribution = ot.MaximumDistribution(coll)
 print("%.5g" % distribution.computePDF([1.1]))
+
+# --- MaximumDistribution: equality sees copy counts, operators agree ---
+assert ot.MaximumDistribution(ot.Normal(), 3) != ot.MaximumDistribution(ot.Normal(), 4)
+assert ot.MaximumDistribution(ot.Normal(), 3) == ot.MaximumDistribution(ot.Normal(), 3)
+
+# --- MaximumDistribution: library convention gives zero density at finite bounds ---
+ott.assert_almost_equal(
+    ot.MaximumDistribution(ot.Uniform(0.0, 1.0), 2).computePDF([1.0]), 0.0, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.MaximumDistribution(ot.Uniform(0.0, 1.0), 2).computePDF([0.99]), 1.98, 1e-12, 0.0
+)

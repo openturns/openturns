@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 distribution = ot.InverseNormal(2.5, 1.5)
@@ -22,3 +23,11 @@ estimatedInverseNormal = factory.buildAsInverseNormal()
 print("Default inverseNormal=", estimatedInverseNormal)
 estimatedInverseNormal = factory.buildAsInverseNormal(distribution.getParameter())
 print("InverseNormal from parameters=", estimatedInverseNormal)
+
+# --- InverseNormalFactory checks positivity on the moments path ---
+ot.ResourceMap.SetAsString("InverseNormalFactory-Method", "Moments")
+try:
+    with ott.assert_raises(Exception):
+        ot.InverseNormalFactory().build(ot.Sample([[-1.0], [2.0], [3.0], [4.0]]))
+finally:
+    ot.ResourceMap.SetAsString("InverseNormalFactory-Method", "MLE")

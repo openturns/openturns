@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -58,3 +59,17 @@ validation.run()
 distribution.setN(11)
 distribution.setK(4)
 ott.assert_almost_equal(distribution.getParameter(), [4, 11])
+
+# --- CombinationsDistribution: CDF, k=1 covariance, multi-index marginal ---
+comb = ot.CombinationsDistribution(3, 6)
+assert m.isfinite(comb.computeCDF([1.0, 2.0, 4.0]))
+ott.assert_almost_equal(
+    ot.CombinationsDistribution(1, 5).getCovariance(),
+    ot.CovarianceMatrix(1, [2.0]),
+    1e-12,
+    0.0,
+)
+marginal = ot.CombinationsDistribution(2, 5).getMarginal([0, 1])
+supportC = marginal.getSupport()
+total = sum(marginal.computePDF(p) for p in supportC)
+ott.assert_almost_equal(total, 1.0, 1e-12, 0.0)

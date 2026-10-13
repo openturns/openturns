@@ -291,6 +291,17 @@ for theta in ([1.0, 2.0, 3.0], [2.0, 6.0, 3.0, 4.0], [2.0, 6.0, 3.0, 4.0, 5.0]):
 dmc = ot.Dirichlet([2.0, 6.0, 3.0, 4.0, 5.0])
 mcCDF = dmc.computeCDF([0.3, 0.3, 0.3, 0.3])
 assert 0.0 <= mcCDF <= 1.0
+
+# --- Dirichlet: standard deviation, sequential conditionals ---
+ott.assert_almost_equal(
+    ot.Dirichlet([1.0, 2.0, 3.0]).getStandardDeviation(),
+    [0.14085904245475275, 0.17817416127494959],
+    1e-12,
+    0.0,
+)
+seq = ot.Dirichlet([1.0, 1.0, 1.0]).computeSequentialConditionalPDF([0.5, 0.3])
+assert all(m.isfinite(v) for v in seq)
+
 ot.ResourceMap.SetAsUnsignedInteger(
     "Dirichlet-DefaultIntegrationSize", defaultIntegrationSize
 )

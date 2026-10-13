@@ -66,3 +66,7 @@ validation.run()
 # Oversized range products are rejected before conversion
 with ott.assert_raises(TypeError):
     ot.DiscreteCompoundDistribution(ot.Binomial(2**40), ot.Binomial(2**40))
+
+# --- DiscreteCompoundDistribution: huge transforms are rejected ---
+with ott.assert_raises(Exception):
+    ot.DiscreteCompoundDistribution(ot.Binomial(2097152, 0.5), ot.Poisson(2.0))

@@ -164,3 +164,11 @@ print("a >= b raises exception: OK")
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- MultivariateUniform: log-density agrees with density at the atom ---
+ott.assert_almost_equal(
+    otexp.MultivariateUniform([0.0, 0.0], [1.0, 1.0]).computeLogPDF([0.0, 0.5]),
+    ot.SpecFunc.LowestScalar,
+    0.0,
+    0.0,
+)

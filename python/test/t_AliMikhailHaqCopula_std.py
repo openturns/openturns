@@ -121,3 +121,9 @@ ott.assert_almost_equal(unitCopula.computeArchimedeanGenerator(0.5), 1.0, 0.0, 0
 ott.assert_almost_equal(unitCopula.computeInverseArchimedeanGenerator(1.0), 0.5, 0.0, 0.0)
 ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorDerivative(0.5), -4.0, 0.0, 0.0)
 ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 16.0, 0.0, 0.0)
+
+# --- AliMikhailHaqCopula: endpoints allowed, independence generator ---
+assert ot.AliMikhailHaqCopula(1.0).getTheta() == 1.0
+assert ot.AliMikhailHaqCopula(-1.0).getTheta() == -1.0
+with ott.assert_raises(Exception):
+    ot.AliMikhailHaqCopula(1.5)

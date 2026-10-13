@@ -82,3 +82,22 @@ validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.skipGradient()  # slow
 validation.run()
+
+# --- JointByConditioningDistribution: empty conditioning domain gives 0 ---
+link = ot.SymbolicFunction(["y"], ["y", "1.0"])
+jbcd = ot.JointByConditioningDistribution(ot.Normal(), ot.Normal(), link)
+assert jbcd.computeCDF([-100.0, -100.0]) == 0.0
+
+# --- JointByConditioningDistribution: trailing conditioned state is kept ---
+link2d = ot.SymbolicFunction(["y"], ["y", "1.0", "y + 1.0", "2.0"])
+conditioned2d = ot.JointDistribution([ot.Normal(), ot.Normal()])
+jbcd2d = ot.JointByConditioningDistribution(conditioned2d, ot.Uniform(0.0, 1.0), link2d)
+reference2d = ot.JointDistribution(
+    [ot.Normal(0.3, 1.0), ot.Normal(1.3, 2.0)], ot.IndependentCopula(2)
+)
+ott.assert_almost_equal(
+    jbcd2d.computeConditionalPDF(1.0, [0.3, 0.5]),
+    reference2d.computeConditionalPDF(1.0, [0.5]),
+    1e-12,
+    0.0,
+)

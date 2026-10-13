@@ -96,3 +96,7 @@ posterior = ot.PosteriorDistribution(conditioned, conditioning, link, observatio
 print("conditioned=", posterior.getConditionedDistribution())
 print("conditioning=", posterior.getConditioningDistribution())
 print("link=", posterior.getLinkFunction())
+
+# --- PosteriorDistribution: observations are validated in all ctors ---
+with ott.assert_raises(Exception):
+    ot.PosteriorDistribution(ot.Normal(), ot.Normal(), ot.Sample(0, 1))

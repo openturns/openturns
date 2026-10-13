@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -94,3 +95,11 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- InverseNormal: CDF stays in [0, 1] over a wide parameter grid ---
+for mu, lambd in [(0.01, 100.0), (1.0, 1.0), (2.0, 0.5), (0.5, 50.0)]:
+    distIN = ot.InverseNormal(mu, lambd)
+    for x in [0.01, 0.1, 1.0, 5.0, 50.0]:
+        c = distIN.computeCDF([x])
+        assert 0.0 <= c <= 1.0 and m.isfinite(c)
+ott.assert_almost_equal(ot.InverseNormal(0.01, 100.0).computeCDF([1.0]), 1.0, 0.0, 0.0)

@@ -55,3 +55,8 @@ validation1d = ott.DistributionValidation(distribution1d)
 validation1d.skipMoments()  # slow
 validation1d.skipCorrelation()  # slow
 validation1d.run()
+
+# --- KPermutationsDistribution: setK refreshes the range ---
+kp = ot.KPermutationsDistribution(3, 5)
+kp.setK(2)
+assert kp.getRange().getDimension() == 2

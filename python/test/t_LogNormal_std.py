@@ -126,3 +126,17 @@ with ott.assert_raises(TypeError):
     ot.LogNormalMuSigmaOverMu(float("nan"), 5.24, -0.5)
 with ott.assert_raises(TypeError):
     ot.LogNormalMuErrorFactor(float("nan"), 1.5, -0.5)
+
+# --- LogNormal helpers validate their inputs ---
+with ott.assert_raises(Exception):
+    ot.LogNormalMuSigma().setValues([0.0, -1.0, 0.0])
+with ott.assert_raises(Exception):
+    ot.LogNormalMuSigmaOverMu().setValues([0.0, 0.5, -1.0])
+with ott.assert_raises(Exception):
+    ot.LogNormalMuErrorFactor().setValues([0.0, 0.5, 0.0])
+with ott.assert_raises(Exception):
+    ot.GammaMuSigma().setValues([0.0, -1.0, 0.0])
+with ott.assert_raises(Exception):
+    ot.WeibullMaxMuSigma().setValues([2.0, 1.0, 0.0])
+with ott.assert_raises(Exception):
+    ot.WeibullMinMuSigma().setValues([0.0, 1.0, 2.0])

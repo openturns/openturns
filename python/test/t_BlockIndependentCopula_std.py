@@ -261,3 +261,12 @@ with ott.assert_raises(Exception):
 assert list(paramCopula.getParameter()) == [4.0, 5.0]
 paramCopula.setParameter(reference)
 ott.assert_almost_equal(paramCopula.getParameter(), reference)
+
+# --- BlockIndependentCopula: log-density path, probability offsets ---
+bic = ot.BlockIndependentCopula([ot.IndependentCopula(1), ot.IndependentCopula(1)])
+ott.assert_almost_equal(bic.computeLogPDF([0.5, 0.5]), 0.0, 1e-12, 0.0)
+bic2 = ot.BlockIndependentCopula([ot.FrankCopula(3.0), ot.ClaytonCopula(2.0)])
+prob = bic2.computeProbability(ot.Interval([0.0, 0.0, 0.5, 0.5], [1.0, 1.0, 1.0, 1.0]))
+ref = ot.ClaytonCopula(2.0).computeProbability(ot.Interval([0.5, 0.5], [1.0, 1.0]))
+ott.assert_almost_equal(prob, ref, 1e-12, 0.0)
+assert prob < 1.0

@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -108,3 +109,20 @@ ot.RandomGenerator.SetSeed(1)
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Beta: endpoint density, DDF guard, Arcsine shortcut, roughness guard ---
+ott.assert_almost_equal(ot.Beta(3.0, 1.0, 0.0, 2.0).computePDF(2.0), 1.5, 1e-12, 0.0)
+ott.assert_almost_equal(
+    ot.Beta(3.0, 1.0, 0.0, 2.0).computeLogPDF(2.0), m.log(1.5), 1e-12, 0.0
+)
+ott.assert_almost_equal(ot.Beta(2.0, 1.0, 0.0, 1.0).computeDDF([1.0]), [0.0], 0.0, 0.0)
+assert (
+    ot.Beta(0.5, 0.5, -1.0, 1.0).getStandardRepresentative().getImplementation().getClassName()
+    == "Arcsine"
+)
+with ott.assert_raises(Exception):
+    ot.Beta(0.3, 0.4).getRoughness()
+with ott.assert_raises(Exception):
+    ot.BetaMuSigma().setValues([0.5, 10.0, 0.0, 1.0])
+with ott.assert_raises(Exception):
+    ot.BetaMuSigma()([0.5, 10.0, 0.0, 1.0])

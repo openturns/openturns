@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math as m
+import os
 import openturns as ot
 import openturns.testing as ott
 
@@ -93,3 +95,23 @@ print("cdf=%.6g" % distribution.computeCDF(x))
 
 # test default ctor
 ot.MixedHistogramFiniteDiscreteDistribution().getSample(5)
+
+# --- MixedHistogramFiniteDiscreteDistribution: marginal masses, load rebuild ---
+studyFile = "myStudyBugFixMixedHistogram.xml"
+ticks = [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]
+kind = [ot.MixedHistogramFiniteDiscreteDistribution.DISCRETE] * 3
+mixed = ot.MixedHistogramFiniteDiscreteDistribution(ticks, kind, [0.125] * 8)
+marginal01 = mixed.getMarginal([0, 1])
+totalMass = sum(marginal01.computePDF([i, j]) for i in [0.0, 1.0] for j in [0.0, 1.0])
+ott.assert_almost_equal(totalMass, 1.0, 1e-12, 0.0)
+study = ot.Study(studyFile)
+study.add("mixed", mixed)
+study.save()
+study2 = ot.Study(studyFile)
+study2.load()
+ticksR = [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]
+mixedR = ot.MixedHistogramFiniteDiscreteDistribution(ticksR, kind, [0.125] * 8)
+study2.fillObject("mixed", mixedR)
+os.remove(studyFile)
+assert mixedR.getRealization().getSize() == 3
+assert m.isfinite(mixedR.computePDF([0.0, 0.0, 0.0]))

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import openturns as ot
 import openturns.testing as ott
 
@@ -213,3 +214,52 @@ with ott.assert_raises(TypeError):
     cond.setParameter(bad)
 ott.assert_almost_equal(cond.getParameter(), before, 0.0, 0.0)
 ott.assert_almost_equal(cond.computePDF([0.0]), pdfBefore, 0.0, 0.0)
+
+# --- PointConditionalDistribution: Student conditional scale is linear ---
+# the simplified Student formula is under test: the host file above disables it
+ot.ResourceMap.SetAsBool("PointConditionalDistribution-UseSimplifiedVersion", True)
+R = ot.CorrelationMatrix(2)
+R[0, 1] = 0.5
+pcdStudent = ot.PointConditionalDistribution(
+    ot.Student(5.0, [0.0, 0.0], [1.0, 1.0], R), [1], [0.5]
+)
+ott.assert_almost_equal(pcdStudent.getMean(), [0.25], 1e-12, 0.0)
+ott.assert_almost_equal(
+    pcdStudent.getCovariance(), ot.CovarianceMatrix(1, [0.984375]), 1e-12, 0.0
+)
+# covariance constructor honors its documented contract
+covStudent = ot.Student(6.0, [0.25], ot.CovarianceMatrix(1, [0.984375]))
+ott.assert_almost_equal(
+    covStudent.getCovariance(), ot.CovarianceMatrix(1, [0.984375]), 1e-12, 0.0
+)
+with ott.assert_raises(Exception):
+    ot.Student(1.5, [0.0], ot.CovarianceMatrix(1, [1.0]))
+# ... including for singular matrices as before
+singStudent = ot.Student(
+    4.2, [0.0] * 3, ot.CovarianceMatrix([[1.0, 1.0, 0.0], [1.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+)
+ott.assert_almost_equal(singStudent.getMean(), [0.0] * 3, 0.0, 0.0)
+
+# --- PointConditionalDistribution: parameter validation and persistence ---
+studyFile = "myStudyBugFixPointConditional.xml"
+pcd = ot.PointConditionalDistribution(ot.Normal(2), [1], [0.5])
+pcdParam = pcd.getParameter()
+pcdParam[-1] = 1.0e6
+with ott.assert_raises(Exception):
+    pcd.setParameter(pcdParam)
+pcd.setIntegrationAlgorithm(ot.SimplicialCubature())
+study = ot.Study(studyFile)
+study.add("pcd", pcd)
+study.save()
+study2 = ot.Study(studyFile)
+study2.load()
+pcdR = ot.PointConditionalDistribution(ot.Normal(2), [1], [0.5])
+study2.fillObject("pcd", pcdR)
+os.remove(studyFile)
+assert (
+    pcdR.getIntegrationAlgorithm().getImplementation().getClassName()
+    == "SimplicialCubature"
+)
+ott.assert_almost_equal(
+    pcdR.computePDF([0.0]), pcd.computePDF([0.0]), 1e-12, 0.0
+)

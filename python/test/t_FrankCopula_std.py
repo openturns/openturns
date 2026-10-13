@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -117,3 +118,20 @@ ott.assert_almost_equal(deriv, -1.0 / t_small, 1e-3, 0.0)
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.run()
+
+# --- FrankCopula: negative dependence uses the general formulas ---
+frankNeg = ot.FrankCopula(-5.0)
+assert m.isfinite(frankNeg.computeEntropy())
+# entropy is consistent with a Monte Carlo estimate
+ot.RandomGenerator.SetSeed(10)
+sizeMC = 200000
+sampleMC = frankNeg.getSample(sizeMC)
+logPDFMC = frankNeg.computeLogPDF(sampleMC).asPoint()
+ott.assert_almost_equal(
+    frankNeg.computeEntropy(), -sum(logPDFMC) / sizeMC, 1e-2, 1e-3
+)
+assert frankNeg.getCovariance()[0, 1] < 0.0
+# covariance matches its Monte Carlo estimate
+meanMC = sampleMC.computeMean()
+covMC = ((sampleMC - meanMC).computeCovariance()[0, 1])
+ott.assert_almost_equal(frankNeg.getCovariance()[0, 1], covMC, 1e-2, 1e-3)

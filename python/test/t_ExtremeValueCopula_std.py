@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -109,3 +110,8 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.setMomentsSamplingSize(100000)
 validation.run()
+
+# --- ExtremeValueCopula: density is nonnegative ---
+evc = ot.ExtremeValueCopula(ot.SymbolicFunction("t", "(t-0.5)^2+0.75"))
+assert evc.computePDF([0.3, 0.4]) >= 0.0
+assert m.isfinite(evc.computeLogPDF([0.3, 0.4]))

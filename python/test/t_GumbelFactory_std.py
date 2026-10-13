@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+import openturns.testing as ott
 distribution = ot.Gumbel(0.5, 2.5)
 size = 10000
 sample = distribution.getSample(size)
@@ -27,3 +28,16 @@ estimatedDistribution = result.getDistribution()
 print("Estimated distribution (mu/sigma)       =", repr(estimatedDistribution))
 parameterDistribution = result.getParameterDistribution()
 print("Parameter distribution (mu/sigma)       =", parameterDistribution)
+
+# --- GumbelFactory rejects constant samples, helper prints true names ---
+with ott.assert_raises(Exception):
+    ot.GumbelFactory().build(ot.Sample([[1.0], [1.0], [1.0]]))
+assert "lambda" in str(ot.GumbelLambdaGamma())
+with ott.assert_raises(Exception):
+    ot.GumbelMuSigma().setValues([0.0, -1.0])
+with ott.assert_raises(Exception):
+    ot.GumbelLambdaGamma().setValues([-1.0, 0.0])
+
+# --- GumbelFactory: clean errors on bad samples ---
+with ott.assert_raises(Exception):
+    ot.GumbelFactory().build(ot.Sample([[1.0], [1.0], [1.0]]))

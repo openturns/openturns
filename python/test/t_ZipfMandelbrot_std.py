@@ -80,3 +80,12 @@ assert not distribution.isElliptical()
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- ZipfMandelbrot: setters refresh the harmonic table ---
+zipf = ot.ZipfMandelbrot(10, 0.5, 1.5)
+pdfBefore = zipf.computePDF([3.0])
+zipf.setQ(1.5)
+assert zipf.computePDF([3.0]) != pdfBefore
+ott.assert_almost_equal(
+    zipf.computePDF([3.0]), ot.ZipfMandelbrot(10, 1.5, 1.5).computePDF([3.0]), 1e-12, 0.0
+)

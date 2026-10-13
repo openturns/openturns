@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -153,3 +154,8 @@ with ott.assert_raises(TypeError):
     copula.computeConditionalQuantile(2.0, [0.3])
 with ott.assert_raises(TypeError):
     copula.computeConditionalQuantile(-0.5, [0.3])
+
+# --- GumbelCopula: conditional edge cases, gradient at the boundary ---
+ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [1.0]), 0.0, 0.0, 0.0)
+ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 0.0, 0.0, 0.0)
+assert m.isfinite(ot.GumbelCopula(1.0).computePDFGradient([0.3, 0.4])[0])

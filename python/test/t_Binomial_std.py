@@ -202,3 +202,9 @@ binomial.setP(0.9999)
 computed = binomial.computePDF(1.0)
 expected = 1.999799999999779835e-04
 ott.assert_almost_equal(computed, expected, 1e-12, 0.0)
+
+# --- Binomial: negative trial count rejected, degenerate quantiles ---
+with ott.assert_raises(Exception):
+    ot.Binomial().setParameter([-1.0, 0.5])
+ott.assert_almost_equal(ot.Binomial(5, 0.0).computeQuantile(0.3), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(ot.Binomial(5, 1.0).computeQuantile(0.3), [5.0], 0.0, 0.0)

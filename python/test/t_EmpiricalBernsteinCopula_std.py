@@ -136,3 +136,9 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.skipGradient()  # computePDFGradient does not handle integer parameters
 validation.run()
+
+# --- EmpiricalBernsteinCopula: sequential CDF stays in [0, 1] ---
+ot.RandomGenerator.SetSeed(1)
+ebc = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(20), 2)
+seqCDF = ebc.computeSequentialConditionalCDF([0.5, 0.5])
+assert all(0.0 <= v <= 1.0 for v in seqCDF)

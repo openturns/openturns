@@ -221,3 +221,14 @@ validation.skipGradient()
 validation.skipEntropy()
 validation.skipMinimumVolumeLevelSet()  # slow optimizer on the mixture
 validation.run()
+
+# --- CompoundDistribution keeps its link function ---
+# deterministic discretization: the host file above leaves MC/32 nodes set
+ot.ResourceMap.SetAsString("CompoundDistribution-ContinuousDiscretizationMethod", "GaussProduct")
+ot.ResourceMap.SetAsUnsignedInteger("CompoundDistribution-MarginalIntegrationNodesNumber", 48)
+ot.ResourceMap.SetAsUnsignedInteger("CompoundDistribution-MaximumIntegrationNodesNumber", 100000)
+link1d = ot.SymbolicFunction(["y"], ["y", "1.0"])
+compound = ot.CompoundDistribution(ot.Normal(), ot.Exponential(1.0), link1d)
+pdfBefore = compound.computePDF([0.0])
+compound.setParameter(compound.getParameter())
+ott.assert_almost_equal(compound.computePDF([0.0]), pdfBefore, 1e-12, 0.0)

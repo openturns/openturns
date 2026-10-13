@@ -159,3 +159,8 @@ thin_tail = ot.FiniteDiscreteDistribution(
     [[0.0], [1.0], [2.0]], [0.5, 0.5 - 1e-15, 1e-15]
 )
 ott.assert_almost_equal(thin_tail.computeQuantile(0.0, True), [2.0], 0.0, 0.0)
+
+# --- FiniteDiscreteDistribution: tail quantile walks the right way ---
+fdd = ot.FiniteDiscreteDistribution([[0.0], [1.0]], [0.5, 0.5])
+ott.assert_almost_equal(fdd.computeQuantile(0.4, True), [1.0], 0.0, 0.0)
+ott.assert_almost_equal(fdd.computeQuantile(0.6), [1.0], 0.0, 0.0)

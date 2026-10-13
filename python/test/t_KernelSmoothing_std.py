@@ -494,3 +494,15 @@ with ott.assert_raises(TypeError):
     ot.KernelSmoothing().buildWeighted(
         bandwidthSample, [1.0] * 20, [float("inf")]
     )
+
+# --- KernelSmoothing: bandwidth validation and degenerate cache ---
+ks = ot.KernelSmoothing()
+with ott.assert_raises(Exception):
+    ks.build(ot.Normal().getSample(10), [-1.0])
+with ott.assert_raises(Exception):
+    ks.buildWeighted(
+        ot.Sample([[float("nan")], [1.0], [2.0]]), [0.25, 0.25, 0.5], [0.5]
+    )
+constSample = ot.Sample([[2.0]] * 5)
+ks.buildWeighted(constSample, [0.2] * 5, [0.5])
+ott.assert_almost_equal(ks.getBandwidth(), [0.5], 0.0, 0.0)

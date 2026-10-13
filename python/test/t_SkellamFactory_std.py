@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 distribution = ot.Skellam(10.0, 5.0)
@@ -22,3 +23,7 @@ estimatedSkellam = factory.buildAsSkellam()
 print("Default skellam=", estimatedSkellam)
 estimatedSkellam = factory.buildAsSkellam(distribution.getParameter())
 print("Skellam from parameters=", estimatedSkellam)
+
+# --- SkellamFactory checks both rates ---
+with ott.assert_raises(Exception):
+    ot.SkellamFactory().build(ot.Sample([[-5.0], [-4.0], [-5.0], [-4.0]]))

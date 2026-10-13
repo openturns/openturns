@@ -121,3 +121,11 @@ print("margins realization=", repr(margins.getRealization()))
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.run()
+
+# --- IndependentCopula accepts unit conditioning ---
+ott.assert_almost_equal(
+    ot.IndependentCopula(2).computeConditionalCDF(0.5, [1.0]), 0.5, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.IndependentCopula(2).computeConditionalQuantile(0.5, [1.0]), 0.5, 0.0, 0.0
+)

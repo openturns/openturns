@@ -2,6 +2,7 @@
 
 import openturns as ot
 
+import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 
@@ -30,3 +31,13 @@ estimatedLogNormal = factory.buildAsLogNormal()
 print("Default logNormal=", estimatedLogNormal)
 estimatedLogNormal = factory.buildAsLogNormal(distribution.getParameter())
 print("LogNormal from parameters=", estimatedLogNormal)
+
+# --- LogNormalFactory: invalid shifts are rejected ---
+with ott.assert_raises(Exception):
+    ot.LogNormalFactory().buildMethodOfLeastSquares(
+        ot.Sample([[1.0], [2.0], [3.0]]), 5.0
+    )
+with ott.assert_raises(Exception):
+    ot.ParetoFactory().buildMethodOfLeastSquares(
+        ot.Sample([[1.0], [2.0], [3.0]]), 5.0
+    )

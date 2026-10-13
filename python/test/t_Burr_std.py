@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -102,3 +103,9 @@ ott.assert_almost_equal(p, 1.0)
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Burr: nonexistent moments throw, tail log-density is finite ---
+with ott.assert_raises(Exception):
+    ot.Burr(2.0, 0.5).getMean()
+ott.assert_almost_equal(ot.Burr(2.0, 2.0).getMean()[0], m.pi / 4.0, 1e-12, 0.0)
+assert m.isfinite(ot.Burr(2.0, 2.0).computeLogPDF([1.0e150]))

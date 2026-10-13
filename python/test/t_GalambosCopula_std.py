@@ -132,3 +132,6 @@ ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(copula)
 validation.setMomentsSamplingSize(100000)
 validation.run()
+
+# --- GalambosCopula has no independent case ---
+assert not ot.GalambosCopula(0.5).hasIndependentCopula()

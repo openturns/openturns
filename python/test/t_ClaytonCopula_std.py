@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -147,3 +148,17 @@ validation.run()
 # Verify upper tail dependence is zero for Clayton
 chi = copula.computeUpperTailDependenceMatrix()[0, 1]
 ott.assert_almost_equal(chi, 0.0, 1e-5, 1e-5)
+
+# --- ClaytonCopula: gradients at independence, negative-dependence quantile ---
+ott.assert_almost_equal(ot.ClaytonCopula(0.0).computePDFGradient([0.3, 0.4]), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeCDFGradient([0.3, 0.4]), [0.0], 0.0, 0.0)
+q = ot.ClaytonCopula(-0.5).computeConditionalQuantile(0.5, [0.5])
+assert 0.0 <= q <= 1.0 and m.isfinite(q)
+
+# --- ClaytonCopula: log-density matches the density ---
+for thetaClayton in [0.0, 2.0, 50.0, 200.0]:
+    clayton = ot.ClaytonCopula(thetaClayton)
+    for pt in [[0.3, 0.4], [0.9, 0.95], [0.05, 0.1]]:
+        ott.assert_almost_equal(
+            clayton.computeLogPDF(pt), m.log(clayton.computePDF(pt)), 1e-12, 0.0
+        )

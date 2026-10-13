@@ -105,3 +105,12 @@ print("Standard representative=", distribution.getStandardRepresentative())
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
 validation.run()
+
+# --- Arcsine: setAB invalidates cached mean/covariance, kurtosis is 1.5 ---
+arcsine = ot.Arcsine(0.0, 1.0)
+assert arcsine.getMean()[0] == 0.5
+arcsine.setA(-1.0)
+ott.assert_almost_equal(arcsine.getMean(), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(arcsine.getKurtosis(), [1.5], 0.0, 0.0)
+with ott.assert_raises(Exception):
+    ot.ArcsineMuSigma().setValues([0.0, -1.0])
