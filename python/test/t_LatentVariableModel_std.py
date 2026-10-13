@@ -85,10 +85,17 @@ assert k.getNuggetFactor() == 0.1
 with ott.assert_raises(Exception):
     k.draw()
 
-# persistence (save only: reload is covered by CovarianceModel tests)
+# persistence roundtrip (regression: load dropped latent state)
 
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("latent_variable_model.xml"))
 study.add("model", ot.CovarianceModel(k))
 study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("latent_variable_model.xml"))
+loadedStudy.load()
+loaded = ot.CovarianceModel()
+loadedStudy.fillObject("model", loaded)
+assert loaded == k
+ott.assert_almost_equal(loaded([0.0], [1.0]), k([0.0], [1.0]), 1e-12, 1e-12)
 os.remove("latent_variable_model.xml")
