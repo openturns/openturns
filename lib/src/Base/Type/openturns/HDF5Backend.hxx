@@ -107,9 +107,6 @@ private:
   /** Default constructor (disabled) */
   HDF5Backend();
 
-  /** Reopen the file in read/write mode and remap the dataset */
-  void openFile();
-
   /** HDF5 file path */
   FileName fileName_;
 
