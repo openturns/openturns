@@ -156,6 +156,8 @@ void ComplexDataContainer::setBackend(Pointer<StorageBackend> newBackend)
   if (totalSize > 0)
     std::copy(cachedData_, cachedData_ + totalSize, newBackend->data());
   backend_ = newBackend;
+  // Persist immediately, mirroring DataContainer::setBackend
+  backend_->flush();
   refreshCache();
 }
 
