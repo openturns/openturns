@@ -178,7 +178,7 @@ view = otv.View(graph)
 
 # %%
 # The quasi-Monte Carlo approach using the Sobol' low-discrepancy sequence
-# converges more rapidly across individual indices than the standard Latin 
+# converges more rapidly across individual indices than the standard Latin
 # Hypercube Sampling strategy.
 
 # %%
