@@ -42,6 +42,11 @@ GaussKronrod::GaussKronrod()
   , maximumSubIntervals_(ResourceMap::GetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals"))
   , maximumError_(ResourceMap::GetAsScalar("GaussKronrod-MaximumError"))
   , rule_()
+  , errorEstimate_(0.0)
+  , iterationNumber_(0)
+  , ai_()
+  , bi_()
+  , ei_()
 {
   // Check the maximum number of sub-intervals
   if (!(maximumSubIntervals_ >= 2)) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals_ << ". Check the value of the key 'GaussKronrod-MaximumSubIntervals' in ResourceMap.";
@@ -55,6 +60,11 @@ GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
   , maximumSubIntervals_(maximumSubIntervals)
   , maximumError_(maximumError)
   , rule_(rule)
+  , errorEstimate_(0.0)
+  , iterationNumber_(0)
+  , ai_()
+  , bi_()
+  , ei_()
 {
   // Check the maximum number of sub-intervals
   if (!(maximumSubIntervals >= 2)) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals;
@@ -134,6 +144,11 @@ Point GaussKronrod::integrate(const Function & function,
   bi.resize(im + 1);
   ei.resize(im + 1);
   fi.erase(im + 1, maximumSubIntervals_);
+  errorEstimate_ = error;
+  iterationNumber_ = im + 1;
+  ai_ = ai;
+  bi_ = bi;
+  ei_ = ei;
   if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
   return result;
 }
@@ -304,6 +319,14 @@ Scalar GaussKronrod::integrate(const UniVariateFunction & function,
     ip = iErrorMax;
     error = sqrt(error);
   } // while (error >...)
+  errorEstimate_ = error;
+  iterationNumber_ = im + 1;
+  ai_ = Point(ai);
+  ai_.resize(im + 1);
+  bi_ = Point(bi);
+  bi_.resize(im + 1);
+  ei_ = Point(ei);
+  ei_.resize(im + 1);
   if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
   return result;
 }
@@ -379,6 +402,34 @@ GaussKronrodRule GaussKronrod::getRule() const
 void GaussKronrod::setRule(const GaussKronrodRule & rule)
 {
   rule_ = rule;
+}
+
+/* Last integration state accessors */
+Scalar GaussKronrod::getErrorEstimate() const
+{
+  return errorEstimate_;
+}
+
+UnsignedInteger GaussKronrod::getIterationNumber() const
+{
+  return iterationNumber_;
+}
+
+Sample GaussKronrod::getEvaluationSubIntervals() const
+{
+  const UnsignedInteger size = ai_.getSize();
+  Sample subIntervals(size, 2);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    subIntervals(i, 0) = ai_[i];
+    subIntervals(i, 1) = bi_[i];
+  }
+  return subIntervals;
+}
+
+Point GaussKronrod::getLocalErrorEstimates() const
+{
+  return ei_;
 }
 
 /* Static method to initialize the rule names/GKrule pairing in GaussKronrod */
