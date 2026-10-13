@@ -142,7 +142,7 @@ multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.
 # Then we create the multivariate basis which has maximum degree equal to 2. There are 15 functions contained in the basis.
 totalDegree = 2
 enumerateFunction = multivariateBasis.getEnumerateFunction()
-numberOfTrendCoefficients = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
+numberOfTrendCoefficients = enumerateFunction.getBasisSizeFromTotalDegree(totalDegree)
 print("Number of functions in the basis: ", numberOfTrendCoefficients)
 
 # %%

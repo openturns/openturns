@@ -158,7 +158,7 @@ enumerateFunction = ot.LinearEnumerateFunction(dimension_xi_X)
 basis = ot.OrthogonalProductPolynomialFactory(
     [ot.HermiteFactory()] * dimension_xi_X, enumerateFunction
 )
-basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
+basisSize = enumerateFunction.getBasisSizeFromTotalDegree(degree)
 adaptive = ot.FixedStrategy(basis, basisSize)
 projection = ot.LeastSquaresStrategy(
     ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut())

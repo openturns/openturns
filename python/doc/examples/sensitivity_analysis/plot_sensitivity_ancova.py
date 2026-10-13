@@ -60,7 +60,7 @@ productBasis = ot.OrthogonalProductPolynomialFactory(
     [ot.HermiteFactory()] * 2, enumerateFunction
 )
 adaptiveStrategy = ot.FixedStrategy(
-    productBasis, enumerateFunction.getStrataCumulatedCardinal(4)
+    productBasis, enumerateFunction.getBasisSizeFromTotalDegree(4)
 )
 samplingSize = 250
 experiment = ot.MonteCarloExperiment(distribution, samplingSize)
