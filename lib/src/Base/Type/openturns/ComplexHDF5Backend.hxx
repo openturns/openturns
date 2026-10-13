@@ -58,7 +58,7 @@ public:
   Pointer<ComplexDataContainer::StorageBackend> clone() const override;
 
   /** Write pending modifications to disk */
-  void flush();
+  void flush() override;
 
 private:
   ComplexHDF5Backend() = default;
