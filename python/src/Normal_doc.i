@@ -88,8 +88,8 @@ Draw a sample:
 Create a multivariate normal distribution with constant :math:`\sigma` and identity correlation matrix:
 
 >>> dimension = 5
->>> mu = ot.Point(dimension)
->>> sigma = ot.Point(dimension, 0.1)
+>>> mu = [0.0]*dimension
+>>> sigma = [0.1]*dimension
 >>> R = ot.CorrelationMatrix(dimension)
 >>> distribution = ot.Normal(mu, sigma, R)
 >>> print('distribution=', distribution)
