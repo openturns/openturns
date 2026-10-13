@@ -173,6 +173,7 @@ SquareMatrix FractionalBrownianMotionModel::operator() (const Point & s,
           correlation = outputCorrelation_(i, j) * (sPowHij + tPowHij - stPowHij);
       } // |Hij - 1| >= 1e-7
       result(i, j) = 0.5 * sigmaI * amplitude_[j] * (correlation + asymmetry);
+      result(j, i) = 0.5 * sigmaI * amplitude_[j] * (correlation - asymmetry);
     } // j
     result(i, i) = 0.5 * sigmaI * sigmaI * (std::pow(absSOverTheta, 2.0 * Hi) + std::pow(absTOverTheta, 2.0 * Hi) - std::pow(absSTOverTheta, 2.0 * Hi));
     if (absSTOverTheta <= SpecFunc::ScalarEpsilon) result(i, i) *= 1.0 + nuggetFactor_;
