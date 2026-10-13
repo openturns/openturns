@@ -52,6 +52,7 @@ public:
     virtual UnsignedInteger size() const = 0;
     virtual Bool isShareable() const = 0;
     virtual Pointer<StorageBackend> clone() const = 0;
+    virtual void flush() {}
   };
 
   /** In-memory storage backend using contiguous std::vector */
