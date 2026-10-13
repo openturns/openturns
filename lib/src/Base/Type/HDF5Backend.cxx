@@ -80,7 +80,9 @@ HDF5Backend::HDF5Backend(const FileName & fileName,
     h5Dataspace_ = p_dspace;
 
     // Create dataset with chunking and optional compression
-    hsize_t chunkDims[1] = { std::min(static_cast<hsize_t>(n), static_cast<hsize_t>(ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultChunkSize"))) };
+    // Guard against empty datasets: HDF5 rejects zero-sized chunks
+    const hsize_t chunkSize = static_cast<hsize_t>(ResourceMap::GetAsUnsignedInteger("HDF5Backend-DefaultChunkSize"));
+    hsize_t chunkDims[1] = { std::max(static_cast<hsize_t>(1), std::min(static_cast<hsize_t>(n), chunkSize)) };
     H5::DSetCreatPropList prop;
     prop.setChunk(1, chunkDims);
     if (compressionLevel > 0)
@@ -184,6 +186,14 @@ Scalar * HDF5Backend::data()
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "HDF5Backend requires HDF5 support";
 #else
+  // Block operations may have shrunk the buffer to their last window;
+  // restore the full window before serving raw access
+  if (bufferOffset_ != 0 || buffer_.size() != size_)
+  {
+    buffer_.resize(size_);
+    bufferOffset_ = 0;
+    bufferValid_ = false;
+  }
   if (!bufferValid_)
   {
     // Reload from disk
@@ -207,6 +217,14 @@ const Scalar * HDF5Backend::data() const
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "HDF5Backend requires HDF5 support";
 #else
+  // Block operations may have shrunk the buffer to their last window;
+  // restore the full window before serving raw access
+  if (bufferOffset_ != 0 || buffer_.size() != size_)
+  {
+    buffer_.resize(size_);
+    bufferOffset_ = 0;
+    bufferValid_ = false;
+  }
   if (!bufferValid_)
   {
     try
@@ -274,7 +292,11 @@ Pointer<DataContainer::StorageBackend> HDF5Backend::clone() const
   Pointer<HDF5Backend> p_copy(new HDF5Backend(tempFile, dataSetName_ + "_copy", size_, compressionLevel_));
   if (size_ > 0)
   {
-    std::copy(buffer_.begin(), buffer_.end(), p_copy->buffer_.begin());
+    // Copy the full memory state through the window discipline:
+    // data() restores the full window (block operations may have
+    // shrunk it) and reloads from disk if invalidated
+    const Scalar * full = data();
+    std::copy(full, full + size_, p_copy->buffer_.begin());
     p_copy->bufferValid_ = true;
   }
   return p_copy;
@@ -286,6 +308,9 @@ void HDF5Backend::flush()
 #ifndef OPENTURNS_HAVE_HDF5
   return;
 #else
+  // A partial block window is already on disk (block writes go straight
+  // to their hyperslab), so only a full valid window has anything to write
+  if (bufferOffset_ != 0 || buffer_.size() != size_) return;
   if (readOnly_ || !bufferValid_) return;
 
   try
