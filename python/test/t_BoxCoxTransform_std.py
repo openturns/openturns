@@ -82,6 +82,16 @@ assert shiftedTransform.getInputDimension() == 2
 assert shiftedTransform.getOutputDimension() == 2
 assert "BoxCox" in repr(shiftedTransform)
 ott.assert_almost_equal(shiftedTransform([1.0, 1.0]), [0.8284271247461903, 2.0])
+# roundtrip with nonzero shift (regression: inverse subtracted shift from input)
+ott.assert_almost_equal(
+    shiftedTransform.getInverse()(shiftedTransform([1.0, 1.0])), [1.0, 1.0], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    shiftedTransform.getInverse()(shiftedTransform([[1.0, 1.0], [0.0, 0.0]])),
+    [[1.0, 1.0], [0.0, 0.0]],
+    1e-12,
+    1e-12,
+)
 outSample = shiftedTransform([[1.0, 1.0], [0.0, 0.0]])
 ott.assert_almost_equal(outSample[0], [0.8284271247461903, 2.0])
 ott.assert_almost_equal(outSample[1], [0.0, 1.0])
