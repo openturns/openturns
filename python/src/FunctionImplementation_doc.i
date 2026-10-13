@@ -5,7 +5,7 @@ Notes
 -----
 A function acts on points to produce points: :math:`f: \Rset^d \rightarrow \Rset^{d'}`.
 
-A function enables to evaluate its gradient and its hessian when mathematically defined.
+A function enables the evaluation of its gradient and its Hessian when mathematically defined.
 
 
 Examples
@@ -244,15 +244,15 @@ OT_Function_getGradientCallsNumber_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getHessianCallsNumber_doc
-"Accessor to the number of times the hessian of the function has been called.
+"Accessor to the number of times the Hessian of the function has been called.
 
 Returns
 -------
 hessian_calls_number : int
-    Integer that counts the number of times the hessian of the
+    Integer that counts the number of times the Hessian of the
     Function has been called since its creation.
-    Note that if the hessian is implemented by a finite difference method,
-    the hessian calls number is equal to 0 and the different calls are counted
+    Note that if the Hessian is implemented by a finite difference method,
+    the Hessian calls number is equal to 0 and the different calls are counted
     in the evaluation calls number."
 %enddef
 %feature("docstring") OT::FunctionImplementation::getHessianCallsNumber
@@ -280,12 +280,12 @@ OT_Function_getMarginal_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getImplementation_doc
-"Accessor to the evaluation, gradient and hessian functions.
+"Accessor to the evaluation, gradient and Hessian functions.
 
 Returns
 -------
 function : :class:`~openturns.FunctionImplementation`
-    A copy of the evaluation, gradient and hessian functions.
+    A copy of the evaluation, gradient and Hessian functions.
 
 Examples
 --------
@@ -339,10 +339,20 @@ Returns
 gradient : :class:`~openturns.GradientImplementation`
     The gradient function.
 
+Notes
+-----
+If no gradient is explicitly implemented, a centered finite-difference approximation is used by default.
+For each input coordinate :math:`i`, it is computed as
+:math:`\frac{f(\vect{x} + \varepsilon \vect{e}_i) - f(\vect{x} - \varepsilon \vect{e}_i)}{2\varepsilon}`.
+An explicitly implemented gradient can be provided as an alternative.
+A :class:`~openturns.SymbolicFunction` uses an analytical gradient when available
+and centered finite differences otherwise.
+
 Examples
 --------
-To get the gradient formulas when the function is a  :class:`~openturns.SymbolicFunction`.
-The indices are :math:`(i,j)`. The corresponding formula is
+For a :class:`~openturns.SymbolicFunction`, this method can be used to retrieve
+the formulas of the gradient.
+Note that for :math:`(i,j)` indices, we get the formula of
 :math:`\left( \dfrac{\partial f_j(\vect{x})}{\partial x_i} \right)`.
 
 >>> import openturns as ot
@@ -358,17 +368,26 @@ OT_Function_getGradient_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_getHessian_doc
-R"RAW(Accessor to the hessian function.
+R"RAW(Accessor to the Hessian function.
 
 Returns
 -------
 hessian : :class:`~openturns.HessianImplementation`
-    The hessian function.
+    The Hessian function.
+
+Notes
+-----
+If no Hessian is explicitly implemented, a centered finite-difference approximation is used by default.
+An explicitly implemented Hessian can be provided as an alternative.
+A :class:`~openturns.SymbolicFunction` uses an analytical Hessian when available
+and centered finite differences otherwise.
 
 Examples
 --------
-To get the hessian formulas when the function is a  :class:`~openturns.SymbolicFunction`.
-The indices are :math:`(i,j,k)`. The corresponding formula is :math:`\left( \dfrac{\partial^2 f_k(\vect{x})}{\partial x_i \partial x_j} \right)`.
+For a :class:`~openturns.SymbolicFunction`, this method can be used to retrieve
+the formulas of the Hessian.
+Note that for :math:`(i,j, k)` indices, we get the formula of
+:math:`\left( \dfrac{\partial^2 f_k(\vect{x})}{\partial x_i \partial x_j} \right)`.
 
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x1', 'x2'],
@@ -422,12 +441,12 @@ OT_Function_setGradient_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_setHessian_doc
-"Accessor to the hessian function.
+"Accessor to the Hessian function.
 
 Parameters
 ----------
 hessian_function : :class:`~openturns.HessianImplementation`
-    The hessian function.
+    The Hessian function.
 
 Examples
 --------
@@ -487,12 +506,12 @@ OT_Function_gradient_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_hessian_doc
-R"RAW(Return the hessian of the function at a point.
+R"RAW(Return the Hessian of the function at a point.
 
 Parameters
 ----------
 point : sequence of float
-    Point where the hessian of the function is calculated.
+    Point where the Hessian of the function is calculated.
 
 Returns
 -------
@@ -502,7 +521,7 @@ hessian : :class:`~openturns.SymmetricTensor`
 Notes
 -----
 Let :math:`f : \Rset^\inputDim \rightarrow \Rset^p` where the
-:math:`f_i` are the components functions. Then, the hessian evaluated at :math:`\vect{x}` is
+:math:`f_i` are the components functions. Then, the Hessian evaluated at :math:`\vect{x}` is
 a symmetric tensor with :math:`p` sheets, each one composed of :math:`\inputDim` rows and :math:`\inputDim`
 columns. The :math:`k` -th sheet is defined by:
 
