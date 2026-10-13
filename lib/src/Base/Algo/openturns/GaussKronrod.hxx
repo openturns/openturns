@@ -25,6 +25,8 @@
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"
 #include "openturns/GaussKronrodRule.hxx"
+#include <memory>
+#include <mutex>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -118,6 +120,15 @@ public:
   GaussKronrodRule getRule() const;
   void setRule(const GaussKronrodRule & rule);
 
+  /** State accessors: they return the state of the last call to integrate,
+      except for the scratch-containers overload which never touches them
+      as its containers may be shared between concurrent calls.
+      They allow a SciPy-like usage without preallocated out-arguments. */
+  Scalar getErrorEstimate() const;
+  UnsignedInteger getIterationNumber() const;
+  Sample getEvaluationSubIntervals() const;
+  Point getLocalErrorEstimates() const;
+
 protected:
   /** Map of NLopt algorithms names */
   static std::map<String, GaussKronrodRule> RuleNames_;
@@ -171,6 +182,21 @@ private:
 
   /* Local integration rule */
   GaussKronrodRule rule_;
+
+  /* Last integration state, filled by integrate() except by the
+     scratch-containers overload. Mutable so that the const integrate()
+     methods can update it; guarded by stateMutex_ as integrate() runs
+     on worker threads (e.g. batched PDF evaluations), so concurrent
+     calls stay memory-safe and the state reflects the last completed
+     call. */
+  mutable Scalar errorEstimate_;
+  mutable UnsignedInteger iterationNumber_;
+  mutable Point ai_;
+  mutable Point bi_;
+  mutable Point ei_;
+
+  /** Mutex for the thread-safe last-state recording above */
+  mutable std::shared_ptr<std::recursive_mutex> stateMutex_{std::make_shared<std::recursive_mutex>()};
 
 } ; /* class GaussKronrod */
 
