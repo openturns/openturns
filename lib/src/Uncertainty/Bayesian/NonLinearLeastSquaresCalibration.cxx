@@ -39,6 +39,7 @@ static const Factory<NonLinearLeastSquaresCalibration> Factory_NonLinearLeastSqu
 /* Default constructor */
 NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration()
   : CalibrationAlgorithmImplementation()
+  , useLaplaceApproximation_(false)
 {
   // Nothing to do
 }
@@ -51,6 +52,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(startingPoint, CovarianceMatrix((IdentityMatrix(startingPoint.getDimension()) * std::sqrt(SpecFunc::MaxScalar)).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
+  , useLaplaceApproximation_(false)
 {
   // Check the input
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
@@ -289,7 +291,35 @@ void NonLinearLeastSquaresCalibration::run()
     LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, gradientObservations.transpose()));
     // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
     (void) method.solve(Point(gradientObservations.getNbColumns()));
-    const CovarianceMatrix gramInverse(method.getGramInverse());
+    CovarianceMatrix gramInverse(method.getGramInverse());
+    if (useLaplaceApproximation_)
+    {
+      // Laplace approximation: the posterior covariance uses the full Hessian
+      // H = J^T J + sum_k r_k Hessian(r_k) at the MAP instead of the
+      // Gauss-Newton Gram matrix (see issue #3273)
+      const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
+      const Point residuals(residual.getImplementation()->getData());
+      const SymmetricTensor residualHessian(residualFunction.hessian(thetaStar));
+      Matrix laplaceHessian(gradientObservations * gradientObservations.transpose());
+      const UnsignedInteger residualSize = residuals.getSize();
+      for (UnsignedInteger k = 0; k < residualSize; ++k)
+        for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+          for (UnsignedInteger j = 0; j <= i; ++j)
+            laplaceHessian(i, j) += residuals[k] * residualHessian(i, j, k);
+      // Symmetrize explicitly before inversion
+      for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+        for (UnsignedInteger j = 0; j < i; ++j)
+          laplaceHessian(j, i) = laplaceHessian(i, j);
+      try
+      {
+        const Matrix laplaceInverse(laplaceHessian.solveLinearSystem(IdentityMatrix(parameterDimension)));
+        gramInverse = CovarianceMatrix(*laplaceInverse.getImplementation());
+      }
+      catch (const Exception &)
+      {
+        throw InvalidArgumentException(HERE) << "In NonLinearLeastSquaresCalibration::run, cannot compute the Laplace approximation: the Hessian of the residuals at the optimum is not definite.";
+      }
+    }
     Distribution tmp;
     parameterPosterior = LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(thetaStar, residual.getImplementation()->getData(), gramInverse, 0, tmp);
   }
@@ -359,6 +389,17 @@ void NonLinearLeastSquaresCalibration::setBootstrapSize(const UnsignedInteger bo
   bootstrapSize_ = bootstrapSize;
 }
 
+/* Laplace approximation accessor */
+Bool NonLinearLeastSquaresCalibration::getUseLaplaceApproximation() const
+{
+  return useLaplaceApproximation_;
+}
+
+void NonLinearLeastSquaresCalibration::setUseLaplaceApproximation(const Bool useLaplaceApproximation)
+{
+  useLaplaceApproximation_ = useLaplaceApproximation;
+}
+
 /* String converter */
 String NonLinearLeastSquaresCalibration::__repr__() const
 {
@@ -379,6 +420,7 @@ void NonLinearLeastSquaresCalibration::save(Advocate & adv) const
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
+  adv.saveAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -387,6 +429,8 @@ void NonLinearLeastSquaresCalibration::load(Advocate & adv)
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
+  if (adv.hasAttribute("useLaplaceApproximation_")) adv.loadAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
+  else useLaplaceApproximation_ = false;
 }
 
 
