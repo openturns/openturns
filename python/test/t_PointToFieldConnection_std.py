@@ -59,6 +59,7 @@ print("called ", myFunc.getCallsNumber(), " times")
 # Extra coverage (no output to preserve expout)
 assert ot.PointToFieldConnection() == ot.PointToFieldConnection()
 assert myFunc == myFunc
+assert ot.PointToFieldConnection() != myFunc
 assert len(repr(myFunc)) > 0
 assert len(str(myFunc)) > 0
 # accessors
