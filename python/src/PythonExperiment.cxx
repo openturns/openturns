@@ -139,6 +139,34 @@ Sample PythonExperiment::generate() const
 }
 
 
+Sample PythonExperiment::generateWithWeights(Point & weights) const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("generateWithWeights")))
+  {
+    ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
+                                 const_cast<char *>( "generateWithWeights" ),
+                                 const_cast<char *>( "()" ) ));
+    if (result.isNull())
+    {
+      handleException();
+    }
+    // The Python method must return a (sample, weights) pair
+    check<_PySequence_>(result.get());
+    if (PySequence_Length(result.get()) != 2) throw InvalidArgumentException(HERE) << "Error: the generateWithWeights() method must return a (sample, weights) pair.";
+    ScopedPyObjectPointer pySample(PySequence_GetItem(result.get(), 0));
+    ScopedPyObjectPointer pyWeights(PySequence_GetItem(result.get(), 1));
+    const Sample sample(convert<_PySequence_, Sample>(pySample.get()));
+    weights = convert<_PySequence_, Point>(pyWeights.get());
+    if (weights.getSize() != sample.getSize()) throw InvalidArgumentException(HERE) << "Error: the weights size (" << weights.getSize() << ") does not match the sample size (" << sample.getSize() << ").";
+    return sample;
+  }
+  // Fallback to generate() with uniform weights
+  const Sample result(generate());
+  weights = Point(result.getSize(), 1.0 / result.getSize());
+  return result;
+}
+
+
 /* Method save() stores the object through the StorageManager */
 void PythonExperiment::save(Advocate & adv) const
 {
