@@ -1935,12 +1935,7 @@ void MatrixImplementation::squareElements()
 /** The Frobenius norm */
 Scalar MatrixImplementation::frobeniusNorm() const
 {
-  int n = nbRows_ * nbColumns_;
-  int one = 1;
-  Scalar norm = 0.0;
-  if (n > 0)
-    norm = dnrm2_(&n, const_cast<double*>(&(*this)[0]), &one);
-  return norm;
+  return AlgebraEngine::Norm(data_);
 }
 
 END_NAMESPACE_OPENTURNS
