@@ -71,6 +71,12 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
+  /** Laplace approximation accessor: when true, the parameter posterior
+      covariance uses the full Hessian at the MAP instead of the
+      Gauss-Newton Gram matrix (see issue #3273) */
+  Bool getUseLaplaceApproximation() const;
+  void setUseLaplaceApproximation(const Bool useLaplaceApproximation);
+
   /* Here is the interface that all derived class must implement */
 
   /* Build the associated residual function */
@@ -93,6 +99,9 @@ private:
 
   /* Number of bootstrap replica */
   UnsignedInteger bootstrapSize_;
+
+  /* Laplace approximation of the posterior covariance flag */
+  Bool useLaplaceApproximation_ = false;
 
 }; /* class NONLINEARLEASTSQUARESCALIBRATION */
 
