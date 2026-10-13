@@ -247,6 +247,7 @@ void HDF5Backend::resize(UnsignedInteger n)
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "HDF5Backend requires HDF5 support";
 #else
+  if (readOnly_) throw InternalException(HERE) << "Cannot resize a read-only HDF5Backend";
   if (n == size_) return;
 
   try
@@ -384,6 +385,7 @@ void HDF5Backend::writeBlock(const Scalar * src, UnsignedInteger offset, Unsigne
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "HDF5Backend requires HDF5 support";
 #else
+  if (readOnly_) throw InternalException(HERE) << "Cannot write into a read-only HDF5Backend";
   if (offset + n > size_)
     throw InvalidArgumentException(HERE) << "Block [" << offset << ", " << offset + n << ") exceeds dataset size " << size_;
 
