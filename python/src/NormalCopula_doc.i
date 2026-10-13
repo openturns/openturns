@@ -1,39 +1,36 @@
 %feature("docstring") OT::NormalCopula
 R"RAW(Normal copula.
 
-The Normal copula is defined by:
+The Normal copula in dimension :math:`\inputDim` is defined by:
 
 .. math::
 
-    C(u_1, \cdots, u_n) = \Phi_{\mat{R}}^n(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_n))
+    C(u_1, \cdots, u_\inputDim) = \Phi_{\mat{R}}^\inputDim(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_\inputDim))
 
-where :math:`\Phi_{\mat{R}}^n` is the cumulative distribution function of the
+where the shape matrix :math:`\mat{R}` is a correlation matix and
+:math:`\Phi_{\inputDim, \mat{R}}` is the cumulative distribution function of the
 normal distribution with zero mean, unit marginal variances and correlation :math:`R`:
 
 .. math::
 
-    \Phi_{\mat{R}}^n(\vect{x}) = \int_{-\infty}^{x_1} \ldots
-                                   \int_{-\infty}^{x_n}
+    \Phi_{\inputDim, \mat{R}}(\vect{x}) = \int_{-\infty}^{x_1} \ldots
+                                   \int_{-\infty}^{x_\inputDim}
                                    \frac{1}
                                         {{(2\pi\det{\mat{R}})}^{\frac{n}{2}}}
                                  \exp \left(-\frac{\Tr{\vect{u}}\mat{R}\vect{u}}{2} \right)\di{\vect{u}}
 
-with :math:`\Phi` given by:
 
-.. math::
-
-      \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2}{2}}\di{t}
-
-The correlation matrix :math:`\mat{R}` is linked to the Spearman correlation
-and the Kendall concordance through the following relations:      
+The shape matrix :math:`\mat{R}` can be computed from the Spearman correlation
+matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}` as well as the the
+Kendall concordance matrix :math:`\left( \tau_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`
+as follows:
 
 - From the Spearman correlation matrix:
 
   .. math ::
-
+      :label: SpearmanToShape
       \mat{R}_{ij} = 2 \sin \left( \frac{\pi}{6}\rho_{ij}^S \right)
 
-  where :math:`\rho_{ij}^S = \rho^S(X_i,X_j) = \rho^P(F_{X_i}(X_i),F_{X_j}(X_j))`
 
 - From the Kendall concordance matrix:
 
@@ -44,13 +41,12 @@ and the Kendall concordance through the following relations:
   with
 
   .. math::
+      :label: KendallToShape
 
       \tau_{ij} = \tau(X_i,X_j)
                 = \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) > 0} -
                   \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) < 0}
 
-  where :math:`(X_{i_1},X_{j_1}` and :math:`(X_{i_2},X_{j_2})` follow the
-  distribution of :math:`(X_i,X_j)`.
 
 Available constructor:
     NormalCopula(*n*)
@@ -61,12 +57,12 @@ Parameters
 ----------
 n : int, :math:`n \geq 1`
     Dimension of the copula.
+
     Default value is 2.
 
 R : :class:`~openturns.CorrelationMatrix`
-    Shape matrix :math:`\mat{R}` of the copula, ie the correlation matrix of
-    any normal distribution with this copula (it is not the Kendall nor the
-    Spearman rank correlation matrix of the distribution).
+    Shape matrix :math:`\mat{R}`.
+
     Default value is the identity matrix.
 
 See also
@@ -91,34 +87,41 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NormalCopula::GetCorrelationFromKendallCorrelation
-R"RAW(Get the correlation matrix from the Kendall correlation matrix.
+R"RAW(Get the shape matrix from the Kendall correlation matrix.
 
 Parameters
 ----------
 K : :class:`~openturns.CorrelationMatrix`
-    Kendall correlation matrix of the considered random vector.
+    Kendall correlation matrix :math:`\left(\tau_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`.
 
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R}` of the normal copula evaluated from
-    the Kendall correlation matrix :math:`K`.)RAW"
+    Shape matrix :math:`\mat{R}`.
+
+Notes
+-----
+The shape matrix :math:`\mat{R}` is computed following :eq:`SpearmanToShape`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::NormalCopula::GetCorrelationFromSpearmanCorrelation
-R"RAW(Get the correlation matrix from the Spearman correlation matrix.
+R"RAW(Get the shape matrix from the Spearman correlation matrix.
 
 Parameters
 ----------
 S : :class:`~openturns.CorrelationMatrix`
-    Spearman correlation matrix :math:`S` of the considered random vector.
+    Spearman correlation matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`.
 
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R}` of the normal copula evaluated from
-    the Spearman correlation matrix :math:`S`.)RAW"
+    Shape matrix :math:`\mat{R}`.
+
+Notes
+-----
+The shape matrix :math:`\mat{R}` is computed following :eq:`KendallToShape`.)RAW"
 
 // ---------------------------------------------------------------------
 
