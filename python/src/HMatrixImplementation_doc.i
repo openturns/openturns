@@ -83,6 +83,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``HMatrix-FactorizationIterations`` (``UnsignedInteger``, default: ``10``): number of factorization iterations.
 - ``HMatrix-LargestEigenValueIterations`` (``UnsignedInteger``, default: ``10``): number of eigenvalue iterations.
 - ``HMatrix-MaxLeafSize`` (``UnsignedInteger``, default: ``250``): maximum leaf size for cluster tree.
+- ``HMatrix-ClusteringMaxDof`` (``UnsignedInteger``, default: ``250``): maximum number of degrees of freedom per cluster.
 - ``HMatrix-ValidationDump`` (``UnsignedInteger``, default: ``0``): validation dump level.
 - ``HMatrix-ValidationRerun`` (``UnsignedInteger``, default: ``0``): validation rerun count.
 
