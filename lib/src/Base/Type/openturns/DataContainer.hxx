@@ -62,6 +62,7 @@ public:
     virtual void resize(UnsignedInteger n) = 0;
     virtual UnsignedInteger size() const = 0;
     virtual Bool isShareable() const = 0;
+    virtual Bool isView() const { return false; }
     virtual Pointer<StorageBackend> clone() const = 0;
     virtual void flush() {}
   };
@@ -95,6 +96,7 @@ public:
     void resize(UnsignedInteger n) override;
     UnsignedInteger size() const override;
     Bool isShareable() const override;
+    Bool isView() const override;
     Pointer<StorageBackend> clone() const override;
   private:
     Scalar * ptr_;

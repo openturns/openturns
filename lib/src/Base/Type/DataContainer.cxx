@@ -114,6 +114,11 @@ Bool DataContainer::ViewBackend::isShareable() const
   return false;
 }
 
+Bool DataContainer::ViewBackend::isView() const
+{
+  return true;
+}
+
 Pointer<DataContainer::StorageBackend> DataContainer::ViewBackend::clone() const
 {
   // Materialize: copy view data into a new MemoryBackend
@@ -398,6 +403,9 @@ void DataContainer::erase(UnsignedInteger firstFlat, UnsignedInteger lastFlat)
 /* Clear all data, resetting to empty */
 void DataContainer::clear()
 {
+  // Clearing a view cannot propagate to the parent storage: reject like erase()
+  if (isView())
+    throw InternalException(HERE) << "Cannot clear a non-owning DataContainer view";
   size_ = 0;
   dimension_ = 1;
   backend_ = new MemoryBackend();
@@ -422,7 +430,7 @@ void DataContainer::makeUnique()
 /* Check if this container is a non-owning view */
 Bool DataContainer::isView() const
 {
-  return !backend_->isShareable();
+  return backend_->isView();
 }
 
 /* Return a non-owning view over a contiguous row range [startRow, startRow + nrows) */

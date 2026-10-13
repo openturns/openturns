@@ -184,6 +184,7 @@ void ComplexHDF5Backend::resize(UnsignedInteger n)
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "ComplexHDF5Backend requires HDF5 support";
 #else
+  if (readOnly_) throw InternalException(HERE) << "Cannot resize a read-only ComplexHDF5Backend";
   if (n == size_) return;
 
   flush();
