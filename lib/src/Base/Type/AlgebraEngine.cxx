@@ -34,8 +34,9 @@ BEGIN_NAMESPACE_OPENTURNS
 
 Scalar AlgebraEngine::Dot(const DataContainer & a, const DataContainer & b)
 {
-  const UnsignedInteger n = a.getSize();
-  if (n != b.getSize()) throw InvalidDimensionException(HERE) << "Cannot compute dot product: vectors have incompatible sizes " << n << " and " << b.getSize();
+  const UnsignedInteger n = a.getSize() * a.getDimension();
+  const UnsignedInteger m = b.getSize() * b.getDimension();
+  if (n != m) throw InvalidDimensionException(HERE) << "Cannot compute dot product: vectors have incompatible sizes " << n << " and " << m;
   if (n == 0) return 0.0;
   int intN = static_cast<int>(n);
   int one = 1;
@@ -44,7 +45,7 @@ Scalar AlgebraEngine::Dot(const DataContainer & a, const DataContainer & b)
 
 Scalar AlgebraEngine::Norm(const DataContainer & v)
 {
-  const UnsignedInteger n = v.getSize();
+  const UnsignedInteger n = v.getSize() * v.getDimension();
   if (n == 0) return 0.0;
   int intN = static_cast<int>(n);
   int one = 1;
@@ -53,7 +54,7 @@ Scalar AlgebraEngine::Norm(const DataContainer & v)
 
 Scalar AlgebraEngine::Norm1(const DataContainer & v)
 {
-  const UnsignedInteger n = v.getSize();
+  const UnsignedInteger n = v.getSize() * v.getDimension();
   if (n == 0) return 0.0;
   int intN = static_cast<int>(n);
   int one = 1;
@@ -62,7 +63,7 @@ Scalar AlgebraEngine::Norm1(const DataContainer & v)
 
 Scalar AlgebraEngine::NormInf(const DataContainer & v)
 {
-  const UnsignedInteger n = v.getSize();
+  const UnsignedInteger n = v.getSize() * v.getDimension();
   Scalar result = 0.0;
   for (UnsignedInteger i = 0; i < n; ++i)
   {
@@ -74,7 +75,7 @@ Scalar AlgebraEngine::NormInf(const DataContainer & v)
 
 DataContainer AlgebraEngine::Scale(const DataContainer & x, Scalar alpha)
 {
-  const UnsignedInteger n = x.getSize();
+  const UnsignedInteger n = x.getSize() * x.getDimension();
   DataContainer result(n, 0.0);
   std::copy(x.data(), x.data() + n, result.data());
   if (n == 0) return result;
@@ -86,8 +87,8 @@ DataContainer AlgebraEngine::Scale(const DataContainer & x, Scalar alpha)
 
 DataContainer AlgebraEngine::Axpy(Scalar alpha, const DataContainer & x, const DataContainer & y)
 {
-  const UnsignedInteger n = x.getSize();
-  if (n != y.getSize()) throw InvalidDimensionException(HERE) << "Cannot compute axpy: vectors have incompatible sizes " << n << " and " << y.getSize();
+  const UnsignedInteger n = x.getSize() * x.getDimension();
+  if (n != y.getSize() * y.getDimension()) throw InvalidDimensionException(HERE) << "Cannot compute axpy: vectors have incompatible sizes " << n << " and " << y.getSize() * y.getDimension();
   DataContainer result(n, 0.0);
   std::copy(y.data(), y.data() + n, result.data());
   if (n == 0) return result;
@@ -131,6 +132,26 @@ DataContainer AlgebraEngine::SymMatrixPointProduct(const DataContainer & A, cons
   double beta = 0.0;
   int luplo = 1;
   dsymv_((char *)"L", &intN, &alpha, const_cast<double *>(A.data()), &lda, const_cast<double *>(x.data()), &one, &beta, result.data(), &one, &luplo);
+  return result;
+}
+
+DataContainer AlgebraEngine::TriangularPointProduct(const DataContainer & A, const DataContainer & x, char uplo, Bool transpose)
+{
+  const UnsignedInteger n = A.getSize();
+  if (A.getDimension() != n) throw InvalidDimensionException(HERE) << "Matrix must be square for triangular matrix-vector product";
+  if (x.getSize() != n) throw InvalidDimensionException(HERE) << "Cannot compute triangular matrix-vector product: vector size=" << x.getSize() << " must match matrix dimension=" << n;
+  DataContainer result(n, 1, 0.0);
+  std::copy(x.data(), x.data() + n, result.data());
+  if (n == 0) return result;
+  int intN = static_cast<int>(n);
+  int lda = intN;
+  int one = 1;
+  char trans = transpose ? 'T' : 'N';
+  int ltrans = 1;
+  char diag = 'N';
+  int ldiag = 1;
+  int luplo = 1;
+  dtrmv_(&uplo, &trans, &diag, &intN, const_cast<double *>(A.data()), &lda, result.data(), &one, &luplo, &ltrans, &ldiag);
   return result;
 }
 
@@ -329,11 +350,12 @@ DataContainer AlgebraEngine::SolveLinearSystem(const DataContainer & A, const Da
   const UnsignedInteger n = A.getSize();
   if (A.getDimension() != n) throw InvalidDimensionException(HERE) << "Matrix must be square for linear system solve";
   if (b.getSize() != n) throw InvalidDimensionException(HERE) << "Right-hand side dimension=" << b.getSize() << " must match matrix dimension=" << n;
-  DataContainer result(n, 1, 0.0);
-  std::copy(b.data(), b.data() + n, result.data());
+  const UnsignedInteger q = b.getDimension();
+  DataContainer result(n, q, 0.0);
+  std::copy(b.data(), b.data() + n * q, result.data());
   if (n == 0) return result;
   int intN = static_cast<int>(n);
-  int nrhs = 1;
+  int nrhs = static_cast<int>(q);
   int info = 0;
   std::vector<int> ipiv(n);
   DataContainer Acopy(n, n, 0.0);
@@ -348,11 +370,12 @@ DataContainer AlgebraEngine::SolveLinearSystemSPD(const DataContainer & A, const
   const UnsignedInteger n = A.getSize();
   if (A.getDimension() != n) throw InvalidDimensionException(HERE) << "Matrix must be square for SPD linear system solve";
   if (b.getSize() != n) throw InvalidDimensionException(HERE) << "Right-hand side dimension=" << b.getSize() << " must match matrix dimension=" << n;
-  DataContainer result(n, 1, 0.0);
-  std::copy(b.data(), b.data() + n, result.data());
+  const UnsignedInteger q = b.getDimension();
+  DataContainer result(n, q, 0.0);
+  std::copy(b.data(), b.data() + n * q, result.data());
   if (n == 0) return result;
   int intN = static_cast<int>(n);
-  int nrhs = 1;
+  int nrhs = static_cast<int>(q);
   int info = 0;
   int luplo = 1;
   DataContainer Acopy(n, n, 0.0);
@@ -362,13 +385,42 @@ DataContainer AlgebraEngine::SolveLinearSystemSPD(const DataContainer & A, const
   return result;
 }
 
+/* ===== SolveLinearSystemSymmetric ===== */
+
+DataContainer AlgebraEngine::SolveLinearSystemSymmetric(const DataContainer & A, const DataContainer & b)
+{
+  const UnsignedInteger n = A.getSize();
+  if (A.getDimension() != n) throw InvalidDimensionException(HERE) << "Matrix must be square for symmetric linear system solve";
+  if (b.getSize() != n) throw InvalidDimensionException(HERE) << "Right-hand side dimension=" << b.getSize() << " must match matrix dimension=" << n;
+  const UnsignedInteger q = b.getDimension();
+  DataContainer result(n, q, 0.0);
+  std::copy(b.data(), b.data() + n * q, result.data());
+  if (n == 0) return result;
+  int intN = static_cast<int>(n);
+  int nrhs = static_cast<int>(q);
+  int info = 0;
+  int luplo = 1;
+  std::vector<int> ipiv(n);
+  DataContainer Acopy(n, n, 0.0);
+  std::copy(A.data(), A.data() + n * n, Acopy.data());
+  int lwork = -1;
+  double lwork_d = -1.0;
+  dsysv_((char *)"L", &intN, &nrhs, Acopy.data(), &intN, ipiv.data(), result.data(), &intN, &lwork_d, &lwork, &info, &luplo);
+  lwork = static_cast<int>(lwork_d);
+  std::vector<double> work(lwork);
+  dsysv_((char *)"L", &intN, &nrhs, Acopy.data(), &intN, ipiv.data(), result.data(), &intN, work.data(), &lwork, &info, &luplo);
+  if (info != 0) throw NotDefinedException(HERE) << "Error: the matrix is singular (LAPACK dsysv info=" << info << ")";
+  return result;
+}
+
 DataContainer AlgebraEngine::SolveLinearSystemTriangular(const DataContainer & A, const DataContainer & b, Bool lower, Bool transpose)
 {
   const UnsignedInteger n = A.getSize();
   if (A.getDimension() != n) throw InvalidDimensionException(HERE) << "Matrix must be square for triangular solve";
   if (b.getSize() != n) throw InvalidDimensionException(HERE) << "Right-hand side dimension=" << b.getSize() << " must match matrix dimension=" << n;
-  DataContainer result(n, 1, 0.0);
-  std::copy(b.data(), b.data() + n, result.data());
+  const UnsignedInteger q = b.getDimension();
+  DataContainer result(n, q, 0.0);
+  std::copy(b.data(), b.data() + n * q, result.data());
   if (n == 0) return result;
   char side = 'L';
   int lside = 1;
@@ -379,7 +431,7 @@ DataContainer AlgebraEngine::SolveLinearSystemTriangular(const DataContainer & A
   char diag = 'N';
   int ldiag = 1;
   int intN = static_cast<int>(n);
-  int nrhs = 1;
+  int nrhs = static_cast<int>(q);
   double alpha = 1.0;
   int lda = intN;
   int ldb = intN;
@@ -389,21 +441,27 @@ DataContainer AlgebraEngine::SolveLinearSystemTriangular(const DataContainer & A
 
 DataContainer AlgebraEngine::SolveLinearSystemRectangular(const DataContainer & A, const DataContainer & b)
 {
+  return SolveLinearSystemRectangular(A, b, SpecFunc::Precision);
+}
+
+DataContainer AlgebraEngine::SolveLinearSystemRectangular(const DataContainer & A, const DataContainer & b, Scalar rcond)
+{
   const UnsignedInteger m = A.getSize();
   const UnsignedInteger n = A.getDimension();
   if (b.getSize() != m) throw InvalidDimensionException(HERE) << "Right-hand side dimension=" << b.getSize() << " must match matrix row dimension=" << m;
   if (m == 0 || n == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  const UnsignedInteger q = b.getDimension();
   int intM = static_cast<int>(m);
   int intN = static_cast<int>(n);
   int p = std::max(intM, intN);
-  int nrhs = 1;
+  int nrhs = static_cast<int>(q);
 
-  DataContainer B(p, 1, 0.0);
-  for (UnsignedInteger i = 0; i < m; ++i)
-    B[i] = b[i];
+  DataContainer B(p, q, 0.0);
+  for (UnsignedInteger j = 0; j < q; ++j)
+    for (UnsignedInteger i = 0; i < m; ++i)
+      B(i, j) = b(i, j);
 
   std::vector<int> jpiv(n, 0);
-  double rcond = SpecFunc::Precision;
   int rank = -1;
   int info = -1;
 
@@ -417,9 +475,10 @@ DataContainer AlgebraEngine::SolveLinearSystemRectangular(const DataContainer & 
   std::vector<double> work(lwork);
   dgelsy_(&intM, &intN, &nrhs, Acopy.data(), &intM, B.data(), &p, jpiv.data(), &rcond, &rank, work.data(), &lwork, &info);
 
-  DataContainer result(n, 1, 0.0);
-  for (UnsignedInteger i = 0; i < n; ++i)
-    result[i] = B[i];
+  DataContainer result(n, q, 0.0);
+  for (UnsignedInteger j = 0; j < q; ++j)
+    for (UnsignedInteger i = 0; i < n; ++i)
+      result(i, j) = B(i, j);
   return result;
 }
 
@@ -628,10 +687,38 @@ Scalar AlgebraEngine::FrobeniusNorm(const DataContainer & A)
 
 DataContainer AlgebraEngine::ComputeGram(const DataContainer & A, Bool transpose)
 {
+  const UnsignedInteger m = A.getSize();
+  const UnsignedInteger n = A.getDimension();
+  const UnsignedInteger out = transpose ? n : m;
+  DataContainer result(out, out, 0.0, DataContainer::COLUMN_MAJOR);
+  if (m == 0 || n == 0) return result;
+  // Work column-major like LAPACK expects, whatever the input layout
+  DataContainer colMajor(m, n, 0.0, DataContainer::COLUMN_MAJOR);
+  for (UnsignedInteger i = 0; i < m; ++i)
+    for (UnsignedInteger j = 0; j < n; ++j) colMajor(i, j) = A(i, j);
+  int one = 1;
+  double alpha = 1.0;
+  double beta = 0.0;
   if (transpose)
-    return MatrixProduct(Transpose(A), A);
+  {
+    // C = A^T * A via dsyrk, like the historical MatrixImplementation path
+    int intN = static_cast<int>(n);
+    int intK = static_cast<int>(m);
+    int lda = intK;
+    dsyrk_((char *)"L", (char *)"T", &intN, &intK, &alpha, colMajor.data(), &lda, &beta, result.data(), &intN, &one, &one);
+  }
   else
-    return MatrixProduct(A, Transpose(A));
+  {
+    // C = A * A^T via dsyrk
+    int intN = static_cast<int>(m);
+    int intK = static_cast<int>(n);
+    int lda = intN;
+    dsyrk_((char *)"L", (char *)"N", &intN, &intK, &alpha, colMajor.data(), &lda, &beta, result.data(), &intN, &one, &one);
+  }
+  // Mirror the lower triangle like ComputeGramBlockwise
+  for (UnsignedInteger j = 0; j < out; ++j)
+    for (UnsignedInteger i = 0; i < j; ++i) result(i, j) = result(j, i);
+  return result;
 }
 
 DataContainer AlgebraEngine::Transpose(const DataContainer & A)
