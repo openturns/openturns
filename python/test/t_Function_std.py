@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -351,3 +352,19 @@ study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("product_func.xml"))
 study.add("prod", prod)
 study.save()
+
+# ProductFunction: parameterGradient error branch and persistence roundtrip
+
+with ott.assert_raises(Exception):
+    productFunc.parameterGradient([1.0])
+persistenceStudy = ot.Study()
+persistenceStudy.setStorageManager(ot.XMLStorageManager("product_function.xml"))
+persistenceStudy.add("productFunc", productFunc)
+persistenceStudy.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("product_function.xml"))
+loadedStudy.load()
+loadedFunc = ot.Function()
+loadedStudy.fillObject("productFunc", loadedFunc)
+ott.assert_almost_equal(loadedFunc(x), [-3.0, 6.0], 1e-14, 1e-14)
+os.remove("product_function.xml")

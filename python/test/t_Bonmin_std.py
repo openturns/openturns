@@ -3,6 +3,7 @@
 import openturns as ot
 import openturns.testing as ott
 import sys
+import os
 
 
 def progress(percent):
@@ -87,3 +88,15 @@ bad = ot.Bonmin(problem)
 with ott.assert_raises(Exception):
     bad.setStartingPoint([0.0])
     bad.run()
+
+# save/load round-trip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("bonmin.xml"))
+study.add("algo", algo)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("bonmin.xml"))
+loadedStudy.load()
+assert loadedStudy.hasObject("algo")
+
+os.remove("bonmin.xml")

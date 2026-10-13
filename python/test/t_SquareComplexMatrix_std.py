@@ -113,3 +113,30 @@ squareComplexMatrix6 = ot.SquareComplexMatrix()
 print("squareComplexMatrix0 is empty = ", squareComplexMatrix0.isEmpty())
 print("squareComplexMatrix1 is empty = ", squareComplexMatrix1.isEmpty())
 print("squareComplexMatrix5 is empty = ", squareComplexMatrix5.isEmpty())
+
+# Extra coverage: constructors, dimension, transpose variants, Hermitian ops
+m_coll = ot.SquareComplexMatrix(2, [1 + 1j, 2 + 0j, 3 + 0j, 4 + 0j])
+assert m_coll.getDimension() == 2
+herm = ot.HermitianMatrix([[1.0, 0.5], [0.5, 2.0]])
+m_herm = ot.SquareComplexMatrix(herm)
+assert m_herm.getDimension() == 2
+# transpose / conjugate / conjugateTranspose on 2x2
+assert m_coll.transpose()[1, 0] == m_coll[0, 1]
+assert m_coll.conjugateTranspose()[0, 1] == m_coll[1, 0].conjugate()
+assert m_coll.conjugate()[0, 0] == m_coll[0, 0].conjugate()
+# quick-return paths for empty and 1x1 matrices
+assert ot.SquareComplexMatrix().transpose().getDimension() == 0
+assert ot.SquareComplexMatrix(1, [2 + 3j]).transpose()[0, 0] == 2 + 3j
+assert ot.SquareComplexMatrix(1, [2 + 3j]).conjugate()[0, 0] == 2 - 3j
+assert ot.SquareComplexMatrix(1, [2 + 3j]).conjugateTranspose()[0, 0] == 2 - 3j
+# operations with HermitianMatrix and IdentityMatrix
+assert (m_coll + herm) - herm == m_coll
+assert (m_coll - herm) + herm == m_coll
+prod_h = m_coll * herm
+assert prod_h.getNbRows() == 2 and prod_h.getNbColumns() == 2
+assert m_coll * ot.IdentityMatrix(2) == m_coll
+# products with vectors
+assert list(m_coll * ot.Point([1.0, 2.0])) == list(m_coll * [1.0, 2.0])
+assert list(m_coll * ot.ComplexCollection([1 + 0j, 2 + 0j])) == list(
+    m_coll * ot.Point([1.0, 2.0])
+)

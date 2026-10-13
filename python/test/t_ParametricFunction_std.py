@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 f = ot.SymbolicFunction(
     ot.Description.BuildDefault(5, "x"),
@@ -212,3 +213,68 @@ for value in [float("nan"), float("inf"), float("-inf")]:
     nonFiniteFrozen = ot.ParametricFunction(nonFiniteFunc, [0], [value])
     with ott.assert_raises(RuntimeError):
         nonFiniteFrozen([2.0])
+
+# Extra coverage: default ctor, comparison, string converters (no prints to keep expout stable)
+defaultParam = ot.ParametricFunction()
+assert isinstance(repr(defaultParam), str)
+assert isinstance(str(defaultParam), str)
+assert g2 == g2
+assert not (g2 != g2)
+g2bis = ot.ParametricFunction(f, [3, 1], [0.85] * 2, True)
+g2bis.setOutputDescription(g2.getOutputDescription())
+assert g2 == g2bis
+assert g2 != ot.ParametricFunction(f, [0, 2], [0.0, 0.0])
+assert isinstance(repr(g2), str)
+assert isinstance(str(g2), str)
+ott.assert_almost_equal(
+    ot.ParametricFunction(f, [3, 1], [0.85] * 2, True)([1.0, 2.0, 0.0]),
+    g2([1.0, 2.0, 0.0]),
+    1e-12,
+    1e-12,
+)
+
+# ParametricHessian direct coverage (no prints)
+
+hessFunc = ot.SymbolicFunction(["x0", "x1", "a"], ["a*x0^2+x1"])
+hessParam = ot.ParametricFunction(hessFunc, [2], [3.0])
+hess = hessParam.getHessian()
+assert hess.getInputDimension() == 2
+assert hess.getOutputDimension() == 1
+ott.assert_almost_equal(hess.hessian([1.0, 2.0])[0, 0, 0], 6.0)
+ott.assert_almost_equal(hess.hessian([1.0, 2.0])[1, 1, 0], 0.0)
+with ott.assert_raises(Exception):
+    hess.hessian([1.0])
+assert "ParametricHessian" in repr(hess)
+assert "ParametricHessian" in str(hess)
+hessImpl = hess.getImplementation()
+assert hessImpl.getInputDimension() == 2
+assert hessImpl.getOutputDimension() == 1
+assert hessImpl.getParameterDimension() == 1
+assert "ParametricEvaluation" in repr(hessImpl.getEvaluation())
+defaultHess = ot.ParametricHessian()
+assert defaultHess.getInputDimension() == 0
+assert "ParametricHessian" in repr(defaultHess)
+assert "ParametricHessian" in str(defaultHess)
+evalHess = ot.ParametricHessian(hessParam.getEvaluation().getImplementation())
+assert evalHess.getInputDimension() == 2
+assert evalHess.getParameterDimension() == 1
+ott.assert_almost_equal(evalHess.hessian([1.0, 2.0])[0, 0, 0], 6.0)
+with ott.assert_raises(Exception):
+    evalHess.hessian([1.0])
+hessSame = ot.ParametricFunction(hessFunc, [2], [3.0]).getHessian()
+hessOther = ot.ParametricFunction(hessFunc, [2], [4.0]).getHessian()
+assert hess == hessSame
+assert hess != hessOther
+assert not (hess == hessOther)
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("parametric_hessian.xml"))
+study.add("h", hess)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("parametric_hessian.xml"))
+loadedStudy.load()
+loadedHess = ot.Hessian()
+loadedStudy.fillObject("h", loadedHess)
+assert loadedHess == hess
+ott.assert_almost_equal(loadedHess.hessian([1.0, 2.0])[0, 0, 0], 6.0)
+os.remove("parametric_hessian.xml")
