@@ -1,0 +1,107 @@
+"""
+Combine OpenTURNS graphics with `matplotlib`
+============================================
+
+This example shows how to combine OpenTURNS graphs with `matplotlib`.
+
+Every :class:`~openturns.Graph` displayed with :class:`~openturns.viewer.View`
+is a `matplotlib` figure. Hence we can:
+
+-  retrieve the Matplotlib ``Figure`` and ``Axes`` from a ``View``
+   and enrich them with Matplotlib,
+-  draw one or several OpenTURNS graphs into an existing Matplotlib figure.
+
+The example uses a standard Normal distribution: its PDF is drawn by
+OpenTURNS, the failure threshold, the shaded tail and the annotations
+are added with Matplotlib.
+"""
+
+# sphinx_gallery_thumbnail_number = 2
+
+# %%
+# Create an OpenTURNS graph and retrieve the `matplotlib` objects
+# ---------------------------------------------------------------
+# We start from a basic OpenTURNS graph: the PDF of a Normal distribution.
+# Every graph displayed with :class:`~openturns.viewer.View` is a `matplotlib`
+# :meth:`~openturns.viewer.View.getFigure` and
+# :meth:`~openturns.viewer.View.getAxes` give access to the underlying
+# Matplotlib objects. Any `matplotlib` customization then applies.
+import openturns as ot
+import openturns.viewer as otv
+import matplotlib.pyplot as plt
+
+ot.RandomGenerator.SetSeed(0)
+
+normal = ot.Normal()
+graph_pdf = normal.drawPDF()
+graph_pdf.setTitle("Standard Normal PDF")
+view = otv.View(graph_pdf)
+fig = view.getFigure()
+ax = view.getAxes()[0]
+ax.grid(True, alpha=0.3)
+ax.set_xlabel("x")
+fig.suptitle("An OpenTURNS graph is a Matplotlib figure", fontsize=10)
+
+# %%
+# Add `matplotlib` plots onto an OpenTURNS Axes
+# ---------------------------------------------
+# Let us highlight the event ``X > 2``.
+# The curve itself was drawn by OpenTURNS: we reuse its line data
+# to shade the tail exactly under the curve, then add a threshold
+# line and a text.
+threshold = 2.0
+prob = 1.0 - normal.computeCDF(threshold)
+
+# Fresh view to keep the previous figure simple.
+view = otv.View(graph_pdf)
+ax = view.getAxes()[0]
+
+# Data of the PDF curve drawn by OpenTURNS.
+line = ax.get_lines()[0]
+x, y = line.get_xdata(), line.get_ydata()
+mask = x >= threshold
+
+ax.fill_between(x[mask], y[mask], alpha=0.3, label=f"P(X > 2) = {prob:.3f}")
+ax.axvline(threshold, color="red", linestyle="--", label="threshold s = 2")
+ax.text(
+    threshold + 0.1,
+    0.3,
+    f"Failure probability\n{prob:.4f}",
+    color="red",
+    fontsize=9,
+)
+# The legend must be redrawn after adding `matplotlib` artists.
+ax.legend()
+ax.grid(True, alpha=0.3)
+
+# %%
+# Apply a `matplotlib` transform
+# ------------------------------
+# Any Axes method applies, e.g. a manual rescaling to inspect the upper tail.
+view_scale = otv.View(graph_pdf, figure_kw={"figsize": (6, 4)})
+new_scale = view_scale.getAxes()[0]
+new_scale.set_xlim([3.0, 3.8])
+new_scale.set_ylim([0.0, 0.005])
+new_scale.grid(True, which="both", alpha=0.3)
+
+# %%
+# Draw OpenTURNS graphs into an existing `matplotlib` figure
+# ----------------------------------------------------------
+# The reverse direction is also possible: create the `matplotlib` figure
+# first with :func:`~matplotlib.pyplot.subplots`, then draw each
+# OpenTURNS graph on a chosen ``Axes`` with the ``figure`` and ``axes``
+# arguments. Extra `matplotlib`-only elements can then be mixed freely.
+graph_cdf = normal.drawCDF()
+
+fig, axs = plt.subplots(1, 2, figsize=(12, 4))
+_ = otv.View(graph_pdf, figure=fig, axes=[axs[0]])
+_ = otv.View(graph_cdf, figure=fig, axes=[axs[1]])
+
+# Pure `matplotlib` additions: median point and decorations.
+axs[1].axhline(0.5, color="black", linestyle=":", label="median level")
+axs[1].plot([0.0], [0.5], "ro", label="median")
+axs[1].legend()
+fig.suptitle("Two OpenTURNS graphs embedded in a Matplotlib figure")
+fig.tight_layout()
+
+otv.View.ShowAll()
