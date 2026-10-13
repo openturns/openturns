@@ -135,7 +135,6 @@
   <FieldToPointFunctionalChaosAlgorithm-CopulaType value_str="Normal" />
 
   <!-- OT:: PointToFieldFunctionalChaosAlgorithm parameters -->
-  <PointToFieldFunctionalChaosAlgorithm-DefaultRecompress value_bool="false" />
   <PointToFieldFunctionalChaosAlgorithm-Expansion value_str="LeastSquaresExpansion" />
 
   <!-- OT::SQP parameters -->

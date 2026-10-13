@@ -780,7 +780,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
-  addAsBool("PointToFieldFunctionalChaosAlgorithm-DefaultRecompress", false);
   addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion", {"LeastSquaresExpansion", "FunctionalChaosAlgorithm"});
 
   // SQP parameters //
