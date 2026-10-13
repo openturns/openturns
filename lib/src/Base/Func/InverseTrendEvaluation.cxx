@@ -131,7 +131,8 @@ void InverseTrendEvaluation::load(Advocate & adv)
 
 Bool InverseTrendEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const InverseTrendEvaluation &>(other);
+  const InverseTrendEvaluation * p_other = dynamic_cast<const InverseTrendEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

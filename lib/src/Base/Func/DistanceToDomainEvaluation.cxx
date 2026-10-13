@@ -114,7 +114,8 @@ void DistanceToDomainEvaluation::load(Advocate & adv)
 
 Bool DistanceToDomainEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const DistanceToDomainEvaluation &>(other);
+  const DistanceToDomainEvaluation * p_other = dynamic_cast<const DistanceToDomainEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

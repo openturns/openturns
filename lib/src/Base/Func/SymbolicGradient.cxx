@@ -256,7 +256,8 @@ void SymbolicGradient::load(Advocate & adv)
 
 Bool SymbolicGradient::equals(const GradientImplementation & other) const
 {
-  return *this == dynamic_cast<const SymbolicGradient &>(other);
+  const SymbolicGradient * p_other = dynamic_cast<const SymbolicGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

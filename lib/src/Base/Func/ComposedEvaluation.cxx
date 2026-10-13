@@ -138,7 +138,8 @@ void ComposedEvaluation::setParameter(const Point & parameter)
 
 Bool ComposedEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const ComposedEvaluation &>(other);
+  const ComposedEvaluation * p_other = dynamic_cast<const ComposedEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Parameters description accessor */
