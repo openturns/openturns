@@ -77,6 +77,7 @@ if the estimated p-value is lower than or equal to :math:`\alpha`.
 
 .. topic:: Examples:
 
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_fitted_copula_ranking` for ranking copulas by BIC and goodness-of-fit tests
     - See :doc:`/auto_data_analysis/statistical_tests/plot_test_copula` for a graphical validation of a copula
 
 .. topic:: References:
