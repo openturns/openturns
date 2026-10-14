@@ -56,8 +56,10 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
   // Check the input
+  const UnsignedInteger parameterDimension = startingPoint.getDimension();
+  if (model.getInputDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << parameterDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
-  if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
+  if (model.getParameterDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << inputDimension << ", got parameter dimension=" << model.getParameterDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = outputObservations.getSize();
@@ -65,7 +67,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
 
   // Now the automatic selection of the algorithm
   algorithm_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
-  parameterPrior_.setDescription(model.getParameterDescription());
+  parameterPrior_.setDescription(model.getInputDescription());
 }
 
 namespace NonLinearLeastSquaresCalibrationFunctions
@@ -82,7 +84,7 @@ public:
     , outputObservations_(outputObservations)
   {
     // Check if the given input observations are compatible with the model
-    if (inputObservations.getDimension() != model.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected input observations of dimension=" << model.getInputDimension() << ", got dimension=" << inputObservations.getDimension();
+    if (inputObservations.getDimension() != model.getParameterDimension()) throw InvalidArgumentException(HERE) << "Error: expected input observations of dimension=" << model.getParameterDimension() << ", got dimension=" << inputObservations.getDimension();
     // Check if the given output observations are compatible with the model
     if (outputObservations.getDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected output observations of dimension=" << model.getOutputDimension() << ", got dimension=" << outputObservations.getDimension();
   }
@@ -95,13 +97,22 @@ public:
   Point operator() (const Point & point) const override
   {
     Function localModel(model_);
-    localModel.setParameter(point);
-    return localModel(inputObservations_).getImplementation()->getData() - outputObservations_.getImplementation()->getData();
+    const UnsignedInteger size = inputObservations_.getSize();
+    Point predictions(getOutputDimension());
+    UnsignedInteger shift = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+        localModel.setParameter(inputObservations_[i]);
+        const Point prediction(localModel(point));
+        std::copy(prediction.begin(), prediction.end(), predictions.begin() + shift);
+        shift += prediction.getDimension();
+    }
+    return predictions - outputObservations_.getImplementation()->getData();
   }
 
   UnsignedInteger getInputDimension() const override
   {
-    return model_.getParameterDimension();
+    return model_.getInputDimension();
   }
 
   UnsignedInteger getOutputDimension() const override
@@ -111,7 +122,7 @@ public:
 
   Description getInputDescription() const override
   {
-    return model_.getParameterDescription();
+    return model_.getInputDescription();
   }
 
   Description getOutputDescription() const override
@@ -183,17 +194,17 @@ public:
 
   Matrix gradient(const Point & point) const override
   {
-    Function parametrizedModel(evaluation_.getModel());
-    parametrizedModel.setParameter(point);
+    Function model(evaluation_.getModel());
     const Sample inputObservations(evaluation_.getInputObservations());
     const UnsignedInteger size = inputObservations.getSize();
     MatrixImplementation gradientObservations(getInputDimension(), getOutputDimension());
-    const UnsignedInteger skip = parametrizedModel.getParameterDimension() * parametrizedModel.getOutputDimension();
+    const UnsignedInteger skip = getInputDimension() * model.getOutputDimension();
     UnsignedInteger shift = 0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Matrix parameterGradient(parametrizedModel.parameterGradient(inputObservations[i]));
-      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.begin() + shift);
+      model.setParameter(inputObservations[i]);
+      const Matrix gradient(model.gradient(point));
+      std::copy(gradient.getImplementation()->begin(), gradient.getImplementation()->end(), gradientObservations.begin() + shift);
       shift += skip;
     }
     return gradientObservations;
@@ -273,19 +284,19 @@ void NonLinearLeastSquaresCalibration::run()
   {
     // Prepare the inverse Gram
     // Compute the linearization
-    Function parametrizedModel(model_);
-    parametrizedModel.setParameter(thetaStar);
+    Function model(model_);
     // Flatten everything related to the model evaluations over the input observations
     const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
     const UnsignedInteger outputDimension = getOutputObservations().getDimension();
     const UnsignedInteger size = getOutputObservations().getSize();
     Matrix gradientObservations = MatrixImplementation(parameterDimension, size * outputDimension);
     UnsignedInteger shift = 0;
-    UnsignedInteger skip = parameterDimension * outputDimension;
+    const UnsignedInteger skip = parameterDimension * outputDimension;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
-      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
+      model.setParameter(getInputObservations()[i]);
+      const Matrix gradient(model.gradient(thetaStar));
+      std::copy(gradient.getImplementation()->begin(), gradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
       shift += skip;
     }
     const Matrix jacobian(gradientObservations.transpose());
@@ -431,12 +442,10 @@ String NonLinearLeastSquaresCalibration::__repr__() const
          << " name=" << getName();
 }
 
-
 NonLinearLeastSquaresCalibration * NonLinearLeastSquaresCalibration::clone() const
 {
   return new NonLinearLeastSquaresCalibration(*this);
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void NonLinearLeastSquaresCalibration::save(Advocate & adv) const
@@ -456,6 +465,5 @@ void NonLinearLeastSquaresCalibration::load(Advocate & adv)
   if (adv.hasAttribute("useLaplaceApproximation_")) adv.loadAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
   else useLaplaceApproximation_ = false;
 }
-
 
 END_NAMESPACE_OPENTURNS

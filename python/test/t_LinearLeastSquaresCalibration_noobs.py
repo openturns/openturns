@@ -11,9 +11,6 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
 
-ot.RandomGenerator.SetSeed(0)
-
-
 # This model is linear in (a, b, c) and identifiable.
 # Derived from y = a + b * x + c * x^2 at x=[-1.0, -0.6, -0.2, 0.2, 0.6, 1.0]
 g = ot.SymbolicFunction(
@@ -44,6 +41,10 @@ candidate = ot.Point([8.0, 9.0, -6.0])
 calibratedIndices = [0, 1, 2]
 model = ot.ParametricFunction(g, calibratedIndices, candidate)
 
+# Function needed by the calibration algorithm
+# Since there are no observations, we can use g directly
+calibrationModel = g
+
 outputObservationNoiseSigma = 0.05
 meanNoise = ot.Point(outputDimension)
 covarianceNoise = ot.Point(outputDimension, outputObservationNoiseSigma)
@@ -61,7 +62,7 @@ sampleNoise = observationOutputNoise.getSample(size)
 outputObservations = outputStress + sampleNoise
 # Calibrate
 algo = ot.LinearLeastSquaresCalibration(
-    model, inputObservations, outputObservations, candidate, "SVD"
+    calibrationModel, inputObservations, outputObservations, candidate, "SVD"
 )
 algo.run()
 calibrationResult = algo.getResult()

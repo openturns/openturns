@@ -101,7 +101,7 @@ observedInput.setDescription(["Force", "Young Modulus"])
 observedInput[0:5]
 
 # %%
-# We would like to see how the observed output depend on the
+# We would like to see how the observed outputs depend on the
 # observed inputs.
 # To do this, we use the :meth:`~openturns.VisualTest.DrawPairs` method.
 
@@ -125,7 +125,7 @@ plt.subplots_adjust(wspace=0.3, hspace=0.3)
 # these values will be used as the mean of the prior normal distribution
 # of the parameters.
 # We set it with a slight difference with the true values, because,
-# in general, we do not know the exact value (otherwise we would
+# in general, we do not know the exact values (otherwise we would
 # not use a calibration method).
 
 # %%
@@ -192,38 +192,38 @@ print("Physical Model Inputs:", dt.model.getInputDescription())
 print("Physical Model Parameters:", dt.model.getParameterDescription())
 
 # %%
-# In order to perform calibration, we have to define a parametric model,
-# with observed inputs and parameters to calibrate.
+# In order to perform the calibration, we have to define a parametric model.
+# Its inputs correspond to the calibrated parameters
+# and its parameters correspond to the observed inputs.
 # In order to do this, we create a :class:`~openturns.ParametricFunction` where the parameters
-# are `L`, `a`, `de`, `di`, which have the indices 1, 2, 3 and 4
-# in the physical model.
+# are `F` and `E` (which have indices 0 and 5 in the physical model).
 #
 # +-------+----------------+
 # | Index | Input variable |
 # +=======+================+
-# | 0     | F              |
+# | 0     | L              |
 # +-------+----------------+
-# | 1     | E              |
+# | 1     | a              |
+# +-------+----------------+
+# | 2     | De             |
+# +-------+----------------+
+# | 3     | di             |
 # +-------+----------------+
 #
 # +-------+-----------+
 # | Index | Parameter |
 # +=======+===========+
-# | 0     | L         |
+# | 0     | F         |
 # +-------+-----------+
-# | 1     | a         |
-# +-------+-----------+
-# | 2     | De        |
-# +-------+-----------+
-# | 3     | di        |
+# | 1     | E         |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
 #
 
 # %%
-calibratedIndices = [1, 2, 3, 4]  # [L, a, De, di]
-calibrationFunction = ot.ParametricFunction(dt.model, calibratedIndices, thetaPrior)
+observedIndices = [0, 5]  # [F, E]
+calibrationFunction = ot.ParametricFunction(dt.model, observedIndices, [0.0] * len(observedIndices))
 print("Parametric Model Inputs:", calibrationFunction.getInputDescription())
 print("Parametric Model Parameters:", calibrationFunction.getParameterDescription())
 
@@ -248,8 +248,14 @@ errorCovariance[1, 1] = sigmaObservation[1] ** 2
 errorCovariance[2, 2] = sigmaObservation[2] ** 2
 
 # %%
-calibrationFunction.setParameter(thetaPrior)
-predictedOutput = calibrationFunction(observedInput)
+# Predictions of the prior model.
+
+# %%
+predictedOutput = ot.Sample(0, calibrationFunction.getOutputDimension())
+predictedOutput.setDescription(calibrationFunction.getOutputDescription())
+for observation in observedInput:
+    calibrationFunction.setParameter(observation)
+    predictedOutput.add(calibrationFunction(thetaPrior))
 predictedOutput[0:5]
 
 # %%
