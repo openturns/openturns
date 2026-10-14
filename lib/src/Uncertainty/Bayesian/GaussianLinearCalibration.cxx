@@ -25,8 +25,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(GaussianLinearCalibration)
 
 static const Factory<GaussianLinearCalibration> Factory_GaussianLinearCalibration;
@@ -55,10 +53,10 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
 {
   // Check the input
   const UnsignedInteger parameterDimension = parameterMean.getDimension();
-  if (model.getParameterDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << parameterDimension << ", got parameter dimension=" << model.getParameterDimension();
-  if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
+  if (model.getInputDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << parameterDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
-  if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
+  if (model.getParameterDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << inputDimension << ", got parameter dimension=" << model.getParameterDimension();
+  if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = outputObservations.getSize();
@@ -94,7 +92,6 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
   globalErrorCovariance_ = errorCovariance.getDimension() != outputDimension;
   if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
 }
-
 
 Matrix GaussianLinearCalibration::ComputeDesignMatrix(const UnsignedInteger parameterDimension,
     const UnsignedInteger outputDimension,
@@ -141,7 +138,6 @@ Matrix GaussianLinearCalibration::ComputeDesignMatrix(const UnsignedInteger para
   return Abar;
 }
 
-
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void GaussianLinearCalibration::run()
 {
@@ -151,21 +147,23 @@ void GaussianLinearCalibration::run()
   if (getModel().getEvaluation().getImplementation()->isActualImplementation())
   {
     // Compute the linearization
-    Function parametrizedModel(getModel());
-    parametrizedModel.setParameter(getParameterPrior().getMean());
+    Function model(getModel());
     // Flatten everything related to the model evaluations over the input observations
-    modelObservations_ = parametrizedModel(getInputObservations());
+    const Point parameterMean(getParameterMean());
+    modelObservations_ = Sample(0, outputDimension);
     gradientObservations_ = MatrixImplementation(parameterDimension, size * outputDimension);
     UnsignedInteger shift = 0;
-    UnsignedInteger skip = parameterDimension * outputDimension;
+    const UnsignedInteger skip = parameterDimension * outputDimension;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
-      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
+      model.setParameter(getInputObservations()[i]);
+      modelObservations_.add(model(parameterMean));
+      const Matrix gradient(model.gradient(parameterMean));
+      std::copy(gradient.getImplementation()->begin(), gradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
       shift += skip;
     }
     gradientObservations_ = gradientObservations_.transpose();
-    parameterPrior_.setDescription(getModel().getParameterDescription());
+    parameterPrior_.setDescription(model.getInputDescription());
   }
 
   TriangularMatrix errorInverseCholesky;
@@ -201,7 +199,6 @@ Sample GaussianLinearCalibration::getModelObservations() const
 {
   return modelObservations_;
 }
-
 
 /* Model gradient wrt the parameter accessor */
 Matrix GaussianLinearCalibration::getGradientObservations() const
@@ -248,12 +245,10 @@ String GaussianLinearCalibration::__repr__() const
          << " name=" << getName();
 }
 
-
 GaussianLinearCalibration * GaussianLinearCalibration::clone() const
 {
   return new GaussianLinearCalibration(*this);
 }
-
 
 /* Method save() stores the object through the StorageManager */
 void GaussianLinearCalibration::save(Advocate & adv) const
@@ -276,6 +271,5 @@ void GaussianLinearCalibration::load(Advocate & adv)
   adv.loadAttribute("globalErrorCovariance_", globalErrorCovariance_);
   adv.loadAttribute("methodName_", methodName_);
 }
-
 
 END_NAMESPACE_OPENTURNS

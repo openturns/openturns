@@ -39,6 +39,10 @@ model = ot.ParametricFunction(g, params, trueParameter)
 inputSample = inputRandomVector.getSample(size)
 y = g(inputSample)
 
+# Function needed by the calibration algorithm
+# Since there are no observations, we can use g directly
+calibrationModel = g
+
 outputObservationNoiseSigma = 0.05
 meanNoise = ot.Point(outputDimension)
 covarianceNoise = ot.Point(outputDimension, outputObservationNoiseSigma)
@@ -52,10 +56,10 @@ y += sampleNoise
 candidate = [1.0] * 3
 bootstrapSizes = [0, 100]
 for bootstrapSize in bootstrapSizes:
-    algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+    algo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    # To avoid discrepance between the platforms with or without CMinpack
+    # To avoid discrepancy between the platforms with or without CMinpack
     # Check MAP
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()
@@ -77,7 +81,7 @@ for bootstrapSize in bootstrapSizes:
         )
     )
     algo.run()
-    # To avoid discrepance between the platforms with or without CMinpack
+    # To avoid discrepancy between the platforms with or without CMinpack
     calibrationResult = algo.getResult()
     parameterMAP = calibrationResult.getParameterMAP()
     print("(Multistart/TNC) MAP=", repr(parameterMAP))

@@ -18,8 +18,9 @@ def _exec(X):
 
 
 prior = ot.JointDistribution([ot.Normal(0.1, 0.01)] * 3)
-model = ot.PythonFunction(9, 2, _exec)
-model_p = ot.ParametricFunction(model, [6, 7, 8], prior.getMean())
+g = ot.PythonFunction(9, 2, _exec)
+model = ot.ParametricFunction(g, [6, 7, 8], prior.getMean())
+calibration_model = ot.ParametricFunction(g, [0, 1, 2, 3, 4, 5], [0.0] * 6)
 
 obs_sample = ot.Sample.ImportFromCSVFile("t_Calibration_console.csv", ",")
 obs_in = obs_sample.getMarginal([0, 1, 2, 3, 4, 5])
@@ -30,8 +31,8 @@ for i in range(2):
 p0cov = prior.getCovariance()
 p0 = prior.getMean()
 algos = [
-    ot.GaussianNonLinearCalibration(model_p, obs_in, obs_out, p0, p0cov, err_cov),
-    ot.NonLinearLeastSquaresCalibration(model_p, obs_in, obs_out, p0),
+    ot.GaussianNonLinearCalibration(calibration_model, obs_in, obs_out, p0, p0cov, err_cov),
+    ot.NonLinearLeastSquaresCalibration(calibration_model, obs_in, obs_out, p0),
 ]
 for algo in algos:
     names = []
