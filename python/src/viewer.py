@@ -560,6 +560,22 @@ class View:
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
                     legend_labels.append(drawable.getLegend())
+                labels = drawable.getLabels()
+                if len(labels) > 0 and len(x) > 0:
+                    # Defaults through setdefault: a caller-provided alignment
+                    # in text_kw must not reach Axes.text twice
+                    text_kw.setdefault("horizontalalignment", "center")
+                    text_kw.setdefault("verticalalignment", "center")
+                    for i, label in enumerate(labels):
+                        if len(label) == 0:
+                            continue
+                        k = int((i + 0.5) * len(x) / len(labels))
+                        self._ax[0].text(
+                            x[k],
+                            y[k],
+                            self._ToUnicode(label),
+                            **text_kw,
+                        )
 
             elif drawableKind == "Polygon":
                 if ("facecolor" not in polygon_kw_default) and (
