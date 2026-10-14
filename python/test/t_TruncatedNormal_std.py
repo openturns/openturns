@@ -142,6 +142,23 @@ ott.assert_almost_equal(t2.computeCDF(-10.1), 0.36248854971435807, 1e-12)
 t3 = ot.TruncatedNormal(-52.0658, 1.56137, -2.22475e-05, 0.1408)
 ott.assert_almost_equal(t3.computeScalarQuantile(0.5), 0.030153711943197572, 1e-12)
 ott.assert_almost_equal(t3.computeCDF(0.0), 0.00049999351035801, 1e-12)
+# Extreme far-tail truncation: natural-scale mass underflows,
+# everything goes through the log-scale normalization factor
+t7 = ot.TruncatedNormal(0.0, 1.0, 20.0, 22.0)
+ott.assert_almost_equal(t7.computePDF(21.0), 2.5065256268967036e-08, 1e-12)
+ott.assert_almost_equal(t7.computeLogPDF(21.0), -17.501783162107387, 1e-12)
+ott.assert_almost_equal(t7.computeCDF(21.0), 0.9999999988091047, 1e-12)
+ott.assert_almost_equal(t7.computeCDF(t7.computeQuantile(0.5)[0]), 0.5, 1e-12)
+ott.assert_almost_equal(t7.getMean()[0], 20.049753068528293, 1e-12)
+ott.assert_almost_equal(t7.getCovariance()[0, 0], 0.0024632616150521815, 1e-12)
+cf7 = t7.computeCharacteristicFunction(0.5)
+ott.assert_almost_equal(cf7.real, -0.825028811645019, 1e-9)
+ott.assert_almost_equal(cf7.imag, -0.5645458527839131, 1e-9)
+# Symmetrical left-tail case
+t8 = ot.TruncatedNormal(0.0, 1.0, -22.0, -20.0)
+ott.assert_almost_equal(t8.computePDF(-21.0), 2.5065256268967036e-08, 1e-12)
+ott.assert_almost_equal(t8.getMean()[0], -20.049753068528293, 1e-12)
+ott.assert_almost_equal(t8.computeCDF(t8.computeQuantile(0.5)[0]), 0.5, 1e-12)
 
 # Half-normal: TruncatedNormal(0, 1, 0, +inf)
 t4 = ot.TruncatedNormal(0.0, 1.0, 0.0, ot.SpecFunc.Infinity)
