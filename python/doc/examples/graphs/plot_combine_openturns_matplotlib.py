@@ -35,7 +35,7 @@ ot.RandomGenerator.SetSeed(0)
 normal = ot.Normal()
 graph_pdf = normal.drawPDF()
 graph_pdf.setTitle("Standard Normal PDF")
-graph_pdf.setLegends(["Density of XO"])
+graph_pdf.setLegends(["Density of X"])
 view = otv.View(graph_pdf)
 fig = view.getFigure()
 ax = view.getAxes()[0]
