@@ -123,6 +123,25 @@ correlation : DataContainer
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::StatisticsEngine::ComputeWeightedKendallTau
+"Compute weighted Kendall rank correlation matrix (with ties correction).
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d), e.g. the atoms of a discrete law.
+weights : DataContainer
+    Flat vector of n atom masses.
+epsilon : float
+    Tie tolerance on component values.
+
+Returns
+-------
+correlation : DataContainer
+    Full symmetric Kendall correlation matrix of size d x d with unit diagonal."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::StatisticsEngine::ComputeQuantile
 "Compute quantiles of each column, at one or several probability levels.
 
