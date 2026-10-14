@@ -48,10 +48,8 @@ public:
                                 const Scalar value = 0.0);
 
   /** Constructor from a collection */
-  PointWithDescription(const Collection<Scalar> & coll);
-
-  /** Constructor from a base class */
-  PointWithDescription(const Pointer<Point> & p_base);
+  PointWithDescription(const Point & values,
+                       const Description & desc = Description());
 
   /** Initializer list constructor */
   PointWithDescription(std::initializer_list<Scalar> initList);
@@ -80,6 +78,21 @@ private:
   Description description_;
 
 }; /* class PointWithDescription */
+
+
+#ifndef SWIG
+/** Comparison operator */
+OT_API Bool operator == (const PointWithDescription & lhs,
+                         const PointWithDescription & rhs);
+
+/** Comparison operator */
+OT_API Bool operator != (const PointWithDescription & lhs,
+                         const PointWithDescription & rhs);
+
+/** Ordering operator */
+OT_API Bool operator < (const PointWithDescription & lhs,
+                        const PointWithDescription & rhs);
+#endif
 
 
 
