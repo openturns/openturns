@@ -158,6 +158,10 @@ class View:
         Used when drawing Pairs, Text drawables
         Passed on to matplotlib.axes.Axes.text kwargs
 
+    title_kw : dict, optional
+        Used for the figure suptitle holding the graph title
+        Passed on to matplotlib.figure.Figure.suptitle kwargs
+
     legend_kw : dict, optional
         Passed on to matplotlib.axes.Axes.legend kwargs
 
@@ -219,6 +223,8 @@ class View:
         colorbar_kw=None,
         add_legend=True,
         square_axes=False,
+        # Grid suptitle styling, kept last for positional compatibility, see #3001
+        title_kw=None,
         **kwargs,
     ):
         if not (
@@ -254,6 +260,7 @@ class View:
         clabel_kw_default = self._CheckDict(clabel_kw)
         scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
+        title_kw_default = self._CheckDict(title_kw)
         legend_kw_default = self._CheckDict(legend_kw)
         colorbar_kw_default = self._CheckDict(colorbar_kw)
         legend_handles = []
@@ -328,9 +335,10 @@ class View:
                         clabel_kw=clabel_kw,
                         scatter_kw=scatter_kw,
                         text_kw=text_kw,
+                        title_kw={},
                         legend_kw=legend_kw,
                     )
-            self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+            self._fig.suptitle(self._ToUnicode(graph.getTitle()), **title_kw_default)
             return
 
         drawables = graph.getDrawables()
@@ -341,7 +349,7 @@ class View:
             return
 
         # set title
-        self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+        self._fig.suptitle(self._ToUnicode(graph.getTitle()), **title_kw_default)
 
         # set axes
         if len(axes) == 0:
