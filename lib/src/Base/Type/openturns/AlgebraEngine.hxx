@@ -226,6 +226,10 @@ public:
       const DataContainer & b,
       UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
 
+  /** Block transpose via cache-tiled copy (bitwise-identical to Transpose) */
+  static DataContainer TransposeBlockwise(const DataContainer & A,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
+
 }; /* class AlgebraEngine */
 
 END_NAMESPACE_OPENTURNS
