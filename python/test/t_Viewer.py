@@ -316,3 +316,8 @@ assert list(labeledCurve.getLabels()) == ["peak"]
 labelGraph = ot.Graph()
 labelGraph.add(labeledCurve)
 View(labelGraph)
+
+# Grid title styling, see issue #3001
+titleGraph = ot.Normal(2).drawPDF()
+titleView = View(titleGraph, title_kw={"fontsize": 20})
+assert titleView._fig._suptitle.get_fontsize() == 20
