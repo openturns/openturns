@@ -275,7 +275,7 @@ void MemoizeEvaluation::addCacheContent(const Sample& inSample, const Sample& ou
   }
 }
 
-Sample MemoizeEvaluation::getCacheInput() const
+Sample MemoizeEvaluation::getInputCache() const
 {
   const Bool cacheEnabled = isCacheEnabled();
   enableCache();
@@ -288,7 +288,13 @@ Sample MemoizeEvaluation::getCacheInput() const
   return inSample;
 }
 
-Sample MemoizeEvaluation::getCacheOutput() const
+Sample MemoizeEvaluation::getCacheInput() const
+{
+  LOGWARN("MemoizeEvaluation::getCacheInput is deprecated, use getInputCache instead");
+  return getInputCache();
+}
+
+Sample MemoizeEvaluation::getOutputCache() const
 {
   const Bool cacheEnabled = isCacheEnabled();
   enableCache();
@@ -299,6 +305,12 @@ Sample MemoizeEvaluation::getCacheOutput() const
   for (UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i)
     outSample.add(valuesColl[i]);
   return outSample;
+}
+
+Sample MemoizeEvaluation::getCacheOutput() const
+{
+  LOGWARN("MemoizeEvaluation::getCacheOutput is deprecated, use getOutputCache instead");
+  return getOutputCache();
 }
 
 void MemoizeEvaluation::clearCache() const
@@ -379,8 +391,8 @@ void MemoizeEvaluation::save(Advocate & adv) const
   adv.saveAttribute("isHistoryEnabled_", isHistoryEnabled_);
   const Bool cacheEnabled = isCacheEnabled();
   adv.saveAttribute("cacheEnabled", cacheEnabled);
-  const Sample cacheInput(getCacheInput());
-  const Sample cacheOutput(getCacheOutput());
+  const Sample cacheInput(getInputCache());
+  const Sample cacheOutput(getOutputCache());
   adv.saveAttribute("cacheInput", cacheInput);
   adv.saveAttribute("cacheOutput", cacheOutput);
 }
