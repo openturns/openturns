@@ -230,6 +230,10 @@ public:
   static DataContainer TransposeBlockwise(const DataContainer & A,
       UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
 
+  /** Block singular values via blockwise Gram plus symmetric eigensolve (tall/square: A^T A, wide: A A^T padded with zeros) */
+  static DataContainer ComputeSingularValuesBlockwise(const DataContainer & A,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
+
 }; /* class AlgebraEngine */
 
 END_NAMESPACE_OPENTURNS
