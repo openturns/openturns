@@ -20,6 +20,7 @@
  */
 #include <iomanip>
 #include <fstream>
+#include <cmath>
 #include "openturns/QuantileMatchingFactory.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Exception.hxx"
@@ -172,7 +173,12 @@ public:
     const UnsignedInteger estimatedParameterSize = probabilities_.getSize();
     Point result(estimatedParameterSize);
     for (UnsignedInteger j = 0; j < estimatedParameterSize; ++ j)
+    {
       result[j] = refQuantiles_[j] - distribution.computeScalarQuantile(probabilities_[j]);
+      // A non-finite residual (e.g. quantile overflow) would drive TNC
+      // to NaN points, see issue #3031
+      if (!std::isfinite(result[j])) result[j] = SpecFunc::Infinity;
+    }
     return result;
   }
 
