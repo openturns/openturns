@@ -34,3 +34,23 @@ Examples
 >>> # Create the curve
 >>> myCurve = ot.Curve(data, 'blue', 'solid', 2, '')
 >>> myGraph.add(myCurve)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Curve::getLabels
+"Accessor to the labels drawn along the curve.
+
+Returns
+-------
+labels : :class:`~openturns.Description`
+    Labels drawn at evenly spaced points of the curve."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Curve::setLabels
+"Accessor to the labels drawn along the curve.
+
+Parameters
+----------
+labels : sequence of str
+    Labels drawn at evenly spaced points of the curve."
