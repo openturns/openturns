@@ -612,36 +612,7 @@ void TruncatedNormal::setA(const Scalar a)
   if (a != a_)
   {
     a_ = a;
-    const Scalar iSigma = 1.0 / sigma_;
-    aNorm_ = (a_ - mu_) * iSigma;
-    PhiANorm_ = DistFunc::pNormal(aNorm_);
-    const Scalar denominator = PhiBNorm_ - PhiANorm_;
-    if (denominator <= 0.0)
-    {
-      if ((bNorm_ < 0.0) || (std::abs(aNorm_) >= std::abs(bNorm_)))
-      {
-        const Scalar logCDFA = DistFunc::logpNormal(aNorm_);
-        const Scalar logCDFB = DistFunc::logpNormal(bNorm_);
-        normalizationFactor_ = -(logCDFB + log1p(-std::exp(logCDFA - logCDFB)));
-      }
-      else
-      {
-        const Scalar logComplementaryCDFA = DistFunc::logpNormal(aNorm_, true);
-        const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
-        normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
-      }
-      normalizationFactorIsLog_ = true;
-    }
-    else
-    {
-      normalizationFactor_ = 1.0 / denominator;
-      normalizationFactorIsLog_ = false;
-    }
-    phiANorm_ = DistFunc::dNormal(aNorm_);
-    computeBoundProducts();
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
-    computeRange();
+    update();
   }
 }
 
@@ -657,36 +628,7 @@ void TruncatedNormal::setB(const Scalar b)
   if (b != b_)
   {
     b_ = b;
-    const Scalar iSigma = 1.0 / sigma_;
-    bNorm_ = (b_ - mu_) * iSigma;
-    PhiBNorm_ = DistFunc::pNormal(bNorm_);
-    Scalar denominator = PhiBNorm_ - PhiANorm_;
-    if (denominator <= 0.0)
-    {
-      if ((bNorm_ < 0.0) || (std::abs(aNorm_) >= std::abs(bNorm_)))
-      {
-        const Scalar logCDFA = DistFunc::logpNormal(aNorm_);
-        const Scalar logCDFB = DistFunc::logpNormal(bNorm_);
-        normalizationFactor_ = -(logCDFB + log1p(-std::exp(logCDFA - logCDFB)));
-      }
-      else
-      {
-        const Scalar logComplementaryCDFA = DistFunc::logpNormal(aNorm_, true);
-        const Scalar logComplementaryCDFB = DistFunc::logpNormal(bNorm_, true);
-        normalizationFactor_ = -(logComplementaryCDFA + log1p(-std::exp(logComplementaryCDFB - logComplementaryCDFA)));
-      }
-      normalizationFactorIsLog_ = true;
-    }
-    else
-    {
-      normalizationFactor_ = 1.0 / denominator;
-      normalizationFactorIsLog_ = false;
-    }
-    phiBNorm_ = DistFunc::dNormal(bNorm_);
-    computeBoundProducts();
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
-    computeRange();
+    update();
   }
 }
 
