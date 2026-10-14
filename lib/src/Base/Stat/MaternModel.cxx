@@ -78,8 +78,6 @@ void MaternModel::computeSqrt2nuOverTheta()
 {
   // Compute useful scaling factor
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
-  // The closed form of the covariance value only depends on nu
-  updateClosedForm();
 }
 
 /* Virtual constructor */
@@ -112,7 +110,7 @@ Scalar MaternModel::computeAsScalar(const Point & tau) const
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance(0, 0) * computeCovarianceValue(scaledPoint);
+    return outputCovariance(0, 0) * computeCorrelationValue(scaledPoint);
 }
 
 Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
@@ -134,7 +132,7 @@ Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return amplitudeSquare * (1.0 + nuggetFactor_);
   else
-    return amplitudeSquare * computeCovarianceValue(scaledPoint);
+    return amplitudeSquare * computeCorrelationValue(scaledPoint);
 }
 
 // Entry point for the bulk evaluations of the compressed matrix assemblies:
@@ -155,7 +153,7 @@ Scalar MaternModel::computeAsScalar(const Scalar * s, const Scalar * t) const
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return amplitudeSquare * (1.0 + nuggetFactor_);
   else
-    return amplitudeSquare * computeCovarianceValue(scaledPoint);
+    return amplitudeSquare * computeCorrelationValue(scaledPoint);
 }
 
 Scalar MaternModel::computeAsScalar(const Scalar tau) const
@@ -169,7 +167,7 @@ Scalar MaternModel::computeAsScalar(const Scalar tau) const
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return amplitudeSquare * (1.0 + nuggetFactor_);
   else
-    return amplitudeSquare * computeCovarianceValue(scaledPoint);
+    return amplitudeSquare * computeCorrelationValue(scaledPoint);
 }
 
 // Select the closed form once and for all: the evaluation paths only test
@@ -187,13 +185,14 @@ void MaternModel::updateClosedForm()
     closedForm_ = 0;
 }
 
-// Exact value of the Matern covariance for the scaled distance scaledPoint =
+// Exact value of the Matern correlation (unit variance) for the scaled
+// distance scaledPoint =
 // sqrt(2 nu) * ||tau|| / scale. For the half-integer smoothness nu = p + 1/2
 // the modified Bessel function K_nu reduces to exp(-s) times a polynomial of
 // degree p in s, which is cheaper and numerically more stable than the
 // general formula in terms of log and LogBesselK. Which form applies has
 // already been decided by updateClosedForm().
-Scalar MaternModel::computeCovarianceValue(const Scalar scaledPoint) const
+Scalar MaternModel::computeCorrelationValue(const Scalar scaledPoint) const
 {
   if (closedForm_ == 1)
     return std::exp(-scaledPoint);
@@ -335,6 +334,8 @@ void MaternModel::setNu(const Scalar nu)
     computeLogNormalizationFactor();
     // Compute useful scaling factor
     computeSqrt2nuOverTheta();
+    // Refresh the closed-form selection, which only depends on nu
+    updateClosedForm();
   }
 }
 

@@ -316,9 +316,9 @@ HODLRNode * HODLRNode::clone() const
 HODLRNode::HODLRNode(ForLoad,
                      Pointer<const HODLREntryEvaluator> eval,
                      const Scalar* diag,
-                     UnsignedInteger start,
-                     UnsignedInteger size,
-                     SignedInteger direction,
+                     const UnsignedInteger start,
+                     const UnsignedInteger size,
+                     const SignedInteger direction,
                      HODLRNode* parent)
   : p_diag_(diag)
   , p_eval_(eval)
@@ -350,13 +350,13 @@ HODLRNode::HODLRNode(ForLoad,
 
 HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
                      const Scalar* diag,
-                     UnsignedInteger start,
-                     UnsignedInteger size,
-                     UnsignedInteger minLeafSize,
-                     UnsignedInteger maxRank,
-                     Scalar tolerance,
-                     Scalar recompressionTolerance,
-                     SignedInteger direction,
+                     const UnsignedInteger start,
+                     const UnsignedInteger size,
+                     const UnsignedInteger minLeafSize,
+                     const UnsignedInteger maxRank,
+                     const Scalar tolerance,
+                     const Scalar recompressionTolerance,
+                     const SignedInteger direction,
                      HODLRNode* parent)
   : HODLRNode(ForLoad(), eval, diag, start, size, direction, parent)
 {
