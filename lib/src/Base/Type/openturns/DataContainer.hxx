@@ -171,6 +171,8 @@ public:
   const Scalar & at(UnsignedInteger flatIndex) const;
 
   /** Comparison operators */
+  using PersistentObject::operator==;
+  using PersistentObject::operator!=;
   Bool operator==(const DataContainer & other) const;
   Bool operator!=(const DataContainer & other) const;
 

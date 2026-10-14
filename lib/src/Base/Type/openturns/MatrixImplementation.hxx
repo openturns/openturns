@@ -389,6 +389,8 @@ public:
   virtual MatrixImplementation computeGram(const Bool transpose = true) const;
 
   /** Comparison operators */
+  using PersistentObject::operator==;
+  using PersistentObject::operator!=;
   Bool operator == (const MatrixImplementation & rhs) const;
 
   inline Bool operator != (const MatrixImplementation & rhs) const
