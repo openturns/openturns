@@ -87,6 +87,7 @@
 ==== API changes ====
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
+ * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
