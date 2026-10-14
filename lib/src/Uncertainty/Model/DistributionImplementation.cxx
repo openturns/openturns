@@ -91,6 +91,11 @@ CLASSNAMEINIT(DistributionImplementation)
 CLASSNAMEINIT(DistributionImplementation::PDFWrapper)
 CLASSNAMEINIT(DistributionImplementation::LogPDFWrapper)
 CLASSNAMEINIT(DistributionImplementation::CDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::ComplementaryCDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::QuantileFunctionWrapper)
+CLASSNAMEINIT(DistributionImplementation::SurvivalWrapper)
+CLASSNAMEINIT(DistributionImplementation::InverseSurvivalFunctionWrapper)
+CLASSNAMEINIT(DistributionImplementation::DDFWrapper)
 
 typedef Collection<Distribution>                                      DistributionCollection;
 
@@ -98,6 +103,11 @@ static const Factory<DistributionImplementation> Factory_DistributionImplementat
 static const Factory<DistributionImplementation::PDFWrapper> Factory_DistributionImplementation_PDFWrapper;
 static const Factory<DistributionImplementation::LogPDFWrapper> Factory_DistributionImplementation_LogPDFWrapper;
 static const Factory<DistributionImplementation::CDFWrapper> Factory_DistributionImplementation_CDFWrapper;
+static const Factory<DistributionImplementation::ComplementaryCDFWrapper> Factory_DistributionImplementation_ComplementaryCDFWrapper;
+static const Factory<DistributionImplementation::QuantileFunctionWrapper> Factory_DistributionImplementation_QuantileFunctionWrapper;
+static const Factory<DistributionImplementation::SurvivalWrapper> Factory_DistributionImplementation_SurvivalWrapper;
+static const Factory<DistributionImplementation::InverseSurvivalFunctionWrapper> Factory_DistributionImplementation_InverseSurvivalFunctionWrapper;
+static const Factory<DistributionImplementation::DDFWrapper> Factory_DistributionImplementation_DDFWrapper;
 
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()
@@ -749,6 +759,31 @@ Function DistributionImplementation::getLogPDF() const
 Function DistributionImplementation::getCDF() const
 {
   return Function(DistributionImplementation::CDFWrapper(*this));
+}
+
+Function DistributionImplementation::getComplementaryCDF() const
+{
+  return Function(DistributionImplementation::ComplementaryCDFWrapper(*this));
+}
+
+Function DistributionImplementation::getQuantile() const
+{
+  return Function(DistributionImplementation::QuantileFunctionWrapper(*this));
+}
+
+Function DistributionImplementation::getSurvivalFunction() const
+{
+  return Function(DistributionImplementation::SurvivalWrapper(*this));
+}
+
+Function DistributionImplementation::getInverseSurvivalFunction() const
+{
+  return Function(DistributionImplementation::InverseSurvivalFunctionWrapper(*this));
+}
+
+Function DistributionImplementation::getDDF() const
+{
+  return Function(DistributionImplementation::DDFWrapper(*this));
 }
 
 /* Get the DDF of the distribution */
@@ -6396,6 +6431,76 @@ void DistributionImplementation::CDFWrapper::save(Advocate & adv) const
 }
 
 void DistributionImplementation::CDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::ComplementaryCDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::ComplementaryCDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::QuantileFunctionWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::QuantileFunctionWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::SurvivalWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::SurvivalWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::InverseSurvivalFunctionWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::InverseSurvivalFunctionWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::DDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::DDFWrapper::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
   Distribution savedDistribution;

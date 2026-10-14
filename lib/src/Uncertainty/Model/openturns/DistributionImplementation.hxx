@@ -176,6 +176,11 @@ public:
   Function getPDF() const;
   Function getLogPDF() const;
   Function getCDF() const;
+  Function getComplementaryCDF() const;
+  Function getQuantile() const;
+  Function getSurvivalFunction() const;
+  Function getInverseSurvivalFunction() const;
+  Function getDDF() const;
 
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
@@ -1217,6 +1222,467 @@ public:
   private:
     DistributionImplementation::Implementation p_shared_distribution_;
   }; // class CDFWrapper
+
+public:
+  // Class used to wrap the computeComplementaryCDF() method, see issue #2763
+  class ComplementaryCDFWrapper: public EvaluationImplementation
+  {
+    CLASSNAME
+  public:
+    ComplementaryCDFWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
+    ComplementaryCDFWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    ComplementaryCDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
+    {
+      // Nothing to do
+    }
+
+    ComplementaryCDFWrapper * clone() const override
+    {
+      return new ComplementaryCDFWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      return Point(1, p_shared_distribution_->computeComplementaryCDF(point));
+    }
+
+    Sample operator() (const Sample & sample) const override
+    {
+      return p_shared_distribution_->computeComplementaryCDF(sample);
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return p_shared_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const override
+    {
+      return p_shared_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const override
+    {
+      return Description(1, "ccdf");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      oss << "ComplementaryCDFWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const override
+    {
+      OSS oss;
+      oss << "ComplementaryCDFWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object through the StorageManager */
+    void load(Advocate & adv) override;
+
+  private:
+    DistributionImplementation::Implementation p_shared_distribution_;
+  }; // class ComplementaryCDFWrapper
+
+public:
+  // Class used to wrap the computeQuantile() method, see issue #2763.
+  // Named QuantileFunctionWrapper as QuantileWrapper already exists below.
+  class QuantileFunctionWrapper: public EvaluationImplementation
+  {
+    CLASSNAME
+  public:
+    QuantileFunctionWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
+    QuantileFunctionWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    QuantileFunctionWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
+    {
+      // Nothing to do
+    }
+
+    QuantileFunctionWrapper * clone() const override
+    {
+      return new QuantileFunctionWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      return p_shared_distribution_->computeQuantile(point[0]);
+    }
+
+    Sample operator() (const Sample & sample) const override
+    {
+      const UnsignedInteger size = sample.getSize();
+      const UnsignedInteger dimension = p_shared_distribution_->getDimension();
+      Sample result(0, dimension);
+      for (UnsignedInteger i = 0; i < size; ++i)
+        result.add(p_shared_distribution_->computeQuantile(sample(i, 0)));
+      return result;
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return p_shared_distribution_->getDimension();
+    }
+
+    Description getInputDescription() const override
+    {
+      return Description(1, "p");
+    }
+
+    Description getOutputDescription() const override
+    {
+      return p_shared_distribution_->getDescription();
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      oss << "QuantileFunctionWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const override
+    {
+      OSS oss;
+      oss << "QuantileFunctionWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object through the StorageManager */
+    void load(Advocate & adv) override;
+
+  private:
+    DistributionImplementation::Implementation p_shared_distribution_;
+  }; // class QuantileFunctionWrapper
+
+public:
+  // Class used to wrap the computeSurvivalFunction() method, see issue #2763
+  class SurvivalWrapper: public EvaluationImplementation
+  {
+    CLASSNAME
+  public:
+    SurvivalWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
+    SurvivalWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    SurvivalWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
+    {
+      // Nothing to do
+    }
+
+    SurvivalWrapper * clone() const override
+    {
+      return new SurvivalWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      return Point(1, p_shared_distribution_->computeSurvivalFunction(point));
+    }
+
+    Sample operator() (const Sample & sample) const override
+    {
+      return p_shared_distribution_->computeSurvivalFunction(sample);
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return p_shared_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const override
+    {
+      return p_shared_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const override
+    {
+      return Description(1, "survival");
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      oss << "SurvivalWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const override
+    {
+      OSS oss;
+      oss << "SurvivalWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object through the StorageManager */
+    void load(Advocate & adv) override;
+
+  private:
+    DistributionImplementation::Implementation p_shared_distribution_;
+  }; // class SurvivalWrapper
+
+public:
+  // Class used to wrap the computeInverseSurvivalFunction() method, see issue #2763
+  class InverseSurvivalFunctionWrapper: public EvaluationImplementation
+  {
+    CLASSNAME
+  public:
+    InverseSurvivalFunctionWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
+    InverseSurvivalFunctionWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    InverseSurvivalFunctionWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
+    {
+      // Nothing to do
+    }
+
+    InverseSurvivalFunctionWrapper * clone() const override
+    {
+      return new InverseSurvivalFunctionWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      return p_shared_distribution_->computeInverseSurvivalFunction(point[0]);
+    }
+
+    Sample operator() (const Sample & sample) const override
+    {
+      const UnsignedInteger size = sample.getSize();
+      const UnsignedInteger dimension = p_shared_distribution_->getDimension();
+      Sample result(0, dimension);
+      for (UnsignedInteger i = 0; i < size; ++i)
+        result.add(p_shared_distribution_->computeInverseSurvivalFunction(sample(i, 0)));
+      return result;
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return p_shared_distribution_->getDimension();
+    }
+
+    Description getInputDescription() const override
+    {
+      return Description(1, "p");
+    }
+
+    Description getOutputDescription() const override
+    {
+      return p_shared_distribution_->getDescription();
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      oss << "InverseSurvivalFunctionWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const override
+    {
+      OSS oss;
+      oss << "InverseSurvivalFunctionWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object through the StorageManager */
+    void load(Advocate & adv) override;
+
+  private:
+    DistributionImplementation::Implementation p_shared_distribution_;
+  }; // class InverseSurvivalFunctionWrapper
+
+public:
+  // Class used to wrap the computeDDF() method, see issue #2763
+  class DDFWrapper: public EvaluationImplementation
+  {
+    CLASSNAME
+  public:
+    DDFWrapper()
+      : EvaluationImplementation()
+    {
+      // Nothing to do
+    }
+
+    DDFWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(p_distribution->clone())
+    {
+      // Nothing to do
+    }
+
+    DDFWrapper(const DistributionImplementation & distribution)
+      : EvaluationImplementation()
+      , p_shared_distribution_(distribution.clone())
+    {
+      // Nothing to do
+    }
+
+    DDFWrapper * clone() const override
+    {
+      return new DDFWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const override
+    {
+      return p_shared_distribution_->computeDDF(point);
+    }
+
+    Sample operator() (const Sample & sample) const override
+    {
+      return p_shared_distribution_->computeDDF(sample);
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return p_shared_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return p_shared_distribution_->getDimension();
+    }
+
+    Description getInputDescription() const override
+    {
+      return p_shared_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const override
+    {
+      return p_shared_distribution_->getDescription();
+    }
+
+    Bool isParallel() const override
+    {
+      return p_shared_distribution_->isParallel();
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      oss << "DDFWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const override
+    {
+      OSS oss;
+      oss << "DDFWrapper(" << p_shared_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    /* Method save() stores the object through the StorageManager */
+    void save(Advocate & adv) const override;
+
+    /* Method load() reloads the object through the StorageManager */
+    void load(Advocate & adv) override;
+
+  private:
+    DistributionImplementation::Implementation p_shared_distribution_;
+  }; // class DDFWrapper
 
 protected:
   // Class used to implement the computeQuantile() method efficiently
