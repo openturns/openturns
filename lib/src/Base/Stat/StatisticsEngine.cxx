@@ -1128,5 +1128,121 @@ DataContainer StatisticsEngine::ComputeCentralMomentBlockwise(const DataContaine
   return accumulated;
 }
 
+/* ===== Blockwise composed statistics ===== */
+
+DataContainer StatisticsEngine::ComputeSkewnessBlockwise(const DataContainer & sample,
+    Bool adjusted,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger dimension = sample.getDimension();
+  DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
+  // Match the dense guards: 0 at size 2, nothing below
+  if (size <= 2) return result;
+  const DataContainer m2 = ComputeCentralMomentBlockwise(sample, 2, blockSize);
+  const DataContainer m3 = ComputeCentralMomentBlockwise(sample, 3, blockSize);
+
+  const Scalar n = 1.0 * size;
+  const Scalar factor = adjusted ? std::sqrt(n * (n - 1.0)) / (n - 2.0) : 1.0;
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    const Scalar moment2 = m2[j];
+    if (moment2 > 0.0)
+    {
+      const Scalar sd = std::sqrt(moment2);
+      result[j] = factor * m3[j] / (sd * sd * sd);
+    }
+  }
+  return result;
+}
+
+DataContainer StatisticsEngine::ComputeKurtosisBlockwise(const DataContainer & sample,
+    Bool adjusted,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger dimension = sample.getDimension();
+  DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
+  // Match the dense guards: 0 at size 3, nothing below
+  if (size <= 3) return result;
+  const DataContainer m2 = ComputeCentralMomentBlockwise(sample, 2, blockSize);
+  const DataContainer m4 = ComputeCentralMomentBlockwise(sample, 4, blockSize);
+
+  const Scalar n = 1.0 * size;
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    const Scalar moment2 = m2[j];
+    if (moment2 > 0.0)
+    {
+      const Scalar b2 = m4[j] / (moment2 * moment2);
+      if (adjusted)
+        result[j] = ((n * n - 1.0) / ((n - 2.0) * (n - 3.0))) * b2 - 3.0 * (3.0 * n - 5.0) / ((n - 2.0) * (n - 3.0));
+      else
+        result[j] = b2;
+    }
+  }
+  return result;
+}
+
+DataContainer StatisticsEngine::ComputePearsonCorrelationBlockwise(const DataContainer & sample,
+    UnsignedInteger blockSize)
+{
+  // Same denominators-from-the-same-covariance rule as the dense path,
+  // fed by the blockwise covariance: exact unit (anti-)correlations kept
+  const DataContainer cov = ComputeCovarianceBlockwise(sample, blockSize);
+  const UnsignedInteger dimension = cov.getDimension();
+
+  DataContainer result(dimension, dimension, 0.0, DataContainer::ROW_MAJOR);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    result(i, i) = 1.0;
+    const Scalar sdi = std::sqrt(cov(i, i));
+    for (UnsignedInteger j = i + 1; j < dimension; ++j)
+    {
+      const Scalar sdj = std::sqrt(cov(j, j));
+      const Scalar denom = sdi * sdj;
+      Scalar corr = (denom > 0.0) ? cov(i, j) / denom : 0.0;
+      // Cauchy-Schwarz: round-off alone can push |corr| past 1
+      corr = std::min(std::max(corr, -1.0), 1.0);
+      result(i, j) = corr;
+      result(j, i) = corr;
+    }
+  }
+  return result;
+}
+
+Scalar StatisticsEngine::ComputeEmpiricalCDFBlockwise(const DataContainer & sample,
+    const DataContainer & location,
+    Bool tail,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger nbRows = sample.getSize();
+  const UnsignedInteger dim = sample.getDimension();
+  if (location.getSize() * location.getDimension() != dim)
+    throw InvalidArgumentException(HERE) << "Location has incorrect dimension";
+  if (nbRows == 0) return 0.0;
+  if (nbRows <= blockSize) return ComputeEmpiricalCDF(sample, location, tail);
+  const Scalar * src = sample.data();
+  const Scalar * point = location.data();
+  UnsignedInteger count = 0;
+  UnsignedInteger processed = 0;
+  while (processed < nbRows)
+  {
+    const UnsignedInteger currentBlock = std::min(blockSize, nbRows - processed);
+    for (UnsignedInteger i = 0; i < currentBlock; ++i)
+    {
+      const Scalar * row = src + (processed + i) * dim;
+      UnsignedInteger j = 0;
+      while ((j < dim) && (tail ^ (row[j] <= point[j]))) ++j;
+      if (j == dim) ++count;
+    }
+    processed += currentBlock;
+  }
+  return (1.0 * count) / nbRows;
+}
+
 
 END_NAMESPACE_OPENTURNS

@@ -98,4 +98,18 @@ assert list(ot.StatisticsEngine.ComputeRawMomentBlockwise(t, 0, 2)) == [1.0, 1.0
 assert list(ot.StatisticsEngine.ComputeCentralMomentBlockwise(t, 0, 2)) == [1.0, 1.0, 1.0]
 print("Streaming statistics Blockwise: OK")
 
+# Composed statistics twins: skew/kurtosis (both flags), Pearson, ECDF
+big7 = ot.DataContainer(50, 3, 0.0, ot.DataContainer.ROW_MAJOR)
+for k in range(150):
+    big7[k] = math.sin(0.3 * k) + 0.5 * math.cos(0.11 * k + 1.0)
+loc = ot.DataContainer(3, 0.25)
+for bs in [1, 7, 100]:
+    for adjusted in [True, False]:
+        assert max_abs_diff(ot.StatisticsEngine.ComputeSkewness(big7, adjusted), ot.StatisticsEngine.ComputeSkewnessBlockwise(big7, adjusted, bs), 1) < 1e-12
+        assert max_abs_diff(ot.StatisticsEngine.ComputeKurtosis(big7, adjusted), ot.StatisticsEngine.ComputeKurtosisBlockwise(big7, adjusted, bs), 1) < 1e-12
+    assert max_abs_diff(ot.StatisticsEngine.ComputePearsonCorrelation(big7), ot.StatisticsEngine.ComputePearsonCorrelationBlockwise(big7, bs), 1) < 1e-12
+    assert abs(ot.StatisticsEngine.ComputeEmpiricalCDF(big7, loc, False) - ot.StatisticsEngine.ComputeEmpiricalCDFBlockwise(big7, loc, False, bs)) == 0.0
+    assert abs(ot.StatisticsEngine.ComputeEmpiricalCDF(big7, loc, True) - ot.StatisticsEngine.ComputeEmpiricalCDFBlockwise(big7, loc, True, bs)) == 0.0
+print("Composed statistics Blockwise: OK")
+
 print("=== ALL BLOCKWISE SCALE TESTS PASSED ===")
