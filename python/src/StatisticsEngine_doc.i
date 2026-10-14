@@ -467,3 +467,79 @@ Returns
 -------
 moment : DataContainer
     Central moment of order k of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeSkewnessBlockwise
+"Block-based skewness for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+adjusted : bool, optional
+    Fisher bias correction (default True).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+skewness : DataContainer
+    Skewness of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeKurtosisBlockwise
+"Block-based kurtosis for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+adjusted : bool, optional
+    Fisher bias correction, excess kurtosis (default True).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+kurtosis : DataContainer
+    Kurtosis of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputePearsonCorrelationBlockwise
+"Block-based Pearson correlation for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+correlation : DataContainer
+    Pearson correlation matrix of size d x d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeEmpiricalCDFBlockwise
+"Block-based empirical CDF for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+location : DataContainer
+    Evaluation point of size d.
+tail : bool
+    Survival function if True, CDF otherwise.
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+p : float
+    Empirical probability."
