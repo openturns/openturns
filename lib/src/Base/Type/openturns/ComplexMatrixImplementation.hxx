@@ -224,6 +224,8 @@ public:
   virtual ComplexMatrixImplementation computeCholeskyInPlace();
 
   /** Comparison operators */
+  using PersistentObject::operator==;
+  using PersistentObject::operator!=;
   Bool operator == (const ComplexMatrixImplementation & rhs) const;
 
 

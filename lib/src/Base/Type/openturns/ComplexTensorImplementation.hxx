@@ -140,6 +140,8 @@ public:
   TensorImplementation imag() const;
 
   /** Comparison operators */
+  using PersistentObject::operator==;
+  using PersistentObject::operator!=;
   Bool operator == (const ComplexTensorImplementation & rhs) const;
 
   /** Empty returns true if there is no element in the tensor */
