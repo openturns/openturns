@@ -405,6 +405,31 @@ Function Distribution::getCDF() const
   return getImplementation()->getCDF();
 }
 
+Function Distribution::getComplementaryCDF() const
+{
+  return getImplementation()->getComplementaryCDF();
+}
+
+Function Distribution::getQuantile() const
+{
+  return getImplementation()->getQuantile();
+}
+
+Function Distribution::getSurvivalFunction() const
+{
+  return getImplementation()->getSurvivalFunction();
+}
+
+Function Distribution::getInverseSurvivalFunction() const
+{
+  return getImplementation()->getInverseSurvivalFunction();
+}
+
+Function Distribution::getDDF() const
+{
+  return getImplementation()->getDDF();
+}
+
 /* Get the DDF of the distribution */
 Point Distribution::computeDDF(const Point & point) const
 {
