@@ -989,5 +989,144 @@ DataContainer StatisticsEngine::ComputeCovarianceBlockwise(const DataContainer &
   return accumulated;
 }
 
+/* ===== Blockwise single-pass statistics ===== */
+
+DataContainer StatisticsEngine::ComputeSumBlockwise(const DataContainer & sample,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger nbRows = sample.getSize();
+  const UnsignedInteger dim = sample.getDimension();
+  if (nbRows == 0) return DataContainer(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  if (nbRows <= blockSize) return ComputeSum(sample);
+  DataContainer accumulated(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  const Scalar * src = sample.data();
+  UnsignedInteger processed = 0;
+  while (processed < nbRows)
+  {
+    const UnsignedInteger currentBlock = std::min(blockSize, nbRows - processed);
+    const Scalar * block = src + processed * dim;
+    for (UnsignedInteger i = 0; i < currentBlock; ++i)
+      for (UnsignedInteger j = 0; j < dim; ++j)
+        accumulated[j] += block[i * dim + j];
+    processed += currentBlock;
+  }
+  return accumulated;
+}
+
+DataContainer StatisticsEngine::ComputeMinBlockwise(const DataContainer & sample,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger nbRows = sample.getSize();
+  const UnsignedInteger dim = sample.getDimension();
+  if (nbRows == 0) return DataContainer(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  if (nbRows <= blockSize) return ComputeMin(sample);
+  DataContainer accumulated(1, dim, std::numeric_limits<Scalar>::max(), DataContainer::ROW_MAJOR);
+  const Scalar * src = sample.data();
+  UnsignedInteger processed = 0;
+  while (processed < nbRows)
+  {
+    const UnsignedInteger currentBlock = std::min(blockSize, nbRows - processed);
+    const Scalar * block = src + processed * dim;
+    for (UnsignedInteger i = 0; i < currentBlock; ++i)
+      for (UnsignedInteger j = 0; j < dim; ++j)
+        if (block[i * dim + j] < accumulated[j]) accumulated[j] = block[i * dim + j];
+    processed += currentBlock;
+  }
+  return accumulated;
+}
+
+DataContainer StatisticsEngine::ComputeMaxBlockwise(const DataContainer & sample,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger nbRows = sample.getSize();
+  const UnsignedInteger dim = sample.getDimension();
+  if (nbRows == 0) return DataContainer(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  if (nbRows <= blockSize) return ComputeMax(sample);
+  DataContainer accumulated(1, dim, std::numeric_limits<Scalar>::lowest(), DataContainer::ROW_MAJOR);
+  const Scalar * src = sample.data();
+  UnsignedInteger processed = 0;
+  while (processed < nbRows)
+  {
+    const UnsignedInteger currentBlock = std::min(blockSize, nbRows - processed);
+    const Scalar * block = src + processed * dim;
+    for (UnsignedInteger i = 0; i < currentBlock; ++i)
+      for (UnsignedInteger j = 0; j < dim; ++j)
+        if (block[i * dim + j] > accumulated[j]) accumulated[j] = block[i * dim + j];
+    processed += currentBlock;
+  }
+  return accumulated;
+}
+
+DataContainer StatisticsEngine::ComputeStandardDeviationBlockwise(const DataContainer & sample,
+    UnsignedInteger blockSize)
+{
+  const DataContainer variance = ComputeVarianceBlockwise(sample, blockSize);
+  const UnsignedInteger dimension = variance.getDimension();
+  DataContainer result(1, dimension, 0.0, DataContainer::ROW_MAJOR);
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+    result[j] = std::sqrt(variance[j]);
+  return result;
+}
+
+DataContainer StatisticsEngine::ComputeRawMomentBlockwise(const DataContainer & sample,
+    UnsignedInteger k,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger nbRows = sample.getSize();
+  const UnsignedInteger dim = sample.getDimension();
+  if (nbRows == 0) return DataContainer(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  if (k == 0) return DataContainer(1, dim, 1.0, DataContainer::ROW_MAJOR);
+  if (nbRows <= blockSize) return ComputeRawMoment(sample, k);
+  DataContainer accumulated(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  const Scalar * src = sample.data();
+  UnsignedInteger processed = 0;
+  while (processed < nbRows)
+  {
+    const UnsignedInteger currentBlock = std::min(blockSize, nbRows - processed);
+    const Scalar * block = src + processed * dim;
+    for (UnsignedInteger i = 0; i < currentBlock; ++i)
+      for (UnsignedInteger j = 0; j < dim; ++j)
+        accumulated[j] += std::pow(block[i * dim + j], static_cast<Scalar>(k));
+    processed += currentBlock;
+  }
+  const Scalar invN = 1.0 / static_cast<Scalar>(nbRows);
+  for (UnsignedInteger j = 0; j < dim; ++j)
+    accumulated[j] *= invN;
+  return accumulated;
+}
+
+DataContainer StatisticsEngine::ComputeCentralMomentBlockwise(const DataContainer & sample,
+    UnsignedInteger k,
+    UnsignedInteger blockSize)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger nbRows = sample.getSize();
+  const UnsignedInteger dim = sample.getDimension();
+  if (nbRows == 0) return DataContainer(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  if (k == 0) return DataContainer(1, dim, 1.0, DataContainer::ROW_MAJOR);
+  if (nbRows <= blockSize) return ComputeCentralMoment(sample, k);
+  const DataContainer mean = ComputeMeanBlockwise(sample, blockSize);
+  DataContainer accumulated(1, dim, 0.0, DataContainer::ROW_MAJOR);
+  const Scalar * src = sample.data();
+  UnsignedInteger processed = 0;
+  while (processed < nbRows)
+  {
+    const UnsignedInteger currentBlock = std::min(blockSize, nbRows - processed);
+    const Scalar * block = src + processed * dim;
+    for (UnsignedInteger i = 0; i < currentBlock; ++i)
+      for (UnsignedInteger j = 0; j < dim; ++j)
+        accumulated[j] += std::pow(block[i * dim + j] - mean[j], static_cast<Scalar>(k));
+    processed += currentBlock;
+  }
+  const Scalar invN = 1.0 / static_cast<Scalar>(nbRows);
+  for (UnsignedInteger j = 0; j < dim; ++j)
+    accumulated[j] *= invN;
+  return accumulated;
+}
+
 
 END_NAMESPACE_OPENTURNS
