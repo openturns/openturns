@@ -1745,4 +1745,27 @@ DataContainer AlgebraEngine::SolveLinearSystemRectangularBlockwise(
   return x;
 }
 
+DataContainer AlgebraEngine::TransposeBlockwise(const DataContainer & A,
+    UnsignedInteger blockSize)
+{
+  const UnsignedInteger m = A.getSize();
+  const UnsignedInteger n = A.getDimension();
+  DataContainer result(n, m, 0.0);
+  if (blockSize == 0) throw InvalidArgumentException(HERE) << "Block size must be positive";
+  // Cache-tiled transpose: each element is assigned exactly once with the
+  // same value as the dense path, so the result is bitwise-identical
+  for (UnsignedInteger i0 = 0; i0 < m; i0 += blockSize)
+  {
+    const UnsignedInteger i1 = std::min(i0 + blockSize, m);
+    for (UnsignedInteger j0 = 0; j0 < n; j0 += blockSize)
+    {
+      const UnsignedInteger j1 = std::min(j0 + blockSize, n);
+      for (UnsignedInteger i = i0; i < i1; ++i)
+        for (UnsignedInteger j = j0; j < j1; ++j)
+          result(j, i) = A(i, j);
+    }
+  }
+  return result;
+}
+
 END_NAMESPACE_OPENTURNS

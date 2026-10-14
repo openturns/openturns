@@ -552,6 +552,23 @@ AT : DataContainer
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::AlgebraEngine::TransposeBlockwise
+"Compute matrix transpose by cache-tiled blocks.
+
+Parameters
+----------
+A : DataContainer
+    Input matrix (column-major, m x n).
+blockSize : int, optional
+    Tile size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
+
+Returns
+-------
+AT : DataContainer
+    Transposed matrix (column-major, n x m), bitwise-identical to Transpose."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::AlgebraEngine::Inverse
 "Compute matrix inverse.
 
