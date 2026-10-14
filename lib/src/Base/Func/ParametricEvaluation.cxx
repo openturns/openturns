@@ -19,6 +19,11 @@
  *
  */
 #include "openturns/ParametricEvaluation.hxx"
+#include "openturns/SymbolicEvaluation.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/OSS.hxx"
+#include <cmath>
+#include <locale>
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
@@ -80,6 +85,7 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   // Set the relevant part of the reference point in the parameters
   parameter_ = referencePoint;
   parameterDescription_ = function.getInputDescription().select(parametersPositions_);
+  updateReducedFunction();
 }
 
 /* Virtual constructor method */
@@ -101,9 +107,92 @@ Bool ParametricEvaluation::equals(const EvaluationImplementation & other) const
   return p_other && (*this == *p_other);
 }
 
+/* Substitute the frozen parameters into symbolic formulas once and
+   recompile, so repeated evaluations skip the splicing, see #2902 */
+void ParametricEvaluation::updateReducedFunction()
+{
+  useReduced_ = false;
+  // Nothing is frozen: the underlying function is already compiled
+  if (parametersPositions_.getSize() == 0) return;
+  const SymbolicEvaluation * p_symbolic = dynamic_cast<const SymbolicEvaluation *>(function_.getEvaluation().getImplementation().get());
+  if (!p_symbolic) return;
+  const Description inputVariables(p_symbolic->getInputVariablesNames());
+  const Description outputVariables(p_symbolic->getOutputVariablesNames());
+  const Description formulas(p_symbolic->getFormulas());
+  // Free variables keep the inputPositions_ order used by operator()
+  Description freeVariables(0);
+  for (UnsignedInteger j = 0; j < inputPositions_.getSize(); ++j)
+    freeVariables.add(inputVariables[inputPositions_[j]]);
+  // Nothing to compile when every input is frozen
+  if (freeVariables.getSize() == 0) return;
+  const UnsignedInteger parametersDimension = parametersPositions_.getSize();
+  // A non-finite frozen value cannot be substituted into the formula: the
+  // parser rejects nan and inf as undefined symbols. Keep the generic path,
+  // which passes such values as ordinary input coordinates.
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+    if (!std::isfinite(parameter_[i])) return;
+  Description reducedFormulas(formulas.getSize());
+  for (UnsignedInteger f = 0; f < formulas.getSize(); ++f)
+  {
+    const String & formula = formulas[f];
+    String reduced;
+    String::size_type cursor = 0;
+    while (cursor < formula.size())
+    {
+      if (std::isalnum(formula[cursor], std::locale::classic()) || (formula[cursor] == '_'))
+      {
+        String::size_type end = cursor;
+        while ((end < formula.size()) && (std::isalnum(formula[end], std::locale::classic()) || (formula[end] == '_'))) ++end;
+        const String token(formula.substr(cursor, end - cursor));
+        Bool frozen = false;
+        for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+          if (token == inputVariables[parametersPositions_[i]])
+          {
+            // Keep the full double precision and protect the value with
+            // parentheses, as in a^2 where a = -2 must read (-2)^2
+            OSS value;
+            value.setPrecision(17);
+            value << parameter_[i];
+            reduced += "(" + String(value) + ")";
+            frozen = true;
+            break;
+          }
+        if (!frozen) reduced += token;
+        cursor = end;
+      }
+      else
+      {
+        reduced += formula[cursor];
+        ++cursor;
+      }
+    }
+    reducedFormulas[f] = reduced;
+  }
+  // A single formula may define one or several outputs by their symbolic
+  // names, as in `result := ...`: compile it with the output variables so
+  // that the assignment resolves the declared output name. Plain expressions
+  // are mapped positionally to the default output names, which the
+  // output-name constructor would silently evaluate as zero.
+  const Bool hasAssignments = (reducedFormulas.getSize() == 1)
+                              && (reducedFormulas[0].find(":=") != String::npos);
+  if (hasAssignments)
+    reducedFunction_ = SymbolicFunction(freeVariables, outputVariables, reducedFormulas[0]);
+  else
+    reducedFunction_ = SymbolicFunction(freeVariables, reducedFormulas);
+  reducedFunction_.setOutputDescription(function_.getOutputDescription());
+  useReduced_ = true;
+}
+
 /* Evaluation operator */
 Point ParametricEvaluation::operator() (const Point & point) const
 {
+  // Precompiled reduced function when the underlying is symbolic
+  if (useReduced_)
+  {
+    Point value(reducedFunction_(point));
+    callsNumber_.increment();
+    return value;
+  }
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger pointDimension = point.getDimension();
   const UnsignedInteger parametersDimension = getParameterDimension();
@@ -119,6 +208,13 @@ Point ParametricEvaluation::operator() (const Point & point) const
 /* Operator () */
 Sample ParametricEvaluation::operator() (const Sample & inSample) const
 {
+  // Precompiled reduced function when the underlying is symbolic
+  if (useReduced_)
+  {
+    const Sample output(reducedFunction_(inSample));
+    callsNumber_.fetchAndAdd(inSample.getSize());
+    return output;
+  }
   const UnsignedInteger size = inSample.getSize();
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger sampleDimension = inSample.getDimension();
@@ -159,6 +255,7 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
 
       ParametricEvaluation evaluation(function_, inputPositions_, inP);
       evaluation.inputPositions_ = parametersPositions_; // keep parameters order
+      evaluation.useReduced_ = false; // positions changed after the reduced function was built
       const Matrix reducedGradient(CenteredFiniteDifferenceGradient(step, evaluation).gradient(parameter_));
       return reducedGradient;
     }
@@ -176,6 +273,7 @@ Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
 
       ParametricEvaluation evaluation(function_, inputPositions_, inP);
       evaluation.inputPositions_ = parametersPositions_; // keep parameters order
+      evaluation.useReduced_ = false; // positions changed after the reduced function was built
       const NonCenteredFiniteDifferenceGradient reducedGradient(step, evaluation);
       return reducedGradient.gradient(parameter_);
     }
@@ -204,6 +302,12 @@ void ParametricEvaluation::setParameter(const Point & parameters)
     throw InvalidArgumentException(HERE) << "ParametricEvaluation expected a parameter of dimension " << parametersPositions_.getSize()
                                          << ", got dimension " << parametersDimension;
   parameter_ = parameters;
+  // Do not recompile the substituted formulas here: setParameter() is called in
+  // hot loops where the parameter changes at every call, e.g. by the
+  // Metropolis-Hastings likelihood. The generic path already splits the
+  // current parameter values into the input point of the compiled function.
+  useReduced_ = false;
+  reducedFunction_ = Function();
 }
 
 /* Parameters positions accessor */
@@ -297,6 +401,7 @@ void ParametricEvaluation::setInputDescription(const Description & inputDescript
   for (UnsignedInteger i = 0; i < inputDimension; ++ i)
     fullInputDescription[inputPositions_[i]] = inputDescription[i];
   function_.setInputDescription(fullInputDescription);
+  if (useReduced_) reducedFunction_.setInputDescription(inputDescription);
 }
 
 Description ParametricEvaluation::getInputDescription() const
@@ -308,6 +413,7 @@ Description ParametricEvaluation::getInputDescription() const
 void ParametricEvaluation::setOutputDescription(const Description & outputDescription)
 {
   function_.setOutputDescription(outputDescription);
+  if (useReduced_) reducedFunction_.setOutputDescription(outputDescription);
 }
 
 Description ParametricEvaluation::getOutputDescription() const
@@ -341,6 +447,8 @@ void ParametricEvaluation::load(Advocate & adv)
   adv.loadAttribute( "function_", function_ );
   adv.loadAttribute( "parametersPositions_", parametersPositions_ );
   adv.loadAttribute( "inputPositions_", inputPositions_ );
+  // parameter_ is restored by EvaluationImplementation::load()
+  updateReducedFunction();
 }
 
 
