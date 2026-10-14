@@ -269,9 +269,7 @@ void VonMisesFisher::setParameter(const Point & parameter)
   Point mu(size - 1);
   std::copy(parameter.begin(), parameter.begin() + size - 1, mu.begin());
   const Scalar kappa = parameter[size - 1];
-  const Scalar w = getWeight();
   *this = VonMisesFisher(mu, kappa);
-  setWeight(w);
 }
 
 Description VonMisesFisher::getParameterDescription() const

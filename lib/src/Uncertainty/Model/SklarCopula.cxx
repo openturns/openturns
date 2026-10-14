@@ -422,9 +422,7 @@ void SklarCopula::setParameter(const Point & parameters)
 {
   Distribution newDistribution(distribution_);
   newDistribution.setParameter(parameters);
-  const Scalar w = getWeight();
   *this = SklarCopula(newDistribution);
-  setWeight(w);
 }
 
 Description SklarCopula::getParameterDescription() const
@@ -447,9 +445,7 @@ Bool SklarCopula::hasEllipticalCopula() const
 /* Distribution accessor */
 void SklarCopula::setDistribution(const Distribution & distribution)
 {
-  const Scalar w = getWeight();
   *this = SklarCopula(distribution);
-  setWeight(w);
 }
 
 /* Distribution accessor */

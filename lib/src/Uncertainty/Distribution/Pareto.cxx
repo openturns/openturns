@@ -289,9 +289,7 @@ Point Pareto::getParameter() const
 void Pareto::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = Pareto(parameter[0], parameter[1], parameter[2]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

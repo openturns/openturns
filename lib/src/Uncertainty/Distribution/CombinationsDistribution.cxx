@@ -429,9 +429,7 @@ void CombinationsDistribution::setParameter(const Point & parameter)
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "CombinationsDistribution expected 2 parameters, got " << parameter.getSize();
   if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "CombinationsDistribution first parameter k must be an integer, got " << parameter[0];
   if (parameter[1] != std::round(parameter[1])) throw InvalidArgumentException(HERE) << "CombinationsDistribution second parameter n must be an integer, got " << parameter[1];
-  const Scalar w = getWeight();
   *this = CombinationsDistribution(parameter[0], parameter[1]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

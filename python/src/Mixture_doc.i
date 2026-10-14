@@ -14,9 +14,7 @@ collDist : sequence of :class:`~openturns.Distribution`,
 weights : sequence of float, optional
     A sequence with each component :math:`\geq 0`, of dimension equal to the
     size of *collDist*. The collection of weights applied to the collection of
-    distributions. By default, the weights fulfilled inside
-    each distribution are used (if any), thanks to the method
-    *collDist[i].setWeight(myWeight)*. If not set, the weights are all
+    distributions. By default, the weights are all
     taken equal to 1. The weights are automatically normalized so that their
     sum is equal to 1.
 

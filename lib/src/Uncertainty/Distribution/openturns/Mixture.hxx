@@ -181,12 +181,11 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-
-
-private:
   /** Set distribution collection with weights given in a vector */
   void setDistributionCollectionWithWeights(const DistributionCollection & coll,
       const Point & weights);
+
+private:
 
   /** Compute the mean of a mixture */
   void computeMean() const override;

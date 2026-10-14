@@ -11,7 +11,6 @@ Uniform
 <ul>
   <li>name=Uniform</li>
   <li>dimension=1</li>
-  <li>weight=1</li>
   <li>range=[-100, 1.1e+03]</li>
   <li>description=[v0]</li>
   <li>parameter=[-100,1.1e+03]</li>
@@ -27,7 +26,6 @@ distribution (Markdown)
 Uniform
 - name=Uniform
 - dimension=1
-- weight=1
 - range=[-100, 1.1e+03]
 - description=[v0]
 - parameter=[-100,1.1e+03]

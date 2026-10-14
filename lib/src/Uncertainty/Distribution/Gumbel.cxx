@@ -301,9 +301,7 @@ Point Gumbel::getParameter() const
 void Gumbel::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = Gumbel(parameter[0], parameter[1]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

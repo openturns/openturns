@@ -596,9 +596,7 @@ void WrappedNormal::setParameter(const Point & parameter)
       sigma(i, j) = parameter[idx++];
   const Scalar period = parameter[idx];
 
-  const Scalar w = getWeight();
   *this = WrappedNormal(mu, sigma, period);
-  setWeight(w);
 }
 
 Description WrappedNormal::getParameterDescription() const

@@ -36,12 +36,9 @@ int main(int, char *[])
     {
       Mixture::DistributionCollection atoms(3);
       atoms[0] = Normal(-3.0, 1.0);
-      atoms[0].setWeight(1.0);
       atoms[1] = Normal(1.0, 2.0);
-      atoms[1].setWeight(2.0);
       atoms[2] = Normal(3.0, 3.0);
-      atoms[2].setWeight(4.0);
-      Mixture distribution(atoms);
+      Mixture distribution(atoms, Point({1.0, 2.0, 4.0}));
       Mixture::PointWithDescriptionCollection parameters(distribution.getParametersCollection());
       fullprint << "parameters=" << parameters << std::endl;
       Point parameter(distribution.getParameter());

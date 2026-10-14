@@ -303,9 +303,7 @@ void MultivariateUniform::setParameter(const Point & parameter)
   Point b(dimension);
   std::copy(parameter.begin(), parameter.begin() + dimension, a.begin());
   std::copy(parameter.begin() + dimension, parameter.end(), b.begin());
-  const Scalar w = getWeight();
   *this = MultivariateUniform(a, b);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

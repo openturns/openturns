@@ -406,10 +406,8 @@ void MatrixFisher::setParameter(const Point & parameter)
     for (UnsignedInteger j = 0; j < 3; ++j)
       F(i, j) = parameter[i * 3 + j];
 
-  const Scalar w = getWeight();
   const Scalar epsilon = epsilon_;
   *this = MatrixFisher(F);
-  setWeight(w);
   setEpsilon(epsilon);
 }
 

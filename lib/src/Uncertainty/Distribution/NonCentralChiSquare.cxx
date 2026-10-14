@@ -194,10 +194,8 @@ Point NonCentralChiSquare::getParameter() const
 void NonCentralChiSquare::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   const UnsignedInteger maximumIteration = getMaximumIteration();
   *this = NonCentralChiSquare(parameter[0], parameter[1]);
-  setWeight(w);
   setMaximumIteration(maximumIteration);
 }
 

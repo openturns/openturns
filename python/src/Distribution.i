@@ -36,8 +36,6 @@ OTTypedCollectionInterfaceObjectHelper(Distribution)
 }
 
 %ignore OT::Distribution::pow;
-%ignore OT::Distribution::setWeight;
-%ignore OT::Distribution::getWeight;
 
 %include openturns/Distribution.hxx
 

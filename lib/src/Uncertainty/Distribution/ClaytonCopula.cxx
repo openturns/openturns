@@ -554,9 +554,7 @@ Point ClaytonCopula::getParameter() const
 void ClaytonCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 parameter, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = ClaytonCopula(parameter[0]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

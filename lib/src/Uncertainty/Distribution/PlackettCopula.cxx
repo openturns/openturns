@@ -301,9 +301,7 @@ void PlackettCopula::setParameter(const Point & parameter)
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   if (parameter[0] != theta_)
   {
-    const Scalar w = getWeight();
     *this = PlackettCopula(parameter[0]);
-    setWeight(w);
   }
 }
 

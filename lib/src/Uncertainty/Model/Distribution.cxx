@@ -251,20 +251,6 @@ String Distribution::__repr_markdown__() const
   return getImplementation()->__repr_markdown__();
 }
 
-/* Weight accessor */
-void Distribution::setWeight(const Scalar w)
-{
-  copyOnWrite();
-  getImplementation()->setWeight(w);
-}
-
-/* Weight accessor */
-Scalar Distribution::getWeight() const
-{
-  return getImplementation()->getWeight();
-}
-
-
 /* Dimension accessor */
 UnsignedInteger Distribution::getDimension() const
 {

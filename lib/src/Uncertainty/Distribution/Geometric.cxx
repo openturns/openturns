@@ -264,9 +264,7 @@ Point Geometric::getParameter() const
 void Geometric::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = Geometric(parameter[0]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

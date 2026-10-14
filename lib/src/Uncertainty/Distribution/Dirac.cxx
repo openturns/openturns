@@ -283,7 +283,6 @@ Dirac::PointWithDescriptionCollection Dirac::getParametersCollection() const
 
 void Dirac::setParametersCollection(const PointCollection & parametersCollection)
 {
-  const Scalar w = getWeight();
   const UnsignedInteger dimension = parametersCollection.getSize();
   Point point(dimension);
   // The ith component of the point is supposed to be the first component of the point
@@ -291,7 +290,6 @@ void Dirac::setParametersCollection(const PointCollection & parametersCollection
   for (UnsignedInteger i = 0; i < dimension; ++i)
     point[i] = parametersCollection[i][0];
   *this = Dirac(point);
-  setWeight(w);
 }
 
 Point Dirac::getParameter() const
@@ -301,9 +299,7 @@ Point Dirac::getParameter() const
 
 void Dirac::setParameter(const Point & parameter)
 {
-  const Scalar w = getWeight();
   *this = Dirac(parameter);
-  setWeight(w);
 }
 
 Description Dirac::getParameterDescription() const

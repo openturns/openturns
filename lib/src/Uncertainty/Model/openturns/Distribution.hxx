@@ -124,10 +124,6 @@ public:
   String _repr_html_() const override;
   String __repr_markdown__() const override;
 
-  /** Weight accessor */
-  void setWeight(const Scalar w);
-  Scalar getWeight() const;
-
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 

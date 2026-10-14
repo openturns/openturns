@@ -755,12 +755,10 @@ void MultivariateHypergeometric::setParameter(const Point & parameter)
   if (1.0 * total < parameter[0]) throw InvalidArgumentException(HERE) << "the total population = " << total << " must be greater or equal to the number of draws n = " << parameter[0];
   const Scalar eta = eta_;
   const Scalar smallA = smallA_;
-  const Scalar w = getWeight();
   const Description d(getDescription());
   *this = MultivariateHypergeometric(static_cast<UnsignedInteger>(parameter[0]), colors, total);
   setSmallA(smallA);
   setEta(eta);
-  setWeight(w);
   setDescription(d);
 }
 

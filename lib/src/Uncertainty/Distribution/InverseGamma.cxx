@@ -351,9 +351,7 @@ Point InverseGamma::getParameter() const
 void InverseGamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 parameters, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = InverseGamma(parameter[0], parameter[1]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

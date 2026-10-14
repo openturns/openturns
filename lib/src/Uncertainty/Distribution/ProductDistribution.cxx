@@ -826,9 +826,7 @@ void ProductDistribution::setParameter(const Point & parameter)
   Distribution newRight(p_right_);
   newLeft.setParameter(newLeftParameters);
   newRight.setParameter(newRightParameters);
-  const Scalar w = getWeight();
   *this = ProductDistribution(newLeft, newRight);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

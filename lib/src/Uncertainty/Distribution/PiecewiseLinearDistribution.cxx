@@ -509,13 +509,11 @@ void PiecewiseLinearDistribution::setParameter(const Point & parameter)
 {
   const UnsignedInteger n = x_.getSize();
   if (parameter.getSize() != 2 * n) throw InvalidArgumentException(HERE) << "Error: expected " << 2 * n << " values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   Point x(n);
   Point y(n);
   std::copy(parameter.begin(), parameter.begin() + n, x.begin());
   std::copy(parameter.begin() + n, parameter.end(), y.begin());
   *this = PiecewiseLinearDistribution(x, y);
-  setWeight(w);
 }
 
 
