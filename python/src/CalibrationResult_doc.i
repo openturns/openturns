@@ -319,3 +319,28 @@ Returns
 -------
 bayesian : bool
     Whether the method is Bayesian"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::isParameterDistributionPosterior
+"Whether the parameter distribution is a posterior distribution.
+
+Returns
+-------
+isPosterior : bool
+    True when the parameter distribution is a posterior distribution,
+    False when it is the distribution of the MAP under bootstrap
+    resampling. Used by :meth:`drawParameterDistributions` to label
+    the parameter distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setIsParameterDistributionPosterior
+"Set whether the parameter distribution is a posterior distribution.
+
+Parameters
+----------
+isPosterior : bool
+    True when the parameter distribution is a posterior distribution,
+    False when it is the distribution of the MAP under bootstrap
+    resampling."
