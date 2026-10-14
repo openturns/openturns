@@ -226,3 +226,26 @@ ott.assert_almost_equal(
     tailSample.computeQuantile(1.0e-9, True),
     tailSample.computeQuantile(1.0 - 1.0e-9),
 )
+
+# Super-quantile (expected shortfall), see issue #3013
+superSample = ot.Normal(2).getSample(50)
+for prob in [0.0, 0.5, 0.9]:
+    threshold = superSample.computeQuantilePerComponent(prob)
+    expected = [0.0, 0.0]
+    counts = [0, 0]
+    for i in range(superSample.getSize()):
+        for j in range(2):
+            if superSample[i, j] >= threshold[j]:
+                expected[j] += superSample[i, j]
+                counts[j] += 1
+    expected = [expected[j] / counts[j] for j in range(2)]
+    ott.assert_almost_equal(superSample.computeSuperQuantile(prob), expected)
+with ott.assert_raises(Exception):
+    superSample.computeSuperQuantile(1.5)
+# Independent oracle: Normal(0, 1) expected shortfall at 0.9 is
+# phi(q)/((1 - Phi(q))) with q the 0.9 quantile, about 1.755
+ot.RandomGenerator.SetSeed(1)
+normalSample = ot.Normal().getSample(20000)
+ott.assert_almost_equal(
+    normalSample.computeSuperQuantile(0.9), [1.755], 1e-1, 1e-1
+)

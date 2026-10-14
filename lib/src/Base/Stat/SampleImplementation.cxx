@@ -1423,6 +1423,25 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
   return moment / size_;
 }
 
+Point SampleImplementation::computeSuperQuantile(const Scalar prob) const
+{
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the super-quantile of an empty sample.";
+  if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a super-quantile for a probability level outside of [0, 1]";
+  // Mean of the points above the quantile, component by component
+  const Point threshold(computeQuantilePerComponent(prob));
+  Point result(dimension_, 0.0);
+  Point counts(dimension_, 0.0);
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      if (operator()(i, j) >= threshold[j])
+      {
+        result[j] += operator()(i, j);
+        counts[j] += 1.0;
+      }
+  for (UnsignedInteger j = 0; j < dimension_; ++j) result[j] /= counts[j];
+  return result;
+}
+
 /*
  * Gives the quantile per component of the sample
  */
