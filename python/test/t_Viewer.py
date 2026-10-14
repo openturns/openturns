@@ -321,3 +321,13 @@ View(labelGraph)
 titleGraph = ot.Normal(2).drawPDF()
 titleView = View(titleGraph, title_kw={"fontsize": 20})
 assert titleView._fig._suptitle.get_fontsize() == 20
+
+# Cloud transparency survives Graph.add and reaches the viewer, see issue #2831
+alphaCloud = ot.Cloud([[0.0, 0.0], [1.0, 1.0]])
+alphaCloud.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaCloud)
+assert abs(alphaGraph.getDrawable(0).getAlpha() - 0.3) < 1e-2
+alphaView = View(alphaGraph)
+facecolor = alphaView._ax[0].collections[0].get_facecolor()[0]
+assert abs(facecolor[3] - 0.3) < 1e-2
