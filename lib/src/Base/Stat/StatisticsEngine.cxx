@@ -436,6 +436,210 @@ DataContainer StatisticsEngine::ComputeKendallTau(const DataContainer & sample)
   return result;
 }
 
+/* ===== ComputeWeightedKendallTau ===== */
+
+/* Sort the atoms of one component into epsilon tie groups, accumulating
+   the probability mass of each group and of the tied atom pairs */
+struct KendallTieComponent
+{
+  KendallTieComponent() {}
+
+  KendallTieComponent(const Scalar * data,
+                      const Scalar * weights,
+                      UnsignedInteger size,
+                      UnsignedInteger dimension,
+                      UnsignedInteger component,
+                      Scalar epsilon)
+    : order_(size)
+    , group_(size)
+    , tiedMass_(0.0)
+  {
+    for (UnsignedInteger k = 0; k < size; ++k) order_[k] = k;
+    std::stable_sort(order_.begin(), order_.end(), [data, dimension, component](UnsignedInteger a, UnsignedInteger b)
+    {
+      return data[a * dimension + component] < data[b * dimension + component];
+    });
+    // Gather the atoms sharing the same value (up to epsilon) into tie groups
+    UnsignedInteger first = 0;
+    while (first < size)
+    {
+      UnsignedInteger last = first;
+      Scalar mass = 0.0;
+      Scalar squaredMass = 0.0;
+      while (last < size)
+      {
+        if ((last > first) && (std::abs(data[order_[last] * dimension + component] - data[order_[first] * dimension + component]) > epsilon)) break;
+        const Scalar p = weights[order_[last]];
+        mass += p;
+        squaredMass += p * p;
+        ++last;
+      }
+      const UnsignedInteger currentGroup = static_cast<UnsignedInteger>(groupMass_.size());
+      groupMass_.push_back(mass);
+      for (UnsignedInteger k = first; k < last; ++k) group_[order_[k]] = currentGroup;
+      // Probability of the pairs of atoms tied for this component
+      tiedMass_ += 0.5 * (mass * mass - squaredMass);
+      first = last;
+    }
+  }
+
+  /** Get the index of the k-th atom in increasing order of the component */
+  UnsignedInteger operator[](UnsignedInteger k) const
+  {
+    return order_[k];
+  }
+
+  /** Get the tie group of an atom */
+  UnsignedInteger getGroup(UnsignedInteger k) const
+  {
+    return group_[k];
+  }
+
+  /** Get the number of tie groups */
+  UnsignedInteger getGroupNumber() const
+  {
+    return static_cast<UnsignedInteger>(groupMass_.size());
+  }
+
+  /** Get the probability of the pairs of atoms tied for this component */
+  Scalar getTiedMass() const
+  {
+    return tiedMass_;
+  }
+
+  /** The indices of the atoms sorted by increasing value of the component */
+  std::vector<UnsignedInteger> order_;
+  /** The tie group of each atom */
+  std::vector<UnsignedInteger> group_;
+  /** The probability mass of each tie group */
+  std::vector<Scalar> groupMass_;
+  /** The probability of the pairs of atoms tied for this component */
+  Scalar tiedMass_ = 0.0;
+}; // struct KendallTieComponent
+
+/* Accumulate the probability mass of the atoms gathered by tie group in
+   order to evaluate in logarithmic time the mass of the tie groups less
+   than a given one. Binary indexed tree (Fenwick tree), tie groups numbered
+   from 0 while the tree is indexed from 1 */
+struct KendallMassTree
+{
+  explicit KendallMassTree(UnsignedInteger size)
+    : partialSum_(size + 1, 0.0)
+    , size_(size)
+  {
+    // Nothing to do
+  }
+
+  /** Add the given mass to the atoms of the given tie group */
+  void add(UnsignedInteger group,
+           Scalar mass)
+  {
+    for (UnsignedInteger index = group + 1; index <= size_; index += index & (~index + 1)) partialSum_[index] += mass;
+  }
+
+  /** Get the mass of the atoms of the tie groups less than the given one */
+  Scalar getLowerMass(UnsignedInteger group) const
+  {
+    Scalar mass = 0.0;
+    for (UnsignedInteger index = group; index > 0; index -= index & (~index + 1)) mass += partialSum_[index];
+    return mass;
+  }
+
+  /** The partial sums */
+  std::vector<Scalar> partialSum_;
+  /** The number of tie groups */
+  UnsignedInteger size_;
+}; // struct KendallMassTree
+
+DataContainer StatisticsEngine::ComputeWeightedKendallTau(const DataContainer & sample,
+    const DataContainer & weights,
+    Scalar epsilon)
+{
+  CheckSampleLayout(sample);
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger dimension = sample.getDimension();
+  DataContainer result(dimension, dimension, 0.0, DataContainer::ROW_MAJOR);
+  for (UnsignedInteger i = 0; i < dimension; ++i) result(i, i) = 1.0;
+  if (dimension < 2 || size == 0) return result;
+  if (weights.getSize() * weights.getDimension() != size)
+    throw InvalidDimensionException(HERE) << "Weights size=" << weights.getSize() * weights.getDimension() << " must match sample size=" << size;
+  const Scalar * pData = sample.data();
+  const Scalar * pWeights = weights.data();
+  // Probability of a pair of distinct atoms
+  Scalar sumSquares = 0.0;
+  for (UnsignedInteger k = 0; k < size; ++k) sumSquares += pWeights[k] * pWeights[k];
+  const Scalar pairMass = 0.5 * (1.0 - sumSquares);
+  if (!(pairMass > 0.0)) return result;
+  // Sort the atoms by increasing value of each component
+  std::vector<KendallTieComponent> sortedComponents;
+  sortedComponents.reserve(dimension);
+  std::vector<Scalar> untiedMass(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    sortedComponents.emplace_back(pData, pWeights, size, dimension, i, epsilon);
+    // The atoms tied for a given component do not contribute to the numerator,
+    // but they are removed from the denominators, as in ComputeKendallTau()
+    untiedMass[i] = pairMass - sortedComponents[i].getTiedMass();
+    if (!(untiedMass[i] > 0.0)) untiedMass[i] = pairMass;
+  }
+  std::vector<Scalar> tiedMass;
+  Scalar totalMass = 0.0;
+  Scalar concordance = 0.0;
+  for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+  {
+    for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+    {
+      const KendallTieComponent & sortedRow = sortedComponents[rowIndex];
+      const KendallTieComponent & sortedColumn = sortedComponents[columnIndex];
+      const UnsignedInteger groupNumber = sortedColumn.getGroupNumber();
+      // Tree accumulating the mass of the atoms already visited, indexed by
+      // their tie group for the column component
+      KendallMassTree massTree(groupNumber);
+      // Mass of the atoms already visited, per tie group and in total
+      tiedMass.assign(groupNumber, 0.0);
+      totalMass = 0.0;
+      concordance = 0.0;
+      // Walk through the atoms by increasing value of the row component. A tie
+      // group is entirely read before being inserted, so that only strictly
+      // smaller values of the row component contribute to the concordance
+      UnsignedInteger first = 0;
+      while (first < size)
+      {
+        const UnsignedInteger group = sortedRow.getGroup(sortedRow[first]);
+        UnsignedInteger last = first;
+        while ((last < size) && (sortedRow.getGroup(sortedRow[last]) == group)) ++last;
+        // The atoms tied for the column component are neither concordant nor
+        // discordant, hence their exclusion from the concordance
+        for (UnsignedInteger k = first; k < last; ++k)
+        {
+          const UnsignedInteger atom = sortedRow[k];
+          const UnsignedInteger columnGroup = sortedColumn.getGroup(atom);
+          // Mass of the inserted atoms with a lower or a higher value for the
+          // column component, ie strictly lower and strictly higher
+          const Scalar lowerMass = massTree.getLowerMass(columnGroup);
+          const Scalar higherMass = totalMass - lowerMass - tiedMass[columnGroup];
+          concordance += pWeights[atom] * (lowerMass - higherMass);
+        } // k
+        // Then insert the atoms of the tie group
+        for (UnsignedInteger k = first; k < last; ++k)
+        {
+          const UnsignedInteger atom = sortedRow[k];
+          const UnsignedInteger columnGroup = sortedColumn.getGroup(atom);
+          const Scalar p = pWeights[atom];
+          massTree.add(columnGroup, p);
+          tiedMass[columnGroup] += p;
+          totalMass += p;
+        } // k
+        first = last;
+      } // tie group
+      const Scalar tau = concordance / std::sqrt(untiedMass[rowIndex] * untiedMass[columnIndex]);
+      result(rowIndex, columnIndex) = tau;
+      result(columnIndex, rowIndex) = tau;
+    } // columnIndex
+  } // rowIndex
+  return result;
+}
+
 /* ===== ComputeQuantile ===== */
 
 DataContainer StatisticsEngine::ComputeQuantile(const DataContainer & sample,
