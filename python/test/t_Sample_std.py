@@ -221,3 +221,11 @@ ott.assert_almost_equal(
     tailSample.computeQuantile(1.0e-9, True),
     tailSample.computeQuantile(1.0 - 1.0e-9),
 )
+
+# Flat float sequences build N x 1 samples, see issue #2968
+flatSample = ot.Sample([0.0] * 10)
+assert flatSample.getSize() == 10
+assert flatSample.getDimension() == 1
+ott.assert_almost_equal(flatSample.computeMean(), [0.0])
+with ott.assert_raises(Exception):
+    ot.Sample([0.0, "a"])

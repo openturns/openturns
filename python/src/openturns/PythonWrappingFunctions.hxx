@@ -1098,6 +1098,22 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   const UnsignedInteger size = Sequence_Fast_GET_SIZE(newPyObj.get());
   if (size == 0) return Sample();
 
+  // Flat sequence of scalars: N x 1 sample (see issue #2968)
+  PyObject * firstValue = Sequence_Fast_GET_ITEM(newPyObj.get(), 0);
+  if (!PySequence_Check(firstValue))
+  {
+    Sample sample(size, 1);
+    for(UnsignedInteger i = 0; i < size; ++i)
+    {
+      PyObject * value = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
+      sample(i, 0) = checkAndConvert<_PyFloat_, Scalar>(value);
+      Sequence_Fast_DECREF_ITEM(value);
+    }
+    Sequence_Fast_DECREF_ITEM(firstValue);
+    return sample;
+  }
+  Sequence_Fast_DECREF_ITEM(firstValue);
+
   // Get dimension of first point
   PyObject * firstPoint = Sequence_Fast_GET_ITEM(newPyObj.get(), 0);
   check<_PySequence_>(firstPoint);
