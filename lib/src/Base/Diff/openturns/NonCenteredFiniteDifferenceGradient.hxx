@@ -74,6 +74,7 @@ public:
 
 
   /* Here is the interface that all derived class must implement */
+  using GradientImplementation::gradient;
 
   /** This method computes the gradient at some point
    * @param in The point where the gradient is computed

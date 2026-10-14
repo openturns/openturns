@@ -23,6 +23,7 @@
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Tensor.hxx"
@@ -86,6 +87,14 @@ public:
 
   /** Gradient method */
   virtual Matrix gradient(const Point & inP) const;
+
+  /** Batch gradient over a sample, see issue #2741.
+      Returns a sample with inputDimension * outputDimension columns holding
+      the flattened gradient matrices in column-major order, so that
+      statistics over gradients can be estimated by sampling. The default
+      implementation loops over the point-wise gradient; subclasses may
+      override it with a truly vectorized evaluation. */
+  virtual Sample gradient(const Sample & inS) const;
 
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;

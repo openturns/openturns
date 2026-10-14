@@ -463,17 +463,19 @@ OT_Function_setHessian_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_gradient_doc
-R"RAW(Return the Jacobian transposed matrix of the function at a point.
+R"RAW(Return the Jacobian transposed matrix of the function at a point or sample.
 
 Parameters
 ----------
-inP : sequence of float
-    Point where the Jacobian transposed matrix is calculated.
+inP : sequence of float or 2-d sequence of float
+    Point or sample where the Jacobian transposed matrix is calculated.
 
 Returns
 -------
-gradient : :class:`~openturns.Matrix`
-    The Jacobian transposed matrix of the function at *inP*.
+gradient : :class:`~openturns.Matrix` or :class:`~openturns.Sample`
+    The Jacobian transposed matrix of the function at *inP*. For a
+    sample input, the flattened gradient matrices in column-major order,
+    with ``inputDimension * outputDimension`` columns.
 
 Notes
 -----

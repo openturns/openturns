@@ -380,6 +380,34 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
   }
 }
 
+/* Batch gradient() over a sample, with the same fallback policy */
+Sample FunctionImplementation::gradient(const Sample & inS) const
+{
+  // Here we must catch the exceptions raised by functions with undefined gradient
+  try
+  {
+    return gradient_.gradient(inS);
+  }
+  catch (const NotDefinedException &)
+  {
+    // the gradient may not exist (NoGradient class)
+    // the symbolic derivative parser might fail to parse or differentiate expression
+    // also the symbolic evaluation parser might fail to evaluation expression
+  }
+
+  // Fallback on non-centered finite difference gradient
+  try
+  {
+    LOGWARN(OSS() << "Switch to finite difference to compute the gradient over a sample of size " << inS.getSize());
+    const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon"), evaluation_);
+    return gradientFD.gradient(inS);
+  }
+  catch (const Exception & exc)
+  {
+    throw InternalException(HERE) << "Cannot compute FD gradient over a sample msg: " << exc.what();
+  }
+}
+
 /* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
 {
