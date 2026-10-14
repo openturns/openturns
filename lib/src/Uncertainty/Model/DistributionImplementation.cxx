@@ -220,6 +220,21 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
   return new JointDistribution(marginals, getCopula());
 }
 
+/* Addition operator with a point */
+Distribution DistributionImplementation::operator + (const Point & point) const
+{
+  if (point.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Can only add a point of dimension " << dimension_ << ", here dimension=" << point.getDimension();
+  if (point.norm() == 0.0) return clone();
+  // Special case: Dirac distribution
+  if (getClassName() == "Dirac") return new Dirac(getRealization() + point);
+  if (dimension_ == 1) return operator +(point[0]);
+  // Shift each marginal, preserving the copula as the scalar version does
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    marginals[j] = getMarginal(j) + point[j];
+  return new JointDistribution(marginals, getCopula());
+}
+
 /* Subtraction operator */
 Distribution DistributionImplementation::operator - (const Distribution & other) const
 {
@@ -262,6 +277,14 @@ Distribution DistributionImplementation::operator - (const Scalar value) const
 {
   if (value == 0.0) return clone();
   return *this + (-value);
+}
+
+/* Subtraction operator with a point */
+Distribution DistributionImplementation::operator - (const Point & point) const
+{
+  if (point.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Can only subtract a point of dimension " << dimension_ << ", here dimension=" << point.getDimension();
+  if (point.norm() == 0.0) return clone();
+  return *this + (-point);
 }
 
 /* Multiplication operator */
@@ -321,6 +344,38 @@ Distribution DistributionImplementation::operator * (const Scalar value) const
   if ((res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
     return res.getDistributionCollection()[0];
   return res.clone();
+}
+
+/* Multiplication operator with a matrix: Y = M X */
+Distribution DistributionImplementation::operator * (const Matrix & matrix) const
+{
+  if (matrix.getNbColumns() != dimension_) throw InvalidDimensionException(HERE) << "Can only multiply by a matrix with " << dimension_ << " columns, here columns=" << matrix.getNbColumns();
+  const UnsignedInteger outputDimension = matrix.getNbRows();
+  // Degenerate null matrix: the distribution collapses to the origin
+  if (matrix.frobeniusNorm() == 0.0) return new Dirac(Point(outputDimension));
+  // Identity matrix: the distribution is unchanged
+  Bool isIdentity = (outputDimension == dimension_);
+  for (UnsignedInteger i = 0; isIdentity && (i < dimension_); ++i)
+    for (UnsignedInteger j = 0; isIdentity && (j < dimension_); ++j)
+      isIdentity = (matrix(i, j) == (i == j ? 1.0 : 0.0));
+  if (isIdentity) return clone();
+  // Special case: Dirac distribution
+  if (getClassName() == "Dirac") return new Dirac(matrix * getRealization());
+  // Special case: Gaussian distributions are closed under linear maps
+  if (getClassName() == "Normal")
+  {
+    const Point mean(matrix * getMean());
+    const Matrix sigmaT(Matrix(getCovariance()) * matrix.transpose());
+    Matrix covariance(matrix * sigmaT);
+    // Enforce exact symmetry before building the covariance
+    for (UnsignedInteger i = 0; i < covariance.getNbRows(); ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        covariance(j, i) = covariance(i, j);
+    return new Normal(mean, CovarianceMatrix(*covariance.getImplementation()));
+  }
+  // Special case: 1x1 matrix, same as scalar multiplication
+  if ((matrix.getNbRows() == 1) && (matrix.getNbColumns() == 1)) return operator *(matrix(0, 0));
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator * (const Matrix & matrix) const: can multiply Dirac, Normal or 1x1 matrices only.";
 }
 
 /* Division operator */

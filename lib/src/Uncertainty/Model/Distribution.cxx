@@ -83,6 +83,11 @@ Distribution Distribution::operator + (const Scalar value) const
   return getImplementation()->operator +(value);
 }
 
+Distribution Distribution::operator + (const Point & point) const
+{
+  return getImplementation()->operator +(point);
+}
+
 /* Subtraction operator */
 Distribution Distribution::operator - (const Distribution & other) const
 {
@@ -94,6 +99,11 @@ Distribution Distribution::operator - (const Scalar value) const
   return getImplementation()->operator -(value);
 }
 
+Distribution Distribution::operator - (const Point & point) const
+{
+  return getImplementation()->operator -(point);
+}
+
 /* Multiplication operator */
 Distribution Distribution::operator * (const Distribution & other) const
 {
@@ -103,6 +113,11 @@ Distribution Distribution::operator * (const Distribution & other) const
 Distribution Distribution::operator * (const Scalar value) const
 {
   return getImplementation()->operator *(value);
+}
+
+Distribution Distribution::operator * (const Matrix & matrix) const
+{
+  return getImplementation()->operator *(matrix);
 }
 
 /* Division operator */
