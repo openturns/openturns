@@ -90,17 +90,23 @@ public:
 
   Distribution operator + (const Scalar value) const;
 
+  Distribution operator + (const Point & point) const;
+
   /** Subtraction operator */
   Distribution operator - (const DistributionImplementation & other) const;
   Distribution operator - (const Distribution & other) const;
 
   Distribution operator - (const Scalar value) const;
 
+  Distribution operator - (const Point & point) const;
+
   /** Multiplication operator */
   Distribution operator * (const DistributionImplementation & other) const;
   Distribution operator * (const Distribution & other) const;
 
   Distribution operator * (const Scalar value) const;
+
+  Distribution operator * (const Matrix & matrix) const;
 
   /** Division operator */
   Distribution operator / (const DistributionImplementation & other) const;
