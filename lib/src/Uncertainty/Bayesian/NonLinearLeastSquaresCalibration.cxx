@@ -296,6 +296,8 @@ void NonLinearLeastSquaresCalibration::run()
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
+  // A bootstrapped posterior is the MAP distribution, not a posterior (see #2889)
+  result_.setIsParameterDistributionPosterior(bootstrapSize_ == 0);
 }
 
 /* Perform a unique estimation */
