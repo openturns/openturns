@@ -521,6 +521,7 @@ class View:
                     bar_kw["hatch"] = "////"
                     bar_kw["edgecolor"] = bar_kw["color"]
 
+                bar_kw.setdefault("alpha", drawable.getAlpha())
                 xi = drawable.getOrigin()
                 for i in range(len(x)):
                     # label only the first bar to avoid getting several items
@@ -558,12 +559,14 @@ class View:
                 if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
                     scatter_kw["s"] = 1
                     scatter_kw["linewidths"] = 0.0
+                scatter_kw.setdefault("alpha", drawable.getAlpha())
                 lines = self._ax[0].scatter(x, y, **scatter_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines.findobj()[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
+                plot_kw.setdefault("alpha", drawable.getAlpha())
                 lines = self._ax[0].plot(x, y, **plot_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
@@ -597,6 +600,7 @@ class View:
                     polygon_kw["edgecolor"] = drawable.ConvertFromName(
                         drawable.getEdgeColor()
                     )
+                polygon_kw.setdefault("alpha", drawable.getAlpha())
                 poly = matplotlib.patches.Polygon(data, **polygon_kw)
                 self._ax[0].add_patch(poly)
                 if len(drawable.getLegend()) > 0:
@@ -619,6 +623,7 @@ class View:
                 assert (
                     len(data) == polygonsNumber * verticesNumber
                 ), "incompatible data for PolygonArray"
+                polygoncollection_kw.setdefault("alpha", drawable.getAlpha())
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
@@ -631,6 +636,10 @@ class View:
                     "labels", [self._ToUnicode(label) for label in drawable.getLabels()]
                 )
                 pie_kw.setdefault("colors", drawable.getPalette())
+                # Axes.pie has no alpha keyword: forward it through the wedges
+                wedgeprops = dict(pie_kw.get("wedgeprops") or {})
+                wedgeprops.setdefault("alpha", drawable.getAlpha())
+                pie_kw["wedgeprops"] = wedgeprops
                 self._ax[0].set_aspect("equal")
                 self._ax[0].pie(x, **pie_kw)
 
@@ -680,8 +689,7 @@ class View:
                     contour_kw["cmap"] = contour.getColorMap()
                 if "colors" not in contour_kw_default and "cmap" not in contour_kw:
                     contour_kw["colors"] = [drawable.getColorCode()]
-                if "alpha" not in contour_kw_default:
-                    contour_kw["alpha"] = contour.getAlpha()
+                contour_kw.setdefault("alpha", contour.getAlpha())
                 if "vmin" not in contour_kw_default and contour.isVminUsed():
                     contour_kw["vmin"] = contour.getVmin()
                 if "vmax" not in contour_kw_default and contour.isVmaxUsed():
@@ -801,12 +809,14 @@ class View:
                         )  # Avoids the absence of labels in logarithmic scale
 
             elif drawableKind == "Staircase":
+                step_kw.setdefault("alpha", drawable.getAlpha())
                 lines = self._ax[0].step(x, y, **step_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Text":
+                text_kw.setdefault("alpha", drawable.getAlpha())
                 # adjust font
                 if ("fontsize" not in text_kw_default) and (
                     "size" not in text_kw_default

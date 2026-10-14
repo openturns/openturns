@@ -2,6 +2,7 @@
 
 from openturns.viewer import View
 import openturns as ot
+import openturns.testing as ott
 import inspect
 
 # Curve
@@ -324,6 +325,51 @@ alignView = View(labelGraph, text_kw={"horizontalalignment": "left"})
 titleGraph = ot.Normal(2).drawPDF()
 titleView = View(titleGraph, title_kw={"fontsize": 20})
 assert titleView._fig._suptitle.get_fontsize() == 20
+
+# Cloud transparency survives Graph.add and reaches the viewer, see issue #2831
+alphaCloud = ot.Cloud([[0.0, 0.0], [1.0, 1.0]])
+alphaCloud.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaCloud)
+ott.assert_almost_equal(alphaGraph.getDrawable(0).getAlpha(), 0.3, 1e-2, 0.0)
+alphaView = View(alphaGraph)
+facecolor = alphaView._ax[0].collections[0].get_facecolor()[0]
+ott.assert_almost_equal(facecolor[3], 0.3, 1e-2, 0.0)
+
+# The same forward applies to the other drawable kinds with an alpha channel
+alphaPolygon = ot.Polygon(
+    ot.Sample([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
+)
+alphaPolygon.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaPolygon)
+alphaView = View(alphaGraph, polygon_kw={"facecolor": "#1f77b4"})
+ott.assert_almost_equal(alphaView._ax[0].patches[0].get_alpha(), 0.3, 1e-2, 0.0)
+
+alphaArray = ot.PolygonArray([alphaPolygon])
+alphaArray.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaArray)
+alphaView = View(alphaGraph, polygoncollection_kw={"facecolors": ["#1f77b4"]})
+ott.assert_almost_equal(
+    alphaView._ax[0].collections[0].get_alpha(), 0.3, 1e-2, 0.0
+)
+
+alphaPie = ot.Pie([1.0, 2.0, 3.0])
+alphaPie.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaPie)
+alphaView = View(
+    alphaGraph, pie_kw={"colors": ["#1f77b4", "#ff7f0e", "#2ca02c"]}
+)
+ott.assert_almost_equal(alphaView._ax[0].patches[0].get_alpha(), 0.3, 1e-2, 0.0)
+
+alphaText = ot.Text([[0.0, 0.0]], ["a"])
+alphaText.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaText)
+alphaView = View(alphaGraph, text_kw={"color": "#1f77b4"})
+ott.assert_almost_equal(alphaView._ax[0].texts[0].get_alpha(), 0.3, 1e-2, 0.0)
 
 # title_kw stays last for positional compatibility, see issue #3001
 viewParams = list(inspect.signature(View.__init__).parameters)
