@@ -152,6 +152,9 @@ private:
   /** Compute the covariance of the distribution */
   void computeCovariance() const override;
 
+  /** Recompute all the derived quantities after a parameter change */
+  void update();
+
   /** The prior mean */
   Scalar mu_ = 0.0;
 

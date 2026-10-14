@@ -132,9 +132,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   // bounds are fixed
   Point knownParameterValues(2, oneEps);
   knownParameterValues[0] = -oneEps;
-  Indices knownParameterIndices(2);
-  knownParameterIndices[0] = 2;
-  knownParameterIndices[1] = 3;
+  Indices knownParameterIndices{2, 3};
   factory.setKnownParameter(knownParameterIndices, knownParameterValues);
 
   // override starting point

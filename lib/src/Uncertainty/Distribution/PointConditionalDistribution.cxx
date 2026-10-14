@@ -1237,7 +1237,8 @@ void PointConditionalDistribution::load(Advocate & adv)
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("conditioningIndices_", conditioningIndices_);
   adv.loadAttribute("conditioningValues_", conditioningValues_);
-  adv.loadAttribute("integrationAlgorithm_", integrationAlgorithm_);
+  if (adv.hasAttribute("integrationAlgorithm_"))
+    adv.loadAttribute("integrationAlgorithm_", integrationAlgorithm_);
   update();
 }
 

@@ -36,7 +36,6 @@ static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
   : DistributionImplementation()
-  , mu_(0.0)
   , sigma_(1.0)
   , a_(-1.0)
   , b_(1.0)
