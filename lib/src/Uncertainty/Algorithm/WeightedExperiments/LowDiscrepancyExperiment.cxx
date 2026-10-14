@@ -179,6 +179,16 @@ void LowDiscrepancyExperiment::setRestart(const Bool restart)
   restart_ = restart;
 }
 
+/* Size accessor */
+void LowDiscrepancyExperiment::setSize(const UnsignedInteger size)
+{
+  WeightedExperimentImplementation::setSize(size);
+  // A new size starts a new design, so the sequence restarts when asked
+  // for (see issue #2740). Blocked algorithms set the size once at setup
+  // and keep generating the continuation of the sequence afterwards.
+  if (restart_) sequence_.initialize(distribution_.getDimension());
+}
+
 
 /* Randomization accessor */
 Bool LowDiscrepancyExperiment::getRandomize() const

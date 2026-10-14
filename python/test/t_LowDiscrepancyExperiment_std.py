@@ -45,3 +45,19 @@ for i in range(1, 4):
 distribution.setR(R)
 experiment = ot.LowDiscrepancyExperiment(ot.HaltonSequence(), distribution, size, False)
 print("sample = ", experiment.generate())
+
+# Restart behavior, see issue #2740: setting a size restarts the
+# sequence when restart is set, successive generations continue it
+restartTrue = ot.LowDiscrepancyExperiment(
+    ot.SobolSequence(), ot.JointDistribution([ot.Uniform()] * 2), 4, True
+)
+restartTrue.setSize(4)
+firstBatch = restartTrue.generate()
+restartTrue.setSize(4)
+assert restartTrue.generate() == firstBatch
+assert restartTrue.generate() != firstBatch
+restartFalse = ot.LowDiscrepancyExperiment(
+    ot.SobolSequence(), ot.JointDistribution([ot.Uniform()] * 2), 4, False
+)
+restartFalse.setSize(4)
+assert restartFalse.generate() != restartFalse.generate()

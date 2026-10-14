@@ -82,6 +82,9 @@ public:
   Bool getRestart() const;
   void setRestart(const Bool restart);
 
+  /** Size accessor: setting a new size restarts the sequence when restart_ is set */
+  void setSize(const UnsignedInteger size) override;
+
   /** Randomization flag accessor */
   Bool getRandomize() const;
   void setRandomize(const Bool randomize);
