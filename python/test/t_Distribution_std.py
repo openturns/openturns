@@ -163,3 +163,13 @@ finally:
     ot.ResourceMap.SetAsUnsignedInteger(
         "Distribution-CharacteristicFunctionNMax", 1000000
     )
+
+# zero integration nodes number is rejected, as the GaussLegendre
+# construction used to do before the FastLegendre switch, see PR #3352 review
+defaultNodesNumber = mimic.getIntegrationNodesNumber()
+mimic.setIntegrationNodesNumber(0)
+try:
+    with ott.assert_raises(TypeError):
+        mimic.computeCharacteristicFunction(1.0)
+finally:
+    mimic.setIntegrationNodesNumber(defaultNodesNumber)
