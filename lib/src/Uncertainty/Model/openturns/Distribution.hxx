@@ -147,6 +147,11 @@ public:
   Function getPDF() const;
   Function getLogPDF() const;
   Function getCDF() const;
+  Function getComplementaryCDF() const;
+  Function getQuantile() const;
+  Function getSurvivalFunction() const;
+  Function getInverseSurvivalFunction() const;
+  Function getDDF() const;
 
   /** Get the DDF of the distribution */
   Scalar computeDDF(const Scalar scalar) const;
