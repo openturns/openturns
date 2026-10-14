@@ -120,6 +120,9 @@ private:
   Sample equalityConstraintHistory_;
   Sample inequalityConstraintHistory_;
 
+  // initial gradient counter to populate the result
+  UnsignedInteger gradientCallsNumber_ = 0;
+
   // internal solver
   void * p_opt_ = nullptr;
 

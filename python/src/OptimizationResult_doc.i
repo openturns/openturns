@@ -96,6 +96,46 @@ callsNumber : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::OptimizationResult::setGradientCallsNumber
+"Accessor to the number of gradient calls.
+
+Parameters
+----------
+gradientCallsNumber : int
+    Number of gradient calls."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getGradientCallsNumber
+"Accessor to the number of gradient calls.
+
+Returns
+-------
+gradientCallsNumber : int
+    Number of gradient calls."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::setHessianCallsNumber
+"Accessor to the number of hessian calls.
+
+Parameters
+----------
+hessianCallsNumber : int
+    Number of hessian calls."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::OptimizationResult::getHessianCallsNumber
+"Accessor to the number of hessian calls.
+
+Returns
+-------
+hessianCallsNumber : int
+    Number of hessian calls."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::OptimizationResult::setIterationNumber
 "Accessor to the number of iterations.
 
