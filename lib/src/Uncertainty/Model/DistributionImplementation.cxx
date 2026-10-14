@@ -4772,6 +4772,27 @@ Graph DistributionImplementation::drawMarginal2DPDF(const UnsignedInteger firstM
   return marginalGraph;
 }
 
+/* Draw the PDFs of all the 1D and 2D marginals on a grid */
+GridLayout DistributionImplementation::drawMarginalPDFs() const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber");
+  GridLayout grid(dimension, dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      if (i == j) grid.setGraph(i, j, getMarginal(i).drawPDF());
+      else
+      {
+        const Indices indices = {i, j};
+        const Interval range(getMarginal(indices).getRange());
+        grid.setGraph(i, j, drawMarginal2DPDF(i, j, range.getLowerBound(), range.getUpperBound(), Indices(2, pointNumber)));
+      }
+    }
+  grid.setTitle(OSS() << getDescription() << " marginal PDFs");
+  return grid;
+}
+
 /* Draw the log-PDF of a discrete distribution */
 Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
     const Scalar xMax,
