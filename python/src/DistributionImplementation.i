@@ -23,8 +23,6 @@
 %include DistributionImplementation_doc.i
 
 %ignore OT::DistributionImplementation::pow;
-%ignore OT::DistributionImplementation::setWeight;
-%ignore OT::DistributionImplementation::getWeight;
 %ignore OT::DistributionImplementation::setParallel;
 %ignore OT::DistributionImplementation::setQuantileEpsilon;
 %ignore OT::DistributionImplementation::getQuantileEpsilon;

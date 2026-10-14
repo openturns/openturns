@@ -435,9 +435,7 @@ Point Trapezoidal::getParameter() const
 void Trapezoidal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = Trapezoidal(parameter[0], parameter[1], parameter[2], parameter[3]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

@@ -352,7 +352,6 @@ Point Histogram::getParameter() const
 void Histogram::setParameter(const Point & parameter)
 {
   if (parameter.getSize() % 2 == 0) throw InvalidArgumentException(HERE) << "Error: expected an odd number of values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   const UnsignedInteger size = (parameter.getSize() - 1) / 2;
   first_ = parameter[0];
   width_ = Point(size);
@@ -364,7 +363,6 @@ void Histogram::setParameter(const Point & parameter)
   }
 
   *this = Histogram(first_, width_, height_);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

@@ -119,7 +119,6 @@ DistributionImplementation::DistributionImplementation()
   , isAlreadyCreatedGeneratingFunction_(false)
   , generatingFunction_(0)
   , dimension_(1)
-  , weight_(1.0)
     // The range is empty by default
   , range_(Interval(1.0, -1.0))
   , description_(1)
@@ -152,7 +151,6 @@ Bool DistributionImplementation::hasEqualBase(const DistributionImplementation &
 {
   return (dimension_ == other.dimension_)
       && (description_ == other.description_)
-      && (weight_ == other.weight_)
       && (range_ == other.range_)
       && (isParallel_ == other.isParallel_)
       && (isCopula_ == other.isCopula_);
@@ -472,7 +470,6 @@ String DistributionImplementation::_repr_html_() const
   oss << "<ul>\n";
   oss << "  <li>name=" << getName() << "</li>\n";
   oss << "  <li>dimension=" << dimension_ << "</li>\n";
-  oss << "  <li>weight=" << weight_ << "</li>\n";
   oss << "  <li>range=" << range_ << "</li>\n";
   oss << "  <li>description=" << description_ << "</li>\n";
   oss << "  <li>isParallel=" << isParallel_ << "</li>\n";
@@ -487,26 +484,12 @@ String DistributionImplementation::__repr_markdown__() const
   oss << getClassName() << "\n";
   oss << "- name=" << getName() << "\n";
   oss << "- dimension=" << dimension_ << "\n";
-  oss << "- weight=" << weight_ << "\n";
   oss << "- range=" << range_ << "\n";
   oss << "- description=" << description_ << "\n";
   oss << "- isParallel=" << isParallel_ << "\n";
   oss << "- isCopula=" << isCopula_ << "\n";
   return oss;
 }
-
-/* Weight accessor */
-void DistributionImplementation::setWeight(const Scalar w)
-{
-  weight_ = w;
-}
-
-/* Weight accessor */
-Scalar DistributionImplementation::getWeight() const
-{
-  return weight_;
-}
-
 
 /* Dimension accessor */
 UnsignedInteger DistributionImplementation::getDimension() const
@@ -5851,7 +5834,6 @@ void DistributionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "isAlreadyComputedCovariance_", isAlreadyComputedCovariance_ );
   adv.saveAttribute( "isAlreadyComputedGaussNodesAndWeights_", isAlreadyComputedGaussNodesAndWeights_ );
   adv.saveAttribute( "dimension_", dimension_ );
-  adv.saveAttribute( "weight_", weight_ );
   adv.saveAttribute( "range_", range_ );
   adv.saveAttribute( "description_", description_ );
   adv.saveAttribute( "isCopula_", isCopula_ );
@@ -5872,7 +5854,12 @@ void DistributionImplementation::load(Advocate & adv)
   adv.loadAttribute( "isAlreadyComputedCovariance_", isAlreadyComputedCovariance_ );
   adv.loadAttribute( "isAlreadyComputedGaussNodesAndWeights_", isAlreadyComputedGaussNodesAndWeights_ );
   adv.loadAttribute( "dimension_", dimension_ );
-  adv.loadAttribute( "weight_", weight_ );
+  // weight_ removed in favor of weights handled internally by Mixture: ignore old archives
+  if (adv.hasAttribute("weight_"))
+  {
+    Scalar weight = 1.0;
+    adv.loadAttribute( "weight_", weight );
+  }
   adv.loadAttribute( "range_", range_ );
   adv.loadAttribute( "description_", description_ );
   adv.loadAttribute( "isCopula_", isCopula_ );

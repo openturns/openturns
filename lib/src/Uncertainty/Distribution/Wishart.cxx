@@ -420,9 +420,7 @@ void Wishart::setParameter(const Point & parameter)
       ++ index;
     }
   const Scalar nu = parameter[size - 1];
-  const Scalar w = getWeight();
   *this = Wishart(V, nu);
-  setWeight(w);
 }
 
 Description Wishart::getParameterDescription() const

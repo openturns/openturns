@@ -622,7 +622,6 @@ void NormalCopula::setParameter(const Point & parameter)
   Scalar dimReal = 0.5 * std::sqrt(1.0 + 8.0 * size) + 0.5;
   if (dimReal != round(dimReal)) throw InvalidArgumentException(HERE) << "Error: invalid value number for NormalCopula";
   const UnsignedInteger dimension = dimReal;
-  const Scalar w = getWeight();
   if (dimension > 1)
   {
     CorrelationMatrix R(dimension);
@@ -641,7 +640,6 @@ void NormalCopula::setParameter(const Point & parameter)
   {
     *this = NormalCopula(dimension);
   }
-  setWeight(w);
 }
 
 Description NormalCopula::getParameterDescription() const

@@ -387,9 +387,7 @@ Point AliMikhailHaqCopula::getParameter() const
 void AliMikhailHaqCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = AliMikhailHaqCopula(parameter[0]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

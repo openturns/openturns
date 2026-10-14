@@ -267,12 +267,10 @@ Point Hypergeometric::getParameter() const
 void Hypergeometric::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Hypergeometric expected 3 parameters, got " << parameter.getSize();
-  const Scalar w = getWeight();
   if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Hypergeometric first parameter n must be an integer, got " << parameter[0];
   if (parameter[1] != std::round(parameter[1])) throw InvalidArgumentException(HERE) << "the Hypergeometric second parameter k must be an integer, got " << parameter[1];
   if (parameter[2] != std::round(parameter[2])) throw InvalidArgumentException(HERE) << "the Hypergeometric third parameter m must be an integer, got " << parameter[2];
   *this = Hypergeometric(parameter[0], parameter[1], parameter[2]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

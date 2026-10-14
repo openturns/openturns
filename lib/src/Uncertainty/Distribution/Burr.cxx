@@ -261,9 +261,7 @@ Point Burr::getParameter() const
 void Burr::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = Burr(parameter[0], parameter[1]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

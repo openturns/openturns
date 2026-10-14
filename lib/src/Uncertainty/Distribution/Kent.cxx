@@ -398,7 +398,6 @@ void Kent::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 11)
     throw InvalidArgumentException(HERE) << "Error: expected 11 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   SquareMatrix gamma(3);
   gamma(0, 0) = parameter[2];
   gamma(1, 0) = parameter[3];
@@ -410,7 +409,6 @@ void Kent::setParameter(const Point & parameter)
   gamma(1, 2) = parameter[9];
   gamma(2, 2) = parameter[10];
   *this = Kent(parameter[0], parameter[1], gamma, epsilon_);
-  setWeight(w);
 }
 
 Description Kent::getParameterDescription() const

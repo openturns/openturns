@@ -249,9 +249,7 @@ Point FisherSnedecor::getParameter() const
 void FisherSnedecor::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = FisherSnedecor(parameter[0], parameter[1]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

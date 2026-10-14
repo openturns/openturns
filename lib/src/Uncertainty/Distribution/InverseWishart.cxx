@@ -404,9 +404,7 @@ void InverseWishart::setParameter(const Point & parameter)
       ++ index;
     }
   const Scalar nu = parameter[size - 1];
-  const Scalar w = getWeight();
   *this = InverseWishart(V, nu);
-  setWeight(w);
 }
 
 Description InverseWishart::getParameterDescription() const

@@ -352,7 +352,6 @@ void JointByConditioningDistribution::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize())
     throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   Point::const_iterator start = parameter.begin();
   const UnsignedInteger linkParameterSize = linkFunction_.getParameterDimension();
   if (linkParameterSize > 0)
@@ -370,7 +369,6 @@ void JointByConditioningDistribution::setParameter(const Point & parameter)
     conditioningDistribution_.setParameter(conditioningParameter);
   }
   *this = JointByConditioningDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_);
-  setWeight(w);
 } // setParameter
 
 /* Parameters value and description accessor */

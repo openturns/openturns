@@ -143,10 +143,6 @@ public:
   String _repr_html_() const override;
   String __repr_markdown__() const override;
 
-  /** Weight accessor */
-  void setWeight(Scalar w);
-  Scalar getWeight() const;
-
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 
@@ -1988,9 +1984,6 @@ protected:
 
   /** The dimension of the distribution */
   UnsignedInteger dimension_;
-
-  /** The weight used ONLY by Mixture */
-  Scalar weight_;
 
   /** Range of the distribution */
   Interval range_;

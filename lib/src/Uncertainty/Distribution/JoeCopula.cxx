@@ -119,9 +119,7 @@ Point JoeCopula::getParameter() const
 void JoeCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = JoeCopula(parameter[0], parameter[1], parameter[2]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

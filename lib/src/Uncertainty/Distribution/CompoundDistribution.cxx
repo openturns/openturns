@@ -136,10 +136,8 @@ void CompoundDistribution::setParameter(const Point & parameter)
 {
   Distribution conditioningDistribution(conditioningDistribution_);
   conditioningDistribution.setParameter(parameter);
-  const Scalar w = getWeight();
   Distribution conditionedDistribution(conditionedDistribution_);
   *this = CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction_);
-  setWeight(w);
 }
 
 Description CompoundDistribution::getParameterDescription() const
@@ -317,6 +315,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
     }
     const Sample yPDF(conditioningDistribution.computePDF(currentY));
     const Sample parameters(linkFunction_(currentY));
+    Point weights(0);
     for (UnsignedInteger i = 0; i < discreteAtomsNumber; ++i)
     {
       const Scalar wI = yPDF(i, 0);
@@ -324,9 +323,9 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
         try
         {
           Distribution dist(conditionedDistribution);
-          dist.setWeight(wI);
           dist.setParameter(parameters[i]);
           atoms.add(dist);
+          weights.add(wI);
         }
         catch (...)
         {
@@ -334,7 +333,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
         }
     } // Discrete measure
     // Now, update the underlying Mixture
-    setDistributionCollection(atoms);
+    setDistributionCollectionWithWeights(atoms, weights);
     return;
   } // No continuous marginal
   // Second case: only Dirac and continuous marginals with at least one continuous marginal
@@ -355,6 +354,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
     }
     const Sample yPDF(conditioningDistribution.computePDF(currentY));
     const Sample parameters(linkFunction_(currentY));
+    Point weights(0);
     for (UnsignedInteger i = 0; i < continuousAtomsNumber; ++i)
     {
       const Scalar wI = yPDF(i, 0) * continuousWeights_[i];
@@ -362,9 +362,9 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
         try
         {
           Distribution dist(conditionedDistribution);
-          dist.setWeight(wI);
           dist.setParameter(parameters[i]);
           atoms.add(dist);
+          weights.add(wI);
         }
         catch (...)
         {
@@ -372,7 +372,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
         }
     } // Continuous measure
     // Now, update the underlying Mixture
-    setDistributionCollection(atoms);
+    setDistributionCollectionWithWeights(atoms, weights);
     return;
   } // No discrete marginal
   // Third case: Dirac, stochastic discrete and continuous marginal distributions with at least one stochastic discrete marginal and one continuous marginal
@@ -401,6 +401,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
   }
   const Sample yPDF(conditioningDistribution.computePDF(currentYs));
   const Sample parameters(linkFunction_(currentYs));
+  Point weights(0);
   for (UnsignedInteger i = 0; i < currentYs.getSize(); ++i)
   {
     const Scalar wI = yPDF(i, 0) * continuousWeights_[i % continuousAtomsNumber];
@@ -408,9 +409,9 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
       try
       {
         Distribution dist(conditionedDistribution);
-        dist.setWeight(wI);
         dist.setParameter(parameters[i]);
         atoms.add(dist);
+        weights.add(wI);
       }
       catch (...)
       {
@@ -418,7 +419,7 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
       }
   }
   // Now, update the underlying Mixture
-  setDistributionCollection(atoms);
+  setDistributionCollectionWithWeights(atoms, weights);
 }
 
 /* Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */

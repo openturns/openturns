@@ -246,9 +246,7 @@ void Binomial::setParameter(const Point & parameter)
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Binomial expected 2 parameters, got " << parameter.getSize();
   if (parameter[0] != std::round(parameter[0])) throw InvalidArgumentException(HERE) << "the Binomial first parameter n must be an integer, got " << parameter[0];
   if (!(parameter[0] >= 0.0) || !(parameter[0] < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "the Binomial first parameter n must be nonnegative and finite, got " << parameter[0];
-  const Scalar w = getWeight();
   *this = Binomial(parameter[0], parameter[1]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

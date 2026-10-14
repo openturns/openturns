@@ -152,8 +152,9 @@ void Mixture::computeRange()
 void Mixture::setDistributionCollection(const DistributionCollection & coll)
 {
   const UnsignedInteger size = coll.getSize();
-  Point weights(size);
-  for (UnsignedInteger i = 0; i < size; ++i) weights[i] = coll[i].getWeight();
+  // Weights are handled internally: default to uniform weights,
+  // use the (coll, weights) constructor or setWeights for non-uniform weights
+  Point weights(size, 1.0);
   setDistributionCollectionWithWeights(coll, weights);
 }
 
@@ -544,9 +545,8 @@ Distribution Mixture::getMarginal(const UnsignedInteger i) const
   for (UnsignedInteger index = 0; index < size; ++index)
   {
     collection.add(distributionCollection_[index].getMarginal(i));
-    collection[index].setWeight(p_[index]);
   }
-  Mixture* marginal(new Mixture(collection));
+  Mixture* marginal(new Mixture(collection, p_));
   marginal->isCopula_ = isCopula_;
   marginal->setDescription(Description(1, getDescription()[i]));
   return marginal;
@@ -564,9 +564,8 @@ Distribution Mixture::getMarginal(const Indices & indices) const
   for (UnsignedInteger index = 0; index < size; ++index)
   {
     collection.add(distributionCollection_[index].getMarginal(indices));
-    collection[index].setWeight(p_[index]);
   }
-  Mixture* marginal(new Mixture(collection));
+  Mixture* marginal(new Mixture(collection, p_));
   marginal->isCopula_ = isCopula_;
   marginal->setDescription(getDescription().select(indices));
   return marginal;

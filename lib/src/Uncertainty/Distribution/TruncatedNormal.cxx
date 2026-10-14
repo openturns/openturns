@@ -571,9 +571,7 @@ Point TruncatedNormal::getParameter() const
 void TruncatedNormal::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = TruncatedNormal(parameter[0], parameter[1], parameter[2], parameter[3]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

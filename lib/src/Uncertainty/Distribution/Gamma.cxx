@@ -393,9 +393,7 @@ Point Gamma::getParameter() const
 void Gamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = Gamma(parameter[0], parameter[1], parameter[2]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

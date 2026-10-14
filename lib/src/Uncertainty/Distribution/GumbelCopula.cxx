@@ -343,9 +343,7 @@ Point GumbelCopula::getParameter() const
 void GumbelCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
-  const Scalar w = getWeight();
   *this = GumbelCopula(parameter[0]);
-  setWeight(w);
 }
 
 /* Parameters description accessor */

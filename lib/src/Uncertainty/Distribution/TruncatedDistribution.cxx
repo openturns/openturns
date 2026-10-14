@@ -464,7 +464,6 @@ void TruncatedDistribution::computeRange()
 
   // enable simplified path
   useSimplifiedVersion_ = hasSimplifiedVersion(simplifiedVersion_);
-  simplifiedVersion_.setWeight(getWeight());
 }
 
 /* Get one realization of the distribution */
@@ -731,9 +730,7 @@ void TruncatedDistribution::setParameter(const Point & parameter)
       ++ index;
     }
   Interval bounds(lowerBound, upperBound, bounds_.getFiniteLowerBound(), bounds_.getFiniteUpperBound());
-  const Scalar w = getWeight();
   *this = TruncatedDistribution(newDistribution, bounds);
-  setWeight(w);
 }
 
 /* Parameters description accessor */
