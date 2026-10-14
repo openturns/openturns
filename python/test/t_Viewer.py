@@ -2,6 +2,7 @@
 
 from openturns.viewer import View
 import openturns as ot
+import inspect
 
 # Curve
 graph = ot.Normal().drawCDF()
@@ -318,3 +319,12 @@ labelGraph.add(labeledCurve)
 View(labelGraph)
 # Caller-provided text alignment must not reach Axes.text twice
 alignView = View(labelGraph, text_kw={"horizontalalignment": "left"})
+
+# Grid title styling, see issue #3001
+titleGraph = ot.Normal(2).drawPDF()
+titleView = View(titleGraph, title_kw={"fontsize": 20})
+assert titleView._fig._suptitle.get_fontsize() == 20
+
+# title_kw stays last for positional compatibility, see issue #3001
+viewParams = list(inspect.signature(View.__init__).parameters)
+assert viewParams.index("title_kw") > viewParams.index("legend_kw")
