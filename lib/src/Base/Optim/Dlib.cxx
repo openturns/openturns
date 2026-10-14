@@ -305,6 +305,8 @@ public:
                               const DlibMatrix & )
   {
     optimizationResult_.setCallsNumber(objectiveFunction_.getCallsNumber());
+    optimizationResult_.setGradientCallsNumber(objectiveFunction_.getGradientCallsNumber());
+    optimizationResult_.setHessianCallsNumber(objectiveFunction_.getHessianCallsNumber());
 
     Point xPoint(x.size());
     std::copy(x.begin(), x.end(), xPoint.begin());
@@ -636,7 +638,7 @@ void Dlib::run()
     // find_max is broken for dlib<19.19, lets use find_min(-f) instead
     // tweak the sign of the output & gradient according to isMinimization when returning results to dlib
     DlibFunction objectiveDlibFunction(getProblem().getObjective(), getProblem().isMinimization());
-    DlibGradient objectiveDlibGradient(objectiveDlibFunction.getGradient(), getProblem().isMinimization());
+    DlibGradient objectiveDlibGradient(objectiveDlibFunction.asDlibGradient());
 
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;
@@ -765,6 +767,8 @@ void Dlib::run()
       result_.setOptimalPoint(optimalPoint);
       result_.setOptimalValue(Point(1, minimization ? -bestY : bestY));
       result_.setCallsNumber(objectiveDlibFunction.getCallsNumber());
+      result_.setGradientCallsNumber(objectiveDlibFunction.getGradientCallsNumber());
+      result_.setHessianCallsNumber(objectiveDlibFunction.getHessianCallsNumber());
       if (interrupted)
       {
         result_.setStatus(OptimizationResult::INTERRUPTION);
@@ -805,6 +809,8 @@ void Dlib::run()
                               list,
                               params,
                               initialTrustRegionRadius_);
+    result_.setGradientCallsNumber(residualDlibFunction.getGradientCallsNumber());
+    result_.setHessianCallsNumber(residualDlibFunction.getHessianCallsNumber());
   }
   else if (algoName_ == "least_squares_lm")
   {
@@ -840,6 +846,8 @@ void Dlib::run()
                                  params,
                                  initialTrustRegionRadius_
                                 );
+    result_.setGradientCallsNumber(residualDlibFunction.getGradientCallsNumber());
+    result_.setHessianCallsNumber(residualDlibFunction.getHessianCallsNumber());
   }
   else if (algoName_ == "trust_region")
   {
@@ -863,6 +871,8 @@ void Dlib::run()
                                    optimizer,
                                    initialTrustRegionRadius_
                                  );
+    result_.setGradientCallsNumber(objectiveDlibFunction.getGradientCallsNumber());
+    result_.setHessianCallsNumber(objectiveDlibFunction.getHessianCallsNumber());
   }
   else
     throw NotYetImplementedException(HERE) << "Error: unknown strategy " << algoName_;
