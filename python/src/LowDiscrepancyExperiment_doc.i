@@ -20,10 +20,11 @@ distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` of dimension :math:`\sampleSize`.
 restart : bool
     Flag to tell if the low discrepancy sequence must be restarted from
-    its initial state at each change of distribution or not.
+    its initial state at each change of size or distribution or not.
 
-    Default is *True*: the sequence is restarted at each change of
-    distribution.
+    Default is *True*: the sequence restarts when a new size or a new
+    distribution is set, while successive generations without such a
+    change continue the sequence.
 
 Notes
 -----
