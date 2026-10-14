@@ -112,4 +112,16 @@ for bs in [1, 7, 100]:
     assert abs(ot.StatisticsEngine.ComputeEmpiricalCDF(big7, loc, True) - ot.StatisticsEngine.ComputeEmpiricalCDFBlockwise(big7, loc, True, bs)) == 0.0
 print("Composed statistics Blockwise: OK")
 
+# Transpose twin: bitwise-identical at several tile sizes, non-square shapes
+tall = ot.DataContainer(17, 5, 0.0)
+for k in range(85):
+    tall[k] = math.sin(0.2 * k) - 0.5
+refT = ot.AlgebraEngine.Transpose(tall)
+assert refT.getSize() == 5 and refT.getDimension() == 17
+for bs in [1, 4, 5, 16, 100]:
+    tb = ot.AlgebraEngine.TransposeBlockwise(tall, bs)
+    assert len(tb) == len(refT)
+    assert max_abs_diff(refT, tb, 1) == 0.0
+print("TransposeBlockwise: OK")
+
 print("=== ALL BLOCKWISE SCALE TESTS PASSED ===")
