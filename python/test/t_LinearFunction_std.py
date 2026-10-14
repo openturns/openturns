@@ -102,3 +102,8 @@ with ott.assert_raises(Exception):
     ot.LinearFunction(center, [1.0, 2.0, 3.0], linear)
 with ott.assert_raises(Exception):
     ot.LinearFunction(ot.Point(inputDimension + 1), constant, linear)
+
+# Parameter accessors, see issue #2833
+ott.assert_almost_equal(myFunction.getCenter(), center)
+ott.assert_almost_equal(myFunction.getConstant(), constant)
+ott.assert_almost_equal(myFunction.getLinear(), linear)
