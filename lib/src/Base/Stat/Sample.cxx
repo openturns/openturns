@@ -582,6 +582,11 @@ Sample Sample::computeQuantile(const Point & prob,
   return getImplementation()->computeQuantile(prob, tail);
 }
 
+Point Sample::computeSuperQuantile(const Scalar prob) const
+{
+  return getImplementation()->computeSuperQuantile(prob);
+}
+
 /*
  * Get the empirical CDF of the sample
  */

@@ -265,6 +265,12 @@ public:
                                      const Bool tail = false) const;
 
   /**
+   * Method computeSuperQuantile() gives the super-quantile (expected
+   * shortfall) per component of the sample, see issue #3013
+   */
+  Point computeSuperQuantile(const Scalar prob) const;
+
+  /**
    * Method computeQuantile() gives the N-dimension quantile of the sample
    */
   Point computeQuantile(const Scalar prob,
