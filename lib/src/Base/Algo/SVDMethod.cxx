@@ -222,6 +222,28 @@ CovarianceMatrix SVDMethod::getGramInverse() const
   return sigmaInvVt.computeGram();
 }
 
+Matrix SVDMethod::getPseudoInverse() const
+{
+  // B = V Sigma^{-1} U^T with V[i,k] = (V^T)[k,i], same 1/sigma
+  // convention as getGramInverse (no zero-singular-value guard there either)
+  const UnsignedInteger basisSize = singularValues_.getSize();
+  const UnsignedInteger sampleSize = u_.getNbRows();
+  const UnsignedInteger vtRows = vT_.getNbRows();
+  const UnsignedInteger uRows = u_.getNbRows();
+  const MatrixImplementation & vTimpl(*vT_.getImplementation());
+  const MatrixImplementation & uimpl(*u_.getImplementation());
+  MatrixImplementation pseudoInverse(basisSize, sampleSize);
+  for (UnsignedInteger j = 0; j < sampleSize; ++j)
+    for (UnsignedInteger i = 0; i < basisSize; ++i)
+    {
+      Scalar sum = 0.0;
+      for (UnsignedInteger k = 0; k < basisSize; ++k)
+        sum += vTimpl[i * vtRows + k] * uimpl[k * uRows + j] / singularValues_[k];
+      pseudoInverse[j * basisSize + i] = sum;
+    }
+  return Matrix(pseudoInverse);
+}
+
 Scalar SVDMethod::getGramInverseTrace() const
 {
   Scalar traceInverse = 0.0;

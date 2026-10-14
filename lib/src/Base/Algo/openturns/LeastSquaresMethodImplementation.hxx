@@ -90,6 +90,9 @@ public:
   /** Get the inverse of the Gram matrix */
   virtual CovarianceMatrix getGramInverse() const;
 
+  /** Get the pseudo-inverse B = (A^T A)^{-1} A^T, see issue #3047 */
+  virtual Matrix getPseudoInverse() const;
+
   /** Get the scaled inverse H = Psi.G^{-1}.Psi^t of the Gram matrix */
   virtual SymmetricMatrix getH() const;
 
