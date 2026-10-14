@@ -228,6 +228,32 @@ OT_LeastSquaresMethod_getGramInverse_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_LeastSquaresMethod_getPseudoInverse_doc
+R"RAW(Get the Moore-Penrose pseudo-inverse of the weighted design matrix.
+
+For a full-column-rank weighted design matrix
+:math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}`, it reads:
+
+.. math::
+
+    \mat{B} = (\mat{\Psi}_w^\intercal \mat{\Psi}_w)^{-1} \mat{\Psi}_w^\intercal
+
+so that :math:`\hat{\mat{\beta}} = \mat{B} \mat{W}^{1/2} \vect{y}` solves
+the weighted least squares problem. The SVD decomposition also supports
+underdetermined designs of full row rank, where :math:`\mat{B}` is the
+Moore-Penrose pseudo-inverse; rank-deficient designs are rejected. Each
+decomposition (QR, Cholesky, SVD) evaluates it from its own factors.
+
+Returns
+-------
+pseudoInverse : :class:`~openturns.Matrix`
+    The Moore-Penrose pseudo-inverse of the weighted design matrix.)RAW"
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getPseudoInverse
+OT_LeastSquaresMethod_getPseudoInverse_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_LeastSquaresMethod_getGramInverseDiag_doc
 R"RAW(Get the diagonal of the inverse Gram matrix.
 

@@ -317,7 +317,6 @@ CovarianceMatrix CholeskyMethod::getGramInverse() const
   return invL.computeGram(true);
 }
 
-
 SymmetricMatrix CholeskyMethod::getH() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();

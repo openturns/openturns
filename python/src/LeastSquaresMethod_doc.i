@@ -22,6 +22,8 @@ OT_LeastSquaresMethod_solveNormal_doc
 OT_LeastSquaresMethod_solveNormalGram_doc
 %feature("docstring") OT::LeastSquaresMethod::getGramInverse
 OT_LeastSquaresMethod_getGramInverse_doc
+%feature("docstring") OT::LeastSquaresMethod::getPseudoInverse
+OT_LeastSquaresMethod_getPseudoInverse_doc
 %feature("docstring") OT::LeastSquaresMethod::getGramInverseDiag
 OT_LeastSquaresMethod_getGramInverseDiag_doc
 %feature("docstring") OT::LeastSquaresMethod::getGramInverseTrace

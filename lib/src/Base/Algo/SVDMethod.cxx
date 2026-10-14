@@ -222,6 +222,37 @@ CovarianceMatrix SVDMethod::getGramInverse() const
   return sigmaInvVt.computeGram();
 }
 
+Matrix SVDMethod::getPseudoInverse() const
+{
+  // B = V Sigma^{-1} U^T with V[i,k] = (V^T)[k,i], same 1/sigma
+  // convention as getGramInverse.
+  // The economic SVD has min(m, n) singular values, which is smaller than the
+  // number of basis terms in the underdetermined case: B still has one row per
+  // basis term while the sum runs over the singular values only.
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const UnsignedInteger sampleSize = u_.getNbRows();
+  const UnsignedInteger svdSize = singularValues_.getSize();
+  // A failed update() may have stored a decomposition with null singular
+  // values before throwing: do not divide by them
+  for (UnsignedInteger k = 0; k < svdSize; ++k)
+    if (!(singularValues_[k] > 0.0))
+      throw InvalidArgumentException(HERE) << "Error: null eigenvalue in svd decomposition";
+  const UnsignedInteger vtRows = vT_.getNbRows();
+  const UnsignedInteger uRows = u_.getNbRows();
+  const MatrixImplementation & vTimpl(*vT_.getImplementation());
+  const MatrixImplementation & uimpl(*u_.getImplementation());
+  MatrixImplementation pseudoInverse(basisSize, sampleSize);
+  for (UnsignedInteger j = 0; j < sampleSize; ++j)
+    for (UnsignedInteger i = 0; i < basisSize; ++i)
+    {
+      Scalar sum = 0.0;
+      for (UnsignedInteger k = 0; k < svdSize; ++k)
+        sum += vTimpl[k + i * vtRows] * uimpl[j + k * uRows] / singularValues_[k];
+      pseudoInverse[i + j * basisSize] = sum;
+    }
+  return Matrix(pseudoInverse);
+}
+
 Scalar SVDMethod::getGramInverseTrace() const
 {
   Scalar traceInverse = 0.0;
