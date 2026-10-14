@@ -300,3 +300,11 @@ graph.add(contour)
 view = View(graph)
 
 view.ShowAll(block=True)
+
+# Copula drawPDF: drawable 0 is the contour, see issue #3061
+copulaGraph = ot.NormalCopula(2).drawPDF()
+assert copulaGraph.getDrawable(0).getImplementation().getClassName() == "Contour"
+contour = copulaGraph.getDrawable(0).getImplementation()
+contour.setColor("black")
+contour.setColorBarPosition("")
+contour.setLineWidth(3)
