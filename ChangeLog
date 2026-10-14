@@ -85,6 +85,7 @@
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
 
 ==== API changes ====
+ * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
