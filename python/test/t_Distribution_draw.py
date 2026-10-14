@@ -122,3 +122,8 @@ graph4 = copula.drawLowerExtremalDependenceFunction()
 # 2d / discrete
 dist_2d_discrete = ot.JointDistribution([ot.Geometric(0.5)] * 2)
 graphPDF = dist_2d_discrete.drawPDF()
+
+# Marginal PDF grid for dimension > 2, see issue #2904
+gridPDFs = ot.Normal(3).drawMarginalPDFs()
+assert gridPDFs.getNbRows() == 3
+assert gridPDFs.getNbColumns() == 3

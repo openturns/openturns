@@ -1657,6 +1657,37 @@ OT_Distribution_drawMarginal2DPDF_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_drawMarginalPDFs_doc
+R"RAW(Draw the PDFs of all the 1D and 2D margins on a grid.
+
+The diagonal graphs show the 1D marginal PDFs and the extra-diagonal
+graphs the 2D marginal PDF contours.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    The :math:`d \times d` grid of marginal PDF graphs, where :math:`d`
+    is the dimension.
+
+See Also
+--------
+openturns.Distribution.drawPDF
+openturns.Distribution.drawMarginal1DPDF
+openturns.Distribution.drawMarginal2DPDF
+
+Examples
+--------
+>>> import openturns as ot
+>>> distribution = ot.Normal(3)
+>>> grid = distribution.drawMarginalPDFs()
+>>> print(grid.getNbRows(), grid.getNbColumns())
+3 3)RAW"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginalPDFs
+OT_Distribution_drawMarginalPDFs_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_drawMarginal2DLogPDF_doc
 R"RAW(Draw the log-probability density function of a couple of margins.
 
