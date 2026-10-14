@@ -38,6 +38,7 @@
 #include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/ChiSquare.hxx"
 #include "openturns/LinearBasisFactory.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 
@@ -550,6 +551,75 @@ BoxCoxTransform BoxCoxFactory::buildWithGraph(const Sample & sample,
   }
   // return result ==> Box Cox transform
   return BoxCoxTransform(lambda, shift);
+}
+
+/* Solve ell(x) = target on [a, b] with opposite signs at the ends */
+static Scalar SolveProfileLevel(const BoxCoxSampleOptimization & likelihood,
+                                const Scalar target,
+                                Scalar a,
+                                Scalar b)
+{
+  Scalar ga = likelihood(Point(1, a))[0] - target;
+  for (UnsignedInteger i = 0; i < 200; ++i)
+  {
+    const Scalar mid = 0.5 * (a + b);
+    if (!(b - a > 1.0e-12 * (1.0 + std::abs(mid)))) break;
+    const Scalar gm = likelihood(Point(1, mid))[0] - target;
+    if ((ga < 0.0) == (gm < 0.0))
+    {
+      a = mid;
+      ga = gm;
+    }
+    else b = mid;
+  }
+  return 0.5 * (a + b);
+}
+
+Interval BoxCoxFactory::computeLambdaConfidenceInterval(const Sample & sample,
+    const Scalar level) const
+{
+  return computeLambdaConfidenceInterval(sample, Point(sample.getDimension()), level);
+}
+
+Interval BoxCoxFactory::computeLambdaConfidenceInterval(const Sample & sample,
+    const Point & shift,
+    const Scalar level) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0)
+    throw InvalidArgumentException(HERE) << "Error: cannot build a Box-Cox factory from empty data";
+  const UnsignedInteger dimension = sample.getDimension();
+  if (shift.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: the shift has a dimension=" << shift.getDimension() << " different from the sample dimension=" << dimension;
+  if (!(level > 0.0) || !(level < 1.0))
+    throw InvalidArgumentException(HERE) << "Error: the confidence level must be in ]0, 1[, got " << level;
+  // Wilks threshold on the profile log-likelihood, see issue #2849
+  const Scalar halfWidth = 0.5 * ChiSquare(1).computeQuantile(level)[0];
+  const Point lambdaHat(build(sample, shift).getLambda());
+  Point lowerBounds(dimension);
+  Point upperBounds(dimension);
+  for (UnsignedInteger d = 0; d < dimension; ++d)
+  {
+    Sample marginalSample(sample.getMarginal(d));
+    marginalSample += Point(1, shift[d]);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      if (!(marginalSample(i, 0) > 0.0))
+        throw InvalidArgumentException(HERE) << "Error: shifted sample must be strictly positive, got " << marginalSample(i, 0) << " at index " << i << " marginal " << d;
+    const BoxCoxSampleOptimization likelihood(marginalSample);
+    const Scalar hat = lambdaHat[d];
+    const Scalar target = likelihood(Point(1, hat))[0] - halfWidth;
+    // Left crossing on [min(-2, hat), hat], clamped at the range end
+    Scalar left = std::min(-2.0, hat);
+    if (likelihood(Point(1, left))[0] - target < 0.0)
+      left = SolveProfileLevel(likelihood, target, left, hat);
+    lowerBounds[d] = left;
+    // Right crossing on [hat, max(2, hat)], clamped at the range end
+    Scalar right = std::max(2.0, hat);
+    if (likelihood(Point(1, right))[0] - target < 0.0)
+      right = SolveProfileLevel(likelihood, target, hat, right);
+    upperBounds[d] = right;
+  }
+  return Interval(lowerBounds, upperBounds);
 }
 
 /** Build the factory from data by estimating the best generalized linear model */

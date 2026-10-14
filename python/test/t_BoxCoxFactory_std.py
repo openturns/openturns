@@ -41,3 +41,25 @@ print("BoxCox graph (time-series)=", graph)
 
 # with sample
 myBoxCoxShift, graph = factory.buildWithGraph(sample, shift)
+
+# Lambda profile-likelihood confidence interval, see issue #2849
+ciSample = ot.LogNormal().getSample(1000)
+ci = factory.computeLambdaConfidenceInterval(ciSample)
+lambdaHat = factory.build(ciSample).getLambda()
+assert ci.getLowerBound()[0] <= lambdaHat[0] <= ci.getUpperBound()[0]
+assert -2.0 <= ci.getLowerBound()[0] and ci.getUpperBound()[0] <= 2.0
+ci50 = factory.computeLambdaConfidenceInterval(ciSample, 0.5)
+assert (ci50.getUpperBound()[0] - ci50.getLowerBound()[0]) <= (
+    ci.getUpperBound()[0] - ci.getLowerBound()[0]
+)
+for badLevel in [0.0, 1.0, 1.5]:
+    raised = False
+    try:
+        factory.computeLambdaConfidenceInterval(ciSample, badLevel)
+    except Exception:
+        raised = True
+    assert raised
+ci2d = factory.computeLambdaConfidenceInterval(
+    ot.JointDistribution([ot.Uniform(1.0, 2.0)] * 2).getSample(200)
+)
+assert ci2d.getDimension() == 2

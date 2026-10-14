@@ -159,6 +159,30 @@ Estimation of a gaussian process fitter:
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::BoxCoxFactory::computeLambdaConfidenceInterval
+R"RAW(Compute the profile-likelihood confidence interval of lambda.
+
+For each marginal, the bounds solve
+:math:`\ell(\hat{\lambda}) - \ell(\lambda) = \chi^2_1(level) / 2`
+on :math:`[-2, \hat{\lambda}]` and :math:`[\hat{\lambda}, 2]`, clamped
+at the range ends when the level is not crossed.
+
+Parameters
+----------
+data : 2-d sequence of float
+    The sample the Box Cox transformation is estimated from.
+shift : :class:`~openturns.Point`, optional
+    It ensures that when shifted, the data are all positive.
+level : float, :math:`0 < level < 1`, optional
+    The confidence level, default is 0.95.
+
+Returns
+-------
+interval : :class:`~openturns.Interval`
+    Per-marginal confidence bounds of lambda.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::BoxCoxFactory::build
 R"RAW(Estimate the Box Cox transformation.
 
