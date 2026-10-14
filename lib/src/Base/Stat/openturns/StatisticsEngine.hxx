@@ -144,6 +144,26 @@ public:
       UnsignedInteger k,
       UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
 
+  /** Block-based skewness: via blockwise central moments, same guards and factors. */
+  static DataContainer ComputeSkewnessBlockwise(const DataContainer & sample,
+      Bool adjusted = true,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based kurtosis: via blockwise central moments, same guards and factors. */
+  static DataContainer ComputeKurtosisBlockwise(const DataContainer & sample,
+      Bool adjusted = true,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based Pearson correlation: via the blockwise covariance, same denominators and clamp. */
+  static DataContainer ComputePearsonCorrelationBlockwise(const DataContainer & sample,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based empirical CDF: single-pass row counting. */
+  static Scalar ComputeEmpiricalCDFBlockwise(const DataContainer & sample,
+      const DataContainer & location,
+      Bool tail,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
 }; /* class StatisticsEngine */
 
 END_NAMESPACE_OPENTURNS
