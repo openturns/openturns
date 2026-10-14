@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 inputDimension = 3
 outputDimension = 2
@@ -65,3 +66,9 @@ print(
     " ) = ",
     repr(myFunction.hessian(inPoint)),
 )
+
+# Parameter accessors, see issue #2833
+ott.assert_almost_equal(myFunction.getCenter(), center)
+ott.assert_almost_equal(myFunction.getConstant(), constant)
+ott.assert_almost_equal(myFunction.getLinear(), linear)
+ott.assert_almost_equal(myFunction.getQuadratic(), quadratic)

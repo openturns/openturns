@@ -80,3 +80,43 @@ and:
 >>> inP = [1.0, 2.0]
 >>> print(function(inP))
 [39.5,60.5])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getCenter
+"Accessor to the center.
+
+Returns
+-------
+center : :class:`~openturns.Point`
+    The center, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getConstant
+"Accessor to the constant.
+
+Returns
+-------
+constant : :class:`~openturns.Point`
+    The constant, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getLinear
+"Accessor to the linear term.
+
+Returns
+-------
+linear : :class:`~openturns.Matrix`
+    The matrix, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getQuadratic
+"Accessor to the quadratic term.
+
+Returns
+-------
+quadratic : :class:`~openturns.SymmetricTensor`
+    The tensor, as given to the constructor."

@@ -22,6 +22,7 @@
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/NullHessian.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +53,31 @@ Bool LinearFunction::operator ==(const LinearFunction & other) const
 {
   if (this == &other) return true;
   return getEvaluation() == other.getEvaluation();
+}
+
+/* Center accessor */
+Point LinearFunction::getCenter() const
+{
+  const LinearEvaluation * p_evaluation = dynamic_cast<const LinearEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the LinearFunction is not a LinearEvaluation.";
+  return p_evaluation->getCenter();
+}
+
+/* Constant accessor */
+Point LinearFunction::getConstant() const
+{
+  const LinearEvaluation * p_evaluation = dynamic_cast<const LinearEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the LinearFunction is not a LinearEvaluation.";
+  return p_evaluation->getConstant();
+}
+
+/* Linear term accessor, as given to the constructor */
+Matrix LinearFunction::getLinear() const
+{
+  const LinearEvaluation * p_evaluation = dynamic_cast<const LinearEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the LinearFunction is not a LinearEvaluation.";
+  // The constructor transposes the given matrix before storage
+  return p_evaluation->getLinear().transpose();
 }
 
 /* String converter */

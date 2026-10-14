@@ -22,6 +22,7 @@
 #include "openturns/QuadraticEvaluation.hxx"
 #include "openturns/LinearGradient.hxx"
 #include "openturns/ConstantHessian.hxx"
+#include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,6 +45,38 @@ Bool QuadraticFunction::operator ==(const QuadraticFunction & other) const
 {
   if (this == &other) return true;
   return getEvaluation() == other.getEvaluation();
+}
+
+/* Center accessor */
+Point QuadraticFunction::getCenter() const
+{
+  const QuadraticEvaluation * p_evaluation = dynamic_cast<const QuadraticEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the QuadraticFunction is not a QuadraticEvaluation.";
+  return p_evaluation->getCenter();
+}
+
+/* Constant accessor */
+Point QuadraticFunction::getConstant() const
+{
+  const QuadraticEvaluation * p_evaluation = dynamic_cast<const QuadraticEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the QuadraticFunction is not a QuadraticEvaluation.";
+  return p_evaluation->getConstant();
+}
+
+/* Linear term accessor, as given to the constructor */
+Matrix QuadraticFunction::getLinear() const
+{
+  const QuadraticEvaluation * p_evaluation = dynamic_cast<const QuadraticEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the QuadraticFunction is not a QuadraticEvaluation.";
+  return p_evaluation->getLinear();
+}
+
+/* Quadratic term accessor, as given to the constructor */
+SymmetricTensor QuadraticFunction::getQuadratic() const
+{
+  const QuadraticEvaluation * p_evaluation = dynamic_cast<const QuadraticEvaluation *>(getEvaluation().getImplementation().get());
+  if (!p_evaluation) throw InvalidArgumentException(HERE) << "Error: the evaluation of the QuadraticFunction is not a QuadraticEvaluation.";
+  return p_evaluation->getQuadratic();
 }
 
 /* String converter */
