@@ -1998,6 +1998,7 @@ protected:
       return new MinimumVolumeLevelSetGradient(*this);
     }
 
+    using GradientImplementation::gradient;
     Matrix gradient(const Point & point) const override
     {
       const Scalar pdf = p_distribution_->computePDF(point);

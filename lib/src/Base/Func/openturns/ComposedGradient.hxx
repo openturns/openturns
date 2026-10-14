@@ -62,6 +62,7 @@ public:
   String __repr__() const override;
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
+  using GradientImplementation::gradient;
   Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */

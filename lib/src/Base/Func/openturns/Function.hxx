@@ -152,6 +152,9 @@ public:
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
   Matrix gradient(const Point & inP) const;
 
+  /** Batch gradient over a sample, see issue #2741 */
+  Sample gradient(const Sample & inS) const;
+
 
   /** Method hessian() returns the symmetric tensor of the function at point */
   SymmetricTensor hessian(const Point & inP) const;

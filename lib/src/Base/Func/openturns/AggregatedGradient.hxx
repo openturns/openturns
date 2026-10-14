@@ -63,6 +63,7 @@ protected:
 public:
 
   /** Gradient method */
+  using GradientImplementation::gradient;
   Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
