@@ -308,3 +308,13 @@ contour = copulaGraph.getDrawable(0).getImplementation()
 contour.setColor("black")
 contour.setColorBarPosition("")
 contour.setLineWidth(3)
+
+# Curve labels are drawn along the line, see issue #2745
+labeledCurve = ot.Curve([[0.0, 0.0], [1.0, 1.0], [2.0, 0.0]])
+labeledCurve.setLabels(["peak"])
+assert list(labeledCurve.getLabels()) == ["peak"]
+labelGraph = ot.Graph()
+labelGraph.add(labeledCurve)
+View(labelGraph)
+# Caller-provided text alignment must not reach Axes.text twice
+alignView = View(labelGraph, text_kw={"horizontalalignment": "left"})

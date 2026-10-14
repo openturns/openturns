@@ -155,12 +155,25 @@ void Curve::checkData(const Sample & data) const
 void Curve::save(Advocate & adv) const
 {
   DrawableImplementation::save(adv);
+  adv.saveAttribute( "labels_", labels_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void Curve::load(Advocate & adv)
 {
   DrawableImplementation::load(adv);
+  if (adv.hasAttribute("labels_")) adv.loadAttribute( "labels_", labels_ );
+}
+
+/* Labels accessors */
+Description Curve::getLabels() const
+{
+  return labels_;
+}
+
+void Curve::setLabels(const Description & labels)
+{
+  labels_ = labels;
 }
 
 END_NAMESPACE_OPENTURNS
