@@ -9,7 +9,8 @@ Available constructors:
 Parameters
 ----------
 model : :class:`~openturns.Function`
-    The parametric function to be calibrated.
+    The parametric function to be calibrated. Its inputs should correspond to the calibrated parameters
+    and its parameters should correspond to the input observations.
 inputObservations : 2-d sequence of float
     The sample of input observations.
     Can have dimension 0 to specify no observations. 
@@ -56,7 +57,7 @@ LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, GaussianNonLine
 
 Examples
 --------
-Calibrate a nonlinear model using GaussianLinearCalibration:
+Calibrate a non-linear model using GaussianLinearCalibration:
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
@@ -64,17 +65,19 @@ Calibrate a nonlinear model using GaussianLinearCalibration:
 >>> x = [[0.5 + i] for i in range(m)]
 >>> inVars = ['a', 'b', 'c', 'x']
 >>> formulas = ['a + b * exp(c * x)']
->>> model = ot.SymbolicFunction(inVars, formulas)
->>> p_ref = [2.8, 1.2, 0.5]
->>> params = [0, 1, 2]
->>> modelX = ot.ParametricFunction(model, params, p_ref)
->>> y = modelX(x)
+>>> g = ot.SymbolicFunction(inVars, formulas)
+>>> paramRef = [2.8, 1.2, 0.5]
+>>> paramIndices = [0, 1, 2]
+>>> model = ot.ParametricFunction(g, paramIndices, paramRef)
+>>> y = model(x)
 >>> y += ot.Normal(0.0, 0.05).getSample(m)
->>> parameterMean = [1.0]*3
+>>> inputIndices = [3]
+>>> calibrationModel = ot.ParametricFunction(g, inputIndices, [0.0] * len(inputIndices))
+>>> parameterMean = [1.0] * 3
 >>> priorCovariance = ot.CovarianceMatrix(3)
 >>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
 >>> method = 'SVD'
->>> algo = ot.GaussianLinearCalibration(modelX, x, y, parameterMean, priorCovariance, errorCovariance, method)
+>>> algo = ot.GaussianLinearCalibration(calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
 [8.11483,0.0770992,0.992927]"

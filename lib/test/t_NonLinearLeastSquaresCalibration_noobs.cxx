@@ -18,7 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/OT.hxx"
+#include "openturns/NonLinearLeastSquaresCalibration.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/MultiStart.hxx"
+#include "openturns/ParametricFunction.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/TNC.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -53,16 +59,21 @@ int main(int, char *[])
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
     y += Normal(Point(outputDimension), Point(outputDimension, 0.05), IdentityMatrix(outputDimension)).getSample(y.getSize());
+
+    // Function needed by the calibration algorithm
+    // Since there are no observations, we can use g directly
+    Function calibrationModel(g);
+
     Point candidate(inputDimension, 1.0);
     const Indices bootstrapSizes = {0, 100};
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
     {
       fullprint << "Bootstrap size =" << bootstrapSizes[n] << std::endl;
       fullprint << "1. Default optim" << std::endl;
-      NonLinearLeastSquaresCalibration algo(model, x, y, candidate);
+      NonLinearLeastSquaresCalibration algo(calibrationModel, x, y, candidate);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
-      // To avoid discrepance between the platforms with or without CMinpack
+      // To avoid discrepancy between the platforms with or without CMinpack
       Point parameterMAP(algo.getResult().getParameterMAP());
       fullprint << "MAP =" << parameterMAP << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 1e-2);

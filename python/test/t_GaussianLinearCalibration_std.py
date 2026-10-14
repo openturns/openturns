@@ -36,6 +36,11 @@ params = [0, 1, 2]
 model = ot.ParametricFunction(g, params, trueParameter)
 y = model(x)
 y += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
+
+# Parametric function needed by the calibration algorithm (input and parameters are swapped)
+input = [3]
+calibrationModel = ot.ParametricFunction(g, input, [0.0] * len(input))
+
 candidate = [1.0] * 3
 priorCovariance = ot.CovarianceMatrix(3)
 for i in range(3):
@@ -59,7 +64,7 @@ for method in methods:
     # 1. Check with local error covariance
     print("Local error covariance")
     algo = ot.GaussianLinearCalibration(
-        model, x, y, candidate, priorCovariance, errorCovariance, method
+        calibrationModel, x, y, candidate, priorCovariance, errorCovariance, method
     )
     algo.run()
     result = algo.getResult()
@@ -94,7 +99,7 @@ for method in methods:
     # 2. Check with global error covariance
     print("Global error covariance")
     algo = ot.GaussianLinearCalibration(
-        model, x, y, candidate, priorCovariance, globalErrorCovariance, method
+        calibrationModel, x, y, candidate, priorCovariance, globalErrorCovariance, method
     )
     algo.run()
     result = algo.getResult()

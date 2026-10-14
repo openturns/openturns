@@ -11,12 +11,17 @@ x = [[0.5 + i] for i in range(m)]
 
 inVars = ["a", "b", "c", "x"]
 formulas = ["a + b * exp(c * x)", "(a * x^2 + b) / (c + x^2)"]
-model = ot.SymbolicFunction(inVars, formulas)
+g = ot.SymbolicFunction(inVars, formulas)
 p_ref = [2.8, 1.2, 0.5]
 params = [0, 1, 2]
-modelX = ot.ParametricFunction(model, params, p_ref)
-y = modelX(x)
+model = ot.ParametricFunction(g, params, p_ref)
+y = model(x)
 y += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
+
+# Parametric function needed by the calibration algorithm (input and parameters are swapped)
+input = [3]
+calibrationModel = ot.ParametricFunction(g, input, [0.0] * len(input))
+
 candidate = [1.0] * 3
 priorCovariance = ot.CovarianceMatrix(3)
 for i in range(3):
@@ -36,11 +41,11 @@ for i in range(2 * m):
 bootstrapSizes = [0, 30]
 for bootstrapSize in bootstrapSizes:
     algo = ot.GaussianNonLinearCalibration(
-        modelX, x, y, candidate, priorCovariance, errorCovariance
+        calibrationModel, x, y, candidate, priorCovariance, errorCovariance
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    # To avoid discrepance between the platforms with or without CMinpack
+    # To avoid discrepancy between the platforms with or without CMinpack
     print("result   (Auto)=", algo.getResult().getParameterMAP())
     multiStartSize = 10
     algo.setOptimizationAlgorithm(
@@ -57,11 +62,11 @@ for bootstrapSize in bootstrapSizes:
     )
     algo.run()
     result = algo.getResult()
-    # To avoid discrepance between the platforms with or without CMinpack
+    # To avoid discrepancy between the platforms with or without CMinpack
     print("result    (TNC)=", result.getParameterMAP())
     print("error=", result.getObservationsError())
     algo = ot.GaussianNonLinearCalibration(
-        modelX, x, y, candidate, priorCovariance, globalErrorCovariance
+        calibrationModel, x, y, candidate, priorCovariance, globalErrorCovariance
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
@@ -76,10 +81,13 @@ for bootstrapSize in bootstrapSizes:
 # unobserved inputs
 p_ref = [2.8, 1.2, 0.5, 2.0]
 params = [0, 1, 2, 3]
-modelX = ot.ParametricFunction(model, params, p_ref)
+model = ot.ParametricFunction(g, params, p_ref)
 x = ot.Sample(m, 0)
-y = modelX(x)
+y = model(x)
 y += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
+# Parametric function needed by the calibration algorithm (input and parameters are swapped)
+input = []
+calibrationModel = ot.ParametricFunction(g, input, [0.0] * len(input))
 priorCovariance = ot.CovarianceMatrix(4)
 for i in range(4):
     priorCovariance[i, i] = 3.0 + (1.0 + i) * (1.0 + i)
@@ -87,7 +95,7 @@ for i in range(4):
         priorCovariance[i, j] = 1.0 / (1.0 + i + j)
 candidate = [1.0] * 4
 algo = ot.GaussianNonLinearCalibration(
-    modelX, x, y, candidate, priorCovariance, errorCovariance
+    calibrationModel, x, y, candidate, priorCovariance, errorCovariance
 )
 algo.run()
 result = algo.getResult()
@@ -96,10 +104,10 @@ print("result (unobs.)=", result.getParameterMAP())
 print("error=", result.getObservationsError())
 
 # test output at mean
-modelX.setParameter(result.getParameterPrior().getMean())
-outputAtPriorMean = modelX(x)
+model.setParameter(result.getParameterPrior().getMean())
+outputAtPriorMean = model(x)
 ott.assert_almost_equal(result.getOutputAtPriorMean(), outputAtPriorMean)
 
-modelX.setParameter(result.getParameterPosterior().getMean())
-outputAtPosteriorMean = modelX(x)
+model.setParameter(result.getParameterPosterior().getMean())
+outputAtPosteriorMean = model(x)
 ott.assert_almost_equal(result.getOutputAtPosteriorMean(), outputAtPosteriorMean)

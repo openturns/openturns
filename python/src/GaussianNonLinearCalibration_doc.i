@@ -1,10 +1,11 @@
 %feature("docstring") OT::GaussianNonLinearCalibration
-"Gaussian non linear calibration algorithm (3DVAR).
+"Gaussian non-linear calibration algorithm (3DVAR).
 
 Parameters
 ----------
 model : :class:`~openturns.Function`
-    The parametric function to be calibrated.
+    The parametric function to be calibrated. Its inputs should correspond to the calibrated parameters
+    and its parameters should correspond to the input observations.
 inputObservations : 2-d sequence of float
     The sample of input observations.
     Can have dimension 0 to specify no observations.
@@ -19,7 +20,7 @@ errorCovariance : 2-d sequence of float
 
 Notes
 -----
-This class implements the Maximum A Posteriori (MAP) estimator for a nonlinear model
+This class implements the Maximum A Posteriori (MAP) estimator for a non-linear model
 under the Bayesian hypothesis that the prior and the observation errors have Gaussian distributions. 
 This algorithm is also known as *3DVAR*. 
 
@@ -37,7 +38,7 @@ Depending on the value of the `GaussianNonLinearCalibration-BootstrapSize` key
 in the :class:`~openturns.ResourceMap`, the parameters are estimated differently.
 
 - If `GaussianNonLinearCalibration-BootstrapSize`
-  is set to a nonzero positive integer, then a bootstrap resampling of the observations
+  is set to a non-zero positive integer, then a bootstrap resampling of the observations
   is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing`
   of the sample of bootstrap optimum parameters.
 - If `GaussianNonLinearCalibration-BootstrapSize`
@@ -46,7 +47,7 @@ in the :class:`~openturns.ResourceMap`, the parameters are estimated differently
   This corresponds to using :class:`~openturns.GaussianLinearCalibration` at the optimum,
   and is named *Laplace approximation* in the Bayesian context.
 
-The default value of `GaussianNonLinearCalibration-BootstrapSize` is nonzero, 
+The default value of `GaussianNonLinearCalibration-BootstrapSize` is non-zero, 
 meaning that a bootstrap is used by default.
 This can be costly in some practical use cases, because it requires
 several runs of the optimization algorithm.
@@ -65,7 +66,7 @@ GaussianLinearCalibration, LinearLeastSquaresCalibration, NonLinearLeastSquaresC
 
 Examples
 --------
-Calibrate a nonlinear model using 3DVAR:
+Calibrate a non-linear model using 3DVAR:
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
@@ -73,18 +74,21 @@ Calibrate a nonlinear model using 3DVAR:
 >>> x = [[0.5 + i] for i in range(m)]
 >>> inVars = ['a', 'b', 'c', 'x']
 >>> formulas = ['a + b * exp(c * x)']
->>> model = ot.SymbolicFunction(inVars, formulas)
->>> p_ref = [2.8, 1.2, 0.5]
->>> params = [0, 1, 2]
->>> modelX = ot.ParametricFunction(model, params, p_ref)
->>> y = modelX(x)
+>>> g = ot.SymbolicFunction(inVars, formulas)
+>>> paramRef = [2.8, 1.2, 0.5]
+>>> paramIndices = [0, 1, 2]
+>>> model = ot.ParametricFunction(g, paramIndices, paramRef)
+>>> y = model(x)
 >>> y += ot.Normal(0.0, 0.05).getSample(m)
->>> parameterMean = [1.0]*3
+>>> inputIndices = [3]
+>>> calibrationModel = ot.ParametricFunction(g, inputIndices, [0.0] * len(inputIndices))
+>>> parameterMean = [1.0] * 3
 >>> priorCovariance = ot.CovarianceMatrix(3)
 >>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
->>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, parameterMean, priorCovariance, errorCovariance)
->>> algo.run()  # doctest: +SKIP
->>> pmap = algo.getResult().getParameterMAP()  # doctest: +SKIP"
+>>> algo = ot.GaussianNonLinearCalibration(calibrationModel, x, y, parameterMean, priorCovariance, errorCovariance)
+>>> algo.run()
+>>> print(algo.getResult().getParameterMAP())
+[2.70532,1.21251,0.499001]"
 
 // ---------------------------------------------------------------------
 
