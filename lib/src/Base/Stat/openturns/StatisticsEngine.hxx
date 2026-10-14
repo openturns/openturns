@@ -118,6 +118,32 @@ public:
   static DataContainer ComputeCovarianceBlockwise(const DataContainer & sample,
       UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
 
+  /** Block-based sum: single pass. */
+  static DataContainer ComputeSumBlockwise(const DataContainer & sample,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based minimum: single pass. */
+  static DataContainer ComputeMinBlockwise(const DataContainer & sample,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based maximum: single pass. */
+  static DataContainer ComputeMaxBlockwise(const DataContainer & sample,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based standard deviation: via the blockwise variance. */
+  static DataContainer ComputeStandardDeviationBlockwise(const DataContainer & sample,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based raw moment of order k: single pass. */
+  static DataContainer ComputeRawMomentBlockwise(const DataContainer & sample,
+      UnsignedInteger k,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
+  /** Block-based central moment of order k: two-pass via the blockwise mean. */
+  static DataContainer ComputeCentralMomentBlockwise(const DataContainer & sample,
+      UnsignedInteger k,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("StatisticsEngine-DefaultBlockSize"));
+
 }; /* class StatisticsEngine */
 
 END_NAMESPACE_OPENTURNS
