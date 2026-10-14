@@ -5,6 +5,16 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+# TNC-only path must not wander to NaN points, see issue #3031
+ot.RandomGenerator.SetSeed(0)
+tncSample = ot.Gumbel(1.5, -0.5).getSample(1000)
+tncFactory = ot.QuantileMatchingFactory(ot.Gumbel(), [0.01, 0.99])
+tncFactory.setOptimizationAlgorithm(ot.TNC())
+tncEstimated = tncFactory.build(tncSample)
+ott.assert_almost_equal(
+    tncEstimated.getParameter(), [1.5, -0.5], 2e-1, 2e-1
+)
+
 # need a proper LS solver
 if not ot.PlatformInfo.HasFeature("cminpack") or not ot.PlatformInfo.HasFeature(
     "ceres"
