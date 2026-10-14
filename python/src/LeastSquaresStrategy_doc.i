@@ -27,7 +27,8 @@ approxAlgoImpFact : :class:`~openturns.ApproximationAlgorithmImplementationFacto
     
     By default, the class :class:`~openturns.PenalizedLeastSquaresAlgorithmFactory` is used.
 measure : :class:`~openturns.Distribution`
-    The input distribution :math:`\mu_{\inputRV}`.
+    The distribution :math:`\mu_{\inputRV}` of the input random vector
+    :math:`\inputRV`, with respect to which the basis is orthonormal.
     
     By default, the limit measure defined within the class
     :class:`~openturns.WeightedExperiment` is used.
@@ -36,9 +37,13 @@ inputSample : 2-d sequence of float
 outputSample : 2-d sequence of float
     The output sample of size :math:`\sampleSize`.
 weights : sequence of float
-    Numerical point that are the weights associated to the input sample points
-    such that the corresponding weighted experiment is a good approximation of
-    :math:`\mu_{\inputRV}`.
+    Weights :math:`(\omega_i)_{1 \leq i \leq \sampleSize}` associated to the
+    input sample points, such that the corresponding weighted experiment
+    is a good approximation of :math:`\mu_{\inputRV}`, in the sense that
+    :math:`\Expect{h(\inputRV)} \approx \sum_{i=1}^{\sampleSize} \omega_i h(\vect{x}^{(i)})`
+    for any integrable function :math:`h`.
+    The weights also weight the residuals of the least-squares problem
+    solved by the approximation algorithm (see :any:`least_squares`).
 
     By default, all weights are equal to
     :math:`\omega_i = \frac{1}{\sampleSize}`.
