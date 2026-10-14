@@ -1021,6 +1021,38 @@ with ott.assert_raises(Exception):
     ot.Sample(0, 2).computeKendallTau()
 print("Sample Kendall delegation: OK")
 
+# Weighted Kendall tau with ties: comonotonic atoms -> 1, independent binary -> 0
+mono = ot.DataContainer(3, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i, v in enumerate([0.0, 0.0, 1.0, 1.0, 2.0, 2.0]):
+    mono[i] = v
+wMono = ot.DataContainer(3, 1.0 / 3.0)
+kMono = ot.StatisticsEngine.ComputeWeightedKendallTau(mono, wMono, 0.0)
+ott.assert_almost_equal(kMono[0], 1.0)
+ott.assert_almost_equal(kMono[1], 1.0)
+ott.assert_almost_equal(kMono[2], 1.0)
+ott.assert_almost_equal(kMono[3], 1.0)
+binary = ot.DataContainer(4, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i, v in enumerate([0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]):
+    binary[i] = v
+wBin = ot.DataContainer(4, 0.25)
+kBin = ot.StatisticsEngine.ComputeWeightedKendallTau(binary, wBin, 0.0)
+ott.assert_almost_equal(kBin[1], 0.0)
+ott.assert_almost_equal(kBin[2], 0.0)
+# uniform weights without ties match the unweighted engine
+uw = ot.DataContainer(5, 1.0 / 5.0)
+plain = ot.DataContainer(5, 2, 0.0, ot.DataContainer.ROW_MAJOR)
+for i, v in enumerate([1.0, 0.0, 2.0, 3.0, 3.0, 1.0, 4.0, 4.0, 5.0, 2.0]):
+    plain[i] = v
+ott.assert_almost_equal(
+    ot.StatisticsEngine.ComputeWeightedKendallTau(plain, uw, 0.0)[1],
+    ot.StatisticsEngine.ComputeKendallTau(plain)[1],
+)
+# discrete distributions route through the engine (same values as before the move)
+ott.assert_almost_equal(
+    ot.FiniteDiscreteDistribution([[0.0, 0.0], [1.0, 1.0], [2.0, 2.0]]).getKendallTau()[0, 1], 1.0
+)
+print("ComputeWeightedKendallTau: OK")
+
 # Empirical CDF, plain and tail
 eSample = ot.Sample([[1.0], [2.0], [3.0], [10.0]])
 ott.assert_almost_equal(eSample.computeEmpiricalCDF(ot.Point([2.5])), 0.5)

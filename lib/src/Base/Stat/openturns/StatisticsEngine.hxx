@@ -63,6 +63,14 @@ public:
   /** Compute Kendall rank correlation matrix. Returns dimension x dimension. */
   static DataContainer ComputeKendallTau(const DataContainer & sample);
 
+  /** Compute weighted Kendall rank correlation with tie correction.
+      sample is ROW_MAJOR (n x d), weights is a flat vector of n atom masses,
+      epsilon is the tie tolerance on component values.
+      Returns the full symmetric matrix with unit diagonal. */
+  static DataContainer ComputeWeightedKendallTau(const DataContainer & sample,
+      const DataContainer & weights,
+      Scalar epsilon);
+
   /** Compute quantiles of each column. q is in [0,1]. Returns 1 x dimension. If type7, use the Hyndman-Fan Type-7 interpolation; otherwise use the historical Sample rule (default). */
   static DataContainer ComputeQuantile(const DataContainer & sample, Scalar q, Bool type7 = false);
 
