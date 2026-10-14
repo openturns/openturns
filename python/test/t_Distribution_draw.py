@@ -122,3 +122,15 @@ graph4 = copula.drawLowerExtremalDependenceFunction()
 # 2d / discrete
 dist_2d_discrete = ot.JointDistribution([ot.Geometric(0.5)] * 2)
 graphPDF = dist_2d_discrete.drawPDF()
+
+# Marginal PDF grid for dimension > 2, see issue #2904
+gridPDFs = ot.Normal(3).drawMarginalPDFs()
+assert gridPDFs.getNbRows() == 3
+assert gridPDFs.getNbColumns() == 3
+# Only the lower triangle is drawn: the upper triangle is left empty
+assert len(gridPDFs.getGraph(0, 1).getDrawables()) == 0
+assert len(gridPDFs.getGraph(0, 2).getDrawables()) == 0
+assert len(gridPDFs.getGraph(1, 2).getDrawables()) == 0
+assert len(gridPDFs.getGraph(1, 0).getDrawables()) > 0
+assert len(gridPDFs.getGraph(2, 0).getDrawables()) > 0
+assert len(gridPDFs.getGraph(2, 1).getDrawables()) > 0
