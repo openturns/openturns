@@ -124,4 +124,24 @@ for bs in [1, 4, 5, 16, 100]:
     assert max_abs_diff(refT, tb, 1) == 0.0
 print("TransposeBlockwise: OK")
 
+
+# Singular values twin: tall (30x20) and wide (12x20) vs dense dgesdd path
+def scaled_matrix(m, p):
+    a = ot.DataContainer(m, p, 0.0)
+    for j in range(p):
+        base = j * m
+        for i in range(m):
+            a[base + i] = math.sin(0.13 * i + 0.29 * j) + 0.5 * math.cos(0.07 * i * j + 0.5)
+    return a
+
+
+for (m, p) in [(30, 20), (12, 20)]:
+    a = scaled_matrix(m, p)
+    ref = ot.AlgebraEngine.ComputeSingularValues(a)
+    for bs in [1, 7, 100]:
+        sb = ot.AlgebraEngine.ComputeSingularValuesBlockwise(a, bs)
+        assert sb.getSize() == min(m, p)
+        assert max_abs_diff(ref, sb, 1) / (1.0 + ref[0]) < 1e-8
+print("ComputeSingularValuesBlockwise: OK")
+
 print("=== ALL BLOCKWISE SCALE TESTS PASSED ===")

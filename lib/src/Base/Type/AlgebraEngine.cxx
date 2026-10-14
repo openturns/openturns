@@ -1768,4 +1768,33 @@ DataContainer AlgebraEngine::TransposeBlockwise(const DataContainer & A,
   return result;
 }
 
+DataContainer AlgebraEngine::ComputeSingularValuesBlockwise(const DataContainer & A,
+    UnsignedInteger blockSize)
+{
+  const UnsignedInteger m = A.getSize();
+  const UnsignedInteger n = A.getDimension();
+  if (!(m > 0 && n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
+  // Out-of-core design via the Gram matrix: tall/square uses A^T A (n x n),
+  // wide uses A A^T (m x m) through the blockwise transpose, padded with zeros.
+  // Full U/V accumulation (block Jacobi) is out of scope: use ComputeSVD in memory.
+  const UnsignedInteger k = std::min(m, n);
+  DataContainer gram;
+  if (m >= n)
+    gram = ComputeGramBlockwise(A, true, blockSize);
+  else
+  {
+    const DataContainer At = TransposeBlockwise(A, blockSize);
+    gram = ComputeGramBlockwise(At, true, blockSize);
+  }
+  const DataContainer eigenValues = ComputeEigenValuesSymmetric(gram);
+  // dsyev returns ascending eigenvalues; singular values are descending
+  DataContainer result(k, 1, 0.0);
+  for (UnsignedInteger i = 0; i < k; ++i)
+  {
+    const Scalar ev = eigenValues[k - 1 - i];
+    result[i] = std::sqrt(std::max(ev, 0.0));
+  }
+  return result;
+}
+
 END_NAMESPACE_OPENTURNS
