@@ -361,3 +361,109 @@ Returns
 -------
 covariance : DataContainer
     Covariance matrix of size d x d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeSumBlockwise
+"Block-based sum for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+sums : DataContainer
+    Column sums of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeMinBlockwise
+"Block-based minimum for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+minimum : DataContainer
+    Column minima of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeMaxBlockwise
+"Block-based maximum for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+maximum : DataContainer
+    Column maxima of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeStandardDeviationBlockwise
+"Block-based standard deviation for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+stddev : DataContainer
+    Standard deviations of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeRawMomentBlockwise
+"Block-based raw moment for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+k : int
+    Moment order (0 returns ones).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+moment : DataContainer
+    Raw moment of order k of size d."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::StatisticsEngine::ComputeCentralMomentBlockwise
+"Block-based central moment for out-of-core processing.
+
+Parameters
+----------
+sample : DataContainer
+    Input sample (ROW_MAJOR, n x d).
+k : int
+    Moment order (0 returns ones).
+blockSize : int, optional
+    Number of rows per block. Default from ResourceMap key ``StatisticsEngine-DefaultBlockSize``.
+
+Returns
+-------
+moment : DataContainer
+    Central moment of order k of size d."
