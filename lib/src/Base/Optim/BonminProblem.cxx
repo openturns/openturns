@@ -61,6 +61,16 @@ Sample BonminProblem::getOutputHistory() const
   return evaluationOutputHistory_;
 }
 
+UnsignedInteger BonminProblem::getGradientCallsNumber() const
+{
+  return gradientCallsNumber_;
+}
+
+UnsignedInteger BonminProblem::getHessianCallsNumber() const
+{
+  return hessianCallsNumber_;
+}
+
 /** Overloading functions from bonmin/Ipopt
     See Ipopt online documentation at
     https://coin-or.github.io/Ipopt/INTERFACES.html#INTERFACE_CPP
@@ -332,6 +342,7 @@ bool BonminProblem::eval_grad_f( int n,
   try
   {
     gradOT = optimProblem_.getObjective().gradient(xPoint);
+    ++ gradientCallsNumber_;
   }
   catch (const std::exception & exc)
   {
@@ -527,6 +538,7 @@ bool BonminProblem::eval_h(int n,
     try
     {
       objectiveHessian = obj_factor * optimProblem_.getObjective().hessian(xPoint).getSheet(0);
+      ++ hessianCallsNumber_;
     }
     catch (const std::exception & exc)
     {

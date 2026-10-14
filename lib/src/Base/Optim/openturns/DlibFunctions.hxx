@@ -48,8 +48,15 @@ public:
   // Operator () for use with residual DlibFunction
   DlibMatrix operator() (const UnsignedInteger i,
                          const DlibMatrix & inP) const;
+
+  // Attach an external counter incremented on each call (shared across copies)
+  void setCallsNumberPointer(UnsignedInteger * p_gradientCallsNumber)
+  {
+    p_gradientCallsNumber_ = p_gradientCallsNumber;
+  }
 private:
   Bool minimization_ = true;
+  UnsignedInteger * p_gradientCallsNumber_ = nullptr;
 } ;
 
 /**  Class DlibHessian to ensure interface between OT::Hessian and dlib functions  **/
@@ -63,6 +70,13 @@ public:
   // Operator ()
   DlibMatrix operator() (const DlibMatrix & inP) const;
 
+  // Attach an external counter incremented on each call (shared across copies)
+  void setCallsNumberPointer(UnsignedInteger * p_hessianCallsNumber)
+  {
+    p_hessianCallsNumber_ = p_hessianCallsNumber;
+  }
+private:
+  UnsignedInteger * p_hessianCallsNumber_ = nullptr;
 } ;
 
 /** Class DlibFunction to ensure interface between OT::Function and dlib functions **/
@@ -110,12 +124,16 @@ public:
 
   /* Accessors to attributes */
   UnsignedInteger getCallsNumber() const;
+  UnsignedInteger getGradientCallsNumber() const;
+  UnsignedInteger getHessianCallsNumber() const;
   Sample getInputHistory();
   Sample getOutputHistory();
 
 protected:
   mutable Sample inputHistory_;
   mutable Sample outputHistory_;
+  mutable UnsignedInteger gradientCallsNumber_ = 0;
+  mutable UnsignedInteger hessianCallsNumber_ = 0;
 private:
   Bool minimization_ = true;
 };
