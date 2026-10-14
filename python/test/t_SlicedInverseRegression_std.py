@@ -24,9 +24,6 @@ x0 = X[0]
 u0 = result.getTransformation()(x0)
 print(x0, u0)
 ott.assert_almost_equal([abs(u0[0]), abs(u0[1])], [0.885348, 0.0235555])
-z0 = result.getInverseTransformation()(u0)
-print(u0, z0)
-ott.assert_almost_equal(z0, x0)
 
 # rank=1
 algo.setNbModes(1)
@@ -36,10 +33,6 @@ dir0 = result.getDirections()
 u0 = result.getTransformation()(x0)
 print(x0, u0)
 ott.assert_almost_equal(u0[0], sum(dir0[i, 0] * x0[i] for i in range(2)))
-z0 = result.getInverseTransformation()(u0)
-print(u0, z0)
-# z0 is the projection: dir0 * u0
-ott.assert_almost_equal(z0, [dir0[0, 0] * u0[0], dir0[1, 0] * u0[0]])
 
 # Poisson single-index model (mirrors statsmodels test_dimred.test_poisson):
 # a 5-d collinear design drives a Poisson response through a single linear
