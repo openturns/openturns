@@ -40,10 +40,8 @@ static const Factory<NormalGamma> Factory_NormalGamma;
 
 /* Default constructor */
 NormalGamma::NormalGamma()
-  : JointByConditioningDistribution()
+  : NormalGamma(0.0, 1.0, 1.0, 1.0)
 {
-  const Point parameter = {mu_, kappa_, alpha_, beta_};
-  setParameter(parameter);
 }
 
 /* Parameters constructor */
@@ -331,9 +329,17 @@ Point NormalGamma::getParameter() const
 void NormalGamma::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 4) throw InvalidArgumentException(HERE) << "Error: expected 4 values, got " << parameter.getSize();
-  const Scalar w = getWeight();
-  *this = NormalGamma(parameter[0], parameter[1], parameter[2], parameter[3]);
-  setWeight(w);
+  if (!(parameter[1] > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << parameter[1];
+  if (!(parameter[2] > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << parameter[2];
+  if (!(parameter[3] > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << parameter[3];
+  if ((parameter[0] != mu_) || (parameter[1] != kappa_) || (parameter[2] != alpha_) || (parameter[3] != beta_))
+  {
+    mu_ = parameter[0];
+    kappa_ = parameter[1];
+    alpha_ = parameter[2];
+    beta_ = parameter[3];
+    update();
+  }
 }
 
 /* Parameters value and description accessor */
@@ -381,9 +387,8 @@ void NormalGamma::setMu(const Scalar mu)
 {
   if (mu != mu_)
   {
-    const Scalar w = getWeight();
-    *this = NormalGamma(mu, kappa_, alpha_, beta_);
-    setWeight(w);
+    mu_ = mu;
+    update();
   }
 }
 
@@ -398,9 +403,9 @@ void NormalGamma::setKappa(const Scalar kappa)
 {
   if (kappa != kappa_)
   {
-    const Scalar w = getWeight();
-    *this = NormalGamma(mu_, kappa, alpha_, beta_);
-    setWeight(w);
+    if (!(kappa > 0.0)) throw InvalidArgumentException(HERE) << "Error: kappa must be positive, here kappa=" << kappa;
+    kappa_ = kappa;
+    update();
   }
 }
 
@@ -414,9 +419,9 @@ void NormalGamma::setAlpha(const Scalar alpha)
 {
   if (!(alpha == alpha_))
   {
-    const Scalar w = getWeight();
-    *this = NormalGamma(mu_, kappa_, alpha, beta_);
-    setWeight(w);
+    if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Error: alpha must be positive, here alpha=" << alpha;
+    alpha_ = alpha;
+    update();
   }
 }
 
@@ -430,15 +435,33 @@ void NormalGamma::setBeta(const Scalar beta)
 {
   if (!(beta == beta_))
   {
-    const Scalar w = getWeight();
-    *this = NormalGamma(mu_, kappa_, alpha_, beta);
-    setWeight(w);
+    if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Error: beta must be positive, here beta=" << beta;
+    beta_ = beta;
+    update();
   }
 }
 
 Scalar NormalGamma::getBeta() const
 {
   return beta_;
+}
+
+/* Recompute all the derived quantities after a parameter change */
+void NormalGamma::update()
+{
+  computeLogNormalization();
+  // See ctor for the link construction: (mu, kappa) are parameters of the link function
+  const Description inVars = {"y", "mu", "kappa"};
+  const Description formulas = {"mu", "1.0 / sqrt(kappa * y)"};
+  const Indices indices = {1, 2};
+  const Point values = {mu_, kappa_};
+  const ParametricFunction link(SymbolicFunction(inVars, formulas), indices, values);
+  // setConditionedAndConditioningDistributionsAndLinkFunction() overwrites the description, preserve a possible custom description
+  const Description description = getDescription();
+  setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
+  setDescription(description);
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
 }
 
 /* Get the skewness of the distribution */
