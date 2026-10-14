@@ -67,7 +67,7 @@ method : :class:`~openturns.LeastSquaresMethod`
 Examples
 --------
 We get the projection onto the functional basis :math:`(x, x^2, x^3)` of
-a model :math:`f: \Rset \rightarrow \Rset` from which we only have a data base of
+a model from which we only have a data base of
 size 50. The least squares problem is solved using the SVD method.
 
 There is no model selection strategy. The projection has 3 components:
@@ -85,7 +85,7 @@ Here we define the functional basis and the design proxy (for the last construct
 >>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
 >>> proxy = ot.DesignProxy(X, phis)
 
-Here, we explicite the design matrix:
+Here, we explicit the design matrix:
 
 >>> full = range(basisSize)
 >>> designMatrix = ot.Matrix(proxy.computeDesign(full))

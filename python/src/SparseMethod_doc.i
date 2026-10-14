@@ -27,7 +27,7 @@ LeastSquaresMethod
 Examples
 --------
 We get the projection onto the functional basis :math:`(x, x^2, x^3)` of
-a model :math:`f: \Rset \rightarrow \Rset` from which we only have a data base of
+a model from which we only have a data base of
 size 50. The least squares problem is solved using the QR method.
 
 Here, the model selection strategy
@@ -51,7 +51,6 @@ Now, we use the selection strategy defined by :class:`~openturns.LARS` and :clas
 >>> basisFact = ot.LARS()
 >>> method = ot.SparseMethod(ot.QRMethod(proxy, full), basisFact, fitAlgo)
 >>> x = method.solve(y)
->>> print(x)
 
 Notes
 -----
