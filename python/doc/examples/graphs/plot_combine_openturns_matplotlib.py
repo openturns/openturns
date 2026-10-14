@@ -1,15 +1,15 @@
 """
-Combine OpenTURNS graphics with `matplotlib`
-============================================
+Combine native graphics with `matplotlib`
+=========================================
 
-This example shows how to combine OpenTURNS graphs with `matplotlib`.
+This example shows how to combine native graphs with `matplotlib`.
 
 Every :class:`~openturns.Graph` displayed with :class:`~openturns.viewer.View`
 is a `matplotlib` figure. Hence we can:
 
 -  retrieve the Matplotlib ``Figure`` and ``Axes`` from a ``View``
    and enrich them with Matplotlib,
--  draw one or several OpenTURNS graphs into an existing Matplotlib figure.
+-  draw one or several native graphs into an existing Matplotlib figure.
 
 The example uses a standard Normal distribution: its PDF is drawn by
 OpenTURNS, the failure threshold, the shaded tail and the annotations
@@ -19,9 +19,9 @@ are added with Matplotlib.
 # sphinx_gallery_thumbnail_number = 2
 
 # %%
-# Create an OpenTURNS graph and retrieve the `matplotlib` objects
-# ---------------------------------------------------------------
-# We start from a basic OpenTURNS graph: the PDF of a Normal distribution.
+# Create a native graph and retrieve the `matplotlib` objects
+# -----------------------------------------------------------
+# We start from a basic native graph: the density of a Normal distribution.
 # Every graph displayed with :class:`~openturns.viewer.View` is a `matplotlib`
 # :meth:`~openturns.viewer.View.getFigure` and
 # :meth:`~openturns.viewer.View.getAxes` give access to the underlying
@@ -40,11 +40,11 @@ fig = view.getFigure()
 ax = view.getAxes()[0]
 ax.grid(True, alpha=0.3)
 ax.set_xlabel("x")
-fig.suptitle("An OpenTURNS graph is a Matplotlib figure", fontsize=10)
+fig.suptitle("A native graph is a Matplotlib figure", fontsize=10)
 
 # %%
-# Add `matplotlib` plots onto an OpenTURNS Axes
-# ---------------------------------------------
+# Add `matplotlib` plots onto OpenTURNS Axes
+# ------------------------------------------
 # Let us highlight the event ``X > 2``.
 # The curve itself was drawn by OpenTURNS: we reuse its line data
 # to shade the tail exactly under the curve, then add a threshold
@@ -85,11 +85,11 @@ new_scale.set_ylim([0.0, 0.005])
 new_scale.grid(True, which="both", alpha=0.3)
 
 # %%
-# Draw OpenTURNS graphs into an existing `matplotlib` figure
-# ----------------------------------------------------------
+# Draw native graphs into an existing `matplotlib` figure
+# -------------------------------------------------------
 # The reverse direction is also possible: create the `matplotlib` figure
 # first with :func:`~matplotlib.pyplot.subplots`, then draw each
-# OpenTURNS graph on a chosen ``Axes`` with the ``figure`` and ``axes``
+# native graph on a chosen ``Axes`` with the ``figure`` and ``axes``
 # arguments. Extra `matplotlib`-only elements can then be mixed freely.
 graph_cdf = normal.drawCDF()
 
@@ -101,7 +101,7 @@ _ = otv.View(graph_cdf, figure=fig, axes=[axs[1]])
 axs[1].axhline(0.5, color="black", linestyle=":", label="median level")
 axs[1].plot([0.0], [0.5], "ro", label="median")
 axs[1].legend()
-fig.suptitle("Two OpenTURNS graphs embedded in a Matplotlib figure")
+fig.suptitle("Two native graphs embedded in a Matplotlib figure")
 fig.tight_layout()
 
 otv.View.ShowAll()
