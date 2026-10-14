@@ -129,6 +129,15 @@ private:
   /** The position of the input */
   Indices inputPositions_;
 
+  /** Precompiled function with frozen parameters substituted, see #2902 */
+  Function reducedFunction_;
+
+  /** Whether the reduced function is in use (underlying is symbolic) */
+  Bool useReduced_ = false;
+
+  /** Rebuild the reduced function from the current parameters */
+  void updateReducedFunction();
+
 }; /* class ParametricEvaluation */
 
 END_NAMESPACE_OPENTURNS

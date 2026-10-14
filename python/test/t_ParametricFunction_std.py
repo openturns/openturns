@@ -164,3 +164,20 @@ assert n_calls_marg == 4, (
 # Verify correctness
 ott.assert_almost_equal(gradient_marg[0, 0], 1.0)
 ott.assert_almost_equal(gradient_marg[1, 0], 1.0)
+
+# Symbolic freeze: substituted formulas give identical values, see #2902
+symFunc = ot.SymbolicFunction(["a", "x", "b"], ["a * x + b", "a * x^2"])
+frozen = ot.ParametricFunction(symFunc, [0, 2], [2.0, 1.0])
+ott.assert_almost_equal(frozen([3.0]), [7.0, 18.0])
+ott.assert_almost_equal(frozen([[3.0], [4.0]]), [[7.0, 18.0], [9.0, 32.0]])
+assert list(frozen.getInputDescription()) == ["x"]
+assert list(frozen.getOutputDescription()) == list(symFunc.getOutputDescription())
+# New reference values recompile the substitution
+frozen.setParameter([3.0, 0.0])
+ott.assert_almost_equal(frozen([2.0]), [6.0, 12.0])
+# Non-symbolic parents keep the legacy path with identical values
+linParent = ot.LinearFunction(
+    [0.0, 0.0], [1.0, 2.0], ot.Matrix([[2.0, 0.0], [0.0, 1.0]])
+)
+linFrozen = ot.ParametricFunction(linParent, [1], [5.0])
+ott.assert_almost_equal(linFrozen([3.0]), linParent([3.0, 5.0]))
