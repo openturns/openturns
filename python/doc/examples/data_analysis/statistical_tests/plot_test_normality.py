@@ -5,13 +5,13 @@ Test Normality
 
 
 # %%
-# In this example, we show how to test the normality of a sample.
+# In this example, we show how to test the normality of a sample of dimension 1.
 #
 # Several tests can be used:
 #
-# - the Henry line test for samples of dimension 1,
-# - the Anderson-Darling test for any samples,
-# - the Cramer-Von Mises test for any samples.
+# - the Henry line test,
+# - the Anderson-Darling test,
+# - the Cramer-Von Mises test.
 
 # %%
 # The Henry line test

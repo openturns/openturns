@@ -6,7 +6,7 @@ cumulative distribution function:
 
 .. math::
 
-    C(u_1, \cdots, u_\inputDim) = \Phi_{\mat{R}}^\inputDim(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_\inputDim))
+    C(u_1, \cdots, u_\inputDim) = \Phi_{\inputDim, \mat{R}}(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_\inputDim))
 
 where the shape matrix :math:`\mat{R}` is a correlation matix and
 :math:`\Phi_{\inputDim, \mat{R}}` is the cumulative distribution function of the
@@ -23,7 +23,7 @@ normal distribution with zero mean, unit marginal variances and correlation :mat
 
 The shape matrix :math:`\mat{R}` can be computed from a Spearman correlation
 matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}` as well as a
-Kendall concordance matrix :math:`\left( \tau_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`
+Kendall concordance matrix :math:`\left( \tau_{ij}\right)_{1 \leq i,j \leq \inputDim}`
 as follows:
 
 - From the Spearman correlation matrix:
@@ -88,7 +88,7 @@ R"RAW(Get the shape matrix from the Kendall correlation matrix.
 Parameters
 ----------
 K : :class:`~openturns.CorrelationMatrix`
-    Kendall correlation matrix :math:`\left(\tau_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`.
+    Kendall correlation matrix :math:`\left(\tau_{ij}\right)_{1 \leq i,j \leq \inputDim}`.
 
 Returns
 -------
