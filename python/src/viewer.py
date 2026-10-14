@@ -521,6 +521,8 @@ class View:
                     bar_kw["hatch"] = "////"
                     bar_kw["edgecolor"] = bar_kw["color"]
 
+                if "alpha" not in bar_kw_default:
+                    bar_kw["alpha"] = drawable.getAlpha()
                 xi = drawable.getOrigin()
                 for i in range(len(x)):
                     # label only the first bar to avoid getting several items
@@ -558,12 +560,16 @@ class View:
                 if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
                     scatter_kw["s"] = 1
                     scatter_kw["linewidths"] = 0.0
+                if "alpha" not in scatter_kw_default:
+                    scatter_kw["alpha"] = drawable.getAlpha()
                 lines = self._ax[0].scatter(x, y, **scatter_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines.findobj()[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
+                if "alpha" not in plot_kw_default:
+                    plot_kw["alpha"] = drawable.getAlpha()
                 lines = self._ax[0].plot(x, y, **plot_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
@@ -801,6 +807,8 @@ class View:
                         )  # Avoids the absence of labels in logarithmic scale
 
             elif drawableKind == "Staircase":
+                if "alpha" not in step_kw_default:
+                    step_kw["alpha"] = drawable.getAlpha()
                 lines = self._ax[0].step(x, y, **step_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
