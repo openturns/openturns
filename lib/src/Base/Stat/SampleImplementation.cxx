@@ -834,6 +834,28 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
 }
 
 /*
+ * Gives the Euclidean distance matrix of the sample
+ */
+SymmetricMatrix SampleImplementation::computePairwiseDistance() const
+{
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the pairwise distances of an empty sample.";
+  SymmetricMatrix distances(size_, size_);
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger j = i + 1; j < size_; ++j)
+    {
+      Scalar distance = 0.0;
+      for (UnsignedInteger k = 0; k < dimension_; ++k)
+      {
+        const Scalar delta = operator()(i, k) - operator()(j, k);
+        // hypot avoids the overflow/underflow of delta * delta
+        distance = std::hypot(distance, delta);
+      }
+      distances(i, j) = distance;
+    }
+  return distances;
+}
+
+/*
  * Gives the standard deviation of each component of the sample.
  */
 Point SampleImplementation::computeStandardDeviation() const

@@ -465,6 +465,14 @@ CovarianceMatrix Sample::computeCovariance() const
 }
 
 /*
+ * Method computePairwiseDistance() gives the Euclidean distance matrix of the sample
+ */
+SymmetricMatrix Sample::computePairwiseDistance() const
+{
+  return getImplementation()->computePairwiseDistance();
+}
+
+/*
  * Method computeStandardDeviation() gives the standard deviation of the sample
  */
 Point Sample::computeStandardDeviation() const

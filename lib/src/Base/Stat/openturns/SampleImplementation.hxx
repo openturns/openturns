@@ -623,6 +623,11 @@ public:
   virtual CovarianceMatrix computeCovariance() const;
 
   /**
+   * Gives the Euclidean distance matrix of the sample
+   */
+  virtual SymmetricMatrix computePairwiseDistance() const;
+
+  /**
    * Gives the standard deviation of each component of the sample
    */
   virtual Point computeStandardDeviation() const;
