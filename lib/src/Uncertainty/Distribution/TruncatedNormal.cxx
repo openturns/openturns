@@ -33,6 +33,11 @@ CLASSNAMEINIT(TruncatedNormal)
 
 static const Factory<TruncatedNormal> Factory_TruncatedNormal;
 
+// Natural-scale closed forms combine O(1) CDF/PDF values with 1/Z, so their
+// relative accuracy degrades as ~1ulp/Z. Below this mass the generic
+// implementations evaluated on log-accurate PDF/CDF are more accurate.
+static const Scalar minimalNaturalMass = 1e-6;
+
 /* Default onstructor */
 TruncatedNormal::TruncatedNormal()
   : DistributionImplementation()
@@ -236,10 +241,10 @@ Scalar TruncatedNormal::computeComplementaryCDF(const Point & point) const
 /* Compute the entropy of the distribution */
 Scalar TruncatedNormal::computeEntropy() const
 {
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::computeEntropy();
   const Scalar inverseZ = 1.0 / z;
   return 0.5 - std::log(SpecFunc::ISQRT2PI * inverseZ / sigma_) + 0.5 * (aNormPhiA_ - bNormPhiB_) * inverseZ;
@@ -381,10 +386,10 @@ Point TruncatedNormal::computePDFGradient(const Point & point) const
   const Scalar x = point[0];
   Point pdfGradient(4, 0.0);
   if ((x <= a_) || (x > b_)) return pdfGradient;
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::computePDFGradient(point);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
@@ -407,10 +412,10 @@ Point TruncatedNormal::computeLogPDFGradient(const Point & point) const
   const Scalar x = point[0];
   Point logPdfGradient(getParameterDimension());
   if (!(x > a_) || !(x < b_)) return logPdfGradient;
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::computeLogPDFGradient(point);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
@@ -432,10 +437,10 @@ Point TruncatedNormal::computeCDFGradient(const Point & point) const
   const Scalar x = point[0];
   Point cdfGradient(4, 0.0);
   if ((x <= a_) || (x > b_)) return cdfGradient;
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::computeCDFGradient(point);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
@@ -455,10 +460,10 @@ Scalar TruncatedNormal::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
-  // Direct inversion only when the truncation mass is representable *and*
-  // accurate in natural scale: a denormal mass would overflow its reciprocal
+  // Direct inversion only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::computeScalarQuantile(prob, tail);
   if (tail) return mu_ + sigma_ * DistFunc::qNormal(PhiBNorm_ - prob * z);
   return mu_ + sigma_ * DistFunc::qNormal(PhiANorm_ + prob * z);
@@ -488,10 +493,10 @@ void TruncatedNormal::computeMean() const
 /* Get the standard deviation of the distribution */
 Point TruncatedNormal::getStandardDeviation() const
 {
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::getStandardDeviation();
   const Scalar inverseZ = 1.0 / z;
   const Scalar ratio = (phiBNorm_ - phiANorm_) * inverseZ;
@@ -501,10 +506,10 @@ Point TruncatedNormal::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point TruncatedNormal::getSkewness() const
 {
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::getSkewness();
   const Scalar inverseZ = 1.0 / z;
   const Scalar ratio = (phiBNorm_ - phiANorm_) * inverseZ;
@@ -517,10 +522,10 @@ Point TruncatedNormal::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point TruncatedNormal::getKurtosis() const
 {
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     return DistributionImplementation::getKurtosis();
   const Scalar inverseZ = 1.0 / z;
   const Scalar ratio = (phiBNorm_ - phiANorm_) * inverseZ;
@@ -542,10 +547,10 @@ Distribution TruncatedNormal::getStandardRepresentative() const
 /* Compute the covariance of the distribution */
 void TruncatedNormal::computeCovariance() const
 {
-  // Closed form only when the truncation mass is representable *and* accurate
-  // in natural scale: a denormal mass would overflow its reciprocal
+  // Closed form only when the truncation mass is large enough for the
+  // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;
-  if (!(z >= SpecFunc::MinScalar))
+  if (!(z >= minimalNaturalMass))
     DistributionImplementation::computeCovariance();
   else
   {
@@ -695,10 +700,6 @@ void TruncatedNormal::save(Advocate & adv) const
   adv.saveAttribute( "PhiANorm_", PhiANorm_ );
   adv.saveAttribute( "PhiBNorm_", PhiBNorm_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
-  // Legacy flag of the dual natural/log-scale era, always true since the factor
-  // is stored in log-scale; kept so files stay readable by previous versions
-  const Bool normalizationFactorIsLog = true;
-  adv.saveAttribute( "normalizationFactorIsLog_", normalizationFactorIsLog );
 }
 
 /* Method load() reloads the object from the StorageManager */
