@@ -569,6 +569,24 @@ AT : DataContainer
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::AlgebraEngine::ComputeSingularValuesBlockwise
+"Compute singular values through the blockwise Gram matrix.
+
+Parameters
+----------
+A : DataContainer
+    Input matrix (column-major, m x n).
+blockSize : int, optional
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
+
+Returns
+-------
+s : DataContainer
+    Singular values in descending order (wide matrices padded with zeros).
+    Full U/V factors are out of scope: use ComputeSVD in memory."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::AlgebraEngine::Inverse
 "Compute matrix inverse.
 
