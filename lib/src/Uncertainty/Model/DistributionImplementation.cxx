@@ -4085,9 +4085,10 @@ TriangularMatrix DistributionImplementation::getInverseCholesky() const
 /* Compute the nodes and weights for a 1D gauss quadrature over [-1, 1] with respect to the Lebesgue measure */
 void DistributionImplementation::computeGaussNodesAndWeights() const
 {
+  if (!(integrationNodesNumber_ > 0)) throw InvalidArgumentException(HERE) << "Error: the integration nodes number must be positive, here integrationNodesNumber=" << integrationNodesNumber_;
   gaussNodes_ = Point(integrationNodesNumber_);
   gaussWeights_ = Point(integrationNodesNumber_);
-  if (integrationNodesNumber_ > 0) FastLegendre::ComputeNodesAndWeights(integrationNodesNumber_, &gaussNodes_[0], &gaussWeights_[0]);
+  FastLegendre::ComputeNodesAndWeights(integrationNodesNumber_, &gaussNodes_[0], &gaussWeights_[0]);
   isAlreadyComputedGaussNodesAndWeights_ = true;
 }
 
