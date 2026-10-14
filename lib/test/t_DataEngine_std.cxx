@@ -729,10 +729,53 @@ int main()
   assert(dc_res[4] == 11.0);
   std::cout << "  HDF5Backend resize: OK" << std::endl;
 
+  // Test HDF5-backed containers through the blockwise engines (out-of-core path)
+  DataContainer h5spd(4, 4, 0.0, DataContainer::COLUMN_MAJOR);
+  const Scalar spdVals[4][4] = {{4.0, 1.0, 0.5, 0.25}, {1.0, 5.0, 1.5, 0.75}, {0.5, 1.5, 6.0, 1.25}, {0.25, 0.75, 1.25, 7.0}};
+  for (UnsignedInteger i = 0; i < 4; ++i)
+    for (UnsignedInteger j = 0; j < 4; ++j)
+      h5spd(i, j) = spdVals[i][j];
+  DataContainer h5spdBacked(h5spd);
+  h5spdBacked.setBackend(new HDF5Backend("/tmp/test_ot_hdf5_bw.h5", "bwmat", 16));
+  const DataContainer h5Lref = AlgebraEngine::ComputeCholesky(h5spd);
+  for (UnsignedInteger bs = 1; bs <= 2; ++bs)
+  {
+    const DataContainer h5L = AlgebraEngine::ComputeCholeskyBlockwise(h5spdBacked, bs);
+    for (UnsignedInteger k = 0; k < 16; ++k) assert(std::abs(h5L[k] - h5Lref[k]) < 1e-10);
+  }
+  std::cout << "  HDF5-backed ComputeCholeskyBlockwise: OK" << std::endl;
+  DataContainer h5B(4, 2, 1.0, DataContainer::COLUMN_MAJOR);
+  h5B(1, 0) = 2.0; h5B(3, 1) = 3.0;
+  const DataContainer h5Xref = AlgebraEngine::SolveLinearSystemSPD(h5spd, h5B);
+  const DataContainer h5X = AlgebraEngine::SolveLinearSystemBlockwise(h5spdBacked, h5B, 2);
+  for (UnsignedInteger k = 0; k < 8; ++k) assert(std::abs(h5X[k] - h5Xref[k]) < 1e-10);
+  std::cout << "  HDF5-backed SolveLinearSystemBlockwise: OK" << std::endl;
+  const DataContainer h5Gref = AlgebraEngine::ComputeGram(h5spd, true);
+  const DataContainer h5G = AlgebraEngine::ComputeGramBlockwise(h5spdBacked, true, 2);
+  for (UnsignedInteger k = 0; k < 16; ++k) assert(std::abs(h5G[k] - h5Gref[k]) < 1e-10);
+  const DataContainer h5Pref = AlgebraEngine::MatrixProduct(h5spd, h5spd);
+  const DataContainer h5P = AlgebraEngine::MatrixProductBlockwise(h5spdBacked, h5spdBacked, 2);
+  for (UnsignedInteger k = 0; k < 16; ++k) assert(std::abs(h5P[k] - h5Pref[k]) < 1e-10);
+  std::cout << "  HDF5-backed Gram/MatProd Blockwise: OK" << std::endl;
+  DataContainer h5sample(sample);
+  h5sample.setBackend(new HDF5Backend("/tmp/test_ot_hdf5_bws.h5", "bwsample", 10));
+  const DataContainer h5meanRef = StatisticsEngine::ComputeMean(sample);
+  const DataContainer h5varRef = StatisticsEngine::ComputeVariance(sample);
+  const DataContainer h5covRef = StatisticsEngine::ComputeCovariance(sample);
+  const DataContainer h5mean = StatisticsEngine::ComputeMeanBlockwise(h5sample, 2);
+  const DataContainer h5var = StatisticsEngine::ComputeVarianceBlockwise(h5sample, 2);
+  const DataContainer h5cov = StatisticsEngine::ComputeCovarianceBlockwise(h5sample, 2);
+  assert(std::abs(h5mean[0] - h5meanRef[0]) < 1e-12 && std::abs(h5mean[1] - h5meanRef[1]) < 1e-12);
+  assert(std::abs(h5var[0] - h5varRef[0]) < 1e-12 && std::abs(h5var[1] - h5varRef[1]) < 1e-12);
+  assert(std::abs(h5cov(0, 0) - h5covRef(0, 0)) < 1e-12 && std::abs(h5cov(0, 1) - h5covRef(0, 1)) < 1e-12);
+  std::cout << "  HDF5-backed statistics Blockwise: OK" << std::endl;
+
   // Clean up test files
   std::remove("/tmp/test_ot_hdf5.h5");
   std::remove("/tmp/test_ot_hdf5_rt.h5");
   std::remove("/tmp/test_ot_hdf5_res.h5");
+  std::remove("/tmp/test_ot_hdf5_bw.h5");
+  std::remove("/tmp/test_ot_hdf5_bws.h5");
   std::remove("/tmp/ot_hdf5_1.h5");
   std::cout << "  HDF5Backend cleanup: OK" << std::endl;
 
