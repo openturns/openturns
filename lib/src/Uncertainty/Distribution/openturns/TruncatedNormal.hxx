@@ -196,8 +196,8 @@ private:
   Scalar phiBNorm_ = 0.0;
   Scalar PhiANorm_ = 0.0;
   Scalar PhiBNorm_ = 0.0;
+  /** Log-scale normalization factor, i.e. -log(Phi(bNorm) - Phi(aNorm)) */
   Scalar normalizationFactor_ = 0.0;
-  Bool normalizationFactorIsLog_ = false;
   /** Safe products x*phi(x) that are 0 when x is infinite */
   Scalar aNormPhiA_ = 0.0;
   Scalar bNormPhiB_ = 0.0;
