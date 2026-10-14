@@ -149,6 +149,12 @@ CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::getGramInverse";
 }
 
+Matrix LeastSquaresMethodImplementation::getPseudoInverse() const
+{
+  // B = (A^T A)^{-1} A^T from the Gram inverse on the current design
+  return Matrix(getGramInverse()) * computeWeightedDesign().transpose();
+}
+
 SymmetricMatrix LeastSquaresMethodImplementation::getH() const
 {
   const MatrixImplementation psiAk(*computeWeightedDesign().getImplementation());
