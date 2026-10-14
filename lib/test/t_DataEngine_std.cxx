@@ -737,10 +737,13 @@ int main()
       h5spd(i, j) = spdVals[i][j];
   DataContainer h5spdBacked(h5spd);
   h5spdBacked.setBackend(new HDF5Backend("/tmp/test_ot_hdf5_bw.h5", "bwmat", 16));
+  std::cout << "  HDF5-backed fixture ready: size=" << h5spdBacked.getSize() << " dim=" << h5spdBacked.getDimension() << std::endl;
   const DataContainer h5Lref = AlgebraEngine::ComputeCholesky(h5spd);
+  std::cout << "  HDF5-backed dense Cholesky done" << std::endl;
   for (UnsignedInteger bs = 1; bs <= 2; ++bs)
   {
     const DataContainer h5L = AlgebraEngine::ComputeCholeskyBlockwise(h5spdBacked, bs);
+    std::cout << "  HDF5-backed Cholesky bs=" << bs << " size=" << h5L.getSize() << " dim=" << h5L.getDimension() << std::endl;
     for (UnsignedInteger k = 0; k < 16; ++k) assert(std::abs(h5L[k] - h5Lref[k]) < 1e-10);
   }
   std::cout << "  HDF5-backed ComputeCholeskyBlockwise: OK" << std::endl;
@@ -748,6 +751,7 @@ int main()
   h5B(1, 0) = 2.0; h5B(3, 1) = 3.0;
   const DataContainer h5Xref = AlgebraEngine::SolveLinearSystemSPD(h5spd, h5B);
   const DataContainer h5X = AlgebraEngine::SolveLinearSystemBlockwise(h5spdBacked, h5B, 2);
+  std::cout << "  HDF5-backed solve done: size=" << h5X.getSize() << " dim=" << h5X.getDimension() << std::endl;
   for (UnsignedInteger k = 0; k < 8; ++k) assert(std::abs(h5X[k] - h5Xref[k]) < 1e-10);
   std::cout << "  HDF5-backed SolveLinearSystemBlockwise: OK" << std::endl;
   const DataContainer h5Gref = AlgebraEngine::ComputeGram(h5spd, true);
