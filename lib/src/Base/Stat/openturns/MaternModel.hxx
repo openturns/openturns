@@ -101,13 +101,13 @@ private:
   // Private methods to set internal parameters
   void computeLogNormalizationFactor();
   void computeSqrt2nuOverTheta();
-  // Select the closed form of the covariance value once, when the parameters
+  // Select the closed form of the correlation value once, when the parameters
   // are set, so that the evaluation paths do not test nu_ per call
   void updateClosedForm();
 
-  // Exact covariance value for a scaled distance, using the closed forms of
+  // Exact correlation value for a scaled distance, using the closed forms of
   // the half-integer smoothness cases to avoid the Bessel function.
-  Scalar computeCovarianceValue(const Scalar scaledPoint) const;
+  Scalar computeCorrelationValue(const Scalar scaledPoint) const;
 
   // The shape parameter
   Scalar nu_;

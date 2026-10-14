@@ -183,13 +183,13 @@ public:
 
   HODLRNode(Pointer<const HODLREntryEvaluator> eval,
             const Scalar* diag,
-            UnsignedInteger start,
-            UnsignedInteger size,
-            UnsignedInteger minLeafSize,
-            UnsignedInteger maxRank,
-            Scalar tolerance,
-            Scalar recompressionTolerance,
-            SignedInteger direction = 0,
+            const UnsignedInteger start,
+            const UnsignedInteger size,
+            const UnsignedInteger minLeafSize,
+            const UnsignedInteger maxRank,
+            const Scalar tolerance,
+            const Scalar recompressionTolerance,
+            const SignedInteger direction = 0,
             HODLRNode* parent = nullptr);
 
   ~HODLRNode();
@@ -254,8 +254,8 @@ private:
   {
   };
   HODLRNode(ForLoad, Pointer<const HODLREntryEvaluator> eval, const Scalar * diag,
-            UnsignedInteger start, UnsignedInteger size,
-            SignedInteger direction, HODLRNode * parent);
+            const UnsignedInteger start, const UnsignedInteger size,
+            const SignedInteger direction, HODLRNode * parent);
 
   // Everything except the inherited context, which is shared: the copy keeps
   // this node's own p_diag_/p_eval_/p_parent_.
