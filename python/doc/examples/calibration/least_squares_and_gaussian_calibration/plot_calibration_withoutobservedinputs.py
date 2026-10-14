@@ -66,8 +66,6 @@ inputRandomVector = ot.JointDistribution([ot.Dirac(theta) for theta in trueParam
 
 # %%
 candidate = ot.Point([8.0, 9.0, -6.0])
-calibratedIndices = [0, 1, 2]
-model = ot.ParametricFunction(g, calibratedIndices, candidate)
 
 # %%
 # We consider a multivariate Gaussian noise with zero mean, standard deviation
@@ -98,17 +96,21 @@ outputObservations = outputStress + sampleNoise
 
 # %%
 # Now is the important part of this script: there are no input observations.
-# This is why we create a sample of dimension equal to 0.
+# This is why:
+#
+# - We create a sample of dimension equal to 0,
+# - The function used by the calibration algorithm is simply equal to :math:`g`.
 
 # %%
 inputObservations = ot.Sample(0, 0)
+calibrationFunction = g
 
 # %%
 # We are now ready to perform the calibration.
 
 # %%
 algo = ot.LinearLeastSquaresCalibration(
-    model, inputObservations, outputObservations, candidate, "SVD"
+    calibrationFunction, inputObservations, outputObservations, candidate, "SVD"
 )
 algo.run()
 calibrationResult = algo.getResult()

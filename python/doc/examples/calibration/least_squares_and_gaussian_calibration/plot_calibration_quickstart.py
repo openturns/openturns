@@ -2,7 +2,7 @@
 Calibrate a parametric model: a quick-start guide to calibration
 ================================================================
 
-In this example we present the calibration of a parametric module.
+In this example we present the calibration of a parametric model.
 To do this, we show how to define the observations.
 Then we create a Python function and create the parametric model that is
 to be calibrated.
@@ -40,7 +40,7 @@ the other examples if this is relevant.
 # The observations are the couples :math:`\{(Q_i,H_i)\}_{i=1,...,n}`, i.e. each observation is a
 # couple made of the flowrate and the corresponding river height.
 #
-# We choose to calibrate this model using non linear least squares, because
+# We choose to calibrate this model using non-linear least squares, because
 # this is a relatively flexible method.
 
 # %%
@@ -74,6 +74,7 @@ fm.data
 # which has some power shape.
 # In the model, the parameters are `a` and `b`, the input is `Q`
 # and the output is `H`:
+#
 # - `Q` : the flowrate of the river,
 # - `a`, `b` : the parameters.
 
@@ -136,26 +137,26 @@ print("Physical Model Inputs:", g.getInputDescription())
 print("Physical Model Parameters:", g.getParameterDescription())
 
 # %%
-# In order to perform calibration, we have to define a parametric model,
-# with observed inputs and parameters to calibrate.
+# In order to perform the calibration, we have to define a parametric model.
+# Its inputs correspond to the calibrated parameters
+# and its parameters correspond to the observed inputs.
 # In order to do this, we create a :class:`~openturns.ParametricFunction`
-# where the parameters are `a` and `b` which have the indices 1 and
-# and 2 in the physical model.
+# where the parameter is `Q` (which has index 0 in the physical model).
 # Please read :doc:`Create a parametric function </auto_functional_modeling/vectorial_functions/plot_parametric_function>`
 # for more details on this topic.
 #
 # +-------+----------------+
 # | Index | Input variable |
 # +=======+================+
-# | 0     | Q              |
+# | 0     | a              |
+# +-------+----------------+
+# | 1     | b              |
 # +-------+----------------+
 #
 # +-------+-----------+
 # | Index | Parameter |
 # +=======+===========+
-# | 0     | a         |
-# +-------+-----------+
-# | 1     | b         |
+# | 0     | Q         |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
@@ -163,13 +164,12 @@ print("Physical Model Parameters:", g.getParameterDescription())
 
 
 # %%
-# The following statement create the calibrated function from the model.
-# The calibrated parameters :math:`a`, :math:`b` are at
-# indices 1, 2 in the inputs arguments of the model.
+# The following statements create the calibration function from the physical model.
+# The observed input :math:`Q` is at index 0 in the input arguments of the model.
 
 # %%
-calibratedIndices = [1, 2]
-calibratedFunction = ot.ParametricFunction(g, calibratedIndices, initialTheta)
+observedIndices = [0]
+calibrationFunction = ot.ParametricFunction(g, observedIndices, [0.0] * len(observedIndices))
 
 # %%
 # Plot the Y observations versus the X observations.
@@ -178,7 +178,9 @@ calibratedFunction = ot.ParametricFunction(g, calibratedIndices, initialTheta)
 title = "Before calibration : a = %.4f, b = %.4f" % (aInitial, bInitial)
 graph = ot.Graph(title, "Q", "H")
 # Plot the model before calibration
-curve = calibratedFunction.draw(100.0, 4000.0).getDrawable(0)
+calibratedIndices = [1, 2]
+initialFunction = ot.ParametricFunction(g, calibratedIndices, initialTheta)
+curve = initialFunction.draw(100.0, 4000.0).getDrawable(0)
 curve.setLegend("Model, before calibration")
 graph.add(curve)
 # Plot the noisy observations
@@ -191,18 +193,18 @@ view = otv.View(graph)
 
 # %%
 # Wee see that the model does not fit to the data.
-# The goal of calibration is to find which parameter best fit to the
+# The goal of calibration is to find which parameters best fit to the
 # observations.
 
 # %%
-# Calibration with non linear least squares
+# Calibration with non-linear least squares
 # -----------------------------------------
 # The :class:`~openturns.NonLinearLeastSquaresCalibration` class performs
-# non linear least squares calibration by minimizing the squared Euclidian norm
+# non-linear least squares calibration by minimizing the squared Euclidian norm
 # between the predictions and the observations.
 
 # %%
-algo = ot.NonLinearLeastSquaresCalibration(calibratedFunction, Qobs, Hobs, initialTheta)
+algo = ot.NonLinearLeastSquaresCalibration(calibrationFunction, Qobs, Hobs, initialTheta)
 
 # %%
 # The :meth:`~openturns.NonLinearLeastSquaresCalibration.run` method computes

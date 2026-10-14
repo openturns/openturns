@@ -85,10 +85,11 @@ C = 2500  # Exact : 2750
 Gamma = 8.0  # Exact : 10
 thetaPrior = ot.Point([R, C, Gamma])
 
-# The following statement create the calibrated function from the model.
-# The calibrated parameters Ks, Zv, Zm are at indices 1, 2, 3 in the inputs arguments of the model.
-calibratedIndices = [1, 2, 3]
-mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+# The following statement creates the calibrated function from the model.
+# The calibrated parameters R, C, Gamma are at indices 1, 2, 3 in the input arguments of the model.
+# The observed input Strain is at index 0.
+inputIndices = [0]
+mycf = ot.ParametricFunction(g, inputIndices, [0.0] * len(inputIndices))
 
 # Gaussian linear calibration
 # The standard deviation of the observations.

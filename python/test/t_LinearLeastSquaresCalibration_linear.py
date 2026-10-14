@@ -10,16 +10,14 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
 
-ot.RandomGenerator.SetSeed(0)
 
-
-def modelLineaire(X):
+def linearModel(X):
     x, theta1, theta2, theta3 = X
     y = theta1 + theta2 * x + theta3 * x**2
     return [y]
 
 
-g = ot.PythonFunction(4, 1, modelLineaire)
+g = ot.PythonFunction(4, 1, linearModel)
 
 trueParameter = ot.Point([12.0, 7.0, -8])
 
@@ -37,6 +35,10 @@ candidate = ot.Point([8.0, 9.0, -6.0])
 calibratedIndices = [1, 2, 3]
 model = ot.ParametricFunction(g, calibratedIndices, candidate)
 
+# Parametric function needed by the calibration algorithm (input and parameters are swapped)
+inputIndices = [0]
+calibrationModel = ot.ParametricFunction(g, inputIndices, [0.0] * len(inputIndices))
+
 outputObservationNoiseSigma = 2.0  # (Pa)
 observationOutputNoise = ot.Normal(0.0, outputObservationNoiseSigma)
 
@@ -51,7 +53,7 @@ outputObservations = outputStress + sampleNoiseH
 # Calibrate
 inputObservations = inputSample[:, 0]
 algo = ot.LinearLeastSquaresCalibration(
-    model, inputObservations, outputObservations, candidate, "SVD"
+    calibrationModel, inputObservations, outputObservations, candidate, "SVD"
 )
 algo.run()
 calibrationResult = algo.getResult()

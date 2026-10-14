@@ -75,7 +75,7 @@ fm.data
 # -------------------------
 # We define the model :math:`g` which has 4 inputs and one output H.
 #
-# The nonlinear least squares algorithm does not take into account for bounds
+# The non-linear least squares algorithm does not take into account for bounds
 # in the parameters.
 # Therefore, we ensure that the output is computed whatever the inputs.
 # The model fails into two situations:
@@ -109,7 +109,7 @@ g.setOutputDescription(["H (m)"])
 # %%
 # Setting the calibration parameters
 # ----------------------------------
-# Define the value of the reference values of the :math:`\theta` parameter.
+# Define the reference values of the :math:`\theta` parameter.
 # In the Bayesian framework, this is called the mean of the *prior* normal
 # distribution.
 # In the data assimilation framework, this is called the *background*.
@@ -149,26 +149,26 @@ print("Physical Model Inputs:", g.getInputDescription())
 print("Physical Model Parameters:", g.getParameterDescription())
 
 # %%
-# In order to perform calibration, we have to define a parametric model,
-# with observed inputs and parameters to calibrate.
+# In order to perform the calibration, we have to define a parametric model.
+# Its inputs correspond to the calibrated parameters
+# and its parameters correspond to the observed inputs.
 # In order to do this, we create a :class:`~openturns.ParametricFunction`
-# where the parameters are `Ks`, `Zv` and `Zm` which have the indices 1, 2
-# and 3 in the physical model.
+# where the parameter is `Q` (which has index 0 in the physical model).
 #
 # +-------+----------------+
 # | Index | Input variable |
 # +=======+================+
-# | 0     | Q              |
+# | 0     | Ks             |
+# +-------+----------------+
+# | 1     | Zv             |
+# +-------+----------------+
+# | 2     | Zm             |
 # +-------+----------------+
 #
 # +-------+-----------+
 # | Index | Parameter |
 # +=======+===========+
-# | 0     | Ks        |
-# +-------+-----------+
-# | 1     | Zv        |
-# +-------+-----------+
-# | 2     | Zm        |
+# | 0     | Q         |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
@@ -176,18 +176,21 @@ print("Physical Model Parameters:", g.getParameterDescription())
 
 
 # %%
-# The following statement creates the calibrated function from the model.
-# The calibrated parameters :math:`K_s`, :math:`Z_v`, :math:`Z_m` are at
-# indices 1, 2, 3 in the inputs arguments of the model.
-calibratedIndices = [1, 2, 3]
-mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+# The following statements create the calibrated function from the physical model.
+# The observed input :math:`Q` is at index 0 in the input arguments of the model.
+
+# %%
+observedIndices = [0]
+calibrationFunction = ot.ParametricFunction(g, observedIndices, [0.0] * len(observedIndices))
 
 # %%
 # Plot the Y observations versus the X observations.
 graph = ot.Graph("Observations", "Q ($m^3/s$)", "H (m)")
 # Plot the model before calibration
-curve = mycf.draw(100.0, 4000.0).getDrawable(0)
-curve.setLegend("Model, before calibration")
+calibratedIndices = [1, 2, 3]
+priorFunction = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+curve = priorFunction.draw(100.0, 4000.0).getDrawable(0)
+curve.setLegend("Model before calibration")
 curve.setLineStyle(ot.ResourceMap.GetAsString("CalibrationResult-ObservationLineStyle"))
 graph.add(curve)
 # Plot the noisy observations
@@ -212,7 +215,7 @@ view = otv.View(graph)
 # The :class:`~openturns.LinearLeastSquaresCalibration` class performs the linear
 # least squares calibration by linearizing the model in the neighbourhood of
 # the reference point.
-algo = ot.LinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior, "SVD")
+algo = ot.LinearLeastSquaresCalibration(calibrationFunction, Qobs, Hobs, thetaPrior, "SVD")
 
 # %%
 # The :meth:`~openturns.LinearLeastSquaresCalibration.run` method computes the
@@ -271,11 +274,11 @@ print(
 # model at the candidate point.
 
 # %%
-mycf.setParameter(thetaPrior)
 thetaDim = len(thetaPrior)
 jacobianMatrix = ot.Matrix(nbobs, thetaDim)
 for i in range(nbobs):
-    jacobianMatrix[i, :] = mycf.parameterGradient(Qobs[i]).transpose()
+    calibrationFunction.setParameter(Qobs[i])
+    jacobianMatrix[i, :] = calibrationFunction.gradient(thetaPrior).transpose()
 print(jacobianMatrix[0:5, :])
 
 # %%
@@ -313,7 +316,7 @@ print(jacobianMatrix.computeSingularValues())
 #
 # * Given that the problem is not identifiable, we can use some regularization
 #   method. Two methods are provided in the library: the Gaussian linear least
-#   squares `GaussianLinearCalibration` and the Gaussian non linear least
+#   squares `GaussianLinearCalibration` and the Gaussian non-linear least
 #   squares `GaussianNonlinearCalibration`.
 # * We can change the problem, replacing it with a problem which is identifiable.
 #   In the flooding model, we can view :math:`Z_v` and :math:`Z_m` as
@@ -323,18 +326,18 @@ print(jacobianMatrix.computeSingularValues())
 # methods perform.
 
 # %%
-# Calibration with non linear least squares
+# Calibration with non-linear least squares
 # -----------------------------------------
 # The :class:`~openturns.NonLinearLeastSquaresCalibration` class performs the
-# non linear least squares calibration by minimizing the squared Euclidian norm
+# non-linear least squares calibration by minimizing the squared Euclidian norm
 # between the predictions and the observations.
 
 # %%
 # Use a null bootstrap size to select the linearized posterior instead of
 # the kernel-smoothed bootstrap posterior: the MAP is unchanged, but the
-# posterior shape as well as its width may change. It avoids ~100 repeat optimizations
+# posterior shape as well as its width may change. It avoids ~100 repeat optimizations.
 ot.ResourceMap.SetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize", 0)
-algo = ot.NonLinearLeastSquaresCalibration(mycf, Qobs, Hobs, thetaPrior)
+algo = ot.NonLinearLeastSquaresCalibration(calibrationFunction, Qobs, Hobs, thetaPrior)
 
 # %%
 # The :meth:`~openturns.NonLinearLeastSquaresCalibration.run` method computes
@@ -515,7 +518,7 @@ print(sigma)
 # The :class:`~openturns.GaussianLinearCalibration` class performs Gaussian
 # linear calibration by linearizing the model in the neighbourhood of the prior.
 algo = ot.GaussianLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance, "SVD"
+    calibrationFunction, Qobs, Hobs, thetaPrior, sigma, errorCovariance, "SVD"
 )
 
 # %%
@@ -609,17 +612,17 @@ view = otv.View(
 plt.subplots_adjust(wspace=1.0, hspace=0.5)
 
 # %%
-# Gaussian nonlinear calibration
-# ------------------------------
+# Gaussian non-linear calibration
+# -------------------------------
 # The :class:`~openturns.GaussianNonLinearCalibration` class performs Gaussian
-# nonlinear calibration.
+# non-linear calibration.
 # Use a null bootstrap size here as well (cf. above): it selects the
 # linearized posterior instead of the kernel-smoothed bootstrap posterior.
 # The MAP is unchanged, but the posterior shape as well as its width may
 # change, while the ~100 bootstrap optimizations are skipped
 ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 algo = ot.GaussianNonLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+    calibrationFunction, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )
 
 # %%
@@ -732,7 +735,7 @@ print(ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-Bootstra
 # the parameter does not change the result).
 ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 algo = ot.GaussianNonLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+    calibrationFunction, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )
 algo.run()
 calibrationResult = algo.getResult()
