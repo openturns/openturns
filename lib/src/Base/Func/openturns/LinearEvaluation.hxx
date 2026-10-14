@@ -1,9 +1,9 @@
 //                                               -*- C++ -*-
 /**
  * @brief Class for a linear function implementation
- *        of the form y = constant + <linear, x - c> where c is a
- *        dim(x) point, linear a dim(x) by dim(y) matrix
- *        and  <linear, x - c> means Transpose(linear).(x - c)
+ *        of the form y = constant + linear.(x - c) where c is a
+ *        dim(x) point, linear a dim(y) by dim(x) matrix
+ *        and constant a dim(y) point
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

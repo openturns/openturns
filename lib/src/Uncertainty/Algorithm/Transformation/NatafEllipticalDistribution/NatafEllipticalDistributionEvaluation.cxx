@@ -47,7 +47,7 @@ NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation(con
   : LinearEvaluation(
       mean,
       Point(mean.getDimension(), 0.0),
-      inverseCholesky.transpose()
+      inverseCholesky
     )
 {
   // Nothing to do
@@ -75,7 +75,7 @@ String NatafEllipticalDistributionEvaluation::__repr__() const
   OSS oss;
   oss << "class=" << NatafEllipticalDistributionEvaluation::GetClassName()
       << " mean=" << getCenter()
-      << " inverseCholesky=" << getLinear().transpose();
+      << " inverseCholesky=" << getLinear();
 
   return oss;
 }
@@ -104,7 +104,7 @@ String NatafEllipticalDistributionEvaluation::__repr__() const
 Matrix NatafEllipticalDistributionEvaluation::parameterGradient(const Point & inP) const
 {
   Point center(getCenter()); // \mu
-  Matrix linear(getLinear()); // \Gamma^t, transposed inverse Cholesky
+  Matrix linear(getLinear().transpose()); // \Gamma^t, transposed inverse Cholesky
   UnsignedInteger inputDimension = getInputDimension();
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i

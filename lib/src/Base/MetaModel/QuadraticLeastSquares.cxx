@@ -145,7 +145,7 @@ void QuadraticLeastSquares::run()
       } // Off-diagonal terms
     } // quadratic term
   } // output components
-  result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center_, constant_, linear_, quadratic_));
+  result_ = MetaModelResult(dataIn_, dataOut_, QuadraticFunction(center_, constant_, linear_.transpose(), quadratic_));
 }
 
 /* DataIn accessor */

@@ -58,6 +58,15 @@ public:
   using Function::operator ==;
   Bool operator ==(const LinearFunction & other) const;
 
+  /** Center accessor */
+  Point getCenter() const;
+
+  /** Constant accessor */
+  Point getConstant() const;
+
+  /** Linear term accessor, as given to the constructor */
+  Matrix getLinear() const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

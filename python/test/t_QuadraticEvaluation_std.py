@@ -14,13 +14,13 @@ constant = ot.Point(outputDimension)
 constant[0] = -1.0
 constant[1] = 2.0
 # Linear term
-linear = ot.Matrix(inputDimension, outputDimension)
+linear = ot.Matrix(outputDimension, inputDimension)
 linear[0, 0] = 1.0
-linear[1, 0] = 2.0
-linear[2, 0] = 3.0
-linear[0, 1] = 4.0
+linear[0, 1] = 2.0
+linear[0, 2] = 3.0
+linear[1, 0] = 4.0
 linear[1, 1] = 5.0
-linear[2, 1] = 6.0
+linear[1, 2] = 6.0
 # Quadratic term
 quadratic = ot.SymmetricTensor(inputDimension, outputDimension)
 quadratic[0, 0, 0] = 7.0

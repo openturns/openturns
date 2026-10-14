@@ -19,12 +19,12 @@ This class implements a quadratic function :math:`f` defined as:
 .. math::
 
     f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
-        & \vect{x} \rightarrow \vect{c} + \Tr{\mat{A}} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}
+        & \vect{x} \rightarrow \vect{c} + \mat{A} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}
         \tens{M}( \vect{x} - \vect{b} )
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`\inputDim` lines and :math:`\outputDim` columns,
+- :math:`\mat{A}` is a matrix with :math:`\outputDim` lines and :math:`\inputDim` columns,
 - :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`,
 - :math:`\vect{c}` is a  vector in :math:`\Rset^\outputDim`,
 - :math:`\tens{M}` is a :math:`\Rset^\outputDim \times \Rset^\inputDim \times \Rset^\inputDim` symmetric
@@ -38,8 +38,8 @@ such that:
 .. math::
 
     \mat{A} = \left( \begin{array}{cc}
-    1 & 2 \\
-    3 & 4
+    1 & 3 \\
+    2 & 4
     \end{array}\right), \vect{b} = \Tr{(0,0)}, \vect{c} = (0)
 
 and:
@@ -62,10 +62,10 @@ and:
 >>> p = 2
 >>> center = [0.0] * d
 >>> constant = [0.0] * p
->>> linear = ot.Matrix(d, p)
+>>> linear = ot.Matrix(p, d)
 >>> linear[0,0] = 1.0
->>> linear[0,1] = 2.0
->>> linear[1,0] = 3.0
+>>> linear[0,1] = 3.0
+>>> linear[1,0] = 2.0
 >>> linear[1,1] = 4.0
 >>> quadratic = ot.SymmetricTensor(d, p)
 >>> quadratic[0,0,0] = 5
@@ -80,3 +80,43 @@ and:
 >>> inP = [1.0, 2.0]
 >>> print(function(inP))
 [39.5,60.5])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getCenter
+"Accessor to the center.
+
+Returns
+-------
+center : :class:`~openturns.Point`
+    The center, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getConstant
+"Accessor to the constant.
+
+Returns
+-------
+constant : :class:`~openturns.Point`
+    The constant, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getLinear
+"Accessor to the linear term.
+
+Returns
+-------
+linear : :class:`~openturns.Matrix`
+    The matrix, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuadraticFunction::getQuadratic
+"Accessor to the quadratic term.
+
+Returns
+-------
+quadratic : :class:`~openturns.SymmetricTensor`
+    The tensor, as given to the constructor."
