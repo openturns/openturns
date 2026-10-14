@@ -90,6 +90,7 @@
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points
  * Added Distribution.getComplementaryCDF/getQuantile/getSurvivalFunction/getInverseSurvivalFunction/getDDF: the remaining distribution functions as Function objects
  * Added Distribution/Point and Matrix/Distribution arithmetic: shifts preserve the copula, matrix products are exact for Gaussians
+ * Added MemoizePointToFieldFunction: point to field functions with transparent evaluation caching
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion

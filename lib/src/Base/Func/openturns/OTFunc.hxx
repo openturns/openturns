@@ -155,6 +155,7 @@
 #include "openturns/ExceptionPenalizedEvaluation.hxx"
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/MemoizePointToFieldFunction.hxx"
 #include "openturns/NullHessian.hxx"
 #include "openturns/MarginalEvaluation.hxx"
 #include "openturns/MarginalGradient.hxx"
