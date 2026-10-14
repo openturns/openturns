@@ -686,6 +686,11 @@ public:
       const Bool tail = false) const;
 
   /**
+   * Gives the super-quantile (expected shortfall) per component of the sample
+   */
+  virtual Point computeSuperQuantile(const Scalar prob) const;
+
+  /**
    * Gives the N-dimension quantile of the sample
    */
   Point computeQuantile(const Scalar prob,

@@ -619,6 +619,35 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Sample::computeSuperQuantile
+R"RAW(Estimate the super-quantile (expected shortfall) per component.
+
+The super-quantile at level :math:`p` is the mean of the sample points
+above the quantile of order :math:`p`, computed separately for each
+component. It measures how bad the variable can be once a threshold
+is exceeded, contrary to the quantile which only measures the
+probability of exceeding it.
+
+Parameters
+----------
+p : float, :math:`0 \leq p \leq 1`
+    Input probability level.
+
+Returns
+-------
+superQuantile : :class:`~openturns.Point`
+    Componentwise super-quantile at probability level :math:`p`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(2).getSample(30)
+>>> print(sample.computeSuperQuantile(0.9))
+[1.36728,1.86897])RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::computeRange
 "Compute the range per component.
 

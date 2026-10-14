@@ -229,3 +229,19 @@ assert flatSample.getDimension() == 1
 ott.assert_almost_equal(flatSample.computeMean(), [0.0])
 with ott.assert_raises(Exception):
     ot.Sample([0.0, "a"])
+
+# Super-quantile (expected shortfall), see issue #3013
+superSample = ot.Normal(2).getSample(50)
+for prob in [0.0, 0.5, 0.9]:
+    threshold = superSample.computeQuantilePerComponent(prob)
+    expected = [0.0, 0.0]
+    counts = [0, 0]
+    for i in range(superSample.getSize()):
+        for j in range(2):
+            if superSample[i, j] >= threshold[j]:
+                expected[j] += superSample[i, j]
+                counts[j] += 1
+    expected = [expected[j] / counts[j] for j in range(2)]
+    ott.assert_almost_equal(superSample.computeSuperQuantile(prob), expected)
+with ott.assert_raises(Exception):
+    superSample.computeSuperQuantile(1.5)
