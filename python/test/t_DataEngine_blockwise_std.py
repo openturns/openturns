@@ -80,4 +80,22 @@ assert max_abs_diff(mean, ot.StatisticsEngine.ComputeMeanBlockwise(S), 1) < 1e-9
 assert max_abs_diff(cov, ot.StatisticsEngine.ComputeCovarianceBlockwise(S), 1) < 1e-9
 print("Scaled statistics Blockwise: OK")
 
+# Streaming statistics twins: dense vs blockwise at several block sizes
+t = ot.DataContainer(7, 3, 0.0, ot.DataContainer.ROW_MAJOR)
+for k in range(21):
+    t[k] = ((k * 37) % 11) - 5.0
+for bs in [1, 2, 5, 100]:
+    s = ot.StatisticsEngine.ComputeSum(t)
+    sb = ot.StatisticsEngine.ComputeSumBlockwise(t, bs)
+    assert max_abs_diff(s, sb, 1) == 0.0
+    assert max_abs_diff(ot.StatisticsEngine.ComputeMin(t), ot.StatisticsEngine.ComputeMinBlockwise(t, bs), 1) == 0.0
+    assert max_abs_diff(ot.StatisticsEngine.ComputeMax(t), ot.StatisticsEngine.ComputeMaxBlockwise(t, bs), 1) == 0.0
+    assert max_abs_diff(ot.StatisticsEngine.ComputeStandardDeviation(t), ot.StatisticsEngine.ComputeStandardDeviationBlockwise(t, bs), 1) < 1e-12
+    assert max_abs_diff(ot.StatisticsEngine.ComputeRawMoment(t, 3), ot.StatisticsEngine.ComputeRawMomentBlockwise(t, 3, bs), 1) < 1e-12
+    assert max_abs_diff(ot.StatisticsEngine.ComputeCentralMoment(t, 3), ot.StatisticsEngine.ComputeCentralMomentBlockwise(t, 3, bs), 1) < 1e-12
+# order-0 moments return ones on both paths
+assert list(ot.StatisticsEngine.ComputeRawMomentBlockwise(t, 0, 2)) == [1.0, 1.0, 1.0]
+assert list(ot.StatisticsEngine.ComputeCentralMomentBlockwise(t, 0, 2)) == [1.0, 1.0, 1.0]
+print("Streaming statistics Blockwise: OK")
+
 print("=== ALL BLOCKWISE SCALE TESTS PASSED ===")
