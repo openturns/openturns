@@ -1,7 +1,8 @@
 %feature("docstring") OT::NormalCopula
 R"RAW(Normal copula.
 
-The Normal copula in dimension :math:`\inputDim` is defined by:
+The Normal copula in dimension :math:`\inputDim` is defined by its
+cumulative distribution function:
 
 .. math::
 
@@ -16,12 +17,12 @@ normal distribution with zero mean, unit marginal variances and correlation :mat
     \Phi_{\inputDim, \mat{R}}(\vect{x}) = \int_{-\infty}^{x_1} \ldots
                                    \int_{-\infty}^{x_\inputDim}
                                    \frac{1}
-                                        {{(2\pi\det{\mat{R}})}^{\frac{n}{2}}}
+                                        {{(2\pi\det{\mat{R}})}^{\frac{\inputDim}{2}}}
                                  \exp \left(-\frac{\Tr{\vect{u}}\mat{R}\vect{u}}{2} \right)\di{\vect{u}}
 
 
-The shape matrix :math:`\mat{R}` can be computed from the Spearman correlation
-matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}` as well as the
+The shape matrix :math:`\mat{R}` can be computed from a Spearman correlation
+matrix :math:`\left(\rho_{ij}^S\right)_{1 \leq i,j \leq \inputDim}` as well as a
 Kendall concordance matrix :math:`\left( \tau_{ij}^S\right)_{1 \leq i,j \leq \inputDim}`
 as follows:
 
@@ -40,7 +41,8 @@ as follows:
 
       \mat{R}_{ij} = \sin \left( \frac{\pi}{2} \tau_{ij} \right)
 
-
+The shape matrix is the Pearson correlation matrix of a multivariate distribution
+only if the normal copula is associated to normal margin distributions.
 
 Available constructor:
     NormalCopula(*n*)
