@@ -1,113 +1,206 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
-# Instantiate one distribution object
-for distribution in [
-    ot.TruncatedNormal(1.5, 3.0, -2.0, 5.0),
-    ot.TruncatedNormal(50.0, 1.0, 3.0, 4.0),
-]:
-    print("Distribution ", distribution)
+# Print-free checks (no expout): same coverage as the former diagnostic
+# output, migrated to asserts with the blessed reference values
+cases = [
+    {
+        "distribution": ot.TruncatedNormal(1.5, 3.0, -2.0, 5.0),
+        "elliptical": True,
+        "realization": [3.3246],
+        "ddf": [-0.0312729],
+        "logpdf": -1.960925,
+        "pdf": 0.140728,
+        "cdf": 0.827107,
+        "ccdf": 0.172893,
+        "pdfgr": [0.0312729, 0.0031597, 0.0125231, -0.0125231],
+        "logpdfgr": [0.222222, 0.0224525, 0.0889876, -0.0889876],
+        "cdfgr": [-0.0517406, -0.0258989, -0.0153853, -0.0736023],
+        "quantile": [4.48948],
+        "inv_survival": [-1.48948],
+        "mvi": [-1.73303, 4.73303],
+        "bilateral": [-1.73303, 4.73303],
+        "mean": [1.5],
+        "std": [1.84222],
+        "cov": ot.CovarianceMatrix(1, [3.39378]),
+        "parameters": [1.5, 3.0, -2.0, 5.0],
+        "std_rep": [0.0, 0.857143, -1.0, 1.0],
+        "cf": [-0.010863830248557443, 0.018222189352990206],
+    },
+    {
+        "distribution": ot.TruncatedNormal(50.0, 1.0, 3.0, 4.0),
+        "elliptical": False,
+        "realization": [3.99466],
+        "ddf": [1.93801e-07],
+        "logpdf": -19.295887,
+        "pdf": None,  # underflows print precision, checked via logPDF below
+        "cdf": 0.0,  # checked with absolute tolerance below
+        "ccdf": 1.0,
+        "pdfgr": [-1.99336e-09, 1.84427e-07, 0.0, -1.91808e-07],
+        "logpdfgr": [-0.478281, 44.2509, 0.0, -46.0217],
+        "cdfgr": [-4.47731e-11, 4.14344e-09, -2.95456e-19, -4.12299e-09],
+        "quantile": [3.99889],
+        "inv_survival": [3.93495],
+        "mvi": [3.93495, 4.0],
+        "bilateral": [3.91991, 3.99945],
+        "mean": [3.97828],
+        "std": [0.0217084],
+        "cov": ot.CovarianceMatrix(1, [0.000471255]),
+        "parameters": [50.0, 1.0, 3.0, 4.0],
+        "std_rep": [93.0, 2.0, -1.0, 1.0],
+        "cf": [0.21082122033214787, 0.9745843281298094],
+    },
+]
+for case in cases:
+    distribution = case["distribution"]
+    a, b = case["parameters"][2], case["parameters"][3]
 
-    # Is this distribution elliptical ?
-    print("Elliptical = ", distribution.isElliptical())
-
-    # Is this distribution continuous ?
-    print("Continuous = ", distribution.isContinuous())
+    # Is this distribution elliptical / continuous?
+    assert distribution.isElliptical() == case["elliptical"]
+    assert distribution.isContinuous()
 
     # Test for realization of distribution
     oneRealization = distribution.getRealization()
-    print("oneRealization=", repr(oneRealization))
+    assert a <= oneRealization[0] <= b
+    ott.assert_almost_equal(oneRealization, case["realization"], 1e-4, 0.0)
 
     # Define a point
     point = ot.Point(distribution.getDimension(), 3.5)
-    print("Point= ", repr(point))
 
     # derivative of PDF with regards its arguments
-    DDF = distribution.computeDDF(point)
-    print("ddf     =", repr(DDF))
+    ott.assert_almost_equal(
+        distribution.computeDDF(point), case["ddf"], 1e-5, 1e-12
+    )
 
     # PDF value
     LPDF = distribution.computeLogPDF(point)
-    print("log pdf=%.6f" % LPDF)
+    ott.assert_almost_equal(LPDF, case["logpdf"], 1e-5, 1e-12)
     PDF = distribution.computePDF(point)
-    print("pdf     =%.6f" % PDF)
+    if case["pdf"] is None:
+        ott.assert_almost_equal(PDF, math.exp(LPDF), 1e-12, 0.0)
+    else:
+        ott.assert_almost_equal(PDF, case["pdf"], 1e-5, 1e-12)
+        ott.assert_almost_equal(PDF, math.exp(LPDF), 1e-12, 0.0)
 
-    # derivative of the PDF with regards the parameters of the distribution
+    # CDF values
     CDF = distribution.computeCDF(point)
-    print("cdf=%.6f" % CDF)
     CCDF = distribution.computeComplementaryCDF(point)
-    print("ccdf=%.6f" % CCDF)
+    ott.assert_almost_equal(CDF, case["cdf"], 1e-5, 1e-6)
+    ott.assert_almost_equal(CCDF, case["ccdf"], 1e-5, 1e-12)
+    ott.assert_almost_equal(CDF + CCDF, 1.0, 1e-12, 0.0)
 
-    PDFgr = distribution.computePDFGradient(point)
-    print("pdf gradient     =", repr(PDFgr))
+    # derivatives with regards the parameters of the distribution
+    ott.assert_almost_equal(
+        distribution.computePDFGradient(point), case["pdfgr"], 1e-5, 1e-12
+    )
+    ott.assert_almost_equal(
+        distribution.computeLogPDFGradient(point),
+        case["logpdfgr"],
+        1e-5,
+        1e-12,
+    )
+    ott.assert_almost_equal(
+        distribution.computeCDFGradient(point), case["cdfgr"], 1e-5, 1e-12
+    )
 
-    # derivative of the logPDF with regards the parameters of the distribution
-    logPDFgr = distribution.computeLogPDFGradient(point)
-    print("log-pdf gradient     =", repr(logPDFgr))
-
-    # derivative of the PDF with regards the parameters of the distribution
-    CDFgr = distribution.computeCDFGradient(point)
-    print("cdf gradient     =", repr(CDFgr))
-
-    # quantile
+    # quantile and survival round-trips
     quantile = distribution.computeQuantile(0.95)
-    print("quantile=", repr(quantile))
-    print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-    # Get 95% survival function
-    inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-    print("InverseSurvival=", repr(inverseSurvival))
-    print(
-        "Survival(inverseSurvival)=%.6f"
-        % distribution.computeSurvivalFunction(inverseSurvival)
+    ott.assert_almost_equal(quantile, case["quantile"], 1e-5, 1e-12)
+    ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-9, 0.0)
+    inverseSurvival = ot.Point(
+        distribution.computeInverseSurvivalFunction(0.95)
+    )
+    ott.assert_almost_equal(inverseSurvival, case["inv_survival"], 1e-5, 1e-12)
+    ott.assert_almost_equal(
+        distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-9, 0.0
     )
     # NOTE: entropy is covered by DistributionValidation below, no manual check needed
 
     # Confidence regions
-    (
-        interval,
-        threshold,
-    ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
-    print("threshold=", ot.Point(1, threshold))
-    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-    print("Minimum volume level set=", levelSet)
-    print("beta=", ot.Point(1, beta))
-    (
-        interval,
-        beta,
-    ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-    print("Bilateral confidence interval=", interval)
-    print("beta=", ot.Point(1, beta))
-    (
-        interval,
-        beta,
-    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, False
+    interval, _ = (
+        distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     )
-    print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", ot.Point(1, beta))
-    (
-        interval,
-        beta,
-    ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-        0.95, True
+    ott.assert_almost_equal(
+        interval.getLowerBound(), [case["mvi"][0]], 1e-5, 1e-12
     )
-    print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    ott.assert_almost_equal(
+        interval.getUpperBound(), [case["mvi"][1]], 1e-5, 1e-12
+    )
+    ott.assert_almost_equal(
+        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
+    )
+    levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
+        0.95
+    )
+    lower = interval.getLowerBound()[0]
+    ott.assert_almost_equal(
+        beta, distribution.computePDF([lower]), 1e-9, 1e-12
+    )
+    interval, _ = (
+        distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
+            0.95
+        )
+    )
+    ott.assert_almost_equal(
+        interval.getLowerBound(), [case["bilateral"][0]], 1e-5, 1e-12
+    )
+    ott.assert_almost_equal(
+        interval.getUpperBound(), [case["bilateral"][1]], 1e-5, 1e-12
+    )
+    ott.assert_almost_equal(
+        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
+    )
+    interval, _ = (
+        distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, False
+        )
+    )
+    ott.assert_almost_equal(interval.getLowerBound()[0], a, 0.0, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
+    )
+    interval, _ = (
+        distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
+            0.95, True
+        )
+    )
+    ott.assert_almost_equal(interval.getUpperBound()[0], b, 0.0, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeProbability(interval), 0.95, 1e-9, 0.0
+    )
+
+    # characteristic function
+    CF = distribution.computeCharacteristicFunction(point[0])
+    ott.assert_almost_equal([CF.real, CF.imag], case["cf"], 1e-9, 0.0)
 
     mean = distribution.getMean()
-    print("mean=", repr(mean))
+    ott.assert_almost_equal(mean, case["mean"], 1e-5, 1e-12)
     standardDeviation = distribution.getStandardDeviation()
-    print("standard deviation=", repr(standardDeviation))
+    ott.assert_almost_equal(standardDeviation, case["std"], 1e-5, 1e-12)
     covariance = distribution.getCovariance()
-    print("covariance=", repr(covariance))
-    parameters = distribution.getParametersCollection()
-    print("parameters=", repr(parameters))
-    print("Standard representative=", distribution.getStandardRepresentative())
+    ott.assert_almost_equal(covariance, case["cov"], 1e-5, 1e-12)
+    ott.assert_almost_equal(
+        covariance[0, 0], standardDeviation[0] ** 2, 1e-12, 0.0
+    )
+    ott.assert_almost_equal(
+        distribution.getParameter(), case["parameters"], 0.0, 0.0
+    )
+    assert (
+        list(distribution.getParameterDescription())
+        == ["mu", "sigma", "a", "b"]
+    )
+    ott.assert_almost_equal(
+        distribution.getStandardRepresentative().getParameter(),
+        case["std_rep"],
+        1e-6,
+        1e-12,
+    )
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
