@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.ResourceMap.Set("SymbolicParser-Backend", "ExprTk")
@@ -267,3 +268,33 @@ for i in range(5):
     except Exception as exc:
         # print(exc)
         assert "Undefined symbol" in str(exc)
+
+# Batch gradient over a sample, see issue #2741
+batchFunc = ot.SymbolicFunction(["x1", "x2"], ["x1 * x2", "x1 + x2"])
+batchPoints = [[1.0, 2.0], [3.0, 4.0]]
+batchGradient = batchFunc.gradient(batchPoints)
+assert batchGradient.getSize() == 2
+assert batchGradient.getDimension() == 4
+for k in range(2):
+    ref = batchFunc.gradient(batchPoints[k])
+    for i in range(2):
+        for j in range(2):
+            ott.assert_almost_equal(batchGradient[k][j * 2 + i], ref[i, j])
+
+
+# A missing gradient must not change the width on an empty sample
+class EmptySample(ot.Sample):
+    # SWIG sees an empty sample as an empty point and would select the
+    # point-wise overload: report a single non-float item instead
+    def __len__(self):
+        return 1
+
+    def __getitem__(self, index):
+        return None
+
+
+noGradFunc = ot.SymbolicFunction(["x1", "x2"], ["x1 + x2"])
+noGradFunc.setGradient(ot.NoGradient())
+emptyGradient = noGradFunc.gradient(EmptySample(0, 2))
+assert emptyGradient.getSize() == 0
+assert emptyGradient.getDimension() == 2

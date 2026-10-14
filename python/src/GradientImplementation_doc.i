@@ -77,17 +77,18 @@ OT_Gradient_getMarginal_doc
 // ---------------------------------------------------------------------
 
 %define OT_Gradient_gradient_doc
-"Return the Jacobian transposed matrix of the implementation at a point.
+"Return the Jacobian transposed matrix of the implementation at a point or sample.
 
 Parameters
 ----------
-point : sequence of float
-    Point where the Jacobian transposed matrix is calculated.
+point : sequence of float or 2-d sequence of float
+    Point or sample where the Jacobian transposed matrix is calculated.
 
 Returns
 -------
-gradient : :class:`~openturns.Matrix`
-    The Jacobian transposed matrix of the function at *point*."
+gradient : :class:`~openturns.Matrix` or :class:`~openturns.Sample`
+    The Jacobian transposed matrix of the function at *point*. For a
+    sample input, the flattened gradient matrices in column-major order."
 %enddef
 %feature("docstring") OT::GradientImplementation::gradient
 OT_Gradient_gradient_doc

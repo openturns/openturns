@@ -58,6 +58,7 @@ public:
   String __repr__() const override;
 
   /** Compute the gradient of a product of univariate polynomials */
+  using GradientImplementation::gradient;
   Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
