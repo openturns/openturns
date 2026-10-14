@@ -89,3 +89,26 @@ class NonSequencePointToFieldFunction(ot.OpenTURNSPythonPointToFieldFunction):
 
 with ott.assert_raises(Exception):
     ot.PointToFieldFunction(NonSequencePointToFieldFunction())([1.0, 2.0])
+
+
+class MarginalPointToFieldFunction(ot.OpenTURNSPythonPointToFieldFunction):
+    def __init__(self):
+        mesh = ot.RegularGrid(0.0, 0.1, 11)
+        super().__init__(2, mesh, 2)
+        self.setInputDescription(["R", "S"])
+        self.setOutputDescription(["T", "U"])
+
+    def _exec(self, X):
+        size = self.getOutputMesh().getVerticesNumber()
+        return [ot.Point(X) * i for i in range(size)]
+
+
+# Marginals of a point to field function, see issue #2801
+marginalFunc = ot.PointToFieldFunction(MarginalPointToFieldFunction())
+marginal0 = marginalFunc.getMarginal(0)
+assert marginal0.getOutputDimension() == 1
+assert list(marginal0.getOutputDescription()) == ["T"]
+marginal1 = marginalFunc.getMarginal(1)
+ott.assert_almost_equal(marginal1([1.0, 2.0]), marginalFunc([1.0, 2.0]).getMarginal(1))
+with ott.assert_raises(Exception):
+    marginalFunc.getMarginal(2)

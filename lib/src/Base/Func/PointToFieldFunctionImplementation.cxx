@@ -100,11 +100,59 @@ PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const Unsig
   return getMarginal(Indices(1, i));
 }
 
+/* Marginal of a point to field function, selecting output components */
+class MarginalPointToFieldFunction
+  : public PointToFieldFunctionImplementation
+{
+public:
+  MarginalPointToFieldFunction(const PointToFieldFunction & function,
+                               const Indices & indices)
+    : PointToFieldFunctionImplementation(function.getInputDimension(), function.getOutputMesh(), indices.getSize())
+    , function_(function)
+    , indices_(indices)
+  {
+    setInputDescription(function.getInputDescription());
+    const Description outputDescription(function.getOutputDescription());
+    Description marginalDescription(indices.getSize());
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++i) marginalDescription[i] = outputDescription[indices[i]];
+    setOutputDescription(marginalDescription);
+  }
+
+  MarginalPointToFieldFunction * clone() const override
+  {
+    return new MarginalPointToFieldFunction(*this);
+  }
+
+  Sample operator() (const Point & inP) const override
+  {
+    const Sample values(function_(inP));
+    Sample marginalValues(values.getSize(), indices_.getSize());
+    for (UnsignedInteger i = 0; i < values.getSize(); ++i)
+      for (UnsignedInteger j = 0; j < indices_.getSize(); ++j)
+        marginalValues(i, j) = values(i, indices_[j]);
+    return marginalValues;
+  }
+
+  PointToFieldFunction getMarginal(const Indices & subIndices) const override
+  {
+    Indices composed(subIndices.getSize());
+    for (UnsignedInteger i = 0; i < subIndices.getSize(); ++i) composed[i] = indices_[subIndices[i]];
+    return new MarginalPointToFieldFunction(function_, composed);
+  }
+
+private:
+  MarginalPointToFieldFunction() = delete;
+
+  PointToFieldFunction function_;
+  Indices indices_;
+
+}; // class MarginalPointToFieldFunction
+
 /* Get the function corresponding to indices components */
 PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const";
+  return new MarginalPointToFieldFunction(PointToFieldFunction(*this), indices);
 }
 
 /* Input description Accessor */
