@@ -6,6 +6,8 @@
 
 %include ActiveLearningReliabilityFunction_doc.i
 
+OTTypedInterfaceObjectHelper(ActiveLearningReliabilityFunction)
+
 %copyctor OT::ActiveLearningReliabilityFunction;
 
 %include openturns/ActiveLearningReliabilityFunction.hxx

@@ -105,7 +105,7 @@ public:
 
   Pointer<EventSimulation> getSimulationAlgorithm() const;
 
-  /** Learning criterion accessor (cloned on set, single owner) */
+  /** Learning criterion accessor (value semantics, dynamic type preserved) */
   void setCriterion(const ActiveLearningReliabilityFunction & criterion);
   ActiveLearningReliabilityFunction getCriterion() const;
 
@@ -147,7 +147,7 @@ protected:
   RandomVector defaultEvent_;
   Pointer<EventSimulation> p_defaultSimulationAlgorithm_;
   Pointer<EventSimulation> p_simulationAlgorithm_;
-  Pointer<ActiveLearningReliabilityFunction> p_activeLearningFunction;
+  ActiveLearningReliabilityFunction criterion_;
 
   Sample currentInputSample_;
   Sample inputDoE_;

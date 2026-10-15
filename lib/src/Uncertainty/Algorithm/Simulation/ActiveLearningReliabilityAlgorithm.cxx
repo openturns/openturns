@@ -41,7 +41,6 @@
 #include "openturns/ActiveLearningReliabilityResult.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/Evaluation.hxx"
 #include <cmath>
 #include <mutex>
 BEGIN_NAMESPACE_OPENTURNS
@@ -67,10 +66,10 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   , convergenceUncertaintyFactor_(ResourceMap::GetAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor"))
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
-    // Default members must be valid for Study save/load of a default instance
+    // Default members must be valid for Study save/load of a default instance.
+    // The criterion handle default-constructs its own implementation.
     p_defaultSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(defaultEvent_);
     p_simulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
-    p_activeLearningFunction = new ActiveLearningReliabilityFunction();
   }
 
 /** Extract the surrogate specification from a fitter. Only the fitter
@@ -101,6 +100,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   , defaultEvent_(simulation.getEvent())
   , inputDoE_(fitter.getInputSample())
   , outputDoE_(fitter.getOutputSample())
+  , criterion_(criterion)
   , functionCallNumber_(0)
   , convergenceCriterion_(2)
   , simulationBudget_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations"))
@@ -115,13 +115,13 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   if (inputDoE_.getSize() == 0) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input design of experiment is empty";
   if (inputDoE_.getSize() != outputDoE_.getSize()) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input and output designs have different sizes (" << inputDoE_.getSize() << " vs " << outputDoE_.getSize() << ")";
   if (outputDoE_.getDimension() != 1) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: output design must be 1-dimensional";
-  // Deep copies: run() retargets the simulator through setEvent, which must
-  // not mutate the caller object, and refreshes the criterion in place.
+  // Deep copy: run() retargets the simulator through setEvent, which must
+  // not mutate the caller object. The criterion handle shares its
+  // implementation until first mutation (copy-on-write on setGaussianProcessRegression).
   // The simulators keep their own sample policy: the scoring pool is drawn
   // separately, so keepSample is left untouched.
   p_defaultSimulationAlgorithm_ = simulation.clone();
   p_simulationAlgorithm_ = simulation.clone();
-  p_activeLearningFunction = criterion.clone();
   p_simulationAlgorithm_->setKeepSample(true);
   p_defaultSimulationAlgorithm_->setKeepSample(true);
    
@@ -397,13 +397,12 @@ Pointer<EventSimulation> ActiveLearningReliabilityAlgorithm::getSimulationAlgori
 
 void ActiveLearningReliabilityAlgorithm::setCriterion(const ActiveLearningReliabilityFunction & criterion)
 {
-  p_activeLearningFunction = criterion.clone();
+  criterion_ = criterion;
 }
 
 ActiveLearningReliabilityFunction ActiveLearningReliabilityAlgorithm::getCriterion() const
 {
-  if (!p_activeLearningFunction) throw InternalException(HERE) << "ActiveLearningReliabilityAlgorithm has null learning criterion";
-  return *p_activeLearningFunction;
+  return criterion_;
 }
 
 CovarianceModel ActiveLearningReliabilityAlgorithm::getCovarianceModel() const
@@ -564,8 +563,8 @@ void ActiveLearningReliabilityAlgorithm::run()
       Sample candidatePool = p_currentSimulationAlgorithm->getInputSample();
       
       // Compute active learning values on the fixed candidate pool
-      p_activeLearningFunction->setGaussianProcessRegression(newGPRResult);
-      Sample activeLearningValues = (*p_activeLearningFunction)(candidatePool, inputDoE_);
+      criterion_.setGaussianProcessRegression(newGPRResult);
+      Sample activeLearningValues = criterion_(candidatePool, inputDoE_);
 
       // Store history
       Scalar currentProbabilityEstimate = p_currentSimulationAlgorithm->getResult().getProbabilityEstimate();
@@ -590,7 +589,7 @@ void ActiveLearningReliabilityAlgorithm::run()
       else if (convergenceCriterion_ == 2)
       {
         // check convergence of active learning
-        convergenceStatus = p_activeLearningFunction->checkConvergenceLearning(activeLearningValues);
+        convergenceStatus = criterion_.checkConvergenceLearning(activeLearningValues);
       }
       else if (convergenceCriterion_ == 3)
       {
@@ -624,7 +623,7 @@ void ActiveLearningReliabilityAlgorithm::run()
       if (!convergenceStatus)
       {
         // Get input sample to evaluate from the fixed candidate pool
-        Sample infillInputSample = p_activeLearningFunction->getInfillSample(candidatePool, activeLearningValues);
+        Sample infillInputSample = criterion_.getInfillSample(candidatePool, activeLearningValues);
 
         inputDoE_.add(infillInputSample);
         Sample infillOutputSample = model(infillInputSample);
@@ -689,13 +688,11 @@ void ActiveLearningReliabilityAlgorithm::save(Advocate & adv) const
   // Polymorphic simulator: the dynamic class name drives the compact table
   // dispatch in load(); the object itself carries the full derived state
   if (!p_defaultSimulationAlgorithm_) throw InternalException(HERE) << "Cannot save ActiveLearningReliabilityAlgorithm with null simulation algorithm";
-  if (!p_activeLearningFunction) throw InternalException(HERE) << "Cannot save ActiveLearningReliabilityAlgorithm with null learning criterion";
   adv.saveAttribute("simulationClassName_", p_defaultSimulationAlgorithm_->getClassName());
   adv.saveAttribute("simulation_", *p_defaultSimulationAlgorithm_);
-  // Polymorphic criterion: travels through its Evaluation handle, which
-  // rebuilds the dynamic type without enumerating subclasses, so new criteria
-  // need no change here
-  adv.saveAttribute("criterion_", Evaluation(*p_activeLearningFunction));
+  // Polymorphic criterion: the handle persists the dynamic type through the
+  // Factory, so new criteria round-trip without touching this method
+  adv.saveAttribute("criterion_", criterion_);
   adv.saveAttribute("functionCallNumber_", functionCallNumber_);
   adv.saveAttribute("probabilityHistory_", probabilityHistory_);
   adv.saveAttribute("reliabilityIndexHistory_", reliabilityIndexHistory_);
@@ -765,14 +762,9 @@ void ActiveLearningReliabilityAlgorithm::load(Advocate & adv)
   }
   if (!simulationRebuilt) throw InternalException(HERE) << "Unknown simulation class " << simulationClassName;
   p_simulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
-  // Generic criterion rebuild through its Evaluation handle: no per-subclass
-  // branch, new criteria round-trip without touching this method
-  Evaluation criterion;
-  adv.loadAttribute("criterion_", criterion);
-  ActiveLearningReliabilityFunction * p_criterion =
-    dynamic_cast<ActiveLearningReliabilityFunction *>(criterion.getImplementation()->clone());
-  if (p_criterion == nullptr) throw InternalException(HERE) << "Stored criterion is not an ActiveLearningReliabilityFunction";
-  p_activeLearningFunction = Pointer<ActiveLearningReliabilityFunction>(p_criterion);
+  // Criterion rebuild through its handle: the Factory restores the dynamic
+  // type, so new criteria round-trip without touching this method
+  adv.loadAttribute("criterion_", criterion_);
   adv.loadAttribute("functionCallNumber_", functionCallNumber_);
   adv.loadAttribute("probabilityHistory_", probabilityHistory_);
   adv.loadAttribute("reliabilityIndexHistory_", reliabilityIndexHistory_);

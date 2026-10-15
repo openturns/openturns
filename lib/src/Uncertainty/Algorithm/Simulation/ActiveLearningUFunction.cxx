@@ -38,7 +38,7 @@ static const Factory<ActiveLearningUFunction> Factory_ActiveLearningUFunction;
 
  /** Default constructor */
 ActiveLearningUFunction::ActiveLearningUFunction()
-  :ActiveLearningReliabilityFunction()
+  :ActiveLearningReliabilityFunctionImplementation()
   {
     // Nothing to do
   } 
@@ -46,7 +46,7 @@ ActiveLearningUFunction::ActiveLearningUFunction()
 /* Constructor with parameters */
 ActiveLearningUFunction::ActiveLearningUFunction(const Scalar reliabilityThreshold,
                                                  const Scalar learningThreshold)
-    : ActiveLearningReliabilityFunction(reliabilityThreshold,
+    : ActiveLearningReliabilityFunctionImplementation(reliabilityThreshold,
                                         learningThreshold)
   {
   }
@@ -63,7 +63,7 @@ String ActiveLearningUFunction::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << ActiveLearningReliabilityFunction::__repr__();
+      << " derived from " << ActiveLearningReliabilityFunctionImplementation::__repr__();
   return oss;
 }
 
@@ -119,13 +119,13 @@ Bool ActiveLearningUFunction::isMaximization() const
 /* Method save() stores the object through the StorageManager */
 void ActiveLearningUFunction::save(Advocate & adv) const
 {
-  ActiveLearningReliabilityFunction::save(adv);
+  ActiveLearningReliabilityFunctionImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ActiveLearningUFunction::load(Advocate & adv)
 {
-  ActiveLearningReliabilityFunction::load(adv);
+  ActiveLearningReliabilityFunctionImplementation::load(adv);
 }
 
 

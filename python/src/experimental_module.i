@@ -121,6 +121,7 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 
 /* Uncertainty/Algorithm/Simulation (experimental active-learning reliability) */
 %import simulation_module.i
+%include ActiveLearningReliabilityFunctionImplementation.i
 %include ActiveLearningReliabilityFunction.i
 %include ActiveLearningUFunction.i
 %include ActiveLearningEFFFunction.i
