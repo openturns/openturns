@@ -11,8 +11,8 @@ Parameters
 distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with an independent copula used to generate the
     set of input data.
-size : positive int
-    Size :math:`N` of each of the two independent initial samples.
+N : positive int
+    Size of each of the two independent initial samples.
     For the total size of the experiment see notes below.
 experiment : :class:`~openturns.WeightedExperiment`
     Design of experiment used to sample the distribution.
@@ -32,7 +32,7 @@ to be supplied to the constructor of one of the :class:`~openturns.SobolIndicesA
 - :class:`~openturns.JansenSensitivityAlgorithm`.
 
 The chosen :class:`~openturns.SobolIndicesAlgorithm` implementation then uses the sample as *input design*,
-which means it represents (but is not a realization of) a random vector :math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)`.
+which means it represents (but is not a realization of) a random vector :math:`\vect{X} = \left( X^1, \ldots, X^{\inputDim} \right)`.
 
 Either the :class:`~openturns.Distribution` of :math:`\vect{X}`
 or a :class:`~openturns.WeightedExperiment` that represents it
@@ -42,10 +42,10 @@ If a :class:`~openturns.WeightedExperiment` is supplied, the class uses it direc
 
 If the distribution of :math:`\vect{X}` is supplied, the class generates a :class:`~openturns.WeightedExperiment`.
 To do this, it duplicates the distribution: every marginal is repeated once to produce
-a :math:`2 n_X`-dimensional distribution.
+a :math:`2 \inputDim`-dimensional distribution.
 This trick makes it possible to choose a :class:`~openturns.WeightedExperiment` with non-iid samples
 (that is a :class:`~openturns.LHSExperiment` or a :class:`~openturns.LowDiscrepancyExperiment`)
-to represent the original :math:`n_X`-dimensional distribution.
+to represent the original :math:`\inputDim`-dimensional distribution.
 
 The type of :class:`~openturns.WeightedExperiment` depends on the value of ``'SobolIndicesExperiment-SamplingMethod'`` in the :class:`~openturns.ResourceMap`:
 
@@ -55,8 +55,8 @@ The type of :class:`~openturns.WeightedExperiment` depends on the value of ``'So
 
 ``'MonteCarlo'`` is the default choice because it allows the chosen :class:`~openturns.SobolIndicesAlgorithm` implementation to use the asymptotic distribution of the estimators of the Sobol' indices.
 
-Note that ``'QMC'`` is only possible if :math:`2 n_X \leqslant` :class:`~openturns.SobolSequence`:code:`.MaximumDimension`.
-If ``'QMC'`` is specified but :math:`2 n_X >` :class:`~openturns.SobolSequence`:code:`.MaximumDimension`, the class falls back to ``'LHS'``.
+Note that ``'QMC'`` is only possible if :math:`2 \inputDim \leqslant` :class:`~openturns.SobolSequence`:code:`.MaximumDimension`.
+If ``'QMC'`` is specified but :math:`2 \inputDim >` :class:`~openturns.SobolSequence`:code:`.MaximumDimension`, the class falls back to ``'LHS'``.
 
 >>> import openturns as ot
 >>> print(ot.SobolSequence.MaximumDimension)
@@ -68,18 +68,18 @@ the class splits it into two samples with the same size :math:`N`:
 Their columns are mixed in order to produce a very large sample: the *inputDesign* argument
 taken by one of the constructors of every :class:`~openturns.SobolIndicesAlgorithm` implementation.
 
-If *computeSecondOrder* is set to *False*, the input design is of size :math:`N(2+n_X)`.
+If *computeSecondOrder* is set to *False*, the input design is of size :math:`N(2+\inputDim)`.
 The first :math:`N` rows contain the sample :math:`\mat{A}` and the next :math:`N` rows the sample :math:`\mat{B}`.
-The last :math:`N n_X` rows contain :math:`n_X` copies of :math:`\mat{A}`,
+The last :math:`N \inputDim` rows contain :math:`\inputDim` copies of :math:`\mat{A}`,
 each with a different column replaced by the corresponding column from :math:`\mat{B}`
 (they are the matrices :math:`\mat{E}^i` from the documentation page of :class:`~openturns.SobolIndicesAlgorithm`).
 
-If *computeSecondOrder* is set to *True* and :math:`n_X = 2`, the input design is the same as in
+If *computeSecondOrder* is set to *True* and :math:`\inputDim = 2`, the input design is the same as in
 the case where *computeSecondOrder* is *False* (see [saltelli2002]_).
 
-If *computeSecondOrder* is set to *True* and :math:`n_X \neq 2`, the input design size is :math:`N(2+2 n_X)`.
-The first :math:`N(2+n_X)` rows are the same as when *computeSecondOrder* is *False*.
-The last :math:`N n_X` rows contain :math:`n_X` copies of :math:`\mat{B}`,
+If *computeSecondOrder* is set to *True* and :math:`\inputDim \neq 2`, the input design size is :math:`N(2+2 \inputDim)`.
+The first :math:`N(2+\inputDim)` rows are the same as when *computeSecondOrder* is *False*.
+The last :math:`N \inputDim` rows contain :math:`\inputDim` copies of :math:`\mat{B}`,
 each with a different column replaced by the corresponding column from :math:`\mat{A}`
 (they are the matrices :math:`\mat{C}^i` from the documentation page of :class:`~openturns.SobolIndicesAlgorithm`).
 
