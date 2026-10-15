@@ -148,7 +148,7 @@ class IshigamiModel:
         self.ST2 = self.S2
         self.ST3 = self.S3 + self.S13
 
-    def getNonZeroPolynomialChaosExpansionCoefficients(self, index):
+    def getNonZeroPolynomialChaosExpansionCoefficients(self, index=None):
         coefficients = [
             3.50000000000000000e00,
             1.62541782669813939e00,
@@ -197,13 +197,15 @@ class IshigamiModel:
             -4.06875638545441148e-12,
             2.13045013046006517e-16,
         ]
+        if index is None:
+            return coefficients
         if index < -len(coefficients) or index >= len(coefficients):
             raise ValueError(
                 "Index out of range for polynomial chaos expansion coefficients."
             )
         return coefficients[index]
 
-    def getNonZeroPolynomialChaosExpansionIndices(self, index):
+    def getNonZeroPolynomialChaosExpansionIndices(self, index=None):
         multiIndices = [
             [0, 0, 0],
             [1, 0, 0],
@@ -252,6 +254,8 @@ class IshigamiModel:
             [0, 24, 0],
             [21, 0, 4],
         ]
+        if index is None:
+            return multiIndices
         if index < -len(multiIndices) or index >= len(multiIndices):
             raise ValueError(
                 "Index out of range for polynomial chaos expansion indices."

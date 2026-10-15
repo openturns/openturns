@@ -1,3 +1,4 @@
+# %%
 #! /usr/bin/env python
 
 import openturns as ot
@@ -240,3 +241,59 @@ for i in range(dimension):
         1.0e-10,
         1.0e-10,
     )
+
+# Test exact PCE coefficients and indices accessors
+exactCoefficients = im.getNonZeroPolynomialChaosExpansionCoefficients()
+exactIndices = im.getNonZeroPolynomialChaosExpansionIndices()
+assert len(exactCoefficients) == 46
+assert len(exactIndices) == 46
+assert exactCoefficients[0] == im.getNonZeroPolynomialChaosExpansionCoefficients(0)
+assert exactIndices[0] == im.getNonZeroPolynomialChaosExpansionIndices(0)
+assert exactCoefficients[-1] == im.getNonZeroPolynomialChaosExpansionCoefficients(-1)
+assert exactIndices[-1] == im.getNonZeroPolynomialChaosExpansionIndices(-1)
+ott.assert_almost_equal(
+    im.getNonZeroPolynomialChaosExpansionCoefficients(0), im.expectation, 1.0e-14, 1.0e-14
+)
+assert im.getNonZeroPolynomialChaosExpansionIndices(0) == [0, 0, 0]
+
+with ott.assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionCoefficients(46)
+with ott.assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionCoefficients(-47)
+with ott.assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionIndices(46)
+with ott.assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionIndices(-47)
+
+# Validate computed PCE coefficients against exact analytical values by numerical integration
+quadratureNodes = [10] * dimension
+quadExperiment = ot.GaussProductExperiment(distribution, quadratureNodes)
+Xquad, Wquad = quadExperiment.generateWithWeights()
+Yquad = model(Xquad)
+
+totalDegreeQuad = 6
+strataIndex = enumerateFunction.getMaximumDegreeStrataIndex(totalDegreeQuad)
+quadBasisSize = enumerateFunction.getStrataCumulatedCardinal(strataIndex)
+quadAdaptive = ot.FixedStrategy(productBasis, quadBasisSize)
+quadAlgo = ot.FunctionalChaosAlgorithm(
+    Xquad, Wquad, Yquad, distribution, quadAdaptive, ot.IntegrationStrategy()
+)
+quadAlgo.run()
+quadResult = quadAlgo.getResult()
+computedIndices = quadResult.getIndices()
+computedCoefficients = quadResult.getCoefficients()
+
+for multiIndex, exactCoeff in zip(exactIndices, exactCoefficients):
+    if sum(multiIndex) <= totalDegreeQuad:
+        globalIndex = enumerateFunction.inverse(ot.Indices(multiIndex))
+        pos = [i for i, idx in enumerate(computedIndices) if idx == globalIndex]
+        assert len(pos) == 1
+        ott.assert_almost_equal(computedCoefficients[pos[0], 0], exactCoeff, 1.0e-7, 1.0e-7)
+
+exactMultiIndicesSet = {tuple(idx) for idx in exactIndices}
+for i, idx in enumerate(computedIndices):
+    multiIndex = tuple(enumerateFunction(idx))
+    if multiIndex not in exactMultiIndicesSet:
+        ott.assert_almost_equal(computedCoefficients[i, 0], 0.0, 0.0, 1.0e-7)
+
+# %%
