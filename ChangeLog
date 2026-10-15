@@ -266,6 +266,7 @@
  * Mixture and KernelMixture: the new computeLogPDF implementation uses a log-sum-exp, and computePDF falls back to it when every atom underflows
  * EmpiricalBernsteinCopula: the PDF, log-PDF and conditional services use a log-sum-exp, so mixtures with many atoms remain accurate in the tails
  * Bingham, Burr, ClaytonCopula, DistFunc, Logistic, Ridgway and WrappedNormal now use SpecFunc.LogSumExp instead of local log-sum-exp code
+ * Added blockwise (*Blockwise) variants of the AlgebraEngine and StatisticsEngine kernels operating on DataContainer storage, with HDF5-backed containers supported throughout
 
 === Documentation ===
  * Theory: add interpolation page
