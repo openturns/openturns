@@ -36,7 +36,7 @@ static const Factory<NAIS> Factory_NAIS;
 
 // Default constructor
 NAIS::NAIS()
-  : EventSimulation()
+  : EventSimulationImplementation()
 {
   // Nothing TO DO
 }
@@ -45,7 +45,7 @@ NAIS::NAIS()
 // Default constructor
 NAIS::NAIS(const RandomVector & event,
            const Scalar quantileLevel)
-  : EventSimulation(event.getImplementation()->asComposedEvent())
+  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
   , quantileLevel_(getEvent().getOperator()(0, 1) ? quantileLevel : 1.0 - quantileLevel)
 {
   const Interval range(getEvent().getAntecedent().getDistribution().getRange());
@@ -66,7 +66,7 @@ void NAIS::setEvent(const RandomVector & event)
 {
 
   const Bool previousDirection = getEvent().getOperator()(0, 1);
-  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  EventSimulationImplementation::setEvent(event.getImplementation()->asComposedEvent());
   const Interval range(getEvent().getAntecedent().getDistribution().getRange());
   const Interval::BoolCollection rangeUpper(range.getFiniteUpperBound());
   const Interval::BoolCollection rangeLower(range.getFiniteLowerBound());
@@ -329,7 +329,7 @@ void NAIS::run()
   naisResult_.setBlockSize(getBlockSize());
   naisResult_.setVarianceEstimate(varianceEstimate);
   // Mirror the estimates into the base result: readers through a generic
-  // Pointer<EventSimulation> only see the base getResult(), which is hidden
+  // EventSimulation handle only see the base getResult(), which is hidden
   // (not overridden) by NAIS::getResult()
   setResult(naisResult_);
 
@@ -407,7 +407,7 @@ String NAIS::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulation::__repr__()
+      << " derived from " << EventSimulationImplementation::__repr__()
       << " quantileLevel=" << quantileLevel_;
   return oss;
 }
@@ -416,7 +416,7 @@ String NAIS::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void NAIS::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("quantileLevel_", quantileLevel_);
   adv.saveAttribute("naisResult_", naisResult_);
 
@@ -432,7 +432,7 @@ void NAIS::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NAIS::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("quantileLevel_", quantileLevel_);
   adv.loadAttribute("naisResult_", naisResult_);
 

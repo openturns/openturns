@@ -28,6 +28,7 @@
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/GenericSimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -58,6 +59,12 @@ public:
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
+
+  /** Current result with full dynamic type, for per-iteration histories.
+      The default implementation wraps the base result; simulators with an
+      extended result type override it. Future simulators inherit a working
+      base view and opt into full detail with a one-line override. */
+  virtual GenericSimulationResult getHistoryResult() const;
 
   /** String converter */
   String __repr__() const override;

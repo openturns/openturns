@@ -30,7 +30,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSampling
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
   CLASSNAME
 public:

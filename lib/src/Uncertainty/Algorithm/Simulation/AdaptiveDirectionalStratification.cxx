@@ -31,7 +31,7 @@ CLASSNAMEINIT(AdaptiveDirectionalStratification)
 
 /* Default constructor */
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
-  : EventSimulation()
+  : EventSimulationImplementation()
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
@@ -42,7 +42,7 @@ AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulation(event.getImplementation()->asComposedEvent())
+  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
   , standardEvent_(StandardEvent(getEvent()))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
@@ -62,7 +62,7 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
 /*  Event accessor */
 void AdaptiveDirectionalStratification::setEvent(const RandomVector & event)
 {
-  EventSimulation::setEvent(event.getImplementation()->asComposedEvent());
+  EventSimulationImplementation::setEvent(event.getImplementation()->asComposedEvent());
   standardEvent_ = StandardEvent(getEvent());
   const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
   samplingStrategy_.setDimension(dimension);

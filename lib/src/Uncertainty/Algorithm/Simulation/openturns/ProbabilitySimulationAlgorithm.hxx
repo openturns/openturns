@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ProbabilitySimulationAlgorithm
  */
 
-class OT_API ProbabilitySimulationAlgorithm : public EventSimulation
+class OT_API ProbabilitySimulationAlgorithm : public EventSimulationImplementation
 {
 
   CLASSNAME
