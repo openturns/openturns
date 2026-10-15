@@ -37,7 +37,7 @@ process : :class:`~openturns.Process`
 
 Notes
 -----
-The method applies only to random vectors :math:`\vect{Y}` which antecedent is a :class:`~openturns.Process`.
+The method is implemented only for :class:`~openturns.ProcessEvent`.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -55,7 +55,10 @@ Notes
 -----
 The method applies only to random vectors :math:`\vect{Y}` which are :class:`~openturns.CompositeRandomVector`.
 
-If the antecedent :math:`\vect{X}` is itself a :class:`~openturns.CompositeRandomVector`, then its antecedent is searched, until the final antecedent which is a :class:`~openturns.UsualRandomVector`. The method returns this final random vector.
+If the antecedent :math:`\vect{X}` is itself a :class:`~openturns.CompositeRandomVector`,
+say :math:`\vect{X}=g(\vect{Z})`, then the stored antecedent is the root antecedent of
+:math:`\vect{Z}` and the stored function is the composition :math:`f\circ g`, so that
+:math:`\vect{Y}=(f\circ g)(\vect{Z})`.
 )RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getAntecedent
@@ -144,7 +147,7 @@ R"RAW(Accessor to the distribution of the RandomVector.
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Distribution that follows the random vector.
+    Distribution followed by the random vector.
 
 Notes
 -----
@@ -431,7 +434,7 @@ Notes
 The value is generated according to the type of the random vector.
 
 In the case of a :class:`~openturns.ThresholdEvent`, the method returns one realization
-of the event considered as a Bernoulli variable, which are boolean values: 1 for the
+of the event considered as a Bernoulli variable, which is a boolean value: 1 for the
 realization of the event and 0 else.
 
 See also

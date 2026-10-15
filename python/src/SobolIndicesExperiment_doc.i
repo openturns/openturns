@@ -1,5 +1,5 @@
 %feature("docstring") OT::SobolIndicesExperiment
-R"RAW(Experiment to computeSobol' indices.
+R"RAW(Experiment to compute Sobol' indices.
 
 Available constructors:
     SobolIndicesExperiment(*distribution, size, computeSecondOrder=False*)
@@ -11,8 +11,8 @@ Parameters
 distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` with an independent copula used to generate the
     set of input data.
-N : positive int
-    Size of each of the two independent initial samples.
+size : positive int
+    Size :math:`N` of each of the two independent initial samples.
     For the total size of the experiment see notes below.
 experiment : :class:`~openturns.WeightedExperiment`
     Design of experiment used to sample the distribution.
@@ -32,7 +32,7 @@ to be supplied to the constructor of one of the :class:`~openturns.SobolIndicesA
 - :class:`~openturns.JansenSensitivityAlgorithm`.
 
 The chosen :class:`~openturns.SobolIndicesAlgorithm` implementation then uses the sample as *input design*,
-which means it represents (but is not a realization of) a random vector :math:`\vect{X} = \left( X^1, \ldots, X^{\inputDim} \right)`.
+which means it represents (but is not a realization of) a random vector :math:`\vect{X} = \left( X_1, \ldots, X_{\inputDim} \right)`.
 
 Either the :class:`~openturns.Distribution` of :math:`\vect{X}`
 or a :class:`~openturns.WeightedExperiment` that represents it
