@@ -25,12 +25,10 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/GaussKronrodRule.hxx"
-#include "openturns/GaussKronrod.hxx"
-#include "openturns/ParametricFunction.hxx"
 #include "openturns/Log.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #define BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
+#include <boost/version.hpp>
 #include <boost/math/distributions/students_t.hpp>
 #include <boost/math/distributions/non_central_t.hpp>
 #endif
@@ -238,185 +236,33 @@ Scalar StudentRealization(const Scalar nu)
 }
 
 /************************************************************************************************************/
-/* Normalized NonCentralStudent distribution, i.e. with a PDF equals to (eq. 31.15 p.516 of the reference): */
-/* exp(-delta^2 / 2) * (nu / (nu + x^2)) ^ ((nu + 1) / 2) / (sqrt(nu * Pi) * Gamma(nu / 2)) * SUM           */
-/* where SUM = sum_0^inf Gamma((nu + k + 1) / 2) * omega^k / Gamma(k + 1)                                   */
-/* and omega = x * delta * sqrt(2 / (nu + x^2))                                                             */
-/* Reference:                                                                                               */
-/* Norman L. Johnson, Samuel Kotz, N. Balakrishnan, "Continuous univariate distributions volume 2", second  */
-/* edition, 1995, Wiley Inter-Science                                                                       */
+/* Normalized NonCentralStudent distribution                                                                */
+/* The CDF and the PDF below share the same Poisson-mixture structure: a Poisson(lambda = delta^2 / 2)      */
+/* weighted sum of central incomplete-beta terms (CDF) or beta densities (PDF, obtained by differentiating  */
+/* the CDF series term by term). Both sums start from the Poisson mode and proceed bidirectionally with an  */
+/* underflow cutoff, so no cancellation can occur when x and delta share the same sign.                     */
 /************************************************************************************************************/
-/* CDF
-   We use the algorithm described in:
-   Viktor Witkovsky, "A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter"
-   Computational Statistics & Data Analysis, 43 (2003) pp 249-267
-*/
-Scalar NonCentralStudentCDF(const Scalar nu,
-                            const Scalar delta,
-                            const Scalar x,
-                            const Bool tail)
+namespace
 {
-  // Check nu
-  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
-  // Special case when |delta| << 1
-  if (std::abs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x, tail);
-  // Very large nu
-  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - delta);
-  // Special case when |x| << 1
-  if (std::abs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
-  // Small nu
-  if (nu < 20.0)
-  {
-#ifdef OPENTURNS_HAVE_BOOST
-    return (tail ? boost::math::cdf(boost::math::complement(boost::math::non_central_t(nu, delta), x)) : boost::math::cdf(boost::math::non_central_t(nu, delta), x));
-#else
-    return NonCentralStudentCDFAlt0(nu, delta, x, tail, SpecFunc::Precision, SpecFunc::MaximumIteration);
-#endif
-  }
-  if (x < 0.0) return NonCentralStudentCDF(nu, -delta, -x, !tail);
-  Bool computeTail = true;
-  Bool useChiSquareTail = false;
-  if (x < delta)
-  {
-    computeTail = false;
-    useChiSquareTail = true;
-  }
 
-  /*******************************/
-  /* Integration bounds and mode */
-  /*******************************/
-  Scalar lowerBound = 0.0;
-  Scalar upperBound = 0.0;
-  Scalar mode = 0.0;
-  // const = -(log(2)+log(2*pi)/2)
-  const Scalar const1 = -1.6120857137646180667900353000732139;
-  // logRelTolBound = log(eps) eps = 2.220446049250313e-16
-  const Scalar logRelTolBound = -3.604365338911715e+01;
-  // zUpperBound > -norminv(eps(0)) =  3.847234634276879e+01
-  const Scalar zUpperBound = 38.5;
-  // tLower = log(1/(1-eps)) ~ eps
-  const Scalar tUpper(7.208730677823431e+01); // tUpper = log(1/eps^2)
-  const Scalar tLower(4.930380657631324e-32); // tLower = log(1/(1-eps^2)) ~ eps^2
-  const Scalar nuMinus2 = std::max(1.0, (nu - 2.0));
-  const Scalar xSquare = x * x;
-  const Scalar halfNu = 0.5 * nu;
+/* The helper below is only needed when Boost is unavailable: it implements the native fallback           */
+/* (Poisson-mixture series) shared by the CDF and the PDF.                                                    */
+#ifndef OPENTURNS_HAVE_BOOST
 
-  // Estimate the position of the modus MOD of the FUNC
-  mode = (x * std::sqrt(4 * nu * nuMinus2 + xSquare * (delta * delta + 4 * nuMinus2)) - delta * (xSquare + 2 * nu)) / (2 * (xSquare + nu));
-  const Scalar dZ = std::min(0.5 * std::abs(mode + delta), 0.01);
-  Point dMode(3);
-  dMode[0] = mode - dZ;
-  dMode[1] = mode;
-  dMode[2] = mode + dZ;
-  const Scalar theta = nu / xSquare;
-  Point q(3);
-  q[0] = theta * std::pow(dMode[0] + delta, 2);
-  q[1] = theta * std::pow(dMode[1] + delta, 2);
-  q[2] = theta * std::pow(dMode[2] + delta, 2);
-  // Estimate the value of log(FUNC) around the mode point
-  Point logFMode(3);
-  logFMode[0] = const1 + 0.5 * (nuMinus2 * std::log(q[0] / nu) + nu - q[0] - dMode[0] * dMode[0]);
-  logFMode[1] = const1 + 0.5 * (nuMinus2 * std::log(q[1] / nu) + nu - q[1] - dMode[1] * dMode[1]);
-  logFMode[2] = const1 + 0.5 * (nuMinus2 * std::log(q[2] / nu) + nu - q[2] - dMode[2] * dMode[2]);
-  // For given logRelTolBound estimate the logAbsoluteToleranceBound
-  const Scalar logAbsoluteToleranceBound = logFMode[1] + logRelTolBound;
-  // Estimate the integration limits by quadratic approximation
-  const Scalar a = 0.5 * ((logFMode[0] - logFMode[1]) + (logFMode[2] - logFMode[1])) / (dZ * dZ);
-  const Scalar b = 0.5 * (logFMode[0] - logFMode[2]) / dZ;
-  const Scalar discriminantSqrt = std::sqrt(b * b + 4 * a * logRelTolBound);
-  const Scalar denominator = 2 * a;
-  Scalar lowerBound0 = std::max(-zUpperBound, (discriminantSqrt - b) / denominator);
-  Scalar upperBound0 = std::max(-zUpperBound, std::min(zUpperBound, -(discriminantSqrt + b) / denominator));
-  // Find zAbsoluteToleranceBound by solving: logAbsoluteToleranceBound = log(normpdf(z))
-  const Scalar zAbsoluteToleranceBound = std::min(zUpperBound, std::sqrt(-1.8378770664093454835606594728112352 - 2 * logAbsoluteToleranceBound));
-  if (!useChiSquareTail)
-  {
-    Scalar quantileUpper = 0.0;
-    // Estimate quantile of chi^2 distribution
-    // with nu degrees of freedom, see INGLOT (2010, Eqn. A.3)
-    if (nu > 1) quantileUpper = std::max(0.0, nu + 2 * tUpper + 1.62 * std::sqrt(nu * tUpper) + 0.63012 * std::sqrt(nu) * std::log(tUpper) - 1.12032 * std::sqrt(nu) - 2.48 * std::sqrt(tUpper) - 0.65381 * std::log(tUpper) - 0.22872);
-    else quantileUpper = 6.739648382445014e+01;
-    const Scalar zQuantileUpper = std::sqrt((quantileUpper / nu) * xSquare) - delta;
-    // Conservative estimate of the upper integration limit upperBound:
-    // NORMPDF is sufficiently small OR CHI2CDF is close to 1.
-    upperBound = std::min(zAbsoluteToleranceBound, zQuantileUpper);
-    // For large nu we assume approximate symmetry of FUNC
-    if ((nu > 1e4) && (mode > -zUpperBound) && (mode < zUpperBound)) lowerBound0 = mode - (upperBound - mode);
-    lowerBound = std::max(-delta, lowerBound0);
-  }
-  else
-  {
-    Scalar quantileLower = 0.0;
-    if (nu > 1) quantileLower = std::max(0.0, nu + 2 * tLower + 1.62 * std::sqrt(nu * tLower) + 0.63012 * std::sqrt(nu) * std::log(tLower) - 1.12032 * std::sqrt(nu) - 2.48 * std::sqrt(tLower) - 0.65381 * std::log(tLower) - 0.22872);
-    else quantileLower = 0.0;
-    const Scalar zQuantileLower = std::sqrt((quantileLower / nu) * xSquare) - delta;
-    const Scalar lowerBound1 = std::max(-zAbsoluteToleranceBound, zQuantileLower);
-    lowerBound = std::max(-delta, lowerBound1);
-    if ((nu > 1e4) && (mode > -zUpperBound) && (mode < zUpperBound)) upperBound0 = mode + (mode - lowerBound);
-    upperBound = upperBound0;
-  }
-  Scalar value = 0.0;
-  // First, compute the Normal contribution
-  if (useChiSquareTail) value = 0.5 * SpecFunc::ErfC(-lowerBound * 0.7071067811865475244);
-  else value = 0.5 * SpecFunc::ErfC(upperBound * 0.7071067811865475244);
-  // Second, compute the contribution of each subinterval by Gauss-Legendre integration with 15 nodes on 16 intervals
-  const GaussKronrodRule rule(GaussKronrodRule::G7K15);
-  const Scalar wg0 = rule.getZeroGaussWeight();
-  const Point wg(rule.getOtherGaussWeights());
-  const Point xg(rule.getOtherKronrodNodes());
-  const UnsignedInteger iMax = 8;
-  const Scalar dLowerBound = (mode - lowerBound) / iMax;
-  const Scalar wLowerBound = 0.5 * dLowerBound;
-  const Scalar dUpperBound = (mode - upperBound) / iMax;
-  const Scalar wUpperBound = 0.5 * dUpperBound;
-  const Scalar omega = nu / (2.0 * xSquare);
-  for (UnsignedInteger i = 0; i < iMax; ++i)
-  {
-    // Ith interval at the left of the mode
-    const Scalar ci = lowerBound + (i + 0.5) * dLowerBound;
-    Scalar contributionLeft = wg0 * DistFunc::pGamma(halfNu, omega * std::pow(ci + delta, 2), useChiSquareTail) * DistFunc::dNormal(ci);
-    // Ith interval at the right of the mode
-    const Scalar xii = upperBound + (i + 0.5) * dUpperBound;
-    Scalar contributionRight = wg0 * DistFunc::pGamma(halfNu, omega * std::pow(xii + delta, 2), useChiSquareTail) * DistFunc::dNormal(xii);
-    for (UnsignedInteger j = 0; j < xg.getSize() / 2; ++j)
-    {
-      const Scalar zetaj = xg[2 * j + 1];
-      // Contribution of the left interval
-      const Scalar zj_m = ci - wLowerBound * zetaj;
-      const Scalar zj_p = ci + wLowerBound * zetaj;
-      contributionLeft += wg[j] * (DistFunc::pGamma(halfNu, omega * std::pow(zj_m + delta, 2), useChiSquareTail) * DistFunc::dNormal(zj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zj_p + delta, 2), useChiSquareTail) * DistFunc::dNormal(zj_p));
-      // Contribution of the right interval
-      const Scalar zetaj_m = xii - wUpperBound * zetaj;
-      const Scalar zetaj_p = xii + wUpperBound * zetaj;
-      contributionRight += wg[j] * (DistFunc::pGamma(halfNu, omega * std::pow(zetaj_m + delta, 2), useChiSquareTail) * DistFunc::dNormal(zetaj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zetaj_p + delta, 2), useChiSquareTail) * DistFunc::dNormal(zetaj_p));
-    } // Loop over j, the integration points
-    value += contributionLeft * wLowerBound - contributionRight * wUpperBound;
-  } // Loop over i, the integration subintervals
-  // Set the values of the CDF and CCDF
-  return (computeTail == tail ? value : 0.5 + (0.5 - value));
-}
-
-/* CDF Alt0
-   We use the algorithm described in:
-   Denise Benton, K. Krishnamoorthy, "Computing discrete mixtures of continuous distributions: noncentral chisquare, noncentral t
-   and the distribution of the square of the sample multiple correlation coefficient",
-   Computational Statistics & Data Analysis, 43 (2003) pp 249-267
-*/
-Scalar NonCentralStudentCDFAlt0(const Scalar nu,
-                                const Scalar delta,
-                                const Scalar x,
-                                const Bool tail,
-                                const Scalar precision,
-                                const UnsignedInteger maximumIteration)
+/* CDF series for any nu, used by NonCentralStudentCDF below when Boost is unavailable.                       */
+/* Poisson-mixture series of central incomplete-beta terms summed bidirectionally from the Poisson mode.     */
+/* Reference:                                                                                               */
+/* Denise Benton, K. Krishnamoorthy, "Computing discrete mixtures of continuous distributions: noncentral   */
+/* chisquare, noncentral t and the distribution of the square of the sample multiple correlation            */
+/* coefficient", Computational Statistics & Data Analysis, 43 (2003) pp 249-267                             */
+Scalar NonCentralStudentCDFSeries(const Scalar nu,
+                                  const Scalar delta,
+                                  const Scalar x,
+                                  const Bool tail)
 {
-  // Check nu
-  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
-  // Special case when |delta| << 1
-  if (std::abs(delta / (4.0 * nu)) < precision) return DistFunc::pStudent(nu, x, tail);
-  // Very large nu
-  if (nu > 1.0 / precision) return DistFunc::pNormal(x - delta);
-  // Special case when |x| << 1
-  if (std::abs(x) < precision) return DistFunc::pNormal(-delta, tail);
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration");
+  // Note: argument guards (|delta| << 1, huge nu, |x| << 1) are checked by the
+  // caller NonCentralStudentCDF, the single call site of this helper.
   Scalar t = x;
   Scalar del = delta;
   // Must use the complementary function for negative arguments
@@ -432,15 +278,15 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   const Scalar halfNu = 0.5 * nu;
   const Scalar halfDelta2 = 0.5 * del * del;
   const Scalar logHalfDelta2 = std::log(halfDelta2);
-  // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
-  const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(floor(halfDelta2)));
+  // Starting index in the sum: Poisson mode max(1, floor(halfDelta2)), where the weights are largest
+  const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(std::floor(halfDelta2)));
   // Index of the forward iterations
   UnsignedInteger kForward = k;
   // Index of the backward iterations
   UnsignedInteger kBackward = k;
   LOGDEBUG(OSS() << "kForward=" << kForward << "kBackward=" << kBackward);
   // Terms and factors of the summation.
-  // The initialization corresponds to the terme of index k.
+  // The initialization corresponds to the term of index k.
   const Scalar commonExponent = -halfDelta2 + k * logHalfDelta2;
   LOGDEBUG(OSS() << "commonExponent=" << commonExponent);
   Scalar pForward = 0.5 * std::exp(commonExponent - SpecFunc::LogGamma(k + 1));
@@ -457,7 +303,7 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   LOGDEBUG(OSS() << "commonFactor=" << commonFactor);
   // correctionBetaPForward = Gamma(k - 1/2 + nu/2) / Gamma(k + 1/2) / Gamma(nu/2) * xi^(k - 1/2) * (1 - xi)^(nu/2)
   Scalar correctionBetaPForward = -std::exp(SpecFunc::LogGamma(k - 0.5 + halfNu) - SpecFunc::LogGamma(k + 0.5) + commonFactor);
-  // correctionBetaPForward = Gamma(k + nu/2) / Gamma(k + 1) / Gamma(nu/2) * xi^k * (1 - xi)^(nu/2)
+  // correctionBetaQForward = Gamma(k + nu/2) / Gamma(k + 1) / Gamma(nu/2) * xi^k * (1 - xi)^(nu/2)
   Scalar correctionBetaQForward = -std::exp(SpecFunc::LogGamma(k + halfNu) - SpecFunc::LogGamma(k + 1) + commonFactor + 0.5 * logXi);
   LOGDEBUG(OSS() << "correctionBetaPForward=" << correctionBetaPForward << ", correctionBetaQForward=" << correctionBetaQForward);
   Scalar pBackward = pForward;
@@ -473,6 +319,8 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   Scalar correctionBetaQBackward = -correctionBetaQForward * xi * (k + halfNu) / (k + 1);
   LOGDEBUG(OSS() << "correctionBetaPBackward=" << correctionBetaPBackward << ", correctionBetaQBackward=" << correctionBetaQBackward);
   Scalar value = DistFunc::pNormal(-del) + pForward * betaPForward + qForward * betaQForward;
+  // Sum of absolute contributions: measures the rounding residue when terms of opposite signs cancel
+  Scalar absSum = std::abs(value);
   Scalar contributionForward = 0.0;
   Scalar contributionBackward = 0.0;
   Scalar error = SpecFunc::Infinity;
@@ -485,25 +333,31 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // Third, update the P and Q factors
   // Fourth, accumulate the current contribution
   // It is the responsibility of the main iteration to update kForward and kBackward
-#define FORWARD_ITERATION                                               \
-    correctionBetaPForward *= xi * (kForward - 0.5 + halfNu) / (kForward + 0.5); \
-    correctionBetaQForward *= xi * (kForward + halfNu) / (kForward + 1); \
-    pForward *= halfDelta2 / (kForward + 1);                            \
-    betaPForward += correctionBetaPForward;                             \
-    qForward *= halfDelta2 / (kForward + 1.5);                          \
-    betaQForward += correctionBetaQForward;                             \
-    contributionForward = pForward * betaPForward + qForward * betaQForward; \
+  // Local iterations as lambdas capturing the summation state by reference.
+  // They factor the bodies shared by the paired and forward-only loops below.
+  auto forwardIterationCDF = [&]()
+  {
+    correctionBetaPForward *= xi * (kForward - 0.5 + halfNu) / (kForward + 0.5);
+    correctionBetaQForward *= xi * (kForward + halfNu) / (kForward + 1);
+    pForward *= halfDelta2 / (kForward + 1);
+    betaPForward += correctionBetaPForward;
+    qForward *= halfDelta2 / (kForward + 1.5);
+    betaQForward += correctionBetaQForward;
+    contributionForward = pForward * betaPForward + qForward * betaQForward;
     value += contributionForward;
+  };
 
-#define BACKWARD_ITERATION                                              \
-    correctionBetaPBackward *= (kBackward + 0.5) / (xi * (kBackward - 0.5 + halfNu)); \
-    correctionBetaQBackward *= (kBackward + 1) / (xi * (kBackward + halfNu)); \
-    pBackward *= kBackward / halfDelta2;                                \
-    betaPBackward += correctionBetaPBackward;                           \
-    qBackward *= (kBackward + 0.5) / halfDelta2;                        \
-    betaQBackward += correctionBetaQBackward;                           \
-    contributionBackward = pBackward * betaPBackward + qBackward * betaQBackward; \
+  auto backwardIterationCDF = [&]()
+  {
+    correctionBetaPBackward *= (kBackward + 0.5) / (xi * (kBackward - 0.5 + halfNu));
+    correctionBetaQBackward *= (kBackward + 1) / (xi * (kBackward + halfNu));
+    pBackward *= kBackward / halfDelta2;
+    betaPBackward += correctionBetaPBackward;
+    qBackward *= (kBackward + 0.5) / halfDelta2;
+    betaQBackward += correctionBetaQBackward;
+    contributionBackward = pBackward * betaPBackward + qBackward * betaQBackward;
     value += contributionBackward;
+  };
 
   // Here, i is an UnsignedInteger as it is only a loop counter
   UnsignedInteger i = 1;
@@ -511,9 +365,11 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   const UnsignedInteger imax = std::min(k, maximumIteration);
   while((error > 0.0) && (i <= imax))
   {
-    FORWARD_ITERATION;
-    BACKWARD_ITERATION;
-    error = contributionForward + contributionBackward;
+    forwardIterationCDF();
+    backwardIterationCDF();
+    // Absolute contributions: the signed sum may cancel when del < 0, the iteration must go on until underflow
+    absSum += std::abs(contributionForward) + std::abs(contributionBackward);
+    error = std::abs(contributionForward) + std::abs(contributionBackward);
     ++kForward;
     --kBackward;
     ++i;
@@ -521,14 +377,18 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   // Do we have to perform further forward iterations?
   while ((error > 0.0) && (i <= maximumIteration))
   {
-    FORWARD_ITERATION;
-    error = contributionForward;
+    forwardIterationCDF();
+    absSum += std::abs(contributionForward);
+    error = std::abs(contributionForward);
     ++kForward;
     ++i;
   }
-#undef FORWARD_ITERATION
-#undef BACKWARD_ITERATION
-  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentAlt0(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
+  if (error > SpecFunc::Precision * (std::abs(value) + SpecFunc::Precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentCDF(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
+  // Flush rounding residue: when opposite-sign terms cancel down to less than 1e-12 of the summed
+  // magnitudes, no significant digit remains; return 0 instead of meaningless residue, like Boost does.
+  // The 1e-12 significance threshold is deliberately distinct from the SpecFunc/DistFunc-Precision
+  // convergence tolerances: those govern when the iteration stops, this one whether its result is usable.
+  if (value <= 1.0e-12 * absSum) value = 0.0;
   // Clip to [0,1] in order to get rid of small rounding error
   value = (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
   // Check if we had to change the sign of the argument or if we are asked for the tail CDF
@@ -536,121 +396,160 @@ Scalar NonCentralStudentCDFAlt0(const Scalar nu,
   return value;
 }
 
+#endif // OPENTURNS_HAVE_BOOST
+} // anonymous namespace
+
+/* CDF
+   Boost when available, otherwise the native Benton & Krishnamoorthy (2003) Poisson-mixture series of
+   central incomplete-beta terms (see NonCentralStudentCDFSeries). The series handles all nu with no
+   quadrature: its cost grows with delta^2 / 2, not with nu.
+*/
+Scalar NonCentralStudentCDF(const Scalar nu,
+                            const Scalar delta,
+                            const Scalar x,
+                            const Bool tail)
+{
+  // Check nu
+  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
+  // Special case when |delta| << 1: central Student centred on delta, as in Boost
+  if (std::abs(delta) < 4.0 * SpecFunc::Precision * nu) return DistFunc::pStudent(nu, x - delta, tail);
+  // Very large nu
+  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::pNormal(x - delta, tail);
+  // Special case when |x| << 1
+  if (std::abs(x) < SpecFunc::Precision) return DistFunc::pNormal(-delta, tail);
+#ifdef OPENTURNS_HAVE_BOOST
+  return (tail ? boost::math::cdf(boost::math::complement(boost::math::non_central_t(nu, delta), x)) : boost::math::cdf(boost::math::non_central_t(nu, delta), x));
+#else
+  // Native Poisson-mixture series, summed bidirectionally from the Poisson mode with an underflow cutoff.
+  // The complementary probability is obtained by complementation of the lower tail and therefore carries
+  // no significant digits once F is within machine precision of 1.
+  return NonCentralStudentCDFSeries(nu, delta, x, tail);
+#endif
+}
+
 /* PDF
-   We use the relation between the PDF and the CDF in order to reduce the computation of the PDF to two computations of the CDF */
+   Boost when available and recent enough, otherwise a native Poisson-mixture series obtained by
+   differentiating the Benton & Krishnamoorthy (2003) CDF series term by term: the beta CDFs become beta
+   densities, so the terms keep the Poisson weights shared with the CDF series above (same starting index,
+   same bidirectional summation with underflow cutoff). This direct series replaces the former CDF-difference
+   identity f(x) = nu / x * (F_{nu+2} - F_nu), which lost digits when F_{nu+2} ~= F_nu, and costs a single
+   series instead of two CDF evaluations.
+   Boost versions before 1.84 are excluded: their noncentral-t PDF drops the odd terms far in the tail
+   (e.g. nu=1.4, delta=5, x=0.1 gives 1.53e-6 instead of 2.34e-6); the native series is used instead. */
 Scalar NonCentralStudentPDF(const Scalar nu,
                             const Scalar delta,
                             const Scalar x)
 {
   // Check nu
   if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
-  // Early exit for delta == 0, central Student PDF
-  if (std::abs(delta / (4.0 * nu)) < SpecFunc::Precision) return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
-  if (std::abs(x) < SpecFunc::Precision) return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) - 0.5 * delta * delta);
-  return std::max(0.0, nu / x * (NonCentralStudentCDF(nu + 2, delta, x * std::sqrt(1.0 + 2.0 / nu)) - NonCentralStudentCDF(nu, delta, x)));
-}
-
-/************************************************************************************************************/
-/* Normalized NonCentralStudent distribution, i.e. with a PDF equals to (eq. 31.15 p.516 of the reference): */
-/* exp(-delta^2 / 2) * (nu / (nu + x^2)) ^ ((nu + 1) / 2) / (sqrt(nu * Pi) * Gamma(nu / 2)) * SUM           */
-/* where SUM = sum_0^inf Gamma((nu + k + 1) / 2) * omega^k / Gamma(k + 1)                                   */
-/* and omega = x * delta * sqrt(2 / (nu + x^2))                                                             */
-/* In order to derive simple update formulas for the terms in the sum, we separate the odd indices from the */
-/* even ones:                                                                                               */
-/* SUM = SUM_ODD + SUM_EVEN, where:                                                                         */
-/* SUM_ODD  = sum_0^inf Gamma(nu / 2 + k + 1) * omega * z^k / Gamma(2 * k + 2)                              */
-/* SUM_EVEN = sum_O^inf Gamma((nu + 1) / 2 + k) * z^k / Gamma(2 * k + 1)                                    */
-/* and z = omega^2                                                                                          */
-/* The summation is done starting at the kM chosen as for the NonCentralStudentCDFAlt0 method.                    */
-/* Reference:                                                                                               */
-/* Norman L. Johnson, Samuel Kotz, N. Balakrishnan, "Continuous univariate distributions volume 2", second  */
-/* edition, 1995, Wiley Inter-Science                                                                       */
-/************************************************************************************************************/
-Scalar NonCentralStudentPDFAlt0(const Scalar nu,
-                                const Scalar delta,
-                                const Scalar x,
-                                const Scalar precision,
-                                const UnsignedInteger maximumIteration)
-{
-  // Check nu
-  if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Error: the number of degrees of freedom nu=" << nu << " should be strictly positive.";
-  // Early exit for delta == 0, central Student PDF
-  if (std::abs(delta / (4.0 * nu)) < precision) return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + x * x)));
-  // Case delta <> 0
-#ifdef OPENTURNS_HAVE_BOOST
-  (void) maximumIteration;
+#if defined(OPENTURNS_HAVE_BOOST) && (BOOST_VERSION >= 108400)
   return boost::math::pdf(boost::math::non_central_t(nu, delta), x);
 #else
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration");
+  // Very large nu: normal approximation, consistent with NonCentralStudentCDF.
+  // The gamma-ratio closed forms below lose all digits when nu exceeds 1 / eps.
+  if (nu > 1.0 / SpecFunc::Precision) return DistFunc::dNormal(x - delta);
+  // Special case when |delta| << 1: central Student PDF centred on delta, as in Boost
+  if (std::abs(delta / (4.0 * nu)) < SpecFunc::Precision)
+  {
+    const Scalar y = x - delta;
+    return std::exp(SpecFunc::LogGamma(0.5 * nu + 0.5) - SpecFunc::LogGamma(0.5 * nu) - 0.5 * std::log(M_PI * nu) + (0.5 * nu + 0.5) * std::log(nu / (nu + y * y)));
+  }
   const Scalar halfNu = 0.5 * nu;
   const Scalar halfNup1_2 = halfNu + 0.5;
-  const Scalar logConstant = -0.5 * delta * delta - SpecFunc::LogGamma(halfNu) - 0.5 * std::log(M_PI * nu);
-  // Early exit for x == 0
-  if (std::abs(x) < precision) return std::exp(logConstant + SpecFunc::LogGamma(halfNup1_2));
-  // For x <> 0
-  const Scalar x2 = x * x;
-  const Scalar w = 1.0 / (nu + x2);
-  Scalar logFactor = logConstant + halfNup1_2 * std::log(nu * w);
-  // Special treatment for very low value to avoid NaNs due to 0.Inf
-  const Scalar logPrecision = std::log(precision);
-  if (logFactor < logPrecision)
+  // Exact closed form at x == 0, which also removes the 1/x singularity of the series below
+  if (std::abs(x) < SpecFunc::Precision) return std::exp(SpecFunc::LogGamma(halfNup1_2) - SpecFunc::LogGamma(halfNu) - 0.5 * std::log(M_PI * nu) - 0.5 * delta * delta);
+  // Use f(x; delta) = f(-x; -delta) to work with t > 0
+  Scalar t = x;
+  Scalar del = delta;
+  if (x < 0.0)
   {
-    Scalar value = 0.0;
-    if (x < 0.0) value = nu / x * (NonCentralStudentCDF(nu + 2.0, delta, x * std::sqrt(1.0 + 2.0 / nu), false) - NonCentralStudentCDF(nu, delta, x, false));
-    else value = -nu / x * (NonCentralStudentCDF(nu + 2.0, -delta, -x * std::sqrt(1.0 + 2.0 / nu), false) - NonCentralStudentCDF(nu, -delta, -x));
-    return std::max(0.0, value);
+    t = -t;
+    del = -del;
   }
-
-  const Scalar omega = delta * x * std::sqrt(2 * w);
-  const Scalar z = omega * omega;
-  // Start at even index that maximize the coefficient in the sum
-  const Scalar halfDelta2 = 0.5 * delta * delta;
-  // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
-  const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(floor(halfDelta2)));
-  // Loop forward and backward starting from k
-  // Initialization
-  const Scalar kLogZ = k * std::log(z);
-  Scalar pForwardEven = std::exp(logFactor + SpecFunc::LogGamma(halfNup1_2 + k) - SpecFunc::LogGamma(2 * k + 1) + kLogZ);
-  Scalar pForwardOdd = omega * std::exp(logFactor + SpecFunc::LogGamma(halfNu + k + 1) - SpecFunc::LogGamma(2 * k + 2) + kLogZ);
-  Scalar pBackwardEven = pForwardEven;
-  Scalar pBackwardOdd = pForwardOdd;
-  Scalar value = pForwardOdd + pForwardEven;
-  Scalar error = SpecFunc::Infinity;
+  // Some useful quantities, with xi = t^2 / (nu + t^2) in ]0, 1[
+  const Scalar t2 = t * t;
+  const Scalar xi = t2 / (nu + t2);
+  const Scalar logXi = std::log(xi);
+  const Scalar logOneMinusXi = std::log(nu / (nu + t2));
+  const Scalar halfDelta2 = 0.5 * del * del;
+  const Scalar logHalfDelta2 = std::log(halfDelta2);
+  // Starting index in the sum: Poisson mode max(1, floor(halfDelta2)), where the weights are largest
+  const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(std::floor(halfDelta2)));
+  // Index of the forward iterations
   UnsignedInteger kForward = k;
+  // Index of the backward iterations
   UnsignedInteger kBackward = k;
-#define FORWARD_ITERATION                                               \
-    pForwardOdd *= (halfNu + kForward + 1) * z / (2 * (kForward + 1) * (2 * kForward + 3)); \
-    pForwardEven *= (halfNup1_2 + kForward) * z / (2 * (kForward + 1) * (2 * kForward + 1)); \
-    value += pForwardOdd + pForwardEven;
-#define BACKWARD_ITERATION                                              \
-    pBackwardOdd *= 2 * kBackward * (2 * kBackward + 1) / (z * (halfNu + kBackward)); \
-    pBackwardEven *= 2 * kBackward * (2 * kBackward - 1) / (z * (halfNup1_2 + kBackward - 1)); \
-    value += pBackwardOdd + pBackwardEven;
+  // Terms of the summation: Poisson weights times beta densities. The initialization corresponds to k.
+  const Scalar commonExponent = -halfDelta2 + k * logHalfDelta2;
+  Scalar pForward = 0.5 * std::exp(commonExponent - SpecFunc::LogGamma(k + 1));
+  Scalar qForward = 0.5 * del / M_SQRT2 * std::exp(commonExponent - SpecFunc::LogGamma(k + 1.5));
+  Scalar betaDensityPForward = std::exp((k - 0.5) * logXi + (halfNu - 1.0) * logOneMinusXi - (SpecFunc::LogGamma(k + 0.5) + SpecFunc::LogGamma(halfNu) - SpecFunc::LogGamma(k + 0.5 + halfNu)));
+  Scalar betaDensityQForward = std::exp(k * logXi + (halfNu - 1.0) * logOneMinusXi - (SpecFunc::LogGamma(k + 1.0) + SpecFunc::LogGamma(halfNu) - SpecFunc::LogGamma(k + 1.0 + halfNu)));
+  Scalar pBackward = pForward;
+  Scalar qBackward = qForward;
+  Scalar betaDensityPBackward = betaDensityPForward;
+  Scalar betaDensityQBackward = betaDensityQForward;
+  // Derivative of xi with respect to t. The cofactor 1 - xi is evaluated as nu / (nu + t2):
+  // 1.0 - xi loses all digits when t2 >> nu (xi rounds to 1.0, hence a zero PDF far in the tail).
+  const Scalar dXi = 2.0 * xi * (nu / (nu + t2)) / t;
+  Scalar value = (pForward * betaDensityPForward + qForward * betaDensityQForward) * dXi;
+  // Sum of absolute contributions: measures the rounding residue when terms of opposite signs cancel
+  Scalar absSum = std::abs(value);
+  Scalar contributionForward = 0.0;
+  Scalar contributionBackward = 0.0;
+  Scalar error = SpecFunc::Infinity;
+  // Local iterations as lambdas capturing the summation state by reference.
+  // They factor the bodies shared by the paired and forward-only loops below.
+  auto forwardIterationPDF = [&]()
+  {
+    pForward *= halfDelta2 / (kForward + 1);
+    qForward *= halfDelta2 / (kForward + 1.5);
+    betaDensityPForward *= xi * (kForward + 0.5 + halfNu) / (kForward + 0.5);
+    betaDensityQForward *= xi * (kForward + 1.0 + halfNu) / (kForward + 1.0);
+    contributionForward = (pForward * betaDensityPForward + qForward * betaDensityQForward) * dXi;
+    value += contributionForward;
+  };
+
+  auto backwardIterationPDF = [&]()
+  {
+    pBackward *= kBackward / halfDelta2;
+    qBackward *= (kBackward + 0.5) / halfDelta2;
+    betaDensityPBackward *= (kBackward - 0.5) / (xi * (kBackward - 0.5 + halfNu));
+    betaDensityQBackward *= kBackward / (xi * (kBackward + halfNu));
+    contributionBackward = (pBackward * betaDensityPBackward + qBackward * betaDensityQBackward) * dXi;
+    value += contributionBackward;
+  };
 
   // Here, i is an UnsignedInteger as it is only a loop counter
   UnsignedInteger i = 1;
   const UnsignedInteger imax = std::min(k, maximumIteration);
-  //        while((error > precision * (std::abs(value) + precision)) && (i <= imax))
   while((error > 0.0) && (i <= imax))
   {
-    FORWARD_ITERATION;
-    BACKWARD_ITERATION;
-    error = pForwardOdd + pBackwardOdd + pForwardEven + pBackwardEven;
+    forwardIterationPDF();
+    backwardIterationPDF();
+    // Absolute contributions: the signed sum may cancel when del < 0, the iteration must go on until underflow
+    absSum += std::abs(contributionForward) + std::abs(contributionBackward);
+    error = std::abs(contributionForward) + std::abs(contributionBackward);
     ++kForward;
     --kBackward;
     ++i;
   }
   // Do we have to perform further forward iterations?
-  //        while ((error > precision * (std::abs(value) + precision)) && (i <= MaximumIteration))
   while ((error > 0.0) && (i <= maximumIteration))
   {
-    FORWARD_ITERATION;
-    error = pForwardOdd + pForwardEven;
+    forwardIterationPDF();
+    absSum += std::abs(contributionForward);
+    error = std::abs(contributionForward);
     ++kForward;
     ++i;
   }
-#undef FORWARD_ITERATION
-#undef BACKWARD_ITERATION
-  if (error > precision * (std::abs(value) + precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentPDFAlt0(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
+  if (error > SpecFunc::Precision * (std::abs(value) + SpecFunc::Precision)) LOGWARN(OSS() << "Warning: in NonCentralStudentPDF(nu, delta, x), no convergence after " << i << " iterations. Error is " << error * value << " value is " << value << " for nu=" << nu << ", delta=" << delta << " and x=" << x);
+  // Flush rounding residue: when opposite-sign terms cancel down to less than 1e-12 of the summed
+  // magnitudes, no significant digit remains; return 0 instead of meaningless residue, like Boost does.
+  // The 1e-12 significance threshold is deliberately distinct from the SpecFunc/DistFunc-Precision
+  // convergence tolerances: those govern when the iteration stops, this one whether its result is usable.
+  if (value <= 1.0e-12 * absSum) return 0.0;
   // Clip to [0,+inf[ in order to get rid of small rounding error
   return (value <= 0.0 ? 0.0 : value);
 #endif
