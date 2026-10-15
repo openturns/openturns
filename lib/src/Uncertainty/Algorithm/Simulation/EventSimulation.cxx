@@ -83,12 +83,6 @@ ProbabilitySimulationResult EventSimulation::getResult() const
   return getImplementation()->getResult();
 }
 
-/* Current result with full dynamic type */
-GenericSimulationResult EventSimulation::getHistoryResult() const
-{
-  return getImplementation()->getHistoryResult();
-}
-
 /* String converter */
 String EventSimulation::__repr__() const
 {

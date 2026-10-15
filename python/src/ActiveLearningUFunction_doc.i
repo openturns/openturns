@@ -28,3 +28,49 @@ See also
 --------
 ActiveLearningGMMFunction, ActiveLearningEFFFunction, ActiveLearningReliabilityFunction, ActiveLearningReliabilityAlgorithm
 )RAW"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningUFunction::checkConvergenceLearning
+"Test convergence of the U learning criterion. Convergence holds when the
+minimum U value over the candidate sample reaches the learning threshold.
+
+Parameters
+----------
+criterionValues : :class:`~openturns.Sample`
+    Values of the U criterion on the candidate sample.
+
+Returns
+-------
+convergenceIndicator : bool
+    True if learning has converged.
+"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningUFunction::getInfillSample
+"Select the candidate sample minimizing the U criterion.
+
+Parameters
+----------
+candidateSample : :class:`~openturns.Sample`
+    Candidate sample to test.
+criterionValues : :class:`~openturns.Sample`
+    Values of the U criterion for the candidateSample.
+
+Returns
+-------
+sampleToEvaluate : :class:`~openturns.Sample`
+    Candidate sample with the smallest U value, to evaluate on the true function.
+"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningUFunction::isMaximization
+"Selection direction of the U criterion.
+
+Returns
+-------
+isMaximization : bool
+    Always False: the infill point minimizes U.
+"

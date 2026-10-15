@@ -40,3 +40,49 @@ See also
 --------
 ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningReliabilityFunction, ActiveLearningReliabilityAlgorithm
 )RAW"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningGMMFunction::checkConvergenceLearning
+"Test convergence of the GMM learning criterion. Convergence holds when the
+maximum GMM value over the candidate sample drops to the learning threshold.
+
+Parameters
+----------
+criterionValues : :class:`~openturns.Sample`
+    Values of the GMM criterion on the candidate sample.
+
+Returns
+-------
+convergenceIndicator : bool
+    True if learning has converged.
+"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningGMMFunction::getInfillSample
+"Select the candidate sample maximizing the GMM criterion.
+
+Parameters
+----------
+candidateSample : :class:`~openturns.Sample`
+    Candidate sample to test.
+criterionValues : :class:`~openturns.Sample`
+    Values of the GMM criterion for the candidateSample.
+
+Returns
+-------
+sampleToEvaluate : :class:`~openturns.Sample`
+    Candidate sample with the largest GMM value, to evaluate on the true function.
+"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningGMMFunction::isMaximization
+"Selection direction of the GMM criterion.
+
+Returns
+-------
+isMaximization : bool
+    Always True: the infill point maximizes GMM.
+"

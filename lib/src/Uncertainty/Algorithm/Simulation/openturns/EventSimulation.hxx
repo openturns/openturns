@@ -68,9 +68,6 @@ public:
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
 
-  /** Current result with full dynamic type, for per-iteration histories */
-  GenericSimulationResult getHistoryResult() const;
-
   /** String converter */
   String __repr__() const override;
 

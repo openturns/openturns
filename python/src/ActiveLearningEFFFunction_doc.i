@@ -34,3 +34,49 @@ See also
 --------
 ActiveLearningGMMFunction, ActiveLearningUFunction, ActiveLearningReliabilityFunction, ActiveLearningReliabilityAlgorithm
 )RAW"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningEFFFunction::checkConvergenceLearning
+"Test convergence of the EFF learning criterion. Convergence holds when the
+maximum EFF value over the candidate sample drops to the learning threshold.
+
+Parameters
+----------
+criterionValues : :class:`~openturns.Sample`
+    Values of the EFF criterion on the candidate sample.
+
+Returns
+-------
+convergenceIndicator : bool
+    True if learning has converged.
+"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningEFFFunction::getInfillSample
+"Select the candidate sample maximizing the EFF criterion.
+
+Parameters
+----------
+candidateSample : :class:`~openturns.Sample`
+    Candidate sample to test.
+criterionValues : :class:`~openturns.Sample`
+    Values of the EFF criterion for the candidateSample.
+
+Returns
+-------
+sampleToEvaluate : :class:`~openturns.Sample`
+    Candidate sample with the largest EFF value, to evaluate on the true function.
+"
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::ActiveLearningEFFFunction::isMaximization
+"Selection direction of the EFF criterion.
+
+Returns
+-------
+isMaximization : bool
+    Always True: the infill point maximizes EFF.
+"

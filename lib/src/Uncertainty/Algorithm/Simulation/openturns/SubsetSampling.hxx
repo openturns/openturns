@@ -95,9 +95,11 @@ public:
   /** Event accessor */
   void setEvent(const RandomVector & event) override;
 
-  /** Current result with full dynamic type */
+protected:
+
+  /** Restricted history bridge for ActiveLearningReliabilityAlgorithm */
   GenericSimulationResult getHistoryResult() const override;
-  
+
 private:
   /** Compute the block sample */
   Sample computeBlockSample() override;

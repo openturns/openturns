@@ -565,7 +565,9 @@ void ActiveLearningReliabilityAlgorithm::run()
       reliabilityIndexHistory_.add(currentReliabilityIndex);
       // Store the inner result with full dynamic type (cloned on wrap,
       // later runs never mutate stored elements)
-      simulationResults.add(currentSimulation.getHistoryResult());
+      // Restricted history bridge (friend of EventSimulationImplementation):
+      // keeps the full dynamic type without public API exposure
+      simulationResults.add(currentSimulation.getImplementation()->getHistoryResult());
 
       // Check convergence
       if (convergenceCriterion_ == 0)

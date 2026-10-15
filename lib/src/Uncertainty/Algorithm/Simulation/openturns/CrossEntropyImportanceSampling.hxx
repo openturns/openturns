@@ -58,9 +58,6 @@ public:
   /** Accessor to results */
   CrossEntropyResult getResult() const;
 
-  /** Current result with full dynamic type */
-  GenericSimulationResult getHistoryResult() const override;
-
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;
 
@@ -86,6 +83,9 @@ public:
   void setEvent(const RandomVector & event) override;
   
 protected:
+  /** Restricted history bridge for ActiveLearningReliabilityAlgorithm */
+  GenericSimulationResult getHistoryResult() const override;
+
   virtual Distribution getInitialDistribution() const;
 
   /** Limit state accessor */

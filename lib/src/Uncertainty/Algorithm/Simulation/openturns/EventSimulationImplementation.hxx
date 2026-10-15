@@ -33,6 +33,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// Forward declaration for restricted access to the history bridge
+class ActiveLearningReliabilityAlgorithm;
+
 /**
  * @class EventSimulationImplementation
  */
@@ -59,12 +62,6 @@ public:
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
-
-  /** Current result with full dynamic type, for per-iteration histories.
-      The default implementation wraps the base result; simulators with an
-      extended result type override it. Future simulators inherit a working
-      base view and opt into full detail with a one-line override. */
-  virtual GenericSimulationResult getHistoryResult() const;
 
   /** String converter */
   String __repr__() const override;
@@ -94,11 +91,18 @@ protected:
 
   /** Result accessor */
   void setResult(const ProbabilitySimulationResult & result);
-  
+
+  /** Current result with full dynamic type, for per-iteration histories.
+      Restricted to ActiveLearningReliabilityAlgorithm (friend): it has no
+      meaning as standalone public API. The default implementation wraps
+      the base result; simulators with an extended result type override it. */
+  virtual GenericSimulationResult getHistoryResult() const;
+
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
 
   friend class Factory<EventSimulationImplementation>;
+  friend class ActiveLearningReliabilityAlgorithm;
 
   // The event we are computing the probability of
   RandomVector event_;
