@@ -296,10 +296,15 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
  * output mesh is then extracted per-simplex downstream (good-simplex
  * filtering, moves by global vertex index, fixOrientation), its
  * connectivity is never carried over from this grid. A conforming
- * red-green closure would further split unmarked neighbours along
- * non-longest edges, enlarging the refinement footprint and hence the
- * validated volumes; Mesh::isValid() remains available as a topology
- * oracle if this grid ever needs one. */
+ * closure would further split unmarked neighbours along non-longest
+ * edges, enlarging the refinement footprint and hence the validated
+ * volumes. Such closures are a literature of their own, e.g. M.-C.
+ * Rivara, "Mesh refinement processes based on the generalized bisection
+ * of simplices", SIAM J. Numer. Anal. 21(3), 604-613, 1984
+ * (longest-edge propagation in 2D) and J. Bey, "Tetrahedral grid
+ * refinement", Computing 55(4), 355-378, 1995 (red-green refinement in
+ * 3D); Mesh::isValid() remains available as a topology oracle if this
+ * grid ever needs one. */
 static void BisectMarkedSimplices(const Mesh & mesh,
                                   const Sample & values,
                                   const Indices & marked,
