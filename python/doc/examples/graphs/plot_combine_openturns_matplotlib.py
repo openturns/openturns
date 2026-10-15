@@ -44,10 +44,10 @@ ax.set_xlabel("x")
 fig.suptitle("A native graph is a Matplotlib figure", fontsize=10)
 
 # %%
-# Add `matplotlib` plots onto OpenTURNS Axes
-# ------------------------------------------
+# Customize graphs with `matplotlib`
+# ----------------------------------
 # Let us highlight the event ``X > 2``.
-# The curve itself was drawn by OpenTURNS: we reuse its line data
+# The curve itself was drawn with the library: we reuse its line data
 # to shade the tail exactly under the curve, then add a threshold
 # line and a text.
 threshold = 2.0
@@ -57,7 +57,7 @@ prob = 1.0 - normal.computeCDF(threshold)
 view = otv.View(graph_pdf)
 ax = view.getAxes()[0]
 
-# Data of the PDF curve drawn by OpenTURNS.
+# Data of the PDF curve drawn with the library.
 line = ax.get_lines()[0]
 x, y = line.get_xdata(), line.get_ydata()
 mask = x >= threshold
