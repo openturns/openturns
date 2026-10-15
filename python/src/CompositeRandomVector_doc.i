@@ -1,5 +1,5 @@
 %feature("docstring") OT::CompositeRandomVector
-"Random Vector obtained by applying a function.
+R"RAW(Random Vector obtained by applying a function.
 
 Allows one to define the random variable :math:`Y=f(X)` from a function :math:`f`
 and another random variable :math:`X`.
@@ -31,7 +31,7 @@ If the random vector :math:`\vect{X}` is itself a :class:`~openturns.CompositeRa
 its realizations are generated using recursively its associated model and input random vector
 until the initial random vector which is a :class:`~openturns.UsualRandomVector`.
 
-In the library, random vectors are the inputs to :class:`~openturns.Functions`, unlike distributions, which cannot be used directly by functions.
+In the library, random vectors are the inputs to :class:`~openturns.Function`, unlike distributions, which cannot be used directly by functions.
 
 Examples
 --------
@@ -44,4 +44,5 @@ The random vector :math:`Y` is defined by :math:`Y = X^2 \sin X` where :math:`X`
 
 Draw a sample:
 
->>> sample = Y.getSample(5)"
+>>> sample = Y.getSample(5)
+)RAW"

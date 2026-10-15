@@ -11,7 +11,7 @@ Notes
 The UsualRandomVector is defined by the distribution it follows. It provides a method to
 generate some realizations which are generated using its distribution.
 
-In the library, random vectors are the inputs to :class:`~openturns.Functions`, unlike distributions, which cannot be used directly by functions.
+In the library, random vectors are the inputs to :class:`~openturns.Function`, unlike distributions, which cannot be used directly by functions.
 
 Examples
 --------

@@ -12,15 +12,15 @@ A :class:`~openturns.RandomVector` models a vector that can take random values.
 It is defined by a distribution or as the image of other random vectors through a function
 :math:`f`.
 
-In the library, random vectors are the inputs to :class:`~openturns.Functions`, unlike distributions, which cannot be used directly by functions.
+In the library, random vectors are the inputs to :class:`~openturns.Function`, unlike distributions, which cannot be used directly by functions.
 
-A random vector provides always provides a method to generate some realizations.
+A random vector always provides a method to generate some realizations.
 
 See also
 --------
 UsualRandomVector, CompositeRandomVector, CompoundRandomVector,
 ConstantRandomVector, FunctionalChaosRandomVector, ThresholdEvent,
-PythonRandomVector"
+PythonRandomVector, RandomWalkMetropolisHastings"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation
 OT_RandomVector_doc
@@ -84,7 +84,7 @@ OT_RandomVector_getFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getCovariance_doc
-"Accessor to the covariance of the RandomVector.
+R"RAW(Accessor to the covariance of the RandomVector.
 
 Returns
 -------
@@ -103,7 +103,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getCovariance())
 [[ 1    0    ]
- [ 0    2.25 ]]"
+ [ 0    2.25 ]]
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getCovariance
 OT_RandomVector_getCovariance_doc
@@ -111,7 +112,7 @@ OT_RandomVector_getCovariance_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getMean_doc
-"Accessor to the mean of the RandomVector.
+R"RAW(Accessor to the mean of the RandomVector.
 
 Returns
 -------
@@ -129,7 +130,8 @@ Examples
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getMean())
-[0,0.5]"
+[0,0.5]
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getMean
 OT_RandomVector_getMean_doc
@@ -137,7 +139,7 @@ OT_RandomVector_getMean_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getDistribution_doc
-"Accessor to the distribution of the RandomVector.
+R"RAW(Accessor to the distribution of the RandomVector.
 
 Returns
 -------
@@ -156,7 +158,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getDistribution())
 Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
- [ 0 1 ]])"
+ [ 0 1 ]])
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getDistribution
 OT_RandomVector_getDistribution_doc
