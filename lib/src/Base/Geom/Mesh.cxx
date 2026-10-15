@@ -1193,7 +1193,8 @@ Mesh Mesh::intersect(const Mesh & other) const
   // of a CCW clip triangle, on raw doubles (no allocation in the hot loop).
   // Points on the boundary are kept. Used as an alternative to the per-pair
   // convex triangle clip. A triangle clipped by three
-  // half-planes keeps at most 6 vertices.
+  // half-planes keeps at most 6 vertices in exact arithmetic
+  // (up to 9 under floating-point sign alternation).
   struct TriangleClipper
   {
     static Scalar cross(Scalar ax, Scalar ay, Scalar bx, Scalar by, Scalar px, Scalar py)
@@ -1202,7 +1203,8 @@ Mesh Mesh::intersect(const Mesh & other) const
     }
 
     // clip n-vertex convex polygon (sx, sy) by the left of edge a->b.
-    // Returns the output vertex count, at most n + 1.
+    // Returns the output vertex count: n + 1 in exact arithmetic,
+    // up to n + n / 2 under floating-point sign alternation.
     static UnsignedInteger clipHalfPlane(const Scalar * sx, const Scalar * sy,
                                          const UnsignedInteger n,
                                          Scalar ax, Scalar ay, Scalar bx, Scalar by,
@@ -1438,8 +1440,10 @@ Mesh Mesh::intersect(const Mesh & other) const
           const Point c0(other.vertices_[other.simplices_(i2, 0)]);
           const Point c1(other.vertices_[other.simplices_(i2, 1)]);
           const Point c2(other.vertices_[other.simplices_(i2, 2)]);
-          Scalar bufferX[2][7];
-          Scalar bufferY[2][7];
+          // floating-point sign alternation near the clip line can add up to
+          // floor(n/2) vertices per pass: 3 -> 4 -> 6 -> 9
+          Scalar bufferX[2][9];
+          Scalar bufferY[2][9];
           UnsignedInteger count = 3;
           if ((c1[0] - c0[0]) * (c2[1] - c0[1]) - (c1[1] - c0[1]) * (c2[0] - c0[0]) >= 0.0)
           {

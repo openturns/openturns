@@ -617,6 +617,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
             {
               Bool qefInside = true;
               Bool qefOnBoundary = true;
+              Point qefValues(constraintNumber);
               for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
               {
                 const Scalar qefValue = functions[k](qefTarget)[0];
@@ -625,11 +626,12 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
                   qefInside = false;
                 if (std::abs(qefValue - levels[k]) > boundaryTolerance)
                   qefOnBoundary = false;
-                centerValues[k] = qefValue;
+                qefValues[k] = qefValue;
               }
               if (qefInside || qefOnBoundary)
               {
                 center = qefTarget;
+                centerValues = qefValues;
                 simplexHasQEF = true;
               }
             }
