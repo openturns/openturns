@@ -220,11 +220,6 @@ OT_API Point rNonCentralChiSquare(const Scalar nu,
 OT_API Scalar dNonCentralStudent(const Scalar nu,
                                  const Scalar delta,
                                  const Scalar x);
-OT_API Scalar dNonCentralStudentAlt0(const Scalar nu,
-                                     const Scalar delta,
-                                     const Scalar x,
-                                     const Scalar precision = ResourceMap::GetAsScalar("DistFunc-Precision"),
-                                     const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("DistFunc-MaximumIteration"));
 OT_API Scalar pNonCentralStudent(const Scalar nu,
                                  const Scalar delta,
                                  const Scalar x,

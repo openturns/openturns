@@ -83,6 +83,7 @@
  * HODLRMatrix: new method getRegularizationShift() returns the shift actually applied by the last Cholesky factorization; a non-zero value means the factorized matrix is A + shift * I rather than A. Both HODLRMatrix and HMatrix now emit a warning when the shift is non-negligible relative to the diagonal (ResourceMap keys "HODLRMatrix-RegularizationWarnThreshold" and "HMatrix-RegularizationWarnThreshold", default 1e-4), so a silently-degraded solve() or logDeterminant() is reported
  * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
+ * Removed DistFunc.dNonCentralStudentAlt0 and the StudentFunctions NonCentralStudentCDFAlt0/NonCentralStudentCDFAlt1/NonCentralStudentPDFAlt0 helpers: Boost is still used when available for all degrees of freedom, and the native fallback now matches it (Benton & Krishnamoorthy Poisson-mixture series for the CDF, direct Poisson-mixture beta-density series for the PDF instead of the CDF-difference identity)
  * Removed deprecated Graph.setDrawable(Drawable, int)
  * Removed FFT.transform2D/transform3D/inverseTransform2D/inverseTransform3D; use the N-D transforms of flat data instead
  * Removed deprecated SpecFunc.IsNormal
