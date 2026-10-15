@@ -95,7 +95,7 @@ graph.setAxes(True)
 graph.setGrid(True)
 graph.setLegendPosition("upper right")
 drawfunction = g.draw(
-    [-5] * input_dimension, [5] * input_dimension, [100] * input_dimension
+    [-5] * input_dimension, [5] * input_dimension, [50] * input_dimension
 )
 graph.add(drawfunction)
 view = otv.View(graph)
@@ -159,7 +159,7 @@ fitter = ot.GaussianProcessFitter(input_DoE, output_DoE, covariance_model, basis
 Monte_Carlo_experiment = ot.MonteCarloExperiment()
 Monte_Carlo_algorithm = ot.ProbabilitySimulationAlgorithm(event, Monte_Carlo_experiment)
 Monte_Carlo_algorithm.setMaximumCoefficientOfVariation(0.01)
-Monte_Carlo_algorithm.setMaximumOuterSampling(5000)
+Monte_Carlo_algorithm.setMaximumOuterSampling(2000)
 
 # %%
 # Definition of active learning function. Here, we choose the "U" function. This function takes two arguments. The first one is the event threshold.
@@ -172,8 +172,9 @@ u_function = otexp.ActiveLearningUFunction(
 )
 
 # %%
-# Now, we can build the active learning algorithm. We define the maximal number of exact limit state function evaluations to 75.
-simulation_budget = 75
+# Now, we can build the active learning algorithm. We define the maximal number of exact limit state function evaluations to 25.
+# This budget keeps the gallery example fast enough for the test suite while remaining illustrative.
+simulation_budget = 25
 active_learning_MonteCarlo = otexp.ActiveLearningReliabilityAlgorithm(
     fitter, Monte_Carlo_algorithm, u_function
 )
@@ -271,7 +272,7 @@ _ = otv.View(graph_history)
 # We can also plot the limit state provided by the true function and compare with the one estimated by the refined metamodel.
 graph = ot.Graph("Limit states", "x1", "x2")
 g_IsoLines = g.draw(
-    [-5] * input_dimension, [5] * input_dimension, [128] * input_dimension
+    [-5] * input_dimension, [5] * input_dimension, [64] * input_dimension
 )
 dr = g_IsoLines.getDrawable(0)
 dr.setLevels([threshold])
