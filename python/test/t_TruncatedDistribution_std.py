@@ -395,3 +395,15 @@ s_interior = t_interior.getSimplifiedVersion()
 for test_x in [0.5, 1.0, 1.5, 2.0, 2.5]:
     ott.assert_almost_equal(s_interior.computePDF(test_x), t_interior.computePDF(test_x))
     ott.assert_almost_equal(s_interior.computeCDF(test_x), t_interior.computeCDF(test_x))
+
+# Truncated discrete distribution must keep the lower atom, see issue #3361
+binomial = ot.Binomial(4, 0.5)
+truncated_binomial = ot.TruncatedDistribution(binomial, ot.Interval(1.0, 3.0))
+ott.assert_almost_equal(truncated_binomial.computePDF(1.0), 2.0 / 7.0)
+ott.assert_almost_equal(truncated_binomial.computeCDF(1.0), 2.0 / 7.0)
+ott.assert_almost_equal(truncated_binomial.computeCDF(1.5), 2.0 / 7.0)
+ott.assert_almost_equal(truncated_binomial.computeCDF(0.9), 0.0)
+ott.assert_almost_equal(truncated_binomial.computeSurvivalFunction(1.0), 5.0 / 7.0)
+ott.assert_almost_equal(truncated_binomial.computeQuantile(0.25)[0], 1.0)
+ott.assert_almost_equal(truncated_binomial.computeQuantile(0.0)[0], 1.0)
+ott.assert_almost_equal(truncated_binomial.computeQuantile(1.0, True)[0], 1.0)
