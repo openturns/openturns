@@ -931,7 +931,7 @@ Scalar DistFunc::pAndersonDarling(const UnsignedInteger n,
 /* SUM_ODD  = sum_0^inf Gamma(nu / 2 + k + 1) * omega * z^k / Gamma(2 * k + 2)                                 */
 /* SUM_EVEN = sum_O^inf Gamma((nu + 1) / 2 + k) * z^k / Gamma(2 * k + 1)                                       */
 /* and z = omega^2                                                                                             */
-/* The summation is done starting at the kM chosen as for the pNonCentralStudent method. See                   */
+/* The summation starts from the Poisson mode max(1, floor(lambda / 2)) and proceeds bidirectionally.        */
 /* Denise Benton, K. Krishnamoorthy, "Computing discrete mixtures of continuous distributions: noncentral      */
 /* chisquare, noncentral t and the distribution of the square of the sample multiple correlation coefficient", */
 /* Computational Statistics & Data Analysis, 43 (2003) pp 249-267                                              */
@@ -1118,43 +1118,16 @@ Point DistFunc::rNonCentralChiSquare(const Scalar nu,
 /* edition, 1995, Wiley Inter-Science                                                                       */
 /************************************************************************************************************/
 /* PDF
-   We use the relation between the PDF and the CDF in order to reduce the computation of the PDF to two computations of the CDF */
+   Direct Poisson-mixture series of beta densities, see StudentFunctions::NonCentralStudentPDF */
 Scalar DistFunc::dNonCentralStudent(const Scalar nu,
                                     const Scalar delta,
                                     const Scalar x)
 {
   return StudentFunctions::NonCentralStudentPDF(nu, delta, x);
 }
-/************************************************************************************************************/
-/* Normalized NonCentralStudent distribution, i.e. with a PDF equals to (eq. 31.15 p.516 of the reference): */
-/* exp(-delta^2 / 2) * (nu / (nu + x^2)) ^ ((nu + 1) / 2) / (sqrt(nu * Pi) * Gamma(nu / 2)) * SUM           */
-/* where SUM = sum_0^inf Gamma((nu + k + 1) / 2) * omega^k / Gamma(k + 1)                                   */
-/* and omega = x * delta * sqrt(2 / (nu + x^2))                                                             */
-/* In order to derive simple update formulas for the terms in the sum, we separate the odd indices from the */
-/* even ones:                                                                                               */
-/* SUM = SUM_ODD + SUM_EVEN, where:                                                                         */
-/* SUM_ODD  = sum_0^inf Gamma(nu / 2 + k + 1) * omega * z^k / Gamma(2 * k + 2)                              */
-/* SUM_EVEN = sum_O^inf Gamma((nu + 1) / 2 + k) * z^k / Gamma(2 * k + 1)                                    */
-/* and z = omega^2                                                                                          */
-/* The summation is done starting at the kM chosen as for the pNonCentralStudent method.                    */
-/* Reference:                                                                                               */
-/* Norman L. Johnson, Samuel Kotz, N. Balakrishnan, "Continuous univariate distributions volume 2", second  */
-/* edition, 1995, Wiley Inter-Science                                                                       */
-/************************************************************************************************************/
-/* PDF */
-Scalar DistFunc::dNonCentralStudentAlt0(const Scalar nu,
-                                        const Scalar delta,
-                                        const Scalar x,
-                                        const Scalar precision,
-                                        const UnsignedInteger maximumIteration)
-{
-  return StudentFunctions::NonCentralStudentPDFAlt0(nu, delta, x, precision, maximumIteration);
-}
 /* CDF
-   We use the algorithm described in:
-   Viktor Witkovsky, "A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter"
-   Computational Statistics & Data Analysis, 43 (2003) pp 249-267
-*/
+   Boost when available, otherwise the native Benton & Krishnamoorthy (2003) Poisson-mixture series of
+   central incomplete-beta terms, see StudentFunctions::NonCentralStudentCDF */
 Scalar DistFunc::pNonCentralStudent(const Scalar nu,
                                     const Scalar delta,
                                     const Scalar x,
