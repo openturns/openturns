@@ -8,8 +8,8 @@ Sobol' sensitivity indices using a low-discrepancy sequence
 # :ref:`Ishigami function <use-case-ishigami>` using quasi-Monte Carlo
 # sampling with a low-discrepancy sequence (Sobol' sequence).
 #
-# We compare its estimation accuracy and convergence rate to a standard
-# Latin Hypercube Sampling (LHS) design of experiments.
+# We compare its estimation accuracy and convergence rate to those obtained
+# with a standard Latin Hypercube Sampling (LHS) design of experiments.
 
 # %%
 # Model definition and analytical indices
@@ -36,10 +36,10 @@ print(
 )
 
 # %%
-# Standard Monte-Carlo estimation
+# Standard Monte Carlo estimation
 # -------------------------------
 #
-# We first estimate the indices using standard Monte-Carlo sampling.
+# We first estimate the indices using standard Monte Carlo sampling.
 ot.RandomGenerator.SetSeed(0)
 size = 1024
 
@@ -48,7 +48,7 @@ input_design_mc = experiment_mc.generate()
 output_design_mc = model(input_design_mc)
 
 algo_mc = ot.SaltelliSensitivityAlgorithm(input_design_mc, output_design_mc, size)
-print("+ Monte-Carlo experiment:")
+print("+ Monte Carlo experiment:")
 print("  First-order indices:", algo_mc.getFirstOrderIndices())
 print("  Total-order indices:", algo_mc.getTotalOrderIndices())
 
@@ -127,12 +127,12 @@ for i in range(num_iterations):
     current_size *= 2
 
 # %%
-# Display convergence graph
-# -------------------------
+# Display convergence graphs
+# --------------------------
 #
-# We plot the absolute errors for each variable for both first and total orders in
-# logarithmic scales. Solid lines represent the Sobol' sequence and dashed lines
-# represent LHS, with matching colors per sensitivity index.
+# We plot the absolute errors for each variable, for both first- and total-order indices.
+# Solid lines represent the Sobol' sequence and dashed lines represent LHS, with matching
+# colors per sensitivity index.
 graph_first = ot.Graph(
     "First-order indices",
     "Sample size",
