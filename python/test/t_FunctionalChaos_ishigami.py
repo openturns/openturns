@@ -1,4 +1,3 @@
-# %%
 #! /usr/bin/env python
 
 import openturns as ot
@@ -266,7 +265,7 @@ with ott.assert_raises(ValueError):
     im.getNonZeroPolynomialChaosExpansionIndices(-47)
 
 # Validate computed PCE coefficients against exact analytical values by numerical integration
-quadratureNodes = [10] * dimension
+quadratureNodes = [15] * dimension
 quadExperiment = ot.GaussProductExperiment(distribution, quadratureNodes)
 Xquad, Wquad = quadExperiment.generateWithWeights()
 Yquad = model(Xquad)
@@ -295,5 +294,3 @@ for i, idx in enumerate(computedIndices):
     multiIndex = tuple(enumerateFunction(idx))
     if multiIndex not in exactMultiIndicesSet:
         ott.assert_almost_equal(computedCoefficients[i, 0], 0.0, 0.0, 1.0e-7)
-
-# %%
