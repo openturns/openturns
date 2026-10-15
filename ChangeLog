@@ -200,6 +200,7 @@
  * PointToFieldFunction.getMarginal
  * GaussKronrod.setMaximumError now requires a strictly positive finite error instead of a nonnegative one
  * FunctionalChaosAlgorithm now rejects an input sample outside of the distribution range at construction time
+ * Added blockwise (*Blockwise) variants of the AlgebraEngine and StatisticsEngine kernels operating on DataContainer storage, with HDF5-backed containers supported throughout
 
 === Documentation ===
  * Theory: add interpolation page
