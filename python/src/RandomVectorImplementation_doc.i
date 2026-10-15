@@ -8,13 +8,19 @@ distribution : :class:`~openturns.Distribution`
 
 Notes
 -----
-A :class:`~openturns.RandomVector` provides at least a way to generate realizations.
+A :class:`~openturns.RandomVector` models a vector that can take random values.
+It is defined by a distribution or as the image of other random vectors through a function
+:math:`f`.
+
+In the library, random vectors are the inputs to :class:`~openturns.Function`, unlike distributions, which cannot be used directly by functions.
+
+A random vector always provides a method to generate some realizations.
 
 See also
 --------
 UsualRandomVector, CompositeRandomVector, CompoundRandomVector,
 ConstantRandomVector, FunctionalChaosRandomVector, ThresholdEvent,
-PythonRandomVector"
+PythonRandomVector, RandomWalkMetropolisHastings"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation
 OT_RandomVector_doc
@@ -22,12 +28,17 @@ OT_RandomVector_doc
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::RandomVectorImplementation::getProcess
-"Get the stochastic process.
+R"RAW(Get the stochastic process.
 
 Returns
 -------
 process : :class:`~openturns.Process`
-    Stochastic process used to define the :class:`~openturns.RandomVector`."
+    Stochastic process used to define the random vector.
+
+Notes
+-----
+The method is implemented only for :class:`~openturns.ProcessEvent`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -37,9 +48,19 @@ R"RAW(Accessor to the antecedent RandomVector in case of a composite RandomVecto
 Returns
 -------
 antecedent : :class:`~openturns.RandomVector`
-    Antecedent RandomVector :math:`\vect{X}` in case of a
-    :class:`~openturns.CompositeRandomVector` such as:
-    :math:`\vect{Y}=f(\vect{X})`.)RAW"
+    Random vector :math:`\vect{X}` such that
+    :math:`\vect{Y}=f(\vect{X})`.
+
+Notes
+-----
+The method applies only to random vectors :math:`\vect{Y}` which are
+:class:`~openturns.CompositeRandomVector`.
+
+If the antecedent :math:`\vect{X}` is itself a :class:`~openturns.CompositeRandomVector`,
+say :math:`\vect{X}=g(\vect{Z})`, then the stored antecedent is the root antecedent of
+:math:`\vect{Z}` and the stored function is the composition :math:`f\circ g`, so that
+:math:`\vect{Y}=(f\circ g)(\vect{Z})`.
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getAntecedent
 OT_RandomVector_getAntecedent_doc
@@ -52,9 +73,14 @@ R"RAW(Accessor to the Function in case of a composite RandomVector.
 Returns
 -------
 function : :class:`~openturns.Function`
-    Function used to define a :class:`~openturns.CompositeRandomVector` as the
-    image through this function of the antecedent :math:`\vect{X}`:
-    :math:`\vect{Y}=f(\vect{X})`.)RAW"
+    Function :math:`f` defining the :class:`~openturns.CompositeRandomVector`.
+
+Notes
+-----
+The method applies only to random vectors :math:`\vect{Y}` which are :class:`~openturns.CompositeRandomVector` defined by :math:`\vect{Y}=f(\vect{X})`.
+
+If the antecedent :math:`\vect{X}` is itself a :class:`~openturns.CompositeRandomVector`, then its antecedent is searched, until the final antecedent which is :class:`~openturns.UsualRandomVector`. Then, all the intermediate functions are composed. The method returns that final composed model.
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getFunction
 OT_RandomVector_getFunction_doc
@@ -62,12 +88,16 @@ OT_RandomVector_getFunction_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getCovariance_doc
-"Accessor to the covariance of the RandomVector.
+R"RAW(Accessor to the covariance of the RandomVector.
 
 Returns
 -------
 covariance : :class:`~openturns.CovarianceMatrix`
-    Covariance of the considered :class:`~openturns.UsualRandomVector`.
+    Covariance of the associated distribution.
+
+Notes
+-----
+The method applies only to random vectors :math:`\vect{Y}` which are :class:`~openturns.UsualRandomVector` defined by a distribution.
 
 Examples
 --------
@@ -77,7 +107,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getCovariance())
 [[ 1    0    ]
- [ 0    2.25 ]]"
+ [ 0    2.25 ]]
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getCovariance
 OT_RandomVector_getCovariance_doc
@@ -85,12 +116,16 @@ OT_RandomVector_getCovariance_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getMean_doc
-"Accessor to the mean of the RandomVector.
+R"RAW(Accessor to the mean of the RandomVector.
 
 Returns
 -------
 mean : :class:`~openturns.Point`
-    Mean of the considered :class:`~openturns.UsualRandomVector`.
+    Mean value of the associated distribution.
+
+Notes
+-----
+Depending on the type of the random vector, it might not be implemented.
 
 Examples
 --------
@@ -99,7 +134,8 @@ Examples
 >>> randomVector = ot.RandomVector(distribution)
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getMean())
-[0,0.5]"
+[0,0.5]
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getMean
 OT_RandomVector_getMean_doc
@@ -107,12 +143,16 @@ OT_RandomVector_getMean_doc
 // ---------------------------------------------------------------------
 
 %define OT_RandomVector_getDistribution_doc
-"Accessor to the distribution of the RandomVector.
+R"RAW(Accessor to the distribution of the RandomVector.
 
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Distribution of the considered :class:`~openturns.UsualRandomVector`.
+    Distribution followed by the random vector.
+
+Notes
+-----
+The method applies only to random vectors :math:`\vect{Y}` which are :class:`~openturns.UsualRandomVector` defined by a distribution.
 
 Examples
 --------
@@ -122,7 +162,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> print(randomVector.getDistribution())
 Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
- [ 0 1 ]])"
+ [ 0 1 ]])
+)RAW"
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getDistribution
 OT_RandomVector_getDistribution_doc
@@ -195,10 +236,15 @@ n : int, :math:`n \geq 0`
 Returns
 -------
 realizations : :class:`~openturns.Sample`
-    n sequences of values randomly determined from the RandomVector definition.
-    In the case of an event: n realizations of the event (considered as a
-    Bernoulli variable) which are boolean values (1 for the realization of the
-    event and 0 else).
+    :math:`n` sequences of values of the random vector.
+
+Notes
+-----
+The values are generated according to the type of the random vector.
+
+In the case of a :class:`~openturns.ThresholdEvent`, the method returns :math:`n` realizations
+of the event considered as a Bernoulli variable, which are boolean values: 1 for the
+realization of the event and 0 else.
 
 See also
 --------
@@ -309,7 +355,11 @@ OT_RandomVector_getFrozenSample_doc
 Returns
 -------
 operator : :class:`~openturns.ComparisonOperator`
-    Comparison operator used to define the :class:`~openturns.RandomVector`."
+    Comparison operator of the event defining the random vector.
+
+Notes
+-----
+The method applies only to :class:`~openturns.ThresholdEvent` random vectors."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getOperator
 OT_RandomVector_getOperator_doc
@@ -322,7 +372,11 @@ OT_RandomVector_getOperator_doc
 Returns
 -------
 threshold : float
-    Threshold of the :class:`~openturns.RandomVector`."
+    Threshold of the event defining the random vector.
+
+Notes
+-----
+The method applies only to :class:`~openturns.ThresholdEvent` random vectors."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getThreshold
 OT_RandomVector_getThreshold_doc
@@ -348,7 +402,7 @@ OT_RandomVector_isComposite_doc
 Returns
 -------
 description : :class:`~openturns.Description`
-    Describes the components of the RandomVector."
+    Describes the names of the random vector."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getDescription
 OT_RandomVector_getDescription_doc
@@ -374,10 +428,15 @@ OT_RandomVector_setDescription_doc
 Returns
 -------
 realization : :class:`~openturns.Point`
-    Sequence of values randomly determined from the RandomVector definition.
-    In the case of an event: one realization of the event (considered as a
-    Bernoulli variable) which is a boolean value (1 for the realization of the
-    event and 0 else).
+    One value of the random vector.
+
+Notes
+-----
+The value is generated according to the type of the random vector.
+
+In the case of a :class:`~openturns.ThresholdEvent`, the method returns one realization
+of the event considered as a Bernoulli variable, which is a boolean value: 1 for the
+realization of the event and 0 else.
 
 See also
 --------
@@ -405,7 +464,11 @@ OT_RandomVector_getRealization_doc
 Returns
 -------
 domain : :class:`~openturns.Domain`
-    Describes the domain of an event."
+    Describes the domain of an event.
+
+Notes
+-----
+The method applies only to :class:`~openturns.ThresholdEvent` random vectors."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getDomain
 OT_RandomVector_getDomain_doc
@@ -432,7 +495,11 @@ OT_RandomVector_setParameter_doc
 Returns
 -------
 parameter : :class:`~openturns.Point`
-    Parameter values."
+    Parameters of the distribution of the random vector.
+
+Notes
+-----
+The method applies only to :class:`~openturns.UsualRandomVector` random vectors."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getParameter
 OT_RandomVector_getParameter_doc
@@ -445,7 +512,11 @@ OT_RandomVector_getParameter_doc
 Returns
 -------
 description : :class:`~openturns.Description`
-    Parameter names."
+    Parameter names of the distribution of the random vector.
+
+Notes
+-----
+The method applies only to :class:`~openturns.UsualRandomVector` random vectors."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getParameterDescription
 OT_RandomVector_getParameterDescription_doc
