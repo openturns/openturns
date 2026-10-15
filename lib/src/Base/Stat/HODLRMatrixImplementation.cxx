@@ -787,7 +787,7 @@ Scalar HODLRCovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedIn
     // covariance model beyond its interface. The buffer is fetched here rather
     // than stored: no member can dangle, and no smart pointer fits a
     // non-owning view (Pointer/bridge both imply ownership).
-    const Scalar * verticesBegin = vertices_.getImplementation()->data();
+    const Scalar * verticesBegin = vertices_.getImplementation()->data_begin();
     return implementation_->computeAsScalar(&verticesBegin[i * inputDimension_],
                                             &verticesBegin[j * inputDimension_]);
   }
