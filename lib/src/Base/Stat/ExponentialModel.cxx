@@ -136,15 +136,15 @@ Scalar ExponentialModel::computeAsScalar(const Point &tau) const
  * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-Scalar ExponentialModel::computeAsScalar(const Scalar * s_begin,
-    const Scalar * t_begin) const
+Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
 
   Scalar tauOverThetaNorm = 0;
-  const Scalar * s_it = s_begin;
-  const Scalar * t_it = t_begin;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = (*s_it - *t_it) / scale_[i];
