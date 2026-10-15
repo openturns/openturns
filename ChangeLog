@@ -140,6 +140,7 @@
  * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
  * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
  * HDF5Backend: add the DefaultChunkSize and DefaultCompressionLevel ResourceMap keys controlling the chunk size and the deflate compression level of the HDF5-backed storage, 0 disabling compression
+ * Added blockwise (*Blockwise) variants of the AlgebraEngine and StatisticsEngine kernels operating on DataContainer storage, with HDF5-backed containers supported throughout
 
 === Documentation ===
  * Theory: add interpolation page
