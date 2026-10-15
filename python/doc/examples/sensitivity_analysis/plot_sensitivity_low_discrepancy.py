@@ -18,7 +18,6 @@ Sobol' sensitivity indices using a low-discrepancy sequence
 # We load the Ishigami model from the usecases module.
 
 # %%
-import matplotlib.pyplot as plt
 import openturns as ot
 import openturns.viewer as otv
 from openturns.usecases import ishigami_function
