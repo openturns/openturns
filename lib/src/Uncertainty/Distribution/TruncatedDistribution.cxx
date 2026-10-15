@@ -460,6 +460,21 @@ void TruncatedDistribution::computeRange()
     distribution_.copyOnWrite();
     distribution_.getImplementation()->setQuantileEpsilon(quantileEpsilon_ * probability);
   }
+  if (getDimension() == 1)
+  {
+    // Centralized precomputations, used by computeCDF/computeSurvivalFunction/computeScalarQuantile/gradients
+    pdfLowerBound_ = distribution_.computePDF(bounds_.getLowerBound());
+    pdfUpperBound_ = distribution_.computePDF(bounds_.getUpperBound());
+    // The lower atom must be kept for discrete distributions: use F(a-) instead of F(a).
+    // F(a-) = F(b) - P([a, b]) with P([a, b]) = 1 / normalizationFactor_.
+    // For continuous distributions use F(a) directly: it is more accurate than
+    // F(b) - P([a, b]) as computeProbability(range) carries its own numerical error.
+    cdfUpperBound_ = distribution_.computeCDF(bounds_.getUpperBound());
+    if (distribution_.isContinuous())
+      cdfLowerBound_ = distribution_.computeCDF(bounds_.getLowerBound());
+    else
+      cdfLowerBound_ = cdfUpperBound_ - 1.0 / normalizationFactor_;
+  }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 
   // enable simplified path
@@ -529,7 +544,7 @@ Scalar TruncatedDistribution::computeCDF(const Point & point) const
   if (dimension == 1)
   {
     const Scalar x = point[0];
-    if (x <= getRange().getLowerBound()[0]) return 0.0;
+    if (x < getRange().getLowerBound()[0]) return 0.0;
     if (x >= getRange().getUpperBound()[0]) return 1.0;
 
     // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -551,7 +566,7 @@ Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
   if (dimension == 1)
   {
     const Scalar xI = point[0];
-    if (xI <= getRange().getLowerBound()[0]) return 1.0;
+    if (xI < getRange().getLowerBound()[0]) return 1.0;
     if (xI >= getRange().getUpperBound()[0]) return 0.0;
 
     // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -770,14 +785,6 @@ void TruncatedDistribution::setDistribution(const Distribution & distribution)
   distribution_ = distribution;
   setDimension(distribution.getDimension());
   setDescription(distribution.getDescription());
-  // Precompute some useful quantities for dimension=1
-  if (getDimension() == 1)
-  {
-    pdfLowerBound_ = distribution.computePDF(bounds_.getLowerBound());
-    pdfUpperBound_ = distribution.computePDF(bounds_.getUpperBound());
-    cdfLowerBound_ = distribution.computeCDF(bounds_.getLowerBound());
-    cdfUpperBound_ = distribution.computeCDF(bounds_.getUpperBound());
-  }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
@@ -830,14 +837,6 @@ void TruncatedDistribution::setBounds(const Interval & bounds)
   if (bounds_ != bounds)
   {
     bounds_ = bounds;
-    // Precompute some useful quantities for dimension=1
-    if (getDimension() == 1)
-    {
-      pdfLowerBound_ = distribution_.computePDF(bounds.getLowerBound());
-      pdfUpperBound_ = distribution_.computePDF(bounds.getUpperBound());
-      cdfLowerBound_ = distribution_.computeCDF(bounds.getLowerBound());
-      cdfUpperBound_ = distribution_.computeCDF(bounds.getUpperBound());
-    }
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;
