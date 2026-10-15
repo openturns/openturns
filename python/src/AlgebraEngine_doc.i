@@ -340,6 +340,25 @@ x : DataContainer
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::AlgebraEngine::SolveLinearSystemSymmetricBlockwise
+"Solve linear system for symmetric A (possibly indefinite) via block LU.
+
+Parameters
+----------
+A : DataContainer
+    Symmetric matrix.
+b : DataContainer
+    Right-hand side vector, or matrix with matching row count.
+blockSize : int, optional
+    Block size. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
+
+Returns
+-------
+x : DataContainer
+    Solution vector or matrix."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::AlgebraEngine::SolveLinearSystemTriangular
 "Solve triangular system.
 
@@ -516,6 +535,23 @@ Returns
 -------
 norm : float
     Frobenius norm :math:`\|A\|_F`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::AlgebraEngine::FrobeniusNormBlockwise
+"Compute Frobenius norm by flat tiles.
+
+Parameters
+----------
+A : DataContainer
+    Input matrix.
+blockSize : int, optional
+    Number of elements per tile. Default from ResourceMap key ``AlgebraEngine-DefaultBlockSize``.
+
+Returns
+-------
+norm : float
+    Frobenius norm :math:`\|A\|_F`, same terms as FrobeniusNorm."
 
 // ---------------------------------------------------------------------
 
