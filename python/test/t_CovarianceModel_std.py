@@ -8,6 +8,7 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.testing as ott
 
+
 def matrix_to_point(m):
     """Flatten a matrix into a Point in storage (column-major) order."""
     res = ot.Point(m.getNbRows() * m.getNbColumns())
