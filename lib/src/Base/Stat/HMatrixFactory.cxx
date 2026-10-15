@@ -26,7 +26,7 @@
 
 #ifdef OPENTURNS_HAVE_HMAT
 #include <hmat/config.h>
-#ifdef HMAT_HAVE_STARPU
+#if defined(HMAT_HAVE_STARPU) || defined(HMAT_HAVE_TOYRT)
 # include <hmat/hmat_parallel.h>
 #else
 # include <hmat/hmat.h>
@@ -62,20 +62,66 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
   hmat_interface_t *hmatInterface = (hmat_interface_t*) calloc(1, sizeof(hmat_interface_t));
   hmat_settings_t settings;
 
-#ifdef HMAT_HAVE_STARPU
-  if (!ResourceMap::GetAsBool("HMatrix-ForceSequential"))
-    hmat_init_starpu_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
-  else
-#endif
+
+#if defined(HMAT_HAVE_STARPU) && defined(HMAT_HAVE_TOYRT)
+    // If both are available, choose based on the boolean
+    // if we don't force the sequential
+    if (ResourceMap::GetAsBool("HMatrix-ForceSequential"))
+    {
+      Log::Info( "Found both ToyRT & StarPU, but forceSequential ! ");
+      hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+    else
+    {
+      if (ResourceMap::GetAsString("HMatrix-ParallelSolver") == "starpu")
+      {
+	Log::Info ("Found both ToyRT & StarPU and user selected StarPU ! ");
+        hmat_init_starpu_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+      }
+      else
+      {
+	Log::Info ("Found both ToyRT & StarPU and user selected ToyRT ! ");
+        hmat_init_toyrt_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+
+      }
+    }
+#elif defined(HMAT_HAVE_STARPU)
+    // Only StarPU is compiled
+    if (ResourceMap::GetAsBool("HMatrix-ForceSequential"))
+    {
+      Log::Info( "Found StarPU, but forceSequential ! ");
+      hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+    else
+    {
+      Log::Info ("Found StarPU ! ");
+      hmat_init_starpu_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+#elif defined(HMAT_HAVE_TOYRT)
+    // Only ToyRT is compiled
+    if (ResourceMap::GetAsBool("HMatrix-ForceSequential"))
+    {
+      Log::Info( "Found ToyRT, but forceSequential ! ");
+      hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+    else
+    {
+      Log::Info ("Found ToyRT ");
+      hmat_init_toyrt_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+    }
+#else
+    Log::Info ("Sequential engine available");
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
+#endif
+
 
   hmat_get_parameters(&settings);
-
   settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.validationErrorThreshold = ResourceMap::GetAsScalar("HMatrix-ValidationError");
   settings.validateCompression = settings.validationErrorThreshold > 0;
   settings.validationReRun = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationRerun");
   settings.validationDump = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationDump");
+
 
   hmat_set_parameters(&settings);
 
@@ -93,6 +139,7 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
       std::copy(&sample(i, 0), &sample(i, 0) + inputDimension, points + i * inputDimension * outputDimension + j * inputDimension);
   }
 
+
   hmat_clustering_algorithm_t* algo;
   const String clusteringAlgorithm = parameters.getClusteringAlgorithm();
   if (clusteringAlgorithm == "median")
@@ -103,14 +150,33 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     algo = hmat_create_clustering_hybrid();
   else
     throw InvalidArgumentException(HERE) << "Unknown clustering method: " << clusteringAlgorithm << ", valid choices are: median, geometric or hybrid";
+  // Set MaxDof
+  hmat_clustering_algorithm_t *algodof = hmat_create_clustering_max_dof(algo, ResourceMap::GetAsUnsignedInteger("HMatrix-ClusteringMaxDof"));
+  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algodof);
 
-  hmat_cluster_tree_t* ct = hmat_create_cluster_tree(points, inputDimension, outputDimension * size, algo);
+  hmat_delete_clustering(algodof);
   hmat_delete_clustering(algo);
   delete[] points;
 
-  Scalar eta = parameters.getAdmissibilityFactor();
-  hmat_admissibility_t* admissibility = hmat_create_admissibility_standard(eta);
-  hmat_matrix_t* ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
+  const String admissibilityType = parameters.getAdmissibility();
+  hmat_admissibility_t *admissibility;
+  if (admissibilityType == "standard")
+  {
+    const Scalar eta = parameters.getAdmissibilityFactor();
+    admissibility = hmat_create_admissibility_standard(eta);
+  }
+  else if(admissibilityType == "hodlr")
+  {
+    admissibility = hmat_create_admissibility_hodlr();
+  }
+  else
+  {
+    LOGWARN( OSS() << "admissibility method: " << admissibilityType << ". Valid values are `standard` or `hodlr`.");
+    const Scalar eta = parameters.getAdmissibilityFactor();
+    admissibility = hmat_create_admissibility_standard(1.0);
+  }
+
+  hmat_matrix_t *ptrHMat = hmatInterface->create_empty_hmatrix_admissibility(ct, ct, symmetric, admissibility);
   hmat_delete_admissibility(admissibility);
   return HMatrix(new HMatrixImplementation(hmatInterface, ct, outputDimension * size, ptrHMat));
 #endif /* OPENTURNS_HAVE_HMAT */

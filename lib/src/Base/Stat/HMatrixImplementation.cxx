@@ -23,6 +23,7 @@
 
 #include "openturns/HMatrixImplementation.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #ifdef OPENTURNS_HAVE_HMAT
 # include <hmat/hmat.h>
@@ -207,6 +208,7 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
   , hmatInterface_(other.hmatInterface_)
   , hmatClusterTree_(NULL)
   , hmat_(NULL)
+  , isFactorized_(other.isFactorized_)
 {
 #ifdef OPENTURNS_HAVE_HMAT
   if (other.hmatClusterTree_.get())
@@ -250,6 +252,7 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
       hmat_ = hmat_copy;
 
       hmatInterface_ = other.hmatInterface_;
+      isFactorized_ = other.isFactorized_;
     }
 #endif
   }
@@ -476,6 +479,9 @@ void HMatrixImplementation::factorize(const String& method)
 #ifdef OPENTURNS_HAVE_HMAT
   if (!hmatInterface_)
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
+  // Check the matrix is not already factorized
+  if (isFactorized_)
+    return;
   hmat_settings_t settings;
   hmat_get_parameters(&settings);
   hmat_factorization_t fact_method = hmat_factorization_lu;
@@ -483,8 +489,12 @@ void HMatrixImplementation::factorize(const String& method)
     fact_method = hmat_factorization_ldlt;
   else if (method == "LLt")
     fact_method = hmat_factorization_llt;
+  else if (method == "hodlr")
+    fact_method = hmat_factorization_hodlr;
+  else if (method == "hodlrsym")
+    fact_method = hmat_factorization_hodlrsym;
   else if (method != "LU")
-    LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
+    LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, LLt, hodlr or hodlrsym.");
 
   // Compute an approximation of the max eigen value
   const Scalar maxEV = computeApproximateLargestEigenValue();
@@ -534,6 +544,8 @@ void HMatrixImplementation::factorize(const String& method)
   static_cast<hmat_interface_t *>(hmatInterface_.get())->finalize();
   if (!done)
     throw InternalException(HERE) << "HMatrix::factorize : factorization failed, probably needs more regularization" ;
+  // isFactorized becomes true.
+  isFactorized_ = true;
 #else
   (void)method;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -587,12 +599,138 @@ void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const H
 #endif
 }
 
+/* compute:
+  Y <- alpha * op(this) * op(X) if side is 'L'
+  or Y <- alpha * op(X) * op(this) if side is 'R'
+*/
+Matrix HMatrixImplementation::gemm_dense(char transB, char transA, char side, Scalar alpha, const Matrix & lhs)
+{
+#ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
+  if (!((side == 'L') || (side == 'R')))
+    throw InvalidArgumentException(HERE) << "Invalid side argument: must be either 'L' or 'R'";
+  if (!((transA == 'T') || (transA == 'N')))
+    throw InvalidArgumentException(HERE) << "Invalid transA argument: must be either 'T' or 'N'";
+  if (!((transB == 'T') || (transB == 'N')))
+    throw InvalidArgumentException(HERE) << "Invalid transB argument: must be either 'T' or 'N'";
+  // Dimensions of the matrix
+  Scalar beta = 0.0;
+  const UnsignedInteger lhsRow = lhs.getNbRows();
+  const UnsignedInteger lhsCol = lhs.getNbColumns();
+  // Dimensions of the mat result (and product check)
+  UnsignedInteger BRows, BCols, ARows, ACols;
+  // intermediate char variables to control the different cases
+  char trans_b, trans_a;
+  Bool transpose_result = false;
+  // First check the dimension compatibility of the product and allocate the result matrix accordingly
+  if (transB == 'N')
+  {
+    BRows = getNbRows();
+    BCols = getNbColumns();
+  }
+  else
+  {
+    BRows = getNbColumns();
+    BCols = getNbRows();
+  }
+  if (transA == 'N')
+  {
+    ARows = lhsRow;
+    ACols = lhsCol; 
+  }
+  else
+  {
+    ARows = lhsCol;
+    ACols = lhsRow;
+  }
+  // Create a copy to avoid modifying data
+  Matrix lhsCopy(lhs);
+  // Allocate the result matrix depending on the side of the product
+  Matrix rhs;
+  // With side argument, transB & transA, we have 8 situations to consider.
+  // first handle the case side == 'R'. We avoid using directly the case side == 'R' in hmat as we can do
+  // directly some transpositions and guarantee the result is in the right order.
+  if (side == 'R')
+  {
+    if (ACols != BRows)
+      throw InvalidArgumentException(HERE) << "Incompatible mat-hmat product. The lhs has " << ACols << " columns, but rhs h-matrix has " << BRows << " rows.";
+    transpose_result = true;
+    // output reslt matrix
+    rhs = Matrix(BCols, ARows);
+    // Now we revert the transA & transB arguments in order to use the gemm_dense with the side == 'L' case.
+    if (transA == 'N')
+      trans_a = 'T';
+    else
+      trans_a = 'N';
+    if (transB == 'N')
+      trans_b = 'T';
+    else
+      trans_b = 'N';
+  }
+  else
+  {
+    if (BCols != ARows)
+      throw InvalidArgumentException(HERE) << "Incompatible hmat-mat product. The lhs has " << BCols << " columns, but rhs matrix has " << ARows << " rows.";
+    rhs = Matrix(BRows, ACols);
+    trans_a = transA;
+    trans_b = transB;
+  }
+
+  // check transA : if 'T' we do transposition here
+  if (trans_a == 'T')
+    lhsCopy = lhsCopy.transpose();
+  // First reorder vectors in before performing any operation
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->vector_reorder(&lhsCopy(0,0), static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get()), 0, NULL, rhs.getNbColumns());
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->gemm_dense(trans_b, 'N', 'L', &alpha, static_cast<hmat_matrix_t*>(hmat_), &lhsCopy(0,0), &beta, &rhs(0,0), rhs.getNbColumns());
+  // Restore vectors
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->vector_restore(&rhs(0, 0), static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get()), 0, NULL, rhs.getNbColumns());
+  if (transpose_result)
+    rhs = rhs.transpose();
+  return rhs;
+#else
+  (void)transA;
+  (void)transB;
+  (void)side;
+  (void)alpha;
+  (void)lhs;
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
+#endif
+}
+
 void HMatrixImplementation::transpose()
 {
 #ifdef OPENTURNS_HAVE_HMAT
   if (!hmatInterface_)
     throw InvalidArgumentException(HERE) << "Empty HMatrix";
   static_cast<hmat_interface_t*>(hmatInterface_.get())->transpose(static_cast<hmat_matrix_t*>(hmat_));
+#else
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
+#endif
+}
+
+/** Compute log determinant */
+Scalar HMatrixImplementation::computeLogDeterminant() const
+{
+#ifdef OPENTURNS_HAVE_HMAT
+  if (!hmatInterface_)
+    throw InvalidArgumentException(HERE) << "Empty HMatrix";
+  if (!isFactorized_)
+    throw InvalidArgumentException(HERE) << "HMatrix must be factorized before computing log determinant";
+  Scalar logdet = 0.0;
+  // use the hmat logdet function.
+  int rc = static_cast<hmat_interface_t *>(hmatInterface_.get())->logdet(static_cast<hmat_matrix_t *>(hmat_), &logdet);
+  if (rc == 0) return logdet;
+  // rc != 0 means that the something went wrong, so we fallback to the diagonal method.
+  Point diagonal(getDiagonal());
+  for (UnsignedInteger i = 0; i < diagonal.getSize(); ++i)
+  {
+    const Scalar lii = diagonal[i];
+    if (lii <= 0.0)
+      return SpecFunc::LowestScalar;
+    logdet += log(lii);
+  }
+  return logdet;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif

@@ -627,3 +627,4 @@ Bibliography
     *Initialization of the Circulant Embedding method to speed up the generation of Gaussian random fields.*
     SMAI Journal of Computational Mathematics, 8, 21.
     `pdf <https://doi.org/10.5802/smai-jcm.89>`__
+.. [hackbusch1999] Hackbusch, W. (1999). *A sparse matrix arithmetic based on H-matrices. Part I: Introduction to H-matrices.* Computing, 62(2), 89-108.
