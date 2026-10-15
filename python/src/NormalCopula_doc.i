@@ -8,7 +8,7 @@ cumulative distribution function:
 
     C(u_1, \cdots, u_\inputDim) = \Phi_{\inputDim, \mat{R}}(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_\inputDim))
 
-where the shape matrix :math:`\mat{R}` is a correlation matix and
+where the shape matrix :math:`\mat{R}` is a correlation matrix and
 :math:`\Phi_{\inputDim, \mat{R}}` is the cumulative distribution function of the
 normal distribution with zero mean, unit marginal variances and correlation :math:`R`:
 
@@ -43,6 +43,8 @@ as follows:
 
 The shape matrix is the Pearson correlation matrix of a multivariate distribution
 only if the normal copula is associated to normal margin distributions.
+
+Note that relation :eq:`KendallToShape` is universal among the elliptical copulas, to the contrary of the Spearman correlation.
 
 Available constructor:
     NormalCopula(*n*)
@@ -97,7 +99,7 @@ R : :class:`~openturns.CorrelationMatrix`
 
 Notes
 -----
-The shape matrix :math:`\mat{R}` is computed following :eq:`SpearmanToShape`.
+The shape matrix :math:`\mat{R}` is computed following :eq:`KendallToShape`.
 )RAW"
 
 // ---------------------------------------------------------------------

@@ -48,10 +48,11 @@ proxy : :class:`~openturns.DesignProxy`
     :math:`j` is :math:`\psi_j(\vect{u}_i)`, ie the value of the j-th basis
     term at the i-th point of the input sample.
 weight : sequence of positive floats
-    Statistical weights :math:`w_i` of the equations, of size equal to the
+    Weights :math:`w_i` of the equations, of size equal to the
     size of the input sample.
     
-    By default, all the weights are equal to 1.
+    By default, all the weights are equal to 1, which is equivalent,
+    from an algebraic point of view, of weights all equal to :math:`1/size`.
 indices : sequence of int
     Indices allowed in the basis
     
