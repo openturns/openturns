@@ -89,17 +89,6 @@ See Also
 --------
 openturns.experimental.LinearProblem
 
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``HiGHS-solver`` (``String``, default: ``choose``): overrides the ``algoName`` constructor argument, use :func:`GetAlgorithmNames` to list the recognized names.
-- ``HiGHS-run_crossover`` (``String``, default: ``on``): crossover of the interior point solvers, possible values are ``off``, ``choose`` and ``on``.
-- ``HiGHS-mip_lp_solver`` (``String``, default: ``choose``): MIP subsolver choice on discrete problems, possible values are ``choose``, ``simplex``, ``ipm``, ``ipx`` and ``hipo``.
-- ``HiGHS-mip_ipm_solver`` (``String``, default: ``choose``): MIP interior point subsolver choice on discrete problems, possible values are ``choose``, ``ipx`` and ``hipo``.
-- ``HiGHS-mip_rel_gap`` (``Scalar``, default: ``1e-4``): relative MIP gap tolerance.
-- ``HiGHS-mip_abs_gap`` (``Scalar``, default: ``1e-6``): absolute MIP gap tolerance.
-
 Examples
 --------
 Solve a mixed integer linear optimization problem with objective:
