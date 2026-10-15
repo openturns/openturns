@@ -53,7 +53,8 @@ antecedent : :class:`~openturns.RandomVector`
 
 Notes
 -----
-The method applies only to random vectors :math:`\vect{Y}` which are :class:`~openturns.CompositeRandomVector`.
+The method applies only to random vectors :math:`\vect{Y}` which are
+:class:`~openturns.CompositeRandomVector`.
 
 If the antecedent :math:`\vect{X}` is itself a :class:`~openturns.CompositeRandomVector`,
 say :math:`\vect{X}=g(\vect{Z})`, then the stored antecedent is the root antecedent of
@@ -124,7 +125,7 @@ mean : :class:`~openturns.Point`
 
 Notes
 -----
-The method applies only to random vectors :math:`\vect{Y}` which are :class:`~openturns.UsualRandomVector` defined by a distribution.
+Depending on the type of the random vector, it might not be implemented.
 
 Examples
 --------
