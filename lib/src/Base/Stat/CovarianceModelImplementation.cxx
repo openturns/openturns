@@ -215,13 +215,13 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
   // Return the scalar value
   // Even if model is stationary we do not create a new Point tau
   // We prefer relying on the iterator method
-  return computeAsScalar(&*s.begin(), &*t.begin());
+  return computeAsScalar(s.begin(), t.begin());
 }
 
-Scalar CovarianceModelImplementation::computeAsScalar(const Scalar * ,
-    const Scalar * ) const
+Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator &,
+    const Collection<Scalar>::const_iterator & ) const
 {
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar * s_begin, const Scalar * t_begin) const";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
 
 /* Bulk entry point on contiguous coordinates. The generic fallback builds the
