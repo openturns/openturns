@@ -161,14 +161,21 @@ ComplexHDF5Backend::~ComplexHDF5Backend()
 #endif
 }
 
+// GCC 16 proves a false positive here: through the speculative devirtualization
+// of backend_->data() in refreshCache(), it analyzes this override against a
+// default-constructed (empty) object and flags vector internals, no matter how
+// the empty case is guarded. Silence that instance only; behavior unchanged.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
 Complex * ComplexHDF5Backend::data()
 {
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "ComplexHDF5Backend requires HDF5 support";
 #else
-  // Guard the empty case via the size member (not buffer_.empty(): the
-  // vector begin/end involved trips -Werror=array-bounds on GCC 16 once
-  // inlined through refreshCache). No caller dereferences an empty backend.
+  // Guard the empty case via the size member (kept in sync with the buffer
+  // in every path). No caller dereferences an empty backend.
   if (size_ == 0) return nullptr;
   return buffer_.data();
 #endif
@@ -183,6 +190,9 @@ const Complex * ComplexHDF5Backend::data() const
   return buffer_.data();
 #endif
 }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 void ComplexHDF5Backend::resize(UnsignedInteger n)
 {
