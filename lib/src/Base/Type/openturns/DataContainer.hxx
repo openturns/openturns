@@ -316,6 +316,9 @@ inline void DataContainer::setBackend(Pointer<StorageBackend> newBackend)
     std::copy(backend_->data(), backend_->data() + totalSize, newBackend->data());
   newBackend->flush();
   backend_ = newBackend;
+  // Re-point the cache: the previous backend is destroyed above, so any
+  // later access through cachedData_ would read freed memory
+  refreshCache();
 }
 
 END_NAMESPACE_OPENTURNS
