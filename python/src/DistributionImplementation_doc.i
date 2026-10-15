@@ -2018,22 +2018,24 @@ OT_Distribution_getCopula_doc
 // ---------------------------------------------------------------------
 
 %define OT_Distribution_getCorrelation_doc
-R"RAW( Accessor to the correlation matrix.
+R"RAW( Accessor to the Pearson correlation matrix.
 
 Returns
 -------
 R : :class:`~openturns.CorrelationMatrix`
-    The correlation matrix of the distribution.
+    The Pearson correlation matrix.
 
 Notes
 -----
+The Pearson correlation :math:`\rho_{ij}^P` between two components
+:math:`X_i` and :math:`X_j` of a distribution is defined by:
 
 .. math::
 
-   R_{ij} = \dfrac{C_{ij}}{\sigma_i\sigma_j}
+   \rho_{ij}^P = \dfrac{C_{ij}}{\sigma_i\sigma_j}
 
-where the :math:`(\sigma_i)` are the margin standard deviations
-and :math:`(C_{ij})` the covariance coefficients.
+where :math:`(\sigma_i)` and :math:`(\sigma_j)` are the standard deviations of
+:math:`X_i` and :math:`X_j` and :math:`(C_{ij})` the covariance of :math:`(X_i, X_j)`.
 )RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getCorrelation
