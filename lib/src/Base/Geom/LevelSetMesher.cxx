@@ -283,7 +283,23 @@ Mesh LevelSetMesher::build(const Collection<LevelSet> & collection,
 /* Longest-edge bisection of marked background simplices (adaptive mesh
  * refinement primitive, valid in any dimension). Marked tetrahedra split in
  * two at their longest-edge midpoint; new vertices are evaluated on all
- * level functions. Unmarked simplices are copied unchanged. */
+ * level functions. Unmarked simplices are copied unchanged.
+ *
+ * NOTE: this primitive is intentionally non-conforming, and that only ever
+ * affects the transient background grid, never the output mesh. Two marked
+ * simplices sharing the same longest edge each append their own midpoint
+ * vertex (identical coordinates, distinct indices), and an unmarked
+ * neighbour of a split edge keeps its unsplit edge (hanging node). This is
+ * harmless here: every midpoint is evaluated on all level functions at the
+ * same coordinates, so duplicate vertices carry identical values and the
+ * inside/outside classification in buildCore agrees on all copies; the
+ * output mesh is then extracted per-simplex downstream (good-simplex
+ * filtering, moves by global vertex index, fixOrientation), its
+ * connectivity is never carried over from this grid. A conforming
+ * red-green closure would further split unmarked neighbours along
+ * non-longest edges, enlarging the refinement footprint and hence the
+ * validated volumes; Mesh::isValid() remains available as a topology
+ * oracle if this grid ever needs one. */
 static void BisectMarkedSimplices(const Mesh & mesh,
                                   const Sample & values,
                                   const Indices & marked,
