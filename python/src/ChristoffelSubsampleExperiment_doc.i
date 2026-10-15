@@ -30,7 +30,13 @@ The sizing follows the budget theorem: from :math:`\gamma m \log m`
 Christoffel draws with :math:`\gamma \approx 9.242` (Theorem 2.3 of Cohen
 and Dolbeault [cohendolbeault2020]_) one extracts :math:`m + k` points
 with a good approximation; the pool above is the practical pool, used at
-the price of weaker guarantees.
+the price of weaker guarantees. The :math:`\gamma m \log m` budget sizes
+the pool draws, not the space dimension, which stays :math:`m = n - k`.
+With an inexhaustible basis :math:`m = n`, so the default ``Removal``
+thinning costs approximately :math:`O(n^5)` (:math:`O(n)` iterations
+scoring :math:`O(n)` candidates with an :math:`m \times m` eigen solve
+each); keep :math:`n` moderate in that case. The implementation checks
+the frame bounds and can return a design satisfying them.
 
 Available constructors:
     ChristoffelSubsampleExperiment(*basis, size*)
@@ -154,6 +160,8 @@ R"RAW(Deduce the space dimension from a target size.
 With an inexhaustible basis the dimension is the target size
 (:math:`k = 0` in :math:`m = n - k`); the constructors try
 :math:`k = 1, 2, \dots` until the basis supplies :math:`m` functions.
+With :math:`m = n` the generation cost grows approximately as
+:math:`O(n^5)`; see the class documentation.
 
 Parameters
 ----------
