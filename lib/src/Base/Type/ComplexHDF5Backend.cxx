@@ -166,10 +166,10 @@ Complex * ComplexHDF5Backend::data()
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "ComplexHDF5Backend requires HDF5 support";
 #else
-  // Guard the empty case explicitly: vector::data() on an empty buffer
-  // trips -Werror=array-bounds on GCC 16 once inlined through refreshCache.
-  // No caller dereferences an empty backend (all copies are size-guarded).
-  if (buffer_.empty()) return nullptr;
+  // Guard the empty case via the size member (not buffer_.empty(): the
+  // vector begin/end involved trips -Werror=array-bounds on GCC 16 once
+  // inlined through refreshCache). No caller dereferences an empty backend.
+  if (size_ == 0) return nullptr;
   return buffer_.data();
 #endif
 }
@@ -179,7 +179,7 @@ const Complex * ComplexHDF5Backend::data() const
 #ifndef OPENTURNS_HAVE_HDF5
   throw NotYetImplementedException(HERE) << "ComplexHDF5Backend requires HDF5 support";
 #else
-  if (buffer_.empty()) return nullptr;
+  if (size_ == 0) return nullptr;
   return buffer_.data();
 #endif
 }
