@@ -131,6 +131,7 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
+ * Added blockwise (*Blockwise) variants of the AlgebraEngine and StatisticsEngine kernels operating on DataContainer storage, with HDF5-backed containers supported throughout
 
 
 === Documentation ===
