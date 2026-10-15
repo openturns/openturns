@@ -2,13 +2,13 @@
 "Cloud.
 
 Available constructors:
-    Cloud(*data, legend=' '*)
+    Cloud(*data, legend*)
 
-    Cloud(*dataX, dataY, legend=' '*)
+    Cloud(*dataX, dataY, legend*)
 
-    Cloud(*data, color, pointStyle, legend=' '*)
+    Cloud(*data, color, pointStyle, legend*)
 
-    Cloud(*dataComplex, legend=' '*)
+    Cloud(*dataComplex, legend*)
 
 Parameters
 ----------
@@ -17,7 +17,7 @@ data : 2-d sequence of float
 dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
     Points from which the cloud is built.
 legend : str
-    Legend of the Cloud.
+    Legend of the Cloud. By default, empty.
 color : str
     Color of the points. If not specified, the default color is the first color in the default palette.
 pointStyle : str

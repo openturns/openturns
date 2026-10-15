@@ -24,9 +24,9 @@ and its cumulative distribution function is defined as:
     \end{array}
 
 Available constructors:
-    TruncatedDistribution(*distribution, bound, side=ot.TruncatedDistribution.LOWER, threshold=0.5*)
+    TruncatedDistribution(*distribution, bound, side, threshold*)
 
-    TruncatedDistribution(*distribution, truncationInterval, threshold=0.5*)
+    TruncatedDistribution(*distribution, truncationInterval, threshold*)
 
 Parameters
 ----------
@@ -43,11 +43,14 @@ bound : float
 side : int, optional
     Integer used when one of the bounds of the distribution is not finite.
     (Amongst ot.TruncatedDistribution.LOWER and ot.TruncatedDistribution.UPPER).
+    By default, equal to ot.TruncatedDistribution.LOWER.
 truncationInterval : :class:`~openturns.Interval`
     Define a new distribution range :math:`[lowerBound, upperBound]` with
     finite bounds.
 threshold : float, :math:`\tau \in [0, 1]`
     This threshold is used when generating an evaluation of the distribution.
+    By default, equal to 0.5, which is the value of the
+    ``TruncatedDistribution-DefaultThresholdRealization`` :class:`~openturns.ResourceMap` key.
     We note :math:`F` the CDF of the non truncated distribution:
 
     If :math:`F(upperBound)-F(lowerBound)<\tau`: a CDF inversion is performed.

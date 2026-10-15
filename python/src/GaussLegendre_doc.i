@@ -2,14 +2,14 @@
 R"RAW(Tensorized integration algorithm of Gauss-Legendre.
 
 Available constructors:
-    GaussLegendre(*dimension=1*)
+    GaussLegendre(*dimension*)
 
     GaussLegendre(*discretization*)
 
 Parameters
 ----------
 dimension : int, :math:`dimension>0`
-    The input dimension of the functions to integrate.
+    The input dimension of the functions to integrate. By default, equal to 1.
 discretization : sequence of int
     The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
     

@@ -2,13 +2,13 @@
 R"RAW(Multivariate stationary Kronecker covariance function.
 
 Available constructors:
-    KroneckerCovarianceModel(*inputDimension=1*)
+    KroneckerCovarianceModel(*inputDimension*)
 
     KroneckerCovarianceModel(*rho, amplitude*)
 
-    KroneckerCovarianceModel(*rho, amplitude, outputCorrelation*)
+    KroneckerCovarianceModel(*rho, amplitude, spatialCorrelation*)
 
-    KroneckerCovarianceModel(*rho, outputCovariance*)
+    KroneckerCovarianceModel(*rho, sigma*)
 
 Parameters
 ----------
@@ -19,10 +19,10 @@ rho : :class:`~openturns.CovarianceModel`
     Covariance model
 amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
-outputCorrelation : :class:`~openturns.CorrelationMatrix`
+spatialCorrelation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
     By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
-outputCovariance : :class:`~openturns.CovarianceMatrix`
+sigma : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`C^{spatial} \in \cS_d^+(\Rset)`.
 
 Notes
@@ -58,17 +58,17 @@ Create a Kronecker covariance model and specify the output correlation matrix.
 >>> scale = [4.0, 5.0]
 >>> rho = ot.GeneralizedExponential(scale,  1.0)
 >>> amplitude = [1.0, 2.0]
->>> outputCorrelation = ot.CorrelationMatrix(2)
->>> outputCorrelation[1,0] = 0.8
->>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, amplitude, outputCorrelation)
+>>> spatialCorrelation = ot.CorrelationMatrix(2)
+>>> spatialCorrelation[1,0] = 0.8
+>>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, amplitude, spatialCorrelation)
 
 Create a Kronecker covariance model and specify the output covariance matrix.
 
 >>> scale = [4.0, 5.0]
 >>> rho = ot.GeneralizedExponential(scale, 1.0)
->>> outputCovariance = ot.CovarianceMatrix(2)
->>> outputCovariance[0,0] = 4.0
->>> outputCovariance[1,1] = 5.0
->>> outputCovariance[1,0] = 1.2
->>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, outputCovariance)
+>>> sigma = ot.CovarianceMatrix(2)
+>>> sigma[0,0] = 4.0
+>>> sigma[1,1] = 5.0
+>>> sigma[1,0] = 1.2
+>>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, sigma)
 )RAW"

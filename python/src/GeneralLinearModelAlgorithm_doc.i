@@ -4,9 +4,9 @@ R"RAW(Algorithm for the evaluation of general linear models.
 Refer to :any:`gaussian_process_regression`.
 
 Available constructors:
-    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, keepCovariance*)
 
-    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, keepCovariance=True*)
+    GeneralLinearModelAlgorithm(*inputSample, outputSample, covarianceModel, basis, keepCovariance*)
 
 Parameters
 ----------

@@ -2,9 +2,9 @@
 "Text.
 
 Available constructors:
-    Text(*data, texts, position='top', legend=''*)
+    Text(*data, texts, position, legend*)
 
-    Text(*dataX, dataY, texts, position='top', legend=''*)
+    Text(*dataX, dataY, texts, position, legend*)
 
 Parameters
 ----------

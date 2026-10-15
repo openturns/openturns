@@ -2,16 +2,18 @@
 R"RAW(Collection of strings.
 
 Available constructors:
-    Description(*size=0, value=' '*)
+    Description(*size*)
+
+    Description(*size, value*)
 
     Description(*sequence*)
 
 Parameters
 ----------
 size : int, :math:`size \geq 0`
-    Size of the collection.
+    Size of the collection. By default, equal to 0.
 value : str
-    Value set to the *size* elements.
+    Value set to the *size* elements. By default, empty.
 sequence : sequence of str
     Components of the vector.
 

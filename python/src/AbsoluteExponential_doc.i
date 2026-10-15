@@ -2,7 +2,7 @@
 R"RAW(Absolute exponential covariance function.
 
 Available constructors:
-    AbsoluteExponential(*spatialDim=1*)
+    AbsoluteExponential(*inputDimension*)
 
     AbsoluteExponential(*scale*)
 
@@ -10,7 +10,7 @@ Available constructors:
 
 Parameters
 ----------
-spatialDim : int
+inputDimension : int
     Spatial dimension :math:`n`.
     When not fulfilled, the input dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
     By default, equal to 1.
