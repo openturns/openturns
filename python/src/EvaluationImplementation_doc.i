@@ -1,9 +1,6 @@
 %define OT_Evaluation_doc
 "Numerical math evaluation implementation.
 
-Available constructors:
-    EvaluationImplementation()
-
 See also
 --------
 Function, AggregatedEvaluation,

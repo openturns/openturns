@@ -2,7 +2,7 @@
 R"RAW(Mesh.
 
 Available constructors:
-    Mesh(*dim=1*)
+    Mesh(*dim*)
 
     Mesh(*vertices*)
 
@@ -11,7 +11,8 @@ Available constructors:
 Parameters
 ----------
 dim : int, :math:`dim \geq 0`
-    The dimension of the vertices. By default, it creates only one
+    The dimension of the vertices. By default, equal to 1.
+    This constructor creates only one
     vertex of dimension :math:`dim` with components equal to 0.
 vertices : 2-d sequence of float
     Vertices' coordinates in :math:`\Rset^{dim}`.

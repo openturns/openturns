@@ -2,14 +2,14 @@
 "Define the way OpenTURNS' objects are saved and reloaded.
 
 Available constructors:
-    StorageManager(*defaultVersion=1*)
+    StorageManager(*defaultVersion*)
 
 Parameters
 ----------
 defaultVersion : positive int
     Argument interpreted as the name of the object in a user point of view.
     This name is never used in another way than for user information. This name
-    has no meaning to the platform.
+    has no meaning to the platform. By default, equal to 1.
 
 Notes
 -----

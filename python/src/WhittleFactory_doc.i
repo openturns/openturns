@@ -2,8 +2,6 @@
 R"RAW(Whittle estimator of a scalar ARMA Gaussian process.
 
 Available constructors:
-    WhittleFactory()
-
     WhittleFactory(*p, q, invert*)
 
     WhittleFactory(*indP, indQ, invertible*)

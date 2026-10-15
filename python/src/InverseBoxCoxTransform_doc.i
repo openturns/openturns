@@ -2,9 +2,9 @@
 R"RAW(BoxCox transformation.
 
 Available constructors:
-    InverseBoxCoxTransform(*lambdaVect, shiftVect = 0*)
+    InverseBoxCoxTransform(*lambdaVect, shiftVect*)
 
-    InverseBoxCoxTransform(*lambda, shift=0*)
+    InverseBoxCoxTransform(*lambda, shift*)
 
 Parameters
 ----------

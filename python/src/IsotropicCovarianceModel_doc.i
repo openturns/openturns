@@ -1,11 +1,11 @@
 %define OT_IsotropicCovarianceModel_doc
 R"RAW(Isotropic covariance kernel.
 
-IsotropicCovarianceModel(*oneDimensionalKernel, inputDimension*)
+IsotropicCovarianceModel(*oneDimensional, inputDimension*)
 
 Parameters
 ----------
-oneDimensionalKernel : :class:`~openturns.CovarianceModel`
+oneDimensional : :class:`~openturns.CovarianceModel`
     This kernel must be stationary.
     Its input and output dimensions must be 1.
 inputDimension : int, :math:`n > 0`

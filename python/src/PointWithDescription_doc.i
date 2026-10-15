@@ -2,16 +2,18 @@
 R"RAW(Collection of real values with a description for each component.
 
 Available constructors:
-    PointWithDescription(*size=0, value=0.0*)
+    PointWithDescription(*size*)
+
+    PointWithDescription(*size, value*)
 
     PointWithDescription(*sequence*)
 
 Parameters
 ----------
 size : int, :math:`size \geq 0`
-    Size of the vector.
+    Size of the vector. By default, equal to 0.
 value : float
-    Value set to the *size* elements.
+    Value set to the *size* elements. By default, equal to 0.0.
 sequence : sequence of pair (string, float)
     Components of the vector.
 

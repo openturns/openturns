@@ -2,9 +2,9 @@
 R"RAW(Experiment to computeSobol' indices.
 
 Available constructors:
-    SobolIndicesExperiment(*distribution, size, computeSecondOrder=False*)
+    SobolIndicesExperiment(*distribution, size, computeSecondOrder*)
 
-    SobolIndicesExperiment(*experiment, computeSecondOrder=False*)
+    SobolIndicesExperiment(*experiment, computeSecondOrder*)
 
 Parameters
 ----------

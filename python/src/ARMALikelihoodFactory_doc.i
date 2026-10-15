@@ -2,8 +2,6 @@
 R"RAW(Maximum likelihood estimator of a multivariate ARMA Gaussian process.
 
 Available constructors:
-    ARMALikelihoodFactory()
-
     ARMALikelihoodFactory(*p, q, d, invertible*)
 
     ARMALikelihoodFactory(*indP, indQ, d, invertible*)
