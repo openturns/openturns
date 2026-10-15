@@ -65,6 +65,7 @@ public:
                            const Point & t) const override;
 
   /** Scalar interface (for 1D case) */
+  using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar(const Point & s, const Point & t) const override;
   Scalar computeAsScalar(const Point & tau) const override;
   Scalar computeAsScalar(const Scalar s, const Scalar t) const override;
