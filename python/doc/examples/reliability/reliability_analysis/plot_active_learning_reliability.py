@@ -55,6 +55,12 @@ import openturns.viewer as otv
 import math
 
 # %%
+# Set the seed for reproducibility of the design of experiments:
+
+# %%
+ot.RandomGenerator.SetSeed(0)
+
+# %%
 # Create the probabilistic model :math:`Y = g(\vect{X})`
 # ------------------------------------------------------
 
@@ -125,14 +131,14 @@ event = ot.ThresholdEvent(Y, ot.Less(), threshold)
 # -------------------------------------
 
 # %%
-# Creation of DoE with a limited size (number_samples_DoE = 10) and evaluation of the exact limit state function.
+# Creation of DoE with a limited size (number_samples_DoE = 20) and evaluation of the exact limit state function.
 # The definition domain for the DoE (through the lower and upper bounds) is extended in order to get samples in rare event regions.
 # It can be also defined by a combination of mean and standard deviation of the input distribution (for example, :math:`\mu \pm 4 \sigma`).
 
 # %%
 lower_bound_DoE = -5.0
 upper_bound_DoE = 5.0
-number_samples_DoE = 10
+number_samples_DoE = 20
 distribution_LHS = ot.JointDistribution(
     [ot.Uniform(lower_bound_DoE, upper_bound_DoE)] * input_dimension
 )
@@ -159,7 +165,7 @@ fitter = ot.GaussianProcessFitter(input_DoE, output_DoE, covariance_model, basis
 Monte_Carlo_experiment = ot.MonteCarloExperiment()
 Monte_Carlo_algorithm = ot.ProbabilitySimulationAlgorithm(event, Monte_Carlo_experiment)
 Monte_Carlo_algorithm.setMaximumCoefficientOfVariation(0.01)
-Monte_Carlo_algorithm.setMaximumOuterSampling(2000)
+Monte_Carlo_algorithm.setMaximumOuterSampling(10000)
 
 # %%
 # Definition of active learning function. Here, we choose the "U" function. This function takes two arguments. The first one is the event threshold.
@@ -172,9 +178,9 @@ u_function = otexp.ActiveLearningUFunction(
 )
 
 # %%
-# Now, we can build the active learning algorithm. We define the maximal number of exact limit state function evaluations to 25.
+# Now, we can build the active learning algorithm. We define the maximal number of exact limit state function evaluations to 60.
 # This budget keeps the gallery example fast enough for the test suite while remaining illustrative.
-simulation_budget = 25
+simulation_budget = 60
 active_learning_MonteCarlo = otexp.ActiveLearningReliabilityAlgorithm(
     fitter, Monte_Carlo_algorithm, u_function
 )
@@ -330,11 +336,14 @@ gmm_function = otexp.ActiveLearningGMMFunction(
 )
 
 # %%
-# Now, we can build the active learning algorithm
+# Now, we can build the active learning algorithm. The uncertainty-based
+# stopping criterion evaluates several subset simulations per iteration,
+# hence a smaller budget of 20 exact evaluations is enough here.
+simulation_budget_subset = 20
 active_learning_subset = otexp.ActiveLearningReliabilityAlgorithm(
     fitter, subset_algorithm, gmm_function
 )
-active_learning_subset.setMaximumIterations(simulation_budget)
+active_learning_subset.setMaximumIterations(simulation_budget_subset)
 
 # %%
 # Here we choose to stop the algorithm based on the probability uncertainty estimation due to the Gaussian Process Regressor model.
