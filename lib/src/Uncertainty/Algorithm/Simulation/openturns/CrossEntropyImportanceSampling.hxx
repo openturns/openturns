@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 class OT_API CrossEntropyImportanceSampling
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
 
   CLASSNAME

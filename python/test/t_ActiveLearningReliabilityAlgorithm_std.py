@@ -109,6 +109,9 @@ assert indexCI.getLowerBound()[0] <= indexCI.getUpperBound()[0]
 assert algo.getCriterion().getReliabilityThreshold() == threshold
 assert algo.getCovarianceModel().getInputDimension() == 2
 
+# the wrapped simulator keeps its dynamic type through the handle
+assert algo.getSimulationAlgorithm().getImplementation().getClassName() == "ProbabilitySimulationAlgorithm"
+
 # persistence round-trip through a Study
 fileName = "t_ActiveLearningReliabilityAlgorithm_std.xml"
 study = ot.Study(fileName)
@@ -120,6 +123,7 @@ loaded = otexp.ActiveLearningReliabilityAlgorithm()
 study2.fillObject("algo", loaded)
 assert loaded.getFunctionCallNumber() == calls
 assert loaded.getInputDoE().getSize() == initialSize + calls
+assert loaded.getSimulationAlgorithm().getImplementation().getClassName() == "ProbabilitySimulationAlgorithm"
 ott.assert_almost_equal(loaded.getResult().getProbabilityEstimate(), probability)
 os.remove(fileName)
 

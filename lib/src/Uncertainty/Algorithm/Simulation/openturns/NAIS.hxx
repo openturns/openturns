@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NAIS is some nais type to illustrate how to add some classes in OpenTURNS
  */
 class OT_API NAIS
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
 
   CLASSNAME

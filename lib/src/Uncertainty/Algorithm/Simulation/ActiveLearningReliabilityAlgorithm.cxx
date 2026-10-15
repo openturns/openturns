@@ -29,14 +29,6 @@
 #include "openturns/EventSimulation.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/SimulationResult.hxx"
-#include "openturns/NAIS.hxx"
-#include "openturns/SubsetSampling.hxx"
-#include "openturns/LineSampling.hxx"
-#include "openturns/DirectionalSampling.hxx"
-#include "openturns/AdaptiveDirectionalStratification.hxx"
-#include "openturns/StandardSpaceCrossEntropyImportanceSampling.hxx"
-#include "openturns/PhysicalSpaceCrossEntropyImportanceSampling.hxx"
-#include "openturns/CrossEntropyImportanceSampling.hxx"
 #include "openturns/ActiveLearningReliabilityFunction.hxx"
 #include "openturns/ActiveLearningReliabilityResult.hxx"
 #include "openturns/DistFunc.hxx"
@@ -55,7 +47,7 @@ static const Factory<ActiveLearningReliabilityAlgorithm> Factory_ActiveLearningR
 
   /** Default constructor */
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
-  : EventSimulation()
+  : EventSimulationImplementation()
   , defaultEvent_(getEvent())
   , functionCallNumber_(0)
   , convergenceCriterion_(2)
@@ -67,9 +59,9 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm()
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
   {
     // Default members must be valid for Study save/load of a default instance.
-    // The criterion handle default-constructs its own implementation.
-    p_defaultSimulationAlgorithm_ = new ProbabilitySimulationAlgorithm(defaultEvent_);
-    p_simulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+    // Both handles share their implementation until first mutation.
+    defaultSimulation_ = ProbabilitySimulationAlgorithm(defaultEvent_);
+    simulation_ = defaultSimulation_;
   }
 
 /** Extract the surrogate specification from a fitter. Only the fitter
@@ -89,15 +81,17 @@ static void ExtractSurrogateSpec(const GaussianProcessFitter & fitter,
 
 /** Generic constructor: a single overload for any simulator type.
  * Per-concrete-type overloads are voluntarily absent: the simulator is
- * deep-copied through the virtual clone() and retargeted at each iteration
- * through the virtual setEvent(), so new simulators need no algorithm change.
+ * held by value through the EventSimulation handle and retargeted at each
+ * iteration through setEvent (copy-on-write), so new simulators need no
+ * algorithm change.
  * The design of experiment and the surrogate specification are sourced from
  * the fitter, the true event from the simulation. */
 ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const GaussianProcessFitter & fitter,
                                                                        const EventSimulation & simulation,
                                                                        const ActiveLearningReliabilityFunction & criterion)
-  : EventSimulation(simulation.getEvent())
+  : EventSimulationImplementation(simulation.getEvent())
   , defaultEvent_(simulation.getEvent())
+  , defaultSimulation_(simulation)
   , criterion_(criterion)
   , inputDoE_(fitter.getInputSample())
   , outputDoE_(fitter.getOutputSample())
@@ -115,15 +109,15 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   if (inputDoE_.getSize() == 0) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input design of experiment is empty";
   if (inputDoE_.getSize() != outputDoE_.getSize()) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input and output designs have different sizes (" << inputDoE_.getSize() << " vs " << outputDoE_.getSize() << ")";
   if (outputDoE_.getDimension() != 1) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: output design must be 1-dimensional";
-  // Deep copy: run() retargets the simulator through setEvent, which must
-  // not mutate the caller object. The criterion handle shares its
+  // The simulator handles share their implementation until first mutation:
+  // setEvent/run/setKeepSample detach through copy-on-write, so the caller
+  // object is never mutated. The criterion handle shares its
   // implementation until first mutation (copy-on-write on setGaussianProcessRegression).
   // The simulators keep their own sample policy: the scoring pool is drawn
   // separately, so keepSample is left untouched.
-  p_defaultSimulationAlgorithm_ = simulation.clone();
-  p_simulationAlgorithm_ = simulation.clone();
-  p_simulationAlgorithm_->setKeepSample(true);
-  p_defaultSimulationAlgorithm_->setKeepSample(true);
+  simulation_ = defaultSimulation_;
+  simulation_.setKeepSample(true);
+  defaultSimulation_.setKeepSample(true);
    
 }
 
@@ -138,7 +132,7 @@ String ActiveLearningReliabilityAlgorithm::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << EventSimulation::__repr__()
+      << " derived from " << EventSimulationImplementation::__repr__()
       << " maximumIterations=" << maximumIterations_
       << " functionCallNumber=" << functionCallNumber_
       << " hasConverged=" << (hasConverged_ ? "true" : "false");
@@ -242,12 +236,12 @@ static std::mutex & GetActiveLearningSimulationMutex()
    process mutex, then run while holding it so no other AK run can interleave
    a reset or draws. Single-threaded runs are exactly reproducible;
    concurrent draws from other threads remain best-effort. */
-static void RunInnerWithFixedStream(Pointer<EventSimulation> & simulation,
+static void RunInnerWithFixedStream(EventSimulation & simulation,
                                     const UnsignedInteger seed)
 {
   std::lock_guard<std::mutex> lock(GetActiveLearningSimulationMutex());
   RandomGenerator::SetSeed(seed);
-  simulation->run();
+  simulation.run();
 }
 
 /* Check convergence based on probability uncertainty due to GP error */
@@ -296,11 +290,11 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
                                             defaultEvent_.getOperator(),
                                             defaultEvent_.getThreshold());
 
-  Pointer<EventSimulation> p_simulationAlgorithmMean_ = p_defaultSimulationAlgorithm_->clone();
+  EventSimulation simulationMean = defaultSimulation_;
 
-  p_simulationAlgorithmMean_->setEvent(meanEvent);
-  RunInnerWithFixedStream(p_simulationAlgorithmMean_, simulationAlgorithmSeed_);
-  Scalar meanProbability = p_simulationAlgorithmMean_-> getResult().getProbabilityEstimate();
+  simulationMean.setEvent(meanEvent);
+  RunInnerWithFixedStream(simulationMean, simulationAlgorithmSeed_);
+  Scalar meanProbability = simulationMean.getResult().getProbabilityEstimate();
 
   // Computation of probability with GP mean - k sigma
   CompositeRandomVector minusEventRV(GPMinus,
@@ -310,10 +304,10 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
                                              defaultEvent_.getOperator(),
                                              defaultEvent_.getThreshold());
 
-  Pointer<EventSimulation> p_simulationAlgorithmMinus_ = p_defaultSimulationAlgorithm_->clone();
-  p_simulationAlgorithmMinus_->setEvent(eventMinus);
-  RunInnerWithFixedStream(p_simulationAlgorithmMinus_, simulationAlgorithmSeed_);
-  Scalar minusProbability = p_simulationAlgorithmMinus_-> getResult().getProbabilityEstimate();
+  EventSimulation simulationMinus = defaultSimulation_;
+  simulationMinus.setEvent(eventMinus);
+  RunInnerWithFixedStream(simulationMinus, simulationAlgorithmSeed_);
+  Scalar minusProbability = simulationMinus.getResult().getProbabilityEstimate();
 
   // Computation of probability with GP mean + k sigma
   CompositeRandomVector plusEventRV(GPPlus,
@@ -323,10 +317,10 @@ Point ActiveLearningReliabilityAlgorithm::computeProbabilityWithUncertainty()
                                             defaultEvent_.getOperator(),
                                             defaultEvent_.getThreshold());
 
-  Pointer<EventSimulation> p_simulationAlgorithmPlus_ = p_defaultSimulationAlgorithm_->clone();
-  p_simulationAlgorithmPlus_->setEvent(eventPlus);
-  RunInnerWithFixedStream(p_simulationAlgorithmPlus_, simulationAlgorithmSeed_);
-  Scalar plusProbability = p_simulationAlgorithmPlus_-> getResult().getProbabilityEstimate();
+  EventSimulation simulationPlus = defaultSimulation_;
+  simulationPlus.setEvent(eventPlus);
+  RunInnerWithFixedStream(simulationPlus, simulationAlgorithmSeed_);
+  Scalar plusProbability = simulationPlus.getResult().getProbabilityEstimate();
 
   Point probabilitiesWithUncertainty = Point({meanProbability, minusProbability, plusProbability});
 
@@ -390,9 +384,9 @@ UnsignedInteger ActiveLearningReliabilityAlgorithm::getMaximumIterations() const
   return maximumIterations_;
 }
 
-Pointer<EventSimulation> ActiveLearningReliabilityAlgorithm::getSimulationAlgorithm() const
+EventSimulation ActiveLearningReliabilityAlgorithm::getSimulationAlgorithm() const
 {
-  return p_simulationAlgorithm_;
+  return simulation_;
 }
 
 void ActiveLearningReliabilityAlgorithm::setCriterion(const ActiveLearningReliabilityFunction & criterion)
@@ -553,27 +547,25 @@ void ActiveLearningReliabilityAlgorithm::run()
                                                defaultEvent_.getOperator(),
                                                defaultEvent_.getThreshold());
 
-      Pointer<EventSimulation> p_currentSimulationAlgorithm = p_defaultSimulationAlgorithm_->clone();
-      p_currentSimulationAlgorithm->setEvent(newEvent);
-      RunInnerWithFixedStream(p_currentSimulationAlgorithm, simulationAlgorithmSeed_);
+      EventSimulation currentSimulation = defaultSimulation_;
+      currentSimulation.setEvent(newEvent);
+      RunInnerWithFixedStream(currentSimulation, simulationAlgorithmSeed_);
 
-      // Reseat the pointer instead of assigning through it: assigning the
-      // pointed-to objects would slice if the dynamic types ever differed
-      p_simulationAlgorithm_ = p_currentSimulationAlgorithm;
-      Sample candidatePool = p_currentSimulationAlgorithm->getInputSample();
+      simulation_ = currentSimulation;
+      Sample candidatePool = currentSimulation.getInputSample();
       
       // Compute active learning values on the fixed candidate pool
       criterion_.setGaussianProcessRegression(newGPRResult);
       Sample activeLearningValues = criterion_(candidatePool, inputDoE_);
 
       // Store history
-      Scalar currentProbabilityEstimate = p_currentSimulationAlgorithm->getResult().getProbabilityEstimate();
+      Scalar currentProbabilityEstimate = currentSimulation.getResult().getProbabilityEstimate();
       probabilityHistory_.add(currentProbabilityEstimate);
       Scalar currentReliabilityIndex = - DistFunc::qNormal(currentProbabilityEstimate);
       reliabilityIndexHistory_.add(currentReliabilityIndex);
       // Store the inner result with full dynamic type (cloned on wrap,
       // later runs never mutate stored elements)
-      simulationResults.add(p_currentSimulationAlgorithm->getHistoryResult());
+      simulationResults.add(currentSimulation.getHistoryResult());
 
       // Check convergence
       if (convergenceCriterion_ == 0)
@@ -641,9 +633,9 @@ void ActiveLearningReliabilityAlgorithm::run()
     index[0] = historySize - 1;
     Scalar currentProbabilityEstimate = probabilityHistory_.select(index)[0];
     Scalar currentReliabilityIndex = reliabilityIndexHistory_.select(index)[0];
-    const Scalar currentVarianceEstimate = p_simulationAlgorithm_->getResult().getVarianceEstimate();
-    const UnsignedInteger currentOuterSampling = p_simulationAlgorithm_->getResult().getOuterSampling();
-    const UnsignedInteger currentBlockSize = p_simulationAlgorithm_->getResult().getBlockSize();
+    const Scalar currentVarianceEstimate = simulation_.getResult().getVarianceEstimate();
+    const UnsignedInteger currentOuterSampling = simulation_.getResult().getOuterSampling();
+    const UnsignedInteger currentBlockSize = simulation_.getResult().getBlockSize();
 
     Point probaCI = computeProbabilityWithUncertainty();
     // probaCI holds {mean, minus, plus}: the interval spans the minus and
@@ -672,24 +664,22 @@ void ActiveLearningReliabilityAlgorithm::run()
     setResult(results);
     // Mirror the probability estimate into the base result: readers through a
     // generic EventSimulation handle only see the base getResult()
-    EventSimulation::setResult(results);
+    EventSimulationImplementation::setResult(results);
 
 }
 
 /* Method save() stores the object through the StorageManager */
 void ActiveLearningReliabilityAlgorithm::save(Advocate & adv) const
 {
-  EventSimulation::save(adv);
+  EventSimulationImplementation::save(adv);
   adv.saveAttribute("inputDoE_", inputDoE_);
   adv.saveAttribute("outputDoE_", outputDoE_);
   adv.saveAttribute("covarianceModel_", covarianceModel_);
   adv.saveAttribute("basis_", basis_);
   adv.saveAttribute("defaultEvent_", defaultEvent_);
-  // Polymorphic simulator: the dynamic class name drives the compact table
-  // dispatch in load(); the object itself carries the full derived state
-  if (!p_defaultSimulationAlgorithm_) throw InternalException(HERE) << "Cannot save ActiveLearningReliabilityAlgorithm with null simulation algorithm";
-  adv.saveAttribute("simulationClassName_", p_defaultSimulationAlgorithm_->getClassName());
-  adv.saveAttribute("simulation_", *p_defaultSimulationAlgorithm_);
+  // Polymorphic simulator: the handle persists the dynamic type through the
+  // Factory, so new simulators round-trip without touching this method
+  adv.saveAttribute("simulation_", defaultSimulation_);
   // Polymorphic criterion: the handle persists the dynamic type through the
   // Factory, so new criteria round-trip without touching this method
   adv.saveAttribute("criterion_", criterion_);
@@ -705,63 +695,19 @@ void ActiveLearningReliabilityAlgorithm::save(Advocate & adv) const
   adv.saveAttribute("activeLearningReliabilityResult_", activeLearningReliabilityResult_);
 }
 
-/* Compact dispatch for the polymorphic simulator: one entry per concrete
-   EventSimulation, selected by the stored dynamic class name. The framework
-   offers no generic Advocate-level rebuild for Pointer<Base> members, so the
-   table is the smallest correct form; unknown names fail loudly instead of
-   silently mistyping the simulator. */
-typedef Pointer<EventSimulation> (*SimulationBuilder)(Advocate &);
-
-template <typename SIMULATION>
-static Pointer<EventSimulation> BuildSimulation(Advocate & adv)
-{
-  SIMULATION simulation;
-  adv.loadAttribute("simulation_", simulation);
-  return simulation.clone();
-}
-
-struct SimulationBuilderEntry
-{
-  const char * className;
-  SimulationBuilder build;
-};
-
-static const SimulationBuilderEntry SimulationBuilders[] =
-{
-  {"ProbabilitySimulationAlgorithm", &BuildSimulation<ProbabilitySimulationAlgorithm>},
-  {"NAIS", &BuildSimulation<NAIS>},
-  {"SubsetSampling", &BuildSimulation<SubsetSampling>},
-  {"StandardSpaceCrossEntropyImportanceSampling", &BuildSimulation<StandardSpaceCrossEntropyImportanceSampling>},
-  {"PhysicalSpaceCrossEntropyImportanceSampling", &BuildSimulation<PhysicalSpaceCrossEntropyImportanceSampling>},
-  {"CrossEntropyImportanceSampling", &BuildSimulation<CrossEntropyImportanceSampling>},
-  {"LineSampling", &BuildSimulation<LineSampling>},
-  {"DirectionalSampling", &BuildSimulation<DirectionalSampling>},
-  {"AdaptiveDirectionalStratification", &BuildSimulation<AdaptiveDirectionalStratification>}
-};
-
 /* Method load() reloads the object from the StorageManager */
 void ActiveLearningReliabilityAlgorithm::load(Advocate & adv)
 {
-  EventSimulation::load(adv);
+  EventSimulationImplementation::load(adv);
   adv.loadAttribute("inputDoE_", inputDoE_);
   adv.loadAttribute("outputDoE_", outputDoE_);
   adv.loadAttribute("covarianceModel_", covarianceModel_);
   adv.loadAttribute("basis_", basis_);
   adv.loadAttribute("defaultEvent_", defaultEvent_);
-  String simulationClassName;
-  adv.loadAttribute("simulationClassName_", simulationClassName);
-  Bool simulationRebuilt = false;
-  for (UnsignedInteger i = 0; i < sizeof(SimulationBuilders) / sizeof(SimulationBuilders[0]); ++ i)
-  {
-    if (simulationClassName == SimulationBuilders[i].className)
-    {
-      p_defaultSimulationAlgorithm_ = SimulationBuilders[i].build(adv);
-      simulationRebuilt = true;
-      break;
-    }
-  }
-  if (!simulationRebuilt) throw InternalException(HERE) << "Unknown simulation class " << simulationClassName;
-  p_simulationAlgorithm_ = p_defaultSimulationAlgorithm_->clone();
+  // Simulator rebuild through its handle: the Factory restores the dynamic
+  // type, so new simulators round-trip without touching this method
+  adv.loadAttribute("simulation_", defaultSimulation_);
+  simulation_ = defaultSimulation_;
   // Criterion rebuild through its handle: the Factory restores the dynamic
   // type, so new criteria round-trip without touching this method
   adv.loadAttribute("criterion_", criterion_);

@@ -38,8 +38,9 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Generic active-learning reliability algorithm (AK family).
  * It owns a single wrapped EventSimulation of any concrete type
- * (deep-copied at construction, retargeted at each iteration through
- * the virtual setEvent) and a single learning criterion, and enriches
+ * (held by value through the EventSimulation handle, retargeted at each
+ * iteration through setEvent with copy-on-write) and a single learning
+ * criterion, and enriches
  * the design of experiment until the criterion converges or the
  * iteration budget is exhausted. The design of experiment and the
  * surrogate specification are sourced from a GaussianProcessFitter,
@@ -47,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
 */
 
 class OT_API ActiveLearningReliabilityAlgorithm
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
 
   CLASSNAME
@@ -103,7 +104,7 @@ public:
 
   UnsignedInteger getSimulationAlgorithmSeed() const;
 
-  Pointer<EventSimulation> getSimulationAlgorithm() const;
+  EventSimulation getSimulationAlgorithm() const;
 
   /** Learning criterion accessor (value semantics, dynamic type preserved) */
   void setCriterion(const ActiveLearningReliabilityFunction & criterion);
@@ -145,8 +146,8 @@ protected:
   GaussianProcessRegressionResult fitGaussianProcess() const;
 
   RandomVector defaultEvent_;
-  Pointer<EventSimulation> p_defaultSimulationAlgorithm_;
-  Pointer<EventSimulation> p_simulationAlgorithm_;
+  EventSimulation defaultSimulation_;
+  EventSimulation simulation_;
   ActiveLearningReliabilityFunction criterion_;
 
   Sample currentInputSample_;

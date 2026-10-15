@@ -29,7 +29,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API LineSampling
-  : public EventSimulation
+  : public EventSimulationImplementation
 {
   CLASSNAME
 public:
