@@ -144,4 +144,26 @@ for (m, p) in [(30, 20), (12, 20)]:
         assert max_abs_diff(ref, sb, 1) / (1.0 + ref[0]) < 1e-8
 print("ComputeSingularValuesBlockwise: OK")
 
+# Symmetric indefinite solve: 6x6 exchange matrix (eigenvalues +-1)
+n = 6
+exc = ot.DataContainer(n, n, 0.0)
+for i in range(n):
+    exc[i + (n - 1 - i) * n] = 1.0
+B = ot.DataContainer(n, 2, 0.0)
+for j in range(2):
+    base = j * n
+    for i in range(n):
+        B[base + i] = math.sin(0.5 * i + j) + 2.0
+refX = ot.AlgebraEngine.SolveLinearSystemSymmetric(exc, B)
+for bs in [1, 2, 100]:
+    xb = ot.AlgebraEngine.SolveLinearSystemSymmetricBlockwise(exc, B, bs)
+    assert max_abs_diff(refX, xb, 1) < 1e-10
+print("SolveLinearSystemSymmetricBlockwise: OK")
+
+# Frobenius norm twin: same terms, tile regrouping only
+assert abs(ot.AlgebraEngine.FrobeniusNormBlockwise(tall, 1) - ot.AlgebraEngine.FrobeniusNorm(tall)) < 1e-12
+assert abs(ot.AlgebraEngine.FrobeniusNormBlockwise(tall, 7) - ot.AlgebraEngine.FrobeniusNorm(tall)) < 1e-12
+assert abs(ot.AlgebraEngine.FrobeniusNormBlockwise(M, 1000) - ot.AlgebraEngine.FrobeniusNorm(M)) < 1e-9
+print("FrobeniusNormBlockwise: OK")
+
 print("=== ALL BLOCKWISE SCALE TESTS PASSED ===")

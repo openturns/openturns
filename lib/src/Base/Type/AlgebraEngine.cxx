@@ -1745,6 +1745,48 @@ DataContainer AlgebraEngine::SolveLinearSystemRectangularBlockwise(
   return x;
 }
 
+DataContainer AlgebraEngine::SolveLinearSystemSymmetricBlockwise(const DataContainer & A,
+    const DataContainer & b,
+    UnsignedInteger blockSize)
+{
+  const UnsignedInteger n = A.getSize();
+  if (A.getDimension() != n) throw InvalidDimensionException(HERE) << "Matrix must be square for symmetric linear system solve";
+  if (b.getSize() != n) throw InvalidDimensionException(HERE) << "Right-hand side dimension=" << b.getSize() << " must match matrix dimension=" << n;
+  // Block LU with partial pivoting handles indefinite symmetric matrices,
+  // where block Cholesky does not apply. PA = LU, then L Y = P B, U X = Y.
+  DataContainer P, L, U;
+  ComputeLUBlockwise(A, P, L, U, blockSize);
+  const UnsignedInteger q = b.getDimension();
+  DataContainer permutedB(n, q, 0.0);
+  for (UnsignedInteger i = 0; i < n; ++i)
+  {
+    UnsignedInteger sourceRow = 0;
+    for (UnsignedInteger k = 0; k < n; ++k)
+      if (P(i, k) == 1.0) sourceRow = k;
+    for (UnsignedInteger j = 0; j < q; ++j)
+      permutedB(i, j) = b(sourceRow, j);
+  }
+  const DataContainer y = SolveLinearSystemTriangularBlockwise(L, permutedB, true, false, blockSize);
+  return SolveLinearSystemTriangularBlockwise(U, y, false, false, blockSize);
+}
+
+Scalar AlgebraEngine::FrobeniusNormBlockwise(const DataContainer & A,
+    UnsignedInteger blockSize)
+{
+  if (blockSize == 0) throw InvalidArgumentException(HERE) << "Block size must be positive";
+  const UnsignedInteger n = A.getSize() * A.getDimension();
+  const Scalar * pData = A.data();
+  // Flat tiles in order: same terms as the dense path, tile regrouping only
+  Scalar sum = 0.0;
+  for (UnsignedInteger start = 0; start < n; start += blockSize)
+  {
+    const UnsignedInteger end = std::min(start + blockSize, n);
+    for (UnsignedInteger i = start; i < end; ++i)
+      sum += pData[i] * pData[i];
+  }
+  return std::sqrt(sum);
+}
+
 DataContainer AlgebraEngine::TransposeBlockwise(const DataContainer & A,
     UnsignedInteger blockSize)
 {

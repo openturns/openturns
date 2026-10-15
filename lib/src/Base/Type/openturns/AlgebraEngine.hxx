@@ -226,6 +226,15 @@ public:
       const DataContainer & b,
       UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
 
+  /** Block symmetric (possibly indefinite) solve via block LU with partial pivoting */
+  static DataContainer SolveLinearSystemSymmetricBlockwise(const DataContainer & A,
+      const DataContainer & b,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
+
+  /** Block Frobenius norm via flat tiles (same terms as FrobeniusNorm, tile regrouping only) */
+  static Scalar FrobeniusNormBlockwise(const DataContainer & A,
+      UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
+
   /** Block transpose via cache-tiled copy (bitwise-identical to Transpose) */
   static DataContainer TransposeBlockwise(const DataContainer & A,
       UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger("AlgebraEngine-DefaultBlockSize"));
