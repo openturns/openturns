@@ -166,6 +166,11 @@ lensFieldMesh = lensMesher.build(lens, ot.Field(supportMesh, stacked))
 lensMesher.setUseQEF(False)
 ott.assert_almost_equal(lensFieldMesh.getVertices(), lensQEF.getVertices(), 1e-4, 1e-4)
 
+# Field with fewer columns than level sets: values are re-evaluated (warn path)
+oneColumn = disk1(supportVertices)
+lensFieldMismatch = lensMesher.build(lens, ot.Field(supportMesh, oneColumn))
+ott.assert_almost_equal(lensFieldMismatch.getVertices(), lensLegacy.getVertices(), 1e-4, 1e-4)
+
 # default value read in ResourceMap: on enables QEF at construction
 ot.ResourceMap.SetAsBool("LevelSetMesher-UseQEF", True)
 defaultOnMesher = ot.LevelSetMesher([6] * 2)
@@ -181,6 +186,19 @@ with ott.assert_raises(Exception):
 with ott.assert_raises(Exception):
     badLevelSet = ot.LevelSet(ot.SymbolicFunction(["x", "y", "z"], ["x^2+y^2+z^2"]), ot.LessOrEqual(), 1.0)
     ot.LevelSetMesher([4] * 2).build([lens[0], badLevelSet], lensBB)
+# Validation of the bounding-box overloads
+with ott.assert_raises(Exception):
+    ot.LevelSetMesher([4] * 3).build(lens[0], lensBB)
+with ott.assert_raises(Exception):
+    ot.LevelSetMesher([4] * 2).build(lens[0], ot.Interval([-1.0] * 3, [1.0] * 3))
+with ott.assert_raises(Exception):
+    ot.LevelSetMesher([4] * 2).build(lens, ot.Interval([-1.0] * 3, [1.0] * 3))
+# Validation of the field overload: support mesh dimension mismatch
+mesh3D = ot.IntervalMesher([2] * 3).build(ot.Interval([-1.0] * 3, [1.0] * 3))
+with ott.assert_raises(Exception):
+    ot.LevelSetMesher([4] * 2).build(
+        lens, ot.Field(mesh3D, ot.Sample(mesh3D.getVerticesNumber(), 2))
+    )
 
 ot.ResourceMap.SetAsBool("LevelSetMesher-SolveEquation", True)
 

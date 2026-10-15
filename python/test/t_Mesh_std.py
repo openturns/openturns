@@ -168,6 +168,23 @@ if ot.PlatformInfo.HasFeature("boost"):
     assert interEmpty.getSimplicesNumber() == 0, "expected empty intersection"
     assert interEmpty.getVerticesNumber() == 0, "expected no vertices"
 
+# Grid candidate path (above Mesh-GridThreshold pairs): same geometry as
+# the dense product path, here [0, 1]^2 of volume 1.0
+boxA = ot.IntervalMesher([8] * 2).build(ot.Interval([-1.0] * 2, [1.0] * 2))
+boxB = ot.IntervalMesher([8] * 2).build(ot.Interval([0.0] * 2, [2.0] * 2))
+assert (
+    boxA.getSimplicesNumber() * boxB.getSimplicesNumber()
+    > ot.ResourceMap.GetAsUnsignedInteger("Mesh-GridThreshold")
+), "test must take the grid path"
+gridInter = boxA.intersect(boxB)
+ott.assert_almost_equal(gridInter.getVolume(), 1.0, 1e-9, 1e-9)
+gridThreshold = ot.ResourceMap.GetAsUnsignedInteger("Mesh-GridThreshold")
+ot.ResourceMap.SetAsUnsignedInteger("Mesh-GridThreshold", 1000000)
+denseInter = boxA.intersect(boxB)
+ot.ResourceMap.SetAsUnsignedInteger("Mesh-GridThreshold", gridThreshold)
+ott.assert_almost_equal(denseInter.getVolume(), gridInter.getVolume(), 1e-12, 1e-12)
+assert denseInter.getSimplicesNumber() == gridInter.getSimplicesNumber(), "grid/dense simplex mismatch"
+
 # Mesh inequality tests
 assert m1 != m2, "different meshes"
 assert not (m1 != m1), "same mesh"
