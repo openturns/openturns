@@ -215,7 +215,7 @@ simulationAlgorithm : :class:`~openturns.EventSimulation`
 
 // ---------------------------------------------------------------------------
 %feature("docstring") OT::ActiveLearningReliabilityAlgorithm::setCriterion
-"Accessor to the learning criterion. The criterion is cloned.
+"Accessor to the learning criterion. The criterion is stored by value.
 
 Parameters
 ----------
@@ -230,8 +230,7 @@ criterion : :class:`~openturns.experimental.ActiveLearningReliabilityFunction`
 Returns
 -------
 criterion : :class:`~openturns.experimental.ActiveLearningReliabilityFunction`
-   Copy of the learning criterion as base class (thresholds and surrogate
-   state). The concrete scoring behavior is defined by the subclasses.
+   Copy of the learning criterion, dynamic type preserved.
 "
 
 // ---------------------------------------------------------------------------

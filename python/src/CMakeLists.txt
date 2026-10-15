@@ -568,6 +568,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
+                     ActiveLearningReliabilityFunctionImplementation.i ActiveLearningReliabilityFunctionImplementation_doc.i
                      ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
                      ActiveLearningUFunction.i ActiveLearningUFunction_doc.i
                      ActiveLearningEFFFunction.i ActiveLearningEFFFunction_doc.i

@@ -23,7 +23,7 @@
 #ifndef OPENTURNS_ACTIVELEARNINGEFFFUNCTION_HXX
 #define OPENTURNS_ACTIVELEARNINGEFFFUNCTION_HXX
 
-#include "openturns/ActiveLearningReliabilityFunction.hxx"
+#include "openturns/ActiveLearningReliabilityFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
 */
 
 class OT_API ActiveLearningEFFFunction
-  : public ActiveLearningReliabilityFunction
+  : public ActiveLearningReliabilityFunctionImplementation
 {
 
   CLASSNAME

@@ -36,7 +36,7 @@ static const Factory<ActiveLearningGMMFunction> Factory_ActiveLearningGMMFunctio
 
  /** Default constructor */
 ActiveLearningGMMFunction::ActiveLearningGMMFunction()
-  :ActiveLearningReliabilityFunction()
+  :ActiveLearningReliabilityFunctionImplementation()
   {
     // Nothing to do
   } 
@@ -46,7 +46,7 @@ ActiveLearningGMMFunction::ActiveLearningGMMFunction(const Scalar reliabilityThr
                                                      const Scalar learningThreshold,
                                                      const Distribution & inputDistribution,
                                                      const Scalar outputQuantileLevel)
-    : ActiveLearningReliabilityFunction(reliabilityThreshold,
+    : ActiveLearningReliabilityFunctionImplementation(reliabilityThreshold,
                                         learningThreshold)
     , inputDistribution_(inputDistribution)
     , outputQuantileLevel_(outputQuantileLevel)
@@ -66,7 +66,7 @@ String ActiveLearningGMMFunction::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << ActiveLearningReliabilityFunction::__repr__();
+      << " derived from " << ActiveLearningReliabilityFunctionImplementation::__repr__();
   return oss;
 }
 
@@ -183,7 +183,7 @@ Bool ActiveLearningGMMFunction::isMaximization() const
 /* Method save() stores the object through the StorageManager */
 void ActiveLearningGMMFunction::save(Advocate & adv) const
 {
-  ActiveLearningReliabilityFunction::save(adv);
+  ActiveLearningReliabilityFunctionImplementation::save(adv);
   adv.saveAttribute("inputDistribution_", inputDistribution_);
   adv.saveAttribute("outputQuantileLevel_", outputQuantileLevel_);
 }
@@ -191,7 +191,7 @@ void ActiveLearningGMMFunction::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ActiveLearningGMMFunction::load(Advocate & adv)
 {
-  ActiveLearningReliabilityFunction::load(adv);
+  ActiveLearningReliabilityFunctionImplementation::load(adv);
   adv.loadAttribute("inputDistribution_", inputDistribution_);
   adv.loadAttribute("outputQuantileLevel_", outputQuantileLevel_);
 }

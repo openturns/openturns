@@ -47,7 +47,7 @@
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
- * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction (openturns.experimental)
+ * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningReliabilityFunctionImplementation, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction (openturns.experimental)
  * GenericSimulationResult
 
 

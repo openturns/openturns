@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ActiveLearningReliabilityFunction implements parent class for 
- *  active learning criterion used in reliability analysis
+ *  @brief ActiveLearningReliabilityFunction is the handle of the
+ *  active learning criterion used in reliability algorithms
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -21,176 +21,107 @@
  */
 
 #include "openturns/ActiveLearningReliabilityFunction.hxx"
-#include "openturns/PersistentObjectFactory.hxx"
-#include <cmath>
+#include "openturns/ActiveLearningReliabilityFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class ActiveLearningReliabilityFunction
  */
- 
+
 CLASSNAMEINIT(ActiveLearningReliabilityFunction)
 
-static const Factory<ActiveLearningReliabilityFunction> Factory_ActiveLearningReliabilityFunction;
-
-// Default constructor
+/* Default constructor */
 ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction()
-  : EvaluationImplementation()
-  , reliabilityThreshold_(0.0)
-  , learningThreshold_(0.0)
+  : TypedInterfaceObject<ActiveLearningReliabilityFunctionImplementation>(new ActiveLearningReliabilityFunctionImplementation())
 {
   // Nothing to do
 }
 
-/* Constructor with parameters */
-ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
-                                                                     const Scalar learningThreshold)
-    : EvaluationImplementation()
-    , reliabilityThreshold_(reliabilityThreshold)
-    , learningThreshold_(learningThreshold)
+/* Constructor from implementation */
+ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const ActiveLearningReliabilityFunctionImplementation & implementation)
+  : TypedInterfaceObject<ActiveLearningReliabilityFunctionImplementation>(implementation.clone())
 {
-  if (!std::isfinite(reliabilityThreshold)) throw InvalidArgumentException(HERE) << "Reliability threshold must be finite, here threshold=" << reliabilityThreshold;
-  if (!(learningThreshold >= 0.0) || !std::isfinite(learningThreshold)) throw InvalidArgumentException(HERE) << "Learning threshold must be finite and nonnegative, here threshold=" << learningThreshold;
+  // Nothing to do
 }
 
-ActiveLearningReliabilityFunction * ActiveLearningReliabilityFunction::clone() const 
+#ifndef SWIG
+/* Constructor from implementation pointer */
+ActiveLearningReliabilityFunction::ActiveLearningReliabilityFunction(const Implementation & p_implementation)
+  : TypedInterfaceObject<ActiveLearningReliabilityFunctionImplementation>(p_implementation)
 {
-  return new ActiveLearningReliabilityFunction(*this);
+  // Nothing to do
+}
+#endif
+
+/* Gaussian process surrogate accessor */
+void ActiveLearningReliabilityFunction::setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult)
+{
+  copyOnWrite();
+  getImplementation()->setGaussianProcessRegression(gprResult);
 }
 
-Point ActiveLearningReliabilityFunction::operator()(const Point & x) const 
+GaussianProcessRegressionResult ActiveLearningReliabilityFunction::getGaussianProcessRegression() const
 {
-  return Point(1, computeAsScalar(x));
+  return getImplementation()->getGaussianProcessRegression();
 }
 
-Sample ActiveLearningReliabilityFunction::operator()(const Sample & x) const
+/* Reliability threshold accessor */
+void ActiveLearningReliabilityFunction::setReliabilityThreshold(const Scalar reliabilityThreshold)
 {
-  // The single-argument call carries no design sample: criteria that do not
-  // need it (U, EFF) ignore it, criteria that do (GMM) reject the empty one
-  return operator()(x, Sample(0, x.getDimension()));
+  copyOnWrite();
+  getImplementation()->setReliabilityThreshold(reliabilityThreshold);
 }
 
-Field ActiveLearningReliabilityFunction::operator()(const OT::Field&) const 
+Scalar ActiveLearningReliabilityFunction::getReliabilityThreshold() const
 {
-  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::operator()(const OT::Field&)";
-}
-  
-Sample ActiveLearningReliabilityFunction::operator()(const Sample & inputSample, const Sample &) const 
-{
-
-
-  const UnsignedInteger size = inputSample.getSize();
-  // avoid creating size points
-  Point inputSample_i(inputSample.getDimension());
-  Sample outS(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    for (UnsignedInteger j = 0; j < inputSample_i.getSize(); ++ j)
-    {
-      inputSample_i[j] = inputSample(i, j);
-    } 
-    outS(i, 0) = computeAsScalar(inputSample_i);
-  }
-  return outS;
+  return getImplementation()->getReliabilityThreshold();
 }
 
-Scalar ActiveLearningReliabilityFunction::computeAsScalar(const Point & ) const
+/* Learning threshold accessor */
+void ActiveLearningReliabilityFunction::setLearningThreshold(const Scalar learningThreshold)
 {
-  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::computeAsScalar(const Point & )";
+  copyOnWrite();
+  getImplementation()->setLearningThreshold(learningThreshold);
 }
 
-Bool ActiveLearningReliabilityFunction::checkConvergenceLearning(const Sample &) const
+Scalar ActiveLearningReliabilityFunction::getLearningThreshold() const
 {
-  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::checkConvergenceLearning(const Sample &)";
+  return getImplementation()->getLearningThreshold();
 }
 
+/* Score the candidate pool against the current design */
+Sample ActiveLearningReliabilityFunction::operator()(const Sample & inputSample, const Sample & inputDoE) const
+{
+  return getImplementation()->operator()(inputSample, inputDoE);
+}
+
+/* Select the infill sample to evaluate on the true function */
+Sample ActiveLearningReliabilityFunction::getInfillSample(const Sample & inputSample,
+                                                          const Sample & criterionValues) const
+{
+  return getImplementation()->getInfillSample(inputSample, criterionValues);
+}
+
+/* Test convergence of active learning */
+Bool ActiveLearningReliabilityFunction::checkConvergenceLearning(const Sample & criterionValues) const
+{
+  return getImplementation()->checkConvergenceLearning(criterionValues);
+}
+
+/* Selection direction */
 Bool ActiveLearningReliabilityFunction::isMaximization() const
 {
-  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::isMaximization()";
-}
-
-/* Return sample corresponding to  criterion*/
-Sample ActiveLearningReliabilityFunction::getInfillSample(const Sample &,
-                                                          const Sample &) const 
-{
-  throw NotYetImplementedException(HERE) << "In ActiveLearningReliabilityFunction::getInfillSample(const Sample & , const Sample & criterionValues) "; 
+  return getImplementation()->isMaximization();
 }
 
 /* String converter */
 String ActiveLearningReliabilityFunction::__repr__() const
 {
   OSS oss;
-  oss << "class=" << getClassName()
-      << " derived from " << EvaluationImplementation::__repr__();
+  oss << "class=" << ActiveLearningReliabilityFunction::GetClassName()
+      << " implementation=" << getImplementation()->__repr__();
   return oss;
-}
-
-
-/* update of GPR model */
-void ActiveLearningReliabilityFunction::setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult)
-{
-  gprResult_ = gprResult;
-  gprCov_ = GaussianProcessConditionalCovariance(gprResult);
-}
-
-/* Dimensions accessors */
-UnsignedInteger ActiveLearningReliabilityFunction::getInputDimension() const
-{
-  return gprResult_.getMetaModel().getInputDimension();
-}
-
-UnsignedInteger ActiveLearningReliabilityFunction::getOutputDimension() const
-{
-  return 1;
-}
-/* accessor reliability threshold */
-void ActiveLearningReliabilityFunction::setReliabilityThreshold(const Scalar reliabilityThreshold)
-{
-  if (!std::isfinite(reliabilityThreshold)) throw InvalidArgumentException(HERE) << "Reliability threshold must be finite, here threshold=" << reliabilityThreshold;
-  reliabilityThreshold_ = reliabilityThreshold;
-}
-
-Scalar ActiveLearningReliabilityFunction::getReliabilityThreshold() const
-{
-  return reliabilityThreshold_;
-}
-
-/* accessor learning threshold */
-void ActiveLearningReliabilityFunction::setLearningThreshold(const Scalar learningThreshold)
-{
-  if (!(learningThreshold >= 0.0) || !std::isfinite(learningThreshold)) throw InvalidArgumentException(HERE) << "Learning threshold must be finite and nonnegative, here threshold=" << learningThreshold;
-  learningThreshold_ = learningThreshold;
-}
-
-Scalar ActiveLearningReliabilityFunction::getLearningThreshold() const
-{
-  return learningThreshold_;
-}
-
-GaussianProcessRegressionResult ActiveLearningReliabilityFunction::getGaussianProcessRegression() const
-{
-  return gprResult_;
-}
-
-/* Method save() stores the object through the StorageManager */
-void ActiveLearningReliabilityFunction::save(Advocate & adv) const
-{
-  EvaluationImplementation::save(adv);
-  adv.saveAttribute("reliabilityThreshold_", reliabilityThreshold_);
-  adv.saveAttribute("gprResult_", gprResult_);
-  adv.saveAttribute("learningThreshold_", learningThreshold_);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void ActiveLearningReliabilityFunction::load(Advocate & adv)
-{
-  EvaluationImplementation::load(adv);
-  adv.loadAttribute("reliabilityThreshold_", reliabilityThreshold_);
-  adv.loadAttribute("gprResult_", gprResult_);
-  adv.loadAttribute("learningThreshold_", learningThreshold_);
-  // gprCov_ is redundant with gprResult_: rebuild it instead of persisting it
-  gprCov_ = GaussianProcessConditionalCovariance(gprResult_);
 }
 
 END_NAMESPACE_OPENTURNS

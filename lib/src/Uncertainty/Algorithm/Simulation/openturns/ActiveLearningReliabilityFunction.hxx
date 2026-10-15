@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ActiveLearningReliabilityFunction implements parent class for 
+ *  @brief ActiveLearningReliabilityFunction is the handle of the
  *  active learning criterion used in reliability algorithms
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -23,19 +23,26 @@
 #ifndef OPENTURNS_ACTIVELEARNINGRELIABILITYFUNCTION_HXX
 #define OPENTURNS_ACTIVELEARNINGRELIABILITYFUNCTION_HXX
 
-#include "openturns/EvaluationImplementation.hxx"
-#include "openturns/GaussianProcessRegressionResult.hxx"
-#include "openturns/GaussianProcessConditionalCovariance.hxx"
-#include "openturns/Distribution.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ActiveLearningReliabilityFunctionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class ActiveLearningReliabilityFunction
-*/
+ *
+ * Handle of the active learning (infill) criterion for reliability
+ * analysis. The implementation hierarchy
+ * (ActiveLearningReliabilityFunctionImplementation, ActiveLearningUFunction,
+ * ActiveLearningEFFFunction, ActiveLearningGMMFunction) carries the
+ * scoring behavior; this handle provides value semantics so owners
+ * such as ActiveLearningReliabilityAlgorithm hold it by value, without
+ * Pointer members, null checks or manual persistence dispatch.
+ * Concrete criteria convert implicitly to this handle.
+ */
 
 class OT_API ActiveLearningReliabilityFunction
-  : public EvaluationImplementation
+  : public TypedInterfaceObject<ActiveLearningReliabilityFunctionImplementation>
 {
 
   CLASSNAME
@@ -43,66 +50,45 @@ public:
 
   /** Default constructor */
   ActiveLearningReliabilityFunction();
-  
-  /** Default constructor */  
-  ActiveLearningReliabilityFunction(const Scalar reliabilityThreshold,
-                                    const Scalar learningThreshold);
-                                    
-                                    
-  /** Virtual constructor */
-  ActiveLearningReliabilityFunction * clone() const override;
 
-  /** Input dimension accessor, defined by the Gaussian process surrogate */
-  UnsignedInteger getInputDimension() const override;
+  /** Constructor from implementation */
+  ActiveLearningReliabilityFunction(const ActiveLearningReliabilityFunctionImplementation & implementation);
 
-  /** Output dimension accessor, always 1 (scalar criterion) */
-  UnsignedInteger getOutputDimension() const override;
-    
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  ActiveLearningReliabilityFunction(const Implementation & p_implementation);
+#endif
 
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
-  
-  /** Accessors */
+  /** Gaussian process surrogate accessor */
   void setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult);
 
   GaussianProcessRegressionResult getGaussianProcessRegression() const;
 
+  /** Reliability threshold accessor */
   void setReliabilityThreshold(const Scalar reliabilityThreshold);
 
   Scalar getReliabilityThreshold() const;
 
+  /** Learning threshold accessor */
   void setLearningThreshold(const Scalar learningThreshold);
 
   Scalar getLearningThreshold() const;
-  
-  /** String converter */
-  String __repr__() const override;
-  
-  virtual Sample operator()(const Sample & inputSample, const Sample &) const; 
-  
-  /* return infill Sample */
-  virtual Sample getInfillSample(const Sample & inputSample,
-                                 const Sample & criterionValues) const ;
-                                 
-  virtual Bool checkConvergenceLearning(const Sample & criterionValues) const;
+
+  /** Score the candidate pool against the current design */
+  Sample operator()(const Sample & inputSample, const Sample & inputDoE) const;
+
+  /** Select the infill sample to evaluate on the true function */
+  Sample getInfillSample(const Sample & inputSample,
+                         const Sample & criterionValues) const;
+
+  /** Test convergence of active learning */
+  Bool checkConvergenceLearning(const Sample & criterionValues) const;
 
   /** Selection direction: true if the infill point maximizes the criterion (EFF, GMM), false if it minimizes it (U) */
-  virtual Bool isMaximization() const;
+  Bool isMaximization() const;
 
-  Point operator()(const Point & x) const override;
-  Sample operator()(const Sample & x) const override;
-  Field operator()(const Field & x) const override;
-
-protected:
-
-  virtual Scalar computeAsScalar(const Point & x) const;
-  
-  Scalar reliabilityThreshold_ = 0.0;
-  Scalar learningThreshold_ = 0.0;
-  GaussianProcessRegressionResult gprResult_;
-  GaussianProcessConditionalCovariance gprCov_;
+  /** String converter */
+  String __repr__() const override;
 
 } ; /* class ActiveLearningReliabilityFunction */
 
