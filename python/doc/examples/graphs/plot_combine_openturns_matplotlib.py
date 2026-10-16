@@ -11,9 +11,8 @@ is a `matplotlib` figure. Hence we can:
    and enrich them with `matplotlib`,
 -  draw one or several native graphs into an existing `matplotlib` figure.
 
-The example uses a standard Normal distribution: its PDF is drawn using the library,
- the failure threshold, the shaded tail and the annotations
-are added with `matplotlib`.
+The example uses a standard Normal distribution: its PDF is drawn using the library, 
+the failure threshold, the shaded tail and the annotations are added with `matplotlib`.
 """
 
 # %%
@@ -121,6 +120,8 @@ axs[0, 1].axhline(0.5, color="black", linestyle=":", label="median level")
 axs[0, 1].plot([0.0], [0.5], "ro", label="median")
 axs[0, 1].legend()
 fig.suptitle("Four native graphs embedded in a Matplotlib figure")
-fig.subplots_adjust(left=0.07, right=0.95, bottom=0.08, top=0.90, wspace=0.3, hspace=0.5)
+fig.subplots_adjust(
+    left=0.07, right=0.95, bottom=0.08, top=0.90, wspace=0.3, hspace=0.5
+)
 
 otv.View.ShowAll()
