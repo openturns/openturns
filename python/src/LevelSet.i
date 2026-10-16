@@ -44,4 +44,22 @@ namespace OT {
 
 %template(LevelSetCollection) OT::Collection<OT::LevelSet>;
 
+%typemap(in) const OT::Collection<OT::LevelSet> & (OT::Pointer<OT::Collection<OT::LevelSet> > temp) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
+    // From collection object, ok
+  } else {
+    try {
+      temp = OT::buildCollectionFromPySequence< OT::LevelSet >($input);
+      $1 = temp.get();
+    } catch (const OT::InvalidArgumentException &) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of LevelSet");
+    }
+  }
+}
+
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::Collection<OT::LevelSet> & {
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::LevelSet >($input);
+}
+
 %include openturns/LevelSet.hxx
