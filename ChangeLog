@@ -70,7 +70,6 @@
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
 
-==== API changes ====
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra", values "LAPACK", "HMAT" or "HODLR"); GaussianProcessRegression inherits the linear algebra method from its GaussianProcessFitterResult, and GeneralLinearModelAlgorithm still relies on its own key "GeneralLinearModelAlgorithm-LinearAlgebra" (values "LAPACK" or "HMAT")
  * GaussianProcessFitter: analytical amplitude estimate now works with the HODLR backend; the HODLR path uses the precomputed quadratic form y^T R^{-1} y instead of rho_.normSquare(), since rho_ is the raw residual rather than L^{-1}(residual)
  * HODLRMatrix: new method applyNugget() adds a relative nugget to the diagonal of the covariance matrix, enabled by default in the GP covariance assembly path via the ResourceMap key "HODLRMatrix-Nugget" (default 1.0e-8, set to zero to disable)
