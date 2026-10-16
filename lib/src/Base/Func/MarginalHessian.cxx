@@ -127,7 +127,8 @@ void MarginalHessian::load(Advocate & adv)
 
 Bool MarginalHessian::equals(const HessianImplementation & other) const
 {
-  return *this == dynamic_cast<const MarginalHessian &>(other);
+  const MarginalHessian * p_other = dynamic_cast<const MarginalHessian *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 

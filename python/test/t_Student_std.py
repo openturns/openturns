@@ -366,3 +366,34 @@ ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", oldGenz)
 # --- Student: nonpositive degrees of freedom are rejected ---
 with ott.assert_raises(Exception):
     ot.Student(5.0, 0.0, 1.0).setNu(-1.0)
+
+# --- Coverage: ctors, equality, parameters, degenerate sigma, high-dim sample ---
+d3_cov = ot.Student(5.0, [0.0, 0.0], [1.0, 1.0])
+assert d3_cov.getDimension() == 2
+with ott.assert_raises(Exception):
+    ot.Student(5.0, [0.0] * 2, ot.CovarianceMatrix(3))
+with ott.assert_raises(Exception):
+    ot.Student(5.0, [0.0] * 2, ot.CovarianceMatrix([[1, 0], [0, -1]]))
+d1_cov = ot.Student(5, 0, 1)
+assert d1_cov == ot.Student(5, 0, 1)
+assert d1_cov != ot.Student(6, 0, 1)
+assert d1_cov == d1_cov
+d1_cov.setParametersCollection(d1_cov.getParametersCollection())
+d2d_cov = ot.Student(5.0, [0.0, 0.0], [1.0, 1.0], ot.CorrelationMatrix(2))
+d2d_cov.setParametersCollection(d2d_cov.getParametersCollection())
+R_cov = ot.CorrelationMatrix(2)
+deg_cov = ot.Student(5.0, [0.0, 0.0], [0.0, 1.0], R_cov)
+ott.assert_almost_equal(deg_cov.computeCDF([-1.0, 0.0]), 0.0)
+assert deg_cov.computeCDF([0.0, 0.0]) > 0.0
+assert deg_cov.computeProbability(ot.Interval([-1, -1], [1, 1])) > 0.0
+oldGenz_cov = ot.ResourceMap.GetAsUnsignedInteger("Genz-DefaultSampleSize")
+ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", 2**12)
+R7_cov = ot.CorrelationMatrix(7)
+s7_cov = ot.Student(5.0, [0.0] * 7, [1.0] * 7, R7_cov)
+assert len(s7_cov.computeCDF(ot.Normal(7).getSample(3))) == 3
+ot.ResourceMap.SetAsUnsignedInteger("Genz-DefaultSampleSize", oldGenz_cov)
+R3_cov = ot.CorrelationMatrix(3)
+dd_cov = ot.Student(5.0, [0.0] * 3, [0.0, 1.0, 1.0], R3_cov)
+assert dd_cov.computeConditionalPDF(0.5, [0.0]) >= 0.0
+assert 0.0 <= dd_cov.computeConditionalCDF(0.5, [0.0]) <= 1.0
+dd_cov.computeConditionalQuantile(0.5, [0.0])

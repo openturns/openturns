@@ -93,7 +93,8 @@ void DatabaseEvaluation::setInputSample(const Sample &inputSample)
 
 Bool DatabaseEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const DatabaseEvaluation &>(other);
+  const DatabaseEvaluation * p_other = dynamic_cast<const DatabaseEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 Sample DatabaseEvaluation::getInputSample() const

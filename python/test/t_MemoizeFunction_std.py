@@ -110,3 +110,42 @@ f0 = ot.MemoizeFunction(f.getMarginal([0]))
 f0(x)
 assert f.getInputHistory().getSize() == len(x), "wrong size"
 assert f.getCacheInput().getSize() == len(x), "wrong size"
+
+# Extended cache API coverage (no prints)
+defaultMemo = ot.MemoizeFunction()
+assert defaultMemo.getInputDimension() == 0
+assert "Function" in repr(defaultMemo)
+g = ot.SymbolicFunction(["x"], ["x^2"])
+memo = ot.MemoizeFunction(g)
+assert memo.isCacheEnabled()
+memo.disableCache()
+assert not memo.isCacheEnabled()
+memo.enableCache()
+assert memo.isCacheEnabled()
+memo([1.0])
+memo([1.0])
+assert memo.getCacheHits() == 1
+memo.clearCache()
+assert memo.getCacheHits() == 0
+assert memo.getCacheInput().getSize() == 0
+assert memo.getCacheOutput().getSize() == 0
+memo.addCacheContent([[2.0]], [[4.0]])
+assert_almost_equal(memo.getCacheInput()[0], [2.0], 0.0, 0.0)
+assert_almost_equal(memo.getCacheOutput()[0], [4.0], 0.0, 0.0)
+assert_almost_equal(memo([2.0]), [4.0], 0.0, 0.0)
+assert memo.getCacheHits() == 1
+memo.setEvaluation(ot.SymbolicFunction(["x"], ["2*x"]).getEvaluation())
+assert_almost_equal(memo([3.0]), [6.0], 0.0, 0.0)
+assert memo == memo
+assert not (memo == ot.MemoizeFunction(g))
+# constructor with an explicit history strategy
+memoHS = ot.MemoizeFunction(g, ot.HistoryStrategy())
+assert_almost_equal(memoHS([2.0]), [4.0], 0.0, 0.0)
+# constructor rewires a non-centered finite-difference gradient
+ncFunc = ot.SymbolicFunction(["x"], ["x^2"])
+ncFunc.setGradient(ot.NonCenteredFiniteDifferenceGradient(1e-5, ncFunc.getEvaluation()))
+memoNC = ot.MemoizeFunction(ncFunc)
+assert_almost_equal(memoNC.gradient([2.0])[0, 0], 4.0, 1e-4, 1e-4)
+# constructor rewires centered finite differences of a PythonFunction
+memoPy = ot.MemoizeFunction(ot.PythonFunction(1, 1, lambda t: [t[0] ** 2]))
+assert_almost_equal(memoPy.gradient([2.0])[0, 0], 4.0, 1e-4, 1e-4)

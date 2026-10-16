@@ -125,9 +125,9 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
       for (UnsignedInteger j = 0; j < evaluation_.getInputDimension(); ++j)
       {
         const Scalar lambda_j = evaluation_.getLambda()[j];
-        const Scalar x = input_(i, j) - evaluation_.getShift()[j];
-        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
-        else output_(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
+        const Scalar x = input_(i, j);
+        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x) - evaluation_.getShift()[j];
+        else output_(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j) - evaluation_.getShift()[j];
       } // j
     } // i
   } // operator ()
@@ -158,14 +158,14 @@ Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
   // This last one must be done by user or, as the evaluation is used in a stochastic context, in the BoxCoxTransform class
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
-    const Scalar x = inP[index] - shift_[index];
+    const Scalar x = inP[index];
     const Scalar lambda_i = lambda_[index];
-    if (std::abs(lambda_i * x * x) < 1e-8) result[index] = exp(x) * (1.0 - 0.5 * lambda_i * x * x);
+    if (std::abs(lambda_i * x * x) < 1e-8) result[index] = exp(x) * (1.0 - 0.5 * lambda_i * x * x) - shift_[index];
     else
     {
       const Scalar evaluation = lambda_i * x + 1.0;
       if (!(evaluation > 0)) throw InvalidArgumentException(HERE) << "Can not apply the inverse Box Cox function " ;
-      result[index] = pow(evaluation, 1.0 / lambda_i);
+      result[index] = pow(evaluation, 1.0 / lambda_i) - shift_[index];
     }
   }
   callsNumber_.increment();
@@ -202,7 +202,8 @@ void InverseBoxCoxEvaluation::load(Advocate & adv)
 
 Bool InverseBoxCoxEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const InverseBoxCoxEvaluation &>(other);
+  const InverseBoxCoxEvaluation * p_other = dynamic_cast<const InverseBoxCoxEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

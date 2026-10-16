@@ -67,7 +67,10 @@ KarhunenLoeveReduction * KarhunenLoeveReduction::clone() const
 /* Comparison operator */
 Bool KarhunenLoeveReduction::operator ==(const KarhunenLoeveReduction & other) const
 {
-  return connection_ == other.connection_;
+  if (this == &other) return true;
+  // NOTE: connection_ members are compared through base-class operator==,
+  // so also compare the base dimensions to tell apart e.g. default vs built objects
+  return (getInputDimension() == other.getInputDimension()) && (getOutputDimension() == other.getOutputDimension()) && (connection_ == other.connection_);
 }
 
 /* String converter */

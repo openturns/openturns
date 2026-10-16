@@ -128,7 +128,8 @@ void ConstantHessian::load(Advocate & adv)
 
 Bool ConstantHessian::equals(const HessianImplementation & other) const
 {
-  return *this == dynamic_cast<const ConstantHessian &>(other);
+  const ConstantHessian * p_other = dynamic_cast<const ConstantHessian *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS
