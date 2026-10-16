@@ -25,10 +25,18 @@ imgVertices1 = ot.Sample(
 )
 field1 = ot.Field(refMesh1, imgVertices1)
 dist1 = otexp.PushForwardOverMesh(field1)
-pdf1 = [dist1.computePDF(p) for p in imgVertices1]
+# Evaluate the PDF at the mapped segment midpoints: interior vertices are
+# shared by two segments and their first-match value depends on segment
+# order, while midpoints lie strictly inside one image segment each.
+midpoints1 = ot.Sample(
+    [[0.5 * (imgVertices1[i][0] + imgVertices1[i + 1][0]),
+      0.5 * (imgVertices1[i][1] + imgVertices1[i + 1][1])]
+     for i in range(nSeg)]
+)
+pdf1 = [dist1.computePDF(p) for p in midpoints1]
 ax1.plot(circleX, circleY, "k--", lw=1.0, label="unit disk")
 sc1 = ax1.scatter(
-    [p[0] for p in imgVertices1], [p[1] for p in imgVertices1], c=pdf1, cmap="viridis", s=12
+    [p[0] for p in midpoints1], [p[1] for p in midpoints1], c=pdf1, cmap="viridis", s=12
 )
 ax1.set_aspect("equal", adjustable="box")
 ax1.set_title("n=1, p=2: PDF on curve mesh")

@@ -124,8 +124,9 @@ void PushForwardOverMesh::setAntecedentAndValues(const Distribution & antecedent
     throw InvalidArgumentException(HERE) << "Error: the antecedent must have a dimension equal to the dimension of the reference mesh, here the dimension of the antecedent is " << antecedent.getDimension() << " and the dimension of the reference mesh is " << inputDimension;
   if (!antecedent.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: the antecedent must be absolutely continuous, here isContinuous()=" << antecedent.isContinuous();
-  if ((outputDimension < inputDimension) && ((inputDimension - outputDimension != 1) || (antecedent.getImplementation()->getClassName() != "UniformOverMesh")))
-    throw NotYetImplementedException(HERE) << "Error: the co-area case with output dimension lower than the reference dimension is only implemented for a codimension 1 uniform push-forward (n-p==1 with UniformOverMesh antecedent), here reference dimension=" << inputDimension << " and ambient dimension=" << outputDimension << " with antecedent=" << antecedent.getImplementation()->getClassName();
+  const UnsignedInteger intrinsicDimension = values.getMesh().getIntrinsicDimension();
+  if ((outputDimension < intrinsicDimension) && ((intrinsicDimension != 2) || (inputDimension != 2) || (outputDimension != 1) || (antecedent.getImplementation()->getClassName() != "UniformOverMesh")))
+    throw NotYetImplementedException(HERE) << "Error: the co-area case with output dimension lower than the intrinsic reference dimension is only implemented for a 2D triangle reference mesh mapped to 1D with a UniformOverMesh antecedent, here intrinsic dimension=" << intrinsicDimension << ", reference dimension=" << inputDimension << ", output dimension=" << outputDimension << " and antecedent=" << antecedent.getImplementation()->getClassName();
   antecedent_ = antecedent;
   values_ = values;
   evaluation_ = P1LagrangeEvaluation(values_);
@@ -150,12 +151,12 @@ void PushForwardOverMesh::computeWeights()
   const UnsignedInteger simplicesNumber = simplices.getSize();
   weights_ = Point(simplicesNumber, 0.0);
   const UnsignedInteger outputDimension = imageVertices.getDimension();
-  const UnsignedInteger inputDimension = referenceVertices.getDimension();
-  if (outputDimension < inputDimension)
+  if (outputDimension < intrinsicDimension)
   {
-    // Co-area MVP (p<n, n-p==1, uniform): no constant per-simplex weight,
-    // the density needs the y-dependent fiber measure divided by the local
-    // Jacobian, evaluated on the fly in computePDF(). Keep unit weights.
+    // Co-area MVP (2D triangle to 1D, uniform): no constant per-simplex
+    // weight, the density needs the y-dependent fiber measure divided by
+    // the local Jacobian, evaluated on the fly in computePDF().
+    // Keep unit weights.
     for (UnsignedInteger i = 0; i < simplicesNumber; ++i) weights_[i] = 1.0;
     return;
   }
@@ -220,8 +221,7 @@ Field PushForwardOverMesh::getValues() const
 /* Image mesh accessor */
 Mesh PushForwardOverMesh::getMesh() const
 {
-  const UnsignedInteger inputDimension = values_.getMesh().getVertices().getDimension();
-  if (getDimension() < inputDimension)
+  if (getDimension() < values_.getMesh().getIntrinsicDimension())
     throw NotYetImplementedException(HERE) << "Error: getMesh() is not yet implemented for the co-area case (p<n): the collapsed image simplices need extreme-vertex reconstruction";
   return Mesh(values_.getValues(), values_.getMesh().getSimplices());
 }
@@ -229,13 +229,13 @@ Mesh PushForwardOverMesh::getMesh() const
 /* Intrinsic dimension accessor */
 UnsignedInteger PushForwardOverMesh::getIntrinsicDimension() const
 {
-  const UnsignedInteger inputDimension = values_.getMesh().getVertices().getDimension();
-  if (getDimension() < inputDimension)
+  const UnsignedInteger intrinsicDimension = values_.getMesh().getIntrinsicDimension();
+  if (getDimension() < intrinsicDimension)
   {
     // Co-area MVP: the image is assumed full-dimensional (rank p)
     return getDimension();
   }
-  return values_.getMesh().getIntrinsicDimension();
+  return intrinsicDimension;
 }
 
 /* Get one realization of the distribution */
@@ -328,7 +328,7 @@ Scalar PushForwardOverMesh::computePDF(const Point & point) const
   const UnsignedInteger inputDimension = referenceVertices.getDimension();
   const UnsignedInteger intrinsicDimension = referenceMesh.getIntrinsicDimension();
   const UnsignedInteger simplicesNumber = simplices.getSize();
-  if (outputDimension < inputDimension)
+  if (outputDimension < intrinsicDimension)
   {
     // Co-area MVP (2D->1D, uniform): f_Y(y) = sum_s antecedentPDF * length(fiber_s(y)) / J_s
     // with J_s = ||A_s|| the local projection Jacobian and fiber_s(y) the

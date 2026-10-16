@@ -72,19 +72,13 @@ Point SphereManifold::logMap(const Point & basePoint,
   checkAmbientDimension(point, "SphereManifold::logMap point");
   const Point p(projectToManifold(basePoint));
   const Point q(projectToManifold(point));
-  Scalar cosDistance = 0.0;
-  for (UnsignedInteger i = 0; i < ambientDimension_; ++i)
-    cosDistance += p[i] * q[i];
-  // Clamp the scalar product to [-1, 1] for numerical safety
-  cosDistance = std::max(-1.0, std::min(1.0, cosDistance));
-  const Scalar distance = std::acos(cosDistance);
+  const Scalar cosDistance = p.dot(q);
+  const Point orthogonal(q - p * cosDistance);
+  const Scalar sinDistance = orthogonal.norm();
+  const Scalar distance = std::atan2(sinDistance, cosDistance);
   if (distance <= epsilon_) return Point(ambientDimension_);
-  const Scalar sinDistance = std::sin(distance);
   if (sinDistance <= epsilon_) throw InvalidArgumentException(HERE) << "Error: the logarithmic map is not defined at the cut locus (antipodal points) of the base point";
-  Point result(ambientDimension_);
-  for (UnsignedInteger i = 0; i < ambientDimension_; ++i)
-    result[i] = (q[i] - cosDistance * p[i]) * (distance / sinDistance);
-  return result;
+  return orthogonal * (distance / sinDistance);
 }
 
 /* Closest-point projection of an ambient vector onto the sphere */
@@ -127,11 +121,8 @@ Scalar SphereManifold::getGeodesicDistance(const Point & point1,
   checkAmbientDimension(point2, "SphereManifold::getGeodesicDistance second point");
   const Point p(projectToManifold(point1));
   const Point q(projectToManifold(point2));
-  Scalar cosDistance = 0.0;
-  for (UnsignedInteger i = 0; i < ambientDimension_; ++i)
-    cosDistance += p[i] * q[i];
-  cosDistance = std::max(-1.0, std::min(1.0, cosDistance));
-  return std::acos(cosDistance);
+  const Scalar cosDistance = p.dot(q);
+  return std::atan2((q - p * cosDistance).norm(), cosDistance);
 }
 
 /* Orthonormal basis of the tangent space at basePoint, Gram-Schmidt on the canonical axes */

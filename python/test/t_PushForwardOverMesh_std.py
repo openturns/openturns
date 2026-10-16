@@ -206,6 +206,26 @@ ott.assert_almost_equal(
     squareProjDistribution.computePDF([1.5]), 0.0, 0.0, 1e-12
 )
 
+# Intrinsic-preserving embedded map: segment in R^2 (intrinsic 1) projected
+# onto its x-coordinate. The weighted piecewise-affine path applies (output
+# dimension equals the intrinsic dimension), giving Uniform(0, 2).
+segmentProjMesh = ot.Mesh(
+    ot.Sample([[0.0, 0.0], [2.0, 0.0]]), ot.IndicesCollection([[0, 1, 1]])
+)
+assert segmentProjMesh.getDimension() == 2
+assert segmentProjMesh.getIntrinsicDimension() == 1
+segmentProjDistribution = otexp.PushForwardOverMesh(
+    ot.Field(segmentProjMesh, ot.Sample([[0.0], [2.0]]))
+)
+assert segmentProjDistribution.getDimension() == 1
+assert segmentProjDistribution.getIntrinsicDimension() == 1
+ott.assert_almost_equal(
+    segmentProjDistribution.computePDF([1.0]), 0.5, 1e-10, 0.0
+)
+ott.assert_almost_equal(
+    segmentProjDistribution.computePDF([3.0]), 0.0, 0.0, 1e-12
+)
+
 # Exception tests: methods that throw exceptions
 with ott.assert_raises(TypeError):
     # the antecedent must be absolutely continuous

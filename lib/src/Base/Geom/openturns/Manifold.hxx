@@ -48,7 +48,7 @@ public:
   Manifold();
 
   /** Copy-Standard constructor */
-  explicit Manifold(const ManifoldImplementation & implementation);
+  Manifold(const ManifoldImplementation & implementation);
 
   /** Ambient dimension accessor */
   UnsignedInteger getAmbientDimension() const;
