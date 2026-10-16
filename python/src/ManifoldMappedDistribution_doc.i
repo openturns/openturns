@@ -1,0 +1,127 @@
+%feature("docstring") OT::ManifoldMappedDistribution
+R"RAW(Manifold mapped distribution.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+The distribution on a Riemannian manifold obtained by pushing forward a
+background Euclidean distribution of dimension equal to the intrinsic
+dimension of the manifold through the exponential map at a chart center:
+a background realization :math:`\inputReal` is mapped to
+:math:`\exp(\vect{c}, \sum_k \inputReal_k \vect{B}_k)` where the :math:`\vect{B}_k` form the tangent
+basis of the manifold at the chart center :math:`\vect{c}`.
+
+The density with respect to the Riemannian volume follows from the
+change of variables formula through the logarithmic map, corrected by
+the volume density of the exponential map. At the cut locus of the chart
+center the density is singular and is not evaluated: the background
+distribution is expected to be concentrated around the origin so that the
+dropped cut-locus mass is negligible (no wrapping sum, unlike
+:class:`~openturns.experimental.WrappedNormal`). Points off the manifold carry no mass:
+their log-density is :math:`-\infty`.
+
+Parameters
+----------
+background : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
+    The background Euclidean distribution, where :math:`\inputDim` is the
+    intrinsic dimension of the manifold.
+manifold : :class:`~openturns.experimental.Manifold`
+    The manifold supporting the distribution.
+chartCenter : sequence of float
+    Chart center on the manifold.
+
+See also
+--------
+Manifold, PushForwardDistribution
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``ManifoldMappedDistribution-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
+  realizations used to estimate the mean and the covariance.
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> manifold = otexp.Manifold(otexp.SphereManifold(3))
+>>> background = ot.Normal(2)
+>>> chartCenter = [0.0, 0.0, 1.0]
+>>> distribution = otexp.ManifoldMappedDistribution(background, manifold, chartCenter)
+>>> print(distribution.getDimension())
+3
+>>> print(distribution.computePDF(chartCenter))
+0.1591549...
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::getBackground
+R"RAW(Accessor to the background distribution.
+
+Returns
+-------
+background : :class:`~openturns.Distribution`
+    The background Euclidean distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::setBackground
+R"RAW(Accessor to the background distribution.
+
+Parameters
+----------
+background : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
+    The background Euclidean distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::getManifold
+R"RAW(Accessor to the manifold.
+
+Returns
+-------
+manifold : :class:`~openturns.experimental.Manifold`
+    The manifold supporting the distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::setManifold
+R"RAW(Accessor to the manifold.
+
+Parameters
+----------
+manifold : :class:`~openturns.experimental.Manifold`
+    The manifold supporting the distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::getChartCenter
+R"RAW(Accessor to the chart center.
+
+Returns
+-------
+chartCenter : :class:`~openturns.Point`
+    Chart center on the manifold.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::setChartCenter
+R"RAW(Accessor to the chart center.
+
+Parameters
+----------
+chartCenter : sequence of float
+    Chart center on the manifold.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ManifoldMappedDistribution::getTangentBasis
+R"RAW(Accessor to the tangent basis at the chart center.
+
+Returns
+-------
+basis : :class:`~openturns.Sample`
+    Orthonormal ambient vectors spanning the tangent space.)RAW"

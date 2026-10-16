@@ -24,6 +24,7 @@
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
+ * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -31,6 +32,7 @@
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
+ * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)

@@ -578,6 +578,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      BinghamFactory.i BinghamFactory_doc.i
                      ManifoldImplementation.i ManifoldImplementation_doc.i
                      Manifold.i Manifold_doc.i
+                     ManifoldMappedDistribution.i ManifoldMappedDistribution_doc.i
                      SphereManifold.i SphereManifold_doc.i
                      SO3Manifold.i SO3Manifold_doc.i
                      MatrixFisher.i MatrixFisher_doc.i
