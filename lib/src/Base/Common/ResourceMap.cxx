@@ -1527,6 +1527,10 @@ void ResourceMap::loadDefaultConfiguration()
   // WrappedNormalFactory parameters //
   addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
 
+  // UniformOverMeshFactory parameters //
+  addAsUnsignedInteger("UniformOverMeshFactory-NearestNeighbors", 12);
+  addAsScalar("UniformOverMeshFactory-MinimumAreaFactor", 1.0e-3);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 
