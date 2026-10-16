@@ -14,6 +14,7 @@
  * Removed deprecated MixedHistogramUserDefined class alias
  * Removed deprecated ProcessSample.setField(Field, int) in favor of ProcessSample.setField(int, Field)
  * Removed deprecated viewer.PlotDesign
+ * Added IshigamiModel.getFunctionalChaosResult to the Ishigami use case: it returns the reference FunctionalChaosResult built from the 46 exact polynomial chaos coefficients, exposing the reference surrogate (getMetaModel) and the exact Sobol indices
 
 === Documentation ===
 
