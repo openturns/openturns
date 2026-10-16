@@ -11,9 +11,9 @@ is a `matplotlib` figure. Hence we can:
    and enrich them with Matplotlib,
 -  draw one or several native graphs into an existing Matplotlib figure.
 
-The example uses a standard Normal distribution: its PDF is drawn by
-OpenTURNS, the failure threshold, the shaded tail and the annotations
-are added with Matplotlib.
+The example uses a standard Normal distribution: its PDF is drawn using the library,
+ the failure threshold, the shaded tail and the annotations
+are added with `matplotlib`.
 """
 
 # sphinx_gallery_thumbnail_number = 2
@@ -95,7 +95,7 @@ new_scale.set_xlabel("X")
 # first with :func:`~matplotlib.pyplot.subplots`, then draw each
 # native graph on a chosen ``Axes`` with the ``figure`` and ``axes``
 # arguments. Extra `matplotlib`-only elements can then be mixed freely.
-# Function `subplots_adjust` of `matpltlib` can be used to separate the graphs
+# Function `subplots_adjust` of `matplotlib` can be used to separate the graphs
 # within the grid layout.
 graph_cdf = normal.drawCDF()
 graph_cdf.setLegends(["CDF of X"])
@@ -121,6 +121,6 @@ axs[0, 1].axhline(0.5, color="black", linestyle=":", label="median level")
 axs[0, 1].plot([0.0], [0.5], "ro", label="median")
 axs[0, 1].legend()
 fig.suptitle("Four native graphs embedded in a Matplotlib figure")
-plt.subplots_adjust(left=0.07, right=0.95, bottom=0.08, top=0.90, wspace=0.3, hspace=0.5)
+fig.subplots_adjust(left=0.07, right=0.95, bottom=0.08, top=0.90, wspace=0.3, hspace=0.5)
 
 otv.View.ShowAll()
