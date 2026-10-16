@@ -461,6 +461,7 @@ ot_pyinstallcheck_test (Chi_std)
 ot_pyinstallcheck_test (ChiFactory_std)
 ot_pyinstallcheck_test (ChiSquare_std)
 ot_pyinstallcheck_test (ChiSquareFactory_std)
+ot_pyinstallcheck_test (ChristoffelDistribution_std IGNOREOUT)
 ot_pyinstallcheck_test (ClaytonCopula_std)
 ot_pyinstallcheck_test (ClaytonCopulaFactory_std)
 ot_pyinstallcheck_test (BlockIndependentCopula_std)
@@ -743,6 +744,10 @@ ot_pyinstallcheck_test (Experiment_python)
 ot_pyinstallcheck_test (Splitter_std IGNOREOUT)
 ot_pyinstallcheck_test (TensorProductExperiment_std IGNOREOUT)
 ot_pyinstallcheck_test (FejerExperiment_std IGNOREOUT)
+ot_pyinstallcheck_test (ChristoffelSubsampleExperiment_std IGNOREOUT)
+# Several full thinnings at m = 30-50: about 90 s on the slowest runners,
+# above the 100 s ctest ceiling under parallel load
+set_tests_properties (pyinstallcheck_ChristoffelSubsampleExperiment_std PROPERTIES TIMEOUT 300)
 
 # IterativeStat
 ot_pyinstallcheck_test (IterativeExtrema_std IGNOREOUT)
@@ -938,6 +943,8 @@ if (MATPLOTLIB_FOUND)
   if (NOT highs_FOUND)
     set_tests_properties (pyinstallcheck_example_plot_optimization_highs PROPERTIES DISABLED TRUE)
   endif ()
+  # 60 thinnings at m = 30: seconds isolated, tens of seconds under parallel load
+  set_tests_properties (pyinstallcheck_example_plot_christoffel_ishigami PROPERTIES TIMEOUT 300)
   if (NOT HMAT_FOUND)
     set_tests_properties (pyinstallcheck_example_plot_gpr_cantilever_beam_hmat PROPERTIES DISABLED TRUE)
     set_tests_properties (pyinstallcheck_example_plot_gaussian_process_covariance_hmat PROPERTIES DISABLED TRUE)

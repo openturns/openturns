@@ -57,6 +57,7 @@
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include FejerExperiment.i
+%include ChristoffelSubsampleExperiment.i
 
 /* Uncertainty */
 %import metamodel_module.i
@@ -71,6 +72,7 @@
 %include DivFreeModel.i
 
 /* Uncertainty/Distribution */
+%include ChristoffelDistribution.i
 %include Kent.i
 %include KentFactory.i
 %include MarginalUniformOrderStatistics.i
