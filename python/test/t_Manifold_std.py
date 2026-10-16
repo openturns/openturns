@@ -69,6 +69,17 @@ ott.assert_almost_equal(sphere.expMap(east, preimage), north2, 1e-12, 1e-12)
 # Logarithmic map of the base point is the null vector
 ott.assert_almost_equal(sphere.logMap(east, east), [0.0, 0.0, 0.0], 1e-12, 1e-12)
 
+# Small angles stay accurate: points 1e-9 rad apart (acos would round
+# the dot product to 1 and return 0)
+tinyAngle = 1.0e-9
+tinyPoint = [math.cos(tinyAngle), math.sin(tinyAngle), 0.0]
+ott.assert_almost_equal(
+    sphere.getGeodesicDistance(east, tinyPoint), tinyAngle, 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    sphere.logMap(east, tinyPoint), [0.0, tinyAngle, 0.0], 1e-9, 1e-9
+)
+
 # Logarithmic map at the cut locus (antipodal points) raises
 with ott.assert_raises(TypeError):
     sphere.logMap(east, [-1.0, 0.0, 0.0])

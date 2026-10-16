@@ -29,9 +29,10 @@ ax1.set_xlabel(r"$y_0$")
 ax1.set_ylabel(r"$y_1$")
 plt.colorbar(sc, ax=ax1, label="PDF")
 
-# Case n=2, p=2: antecedent Normal(2) mapped onto the unit disk by
-# f(x) = x / (1 + |x|^2), a smooth diffeomorphism onto the disk of radius 1/2.
-# The PDF is a surface density on the disk.
+# Case n=2, p=2: antecedent Normal(2) mapped by f(x) = x / (1 + |x|^2) onto
+# the open disk of radius 1/2. The map is 2-to-1 (radii r and 1/r share the
+# same image) and singular on |x| = 1, so the PDF sums two preimage
+# contributions and diverges at the boundary of the disk.
 f2 = ot.SymbolicFunction(
     ["x0", "x1"],
     ["x0 / (1 + x0^2 + x1^2)", "x1 / (1 + x0^2 + x1^2)"],
@@ -57,7 +58,7 @@ im = ax2.imshow(
 )
 ax2.plot([p[0] for p in circle], [p[1] for p in circle], "k--", lw=1.0)
 ax2.set_aspect("equal", adjustable="box")
-ax2.set_title("n=2, p=2: PDF on disk")
+ax2.set_title("n=2, p=2: PDF on disk of radius 1/2")
 ax2.set_xlabel(r"$y_0$")
 ax2.set_ylabel(r"$y_1$")
 plt.colorbar(im, ax=ax2, label="PDF")

@@ -45,11 +45,12 @@ reference mesh, this distribution reduces to the uniform distribution over
 the mesh.
 
 The case :math:`\outputDim < \inputDim` (co-area formula) is implemented for
-the codimension 1 uniform case (reference dimension minus image dimension
-equal to 1 with ``UniformOverMesh`` antecedent): the density integrates the
-antecedent over the fiber segments with the local projection Jacobian.
-Other co-area cases (higher codimension or non-uniform antecedent) are not
-implemented yet.
+the 2D triangle reference mesh mapped to 1D with ``UniformOverMesh``
+antecedent: the density integrates the antecedent over the fiber segments
+with the local projection Jacobian. Intrinsic-preserving maps (output
+dimension larger than or equal to the intrinsic reference dimension, e.g. a
+polyline in :math:`\Rset^2` mapped to scalars) use the weighted
+piecewise-affine path above. Other co-area cases are not implemented yet.
 
 Parameters
 ----------

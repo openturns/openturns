@@ -192,24 +192,26 @@ Interval PushForwardDistribution::buildSearchInterval() const
   const Interval antecedentRange(antecedent_.getRange());
   const Interval::BoolCollection finiteLowerBound(antecedentRange.getFiniteLowerBound());
   const Interval::BoolCollection finiteUpperBound(antecedentRange.getFiniteUpperBound());
-  // When a bound is not finite, clip it using such a quantile of the
-  // antecedent that the probability mass outside the box is negligible
+  // When a bound is not finite, clip it using such a marginal quantile of
+  // the antecedent that the probability mass outside the box is negligible
   const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   const Scalar upperQuantile = 1.0 - quantileEpsilon;
-  Point lowerBound(dimension);
-  Point upperBound(dimension);
+  Point lowerBound(antecedentRange.getLowerBound());
+  Point upperBound(antecedentRange.getUpperBound());
+  const Point mean(antecedent_.getMean());
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (finiteLowerBound[i]) lowerBound[i] = antecedentRange.getLowerBound()[i];
-    else lowerBound[i] = antecedent_.computeQuantile(quantileEpsilon)[i];
-    if (finiteUpperBound[i]) upperBound[i] = antecedentRange.getUpperBound()[i];
-    else upperBound[i] = antecedent_.computeQuantile(upperQuantile)[i];
+    if (!finiteLowerBound[i] || !finiteUpperBound[i])
+    {
+      const Distribution marginal(antecedent_.getMarginal(i));
+      if (!finiteLowerBound[i]) lowerBound[i] = marginal.computeQuantile(quantileEpsilon)[0];
+      if (!finiteUpperBound[i]) upperBound[i] = marginal.computeQuantile(upperQuantile)[0];
+    }
     if (!(lowerBound[i] < upperBound[i]))
     {
       // Degenerate search interval: fall back to a unit interval around the mean
-      const Scalar mean_i = antecedent_.getMean()[i];
-      lowerBound[i] = mean_i - 1.0;
-      upperBound[i] = mean_i + 1.0;
+      lowerBound[i] = mean[i] - 1.0;
+      upperBound[i] = mean[i] + 1.0;
     }
   }
   return Interval(lowerBound, upperBound, Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, true));
@@ -520,8 +522,9 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
   //   finds all the preimages, being comprehensive in dimension one through
   //   a decomposition of the search interval and multi-start in higher
   //   dimensions, hence supporting non-injective functions;
-  // - in the intrinsic case (p > n), only the preimage closest to the mean
-  //   of the antecedent is searched for, through the least squares solver
+  // - in the intrinsic case (p > n), all the preimages are searched for by
+  //   multi-start least squares over the finite search box, deduplicated by
+  //   distance up to the solver accuracy, hence supporting non-injective maps
   PointCollection preimages(0);
   if (outputDimension == inputDimension)
   {
@@ -539,7 +542,11 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
     const Point searchUpperBound(searchInterval.getUpperBound());
     const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance");
     const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize");
-    const Scalar dedupTolerance = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, std::max(searchLowerBound.norm(), searchUpperBound.norm()));
+    // The least squares solver is only accurate up to residualTolerance, so
+    // two solves of the same branch may differ by order sqrt(residualTolerance):
+    // deduplicate at that scale, unlike the square case whose Newton polish
+    // reaches machine precision
+    const Scalar dedupTolerance = std::sqrt(residualTolerance) * std::max(1.0, std::max(searchLowerBound.norm(), searchUpperBound.norm()));
     PointCollection startingPoints(0);
     if (inputDimension == 1)
     {
