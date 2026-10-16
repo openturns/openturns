@@ -204,8 +204,8 @@ print("Probability estimate:", results_active_MonteCarlo.getProbabilityEstimate(
 # %%
 # Per-iteration inner simulation results are also exposed by the algorithm.
 # For example, the inner result of the third enrichment iteration:
-thirdIteration = active_learning_MonteCarlo.getSimulationResults()[2]
-print("Results at third iteration:", thirdIteration)
+tenthIteration = active_learning_MonteCarlo.getSimulationResults()[9]
+print("Results at iteration 10:", tenthIteration)
 
 # %%
 # Confidence interval of probability estimation due to Gaussian Process uncertainty
