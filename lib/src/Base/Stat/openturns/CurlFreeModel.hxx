@@ -52,6 +52,18 @@ public:
   SquareMatrix operator()(const Point & s, const Point & t) const override;
   SquareMatrix operator()(const Point & tau) const override;
 
+  /** Gradient */
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
+
+  /** Hessian of the (0, 0) output component, semi-analytic via H stencil */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Parameter gradient, semi-analytic via base parameterHessian */
+  Matrix parameterGradient(const Point & s,
+                           const Point & t) const override;
+
   /** Scalar interface (for 1D case) */
   Scalar computeAsScalar(const Point & s, const Point & t) const override;
   Scalar computeAsScalar(const Point & tau) const override;
