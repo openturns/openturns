@@ -26,6 +26,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -144,6 +145,14 @@ public:
   /** Accessor for the text size */
   virtual Scalar getTextSize() const;
   virtual void setTextSize(const Scalar size);
+
+  /** Accessor for bounds */
+  virtual Interval getBounds() const;
+  virtual void setBounds(const Interval & bounds);
+
+  /** Accessor for subdivisions */
+  virtual Indices getSubdivisions() const;
+  virtual void setSubdivisions(const Indices & subdivisions);
 
   /** Bounding box accessor */
   virtual Interval getBoundingBox() const;

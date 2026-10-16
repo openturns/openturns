@@ -18,26 +18,26 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BATCHFAILEDEXCEPTION_HXX
-#define OPENTURNS_BATCHFAILEDEXCEPTION_HXX
+#ifndef OPENTURNS_BATCHFAILUREEXCEPTION_HXX
+#define OPENTURNS_BATCHFAILUREEXCEPTION_HXX
 
 #include "openturns/Exception.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
-class OT_API BatchFailedException : public Exception
+class OT_API BatchFailureException : public Exception
 {
 
 public:
 
-  BatchFailedException(const PointInSourceFile & point,
+  BatchFailureException(const PointInSourceFile & point,
                        const Indices & failedIndices,
                        const Description & errorDescription,
                        const Indices & succeededIndices,
                        const Sample & inputSample,
                        const Sample & outputSample)
-    : Exception(point, "BatchFailedException"),
+    : Exception(point, "BatchFailureException"),
       failedIndices_(failedIndices),
       errorDescription_(errorDescription),
       succeededIndices_(succeededIndices),
@@ -52,7 +52,7 @@ public:
       throw InvalidArgumentException(HERE) << "succeed+failed indices size must match input size";
   }
 
-  template <class T> BatchFailedException & operator << (T obj)
+  template <class T> BatchFailureException & operator << (T obj)
   {
     this->Exception::operator << (obj);
     return *this;
@@ -118,4 +118,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_BATCHFAILEDEXCEPTION_HXX */
+#endif /* OPENTURNS_BATCHFAILUREEXCEPTION_HXX */

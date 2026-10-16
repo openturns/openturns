@@ -23,7 +23,7 @@
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MarginalEvaluation.hxx"
-#include "openturns/BatchFailedException.hxx"
+#include "openturns/BatchFailureException.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -170,9 +170,9 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         for (UnsignedInteger i = 0; i < toDoSize; ++ i)
           tempCache.add(toDo[i], result[i]);
       }
-      catch (const BatchFailedException & exc)
+      catch (const BatchFailureException & exc)
       {
-        // rethrow another BatchFailedException, but with updated indices
+        // rethrow another BatchFailureException, but with updated indices
         // as the original evaluation is called on a subset of the input sample
         callsNumber_.fetchAndAdd(toDoSize);
         const Indices localOkIndices(exc.getSucceededIndices());
@@ -203,7 +203,7 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
         }
         p_cache_->merge(tempCache);
         const Indices okIndices(failedIndices.complement(size));
-        throw BatchFailedException(HERE, failedIndices, errorDescription, okIndices, inSample, okSample) << exc.what();
+        throw BatchFailureException(HERE, failedIndices, errorDescription, okIndices, inSample, okSample) << exc.what();
       }
     }
     // Fill remaining output values

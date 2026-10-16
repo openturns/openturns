@@ -170,6 +170,10 @@ class View:
     square_axes : bool, optional
         Forces the axes to share the same scale if True. Default is False.
 
+    grid_kw : dict, optional
+        Used when drawing Grid drawables
+        Passed on to matplotlib.axes.Axes.plot kwargs
+
     Examples
     --------
     >>> import openturns as ot
@@ -219,6 +223,7 @@ class View:
         colorbar_kw=None,
         add_legend=True,
         square_axes=False,
+        grid_kw=None,
         **kwargs,
     ):
         if not (
@@ -254,6 +259,7 @@ class View:
         clabel_kw_default = self._CheckDict(clabel_kw)
         scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
+        grid_kw_default = self._CheckDict(grid_kw)
         legend_kw_default = self._CheckDict(legend_kw)
         colorbar_kw_default = self._CheckDict(colorbar_kw)
         legend_handles = []
@@ -328,7 +334,11 @@ class View:
                         clabel_kw=clabel_kw,
                         scatter_kw=scatter_kw,
                         text_kw=text_kw,
+                        grid_kw=grid_kw,
                         legend_kw=legend_kw,
+                        colorbar_kw=colorbar_kw,
+                        add_legend=add_legend,
+                        square_axes=square_axes,
                     )
             self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
@@ -417,6 +427,7 @@ class View:
             clabel_kw = dict(clabel_kw_default)
             scatter_kw = dict(scatter_kw_default)
             text_kw = dict(text_kw_default)
+            grid_kw = dict(grid_kw_default)
 
             # use drawable order over default patch/line/text order
             plot_kw.setdefault("zorder", zorder)
@@ -429,6 +440,7 @@ class View:
                 clabel_kw.setdefault("zorder", zorder)
             scatter_kw.setdefault("zorder", zorder)
             text_kw.setdefault("zorder", zorder)
+            grid_kw.setdefault("zorder", zorder)
             zorder += 1 / (len(drawables) + 1)
 
             # set color
@@ -440,6 +452,8 @@ class View:
                 bar_kw["color"] = drawable.getColorCode()
             if ("color" not in step_kw_default) and ("c" not in step_kw_default):
                 step_kw["color"] = drawable.getColorCode()
+            if ("color" not in grid_kw_default) and ("c" not in grid_kw_default):
+                grid_kw["color"] = drawable.getColorCode()
             if drawableKind != "Pairs":
                 if ("color" not in text_kw_default) and ("c" not in text_kw_default):
                     text_kw["color"] = drawable.getColorCode()
@@ -464,12 +478,19 @@ class View:
                     step_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
                 except KeyError:
                     warnings.warn("-- Unknown line style")
+            if ("linestyle" not in grid_kw_default) and ("ls" not in grid_kw_default):
+                try:
+                    grid_kw["linestyle"] = lineStyleDict[drawable.getLineStyle()]
+                except KeyError:
+                    warnings.warn("-- Unknown line style")
 
             # set line width
             if ("linewidth" not in plot_kw_default) and ("lw" not in plot_kw_default):
                 plot_kw["linewidth"] = drawable.getLineWidth()
             if ("linewidth" not in step_kw_default) and ("lw" not in step_kw_default):
                 step_kw["linewidth"] = drawable.getLineWidth()
+            if ("linewidth" not in grid_kw_default) and ("lw" not in grid_kw_default):
+                grid_kw["linewidth"] = drawable.getLineWidth()
             if ("linewidth" not in polygon_kw_default) and (
                 "lw" not in polygon_kw_default
             ):
@@ -495,6 +516,7 @@ class View:
                     step_kw.setdefault("label", label)
                     polygon_kw.setdefault("label", label)
                     polygoncollection_kw.setdefault("label", label)
+                    grid_kw.setdefault("label", label)
 
             if drawableKind == "BarPlot":
                 if ("linestyle" not in bar_kw_default) and ("ls" not in bar_kw_default):
@@ -834,6 +856,36 @@ class View:
                         **text_kw,
                     )
 
+            elif drawableKind == "Grid":
+                bounds = drawable.getBounds()
+                subdivisions = drawable.getSubdivisions()
+                x_min = bounds.getLowerBound()[0]
+                y_min = bounds.getLowerBound()[1]
+                x_max = bounds.getUpperBound()[0]
+                y_max = bounds.getUpperBound()[1]
+                nx = subdivisions[0]
+                ny = subdivisions[1]
+                dx = x_max - x_min
+                dy = y_max - y_min
+
+                x_grid = []
+                y_grid = []
+                # Vertical segments
+                for k in range(nx + 1):
+                    xk = x_min + k * dx / float(nx)
+                    x_grid.extend([xk, xk, None])
+                    y_grid.extend([y_min, y_max, None])
+                # Horizontal segments
+                for k in range(ny + 1):
+                    yk = y_min + k * dy / float(ny)
+                    x_grid.extend([x_min, x_max, None])
+                    y_grid.extend([yk, yk, None])
+                # Draw the entire grid with a single Line2D
+                lines = self._ax[0].plot(x_grid, y_grid, **grid_kw)
+                if len(drawable.getLegend()) > 0 and lines:
+                    legend_handles.append(lines[0])
+                    legend_labels.append(drawable.getLegend())
+
             else:
                 raise ValueError("Drawable type not implemented: " + drawableKind)
 
@@ -1090,6 +1142,11 @@ def PlotDesign(
     enableTicks=True,
 ):
     """
+    .. deprecated:: 1.28
+        Use :meth:`~openturns.VisualTest.DrawPairsWithGrid` instead, e.g.
+        `grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions)` then
+        `otv.View(grid).show()`.
+
     Plot a design using a scatter plot.
     If the dimension is equal to 2, then plots the 2D projection.
     If the dimension is greater or equal to 3, then plots all 2D projections.
@@ -1148,6 +1205,10 @@ def PlotDesign(
     >>> subdivisions = [size]*dim
     >>> fig = otv.PlotDesign(sample, bounds, subdivisions)
     """
+    warnings.warn(
+        "PlotDesign is deprecated, use VisualTest.DrawPairsWithGrid instead, "
+        "e.g. grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions)"
+    )
     # check that arguments are dictionaries
     axes_kw = View._CheckDict(axes_kw)
     plot_kw = View._CheckDict(plot_kw)

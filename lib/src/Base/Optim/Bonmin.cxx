@@ -187,6 +187,8 @@ void Bonmin::run()
     setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
                                    getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                    getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+    result_.setGradientCallsNumber(tminlp->getGradientCallsNumber());
+    result_.setHessianCallsNumber(tminlp->getHessianCallsNumber());
     return;
   }
   catch(const ::Bonmin::OsiTMINLPInterface::SimpleError & exc)
@@ -230,6 +232,8 @@ void Bonmin::run()
   setResultFromEvaluationHistory(inputHistory, tminlp->getOutputHistory(),
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+  result_.setGradientCallsNumber(tminlp->getGradientCallsNumber());
+  result_.setHessianCallsNumber(tminlp->getHessianCallsNumber());
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())

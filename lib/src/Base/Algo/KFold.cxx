@@ -171,6 +171,9 @@ Scalar KFold::run(LeastSquaresMethod & method, const Sample & y) const
   }
   // Restore the row filter
   method.getImplementation()->proxy_.setRowFilter(initialRowFilter);
+  // The cached decomposition corresponds to the last fold's filtered design;
+  // trash it so the next solve()/update() recomputes it on the restored design
+  method.getImplementation()->trashDecomposition();
   const Scalar empiricalError = quadraticResidual / totalTestWeight;
 
   const Scalar relativeError = (!(variance > 0.0) ? 0.0 : empiricalError / variance);

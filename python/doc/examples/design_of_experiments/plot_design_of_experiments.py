@@ -31,7 +31,8 @@ sampleSize = 10
 sample = distribution.getSample(sampleSize)
 
 # %%
-fig = otv.PlotDesign(sample, bounds)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid)
 
 # %%
 # We see that there a empty zones in the input space.
@@ -51,8 +52,9 @@ sampleSize = 10
 sample = distribution.getSample(sampleSize)
 
 # %%
-fig = otv.PlotDesign(sample, bounds)
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid)
+view.getFigure().set_size_inches(10, 10)
 
 # %%
 # Latin Hypercube Sampling
@@ -71,8 +73,9 @@ sample = experiment.generate()
 bounds = distribution.getRange()
 
 # %%
-fig = otv.PlotDesign(sample, bounds)
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid)
+view.getFigure().set_size_inches(10, 10)
 
 # %%
 # We see that each column or row exactly contains one single point.
@@ -99,8 +102,9 @@ algo = ot.SimulatedAnnealingLHS(lhs, space_filling, temperatureProfile)
 sample = algo.generate()
 
 # %%
-fig = otv.PlotDesign(sample, bounds)
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid)
+view.getFigure().set_size_inches(10, 10)
 
 # %%
 # We see that this LHS is optimized in the sense that it fills the space more evenly than a non-optimized does in general.
@@ -127,8 +131,9 @@ samplesize
 
 # %%
 subdivisions = [2**2, 2**1]
-fig = otv.PlotDesign(sample, bounds, subdivisions)
-fig.set_size_inches(6, 6)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions)
+view = otv.View(grid)
+view.getFigure().set_size_inches(6, 6)
 
 # %%
 # We have elementary intervals in 2 dimensions, each having a volume equal to 1/8.
@@ -158,8 +163,9 @@ samplesize
 
 # %%
 subdivisions = [2**2, 3]
-fig = otv.PlotDesign(sample, bounds, subdivisions)
-fig.set_size_inches(6, 6)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions)
+view = otv.View(grid)
+view.getFigure().set_size_inches(6, 6)
 
 # %%
 # We have elementary intervals in 2 dimensions, each having a volume equal to 1/12.

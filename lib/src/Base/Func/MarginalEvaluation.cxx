@@ -21,7 +21,7 @@
 
 #include "openturns/MarginalEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/BatchFailedException.hxx"
+#include "openturns/BatchFailureException.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -155,7 +155,7 @@ Sample MarginalEvaluation::operator() (const Sample & inSample) const
     callsNumber_.fetchAndAdd(size);
     return fullOutput.getMarginal(indices_);
   }
-  catch (BatchFailedException & exc)
+  catch (BatchFailureException & exc)
   {
     // rethrow but with updated output sample
     callsNumber_.fetchAndAdd(size);
