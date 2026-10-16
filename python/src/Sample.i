@@ -49,6 +49,10 @@
 %rename(__baseaddress__) OT::Sample::data;
 %rename(__elementsize__) OT::Sample::elementSize;
 
+%ignore OT::SampleImplementation::toDataContainer;
+%ignore OT::SampleImplementation::FromDataContainer;
+%ignore OT::SampleImplementation::FromDataContainerView;
+
 %include openturns/SampleImplementation.hxx
 %include openturns/Sample.hxx
 

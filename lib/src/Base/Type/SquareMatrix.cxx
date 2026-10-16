@@ -109,8 +109,10 @@ SquareMatrix SquareMatrix::operator + (const SquareMatrix & m) const
 
 SquareMatrix SquareMatrix::operator + (const SymmetricMatrix & m) const
 {
-  m.getImplementation()->symmetrize();
-  return Implementation((*getImplementation() + * (m.getImplementation()) ).clone());
+  /* Work on a private copy: the argument may be owned by other objects */
+  MatrixImplementation symmetricCopy(*m.getImplementation());
+  symmetricCopy.symmetrize();
+  return Implementation((*getImplementation() + symmetricCopy).clone());
 }
 
 /* Matrix subtractions (must have the same dimensions) */
@@ -121,8 +123,10 @@ SquareMatrix SquareMatrix::operator - (const SquareMatrix & m) const
 
 SquareMatrix SquareMatrix::operator - (const SymmetricMatrix & m) const
 {
-  m.getImplementation()->symmetrize();
-  return Implementation((*getImplementation() - * (m.getImplementation()) ).clone());
+  /* Work on a private copy: the argument may be owned by other objects */
+  MatrixImplementation symmetricCopy(*m.getImplementation());
+  symmetricCopy.symmetrize();
+  return Implementation((*getImplementation() - symmetricCopy).clone());
 }
 
 /* Matrix multiplications (must have consistent dimensions) */

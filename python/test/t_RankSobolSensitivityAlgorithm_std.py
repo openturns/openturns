@@ -35,6 +35,7 @@ mySobol2.setDesign(sampleX, sampleY, sampleX.getSize())
 indices2 = mySobol2.getFirstOrderIndices()
 interval2 = mySobol2.getFirstOrderIndicesInterval()
 
+# Same design through both entry points
 assert_almost_equal(indices2, indices, 0, ot.SpecFunc.ScalarEpsilon)
 assert_almost_equal(
     interval2.getLowerBound(), interval.getLowerBound(), 0, ot.SpecFunc.ScalarEpsilon

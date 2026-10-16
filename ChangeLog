@@ -23,9 +23,21 @@
  * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
+ * AlgebraEngine-DefaultBlockSize: number of rows and columns per block for out-of-core blockwise linear algebra (default is 384)
+ * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
+ * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
+ * HDF5Backend-DefaultChunkSize: number of elements per chunk for HDF5-backed storage (default is 4096)
+ * HDF5Backend-DefaultCompressionLevel: deflate compression level for HDF5-backed storage, 0 disables compression (default is 0)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
+ * DataContainer
+ * ComplexDataContainer
+ * HDF5Backend
+ * ComplexHDF5Backend
+ * AlgebraEngine
+ * StatisticsEngine
+
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -126,6 +138,7 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
+ * Added blockwise (*Blockwise) variants of the AlgebraEngine and StatisticsEngine kernels operating on DataContainer storage, with HDF5-backed containers supported throughout
 
 === Documentation ===
  * Theory: add interpolation page
@@ -3630,3 +3643,5 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
+
+

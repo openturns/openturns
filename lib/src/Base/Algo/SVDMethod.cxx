@@ -258,7 +258,7 @@ Point SVDMethod::getHDiag() const
   MatrixImplementation::const_iterator u_iterator(u_.getImplementation()->begin());
   for (UnsignedInteger j = 0; j < factorSize; ++ j)
   {
-    for (MatrixImplementation::iterator h_iterator = h.begin(); h_iterator != h.end(); ++ h_iterator)
+    for (Point::iterator h_iterator = h.begin(); h_iterator != h.end(); ++ h_iterator)
     {
       *h_iterator += (*u_iterator) * (*u_iterator);
       ++ u_iterator;

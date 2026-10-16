@@ -75,7 +75,11 @@ ProcessSample KarhunenLoeveValidation::computeResidual() const
   if (trend_.getInputDimension() > 0)
     reduction.setTrend(trend_);
   for (UnsignedInteger i = 0; i < size; ++ i)
-    result[i] = sample_[i] - reduction(sample_[i]);
+    {
+      const Sample valuesI(sample_.getField(i).getValues());
+      const Sample centered(valuesI - reduction(valuesI));
+      result.setField(i, centered);
+    }
   result.setName("KL residual");
   return result;
 }

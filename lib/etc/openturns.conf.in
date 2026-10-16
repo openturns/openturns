@@ -398,6 +398,17 @@
   <LinearModelTest-DefaultDurbinWatsonHypothesis       value_str="Equal"                 />
   <LinearModelTest-DefaultHarrisonMcCabeSimulationSize value_int="1000" />
 
+  <!-- OT::AlgebraEngine parameters -->
+  <AlgebraEngine-DefaultBlockSize value_int="384" />
+
+  <!-- OT::StatisticsEngine parameters -->
+  <StatisticsEngine-DefaultBlockSize value_int="4096" />
+  <StatisticsEngine-ParallelThreshold value_int="100000" />
+
+  <!-- OT::HDF5Backend parameters -->
+  <HDF5Backend-DefaultChunkSize value_int="4096" />
+  <HDF5Backend-DefaultCompressionLevel value_int="0" />
+
   <!-- OT::Last parameters -->
   <Last-DefaultMaximumSize value_int="65536" />
 

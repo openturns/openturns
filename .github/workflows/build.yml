@@ -57,7 +57,7 @@ jobs:
           cmake -G Ninja -B . -LAH ^
            -DCMAKE_INSTALL_PREFIX="C:/Users/runneradmin/miniconda3/Library" ^
            -DCMAKE_PREFIX_PATH="C:/Users/runneradmin/miniconda3/Library" ^
-           -DCMAKE_CXX_FLAGS="/DWIN32 /D_WINDOWS /W3 /GR /EHsc /WX" ^
+           -DCMAKE_CXX_FLAGS="/DWIN32 /D_WINDOWS /W3 /GR /EHsc /WX /bigobj" ^
            -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 ^
            -DLAPACK_LIBRARIES="C:/Users/runneradmin/miniconda3/Library/lib/lapack.lib;C:/Users/runneradmin/miniconda3/Library/lib/blas.lib" ^
            -DUSE_MPFR=OFF -DUSE_MPC=OFF ^
