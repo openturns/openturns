@@ -593,6 +593,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
+                     PushForwardOverMesh.i PushForwardOverMesh_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )

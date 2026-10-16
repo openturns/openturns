@@ -96,6 +96,7 @@
 %include MatrixFisher.i
 %include MatrixFisherFactory.i
 %include PushForwardDistribution.i
+%include PushForwardOverMesh.i
 %include RiemannianGaussian.i
 %include RiemannianGaussianFactory.i
 %include WrappedNormal.i
