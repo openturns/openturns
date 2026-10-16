@@ -101,7 +101,7 @@ graph.setAxes(True)
 graph.setGrid(True)
 graph.setLegendPosition("upper right")
 drawfunction = g.draw(
-    [-5] * input_dimension, [5] * input_dimension, [50] * input_dimension
+    [-5] * input_dimension, [5] * input_dimension, [100] * input_dimension
 )
 graph.add(drawfunction)
 view = otv.View(graph)
@@ -138,7 +138,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), threshold)
 # %%
 lower_bound_DoE = -5.0
 upper_bound_DoE = 5.0
-number_samples_DoE = 20
+number_samples_DoE = 10
 distribution_LHS = ot.JointDistribution(
     [ot.Uniform(lower_bound_DoE, upper_bound_DoE)] * input_dimension
 )
@@ -165,7 +165,7 @@ fitter = ot.GaussianProcessFitter(input_DoE, output_DoE, covariance_model, basis
 Monte_Carlo_experiment = ot.MonteCarloExperiment()
 Monte_Carlo_algorithm = ot.ProbabilitySimulationAlgorithm(event, Monte_Carlo_experiment)
 Monte_Carlo_algorithm.setMaximumCoefficientOfVariation(0.01)
-Monte_Carlo_algorithm.setMaximumOuterSampling(10000)
+Monte_Carlo_algorithm.setMaximumOuterSampling(5000)
 
 # %%
 # Definition of active learning function. Here, we choose the "U" function. This function takes two arguments. The first one is the event threshold.
@@ -278,7 +278,7 @@ _ = otv.View(graph_history)
 # We can also plot the limit state provided by the true function and compare with the one estimated by the refined metamodel.
 graph = ot.Graph("Limit states", "x1", "x2")
 g_IsoLines = g.draw(
-    [-5] * input_dimension, [5] * input_dimension, [64] * input_dimension
+    [-5] * input_dimension, [5] * input_dimension, [128] * input_dimension
 )
 dr = g_IsoLines.getDrawable(0)
 dr.setLevels([threshold])
@@ -339,11 +339,11 @@ gmm_function = otexp.ActiveLearningGMMFunction(
 # Now, we can build the active learning algorithm. The uncertainty-based
 # stopping criterion evaluates several subset simulations per iteration,
 # hence a smaller budget of 20 exact evaluations is enough here.
-simulation_budget_subset = 20
 active_learning_subset = otexp.ActiveLearningReliabilityAlgorithm(
     fitter, subset_algorithm, gmm_function
 )
-active_learning_subset.setMaximumIterations(simulation_budget_subset)
+active_learning_subset.setMaximumIterations(simulation_budget)
+active_learning_subset.setConvergenceCriterion(convergence_criterion)
 
 # %%
 # Here we choose to stop the algorithm based on the probability uncertainty estimation due to the Gaussian Process Regressor model.
