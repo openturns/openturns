@@ -93,15 +93,17 @@ SquareComplexMatrix SquareComplexMatrix::transpose () const
 
 SquareComplexMatrix SquareComplexMatrix::conjugate () const
 {
-  // Quick return for empty or scalar SquareComplexMatrix
-  if (getDimension() <= 1) return (*this);
+  // Quick return for empty SquareComplexMatrix
+  // Note: no quick return for dimension 1, the single element must be conjugated
+  if (getDimension() == 0) return (*this);
   return Implementation(getImplementation()->conjugate().clone());
 }
 
 SquareComplexMatrix SquareComplexMatrix::conjugateTranspose () const
 {
-  // Quick return for empty or scalar SquareComplexMatrix
-  if (getDimension() <= 1) return (*this);
+  // Quick return for empty SquareComplexMatrix
+  // Note: no quick return for dimension 1, the single element must be conjugated
+  if (getDimension() == 0) return (*this);
   return Implementation(getImplementation()->conjugateTranspose().clone());
 }
 
