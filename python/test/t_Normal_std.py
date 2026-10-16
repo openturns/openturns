@@ -5,6 +5,59 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
+scalarNormal = ot.Normal(mu=0.5, sd=2.0)
+assert scalarNormal == ot.Normal(0.5, 2.0)
+assert ot.Normal(dimension=2).getDimension() == 2
+assert ot.Normal(other=scalarNormal) == scalarNormal
+
+mean = [0.5, -0.5]
+sigma = [1.0, 2.0]
+correlation = ot.CorrelationMatrix(2)
+correlation[1, 0] = 0.25
+namedNormal = ot.Normal(mean=mean, sigma=sigma, R=correlation)
+assert namedNormal == ot.Normal(mean, sigma, correlation)
+
+covariance = ot.CovarianceMatrix(2)
+covariance[0, 0] = 1.0
+covariance[1, 1] = 4.0
+covariance[1, 0] = 0.25
+covarianceNormal = ot.Normal(mean=mean, C=covariance)
+assert covarianceNormal == ot.Normal(mean, covariance)
+
+point = ot.Point([0.5, -0.5])
+assert namedNormal.computePDF(point=point) == namedNormal.computePDF(point)
+sample = ot.Sample([point])
+assert namedNormal.computePDF(sample=sample) == namedNormal.computePDF(sample)
+assert namedNormal.computeCDF(point=point) == namedNormal.computeCDF(point)
+assert namedNormal.computeDDF(point=point) == namedNormal.computeDDF(point)
+assert namedNormal.computeDDF(sample=sample) == namedNormal.computeDDF(sample)
+assert namedNormal.computeLogPDF(point=point) == namedNormal.computeLogPDF(point)
+assert namedNormal.computeComplementaryCDF(
+    point=point
+) == namedNormal.computeComplementaryCDF(point)
+assert namedNormal.computeSurvivalFunction(
+    point=point
+) == namedNormal.computeSurvivalFunction(point)
+assert namedNormal.computeCharacteristicFunction(
+    x=point
+) == namedNormal.computeCharacteristicFunction(point)
+assert namedNormal.computeLogCharacteristicFunction(
+    x=point
+) == namedNormal.computeLogCharacteristicFunction(point)
+assert namedNormal.getMarginal(i=0) == namedNormal.getMarginal(0)
+assert namedNormal.getMarginal(indices=ot.Indices([1, 0])) == namedNormal.getMarginal(
+    [1, 0]
+)
+assert namedNormal.computeQuantile(prob=0.5) == namedNormal.computeQuantile(0.5)
+
+gridPdf = ot.Normal().computePDF(xMin=0.0, xMax=1.0, pointNumber=5)
+assert gridPdf == ot.Normal().computePDF(0.0, 1.0, 5)
+gridCdf = ot.Normal().computeCDF(xMin=0.0, xMax=1.0, pointNumber=5)
+assert gridCdf == ot.Normal().computeCDF(0.0, 1.0, 5)
+
+with ott.assert_raises(TypeError):
+    ot.Normal(unknown=0.5)
+
 
 def cleanScalar(inScalar):
     if abs(inScalar) < 1.0e-10:

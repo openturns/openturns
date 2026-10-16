@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Visual tests.") VisualTest
 
-
 %include typemaps.i
 %include OTtypes.i
 %include OTexceptions.i
@@ -17,3 +16,12 @@
 
 /* Uncertainty/StatTests */
 %include VisualTest.i
+
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
+%}

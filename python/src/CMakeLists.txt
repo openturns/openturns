@@ -38,10 +38,27 @@ set_target_properties (OTPythonWrapping PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE
 add_custom_target (pylib)
 set (OPENTURNS_PYTHON_MODULES)
 
+# Modules with keyword-argument sidecars.
+set (OT_KEYWORD_MODULES func algo typ model_copula dist_bundle1 dist_bundle2
+                        dist_bundle3 func2 metamodel model_copula2 experimental
+                        model_process statistics simulation graph optim bayesian
+                        uncertainty weightedexperiment orthogonalbasis
+                        transformation analytical geom randomvector
+                        classification experiment solver common diff stattests
+                        iterative_statistics FittingTest HypothesisTest
+                        LinearModelTest NormalityTest VisualTest SpecFunc
+                        DistFunc testing base)
+
 macro (ot_add_python_module MODULENAME SOURCEFILE)
   set_source_files_properties (${SOURCEFILE} PROPERTIES CPLUSPLUS ON
                                                         SWIG_MODULE_NAME ${MODULENAME}
                                                         INCLUDE_DIRECTORIES "${INTERNAL_INCLUDE_DIRS};${CMAKE_CURRENT_SOURCE_DIR}")
+
+  if (${MODULENAME} IN_LIST OT_KEYWORD_MODULES)
+    set (${MODULENAME}_KEYWORD_XML ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.xml)
+    set (${MODULENAME}_KEYWORD_METADATA ${CMAKE_CURRENT_BINARY_DIR}/_${MODULENAME}_keyword_signatures.py)
+    set_property (SOURCE ${SOURCEFILE} APPEND PROPERTY SWIG_FLAGS -xmlout ${${MODULENAME}_KEYWORD_XML})
+  endif ()
 
   ot_install_swig_file (${SOURCEFILE})
   if (${ARGC} GREATER 2)
@@ -60,6 +77,38 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   # swig_add_module is deprecated
   swig_add_library (${MODULENAME} LANGUAGE python SOURCES ${SOURCEFILE} ${swig_other_sources})
+
+  if (${MODULENAME} IN_LIST OT_KEYWORD_MODULES)
+    # The sidecar is generated from the SWIG XML closure, so it must be
+    # ordered after the SWIG invocation. How UseSWIG declares its outputs
+    # varies: with SWIG dependency tracking (e.g. Ninja) the generated
+    # Python file is a declared build output and a file-level dependency
+    # is enough, while with timestamp tracking (Makefile generator without
+    # depfiles) it is only a byproduct and ordering must go through the
+    # internal SWIG target instead.
+    if (TARGET ${MODULENAME}_swig_compilation)
+      add_custom_target (generate_${MODULENAME}_keyword_signatures
+        COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate_swig_keyword_signatures.py
+                ${${MODULENAME}_KEYWORD_XML} ${${MODULENAME}_KEYWORD_METADATA}
+                --module-i ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCEFILE}
+        BYPRODUCTS ${${MODULENAME}_KEYWORD_METADATA}
+        VERBATIM)
+      add_dependencies (generate_${MODULENAME}_keyword_signatures ${MODULENAME}_swig_compilation)
+    else ()
+      add_custom_command (
+        OUTPUT ${${MODULENAME}_KEYWORD_METADATA}
+        COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/generate_swig_keyword_signatures.py
+                ${${MODULENAME}_KEYWORD_XML} ${${MODULENAME}_KEYWORD_METADATA}
+                --module-i ${CMAKE_CURRENT_SOURCE_DIR}/${SOURCEFILE}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
+        VERBATIM)
+      add_custom_target (generate_${MODULENAME}_keyword_signatures
+        DEPENDS ${${MODULENAME}_KEYWORD_METADATA})
+    endif ()
+    add_dependencies (${MODULENAME} generate_${MODULENAME}_keyword_signatures)
+    install (FILES ${${MODULENAME}_KEYWORD_METADATA}
+             DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
+  endif ()
 
   target_include_directories (${MODULENAME} PRIVATE ${INTERNAL_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} BEFORE)
 
@@ -1071,7 +1120,7 @@ endif ()
 set_target_properties(memoryview PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
-set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
+set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py _keyword_dispatch.py)
 
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
