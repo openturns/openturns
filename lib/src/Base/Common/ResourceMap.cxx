@@ -1457,6 +1457,9 @@ void ResourceMap::loadDefaultConfiguration()
   // FiniteDiscreteDistribution parameters //
   addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
+  // Manifold parameters //
+  addAsScalar("Manifold-Epsilon", 1.0e-10);
+
   // UniformOverMesh parameters //
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber", 262144);
@@ -1508,6 +1511,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // WrappedNormalFactory parameters //
   addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 
