@@ -28,6 +28,8 @@
  * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
  * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
  * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
+ * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
+ * PushForwardOverMesh-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
  * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
  * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
  * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
@@ -52,6 +54,7 @@
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
+ * PushForwardOverMesh (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)

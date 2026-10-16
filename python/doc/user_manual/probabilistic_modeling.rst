@@ -92,6 +92,7 @@ Continuous parametric distributions
 
     :template: classWithPlot.rst_t
     experimental.PushForwardDistribution
+    experimental.PushForwardOverMesh
 
     :template: class.rst_t
     experimental.ManifoldMappedDistribution
