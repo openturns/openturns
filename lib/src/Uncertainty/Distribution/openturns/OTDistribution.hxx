@@ -202,6 +202,7 @@
 #include "openturns/UniformMuSigma.hxx"
 #include "openturns/UniformOrderStatistics.hxx"
 #include "openturns/UniformOverMesh.hxx"
+#include "openturns/UniformOverMeshFactory.hxx"
 #include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/FiniteDiscreteDistributionFactory.hxx"
 #include "openturns/VonMises.hxx"

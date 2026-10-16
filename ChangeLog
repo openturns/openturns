@@ -33,6 +33,8 @@
  * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
  * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
  * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
+ * UniformOverMeshFactory-NearestNeighbors: number of nearest neighbors used to estimate each local tangent plane (default is 12)
+ * UniformOverMeshFactory-MinimumAreaFactor: degenerate triangles whose area is lower than this factor times the maximum triangle area are removed (default is 1e-3)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -56,6 +58,7 @@
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
+ * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
