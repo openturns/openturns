@@ -189,6 +189,9 @@ Matrix SparseMethod::computeWeightedDesign(const Bool whole) const
 void SparseMethod::save(Advocate & adv) const
 {
   LeastSquaresMethodImplementation::save(adv);
+  adv.saveAttribute( "method_", method_ );
+  adv.saveAttribute( "basisSequenceFactory_", basisSequenceFactory_ );
+  adv.saveAttribute( "fittingAlgorithm_", fittingAlgorithm_ );
 }
 
 
@@ -196,6 +199,12 @@ void SparseMethod::save(Advocate & adv) const
 void SparseMethod::load(Advocate & adv)
 {
   LeastSquaresMethodImplementation::load(adv);
+  if (adv.hasAttribute("method_"))
+  {
+    adv.loadAttribute( "method_", method_ );
+    adv.loadAttribute( "basisSequenceFactory_", basisSequenceFactory_ );
+    adv.loadAttribute( "fittingAlgorithm_", fittingAlgorithm_ );
+  }
 }
 
 END_NAMESPACE_OPENTURNS
