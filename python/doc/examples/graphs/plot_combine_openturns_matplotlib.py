@@ -36,11 +36,13 @@ normal = ot.Normal()
 graph_pdf = normal.drawPDF()
 graph_pdf.setTitle("Standard Normal PDF")
 graph_pdf.setLegends(["Density of X"])
+graph_pdf.setXTitle("X")
+
 view = otv.View(graph_pdf)
 fig = view.getFigure()
 ax = view.getAxes()[0]
 ax.grid(True, alpha=0.3)
-ax.set_xlabel("x")
+ax.set_xlabel("X")
 fig.suptitle("A native graph is a Matplotlib figure", fontsize=10)
 
 # %%
@@ -84,6 +86,7 @@ new_scale = view_scale.getAxes()[0]
 new_scale.set_xlim([3.0, 3.8])
 new_scale.set_ylim([0.0, 0.005])
 new_scale.grid(True, which="both", alpha=0.3)
+new_scale.set_xlabel("X")
 
 # %%
 # Draw native graphs into an existing `matplotlib` figure
@@ -92,17 +95,32 @@ new_scale.grid(True, which="both", alpha=0.3)
 # first with :func:`~matplotlib.pyplot.subplots`, then draw each
 # native graph on a chosen ``Axes`` with the ``figure`` and ``axes``
 # arguments. Extra `matplotlib`-only elements can then be mixed freely.
+# Function `subplots_adjust` of `matpltlib` can be used to separate the graphs
+# within the grid layout.
 graph_cdf = normal.drawCDF()
+graph_cdf.setLegends(["CDF of X"])
+graph_cdf.setXTitle("X")
 
-fig, axs = plt.subplots(1, 2, figsize=(12, 4))
-_ = otv.View(graph_pdf, figure=fig, axes=[axs[0]])
-_ = otv.View(graph_cdf, figure=fig, axes=[axs[1]])
+graph_logpdf = normal.drawLogPDF()
+graph_logpdf.setLegends(["LogPDF of X"])
+graph_logpdf.setXTitle("X")
+
+graph_survival = normal.drawSurvivalFunction()
+graph_survival.setLegends(["Survival function of X"])
+graph_survival.setXTitle("X")
+
+
+fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+_ = otv.View(graph_pdf, figure=fig, axes=[axs[0, 0]])
+_ = otv.View(graph_cdf, figure=fig, axes=[axs[0, 1]])
+_ = otv.View(graph_logpdf, figure=fig, axes=[axs[1, 0]])
+_ = otv.View(graph_survival, figure=fig, axes=[axs[1, 1]])
 
 # Pure `matplotlib` additions: median point and decorations.
-axs[1].axhline(0.5, color="black", linestyle=":", label="median level")
-axs[1].plot([0.0], [0.5], "ro", label="median")
-axs[1].legend()
-fig.suptitle("Two native graphs embedded in a Matplotlib figure")
-fig.tight_layout()
+axs[0, 1].axhline(0.5, color="black", linestyle=":", label="median level")
+axs[0, 1].plot([0.0], [0.5], "ro", label="median")
+axs[0, 1].legend()
+fig.suptitle("Four native graphs embedded in a Matplotlib figure")
+plt.subplots_adjust(left=0.07, right=0.95, bottom=0.08, top=0.90, wspace=0.3, hspace=0.5)
 
 otv.View.ShowAll()
