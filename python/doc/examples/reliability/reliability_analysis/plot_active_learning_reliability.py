@@ -343,7 +343,6 @@ active_learning_subset = otexp.ActiveLearningReliabilityAlgorithm(
     fitter, subset_algorithm, gmm_function
 )
 active_learning_subset.setMaximumIterations(simulation_budget)
-active_learning_subset.setConvergenceCriterion(convergence_criterion)
 
 # %%
 # Here we choose to stop the algorithm based on the probability uncertainty estimation due to the Gaussian Process Regressor model.
