@@ -7,16 +7,14 @@ This example shows how to combine native graphs with `matplotlib`.
 Every :class:`~openturns.Graph` displayed with :class:`~openturns.viewer.View`
 is a `matplotlib` figure. Hence we can:
 
--  retrieve the Matplotlib ``Figure`` and ``Axes`` from a ``View``
-   and enrich them with Matplotlib,
--  draw one or several native graphs into an existing Matplotlib figure.
+-  retrieve the `matplotlib` ``Figure`` and ``Axes`` from a ``View``
+   and enrich them with `matplotlib`,
+-  draw one or several native graphs into an existing `matplotlib` figure.
 
 The example uses a standard Normal distribution: its PDF is drawn using the library,
  the failure threshold, the shaded tail and the annotations
 are added with `matplotlib`.
 """
-
-# sphinx_gallery_thumbnail_number = 2
 
 # %%
 # Create a native graph and retrieve the `matplotlib` objects
@@ -25,7 +23,7 @@ are added with `matplotlib`.
 # Every graph displayed with :class:`~openturns.viewer.View` is a `matplotlib`
 # :meth:`~openturns.viewer.View.getFigure` and
 # :meth:`~openturns.viewer.View.getAxes` give access to the underlying
-# Matplotlib objects. Any `matplotlib` customization then applies.
+# `matplotlib` objects. Any `matplotlib` customization then applies.
 import openturns as ot
 import openturns.viewer as otv
 import matplotlib.pyplot as plt
@@ -73,6 +71,8 @@ ax.text(
     color="red",
     fontsize=9,
 )
+# sphinx_gallery_thumbnail_number = 2
+
 # The legend must be redrawn after adding `matplotlib` artists.
 ax.legend()
 ax.grid(True, alpha=0.3)
