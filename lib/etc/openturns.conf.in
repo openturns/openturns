@@ -829,6 +829,9 @@
   <!-- OT::FiniteDiscreteDistribution parameters -->
   <FiniteDiscreteDistribution-SmallSize value_int="10000" />
   
+  <!-- OT::Manifold parameters -->
+  <Manifold-Epsilon value_float="1e-10" />
+
   <!-- OT::UniformOverMesh parameters -->
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
@@ -881,6 +884,7 @@
   <!-- OT::WrappedNormalFactory parameters -->
 
   <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
+
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
 

@@ -88,6 +88,10 @@
 %include VonMisesFisherFactory.i
 %include Bingham.i
 %include BinghamFactory.i
+%include ManifoldImplementation.i
+%include Manifold.i
+%include SphereManifold.i
+%include SO3Manifold.i
 %include MatrixFisher.i
 %include MatrixFisherFactory.i
 %include RiemannianGaussian.i
