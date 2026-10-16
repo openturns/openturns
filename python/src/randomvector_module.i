@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Random vectors.") randomvector
 
-
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
@@ -29,3 +28,12 @@
 
 /* At last we include template definitions */
 %include UncertaintyRandomVectorTemplateDefs.i
+
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
+%}

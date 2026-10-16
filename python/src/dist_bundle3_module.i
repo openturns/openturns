@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Probabilistic distributions.") dist_bundle3
 
-
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTAlgorithm.hxx"
@@ -67,6 +66,14 @@
 %include Wishart.i
 %include ZipfMandelbrot.i
 
-
 /* At last we include template definitions */
 %include UncertaintyDistTemplateDefs.i
+
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
+%}
