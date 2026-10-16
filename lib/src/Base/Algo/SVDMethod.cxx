@@ -328,6 +328,9 @@ Point SVDMethod::getGramInverseDiag() const
 void SVDMethod::save(Advocate & adv) const
 {
   LeastSquaresMethodImplementation::save(adv);
+  adv.saveAttribute( "u_", u_ );
+  adv.saveAttribute( "vT_", vT_ );
+  adv.saveAttribute( "singularValues_", singularValues_ );
 }
 
 
@@ -335,6 +338,14 @@ void SVDMethod::save(Advocate & adv) const
 void SVDMethod::load(Advocate & adv)
 {
   LeastSquaresMethodImplementation::load(adv);
+  if (adv.hasAttribute("u_"))
+  {
+    adv.loadAttribute( "u_", u_ );
+    adv.loadAttribute( "vT_", vT_ );
+    adv.loadAttribute( "singularValues_", singularValues_ );
+  }
+  else
+    trashDecomposition();
 }
 
 

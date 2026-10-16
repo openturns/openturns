@@ -267,6 +267,8 @@ void QRMethod::trashDecomposition()
 void QRMethod::save(Advocate & adv) const
 {
   LeastSquaresMethodImplementation::save(adv);
+  adv.saveAttribute( "q_", q_ );
+  adv.saveAttribute( "r_", r_ );
 }
 
 
@@ -274,6 +276,13 @@ void QRMethod::save(Advocate & adv) const
 void QRMethod::load(Advocate & adv)
 {
   LeastSquaresMethodImplementation::load(adv);
+  if (adv.hasAttribute("q_"))
+  {
+    adv.loadAttribute( "q_", q_ );
+    adv.loadAttribute( "r_", r_ );
+  }
+  else
+    trashDecomposition();
 }
 
 END_NAMESPACE_OPENTURNS
