@@ -95,6 +95,7 @@
 %include SO3Manifold.i
 %include MatrixFisher.i
 %include MatrixFisherFactory.i
+%include PushForwardDistribution.i
 %include RiemannianGaussian.i
 %include RiemannianGaussianFactory.i
 %include WrappedNormal.i
