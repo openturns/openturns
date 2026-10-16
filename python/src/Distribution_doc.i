@@ -186,6 +186,16 @@ OT_Distribution_getPDF_doc
 OT_Distribution_getLogPDF_doc
 %feature("docstring") OT::Distribution::getCDF
 OT_Distribution_getCDF_doc
+%feature("docstring") OT::Distribution::getComplementaryCDF
+OT_Distribution_getComplementaryCDF_doc
+%feature("docstring") OT::Distribution::getQuantile
+OT_Distribution_getQuantile_doc
+%feature("docstring") OT::Distribution::getSurvivalFunction
+OT_Distribution_getSurvivalFunction_doc
+%feature("docstring") OT::Distribution::getInverseSurvivalFunction
+OT_Distribution_getInverseSurvivalFunction_doc
+%feature("docstring") OT::Distribution::getDDF
+OT_Distribution_getDDF_doc
 %feature("docstring") OT::Distribution::getShapeMatrix
 OT_Distribution_getShapeMatrix_doc
 %feature("docstring") OT::Distribution::getSkewness

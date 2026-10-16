@@ -66,6 +66,14 @@ for method in methods:
     d = method.getGramInverseTrace()
     print("getGramInverseTrace: %.5g" % d)
 
+    # pseudo-inverse B = (A^T A)^{-1} A^T on the weighted design, see #3047:
+    # B is the left-inverse of the design the method decomposed
+    pinv = method.getPseudoInverse()
+    assert pinv.getNbRows() == basisSize
+    assert pinv.getNbColumns() == sampleSize
+    weightedDesign = method.computeWeightedDesign()
+    ott.assert_almost_equal(pinv * weightedDesign, ot.IdentityMatrix(basisSize))
+
 proxy = ot.DesignProxy(design)
 
 for method in methods:

@@ -60,6 +60,7 @@ public:
 
   /** Comparison operator */
   using GradientImplementation::operator ==;
+  using GradientImplementation::gradient;
   Bool operator ==(const FiniteDifferenceGradient & other) const;
 
   /** String converter */

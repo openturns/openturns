@@ -352,6 +352,30 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Sample::computePairwiseDistance
+R"RAW(Compute the matrix of pairwise Euclidean distances.
+
+The coefficient :math:`(i, j)` is the Euclidean distance between the
+:math:`i`-th and :math:`j`-th points of the sample. It is useful to
+initialize the correlation lengths of a kriging metamodel, in the
+spirit of `scipy.spatial.distance.pdist
+<https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html>`_.
+
+Returns
+-------
+distances : :class:`~openturns.SymmetricMatrix`
+    Matrix of pairwise Euclidean distances.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.Sample([[0.0, 0.0], [3.0, 4.0]])
+>>> print(sample.computePairwiseDistance())
+[[ 0 5 ]
+ [ 5 0 ]])RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::computeEmpiricalCDF
 R"RAW(Estimate the empirical cumulative distribution function (ECDF).
 

@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import math
 
 ot.TESTPREAMBLE()
 
@@ -164,3 +165,13 @@ for bad in ([10], [-1], [2, 2]):
     sample = ot.Sample([[float(x)] for x in range(10)])
     with ott.assert_raises(Exception):
         sample.erase(bad)
+# Pairwise Euclidean distances, see issue #2841
+distSample = ot.Sample([[0.0, 0.0], [3.0, 4.0], [1.0, 0.0]])
+distances = distSample.computePairwiseDistance()
+assert distances.getDimension() == 3
+for i in range(3):
+    ott.assert_almost_equal(distances[i, i], 0.0)
+    for j in range(3):
+        expected = math.dist(distSample[i], distSample[j])
+        ott.assert_almost_equal(distances[i, j], expected)
+        ott.assert_almost_equal(distances[i, j], distances[j, i])

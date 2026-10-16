@@ -79,6 +79,14 @@ public:
                                  const Point & shift,
                                  Graph & graph) const;
 
+  /** Compute the lambda profile-likelihood confidence interval, see #2849 */
+  Interval computeLambdaConfidenceInterval(const Sample & sample,
+      const Scalar level = 0.95) const;
+
+  Interval computeLambdaConfidenceInterval(const Sample & sample,
+      const Point & shift,
+      const Scalar level = 0.95) const;
+
   /** @deprecated Build the factory from data by estimating the best generalized linear model */
   BoxCoxTransform buildWithGLM(const Sample &inputSample,
                                const Sample &outputSample,

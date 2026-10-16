@@ -74,15 +74,21 @@ public:
 
   Distribution operator + (const Scalar value) const;
 
+  Distribution operator + (const Point & point) const;
+
   /** Subtraction operator */
   Distribution operator - (const Distribution & other) const;
 
   Distribution operator - (const Scalar value) const;
 
+  Distribution operator - (const Point & point) const;
+
   /** Multiplication operator */
   Distribution operator * (const Distribution & other) const;
 
   Distribution operator * (const Scalar value) const;
+
+  Distribution operator * (const Matrix & matrix) const;
 
   /** Division operator */
   Distribution operator / (const Distribution & other) const;
@@ -141,6 +147,11 @@ public:
   Function getPDF() const;
   Function getLogPDF() const;
   Function getCDF() const;
+  Function getComplementaryCDF() const;
+  Function getQuantile() const;
+  Function getSurvivalFunction() const;
+  Function getInverseSurvivalFunction() const;
+  Function getDDF() const;
 
   /** Get the DDF of the distribution */
   Scalar computeDDF(const Scalar scalar) const;

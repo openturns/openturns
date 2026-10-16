@@ -104,6 +104,9 @@ public:
   /** Get the inverse of the Gram matrix */
   CovarianceMatrix getGramInverse() const;
 
+  /** Get the pseudo-inverse B = (A^T A)^{-1} A^T, see issue #3047 */
+  Matrix getPseudoInverse() const;
+
   /** Get the diagonal of the Gram inverse */
   Point getGramInverseDiag() const;
 

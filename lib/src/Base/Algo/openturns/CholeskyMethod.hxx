@@ -73,6 +73,8 @@ public:
   CovarianceMatrix getGramInverse() const override;
   SymmetricMatrix getH() const override;
 
+  Matrix getPseudoInverse() const override;
+
   Point getGramInverseDiag() const override;
   Point getHDiag() const override;
 

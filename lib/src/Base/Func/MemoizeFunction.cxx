@@ -120,10 +120,22 @@ void MemoizeFunction::addCacheContent(const Sample & inSample, const Sample & ou
   p_evaluation->addCacheContent(inSample, outSample);
 }
 
+Sample MemoizeFunction::getInputCache() const
+{
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->getInputCache();
+}
+
 Sample MemoizeFunction::getCacheInput() const
 {
   MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
   return p_evaluation->getCacheInput();
+}
+
+Sample MemoizeFunction::getOutputCache() const
+{
+  MemoizeEvaluation* p_evaluation = dynamic_cast<MemoizeEvaluation*>(getEvaluation().getImplementation().get());
+  return p_evaluation->getOutputCache();
 }
 
 Sample MemoizeFunction::getCacheOutput() const

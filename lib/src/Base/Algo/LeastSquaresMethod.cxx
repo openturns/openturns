@@ -124,6 +124,11 @@ CovarianceMatrix LeastSquaresMethod::getGramInverse() const
   return getImplementation()->getGramInverse();
 }
 
+Matrix LeastSquaresMethod::getPseudoInverse() const
+{
+  return getImplementation()->getPseudoInverse();
+}
+
 Point LeastSquaresMethod::getGramInverseDiag() const
 {
   return getImplementation()->getGramInverseDiag();

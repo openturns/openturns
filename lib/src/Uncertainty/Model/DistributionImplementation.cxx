@@ -91,6 +91,11 @@ CLASSNAMEINIT(DistributionImplementation)
 CLASSNAMEINIT(DistributionImplementation::PDFWrapper)
 CLASSNAMEINIT(DistributionImplementation::LogPDFWrapper)
 CLASSNAMEINIT(DistributionImplementation::CDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::ComplementaryCDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::QuantileFunctionWrapper)
+CLASSNAMEINIT(DistributionImplementation::SurvivalWrapper)
+CLASSNAMEINIT(DistributionImplementation::InverseSurvivalFunctionWrapper)
+CLASSNAMEINIT(DistributionImplementation::DDFWrapper)
 
 typedef Collection<Distribution>                                      DistributionCollection;
 
@@ -98,6 +103,11 @@ static const Factory<DistributionImplementation> Factory_DistributionImplementat
 static const Factory<DistributionImplementation::PDFWrapper> Factory_DistributionImplementation_PDFWrapper;
 static const Factory<DistributionImplementation::LogPDFWrapper> Factory_DistributionImplementation_LogPDFWrapper;
 static const Factory<DistributionImplementation::CDFWrapper> Factory_DistributionImplementation_CDFWrapper;
+static const Factory<DistributionImplementation::ComplementaryCDFWrapper> Factory_DistributionImplementation_ComplementaryCDFWrapper;
+static const Factory<DistributionImplementation::QuantileFunctionWrapper> Factory_DistributionImplementation_QuantileFunctionWrapper;
+static const Factory<DistributionImplementation::SurvivalWrapper> Factory_DistributionImplementation_SurvivalWrapper;
+static const Factory<DistributionImplementation::InverseSurvivalFunctionWrapper> Factory_DistributionImplementation_InverseSurvivalFunctionWrapper;
+static const Factory<DistributionImplementation::DDFWrapper> Factory_DistributionImplementation_DDFWrapper;
 
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()
@@ -220,6 +230,21 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
   return new JointDistribution(marginals, getCopula());
 }
 
+/* Addition operator with a point */
+Distribution DistributionImplementation::operator + (const Point & point) const
+{
+  if (point.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Can only add a point of dimension " << dimension_ << ", here dimension=" << point.getDimension();
+  if (point.norm() == 0.0) return clone();
+  // Special case: Dirac distribution
+  if (getClassName() == "Dirac") return new Dirac(getRealization() + point);
+  if (dimension_ == 1) return operator +(point[0]);
+  // Shift each marginal, preserving the copula as the scalar version does
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    marginals[j] = getMarginal(j) + point[j];
+  return new JointDistribution(marginals, getCopula());
+}
+
 /* Subtraction operator */
 Distribution DistributionImplementation::operator - (const Distribution & other) const
 {
@@ -262,6 +287,14 @@ Distribution DistributionImplementation::operator - (const Scalar value) const
 {
   if (value == 0.0) return clone();
   return *this + (-value);
+}
+
+/* Subtraction operator with a point */
+Distribution DistributionImplementation::operator - (const Point & point) const
+{
+  if (point.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Can only subtract a point of dimension " << dimension_ << ", here dimension=" << point.getDimension();
+  if (point.norm() == 0.0) return clone();
+  return *this + (-point);
 }
 
 /* Multiplication operator */
@@ -321,6 +354,29 @@ Distribution DistributionImplementation::operator * (const Scalar value) const
   if ((res.getWeights()(0, 0) == 1.0) && (res.getConstant()[0] == 0.0))
     return res.getDistributionCollection()[0];
   return res.clone();
+}
+
+/* Multiplication operator with a matrix: Y = M X */
+Distribution DistributionImplementation::operator * (const Matrix & matrix) const
+{
+  if (matrix.getNbColumns() != dimension_) throw InvalidDimensionException(HERE) << "Can only multiply by a matrix with " << dimension_ << " columns, here columns=" << matrix.getNbColumns();
+  // Special case: Dirac distribution
+  if (getClassName() == "Dirac") return new Dirac(matrix * getRealization());
+  // Special case: Gaussian distributions are closed under linear maps
+  if (getClassName() == "Normal")
+  {
+    const Point mean(matrix * getMean());
+    const Matrix sigmaT(Matrix(getCovariance()) * matrix.transpose());
+    Matrix covariance(matrix * sigmaT);
+    // Enforce exact symmetry before building the covariance
+    for (UnsignedInteger i = 0; i < covariance.getNbRows(); ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        covariance(j, i) = covariance(i, j);
+    return new Normal(mean, CovarianceMatrix(*covariance.getImplementation()));
+  }
+  // Special case: 1x1 matrix, same as scalar multiplication
+  if ((matrix.getNbRows() == 1) && (matrix.getNbColumns() == 1)) return operator *(matrix(0, 0));
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator * (const Matrix & matrix) const: can multiply Dirac, Normal or 1x1 matrices only.";
 }
 
 /* Division operator */
@@ -714,6 +770,31 @@ Function DistributionImplementation::getLogPDF() const
 Function DistributionImplementation::getCDF() const
 {
   return Function(DistributionImplementation::CDFWrapper(*this));
+}
+
+Function DistributionImplementation::getComplementaryCDF() const
+{
+  return Function(DistributionImplementation::ComplementaryCDFWrapper(*this));
+}
+
+Function DistributionImplementation::getQuantile() const
+{
+  return Function(DistributionImplementation::QuantileFunctionWrapper(*this));
+}
+
+Function DistributionImplementation::getSurvivalFunction() const
+{
+  return Function(DistributionImplementation::SurvivalWrapper(*this));
+}
+
+Function DistributionImplementation::getInverseSurvivalFunction() const
+{
+  return Function(DistributionImplementation::InverseSurvivalFunctionWrapper(*this));
+}
+
+Function DistributionImplementation::getDDF() const
+{
+  return Function(DistributionImplementation::DDFWrapper(*this));
 }
 
 /* Get the DDF of the distribution */
@@ -6377,6 +6458,76 @@ void DistributionImplementation::CDFWrapper::save(Advocate & adv) const
 }
 
 void DistributionImplementation::CDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::ComplementaryCDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::ComplementaryCDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::QuantileFunctionWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::QuantileFunctionWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::SurvivalWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::SurvivalWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::InverseSurvivalFunctionWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::InverseSurvivalFunctionWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::DDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::DDFWrapper::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
   Distribution savedDistribution;

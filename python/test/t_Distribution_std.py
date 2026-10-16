@@ -173,3 +173,28 @@ try:
         mimic.computeCharacteristicFunction(1.0)
 finally:
     mimic.setIntegrationNodesNumber(defaultNodesNumber)
+
+# Point and Matrix arithmetic, see issue #2872
+d4 = ot.Normal(4)
+shifted = d4 + ot.Point([1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(shifted.getMean(), [1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(shifted.getCovariance(), ot.IdentityMatrix(4))
+back = shifted - ot.Point([1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(back.getMean(), [0.0] * 4)
+ott.assert_almost_equal((ot.Point([1.0] * 4) + d4).getMean(), [1.0] * 4)
+# Matrix product is exact for Gaussians: mean M.mu, covariance M.Sigma.M^T
+mat = ot.Matrix([[1.0, 0.0, 0.0, 0.0], [0.0, 2.0, 0.0, 0.0]])
+scaled = mat * ot.Normal(4)
+assert scaled.getDimension() == 2
+ott.assert_almost_equal(scaled.getMean(), [0.0, 0.0])
+ott.assert_almost_equal(
+    scaled.getCovariance(), ot.Matrix([[1.0, 0.0], [0.0, 4.0]])
+)
+ott.assert_almost_equal((ot.IdentityMatrix(4) * d4).getMean(), [0.0] * 4)
+ott.assert_almost_equal(
+    (ot.Dirac([1.0, 2.0]) + [0.5, -0.5]).getRealization(), [1.5, 1.5]
+)
+with ott.assert_raises(Exception):
+    d4 + ot.Point([1.0, 2.0])
+with ott.assert_raises(Exception):
+    ot.Matrix(2, 3) * d4
