@@ -107,6 +107,76 @@ Scalar LatentVariableModel::computeAsScalar(const Collection<Scalar>::const_iter
   return computeAsScalar(*z1_it, *z2_it);
 }
 
+/* Gradient: the inputs are discrete levels, no spatial gradient is defined */
+Matrix LatentVariableModel::partialGradient(const Point & /*s*/,
+    const Point & /*t*/) const
+{
+  throw NotYetImplementedException(HERE) << "In LatentVariableModel::partialGradient: the inputs are discrete levels, no spatial gradient is defined.";
+}
+
+/* Hessian: the inputs are discrete levels, no spatial Hessian is defined */
+SymmetricMatrix LatentVariableModel::partialHessian(const Point & /*s*/,
+    const Point & /*t*/) const
+{
+  throw NotYetImplementedException(HERE) << "In LatentVariableModel::partialHessian: the inputs are discrete levels, no spatial Hessian is defined.";
+}
+
+/* Gradient wrt the parameters through the latent covariance model */
+Matrix LatentVariableModel::parameterGradient(const Point & z1,
+    const Point & z2) const
+{
+  if (z1.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point z1 has dimension=" << z1.getDimension() << ", expected dimension=" << inputDimension_;
+  if (z2.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point z2 has dimension=" << z2.getDimension() << ", expected dimension=" << inputDimension_;
+  // Same level check as computeAsScalar
+  const Scalar level1 = z1[0];
+  const Scalar level2 = z2[0];
+  const Bool isLevel1 = (level1 >= 0.0 && level1 < 1.0 * nLevels_ && (level1 - std::floor(level1)) == 0.0);
+  const Bool isLevel2 = (level2 >= 0.0 && level2 < 1.0 * nLevels_ && (level2 - std::floor(level2)) == 0.0);
+  if (!isLevel1 || !isLevel2) throw InvalidArgumentException(HERE) << "Error: the input discrete variables values: " << level1
+        << ", and/or " << level2 << " are not among the known levels. They should both present integer values between 0 and " << nLevels_ - 1 << ".";
+  const UnsignedInteger indexA = static_cast<UnsignedInteger>(level1);
+  const UnsignedInteger indexB = static_cast<UnsignedInteger>(level2);
+  // Latent coordinates of both levels
+  const Point ua(fullLatentVariables_[indexA]);
+  const Point ub(fullLatentVariables_[indexB]);
+  // Gradients of the latent model wrt its first argument, swapped for the second one
+  const Matrix gradA(latentCovarianceModel_.partialGradient(ua, ub));
+  const Matrix gradB(latentCovarianceModel_.partialGradient(ub, ua));
+  // Latent parameter gradient, rows are the latent scales then the amplitude
+  const Matrix latentPG(latentCovarianceModel_.parameterGradient(ua, ub));
+  // Full gradient in getFullParameter order: scale, nuggetFactor, amplitude, latent coordinates
+  Point fullGradient(3 + activeLatentCoordinateDim_, 0.0);
+  // The model scale drives all the latent scales
+  Scalar sumScales = 0.0;
+  for (UnsignedInteger m = 0; m < latentDim_; ++m)
+    sumScales += latentPG(m, 0);
+  fullGradient[0] = sumScales;
+  // The nugget factor only acts on the diagonal
+  fullGradient[1] = (indexA == indexB ? amplitude_[0] * amplitude_[0] : 0.0);
+  fullGradient[2] = latentPG(latentDim_, 0);
+  // Each active coordinate drives a single (level, dimension) pair, level 0 is fixed at the origin
+  for (UnsignedInteger q = 0; q < activeLatentCoordinateDim_; ++q)
+  {
+    UnsignedInteger level = 0;
+    UnsignedInteger dim = 0;
+    if (q == 0)
+    {
+      level = 1;
+    }
+    else
+    {
+      const UnsignedInteger r = q - 1;
+      level = 2 + r / latentDim_;
+      dim = r % latentDim_;
+    }
+    Scalar value = 0.0;
+    if (level == indexA) value += gradA(dim, 0);
+    if (level == indexB) value += gradB(dim, 0);
+    fullGradient[3 + q] = value;
+  }
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* Set the covariance model parameters */
 void LatentVariableModel::setFullParameter(const Point & parameter)
 {
