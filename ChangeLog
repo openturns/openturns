@@ -114,6 +114,7 @@
  * Deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in favor of set/getBoundingOption
  * Deprecated QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage(Sample) in favor of QuantileConfidence.computeUnilateralCoverage(UnsignedInteger, UnsignedInteger, Bool)
  * Deprecated QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) in favor of computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)
+ * Added IshigamiModel.getFunctionalChaosResult to the Ishigami use case: it returns the reference FunctionalChaosResult built from the 46 exact polynomial chaos coefficients, exposing the reference surrogate (getMetaModel) and the exact Sobol indices
 
 ==== New features ====
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
