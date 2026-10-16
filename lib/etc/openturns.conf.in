@@ -843,6 +843,7 @@
   <ManifoldMappedDistribution-SampleSize value_int="10000" />
 
   <!-- OT::UniformOverMesh parameters -->
+  <UniformOverMesh-OnManifoldEpsilon value_float="1e-10" />
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 

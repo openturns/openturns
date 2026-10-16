@@ -1471,6 +1471,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ManifoldMappedDistribution-SampleSize", 10000);
 
   // UniformOverMesh parameters //
+  addAsScalar("UniformOverMesh-OnManifoldEpsilon", 1.0e-10);
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber", 262144);
 
