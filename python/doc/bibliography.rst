@@ -292,6 +292,14 @@ Bibliography
 .. [kallenberg2021] Kallenberg, O.
     *Fundations of Modern Probability*,
     Springer, 3rd edition, 2021.
+.. [bichon2008] Bichon B.J., Eldred M.S., Swiler L.P., Mahadevan S., McFarland J.M.,
+    *Efficient global reliability analysis for nonlinear implicit performance functions*,
+    AIAA Journal, 46(10), 2459-2468, 2008.
+    https://doi.org/10.2514/1.34374
+.. [echard2011] Echard B., Gayton N., Lemaire M.,
+    *AK-MCS: an active learning reliability method combining Kriging and Monte Carlo simulation*,
+    Structural Safety, 33(2), 145-154, 2011.
+    https://doi.org/10.1016/j.strusafe.2011.01.002
 .. [Keutelian1991] Hovhannes Keutelian.
     *The Kolmogorov-Smirnov test when parameters are estimated from data*,
     30 April 1991, Fermilab.
@@ -424,6 +432,9 @@ Bibliography
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
 .. [morio2015] Morio J., Balesdent M., *Estimation of Rare Event Probabilities in Complex Aerospace and Other Systems*,
     A Practical Approach, Elsevier, 2015.
+.. [moustapha2019] Moustapha, M. and Sudret, B.,
+    *Surrogate-assisted reliability-based design optimization: a survey and a unified modular framework*,
+    Structural and Multidisciplinary Optimization, 60(5), 2157--2176, 2019.
 .. [morris1995] D. Morris and J. Mitchell. *Exploratory designs for
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.

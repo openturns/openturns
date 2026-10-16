@@ -28,9 +28,13 @@
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/GenericSimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
+// Forward declaration for restricted access to the history bridge
+class ActiveLearningReliabilityAlgorithm;
 
 /**
  * @class EventSimulationImplementation
@@ -87,11 +91,18 @@ protected:
 
   /** Result accessor */
   void setResult(const ProbabilitySimulationResult & result);
-  
+
+  /** Current result with full dynamic type, for per-iteration histories.
+      Restricted to ActiveLearningReliabilityAlgorithm (friend): it has no
+      meaning as standalone public API. The default implementation wraps
+      the base result; simulators with an extended result type override it. */
+  virtual GenericSimulationResult getHistoryResult() const;
+
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
 
   friend class Factory<EventSimulationImplementation>;
+  friend class ActiveLearningReliabilityAlgorithm;
 
   // The event we are computing the probability of
   RandomVector event_;

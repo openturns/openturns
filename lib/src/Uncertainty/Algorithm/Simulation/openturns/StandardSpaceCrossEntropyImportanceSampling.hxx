@@ -47,7 +47,12 @@ public:
   StandardSpaceCrossEntropyImportanceSampling * clone() const override;
 
   /** String converter */
+  
   String __repr__() const override;
+  
+  /** Accessor to input sample in physical space */  
+  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const override;
+  
 protected:
   Distribution getInitialDistribution() const override;
 
