@@ -25,6 +25,8 @@ Use cases from the usecases module
     usecases.wingweight_function.WingWeightModel
     usecases.oscillator.Oscillator
     usecases.stiffened_panel.StiffenedPanel
+    usecases.paleomagnetism.Paleomagnetism
+    usecases.tectonic.Tectonic
     usecases.crystal_texture.CrystalTexture
     usecases.satellite_attitude.SatelliteAttitude
     usecases.brain_diffusion.BrainDiffusion

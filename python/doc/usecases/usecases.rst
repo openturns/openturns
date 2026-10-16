@@ -30,6 +30,8 @@ Contents
    use_case_ames_housing
    use_case_stiffened_panel
    use_case_fission_gas
+   use_case_paleomagnetism
+   use_case_tectonic
    use_case_crystal_texture
    use_case_satellite_attitude
    use_case_brain_diffusion
