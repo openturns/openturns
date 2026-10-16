@@ -112,10 +112,13 @@
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
  * Added SpecFunc.BesselJ and SpecFunc.BesselJDerivative
  * Deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in favor of set/getBoundingOption
+ * Deprecated QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage(Sample) in favor of QuantileConfidence.computeUnilateralCoverage(UnsignedInteger, UnsignedInteger, Bool)
+ * Deprecated QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) in favor of computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)
 
 ==== New features ====
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
+ * Added QuantileConfidence.computeUnilateralCoverage and QuantileConfidence.computeBilateralCoverage to compute the coverage probability of quantile confidence intervals without sample
  * The unary subtraction operator on Function and FunctionImplementation is now available
  * The multiplication of a function by a scalar is now available
  * The division operator between functions with the same input dimension is now available; the right operand must have 1D output, the left operand can have any output dimension
@@ -123,7 +126,6 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
-
 
 === Documentation ===
  * Theory: add interpolation page
@@ -138,6 +140,7 @@
 
  * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
  * Normal::computeCDF used wrong bounds in its large-dimension fallback and returned 0.0, e.g. at the mean of a correlated dimension-7 distribution
+ * QuantileConfidence: fixed inverted unilateral case in computeUnilateralMinimumSampleSize, the flag was renamed from tail to lowerBounded with opposite meaning (old tail=True is now lowerBounded=False); calls passing True positionally or by keyword must swap the flag (see #3178). In computeUnilateralRank and the unilateral confidence interval methods the flag was only renamed (old tail=True is lowerBounded=True), with no change of the returned value
 
 === Miscellaneous ===
  * Added sum and difference operators between fields
