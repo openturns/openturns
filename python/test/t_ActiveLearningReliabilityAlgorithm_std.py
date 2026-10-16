@@ -157,6 +157,14 @@ for i in range(len(history)):
     )
     assert history[i].getOuterSampling() > 0
 
+# the algorithm exposes the same history directly
+assert len(algo.getSimulationResults()) == calls + 1
+for i in range(len(history)):
+    ott.assert_almost_equal(
+        algo.getSimulationResults()[i].getProbabilityEstimate(),
+        result.getProbabilityHistory()[i],
+    )
+
 # history survives the Study round-trip
 loadedHistory = loaded.getResult().getSimulationResults()
 assert len(loadedHistory) == calls + 1

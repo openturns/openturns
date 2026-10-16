@@ -432,6 +432,9 @@ Bibliography
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
 .. [morio2015] Morio J., Balesdent M., *Estimation of Rare Event Probabilities in Complex Aerospace and Other Systems*,
     A Practical Approach, Elsevier, 2015.
+.. [moustapha2019] Moustapha, M. and Sudret, B.,
+    *Surrogate-assisted reliability-based design optimization: a survey and a unified modular framework*,
+    Structural and Multidisciplinary Optimization, 60(5), 2157--2176, 2019.
 .. [morris1995] D. Morris and J. Mitchell. *Exploratory designs for
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.

@@ -127,6 +127,9 @@ public:
       the probability estimate into the base result at the end of run() */
   ActiveLearningReliabilityResult getResult() const;
 
+  /** Accessor to the per-iteration simulation results stored in the result */
+  ActiveLearningReliabilityResult::SimulationResultsCollection getSimulationResults() const;
+
 protected:
 
   /** Accessor to results */

@@ -445,6 +445,12 @@ ActiveLearningReliabilityResult ActiveLearningReliabilityAlgorithm::getResult() 
   return activeLearningReliabilityResult_;
 }
 
+// Accessor to the per-iteration simulation results stored in the result
+ActiveLearningReliabilityResult::SimulationResultsCollection ActiveLearningReliabilityAlgorithm::getSimulationResults() const
+{
+  return activeLearningReliabilityResult_.getSimulationResults();
+}
+
 
 // Accessor to simulationAlgorithmSeed
 
