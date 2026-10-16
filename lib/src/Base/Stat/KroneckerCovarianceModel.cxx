@@ -186,6 +186,80 @@ Matrix KroneckerCovarianceModel::partialGradient(const Point &s, const Point &t)
   return gradient;
 }
 
+/** Hessian wrt s, for the first output component */
+SymmetricMatrix KroneckerCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "KroneckerCovarianceModel::partialHessian, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
+  if (t.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "KroneckerCovarianceModel::partialHessian, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
+  // C_00(s, t) = outputCovariance_(0, 0) * rho(s, t)
+  return rho_.partialHessian(s, t) * outputCovariance_.getImplementation()->operator()(0, 0);
+}
+
+/* Gradient wrt the parameters: C_ij = S_ij * rho, S = outputCovariance_ */
+Matrix KroneckerCovarianceModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "KroneckerCovarianceModel::parameterGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
+  if (t.getDimension() != getInputDimension())
+    throw InvalidArgumentException(HERE) << "KroneckerCovarianceModel::parameterGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
+  const UnsignedInteger rhoThetaSize = rho_.getScale().getSize();
+  const UnsignedInteger nCorr = outputDimension_ * (outputDimension_ - 1) / 2;
+  const UnsignedInteger fullSize = rhoThetaSize + 1 + outputDimension_ + nCorr + extraParameterNumber_;
+  Matrix fullGradient(fullSize, outputDimension_ * outputDimension_);
+  const Scalar rho = rho_.computeAsScalar(s, t);
+  const SquareMatrix covariance(operator()(s, t));
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  // S-part: amplitude and output correlation, rho held fixed
+  for (UnsignedInteger k = 0; k < outputDimension_; ++k)
+  {
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+      {
+        if (i == k) fullGradient(rhoThetaSize + 1 + k, index) = covariance(i, j) / amplitude_[k];
+        if (j == k) fullGradient(rhoThetaSize + 1 + k, index) += covariance(i, j) / amplitude_[k];
+      }
+  }
+  if (outputDimension_ > 1)
+  {
+    UnsignedInteger correlationIndex = 0;
+    for (UnsignedInteger i = 1; i < outputDimension_; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j, ++correlationIndex)
+      {
+        const Scalar derivative = amplitude_[i] * amplitude_[j] * rho;
+        UnsignedInteger index = 0;
+        for (UnsignedInteger q = 0; q < outputDimension_; ++q)
+          for (UnsignedInteger p = 0; p < outputDimension_; ++p, ++index)
+          {
+            if (p == i && q == j) fullGradient(rhoThetaSize + 1 + outputDimension_ + correlationIndex, index) = derivative;
+            if (p == j && q == i) fullGradient(rhoThetaSize + 1 + outputDimension_ + correlationIndex, index) += derivative;
+          }
+      }
+  }
+  // rho-part: dC_ij = S_ij * drho, full rho gradient on an all-active clone
+  // so row positions match the full rho parameter order whatever the
+  // active sets are (rho amplitude at rhoThetaSize + 1 is frozen to 1).
+  // Deep copy through the implementation ctor: a plain handle copy would
+  // share the implementation and setActiveParameter would leak to rho_.
+  CovarianceModel rhoAll(*rho_.getImplementation());
+  const UnsignedInteger rhoFullSize = rho_.getFullParameter().getSize();
+  Indices allActive(rhoFullSize);
+  allActive.fill();
+  rhoAll.setActiveParameter(allActive);
+  const Matrix rhoFullGradient(rhoAll.parameterGradient(s, t));
+  for (UnsignedInteger k = 0; k < rhoThetaSize + 1; ++k)
+    for (UnsignedInteger index = 0; index < outputDimension_ * outputDimension_; ++index)
+      fullGradient(k, index) = outputCovariance(index % outputDimension_, index / outputDimension_) * rhoFullGradient(k, 0);
+  for (UnsignedInteger e = 0; e < extraParameterNumber_; ++e)
+    for (UnsignedInteger index = 0; index < outputDimension_ * outputDimension_; ++index)
+      fullGradient(rhoThetaSize + 1 + outputDimension_ + nCorr + e, index) = outputCovariance(index % outputDimension_, index / outputDimension_) * rhoFullGradient(rhoThetaSize + 2 + e, 0);
+  return filterActiveParameterGradient(fullGradient);
+}
+
 /* Is it safe to compute discretize in parallel? */
 Bool KroneckerCovarianceModel::isParallel() const
 {
