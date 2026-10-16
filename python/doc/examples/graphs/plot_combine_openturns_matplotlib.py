@@ -11,7 +11,7 @@ is a `matplotlib` figure. Hence we can:
    and enrich them with `matplotlib`,
 -  draw one or several native graphs into an existing `matplotlib` figure.
 
-The example uses a standard Normal distribution: its PDF is drawn using the library, 
+The example uses a standard Normal distribution: its PDF is drawn using the library,
 the failure threshold, the shaded tail and the annotations are added with `matplotlib`.
 """
 
