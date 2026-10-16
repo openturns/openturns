@@ -90,6 +90,9 @@ Continuous parametric distributions
     Rayleigh
     Rice
 
+    :template: classWithPlot.rst_t
+    experimental.PushForwardDistribution
+
     :template: class.rst_t
     experimental.ManifoldMappedDistribution
     experimental.RiemannianGaussian
