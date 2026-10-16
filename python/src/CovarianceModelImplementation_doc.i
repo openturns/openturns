@@ -411,12 +411,14 @@ OT_CovarianceModel_getOutputCorrelation_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_getInputDimension_doc
-"Get the input dimension :math:`n` of the covariance function.
+R"RAW(Get the input dimension :math:`n` of the covariance function.
 
 Returns
 -------
 inputDimension : int
-    Spatial dimension :math:`n` of the covariance function."
+    Dimension :math:`n` such that :math:`C : \cD \times \cD \mapsto \cS_d^+(\Rset).`
+    This is the dimension of the process domain :math:`\cD`.
+)RAW"
 
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getInputDimension
