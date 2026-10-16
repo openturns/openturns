@@ -33,7 +33,7 @@ jobs:
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
         make install
         make tests
-        ctest -E GeneralizedParetoFactory_std ${MAKEFLAGS} --output-on-failure --timeout 100 --schedule-random
+        ctest ${MAKEFLAGS} --output-on-failure --timeout 100 --schedule-random
 
   windows:
     runs-on: windows-latest
