@@ -16,37 +16,33 @@ A number of short `SKILL.md` files under `.agents/skills/` are the canonical ref
 ## What is OpenTURNS
 
 At its core it is an object-oriented C++ and Python library dedicated to advanced probabilistic modelling
-(distribution algebra, copulas dependence modelling with copulas, non-parametric distributions, distribution transformations, etc),
+(distribution algebra, dependence modelling with copulas, non-parametric distributions, distribution transformations, etc),
 and with a second layer of statistical and uncertainty quantification capabilities
 (functional modelling, sensitivity analysis, reliability analysis, surrogate modelling, etc).
 
 ## Build
-The library is built using CMake build system, to configure and build:
+The library is built using the CMake build system, to configure and build:
 ```bash
-cmake --preset=linux-debug  # only if build/ folder does not exist
+cmake --preset=linux-debug  # only if the build/ folder does not exist; to switch preset, remove build/ first
 cmake --build build --target install --parallel $(( $(nproc) / 2 ))
 ```
 
 ## C++ library
-- C++ library is located into lib/src/
-- The subfolders lib/src/Base/ and lib/src/Uncertainty/ mark the distinction between non-stochastic and stochastic layers
-
-See **`.agents/skills/openturns-conventions/SKILL.md`** for more details.
+- C++ library is located in `lib/src/`
+- The subfolders `lib/src/Base/` and `lib/src/Uncertainty/` mark the distinction between non-stochastic and stochastic layers
+- Follow the rules in **`.agents/skills/openturns-conventions/SKILL.md`** before editing.
 
 ## Python bindings
-- The C++ library is exposed into Python via SWIG generation tool
-- SWIG files entries for each class live in python/src/*.i
-- Docstring documentation files python/src/*_doc.i are part of the Python bindings
-- Python tests are located in python/test/
-
-See **`.agents/skills/openturns-conventions/SKILL.md`** for more details.
+- The C++ library is exposed to Python via SWIG
+- SWIG interface entries for each class live in `python/src/*.i`
+- Docstring documentation files `python/src/*_doc.i` are part of the Python bindings
+- Python tests are located in `python/test/`
+- Follow the rules in **`.agents/skills/openturns-conventions/SKILL.md`** before editing.
 
 ## Tests
-Tests are run from the build folder with CTest utility
-
-See **`.agents/skills/openturns-test/SKILL.md`** for more details.
+- Tests run from the `build/` folder with CTest, e.g. `ctest -R pyinstallcheck_Axial_std --output-on-failure` from `build/`
+- Read **`.agents/skills/openturns-test/SKILL.md`** for `-R`/`-E` filtering, `-j` parallelism, and C++ vs Python specifics before running or editing tests.
 
 ## Documentation
-The HTML documentation is built using Sphinx-doc generator from python/doc
-
-See **`.agents/skills/openturns-doc/SKILL.md`** for more details.
+- HTML documentation is built with Sphinx from `python/doc/`; API docstrings live in `python/src/*_doc.i`
+- Read **`.agents/skills/openturns-doc/SKILL.md`** before any change to `python/doc/` or `python/src/*_doc.i`.
