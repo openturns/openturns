@@ -49,7 +49,7 @@ The main usage of :class:`~openturns.experimental.ActiveLearningReliabilityAlgor
 
 7 - Check a convergence criterion
 
-The steps 1 to 7 are repeated until convergence.
+The steps 2 to 7 are repeated until convergence.
 
 Different stopping criteria have been implemented. The first one is based on the simulation budget (maximal number of calls of the simulation code). The second one is based on the infill criterion (see :class:`~openturns.experimental.ActiveLearningUFunction`, :class:`~openturns.experimental.ActiveLearningEFFFunction` or :class:`~openturns.experimental.ActiveLearningGMMFunction`). The third one is based on the uncertainty of probability (or reliability index) due to the use of the GPR. The fourth one is based on the stability of the probability estimate (or reliability index) between two iterations of the active learning reliability algorithm. The convergence criterion can be set with the `setConvergenceCriterion` method, with dedicated flags:
 
