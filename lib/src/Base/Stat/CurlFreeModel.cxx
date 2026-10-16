@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/MatrixImplementation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SquaredExponential.hxx"
 
@@ -87,13 +88,25 @@ SquareMatrix CurlFreeModel::operator()(const Point & s, const Point & t) const
   if (t.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
+  if (isStationary())
+  {
+    // H~_ij(s, t) = d^2 k(s, t) / ds_i dt_j = -H_ij(s, t): exact, no finite difference
+    const SymmetricMatrix hessian(model_.partialHessian(s, t));
+    SquareMatrix exact(outputDimension_);
+    for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        exact(i, j) = -hessian(i, j);
+    return exact;
+  }
+
   SquareMatrix result(outputDimension_);
   const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
   const Point scale(model_.getScale());
+  const Bool isotropicScale = (scale.getDimension() != inputDimension_);
 
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
   {
-    const Scalar epsilon = scale[j] * baseEps;
+    const Scalar epsilon = (isotropicScale ? scale[0] : scale[j]) * baseEps;
     Point tPlus(t);
     Point tMinus(t);
     tPlus[j] += epsilon;
@@ -115,14 +128,26 @@ SquareMatrix CurlFreeModel::operator()(const Point & tau) const
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
 
+  if (isStationary())
+  {
+    const Point zero(inputDimension_);
+    const SymmetricMatrix hessian(model_.partialHessian(tau, zero));
+    SquareMatrix exact(outputDimension_);
+    for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        exact(i, j) = -hessian(i, j);
+    return exact;
+  }
+
   SquareMatrix result(outputDimension_);
   const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
   const Point scale(model_.getScale());
+  const Bool isotropicScale2 = (scale.getDimension() != inputDimension_);
   const Point zero(inputDimension_);
 
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
   {
-    const Scalar epsilon = scale[j] * baseEps;
+    const Scalar epsilon = (isotropicScale2 ? scale[0] : scale[j]) * baseEps;
     Point tauPlus(tau);
     Point tauMinus(tau);
     tauPlus[j] += epsilon;
@@ -150,6 +175,124 @@ Bool CurlFreeModel::isStationary() const
 Bool CurlFreeModel::isDiagonal() const
 {
   return false;
+}
+
+
+/* Gradient */
+Matrix CurlFreeModel::partialGradient(const Point & s,
+                                       const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // The (i, j) covariance reads C_ij(s, t) = d^2 k(s, t) / ds_i dt_j, hence
+  // dC_ij/ds_a = d/dt_j H_ai(s, t) where H is the partial Hessian of the
+  // underlying scalar model. H is analytic, so a single central finite
+  // difference in t yields a gradient exact in s, unlike the nested finite
+  // differences of the base-class fallback.
+  const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Point scale(model_.getScale());
+  const Bool isotropicScale3 = (scale.getDimension() != inputDimension_);
+  Collection<SquareMatrix> derivatives(inputDimension_, SquareMatrix(outputDimension_));
+  for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+  {
+    const Scalar epsilon = (isotropicScale3 ? scale[0] : scale[j]) * baseEps;
+    Point tPlus(t);
+    Point tMinus(t);
+    tPlus[j] += epsilon;
+    tMinus[j] -= epsilon;
+    const Scalar delta = tPlus[j] - tMinus[j];
+    const SymmetricMatrix hessianPlus(model_.partialHessian(s, tPlus));
+    const SymmetricMatrix hessianMinus(model_.partialHessian(s, tMinus));
+    for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        derivatives[a](i, j) = (hessianPlus(a, i) - hessianMinus(a, i)) / delta;
+  }
+  // Same layout as the base class: symmetrized covariance flattened column-wise
+  Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    MatrixImplementation flat(*derivatives[a].getImplementation());
+    flat.symmetrize();
+    const Point values(flat);
+    for (UnsignedInteger k = 0; k < values.getSize(); ++k)
+      gradient(a, k) = values[k];
+  }
+  return gradient;
+}
+
+/* Hessian of the (0, 0) component: C_00 = -H_00, second-order stencil on H */
+SymmetricMatrix CurlFreeModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (!isStationary()) return CovarianceModelImplementation::partialHessian(s, t);
+  // C_00(s, t) = -H_00(s, t) with H analytic and nugget-free, so a
+  // value stencil on H is safe at s == t (never evaluates k at centre).
+  // Second differences of values: optimal step is eps^(1/4).
+  const Scalar baseEpsilon = std::sqrt(std::sqrt(SpecFunc::ScalarEpsilon));
+  const Point scale(model_.getScale());
+  const Bool isotropicScale = (scale.getDimension() != inputDimension_);
+  SymmetricMatrix hessian(inputDimension_);
+  const Scalar hessianST = model_.partialHessian(s, t)(0, 0);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar epsilon = (isotropicScale ? scale[0] : scale[i]) * baseEpsilon;
+    Point sPlus(s);
+    Point sMinus(s);
+    sPlus[i] += epsilon;
+    sMinus[i] -= epsilon;
+    const Scalar deltaI = sPlus[i] - sMinus[i];
+    const Scalar valuePlus = model_.partialHessian(sPlus, t)(0, 0);
+    const Scalar valueMinus = model_.partialHessian(sMinus, t)(0, 0);
+    hessian(i, i) = -(valuePlus - 2.0 * hessianST + valueMinus) / (deltaI * deltaI / 4.0);
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      const Scalar epsilonJ = (isotropicScale ? scale[0] : scale[j]) * baseEpsilon;
+      Point sPP(s);
+      Point sPM(s);
+      Point sMM(s);
+      Point sMP(s);
+      sPP[i] += epsilon;
+      sPP[j] += epsilonJ;
+      sPM[i] += epsilon;
+      sPM[j] -= epsilonJ;
+      sMM[i] -= epsilon;
+      sMM[j] -= epsilonJ;
+      sMP[i] -= epsilon;
+      sMP[j] += epsilonJ;
+      const Scalar valuePP = model_.partialHessian(sPP, t)(0, 0);
+      const Scalar valuePM = model_.partialHessian(sPM, t)(0, 0);
+      const Scalar valueMM = model_.partialHessian(sMM, t)(0, 0);
+      const Scalar valueMP = model_.partialHessian(sMP, t)(0, 0);
+      const Scalar deltaJ = sPP[j] - sPM[j];
+      hessian(i, j) = -(valuePP - valuePM - valueMP + valueMM) / (deltaI * deltaJ);
+    }
+  }
+  return hessian;
+}
+
+/* Parameter gradient: C_ij = -H_ij, so dC/dp = -dH/dp via base parameterHessian */
+Matrix CurlFreeModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (!isStationary()) return CovarianceModelImplementation::parameterGradient(s, t);
+  // Base parameterHessian rows are already filtered to base active parameters,
+  // which coincide with ours (forwarded active set). Columns hold dH_ab/dp
+  // with a + d*b layout, matching our output flattening i + d*j.
+  const Matrix baseParameterHessian(model_.getImplementation()->parameterHessian(s, t));
+  const UnsignedInteger activeSize = baseParameterHessian.getNbRows();
+  Matrix gradient(activeSize, outputDimension_ * outputDimension_);
+  for (UnsignedInteger k = 0; k < activeSize; ++k)
+  {
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+        gradient(k, index) = -baseParameterHessian(k, i + inputDimension_ * j);
+  }
+  return gradient;
 }
 
 
