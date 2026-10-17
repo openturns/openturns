@@ -23,7 +23,7 @@ where:
 Refer to :any:`sparse_least_squares` to get all the
 notations and to :any:`least_squares_resolution` to get details on the numerical method.
 
-There is no model selection strategy. 
+There is no model selection strategy.
 
 Available constructors:
     LeastSquaresMethod(*proxy, weight, indices*)
@@ -41,11 +41,9 @@ proxy : :class:`~openturns.DesignProxy`
 weight : sequence of positive floats
     Statistical weights :math:`w_i` of the equations, of size equal to the
     size of the input sample.
-    
     By default, all the weights are equal to 1.
 indices : sequence of int
     Indices of the basis terms retained as columns of the design matrix.
-    
     By default, all the terms are used.
 design : 2-d sequence of float
     The known design matrix
