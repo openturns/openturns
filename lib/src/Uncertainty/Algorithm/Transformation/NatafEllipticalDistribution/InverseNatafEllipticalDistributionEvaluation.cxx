@@ -47,7 +47,7 @@ InverseNatafEllipticalDistributionEvaluation::InverseNatafEllipticalDistribution
   : LinearEvaluation(
       Point(mean.getDimension(), 0.0),
       mean,
-      cholesky.transpose()
+      cholesky
     )
 {
   // Nothing to do
@@ -75,7 +75,7 @@ String InverseNatafEllipticalDistributionEvaluation::__repr__() const
   OSS oss;
   oss << "class=" << InverseNatafEllipticalDistributionEvaluation::GetClassName()
       << " mean=" << getCenter()
-      << " cholesky=" << getLinear().transpose();
+      << " cholesky=" << getLinear();
 
   return oss;
 }

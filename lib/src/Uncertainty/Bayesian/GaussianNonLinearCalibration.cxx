@@ -378,6 +378,8 @@ void GaussianNonLinearCalibration::run()
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);
+  // A bootstrapped posterior is the MAP distribution, not a posterior (see #2889)
+  result_.setIsParameterDistributionPosterior(bootstrapSize_ == 0);
 }
 
 /* Perform a unique estimation */

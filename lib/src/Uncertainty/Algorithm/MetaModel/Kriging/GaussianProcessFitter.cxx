@@ -439,8 +439,11 @@ Scalar GaussianProcessFitter::maximizeReducedLogLikelihood()
 
   const UnsignedInteger evaluationNumber = result.getCallsNumber();
   // Check if the optimal value corresponds to the last computed value, in order to
-  // see if the by-products (Cholesky factor etc) are correct
-  if (lastReducedLogLikelihood_ != optimalLogLikelihood)
+  // see if the by-products (Cholesky factor etc) are correct. With an analytical
+  // amplitude, always re-evaluate at the optimum: a failed evaluation caught by
+  // the solver resets the amplitude to 1 without updating it (see #3231), and
+  // the value comparison cannot detect it as the last likelihood is unchanged
+  if (analyticalAmplitude_ || (lastReducedLogLikelihood_ != optimalLogLikelihood))
   {
     LOGDEBUG(OSS(false) << "Need to evaluate the objective function one more time because the last computed reduced log-likelihood value=" << lastReducedLogLikelihood_ << " is different from the optimal one=" << optimalLogLikelihood);
     (void) computeReducedLogLikelihood(optimalParameters);

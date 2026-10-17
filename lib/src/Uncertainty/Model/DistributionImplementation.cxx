@@ -4113,7 +4113,7 @@ void DistributionImplementation::computeGaussNodesAndWeights() const
   if (!(integrationNodesNumber_ > 0)) throw InvalidArgumentException(HERE) << "Error: the integration nodes number must be positive, here integrationNodesNumber=" << integrationNodesNumber_;
   gaussNodes_ = Point(integrationNodesNumber_);
   gaussWeights_ = Point(integrationNodesNumber_);
-  FastLegendre::ComputeNodesAndWeights(integrationNodesNumber_, &gaussNodes_[0], &gaussWeights_[0]);
+  FastLegendre::ComputeNodesAndWeights(integrationNodesNumber_, const_cast<Scalar *>(gaussNodes_.data()), const_cast<Scalar *>(gaussWeights_.data()));
   isAlreadyComputedGaussNodesAndWeights_ = true;
 }
 
@@ -4742,7 +4742,8 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber,
   if (!isCopula()) delta = (2.0 * (xMax - xMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin"))));
   const Interval intersection(range_.intersect(Interval(xMin - delta, xMax + delta)));
   Graph graph(drawPDF(intersection.getLowerBound(), intersection.getUpperBound(), pointNumber, logScaleX, logScaleY));
-  // Add a border for a copula
+  // Add a border for a copula, after the other drawables so that
+  // drawable 0 stays the contour itself (see issue #3061)
   if (isCopula())
   {
     Sample data(5, 2);
@@ -4750,11 +4751,11 @@ Graph DistributionImplementation::drawPDF(const Indices & pointNumber,
     data[2]    = Point(2, 1.0);
     data(3, 1) = 1.0;
     Curve square(data);
+    square.setColor("black");
 
-    // prepend square
-    Collection<Drawable> coll;
+    // append square
+    Collection<Drawable> coll(graph.getDrawables());
     coll.add(square);
-    coll.add(graph.getDrawables());
     graph.setDrawables(coll);
   }
   return graph;

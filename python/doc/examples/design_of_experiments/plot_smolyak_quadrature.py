@@ -271,7 +271,7 @@ def drawQuadrature(
     ls_fit = algo.getResult().getMetaModel()
     logerror_fit = ls_fit(basis(data_logn))
     error_fit = np.exp(logerror_fit).flatten()
-    alpha = algo.getLinear()[1, 0]
+    alpha = algo.getLinear()[0, 1]
     #
     graph = ot.Graph()
     cloud = ot.Cloud(size_list, abserr_list)
