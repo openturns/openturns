@@ -62,12 +62,15 @@ Manifolds
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     experimental.Manifold
-    experimental.ManifoldImplementation
     experimental.SphereManifold
     experimental.SO3Manifold
+
+    :template: class.rst_t
+
+    experimental.ManifoldImplementation
 
 Matrices
 ========
