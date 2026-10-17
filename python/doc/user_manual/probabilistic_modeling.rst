@@ -94,8 +94,11 @@ Continuous parametric distributions
     experimental.PushForwardDistribution
     experimental.PushForwardOverMesh
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
     experimental.ManifoldMappedDistribution
+
+    :template: class.rst_t
+
     experimental.RiemannianGaussian
 
     :template: Distribution.rst_t
@@ -349,6 +352,7 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
+    DistFunc.dNonCentralStudentAlt0
     DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
