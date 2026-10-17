@@ -72,12 +72,41 @@ int main(int, char *[])
       Sample dataOut(myFunc(data));
       LinearLeastSquares myLeastSquares(data, dataOut);
       myLeastSquares.run();
+      // The linear term follows the LinearFunction convention:
+      // outputDimension rows, inputDimension columns
+      const Point center(myLeastSquares.getCenter());
+      const Point constant(myLeastSquares.getConstant());
+      const Matrix linear(myLeastSquares.getLinear());
+      assert(center.getDimension() == 2);
+      assert(constant.getDimension() == 3);
+      assert(linear.getNbRows() == 3);
+      assert(linear.getNbColumns() == 2);
+      assert_almost_equal(center, Point({0.0555556, 0.0555556}));
+      assert_almost_equal(constant, Point({0.0266348, 0.819564, 1.03714}));
+      Matrix expectedLinear(3, 2);
+      expectedLinear(0, 0) = 0.0628755;
+      expectedLinear(1, 0) = -0.082405;
+      expectedLinear(2, 0) = 0.951099;
+      expectedLinear(0, 1) = 0.0628755;
+      expectedLinear(1, 1) = -0.082405;
+      expectedLinear(2, 1) = -0.972737;
+      assert_almost_equal(linear, expectedLinear);
+      // The metamodel matches the LinearFunction definition:
+      // the evaluation stores the linear term as is, the gradient stores its transpose
       Function responseSurface(myLeastSquares.getResult().getMetaModel());
-      fullprint << "myLeastSquares=" << myLeastSquares << std::endl;
-      fullprint << "responseSurface=" << responseSurface << std::endl;
-      Point in(myFunc.getInputDimension(), 0.1);
-      fullprint << "myFunc(" << in << ")=" << myFunc(in) << std::endl;
-      fullprint << "responseSurface(" << in << ")=" << responseSurface(in) << std::endl;
+      const EvaluationImplementation * p_implementation = responseSurface.getEvaluation().getImplementation().get();
+      const LinearEvaluation * p_evaluation = dynamic_cast<const LinearEvaluation *>(p_implementation);
+      assert(p_evaluation);
+      assert_almost_equal(p_evaluation->getLinear(), linear);
+      assert_almost_equal(responseSurface.gradient(center), linear.transpose());
+      const Point in(myFunc.getInputDimension(), 0.1);
+      assert_almost_equal(myFunc(in), Point({0.00998334, 0.980067, 0.995321}));
+      assert_almost_equal(responseSurface(in), Point({0.0322237, 0.812239, 1.03617}));
+      assert_almost_equal(myLeastSquares.getInputSample(), data);
+      assert_almost_equal(myLeastSquares.getDataIn(), data);
+      assert_almost_equal(myLeastSquares.getOutputSample(), dataOut);
+      assert_almost_equal(myLeastSquares.getDataOut(), dataOut);
+      fullprint << "myLeastSquares linear=" << linear << std::endl;
     }
   }
   catch (TestFailed & ex)

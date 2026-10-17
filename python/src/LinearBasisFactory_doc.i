@@ -23,5 +23,4 @@ Examples
 >>> basis = ot.LinearBasisFactory(2).build()
 >>> psi_1 = basis.build(1)
 >>> print(psi_1)
-class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
- [ 0 ]])RAW"
+class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 0 ]])RAW"
