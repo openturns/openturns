@@ -3,21 +3,16 @@ factory=class=ConstantBasisFactory name=Unnamed
 basis=Basis( [[x0,x1]->[1]] )
 y=[1]
 factory=class=LinearBasisFactory name=Unnamed
-basis=Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
- [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
- [ 1 ]]] )
+basis=Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 1 ]]] )
 y=[1,2,3]
 factory=class=QuadraticBasisFactory name=Unnamed
-basis=Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 ]
- [ 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 ]
- [ 1 ]],QuadraticEvaluation
+basis=Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 1 0 ]],class=LinearEvaluation name=Unnamed center=[0,0] constant=[0] linear=[[ 0 1 ]],QuadraticEvaluation
   center :
     [0,0]
   constant :
     [0]
   linear :
-  [[ 0 ]
-   [ 0 ]]
+  [[ 0 0 ]]
   quadratic :
   sheet #0
   [[ 2 0 ]
@@ -28,8 +23,7 @@ basis=Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] cons
   constant :
     [0]
   linear :
-  [[ 0 ]
-   [ 0 ]]
+  [[ 0 0 ]]
   quadratic :
   sheet #0
   [[ 0 1 ]
@@ -40,8 +34,7 @@ basis=Basis( [[x0,x1]->[1],class=LinearEvaluation name=Unnamed center=[0,0] cons
   constant :
     [0]
   linear :
-  [[ 0 ]
-   [ 0 ]]
+  [[ 0 0 ]]
   quadratic :
   sheet #0
   [[ 0 0 ]
