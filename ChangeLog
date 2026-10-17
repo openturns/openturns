@@ -23,12 +23,26 @@
  * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
+ * PushForwardDistribution-SolverResidualTolerance: tolerance on the residual norm used to accept a point as a preimage (default is 1.0e-5)
+ * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range, the mean and the covariance (default is 10000)
+ * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
+ * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
+ * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
+ * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
+ * PushForwardOverMesh-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
+ * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
+ * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
+ * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
+ * UniformOverMeshFactory-NearestNeighbors: number of nearest neighbors used to estimate each local tangent plane (default is 12)
+ * UniformOverMeshFactory-MinimumAreaFactor: degenerate triangles whose area is lower than this factor times the maximum triangle area are removed (default is 1e-3)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
+ * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
+ * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
@@ -41,7 +55,10 @@
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
+ * PushForwardDistribution (openturns.experimental)
+ * PushForwardOverMesh (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
+ * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
@@ -51,6 +68,7 @@
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Added LeastSquaresMethod.solveNormalGram to solve the weighted Gram system, while solveNormal remains restricted to uniform weights
+ * Extended UniformOverMesh to embedded meshes with getIntrinsicDimension and getVolume
  * Added MetaModelValidation.getWeights and MetaModelValidation.setWeights: the R2 score and the mean squared error are weighted by the validation weights, uniform by default, and normalized by the weight mass
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
