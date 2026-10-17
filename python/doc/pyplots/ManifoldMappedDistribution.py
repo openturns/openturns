@@ -14,12 +14,12 @@ ax1 = fig.add_subplot(121, projection='3d')
 
 # Unit sphere grid (shared with PDF evaluation)
 n_lat = 30
-n_lon = 60
+n_long = 60
 lat_vals = np.linspace(0, math.pi, n_lat)
-lon_vals = np.linspace(0, 2 * math.pi, n_lon)
-x = np.outer(np.cos(lon_vals), np.sin(lat_vals))
-y = np.outer(np.sin(lon_vals), np.sin(lat_vals))
-z = np.outer(np.ones(np.size(lon_vals)), np.cos(lat_vals))
+long_vals = np.linspace(0, 2 * math.pi, n_long)
+x = np.outer(np.cos(long_vals), np.sin(lat_vals))
+y = np.outer(np.sin(long_vals), np.sin(lat_vals))
+z = np.outer(np.ones(np.size(long_vals)), np.cos(lat_vals))
 ax1.plot_wireframe(x, y, z, color='lightgray', alpha=0.3)
 
 # Build the manifold mapped distribution
