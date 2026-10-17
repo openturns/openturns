@@ -56,11 +56,11 @@ ax1.legend(loc='upper left', fontsize=8)
 ax2 = fig.add_subplot(122, projection='3d')
 
 # Evaluate PDF on a grid of sphere points (same grid as left panel)
-pdf_vals = np.zeros((n_lat, n_lon))
+pdf_vals = np.zeros((n_lat, n_long))
 for i, lat in enumerate(lat_vals):
-    for j, lon in enumerate(lon_vals):
-        pt = ot.Point([math.sin(lat) * math.cos(lon),
-                       math.sin(lat) * math.sin(lon),
+    for j, long in enumerate(long_vals):
+        pt = ot.Point([math.sin(lat) * math.cos(long),
+                       math.sin(lat) * math.sin(long),
                        math.cos(lat)])
         pdf_vals[i, j] = distribution.computePDF(pt)
 
