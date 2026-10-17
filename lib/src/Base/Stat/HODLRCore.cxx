@@ -1015,8 +1015,8 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
   {
     MatrixImplementation& UoutImpl = *Uout.getImplementation();
     MatrixImplementation& VoutImpl = *Vout.getImplementation();
-    Scalar* const Uout_data = &UoutImpl[0];
-    Scalar* const Vout_data = &VoutImpl[0];
+    Scalar* const Uout_data = const_cast<Scalar *>(UoutImpl.data());
+    Scalar* const Vout_data = const_cast<Scalar *>(VoutImpl.data());
     for (UnsignedInteger l = 0; l < rank; ++l)
     {
       const Scalar* const up = Udata.data() + l * nRows;
@@ -1076,8 +1076,8 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
   Point uNormSq(totalRank);
   Point vNormSq(totalRank);
   {
-    Scalar* Ucat_data = &Ucat[0];
-    Scalar* Vcat_data = &Vcat[0];
+    Scalar* Ucat_data = const_cast<Scalar *>(Ucat.data());
+    Scalar* Vcat_data = const_cast<Scalar *>(Vcat.data());
     if (rankIn > 0)
     {
       const Scalar* Uout_data = Uout.getImplementation()->data();
@@ -1185,8 +1185,8 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
       if (kept < totalRank)
       {
         // Compact the kept columns in place (k <= c, forward copies are safe).
-        Scalar* Ud = &Ucat[0];
-        Scalar* Vd = &Vcat[0];
+        Scalar* Ud = const_cast<Scalar *>(Ucat.data());
+        Scalar* Vd = const_cast<Scalar *>(Vcat.data());
         UnsignedInteger k = 0;
         for (UnsignedInteger c = 0; c < totalRank; ++c)
         {
@@ -1227,16 +1227,16 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
     double lworkQuery = 0.0;
     int lwork = -1;
     int info = 0;
-    dgeqrf_(&m, &n, &Ucat[0], &lda, &tau[0], &lworkQuery, &lwork, &info);
+    dgeqrf_(&m, &n, const_cast<Scalar *>(Ucat.data()), &lda, const_cast<Scalar *>(tau.data()), &lworkQuery, &lwork, &info);
     lwork = static_cast<int>(lworkQuery);
     Point work(lwork);
-    dgeqrf_(&m, &n, &Ucat[0], &lda, &tau[0], &work[0], &lwork, &info);
+    dgeqrf_(&m, &n, const_cast<Scalar *>(Ucat.data()), &lda, const_cast<Scalar *>(tau.data()), const_cast<Scalar *>(work.data()), &lwork, &info);
     if (info != 0)
       throw InternalException(HERE) << "dgeqrf failed (info=" << info << ")";
     // Extract R (upper trapezoid) from the Householder storage of Ucat.
     {
-      const Scalar* Ud = Ucat.data();
-      Scalar* Rd = &Rcat[0];
+      const Scalar* Ud = const_cast<Scalar *>(Ucat.data());
+      Scalar* Rd = const_cast<Scalar *>(Rcat.data());
       for (UnsignedInteger c = 0; c < totalRank; ++c)
       {
         const UnsignedInteger lim = std::min(c + 1, k1);
@@ -1269,7 +1269,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         double zero = 0.0;
         int ldV = static_cast<int>(nCols);
         int ldH = static_cast<int>(totalRank);
-        HODLRDgemm("T", "N", &mm, &nn, &kk, &one, &Vcat[0], &ldV, &Vcat[0], &ldV, &zero, &H[0], &ldH);
+        HODLRDgemm("T", "N", &mm, &nn, &kk, &one, const_cast<Scalar *>(Vcat.data()), &ldV, const_cast<Scalar *>(Vcat.data()), &ldV, &zero, const_cast<Scalar *>(H.data()), &ldH);
       }
       MatrixImplementation Tmp(totalRank, k1);
       {
@@ -1281,7 +1281,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         int ldH = static_cast<int>(totalRank);
         int ldR = static_cast<int>(k1);
         int ldT = static_cast<int>(totalRank);
-        HODLRDgemm("N", "T", &mm, &nn, &kk, &one, &H[0], &ldH, &Rcat[0], &ldR, &zero, &Tmp[0], &ldT);
+        HODLRDgemm("N", "T", &mm, &nn, &kk, &one, const_cast<Scalar *>(H.data()), &ldH, const_cast<Scalar *>(Rcat.data()), &ldR, &zero, const_cast<Scalar *>(Tmp.data()), &ldT);
       }
       {
         int mm = static_cast<int>(k1);
@@ -1292,7 +1292,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         int ldR = static_cast<int>(k1);
         int ldT = static_cast<int>(totalRank);
         int ldG = static_cast<int>(k1);
-        HODLRDgemm("N", "N", &mm, &nn, &kk, &one, &Rcat[0], &ldR, &Tmp[0], &ldT, &zero, &G[0], &ldG);
+        HODLRDgemm("N", "N", &mm, &nn, &kk, &one, const_cast<Scalar *>(Rcat.data()), &ldR, const_cast<Scalar *>(Tmp.data()), &ldT, &zero, const_cast<Scalar *>(G.data()), &ldG);
       }
     }
     else
@@ -1307,7 +1307,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         int ldV = static_cast<int>(nCols);
         int ldR = static_cast<int>(k1);
         int ldM = static_cast<int>(nCols);
-        HODLRDgemm("N", "T", &mm, &nn, &kk, &one, &Vcat[0], &ldV, &Rcat[0], &ldR, &zero, &Mcat[0], &ldM);
+        HODLRDgemm("N", "T", &mm, &nn, &kk, &one, const_cast<Scalar *>(Vcat.data()), &ldV, const_cast<Scalar *>(Rcat.data()), &ldR, &zero, const_cast<Scalar *>(Mcat.data()), &ldM);
       }
       {
         int mm = static_cast<int>(k1);
@@ -1317,7 +1317,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         double zero = 0.0;
         int ldM = static_cast<int>(nCols);
         int ldG = static_cast<int>(k1);
-        HODLRDgemm("T", "N", &mm, &nn, &kk, &one, &Mcat[0], &ldM, &Mcat[0], &ldM, &zero, &G[0], &ldG);
+        HODLRDgemm("T", "N", &mm, &nn, &kk, &one, const_cast<Scalar *>(Mcat.data()), &ldM, const_cast<Scalar *>(Mcat.data()), &ldM, &zero, const_cast<Scalar *>(G.data()), &ldG);
       }
     }
     g_factorTiming.recompGram += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
@@ -1337,12 +1337,12 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
     double lworkQuery = 0.0;
     int liworkQuery = 0;
     int info = 0;
-    dsyevd_(&jobz, &uplo, &n, &G[0], &n, &eigenvalues[0], &lworkQuery, &lwork, &liworkQuery, &liwork, &info, &ljobz, &luplo);
+    dsyevd_(&jobz, &uplo, &n, const_cast<Scalar *>(G.data()), &n, const_cast<Scalar *>(eigenvalues.data()), &lworkQuery, &lwork, &liworkQuery, &liwork, &info, &ljobz, &luplo);
     lwork = static_cast<int>(lworkQuery);
     liwork = static_cast<int>(liworkQuery);
     Point work(lwork);
     std::vector<int> iwork(static_cast<std::size_t>(liwork));
-    dsyevd_(&jobz, &uplo, &n, &G[0], &n, &eigenvalues[0], &work[0], &lwork, &iwork[0], &liwork, &info, &ljobz, &luplo);
+    dsyevd_(&jobz, &uplo, &n, const_cast<Scalar *>(G.data()), &n, const_cast<Scalar *>(eigenvalues.data()), const_cast<Scalar *>(work.data()), &lwork, iwork.data(), &liwork, &info, &ljobz, &luplo);
     if (info != 0)
       throw InternalException(HERE) << "dsyevd failed to converge (info=" << info << ")";
     g_factorTiming.recompSyevd += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
@@ -1386,11 +1386,11 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
   if (rankOut > 0)
   {
     const auto t0 = std::chrono::steady_clock::now();
-    const Scalar* G_data = G.data();
+    const Scalar* G_data = const_cast<Scalar *>(G.data());
     MatrixImplementation Ps(k1, rankOut);
     MatrixImplementation Pi(k1, rankOut);
-    Scalar* Ps_data = &Ps[0];
-    Scalar* Pi_data = &Pi[0];
+    Scalar* Ps_data = const_cast<Scalar *>(Ps.data());
+    Scalar* Pi_data = const_cast<Scalar *>(Pi.data());
     for (UnsignedInteger c = 0; c < rankOut; ++c)
     {
       const UnsignedInteger col = k1 - 1 - c;
@@ -1426,12 +1426,12 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
       double lworkQuery = 0.0;
       int lwork = -1;
       int info = 0;
-      dormqr_(&side, &trans, &mm, &nn, &kk, &Ucat[0], &lda, &tau[0], Uout_data, &ldc,
+      dormqr_(&side, &trans, &mm, &nn, &kk, const_cast<Scalar *>(Ucat.data()), &lda, const_cast<Scalar *>(tau.data()), Uout_data, &ldc,
               &lworkQuery, &lwork, &info, &lside, &ltrans);
       lwork = static_cast<int>(lworkQuery);
       Point work(lwork);
-      dormqr_(&side, &trans, &mm, &nn, &kk, &Ucat[0], &lda, &tau[0], Uout_data, &ldc,
-              &work[0], &lwork, &info, &lside, &ltrans);
+      dormqr_(&side, &trans, &mm, &nn, &kk, const_cast<Scalar *>(Ucat.data()), &lda, const_cast<Scalar *>(tau.data()), Uout_data, &ldc,
+              const_cast<Scalar *>(work.data()), &lwork, &info, &lside, &ltrans);
       if (info != 0)
         throw InternalException(HERE) << "dormqr failed (info=" << info << ")";
     }
@@ -1448,7 +1448,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         int ldR = static_cast<int>(k1);
         int ldP = static_cast<int>(k1);
         int ldT = static_cast<int>(totalRank);
-        HODLRDgemm("T", "N", &mm, &nn, &kk, &one, &Rcat[0], &ldR, &Pi[0], &ldP, &zero, &RPi[0], &ldT);
+        HODLRDgemm("T", "N", &mm, &nn, &kk, &one, const_cast<Scalar *>(Rcat.data()), &ldR, const_cast<Scalar *>(Pi.data()), &ldP, &zero, const_cast<Scalar *>(RPi.data()), &ldT);
       }
       {
         int mm = static_cast<int>(nCols);
@@ -1459,7 +1459,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
         int ldV = static_cast<int>(nCols);
         int ldT = static_cast<int>(totalRank);
         int ldVn = static_cast<int>(nCols);
-        HODLRDgemm("N", "N", &mm, &nn, &kk, &one, &Vcat[0], &ldV, &RPi[0], &ldT, &zero, Vout_data, &ldVn);
+        HODLRDgemm("N", "N", &mm, &nn, &kk, &one, const_cast<Scalar *>(Vcat.data()), &ldV, const_cast<Scalar *>(RPi.data()), &ldT, &zero, Vout_data, &ldVn);
       }
     }
     else
@@ -1472,7 +1472,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
       int ldM = static_cast<int>(nCols);
       int ldP = static_cast<int>(k1);
       int ldV = static_cast<int>(nCols);
-      HODLRDgemm("N", "N", &mm, &nn, &kk, &one, &Mcat[0], &ldM, &Pi[0], &ldP, &zero, Vout_data, &ldV);
+      HODLRDgemm("N", "N", &mm, &nn, &kk, &one, const_cast<Scalar *>(Mcat.data()), &ldM, const_cast<Scalar *>(Pi.data()), &ldP, &zero, Vout_data, &ldV);
     }
     g_factorTiming.recompFinal += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     bt.final = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
@@ -2103,7 +2103,7 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
       HODLRDgemm("N", "T", &m, &l, &k, &neg,
              &temp(0, 0), &m,
              const_cast<double*>(&U1(0, 0)), &m,
-             &one, &Sfact[0], &m);
+             &one, const_cast<Scalar *>(Sfact.data()), &m);
     }
   }
 
@@ -2147,7 +2147,7 @@ void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1
   // 4. Cholesky factorization
   int info = 0;
   int nn = static_cast<int>(n);
-  HODLRDpotrf("L", &nn, &Sfact[0], &nn, &info);
+  HODLRDpotrf("L", &nn, const_cast<Scalar *>(Sfact.data()), &nn, &info);
   if (info != 0)
     throw InternalException(HERE) << "Cholesky factorization failed, info=" << info;
 
@@ -2197,7 +2197,7 @@ void HODLRNode::applyInverseFactor(Matrix& x) const
   Matrix x0(s0, nrhs);
   MatrixImplementation& x0Impl = *x0.getImplementation();
   for (UnsignedInteger j = 0; j < nrhs; ++j)
-    std::copy(x_data + j * nxRows, x_data + j * nxRows + s0, &x0Impl[0] + j * s0);
+    std::copy(x_data + j * nxRows, x_data + j * nxRows + s0, const_cast<Scalar *>(x0Impl.data()) + j * s0);
   p_child0_->applyInverseFactor(x0);
 
   if (rank_ > 0)
@@ -2213,7 +2213,7 @@ void HODLRNode::applyInverseFactor(Matrix& x) const
     int ldT = static_cast<int>(rank_);
     Matrix temp(mT, nT);
     MatrixImplementation& tempImpl = *temp.getImplementation();
-    HODLRDgemm("T", "N", &mT, &nT, &kT, &one, const_cast<double*>(&(*W_.getImplementation())[0]), &ldW, &x0Impl[0], &ldX0, &zero, &tempImpl[0], &ldT);
+    HODLRDgemm("T", "N", &mT, &nT, &kT, &one, const_cast<double*>(&(*W_.getImplementation())[0]), &ldW, const_cast<Scalar *>(x0Impl.data()), &ldX0, &zero, const_cast<Scalar *>(tempImpl.data()), &ldT);
 
     // x1 -= U_[1] * temp  via dgemm
     int mU = static_cast<int>(s1);
@@ -2222,22 +2222,22 @@ void HODLRNode::applyInverseFactor(Matrix& x) const
     int ldU1 = static_cast<int>(s1);
     int ldTemp = static_cast<int>(rank_);
     int ldX = static_cast<int>(size_);
-    HODLRDgemm("N", "N", &mU, &nU, &kU, &neg, const_cast<double*>(&(*U_[1].getImplementation())[0]), &ldU1, &tempImpl[0], &ldTemp, &one, &x_data[s0], &ldX);
+    HODLRDgemm("N", "N", &mU, &nU, &kU, &neg, const_cast<double*>(&(*U_[1].getImplementation())[0]), &ldU1, const_cast<Scalar *>(tempImpl.data()), &ldTemp, &one, &x_data[s0], &ldX);
   }
 
   // Step 3: x1 = L11^{-1} * x1  (recursive on child1)
   Matrix x1(s1, nrhs);
   MatrixImplementation& x1Impl = *x1.getImplementation();
   for (UnsignedInteger j = 0; j < nrhs; ++j)
-    std::copy(x_data + s0 + j * nxRows, x_data + s0 + j * nxRows + s1, &x1Impl[0] + j * s1);
+    std::copy(x_data + s0 + j * nxRows, x_data + s0 + j * nxRows + s1, const_cast<Scalar *>(x1Impl.data()) + j * s1);
 
   p_child1_->applyInverseFactor(x1);
 
   // Write back
   for (UnsignedInteger j = 0; j < nrhs; ++j)
   {
-    std::copy(&x0Impl[0] + j * s0, &x0Impl[0] + j * s0 + s0, x_data + j * nxRows);
-    std::copy(&x1Impl[0] + j * s1, &x1Impl[0] + j * s1 + s1, x_data + s0 + j * nxRows);
+    std::copy(x0Impl.data() + j * s0, x0Impl.data() + j * s0 + s0, x_data + j * nxRows);
+    std::copy(x1Impl.data() + j * s1, x1Impl.data() + j * s1 + s1, x_data + s0 + j * nxRows);
   }
 }
 
@@ -2276,7 +2276,7 @@ void HODLRNode::applyInverseFactorTranspose(Matrix& x) const
   Matrix x1(s1, nrhs);
   MatrixImplementation& x1Impl = *x1.getImplementation();
   for (UnsignedInteger j = 0; j < nrhs; ++j)
-    std::copy(x_data + s0 + j * nxRows, x_data + s0 + j * nxRows + s1, &x1Impl[0] + j * s1);
+    std::copy(x_data + s0 + j * nxRows, x_data + s0 + j * nxRows + s1, const_cast<Scalar *>(x1Impl.data()) + j * s1);
   p_child1_->applyInverseFactorTranspose(x1);
 
   if (rank_ > 0)
@@ -2292,7 +2292,7 @@ void HODLRNode::applyInverseFactorTranspose(Matrix& x) const
     int ldT = static_cast<int>(rank_);
     Matrix temp(mU, nU);
     MatrixImplementation& tempImpl = *temp.getImplementation();
-    HODLRDgemm("T", "N", &mU, &nU, &kU, &one, const_cast<double*>(&(*U_[1].getImplementation())[0]), &ldU1, &x1Impl[0], &ldX1, &zero, &tempImpl[0], &ldT);
+    HODLRDgemm("T", "N", &mU, &nU, &kU, &one, const_cast<double*>(&(*U_[1].getImplementation())[0]), &ldU1, const_cast<Scalar *>(x1Impl.data()), &ldX1, &zero, const_cast<Scalar *>(tempImpl.data()), &ldT);
 
     // x0 -= W * temp  via dgemm.
     // x_data is the node's (size_ x nrhs) buffer, so the stride between
@@ -2304,21 +2304,21 @@ void HODLRNode::applyInverseFactorTranspose(Matrix& x) const
     int ldW = static_cast<int>(s0);
     int ldTemp = static_cast<int>(rank_);
     int ldX0 = static_cast<int>(nxRows);
-    HODLRDgemm("N", "N", &mW, &nW, &kW, &neg, const_cast<double*>(&(*W_.getImplementation())[0]), &ldW, &tempImpl[0], &ldTemp, &one, x_data, &ldX0);
+    HODLRDgemm("N", "N", &mW, &nW, &kW, &neg, const_cast<double*>(&(*W_.getImplementation())[0]), &ldW, const_cast<Scalar *>(tempImpl.data()), &ldTemp, &one, x_data, &ldX0);
   }
 
   // Step 3: L00^T * x0 = x0  (recursive on child0)
   Matrix x0(s0, nrhs);
   MatrixImplementation& x0Impl = *x0.getImplementation();
   for (UnsignedInteger j = 0; j < nrhs; ++j)
-    std::copy(x_data + j * nxRows, x_data + j * nxRows + s0, &x0Impl[0] + j * s0);
+    std::copy(x_data + j * nxRows, x_data + j * nxRows + s0, const_cast<Scalar *>(x0Impl.data()) + j * s0);
   p_child0_->applyInverseFactorTranspose(x0);
 
   // Write back
   for (UnsignedInteger j = 0; j < nrhs; ++j)
   {
-    std::copy(&x0Impl[0] + j * s0, &x0Impl[0] + j * s0 + s0, x_data + j * nxRows);
-    std::copy(&x1Impl[0] + j * s1, &x1Impl[0] + j * s1 + s1, x_data + s0 + j * nxRows);
+    std::copy(x0Impl.data() + j * s0, x0Impl.data() + j * s0 + s0, x_data + j * nxRows);
+    std::copy(x1Impl.data() + j * s1, x1Impl.data() + j * s1 + s1, x_data + s0 + j * nxRows);
   }
 }
 
