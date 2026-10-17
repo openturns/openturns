@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -72,3 +74,29 @@ loaded = ot.Study()
 loaded.setStorageManager(ot.XMLStorageManager("finiteDifferenceGradient.xml"))
 loaded.load()
 assert loaded.hasObject("gradient")
+
+# Per-output finite difference steps, see issue #3284: the outputs have
+# very different scales, no single step fits both
+stiffFunc = ot.SymbolicFunction(["x"], ["x^3", "sin(1e6*x)"])
+stiffPoint = [1.0]
+stiffRef = [3.0, 1.0e6 * math.cos(1.0e6)]
+stiffGradient = ot.CenteredFiniteDifferenceGradient(
+    ot.ConstantStep([1.0e-5]), stiffFunc.getEvaluation()
+)
+stiffGradient.setFiniteDifferenceStep(1, ot.ConstantStep([1.0e-9]))
+stiffValue = stiffGradient.gradient(stiffPoint)
+ott.assert_almost_equal(stiffValue[0, 0], stiffRef[0], 1e-5, 1e-5)
+ott.assert_almost_equal(stiffValue[0, 1], stiffRef[1], 1e-5, 1e-5)
+# broadcast setter still covers all outputs at once
+stiffGradient.setFiniteDifferenceStep(ot.ConstantStep([1.0e-5]))
+ott.assert_almost_equal(
+    list(stiffGradient.getFiniteDifferenceStep(0).getEpsilon()), [1.0e-5]
+)
+ott.assert_almost_equal(
+    list(stiffGradient.getFiniteDifferenceStep(1).getEpsilon()), [1.0e-5]
+)
+# Out-of-range output indices are rejected by both setter and getter
+with ott.assert_raises(Exception):
+    stiffGradient.setFiniteDifferenceStep(99, ot.ConstantStep([1.0e-5]))
+with ott.assert_raises(Exception):
+    stiffGradient.getFiniteDifferenceStep(99)

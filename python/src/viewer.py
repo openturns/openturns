@@ -158,6 +158,10 @@ class View:
         Used when drawing Pairs, Text drawables
         Passed on to matplotlib.axes.Axes.text kwargs
 
+    title_kw : dict, optional
+        Used for the figure suptitle holding the graph title
+        Passed on to matplotlib.figure.Figure.suptitle kwargs
+
     legend_kw : dict, optional
         Passed on to matplotlib.axes.Axes.legend kwargs
 
@@ -219,6 +223,8 @@ class View:
         colorbar_kw=None,
         add_legend=True,
         square_axes=False,
+        # Grid suptitle styling, kept last for positional compatibility, see #3001
+        title_kw=None,
         **kwargs,
     ):
         if not (
@@ -254,6 +260,7 @@ class View:
         clabel_kw_default = self._CheckDict(clabel_kw)
         scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
+        title_kw_default = self._CheckDict(title_kw)
         legend_kw_default = self._CheckDict(legend_kw)
         colorbar_kw_default = self._CheckDict(colorbar_kw)
         legend_handles = []
@@ -328,9 +335,10 @@ class View:
                         clabel_kw=clabel_kw,
                         scatter_kw=scatter_kw,
                         text_kw=text_kw,
+                        title_kw={},
                         legend_kw=legend_kw,
                     )
-            self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+            self._fig.suptitle(self._ToUnicode(graph.getTitle()), **title_kw_default)
             return
 
         drawables = graph.getDrawables()
@@ -341,7 +349,7 @@ class View:
             return
 
         # set title
-        self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+        self._fig.suptitle(self._ToUnicode(graph.getTitle()), **title_kw_default)
 
         # set axes
         if len(axes) == 0:
@@ -513,6 +521,8 @@ class View:
                     bar_kw["hatch"] = "////"
                     bar_kw["edgecolor"] = bar_kw["color"]
 
+                if "alpha" not in bar_kw_default:
+                    bar_kw["alpha"] = drawable.getAlpha()
                 xi = drawable.getOrigin()
                 for i in range(len(x)):
                     # label only the first bar to avoid getting several items
@@ -550,16 +560,36 @@ class View:
                 if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
                     scatter_kw["s"] = 1
                     scatter_kw["linewidths"] = 0.0
+                if "alpha" not in scatter_kw_default:
+                    scatter_kw["alpha"] = drawable.getAlpha()
                 lines = self._ax[0].scatter(x, y, **scatter_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines.findobj()[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
+                if "alpha" not in plot_kw_default:
+                    plot_kw["alpha"] = drawable.getAlpha()
                 lines = self._ax[0].plot(x, y, **plot_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
                     legend_labels.append(drawable.getLegend())
+                labels = drawable.getLabels()
+                if len(labels) > 0 and len(x) > 0:
+                    # Defaults through setdefault: a caller-provided alignment
+                    # in text_kw must not reach Axes.text twice
+                    text_kw.setdefault("horizontalalignment", "center")
+                    text_kw.setdefault("verticalalignment", "center")
+                    for i, label in enumerate(labels):
+                        if len(label) == 0:
+                            continue
+                        k = int((i + 0.5) * len(x) / len(labels))
+                        self._ax[0].text(
+                            x[k],
+                            y[k],
+                            self._ToUnicode(label),
+                            **text_kw,
+                        )
 
             elif drawableKind == "Polygon":
                 if ("facecolor" not in polygon_kw_default) and (
@@ -777,6 +807,8 @@ class View:
                         )  # Avoids the absence of labels in logarithmic scale
 
             elif drawableKind == "Staircase":
+                if "alpha" not in step_kw_default:
+                    step_kw["alpha"] = drawable.getAlpha()
                 lines = self._ax[0].step(x, y, **step_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])

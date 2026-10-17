@@ -87,7 +87,8 @@ gradient : :class:`~openturns.Matrix`
 Returns
 -------
 step : :class:`~openturns.FiniteDifferenceStep`
-    Defines how finite difference steps values are computed."
+    Defines how finite difference steps values are computed. Without
+    argument, the step of the first output is returned."
 
 // ---------------------------------------------------------------------
 
@@ -97,4 +98,7 @@ step : :class:`~openturns.FiniteDifferenceStep`
 Parameters
 ----------
 step : :class:`~openturns.FiniteDifferenceStep`
-    Defines how finite difference steps values are computed."
+    Defines how finite difference steps values are computed. Without
+    output index, the step is broadcast to all the outputs.
+index : int
+    Index of the output whose step is set when given."

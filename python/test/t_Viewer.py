@@ -2,6 +2,8 @@
 
 from openturns.viewer import View
 import openturns as ot
+import openturns.testing as ott
+import inspect
 
 # Curve
 graph = ot.Normal().drawCDF()
@@ -300,3 +302,32 @@ graph.add(contour)
 view = View(graph)
 
 view.ShowAll(block=True)
+
+# Curve labels are drawn along the line, see issue #2745
+labeledCurve = ot.Curve([[0.0, 0.0], [1.0, 1.0], [2.0, 0.0]])
+labeledCurve.setLabels(["peak"])
+assert list(labeledCurve.getLabels()) == ["peak"]
+labelGraph = ot.Graph()
+labelGraph.add(labeledCurve)
+View(labelGraph)
+# Caller-provided text alignment must not reach Axes.text twice
+alignView = View(labelGraph, text_kw={"horizontalalignment": "left"})
+
+# Grid title styling, see issue #3001
+titleGraph = ot.Normal(2).drawPDF()
+titleView = View(titleGraph, title_kw={"fontsize": 20})
+assert titleView._fig._suptitle.get_fontsize() == 20
+
+# Cloud transparency survives Graph.add and reaches the viewer, see issue #2831
+alphaCloud = ot.Cloud([[0.0, 0.0], [1.0, 1.0]])
+alphaCloud.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaCloud)
+ott.assert_almost_equal(alphaGraph.getDrawable(0).getAlpha(), 0.3, 1e-2, 0.0)
+alphaView = View(alphaGraph)
+facecolor = alphaView._ax[0].collections[0].get_facecolor()[0]
+ott.assert_almost_equal(facecolor[3], 0.3, 1e-2, 0.0)
+
+# title_kw stays last for positional compatibility, see issue #3001
+viewParams = list(inspect.signature(View.__init__).parameters)
+assert viewParams.index("title_kw") > viewParams.index("legend_kw")

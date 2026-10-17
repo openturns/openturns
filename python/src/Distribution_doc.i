@@ -84,6 +84,8 @@ OT_Distribution_drawMarginal1DLogPDF_doc
 OT_Distribution_drawMarginal2DCDF_doc
 %feature("docstring") OT::Distribution::drawMarginal2DPDF
 OT_Distribution_drawMarginal2DPDF_doc
+%feature("docstring") OT::Distribution::drawMarginalPDFs
+OT_Distribution_drawMarginalPDFs_doc
 %feature("docstring") OT::Distribution::drawMarginal2DLogPDF
 OT_Distribution_drawMarginal2DLogPDF_doc
 %feature("docstring") OT::Distribution::drawMarginal2DSurvivalFunction

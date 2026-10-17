@@ -70,6 +70,10 @@
 %include CurlFreeModel.i
 %include DivFreeModel.i
 
+/* Base/Func */
+%include MinMaxScaling.i
+%include MuSigmaScaling.i
+
 /* Uncertainty/Distribution */
 %include Kent.i
 %include KentFactory.i

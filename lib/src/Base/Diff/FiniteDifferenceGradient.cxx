@@ -31,10 +31,13 @@ CLASSNAMEINIT(FiniteDifferenceGradient)
 
 static const Factory<FiniteDifferenceGradient> Factory_FiniteDifferenceGradient;
 
+static const Factory<PersistentCollection<FiniteDifferenceStep> > Factory_PersistentCollection_FiniteDifferenceStep;
+
 /* Default constructor */
 FiniteDifferenceGradient::FiniteDifferenceGradient()
   : GradientImplementation()
   , evaluation_(new NoEvaluation())
+  , finiteDifferenceSteps_(1)
 {
   // Nothing to do
 }
@@ -45,7 +48,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(
   const Evaluation & evaluation)
   : GradientImplementation()
   , evaluation_(evaluation)
-  , finiteDifferenceStep_(epsilon)
+  , finiteDifferenceSteps_(1, FiniteDifferenceStep(epsilon))
 {
   /* Check if the dimension of the constant term is compatible with the linear and quadratic terms */
   if (epsilon.getDimension() != evaluation.getInputDimension())
@@ -64,7 +67,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(const Scalar epsilon,
     const Evaluation & evaluation)
   : GradientImplementation()
   , evaluation_(evaluation)
-  , finiteDifferenceStep_(Point(evaluation.getInputDimension(), epsilon))
+  , finiteDifferenceSteps_(1, FiniteDifferenceStep(Point(evaluation.getInputDimension(), epsilon)))
 {
   // Check if epsilon is exactly zero
   if (!(epsilon > 0.0 || epsilon < 0.0)) // condition equivalent to epsilon == 0.0, but true if epsilon is NaN
@@ -77,7 +80,7 @@ FiniteDifferenceGradient::FiniteDifferenceGradient(
   const Evaluation & evaluation)
   : GradientImplementation()
   , evaluation_(evaluation)
-  , finiteDifferenceStep_(finiteDifferenceStep)
+  , finiteDifferenceSteps_(1, finiteDifferenceStep)
 {
   Point epsilon(getEpsilon());
   //Check if the dimension of the constant term is compatible with the linear and quadratic terms
@@ -124,7 +127,8 @@ String FiniteDifferenceGradient:: __repr__() const
 /* Accessor for epsilon */
 Point FiniteDifferenceGradient::getEpsilon() const
 {
-  return finiteDifferenceStep_.getEpsilon();
+  if (finiteDifferenceSteps_.isEmpty()) return FiniteDifferenceStep().getEpsilon();
+  return finiteDifferenceSteps_[0].getEpsilon();
 }
 
 /* Accessor for the evaluation */
@@ -148,12 +152,33 @@ UnsignedInteger FiniteDifferenceGradient::getOutputDimension() const
 /* Accessor for the finite difference step */
 void FiniteDifferenceGradient::setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep)
 {
-  finiteDifferenceStep_ = finiteDifferenceStep;
+  finiteDifferenceSteps_ = Collection<FiniteDifferenceStep>(1, finiteDifferenceStep);
 }
 
 FiniteDifferenceStep FiniteDifferenceGradient::getFiniteDifferenceStep() const
 {
-  return finiteDifferenceStep_;
+  if (finiteDifferenceSteps_.isEmpty()) return FiniteDifferenceStep();
+  return finiteDifferenceSteps_[0];
+}
+
+void FiniteDifferenceGradient::setFiniteDifferenceStep(const UnsignedInteger outputIndex,
+    const FiniteDifferenceStep & finiteDifferenceStep)
+{
+  const UnsignedInteger outputDimension = evaluation_.getOutputDimension();
+  if (!(outputIndex < outputDimension)) throw InvalidArgumentException(HERE) << "Output index (" << outputIndex << ") is out of range, expected less than " << outputDimension;
+  if (finiteDifferenceSteps_.getSize() == 1)
+    finiteDifferenceSteps_ = Collection<FiniteDifferenceStep>(outputDimension, finiteDifferenceSteps_[0]);
+  if (finiteDifferenceSteps_.getSize() != outputDimension) throw InvalidArgumentException(HERE) << "Invalid number of finite difference steps " << finiteDifferenceSteps_.getSize() << ", should be " << outputDimension;
+  finiteDifferenceSteps_[outputIndex] = finiteDifferenceStep;
+}
+
+FiniteDifferenceStep FiniteDifferenceGradient::getFiniteDifferenceStep(const UnsignedInteger outputIndex) const
+{
+  const UnsignedInteger outputDimension = evaluation_.getOutputDimension();
+  if (!(outputIndex < outputDimension)) throw InvalidArgumentException(HERE) << "Output index (" << outputIndex << ") is out of range, expected less than " << outputDimension;
+  if (finiteDifferenceSteps_.getSize() == 1) return getFiniteDifferenceStep();
+  if (!(outputIndex < finiteDifferenceSteps_.getSize())) throw InvalidArgumentException(HERE) << "Output index (" << outputIndex << ") is out of range, expected less than " << finiteDifferenceSteps_.getSize();
+  return finiteDifferenceSteps_[outputIndex];
 }
 
 /* Evaluation method */
@@ -167,7 +192,8 @@ void FiniteDifferenceGradient::save(Advocate & adv) const
 {
   GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", evaluation_ );
-  adv.saveAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
+  const FiniteDifferenceStepPersistentCollection steps(finiteDifferenceSteps_);
+  adv.saveAttribute( "finiteDifferenceSteps_", steps );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -175,7 +201,19 @@ void FiniteDifferenceGradient::load(Advocate & adv)
 {
   GradientImplementation::load(adv);
   adv.loadAttribute( "evaluation_", evaluation_ );
-  adv.loadAttribute( "finiteDifferenceStep_", finiteDifferenceStep_ );
+  if (adv.hasAttribute("finiteDifferenceSteps_"))
+  {
+    FiniteDifferenceStepPersistentCollection steps;
+    adv.loadAttribute( "finiteDifferenceSteps_", steps );
+    finiteDifferenceSteps_ = steps;
+  }
+  else
+  {
+    // Backward compatibility with archives storing a single step
+    FiniteDifferenceStep finiteDifferenceStep;
+    adv.loadAttribute( "finiteDifferenceStep_", finiteDifferenceStep );
+    finiteDifferenceSteps_ = Collection<FiniteDifferenceStep>(evaluation_.getOutputDimension(), finiteDifferenceStep);
+  }
 }
 
 

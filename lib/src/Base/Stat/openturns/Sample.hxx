@@ -259,14 +259,24 @@ public:
   /**
    * Method computeQuantilePerComponent() gives the quantile per component of the sample
    */
-  Point computeQuantilePerComponent(const Scalar prob) const;
-  Sample computeQuantilePerComponent(const Point & prob) const;
+  Point computeQuantilePerComponent(const Scalar prob,
+                                    const Bool tail = false) const;
+  Sample computeQuantilePerComponent(const Point & prob,
+                                     const Bool tail = false) const;
+
+  /**
+   * Method computeSuperQuantile() gives the super-quantile (expected
+   * shortfall) per component of the sample, see issue #3013
+   */
+  Point computeSuperQuantile(const Scalar prob) const;
 
   /**
    * Method computeQuantile() gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const Scalar prob) const;
-  Sample computeQuantile(const Point & prob) const;
+  Point computeQuantile(const Scalar prob,
+                        const Bool tail = false) const;
+  Sample computeQuantile(const Point & prob,
+                         const Bool tail = false) const;
 
   /**
    * Get the empirical CDF of the sample

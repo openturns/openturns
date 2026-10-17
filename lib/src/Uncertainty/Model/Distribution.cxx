@@ -983,6 +983,12 @@ Graph Distribution::drawMarginal2DPDF(const UnsignedInteger firstMarginal,
   return getImplementation()->drawMarginal2DPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
+/* Draw the PDFs of all the 1D and 2D marginals on a grid */
+GridLayout Distribution::drawMarginalPDFs() const
+{
+  return getImplementation()->drawMarginalPDFs();
+}
+
 /* Draw the log-PDF of the distribution when its dimension is 1 */
 Graph Distribution::drawLogPDF(const Scalar xMin,
                                const Scalar xMax,

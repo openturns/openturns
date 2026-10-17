@@ -33,6 +33,7 @@
 #include "openturns/LevelSet.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/GridLayout.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GradientImplementation.hxx"
@@ -613,6 +614,9 @@ public:
                                   const Indices & pointNumber,
                                   const Bool logScaleX = false,
                                   const Bool logScaleY = false) const;
+
+  /** Draw the PDFs of all the 1D and 2D marginals on a grid, see #2904 */
+  virtual GridLayout drawMarginalPDFs() const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawLogPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),

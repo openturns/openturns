@@ -1412,7 +1412,8 @@ void DrawableImplementation::setAlpha(const Scalar & alpha)
   const UnsignedInteger green = colorIndices[1];
   const UnsignedInteger blue = colorIndices[2];
   const UnsignedInteger alphaInteger = std::round(255 * alpha);
-  setColor(ConvertFromRGBA(red, green, blue, alphaInteger), isColorExplicitlySet());
+  // Setting alpha is an explicit color customization: it must survive Graph::add (#2831)
+  setColor(ConvertFromRGBA(red, green, blue, alphaInteger), true);
 }
 
 /* Accessor for explicit color validation flag*/
