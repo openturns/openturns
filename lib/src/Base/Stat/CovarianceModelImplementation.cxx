@@ -340,7 +340,14 @@ SymmetricMatrix CovarianceModelImplementation::partialHessian (const Point & s,
   // so the nugget discontinuity at s == t is avoided, and the step
   // is relative to the scale. This also covers models whose
   // partialGradient is itself a finite difference, as it already
-  // offsets s. Only the (0, 0) output component is differentiated.
+  // offsets s.
+  // Only the (0, 0) output component is differentiated: for output
+  // dimension > 1 the base fallback returns d^2 C_11 / ds_i ds_j,
+  // i.e. the Hessian of the first output component only. Stationary
+  // models override partialHessian with closed forms handling all
+  // output components through outputCovariance_; non-stationary or
+  // edge-case paths (zero norm, etc.) fall back here and are thus
+  // limited to component (0, 0).
   SymmetricMatrix hessian(inputDimension_);
   const Scalar baseEpsilon = std::cbrt(SpecFunc::ScalarEpsilon);
   // Isotropic models store a single scale: reuse it for every axis
@@ -352,7 +359,7 @@ SymmetricMatrix CovarianceModelImplementation::partialHessian (const Point & s,
     Point sMinus(s);
     sPlus[j] += epsilon;
     sMinus[j] -= epsilon;
-    const Scalar delta = sPlus[j] - sMinus[j];
+    const Scalar delta = sPlus[j] - sMinus[j];  // = 2 * epsilon: central FD step width
     const Matrix gradientPlus(partialGradient(sPlus, t));
     const Matrix gradientMinus(partialGradient(sMinus, t));
     for (UnsignedInteger i = j; i < inputDimension_; ++i)
