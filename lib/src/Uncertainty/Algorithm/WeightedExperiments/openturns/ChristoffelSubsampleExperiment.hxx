@@ -121,6 +121,12 @@ protected:
 private:
   /** Rebuild the derived members from basis_ and size_ */
   void update();
+
+  /** Gramian of a subset: mean over kept of w * phi * phi^T, via BLAS */
+  static SymmetricMatrix ComputeGramian(const Matrix & features,
+                                        const Point & weights,
+                                        const Indices & kept);
+
   /** Forward barrier greedy selection: kept indices plus barrier weights */
   void barrierSelection(const Sample & pool,
                         const Point & poolWeights,
