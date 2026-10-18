@@ -97,8 +97,8 @@ Returns
 dist : :class:`~openturns.Distribution`
     The estimated distribution.
 
-    In the first usage, the default native distribution is built, in the
-    second and the third the distribution whose mesh is estimated from the
+    In the first and the third usages the default native distribution is
+    built, in the second the distribution whose mesh is estimated from the
     point cloud.
 
 See Also
