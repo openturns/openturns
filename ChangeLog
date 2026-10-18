@@ -43,10 +43,16 @@
  * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
  * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
  * ChristoffelDistribution-SliceGridSize: grid size of the univariate slice maxima in sequential conditional sampling (default is 1000)
+ * ChristoffelSubsampleExperiment-PoolOversamplingFactor: pool size as a multiple of the target size before greedy thinning (default is 2.0)
+ * ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor: cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool (default is 16.0)
+ * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
+ * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
+ * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
+ * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
- * ChristoffelDistribution (openturns.experimental)
+ * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -83,7 +89,6 @@
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
 
-==== API changes ====
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra", values "LAPACK", "HMAT" or "HODLR"); GaussianProcessRegression inherits the linear algebra method from its GaussianProcessFitterResult, and GeneralLinearModelAlgorithm still relies on its own key "GeneralLinearModelAlgorithm-LinearAlgebra" (values "LAPACK" or "HMAT")
  * GaussianProcessFitter: analytical amplitude estimate now works with the HODLR backend; the HODLR path uses the precomputed quadratic form y^T R^{-1} y instead of rho_.normSquare(), since rho_ is the raw residual rather than L^{-1}(residual)
  * HODLRMatrix: new method applyNugget() adds a relative nugget to the diagonal of the covariance matrix, enabled by default in the GP covariance assembly path via the ResourceMap key "HODLRMatrix-Nugget" (default 1.0e-8, set to zero to disable)
