@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import math
+import os
 
 import openturns as ot
 import openturns.experimental as otexp
@@ -155,6 +156,49 @@ defaultDistribution = otexp.PushForwardOverMesh()
 print("default pdf(0.5)=", defaultDistribution.computePDF([0.5]))
 ott.assert_almost_equal(defaultDistribution.computePDF([0.5]), 1.0, 1e-10, 0.0)
 
+# Covariance. The antecedent covariance is exact, the pushed-forward one is
+# estimated by Monte-Carlo with PushForwardOverMesh-SampleSize realizations,
+# hence the loose tolerance
+ott.assert_almost_equal(uniformOverMesh.getCovariance(),
+                        ot.CovarianceMatrix([[1.0 / 12, 0.0], [0.0, 1.0 / 12]]),
+                        1e-12, 1e-12)
+ott.assert_almost_equal(uniformClass.getCovariance(),
+                        uniformOverMesh.getCovariance(), 5e-3, 5e-3)
+# The map (x, y) -> (x, y, x + y) over the unit right triangle gives
+# Var = 1/18, Cov(X, Y) = -1/36 and Cov(X, Z) = Cov(Y, Z) = 1/36
+print("covariance=", otexp.PushForwardOverMesh(field).getCovariance())
+ott.assert_almost_equal(
+    otexp.PushForwardOverMesh(field).getCovariance(),
+    ot.CovarianceMatrix([[1.0 / 18, -1.0 / 36, 1.0 / 36],
+                         [-1.0 / 36, 1.0 / 18, 1.0 / 36],
+                         [1.0 / 36, 1.0 / 36, 1.0 / 18]]),
+    5e-3, 5e-3)
+
+# Parameters are delegated to the antecedent, which has none for UniformOverMesh
+assert uniformClass.getParametersCollection().getSize() == 1
+assert uniformClass.getParametersCollection()[0].getDimension() == 0
+assert uniformClass.getParameterDescription() == \
+    ot.UniformOverMesh(squareMesh).getParameterDescription()
+uniformClass.setParameter([])
+assert uniformClass.getParameter().getSize() == 0
+uniformClass.setParametersCollection(
+    uniformClass.getParametersCollection())
+
+# Persistence through the Study mechanism
+if ot.PlatformInfo.HasFeature("libxml2"):
+    studyFile = "study_push_forward_over_mesh.xml"
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(studyFile))
+    study.add("distribution", distribution)
+    study.save()
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(studyFile))
+    study.load()
+    loaded = otexp.PushForwardOverMesh()
+    study.fillObject("distribution", loaded)
+    assert loaded == distribution
+    os.remove(studyFile)
+
 # Embedded reference mesh: triangle in R^3 (intrinsic 2, ambient 3) mapped
 # by the same piecewise-affine map onto the plane x + y = z. The simplex
 # loops must use the intrinsic dimension, not the ambient one.
@@ -225,6 +269,12 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     segmentProjDistribution.computePDF([3.0]), 0.0, 0.0, 1e-12
 )
+
+# The image mesh of the co-area case cannot be built, since the image of a
+# reference triangle is a collapsed segment rather than a simplex of the same
+# dimension: it is reported as not yet implemented
+with ott.assert_raises(RuntimeError):
+    squareProjDistribution.getMesh()
 
 # Exception tests: methods that throw exceptions
 with ott.assert_raises(TypeError):
