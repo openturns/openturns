@@ -952,9 +952,9 @@ void ChristoffelDistribution::update()
   // univariate factors of detectTensorProduct() only serve computeTensorFactor,
   // which runs in the sequential conditional and drawing paths, never under
   // ParallelForIf, so they do not constrain this flag.
-  Bool parallel = measure_.getImplementation().isParallel();
+  Bool parallel = measure_.getImplementation()->isParallel();
   for (UnsignedInteger i = 0; i < size_; ++i)
-    parallel = parallel && coll[i].getImplementation().isParallel();
+    parallel = parallel && coll[i].getImplementation()->isParallel();
   setParallel(parallel);
   setDimension(dimension);
   setDescription(measure_.getDescription());

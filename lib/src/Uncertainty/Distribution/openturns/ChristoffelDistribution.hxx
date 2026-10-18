@@ -59,20 +59,6 @@ public:
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;
-  using DistributionImplementation::computePDF;
-  using DistributionImplementation::computeLogPDF;
-  using DistributionImplementation::computeConditionalPDF;
-  using DistributionImplementation::computeConditionalCDF;
-  using DistributionImplementation::computeSequentialConditionalPDF;
-  using DistributionImplementation::computeSequentialConditionalCDF;
-  using DistributionImplementation::getRealization;
-  using DistributionImplementation::getSample;
-  using DistributionImplementation::getParametersCollection;
-  using DistributionImplementation::setParametersCollection;
-  using DistributionImplementation::save;
-  using DistributionImplementation::load;
-  using DistributionImplementation::computeRange;
-  using DistributionImplementation::equals;
   Bool operator ==(const ChristoffelDistribution & other) const;
 
   /** Quadrature wrapper over tensor slices needs the partial sums */
@@ -111,18 +97,24 @@ public:
   /** Stability factor estimate, ie sup of the Christoffel function */
   Scalar computeKn() const;
 
-  /** PDF and log-PDF */
+  /** Get the PDF of the distribution */
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
-  /** Conditional PDF of Xj | X0..Xj-1, fast slice form for independent references */
+  /** Compute the PDF of Xj | X0..Xj-1, fast slice form for independent references */
+  using DistributionImplementation::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
 
-  /** Conditional CDF, slice quadrature in the tensor case */
+  /** Compute the CDF of Xj | X0..Xj-1, slice quadrature in the tensor case */
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
 
   /** Sequential conditionals fanning out to the scalar versions */
+  using DistributionImplementation::computeSequentialConditionalPDF;
   Point computeSequentialConditionalPDF(const Point & x) const override;
+  using DistributionImplementation::computeSequentialConditionalCDF;
   Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Realization and sample, through the internal sampler */
@@ -131,6 +123,7 @@ public:
 
   /** Parameters accessors (no parametric representation) */
   PointWithDescriptionCollection getParametersCollection() const override;
+  using DistributionImplementation::setParametersCollection;
   void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Method save() stores the object through the StorageManager */
