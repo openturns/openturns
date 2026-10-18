@@ -69,6 +69,7 @@
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Added LeastSquaresMethod.solveNormalGram to solve the weighted Gram system, while solveNormal remains restricted to uniform weights
  * Extended UniformOverMesh to embedded meshes with getIntrinsicDimension and getVolume
+ * Restricted the UniformOverMesh(mesh) constructor to explicit conversions
  * Added MetaModelValidation.getWeights and MetaModelValidation.setWeights: the R2 score and the mean squared error are weighted by the validation weights, uniform by default, and normalized by the weight mass
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs

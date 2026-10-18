@@ -27,7 +27,7 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``Manifold-Epsilon`` (``Scalar``, default: ``1.0e-10``): tolerance used by :meth:`isOnManifold` and the
+- ``Manifold-Epsilon`` (``Scalar``, default: ``1e-10``): tolerance used by :meth:`isOnManifold` and the
   projections.
 
 Examples
