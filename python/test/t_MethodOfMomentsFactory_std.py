@@ -96,3 +96,12 @@ inf_dist = result.getDistribution().getParameter()
 print("estimated distribution=", inf_dist)
 p_ref = [2.04553, 1.0]
 ott.assert_almost_equal(result.getDistribution().getParameter(), p_ref, 1e-3, 1e-3)
+
+# issue #3376: residual must not shrink with growing variance
+sample = ot.Sample([[0.0], [0.25]])
+factory = ot.MethodOfMomentsFactory(ot.Normal(), [1, 2])
+factory.setOptimizationAlgorithm(ot.TNC())
+inf_dist = factory.build(sample)
+print("estimated distribution=", inf_dist)
+ott.assert_almost_equal(inf_dist.getMean()[0], 0.125, 1e-3, 1e-3)
+ott.assert_almost_equal(inf_dist.getCovariance()[0, 0], 0.015625, 1e-3, 1e-3)
