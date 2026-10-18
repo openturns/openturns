@@ -510,8 +510,11 @@ void UniformOverMesh::load(Advocate & adv)
   DistributionImplementation::load(adv);
   Mesh mesh;
   adv.loadAttribute( "mesh_", mesh );
-  adv.loadAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
+  // setMesh() resets integrationAlgorithm_ to its default, so restore the
+  // saved value afterwards; otherwise a custom integration algorithm set
+  // before save() is lost after load()
   setMesh(mesh);
+  adv.loadAttribute( "integrationAlgorithm_", integrationAlgorithm_ );
 }
 
 END_NAMESPACE_OPENTURNS
