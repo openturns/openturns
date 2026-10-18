@@ -139,9 +139,13 @@ private:
 
   /** Check if the point belongs to the image of the simplex at the given
       index, and if so give its barycentric coordinates with respect to
-      this image */
+      this image. The image vertices and simplices are passed by the caller
+      so that they are extracted once per PDF evaluation */
   Bool isOnSimplex(const Point & point,
                    const UnsignedInteger index,
+                   const Sample & imageVertices,
+                   const IndicesCollection & simplices,
+                   const UnsignedInteger intrinsicDimension,
                    Point & barycentricCoordinates) const;
 
   /** The antecedent distribution */

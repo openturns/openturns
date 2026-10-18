@@ -252,15 +252,16 @@ void PushForwardOverMesh::computeRange()
 }
 
 /* Check if the point belongs to the affine hull of the image of the simplex
-   at the given index, and if so give its barycentric coordinates */
+   at the given index, and if so give its barycentric coordinates. The image
+   data is passed by the caller, which extracts it once per PDF evaluation
+   instead of once per simplex. */
 Bool PushForwardOverMesh::isOnSimplex(const Point & point,
                                       const UnsignedInteger index,
+                                      const Sample & imageVertices,
+                                      const IndicesCollection & simplices,
+                                      const UnsignedInteger intrinsicDimension,
                                       Point & barycentricCoordinates) const
 {
-  const Mesh referenceMesh(values_.getMesh());
-  const IndicesCollection simplices(referenceMesh.getSimplices());
-  const Sample imageVertices(values_.getValues());
-  const UnsignedInteger intrinsicDimension = referenceMesh.getIntrinsicDimension();
   const UnsignedInteger index0 = simplices(index, 0);
   const Point v0(imageVertices[index0]);
   // Gram matrix of the image edges and the right hand side
@@ -325,6 +326,7 @@ Scalar PushForwardOverMesh::computePDF(const Point & point) const
   const Mesh referenceMesh(values_.getMesh());
   const Sample referenceVertices(referenceMesh.getVertices());
   const IndicesCollection simplices(referenceMesh.getSimplices());
+  const Sample imageVertices(values_.getValues());
   const UnsignedInteger inputDimension = referenceVertices.getDimension();
   const UnsignedInteger intrinsicDimension = referenceMesh.getIntrinsicDimension();
   const UnsignedInteger simplicesNumber = simplices.getSize();
@@ -345,7 +347,6 @@ Scalar PushForwardOverMesh::computePDF(const Point & point) const
       const Point r0(referenceVertices[simplices(s, 0)]);
       const Point r1(referenceVertices[simplices(s, 1)]);
       const Point r2(referenceVertices[simplices(s, 2)]);
-      const Sample imageVertices(values_.getValues());
       const Scalar v0 = imageVertices[simplices(s, 0)][0];
       const Scalar v1 = imageVertices[simplices(s, 1)][0];
       const Scalar v2 = imageVertices[simplices(s, 2)][0];
@@ -435,7 +436,8 @@ Scalar PushForwardOverMesh::computePDF(const Point & point) const
   for (UnsignedInteger s = 0; s < simplicesNumber; ++s)
   {
     Point barycentricCoordinates;
-    if (!isOnSimplex(point, s, barycentricCoordinates)) continue;
+    if (!isOnSimplex(point, s, imageVertices, simplices, intrinsicDimension,
+                     barycentricCoordinates)) continue;
     if (!(weights_[s] > 0.0)) continue;
     // Check if the point is strictly inside the image of the simplex
     Bool strictlyInside = true;
