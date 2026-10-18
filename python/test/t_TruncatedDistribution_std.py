@@ -406,3 +406,11 @@ ott.assert_almost_equal(truncated_binomial.computeSurvivalFunction(1.0), 5.0 / 7
 ott.assert_almost_equal(truncated_binomial.computeQuantile(0.25)[0], 1.0)
 ott.assert_almost_equal(truncated_binomial.computeQuantile(0.0)[0], 1.0)
 ott.assert_almost_equal(truncated_binomial.computeQuantile(1.0, True)[0], 1.0)
+
+# Truncating a 1D Dirichlet must condition, not rescale, see issue #3377
+truncated_dirichlet = ot.TruncatedDistribution(
+    ot.Dirichlet([2.0, 3.0]), ot.Interval(0.25, 0.75)
+)
+ott.assert_almost_equal(truncated_dirichlet.computePDF(0.5), 24.0 / 11.0)
+ott.assert_almost_equal(truncated_dirichlet.computeCDF(0.5), 109.0 / 176.0)
+ott.assert_almost_equal(truncated_dirichlet.getMean()[0], 203.0 / 440.0)
