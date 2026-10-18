@@ -106,10 +106,15 @@ void ManifoldMappedDistribution::setBackgroundManifoldAndChartCenter(const Distr
 {
   const UnsignedInteger intrinsicDimension = manifold.getIntrinsicDimension();
   if (background.getDimension() != intrinsicDimension) throw InvalidArgumentException(HERE) << "Error: the background distribution must have a dimension equal to the intrinsic dimension of the manifold, here background dimension=" << background.getDimension() << " and intrinsic dimension=" << intrinsicDimension;
+  // Validate everything before assigning, so that a failure leaves the object
+  // unchanged instead of with a background and a manifold that no longer match
+  // its chart center and tangent basis
+  const Point projectedChartCenter(manifold.projectToManifold(chartCenter));
+  const Sample newTangentBasis(manifold.getTangentBasis(projectedChartCenter));
   background_ = background;
   manifold_ = manifold;
-  chartCenter_ = manifold_.projectToManifold(chartCenter);
-  tangentBasis_ = manifold_.getTangentBasis(chartCenter_);
+  chartCenter_ = projectedChartCenter;
+  tangentBasis_ = newTangentBasis;
   setDimension(manifold_.getAmbientDimension());
   setParallel(false);
   isAlreadyComputedMean_ = false;
