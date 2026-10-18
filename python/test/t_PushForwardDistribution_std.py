@@ -77,6 +77,17 @@ parameters = distribution.getParametersCollection()
 print("parameters=", parameters)
 assert parameters.getSize() == 1
 assert parameters[0].getDimension() == 2
+assert distribution.getParameterDescription() == \
+    ot.Normal(0.0, 1.0).getParameterDescription()
+ott.assert_almost_equal(distribution.getParameter(), [0.0, 1.0], 1e-12, 0.0)
+# Setting a parameter of the antecedent changes the pushed-forward distribution:
+# X ~ N(0, 4) pushed through f(x) = 2x gives Y ~ N(0, 16)
+distribution.setParameter([0.0, 2.0])
+assert distribution.getAntecedent() == ot.Normal(0.0, 2.0)
+ott.assert_almost_equal(distribution.computePDF([0.0]),
+                        1.0 / (4.0 * math.sqrt(2.0 * math.pi)), 1e-4, 0.0)
+distribution.setParametersCollection(parameters)
+assert distribution.getAntecedent() == ot.Normal(0.0, 1.0)
 
 # Identity function: the distribution is the same as the antecedent
 fIdentity = ot.SymbolicFunction(["x"], ["x"])

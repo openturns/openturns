@@ -151,6 +151,12 @@ private:
   /** The antecedent distribution */
   Distribution antecedent_;
 
+  /** Cached search box in the support of the antecedent, where the preimages
+      of a point are sought. It only depends on the antecedent, hence it is
+      computed once by setFunctionAndAntecedent() instead of at each PDF
+      evaluation */
+  Interval searchInterval_;
+
   /** Solver used to invert the function */
   Solver solver_;
 }; /* class PushForwardDistribution */
