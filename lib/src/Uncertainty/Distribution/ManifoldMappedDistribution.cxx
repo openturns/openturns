@@ -176,38 +176,46 @@ Point ManifoldMappedDistribution::getRealization() const
 Scalar ManifoldMappedDistribution::computePDF(const Point & point) const
 {
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == -SpecFunc::Infinity) return 0.0;
+  // Also catches a NaN log-density, for which no probability mass is assigned
+  if (!(logPDF > -SpecFunc::Infinity)) return 0.0;
   return std::exp(logPDF);
 }
 
 /* Get the log-PDF of the distribution */
 Scalar ManifoldMappedDistribution::computeLogPDF(const Point & point) const
 {
+  // The distribution is supported on the manifold: points off the manifold
+  // carry no mass, consistently with PushForwardOverMesh returning 0 off-image
+  if (!manifold_.isOnManifold(point)) return -SpecFunc::Infinity;
+  const Point projected(manifold_.projectToManifold(point));
+  // The logarithmic map is not defined on the cut locus of the chart center,
+  // where the exponential map collapses the whole sphere of tangent vectors of
+  // the cut radius onto the single point of the manifold given by the cut locus
+  Point tangentVector(manifold_.getAmbientDimension());
   try
   {
-    // The distribution is supported on the manifold: points off the manifold
-    // carry no mass, consistently with PushForwardOverMesh returning 0 off-image
-    if (!manifold_.isOnManifold(point)) return -SpecFunc::Infinity;
-    const Point projected(manifold_.projectToManifold(point));
-    const Point tangentVector(manifold_.logMap(chartCenter_, projected));
-    const UnsignedInteger intrinsicDimension = manifold_.getIntrinsicDimension();
-    Point coordinates(intrinsicDimension);
-    for (UnsignedInteger k = 0; k < intrinsicDimension; ++k)
-    {
-      const Point direction(tangentBasis_[k]);
-      Scalar scalarProduct = 0.0;
-      for (UnsignedInteger i = 0; i < tangentVector.getDimension(); ++i)
-        scalarProduct += tangentVector[i] * direction[i];
-      coordinates[k] = scalarProduct;
-    }
-    const Scalar density = manifold_.getExpMapVolumeDensity(coordinates);
-    return background_.computeLogPDF(coordinates) - std::log(density);
+    tangentVector = manifold_.logMap(chartCenter_, projected);
   }
   catch (const Exception &)
   {
-    // At the cut locus of the chart center the density is singular
-    return -SpecFunc::Infinity;
+    // At the cut locus the volume density of the exponential map vanishes, so
+    // the pushed-forward density with respect to the Riemannian volume
+    // diverges, consistently with PushForwardDistribution returning +inf at
+    // the critical points of its antecedent
+    return SpecFunc::Infinity;
   }
+  const UnsignedInteger intrinsicDimension = manifold_.getIntrinsicDimension();
+  Point coordinates(intrinsicDimension);
+  for (UnsignedInteger k = 0; k < intrinsicDimension; ++k)
+  {
+    const Point direction(tangentBasis_[k]);
+    Scalar scalarProduct = 0.0;
+    for (UnsignedInteger i = 0; i < tangentVector.getDimension(); ++i)
+      scalarProduct += tangentVector[i] * direction[i];
+    coordinates[k] = scalarProduct;
+  }
+  const Scalar density = manifold_.getExpMapVolumeDensity(coordinates);
+  return background_.computeLogPDF(coordinates) - std::log(density);
 }
 
 /* Parameters value and description accessor */
