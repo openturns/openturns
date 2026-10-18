@@ -30,7 +30,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/SpecFunc.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -286,28 +285,34 @@ void UniformOverMesh::computeCovariance() const
   SquareMatrix secondMoments(dimension);
   const UnsignedInteger simplicesNumber = simplices_.getSize();
   // Center the vertices first: accumulating raw second moments then
-  // subtracting mean*mean^T loses precision for meshes far from the origin
+  // subtracting mean*mean^T loses precision for meshes far from the origin.
+  // The centered vertices of the current simplex are kept in a contiguous
+  // buffer to avoid copying a Point per vertex pair in the inner loops.
   const Point mean(getMean());
+  Sample centered(verticesPerSimplex, dimension);
   for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
   {
-    SquareMatrix contribution(dimension);
     for (UnsignedInteger a = 0; a < verticesPerSimplex; ++a)
     {
-      const Point vertexA(vertices_[simplices_(i, a)] - mean);
+      const Point vertex(vertices_[simplices_(i, a)]);
+      for (UnsignedInteger r = 0; r < dimension; ++r)
+        centered(a, r) = vertex[r] - mean[r];
+    }
+    const Scalar * centeredData = centered.data();
+    for (UnsignedInteger a = 0; a < verticesPerSimplex; ++a)
+    {
+      const Scalar * vertexA = centeredData + a * dimension;
       for (UnsignedInteger r = 0; r < dimension; ++r)
         for (UnsignedInteger c = 0; c < dimension; ++c)
-          contribution(r, c) += vertexA[r] * vertexA[c];
+          secondMoments(r, c) += probabilities_[i] * vertexA[r] * vertexA[c] / denominator;
       for (UnsignedInteger b = 0; b < verticesPerSimplex; ++b)
       {
-        const Point vertexB(vertices_[simplices_(i, b)] - mean);
+        const Scalar * vertexB = centeredData + b * dimension;
         for (UnsignedInteger r = 0; r < dimension; ++r)
           for (UnsignedInteger c = 0; c < dimension; ++c)
-            contribution(r, c) += vertexA[r] * vertexB[c];
+            secondMoments(r, c) += probabilities_[i] * vertexA[r] * vertexB[c] / denominator;
       }
     }
-    for (UnsignedInteger r = 0; r < dimension; ++r)
-      for (UnsignedInteger c = 0; c < dimension; ++c)
-        secondMoments(r, c) += probabilities_[i] * contribution(r, c) / denominator;
   }
   covariance_ = CovarianceMatrix(secondMoments.getImplementation());
   isAlreadyComputedCovariance_ = true;
@@ -331,41 +336,11 @@ void UniformOverMesh::setMesh(const Mesh & mesh)
   if (intrinsicDimension > dimension)
     throw InvalidArgumentException(HERE) << "Error: the intrinsic dimension=" << intrinsicDimension << " of the mesh must be lower than or equal to the ambient dimension=" << dimension << ".";
   intrinsicDimension_ = intrinsicDimension;
-  // Compute the volume of each simplex
-  if (intrinsicDimension == dimension)
-  {
-    simplicesVolumes_ = mesh.computeSimplicesVolume();
-  }
-  else
-  {
-    // The intrinsic volume of a simplex embedded in an ambient space of
-    // larger dimension is sqrt(det(G)) / d! where G is the Gram matrix of
-    // its edge vectors. The expected intrinsic dimension is small (1-3),
-    // so the direct factorial form is used.
-    const Scalar factorial = SpecFunc::Factorial(intrinsicDimension);
-    SquareMatrix gram(intrinsicDimension);
-    simplicesVolumes_ = Point(simplicesNumber);
-    for (UnsignedInteger i = 0; i < simplicesNumber; ++i)
-    {
-      const UnsignedInteger index0 = simplices_(i, 0);
-      const Point v0(vertices_[index0]);
-      for (UnsignedInteger j = 0; j < intrinsicDimension; ++j)
-      {
-        const UnsignedInteger indexJ = simplices_(i, j + 1);
-        const Point edgeJ(vertices_[indexJ] - v0);
-        for (UnsignedInteger k = j; k < intrinsicDimension; ++k)
-        {
-          const UnsignedInteger indexK = simplices_(i, k + 1);
-          const Point edgeK(vertices_[indexK] - v0);
-          const Scalar value = edgeJ.dot(edgeK);
-          gram(j, k) = value;
-          gram(k, j) = value;
-        }
-      }
-      const Scalar determinant = gram.computeDeterminant();
-      simplicesVolumes_[i] = (determinant > 0.0) ? std::sqrt(determinant) / factorial : 0.0;
-    }
-  }
+  // Compute the intrinsic volume of each simplex. Mesh::computeSimplicesVolume()
+  // handles a mesh embedded in an ambient space of larger dimension, where the
+  // volume is sqrt(det(G)) / d! for the Gram matrix G of the d edge vectors of
+  // the simplex, so no special case is needed here.
+  simplicesVolumes_ = mesh.computeSimplicesVolume();
   meshVolume_ = std::accumulate(simplicesVolumes_.begin(), simplicesVolumes_.end(), 0.0);
   if (!(meshVolume_ > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a mesh of positive volume.";
   probabilities_ = simplicesVolumes_ / meshVolume_;
