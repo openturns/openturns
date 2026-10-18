@@ -74,9 +74,14 @@ ott.assert_almost_equal(pdfError, 0.0, 0.05, 0.0)
 # The empirical mean is on the estimated manifold
 assert estimated.computePDF(sample.computeMean()) > 0.0
 
-# build() delegates to buildAsUniformOverMesh
+# build(sample) estimates the same distribution from the same point cloud as
+# buildAsUniformOverMesh, it only returns it as a plain Distribution
 other = factory.build(sample)
 assert other == estimated
+assert other.getImplementation().getClassName() == "UniformOverMesh"
+# build() with no argument gives the default distribution, build(param) expects
+# an empty point since UniformOverMesh has no parameter
+assert factory.build().getImplementation().getClassName() == "UniformOverMesh"
 
 # The description of the sample is propagated
 sample.setDescription(["a", "b", "c"])
