@@ -363,10 +363,33 @@ Matrix ProductCovarianceModel::parameterGradient(const Point & s,
   Point fullGradient(fullSize, 0.0);
 
   // Gradient wrt the parameters of the marginal models
-  UnsignedInteger scaleStart = 0;
+  // Compute the covariance of each marginal model and the prefix/suffix
+  // products of these covariances: this avoids the division by the marginal
+  // covariance, which is undefined when this covariance vanishes
+  const UnsignedInteger size = collection_.getSize();
+  Point localCovariances(size);
   UnsignedInteger pointStart = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    Point localS(localInputDimension);
+    std::copy(s.begin() + pointStart, s.begin() + pointStart + localInputDimension, localS.begin());
+    Point localT(localInputDimension);
+    std::copy(t.begin() + pointStart, t.begin() + pointStart + localInputDimension, localT.begin());
+    localCovariances[i] = collection_[i](localS, localT)(0, 0);
+    pointStart += localInputDimension;
+  }
+  Point prefix(size + 1, 1.0);
+  Point suffix(size + 1, 1.0);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    prefix[i + 1] = prefix[i] * localCovariances[i];
+  for (UnsignedInteger i = size; i > 0; --i)
+    suffix[i - 1] = suffix[i] * localCovariances[i - 1];
+  const Scalar nuggetFactor = (tau.norm() <= SpecFunc::ScalarEpsilon ? 1.0 + getNuggetFactor() : 1.0);
+  UnsignedInteger scaleStart = 0;
+  pointStart = 0;
   UnsignedInteger extraStart = scaleSize + 2;
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
     const UnsignedInteger localScaleSize = collection_[i].getScale().getSize();
@@ -375,22 +398,19 @@ Matrix ProductCovarianceModel::parameterGradient(const Point & s,
     std::copy(s.begin() + pointStart, s.begin() + pointStart + localInputDimension, localS.begin());
     Point localT(localInputDimension);
     std::copy(t.begin() + pointStart, t.begin() + pointStart + localInputDimension, localT.begin());
-    const Scalar corr = collection_[i](localS, localT)(0, 0);
-    if (corr != 0.0)
-    {
-      // Get the gradient of the marginal wrt all its parameters
-      CovarianceModel localModel(collection_[i]);
-      Indices allActive(localModel.getFullParameter().getSize());
-      for (UnsignedInteger j = 0; j < allActive.getSize(); ++j) allActive[j] = j;
-      localModel.setActiveParameter(allActive);
-      const Matrix localGradient(localModel.parameterGradient(localS, localT));
-      const Scalar factor = k / corr;
-      for (UnsignedInteger j = 0; j < localScaleSize; ++j)
-        fullGradient[scaleStart + j] = localGradient(j, 0) * factor;
-      // The local amplitude and nugget factor are fixed to 1 and 0 respectively
-      for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
-        fullGradient[extraStart + j] = localGradient(localScaleSize + 2 + j, 0) * factor;
-    }
+    // Get the gradient of the marginal wrt all its parameters
+    CovarianceModel localModel(collection_[i]);
+    Indices allActive(localModel.getFullParameter().getSize());
+    for (UnsignedInteger j = 0; j < allActive.getSize(); ++j) allActive[j] = j;
+    localModel.setActiveParameter(allActive);
+    const Matrix localGradient(localModel.parameterGradient(localS, localT));
+    // product of the covariances of all the other marginal models
+    const Scalar factor = amplitude_[0] * amplitude_[0] * nuggetFactor * prefix[i] * suffix[i + 1];
+    for (UnsignedInteger j = 0; j < localScaleSize; ++j)
+      fullGradient[scaleStart + j] = localGradient(j, 0) * factor;
+    // The local amplitude and nugget factor are fixed to 1 and 0 respectively
+    for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
+      fullGradient[extraStart + j] = localGradient(localScaleSize + 2 + j, 0) * factor;
     scaleStart = scaleStop;
     pointStart += localInputDimension;
     extraStart += extraParameterNumber_[i];
