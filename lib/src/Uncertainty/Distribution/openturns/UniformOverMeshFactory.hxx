@@ -27,6 +27,25 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
+/**
+ * @class UniformOverMeshFactory
+ *
+ * Factory of the uniform distribution over a mesh estimated from an
+ * unstructured sample of a surface embedded in an ambient space.
+ *
+ * The estimation is the moving least squares surface reconstruction of
+ * Cao, C., Wang, Y., Wang, Y., et al. (2021). Efficient and accurate
+ * moving least squares method for the approximation of implicit surfaces.
+ * Journal of Computational Physics, 449, 109754: the local tangent plane
+ * is estimated by a principal component analysis of the offsets of the
+ * nearest neighbors, as done here. Bowyer, J. (1981). Computing
+ * Dirichlet's tessellation. The Computer Journal, 24(2), 162-166: the
+ * incremental Delaunay triangulation of the neighbors projected onto that
+ * tangent plane. The triangles of all the neighborhoods are merged into a
+ * single mesh, whose overlapping parts make it overestimate the intrinsic
+ * volume of the surface.
+ */
+
 class OT_API UniformOverMeshFactory
   : public DistributionFactoryImplementation
 {
