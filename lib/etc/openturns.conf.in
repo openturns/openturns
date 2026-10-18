@@ -900,8 +900,8 @@
 
   <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
 
+  <!-- OT::UniformOverMeshFactory parameters -->
   <UniformOverMeshFactory-NearestNeighbors  value_int="12" />
-
   <UniformOverMeshFactory-MinimumAreaFactor value_float="1e-3" />
 
   <!-- OT::Wishart parameters -->
