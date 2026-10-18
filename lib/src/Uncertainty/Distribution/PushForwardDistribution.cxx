@@ -115,6 +115,9 @@ void PushForwardDistribution::setFunctionAndAntecedent(const Function & function
     throw NotYetImplementedException(HERE) << "Error: the case where the output dimension of the function is lower than the input dimension (co-area formula) is not yet implemented, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
   function_ = function;
   antecedent_ = antecedent;
+  // The search box only depends on the antecedent, cache it: rebuilding it at
+  // each PDF evaluation would redo the marginal quantiles and the mean
+  searchInterval_ = buildSearchInterval();
   setDimension(outputDimension);
   // We don't know if the function is thread-safe and it could be called in parallel in computePDF()
   setParallel(false);
@@ -236,7 +239,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
       residual = residualFunction(point);
       residualNorm = residual.norm();
     }
-    catch (...)
+    catch (const Exception &)
     {
       // The residual does not exist at this point
       return Point();
@@ -256,7 +259,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
         {
           jacobianMatrix = residualFunction.gradient(currentPoint);
         }
-        catch (...)
+        catch (const Exception &)
         {
           break;
         }
@@ -266,7 +269,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
           const SquareMatrix jacobian(*jacobianMatrix.getImplementation());
           correction = jacobian.transpose().solveLinearSystem(residualFunction(currentPoint));
         }
-        catch (...)
+        catch (const Exception &)
         {
           break;
         }
@@ -276,7 +279,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
         {
           polishedResidualNorm = residualFunction(polishedPoint).norm();
         }
-        catch (...)
+        catch (const Exception &)
         {
           break;
         }
@@ -293,7 +296,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
     {
       gradientMatrix = residualFunction.gradient(point);
     }
-    catch (...)
+    catch (const Exception &)
     {
       // The residual has no computable Jacobian at this point
       return Point();
@@ -309,7 +312,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
       const SquareMatrix jacobian(*gradientMatrix.getImplementation());
       correction = jacobian.transpose().solveLinearSystem(residual);
     }
-    catch (...)
+    catch (const Exception &)
     {
       // The Jacobian is not invertible at this point
       return Point();
@@ -325,7 +328,7 @@ Point PushForwardDistribution::dampedNewton(const Function & residualFunction,
       {
         nextResidualNorm = residualFunction(nextPoint).norm();
       }
-      catch (...)
+      catch (const Exception &)
       {
         // The residual does not exist at the trial point: keep reducing the step
         nextResidualNorm = residualNorm;
@@ -350,7 +353,7 @@ DistributionImplementation::PointCollection PushForwardDistribution::findPreimag
 {
   PointCollection preimages(0);
   const UnsignedInteger dimension = antecedent_.getDimension();
-  const Interval searchInterval(buildSearchInterval());
+  const Interval searchInterval(searchInterval_);
   const Point lowerBound(searchInterval.getLowerBound());
   const Point upperBound(searchInterval.getUpperBound());
   const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance");
@@ -365,7 +368,7 @@ DistributionImplementation::PointCollection PushForwardDistribution::findPreimag
     {
       return residualFunction(candidate).norm() <= residualTolerance;
     }
-    catch (...)
+    catch (const Exception &)
     {
       return false;
     }
@@ -406,7 +409,7 @@ DistributionImplementation::PointCollection PushForwardDistribution::findPreimag
       {
         residualValues[i] = residualFunction(Point(1, u))[0];
       }
-      catch (...)
+      catch (const Exception &)
       {
         residualValues[i] = SpecFunc::ScalarEpsilon;
       }
@@ -446,7 +449,7 @@ DistributionImplementation::PointCollection PushForwardDistribution::findPreimag
             {
               rMiddle = residualFunction(Point(1, rootValue))[0];
             }
-            catch (...)
+            catch (const Exception &)
             {
               break;
             }
@@ -537,7 +540,7 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
     // plus the antecedent mean, deduplicated by distance. This extends the
     // previous closest-to-mean single branch, which underestimated the
     // density for non-injective maps.
-    const Interval searchInterval(buildSearchInterval());
+    const Interval searchInterval(searchInterval_);
     const Point searchLowerBound(searchInterval.getLowerBound());
     const Point searchUpperBound(searchInterval.getUpperBound());
     const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance");
@@ -612,34 +615,28 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
     // In the square case the denominator is |det(J)|, in the intrinsic case
     // it is sqrt(det(J^T J)) where J is the Jacobian matrix of the function.
     // The gradient matrix returned by the function is the transpose of J.
-    Scalar determinant = 0.0;
+    Scalar denominator = 0.0;
     if (outputDimension == inputDimension)
     {
       const SquareMatrix jacobianSquareMatrix(*gradientMatrix.getImplementation());
-      determinant = jacobianSquareMatrix.computeDeterminant();
+      denominator = std::abs(jacobianSquareMatrix.computeDeterminant());
     }
     else
     {
-      // Here J^T J = gradient * gradient^T
-      SquareMatrix gramMatrix(inputDimension);
-      for (UnsignedInteger i = 0; i < inputDimension; ++i)
-        for (UnsignedInteger j = 0; j < inputDimension; ++j)
-        {
-          Scalar value = 0.0;
-          for (UnsignedInteger kk = 0; kk < outputDimension; ++kk)
-            value += gradientMatrix(i, kk) * gradientMatrix(j, kk);
-          gramMatrix(i, j) = value;
-        }
-      determinant = gramMatrix.computeDeterminant();
+      // sqrt(det(J^T J)) is the product of the singular values of J. Taking
+      // the determinant of the Gram matrix J^T J instead would square the
+      // conditioning of the computation and lose the sign of its square
+      // root to roundoff, turning a finite density into +inf.
+      denominator = 1.0;
+      const Point singularValues(gradientMatrix.computeSingularValues());
+      for (UnsignedInteger index = 0; index < inputDimension; ++index)
+        denominator *= singularValues[index];
     }
-    const Scalar denominator = (outputDimension == inputDimension) ? std::abs(determinant) : std::sqrt(determinant);
     if (!std::isfinite(denominator) || !(denominator > 0.0))
     {
       // Critical value of the function where the Jacobian is singular: the
       // density diverges where the antecedent carries mass (e.g. Y=X^2 at 0)
-      if (numerator > 0.0)
-        return SpecFunc::Infinity;
-      continue;
+      return SpecFunc::Infinity;
     }
     pdf += numerator / denominator;
   }
