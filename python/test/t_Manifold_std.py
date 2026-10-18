@@ -32,6 +32,35 @@ assert circle.getAmbientDimension() == 2
 assert circle.getIntrinsicDimension() == 1
 ott.assert_almost_equal(circle.getVolume(), 2.0 * math.pi, 1e-12, 1e-12)
 
+# Geodesics of the unit circle are arcs of the circle itself: the intrinsic
+# dimension is 1, the tangent space at (1, 0) is the line y = 0 and the exp-map
+# is the rotation of the point by the norm of the tangent vector
+east2 = [1.0, 0.0]
+top = [0.0, 1.0]
+assert circle.isOnManifold(east2)
+assert not circle.isOnManifold([2.0, 0.0])
+ott.assert_almost_equal(circle.projectToManifold([3.0, 0.0]), east2, 1e-12, 1e-12)
+ott.assert_almost_equal(circle.projectToTangentSpace(east2, [1.0, 1.0]), [0.0, 1.0],
+                        1e-12, 1e-12)
+# A tangent vector of norm pi/2 at (1, 0) maps to (0, 1)
+ott.assert_almost_equal(circle.expMap(east2, [0.0, 0.5 * math.pi]), top, 1e-12, 1e-12)
+ott.assert_almost_equal(circle.logMap(east2, top), [0.0, 0.5 * math.pi], 1e-12, 1e-12)
+ott.assert_almost_equal(circle.getGeodesicDistance(east2, top), 0.5 * math.pi,
+                        1e-12, 1e-12)
+# The tangent basis of a 1-dimensional manifold is a single unit vector; the
+# canonical first axis is rejected here since it is the normal of the tangent
+# space at (1, 0)
+circleBasis = circle.getTangentBasis(east2)
+assert circleBasis.getSize() == 1
+assert circleBasis.getDimension() == 2
+ott.assert_almost_equal(circleBasis[0].norm(), 1.0, 1e-12, 1e-12)
+ott.assert_almost_equal(circleBasis[0].dot(circleBasis[0]), 1.0, 1e-12, 1e-12)
+ott.assert_almost_equal(circle.expMap(east2, circleBasis[0]), [math.cos(1.0), math.sin(1.0)],
+                        1e-12, 1e-12)
+# The logarithmic map is undefined at the antipode of the base point
+with ott.assert_raises(TypeError):
+    circle.logMap(east2, [-1.0, 0.0])
+
 # Geodesic distance between (1, 0, 0) and (0, 1, 0) is pi / 2
 east = [1.0, 0.0, 0.0]
 north2 = [0.0, 1.0, 0.0]
@@ -205,6 +234,31 @@ ott.assert_almost_equal(wrapped.expMap(east, [0.0, 0.5 * math.pi, 0.0]), north2,
 assert wrapped.isOnManifold(east)
 wrapped.setEpsilon(1e-8)
 ott.assert_almost_equal(wrapped.getEpsilon(), 1e-8, 1e-15, 0.0)
+# The remaining operations are forwarded to the implementation as well
+ott.assert_almost_equal(wrapped.projectToManifold([2.0, 0.0, 0.0]), east, 1e-12, 1e-12)
+ott.assert_almost_equal(wrapped.projectToTangentSpace(east, [1.0, 1.0, 0.0]),
+                        [0.0, 1.0, 0.0], 1e-12, 1e-12)
+ott.assert_almost_equal(wrapped.logMap(east, north2), [0.0, 0.5 * math.pi, 0.0],
+                        1e-12, 1e-12)
+ott.assert_almost_equal(wrapped.getGeodesicDistance(east, north2), 0.5 * math.pi,
+                        1e-12, 1e-12)
+ott.assert_almost_equal(wrapped.getTangentBasis(east), sphere.getTangentBasis(east),
+                        1e-12, 1e-12)
+ott.assert_almost_equal(wrapped.getExpMapVolumeDensity([0.5, 0.0]),
+                        sphere.getExpMapVolumeDensity([0.5, 0.0]), 1e-12, 1e-12)
+# The comparison operator takes the tolerance into account, so restore the
+# default one before comparing with a freshly built manifold
+wrapped.setEpsilon(1e-10)
+assert wrapped == otexp.Manifold(otexp.SphereManifold(3))
+assert wrapped != otexp.Manifold(otexp.SphereManifold(2))
+# The default interface object is the 2-sphere in R^3
+assert otexp.Manifold().getAmbientDimension() == 3
+
+# The tolerance must be positive
+with ott.assert_raises(TypeError):
+    sphere.setEpsilon(0.0)
+with ott.assert_raises(TypeError):
+    sphere.setEpsilon(-1.0)
 
 # Persistence through the Study mechanism
 if ot.PlatformInfo.HasFeature("libxml2"):
