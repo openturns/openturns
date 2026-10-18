@@ -42,8 +42,14 @@ ott.assert_almost_equal(distribution.computePDF(point), expected, 1e-10, 1e-10)
 # Log PDF consistency with PDF
 ott.assert_almost_equal(distribution.computeLogPDF(point), math.log(distribution.computePDF(point)), 1e-10, 1e-10)
 
-# At the cut locus (antipode) the density is singular, PDF is zero
-ott.assert_almost_equal(distribution.computePDF([0.0, 0.0, -1.0]), 0.0, 1e-12, 1e-12)
+# At the cut locus (antipode) the exponential map collapses the whole sphere
+# of tangent vectors of radius pi onto the antipode, so the volume density of
+# the exponential map vanishes there and the pushed-forward density diverges
+antipode = [0.0, 0.0, -1.0]
+assert distribution.computePDF(antipode) == float("inf")
+assert distribution.computeLogPDF(antipode) == float("inf")
+# Points off the manifold carry no mass
+ott.assert_almost_equal(distribution.computePDF([0.0, 0.0, 2.0]), 0.0, 0.0, 1e-12)
 
 # Realizations lie on the sphere
 sample = distribution.getSample(100)

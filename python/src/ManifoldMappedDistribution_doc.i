@@ -15,9 +15,11 @@ basis of the manifold at the chart center :math:`\vect{c}`.
 The density with respect to the Riemannian volume follows from the
 change of variables formula through the logarithmic map, corrected by
 the volume density of the exponential map. At the cut locus of the chart
-center the density is singular and is not evaluated: the background
-distribution is expected to be concentrated around the origin so that the
-dropped cut-locus mass is negligible (no wrapping sum, unlike
+center the logarithmic map is not defined: the exponential map collapses
+the whole sphere of tangent vectors of the cut radius onto the single
+point of the manifold given by the cut locus, so the volume density of
+the exponential map vanishes there and the density diverges to
+:math:`+\infty` (no wrapping sum, unlike
 :class:`~openturns.experimental.WrappedNormal`). Points off the manifold carry no mass:
 their log-density is :math:`-\infty`.
 
