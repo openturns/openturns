@@ -712,12 +712,35 @@ dimension : int
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Mesh::getIntrinsicDimension
-"Intrinsic dimension accessor.
+R"RAW(Intrinsic dimension accessor.
 
 Returns
 -------
 dimension : int
-    Dimension of the simplices. It differs from the dimension if the last indices are repeated in the definition of the simplices."
+    Dimension of the simplices. It differs from the dimension if the last indices are repeated in the definition of the simplices.
+
+Notes
+-----
+All the simplices must agree on the number of distinct vertex indices, otherwise the intrinsic dimension of the mesh is not defined and an exception is raised.
+
+Examples
+--------
+>>> import openturns as ot
+>>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [0.0, 1.0]])
+>>> # A full-dimensional mesh of R^2: three distinct vertex indices
+>>> print(ot.Mesh(vertices, ot.IndicesCollection([[0, 1, 2], [0, 2, 3]])).getIntrinsicDimension())
+2
+>>> # A segment embedded in R^2: the last index is repeated
+>>> print(ot.Mesh(vertices, ot.IndicesCollection([[0, 1, 1], [2, 3, 3]])).getIntrinsicDimension())
+1
+>>> # Simplices with a different number of distinct indices: undefined
+>>> try:
+...     mesh = ot.Mesh(vertices, ot.IndicesCollection([[0, 1, 2], [0, 2, 2]]))
+...     print(mesh.getIntrinsicDimension())
+... except TypeError:
+...     print("heterogeneous simplices")
+heterogeneous simplices
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::Mesh::getLowerBound
