@@ -27,7 +27,7 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``Manifold-Epsilon`` (``Scalar``, default: ``1.0e-10``): tolerance used by :meth:`isOnManifold` and the
+- ``Manifold-Epsilon`` (``Scalar``, default: ``1e-10``): tolerance used by :meth:`isOnManifold` and the
   projections.
 )RAW"
 
@@ -39,7 +39,8 @@ R"RAW(Accessor to the ambient dimension.
 Returns
 -------
 ambientDimension : int
-    Dimension of the ambient Euclidean space.)RAW"
+    Dimension of the ambient Euclidean space.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -49,7 +50,8 @@ R"RAW(Accessor to the intrinsic dimension.
 Returns
 -------
 intrinsicDimension : int
-    Dimension of the manifold as a Riemannian manifold.)RAW"
+    Dimension of the manifold as a Riemannian manifold.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -59,7 +61,8 @@ R"RAW(Accessor to the tolerance.
 Returns
 -------
 epsilon : float
-    Tolerance used by :meth:`isOnManifold` and the projections.)RAW"
+    Tolerance used by :meth:`isOnManifold` and the projections.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -69,7 +72,8 @@ R"RAW(Accessor to the tolerance.
 Parameters
 ----------
 epsilon : float, :math:`> 0`
-    Tolerance used by :meth:`isOnManifold` and the projections.)RAW"
+    Tolerance used by :meth:`isOnManifold` and the projections.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -86,7 +90,8 @@ tangentVector : sequence of float
 Returns
 -------
 point : :class:`~openturns.Point`
-    Image of the tangent vector on the manifold.)RAW"
+    Image of the tangent vector on the manifold.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -103,7 +108,8 @@ point : sequence of float
 Returns
 -------
 tangentVector : :class:`~openturns.Point`
-    Preimage of the point in the tangent space at the base point.)RAW"
+    Preimage of the point in the tangent space at the base point.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -118,7 +124,8 @@ point : sequence of float
 Returns
 -------
 projectedPoint : :class:`~openturns.Point`
-    Projection of the ambient vector onto the manifold.)RAW"
+    Projection of the ambient vector onto the manifold.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -135,7 +142,8 @@ vector : sequence of float
 Returns
 -------
 tangentVector : :class:`~openturns.Point`
-    Projection of the ambient vector onto the tangent space.)RAW"
+    Projection of the ambient vector onto the tangent space.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -150,7 +158,8 @@ point : sequence of float
 Returns
 -------
 isOnManifold : bool
-    Whether the ambient vector lies on the manifold.)RAW"
+    Whether the ambient vector lies on the manifold.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -167,7 +176,8 @@ point2 : sequence of float
 Returns
 -------
 distance : float
-    Geodesic distance between the two points.)RAW"
+    Geodesic distance between the two points.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -177,7 +187,8 @@ R"RAW(Total Riemannian volume of the manifold.
 Returns
 -------
 volume : float
-    Total volume of the manifold for its Riemannian metric.)RAW"
+    Total volume of the manifold for its Riemannian metric.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -192,7 +203,8 @@ basePoint : sequence of float
 Returns
 -------
 basis : :class:`~openturns.Sample`
-    Orthonormal ambient vectors spanning the tangent space.)RAW"
+    Orthonormal ambient vectors spanning the tangent space.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -212,4 +224,5 @@ coordinates : sequence of float
 Returns
 -------
 density : float, :math:`> 0`
-    Volume density at the given coordinates.)RAW"
+    Volume density at the given coordinates.
+)RAW"

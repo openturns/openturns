@@ -91,11 +91,9 @@ Continuous parametric distributions
     Rice
 
     :template: classWithPlot.rst_t
+    experimental.ManifoldMappedDistribution
     experimental.PushForwardDistribution
     experimental.PushForwardOverMesh
-
-    :template: classWithPlot.rst_t
-    experimental.ManifoldMappedDistribution
 
     :template: class.rst_t
 
@@ -352,7 +350,6 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
-    DistFunc.dNonCentralStudentAlt0
     DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1
