@@ -336,8 +336,7 @@ UniformOverMesh UniformOverMeshFactory::buildAsUniformOverMesh(const Sample & sa
     simplicesCollection.add(simplex);
   }
   // Compact the vertices: drop the sample points referenced by no kept
-  // triangle, otherwise the mesh carries unconnected vertices which its
-  // validity check rejects
+  // triangle, otherwise the mesh carries unconnected vertices
   std::set<UnsignedInteger> usedVertices;
   for (UnsignedInteger i = 0; i < simplicesCollection.getSize(); ++i)
     for (UnsignedInteger j = 0; j < 3; ++j)
@@ -372,7 +371,7 @@ UniformOverMesh UniformOverMeshFactory::buildAsUniformOverMesh(const Sample & sa
     for (UnsignedInteger j = 3; j < verticesPerSimplex; ++j)
       simplices(i, j) = simplices(i, 2);
   }
-  const Mesh mesh(compactVertices, simplices, false);
+  const Mesh mesh(compactVertices, simplices);
   UniformOverMesh result(mesh);
   result.setDescription(sample.getDescription());
   return result;
