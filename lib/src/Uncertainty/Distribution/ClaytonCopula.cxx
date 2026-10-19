@@ -131,18 +131,23 @@ Point ClaytonCopula::getRealization() const
   }
 #endif
   realization[0] = u1;
-  if (theta_ < 1.0e-8)
+  // Second-order expansion around theta=0, remainder is O(theta^3)
+  // so |theta| < 1e-8 ensures double precision of the approximation
+  if (std::abs(theta_) < 1.0e-8)
   {
     const Scalar logU1 = std::log(u1);
     const Scalar logU2 = std::log(u2);
-    realization[1] = u2 * (1.0 - logU2 * theta_ * (1.0 + logU1 - 0.5 * theta_ * ((1.0 + logU2) * logU1 * logU1 + (2.0 + logU2) * (1.0 + logU1))));
+    realization[1] = SpecFunc::Clip01(u2 * (1.0 - logU2 * theta_ * (1.0 + logU1 - 0.5 * theta_ * ((1.0 + logU2) * logU1 * logU1 + (2.0 + logU2) * (1.0 + logU1)))));
     return realization;
   }
+  // First-order expansion in 1/theta around the comonotonic limit, remainder is O(1/theta^2)
+  // so theta >= 1e8 ensures double precision while avoiding roundoff in the closed form above
   if (theta_ < 1.0e8)
   {
     const Scalar base = std::pow(u2, -theta_ / (1.0 + theta_)) - 1.0 + std::pow(u1, theta_);
-    // For a negative theta the base is mathematically nonnegative but roundoff can make it slightly negative
-    realization[1] = u1 * std::pow(base > 0.0 ? base : 0.0, -1.0 / theta_);
+    // For a negative theta the base is mathematically nonnegative but roundoff can make it slightly negative.
+    // For a positive theta a nul base gives +inf, so clip to the unit interval.
+    realization[1] = SpecFunc::Clip01(u1 * std::pow(base > 0.0 ? base : 0.0, -1.0 / theta_));
   }
   else realization[1] = u1 * (1.0 - (log1p(-u2) + std::log(u2)) / theta_);
   return realization;

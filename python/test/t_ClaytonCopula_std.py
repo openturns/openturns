@@ -158,6 +158,10 @@ ott.assert_almost_equal(
 )
 q = ot.ClaytonCopula(-0.5).computeConditionalQuantile(0.5, [0.5])
 assert 0.0 <= q <= 1.0 and m.isfinite(q)
+for theta in [-0.5, 0.5, 2.0, 50.0]:
+    sample = ot.ClaytonCopula(theta).getSample(1000)
+    assert sample.getMin()[0] >= 0.0 and sample.getMax()[0] <= 1.0
+    assert sample.getMin()[1] >= 0.0 and sample.getMax()[1] <= 1.0
 
 # --- ClaytonCopula: entropy at independence is zero ---
 ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeEntropy(), 0.0, 1e-12, 0.0)
