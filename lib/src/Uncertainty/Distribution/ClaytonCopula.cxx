@@ -378,8 +378,10 @@ Point ClaytonCopula::computePDFGradient(const Point & point) const
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0)) return Point(1, 0.0);
-  // The independent and Frechet-bound cases have null gradients almost everywhere
-  if ((theta_ == 0.0) || (theta_ == -1.0)) return Point(1, 0.0);
+  // The Frechet-bound case has null gradient almost everywhere
+  if (theta_ == -1.0) return Point(1, 0.0);
+  // The independent case has a non-zero gradient: order-1 term of the small-theta series used below
+  if (theta_ == 0.0) return Point(1, 1.0 + std::log(u) + std::log(v) + std::log(u) * std::log(v));
   const Scalar t1 = std::pow(u, -theta_);
   const Scalar t2 = std::pow(v, -theta_);
   const Scalar t3 = t1 + t2 - 1.0;
@@ -421,8 +423,10 @@ Point ClaytonCopula::computeCDFGradient(const Point & point) const
   if (u >= 1.0) return Point(1, 0.0);
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return Point(1, 0.0);
-  // The independent and Frechet-bound cases have null gradients almost everywhere
-  if ((theta_ == 0.0) || (theta_ == -1.0)) return Point(1, 0.0);
+  // The Frechet-bound case has null gradient almost everywhere
+  if (theta_ == -1.0) return Point(1, 0.0);
+  // The independent case has a non-zero gradient: dC/dtheta = u*v*log(u)*log(v)
+  if (theta_ == 0.0) return Point(1, u * v * std::log(u) * std::log(v));
   // If we are in the support
   const Scalar powUMinusTheta = std::pow(u, -theta_);
   const Scalar powVMinusTheta = std::pow(v, -theta_);

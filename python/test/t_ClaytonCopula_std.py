@@ -150,8 +150,12 @@ chi = copula.computeUpperTailDependenceMatrix()[0, 1]
 ott.assert_almost_equal(chi, 0.0, 1e-5, 1e-5)
 
 # --- ClaytonCopula: gradients at independence, negative-dependence quantile ---
-ott.assert_almost_equal(ot.ClaytonCopula(0.0).computePDFGradient([0.3, 0.4]), [0.0], 0.0, 0.0)
-ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeCDFGradient([0.3, 0.4]), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.ClaytonCopula(0.0).computePDFGradient([0.3, 0.4]), [-0.01707441416770017], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    ot.ClaytonCopula(0.0).computeCDFGradient([0.3, 0.4]), [0.13238269464388688], 1e-12, 1e-12
+)
 q = ot.ClaytonCopula(-0.5).computeConditionalQuantile(0.5, [0.5])
 assert 0.0 <= q <= 1.0 and m.isfinite(q)
 
