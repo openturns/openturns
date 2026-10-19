@@ -28,8 +28,8 @@ where:
 
     b_j =
     \begin{cases}
-    2 & \textrm{ if } j < \lfloor (n-1)/2\rfloor, \\
-    1 & \textrm{ otherwise},
+    1 & \textrm{ if } n \textrm{ is odd and } j = (n-1)/2, \\
+    2 & \textrm{ otherwise},
     \end{cases}
 
 and:
