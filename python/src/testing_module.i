@@ -27,7 +27,6 @@
 %ignore OT::Test::ExitCode;
 %include openturns/OTtestcode.hxx
 
-
 %pythoncode %{
 import contextlib
 
@@ -54,4 +53,13 @@ def assert_raises(exception_class):
         raise AssertionError(f"{exception_class.__name__} not raised")
     except exception_class:
         pass
+%}
+
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
 %}

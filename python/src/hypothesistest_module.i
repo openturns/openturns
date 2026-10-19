@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Hypothesis tests.") HypothesisTest
 
-
 %{
 #include "openturns/OTStatTests.hxx"
 %}
@@ -19,3 +18,12 @@
 
 /* Uncertainty/StatTests */
 %include HypothesisTest.i
+
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
+%}

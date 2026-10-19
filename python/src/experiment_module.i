@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Designs of experiments.") experiment
 
-
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTBase.hxx"
@@ -31,3 +30,12 @@
 %include Combinations.i
 %include KPermutations.i
 %include Tuples.i
+
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
+%}

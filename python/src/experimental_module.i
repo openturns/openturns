@@ -2,7 +2,6 @@
 
 %module(package="openturns", docstring="Experimental features.") experimental
 
-
 %{
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTAlgorithm.hxx"
@@ -120,3 +119,11 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
 
+%pythoncode %{
+try:
+    from ._keyword_dispatch import apply_module_keywords as _keyword_apply_module
+    _keyword_apply_module(__name__, globals())
+    del _keyword_apply_module
+except (ImportError, AttributeError):
+    pass
+%}
