@@ -228,6 +228,29 @@ OT_LeastSquaresMethod_getGramInverse_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_LeastSquaresMethod_getPseudoInverse_doc
+R"RAW(Get the pseudo-inverse of the weighted design matrix.
+
+The pseudo-inverse of the weighted design matrix :math:`\mat{\Psi}` is:
+
+.. math::
+
+    \mat{B} = (\mat{\Psi}^\intercal \mat{\Psi})^{-1} \mat{\Psi}^\intercal
+
+so that :math:`\hat{\mat{\beta}} = \mat{B} \mat{y}` solves the least
+squares problem. Each decomposition (QR, Cholesky, SVD) evaluates it
+from its own factors.
+
+Returns
+-------
+pseudoInverse : :class:`~openturns.Matrix`
+    The pseudo-inverse of the weighted design matrix.)RAW"
+%enddef
+%feature("docstring") OT::LeastSquaresMethodImplementation::getPseudoInverse
+OT_LeastSquaresMethod_getPseudoInverse_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_LeastSquaresMethod_getGramInverseDiag_doc
 R"RAW(Get the diagonal of the inverse Gram matrix.
 

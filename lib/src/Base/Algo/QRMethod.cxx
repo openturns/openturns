@@ -209,6 +209,15 @@ CovarianceMatrix QRMethod::getGramInverse() const
   return invR.computeGram(false);
 }
 
+Matrix QRMethod::getPseudoInverse() const
+{
+  // B = R^{-1} Q^T, avoiding the Gram matrix entirely
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
+  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, false));
+  return invR * q_.transpose();
+}
+
 Point QRMethod::getGramInverseDiag() const
 {
   // G^{-1}=R^-1*R*^-T

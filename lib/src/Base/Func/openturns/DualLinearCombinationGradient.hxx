@@ -56,6 +56,7 @@ public:
 
   /** Comparison operator */
   using GradientImplementation::operator ==;
+  using GradientImplementation::gradient;
   Bool operator ==(const DualLinearCombinationGradient & other) const;
 protected:
   Bool equals(const GradientImplementation & other) const override;

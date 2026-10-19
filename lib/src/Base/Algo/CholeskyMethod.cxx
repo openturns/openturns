@@ -317,6 +317,12 @@ CovarianceMatrix CholeskyMethod::getGramInverse() const
   return invL.computeGram(true);
 }
 
+Matrix CholeskyMethod::getPseudoInverse() const
+{
+  // B = G^{-1} A^T routed through the Cholesky-based Gram inverse
+  return Matrix(getGramInverse()) * computeWeightedDesign().transpose();
+}
+
 
 SymmetricMatrix CholeskyMethod::getH() const
 {

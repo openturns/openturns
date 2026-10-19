@@ -45,6 +45,10 @@ for i in range(5):
 assert mem(mem.getCacheInput()) == mem.getCacheOutput(), "wrong order"
 print("ok")
 
+# consistent location-first naming, see issue #3007
+assert_almost_equal(mem.getInputCache(), mem.getCacheInput())
+assert_almost_equal(mem.getOutputCache(), mem.getCacheOutput())
+
 ot.PlatformInfo.SetNumericalPrecision(20)
 
 

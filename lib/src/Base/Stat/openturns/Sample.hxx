@@ -202,6 +202,12 @@ public:
   CovarianceMatrix computeCovariance() const;
 
   /**
+   * Method computePairwiseDistance() gives the Euclidean distance matrix
+   * of the sample, see issue #2841
+   */
+  SymmetricMatrix computePairwiseDistance() const;
+
+  /**
    * Method computeStandard() gives the standard deviation of each component of the sample
    */
   Point computeStandardDeviation() const;

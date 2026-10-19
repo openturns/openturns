@@ -2668,6 +2668,71 @@ OT_Distribution_getCDF_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Distribution_getComplementaryCDF_doc
+"Return the complementary CDF as a :class:`~openturns.Function`.
+
+Returns
+-------
+CCDF : :class:`~openturns.FunctionImplementation`
+    The complementary CDF of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getComplementaryCDF
+OT_Distribution_getComplementaryCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getQuantile_doc
+"Return the quantile function as a :class:`~openturns.Function`.
+
+Returns
+-------
+quantile : :class:`~openturns.FunctionImplementation`
+    The quantile function of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getQuantile
+OT_Distribution_getQuantile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSurvivalFunction_doc
+"Return the survival function as a :class:`~openturns.Function`.
+
+Returns
+-------
+survival : :class:`~openturns.FunctionImplementation`
+    The survival function of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSurvivalFunction
+OT_Distribution_getSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getInverseSurvivalFunction_doc
+"Return the inverse survival function as a :class:`~openturns.Function`.
+
+Returns
+-------
+inverseSurvival : :class:`~openturns.FunctionImplementation`
+    The inverse survival function of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getInverseSurvivalFunction
+OT_Distribution_getInverseSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getDDF_doc
+"Return the DDF (derivative of the PDF) as a :class:`~openturns.Function`.
+
+Returns
+-------
+ddf : :class:`~openturns.FunctionImplementation`
+    The DDF of the distribution as a :class:`~openturns.Function` wrapping a copy of the distribution."
+%enddef
+%feature("docstring") OT::DistributionImplementation::getDDF
+OT_Distribution_getDDF_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Distribution_getShapeMatrix_doc
 "Accessor to the shape matrix of the underlying copula if it is elliptical.
 
