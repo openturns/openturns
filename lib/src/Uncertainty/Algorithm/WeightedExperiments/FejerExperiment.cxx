@@ -286,13 +286,16 @@ void FejerExperiment::generateNodesAndWeightsClenshawCurtis(Collection<Point> & 
         const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
         // Nodes
         mni[k] = std::cos(theta_k);
-        // Weights
+        // Weights, see J. Waldvogel, Fast construction of the Fejer and Clenshaw-Curtis quadrature rules,
+        // BIT Numerical Mathematics, vol. 46, pp. 195-202, 2006: the last cosine coefficient
+        // is halved only when the number of nodes is odd.
         Scalar term = 1.0;
         const UnsignedInteger halfNodesNumber = (integrationNodesNumber - 1) / 2;
-        for (UnsignedInteger l = 1; l <= halfNodesNumber; ++l)
+        const Bool isOdd = (integrationNodesNumber % 2 == 1);
+        for (UnsignedInteger j = 1; j <= halfNodesNumber; ++j)
         {
-          const Scalar bj = l < halfNodesNumber ? 2.0 : 1.0;
-          term -= bj / (4.0 * l * l - 1) * std::cos(2 * l * theta_k);
+          const Scalar bj = (isOdd && (j == halfNodesNumber)) ? 1.0 : 2.0;
+          term -= bj / (4.0 * j * j - 1.0) * std::cos(2.0 * j * theta_k);
         }
         Scalar ck = 2.0;
         if (k == 0 || k == (integrationNodesNumber - 1))
