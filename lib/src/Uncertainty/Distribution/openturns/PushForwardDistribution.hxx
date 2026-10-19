@@ -139,6 +139,14 @@ private:
       low-discrepancy multi-start in higher dimensions */
   PointCollection findPreimages(const Function & residualFunction) const;
 
+  /** Compute the PDF in the co-area case, i.e. when the output dimension of
+      the function is smaller than its input dimension: the density at a point
+      is the integral of the antecedent density along the fibre f(u) = point,
+      divided by the p-dimensional Jacobian, i.e. the product of the singular
+      values of the p x n Jacobian matrix. Only a one dimensional fibre and an
+      affine function are supported */
+  Scalar computePDFByCoArea(const Point & point) const;
+
   /** Solve r(u) = 0 by damped Newton with step control from the given
       starting point; returns the root if converged within tolerance, an
       empty point otherwise */

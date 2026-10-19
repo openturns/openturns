@@ -18,9 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
 #include "openturns/PushForwardDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ConstantFunction.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/GaussKronrod.hxx"
 #include "openturns/IdentityFunction.hxx"
 #include "openturns/LeastSquaresEquationsSolver.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -35,6 +38,105 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(PushForwardDistribution)
 
 static const Factory<PushForwardDistribution> Factory_PushForwardDistribution;
+
+namespace PushForwardDistributionFunctions
+{
+
+/**
+ * Integrand of the co-area formula: the density of the antecedent at the
+ * point u(t) = origin + t * direction of the fibre f(u) = point, divided by
+ * the p-dimensional Jacobian. The direction is a unit vector spanning the
+ * kernel of the Jacobian matrix, so that the Hausdorff element along the
+ * fibre is exactly dt and no metric factor is needed in the integrand.
+ */
+class CoAreaIntegrand: public EvaluationImplementation
+{
+public:
+  CoAreaIntegrand(const Point & origin,
+                  const Point & direction,
+                  const Distribution & antecedent,
+                  const Function & function,
+                  const Point & point,
+                  const Scalar jacobian,
+                  const Scalar residualTolerance)
+    : EvaluationImplementation()
+    , origin_(origin)
+    , direction_(direction)
+    , antecedent_(antecedent)
+    , function_(function)
+    , point_(point)
+    , jacobian_(jacobian)
+    , residualTolerance_(residualTolerance)
+  {
+    // Nothing to do
+  }
+
+  CoAreaIntegrand * clone() const override
+  {
+    return new CoAreaIntegrand(*this);
+  }
+
+  Point operator() (const Point & parameter) const override
+  {
+    const Scalar t = parameter[0];
+    const Point x(origin_ + t * direction_);
+    const Scalar antecedentPDF = antecedent_.computePDF(x);
+    // Outside the support of the antecedent the fibre carries no mass. The
+    // residual is not tested there: only the region carrying mass matters
+    if (!(antecedentPDF > 0.0))
+      return Point(1, 0.0);
+    // The co-area formula is implemented for an affine function only, in
+    // which case the image of the whole fibre is the point itself. A curved
+    // level set betrays itself by a residual that no rounding error can
+    // explain, and integrating along the straight fibre regardless would
+    // return a density that is silently wrong
+    const Point image(function_(x));
+    if ((image - point_).norm() > residualTolerance_ * std::max(1.0, std::max(point_.norm(), image.norm())))
+      throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for an affine function, here f(" << x << ")=" << image << " whereas the density is evaluated at " << point_ << ", so that the fibre is curved or the function is not affine";
+    return Point(1, antecedentPDF / jacobian_);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  String __repr__() const override
+  {
+    OSS oss(true);
+    oss << "class=CoAreaIntegrand"
+        << " origin=" << origin_.__repr__()
+        << " direction=" << direction_.__repr__()
+        << " point=" << point_.__repr__();
+    return oss;
+  }
+
+  String __str__(const String & ) const override
+  {
+    OSS oss(false);
+    oss << "CoAreaIntegrand(origin=" << origin_
+        << ", direction=" << direction_
+        << ", point=" << point_
+        << ", jacobian=" << jacobian_ << ")";
+    return oss;
+  }
+
+private:
+  Point origin_;
+  Point direction_;
+  Distribution antecedent_;
+  Function function_;
+  Point point_;
+  Scalar jacobian_;
+  Scalar residualTolerance_;
+}; // CoAreaIntegrand
+
+} // namespace PushForwardDistributionFunctions
 
 /* Default constructor */
 PushForwardDistribution::PushForwardDistribution()
@@ -111,8 +213,10 @@ void PushForwardDistribution::setFunctionAndAntecedent(const Function & function
     throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to the dimension of the antecedent, here input dimension=" << inputDimension << " and dimension of the antecedent=" << antecedent.getDimension();
   if (!antecedent.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: the antecedent must be absolutely continuous, here isContinuous()=" << antecedent.isContinuous();
-  if (outputDimension < inputDimension)
-    throw NotYetImplementedException(HERE) << "Error: the case where the output dimension of the function is lower than the input dimension (co-area formula) is not yet implemented, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
+  // The case outputDimension < inputDimension (co-area formula) is handled by
+  // computePDFByCoArea(), which is restricted to a one dimensional fibre and
+  // to an affine function. The restriction is not enforced here: sampling, the
+  // mean and the range stay available for a function of any codimension
   function_ = function;
   antecedent_ = antecedent;
   // The search box only depends on the antecedent, cache it: rebuilding it at
@@ -218,6 +322,148 @@ Interval PushForwardDistribution::buildSearchInterval() const
     }
   }
   return Interval(lowerBound, upperBound, Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, true));
+}
+
+/* Compute the PDF in the co-area case, i.e. when the output dimension of the
+   function is lower than its input dimension */
+Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
+{
+  const UnsignedInteger outputDimension = function_.getOutputDimension();
+  const UnsignedInteger inputDimension = function_.getInputDimension();
+  const UnsignedInteger fibreDimension = inputDimension - outputDimension;
+  if (fibreDimension != 1)
+    throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for a one dimensional fibre, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
+  // The function is assumed affine, hence its Jacobian matrix is constant and
+  // is evaluated once, at the mean of the antecedent. The assumption is
+  // checked numerically in the integrand, at each quadrature node
+  const Point mean(antecedent_.getMean());
+  const Matrix gradientMatrix(function_.gradient(mean));
+  if ((gradientMatrix.getNbRows() != inputDimension) || (gradientMatrix.getNbColumns() != outputDimension))
+    throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
+  // Full SVD of the n x p Jacobian matrix J of the function: its p singular
+  // values give the p-dimensional Jacobian |J_p f| = prod sigma_i, i.e. the
+  // factor relating the p-dimensional Hausdorff measure on the image to the
+  // n-dimensional Lebesgue measure of the antecedent, and the last n - p
+  // columns of the full left factor span the kernel of J, i.e. the directions
+  // along which the function is constant, which are precisely the tangent
+  // directions of the fibre
+  Matrix leftFactor;
+  Matrix rightFactorTransposed;
+  const Point singularValues(gradientMatrix.computeSVD(leftFactor, rightFactorTransposed, true));
+  // A singular value below this threshold is numerically zero, so that the
+  // corresponding direction of the output space is not reached at all
+  const Scalar rankTolerance = inputDimension * SpecFunc::ScalarEpsilon * singularValues[0];
+  Bool rankDeficient = false;
+  Scalar jacobian = 1.0;
+  for (UnsignedInteger index = 0; index < outputDimension; ++index)
+  {
+    if (singularValues[index] <= rankTolerance)
+      rankDeficient = true;
+    else
+      jacobian *= singularValues[index];
+  }
+  // Solve J * delta = point - f(mean) in the least squares sense, keeping the
+  // minimum norm solution, so that origin = mean + delta is the point of the
+  // fibre closest to the mean of the antecedent. Writing the residual in the
+  // directions of the output space that J cannot reach tells whether the
+  // point belongs to the image of the function at all
+  const Point target(point - function_(mean));
+  Point delta(inputDimension, 0.0);
+  Scalar imageResidual = 0.0;
+  for (UnsignedInteger index = 0; index < outputDimension; ++index)
+  {
+    Point leftVector(inputDimension);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      leftVector[i] = leftFactor(i, index);
+    Scalar projection = 0.0;
+    for (UnsignedInteger i = 0; i < outputDimension; ++i)
+      projection += rightFactorTransposed(index, i) * target[i];
+    // Minimum norm solution of J * delta = target
+    if (singularValues[index] > rankTolerance)
+      delta += (projection / singularValues[index]) * leftVector;
+    else
+      imageResidual += projection * projection;
+  }
+  // Membership of the image is a measure zero condition when J is rank
+  // deficient, hence the strict, machine precision threshold: a point that is
+  // even slightly off the image has an empty fibre and a zero density, while
+  // a point exactly on it carries a singular density
+  if (std::sqrt(imageResidual) > SpecFunc::ScalarEpsilon * std::max(1.0, target.norm()))
+    // The point is not in the image of the function: its fibre is empty
+    return 0.0;
+  if (rankDeficient)
+    // The image of the function is contained in a set of zero measure of the
+    // output space: the density is singular wherever it does not vanish
+    return SpecFunc::Infinity;
+  // Orthonormal basis of the kernel of J, of dimension n - p = 1: it is the
+  // last column of the full left factor of the SVD. Being a unit vector, the
+  // Hausdorff element along the fibre parameterised as origin + t * direction
+  // is exactly dt
+  Point direction(inputDimension);
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    direction[i] = leftFactor(i, inputDimension - 1);
+  const Point origin(mean + delta);
+  // The fibre is integrated over its intersection with the search box in the
+  // support of the antecedent. Each coordinate of the box constrains t
+  // independently, so their intersection is exactly the set of admissible t
+  const Interval searchInterval(searchInterval_);
+  const Point lowerBound(searchInterval.getLowerBound());
+  const Point upperBound(searchInterval.getUpperBound());
+  const Scalar directionTolerance = inputDimension * SpecFunc::ScalarEpsilon;
+  Scalar tMin = -SpecFunc::MaxScalar;
+  Scalar tMax = SpecFunc::MaxScalar;
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+  {
+    if (std::abs(direction[i]) <= directionTolerance)
+    {
+      // The fibre does not move along this axis: it meets the search box only
+      // if its coordinate already lies inside it
+      if ((origin[i] < lowerBound[i]) || (origin[i] > upperBound[i]))
+        return 0.0;
+      continue;
+    }
+    Scalar first = (lowerBound[i] - origin[i]) / direction[i];
+    Scalar second = (upperBound[i] - origin[i]) / direction[i];
+    if (first > second) std::swap(first, second);
+    tMin = std::max(tMin, first);
+    tMax = std::min(tMax, second);
+  }
+  if (!(tMin < tMax)) return 0.0;
+  const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaResidualTolerance");
+  // Magnitude of the integrand at the fibre point: it scales both the error
+  // requested from GaussKronrod and the significance test of the ends of the
+  // integration interval
+  const Scalar densityScale = antecedent_.computePDF(origin) / jacobian;
+  // The intersection with the search box clips the fibre. The clipping is
+  // exact for an antecedent with a bounded support, as the integrand then
+  // vanishes beyond the box, but for an unbounded antecedent it neglects a
+  // relative mass of the order of Distribution-DefaultQuantileEpsilon. Each
+  // end is therefore pushed outward while the integrand is still significant
+  // there. A heavy tail stops the extension immediately: its box already
+  // extends far into the region where its density is negligible, which is
+  // precisely the situation where a wider interval would make the quadrature
+  // miss the bulk of the mass
+  const Scalar negligibleIntegrand = SpecFunc::ScalarEpsilon * densityScale;
+  if (densityScale > 0.0)
+  {
+    const UnsignedInteger maximumExtensions = 16;
+    for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMax * direction) > negligibleIntegrand * jacobian); ++extension)
+      tMax += tMax - tMin;
+    for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMin * direction) > negligibleIntegrand * jacobian); ++extension)
+      tMin -= tMax - tMin;
+  }
+  const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, direction, antecedent_, function_, point, jacobian, residualTolerance);
+  // The error requested from GaussKronrod is an absolute error, whereas the
+  // accuracy of a density is naturally relative: scaling it by the magnitude
+  // of the integrand at the fibre point requests a number of significant
+  // digits instead, which is what matters in the tails of the antecedent
+  const GaussKronrod integrator(ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals"),
+                                ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaMaximumError") * std::max(densityScale, SpecFunc::ScalarEpsilon),
+                                GaussKronrodRule(GaussKronrodRule::G7K15));
+  Scalar error = 0.0;
+  // GaussKronrod reports by itself, at the info level, when it cannot reach
+  // the requested error
+  return integrator.integrate(Function(integrand), Interval(tMin, tMax), error)[0];
 }
 
 /* Solve r(u) = 0 by damped Newton with step control from the given starting point */
@@ -516,6 +762,10 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
   const UnsignedInteger outputDimension = function_.getOutputDimension();
   if (point.getDimension() != outputDimension)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << outputDimension << ", here dimension=" << point.getDimension();
+  // The co-area case has no discrete preimage structure: the fibre f(u) =
+  // point is a continuum and its contribution is integrated along it
+  if (outputDimension < inputDimension)
+    return computePDFByCoArea(point);
   // The preimages of the point are the roots of the residual function
   // r(u) = f(u) - point
   const Function residualFunction(function_ - ConstantFunction(inputDimension, point));

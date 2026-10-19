@@ -1387,6 +1387,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // PushForwardDistribution parameters //
   addAsScalar("PushForwardDistribution-SolverResidualTolerance", 1.0e-5);
+  addAsScalar("PushForwardDistribution-CoAreaResidualTolerance", 1.0e-8);
+  addAsScalar("PushForwardDistribution-CoAreaMaximumError", 1.0e-14);
+  addAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals", 100);
   addAsUnsignedInteger("PushForwardDistribution-SampleSize", 10000);
   addAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize", 256);
   addAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations", 50);

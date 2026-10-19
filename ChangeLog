@@ -11,6 +11,7 @@
  * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
  * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
+ * PushForwardDistribution (openturns.experimental): implemented the co-area case, where the output dimension of the function is lower than its input dimension, for an affine function and a one dimensional fibre, integrating the antecedent density along the fibre with an adaptive Gauss-Kronrod rule and rejecting a curved fibre instead of returning a wrong density
 
 ==== New ResourceMap keys ====
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
@@ -28,6 +29,9 @@
  * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
  * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
  * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
+ * PushForwardDistribution-CoAreaResidualTolerance: relative tolerance on the residual norm used to check that the fibre of the evaluated point is a straight line, hence that the function is affine, in the co-area case (default is 1.0e-8)
+ * PushForwardDistribution-CoAreaMaximumError: requested relative error of the integration of the density along the fibre in the co-area case (default is 1.0e-14)
+ * PushForwardDistribution-CoAreaMaximumSubIntervals: maximum number of sub-intervals of the adaptive bisection used to integrate the density along the fibre in the co-area case (default is 100)
  * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
  * PushForwardOverMesh-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
  * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)

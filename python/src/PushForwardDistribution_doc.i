@@ -53,10 +53,36 @@ At critical values, where the Jacobian of :math:`f` is singular, the
 density diverges where the antecedent carries mass and `computePDF`
 returns `+inf`.
 
-The case :math:`\outputDim < \inputDim` (co-area formula) is not implemented yet:
-it would require the integration of the antecedent density over the fibers
-:math:`\{\inputReal : f(\inputReal) = \outputReal\}`, which is out of scope
-of the current preimage solvers.
+In the co-area case :math:`\outputDim < \inputDim`, the preimages of
+:math:`\outputReal` are not isolated points but the
+:math:`(\inputDim - \outputDim)`-dimensional fibre
+:math:`\{\inputReal : f(\inputReal) = \outputReal\}`, and the density is the
+integral of the antecedent density along it, divided by the
+:math:`\outputDim`-dimensional Jacobian of :math:`f`:
+
+.. math::
+
+    f_{\outputRV}(\outputReal) = \int_{f^{-1}(\outputReal)} \frac{f_{\inputRV}(\inputReal)}{\sqrt{\det(J_f(\inputReal)^T J_f(\inputReal))}}
+    \, \mathrm{d} H^{\inputDim - \outputDim}(\inputReal)
+
+where :math:`J_f` is the :math:`\inputDim \times \outputDim` Jacobian matrix of
+:math:`f` and :math:`H^{\inputDim - \outputDim}` is the Hausdorff measure of
+dimension :math:`\inputDim - \outputDim` on the fibre. This case is implemented
+for an affine function :math:`f(\inputReal) = \mat{A}\inputReal + \vect{c}` with a one
+dimensional fibre, i.e. :math:`\outputDim = \inputDim - 1`. The fibre is then a
+straight line through the point closest to the mean of :math:`\inputRV`, directed
+by a unit vector of the kernel of :math:`\mat{A}`: with such a parameterization the
+Hausdorff element along the fibre is exactly the parameter element, and the
+density reduces to a one dimensional integral, evaluated by an adaptive
+Gauss-Kronrod rule (see the ``PushForwardDistribution-CoAreaMaximumError`` and
+``PushForwardDistribution-CoAreaMaximumSubIntervals`` keys). Whether :math:`f` is
+affine is checked at each quadrature node, and a curved fibre raises an
+exception instead of returning a wrong density. The integration is carried out
+over the intersection of the fibre with the search box of the distribution,
+extended while the integrand is not negligible there: the neglected mass at the
+ends of the fibre is then at most of the order of
+``Distribution-DefaultQuantileEpsilon`` for an antecedent with an unbounded
+support, and exactly zero for an antecedent with a bounded one.
 
 Parameters
 ----------
@@ -83,6 +109,14 @@ The following :class:`~openturns.ResourceMap` keys are used:
   of iterations of the damped Newton solver.
 - ``PushForwardDistribution-NewtonStepReduction`` (``Scalar``, default: ``0.5``): reduction factor applied
   to the step when it fails to decrease the residual norm.
+- ``PushForwardDistribution-CoAreaResidualTolerance`` (``Scalar``, default: ``1.0e-8``): relative tolerance
+  on the residual norm of the co-area formula, used to check that the fibre of the evaluated point is a
+  straight line and hence that the function is affine.
+- ``PushForwardDistribution-CoAreaMaximumError`` (``Scalar``, default: ``1.0e-14``): requested relative error
+  of the integration of the density along the fibre, scaled by the magnitude of the integrand so that the
+  relative accuracy does not degrade for small densities.
+- ``PushForwardDistribution-CoAreaMaximumSubIntervals`` (``UnsignedInteger``, default: ``100``): maximum
+  number of sub-intervals of the adaptive bisection used to integrate the density along the fibre.
 
 Examples
 --------
@@ -109,6 +143,15 @@ with :math:`\inputRV \sim \cN(0, \vect{I}_2)`:
 >>> dist2 = otexp.PushForwardDistribution(f, ot.Normal(2))
 >>> print(dist2.computePDF([1.0, 1.0]))
 0.0585498...
+
+Create the distribution of :math:`\outputRV = (\inputRV_0, \inputRV_1)`
+with :math:`\inputRV \sim \cN(0, \vect{I}_3)`, whose density is the bivariate
+marginal obtained by integrating along the fibre:
+
+>>> f = ot.SymbolicFunction(['x0', 'x1', 'x2'], ['x0', 'x1'])
+>>> distCoArea = otexp.PushForwardDistribution(f, ot.Normal(3))
+>>> print(distCoArea.computePDF([0.0, 0.0]))
+0.159154943...
 
 Create the distribution of a random point following a normal distribution
 along the diagonal of :math:`\Rset^2`:

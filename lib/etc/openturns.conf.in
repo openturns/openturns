@@ -771,11 +771,14 @@
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
   <!-- OT::PushForwardDistribution parameters -->
-  <PushForwardDistribution-SolverResidualTolerance value_float="1.0e-5" />
-  <PushForwardDistribution-SampleSize              value_int="10000"   />
-  <PushForwardDistribution-PreimageSearchSampleSize value_int="256" />
-  <PushForwardDistribution-NewtonMaximumIterations  value_int="50" />
-  <PushForwardDistribution-NewtonStepReduction      value_float="0.5" />
+  <PushForwardDistribution-SolverResidualTolerance   value_float="1.0e-5" />
+  <PushForwardDistribution-CoAreaResidualTolerance   value_float="1.0e-8" />
+  <PushForwardDistribution-CoAreaMaximumError        value_float="1.0e-14" />
+  <PushForwardDistribution-CoAreaMaximumSubIntervals value_int="100" />
+  <PushForwardDistribution-SampleSize                value_int="10000" />
+  <PushForwardDistribution-PreimageSearchSampleSize  value_int="256" />
+  <PushForwardDistribution-NewtonMaximumIterations   value_int="50" />
+  <PushForwardDistribution-NewtonStepReduction       value_float="0.5" />
 
   <!-- OT::PushForwardOverMesh parameters -->
   <PushForwardOverMesh-OnSimplexEpsilon value_float="1.0e-10" />
