@@ -123,6 +123,13 @@ ott.assert_almost_equal(unitCopula.computeInverseArchimedeanGenerator(1.0), 0.5,
 ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorDerivative(0.5), -4.0, 0.0, 0.0)
 ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 16.0, 0.0, 0.0)
 
+# Theta=0 is the independent copula, of generator -log(t)
+independentCopula = ot.AliMikhailHaqCopula(0.0)
+ott.assert_almost_equal(independentCopula.computeArchimedeanGeneratorDerivative(0.5), -2.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    independentCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 4.0, 0.0, 0.0
+)
+
 # --- AliMikhailHaqCopula: endpoints allowed, independence generator ---
 assert ot.AliMikhailHaqCopula(1.0).getTheta() == 1.0
 assert ot.AliMikhailHaqCopula(-1.0).getTheta() == -1.0
