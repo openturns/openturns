@@ -155,6 +155,9 @@ ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeCDFGradient([0.3, 0.4]), [0
 q = ot.ClaytonCopula(-0.5).computeConditionalQuantile(0.5, [0.5])
 assert 0.0 <= q <= 1.0 and m.isfinite(q)
 
+# --- ClaytonCopula: entropy at independence is zero ---
+ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeEntropy(), 0.0, 1e-12, 0.0)
+
 # --- ClaytonCopula: log-density matches the density ---
 for thetaClayton in [0.0, 2.0, 50.0, 200.0]:
     clayton = ot.ClaytonCopula(thetaClayton)
