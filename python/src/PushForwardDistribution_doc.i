@@ -79,7 +79,9 @@ Gauss-Kronrod rule (see the ``PushForwardDistribution-CoAreaMaximumError`` and
 affine is checked on the faces and on the corners of the search box, which bound
 the region where the fibre may be integrated, and again at each quadrature node
 along the fibre: a curved fibre raises an exception instead of returning a wrong
-density. The integration is carried out
+density. These checks are necessary conditions, performed on a finite set of
+points: a nonlinear function that agrees with its linearization there cannot be
+told apart from an affine one. The integration is carried out
 over the intersection of the fibre with the search box of the distribution,
 extended while the integrand is not negligible there: the neglected mass at the
 ends of the fibre is then at most of the order of
