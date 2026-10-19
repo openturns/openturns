@@ -295,3 +295,24 @@ with ott.assert_raises(RuntimeError):
     otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1"],
                                                       ["x0 + x1^2"]),
                                   ot.Normal(2)).computePDF([1.0])
+with ott.assert_raises(RuntimeError):
+    # f(x0, x1, x2) = (x0, x1^2) is not affine: the Jacobian at the mean is
+    # singular, and the point is outside the image of the linearization. The
+    # density must be refused instead of being reported as zero, while the
+    # density of the push-forward is positive there
+    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
+                                                      ["x0", "x1^2"]),
+                                  ot.Normal(3)).computePDF([0.5, 1.0])
+with ott.assert_raises(RuntimeError):
+    # Same function, but the point belongs to the image of the linearization,
+    # where the singular Jacobian would report an infinite density while the
+    # density of the push-forward is finite
+    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
+                                                      ["x0", "x1^2"]),
+                                  ot.Normal(3)).computePDF([0.5, 0.0])
+with ott.assert_raises(RuntimeError):
+    # f(x0, x1, x2) = (x0^2, x1) is not affine either: its Jacobian vanishes at
+    # the mean, and the point is outside the image of the linearization
+    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
+                                                      ["x0^2", "x1"]),
+                                  ot.Normal(3)).computePDF([1.0, 0.0])

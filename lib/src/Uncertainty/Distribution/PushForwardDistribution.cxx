@@ -335,11 +335,38 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
     throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for a one dimensional fibre, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
   // The function is assumed affine, hence its Jacobian matrix is constant and
   // is evaluated once, at the mean of the antecedent. The assumption is
-  // checked numerically in the integrand, at each quadrature node
+  // checked on the faces of the search box, which bound the region where the
+  // fibre is integrated, and again in the integrand at each quadrature node
   const Point mean(antecedent_.getMean());
+  const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaResidualTolerance");
   const Matrix gradientMatrix(function_.gradient(mean));
   if ((gradientMatrix.getNbRows() != inputDimension) || (gradientMatrix.getNbColumns() != outputDimension))
     throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
+  const Interval searchInterval(searchInterval_);
+  const Point lowerBound(searchInterval.getLowerBound());
+  const Point upperBound(searchInterval.getUpperBound());
+  const Point meanImage(function_(mean));
+  // Move each coordinate of the mean to the two faces of the search box: there
+  // the linearization defines the image of the function, and it is expected to
+  // reproduce the function itself. The check is done before the shortcuts of
+  // the density computation, which return a value without integrating along
+  // the fibre: a nonlinear function whose Jacobian is singular at the mean
+  // would otherwise get a zero or an infinite density that no integral backs
+  for (UnsignedInteger index = 0; index < inputDimension; ++index)
+  {
+    for (UnsignedInteger side = 0; side < 2; ++side)
+    {
+      const Scalar face = (side == 0 ? lowerBound[index] : upperBound[index]);
+      Point x(mean);
+      x[index] = face;
+      const Point image(function_(x));
+      Point linearization(meanImage);
+      for (UnsignedInteger k = 0; k < outputDimension; ++k)
+        linearization[k] += gradientMatrix(index, k) * (face - mean[index]);
+      if ((image - linearization).norm() > residualTolerance * std::max(1.0, std::max(image.norm(), linearization.norm())))
+        throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for an affine function, here f(" << x << ")=" << image << " whereas its linearization at the mean of the antecedent gives " << linearization << ", so that the fibre is not a straight line";
+    }
+  }
   // Full SVD of the n x p Jacobian matrix J of the function: its p singular
   // values give the p-dimensional Jacobian |J_p f| = prod sigma_i, i.e. the
   // factor relating the p-dimensional Hausdorff measure on the image to the
@@ -367,7 +394,7 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   // fibre closest to the mean of the antecedent. Writing the residual in the
   // directions of the output space that J cannot reach tells whether the
   // point belongs to the image of the function at all
-  const Point target(point - function_(mean));
+  const Point target(point - meanImage);
   Point delta(inputDimension, 0.0);
   Scalar imageResidual = 0.0;
   for (UnsignedInteger index = 0; index < outputDimension; ++index)
@@ -406,9 +433,6 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   // The fibre is integrated over its intersection with the search box in the
   // support of the antecedent. Each coordinate of the box constrains t
   // independently, so their intersection is exactly the set of admissible t
-  const Interval searchInterval(searchInterval_);
-  const Point lowerBound(searchInterval.getLowerBound());
-  const Point upperBound(searchInterval.getUpperBound());
   const Scalar directionTolerance = inputDimension * SpecFunc::ScalarEpsilon;
   Scalar tMin = -SpecFunc::MaxScalar;
   Scalar tMax = SpecFunc::MaxScalar;
@@ -429,7 +453,6 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
     tMax = std::min(tMax, second);
   }
   if (!(tMin < tMax)) return 0.0;
-  const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaResidualTolerance");
   // Magnitude of the integrand at the fibre point: it scales both the error
   // requested from GaussKronrod and the significance test of the ends of the
   // integration interval
