@@ -1561,7 +1561,7 @@ Scalar DistributionImplementation::computeEntropy() const
       {
         const Implementation marginalDistribution(getMarginal(marginal).getImplementation());
         Point integrationBounds(1, lowerBound_[marginal]);
-        integrationBounds.add(getSingularities());
+        integrationBounds.add(marginalDistribution->getSingularities());
         integrationBounds.add(upperBound_[marginal]);
         for (UnsignedInteger j = 0; j < integrationBounds.getSize() - 1; ++j)
         {
