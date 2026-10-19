@@ -356,6 +356,8 @@ Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) c
 /* Compute the derivative of the density generator */
 Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
+  // The independent copula has generator -log(t)
+  if (theta_ == 0.0) return -1.0 / t;
   if (theta_ == 1.0) return -1.0 / (t * t);
   const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (theta_ / u - std::log(u) / t) / t;
@@ -364,6 +366,8 @@ Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t
 /* Compute the seconde derivative of the density generator */
 Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
+  // The independent copula has generator -log(t)
+  if (theta_ == 0.0) return 1.0 / (t * t);
   if (theta_ == 1.0) return 2.0 / (t * t * t);
   const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * std::log(u) / (t * t)) / t;
