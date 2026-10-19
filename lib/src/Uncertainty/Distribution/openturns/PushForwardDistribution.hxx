@@ -143,8 +143,8 @@ private:
       the function is smaller than its input dimension: the density at a point
       is the integral of the antecedent density along the fibre f(u) = point,
       divided by the p-dimensional Jacobian, i.e. the product of the singular
-      values of the p x n Jacobian matrix. Only a one dimensional fibre and an
-      affine function are supported */
+      values of the p x n Jacobian matrix. Only an affine function is
+      supported; the fibre may have any dimension n - p >= 1 */
   Scalar computePDFByCoArea(const Point & point) const;
 
   /** Solve r(u) = 0 by damped Newton with step control from the given

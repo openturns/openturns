@@ -68,25 +68,49 @@ integral of the antecedent density along it, divided by the
 where :math:`J_f` is the :math:`\inputDim \times \outputDim` Jacobian matrix of
 :math:`f` and :math:`H^{\inputDim - \outputDim}` is the Hausdorff measure of
 dimension :math:`\inputDim - \outputDim` on the fibre. This case is implemented
-for an affine function :math:`f(\inputReal) = \mat{A}\inputReal + \vect{c}` with a one
-dimensional fibre, i.e. :math:`\outputDim = \inputDim - 1`. The fibre is then a
-straight line through the point closest to the mean of :math:`\inputRV`, directed
-by a unit vector of the kernel of :math:`\mat{A}`: with such a parameterization the
-Hausdorff element along the fibre is exactly the parameter element, and the
-density reduces to a one dimensional integral, evaluated by an adaptive
-Gauss-Kronrod rule (see the ``PushForwardDistribution-CoAreaMaximumError`` and
-``PushForwardDistribution-CoAreaMaximumSubIntervals`` keys). Whether :math:`f` is
-affine is checked on the faces and on the corners of the search box, which bound
-the region where the fibre may be integrated, and again at each quadrature node
-along the fibre: a curved fibre raises an exception instead of returning a wrong
-density. These checks are necessary conditions, performed on a finite set of
-points: a nonlinear function that agrees with its linearization there cannot be
-told apart from an affine one. The integration is carried out
-over the intersection of the fibre with the search box of the distribution,
-extended while the integrand is not negligible there: the neglected mass at the
-ends of the fibre is then at most of the order of
+for an affine function :math:`f(\inputReal) = \mat{A}\inputReal + \vect{c}`, with
+a fibre of dimension :math:`\inputDim - \outputDim \geq 1`. The fibre is
+parameterized as :math:`\inputReal(\vect{t}) = \vect{x}_0 + \mat{W}\vect{t}`,
+where :math:`\vect{x}_0` is the point of the fibre closest to the mean of
+:math:`\inputRV` and the columns of :math:`\mat{W}` form an orthonormal basis of
+the kernel of :math:`\mat{A}`. With such a parameterization the Hausdorff
+element along the fibre is exactly the parameter element
+:math:`\mathrm{d}\vect{t}`, and the density reduces to an integral on the
+intersection of the fibre with the search box of the distribution.
+
+For a one dimensional fibre, i.e. :math:`\outputDim = \inputDim - 1`, this
+intersection is an interval: the density is a one dimensional integral,
+evaluated by an adaptive Gauss-Kronrod rule (see the
+``PushForwardDistribution-CoAreaMaximumError`` and
+``PushForwardDistribution-CoAreaMaximumSubIntervals`` keys), over the interval
+extended while the integrand is not negligible there, so that the neglected
+mass at its ends is at most of the order of
 ``Distribution-DefaultQuantileEpsilon`` for an antecedent with an unbounded
 support, and exactly zero for an antecedent with a bounded one.
+
+For a fibre of dimension two or more, the intersection is a convex polytope
+described by the :math:`2\inputDim` constraints
+:math:`\vect{l} \leq \vect{x}_0 + \mat{W}\vect{t} \leq \vect{u}`. Its exact
+nested interval description is obtained by Fourier-Motzkin elimination of these
+constraints, and the density is evaluated by an iterated Gauss-Kronrod rule on
+the resulting levels. The kinks of the nested bounds limit the accuracy of the
+adaptive rule: for a fibre of dimension three or more the requested relative
+error is floored at the value of the
+``PushForwardDistribution-CoAreaErrorFloor`` key, the order of the measured
+accuracy floor, whereas the one and two dimensional fibres reach the machine
+precision. The
+cost grows quickly with the fibre dimension, as each level of the iterated
+integration evaluates the next one at every quadrature node, and the whole
+search box is integrated, without the one dimensional extension: the neglected
+mass is then at most of the order of ``Distribution-DefaultQuantileEpsilon`` for
+an antecedent with an unbounded support, and exactly zero for a bounded one.
+
+Whether :math:`f` is affine is checked on the faces and on the corners of the
+search box, which bound the region where the fibre may be integrated, and again
+at each quadrature node along the fibre: a curved fibre raises an exception
+instead of returning a wrong density. These checks are necessary conditions,
+performed on a finite set of points: a nonlinear function that agrees with its
+linearization there cannot be told apart from an affine one.
 
 Parameters
 ----------
@@ -119,6 +143,9 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``PushForwardDistribution-CoAreaMaximumError`` (``Scalar``, default: ``1.0e-14``): requested relative error
   of the integration of the density along the fibre, scaled by the magnitude of the integrand so that the
   relative accuracy does not degrade for small densities.
+- ``PushForwardDistribution-CoAreaErrorFloor`` (``Scalar``, default: ``1.0e-7``): floor applied to the requested
+  relative error for a fibre of dimension three or more, the order of the accuracy reached by the adaptive rule
+  across the kinks of the nested integration bounds.
 - ``PushForwardDistribution-CoAreaMaximumSubIntervals`` (``UnsignedInteger``, default: ``100``): maximum
   number of sub-intervals of the adaptive bisection used to integrate the density along the fibre.
 
@@ -156,6 +183,15 @@ marginal obtained by integrating along the fibre:
 >>> distCoArea = otexp.PushForwardDistribution(f, ot.Normal(3))
 >>> print(distCoArea.computePDF([0.0, 0.0]))
 0.159154943...
+
+Create the distribution of the single coordinate :math:`\inputRV_0` of a
+three dimensional normal vector, whose two dimensional fibre is integrated
+by the nested interval method:
+
+>>> f = ot.SymbolicFunction(['x0', 'x1', 'x2'], ['x0'])
+>>> distFibre = otexp.PushForwardDistribution(f, ot.Normal(3))
+>>> print(distFibre.computePDF([0.5]))
+0.352065326...
 
 Create the distribution of a random point following a normal distribution
 along the diagonal of :math:`\Rset^2`:

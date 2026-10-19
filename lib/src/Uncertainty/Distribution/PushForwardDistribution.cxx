@@ -19,12 +19,14 @@
  *
  */
 #include <algorithm>
+#include <vector>
 #include "openturns/PushForwardDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ConstantFunction.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/IteratedQuadrature.hxx"
 #include "openturns/LeastSquaresEquationsSolver.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Sample.hxx"
@@ -43,17 +45,19 @@ namespace PushForwardDistributionFunctions
 {
 
 /**
- * Integrand of the co-area formula: the density of the antecedent at the
- * point u(t) = origin + t * direction of the fibre f(u) = point, divided by
- * the p-dimensional Jacobian. The direction is a unit vector spanning the
- * kernel of the Jacobian matrix, so that the Hausdorff element along the
- * fibre is exactly dt and no metric factor is needed in the integrand.
+ * Integrand of the co-area formula for a fibre of any dimension: the density
+ * of the antecedent at the point u(t) = origin + kernel * t of the fibre
+ * f(u) = point, divided by the p-dimensional Jacobian. The columns of the
+ * kernel form an orthonormal basis of the kernel of the Jacobian matrix (a
+ * single column for a one dimensional fibre), so that the Hausdorff element
+ * along the fibre is exactly the Lebesgue element dt and no metric factor is
+ * needed in the integrand.
  */
 class CoAreaIntegrand: public EvaluationImplementation
 {
 public:
   CoAreaIntegrand(const Point & origin,
-                  const Point & direction,
+                  const Matrix & kernel,
                   const Distribution & antecedent,
                   const Function & function,
                   const Point & point,
@@ -61,7 +65,7 @@ public:
                   const Scalar residualTolerance)
     : EvaluationImplementation()
     , origin_(origin)
-    , direction_(direction)
+    , kernel_(kernel)
     , antecedent_(antecedent)
     , function_(function)
     , point_(point)
@@ -78,8 +82,7 @@ public:
 
   Point operator() (const Point & parameter) const override
   {
-    const Scalar t = parameter[0];
-    const Point x(origin_ + t * direction_);
+    const Point x(origin_ + kernel_ * parameter);
     const Scalar antecedentPDF = antecedent_.computePDF(x);
     // Outside the support of the antecedent the fibre carries no mass. The
     // residual is not tested there: only the region carrying mass matters
@@ -98,7 +101,7 @@ public:
 
   UnsignedInteger getInputDimension() const override
   {
-    return 1;
+    return kernel_.getNbColumns();
   }
 
   UnsignedInteger getOutputDimension() const override
@@ -111,7 +114,7 @@ public:
     OSS oss(true);
     oss << "class=CoAreaIntegrand"
         << " origin=" << origin_.__repr__()
-        << " direction=" << direction_.__repr__()
+        << " kernel=" << kernel_.__repr__()
         << " point=" << point_.__repr__();
     return oss;
   }
@@ -120,7 +123,7 @@ public:
   {
     OSS oss(false);
     oss << "CoAreaIntegrand(origin=" << origin_
-        << ", direction=" << direction_
+        << ", kernel=" << kernel_
         << ", point=" << point_
         << ", jacobian=" << jacobian_ << ")";
     return oss;
@@ -128,13 +131,247 @@ public:
 
 private:
   Point origin_;
-  Point direction_;
+  Matrix kernel_;
   Distribution antecedent_;
   Function function_;
   Point point_;
   Scalar jacobian_;
   Scalar residualTolerance_;
 }; // CoAreaIntegrand
+
+/**
+ * A half space alpha . t <= beta of the parameter space of a fibre of
+ * dimension d >= 2
+ */
+struct CoAreaConstraint
+{
+  Point normal;
+  Scalar bound;
+};
+
+typedef std::vector<CoAreaConstraint> CoAreaConstraintCollection;
+
+/**
+ * The normals of the constraints are built from the rows of an orthonormal
+ * basis of the kernel of the Jacobian and combined by the Fourier-Motzkin
+ * elimination below: their entries are of order one and their rounding error
+ * is a small multiple of the machine precision, amplified by the elimination.
+ * Two unit normals closer than this threshold are numerically the same
+ * direction, and a coefficient below it is numerically zero. It is far above
+ * the machine precision to absorb the amplification, but small enough not to
+ * merge distinct facets of the projected box.
+ */
+const Scalar CoAreaConstraintTolerance = 1.0e-12;
+
+/**
+ * Drop the constraints with a numerically zero normal after checking that
+ * they are satisfied, and among constraints with the same normalised
+ * direction keep the tightest only. The constraints are stored in the
+ * normalised form alpha . t <= beta with ||alpha|| = 1, which leaves them
+ * unchanged and makes the comparison of parallel constraints meaningful.
+ * Return false when a constraint with a zero normal is violated, i.e. when
+ * the fibre does not meet the search box.
+ */
+Bool pruneCoAreaConstraints(const CoAreaConstraintCollection & constraints,
+                            const Scalar feasibilityTolerance,
+                            CoAreaConstraintCollection & pruned)
+{
+  pruned.clear();
+  for (UnsignedInteger i = 0; i < constraints.size(); ++i)
+  {
+    const Point & normal = constraints[i].normal;
+    const Scalar norm = normal.norm();
+    if (norm <= CoAreaConstraintTolerance)
+    {
+      // The constraint no longer depends on t: it is either trivially
+      // satisfied or it makes the whole fibre empty
+      if (constraints[i].bound < -feasibilityTolerance)
+        return false;
+      continue;
+    }
+    const Point unitNormal(normal / norm);
+    const Scalar unitBound = constraints[i].bound / norm;
+    Bool merged = false;
+    for (UnsignedInteger j = 0; j < pruned.size(); ++j)
+    {
+      if ((unitNormal - pruned[j].normal).norm() <= CoAreaConstraintTolerance)
+      {
+        // Same direction: only the tightest bound matters
+        if (unitBound < pruned[j].bound)
+          pruned[j].bound = unitBound;
+        merged = true;
+        break;
+      }
+    }
+    if (!merged)
+    {
+      CoAreaConstraint constraint;
+      constraint.normal = unitNormal;
+      constraint.bound = unitBound;
+      pruned.push_back(constraint);
+    }
+  }
+  return true;
+}
+
+/**
+ * Fourier-Motzkin elimination of the coordinate t_level from a system of
+ * constraints: the result describes the exact projection of the set
+ * {alpha . t <= beta} onto the other coordinates. Return false when the
+ * projection is empty.
+ */
+Bool eliminateCoAreaConstraint(const CoAreaConstraintCollection & constraints,
+                               const UnsignedInteger level,
+                               const Scalar feasibilityTolerance,
+                               CoAreaConstraintCollection & eliminated)
+{
+  // alpha . t <= beta with alpha[level] > 0 bounds t_level from above, and
+  // alpha[level] < 0 bounds it from below
+  CoAreaConstraintCollection lowerBounds(0);
+  CoAreaConstraintCollection upperBounds(0);
+  CoAreaConstraintCollection independent(0);
+  for (UnsignedInteger i = 0; i < constraints.size(); ++i)
+  {
+    const Scalar coefficient = constraints[i].normal[level];
+    if (coefficient > CoAreaConstraintTolerance)
+      upperBounds.push_back(constraints[i]);
+    else if (coefficient < -CoAreaConstraintTolerance)
+      lowerBounds.push_back(constraints[i]);
+    else
+      independent.push_back(constraints[i]);
+  }
+  // Each upper bound and each lower bound combine into a constraint on the
+  // other coordinates by eliminating t_level
+  for (UnsignedInteger i = 0; i < upperBounds.size(); ++i)
+  {
+    const Point & upperNormal = upperBounds[i].normal;
+    for (UnsignedInteger j = 0; j < lowerBounds.size(); ++j)
+    {
+      const Point & lowerNormal = lowerBounds[j].normal;
+      Point normal(upperNormal / upperNormal[level] - lowerNormal / lowerNormal[level]);
+      normal[level] = 0.0;
+      CoAreaConstraint constraint;
+      constraint.normal = normal;
+      constraint.bound = upperBounds[i].bound / upperNormal[level] - lowerBounds[j].bound / lowerNormal[level];
+      independent.push_back(constraint);
+    }
+  }
+  return pruneCoAreaConstraints(independent, feasibilityTolerance, eliminated);
+}
+
+/**
+ * Bounds of the coordinate t_level of the fibre when the coordinates
+ * t_0, ..., t_{level-1} are fixed to the given prefix, computed from the
+ * exact projection of the fibre intersected with the search box onto
+ * (t_0, ..., t_level). Return false when the prefix does not belong to the
+ * projection, i.e. when the section of the fibre is empty.
+ */
+Bool computeCoAreaBounds(const CoAreaConstraintCollection & system,
+                         const UnsignedInteger level,
+                         const Point & prefix,
+                         const Scalar feasibilityTolerance,
+                         Scalar & lower,
+                         Scalar & upper)
+{
+  lower = -SpecFunc::MaxScalar;
+  upper = SpecFunc::MaxScalar;
+  for (UnsignedInteger i = 0; i < system.size(); ++i)
+  {
+    const CoAreaConstraint & constraint = system[i];
+    Scalar value = constraint.bound;
+    for (UnsignedInteger j = 0; j < level; ++j)
+      value -= constraint.normal[j] * prefix[j];
+    const Scalar coefficient = constraint.normal[level];
+    if (std::abs(coefficient) <= CoAreaConstraintTolerance)
+    {
+      // The constraint only involves the prefix: a violation means that the
+      // section of the fibre is empty
+      if (value < -feasibilityTolerance)
+        return false;
+      continue;
+    }
+    const Scalar extent = value / coefficient;
+    if (coefficient > 0.0)
+      upper = std::min(upper, extent);
+    else
+      lower = std::max(lower, extent);
+  }
+  return true;
+}
+
+/**
+ * Bound function of a nested integration level: it returns the lower or the
+ * upper bound of t_level given the already integrated coordinates t_0, ...,
+ * t_{level-1}. An empty section is returned as the zero length interval
+ * [0, 0], in which the quadrature naturally finds no mass.
+ */
+class CoAreaBoundFunction: public EvaluationImplementation
+{
+public:
+  CoAreaBoundFunction(const CoAreaConstraintCollection & system,
+                      const UnsignedInteger level,
+                      const Bool upper,
+                      const Scalar feasibilityTolerance)
+    : EvaluationImplementation()
+    , system_(system)
+    , level_(level)
+    , upper_(upper)
+    , feasibilityTolerance_(feasibilityTolerance)
+  {
+    // Nothing to do
+  }
+
+  CoAreaBoundFunction * clone() const override
+  {
+    return new CoAreaBoundFunction(*this);
+  }
+
+  Point operator() (const Point & prefix) const override
+  {
+    Scalar lower = 0.0;
+    Scalar upper = 0.0;
+    if (!computeCoAreaBounds(system_, level_, prefix, feasibilityTolerance_, lower, upper))
+      return Point(1, 0.0);
+    // The two bound functions are evaluated independently by the integration
+    // algorithm: clamp the upper one to the lower one so that it never
+    // describes a reversed interval, which the quadrature would integrate
+    // backwards
+    return Point(1, upper_ ? std::max(lower, upper) : lower);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return level_;
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  String __repr__() const override
+  {
+    OSS oss(true);
+    oss << "class=CoAreaBoundFunction"
+        << " level=" << level_
+        << " upper=" << upper_;
+    return oss;
+  }
+
+  String __str__(const String & ) const override
+  {
+    OSS oss(false);
+    oss << "CoAreaBoundFunction(level=" << level_
+        << ", upper=" << upper_ << ")";
+    return oss;
+  }
+
+private:
+  CoAreaConstraintCollection system_;
+  UnsignedInteger level_;
+  Bool upper_;
+  Scalar feasibilityTolerance_;
+}; // CoAreaBoundFunction
 
 } // namespace PushForwardDistributionFunctions
 
@@ -214,9 +451,9 @@ void PushForwardDistribution::setFunctionAndAntecedent(const Function & function
   if (!antecedent.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: the antecedent must be absolutely continuous, here isContinuous()=" << antecedent.isContinuous();
   // The case outputDimension < inputDimension (co-area formula) is handled by
-  // computePDFByCoArea(), which is restricted to a one dimensional fibre and
-  // to an affine function. The restriction is not enforced here: sampling, the
-  // mean and the range stay available for a function of any codimension
+  // computePDFByCoArea(), which is restricted to an affine function. The
+  // restriction is not enforced here: sampling, the mean and the range stay
+  // available for a function of any codimension
   function_ = function;
   antecedent_ = antecedent;
   // The search box only depends on the antecedent, cache it: rebuilding it at
@@ -331,8 +568,6 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   const UnsignedInteger outputDimension = function_.getOutputDimension();
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger fibreDimension = inputDimension - outputDimension;
-  if (fibreDimension != 1)
-    throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for a one dimensional fibre, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
   // The function is assumed affine, hence its Jacobian matrix is constant and
   // is evaluated once, at the mean of the antecedent. The assumption is
   // checked on the faces of the search box, which bound the region where the
@@ -436,71 +671,160 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
     // The image of the function is contained in a set of zero measure of the
     // output space: the density is singular wherever it does not vanish
     return SpecFunc::Infinity;
-  // Orthonormal basis of the kernel of J, of dimension n - p = 1: it is the
-  // last column of the full left factor of the SVD. Being a unit vector, the
+  // Orthonormal basis of the kernel of J: it is made of the last n - p
+  // columns of the full left factor of the SVD. Being orthonormal, the
   // Hausdorff element along the fibre parameterised as origin + t * direction
-  // is exactly dt
-  Point direction(inputDimension);
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-    direction[i] = leftFactor(i, inputDimension - 1);
+  // for d = 1, resp. origin + kernel * t for d >= 2, is exactly dt
   const Point origin(mean + delta);
-  // The fibre is integrated over its intersection with the search box in the
-  // support of the antecedent. Each coordinate of the box constrains t
-  // independently, so their intersection is exactly the set of admissible t
-  const Scalar directionTolerance = inputDimension * SpecFunc::ScalarEpsilon;
-  Scalar tMin = -SpecFunc::MaxScalar;
-  Scalar tMax = SpecFunc::MaxScalar;
+  if (fibreDimension == 1)
+  {
+    // The fibre is a straight line directed by the single unit vector of the
+    // kernel
+    Point direction(inputDimension);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      direction[i] = leftFactor(i, inputDimension - 1);
+    // The fibre is integrated over its intersection with the search box in the
+    // support of the antecedent. Each coordinate of the box constrains t
+    // independently, so their intersection is exactly the set of admissible t
+    const Scalar directionTolerance = inputDimension * SpecFunc::ScalarEpsilon;
+    Scalar tMin = -SpecFunc::MaxScalar;
+    Scalar tMax = SpecFunc::MaxScalar;
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    {
+      if (std::abs(direction[i]) <= directionTolerance)
+      {
+        // The fibre does not move along this axis: it meets the search box only
+        // if its coordinate already lies inside it
+        if ((origin[i] < lowerBound[i]) || (origin[i] > upperBound[i]))
+          return 0.0;
+        continue;
+      }
+      Scalar first = (lowerBound[i] - origin[i]) / direction[i];
+      Scalar second = (upperBound[i] - origin[i]) / direction[i];
+      if (first > second) std::swap(first, second);
+      tMin = std::max(tMin, first);
+      tMax = std::min(tMax, second);
+    }
+    if (!(tMin < tMax)) return 0.0;
+    // Magnitude of the integrand at the fibre point: it scales both the error
+    // requested from GaussKronrod and the significance test of the ends of the
+    // integration interval
+    const Scalar densityScale = antecedent_.computePDF(origin) / jacobian;
+    // The intersection with the search box clips the fibre. The clipping is
+    // exact for an antecedent with a bounded support, as the integrand then
+    // vanishes beyond the box, but for an unbounded antecedent it neglects a
+    // relative mass of the order of Distribution-DefaultQuantileEpsilon. Each
+    // end is therefore pushed outward while the integrand is still significant
+    // there. A heavy tail stops the extension immediately: its box already
+    // extends far into the region where its density is negligible, which is
+    // precisely the situation where a wider interval would make the quadrature
+    // miss the bulk of the mass
+    const Scalar negligibleIntegrand = SpecFunc::ScalarEpsilon * densityScale;
+    if (densityScale > 0.0)
+    {
+      const UnsignedInteger maximumExtensions = 16;
+      for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMax * direction) > negligibleIntegrand * jacobian); ++extension)
+        tMax += tMax - tMin;
+      for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMin * direction) > negligibleIntegrand * jacobian); ++extension)
+        tMin -= tMax - tMin;
+    }
+    const Matrix kernel(inputDimension, 1, direction);
+    const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, kernel, antecedent_, function_, point, jacobian, residualTolerance);
+    // The error requested from GaussKronrod is an absolute error, whereas the
+    // accuracy of a density is naturally relative: scaling it by the magnitude
+    // of the integrand at the fibre point requests a number of significant
+    // digits instead, which is what matters in the tails of the antecedent
+    const GaussKronrod integrator(ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals"),
+                                  ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaMaximumError") * std::max(densityScale, SpecFunc::ScalarEpsilon),
+                                  GaussKronrodRule(GaussKronrodRule::G7K15));
+    Scalar error = 0.0;
+    // GaussKronrod reports by itself, at the info level, when it cannot reach
+    // the requested error
+    return integrator.integrate(Function(integrand), Interval(tMin, tMax), error)[0];
+  }
+  // The fibre has dimension d >= 2: it is the affine subspace origin +
+  // kernel * t, t in R^d, whose intersection with the search box in the
+  // support of the antecedent is the convex polytope defined by the 2 n
+  // constraints lower <= origin + kernel * t <= upper
+  Matrix kernel(inputDimension, fibreDimension);
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    for (UnsignedInteger j = 0; j < fibreDimension; ++j)
+      kernel(i, j) = leftFactor(i, outputDimension + j);
+  // The parameter t has the same scale as the point x because the kernel is
+  // orthonormal, so the diagonal of the search box bounds the extent of the
+  // fibre and gives the scale of a meaningful feasibility tolerance
+  const Scalar feasibilityTolerance = PushForwardDistributionFunctions::CoAreaConstraintTolerance * std::max(1.0, (upperBound - lowerBound).norm());
+  PushForwardDistributionFunctions::CoAreaConstraintCollection constraints(0);
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
-    if (std::abs(direction[i]) <= directionTolerance)
-    {
-      // The fibre does not move along this axis: it meets the search box only
-      // if its coordinate already lies inside it
-      if ((origin[i] < lowerBound[i]) || (origin[i] > upperBound[i]))
-        return 0.0;
-      continue;
-    }
-    Scalar first = (lowerBound[i] - origin[i]) / direction[i];
-    Scalar second = (upperBound[i] - origin[i]) / direction[i];
-    if (first > second) std::swap(first, second);
-    tMin = std::max(tMin, first);
-    tMax = std::min(tMax, second);
+    Point normal(fibreDimension);
+    for (UnsignedInteger j = 0; j < fibreDimension; ++j)
+      normal[j] = kernel(i, j);
+    PushForwardDistributionFunctions::CoAreaConstraint constraint;
+    constraint.normal = normal;
+    constraint.bound = upperBound[i] - origin[i];
+    constraints.push_back(constraint);
+    // The same face seen from the other side: -normal . t <= origin[i] - lower[i]
+    constraint.normal = -normal;
+    constraint.bound = origin[i] - lowerBound[i];
+    constraints.push_back(constraint);
   }
-  if (!(tMin < tMax)) return 0.0;
-  // Magnitude of the integrand at the fibre point: it scales both the error
-  // requested from GaussKronrod and the significance test of the ends of the
-  // integration interval
-  const Scalar densityScale = antecedent_.computePDF(origin) / jacobian;
-  // The intersection with the search box clips the fibre. The clipping is
-  // exact for an antecedent with a bounded support, as the integrand then
-  // vanishes beyond the box, but for an unbounded antecedent it neglects a
-  // relative mass of the order of Distribution-DefaultQuantileEpsilon. Each
-  // end is therefore pushed outward while the integrand is still significant
-  // there. A heavy tail stops the extension immediately: its box already
-  // extends far into the region where its density is negligible, which is
-  // precisely the situation where a wider interval would make the quadrature
-  // miss the bulk of the mass
-  const Scalar negligibleIntegrand = SpecFunc::ScalarEpsilon * densityScale;
-  if (densityScale > 0.0)
+  // systems[k] describes the exact projection of the polytope onto
+  // (t_0, ..., t_k), computed once by eliminating the coordinates from the
+  // last one to the first. The nested interval description of the fibre is
+  // then exact: at a feasible prefix, the extent of t_k is the set of values
+  // satisfying systems[k], and the kinks of these piecewise affine bounds are
+  // left to the adaptive quadrature rule
+  PushForwardDistributionFunctions::CoAreaConstraintCollection current(0);
+  if (!PushForwardDistributionFunctions::pruneCoAreaConstraints(constraints, feasibilityTolerance, current))
+    // The fibre does not meet the search box: its density is zero
+    return 0.0;
+  std::vector<PushForwardDistributionFunctions::CoAreaConstraintCollection> systems(fibreDimension + 1);
+  systems[fibreDimension] = current;
+  for (UnsignedInteger level = fibreDimension; level > 0; --level)
   {
-    const UnsignedInteger maximumExtensions = 16;
-    for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMax * direction) > negligibleIntegrand * jacobian); ++extension)
-      tMax += tMax - tMin;
-    for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMin * direction) > negligibleIntegrand * jacobian); ++extension)
-      tMin -= tMax - tMin;
+    const UnsignedInteger coordinate = level - 1;
+    systems[coordinate] = current;
+    PushForwardDistributionFunctions::CoAreaConstraintCollection eliminated(0);
+    if (!PushForwardDistributionFunctions::eliminateCoAreaConstraint(current, coordinate, feasibilityTolerance, eliminated))
+      // The projection is empty: the fibre does not meet the search box
+      return 0.0;
+    current = eliminated;
   }
-  const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, direction, antecedent_, function_, point, jacobian, residualTolerance);
-  // The error requested from GaussKronrod is an absolute error, whereas the
-  // accuracy of a density is naturally relative: scaling it by the magnitude
-  // of the integrand at the fibre point requests a number of significant
-  // digits instead, which is what matters in the tails of the antecedent
-  const GaussKronrod integrator(ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals"),
-                                ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaMaximumError") * std::max(densityScale, SpecFunc::ScalarEpsilon),
-                                GaussKronrodRule(GaussKronrodRule::G7K15));
-  Scalar error = 0.0;
-  // GaussKronrod reports by itself, at the info level, when it cannot reach
-  // the requested error
-  return integrator.integrate(Function(integrand), Interval(tMin, tMax), error)[0];
+  Scalar tMin = 0.0;
+  Scalar tMax = 0.0;
+  if (!PushForwardDistributionFunctions::computeCoAreaBounds(systems[0], 0, Point(0), feasibilityTolerance, tMin, tMax))
+    return 0.0;
+  if (!(tMin < tMax)) return 0.0;
+  // Magnitude of the integrand at the point of the fibre closest to the mean:
+  // it scales the error requested from the adaptive rule, as in the one
+  // dimensional case
+  const Scalar densityScale = antecedent_.computePDF(origin) / jacobian;
+  // The nested bounds are piecewise affine functions with kinks along the
+  // projected facets of the polytope. Adaptive quadrature converges only
+  // algebraically across a kink: for a fibre of dimension three the measured
+  // relative accuracy stalls around 1e-8, and the nested error of the inner
+  // integrals prevents any gain from a tighter request. For the sum of four
+  // uniform variables, a request of 1e-7 reaches 5.5e-9 in 8.5 s whereas a
+  // request of 1e-8 reaches 7.4e-9 in 57 s. Floor the request at the
+  // PushForwardDistribution-CoAreaErrorFloor value for d >= 3, the one and two
+  // dimensional fibres being integrated to the machine precision, as measured
+  // on the same integrand: 3e-16 at 1e-14.
+  Scalar requestedError = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaMaximumError");
+  if (fibreDimension > 2)
+    requestedError = std::max(requestedError, ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaErrorFloor"));
+  const GaussKronrod algorithm(ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals"),
+                               requestedError * std::max(densityScale, SpecFunc::ScalarEpsilon),
+                               GaussKronrodRule(GaussKronrodRule::G7K15));
+  const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, kernel, antecedent_, function_, point, jacobian, residualTolerance);
+  IteratedQuadrature::FunctionCollection lowerBounds(fibreDimension - 1);
+  IteratedQuadrature::FunctionCollection upperBounds(fibreDimension - 1);
+  for (UnsignedInteger level = 1; level < fibreDimension; ++level)
+  {
+    lowerBounds[level - 1] = Function(new PushForwardDistributionFunctions::CoAreaBoundFunction(systems[level], level, false, feasibilityTolerance));
+    upperBounds[level - 1] = Function(new PushForwardDistributionFunctions::CoAreaBoundFunction(systems[level], level, true, feasibilityTolerance));
+  }
+  return IteratedQuadrature(algorithm).integrate(Function(integrand), tMin, tMax, lowerBounds, upperBounds)[0];
 }
 
 /* Solve r(u) = 0 by damped Newton with step control from the given starting point */

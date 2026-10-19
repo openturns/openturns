@@ -773,6 +773,7 @@
   <!-- OT::PushForwardDistribution parameters -->
   <PushForwardDistribution-SolverResidualTolerance   value_float="1.0e-5" />
   <PushForwardDistribution-CoAreaResidualTolerance   value_float="1.0e-8" />
+  <PushForwardDistribution-CoAreaErrorFloor          value_float="1.0e-7" />
   <PushForwardDistribution-CoAreaMaximumError        value_float="1.0e-14" />
   <PushForwardDistribution-CoAreaMaximumSubIntervals value_int="100" />
   <PushForwardDistribution-SampleSize                value_int="10000" />

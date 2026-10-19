@@ -270,6 +270,138 @@ for y in [[0.0, 0.0], [0.3, -0.4], [0.99, 0.99]]:
 assert boxCoArea.computePDF([1.7, 0.0]) == 0.0
 assert boxCoArea.computePDF([0.0, -1.5]) == 0.0
 
+# Multidimensional fibres (n - p >= 2): the fibre is a polytope obtained by
+# intersecting the affine fibre with the search box, and its nested interval
+# description is built from the exact projections of the polytope. The
+# reference densities below come from independent distribution objects, not
+# from the co-area formula.
+
+# d = 2 with a bounded support: Y = X0 + X1 + X2 with independent
+# Uniform(-1, 1) components
+uniformSumFunction = ot.SymbolicFunction(["x0", "x1", "x2"],
+                                         ["x0 + x1 + x2"])
+uniformSumDistribution = otexp.PushForwardDistribution(
+    uniformSumFunction, ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 3))
+uniformSumReference = ot.LinearCombinationDistribution(
+    [ot.Uniform(-1.0, 1.0)] * 3, [1.0, 1.0, 1.0])
+for y in [0.0, 0.5, 1.0]:
+    pdf = uniformSumDistribution.computePDF([y])
+    print(f"uniformSum pdf({y})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, uniformSumReference.computePDF([y]), 1e-12,
+                            1e-15)
+# The fibre is empty outside the support of the sum
+assert uniformSumDistribution.computePDF([4.0]) == 0.0
+
+# d = 2 with a heavy tailed support: the projection of three independent
+# Student(4) variables on their first coordinate is a Student(4) variable,
+# whatever the two free coordinates
+studentProjection = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0"])
+studentProjectionDistribution = otexp.PushForwardDistribution(
+    studentProjection, ot.JointDistribution([student] * 3))
+pdf = studentProjectionDistribution.computePDF([2.0])
+print(f"studentProjection pdf(2)={pdf:.12g}")
+ott.assert_almost_equal(pdf, student.computePDF([2.0]), 1e-6, 0.0)
+
+# d = 2 with a rotated kernel: the sum of two independent Student(4)
+# variables, the third coordinate being free
+studentSumFunction = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0 + x1"])
+studentSumDistribution = otexp.PushForwardDistribution(
+    studentSumFunction, ot.JointDistribution([student] * 3))
+studentSumReference = ot.LinearCombinationDistribution(
+    [student, student], [1.0, 1.0])
+pdf = studentSumDistribution.computePDF([1.0])
+print(f"studentSum pdf(1)={pdf:.12g}")
+ott.assert_almost_equal(pdf, studentSumReference.computePDF([1.0]), 1e-6, 0.0)
+
+# d = 2 with a non axis aligned kernel: Y = X0 + 2 X1 + 3 X2 with independent
+# standard normal components is Normal(0, sqrt(14))
+weightedSum = ot.LinearFunction(ot.Point(3), ot.Point(1),
+                                ot.Matrix(1, 3, [1.0, 2.0, 3.0]))
+weightedSumDistribution = otexp.PushForwardDistribution(weightedSum,
+                                                        ot.Normal(3))
+pdf = weightedSumDistribution.computePDF([0.5])
+print(f"weightedSum pdf(0.5)={pdf:.12g}")
+ott.assert_almost_equal(pdf, ot.Normal(0.0, math.sqrt(14.0)).computePDF([0.5]),
+                        1e-10, 1e-15)
+
+# d = 2 with a two dimensional image and a non orthogonal Jacobian:
+# Y = (X0 + X1, X1 + X2) with X ~ Normal(4) is Normal(0, A A^T)
+linearMatrix = ot.Matrix(2, 4, [1.0, 1.0, 0.0, 0.0,
+                                0.0, 1.0, 1.0, 0.0])
+linearFunction = ot.LinearFunction(ot.Point(4), ot.Point(2), linearMatrix)
+linearDistribution = otexp.PushForwardDistribution(linearFunction,
+                                                   ot.Normal(4))
+linearReference = ot.Normal(
+    ot.Point(2), ot.CovarianceMatrix([[2.0, 1.0], [1.0, 2.0]]))
+for y in [[0.0, 0.0], [0.5, -0.7]]:
+    pdf = linearDistribution.computePDF(y)
+    print(f"linear4 pdf({y})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, linearReference.computePDF(y), 1e-10, 1e-15)
+
+# d = 3: the mean of four independent normal variables is Normal(0, 1/2)
+meanFourFunction = ot.SymbolicFunction(
+    ["x0", "x1", "x2", "x3"], ["0.25 * (x0 + x1 + x2 + x3)"])
+meanFourDistribution = otexp.PushForwardDistribution(
+    meanFourFunction, ot.JointDistribution([ot.Normal()] * 4))
+pdf = meanFourDistribution.computePDF([0.5])
+print(f"meanFour pdf(0.5)={pdf:.12g}")
+ott.assert_almost_equal(pdf, ot.Normal(0.0, 0.5).computePDF([0.5]), 1e-10,
+                        1e-15)
+
+# d = 3 with a bounded support: the sum of four independent Uniform(-1, 1)
+# variables. The kinks of the nested bounds limit the adaptive quadrature to
+# about 1e-7, so the requested error is relaxed for this case to keep the
+# test fast
+uniformSumFourFunction = ot.SymbolicFunction(
+    ["x0", "x1", "x2", "x3"], ["x0 + x1 + x2 + x3"])
+uniformSumFourReference = ot.LinearCombinationDistribution(
+    [ot.Uniform(-1.0, 1.0)] * 4, [1.0, 1.0, 1.0, 1.0])
+previousError = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaMaximumError")
+ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaMaximumError", 1.0e-6)
+try:
+    uniformSumFourDistribution = otexp.PushForwardDistribution(
+        uniformSumFourFunction,
+        ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 4))
+    pdf = uniformSumFourDistribution.computePDF([0.0])
+finally:
+    ot.ResourceMap.SetAsScalar(
+        "PushForwardDistribution-CoAreaMaximumError", previousError)
+print(f"uniformSumFour pdf(0)={pdf:.12g}")
+ott.assert_almost_equal(pdf, uniformSumFourReference.computePDF([0.0]), 1e-6,
+                        0.0)
+
+# The floor of the requested error keeps the cost reasonable for a fibre of
+# dimension three even when the default maximum error asks for much more
+# accuracy than the nested rule can deliver across the kinks of its bounds
+previousFloor = ot.ResourceMap.GetAsScalar(
+    "PushForwardDistribution-CoAreaErrorFloor")
+ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaErrorFloor", 1.0e-4)
+try:
+    pdf = uniformSumFourDistribution.computePDF([0.0])
+finally:
+    ot.ResourceMap.SetAsScalar(
+        "PushForwardDistribution-CoAreaErrorFloor", previousFloor)
+print(f"uniformSumFour floored pdf(0)={pdf:.12g}")
+ott.assert_almost_equal(pdf, uniformSumFourReference.computePDF([0.0]), 1e-3,
+                        0.0)
+
+# d = 4: the mean of five independent normal variables, with the requested
+# error relaxed to keep the test fast
+meanFiveFunction = ot.LinearFunction(ot.Point(5), ot.Point(1),
+                                     ot.Matrix(1, 5, [0.2] * 5))
+ot.ResourceMap.SetAsScalar("PushForwardDistribution-CoAreaMaximumError", 1.0e-3)
+try:
+    meanFiveDistribution = otexp.PushForwardDistribution(
+        meanFiveFunction, ot.JointDistribution([ot.Normal()] * 5))
+    pdf = meanFiveDistribution.computePDF([0.5])
+finally:
+    ot.ResourceMap.SetAsScalar(
+        "PushForwardDistribution-CoAreaMaximumError", previousError)
+print(f"meanFive pdf(0.5)={pdf:.12g}")
+ott.assert_almost_equal(pdf, ot.Normal(0.0, 1.0 / math.sqrt(5.0)).computePDF([0.5]),
+                        1e-6, 0.0)
+
 # A degenerate map, whose image is a line of R^2: the density is singular on
 # the image, and vanishes outside of it
 degenerate = ot.SymbolicFunction(["x0", "x1", "x2"], ["x0", "0.0"])
@@ -286,9 +418,12 @@ with ott.assert_raises(TypeError):
     otexp.PushForwardDistribution(ot.SymbolicFunction(["x"], ["x"]),
                                   ot.Normal(2))
 with ott.assert_raises(RuntimeError):
-    # a fibre of dimension two is not implemented yet
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"], ["x0"]),
-                                  ot.Normal(3)).computePDF([0.0])
+    # x0 + x1^2 has a parabolic fibre of dimension two, the straight
+    # parameterisation of the fibre is invalid, so the density is refused
+    # instead of being wrong
+    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
+                                                      ["x0 + x1^2"]),
+                                  ot.Normal(3)).computePDF([1.0])
 with ott.assert_raises(RuntimeError):
     # x0 + x1^2 has a parabolic fibre, the straight parameterisation of the
     # fibre is invalid, so the density is refused instead of being wrong
