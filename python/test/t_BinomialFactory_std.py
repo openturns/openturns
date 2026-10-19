@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -22,3 +23,21 @@ estimatedBinomial = factory.buildAsBinomial()
 print("Default binomial=", estimatedBinomial)
 estimatedBinomial = factory.buildAsBinomial(distribution.getParameter())
 print("Binomial from parameters=", estimatedBinomial)
+
+# gh #3379: all-zero sample must keep known n
+factoryKnown = ot.BinomialFactory()
+factoryKnown.setKnownParameter([0], [4.0])
+estimatedKnown = factoryKnown.build(ot.Sample([[0.0], [0.0]]))
+ott.assert_almost_equal(estimatedKnown.getParameter(), [4.0, 0.0])
+
+# all-zero sample with known p only: n=0 has likelihood 1
+factoryKnownP = ot.BinomialFactory()
+factoryKnownP.setKnownParameter([1], [0.3])
+estimatedKnownP = factoryKnownP.build(ot.Sample([[0.0], [0.0]]))
+ott.assert_almost_equal(estimatedKnownP.getParameter(), [0.0, 0.3])
+
+# non-integral known n is rejected
+factoryBadN = ot.BinomialFactory()
+factoryBadN.setKnownParameter([0], [4.2])
+with ott.assert_raises(TypeError):
+    factoryBadN.build(ot.Sample([[0.0], [0.0]]))
