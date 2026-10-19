@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -351,3 +352,37 @@ study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("product_func.xml"))
 study.add("prod", prod)
 study.save()
+
+# ProductFunction: parameterGradient error branch and persistence roundtrip
+
+with ott.assert_raises(Exception):
+    productFunc.parameterGradient([1.0])
+# parameterGradient values with asymmetric parameter dims (regression:
+# 2nd loop used left dim -> OOB, and left/right scalings were swapped)
+pLeft = ot.ParametricFunction(
+    ot.SymbolicFunction(["x0", "x1", "a", "b"], ["a*x0+b"]), [2, 3], [2.0, 3.0]
+)
+pRight = ot.ParametricFunction(
+    ot.SymbolicFunction(["x0", "x1", "c"], ["c*x1"]), [2], [4.0]
+)
+pProd = pLeft * pRight
+ott.assert_almost_equal(
+    pProd.parameterGradient([1.0, 2.0]), ot.Matrix([[8.0], [8.0], [10.0]]), 1e-12, 1e-12
+)
+persistenceStudy = ot.Study()
+persistenceStudy.setStorageManager(ot.XMLStorageManager("product_function.xml"))
+persistenceStudy.add("productFunc", productFunc)
+persistenceStudy.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("product_function.xml"))
+loadedStudy.load()
+loadedFunc = ot.Function()
+loadedStudy.fillObject("productFunc", loadedFunc)
+ott.assert_almost_equal(loadedFunc(x), [-3.0, 6.0], 1e-14, 1e-14)
+os.remove("product_function.xml")
+
+# cross-implementation comparison returns False instead of raising bad_cast
+assert ot.Function() != ot.SymbolicFunction(["x"], ["x"])
+assert not (ot.Function() == ot.SymbolicFunction(["x"], ["x"]))
+assert ot.SymbolicFunction(["x"], ["x"]) != ot.SymbolicFunction(["x"], ["2*x"])
+assert ot.DatabaseFunction() != ot.SymbolicFunction(["x"], ["x"])

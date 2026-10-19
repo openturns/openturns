@@ -393,6 +393,7 @@ void CholeskyMethod::trashDecomposition()
 void CholeskyMethod::save(Advocate & adv) const
 {
   LeastSquaresMethodImplementation::save(adv);
+  adv.saveAttribute( "l_", l_ );
 }
 
 
@@ -400,6 +401,10 @@ void CholeskyMethod::save(Advocate & adv) const
 void CholeskyMethod::load(Advocate & adv)
 {
   LeastSquaresMethodImplementation::load(adv);
+  if (adv.hasAttribute("l_"))
+    adv.loadAttribute( "l_", l_ );
+  else
+    trashDecomposition();
 }
 
 

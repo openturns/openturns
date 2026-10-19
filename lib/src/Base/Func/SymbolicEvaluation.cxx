@@ -286,7 +286,8 @@ void SymbolicEvaluation::setCheckOutput(const Bool checkOutput)
 
 Bool SymbolicEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const SymbolicEvaluation &>(other);
+  const SymbolicEvaluation * p_other = dynamic_cast<const SymbolicEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Method save() stores the object through the StorageManager */

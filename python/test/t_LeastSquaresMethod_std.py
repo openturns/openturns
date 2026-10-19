@@ -3,6 +3,7 @@
 import openturns as ot
 import openturns.testing as ott
 import math as m
+import os as _os
 
 # ot.Log.Show(ot.Log.ALL)
 
@@ -121,3 +122,59 @@ ott.assert_almost_equal(xNormal, xGram)
 with ott.assert_raises(TypeError):
     methodUnder.solveNormalGram(ot.Point(largeBasisSize + 1))
 print("underdetermined solveNormalGram: OK")
+
+# Extra CholeskyMethod coverage (no output to preserve expout)
+Xc = ot.Sample(sampleSize, 1)
+for i in range(sampleSize):
+    Xc[i, 0] = i + 1.0
+proxyC = ot.DesignProxy(Xc, phis)
+chol = ot.CholeskyMethod(proxyC, list(full))
+assert len(repr(chol)) > 0
+# constructor with explicit weights and with a design matrix
+cholW = ot.CholeskyMethod(proxyC, [1.0] * sampleSize, list(full))
+cholM = ot.CholeskyMethod(ot.Matrix(proxyC.computeDesign(list(full))))
+ott.assert_almost_equal(cholW.solve(y), chol.solve(y), 1e-12, 1e-12)
+ott.assert_almost_equal(cholM.solve(y), chol.solve(y), 1e-12, 1e-12)
+# solveNormal / solveNormalGram error paths
+with ott.assert_raises(Exception):
+    chol.solveNormal(ot.Point([1.0, 2.0]))
+with ott.assert_raises(Exception):
+    chol.solveNormalGram(ot.Point([1.0]))
+cholNonUniform = ot.CholeskyMethod(proxyC, [1.0, 2.0, 3.0, 4.0, 5.0], list(full))
+with ott.assert_raises(Exception):
+    cholNonUniform.solveNormal(ot.Point([1.0, 2.0, 3.0]))
+with ott.assert_raises(Exception):
+    cholNonUniform.solve([1.0, 2.0])
+# Gram matrix and hat matrix accessors
+assert chol.getH().getNbRows() == sampleSize
+assert chol.getGramInverse().getDimension() == basisSize
+# row update with conserved rows then trash/recompute
+chol.update([0], list(full), [1], True)
+ott.assert_almost_equal(chol.solve(y).getSize(), basisSize)
+chol.trashDecomposition()
+ott.assert_almost_equal(chol.solve(y).getSize(), basisSize)
+# column update with removed indices is not implemented
+with ott.assert_raises(Exception):
+    chol.update([0], [1, 2], [0], False)
+# incremental large-case column update
+old_large_case = ot.ResourceMap.GetAsUnsignedInteger("CholeskyMethod-LargeCase")
+ot.ResourceMap.SetAsUnsignedInteger("CholeskyMethod-LargeCase", 2)
+try:
+    chol.update([2], [0, 1], [], False)
+    ott.assert_almost_equal(chol.solve(y).getSize(), basisSize)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("CholeskyMethod-LargeCase", old_large_case)
+# save / load roundtrip
+study_chol = ot.Study()
+study_chol.setStorageManager(ot.XMLStorageManager("chol_test.xml"))
+study_chol.add("chol", chol)
+study_chol.save()
+study_chol2 = ot.Study()
+study_chol2.setStorageManager(ot.XMLStorageManager("chol_test.xml"))
+try:
+    study_chol2.load()
+    chol_loaded = ot.CholeskyMethod()
+    study_chol2.fillObject("chol", chol_loaded)
+    ott.assert_almost_equal(chol_loaded.solve(y), chol.solve(y), 1e-12, 1e-12)
+finally:
+    _os.remove("chol_test.xml")

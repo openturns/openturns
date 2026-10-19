@@ -56,3 +56,42 @@ cov = ot.CovarianceMatrix(2)
 prod = matrix1 @ cov
 print(prod)
 assert prod == matrix1, "product /cov"
+
+# extra coverage (no prints: output is checked against .expout)
+default = ot.IdentityMatrix()
+assert default.getDimension() == 0
+assert repr(default).startswith("class=IdentityMatrix")
+
+# read-only element access
+assert matrix1[0, 0] == 1.0
+assert matrix1[0, 1] == 0.0
+assert matrix1[1, 0] == 0.0
+
+# products with the other matrix types are identities
+mat = ot.Matrix([[1.0, 2.0], [3.0, 4.0]])
+assert matrix1 * mat == mat
+sq = ot.SquareMatrix([[1.0, 2.0], [3.0, 4.0]])
+assert matrix1 * sq == sq
+sym = ot.SymmetricMatrix([[1.0, 2.0], [2.0, 4.0]])
+assert matrix1 * sym == sym
+corr = ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]])
+assert matrix1 * corr == corr
+
+# in-place variants
+matB = ot.Matrix([[5.0], [6.0]])
+assert matrix1.solveLinearSystemInPlace(matB) == matB
+sign = 0.0
+det_inplace, sign_inplace = matrix1.computeLogAbsoluteDeterminantInPlace()
+assert det_inplace == 0.0
+assert sign_inplace == 1.0
+assert matrix1.computeDeterminantInPlace() == 1.0
+assert list(matrix1.computeEigenValuesInPlace()) == [1.0, 1.0]
+ev_inplace, v_inplace = matrix1.computeEVInPlace()
+assert list(ev_inplace) == [1.0, 1.0]
+assert v_inplace == matrix1
+assert list(matrix1.computeSingularValuesInPlace()) == [1.0, 1.0]
+svd_ev, svd_u, svd_vt = matrix1.computeSVDInPlace()
+assert list(svd_ev) == [1.0, 1.0]
+assert svd_u == matrix1
+assert svd_vt == matrix1
+assert matrix1.computeCholeskyInPlace() == matrix2
