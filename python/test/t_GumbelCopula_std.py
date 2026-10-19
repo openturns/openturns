@@ -157,7 +157,13 @@ with ott.assert_raises(TypeError):
 
 # --- GumbelCopula: conditional edge cases, gradient at the boundary ---
 ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(0.5, [1.0]), 0.0, 0.0, 0.0)
-ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 0.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.GumbelCopula(2.0).computeConditionalQuantile(0.5, [0.0]), 0.0, 0.0, 0.0
+)
+ott.assert_almost_equal(
+    ot.GumbelCopula(2.0).computeConditionalQuantile(0.5, [1.0]), 1.0, 0.0, 0.0
+)
+ott.assert_almost_equal(ot.GumbelCopula(2.0).computeConditionalCDF(1.0, [1.0]), 1.0, 0.0, 0.0)
 assert m.isfinite(ot.GumbelCopula(1.0).computePDFGradient([0.3, 0.4])[0])
 
 # --- GumbelCopula: entropy at independence is zero ---
