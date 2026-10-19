@@ -27,6 +27,8 @@
 #include "openturns/Graph.hxx"
 #include "openturns/GridLayout.hxx"
 #include "openturns/Domain.hxx"
+#include "openturns/Interval.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -124,6 +126,11 @@ OT_API GridLayout DrawInsideOutside(const Domain & domain,
                                     const Sample & sample,
                                     const String & inColor = ResourceMap::GetAsString("Domain-DefaultInColor"),
                                     const String & outColor = ResourceMap::GetAsString("Domain-DefaultOutColor"));
+
+/** Draw 2-d projections of a design with grid lines in each plane */
+OT_API GridLayout DrawPairsWithGrid(const Sample & sample,
+                                    const Interval & bounds = Interval(),
+                                    const Indices & subdivisions = Indices(0));
 
 } /* VisualTest */
 

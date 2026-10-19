@@ -33,6 +33,7 @@ Drawable objects
     Cloud
     Contour
     Curve
+    Grid
     Pie
     Polygon
     PolygonArray
@@ -51,7 +52,4 @@ Graphical visualisation object
     :template: classWithPlot.rst_t
 
     viewer.View
-
-    :template: functionWithPlot.rst_t
-    viewer.PlotDesign
 

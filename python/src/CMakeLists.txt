@@ -743,6 +743,7 @@ ot_add_python_module(graph graph_module.i
                       Cloud.i Cloud_doc.i
                       Contour.i Contour_doc.i
                       Curve.i Curve_doc.i
+                      Grid.i Grid_doc.i
                       GridLayout.i GridLayout_doc.i
                       Pie.i Pie_doc.i
                       Polygon.i Polygon_doc.i

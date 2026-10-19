@@ -1,8 +1,8 @@
 """
-The PlotDesign method
-=====================
+The DrawPairsWithGrid method
+============================
 
-The goal of this example is to present the features of the PlotDesign static method.
+The goal of this example is to present the features of the DrawPairsWithGrid method.
 """
 
 # %%
@@ -10,7 +10,6 @@ The goal of this example is to present the features of the PlotDesign static met
 # ------------
 
 # %%
-import matplotlib.pyplot as plt
 import openturns as ot
 import openturns.viewer as otv
 
@@ -29,10 +28,12 @@ sampleSize = 10
 sample = distribution.getSample(sampleSize)
 
 # %%
-# With default parameters the bounds are computed from the sample.
+# With default parameters the bounds are computed from the sample
+# and 5 subdivisions are used in each direction.
 
 # %%
-fig = otv.PlotDesign(sample)
+grid = ot.VisualTest.DrawPairsWithGrid(sample)
+view = otv.View(grid)
 
 # %%
 # Set the bounds.
@@ -41,40 +42,22 @@ fig = otv.PlotDesign(sample)
 bounds = distribution.getRange()
 
 # %%
-fig = otv.PlotDesign(sample, bounds)
-
-# %%
-# Configure the size of the plot.
-
-# %%
-fig = otv.PlotDesign(sample)
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid)
 
 # %%
 # Configure the number of subdivisions in each direction.
 
 # %%
-fig = otv.PlotDesign(sample, subdivisions=[10, 5])
-
-# %%
-# Disable the ticks.
-
-# %%
-fig = otv.PlotDesign(sample, enableTicks=False)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds, [10, 5])
+view = otv.View(grid)
 
 # %%
 # Configure the marker.
 
 # %%
-fig = otv.PlotDesign(sample, plot_kw={"marker": ".", "color": "red"})
-
-# %%
-# Create the figure beforehand.
-
-# %%
-fig = plt.figure()
-fig.suptitle("My suptitle")
-fig = otv.PlotDesign(sample, figure=fig)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid, scatter_kw={"marker": ".", "color": "red"})
 
 # %%
 # In three dimensions
@@ -90,23 +73,26 @@ sampleSize = 10
 sample = distribution.getSample(sampleSize)
 
 # %%
-fig = otv.PlotDesign(sample)
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample)
+view = otv.View(grid)
+view.getFigure().set_size_inches(10, 10)
 
 # %%
 # Configure the number of subdivisions.
 
 # %%
-fig = otv.PlotDesign(sample, subdivisions=[12, 6, 3])
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, ot.Interval(), [12, 6, 3])
+view = otv.View(grid)
+view.getFigure().set_size_inches(10, 10)
 
 # %%
 # Configure the bounds.
 
 # %%
 bounds = distribution.getRange()
-fig = otv.PlotDesign(sample, bounds)
-fig.set_size_inches(10, 10)
+grid = ot.VisualTest.DrawPairsWithGrid(sample, bounds)
+view = otv.View(grid)
+view.getFigure().set_size_inches(10, 10)
 
 # %%
 # Display all figures

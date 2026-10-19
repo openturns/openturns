@@ -79,6 +79,10 @@ public:
   Scalar getInitialTrustRegionRadius() const;
   void setInitialTrustRegionRadius(const Scalar radius);
 
+  /** Random generator seed accessor, relevant for global algorithm only */
+  void setSeed(const UnsignedInteger seed);
+  UnsignedInteger getSeed() const;
+
   /** Performs the actual computation. Must be overloaded by the actual optimization algorithm */
   void run() override;
 
@@ -112,6 +116,9 @@ private:
 
   // Initial trust region radius to use in "TrustRegion", "LSQ" and "LSQLM" algorithms
   Scalar initialTrustRegionRadius_ = 0.0;
+
+  // RNG seed, relevant for global algorithm only
+  UnsignedInteger seed_ = 0;
 };
 
 END_NAMESPACE_OPENTURNS
