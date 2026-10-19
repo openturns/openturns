@@ -269,7 +269,9 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar xj, const Point & xcond)
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return xj;
   const Scalar u = xcond[0];
-  if ((u <= 0.0) || (u >= 1.0)) return 0.0;
+  if (u <= 0.0) return 0.0;
+  // At u=1 the conditional distribution is degenerate at 1, consistently with computeConditionalQuantile
+  if (u >= 1.0) return (xj >= 1.0 ? 1.0 : 0.0);
   const Scalar v = xj;
   if (v <= 0.0) return 0.0;
   if (v >= 1.0) return 1.0;
@@ -293,6 +295,9 @@ Scalar GumbelCopula::computeConditionalQuantile(const Scalar p, const Point & xc
   if ((conditioningDimension == 0) || hasIndependentCopula()) return p;
   const Scalar u = xcond[0];
   if (!((u >= 0.0) && (u <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a conditioning component outside of [0, 1]";
+  // At the conditioning edges the conditional distribution is degenerate: 0 at u=0, 1 at u=1
+  if (u <= 0.0) return 0.0;
+  if (u >= 1.0) return 1.0;
   const Scalar inverseThetaMinusOne = 1.0 / (theta_ - 1.0);
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
