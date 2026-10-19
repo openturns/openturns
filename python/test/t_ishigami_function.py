@@ -89,3 +89,34 @@ with assert_raises(ValueError):
     im.getNonZeroPolynomialChaosExpansionCoefficients(46)
 with assert_raises(ValueError):
     im.getNonZeroPolynomialChaosExpansionCoefficients(-47)
+
+# Reference polynomial chaos result
+result = im.getFunctionalChaosResult()
+assert len(result.getIndices()) == 46
+assert_almost_equal(result.getCoefficients()[0, 0], im.expectation, 1e-12)
+
+# Meta model vs model
+metamodel = result.getMetaModel()
+X = ot.Sample([[1.0, 0.5, -0.5], [pi / 2.0, pi / 2.0, 1.0]])
+Y = im.model(X)
+Yhat = metamodel(X)
+for i in range(X.getSize()):
+    assert_almost_equal(Yhat[i, 0], Y[i, 0], 1e-3, 1e-3)
+
+# Moments of the reference expansion
+vector = ot.FunctionalChaosRandomVector(result)
+assert_almost_equal(vector.getMean()[0], im.expectation, 1e-12, 1e-12)
+assert_almost_equal(vector.getCovariance()[0, 0], im.variance, 1e-10, 1e-10)
+
+# Sobol indices of the reference expansion
+sensitivity = ot.FunctionalChaosSobolIndices(result)
+assert_almost_equal(sensitivity.getSobolIndex(0), im.S1, 1e-10, 1e-10)
+assert_almost_equal(sensitivity.getSobolIndex(1), im.S2, 1e-10, 1e-10)
+assert_almost_equal(sensitivity.getSobolIndex(2), im.S3, 1e-10, 1e-10)
+assert_almost_equal(sensitivity.getSobolTotalIndex(0), im.ST1, 1e-10, 1e-10)
+assert_almost_equal(sensitivity.getSobolTotalIndex(1), im.ST2, 1e-10, 1e-10)
+assert_almost_equal(sensitivity.getSobolTotalIndex(2), im.ST3, 1e-10, 1e-10)
+
+# Result flags: symbolic integration, no model selection
+assert result.isLeastSquares() is False
+assert result.involvesModelSelection() is False
