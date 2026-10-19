@@ -316,3 +316,10 @@ with ott.assert_raises(RuntimeError):
     otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
                                                       ["x0^2", "x1"]),
                                   ot.Normal(3)).computePDF([1.0, 0.0])
+with ott.assert_raises(RuntimeError):
+    # f(x0, x1) = x0 * x1 is null with a null Jacobian at the mean, and it is
+    # null on both faces of the search box of each coordinate: only the points
+    # moving several coordinates at once tell it from its linearization
+    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1"],
+                                                      ["x0 * x1"]),
+                                  ot.Normal(2)).computePDF([1.0])

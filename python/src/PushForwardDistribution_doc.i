@@ -76,10 +76,10 @@ Hausdorff element along the fibre is exactly the parameter element, and the
 density reduces to a one dimensional integral, evaluated by an adaptive
 Gauss-Kronrod rule (see the ``PushForwardDistribution-CoAreaMaximumError`` and
 ``PushForwardDistribution-CoAreaMaximumSubIntervals`` keys). Whether :math:`f` is
-affine is checked on the faces of the search box, which bound the region where
-the fibre may be integrated, and again at each quadrature node along the fibre:
-a curved fibre raises an exception instead of returning a wrong density. The
-integration is carried out
+affine is checked on the faces and on the corners of the search box, which bound
+the region where the fibre may be integrated, and again at each quadrature node
+along the fibre: a curved fibre raises an exception instead of returning a wrong
+density. The integration is carried out
 over the intersection of the fibre with the search box of the distribution,
 extended while the integrand is not negligible there: the neglected mass at the
 ends of the fibre is then at most of the order of

@@ -346,26 +346,40 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   const Point lowerBound(searchInterval.getLowerBound());
   const Point upperBound(searchInterval.getUpperBound());
   const Point meanImage(function_(mean));
-  // Move each coordinate of the mean to the two faces of the search box: there
-  // the linearization defines the image of the function, and it is expected to
-  // reproduce the function itself. The check is done before the shortcuts of
-  // the density computation, which return a value without integrating along
-  // the fibre: a nonlinear function whose Jacobian is singular at the mean
-  // would otherwise get a zero or an infinite density that no integral backs
+  // The linearization at the mean is the only thing the co-area formula can
+  // rely on, and the checks below are the necessary conditions it must satisfy
+  // for the shortcuts of the density computation, which return a value without
+  // integrating along the fibre, not to give a zero or an infinite density
+  // that no integral backs
+  const auto checkAffineModel = [&](const Point & x)
+  {
+    const Point image(function_(x));
+    Point linearization(meanImage);
+    for (UnsignedInteger index = 0; index < inputDimension; ++index)
+      for (UnsignedInteger k = 0; k < outputDimension; ++k)
+        linearization[k] += gradientMatrix(index, k) * (x[index] - mean[index]);
+    if ((image - linearization).norm() > residualTolerance * std::max(1.0, std::max(image.norm(), linearization.norm())))
+      throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for an affine function, here f(" << x << ")=" << image << " whereas its linearization at the mean of the antecedent gives " << linearization << ", so that the fibre is not a straight line";
+  };
+  // The faces of the search box, one coordinate at a time, bound the region
+  // where the fibre is integrated
   for (UnsignedInteger index = 0; index < inputDimension; ++index)
   {
     for (UnsignedInteger side = 0; side < 2; ++side)
     {
-      const Scalar face = (side == 0 ? lowerBound[index] : upperBound[index]);
       Point x(mean);
-      x[index] = face;
-      const Point image(function_(x));
-      Point linearization(meanImage);
-      for (UnsignedInteger k = 0; k < outputDimension; ++k)
-        linearization[k] += gradientMatrix(index, k) * (face - mean[index]);
-      if ((image - linearization).norm() > residualTolerance * std::max(1.0, std::max(image.norm(), linearization.norm())))
-        throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for an affine function, here f(" << x << ")=" << image << " whereas its linearization at the mean of the antecedent gives " << linearization << ", so that the fibre is not a straight line";
+      x[index] = (side == 0 ? lowerBound[index] : upperBound[index]);
+      checkAffineModel(x);
     }
+  }
+  // Moving all the coordinates together probes their interactions, such as
+  // x0 * x1, which vanish on the faces above
+  for (UnsignedInteger side = 0; side < 2; ++side)
+  {
+    Point x(mean);
+    for (UnsignedInteger index = 0; index < inputDimension; ++index)
+      x[index] = (side == 0 ? lowerBound[index] : upperBound[index]);
+    checkAffineModel(x);
   }
   // Full SVD of the n x p Jacobian matrix J of the function: its p singular
   // values give the p-dimensional Jacobian |J_p f| = prod sigma_i, i.e. the
