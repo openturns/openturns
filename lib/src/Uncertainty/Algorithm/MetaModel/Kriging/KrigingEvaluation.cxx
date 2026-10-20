@@ -329,6 +329,15 @@ UnsignedInteger KrigingEvaluation::getOutputDimension() const
   return covarianceModel_.getOutputDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool KrigingEvaluation::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < basis_.getSize(); ++ i)
+    if (!basis_[i].getImplementation()->isParallel())
+      return false;
+  return covarianceModel_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void KrigingEvaluation::save(Advocate & adv) const
 {
