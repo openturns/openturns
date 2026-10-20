@@ -65,17 +65,17 @@ public:
   void load(Advocate & adv) override;
   
   /** Accessors */
-  void setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult);
+  virtual void setGaussianProcessRegression(const GaussianProcessRegressionResult & gprResult);
 
   GaussianProcessRegressionResult getGaussianProcessRegression() const;
 
-  void setReliabilityThreshold(const Scalar reliabilityThreshold);
+  virtual void setReliabilityThreshold(const Scalar reliabilityThreshold);
 
-  Scalar getReliabilityThreshold() const;
+  virtual Scalar getReliabilityThreshold() const;
 
-  void setLearningThreshold(const Scalar learningThreshold);
+  virtual void setLearningThreshold(const Scalar learningThreshold);
 
-  Scalar getLearningThreshold() const;
+  virtual Scalar getLearningThreshold() const;
   
   /** String converter */
   String __repr__() const override;

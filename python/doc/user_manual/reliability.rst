@@ -52,6 +52,7 @@ Simulation algorithm
     ExpectationSimulationResult
     GenericSimulationResult
     experimental.ActiveLearningReliabilityFunction
+    experimental.PythonActiveLearningReliabilityFunction
     experimental.ActiveLearningUFunction
     experimental.ActiveLearningGMMFunction
     experimental.ActiveLearningEFFFunction

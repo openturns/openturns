@@ -10,7 +10,9 @@ This class is a base class for all the active learning criteria for reliability 
 The principle is to evaluate candidate samples on an active learning (also known as infill) criterion to identify the sample that is the most relevant for the metamodel update.
 
 An :class:`~openturns.experimental.ActiveLearningReliabilityFunction` object can be created only through its derived classes,
-:class:`~openturns.experimental.ActiveLearningUFunction`, :class:`~openturns.experimental.ActiveLearningEFFFunction` or :class:`~openturns.experimental.ActiveLearningGMMFunction`.
+:class:`~openturns.experimental.ActiveLearningUFunction`, :class:`~openturns.experimental.ActiveLearningEFFFunction`,
+:class:`~openturns.experimental.ActiveLearningGMMFunction` or a :class:`~openturns.experimental.PythonActiveLearningReliabilityFunction`
+wrapped with this constructor.
 
 Parameters
 ----------

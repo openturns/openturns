@@ -19,8 +19,9 @@ The quantile prefilter is relative to the evaluated sample: evaluate
 the criterion on the whole candidate pool at once, not point by point
 (a single-point evaluation can never exceed its own quantile).
 
-Unlike the U and EFF criteria, this composite criterion has no external
-literature reference: the definition above is its complete specification.
+The generalized max-min criterion is described in [lacaze2014]_. The
+quantile prefilter that restricts the candidates to the output range
+closest to the threshold is specific to this implementation.
 
 Parameters
 ----------

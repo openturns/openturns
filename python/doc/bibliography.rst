@@ -340,6 +340,10 @@ Bibliography
 .. [li1991] Li, K C. *Sliced Inverse Regression for Dimension Reduction*,
     Journal of the American Statistical Association, 86, 316-342, 1991.
     `pdf <https://escholarship.org/content/qt3mw1p0mb/qt3mw1p0mb.pdf>`__
+.. [lacaze2014] Lacaze S., Missoum S.,
+    *A generalized "max-min" sample for surrogate update*,
+    Structural and Multidisciplinary Optimization, 49(4), 683-687, 2014.
+    https://doi.org/10.1007/s00158-013-1011-9
 .. [lebrun2009a] Lebrun, R. & Dutfoy, A. *An innovating analysis of the Nataf
     transformation from the copula viewpoint.* Prob. Eng. Mech., 2009, 24,
     312-320.
@@ -606,6 +610,10 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [sun2017] Sun, Z., Wang, J., Li, R., & Tong, C. (2017).
+    *LIF: a new Kriging based learning function and its application to structural reliability analysis.*
+    Reliability Engineering & System Safety, 157, 152-165.
+    https://doi.org/10.1016/j.ress.2016.09.003
 .. [townsend2016] Townsend, A., Trogdon, T., Olver, S. (2016).
     *Fast computation of Gauss quadrature nodes and weights on the whole real line.*
     IMA Journal of Numerical Analysis, 36(2), 802-824.

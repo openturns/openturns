@@ -187,7 +187,8 @@ print(
 # Now, we use the :class:`~openturns.experimental.ActiveLearningReliabilityAlgorithm` on the same reliability problem.
 
 # %%
-# Definition of active learning function. Here, we choose the "GMM" function.
+# Definition of active learning function. Here, we choose the "GMM" function
+# of [lacaze2014]_.
 active_learning_convergence_threshold = 1e-10
 gmm_output_quantile = 0.1
 gmm_function = otexp.ActiveLearningGMMFunction(

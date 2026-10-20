@@ -119,6 +119,7 @@
  * Deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in favor of set/getBoundingOption
 
 ==== New features ====
+ * Added PythonActiveLearningReliabilityFunction (openturns.experimental): define custom active learning criteria from Python, usable through ActiveLearningReliabilityFunction and ActiveLearningReliabilityAlgorithm
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
  * The unary subtraction operator on Function and FunctionImplementation is now available

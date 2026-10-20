@@ -331,7 +331,9 @@ _ = otv.View(graph)
 subset_algorithm = ot.SubsetSampling(event)
 
 # %%
-# Definition of active learning function. Here, we choose the "generalized max min" function
+# Definition of active learning function. Here, we choose the "generalized max min"
+# function: the infill point maximizes the distance to the current design weighted
+# by the input PDF, see [lacaze2014]_.
 active_learning_convergence_threshold = 1e-10
 gmm_output_quantile = 0.1
 gmm_function = otexp.ActiveLearningGMMFunction(

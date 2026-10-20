@@ -25,6 +25,7 @@ add_library (OTPythonWrapping OBJECT
                       PythonExperiment.cxx
                       PythonRandomVector.cxx
                       PythonDistribution.cxx
+                      PythonActiveLearningReliabilityFunctionImplementation.cxx
                       PythonFieldFunction.cxx
                       PythonFieldToPointFunction.cxx
                       PythonPointToFieldFunction.cxx)
