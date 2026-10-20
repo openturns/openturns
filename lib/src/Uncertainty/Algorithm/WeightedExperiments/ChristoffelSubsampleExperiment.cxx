@@ -65,7 +65,7 @@ ChristoffelSubsampleExperiment * ChristoffelSubsampleExperiment::clone() const
 Bool ChristoffelSubsampleExperiment::operator ==(const ChristoffelSubsampleExperiment & other) const
 {
   if (this == &other) return true;
-  return hasEqualBase(other) && (certified_ == other.certified_) && (gamma_ == other.gamma_) && (christoffelDistribution_ == other.christoffelDistribution_);
+  return hasEqualBase(other) && (certified_ == other.certified_) && (gamma_ == other.gamma_) && (maxAttempts_ == other.maxAttempts_) && (christoffelDistribution_ == other.christoffelDistribution_);
 }
 
 Bool ChristoffelSubsampleExperiment::equals(const WeightedExperimentImplementation & other) const
@@ -84,7 +84,8 @@ String ChristoffelSubsampleExperiment::__repr__() const
       << " size=" << size_
       << " spaceDimension=" << spaceDimension_
       << " certified=" << (certified_ ? "true" : "false")
-      << " gamma=" << gamma_;
+      << " gamma=" << gamma_
+      << " maxAttempts=" << maxAttempts_;
   return oss;
 }
 
@@ -203,10 +204,17 @@ Sample ChristoffelSubsampleExperiment::generateWithWeights(Point & weightsOut) c
     throw InvalidArgumentException(HERE) << "Error: no orthogonal basis is configured, call setOrthogonalBasis() before generating.";
   if (certified_)
   {
-    Sample design(christoffelDistribution_.getSample(size_));
-    design.setDescription(distribution_.getDescription());
-    weightsOut = computeImportanceWeights(design);
-    checkFrame(design, weightsOut);
+    Sample design;
+    for (UnsignedInteger attempt = 0; attempt < maxAttempts_; ++attempt)
+    {
+      design = christoffelDistribution_.getSample(size_);
+      design.setDescription(distribution_.getDescription());
+      weightsOut = computeImportanceWeights(design);
+      const Bool lastAttempt = (attempt + 1 == maxAttempts_);
+      if (checkFrame(design, weightsOut, lastAttempt)) return design;
+    }
+    // The theorem makes this event very unlikely.  Return the last draw
+    // rather than discard the budget, and let checkFrame() report the miss.
     return design;
   }
   Sample design(drawProjectionDPP(spaceDimension_));
@@ -421,9 +429,10 @@ Sample ChristoffelSubsampleExperiment::drawProjectionDPP(const UnsignedInteger s
   return design;
 }
 
-/* Warn when the weighted design misses the frame bounds */
-void ChristoffelSubsampleExperiment::checkFrame(const Sample & sample,
-    const Point & weights) const
+/* Check the weighted design frame bounds, warning on request */
+Bool ChristoffelSubsampleExperiment::checkFrame(const Sample & sample,
+    const Point & weights,
+    const Bool warn) const
 {
   const Scalar tolerance = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance");
   if (!(tolerance >= 0.0) || !std::isfinite(tolerance))
@@ -442,10 +451,12 @@ void ChristoffelSubsampleExperiment::checkFrame(const Sample & sample,
     minEigenvalue = std::min(minEigenvalue, eigenValues[i]);
     maxEigenvalue = std::max(maxEigenvalue, eigenValues[i]);
   }
-  if (minEigenvalue < 1.0 - tolerance || maxEigenvalue > 1.0 + tolerance)
+  const Bool withinBounds = (minEigenvalue >= 1.0 - tolerance) && (maxEigenvalue <= 1.0 + tolerance);
+  if (!withinBounds && warn)
     LOGWARN(OSS() << "Warning: the weighted design misses the frame bounds [" << 1.0 - tolerance << ", " << 1.0 + tolerance << "], got [" << minEigenvalue << ", " << maxEigenvalue << "]");
-  if (minEigenvalue <= SpecFunc::Precision)
+  if ((minEigenvalue <= SpecFunc::Precision) && warn)
     LOGWARN(OSS() << "Warning: the weighted design is numerically rank deficient, got minimum eigenvalue=" << minEigenvalue);
+  return withinBounds && (minEigenvalue > SpecFunc::Precision);
 }
 
 /* Density ratios of design points, reference over Christoffel law */
@@ -660,6 +671,13 @@ void ChristoffelSubsampleExperiment::update()
   // switches to m = argmax gamma m log(m) <= n; otherwise m = n-k is tried.
   certified_ = ResourceMap::GetAsBool("ChristoffelSubsampleExperiment-Certified");
   gamma_ = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-Gamma");
+  maxAttempts_ = 1;
+  if (certified_)
+  {
+    maxAttempts_ = ResourceMap::GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts");
+    if (maxAttempts_ == 0)
+      throw InvalidArgumentException(HERE) << "Error: expected a positive ChristoffelSubsampleExperiment-MaxAttempts, got 0.";
+  }
   UnsignedInteger dimension = certified_ ? ComputeSpaceDimension(size_, gamma_) : size_;
   Basis::FunctionCollection coll(0);
   while (coll.getSize() < dimension)

@@ -79,6 +79,7 @@ ott.assert_almost_equal(weightsA, weightsB)
 # pool, thinning and barrier controls are gone
 assert not ot.ResourceMap.GetAsBool("ChristoffelSubsampleExperiment-Certified")
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-Gamma"), 9.242343873386666)
+assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts") == 5
 for key in [
     "ChristoffelSubsampleExperiment-PoolOversamplingFactor",
     "ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor",
@@ -106,6 +107,24 @@ try:
     assert all(w > 0.0 for w in certifiedWeights)
     with ott.assert_raises(TypeError):
         certifiedExperiment.generateWithWeights(existing)
+
+    # an impossible frame band forces a redraw: one allowed attempt returns
+    # the first draw, two allowed attempts return the second draw
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.0)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
+    try:
+        oneAttempt = otexp.ChristoffelSubsampleExperiment(basis, 60)
+        ot.RandomGenerator.SetSeed(6)
+        firstSample, _ = oneAttempt.generateWithWeights()
+        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 2)
+        twoAttempts = otexp.ChristoffelSubsampleExperiment(basis, 60)
+        ot.RandomGenerator.SetSeed(6)
+        secondSample, _ = twoAttempts.generateWithWeights()
+        assert firstSample.getSize() == secondSample.getSize() == 60
+        assert any(firstSample[i, 0] != secondSample[i, 0] for i in range(60))
+    finally:
+        ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
+        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 5)
 finally:
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
     ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
@@ -118,6 +137,16 @@ try:
         otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(10)
 finally:
     ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+
+# the certified redraw cap must be positive
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 0)
+try:
+    with ott.assert_raises(TypeError):
+        otexp.ChristoffelSubsampleExperiment(basis, 10)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 5)
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
 assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 60
 

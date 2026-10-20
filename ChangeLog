@@ -46,6 +46,7 @@
  * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
  * ChristoffelSubsampleExperiment-Certified: select the certified sizing n = gamma * m * log(m) instead of the default square design (default is false)
  * ChristoffelSubsampleExperiment-Gamma: gamma constant of the certified sizing, used when ChristoffelSubsampleExperiment-Certified is true (default is 9.242343873386666)
+ * ChristoffelSubsampleExperiment-MaxAttempts: maximum number of independent certified draws tried before returning the last draw (default is 5)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -175,7 +176,7 @@
  * ChristoffelDistribution: the polynomial tensor gradient now clips its input to the numerical range like the objective does, instead of overflowing on infeasible points
  * ChristoffelDistribution: the batch Christoffel and log-Christoffel evaluations now only use TBB above a minimum batch size, instead of spawning parallel work for small samples
  * ChristoffelSubsampleExperiment: exact projection DPP and volume sampling replace the heuristic 2n pool and greedy thinning; fresh designs use the DPP for n=m and a DPP plus independent Christoffel fill for n>m, supplied points use a conditional DPP when M<n and exact candidate volume sampling when M>=n, dependent or zero-weight supplied points are rejected, and the pool, thinning and barrier ResourceMap keys are removed
- * ChristoffelSubsampleExperiment: optional certified mode selected by the ChristoffelSubsampleExperiment-Certified key, with n = gamma * m * log(m) and n independent Christoffel points without thinning; the default square design is unchanged and supplied points are rejected in certified mode
+ * ChristoffelSubsampleExperiment: optional certified mode selected by the ChristoffelSubsampleExperiment-Certified key, with n = gamma * m * log(m) and n independent Christoffel points without thinning; certified draws are repeated up to ChristoffelSubsampleExperiment-MaxAttempts until the frame bounds hold, the default square design is unchanged, and supplied points are rejected in certified mode
  * ChristoffelSubsampleExperiment: default-constructed experiments no longer silently generate from an unconfigured one-function state, and a null size is rejected on load
  * OrthogonalBasis: added a value-based equality operator (measure, enumerate function and factory description) used by ChristoffelDistribution instead of the sole probe-based comparison
  * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete

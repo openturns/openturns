@@ -19,9 +19,12 @@ experiment uses the certified Cohen-Dolbeault sizing instead:
 ``ChristoffelSubsampleExperiment-Gamma`` key value, and a fresh design
 is :math:`n` independent draws from the
 :class:`~openturns.experimental.ChristoffelDistribution`. No thinning
-is applied. This mode makes :math:`m` much smaller than :math:`n` and
-is not the default; when the key is false, :math:`m = n-k` is chosen by
-the basis capacity as described above.
+is applied. The weighted design is checked against the frame bounds; if
+it misses them, the whole independent sample is redrawn, up to
+``ChristoffelSubsampleExperiment-MaxAttempts`` draws. This mode makes
+:math:`m` much smaller than :math:`n` and is not the default; when the
+key is false, :math:`m = n-k` is chosen by the basis capacity as
+described above.
 
 In the default square mode, a fresh design is exact. For :math:`n = m`,
 it is a projection
@@ -67,7 +70,8 @@ budget without making the certificate exact. In certified mode, the
 independent Christoffel budget :math:`n = \gamma m \log(m)` is the
 Cohen-Dolbeault setting, so the frame guarantee holds with high
 probability under the theorem assumptions; the realized design is
-still checked. Use :meth:`computeDesignEigenvalues` when a frame
+checked and the draw is repeated until it passes, up to the configured
+attempt limit. Use :meth:`computeDesignEigenvalues` when a frame
 diagnostic is required on a given design.
 
 Available constructors:
@@ -97,6 +101,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1. It must be non-negative and finite.
 - ``ChristoffelSubsampleExperiment-Certified`` (``bool``, default: ``False``): when true, select the certified sizing :math:`n = \gamma m \log(m)` and independent Christoffel draws.
 - ``ChristoffelSubsampleExperiment-Gamma`` (``Scalar``, default: ``9.242343873386666``): constant :math:`\gamma` of the certified sizing. It must be finite and strictly positive when the certified mode is selected.
+- ``ChristoffelSubsampleExperiment-MaxAttempts`` (positive int, default: ``5``): maximum number of independent certified draws tried before the last draw is returned with a frame warning.
 
 Examples
 --------

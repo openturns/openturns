@@ -147,9 +147,11 @@ private:
   Sample drawProjectionDPP(const UnsignedInteger size,
                            const Sample & fixed = Sample()) const;
 
-  /** Warn when the weighted design misses the frame bounds */
-  void checkFrame(const Sample & sample,
-                  const Point & weights) const;
+  /** Check the weighted design frame bounds, optionally warning on failure.
+      Returns true when the design is inside the frame band. */
+  Bool checkFrame(const Sample & sample,
+                  const Point & weights,
+                  const Bool warn = true) const;
 
   /** Identity index set of given size */
   static Indices IdentityIndices(const UnsignedInteger size);
@@ -167,6 +169,10 @@ private:
   /** Certified sizing constant, read from the ResourceMap during update()
       when certified_ is true. */
   Scalar gamma_ = 0.0;
+
+  /** Maximum number of independent certified draws tried before giving up
+      on the frame certificate, read from the ResourceMap during update(). */
+  UnsignedInteger maxAttempts_ = 1;
 
   /** The Christoffel distribution sampled by the experiment */
   ChristoffelDistribution christoffelDistribution_;
