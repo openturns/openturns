@@ -421,6 +421,23 @@ degenerateCoArea = otexp.PushForwardDistribution(degenerate, ot.Normal(3))
 assert math.isinf(degenerateCoArea.computePDF([0.5, 0.0]))
 assert degenerateCoArea.computePDF([0.5, 1.0]) == 0.0
 
+# A rank-deficient affine map with a bounded antecedent: the algebraic image
+# is a line, but a point on it may still have no preimage in the support
+boundedDegenerate = otexp.PushForwardDistribution(
+    degenerate, ot.JointDistribution([ot.Uniform(-1.0, 1.0)] * 3))
+assert math.isinf(boundedDegenerate.computePDF([0.5, 0.0]))
+assert boundedDegenerate.computePDF([100.0, 0.0]) == 0.0
+
+# The minimum-norm point of the fibre may lie outside the support while
+# another point of the same fibre lies inside it
+shiftedDegenerate = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1", "x2"], ["x0 + x1", "0.0"]),
+    ot.JointDistribution([ot.Uniform(0.0, 10.0),
+                          ot.Uniform(0.0, 1.0),
+                          ot.Uniform(0.0, 1.0)]))
+assert math.isinf(shiftedDegenerate.computePDF([10.5, 0.0]))
+assert shiftedDegenerate.computePDF([12.0, 0.0]) == 0.0
+
 # Exception tests: methods that throw exceptions
 with ott.assert_raises(TypeError):
     # the antecedent must be absolutely continuous

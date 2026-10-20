@@ -12,6 +12,7 @@
  * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
  * PushForwardDistribution (openturns.experimental): implement the co-area density for affine functions
+ * PushForwardDistribution (openturns.experimental): return a zero density for a rank-deficient affine co-area map when the affine fibre misses the antecedent support
  * PushForwardDistribution (openturns.experimental): allow nonlinear co-area maps for sampling, range and moments
  * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3 by a deterministic triangulated level-set extraction with Brent edge roots and intrinsic surface cubature, while the affine co-area path remains exact
  * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically

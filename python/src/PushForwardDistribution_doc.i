@@ -139,7 +139,10 @@ in the output space. Membership of the image is tested through the residual of
 the full SVD in the output directions that the Jacobian does not reach: a
 relative residual above the CDF epsilon of the distribution (by default
 ``Distribution-DefaultCDFEpsilon``) is treated as outside the image and yields
-a zero density, whereas a point on the image yields the singular density.
+a zero density, whereas a point on the image yields the singular density,
+provided that the affine fibre meets the support of the antecedent. When the
+fibre misses that support, the density is zero even though the point belongs
+to the algebraic image.
 
 The mean and the covariance are computed deterministically, not estimated by
 Monte-Carlo: an affine function uses the exact formulas

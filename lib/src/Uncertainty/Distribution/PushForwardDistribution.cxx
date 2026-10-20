@@ -410,6 +410,59 @@ Bool computeCoAreaBounds(const CoAreaConstraintCollection & system,
 }
 
 /**
+ * Check whether the affine fibre origin + kernel * t meets the box delimited
+ * by the finite bounds. The kernel columns are orthonormal, but only
+ * feasibility is needed here: the Fourier-Motzkin elimination is run to the
+ * end, and the zero-normal constraints left at each step are checked by
+ * pruneCoAreaConstraints. Coordinates with an infinite bound do not constrain
+ * the fibre.
+ */
+Bool checkCoAreaSupport(const Matrix & kernel,
+                        const Point & origin,
+                        const Point & lowerBound,
+                        const Point & upperBound,
+                        const Interval::BoolCollection & finiteLowerBound,
+                        const Interval::BoolCollection & finiteUpperBound,
+                        const Scalar feasibilityTolerance,
+                        const Scalar constraintTolerance)
+{
+  const UnsignedInteger inputDimension = origin.getSize();
+  const UnsignedInteger fibreDimension = kernel.getNbColumns();
+  CoAreaConstraintCollection constraints(0);
+  for (UnsignedInteger i = 0; i < inputDimension; ++i)
+  {
+    Point normal(fibreDimension);
+    for (UnsignedInteger j = 0; j < fibreDimension; ++j)
+      normal[j] = kernel(i, j);
+    if (finiteUpperBound[i])
+    {
+      CoAreaConstraint constraint;
+      constraint.normal = normal;
+      constraint.bound = upperBound[i] - origin[i];
+      constraints.add(constraint);
+    }
+    if (finiteLowerBound[i])
+    {
+      CoAreaConstraint constraint;
+      constraint.normal = -normal;
+      constraint.bound = origin[i] - lowerBound[i];
+      constraints.add(constraint);
+    }
+  }
+  CoAreaConstraintCollection current(0);
+  if (!pruneCoAreaConstraints(constraints, feasibilityTolerance, constraintTolerance, current))
+    return false;
+  for (UnsignedInteger level = fibreDimension; level > 0; --level)
+  {
+    CoAreaConstraintCollection eliminated(0);
+    if (!eliminateCoAreaConstraint(current, level - 1, feasibilityTolerance, constraintTolerance, eliminated))
+      return false;
+    current = eliminated;
+  }
+  return true;
+}
+
+/**
  * Bound function of a nested integration level: it returns the lower or the
  * upper bound of t_level given the already integrated coordinates t_0, ...,
  * t_{level-1}. An empty section is returned as the zero length interval
@@ -714,15 +767,17 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   // A singular value below this threshold is numerically zero, so that the
   // corresponding direction of the output space is not reached at all
   const Scalar rankTolerance = inputDimension * SpecFunc::ScalarEpsilon * singularValues[0];
-  Bool rankDeficient = false;
+  UnsignedInteger rank = 0;
   Scalar jacobian = 1.0;
   for (UnsignedInteger index = 0; index < outputDimension; ++index)
   {
-    if (singularValues[index] <= rankTolerance)
-      rankDeficient = true;
-    else
+    if (singularValues[index] > rankTolerance)
+    {
       jacobian *= singularValues[index];
+      ++rank;
+    }
   }
+  const Bool rankDeficient = rank < outputDimension;
   // Solve J * delta = point - f(mean) in the least squares sense, keeping the
   // minimum norm solution, so that origin = mean + delta is the point of the
   // fibre closest to the mean of the antecedent. Writing the residual in the
@@ -753,15 +808,48 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   if (std::sqrt(imageResidual) > cdfEpsilon_ * std::max(1.0, target.norm()))
     // The point is not in the image of the function: its fibre is empty
     return 0.0;
+  const Point origin(mean + delta);
   if (rankDeficient)
+  {
     // The image of the function is contained in a set of zero measure of the
-    // output space: the density is singular wherever it does not vanish
+    // output space: the density is singular wherever the fibre carries mass.
+    // The algebraic image membership above is not enough: the fibre must also
+    // meet the support of the antecedent. Check the affine subspace against
+    // the finite bounds of that support before returning the singular density
+    Matrix kernel(inputDimension, inputDimension - rank);
+    UnsignedInteger kernelIndex = 0;
+    for (UnsignedInteger index = 0; index < outputDimension; ++index)
+      if (singularValues[index] <= rankTolerance)
+      {
+        for (UnsignedInteger i = 0; i < inputDimension; ++i)
+          kernel(i, kernelIndex) = leftFactor(i, index);
+        ++kernelIndex;
+      }
+    for (UnsignedInteger index = outputDimension; index < inputDimension; ++index)
+    {
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+        kernel(i, kernelIndex) = leftFactor(i, index);
+      ++kernelIndex;
+    }
+    const Interval antecedentRange(antecedent_.getRange());
+    const Scalar constraintTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaConstraintTolerance");
+    const Scalar feasibilityTolerance = constraintTolerance * std::max(1.0, (upperBound - lowerBound).norm());
+    if (!PushForwardDistributionFunctions::checkCoAreaSupport(kernel, origin,
+                                                               antecedentRange.getLowerBound(),
+                                                               antecedentRange.getUpperBound(),
+                                                               antecedentRange.getFiniteLowerBound(),
+                                                               antecedentRange.getFiniteUpperBound(),
+                                                               feasibilityTolerance,
+                                                               constraintTolerance))
+      // The fibre does not meet the support of the antecedent: its density is
+      // zero, even though the point belongs to the algebraic image
+      return 0.0;
     return SpecFunc::Infinity;
+  }
   // Orthonormal basis of the kernel of J: it is made of the last n - p
   // columns of the full left factor of the SVD. Being orthonormal, the
   // Hausdorff element along the fibre parameterised as origin + t * direction
   // for d = 1, resp. origin + kernel * t for d >= 2, is exactly dt
-  const Point origin(mean + delta);
   if (fibreDimension == 1)
   {
     // The fibre is a straight line directed by the single unit vector of the
