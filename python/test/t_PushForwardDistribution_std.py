@@ -58,14 +58,15 @@ assert rangeValue.getDimension() == 1
 assert rangeValue.contains([0.0])
 assert not rangeValue.contains([50.0])
 
-# Moments estimated by Monte-Carlo
+# Affine moments are analytical, not Monte-Carlo estimates: for Y = 2 X
+# with X ~ Normal(0, 1), the mean is 0 and the standard deviation is 2
 mean = distribution.getMean()
 print("mean=", mean)
-ott.assert_almost_equal(mean, reference.getMean(), 1e-1, 1e-1)
+ott.assert_almost_equal(mean, reference.getMean(), 1e-14, 1e-14)
 standardDeviation = distribution.getStandardDeviation()
 print("standard deviation=", standardDeviation)
 ott.assert_almost_equal(standardDeviation,
-                        reference.getStandardDeviation(), 1e-1, 0.0)
+                        reference.getStandardDeviation(), 1e-14, 1e-14)
 
 # Goodness of fit of a sample against the reference distribution
 fittingResult = ot.FittingTest.Kolmogorov(oneSample, reference)
@@ -111,6 +112,11 @@ for y, value in [(1.0, 0.24197072451914337),
 # Points outside the image have a zero density
 ott.assert_almost_equal(squareDistribution.computePDF([-1.0]), 0.0, 0.0,
                         1e-12)
+# Y = X^2 with X ~ Normal(0, 1) has mean 1 and variance E[X^4] - 1 = 2.
+# The moments are deterministic quadrature, not Monte-Carlo estimates
+ott.assert_almost_equal(squareDistribution.getMean(), [1.0], 1e-8, 1e-12)
+ott.assert_almost_equal(squareDistribution.getCovariance(),
+                        ot.CovarianceMatrix(1, [2.0]), 1e-8, 1e-12)
 
 # Non-injective function on a finite support: Y = X^2 with
 # X ~ Uniform(-1, 1), so that pdf(y) = 1 / (2 sqrt(y))
@@ -224,7 +230,9 @@ for y in [[0.0, 0.0], [1.0, -0.5], [-1.3, 0.7]]:
     print(f"coArea pdf({y})={pdf:.12g}")
     ott.assert_almost_equal(pdf, ot.Normal(2).computePDF(y), 1e-13, 1e-16)
     ott.assert_almost_equal(pdf, marginal.computePDF(y), 1e-13, 1e-16)
-ott.assert_almost_equal(coArea.getMean(), [0.0, 0.0], 0.05, 0.05)
+ott.assert_almost_equal(coArea.getMean(), [0.0, 0.0], 1e-14, 1e-14)
+ott.assert_almost_equal(coArea.getCovariance(), ot.CovarianceMatrix(2),
+                        1e-14, 1e-14)
 assert coArea.getDimension() == 2
 
 # The same in dimension four, to exercise the kernel extraction on a wider
@@ -246,6 +254,10 @@ for y in [[0.0, 0.0], [0.8, -1.1]]:
     pdf = linearCoArea.computePDF(y)
     print(f"linearCoArea pdf({y})={pdf:.12g}")
     ott.assert_almost_equal(pdf, linearReference.computePDF(y), 1e-13, 1e-16)
+ott.assert_almost_equal(linearCoArea.getMean(), linearReference.getMean(),
+                        1e-14, 1e-14)
+ott.assert_almost_equal(linearCoArea.getCovariance(),
+                        linearReference.getCovariance(), 1e-14, 1e-14)
 
 # A heavy tailed antecedent: the extension of the fibre beyond the search box
 # stops as soon as the integrand is negligible there, so that the density is
@@ -417,44 +429,105 @@ with ott.assert_raises(TypeError):
     # the function input dimension must match the antecedent dimension
     otexp.PushForwardDistribution(ot.SymbolicFunction(["x"], ["x"]),
                                   ot.Normal(2))
-with ott.assert_raises(RuntimeError):
-    # x0 + x1^2 has a parabolic fibre of dimension two, the straight
-    # parameterisation of the fibre is invalid, so the density is refused
-    # instead of being wrong
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
-                                                      ["x0 + x1^2"]),
-                                  ot.Normal(3)).computePDF([1.0])
-with ott.assert_raises(RuntimeError):
-    # x0 + x1^2 has a parabolic fibre, the straight parameterisation of the
-    # fibre is invalid, so the density is refused instead of being wrong
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1"],
-                                                      ["x0 + x1^2"]),
-                                  ot.Normal(2)).computePDF([1.0])
-with ott.assert_raises(RuntimeError):
-    # f(x0, x1, x2) = (x0, x1^2) is not affine: the Jacobian at the mean is
-    # singular, and the point is outside the image of the linearization. The
-    # density must be refused instead of being reported as zero, while the
-    # density of the push-forward is positive there
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
-                                                      ["x0", "x1^2"]),
-                                  ot.Normal(3)).computePDF([0.5, 1.0])
-with ott.assert_raises(RuntimeError):
-    # Same function, but the point belongs to the image of the linearization,
-    # where the singular Jacobian would report an infinite density while the
-    # density of the push-forward is finite
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
-                                                      ["x0", "x1^2"]),
-                                  ot.Normal(3)).computePDF([0.5, 0.0])
-with ott.assert_raises(RuntimeError):
-    # f(x0, x1, x2) = (x0^2, x1) is not affine either: its Jacobian vanishes at
-    # the mean, and the point is outside the image of the linearization
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1", "x2"],
-                                                      ["x0^2", "x1"]),
-                                  ot.Normal(3)).computePDF([1.0, 0.0])
-with ott.assert_raises(RuntimeError):
-    # f(x0, x1) = x0 * x1 is null with a null Jacobian at the mean, and it is
-    # null on both faces of the search box of each coordinate: only the points
-    # moving several coordinates at once tell it from its linearization
-    otexp.PushForwardDistribution(ot.SymbolicFunction(["x0", "x1"],
-                                                      ["x0 * x1"]),
-                                  ot.Normal(2)).computePDF([1.0])
+# A nonlinear scalar map on R^2 has a one dimensional fibre: its density is
+# supported by the triangulated level-set extraction, and the straight affine
+# path is not used because isLinear() is false. Y = X0^2 with X ~ Normal(2) is
+# the chi-square distribution with one degree of freedom
+nonlinearCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1"], ["x0^2"]), ot.Normal(2)
+)
+assert nonlinearCoArea.getDimension() == 1
+assert nonlinearCoArea.getSample(10).getSize() == 10
+ott.assert_almost_equal(nonlinearCoArea.getMean(), [1.0], 1e-8, 1e-12)
+ott.assert_almost_equal(nonlinearCoArea.getCovariance(),
+                        ot.CovarianceMatrix(1, [2.0]), 1e-8, 1e-12)
+for level in [0.7, 1.0]:
+    expected = ot.Normal().computePDF([math.sqrt(level)]) / math.sqrt(level)
+    pdf = nonlinearCoArea.computePDF([level])
+    print(f"nonlinearCoArea pdf({level})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, expected, 2e-3, 0.0)
+ott.assert_almost_equal(math.exp(nonlinearCoArea.computeLogPDF([1.0])),
+                        ot.Normal().computePDF([1.0]), 1e-6, 0.0)
+
+# A function without an analytical gradient exercises the P1 fallback used by
+# the nonlinear co-area factor
+pythonNonlinear = otexp.PushForwardDistribution(
+    ot.PythonFunction(2, 1, lambda x: [x[0] ** 2]), ot.Normal(2)
+)
+ott.assert_almost_equal(pythonNonlinear.computePDF([1.0]),
+                        ot.Normal().computePDF([1.0]), 1e-3, 0.0)
+
+# Y = X0^2 + X1^2 with X ~ Normal(2) is the exponential distribution of
+# rate 1/2: its density is 0.5 * exp(-y / 2) for y > 0
+radialCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2"]), ot.Normal(2)
+)
+for level in [0.5, 1.0, 2.0]:
+    expected = 0.5 * math.exp(-0.5 * level)
+    pdf = radialCoArea.computePDF([level])
+    print(f"radialCoArea pdf({level})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, expected, 2e-3, 0.0)
+
+# A scalar nonlinear map on R^3 has a two dimensional fibre: the level set is
+# extracted from a tetrahedralisation of the search box, and the density is
+# integrated over the resulting triangulated surface. Y = X0^2 + X1^2 + X2^2
+# with X ~ Normal(3) is the chi-square distribution with three degrees of
+# freedom.
+surfaceCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2 + x1^2 + x2^2"]),
+    ot.Normal(3),
+)
+assert surfaceCoArea.getDimension() == 1
+chiSquare3 = ot.ChiSquare(3)
+for level in [0.5, 1.0, 2.0]:
+    expected = chiSquare3.computePDF([level])
+    pdf = surfaceCoArea.computePDF([level])
+    print(f"surfaceCoArea pdf({level})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, expected, 2e-2, 0.0)
+# A negative level is outside the image of the sum of squares: its fibre is
+# empty and the density is zero.
+assert surfaceCoArea.computePDF([-1.0]) == 0.0
+# The deterministic moments are still obtained by input-space quadrature.
+ott.assert_almost_equal(surfaceCoArea.getMean(), [3.0], 1e-8, 1e-12)
+ott.assert_almost_equal(
+    surfaceCoArea.getCovariance(), ot.CovarianceMatrix(1, [6.0]), 1e-8, 1e-12
+)
+
+# A level surface that coincides with a mesh plane exercises the face
+# deduplication: Y = X0^2 on R^3 has two flat branes x0 = +/- sqrt(y), and its
+# density is the chi-square distribution with one degree of freedom.
+planeCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2"]), ot.Normal(3)
+)
+for level in [0.7, 1.0]:
+    expected = ot.Normal().computePDF([math.sqrt(level)]) / math.sqrt(level)
+    pdf = planeCoArea.computePDF([level])
+    print(f"planeCoArea pdf({level})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, expected, 2e-3, 0.0)
+
+# A scalar nonlinear map on R^3 without an analytical gradient uses the
+# finite difference fallback for the co-area factor.
+pythonSurface = otexp.PushForwardDistribution(
+    ot.PythonFunction(3, 1, lambda x: [x[0] ** 2 + x[1] ** 2 + x[2] ** 2]),
+    ot.Normal(3),
+)
+ott.assert_almost_equal(pythonSurface.computePDF([1.0]),
+                        chiSquare3.computePDF([1.0]), 2e-2, 0.0)
+
+# Nonlinear co-area maps with a higher dimensional fibre are still accepted
+# at construction, and their PDF fails with an explicit message.
+nonAffineFunctions = [
+    (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0 + x1^2"]),
+     ot.Normal(4)),
+    (ot.SymbolicFunction(["x0", "x1", "x2"], ["x0", "x1^2"]), ot.Normal(3)),
+    (ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2", "x1"]), ot.Normal(3)),
+]
+for nonAffineFunction, nonAffineAntecedent in nonAffineFunctions:
+    nonAffineDistribution = otexp.PushForwardDistribution(
+        nonAffineFunction, nonAffineAntecedent
+    )
+    outputDimension = nonAffineFunction.getOutputDimension()
+    assert nonAffineDistribution.getDimension() == outputDimension
+    assert nonAffineDistribution.getSample(3).getSize() == 3
+    with ott.assert_raises(RuntimeError):
+        nonAffineDistribution.computePDF(ot.Point(outputDimension))

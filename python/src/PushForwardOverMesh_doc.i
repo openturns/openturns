@@ -9,9 +9,12 @@ Its probability density function is the density of :math:`\outputRV = f(\inputRV
 where :math:`\inputRV` is an :math:`\inputDim`-dimensional absolutely continuous random
 vector whose support is a domain discretized by a mesh of simplices, and
 :math:`f: \Rset^\inputDim \rightarrow \Rset^\outputDim` is the piecewise-affine map
-defined by a P1 field on this reference mesh, with :math:`\outputDim \geq \inputDim`. The
-distribution :math:`\outputRV` is supported on the image mesh, which may be
-embedded in an ambient space of dimension larger than :math:`\inputDim`.
+defined by a P1 field on this reference mesh, with :math:`\outputDim \geq d`,
+where :math:`d` is the intrinsic dimension of the reference mesh.  The ambient
+dimension :math:`\inputDim` of the reference mesh may be larger than :math:`d`.
+The distribution :math:`\outputRV` is supported on the image mesh, which is a
+:math:`d`-dimensional object and may be embedded in an ambient space of
+dimension larger than :math:`d`.
 
 The map :math:`f` is affine on each simplex, with a constant Jacobian
 matrix :math:`J_{f}`, so that the volume stretching factor
@@ -36,21 +39,36 @@ Jacobian of the map is singular on a simplex (degenerate image), its
 contribution is discarded: this is the behaviour of the density at a
 critical point.
 
+When :math:`\outputDim > d`, the image is a :math:`d`-dimensional subset of
+:math:`\Rset^\outputDim` and :math:`\outputRV` is singular with respect to the
+Lebesgue measure of :math:`\Rset^\outputDim`.  The density above is then
+defined with respect to the measure induced on the image mesh, not with
+respect to the Lebesgue measure of the ambient output space.  Points outside
+the image mesh have zero density.
+
 Realizations are sampled by mapping the realizations of :math:`\inputRV` through
 the P1 map, so the distribution is exactly normalized regardless of the
 mesh refinement.
+
+The mean and the covariance are computed deterministically, not estimated by
+Monte-Carlo: they are integrated over the reference mesh with
+:class:`~openturns.SimplicialCubature`, which applies a cubature rule to the
+P1 map and the antecedent density on each simplex. This also covers the
+co-area case, where the integration is performed over the reference domain
+rather than over the collapsed image mesh.
 
 When :math:`f` is the identity map and :math:`\inputRV` is uniform over the
 reference mesh, this distribution reduces to the uniform distribution over
 the mesh.
 
-The case :math:`\outputDim < \inputDim` (co-area formula) is implemented for
-the 2D triangle reference mesh mapped to 1D with ``UniformOverMesh``
-antecedent: the density integrates the antecedent over the fiber segments
-with the local projection Jacobian. Intrinsic-preserving maps (output
-dimension larger than or equal to the intrinsic reference dimension, e.g. a
-polyline in :math:`\Rset^2` mapped to scalars) use the weighted
-piecewise-affine path above. Other co-area cases are not implemented yet.
+The case :math:`\outputDim < d` (co-area formula) is implemented only for
+:math:`d = 2`, ambient reference dimension :math:`\inputDim = 2`, and
+:math:`\outputDim = 1`, with a ``UniformOverMesh`` antecedent: the density
+integrates the antecedent over the fiber segments with the local projection
+Jacobian. Intrinsic-preserving maps with :math:`\outputDim \geq d`, including
+embedded meshes such as a polyline in :math:`\Rset^2` mapped to scalars, use
+the weighted piecewise-affine path above. Other co-area cases are not
+implemented yet.
 
 Parameters
 ----------
@@ -71,8 +89,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``PushForwardOverMesh-OnSimplexEpsilon`` (``Scalar``, default: ``1.0e-10``): tolerance used when checking
   whether a point belongs to the image mesh.
-- ``PushForwardOverMesh-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
-  realizations used to estimate the mean and the covariance.
 
 Examples
 --------
@@ -147,7 +163,14 @@ Returns
 -------
 mesh : :class:`~openturns.Mesh`, embedded in an ambient space of dimension :math:`\outputDim`
     The mesh supporting the distribution: the image of the reference mesh
-    through the P1 map.)RAW"
+    through the P1 map.
+
+Notes
+-----
+In the co-area case :math:`\outputDim < d`, where :math:`d` is the intrinsic
+dimension of the reference mesh, the image simplices are collapsed and cannot
+be reconstructed as a mesh: this accessor raises a
+:class:`~openturns.NotYetImplementedException`.)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -157,5 +180,6 @@ R"RAW(Accessor to the intrinsic dimension of the image mesh.
 Returns
 -------
 dim : int
-    The dimension of the reference domain, which is the dimension of the
-    image mesh.)RAW"
+    The intrinsic dimension of the image mesh.  In the supported co-area case
+    :math:`\outputDim < d`, the image is assumed to be full-dimensional of
+    dimension :math:`\outputDim`, which is returned.)RAW"

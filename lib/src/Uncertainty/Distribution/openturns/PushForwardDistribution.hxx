@@ -147,6 +147,21 @@ private:
       supported; the fibre may have any dimension n - p >= 1 */
   Scalar computePDFByCoArea(const Point & point) const;
 
+  /** Compute the PDF in the scalar nonlinear co-area case
+      f: R^2 -> R, by triangulating the search box, locating the level set
+      f(x) = point through its crossings of the mesh edges, and integrating
+      the antecedent density along the resulting segments. This is a first
+      restricted nonlinear extension; the affine co-area path above remains
+      the dedicated exact implementation. */
+  Scalar computePDFByNonlinearCoArea(const Point & point) const;
+
+  /** Compute the PDF in the scalar nonlinear co-area case f: R^3 -> R, by
+      tetrahedralising the search box, locating the level surface through its
+      crossings of the tetrahedron edges, triangulating the resulting
+      polygons and integrating the antecedent density divided by the gradient
+      norm over the surface with SimplicialCubature. */
+  Scalar computePDFByNonlinearCoAreaSurface(const Point & point) const;
+
   /** Solve r(u) = 0 by damped Newton with step control from the given
       starting point; returns the root if converged within tolerance, an
       empty point otherwise */

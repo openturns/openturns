@@ -19,20 +19,34 @@
  *
  */
 #include <algorithm>
+#include <array>
+#include <atomic>
+#include <cmath>
+#include <iomanip>
+#include <memory>
+#include <set>
+#include <utility>
 #include <vector>
 #include "openturns/PushForwardDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Brent.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/ConstantFunction.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
+#include "openturns/GaussLegendre.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/IntervalMesher.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/LeastSquaresEquationsSolver.hxx"
+#include "openturns/LinearFunction.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/SimplicialCubature.hxx"
 #include "openturns/SobolSequence.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/SquareMatrix.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -59,18 +73,12 @@ public:
   CoAreaIntegrand(const Point & origin,
                   const Matrix & kernel,
                   const Distribution & antecedent,
-                  const Function & function,
-                  const Point & point,
-                  const Scalar jacobian,
-                  const Scalar residualTolerance)
+                  const Scalar jacobian)
     : EvaluationImplementation()
     , origin_(origin)
     , kernel_(kernel)
     , antecedent_(antecedent)
-    , function_(function)
-    , point_(point)
     , jacobian_(jacobian)
-    , residualTolerance_(residualTolerance)
   {
     // Nothing to do
   }
@@ -84,18 +92,9 @@ public:
   {
     const Point x(origin_ + kernel_ * parameter);
     const Scalar antecedentPDF = antecedent_.computePDF(x);
-    // Outside the support of the antecedent the fibre carries no mass. The
-    // residual is not tested there: only the region carrying mass matters
+    // Outside the support of the antecedent the fibre carries no mass.
     if (!(antecedentPDF > 0.0))
       return Point(1, 0.0);
-    // The co-area formula is implemented for an affine function only, in
-    // which case the image of the whole fibre is the point itself. A curved
-    // level set betrays itself by a residual that no rounding error can
-    // explain, and integrating along the straight fibre regardless would
-    // return a density that is silently wrong
-    const Point image(function_(x));
-    if ((image - point_).norm() > residualTolerance_ * std::max(1.0, std::max(point_.norm(), image.norm())))
-      throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for an affine function, here f(" << x << ")=" << image << " whereas the density is evaluated at " << point_ << ", so that the fibre is curved or the function is not affine";
     return Point(1, antecedentPDF / jacobian_);
   }
 
@@ -115,7 +114,7 @@ public:
     oss << "class=CoAreaIntegrand"
         << " origin=" << origin_.__repr__()
         << " kernel=" << kernel_.__repr__()
-        << " point=" << point_.__repr__();
+        << " jacobian=" << jacobian_;
     return oss;
   }
 
@@ -124,7 +123,6 @@ public:
     OSS oss(false);
     oss << "CoAreaIntegrand(origin=" << origin_
         << ", kernel=" << kernel_
-        << ", point=" << point_
         << ", jacobian=" << jacobian_ << ")";
     return oss;
   }
@@ -133,11 +131,132 @@ private:
   Point origin_;
   Matrix kernel_;
   Distribution antecedent_;
-  Function function_;
-  Point point_;
   Scalar jacobian_;
-  Scalar residualTolerance_;
 }; // CoAreaIntegrand
+
+/**
+ * Integrand of the co-area formula on a level surface f(x) = level of a
+ * scalar function f: R^3 -> R. The surface mesh supplies the Hausdorff
+ * element, so the integrand only has to divide the antecedent density by the
+ * norm of the gradient. When the function does not provide an analytical
+ * gradient, a centered finite difference fallback is used. A vanishing
+ * gradient is a critical point of the map: the co-area factor is singular
+ * there, and the shared flag lets the caller return an infinite density.
+ */
+class NonlinearCoAreaSurfaceIntegrand: public EvaluationImplementation
+{
+public:
+  NonlinearCoAreaSurfaceIntegrand(const Distribution & antecedent,
+                                  const Function & function,
+                                  const std::shared_ptr<std::atomic<Bool>> & singular)
+    : EvaluationImplementation()
+    , antecedent_(antecedent)
+    , function_(function)
+    , singular_(singular)
+  {
+    // Nothing to do
+  }
+
+  NonlinearCoAreaSurfaceIntegrand * clone() const override
+  {
+    return new NonlinearCoAreaSurfaceIntegrand(*this);
+  }
+
+  Point operator() (const Point & point) const override
+  {
+    const Scalar antecedentPDF = antecedent_.computePDF(point);
+    // Outside the support of the antecedent the level surface carries no mass.
+    if (!(antecedentPDF > 0.0))
+      return Point(1, 0.0);
+    const Scalar gradientNorm = computeGradientNorm(point);
+    if (!std::isfinite(gradientNorm) || !(gradientNorm > 0.0))
+    {
+      singular_->store(true);
+      return Point(1, 0.0);
+    }
+    return Point(1, antecedentPDF / gradientNorm);
+  }
+
+  UnsignedInteger getInputDimension() const override
+  {
+    return function_.getInputDimension();
+  }
+
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
+
+  String __repr__() const override
+  {
+    OSS oss(true);
+    oss << "class=NonlinearCoAreaSurfaceIntegrand"
+        << " antecedent=" << antecedent_.__repr__()
+        << " function=" << function_.__repr__();
+    return oss;
+  }
+
+  String __str__(const String & ) const override
+  {
+    OSS oss(false);
+    oss << "NonlinearCoAreaSurfaceIntegrand(antecedent=" << antecedent_
+        << ", function=" << function_ << ")";
+    return oss;
+  }
+
+private:
+  Scalar computeGradientNorm(const Point & point) const
+  {
+    // Prefer the analytical gradient of the function when it is available.
+    try
+    {
+      const Matrix gradientMatrix(function_.gradient(point));
+      if ((gradientMatrix.getNbRows() == point.getSize()) && (gradientMatrix.getNbColumns() == 1))
+      {
+        Scalar squaredNorm = 0.0;
+        for (UnsignedInteger i = 0; i < point.getSize(); ++i)
+          squaredNorm += gradientMatrix(i, 0) * gradientMatrix(i, 0);
+        return std::sqrt(squaredNorm);
+      }
+    }
+    catch (const Exception &)
+    {
+      // Fall through to the finite difference approximation
+    }
+    // Centered finite differences for a function without an analytical
+    // gradient. The step is relative to the magnitude of the evaluation point
+    // so that it remains meaningful for coordinates far from the origin.
+    const Scalar step = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, point.norm());
+    Point plusPoint(point);
+    Point minusPoint(point);
+    Scalar squaredNorm = 0.0;
+    for (UnsignedInteger i = 0; i < point.getSize(); ++i)
+    {
+      plusPoint[i] += step;
+      minusPoint[i] -= step;
+      Scalar plusValue = 0.0;
+      Scalar minusValue = 0.0;
+      try
+      {
+        plusValue = function_(plusPoint)[0];
+        minusValue = function_(minusPoint)[0];
+      }
+      catch (const Exception &)
+      {
+        return 0.0;
+      }
+      const Scalar derivative = (plusValue - minusValue) / (2.0 * step);
+      squaredNorm += derivative * derivative;
+      plusPoint[i] = point[i];
+      minusPoint[i] = point[i];
+    }
+    return std::sqrt(squaredNorm);
+  }
+
+  Distribution antecedent_;
+  Function function_;
+  std::shared_ptr<std::atomic<Bool>> singular_;
+}; // NonlinearCoAreaSurfaceIntegrand
 
 /**
  * A half space alpha . t <= beta of the parameter space of a fibre of
@@ -149,19 +268,7 @@ struct CoAreaConstraint
   Scalar bound;
 };
 
-typedef std::vector<CoAreaConstraint> CoAreaConstraintCollection;
-
-/**
- * The normals of the constraints are built from the rows of an orthonormal
- * basis of the kernel of the Jacobian and combined by the Fourier-Motzkin
- * elimination below: their entries are of order one and their rounding error
- * is a small multiple of the machine precision, amplified by the elimination.
- * Two unit normals closer than this threshold are numerically the same
- * direction, and a coefficient below it is numerically zero. It is far above
- * the machine precision to absorb the amplification, but small enough not to
- * merge distinct facets of the projected box.
- */
-const Scalar CoAreaConstraintTolerance = 1.0e-12;
+typedef Collection<CoAreaConstraint> CoAreaConstraintCollection;
 
 /**
  * Drop the constraints with a numerically zero normal after checking that
@@ -174,14 +281,15 @@ const Scalar CoAreaConstraintTolerance = 1.0e-12;
  */
 Bool pruneCoAreaConstraints(const CoAreaConstraintCollection & constraints,
                             const Scalar feasibilityTolerance,
+                            const Scalar constraintTolerance,
                             CoAreaConstraintCollection & pruned)
 {
   pruned.clear();
-  for (UnsignedInteger i = 0; i < constraints.size(); ++i)
+  for (UnsignedInteger i = 0; i < constraints.getSize(); ++i)
   {
     const Point & normal = constraints[i].normal;
     const Scalar norm = normal.norm();
-    if (norm <= CoAreaConstraintTolerance)
+    if (norm <= constraintTolerance)
     {
       // The constraint no longer depends on t: it is either trivially
       // satisfied or it makes the whole fibre empty
@@ -192,9 +300,9 @@ Bool pruneCoAreaConstraints(const CoAreaConstraintCollection & constraints,
     const Point unitNormal(normal / norm);
     const Scalar unitBound = constraints[i].bound / norm;
     Bool merged = false;
-    for (UnsignedInteger j = 0; j < pruned.size(); ++j)
+    for (UnsignedInteger j = 0; j < pruned.getSize(); ++j)
     {
-      if ((unitNormal - pruned[j].normal).norm() <= CoAreaConstraintTolerance)
+      if ((unitNormal - pruned[j].normal).norm() <= constraintTolerance)
       {
         // Same direction: only the tightest bound matters
         if (unitBound < pruned[j].bound)
@@ -208,7 +316,7 @@ Bool pruneCoAreaConstraints(const CoAreaConstraintCollection & constraints,
       CoAreaConstraint constraint;
       constraint.normal = unitNormal;
       constraint.bound = unitBound;
-      pruned.push_back(constraint);
+      pruned.add(constraint);
     }
   }
   return true;
@@ -223,6 +331,7 @@ Bool pruneCoAreaConstraints(const CoAreaConstraintCollection & constraints,
 Bool eliminateCoAreaConstraint(const CoAreaConstraintCollection & constraints,
                                const UnsignedInteger level,
                                const Scalar feasibilityTolerance,
+                               const Scalar constraintTolerance,
                                CoAreaConstraintCollection & eliminated)
 {
   // alpha . t <= beta with alpha[level] > 0 bounds t_level from above, and
@@ -230,22 +339,22 @@ Bool eliminateCoAreaConstraint(const CoAreaConstraintCollection & constraints,
   CoAreaConstraintCollection lowerBounds(0);
   CoAreaConstraintCollection upperBounds(0);
   CoAreaConstraintCollection independent(0);
-  for (UnsignedInteger i = 0; i < constraints.size(); ++i)
+  for (UnsignedInteger i = 0; i < constraints.getSize(); ++i)
   {
     const Scalar coefficient = constraints[i].normal[level];
-    if (coefficient > CoAreaConstraintTolerance)
-      upperBounds.push_back(constraints[i]);
-    else if (coefficient < -CoAreaConstraintTolerance)
-      lowerBounds.push_back(constraints[i]);
+    if (coefficient > constraintTolerance)
+      upperBounds.add(constraints[i]);
+    else if (coefficient < -constraintTolerance)
+      lowerBounds.add(constraints[i]);
     else
-      independent.push_back(constraints[i]);
+      independent.add(constraints[i]);
   }
   // Each upper bound and each lower bound combine into a constraint on the
   // other coordinates by eliminating t_level
-  for (UnsignedInteger i = 0; i < upperBounds.size(); ++i)
+  for (UnsignedInteger i = 0; i < upperBounds.getSize(); ++i)
   {
     const Point & upperNormal = upperBounds[i].normal;
-    for (UnsignedInteger j = 0; j < lowerBounds.size(); ++j)
+    for (UnsignedInteger j = 0; j < lowerBounds.getSize(); ++j)
     {
       const Point & lowerNormal = lowerBounds[j].normal;
       Point normal(upperNormal / upperNormal[level] - lowerNormal / lowerNormal[level]);
@@ -253,10 +362,10 @@ Bool eliminateCoAreaConstraint(const CoAreaConstraintCollection & constraints,
       CoAreaConstraint constraint;
       constraint.normal = normal;
       constraint.bound = upperBounds[i].bound / upperNormal[level] - lowerBounds[j].bound / lowerNormal[level];
-      independent.push_back(constraint);
+      independent.add(constraint);
     }
   }
-  return pruneCoAreaConstraints(independent, feasibilityTolerance, eliminated);
+  return pruneCoAreaConstraints(independent, feasibilityTolerance, constraintTolerance, eliminated);
 }
 
 /**
@@ -270,19 +379,20 @@ Bool computeCoAreaBounds(const CoAreaConstraintCollection & system,
                          const UnsignedInteger level,
                          const Point & prefix,
                          const Scalar feasibilityTolerance,
+                         const Scalar constraintTolerance,
                          Scalar & lower,
                          Scalar & upper)
 {
   lower = -SpecFunc::MaxScalar;
   upper = SpecFunc::MaxScalar;
-  for (UnsignedInteger i = 0; i < system.size(); ++i)
+  for (UnsignedInteger i = 0; i < system.getSize(); ++i)
   {
     const CoAreaConstraint & constraint = system[i];
     Scalar value = constraint.bound;
     for (UnsignedInteger j = 0; j < level; ++j)
       value -= constraint.normal[j] * prefix[j];
     const Scalar coefficient = constraint.normal[level];
-    if (std::abs(coefficient) <= CoAreaConstraintTolerance)
+    if (std::abs(coefficient) <= constraintTolerance)
     {
       // The constraint only involves the prefix: a violation means that the
       // section of the fibre is empty
@@ -311,12 +421,14 @@ public:
   CoAreaBoundFunction(const CoAreaConstraintCollection & system,
                       const UnsignedInteger level,
                       const Bool upper,
-                      const Scalar feasibilityTolerance)
+                      const Scalar feasibilityTolerance,
+                      const Scalar constraintTolerance)
     : EvaluationImplementation()
     , system_(system)
     , level_(level)
     , upper_(upper)
     , feasibilityTolerance_(feasibilityTolerance)
+    , constraintTolerance_(constraintTolerance)
   {
     // Nothing to do
   }
@@ -330,7 +442,7 @@ public:
   {
     Scalar lower = 0.0;
     Scalar upper = 0.0;
-    if (!computeCoAreaBounds(system_, level_, prefix, feasibilityTolerance_, lower, upper))
+    if (!computeCoAreaBounds(system_, level_, prefix, feasibilityTolerance_, constraintTolerance_, lower, upper))
       return Point(1, 0.0);
     // The two bound functions are evaluated independently by the integration
     // algorithm: clamp the upper one to the lower one so that it never
@@ -371,6 +483,7 @@ private:
   UnsignedInteger level_;
   Bool upper_;
   Scalar feasibilityTolerance_;
+  Scalar constraintTolerance_;
 }; // CoAreaBoundFunction
 
 } // namespace PushForwardDistributionFunctions
@@ -450,10 +563,10 @@ void PushForwardDistribution::setFunctionAndAntecedent(const Function & function
     throw InvalidArgumentException(HERE) << "Error: the function must have an input dimension equal to the dimension of the antecedent, here input dimension=" << inputDimension << " and dimension of the antecedent=" << antecedent.getDimension();
   if (!antecedent.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: the antecedent must be absolutely continuous, here isContinuous()=" << antecedent.isContinuous();
-  // The case outputDimension < inputDimension (co-area formula) is handled by
-  // computePDFByCoArea(), which is restricted to an affine function. The
-  // restriction is not enforced here: sampling, the mean and the range stay
-  // available for a function of any codimension
+  // A nonlinear co-area map is accepted for sampling, range and moments: these
+  // operations only need evaluations of the function or integrals over the
+  // input space. The co-area density itself needs an implicit fibre and is
+  // rejected in computePDF() when the function does not declare its affinity.
   function_ = function;
   antecedent_ = antecedent;
   // The search box only depends on the antecedent, cache it: rebuilding it at
@@ -516,11 +629,12 @@ void PushForwardDistribution::computeRange()
   const Point upperBound(sample.getMax());
   Point marginedLowerBound(outputDimension);
   Point marginedUpperBound(outputDimension);
+  const Scalar rangeMargin = ResourceMap::GetAsScalar("PushForwardDistribution-RangeMargin");
   for (UnsignedInteger i = 0; i < outputDimension; ++i)
   {
-    // Add a margin of 5% of each marginal span to avoid rejecting points
-    // lying on the edge of the support
-    const Scalar halfSpan = 0.025 * (upperBound[i] - lowerBound[i]);
+    // Add a margin to each marginal span to avoid rejecting points lying on
+    // the edge of the sampled support
+    const Scalar halfSpan = rangeMargin * (upperBound[i] - lowerBound[i]);
     marginedLowerBound[i] = lowerBound[i] - halfSpan;
     marginedUpperBound[i] = upperBound[i] + halfSpan;
   }
@@ -538,8 +652,7 @@ Interval PushForwardDistribution::buildSearchInterval() const
   const Interval::BoolCollection finiteUpperBound(antecedentRange.getFiniteUpperBound());
   // When a bound is not finite, clip it using such a marginal quantile of
   // the antecedent that the probability mass outside the box is negligible
-  const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
-  const Scalar upperQuantile = 1.0 - quantileEpsilon;
+  const Scalar upperQuantile = 1.0 - quantileEpsilon_;
   Point lowerBound(antecedentRange.getLowerBound());
   Point upperBound(antecedentRange.getUpperBound());
   const Point mean(antecedent_.getMean());
@@ -548,14 +661,18 @@ Interval PushForwardDistribution::buildSearchInterval() const
     if (!finiteLowerBound[i] || !finiteUpperBound[i])
     {
       const Distribution marginal(antecedent_.getMarginal(i));
-      if (!finiteLowerBound[i]) lowerBound[i] = marginal.computeQuantile(quantileEpsilon)[0];
+      if (!finiteLowerBound[i]) lowerBound[i] = marginal.computeQuantile(quantileEpsilon_)[0];
       if (!finiteUpperBound[i]) upperBound[i] = marginal.computeQuantile(upperQuantile)[0];
     }
     if (!(lowerBound[i] < upperBound[i]))
     {
-      // Degenerate search interval: fall back to a unit interval around the mean
-      lowerBound[i] = mean[i] - 1.0;
-      upperBound[i] = mean[i] + 1.0;
+      // A continuous distribution with a non-degenerate support normally
+      // gives a positive width. If a numerical quantile still collapses the
+      // interval, fall back to a finite box around the mean whose half width
+      // is controlled by the ResourceMap, so that the search remains bounded.
+      const Scalar halfWidth = ResourceMap::GetAsScalar("PushForwardDistribution-DegenerateSearchIntervalHalfWidth");
+      lowerBound[i] = mean[i] - halfWidth;
+      upperBound[i] = mean[i] + halfWidth;
     }
   }
   return Interval(lowerBound, upperBound, Interval::BoolCollection(dimension, true), Interval::BoolCollection(dimension, true));
@@ -568,12 +685,10 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   const UnsignedInteger outputDimension = function_.getOutputDimension();
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger fibreDimension = inputDimension - outputDimension;
-  // The function is assumed affine, hence its Jacobian matrix is constant and
-  // is evaluated once, at the mean of the antecedent. The assumption is
-  // checked on the faces of the search box, which bound the region where the
-  // fibre is integrated, and again in the integrand at each quadrature node
+  // computePDF() routes only affine functions here: a nonlinear co-area map
+  // is rejected before this point. The Jacobian matrix is therefore constant
+  // and is evaluated once, at the mean of the antecedent.
   const Point mean(antecedent_.getMean());
-  const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaResidualTolerance");
   const Matrix gradientMatrix(function_.gradient(mean));
   if ((gradientMatrix.getNbRows() != inputDimension) || (gradientMatrix.getNbColumns() != outputDimension))
     throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
@@ -581,48 +696,18 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   const Point lowerBound(searchInterval.getLowerBound());
   const Point upperBound(searchInterval.getUpperBound());
   const Point meanImage(function_(mean));
-  // The linearization at the mean is the only thing the co-area formula can
-  // rely on, and the checks below are the necessary conditions it must satisfy
-  // for the shortcuts of the density computation, which return a value without
-  // integrating along the fibre, not to give a zero or an infinite density
-  // that no integral backs
-  const auto checkAffineModel = [&](const Point & x)
-  {
-    const Point image(function_(x));
-    Point linearization(meanImage);
-    for (UnsignedInteger index = 0; index < inputDimension; ++index)
-      for (UnsignedInteger k = 0; k < outputDimension; ++k)
-        linearization[k] += gradientMatrix(index, k) * (x[index] - mean[index]);
-    if ((image - linearization).norm() > residualTolerance * std::max(1.0, std::max(image.norm(), linearization.norm())))
-      throw NotYetImplementedException(HERE) << "Error: the co-area formula is only implemented for an affine function, here f(" << x << ")=" << image << " whereas its linearization at the mean of the antecedent gives " << linearization << ", so that the fibre is not a straight line";
-  };
-  // The faces of the search box, one coordinate at a time, bound the region
-  // where the fibre is integrated
-  for (UnsignedInteger index = 0; index < inputDimension; ++index)
-  {
-    for (UnsignedInteger side = 0; side < 2; ++side)
-    {
-      Point x(mean);
-      x[index] = (side == 0 ? lowerBound[index] : upperBound[index]);
-      checkAffineModel(x);
-    }
-  }
-  // Moving all the coordinates together probes their interactions, such as
-  // x0 * x1, which vanish on the faces above
-  for (UnsignedInteger side = 0; side < 2; ++side)
-  {
-    Point x(mean);
-    for (UnsignedInteger index = 0; index < inputDimension; ++index)
-      x[index] = (side == 0 ? lowerBound[index] : upperBound[index]);
-    checkAffineModel(x);
-  }
   // Full SVD of the n x p Jacobian matrix J of the function: its p singular
   // values give the p-dimensional Jacobian |J_p f| = prod sigma_i, i.e. the
   // factor relating the p-dimensional Hausdorff measure on the image to the
   // n-dimensional Lebesgue measure of the antecedent, and the last n - p
   // columns of the full left factor span the kernel of J, i.e. the directions
   // along which the function is constant, which are precisely the tangent
-  // directions of the fibre
+  // directions of the fibre.
+  // Matrix::computeSVD is used directly rather than SVDMethod: the latter is
+  // a least-squares solver based on an economic SVD, it throws on a zero
+  // singular value and exposes neither the full left factor needed for the
+  // kernel nor the residual needed to test membership of the image. The
+  // co-area formula needs all of these
   Matrix leftFactor;
   Matrix rightFactorTransposed;
   const Point singularValues(gradientMatrix.computeSVD(leftFactor, rightFactorTransposed, true));
@@ -661,10 +746,11 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
       imageResidual += projection * projection;
   }
   // Membership of the image is a measure zero condition when J is rank
-  // deficient, hence the strict, machine precision threshold: a point that is
-  // even slightly off the image has an empty fibre and a zero density, while
-  // a point exactly on it carries a singular density
-  if (std::sqrt(imageResidual) > SpecFunc::ScalarEpsilon * std::max(1.0, target.norm()))
+  // deficient. A point that is even slightly off the image has an empty fibre
+  // and a zero density, while a point exactly on it carries a singular
+  // density. The threshold is the CDF epsilon of the distribution, which is
+  // the natural relative tolerance for a measure zero test
+  if (std::sqrt(imageResidual) > cdfEpsilon_ * std::max(1.0, target.norm()))
     // The point is not in the image of the function: its fibre is empty
     return 0.0;
   if (rankDeficient)
@@ -718,18 +804,20 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
     // there. A heavy tail stops the extension immediately: its box already
     // extends far into the region where its density is negligible, which is
     // precisely the situation where a wider interval would make the quadrature
-    // miss the bulk of the mass
-    const Scalar negligibleIntegrand = SpecFunc::ScalarEpsilon * densityScale;
+    // miss the bulk of the mass. The threshold is a numerical zero on the
+    // density at the end point, not a requested relative accuracy: a large
+    // end point multiplied by this density still estimates the neglected tail
+    const Scalar negligibleIntegrand = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaTailEpsilon") * densityScale;
     if (densityScale > 0.0)
     {
-      const UnsignedInteger maximumExtensions = 16;
+      const UnsignedInteger maximumExtensions = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumExtensions");
       for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMax * direction) > negligibleIntegrand * jacobian); ++extension)
         tMax += tMax - tMin;
       for (UnsignedInteger extension = 0; (extension < maximumExtensions) && (antecedent_.computePDF(origin + tMin * direction) > negligibleIntegrand * jacobian); ++extension)
         tMin -= tMax - tMin;
     }
     const Matrix kernel(inputDimension, 1, direction);
-    const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, kernel, antecedent_, function_, point, jacobian, residualTolerance);
+    const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, kernel, antecedent_, jacobian);
     // The error requested from GaussKronrod is an absolute error, whereas the
     // accuracy of a density is naturally relative: scaling it by the magnitude
     // of the integrand at the fibre point requests a number of significant
@@ -750,10 +838,19 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
     for (UnsignedInteger j = 0; j < fibreDimension; ++j)
       kernel(i, j) = leftFactor(i, outputDimension + j);
+  // The normals of the constraints are built from the rows of an orthonormal
+  // basis of the kernel of the Jacobian and combined by the Fourier-Motzkin
+  // elimination below: their entries are of order one and their rounding error
+  // is a small multiple of the machine precision, amplified by the elimination.
+  // Two unit normals closer than the constraint tolerance are numerically the
+  // same direction, and a coefficient below it is numerically zero. It is far
+  // above the machine precision to absorb the amplification, but small enough
+  // not to merge distinct facets of the projected box.
+  const Scalar constraintTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaConstraintTolerance");
   // The parameter t has the same scale as the point x because the kernel is
   // orthonormal, so the diagonal of the search box bounds the extent of the
   // fibre and gives the scale of a meaningful feasibility tolerance
-  const Scalar feasibilityTolerance = PushForwardDistributionFunctions::CoAreaConstraintTolerance * std::max(1.0, (upperBound - lowerBound).norm());
+  const Scalar feasibilityTolerance = constraintTolerance * std::max(1.0, (upperBound - lowerBound).norm());
   PushForwardDistributionFunctions::CoAreaConstraintCollection constraints(0);
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
@@ -763,11 +860,11 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
     PushForwardDistributionFunctions::CoAreaConstraint constraint;
     constraint.normal = normal;
     constraint.bound = upperBound[i] - origin[i];
-    constraints.push_back(constraint);
+    constraints.add(constraint);
     // The same face seen from the other side: -normal . t <= origin[i] - lower[i]
     constraint.normal = -normal;
     constraint.bound = origin[i] - lowerBound[i];
-    constraints.push_back(constraint);
+    constraints.add(constraint);
   }
   // systems[k] describes the exact projection of the polytope onto
   // (t_0, ..., t_k), computed once by eliminating the coordinates from the
@@ -776,24 +873,24 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   // satisfying systems[k], and the kinks of these piecewise affine bounds are
   // left to the adaptive quadrature rule
   PushForwardDistributionFunctions::CoAreaConstraintCollection current(0);
-  if (!PushForwardDistributionFunctions::pruneCoAreaConstraints(constraints, feasibilityTolerance, current))
+  if (!PushForwardDistributionFunctions::pruneCoAreaConstraints(constraints, feasibilityTolerance, constraintTolerance, current))
     // The fibre does not meet the search box: its density is zero
     return 0.0;
-  std::vector<PushForwardDistributionFunctions::CoAreaConstraintCollection> systems(fibreDimension + 1);
+  Collection<PushForwardDistributionFunctions::CoAreaConstraintCollection> systems(fibreDimension + 1);
   systems[fibreDimension] = current;
   for (UnsignedInteger level = fibreDimension; level > 0; --level)
   {
     const UnsignedInteger coordinate = level - 1;
     systems[coordinate] = current;
     PushForwardDistributionFunctions::CoAreaConstraintCollection eliminated(0);
-    if (!PushForwardDistributionFunctions::eliminateCoAreaConstraint(current, coordinate, feasibilityTolerance, eliminated))
+    if (!PushForwardDistributionFunctions::eliminateCoAreaConstraint(current, coordinate, feasibilityTolerance, constraintTolerance, eliminated))
       // The projection is empty: the fibre does not meet the search box
       return 0.0;
     current = eliminated;
   }
   Scalar tMin = 0.0;
   Scalar tMax = 0.0;
-  if (!PushForwardDistributionFunctions::computeCoAreaBounds(systems[0], 0, Point(0), feasibilityTolerance, tMin, tMax))
+  if (!PushForwardDistributionFunctions::computeCoAreaBounds(systems[0], 0, Point(0), feasibilityTolerance, constraintTolerance, tMin, tMax))
     return 0.0;
   if (!(tMin < tMax)) return 0.0;
   // Magnitude of the integrand at the point of the fibre closest to the mean:
@@ -803,28 +900,509 @@ Scalar PushForwardDistribution::computePDFByCoArea(const Point & point) const
   // The nested bounds are piecewise affine functions with kinks along the
   // projected facets of the polytope. Adaptive quadrature converges only
   // algebraically across a kink: for a fibre of dimension three the measured
-  // relative accuracy stalls around 1e-8, and the nested error of the inner
+  // relative error stalls above 1e-9, and the nested error of the inner
   // integrals prevents any gain from a tighter request. For the sum of four
   // uniform variables, a request of 1e-7 reaches 5.5e-9 in 8.5 s whereas a
   // request of 1e-8 reaches 7.4e-9 in 57 s. Floor the request at the
-  // PushForwardDistribution-CoAreaErrorFloor value for d >= 3, the one and two
-  // dimensional fibres being integrated to the machine precision, as measured
-  // on the same integrand: 3e-16 at 1e-14.
+  // PushForwardDistribution-CoAreaErrorFloor value for d >= 3. The one and
+  // two dimensional fibres reached 3e-16 on the same integrand at a request of
+  // 1e-14, so they are not floored.
   Scalar requestedError = ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaMaximumError");
   if (fibreDimension > 2)
     requestedError = std::max(requestedError, ResourceMap::GetAsScalar("PushForwardDistribution-CoAreaErrorFloor"));
+  // The floor on densityScale only avoids a zero absolute error request when
+  // the density vanishes at the origin; it is a numerical safeguard, not an
+  // accuracy target.
   const GaussKronrod algorithm(ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals"),
                                requestedError * std::max(densityScale, SpecFunc::ScalarEpsilon),
                                GaussKronrodRule(GaussKronrodRule::G7K15));
-  const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, kernel, antecedent_, function_, point, jacobian, residualTolerance);
+  const PushForwardDistributionFunctions::CoAreaIntegrand integrand(origin, kernel, antecedent_, jacobian);
   IteratedQuadrature::FunctionCollection lowerBounds(fibreDimension - 1);
   IteratedQuadrature::FunctionCollection upperBounds(fibreDimension - 1);
   for (UnsignedInteger level = 1; level < fibreDimension; ++level)
   {
-    lowerBounds[level - 1] = Function(new PushForwardDistributionFunctions::CoAreaBoundFunction(systems[level], level, false, feasibilityTolerance));
-    upperBounds[level - 1] = Function(new PushForwardDistributionFunctions::CoAreaBoundFunction(systems[level], level, true, feasibilityTolerance));
+    lowerBounds[level - 1] = Function(new PushForwardDistributionFunctions::CoAreaBoundFunction(systems[level], level, false, feasibilityTolerance, constraintTolerance));
+    upperBounds[level - 1] = Function(new PushForwardDistributionFunctions::CoAreaBoundFunction(systems[level], level, true, feasibilityTolerance, constraintTolerance));
   }
   return IteratedQuadrature(algorithm).integrate(Function(integrand), tMin, tMax, lowerBounds, upperBounds)[0];
+}
+
+/* Compute the PDF in the scalar nonlinear co-area case f: R^3 -> R. The
+   tetrahedral mesh of the search box supplies the topology of the level
+   surface: a tetrahedron is crossed when its vertices are not all on the same
+   side of the requested level. The intersection of the level with a crossed
+   tetrahedron is a convex polygon whose vertices lie on the actual level set:
+   each crossed edge is solved with a scalar Brent solve on the actual
+   function. The polygon is triangulated by an angular sort in a local tangent
+   plane, and the antecedent density divided by the norm of the gradient of f
+   is integrated over the resulting surface mesh with SimplicialCubature.
+   This is the two-dimensional analogue of the scalar R^2 path, restricted to
+   a regular level surface, and it keeps the affine co-area path dedicated to
+   the exact affine case. */
+Scalar PushForwardDistribution::computePDFByNonlinearCoAreaSurface(const Point & point) const
+{
+  const Scalar level = point[0];
+  const UnsignedInteger discretization = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization");
+  const Scalar levelTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-NonlinearCoAreaLevelTolerance");
+  // A uniform tetrahedral mesh of the search box is enough for a first
+  // deterministic implementation. The level crossings are polished on the
+  // actual function, so the geometric error is quadratic in the mesh size,
+  // and the resource key lets the caller trade cost for accuracy without
+  // changing the algorithm.
+  const Mesh mesh(IntervalMesher(Indices(3, discretization)).build(searchInterval_));
+  const Sample vertexValues(function_(mesh.getVertices()));
+  const Brent edgeSolver;
+  const Scalar pointTolerance = levelTolerance * std::max(1.0, (searchInterval_.getUpperBound() - searchInterval_.getLowerBound()).norm());
+  // The surface mesh is stored as a flat list of triangles. Each triangle has
+  // three new vertices, padded with a repeated vertex to make the ambient
+  // dimension three and the intrinsic dimension two, as expected by Mesh and
+  // SimplicialCubature.
+  Sample surfaceVertices(0, 3);
+  const auto addTriangle = [&](const Point & first, const Point & second, const Point & third)
+  {
+    const Point firstEdge(second - first);
+    const Point secondEdge(third - first);
+    Point normal(3);
+    normal[0] = firstEdge[1] * secondEdge[2] - firstEdge[2] * secondEdge[1];
+    normal[1] = firstEdge[2] * secondEdge[0] - firstEdge[0] * secondEdge[2];
+    normal[2] = firstEdge[0] * secondEdge[1] - firstEdge[1] * secondEdge[0];
+    if (!(normal.norm() > 0.0))
+      return;
+    surfaceVertices.add(first);
+    surfaceVertices.add(second);
+    surfaceVertices.add(third);
+  };
+  // When the level set coincides exactly with a tetrahedron face, the two
+  // adjacent tetrahedra see the same face. Count it once; this only happens
+  // on a set of level values of measure zero, but it keeps the result stable
+  // for round levels such as the mean of a symmetric distribution.
+  std::set<std::array<UnsignedInteger, 3>> countedFaces;
+  for (UnsignedInteger simplexIndex = 0; simplexIndex < mesh.getSimplicesNumber(); ++simplexIndex)
+  {
+    const Indices simplex(mesh.getSimplex(simplexIndex));
+    if (simplex.getSize() != 4)
+      continue;
+    Point x[4];
+    Scalar value[4];
+    SignedInteger sign[4];
+    for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+    {
+      x[vertexIndex] = mesh.getVertex(simplex[vertexIndex]);
+      value[vertexIndex] = vertexValues(simplex[vertexIndex], 0);
+      // The tolerance is relative to the level and to the local values, so
+      // that a vertex is classified as lying on the level set consistently
+      // with the floating point representation of f.
+      const Scalar scale = std::max(1.0, std::max(std::abs(level), std::abs(value[vertexIndex])));
+      const Scalar tolerance = levelTolerance * scale;
+      sign[vertexIndex] = (value[vertexIndex] < level - tolerance) ? -1 : ((value[vertexIndex] > level + tolerance) ? 1 : 0);
+    }
+    const UnsignedInteger zeroCount = (sign[0] == 0) + (sign[1] == 0) + (sign[2] == 0) + (sign[3] == 0);
+    // A whole tetrahedron at the requested level is a three dimensional part
+    // of the fibre: the two dimensional co-area density is singular there.
+    if (zeroCount == 4)
+      return SpecFunc::Infinity;
+    const auto addCrossing = [&](const UnsignedInteger firstVertex, const UnsignedInteger secondVertex) -> Point
+    {
+      // The two vertices are on opposite sides of the level. Solve
+      // f(x) = level on the edge instead of using the P1 interpolation only:
+      // the root is bracketed, and this keeps the surface vertices on the
+      // actual level set even when the function is strongly curved.
+      const Point edgeDirection(x[secondVertex] - x[firstVertex]);
+      const LinearFunction edge(Point(1, 0.0), x[firstVertex], Matrix(3, 1, edgeDirection));
+      const Function edgeFunction(ComposedFunction(function_, edge));
+      Scalar parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+      try
+      {
+        parameter = edgeSolver.solve(edgeFunction, level, 0.0, 1.0, value[firstVertex], value[secondVertex]);
+      }
+      catch (const Exception &)
+      {
+        // Keep the linear estimate when the scalar solver cannot improve it.
+      }
+      if (!(parameter >= 0.0) || !(parameter <= 1.0))
+        parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+      return x[firstVertex] + parameter * edgeDirection;
+    };
+    std::vector<Point> points;
+    const auto addPoint = [&](const Point & pointToAdd)
+    {
+      // Consecutive crossings can coincide when the level passes through a
+      // mesh vertex. Drop such duplicates, which would only add degenerate
+      // triangles to the surface mesh.
+      for (UnsignedInteger i = 0; i < points.size(); ++i)
+        if ((points[i] - pointToAdd).norm() <= pointTolerance)
+          return;
+      points.push_back(pointToAdd);
+    };
+    if (zeroCount == 3)
+    {
+      Indices zeroVertices(0);
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+        if (sign[vertexIndex] == 0)
+          zeroVertices.add(vertexIndex);
+      std::array<UnsignedInteger, 3> face = {zeroVertices[0], zeroVertices[1], zeroVertices[2]};
+      std::sort(face.begin(), face.end());
+      if (countedFaces.insert(face).second)
+      {
+        // The face is already a part of the level surface. Add its vertices
+        // in the order of the tetrahedron to preserve a consistent polygon.
+        for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+          if (sign[vertexIndex] == 0)
+            addPoint(x[vertexIndex]);
+      }
+    }
+    else if (zeroCount == 2)
+    {
+      Indices zeroVertices(0);
+      Indices otherVertices(0);
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+        if (sign[vertexIndex] == 0)
+          zeroVertices.add(vertexIndex);
+        else
+          otherVertices.add(vertexIndex);
+      // If the two other vertices are on the same side, the level only
+      // touches the tetrahedron along an edge, whose area is zero.
+      if (sign[otherVertices[0]] * sign[otherVertices[1]] < 0)
+      {
+        addPoint(x[zeroVertices[0]]);
+        addPoint(x[zeroVertices[1]]);
+        addPoint(addCrossing(otherVertices[0], otherVertices[1]));
+      }
+    }
+    else if (zeroCount == 1)
+    {
+      UnsignedInteger zeroVertex = 4;
+      Indices otherVertices(0);
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+        if (sign[vertexIndex] == 0)
+          zeroVertex = vertexIndex;
+        else
+          otherVertices.add(vertexIndex);
+      // If the three other vertices are on the same side, the level only
+      // touches the tetrahedron at the vertex: its area is zero. Otherwise
+      // the intersection is the vertex plus the crossings of the two edges
+      // joining the opposite vertex to the two vertices on the other side.
+      if (!((sign[otherVertices[0]] == sign[otherVertices[1]]) && (sign[otherVertices[1]] == sign[otherVertices[2]])))
+      {
+        addPoint(x[zeroVertex]);
+        for (UnsignedInteger first = 0; first < 3; ++first)
+          for (UnsignedInteger second = first + 1; second < 3; ++second)
+            if (sign[otherVertices[first]] * sign[otherVertices[second]] < 0)
+              addPoint(addCrossing(otherVertices[first], otherVertices[second]));
+      }
+    }
+    else
+    {
+      // No vertex is on the level: the level either crosses three or four
+      // edges, giving a triangle or a quadrilateral. Find every crossing.
+      for (UnsignedInteger first = 0; first < 4; ++first)
+        for (UnsignedInteger second = first + 1; second < 4; ++second)
+          if (sign[first] * sign[second] < 0)
+            addPoint(addCrossing(first, second));
+    }
+    if (points.size() < 3)
+      continue;
+    // For a quadrilateral, order the points around their centroid in a local
+    // tangent plane before building the two triangles. A triangle does not
+    // need an ordering, but the same projection is harmless.
+    if (points.size() > 3)
+    {
+      Point normal(3);
+      // Use the constant P1 gradient of f on the tetrahedron as the normal of
+      // the local tangent plane. When the tetrahedron is degenerate, fall
+      // back to the cross product of two of its edges.
+      Matrix edgeMatrix(3, 3);
+      Point valueDifference(3);
+      for (UnsignedInteger row = 0; row < 3; ++row)
+      {
+        const Point edge(x[row + 1] - x[0]);
+        for (UnsignedInteger column = 0; column < 3; ++column)
+          edgeMatrix(row, column) = edge[column];
+        valueDifference[row] = value[row + 1] - value[0];
+      }
+      try
+      {
+        const Point gradient(edgeMatrix.solveLinearSystem(valueDifference));
+        normal = gradient;
+      }
+      catch (const Exception &)
+      {
+        // Fall through to the geometric normal below
+      }
+      if (!(normal.norm() > 0.0))
+      {
+        for (UnsignedInteger first = 0; (first < 4) && !(normal.norm() > 0.0); ++first)
+          for (UnsignedInteger second = first + 1; (second < 4) && !(normal.norm() > 0.0); ++second)
+            for (UnsignedInteger third = second + 1; (third < 4) && !(normal.norm() > 0.0); ++third)
+            {
+              const Point firstEdge(x[second] - x[first]);
+              const Point secondEdge(x[third] - x[first]);
+              normal[0] = firstEdge[1] * secondEdge[2] - firstEdge[2] * secondEdge[1];
+              normal[1] = firstEdge[2] * secondEdge[0] - firstEdge[0] * secondEdge[2];
+              normal[2] = firstEdge[0] * secondEdge[1] - firstEdge[1] * secondEdge[0];
+            }
+      }
+      const Scalar normalNorm = normal.norm();
+      if (!(normalNorm > 0.0))
+        continue;
+      normal /= normalNorm;
+      // Build an orthonormal basis of the tangent plane. The coordinate axis
+      // least aligned with the normal gives a stable first direction.
+      UnsignedInteger axis = 0;
+      for (UnsignedInteger coordinate = 1; coordinate < 3; ++coordinate)
+        if (std::abs(normal[coordinate]) < std::abs(normal[axis]))
+          axis = coordinate;
+      Point axisVector(3, 0.0);
+      axisVector[axis] = 1.0;
+      Point tangent(3);
+      tangent[0] = normal[1] * axisVector[2] - normal[2] * axisVector[1];
+      tangent[1] = normal[2] * axisVector[0] - normal[0] * axisVector[2];
+      tangent[2] = normal[0] * axisVector[1] - normal[1] * axisVector[0];
+      const Scalar tangentNorm = tangent.norm();
+      if (!(tangentNorm > 0.0))
+        continue;
+      tangent /= tangentNorm;
+      Point binormal(3);
+      binormal[0] = normal[1] * tangent[2] - normal[2] * tangent[1];
+      binormal[1] = normal[2] * tangent[0] - normal[0] * tangent[2];
+      binormal[2] = normal[0] * tangent[1] - normal[1] * tangent[0];
+      Point centroid(3);
+      for (UnsignedInteger i = 0; i < points.size(); ++i)
+        centroid += points[i];
+      centroid /= static_cast<Scalar>(points.size());
+      std::vector<std::pair<Scalar, UnsignedInteger>> angles(points.size());
+      for (UnsignedInteger i = 0; i < points.size(); ++i)
+      {
+        const Point offset(points[i] - centroid);
+        angles[i] = std::make_pair(std::atan2(offset.dot(binormal), offset.dot(tangent)), i);
+      }
+      std::sort(angles.begin(), angles.end());
+      std::vector<Point> orderedPoints(points.size());
+      for (UnsignedInteger i = 0; i < points.size(); ++i)
+        orderedPoints[i] = points[angles[i].second];
+      points = orderedPoints;
+    }
+    // Triangulate the polygon as a fan from its first vertex.
+    for (UnsignedInteger i = 1; i + 1 < points.size(); ++i)
+      addTriangle(points[0], points[i], points[i + 1]);
+  }
+  if (surfaceVertices.getSize() == 0)
+    return 0.0;
+  // Pack the triangles as intrinsic two dimensional simplices embedded in R^3:
+  // the last vertex index is repeated, which Mesh and SimplicialCubature both
+  // understand as a lower intrinsic dimension.
+  const UnsignedInteger triangleNumber = surfaceVertices.getSize() / 3;
+  Indices flatSimplices(4 * triangleNumber);
+  for (UnsignedInteger triangleIndex = 0; triangleIndex < triangleNumber; ++triangleIndex)
+  {
+    flatSimplices[4 * triangleIndex] = 3 * triangleIndex;
+    flatSimplices[4 * triangleIndex + 1] = 3 * triangleIndex + 1;
+    flatSimplices[4 * triangleIndex + 2] = 3 * triangleIndex + 2;
+    flatSimplices[4 * triangleIndex + 3] = 3 * triangleIndex + 2;
+  }
+  const Mesh surfaceMesh(surfaceVertices, IndicesCollection(triangleNumber, 4, flatSimplices));
+  const std::shared_ptr<std::atomic<Bool>> singular = std::make_shared<std::atomic<Bool>>(false);
+  const Function integrand(new PushForwardDistributionFunctions::NonlinearCoAreaSurfaceIntegrand(antecedent_, function_, singular));
+  const Point integral(SimplicialCubature().integrate(integrand, surfaceMesh));
+  if (singular->load())
+    return SpecFunc::Infinity;
+  return integral[0];
+}
+
+/* Compute the PDF in the scalar nonlinear co-area case f: R^2 -> R. The
+   triangulation of the search box supplies the topology of the level set: a
+   triangle is crossed when its vertices are not all on the same side of the
+   requested level. The intersection of the level with each crossed mesh edge
+   is found with a scalar Brent solve on the actual function, so that the
+   segment ends lie on the true level set. The co-area factor is the norm of
+   the gradient of f at the segment midpoint, and the antecedent density is
+   integrated along the segment. This is the first restricted nonlinear path:
+   it is deterministic, handles several connected components and closed
+   curves, and keeps the affine co-area path above dedicated to the exact
+   affine case. */
+Scalar PushForwardDistribution::computePDFByNonlinearCoArea(const Point & point) const
+{
+  const UnsignedInteger inputDimension = function_.getInputDimension();
+  const UnsignedInteger outputDimension = function_.getOutputDimension();
+  if (outputDimension != 1)
+    throw NotYetImplementedException(HERE) << "Error: the nonlinear co-area density is only implemented for a scalar function, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
+  if (inputDimension == 3)
+    return computePDFByNonlinearCoAreaSurface(point);
+  if (inputDimension != 2)
+    throw NotYetImplementedException(HERE) << "Error: the nonlinear co-area density is only implemented for a scalar function on R^2 or R^3, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
+  const Scalar level = point[0];
+  const UnsignedInteger discretization = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaDiscretization");
+  const Scalar levelTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-NonlinearCoAreaLevelTolerance");
+  // A uniform triangulation of the search box is enough for a first
+  // deterministic implementation. The level crossings are polished on the
+  // actual function, so the geometric error is quadratic in the mesh size,
+  // and the resource key lets the caller trade cost for accuracy without
+  // changing the algorithm.
+  const Mesh mesh(IntervalMesher(Indices(2, discretization)).build(searchInterval_));
+  const Sample vertexValues(function_(mesh.getVertices()));
+  const Function antecedentPDF(antecedent_.getPDF());
+  const GaussLegendre quadrature(1);
+  const Brent edgeSolver;
+  Scalar density = 0.0;
+  // When the level set coincides exactly with a mesh edge, the two adjacent
+  // triangles see the same edge. Count it once; this only happens on a set of
+  // level values of measure zero, but it keeps the result stable for round
+  // levels such as the mean of a symmetric distribution.
+  std::set<std::pair<UnsignedInteger, UnsignedInteger>> countedEdges;
+  for (UnsignedInteger simplexIndex = 0; simplexIndex < mesh.getSimplicesNumber(); ++simplexIndex)
+  {
+    const Indices simplex(mesh.getSimplex(simplexIndex));
+    if (simplex.getSize() != 3)
+      continue;
+    Point x[3];
+    Scalar value[3];
+    SignedInteger sign[3];
+    for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+    {
+      x[vertexIndex] = mesh.getVertex(simplex[vertexIndex]);
+      value[vertexIndex] = vertexValues(simplex[vertexIndex], 0);
+      // The tolerance is relative to the level and to the local values, so
+      // that a vertex is classified as lying on the level set consistently
+      // with the floating point representation of f.
+      const Scalar scale = std::max(1.0, std::max(std::abs(level), std::abs(value[vertexIndex])));
+      const Scalar tolerance = levelTolerance * scale;
+      sign[vertexIndex] = (value[vertexIndex] < level - tolerance) ? -1 : ((value[vertexIndex] > level + tolerance) ? 1 : 0);
+    }
+    const UnsignedInteger zeroCount = (sign[0] == 0) + (sign[1] == 0) + (sign[2] == 0);
+    // A whole triangle at the requested level is a two dimensional part of
+    // the fibre: the one dimensional co-area density is singular there.
+    if (zeroCount == 3)
+      return SpecFunc::Infinity;
+    Point firstPoint(2);
+    Point secondPoint(2);
+    UnsignedInteger pointCount = 0;
+    const auto addPoint = [&](const Point & pointToAdd)
+    {
+      if (pointCount == 0)
+        firstPoint = pointToAdd;
+      else if (pointCount == 1)
+        secondPoint = pointToAdd;
+      ++pointCount;
+    };
+    const auto addCrossing = [&](const UnsignedInteger firstVertex, const UnsignedInteger secondVertex)
+    {
+      // The two vertices are on opposite sides of the level. Solve
+      // f(x) = level on the edge instead of using the P1 interpolation only:
+      // the root is bracketed, and this keeps the segment ends on the actual
+      // level set even when the function is strongly curved.
+      const Point edgeDirection(x[secondVertex] - x[firstVertex]);
+      const LinearFunction edge(Point(1, 0.0), x[firstVertex], Matrix(2, 1, edgeDirection));
+      const Function edgeFunction(ComposedFunction(function_, edge));
+      Scalar parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+      try
+      {
+        parameter = edgeSolver.solve(edgeFunction, level, 0.0, 1.0, value[firstVertex], value[secondVertex]);
+      }
+      catch (const Exception &)
+      {
+        // Keep the linear estimate when the scalar solver cannot improve it.
+      }
+      // Brent may return a value marginally outside the bracket because of
+      // its termination criterion; fall back to the linear estimate in this
+      // unlikely case.
+      if (!(parameter >= 0.0) || !(parameter <= 1.0))
+        parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+      addPoint(x[firstVertex] + parameter * edgeDirection);
+    };
+    if (zeroCount == 2)
+    {
+      UnsignedInteger firstZero = 3;
+      UnsignedInteger secondZero = 3;
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+        if (sign[vertexIndex] == 0)
+        {
+          if (firstZero == 3)
+            firstZero = vertexIndex;
+          else
+            secondZero = vertexIndex;
+        }
+      const std::pair<UnsignedInteger, UnsignedInteger> edge(std::min(firstZero, secondZero), std::max(firstZero, secondZero));
+      if (countedEdges.insert(edge).second)
+      {
+        addPoint(x[firstZero]);
+        addPoint(x[secondZero]);
+      }
+    }
+    else if (zeroCount == 1)
+    {
+      UnsignedInteger zeroVertex = 3;
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+        if (sign[vertexIndex] == 0)
+          zeroVertex = vertexIndex;
+      const UnsignedInteger firstOther = (zeroVertex + 1) % 3;
+      const UnsignedInteger secondOther = (zeroVertex + 2) % 3;
+      // If the two other vertices are on the same side, the level set only
+      // touches the triangle at the vertex: its length is zero.
+      if (sign[firstOther] * sign[secondOther] < 0)
+      {
+        addPoint(x[zeroVertex]);
+        addCrossing(firstOther, secondOther);
+      }
+    }
+    else
+    {
+      // No vertex is on the level: either the level crosses two edges or it
+      // does not enter the triangle.
+      if (sign[0] * sign[1] < 0)
+        addCrossing(0, 1);
+      if (sign[1] * sign[2] < 0)
+        addCrossing(1, 2);
+      if (sign[2] * sign[0] < 0)
+        addCrossing(2, 0);
+    }
+    if (pointCount != 2)
+      continue;
+    const Point direction(secondPoint - firstPoint);
+    const Scalar length = direction.norm();
+    if (!(length > 0.0))
+      continue;
+    // Co-area factor: norm of the gradient of the actual function at the
+    // midpoint of the segment. When the function does not provide a gradient,
+    // fall back to the constant gradient of its P1 interpolation on the
+    // triangle, which solves grad f . (x_i - x_0) = f_i - f_0.
+    Point midpoint(2);
+    for (UnsignedInteger coordinate = 0; coordinate < 2; ++coordinate)
+      midpoint[coordinate] = 0.5 * (firstPoint[coordinate] + secondPoint[coordinate]);
+    Scalar gradientNorm = 0.0;
+    try
+    {
+      const Matrix gradientMatrix(function_.gradient(midpoint));
+      if ((gradientMatrix.getNbRows() == 2) && (gradientMatrix.getNbColumns() == 1))
+        gradientNorm = std::sqrt(gradientMatrix(0, 0) * gradientMatrix(0, 0) + gradientMatrix(1, 0) * gradientMatrix(1, 0));
+    }
+    catch (const Exception &)
+    {
+      gradientNorm = 0.0;
+    }
+    if (!(gradientNorm > 0.0))
+    {
+      const Point firstEdge(x[1] - x[0]);
+      const Point secondEdge(x[2] - x[0]);
+      const Scalar determinant = firstEdge[0] * secondEdge[1] - firstEdge[1] * secondEdge[0];
+      const Scalar determinantTolerance = SpecFunc::ScalarEpsilon * firstEdge.norm() * secondEdge.norm();
+      if (std::abs(determinant) <= determinantTolerance)
+        continue;
+      const Scalar gradientX = ((value[1] - value[0]) * secondEdge[1] - (value[2] - value[0]) * firstEdge[1]) / determinant;
+      const Scalar gradientY = ((value[2] - value[0]) * firstEdge[0] - (value[1] - value[0]) * secondEdge[0]) / determinant;
+      gradientNorm = std::sqrt(gradientX * gradientX + gradientY * gradientY);
+    }
+    if (!(gradientNorm > 0.0))
+      continue;
+    // Parameterisation of the segment: t in [0, 1] maps to firstPoint +
+    // t * direction. The antecedent density is integrated along the segment
+    // with a fixed Gauss-Legendre rule; the rule is accurate for the smooth
+    // densities considered here, while the mesh controls the geometric error.
+    const LinearFunction segment(Point(1, 0.0), firstPoint, Matrix(2, 1, direction));
+    const Function integrand(ComposedFunction(antecedentPDF, segment));
+    const Scalar segmentIntegral = quadrature.integrate(integrand, Interval(0.0, 1.0))[0];
+    density += segmentIntegral * length / gradientNorm;
+  }
+  return density;
 }
 
 /* Solve r(u) = 0 by damped Newton with step control from the given starting point */
@@ -965,6 +1543,7 @@ DistributionImplementation::PointCollection PushForwardDistribution::findPreimag
   const Point upperBound(searchInterval.getUpperBound());
   const Scalar residualTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-SolverResidualTolerance");
   const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize");
+  const UnsignedInteger maximumBisections = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-MaximumBisections");
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << "Error: the resource map key PushForwardDistribution-PreimageSearchSampleSize must be nonzero.";
   // Tolerance below which two preimages are considered to be the same one
@@ -1048,7 +1627,7 @@ DistributionImplementation::PointCollection PushForwardDistribution::findPreimag
           Scalar uHigh = gridPoints[i + 1];
           Scalar rLow = rA;
           Scalar rootValue = 0.5 * (uLow + uHigh);
-          for (UnsignedInteger bisection = 0; bisection <= 64; ++bisection)
+          for (UnsignedInteger bisection = 0; bisection < maximumBisections; ++bisection)
           {
             rootValue = 0.5 * (uLow + uHigh);
             Scalar rMiddle = SpecFunc::ScalarEpsilon;
@@ -1124,9 +1703,22 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
   if (point.getDimension() != outputDimension)
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << outputDimension << ", here dimension=" << point.getDimension();
   // The co-area case has no discrete preimage structure: the fibre f(u) =
-  // point is a continuum and its contribution is integrated along it
+  // point is a continuum and its contribution is integrated along it. An
+  // affine function uses the dedicated exact SVD path. A scalar nonlinear
+  // map on R^2 or R^3 has a one or two dimensional fibre, extracted from a
+  // triangulation or tetrahedralisation of the search box; higher dimensional
+  // nonlinear fibres still need the implicit-manifold integration described
+  // in the report.
   if (outputDimension < inputDimension)
+  {
+    if (!function_.isLinear())
+    {
+      if ((outputDimension == 1) && ((inputDimension == 2) || (inputDimension == 3)))
+        return computePDFByNonlinearCoArea(point);
+      throw NotYetImplementedException(HERE) << "Error: the PDF in the co-area case (output dimension < input dimension) is only implemented for an affine function, or for a nonlinear scalar function on R^2 or R^3; this nonlinear co-area map can be sampled and its moments computed, but its density requires an implicit fibre integration";
+    }
     return computePDFByCoArea(point);
+  }
   // The preimages of the point are the roots of the residual function
   // r(u) = f(u) - point
   const Function residualFunction(function_ - ConstantFunction(inputDimension, point));
@@ -1299,18 +1891,67 @@ Bool PushForwardDistribution::isDiscrete() const
 /* Compute the mean of the distribution */
 void PushForwardDistribution::computeMean() const
 {
-  const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-SampleSize");
-  const Sample sample(function_(antecedent_.getSample(sampleSize)));
-  mean_ = sample.computeMean();
+  // An affine function has an exact image mean. A nonlinear function is
+  // integrated deterministically over the finite search box built from the
+  // support of the antecedent or from its extreme quantiles
+  if (function_.isLinear())
+    mean_ = function_(antecedent_.getMean());
+  else
+    mean_ = IteratedQuadrature().integrate(Function(antecedent_.getPDF() * function_), searchInterval_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Compute the covariance of the distribution */
 void PushForwardDistribution::computeCovariance() const
 {
-  const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-SampleSize");
-  const Sample sample(function_(antecedent_.getSample(sampleSize)));
-  covariance_ = sample.computeCovariance();
+  const UnsignedInteger outputDimension = function_.getOutputDimension();
+  // The centered moments need the mean, which is exact for an affine
+  // function and deterministic otherwise
+  (void) getMean();
+  if (function_.isLinear())
+  {
+    // For f(x) = A x + c, Cov(Y) = A Cov(X) A^T. Function::gradient returns
+    // the transposed Jacobian, hence the transpose below
+    const Matrix gradient(function_.gradient(antecedent_.getMean()));
+    if ((gradient.getNbRows() != function_.getInputDimension()) || (gradient.getNbColumns() != outputDimension))
+      throw InternalException(HERE) << "Error: the given function has no actual gradient. Consider using finite differences.";
+    const Matrix covarianceMatrix(gradient.transpose() * antecedent_.getCovariance() * gradient);
+    covariance_ = CovarianceMatrix(outputDimension);
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger i = 0; i <= j; ++i)
+        covariance_(i, j) = covarianceMatrix(i, j);
+  }
+  else
+  {
+    // Integrate the centered second order products against the antecedent
+    // density over the finite search box, deterministically
+    const Description imageVariables(Description::BuildDefault(outputDimension, "y"));
+    Description formulas((outputDimension * (outputDimension + 1)) / 2);
+    Description meanAsStrings(outputDimension);
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+    {
+      meanAsStrings[j] = (OSS() << std::setprecision(17) << mean_[j]);
+      for (UnsignedInteger i = 0; i <= j; ++i)
+      {
+        formulas[index] = "(" + imageVariables[i] + "-(" + meanAsStrings[i] + "))*(" + imageVariables[j] + "-(" + meanAsStrings[j] + "))";
+        ++index;
+      }
+    }
+    const Function momentsFunction(ComposedFunction(SymbolicFunction(imageVariables, formulas), function_));
+    const Function integrand(antecedent_.getPDF() * momentsFunction);
+    const Point covarianceAsPoint(IteratedQuadrature().integrate(integrand, searchInterval_));
+    covariance_ = CovarianceMatrix(outputDimension);
+    index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+    {
+      for (UnsignedInteger i = 0; i <= j; ++i)
+      {
+        covariance_(i, j) = covarianceAsPoint[index];
+        ++index;
+      }
+    }
+  }
   isAlreadyComputedCovariance_ = true;
 }
 

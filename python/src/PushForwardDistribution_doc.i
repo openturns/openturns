@@ -67,8 +67,9 @@ integral of the antecedent density along it, divided by the
 
 where :math:`J_f` is the :math:`\inputDim \times \outputDim` Jacobian matrix of
 :math:`f` and :math:`H^{\inputDim - \outputDim}` is the Hausdorff measure of
-dimension :math:`\inputDim - \outputDim` on the fibre. This case is implemented
-for an affine function :math:`f(\inputReal) = \mat{A}\inputReal + \vect{c}`, with
+dimension :math:`\inputDim - \outputDim` on the fibre. The density in this
+case is implemented for an affine function
+:math:`f(\inputReal) = \mat{A}\inputReal + \vect{c}`, with
 a fibre of dimension :math:`\inputDim - \outputDim \geq 1`. The fibre is
 parameterized as :math:`\inputReal(\vect{t}) = \vect{x}_0 + \mat{W}\vect{t}`,
 where :math:`\vect{x}_0` is the point of the fibre closest to the mean of
@@ -97,20 +98,58 @@ the resulting levels. The kinks of the nested bounds limit the accuracy of the
 adaptive rule: for a fibre of dimension three or more the requested relative
 error is floored at the value of the
 ``PushForwardDistribution-CoAreaErrorFloor`` key, the order of the measured
-accuracy floor, whereas the one and two dimensional fibres reach the machine
-precision. The
+accuracy floor, whereas the one and two dimensional fibres reached about
+:math:`3\times 10^{-16}` on the same smooth test integrand. The
 cost grows quickly with the fibre dimension, as each level of the iterated
 integration evaluates the next one at every quadrature node, and the whole
 search box is integrated, without the one dimensional extension: the neglected
 mass is then at most of the order of ``Distribution-DefaultQuantileEpsilon`` for
 an antecedent with an unbounded support, and exactly zero for a bounded one.
 
-Whether :math:`f` is affine is checked on the faces and on the corners of the
-search box, which bound the region where the fibre may be integrated, and again
-at each quadrature node along the fibre: a curved fibre raises an exception
-instead of returning a wrong density. These checks are necessary conditions,
-performed on a finite set of points: a nonlinear function that agrees with its
-linearization there cannot be told apart from an affine one.
+The affinity of the co-area density is enforced structurally by
+:meth:`~openturns.Function.isLinear` when ``computePDF()`` is called: a
+function that does not declare its linearity never uses the affine density
+path, instead of being probed on a finite set of points where a nonlinear
+function could hide its curvature. A custom or Python function must therefore
+override ``isLinear()`` to use the exact affine path. The nonlinear co-area
+density is implemented for a scalar function
+:math:`f: \Rset^2 \rightarrow \Rset` and
+:math:`f: \Rset^3 \rightarrow \Rset`. The search box is triangulated into
+triangles or tetrahedra; the signs of :math:`f - y` at the vertices locate the
+crossed edges, each crossing is polished with a scalar Brent solve on the actual
+function, and the density is integrated along the resulting level segments
+(:math:`\inputDim = 2`) or over the triangulated level surface
+(:math:`\inputDim = 3`). The co-area factor is the norm of the gradient,
+evaluated at the segment midpoint in :math:`\Rset^2` and at the surface
+quadrature points in :math:`\Rset^3`; the surface path falls back to centered
+finite differences when the function provides no analytic gradient. The mesh
+resolution is controlled by the
+``PushForwardDistribution-NonlinearCoAreaDiscretization`` key in
+:math:`\Rset^2` and by the
+``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` key in
+:math:`\Rset^3`. These densities are approximations, whereas the affine path
+remains exact. Other nonlinear maps with
+:math:`\outputDim < \inputDim` are accepted by the constructor, can be
+sampled, and have their range, mean and covariance computed, but their density
+is not implemented and ``computePDF()`` raises
+:class:`~openturns.NotYetImplementedException`.
+
+When the Jacobian is rank deficient, the image of the function has measure zero
+in the output space. Membership of the image is tested through the residual of
+the full SVD in the output directions that the Jacobian does not reach: a
+relative residual above the CDF epsilon of the distribution (by default
+``Distribution-DefaultCDFEpsilon``) is treated as outside the image and yields
+a zero density, whereas a point on the image yields the singular density.
+
+The mean and the covariance are computed deterministically, not estimated by
+Monte-Carlo: an affine function uses the exact formulas
+:math:`\Expect[f(\inputRV)] = \mat{A}\Expect[\inputRV] + \vect{c}` and
+:math:`\Cov{f(\inputRV)} = \mat{A}\Cov{\inputRV}\mat{A}^T`, while a nonlinear
+function is integrated over the finite search box with an iterated quadrature
+rule. This includes nonlinear maps with :math:`\outputDim < \inputDim`: their
+moments are available, including the cases whose density is not implemented.
+The range is still estimated from a sample, as it has no closed form in
+general.
 
 Parameters
 ----------
@@ -130,16 +169,20 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``PushForwardDistribution-SolverResidualTolerance`` (``Scalar``, default: ``1.0e-5``): tolerance on the
   residual norm used to accept a point as a preimage of the searched point and to configure the default solver.
 - ``PushForwardDistribution-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
-  realizations used to estimate the range, the mean and the covariance.
+  realizations used to estimate the range only; the mean and the covariance are deterministic.
 - ``PushForwardDistribution-PreimageSearchSampleSize`` (``UnsignedInteger``, default: ``256``): number of
   points used to decompose the search interval and to seed the damped Newton solver.
 - ``PushForwardDistribution-NewtonMaximumIterations`` (``UnsignedInteger``, default: ``50``): maximum number
   of iterations of the damped Newton solver.
 - ``PushForwardDistribution-NewtonStepReduction`` (``Scalar``, default: ``0.5``): reduction factor applied
   to the step when it fails to decrease the residual norm.
-- ``PushForwardDistribution-CoAreaResidualTolerance`` (``Scalar``, default: ``1.0e-8``): relative tolerance
-  on the residual norm of the co-area formula, used to check that the fibre of the evaluated point is a
-  straight line and hence that the function is affine.
+- ``PushForwardDistribution-MaximumBisections`` (``UnsignedInteger``, default: ``64``): maximum number of
+  bisection iterations used as a fallback when the damped Newton solver fails on a sign change.
+- ``PushForwardDistribution-CoAreaConstraintTolerance`` (``Scalar``, default: ``1.0e-12``): tolerance used
+  to detect parallel constraints and numerically zero coefficients in the Fourier-Motzkin elimination.
+- ``PushForwardDistribution-CoAreaTailEpsilon`` (``Scalar``, default: ``1.0e-16``): relative density below
+  which the end point of a one dimensional fibre is considered negligible when the integration interval is
+  extended over the search box.
 - ``PushForwardDistribution-CoAreaMaximumError`` (``Scalar``, default: ``1.0e-14``): requested relative error
   of the integration of the density along the fibre, scaled by the magnitude of the integrand so that the
   relative accuracy does not degrade for small densities.
@@ -148,6 +191,21 @@ The following :class:`~openturns.ResourceMap` keys are used:
   across the kinks of the nested integration bounds.
 - ``PushForwardDistribution-CoAreaMaximumSubIntervals`` (``UnsignedInteger``, default: ``100``): maximum
   number of sub-intervals of the adaptive bisection used to integrate the density along the fibre.
+- ``PushForwardDistribution-CoAreaMaximumExtensions`` (``UnsignedInteger``, default: ``16``): maximum number
+  of times the one dimensional integration interval is extended over the search box while the integrand is
+  still significant at its end.
+- ``PushForwardDistribution-NonlinearCoAreaDiscretization`` (``UnsignedInteger``, default: ``128``): number of
+  intervals per input dimension in the triangulation of the search box used by the scalar nonlinear co-area
+  density in :math:`\Rset^2`.
+- ``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` (``UnsignedInteger``, default: ``48``): number
+  of intervals per input dimension in the tetrahedral background mesh used by the scalar nonlinear co-area
+  density in :math:`\Rset^3`.
+- ``PushForwardDistribution-NonlinearCoAreaLevelTolerance`` (``Scalar``, default: ``1.0e-12``): relative
+  tolerance used to decide that a mesh vertex lies on the requested level set in the nonlinear co-area paths.
+- ``PushForwardDistribution-RangeMargin`` (``Scalar``, default: ``0.025``): relative margin added to each
+  marginal span when the numerical range is estimated from a sample.
+- ``PushForwardDistribution-DegenerateSearchIntervalHalfWidth`` (``Scalar``, default: ``1.0``): half width of
+  the fallback search box used when the quantiles of a marginal collapse to a zero-width interval.
 
 Examples
 --------
