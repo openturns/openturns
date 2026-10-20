@@ -15,10 +15,10 @@ Christoffel subsampling for the Ishigami function
 # of their squared :math:`L^2` errors.
 #
 # Two practical choices shape the protocol. With an inexhaustible basis the
-# experiment works with :math:`m = n` functions, and thinning then costs
-# approximately :math:`O(n^5)`; a budget of 200 points costs about a minute
-# per design. We use 30 points (a fraction of a second per design) instead,
-# which already separates the two methods by two orders of magnitude. Likewise
+# experiment works with :math:`m = n` functions and samples a projection DPP
+# sequentially; the cost grows quickly with the budget. We use 30 points
+# (a fraction of a second per design) instead, which already separates the
+# two methods by two orders of magnitude. Likewise
 # the error is measured against the best approximation in the 30-dimensional
 # space rather than the function itself: the truncation error is then
 # identical for both arms and the comparison isolates the design quality.
@@ -77,7 +77,7 @@ reference = coarse
 # on the first ``expansionSize`` basis functions, and each is scored by its
 # squared coefficient distance to the reference projection, which is the
 # squared :math:`L^2` distance by orthonormality. At :math:`m = n` the
-# thinned design systematically misses the default frame band, so the loop
+# square DPP design systematically misses the default frame band, so the loop
 # runs with warnings silenced; the error distributions below show the design
 # still wins by far.
 repetitions = 60

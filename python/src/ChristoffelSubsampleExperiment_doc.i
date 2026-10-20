@@ -9,48 +9,47 @@ Given an orthonormal basis of :math:`L^2(D, \mu)` and a target size
 :math:`n`, the experiment works with the first :math:`m` basis functions,
 where :math:`m = n - k` is the largest dimension supplied by the basis:
 :math:`k = 0` with an inexhaustible basis, and :math:`k = 1, 2, \dots` is
-tried until the basis supplies :math:`m` functions. It draws a pool of points
-from the :class:`~openturns.experimental.ChristoffelDistribution` associated to
-these :math:`m` functions, sized by
-``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` times :math:`n`,
-then greedily thins the pool down to :math:`n` points. When the thinned
-design is numerically unusable, the pool is doubled with fresh draws,
-keeping the existing points, up to
-``ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor`` times
-:math:`n`, and thinned again. The default ``Removal``
-method drops pool points while keeping the largest smallest Gramian eigenvalue
-and no reweighting; the ``Barrier`` method is a forward barrier greedy selection
-with reweighting, clamped strictly inside the current spectrum so rank-deficient
-steps stay well-defined. It is less reliable when the space dimension is close
-to the target size: with :math:`m \approx n` its Gramian stays ill-conditioned
-and the barrier potentials can vanish. Prefer ``Removal`` in that regime, or a
-larger pool. Each kept point :math:`x_i` carries a weight proportional
-to :math:`m / k_m(x_i)`, the density ratio of the reference measure
-over the Christoffel distribution, times the barrier weight for the
-``Barrier`` method. The returned weights are positive and finite: a pool
-point with a null or non-finite importance ratio (for example a point
-outside the numerical range) is never kept. If thinning leaves such a
-point in the design, the pool is grown; at the pool cap the generation
-throws instead of returning a zero-weight design.
+tried until the basis supplies :math:`m` functions.
 
-The sizing follows the budget theorem: from :math:`\gamma m \log m`
-Christoffel draws with :math:`\gamma \approx 9.242` (Theorem 2.3 of Cohen
-and Dolbeault [cohendolbeault2020]_) one extracts :math:`m + k` points
-with a good approximation; the pool above is the practical pool, used at
-the price of weaker guarantees. The :math:`\gamma m \log m` budget sizes
-the pool draws, not the space dimension, which stays :math:`m = n - k`.
-With an inexhaustible basis :math:`m = n`, so the default ``Removal``
-thinning costs approximately :math:`O(n^5)` (:math:`O(n)` iterations
-scoring :math:`O(n)` candidates with an :math:`m \times m` eigen solve
-each); keep :math:`n` moderate in that case. The implementation checks
-the frame bounds and warns when they are missed. This check is advisory:
-it is not a certificate that the frame bounds hold. The default
-:math:`2n` pool is far below the :math:`\gamma n \log n` budget of the
-theorem, and the :math:`16n` growth cap is below that budget for
-:math:`n \ge 6`. Use a finite basis with :math:`m < n`, raise
-``ChristoffelSubsampleExperiment-PoolOversamplingFactor``, or check the
-eigenvalues returned by :meth:`computeDesignEigenvalues` when a frame
-certificate is required.
+A fresh design is exact. For :math:`n = m`, it is a projection
+determinantal point process (DPP) of size :math:`m` associated with the
+Christoffel kernel of the :math:`m` functions. For :math:`n > m`, the
+first :math:`m` points are a projection DPP and the remaining
+:math:`n - m` points are independent draws from the
+:class:`~openturns.experimental.ChristoffelDistribution`; the design is
+then randomly permuted. The DPP is sampled sequentially: at each step a
+Christoffel proposal is accepted with probability
+:math:`K_k(x) / K_0(x)`, where :math:`K_k` is the residual kernel after
+the :math:`k` accepted points. The sequential sampler needs about
+:math:`m H_m` proposals on average, so keep :math:`n` moderate when
+:math:`m = n`.
+
+When points are supplied to :meth:`generateWithWeights`, an empty sample
+selects the fresh path. If at least :math:`n` points are supplied,
+exactly :math:`n` of them are selected by volume sampling, with
+probability proportional to the determinant of the Gram matrix of their
+basis features; no fresh point is drawn. If fewer than :math:`n` and at
+most :math:`m` points are supplied, all of them are kept and the DPP is
+conditioned on their feature vectors; the remaining :math:`m - M` DPP
+points are drawn, followed by :math:`n - m` independent Christoffel
+points when :math:`n > m`. Supplying more than :math:`m` points while
+asking for fewer than :math:`n` points is rejected, as is a set of
+supplied features that is not linearly independent.
+
+Each design point :math:`x_i` carries a weight proportional to
+:math:`m / k_m(x_i)`, the density ratio of the reference measure over
+the Christoffel distribution. The returned weights are positive and
+finite: a point with a null or non-finite importance ratio, for example
+a point outside the numerical range, is rejected instead of being
+returned with a zero weight.
+
+The implementation checks the frame bounds and warns when they are
+missed. This check is advisory: it is not a certificate that the frame
+bounds hold. For :math:`n = m` the design is square and the projection
+DPP has no certified frame guarantee; for :math:`n > m` the extra
+independent Christoffel points improve the budget without making the
+certificate exact. Use :meth:`computeDesignEigenvalues` when a frame
+diagnostic is required on a given design.
 
 Available constructors:
     ChristoffelSubsampleExperiment(*basis, size*)
@@ -74,14 +73,9 @@ A default-constructed experiment has no configured basis: call
 :meth:`setOrthogonalBasis` (and optionally :meth:`setSize`) before
 generating. Generation from the unconfigured default state throws.
 
-The following :class:`~openturns.ResourceMap` keys are used:
+The following :class:`~openturns.ResourceMap` key is used:
 
-- ``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` (``Scalar``, default: ``2.0``): candidate pool size as a multiple of the target size.
-- ``ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor`` (``Scalar``, default: ``16.0``): cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool. An incoming pool larger than this cap is used as is, never truncated.
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1. It must be non-negative and finite.
-- ``ChristoffelSubsampleExperiment-ThinningMethod`` (``String``, default: ``Removal``): greedy thinning method. Possible values: ``Barrier``, ``Removal``.
-- ``ChristoffelSubsampleExperiment-BarrierStep`` (``Scalar``, default: ``1.0``): barrier advance per selection step of the ``Barrier`` method.
-- ``ChristoffelSubsampleExperiment-BarrierRegularization`` (``Scalar``, default: ``1e-8``): safety gap keeping the barriers strictly inside the spectrum.
 
 Examples
 --------
@@ -142,17 +136,22 @@ spaceDimension : positive int
 
 Parameters
 ----------
-poolSample : 2-d sequence of float, optional
-    Existing points prepended to the candidate pool, e.g. already
-    evaluated points to recycle. Fresh Christoffel draws top the
-    pool up to the oversampling size.
+suppliedSample : 2-d sequence of float, optional
+    Supplied candidate points, e.g. already evaluated points to recycle.
+    An empty sample selects the fresh path. With at least `size` points,
+    exactly `size` of them are selected by volume sampling. With fewer
+    than `size` and at most `spaceDimension` points, all of them are kept
+    and the design is completed by a conditional projection DPP, plus
+    independent Christoffel points when `size` exceeds the space
+    dimension. More than `spaceDimension` supplied points while asking
+    for fewer than `size` points is rejected.
 
 Returns
 -------
 sample : :class:`~openturns.Sample`
-    The thinned design of `size` points.
+    The design of `size` points.
 weights : :class:`~openturns.Point`
-    The associated weights, recomputed at the kept points."
+    The associated importance weights."
 
 // ---------------------------------------------------------------------
 
@@ -185,8 +184,9 @@ R"RAW(Deduce the space dimension from a target size.
 With an inexhaustible basis the dimension is the target size
 (:math:`k = 0` in :math:`m = n - k`). With a finite basis, the
 constructor builds functions until the basis is exhausted and keeps
-the largest available dimension. With :math:`m = n` the generation
-cost grows approximately as :math:`O(n^5)`; see the class documentation.
+the largest available dimension. With :math:`m = n` the projection DPP
+is sampled sequentially, so keep the target size moderate; see the class
+documentation.
 
 Parameters
 ----------
@@ -207,9 +207,9 @@ spaceDimension : positive int
 Parameters
 ----------
 features : 2-d sequence of float
-    Basis function values, one row per pool point.
+    Basis function values, one row per design point.
 weights : sequence of float
-    Weight of each pool point.
+    Weight of each design point.
 kept : sequence of int
     Indices of the points kept in the subset.
 

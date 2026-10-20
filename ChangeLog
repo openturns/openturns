@@ -43,12 +43,7 @@
  * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
  * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
  * ChristoffelDistribution-SliceGridSize: grid size of the univariate slice maxima in sequential conditional sampling (default is 1000)
- * ChristoffelSubsampleExperiment-PoolOversamplingFactor: pool size as a multiple of the target size before greedy thinning (default is 2.0)
- * ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor: cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool (default is 16.0)
  * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
- * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
- * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
- * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -177,7 +172,7 @@
  * ChristoffelDistribution: the stability factor now rejects a non-positive or non-finite safety factor, refreshes its cache when a ResourceMap key that enters the estimate changes, recovers optimizer peaks whose raw value overflows but whose logarithm is finite, and fails explicitly on non-finite envelopes instead of looping forever
  * ChristoffelDistribution: the polynomial tensor gradient now clips its input to the numerical range like the objective does, instead of overflowing on infeasible points
  * ChristoffelDistribution: the batch Christoffel and log-Christoffel evaluations now only use TBB above a minimum batch size, instead of spawning parallel work for small samples
- * ChristoffelSubsampleExperiment: exact projection DPP and volume sampling replace the heuristic 2n pool and greedy thinning; fresh designs use the DPP for n=m and a DPP plus independent Christoffel fill for n>m, supplied points use a conditional DPP when M<n and exact candidate volume sampling when M>=n, and dependent or zero-weight supplied points are rejected
+ * ChristoffelSubsampleExperiment: exact projection DPP and volume sampling replace the heuristic 2n pool and greedy thinning; fresh designs use the DPP for n=m and a DPP plus independent Christoffel fill for n>m, supplied points use a conditional DPP when M<n and exact candidate volume sampling when M>=n, dependent or zero-weight supplied points are rejected, and the pool, thinning and barrier ResourceMap keys are removed
  * ChristoffelSubsampleExperiment: default-constructed experiments no longer silently generate from an unconfigured one-function state, and a null size is rejected on load
  * OrthogonalBasis: added a value-based equality operator (measure, enumerate function and factory description) used by ChristoffelDistribution instead of the sole probe-based comparison
  * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete

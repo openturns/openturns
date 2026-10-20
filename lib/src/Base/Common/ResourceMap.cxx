@@ -1214,12 +1214,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 1000);
 
   // ChristoffelSubsampleExperiment parameters //
-  addAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0);
-  addAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0);
   addAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5);
-  addAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal", {"Barrier", "Removal"});
-  addAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0);
-  addAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1.0e-8);
 
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);

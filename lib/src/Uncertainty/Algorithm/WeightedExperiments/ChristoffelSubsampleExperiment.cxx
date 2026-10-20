@@ -20,7 +20,6 @@
  */
 #include <cmath>
 #include <algorithm>
-#include <limits>
 #include "openturns/ChristoffelSubsampleExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -29,7 +28,6 @@
 #include "openturns/Log.hxx"
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -176,7 +174,7 @@ Sample ChristoffelSubsampleExperiment::generateWithWeights(Point & weightsOut) c
   Sample design(drawProjectionDPP(spaceDimension_));
   if (size_ > spaceDimension_)
   {
-    const Sample fill(drawPool(size_ - spaceDimension_));
+    const Sample fill(drawChristoffelPoints(size_ - spaceDimension_));
     for (UnsignedInteger i = 0; i < fill.getSize(); ++i) design.add(fill[i]);
   }
   design.setDescription(distribution_.getDescription());
@@ -193,33 +191,33 @@ Sample ChristoffelSubsampleExperiment::generateWithWeights(Point & weightsOut) c
   Sample permuted(size_, distribution_.getDimension());
   permuted.setDescription(distribution_.getDescription());
   for (UnsignedInteger i = 0; i < size_; ++i) permuted[i] = design[order[i]];
-  weightsOut = computePoolWeights(permuted);
+  weightsOut = computeImportanceWeights(permuted);
   checkFrame(permuted, weightsOut);
   return permuted;
 }
 
 /* Sample generation with weights from supplied points: exact volume sample
-   when the supplied pool already contains the target size, conditional
+   when the supplied sample already contains the target size, conditional
    projection DPP otherwise */
-Sample ChristoffelSubsampleExperiment::generateWithWeights(const Sample & poolSample, Point & weightsOut) const
+Sample ChristoffelSubsampleExperiment::generateWithWeights(const Sample & suppliedSample, Point & weightsOut) const
 {
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive experiment size.";
   if ((spaceDimension_ == 0) || (christoffelDistribution_.getSize() == 0))
     throw InvalidArgumentException(HERE) << "Error: no orthogonal basis is configured, call setOrthogonalBasis() before generating.";
-  if (poolSample.getDimension() != distribution_.getDimension())
-    throw InvalidArgumentException(HERE) << "Error: expected supplied points of dimension=" << distribution_.getDimension() << ", got dimension=" << poolSample.getDimension();
-  const UnsignedInteger suppliedSize = poolSample.getSize();
+  if (suppliedSample.getDimension() != distribution_.getDimension())
+    throw InvalidArgumentException(HERE) << "Error: expected supplied points of dimension=" << distribution_.getDimension() << ", got dimension=" << suppliedSample.getDimension();
+  const UnsignedInteger suppliedSize = suppliedSample.getSize();
   if (suppliedSize == 0) return generateWithWeights(weightsOut);
 
   if (suppliedSize >= size_)
   {
     // Exact volume sample of the target size from the supplied candidates.
-    const Matrix features(computeFeatures(poolSample));
+    const Matrix features(computeFeatures(suppliedSample));
     const Indices kept(ComputeVolumeSample(features, size_));
     Sample design(size_, distribution_.getDimension());
     design.setDescription(distribution_.getDescription());
-    for (UnsignedInteger i = 0; i < size_; ++i) design[i] = poolSample[kept[i]];
-    weightsOut = computePoolWeights(design);
+    for (UnsignedInteger i = 0; i < size_; ++i) design[i] = suppliedSample[kept[i]];
+    weightsOut = computeImportanceWeights(design);
     checkFrame(design, weightsOut);
     return design;
   }
@@ -228,31 +226,20 @@ Sample ChristoffelSubsampleExperiment::generateWithWeights(const Sample & poolSa
   // points: m independent feature vectors are needed to span the space.
   if (suppliedSize > spaceDimension_)
     throw InvalidArgumentException(HERE) << "Error: cannot condition a projection DPP of size=" << spaceDimension_ << " on " << suppliedSize << " supplied points.";
-  Sample design(drawProjectionDPP(spaceDimension_, poolSample));
+  Sample design(drawProjectionDPP(spaceDimension_, suppliedSample));
   if (size_ > spaceDimension_)
   {
-    const Sample fill(drawPool(size_ - spaceDimension_));
+    const Sample fill(drawChristoffelPoints(size_ - spaceDimension_));
     for (UnsignedInteger i = 0; i < fill.getSize(); ++i) design.add(fill[i]);
   }
   design.setDescription(distribution_.getDescription());
-  weightsOut = computePoolWeights(design);
+  weightsOut = computeImportanceWeights(design);
   checkFrame(design, weightsOut);
   return design;
 }
 
-/* Target pool size from the oversampling factor */
-UnsignedInteger ChristoffelSubsampleExperiment::computePoolSize() const
-{
-  const Scalar poolFactor = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor");
-  if (!(poolFactor >= 1.0) || !std::isfinite(poolFactor)) throw InvalidArgumentException(HERE) << "Error: expected a finite pool oversampling factor not smaller than 1, here factor=" << poolFactor;
-  const Scalar poolScale = poolFactor * size_;
-  if (!std::isfinite(poolScale) || (poolScale >= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max())))
-    throw InvalidArgumentException(HERE) << "Error: the pool oversampling factor is too large, here factor=" << poolFactor;
-  return std::max(size_, static_cast<UnsignedInteger>(std::ceil(poolScale)));
-}
-
-/* Draw fresh pool points from the Christoffel law */
-Sample ChristoffelSubsampleExperiment::drawPool(const UnsignedInteger count) const
+/* Draw fresh Christoffel points */
+Sample ChristoffelSubsampleExperiment::drawChristoffelPoints(const UnsignedInteger count) const
 {
   if (count == 0) return Sample(0, distribution_.getDimension());
   return christoffelDistribution_.getSample(count);
@@ -421,24 +408,24 @@ void ChristoffelSubsampleExperiment::checkFrame(const Sample & sample,
     LOGWARN(OSS() << "Warning: the weighted design is numerically rank deficient, got minimum eigenvalue=" << minEigenvalue);
 }
 
-/* Density ratios of pool points, reference over Christoffel law */
-Point ChristoffelSubsampleExperiment::computePoolWeights(const Sample & pool) const
+/* Density ratios of design points, reference over Christoffel law */
+Point ChristoffelSubsampleExperiment::computeImportanceWeights(const Sample & sample) const
 {
-  const UnsignedInteger poolSize = pool.getSize();
-  Point poolWeights(poolSize);
-  for (UnsignedInteger i = 0; i < poolSize; ++i)
+  const UnsignedInteger sampleSize = sample.getSize();
+  Point weights(sampleSize);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     // A point outside the numerical range has a null law density: the ratio
     // is undefined there, so keep such a point out of the weighted design.
-    const Scalar lawPDF = christoffelDistribution_.computePDF(pool[i]);
-    Scalar weight = (lawPDF > 0.0) ? distribution_.computePDF(pool[i]) / lawPDF : 0.0;
+    const Scalar lawPDF = christoffelDistribution_.computePDF(sample[i]);
+    Scalar weight = (lawPDF > 0.0) ? distribution_.computePDF(sample[i]) / lawPDF : 0.0;
     // Recover weights whose direct ratio underflowed or overflowed by working
     // in the log domain. The law and reference log-densities are finite for
     // points in the numerical range; a null reference density stays null.
     if (!(weight > 0.0) || !std::isfinite(weight))
     {
-      const Scalar logLawPDF = christoffelDistribution_.computeLogPDF(pool[i]);
-      const Scalar logReferencePDF = distribution_.computeLogPDF(pool[i]);
+      const Scalar logLawPDF = christoffelDistribution_.computeLogPDF(sample[i]);
+      const Scalar logReferencePDF = distribution_.computeLogPDF(sample[i]);
       if ((logLawPDF > SpecFunc::LowestScalar) && std::isfinite(logLawPDF) &&
           (logReferencePDF > SpecFunc::LowestScalar) && std::isfinite(logReferencePDF))
       {
@@ -447,9 +434,9 @@ Point ChristoffelSubsampleExperiment::computePoolWeights(const Sample & pool) co
           weight = std::exp(logWeight);
       }
     }
-    poolWeights[i] = (weight > 0.0) && std::isfinite(weight) ? weight : 0.0;
+    weights[i] = (weight > 0.0) && std::isfinite(weight) ? weight : 0.0;
   }
-  return poolWeights;
+  return weights;
 }
 
 /* Eigenvalues of the weighted design Gramian */
@@ -463,121 +450,11 @@ Point ChristoffelSubsampleExperiment::computeDesignEigenvalues(const Sample & sa
   for (UnsignedInteger k = 0; k < sampleSize; ++k)
     if (!(weights[k] > 0.0) || !std::isfinite(weights[k]))
       throw InvalidArgumentException(HERE) << "Error: expected positive finite design weights, got weight=" << weights[k] << " at index " << k << ".";
-  const Matrix features(computePoolFeatures(sample, weights));
+  const Matrix features(computeFeatures(sample));
   Indices all(sampleSize);
   for (UnsignedInteger k = 0; k < sampleSize; ++k) all[k] = k;
-  // computePoolFeatures has applied the design weights, so scale by one here
-  const Point unitWeights(sampleSize, 1.0);
-  const SymmetricMatrix gramian(ComputeGramian(features, unitWeights, all));
+  const SymmetricMatrix gramian(ComputeGramian(features, weights, all));
   return gramian.computeEigenValues();
-}
-
-/* Thin a pool to size_, weigh and frame-check the design, growing a
-   numerically unusable pool up to the cap */
-Sample ChristoffelSubsampleExperiment::finalizeDesign(const Sample & pool,
-    const Point & poolWeights,
-    Point & weightsOut) const
-{
-  const Scalar maxFactor = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor");
-  if (!(maxFactor > 0.0) || !std::isfinite(maxFactor)) throw InvalidArgumentException(HERE) << "Error: expected a positive finite pool maximum oversampling factor, here factor=" << maxFactor;
-  const Scalar tolerance = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance");
-  if (!(tolerance >= 0.0) || !std::isfinite(tolerance))
-    throw InvalidArgumentException(HERE) << "Error: expected a non-negative finite frame tolerance, here tolerance=" << tolerance;
-  const Scalar capScale = maxFactor * size_;
-  if (!std::isfinite(capScale) || (capScale >= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max())))
-    throw InvalidArgumentException(HERE) << "Error: the pool maximum oversampling factor is too large, here factor=" << maxFactor;
-  // Cap the adaptive growth, never below the incoming pool: both overloads
-  // hand over at least poolSize() >= 1 points, so the growth below progresses
-  const UnsignedInteger poolCap = std::max(pool.getSize(), static_cast<UnsignedInteger>(std::ceil(capScale)));
-  Sample grownPool(pool);
-  Point grownWeights(poolWeights);
-  while (true)
-  {
-    // All-zero weights (for example a pool outside the numerical range) cannot
-    // feed either thinning method: grow first, and report the cap explicitly.
-    Bool hasPositiveWeight = false;
-    for (UnsignedInteger i = 0; i < grownPool.getSize(); ++i)
-      if (grownWeights[i] > 0.0)
-      {
-        hasPositiveWeight = true;
-        break;
-      }
-    if (!hasPositiveWeight)
-    {
-      if (grownPool.getSize() >= poolCap)
-        throw InternalException(HERE) << "Error: the pool contains no positive importance weight at the pool cap; increase the pool size or oversampling factor.";
-      const UnsignedInteger grownSize = std::min(2 * grownPool.getSize(), poolCap);
-      const Sample fresh(drawPool(grownSize - grownPool.getSize()));
-      for (UnsignedInteger i = 0; i < fresh.getSize(); ++i) grownPool.add(fresh[i]);
-      grownWeights = computePoolWeights(grownPool);
-      continue;
-    }
-    Indices kept;
-    Point selectionWeights(grownPool.getSize(), 1.0);
-    // sqrt(w) * phi evaluations shared by the thinning step and the frame check below
-    const Matrix poolFeatures(computePoolFeatures(grownPool, grownWeights));
-    const String thinningMethod = ResourceMap::GetAsString("ChristoffelSubsampleExperiment-ThinningMethod");
-    if (thinningMethod == "Barrier")
-    {
-      Point barrierWeights;
-      barrierSelection(grownPool, poolFeatures, kept, barrierWeights);
-      Scalar totalWeight = 0.0;
-      for (UnsignedInteger k = 0; k < size_; ++k) totalWeight += barrierWeights[kept[k]] * grownWeights[kept[k]];
-      if (!(totalWeight > 0.0)) throw InternalException(HERE) << "Error: null total barrier weight.";
-      for (UnsignedInteger k = 0; k < size_; ++k) selectionWeights[kept[k]] = size_ * barrierWeights[kept[k]] / totalWeight;
-    }
-    else if (thinningMethod == "Removal")
-    {
-      kept = thinIndices(grownPool, poolFeatures);
-    }
-    else throw InvalidArgumentException(HERE) << "Error: unknown thinning method=" << thinningMethod << ", expected Barrier or Removal.";
-    Sample sample(size_, distribution_.getDimension());
-    sample.setDescription(distribution_.getDescription());
-    weightsOut = Point(size_);
-    for (UnsignedInteger k = 0; k < size_; ++k) weightsOut[k] = selectionWeights[kept[k]] * grownWeights[kept[k]];
-    // Bulk row copy through the contiguous storage
-    const UnsignedInteger inputDimension = distribution_.getDimension();
-    auto poolBegin = grownPool.getImplementation()->data_begin();
-    auto sampleBegin = sample.getImplementation()->data_begin();
-    for (UnsignedInteger k = 0; k < size_; ++k)
-      std::copy(poolBegin + kept[k] * inputDimension, poolBegin + (kept[k] + 1) * inputDimension, sampleBegin + k * inputDimension);
-    Bool positiveWeights = true;
-    for (UnsignedInteger k = 0; k < size_; ++k)
-      if (!(weightsOut[k] > 0.0) || !std::isfinite(weightsOut[k])) positiveWeights = false;
-    // Frame check on the weighted thinned design, reusing the pool evaluations
-    // above: poolFeatures already carry sqrt(pool weight), selectionWeights add
-    // the barrier normalization (unit for Removal)
-    const Point eigenValues(ComputeGramian(poolFeatures, selectionWeights, kept).computeEigenValues());
-    Scalar minEigenvalue = eigenValues[0];
-    Scalar maxEigenvalue = eigenValues[0];
-    for (UnsignedInteger k = 1; k < eigenValues.getSize(); ++k)
-    {
-      minEigenvalue = std::min(minEigenvalue, eigenValues[k]);
-      maxEigenvalue = std::max(maxEigenvalue, eigenValues[k]);
-    }
-    const Bool usable = (minEigenvalue > SpecFunc::Precision);
-    const Bool capped = (grownPool.getSize() >= poolCap);
-    if (usable && positiveWeights)
-    {
-      if (minEigenvalue < 1.0 - tolerance || maxEigenvalue > 1.0 + tolerance)
-        LOGWARN(OSS() << "Warning: the thinned design misses the frame bounds [" << 1.0 - tolerance << ", " << 1.0 + tolerance << "], got [" << minEigenvalue << ", " << maxEigenvalue << "]");
-      return sample;
-    }
-    if (capped)
-    {
-      if (!positiveWeights)
-        throw InternalException(HERE) << "Error: the thinned design still contains zero or non-finite weights at the pool cap; increase the pool size or oversampling factor.";
-      if (minEigenvalue < 1.0 - tolerance || maxEigenvalue > 1.0 + tolerance)
-        LOGWARN(OSS() << "Warning: the thinned design misses the frame bounds [" << 1.0 - tolerance << ", " << 1.0 + tolerance << "], got [" << minEigenvalue << ", " << maxEigenvalue << "]");
-      return sample;
-    }
-    // Degenerate pool (eg duplicates): top up with fresh draws, keeping the
-    // existing points so no evaluation is wasted, and thin again
-    const UnsignedInteger grownSize = std::min(2 * grownPool.getSize(), poolCap);
-    const Sample fresh(drawPool(grownSize - grownPool.getSize()));
-    for (UnsignedInteger i = 0; i < fresh.getSize(); ++i) grownPool.add(fresh[i]);
-    grownWeights = computePoolWeights(grownPool);
-  }
 }
 
 /* Identity index set of given size */
@@ -588,9 +465,8 @@ Indices ChristoffelSubsampleExperiment::IdentityIndices(const UnsignedInteger si
   return indices;
 }
 
-/* Gramian of a subset of sqrt(w) * phi, via BLAS. The features are already
-   scaled by sqrt(pool weight); designWeights scale the selected rows by the
-   remaining sqrt(design weight), as in the thinned design itself. */
+/* Gramian of a subset of sqrt(w) * phi, via BLAS.  The features are the
+   raw basis values; designWeights scale the selected rows by sqrt(w). */
 SymmetricMatrix ChristoffelSubsampleExperiment::ComputeGramian(const Matrix & features,
     const Point & designWeights,
     const Indices & kept)
@@ -727,307 +603,6 @@ Indices ChristoffelSubsampleExperiment::ComputeVolumeSample(const Matrix & featu
     if (needsRefresh || ((removedCount % dimension) == 0)) refresh();
   }
   return remaining;
-}
-
-/* Min eigenvalue left after removing one candidate of a block, by downdate */
-struct RemovalScoresPolicy
-{
-  const SymmetricMatrix & total_;
-  const Matrix & features_;
-  const Indices & kept_;
-  const Scalar divisor_;
-  const UnsignedInteger dimension_;
-  Point & minima_;
-
-  RemovalScoresPolicy(const SymmetricMatrix & total,
-                      const Matrix & features,
-                      const Indices & kept,
-                      const Scalar divisor,
-                      const UnsignedInteger dimension,
-                      Point & minima)
-    : total_(total)
-    , features_(features)
-    , kept_(kept)
-    , divisor_(divisor)
-    , dimension_(dimension)
-    , minima_(minima)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
-  {
-    for (UnsignedInteger pos = r.begin(); pos != r.end(); ++pos)
-    {
-      const UnsignedInteger idx = kept_[pos];
-      SymmetricMatrix gramian(total_);
-      for (UnsignedInteger a = 0; a < dimension_; ++a)
-        for (UnsignedInteger b = 0; b <= a; ++b)
-          gramian(a, b) -= features_(idx, a) * features_(idx, b);
-      gramian = gramian / divisor_;
-      const Point eigenValues(gramian.computeEigenValues());
-      Scalar minEigenvalue = eigenValues[0];
-      for (UnsignedInteger k = 1; k < dimension_; ++k) minEigenvalue = std::min(minEigenvalue, eigenValues[k]);
-      minima_[pos] = minEigenvalue;
-    }
-  }
-}; /* end struct RemovalScoresPolicy */
-
-/* Finite basis evaluations on a pool, scaled by sqrt(weight) */
-Matrix ChristoffelSubsampleExperiment::computePoolFeatures(const Sample & pool,
-    const Point & weights) const
-{
-  const Basis finiteBasis(christoffelDistribution_.getBasis());
-  const UnsignedInteger dimension = finiteBasis.getSize();
-  const UnsignedInteger poolSize = pool.getSize();
-  if (weights.getSize() != poolSize) throw InvalidArgumentException(HERE) << "Error: expected as many weights as pool points.";
-  Matrix features(poolSize, dimension);
-  for (UnsignedInteger i = 0; i < poolSize; ++i)
-  {
-    const Scalar rootWeight = std::sqrt(weights[i]);
-    const Point point(pool[i]);
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      const Scalar value = finiteBasis[j](point)[0];
-      const Scalar scaledValue = (rootWeight == 0.0) ? 0.0 : rootWeight * value;
-      if (!std::isfinite(scaledValue))
-        throw InternalException(HERE) << "Error: non-finite basis value for a positive-weight pool point at index " << i << ".";
-      features(i, j) = scaledValue;
-    }
-  }
-  return features;
-}
-
-/* Greedy removal of pool points down to size_, maximizing the min eigenvalue */
-Indices ChristoffelSubsampleExperiment::thinIndices(const Sample & pool,
-    const Matrix & features) const
-{
-  const UnsignedInteger poolSize = pool.getSize();
-  const UnsignedInteger dimension = features.getNbColumns();
-  Indices kept(IdentityIndices(poolSize));
-  while (kept.getSize() > size_)
-  {
-    const UnsignedInteger keptSize = kept.getSize();
-    // Unscaled sum once per iteration, downdated per candidate below
-    SymmetricMatrix total(dimension);
-    for (UnsignedInteger q = 0; q < keptSize; ++q)
-    {
-      const UnsignedInteger idx = kept[q];
-      for (UnsignedInteger a = 0; a < dimension; ++a)
-        for (UnsignedInteger b = 0; b <= a; ++b)
-          total(a, b) += features(idx, a) * features(idx, b);
-    }
-    Point minima(keptSize, SpecFunc::LowestScalar);
-    const RemovalScoresPolicy policy(total, features, kept, 1.0 * (keptSize - 1), dimension, minima);
-    const Bool parallel = christoffelDistribution_.isParallel();
-    TBBImplementation::ParallelForIf(parallel && (keptSize > 256), 0, keptSize, policy, 256);
-    Scalar bestMinEigenvalue = SpecFunc::LowestScalar;
-    UnsignedInteger bestPosition = 0;
-    for (UnsignedInteger pos = 0; pos < keptSize; ++pos)
-      if (minima[pos] > bestMinEigenvalue)
-      {
-        bestMinEigenvalue = minima[pos];
-        bestPosition = pos;
-      }
-    kept.erase(kept.begin() + bestPosition);
-  }
-  return kept;
-}
-
-/* Barrier gap and step scores of one block of candidates */
-struct BarrierScoresPolicy
-{
-  const SymmetricMatrix & lowerBase_;
-  const SymmetricMatrix & upperBase_;
-  const Scalar potentialLower_;
-  const Scalar potentialLowerNext_;
-  const Scalar potentialUpper_;
-  const Scalar potentialUpperNext_;
-  const Matrix & scaled_;
-  const Indices & remaining_;
-  Point & gaps_;
-  Point & deltas_;
-  const Scalar barrierStep_;
-  const Scalar deltaCap_;
-  const UnsignedInteger dimension_;
-
-  BarrierScoresPolicy(const SymmetricMatrix & lowerBase,
-                      const SymmetricMatrix & upperBase,
-                      const Scalar potentialLower,
-                      const Scalar potentialLowerNext,
-                      const Scalar potentialUpper,
-                      const Scalar potentialUpperNext,
-                      const Matrix & scaled,
-                      const Indices & remaining,
-                      Point & gaps,
-                      Point & deltas,
-                      const Scalar barrierStep,
-                      const Scalar deltaCap,
-                      const UnsignedInteger dimension)
-    : lowerBase_(lowerBase)
-    , upperBase_(upperBase)
-    , potentialLower_(potentialLower)
-    , potentialLowerNext_(potentialLowerNext)
-    , potentialUpper_(potentialUpper)
-    , potentialUpperNext_(potentialUpperNext)
-    , scaled_(scaled)
-    , remaining_(remaining)
-    , gaps_(gaps)
-    , deltas_(deltas)
-    , barrierStep_(barrierStep)
-    , deltaCap_(deltaCap)
-    , dimension_(dimension)
-  {
-    // Nothing to do
-  }
-
-  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
-  {
-    Point direction(dimension_);
-    for (UnsignedInteger pos = r.begin(); pos != r.end(); ++pos)
-    {
-      const UnsignedInteger idx = remaining_[pos];
-      for (UnsignedInteger k = 0; k < dimension_; ++k) direction[k] = scaled_(idx, k);
-      const Point invLower(lowerBase_.solveLinearSystem(direction));
-      const Point invUpper(upperBase_.solveLinearSystem(direction));
-      Scalar lowerLinear = 0.0;
-      Scalar lowerQuadratic = 0.0;
-      Scalar upperLinear = 0.0;
-      Scalar upperQuadratic = 0.0;
-      for (UnsignedInteger k = 0; k < dimension_; ++k)
-      {
-        lowerLinear += direction[k] * invLower[k];
-        lowerQuadratic += invLower[k] * invLower[k];
-        upperLinear += direction[k] * invUpper[k];
-        upperQuadratic += invUpper[k] * invUpper[k];
-      }
-      const Scalar lowerDenominator = potentialLowerNext_ - potentialLower_;
-      const Scalar upperDenominator = potentialUpper_ - potentialUpperNext_;
-      if (!(lowerDenominator > 0.0)) continue;
-      if (!(upperDenominator > 0.0)) continue;
-      const Scalar lowerScore = lowerQuadratic / lowerDenominator - lowerLinear;
-      const Scalar upperScore = upperQuadratic / upperDenominator + upperLinear;
-      gaps_[pos] = lowerScore - upperScore;
-      if (lowerScore > upperScore && lowerScore + upperScore > 0.0)
-        deltas_[pos] = std::min(2.0 / (lowerScore + upperScore), deltaCap_);
-      else
-        deltas_[pos] = std::min(barrierStep_, deltaCap_);
-    }
-  }
-}; /* end struct BarrierScoresPolicy */
-
-/* Forward barrier greedy selection of size_ pool points plus their weights */
-void ChristoffelSubsampleExperiment::barrierSelection(const Sample & pool,
-    const Matrix & features,
-    Indices & keptOut,
-    Point & barrierWeightsOut) const
-{
-  const UnsignedInteger poolSize = pool.getSize();
-  const UnsignedInteger dimension = features.getNbColumns();
-  const Scalar barrierStep = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-BarrierStep");
-  if (!(barrierStep > 0.0) || !std::isfinite(barrierStep)) throw InvalidArgumentException(HERE) << "Error: expected a positive finite barrier step, here step=" << barrierStep;
-  // Frame vectors v_i = sqrt(w_i / M) * phi(x_i); features already stores
-  // sqrt(w_i) * phi(x_i), so only the 1/sqrt(M) factor remains.
-  Matrix scaled(poolSize, dimension);
-  const Scalar scale = 1.0 / std::sqrt(1.0 * poolSize);
-  for (UnsignedInteger i = 0; i < poolSize; ++i)
-    for (UnsignedInteger j = 0; j < dimension; ++j) scaled(i, j) = scale * features(i, j);
-  SymmetricMatrix current(dimension);
-  Scalar lower = -1.0 * dimension;
-  Scalar upper = 1.0 * dimension;
-  Indices remaining(IdentityIndices(poolSize));
-  Indices selected;
-  Point barrierWeights(poolSize, 0.0);
-  // Trace budget: E||v||^2 = m/M, hence a mean step M/n gives a trace
-  // increase of m/n per selection and tr(A) ~= m after n selections.
-  const Scalar deltaCap = 1.0 * poolSize / size_;
-  for (UnsignedInteger step = 0; step < size_; ++step)
-  {
-    // Clamp the barriers strictly inside the current spectrum: fixed steps
-    // outrun small spectra (eg rank-deficient early Gramians), singular solves
-    const Point spectrum(current.computeEigenValues());
-    Scalar minEig = spectrum[0];
-    Scalar maxEig = spectrum[0];
-    for (UnsignedInteger k = 1; k < dimension; ++k)
-    {
-      minEig = std::min(minEig, spectrum[k]);
-      maxEig = std::max(maxEig, spectrum[k]);
-    }
-    const Scalar regularization = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization");
-    if (!(regularization > 0.0) || !std::isfinite(regularization)) throw InvalidArgumentException(HERE) << "Error: expected a positive finite barrier regularization, here value=" << regularization;
-    // Re-validate the current levels after growth, then advance inside the spectrum
-    lower = std::min(lower, minEig - regularization);
-    upper = std::max(upper, maxEig + regularization);
-    // Cap the step at half the remaining gap: a barrierStep larger than the
-    // gap would stall nextLower on lower, freeze the lower potential and
-    // skip every candidate. The midpoint stays strictly inside (lower, minEig).
-    const Scalar nextLower = std::min(lower + barrierStep, lower + 0.5 * (minEig - lower));
-    const Scalar nextUpper = std::max(upper + barrierStep, maxEig + regularization);
-    SymmetricMatrix lowerBase(current);
-    SymmetricMatrix upperBase(dimension);
-    for (UnsignedInteger a = 0; a < dimension; ++a)
-    {
-      lowerBase(a, a) -= nextLower;
-      for (UnsignedInteger b = 0; b < a; ++b) upperBase(a, b) = -current(a, b);
-      upperBase(a, a) = nextUpper - current(a, a);
-    }
-    // Barrier potentials at the current and next levels, read off the spectrum:
-    // tr((A - lI)^-1) = sum 1/(lambda_k - l) and tr((uI - A)^-1) = sum 1/(u - lambda_k).
-    // Same values as solving with the unit vectors, in O(dimension) instead of
-    // 4 * dimension dense O(dimension^3) solves per selection step.
-    Scalar potentialLower = 0.0;
-    Scalar potentialLowerNext = 0.0;
-    Scalar potentialUpper = 0.0;
-    Scalar potentialUpperNext = 0.0;
-    for (UnsignedInteger k = 0; k < dimension; ++k)
-    {
-      potentialLower += 1.0 / (spectrum[k] - lower);
-      potentialLowerNext += 1.0 / (spectrum[k] - nextLower);
-      potentialUpper += 1.0 / (upper - spectrum[k]);
-      potentialUpperNext += 1.0 / (nextUpper - spectrum[k]);
-    }
-    Scalar bestGap = SpecFunc::LowestScalar;
-    UnsignedInteger bestPosition = 0;
-    Scalar bestDelta = barrierStep;
-    const UnsignedInteger remainingSize = remaining.getSize();
-    Point gaps(remainingSize, SpecFunc::LowestScalar);
-    Point stepDeltas(remainingSize, barrierStep);
-    const BarrierScoresPolicy policy(lowerBase, upperBase, potentialLower, potentialLowerNext, potentialUpper, potentialUpperNext, scaled, remaining, gaps, stepDeltas, barrierStep, deltaCap, dimension);
-    const Bool parallel = christoffelDistribution_.isParallel();
-    TBBImplementation::ParallelForIf(parallel && (remainingSize > 256), 0, remainingSize, policy);
-    for (UnsignedInteger pos = 0; pos < remainingSize; ++pos)
-      if (gaps[pos] > bestGap)
-      {
-        bestGap = gaps[pos];
-        bestPosition = pos;
-        bestDelta = stepDeltas[pos];
-      }
-    // every candidate skipped (null denominators): no admissible step exists
-    if (!(bestGap > SpecFunc::LowestScalar)) throw InternalException(HERE) << "Error: no admissible barrier candidate at this step.";
-    const UnsignedInteger chosen = remaining[bestPosition];
-    for (UnsignedInteger a = 0; a < dimension; ++a)
-      for (UnsignedInteger b = 0; b <= a; ++b)
-        current(a, b) += bestDelta * scaled(chosen, a) * scaled(chosen, b);
-    barrierWeights[chosen] = bestDelta;
-    selected.add(chosen);
-    remaining.erase(remaining.begin() + bestPosition);
-    lower = nextLower;
-    upper = nextUpper;
-  }
-  // Kept indices in pool order for a stable layout
-  keptOut = Indices();
-  for (UnsignedInteger i = 0; i < poolSize; ++i)
-  {
-    Bool found = false;
-    for (UnsignedInteger q = 0; q < selected.getSize(); ++q)
-      if (selected[q] == i)
-      {
-        found = true;
-        break;
-      }
-    if (found) keptOut.add(i);
-  }
-  barrierWeightsOut = barrierWeights;
 }
 
 /* Rebuild the derived members */

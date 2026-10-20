@@ -14,8 +14,8 @@ Christoffel subsampling on the square
 # accurate than uniform sampling at the same budget. The fitted expansions
 # are polynomial chaos (functional chaos expansion) metamodels built with
 # least squares on the sampled designs: this sampling is the design step of
-# such a workflow. The uniform design is then recycled as a given pool for
-# a second subsampling, and the same case is repeated with a Fourier basis
+# such a workflow. A larger uniform candidate set is then recycled for a
+# second subsampling, and the same case is repeated with a Fourier basis
 # to show that the workflow does not depend on the polynomial family.
 # See Cohen and Dolbeault (Fig. 1, Sec. 6).
 
@@ -104,14 +104,14 @@ print(f"subsampled conditioning={condition(sample, weights):.3f} uniform conditi
 
 # %%
 # In practice simulation points may already be available from a previous study.
-# We recycle the uniform design as the candidate pool of a second subsampling:
-# the existing points are kept and only topped up with fresh Christoffel draws
-# before thinning. We observe that the recycled design performs like the fully
-# subsampled one, so no evaluation is wasted.
-givenSample, givenWeights = experiment.generateWithWeights(uniformSample)
+# We recycle a larger uniform candidate set: since it contains more than
+# budget points, the experiment selects exactly budget of them by exact volume
+# sampling and draws no fresh point. The selected subset is fitted below.
+candidatePool = measure.getSample(2 * budget)
+givenSample, givenWeights = experiment.generateWithWeights(candidatePool)
 givenMetamodel = fit(givenSample, list(givenWeights))
 givenError = ((givenMetamodel(validation) - reference).computeRawMoment(2)[0]) ** 0.5 / norm
-print(f"given-pool error={givenError:.3e} conditioning={condition(givenSample, list(givenWeights)):.3f}")
+print(f"recycled error={givenError:.3e} conditioning={condition(givenSample, list(givenWeights)):.3f}")
 
 # %%
 # The workflow is not specific to polynomials. We repeat the same test case
@@ -130,17 +130,17 @@ fourierError = ((fourierMetamodel(fourierValidation) - fourierReference).compute
 print(f"fourier error={fourierError:.3e} conditioning={condition(fourierSample, fourierWeights, fourierExperiment):.3f}")
 
 # %%
-# We display the three designs together. We observe that the thinned designs
+# We display the three designs together. We observe that the sampled designs
 # cluster where the Christoffel density is large, at the corners, while the
 # uniform design covers the square evenly.
 cloud = ot.Cloud(sample, "blue", "fsquare", "subsample")
 uniformCloud = ot.Cloud(uniformSample, "red", "fcircle", "uniform")
-givenCloud = ot.Cloud(givenSample, "green", "plus", "given-pool")
+givenCloud = ot.Cloud(givenSample, "green", "plus", "recycled")
 designGraph = ot.Graph("Designs", "x0", "x1")
 designGraph.add(cloud)
 designGraph.add(uniformCloud)
 designGraph.add(givenCloud)
-designGraph.setLegends(["subsample", "uniform", "given-pool"])
+designGraph.setLegends(["subsample", "uniform", "recycled"])
 view = otv.View(designGraph)
 
 # %%

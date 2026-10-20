@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import math
 import pickle
 from io import BytesIO
 
@@ -76,10 +75,17 @@ sampleB, weightsB = experiment.generateWithWeights()
 ott.assert_almost_equal(sampleA, sampleB)
 ott.assert_almost_equal(weightsA, weightsB)
 
-# the sizing rule needs no gamma key anymore: m = n-k is deduced by trial
+# the sizing rule needs no gamma key anymore: m = n-k is deduced by trial,
+# and the pool, thinning and barrier controls are gone
 assert not ot.ResourceMap.HasKey("ChristoffelSubsampleExperiment-Gamma")
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor"), 2.0)
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor"), 16.0)
+for key in [
+    "ChristoffelSubsampleExperiment-PoolOversamplingFactor",
+    "ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor",
+    "ChristoffelSubsampleExperiment-ThinningMethod",
+    "ChristoffelSubsampleExperiment-BarrierStep",
+    "ChristoffelSubsampleExperiment-BarrierRegularization",
+]:
+    assert not ot.ResourceMap.HasKey(key)
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance"), 0.5)
 existing = reference.getSample(20)
 
@@ -197,24 +203,6 @@ with ott.assert_raises(TypeError):
     defaultExperiment.generateWithWeights()
 with ott.assert_raises(TypeError):
     defaultExperiment.generate()
-
-# the fresh path no longer reads the pool, thinning or barrier controls
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 0.5)
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 0.0)
-ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 0.0)
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 0.0)
-try:
-    directSample, directWeights = experiment.generateWithWeights()
-    assert directSample.getSize() == 50
-    assert len(directWeights) == 50
-    assert all(w > 0.0 for w in directWeights)
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0)
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
-    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0)
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1e-8)
 
 # a negative frame tolerance is rejected
 ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", -1.0)

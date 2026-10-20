@@ -35,10 +35,14 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Weighted experiment drawing size_ points from the Christoffel
  * distribution associated to the first spaceDimension_ functions
- * of an orthogonal basis, with weights w = m / k_m. The space
- * dimension m = n-k is the largest dimension supplied by the basis:
- * k=0 with an inexhaustible basis, and k=1,2,... is tried until
- * the basis supplies m functions.
+ * of an orthogonal basis, with importance weights w = m / k_m.
+ * The space dimension m = n-k is the largest dimension supplied by
+ * the basis: k=0 with an inexhaustible basis, and k=1,2,... is tried
+ * until the basis supplies m functions. Fresh designs use the exact
+ * projection DPP of size m, completed by independent Christoffel
+ * points when n > m. Supplied points are either volume-sampled when
+ * there are at least n of them, or used as the conditioning set of a
+ * projection DPP when there are at most m of them.
  */
 class OT_API ChristoffelSubsampleExperiment
   : public WeightedExperimentImplementation
@@ -92,8 +96,8 @@ public:
   /** Sample generation with weights */
   Sample generateWithWeights(Point & weightsOut) const override;
 
-  /** Sample generation with weights from a pool prepended with existing points */
-  Sample generateWithWeights(const Sample & poolSample, Point & weightsOut) const;
+  /** Sample generation with weights from supplied points */
+  Sample generateWithWeights(const Sample & suppliedSample, Point & weightsOut) const;
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -103,26 +107,17 @@ public:
 protected:
   Bool equals(const WeightedExperimentImplementation & other) const override;
 
-  /** Target pool size from the oversampling factor */
-  UnsignedInteger computePoolSize() const;
+  /** Draw fresh Christoffel points */
+  Sample drawChristoffelPoints(const UnsignedInteger count) const;
 
-  /** Draw fresh pool points from the Christoffel law */
-  Sample drawPool(const UnsignedInteger count) const;
-
-  /** Density ratios of pool points, reference over Christoffel law */
-  Point computePoolWeights(const Sample & pool) const;
-
-  /** Thin a pool to size_, weigh and frame-check the design, growing a
-      numerically unusable pool up to the cap */
-  Sample finalizeDesign(const Sample & pool,
-                        const Point & poolWeights,
-                        Point & weightsOut) const;
+  /** Density ratios of design points, reference over Christoffel law */
+  Point computeImportanceWeights(const Sample & sample) const;
 
 private:
   /** Rebuild the derived members from basis_ and size_ */
   void update();
 
-  /** Gramian of a subset of sqrt(w) * phi, with an extra design-weight scaling, via BLAS */
+  /** Gramian of a subset of sqrt(w) * phi, via BLAS */
   static SymmetricMatrix ComputeGramian(const Matrix & features,
                                         const Point & designWeights,
                                         const Indices & kept);
@@ -143,20 +138,6 @@ private:
   /** Warn when the weighted design misses the frame bounds */
   void checkFrame(const Sample & sample,
                   const Point & weights) const;
-
-  /** Forward barrier greedy selection: kept indices plus barrier weights */
-  void barrierSelection(const Sample & pool,
-                        const Matrix & features,
-                        Indices & keptOut,
-                        Point & barrierWeightsOut) const;
-
-  /** Greedy removal of pool points down to size_, keeping the largest min eigenvalue */
-  Indices thinIndices(const Sample & pool,
-                      const Matrix & features) const;
-
-  /** Finite basis evaluations on a pool, scaled by sqrt(weight) */
-  Matrix computePoolFeatures(const Sample & pool,
-                             const Point & weights) const;
 
   /** Identity index set of given size */
   static Indices IdentityIndices(const UnsignedInteger size);
