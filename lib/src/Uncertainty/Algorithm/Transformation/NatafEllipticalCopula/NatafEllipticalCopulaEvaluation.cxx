@@ -131,6 +131,12 @@ UnsignedInteger NatafEllipticalCopulaEvaluation::getOutputDimension() const
   return inverseCholesky_.getDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool NatafEllipticalCopulaEvaluation::isParallel() const
+{
+  return standardDistribution_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void NatafEllipticalCopulaEvaluation::save(Advocate & adv) const
 {
