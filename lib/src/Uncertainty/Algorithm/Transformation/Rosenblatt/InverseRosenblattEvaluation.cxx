@@ -104,6 +104,12 @@ UnsignedInteger InverseRosenblattEvaluation::getOutputDimension() const
   return distribution_.getDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool InverseRosenblattEvaluation::isParallel() const
+{
+  return distribution_.getImplementation()->isParallel();
+}
+
 /* String converter */
 String InverseRosenblattEvaluation::__repr__() const
 {
