@@ -176,6 +176,12 @@ UnsignedInteger MarginalEvaluation::getOutputDimension() const
   return indices_.getSize();
 }
 
+/* Is it safe to call in parallel? */
+Bool MarginalEvaluation::isParallel() const
+{
+  return p_evaluation_->isParallel();
+}
+
 /* Gradient according to the marginal parameters */
 Matrix MarginalEvaluation::parameterGradient(const Point & inP) const
 {
