@@ -531,13 +531,63 @@ pythonSurface = otexp.PushForwardDistribution(
 ott.assert_almost_equal(pythonSurface.computePDF([1.0]),
                         chiSquare3.computePDF([1.0]), 2e-2, 0.0)
 
+# A nonlinear map from R^3 to R^2 has a one dimensional fibre, the
+# intersection of the two level surfaces. For the uniform cube and
+# Y = (X0^2 + X1^2, X2), the fibre at (r^2, y1) with 0 < r < 1 is the
+# quarter circle of radius r in the positive quadrant. Its length is
+# pi * r / 2, the two dimensional Jacobian is 2 * r, and the antecedent
+# density is one, so the density is pi / 4.
+uniformCube = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
+curveCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2 + x1^2", "x2"]),
+    uniformCube,
+)
+for point in [[0.5, 0.5], [0.2, 0.3]]:
+    pdf = curveCoArea.computePDF(point)
+    print(f"curveCoArea pdf({point})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, math.pi / 4.0, 1e-3, 0.0)
+# Points outside the image of the two components have an empty fibre.
+assert curveCoArea.computePDF([-0.1, 0.5]) == 0.0
+assert curveCoArea.computePDF([0.5, 1.5]) == 0.0
+
+# With independent standard normal inputs, the same map has the closed-form
+# density 0.5 * exp(-y0 / 2) * phi(y1), which also exercises the finite
+# search box and the non-constant antecedent density.
+normalCurve = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2 + x1^2", "x2"]),
+    ot.Normal(3),
+)
+curvePoint = [0.7, 0.4]
+expectedCurvePDF = (0.5 * math.exp(-0.5 * curvePoint[0])
+                    * ot.Normal().computePDF([curvePoint[1]]))
+pdf = normalCurve.computePDF(curvePoint)
+print(f"normalCurve pdf({curvePoint})={pdf:.12g}")
+ott.assert_almost_equal(pdf, expectedCurvePDF, 1e-2, 0.0)
+# The deterministic moments are still obtained by input-space quadrature.
+ott.assert_almost_equal(normalCurve.getMean(), [2.0, 0.0], 1e-8, 1e-9)
+ott.assert_almost_equal(
+    normalCurve.getCovariance(),
+    ot.CovarianceMatrix(2, [4.0, 0.0, 0.0, 1.0]),
+    1e-8,
+    1e-9,
+)
+
+# A nonlinear R^3 -> R^2 map without an analytical gradient uses the finite
+# difference fallback for the two dimensional Jacobian.
+pythonCurve = otexp.PushForwardDistribution(
+    ot.PythonFunction(3, 2, lambda x: [x[0] ** 2 + x[1] ** 2, x[2]]),
+    uniformCube,
+)
+ott.assert_almost_equal(pythonCurve.computePDF([0.5, 0.4]),
+                        math.pi / 4.0, 2e-3, 0.0)
+
 # Nonlinear co-area maps with a higher dimensional fibre are still accepted
 # at construction, and their PDF fails with an explicit message.
 nonAffineFunctions = [
     (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0 + x1^2"]),
      ot.Normal(4)),
-    (ot.SymbolicFunction(["x0", "x1", "x2"], ["x0", "x1^2"]), ot.Normal(3)),
-    (ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2", "x1"]), ot.Normal(3)),
+    (ot.SymbolicFunction(["x0", "x1", "x2", "x3"], ["x0^2", "x1"]),
+     ot.Normal(4)),
 ]
 for nonAffineFunction, nonAffineAntecedent in nonAffineFunctions:
     nonAffineDistribution = otexp.PushForwardDistribution(

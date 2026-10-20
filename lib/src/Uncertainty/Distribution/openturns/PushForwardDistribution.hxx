@@ -162,6 +162,14 @@ private:
       norm over the surface with SimplicialCubature. */
   Scalar computePDFByNonlinearCoAreaSurface(const Point & point) const;
 
+  /** Compute the PDF in the nonlinear co-area case f: R^3 -> R^2, by
+      tetrahedralising the search box and locating the curve where the two
+      level surfaces intersect. The co-area factor is the two dimensional
+      Jacobian of f, i.e. the norm of the cross product of its two gradient
+      vectors, and the antecedent density is integrated along the resulting
+      segments. */
+  Scalar computePDFByNonlinearCoAreaCurve(const Point & point) const;
+
   /** Solve r(u) = 0 by damped Newton with step control from the given
       starting point; returns the root if converged within tolerance, an
       empty point otherwise */

@@ -50,8 +50,10 @@ finite search box plus the mean of :math:`\inputRV`, deduplicated by
 distance, and their contributions are summed.
 
 At critical values, where the Jacobian of :math:`f` is singular, the
-density diverges where the antecedent carries mass and `computePDF`
-returns `+inf`.
+co-area density may diverge. When an implemented nonlinear path detects a
+rank deficient Jacobian at a point where the antecedent carries mass,
+`computePDF` returns `+inf`. Critical values whose density has a finite
+limit are not resolved reliably by the mesh extraction.
 
 In the co-area case :math:`\outputDim < \inputDim`, the preimages of
 :math:`\outputReal` are not isolated points but the
@@ -113,22 +115,29 @@ path, instead of being probed on a finite set of points where a nonlinear
 function could hide its curvature. A custom or Python function must therefore
 override ``isLinear()`` to use the exact affine path. The nonlinear co-area
 density is implemented for a scalar function
-:math:`f: \Rset^2 \rightarrow \Rset` and
-:math:`f: \Rset^3 \rightarrow \Rset`. The search box is triangulated into
+:math:`f: \Rset^2 \rightarrow \Rset`,
+:math:`f: \Rset^3 \rightarrow \Rset`, and for a function
+:math:`f: \Rset^3 \rightarrow \Rset^2`. The search box is triangulated into
 triangles or tetrahedra; the signs of :math:`f - y` at the vertices locate the
 crossed edges, each crossing is polished with a scalar Brent solve on the actual
 function, and the density is integrated along the resulting level segments
 (:math:`\inputDim = 2`) or over the triangulated level surface
-(:math:`\inputDim = 3`). The co-area factor is the norm of the gradient,
-evaluated at the segment midpoint in :math:`\Rset^2` and at the surface
-quadrature points in :math:`\Rset^3`; the surface path falls back to centered
+(:math:`\inputDim = 3`). In the :math:`\Rset^3 \rightarrow \Rset^2` case, the
+intersection of the two P1 level planes is a segment in each tetrahedron, its
+two ends are polished by a two dimensional Newton solve on the actual function,
+and the density is integrated along the segments. The co-area factor is the
+norm of the gradient for a scalar function, evaluated at the segment midpoint in
+:math:`\Rset^2` and at the surface quadrature points in :math:`\Rset^3`. For
+:math:`f: \Rset^3 \rightarrow \Rset^2` it is the two dimensional Jacobian, i.e.
+the norm of the cross product of the two gradient vectors, evaluated at the
+segment quadrature points. The :math:`\Rset^3` paths fall back to centered
 finite differences when the function provides no analytic gradient. The mesh
 resolution is controlled by the
 ``PushForwardDistribution-NonlinearCoAreaDiscretization`` key in
 :math:`\Rset^2` and by the
-``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` key in
-:math:`\Rset^3`. These densities are approximations, whereas the affine path
-remains exact. Other nonlinear maps with
+``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` key for both
+:math:`\Rset^3` paths. These densities are approximations, whereas the affine
+path remains exact. Other nonlinear maps with
 :math:`\outputDim < \inputDim` are accepted by the constructor, can be
 sampled, and have their range, mean and covariance computed, but their density
 is not implemented and ``computePDF()`` raises
@@ -201,8 +210,8 @@ The following :class:`~openturns.ResourceMap` keys are used:
   intervals per input dimension in the triangulation of the search box used by the scalar nonlinear co-area
   density in :math:`\Rset^2`.
 - ``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` (``UnsignedInteger``, default: ``48``): number
-  of intervals per input dimension in the tetrahedral background mesh used by the scalar nonlinear co-area
-  density in :math:`\Rset^3`.
+  of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities
+  from :math:`\Rset^3` to :math:`\Rset` and from :math:`\Rset^3` to :math:`\Rset^2`.
 - ``PushForwardDistribution-NonlinearCoAreaLevelTolerance`` (``Scalar``, default: ``1.0e-12``): relative
   tolerance used to decide that a mesh vertex lies on the requested level set in the nonlinear co-area paths.
 - ``PushForwardDistribution-RangeMargin`` (``Scalar``, default: ``0.025``): relative margin added to each
