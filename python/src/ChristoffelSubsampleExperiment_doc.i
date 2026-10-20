@@ -21,10 +21,17 @@ keeping the existing points, up to
 method drops pool points while keeping the largest smallest Gramian eigenvalue
 and no reweighting; the ``Barrier`` method is a forward barrier greedy selection
 with reweighting, clamped strictly inside the current spectrum so rank-deficient
-steps stay well-defined. Each kept point :math:`x_i` carries a weight proportional
+steps stay well-defined. It is less reliable when the space dimension is close
+to the target size: with :math:`m \approx n` its Gramian stays ill-conditioned
+and the barrier potentials can vanish. Prefer ``Removal`` in that regime, or a
+larger pool. Each kept point :math:`x_i` carries a weight proportional
 to :math:`m / k_m(x_i)`, the density ratio of the reference measure
 over the Christoffel distribution, times the barrier weight for the
-``Barrier`` method.
+``Barrier`` method. The returned weights are positive and finite: a pool
+point with a null or non-finite importance ratio (for example a point
+outside the numerical range) is never kept. If thinning leaves such a
+point in the design, the pool is grown; at the pool cap the generation
+throws instead of returning a zero-weight design.
 
 The sizing follows the budget theorem: from :math:`\gamma m \log m`
 Christoffel draws with :math:`\gamma \approx 9.242` (Theorem 2.3 of Cohen
@@ -36,7 +43,14 @@ With an inexhaustible basis :math:`m = n`, so the default ``Removal``
 thinning costs approximately :math:`O(n^5)` (:math:`O(n)` iterations
 scoring :math:`O(n)` candidates with an :math:`m \times m` eigen solve
 each); keep :math:`n` moderate in that case. The implementation checks
-the frame bounds and can return a design satisfying them.
+the frame bounds and warns when they are missed. This check is advisory:
+it is not a certificate that the frame bounds hold. The default
+:math:`2n` pool is far below the :math:`\gamma n \log n` budget of the
+theorem, and the :math:`16n` growth cap is below that budget for
+:math:`n \ge 6`. Use a finite basis with :math:`m < n`, raise
+``ChristoffelSubsampleExperiment-PoolOversamplingFactor``, or check the
+eigenvalues returned by :meth:`computeDesignEigenvalues` when a frame
+certificate is required.
 
 Available constructors:
     ChristoffelSubsampleExperiment(*basis, size*)
@@ -56,11 +70,15 @@ openturns.experimental.ChristoffelDistribution
 
 Notes
 -----
+A default-constructed experiment has no configured basis: call
+:meth:`setOrthogonalBasis` (and optionally :meth:`setSize`) before
+generating. Generation from the unconfigured default state throws.
+
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``ChristoffelSubsampleExperiment-PoolOversamplingFactor`` (``Scalar``, default: ``2.0``): candidate pool size as a multiple of the target size.
-- ``ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor`` (``Scalar``, default: ``16.0``): cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool.
-- ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1.
+- ``ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor`` (``Scalar``, default: ``16.0``): cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool. An incoming pool larger than this cap is used as is, never truncated.
+- ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1. It must be non-negative and finite.
 - ``ChristoffelSubsampleExperiment-ThinningMethod`` (``String``, default: ``Removal``): greedy thinning method. Possible values: ``Barrier``, ``Removal``.
 - ``ChristoffelSubsampleExperiment-BarrierStep`` (``Scalar``, default: ``1.0``): barrier advance per selection step of the ``Barrier`` method.
 - ``ChristoffelSubsampleExperiment-BarrierRegularization`` (``Scalar``, default: ``1e-8``): safety gap keeping the barriers strictly inside the spectrum.
@@ -146,13 +164,18 @@ Parameters
 sample : 2-d sequence of float
     Design points.
 weights : sequence of float
-    Weight of each design point.
+    Positive finite weight of each design point.
 
 Returns
 -------
 eigenvalues : :class:`~openturns.Point`
     Eigenvalues of the mean over the design of weight times outer
-    product, the frame stability certificate."
+    product, the frame stability certificate.
+
+Notes
+-----
+The weights must be positive and finite; a zero-weight design point is
+rejected because the frame certificate would silently ignore it."
 
 // ---------------------------------------------------------------------
 
@@ -160,10 +183,10 @@ eigenvalues : :class:`~openturns.Point`
 R"RAW(Deduce the space dimension from a target size.
 
 With an inexhaustible basis the dimension is the target size
-(:math:`k = 0` in :math:`m = n - k`); the constructors try
-:math:`k = 1, 2, \dots` until the basis supplies :math:`m` functions.
-With :math:`m = n` the generation cost grows approximately as
-:math:`O(n^5)`; see the class documentation.
+(:math:`k = 0` in :math:`m = n - k`). With a finite basis, the
+constructor builds functions until the basis is exhausted and keeps
+the largest available dimension. With :math:`m = n` the generation
+cost grows approximately as :math:`O(n^5)`; see the class documentation.
 
 Parameters
 ----------

@@ -67,8 +67,16 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``ChristoffelDistribution-KnSamplingSize`` (``UnsignedInteger``, default: ``100000``): size of the candidate pool of the stability factor search.
 - ``ChristoffelDistribution-ExactKn`` (``Bool``, default: ``True``): refine the stability factor by a multi-start bounded maximization instead of keeping the Monte-Carlo maximum.
 - ``ChristoffelDistribution-KnMaximumMultiStart`` (``UnsignedInteger``, default: ``16``): number of best candidates used as starting points of that maximization.
-- ``ChristoffelDistribution-KnSafetyFactor`` (``Scalar``, default: ``1.1``): multiplicative safety margin of the stability factor estimate.
+- ``ChristoffelDistribution-KnSafetyFactor`` (``Scalar``, default: ``1.1``): multiplicative safety margin of the stability factor estimate. It must be positive and finite; the samplers throw if it is not.
 - ``ChristoffelDistribution-SliceGridSize`` (``UnsignedInteger``, default: ``1000``): grid size of the univariate slice maxima in sequential conditional sampling.
+
+The interval returned by :meth:`getRange` is a numerical range, not
+necessarily the support. :meth:`computePDF` returns zero exactly when the
+reference density evaluates to zero; for an unbounded reference it may
+evaluate points beyond that numerical range when their density is positive.
+Conversely, a reference density that underflows to zero makes the PDF zero
+even when the reference log-density is finite; use :meth:`computeLogPDF`
+when tail values are needed.
 
 Examples
 --------
@@ -188,8 +196,11 @@ kn : float
     low-discrepancy sequence pushed through the inverse Rosenblatt
     transform of the reference measure, refined by a multi-start bounded
     maximization when ``ChristoffelDistribution-ExactKn`` is enabled,
-    times the safety margin. The value is cached until the basis or the
-    size changes.
+    times the safety margin. The value is cached until the basis, the
+    size, or one of the keys that enter the estimate changes
+    (``KnSamplingSize``, ``ExactKn``, ``KnMaximumMultiStart``,
+    ``KnSafetyFactor``, ``OptimizationAlgorithm``). A non-positive or
+    non-finite safety factor is rejected.
 
 Notes
 -----

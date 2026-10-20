@@ -55,6 +55,11 @@ with ott.assert_raises(TypeError):
     experiment.computeDesignEigenvalues(ot.Sample(5, 2), ot.Point(5, 1.0))
 with ott.assert_raises(TypeError):
     experiment.computeDesignEigenvalues(sample, ot.Point(3, 1.0))
+# zero and negative weights are rejected: the frame certificate would ignore them
+with ott.assert_raises(TypeError):
+    experiment.computeDesignEigenvalues(sample, ot.Point(30, 0.0))
+with ott.assert_raises(TypeError):
+    experiment.computeDesignEigenvalues(sample, ot.Point(30, -1.0))
 
 # setters rebuild the derived members
 experiment.setSize(50)
@@ -114,6 +119,9 @@ finiteFactory = otexp.FiniteOrthogonalFunctionFactory(finiteFunctions, ot.Unifor
 finiteBasis = ot.OrthogonalBasis(finiteFactory)
 finiteExperiment = otexp.ChristoffelSubsampleExperiment(finiteBasis, 30)
 assert finiteExperiment.getSpaceDimension() == 5
+finiteSample, finiteWeights = finiteExperiment.generateWithWeights()
+assert finiteSample.getSize() == finiteExperiment.getSize()
+assert all(w > 0.0 for w in finiteWeights)
 
 # pool factor 1 fast path: no thinning, direct Christoffel draws
 ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 1.0)
@@ -168,6 +176,12 @@ assert experiment.getOrthogonalBasis() == basis
 defaultExperiment = otexp.ChristoffelSubsampleExperiment()
 assert defaultExperiment.getSize() == ot.ResourceMap.GetAsUnsignedInteger("WeightedExperiment-DefaultSize")
 assert defaultExperiment.getSpaceDimension() == 0
+# the default state is explicitly unconfigured: generation throws instead of
+# silently building a one-function law with an inconsistent dimension metadata
+with ott.assert_raises(TypeError):
+    defaultExperiment.generateWithWeights()
+with ott.assert_raises(TypeError):
+    defaultExperiment.generate()
 
 # a pool point outside the numerical range has a null law density: its
 # importance ratio is undefined and it must not divide by zero
@@ -175,6 +189,20 @@ mixedPool = ot.Sample([[0.5], [3.0], [-0.7]])
 mixedSample, mixedWeights = experiment.generateWithWeights(mixedPool)
 assert mixedSample.getSize() == 50
 assert all(math.isfinite(w) for w in mixedWeights)
+assert all(w > 0.0 for w in mixedWeights)
+
+# a design that still has zero weights at the pool cap is rejected instead of
+# being returned with points the least-squares driver silently ignores
+zeroWeightExperiment = otexp.ChristoffelSubsampleExperiment(basis, 5)
+zeroWeightPool = ot.Sample(10, [2.0])
+ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 1.0)
+try:
+    with ott.assert_raises(RuntimeError):
+        zeroWeightExperiment.generateWithWeights(zeroWeightPool)
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
+    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
 
 # a pool oversampling factor below 1 is rejected
 ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 0.5)
@@ -191,6 +219,14 @@ try:
         experiment.generateWithWeights()
 finally:
     ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
+
+# a negative frame tolerance is rejected
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", -1.0)
+try:
+    with ott.assert_raises(TypeError):
+        experiment.generateWithWeights()
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
 
 # adaptive pool: a degenerate pool of duplicates grows with fresh draws
 # until the thinned design is usable, keeping the existing points

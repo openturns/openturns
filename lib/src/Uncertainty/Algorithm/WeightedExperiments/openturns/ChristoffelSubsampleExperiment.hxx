@@ -122,25 +122,24 @@ private:
   /** Rebuild the derived members from basis_ and size_ */
   void update();
 
-  /** Gramian of a subset: mean over kept of w * phi * phi^T, via BLAS */
+  /** Gramian of a subset of sqrt(w) * phi, with an extra design-weight scaling, via BLAS */
   static SymmetricMatrix ComputeGramian(const Matrix & features,
-                                        const Point & weights,
+                                        const Point & designWeights,
                                         const Indices & kept);
 
   /** Forward barrier greedy selection: kept indices plus barrier weights */
   void barrierSelection(const Sample & pool,
-                        const Point & poolWeights,
                         const Matrix & features,
                         Indices & keptOut,
                         Point & barrierWeightsOut) const;
 
   /** Greedy removal of pool points down to size_, keeping the largest min eigenvalue */
   Indices thinIndices(const Sample & pool,
-                      const Point & poolWeights,
                       const Matrix & features) const;
 
-  /** Finite basis evaluations on a pool, shared by the thinning step and the frame check */
-  Matrix computePoolFeatures(const Sample & pool) const;
+  /** Finite basis evaluations on a pool, scaled by sqrt(weight) */
+  Matrix computePoolFeatures(const Sample & pool,
+                             const Point & weights) const;
 
   /** Identity index set of given size */
   static Indices IdentityIndices(const UnsignedInteger size);
