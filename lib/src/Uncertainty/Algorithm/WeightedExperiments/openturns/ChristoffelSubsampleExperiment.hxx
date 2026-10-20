@@ -127,6 +127,23 @@ private:
                                         const Point & designWeights,
                                         const Indices & kept);
 
+  /** Exact volume sample of the given size from the rows of a feature matrix */
+  static Indices ComputeVolumeSample(const Matrix & features,
+                                     const UnsignedInteger size);
+
+  /** Raw finite-basis features of a sample, one row per point */
+  Matrix computeFeatures(const Sample & sample,
+                         const Bool checkFinite = true) const;
+
+  /** Exact projection determinantal point process sample, optionally
+      conditioned on supplied points */
+  Sample drawProjectionDPP(const UnsignedInteger size,
+                           const Sample & fixed = Sample()) const;
+
+  /** Warn when the weighted design misses the frame bounds */
+  void checkFrame(const Sample & sample,
+                  const Point & weights) const;
+
   /** Forward barrier greedy selection: kept indices plus barrier weights */
   void barrierSelection(const Sample & pool,
                         const Matrix & features,
