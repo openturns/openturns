@@ -115,6 +115,12 @@ UnsignedInteger InverseTrendEvaluation::getOutputDimension() const
   return function_.getOutputDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool InverseTrendEvaluation::isParallel() const
+{
+  return function_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void InverseTrendEvaluation::save(Advocate & adv) const
 {
