@@ -575,6 +575,8 @@
 
   <!-- OT::ChristoffelSubsampleExperiment parameters -->
   <ChristoffelSubsampleExperiment-FrameTolerance value_float="0.5" />
+  <ChristoffelSubsampleExperiment-Certified      value_bool="false" />
+  <ChristoffelSubsampleExperiment-Gamma          value_float="9.242343873386666" />
 
   <!-- OT::CompositeDistribution parameters -->
   <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />

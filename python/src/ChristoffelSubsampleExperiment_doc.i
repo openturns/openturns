@@ -6,12 +6,25 @@ R"RAW(Christoffel subsample experiment.
     To use it, import the ``openturns.experimental`` submodule.
 
 Given an orthonormal basis of :math:`L^2(D, \mu)` and a target size
-:math:`n`, the experiment works with the first :math:`m` basis functions,
-where :math:`m = n - k` is the largest dimension supplied by the basis:
-:math:`k = 0` with an inexhaustible basis, and :math:`k = 1, 2, \dots` is
-tried until the basis supplies :math:`m` functions.
+:math:`n`, the experiment works with the first :math:`m` basis functions.
+By default, :math:`m = n - k` is the largest dimension supplied by the
+basis: :math:`k = 0` with an inexhaustible basis, and
+:math:`k = 1, 2, \dots` is tried until the basis supplies :math:`m`
+functions.
 
-A fresh design is exact. For :math:`n = m`, it is a projection
+When the ``ChristoffelSubsampleExperiment-Certified`` key is true, the
+experiment uses the certified Cohen-Dolbeault sizing instead:
+:math:`m` is the largest integer with
+:math:`n \ge \gamma m \log(m)`, where :math:`\gamma` is the
+``ChristoffelSubsampleExperiment-Gamma`` key value, and a fresh design
+is :math:`n` independent draws from the
+:class:`~openturns.experimental.ChristoffelDistribution`. No thinning
+is applied. This mode makes :math:`m` much smaller than :math:`n` and
+is not the default; when the key is false, :math:`m = n-k` is chosen by
+the basis capacity as described above.
+
+In the default square mode, a fresh design is exact. For :math:`n = m`,
+it is a projection
 determinantal point process (DPP) of size :math:`m` associated with the
 Christoffel kernel of the :math:`m` functions. For :math:`n > m`, the
 first :math:`m` points are a projection DPP and the remaining
@@ -34,7 +47,9 @@ conditioned on their feature vectors; the remaining :math:`m - M` DPP
 points are drawn, followed by :math:`n - m` independent Christoffel
 points when :math:`n > m`. Supplying more than :math:`m` points while
 asking for fewer than :math:`n` points is rejected, as is a set of
-supplied features that is not linearly independent.
+supplied features that is not linearly independent. In certified mode,
+supplied points are rejected because the certificate assumes
+independent Christoffel draws; only the fresh path is available.
 
 Each design point :math:`x_i` carries a weight proportional to
 :math:`m / k_m(x_i)`, the density ratio of the reference measure over
@@ -44,11 +59,15 @@ a point outside the numerical range, is rejected instead of being
 returned with a zero weight.
 
 The implementation checks the frame bounds and warns when they are
-missed. This check is advisory: it is not a certificate that the frame
-bounds hold. For :math:`n = m` the design is square and the projection
-DPP has no certified frame guarantee; for :math:`n > m` the extra
-independent Christoffel points improve the budget without making the
-certificate exact. Use :meth:`computeDesignEigenvalues` when a frame
+missed. In the default mode this check is advisory: it is not a
+certificate that the frame bounds hold. For :math:`n = m` the design is
+square and the projection DPP has no certified frame guarantee; for
+:math:`n > m` the extra independent Christoffel points improve the
+budget without making the certificate exact. In certified mode, the
+independent Christoffel budget :math:`n = \gamma m \log(m)` is the
+Cohen-Dolbeault setting, so the frame guarantee holds with high
+probability under the theorem assumptions; the realized design is
+still checked. Use :meth:`computeDesignEigenvalues` when a frame
 diagnostic is required on a given design.
 
 Available constructors:
@@ -73,9 +92,11 @@ A default-constructed experiment has no configured basis: call
 :meth:`setOrthogonalBasis` (and optionally :meth:`setSize`) before
 generating. Generation from the unconfigured default state throws.
 
-The following :class:`~openturns.ResourceMap` key is used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1. It must be non-negative and finite.
+- ``ChristoffelSubsampleExperiment-Certified`` (``bool``, default: ``False``): when true, select the certified sizing :math:`n = \gamma m \log(m)` and independent Christoffel draws.
+- ``ChristoffelSubsampleExperiment-Gamma`` (``Scalar``, default: ``9.242343873386666``): constant :math:`\gamma` of the certified sizing. It must be finite and strictly positive when the certified mode is selected.
 
 Examples
 --------
@@ -144,7 +165,9 @@ suppliedSample : 2-d sequence of float, optional
     and the design is completed by a conditional projection DPP, plus
     independent Christoffel points when `size` exceeds the space
     dimension. More than `spaceDimension` supplied points while asking
-    for fewer than `size` points is rejected.
+    for fewer than `size` points is rejected. In certified mode, a
+    non-empty supplied sample is rejected: only independent Christoffel
+    draws carry the certificate.
 
 Returns
 -------
@@ -181,12 +204,17 @@ rejected because the frame certificate would silently ignore it."
 %feature("docstring") OT::ChristoffelSubsampleExperiment::DeduceSpaceDimension
 R"RAW(Deduce the space dimension from a target size.
 
-With an inexhaustible basis the dimension is the target size
+In the default mode the dimension is the target size
 (:math:`k = 0` in :math:`m = n - k`). With a finite basis, the
 constructor builds functions until the basis is exhausted and keeps
 the largest available dimension. With :math:`m = n` the projection DPP
-is sampled sequentially, so keep the target size moderate; see the class
-documentation.
+is sampled sequentially, so keep the target size moderate.
+
+When ``ChristoffelSubsampleExperiment-Certified`` is true, the result is
+the largest :math:`m \ge 1` such that
+:math:`\gamma m \log(m) \le n`, with :math:`\gamma` read from
+``ChristoffelSubsampleExperiment-Gamma``. The basis capacity is still
+applied by the constructor.
 
 Parameters
 ----------
@@ -196,7 +224,8 @@ size : positive int
 Returns
 -------
 spaceDimension : positive int
-    The target size itself.
+    The target size in the default mode, or the certified dimension
+    :math:`m` when the certified mode is selected.
 )RAW"
 
 // ---------------------------------------------------------------------

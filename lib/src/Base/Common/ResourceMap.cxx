@@ -1215,6 +1215,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // ChristoffelSubsampleExperiment parameters //
   addAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5);
+  addAsBool("ChristoffelSubsampleExperiment-Certified", false);
+  addAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666);
 
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);

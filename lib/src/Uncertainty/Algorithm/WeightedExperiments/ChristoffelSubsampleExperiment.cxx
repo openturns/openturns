@@ -65,7 +65,7 @@ ChristoffelSubsampleExperiment * ChristoffelSubsampleExperiment::clone() const
 Bool ChristoffelSubsampleExperiment::operator ==(const ChristoffelSubsampleExperiment & other) const
 {
   if (this == &other) return true;
-  return hasEqualBase(other) && (christoffelDistribution_ == other.christoffelDistribution_);
+  return hasEqualBase(other) && (certified_ == other.certified_) && (gamma_ == other.gamma_) && (christoffelDistribution_ == other.christoffelDistribution_);
 }
 
 Bool ChristoffelSubsampleExperiment::equals(const WeightedExperimentImplementation & other) const
@@ -82,7 +82,9 @@ String ChristoffelSubsampleExperiment::__repr__() const
       << " name=" << getName()
       << " basis=" << basis_
       << " size=" << size_
-      << " spaceDimension=" << spaceDimension_;
+      << " spaceDimension=" << spaceDimension_
+      << " certified=" << (certified_ ? "true" : "false")
+      << " gamma=" << gamma_;
   return oss;
 }
 
@@ -145,11 +147,37 @@ void ChristoffelSubsampleExperiment::setDistribution(const Distribution &)
   throw InvalidArgumentException(HERE) << "Error: the reference distribution of a ChristoffelSubsampleExperiment is embedded in its basis, use setOrthogonalBasis() instead.";
 }
 
-/* Largest space dimension m = n-k for the target size n with an inexhaustible
-   basis (k=0): the basis capacity trial needs the basis itself, see update() */
+/* Largest m >= 1 such that gamma m log(m) <= size.  The search is bounded
+   by size because m > n is never useful, and it is a binary search to
+   avoid looping up to a large target size. */
+UnsignedInteger ChristoffelSubsampleExperiment::ComputeSpaceDimension(const UnsignedInteger size,
+    const Scalar gamma)
+{
+  if (!std::isfinite(gamma) || !(gamma > 0.0))
+    throw InvalidArgumentException(HERE) << "Error: expected a finite positive ChristoffelSubsampleExperiment-Gamma, got gamma=" << gamma;
+  if (size == 0) return 0;
+  UnsignedInteger lower = 1;
+  UnsignedInteger upper = size;
+  while (lower < upper)
+  {
+    const UnsignedInteger middle = lower + (upper - lower + 1) / 2;
+    const Scalar budget = gamma * middle * std::log(static_cast<Scalar>(middle));
+    if (std::isfinite(budget) && (budget <= static_cast<Scalar>(size)))
+      lower = middle;
+    else
+      upper = middle - 1;
+  }
+  return lower;
+}
+
+/* Deduce the space dimension from the target size: identity for the default
+   square design, gamma m log(m) <= n when the Certified key is true.  The
+   basis capacity is applied in update(). */
 UnsignedInteger ChristoffelSubsampleExperiment::DeduceSpaceDimension(const UnsignedInteger size)
 {
-  return size;
+  if (!ResourceMap::GetAsBool("ChristoffelSubsampleExperiment-Certified")) return size;
+  const Scalar gamma = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-Gamma");
+  return ComputeSpaceDimension(size, gamma);
 }
 
 /* Uniform weights ? */
@@ -164,13 +192,23 @@ Bool ChristoffelSubsampleExperiment::isRandom() const
   return true;
 }
 
-/* Sample generation with weights: exact projection DPP for the first m
-   points, then independent Christoffel draws for the remaining n-m points */
+/* Sample generation with weights: in certified mode, n independent
+   Christoffel draws with no thinning; otherwise an exact projection DPP
+   for the first m points and independent Christoffel draws for the
+   remaining n-m points */
 Sample ChristoffelSubsampleExperiment::generateWithWeights(Point & weightsOut) const
 {
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive experiment size.";
   if ((spaceDimension_ == 0) || (christoffelDistribution_.getSize() == 0))
     throw InvalidArgumentException(HERE) << "Error: no orthogonal basis is configured, call setOrthogonalBasis() before generating.";
+  if (certified_)
+  {
+    Sample design(christoffelDistribution_.getSample(size_));
+    design.setDescription(distribution_.getDescription());
+    weightsOut = computeImportanceWeights(design);
+    checkFrame(design, weightsOut);
+    return design;
+  }
   Sample design(drawProjectionDPP(spaceDimension_));
   if (size_ > spaceDimension_)
   {
@@ -208,6 +246,8 @@ Sample ChristoffelSubsampleExperiment::generateWithWeights(const Sample & suppli
     throw InvalidArgumentException(HERE) << "Error: expected supplied points of dimension=" << distribution_.getDimension() << ", got dimension=" << suppliedSample.getDimension();
   const UnsignedInteger suppliedSize = suppliedSample.getSize();
   if (suppliedSize == 0) return generateWithWeights(weightsOut);
+  if (certified_)
+    throw InvalidArgumentException(HERE) << "Error: the certified mode only generates independent Christoffel points; supplied points are not supported.";
 
   if (suppliedSize >= size_)
   {
@@ -616,8 +656,11 @@ void ChristoffelSubsampleExperiment::update()
   // Largest approximation dimension m = n-k: try k=0,1,2,... until the basis
   // supplies m functions (finite bases throw beyond their capacity). Build each
   // function once here and hand the finite basis to the internal constructor, so
-  // the Christoffel law does not build them a second time.
-  UnsignedInteger dimension = DeduceSpaceDimension(size_);
+  // the Christoffel law does not build them a second time.  The Certified key
+  // switches to m = argmax gamma m log(m) <= n; otherwise m = n-k is tried.
+  certified_ = ResourceMap::GetAsBool("ChristoffelSubsampleExperiment-Certified");
+  gamma_ = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-Gamma");
+  UnsignedInteger dimension = certified_ ? ComputeSpaceDimension(size_, gamma_) : size_;
   Basis::FunctionCollection coll(0);
   while (coll.getSize() < dimension)
   {

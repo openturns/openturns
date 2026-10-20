@@ -75,9 +75,10 @@ sampleB, weightsB = experiment.generateWithWeights()
 ott.assert_almost_equal(sampleA, sampleB)
 ott.assert_almost_equal(weightsA, weightsB)
 
-# the sizing rule needs no gamma key anymore: m = n-k is deduced by trial,
-# and the pool, thinning and barrier controls are gone
-assert not ot.ResourceMap.HasKey("ChristoffelSubsampleExperiment-Gamma")
+# the default sizing rule is m = n-k; the certified mode is opt-in and the
+# pool, thinning and barrier controls are gone
+assert not ot.ResourceMap.GetAsBool("ChristoffelSubsampleExperiment-Certified")
+ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-Gamma"), 9.242343873386666)
 for key in [
     "ChristoffelSubsampleExperiment-PoolOversamplingFactor",
     "ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor",
@@ -88,6 +89,37 @@ for key in [
     assert not ot.ResourceMap.HasKey(key)
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance"), 0.5)
 existing = reference.getSample(20)
+
+# certified mode: n = gamma m log(m), n independent Christoffel points and
+# no recycling of supplied points
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+try:
+    assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 4
+    assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(100) == 6
+    certifiedExperiment = otexp.ChristoffelSubsampleExperiment(basis, 60)
+    assert certifiedExperiment.getSize() == 60
+    assert certifiedExperiment.getSpaceDimension() == 4
+    ot.RandomGenerator.SetSeed(5)
+    certifiedSample, certifiedWeights = certifiedExperiment.generateWithWeights()
+    assert certifiedSample.getSize() == 60
+    assert len(certifiedWeights) == 60
+    assert all(w > 0.0 for w in certifiedWeights)
+    with ott.assert_raises(TypeError):
+        certifiedExperiment.generateWithWeights(existing)
+finally:
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+
+# a non-positive gamma is rejected when the certified mode is selected
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", -1.0)
+try:
+    with ott.assert_raises(TypeError):
+        otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(10)
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 60
 
 # small space dimension (m=15): exact projection DPP, no pool
 smallExperiment = otexp.ChristoffelSubsampleExperiment(basis, 15)

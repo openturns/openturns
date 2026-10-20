@@ -38,11 +38,16 @@ BEGIN_NAMESPACE_OPENTURNS
  * of an orthogonal basis, with importance weights w = m / k_m.
  * The space dimension m = n-k is the largest dimension supplied by
  * the basis: k=0 with an inexhaustible basis, and k=1,2,... is tried
- * until the basis supplies m functions. Fresh designs use the exact
- * projection DPP of size m, completed by independent Christoffel
- * points when n > m. Supplied points are either volume-sampled when
- * there are at least n of them, or used as the conditioning set of a
- * projection DPP when there are at most m of them.
+ * until the basis supplies m functions. By default, fresh designs use
+ * the exact projection DPP of size m, completed by independent
+ * Christoffel points when n > m. When the Certified ResourceMap key is
+ * true, the certified sizing n = gamma m log(m) is used instead, with
+ * the Gamma key as the constant: generateWithWeights() draws n
+ * independent Christoffel points and keeps all of them, and supplied
+ * points are rejected. In the default mode, supplied points are either
+ * volume-sampled when there are at least n of them, or used as the
+ * conditioning set of a projection DPP when there are at most m of
+ * them.
  */
 class OT_API ChristoffelSubsampleExperiment
   : public WeightedExperimentImplementation
@@ -81,7 +86,9 @@ public:
   /** Reference distribution accessor (read-only, embedded in the basis) */
   void setDistribution(const Distribution & distribution) override;
 
-  /** Deduce the space dimension from the target size */
+  /** Deduce the space dimension from the target size. When the
+      Certified key is true, use n = gamma m log(m); otherwise return
+      the target size itself and let the basis capacity choose m = n-k. */
   static UnsignedInteger DeduceSpaceDimension(const UnsignedInteger size);
 
   /** Eigenvalues of the weighted design Gramian, the frame stability certificate */
@@ -117,6 +124,11 @@ private:
   /** Rebuild the derived members from basis_ and size_ */
   void update();
 
+  /** Largest m >= 1 such that gamma * m * log(m) <= size. Gamma must
+      be finite and strictly positive. */
+  static UnsignedInteger ComputeSpaceDimension(const UnsignedInteger size,
+      const Scalar gamma);
+
   /** Gramian of a subset of sqrt(w) * phi, via BLAS */
   static SymmetricMatrix ComputeGramian(const Matrix & features,
                                         const Point & designWeights,
@@ -147,6 +159,14 @@ private:
 
   /** The number of basis functions used */
   UnsignedInteger spaceDimension_ = 0;
+
+  /** Certified sizing switch, read from the ResourceMap during update().
+      When false, m = n-k is chosen by the basis capacity. */
+  Bool certified_ = false;
+
+  /** Certified sizing constant, read from the ResourceMap during update()
+      when certified_ is true. */
+  Scalar gamma_ = 0.0;
 
   /** The Christoffel distribution sampled by the experiment */
   ChristoffelDistribution christoffelDistribution_;
