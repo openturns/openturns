@@ -559,6 +559,27 @@ UnsignedInteger MarginalTransformationEvaluation::getOutputDimension() const
   return inputDistributionCollection_.getSize();
 }
 
+/* Is it safe to call in parallel? */
+Bool MarginalTransformationEvaluation::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < inputDistributionCollection_.getSize(); ++ i)
+  {
+    if (simplifications_[i])
+    {
+      if (!expressions_[i].getImplementation()->isParallel())
+        return false;
+    }
+    else
+    {
+      if (!inputDistributionCollection_[i].getImplementation()->isParallel())
+        return false;
+      if (!outputDistributionCollection_[i].getImplementation()->isParallel())
+        return false;
+    }
+  }
+  return true;
+}
+
 /* Input distribution collection accessor */
 void MarginalTransformationEvaluation::setInputDistributionCollection(const DistributionCollection & inputDistributionCollection)
 {
