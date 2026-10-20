@@ -79,7 +79,7 @@ ott.assert_almost_equal(weightsA, weightsB)
 # pool, thinning and barrier controls are gone
 assert not ot.ResourceMap.GetAsBool("ChristoffelSubsampleExperiment-Certified")
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-Gamma"), 9.242343873386666)
-assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts") == 5
+assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts") == 10
 for key in [
     "ChristoffelSubsampleExperiment-PoolOversamplingFactor",
     "ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor",
@@ -124,7 +124,7 @@ try:
         assert any(firstSample[i, 0] != secondSample[i, 0] for i in range(60))
     finally:
         ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
-        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 5)
+        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
 finally:
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
     ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
@@ -146,7 +146,7 @@ try:
     with ott.assert_raises(TypeError):
         otexp.ChristoffelSubsampleExperiment(basis, 10)
 finally:
-    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 5)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
     ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
 assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 60
 

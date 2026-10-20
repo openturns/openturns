@@ -101,7 +101,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1. It must be non-negative and finite.
 - ``ChristoffelSubsampleExperiment-Certified`` (``bool``, default: ``False``): when true, select the certified sizing :math:`n = \gamma m \log(m)` and independent Christoffel draws.
 - ``ChristoffelSubsampleExperiment-Gamma`` (``Scalar``, default: ``9.242343873386666``): constant :math:`\gamma` of the certified sizing. It must be finite and strictly positive when the certified mode is selected.
-- ``ChristoffelSubsampleExperiment-MaxAttempts`` (positive int, default: ``5``): maximum number of independent certified draws tried before the last draw is returned with a frame warning.
+- ``ChristoffelSubsampleExperiment-MaxAttempts`` (positive int, default: ``10``): maximum number of independent certified draws tried before the last draw is returned with a frame warning.
 
 Examples
 --------

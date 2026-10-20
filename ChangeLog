@@ -46,7 +46,7 @@
  * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
  * ChristoffelSubsampleExperiment-Certified: select the certified sizing n = gamma * m * log(m) instead of the default square design (default is false)
  * ChristoffelSubsampleExperiment-Gamma: gamma constant of the certified sizing, used when ChristoffelSubsampleExperiment-Certified is true (default is 9.242343873386666)
- * ChristoffelSubsampleExperiment-MaxAttempts: maximum number of independent certified draws tried before returning the last draw (default is 5)
+ * ChristoffelSubsampleExperiment-MaxAttempts: maximum number of independent certified draws tried before returning the last draw (default is 10)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
