@@ -47,6 +47,7 @@
 #include "openturns/ChiSquareFactory.hxx"
 #include "openturns/Chi.hxx"
 #include "openturns/ChiFactory.hxx"
+#include "openturns/ChristoffelDistribution.hxx"
 #include "openturns/ClaytonCopula.hxx"
 #include "openturns/ClaytonCopulaFactory.hxx"
 #include "openturns/CombinationsDistribution.hxx"

@@ -57,6 +57,7 @@
 %import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include FejerExperiment.i
+%include ChristoffelSubsampleExperiment.i
 
 /* Uncertainty */
 %import metamodel_module.i
@@ -71,6 +72,7 @@
 %include DivFreeModel.i
 
 /* Uncertainty/Distribution */
+%include ChristoffelDistribution.i
 %include Kent.i
 %include KentFactory.i
 %include MarginalUniformOrderStatistics.i
@@ -117,4 +119,10 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include EfficientGlobalOptimization.i
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
+
+/* Base/Func */
+%include ExceptionPenalizedEvaluation.i
+
+/* Base/Optim */
+%include ExceptionPenalizedProblem.i
 

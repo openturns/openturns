@@ -553,6 +553,7 @@ ot_add_python_module(model_copula2 model_copula2_module.i
 )
 
 ot_add_python_module(experimental experimental_module.i
+                     ChristoffelDistribution.i ChristoffelDistribution_doc.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
@@ -567,6 +568,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      SquaredNormalFactory.i SquaredNormalFactory_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
+                     ChristoffelSubsampleExperiment.i ChristoffelSubsampleExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
@@ -586,6 +588,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      UniformOverMeshFactory.i UniformOverMeshFactory_doc.i
                      RiemannianGaussian.i RiemannianGaussian_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
+                     ExceptionPenalizedEvaluation.i ExceptionPenalizedEvaluation_doc.i
+		     ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
@@ -1106,7 +1110,7 @@ if (SPHINX_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)")
   endif ()
   if (NOT Pagmo_FOUND)
-    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)")
+    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)|(optimization_penalized)")
   endif ()
   if (NOT PANDAS_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")
