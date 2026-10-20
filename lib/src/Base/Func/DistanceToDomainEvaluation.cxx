@@ -98,6 +98,12 @@ UnsignedInteger DistanceToDomainEvaluation::getOutputDimension() const
   return 1;
 }
 
+/* Is it safe to call in parallel? */
+Bool DistanceToDomainEvaluation::isParallel() const
+{
+  return domain_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void DistanceToDomainEvaluation::save(Advocate & adv) const
 {
