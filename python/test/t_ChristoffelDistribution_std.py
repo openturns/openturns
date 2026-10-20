@@ -2,6 +2,7 @@
 
 import math
 import pickle
+import time
 from io import BytesIO
 
 import openturns as ot
@@ -100,6 +101,42 @@ ot.RandomGenerator.SetSeed(0)
 normalSample = normalDistribution.getSample(5000)
 normalKnMean = normalDistribution.computeChristoffelFunction(normalSample).computeMean()[0]
 assert abs(normalKnMean - 11.0) < 1.5
+
+# A high-degree Hermite slice must not spend its time rejecting proposals in
+# the tails. The density-weighted envelope and full-support proposal keep the
+# sampler fast, and its CDF matches the conditional CDF.
+highDistribution = otexp.ChristoffelDistribution(normalBasis, 8)
+ot.RandomGenerator.SetSeed(0)
+start = time.perf_counter()
+highSample = highDistribution.getSample(2000)
+elapsed = time.perf_counter() - start
+assert highSample.getSize() == 2000
+assert elapsed < 30.0
+for x in [-4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0]:
+    assert abs(highSample.computeEmpiricalCDF([x]) - highDistribution.computeConditionalCDF(x, [])) < 0.05
+
+# A one-sided unbounded marginal exercises the half-Cauchy proposal.
+gammaBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Gamma(2.0, 1.0)]))
+gammaDistribution = otexp.ChristoffelDistribution(gammaBasis, 8)
+ot.RandomGenerator.SetSeed(0)
+gammaSample = gammaDistribution.getSample(2000)
+assert gammaSample.getMin()[0] >= 0.0
+for x in [1.0, 2.0, 5.0, 10.0, 20.0]:
+    assert abs(gammaSample.computeEmpiricalCDF([x]) - gammaDistribution.computeConditionalCDF(x, [])) < 0.06
+
+# The degree-29 case named in the review must complete as well. Its target has
+# polynomial tails beyond the normal numerical range, so the sample is allowed
+# to leave that range: the full-support proposal is what keeps the law exact.
+veryHighDistribution = otexp.ChristoffelDistribution(normalBasis, 30)
+ot.RandomGenerator.SetSeed(0)
+start = time.perf_counter()
+veryHighSample = veryHighDistribution.getSample(200)
+elapsed = time.perf_counter() - start
+assert veryHighSample.getSize() == 200
+assert elapsed < 30.0
+assert abs(veryHighSample.computeMean()[0]) < 1.5
+for point in veryHighSample:
+    assert math.isfinite(point[0])
 
 # clone, comparison and persistence
 assert distribution == otexp.ChristoffelDistribution(basis, 3)

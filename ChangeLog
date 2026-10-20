@@ -42,7 +42,7 @@
  * ChristoffelDistribution-ExactKn: refine the stability factor by a multi-start bounded maximization of the log-objective over the numerical range instead of keeping the Monte-Carlo pool maximum (default is true)
  * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
  * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
- * ChristoffelDistribution-SliceGridSize: grid size of the univariate slice maxima in sequential conditional sampling (default is 1000)
+ * ChristoffelDistribution-SliceGridSize: grid size of the rejection envelope scan in sequential conditional sampling, uniform in the proposal CDF (default is 1000)
  * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
  * ChristoffelSubsampleExperiment-Certified: select the certified sizing n = gamma * m * log(m) instead of the default square design (default is false)
  * ChristoffelSubsampleExperiment-Gamma: gamma constant of the certified sizing, used when ChristoffelSubsampleExperiment-Certified is true (default is 9.242343873386666)
@@ -171,7 +171,7 @@
 
 === Bug fixes ===
 
- * ChristoffelDistribution: the tensor sequential sampler proposed from the marginal measure but kept the marginal density in both the grid envelope and the acceptance test, so the accepted law was proportional to mu_j^2 * Sm_j instead of mu_j * Sm_j; the marginal factor is now removed, and a non-uniform-marginal regression test distinguishes the corrected law from the old one
+ * ChristoffelDistribution: the tensor sequential sampler now uses the target-to-proposal ratio consistently: a uniform proposal with a marginal-density-weighted envelope on bounded slices, and a full-support Cauchy or half-Cauchy proposal on unbounded slices, with the envelope scanned on a grid uniform in the proposal CDF; this removes both the non-uniform-marginal bias and the high-degree tail rejection of the former S_j-only envelope, and the degree-29 Hermite regression completes in seconds instead of stalling
  * ChristoffelDistribution: the stability factor now rejects a non-positive or non-finite safety factor, refreshes its cache when a ResourceMap key that enters the estimate changes, recovers optimizer peaks whose raw value overflows but whose logarithm is finite, and fails explicitly on non-finite envelopes instead of looping forever
  * ChristoffelDistribution: the polynomial tensor gradient now clips its input to the numerical range like the objective does, instead of overflowing on infeasible points
  * ChristoffelDistribution: the batch Christoffel and log-Christoffel evaluations now only use TBB above a minimum batch size, instead of spawning parallel work for small samples

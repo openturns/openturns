@@ -947,11 +947,90 @@ Point ChristoffelDistribution::drawSequentialTensor() const
     const Interval rangeJ(marginalJ.getRange());
     const Scalar lower = rangeJ.getLowerBound()[0];
     const Scalar upper = rangeJ.getUpperBound()[0];
-    // Grid abscissae shared by the envelope scan. The proposal is marginalJ,
-    // so the rejection ratio is S_j / max S_j: the marginal density cancels
-    // and must not appear in the envelope or in the acceptance test.
+    const Scalar width = upper - lower;
+    if (!(width > 0.0) || !std::isfinite(width))
+      throw InternalException(HERE) << "Error: invalid marginal numerical range along dimension " << j << ".";
+    // The target conditional density is proportional to marginalJ(x) * S_j(x).
+    // Bounded marginals use a uniform proposal, for which the envelope is the
+    // maximum of the target density.  Unbounded marginals cannot use the
+    // numerical range as a truncation: the polynomial growth of S_j gives the
+    // Christoffel law heavier tails than the reference, and the lost tail mass
+    // grows with the degree.  A Cauchy proposal covers the whole support; its
+    // ratio to the target has a finite maximum because the target is integrable.
+    enum class Proposal { Uniform, TwoSidedCauchy, LowerHalfCauchy, UpperHalfCauchy };
+    const Bool finiteLower = rangeJ.getFiniteLowerBound()[0];
+    const Bool finiteUpper = rangeJ.getFiniteUpperBound()[0];
+    Proposal proposalKind = Proposal::Uniform;
+    Scalar proposalCenter = 0.0;
+    Scalar proposalScale = 0.0;
+    if (finiteLower && finiteUpper)
+      proposalKind = Proposal::Uniform;
+    else if (finiteLower)
+    {
+      proposalKind = Proposal::LowerHalfCauchy;
+      proposalCenter = lower;
+      proposalScale = width;
+    }
+    else if (finiteUpper)
+    {
+      proposalKind = Proposal::UpperHalfCauchy;
+      proposalCenter = upper;
+      proposalScale = width;
+    }
+    else
+    {
+      proposalKind = Proposal::TwoSidedCauchy;
+      proposalCenter = 0.5 * (lower + upper);
+      proposalScale = 0.5 * width;
+    }
+    if (!(proposalScale >= 0.0) || !std::isfinite(proposalScale))
+      throw InternalException(HERE) << "Error: invalid proposal scale along dimension " << j << ".";
+    const auto proposalPDF = [&](const Scalar x)
+    {
+      if (proposalKind == Proposal::Uniform) return 1.0 / width;
+      if (proposalKind == Proposal::TwoSidedCauchy)
+      {
+        const Scalar z = (x - proposalCenter) / proposalScale;
+        return 1.0 / (M_PI * proposalScale * (1.0 + z * z));
+      }
+      if (proposalKind == Proposal::LowerHalfCauchy)
+      {
+        const Scalar z = (x - proposalCenter) / proposalScale;
+        return 2.0 / (M_PI * proposalScale * (1.0 + z * z));
+      }
+      const Scalar z = (proposalCenter - x) / proposalScale;
+      return 2.0 / (M_PI * proposalScale * (1.0 + z * z));
+    };
+    const auto drawProposal = [&]()
+    {
+      const Scalar u = RandomGenerator::Generate();
+      if (proposalKind == Proposal::Uniform) return lower + width * u;
+      if (proposalKind == Proposal::TwoSidedCauchy) return proposalCenter + proposalScale * std::tan(M_PI * (u - 0.5));
+      if (proposalKind == Proposal::LowerHalfCauchy) return proposalCenter + proposalScale * std::tan(0.5 * M_PI * u);
+      return proposalCenter - proposalScale * std::tan(0.5 * M_PI * u);
+    };
+    // Scan the envelope on a grid uniform in the proposal probability space.
+    // A uniform-x grid can miss narrow target peaks near the proposal mode
+    // (for example the Gamma slice at high degree), which would make the
+    // adaptive envelope start below the true maximum.
+    const Scalar cauchyScan = 4.0;
+    const Scalar uScan = 2.0 * std::atan(cauchyScan) / M_PI;
     Sample grid(gridSize + 1, 1);
-    for (UnsignedInteger g = 0; g <= gridSize; ++g) grid(g, 0) = lower + (upper - lower) * g / gridSize;
+    for (UnsignedInteger g = 0; g <= gridSize; ++g)
+    {
+      const Scalar u = static_cast<Scalar>(g) / gridSize;
+      Scalar abscissa = lower + width * u;
+      if (proposalKind == Proposal::TwoSidedCauchy)
+        abscissa = proposalCenter + proposalScale * std::tan(M_PI * uScan * (u - 0.5));
+      else if (proposalKind == Proposal::LowerHalfCauchy)
+        abscissa = proposalCenter + proposalScale * std::tan(0.5 * M_PI * uScan * u);
+      else if (proposalKind == Proposal::UpperHalfCauchy)
+        abscissa = proposalCenter - proposalScale * std::tan(0.5 * M_PI * uScan * u);
+      grid(g, 0) = abscissa;
+    }
+    const Sample marginalDensities(marginalJ.computePDF(grid));
+    if (marginalDensities.getSize() != gridSize + 1)
+      throw InternalException(HERE) << "Error: unexpected marginal PDF grid size along dimension " << j << ".";
     Point sliceTotals(gridSize + 1, 0.0);
     for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex)
     {
@@ -970,10 +1049,19 @@ Point ChristoffelDistribution::drawSequentialTensor() const
     Scalar envelope = 0.0;
     for (UnsignedInteger g = 0; g <= gridSize; ++g)
     {
-      const Scalar density = sliceTotals[g];
-      if (!std::isfinite(density))
+      const Scalar marginalDensity = marginalDensities(g, 0);
+      if (!std::isfinite(marginalDensity) || marginalDensity < 0.0)
+        throw InternalException(HERE) << "Error: non-finite marginal density along dimension " << j << ".";
+      // A vanishing marginal density makes the target density vanish even when
+      // the polynomial slice has overflowed: skip it instead of forming 0*inf.
+      if (marginalDensity == 0.0) continue;
+      const Scalar density = marginalDensity * sliceTotals[g];
+      if (!std::isfinite(density) || density < 0.0)
         throw InternalException(HERE) << "Error: non-finite tensor slice density along dimension " << j << ".";
-      if (density > envelope) envelope = density;
+      const Scalar ratio = density / proposalPDF(grid(g, 0));
+      if (!std::isfinite(ratio) || ratio < 0.0)
+        throw InternalException(HERE) << "Error: non-finite proposal ratio along dimension " << j << ".";
+      if (ratio > envelope) envelope = ratio;
     }
     envelope *= safety;
     if (!(envelope > 0.0) || !std::isfinite(envelope))
@@ -981,20 +1069,27 @@ Point ChristoffelDistribution::drawSequentialTensor() const
     // Adaptive rejection with restart on envelope exceedance
     while (true)
     {
-      const Scalar proposal = (marginalJ.getRealization())[0];
+      const Scalar proposal = drawProposal();
       if (!std::isfinite(proposal))
         throw InternalException(HERE) << "Error: non-finite proposal along dimension " << j << ".";
-      const Scalar density = computePartialChristoffel(partial, j, proposal);
+      const Scalar marginalDensity = marginalJ.computePDF(proposal);
+      if (!std::isfinite(marginalDensity) || marginalDensity < 0.0)
+        throw InternalException(HERE) << "Error: non-finite marginal density along dimension " << j << ".";
+      if (marginalDensity == 0.0) continue;
+      const Scalar density = marginalDensity * computePartialChristoffel(partial, j, proposal);
       if (!std::isfinite(density) || !(density >= 0.0))
         throw InternalException(HERE) << "Error: non-finite conditional slice density along dimension " << j << ".";
-      if (density > envelope)
+      const Scalar ratio = density / proposalPDF(proposal);
+      if (!std::isfinite(ratio) || ratio < 0.0)
+        throw InternalException(HERE) << "Error: non-finite proposal ratio along dimension " << j << ".";
+      if (ratio > envelope)
       {
-        envelope = density * safety;
+        envelope = ratio * safety;
         if (!std::isfinite(envelope))
           throw InternalException(HERE) << "Error: non-finite slice envelope after an exceedance along dimension " << j << ".";
         continue;
       }
-      if (RandomGenerator::Generate() * envelope <= density)
+      if (RandomGenerator::Generate() * envelope <= ratio)
       {
         point[j] = proposal;
         break;
