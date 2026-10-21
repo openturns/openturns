@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/BinomialFactory.hxx"
+#include <limits>
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -97,12 +98,13 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
       if (indices[i] == 0)
       {
         if (values[i] != std::round(values[i])) throw InvalidArgumentException(HERE) << "Error: the Binomial first parameter n must be an integer, got " << values[i];
-        if (!(values[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the Binomial first parameter n must be nonnegative, got " << values[i];
+        if (!(values[i] >= 0.0) || !(values[i] < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "Error: the Binomial first parameter n must be nonnegative and finite, got " << values[i];
         n = static_cast<UnsignedInteger>(round(values[i]));
         nKnown = true;
       }
       if (indices[i] == 1)
       {
+        if (!std::isfinite(values[i]) || (values[i] < 0.0) || (values[i] > 1.0)) throw InvalidArgumentException(HERE) << "Error: the Binomial second parameter p must be in [0, 1], got " << values[i];
         p = values[i];
         pKnown = true;
       }
