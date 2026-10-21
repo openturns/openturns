@@ -124,3 +124,11 @@ ott.assert_almost_equal([gotCF.imag], [mcCF.imag], 5e-3, 0.0)
 edge = ot.WeibullMin(2.0, 1.0, -0.5)
 ott.assert_almost_equal(edge.computePDF(-0.5), 0.5, 1e-12, 0.0)
 ott.assert_almost_equal(edge.computeLogPDF(-0.5), -math.log(2.0), 1e-12, 0.0)
+# Roughness: analytic value alpha / (2 * beta) * exp(lgamma(2 - 1/alpha) + (1/alpha - 1) * log(2))
+ott.assert_almost_equal(
+    ot.WeibullMin(1.0, 1.5).getRoughness(),
+    1.5 / 2.0 * math.exp(math.lgamma(2.0 - 1.0 / 1.5) + (1.0 / 1.5 - 1.0) * math.log(2.0)),
+)
+# The L2 norm of the PDF diverges for alpha <= 0.5
+with ott.assert_raises(Exception):
+    ot.WeibullMin(1.0, 0.5).getRoughness()
