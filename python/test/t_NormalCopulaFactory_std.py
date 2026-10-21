@@ -85,3 +85,9 @@ constantSample = ot.Sample(
 )
 with ott.assert_raises(Exception):
     factory.build(constantSample)
+
+# A constant marginal is rejected even for tiny samples, where rank
+# estimators may return finite zero correlations instead of NaN
+tinyConstantSample = ot.Sample([[0.5, 0.10], [0.5, 0.11], [0.5, 0.12]])
+with ott.assert_raises(Exception):
+    factory.build(tinyConstantSample)
