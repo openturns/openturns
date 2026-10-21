@@ -134,6 +134,7 @@ Mixture MixtureClassifier::getMixture() const
 void MixtureClassifier::setMixture(const Mixture & mixture)
 {
   mixture_ = mixture;
+  setParallel(mixture.isParallel());
 }
 
 /* Dimension accessor */
