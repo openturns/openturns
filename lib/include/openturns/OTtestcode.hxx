@@ -463,6 +463,8 @@ public:
     checkFitting();
     if (enableEntropy_)
       checkEntropy();
+    if (enableRoughness_)
+      checkRoughness();
     checkMoments();
     if (enableParameters_)
       checkParameters();
@@ -563,6 +565,10 @@ public:
   {
     enableEntropy_ = false;
   }
+  void skipRoughness()
+  {
+    enableRoughness_ = false;
+  }
   void skipConditional()
   {
     enableConditional_ = false;
@@ -574,6 +580,10 @@ public:
   void setEntropyTolerance(const Scalar entropyTolerance)
   {
     entropyTolerance_ = entropyTolerance;
+  }
+  void setRoughnessTolerance(const Scalar roughnessTolerance)
+  {
+    roughnessTolerance_ = roughnessTolerance;
   }
   void setCDFTolerance(const Scalar cdfTolerance)
   {
@@ -602,6 +612,10 @@ public:
   void setEntropySamplingSize(const UnsignedInteger entropySamplingSize)
   {
     entropySamplingSize_ = entropySamplingSize;
+  }
+  void setRoughnessSamplingSize(const UnsignedInteger roughnessSamplingSize)
+  {
+    roughnessSamplingSize_ = roughnessSamplingSize;
   }
   void setDomainSamplingSize(const UnsignedInteger domainSamplingSize)
   {
@@ -1082,6 +1096,42 @@ private:
     }
   }
 
+  void checkRoughness() const
+  {
+    // Restricted to 1D laws: in higher dimension the generic quadrature
+    // misses localized bulks and corner singularities, and Monte Carlo
+    // estimates are too noisy for a generic tolerance
+    if (distribution_.isContinuous() && (distribution_.getDimension() == 1))
+    {
+      LOGTRACE(OSS() << "checking roughness...");
+      // Capture the RNG state first: getRoughness() itself may sample, and the
+      // check must leave the RNG state unmodified on all paths
+      const RandomGeneratorState initialState(RandomGenerator::GetState());
+      Scalar roughness = 0.0;
+      try
+      {
+        roughness = distribution_.getRoughness();
+      }
+      catch (const NotDefinedException &)
+      {
+        // The L2 norm of the PDF is infinite, nothing to check
+        RandomGenerator::SetState(initialState);
+        return;
+      }
+      LOGTRACE(OSS() << "roughness=" << roughness);
+      const Sample pdf(distribution_.computePDF(distribution_.getSample(roughnessSamplingSize_)));
+      RandomGenerator::SetState(initialState);
+      const Scalar roughnessMC = pdf.computeMean()[0];
+      // Accept deviations consistent with the Monte Carlo standard error, so
+      // heavy-tailed sampled PDFs (possibly of infinite variance) do not
+      // reject valid distributions on random fluctuations
+      const Scalar standardError = pdf.computeStandardDeviation()[0] / std::sqrt(1.0 * roughnessSamplingSize_);
+      LOGTRACE(OSS() << "roughness(MC)=" << roughnessMC << " stderr=" << standardError);
+      const Scalar samplingTolerance = 3.0 * standardError / std::max(std::abs(roughnessMC), SpecFunc::ScalarEpsilon);
+      assert_almost_equal(roughness, roughnessMC, roughnessTolerance_ + samplingTolerance, roughnessTolerance_, "roughness " + distribution_.__repr__());
+    }
+  }
+
   void checkMoments() const
   {
     if (!enableMoments_ && !enableCorrelation_)
@@ -1515,9 +1565,11 @@ private:
   Bool enableCharacteristicFunction_ = true;
   Bool enableGradient_ = true;
   Bool enableEntropy_ = true;
+  Bool enableRoughness_ = true;
   Bool enableTransformation_ = true;
   Bool enableConditional_ = true;
   Scalar entropyTolerance_ = 2e-3;
+  Scalar roughnessTolerance_ = 1e-2;
   Scalar cdfTolerance_ = 2e-5;
   Scalar pdfTolerance_ = 1e-3;
   Scalar ddfTolerance_ = 1e-3;
@@ -1526,6 +1578,7 @@ private:
   Scalar domainTolerance_ = 1e-2;
   UnsignedInteger momentsSamplingSize_ = 1000000;
   UnsignedInteger entropySamplingSize_ = 1000000;
+  UnsignedInteger roughnessSamplingSize_ = 100000;
   UnsignedInteger domainSamplingSize_ = 1000000;
   UnsignedInteger pdfSamplingSize_ = 10;
   UnsignedInteger cdfSamplingSize_ = 5;
