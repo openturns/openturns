@@ -240,6 +240,12 @@ Scalar InverseGamma::computeEntropy() const
   return SpecFunc::LogGamma(k_) - (k_ + 1.0) * SpecFunc::Psi(k_) + k_ - std::log(lambda_);
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar InverseGamma::getRoughness() const
+{
+  return lambda_ * std::exp(SpecFunc::LogGamma(2.0 * k_ + 1.0) - (2.0 * k_ + 1.0) * M_LN2 - 2.0 * SpecFunc::LogGamma(k_));
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex InverseGamma::computeCharacteristicFunction(const Scalar x) const
 {
