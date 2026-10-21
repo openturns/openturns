@@ -593,19 +593,25 @@ Point TruncatedDistribution::computePDFGradient(const Point & point) const
   if (!getRange().contains(point)) return Point(getParameterDimension(), 0.0);
   if (getDimension() > 1) return DistributionImplementation::computePDFGradient(point);
   const Point pdfGradientX(distribution_.computePDFGradient(point));
-  const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(bounds_.getFiniteUpperBound()[0] ? distribution_.computeCDFGradient(bounds_.getUpperBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  // For discrete distributions the lower CDF value is F(a-) = F(a) - f(a),
+  // hence its gradient is dF(a)/dtheta - df(a)/dtheta
+  if (!distribution_.isContinuous() && bounds_.getFiniteLowerBound()[0])
+    cdfGradientLowerBound -= distribution_.computePDFGradient(bounds_.getLowerBound());
   const Scalar pdfPoint = distribution_.computePDF(point);
   Point pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
+  // For discrete distributions the CDF is stepwise constant in the bound
+  // location, so the bound derivative is null (continuous-bound terms skipped)
   if (bounds_.getFiniteLowerBound()[0])
   {
-    pdfGradient.add(pdfLowerBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_);
+    pdfGradient.add(distribution_.isContinuous() ? pdfLowerBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_ : 0.0);
   }
   // If the upper bound is finite, add a component to the gradient
   if (bounds_.getFiniteUpperBound()[0])
   {
-    pdfGradient.add(-pdfUpperBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_);
+    pdfGradient.add(distribution_.isContinuous() ? -pdfUpperBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_ : 0.0);
   }
   return pdfGradient;
 }
@@ -617,8 +623,12 @@ Point TruncatedDistribution::computeCDFGradient(const Point & point) const
   if (!getRange().contains(point)) return Point(getParameterDimension(), 0.0);
   if (getDimension() > 1) return DistributionImplementation::computeCDFGradient(point);
   const Point cdfGradientX(distribution_.computeCDFGradient(point));
-  const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(bounds_.getFiniteUpperBound()[0] ? distribution_.computeCDFGradient(bounds_.getUpperBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  // For discrete distributions the lower CDF value is F(a-) = F(a) - f(a),
+  // hence its gradient is dF(a)/dtheta - df(a)/dtheta
+  if (!distribution_.isContinuous() && bounds_.getFiniteLowerBound()[0])
+    cdfGradientLowerBound -= distribution_.computePDFGradient(bounds_.getLowerBound());
   const Scalar cdfPoint = distribution_.computeCDF(point);
   Point cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
