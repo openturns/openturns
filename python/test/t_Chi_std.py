@@ -120,3 +120,11 @@ with ott.assert_raises(Exception):
 edge = ot.Chi(1.0)
 ott.assert_almost_equal(edge.computePDF(0.0), m.sqrt(2.0 / m.pi), 1e-12, 0.0)
 ott.assert_almost_equal(edge.computeLogPDF(0.0), m.log(m.sqrt(2.0 / m.pi)), 1e-12, 0.0)
+# Roughness: analytic value 2^(1-nu) * Gamma(nu-1/2) / Gamma(nu/2)^2 for nu > 0.5
+ott.assert_almost_equal(
+    ot.Chi(3.0).getRoughness(),
+    m.exp((1.0 - 3.0) * m.log(2.0) + m.lgamma(2.5) - 2.0 * m.lgamma(1.5)),
+)
+# The L2 norm of the PDF diverges for nu <= 0.5
+with ott.assert_raises(Exception):
+    ot.Chi(0.5).getRoughness()
