@@ -116,3 +116,5 @@ ott.assert_almost_equal(ot.Pareto(1.0, 1.0, 0.0).computeDDF([1.0]), [0.0], 0.0, 
 # Density at the finite lower bound gamma + beta: alpha / beta
 ott.assert_almost_equal(distribution.computePDF(0.5), 5.0 / 7.5, 1e-12, 0.0)
 ott.assert_almost_equal(distribution.computeLogPDF(0.5), math.log(5.0 / 7.5), 1e-12, 0.0)
+# Roughness: analytic value alpha^2 / (beta * (2 * alpha + 1))
+ott.assert_almost_equal(ot.Pareto(1.0, 2.0).getRoughness(), 0.8)
