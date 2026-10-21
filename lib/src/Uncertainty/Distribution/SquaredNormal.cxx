@@ -120,6 +120,14 @@ Scalar SquaredNormal::computePDF(const Point & point) const
   return (std::exp(-0.5 * std::pow((sqrtX + mu_), 2.0) / std::pow(sigma_, 2.0)) + std::exp(-0.5 * std::pow((sqrtX - mu_), 2.0) / std::pow(sigma_, 2.0))) / (2.0 * M_SQRT2 * sigma_ * std::sqrt(x * M_PI));
 } // computePDF
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar SquaredNormal::getRoughness() const
+{
+  // The PDF behaves as C / sqrt(x) with C > 0 in the neighborhood of zero,
+  // hence its square is not integrable: the roughness is infinite
+  throw NotDefinedException(HERE) << "Error: the roughness is not defined for the SquaredNormal distribution.";
+}
+
 Scalar SquaredNormal::computeProbability(const Interval & interval) const
 {
   if (interval.getDimension() != 1)
