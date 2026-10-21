@@ -116,3 +116,11 @@ ott.assert_almost_equal(edge.computeLogPDF(0.0), m.log(2.0), 1e-12, 0.0)
 extreme = ot.Burr(1.0e-200, 1.0e-200)
 assert m.isinf(extreme.computeLogPDF(0.0))
 assert m.isinf(extreme.computePDF(0.0))
+# Roughness: analytic value c * k^2 * Beta(2 - 1/c, 2*k + 1/c)
+ott.assert_almost_equal(
+    ot.Burr(1.0, 2.0).getRoughness(),
+    1.0 * 4.0 * m.exp(m.lgamma(1.0) + m.lgamma(5.0) - m.lgamma(6.0)),
+)
+# The L2 norm of the PDF diverges for c <= 0.5
+with ott.assert_raises(Exception):
+    ot.Burr(0.5, 2.0).getRoughness()

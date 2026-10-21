@@ -206,6 +206,13 @@ Scalar Burr::computeProbability(const Interval & interval) const
   return computeProbabilityGeneral1D(interval);
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar Burr::getRoughness() const
+{
+  if (c_ <= 0.5) throw NotDefinedException(HERE) << "Error: the roughness is not defined for c <= 0.5.";
+  return c_ * k_ * k_ * std::exp(SpecFunc::LogBeta(2.0 - 1.0 / c_, 2.0 * k_ + 1.0 / c_));
+}
+
 /* Compute the mean of the distribution */
 void Burr::computeMean() const
 {
