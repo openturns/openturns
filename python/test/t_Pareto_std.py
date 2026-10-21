@@ -109,3 +109,6 @@ ott.assert_almost_equal(
     ot.Pareto(1.0, 1.0, 0.0).computeCDFGradient([1.0]), [0.0, 0.0, 0.0], 0.0, 0.0
 )
 ott.assert_almost_equal(ot.Pareto(1.0, 1.0, 0.0).computeDDF([1.0]), [0.0], 0.0, 0.0)
+
+# Roughness: analytic value alpha^2 / (beta * (2 * alpha + 1))
+ott.assert_almost_equal(ot.Pareto(1.0, 2.0).getRoughness(), 0.8)
