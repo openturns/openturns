@@ -414,3 +414,18 @@ truncated_dirichlet = ot.TruncatedDistribution(
 ott.assert_almost_equal(truncated_dirichlet.computePDF(0.5), 24.0 / 11.0)
 ott.assert_almost_equal(truncated_dirichlet.computeCDF(0.5), 109.0 / 176.0)
 ott.assert_almost_equal(truncated_dirichlet.getMean()[0], 203.0 / 440.0)
+
+# Discrete truncation retains the lower atom: the CDF gradient must match
+# the derivative of the CDF, see the retained F(a-) lower bound
+truncated_poisson = ot.TruncatedDistribution(ot.Poisson(2.0), ot.Interval(1.0, 3.0))
+step = 1.0e-6
+cdf_fd = (
+    ot.TruncatedDistribution(ot.Poisson(2.0 + step), ot.Interval(1.0, 3.0)).computeCDF(1.0)
+    - ot.TruncatedDistribution(ot.Poisson(2.0 - step), ot.Interval(1.0, 3.0)).computeCDF(1.0)
+) / (2.0 * step)
+ott.assert_almost_equal(truncated_poisson.computeCDFGradient([1.0])[0], cdf_fd, 1e-4, 0.0)
+# Discrete truncation has no bound derivatives: the full PDF gradient at x=2
+# is [3/128, 0, 0], without continuous boundary terms
+ott.assert_almost_equal(
+    truncated_poisson.computePDFGradient([2.0]), [3.0 / 128.0, 0.0, 0.0], 1e-12, 1e-12
+)
