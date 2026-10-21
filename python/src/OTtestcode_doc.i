@@ -160,6 +160,11 @@ Enable :class:`~openturns.Log` at `TRACE` level to see more details."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Test::DistributionValidation::skipRoughness
+"Disables roughness test."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Test::DistributionValidation::skipConditional
 "Disables conditional test."
 
@@ -209,6 +214,28 @@ Parameters
 ----------
 entropyTolerance : float
     Relative and absolute tolerance of the analytical/empirical entropy comparison.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionValidation::setRoughnessSamplingSize
+"Sampling size accessor for roughness test.
+
+Parameters
+----------
+roughnessSamplingSize : int
+    Sampling size for roughness test.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Test::DistributionValidation::setRoughnessTolerance
+"Roughness test tolerance accessor.
+
+Parameters
+----------
+roughnessTolerance : float
+    Relative and absolute tolerance of the analytical/empirical roughness comparison.
 "
 
 // ---------------------------------------------------------------------
