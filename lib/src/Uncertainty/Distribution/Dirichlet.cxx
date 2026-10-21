@@ -448,6 +448,23 @@ void Dirichlet::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar Dirichlet::getRoughness() const
+{
+  const UnsignedInteger size = theta_.getSize();
+  Scalar logNumerator = 0.0;
+  Scalar sumTheta = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (theta_[i] <= 0.5) throw NotDefinedException(HERE) << "Error: the roughness is not defined for theta <= 0.5.";
+    logNumerator += SpecFunc::LogGamma(2.0 * theta_[i] - 1.0);
+    sumTheta += theta_[i];
+  }
+  Scalar logDenominator = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i) logDenominator += SpecFunc::LogGamma(theta_[i]);
+  return std::exp(logNumerator - SpecFunc::LogGamma(2.0 * sumTheta - size) - 2.0 * (logDenominator - SpecFunc::LogGamma(sumTheta)));
+}
+
 /* Compute the entropy of the distribution */
 Scalar Dirichlet::computeEntropy() const
 {
