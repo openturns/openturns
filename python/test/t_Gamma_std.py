@@ -207,3 +207,8 @@ for distribution in [ot.Gamma(1.5, 2.5, -0.5), ot.Gamma(15.0, 2.5)]:
 edge = ot.Gamma(1.0, 2.0)
 ott.assert_almost_equal(edge.computePDF(0.0), 2.0, 1e-12, 0.0)
 ott.assert_almost_equal(edge.computeLogPDF(0.0), math.log(2.0), 1e-12, 0.0)
+# Roughness: analytic value lambda * Gamma(2k-1) / (2^(2k-1) * Gamma(k)^2)
+ott.assert_almost_equal(ot.Gamma(2.0, 3.0).getRoughness(), 0.75)
+# The L2 norm of the PDF diverges for k <= 0.5
+with ott.assert_raises(Exception):
+    ot.Gamma(0.5, 1.0).getRoughness()
