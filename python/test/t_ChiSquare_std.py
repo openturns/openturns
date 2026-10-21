@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import os
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -123,3 +124,12 @@ study2.fillObject("chisquare", r)
 ott.assert_almost_equal(r.getParameter(), [3.0], 0.0, 0.0)
 ott.assert_almost_equal(r.computePDF([2.0]), ot.ChiSquare(3.0).computePDF([2.0]), 1e-12, 0.0)
 os.remove(studyFile)
+
+# Roughness: analytic value Gamma(nu-1) / (2^nu * Gamma(nu/2)^2)
+ott.assert_almost_equal(
+    ot.ChiSquare(5.0).getRoughness(),
+    0.5 * m.exp(m.lgamma(4.0) - 4.0 * m.log(2.0) - 2.0 * m.lgamma(2.5)),
+)
+# The L2 norm of the PDF diverges for nu <= 1
+with ott.assert_raises(Exception):
+    ot.ChiSquare(1.0).getRoughness()
