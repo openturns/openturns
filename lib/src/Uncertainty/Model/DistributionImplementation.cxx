@@ -593,6 +593,21 @@ UnsignedInteger DistributionImplementation::getDimension() const
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar DistributionImplementation::getRoughness() const
 {
+  // For discrete distributions the L2 norm is the sum of squared probabilities
+  if (isDiscrete())
+  {
+    Sample support;
+    Point probabilities;
+    if (getEnumerableDiscreteSupport(support, probabilities))
+    {
+      Scalar roughness = 0.0;
+      for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i) roughness += probabilities[i] * probabilities[i];
+      return roughness;
+    }
+    // Fall back to a sampling estimate when the support cannot be enumerated
+    const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-RoughnessSamplingSize");
+    return computePDF(getSample(size)).computeMean()[0];
+  }
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFSquaredWrapper pdfSquaredWrapper(this);
   Scalar roughness = 0.0;
