@@ -812,6 +812,17 @@ private:
         LOGTRACE(OSS() << "ddf(fd)=" << ddf2);
         assert_almost_equal(ddf1, ddf2, ddfTolerance_, ddfTolerance_, "ddf " + distribution_.__repr__());
       }
+      // Check the Sample overload against the Point overload on a small batch
+      const UnsignedInteger batchSize = std::min<UnsignedInteger>(2, sample.getSize());
+      Sample batchInput(batchSize, distribution_.getDimension());
+      for (UnsignedInteger i = 0; i < batchSize; ++ i) batchInput[i] = sample[i];
+      const Sample batchDDF(distribution_.computeDDF(batchInput));
+      if (batchDDF.getSize() != batchSize)
+        throw TestFailed(OSS() << "wrong ddf batch size (" << batchDDF.getSize() << ") expected (" << batchSize << ") for " << distribution_);
+      if (batchDDF.getDimension() != distribution_.getDimension())
+        throw TestFailed(OSS() << "wrong ddf batch dimension (" << batchDDF.getDimension() << ") expected (" << distribution_.getDimension() << ") for " << distribution_);
+      for (UnsignedInteger i = 0; i < batchSize; ++ i)
+        assert_almost_equal(Point(batchDDF[i]), distribution_.computeDDF(batchInput[i]), ddfTolerance_, ddfTolerance_, "ddf batch vs pointwise " + distribution_.__repr__());
     }
   }
 
@@ -1007,6 +1018,15 @@ private:
       }
       LOGTRACE(OSS() << "cdfgrad(fd)=" << cdfgrfd.__str__());
       assert_almost_equal(cdfGr, cdfgrfd, parameterTolerance_, parameterTolerance_, "wrong cdf gradient for " + distribution_.__repr__());
+      // Check the Sample overload against the Point overload on a small batch, reusing x to avoid consuming RNG
+      const Sample batchInput(2, x);
+      const Sample batchGr(distribution_.computeCDFGradient(batchInput));
+      if (batchGr.getSize() != 2)
+        throw TestFailed(OSS() << "wrong cdfGradient batch size (" << batchGr.getSize() << ") expected (2) for " << distribution_);
+      if (batchGr.getDimension() != parameter.getDimension())
+        throw TestFailed(OSS() << "wrong cdfGradient batch dimension (" << batchGr.getDimension() << ") expected (" << parameter.getDimension() << ") for " << distribution_);
+      assert_almost_equal(Point(batchGr[0]), distribution_.computeCDFGradient(batchInput[0]), parameterTolerance_, parameterTolerance_, "wrong cdf gradient batch row 0 for " + distribution_.__repr__());
+      assert_almost_equal(Point(batchGr[1]), distribution_.computeCDFGradient(batchInput[1]), parameterTolerance_, parameterTolerance_, "wrong cdf gradient batch row 1 for " + distribution_.__repr__());
     }
   }
 
