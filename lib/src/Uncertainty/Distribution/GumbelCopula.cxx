@@ -269,7 +269,10 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar xj, const Point & xcond)
   // Special case for no conditioning or independent copula
   if ((conditioningDimension == 0) || (hasIndependentCopula())) return xj;
   const Scalar u = xcond[0];
-  if (u <= 0.0) return 0.0;
+  if (u < 0.0) return 0.0;
+  // At u=0 the conditional distribution is degenerate at 0: the limit of the
+  // conditional CDF is 0 at xj=0 and 1 above, consistently with computeConditionalQuantile
+  if (u == 0.0) return (xj > 0.0 ? 1.0 : 0.0);
   // At u=1 the conditional distribution is degenerate at 1, consistently with computeConditionalQuantile
   if (u >= 1.0) return (xj >= 1.0 ? 1.0 : 0.0);
   const Scalar v = xj;
