@@ -47,7 +47,7 @@ LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
     dataIn_(dataIn),
     dataOut_(0, dataOut.getDimension()),
     constant_(dataOut.getDimension()),
-    linear_(dataIn.getDimension(), dataOut.getDimension())
+    linear_(dataOut.getDimension(), dataIn.getDimension())
 {
   setDataOut(dataOut);
 }
@@ -119,14 +119,14 @@ void LinearLeastSquares::run()
     /* Second, the linear term */
     for(UnsignedInteger componentIndex = 0; componentIndex < inputDimension; ++componentIndex)
     {
-      linear_(componentIndex, outputComponent) = coefficients(coefficientsIndex, outputComponent);
+      linear_(outputComponent, componentIndex) = coefficients(coefficientsIndex, outputComponent);
       ++coefficientsIndex;
     } // linear term
   } // output components
   /* Build the several implementations and set them into the response surface */
   Function responseSurface;
   responseSurface.setEvaluation(new LinearEvaluation(center_, constant_, linear_));
-  responseSurface.setGradient(new ConstantGradient(linear_));
+  responseSurface.setGradient(new ConstantGradient(linear_.transpose()));
   responseSurface.setHessian(new ConstantHessian(SymmetricTensor(center_.getDimension(), constant_.getDimension())));
   result_ = MetaModelResult(dataIn_, dataOut_, responseSurface);
 }
@@ -201,7 +201,7 @@ void LinearLeastSquares::load(Advocate & adv)
   if (adv.hasAttribute("center_"))
     adv.loadAttribute("center_", center_);
   else
-    center_ = Point(linear_.getNbRows());
+    center_ = Point(linear_.getNbColumns());
 }
 
 END_NAMESPACE_OPENTURNS

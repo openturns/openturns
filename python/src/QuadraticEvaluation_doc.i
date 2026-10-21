@@ -19,11 +19,11 @@ This class implements the evaluation of a quadratic function :math:`f` defined a
 .. math::
 
     f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
-    & \vect{x} \mapsto \Tr{\mat{A}} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}\tens{M} ( \vect{x} - \vect{b} )
+    & \vect{x} \mapsto \mat{A} ( \vect{x} - \vect{b} ) + \frac{1}{2} \Tr{( \vect{x} - \vect{b} )}\tens{M} ( \vect{x} - \vect{b} )
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`d` lines and :math:`p` columns, called *linear*,
+- :math:`\mat{A}` is a matrix with :math:`p` lines and :math:`d` columns, called *linear*,
 - :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`, called *center*,
 - :math:`\vect{c}` is a  vector in :math:`\Rset^\outputDim`, called *constant*
 - :math:`\tens{M}` is a :math:`\Rset^\outputDim \times \Rset^\inputDim \times \Rset^\inputDim`
@@ -37,8 +37,8 @@ such that:
 .. math::
 
     \mat{A} = \left( \begin{array}{cc}
-    1 & 2 \\
-    3 & 4
+    1 & 3 \\
+    2 & 4
     \end{array}\right), \vect{b} = \Tr{(0,0)}, \vect{c} = (0)
 
 and:
@@ -61,10 +61,10 @@ and:
 >>> p = 2
 >>> center = [0.0] * d
 >>> constant = [0.0] * p
->>> linear = ot.Matrix(d, p)
+>>> linear = ot.Matrix(p, d)
 >>> linear[0,0] = 1.0
->>> linear[0,1] = 2.0
->>> linear[1,0] = 3.0
+>>> linear[0,1] = 3.0
+>>> linear[1,0] = 2.0
 >>> linear[1,1] = 4.0
 >>> quadratic = ot.SymmetricTensor(d, p)
 >>> quadratic[0,0,0] = 5

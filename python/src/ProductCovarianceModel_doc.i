@@ -3,7 +3,7 @@ R"RAW(Univariate covariance function defined as a product.
 
 Parameters
 ----------
-coll : sequence of :class:`~openturns.CovarianceModel`
+collection : sequence of :class:`~openturns.CovarianceModel`
     Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`d=1`.
 
 Notes
@@ -71,5 +71,5 @@ Create a product covariance function from two exponential functions, each one de
 
 Returns
 -------
-coll : sequence of :class:`~openturns.CovarianceModel`"
+collection : sequence of :class:`~openturns.CovarianceModel`"
 

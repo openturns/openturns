@@ -2,8 +2,6 @@
 "Polynomial specific orthogonal univariate function factory.
 
 Available constructor:
-    OrthogonalUniVariatePolynomialFunctionFactory()
-
     OrthogonalUniVariatePolynomialFunctionFactory(*polynomialFactory*)
 
 Parameters

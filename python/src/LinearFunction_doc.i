@@ -49,7 +49,41 @@ In this example, we create the linear function :math:`f: \Rset^2 \rightarrow \Rs
 >>> print(f([1.0, 1.0]))
 [4]
 
-Get the matrix :math:`\Tr{\mat{A}}`:
+Get the center, the constant and the matrix :math:`\mat{A}`:
 
->>> A_transpose = f.getEvaluation().getImplementation().getLinear()
-)RAW"
+>>> print(f.getCenter())
+[0,0]
+>>> print(f.getConstant())
+[-1]
+>>> print(f.getLinear())
+[[ 2 3 ]])RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearFunction::getCenter
+"Accessor to the center.
+
+Returns
+-------
+center : :class:`~openturns.Point`
+    The center, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearFunction::getConstant
+"Accessor to the constant.
+
+Returns
+-------
+constant : :class:`~openturns.Point`
+    The constant, as given to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearFunction::getLinear
+"Accessor to the linear term.
+
+Returns
+-------
+linear : :class:`~openturns.Matrix`
+    The matrix, as given to the constructor."

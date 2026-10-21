@@ -2,7 +2,7 @@
 R"RAW(Squared exponential covariance function.
 
 Available constructors:
-    SquaredExponential(*spatialDim*)
+    SquaredExponential(*inputDimension*)
 
     SquaredExponential(*scale*)
 
@@ -10,7 +10,7 @@ Available constructors:
 
 Parameters
 ----------
-spatialDim : int
+inputDimension : int
     Spatial dimension :math:`n`.
     When not fulfilled, the input dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
     By default, equal to 1.

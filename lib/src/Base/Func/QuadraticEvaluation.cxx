@@ -1,12 +1,10 @@
 //                                               -*- C++ -*-
 /**
  *  @brief Class for a quadratic function implementation
- *        of the form y = constant + <linear, x-c> + 0.5 * <<quadratic, x-c>, x-c>
+ *        of the form y = constant + linear.(x - c) + 0.5 * <<quadratic, x-c>, x-c>
  *        where constant is a dim(y) point, c a dim(x)
- *        point, linear is a dim(x) by dim(y) matrix, quadratic is a
- *        dim(x) by dim(x) by dim(y) symmetric tensor and <linear, x>
- *        means Transpose(linear).x, <quadratic, x> means
- *        Transpose_kj(quadratic).x
+ *        point, linear is a dim(y) by dim(x) matrix and quadratic is a
+ *        dim(x) by dim(x) by dim(y) symmetric tensor
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -52,13 +50,13 @@ QuadraticEvaluation::QuadraticEvaluation(const Point & center,
   : EvaluationImplementation(),
     center_(center),
     constant_(constant),
-    linear_(linear.transpose()),
+    linear_(linear),
     quadratic_(quadratic)
 {
   /* Check if the dimension of the constant term is compatible with the linear and quadratic terms */
-  if ((constant.getDimension() != linear.getNbColumns()) || (constant.getDimension() != quadratic.getNbSheets())) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term or with the quadratic term";
+  if ((constant.getDimension() != linear.getNbRows()) || (constant.getDimension() != quadratic.getNbSheets())) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term or with the quadratic term";
   /* Check if the dimension of the center is compatible with the linear and quadratic terms */
-  if ((center.getDimension() != linear.getNbRows()) || (center.getDimension() != quadratic.getNbRows())) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term or with the quadratic term";
+  if ((center.getDimension() != linear.getNbColumns()) || (center.getDimension() != quadratic.getNbRows())) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term or with the quadratic term";
   setInputDescription(Description::BuildDefault(center.getDimension(), "x"));
   setOutputDescription(Description::BuildDefault(constant.getDimension(), "y"));
 }
@@ -83,7 +81,7 @@ String QuadraticEvaluation::__repr__() const
       << " name=" << getName()
       << " center=" << center_.__repr__()
       << " constant=" << constant_.__repr__()
-      << " linear=" << linear_.transpose()
+      << " linear=" << linear_
       << " quadratic=" << quadratic_;
   return oss;
 }
@@ -94,7 +92,7 @@ String QuadraticEvaluation::__str__(const String & offset) const
   oss << QuadraticEvaluation::GetClassName() << "\n"
       << offset << "  center :"  << "\n"   << offset << "  " << center_.__str__(offset + "  ") << "\n"
       << offset << "  constant :" << "\n"  << offset << "  " << constant_.__str__(offset + "  ") << "\n"
-      << offset << "  linear :" << "\n"    << offset << "  " << linear_.transpose().__str__(offset + "  ") << "\n"
+      << offset << "  linear :" << "\n"    << offset << "  " << linear_.__str__(offset + "  ") << "\n"
       << offset << "  quadratic :" << "\n" << offset << "  " << quadratic_.__str__(offset + "  ") << "\n";
   return oss;
 }
@@ -114,7 +112,7 @@ Point QuadraticEvaluation::getConstant() const
 /* Accessor for the linear term */
 Matrix QuadraticEvaluation::getLinear() const
 {
-  return linear_.transpose();
+  return linear_;
 }
 
 /* Accessor for the quadratic term */

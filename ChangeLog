@@ -25,12 +25,41 @@
  * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
+* PushForwardDistribution-SolverResidualTolerance: tolerance on the residual norm used to accept a point as a preimage (default is 1.0e-5)
+ * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range, the mean and the covariance (default is 10000)
+ * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
+ * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
+ * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
+ * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
+ * PushForwardOverMesh-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
+ * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
+ * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
+ * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
+ * UniformOverMeshFactory-NearestNeighbors: number of nearest neighbors used to estimate each local tangent plane (default is 12)
+ * UniformOverMeshFactory-MinimumAreaFactor: degenerate triangles whose area is lower than this factor times the maximum triangle area are removed (default is 1e-3)
+ * ChristoffelDistribution-OptimizationAlgorithm: optimization algorithm of the exact stability factor search and of the internal ratio-of-uniforms sampler (default is TNC, using the gradient of the log-objective; Cobyla remains available as the gradient-free alternative)
+ * ChristoffelDistribution-RatioUniformCandidateNumber: number of candidate points of the internal ratio-of-uniforms sampler (default is 10000)
+ * ChristoffelDistribution-RatioUniformMaxDimension: input dimension above which sampling does not attempt the ratio-of-uniforms sampler and uses crude rejection (default is 5); within this guard, and whenever its setup succeeds, sampling picks the branch with the larger acceptance rate, rejection accepting at exactly size/kn, and a setup failure at any dimension falls back to rejection
+ * ChristoffelDistribution-KnSamplingSize: size of the candidate pool of the stability factor search (default is 100000)
+ * ChristoffelDistribution-ExactKn: refine the stability factor by a multi-start bounded maximization of the log-objective over the numerical range instead of keeping the Monte-Carlo pool maximum (default is true)
+ * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
+ * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
+ * ChristoffelDistribution-SliceGridSize: grid size of the univariate slice maxima in sequential conditional sampling (default is 1000)
+ * ChristoffelSubsampleExperiment-PoolOversamplingFactor: pool size as a multiple of the target size before greedy thinning (default is 2.0)
+ * ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor: cap of the adaptive pool growth as a multiple of the target size, reached by doubling a numerically unusable pool (default is 16.0)
+ * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
+ * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
+ * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
+ * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
+ * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
+ * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
+ * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
@@ -38,12 +67,16 @@
  * PiecewiseLinearDistribution (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
+ * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
+ * PushForwardDistribution (openturns.experimental)
+ * PushForwardOverMesh (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
+ * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
@@ -56,11 +89,12 @@
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * Added LeastSquaresMethod.solveNormalGram to solve the weighted Gram system, while solveNormal remains restricted to uniform weights
+ * Extended UniformOverMesh to embedded meshes with getIntrinsicDimension and getVolume
+ * Restricted the UniformOverMesh(mesh) constructor to explicit conversions
  * Added MetaModelValidation.getWeights and MetaModelValidation.setWeights: the R2 score and the mean squared error are weighted by the validation weights, uniform by default, and normalized by the weight mass
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
 
-==== API changes ====
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra", values "LAPACK", "HMAT" or "HODLR"); GaussianProcessRegression inherits the linear algebra method from its GaussianProcessFitterResult, and GeneralLinearModelAlgorithm still relies on its own key "GeneralLinearModelAlgorithm-LinearAlgebra" (values "LAPACK" or "HMAT")
  * GaussianProcessFitter: analytical amplitude estimate now works with the HODLR backend; the HODLR path uses the precomputed quadratic form y^T R^{-1} y instead of rho_.normSquare(), since rho_ is the raw residual rather than L^{-1}(residual)
  * HODLRMatrix: new method applyNugget() adds a relative nugget to the diagonal of the covariance matrix, enabled by default in the GP covariance assembly path via the ResourceMap key "HODLRMatrix-Nugget" (default 1.0e-8, set to zero to disable)
@@ -117,11 +151,14 @@
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
  * Added SpecFunc.BesselJ and SpecFunc.BesselJDerivative
  * Deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in favor of set/getBoundingOption
+ * Deprecated QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage(Sample) in favor of QuantileConfidence.computeUnilateralCoverage(UnsignedInteger, UnsignedInteger, Bool)
+ * Deprecated QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) in favor of computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)
 
 ==== New features ====
  * Added PythonActiveLearningReliabilityFunction (openturns.experimental): define custom active learning criteria from Python, usable through ActiveLearningReliabilityFunction and ActiveLearningReliabilityAlgorithm
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
+ * Added QuantileConfidence.computeUnilateralCoverage and QuantileConfidence.computeBilateralCoverage to compute the coverage probability of quantile confidence intervals without sample
  * The unary subtraction operator on Function and FunctionImplementation is now available
  * The multiplication of a function by a scalar is now available
  * The division operator between functions with the same input dimension is now available; the right operand must have 1D output, the left operand can have any output dimension
@@ -129,7 +166,6 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
-
 
 === Documentation ===
  * Theory: add interpolation page
@@ -144,6 +180,7 @@
 
  * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
  * Normal::computeCDF used wrong bounds in its large-dimension fallback and returned 0.0, e.g. at the mean of a correlated dimension-7 distribution
+ * QuantileConfidence: fixed inverted unilateral case in computeUnilateralMinimumSampleSize, the flag was renamed from tail to lowerBounded with opposite meaning (old tail=True is now lowerBounded=False); calls passing True positionally or by keyword must swap the flag (see #3178). In computeUnilateralRank and the unilateral confidence interval methods the flag was only renamed (old tail=True is lowerBounded=True), with no change of the returned value
 
 === Miscellaneous ===
  * Added sum and difference operators between fields

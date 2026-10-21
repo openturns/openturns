@@ -4,11 +4,11 @@ R"RAW(Penalized least squares algorithm.
 Refer to :any:`least_squares`.
 
 Available constructors:
-    PenalizedLeastSquaresAlgorithm(*x, y, psi, indices, penalizationFactor=0, useNormal=False*)
+    PenalizedLeastSquaresAlgorithm(*x, y, psi, indices, penalizationFactor, useNormal*)
 
-    PenalizedLeastSquaresAlgorithm(*x, y, weight, psi, indices, penalizationFactor=0, useNormal=False*)
+    PenalizedLeastSquaresAlgorithm(*x, y, weight, psi, indices, penalizationFactor, useNormal*)
 
-    PenalizedLeastSquaresAlgorithm(*x, y, weight, psi, indices, penalizationFactor=0, penalizationMatrix, useNormal=False*)
+    PenalizedLeastSquaresAlgorithm(*x, y, weight, psi, indices, penalizationFactor, penalizationMatrix, useNormal*)
 
 Parameters
 ----------
@@ -25,11 +25,11 @@ psi : sequence of :class:`~openturns.Function`
 indices : sequence of int
     Indices allowed in the basis
 penalizationFactor : float, optional
-    Penalization factor
+    Penalization factor. By default, equal to 0.
 penalizationMatrix : 2-d sequence of float
     Penalization matrix
 useNormal : bool, optional
-    Solve the normal equation
+    Solve the normal equation. By default, equal to False.
 
 See also
 --------

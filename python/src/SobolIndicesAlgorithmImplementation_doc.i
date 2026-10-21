@@ -27,12 +27,12 @@ Several estimators of :math:`V_i`, :math:`V_i^T` and :math:`V_{-i}` are provided
 Specific formulas for :math:`\widehat{V}_i`, :math:`\widehat{V}_i^T` and :math:`\widehat{V}_{-i}` are given in the corresponding documentation pages.
 
 
-For multivariate outputs i.e. when :math:`\outputDim>1`, we compute the Sobol' indices with respect to each output variable. 
-In this case, the methods :meth:`getFirstOrderIndices` and 
-:meth:`getTotalOrderIndices` return the Sobol' indices of the first output, 
+For multivariate outputs i.e. when :math:`\outputDim>1`, we compute the Sobol' indices with respect to each output variable.
+In this case, the methods :meth:`getFirstOrderIndices` and
+:meth:`getTotalOrderIndices` return the Sobol' indices of the first output,
 but the index of the output can be specified as input argument.
-Aggregated indices can be retrieved with the :meth:`getAggregatedFirstOrderIndices` 
-and :meth:`getAggregatedTotalOrderIndices` methods. 
+Aggregated indices can be retrieved with the :meth:`getAggregatedFirstOrderIndices`
+and :meth:`getAggregatedTotalOrderIndices` methods.
 
 
 Notice that the distribution of the estimators of the first
@@ -297,13 +297,13 @@ OT_SobolIndicesAlgorithm_draw_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc
-"Draw the correlation coefficients. 
+"Draw the correlation coefficients.
  As correlation coefficients are considered, values might be positive or negative.
 
 Available usages:
-    DrawCorrelationCoefficients(*correlationCoefficients, title='Correlation coefficients', yLabel='correlation coefficient'*)
+    DrawCorrelationCoefficients(*correlationCoefficients, title, yLabel*)
 
-    DrawCorrelationCoefficients(*values, names, title='Correlation coefficients', yLabel='correlation coefficient'*)
+    DrawCorrelationCoefficients(*values, names, title, yLabel*)
 
 Parameters
 ----------
@@ -316,15 +316,15 @@ values : sequence of float
 names : sequence of str
     Variables' names used to build labels for the created the graph.
 title : str
-    Title of the graph.
+    Title of the graph. By default, equal to 'Correlation coefficients'.
 yLabel : str
     Y-axis label of the graph, which allows one to adapt it to other kinds of
-    coefficients such as SRC indices.
+    coefficients such as SRC indices. By default, equal to 'correlation coefficient'.
 
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text` 
+    A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text`
     of the correlation coefficients."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients
@@ -336,9 +336,9 @@ OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc
 "Draw the importance factors.
 
 Available usages:
-    DrawImportanceFactors(*importanceFactors, title='Importance Factors'*)
+    DrawImportanceFactors(*importanceFactors, title*)
 
-    DrawImportanceFactors(*values, names, title='Importance Factors'*)
+    DrawImportanceFactors(*values, names, title*)
 
 Parameters
 ----------
@@ -351,7 +351,7 @@ values : sequence of float
 names : sequence of str
     Variables' names used to build labels for the created Pie.
 title : str
-    Title of the graph.
+    Title of the graph. By default, equal to 'Importance Factors'.
 
 Returns
 -------

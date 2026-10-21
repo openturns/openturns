@@ -554,6 +554,7 @@ ot_add_python_module(model_copula2 model_copula2_module.i
 )
 
 ot_add_python_module(experimental experimental_module.i
+                     ChristoffelDistribution.i ChristoffelDistribution_doc.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
@@ -568,6 +569,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      SquaredNormalFactory.i SquaredNormalFactory_doc.i
                      InverseGammaFactory.i InverseGammaFactory_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
+                     ChristoffelSubsampleExperiment.i ChristoffelSubsampleExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
                      ActiveLearningReliabilityFunctionImplementation.i ActiveLearningReliabilityFunctionImplementation_doc.i
                      ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
@@ -584,10 +586,18 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
                      Bingham.i Bingham_doc.i
                      BinghamFactory.i BinghamFactory_doc.i
+                     ManifoldImplementation.i ManifoldImplementation_doc.i
+                     Manifold.i Manifold_doc.i
+                     ManifoldMappedDistribution.i ManifoldMappedDistribution_doc.i
+                     SphereManifold.i SphereManifold_doc.i
+                     SO3Manifold.i SO3Manifold_doc.i
                      MatrixFisher.i MatrixFisher_doc.i
                      MatrixFisherFactory.i MatrixFisherFactory_doc.i
+                     UniformOverMeshFactory.i UniformOverMeshFactory_doc.i
                      RiemannianGaussian.i RiemannianGaussian_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
+                     ExceptionPenalizedEvaluation.i ExceptionPenalizedEvaluation_doc.i
+		     ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
@@ -595,6 +605,8 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      CurlFreeModel.i CurlFreeModel_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
+                     PushForwardDistribution.i PushForwardDistribution_doc.i
+                     PushForwardOverMesh.i PushForwardOverMesh_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )
@@ -1107,7 +1119,7 @@ if (SPHINX_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)")
   endif ()
   if (NOT Pagmo_FOUND)
-    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)")
+    set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)|(optimization_penalized)")
   endif ()
   if (NOT PANDAS_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(sample_pandas)")

@@ -2,16 +2,16 @@
 "Polygon array.
 
 Available constructors:
-    PolygonArray(*legend=' '*)
+    PolygonArray(*legend*)
 
-    PolygonArray(*polygons, legend=' '*)
+    PolygonArray(*polygons, legend*)
 
-    PolygonArray(*coordinates, verticesNumber, palette, legend=' '*)
+    PolygonArray(*coordinates, verticesNumber, palette, legend*)
 
 Parameters
 ----------
 legend : str
-    Legend of the Cloud.
+    Legend of the Cloud. By default, empty.
 polygons : sequence of :class:`~openturns.Polygon`
     Sequence of polygons.
 coordinates : 2-d sequence of float

@@ -1203,6 +1203,24 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("PosteriorDistribution-OptimizationAlgorithm", "Cobyla");
   addAsUnsignedInteger("PosteriorDistribution-RatioUniformCandidateNumber", 10000);
 
+  // ChristoffelDistribution parameters //
+  addAsString("ChristoffelDistribution-OptimizationAlgorithm", "TNC");
+  addAsUnsignedInteger("ChristoffelDistribution-RatioUniformCandidateNumber", 10000);
+  addAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 5);
+  addAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize", 100000);
+  addAsBool("ChristoffelDistribution-ExactKn", true);
+  addAsUnsignedInteger("ChristoffelDistribution-KnMaximumMultiStart", 16);
+  addAsScalar("ChristoffelDistribution-KnSafetyFactor", 1.1);
+  addAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 1000);
+
+  // ChristoffelSubsampleExperiment parameters //
+  addAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0);
+  addAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0);
+  addAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5);
+  addAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal", {"Barrier", "Removal"});
+  addAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0);
+  addAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1.0e-8);
+
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
@@ -1385,6 +1403,17 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("TruncatedOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("TruncatedOverMesh-MaximumIntegrationNodesNumber", 262144);
 
+  // PushForwardDistribution parameters //
+  addAsScalar("PushForwardDistribution-SolverResidualTolerance", 1.0e-5);
+  addAsUnsignedInteger("PushForwardDistribution-SampleSize", 10000);
+  addAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize", 256);
+  addAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations", 50);
+  addAsScalar("PushForwardDistribution-NewtonStepReduction", 0.5);
+
+  // PushForwardOverMesh parameters //
+  addAsScalar("PushForwardOverMesh-OnSimplexEpsilon", 1.0e-10);
+  addAsUnsignedInteger("PushForwardOverMesh-SampleSize", 10000);
+
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
   addAsScalar("MaximumLikelihoodFactory-MaximumConstraintError", 1.0e-10);
@@ -1457,7 +1486,14 @@ void ResourceMap::loadDefaultConfiguration()
   // FiniteDiscreteDistribution parameters //
   addAsUnsignedInteger("FiniteDiscreteDistribution-SmallSize", 10000);
 
+  // Manifold parameters //
+  addAsScalar("Manifold-Epsilon", 1.0e-10);
+
+  // ManifoldMappedDistribution parameters //
+  addAsUnsignedInteger("ManifoldMappedDistribution-SampleSize", 10000);
+
   // UniformOverMesh parameters //
+  addAsScalar("UniformOverMesh-OnManifoldEpsilon", 1.0e-10);
   addAsUnsignedInteger("UniformOverMesh-MarginalIntegrationNodesNumber", 64);
   addAsUnsignedInteger("UniformOverMesh-MaximumIntegrationNodesNumber", 262144);
 
@@ -1508,6 +1544,11 @@ void ResourceMap::loadDefaultConfiguration()
 
   // WrappedNormalFactory parameters //
   addAsScalar("WrappedNormalFactory-DefaultPeriod", 6.283185307179586);
+
+  // UniformOverMeshFactory parameters //
+  addAsUnsignedInteger("UniformOverMeshFactory-NearestNeighbors", 12);
+  addAsScalar("UniformOverMeshFactory-MinimumAreaFactor", 1.0e-3);
+
   // Wishart parameters //
   addAsScalar("Wishart-CDFScaleFactor", 0.5);
 

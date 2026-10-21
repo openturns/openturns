@@ -563,6 +563,24 @@
   <PosteriorDistribution-OptimizationAlgorithm value_str="Cobyla" />
   <PosteriorDistribution-RatioUniformCandidateNumber value_int="10000" />
 
+  <!-- OT::ChristoffelDistribution parameters -->
+  <ChristoffelDistribution-OptimizationAlgorithm value_str="TNC" />
+  <ChristoffelDistribution-RatioUniformCandidateNumber value_int="10000" />
+  <ChristoffelDistribution-RatioUniformMaxDimension value_int="5" />
+  <ChristoffelDistribution-KnSamplingSize value_int="100000" />
+  <ChristoffelDistribution-ExactKn value_bool="true" />
+  <ChristoffelDistribution-KnMaximumMultiStart value_int="16" />
+  <ChristoffelDistribution-KnSafetyFactor value_float="1.1" />
+  <ChristoffelDistribution-SliceGridSize value_int="1000" />
+
+  <!-- OT::ChristoffelSubsampleExperiment parameters -->
+  <ChristoffelSubsampleExperiment-PoolOversamplingFactor value_float="2.0" />
+  <ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor value_float="16.0" />
+  <ChristoffelSubsampleExperiment-FrameTolerance value_float="0.5" />
+  <ChristoffelSubsampleExperiment-ThinningMethod value_str="Removal" />
+  <ChristoffelSubsampleExperiment-BarrierStep value_float="1.0" />
+  <ChristoffelSubsampleExperiment-BarrierRegularization value_float="1.0e-8" />
+
   <!-- OT::CompositeDistribution parameters -->
   <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />
   <CompositeDistribution-StepNumber    value_int="256" />
@@ -770,6 +788,17 @@
   <TruncatedOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
+  <!-- OT::PushForwardDistribution parameters -->
+  <PushForwardDistribution-SolverResidualTolerance value_float="1.0e-5" />
+  <PushForwardDistribution-SampleSize              value_int="10000"   />
+  <PushForwardDistribution-PreimageSearchSampleSize value_int="256" />
+  <PushForwardDistribution-NewtonMaximumIterations  value_int="50" />
+  <PushForwardDistribution-NewtonStepReduction      value_float="0.5" />
+
+  <!-- OT::PushForwardOverMesh parameters -->
+  <PushForwardOverMesh-OnSimplexEpsilon value_float="1.0e-10" />
+  <PushForwardOverMesh-SampleSize       value_int="10000"     />
+
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
   <MaximumLikelihoodFactory-MaximumConstraintError       value_float="1.0e-10"        />
@@ -829,7 +858,14 @@
   <!-- OT::FiniteDiscreteDistribution parameters -->
   <FiniteDiscreteDistribution-SmallSize value_int="10000" />
   
+  <!-- OT::Manifold parameters -->
+  <Manifold-Epsilon value_float="1e-10" />
+
+  <!-- OT::ManifoldMappedDistribution parameters -->
+  <ManifoldMappedDistribution-SampleSize value_int="10000" />
+
   <!-- OT::UniformOverMesh parameters -->
+  <UniformOverMesh-OnManifoldEpsilon value_float="1e-10" />
   <UniformOverMesh-MarginalIntegrationNodesNumber value_int="64" />
   <UniformOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
@@ -881,6 +917,11 @@
   <!-- OT::WrappedNormalFactory parameters -->
 
   <WrappedNormalFactory-DefaultPeriod value_float="6.283185307179586" />
+
+  <!-- OT::UniformOverMeshFactory parameters -->
+  <UniformOverMeshFactory-NearestNeighbors  value_int="12" />
+  <UniformOverMeshFactory-MinimumAreaFactor value_float="1e-3" />
+
   <!-- OT::Wishart parameters -->
   <Wishart-CDFScaleFactor value_float="0.5" />
 

@@ -32,11 +32,11 @@ This class estimates the parameters of the surrogate model
 .. math::
     :label: LinearLeastSquaresMMOpenTURNSAPI
 
-    \metaModel(\vect{x}) = \vect{c} + \Tr{\mat{L}}(\vect{x} - \vect{b})
+    \metaModel(\vect{x}) = \vect{c} + \mat{L}(\vect{x} - \vect{b})
 
 for any :math:`\vect{x} \in \Rset^\inputDim`, where:
 
-- :math:`\mat{L}` is a matrix with :math:`\inputDim` lines and :math:`\outputDim` columns,
+- :math:`\mat{L}` is a matrix with :math:`\outputDim` lines and :math:`\inputDim` columns,
 - :math:`\vect{b}` is a vector in :math:`\Rset^\inputDim`,
 - :math:`\vect{c}` is a vector in :math:`\Rset^\outputDim`.
 
