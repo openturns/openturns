@@ -53,7 +53,7 @@ class UniformNdPy(ot.PythonDistribution):
         return 1.0 / self.factor
 
     def getRoughness(self):
-        return 42.0
+        return 1.0 / self.factor
 
     def getMean(self):
         mu = []
@@ -126,6 +126,9 @@ class UniformNdPy(ot.PythonDistribution):
         for i in range(dim):
             self.a[i] = parameter[i]
             self.b[i] = parameter[dim + i]
+        self.factor = 1.0
+        for i in range(dim):
+            self.factor *= self.b[i] - self.a[i]
 
 
 for pyDist in [UniformNdPy(), UniformNdPy([0.0] * 2, [1.0] * 2)]:
