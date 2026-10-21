@@ -251,6 +251,13 @@ Scalar Chi::computeEntropy() const
   return SpecFunc::LogGamma(0.5 * nu_) + 0.5 * (nu_ - M_LN2 - (nu_ - 1.0) * SpecFunc::Psi(0.5 * nu_));
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar Chi::getRoughness() const
+{
+  if (nu_ <= 0.5) throw NotDefinedException(HERE) << "Error: the roughness is not defined for nu <= 0.5.";
+  return std::exp((1.0 - nu_) * M_LN2 + SpecFunc::LogGamma(nu_ - 0.5) - 2.0 * SpecFunc::LogGamma(0.5 * nu_));
+}
+
 void Chi::computeMean() const
 {
   mean_ = Point(1, M_SQRT2 * std::exp( SpecFunc::LogGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LogGamma(0.5 * nu_)));

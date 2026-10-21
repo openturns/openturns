@@ -112,3 +112,12 @@ with ott.assert_raises(Exception):
     ot.ChiFactory().build(ot.Sample([[1.0], [-2.0], [3.0]]))
 with ott.assert_raises(Exception):
     ot.ChiSquareFactory().build(ot.Sample([[1.0], [-2.0], [3.0]]))
+
+# Roughness: analytic value 2^(1-nu) * Gamma(nu-1/2) / Gamma(nu/2)^2 for nu > 0.5
+ott.assert_almost_equal(
+    ot.Chi(3.0).getRoughness(),
+    m.exp((1.0 - 3.0) * m.log(2.0) + m.lgamma(2.5) - 2.0 * m.lgamma(1.5)),
+)
+# The L2 norm of the PDF diverges for nu <= 0.5
+with ott.assert_raises(Exception):
+    ot.Chi(0.5).getRoughness()
