@@ -12,7 +12,7 @@ The principle is to evaluate candidate samples on an active learning (also known
 An :class:`~openturns.experimental.ActiveLearningReliabilityFunction` object can be created only through its derived classes,
 :class:`~openturns.experimental.ActiveLearningUFunction`, :class:`~openturns.experimental.ActiveLearningEFFFunction`,
 :class:`~openturns.experimental.ActiveLearningGMMFunction` or a :class:`~openturns.experimental.PythonActiveLearningReliabilityFunction`
-wrapped with this constructor.
+wrapped with this constructor. Customized infill criteria can be implemented following the template given in :doc:`active learning gallery example <plot_python_active_learning_reliability>`.
 
 Parameters
 ----------
