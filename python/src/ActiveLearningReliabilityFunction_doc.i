@@ -1,5 +1,5 @@
 %feature("docstring") OT::ActiveLearningReliabilityFunction
-"Active learning criterion for reliability analysis.
+R"RAW(Active learning criterion for reliability analysis.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
@@ -13,6 +13,7 @@ An :class:`~openturns.experimental.ActiveLearningReliabilityFunction` object can
 :class:`~openturns.experimental.ActiveLearningUFunction`, :class:`~openturns.experimental.ActiveLearningEFFFunction`,
 :class:`~openturns.experimental.ActiveLearningGMMFunction` or a :class:`~openturns.experimental.PythonActiveLearningReliabilityFunction`
 wrapped with this constructor. Customized infill criteria can be implemented following the template given in :doc:`/auto_reliability/reliability_analysis/plot_python_active_learning_reliability`.
+
 Parameters
 ----------
 reliabilityThreshold : float
@@ -25,7 +26,7 @@ learningThreshold : float
 See also
 --------
 ActiveLearningGMMFunction, ActiveLearningEFFFunction, ActiveLearningUFunction, ActiveLearningReliabilityAlgorithm
-"
+)RAW"
 
 // ---------------------------------------------------------------------------
 
