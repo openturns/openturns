@@ -41,3 +41,21 @@ factoryBadN = ot.BinomialFactory()
 factoryBadN.setKnownParameter([0], [4.2])
 with ott.assert_raises(TypeError):
     factoryBadN.build(ot.Sample([[0.0], [0.0]]))
+
+# out-of-range known n is rejected
+factoryHugeN = ot.BinomialFactory()
+factoryHugeN.setKnownParameter([0], [1.0e30])
+with ott.assert_raises(TypeError):
+    factoryHugeN.build(ot.Sample([[0.0], [0.0]]))
+
+# non-finite known p is rejected
+factoryBadP = ot.BinomialFactory()
+factoryBadP.setKnownParameter([1], [float("nan")])
+with ott.assert_raises(TypeError):
+    factoryBadP.build(ot.Sample([[0.0], [0.0]]))
+
+# out-of-range known p is rejected
+factoryBadP2 = ot.BinomialFactory()
+factoryBadP2.setKnownParameter([1], [1.5])
+with ott.assert_raises(TypeError):
+    factoryBadP2.build(ot.Sample([[0.0], [0.0]]))
