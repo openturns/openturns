@@ -78,3 +78,16 @@ for i in range(3):
     assert regularizedR[i, i] == 1.0
     for j in range(3):
         assert -1.0 <= regularizedR[i, j] <= 1.0
+
+# A constant marginal yields non-finite correlations: clear error, no regularization
+constantSample = ot.Sample(
+    [[0.5, 0.10], [0.5, 0.11], [0.5, 0.12], [0.5, 0.13], [0.5, 0.14]]
+)
+with ott.assert_raises(Exception):
+    factory.build(constantSample)
+
+# A constant marginal is rejected even for tiny samples, where rank
+# estimators may return finite zero correlations instead of NaN
+tinyConstantSample = ot.Sample([[0.5, 0.10], [0.5, 0.11], [0.5, 0.12]])
+with ott.assert_raises(Exception):
+    factory.build(tinyConstantSample)

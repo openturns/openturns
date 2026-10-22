@@ -81,6 +81,18 @@ NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) con
       R = sample.computeLinearCorrelation();
     }
   }
+  // A constant marginal has zero variance: the associated correlations are
+  // meaningless (possibly finite zeros depending on the estimator), reject
+  // the sample explicitly instead of fitting a degenerate copula
+  const Point variances(sample.computeVariance());
+  for (UnsignedInteger i = 0; i < sample.getDimension(); ++i)
+    if (!(variances[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a NormalCopula from a sample with a constant marginal (zero variance in marginal " << i << ")";
+  // A degenerate sample (e.g. a constant marginal) yields non-finite
+  // correlations: fail with a clear message instead of a cryptic
+  // exception from CorrelationMatrix, which the regularization below cannot fix
+  for (UnsignedInteger i = 0; i < R.getNbRows(); ++i)
+    for (UnsignedInteger j = 0; j < i; ++j)
+      if (!std::isfinite(R(i, j))) throw InvalidArgumentException(HERE) << "Error: cannot build a NormalCopula from a sample with non-finite correlations (e.g. a constant marginal)";
   try
   {
     NormalCopula result(R);

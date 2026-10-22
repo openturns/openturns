@@ -34,8 +34,6 @@
 #include "openturns/BlockIndependentCopula.hxx"
 #include "openturns/KernelMixture.hxx"
 #include "openturns/Mixture.hxx"
-#include "openturns/Dirichlet.hxx"
-#include "openturns/Beta.hxx"
 #include "openturns/PiecewiseLinearDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -332,13 +330,6 @@ Bool TruncatedDistribution::hasSimplifiedVersion(Distribution & simplified) cons
       simplified = Exponential(lambda, alpha);
       return true;
     }
-    if (kind == "Dirichlet")
-    {
-      const Dirichlet * dirichlet(dynamic_cast< const Dirichlet * >(localDistribution.getImplementation().get()));
-      const Point theta(dirichlet->getTheta());
-      simplified = Beta(theta[0], theta[1], alpha, beta);
-      return true;
-    }
     if (kind == "PiecewiseLinearDistribution")
     {
       const PiecewiseLinearDistribution * pwd(dynamic_cast< const PiecewiseLinearDistribution * >(localDistribution.getImplementation().get()));
@@ -460,6 +451,21 @@ void TruncatedDistribution::computeRange()
     distribution_.copyOnWrite();
     distribution_.getImplementation()->setQuantileEpsilon(quantileEpsilon_ * probability);
   }
+  if (getDimension() == 1)
+  {
+    // Centralized precomputations, used by computeCDF/computeSurvivalFunction/computeScalarQuantile/gradients
+    pdfLowerBound_ = distribution_.computePDF(bounds_.getLowerBound());
+    pdfUpperBound_ = distribution_.computePDF(bounds_.getUpperBound());
+    // The lower atom must be kept for discrete distributions: use F(a-) instead of F(a).
+    // F(a-) = F(b) - P([a, b]) with P([a, b]) = 1 / normalizationFactor_.
+    // For continuous distributions use F(a) directly: it is more accurate than
+    // F(b) - P([a, b]) as computeProbability(range) carries its own numerical error.
+    cdfUpperBound_ = distribution_.computeCDF(bounds_.getUpperBound());
+    if (distribution_.isContinuous())
+      cdfLowerBound_ = distribution_.computeCDF(bounds_.getLowerBound());
+    else
+      cdfLowerBound_ = cdfUpperBound_ - 1.0 / normalizationFactor_;
+  }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 
   // enable simplified path
@@ -529,7 +535,7 @@ Scalar TruncatedDistribution::computeCDF(const Point & point) const
   if (dimension == 1)
   {
     const Scalar x = point[0];
-    if (x <= getRange().getLowerBound()[0]) return 0.0;
+    if (x < getRange().getLowerBound()[0]) return 0.0;
     if (x >= getRange().getUpperBound()[0]) return 1.0;
 
     // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -551,7 +557,7 @@ Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
   if (dimension == 1)
   {
     const Scalar xI = point[0];
-    if (xI <= getRange().getLowerBound()[0]) return 1.0;
+    if (xI < getRange().getLowerBound()[0]) return 1.0;
     if (xI >= getRange().getUpperBound()[0]) return 0.0;
 
     // If tail=true, don't call distribution_.computeCDF with tail=true in the next line!
@@ -587,19 +593,25 @@ Point TruncatedDistribution::computePDFGradient(const Point & point) const
   if (!getRange().contains(point)) return Point(getParameterDimension(), 0.0);
   if (getDimension() > 1) return DistributionImplementation::computePDFGradient(point);
   const Point pdfGradientX(distribution_.computePDFGradient(point));
-  const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(bounds_.getFiniteUpperBound()[0] ? distribution_.computeCDFGradient(bounds_.getUpperBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  // For discrete distributions the lower CDF value is F(a-) = F(a) - f(a),
+  // hence its gradient is dF(a)/dtheta - df(a)/dtheta
+  if (!distribution_.isContinuous() && bounds_.getFiniteLowerBound()[0])
+    cdfGradientLowerBound -= distribution_.computePDFGradient(bounds_.getLowerBound());
   const Scalar pdfPoint = distribution_.computePDF(point);
   Point pdfGradient(normalizationFactor_ * pdfGradientX - pdfPoint * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
+  // For discrete distributions the PDF is stepwise constant in the bound
+  // location, so the bound derivative is null (continuous-bound terms skipped)
   if (bounds_.getFiniteLowerBound()[0])
   {
-    pdfGradient.add(pdfLowerBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_);
+    pdfGradient.add(distribution_.isContinuous() ? pdfLowerBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_ : 0.0);
   }
   // If the upper bound is finite, add a component to the gradient
   if (bounds_.getFiniteUpperBound()[0])
   {
-    pdfGradient.add(-pdfUpperBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_);
+    pdfGradient.add(distribution_.isContinuous() ? -pdfUpperBound_ * pdfPoint * normalizationFactor_ * normalizationFactor_ : 0.0);
   }
   return pdfGradient;
 }
@@ -611,8 +623,12 @@ Point TruncatedDistribution::computeCDFGradient(const Point & point) const
   if (!getRange().contains(point)) return Point(getParameterDimension(), 0.0);
   if (getDimension() > 1) return DistributionImplementation::computeCDFGradient(point);
   const Point cdfGradientX(distribution_.computeCDFGradient(point));
-  const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(bounds_.getFiniteUpperBound()[0] ? distribution_.computeCDFGradient(bounds_.getUpperBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
+  // For discrete distributions the lower CDF value is F(a-) = F(a) - f(a),
+  // hence its gradient is dF(a)/dtheta - df(a)/dtheta
+  if (!distribution_.isContinuous() && bounds_.getFiniteLowerBound()[0])
+    cdfGradientLowerBound -= distribution_.computePDFGradient(bounds_.getLowerBound());
   const Scalar cdfPoint = distribution_.computeCDF(point);
   Point cdfGradient(normalizationFactor_ * (cdfGradientX - cdfGradientLowerBound) - (cdfPoint - cdfLowerBound_) * normalizationFactor_ * normalizationFactor_ * (cdfGradientUpperBound - cdfGradientLowerBound));
   // If the lower bound is finite, add a component to the gradient
@@ -637,6 +653,10 @@ Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
 
   if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
 
+  // For discrete distributions cdfLowerBound_ is the CDF before the retained lower atom,
+  // so endpoint probabilities would map to the excluded predecessor: return the lower bound instead
+  if (!distribution_.isContinuous() && ((prob == 0.0 && !tail) || (prob == 1.0 && tail)))
+    return getRange().getLowerBound()[0];
   if (tail) return distribution_.computeScalarQuantile(cdfUpperBound_ - prob * (cdfUpperBound_ - cdfLowerBound_));
   return distribution_.computeScalarQuantile(cdfLowerBound_ + prob * (cdfUpperBound_ - cdfLowerBound_));
 }
@@ -770,14 +790,6 @@ void TruncatedDistribution::setDistribution(const Distribution & distribution)
   distribution_ = distribution;
   setDimension(distribution.getDimension());
   setDescription(distribution.getDescription());
-  // Precompute some useful quantities for dimension=1
-  if (getDimension() == 1)
-  {
-    pdfLowerBound_ = distribution.computePDF(bounds_.getLowerBound());
-    pdfUpperBound_ = distribution.computePDF(bounds_.getUpperBound());
-    cdfLowerBound_ = distribution.computeCDF(bounds_.getLowerBound());
-    cdfUpperBound_ = distribution.computeCDF(bounds_.getUpperBound());
-  }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
@@ -830,14 +842,6 @@ void TruncatedDistribution::setBounds(const Interval & bounds)
   if (bounds_ != bounds)
   {
     bounds_ = bounds;
-    // Precompute some useful quantities for dimension=1
-    if (getDimension() == 1)
-    {
-      pdfLowerBound_ = distribution_.computePDF(bounds.getLowerBound());
-      pdfUpperBound_ = distribution_.computePDF(bounds.getUpperBound());
-      cdfLowerBound_ = distribution_.computeCDF(bounds.getLowerBound());
-      cdfUpperBound_ = distribution_.computeCDF(bounds.getUpperBound());
-    }
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;

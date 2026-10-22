@@ -212,6 +212,12 @@ Scalar InverseChiSquare::computeEntropy() const
   return 0.5 * nu_ - M_LN2 + SpecFunc::LogGamma(0.5 * nu_) - (1.0 + 0.5 * nu_) * SpecFunc::Psi(0.5 * nu_);
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar InverseChiSquare::getRoughness() const
+{
+  return std::exp(SpecFunc::LogGamma(nu_ + 1.0) - nu_ * M_LN2 - 2.0 * SpecFunc::LogGamma(0.5 * nu_));
+}
+
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex InverseChiSquare::computeCharacteristicFunction(const Scalar x) const
 {

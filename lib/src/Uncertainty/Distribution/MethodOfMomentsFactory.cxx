@@ -184,17 +184,15 @@ public:
         moments[j] = distribution.getCentralMoment(momentOrders_[j])[0];
     }
 
-    // compute sum of deltas between centered homogenized moments
+    // compute deltas between homogenized moments
     Point result(momentOrders_.getSize());
     for (UnsignedInteger j = 0; j < estimatedParameterSize; ++ j)
     {
+      const Scalar order = 1.0 * momentOrders_[j];
       const Scalar sign = moments[j] < 0.0 ? -1.0 : 1.0;
-      result[j] = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / (j + 1.0)) - sign * std::pow(std::abs(moments[j]), 1.0 / (j + 1.0));
+      result[j] = refSign_[j] * std::pow(std::abs(refMoments_[j]), 1.0 / order) - sign * std::pow(std::abs(moments[j]), 1.0 / order);
     }
-    const Scalar sigma2 = distribution.getCovariance()(0, 0);
-    if (!(sigma2 > 0.0))
-      return Point(getOutputDimension(), SpecFunc::Infinity);
-    return result / sigma2;
+    return result;
   }
 
 private:

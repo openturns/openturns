@@ -528,6 +528,21 @@ UnsignedInteger DistributionImplementation::getDimension() const
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar DistributionImplementation::getRoughness() const
 {
+  // For discrete distributions the L2 norm is the sum of squared probabilities
+  if (isDiscrete())
+  {
+    Sample support;
+    Point probabilities;
+    if (getEnumerableDiscreteSupport(support, probabilities))
+    {
+      Scalar roughness = 0.0;
+      for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i) roughness += probabilities[i] * probabilities[i];
+      return roughness;
+    }
+    // Fall back to a sampling estimate when the support cannot be enumerated
+    const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-RoughnessSamplingSize");
+    return computePDF(getSample(size)).computeMean()[0];
+  }
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFSquaredWrapper pdfSquaredWrapper(this);
   Scalar roughness = 0.0;
@@ -1561,7 +1576,7 @@ Scalar DistributionImplementation::computeEntropy() const
       {
         const Implementation marginalDistribution(getMarginal(marginal).getImplementation());
         Point integrationBounds(1, lowerBound_[marginal]);
-        integrationBounds.add(getSingularities());
+        integrationBounds.add(marginalDistribution->getSingularities());
         integrationBounds.add(upperBound_[marginal]);
         for (UnsignedInteger j = 0; j < integrationBounds.getSize() - 1; ++j)
         {
@@ -1659,7 +1674,7 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  Sample result(size, 1);
+  Sample result(size, dimension_);
   const ComputeDDFPolicy policy(inSample, result, *this);
   TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
@@ -2170,13 +2185,14 @@ Sample DistributionImplementation::computeLogPDFGradient(const Sample & inSample
 Sample DistributionImplementation::computeCDFGradient(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  SampleImplementation outSample(size, getParameterDimension());
+  const UnsignedInteger parameterDimension = getParameterDimension();
+  SampleImplementation outSample(size, parameterDimension);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Point point(computeCDFGradient(inSample[i]));
     std::copy(point.begin(), point.end(), outSample.data_begin() + shift);
-    shift += dimension_;
+    shift += parameterDimension;
   }
   return outSample;
 }

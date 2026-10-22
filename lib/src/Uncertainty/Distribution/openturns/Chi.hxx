@@ -83,6 +83,9 @@ public:
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const override;
 
+  /** Get the roughness, i.e. the L2-norm of the PDF */
+  Scalar getRoughness() const override;
+
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const override;
 

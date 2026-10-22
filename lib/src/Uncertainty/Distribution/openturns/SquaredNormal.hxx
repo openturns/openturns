@@ -74,6 +74,9 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Get the roughness, i.e. the L2-norm of the PDF */
+  Scalar getRoughness() const override;
+
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;
 

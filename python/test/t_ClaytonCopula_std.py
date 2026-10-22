@@ -150,10 +150,21 @@ chi = copula.computeUpperTailDependenceMatrix()[0, 1]
 ott.assert_almost_equal(chi, 0.0, 1e-5, 1e-5)
 
 # --- ClaytonCopula: gradients at independence, negative-dependence quantile ---
-ott.assert_almost_equal(ot.ClaytonCopula(0.0).computePDFGradient([0.3, 0.4]), [0.0], 0.0, 0.0)
-ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeCDFGradient([0.3, 0.4]), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(
+    ot.ClaytonCopula(0.0).computePDFGradient([0.3, 0.4]), [-0.01707441416770017], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    ot.ClaytonCopula(0.0).computeCDFGradient([0.3, 0.4]), [0.13238269464388688], 1e-12, 1e-12
+)
 q = ot.ClaytonCopula(-0.5).computeConditionalQuantile(0.5, [0.5])
 assert 0.0 <= q <= 1.0 and m.isfinite(q)
+for theta in [-0.5, 0.5, 2.0, 50.0]:
+    sample = ot.ClaytonCopula(theta).getSample(1000)
+    assert sample.getMin()[0] >= 0.0 and sample.getMax()[0] <= 1.0
+    assert sample.getMin()[1] >= 0.0 and sample.getMax()[1] <= 1.0
+
+# --- ClaytonCopula: entropy at independence is zero ---
+ott.assert_almost_equal(ot.ClaytonCopula(0.0).computeEntropy(), 0.0, 1e-12, 0.0)
 
 # --- ClaytonCopula: log-density matches the density ---
 for thetaClayton in [0.0, 2.0, 50.0, 200.0]:

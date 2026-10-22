@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -112,3 +113,9 @@ validation.run()
 # --- Frechet: wrong-dimension inputs are rejected ---
 with ott.assert_raises(Exception):
     ot.Frechet().computePDF([0.5, 0.5])
+
+# Roughness: analytic value alpha / (2 * beta) * exp(lgamma(2 + 1/alpha) - (1 + 1/alpha) * log(2))
+ott.assert_almost_equal(
+    ot.Frechet(1.0, 2.0).getRoughness(),
+    2.0 / 2.0 * m.exp(m.lgamma(2.5) - 1.5 * m.log(2.0)),
+)

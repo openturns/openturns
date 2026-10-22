@@ -178,6 +178,8 @@ Scalar AliMikhailHaqCopula::computeCDF(const Point & point) const
 Scalar AliMikhailHaqCopula::computeEntropy() const
 {
   if (theta_ == 0.0) return 0.0;
+  if (theta_ == -1.0) return 0.5 + M_LN2 - M_PI * M_PI / 8.0;
+  if (theta_ == 1.0) return 0.5 - M_LN2;
   if (std::abs(theta_) <= 0.25) return theta_ * theta_ * (-1.0 / 18.0 + (-1.0 / 36.0 + (-1.0 / 50.0 + (-1.0 / 75.0 + (-1.0 / 98.0 + (-3.0 / 392.0 + (-1.0 / 162.0 + (-2.0 / 405.0 + (-1.0 / 242.0 + (-5.0 / 1452.0 + (-1.0 / 338.0 + (-3.0 / 1183.0 + (-1.0 / 450.0 + (-7.0 / 3600.0 + (-1.0 / 578.0 + (-4.0 / 2601.0 + (-1.0 / 722.0 + (-9.0 / 7220.0 - theta_ / 882.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_);
 
   const Scalar t1 = theta_ - 1.0;
@@ -354,6 +356,8 @@ Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) c
 /* Compute the derivative of the density generator */
 Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t) const
 {
+  // The independent copula has generator -log(t)
+  if (theta_ == 0.0) return -1.0 / t;
   if (theta_ == 1.0) return -1.0 / (t * t);
   const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (theta_ / u - std::log(u) / t) / t;
@@ -362,6 +366,8 @@ Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorDerivative(const Scalar t
 /* Compute the seconde derivative of the density generator */
 Scalar AliMikhailHaqCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) const
 {
+  // The independent copula has generator -log(t)
+  if (theta_ == 0.0) return 1.0 / (t * t);
   if (theta_ == 1.0) return 2.0 / (t * t * t);
   const Scalar u = 1.0 - theta_ * (1.0 - t);
   return (-theta_ * theta_ / (u * u) - 2.0 * theta_ / (t * u) + 2.0 * std::log(u) / (t * t)) / t;

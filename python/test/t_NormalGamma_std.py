@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -201,3 +202,19 @@ with ott.assert_raises(Exception):
     ot.NormalGamma(0.0, 1.0, 1.5, 1.0).getKurtosis()
 # Kendall's tau is 0: X|tau is symmetric, so concordance has probability 1/2
 ott.assert_almost_equal(distribution.getKendallTau(), ot.CorrelationMatrix(2))
+
+# Roughness: analytic value beta^(2*alpha) * sqrt(kappa / (4*pi))
+#            * Gamma(2*alpha - 1/2) / ((2*beta)^(2*alpha - 1/2) * Gamma(alpha)^2)
+ott.assert_almost_equal(
+    ot.NormalGamma(1.0, 2.0, 3.0, 4.0).getRoughness(),
+    m.exp(
+        6.0 * m.log(4.0)
+        + 0.5 * (m.log(2.0) - m.log(4.0 * m.pi))
+        + m.lgamma(5.5)
+        - 5.5 * m.log(8.0)
+        - 2.0 * m.lgamma(3.0)
+    ),
+)
+# The L2 norm of the PDF diverges for alpha <= 0.25
+with ott.assert_raises(Exception):
+    ot.NormalGamma(1.0, 2.0, 0.25, 4.0).getRoughness()

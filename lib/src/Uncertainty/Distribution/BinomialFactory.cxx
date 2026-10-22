@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/BinomialFactory.hxx"
+#include <limits>
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistributionImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -84,7 +85,36 @@ Binomial BinomialFactory::buildAsBinomial(const Sample & sample) const
     sum += x;
   }
   // Quick exit if sum == 0
-  if (sum == 0) return Binomial(1, 0.0);
+  if (sum == 0)
+  {
+    UnsignedInteger n = 1;
+    Scalar p = 0.0;
+    Bool nKnown = false;
+    Bool pKnown = false;
+    const Indices indices(getKnownParameterIndices());
+    const Point values(getKnownParameterValues());
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+    {
+      if (indices[i] == 0)
+      {
+        if (values[i] != std::round(values[i])) throw InvalidArgumentException(HERE) << "Error: the Binomial first parameter n must be an integer, got " << values[i];
+        if (!(values[i] >= 0.0) || !(values[i] < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "Error: the Binomial first parameter n must be nonnegative and finite, got " << values[i];
+        n = static_cast<UnsignedInteger>(round(values[i]));
+        nKnown = true;
+      }
+      if (indices[i] == 1)
+      {
+        if (!std::isfinite(values[i]) || (values[i] < 0.0) || (values[i] > 1.0)) throw InvalidArgumentException(HERE) << "Error: the Binomial second parameter p must be in [0, 1], got " << values[i];
+        p = values[i];
+        pKnown = true;
+      }
+    }
+    // With an all-zero sample and known p, n=0 has likelihood 1
+    if (!nKnown && pKnown) n = 0;
+    Binomial result(n, p);
+    result.setDescription(sample.getDescription());
+    return result;
+  }
   // Loop to maximize the likelihood
   // First guess for the parameter n, based on moment estimate
   // mean = np

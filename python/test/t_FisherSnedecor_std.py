@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import os
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -126,3 +127,25 @@ study2.fillObject("fisher", r)
 ott.assert_almost_equal(r.getParameter(), [4.0, 5.0], 0.0, 0.0)
 ott.assert_almost_equal(r.computePDF([1.0]), ot.FisherSnedecor(4.0, 5.0).computePDF([1.0]), 1e-12, 0.0)
 os.remove(studyFile)
+
+# Roughness: analytic value a * exp(lbeta(d1 - 1, d2 + 1) - 2 * lbeta(d1 / 2, d2 / 2)) with a = d1 / d2
+d1, d2 = 5.0, 3.0
+ott.assert_almost_equal(
+    ot.FisherSnedecor(d1, d2).getRoughness(),
+    d1
+    / d2
+    * m.exp(
+        m.lgamma(d1 - 1.0)
+        + m.lgamma(d2 + 1.0)
+        - m.lgamma(d1 + d2)
+        - 2.0
+        * (
+            m.lgamma(0.5 * d1)
+            + m.lgamma(0.5 * d2)
+            - m.lgamma(0.5 * (d1 + d2))
+        )
+    ),
+)
+# The L2 norm of the PDF diverges for d1 <= 1
+with ott.assert_raises(Exception):
+    ot.FisherSnedecor(1.0, 3.0).getRoughness()

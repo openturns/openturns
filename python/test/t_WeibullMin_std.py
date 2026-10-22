@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import cmath
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -116,3 +117,12 @@ mcCF = sum(cmath.exp(1j * u * x[0]) for x in mcSample) / mcSample.getSize()
 gotCF = weibull.computeCharacteristicFunction(u)
 ott.assert_almost_equal([gotCF.real], [mcCF.real], 5e-3, 0.0)
 ott.assert_almost_equal([gotCF.imag], [mcCF.imag], 5e-3, 0.0)
+
+# Roughness: analytic value alpha / (2 * beta) * exp(lgamma(2 - 1/alpha) + (1/alpha - 1) * log(2))
+ott.assert_almost_equal(
+    ot.WeibullMin(1.0, 1.5).getRoughness(),
+    1.5 / 2.0 * m.exp(m.lgamma(2.0 - 1.0 / 1.5) + (1.0 / 1.5 - 1.0) * m.log(2.0)),
+)
+# The L2 norm of the PDF diverges for alpha <= 0.5
+with ott.assert_raises(Exception):
+    ot.WeibullMin(1.0, 0.5).getRoughness()

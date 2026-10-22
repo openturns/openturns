@@ -102,3 +102,17 @@ ott.assert_almost_equal(
 )
 ot.RandomGenerator.SetSeed(2)
 assert all(m.isfinite(v) for v in ot.FarlieGumbelMorgensternCopula(1.0).getRealization())
+
+# --- FarlieGumbelMorgensternCopula: entropy is finite at endpoints, see #3382 ---
+ott.assert_almost_equal(
+    ot.FarlieGumbelMorgensternCopula(1.0).computeEntropy(),
+    5.0 / 4.0 - m.log(2.0) - m.pi**2 / 16.0,
+    1e-12,
+    0.0,
+)
+ott.assert_almost_equal(
+    ot.FarlieGumbelMorgensternCopula(-1.0).computeEntropy(),
+    5.0 / 4.0 - m.log(2.0) - m.pi**2 / 16.0,
+    1e-12,
+    0.0,
+)

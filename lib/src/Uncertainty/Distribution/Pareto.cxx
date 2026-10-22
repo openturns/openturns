@@ -187,6 +187,12 @@ Scalar Pareto::computeEntropy() const
   return std::log(beta_ / alpha_) + 1.0 / alpha_ + 1.0;
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar Pareto::getRoughness() const
+{
+  return alpha_ * alpha_ / (beta_ * (2.0 * alpha_ + 1.0));
+}
+
 /* Get the PDFGradient of the distribution */
 Point Pareto::computePDFGradient(const Point & point) const
 {

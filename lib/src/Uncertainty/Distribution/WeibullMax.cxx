@@ -225,6 +225,13 @@ Scalar WeibullMax::computeEntropy() const
   return 1.0 + SpecFunc::EulerConstant * (1.0 - 1.0 / alpha_) + std::log(beta_ / alpha_);
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar WeibullMax::getRoughness() const
+{
+  if (alpha_ <= 0.5) throw NotDefinedException(HERE) << "Error: the roughness is not defined for alpha <= 0.5.";
+  return alpha_ / (2.0 * beta_) * std::exp(SpecFunc::LogGamma(2.0 - 1.0 / alpha_) + (1.0 / alpha_ - 1.0) * M_LN2);
+}
+
 /* Get the PDFGradient of the distribution */
 Point WeibullMax::computePDFGradient(const Point & point) const
 {

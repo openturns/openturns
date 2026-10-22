@@ -109,3 +109,12 @@ with ott.assert_raises(Exception):
     ot.Burr(2.0, 0.5).getMean()
 ott.assert_almost_equal(ot.Burr(2.0, 2.0).getMean()[0], m.pi / 4.0, 1e-12, 0.0)
 assert m.isfinite(ot.Burr(2.0, 2.0).computeLogPDF([1.0e150]))
+
+# Roughness: analytic value c * k^2 * Beta(2 - 1/c, 2*k + 1/c)
+ott.assert_almost_equal(
+    ot.Burr(1.0, 2.0).getRoughness(),
+    1.0 * 4.0 * m.exp(m.lgamma(1.0) + m.lgamma(5.0) - m.lgamma(6.0)),
+)
+# The L2 norm of the PDF diverges for c <= 0.5
+with ott.assert_raises(Exception):
+    ot.Burr(0.5, 2.0).getRoughness()

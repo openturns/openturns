@@ -308,3 +308,25 @@ ot.ResourceMap.SetAsUnsignedInteger(
 ot.ResourceMap.SetAsUnsignedInteger(
     "Dirichlet-DefaultSamplingSize", defaultSamplingSize
 )
+
+# Roughness: analytic value B(2*theta - 1) / B(theta)^2 with multinomial Beta
+theta = [2.0, 3.0, 4.0]
+ott.assert_almost_equal(
+    ot.Dirichlet(theta).getRoughness(),
+    m.exp(
+        m.lgamma(3.0)
+        + m.lgamma(5.0)
+        + m.lgamma(7.0)
+        - m.lgamma(15.0)
+        - 2.0
+        * (
+            m.lgamma(2.0)
+            + m.lgamma(3.0)
+            + m.lgamma(4.0)
+            - m.lgamma(9.0)
+        )
+    ),
+)
+# The L2 norm of the PDF diverges when a concentration is <= 0.5
+with ott.assert_raises(Exception):
+    ot.Dirichlet([0.5, 0.5, 0.5]).getRoughness()
