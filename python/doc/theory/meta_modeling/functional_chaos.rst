@@ -205,7 +205,7 @@ The model :math:`\model` is then transformed into
 :math:`h = \model \circ T^{-1} \in L^2\left(\mu_{\vect{U}}\right)`.
 One seeks :math:`\widetilde{h}`, the orthogonal projection of :math:`h`
 with respect to :math:`\mu_{\vect{U}}` onto the polynomial space :math:`\cP_n`.
-The metamodel of :math:`\model` is then given by:
+The surrogate model of :math:`\model` is then given by:
 
 .. math::
    \metaModel = \widetilde{h} \circ T

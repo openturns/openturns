@@ -11,8 +11,8 @@ Let :math:`\model: \Rset^\inputDim \rightarrow \Rset^\outputDim` be a model and 
 :math:`(\vect{x}_k, \vect{y}_k)_{1 \leq k \leq \sampleSize}` where :math:`\vect{y}_k = \model(\vect{x}_k)`
 for all :math:`k`.
 
-The objective is to build a metamodel :math:`\metaModel`, using a Gaussian process that interpolates the data
-set. To build this metamodel, we follow the steps:
+The objective is to build a surrogate model :math:`\metaModel`, using a Gaussian process that interpolates the data
+set. To build this surrogate model, we follow the steps:
 
 - **Step 1: Gaussian process fitting**: we build  the Gaussian process :math:`\vect{Y}(\omega, \vect{x})` defined by
   :math:`\vect{Y}(\omega, \vect{x}) = \vect{\mu}(\vect{x}) + \vect{W}(\omega, \vect{x})`
@@ -24,11 +24,11 @@ set. To build this metamodel, we follow the steps:
   Gaussian Process Regression denoted by
   :math:`\vect{Z}(\omega, \vect{x}) = \vect{Y}(\omega, \vect{x})\, | \, \cC` where :math:`\cC`
   is the condition :math:`\vect{Y}(\omega, \vect{x}_k) =  \vect{y}_k` for :math:`1 \leq k \leq \sampleSize`;
-- **Step 3:  Gaussian Process Regression metamodel and its exploitation**:  we define the metamodel as
+- **Step 3:  Gaussian Process Regression model and its exploitation**:  we define the surrogate model as
   :math:`\metaModel(\vect{x}) =  \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}`. Note
-  that this metamodel is interpolating the data set when the noise parameter is set to zero. We can use the
+  that this surrogate model is interpolating the data set when the noise parameter is set to zero. We can use the
   conditional covariance in order to quantify
-  the error of the metamodel, that is the variation of the Gaussian vector at a given point.
+  the error of the surrogate model, that is the variation of the Gaussian vector at a given point.
 
 
 Note that the Gaussian process regression of a function with multivariate output (:math:`\outputDim > 1`)
@@ -299,10 +299,10 @@ where :math:`\Sigma_{ij} = \Cov{\vect{Z}(\omega, \vect{\xi}_i), \vect{Z}(\omega,
 This step is performed by the class :class:`~openturns.GaussianProcessRegression`.
 
 
-Step 3:  Gaussian Process Regression metamodel and its exploitation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Step 3:  Gaussian Process Regression model and its exploitation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
+The Gaussian Process Regression model :math:`\metaModel` is defined by:
 
 .. math::
     :label: GPRmetamodel
@@ -311,7 +311,7 @@ The Gaussian Process Regression metamodel :math:`\metaModel` is defined by:
     ^\sampleSize \gamma_i \mat{C}( \vect{x},  \vect{x}_i).
 
 We can use the conditional covariance of :math:`\vect{Y}` in order to quantify the predictive
-uncertainty of the metamodel. The :class:`~openturns.GaussianProcessConditionalCovariance` provides all the
+uncertainty of the surrogate model. The :class:`~openturns.GaussianProcessConditionalCovariance` provides all the
 services to get the predictive error at any point.
 
 .. topic:: API:
