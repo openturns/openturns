@@ -251,7 +251,7 @@ Bool ActiveLearningReliabilityAlgorithm::checkConvergenceProbabilityWithUncertai
   const Scalar meanProbability = probabilitiesWithUncertainty[0];
   const Scalar minusProbability = probabilitiesWithUncertainty[1];
   const Scalar plusProbability =  probabilitiesWithUncertainty[2];
-  const Bool convergenceProbability = abs((plusProbability - minusProbability) / meanProbability) <= convergenceCriterionThreshold_;
+  const Bool convergenceProbability = std::abs((plusProbability - minusProbability) / meanProbability) <= convergenceCriterionThreshold_;
 
   return convergenceProbability;
 }
@@ -266,7 +266,7 @@ Bool ActiveLearningReliabilityAlgorithm::checkConvergenceReliabilityIndexWithUnc
   const Scalar minusReliabilityIndex = - DistFunc::qNormal(minusProbability);
   const Scalar plusProbability =  probabilitiesWithUncertainty[2];
   const Scalar plusReliabilityIndex = - DistFunc::qNormal(plusProbability);
-  const Bool convergenceReliabilityIndex = abs((plusReliabilityIndex - minusReliabilityIndex) / meanReliabilityIndex) <= convergenceCriterionThreshold_;
+  const Bool convergenceReliabilityIndex = std::abs((plusReliabilityIndex - minusReliabilityIndex) / meanReliabilityIndex) <= convergenceCriterionThreshold_;
 
   return convergenceReliabilityIndex;
 }
