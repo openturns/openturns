@@ -105,10 +105,10 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   , simulationAlgorithmSeed_(ResourceMap::GetAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed"))
 {
   // Single extraction of the surrogate specification (one implicit fit at most)
-  ExtractSurrogateSpec(fitter, covarianceModel_, basis_);
   if (inputDoE_.getSize() == 0) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input design of experiment is empty";
   if (inputDoE_.getSize() != outputDoE_.getSize()) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input and output designs have different sizes (" << inputDoE_.getSize() << " vs " << outputDoE_.getSize() << ")";
   if (outputDoE_.getDimension() != 1) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: output design must be 1-dimensional";
+  ExtractSurrogateSpec(fitter, covarianceModel_, basis_);
   // The simulator handles share their implementation until first mutation:
   // setEvent/run/setKeepSample detach through copy-on-write, so the caller
   // object is never mutated. The criterion handle shares its
@@ -161,6 +161,12 @@ public:
   GPWithUncertainty * clone() const override
   {
     return new GPWithUncertainty(*this);
+  }
+  Point operator()(const Point & x) const override
+  {
+    const Scalar mean = gprMetamodel_(x)[0];
+    const Scalar variance = gprCov_.getConditionalMarginalVariance(x);
+    return Point(1, mean + kFactor_ * std::sqrt(std::max(variance, 0.0)));
   }
   // Interface obligatoire pour Function
   Sample operator()(const Sample & x) const override
@@ -332,7 +338,7 @@ Bool ActiveLearningReliabilityAlgorithm::checkConvergenceStability(const Scalar 
                                                                    const Scalar previousValue)
 {
   if (!(std::abs(currentValue) > 0.0)) return !(std::abs(previousValue) > 0.0);
-  return abs(currentValue - previousValue)/ currentValue <= convergenceCriterionThreshold_;
+  return std::abs(currentValue - previousValue) / std::abs(currentValue) <= convergenceCriterionThreshold_;
 }
 
 // Set type of convergence

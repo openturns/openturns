@@ -56,7 +56,7 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Is it safe to call in parallel? No: Python calls hold the GIL. */
+  /** Is it safe to call in parallel? Only on free-threaded Python builds (Py_GIL_DISABLED). */
   Bool isParallel() const override;
 
   /** Score the candidate pool against the current design */

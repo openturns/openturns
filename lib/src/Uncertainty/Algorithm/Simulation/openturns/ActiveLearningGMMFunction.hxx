@@ -38,7 +38,7 @@ class OT_API ActiveLearningGMMFunction
 {
 
   CLASSNAME
-  
+public:
   /** Default constructor */
   ActiveLearningGMMFunction();
   

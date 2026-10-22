@@ -102,7 +102,7 @@ Parameters
 step : int
     Step index, between 0 and the number of steps minus 1.
 select : int, optional
-    Flag selecting the event realization (0), the complementary event (1)
+    Flag selecting the complementary event (0), the event realization (1)
     or both (2, default).
 
 Returns
