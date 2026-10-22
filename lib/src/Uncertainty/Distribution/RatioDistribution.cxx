@@ -22,10 +22,13 @@
 #include <cmath>
 
 #include "openturns/RatioDistribution.hxx"
+#include "openturns/Brent.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
+#include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/UniVariateFunction.hxx"
 #include "openturns/UniVariateFunctionImplementation.hxx"
 #include "openturns/Uniform.hxx"
 
@@ -275,6 +278,35 @@ private:
 
 }; // class CDFTailKernelRatioDistribution
 
+// Class used to evaluate the CDF as a univariate function of the quantile
+class CDFRatioDistribution: public UniVariateFunctionImplementation
+{
+public:
+  CDFRatioDistribution(const RatioDistribution * p_distribution,
+                       const Bool complementary = false)
+    : UniVariateFunctionImplementation()
+    , p_distribution_(p_distribution)
+    , complementary_(complementary)
+  {
+    // Nothing to do
+  }
+
+  CDFRatioDistribution * clone() const override
+  {
+    return new CDFRatioDistribution(*this);
+  }
+
+  Scalar operator() (const Scalar x) const override
+  {
+    return complementary_ ? p_distribution_->computeComplementaryCDF(x) : p_distribution_->computeCDF(x);
+  }
+
+private:
+  const RatioDistribution * p_distribution_;
+  const Bool complementary_;
+
+}; // class CDFRatioDistribution
+
 // Class used to wrap the kernel of the integral defining the characteristic function
 class CFKernelRatioDistribution: public EvaluationImplementation
 {
@@ -521,56 +553,105 @@ Scalar RatioDistribution::computeScalarQuantile(const Scalar prob,
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
   const Scalar q = (tail ? 1.0 - prob : prob);
-  if (q <= 0.0) return getRange().getLowerBound()[0];
-  if (q >= 1.0) return getRange().getUpperBound()[0];
+  const Scalar lowerBound = getRange().getLowerBound()[0];
+  const Scalar upperBound = getRange().getUpperBound()[0];
+  if (q <= 0.0) return lowerBound;
+  if (q >= 1.0) return upperBound;
+  const Scalar c = p_right_->getRange().getLowerBound()[0];
+  const Scalar d = p_right_->getRange().getUpperBound()[0];
+  const Scalar cdfZero = computeCDF(0.0);
+  // In the upper tail, solving for the complementary CDF avoids the loss of
+  // accuracy of 1 - CDF when q is close to one.  This is the range where the
+  // ratio CDF has its narrow transition at a vanishing denominator.
+  if ((c <= 0.0) && (d >= 0.0) && (q > cdfZero) && (q > 0.5))
+  {
+    const Scalar targetTail = (tail ? prob : 1.0 - q);
+    Scalar lower = 0.0;
+    Scalar upper = 1.0;
+    Scalar tailLower = computeComplementaryCDF(lower);
+    Scalar tailUpper = computeComplementaryCDF(upper);
+    UnsignedInteger iteration = 0;
+    while ((tailUpper > targetTail) && (iteration < quantileIterations_))
+    {
+      if (upper > 0.5 * SpecFunc::MaxScalar) break;
+      upper *= 2.0;
+      tailUpper = computeComplementaryCDF(upper);
+      ++iteration;
+    }
+    // A target tail slightly above the complementary CDF at zero can only be
+    // a rounding effect: fall back to the CDF bracket rather than returning
+    // the far end of the expansion.
+    if (tailLower >= targetTail)
+    {
+      if (!(tailUpper <= targetTail))
+      {
+        LOGWARN(OSS() << "RatioDistribution::computeScalarQuantile could not bracket the upper tail probability " << targetTail
+                << ", returning the last finite bracket bound=" << upper);
+        return upper;
+      }
+      // Scale the residual tolerance with the tail probability: the default
+      // absolute CDF tolerance is far too large when the target tail is tiny.
+      const Scalar residualError = std::max(SpecFunc::MinScalar, std::min(cdfEpsilon_, targetTail * quantileEpsilon_));
+      const Brent solver(quantileEpsilon_, quantileEpsilon_, residualError, quantileIterations_);
+      const UniVariateFunction complementaryCDFFunction(new CDFRatioDistribution(this, true));
+      return solver.solve(complementaryCDFFunction, targetTail, lower, upper, tailLower, tailUpper);
+    }
+  }
   // Bracket the quantile around zero, which is a natural starting point for
   // ratio distributions and avoids the very large initial interval that the
-  // generic implementation would use for an unbounded range.
+  // generic implementation would use for an unbounded range.  The expansion
+  // is capped and checked against overflow so that a saturated CDF cannot
+  // lead to an infinite bracket.
   Scalar lower = 0.0;
   Scalar upper = 0.0;
-  Scalar cdfLower = computeCDF(lower);
+  Scalar cdfLower = cdfZero;
+  Scalar cdfUpper = cdfZero;
+  Bool hasBracket = true;
   if (q < cdfLower)
   {
-    Scalar step = 1.0;
-    lower = -step;
+    lower = -1.0;
     cdfLower = computeCDF(lower);
-    while (cdfLower > q)
+    UnsignedInteger iteration = 0;
+    while ((cdfLower > q) && (iteration < quantileIterations_))
     {
-      step *= 2.0;
-      lower = -step;
+      if (lower < -0.5 * SpecFunc::MaxScalar) break;
+      lower *= 2.0;
       cdfLower = computeCDF(lower);
+      ++iteration;
     }
+    hasBracket = (cdfLower <= q);
   }
   else if (q > cdfLower)
   {
-    Scalar step = 1.0;
-    upper = step;
-    Scalar cdfUpper = computeCDF(upper);
-    while (cdfUpper < q)
+    upper = 1.0;
+    cdfUpper = computeCDF(upper);
+    UnsignedInteger iteration = 0;
+    while ((cdfUpper < q) && (iteration < quantileIterations_))
     {
-      step *= 2.0;
-      upper = step;
+      if (upper > 0.5 * SpecFunc::MaxScalar) break;
+      upper *= 2.0;
       cdfUpper = computeCDF(upper);
+      ++iteration;
     }
+    hasBracket = (cdfUpper >= q);
   }
   else return 0.0;
-  // Bisection is robust with respect to the numerical integration errors of
-  // the CDF and is sufficiently fast for a one-dimensional distribution.
-  for (UnsignedInteger i = 0; i < quantileIterations_; ++i)
+  if (!hasBracket)
   {
-    const Scalar middle = 0.5 * (lower + upper);
-    const Scalar cdfMiddle = computeCDF(middle);
-    if (cdfMiddle < q)
-    {
-      lower = middle;
-    }
-    else
-    {
-      upper = middle;
-    }
-    if ((upper - lower) <= quantileEpsilon_ * std::max(1.0, std::abs(middle))) break;
+    // The requested probability is below or above the numerical resolution
+    // of the CDF.  Return the finite end of the explored bracket rather than
+    // an infinite value.
+    LOGWARN(OSS() << "RatioDistribution::computeScalarQuantile could not bracket the quantile for p=" << q
+            << ", returning the last finite bracket bound=" << (q < cdfLower ? lower : upper));
+    return (q < cdfLower ? lower : upper);
   }
-  return 0.5 * (lower + upper);
+  // Brent is the standard scalar solver used by the distribution layer.  The
+  // bracket found above is finite and the CDF is monotone.  The residual
+  // tolerance is scaled with the target probability for small lower tails.
+  const Scalar residualError = std::max(SpecFunc::MinScalar, std::min(cdfEpsilon_, q * quantileEpsilon_));
+  const Brent solver(quantileEpsilon_, quantileEpsilon_, residualError, quantileIterations_);
+  const UniVariateFunction cdfFunction(new CDFRatioDistribution(this));
+  return solver.solve(cdfFunction, q, lower, upper, cdfLower, cdfUpper);
 }
 
 /* Get the characteristic function of the distribution */

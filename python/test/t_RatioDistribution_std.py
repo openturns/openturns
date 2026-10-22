@@ -78,6 +78,30 @@ for z in [2048.0, -2048.0]:
     cdf = negative_ratio.computeCDF([z])
     expected = exponential_ratio.computeCDF([z])
     ott.assert_almost_equal(cdf, expected, 1e-10, 1e-10)
+
+
+# The normal/normal ratio is a standard Cauchy distribution.  The exact
+# quantiles exercise both tail branches and the bracket expansion.  Evaluate
+# the tangent in its stable form near the tails.
+def cauchy_quantile(p):
+    if p < 0.5:
+        return -1.0 / math.tan(math.pi * p)
+    return 1.0 / math.tan(math.pi * (1.0 - p))
+
+
+for p in [1.0e-6, 1.0 - 1.0e-6, 1.0 - 1.0e-10, 1.0 - 1.0e-12, 1.0 - 1.0e-14]:
+    ott.assert_almost_equal(
+        ratio.computeQuantile(p),
+        [cauchy_quantile(p)],
+        1e-10,
+        1e-8,
+    )
+ott.assert_almost_equal(
+    ratio.computeQuantile(1.0e-12, True),
+    [1.0 / math.tan(math.pi * 1.0e-12)],
+    1e-10,
+    1e-8,
+)
 ott.assert_almost_equal(
     ratio.computeCharacteristicFunction(1.0),
     complex(math.exp(-1.0), 0.0),
