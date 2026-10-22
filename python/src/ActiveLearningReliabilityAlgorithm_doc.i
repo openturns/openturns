@@ -6,7 +6,7 @@ R"RAW(Active learning reliability algorithm.
     To use it, import the ``openturns.experimental`` submodule.
 
 Consider the following reliability analysis problem to solve:
-:math:`P_f = \Prob{\model\left( \inputRV \right) \leq T)}`
+:math:`P_f = \Prob{\model\left( \inputRV \right) \leq T}`
 
 :math:`\inputRV` is the input random vector of dimension :math:`\inputDim`, :math:`f_\inputRV (\mathbf{x})`  its joint density probability function. :math:`\model(\cdot)` is the limit state function of the model.
 :math:`D_f = \{\inputRV \in \mathbb{R}^\inputDim \, \vert \, \model(\inputRV,\mathbf{d}) \leq T\}` is the domain definition of the event to consider (failure). :math:`\model(\cdot) = T` is called the limit state.
