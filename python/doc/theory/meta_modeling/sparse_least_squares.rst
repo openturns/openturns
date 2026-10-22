@@ -76,7 +76,7 @@ as follows:
 
 where :math:`\|\vect{a}\|_{1} = \sum_{j=0}^{P-1} |a_{j}|` and
 :math:`C` is a non negative constant. A nice feature of LASSO is that
-it provides a *sparse* metamodel, i.e. it discards insignificant
+it provides a *sparse* surrogate model, i.e. it discards insignificant
 variables from the set of predictors. The obtained response surface is
 all the sparser since the value of the tuning parameter :math:`C` is
 high.
@@ -165,7 +165,7 @@ Note that if :math:`\sampleSize \geq P`, then the last step of LARS provides the
 ordinary least-square solution. It is shown that LARS is noticeably
 efficient since it only requires the computational cost of ordinary
 least-square regression on :math:`P` predictors for producing a
-*collection* of :math:`m` metamodels.
+*collection* of :math:`m` surrogate models.
 
 LASSO and Forward Stagewise as variants of LARS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -178,14 +178,14 @@ to a maximum value. The modified algorithm is as follows:
 -  Run the LARS procedure from Steps 1 to 4.
 
 -  If a non zero coefficient hits zero, discard it from the current
-   metamodel and recompute the current joint least-square direction.
+   surrogate model and recompute the current joint least-square direction.
 
 -  Continue this way until :math:`m = \min(P,\sampleSize-1)` predictors have been
    entered.
 
 Note that the LAR-based LASSO procedure may take more than :math:`m`
 steps since the predictors are allowed to be discarded and introduced
-later again into the metamodel. In a similar fashion, a limiting
+later again into the surrogate model. In a similar fashion, a limiting
 version of the forward stagewise method when :math:`\varepsilon \to 0`
 may be obtained by slightly modifying the original LARS algorithm. In
 the literature, one commonly uses the label LARS when referring to all
@@ -197,7 +197,7 @@ Selection of the optimal LARS solution
 
 The LAR-based approaches (i.e. original LAR, LASSO and forward
 stagewise) provide a *collection* of less and less sparse PC
-approximations. The accuracy of each PC metamodel may be assessed by
+approximations. The accuracy of each PC surrogate model may be assessed by
 cross validation. Eventually the PC representation associated with the
 lowest error estimate is retained.
 
