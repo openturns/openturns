@@ -1068,7 +1068,7 @@ int main(int, char *[])
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
-    compare<ProbabilitySimulationResultImplementation >( simulationResult, study2 );
+    compare<ProbabilitySimulationResultImplementation >( simulationResult, study2, "probabilitySimulationResult" );
 
     // Analytical
     compare<SORM >( sorm, study2, "sorm");
