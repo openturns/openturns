@@ -75,7 +75,7 @@ void AdaptiveDirectionalStratification::run()
 {
   // First, reset the convergence history
   convergenceStrategy_.setDimension(3);
-  result_ = ProbabilitySimulationResult();
+  result_ = ProbabilitySimulationResultImplementation();
   result_.setEvent(getEvent());
   result_.setBlockSize(1);
 
@@ -150,7 +150,7 @@ void AdaptiveDirectionalStratification::run()
       if (progressCallback_.first)
         progressCallback_.first((100.0 * n) / n0, progressCallback_.second);
 
-      const ProbabilitySimulationResult result(directionalSampling.getResult());
+      const ProbabilitySimulationResultImplementation result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
       // concatenate the convergence history

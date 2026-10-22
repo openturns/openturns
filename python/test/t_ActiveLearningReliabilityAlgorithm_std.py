@@ -150,7 +150,7 @@ assert finalGPR.getInputSample().getSize() == initialSize + calls
 # per-iteration history: generic level, one entry per loop iteration
 history = result.getSimulationResults()
 assert len(history) == calls + 1
-assert history[0].getImplementation().getClassName() == "ProbabilitySimulationResult"
+assert history[0].getImplementation().getClassName() == "ProbabilitySimulationResultImplementation"
 for i in range(len(history)):
     ott.assert_almost_equal(
         history[i].getProbabilityEstimate(), result.getProbabilityHistory()[i]

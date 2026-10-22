@@ -5,13 +5,13 @@
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-It derives from :class:`~openturns.ProbabilitySimulationResult` so that
+It derives from :class:`~openturns.ProbabilitySimulationResultImplementation` so that
 the failure probability estimate is visible through a generic
 :class:`~openturns.EventSimulation` handle.
 
 Per-iteration inner simulation results are kept with full dynamic type:
 generic quantities read directly on
-:class:`~openturns.GenericSimulationResult`, concrete details through
+:class:`~openturns.ProbabilitySimulationResult`, concrete details through
 ``getImplementation()``.
 
 See also
@@ -205,7 +205,7 @@ hasConverged : bool
 
 Returns
 -------
-simulationResults : sequence of :class:`~openturns.GenericSimulationResult`
+simulationResults : sequence of :class:`~openturns.ProbabilitySimulationResult`
     Inner simulation result of each enrichment iteration, with full
     dynamic type. Generic quantities read directly; concrete details
     through conversion to the known concrete type.
@@ -217,6 +217,6 @@ simulationResults : sequence of :class:`~openturns.GenericSimulationResult`
 
 Parameters
 ----------
-simulationResults : sequence of :class:`~openturns.GenericSimulationResult`
+simulationResults : sequence of :class:`~openturns.ProbabilitySimulationResult`
     Inner simulation result of each enrichment iteration
 "

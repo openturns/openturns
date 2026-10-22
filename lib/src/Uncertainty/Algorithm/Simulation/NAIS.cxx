@@ -396,9 +396,9 @@ NAISResult NAIS::getResult() const
 }
 
 /* Current result with full dynamic type */
-GenericSimulationResult NAIS::getHistoryResult() const
+ProbabilitySimulationResult NAIS::getHistoryResult() const
 {
-  return GenericSimulationResult(naisResult_);
+  return ProbabilitySimulationResult(naisResult_);
 }
 
 

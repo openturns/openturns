@@ -214,7 +214,7 @@ int main(int, char *[])
     study.add("staircase", staircase);
 
     // Create a Simulation::Result
-    ProbabilitySimulationResult simulationResult(ThresholdEvent(), 0.5, 0.01, 150, 4);
+    ProbabilitySimulationResultImplementation simulationResult(ThresholdEvent(), 0.5, 0.01, 150, 4);
     simulationResult.setName("probabilitySimulationResult");
     study.add("probabilitySimulationResult", simulationResult);
 
@@ -1068,7 +1068,7 @@ int main(int, char *[])
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );
-    compare<ProbabilitySimulationResult >( simulationResult, study2 );
+    compare<ProbabilitySimulationResultImplementation >( simulationResult, study2 );
 
     // Analytical
     compare<SORM >( sorm, study2, "sorm");

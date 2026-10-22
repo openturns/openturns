@@ -84,22 +84,22 @@ void EventSimulationImplementation::setEvent(const RandomVector & event)
 }
 
 /* Result accessor */
-void EventSimulationImplementation::setResult(const ProbabilitySimulationResult & result)
+void EventSimulationImplementation::setResult(const ProbabilitySimulationResultImplementation & result)
 {
   result_ = result;
 }
 
 
 /* Result accessor */
-ProbabilitySimulationResult EventSimulationImplementation::getResult() const
+ProbabilitySimulationResultImplementation EventSimulationImplementation::getResult() const
 {
   return result_;
 }
 
 /* Current result with full dynamic type */
-GenericSimulationResult EventSimulationImplementation::getHistoryResult() const
+ProbabilitySimulationResult EventSimulationImplementation::getHistoryResult() const
 {
-  return GenericSimulationResult(result_);
+  return ProbabilitySimulationResult(result_);
 }
 
 /* String converter */
@@ -214,7 +214,7 @@ Graph EventSimulationImplementation::drawProbabilityConvergence(const Scalar lev
     dataEstimate(i, 1) = probabilityEstimate;
     if (varianceEstimate >= 0.0)
     {
-      const Interval confidenceInterval(ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getProbabilityDistribution().computeBilateralConfidenceInterval(level));
+      const Interval confidenceInterval(ProbabilitySimulationResultImplementation(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getProbabilityDistribution().computeBilateralConfidenceInterval(level));
       dataLowerBound.add(Point({outerIndex + 1, confidenceInterval.getLowerBound()[0]}));
       dataUpperBound.add(Point({outerIndex + 1, confidenceInterval.getUpperBound()[0]}));
     }

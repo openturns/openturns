@@ -78,7 +78,7 @@ void EventSimulation::setEvent(const RandomVector & event)
 }
 
 /* Result accessor */
-ProbabilitySimulationResult EventSimulation::getResult() const
+ProbabilitySimulationResultImplementation EventSimulation::getResult() const
 {
   return getImplementation()->getResult();
 }

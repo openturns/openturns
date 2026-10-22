@@ -986,9 +986,9 @@
   <SimulationAlgorithm-DefaultBlockSize                     value_int="1"    />
   <SimulationAlgorithm-DefaultMaximumOuterSampling          value_int="1000" />
 
-  <!-- OT::ProbabilitySimulationResult parameters -->
-  <ProbabilitySimulationResult-CheckPositiveVariance  value_bool="false"  />
-  <ProbabilitySimulationResult-DefaultConfidenceLevel value_float="0.95" />
+  <!-- OT::ProbabilitySimulationResultImplementation parameters -->
+  <ProbabilitySimulationResultImplementation-CheckPositiveVariance  value_bool="false"  />
+  <ProbabilitySimulationResultImplementation-DefaultConfidenceLevel value_float="0.95" />
 
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />

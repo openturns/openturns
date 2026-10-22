@@ -319,9 +319,9 @@ CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
 }
 
 /* Current result with full dynamic type */
-GenericSimulationResult CrossEntropyImportanceSampling::getHistoryResult() const
+ProbabilitySimulationResult CrossEntropyImportanceSampling::getHistoryResult() const
 {
-  return GenericSimulationResult(crossEntropyResult_);
+  return ProbabilitySimulationResult(crossEntropyResult_);
 }
 
 

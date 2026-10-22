@@ -26,11 +26,11 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(ActiveLearningReliabilityResult)
 
 static const Factory<ActiveLearningReliabilityResult> Factory_ActiveLearningReliabilityResult;
-static const Factory<PersistentCollection<GenericSimulationResult> > Factory_PersistentCollection_GenericSimulationResult;
+static const Factory<PersistentCollection<ProbabilitySimulationResult> > Factory_PersistentCollection_ProbabilitySimulationResult;
 
 /* Default constructor */
 ActiveLearningReliabilityResult::ActiveLearningReliabilityResult()
-  : ProbabilitySimulationResult()
+  : ProbabilitySimulationResultImplementation()
 {
   // Nothing to do
 }
@@ -44,7 +44,7 @@ ActiveLearningReliabilityResult::ActiveLearningReliabilityResult(const Scalar pr
                                                                  const UnsignedInteger functionCallNumber,
                                                                  const Interval probabilityCI,
                                                                  const Interval reliabilityIndexCI)
-  : ProbabilitySimulationResult()
+  : ProbabilitySimulationResultImplementation()
   , reliabilityIndex_(reliabilityIndex)
   , gprResult_(gprResult)
   , probabilityHistory_(probabilityHistory)
@@ -72,7 +72,7 @@ ActiveLearningReliabilityResult::ActiveLearningReliabilityResult(const RandomVec
                                                                  const UnsignedInteger functionCallNumber,
                                                                  const Interval probabilityCI,
                                                                  const Interval reliabilityIndexCI)
-  : ProbabilitySimulationResult(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize)
+  : ProbabilitySimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize)
   , reliabilityIndex_(reliabilityIndex)
   , gprResult_(gprResult)
   , probabilityHistory_(probabilityHistory)
@@ -96,7 +96,7 @@ String ActiveLearningReliabilityResult::__repr__() const
 {
   OSS oss;
   oss << "class=" << getClassName()
-      << " derived from " << ProbabilitySimulationResult::__repr__()
+      << " derived from " << ProbabilitySimulationResultImplementation::__repr__()
       << " reliabilityIndex=" << reliabilityIndex_
       << " functionCallNumber=" << functionCallNumber_
       << " simulationResults=" << simulationResults_.getSize()
@@ -209,7 +209,7 @@ void ActiveLearningReliabilityResult::setReliabilityIndexConfidenceInterval(cons
 /* Method save() stores the object through the StorageManager */
 void ActiveLearningReliabilityResult::save(Advocate & adv) const
 {
-  ProbabilitySimulationResult::save(adv);
+  ProbabilitySimulationResultImplementation::save(adv);
   adv.saveAttribute("reliabilityIndex_", reliabilityIndex_);
   adv.saveAttribute("gprResult_", gprResult_);
   adv.saveAttribute("probabilityHistory_", probabilityHistory_);
@@ -224,7 +224,7 @@ void ActiveLearningReliabilityResult::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ActiveLearningReliabilityResult::load(Advocate & adv)
 {
-  ProbabilitySimulationResult::load(adv);
+  ProbabilitySimulationResultImplementation::load(adv);
   adv.loadAttribute("reliabilityIndex_", reliabilityIndex_);
   adv.loadAttribute("gprResult_", gprResult_);
   adv.loadAttribute("probabilityHistory_", probabilityHistory_);

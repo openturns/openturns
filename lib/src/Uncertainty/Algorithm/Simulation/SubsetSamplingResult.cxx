@@ -31,7 +31,7 @@ static const Factory<SubsetSamplingResult> Factory_SubsetSamplingResult;
 
 /* Default constructor */
 SubsetSamplingResult::SubsetSamplingResult()
-  : ProbabilitySimulationResult()
+  : ProbabilitySimulationResultImplementation()
 {
 }
 
@@ -43,7 +43,7 @@ SubsetSamplingResult::SubsetSamplingResult(const RandomVector & event,
     const UnsignedInteger outerSampling,
     const UnsignedInteger blockSize,
     const Scalar coefficientOfVariation)
-  : ProbabilitySimulationResult(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize),
+  : ProbabilitySimulationResultImplementation(event, probabilityEstimate, varianceEstimate, outerSampling, blockSize),
     coefficientOfVariation_(coefficientOfVariation)
 {
 }
@@ -67,7 +67,7 @@ Scalar SubsetSamplingResult::getCoefficientOfVariation() const
 String SubsetSamplingResult::__repr__() const
 {
   OSS oss;
-  oss << ProbabilitySimulationResult::__repr__();
+  oss << ProbabilitySimulationResultImplementation::__repr__();
   return oss;
 }
 
@@ -75,7 +75,7 @@ String SubsetSamplingResult::__repr__() const
 /* Method save() stores the object through the StorageManager */
 void SubsetSamplingResult::save(Advocate & adv) const
 {
-  ProbabilitySimulationResult::save(adv);
+  ProbabilitySimulationResultImplementation::save(adv);
   adv.saveAttribute("coefficientOfVariation_", coefficientOfVariation_);
 }
 
@@ -83,7 +83,7 @@ void SubsetSamplingResult::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SubsetSamplingResult::load(Advocate & adv)
 {
-  ProbabilitySimulationResult::load(adv);
+  ProbabilitySimulationResultImplementation::load(adv);
   adv.loadAttribute("coefficientOfVariation_", coefficientOfVariation_);
 }
 

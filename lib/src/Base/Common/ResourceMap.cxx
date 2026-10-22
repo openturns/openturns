@@ -1613,9 +1613,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SimulationAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultMaximumOuterSampling", 1000);
 
-  // ProbabilitySimulationResult parameters //
-  addAsBool("ProbabilitySimulationResult-CheckPositiveVariance", false);
-  addAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95);
+  // ProbabilitySimulationResultImplementation parameters //
+  addAsBool("ProbabilitySimulationResultImplementation-CheckPositiveVariance", false);
+  addAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel", 0.95);
 
   // ExpectationSimulationAlgorithm parameters //
   addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});

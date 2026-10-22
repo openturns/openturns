@@ -22,8 +22,8 @@
 #define OPENTURNS_ACTIVELEARNINGRELIABILITYRESULT_HXX
 
 
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
-#include "openturns/GenericSimulationResult.hxx"
 #include "openturns/GaussianProcessRegressionResult.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/PersistentCollection.hxx"
@@ -34,19 +34,19 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class ActiveLearningReliabilityResult
  *
  * ActiveLearningReliabilityResult is a class to store all the results provided by ActiveLearningReliabilityAlgorithm.
- * It derives from ProbabilitySimulationResult so that a generic EventSimulation
+ * It derives from ProbabilitySimulationResultImplementation so that a generic EventSimulation
  * handle sees the failure probability estimate through the base result
  * (mirror rule), while the active-learning details remain available here.
  */
 class OT_API ActiveLearningReliabilityResult
-  : public ProbabilitySimulationResult
+  : public ProbabilitySimulationResultImplementation
 {
 
   CLASSNAME
 public:
 
-  typedef Collection<GenericSimulationResult> SimulationResultsCollection;
-  typedef PersistentCollection<GenericSimulationResult> SimulationResultsPersistentCollection;
+  typedef Collection<ProbabilitySimulationResult> SimulationResultsCollection;
+  typedef PersistentCollection<ProbabilitySimulationResult> SimulationResultsPersistentCollection;
 
   /** Default constructor */
   ActiveLearningReliabilityResult();

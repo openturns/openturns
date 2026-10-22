@@ -65,7 +65,7 @@
 /* Base/Func (Basis, Function, Sample) */
 %import func_module.i
 
-/* Uncertainty/Algorithm/Simulation (EventSimulation, ProbabilitySimulationResult) */
+/* Uncertainty/Algorithm/Simulation (EventSimulation, ProbabilitySimulationResultImplementation) */
 %import simulation_module.i
 
 /* Uncertainty/Process */

@@ -47,10 +47,10 @@ Simulation algorithm
     SimulationResult
     EventSimulation
     ProbabilitySimulationAlgorithm
-    ProbabilitySimulationResult
+    ProbabilitySimulationResultImplementation
     ExpectationSimulationAlgorithm
     ExpectationSimulationResult
-    GenericSimulationResult
+    ProbabilitySimulationResult
     experimental.ActiveLearningReliabilityFunction
     experimental.PythonActiveLearningReliabilityFunction
     experimental.ActiveLearningUFunction

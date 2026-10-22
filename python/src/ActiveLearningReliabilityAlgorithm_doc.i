@@ -309,7 +309,7 @@ result : :class:`~openturns.experimental.ActiveLearningReliabilityResult`
 
 Returns
 -------
-simulationResults : sequence of :class:`~openturns.GenericSimulationResult`
+simulationResults : sequence of :class:`~openturns.ProbabilitySimulationResult`
     Inner simulation results, one per enrichment iteration, each preserving
     its dynamic type. Empty before the first run.
 "

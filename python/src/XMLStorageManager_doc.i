@@ -25,7 +25,7 @@ Examples
 >>> myStudy2 = ot.Study()  # doctest: +SKIP
 >>> myStudy2.setStorageManager(ot.XMLStorageManager('myStudy2.xml.gz', 5))  # doctest: +SKIP
 >>> # Add an object in the study:
->>> simulationResult = ot.ProbabilitySimulationResult(ot.ThresholdEvent(), 0.5, 0.01, 150, 4)  # doctest: +SKIP
+>>> simulationResult = ot.ProbabilitySimulationResultImplementation(ot.ThresholdEvent(), 0.5, 0.01, 150, 4)  # doctest: +SKIP
 >>> myStudy.add('simulationResult', simulationResult)  # doctest: +SKIP
 >>> # Save the Study in the file myStudy.xml:
 >>> myStudy.save()  # doctest: +SKIP"

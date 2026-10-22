@@ -534,10 +534,10 @@ Point SubsetSampling::getThresholdPerStep() const
 
 /* Current result with full dynamic type: rebuild the concrete result from
    the mirrored base fields, preserving the coefficient of variation */
-GenericSimulationResult SubsetSampling::getHistoryResult() const
+ProbabilitySimulationResult SubsetSampling::getHistoryResult() const
 {
-  const ProbabilitySimulationResult result(getResult());
-  return GenericSimulationResult(SubsetSamplingResult(result.getEvent(), result.getProbabilityEstimate(), result.getVarianceEstimate(), result.getOuterSampling(), result.getBlockSize(), result.getCoefficientOfVariation()));
+  const ProbabilitySimulationResultImplementation result(getResult());
+  return ProbabilitySimulationResult(SubsetSamplingResult(result.getEvent(), result.getProbabilityEstimate(), result.getVarianceEstimate(), result.getOuterSampling(), result.getBlockSize(), result.getCoefficientOfVariation()));
 }
 
 

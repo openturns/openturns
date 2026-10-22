@@ -98,7 +98,7 @@ public:
 protected:
 
   /** Restricted history bridge for ActiveLearningReliabilityAlgorithm */
-  GenericSimulationResult getHistoryResult() const override;
+  ProbabilitySimulationResult getHistoryResult() const override;
 
 private:
   /** Compute the block sample */
