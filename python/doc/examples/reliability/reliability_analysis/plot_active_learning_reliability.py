@@ -131,7 +131,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), threshold)
 # -------------------------------------
 
 # %%
-# Creation of DoE with a limited size (number_samples_DoE = 20) and evaluation of the exact limit state function.
+# Creation of DoE with a limited size (number_samples_DoE = 10) and evaluation of the exact limit state function.
 # The definition domain for the DoE (through the lower and upper bounds) is extended in order to get samples in rare event regions.
 # It can be also defined by a combination of mean and standard deviation of the input distribution (for example, :math:`\mu \pm 4 \sigma`).
 
