@@ -4,17 +4,12 @@ Welcome
 OpenTURNS stands for open-source initiative for the Treatment of Uncertainties,
 Risks'N Statistics in a structured industrial approach.
 
+New to OpenTURNS? Start with the :doc:`install` instructions,
+then explore the :doc:`examples/examples` and :doc:`usecases/usecases`,
+or dive into the :doc:`user_manual/user_manual`.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    contents
-   examples/examples
-   usecases/usecases
-   install
-   user_manual/user_manual
-   theory/theory
-   developer_guide/developer_guide
-   bibliography
-   about
 
