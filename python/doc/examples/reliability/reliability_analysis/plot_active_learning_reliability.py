@@ -393,8 +393,8 @@ print("Number of function calls:", results_active_subset.getFunctionCallNumber()
 # Visualization of infill samples.
 # We use the Gaussian process regressor refined with the active learning algorithm. We plot both the initial and enriched DoEs.
 # We also plot the contours of the limit state approximation with the metamodel.
-# We can see that the infilled samples using the GMM are more spread out that with the "U"-function.
-# This is due to the fact that the GMM function takes the distance between the currrent DoE samples into account.
+# We can see that the infilled samples using the GMM are more spread out than with the "U"-function.
+# This is due to the fact that the GMM function takes the distance between the current DoE samples into account.
 gprResult_subset = results_active_subset.getGprResult()
 
 metamodel_subset = gprResult_subset.getMetaModel()
