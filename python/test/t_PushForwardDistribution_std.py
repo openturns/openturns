@@ -485,6 +485,35 @@ for level in [0.5, 1.0, 2.0]:
     print(f"radialCoArea pdf({level})={pdf:.12g}")
     ott.assert_almost_equal(pdf, expected, 2e-3, 0.0)
 
+# The continuation key refines the closed fibre of the previous map. The
+# mesh result remains the fallback when the key is disabled.
+continuationKey = "PushForwardDistribution-NonlinearCoAreaContinuation"
+levels = [0.5, 1.0, 2.0]
+ot.ResourceMap.SetAsBool(continuationKey, False)
+radialMeshPDF = [radialCoArea.computePDF([level]) for level in levels]
+ot.ResourceMap.SetAsBool(continuationKey, True)
+for level, meshPDF in zip(levels, radialMeshPDF):
+    expected = 0.5 * math.exp(-0.5 * level)
+    continuationPDF = radialCoArea.computePDF([level])
+    print(f"radialCoArea continuation pdf({level})={continuationPDF:.12g}")
+    ott.assert_almost_equal(continuationPDF, expected, 1e-4, 0.0)
+    assert abs(continuationPDF - expected) < abs(meshPDF - expected)
+
+# An open scalar fibre exercises the two directions of the continuation: the
+# two branches of Y = X1^2 are horizontal lines, each one contributes
+# phi(1) / 2 because the co-area factor is 2 * |x1| = 2, so the total is phi(1).
+openCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1"], ["x1^2"]), ot.Normal(2)
+)
+ot.ResourceMap.SetAsBool(continuationKey, False)
+openMeshPDF = openCoArea.computePDF([1.0])
+ot.ResourceMap.SetAsBool(continuationKey, True)
+openContinuationPDF = openCoArea.computePDF([1.0])
+expected = ot.Normal().computePDF([1.0])
+print(f"openCoArea continuation pdf(1.0)={openContinuationPDF:.12g}")
+ott.assert_almost_equal(openContinuationPDF, expected, 1e-6, 0.0)
+assert abs(openContinuationPDF - expected) < abs(openMeshPDF - expected)
+
 # A scalar nonlinear map on R^3 has a two dimensional fibre: the level set is
 # extracted from a tetrahedralisation of the search box, and the density is
 # integrated over the resulting triangulated surface. Y = X0^2 + X1^2 + X2^2
@@ -546,6 +575,15 @@ for point in [[0.5, 0.5], [0.2, 0.3]]:
     pdf = curveCoArea.computePDF(point)
     print(f"curveCoArea pdf({point})={pdf:.12g}")
     ott.assert_almost_equal(pdf, math.pi / 4.0, 1e-3, 0.0)
+ot.ResourceMap.SetAsBool(continuationKey, False)
+curveMeshPDF = [curveCoArea.computePDF(point) for point in [[0.5, 0.5], [0.2, 0.3]]]
+ot.ResourceMap.SetAsBool(continuationKey, True)
+for point, meshPDF in zip([[0.5, 0.5], [0.2, 0.3]], curveMeshPDF):
+    continuationPDF = curveCoArea.computePDF(point)
+    print(f"curveCoArea continuation pdf({point})={continuationPDF:.12g}")
+    ott.assert_almost_equal(continuationPDF, math.pi / 4.0, 1e-5, 0.0)
+    assert abs(continuationPDF - math.pi / 4.0) < abs(meshPDF - math.pi / 4.0)
+
 # Points outside the image of the two components have an empty fibre.
 assert curveCoArea.computePDF([-0.1, 0.5]) == 0.0
 assert curveCoArea.computePDF([0.5, 1.5]) == 0.0
@@ -571,6 +609,75 @@ ott.assert_almost_equal(
     1e-8,
     1e-9,
 )
+
+# A nonlinear map from R^4 to R^3 has a one dimensional fibre as well. For
+# the uniform cube and Y = (X0^2 + X1^2, X2, X3), the fibre at (r^2, y1, y2)
+# is a quarter circle of radius r, so the density is again pi / 4.
+volumeKey = "PushForwardDistribution-NonlinearCoAreaVolumeDiscretization"
+previousVolumeDiscretization = ot.ResourceMap.GetAsUnsignedInteger(volumeKey)
+ot.ResourceMap.SetAsUnsignedInteger(volumeKey, 8)
+uniformCube4 = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 4)
+curve4CoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(
+        ["x0", "x1", "x2", "x3"],
+        ["x0^2 + x1^2", "x2", "x3"],
+    ),
+    uniformCube4,
+)
+curve4Points = [[0.5, 0.5, 0.5], [0.2, 0.3, 0.4]]
+for point in curve4Points:
+    pdf = curve4CoArea.computePDF(point)
+    print(f"curve4CoArea pdf({point})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, math.pi / 4.0, 1e-5, 0.0)
+ot.ResourceMap.SetAsBool(continuationKey, False)
+curve4MeshPDF = [curve4CoArea.computePDF(point) for point in curve4Points]
+ot.ResourceMap.SetAsBool(continuationKey, True)
+for point, meshPDF in zip(curve4Points, curve4MeshPDF):
+    continuationPDF = curve4CoArea.computePDF(point)
+    print(f"curve4CoArea continuation pdf({point})={continuationPDF:.12g}")
+    ott.assert_almost_equal(continuationPDF, math.pi / 4.0, 1e-5, 0.0)
+    assert abs(continuationPDF - math.pi / 4.0) < abs(meshPDF - math.pi / 4.0)
+
+# An empty R^4 fibre has a zero density.
+assert curve4CoArea.computePDF([-0.1, 0.5, 0.5]) == 0.0
+assert curve4CoArea.computePDF([0.5, 1.5, 0.5]) == 0.0
+assert curve4CoArea.computePDF([0.5, 0.5, 1.5]) == 0.0
+
+# Restore the default volume discretization before the normal R^4 tests.
+ot.ResourceMap.SetAsUnsignedInteger(volumeKey, previousVolumeDiscretization)
+
+# With independent standard normal inputs, the R^4 -> R^3 density is
+# 0.5 * exp(-y0 / 2) * phi(y1) * phi(y2), which exercises the finite search
+# box and the non-constant antecedent density in dimension four.
+normalCurve4 = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(
+        ["x0", "x1", "x2", "x3"],
+        ["x0^2 + x1^2", "x2", "x3"],
+    ),
+    ot.Normal(4),
+)
+curve4Point = [0.7, 0.4, 0.5]
+expectedCurve4PDF = (
+    0.5
+    * math.exp(-0.5 * curve4Point[0])
+    * ot.Normal().computePDF([curve4Point[1]])
+    * ot.Normal().computePDF([curve4Point[2]])
+)
+pdf = normalCurve4.computePDF(curve4Point)
+print(f"normalCurve4 pdf({curve4Point})={pdf:.12g}")
+ott.assert_almost_equal(pdf, expectedCurve4PDF, 1e-4, 0.0)
+# A fibre whose radius is smaller than the mesh step exercises the closure of
+# a short loop: it must be traced once, not twice.
+tinyCurve4Point = [0.02, 0.0, 0.0]
+expectedTinyCurve4PDF = (
+    0.5
+    * math.exp(-0.5 * tinyCurve4Point[0])
+    * ot.Normal().computePDF([tinyCurve4Point[1]])
+    * ot.Normal().computePDF([tinyCurve4Point[2]])
+)
+pdf = normalCurve4.computePDF(tinyCurve4Point)
+print(f"normalCurve4 pdf({tinyCurve4Point})={pdf:.12g}")
+ott.assert_almost_equal(pdf, expectedTinyCurve4PDF, 1e-4, 0.0)
 
 # A nonlinear R^3 -> R^2 map without an analytical gradient uses the finite
 # difference fallback for the two dimensional Jacobian.

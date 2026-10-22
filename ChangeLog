@@ -14,7 +14,8 @@
  * PushForwardDistribution (openturns.experimental): implement the co-area density for affine functions
  * PushForwardDistribution (openturns.experimental): return a zero density for a rank-deficient affine co-area map when the affine fibre misses the antecedent support
  * PushForwardDistribution (openturns.experimental): allow nonlinear co-area maps for sampling, range and moments
- * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3, and for a nonlinear map from R^3 to R^2, by a deterministic triangulated level-set extraction with Brent edge roots, face Newton polishing and intrinsic surface or curve cubature, while the affine co-area path remains exact
+ * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3, and for a nonlinear map from R^n to R^(n-1) with n >= 3 (including R^3 to R^2 and R^4 to R^3), by a deterministic simplicial level-set extraction with actual-function root polishing and intrinsic surface or curve cubature, while the affine co-area path remains exact
+ * PushForwardDistribution (openturns.experimental): refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh, the mesh result remaining the fallback for branching and saddle fibres
  * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically
 
 ==== New ResourceMap keys ====
@@ -42,7 +43,9 @@
  * PushForwardDistribution-CoAreaMaximumExtensions: maximum number of extensions of the one dimensional integration interval (default is 16)
  * PushForwardDistribution-NonlinearCoAreaDiscretization: number of intervals per input dimension in the triangulation used by the scalar nonlinear co-area density in R^2 (default is 128)
  * PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization: number of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities in R^3 (default is 48)
+ * PushForwardDistribution-NonlinearCoAreaVolumeDiscretization: number of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from R^n to R^(n-1) with n >= 4 (default is 12)
  * PushForwardDistribution-NonlinearCoAreaLevelTolerance: relative tolerance used to classify a mesh vertex as lying on the requested level set (default is 1.0e-12)
+ * PushForwardDistribution-NonlinearCoAreaContinuation: refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh (default is true)
  * PushForwardDistribution-RangeMargin: relative margin added to the marginal spans estimated from a sample (default is 0.025)
  * PushForwardDistribution-DegenerateSearchIntervalHalfWidth: half width of the fallback search box used when a marginal interval has zero width (default is 1.0)
  * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)

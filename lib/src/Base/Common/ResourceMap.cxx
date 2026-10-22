@@ -1413,7 +1413,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumExtensions", 16);
   addAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaDiscretization", 128);
   addAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization", 48);
+  addAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaVolumeDiscretization", 12);
   addAsScalar("PushForwardDistribution-NonlinearCoAreaLevelTolerance", 1.0e-12);
+  addAsBool("PushForwardDistribution-NonlinearCoAreaContinuation", true);
   addAsUnsignedInteger("PushForwardDistribution-MaximumBisections", 64);
   addAsScalar("PushForwardDistribution-RangeMargin", 0.025);
   addAsScalar("PushForwardDistribution-DegenerateSearchIntervalHalfWidth", 1.0);

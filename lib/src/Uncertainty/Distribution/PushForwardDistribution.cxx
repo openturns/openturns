@@ -39,6 +39,7 @@
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/LeastSquaresEquationsSolver.hxx"
+#include "openturns/LevelSetContinuation.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Sample.hxx"
@@ -260,13 +261,15 @@ private:
 
 /**
  * Integrand of the co-area formula along a curve f(x) = point for a map
- * f: R^3 -> R^2. The segment supplies the Hausdorff element, so the integrand
- * is the antecedent density multiplied by the segment length and divided by
- * the two dimensional Jacobian of f, i.e. the norm of the cross product of
- * the two gradient vectors. A rank deficient Jacobian is a critical point of
- * the map: the co-area factor is singular there, and the shared flag lets the
- * caller return an infinite density. When the function does not provide an
- * analytical gradient, a centered finite difference fallback is used.
+ * f: R^n -> R^{n-1}. The segment supplies the Hausdorff element, so the
+ * integrand is the antecedent density multiplied by the segment length and
+ * divided by the (n - 1)-dimensional Jacobian of f. The latter is the norm of
+ * the generalized cross product of the n - 1 gradient vectors, i.e. the norm
+ * of the vector of signed (n - 1) x (n - 1) minors. A rank deficient Jacobian
+ * is a critical point of the map: the co-area factor is singular there, and
+ * the shared flag lets the caller return an infinite density. When the
+ * function does not provide an analytical gradient, a centered finite
+ * difference fallback is used.
  */
 class NonlinearCoAreaCurveIntegrand: public EvaluationImplementation
 {
@@ -342,14 +345,18 @@ public:
 private:
   Scalar computeJacobian(const Point & point) const
   {
+    const UnsignedInteger inputDimension = point.getSize();
+    const UnsignedInteger outputDimension = function_.getOutputDimension();
+    if ((inputDimension < 2) || (outputDimension + 1 != inputDimension))
+      return 0.0;
     Matrix gradientMatrix;
     Bool hasGradient = false;
     // Prefer the analytical gradient of the function when it is available.
     try
     {
       gradientMatrix = function_.gradient(point);
-      hasGradient = (gradientMatrix.getNbRows() == point.getSize())
-                    && (gradientMatrix.getNbColumns() == 2);
+      hasGradient = (gradientMatrix.getNbRows() == inputDimension)
+                    && (gradientMatrix.getNbColumns() == outputDimension);
     }
     catch (const Exception &)
     {
@@ -361,10 +368,10 @@ private:
       // gradient. The step is relative to the magnitude of the evaluation point
       // so that it remains meaningful for coordinates far from the origin.
       const Scalar step = std::sqrt(SpecFunc::ScalarEpsilon) * std::max(1.0, point.norm());
-      gradientMatrix = Matrix(point.getSize(), 2);
+      gradientMatrix = Matrix(inputDimension, outputDimension);
       Point plusPoint(point);
       Point minusPoint(point);
-      for (UnsignedInteger i = 0; i < point.getSize(); ++i)
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
       {
         plusPoint[i] += step;
         minusPoint[i] -= step;
@@ -379,31 +386,16 @@ private:
         {
           return 0.0;
         }
-        for (UnsignedInteger j = 0; j < 2; ++j)
+        for (UnsignedInteger j = 0; j < outputDimension; ++j)
           gradientMatrix(i, j) = (plusValue[j] - minusValue[j]) / (2.0 * step);
         plusPoint[i] = point[i];
         minusPoint[i] = point[i];
       }
     }
     // The gradient matrix returned by the function has the input dimension as
-    // rows and the output dimension as columns. The rows of the Jacobian are
-    // the gradients of the two output components.
-    Point firstGradient(3);
-    Point secondGradient(3);
-    for (UnsignedInteger i = 0; i < 3; ++i)
-    {
-      firstGradient[i] = gradientMatrix(i, 0);
-      secondGradient[i] = gradientMatrix(i, 1);
-    }
-    const Scalar firstComponent = firstGradient[1] * secondGradient[2]
-                                  - firstGradient[2] * secondGradient[1];
-    const Scalar secondComponent = firstGradient[2] * secondGradient[0]
-                                   - firstGradient[0] * secondGradient[2];
-    const Scalar thirdComponent = firstGradient[0] * secondGradient[1]
-                                  - firstGradient[1] * secondGradient[0];
-    return std::sqrt(firstComponent * firstComponent
-                     + secondComponent * secondComponent
-                     + thirdComponent * thirdComponent);
+    // rows and the output dimension as columns. Its generalized cross product
+    // gives both the co-area factor and the tangent of the fibre.
+    return LevelSetContinuation::computeCoAreaFactor(gradientMatrix);
   }
 
   Point origin_;
@@ -1453,107 +1445,118 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaSurface(const Point &
   return integral[0];
 }
 
-/* Compute the PDF in the nonlinear co-area case f: R^3 -> R^2. The
-   tetrahedral mesh of the search box supplies the topology of the fibre: in
-   each tetrahedron, the two components of f are replaced by their P1
-   interpolations, and the intersection of the two corresponding level planes
-   with the tetrahedron is a segment, found by solving a 3x4 barycentric
-   linear system. The two segment ends lie on faces of the tetrahedron; each
-   one is polished by a two dimensional damped Newton solve of f(x) = point on
-   the actual function. The antecedent density divided by the two dimensional
-   Jacobian is then integrated along the segment. This is the first restricted
-   p > 1 nonlinear path: it is deterministic and keeps the affine co-area path
-   above dedicated to the exact affine case. */
+/* Compute the PDF in the nonlinear co-area case f: R^n -> R^{n-1} with
+   n >= 3. The n-dimensional mesh of the search box supplies the topology of
+   the fibre: in each n-simplex, the n - 1 components of f are replaced by
+   their P1 interpolations, and the intersection of the corresponding level
+   hyperplanes with the simplex is a segment. The segment is obtained from the
+   null space of the n x (n + 1) barycentric system, clipped to the simplex,
+   and both ends are polished on the active facet by an (n - 1)-dimensional
+   damped Newton solve of f(x) = point on the actual function. The antecedent
+   density divided by the (n - 1)-dimensional Jacobian is then integrated
+   along the segment. The same code handles R^3 -> R^2 and R^4 -> R^3; only
+   the background mesh and the discretization key depend on the dimension. */
 Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & point) const
 {
-  const UnsignedInteger discretization = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization");
+  const UnsignedInteger inputDimension = function_.getInputDimension();
+  const UnsignedInteger outputDimension = function_.getOutputDimension();
+  if ((inputDimension < 3) || (outputDimension + 1 != inputDimension))
+    throw InvalidArgumentException(HERE)
+        << "Error: the nonlinear curve co-area path expects a map from R^n to R^(n-1) with n >= 3, here input dimension="
+        << inputDimension << " and output dimension=" << outputDimension;
+  const UnsignedInteger simplexSize = inputDimension + 1;
+  const String discretizationKey = (inputDimension == 3)
+                                   ? "PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization"
+                                   : "PushForwardDistribution-NonlinearCoAreaVolumeDiscretization";
+  const UnsignedInteger discretization = ResourceMap::GetAsUnsignedInteger(discretizationKey);
   const Scalar levelTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-NonlinearCoAreaLevelTolerance");
-  // The same uniform tetrahedral background mesh is used for the scalar
-  // R^3 -> R surface and for the R^3 -> R^2 curve. The level crossings are
-  // polished on the actual function, so the geometric error is quadratic in
-  // the mesh size.
-  const Mesh mesh(IntervalMesher(Indices(3, discretization)).build(searchInterval_));
+  // The uniform mesh of the search box is the global seeder. The level
+  // crossings are polished on the actual function, so the geometric error is
+  // quadratic in the mesh size, and the resource key lets the caller trade
+  // cost for accuracy without changing the algorithm.
+  const Mesh mesh(IntervalMesher(Indices(inputDimension, discretization)).build(searchInterval_));
   const Sample vertexValues(function_(mesh.getVertices()));
   const GaussLegendre quadrature(1);
   const Scalar pointTolerance = levelTolerance * std::max(1.0, (searchInterval_.getUpperBound() - searchInterval_.getLowerBound()).norm());
   const Scalar barycentricTolerance = 1.0e-10;
+  // Two adjacent simplices can produce the same segment when the fibre lies
+  // on a shared facet or on a lower dimensional face of the mesh. Deduplicate
+  // by the two polished endpoints rather than by the simplex face: a line in
+  // R^4 can lie in a triangular face, which is neither a facet nor an edge.
+  const Scalar segmentDedupTolerance = 1.0e-10 * std::max(1.0, (searchInterval_.getUpperBound() - searchInterval_.getLowerBound()).norm());
   const std::shared_ptr<std::atomic<Bool>> singular = std::make_shared<std::atomic<Bool>>(false);
   Scalar density = 0.0;
-  // A fibre that lies exactly on a shared face or edge of the tetrahedral
-  // mesh is seen by both adjacent tetrahedra. Count it once, as for the face
-  // deduplication of the scalar surface path.
-  std::set<std::array<UnsignedInteger, 3>> countedFaceCurves;
-  std::set<std::pair<UnsignedInteger, UnsignedInteger>> countedEdgeCurves;
+  Collection<LevelSetContinuation::Segment> continuationSegments;
+  std::set<std::vector<SignedInteger>> countedSegments;
   for (UnsignedInteger simplexIndex = 0; simplexIndex < mesh.getSimplicesNumber(); ++simplexIndex)
   {
     const Indices simplex(mesh.getSimplex(simplexIndex));
-    if (simplex.getSize() != 4)
+    if (simplex.getSize() != simplexSize)
       continue;
-    Point x[4];
-    Point value[4];
-    Point delta[4];
+    std::vector<Point> x(simplexSize);
+    std::vector<Point> value(simplexSize);
+    std::vector<Point> delta(simplexSize);
+    std::vector<Bool> positive(outputDimension, false);
+    std::vector<Bool> negative(outputDimension, false);
+    std::vector<Bool> onLevel(outputDimension, false);
     Bool allOnLevel = true;
-    Bool firstPositive = false;
-    Bool firstNegative = false;
-    Bool firstOnLevel = false;
-    Bool secondPositive = false;
-    Bool secondNegative = false;
-    Bool secondOnLevel = false;
-    const Scalar firstLevelTolerance = levelTolerance * std::max(1.0, std::abs(point[0]));
-    const Scalar secondLevelTolerance = levelTolerance * std::max(1.0, std::abs(point[1]));
-    for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+    for (UnsignedInteger vertexIndex = 0; vertexIndex < simplexSize; ++vertexIndex)
     {
       x[vertexIndex] = mesh.getVertex(simplex[vertexIndex]);
-      value[vertexIndex] = Point(2);
-      for (UnsignedInteger outputIndex = 0; outputIndex < 2; ++outputIndex)
+      value[vertexIndex] = Point(outputDimension);
+      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
         value[vertexIndex][outputIndex] = vertexValues(simplex[vertexIndex], outputIndex);
       delta[vertexIndex] = value[vertexIndex] - point;
       if (!(delta[vertexIndex].norm() <= levelTolerance * std::max(1.0, point.norm())))
         allOnLevel = false;
-      if (delta[vertexIndex][0] > firstLevelTolerance)
-        firstPositive = true;
-      else if (delta[vertexIndex][0] < -firstLevelTolerance)
-        firstNegative = true;
-      else
-        firstOnLevel = true;
-      if (delta[vertexIndex][1] > secondLevelTolerance)
-        secondPositive = true;
-      else if (delta[vertexIndex][1] < -secondLevelTolerance)
-        secondNegative = true;
-      else
-        secondOnLevel = true;
+      for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
+      {
+        const Scalar tolerance = levelTolerance * std::max(1.0, std::abs(point[outputIndex]));
+        if (delta[vertexIndex][outputIndex] > tolerance)
+          positive[outputIndex] = true;
+        else if (delta[vertexIndex][outputIndex] < -tolerance)
+          negative[outputIndex] = true;
+        else
+          onLevel[outputIndex] = true;
+      }
     }
-    // A whole tetrahedron maps to the requested point: the three dimensional
-    // part of the fibre makes the one dimensional co-area density singular.
+    // A whole simplex maps to the requested point: the n-dimensional part of
+    // the fibre makes the one dimensional co-area density singular.
     if (allOnLevel)
       return SpecFunc::Infinity;
-    // Cheap rejection: a tetrahedron whose vertices are all strictly on the
-    // same side of one of the two levels cannot contain the fibre.
-    const Bool firstCrosses = firstOnLevel || (firstPositive && firstNegative);
-    const Bool secondCrosses = secondOnLevel || (secondPositive && secondNegative);
-    if (!firstCrosses || !secondCrosses)
+    // Cheap rejection: a simplex whose vertices are all strictly on the same
+    // side of one of the levels cannot contain the fibre.
+    Bool crosses = true;
+    for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
+      if (!(onLevel[outputIndex] || (positive[outputIndex] && negative[outputIndex])))
+      {
+        crosses = false;
+        break;
+      }
+    if (!crosses)
       continue;
     // The P1 fibre is the set of barycentric coordinates lambda such that
-    // sum_i lambda_i = 1 and sum_i lambda_i delta_i = 0. This is a 3x4
-    // linear system; its null vector gives the direction of the fibre and a
-    // particular solution is obtained by setting its largest component to 0.
-    Matrix system(3, 4);
-    for (UnsignedInteger column = 0; column < 4; ++column)
+    // sum_i lambda_i = 1 and sum_i lambda_i delta_i = 0. This is an
+    // n x (n + 1) linear system; its null vector gives the direction of the
+    // fibre and a particular solution is obtained by setting its largest
+    // component to 0.
+    Matrix system(inputDimension, simplexSize);
+    for (UnsignedInteger column = 0; column < simplexSize; ++column)
     {
-      system(0, column) = delta[column][0];
-      system(1, column) = delta[column][1];
-      system(2, column) = 1.0;
+      for (UnsignedInteger row = 0; row < outputDimension; ++row)
+        system(row, column) = delta[column][row];
+      system(outputDimension, column) = 1.0;
     }
-    Point nullVector(4);
-    for (UnsignedInteger column = 0; column < 4; ++column)
+    Point nullVector(simplexSize);
+    for (UnsignedInteger column = 0; column < simplexSize; ++column)
     {
-      SquareMatrix minor(3, 3);
+      SquareMatrix minor(inputDimension);
       UnsignedInteger reducedColumn = 0;
-      for (UnsignedInteger otherColumn = 0; otherColumn < 4; ++otherColumn)
+      for (UnsignedInteger otherColumn = 0; otherColumn < simplexSize; ++otherColumn)
       {
         if (otherColumn == column)
           continue;
-        for (UnsignedInteger row = 0; row < 3; ++row)
+        for (UnsignedInteger row = 0; row < inputDimension; ++row)
           minor(row, reducedColumn) = system(row, otherColumn);
         ++reducedColumn;
       }
@@ -1563,32 +1566,32 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
     const Scalar nullNorm = nullVector.norm();
     const Scalar nullTolerance = 1.0e-12 * nullNorm;
     if (!(nullNorm > 0.0))
-      // The two P1 level planes are parallel or coincident: no well defined
-      // curve in this tetrahedron. The true fibre may still be regular, but
-      // the neighbouring tetrahedra carry its segments.
+      // The P1 level hyperplanes are parallel or coincident: no well defined
+      // curve in this simplex. The true fibre may still be regular, but the
+      // neighbouring simplices carry its segments.
       continue;
     UnsignedInteger freeColumn = 0;
-    for (UnsignedInteger column = 1; column < 4; ++column)
+    for (UnsignedInteger column = 1; column < simplexSize; ++column)
       if (std::abs(nullVector[column]) > std::abs(nullVector[freeColumn]))
         freeColumn = column;
-    SquareMatrix reducedSystem(3, 3);
+    SquareMatrix reducedSystem(inputDimension);
     UnsignedInteger reducedColumn = 0;
-    for (UnsignedInteger column = 0; column < 4; ++column)
+    for (UnsignedInteger column = 0; column < simplexSize; ++column)
     {
       if (column == freeColumn)
         continue;
-      for (UnsignedInteger row = 0; row < 3; ++row)
+      for (UnsignedInteger row = 0; row < inputDimension; ++row)
         reducedSystem(row, reducedColumn) = system(row, column);
       ++reducedColumn;
     }
-    Point rightHandSide(3, 0.0);
-    rightHandSide[2] = 1.0;
-    Point particularSolution(4, 0.0);
+    Point rightHandSide(inputDimension, 0.0);
+    rightHandSide[outputDimension] = 1.0;
+    Point particularSolution(simplexSize, 0.0);
     try
     {
       const Point reducedSolution(reducedSystem.solveLinearSystem(rightHandSide));
       reducedColumn = 0;
-      for (UnsignedInteger column = 0; column < 4; ++column)
+      for (UnsignedInteger column = 0; column < simplexSize; ++column)
       {
         if (column == freeColumn)
           continue;
@@ -1601,14 +1604,14 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
       continue;
     }
     // Intersect the barycentric line lambda(t) = particular + t * null with
-    // the tetrahedron lambda_i >= 0. The active constraints give the two
-    // faces where the fibre enters and leaves the tetrahedron.
+    // the simplex lambda_i >= 0. The active constraints give the two facets
+    // where the fibre enters and leaves the simplex.
     Scalar lowerParameter = -SpecFunc::MaxScalar;
     Scalar upperParameter = SpecFunc::MaxScalar;
-    UnsignedInteger lowerFace = 4;
-    UnsignedInteger upperFace = 4;
+    UnsignedInteger lowerFace = simplexSize;
+    UnsignedInteger upperFace = simplexSize;
     Bool feasible = true;
-    for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+    for (UnsignedInteger vertexIndex = 0; vertexIndex < simplexSize; ++vertexIndex)
     {
       const Scalar directionComponent = nullVector[vertexIndex];
       if (std::abs(directionComponent) <= nullTolerance)
@@ -1635,67 +1638,24 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
         upperFace = vertexIndex;
       }
     }
-    if (!feasible || (lowerFace == 4) || (upperFace == 4))
+    if (!feasible || (lowerFace == simplexSize) || (upperFace == simplexSize))
       continue;
     if (upperParameter < lowerParameter - barycentricTolerance)
       continue;
     if (upperParameter - lowerParameter <= barycentricTolerance)
       continue;
-    // Count a fibre lying on a face or an edge only once.
-    std::vector<UnsignedInteger> zeroCoordinates;
-    for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
-      if ((std::abs(nullVector[vertexIndex]) <= nullTolerance)
-          && (std::abs(particularSolution[vertexIndex]) <= barycentricTolerance))
-        zeroCoordinates.push_back(vertexIndex);
-    if (zeroCoordinates.size() == 1)
-    {
-      std::array<UnsignedInteger, 3> face;
-      UnsignedInteger faceIndex = 0;
-      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
-        if (vertexIndex != zeroCoordinates[0])
-        {
-          face[faceIndex] = simplex[vertexIndex];
-          ++faceIndex;
-        }
-      std::sort(face.begin(), face.end());
-      if (!countedFaceCurves.insert(face).second)
-        continue;
-    }
-    else if (zeroCoordinates.size() == 2)
-    {
-      Indices edgeVertices(0);
-      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
-      {
-        Bool isZero = false;
-        for (UnsignedInteger zeroIndex = 0; zeroIndex < 2; ++zeroIndex)
-          if (vertexIndex == zeroCoordinates[zeroIndex])
-            isZero = true;
-        if (!isZero)
-          edgeVertices.add(simplex[vertexIndex]);
-      }
-      if (edgeVertices.getSize() == 2)
-      {
-        const std::pair<UnsignedInteger, UnsignedInteger> edge(
-          std::min(edgeVertices[0], edgeVertices[1]),
-          std::max(edgeVertices[0], edgeVertices[1]));
-        if (!countedEdgeCurves.insert(edge).second)
-          continue;
-      }
-    }
-    else if (zeroCoordinates.size() > 2)
-      continue;
-    Point lowerBarycentric(4);
-    Point upperBarycentric(4);
-    for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+    Point lowerBarycentric(simplexSize);
+    Point upperBarycentric(simplexSize);
+    for (UnsignedInteger vertexIndex = 0; vertexIndex < simplexSize; ++vertexIndex)
     {
       lowerBarycentric[vertexIndex] = particularSolution[vertexIndex] + lowerParameter * nullVector[vertexIndex];
       upperBarycentric[vertexIndex] = particularSolution[vertexIndex] + upperParameter * nullVector[vertexIndex];
     }
     const auto pointFromBarycentric = [&](const Point & barycentric) -> Point
     {
-      Point barycentricPoint(3, 0.0);
+      Point barycentricPoint(inputDimension, 0.0);
       Scalar barycentricSum = 0.0;
-      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < simplexSize; ++vertexIndex)
       {
         barycentricPoint += barycentric[vertexIndex] * x[vertexIndex];
         barycentricSum += barycentric[vertexIndex];
@@ -1704,50 +1664,62 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
         barycentricPoint /= barycentricSum;
       return barycentricPoint;
     };
-    // Polish a P1 endpoint on the corresponding face of the tetrahedron by
-    // solving the two actual equations f(x) = point in the two barycentric
-    // coordinates of that face.
+    // Polish a P1 endpoint on the corresponding facet of the simplex by
+    // solving the n - 1 actual equations f(x) = point in the n - 1
+    // barycentric coordinates of that facet.
     const auto refineOnFace = [&](const Point & linearPoint,
                                   const UnsignedInteger faceIndex,
                                   const Point & barycentric) -> Point
     {
       Indices faceVertices(0);
-      for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < simplexSize; ++vertexIndex)
         if (vertexIndex != faceIndex)
           faceVertices.add(vertexIndex);
-      if (faceVertices.getSize() != 3)
+      if (faceVertices.getSize() != inputDimension)
         return linearPoint;
       const UnsignedInteger firstVertex = faceVertices[0];
-      const UnsignedInteger secondVertex = faceVertices[1];
-      const UnsignedInteger thirdVertex = faceVertices[2];
-      Matrix faceMatrix(3, 2);
-      for (UnsignedInteger row = 0; row < 3; ++row)
+      Matrix faceMatrix(inputDimension, inputDimension - 1);
+      for (UnsignedInteger row = 0; row < inputDimension; ++row)
+        for (UnsignedInteger column = 1; column < inputDimension; ++column)
+          faceMatrix(row, column - 1) = x[faceVertices[column]][row] - x[firstVertex][row];
+      Point startingPoint(inputDimension - 1);
+      Scalar parameterSum = 0.0;
+      for (UnsignedInteger column = 1; column < inputDimension; ++column)
       {
-        faceMatrix(row, 0) = x[secondVertex][row] - x[firstVertex][row];
-        faceMatrix(row, 1) = x[thirdVertex][row] - x[firstVertex][row];
+        Scalar parameter = barycentric[faceVertices[column]];
+        parameter = std::max(0.0, std::min(1.0 - parameterSum, parameter));
+        startingPoint[column - 1] = parameter;
+        parameterSum += parameter;
       }
-      Scalar firstParameter = std::max(0.0, std::min(1.0, barycentric[secondVertex]));
-      Scalar secondParameter = std::max(0.0, std::min(1.0 - firstParameter, barycentric[thirdVertex]));
-      Point startingPoint(2);
-      startingPoint[0] = firstParameter;
-      startingPoint[1] = secondParameter;
       try
       {
-        const LinearFunction faceFunction(Point(2, 0.0), x[firstVertex], faceMatrix);
-        const Function faceResidual(ComposedFunction(function_, faceFunction) - ConstantFunction(2, point));
+        const LinearFunction faceFunction(Point(inputDimension - 1, 0.0), x[firstVertex], faceMatrix);
+        const Function faceResidual(ComposedFunction(function_, faceFunction) - ConstantFunction(outputDimension, point));
         const Point root(dampedNewton(faceResidual, startingPoint));
-        if (root.getSize() == 2)
+        if (root.getSize() == inputDimension - 1)
         {
-          const Scalar triangleTolerance = 1.0e-8;
-          if ((root[0] >= -triangleTolerance)
-              && (root[1] >= -triangleTolerance)
-              && (root[0] + root[1] <= 1.0 + triangleTolerance))
+          const Scalar simplexTolerance = 1.0e-8;
+          Scalar rootSum = 0.0;
+          Bool inside = true;
+          for (UnsignedInteger column = 0; column < inputDimension - 1; ++column)
           {
-            firstParameter = std::max(0.0, std::min(1.0, root[0]));
-            secondParameter = std::max(0.0, std::min(1.0 - firstParameter, root[1]));
-            Point parameters(2);
-            parameters[0] = firstParameter;
-            parameters[1] = secondParameter;
+            if (root[column] < -simplexTolerance)
+            {
+              inside = false;
+              break;
+            }
+            rootSum += root[column];
+          }
+          if (inside && (rootSum <= 1.0 + simplexTolerance))
+          {
+            Point parameters(inputDimension - 1);
+            Scalar remaining = 1.0;
+            for (UnsignedInteger column = 0; column < inputDimension - 1; ++column)
+            {
+              const Scalar parameter = std::max(0.0, std::min(remaining, root[column]));
+              parameters[column] = parameter;
+              remaining -= parameter;
+            }
             return faceFunction(parameters);
           }
         }
@@ -1764,11 +1736,48 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
     const Scalar length = direction.norm();
     if (!(length > pointTolerance))
       continue;
+    const auto segmentKey = [&](const Point & first, const Point & second)
+    {
+      std::vector<SignedInteger> firstKey(inputDimension);
+      std::vector<SignedInteger> secondKey(inputDimension);
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      {
+        firstKey[i] = static_cast<SignedInteger>(std::llround(first[i] / segmentDedupTolerance));
+        secondKey[i] = static_cast<SignedInteger>(std::llround(second[i] / segmentDedupTolerance));
+      }
+      if (secondKey < firstKey)
+        std::swap(firstKey, secondKey);
+      std::vector<SignedInteger> key(firstKey);
+      key.insert(key.end(), secondKey.begin(), secondKey.end());
+      return key;
+    };
+    if (!countedSegments.insert(segmentKey(firstPoint, secondPoint)).second)
+      continue;
     const Function integrand(new PushForwardDistributionFunctions::NonlinearCoAreaCurveIntegrand(firstPoint, direction, antecedent_, function_, singular));
     density += quadrature.integrate(integrand, Interval(0.0, 1.0))[0];
+    LevelSetContinuation::Segment continuationSegment;
+    continuationSegment.first = firstPoint;
+    continuationSegment.second = secondPoint;
+    continuationSegments.add(continuationSegment);
   }
   if (singular->load())
     return SpecFunc::Infinity;
+  if (ResourceMap::GetAsBool("PushForwardDistribution-NonlinearCoAreaContinuation")
+      && !continuationSegments.isEmpty())
+  {
+    const Point width(searchInterval_.getUpperBound() - searchInterval_.getLowerBound());
+    Scalar meshStep = 0.0;
+    for (UnsignedInteger i = 0; i < width.getSize(); ++i)
+      meshStep = std::max(meshStep, width[i] / discretization);
+    const LevelSetContinuation continuation(function_, antecedent_.getPDF(), searchInterval_, point);
+    const LevelSetContinuation::Result result = continuation.computeDensity(
+          continuationSegments, meshStep, 1.0e-4 * meshStep);
+    if (result.status == LevelSetContinuation::SINGULAR)
+      return SpecFunc::Infinity;
+    if ((result.status == LevelSetContinuation::SUCCESS)
+        && ((result.density > 0.0) || (density == 0.0)))
+      return result.density;
+  }
   return density;
 }
 
@@ -1779,18 +1788,17 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
    is found with a scalar Brent solve on the actual function, so that the
    segment ends lie on the true level set. The co-area factor is the norm of
    the gradient of f at the segment midpoint, and the antecedent density is
-   integrated along the segment. This is the first restricted nonlinear path:
-   it is deterministic, handles several connected components and closed
-   curves, and keeps the affine co-area path above dedicated to the exact
-   affine case. */
+   integrated along the segment. The path is deterministic, handles several
+   connected components and closed curves, and keeps the affine co-area path
+   dedicated to the exact affine case. */
 Scalar PushForwardDistribution::computePDFByNonlinearCoArea(const Point & point) const
 {
   const UnsignedInteger inputDimension = function_.getInputDimension();
   const UnsignedInteger outputDimension = function_.getOutputDimension();
-  if ((outputDimension == 2) && (inputDimension == 3))
+  if ((outputDimension >= 2) && (outputDimension + 1 == inputDimension))
     return computePDFByNonlinearCoAreaCurve(point);
   if (outputDimension != 1)
-    throw NotYetImplementedException(HERE) << "Error: the nonlinear co-area density is only implemented for a scalar function on R^2 or R^3, or for a function from R^3 to R^2, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
+    throw NotYetImplementedException(HERE) << "Error: the nonlinear co-area density is only implemented for a scalar function on R^2 or R^3, or for a map from R^n to R^(n-1) with n >= 3, here input dimension=" << inputDimension << " and output dimension=" << outputDimension;
   if (inputDimension == 3)
     return computePDFByNonlinearCoAreaSurface(point);
   if (inputDimension != 2)
@@ -1809,6 +1817,7 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoArea(const Point & point)
   const GaussLegendre quadrature(1);
   const Brent edgeSolver;
   Scalar density = 0.0;
+  Collection<LevelSetContinuation::Segment> continuationSegments;
   // When the level set coincides exactly with a mesh edge, the two adjacent
   // triangles see the same edge. Count it once; this only happens on a set of
   // level values of measure zero, but it keeps the result stable for round
@@ -1966,6 +1975,26 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoArea(const Point & point)
     const Function integrand(ComposedFunction(antecedentPDF, segment));
     const Scalar segmentIntegral = quadrature.integrate(integrand, Interval(0.0, 1.0))[0];
     density += segmentIntegral * length / gradientNorm;
+    LevelSetContinuation::Segment continuationSegment;
+    continuationSegment.first = firstPoint;
+    continuationSegment.second = secondPoint;
+    continuationSegments.add(continuationSegment);
+  }
+  if (ResourceMap::GetAsBool("PushForwardDistribution-NonlinearCoAreaContinuation")
+      && !continuationSegments.isEmpty())
+  {
+    const Point width(searchInterval_.getUpperBound() - searchInterval_.getLowerBound());
+    Scalar meshStep = 0.0;
+    for (UnsignedInteger i = 0; i < width.getSize(); ++i)
+      meshStep = std::max(meshStep, width[i] / discretization);
+    const LevelSetContinuation continuation(function_, antecedentPDF, searchInterval_, point);
+    const LevelSetContinuation::Result result = continuation.computeDensity(
+          continuationSegments, meshStep, 1.0e-4 * meshStep);
+    if (result.status == LevelSetContinuation::SINGULAR)
+      return SpecFunc::Infinity;
+    if ((result.status == LevelSetContinuation::SUCCESS)
+        && ((result.density > 0.0) || (density == 0.0)))
+      return result.density;
   }
   return density;
 }
@@ -2271,18 +2300,19 @@ Scalar PushForwardDistribution::computePDF(const Point & point) const
   // point is a continuum and its contribution is integrated along it. An
   // affine function uses the dedicated exact SVD path. A scalar nonlinear
   // map on R^2 or R^3 has a one or two dimensional fibre, extracted from a
-  // triangulation or tetrahedralisation of the search box. A nonlinear map
-  // from R^3 to R^2 has a one dimensional fibre, the intersection of the two
-  // level surfaces; other nonlinear fibres still need the implicit-manifold
-  // integration or equality-intersection meshing described in the report.
+  // triangulation or tetrahedralisation of the search box. A map from R^n to
+  // R^(n-1) with n >= 3 has a one dimensional fibre, the intersection of its
+  // n - 1 level hypersurfaces. Other nonlinear fibres require a general
+  // implicit-manifold integration or equality-intersection meshing and are
+  // outside this dispatch.
   if (outputDimension < inputDimension)
   {
     if (!function_.isLinear())
     {
       if (((outputDimension == 1) && ((inputDimension == 2) || (inputDimension == 3)))
-          || ((outputDimension == 2) && (inputDimension == 3)))
+          || ((outputDimension >= 2) && (outputDimension + 1 == inputDimension)))
         return computePDFByNonlinearCoArea(point);
-      throw NotYetImplementedException(HERE) << "Error: the PDF in the co-area case (output dimension < input dimension) is only implemented for an affine function, for a nonlinear scalar function on R^2 or R^3, or for a nonlinear function from R^3 to R^2; this nonlinear co-area map can be sampled and its moments computed, but its density requires an implicit fibre integration";
+      throw NotYetImplementedException(HERE) << "Error: the PDF in the co-area case (output dimension < input dimension) is only implemented for an affine function, for a nonlinear scalar function on R^2 or R^3, or for a nonlinear map from R^n to R^(n-1) with n >= 3; this nonlinear co-area map can be sampled and its moments computed, but its density requires an implicit fibre integration";
     }
     return computePDFByCoArea(point);
   }

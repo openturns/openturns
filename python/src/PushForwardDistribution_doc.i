@@ -117,30 +117,45 @@ override ``isLinear()`` to use the exact affine path. The nonlinear co-area
 density is implemented for a scalar function
 :math:`f: \Rset^2 \rightarrow \Rset`,
 :math:`f: \Rset^3 \rightarrow \Rset`, and for a function
-:math:`f: \Rset^3 \rightarrow \Rset^2`. The search box is triangulated into
-triangles or tetrahedra; the signs of :math:`f - y` at the vertices locate the
-crossed edges, each crossing is polished with a scalar Brent solve on the actual
+:math:`f: \Rset^n \rightarrow \Rset^{n-1}` with :math:`n \geq 3`, i.e.
+:math:`\Rset^3 \rightarrow \Rset^2`, :math:`\Rset^4 \rightarrow \Rset^3`
+and beyond. The search box is triangulated into :math:`n`-simplices. For a
+scalar function, the signs of :math:`f - y` at the vertices locate the crossed
+edges, each crossing is polished with a scalar Brent solve on the actual
 function, and the density is integrated along the resulting level segments
 (:math:`\inputDim = 2`) or over the triangulated level surface
-(:math:`\inputDim = 3`). In the :math:`\Rset^3 \rightarrow \Rset^2` case, the
-intersection of the two P1 level planes is a segment in each tetrahedron, its
-two ends are polished by a two dimensional Newton solve on the actual function,
-and the density is integrated along the segments. The co-area factor is the
-norm of the gradient for a scalar function, evaluated at the segment midpoint in
-:math:`\Rset^2` and at the surface quadrature points in :math:`\Rset^3`. For
-:math:`f: \Rset^3 \rightarrow \Rset^2` it is the two dimensional Jacobian, i.e.
-the norm of the cross product of the two gradient vectors, evaluated at the
-segment quadrature points. The :math:`\Rset^3` paths fall back to centered
-finite differences when the function provides no analytic gradient. The mesh
-resolution is controlled by the
+(:math:`\inputDim = 3`). For :math:`f: \Rset^n \rightarrow \Rset^{n-1}`,
+each component of :math:`f` is replaced by its P1 interpolation in a simplex;
+the intersection of the :math:`n - 1` level hyperplanes is a segment, obtained
+from the null space of the barycentric system and clipped to the simplex. Its
+two ends are polished on the actual function, and the density is integrated
+along the segments. Once the mesh has supplied the topology and one seed per
+connected component, the regular one dimensional fibres are refined by a
+predictor-corrector continuation: an arc-length ordinary differential equation
+with unit tangent is integrated with Runge-Kutta steps, each step being
+followed by a Newton projection on the actual level set. This removes most of
+the mesh-size bias of the polygonal approximation, while branching and saddle
+fibres keep the mesh result as a fallback and singular fibres return an
+infinite density. The continuation is controlled by the
+``PushForwardDistribution-NonlinearCoAreaContinuation`` key.
+The co-area factor is the norm of the gradient for a scalar function,
+evaluated at the segment midpoint in :math:`\Rset^2` and at the surface
+quadrature points in :math:`\Rset^3`. For
+:math:`f: \Rset^n \rightarrow \Rset^{n-1}` it is the :math:`(n - 1)`
+dimensional Jacobian, i.e. the norm of the generalized cross product of the
+:math:`n - 1` gradient vectors, evaluated at the segment quadrature points.
+The nonlinear paths fall back to centered finite differences when the function
+provides no analytic gradient. The mesh resolution is controlled by the
 ``PushForwardDistribution-NonlinearCoAreaDiscretization`` key in
-:math:`\Rset^2` and by the
-``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` key for both
-:math:`\Rset^3` paths. These densities are approximations, whereas the affine
-path remains exact. Other nonlinear maps with
-:math:`\outputDim < \inputDim` are accepted by the constructor, can be
-sampled, and have their range, mean and covariance computed, but their density
-is not implemented and ``computePDF()`` raises
+:math:`\Rset^2`, by the
+``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` key for the
+:math:`\Rset^3` paths, and by the
+``PushForwardDistribution-NonlinearCoAreaVolumeDiscretization`` key for
+:math:`\Rset^n \rightarrow \Rset^{n-1}` with :math:`n \geq 4`. These
+densities are approximations, whereas the affine path remains exact. Other
+nonlinear maps with :math:`\outputDim < \inputDim` are accepted by the
+constructor, can be sampled, and have their range, mean and covariance
+computed, but their density is not implemented and ``computePDF()`` raises
 :class:`~openturns.NotYetImplementedException`.
 
 When the Jacobian is rank deficient, the image of the function has measure zero
@@ -212,8 +227,14 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` (``UnsignedInteger``, default: ``48``): number
   of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities
   from :math:`\Rset^3` to :math:`\Rset` and from :math:`\Rset^3` to :math:`\Rset^2`.
+- ``PushForwardDistribution-NonlinearCoAreaVolumeDiscretization`` (``UnsignedInteger``, default: ``12``): number
+  of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from
+  :math:`\Rset^n` to :math:`\Rset^{n-1}` with :math:`n \geq 4`.
 - ``PushForwardDistribution-NonlinearCoAreaLevelTolerance`` (``Scalar``, default: ``1.0e-12``): relative
   tolerance used to decide that a mesh vertex lies on the requested level set in the nonlinear co-area paths.
+- ``PushForwardDistribution-NonlinearCoAreaContinuation`` (``Bool``, default: ``true``): refine the regular one
+  dimensional nonlinear co-area fibres with a predictor-corrector continuation seeded by the background mesh;
+  branching and saddle fibres fall back to the mesh result, singular fibres return an infinite density.
 - ``PushForwardDistribution-RangeMargin`` (``Scalar``, default: ``0.025``): relative margin added to each
   marginal span when the numerical range is estimated from a sample.
 - ``PushForwardDistribution-DegenerateSearchIntervalHalfWidth`` (``Scalar``, default: ``1.0``): half width of

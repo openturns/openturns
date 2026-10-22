@@ -798,7 +798,9 @@
   <PushForwardDistribution-CoAreaMaximumExtensions   value_int="16" />
   <PushForwardDistribution-NonlinearCoAreaDiscretization value_int="128" />
   <PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization value_int="48" />
+  <PushForwardDistribution-NonlinearCoAreaVolumeDiscretization value_int="12" />
   <PushForwardDistribution-NonlinearCoAreaLevelTolerance value_float="1.0e-12" />
+  <PushForwardDistribution-NonlinearCoAreaContinuation value_bool="true" />
   <PushForwardDistribution-MaximumBisections         value_int="64" />
   <PushForwardDistribution-RangeMargin               value_float="0.025" />
   <PushForwardDistribution-DegenerateSearchIntervalHalfWidth value_float="1.0" />

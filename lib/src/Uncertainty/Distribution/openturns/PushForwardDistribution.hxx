@@ -150,9 +150,8 @@ private:
   /** Compute the PDF in the scalar nonlinear co-area case
       f: R^2 -> R, by triangulating the search box, locating the level set
       f(x) = point through its crossings of the mesh edges, and integrating
-      the antecedent density along the resulting segments. This is a first
-      restricted nonlinear extension; the affine co-area path above remains
-      the dedicated exact implementation. */
+      the antecedent density along the resulting segments. The affine co-area
+      path above remains the dedicated exact implementation. */
   Scalar computePDFByNonlinearCoArea(const Point & point) const;
 
   /** Compute the PDF in the scalar nonlinear co-area case f: R^3 -> R, by
@@ -162,12 +161,13 @@ private:
       norm over the surface with SimplicialCubature. */
   Scalar computePDFByNonlinearCoAreaSurface(const Point & point) const;
 
-  /** Compute the PDF in the nonlinear co-area case f: R^3 -> R^2, by
-      tetrahedralising the search box and locating the curve where the two
-      level surfaces intersect. The co-area factor is the two dimensional
-      Jacobian of f, i.e. the norm of the cross product of its two gradient
-      vectors, and the antecedent density is integrated along the resulting
-      segments. */
+  /** Compute the PDF in the nonlinear co-area case f: R^n -> R^(n-1),
+      n >= 3, by simplicialising the search box and locating the curve where
+      the n - 1 level hypersurfaces intersect. The co-area factor is the
+      (n - 1)-dimensional Jacobian of f, i.e. the norm of the generalized
+      cross product of its n - 1 gradient vectors, and the antecedent density
+      is integrated along the resulting segments. The same implementation
+      covers R^3 -> R^2 and R^4 -> R^3. */
   Scalar computePDFByNonlinearCoAreaCurve(const Point & point) const;
 
   /** Solve r(u) = 0 by damped Newton with step control from the given
