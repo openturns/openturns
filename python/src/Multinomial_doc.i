@@ -18,8 +18,8 @@ Notes
 
 This distribution differs from the classical multinomial distribution definition.
 The classical multinomial distribution is constrained by :math:`\sum_{i = 1}^d p_i=1` and is supported by
-:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`. The OpenTURNS distribution is
-constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:`q \leq 1` and is supported in general by
+:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`.
+The distribution is constrained by :math:`q=\sum_{i = 1}^d p_i` with :math:`q \leq 1` and is supported in general by
 :math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N\right\}`.
 
 Its probability distribution function is defined as:

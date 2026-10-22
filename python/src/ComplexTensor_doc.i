@@ -17,8 +17,7 @@ n_columns : int, :math:`n_c > 0`
 n_sheets : int, :math:`n_s > 0`
     Number of sheets.
 values : sequence of complex with size :math:`n_r \times n_c \times n_s`, optional
-    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
-    reshaping the flat list of values.
+    Flat list of values, reshaped using **column-major** ordering (like Fortran).
     If not mentioned, a zero tensor is created.
 sequence : sequence of complex
     Values.

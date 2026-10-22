@@ -124,7 +124,9 @@ eigenVal : :class:`~openturns.Point`
 
 Notes
 -----
-OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  to the most significant terms, selected by the threshold defined in :class:`~openturns.KarhunenLoeveAlgorithm`.)RAW"
+The sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` is truncated to the most significant terms,
+selected by the threshold defined in :class:`~openturns.KarhunenLoeveAlgorithm`.
+)RAW"
 %enddef
 %feature("docstring") OT::KarhunenLoeveResultImplementation::getEigenvalues
 OT_KarhunenLoeveResult_getEigenvalues_doc

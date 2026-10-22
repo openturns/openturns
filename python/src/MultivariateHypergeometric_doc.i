@@ -29,8 +29,8 @@ Notes
 
 This distribution differs from the classical multivariate hypergeometric distribution definition.
 The classical definition is constrained by :math:`C = \sum_{i = 1}^d c_i` and is supported by
-:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N, x_i \leq c_i\right\}`. The OpenTURNS distribution is
-constrained by :math:`C \geq \sum_{i = 1}^d c_i` and is supported in general by
+:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N, x_i \leq c_i\right\}`.
+The distribution is constrained by :math:`C \geq \sum_{i = 1}^d c_i` and is supported in general by
 :math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N, x_i \leq c_i, N - \sum_{i = 1}^d x_i \leq C - \sum_{i = 1}^d c_i\right\}`.
 
 Its probability distribution function is defined as:

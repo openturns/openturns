@@ -29,7 +29,7 @@ If the process is a second order process, we denote by:
   :math:`(\rho_{ij}(\vect{s}, \vect{t}) = C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
 
 
-In OpenTURNS, it is assumed that:
+In the library, it is assumed that:
 
 - the *spatial* correlation :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` between the components of :math:`X_{\vect{t}}`
   and the vector of marginal standard deviations :math:`\vect{\sigma} \in \Rset^{\inputDim}`

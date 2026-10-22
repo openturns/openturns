@@ -71,10 +71,9 @@ The  **collocation** approach leads to the following generalized eigenvalue prob
 
 Equations :eq:`EqFinQuadGalerkin` and  :eq:`EqFinQuadCollocation` are equivalent  when :math:`\mat{\Theta}` is invertible.
 
-OpenTURNS solves the equation :eq:`EqFinQuadGalerkin`.
+The library solves the equation :eq:`EqFinQuadGalerkin`.
 
 The second constructor is a short-hand to the first one, where *basis* is the tensorized Legendre basis (see :class:`~openturns.OrthogonalProductPolynomialFactory` and :class:`~openturns.LegendreFactory`), *experiment* is a tensorized Gauss-Legendre quadrature (see :class:`~openturns.GaussProductExperiment`), *basisSize* is equal to *marginalDegree* to the power the dimension of *domain* and *mustScale* is set to *True*.
-
 
 
 The following :class:`~openturns.ResourceMap` key is used:
