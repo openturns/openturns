@@ -101,7 +101,7 @@ event = ot.ThresholdEvent(Y, ot.Greater(), threshold)
 # %%
 # Computation of true probability of failure by Monte-Carlo
 # %%
-# Run of Monte-Carlo algorithm on the metamodel
+# Run of Monte-Carlo algorithm
 ot.RandomGenerator.SetSeed(0)
 Monte_Carlo_experiment = ot.MonteCarloExperiment()
 Monte_Carlo = ot.ProbabilitySimulationAlgorithm(event, Monte_Carlo_experiment)
