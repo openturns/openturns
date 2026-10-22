@@ -17,7 +17,7 @@ sequence : :class:`~openturns.LowDiscrepancySequence`
 
     If not specified, the sequence is a :class:`~openturns.SobolSequence`.
 distribution : :class:`~openturns.Distribution`
-    Distribution :math:`\mu` of dimension :math:`\sampleSize`.
+    Distribution :math:`\mu` of dimension :math:`\inputDim`.
 restart : bool
     Flag to tell if the low discrepancy sequence must be restarted from
     its initial state at each change of size or distribution or not.
@@ -29,11 +29,11 @@ restart : bool
 Notes
 -----
 The :meth:`generate` method generates a low discrepancy sequence :math:`(u_1, \cdots, u_\sampleSize)`
-over :math:`[0,1]^\sampleSize` using the Sobol sequence if no particular other sequence has been fixed
+over :math:`[0,1]^\inputDim` using the Sobol sequence if no particular other sequence has been fixed
 through the parameter *sequence*.
 
 Then we use an :any:`Isoprobabilistic transformation <isoprobabilistic_transformation>` that
-maps the independent copula of dimension :math:`\sampleSize`
+maps the independent copula of dimension :math:`\inputDim`
 into the distribution given through the parameter *distribution*: the sample :math:`(u_1, \cdots, u_\sampleSize)`
 is transformed into the sample :math:`(x_1, \cdots, x_\sampleSize)` that is finally returned.
 
