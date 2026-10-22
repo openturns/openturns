@@ -34,8 +34,8 @@ Use this functionality with caution:
      projected (see [ernst2012]_).
      See :any:`functional_chaos` for more details on this topic.
 
-OpenTURNS implements the following **specific orthonormal** univariate
-polynomial families together with their associated distributions.
+The following **specific orthonormal** univariate polynomial families
+are implemented together with their associated distributions.
 
 .. list-table::
    :widths: 60 40
@@ -73,10 +73,10 @@ representative :math:`\mu_0` and of the affine transformation:
 
     P_n(x)\ =\ p_n(a x + b).
 
-Aside, OpenTURNS also implements generic algorithms for building orthonormal
+Generic algorithms are also implemented for building orthonormal
 univariate polynomial families with respect to any arbitrary probability
 measure (implemented as a :class:`~openturns.Distribution`).
-OpenTURNS implements the following :class:`~openturns.OrthonormalizationAlgorithm`\s,
+The library implements the following :class:`~openturns.OrthonormalizationAlgorithm`\s,
 with :class:`~openturns.AdaptiveStieltjesAlgorithm` as the default.
 
 See also

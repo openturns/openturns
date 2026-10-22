@@ -22,9 +22,13 @@ Notes
 
 *Convergence criteria:*
 
-  To estimate the convergence of the algorithm during the optimization process, Ipopt uses specific tolerance parameters, different from the standard absolute/relative/residual errors used in OpenTURNS. The definition of Ipopt's parameters can be found in `this paper, page 3 <http://www.optimization-online.org/DB_FILE/2004/03/836.pdf>`_.
+  To estimate the convergence of the algorithm during the optimization process,
+  Ipopt uses specific tolerance parameters, different from the standard absolute/relative/residual errors used in the library.
+  The definition of Ipopt's parameters can be found in `this paper, page 3 <http://www.optimization-online.org/DB_FILE/2004/03/836.pdf>`_.
 
-  Thus the attributes ``maximumAbsoluteError``, ``maximumRelativeError``, ``maximumResidualError`` and ``maximumConstraintError`` defined in' ``OptimizationAlgorithm`` are not used in this case. The tolerances used by Ipopt can be set using specific options (e.g. ``tol``, ``dual_inf_tol`` ...).
+  Thus the attributes ``maximumAbsoluteError``, ``maximumRelativeError``, ``maximumResidualError`` and ``maximumConstraintError``
+  defined in' ``OptimizationAlgorithm`` are not used in this case.
+  The tolerances used by Ipopt can be set using specific options (e.g. ``tol``, ``dual_inf_tol`` ...).
 
 
 See also

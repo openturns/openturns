@@ -192,10 +192,14 @@ It is also possible to proceed as follows:
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
 
-- *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`\outputDim > 1` or if :math:`\outputDim = 1` and :math:`\sigma` is not part of :math:`\vect{p}`
-- *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows one to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize - d_p}` in the optimality condition for :math:`\sigma`, where :math:`d_p \in \Nset` is the dimension of the vector :math:`\vect{p}`.
+- *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`.
+  It has no effect if :math:`\outputDim > 1` or if :math:`\outputDim = 1` and :math:`\sigma` is not part of :math:`\vect{p}`
+- *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows one to use the *unbiased* estimate
+  of :math:`\sigma` where :math:`\dfrac{1}{\sampleSize}` is replaced by :math:`\dfrac{1}{\sampleSize - d_p}` in the optimality condition
+  for :math:`\sigma`, where :math:`d_p \in \Nset` is the dimension of the vector :math:`\vect{p}`.
 
-With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
+With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_
+compression can be used if the library has been compiled with `hmat-oss` support.
 
 This implementation, which is based on a compressed representation of an approximated covariance matrix (and its Cholesky factor),
 has a better complexity both in terms of memory requirements and floating point operations.

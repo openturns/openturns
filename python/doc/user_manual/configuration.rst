@@ -7,7 +7,7 @@ Configuration
 Environment variables
 =====================
 
-OpenTURNS uses the following (optional) environment variables.
+The library uses the following (optional) environment variables.
 
 OPENTURNS_CONFIG_PATH
     Path to the `openturns.conf` XML file used by the :class:`~openturns.ResourceMap`.
