@@ -70,6 +70,28 @@ Bool CovarianceModelImplementation::hasEqualBase(const CovarianceModelImplementa
          && (nuggetFactor_ == other.nuggetFactor_);
 }
 
+/* Addition of two scalar-output covariance models with the same input dimension */
+CovarianceModel CovarianceModelImplementation::operator +(const CovarianceModelImplementation & right) const
+{
+  return CovarianceModel(*this) + CovarianceModel(right);
+}
+
+CovarianceModel CovarianceModelImplementation::operator +(const Implementation & p_right) const
+{
+  return *this + *p_right;
+}
+
+CovarianceModel CovarianceModelImplementation::operator +(const CovarianceModel & right) const
+{
+  return CovarianceModel(*this) + right;
+}
+
+/* Multiplication of a covariance model by a positive scalar */
+CovarianceModel CovarianceModelImplementation::operator *(const Scalar scalar) const
+{
+  return CovarianceModel(*this) * scalar;
+}
+
 /* Dimension-based constructor */
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger inputDimension)
   : PersistentObject()
