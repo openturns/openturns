@@ -5,12 +5,14 @@ Parameters
 ----------
 frequency : :class:`~openturns.RegularGrid`
     The frequency grid :math:`(-f_c, \dots, f_c)` with step :math:`\delta f` on which the model is built.
-densityCollectionFunction : :class:`~openturns.HermitianMatrixCollection`
-    Collection of hermitian matrices :math:`\in \mathbb{M}_d(\mathbb{C})` which are the images of each point of the frequency grid through the density spectral function.
+densityCollectionFunction : sequence of :class:`~openturns.HermitianMatrix`
+    Collection of hermitian matrices :math:`\in \mathbb{M}_d(\mathbb{C})` which are the images of each point
+    of the frequency grid through the density spectral function.
 
 Notes
 -----
-We consider a multivariate process :math:`X: \Omega \times \cD \rightarrow \Rset^d` of dimension :math:`d` where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`).
+We consider a multivariate process :math:`X: \Omega \times \cD \rightarrow \Rset^d` of dimension :math:`d` where :math:`\cD \in \Rset^n`.
+We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`).
 
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the time stamps of the time grid.
 
@@ -23,9 +25,12 @@ We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the time stamps of the tim
 
 exists, where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
 
-We get a piecewise constant function on :math:`[-f_c,f_c]`, where the intervals on which the density spectral function is constant are centered on the points of the frequency grid, of length :math:`\delta f`. 
+We get a piecewise constant function on :math:`[-f_c,f_c]`, where the intervals on which the density spectral function is constant
+are centered on the points of the frequency grid, of length :math:`\delta f`. 
 
-Then, it is  possible to evaluate the spectral density function for a given frequency thanks to the method *computeSpectralDensity*: if the frequency is not inside the interval :math:`[-f_c,f_c]`, OpenTURNS returns an exception. Otherwise, it returns the hermitian matrix of the subinterval of :math:`[-f_c,f_c]` that contains the given frequency.
+Then, it is  possible to evaluate the spectral density function for a given frequency thanks to the method *computeSpectralDensity*:
+if the frequency is not inside the interval :math:`[-f_c,f_c]`, an exception is returned.
+Otherwise, it returns the hermitian matrix of the subinterval of :math:`[-f_c,f_c]` that contains the given frequency.
 
 Examples
 --------

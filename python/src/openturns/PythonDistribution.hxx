@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief This class binds a Python object to an OpenTURNS' Distribution
+ * @brief This class binds a Python object to a Distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PythonDistribution
  *
- * This class binds a Python object to an OpenTURNS' RandomVector
+ * This class binds a Python object to a Distribution
  */
 class PythonDistribution
   : public DistributionImplementation

@@ -1,5 +1,5 @@
 %feature("docstring") OT::StorageManager
-"Define the way OpenTURNS' objects are saved and reloaded.
+"Define the way objects are saved and reloaded.
 
 Available constructors:
     StorageManager(*defaultVersion*)

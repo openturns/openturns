@@ -3,7 +3,7 @@ R"RAW(Base class for probability distributions.
 
 Notes
 -----
-In OpenTURNS a :class:`~openturns.Distribution` maps the concept of *probability distribution*.
+The :class:`~openturns.Distribution` maps the concept of *probability distribution*.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
@@ -140,7 +140,7 @@ The characteristic function is defined as:
     \phi_X(t) = \mathbb{E}\left[\exp(- i t X)\right],
                 \quad t \in \Rset
 
-OpenTURNS features a generic implementation of the characteristic function for
+The library features a generic implementation of the characteristic function for
 all its univariate distributions (both continuous and discrete). This default
 implementation might be time consuming, especially as the modulus of :math:`t` gets
 high. Only some univariate distributions benefit from dedicated more efficient
@@ -581,8 +581,8 @@ The probability-generating function is defined as follows:
 
     G_X(z) = \Expect{z^X}, \quad z \in \Cset
 
-This function only exists for discrete distributions. OpenTURNS implements
-this method for univariate distributions only.
+This function only exists for discrete distributions.
+This method is only implemented for univariate distributions.
 
 See Also
 --------
@@ -608,7 +608,7 @@ phi : complex
 
 Notes
 -----
-OpenTURNS features a generic implementation of the characteristic function for
+The library features a generic implementation of the characteristic function for
 all its univariate distributions (both continuous and discrete). This default
 implementation might be time consuming, especially as the modulus of :math:`t` gets
 high. Only some univariate distributions benefit from dedicated more efficient
@@ -638,8 +638,8 @@ lg : float
 
 Notes
 -----
-This function only exists for discrete distributions. OpenTURNS implements
-this method for univariate distributions only.
+This function only exists for discrete distributions.
+This method is only implemented for univariate distributions.
 
 See Also
 --------

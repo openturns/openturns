@@ -34,8 +34,8 @@ Notes
 
 This distribution differs from the classical Dirichlet-multinomial definition.
 The classical definition is constrained by :math:`Q = \sum_{i = 1}^d \alpha_i` and is supported by
-:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`. The OpenTURNS distribution is
-constrained by :math:`Q \geq \sum_{i = 1}^d \alpha_i` and is supported in general by
+:math:`\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i = N\right\}`.
+The distribution is constrained by :math:`Q \geq \sum_{i = 1}^d \alpha_i` and is supported in general by
 :math:`\cS=\left\{\vect{x} \in \Nset^d\, |\, \sum_{i = 1}^d x_i \leq N\right\}`.
 
 Let :math:`Q` be the total concentration, and :math:`\mathrm{Po}(x, m; c)` be a

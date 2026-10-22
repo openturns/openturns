@@ -1,16 +1,11 @@
 %feature("docstring") OT::KissFFT
-"Kiss FFT.
+"KissFFT implementation.
+
+This is a wrapper on the KissFFT library and implements the :class:`~openturns.FFT` interface.
 
 See also
 --------
 FFT
-
-Notes
------
-The KissFFT class inherits from the :class:`~openturns.FFT` class. The methods
-are the same as the FFT class (there is no additional method). This class
-interacts with the kissfft implementation and returns results as OpenTURNS objects
-(:class:`~openturns.ComplexCollection`).
 
 Examples
 --------
