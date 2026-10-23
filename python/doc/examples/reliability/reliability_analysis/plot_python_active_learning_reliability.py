@@ -96,6 +96,7 @@ def fourthBranch(x):
     g4 = (x2 - x1) + 6 / sqrt2
     return [g4]
 
+
 input_distribution = ot.Normal([0.0, 0.0], [1.5, 1.5])
 input_dimension = input_distribution.getDimension()
 g1 = ot.PythonFunction(input_dimension, 1, firstBranch)
