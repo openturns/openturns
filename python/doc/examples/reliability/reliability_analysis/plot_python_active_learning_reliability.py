@@ -28,23 +28,37 @@ ot.RandomGenerator.SetSeed(0)
 # The four-branch reliability problem
 # -----------------------------------
 #
-# The four-branch function is a classical benchmark for reliability
-# algorithms. It is defined by:
+# The four-branch function :math:`g : \mathbb{R}^2 \rightarrow \mathbb{R}` is defined by:
 #
 # .. math::
-#    :nowrap:
+#   :nowrap:
 #
-#    \begin{align}
-#    g_1(x) &= 3 + 0.1 (x_1 - x_2)^2 - \frac{x_1 + x_2}{\sqrt{2}}, \\
-#    g_2(x) &= 3 + 0.1 (x_1 - x_2)^2 + \frac{x_1 + x_2}{\sqrt{2}}, \\
-#    g_3(x) &= (x_1 - x_2) + \frac{6}{\sqrt{2}}, \\
-#    g_4(x) &= (x_2 - x_1) + \frac{6}{\sqrt{2}}, \\
-#    g(x) &= \min(g_1(x), g_2(x), g_3(x), g_4(x)).
-#    \end{align}
+#   \begin{align*}
+#   g(\vect{x}) = \min \begin{pmatrix}3+0.1(x_1-x_2)^2-\frac{(x_1+x_2)}{\sqrt{2}}\\
+#   3+0.1(x_1-x_2)^2+\frac{(x_1+x_2)}{\sqrt{2}}\\
+#   (x_1-x_2)+ \frac{6}{\sqrt{2}}\\
+#   (x_2-x_1)+ \frac{6}{\sqrt{2}}
+#   \end{pmatrix}
+#   \end{align*}
 #
-# The input vector :math:`X` is a bivariate normal random vector with zero mean
-# and standard deviations equal to 1.5. The event of interest is
-# :math:`g(X) \leq 0`.
+# with the input random vector :math:`\vect{X} = (X_1, X_2)` which follows the 2-dimensional Normal distribution:
+#
+# .. math::
+#   :nowrap:
+#
+#   \begin{align*}
+#   \vect{X} \sim  \mathcal{N}(\mu = [0, 0], \sigma = [1.5,1.5], corr = \mat{I}_2)
+#   \end{align*}
+#
+# The probability to estimate is defined by:
+#
+# .. math::
+#   :nowrap:
+#
+#   \begin{align*}
+#   p = \mathbb{P} ( g(\vect{X}) \leq 0 )
+#   \end{align*}
+#
 
 
 # %%
