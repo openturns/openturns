@@ -3,13 +3,22 @@ Test Normality
 ==============
 """
 
+
 # %%
-# Normal fitting test using the Henry line
-# ----------------------------------------
+# In this example, we show how to test the normality of a sample of dimension 1.
 #
-# In this paragraph we perform a visual goodness-of-fit test for a univariate
-# Normal distribution using the Henry line test, which is the QQ plot adapted
-# for Gaussian distributions.
+# Several tests can be used:
+#
+# - the Henry line test,
+# - the Anderson-Darling test,
+# - the Cramer-Von Mises test.
+
+# %%
+# The Henry line test
+# -------------------
+#
+# The Henry line test is a visual goodness-of-fit test for samples of dimension 1.
+# The test is the QQ plot adapted for normal distributions.
 
 # %%
 import openturns as ot
@@ -34,23 +43,21 @@ view = otv.View(graph)
 
 
 # %%
-# Normality tests
-# ---------------
+# The Anderson-Darling test
+# -------------------------
 #
-# We use two tests to check whether a sample follows a Normal distribution :
-#
-#  - the Anderson-Darling test
-#  - the Cramer-Von Mises test
-#
+# The Anderson-Darling test is a quantitative goodness-of-fit test for samples
+# of any dimension.
 
 # %%
-# We first generate two samples, one from a standard unit Gaussian and another from a Gumbel
-# distribution with parameters :math:`\beta = 1` and :math:`\gamma = 0`.
+# We first generate two samples, one from a standard normal distribution
+# and another from a Gumbel distribution with parameters
+# :math:`\beta = 1` and :math:`\gamma = 0`.
 sample1 = ot.Normal().getSample(200)
 sample2 = ot.Gumbel().getSample(200)
 
 # %%
-# We test the normality of the sample. We can display the result of the test as a yes/no answer with
+# We test the normality of each sample. We can display the result of the test as a yes/no answer with
 # the `getBinaryQualityMeasure`. We can retrieve the p-value and the threshold with the `getPValue`
 # and `getThreshold` methods.
 
@@ -73,6 +80,11 @@ print(
 )
 
 # %%
+# The Cramer-Von Mises test
+# -------------------------
+#
+# The Cramer-Von Mises test is a quantitative goodness-of-fit test for samples
+# of any dimension.
 test_result = ot.NormalityTest.CramerVonMisesNormal(sample1)
 print(
     "Component is normal?",

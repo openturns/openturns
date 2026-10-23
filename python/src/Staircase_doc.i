@@ -2,11 +2,11 @@
 "Staircase.
 
 Available constructors:
-    Staircase(*data, legend=' '*)
+    Staircase(*data, legend*)
 
-    Staircase(*data, color, lineStyle, lineWidth, pattern, legend=' '*)
+    Staircase(*data, color, lineStyle, lineWidth, pattern, legend*)
 
-    Staircase(*data, color, lineStyle, pattern, legend=' '*)
+    Staircase(*data, color, lineStyle, pattern, legend*)
 
 Parameters
 ----------
@@ -14,7 +14,7 @@ data : 2-d sequence of float
     Points from which the Staircase is built, must be of dimension 2: the
     discontinuous points and their corresponding height.
 legend : str
-    Legend of the Staircase.
+    Legend of the Staircase. By default, empty.
 color : str
     Color of the curve. If not specified, the default color is the first color in the default palette.
 lineStyle : str

@@ -57,6 +57,21 @@ Domains
     Mesh
     BoundaryMesher
 
+Manifolds
+=========
+
+.. autosummary::
+    :toctree: _generated/
+    :template: classWithPlot.rst_t
+
+    experimental.Manifold
+    experimental.SphereManifold
+    experimental.SO3Manifold
+
+    :template: class.rst_t
+
+    experimental.ManifoldImplementation
+
 Matrices
 ========
 

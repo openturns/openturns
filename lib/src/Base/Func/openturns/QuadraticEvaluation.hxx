@@ -1,12 +1,10 @@
 //                                               -*- C++ -*-
 /**
  *  @brief Class for a quadratic function implementation
- *        of the form y = constant + <linear, x-c> + <<quadratic, x-c>, x-c>
+ *        of the form y = constant + linear.(x - c) + <<quadratic, x-c>, x-c>
  *        where constant is a dim(y) point, c a dim(x)
- *        point, linear is a dim(x) by dim(y) matrix, quadratic is a
- *        dim(x) by dim(x) by dim(y) symmetric tensor and <linear, x>
- *        means Transpose(linear).x, <quadratic, x> means
- *        Transpose_kj(quadratic).x
+ *        point, linear is a dim(y) by dim(x) matrix and quadratic is a
+ *        dim(x) by dim(x) by dim(y) symmetric tensor
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

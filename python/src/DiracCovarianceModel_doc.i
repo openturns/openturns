@@ -2,27 +2,27 @@
 R"RAW(Dirac covariance function.
 
 Available constructors:
-    DiracCovarianceModel(*spatialDim=1*)
+    DiracCovarianceModel(*inputDimension*)
 
-    DiracCovarianceModel(*spatialDim, amplitude*)
+    DiracCovarianceModel(*inputDimension, amplitude*)
 
-    DiracCovarianceModel(*spatialDim, amplitude, spatialCorrelation*)
+    DiracCovarianceModel(*inputDimension, amplitude, correlation*)
 
-    DiracCovarianceModel(*spatialDim, spatialCovariance*)
+    DiracCovarianceModel(*inputDimension, covariance*)
 
 Parameters
 ----------
-spatialDim : int
+inputDimension : int
     Spatial dimension :math:`n`.
     By default, equal to 1.
 amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
     Its size is the dimension :math:`d` of the process.
     By default, equal to :math:`[1]`.
-spatialCorrelation : :class:`~openturns.CorrelationMatrix`
+correlation : :class:`~openturns.CorrelationMatrix`
     Correlation matrix :math:`\mat{R} \in \cS^+_d([-1, 1])`.
     By default, Identity matrix.
-spatialCovariance : :class:`~openturns.CovarianceMatrix`
+covariance : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`\mat{C}^{spatial} \in \cS_d^+(\Rset)`.
     By default, Identity matrix.
 

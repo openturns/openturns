@@ -36,6 +36,7 @@ Continuous parametric distributions
     :template: Distribution.rst_t
     Chi
     ChiSquare
+    experimental.ChristoffelDistribution
 
     :template: classWithPlot.rst_t
     Dirichlet
@@ -90,7 +91,13 @@ Continuous parametric distributions
     Rayleigh
     Rice
 
+    :template: classWithPlot.rst_t
+    experimental.ManifoldMappedDistribution
+    experimental.PushForwardDistribution
+    experimental.PushForwardOverMesh
+
     :template: class.rst_t
+
     experimental.RiemannianGaussian
 
     :template: Distribution.rst_t
@@ -344,7 +351,6 @@ Low-level distribution functions
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
     DistFunc.dNonCentralStudent
-    DistFunc.dNonCentralStudentAlt0
     DistFunc.dNormal
     DistFunc.dPoisson
     DistFunc.eZ1

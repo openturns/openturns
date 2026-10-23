@@ -76,7 +76,7 @@ void LinearTaylor::run()
   constant_ = inputFunction_(center_);
   linear_ = inputFunction_.gradient(center_);
   /* Build the several implementations and set it into the response surface */
-  responseSurface_.setEvaluation(new LinearEvaluation(center_, constant_, linear_));
+  responseSurface_.setEvaluation(new LinearEvaluation(center_, constant_, linear_.transpose()));
   responseSurface_.setGradient(new ConstantGradient(linear_));
   responseSurface_.setHessian(new ConstantHessian(SymmetricTensor(center_.getDimension(), constant_.getDimension())));
   responseSurface_.setDescription(inputFunction_.getDescription());

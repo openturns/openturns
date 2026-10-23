@@ -39,16 +39,37 @@ class OT_API HiGHS
 public:
 
   /** Default constructor */
-  HiGHS();
+  explicit HiGHS(const String & algoName = "choose");
 
-  /** Constructor that sets starting points */
-  HiGHS(const OptimizationProblem & problem);
+  /** Constructor with parameters */
+  explicit HiGHS(const OptimizationProblem & problem,
+                 const String & algoName = "choose");
 
   /** Virtual constructor */
   HiGHS * clone() const override;
 
+  /** Algorithm names accessor */
+  static Description GetAlgorithmNames();
+
+  /** Algorithm name accessor */
+  void setAlgorithmName(const String & algoName);
+  String getAlgorithmName() const;
+
+  /** Dual solution accessors (from last run) */
+  Point getDualPoint() const;
+  Point getReducedCosts() const;
+  Point getConstraintValues() const;
+
+  /** Per-solver iteration counts (from last run) */
+  UnsignedInteger getSimplexIterationNumber() const;
+  UnsignedInteger getIPMIterationNumber() const;
+  UnsignedInteger getCrossoverIterationNumber() const;
+  UnsignedInteger getPDLPIterationNumber() const;
+  UnsignedInteger getQPIterationNumber() const;
+
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Performs the actual computation. */
   void run() override;
@@ -65,6 +86,16 @@ protected:
   void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
+
+  String algoName_;
+  Point dualPoint_;
+  Point reducedCosts_;
+  Point constraintValues_;
+  UnsignedInteger simplexIterationNumber_ = 0;
+  UnsignedInteger ipmIterationNumber_ = 0;
+  UnsignedInteger crossoverIterationNumber_ = 0;
+  UnsignedInteger pdlpIterationNumber_ = 0;
+  UnsignedInteger qpIterationNumber_ = 0;
 
 }; /* class HiGHS */
 

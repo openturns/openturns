@@ -190,6 +190,7 @@ void CalibrationResult::save(Advocate & adv) const
   adv.saveAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
   adv.saveAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
   adv.saveAttribute( "bayesian_", bayesian_ );
+  adv.saveAttribute( "isParameterDistributionPosterior_", isParameterDistributionPosterior_ );
   adv.saveAttribute( "priorColor_", priorColor_ );
   adv.saveAttribute( "posteriorColor_", posteriorColor_ );
   adv.saveAttribute( "observationColor_", observationColor_ );
@@ -217,7 +218,6 @@ void CalibrationResult::load(Advocate & adv)
   }
   else
   {
-    bayesian_ = false;
     if (parameterPrior_.getDimension() > 0)
     {
       const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
@@ -228,6 +228,8 @@ void CalibrationResult::load(Advocate & adv)
     posteriorColor_ = colors[1];
     observationColor_ = colors[2];
   }
+  if (adv.hasAttribute("isParameterDistributionPosterior_")) adv.loadAttribute( "isParameterDistributionPosterior_", isParameterDistributionPosterior_ );
+  // else keep the default-constructed value (true)
 }
 
 void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAtPrior, const Sample & outputAtPosterior)
@@ -293,7 +295,12 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
     Drawable postPDF(posteriorJ.drawPDF().getDrawable(0));
     if (upperRightGraph)
-      postPDF.setLegend(bayesian_ ? "Posterior" : "Calibrated");
+    {
+      if (!bayesian_) postPDF.setLegend("Calibrated");
+      else if (isParameterDistributionPosterior_) postPDF.setLegend("Posterior");
+      // Bootstrap MAP distribution, not a posterior (see issue #2889)
+      else postPDF.setLegend("MAP (bootstrap)");
+    }
     else
       postPDF.setLegend("");
     postPDF.setColor(posteriorColor_);
@@ -532,6 +539,17 @@ GridLayout CalibrationResult::drawResidualsNormalPlot() const
 Bool CalibrationResult::isBayesian() const
 {
   return bayesian_;
+}
+
+/* Parameter distribution nature accessor */
+Bool CalibrationResult::isParameterDistributionPosterior() const
+{
+  return isParameterDistributionPosterior_;
+}
+
+void CalibrationResult::setIsParameterDistributionPosterior(const Bool isPosterior)
+{
+  isParameterDistributionPosterior_ = isPosterior;
 }
 
 END_NAMESPACE_OPENTURNS

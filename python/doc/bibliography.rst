@@ -104,6 +104,10 @@ Bibliography
     `pdf <https://arxiv.org/abs/1604.00362>`__
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
+.. [cohendolbeault2020] Cohen, A. and Dolbeault, M. (2020).
+    *Optimal sampling and Christoffel functions on general domains.*
+    arXiv:2010.11040.
+    `pdf <https://arxiv.org/abs/2010.11040>`__
 .. [coles2001] Coles, S. G., *An Introduction to Statistical Modelling of Extreme Values*.
     Springer, 2001.
 .. [crombecq2011] Crombecq, K., *Surrogate Modelling of Computer Experiments with Sequential Experimental Design*,

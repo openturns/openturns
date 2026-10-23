@@ -2,11 +2,11 @@
 "Bar plot.
 
 Available constructors:
-    BarPlot(*data, origin, legend=' '*)
+    BarPlot(*data, origin, legend*)
 
-    BarPlot(*data, origin, color, fillStyle, lineStyle, legend=' '*)
+    BarPlot(*data, origin, color, fillStyle, lineStyle, legend*)
 
-    BarPlot(*data, origin, color, fillStyle, lineStyle, lineWidth, legend=' '*)
+    BarPlot(*data, origin, color, fillStyle, lineStyle, lineWidth, legend*)
 
 Parameters
 ----------
@@ -16,7 +16,7 @@ data : 2-d sequence of float
 origin : float
     Scalar defining where the BarPlot begins.
 legend : str
-    Legend of the BarPlot.
+    Legend of the BarPlot. By default, empty.
 color : str
     Color of the curve. If not specified, the default color is the first color in the default palette.
 fillStyle : str

@@ -2,13 +2,13 @@
 R"RAW(Exponentially damped cosine covariance function.
 
 Available constructors:
-    ExponentiallyDampedCosineModel(*spatialDim=1*)
+    ExponentiallyDampedCosineModel(*inputDimension*)
 
-    ExponentiallyDampedCosineModel(*scale, amplitude, f*)
+    ExponentiallyDampedCosineModel(*scale, amplitude, frequency*)
 
 Parameters
 ----------
-spatialDim : int
+inputDimension : int
     Spatial dimension :math:`n`.
     By default, equal to 1.
 scale : sequence of floats
@@ -18,8 +18,8 @@ amplitude : sequence of positive floats
     Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
-f : positive float
-    Frequency parameter.
+frequency : positive float
+    Frequency parameter, noted :math:`f` in the formulas.
 
 Notes
 -----
@@ -76,7 +76,7 @@ Create a  exponentially damped cosine  covariance function specifying the amplit
 
 Parameters
 ----------
-f : positive float
+frequency : positive float
     Frequency parameter."
 
 // ---------------------------------------------------------------------
@@ -86,5 +86,5 @@ f : positive float
 
 Returns
 -------
-f : positive float
+frequency : positive float
     Frequency parameter."

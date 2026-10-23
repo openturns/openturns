@@ -2,7 +2,7 @@
 R"RAW(Spherical covariance function.
 
 Available constructors:
-    SphericalModel(*spatialDim=1*)
+    SphericalModel(*inputDimension*)
 
     SphericalModel(*scale, amplitude*)
 
@@ -10,7 +10,7 @@ Available constructors:
 
 Parameters
 ----------
-spatialDim : int
+inputDimension : int
     Spatial dimension :math:`n`.
     By default, equal to 1.
 scale : sequence of positive floats

@@ -4,10 +4,19 @@
 Parameters
 ----------
 X : :class:`~openturns.Distribution`
-   Distribution of X.
+   Distribution of the random vector.
+
+Notes
+-----
+The UsualRandomVector is defined by the distribution it follows. It provides a method to
+generate some realizations which are generated using its distribution.
+
+In the library, random vectors are the inputs to :class:`~openturns.Function`, unlike distributions, which cannot be used directly by functions.
 
 Examples
 --------
+This random vector is defined by the standard normal distribution.
+
 >>> import openturns as ot
 >>> X = ot.RandomVector(ot.Normal())
 

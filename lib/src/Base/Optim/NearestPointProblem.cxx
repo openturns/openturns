@@ -69,7 +69,7 @@ void NearestPointProblem::setLevelFunction(const Function & levelFunction)
   // Update objective function
   const Point center(dimension_);
   const Point constant(1);
-  const Matrix linear(dimension_, 1);
+  const Matrix linear(1, dimension_);
   const IdentityMatrix identity(dimension_);
   const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
   objective_ = QuadraticFunction(center, constant, linear, quadratic);

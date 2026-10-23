@@ -75,7 +75,7 @@ Basis QuadraticBasisFactory::build() const
       quadratic(i, j, 0) = (i == j) ? 2.0 : 1.0;
       Point center(inputDimension_, 0.0);
       Point constant(1, 0.0);
-      Matrix linear(inputDimension_, 1);
+      Matrix linear(1, inputDimension_);
       functions.add(QuadraticFunction(center, constant, linear, quadratic));
     }
   }

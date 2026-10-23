@@ -70,6 +70,10 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``Normal-MinimumNumberOfPoints`` (``UnsignedInteger``, default: ``100000``): minimum number of points of the grid used to compute the CDF.
 - ``Normal-RectangularProbabilityAlgorithm`` (``String``, default: ``Genz``): algorithm used to compute rectangular probabilities in large dimension, either ``Genz`` (quasi-Monte Carlo) or ``Ridgway`` (sequential Monte Carlo, more robust for tail probabilities [fasano2025]_).
 
+Note that the correlation matrix :math:`\mat{R}` can be accessed through the method
+:meth:`getShapeMatrix`. The shape matrix is the correlation matix of any normal
+distribution (ie defined by normal marginals and a normal copula).
+
 Examples
 --------
 Create a distribution:
@@ -84,8 +88,8 @@ Draw a sample:
 Create a multivariate normal distribution with constant :math:`\sigma` and identity correlation matrix:
 
 >>> dimension = 5
->>> mu = ot.Point(dimension)
->>> sigma = ot.Point(dimension, 0.1)
+>>> mu = [0.0]*dimension
+>>> sigma = [0.1]*dimension
 >>> R = ot.CorrelationMatrix(dimension)
 >>> distribution = ot.Normal(mu, sigma, R)
 >>> print('distribution=', distribution)

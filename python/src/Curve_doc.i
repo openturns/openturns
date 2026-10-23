@@ -2,11 +2,11 @@
 "Curve.
 
 Available constructors:
-    Curve(*data, legend=' '*)
+    Curve(*data, legend*)
 
-    Curve(*dataX, dataY, legend=' '*)
+    Curve(*dataX, dataY, legend*)
 
-    Curve(*data, color, lineStyle, lineWidth, legend=' '*)
+    Curve(*data, color, lineStyle, lineWidth, legend*)
 
 Parameters
 ----------
@@ -15,7 +15,7 @@ data : 2-d sequence of float
 dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
     Points from which the curve is built.
 legend : str
-    Legend of the Curve.
+    Legend of the Curve. By default, empty.
 color : str
     Color of the curve. If not specified, by default it is the first color of the default palette.
 lineStyle : str

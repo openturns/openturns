@@ -2,13 +2,13 @@
 "Polygon.
 
 Available constructors:
-    Polygon(*legend=' '*)
+    Polygon(*legend*)
 
-    Polygon(*data, legend=' '*)
+    Polygon(*data, legend*)
 
-    Polygon(*dataX, dataY, legend=' '*)
+    Polygon(*dataX, dataY, legend*)
 
-    Polygon(*data, color, edgeColor, legend=' '*)
+    Polygon(*data, color, edgeColor, legend*)
 
 Parameters
 ----------
@@ -17,7 +17,7 @@ data : 2-d sequence of float of dimension 2
 dataX, dataY : two 2-d sequences of float of dimension 1, or two sequences of float
     List of the first and second coordinates of the vertices.
 legend : str
-    Legend of the polygon.
+    Legend of the polygon. By default, empty.
 color, edgeColor : two str
     Fill color and the edge color. If not specified, the default color is the first color in the default palette.
 

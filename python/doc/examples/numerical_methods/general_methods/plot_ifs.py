@@ -78,8 +78,8 @@ f1 = [
         2,
         [
             rho1 * m.cos(theta1),
-            -rho1 * m.sin(theta1),
             rho1 * m.sin(theta1),
+            -rho1 * m.sin(theta1),
             rho1 * m.cos(theta1),
         ],
     ),
@@ -97,9 +97,9 @@ view = otv.View(graph)
 # %%
 # Fern
 f1 = [[0.0] * 2, ot.SquareMatrix(2, [0.0, 0.0, 0.0, 0.16])]
-f2 = [[0.0, 1.6], ot.SquareMatrix(2, [0.85, 0.04, -0.04, 0.85])]
-f3 = [[0.0, 1.6], ot.SquareMatrix(2, [0.2, -0.26, 0.23, 0.22])]
-f4 = [[0.0, 0.44], ot.SquareMatrix(2, [-0.15, 0.28, 0.26, 0.24])]
+f2 = [[0.0, 1.6], ot.SquareMatrix(2, [0.85, -0.04, 0.04, 0.85])]
+f3 = [[0.0, 1.6], ot.SquareMatrix(2, [0.2, 0.23, -0.26, 0.22])]
+f4 = [[0.0, 0.44], ot.SquareMatrix(2, [-0.15, 0.26, 0.28, 0.24])]
 f_i = [f1, f2, f3, f4]
 graph, s = drawIFS(
     f_i, skip=100, iterations=50000, batch_size=1, name="Fern", color="green"
@@ -110,8 +110,8 @@ view = otv.View(graph)
 
 # %%
 # Dragon
-f1 = [[0.0, 0.0], ot.SquareMatrix(2, [0.5, -0.5, 0.5, 0.5])]
-f2 = [[1.0, 0.0], ot.SquareMatrix(2, [-0.5, -0.5, 0.5, -0.5])]
+f1 = [[0.0, 0.0], ot.SquareMatrix(2, [0.5, 0.5, -0.5, 0.5])]
+f2 = [[1.0, 0.0], ot.SquareMatrix(2, [-0.5, 0.5, -0.5, -0.5])]
 f_i = [f1, f2]
 graph, s = drawIFS(
     f_i, skip=100, iterations=50000, batch_size=1, name="Dragon", color="red"

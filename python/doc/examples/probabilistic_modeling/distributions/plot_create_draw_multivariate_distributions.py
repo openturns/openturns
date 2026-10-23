@@ -74,7 +74,7 @@ cop_dist = distribution.getCopula()
 graph_cop = cop_dist.drawPDF()
 # Get the Contour Drawable's actual implementation from the Graph
 # produced by drawPDF in order to access all its methods
-contour_cop = cop.drawPDF().getDrawable(1).getImplementation()
+contour_cop = cop.drawPDF().getDrawable(0).getImplementation()
 contour_cop.setLineStyle("dashed")
 # Remove the colorbar
 contour_cop.setColorBarPosition("")
@@ -145,7 +145,7 @@ view = otv.View(graph_CDF_1)
 # At last, we check that the copula of the multivariate distribution is not the specified core.
 cop_dist = distribution.getCopula()
 graph_cop = cop_dist.drawPDF()
-cop_dist_draw = graph_cop.getDrawable(1)
+cop_dist_draw = graph_cop.getDrawable(0)
 levels = cop_dist_draw.getLevels()
 graph_core = core_dir.drawPDF()
 core_draw = graph_core.getDrawable(0).getImplementation()
