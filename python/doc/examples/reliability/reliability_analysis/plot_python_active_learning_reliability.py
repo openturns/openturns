@@ -9,10 +9,10 @@ The criterion used here is the least improvement function (LIF) proposed by
 Sun et al. [sun2017]_.
 
 The reliability problem is the four-branch function already used in the
-:doc:`active learning gallery example <plot_active_learning_reliability>`.
-Using the same model, input distribution and initial design of experiments
-makes it easy to compare the custom criterion with the built-in
-:class:`~openturns.experimental.ActiveLearningUFunction`.
+:doc:`active learning gallery example <plot_active_learning_reliability>`,
+but revisited as a union event. Using the same model, input distribution 
+and initial design of experiments makes it easy to compare the custom 
+criterion with the built-in :class:`~openturns.experimental.ActiveLearningUFunction`.
 """
 
 # %%
@@ -59,26 +59,62 @@ ot.RandomGenerator.SetSeed(0)
 #   p = \mathbb{P} ( g(\vect{X}) \leq 0 )
 #   \end{align*}
 #
+# Here, we revisit the four-branch example as a union of four events, one for each branch.
+# The four branch function for reliability is then defined as a composed event of the
+# union events, each them defined by a single branch function.
 
 
 # %%
-def fourBranch(x):
+def firstBranch(x):
     x1 = x[0]
     x2 = x[1]
     sqrt2 = math.sqrt(2.0)
     g1 = 3 + 0.1 * (x1 - x2) ** 2 - (x1 + x2) / sqrt2
-    g2 = 3 + 0.1 * (x1 - x2) ** 2 + (x1 + x2) / sqrt2
-    g3 = (x1 - x2) + 6 / sqrt2
-    g4 = (x2 - x1) + 6 / sqrt2
-    return [min(g1, g2, g3, g4)]
+    return [g1]
 
+
+def secondBranch(x):
+    x1 = x[0]
+    x2 = x[1]
+    sqrt2 = math.sqrt(2.0)
+    g2 = 3 + 0.1 * (x1 - x2) ** 2 + (x1 + x2) / sqrt2
+    return [g2]
+
+
+def thirdBranch(x):
+    x1 = x[0]
+    x2 = x[1]
+    sqrt2 = math.sqrt(2.0)
+    g3 = (x1 - x2) + 6 / sqrt2
+    return [g3]
+
+
+def fourthBranch(x):
+    x1 = x[0]
+    x2 = x[1]
+    sqrt2 = math.sqrt(2.0)
+    g4 = (x2 - x1) + 6 / sqrt2
+    return [g4]
+
+
+g1 = ot.PythonFunction(input_dimension, 1, firstBranch)
+g2 = ot.PythonFunction(input_dimension, 1, secondBranch)
+g3 = ot.PythonFunction(input_dimension, 1, thirdBranch)
+g4 = ot.PythonFunction(input_dimension, 1, fourthBranch)
 
 # %%
-input_distribution = ot.Normal([0.0, 0.0], [1.5, 1.5])
-input_dimension = input_distribution.getDimension()
-g = ot.PythonFunction(input_dimension, 1, fourBranch)
-random_vector = ot.CompositeRandomVector(g, ot.RandomVector(input_distribution))
-event = ot.ThresholdEvent(random_vector, ot.Less(), 0.0)
+X = ot.RandomVector(input_distribution)
+Y1 = ot.CompositeRandomVector(g1, X)
+Y2 = ot.CompositeRandomVector(g2, X)
+Y3 = ot.CompositeRandomVector(g3, X)
+Y4 = ot.CompositeRandomVector(g4, X)
+
+e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
+e2 = ot.ThresholdEvent(Y2, ot.Less(), 0.0)
+e3 = ot.ThresholdEvent(Y3, ot.Less(), 0.0)
+e4 = ot.ThresholdEvent(Y4, ot.Less(), 0.0)
+
+event = ot.UnionEvent([e1, e2, e3, e4]).asComposedEvent()
 
 # %%
 # Initial design of experiments and Gaussian process fitter
@@ -165,7 +201,7 @@ class LIFCriterion(otexp.PythonActiveLearningReliabilityFunction):
 # can be passed to the active learning algorithm.
 learning_threshold = 1.0e-3
 lif_criterion = otexp.ActiveLearningReliabilityFunction(
-    LIFCriterion(event.getThreshold(), learning_threshold, input_distribution)
+    LIFCriterion(0.0, learning_threshold, input_distribution)
 )
 
 # %%
