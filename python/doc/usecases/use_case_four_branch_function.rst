@@ -81,18 +81,6 @@ estimated by several methods in the literature:
 
 **Table 2.** Reference values for the failure probability with :math:`p=6`.
 
-Note on OpenTURNS Active Learning Examples
--------------------------------------------
-
-The OpenTURNS active learning examples (e.g., `plot_active_learning_reliability.py`)
-use a slightly different parameterization:
-
-- Inputs: :math:`X_1, X_2 \sim \mathcal{N}(0, 1.5^2)` (independent)
-- Parameter: :math:`p = 6` (same)
-- Resulting failure probability: :math:`\approx 2.3 \times 10^{-3}`
-
-This version can be obtained via :meth:`FourBranchModel.OpenTURNSActiveLearningVersion`.
-
 Analysis
 --------
 

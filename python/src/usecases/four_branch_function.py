@@ -134,29 +134,3 @@ class FourBranchModel:
         self.model = ot.PythonFunction(self.dim, 1, four_branch)
         self.model.setInputDescription(["X1", "X2"])
         self.model.setOutputDescription(["y"])
-
-    @classmethod
-    def OpenTURNSActiveLearningVersion(cls):
-        """
-        Create the version used in OpenTURNS active learning examples.
-
-        This version uses N(0, 1.5) inputs as in the OpenTURNS examples:
-        plot_active_learning_reliability.py, plot_python_active_learning_reliability.py,
-        plot_nais.py, plot_analysis_active_learning_reliability.py
-
-        Returns
-        -------
-        FourBranchModel
-            Model with X1, X2 ~ N(0, 1.5) and p=6.
-        """
-        fb = cls(p=6.0)
-        # Override distribution to match OpenTURNS examples
-        fb.X1 = ot.Normal(0.0, 1.5)
-        fb.X1.setName("X1")
-        fb.X1.setDescription(["X1"])
-        fb.X2 = ot.Normal(0.0, 1.5)
-        fb.X2.setName("X2")
-        fb.X2.setDescription(["X2"])
-        fb.distribution = ot.JointDistribution([fb.X1, fb.X2])
-        fb.distribution.setDescription(["X1", "X2"])
-        return fb
