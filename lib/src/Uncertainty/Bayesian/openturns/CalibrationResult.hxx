@@ -90,6 +90,12 @@ public:
   /** Bayesian method accessor */
   Bool isBayesian() const;
 
+  /** Parameter distribution nature accessor: true when the parameter
+      distribution is a posterior, false when it is the distribution of
+      the MAP under bootstrap resampling (see issue #2889) */
+  Bool isParameterDistributionPosterior() const;
+  void setIsParameterDistributionPosterior(const Bool isPosterior);
+
   /** String converter */
   String __repr__() const override;
 
@@ -140,6 +146,10 @@ private:
 
   /* Bayesian */
   Bool bayesian_ = false;
+
+  /* True when the parameter distribution is a posterior, false when it
+     is the distribution of the MAP under bootstrap resampling */
+  Bool isParameterDistributionPosterior_ = true;
 
   /* Colors */
   String priorColor_;

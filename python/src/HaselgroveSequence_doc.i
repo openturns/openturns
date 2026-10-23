@@ -2,14 +2,14 @@
 "Haselgrove sequence.
 
 Available constructors:
-    HaselgroveSequence(*dimension=1*)
+    HaselgroveSequence(*dimension*)
 
     HaselgroveSequence(*base*)
 
 Parameters
 ----------
 dimension : positive int
-    Dimension of the points.
+    Dimension of the points. By default, equal to 1.
 base : sequence of positive float
     Sequence of positive real values linearly independent over the integer
     ring, i.e. no linear combination with integer coefficients of these values

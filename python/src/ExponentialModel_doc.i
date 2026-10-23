@@ -2,7 +2,7 @@
 R"RAW(Multivariate stationary exponential covariance function.
 
 Available constructors:
-    ExponentialModel(*inputDimension=1*)
+    ExponentialModel(*inputDimension*)
 
     ExponentialModel(*scale, amplitude*)
 

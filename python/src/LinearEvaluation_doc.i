@@ -17,11 +17,11 @@ This class implements the evaluation of a linear :class:`~openturns.Function` :m
 .. math::
 
     f : & \Rset^\inputDim \rightarrow \Rset^\outputDim  \\
-        & \vect{X} \mapsto \Tr{\mat{A}} ( \vect{X} - \vect{b} ) + \vect{c}
+        & \vect{X} \mapsto \mat{A} ( \vect{X} - \vect{b} ) + \vect{c}
 
 where:
 
-- :math:`\mat{A}` is a matrix with :math:`\inputDim` lines and :math:`\outputDim` columns,
+- :math:`\mat{A}` is a matrix with :math:`\outputDim` lines and :math:`\inputDim` columns,
 - :math:`\vect{b}` is a vector in  :math:`\Rset^\inputDim`,
 - :math:`\vect{c}` is a vector in :math:`\Rset^\outputDim`.
 
@@ -37,14 +37,13 @@ In this example, we create the linear function :math:`f: \Rset^2 \rightarrow \Rs
 .. math::
 
     \mat{A} = \left( \begin{array}{cc}
-    2  \\
-    3
+    2 & 3
     \end{array}\right), \vect{b} = \Tr{(0,0)}, \vect{c} = (-1)
 
 >>> import openturns as ot
->>> A = ot.Matrix(2,1)
+>>> A = ot.Matrix(1,2)
 >>> A[0,0] = 2
->>> A[1,0] = 3
+>>> A[0,1] = 3
 >>> b = [2.0, 3.0]
 >>> c = [4.0]
 >>> f = ot.LinearEvaluation(b,c,A)

@@ -2,14 +2,19 @@
 R"RAW(Weighted experiment.
 
 Available constructor:
-    WeightedExperiment(*distribution=ot.Uniform(), size=100*)
+    WeightedExperiment(*size*)
+
+    WeightedExperiment(*distribution, size*)
 
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` used to generate the set of input data.
+    By default, :class:`~openturns.Uniform` over :math:`[-1, 1]`.
 size : positive int
     Number :math:`\sampleSize` of points that will be generated in the experiment.
+    By default, the value of the
+    ``WeightedExperiment-DefaultSize`` :class:`~openturns.ResourceMap` key.
 
 See also
 --------

@@ -117,7 +117,6 @@ private:
   const CovarianceModel covarianceModel_;
   const Pointer<const CovarianceModelImplementation> implementation_;
   const Sample vertices_;
-  const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
   const UnsignedInteger size_;

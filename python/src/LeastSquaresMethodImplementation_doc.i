@@ -20,6 +20,11 @@ where:
 - the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
   selected basis terms.
 
+Refer to :any:`sparse_least_squares` to get all the
+notations and to :any:`least_squares_resolution` to get details on the numerical method.
+
+There is no model selection strategy.
+
 Available constructors:
     LeastSquaresMethod(*proxy, weight, indices*)
 
@@ -41,7 +46,7 @@ indices : sequence of int
     Indices of the basis terms retained as columns of the design matrix.
     By default, all the terms are used.
 design : 2-d sequence of float
-    A priori known design matrix
+    The known design matrix
 
 See also
 --------
@@ -49,13 +54,35 @@ CholeskyMethod, SVDMethod, QRMethod
 
 Examples
 --------
+We get the projection onto the functional basis :math:`(x, x^2, x^3)` of
+a model from which we only have a data base of
+size 50. The least squares problem is solved using the QR method: to change the
+decomposition method, use the :meth:`Build` method.
+
+There is no model selection strategy. The projection has 3 components:
+all the functions of the basis are used.
+
 >>> import openturns as ot
->>> A = ot.Matrix([[1, 1], [1, 2], [1, 3], [1, 4]])
->>> y = [6, 5, 7, 10]
->>> method = ot.LeastSquaresMethod(A)
+>>> sampleSize = 50
+>>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
+>>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
+>>> y = normal.getRealization()
+
+Here we define the functional basis and the design proxy (for the last constructor):
+
+>>> basisSize = 3
+>>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
+>>> proxy = ot.DesignProxy(X, phis)
+
+Here, we explicit the design matrix:
+
+>>> full = range(basisSize)
+>>> designMatrix = ot.Matrix(proxy.computeDesign(full))
+
+Here, we define and solve the least-squares problem:
+
+>>> method = ot.LeastSquaresMethod(proxy, full)
 >>> x = method.solve(y)
->>> print(x)
-[3.5,1.4]
 )RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation

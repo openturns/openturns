@@ -762,7 +762,6 @@ HODLRCovarianceAssemblyFunction::HODLRCovarianceAssemblyFunction(
   , covarianceModel_(covarianceModel)
   , implementation_(covarianceModel.getImplementation())
   , vertices_(vertices)
-  , verticesBegin_(vertices.getImplementation()->data_begin())
   , inputDimension_(vertices.getDimension())
   , covarianceDimension_(covarianceModel.getOutputDimension())
   , size_(vertices.getSize())
@@ -785,9 +784,12 @@ Scalar HODLRCovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedIn
   {
     // The model evaluates its own kernel on the two coordinate buffers, with
     // whatever specialization it provides: the assembly knows nothing about the
-    // covariance model beyond its interface.
-    return implementation_->computeAsScalar(&verticesBegin_[i * inputDimension_],
-                                            &verticesBegin_[j * inputDimension_]);
+    // covariance model beyond its interface. The buffer is fetched here rather
+    // than stored: no member can dangle, and no smart pointer fits a
+    // non-owning view (Pointer/bridge both imply ownership).
+    const Scalar * verticesBegin = vertices_.getImplementation()->data();
+    return implementation_->computeAsScalar(&verticesBegin[i * inputDimension_],
+                                            &verticesBegin[j * inputDimension_]);
   }
 
   const UnsignedInteger rowIndex = i / covarianceDimension_;

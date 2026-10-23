@@ -1,9 +1,9 @@
 //                                               -*- C++ -*-
 /**
  * @brief Class for a linear function implementation
- *        of the form y = constant + <linear, x - c> where c is a
- *        dim(x) point, linear a dim(x) by dim(y) matrix
- *        and  <linear, x - c> means Transpose(linear).(x - c)
+ *        of the form y = constant + linear.(x - c) where c is a
+ *        dim(x) point, linear a dim(y) by dim(x) matrix
+ *        and constant a dim(y) point
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -47,18 +47,18 @@ LinearEvaluation::LinearEvaluation(const Point & center,
   : EvaluationImplementation()
   , center_(center)
   , constant_(constant)
-  , linear_(linear.transpose())
+  , linear_(linear)
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
-  if (constant.getDimension() != linear.getNbColumns())
+  if (constant.getDimension() != linear.getNbRows())
     throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term. "
                                           << "The constant has dimension: " << constant.getDimension()
-                                          << " but the number of columns in the linear matrix is: " << linear.getNbColumns();
+                                          << " but the number of rows in the linear matrix is: " << linear.getNbRows();
   /* Check if the dimension of the center term is compatible with the linear term */
-  if (center.getDimension() != linear.getNbRows())
+  if (center.getDimension() != linear.getNbColumns())
     throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term. "
                                           << "The dimension of the center is: " << center.getDimension()
-                                          << " but the number of rows of the linear matrix is: " << linear.getNbRows();
+                                          << " but the number of columns of the linear matrix is: " << linear.getNbColumns();
   setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "y"));
 }
@@ -83,7 +83,7 @@ String LinearEvaluation::__repr__() const
       << " name=" << getName()
       << " center=" << center_
       << " constant=" << constant_
-      << " linear=" << linear_.transpose();
+      << " linear=" << linear_;
   return oss;
 }
 
@@ -94,7 +94,7 @@ String LinearEvaluation::__str__(const String & ) const
       << " name=" << getName()
       << " center=" << center_
       << " constant=" << constant_
-      << " linear=" << linear_.transpose();
+      << " linear=" << linear_;
   return oss;
 }
 
@@ -113,7 +113,7 @@ Point LinearEvaluation::getConstant() const
 /* Accessor for the linear term */
 Matrix LinearEvaluation::getLinear() const
 {
-  return linear_.transpose();
+  return linear_;
 }
 
 /* Here is the interface that all derived class must implement */

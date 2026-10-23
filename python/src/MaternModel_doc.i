@@ -2,7 +2,7 @@
 R"RAW(Matern covariance function.
 
 Available constructors:
-    MaternModel(*spatialDim=1*)
+    MaternModel(*inputDimension*)
 
     MaternModel(*scale, nu*)
 
@@ -10,7 +10,7 @@ Available constructors:
 
 Parameters
 ----------
-spatialDim : int
+inputDimension : int
     Spatial dimension :math:`n`.
     When not fulfilled, the input dimension is equal to the  size of the parameter :math:`\vect{\theta}`.
     By default, equal to 1.

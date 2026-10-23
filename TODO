@@ -19,3 +19,6 @@ Remove Field.getInputDimension/getOutputDimension
 Remove BoxCoxFactory.buildWithGLM
 Remove deprecated KernelSmoothing.setBoundaryCorrection/getBoundaryCorrection in some future version
 Remove coupling_tools.execute
+Remove QuantileConfidence.computeUnilateralConfidenceIntervalWithCoverage
+Remove QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage
+

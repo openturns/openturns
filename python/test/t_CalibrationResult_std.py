@@ -39,6 +39,27 @@ algo = ot.GaussianNonLinearCalibration(
 algo.run()
 result = algo.getResult()
 assert result.isBayesian()
+assert not result.isParameterDistributionPosterior()
+
+# without bootstrap the posterior label is kept
+bootstrapKey = "GaussianNonLinearCalibration-BootstrapSize"
+previousBootstrapSize = ot.ResourceMap.GetAsUnsignedInteger(bootstrapKey)
+ot.ResourceMap.SetAsUnsignedInteger(bootstrapKey, 0)
+try:
+    algo2 = ot.GaussianNonLinearCalibration(
+        model, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+    )
+    algo2.run()
+    result2 = algo2.getResult()
+    assert result2.isParameterDistributionPosterior()
+    legends2 = [
+        legend
+        for j in range(3)
+        for legend in result2.drawParameterDistributions().getGraph(0, j).getLegends()
+    ]
+    assert any(legend == "Posterior" for legend in legends2)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(bootstrapKey, previousBootstrapSize)
 
 # check that the graphs can be produced
 graph1 = result.drawParameterDistributions()
@@ -46,6 +67,15 @@ graph2 = result.drawResiduals()
 graph3 = result.drawObservationsVsInputs()
 graph4 = result.drawObservationsVsPredictions()
 graph5 = result.drawResidualsNormalPlot()
+
+# bootstrapped posterior is the MAP distribution, see issue #2889
+legends = [
+    legend
+    for j in range(3)
+    for legend in graph1.getGraph(0, j).getLegends()
+]
+assert any("MAP (bootstrap)" in legend for legend in legends)
+assert not any(legend == "Posterior" for legend in legends)
 
 if len(sys.argv) > 1:
     from openturns.viewer import View

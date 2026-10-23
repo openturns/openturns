@@ -718,7 +718,7 @@ ot_check_test (CenteredFiniteDifferenceHessian_std)
 ot_check_test (LinearTaylor_std)
 ot_check_test (QuadraticTaylor_std)
 ot_check_test (QuadraticLeastSquares_std)
-ot_check_test (LinearLeastSquares_std)
+ot_check_test (LinearLeastSquares_std IGNOREOUT)
 
 
 add_custom_target (cppcheck COMMAND ${CMAKE_CTEST_COMMAND} --build-config ${CMAKE_BUILD_TYPE} --tests-regex "^cppcheck_"

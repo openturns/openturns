@@ -4,9 +4,9 @@ R"RAW(Iterative sampling methods.
 Refer to :any:`monte_carlo_simulation`, :any:`importance_simulation`, :any:`lhs_simulation`, :any:`qmc_simulation`.
 
 Available constructor:
-    ProbabilitySimulationAlgorithm(*event, experiment, convergenceStrategy=ot.Compact()*)
+    ProbabilitySimulationAlgorithm(*event, experiment, convergenceStrategy*)
 
-    ProbabilitySimulationAlgorithm(*event, convergenceStrategy=ot.Compact()*)
+    ProbabilitySimulationAlgorithm(*event, convergenceStrategy*)
 
 Parameters
 ----------
@@ -18,7 +18,7 @@ convergenceStrategy : :class:`~openturns.HistoryStrategy`, optional
     Storage strategy used to store the values of the probability estimator and
     its variance during the simulation algorithm.
     
-    By default, the :class:`~openturns.Full` strategy is used.
+    By default, the :class:`~openturns.Compact` strategy is used.
 
 Notes
 -----

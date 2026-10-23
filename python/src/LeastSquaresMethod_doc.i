@@ -36,7 +36,7 @@ OT_LeastSquaresMethod_update_doc
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LeastSquaresMethod::Build
-"Instantiate a decomposition method from its name.
+R"RAW(Instantiate a decomposition method from its name.
 
 Parameters
 ----------
@@ -44,13 +44,21 @@ name : str
     The name of the least-squares method
     Values are 'QR', 'SVD', 'Cholesky'
 proxy : :class:`~openturns.DesignProxy`
-    Input sample
-weight : sequence of float, optional
-    Output weights
+    Proxy of the design matrix: its element of row :math:`i` and column
+    :math:`j` is :math:`\psi_j(\vect{u}_i)`, ie the value of the j-th basis
+    term at the i-th point of the input sample.
+weight : sequence of positive floats
+    Weights :math:`w_i` of the equations, of size equal to the
+    size of the input sample.
+
+    By default, all the weights are equal to 1, which is equivalent,
+    from an algebraic point of view, of weights all equal to :math:`1/size`.
 indices : sequence of int
     Indices allowed in the basis
+
+    By default, all the terms are used.
 design : 2-d sequence of float
-    A priori known design matrix
+    The known design matrix
 
 Returns
 -------
@@ -59,16 +67,32 @@ method : :class:`~openturns.LeastSquaresMethod`
 
 Examples
 --------
+We get the projection onto the functional basis :math:`(x, x^2, x^3)` of
+a model from which we only have a data base of
+size 50. The least squares problem is solved using the SVD method.
+
+There is no model selection strategy. The projection has 3 components:
+all the functions of the basis are used.
+
 >>> import openturns as ot
->>> basisSize = 3
->>> sampleSize = 5
+>>> sampleSize = 50
 >>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
->>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
->>> basis = ot.Basis(phis)
->>> proxy = ot.DesignProxy(X, phis)
->>> indices = range(basisSize)
->>> designMatrix = ot.Matrix(proxy.computeDesign(indices))
->>> method = ot.LeastSquaresMethod.Build('SVD', designMatrix)
 >>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
 >>> y = normal.getRealization()
->>> x = method.solve(y)"
+
+Here we define the functional basis and the design proxy (for the last constructor):
+
+>>> basisSize = 3
+>>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
+>>> proxy = ot.DesignProxy(X, phis)
+
+Here, we explicit the design matrix:
+
+>>> full = range(basisSize)
+>>> designMatrix = ot.Matrix(proxy.computeDesign(full))
+
+Here, we define and solve the least-squares problem:
+
+>>> method = ot.LeastSquaresMethod.Build('SVD', designMatrix)
+>>> x = method.solve(y)
+)RAW"

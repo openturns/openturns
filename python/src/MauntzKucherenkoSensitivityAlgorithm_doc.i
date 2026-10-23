@@ -33,8 +33,8 @@ computeSecondOrder : bool
 Notes
 -----
 This class analyzes the influence of each component of a random vector
-:math:`\vect{X} = \left( X_1, \ldots, X_{n_X} \right)` on a random vector
-:math:`\vect{Y} = \left( Y_1, \ldots, Y_{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
+:math:`\vect{X} = \left( X_1, \ldots, X_{\inputDim} \right)` on a random vector
+:math:`\vect{Y} = \left( Y_1, \ldots, Y_{\outputDim} \right)` by computing Sobol' indices (see also [sobol1993]_).
 The [sobol2007]_ method is used to estimate both first
 and total order indices.
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.

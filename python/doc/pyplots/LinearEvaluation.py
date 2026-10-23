@@ -1,9 +1,9 @@
 import openturns as ot
 import openturns.viewer as otv
 
-A = ot.Matrix(2, 1)
+A = ot.Matrix(1, 2)
 A[0, 0] = 1.0
-A[1, 0] = 2.0
+A[0, 1] = 2.0
 const = [1.5]
 center = [2.0, 3.0]
 func = ot.LinearEvaluation(center, const, A)

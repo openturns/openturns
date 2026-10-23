@@ -76,7 +76,7 @@ void QuadraticTaylor::run()
   linear_ = inputFunction_.gradient(center_);
   quadratic_ = inputFunction_.hessian(center_);
   /* Build the several implementations and set it into the response surface */
-  responseSurface_ = QuadraticFunction(center_, constant_, linear_, quadratic_);
+  responseSurface_ = QuadraticFunction(center_, constant_, linear_.transpose(), quadratic_);
   responseSurface_.setDescription(inputFunction_.getDescription());
 }
 

@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
-from openturns.testing import assert_almost_equal
+from openturns.testing import assert_almost_equal, assert_raises
 from openturns.usecases import ishigami_function
 from math import pi
 
@@ -65,3 +65,27 @@ assert_almost_equal(im.ST2, ST2, 1e-12)
 
 ST3 = S13
 assert_almost_equal(im.ST3, ST3, 1e-12)
+
+# Polynomial chaos expansion indices and coefficients
+indices = im.getNonZeroPolynomialChaosExpansionIndices()
+coefficients = im.getNonZeroPolynomialChaosExpansionCoefficients()
+assert len(indices) == 46
+assert len(coefficients) == len(indices)
+for idx in indices:
+    assert len(idx) == im.dim
+
+assert im.getNonZeroPolynomialChaosExpansionIndices(0) == [0, 0, 0]
+assert im.getNonZeroPolynomialChaosExpansionIndices(1) == [1, 0, 0]
+assert im.getNonZeroPolynomialChaosExpansionIndices(-1) == [21, 0, 4]
+assert indices[0] == im.getNonZeroPolynomialChaosExpansionIndices(0)
+assert indices[-1] == im.getNonZeroPolynomialChaosExpansionIndices(-1)
+assert_almost_equal(im.getNonZeroPolynomialChaosExpansionCoefficients(0), im.expectation, 1e-12)
+
+with assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionIndices(46)
+with assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionIndices(-47)
+with assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionCoefficients(46)
+with assert_raises(ValueError):
+    im.getNonZeroPolynomialChaosExpansionCoefficients(-47)
