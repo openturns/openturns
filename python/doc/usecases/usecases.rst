@@ -37,3 +37,4 @@ Contents
    use_case_brain_diffusion
    use_case_wind_rose
    use_case_geometric_tolerancing
+   use_case_four_branch_function
