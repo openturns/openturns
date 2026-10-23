@@ -303,16 +303,6 @@ Standard benchmark version (independent standard normals, p=6):
     X1 ~ Normal(mu=0, sigma=1)
     X2 ~ Normal(mu=0, sigma=1)
 
-OpenTURNS active learning version (N(0,1.5) inputs, p=6):
-
-.. code-block:: python
-
-    >>> fb = four_branch_function.FourBranchModel.OpenTURNSActiveLearningVersion()
-    >>> print(fb.distribution)
-    Independent copula
-    X1 ~ Normal(mu=0, sigma=1.5)
-    X2 ~ Normal(mu=0, sigma=1.5)
-
 Custom parameter p:
 
 .. code-block:: python
