@@ -69,13 +69,7 @@ void CrossEntropyImportanceSampling::setEvent(const RandomVector & event)
   EventSimulationImplementation::setEvent(event.getImplementation()->asComposedEvent());
   const Bool newDirection = getEvent().getOperator()(0, 1);
   if (previousDirection != newDirection)
-    quantileLevel_ = 1.0 - quantileLevel_;
-}
-
-/* Setter for MaximumCoefficientOfVariation. */
-void CrossEntropyImportanceSampling::setMaximumCoefficientOfVariation(const Scalar)
-{
-  throw InvalidArgumentException(HERE) << "The maximum coefficient cannot be used as termination criterion in this algorithm.";
+    quantileLevel_ = 1.0 - quantileLevel_;  
 }
 
 // Get quantileLevel
@@ -312,12 +306,22 @@ void CrossEntropyImportanceSampling::run()
   crossEntropyResult_.setOuterSampling(getMaximumOuterSampling() * numberOfSteps_);
   crossEntropyResult_.setBlockSize(getBlockSize());
   crossEntropyResult_.setVarianceEstimate(varianceEstimate);
+  // Mirror the estimates into the base result: readers through a generic
+  // EventSimulation handle only see the base getResult(), which is hidden
+  // (not overridden) by CrossEntropyImportanceSampling::getResult()
+  setResult(crossEntropyResult_);
 }
 
 // Accessor to CrossEntropyImportanceSampling Result_s
 CrossEntropyResult CrossEntropyImportanceSampling::getResult() const
 {
   return crossEntropyResult_;
+}
+
+/* Current result with full dynamic type */
+ProbabilitySimulationResult CrossEntropyImportanceSampling::getHistoryResult() const
+{
+  return ProbabilitySimulationResult(crossEntropyResult_);
 }
 
 
@@ -341,6 +345,15 @@ Sample CrossEntropyImportanceSampling::getInputSample(const UnsignedInteger step
   if (select > 2)
     throw InvalidArgumentException(HERE) << "CrossEntropy select flag (" << select << ") must be in [0-2]";
   return (select == 2) ? inputSample_[step] : inputSample_[step].select(getSampleIndices(step, (select == EVENT1)));
+}
+
+
+Sample CrossEntropyImportanceSampling::getInputSample() const
+{
+  if (!keepSample_)
+    throw InvalidArgumentException(HERE) << "CrossEntropyImportanceSampling keepSample was not set";
+    
+  return getInputSample(getStepsNumber()-1, BOTH);
 }
 
 Sample CrossEntropyImportanceSampling::getOutputSample(const UnsignedInteger step, const UnsignedInteger select) const

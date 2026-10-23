@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of SimulationResult
+ *  @brief ProbabilitySimulationResult is a handle to any concrete
+ *  simulation result, preserving its dynamic type
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -19,180 +20,109 @@
  *
  */
 #include "openturns/ProbabilitySimulationResult.hxx"
-#include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/DistFunc.hxx"
-#include "openturns/SimulationSensitivityAnalysis.hxx"
-#include "openturns/Log.hxx"
-#include "openturns/Exception.hxx"
-#include "openturns/Dirac.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ProbabilitySimulationResult)
+/**
+ * @class ProbabilitySimulationResult
+ */
 
-static const Factory<ProbabilitySimulationResult> Factory_ProbabilitySimulationResult;
+CLASSNAMEINIT(ProbabilitySimulationResult)
 
 /* Default constructor */
 ProbabilitySimulationResult::ProbabilitySimulationResult()
-  : SimulationResult()
+  : TypedInterfaceObject<ProbabilitySimulationResultImplementation>(new ProbabilitySimulationResultImplementation())
 {
   // Nothing to do
 }
 
-/* Standard constructor */
-ProbabilitySimulationResult::ProbabilitySimulationResult(const RandomVector & event,
-    const Scalar probabilityEstimate,
-    const Scalar varianceEstimate,
-    const UnsignedInteger outerSampling,
-    const UnsignedInteger blockSize)
-  : SimulationResult(outerSampling, blockSize)
-  , event_(event)
-  , probabilityEstimate_(probabilityEstimate)
-  , varianceEstimate_(varianceEstimate)
+/* Constructor from a concrete result: clone for independence */
+ProbabilitySimulationResult::ProbabilitySimulationResult(const ProbabilitySimulationResultImplementation & result)
+  : TypedInterfaceObject<ProbabilitySimulationResultImplementation>(Pointer<ProbabilitySimulationResultImplementation>(result.clone()))
 {
-  // Check if the probability estimate is within the range [0, 1]
-  if ((probabilityEstimate < 0.0) || (probabilityEstimate > 1.0)) LOGINFO("The probability estimate should be in the range [0, 1]");
-  // Check if the variance estimate is >= 0.0
-  if (!(varianceEstimate >= 0.0)) throw InvalidArgumentException(HERE) << "The variance estimate must be >= 0";
+  // Nothing to do
 }
 
-
-/* Virtual constructor */
-ProbabilitySimulationResult * ProbabilitySimulationResult::clone() const
+/* Constructor from implementation */
+ProbabilitySimulationResult::ProbabilitySimulationResult(const Implementation & p_implementation)
+  : TypedInterfaceObject<ProbabilitySimulationResultImplementation>(p_implementation)
 {
-  return new ProbabilitySimulationResult(*this);
+  // Nothing to do
 }
 
-/* Event accessor */
-RandomVector ProbabilitySimulationResult::getEvent() const
+#ifndef SWIG
+/* Constructor from implementation pointer */
+ProbabilitySimulationResult::ProbabilitySimulationResult(ProbabilitySimulationResultImplementation * p_implementation)
+  : TypedInterfaceObject<ProbabilitySimulationResultImplementation>(p_implementation)
 {
-  return event_;
+  // Nothing to do
+}
+#endif
+
+/* String converter */
+String ProbabilitySimulationResult::__repr__() const
+{
+  OSS oss;
+  oss << "class=" << getClassName();
+  if (getImplementation())
+    oss << " wrapped=" << getImplementation()->__repr__();
+  else
+    oss << " wrapped=null";
+  return oss;
 }
 
-void ProbabilitySimulationResult::setEvent(const RandomVector & event)
+String ProbabilitySimulationResult::__str__(const String & offset) const
 {
-  event_ = event;
+  OSS oss;
+  oss << offset << getClassName() << "(";
+  if (getImplementation())
+    oss << getImplementation()->__str__(offset);
+  else
+    oss << "null";
+  oss << ")";
+  return oss;
 }
 
 /* Probability estimate accessor */
 Scalar ProbabilitySimulationResult::getProbabilityEstimate() const
 {
-  return probabilityEstimate_;
-}
-
-void ProbabilitySimulationResult::setProbabilityEstimate(const Scalar probabilityEstimate)
-{
-  probabilityEstimate_ = probabilityEstimate;
+  return getImplementation()->getProbabilityEstimate();
 }
 
 /* Variance estimate accessor */
 Scalar ProbabilitySimulationResult::getVarianceEstimate() const
 {
-  return varianceEstimate_;
-}
-
-void ProbabilitySimulationResult::setVarianceEstimate(const Scalar varianceEstimate)
-{
-  varianceEstimate_ = varianceEstimate;
-}
-
-/* Probability estimate distribution accessor */
-Distribution ProbabilitySimulationResult::getProbabilityDistribution() const
-{
-  if (varianceEstimate_ <= 0.0) return Dirac(probabilityEstimate_);
-  return Normal(probabilityEstimate_, std::sqrt(varianceEstimate_));
+  return getImplementation()->getVarianceEstimate();
 }
 
 /* Coefficient of variation estimate accessor */
 Scalar ProbabilitySimulationResult::getCoefficientOfVariation() const
 {
-  // The usual case: the variance estimate is > 0.0 and the probability estimate is in ]0,1] or the user accept a zero variance
-  if ((varianceEstimate_ > 0.0) && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ <= 1.0)) return sqrt(varianceEstimate_) / probabilityEstimate_;
-  // when covarianceEstimate_ == 0.0 and 0.0 < probabilityEstimate_ < 1.0
-  const Bool checkPositiveVariance = ResourceMap::GetAsBool("ProbabilitySimulationResult-CheckPositiveVariance");
-  if (!checkPositiveVariance && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ < 1.0) && (outerSampling_ * blockSize_ > 1)) return sqrt(varianceEstimate_) / probabilityEstimate_;
-  // In all the other cases, return -1.0, waiting for a better strategy
-  return -1.0;
+  return getImplementation()->getCoefficientOfVariation();
 }
 
 /* Standard deviation estimate accessor */
 Scalar ProbabilitySimulationResult::getStandardDeviation() const
 {
-  // The usual case: the variance estimate is > 0.0 or the user accept a zero variance
-  if (varianceEstimate_ > 0.0) return sqrt(varianceEstimate_);
-  // when covarianceEstimate_ == 0.0 and 0.0 < probabilityEstimate_ < 1.0
-  const Bool checkPositiveVariance = ResourceMap::GetAsBool("ProbabilitySimulationResult-CheckPositiveVariance");
-  if (!checkPositiveVariance && (probabilityEstimate_ > 0.0) && (probabilityEstimate_ < 1.0) && (outerSampling_ * blockSize_ > 1)) return sqrt(varianceEstimate_);
-  // In all the other cases, return -1.0, waiting for a better strategy
-  return -1.0;
+  return getImplementation()->getStandardDeviation();
 }
 
-/* String converter */
-String ProbabilitySimulationResult::__repr__() const
+/* Outer sampling accessor */
+UnsignedInteger ProbabilitySimulationResult::getOuterSampling() const
 {
-  const Scalar defaultConfidenceLevel = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel");
-  OSS oss;
-  oss.setPrecision(6);
-  oss << std::scientific
-      << "probabilityEstimate=" << probabilityEstimate_
-      << " varianceEstimate=" << varianceEstimate_;
-
-  oss.setPrecision(2)
-      << " standard deviation=" << getStandardDeviation()
-      << " coefficient of variation=" << getCoefficientOfVariation()
-      << std::fixed
-      << " confidenceLength(" << defaultConfidenceLevel << ")=" << std::scientific << getProbabilityDistribution().computeBilateralConfidenceInterval(defaultConfidenceLevel).getVolume() << std::fixed
-      << " outerSampling=" << outerSampling_
-      << " blockSize=" << blockSize_;
-
-  return oss;
+  return getImplementation()->getOuterSampling();
 }
 
-/* Confidence length */
-Scalar ProbabilitySimulationResult::getConfidenceLength(const Scalar level) const
+/* Block size accessor */
+UnsignedInteger ProbabilitySimulationResult::getBlockSize() const
 {
-  LOGWARN("ProbabilitySimulationResult.getConfidenceLength is deprecated");
-  // Check if the given level is in ]0, 1[
-  if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Confidence level must be in ]0, 1[";
-  // The probability estimate is asymptotically normal
-  const Scalar xq = DistFunc::qNormal(0.5 + 0.5 * level);
-  return 2.0 * xq * sqrt(varianceEstimate_);
+  return getImplementation()->getBlockSize();
 }
 
-/* Mean point conditioned to the event realization accessor */
-Point ProbabilitySimulationResult::getMeanPointInEventDomain() const
+/* Event accessor */
+RandomVector ProbabilitySimulationResult::getEvent() const
 {
-  return SimulationSensitivityAnalysis(event_).computeMeanPointInEventDomain();
-}
-
-/* Get the importance factors based on the mean point in the event domain. The mean point is transformed into the standard space, then the importance factors are obtained as the normalized squared cosine directors. */
-PointWithDescription ProbabilitySimulationResult::getImportanceFactors() const
-{
-  return SimulationSensitivityAnalysis(event_).computeImportanceFactors();
-}
-
-/* ImportanceFactors graph */
-Graph ProbabilitySimulationResult::drawImportanceFactors() const
-{
-  return SimulationSensitivityAnalysis(event_).drawImportanceFactors();
-}
-
-/* Method save() stores the object through the StorageManager */
-void ProbabilitySimulationResult::save(Advocate & adv) const
-{
-  SimulationResult::save(adv);
-  adv.saveAttribute("event_", event_);
-  adv.saveAttribute("probabilityEstimate_", probabilityEstimate_);
-  adv.saveAttribute("varianceEstimate_", varianceEstimate_);
-}
-
-/* Method load() reloads the object from the StorageManager */
-void ProbabilitySimulationResult::load(Advocate & adv)
-{
-  SimulationResult::load(adv);
-  adv.loadAttribute("event_", event_);
-  adv.loadAttribute("probabilityEstimate_", probabilityEstimate_);
-  adv.loadAttribute("varianceEstimate_", varianceEstimate_);
+  return getImplementation()->getEvent();
 }
 
 END_NAMESPACE_OPENTURNS

@@ -47,9 +47,17 @@ Simulation algorithm
     SimulationResult
     EventSimulation
     ProbabilitySimulationAlgorithm
-    ProbabilitySimulationResult
+    ProbabilitySimulationResultImplementation
     ExpectationSimulationAlgorithm
     ExpectationSimulationResult
+    ProbabilitySimulationResult
+    experimental.ActiveLearningReliabilityFunction
+    experimental.PythonActiveLearningReliabilityFunction
+    experimental.ActiveLearningUFunction
+    experimental.ActiveLearningGMMFunction
+    experimental.ActiveLearningEFFFunction
+    experimental.ActiveLearningReliabilityAlgorithm
+    experimental.ActiveLearningReliabilityResult
 
 Directional Sampling
 ====================

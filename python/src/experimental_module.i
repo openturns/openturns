@@ -62,6 +62,12 @@
 /* Uncertainty */
 %import metamodel_module.i
 
+/* Base/Func (Basis, Function, Sample) */
+%import func_module.i
+
+/* Uncertainty/Algorithm/Simulation (EventSimulation, ProbabilitySimulationResultImplementation) */
+%import simulation_module.i
+
 /* Uncertainty/Process */
 %import model_process_module.i
 %include CirculantEmbeddingGaussianProcess.i
@@ -106,7 +112,6 @@
 %include WrappedNormalFactory.i
 
 /* Base/Stat */
-%import statistics_module.i
 // HODLR wrappers live in the statistics module (like HMatrix) so that
 // CovarianceModel/GaussianProcessFitter methods using HODLR types compile;
 // re-export them here to keep the openturns.experimental API.
@@ -120,9 +125,17 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include GaussianProcessRegressionCrossValidation.i
 %include SparseExpansion.i
 
+/* Uncertainty/Algorithm/Simulation (experimental active-learning reliability) */
+%include ActiveLearningReliabilityFunctionImplementation.i
+%include ActiveLearningReliabilityFunction.i
+%include ActiveLearningUFunction.i
+%include ActiveLearningEFFFunction.i
+%include ActiveLearningGMMFunction.i
+%include ActiveLearningReliabilityResult.i
+%include ActiveLearningReliabilityAlgorithm.i
+
 /* Base/Func */
 %include ExceptionPenalizedEvaluation.i
 
 /* Base/Optim */
 %include ExceptionPenalizedProblem.i
-

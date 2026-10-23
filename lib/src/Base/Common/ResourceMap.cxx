@@ -1613,9 +1613,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SimulationAlgorithm-DefaultBlockSize", 1);
   addAsUnsignedInteger("SimulationAlgorithm-DefaultMaximumOuterSampling", 1000);
 
-  // ProbabilitySimulationResult parameters //
-  addAsBool("ProbabilitySimulationResult-CheckPositiveVariance", false);
-  addAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel", 0.95);
+  // ProbabilitySimulationResultImplementation parameters //
+  addAsBool("ProbabilitySimulationResultImplementation-CheckPositiveVariance", false);
+  addAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel", 0.95);
 
   // ExpectationSimulationAlgorithm parameters //
   addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});
@@ -1640,6 +1640,11 @@ void ResourceMap::loadDefaultConfiguration()
   // Cross Entropy Importance Sampling parameters //
   addAsScalar("CrossEntropyImportanceSampling-DefaultQuantileLevel", 0.25);
 
+  // ActiveLearningReliability Algorithm parameters //
+  addAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultSimulationAlgorithmSeed", 0);
+  addAsScalar("ActiveLearningReliabilityAlgorithm-DefaultConvergenceUncertaintyFactor", 2.0);
+  addAsUnsignedInteger("ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations", 100);
+  
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 

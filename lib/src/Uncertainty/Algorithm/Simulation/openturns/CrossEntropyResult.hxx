@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_CROSSENTROPYRESULT_HXX
 #define OPENTURNS_CROSSENTROPYRESULT_HXX
 
-#include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * CrossEntropyResult is some CrossEntropyResult type to illustrate how to add some classes in Open TURNS
  */
 class OT_API CrossEntropyResult
-  : public ProbabilitySimulationResult
+  : public ProbabilitySimulationResultImplementation
 {
 
   CLASSNAME

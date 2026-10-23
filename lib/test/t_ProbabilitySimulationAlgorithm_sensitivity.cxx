@@ -72,7 +72,7 @@ int main(int, char *[])
     /* Perform the simulation */
     myAlgo.run();
 
-    ProbabilitySimulationResult result(myAlgo.getResult());
+    ProbabilitySimulationResultImplementation result(myAlgo.getResult());
     fullprint << "MonteCarlo result=" << result << std::endl;
 
     /* Compute sensitivity information */

@@ -66,7 +66,7 @@ public:
   void setEvent(const RandomVector & event);
 
   /** Result accessor */
-  ProbabilitySimulationResult getResult() const;
+  ProbabilitySimulationResultImplementation getResult() const;
 
   /** String converter */
   String __repr__() const override;
@@ -75,7 +75,7 @@ public:
   void run();
 
   /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel")) const;
 
   /** Input accessor */
   Sample getInputSample() const;

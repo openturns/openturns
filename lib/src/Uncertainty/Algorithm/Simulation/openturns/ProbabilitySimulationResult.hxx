@@ -1,6 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Implementation of SimulationResult
+ *  @brief ProbabilitySimulationResult is a handle to any concrete
+ *  simulation result, preserving its dynamic type
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -21,91 +22,73 @@
 #ifndef OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 #define OPENTURNS_PROBABILITYSIMULATIONRESULT_HXX
 
-#include "openturns/RandomVector.hxx"
-#include "openturns/SimulationResult.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
-#include "openturns/Graph.hxx"
-#include "openturns/Normal.hxx"
-#include "openturns/Distribution.hxx"
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class ProbabilitySimulationResult
- * Implementation of SimulationResult
+ *
+ * ProbabilitySimulationResult holds any concrete simulation result
+ * (ProbabilitySimulationResultImplementation, NAISResult, SubsetSamplingResult,
+ * CrossEntropyResult, ...) without slicing it. It is the element type
+ * of per-iteration histories, e.g. in ActiveLearningReliabilityResult:
+ * generic quantities are readable directly, concrete details through a
+ * downcast to the known concrete type.
  */
+
 class OT_API ProbabilitySimulationResult
-  : public SimulationResult
+  : public TypedInterfaceObject<ProbabilitySimulationResultImplementation>
 {
 
   CLASSNAME
 public:
 
-
   /** Default constructor */
   ProbabilitySimulationResult();
 
-  /** Standard constructor */
-  ProbabilitySimulationResult(const RandomVector & event,
-                              const Scalar probabilityEstimate,
-                              const Scalar varianceEstimate,
-                              const UnsignedInteger outerSampling,
-                              const UnsignedInteger blockSize);
+  /** Constructor from a concrete result: the result is cloned, so the
+      handle is independent of the source object and later runs never
+      mutate stored history elements */
+  explicit ProbabilitySimulationResult(const ProbabilitySimulationResultImplementation & result);
 
-  /** Virtual constructor */
-  ProbabilitySimulationResult * clone() const override;
+#ifndef SWIG
+  /** Constructor from implementation */
+  ProbabilitySimulationResult(const Implementation & p_implementation);
 
-  /** Event accessor */
-  RandomVector getEvent() const;
-  void setEvent(const RandomVector & event);
-
-  /** Probability estimate accessor */
-  Scalar getProbabilityEstimate() const;
-  void setProbabilityEstimate(const Scalar probabilityEstimate);
-
-  /** Variance estimate accessor */
-  Scalar getVarianceEstimate() const;
-  void setVarianceEstimate(const Scalar varianceEstimate);
-
-  /** Probability estimate distribution accessor */
-  Distribution getProbabilityDistribution() const;
-
-  /** Coefficient of variation estimate accessor */
-  virtual Scalar getCoefficientOfVariation() const;
-
-  /** Standard deviation estimate accessor */
-  virtual Scalar getStandardDeviation() const;
-
-  /** Mean point conditioned to the event realization accessor */
-  Point getMeanPointInEventDomain() const;
-
-  /** Importance factors accessor */
-  PointWithDescription getImportanceFactors() const;
-
-  /** Draw the importance factors */
-  Graph drawImportanceFactors() const;
-
-  /** Confidence length @deprecated */
-  virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+  /** Constructor from implementation pointer */
+  ProbabilitySimulationResult(ProbabilitySimulationResultImplementation * p_implementation);
+#endif
 
   /** String converter */
   String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;
+  /** Probability estimate accessor */
+  Scalar getProbabilityEstimate() const;
 
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;
+  /** Variance estimate accessor */
+  Scalar getVarianceEstimate() const;
 
-protected:
+  /** Coefficient of variation estimate accessor */
+  Scalar getCoefficientOfVariation() const;
 
-  /* The event we are interested in */
-  RandomVector event_;
-  Scalar probabilityEstimate_ = 0.0;
-  Scalar varianceEstimate_ = 0.0;
+  /** Standard deviation estimate accessor */
+  Scalar getStandardDeviation() const;
 
-}; // class ProbabilitySimulationResult
+  /** Outer sampling accessor */
+  UnsignedInteger getOuterSampling() const;
+
+  /** Block size accessor */
+  UnsignedInteger getBlockSize() const;
+
+  /** Event accessor */
+  RandomVector getEvent() const;
+
+} ; /* class ProbabilitySimulationResult */
+
+typedef Collection<ProbabilitySimulationResult> GenericSimulationResultCollection;
 
 END_NAMESPACE_OPENTURNS
 

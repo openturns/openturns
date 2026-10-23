@@ -25,6 +25,7 @@ add_library (OTPythonWrapping OBJECT
                       PythonExperiment.cxx
                       PythonRandomVector.cxx
                       PythonDistribution.cxx
+                      PythonActiveLearningReliabilityFunctionImplementation.cxx
                       PythonFieldFunction.cxx
                       PythonFieldToPointFunction.cxx
                       PythonPointToFieldFunction.cxx)
@@ -570,6 +571,13 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      FejerExperiment.i FejerExperiment_doc.i
                      ChristoffelSubsampleExperiment.i ChristoffelSubsampleExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
+                     ActiveLearningReliabilityFunctionImplementation.i ActiveLearningReliabilityFunctionImplementation_doc.i
+                     ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
+                     ActiveLearningUFunction.i ActiveLearningUFunction_doc.i
+                     ActiveLearningEFFFunction.i ActiveLearningEFFFunction_doc.i
+                     ActiveLearningGMMFunction.i ActiveLearningGMMFunction_doc.i
+                     ActiveLearningReliabilityAlgorithm.i ActiveLearningReliabilityAlgorithm_doc.i
+                     ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
@@ -698,7 +706,7 @@ ot_add_python_module(simulation simulation_module.i
                       SobolIndicesExperiment.i SobolIndicesExperiment_doc.i
                       RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i
-                      ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
+                      ProbabilitySimulationResultImplementation.i ProbabilitySimulationResultImplementation_doc.i
                       SimulationResult.i SimulationResult_doc.i
                       SimulationAlgorithm.i SimulationAlgorithm_doc.i
                       EventSimulationImplementation.i EventSimulationImplementation_doc.i
@@ -733,7 +741,8 @@ ot_add_python_module(simulation simulation_module.i
                       StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i
                       PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i
                       LineSampling.i LineSampling_doc.i
-                    )
+                      ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
+                     )
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i
                       Drawable.i Drawable_doc.i

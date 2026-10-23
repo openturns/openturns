@@ -54,7 +54,7 @@ Add PersistentObjects to the study:
 >>> point[2] = 12.0
 >>> myStudy.add('point', point)
 >>> # a simulation result:
->>> simulationResult = ot.ProbabilitySimulationResult(ot.ThresholdEvent(), 0.5, 0.01, 150, 4)
+>>> simulationResult = ot.ProbabilitySimulationResultImplementation(ot.ThresholdEvent(), 0.5, 0.01, 150, 4)
 >>> myStudy.add('simulationResult', simulationResult)
 
 Get objects from the study:
@@ -81,7 +81,7 @@ Create data from the ones stored in the study:
 >>> otherPoint = ot.Point()
 >>> myStudy.fillObject('point', otherPoint)
 >>> # a simulation result:
->>> otherSimulationResult = ot.ProbabilitySimulationResult()
+>>> otherSimulationResult = ot.ProbabilitySimulationResultImplementation()
 >>> myStudy.fillObject('simulationResult', otherSimulationResult)
 
 Get information from the study:
