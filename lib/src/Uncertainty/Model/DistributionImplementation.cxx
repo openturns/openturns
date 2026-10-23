@@ -1387,7 +1387,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     const Scalar xMin = range_.getLowerBound()[0];
     const Scalar xMax = range_.getUpperBound()[0];
     const Scalar delta = xMax - xMin;
-    const UnsignedInteger intervalsNumber = std::max(1, static_cast<int>(round(2 * x * delta / integrationNodesNumber_)));
+    const UnsignedInteger intervalsNumber = std::max(1, static_cast<int>(round(2.0 * std::abs(x) * delta / integrationNodesNumber_)));
     if (intervalsNumber * integrationNodesNumber_ < N)
     {
       const Scalar halfLength = 0.5 * delta / intervalsNumber;
@@ -1407,8 +1407,10 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     {
       // Highly oscillatory regime: delegate to the Filon quadrature, which
       // interpolates the PDF by parabolas (fourth-order) instead of the
-      // linear Filon-trapezoidal rule previously inlined here
-      const FilonQuadrature filon(N, x, 2);
+      // linear Filon-trapezoidal rule previously inlined here.  A Filon grid
+      // contains 2*n+1 points, so choose n to honor the point budget N.
+      const UnsignedInteger filonN = std::max(UnsignedInteger(1), (N > 2) ? (N - 1) / 2 : UnsignedInteger(1));
+      const FilonQuadrature filon(filonN, x, 2);
       const Point cf(filon.integrate(getPDF(), range_));
       return Complex(cf[0], cf[1]);
     }
