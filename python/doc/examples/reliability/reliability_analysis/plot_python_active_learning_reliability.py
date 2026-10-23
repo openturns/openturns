@@ -10,8 +10,8 @@ Sun et al. [sun2017]_.
 
 The reliability problem is the four-branch function already used in the
 :doc:`active learning gallery example <plot_active_learning_reliability>`,
-but revisited as a union event. Using the same model, input distribution 
-and initial design of experiments makes it easy to compare the custom 
+but revisited as a union event. Using the same model, input distribution
+and initial design of experiments makes it easy to compare the custom
 criterion with the built-in :class:`~openturns.experimental.ActiveLearningUFunction`.
 """
 
@@ -96,7 +96,8 @@ def fourthBranch(x):
     g4 = (x2 - x1) + 6 / sqrt2
     return [g4]
 
-
+input_distribution = ot.Normal([0.0, 0.0], [1.5, 1.5])
+input_dimension = input_distribution.getDimension()
 g1 = ot.PythonFunction(input_dimension, 1, firstBranch)
 g2 = ot.PythonFunction(input_dimension, 1, secondBranch)
 g3 = ot.PythonFunction(input_dimension, 1, thirdBranch)
@@ -115,6 +116,7 @@ e3 = ot.ThresholdEvent(Y3, ot.Less(), 0.0)
 e4 = ot.ThresholdEvent(Y4, ot.Less(), 0.0)
 
 event = ot.UnionEvent([e1, e2, e3, e4]).asComposedEvent()
+g = event.getFunction()
 
 # %%
 # Initial design of experiments and Gaussian process fitter
