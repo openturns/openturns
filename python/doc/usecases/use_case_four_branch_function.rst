@@ -50,15 +50,16 @@ The two input variables are modeled as independent standard normal random variab
 .. math::
    X_1, X_2 \sim \mathcal{N}(0, 1) \quad \text{independent}
 
-+----------------+-----------------------------------------------+
-| Input variable | Distribution                                  |
-+================+===============================================+
-| :math:`X_1`    | Normal(:math:`\mu=0`, :math:`\sigma=1`)       |
-+----------------+-----------------------------------------------+
-| :math:`X_2`    | Normal(:math:`\mu=0`, :math:`\sigma=1`)       |
-+----------------+-----------------------------------------------+
+.. list-table:: **Table 1.** Distribution of the input random variables (standard benchmark).
+   :header-rows: 1
+   :widths: 30 70
 
-**Table 1.** Distribution of the input random variables (standard benchmark).
+   * - Input variable
+     - Distribution
+   * - :math:`X_1`
+     - Normal(:math:`\mu=0`, :math:`\sigma=1`)
+   * - :math:`X_2`
+     - Normal(:math:`\mu=0`, :math:`\sigma=1`)
 
 The failure event is defined as:
 
@@ -71,15 +72,25 @@ Reference Failure Probability
 The failure probability :math:`P_f = \mathbb{P}[f(\vect{X}, 6) \leq 0]` has been
 estimated by several methods in the literature:
 
-+--------+------------+----------------------+----------------+-----------------+
-| Method | N          | :math:`\hat{P}_f`    | COV            | Source          |
-+========+============+======================+================+=================+
-| MCS    | :math:`10^6` | :math:`4.416\times10^{-3}` | 0.15%       | Echard et al. (2011) |
-+--------+------------+----------------------+----------------+-----------------+
-| IS     | 1469       | :math:`4.9\times10^{-3}`   | -            | Echard et al. (2011) |
-+--------+------------+----------------------+----------------+-----------------+
+.. list-table:: **Table 2.** Reference values for the failure probability with :math:`p=6`.
+   :header-rows: 1
+   :widths: 15 15 25 15 30
 
-**Table 2.** Reference values for the failure probability with :math:`p=6`.
+   * - Method
+     - N
+     - :math:`\hat{P}_f`
+     - COV
+     - Source
+   * - MCS
+     - :math:`10^6`
+     - :math:`4.416\times10^{-3}`
+     - 0.15%
+     - Echard et al. (2011)
+   * - IS
+     - 1469
+     - :math:`4.9\times10^{-3}`
+     - -
+     - Echard et al. (2011)
 
 Analysis
 --------
@@ -97,182 +108,10 @@ This function is particularly challenging for reliability methods because:
 2. The limit state function is non-smooth (minimum of four functions)
 3. The probability of failure is small (rare event, ~0.45%)
 
-It serves as an excellent benchmark for:
+It serves as a benchmark for:
 - Active learning reliability algorithms (AK-MCS, PC-Kriging, etc.)
 - Subset Sampling and NAIS algorithms
-- Gaussian Process / Polynomial Chaos Kriging metamodeling
-- Neural network and spline-based reliability methods (original paper)
-
-Visualization
--------------
-
-The following examples show how to visualize the function, its limit state,
-and the failure domain.
-
-**Surface plot of the Four Branch function:**
-
-.. plot::
-
-    import openturns as ot
-    import openturns.viewer as otv
-    from openturns.usecases import four_branch_function
-
-    fb = four_branch_function.FourBranchModel()
-
-    # 3D surface plot
-    graph = fb.model.draw([-4.0, -4.0], [4.0, 4.0], [80, 80])
-    graph.setTitle("Four Branch function (surface)")
-    graph.setXTitle("X1")
-    graph.setYTitle("X2")
-    graph.setLegendPosition("upper right")
-    view = otv.View(graph, figure_kw={"figsize": (8, 6)})
-
-**Contour plot with limit state and input PDF:**
-
-.. plot::
-
-    import openturns as ot
-    import openturns.viewer as otv
-    from openturns.usecases import four_branch_function
-
-    fb = four_branch_function.FourBranchModel()
-
-    # Contour plot of the function
-    graph = fb.model.draw([-4.0, -4.0], [4.0, 4.0], [128, 128])
-    dr = graph.getDrawable(0)
-    dr.setLevels([-2.0, -1.0, -0.5, 0.0, 0.5, 1.0, 2.0, 3.0])
-    dr.setLegend("f(x)")
-    dr.setLineWidth(1.5)
-
-    # Highlight the limit state (f(x) = 0)
-    ls_graph = fb.model.draw([-4.0, -4.0], [4.0, 4.0], [200, 200])
-    ls_dr = ls_graph.getDrawable(0)
-    ls_dr.setLevels([0.0])
-    ls_dr.setLegend("Limit state f(x) = 0")
-    ls_dr.setLineWidth(3)
-    ls_dr.setColor("red")
-    ls_dr.setLineStyle("solid")
-
-    # Add input PDF contours
-    pdf_graph = fb.distribution.drawPDF([-4.0, -4.0], [4.0, 4.0], [80, 80])
-    pdf_dr = pdf_graph.getDrawable(0)
-    pdf_dr.setAlpha(0.3)
-    pdf_dr.setLegend("Input PDF (std. normal)")
-
-    graph.add(ls_dr)
-    graph.add(pdf_dr)
-    graph.setTitle("Four Branch: contours, limit state (red), input PDF")
-    graph.setXTitle("X1")
-    graph.setYTitle("X2")
-    graph.setLegendPosition("upper right")
-    view = otv.View(graph, figure_kw={"figsize": (8, 6)})
-
-**Failure domain visualization:**
-
-.. plot::
-
-    import openturns as ot
-    import openturns.viewer as otv
-    import numpy as np
-    from openturns.usecases import four_branch_function
-
-    fb = four_branch_function.FourBranchModel()
-
-    # Monte Carlo sampling to show failure domain
-    sample = fb.distribution.getSample(50000)
-    values = fb.model(sample)
-
-    # Separate failure and safe points
-    failure_indices = [i for i, v in enumerate(values) if v[0] <= 0]
-    safe_indices = [i for i, v in enumerate(values) if v[0] > 0]
-
-    failure_sample = sample[failure_indices]
-    safe_sample = sample[safe_indices]
-
-    graph = ot.Graph("Failure domain (red) vs Safe domain (blue)", "X1", "X2")
-    graph.setAxes(True)
-    graph.setGrid(True)
-
-    if failure_sample.getSize() > 0:
-        cloud_fail = ot.Cloud(failure_sample)
-        cloud_fail.setColor("red")
-        cloud_fail.setPointStyle("bullet")
-        cloud_fail.setLegend("Failure (f(x) <= 0)")
-        graph.add(cloud_fail)
-
-    cloud_safe = ot.Cloud(safe_sample)
-    cloud_safe.setColor("blue")
-    cloud_safe.setPointStyle("dot")
-    cloud_safe.setLegend("Safe (f(x) > 0)")
-    graph.add(cloud_safe)
-
-    # Add limit state
-    ls_graph = fb.model.draw([-4.0, -4.0], [4.0, 4.0], [200, 200])
-    ls_dr = ls_graph.getDrawable(0)
-    ls_dr.setLevels([0.0])
-    ls_dr.setLineWidth(2)
-    ls_dr.setColor("black")
-    ls_dr.setLineStyle("dashed")
-    ls_dr.setLegend("Limit state")
-    graph.add(ls_dr)
-
-    graph.setLegendPosition("upper right")
-    view = otv.View(graph, figure_kw={"figsize": (8, 6)})
-
-**Individual branches visualization:**
-
-.. plot::
-
-    import openturns as ot
-    import openturns.viewer as otv
-    import math
-    from openturns.usecases import four_branch_function
-
-    fb = four_branch_function.FourBranchModel()
-    p = fb.p
-    sqrt2 = math.sqrt(2.0)
-
-    # Define individual branches
-    g1 = ot.SymbolicFunction(["x1", "x2"],
-        [f"3 + 0.1*(x1 - x2)^2 - (x1 + x2)/{sqrt2:.6f}"])
-    g2 = ot.SymbolicFunction(["x1", "x2"],
-        [f"3 + 0.1*(x1 - x2)^2 + (x1 + x2)/{sqrt2:.6f}"])
-    g3 = ot.SymbolicFunction(["x1", "x2"],
-        [f"(x1 - x2) + {p}/{sqrt2:.6f}"])
-    g4 = ot.SymbolicFunction(["x1", "x2"],
-        [f"(x2 - x1) + {p}/{sqrt2:.6f}"])
-
-    # Plot each branch's zero contour
-    graph = ot.Graph("Individual branches (zero contours)", "X1", "X2")
-    graph.setAxes(True)
-    graph.setGrid(True)
-
-    branches = [
-        (g1, "g1 (quadratic)", "blue"),
-        (g2, "g2 (quadratic)", "green"),
-        (g3, "g3 (linear)", "orange"),
-        (g4, "g4 (linear)", "purple"),
-    ]
-
-    for func, name, color in branches:
-        dr = func.draw([-4.0, -4.0], [4.0, 4.0], [100, 100]).getDrawable(0)
-        dr.setLevels([0.0])
-        dr.setLegend(name)
-        dr.setColor(color)
-        dr.setLineWidth(2)
-        graph.add(dr)
-
-    # Add overall limit state
-    dr_all = fb.model.draw([-4.0, -4.0], [4.0, 4.0], [200, 200]).getDrawable(0)
-    dr_all.setLevels([0.0])
-    dr_all.setLegend("Overall min(g1,g2,g3,g4)")
-    dr_all.setColor("red")
-    dr_all.setLineWidth(3)
-    dr_all.setLineStyle("dashed")
-    graph.add(dr_all)
-
-    graph.setLegendPosition("upper right")
-    view = otv.View(graph, figure_kw={"figsize": (8, 6)})
+- Gaussian Process / Polynomial Chaos metamodeling
 
 References
 ----------
@@ -284,8 +123,6 @@ References
 * [Echard2011]_ B. Echard, N. Gayton, and M. Lemaire, "AK-MCS: An active learning
   reliability method combining Kriging and Monte Carlo simulation",
   *Reliability Engineering and System Safety*, vol. 96, no. 2, pp. 145-154, 2011.
-
-* UQWorld Benchmark: https://uqworld.org/t/four-branch-function/59
 
 Load the use case
 -----------------
