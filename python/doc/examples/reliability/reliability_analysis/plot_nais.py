@@ -15,7 +15,7 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # .. math::
 #   \begin{align*}
-#   p = \mathbb{P} ( f(\vect{X}, 6) \leq 0 )
+#   p_f = \mathbb{P} ( f(\vect{X}, 6) \leq 0 )
 #   \end{align*}
 #
 # where :math:`f` is the Four Branch function and :math:`\vect{X} = (X_1, X_2)` follows
