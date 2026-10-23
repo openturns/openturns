@@ -7,30 +7,19 @@ Non parametric Adaptive Importance Sampling (NAIS)
 #
 # The objective is to evaluate a probability from the Non parametric Adaptive Importance Sampling (NAIS) technique.
 #
-# We consider the four-branch function :math:`g : \mathbb{R}^2 \rightarrow \mathbb{R}` defined by:
+# We consider the Four Branch function use case (see :ref:`use-case-four-branch`).
+# The function is a 2D limit state function with four distinct failure modes.
+# The standard benchmark uses independent standard normal inputs and parameter :math:`p=6`.
+#
+# We want to evaluate the failure probability:
 #
 # .. math::
 #   \begin{align*}
-#   g(\vect{X}) = \min \begin{pmatrix}5+0.1(x_1-x_2)^2-\frac{(x_1+x_2)}{\sqrt{2}}\\
-#   5+0.1(x_1-x_2)^2+\frac{(x_1+x_2)}{\sqrt{2}}\\
-#   (x_1-x_2)+ \frac{9}{\sqrt{2}}\\
-#   (x_2-x_1)+ \frac{9}{\sqrt{2}}
-#   \end{pmatrix}
+#   p = \mathbb{P} ( f(\vect{X}, 6) \leq 0 )
 #   \end{align*}
 #
-# and the input random vector :math:`\vect{X} = (X_1, X_2)` which follows the standard 2-dimensional Normal distribution:
-#
-# .. math::
-#   \begin{align*}
-#   \vect{X} \sim  \mathcal{N}(\mu = [0, 0], \sigma = [1,1], corr = \mat{I}_2)
-#   \end{align*}
-#
-# We want to evaluate the probability:
-#
-# .. math::
-#   \begin{align*}
-#   p = \mathbb{P} ( g(\vect{X}) \leq 0 )
-#   \end{align*}
+# where :math:`f` is the Four Branch function and :math:`\vect{X} = (X_1, X_2)` follows
+# the standard 2-dimensional Normal distribution.
 #
 
 # %%
@@ -39,40 +28,33 @@ Non parametric Adaptive Importance Sampling (NAIS)
 # %%
 import openturns as ot
 import openturns.viewer as otv
-import math
 
 # %%
-# Create the probabilistic model :math:`Y = g(\vect{X})`
+# Create the probabilistic model :math:`Y = f(\vect{X})`
 # ------------------------------------------------------
+
+# %%
+# Load the Four Branch function use case:
+
+# %%
+from openturns.usecases import four_branch_function
+
+fb = four_branch_function.FourBranchModel()
 
 # %%
 # Create the input random vector :math:`\vect{X}`:
 
 # %%
-X = ot.RandomVector(ot.Normal(2))
+X = ot.RandomVector(fb.distribution)
 
 # %%
-# Create the function :math:`g` from a :class:`~openturns.PythonFunction`:
+# Get the limit state function :math:`f`:
 
 # %%
-
-
-def fourBranch(x):
-    x1 = x[0]
-    x2 = x[1]
-
-    g1 = 5 + 0.1 * (x1 - x2) ** 2 - (x1 + x2) / math.sqrt(2)
-    g2 = 5 + 0.1 * (x1 - x2) ** 2 + (x1 + x2) / math.sqrt(2)
-    g3 = (x1 - x2) + 9 / math.sqrt(2)
-    g4 = (x2 - x1) + 9 / math.sqrt(2)
-
-    return [min((g1, g2, g3, g4))]
-
-
-g = ot.PythonFunction(2, 1, fourBranch)
+g = fb.model
 
 # %%
-# Draw the function :math:`g` to help to understand the shape of the limit state function:
+# Draw the function :math:`f` to help to understand the shape of the limit state function:
 
 # %%
 graph = ot.Graph("Four Branch function", "x1", "x2")
@@ -89,7 +71,7 @@ view = otv.View(graph)
 g = ot.MemoizeFunction(g)
 
 # %%
-# Create the output random vector :math:`Y = g(\vect{X})`:
+# Create the output random vector :math:`Y = f(\vect{X})`:
 
 # %%
 Y = ot.CompositeRandomVector(g, X)

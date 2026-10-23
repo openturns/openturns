@@ -8,7 +8,6 @@ visualizes its limit state, and performs basic reliability analysis.
 
 import openturns as ot
 import openturns.viewer as otv
-import openturns.experimental as otexp
 from openturns.usecases import four_branch_function
 import math
 
@@ -159,7 +158,7 @@ mc_algo.setMaximumCoefficientOfVariation(0.05)
 mc_algo.setMaximumOuterSampling(int(1e6))
 mc_algo.run()
 mc_result = mc_algo.getResult()
-print(f"\nMonte Carlo (COV=5%):")
+print(f" Monte Carlo (COV=5%):")
 print(f"  P_f = {mc_result.getProbabilityEstimate():.6e}")
 print(f"  COV = {mc_result.getCoefficientOfVariation():.4f}")
 print(f"  N_calls = {mc_result.getOuterSampling()}")
