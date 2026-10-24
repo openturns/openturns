@@ -550,11 +550,9 @@ for level in [0.5, 1.0, 2.0]:
 # A negative level is outside the image of the sum of squares: its fibre is
 # empty and the density is zero.
 assert surfaceCoArea.computePDF([-1.0]) == 0.0
-# The deterministic moments are still obtained by input-space quadrature.
-ott.assert_almost_equal(surfaceCoArea.getMean(), [3.0], 1e-8, 1e-12)
-ott.assert_almost_equal(
-    surfaceCoArea.getCovariance(), ot.CovarianceMatrix(1, [6.0]), 1e-8, 1e-12
-)
+# Its deterministic moments are checked in
+# t_PushForwardDistribution_surface_moments.py: the input-space quadrature is
+# too expensive to share this test under coverage instrumentation.
 
 # A level surface that coincides with a mesh plane exercises the face
 # deduplication: Y = X0^2 on R^3 has two flat branes x0 = +/- sqrt(y), and its
@@ -643,14 +641,9 @@ expectedCurvePDF = (0.5 * math.exp(-0.5 * curvePoint[0])
 pdf = normalCurve.computePDF(curvePoint)
 print(f"normalCurve pdf({curvePoint})={pdf:.12g}")
 ott.assert_almost_equal(pdf, expectedCurvePDF, 1e-2, 0.0)
-# The deterministic moments are still obtained by input-space quadrature.
-ott.assert_almost_equal(normalCurve.getMean(), [2.0, 0.0], 1e-8, 1e-9)
-ott.assert_almost_equal(
-    normalCurve.getCovariance(),
-    ot.CovarianceMatrix(2, [4.0, 0.0, 0.0, 1.0]),
-    1e-8,
-    1e-9,
-)
+# Its deterministic moments are checked in
+# t_PushForwardDistribution_curve_moments.py: the input-space quadrature is
+# too expensive to share this test under coverage instrumentation.
 ot.ResourceMap.SetAsUnsignedInteger(
     surfaceDiscretizationKey, previousSurfaceDiscretization
 )
