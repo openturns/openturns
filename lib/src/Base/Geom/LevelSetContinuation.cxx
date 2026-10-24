@@ -127,18 +127,18 @@ Point LevelSetContinuation::computeCoAreaVector(const Matrix & jacobian)
   Point coAreaVector(inputDimension);
   for (UnsignedInteger removedRow = 0; removedRow < inputDimension; ++removedRow)
   {
-    SquareMatrix minor(outputDimension);
+    SquareMatrix minorMatrix(outputDimension);
     UnsignedInteger minorRow = 0;
     for (UnsignedInteger row = 0; row < inputDimension; ++row)
     {
       if (row == removedRow)
         continue;
       for (UnsignedInteger column = 0; column < outputDimension; ++column)
-        minor(minorRow, column) = jacobian(row, column);
+        minorMatrix(minorRow, column) = jacobian(row, column);
       ++minorRow;
     }
     const Scalar sign = (removedRow % 2 == 0) ? 1.0 : -1.0;
-    coAreaVector[removedRow] = sign * minor.computeDeterminant();
+    coAreaVector[removedRow] = sign * minorMatrix.computeDeterminant();
   }
   return coAreaVector;
 }
