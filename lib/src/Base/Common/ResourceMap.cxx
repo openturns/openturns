@@ -1139,6 +1139,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-WeldEpsilon", 1.0e-12);
   addAsScalar("Mesh-DefaultThetaX", 0.3);
   addAsScalar("Mesh-DefaultThetaY", 0.3);
   addAsScalar("Mesh-DefaultThetaZ", 0.3);

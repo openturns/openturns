@@ -17,6 +17,7 @@
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
  * LevelSetMesher-UseQEF: enable the QEF sharp-edge placement in LevelSetMesher (default is False)
  * Mesh-GridThreshold: number of simplex pairs above which Mesh::intersect filters candidate pairs through a bounding-box grid (default is 1024)
+ * Mesh-WeldEpsilon: relative tolerance used to weld coincident vertices in Mesh::intersect (default is 1.0e-12)
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
  * LinearCombinationDistribution-BetaAdaptationEpsilon: target for the estimated mass outside the confidence band (default is 1e-6)
  * LinearCombinationDistribution-MaximumBeta: upper bound on the confidence band parameter reached by the adaptation (default is 64.0)

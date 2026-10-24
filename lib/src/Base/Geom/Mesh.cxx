@@ -1577,7 +1577,16 @@ Mesh Mesh::intersect(const Mesh & other) const
     }
     return root;
   };
-  const Scalar tolerance = SpecFunc::Precision * vertices.computeRange().norm();
+  // Crossing coordinates are linear interpolations of the input vertices,
+  // so their rounding error scales with the coordinate magnitude, not only
+  // with the mesh extent. Use the Mesh-WeldEpsilon ResourceMap key relative
+  // to the vertex range plus the largest coordinate magnitude: well above a
+  // few ulps, far below any meaningful mesh edge length.
+  Scalar maxAbs = 0.0;
+  for (UnsignedInteger i = 0; i < fullSize; ++ i)
+    for (UnsignedInteger d = 0; d < 2; ++ d)
+      maxAbs = std::max(maxAbs, std::abs(vertices(i, d)));
+  const Scalar tolerance = ResourceMap::GetAsScalar("Mesh-WeldEpsilon") * (vertices.computeRange().norm() + maxAbs);
   // radius neighbours via nanoflann when available, brute force otherwise
   // (minimal configurations build without nanoflann, where queryRadius
   // throws NotYetImplementedException)
@@ -1602,9 +1611,22 @@ Mesh Mesh::intersect(const Mesh & other) const
   }
   else
   {
-    for (UnsignedInteger i = 0; i < fullSize; ++ i)
-      for (UnsignedInteger j = i + 1; j < fullSize; ++ j)
+    // Sorted sweep: only vertices whose x coordinate differs by at most the
+    // tolerance can be welded, so ordering by x and stopping the inner loop
+    // at that distance replaces the all-pairs scan with a near-linear one on
+    // meshes with well-separated vertices.
+    Indices order(fullSize);
+    order.fill();
+    std::sort(order.begin(), order.end(), [&](const UnsignedInteger a, const UnsignedInteger b)
+    {
+      return vertices(a, 0) < vertices(b, 0);
+    });
+    for (UnsignedInteger p = 0; p < fullSize; ++ p)
+    {
+      const UnsignedInteger i = order[p];
+      for (UnsignedInteger q = p + 1; (q < fullSize) && (vertices(order[q], 0) - vertices(i, 0) <= tolerance); ++ q)
       {
+        const UnsignedInteger j = order[q];
         Scalar squaredDistance = 0.0;
         for (UnsignedInteger k = 0; k < 2; ++ k)
         {
@@ -1619,6 +1641,7 @@ Mesh Mesh::intersect(const Mesh & other) const
             parent[rootI] = rootJ;
         }
       }
+    }
   }
   Indices compressedVertexMap(fullSize, fullSize);
   UnsignedInteger nRoots = 0;
