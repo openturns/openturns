@@ -16,11 +16,14 @@
  * PushForwardDistribution (openturns.experimental): allow nonlinear co-area maps for sampling, range and moments
  * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3, and for a nonlinear map from R^n to R^(n-1) with n >= 3 (including R^3 to R^2 and R^4 to R^3), by a deterministic simplicial level-set extraction with actual-function root polishing and intrinsic surface or curve cubature, while the affine co-area path remains exact
  * PushForwardDistribution (openturns.experimental): refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh, the mesh result remaining the fallback for branching and saddle fibres
- * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically
- * RatioDistribution: evaluate the density and the distribution function of a ratio of independent continuous random variables by dedicated one-dimensional quadrature instead of composing the numerator with the inverse of the denominator
- * RatioDistribution: compute the distribution function in the far tails with a change of variable around the vanishing denominator and expose a stable complementary distribution function
- * RatioDistribution: solve the quantile with a capped bracket and Brent instead of an unbounded bisection
+ * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically, and estimate them from a sample above PushForwardDistribution-MomentsMaximumDimension for nonlinear maps
+ * PushForwardDistribution (openturns.experimental): deduplicate the level-set faces and edges by global mesh vertex numbers
+ * RatioDistribution (openturns.experimental): evaluate the density and the distribution function of a ratio of independent continuous random variables by dedicated one-dimensional quadrature instead of composing the numerator with the inverse of the denominator
+ * RatioDistribution (openturns.experimental): compute the distribution function in the far tails with a change of variable around the vanishing denominator and expose a stable complementary distribution function
+ * RatioDistribution (openturns.experimental): solve the quantile with a capped bracket and Brent instead of an unbounded bisection
+ * RatioDistribution (openturns.experimental): compute inverse moments when zero is only an endpoint of the denominator support, and detect divergent integrals from the quadrature error estimate
  * ProductDistribution: evaluate the distribution function and its complement by dedicated product quadrature with stable tails, solve tail quantiles in the logarithmic distance to the support bounds, and detect the integrable density singularity at zero
+ * ProductDistribution: return the finite limiting density at zero when exactly one factor density vanishes there, and preserve the original upper-tail probability in the quantile solver
  * ProductDistribution: integrate the factor characteristic function directly for large arguments instead of falling back to the generic nested product density integration
  * ProductDistribution: evaluate the real and imaginary parts of the characteristic function with separate scalar Gauss-Kronrod passes, avoiding a Point allocation at every quadrature node
  * DistributionImplementation: select the generic characteristic-function integration panels from the absolute argument, keep the Filon grid within Distribution-CharacteristicFunctionNMax points, and document the positive exponent convention used by the implementation
@@ -38,7 +41,8 @@
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * PushForwardDistribution-SolverResidualTolerance: tolerance on the residual norm used to accept a point as a preimage (default is 1.0e-5)
- * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range only (default is 10000)
+ * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range and the moments of nonlinear maps above PushForwardDistribution-MomentsMaximumDimension (default is 10000)
+ * PushForwardDistribution-MomentsMaximumDimension: maximum input dimension for which the mean and the covariance of a nonlinear map are integrated deterministically (default is 4)
  * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
  * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
  * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
@@ -100,7 +104,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
- * RatioDistribution
+ * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)

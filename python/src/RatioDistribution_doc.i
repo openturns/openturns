@@ -1,6 +1,10 @@
 %feature("docstring") OT::RatioDistribution
 R"RAW(Ratio distribution.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 The distribution of the random variable :math:`Z = X / Y`, where :math:`X` and
 :math:`Y` are two independent univariate continuous random variables with
 probability density functions :math:`f_X` and :math:`f_Y`.
@@ -31,8 +35,12 @@ In particular:
 
     \Expect{Z} = \Expect{X} \Expect{1 / Y}.
 
-When the support of :math:`Y` contains zero, the ratio distribution may have
-heavy tails and its moments may not be defined.
+When the support of :math:`Y` contains zero in its interior, the ratio
+distribution has heavy tails and its moments are not defined. When zero is only
+an endpoint of the support of :math:`Y`, the inverse moments are finite when
+the density of :math:`Y` vanishes fast enough at zero; they are integrated
+numerically, and the computation raises an exception when the quadrature
+detects a divergence.
 
 Parameters
 ----------
@@ -51,14 +59,15 @@ distZ : :class:`~openturns.Distribution`, univariate
 
 See Also
 --------
-ProductDistribution, Distribution
+:class:`~openturns.ProductDistribution`, :class:`~openturns.Distribution`
 
 Examples
 --------
 Create the ratio of two independent standard normal random variables:
 
 >>> import openturns as ot
->>> distZ = ot.RatioDistribution(ot.Normal(), ot.Normal())
+>>> import openturns.experimental as otexp
+>>> distZ = otexp.RatioDistribution(ot.Normal(), ot.Normal())
 >>> print(round(distZ.computePDF(0.0), 6))
 0.31831
 
@@ -72,8 +81,11 @@ Notes
 -----
 The probability density function and the cumulative distribution function are
 evaluated by adaptive one-dimensional quadrature on the support of the
-denominator. When this support contains zero, the distribution has unbounded
-support and its moments are reported as not defined.
+denominator. When this support contains zero in its interior, the distribution
+has unbounded support and its moments are reported as not defined. When zero is
+only an endpoint, the inverse moments are integrated with the same adaptive
+rule and an exception is raised when the estimated error indicates a
+divergence.
 )RAW"
 
 // ---------------------------------------------------------------------

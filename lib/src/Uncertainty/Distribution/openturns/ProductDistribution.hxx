@@ -181,6 +181,9 @@ private:
   /** Tell if the density has a singularity at zero */
   Bool hasSingularityAtZero() const;
 
+  /** Compute the limiting density at zero when it is finite */
+  Scalar computePDFAtZero() const;
+
   /** The main parameter set of the distribution */
   Pointer<DistributionImplementation> p_left_;
   Pointer<DistributionImplementation> p_right_;

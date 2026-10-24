@@ -5,16 +5,22 @@ R"RAW(Push-forward distribution over an embedded mesh.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Its probability density function is the density of :math:`\outputRV = f(\inputRV)`
-where :math:`\inputRV` is an :math:`\inputDim`-dimensional absolutely continuous random
-vector whose support is a domain discretized by a mesh of simplices, and
-:math:`f: \Rset^\inputDim \rightarrow \Rset^\outputDim` is the piecewise-affine map
-defined by a P1 field on this reference mesh, with :math:`\outputDim \geq d`,
-where :math:`d` is the intrinsic dimension of the reference mesh.  The ambient
-dimension :math:`\inputDim` of the reference mesh may be larger than :math:`d`.
-The distribution :math:`\outputRV` is supported on the image mesh, which is a
-:math:`d`-dimensional object and may be embedded in an ambient space of
-dimension larger than :math:`d`.
+This distribution is the piecewise-affine special case of
+:class:`~openturns.experimental.PushForwardDistribution`, where the map
+:math:`f` is defined by a P1 field on a mesh of simplices. The general
+definition of the push-forward distribution, of its density with respect to the
+measure induced on the image, and of the co-area case are given in the
+:class:`~openturns.experimental.PushForwardDistribution` documentation.
+
+Here, :math:`\inputRV` is an :math:`\inputDim`-dimensional absolutely continuous
+random vector whose support is a domain discretized by a mesh of simplices, and
+:math:`f: \Rset^\inputDim \rightarrow \Rset^\outputDim` is the piecewise-affine
+map defined by a P1 field on this reference mesh, with
+:math:`\outputDim \geq d`, where :math:`d` is the intrinsic dimension of the
+reference mesh. The ambient dimension :math:`\inputDim` of the reference mesh
+may be larger than :math:`d`. The distribution :math:`\outputRV` is supported
+on the image mesh, which is a :math:`d`-dimensional object and may be embedded
+in an ambient space of dimension larger than :math:`d`.
 
 The map :math:`f` is affine on each simplex, with a constant Jacobian
 matrix :math:`J_{f}`, so that the volume stretching factor
@@ -40,11 +46,9 @@ contribution is discarded: this is the behaviour of the density at a
 critical point.
 
 When :math:`\outputDim > d`, the image is a :math:`d`-dimensional subset of
-:math:`\Rset^\outputDim` and :math:`\outputRV` is singular with respect to the
-Lebesgue measure of :math:`\Rset^\outputDim`.  The density above is then
-defined with respect to the measure induced on the image mesh, not with
-respect to the Lebesgue measure of the ambient output space.  Points outside
-the image mesh have zero density.
+:math:`\Rset^\outputDim`, so the density above is defined with respect to the
+measure induced on the image mesh, as in the general singular case. Points
+outside the image mesh have zero density.
 
 Realizations are sampled by mapping the realizations of :math:`\inputRV` through
 the P1 map, so the distribution is exactly normalized regardless of the
@@ -170,7 +174,8 @@ Notes
 In the co-area case :math:`\outputDim < d`, where :math:`d` is the intrinsic
 dimension of the reference mesh, the image simplices are collapsed and cannot
 be reconstructed as a mesh: this accessor raises a
-:class:`~openturns.NotYetImplementedException`.)RAW"
+*NotYetImplementedException*.
+)RAW"
 
 // ---------------------------------------------------------------------
 

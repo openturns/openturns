@@ -247,7 +247,7 @@ Combining and transforming distributions
 
     :template: Distribution.rst_t
     ProductDistribution
-    RatioDistribution
+    experimental.RatioDistribution
     TruncatedDistribution
 
 .. _copulas:

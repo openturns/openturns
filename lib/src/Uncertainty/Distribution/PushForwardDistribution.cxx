@@ -1276,7 +1276,7 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaSurface(const Point &
       for (UnsignedInteger vertexIndex = 0; vertexIndex < 4; ++vertexIndex)
         if (sign[vertexIndex] == 0)
           zeroVertices.add(vertexIndex);
-      std::array<UnsignedInteger, 3> face = {zeroVertices[0], zeroVertices[1], zeroVertices[2]};
+      std::array<UnsignedInteger, 3> face = {simplex[zeroVertices[0]], simplex[zeroVertices[1]], simplex[zeroVertices[2]]};
       std::sort(face.begin(), face.end());
       if (countedFaces.insert(face).second)
       {
@@ -1550,18 +1550,18 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
     Point nullVector(simplexSize);
     for (UnsignedInteger column = 0; column < simplexSize; ++column)
     {
-      SquareMatrix minor(inputDimension);
+      SquareMatrix minorMatrix(inputDimension);
       UnsignedInteger reducedColumn = 0;
       for (UnsignedInteger otherColumn = 0; otherColumn < simplexSize; ++otherColumn)
       {
         if (otherColumn == column)
           continue;
         for (UnsignedInteger row = 0; row < inputDimension; ++row)
-          minor(row, reducedColumn) = system(row, otherColumn);
+          minorMatrix(row, reducedColumn) = system(row, otherColumn);
         ++reducedColumn;
       }
       const Scalar sign = (column % 2 == 0) ? 1.0 : -1.0;
-      nullVector[column] = sign * minor.computeDeterminant();
+      nullVector[column] = sign * minorMatrix.computeDeterminant();
     }
     const Scalar nullNorm = nullVector.norm();
     const Scalar nullTolerance = 1.0e-12 * nullNorm;
@@ -1895,7 +1895,9 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoArea(const Point & point)
           else
             secondZero = vertexIndex;
         }
-      const std::pair<UnsignedInteger, UnsignedInteger> edge(std::min(firstZero, secondZero), std::max(firstZero, secondZero));
+      const UnsignedInteger firstGlobal = simplex[firstZero];
+      const UnsignedInteger secondGlobal = simplex[secondZero];
+      const std::pair<UnsignedInteger, UnsignedInteger> edge(std::min(firstGlobal, secondGlobal), std::max(firstGlobal, secondGlobal));
       if (countedEdges.insert(edge).second)
       {
         addPoint(x[firstZero]);
@@ -2490,11 +2492,19 @@ void PushForwardDistribution::computeMean() const
 {
   // An affine function has an exact image mean. A nonlinear function is
   // integrated deterministically over the finite search box built from the
-  // support of the antecedent or from its extreme quantiles
+  // support of the antecedent or from its extreme quantiles.  The cost of the
+  // iterated quadrature grows exponentially with the input dimension, so fall
+  // back to a Monte-Carlo estimate above the configured dimension.
   if (function_.isLinear())
     mean_ = function_(antecedent_.getMean());
-  else
+  else if (function_.getInputDimension() <= ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-MomentsMaximumDimension"))
     mean_ = IteratedQuadrature().integrate(Function(antecedent_.getPDF() * function_), searchInterval_);
+  else
+  {
+    const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-SampleSize");
+    const Sample sample(function_(antecedent_.getSample(sampleSize)));
+    mean_ = sample.computeMean();
+  }
   isAlreadyComputedMean_ = true;
 }
 
@@ -2503,7 +2513,7 @@ void PushForwardDistribution::computeCovariance() const
 {
   const UnsignedInteger outputDimension = function_.getOutputDimension();
   // The centered moments need the mean, which is exact for an affine
-  // function and deterministic otherwise
+  // function, deterministic in low dimension and estimated otherwise
   (void) getMean();
   if (function_.isLinear())
   {
@@ -2518,7 +2528,7 @@ void PushForwardDistribution::computeCovariance() const
       for (UnsignedInteger i = 0; i <= j; ++i)
         covariance_(i, j) = covarianceMatrix(i, j);
   }
-  else
+  else if (function_.getInputDimension() <= ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-MomentsMaximumDimension"))
   {
     // Integrate the centered second order products against the antecedent
     // density over the finite search box, deterministically
@@ -2548,6 +2558,12 @@ void PushForwardDistribution::computeCovariance() const
         ++index;
       }
     }
+  }
+  else
+  {
+    const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-SampleSize");
+    const Sample sample(function_(antecedent_.getSample(sampleSize)));
+    covariance_ = sample.computeCovariance();
   }
   isAlreadyComputedCovariance_ = true;
 }

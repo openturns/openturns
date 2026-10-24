@@ -3,6 +3,7 @@
 import math
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
@@ -11,7 +12,7 @@ ot.TESTPREAMBLE()
 # distribution.  Checking the density at zero is a regression test for the
 # singularity of the old X * (1 / Y) composition.
 normal = ot.Normal()
-ratio = ot.RatioDistribution(normal, normal)
+ratio = otexp.RatioDistribution(normal, normal)
 assert ratio.getClassName() == "RatioDistribution"
 assert ratio.getDimension() == 1
 assert ratio.isContinuous()
@@ -57,7 +58,7 @@ for z in [100.0, 2048.0, 1.0e5]:
 # CDF against the exponential density.
 uniform = ot.Uniform(-1.0, 1.0)
 exponential = ot.Exponential()
-exponential_ratio = ot.RatioDistribution(uniform, exponential)
+exponential_ratio = otexp.RatioDistribution(uniform, exponential)
 for z in [2048.0, -2048.0]:
     a = 1.0 / abs(z)
     if z > 0.0:
@@ -73,7 +74,7 @@ for z in [2048.0, -2048.0]:
 # The symmetric numerator makes the distribution unchanged when the
 # denominator sign is flipped.
 negative_exponential = ot.Exponential() * -1.0
-negative_ratio = ot.RatioDistribution(uniform, negative_exponential)
+negative_ratio = otexp.RatioDistribution(uniform, negative_exponential)
 for z in [2048.0, -2048.0]:
     cdf = negative_ratio.computeCDF([z])
     expected = exponential_ratio.computeCDF([z])
@@ -117,7 +118,7 @@ pdf_zero = quotient.computePDF([0.0])
 ott.assert_almost_equal(pdf_zero, 1.0 / math.pi, 1e-10, 1e-10)
 
 # A bounded ratio with an analytic density.
-bounded = ot.RatioDistribution(ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0))
+bounded = otexp.RatioDistribution(ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0))
 ott.assert_almost_equal(bounded.getRange().getLowerBound(), [0.0])
 ott.assert_almost_equal(bounded.getRange().getUpperBound(), [1.0])
 ott.assert_almost_equal(bounded.computePDF([0.25]), 1.5, 1e-10, 1e-10)
@@ -132,7 +133,7 @@ ott.assert_almost_equal(bounded.computeQuantile(0.375), [0.25], 1e-9, 1e-9)
 ott.assert_almost_equal(bounded.computeQuantile(0.5), [1.0 / 3.0], 1e-9, 1e-9)
 # The same ratio with a negative denominator exercises the negative branch of
 # the CDF integral.
-negative = ot.RatioDistribution(ot.Uniform(0.0, 1.0), ot.Uniform(-2.0, -1.0))
+negative = otexp.RatioDistribution(ot.Uniform(0.0, 1.0), ot.Uniform(-2.0, -1.0))
 ott.assert_almost_equal(negative.getRange().getLowerBound(), [-1.0])
 ott.assert_almost_equal(negative.getRange().getUpperBound(), [0.0])
 ott.assert_almost_equal(negative.computePDF([-0.5]), 1.5, 1e-10, 1e-10)
@@ -151,6 +152,41 @@ ott.assert_almost_equal(bounded.getMoment(1), [mean], 1e-10, 1e-10)
 ott.assert_almost_equal(bounded.getMoment(2), [1.0 / 6.0], 1e-10, 1e-10)
 ott.assert_almost_equal(bounded.getCovariance()[0, 0], variance, 1e-10, 1e-10)
 
+# A denominator whose support only touches zero at an endpoint may have finite
+# inverse moments.  The lognormal density vanishes faster than any power at
+# zero, while a gamma density with shape k has a finite inverse moment of order
+# n as long as k > n.
+logNormalRatio = otexp.RatioDistribution(ot.Normal(), ot.LogNormal())
+ott.assert_almost_equal(logNormalRatio.getMean(), [0.0], 1e-10, 1e-10)
+ott.assert_almost_equal(logNormalRatio.getMoment(1), [0.0], 1e-10, 1e-10)
+ott.assert_almost_equal(
+    logNormalRatio.getMoment(2), [math.exp(2.0)], 1e-8, 1e-8
+)
+ott.assert_almost_equal(
+    logNormalRatio.getCovariance()[0, 0], math.exp(2.0), 1e-8, 1e-8
+)
+gammaRatio = otexp.RatioDistribution(ot.Normal(), ot.Gamma(3.0, 1.0))
+ott.assert_almost_equal(gammaRatio.getMean(), [0.0], 1e-10, 1e-10)
+ott.assert_almost_equal(gammaRatio.getMoment(1), [0.0], 1e-10, 1e-10)
+ott.assert_almost_equal(gammaRatio.getMoment(2), [0.5], 1e-8, 1e-8)
+ott.assert_almost_equal(gammaRatio.getCovariance()[0, 0], 0.5, 1e-8, 1e-8)
+
+# The first inverse moment of a gamma(k) denominator is finite for k > 1, but
+# the second one diverges for k = 2.
+partialGammaRatio = otexp.RatioDistribution(ot.Normal(), ot.Gamma(2.0, 1.0))
+ott.assert_almost_equal(partialGammaRatio.getMean(), [0.0], 1e-10, 1e-10)
+with ott.assert_raises(RuntimeError):
+    partialGammaRatio.getCovariance()
+
+# An exponential denominator vanishes linearly at zero: its inverse moments
+# diverge and must be reported as not defined instead of returning a large
+# finite quadrature value.
+divergentRatio = otexp.RatioDistribution(ot.Normal(), ot.Exponential())
+with ott.assert_raises(RuntimeError):
+    divergentRatio.getMoment(1)
+with ott.assert_raises(RuntimeError):
+    divergentRatio.getMean()
+
 ott.assert_almost_equal(bounded.getLeft(), ot.Uniform(0.0, 1.0))
 ott.assert_almost_equal(bounded.getRight(), ot.Uniform(1.0, 2.0))
 ott.assert_almost_equal(bounded.getParameter(), [0.0, 1.0, 1.0, 2.0])
@@ -158,7 +194,7 @@ bounded.setParameter([0.5, 1.0, 2.0, 3.0])
 ott.assert_almost_equal(bounded.getLeft(), ot.Uniform(0.5, 1.0))
 ott.assert_almost_equal(bounded.getRight(), ot.Uniform(2.0, 3.0))
 
-bounded = ot.RatioDistribution(ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0))
+bounded = otexp.RatioDistribution(ot.Uniform(0.0, 1.0), ot.Uniform(1.0, 2.0))
 validation = ott.DistributionValidation(bounded)
 validation.skipPDFAtLowerBound()
 validation.skipEntropy()
@@ -182,9 +218,9 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     ratio.setParameter([1.0])
 with ott.assert_raises(TypeError):
-    ot.RatioDistribution(ot.Normal(2), ot.Normal())
+    otexp.RatioDistribution(ot.Normal(2), ot.Normal())
 with ott.assert_raises(TypeError):
-    ot.RatioDistribution(ot.Poisson(), ot.Normal())
+    otexp.RatioDistribution(ot.Poisson(), ot.Normal())
 with ott.assert_raises(TypeError):
     bounded.setLeft(ot.Poisson())
 with ott.assert_raises(TypeError):

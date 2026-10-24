@@ -24,11 +24,13 @@
 #include "openturns/RatioDistribution.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/UniVariateFunction.hxx"
+#include "openturns/UniVariateFunctionEvaluation.hxx"
 #include "openturns/UniVariateFunctionImplementation.hxx"
 #include "openturns/Uniform.hxx"
 
@@ -376,6 +378,7 @@ public:
 
   Scalar operator() (const Scalar u) const override
   {
+    if (u == 0.0) return 0.0;
     return p_right_->computePDF(u) / std::pow(u, static_cast<Scalar>(order_));
   }
 
@@ -685,10 +688,26 @@ Scalar RatioDistribution::computeInverseMoment(const UnsignedInteger n) const
   if (n == 0) return 1.0;
   const Scalar c = p_right_->getRange().getLowerBound()[0];
   const Scalar d = p_right_->getRange().getUpperBound()[0];
-  if ((c <= 0.0) && (d >= 0.0))
-    throw NotDefinedException(HERE) << "Error: the inverse moments of the denominator are not defined when its support contains zero";
+  // A support strictly containing zero crosses the pole of 1 / u^n, so the
+  // inverse moment is not defined.  A support only touching zero at an
+  // endpoint may still give a finite integral, for example when the density
+  // vanishes fast enough there.  Integrate it and rely on the Gauss-Kronrod
+  // error estimate to detect the divergent cases.
+  if ((c < 0.0) && (d > 0.0))
+    throw NotDefinedException(HERE) << "Error: the inverse moments of the denominator are not defined when its support contains zero in its interior";
   const InverseMomentKernelRatioDistribution kernel(p_right_, n);
-  return algo_.integrate(kernel, c, d);
+  const UniVariateFunction function(kernel);
+  const Function integrand{UniVariateFunctionEvaluation(function)};
+  Scalar error = 0.0;
+  const Point value(algo_.integrate(integrand, Interval(c, d), error));
+  // An endpoint singularity integrable in the mathematical sense can leave a
+  // non-negligible quadrature error.  A relative error above 1e-3 indicates a
+  // divergence (or a singularity too strong for the adaptive rule), whereas
+  // the finite cases encountered in practice stay well below this threshold.
+  if (!std::isfinite(value[0]) || !(error <= 1.0e-3 * (1.0 + std::abs(value[0]))))
+    throw NotDefinedException(HERE) << "Error: unable to compute the inverse moment of order " << n
+                                     << " of the denominator, the integral is likely divergent";
+  return value[0];
 }
 
 /* Compute the mean of the distribution */

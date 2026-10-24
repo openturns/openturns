@@ -197,6 +197,35 @@ private:
 
 }; // class PDFKernelProductDistribution
 
+// Class used to integrate the density of one factor divided by |u|.  It gives
+// the finite limiting density at zero when the other factor has a vanishing
+// density at zero.
+class InverseAbsoluteDensityKernelProductDistribution: public UniVariateFunctionImplementation
+{
+public:
+  explicit InverseAbsoluteDensityKernelProductDistribution(const Pointer<DistributionImplementation> & p_distribution)
+    : UniVariateFunctionImplementation()
+    , p_distribution_(p_distribution)
+  {
+    // Nothing to do
+  }
+
+  InverseAbsoluteDensityKernelProductDistribution * clone() const override
+  {
+    return new InverseAbsoluteDensityKernelProductDistribution(*this);
+  }
+
+  Scalar operator() (const Scalar u) const override
+  {
+    if (u == 0.0) return 0.0;
+    return p_distribution_->computePDF(u) / std::abs(u);
+  }
+
+private:
+  const Pointer<DistributionImplementation> p_distribution_;
+
+}; // class InverseAbsoluteDensityKernelProductDistribution
+
 // Class used to wrap the kernel of the integral defining the CDF of the product
 // after the change of variable t = x / u.  This removes the narrow interval
 // that appears near the support endpoints when integrating directly over u.
@@ -330,7 +359,11 @@ Scalar ProductDistribution::computePDF(const Scalar x) const
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
   if ((x < a) || (x > b)) return 0.0;
-  if ((x == 0.0) && hasSingularityAtZero()) return SpecFunc::Infinity;
+  if (x == 0.0)
+  {
+    if (hasSingularityAtZero()) return SpecFunc::Infinity;
+    return computePDFAtZero();
+  }
   const Scalar aLeft = p_left_->getRange().getLowerBound()[0];
   const Scalar bLeft = p_left_->getRange().getUpperBound()[0];
   const Scalar aRight = p_right_->getRange().getLowerBound()[0];
@@ -408,6 +441,34 @@ Scalar ProductDistribution::computePDF(const Scalar x) const
   const Scalar q4 = computePDFQ4(x, 0.0, bLeft, aRight, 0.0);
   LOGDEBUG(OSS() << "value Q1=" << q1 << "value Q2=" << q2 << ", value Q3=" << q3 << "value Q4=" << q4 << ", pdf=" << q1 + q2 + q3 + q4);
   return q1 + q2 + q3 + q4;
+}
+
+/* Get the limiting PDF at zero when it is finite.  Conditioning on each
+   factor gives
+   PDF(0) = PDF_left(0) \int PDF_right(v) / |v| dv
+            + PDF_right(0) \int PDF_left(u) / |u| du.
+   If both densities are positive at zero the two integrals diverge and
+   hasSingularityAtZero() has already returned infinity.  If exactly one
+   density vanishes at zero, the corresponding integral is finite under the
+   assumptions of the class and the other term vanishes. */
+Scalar ProductDistribution::computePDFAtZero() const
+{
+  const Scalar leftPDF0 = p_left_->computePDF(0.0);
+  const Scalar rightPDF0 = p_right_->computePDF(0.0);
+  if ((leftPDF0 == 0.0) && (rightPDF0 == 0.0)) return 0.0;
+  const Scalar aLeft = p_left_->getRange().getLowerBound()[0];
+  const Scalar bLeft = p_left_->getRange().getUpperBound()[0];
+  const Scalar aRight = p_right_->getRange().getLowerBound()[0];
+  const Scalar bRight = p_right_->getRange().getUpperBound()[0];
+  if ((leftPDF0 > 0.0) && (rightPDF0 == 0.0))
+  {
+    const InverseAbsoluteDensityKernelProductDistribution kernel(p_right_);
+    return leftPDF0 * algo_.integrate(kernel, aRight, bRight);
+  }
+  // Here rightPDF0 > 0 and leftPDF0 == 0, because the case of two positive
+  // densities is the singular case handled by the caller.
+  const InverseAbsoluteDensityKernelProductDistribution kernel(p_left_);
+  return rightPDF0 * algo_.integrate(kernel, aLeft, bLeft);
 }
 
 /* Get the PDF of the distribution: PDF(x) = \int_Q1 PDF_left(u) * PDF_right(x / u) * du / |u| when left >= 0, right >= 0 */
@@ -756,10 +817,6 @@ Scalar ProductDistribution::computeScalarQuantile(const Scalar prob,
   const Scalar b = getRange().getUpperBound()[0];
   if (prob < 0.0) return (tail ? b : a);
   if (prob >= 1.0) return (tail ? a : b);
-  // The inverse survival function is the quantile of the complementary
-  // probability, which routes the upper tail through the complementary CDF
-  // branch below.
-  if (tail) return computeScalarQuantile(1.0 - prob, false);
   // The generic solver uses an absolute quantile tolerance and stops on an
   // absolute CDF residual.  For a probability many orders of magnitude below
   // the support width this gives a poor quantile.  Both tails are therefore
@@ -771,14 +828,18 @@ Scalar ProductDistribution::computeScalarQuantile(const Scalar prob,
   const Scalar supportWidth = b - a;
   if (!(supportWidth > 0.0) || !std::isfinite(supportWidth))
     return DistributionImplementation::computeScalarQuantile(prob, tail);
-  if (prob < 0.5)
+  // Keep the tail probability passed by the caller instead of routing the
+  // inverse survival function through 1 - prob, which loses all its digits
+  // when prob is close to zero.
+  const Scalar lowerProbability = tail ? 1.0 - prob : prob;
+  if (lowerProbability < 0.5)
   {
     // Bracket the root on the gap x - a, then bisect in log(gap).
     Scalar gapHigh = supportWidth;
     Scalar gapLow = gapHigh;
     Scalar cdf = computeCDF(a + gapLow);
     UnsignedInteger iteration = 0;
-    while ((cdf >= prob) && (iteration < quantileIterations_))
+    while ((cdf >= lowerProbability) && (iteration < quantileIterations_))
     {
       gapLow *= 0.5;
       if (!(a + gapLow > a)) break;
@@ -792,19 +853,19 @@ Scalar ProductDistribution::computeScalarQuantile(const Scalar prob,
     {
       const Scalar logMiddle = 0.5 * (logLow + logHigh);
       const Scalar gap = std::exp(logMiddle);
-      if (computeCDF(a + gap) < prob) logLow = logMiddle;
+      if (computeCDF(a + gap) < lowerProbability) logLow = logMiddle;
       else logHigh = logMiddle;
       if (logHigh - logLow <= quantileEpsilon_ * std::max(1.0, std::abs(logMiddle))) break;
     }
     return a + std::exp(0.5 * (logLow + logHigh));
   }
   // For the upper half, solve the complementary CDF for the gap b - x.
-  const Scalar tailProb = 1.0 - prob;
+  const Scalar upperTailProbability = tail ? prob : 1.0 - prob;
   Scalar gapHigh = supportWidth;
   Scalar gapLow = gapHigh;
   Scalar ccdf = computeComplementaryCDF(b - gapLow);
   UnsignedInteger iteration = 0;
-  while ((ccdf >= tailProb) && (iteration < quantileIterations_))
+  while ((ccdf >= upperTailProbability) && (iteration < quantileIterations_))
   {
     gapLow *= 0.5;
     if (!(b - gapLow < b)) break;
@@ -818,7 +879,7 @@ Scalar ProductDistribution::computeScalarQuantile(const Scalar prob,
   {
     const Scalar logMiddle = 0.5 * (logLow + logHigh);
     const Scalar gap = std::exp(logMiddle);
-    if (computeComplementaryCDF(b - gap) > tailProb) logHigh = logMiddle;
+    if (computeComplementaryCDF(b - gap) > upperTailProbability) logHigh = logMiddle;
     else logLow = logMiddle;
     if (logHigh - logLow <= quantileEpsilon_ * std::max(1.0, std::abs(logMiddle))) break;
   }

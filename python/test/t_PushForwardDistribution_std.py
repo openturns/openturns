@@ -542,6 +542,11 @@ ott.assert_almost_equal(
 # A level surface that coincides with a mesh plane exercises the face
 # deduplication: Y = X0^2 on R^3 has two flat branes x0 = +/- sqrt(y), and its
 # density is the chi-square distribution with one degree of freedom.
+surfaceDiscretizationKey = "PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization"
+previousSurfaceDiscretization = ot.ResourceMap.GetAsUnsignedInteger(
+    surfaceDiscretizationKey
+)
+ot.ResourceMap.SetAsUnsignedInteger(surfaceDiscretizationKey, 24)
 planeCoArea = otexp.PushForwardDistribution(
     ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2"]), ot.Normal(3)
 )
@@ -550,6 +555,25 @@ for level in [0.7, 1.0]:
     pdf = planeCoArea.computePDF([level])
     print(f"planeCoArea pdf({level})={pdf:.12g}")
     ott.assert_almost_equal(pdf, expected, 2e-3, 0.0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    surfaceDiscretizationKey, previousSurfaceDiscretization
+)
+
+# A level surface whose triangles are shared by many tetrahedra exercises the
+# global vertex numbering used by the face deduplication.  The level x2 = 0 of
+# f(x) = x2 exp(x0) is a mesh plane, and its density is
+# phi(0) E[exp(-X0)] = phi(0) exp(1 / 2).
+ot.ResourceMap.SetAsUnsignedInteger(surfaceDiscretizationKey, 16)
+faceDedup = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1", "x2"], ["x2 * exp(x0)"]), ot.Normal(3)
+)
+expectedFaceDedup = ot.Normal().computePDF(0.0) * math.exp(0.5)
+pdf = faceDedup.computePDF([0.0])
+print(f"faceDedup pdf(0)={pdf:.12g}")
+ott.assert_almost_equal(pdf, expectedFaceDedup, 1e-6, 0.0)
+ot.ResourceMap.SetAsUnsignedInteger(
+    surfaceDiscretizationKey, previousSurfaceDiscretization
+)
 
 # A scalar nonlinear map on R^3 without an analytical gradient uses the
 # finite difference fallback for the co-area factor.
@@ -567,6 +591,7 @@ ott.assert_almost_equal(pythonSurface.computePDF([1.0]),
 # pi * r / 2, the two dimensional Jacobian is 2 * r, and the antecedent
 # density is one, so the density is pi / 4.
 uniformCube = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
+ot.ResourceMap.SetAsUnsignedInteger(surfaceDiscretizationKey, 24)
 curveCoArea = otexp.PushForwardDistribution(
     ot.SymbolicFunction(["x0", "x1", "x2"], ["x0^2 + x1^2", "x2"]),
     uniformCube,
@@ -608,6 +633,9 @@ ott.assert_almost_equal(
     ot.CovarianceMatrix(2, [4.0, 0.0, 0.0, 1.0]),
     1e-8,
     1e-9,
+)
+ot.ResourceMap.SetAsUnsignedInteger(
+    surfaceDiscretizationKey, previousSurfaceDiscretization
 )
 
 # A nonlinear map from R^4 to R^3 has a one dimensional fibre as well. For
@@ -705,3 +733,22 @@ for nonAffineFunction, nonAffineAntecedent in nonAffineFunctions:
     assert nonAffineDistribution.getSample(3).getSize() == 3
     with ott.assert_raises(RuntimeError):
         nonAffineDistribution.computePDF(ot.Point(outputDimension))
+
+# Above the configured dimension, the deterministic iterated quadrature is
+# replaced by a Monte-Carlo estimate.  The map X0^2 + X1 with two standard
+# normals has mean 1 and variance 3.
+momentsDimensionKey = "PushForwardDistribution-MomentsMaximumDimension"
+previousMomentsDimension = ot.ResourceMap.GetAsUnsignedInteger(momentsDimensionKey)
+try:
+    ot.ResourceMap.SetAsUnsignedInteger(momentsDimensionKey, 1)
+    sampledMoments = otexp.PushForwardDistribution(
+        ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1"]), ot.Normal(2)
+    )
+    ott.assert_almost_equal(sampledMoments.getMean(), [1.0], 0.0, 0.2)
+    ott.assert_almost_equal(
+        sampledMoments.getCovariance()[0, 0], 3.0, 0.0, 0.4
+    )
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(
+        momentsDimensionKey, previousMomentsDimension
+    )

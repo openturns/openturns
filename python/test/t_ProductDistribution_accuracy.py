@@ -93,7 +93,7 @@ for probability in [1.0 - 1.0e-12, 1.0 - 1.0e-9, 1.0 - 1.0e-6]:
     ott.assert_almost_equal(
         squareDistribution.computeComplementaryCDF(quantile),
         1.0 - probability,
-        1.0e-4,
+        1.0e-8,
         0.0,
     )
 
@@ -102,7 +102,7 @@ for probability in [1.0e-12, 1.0e-9, 1.0e-6]:
     ott.assert_almost_equal(
         squareDistribution.computeComplementaryCDF(quantile),
         probability,
-        1.0e-4,
+        1.0e-8,
         0.0,
     )
 
@@ -120,7 +120,7 @@ for probability in [1.0 - 1.0e-12, 1.0 - 1.0e-9, 1.0 - 1.0e-6]:
     ott.assert_almost_equal(
         boundedDistribution.computeComplementaryCDF(quantile),
         1.0 - probability,
-        1.0e-4,
+        1.0e-8,
         0.0,
     )
 for probability in [1.0e-12, 1.0e-9, 1.0e-6]:
@@ -128,7 +128,7 @@ for probability in [1.0e-12, 1.0e-9, 1.0e-6]:
     ott.assert_almost_equal(
         boundedDistribution.computeComplementaryCDF(quantile),
         probability,
-        1.0e-4,
+        1.0e-8,
         0.0,
     )
 
@@ -138,7 +138,7 @@ betaDistribution = ot.ProductDistribution(
     ot.Uniform(0.0, 1.0), ot.Beta(2.0, 1.0, 0.0, 1.0)
 )
 assert len(betaDistribution.getSingularities()) == 0
-ott.assert_almost_equal(betaDistribution.computePDF(0.0), 0.0, 1.0e-12, 0.0)
+ott.assert_almost_equal(betaDistribution.computePDF(0.0), 2.0, 1.0e-8, 0.0)
 x = 0.25
 ott.assert_almost_equal(betaDistribution.computePDF(x), 2.0 * (1.0 - x), 1.0e-10, 0.0)
 ott.assert_almost_equal(betaDistribution.computeCDF(x), 2.0 * x - x * x, 1.0e-10, 0.0)
@@ -150,6 +150,17 @@ ott.assert_almost_equal(
 x = 0.999999
 ott.assert_almost_equal(
     betaDistribution.computeComplementaryCDF(x), (1.0 - x) ** 2, 1.0e-8, 0.0
+)
+
+# A factor supported away from zero gives a finite density at zero as well:
+# the normal factor is conditioned at zero and the other factor contributes
+# E[1 / U] over its support.
+awayFromZero = ot.ProductDistribution(ot.Normal(), ot.Uniform(1.0, 2.0))
+ott.assert_almost_equal(
+    awayFromZero.computePDF(0.0),
+    ot.Normal().computePDF(0.0) * math.log(2.0),
+    1.0e-10,
+    0.0,
 )
 
 # A central interval must still be correct after the CDF/CCDF difference.

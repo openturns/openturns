@@ -805,6 +805,7 @@
   <PushForwardDistribution-RangeMargin               value_float="0.025" />
   <PushForwardDistribution-DegenerateSearchIntervalHalfWidth value_float="1.0" />
   <PushForwardDistribution-SampleSize                value_int="10000" />
+  <PushForwardDistribution-MomentsMaximumDimension   value_int="4" />
   <PushForwardDistribution-PreimageSearchSampleSize  value_int="256" />
   <PushForwardDistribution-NewtonMaximumIterations   value_int="50" />
   <PushForwardDistribution-NewtonStepReduction       value_float="0.5" />

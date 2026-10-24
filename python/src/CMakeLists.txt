@@ -393,7 +393,6 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       Poisson.i Poisson_doc.i
                       PoissonFactory.i PoissonFactory_doc.i
                       ProductDistribution.i ProductDistribution_doc.i
-                      RatioDistribution.i RatioDistribution_doc.i
                       QuantileMatchingFactory.i QuantileMatchingFactory_doc.i
                       LinearCombinationDistribution.i LinearCombinationDistribution_doc.i
                       Rayleigh.i Rayleigh_doc.i
@@ -600,6 +599,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )

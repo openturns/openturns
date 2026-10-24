@@ -1420,6 +1420,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("PushForwardDistribution-RangeMargin", 0.025);
   addAsScalar("PushForwardDistribution-DegenerateSearchIntervalHalfWidth", 1.0);
   addAsUnsignedInteger("PushForwardDistribution-SampleSize", 10000);
+  addAsUnsignedInteger("PushForwardDistribution-MomentsMaximumDimension", 4);
   addAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize", 256);
   addAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations", 50);
   addAsScalar("PushForwardDistribution-NewtonStepReduction", 0.5);

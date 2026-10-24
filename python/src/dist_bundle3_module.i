@@ -30,7 +30,6 @@
 %include Poisson.i
 %include PoissonFactory.i
 %include ProductDistribution.i
-%include RatioDistribution.i
 %include QuantileMatchingFactory.i
 %include LinearCombinationDistribution.i
 %include Rayleigh.i

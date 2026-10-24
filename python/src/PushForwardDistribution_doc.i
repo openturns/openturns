@@ -156,7 +156,7 @@ densities are approximations, whereas the affine path remains exact. Other
 nonlinear maps with :math:`\outputDim < \inputDim` are accepted by the
 constructor, can be sampled, and have their range, mean and covariance
 computed, but their density is not implemented and ``computePDF()`` raises
-:class:`~openturns.NotYetImplementedException`.
+*NotYetImplementedException*.
 
 When the Jacobian is rank deficient, the image of the function has measure zero
 in the output space. Membership of the image is tested through the residual of
@@ -173,10 +173,13 @@ Monte-Carlo: an affine function uses the exact formulas
 :math:`\Expect[f(\inputRV)] = \mat{A}\Expect[\inputRV] + \vect{c}` and
 :math:`\Cov{f(\inputRV)} = \mat{A}\Cov{\inputRV}\mat{A}^T`, while a nonlinear
 function is integrated over the finite search box with an iterated quadrature
-rule. This includes nonlinear maps with :math:`\outputDim < \inputDim`: their
-moments are available, including the cases whose density is not implemented.
-The range is still estimated from a sample, as it has no closed form in
-general.
+rule when its input dimension does not exceed
+``PushForwardDistribution-MomentsMaximumDimension``. Above this threshold the
+iterated quadrature becomes too expensive and the moments are estimated from a
+``PushForwardDistribution-SampleSize`` sample instead. This includes nonlinear
+maps with :math:`\outputDim < \inputDim`: their moments are available,
+including the cases whose density is not implemented. The range is still
+estimated from a sample, as it has no closed form in general.
 
 Parameters
 ----------
@@ -196,7 +199,10 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``PushForwardDistribution-SolverResidualTolerance`` (``Scalar``, default: ``1.0e-5``): tolerance on the
   residual norm used to accept a point as a preimage of the searched point and to configure the default solver.
 - ``PushForwardDistribution-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
-  realizations used to estimate the range only; the mean and the covariance are deterministic.
+  realizations used to estimate the range and the moments of nonlinear maps above
+  ``PushForwardDistribution-MomentsMaximumDimension``.
+- ``PushForwardDistribution-MomentsMaximumDimension`` (``UnsignedInteger``, default: ``4``): maximum input
+  dimension for which the mean and the covariance of a nonlinear map are integrated deterministically.
 - ``PushForwardDistribution-PreimageSearchSampleSize`` (``UnsignedInteger``, default: ``256``): number of
   points used to decompose the search interval and to seed the damped Newton solver.
 - ``PushForwardDistribution-NewtonMaximumIterations`` (``UnsignedInteger``, default: ``50``): maximum number
