@@ -13,7 +13,8 @@ basis: :math:`k = 0` with an inexhaustible basis, and
 functions.
 
 When the ``ChristoffelSubsampleExperiment-Certified`` key is true, the
-experiment uses the certified Cohen-Dolbeault sizing instead:
+experiment uses the certified sizing of Cohen and Dolbeault
+[cohendolbeault2020]_ instead:
 :math:`m` is the largest integer with
 :math:`n \ge \gamma m \log(m)`, where :math:`\gamma` is the
 ``ChristoffelSubsampleExperiment-Gamma`` key value, and a fresh design
