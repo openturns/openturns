@@ -6,7 +6,7 @@
 
 ==== Major changes ====
  * Speeding up Gaussian field simulation on large grids with the FFT-based circulant embedding method and the P1 interpolation of the simulated trajectories (new CirculantEmbeddingGaussianProcess and P1InterpolatedProcess, openturns.experimental). It addresses part of the HPC probabilistic modelling roadmap (issue #3305), building on the preliminary work of Valentin Abongo (@Proteidore).
- * Mesh::intersect: faster 2D intersection through a bounding-box candidate grid and vertex weld, without Boost
+ * LevelSetMesher: intersection of level sets of a collection, quadratic error function (QEF) sharp-edge placement and adaptive background refinement; Mesh::intersect no longer depends on Boost
 
  * LinearCombinationDistribution: fuse opposite-weight Poisson atoms into a weighted Skellam atom
  * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
@@ -14,6 +14,8 @@
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
 
 ==== New ResourceMap keys ====
+ * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
+ * LevelSetMesher-UseQEF: enable the QEF sharp-edge placement in LevelSetMesher (default is False)
  * Mesh-GridThreshold: number of simplex pairs above which Mesh::intersect filters candidate pairs through a bounding-box grid (default is 1024)
  * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
  * LinearCombinationDistribution-BetaAdaptationEpsilon: target for the estimated mass outside the confidence band (default is 1e-6)
