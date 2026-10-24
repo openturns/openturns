@@ -491,6 +491,7 @@
   <!-- OT::Mesh parameters -->
   <Mesh-BackfaceCulling      value_bool="false"    />
   <Mesh-CheckValidity        value_bool="false"    />
+  <Mesh-GridThreshold        value_int="1024"       />
   <Mesh-AmbientFactor        value_float="0.1"     />
   <Mesh-DiffuseFactor        value_float="0.7"     />
   <Mesh-Shininess            value_float="100.0"   />
