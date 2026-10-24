@@ -160,7 +160,79 @@ Matrix RankMCovarianceModel::partialGradient(const Point & s,
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
-  throw NotYetImplementedException(HERE);
+  Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
+  const UnsignedInteger size = functions_.getSize();
+  // Uncorrelated case: C_ab(s, t) = sum_i variance_i phi_i(s)_a phi_i(t)_b
+  if (covariance_.getDimension() == 0)
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Matrix phiGradient(functions_[i].gradient(s));
+      const Point phiT(functions_[i](t) * variance_[i]);
+      for (UnsignedInteger b = 0; b < outputDimension_; ++b)
+        for (UnsignedInteger a = 0; a < outputDimension_; ++a)
+          for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+            gradient(j, b * outputDimension_ + a) += phiGradient(j, a) * phiT[b];
+    }
+    return gradient;
+  }
+  // Correlated case: C_ab(s, t) = sum_ik phi_i(s)_a covariance_(i, k) phi_k(t)_b
+  Matrix phiT(outputDimension_, size);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const Point evalPhiT(functions_[k](t));
+    for (UnsignedInteger b = 0; b < outputDimension_; ++b)
+      phiT(b, k) = evalPhiT[b];
+  }
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Matrix phiGradient(functions_[i].gradient(s));
+    Point weightedPhiT(outputDimension_, 0.0);
+    for (UnsignedInteger k = 0; k < size; ++k)
+      for (UnsignedInteger b = 0; b < outputDimension_; ++b)
+        weightedPhiT[b] += covariance_(i, k) * phiT(b, k);
+    for (UnsignedInteger b = 0; b < outputDimension_; ++b)
+      for (UnsignedInteger a = 0; a < outputDimension_; ++a)
+        for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+          gradient(j, b * outputDimension_ + a) += phiGradient(j, a) * weightedPhiT[b];
+  }
+  return gradient;
+}
+
+/** Hessian wrt s, for the first output component */
+SymmetricMatrix RankMCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+
+  SymmetricMatrix hessian(inputDimension_);
+  const UnsignedInteger size = functions_.getSize();
+  // Uncorrelated case: C_00(s, t) = sum_i variance_i phi_i(s)_0 phi_i(t)_0
+  if (covariance_.getDimension() == 0)
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const SymmetricTensor phiHessian(functions_[i].hessian(s));
+      const Scalar phiT0 = functions_[i](t)[0] * variance_[i];
+      for (UnsignedInteger k = 0; k < inputDimension_; ++k)
+        for (UnsignedInteger j = 0; j <= k; ++j)
+          hessian(j, k) += phiHessian(j, k, 0) * phiT0;
+    }
+    return hessian;
+  }
+  // Correlated case: C_00(s, t) = sum_ik phi_i(s)_0 covariance_(i, k) phi_k(t)_0
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const SymmetricTensor phiHessian(functions_[i].hessian(s));
+    Scalar weightedPhiT0 = 0.0;
+    for (UnsignedInteger k = 0; k < size; ++k)
+      weightedPhiT0 += covariance_(i, k) * functions_[k](t)[0];
+    for (UnsignedInteger k = 0; k < inputDimension_; ++k)
+      for (UnsignedInteger j = 0; j <= k; ++j)
+        hessian(j, k) += phiHessian(j, k, 0) * weightedPhiT0;
+  }
+  return hessian;
 }
 
 CovarianceMatrix RankMCovarianceModel::discretize(const Sample & vertices) const

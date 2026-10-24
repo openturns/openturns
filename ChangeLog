@@ -12,6 +12,8 @@
  * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
  * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
+ * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
+ * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)

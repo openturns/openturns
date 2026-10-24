@@ -483,6 +483,25 @@ OT_CovarianceModel_partialGradient_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_partialHessian_doc
+R"RAW(Compute the Hessian of the covariance function.
+
+Parameters
+----------
+s, t : floats or sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricMatrix`
+    Hessian of the covariance function with respect to :math:`\vect{s}`
+    for the first output component.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::partialHessian
+OT_CovarianceModel_partialHessian_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_parameterGradient_doc
 R"RAW(Compute the gradient according to the parameters.
 
@@ -498,6 +517,63 @@ gradient : :class:`~openturns.Matrix`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::parameterGradient
 OT_CovarianceModel_parameterGradient_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_thirdOrderPartial_doc
+R"RAW(Compute the third-order spatial derivatives of the covariance function.
+
+Parameters
+----------
+s, t : sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+third : :class:`~openturns.Point`
+    Flat third-order derivatives of the first output component,
+    index ``a + d * (b + d * c)`` holds
+    :math:`\partial^3 k_{00} / \partial s_a \partial s_b \partial s_c`.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::thirdOrderPartial
+OT_CovarianceModel_thirdOrderPartial_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_fourthOrderPartial_doc
+R"RAW(Compute the fourth-order spatial derivatives of the covariance function.
+
+Parameters
+----------
+s, t : sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+fourth : :class:`~openturns.Point`
+    Flat fourth-order derivatives of the first output component.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::fourthOrderPartial
+OT_CovarianceModel_fourthOrderPartial_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_parameterHessian_doc
+R"RAW(Compute the mixed parameter-spatial Hessian of the covariance function.
+
+Parameters
+----------
+s, t : sequences of float
+    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`.
+
+Returns
+-------
+hessian : :class:`~openturns.Matrix`
+    Derivatives of the partial Hessian with respect to the active
+    parameters.)RAW"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::parameterHessian
+OT_CovarianceModel_parameterHessian_doc
 
 // ---------------------------------------------------------------------
 
