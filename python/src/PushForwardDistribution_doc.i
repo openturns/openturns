@@ -168,12 +168,12 @@ provided that the affine fibre meets the support of the antecedent. When the
 fibre misses that support, the density is zero even though the point belongs
 to the algebraic image.
 
-The mean and the covariance are computed deterministically, not estimated by
-Monte-Carlo: an affine function uses the exact formulas
-:math:`\Expect[f(\inputRV)] = \mat{A}\Expect[\inputRV] + \vect{c}` and
-:math:`\Cov{f(\inputRV)} = \mat{A}\Cov{\inputRV}\mat{A}^T`, while a nonlinear
-function is integrated over the finite search box with an iterated quadrature
-rule when its input dimension does not exceed
+The mean and the covariance are available in closed form for an affine
+function:
+:math:`\Expect{\mat{A}\inputRV + \vect{c}} = \mat{A}\Expect{\inputRV} + \vect{c}`
+and :math:`\Cov{f(\inputRV)} = \mat{A}\Cov{\inputRV}\mat{A}^T`. For a nonlinear
+function, they are integrated over the finite search box with an iterated
+quadrature rule when its input dimension does not exceed
 ``PushForwardDistribution-MomentsMaximumDimension``. Above this threshold the
 iterated quadrature becomes too expensive and the moments are estimated from a
 ``PushForwardDistribution-SampleSize`` sample instead. This includes nonlinear
