@@ -16,7 +16,11 @@ dimension 2 embedded in an ambient space of dimension strictly larger than
 4. Merge the triangles of all the charts.
 5. Prune the degenerate triangles, i.e. those of negligible area.
 
-See also
+The sample given to :meth:`build` or :meth:`buildAsUniformOverMesh` is the
+point cloud of the surface itself, not a sample of independent
+realizations: its size sets the resolution of the estimated mesh.
+
+See Also
 --------
 :class:`~openturns.DistributionFactory`, :class:`~openturns.UniformOverMesh`
 
@@ -60,6 +64,51 @@ Estimate the distribution from a sample:
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::UniformOverMeshFactory::build
+R"RAW(Build the distribution.
+
+The estimated mesh merges the charts of the overlapping neighborhoods, hence
+it generally covers the surface more than once and overestimates its
+intrinsic volume: it approximates the uniform distribution over the surface,
+it does not represent it exactly.
+
+**Available usages**:
+
+    build()
+
+    build(*sample*)
+
+    build(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Unstructured point cloud lying on the surface, used as the data of the
+    estimation. This is not a sample of independent realizations of the
+    estimated distribution: the sample size drives the resolution of the
+    estimated mesh and each point contributes one local chart. The
+    dimension must be at least 3, the sample size at least 6.
+param : sequence of float
+    The parameters of the distribution. The UniformOverMesh distribution
+    has no parameter, so this usage expects an empty point.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The estimated distribution.
+
+    In the first and the third usages the default native distribution is
+    built, in the second the distribution whose mesh is estimated from the
+    point cloud.
+
+See Also
+--------
+:class:`~openturns.DistributionFactory`,
+:meth:`~openturns.experimental.UniformOverMeshFactory.buildAsUniformOverMesh`
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::UniformOverMeshFactory::buildAsUniformOverMesh
 R"RAW(Estimate the distribution as native distribution.
 
@@ -72,8 +121,9 @@ R"RAW(Estimate the distribution as native distribution.
 Parameters
 ----------
 sample : 2-d sequence of float
-    Data on the surface. The dimension must be at least 3, the sample size
-    at least 6.
+    Unstructured point cloud lying on the surface, used as the data of the
+    estimation. The dimension must be at least 3, the sample size at
+    least 6.
 
 Returns
 -------
