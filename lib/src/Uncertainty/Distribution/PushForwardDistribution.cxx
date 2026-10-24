@@ -1806,199 +1806,220 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoArea(const Point & point)
   const Scalar level = point[0];
   const UnsignedInteger discretization = ResourceMap::GetAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaDiscretization");
   const Scalar levelTolerance = ResourceMap::GetAsScalar("PushForwardDistribution-NonlinearCoAreaLevelTolerance");
-  // A uniform triangulation of the search box is enough for a first
-  // deterministic implementation. The level crossings are polished on the
-  // actual function, so the geometric error is quadratic in the mesh size,
-  // and the resource key lets the caller trade cost for accuracy without
-  // changing the algorithm.
-  const Mesh mesh(IntervalMesher(Indices(2, discretization)).build(searchInterval_));
-  const Sample vertexValues(function_(mesh.getVertices()));
+  const Bool continuationEnabled = ResourceMap::GetAsBool("PushForwardDistribution-NonlinearCoAreaContinuation");
+  // The background mesh only has to provide one seed per connected component
+  // of the fibre: the continuation then traces the actual level set, so its
+  // accuracy is governed by the requested integration resolution rather than
+  // by the seeding mesh. Build a coarser mesh first to seed the continuation,
+  // and keep the requested resolution for the mesh fallback used when the
+  // continuation fails.
+  const UnsignedInteger seedDiscretization = continuationEnabled ? std::max<UnsignedInteger>(1, discretization / 4) : discretization;
+  const Point width(searchInterval_.getUpperBound() - searchInterval_.getLowerBound());
+  Scalar seedMeshStep = 0.0;
+  Scalar fineMeshStep = 0.0;
+  for (UnsignedInteger i = 0; i < width.getSize(); ++i)
+  {
+    seedMeshStep = std::max(seedMeshStep, width[i] / seedDiscretization);
+    fineMeshStep = std::max(fineMeshStep, width[i] / discretization);
+  }
   const Function antecedentPDF(antecedent_.getPDF());
   const GaussLegendre quadrature(1);
   const Brent edgeSolver;
-  Scalar density = 0.0;
-  Collection<LevelSetContinuation::Segment> continuationSegments;
-  // When the level set coincides exactly with a mesh edge, the two adjacent
-  // triangles see the same edge. Count it once; this only happens on a set of
-  // level values of measure zero, but it keeps the result stable for round
-  // levels such as the mean of a symmetric distribution.
-  std::set<std::pair<UnsignedInteger, UnsignedInteger>> countedEdges;
-  for (UnsignedInteger simplexIndex = 0; simplexIndex < mesh.getSimplicesNumber(); ++simplexIndex)
+  for (UnsignedInteger pass = 0; ; ++pass)
   {
-    const Indices simplex(mesh.getSimplex(simplexIndex));
-    if (simplex.getSize() != 3)
-      continue;
-    Point x[3];
-    Scalar value[3];
-    SignedInteger sign[3];
-    for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+    const Bool useFallback = (pass == 0) && (seedDiscretization < discretization);
+    const UnsignedInteger meshDiscretization = (pass == 0) ? seedDiscretization : discretization;
+    const Scalar meshStep = (pass == 0) ? seedMeshStep : fineMeshStep;
+    // A uniform triangulation of the search box is enough for a first
+    // deterministic implementation. The level crossings are polished on the
+    // actual function, so the geometric error is quadratic in the mesh size,
+    // and the resource key lets the caller trade cost for accuracy without
+    // changing the algorithm.
+    const Mesh mesh(IntervalMesher(Indices(2, meshDiscretization)).build(searchInterval_));
+    const Sample vertexValues(function_(mesh.getVertices()));
+    Scalar density = 0.0;
+    Collection<LevelSetContinuation::Segment> continuationSegments;
+    // When the level set coincides exactly with a mesh edge, the two adjacent
+    // triangles see the same edge. Count it once; this only happens on a set of
+    // level values of measure zero, but it keeps the result stable for round
+    // levels such as the mean of a symmetric distribution.
+    std::set<std::pair<UnsignedInteger, UnsignedInteger>> countedEdges;
+    for (UnsignedInteger simplexIndex = 0; simplexIndex < mesh.getSimplicesNumber(); ++simplexIndex)
     {
-      x[vertexIndex] = mesh.getVertex(simplex[vertexIndex]);
-      value[vertexIndex] = vertexValues(simplex[vertexIndex], 0);
-      // The tolerance is relative to the level and to the local values, so
-      // that a vertex is classified as lying on the level set consistently
-      // with the floating point representation of f.
-      const Scalar scale = std::max(1.0, std::max(std::abs(level), std::abs(value[vertexIndex])));
-      const Scalar tolerance = levelTolerance * scale;
-      sign[vertexIndex] = (value[vertexIndex] < level - tolerance) ? -1 : ((value[vertexIndex] > level + tolerance) ? 1 : 0);
-    }
-    const UnsignedInteger zeroCount = (sign[0] == 0) + (sign[1] == 0) + (sign[2] == 0);
-    // A whole triangle at the requested level is a two dimensional part of
-    // the fibre: the one dimensional co-area density is singular there.
-    if (zeroCount == 3)
-      return SpecFunc::Infinity;
-    Point firstPoint(2);
-    Point secondPoint(2);
-    UnsignedInteger pointCount = 0;
-    const auto addPoint = [&](const Point & pointToAdd)
-    {
-      if (pointCount == 0)
-        firstPoint = pointToAdd;
-      else if (pointCount == 1)
-        secondPoint = pointToAdd;
-      ++pointCount;
-    };
-    const auto addCrossing = [&](const UnsignedInteger firstVertex, const UnsignedInteger secondVertex)
-    {
-      // The two vertices are on opposite sides of the level. Solve
-      // f(x) = level on the edge instead of using the P1 interpolation only:
-      // the root is bracketed, and this keeps the segment ends on the actual
-      // level set even when the function is strongly curved.
-      const Point edgeDirection(x[secondVertex] - x[firstVertex]);
-      const LinearFunction edge(Point(1, 0.0), x[firstVertex], Matrix(2, 1, edgeDirection));
-      const Function edgeFunction(ComposedFunction(function_, edge));
-      Scalar parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+      const Indices simplex(mesh.getSimplex(simplexIndex));
+      if (simplex.getSize() != 3)
+        continue;
+      Point x[3];
+      Scalar value[3];
+      SignedInteger sign[3];
+      for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+      {
+        x[vertexIndex] = mesh.getVertex(simplex[vertexIndex]);
+        value[vertexIndex] = vertexValues(simplex[vertexIndex], 0);
+        // The tolerance is relative to the level and to the local values, so
+        // that a vertex is classified as lying on the level set consistently
+        // with the floating point representation of f.
+        const Scalar scale = std::max(1.0, std::max(std::abs(level), std::abs(value[vertexIndex])));
+        const Scalar tolerance = levelTolerance * scale;
+        sign[vertexIndex] = (value[vertexIndex] < level - tolerance) ? -1 : ((value[vertexIndex] > level + tolerance) ? 1 : 0);
+      }
+      const UnsignedInteger zeroCount = (sign[0] == 0) + (sign[1] == 0) + (sign[2] == 0);
+      // A whole triangle at the requested level is a two dimensional part of
+      // the fibre: the one dimensional co-area density is singular there.
+      if (zeroCount == 3)
+        return SpecFunc::Infinity;
+      Point firstPoint(2);
+      Point secondPoint(2);
+      UnsignedInteger pointCount = 0;
+      const auto addPoint = [&](const Point & pointToAdd)
+      {
+        if (pointCount == 0)
+          firstPoint = pointToAdd;
+        else if (pointCount == 1)
+          secondPoint = pointToAdd;
+        ++pointCount;
+      };
+      const auto addCrossing = [&](const UnsignedInteger firstVertex, const UnsignedInteger secondVertex)
+      {
+        // The two vertices are on opposite sides of the level. Solve
+        // f(x) = level on the edge instead of using the P1 interpolation only:
+        // the root is bracketed, and this keeps the segment ends on the actual
+        // level set even when the function is strongly curved.
+        const Point edgeDirection(x[secondVertex] - x[firstVertex]);
+        const LinearFunction edge(Point(1, 0.0), x[firstVertex], Matrix(2, 1, edgeDirection));
+        const Function edgeFunction(ComposedFunction(function_, edge));
+        Scalar parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+        try
+        {
+          parameter = edgeSolver.solve(edgeFunction, level, 0.0, 1.0, value[firstVertex], value[secondVertex]);
+        }
+        catch (const Exception &)
+        {
+          // Keep the linear estimate when the scalar solver cannot improve it.
+        }
+        // Brent may return a value marginally outside the bracket because of
+        // its termination criterion; fall back to the linear estimate in this
+        // unlikely case.
+        if (!(parameter >= 0.0) || !(parameter <= 1.0))
+          parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
+        addPoint(x[firstVertex] + parameter * edgeDirection);
+      };
+      if (zeroCount == 2)
+      {
+        UnsignedInteger firstZero = 3;
+        UnsignedInteger secondZero = 3;
+        for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+          if (sign[vertexIndex] == 0)
+          {
+            if (firstZero == 3)
+              firstZero = vertexIndex;
+            else
+              secondZero = vertexIndex;
+          }
+        const UnsignedInteger firstGlobal = simplex[firstZero];
+        const UnsignedInteger secondGlobal = simplex[secondZero];
+        const std::pair<UnsignedInteger, UnsignedInteger> edge(std::min(firstGlobal, secondGlobal), std::max(firstGlobal, secondGlobal));
+        if (countedEdges.insert(edge).second)
+        {
+          addPoint(x[firstZero]);
+          addPoint(x[secondZero]);
+        }
+      }
+      else if (zeroCount == 1)
+      {
+        UnsignedInteger zeroVertex = 3;
+        for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
+          if (sign[vertexIndex] == 0)
+            zeroVertex = vertexIndex;
+        const UnsignedInteger firstOther = (zeroVertex + 1) % 3;
+        const UnsignedInteger secondOther = (zeroVertex + 2) % 3;
+        // If the two other vertices are on the same side, the level set only
+        // touches the triangle at the vertex: its length is zero.
+        if (sign[firstOther] * sign[secondOther] < 0)
+        {
+          addPoint(x[zeroVertex]);
+          addCrossing(firstOther, secondOther);
+        }
+      }
+      else
+      {
+        // No vertex is on the level: either the level crosses two edges or it
+        // does not enter the triangle.
+        if (sign[0] * sign[1] < 0)
+          addCrossing(0, 1);
+        if (sign[1] * sign[2] < 0)
+          addCrossing(1, 2);
+        if (sign[2] * sign[0] < 0)
+          addCrossing(2, 0);
+      }
+      if (pointCount != 2)
+        continue;
+      const Point direction(secondPoint - firstPoint);
+      const Scalar length = direction.norm();
+      if (!(length > 0.0))
+        continue;
+      // Co-area factor: norm of the gradient of the actual function at the
+      // midpoint of the segment. When the function does not provide a gradient,
+      // fall back to the constant gradient of its P1 interpolation on the
+      // triangle, which solves grad f . (x_i - x_0) = f_i - f_0.
+      Point midpoint(2);
+      for (UnsignedInteger coordinate = 0; coordinate < 2; ++coordinate)
+        midpoint[coordinate] = 0.5 * (firstPoint[coordinate] + secondPoint[coordinate]);
+      Scalar gradientNorm = 0.0;
       try
       {
-        parameter = edgeSolver.solve(edgeFunction, level, 0.0, 1.0, value[firstVertex], value[secondVertex]);
+        const Matrix gradientMatrix(function_.gradient(midpoint));
+        if ((gradientMatrix.getNbRows() == 2) && (gradientMatrix.getNbColumns() == 1))
+          gradientNorm = std::sqrt(gradientMatrix(0, 0) * gradientMatrix(0, 0) + gradientMatrix(1, 0) * gradientMatrix(1, 0));
       }
       catch (const Exception &)
       {
-        // Keep the linear estimate when the scalar solver cannot improve it.
+        gradientNorm = 0.0;
       }
-      // Brent may return a value marginally outside the bracket because of
-      // its termination criterion; fall back to the linear estimate in this
-      // unlikely case.
-      if (!(parameter >= 0.0) || !(parameter <= 1.0))
-        parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
-      addPoint(x[firstVertex] + parameter * edgeDirection);
-    };
-    if (zeroCount == 2)
-    {
-      UnsignedInteger firstZero = 3;
-      UnsignedInteger secondZero = 3;
-      for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
-        if (sign[vertexIndex] == 0)
-        {
-          if (firstZero == 3)
-            firstZero = vertexIndex;
-          else
-            secondZero = vertexIndex;
-        }
-      const UnsignedInteger firstGlobal = simplex[firstZero];
-      const UnsignedInteger secondGlobal = simplex[secondZero];
-      const std::pair<UnsignedInteger, UnsignedInteger> edge(std::min(firstGlobal, secondGlobal), std::max(firstGlobal, secondGlobal));
-      if (countedEdges.insert(edge).second)
+      if (!(gradientNorm > 0.0))
       {
-        addPoint(x[firstZero]);
-        addPoint(x[secondZero]);
+        const Point firstEdge(x[1] - x[0]);
+        const Point secondEdge(x[2] - x[0]);
+        const Scalar determinant = firstEdge[0] * secondEdge[1] - firstEdge[1] * secondEdge[0];
+        const Scalar determinantTolerance = SpecFunc::ScalarEpsilon * firstEdge.norm() * secondEdge.norm();
+        if (std::abs(determinant) <= determinantTolerance)
+          continue;
+        const Scalar gradientX = ((value[1] - value[0]) * secondEdge[1] - (value[2] - value[0]) * firstEdge[1]) / determinant;
+        const Scalar gradientY = ((value[2] - value[0]) * firstEdge[0] - (value[1] - value[0]) * secondEdge[0]) / determinant;
+        gradientNorm = std::sqrt(gradientX * gradientX + gradientY * gradientY);
       }
-    }
-    else if (zeroCount == 1)
-    {
-      UnsignedInteger zeroVertex = 3;
-      for (UnsignedInteger vertexIndex = 0; vertexIndex < 3; ++vertexIndex)
-        if (sign[vertexIndex] == 0)
-          zeroVertex = vertexIndex;
-      const UnsignedInteger firstOther = (zeroVertex + 1) % 3;
-      const UnsignedInteger secondOther = (zeroVertex + 2) % 3;
-      // If the two other vertices are on the same side, the level set only
-      // touches the triangle at the vertex: its length is zero.
-      if (sign[firstOther] * sign[secondOther] < 0)
-      {
-        addPoint(x[zeroVertex]);
-        addCrossing(firstOther, secondOther);
-      }
-    }
-    else
-    {
-      // No vertex is on the level: either the level crosses two edges or it
-      // does not enter the triangle.
-      if (sign[0] * sign[1] < 0)
-        addCrossing(0, 1);
-      if (sign[1] * sign[2] < 0)
-        addCrossing(1, 2);
-      if (sign[2] * sign[0] < 0)
-        addCrossing(2, 0);
-    }
-    if (pointCount != 2)
-      continue;
-    const Point direction(secondPoint - firstPoint);
-    const Scalar length = direction.norm();
-    if (!(length > 0.0))
-      continue;
-    // Co-area factor: norm of the gradient of the actual function at the
-    // midpoint of the segment. When the function does not provide a gradient,
-    // fall back to the constant gradient of its P1 interpolation on the
-    // triangle, which solves grad f . (x_i - x_0) = f_i - f_0.
-    Point midpoint(2);
-    for (UnsignedInteger coordinate = 0; coordinate < 2; ++coordinate)
-      midpoint[coordinate] = 0.5 * (firstPoint[coordinate] + secondPoint[coordinate]);
-    Scalar gradientNorm = 0.0;
-    try
-    {
-      const Matrix gradientMatrix(function_.gradient(midpoint));
-      if ((gradientMatrix.getNbRows() == 2) && (gradientMatrix.getNbColumns() == 1))
-        gradientNorm = std::sqrt(gradientMatrix(0, 0) * gradientMatrix(0, 0) + gradientMatrix(1, 0) * gradientMatrix(1, 0));
-    }
-    catch (const Exception &)
-    {
-      gradientNorm = 0.0;
-    }
-    if (!(gradientNorm > 0.0))
-    {
-      const Point firstEdge(x[1] - x[0]);
-      const Point secondEdge(x[2] - x[0]);
-      const Scalar determinant = firstEdge[0] * secondEdge[1] - firstEdge[1] * secondEdge[0];
-      const Scalar determinantTolerance = SpecFunc::ScalarEpsilon * firstEdge.norm() * secondEdge.norm();
-      if (std::abs(determinant) <= determinantTolerance)
+      if (!(gradientNorm > 0.0))
         continue;
-      const Scalar gradientX = ((value[1] - value[0]) * secondEdge[1] - (value[2] - value[0]) * firstEdge[1]) / determinant;
-      const Scalar gradientY = ((value[2] - value[0]) * firstEdge[0] - (value[1] - value[0]) * secondEdge[0]) / determinant;
-      gradientNorm = std::sqrt(gradientX * gradientX + gradientY * gradientY);
+      // Parameterisation of the segment: t in [0, 1] maps to firstPoint +
+      // t * direction. The antecedent density is integrated along the segment
+      // with a fixed Gauss-Legendre rule; the rule is accurate for the smooth
+      // densities considered here, while the mesh controls the geometric error.
+      const LinearFunction segment(Point(1, 0.0), firstPoint, Matrix(2, 1, direction));
+      const Function integrand(ComposedFunction(antecedentPDF, segment));
+      const Scalar segmentIntegral = quadrature.integrate(integrand, Interval(0.0, 1.0))[0];
+      density += segmentIntegral * length / gradientNorm;
+      LevelSetContinuation::Segment continuationSegment;
+      continuationSegment.first = firstPoint;
+      continuationSegment.second = secondPoint;
+      continuationSegments.add(continuationSegment);
     }
-    if (!(gradientNorm > 0.0))
+    if (continuationEnabled && !continuationSegments.isEmpty())
+    {
+      const LevelSetContinuation continuation(function_, antecedentPDF, searchInterval_, point);
+      const LevelSetContinuation::Result result = continuation.computeDensity(
+            continuationSegments, fineMeshStep, 1.0e-4 * meshStep);
+      if (result.status == LevelSetContinuation::SINGULAR)
+        return SpecFunc::Infinity;
+      if ((result.status == LevelSetContinuation::SUCCESS)
+          && ((result.density > 0.0) || (!useFallback && (density == 0.0))))
+        return result.density;
+    }
+    // The coarse seeding failed: rebuild the mesh at the requested resolution
+    // and use the same continuation and mesh fallback as before.
+    if (useFallback)
       continue;
-    // Parameterisation of the segment: t in [0, 1] maps to firstPoint +
-    // t * direction. The antecedent density is integrated along the segment
-    // with a fixed Gauss-Legendre rule; the rule is accurate for the smooth
-    // densities considered here, while the mesh controls the geometric error.
-    const LinearFunction segment(Point(1, 0.0), firstPoint, Matrix(2, 1, direction));
-    const Function integrand(ComposedFunction(antecedentPDF, segment));
-    const Scalar segmentIntegral = quadrature.integrate(integrand, Interval(0.0, 1.0))[0];
-    density += segmentIntegral * length / gradientNorm;
-    LevelSetContinuation::Segment continuationSegment;
-    continuationSegment.first = firstPoint;
-    continuationSegment.second = secondPoint;
-    continuationSegments.add(continuationSegment);
+    return density;
   }
-  if (ResourceMap::GetAsBool("PushForwardDistribution-NonlinearCoAreaContinuation")
-      && !continuationSegments.isEmpty())
-  {
-    const Point width(searchInterval_.getUpperBound() - searchInterval_.getLowerBound());
-    Scalar meshStep = 0.0;
-    for (UnsignedInteger i = 0; i < width.getSize(); ++i)
-      meshStep = std::max(meshStep, width[i] / discretization);
-    const LevelSetContinuation continuation(function_, antecedentPDF, searchInterval_, point);
-    const LevelSetContinuation::Result result = continuation.computeDensity(
-          continuationSegments, meshStep, 1.0e-4 * meshStep);
-    if (result.status == LevelSetContinuation::SINGULAR)
-      return SpecFunc::Infinity;
-    if ((result.status == LevelSetContinuation::SUCCESS)
-        && ((result.density > 0.0) || (density == 0.0)))
-      return result.density;
-  }
-  return density;
 }
 
 /* Solve r(u) = 0 by damped Newton with step control from the given starting point */

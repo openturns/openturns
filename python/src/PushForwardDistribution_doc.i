@@ -136,7 +136,10 @@ with unit tangent is integrated with Runge-Kutta steps, each step being
 followed by a Newton projection on the actual level set. This removes most of
 the mesh-size bias of the polygonal approximation, while branching and saddle
 fibres keep the mesh result as a fallback and singular fibres return an
-infinite density. The continuation is controlled by the
+infinite density. The continuation is seeded from a coarser triangulation and
+integrated with the step size of the requested resolution, so that the mesh
+resolution mainly controls the topology discovery and the fallback accuracy.
+The continuation is controlled by the
 ``PushForwardDistribution-NonlinearCoAreaContinuation`` key.
 The co-area factor is the norm of the gradient for a scalar function,
 evaluated at the segment midpoint in :math:`\Rset^2` and at the surface
@@ -196,55 +199,94 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``PushForwardDistribution-SolverResidualTolerance`` (``Scalar``, default: ``1.0e-5``): tolerance on the
-  residual norm used to accept a point as a preimage of the searched point and to configure the default solver.
-- ``PushForwardDistribution-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
-  realizations used to estimate the range and the moments of nonlinear maps above
-  ``PushForwardDistribution-MomentsMaximumDimension``.
-- ``PushForwardDistribution-MomentsMaximumDimension`` (``UnsignedInteger``, default: ``4``): maximum input
-  dimension for which the mean and the covariance of a nonlinear map are integrated deterministically.
-- ``PushForwardDistribution-PreimageSearchSampleSize`` (``UnsignedInteger``, default: ``256``): number of
-  points used to decompose the search interval and to seed the damped Newton solver.
-- ``PushForwardDistribution-NewtonMaximumIterations`` (``UnsignedInteger``, default: ``50``): maximum number
-  of iterations of the damped Newton solver.
-- ``PushForwardDistribution-NewtonStepReduction`` (``Scalar``, default: ``0.5``): reduction factor applied
-  to the step when it fails to decrease the residual norm.
-- ``PushForwardDistribution-MaximumBisections`` (``UnsignedInteger``, default: ``64``): maximum number of
-  bisection iterations used as a fallback when the damped Newton solver fails on a sign change.
-- ``PushForwardDistribution-CoAreaConstraintTolerance`` (``Scalar``, default: ``1.0e-12``): tolerance used
-  to detect parallel constraints and numerically zero coefficients in the Fourier-Motzkin elimination.
-- ``PushForwardDistribution-CoAreaTailEpsilon`` (``Scalar``, default: ``1.0e-16``): relative density below
-  which the end point of a one dimensional fibre is considered negligible when the integration interval is
-  extended over the search box.
-- ``PushForwardDistribution-CoAreaMaximumError`` (``Scalar``, default: ``1.0e-14``): requested relative error
-  of the integration of the density along the fibre, scaled by the magnitude of the integrand so that the
-  relative accuracy does not degrade for small densities.
-- ``PushForwardDistribution-CoAreaErrorFloor`` (``Scalar``, default: ``1.0e-7``): floor applied to the requested
-  relative error for a fibre of dimension three or more, the order of the accuracy reached by the adaptive rule
-  across the kinks of the nested integration bounds.
-- ``PushForwardDistribution-CoAreaMaximumSubIntervals`` (``UnsignedInteger``, default: ``100``): maximum
-  number of sub-intervals of the adaptive bisection used to integrate the density along the fibre.
-- ``PushForwardDistribution-CoAreaMaximumExtensions`` (``UnsignedInteger``, default: ``16``): maximum number
-  of times the one dimensional integration interval is extended over the search box while the integrand is
-  still significant at its end.
-- ``PushForwardDistribution-NonlinearCoAreaDiscretization`` (``UnsignedInteger``, default: ``128``): number of
-  intervals per input dimension in the triangulation of the search box used by the scalar nonlinear co-area
-  density in :math:`\Rset^2`.
-- ``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization`` (``UnsignedInteger``, default: ``48``): number
-  of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities
-  from :math:`\Rset^3` to :math:`\Rset` and from :math:`\Rset^3` to :math:`\Rset^2`.
-- ``PushForwardDistribution-NonlinearCoAreaVolumeDiscretization`` (``UnsignedInteger``, default: ``12``): number
-  of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from
-  :math:`\Rset^n` to :math:`\Rset^{n-1}` with :math:`n \geq 4`.
-- ``PushForwardDistribution-NonlinearCoAreaLevelTolerance`` (``Scalar``, default: ``1.0e-12``): relative
-  tolerance used to decide that a mesh vertex lies on the requested level set in the nonlinear co-area paths.
-- ``PushForwardDistribution-NonlinearCoAreaContinuation`` (``Bool``, default: ``true``): refine the regular one
-  dimensional nonlinear co-area fibres with a predictor-corrector continuation seeded by the background mesh;
-  branching and saddle fibres fall back to the mesh result, singular fibres return an infinite density.
-- ``PushForwardDistribution-RangeMargin`` (``Scalar``, default: ``0.025``): relative margin added to each
-  marginal span when the numerical range is estimated from a sample.
-- ``PushForwardDistribution-DegenerateSearchIntervalHalfWidth`` (``Scalar``, default: ``1.0``): half width of
-  the fallback search box used when the quantiles of a marginal collapse to a zero-width interval.
+.. list-table::
+   :widths: 30 15 15 40
+   :header-rows: 1
+
+   * - Key
+     - Type
+     - Default value
+     - Description
+   * - ``PushForwardDistribution-SolverResidualTolerance``
+     - ``Scalar``
+     - ``1.0e-5``
+     - Tolerance on the residual norm used to accept a point as a preimage of the searched point and to configure the default solver.
+   * - ``PushForwardDistribution-SampleSize``
+     - ``UnsignedInteger``
+     - ``10000``
+     - Number of Monte-Carlo realizations used to estimate the range and the moments of nonlinear maps above ``PushForwardDistribution-MomentsMaximumDimension``.
+   * - ``PushForwardDistribution-MomentsMaximumDimension``
+     - ``UnsignedInteger``
+     - ``4``
+     - Maximum input dimension for which the mean and the covariance of a nonlinear map are integrated deterministically.
+   * - ``PushForwardDistribution-PreimageSearchSampleSize``
+     - ``UnsignedInteger``
+     - ``256``
+     - Number of points used to decompose the search interval and to seed the damped Newton solver.
+   * - ``PushForwardDistribution-NewtonMaximumIterations``
+     - ``UnsignedInteger``
+     - ``50``
+     - Maximum number of iterations of the damped Newton solver.
+   * - ``PushForwardDistribution-NewtonStepReduction``
+     - ``Scalar``
+     - ``0.5``
+     - Reduction factor applied to the step when it fails to decrease the residual norm.
+   * - ``PushForwardDistribution-MaximumBisections``
+     - ``UnsignedInteger``
+     - ``64``
+     - Maximum number of bisection iterations used as a fallback when the damped Newton solver fails on a sign change.
+   * - ``PushForwardDistribution-CoAreaConstraintTolerance``
+     - ``Scalar``
+     - ``1.0e-12``
+     - Tolerance used to detect parallel constraints and numerically zero coefficients in the Fourier-Motzkin elimination.
+   * - ``PushForwardDistribution-CoAreaTailEpsilon``
+     - ``Scalar``
+     - ``1.0e-16``
+     - Relative density below which the end point of a one dimensional fibre is considered negligible when the integration interval is extended over the search box.
+   * - ``PushForwardDistribution-CoAreaMaximumError``
+     - ``Scalar``
+     - ``1.0e-14``
+     - Requested relative error of the integration of the density along the fibre, scaled by the magnitude of the integrand so that the relative accuracy does not degrade for small densities.
+   * - ``PushForwardDistribution-CoAreaErrorFloor``
+     - ``Scalar``
+     - ``1.0e-7``
+     - Floor applied to the requested relative error for a fibre of dimension three or more, the order of the accuracy reached by the adaptive rule across the kinks of the nested integration bounds.
+   * - ``PushForwardDistribution-CoAreaMaximumSubIntervals``
+     - ``UnsignedInteger``
+     - ``100``
+     - Maximum number of sub-intervals of the adaptive bisection used to integrate the density along the fibre.
+   * - ``PushForwardDistribution-CoAreaMaximumExtensions``
+     - ``UnsignedInteger``
+     - ``16``
+     - Maximum number of times the one dimensional integration interval is extended over the search box while the integrand is still significant at its end.
+   * - ``PushForwardDistribution-NonlinearCoAreaDiscretization``
+     - ``UnsignedInteger``
+     - ``128``
+     - Number of intervals per input dimension in the fallback triangulation of the search box used by the scalar nonlinear co-area density in :math:`\Rset^2`. When the continuation is enabled, a quarter-resolution triangulation seeds it first and this resolution is only built if the continuation fails.
+   * - ``PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization``
+     - ``UnsignedInteger``
+     - ``48``
+     - Number of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities from :math:`\Rset^3` to :math:`\Rset` and from :math:`\Rset^3` to :math:`\Rset^2`.
+   * - ``PushForwardDistribution-NonlinearCoAreaVolumeDiscretization``
+     - ``UnsignedInteger``
+     - ``12``
+     - Number of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from :math:`\Rset^n` to :math:`\Rset^{n-1}` with :math:`n \geq 4`.
+   * - ``PushForwardDistribution-NonlinearCoAreaLevelTolerance``
+     - ``Scalar``
+     - ``1.0e-12``
+     - Relative tolerance used to decide that a mesh vertex lies on the requested level set in the nonlinear co-area paths.
+   * - ``PushForwardDistribution-NonlinearCoAreaContinuation``
+     - ``Bool``
+     - ``True``
+     - Refine the regular one dimensional nonlinear co-area fibres with a predictor-corrector continuation seeded by the background mesh; branching and saddle fibres fall back to the mesh result, singular fibres return an infinite density.
+   * - ``PushForwardDistribution-RangeMargin``
+     - ``Scalar``
+     - ``0.025``
+     - Relative margin added to each marginal span when the numerical range is estimated from a sample.
+   * - ``PushForwardDistribution-DegenerateSearchIntervalHalfWidth``
+     - ``Scalar``
+     - ``1.0``
+     - Half width of the fallback search box used when the quantiles of a marginal collapse to a zero-width interval.
 
 Examples
 --------

@@ -17,6 +17,7 @@
  * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3, and for a nonlinear map from R^n to R^(n-1) with n >= 3 (including R^3 to R^2 and R^4 to R^3), by a deterministic simplicial level-set extraction with actual-function root polishing and intrinsic surface or curve cubature, while the affine co-area path remains exact
  * PushForwardDistribution (openturns.experimental): refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh, the mesh result remaining the fallback for branching and saddle fibres
  * PushForwardDistribution (openturns.experimental): detect outward seeds on the search box boundary and let the continuation reduce its step down to the minimum, so that maps such as the product of two univariate distributions no longer fall back to the low accuracy mesh density
+ * PushForwardDistribution (openturns.experimental): seed the scalar co-area continuation from a quarter-resolution mesh while keeping the requested resolution for the integration step and the fallback, which speeds up regular fibres without changing their accuracy
  * PushForwardDistribution (openturns.experimental): stop the co-area continuation when the Newton projection no longer advances along a singular fibre, instead of accepting stagnating steps up to the iteration cap
  * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically, with PushForwardDistribution falling back to a sample above PushForwardDistribution-MomentsMaximumDimension for nonlinear maps
  * PushForwardDistribution (openturns.experimental): deduplicate the level-set faces and edges by global mesh vertex numbers
@@ -55,7 +56,7 @@
  * PushForwardDistribution-CoAreaErrorFloor: minimum relative error of the integration along a fibre of dimension three or more (default is 1.0e-7)
  * PushForwardDistribution-CoAreaMaximumSubIntervals: maximum number of sub-intervals of the adaptive integration along the fibre (default is 100)
  * PushForwardDistribution-CoAreaMaximumExtensions: maximum number of extensions of the one dimensional integration interval (default is 16)
- * PushForwardDistribution-NonlinearCoAreaDiscretization: number of intervals per input dimension in the triangulation used by the scalar nonlinear co-area density in R^2 (default is 128)
+ * PushForwardDistribution-NonlinearCoAreaDiscretization: number of intervals per input dimension in the fallback triangulation used by the scalar nonlinear co-area density in R^2, a quarter-resolution mesh seeding the continuation first (default is 128)
  * PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization: number of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities in R^3 (default is 48)
  * PushForwardDistribution-NonlinearCoAreaVolumeDiscretization: number of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from R^n to R^(n-1) with n >= 4 (default is 12)
  * PushForwardDistribution-NonlinearCoAreaLevelTolerance: relative tolerance used to classify a mesh vertex as lying on the requested level set (default is 1.0e-12)
