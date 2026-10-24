@@ -651,14 +651,16 @@ Scalar GaussianProcessFitter::computeHMatLogDeterminantCholesky()
   }
   LOGDEBUG("Compute log(sqrt(|det(C)|)) = log(|det(L)|)");
   Scalar logDetL = 0.0;
-  Point diagonal(covarianceCholeskyFactorHMatrix_.getDiagonal());
-  for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
+  try
   {
-    const Scalar lii = diagonal[i];
-    if (lii <= 0.0) return SpecFunc::LowestScalar;
-    logDetL += log(lii);
+    logDetL = covarianceCholeskyFactorHMatrix_.computeLogDeterminant();
+    return 2.0 * logDetL;
   }
-  return 2.0 * logDetL;
+  catch (const InternalException & exception)
+  {
+    LOGDEBUG(OSS(false) << "Undefined log-determinant: " << exception.what());
+    return SpecFunc::LowestScalar;
+  }
 }
 
 Scalar GaussianProcessFitter::computeHODLRLogDeterminantCholesky()
