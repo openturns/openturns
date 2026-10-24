@@ -246,6 +246,27 @@ pickle.dump(experiment, buf)
 buf.seek(0)
 assert pickle.load(buf) == experiment
 
+# certified settings are persisted: loading must not re-read the ResourceMap
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 5.0)
+ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 3)
+try:
+    certifiedPersisted = otexp.ChristoffelSubsampleExperiment(basis, 60)
+    assert certifiedPersisted.getSpaceDimension() == 6
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
+    buf = BytesIO()
+    pickle.dump(certifiedPersisted, buf)
+    buf.seek(0)
+    restored = pickle.load(buf)
+    assert restored == certifiedPersisted
+    assert restored.getSpaceDimension() == 6
+finally:
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+
 # errors: the reference distribution is embedded in the basis
 with ott.assert_raises(TypeError):
     experiment.setDistribution(ot.Normal())

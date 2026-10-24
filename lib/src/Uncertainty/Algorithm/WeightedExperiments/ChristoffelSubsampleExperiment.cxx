@@ -173,7 +173,7 @@ UnsignedInteger ChristoffelSubsampleExperiment::ComputeSpaceDimension(const Unsi
 
 /* Deduce the space dimension from the target size: identity for the default
    square design, gamma m log(m) <= n when the Certified key is true.  The
-   basis capacity is applied in update(). */
+   basis capacity is applied in rebuild(). */
 UnsignedInteger ChristoffelSubsampleExperiment::DeduceSpaceDimension(const UnsignedInteger size)
 {
   if (!ResourceMap::GetAsBool("ChristoffelSubsampleExperiment-Certified")) return size;
@@ -656,28 +656,31 @@ Indices ChristoffelSubsampleExperiment::ComputeVolumeSample(const Matrix & featu
   return remaining;
 }
 
+/* Initialize the certified settings from the ResourceMap */
+void ChristoffelSubsampleExperiment::initializeSettings()
+{
+  certified_ = ResourceMap::GetAsBool("ChristoffelSubsampleExperiment-Certified");
+  gamma_ = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-Gamma");
+  maxAttempts_ = 1;
+  if (certified_)
+    maxAttempts_ = ResourceMap::GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts");
+}
+
 /* Rebuild the derived members */
-void ChristoffelSubsampleExperiment::update()
+void ChristoffelSubsampleExperiment::rebuild()
 {
   if (size_ == 0)
   {
     spaceDimension_ = 0;
     return;
   }
+  if (certified_ && (maxAttempts_ == 0))
+    throw InvalidArgumentException(HERE) << "Error: expected a positive ChristoffelSubsampleExperiment-MaxAttempts, got 0.";
   // Largest approximation dimension m = n-k: try k=0,1,2,... until the basis
   // supplies m functions (finite bases throw beyond their capacity). Build each
   // function once here and hand the finite basis to the internal constructor, so
   // the Christoffel law does not build them a second time.  The Certified key
   // switches to m = argmax gamma m log(m) <= n; otherwise m = n-k is tried.
-  certified_ = ResourceMap::GetAsBool("ChristoffelSubsampleExperiment-Certified");
-  gamma_ = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-Gamma");
-  maxAttempts_ = 1;
-  if (certified_)
-  {
-    maxAttempts_ = ResourceMap::GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts");
-    if (maxAttempts_ == 0)
-      throw InvalidArgumentException(HERE) << "Error: expected a positive ChristoffelSubsampleExperiment-MaxAttempts, got 0.";
-  }
   UnsignedInteger dimension = certified_ ? ComputeSpaceDimension(size_, gamma_) : size_;
   Basis::FunctionCollection coll(0);
   while (coll.getSize() < dimension)
@@ -700,13 +703,24 @@ void ChristoffelSubsampleExperiment::update()
   spaceDimension_ = dimension;
 }
 
-/* Method save() stores the object through the StorageManager: only the basis
-   is class-specific here, the base save keeps size_ and distribution_, and
-   update() rebuilds spaceDimension_ and the Christoffel law on load */
+/* Refresh the settings and rebuild the derived members */
+void ChristoffelSubsampleExperiment::update()
+{
+  initializeSettings();
+  rebuild();
+}
+
+/* Method save() stores the object through the StorageManager: the base save
+   keeps size_ and distribution_, while the basis and the certified settings
+   are class-specific. spaceDimension_ and the Christoffel law are rebuilt on
+   load. */
 void ChristoffelSubsampleExperiment::save(Advocate & adv) const
 {
   WeightedExperimentImplementation::save(adv);
   adv.saveAttribute("basis_", basis_);
+  adv.saveAttribute("certified_", certified_);
+  adv.saveAttribute("gamma_", gamma_);
+  adv.saveAttribute("maxAttempts_", maxAttempts_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -715,7 +729,20 @@ void ChristoffelSubsampleExperiment::load(Advocate & adv)
   WeightedExperimentImplementation::load(adv);
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Error: loaded a ChristoffelSubsampleExperiment with a null size.";
   adv.loadAttribute("basis_", basis_);
-  update();
+  if (adv.hasAttribute("certified_")
+      && adv.hasAttribute("gamma_")
+      && adv.hasAttribute("maxAttempts_"))
+  {
+    adv.loadAttribute("certified_", certified_);
+    adv.loadAttribute("gamma_", gamma_);
+    adv.loadAttribute("maxAttempts_", maxAttempts_);
+  }
+  else
+  {
+    // Archives written before the certified settings were persisted
+    initializeSettings();
+  }
+  rebuild();
 }
 
 END_NAMESPACE_OPENTURNS

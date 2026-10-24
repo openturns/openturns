@@ -121,7 +121,13 @@ protected:
   Point computeImportanceWeights(const Sample & sample) const;
 
 private:
-  /** Rebuild the derived members from basis_ and size_ */
+  /** Read the certified settings from the ResourceMap */
+  void initializeSettings();
+
+  /** Rebuild the derived members from basis_, size_ and the certified settings */
+  void rebuild();
+
+  /** Refresh the settings and rebuild the derived members */
   void update();
 
   /** Largest m >= 1 such that gamma * m * log(m) <= size. Gamma must
@@ -162,16 +168,18 @@ private:
   /** The number of basis functions used */
   UnsignedInteger spaceDimension_ = 0;
 
-  /** Certified sizing switch, read from the ResourceMap during update().
-      When false, m = n-k is chosen by the basis capacity. */
+  /** Certified sizing switch, initialized from the ResourceMap by update()
+      and persisted across save/load. When false, m = n-k is chosen by the
+      basis capacity. */
   Bool certified_ = false;
 
-  /** Certified sizing constant, read from the ResourceMap during update()
-      when certified_ is true. */
+  /** Certified sizing constant, initialized from the ResourceMap by update()
+      and persisted across save/load when certified_ is true. */
   Scalar gamma_ = 0.0;
 
   /** Maximum number of independent certified draws tried before giving up
-      on the frame certificate, read from the ResourceMap during update(). */
+      on the frame certificate, initialized from the ResourceMap by update()
+      and persisted across save/load. */
   UnsignedInteger maxAttempts_ = 1;
 
   /** The Christoffel distribution sampled by the experiment */
