@@ -295,3 +295,8 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(edge.computePDF(5.0), edge.computePDF(-2.0), 1e-12, 0.0)
 assert edge.computePDF(-2.0) > 0.0
 ott.assert_almost_equal(edge.computeLogPDF(-2.0), math.log(edge.computePDF(-2.0)), 1e-12, 0.0)
+# Right-sided DDF and inside PDF gradient at the finite lower bound
+ott.assert_almost_equal(edge.computeDDF([-2.0]), [-(-2.0 - 1.5) / 9.0 * edge.computePDF(-2.0)], 1e-12, 0.0)
+grad = edge.computePDFGradient([-2.0])
+assert grad.norm() > 0.0
+ott.assert_almost_equal(grad[2], -edge.computePDFGradient([5.0])[3], 1e-12, 0.0)
