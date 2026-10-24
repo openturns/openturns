@@ -96,27 +96,15 @@ public:
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Scalar scalar) const override;
   Scalar computeCDF(const Point & point) const override;
-private:
-  Scalar computeCDFQ1(const Scalar x,
-                      const Scalar a,
-                      const Scalar b,
-                      const Scalar c,
-                      const Scalar d) const;
-  Scalar computeCDFQ2(const Scalar x,
-                      const Scalar a,
-                      const Scalar b,
-                      const Scalar c,
-                      const Scalar d) const;
-  Scalar computeCDFQ3(const Scalar x,
-                      const Scalar a,
-                      const Scalar b,
-                      const Scalar c,
-                      const Scalar d) const;
-  Scalar computeCDFQ4(const Scalar x,
-                      const Scalar a,
-                      const Scalar b,
-                      const Scalar c,
-                      const Scalar d) const;
+
+  /** Get the complementary CDF of the distribution */
+  using DistributionImplementation::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Scalar scalar) const override;
+  Scalar computeComplementaryCDF(const Point & point) const override;
+
+  /** Compute the scalar quantile */
+  Scalar computeScalarQuantile(const Scalar prob,
+                               const Bool tail = false) const override;
 public:
 
   /** Get the probability content of an interval */
@@ -185,6 +173,16 @@ private:
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
+
+  /** Compute the CDF or its complement by a dedicated product integration */
+  Scalar computeCDFOrComplementaryCDF(const Scalar x,
+                                      const Bool complementary) const;
+
+  /** Tell if the density has a singularity at zero */
+  Bool hasSingularityAtZero() const;
+
+  /** Compute the limiting density at zero when it is finite */
+  Scalar computePDFAtZero() const;
 
   /** The main parameter set of the distribution */
   Pointer<DistributionImplementation> p_left_;

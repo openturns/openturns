@@ -793,15 +793,29 @@
   <TruncatedOverMesh-MaximumIntegrationNodesNumber  value_int="262144" />
 
   <!-- OT::PushForwardDistribution parameters -->
-  <PushForwardDistribution-SolverResidualTolerance value_float="1.0e-5" />
-  <PushForwardDistribution-SampleSize              value_int="10000"   />
-  <PushForwardDistribution-PreimageSearchSampleSize value_int="256" />
-  <PushForwardDistribution-NewtonMaximumIterations  value_int="50" />
-  <PushForwardDistribution-NewtonStepReduction      value_float="0.5" />
+  <PushForwardDistribution-SolverResidualTolerance   value_float="1.0e-5" />
+  <PushForwardDistribution-CoAreaConstraintTolerance value_float="1.0e-12" />
+  <PushForwardDistribution-CoAreaTailEpsilon         value_float="1.0e-16" />
+  <PushForwardDistribution-CoAreaErrorFloor          value_float="1.0e-7" />
+  <PushForwardDistribution-CoAreaMaximumError        value_float="1.0e-14" />
+  <PushForwardDistribution-CoAreaMaximumSubIntervals value_int="100" />
+  <PushForwardDistribution-CoAreaMaximumExtensions   value_int="16" />
+  <PushForwardDistribution-NonlinearCoAreaDiscretization value_int="128" />
+  <PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization value_int="48" />
+  <PushForwardDistribution-NonlinearCoAreaVolumeDiscretization value_int="12" />
+  <PushForwardDistribution-NonlinearCoAreaLevelTolerance value_float="1.0e-12" />
+  <PushForwardDistribution-NonlinearCoAreaContinuation value_bool="true" />
+  <PushForwardDistribution-MaximumBisections         value_int="64" />
+  <PushForwardDistribution-RangeMargin               value_float="0.025" />
+  <PushForwardDistribution-DegenerateSearchIntervalHalfWidth value_float="1.0" />
+  <PushForwardDistribution-SampleSize                value_int="10000" />
+  <PushForwardDistribution-MomentsMaximumDimension   value_int="4" />
+  <PushForwardDistribution-PreimageSearchSampleSize  value_int="256" />
+  <PushForwardDistribution-NewtonMaximumIterations   value_int="50" />
+  <PushForwardDistribution-NewtonStepReduction       value_float="0.5" />
 
   <!-- OT::PushForwardOverMesh parameters -->
   <PushForwardOverMesh-OnSimplexEpsilon value_float="1.0e-10" />
-  <PushForwardOverMesh-SampleSize       value_int="10000"     />
 
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <MaximumLikelihoodFactory-MaximumAbsoluteError         value_float="1.0e-10"        />
