@@ -224,7 +224,7 @@ Scalar Gamma::computePDF(const Point & point) const
 
 Scalar Gamma::computePDF(const Scalar u) const
 {
-  if (u <= gamma_) return 0.0;
+  if (u < gamma_) return 0.0;
   return std::exp(computeLogPDF(u));
 }
 
@@ -240,11 +240,12 @@ Scalar Gamma::computeLogPDF(const Scalar u) const
 {
   // From textbook, we have log(PDF(u)) =  - lambda * (u - gamma) + (k - 1) * log(u - gamma) + k * log(lambda) - log(Gamma(k))
   const Scalar x = lambda_ * (u - gamma_);
-  if (x <= 0.0) return SpecFunc::LowestScalar;
+  if (x < 0.0) return SpecFunc::LowestScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(u)) = L - lambda * (u - gamma) + (k - 1) * log(lambda * (u - gamma) / k)
   if (k_ >= 6.9707081224932495879) return normalizationFactor_ - x + (k_ - 1.0) * std::log(x / k_);
-  return normalizationFactor_ + (k_ - 1) * std::log(x) - x;
+  // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for k_ == 1
+  return normalizationFactor_ + ((k_ == 1.0) ? 0.0 : (k_ - 1.0) * std::log(x)) - x;
 }
 
 /* Get the CDF of the distribution */

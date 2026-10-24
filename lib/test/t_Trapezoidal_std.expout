@@ -235,7 +235,7 @@ characteristic function=(-0.0444406,0.0919846)
 log characteristic function=(-2.28124,2.02086)
 quantile=class=Point name=Unnamed dimension=1 values=[13.355]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.3725] upper bound=class=Point name=Unnamed dimension=1 values=[13.6275] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1.745] upper bound=class=Point name=Unnamed dimension=1 values=[14] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
 Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)) gradientImplementation=MinimumVolumeLevelSetGradient(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Trapezoidal(a = 1, b = 1.2, c = 14, d = 14)) level=2.55723
 beta=0.0775194
