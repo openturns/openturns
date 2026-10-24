@@ -499,6 +499,7 @@
   <Mesh-Shininess            value_float="100.0"   />
   <Mesh-SpecularFactor       value_float="0.2"     />
   <Mesh-VertexEpsilon        value_float="1.0e-6"  />
+  <Mesh-WeldEpsilon          value_float="1.0e-12" />
   <Mesh-DefaultThetaX        value_float="0.3"     />
   <Mesh-DefaultThetaY        value_float="0.3"     />
   <Mesh-DefaultThetaZ        value_float="0.3"     />

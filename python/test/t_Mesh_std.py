@@ -165,6 +165,38 @@ interEmpty = mesh1.intersect(meshFar)
 assert interEmpty.getSimplicesNumber() == 0, "expected empty intersection"
 assert interEmpty.getVerticesNumber() == 0, "expected no vertices"
 
+# The weld tolerance scales with the coordinate magnitude: far from the
+# origin, copies of the same crossing computed from different triangle
+# pairs differ by more than a few ulps and must still be welded. With a
+# tolerance relative to the mesh extent only (the former
+# SpecFunc::Precision * range), this case kept 10 vertices instead of 8.
+farVertices1 = [
+    [1000000.0486993039, 999999.5140417002],
+    [1000000.9394377695, 999999.5140417002],
+    [1000000.9394377695, 1000001.2215834407],
+    [1000000.0486993039, 1000001.2215834407],
+]
+farVertices2 = [
+    [1000000.0795570296, 999999.5982353133],
+    [1000001.8168244953, 999999.5982353133],
+    [1000001.8168244953, 1000001.1004651152],
+    [1000000.0795570296, 1000001.1004651152],
+]
+farMesh1 = ot.Mesh(farVertices1, [[0, 1, 2], [0, 2, 3]])
+farMesh2 = ot.Mesh(farVertices2, [[0, 1, 2], [0, 2, 3]])
+farIntersection = farMesh1.intersect(farMesh2)
+assert (
+    farIntersection.getVerticesNumber() == 8
+), "vertices not welded far from the origin"
+assert farIntersection.getSimplicesNumber() == 7, "wrong simplices number"
+x0 = max(farVertices1[0][0], farVertices2[0][0])
+x1 = min(farVertices1[1][0], farVertices2[1][0])
+y0 = max(farVertices1[0][1], farVertices2[0][1])
+y1 = min(farVertices1[2][1], farVertices2[2][1])
+ott.assert_almost_equal(
+    farIntersection.getVolume(), (x1 - x0) * (y1 - y0), 1e-9, 1e-9
+)
+
 # Grid candidate path (above Mesh-GridThreshold pairs): same geometry as
 # the dense product path, here [0, 1]^2 of volume 1.0
 boxA = ot.IntervalMesher([8] * 2).build(ot.Interval([-1.0] * 2, [1.0] * 2))
