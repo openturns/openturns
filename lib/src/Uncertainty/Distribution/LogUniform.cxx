@@ -181,7 +181,7 @@ Point LogUniform::computePDFGradient(const Point & point) const
 
   Point pdfGradient(2, 0.0);
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return pdfGradient;
+  if ((x < a_) || (x > b_)) return pdfGradient;
   const Scalar value = computePDF(point) / (bLog_ - aLog_);
   pdfGradient[0] = value;
   pdfGradient[1] = -value;
