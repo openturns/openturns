@@ -2,6 +2,7 @@
 
 import math
 import pickle
+import time
 from io import BytesIO
 
 import openturns as ot
@@ -22,6 +23,9 @@ assert isinstance(defaultDistribution.drawCDF(), ot.Graph)
 # orthonormal Legendre basis on Uniform(-1, 1)
 factory = ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)])
 basis = ot.OrthogonalBasis(factory)
+# OrthogonalBasis equality is value-based on the factory description
+assert ot.OrthogonalBasis(factory) == ot.OrthogonalBasis(factory)
+assert ot.OrthogonalBasis(factory) != ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Normal()]))
 distribution = otexp.ChristoffelDistribution(basis, 3)
 
 # accessors
@@ -54,6 +58,23 @@ assert distribution.computePDF([2.0]) == 0.0
 kn = distribution.computeKn()
 assert 9.0 <= kn <= 9.0 * 1.1 * (1.0 + 1e-06)
 
+# the stability factor cache is invalidated when a key that enters the
+# estimate changes: recomputing with a larger safety margin scales the result
+ot.ResourceMap.SetAsScalar("ChristoffelDistribution-KnSafetyFactor", 1.2)
+try:
+    ott.assert_almost_equal(distribution.computeKn(), 9.0 * 1.2)
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelDistribution-KnSafetyFactor", 1.1)
+ott.assert_almost_equal(distribution.computeKn(), kn)
+# a non-positive or non-finite safety factor is rejected by the samplers
+ot.ResourceMap.SetAsScalar("ChristoffelDistribution-KnSafetyFactor", 0.0)
+try:
+    with ott.assert_raises(TypeError):
+        distribution.computeKn()
+finally:
+    ot.ResourceMap.SetAsScalar("ChristoffelDistribution-KnSafetyFactor", 1.1)
+ott.assert_almost_equal(distribution.computeKn(), kn)
+
 # the PDF integrates to 1 over the range
 probability = ot.GaussLegendre([41]).integrate(distribution.getPDF(), ot.Interval([-1.0], [1.0]))[0]
 ott.assert_almost_equal(probability, 1.0)
@@ -68,6 +89,54 @@ for point in sample:
 # sequential draws target a symmetric law of mean 0
 bigSample = distribution.getSample(200)
 assert abs(bigSample.computeMean()[0]) < 0.2
+
+# the tensor sampler must not include the marginal density twice. For this
+# normal Hermite basis, E_sigma[k_m] = int mu k_m^2 / m is exactly 11, while the
+# old envelope and acceptance test proportional to mu_j * S_j * mu_j sampled a
+# different law with E[k_m] about 2.7. The trace identity mean_mu[k_m] = m is
+# not the right regression here: it holds under the reference, not under sigma.
+normalBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Normal()]))
+normalDistribution = otexp.ChristoffelDistribution(normalBasis, 3)
+ot.RandomGenerator.SetSeed(0)
+normalSample = normalDistribution.getSample(5000)
+normalKnMean = normalDistribution.computeChristoffelFunction(normalSample).computeMean()[0]
+assert abs(normalKnMean - 11.0) < 1.5
+
+# A high-degree Hermite slice must not spend its time rejecting proposals in
+# the tails. The density-weighted envelope and full-support proposal keep the
+# sampler fast, and its CDF matches the conditional CDF.
+highDistribution = otexp.ChristoffelDistribution(normalBasis, 8)
+ot.RandomGenerator.SetSeed(0)
+start = time.perf_counter()
+highSample = highDistribution.getSample(2000)
+elapsed = time.perf_counter() - start
+assert highSample.getSize() == 2000
+assert elapsed < 30.0
+for x in [-4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0]:
+    assert abs(highSample.computeEmpiricalCDF([x]) - highDistribution.computeConditionalCDF(x, [])) < 0.05
+
+# A one-sided unbounded marginal exercises the half-Cauchy proposal.
+gammaBasis = ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Gamma(2.0, 1.0)]))
+gammaDistribution = otexp.ChristoffelDistribution(gammaBasis, 8)
+ot.RandomGenerator.SetSeed(0)
+gammaSample = gammaDistribution.getSample(2000)
+assert gammaSample.getMin()[0] >= 0.0
+for x in [1.0, 2.0, 5.0, 10.0, 20.0]:
+    assert abs(gammaSample.computeEmpiricalCDF([x]) - gammaDistribution.computeConditionalCDF(x, [])) < 0.06
+
+# The degree-29 case named in the review must complete as well. Its target has
+# polynomial tails beyond the normal numerical range, so the sample is allowed
+# to leave that range: the full-support proposal is what keeps the law exact.
+veryHighDistribution = otexp.ChristoffelDistribution(normalBasis, 30)
+ot.RandomGenerator.SetSeed(0)
+start = time.perf_counter()
+veryHighSample = veryHighDistribution.getSample(200)
+elapsed = time.perf_counter() - start
+assert veryHighSample.getSize() == 200
+assert elapsed < 30.0
+assert abs(veryHighSample.computeMean()[0]) < 1.5
+for point in veryHighSample:
+    assert math.isfinite(point[0])
 
 # clone, comparison and persistence
 assert distribution == otexp.ChristoffelDistribution(basis, 3)
@@ -196,6 +265,14 @@ try:
         assert distributionC.computePDF(point) >= 0.0
 finally:
     ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension", 5)
+
+# a null slice grid size is rejected by the tensor sampler
+ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 0)
+try:
+    with ott.assert_raises(TypeError):
+        distribution.getSample(1)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 1000)
 
 # dispatch by measured acceptance, rejection wins: with size=1 the Christoffel
 # function is identically 1, so rejection accepts at 1/kn = 1/1.1, above the

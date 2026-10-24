@@ -21,6 +21,10 @@ print(basisFactory._repr_html_())
 basis = ot.OrthogonalBasis(basisFactory)
 print("basis=")
 print(basis)
+# Value-based equality: the same factory gives equal bases, another factory does not
+assert ot.OrthogonalBasis() == ot.OrthogonalBasis()
+assert ot.OrthogonalBasis(basisFactory) == ot.OrthogonalBasis(basisFactory)
+assert ot.OrthogonalBasis(basisFactory) != ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Uniform()]))
 
 x = [0.5] * dim
 enum = basis.getEnumerateFunction()

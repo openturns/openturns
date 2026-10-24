@@ -70,6 +70,28 @@ EnumerateFunction OrthogonalBasis::getEnumerateFunction() const
   return getImplementation()->getEnumerateFunction();
 }
 
+/* Value-based comparison: same measure, same enumerate function and same factory description */
+Bool OrthogonalBasis::operator ==(const OrthogonalBasis & other) const
+{
+  if (getImplementation().get() == other.getImplementation().get()) return true;
+  try
+  {
+    if (getImplementation()->getMeasure() != other.getImplementation()->getMeasure()) return false;
+    if (getImplementation()->getEnumerateFunction() != other.getImplementation()->getEnumerateFunction()) return false;
+  }
+  catch (const Exception &)
+  {
+    // An unconfigured base factory has no enumerate function; its description
+    // is still comparable and keeps default-constructed bases equal to themselves.
+  }
+  return getImplementation()->__repr__() == other.getImplementation()->__repr__();
+}
+
+Bool OrthogonalBasis::operator !=(const OrthogonalBasis & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String OrthogonalBasis::__repr__() const
 {

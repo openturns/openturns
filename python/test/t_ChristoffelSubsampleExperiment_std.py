@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import math
 import pickle
 from io import BytesIO
 
@@ -42,9 +41,9 @@ reference = experiment.getDistribution()
 christoffel = otexp.ChristoffelDistribution(basis, 30)
 ott.assert_almost_equal(weights[0], reference.computePDF(sample[0]) / christoffel.computePDF(sample[0]))
 
-# no absolute frame bounds at m = n with a 2x pool: the thinned design is
-# still far more stable than a uniform design at the same budget, whose
-# Gramian is numerically singular in a 30-function space
+# no absolute frame bounds at m = n: the projection DPP is still far more
+# stable than a uniform design at the same budget, whose Gramian is
+# numerically singular in a 30-function space
 eigenvalues = experiment.computeDesignEigenvalues(sample, weights)
 ot.RandomGenerator.SetSeed(1)
 uniformEigenvalues = experiment.computeDesignEigenvalues(basis.getMeasure().getSample(30), ot.Point(30, 1.0))
@@ -55,6 +54,11 @@ with ott.assert_raises(TypeError):
     experiment.computeDesignEigenvalues(ot.Sample(5, 2), ot.Point(5, 1.0))
 with ott.assert_raises(TypeError):
     experiment.computeDesignEigenvalues(sample, ot.Point(3, 1.0))
+# zero and negative weights are rejected: the frame certificate would ignore them
+with ott.assert_raises(TypeError):
+    experiment.computeDesignEigenvalues(sample, ot.Point(30, 0.0))
+with ott.assert_raises(TypeError):
+    experiment.computeDesignEigenvalues(sample, ot.Point(30, -1.0))
 
 # setters rebuild the derived members
 experiment.setSize(50)
@@ -63,7 +67,7 @@ assert experiment.getSpaceDimension() == 50
 experiment.setOrthogonalBasis(basis)
 assert experiment.getSpaceDimension() == 50
 
-# the thinning is deterministic: same seed gives the same design
+# the generation is deterministic: same seed gives the same design
 ot.RandomGenerator.SetSeed(0)
 sampleA, weightsA = experiment.generateWithWeights()
 ot.RandomGenerator.SetSeed(0)
@@ -71,42 +75,106 @@ sampleB, weightsB = experiment.generateWithWeights()
 ott.assert_almost_equal(sampleA, sampleB)
 ott.assert_almost_equal(weightsA, weightsB)
 
-# the sizing rule needs no gamma key anymore: m = n-k is deduced by trial
-assert not ot.ResourceMap.HasKey("ChristoffelSubsampleExperiment-Gamma")
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor"), 2.0)
-ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor"), 16.0)
+# the default sizing rule is m = n-k; the certified mode is opt-in and the
+# pool, thinning and barrier controls are gone
+assert not ot.ResourceMap.GetAsBool("ChristoffelSubsampleExperiment-Certified")
+ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-Gamma"), 9.242343873386666)
+assert ot.ResourceMap.GetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts") == 10
+for key in [
+    "ChristoffelSubsampleExperiment-PoolOversamplingFactor",
+    "ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor",
+    "ChristoffelSubsampleExperiment-ThinningMethod",
+    "ChristoffelSubsampleExperiment-BarrierStep",
+    "ChristoffelSubsampleExperiment-BarrierRegularization",
+]:
+    assert not ot.ResourceMap.HasKey(key)
 ott.assert_almost_equal(ot.ResourceMap.GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance"), 0.5)
+existing = reference.getSample(20)
 
-# Barrier method: non-trivial reweighting, smoke only (no frame bounds)
-ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
+# certified mode: n = gamma m log(m), n independent Christoffel points and
+# no recycling of supplied points
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
 try:
-    barrierSample, barrierWeights = experiment.generateWithWeights()
-    assert barrierSample.getSize() == 50
-    assert len(barrierWeights) == 50
-    assert all(w > 0.0 for w in barrierWeights)
-finally:
-    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
+    assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 4
+    assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(100) == 6
+    certifiedExperiment = otexp.ChristoffelSubsampleExperiment(basis, 60)
+    assert certifiedExperiment.getSize() == 60
+    assert certifiedExperiment.getSpaceDimension() == 4
+    ot.RandomGenerator.SetSeed(5)
+    certifiedSample, certifiedWeights = certifiedExperiment.generateWithWeights()
+    assert certifiedSample.getSize() == 60
+    assert len(certifiedWeights) == 60
+    assert all(w > 0.0 for w in certifiedWeights)
+    with ott.assert_raises(TypeError):
+        certifiedExperiment.generateWithWeights(existing)
 
-# Barrier with a step larger than the early spectral gap: the lower barrier
-# is capped at half the remaining gap instead of stalling on its level
-ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 2.0)
+    # an impossible frame band forces a redraw: one allowed attempt returns
+    # the first draw, two allowed attempts return the second draw
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.0)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
+    try:
+        oneAttempt = otexp.ChristoffelSubsampleExperiment(basis, 60)
+        ot.RandomGenerator.SetSeed(6)
+        firstSample, _ = oneAttempt.generateWithWeights()
+        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 2)
+        twoAttempts = otexp.ChristoffelSubsampleExperiment(basis, 60)
+        ot.RandomGenerator.SetSeed(6)
+        secondSample, _ = twoAttempts.generateWithWeights()
+        assert firstSample.getSize() == secondSample.getSize() == 60
+        assert any(firstSample[i, 0] != secondSample[i, 0] for i in range(60))
+    finally:
+        ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
+        ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+finally:
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+
+# a non-positive gamma is rejected when the certified mode is selected
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", -1.0)
 try:
-    bigStepSample, bigStepWeights = experiment.generateWithWeights()
-    assert bigStepSample.getSize() == 50
-    assert len(bigStepWeights) == 50
-    assert all(w > 0.0 for w in bigStepWeights)
+    with ott.assert_raises(TypeError):
+        otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(10)
 finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0)
-    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
 
-# small space dimension (m=15): barrier schedule stays inside the spectrum
+# the certified redraw cap must be positive
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 0)
+try:
+    with ott.assert_raises(TypeError):
+        otexp.ChristoffelSubsampleExperiment(basis, 10)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+assert otexp.ChristoffelSubsampleExperiment.DeduceSpaceDimension(60) == 60
+
+# small space dimension (m=15): exact projection DPP, no pool
 smallExperiment = otexp.ChristoffelSubsampleExperiment(basis, 15)
 assert smallExperiment.getSpaceDimension() == 15
 smallSample, smallWeights = smallExperiment.generateWithWeights()
 assert smallSample.getSize() == 15
 assert len(smallWeights) == 15
 assert all(w > 0.0 for w in smallWeights)
+assert len(set(tuple(point) for point in smallSample)) == 15
+
+# m=2 exact DPP moments: E[(X-Y)^2] = 8/5 and E[X^2] = 7/15 for the
+# projection DPP of the first two Legendre functions, against 2/3 and 1/3
+# for independent uniform draws
+twoExperiment = otexp.ChristoffelSubsampleExperiment(basis, 2)
+squaredDifference = 0.0
+square = 0.0
+twoCount = 2000
+for k in range(twoCount):
+    ot.RandomGenerator.SetSeed(500000 + k)
+    twoSample, twoWeights = twoExperiment.generateWithWeights()
+    squaredDifference += (twoSample[0, 0] - twoSample[1, 0]) ** 2
+    square += twoSample[0, 0] ** 2
+squaredDifference /= twoCount
+square /= twoCount
+assert abs(squaredDifference - 1.6) < 0.12
+assert abs(square - 7.0 / 15.0) < 0.05
 
 # finite basis: k is deduced by trial, m = n-k supplied by the basis
 finiteFunctions = [ot.SymbolicFunction("x", formula) for formula in ["1.0", "x", "x^2", "x^3", "x^4"]]
@@ -114,35 +182,59 @@ finiteFactory = otexp.FiniteOrthogonalFunctionFactory(finiteFunctions, ot.Unifor
 finiteBasis = ot.OrthogonalBasis(finiteFactory)
 finiteExperiment = otexp.ChristoffelSubsampleExperiment(finiteBasis, 30)
 assert finiteExperiment.getSpaceDimension() == 5
+finiteSample, finiteWeights = finiteExperiment.generateWithWeights()
+assert finiteSample.getSize() == finiteExperiment.getSize()
+assert all(w > 0.0 for w in finiteWeights)
 
-# pool factor 1 fast path: no thinning, direct Christoffel draws
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 1.0)
-try:
-    directSample, directWeights = experiment.generateWithWeights()
-    assert directSample.getSize() == 50
-    assert len(directWeights) == 50
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0)
+# reuse path with M >= n: exact volume sample of the supplied candidates
+ot.RandomGenerator.SetSeed(1)
+candidatePool = reference.getSample(100)
+volumeSample, volumeWeights = experiment.generateWithWeights(candidatePool)
+assert volumeSample.getSize() == 50
+assert len(volumeWeights) == 50
+assert all(w > 0.0 for w in volumeWeights)
+assert len(set(tuple(point) for point in volumeSample)) == 50
+candidateTuples = set(tuple(point) for point in candidatePool)
+assert all(tuple(point) in candidateTuples for point in volumeSample)
 
-# pool input: existing points are prepended, fresh draws top up
-existing = reference.getSample(20)
-ot.RandomGenerator.SetSeed(1)
-pooledSample, pooledWeights = experiment.generateWithWeights(existing)
-assert pooledSample.getSize() == 50
-assert len(pooledWeights) == 50
-assert all(w > 0.0 for w in pooledWeights)
-ot.RandomGenerator.SetSeed(1)
-pooledSample2, pooledWeights2 = experiment.generateWithWeights(existing)
-ott.assert_almost_equal(pooledSample, pooledSample2)
-ott.assert_almost_equal(pooledWeights, pooledWeights2)
-# empty pool input behaves like the plain call
+# an empty supplied pool delegates to the fresh projection DPP path
 ot.RandomGenerator.SetSeed(2)
-plainSample, plainWeights = experiment.generateWithWeights()
+freshSample, freshWeights = experiment.generateWithWeights()
 ot.RandomGenerator.SetSeed(2)
-emptyPooledSample, emptyPooledWeights = experiment.generateWithWeights(ot.Sample(0, 1))
-ott.assert_almost_equal(plainSample, emptyPooledSample)
-ott.assert_almost_equal(plainWeights, emptyPooledWeights)
-# wrong pool dimension raises
+emptySample, emptyWeights = experiment.generateWithWeights(ot.Sample(0, 1))
+ott.assert_almost_equal(freshSample, emptySample)
+ott.assert_almost_equal(freshWeights, emptyWeights)
+
+# M < n and M <= m: conditional projection DPP anchored on every supplied point
+ot.RandomGenerator.SetSeed(3)
+conditionalSample, conditionalWeights = experiment.generateWithWeights(existing)
+assert conditionalSample.getSize() == 50
+assert len(conditionalWeights) == 50
+assert all(w > 0.0 for w in conditionalWeights)
+ott.assert_almost_equal(conditionalSample[:20], existing)
+
+# M < n but M > m: no projection DPP can be conditioned on that many points
+with ott.assert_raises(TypeError):
+    finiteExperiment.generateWithWeights(reference.getSample(10))
+
+# M <= m on a larger target: conditional DPP block plus independent fill
+ot.RandomGenerator.SetSeed(4)
+smallPool = reference.getSample(3)
+filledSample, filledWeights = finiteExperiment.generateWithWeights(smallPool)
+assert filledSample.getSize() == 30
+assert len(filledWeights) == 30
+assert all(w > 0.0 for w in filledWeights)
+ott.assert_almost_equal(filledSample[:3], smallPool)
+
+# dependent supplied features cannot anchor a conditional DPP
+with ott.assert_raises(TypeError):
+    experiment.generateWithWeights(ot.Sample(2, [0.5]))
+
+# an out-of-support supplied point has a zero importance weight
+with ott.assert_raises(RuntimeError):
+    twoExperiment.generateWithWeights(ot.Sample([[0.5], [3.0]]))
+
+# wrong supplied dimension raises
 with ott.assert_raises(TypeError):
     experiment.generateWithWeights(ot.Sample(5, 2))
 
@@ -153,6 +245,27 @@ buf = BytesIO()
 pickle.dump(experiment, buf)
 buf.seek(0)
 assert pickle.load(buf) == experiment
+
+# certified settings are persisted: loading must not re-read the ResourceMap
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 5.0)
+ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 3)
+try:
+    certifiedPersisted = otexp.ChristoffelSubsampleExperiment(basis, 60)
+    assert certifiedPersisted.getSpaceDimension() == 6
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
+    buf = BytesIO()
+    pickle.dump(certifiedPersisted, buf)
+    buf.seek(0)
+    restored = pickle.load(buf)
+    assert restored == certifiedPersisted
+    assert restored.getSpaceDimension() == 6
+finally:
+    ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", False)
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666)
+    ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)
 
 # errors: the reference distribution is embedded in the basis
 with ott.assert_raises(TypeError):
@@ -168,66 +281,15 @@ assert experiment.getOrthogonalBasis() == basis
 defaultExperiment = otexp.ChristoffelSubsampleExperiment()
 assert defaultExperiment.getSize() == ot.ResourceMap.GetAsUnsignedInteger("WeightedExperiment-DefaultSize")
 assert defaultExperiment.getSpaceDimension() == 0
+with ott.assert_raises(TypeError):
+    defaultExperiment.generateWithWeights()
+with ott.assert_raises(TypeError):
+    defaultExperiment.generate()
 
-# a pool point outside the numerical range has a null law density: its
-# importance ratio is undefined and it must not divide by zero
-mixedPool = ot.Sample([[0.5], [3.0], [-0.7]])
-mixedSample, mixedWeights = experiment.generateWithWeights(mixedPool)
-assert mixedSample.getSize() == 50
-assert all(math.isfinite(w) for w in mixedWeights)
-
-# a pool oversampling factor below 1 is rejected
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 0.5)
+# a negative frame tolerance is rejected
+ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", -1.0)
 try:
     with ott.assert_raises(TypeError):
         experiment.generateWithWeights()
 finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0)
-
-# a non-positive pool maximum factor is rejected
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 0.0)
-try:
-    with ott.assert_raises(TypeError):
-        experiment.generateWithWeights()
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
-
-# adaptive pool: a degenerate pool of duplicates grows with fresh draws
-# until the thinned design is usable, keeping the existing points
-degeneratePool = ot.Sample(100, [0.5])
-ot.RandomGenerator.SetSeed(3)
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 2.0)
-try:
-    cappedSample, cappedWeights = experiment.generateWithWeights(degeneratePool)
-    cappedEigenvalues = experiment.computeDesignEigenvalues(cappedSample, cappedWeights)
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 4.0)
-try:
-    ot.RandomGenerator.SetSeed(3)
-    grownSample, grownWeights = experiment.generateWithWeights(degeneratePool)
-    assert grownSample.getSize() == 50
-    assert len(grownWeights) == 50
-    assert all(w > 0.0 for w in grownWeights)
-    grownEigenvalues = experiment.computeDesignEigenvalues(grownSample, grownWeights)
-    assert min(grownEigenvalues) > min(cappedEigenvalues)
-    assert min(grownEigenvalues) > 0.0
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0)
-
-# the barrier schedule rejects non-positive controls
-ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 0.0)
-try:
-    with ott.assert_raises(TypeError):
-        experiment.generateWithWeights()
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0)
-    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
-ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 0.0)
-ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Barrier")
-try:
-    with ott.assert_raises(TypeError):
-        experiment.generateWithWeights()
-finally:
-    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1e-8)
-    ot.ResourceMap.SetAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal")
+    ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
