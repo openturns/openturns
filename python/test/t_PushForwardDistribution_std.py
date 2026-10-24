@@ -514,6 +514,23 @@ print(f"openCoArea continuation pdf(1.0)={openContinuationPDF:.12g}")
 ott.assert_almost_equal(openContinuationPDF, expected, 1e-6, 0.0)
 assert abs(openContinuationPDF - expected) < abs(openMeshPDF - expected)
 
+# The product map X0 * X1 has two hyperbolic components whose mesh seeds lie
+# exactly on the boundary of the search box, and one traced direction points
+# outward. Before the boundary check, every halving attempt produced a point
+# outside the box, the fixed attempt budget was exhausted before reaching the
+# minimum step, and the continuation silently fell back to the O(h^2) mesh
+# rule with a few 1e-3 relative error. ProductDistribution supplies the
+# reference density K0(|z|) / pi away from the singular level zero.
+productCoArea = otexp.PushForwardDistribution(
+    ot.SymbolicFunction(["x0", "x1"], ["x0 * x1"]), ot.Normal(2)
+)
+productReference = ot.ProductDistribution(ot.Normal(), ot.Normal())
+for level in [-1.0, -0.5, 0.5, 1.0]:
+    expected = productReference.computePDF([level])
+    pdf = productCoArea.computePDF([level])
+    print(f"productCoArea pdf({level})={pdf:.12g}")
+    ott.assert_almost_equal(pdf, expected, 1e-6, 0.0)
+
 # A scalar nonlinear map on R^3 has a two dimensional fibre: the level set is
 # extracted from a tetrahedralisation of the search box, and the density is
 # integrated over the resulting triangulated surface. Y = X0^2 + X1^2 + X2^2

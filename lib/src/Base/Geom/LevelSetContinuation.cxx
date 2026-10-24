@@ -347,16 +347,38 @@ LevelSetContinuation::Result LevelSetContinuation::traceDirection(const Point & 
     result.status = singular ? SINGULAR : FAILURE;
     return result;
   }
+  // A seed on the boundary of the search box with an outward tangent has no
+  // interior length. Detect it before the step-halving loop, otherwise the
+  // first candidate is outside for every attempt and the trace only stops
+  // once the step has been reduced below the minimum step.
+  const Scalar boundaryTolerance = std::max(1.0e-12, 1.0e-4 * initialStep);
+  const Point lowerBound(searchInterval_.getLowerBound());
+  const Point upperBound(searchInterval_.getUpperBound());
+  for (UnsignedInteger i = 0; i < point.getSize(); ++i)
+  {
+    const Scalar orientedTangent = orientation * tangent[i];
+    if (((point[i] - lowerBound[i] <= boundaryTolerance) && (orientedTangent < 0.0))
+        || ((upperBound[i] - point[i] <= boundaryTolerance) && (orientedTangent > 0.0)))
+    {
+      result.status = SUCCESS;
+      return result;
+    }
+  }
   const Scalar boxMargin = 1.0e-12 * std::max(1.0,
                            (searchInterval_.getUpperBound() - searchInterval_.getLowerBound()).norm());
   Scalar step = initialStep;
   Point previousTangent(tangent);
   const Point initialTangent(tangent);
   const UnsignedInteger maximumSteps = 100000;
+  // The step must be reducible from its initial value down to minimumStep.
+  // Since minimumStep can be one millionth of the mesh step, 16 halvings are
+  // not always enough for a fibre that starts close to the boundary and leaves
+  // it almost tangentially.
+  const UnsignedInteger maximumAttempts = static_cast<UnsignedInteger>(std::ceil(std::log2(std::max(1.0, initialStep / minimumStep)))) + 2;
   for (UnsignedInteger iteration = 0; iteration < maximumSteps; ++iteration)
   {
     Bool accepted = false;
-    for (UnsignedInteger attempt = 0; attempt < 16; ++attempt)
+    for (UnsignedInteger attempt = 0; attempt < maximumAttempts; ++attempt)
     {
       Point candidate(point);
       Scalar candidateIntegral = result.density;
@@ -368,8 +390,6 @@ LevelSetContinuation::Result LevelSetContinuation::traceDirection(const Point & 
         result.status = stepSingular ? SINGULAR : FAILURE;
         return result;
       }
-      const Point lowerBound(searchInterval_.getLowerBound());
-      const Point upperBound(searchInterval_.getUpperBound());
       Bool inside = true;
       for (UnsignedInteger i = 0; i < candidate.getSize(); ++i)
         if ((candidate[i] < lowerBound[i] - boxMargin)
@@ -395,6 +415,17 @@ LevelSetContinuation::Result LevelSetContinuation::traceDirection(const Point & 
       const Scalar angle = std::acos(cosine);
       if ((angle > 0.25) && (step > minimumStep))
       {
+        step *= 0.5;
+        continue;
+      }
+      // A singular point can make the projection pull the predictor back to
+      // the same location: without this check the loop would accept steps
+      // forever without advancing along the fibre.
+      const Scalar advance = (candidate - point).norm();
+      if (advance <= 0.5 * step)
+      {
+        if (step <= minimumStep)
+          return result;
         step *= 0.5;
         continue;
       }
