@@ -165,8 +165,8 @@ HMatrix : :class:`~openturns.HMatrix`
 
 Notes
 -----
-This method is similar to the :py:meth:`discretize` method. This method requires that
-OpenTURNS has been compiled with the hmat library.
+This method is similar to the :py:meth:`discretize` method.
+This method requires that the library has been compiled hmat support.
 The method is helpful for very large parameters (Mesh, grid, Sample)
 because it compresses data.
 )RAW"
@@ -196,8 +196,8 @@ HMatrix : :class:`~openturns.HMatrix`
 
 Notes
 -----
-This method is similar to the :py:meth:`discretizeAndFactorize` method. This method requires that
-requires that OpenTURNS has been compiled with the hmat library.
+This method is similar to the :py:meth:`discretizeAndFactorize` method.
+This method requires that the library has been compiled with hmat support.
 The method is helpful for very large parameters (Mesh, grid, Sample)
 because it compresses data.
 )RAW"

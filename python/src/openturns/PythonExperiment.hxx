@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief This class binds a Python object to an OpenTURNS' Experiment
+ * @brief This class binds a Python object to an Experiment
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PythonExperiment
  *
- * This class binds a Python object to an OpenTURNS' Experiment
+ * This class binds a Python object to an Experiment
  */
 class PythonExperiment
   : public ExperimentImplementation

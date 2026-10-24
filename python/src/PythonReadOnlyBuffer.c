@@ -314,7 +314,7 @@ static PySequenceMethods Buffer_as_sequence;
 
 static const char Buffer_doc[] =                                          \
 "openturns.memoryview.Buffer class.\n\n"                                  \
-"This class allows wrapping OpenTURNS containers (Point, Sample, etc.)\n" \
+"This class allows wrapping container objects (Point, Sample, etc.)\n" \
 "into Python objects without copy.  A Buffer object can be indexed,\n"    \
 "or converted into a Sample or a numpy array.";
 

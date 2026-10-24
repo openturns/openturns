@@ -113,34 +113,7 @@ First, add the class to the C++ library
 #. Add ``MyClass.hxx`` to the file ``OTXXXXXX.hxx``, where ``XXXXXX`` is
    the name of the current directory.
 
-#. Create a test file ``t_MyClass_std.cxx`` in the directory lib/test.
-   This test file must use the standard functionalities of the class
-   MyClass.
-   Keep in mind there are over a thousand unit tests, so they should be
-   reasonably quick to run, lasting preferably less than 10 seconds.
-
-#. Create an expected output file ``t_MyClass_std.expout`` that contains
-   a verbatim copy of the expected output (copy-paste the *validated*
-   output of the test in this file).
-
-#. Modify the ``CMakeLists.txt`` file in lib/test: add
-   ``ot_check_test ( MyClass_std )`` in this file.
-
-#. If the validation of your class involved advanced mathematics, or was
-   a significant work using other tools, you can add this validation in
-   the validation/src directory.
-
-   -  copy all of your files in the validation/src directory.
-
-   -  modify the validation/src/CMakeLists.txt file by appending the
-      list of your files to the list of files to install.
-
 #. You may want to update the Changelog file to mention new classes, bug fixes...
-
-That’s it! Your class is integrated to the library and will be checked
-for non-regression in all the subsequent versions of OpenTURNS, assuming
-that your contribution has been incorporated in the “official”  release.
-But nobody can use it!
 
 Second, add your class to the Python interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -240,6 +213,19 @@ Second, add your class to the Python interface
 
    -  add ``t_MyClass_std.py`` to the tests using
       ``ot_pyinstallcheck_test ( MyClass_std )``.
+
+#. If the validation of your class involved advanced mathematics, or was
+   a significant work using other tools, you can add this validation in
+   the validation/src directory.
+
+   -  copy all of your files in the validation/src directory.
+
+   -  modify the validation/src/CMakeLists.txt file by appending the
+      list of your files to the list of files to install.
+
+That’s it! Your class is integrated to the library and will be checked
+for non-regression in all the subsequent versions of the library assuming
+that your contribution has been merged to master branch.
 
 Document your contribution more thoroughly
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PythonPointToFieldFunction
  *
- * This class binds a Python function to an OpenTURNS' PointToFieldFunction
+ * This class binds a Python function to a PointToFieldFunction
  */
 class PythonPointToFieldFunction
   : public PointToFieldFunctionImplementation

@@ -177,7 +177,7 @@ view = otv.View(graph_PDF, square_axes=True)
 # invariance of the distribution in the standard space. This property reduces the dimension
 # of the problem to 1. See :ref:`Isoprobabilistic transformation <isoprobabilistic_transformation>` for more theoretical details.
 #
-# OpenTURNS has several isoprobabilistic transformations, depending on the distribution of the input random vector:
+# The library features several isoprobabilistic transformations depending on the distribution of the input random vector:
 #
 # - the Nataf transformation is used if the input distribution has a normal copula,
 # - the Generalized Nataf transformation is used if the input distribution has an elliptical copula,

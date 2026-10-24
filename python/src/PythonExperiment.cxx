@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief This class binds a Python object to an OpenTURNS' RandomVector
+ * @brief This class binds a Python object to a RandomVector
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *

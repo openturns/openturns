@@ -267,6 +267,15 @@ UnsignedInteger ExpertMixture::getOutputDimension() const
   return experts_[0].getOutputDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool ExpertMixture::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < experts_.getSize(); ++ i)
+    if (!experts_[i].getImplementation()->isParallel())
+      return false;
+  return classifier_.getImplementation()->isParallel();
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void ExpertMixture::save(Advocate & adv) const

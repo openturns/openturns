@@ -26,15 +26,19 @@ indQ : :class:`~openturns.Indices`
 
 Notes
 -----
-We suppose here that the white noise is normal with zero mean and  variance :math:`\sigma^2`. It implies that the ARMA process estimated is normal.
+We suppose here that the white noise is normal with zero mean and  variance :math:`\sigma^2`.
+It implies that the ARMA process estimated is normal.
 
-For each order :math:`(p,q)`, the estimation of the coefficients :math:`(a_k)_{1\leq k\leq p}`, :math:`(b_k)_{1\leq k\leq q}` and the variance :math:`\sigma^2` is done using the Whittle estimator which is based on the maximization of the likelihood function in the frequency domain. 
+For each order :math:`(p,q)`, the estimation of the coefficients :math:`(a_k)_{1\leq k\leq p}`, :math:`(b_k)_{1\leq k\leq q}`
+and the variance :math:`\sigma^2` is done using the Whittle estimator
+which is based on the maximization of the likelihood function in the frequency domain.
 
-The principle is detailed hereafter for the case of a time series : in the case of a process sample, the estimator is similar except for the periodogram which is computed differently.
+The principle is detailed hereafter for the case of a time series : in the case of a process sample,
+the estimator is similar except for the periodogram which is computed differently.
 
 Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`d` from an :math:`ARMA(p,q)` process. 
 
-The spectral density function of the :math:`ARMA(p,q)` process writes :
+The spectral density function of the :math:`ARMA(p,q)` process writes:
 
 .. math::
 
@@ -50,29 +54,32 @@ The Whittle log-likelihood writes :
 
 where :
 
-- :math:`I` is the non parametric estimate of the spectral density, expressed in the Fourier space (frequencies in :math:`[0,2\pi]` instead of :math:`[-f_{max}, f_{max}]`). OpenTURNS uses by default the Welch estimator.
+- :math:`I` is the non parametric estimate of the spectral density, expressed in the Fourier space (frequencies in :math:`[0,2\pi]`
+  instead of :math:`[-f_{max}, f_{max}]`). By default the Welch estimator is used.
 
-- :math:`\lambda_j` is the :math:`j-th` Fourier frequency, :math:`\lambda_j = \frac{2 \pi j}{n}`, :math:`j=1 \ldots m` with :math:`m` the largest integer  :math:`\leq \frac{n-1}{2}`.
+- :math:`\lambda_j` is the :math:`j-th` Fourier frequency, :math:`\lambda_j = \frac{2 \pi j}{n}`, :math:`j=1 \ldots m`
+   with :math:`m` the largest integer  :math:`\leq \frac{n-1}{2}`.
 
-
-We estimate the :math:`(p+q+1)` scalar coefficients by maximizing the log-likelihood function. The corresponding equations lead to the following relation :
+We estimate the :math:`(p+q+1)` scalar coefficients by maximizing the log-likelihood function.
+The corresponding equations lead to the following relation:
 
 .. math::
 
     \sigma^{2*} = \frac{1}{m} \sum_{j=1}^{m} \frac{I(\lambda_j)}{g(\lambda_j, \vect{\theta}^{*})}
 
-where :math:`\vect{\theta}^{*}` maximizes :
+where :math:`\vect{\theta}^{*}` maximizes:
 
 .. math::
 
     \log L_w(\vect{\theta}) = m (\log(2 \pi) - 1) - m \log\left( \frac{1}{m} \sum_{j=1}^{m} \frac{I(\lambda_j)}{g(\lambda_j, \vect{\theta})}\right) - \sum_{j=1}^{m} g(\lambda_j, \vect{\theta})
 
-The Whitle estimation requires that :
+The Whitle estimation requires that:
 
-- the determinant of the eigenvalues of the companion matrix associated to the polynomial  :math:`1 + a_1X + \dots + a_pX^p` are  outside the unit disc, which guarantees the stationarity of the process;
+- the determinant of the eigenvalues of the companion matrix associated to the polynomial :math:`1 + a_1X + \dots + a_pX^p`
+  are outside the unit disc, which guarantees the stationarity of the process;
 
-- the determinant of the eigenvalues of the companion matrix associated to the polynomial  :math:`1 + ba_1X + \dots + b_qX^q` are outside the unit disc, which guarantees the invertibility of the process.
-
+- the determinant of the eigenvalues of the companion matrix associated to the polynomial :math:`1 + ba_1X + \dots + b_qX^q`
+  are outside the unit disc, which guarantees the invertibility of the process.
 
 The criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* are evaluated to help the model selection:
 
@@ -85,9 +92,12 @@ The criteria *AIC*, :math:`AIC_c` (corrected AIC) and *BIC* are evaluated to hel
         BIC & = & -2\log L_w + 2(p + q + 1)\log(p + q + 1)
     \end{eqnarray*}
 
-where :math:`m` is half the number of points of the time grid of the process sample (if the data are a process sample) or in a block of the time series (if the data are a time series).
+where :math:`m` is half the number of points of the time grid of the process sample (if the data are a process sample)
+or in a block of the time series (if the data are a time series).
 
-The *BIC* criterion leads to a model that gives a better prediction. The *AIC* criterion selects the best model that fits the given data. The :math:`AIC_c` criterion improves the previous one by penalizing a too high order that would artificially fit to the data.
+The *BIC* criterion leads to a model that gives a better prediction.
+The *AIC* criterion selects the best model that fits the given data.
+The :math:`AIC_c` criterion improves the previous one by penalizing a too high order that would artificially fit to the data.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 

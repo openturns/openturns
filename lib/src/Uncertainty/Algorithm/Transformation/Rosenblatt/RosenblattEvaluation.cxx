@@ -95,6 +95,12 @@ UnsignedInteger RosenblattEvaluation::getOutputDimension() const
   return distribution_.getDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool RosenblattEvaluation::isParallel() const
+{
+  return distribution_.getImplementation()->isParallel();
+}
+
 /* String converter */
 String RosenblattEvaluation::__repr__() const
 {

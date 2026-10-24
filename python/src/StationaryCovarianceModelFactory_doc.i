@@ -12,14 +12,19 @@ spectralModelFactory : :class:`~openturns.SpectralModelFactory`
 
 Notes
 -----
-We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate   process of dimension *d* where :math:`\cD \in \Rset^n`.  We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`). 
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate   process of dimension *d* where :math:`\cD \in \Rset^n`.
+We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`).
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of the  mesh :math:`\cM \in \cD` which is a time grid supposed regular.
 
-*X* is supposed to be a stationary second order process with zero mean. We note its covariance function :math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{d \times d}(\Rset)`, defined by :math:`C^{stat}(\tau)=\Expect{X_s\Tr{X_{s+\tau}}}` for all :math:`s\in \cD`.
+*X* is supposed to be a stationary second order process with zero mean.
+We note its covariance function :math:`C^{stat}: \cD \rightarrow \mathcal{M}_{d \times d}(\Rset)`,
+defined by :math:`C^{stat}(\tau)=\Expect{X_s\Tr{X_{s+\tau}}}` for all :math:`s\in \cD`.
 
-In addition, we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` is defined,  where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+In addition, we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` is defined,
+where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
 
-OpenTURNS estimates  :math:`C^{stat}` from a field or a sample of fields of *X*, using first the estimation of the spectral density function and then mapping *S* into :math:`C^{stat}` using the inversion relation :
+The factory estimates :math:`C^{stat}` from a field or a sample of fields of *X*, using first the estimation of the spectral density function
+and then mapping *S* into :math:`C^{stat}` using the inversion relation:
 
 .. math::
 
@@ -40,7 +45,8 @@ Using the relation between the covariance model end the spectral function, the c
 
     C_{i,j}^{stat}(\tau)  = \int_{\mathbb{R}}\exp\left\{  2i\pi f \tau \right\} S_{i,j}(f)\di{f}
 
-where :math:`C_{i,j}^{stat}` is the element *(i,j)* of the matrix :math:`C^{stat}(\tau)` and :math:`S_{i,j}(f)` the one of :math:`S(f)`. The integral :eq:`eq2` is approximated by its evaluation on the finite domain :math:`\Omega \in \Rset`:
+where :math:`C_{i,j}^{stat}` is the element *(i,j)* of the matrix :math:`C^{stat}(\tau)` and :math:`S_{i,j}(f)` the one of :math:`S(f)`.
+The integral :eq:`eq2` is approximated by its evaluation on the finite domain :math:`\Omega \in \Rset`:
 
 .. math::
     :label: eq3
@@ -50,7 +56,8 @@ where :math:`C_{i,j}^{stat}` is the element *(i,j)* of the matrix :math:`C^{stat
 
 Let us consider the partition of the domain as follows:
 
-    - :math:`\Omega =[-\Omega_c, \Omega_c]` is subdivised into *M* segments :math:`\Omega = \cup_{k=1}^{M} \mathcal{M}_k` with :math:`\mathcal{M}_k=[f_k - \frac{\Delta f}{2}, f_k + \frac{\Delta f}{2}]`
+    - :math:`\Omega =[-\Omega_c, \Omega_c]` is subdivised into *M* segments :math:`\Omega = \cup_{k=1}^{M} \mathcal{M}_k`
+      with :math:`\mathcal{M}_k=[f_k - \frac{\Delta f}{2}, f_k + \frac{\Delta f}{2}]`
 
     - :math:`\Delta f` be the frequency step, :math:`\Delta f = \frac{2 \Omega_c}{M}`
 

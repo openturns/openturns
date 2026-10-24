@@ -771,7 +771,7 @@ Draws graph of the given 1D *outputMarg* marginal
 marginal with respect to the variation of :math:`x_i` in the interval
 :math:`[x_i^{min}, x_i^{max}]`, when all the other components of
 :math:`\vect{x}` are fixed to the corresponding components of the *centralPoint* :math:`\vect{c}`.
-Then OpenTURNS draws the graph:
+Then it draws the graph:
 
 .. math::
     y = f_k^{(i)}(s)
@@ -789,7 +789,7 @@ with respect to the variation of :math:`(x_i, x_j)` in the interval
 :math:`[x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]`, when all the
 other components of :math:`\vect{x}` are fixed to the corresponding components of the
 *centralPoint* :math:`\vect{c}`.
-Then OpenTURNS draws the graph:
+Then it draws the graph:
 
 .. math::
     y = f_k^{(i,j)}(s, t)

@@ -31,7 +31,7 @@ the latter being represented by its Fourier expansion.
 :math:`\vect{X}=\{X^1,\dots,X^{n_X}\}` is an input random vector of :math:`n_X`
 independent components.
 
-OpenTURNS implements the extended FAST method consisting in computing
+The library implements the extended FAST method consisting in computing
 alternately the first order and the total-effect indices of each input.
 This approach, widely described in the paper by [saltelli1999]_, relies upon a
 Fourier decomposition of the model response. Its key idea is to recast this

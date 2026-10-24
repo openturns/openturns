@@ -95,7 +95,7 @@ Base layer.
 Resource management
 ^^^^^^^^^^^^^^^^^^^
 
-OpenTURNS uses extensively dynamic memory allocation. In order to tie to
+The library uses extensively dynamic memory allocation. In order to tie to
 the Resource Acquisition Is Initialization (RAII) paradigm, all the
 memory management is delegated to smart pointers (the Pointer class).
 The benefits of this approach are:

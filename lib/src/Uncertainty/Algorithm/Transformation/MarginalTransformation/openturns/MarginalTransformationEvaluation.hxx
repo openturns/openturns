@@ -95,6 +95,9 @@ public:
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const override;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
+
   /** Input distribution collection accessor */
   void setInputDistributionCollection(const DistributionCollection & inputDistributionCollection);
   DistributionCollection getInputDistributionCollection() const;

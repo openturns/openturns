@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- * @brief This class binds a Python object to an OpenTURNS' Distribution
+ * @brief This class binds a Python object to a Distribution
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
