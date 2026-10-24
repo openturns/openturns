@@ -774,7 +774,16 @@ other : :class:`~openturns.Mesh`
 Returns
 -------
 intersection : :class:`~openturns.Mesh`
-    The intersection mesh."
+    The intersection mesh.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``Mesh-GridThreshold`` (``UnsignedInteger``, default: ``1024``): when the
+  product of the numbers of simplices of the two meshes exceeds this value,
+  the candidate pairs are filtered through a uniform bounding-box grid before
+  the exact overlap test, instead of an exhaustive scan."
 
 // ---------------------------------------------------------------------
 

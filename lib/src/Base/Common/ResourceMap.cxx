@@ -1131,6 +1131,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);
   addAsBool("Mesh-CheckValidity", false);
+  addAsUnsignedInteger("Mesh-GridThreshold", 1024);
   addAsScalar("Mesh-AmbientFactor", 0.1);
   addAsScalar("Mesh-DiffuseFactor", 0.7);
   addAsScalar("Mesh-Shininess", 100.0);
