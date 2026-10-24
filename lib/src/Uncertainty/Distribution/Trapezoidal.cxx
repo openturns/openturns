@@ -133,12 +133,13 @@ Scalar Trapezoidal::computePDF(const Point & point) const
 
   const Scalar x = point[0];
 
-  if (x <= a_) return 0.0;
+  if (x < a_) return 0.0;
   // Will never go there if a_ == b_
   if (x < b_) return h_ * (x - a_) / (b_ - a_);
   if (x < c_) return h_;
   // Will never go there if c_ == d_
   if (x < d_) return h_ * (d_ - x) / (d_ - c_);
+  if ((c_ == d_) && (x == d_)) return h_;
   return 0.0;
 }
 

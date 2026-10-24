@@ -202,6 +202,7 @@ for testCase in range(len(distribution)):
     ot.RandomGenerator.SetSeed(1)
     validation = ott.DistributionValidation(distribution[testCase])
     validation.skipMinimumVolumeLevelSet()  # slow
+    validation.skipPDFAtLowerBound()  # the density is nonzero at the finite lower bound
     validation.skipTransformation()  # deterministic Rosenblatt+FD, no RNG consumed
     validation.skipConditional()  # deterministic chain, no RNG consumed
     # NOTE: do not reduce the validation sampling sizes here: the

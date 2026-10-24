@@ -204,6 +204,7 @@ for case in cases:
 
     ot.Log.Show(ot.Log.TRACE)
     validation = ott.DistributionValidation(distribution)
+    validation.skipPDFAtLowerBound()  # the density is the renormalized normal density at the finite lower bound
     validation.skipMinimumVolumeLevelSet()  # slow
     validation.skipMinimumVolumeInterval()  # slow 1M-sample MC proba
     validation.skipConfidenceInterval()  # slow 3x 1M-sample MC proba
@@ -284,3 +285,13 @@ ott.assert_almost_equal(
     1e-12,
     0.0,
 )
+
+# Density at the finite bounds: renormalized normal density
+edge = ot.TruncatedNormal(1.5, 3.0, -2.0, 5.0)
+ref = ot.Normal(1.5, 3.0)
+ott.assert_almost_equal(
+    edge.computePDF(-2.0), ref.computePDF(-2.0) / (ref.computeCDF(5.0) - ref.computeCDF(-2.0)), 1e-12, 0.0
+)
+ott.assert_almost_equal(edge.computePDF(5.0), edge.computePDF(-2.0), 1e-12, 0.0)
+assert edge.computePDF(-2.0) > 0.0
+ott.assert_almost_equal(edge.computeLogPDF(-2.0), math.log(edge.computePDF(-2.0)), 1e-12, 0.0)

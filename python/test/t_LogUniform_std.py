@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -115,6 +117,7 @@ assert standard.getImplementation().getClassName() == "LogUniform"
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
+validation.skipPDFAtLowerBound()  # the density is 1 / (a * (log(b) - log(a))) at the finite lower bound
 validation.run()
 
 # --- LogUniform: characteristic function at zero, DDF at the atom ---
@@ -125,3 +128,8 @@ ott.assert_almost_equal(
     0.0,
 )
 ott.assert_almost_equal(ot.LogUniform(1.0, 2.0).computeDDF([1.0]), [0.0], 0.0, 0.0)
+
+# Density at the finite lower bound: 1 / (a * (log(b) - log(a)))
+a = math.exp(-0.5)
+ott.assert_almost_equal(distribution.computePDF(a), math.exp(0.5) / 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computeLogPDF(a), -math.log(2.0) + 0.5, 1e-12, 0.0)

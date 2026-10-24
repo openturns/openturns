@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import math as m
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -8,49 +9,42 @@ ot.TESTPREAMBLE()
 
 # Instantiate one distribution object
 distribution = ot.Burr(1.5, 4.5)
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "Burr"
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Is this distribution continuous ?
-print("Continuous = ", distribution.isContinuous())
+assert distribution.isContinuous()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [0.393842], 1e-5, 0.0)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.5)
-print("Point= ", repr(point))
+ott.assert_almost_equal(point, [1.5], 0.0, 0.0)
 
 # Show PDF and CDF of point
-# DDF = distribution.computeDDF( point )
-# print "ddf     =", repr(DDF)
-
 PDF = distribution.computePDF(point)
-print("pdf     = %.12g" % PDF)
+ott.assert_almost_equal(PDF, 0.0267008010312, 1e-9, 0.0)
 
 CDF = distribution.computeCDF(point)
-print("cdf= %.12g" % CDF)
-# CF = distribution.computeCharacteristicFunction( point[0] )
-# print "characteristic function=", CF
+ott.assert_almost_equal(CDF, 0.990836694178, 1e-9, 0.0)
 
 CDFgr = distribution.computeCDFGradient(point)
-print("cdf gradient     =", repr(CDFgr))
+ott.assert_almost_equal(CDFgr, [0.0108262, 0.00955539], 1e-5, 0.0)
 
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=", distribution.computeCDF(quantile))
+ott.assert_almost_equal(quantile, [0.963592], 1e-5, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-9, 0.0)
 # Get 95% survival function
 inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-print("InverseSurvival=", repr(inverseSurvival))
-print(
-    "Survival(inverseSurvival)=%.6f"
-    % distribution.computeSurvivalFunction(inverseSurvival)
+ott.assert_almost_equal(inverseSurvival, [0.0508413], 1e-5, 0.0)
+ott.assert_almost_equal(
+    distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 1e-6
 )
-print("entropy=%.6f" % distribution.computeEntropy())
+ott.assert_almost_equal(distribution.computeEntropy(), -0.031868, 1e-6, 1e-6)
 
 # Confidence regions
 interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
@@ -58,41 +52,44 @@ interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProba
 )
 ott.assert_almost_equal(interval.getLowerBound(), [0.000634766])
 ott.assert_almost_equal(interval.getUpperBound(), [0.96401], 1e-3, 0.0)
-print("threshold=", ot.Point(1, threshold))
+ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
 levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-print("Minimum volume level set=", levelSet)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(beta, 0.169994, 1e-5, 0.0)
 interval, beta = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )
-print("Bilateral confidence interval=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.0316926], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [1.1727], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, False)
-print("Unilateral confidence interval (lower tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.0], 0.0, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [0.963592], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 (
     interval,
     beta,
 ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
-print("Unilateral confidence interval (upper tail)=", interval)
-print("beta=", ot.Point(1, beta))
+ott.assert_almost_equal(interval.getLowerBound(), [0.0508413], 1e-5, 0.0)
+ott.assert_almost_equal(interval.getUpperBound(), [118.536], 1e-5, 0.0)
+ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 
 mean = distribution.getMean()
-print("mean=", repr(mean))
+ott.assert_almost_equal(mean, [0.37922], 1e-5, 0.0)
 standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", repr(standardDeviation))
+ott.assert_almost_equal(standardDeviation, [0.310221], 1e-5, 0.0)
 skewness = distribution.getSkewness()
-print("skewness=", repr(skewness))
+ott.assert_almost_equal(skewness, [2.16221], 1e-5, 0.0)
 kurtosis = distribution.getKurtosis()
-print("kurtosis=", repr(kurtosis))
+ott.assert_almost_equal(kurtosis, [13.2624], 1e-5, 0.0)
 covariance = distribution.getCovariance()
-print("covariance=", repr(covariance))
+ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [0.0962368]), 1e-5, 0.0)
 parameters = distribution.getParametersCollection()
-print("parameters=", repr(parameters))
-print("Standard representative=", distribution.getStandardRepresentative())
+assert len(parameters) == 1
+ott.assert_almost_equal(parameters[0], [1.5, 4.5], 0.0, 0.0)
+assert distribution.getStandardRepresentative().getImplementation().getClassName() == "Burr"
 
 # computeProba test with bound far away
 p = distribution.computeProbability(
@@ -109,3 +106,13 @@ with ott.assert_raises(Exception):
     ot.Burr(2.0, 0.5).getMean()
 ott.assert_almost_equal(ot.Burr(2.0, 2.0).getMean()[0], m.pi / 4.0, 1e-12, 0.0)
 assert m.isfinite(ot.Burr(2.0, 2.0).computeLogPDF([1.0e150]))
+
+# Density at the support lower bound for c = 1: c * k
+edge = ot.Burr(1.0, 2.0)
+ott.assert_almost_equal(edge.computePDF(0.0), 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(edge.computeLogPDF(0.0), m.log(2.0), 1e-12, 0.0)
+
+# Extreme parameters: log(c * k) underflows while log(c) + log(k) stays finite
+extreme = ot.Burr(1.0e-200, 1.0e-200)
+assert m.isinf(extreme.computeLogPDF(0.0))
+assert m.isinf(extreme.computePDF(0.0))

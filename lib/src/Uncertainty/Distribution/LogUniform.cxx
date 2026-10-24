@@ -130,7 +130,7 @@ Scalar LogUniform::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return 0.0;
+  if ((x < a_) || (x > b_)) return 0.0;
   return 1.0 / (x * (bLog_ - aLog_));
 }
 
