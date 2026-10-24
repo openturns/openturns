@@ -41,9 +41,16 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@v4
         with:
           miniforge-version: latest
+          # The job only calls `conda install` into base via condabin on PATH
+          # and never activates an env, so skip `conda init --all` which
+          # currently fails on Windows (exit code 1, `needs sudo ... conda.exe`)
+          activate-environment: ""
+          auto-activate: false
+          run-init: false
+          remove-profiles: false
       - name: Install
         shell: cmd
         run: |
@@ -54,11 +61,12 @@ jobs:
         run: |
           set "LIB=C:\Users\runneradmin\miniconda3\Library\lib;%LIB%"
           set "INCLUDE=C:\Users\runneradmin\miniconda3\Library\include;%INCLUDE%"
+          set "PATH=C:\Users\runneradmin\miniconda3\Library\bin;%PATH%"
           cmake -G Ninja -B . -LAH ^
            -DCMAKE_INSTALL_PREFIX="C:/Users/runneradmin/miniconda3/Library" ^
            -DCMAKE_PREFIX_PATH="C:/Users/runneradmin/miniconda3/Library" ^
            -DCMAKE_CXX_FLAGS="/DWIN32 /D_WINDOWS /W3 /GR /EHsc /WX" ^
-           -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 ^
+           -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 ^
            -DLAPACK_LIBRARIES="C:/Users/runneradmin/miniconda3/Library/lib/lapack.lib;C:/Users/runneradmin/miniconda3/Library/lib/blas.lib" ^
            -DUSE_MPFR=OFF -DUSE_MPC=OFF ^
            -DPython_FIND_STRATEGY=LOCATION -DPython_ROOT_DIR="C:/Users/runneradmin/miniconda3" || exit 1
