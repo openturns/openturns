@@ -69,3 +69,66 @@ sample1 = ot.Uniform(-1e-10, 1e-10).getSample(100)
 sample2 = ot.Uniform(-1, 1).getSample(5)
 sample1.add(sample2)
 dist = ot.HistogramFactory().build(sample1)
+
+# Weighted histogram, see issue #3164
+ot.RandomGenerator.SetSeed(0)
+wSample = ot.Normal().getSample(200)
+# uniform weights reproduce the unweighted estimate
+uniformWeights = [1.0] * 200
+ott.assert_almost_equal(
+    ot.HistogramFactory().buildWeighted(wSample, uniformWeights).computePDF(0.0),
+    ot.HistogramFactory().build(wSample).computePDF(0.0),
+    1e-12,
+    1e-12,
+)
+# downweighting half of the sample shifts the mass accordingly
+importanceWeights = [1.0 if wSample[i, 0] < 0.0 else 0.25 for i in range(200)]
+weighted = ot.HistogramFactory().buildWeighted(wSample, importanceWeights)
+assert weighted.computeCDF(0.0) > ot.HistogramFactory().build(wSample).computeCDF(0.0)
+# explicit bandwidth variant agrees with the factory on a fixed grid
+fixedBandwidth = ot.HistogramFactory().computeBandwidthWeighted(
+    wSample, uniformWeights
+)
+ott.assert_almost_equal(
+    ot.HistogramFactory()
+    .buildWeightedAsHistogram(wSample, fixedBandwidth, uniformWeights)
+    .computePDF(0.0),
+    ot.HistogramFactory().build(wSample).computePDF(0.0),
+    1e-12,
+    1e-12,
+)
+# invalid weights raise
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().buildWeighted(wSample, [1.0] * 10)
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().buildWeighted(wSample, [-1.0] * 200)
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().buildWeighted(wSample, [float("inf")] * 200)
+# finite weights with an infinite sum are rejected
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().buildWeighted(wSample, [1.0e308] * 200)
+# a constant weighted sample has no bandwidth
+constantSample = ot.Sample([[0.0], [10.0]])
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().computeBandwidthWeighted(
+        constantSample, [1.0, 0.0]
+    )
+# extreme finite weights do not overflow the Kish effective size
+extremeSample = ot.Sample([[-1.0], [1.0]])
+extremeWeights = [1.0e200, 0.5e200]
+extremeBandwidth = ot.HistogramFactory().computeBandwidthWeighted(
+    extremeSample, extremeWeights
+)
+assert extremeBandwidth > 0.0
+# overflowing weighted dispersion is rejected
+overflowSample = ot.Sample([[-1.0e308], [1.0e308]])
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().computeBandwidthWeighted(
+        overflowSample, [1.0, 0.5], False
+    )
+# overflowing range is rejected even when the IQR is finite
+# (non-uniform weights keep the weighted path: uniform weights
+# reproduce the unweighted estimate by design)
+wideSample = ot.Sample([[-1.0e308], [0.0], [1.0e308]])
+with ott.assert_raises(TypeError):
+    ot.HistogramFactory().computeBandwidthWeighted(wideSample, [1.0, 1.0, 0.5])

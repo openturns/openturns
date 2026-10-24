@@ -158,6 +158,10 @@ class View:
         Used when drawing Pairs, Text drawables
         Passed on to matplotlib.axes.Axes.text kwargs
 
+    title_kw : dict, optional
+        Used for the figure suptitle holding the graph title
+        Passed on to matplotlib.figure.Figure.suptitle kwargs
+
     legend_kw : dict, optional
         Passed on to matplotlib.axes.Axes.legend kwargs
 
@@ -219,6 +223,8 @@ class View:
         colorbar_kw=None,
         add_legend=True,
         square_axes=False,
+        # Grid suptitle styling, kept last for positional compatibility, see #3001
+        title_kw=None,
         **kwargs,
     ):
         if not (
@@ -254,6 +260,7 @@ class View:
         clabel_kw_default = self._CheckDict(clabel_kw)
         scatter_kw_default = self._CheckDict(scatter_kw)
         text_kw_default = self._CheckDict(text_kw)
+        title_kw_default = self._CheckDict(title_kw)
         legend_kw_default = self._CheckDict(legend_kw)
         colorbar_kw_default = self._CheckDict(colorbar_kw)
         legend_handles = []
@@ -328,9 +335,10 @@ class View:
                         clabel_kw=clabel_kw,
                         scatter_kw=scatter_kw,
                         text_kw=text_kw,
+                        title_kw={},
                         legend_kw=legend_kw,
                     )
-            self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+            self._fig.suptitle(self._ToUnicode(graph.getTitle()), **title_kw_default)
             return
 
         drawables = graph.getDrawables()
@@ -341,7 +349,7 @@ class View:
             return
 
         # set title
-        self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+        self._fig.suptitle(self._ToUnicode(graph.getTitle()), **title_kw_default)
 
         # set axes
         if len(axes) == 0:
@@ -513,6 +521,7 @@ class View:
                     bar_kw["hatch"] = "////"
                     bar_kw["edgecolor"] = bar_kw["color"]
 
+                bar_kw.setdefault("alpha", drawable.getAlpha())
                 xi = drawable.getOrigin()
                 for i in range(len(x)):
                     # label only the first bar to avoid getting several items
@@ -550,16 +559,34 @@ class View:
                 if "marker" in scatter_kw and scatter_kw["marker"] in [","]:
                     scatter_kw["s"] = 1
                     scatter_kw["linewidths"] = 0.0
+                scatter_kw.setdefault("alpha", drawable.getAlpha())
                 lines = self._ax[0].scatter(x, y, **scatter_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines.findobj()[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Curve":
+                plot_kw.setdefault("alpha", drawable.getAlpha())
                 lines = self._ax[0].plot(x, y, **plot_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
                     legend_labels.append(drawable.getLegend())
+                labels = drawable.getLabels()
+                if len(labels) > 0 and len(x) > 0:
+                    # Defaults through setdefault: a caller-provided alignment
+                    # in text_kw must not reach Axes.text twice
+                    text_kw.setdefault("horizontalalignment", "center")
+                    text_kw.setdefault("verticalalignment", "center")
+                    for i, label in enumerate(labels):
+                        if len(label) == 0:
+                            continue
+                        k = int((i + 0.5) * len(x) / len(labels))
+                        self._ax[0].text(
+                            x[k],
+                            y[k],
+                            self._ToUnicode(label),
+                            **text_kw,
+                        )
 
             elif drawableKind == "Polygon":
                 if ("facecolor" not in polygon_kw_default) and (
@@ -573,6 +600,7 @@ class View:
                     polygon_kw["edgecolor"] = drawable.ConvertFromName(
                         drawable.getEdgeColor()
                     )
+                polygon_kw.setdefault("alpha", drawable.getAlpha())
                 poly = matplotlib.patches.Polygon(data, **polygon_kw)
                 self._ax[0].add_patch(poly)
                 if len(drawable.getLegend()) > 0:
@@ -595,6 +623,7 @@ class View:
                 assert (
                     len(data) == polygonsNumber * verticesNumber
                 ), "incompatible data for PolygonArray"
+                polygoncollection_kw.setdefault("alpha", drawable.getAlpha())
                 self._ax[0].add_collection(
                     matplotlib.collections.PolyCollection(
                         np.array(data).reshape((polygonsNumber, verticesNumber, 2)),
@@ -607,6 +636,10 @@ class View:
                     "labels", [self._ToUnicode(label) for label in drawable.getLabels()]
                 )
                 pie_kw.setdefault("colors", drawable.getPalette())
+                # Axes.pie has no alpha keyword: forward it through the wedges
+                wedgeprops = dict(pie_kw.get("wedgeprops") or {})
+                wedgeprops.setdefault("alpha", drawable.getAlpha())
+                pie_kw["wedgeprops"] = wedgeprops
                 self._ax[0].set_aspect("equal")
                 self._ax[0].pie(x, **pie_kw)
 
@@ -656,8 +689,7 @@ class View:
                     contour_kw["cmap"] = contour.getColorMap()
                 if "colors" not in contour_kw_default and "cmap" not in contour_kw:
                     contour_kw["colors"] = [drawable.getColorCode()]
-                if "alpha" not in contour_kw_default:
-                    contour_kw["alpha"] = contour.getAlpha()
+                contour_kw.setdefault("alpha", contour.getAlpha())
                 if "vmin" not in contour_kw_default and contour.isVminUsed():
                     contour_kw["vmin"] = contour.getVmin()
                 if "vmax" not in contour_kw_default and contour.isVmaxUsed():
@@ -777,12 +809,14 @@ class View:
                         )  # Avoids the absence of labels in logarithmic scale
 
             elif drawableKind == "Staircase":
+                step_kw.setdefault("alpha", drawable.getAlpha())
                 lines = self._ax[0].step(x, y, **step_kw)
                 if len(drawable.getLegend()) > 0:
                     legend_handles.append(lines[0])
                     legend_labels.append(drawable.getLegend())
 
             elif drawableKind == "Text":
+                text_kw.setdefault("alpha", drawable.getAlpha())
                 # adjust font
                 if ("fontsize" not in text_kw_default) and (
                     "size" not in text_kw_default
