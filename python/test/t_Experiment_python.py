@@ -65,3 +65,18 @@ reloader.load()
 reloader.fillObject("experiment", loaded)
 assert loaded.generate().getSize() == 10
 os.remove("pyexp.xml")
+
+
+# Minimal duck-typed interface: generate() alone suffices, see issue #3193
+class MinimalExp:
+    def generate(self):
+        return ot.Sample(5, 2)
+
+
+minimal = ot.Experiment(MinimalExp())
+assert minimal.generate().getSize() == 5
+# weights fall back to uniform without generateWithWeights
+minimalWeights = ot.Point()
+minimal.generateWithWeights(minimalWeights)
+assert minimalWeights.getSize() == 5
+ott.assert_almost_equal(minimalWeights, [0.2] * 5)
