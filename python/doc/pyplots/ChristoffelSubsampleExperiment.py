@@ -5,6 +5,11 @@ import openturns.viewer as otv
 ot.RandomGenerator.SetSeed(0)
 factory = ot.OrthogonalProductPolynomialFactory([ot.Uniform(-1.0, 1.0)])
 basis = ot.OrthogonalBasis(factory)
+# The default square mode (m = n) has no certified frame guarantee and emits
+# an advisory warning on this design. Use the certified mode: its independent
+# Christoffel draws satisfy the frame check and keep the documentation build
+# free of warnings.
+ot.ResourceMap.SetAsBool("ChristoffelSubsampleExperiment-Certified", True)
 experiment = otexp.ChristoffelSubsampleExperiment(basis, 30)
 sample, weights = experiment.generateWithWeights()
 nodes = ot.Cloud(sample, ot.Sample(sample.getSize(), [0.0]))

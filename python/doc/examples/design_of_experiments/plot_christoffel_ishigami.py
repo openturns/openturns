@@ -7,7 +7,7 @@ Christoffel subsampling for the Ishigami function
 # Optimal sampling draws the design points from the Christoffel distribution
 # associated to the approximation space instead of the reference measure.
 # Here the function is the Ishigami model and the reference measure is its
-# natural distribution, the independent uniform law on :math:`[-\\pi, \\pi]^3`.
+# natural distribution, the independent uniform law on :math:`[-\pi, \pi]^3`.
 # The approximation space is spanned by tensor Legendre polynomials, orthonormal
 # with respect to that measure, enumerated in linear (total-degree) order.
 # At equal budget, is the Christoffel subsample more accurate than the natural
@@ -15,10 +15,10 @@ Christoffel subsampling for the Ishigami function
 # of their squared :math:`L^2` errors.
 #
 # Two practical choices shape the protocol. With an inexhaustible basis the
-# experiment works with :math:`m = n` functions, and thinning then costs
-# approximately :math:`O(n^5)`; a budget of 200 points costs about a minute
-# per design. We use 30 points (a fraction of a second per design) instead,
-# which already separates the two methods by two orders of magnitude. Likewise
+# experiment works with :math:`m = n` functions and samples a projection DPP
+# sequentially; the cost grows quickly with the budget. We use 30 points
+# (a fraction of a second per design) instead, which already separates the
+# two methods by two orders of magnitude. Likewise
 # the error is measured against the best approximation in the 30-dimensional
 # space rather than the function itself: the truncation error is then
 # identical for both arms and the comparison isolates the design quality.
@@ -77,7 +77,7 @@ reference = coarse
 # on the first ``expansionSize`` basis functions, and each is scored by its
 # squared coefficient distance to the reference projection, which is the
 # squared :math:`L^2` distance by orthonormality. At :math:`m = n` the
-# thinned design systematically misses the default frame band, so the loop
+# square DPP design systematically misses the default frame band, so the loop
 # runs with warnings silenced; the error distributions below show the design
 # still wins by far.
 repetitions = 60
@@ -111,10 +111,12 @@ print(f"median natural error={naturalErrors.computeQuantile(0.5)[0]:.3e}")
 ot.Log.Show(ot.Log.DEFAULT)
 
 # %%
-# Squared errors live on :math:`[0, +\\infty)`, so each density is estimated
+# Squared errors live on :math:`[0, +\infty)`, so each density is estimated
 # with a :class:`~openturns.KernelSmoothing` truncated at the lower bound 0.
-# The two densities are drawn on the same log-scale figure: the Christoffel
-# errors concentrate two orders of magnitude below the natural ones.
+# The two densities are drawn on the same doubly logarithmic figure: the
+# Christoffel errors concentrate two orders of magnitude below the natural
+# ones, and the log scale resolves both the body and the tails of the two
+# distributions.
 christoffelSmoothing = ot.KernelSmoothing()
 christoffelSmoothing.setBoundingOption(ot.KernelSmoothing.LOWER)
 christoffelSmoothing.setLowerBound(0.0)
@@ -123,12 +125,12 @@ naturalSmoothing = ot.KernelSmoothing()
 naturalSmoothing.setBoundingOption(ot.KernelSmoothing.LOWER)
 naturalSmoothing.setLowerBound(0.0)
 naturalDensity = naturalSmoothing.build(naturalErrors)
-graph = christoffelDensity.drawPDF()
-graph.add(naturalDensity.drawPDF().getDrawable(0))
+graph = christoffelDensity.drawPDF(1.0, 5e6, 512, True)
+graph.add(naturalDensity.drawPDF(1.0, 5e6, 512, True).getDrawable(0))
 graph.setLegends(["Christoffel subsample", "natural sample"])
 graph.setTitle("Squared L2 error distributions")
 graph.setXTitle("squared L2 error")
-graph.setLogScale(ot.GraphImplementation.LOGX)
+graph.setLogScale(ot.GraphImplementation.LOGXY)
 view = otv.View(graph)
 
 # %%
