@@ -69,6 +69,11 @@ public:
   /** Numerical sample accessor */
   Sample generate() const override;
 
+  /** Numerical sample accessor with weights. Calls the generateWithWeights
+      method of the Python object when available, else falls back to
+      generate() with uniform weights. */
+  Sample generateWithWeights(Point & weights) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
