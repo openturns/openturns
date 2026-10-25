@@ -5,60 +5,58 @@ R"RAW(Push-forward distribution over an embedded mesh.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Its probability density function is the density of :math:`\outputRV = f(\inputRV)`
-where :math:`\inputRV` is an :math:`\inputDim`-dimensional absolutely continuous random
-vector whose support is a domain discretized by a mesh of simplices, and
-:math:`f: \Rset^\inputDim \rightarrow \Rset^\outputDim` is the piecewise-affine map
-defined by a P1 field on this reference mesh, with :math:`\outputDim \geq \inputDim`. The
-distribution :math:`\outputRV` is supported on the image mesh, which may be
-embedded in an ambient space of dimension larger than :math:`\inputDim`.
+This distribution is the piecewise-affine special case of
+:class:`~openturns.experimental.PushForwardDistribution`, where the map
+:math:`f` is defined by a P1 (piecewise-affine) field on a mesh of simplices.
+The field is represented by a :class:`~openturns.Field`: its values are the
+images of the vertices of the reference :class:`~openturns.Mesh`, and its
+restriction to each simplex is the affine interpolation of these values.
+The general definition of the push-forward distribution, of its density with
+respect to the measure induced on the image, and of the co-area case are given
+in the :class:`~openturns.experimental.PushForwardDistribution` documentation.
+The mesh-specific construction and the resulting density formula are detailed
+in :ref:`pushforward_over_mesh`.
 
-The map :math:`f` is affine on each simplex, with a constant Jacobian
-matrix :math:`J_{f}`, so that the volume stretching factor
-:math:`\sqrt{\det(J_{f}(\inputReal)^T J_{f}(\inputReal))}` is constant on each simplex:
-given a point :math:`\outputReal` on the image, its preimage :math:`\inputReal` in the
-reference domain is obtained exactly by inverting the affine restriction
-of :math:`f`, which boils down to a small linear system of size
-:math:`\inputDim`, instead of a general non-linear solver. The intrinsic density
-of :math:`\outputRV` with respect to the measure induced on the image mesh is
-
-.. math::
-
-    f_{\outputRV}(\outputReal) = \sum_{s : \outputReal \in f(s)}
-    f_{\inputRV}(\inputReal_s(\outputReal)) \, \sqrt{\frac{\det(G^{\mathrm{ref}}_s)}{\det(G^{\mathrm{img}}_s)}}
-
-where :math:`\inputReal_s(\outputReal)` is the preimage of :math:`\outputReal` in the reference simplex
-:math:`s`, and :math:`G^{\mathrm{ref}}_s`, :math:`G^{\mathrm{img}}_s` are
-the Gram matrices of the edges of the reference and of the image simplex.
-The sum covers all the simplices whose image contains :math:`\outputReal`, so both
-folding maps and self-intersecting meshes are supported. When the
-Jacobian of the map is singular on a simplex (degenerate image), its
-contribution is discarded: this is the behaviour of the density at a
-critical point.
+Here, :math:`\inputRV` is an :math:`n`-dimensional absolutely continuous
+random vector whose support is a domain discretized by a mesh of simplices, and
+:math:`f: \Rset^n \rightarrow \Rset^\outputDim` is the P1 map defined on this
+reference mesh. Its restriction to each simplex is affine, so the preimage of a
+point of the image is obtained by solving a small linear system instead of a
+general non-linear problem. The image mesh is a :math:`d`-dimensional object,
+where :math:`d` is the intrinsic dimension of the reference mesh, and it may
+be embedded in an ambient space of dimension larger than :math:`d`.
 
 Realizations are sampled by mapping the realizations of :math:`\inputRV` through
 the P1 map, so the distribution is exactly normalized regardless of the
 mesh refinement.
 
+The mean and the covariance are computed deterministically, not estimated by
+Monte-Carlo: they are integrated over the reference mesh with
+:class:`~openturns.SimplicialCubature`, which applies a cubature rule to the
+P1 map and the antecedent density on each simplex. This also covers the
+co-area case, where the integration is performed over the reference domain
+rather than over the collapsed image mesh.
+
 When :math:`f` is the identity map and :math:`\inputRV` is uniform over the
 reference mesh, this distribution reduces to the uniform distribution over
 the mesh.
 
-The case :math:`\outputDim < \inputDim` (co-area formula) is implemented for
-the 2D triangle reference mesh mapped to 1D with ``UniformOverMesh``
-antecedent: the density integrates the antecedent over the fiber segments
-with the local projection Jacobian. Intrinsic-preserving maps (output
-dimension larger than or equal to the intrinsic reference dimension, e.g. a
-polyline in :math:`\Rset^2` mapped to scalars) use the weighted
-piecewise-affine path above. Other co-area cases are not implemented yet.
+The case :math:`\outputDim < d` (co-area formula) is implemented only for
+:math:`d = 2`, ambient reference dimension :math:`n = 2`, and
+:math:`\outputDim = 1`, with a ``UniformOverMesh`` antecedent: the density
+integrates the antecedent over the fiber segments with the local projection
+Jacobian. Intrinsic-preserving maps with :math:`\outputDim \geq d`, including
+embedded meshes such as a polyline in :math:`\Rset^2` mapped to scalars, use
+the weighted piecewise-affine path above. Other co-area cases are not
+implemented yet.
 
 Parameters
 ----------
-antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`\inputDim`-dimensional, optional
+antecedent : :class:`~openturns.Distribution`, absolutely continuous :math:`n`-dimensional, optional
     The distribution of :math:`\inputRV`, whose support must be the reference domain.
     When only the field is given, the antecedent defaults to the uniform
     distribution over the mesh of the field.
-values : :class:`~openturns.Field`, from :math:`\Rset^\inputDim` to :math:`\Rset^\outputDim`
+values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map.
 
 See also
@@ -71,8 +69,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``PushForwardOverMesh-OnSimplexEpsilon`` (``Scalar``, default: ``1.0e-10``): tolerance used when checking
   whether a point belongs to the image mesh.
-- ``PushForwardOverMesh-SampleSize`` (``UnsignedInteger``, default: ``10000``): number of Monte-Carlo
-  realizations used to estimate the mean and the covariance.
 
 Examples
 --------
@@ -103,7 +99,7 @@ R"RAW(Accessor to the antecedent distribution.
 
 Returns
 -------
-antecedent : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
+antecedent : :class:`~openturns.Distribution`, :math:`n`-dimensional
     The distribution of :math:`\inputRV`.)RAW"
 
 // ---------------------------------------------------------------------
@@ -113,7 +109,7 @@ R"RAW(Accessor to the antecedent distribution.
 
 Parameters
 ----------
-antecedent : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
+antecedent : :class:`~openturns.Distribution`, :math:`n`-dimensional
     The distribution of :math:`\inputRV`, whose support must be the reference domain.)RAW"
 
 // ---------------------------------------------------------------------
@@ -123,7 +119,7 @@ R"RAW(Accessor to the P1 field.
 
 Returns
 -------
-values : :class:`~openturns.Field`, from :math:`\Rset^\inputDim` to :math:`\Rset^\outputDim`
+values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map: the reference mesh and
     the image of each reference vertex.)RAW"
 
@@ -134,7 +130,7 @@ R"RAW(Accessor to the P1 field.
 
 Parameters
 ----------
-values : :class:`~openturns.Field`, from :math:`\Rset^\inputDim` to :math:`\Rset^\outputDim`
+values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map: the reference mesh and
     the image of each reference vertex.)RAW"
 
@@ -147,7 +143,15 @@ Returns
 -------
 mesh : :class:`~openturns.Mesh`, embedded in an ambient space of dimension :math:`\outputDim`
     The mesh supporting the distribution: the image of the reference mesh
-    through the P1 map.)RAW"
+    through the P1 map.
+
+Notes
+-----
+In the co-area case :math:`\outputDim < d`, where :math:`d` is the intrinsic
+dimension of the reference mesh, the image simplices are collapsed and cannot
+be reconstructed as a mesh: this accessor raises a
+*NotYetImplementedException*.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -157,5 +161,6 @@ R"RAW(Accessor to the intrinsic dimension of the image mesh.
 Returns
 -------
 dim : int
-    The dimension of the reference domain, which is the dimension of the
-    image mesh.)RAW"
+    The intrinsic dimension of the image mesh.  In the supported co-area case
+    :math:`\outputDim < d`, the image is assumed to be full-dimensional of
+    dimension :math:`\outputDim`, which is returned.)RAW"

@@ -130,12 +130,13 @@ allInImage = all(0.0 <= x[0] <= 1.0 for x in foldSample)
 print("fold sample in image=", allInImage)
 assert allInImage
 
-# Moments estimated by Monte-Carlo, consistent with the sampled moments
+# Moments are deterministic SimplicialCubature integrals over the reference
+# mesh, not Monte-Carlo estimates. The uniform reference triangle has mean
+# (1/3, 1/3) and the map adds z = x + y
 mean = distribution.getMean()
 print("mean=", mean)
-sampledMean = oneSample.computeMean()
-for k in range(3):
-    ott.assert_almost_equal(mean[k], sampledMean[k], 1e-1, 1e-1)
+ott.assert_almost_equal(mean, [1.0 / 3.0, 1.0 / 3.0, 2.0 / 3.0], 1e-12,
+                        1e-12)
 
 # Accessors
 antecedent = ot.UniformOverMesh(mesh)
@@ -156,14 +157,12 @@ defaultDistribution = otexp.PushForwardOverMesh()
 print("default pdf(0.5)=", defaultDistribution.computePDF([0.5]))
 ott.assert_almost_equal(defaultDistribution.computePDF([0.5]), 1.0, 1e-10, 0.0)
 
-# Covariance. The antecedent covariance is exact, the pushed-forward one is
-# estimated by Monte-Carlo with PushForwardOverMesh-SampleSize realizations,
-# hence the loose tolerance
+# Covariances are deterministic cubature integrals
 ott.assert_almost_equal(uniformOverMesh.getCovariance(),
                         ot.CovarianceMatrix([[1.0 / 12, 0.0], [0.0, 1.0 / 12]]),
                         1e-12, 1e-12)
 ott.assert_almost_equal(uniformClass.getCovariance(),
-                        uniformOverMesh.getCovariance(), 5e-3, 5e-3)
+                        uniformOverMesh.getCovariance(), 1e-12, 1e-12)
 # The map (x, y) -> (x, y, x + y) over the unit right triangle gives
 # Var = 1/18, Cov(X, Y) = -1/36 and Cov(X, Z) = Cov(Y, Z) = 1/36
 print("covariance=", otexp.PushForwardOverMesh(field).getCovariance())
@@ -172,7 +171,7 @@ ott.assert_almost_equal(
     ot.CovarianceMatrix([[1.0 / 18, -1.0 / 36, 1.0 / 36],
                          [-1.0 / 36, 1.0 / 18, 1.0 / 36],
                          [1.0 / 36, 1.0 / 36, 1.0 / 18]]),
-    5e-3, 5e-3)
+    1e-12, 1e-12)
 
 # Parameters are delegated to the antecedent, which has none for UniformOverMesh
 assert uniformClass.getParametersCollection().getSize() == 1
@@ -249,6 +248,11 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     squareProjDistribution.computePDF([1.5]), 0.0, 0.0, 1e-12
 )
+# The co-area case also has deterministic moments: the projection of the
+# uniform unit square on its first coordinate has mean 1/2 and variance 1/12
+ott.assert_almost_equal(squareProjDistribution.getMean(), [0.5], 1e-12, 1e-12)
+ott.assert_almost_equal(squareProjDistribution.getCovariance(),
+                        ot.CovarianceMatrix(1, [1.0 / 12.0]), 1e-12, 1e-12)
 
 # Intrinsic-preserving embedded map: segment in R^2 (intrinsic 1) projected
 # onto its x-coordinate. The weighted piecewise-affine path applies (output

@@ -12,6 +12,16 @@
  * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
  * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
+ * PushForwardDistribution (openturns.experimental): implement the co-area density for affine functions
+ * PushForwardDistribution (openturns.experimental): return a zero density for a rank-deficient affine co-area map when the affine fibre misses the antecedent support
+ * PushForwardDistribution (openturns.experimental): allow nonlinear co-area maps for sampling, range and moments
+ * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3, and for a nonlinear map from R^n to R^(n-1) with n >= 3 (including R^3 to R^2 and R^4 to R^3), by a deterministic simplicial level-set extraction with actual-function root polishing and intrinsic surface or curve cubature, while the affine co-area path remains exact
+ * PushForwardDistribution (openturns.experimental): refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh, the mesh result remaining the fallback for branching and saddle fibres
+ * PushForwardDistribution (openturns.experimental): detect outward seeds on the search box boundary and let the continuation reduce its step down to the minimum, so that maps such as the product of two univariate distributions no longer fall back to the low accuracy mesh density
+ * PushForwardDistribution (openturns.experimental): seed the scalar co-area continuation from a quarter-resolution mesh while keeping the requested resolution for the integration step and the fallback, which speeds up regular fibres without changing their accuracy
+ * PushForwardDistribution (openturns.experimental): stop the co-area continuation when the Newton projection no longer advances along a singular fibre, instead of accepting stagnating steps up to the iteration cap
+ * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically, with PushForwardDistribution falling back to a sample above PushForwardDistribution-MomentsMaximumDimension for nonlinear maps
+ * PushForwardDistribution (openturns.experimental): deduplicate the level-set faces and edges by global mesh vertex numbers
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
@@ -28,13 +38,27 @@
  * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
  * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
  * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
-* PushForwardDistribution-SolverResidualTolerance: tolerance on the residual norm used to accept a point as a preimage (default is 1.0e-5)
- * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range, the mean and the covariance (default is 10000)
+ * PushForwardDistribution-SolverResidualTolerance: tolerance on the residual norm used to accept a point as a preimage (default is 1.0e-5)
+ * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range and the moments of nonlinear maps above PushForwardDistribution-MomentsMaximumDimension (default is 10000)
+ * PushForwardDistribution-MomentsMaximumDimension: maximum input dimension for which the mean and the covariance of a nonlinear map are integrated deterministically (default is 4)
  * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
  * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
  * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
+ * PushForwardDistribution-MaximumBisections: maximum number of bisections used when the damped Newton solver fails on a sign change (default is 64)
+ * PushForwardDistribution-CoAreaConstraintTolerance: tolerance used to detect degenerate constraints in the Fourier-Motzkin elimination (default is 1.0e-12)
+ * PushForwardDistribution-CoAreaTailEpsilon: relative density below which the end of a one dimensional fibre is negligible (default is 1.0e-16)
+ * PushForwardDistribution-CoAreaMaximumError: requested relative error of the integration along the fibre in the co-area case (default is 1.0e-14)
+ * PushForwardDistribution-CoAreaErrorFloor: minimum relative error of the integration along a fibre of dimension three or more (default is 1.0e-7)
+ * PushForwardDistribution-CoAreaMaximumSubIntervals: maximum number of sub-intervals of the adaptive integration along the fibre (default is 100)
+ * PushForwardDistribution-CoAreaMaximumExtensions: maximum number of extensions of the one dimensional integration interval (default is 16)
+ * PushForwardDistribution-NonlinearCoAreaDiscretization: number of intervals per input dimension in the fallback triangulation used by the scalar nonlinear co-area density in R^2, a quarter-resolution mesh seeding the continuation first (default is 128)
+ * PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization: number of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities in R^3 (default is 48)
+ * PushForwardDistribution-NonlinearCoAreaVolumeDiscretization: number of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from R^n to R^(n-1) with n >= 4 (default is 12)
+ * PushForwardDistribution-NonlinearCoAreaLevelTolerance: relative tolerance used to classify a mesh vertex as lying on the requested level set (default is 1.0e-12)
+ * PushForwardDistribution-NonlinearCoAreaContinuation: refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh (default is true)
+ * PushForwardDistribution-RangeMargin: relative margin added to the marginal spans estimated from a sample (default is 0.025)
+ * PushForwardDistribution-DegenerateSearchIntervalHalfWidth: half width of the fallback search box used when a marginal interval has zero width (default is 1.0)
  * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
- * PushForwardOverMesh-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
  * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
  * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
  * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
