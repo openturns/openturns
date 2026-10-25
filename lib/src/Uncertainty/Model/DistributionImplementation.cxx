@@ -4866,6 +4866,31 @@ Graph DistributionImplementation::drawMarginal2DPDF(const UnsignedInteger firstM
   return marginalGraph;
 }
 
+/* Draw the PDFs of all the 1D and 2D marginals on a grid */
+GridLayout DistributionImplementation::drawMarginalPDFs() const
+{
+  const UnsignedInteger dimension = getDimension();
+  GridLayout grid(dimension, dimension);
+  // Only the lower triangle is filled: the 2D marginal in row i, column j
+  // has the same density as the one in row j, column i, so drawing both
+  // would duplicate the same graph.
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      if (i == j) grid.setGraph(i, j, getMarginal(i).drawPDF());
+      else
+      {
+        // Default quantile-based plotting bounds, consistent with the diagonal
+        const Indices indices = {i, j};
+        Graph cell(getMarginal(indices).drawPDF());
+        cell.setTitle(OSS() << getDescription() << "->[" << description_[i] << ", " << description_[j] << "] components iso-PDF");
+        grid.setGraph(i, j, cell);
+      }
+    }
+  grid.setTitle(OSS() << getDescription() << " marginal PDFs");
+  return grid;
+}
+
 /* Draw the log-PDF of a discrete distribution */
 Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
     const Scalar xMax,
