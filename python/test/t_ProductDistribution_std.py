@@ -117,7 +117,7 @@ with ott.assert_raises(TypeError):
 
 validation = ott.DistributionValidation(distribution)
 validation.setMomentsSamplingSize(100000)
-validation.setEntropySamplingSize(10000)
+validation.setEntropySamplingSize(100000)
 validation.setDomainSamplingSize(10000)
 validation.setFittingSamplingSize(1000)
 validation.run()
