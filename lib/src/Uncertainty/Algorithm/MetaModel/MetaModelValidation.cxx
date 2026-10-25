@@ -102,6 +102,7 @@ void MetaModelValidation::initialize() const
   if (!(weightSum > 0.0)) throw InvalidArgumentException(HERE) << "Validation weights must have a positive sum, here sum=" << weightSum;
   Point weightedMean(outputDimension, 0.0);
   meanSquaredError_ = Point(outputDimension, 0.0);
+  meanAbsoluteError_ = Point(outputDimension, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar w = useUniformWeights ? weights_[0] : weights_[i];
@@ -109,6 +110,7 @@ void MetaModelValidation::initialize() const
     {
       weightedMean[j] += w * outputSample_(i, j);
       meanSquaredError_[j] += w * residual_(i, j) * residual_(i, j);
+      meanAbsoluteError_[j] += w * std::abs(residual_(i, j));
     }
   }
   Point sampleVariance(outputDimension, 0.0);
@@ -122,9 +124,12 @@ void MetaModelValidation::initialize() const
     }
   }
   Point r2Score(outputDimension);
+  rootMeanSquaredError_ = Point(outputDimension, 0.0);
   for (UnsignedInteger j = 0; j < outputDimension; ++j)
   {
     meanSquaredError_[j] /= weightSum;
+    meanAbsoluteError_[j] /= weightSum;
+    rootMeanSquaredError_[j] = std::sqrt(meanSquaredError_[j]);
     sampleVariance[j] /= weightSum;
     if (std::abs(sampleVariance[j]) == 0.0)
       throw NotDefinedException(HERE) << "R2 cannot be computed on constant output component index " << j;
@@ -172,6 +177,16 @@ Point MetaModelValidation::computeR2Score() const
 Point MetaModelValidation::computeMeanSquaredError() const
 {
   return meanSquaredError_;
+}
+
+Point MetaModelValidation::computeRootMeanSquaredError() const
+{
+  return rootMeanSquaredError_;
+}
+
+Point MetaModelValidation::computeMeanAbsoluteError() const
+{
+  return meanAbsoluteError_;
 }
 
 /* Get residual sample */
@@ -223,6 +238,36 @@ GridLayout MetaModelValidation::drawValidation() const
     grid.setGraph(0, j, graph);
   }
   grid.setTitle(OSS() << "Metamodel validation - n = " << outputSample_.getSize());
+  return grid;
+}
+
+/* Draw residuals vs model graph */
+GridLayout MetaModelValidation::drawResiduals() const
+{
+  const UnsignedInteger outputDimension = outputSample_.getDimension();
+  Point minS(outputSample_.getMin());
+  Point maxS(outputSample_.getMax());
+  GridLayout grid(1, outputDimension);
+  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+  {
+    Graph graph("", OSS() << "model " << j, j == 0 ? "residuals" : "");
+
+    // zero line
+    Sample zeroPoints(2, 2);
+    zeroPoints(0, 0) = minS[j];
+    zeroPoints(0, 1) = 0.0;
+    zeroPoints(1, 0) = maxS[j];
+    zeroPoints(1, 1) = 0.0;
+    Curve zeroLine(zeroPoints);
+    graph.add(zeroLine);
+
+    // points
+    Cloud cloud(outputSample_.getMarginal(j), residual_.getMarginal(j));
+    graph.add(cloud);
+
+    grid.setGraph(0, j, graph);
+  }
+  grid.setTitle(OSS() << "Residuals - n = " << outputSample_.getSize());
   return grid;
 }
 
@@ -350,6 +395,8 @@ void MetaModelValidation::save(Advocate & adv) const
   adv.saveAttribute( "residual_", residual_ );
   adv.saveAttribute( "r2Score_", r2Score_ );
   adv.saveAttribute( "meanSquaredError_", meanSquaredError_ );
+  adv.saveAttribute( "rootMeanSquaredError_", rootMeanSquaredError_ );
+  adv.saveAttribute( "meanAbsoluteError_", meanAbsoluteError_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -367,6 +414,35 @@ void MetaModelValidation::load(Advocate & adv)
     adv.loadAttribute( "metaModelPredictions_", metaModelPredictions_ );
     adv.loadAttribute( "meanSquaredError_", meanSquaredError_ );
     adv.loadAttribute( "r2Score_", r2Score_ );
+    if (adv.hasAttribute("rootMeanSquaredError_") && adv.hasAttribute("meanAbsoluteError_"))
+    {
+      adv.loadAttribute( "rootMeanSquaredError_", rootMeanSquaredError_ );
+      adv.loadAttribute( "meanAbsoluteError_", meanAbsoluteError_ );
+    }
+    else
+    {
+      // Old archives predate the new scores: derive them from the loaded
+      // data instead of calling initialize(), which would reject constant
+      // outputs through the R2 score
+      const UnsignedInteger size = outputSample_.getSize();
+      const UnsignedInteger outputDimension = outputSample_.getDimension();
+      const Bool useUniformWeights = (weights_.getSize() == 1);
+      Scalar weightSum = 0.0;
+      if (useUniformWeights) weightSum = weights_[0] * size;
+      else for (UnsignedInteger i = 0; i < size; ++i) weightSum += weights_[i];
+      rootMeanSquaredError_ = Point(outputDimension, 0.0);
+      meanAbsoluteError_ = Point(outputDimension, 0.0);
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        rootMeanSquaredError_[j] = std::sqrt(meanSquaredError_[j]);
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        const Scalar w = useUniformWeights ? weights_[0] : weights_[i];
+        for (UnsignedInteger j = 0; j < outputDimension; ++j)
+          meanAbsoluteError_[j] += w * std::abs(residual_(i, j));
+      }
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        meanAbsoluteError_[j] /= weightSum;
+    }
   }
   else  // Old version of the object
   {
