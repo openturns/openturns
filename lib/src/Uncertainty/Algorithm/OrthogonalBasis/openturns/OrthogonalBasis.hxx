@@ -59,6 +59,12 @@ public:
   /** Return the enumerate function that translate unidimensional indices into multidimensional indices */
   EnumerateFunction getEnumerateFunction() const;
 
+  /** Comparison operator */
+  using TypedInterfaceObject<OrthogonalFunctionFactory>::operator ==;
+  Bool operator ==(const OrthogonalBasis & other) const;
+  using TypedInterfaceObject<OrthogonalFunctionFactory>::operator !=;
+  Bool operator !=(const OrthogonalBasis & other) const;
+
   /** String converter */
   String __repr__() const override;
 
