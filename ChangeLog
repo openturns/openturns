@@ -30,6 +30,7 @@
  * ProductDistribution: return the finite limiting density at zero when exactly one factor density vanishes there, and preserve the original upper-tail probability in the quantile solver
  * ProductDistribution: integrate the factor characteristic function directly for large arguments instead of falling back to the generic nested product density integration
  * ProductDistribution: evaluate the real and imaginary parts of the characteristic function with separate scalar Gauss-Kronrod passes, avoiding a Point allocation at every quadrature node
+ * DistributionImplementation: select the generic characteristic-function integration panels from the absolute argument, keep the Filon grid within Distribution-CharacteristicFunctionNMax points, and document the positive exponent convention used by the implementation
  * DistributionImplementation::operator /: return a RatioDistribution for continuous univariate operands, fixing the inaccurate density of the former inverse composition close to zero
 
 ==== New ResourceMap keys ====
