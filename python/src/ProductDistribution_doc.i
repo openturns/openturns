@@ -1,15 +1,31 @@
 %feature("docstring") OT::ProductDistribution
 R"RAW(Product distribution.
 
-Helper class for defining the push-forward distribution of a given univariate distribution by a given scalar function.
+Distribution of the product :math:`Z=XY` of two independent univariate random variables :math:`X` and :math:`Y`.
 
-We note :math:`Z=XY` the scalar random variable which distribution is :math:`f_Z`.
+We note :math:`Z=XY` the scalar random variable whose distribution has density :math:`f_Z`.
  
 .. math::
 
-    \displaystyle f_Z(z) = \int_{\Rset} f_X (t) f_{Y}(\dfrac{z}{t}) \, \dfrac{\Diff t}{|t|}
+    \displaystyle f_Z(z) = \int_{\Rset} f_X (t) f_Y(\dfrac{z}{t}) \, \dfrac{\Diff t}{|t|}
 
-with :math:`f_X`,  and :math:`f_Y` the probability density functions of :math:`X`  and :math:`Y`.
+with :math:`f_X` and :math:`f_Y` the probability density functions of :math:`X` and :math:`Y`.
+The cumulative distribution function is:
+
+.. math::
+
+    F_Z(z) = \int_{-\infty}^{0} f_X(t) S_Y\left(\dfrac{z}{t}\right) \Diff t
+    + \int_{0}^{+\infty} f_X(t) F_Y\left(\dfrac{z}{t}\right) \Diff t
+
+and its complementary counterpart is:
+
+.. math::
+
+    S_Z(z) = \int_{-\infty}^{0} f_X(t) F_Y\left(\dfrac{z}{t}\right) \Diff t
+    + \int_{0}^{+\infty} f_X(t) S_Y\left(\dfrac{z}{t}\right) \Diff t
+
+where :math:`F_Y` and :math:`S_Y` are the cumulative and complementary
+cumulative distribution functions of :math:`Y`.
 
 Its first moments, if finite, are defined as: 
 
@@ -37,10 +53,6 @@ distZ : :class:`~openturns.Distribution`, univariate
     when :math:`(X,Y)` is a random vector with independent copula
     and respective marginal distributions `distX` and `distY`.
 
-The following :class:`~openturns.ResourceMap` key is used:
-
-- ``ProductDistribution-LargeCharacteristicFunctionArgument`` (``Scalar``, default: ``10``): if the modulus of the argument of the characteristic function is larger than this threshold, an alternative algorithm is used.
-
 Examples
 --------
 Create a distribution:
@@ -58,7 +70,10 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``ProductDistribution-LargeCharacteristicFunctionArgument`` (``Scalar``, default: ``10``)
+- ``ProductDistribution-LargeCharacteristicFunctionArgument`` (``Scalar``, default: ``10``):
+  if the modulus of the argument of the characteristic function is larger than
+  this threshold, the factor characteristic function is integrated with an
+  increased number of Gauss-Kronrod sub-intervals.
 )RAW"
 
 // ---------------------------------------------------------------------

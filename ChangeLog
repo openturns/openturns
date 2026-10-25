@@ -22,6 +22,10 @@
  * PushForwardDistribution (openturns.experimental): stop the co-area continuation when the Newton projection no longer advances along a singular fibre, instead of accepting stagnating steps up to the iteration cap
  * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically, with PushForwardDistribution falling back to a sample above PushForwardDistribution-MomentsMaximumDimension for nonlinear maps
  * PushForwardDistribution (openturns.experimental): deduplicate the level-set faces and edges by global mesh vertex numbers
+ * ProductDistribution: evaluate the distribution function and its complement by dedicated product quadrature with stable tails, solve tail quantiles in the logarithmic distance to the support bounds, and detect the integrable density singularity at zero
+ * ProductDistribution: return the finite limiting density at zero when exactly one factor density vanishes there, and preserve the original upper-tail probability in the quantile solver
+ * ProductDistribution: integrate the factor characteristic function directly for large arguments instead of falling back to the generic nested product density integration
+ * ProductDistribution: evaluate the real and imaginary parts of the characteristic function with separate scalar Gauss-Kronrod passes, avoiding a Point allocation at every quadrature node
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
