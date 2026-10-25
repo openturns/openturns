@@ -82,6 +82,15 @@ with ott.assert_raises(Exception):
     ot.ProductEvaluation(left.getEvaluation(), ot.SymbolicFunction(["y"], ["y"]).getEvaluation())
 with ott.assert_raises(Exception):
     ot.ProductGradient(right.getEvaluation(), right.getGradient(), right.getEvaluation(), right.getGradient())
+
+# A product containing a PythonFunction must not be marked parallel: the
+# Python evaluation requires the GIL and cannot run on TBB worker threads
+pythonFunc = ot.PythonFunction(2, 1, lambda x: [x[0] + x[1]])
+pythonProduct = ot.Function(ot.Normal(2).getPDF() * pythonFunc)
+pythonIntegral = ot.IteratedQuadrature().integrate(
+    pythonProduct, ot.Interval([-1.0] * 2, [1.0] * 2))
+ott.assert_almost_equal(pythonIntegral, [0.0], 1e-10, 1e-10)
+
 # MarginalEvaluation / MarginalGradient / MarginalHessian coverage
 baseFunc = ot.SymbolicFunction(["x1", "x2"], ["x1+x2", "x1*x2", "x1-x2"])
 marginalEval = ot.MarginalEvaluation(
