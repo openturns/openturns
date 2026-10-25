@@ -31,6 +31,10 @@ Bibliography
 .. [Motoyama2025] Hitoshi Motoyama (2025) *The Bahadur representations of quantile estimators in general unequal probability sampling*,
      Communications in Statistics - Theory and Methods, 54:13, 3820-3836, DOI: 10.1080/03610926.2024.2406382
      `pdf <https://www.tandfonline.com/doi/epdf/10.1080/03610926.2024.2406382?needAccess=true>`__
+.. [bardenet2020] Bardenet, R. and Hardy, A. (2020).
+    *Monte Carlo with determinantal point processes.*
+    Annals of Applied Probability, 30(1), 368-417.
+    `pdf <https://arxiv.org/abs/1605.00361>`__
 .. [baudin2015] Baudin M., Dutfoy A., Iooss B., Popelin A.-L. (2015)
     *OpenTURNS: An Industrial Software for Uncertainty Quantification in Simulation.*
     In: Ghanem R., Higdon D., Owhadi H. (eds) Handbook of Uncertainty Quantification. Springer
@@ -144,6 +148,10 @@ Bibliography
     *Modelling under risk and uncertainty.* John Wiley & Sons.
 .. [deisenroth2020] Deisenroth, M. P., Faisal, A. A., and Ong, C. S. (2020).
     *Mathematics for machine learning.* Cambridge University Press.
+.. [derezinski2021] Dereziński, M. and Mahoney, M. W. (2021).
+    *Determinantal point processes in randomized numerical linear algebra.*
+    Notices of the American Mathematical Society, 68(1), 34-45.
+    `pdf <https://arxiv.org/abs/2005.03185>`__
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://luc.devroye.org/handbooksimulation1.pdf>`__
@@ -257,6 +265,9 @@ Bibliography
 .. [hotelling1933] Hotelling, H. (1933).
     *Analysis of a complex of statistical variables into principal components.*
     Journal of educational psychology, 24(6):417.
+.. [hough2009] Hough, J. B., Krishnapur, M., Peres, Y. and Virág, B. (2009).
+    *Zeros of Gaussian analytic functions and determinantal point processes.*
+    University Lecture Series, vol. 51, American Mathematical Society.
 .. [iooss2015] Iooss B., Lemaître P. (2015) *A review on global sensitivity
     analysis methods.* In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithms and Applications, Springer.
     `pdf <https://arxiv.org/pdf/1404.2405>`__
@@ -387,6 +398,10 @@ Bibliography
 .. [luo2018] Zhendong Luo, Goong Chen
     *Proper Orthogonal Decomposition Methods for Partial Differential Equations.*
     (2018) Academic Press.
+.. [macchi1975] Macchi, O. (1975).
+    *The coincidence approach to stochastic point processes.*
+    Advances in Applied Probability, 7(1), 83-122.
+    `pdf <https://doi.org/10.2307/1425855>`__
 .. [marelli2018] S. Marelli, B. Sudret, *An active-learning algorithm that combines sparse
     polynomial chaos expansions and bootstrap for structural reliability analysis*, Structural Safety, 2018.
     `pdf <https://arxiv.org/pdf/1709.01589.pdf>`__
