@@ -174,8 +174,16 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
+ * HistogramFactory.buildWeighted(), buildWeightedAsHistogram() and computeBandwidthWeighted() for importance-weighted histograms
+ * Sample.computeSuperQuantile
+ * Sample.computeQuantile and computeQuantilePerComponent accept an optional tail flag
+ * MetaModelValidation.computeRootMeanSquaredError, computeMeanAbsoluteError and drawResiduals
+ * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
+ * FiniteDifferenceGradient per-output finite difference steps
+ * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
  * GaussKronrod.getErrorEstimate, getIterationNumber, getEvaluationSubIntervals and getLocalErrorEstimates
  * Curve.setLabels/getLabels
+ * PointToFieldFunction.getMarginal
  * GaussKronrod.setMaximumError now requires a strictly positive finite error instead of a nonnegative one
  * FunctionalChaosAlgorithm now rejects an input sample outside of the distribution range at construction time
 
