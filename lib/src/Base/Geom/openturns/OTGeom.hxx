@@ -27,6 +27,7 @@
 #include "openturns/Interval.hxx"
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/LevelSet.hxx"
+#include "openturns/LevelSetContinuation.hxx"
 #include "openturns/LevelSetMesher.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/MeshDomain.hxx"
