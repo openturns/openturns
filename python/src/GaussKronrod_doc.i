@@ -122,6 +122,13 @@ ai, bi, ei : :class:`~openturns.Point`;
 fi : :class:`~openturns.Sample`
     *fi* is the set of :math:`\int_{ai}^{bi} f(t)\di{t}`
 
+    The state of the last integration (error estimate, iteration
+    number, subintervals, local errors) is also available afterwards
+    through :meth:`getErrorEstimate`, :meth:`getIterationNumber`,
+    :meth:`getEvaluationSubIntervals` and :meth:`getLocalErrorEstimates`,
+    without preallocated out-arguments. The scratch-containers overload
+    below leaves that state untouched.
+
 Returns
 -------
 value : :class:`~openturns.Point`
@@ -206,6 +213,57 @@ Parameters
 ----------
 rule : :class:`~openturns.GaussKronrodRule`
     The Gauss-Kronrod rule used in the integration algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getErrorEstimate
+"Accessor to the error estimate of the last integration.
+
+Returns
+-------
+error : float, positive
+    The error estimate of the last call to :meth:`integrate`, except
+    for the scratch-containers overload which leaves this state untouched."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getIterationNumber
+"Accessor to the number of subintervals used by the last integration.
+
+Returns
+-------
+iterations : int, positive
+    The number of subintervals used by the last call to :meth:`integrate`, except
+    for the scratch-containers overload which leaves this state untouched.
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'], ['x'])
+>>> algo = ot.GaussKronrod()
+>>> value = algo.integrate(f, ot.Interval(0.0, 1.0))[0]
+>>> print(algo.getIterationNumber())
+2"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getEvaluationSubIntervals
+"Accessor to the subintervals used by the last integration.
+
+Returns
+-------
+subIntervals : :class:`~openturns.Sample`
+    The :math:`n \\times 2` sample of :math:`[a_i, b_i]` bounds used by the
+    last call to :meth:`integrate`, except for the scratch-containers
+    overload which leaves this state untouched."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussKronrod::getLocalErrorEstimates
+"Accessor to the local error estimates of the last integration.
+
+Returns
+-------
+errors : :class:`~openturns.Point`
+    The local error estimate of each subinterval used by the last call
+    to :meth:`integrate`, except for the scratch-containers overload
+    which leaves this state untouched."
 
 // ---------------------------------------------------------------------
 

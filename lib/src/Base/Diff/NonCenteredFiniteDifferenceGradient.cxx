@@ -102,25 +102,67 @@ String NonCenteredFiniteDifferenceGradient::__str__(const String & ) const
 Matrix NonCenteredFiniteDifferenceGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  const Point step(finiteDifferenceStep_.operator()(inP));
-  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", expected " << step.getDimension();
-  /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim points. */
-  Sample gridPoints(inputDimension + 1, inP);
-  for(UnsignedInteger i = 0; i < inputDimension; ++i) gridPoints(i + 1, i) += step[i];
-  /* Evaluate the evaluation */
-  const Sample gridValues(evaluation_.operator()(gridPoints));
-  /* Get the value at the center of the grid */
-  const Point center(gridValues[0]);
-  /* Compute the gradient */
-  Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
-  for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
+  const UnsignedInteger outputDimension = evaluation_.getOutputDimension();
+  if (finiteDifferenceSteps_.getSize() != outputDimension && finiteDifferenceSteps_.getSize() != 1) throw InvalidArgumentException(HERE) << "Invalid number of finite difference steps " << finiteDifferenceSteps_.getSize() << ", should be 1 or " << outputDimension;
+  const Bool broadcastStep = (finiteDifferenceSteps_.getSize() == 1);
+  const Point commonStep(broadcastStep ? finiteDifferenceSteps_[0](inP) : Point());
+  // Resolve the step of each output, broadcasting the single step if any
+  Collection<Point> steps(outputDimension);
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
   {
-    // Recompute the actual step in order to take into account the round-off error in inP[i] + step[i]
-    const Scalar hi = gridPoints(i + 1, i) - inP[i];
-    for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
+    steps[j] = broadcastStep ? commonStep : finiteDifferenceSteps_[j](inP);
+    if (inputDimension != steps[j].getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", expected " << steps[j].getDimension();
+  }
+  // A single grid suffices when all outputs share the same steps
+  Bool sharedSteps = true;
+  for (UnsignedInteger j = 1; j < outputDimension; ++j)
+    if (steps[j] != steps[0])
+    {
+      sharedSteps = false;
+      break;
+    }
+  /* Compute the gradient */
+  Matrix result(evaluation_.getInputDimension(), outputDimension);
+  if (sharedSteps)
+  {
+    const Point step(steps[0]);
+    /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim points. */
+    Sample gridPoints(inputDimension + 1, inP);
+    for(UnsignedInteger i = 0; i < inputDimension; ++i) gridPoints(i + 1, i) += step[i];
+    /* Evaluate the evaluation */
+    const Sample gridValues(evaluation_.operator()(gridPoints));
+    /* Get the value at the center of the grid */
+    const Point gridCenter(gridValues[0]);
+    for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
+    {
+      // Recompute the actual step in order to take into account the round-off error in inP[i] + step[i]
+      const Scalar hi = gridPoints(i + 1, i) - inP[i];
+      for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
+        /* result(i, j) = (f_j(x + e_i) - f_j(x)) / e_i ~ df_j / dx_i */
+        result(i, j) = (gridValues(i + 1, j) - gridCenter[j]) / hi;
+    }
+    return result;
+  }
+  // One grid per output as each output uses its own steps, at the
+  // price of outputDimension times more function evaluations.
+  // The center value is shared by all the per-output grids.
+  const Point center(evaluation_(inP));
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
+  {
+    const Point step(steps[j]);
+    /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim points. */
+    Sample gridPoints(inputDimension + 1, inP);
+    for(UnsignedInteger i = 0; i < inputDimension; ++i) gridPoints(i + 1, i) += step[i];
+    /* Evaluate the evaluation */
+    const Sample gridValues(evaluation_.operator()(gridPoints));
+    for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
+    {
+      // Recompute the actual step in order to take into account the round-off error in inP[i] + step[i]
+      const Scalar hi = gridPoints(i + 1, i) - inP[i];
       /* result(i, j) = (f_j(x + e_i) - f_j(x)) / e_i ~ df_j / dx_i */
       result(i, j) = (gridValues(i + 1, j) - center[j]) / hi;
-  }
+    }
+  } // For j
   return result;
 }
 
