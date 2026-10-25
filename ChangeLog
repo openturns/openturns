@@ -22,10 +22,15 @@
  * PushForwardDistribution (openturns.experimental): stop the co-area continuation when the Newton projection no longer advances along a singular fibre, instead of accepting stagnating steps up to the iteration cap
  * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically, with PushForwardDistribution falling back to a sample above PushForwardDistribution-MomentsMaximumDimension for nonlinear maps
  * PushForwardDistribution (openturns.experimental): deduplicate the level-set faces and edges by global mesh vertex numbers
+ * RatioDistribution (openturns.experimental): evaluate the density and the distribution function of a ratio of independent continuous random variables by dedicated one-dimensional quadrature instead of composing the numerator with the inverse of the denominator
+ * RatioDistribution (openturns.experimental): compute the distribution function in the far tails with a change of variable around the vanishing denominator and expose a stable complementary distribution function
+ * RatioDistribution (openturns.experimental): solve the quantile with a capped bracket and Brent instead of an unbounded bisection
+ * RatioDistribution (openturns.experimental): compute inverse moments when zero is only an endpoint of the denominator support, and detect divergent integrals from the quadrature error estimate
  * ProductDistribution: evaluate the distribution function and its complement by dedicated product quadrature with stable tails, solve tail quantiles in the logarithmic distance to the support bounds, and detect the integrable density singularity at zero
  * ProductDistribution: return the finite limiting density at zero when exactly one factor density vanishes there, and preserve the original upper-tail probability in the quantile solver
  * ProductDistribution: integrate the factor characteristic function directly for large arguments instead of falling back to the generic nested product density integration
  * ProductDistribution: evaluate the real and imaginary parts of the characteristic function with separate scalar Gauss-Kronrod passes, avoiding a Point allocation at every quadrature node
+ * DistributionImplementation::operator /: return a RatioDistribution for continuous univariate operands, fixing the inaccurate density of the former inverse composition close to zero
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
@@ -65,6 +70,7 @@
  * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
  * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
  * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
+ * RatioDistribution-InverseMomentRelativeError: relative quadrature error above which an inverse moment of the denominator is reported as divergent (default is 1.0e-3)
  * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
  * UniformOverMeshFactory-NearestNeighbors: number of nearest neighbors used to estimate each local tangent plane (default is 12)
  * UniformOverMeshFactory-MinimumAreaFactor: degenerate triangles whose area is lower than this factor times the maximum triangle area are removed (default is 1e-3)
@@ -106,6 +112,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
+ * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)

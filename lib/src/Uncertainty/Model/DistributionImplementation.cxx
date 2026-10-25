@@ -44,6 +44,7 @@
 #include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/ProductDistribution.hxx"
+#include "openturns/RatioDistribution.hxx"
 #include "openturns/SquaredNormal.hxx"
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/Uniform.hxx"
@@ -403,6 +404,11 @@ Distribution DistributionImplementation::operator / (const DistributionImplement
     if (otherValue == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by a Dirac distribution located in 0";
     return *this * (1.0 / otherValue);
   }
+  // Use the dedicated ratio distribution for continuous operands.  The
+  // former composition X * (1 / Y) is inaccurate close to zero because the
+  // inverse distribution is strongly singular there.
+  if (isContinuous() && other.isContinuous())
+    return new RatioDistribution(*this, other.clone());
   return operator * (other.inverse());
 }
 
