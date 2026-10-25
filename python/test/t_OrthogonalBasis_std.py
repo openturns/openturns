@@ -21,6 +21,10 @@ print(basisFactory._repr_html_())
 basis = ot.OrthogonalBasis(basisFactory)
 print("basis=")
 print(basis)
+# Value-based equality: the same factory gives equal bases, another factory does not
+assert ot.OrthogonalBasis() == ot.OrthogonalBasis()
+assert ot.OrthogonalBasis(basisFactory) == ot.OrthogonalBasis(basisFactory)
+assert ot.OrthogonalBasis(basisFactory) != ot.OrthogonalBasis(ot.OrthogonalProductPolynomialFactory([ot.Uniform()]))
 
 x = [0.5] * dim
 enum = basis.getEnumerateFunction()
@@ -44,6 +48,16 @@ factoryCollection2 = [
 dim2 = len(factoryCollection2)
 basisFactory2 = ot.OrthogonalProductFunctionFactory(factoryCollection2)
 basis2 = ot.OrthogonalBasis(basisFactory2)
+assert basis2 == ot.OrthogonalBasis(basisFactory2)
+assert basis2 != ot.OrthogonalBasis(
+    ot.OrthogonalProductFunctionFactory(
+        [
+            ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.LegendreFactory()),
+            ot.HaarWaveletFactory(),
+            ot.FourierSeriesFactory(),
+        ]
+    )
+)
 print("basis=", basis2)
 x2 = [0.5] * dim2
 enum2 = basis2.getEnumerateFunction()

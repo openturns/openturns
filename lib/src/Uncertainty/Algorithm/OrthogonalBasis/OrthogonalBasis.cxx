@@ -70,6 +70,18 @@ EnumerateFunction OrthogonalBasis::getEnumerateFunction() const
   return getImplementation()->getEnumerateFunction();
 }
 
+/* Value-based comparison, dispatched to the implementation */
+Bool OrthogonalBasis::operator ==(const OrthogonalBasis & other) const
+{
+  if (this == &other) return true;
+  return *getImplementation() == *other.getImplementation();
+}
+
+Bool OrthogonalBasis::operator !=(const OrthogonalBasis & other) const
+{
+  return !operator==(other);
+}
+
 /* String converter */
 String OrthogonalBasis::__repr__() const
 {

@@ -21,6 +21,7 @@
 #include <cmath>
 #include <algorithm>
 #include <functional>
+#include <limits>
 #include <vector>
 #include <utility>
 #include "openturns/ChristoffelDistribution.hxx"
@@ -96,6 +97,27 @@ CLASSNAMEINIT(ChristoffelDistribution)
 
 static const Factory<ChristoffelDistribution> Factory_ChristoffelDistribution;
 
+/* Positive, finite safety factor shared by the rejection and tensor samplers */
+static Scalar CheckedKnSafetyFactor()
+{
+  const Scalar safety = ResourceMap::GetAsScalar("ChristoffelDistribution-KnSafetyFactor");
+  if (!(safety > 0.0) || !std::isfinite(safety))
+    throw InvalidArgumentException(HERE) << "Error: expected a positive finite Christoffel stability safety factor, here factor=" << safety;
+  return safety;
+}
+
+/* ResourceMap values that change the stability factor estimate */
+static String KnCacheKey()
+{
+  OSS oss;
+  oss << ResourceMap::GetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize") << "|"
+      << ResourceMap::GetAsBool("ChristoffelDistribution-ExactKn") << "|"
+      << ResourceMap::GetAsUnsignedInteger("ChristoffelDistribution-KnMaximumMultiStart") << "|"
+      << ResourceMap::GetAsScalar("ChristoffelDistribution-KnSafetyFactor") << "|"
+      << ResourceMap::GetAsString("ChristoffelDistribution-OptimizationAlgorithm");
+  return oss;
+}
+
 /* Default constructor: 1D Legendre basis of size 1, a valid state for plotting */
 ChristoffelDistribution::ChristoffelDistribution()
   : DistributionImplementation()
@@ -119,24 +141,49 @@ ChristoffelDistribution::ChristoffelDistribution(const OrthogonalBasis & basis,
   update();
 }
 
+/* Internal constructor from a prebuilt finite basis: the caller has already
+   built the functions once, so no basis function is built twice */
+ChristoffelDistribution::ChristoffelDistribution(const OrthogonalBasis & basis,
+    const Basis & finiteBasis,
+    const UnsignedInteger size)
+  : DistributionImplementation()
+  , orthogonalBasis_(basis)
+  , size_(size)
+{
+  setName("ChristoffelDistribution");
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive space dimension, here size=" << size;
+  if (finiteBasis.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected a finite basis of size=" << size << ", got size=" << finiteBasis.getSize();
+  measure_ = orthogonalBasis_.getMeasure();
+  if (!measure_.isContinuous()) throw InvalidArgumentException(HERE) << "Error: the reference measure must be continuous.";
+  if (measure_.isDiscrete()) throw InvalidArgumentException(HERE) << "Error: the reference measure must not be discrete.";
+  const UnsignedInteger dimension = measure_.getDimension();
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    const Function phi(finiteBasis[i]);
+    if (phi.getInputDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: basis function " << i << " has input dimension=" << phi.getInputDimension() << ", expected dimension=" << dimension;
+    if (phi.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: basis function " << i << " must be scalar valued.";
+  }
+  basis_ = finiteBasis;
+  finalizeFiniteBasis();
+}
+
 /* Virtual constructor */
 ChristoffelDistribution * ChristoffelDistribution::clone() const
 {
   return new ChristoffelDistribution(*this);
 }
 
-/* Comparison operator: measure and size plus basis values on range probes,
-   as OrthogonalBasis has no value-based equality.
-   TODO: OrthogonalBasis has no value-based comparison operator. Different
-   bases can coincide at the probed points yet be different functions, so this
-   probe-based comparison can return true for unequal bases. Implement a proper
-   OrthogonalBasis equality (Function comparison now exists) and use it here. */
+/* Comparison operator: value-based basis equality plus measure, size and basis
+   values on range probes. The basis equality compares the concrete factory
+   state; the probes catch factories whose state compares equal but build
+   different functions. */
 Bool ChristoffelDistribution::operator ==(const ChristoffelDistribution & other) const
 {
   if (this == &other) return true;
   if (size_ != other.size_) return false;
   if (getDimension() != other.getDimension()) return false;
   if (!(measure_ == other.measure_)) return false;
+  if (!(orthogonalBasis_ == other.orthogonalBasis_)) return false;
   const Interval range(getRange());
   Sample probes(0, getDimension());
   probes.add(range.getLowerBound());
@@ -238,13 +285,54 @@ Scalar ChristoffelDistribution::computeChristoffelCore(const Point & point) cons
   return kn;
 }
 
+/* Christoffel function on a point, direct sum and stable log in a single basis pass */
+Scalar ChristoffelDistribution::computeChristoffelCore(const Point & point,
+    Scalar & logCore) const
+{
+  Point values(size_);
+  Scalar kn = 0.0;
+  Scalar maxAbs = 0.0;
+  UnsignedInteger maxIndex = 0;
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    const Scalar value = basis_[i](point)[0];
+    values[i] = value;
+    kn += value * value;
+    const Scalar absValue = std::abs(value);
+    if (absValue > maxAbs)
+    {
+      maxAbs = absValue;
+      maxIndex = i;
+    }
+  }
+  if (!(maxAbs > 0.0))
+  {
+    logCore = SpecFunc::LowestScalar;
+    return kn;
+  }
+  if (!std::isfinite(maxAbs))
+  {
+    logCore = std::numeric_limits<Scalar>::infinity();
+    return kn;
+  }
+  Scalar reduced = 0.0;
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    if (i != maxIndex)
+    {
+      const Scalar ratio = values[i] / maxAbs;
+      reduced += ratio * ratio;
+    }
+  logCore = 2.0 * std::log(maxAbs) + std::log1p(reduced);
+  return kn;
+}
+
 /* Christoffel function evaluation on a point */
 Scalar ChristoffelDistribution::computeChristoffelFunction(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << getDimension() << ", got dimension=" << point.getDimension();
-  Sample sample(1, getDimension());
-  sample[0] = point;
-  return computeChristoffelFunction(sample)(0, 0);
+  // Direct core: a one-point sample would allocate and call the TBB policy for
+  // no parallel benefit, as computeLogChristoffelFunction already avoids.
+  return computeChristoffelCore(point);
 }
 
 struct ComputeChristoffelPolicy
@@ -276,7 +364,7 @@ Sample ChristoffelDistribution::computeChristoffelFunction(const Sample & sample
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
   const ComputeChristoffelPolicy policy(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy, 1024);
+  TBBImplementation::ParallelForIf(isParallel() && (sampleSize > 2048), 0, sampleSize, policy, 1024);
   return values;
 }
 
@@ -322,7 +410,7 @@ public:
     const Scalar value(p_distribution_->computeLogChristoffelFunction(clipped));
     // whatever happens, the objective stays finite: an optimizer never terminates on ±inf
     if (std::isnan(value)) return {-SpecFunc::LogMaxScalar};
-    return {std::min(std::max(value, -SpecFunc::LogMaxScalar), SpecFunc::LogMaxScalar)};
+    return {std::clamp(value, -SpecFunc::LogMaxScalar, SpecFunc::LogMaxScalar)};
   }
 
 private:
@@ -399,7 +487,15 @@ public:
       return result;
     }
     // One forward recurrence pass per coordinate: values and derivatives of every
-    // univariate factor, for all degrees at once.
+    // univariate factor, for all degrees at once. Clip the point exactly like the
+    // objective does: the optimizer may probe outside the numerical range, where
+    // the raw recurrence can overflow and the clipped objective is constant.
+    Point clipped(point);
+    const Interval range(p_distribution_->getRange());
+    const Point lowerBound(range.getLowerBound());
+    const Point upperBound(range.getUpperBound());
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+      clipped[k] = std::clamp(clipped[k], lowerBound[k], upperBound[k]);
     Collection<Point> values(dimension);
     Collection<Point> derivatives(dimension);
     for (UnsignedInteger k = 0; k < dimension; ++k)
@@ -410,7 +506,7 @@ public:
       const Sample rows(polynomials[maxDegree].getRecurrenceCoefficients());
       const Scalar a(polynomials[maxDegree].getA());
       const Scalar b(polynomials[maxDegree].getB());
-      const Scalar z(a * point[k] + b);
+      const Scalar z(a * clipped[k] + b);
       Point value(maxDegree + 1);
       Point derivative(maxDegree + 1);
       value[0] = 1.0;
@@ -506,7 +602,10 @@ Sample ChristoffelDistribution::generateKnCandidates(const UnsignedInteger size)
 Scalar ChristoffelDistribution::computeKn() const
 {
   std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
-  if (!isAlreadyComputedKn_)
+  // Fail before the expensive candidate and optimizer searches
+  const Scalar safety = CheckedKnSafetyFactor();
+  const String cacheKey(KnCacheKey());
+  if (!isAlreadyComputedKn_ || (knCacheKey_ != cacheKey))
   {
     const UnsignedInteger samplingSize = ResourceMap::GetAsUnsignedInteger("ChristoffelDistribution-KnSamplingSize");
     if (samplingSize == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive Kn sampling size.";
@@ -514,6 +613,7 @@ Scalar ChristoffelDistribution::computeKn() const
     const Sample values(computeChristoffelFunction(candidates));
     Scalar knMax = 0.0;
     for (UnsignedInteger i = 0; i < values.getSize(); ++i) knMax = std::max(knMax, values(i, 0));
+    if (!std::isfinite(knMax)) throw InternalException(HERE) << "Error: the Christoffel function overflows on the stability factor candidates; cannot build a finite rejection envelope.";
     // Optional exact refinement: bounded maximization of the log-Christoffel function over the numerical range, multi-started from the best candidates as in RatioOfUniforms::initialize(). The multi-start is a coverage argument only: a local optimum may be missed, hence the safety factor below.
     if (ResourceMap::GetAsBool("ChristoffelDistribution-ExactKn"))
     {
@@ -564,7 +664,21 @@ Scalar ChristoffelDistribution::computeKn() const
             for (UnsignedInteger j = 0; j < optimalPoint.getDimension(); ++j)
               optimalPoint[j] = std::clamp(optimalPoint[j], lowerBound[j], upperBound[j]);
             const Scalar knOptimal = computeChristoffelFunction(optimalPoint);
-            if (std::isfinite(knOptimal)) knMax = std::max(knMax, knOptimal);
+            if (std::isfinite(knOptimal))
+              knMax = std::max(knMax, knOptimal);
+            else
+            {
+              // The raw value may overflow while its logarithm is still finite:
+              // use the log value when it can be exponentiated, otherwise keep
+              // the finite Monte-Carlo estimate instead of silently returning
+              // an infinite envelope.
+              const Scalar logOptimal = computeLogChristoffelFunction(optimalPoint);
+              if (std::isfinite(logOptimal))
+              {
+                const Scalar expOptimal = std::exp(logOptimal);
+                if (std::isfinite(expOptimal)) knMax = std::max(knMax, expOptimal);
+              }
+            }
           }
         }
       }
@@ -574,8 +688,11 @@ Scalar ChristoffelDistribution::computeKn() const
         LOGDEBUG(OSS() << "Could not compute the exact stability factor, keeping the Monte-Carlo estimate: " << ex.what());
       }
     }
-    const Scalar safety = ResourceMap::GetAsScalar("ChristoffelDistribution-KnSafetyFactor");
-    knEstimate_ = knMax * safety;
+    const Scalar estimate = knMax * safety;
+    if (!(estimate > 0.0) || !std::isfinite(estimate))
+      throw InternalException(HERE) << "Error: the Christoffel stability factor estimate is not positive and finite, estimate=" << estimate;
+    knEstimate_ = estimate;
+    knCacheKey_ = cacheKey;
     isAlreadyComputedKn_ = true;
   }
   return knEstimate_;
@@ -588,11 +705,16 @@ Scalar ChristoffelDistribution::computePDF(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Scalar referencePDF = measure_.computePDF(point);
   if (referencePDF == 0.0) return 0.0;
-  // direct core call: the public wrapper would build a one-point sample for nothing
-  const Scalar core = computeChristoffelCore(point);
-  // the core may overflow in the tails for high-degree factors: fall back to the stable log scale
-  if (!std::isfinite(core)) return std::exp(computeLogPDF(point));
-  return referencePDF * core / size_;
+  // direct core and stable log in a single basis pass: no second evaluation
+  // when the raw core overflows in the tails of high-degree factors
+  Scalar logCore = 0.0;
+  const Scalar core = computeChristoffelCore(point, logCore);
+  const Scalar pdf = referencePDF * core / size_;
+  if ((pdf > 0.0) && std::isfinite(pdf)) return pdf;
+  // Either the raw core or the product with the reference density overflowed
+  // (or underflowed): use the log value already computed in the same pass.
+  if (!std::isfinite(logCore)) return std::exp(logCore);
+  return std::exp(std::log(referencePDF) + logCore - std::log(1.0 * size_));
 }
 
 /* Log-PDF evaluation */
@@ -603,7 +725,11 @@ Scalar ChristoffelDistribution::computeLogPDF(const Point & point) const
   const Scalar referenceLogPDF = measure_.computeLogPDF(point);
   const Scalar logKn = computeLogChristoffelCore(point);
   if (!(logKn > SpecFunc::LowestScalar)) return SpecFunc::LowestScalar;
-  return referenceLogPDF + logKn - std::log(1.0 * size_);
+  const Scalar logPDF = referenceLogPDF + logKn - std::log(1.0 * size_);
+  // The sum overflows when both log-values are large, and is indeterminate
+  // when the reference log-density is -inf where the core overflows.
+  if (!(logPDF > SpecFunc::LowestScalar)) return SpecFunc::LowestScalar;
+  return std::min(logPDF, SpecFunc::LogMaxScalar);
 }
 
 /* Stable log of the Christoffel function on a point */
@@ -643,7 +769,7 @@ Sample ChristoffelDistribution::computeLogChristoffelFunction(const Sample & sam
   const UnsignedInteger sampleSize = sample.getSize();
   Sample values(sampleSize, 1);
   const ComputeLogChristoffelPolicy policy(sample, values, *this);
-  TBBImplementation::ParallelForIf(isParallel(), 0, sampleSize, policy, 1024);
+  TBBImplementation::ParallelForIf(isParallel() && (sampleSize > 2048), 0, sampleSize, policy, 1024);
   return values;
 }
 
@@ -665,6 +791,9 @@ Scalar ChristoffelDistribution::computeLogChristoffelCore(const Point & point) c
     }
   }
   if (!(maxAbs > 0.0)) return SpecFunc::LowestScalar;
+  // An overflowed factor gives an infinite log-value; the exact search clips
+  // it to LogMaxScalar, and the PDF log-value saturates honestly.
+  if (!std::isfinite(maxAbs)) return std::numeric_limits<Scalar>::infinity();
   Scalar reduced = 0.0;
   for (UnsignedInteger j = 0; j < size_; ++j)
     if (j != maxIndex)
@@ -685,17 +814,20 @@ Scalar ChristoffelDistribution::computeConditionalPDF(const Scalar x,
     return DistributionImplementation::computeConditionalPDF(x, y);
   // Partial products from the conditioning values, normalizer by orthonormality
   Point partial(size_, 1.0);
-  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex)
-    for (UnsignedInteger k = 0; k < j; ++k)
-    {
-      const Scalar factor = computeTensorFactor(basisIndex, k, y[k]);
-      partial[basisIndex] *= factor * factor;
-    }
+  for (UnsignedInteger k = 0; k < j; ++k) updatePartialProducts(partial, k, y[k]);
+  return computeConditionalPDFFromPartial(x, j, partial);
+}
+
+/* Conditional PDF from partial products already accumulated for dimensions 0..j-1 */
+Scalar ChristoffelDistribution::computeConditionalPDFFromPartial(const Scalar x,
+    const UnsignedInteger j,
+    const Point & partialProducts) const
+{
   Scalar normalizer = 0.0;
-  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex) normalizer += partial[basisIndex];
-  if (!(normalizer > 0.0)) return 0.0;
+  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex) normalizer += partialProducts[basisIndex];
+  if (!(normalizer > 0.0) || !std::isfinite(normalizer)) return 0.0;
   const Distribution marginalJ(measure_.getMarginal(j));
-  const Scalar numerator = marginalJ.computePDF(x) * computePartialChristoffel(partial, j, x);
+  const Scalar numerator = marginalJ.computePDF(x) * computePartialChristoffel(partialProducts, j, x);
   return numerator / normalizer;
 }
 
@@ -707,23 +839,26 @@ Scalar ChristoffelDistribution::computeConditionalCDF(const Scalar x,
   if (j >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   if (!isTensorProduct_ || !measure_.hasIndependentCopula())
     return DistributionImplementation::computeConditionalCDF(x, y);
+  Point partial(size_, 1.0);
+  for (UnsignedInteger k = 0; k < j; ++k) updatePartialProducts(partial, k, y[k]);
+  return computeConditionalCDFFromPartial(x, j, partial);
+}
+
+/* Conditional CDF from partial products already accumulated for dimensions 0..j-1 */
+Scalar ChristoffelDistribution::computeConditionalCDFFromPartial(const Scalar x,
+    const UnsignedInteger j,
+    const Point & partialProducts) const
+{
   const Distribution marginalJ(measure_.getMarginal(j));
   const Interval rangeJ(marginalJ.getRange());
   const Scalar lower = rangeJ.getLowerBound()[0];
   const Scalar upper = rangeJ.getUpperBound()[0];
   if (x <= lower) return 0.0;
   if (x >= upper) return 1.0;
-  Point partial(size_, 1.0);
-  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex)
-    for (UnsignedInteger k = 0; k < j; ++k)
-    {
-      const Scalar factor = computeTensorFactor(basisIndex, k, y[k]);
-      partial[basisIndex] *= factor * factor;
-    }
   Scalar normalizer = 0.0;
-  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex) normalizer += partial[basisIndex];
-  if (!(normalizer > 0.0)) return 0.0;
-  const Function slice(ChristoffelTensorSliceEvaluation(*this, partial, j));
+  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex) normalizer += partialProducts[basisIndex];
+  if (!(normalizer > 0.0) || !std::isfinite(normalizer)) return 0.0;
+  const Function slice(ChristoffelTensorSliceEvaluation(*this, partialProducts, j));
   Scalar error = -1.0;
   Point ai;
   Point bi;
@@ -740,11 +875,11 @@ Point ChristoffelDistribution::computeSequentialConditionalPDF(const Point & x) 
   if (!isTensorProduct_ || !measure_.hasIndependentCopula())
     return DistributionImplementation::computeSequentialConditionalPDF(x);
   Point result(getDimension());
-  Point prefix;
+  Point partial(size_, 1.0);
   for (UnsignedInteger j = 0; j < getDimension(); ++j)
   {
-    result[j] = computeConditionalPDF(x[j], prefix);
-    prefix.add(x[j]);
+    result[j] = computeConditionalPDFFromPartial(x[j], j, partial);
+    updatePartialProducts(partial, j, x[j]);
   }
   return result;
 }
@@ -756,11 +891,11 @@ Point ChristoffelDistribution::computeSequentialConditionalCDF(const Point & x) 
   if (!isTensorProduct_ || !measure_.hasIndependentCopula())
     return DistributionImplementation::computeSequentialConditionalCDF(x);
   Point result(getDimension());
-  Point prefix;
+  Point partial(size_, 1.0);
   for (UnsignedInteger j = 0; j < getDimension(); ++j)
   {
-    result[j] = computeConditionalCDF(x[j], prefix);
-    prefix.add(x[j]);
+    result[j] = computeConditionalCDFFromPartial(x[j], j, partial);
+    updatePartialProducts(partial, j, x[j]);
   }
   return result;
 }
@@ -789,13 +924,25 @@ Scalar ChristoffelDistribution::computePartialChristoffel(const Point & partialP
   return total;
 }
 
+/* Update the tensor partial products with the factor of dimension j */
+void ChristoffelDistribution::updatePartialProducts(Point & partialProducts,
+    const UnsignedInteger j,
+    const Scalar x) const
+{
+  for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex)
+  {
+    const Scalar factor = computeTensorFactor(basisIndex, j, x);
+    partialProducts[basisIndex] *= factor * factor;
+  }
+}
+
 /* One draw by sequential 1D conditional sampling (tensor independent case) */
 Point ChristoffelDistribution::drawSequentialTensor() const
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger gridSize = ResourceMap::GetAsUnsignedInteger("ChristoffelDistribution-SliceGridSize");
   if (gridSize == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive slice grid size.";
-  const Scalar safety = ResourceMap::GetAsScalar("ChristoffelDistribution-KnSafetyFactor");
+  const Scalar safety = CheckedKnSafetyFactor();
   Point point(dimension);
   Point partial(size_, 1.0);
   for (UnsignedInteger j = 0; j < dimension; ++j)
@@ -804,12 +951,93 @@ Point ChristoffelDistribution::drawSequentialTensor() const
     const Interval rangeJ(marginalJ.getRange());
     const Scalar lower = rangeJ.getLowerBound()[0];
     const Scalar upper = rangeJ.getUpperBound()[0];
-    // grid abscissae shared by the envelope scan, evaluated in batch: one
-    // vectorized marginal call plus one batched univariate factor evaluation
-    // per basis function instead of size_ scalar Function calls per node
+    const Scalar width = upper - lower;
+    if (!(width > 0.0) || !std::isfinite(width))
+      throw InternalException(HERE) << "Error: invalid marginal numerical range along dimension " << j << ".";
+    // The target conditional density is proportional to marginalJ(x) * S_j(x).
+    // Bounded marginals use a uniform proposal, for which the envelope is the
+    // maximum of the target density.  Unbounded marginals cannot use the
+    // numerical range as a truncation: the polynomial growth of S_j gives the
+    // Christoffel law heavier tails than the reference, and the lost tail mass
+    // grows with the degree.  A Cauchy proposal covers the whole support; its
+    // ratio to the target has a finite maximum because the target is integrable.
+    enum class Proposal { Uniform, TwoSidedCauchy, LowerHalfCauchy, UpperHalfCauchy };
+    const Bool finiteLower = rangeJ.getFiniteLowerBound()[0];
+    const Bool finiteUpper = rangeJ.getFiniteUpperBound()[0];
+    Proposal proposalKind = Proposal::Uniform;
+    Scalar proposalCenter = 0.0;
+    Scalar proposalScale = 0.0;
+    if (finiteLower && finiteUpper)
+    {
+      proposalKind = Proposal::Uniform;
+      proposalScale = width;
+    }
+    else if (finiteLower)
+    {
+      proposalKind = Proposal::LowerHalfCauchy;
+      proposalCenter = lower;
+      proposalScale = width;
+    }
+    else if (finiteUpper)
+    {
+      proposalKind = Proposal::UpperHalfCauchy;
+      proposalCenter = upper;
+      proposalScale = width;
+    }
+    else
+    {
+      proposalKind = Proposal::TwoSidedCauchy;
+      proposalCenter = 0.5 * (lower + upper);
+      proposalScale = 0.5 * width;
+    }
+    if (!(proposalScale > 0.0))
+      throw InternalException(HERE) << "Error: invalid proposal scale along dimension " << j << ".";
+    const auto proposalPDF = [&](const Scalar x)
+    {
+      if (proposalKind == Proposal::Uniform) return 1.0 / width;
+      if (proposalKind == Proposal::TwoSidedCauchy)
+      {
+        const Scalar z = (x - proposalCenter) / proposalScale;
+        return 1.0 / (M_PI * proposalScale * (1.0 + z * z));
+      }
+      if (proposalKind == Proposal::LowerHalfCauchy)
+      {
+        const Scalar z = (x - proposalCenter) / proposalScale;
+        return 2.0 / (M_PI * proposalScale * (1.0 + z * z));
+      }
+      const Scalar z = (proposalCenter - x) / proposalScale;
+      return 2.0 / (M_PI * proposalScale * (1.0 + z * z));
+    };
+    const auto drawProposal = [&]()
+    {
+      const Scalar u = RandomGenerator::Generate();
+      if (proposalKind == Proposal::Uniform) return lower + width * u;
+      if (proposalKind == Proposal::TwoSidedCauchy) return proposalCenter + proposalScale * std::tan(M_PI * (u - 0.5));
+      if (proposalKind == Proposal::LowerHalfCauchy) return proposalCenter + proposalScale * std::tan(0.5 * M_PI * u);
+      return proposalCenter - proposalScale * std::tan(0.5 * M_PI * u);
+    };
+    // Scan the envelope on a grid uniform in the proposal probability space.
+    // A uniform-x grid can miss narrow target peaks near the proposal mode
+    // (for example the Gamma slice at high degree), which would make the
+    // adaptive envelope start below the true maximum.
+    const Scalar cauchyScan = 4.0;
+    const Scalar uScan = 2.0 * std::atan(cauchyScan) / M_PI;
     Sample grid(gridSize + 1, 1);
-    for (UnsignedInteger g = 0; g <= gridSize; ++g) grid(g, 0) = lower + (upper - lower) * g / gridSize;
-    const Sample marginalPDFs(marginalJ.computePDF(grid));
+    for (UnsignedInteger g = 0; g <= gridSize; ++g)
+    {
+      const Scalar u = static_cast<Scalar>(g) / gridSize;
+      Scalar abscissa = lower + width * u;
+      if (proposalKind == Proposal::TwoSidedCauchy)
+        abscissa = proposalCenter + proposalScale * std::tan(M_PI * uScan * (u - 0.5));
+      else if (proposalKind == Proposal::LowerHalfCauchy)
+        abscissa = proposalCenter + proposalScale * std::tan(0.5 * M_PI * uScan * u);
+      else if (proposalKind == Proposal::UpperHalfCauchy)
+        abscissa = proposalCenter - proposalScale * std::tan(0.5 * M_PI * uScan * u);
+      grid(g, 0) = abscissa;
+    }
+    const Sample marginalDensities(marginalJ.computePDF(grid));
+    if (marginalDensities.getSize() != gridSize + 1)
+      throw InternalException(HERE) << "Error: unexpected marginal PDF grid size along dimension " << j << ".";
     Point sliceTotals(gridSize + 1, 0.0);
     for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex)
     {
@@ -828,32 +1056,53 @@ Point ChristoffelDistribution::drawSequentialTensor() const
     Scalar envelope = 0.0;
     for (UnsignedInteger g = 0; g <= gridSize; ++g)
     {
-      const Scalar density = marginalPDFs(g, 0) * sliceTotals[g];
-      if (density > envelope) envelope = density;
+      const Scalar marginalDensity = marginalDensities(g, 0);
+      if (!std::isfinite(marginalDensity) || marginalDensity < 0.0)
+        throw InternalException(HERE) << "Error: non-finite marginal density along dimension " << j << ".";
+      // A vanishing marginal density makes the target density vanish even when
+      // the polynomial slice has overflowed: skip it instead of forming 0*inf.
+      if (marginalDensity == 0.0) continue;
+      const Scalar density = marginalDensity * sliceTotals[g];
+      if (!std::isfinite(density) || density < 0.0)
+        throw InternalException(HERE) << "Error: non-finite tensor slice density along dimension " << j << ".";
+      const Scalar ratio = density / proposalPDF(grid(g, 0));
+      if (!std::isfinite(ratio) || ratio < 0.0)
+        throw InternalException(HERE) << "Error: non-finite proposal ratio along dimension " << j << ".";
+      if (ratio > envelope) envelope = ratio;
     }
     envelope *= safety;
-    if (!(envelope > 0.0)) throw InternalException(HERE) << "Error: null slice envelope along dimension " << j;
+    if (!(envelope > 0.0) || !std::isfinite(envelope))
+      throw InternalException(HERE) << "Error: null or non-finite slice envelope along dimension " << j << ".";
     // Adaptive rejection with restart on envelope exceedance
     while (true)
     {
-      const Scalar proposal = (marginalJ.getRealization())[0];
-      const Scalar density = marginalJ.computePDF(proposal) * computePartialChristoffel(partial, j, proposal);
-      if (density > envelope)
+      const Scalar proposal = drawProposal();
+      if (!std::isfinite(proposal))
+        throw InternalException(HERE) << "Error: non-finite proposal along dimension " << j << ".";
+      const Scalar marginalDensity = marginalJ.computePDF(proposal);
+      if (!std::isfinite(marginalDensity) || marginalDensity < 0.0)
+        throw InternalException(HERE) << "Error: non-finite marginal density along dimension " << j << ".";
+      if (marginalDensity == 0.0) continue;
+      const Scalar density = marginalDensity * computePartialChristoffel(partial, j, proposal);
+      if (!std::isfinite(density) || !(density >= 0.0))
+        throw InternalException(HERE) << "Error: non-finite conditional slice density along dimension " << j << ".";
+      const Scalar ratio = density / proposalPDF(proposal);
+      if (!std::isfinite(ratio) || ratio < 0.0)
+        throw InternalException(HERE) << "Error: non-finite proposal ratio along dimension " << j << ".";
+      if (ratio > envelope)
       {
-        envelope = density * safety;
+        envelope = ratio * safety;
+        if (!std::isfinite(envelope))
+          throw InternalException(HERE) << "Error: non-finite slice envelope after an exceedance along dimension " << j << ".";
         continue;
       }
-      if (RandomGenerator::Generate() * envelope <= density)
+      if (RandomGenerator::Generate() * envelope <= ratio)
       {
         point[j] = proposal;
         break;
       }
     }
-    for (UnsignedInteger basisIndex = 0; basisIndex < size_; ++basisIndex)
-    {
-      const Scalar factor = computeTensorFactor(basisIndex, j, point[j]);
-      partial[basisIndex] *= factor * factor;
-    }
+    updatePartialProducts(partial, j, point[j]);
   }
   return point;
 }
@@ -861,17 +1110,25 @@ Point ChristoffelDistribution::drawSequentialTensor() const
 /* One draw by rejection from the reference with the Kn envelope */
 Point ChristoffelDistribution::drawByRejection() const
 {
-  const Scalar safety = ResourceMap::GetAsScalar("ChristoffelDistribution-KnSafetyFactor");
+  const Scalar safety = CheckedKnSafetyFactor();
   Scalar envelope = computeKn();
-  if (!(envelope > 0.0)) throw InternalException(HERE) << "Error: null Christoffel envelope.";
+  if (!(envelope > 0.0) || !std::isfinite(envelope))
+    throw InternalException(HERE) << "Error: null or non-finite Christoffel envelope.";
   while (true)
   {
     const Point proposal(measure_.getRealization());
     const Scalar kn = computeChristoffelCore(proposal);
+    if (!std::isfinite(kn) || !(kn >= 0.0))
+      throw InternalException(HERE) << "Error: non-finite Christoffel value during rejection sampling.";
     if (kn > envelope)
     {
       envelope = kn * safety;
-      knEstimate_ = std::max(knEstimate_, envelope);
+      if (!std::isfinite(envelope))
+        throw InternalException(HERE) << "Error: non-finite Christoffel envelope after an exceedance.";
+      {
+        std::lock_guard<std::recursive_mutex> lock(*cacheMutex_);
+        knEstimate_ = std::max(knEstimate_, envelope);
+      }
       continue;
     }
     if (RandomGenerator::Generate() * envelope <= kn) return proposal;
@@ -943,18 +1200,24 @@ void ChristoffelDistribution::update()
     if (phi.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: basis function " << i << " must be scalar valued.";
     coll[i] = phi;
   }
-  const Basis basis(coll);
-  basis_ = basis;
+  basis_ = Basis(coll);
+  finalizeFiniteBasis();
+}
+
+/* Derive the range, tensor caches, parallel flag and sampler from basis_ and measure_ */
+void ChristoffelDistribution::finalizeFiniteBasis()
+{
+  const UnsignedInteger dimension = measure_.getDimension();
   // The parallel paths (computeChristoffelFunction, computeLogChristoffelFunction
   // and the PDF/mean/covariance overloads they feed) evaluate the basis through
-  // the Function objects of coll, so parallelism requires the reference measure
+  // the Function objects of basis_, so parallelism requires the reference measure
   // and all of them to be parallel, as in PosteriorDistribution. The cached
   // univariate factors of detectTensorProduct() only serve computeTensorFactor,
   // which runs in the sequential conditional and drawing paths, never under
   // ParallelForIf, so they do not constrain this flag.
   Bool parallel = measure_.getImplementation()->isParallel();
   for (UnsignedInteger i = 0; i < size_; ++i)
-    parallel = parallel && coll[i].getImplementation()->isParallel();
+    parallel = parallel && basis_[i].getImplementation()->isParallel();
   setParallel(parallel);
   setDimension(dimension);
   setDescription(measure_.getDescription());
@@ -962,6 +1225,7 @@ void ChristoffelDistribution::update()
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyComputedKn_ = false;
+  knCacheKey_.clear();
   detectTensorProduct();
   // Internal RatioOfUniforms sampler, see https://en.wikipedia.org/wiki/Ratio_of_uniforms
   // Set up eagerly for non-tensor references within the dimension guard: the
