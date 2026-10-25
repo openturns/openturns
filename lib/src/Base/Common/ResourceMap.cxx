@@ -1384,6 +1384,9 @@ void ResourceMap::loadDefaultConfiguration()
   // ProductDistribution parameters //
   addAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument", 10.0);
 
+  // RatioDistribution parameters //
+  addAsScalar("RatioDistribution-InverseMomentRelativeError", 1.0e-3);
+
   // RiceFactory parameters //
   addAsScalar("RiceFactory-AbsolutePrecision", 1.0e-12);
   addAsScalar("RiceFactory-RelativePrecision", 1.0e-12);

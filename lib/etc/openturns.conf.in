@@ -769,6 +769,9 @@
   <!-- OT::ProductDistribution parameters -->
   <ProductDistribution-LargeCharacteristicFunctionArgument value_float="10.0" />
 
+  <!-- OT::RatioDistribution parameters -->
+  <RatioDistribution-InverseMomentRelativeError value_float="1.0e-3" />
+
   <!-- OT::RiceFactory parameters -->
   <RiceFactory-AbsolutePrecision value_float="1e-12"        />
   <RiceFactory-RelativePrecision value_float="1e-12"        />
