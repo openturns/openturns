@@ -166,6 +166,13 @@ UnsignedInteger ProductEvaluation::getOutputDimension() const
   return rightEvaluation_.getOutputDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool ProductEvaluation::isParallel() const
+{
+  return leftEvaluation_.getImplementation()->isParallel()
+      && rightEvaluation_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void ProductEvaluation::save(Advocate & adv) const
 {
