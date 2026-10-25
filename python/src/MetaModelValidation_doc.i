@@ -192,6 +192,23 @@ graph : :class:`~openturns.GridLayout`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MetaModelValidation::drawResiduals
+R"RAW(Plot the residuals depending on the model observations.
+
+If the points are scattered around the horizontal zero line of the plot,
+then the metamodel validation is satisfactory. A trend in the cloud
+reveals a bias of the metamodel.
+
+If the output is multi-dimensional, the graph has 1 row and :math:`n_y \in \Nset`
+columns, where :math:`n_y` is the output dimension.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The residuals graph.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::MetaModelValidation::computeMeanSquaredError
 R"RAW(Accessor to the mean squared error.
 
@@ -214,6 +231,49 @@ Returns
 -------
 meanSquaredError : :class:`~openturns.Point`
     The mean squared error of each marginal output dimension.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::computeRootMeanSquaredError
+R"RAW(Accessor to the root mean squared error.
+
+The sample root mean squared error is the square root of the
+:meth:`computeMeanSquaredError`, expressed in the unit of the output.
+
+If the output is multi-dimensional, the same calculations are repeated separately for
+each output marginal :math:`k` for :math:`k = 1, ..., n_y` where :math:`n_y \in \Nset`
+is the output dimension.
+
+Returns
+-------
+rootMeanSquaredError : :class:`~openturns.Point`
+    The root mean squared error of each marginal output dimension.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MetaModelValidation::computeMeanAbsoluteError
+R"RAW(Accessor to the mean absolute error.
+
+The sample mean absolute error is:
+
+.. math::
+    \widehat{\operatorname{MAE}}
+    = \frac{1}{\sum_{j=1}^n w_j} \sum_{j=1}^{n} w_j \left|y^{(j)} - \tilde{g}\left(\bdx^{(j)}\right)\right|
+
+where :math:`n \in \Nset` is the sample size, :math:`\tilde{g}` is the metamodel,
+:math:`\{\bdx^{(j)} \in \Rset^{n_X}\}_{j = 1, ..., n}` is the input experimental design,
+:math:`\{y^{(j)} \in \Rset\}_{j = 1, ..., n}` is the output of the model and
+:math:`\{w_j\}_{j = 1, ..., n}` are the validation weights, uniform by default.
+Contrary to the mean squared error, it is robust to outliers.
+
+If the output is multi-dimensional, the same calculations are repeated separately for
+each output marginal :math:`k` for :math:`k = 1, ..., n_y` where :math:`n_y \in \Nset`
+is the output dimension.
+
+Returns
+-------
+meanAbsoluteError : :class:`~openturns.Point`
+    The mean absolute error of each marginal output dimension.)RAW"
 
 // ---------------------------------------------------------------------
 
