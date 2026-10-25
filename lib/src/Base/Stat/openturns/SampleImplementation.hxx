@@ -683,16 +683,30 @@ public:
   Point computeRawMoment(const UnsignedInteger k) const;
 
   /**
-   * Gives the quantile per component of the sample
+   * Gives the quantile per component of the sample.
+   * The vector overloads return a Pointer<SampleImplementation> rather than a
+   * Sample: Sample wraps a Pointer<SampleImplementation> and includes this
+   * header, so returning a Sample here would introduce a circular dependency.
+   * The Sample facade converts the result, as for the other methods returning
+   * a new implementation below (rank, sort, getMarginal, select).
    */
-  virtual Point computeQuantilePerComponent(const Scalar prob) const;
-  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob) const;
+  virtual Point computeQuantilePerComponent(const Scalar prob,
+      const Bool tail = false) const;
+  virtual Pointer<SampleImplementation> computeQuantilePerComponent(const Point & prob,
+      const Bool tail = false) const;
+
+  /**
+   * Gives the super-quantile (expected shortfall) per component of the sample
+   */
+  virtual Point computeSuperQuantile(const Scalar prob) const;
 
   /**
    * Gives the N-dimension quantile of the sample
    */
-  Point computeQuantile(const Scalar prob) const;
-  Pointer<SampleImplementation> computeQuantile(const Point & prob) const;
+  Point computeQuantile(const Scalar prob,
+                        const Bool tail = false) const;
+  Pointer<SampleImplementation> computeQuantile(const Point & prob,
+      const Bool tail = false) const;
 
   /**
    * Get the empirical CDF of the sample
