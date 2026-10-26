@@ -19,7 +19,6 @@
  *
  */
 #include "openturns/CalibrationResult.hxx"
-#include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
@@ -30,46 +29,54 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(CalibrationResult)
 
-static const Factory<CalibrationResult> Factory_CalibrationResult;
-
 /* Default constructor */
 CalibrationResult::CalibrationResult()
   : PersistentObject()
 {
-  // Nothing to do
+  setColors();
 }
 
 /* Parameter constructor */
 CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
                                      const Distribution & parameterPosterior,
-                                     const Point & parameterMAP,
+                                     const Point & calibratedParameter,
                                      const Distribution & observationsError,
                                      const Sample & inputObservations,
                                      const Sample & outputObservations,
                                      const Function & residualFunction,
-                                     const Bool bayesian)
+                                     const UnsignedInteger bootstrapSize)
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)
-  , parameterMAP_(parameterMAP)
+  , calibratedParameter_(calibratedParameter)
   , observationsError_(observationsError)
   , inputObservations_(inputObservations)
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
-  , bayesian_(bayesian)
+  , bootstrapSize_(bootstrapSize)
 {
   // compute output at prior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
   SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
   outputAtPriorMean.setData(residualFunction_(parameterPrior_.getMean()) + outputObservations_.getImplementation()->getData());
   outputAtPriorMean_ = outputAtPriorMean;
 
-  // Set default colors
+  setColors();
+}
+
+/* Virtual constructor */
+CalibrationResult * CalibrationResult::clone() const
+{
+  return new CalibrationResult(*this);
+}
+
+/* Set the colors used in graphs */
+void CalibrationResult::setColors()
+{
   const Description colors = DrawableImplementation::BuildDefaultPalette(3);
   priorColor_ = colors[0];
   posteriorColor_ = colors[1];
   observationColor_ = colors[2];
 }
-
 
 /* Compute the output at the posterior mean on demand */
 void CalibrationResult::computeOutputAtPosteriorMean() const
@@ -89,56 +96,16 @@ void CalibrationResult::computeOutputAtPosteriorMean() const
   isAlreadyComputedOutputAtPosteriorMean_ = true;
 }
 
-/* Virtual constructor */
-CalibrationResult * CalibrationResult::clone() const
+/* Bayesian method accessor */
+Bool CalibrationResult::isBayesian() const
 {
-  return new CalibrationResult(*this);
+  throw NotYetImplementedException(HERE) << "In CalibrationResult::isBayesian()";
 }
 
-/* Parameter prior accessors */
-Distribution CalibrationResult::getParameterPrior() const
-{
-  return parameterPrior_;
-}
-
-void CalibrationResult::setParameterPrior(const Distribution & parameterPrior)
-{
-  parameterPrior_ = parameterPrior;
-}
-
-/* Parameter posterior accessors */
-Distribution CalibrationResult::getParameterPosterior() const
-{
-  return parameterPosterior_;
-}
-
-void CalibrationResult::setParameterPosterior(const Distribution & parameterPosterior)
-{
-  parameterPosterior_ = parameterPosterior;
-  // the cached output at the posterior mean depends on the posterior
-  isAlreadyComputedOutputAtPosteriorMean_ = false;
-}
-
-/* Parameter MAP accessors */
-Point CalibrationResult::getParameterMAP() const
-{
-  return parameterMAP_;
-}
-
-void CalibrationResult::setParameterMAP(const Point & parameterMAP)
-{
-  parameterMAP_ = parameterMAP;
-}
-
-/* Observations error accessors */
+/* Observations error accessor */
 Distribution CalibrationResult::getObservationsError() const
 {
   return observationsError_;
-}
-
-void CalibrationResult::setObservationsError(const Distribution & observationsError)
-{
-  observationsError_ = observationsError;
 }
 
 /* Input observations accessors */
@@ -168,97 +135,29 @@ void CalibrationResult::setOutputObservations(const Sample & outputObservations)
   outputObservations_ = outputObservations;
 }
 
-/* Residual function accessors */
+/* Residual function accessor */
 Function CalibrationResult::getResidualFunction() const
 {
   return residualFunction_;
 }
 
-void CalibrationResult::setResidualFunction(const Function & residualFunction)
+/* Bootstrap size accessor */
+UnsignedInteger CalibrationResult::getBootstrapSize() const
 {
-  residualFunction_ = residualFunction;
-  // the cached output at the posterior mean depends on the residual function
-  isAlreadyComputedOutputAtPosteriorMean_ = false;
+  return bootstrapSize_;
 }
 
-/* String converter */
-String CalibrationResult::__repr__() const
+/* Output at prior accessor */
+Sample CalibrationResult::getOutputAtPriorMean() const
 {
-  OSS oss;
-  oss << "class=" << CalibrationResult::GetClassName()
-      << " parameter prior=" << parameterPrior_
-      << " parameter posterior=" << parameterPosterior_
-      << " parameter MAP=" << parameterMAP_
-      << " observations error=" << observationsError_
-      << " output observation=" << outputObservations_
-      << " residual function=" << residualFunction_
-      << " bayesian=" << bayesian_
-      << " priorColor_=" << priorColor_
-      << " posteriorColor_=" << posteriorColor_
-      << " observationColor_=" << observationColor_;
-  return oss;
+  return outputAtPriorMean_;
 }
 
-/* Method save() stores the object through the StorageManager */
-void CalibrationResult::save(Advocate & adv) const
+/* Output at posterior accessor */
+Sample CalibrationResult::getOutputAtPosteriorMean() const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "parameterPrior_", parameterPrior_ );
-  adv.saveAttribute( "parameterPosterior_", parameterPosterior_ );
-  adv.saveAttribute( "parameterMAP_", parameterMAP_ );
-  adv.saveAttribute( "observationsError_", observationsError_ );
-  adv.saveAttribute( "inputObservations_", inputObservations_ );
-  adv.saveAttribute( "outputObservations_", outputObservations_ );
-  adv.saveAttribute( "residualFunction_", residualFunction_ );
-  adv.saveAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
-  adv.saveAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
-  adv.saveAttribute( "isAlreadyComputedOutputAtPosteriorMean_", isAlreadyComputedOutputAtPosteriorMean_ );
-  adv.saveAttribute( "bayesian_", bayesian_ );
-  adv.saveAttribute( "isParameterDistributionPosterior_", isParameterDistributionPosterior_ );
-  adv.saveAttribute( "priorColor_", priorColor_ );
-  adv.saveAttribute( "posteriorColor_", posteriorColor_ );
-  adv.saveAttribute( "observationColor_", observationColor_ );
-}
-
-/* Method load() reloads the object from the StorageManager */
-void CalibrationResult::load(Advocate & adv)
-{
-  PersistentObject::load(adv);
-  adv.loadAttribute( "parameterPrior_", parameterPrior_ );
-  adv.loadAttribute( "parameterPosterior_", parameterPosterior_ );
-  adv.loadAttribute( "parameterMAP_", parameterMAP_ );
-  adv.loadAttribute( "observationsError_", observationsError_ );
-  adv.loadAttribute( "inputObservations_", inputObservations_ );
-  adv.loadAttribute( "outputObservations_", outputObservations_ );
-  adv.loadAttribute( "residualFunction_", residualFunction_ );
-  adv.loadAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
-  adv.loadAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
-  if (adv.hasAttribute("isAlreadyComputedOutputAtPosteriorMean_"))
-    adv.loadAttribute( "isAlreadyComputedOutputAtPosteriorMean_", isAlreadyComputedOutputAtPosteriorMean_ );
-  else
-    // a study written before the on-demand computation stores the sample
-    isAlreadyComputedOutputAtPosteriorMean_ = true;
-  if (adv.hasAttribute("bayesian_"))
-  {
-    adv.loadAttribute( "bayesian_", bayesian_ );
-    adv.loadAttribute( "priorColor_", priorColor_ );
-    adv.loadAttribute( "posteriorColor_", posteriorColor_ );
-    adv.loadAttribute( "observationColor_", observationColor_ );
-  }
-  else
-  {
-    if (parameterPrior_.getDimension() > 0)
-    {
-      const CovarianceMatrix priorCovariance(parameterPrior_.getCovariance());
-      bayesian_ = (priorCovariance(0, 0) < std::sqrt(SpecFunc::MaxScalar));
-    }
-    Description colors = DrawableImplementation::BuildDefaultPalette(3);
-    priorColor_ = colors[0];
-    posteriorColor_ = colors[1];
-    observationColor_ = colors[2];
-  }
-  if (adv.hasAttribute("isParameterDistributionPosterior_")) adv.loadAttribute( "isParameterDistributionPosterior_", isParameterDistributionPosterior_ );
-  // else keep the default-constructed value (true)
+  computeOutputAtPosteriorMean();
+  return outputAtPosteriorMean_;
 }
 
 void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAtPrior, const Sample & outputAtPosterior)
@@ -268,26 +167,64 @@ void CalibrationResult::setOutputAtPriorAndPosteriorMean(const Sample & outputAt
   isAlreadyComputedOutputAtPosteriorMean_ = true;
 }
 
-Sample CalibrationResult::getOutputAtPriorMean() const
+/* String converter */
+String CalibrationResult::__repr__() const
 {
-  return outputAtPriorMean_;
+  OSS oss;
+  oss << "class=" << getClassName()
+      << " parameter prior=" << parameterPrior_
+      << " parameter posterior=" << parameterPosterior_
+      << " calibrated parameter=" << calibratedParameter_
+      << " observations error=" << observationsError_
+      << " output observations=" << outputObservations_
+      << " residual function=" << residualFunction_
+      << " bootstrap size=" << bootstrapSize_;
+  return oss;
 }
 
-Sample CalibrationResult::getOutputAtPosteriorMean() const
+/* Method save() stores the object through the StorageManager */
+void CalibrationResult::save(Advocate & adv) const
 {
-  computeOutputAtPosteriorMean();
-  return outputAtPosteriorMean_;
+  PersistentObject::save(adv);
+  adv.saveAttribute( "parameterPrior_", parameterPrior_ );
+  adv.saveAttribute( "parameterPosterior_", parameterPosterior_ );
+  adv.saveAttribute( "calibratedParameter_", calibratedParameter_ );
+  adv.saveAttribute( "observationsError_", observationsError_ );
+  adv.saveAttribute( "inputObservations_", inputObservations_ );
+  adv.saveAttribute( "outputObservations_", outputObservations_ );
+  adv.saveAttribute( "residualFunction_", residualFunction_ );
+  adv.saveAttribute( "bootstrapSize_", bootstrapSize_ );
+  adv.saveAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
+  adv.saveAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  adv.saveAttribute( "isAlreadyComputedOutputAtPosteriorMean_", isAlreadyComputedOutputAtPosteriorMean_ );
+}
+
+/* Method load() reloads the object from the StorageManager */
+void CalibrationResult::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute( "parameterPrior_", parameterPrior_ );
+  adv.loadAttribute( "parameterPosterior_", parameterPosterior_ );
+  adv.loadAttribute( "calibratedParameter_", calibratedParameter_ );
+  adv.loadAttribute( "observationsError_", observationsError_ );
+  adv.loadAttribute( "inputObservations_", inputObservations_ );
+  adv.loadAttribute( "outputObservations_", outputObservations_ );
+  adv.loadAttribute( "residualFunction_", residualFunction_ );
+  adv.loadAttribute( "bootstrapSize_", bootstrapSize_ );
+  adv.loadAttribute( "outputAtPriorMean_", outputAtPriorMean_ );
+  adv.loadAttribute( "outputAtPosteriorMean_", outputAtPosteriorMean_ );
+  adv.loadAttribute( "isAlreadyComputedOutputAtPosteriorMean_", isAlreadyComputedOutputAtPosteriorMean_ );
 }
 
 GridLayout CalibrationResult::drawParameterDistributions() const
 {
-  const UnsignedInteger dimension = parameterMAP_.getDimension();
+  const UnsignedInteger dimension = calibratedParameter_.getDimension();
   GridLayout grid(1, dimension);
-  const Point initialPoint(getParameterPrior().getMean());
+  const Point initialPoint(parameterPrior_.getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     const Bool upperRightGraph = (j == dimension - 1);
-    Graph graph("", getParameterPrior().getDescription()[j], "");
+    Graph graph("", parameterPrior_.getDescription()[j], "");
     graph.setLegendPosition("topright");
 
     // The graph must show:
@@ -295,8 +232,8 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     // + the full prior PDF
     // + the initial point
 
-    const Distribution priorJ(getParameterPrior().getMarginal(j));
-    const Distribution posteriorJ(getParameterPosterior().getMarginal(j));
+    const Distribution priorJ(parameterPrior_.getMarginal(j));
+    const Distribution posteriorJ(parameterPosterior_.getMarginal(j));
 
     if (j == 0)
     {
@@ -304,7 +241,7 @@ GridLayout CalibrationResult::drawParameterDistributions() const
       graph.setYTitle("PDF");
     }
 
-    if (bayesian_)
+    if (isBayesian())
     {
       Drawable priorPDF(priorJ.drawPDF().getDrawable(0));
       priorPDF.setLegend(upperRightGraph ? "Prior" : "");
@@ -327,10 +264,9 @@ GridLayout CalibrationResult::drawParameterDistributions() const
     Drawable postPDF(posteriorJ.drawPDF().getDrawable(0));
     if (upperRightGraph)
     {
-      if (!bayesian_) postPDF.setLegend("Calibrated");
-      else if (isParameterDistributionPosterior_) postPDF.setLegend("Posterior");
-      // Bootstrap MAP distribution, not a posterior (see issue #2889)
-      else postPDF.setLegend("MAP (bootstrap)");
+      if (!isBayesian()) postPDF.setLegend("Calibrated");
+      else if (bootstrapSize_ > 0) postPDF.setLegend("MAP (bootstrap)");
+      else postPDF.setLegend("Posterior");
     }
     else
       postPDF.setLegend("");
@@ -344,7 +280,6 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 
 GridLayout CalibrationResult::drawResiduals() const
 {
-  //
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
   grid.setTitle("Residual analysis");
@@ -383,7 +318,7 @@ GridLayout CalibrationResult::drawResiduals() const
     obsPDF = errorJ.drawPDF(xMin, xMax).getDrawable(0);
     if (upperRightGraph)
     {
-      if (bayesian_)
+      if (isBayesian())
       {
         obsPDF.setLegend("Normal, hypothesis");
       }
@@ -432,7 +367,6 @@ GridLayout CalibrationResult::drawResiduals() const
   }
   return grid;
 }
-
 
 GridLayout CalibrationResult::drawObservationsVsInputs() const
 {
@@ -492,7 +426,6 @@ GridLayout CalibrationResult::drawObservationsVsInputs() const
   return grid;
 }
 
-
 GridLayout CalibrationResult::drawObservationsVsPredictions() const
 {
   computeOutputAtPosteriorMean();
@@ -544,7 +477,6 @@ GridLayout CalibrationResult::drawObservationsVsPredictions() const
   return grid;
 }
 
-
 GridLayout CalibrationResult::drawResidualsNormalPlot() const
 {
   computeOutputAtPosteriorMean();
@@ -568,23 +500,6 @@ GridLayout CalibrationResult::drawResidualsNormalPlot() const
   }
   grid.setTitle("Residuals after calibration vs Gaussian hypothesis");
   return grid;
-}
-
-/* Bayesian method accessor */
-Bool CalibrationResult::isBayesian() const
-{
-  return bayesian_;
-}
-
-/* Parameter distribution nature accessor */
-Bool CalibrationResult::isParameterDistributionPosterior() const
-{
-  return isParameterDistributionPosterior_;
-}
-
-void CalibrationResult::setIsParameterDistributionPosterior(const Bool isPosterior)
-{
-  isParameterDistributionPosterior_ = isPosterior;
 }
 
 END_NAMESPACE_OPENTURNS

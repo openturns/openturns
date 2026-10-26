@@ -67,6 +67,11 @@
 %include FejerExperiment.i
 %include ChristoffelSubsampleExperiment.i
 
+/* Uncertainty/Bayesian */
+%include CalibrationResult.i
+%include GaussianCalibrationResult.i
+%include LeastSquaresCalibrationResult.i
+
 /* Uncertainty */
 %import metamodel_module.i
 

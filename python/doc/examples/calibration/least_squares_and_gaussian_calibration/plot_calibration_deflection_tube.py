@@ -237,7 +237,7 @@ print("Parametric Model Parameters:", calibrationFunction.getParameterDescriptio
 # different values because the value of the true standard deviation of
 # the observation error is not known in general.
 # We will be able to check if these hypotheses are correct
-# after calibration, using the :meth:`~openturns.CalibrationResult.drawResiduals()` method.
+# after calibration, using the :meth:`~openturns.experimental.CalibrationResult.drawResiduals()` method.
 
 # %%
 sigmaObservation = [0.2e-6, 0.3e-6, 0.3e-6]  # Exact : [0.1e-6, 0.5e-6, 0.5e-6]
@@ -283,7 +283,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the optimized parameters.
+# The :meth:`~openturns.experimental.GaussianCalibrationResult.getParameterMAP` method returns the optimized parameters.
 
 # %%
 thetaMAP = calibrationResult.getParameterMAP()
@@ -294,11 +294,11 @@ print("theta Before = ", thetaPrior)
 # Compute a 95% credibility interval for each marginal.
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
+MAPDistribution = calibrationResult.getMAPDistribution()
 alpha = 0.95
-dim = thetaPosterior.getDimension()
+dim = MAPDistribution.getDimension()
 for i in range(dim):
-    print(thetaPosterior.getMarginal(i).computeBilateralConfidenceInterval(alpha))
+    print(MAPDistribution.getMarginal(i).computeBilateralConfidenceInterval(alpha))
 
 # %%
 # We see that the parameters are accurately estimated in this case.

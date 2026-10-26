@@ -28,6 +28,7 @@
 #include "openturns/Interval.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/GaussianCalibrationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,6 +86,9 @@ public:
   UnsignedInteger getBootstrapSize() const;
   void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
+  /** Calibration result accessor */
+  GaussianCalibrationResult getResult() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
@@ -110,8 +114,10 @@ private:
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
 
-}; /* class GaussianNonLinearCalibration */
+  /* The calibration result */
+  GaussianCalibrationResult result_;
 
+}; /* class GaussianNonLinearCalibration */
 
 END_NAMESPACE_OPENTURNS
 

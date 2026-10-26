@@ -117,7 +117,7 @@ Calibrate a non-linear model using linear least squares:
 >>> method = 'SVD'
 >>> algo = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, startingPoint, method)
 >>> algo.run()
->>> print(algo.getResult().getParameterMAP())
+>>> print(algo.getResult().getParameter())
 [8.24019,0.0768046,0.992957]
 
 Calibrate a linear model with bounds on the parameters. The first parameter is
@@ -133,7 +133,7 @@ active at its upper bound:
 ... )
 >>> boundedAlgo.setBounds(ot.Interval([0.0, 0.0], [0.5, 10.0]))
 >>> boundedAlgo.run()
->>> print([round(value, 3) for value in boundedAlgo.getResult().getParameterMAP()])
+>>> print([round(value, 3) for value in boundedAlgo.getResult().getParameter()])
 [0.5, 1.0]
 >>> #
 )RAW"
@@ -178,3 +178,22 @@ Returns
 name : str
     Name of least-squares method used for the resolution."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getResult
+"Accessor to the result object.
+
+Returns
+-------
+result : :class:`~openturns.experimental.LeastSquaresCalibrationResult`
+    Result object."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::run
+"Launch the algorithm.
+
+Notes
+-----
+It launches the algorithm and creates a :class:`~openturns.experimental.LeastSquaresCalibrationResult`
+structure containing all the results."

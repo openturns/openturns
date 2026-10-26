@@ -25,7 +25,7 @@ boundedMapRtol = 1e-5 if ot.PlatformInfo.HasFeature("highs") else 1e-3
 # unconstrained reference
 algoRef = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, candidate, "SVD")
 algoRef.run()
-ott.assert_almost_equal(algoRef.getResult().getParameterMAP(), [2.0, 3.0])
+ott.assert_almost_equal(algoRef.getResult().getParameter(), [2.0, 3.0])
 
 algo = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, candidate, "SVD")
 assert algo.getBounds().getDimension() == 0
@@ -38,8 +38,8 @@ algo.setBounds(bounds)
 assert algo.getBounds() == bounds
 algo.run()
 result = algo.getResult()
-ott.assert_almost_equal(result.getParameterMAP(), [0.5, 3.5], boundedMapRtol)
-posterior = result.getParameterPosterior()
+ott.assert_almost_equal(result.getParameter(), [0.5, 3.5], boundedMapRtol)
+posterior = result.getParameterDistribution()
 ott.assert_almost_equal(posterior.getMean(), [0.5, 3.5], boundedMapRtol)
 covariance = posterior.getCovariance()
 # residual r = (1.5, 1.0, 0.5, 0.0, -0.5), dof = 1 free parameter, variance = 0.9375
@@ -59,7 +59,7 @@ try:
     algoRegularized.setBounds(bounds)
     algoRegularized.run()
     covarianceRegularized = (
-        algoRegularized.getResult().getParameterPosterior().getCovariance()
+        algoRegularized.getResult().getParameterDistribution().getCovariance()
     )
     # a is active at its upper bound and stays fixed, b is free and regularized
     assert abs(covarianceRegularized[0, 0]) < 1e-10
@@ -73,7 +73,7 @@ for method in ["SVD", "QR", "Cholesky"]:
     algoInactive.setBounds(ot.Interval([-10.0, -10.0], [10.0, 10.0]))
     algoInactive.run()
     ott.assert_almost_equal(
-        algoInactive.getResult().getParameterMAP(), [2.0, 3.0], boundedMapRtol
+        algoInactive.getResult().getParameter(), [2.0, 3.0], boundedMapRtol
     )
 
 # lower bound active on a: b = 85 / 30
@@ -82,7 +82,7 @@ for method in ["SVD", "QR", "Cholesky"]:
     algoLower.setBounds(ot.Interval([2.5, -10.0], [10.0, 10.0]))
     algoLower.run()
     ott.assert_almost_equal(
-        algoLower.getResult().getParameterMAP(), [2.5, 85.0 / 30.0], boundedMapRtol
+        algoLower.getResult().getParameter(), [2.5, 85.0 / 30.0], boundedMapRtol
     )
 
 # upper bound active on b only: a = 3
@@ -90,7 +90,7 @@ algoMixed = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, candidate, 
 algoMixed.setBounds(ot.Interval([-10.0, -10.0], [10.0, 2.5]))
 algoMixed.run()
 ott.assert_almost_equal(
-    algoMixed.getResult().getParameterMAP(), [3.0, 2.5], boundedMapRtol
+    algoMixed.getResult().getParameter(), [3.0, 2.5], boundedMapRtol
 )
 
 # infinite bounds on the free side are supported
@@ -100,7 +100,7 @@ algoInfinite.setBounds(
 )
 algoInfinite.run()
 ott.assert_almost_equal(
-    algoInfinite.getResult().getParameterMAP(), [2.5, 85.0 / 30.0], boundedMapRtol
+    algoInfinite.getResult().getParameter(), [2.5, 85.0 / 30.0], boundedMapRtol
 )
 
 # all parameters active at a bound
@@ -108,12 +108,12 @@ algoAll = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, candidate, "S
 algoAll.setBounds(ot.Interval([-10.0, -10.0], [0.5, 1.5]))
 algoAll.run()
 resultAll = algoAll.getResult()
-ott.assert_almost_equal(resultAll.getParameterMAP(), [0.5, 1.5], boundedMapRtol)
+ott.assert_almost_equal(resultAll.getParameter(), [0.5, 1.5], boundedMapRtol)
 # residual r = (1.5, 3.0, 4.5, 6.0, 7.5), no free parameter, variance = 24.75
 ott.assert_almost_equal(
     resultAll.getObservationsError().getStandardDeviation(), [4.9749371855331]
 )
-covarianceAll = resultAll.getParameterPosterior().getCovariance()
+covarianceAll = resultAll.getParameterDistribution().getCovariance()
 assert abs(covarianceAll[0, 0]) < 1e-10
 assert abs(covarianceAll[1, 1]) < 1e-10
 
@@ -122,7 +122,7 @@ algoEmpty = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, candidate, 
 algoEmpty.setBounds(bounds)
 algoEmpty.setBounds(ot.Interval())
 algoEmpty.run()
-ott.assert_almost_equal(algoEmpty.getResult().getParameterMAP(), [2.0, 3.0])
+ott.assert_almost_equal(algoEmpty.getResult().getParameter(), [2.0, 3.0])
 
 # multivariate output: y = (a + b*x, a - b*x)
 gVector = ot.SymbolicFunction(["a", "b", "x"], ["a + b*x", "a - b*x"])
@@ -133,14 +133,14 @@ algoVector = ot.LinearLeastSquaresCalibration(calibrationModelVector, x, yVector
 algoVector.setBounds(ot.Interval([-10.0, -10.0], [0.5, 10.0]))
 algoVector.run()
 resultVector = algoVector.getResult()
-ott.assert_almost_equal(resultVector.getParameterMAP(), [0.5, 3.0], boundedMapRtol)
+ott.assert_almost_equal(resultVector.getParameter(), [0.5, 3.0], boundedMapRtol)
 # residual sum of squares = 22.5 over 10 observations and 1 free parameter:
 # variance = 22.5 / 9 and free parameter b has sum of squares 60
 ott.assert_almost_equal(
     resultVector.getObservationsError().getStandardDeviation(),
     [1.5811388300841898, 1.5811388300841898],
 )
-covarianceVector = resultVector.getParameterPosterior().getCovariance()
+covarianceVector = resultVector.getParameterDistribution().getCovariance()
 assert abs(covarianceVector[0, 0]) < 1e-10
 ott.assert_almost_equal([covarianceVector[1, 1]], [0.041666666666666664], 1e-9)
 
@@ -157,7 +157,7 @@ algoSpec = ot.LinearLeastSquaresCalibration(calibrationModelSpec, xSpec, ySpec, 
 algoSpec.setBounds(ot.Interval([0.0, 2.0], [0.0, 5.0], [False, True], [False, True]))
 algoSpec.run()
 ott.assert_almost_equal(
-    algoSpec.getResult().getParameterMAP(), [2.0, 2.0], boundedMapRtol
+    algoSpec.getResult().getParameter(), [2.0, 2.0], boundedMapRtol
 )
 
 # a rank-deficient free block must fail instead of returning a NaN covariance
@@ -198,7 +198,7 @@ algoLarge = ot.LinearLeastSquaresCalibration(
 algoLarge.setBounds(ot.Interval([1.0e6], [2.0e6]))
 algoLarge.run()
 resultLarge = algoLarge.getResult()
-thetaLarge = resultLarge.getParameterPosterior().getMean()[0]
+thetaLarge = resultLarge.getParameterDistribution().getMean()[0]
 # least-squares solution a* = aLarge + 3 / 14, i.e. 3 / 14 above the lower bound.
 # The QP solver is only accurate to a relative tolerance at this magnitude, so
 # the comparisons are relative: an active bound would return exactly 1.0e6.
@@ -206,7 +206,7 @@ thetaLarge = resultLarge.getParameterPosterior().getMean()[0]
 largeMapRtol = 1e-7 if ot.PlatformInfo.HasFeature("highs") else 1e-5
 ott.assert_almost_equal([thetaLarge], [aLarge + 3.0 / 14.0], largeMapRtol)
 assert thetaLarge - 1.0e6 > 0.5
-covarianceLarge = resultLarge.getParameterPosterior().getCovariance()
+covarianceLarge = resultLarge.getParameterDistribution().getCovariance()
 # residual r = (3, 6, -5) / 14, variance error = (5 / 14) / 2, gram inverse = 1 / 14
 # The fallback solver used when HiGHS is not available is less accurate on
 # this large-magnitude problem, so the covariance is checked loosely.
@@ -223,7 +223,7 @@ yShift = ot.Sample([[1.0e6], [1.0e6], [1.0e6]])
 algoShift = ot.LinearLeastSquaresCalibration(calibrationModelShift, xShift, yShift, [0.0], "SVD")
 algoShift.setBounds(ot.Interval([-2.0e6], [2.0e6]))
 algoShift.run()
-ott.assert_almost_equal(algoShift.getResult().getParameterMAP(), [1.0e6], 1e-6)
+ott.assert_almost_equal(algoShift.getResult().getParameter(), [1.0e6], 1e-6)
 
 # a one-sided bound whose optimum is far from the starting point must not
 # exhaust the fallback solver budget: a half-infinite box has no width to
@@ -234,7 +234,7 @@ algoShiftOneSided = ot.LinearLeastSquaresCalibration(
 )
 algoShiftOneSided.setBounds(ot.Interval([0.0], [1.0e30], [True], [False]))
 algoShiftOneSided.run()
-ott.assert_almost_equal(algoShiftOneSided.getResult().getParameterMAP(), [1.0e6], 1e-6)
+ott.assert_almost_equal(algoShiftOneSided.getResult().getParameter(), [1.0e6], 1e-6)
 
 # a design whose smallest singular value is below the square root of the
 # machine precision: its normal matrix cannot represent the direction it
@@ -253,8 +253,8 @@ for illObservations in ([1.0, 1e-9, 0.1], [1.0, 2e-9, 0.1]):
     bounded.setBounds(ot.Interval([-3.0, -3.0], [3.0, 3.0]))
     bounded.run()
     ott.assert_almost_equal(
-        bounded.getResult().getParameterMAP(),
-        reference.getResult().getParameterMAP(),
+        bounded.getResult().getParameter(),
+        reference.getResult().getParameter(),
         1e-6,
         1e-6,
     )
@@ -264,7 +264,7 @@ active = ot.LinearLeastSquaresCalibration(
 )
 active.setBounds(ot.Interval([-3.0, 0.0], [3.0, 1.5]))
 active.run()
-ott.assert_almost_equal(active.getResult().getParameterMAP(), [-0.5, 1.5], 1e-6, 1e-6)
+ott.assert_almost_equal(active.getResult().getParameter(), [-0.5, 1.5], 1e-6, 1e-6)
 
 # a residual component that no design column can cancel (a constant offset on
 # an extra observation) must not scale the release tolerance of the active-set
@@ -278,7 +278,7 @@ constantOffset = ot.LinearLeastSquaresCalibration(
 constantOffset.setBounds(ot.Interval([0.0, 0.0], [3.0, 0.5]))
 constantOffset.run()
 ott.assert_almost_equal(
-    constantOffset.getResult().getParameterMAP(), [0.5, 0.5], 1e-6, 1e-6
+    constantOffset.getResult().getParameter(), [0.5, 0.5], 1e-6, 1e-6
 )
 
 # a rank-deficient free block must not abort the active-set iterations: the
@@ -292,7 +292,7 @@ singular = ot.LinearLeastSquaresCalibration(
 )
 singular.setBounds(ot.Interval([0.0, 0.0], [3.0, 3.0]))
 singular.run()
-ott.assert_almost_equal(singular.getResult().getParameterMAP(), [0.0, 0.0])
+ott.assert_almost_equal(singular.getResult().getParameter(), [0.0, 0.0])
 
 # the active-set fallback must honour the finite-bound flags: an interval may
 # store an endpoint on a side marked unbounded, which must stay unconstrained
@@ -307,14 +307,14 @@ unboundedLower.setBounds(
 )
 unboundedLower.run()
 ott.assert_almost_equal(
-    unboundedLower.getResult().getParameterMAP(), [-1.0, 1.0], 1e-6, 1e-6
+    unboundedLower.getResult().getParameter(), [-1.0, 1.0], 1e-6, 1e-6
 )
 # a coordinate sitting on a bound must stay free when the step is blocked by
 # another coordinate, instead of being frozen at its current value
 blocked = ot.LinearLeastSquaresCalibration(splitCalibrationModel, illX, splitY, [0.0, 0.0], "SVD")
 blocked.setBounds(ot.Interval([0.0, 0.0], [3.0, 3.0]))
 blocked.run()
-ott.assert_almost_equal(blocked.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)
+ott.assert_almost_equal(blocked.getResult().getParameter(), [0.0, 1.0], 1e-6, 1e-6)
 # a parameter with equal bounds is fixed for good: releasing it would cycle
 # until the iteration budget is exhausted
 equality = ot.LinearLeastSquaresCalibration(
@@ -322,7 +322,7 @@ equality = ot.LinearLeastSquaresCalibration(
 )
 equality.setBounds(ot.Interval([0.0, -3.0], [0.0, 3.0]))
 equality.run()
-ott.assert_almost_equal(equality.getResult().getParameterMAP(), [0.0, 1.0], 1e-6, 1e-6)
+ott.assert_almost_equal(equality.getResult().getParameter(), [0.0, 1.0], 1e-6, 1e-6)
 
 # invalid active-bound tolerances are rejected instead of silently changing
 # the covariance and the residual degrees of freedom
@@ -355,6 +355,6 @@ if HAVE_LIBXML2:
     assert loadedAlgo.getBounds() == bounds
     loadedAlgo.run()
     ott.assert_almost_equal(
-        loadedAlgo.getResult().getParameterMAP(), [0.5, 3.5], boundedMapRtol
+        loadedAlgo.getResult().getParameter(), [0.5, 3.5], boundedMapRtol
     )
     os.remove(studyFile)

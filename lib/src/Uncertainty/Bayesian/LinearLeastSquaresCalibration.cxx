@@ -165,7 +165,7 @@ void LinearLeastSquaresCalibration::run()
   Distribution parameterPosterior(ComputePosteriorAndErrorDistribution(thetaStar, r, gramInverse, freeIndices, degreesOfFreedom, outputObservations_.getDimension(), error));
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
+  result_ = LeastSquaresCalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, 0);
 }
 
 Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(const Point & thetaStar,
@@ -251,13 +251,18 @@ String LinearLeastSquaresCalibration::getMethodName() const
   return methodName_;
 }
 
+/* Calibration result accessor */
+LeastSquaresCalibrationResult LinearLeastSquaresCalibration::getResult() const
+{
+  return result_;
+}
+
 /* String converter */
 String LinearLeastSquaresCalibration::__repr__() const
 {
   return OSS() << "class=" << LinearLeastSquaresCalibration::GetClassName()
          << " name=" << getName();
 }
-
 
 LinearLeastSquaresCalibration * LinearLeastSquaresCalibration::clone() const
 {
@@ -272,6 +277,7 @@ void LinearLeastSquaresCalibration::save(Advocate & adv) const
   adv.saveAttribute("modelObservations_", modelObservations_);
   adv.saveAttribute("gradientObservations_", gradientObservations_);
   adv.saveAttribute("methodName_", methodName_);
+  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -281,7 +287,7 @@ void LinearLeastSquaresCalibration::load(Advocate & adv)
   adv.loadAttribute("modelObservations_", modelObservations_);
   adv.loadAttribute("gradientObservations_", gradientObservations_);
   adv.loadAttribute("methodName_", methodName_);
+  adv.loadAttribute("result_", result_);
 }
-
 
 END_NAMESPACE_OPENTURNS

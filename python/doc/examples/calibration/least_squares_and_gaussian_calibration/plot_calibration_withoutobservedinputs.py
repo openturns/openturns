@@ -114,8 +114,8 @@ algo = ot.LinearLeastSquaresCalibration(
 )
 algo.run()
 calibrationResult = algo.getResult()
-parameterMAP = calibrationResult.getParameterMAP()
-print(parameterMAP)
+parameterCalibrated = calibrationResult.getParameter()
+print(parameterCalibrated)
 
 
 # %%
@@ -123,7 +123,7 @@ print(parameterMAP)
 # the true parameter value.
 
 # %%
-print(parameterMAP - trueParameter)
+print(parameterCalibrated - trueParameter)
 
 
 # %%
@@ -142,7 +142,7 @@ beforeCalibrationFunction = ot.ParametricFunction(
     fullModel, parameterIndices, candidate
 )
 print(beforeCalibrationFunction)
-calibratedFunction = ot.ParametricFunction(fullModel, parameterIndices, parameterMAP)
+calibratedFunction = ot.ParametricFunction(fullModel, parameterIndices, parameterCalibrated)
 print(calibratedFunction)
 
 # %%

@@ -47,10 +47,14 @@ for algo in algos:
         algo.setBootstrapSize(0)
         algo.run()
         result = algo.getResult()
-        theta = result.getParameterMAP()
+        if result.isBayesian():
+            theta = result.getParameterMAP()
+            posterior = result.getParameterPosterior()
+        else:
+            theta = result.getParameter()
+            posterior = result.getParameterDistribution()
         print("theta=", theta)
 
-        posterior = result.getParameterPosterior()
         sample = posterior.getSample(100000)
         level = 0.95
         lb = sample.computeQuantilePerComponent((1 - level) / 2)

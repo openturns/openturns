@@ -187,4 +187,22 @@ The following :class:`~openturns.ResourceMap` key is used:
 
     Name of least-squares method used for the resolution."
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::GaussianLinearCalibration::getResult
+"Accessor to the result object.
+
+Returns
+-------
+result : :class:`~openturns.experimental.GaussianCalibrationResult`
+    Result object."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianLinearCalibration::run
+"Launch the algorithm.
+
+Notes
+-----
+It launches the algorithm and creates a :class:`~openturns.experimental.GaussianCalibrationResult`
+structure containing all the results."

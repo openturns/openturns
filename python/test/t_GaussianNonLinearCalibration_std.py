@@ -109,7 +109,7 @@ model.setParameter(result.getParameterPrior().getMean())
 outputAtPriorMean = model(x)
 ott.assert_almost_equal(result.getOutputAtPriorMean(), outputAtPriorMean)
 
-model.setParameter(result.getParameterPosterior().getMean())
+model.setParameter(result.getMAPDistribution().getMean())
 outputAtPosteriorMean = model(x)
 ott.assert_almost_equal(result.getOutputAtPosteriorMean(), outputAtPosteriorMean)
 

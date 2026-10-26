@@ -13,9 +13,11 @@ Calibration
     GaussianLinearCalibration
     GaussianNonLinearCalibration
     CalibrationAlgorithm
+    experimental.GaussianCalibrationResult
+    experimental.LeastSquaresCalibrationResult
 
 .. autosummary::
     :toctree: _generated/
     :template: classWithPlot.rst_t
 
-    CalibrationResult
+    experimental.CalibrationResult

@@ -10,7 +10,7 @@ prior : :class:`~openturns.Distribution`
 
 See also
 --------
-CalibrationResult"
+experimental.CalibrationResult"
 %enddef
 %feature("docstring") OT::CalibrationAlgorithmImplementation
 OT_CalibrationAlgorithm_doc
@@ -135,47 +135,3 @@ The posterior distribution of the Gaussian calibrations depends on the
 %enddef
 %feature("docstring") OT::CalibrationAlgorithmImplementation::setBounds
 OT_CalibrationAlgorithm_setBounds_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_CalibrationAlgorithm_run_doc
-"Launch the algorithm.
-
-Notes
------
-It launches the algorithm and creates a :class:`~openturns.CalibrationResult`,
-structure containing all the results."
-%enddef
-%feature("docstring") OT::CalibrationAlgorithmImplementation::run
-OT_CalibrationAlgorithm_run_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_CalibrationAlgorithm_getResult_doc
-"Get the result structure.
-
-Returns
--------
-resCalibration : :class:`~openturns.CalibrationResult`
-    The structure containing all the results of the calibration problem.
-
-Notes
------
-The structure contains all the results of the calibration problem."
-%enddef
-%feature("docstring") OT::CalibrationAlgorithmImplementation::getResult
-OT_CalibrationAlgorithm_getResult_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_CalibrationAlgorithm_setResult_doc
-"Accessor to optimization result.
-
-Parameters
-----------
-result : :class:`~openturns.CalibrationResult`
-    Result class."
-%enddef
-%feature("docstring") OT::CalibrationAlgorithmImplementation::setResult
-OT_CalibrationAlgorithm_setResult_doc
-

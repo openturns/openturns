@@ -114,8 +114,11 @@ def printRMSEValue(calibrationResult, theta_prior):
     dimension = residualFunction.getOutputDimension()
     rmseBefore = sqrt(residualsBefore.normSquare() / dimension)
     print(f"RMSE of metamodel before calibration = {rmseBefore:.2f}")
-    thetaMAP = calibrationResult.getParameterMAP()
-    residualsAfter = residualFunction(thetaMAP)
+    if calibrationResult.isBayesian():
+        theta = calibrationResult.getParameterMAP()
+    else:
+        theta = calibrationResult.getParameter()
+    residualsAfter = residualFunction(theta)
     rmseAfter = sqrt(residualsAfter.normSquare() / dimension)
     print(f"RMSE of metamodel after calibration = {rmseAfter:.2f}")
 
@@ -257,13 +260,13 @@ algo = ot.LinearLeastSquaresCalibration(
 algo.run()
 calibrationResult = algo.getResult()
 
-thetaMAP = calibrationResult.getParameterMAP()
-print(thetaMAP)
+theta = calibrationResult.getParameter()
+print(theta)
 
 # %%
 # Plot the predictions before and after calibration.
 
-model.setParameter(thetaMAP)
+model.setParameter(theta)
 population_predicted_after = model(time_observations)
 
 graph = plot_calibrated_prediction(
@@ -347,13 +350,13 @@ algo = ot.GaussianLinearCalibration(
 algo.run()
 calibrationResult = algo.getResult()
 
-thetaMAP = calibrationResult.getParameterMAP()
-print(thetaMAP)
+theta = calibrationResult.getParameterMAP()
+print(theta)
 
 # %%
 # Plot the predictions before and after calibration.
 
-model.setParameter(thetaMAP)
+model.setParameter(theta)
 population_predicted_after = model(time_observations)
 
 graph = plot_calibrated_prediction(
