@@ -21,6 +21,7 @@
 #include "openturns/Contour.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -198,6 +199,38 @@ Bool Contour::isFilled() const
 void Contour::setIsFilled(Bool isFilled)
 {
   isFilled_ = isFilled;
+  if (isFilled_ && (levels_.getSize() == 1) && (data_.getSize() > 0))
+  {
+    // contourf requires at least two levels: keep the caller-specified level as one boundary
+    const Scalar dataMin = data_.getMin()[0];
+    const Scalar dataMax = data_.getMax()[0];
+    const Scalar midValue = levels_[0];
+    if ((dataMax > dataMin) && (midValue > dataMin) && (midValue < dataMax))
+    {
+      const Scalar lowValue = 0.5 * (dataMin + midValue);
+      const Scalar highValue = 0.5 * (midValue + dataMax);
+      const Bool lowOk = std::isfinite(lowValue) && (lowValue > dataMin) && (lowValue < midValue);
+      const Bool highOk = std::isfinite(highValue) && (highValue < dataMax) && (highValue > midValue);
+      if (lowOk && highOk)
+      {
+        if ((midValue - dataMin) >= (dataMax - midValue))
+          levels_ = Point({lowValue, midValue});
+        else
+          levels_ = Point({midValue, highValue});
+        buildDefaultLabels();
+      }
+      else if (lowOk)
+      {
+        levels_ = Point({lowValue, midValue});
+        buildDefaultLabels();
+      }
+      else if (highOk)
+      {
+        levels_ = Point({midValue, highValue});
+        buildDefaultLabels();
+      }
+    }
+  }
 }
 
 /** Accessor for colorBarPosition */
@@ -354,6 +387,65 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
   levels_.resize(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData(static_cast<UnsignedInteger>(size * (i + 0.5) / number), 0);
   levels_.erase(std::unique(levels_.begin(), levels_.end()), levels_.end());
+  // Prune levels at data bounds as they produce empty contours
+  if (levels_.getSize() > 0)
+  {
+    const Scalar dataMin = sortedData(0, 0);
+    const Scalar dataMax = sortedData(size - 1, 0);
+    if (dataMax > dataMin)
+    {
+      Point prunedLevels(0);
+      for (UnsignedInteger i = 0; i < levels_.getSize(); ++i)
+      {
+        if ((levels_[i] > dataMin) && (levels_[i] < dataMax)) prunedLevels.add(levels_[i]);
+      }
+      // Data with large plateaus can leave no interior level, use mid-value to get a single contour
+      if (prunedLevels.getSize() == 0)
+      {
+        const Scalar midValue = 0.5 * (dataMin + dataMax);
+        if (std::isfinite(midValue) && (midValue > dataMin) && (midValue < dataMax))
+        {
+          if (isFilled_)
+          {
+            // Filled contours (contourf) require at least two levels
+            const Scalar lowValue = 0.5 * (dataMin + midValue);
+            const Scalar highValue = 0.5 * (midValue + dataMax);
+            if (std::isfinite(lowValue) && std::isfinite(highValue) && (lowValue > dataMin) && (highValue < dataMax) && (lowValue < highValue))
+            {
+              prunedLevels = Point({lowValue, highValue});
+            }
+            else prunedLevels = Point(1, midValue);
+          }
+          else prunedLevels = Point(1, midValue);
+        }
+      }
+      else if (isFilled_ && (prunedLevels.getSize() == 1))
+      {
+        // Filled contours (contourf) require at least two levels: keep the retained level as one boundary
+        const Scalar midValue = prunedLevels[0];
+        const Scalar lowValue = 0.5 * (dataMin + midValue);
+        const Scalar highValue = 0.5 * (midValue + dataMax);
+        const Bool lowOk = std::isfinite(lowValue) && (lowValue > dataMin) && (lowValue < midValue);
+        const Bool highOk = std::isfinite(highValue) && (highValue < dataMax) && (highValue > midValue);
+        if (lowOk && highOk)
+        {
+          if ((midValue - dataMin) >= (dataMax - midValue))
+            prunedLevels = Point({lowValue, midValue});
+          else
+            prunedLevels = Point({midValue, highValue});
+        }
+        else if (lowOk)
+        {
+          prunedLevels = Point({lowValue, midValue});
+        }
+        else if (highOk)
+        {
+          prunedLevels = Point({midValue, highValue});
+        }
+      }
+      levels_ = prunedLevels;
+    }
+  }
 }
 
 /* Build default labels by taking the level values */
