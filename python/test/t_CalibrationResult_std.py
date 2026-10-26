@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 import sys
 
@@ -40,7 +41,9 @@ algo = ot.GaussianNonLinearCalibration(
 algo.run()
 result = algo.getResult()
 assert result.isBayesian()
-assert not result.isParameterDistributionPosterior()
+result.getMAPDistribution()  # must not raise an exception
+with ott.assert_raises(TypeError):
+    result.getParameterPosterior()
 
 # without bootstrap the posterior label is kept
 bootstrapKey = "GaussianNonLinearCalibration-BootstrapSize"
@@ -52,7 +55,9 @@ try:
     )
     algo2.run()
     result2 = algo2.getResult()
-    assert result2.isParameterDistributionPosterior()
+    result2.getParameterPosterior()  # must not raise an exception
+    with ott.assert_raises(TypeError):
+        result2.getMAPDistribution()
     legends2 = [
         legend
         for j in range(3)

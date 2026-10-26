@@ -30,7 +30,7 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     result = algo.getResult()
     # To avoid discrepancy between the platforms with or without CMinpack
-    print("result (Auto)=", result.getParameterMAP())
+    print("result (Auto)=", result.getParameter())
     ott.assert_almost_equal(
         result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-2, 1e-3
     )
@@ -50,7 +50,7 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     result = algo.getResult()
     # To avoid discrepancy between the platforms with or without CMinpack
-    print("result  (TNC)=", result.getParameterMAP())
+    print("result  (TNC)=", result.getParameter())
     ott.assert_almost_equal(
         result.getObservationsError().getMean(), [0.0051, -0.0028], 1e-2, 1e-3
     )
@@ -69,7 +69,7 @@ assert laplaceAlgo.getUseLaplaceApproximation()
 laplaceAlgo.setBootstrapSize(0)
 laplaceAlgo.run()
 laplaceResult = laplaceAlgo.getResult()
-laplaceCovariance = laplaceResult.getParameterPosterior().getCovariance()
+laplaceCovariance = laplaceResult.getParameterDistribution().getCovariance()
 # a valid covariance: Normal construction requires definiteness
 ot.Normal(candidate, laplaceCovariance)
 gaussAlgo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, candidate)
@@ -78,13 +78,13 @@ gaussAlgo.run()
 gaussResult = gaussAlgo.getResult()
 # the optimum is untouched, only the covariance changes
 ott.assert_almost_equal(
-    laplaceResult.getParameterMAP(), gaussResult.getParameterMAP(), 1e-12, 1e-12
+    laplaceResult.getParameter(), gaussResult.getParameter(), 1e-12, 1e-12
 )
-gaussCovariance = gaussResult.getParameterPosterior().getCovariance()
+gaussCovariance = gaussResult.getParameterDistribution().getCovariance()
 # brute-force check of the Laplace assembly: H = J'J + sum_k r_k Hess(r_k).
 # Both posteriors share the same residual variance, so L*H == G*gram
 # with L the Laplace covariance, G the Gauss-Newton one and gram = J'J
-thetaStar = laplaceResult.getParameterMAP()
+thetaStar = laplaceResult.getParameter()
 residualFunction = laplaceResult.getResidualFunction()
 residualHessian = residualFunction.hessian(thetaStar)
 residuals = residualFunction(thetaStar)
@@ -128,8 +128,8 @@ linearLaplace.setUseLaplaceApproximation(True)
 linearLaplace.setBootstrapSize(0)
 linearLaplace.run()
 ott.assert_almost_equal(
-    linearLaplace.getResult().getParameterPosterior().getCovariance(),
-    linearGauss.getResult().getParameterPosterior().getCovariance(),
+    linearLaplace.getResult().getParameterDistribution().getCovariance(),
+    linearGauss.getResult().getParameterDistribution().getCovariance(),
     1e-6,
     1e-6,
 )
@@ -148,12 +148,12 @@ flatAlgo.setUseLaplaceApproximation(True)
 flatAlgo.setBootstrapSize(0)
 flatAlgo.run()
 flatResult = flatAlgo.getResult()
-ott.assert_almost_equal(flatResult.getParameterMAP(), [0.0], 1e-2, 1e-3)
-flatCovariance = flatResult.getParameterPosterior().getCovariance()
+ott.assert_almost_equal(flatResult.getParameter(), [0.0], 1e-2, 1e-3)
+flatCovariance = flatResult.getParameterDistribution().getCovariance()
 ot.Normal([0.0], flatCovariance)
 # Brute-force check of the Laplace assembly: cov * H == sigma2 with the
 # full Hessian H = J'J + sum_k r_k Hess(r_k) at the MAP
-flatThetaStar = flatResult.getParameterMAP()
+flatThetaStar = flatResult.getParameter()
 flatResidualFunction = flatResult.getResidualFunction()
 flatHessian = 0.0
 flatResiduals = flatResidualFunction(flatThetaStar)

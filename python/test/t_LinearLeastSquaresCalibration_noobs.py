@@ -77,7 +77,7 @@ rtol = 0.0
 atol = 5.0e-2
 ott.assert_almost_equal(sigmaResidual, covarianceNoise, rtol, atol)
 
-# Check MAP
-parameterMAP = calibrationResult.getParameterMAP()
-print("MAP=", repr(parameterMAP))
-ott.assert_almost_equal(parameterMAP, trueParameter, 1.0e-2)
+# Check calibrated parameter
+parameter = calibrationResult.getParameter()
+print("MAP=", repr(parameter))
+ott.assert_almost_equal(parameter, trueParameter, 1.0e-2)

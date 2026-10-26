@@ -784,6 +784,8 @@ ot_add_python_module(bayesian bayesian_module.i
                       CalibrationAlgorithmImplementation.i CalibrationAlgorithmImplementation_doc.i
                       CalibrationAlgorithm.i CalibrationAlgorithm_doc.i
                       CalibrationResult.i CalibrationResult_doc.i
+                      GaussianCalibrationResult.i GaussianCalibrationResult_doc.i
+                      LeastSquaresCalibrationResult.i LeastSquaresCalibrationResult_doc.i
                       LinearLeastSquaresCalibration.i LinearLeastSquaresCalibration_doc.i
                       MetropolisHastingsImplementation.i MetropolisHastingsImplementation_doc.i
                       MetropolisHastings.i MetropolisHastings_doc.i

@@ -388,9 +388,7 @@ void GaussianNonLinearCalibration::run()
     parameterPosterior = Normal(thetaStar, covarianceThetaStar);
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);
-  // A bootstrapped posterior is the MAP distribution, not a posterior (see #2889)
-  result_.setIsParameterDistributionPosterior(bootstrapSize_ == 0);
+  result_ = GaussianCalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, bootstrapSize_);
 }
 
 /* Perform a unique estimation */
@@ -470,6 +468,12 @@ void GaussianNonLinearCalibration::setBootstrapSize(const UnsignedInteger bootst
   bootstrapSize_ = bootstrapSize;
 }
 
+/* Calibration result accessor */
+GaussianCalibrationResult GaussianNonLinearCalibration::getResult() const
+{
+  return result_;
+}
+
 /* String converter */
 String GaussianNonLinearCalibration::__repr__() const
 {
@@ -490,6 +494,7 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("errorCovariance_", errorCovariance_);
   adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
+  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -503,6 +508,7 @@ void GaussianNonLinearCalibration::load(Advocate & adv)
     adv.loadAttribute("errorCovariance_", errorCovariance_);
     adv.loadAttribute("globalErrorCovariance_", globalErrorCovariance_);
   }
+  adv.loadAttribute("result_", result_);
 }
 
 END_NAMESPACE_OPENTURNS

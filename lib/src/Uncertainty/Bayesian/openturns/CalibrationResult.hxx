@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief CalibrationResult implements the result of an algorithm for solving a calibration problem
+ *  @brief CalibrationResult base class to store the result of a calibration algorithm
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -24,16 +24,12 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/Sample.hxx"
-#include "openturns/Function.hxx"
-#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
 /**
  * @class CalibrationResult
- * CalibrationResult stores the calibration result
+ * Base class for calibration result
  */
 class OT_API CalibrationResult
   : public PersistentObject
@@ -42,38 +38,27 @@ class OT_API CalibrationResult
 
 public:
 
-
   /** Default constructor */
   CalibrationResult();
 
   /** Standard constructor */
   CalibrationResult(const Distribution & parameterPrior,
                     const Distribution & parameterPosterior,
-                    const Point & parameterMAP,
+                    const Point & calibratedParameter,
                     const Distribution & observationsError,
                     const Sample & inputObservations,
                     const Sample & outputObservations,
                     const Function & residualFunction,
-                    const Bool bayesianAnalysis);
+                    const UnsignedInteger bootstrapSize);
 
   /** Virtual constructor */
   CalibrationResult * clone() const override;
 
-  /** Parameter prior distribution accessors */
-  void setParameterPrior(const Distribution & parameterPrior);
-  Distribution getParameterPrior() const;
-
-  /** Parameter posterior distribution accessor */
-  void setParameterPosterior(const Distribution & parameterPosterior);
-  Distribution getParameterPosterior() const;
+  /** Bayesian method accessor */
+  virtual Bool isBayesian() const;
 
   /** Observations error distribution accessor */
-  void setObservationsError(const Distribution & observationsError);
   Distribution getObservationsError() const;
-
-  /** Parameter maximum a posteriori accessors */
-  void setParameterMAP(const Point & parameterMAP);
-  Point getParameterMAP() const;
 
   /** Input observations accessors */
   void setInputObservations(const Sample & inputObservations);
@@ -83,18 +68,16 @@ public:
   void setOutputObservations(const Sample & outputObservations);
   Sample getOutputObservations() const;
 
-  /** Residual function accessors */
-  void setResidualFunction(const Function & residualFunction);
+  /** Residual function accessor */
   Function getResidualFunction() const;
 
-  /** Bayesian method accessor */
-  Bool isBayesian() const;
+  /** Bootstrap size accessor */
+  UnsignedInteger getBootstrapSize();
 
-  /** Parameter distribution nature accessor: true when the parameter
-      distribution is a posterior, false when it is the distribution of
-      the MAP under bootstrap resampling (see issue #2889) */
-  Bool isParameterDistributionPosterior() const;
-  void setIsParameterDistributionPosterior(const Bool isPosterior);
+  /** Output at prior/posterior accessors */
+  void setOutputAtPriorAndPosteriorMean(const Sample & outputAtPriorMean, const Sample & outputAtPosteriorMean);
+  Sample getOutputAtPriorMean() const;
+  Sample getOutputAtPosteriorMean() const;
 
   /** String converter */
   String __repr__() const override;
@@ -105,11 +88,6 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Output at prior/posterior accessor */
-  void setOutputAtPriorAndPosteriorMean(const Sample & outputAtPriorMean, const Sample & outputAtPosteriorMean);
-  Sample getOutputAtPriorMean() const;
-  Sample getOutputAtPosteriorMean() const;
-
   /** Graphic analysis */
   GridLayout drawParameterDistributions() const;
   GridLayout drawResiduals() const;
@@ -117,7 +95,9 @@ public:
   GridLayout drawObservationsVsPredictions() const;
   GridLayout drawResidualsNormalPlot() const;
 
-private:
+protected:
+
+  void setColors();
 
   /* Parameter prior distribution */
   Distribution parameterPrior_;
@@ -125,8 +105,8 @@ private:
   /* Parameter posterior distribution */
   Distribution parameterPosterior_;
 
-  /* Parameter MAP */
-  Point parameterMAP_;
+  /* Calibrated value of the parameter */
+  Point calibratedParameter_;
 
   /* Observations error distribution */
   Distribution observationsError_;
@@ -144,12 +124,8 @@ private:
   Sample outputAtPriorMean_;
   Sample outputAtPosteriorMean_;
 
-  /* Bayesian */
-  Bool bayesian_ = false;
-
-  /* True when the parameter distribution is a posterior, false when it
-     is the distribution of the MAP under bootstrap resampling */
-  Bool isParameterDistributionPosterior_ = true;
+  /* Bootstrap size */
+  UnsignedInteger bootstrapSize_ = 0;
 
   /* Colors */
   String priorColor_;
@@ -158,8 +134,6 @@ private:
 
 }; // class CalibrationResult
 
-
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_CALIBRATIONRESULT_HXX */
-

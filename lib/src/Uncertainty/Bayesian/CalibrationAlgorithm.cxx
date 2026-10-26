@@ -58,16 +58,4 @@ Distribution CalibrationAlgorithm::getParameterPrior() const
   return getImplementation()->getParameterPrior();
 }
 
-/* Result accessor */
-void CalibrationAlgorithm::setResult(const CalibrationResult & result)
-{
-  getImplementation()->setResult(result);
-}
-
-CalibrationResult CalibrationAlgorithm::getResult() const
-{
-  return getImplementation()->getResult();
-}
-
-
 END_NAMESPACE_OPENTURNS

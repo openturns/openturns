@@ -210,8 +210,8 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method
-# returns the maximum of the posterior density of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method
+# returns the optimal value of :math:`\theta`.
 
 
 def printRCGamma(parameter, indentation="   "):
@@ -225,9 +225,9 @@ def printRCGamma(parameter, indentation="   "):
 
 
 # %%
-thetaMAP = calibrationResult.getParameterMAP()
+thetaCalibrated = calibrationResult.getParameter()
 print("theta After = ")
-printRCGamma(thetaMAP)
+printRCGamma(thetaCalibrated)
 print("theta Before = ")
 printRCGamma(thetaPrior)
 print("theta True = ")
@@ -257,8 +257,8 @@ def printRCGammaInterval(interval, indentation="   "):
 
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+thetaDistribution = calibrationResult.getParameterDistribution()
+interval = thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )[0]
 print("95% C.I.:")
@@ -435,7 +435,7 @@ def plotDistributionGridPDF(distribution):
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -486,19 +486,19 @@ calibrationResult = algo.getResult()
 # -----------------------
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method
-# returns the maximum of the posterior distribution of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method
+# returns the optimal value of :math:`\theta`.
 
 # %%
-thetaMAP = calibrationResult.getParameterMAP()
-print(thetaMAP)
+thetaCalibrated = calibrationResult.getParameter()
+print(thetaCalibrated)
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+thetaDistribution = calibrationResult.getParameterDistribution()
+interval = thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )[0]
 print("95% C.I.:")
@@ -585,7 +585,7 @@ view = otv.View(graph)
 # Plot the PDF values of the distribution of the optimum parameters.
 
 # %%
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (6.0, 6.0)},
@@ -663,7 +663,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
 
 # %%
@@ -804,7 +804,7 @@ calibrationResult = algo.getResult()
 # -----------------------
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method
 # returns the maximum of the posterior distribution of :math:`\theta`.
 
 # %%
@@ -813,8 +813,8 @@ print(thetaMAP)
 
 # %%
 # We can compute a 95% credibility interval of the parameter :math:`\theta^\star`.
-thetaPosterior = calibrationResult.getParameterPosterior()
-interval = thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
+MAPDistribution = calibrationResult.getMAPDistribution()
+interval = MAPDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(
     0.95
 )[0]
 print("95% C.I.:")
