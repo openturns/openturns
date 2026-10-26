@@ -219,12 +219,12 @@ calibrationResult = algo.getResult()
 # -----------------------
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
-# maximum of the posterior distribution of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method returns the
+# optimal value of :math:`\theta`.
 
 # %%
-thetaMAP = calibrationResult.getParameterMAP()
-print(thetaMAP)
+thetaCalibrated = calibrationResult.getParameter()
+print(thetaCalibrated)
 
 
 # %%
@@ -233,7 +233,7 @@ print(thetaMAP)
 
 # sphinx_gallery_thumbnail_number = 2
 graph = calibrationResult.drawObservationsVsInputs()
-aEstimated, bEstimated = thetaMAP
+aEstimated, bEstimated = thetaCalibrated
 title = "After calibration : a = %.4f, b = %.4f" % (aEstimated, bEstimated)
 graph.setTitle(title)
 graph.setLegendPosition("upper left")

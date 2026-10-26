@@ -176,3 +176,12 @@ size : int
     been used to get the posterior distribution, using the :class:`~openturns.GaussianLinearCalibration`
     algorithm at the maximum a posteriori estimate."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianNonLinearCalibration::getResult
+"Accessor to the result object.
+
+Returns
+-------
+result : :class:`~openturns.GaussianCalibrationResult`
+    Result object."

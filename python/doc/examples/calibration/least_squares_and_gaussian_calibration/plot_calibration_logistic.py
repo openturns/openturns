@@ -254,8 +254,8 @@ algo = ot.LinearLeastSquaresCalibration(
 )
 algo.run()
 calibrationResult = algo.getResult()
-thetaMAP = calibrationResult.getParameterMAP()
-print("theta After = ", thetaMAP)
+thetaCalibrated = calibrationResult.getParameter()
+print("theta After = ", thetaCalibrated)
 print("theta Before = ", thetaPrior)
 
 # %%
@@ -267,8 +267,8 @@ print("theta Before = ", thetaPrior)
 # observation errors, we compute 95% confidence intervals.
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
+thetaDistribution = calibrationResult.getParameterDistribution()
+print(thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # The 95% confidence intervals of the optimum are relatively narrow:

@@ -23,8 +23,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-
-
 CLASSNAMEINIT(CalibrationAlgorithmImplementation)
 
 static const Factory<CalibrationAlgorithmImplementation> Factory_CalibrationAlgorithmImplementation;
@@ -46,7 +44,6 @@ CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation(const Fun
   , inputObservations_(inputObservations)
   , outputObservations_(outputObservations)
   , parameterPrior_(parameterPrior)
-  , result_()
 {
   // Allow for a dim-0 sample but it should have the right size internally
   if (!inputObservations_.getDimension())
@@ -64,8 +61,7 @@ String CalibrationAlgorithmImplementation::__repr__() const
 {
   return OSS() << "class=" << CalibrationAlgorithmImplementation::GetClassName()
          << " output observations=" << outputObservations_
-         << " parameter prior=" << parameterPrior_
-         << " result=" << result_;
+         << " parameter prior=" << parameterPrior_;
 }
 
 /* Model accessor */
@@ -92,17 +88,6 @@ Distribution CalibrationAlgorithmImplementation::getParameterPrior() const
   return parameterPrior_;
 }
 
-/* Result accessor */
-void CalibrationAlgorithmImplementation::setResult(const CalibrationResult & result)
-{
-  result_ = result;
-}
-
-CalibrationResult CalibrationAlgorithmImplementation::getResult() const
-{
-  return result_;
-}
-
 /* Virtual copy constructor */
 CalibrationAlgorithmImplementation* CalibrationAlgorithmImplementation::clone() const
 {
@@ -117,7 +102,6 @@ void CalibrationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute("inputObservations_", inputObservations_);
   adv.saveAttribute("outputObservations_", outputObservations_);
   adv.saveAttribute("parameterPrior_", parameterPrior_);
-  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -128,8 +112,6 @@ void CalibrationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute("inputObservations_", inputObservations_);
   adv.loadAttribute("outputObservations_", outputObservations_);
   adv.loadAttribute("parameterPrior_", parameterPrior_);
-  adv.loadAttribute("result_", result_);
 }
-
 
 END_NAMESPACE_OPENTURNS

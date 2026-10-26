@@ -84,7 +84,7 @@ Calibrate a non-linear model using linear least squares:
 >>> method = 'SVD'
 >>> algo = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, startingPoint, method)
 >>> algo.run()
->>> print(algo.getResult().getParameterMAP())
+>>> print(algo.getResult().getParameter())
 [8.24019,0.0768046,0.992957]
 >>> #
 )RAW"
@@ -129,3 +129,12 @@ Returns
 name : str
     Name of least-squares method used for the resolution."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getResult
+"Accessor to the result object.
+
+Returns
+-------
+result : :class:`~openturns.LeastSquaresCalibrationResult`
+    Result object."

@@ -73,10 +73,10 @@ int main(int, char *[])
       fullprint << "(const. 1)" << std::endl;
       LinearLeastSquaresCalibration algo(calibrationModel, x, y, candidate, methods[n]);
       algo.run();
-      Point parameterMAP(algo.getResult().getParameterMAP());
-      fullprint << "MAP =" << parameterMAP << std::endl;
+      Point parameter(algo.getResult().getParameter());
+      fullprint << "MAP =" << parameter << std::endl;
       fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      assert_almost_equal(parameter, trueParameter, 1e-2);
       // 2nd constructor
       fullprint << "(const. 2)" << std::endl;
       model.setParameter(candidate);
@@ -93,10 +93,10 @@ int main(int, char *[])
       }
       algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
       algo.run();
-      parameterMAP = algo.getResult().getParameterMAP();
-      fullprint << "MAP =" << parameterMAP << std::endl;
+      parameter = algo.getResult().getParameter();
+      fullprint << "MAP =" << parameter << std::endl;
       fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      assert_almost_equal(parameter, trueParameter, 1e-2);
     } // n
   }
   catch (TestFailed & ex)

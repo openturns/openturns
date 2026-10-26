@@ -26,6 +26,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/LeastSquaresCalibrationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -77,12 +78,15 @@ public:
   Bool getUseLaplaceApproximation() const;
   void setUseLaplaceApproximation(const Bool useLaplaceApproximation);
 
-  /* Here is the interface that all derived class must implement */
+  /** Calibration result accessor */
+  LeastSquaresCalibrationResult getResult() const;
 
   /* Build the associated residual function */
   static Function BuildResidualFunction(const Function & model,
                                         const Sample & inputObservations,
                                         const Sample & outputObservations);
+
+  /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
   NonLinearLeastSquaresCalibration * clone() const override;
@@ -103,8 +107,10 @@ private:
   /* Laplace approximation of the posterior covariance flag */
   Bool useLaplaceApproximation_ = false;
 
-}; /* class NONLINEARLEASTSQUARESCALIBRATION */
+  /* The calibration result */
+  LeastSquaresCalibrationResult result_;
 
+}; /* class NONLINEARLEASTSQUARESCALIBRATION */
 
 END_NAMESPACE_OPENTURNS
 

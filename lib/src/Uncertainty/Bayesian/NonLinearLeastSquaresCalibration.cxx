@@ -338,9 +338,7 @@ void NonLinearLeastSquaresCalibration::run()
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
-  // A bootstrapped posterior is the MAP distribution, not a posterior (see #2889)
-  result_.setIsParameterDistributionPosterior(bootstrapSize_ == 0);
+  result_ = LeastSquaresCalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, bootstrapSize_);
 }
 
 /* Perform a unique estimation */
@@ -415,6 +413,12 @@ void NonLinearLeastSquaresCalibration::setUseLaplaceApproximation(const Bool use
   useLaplaceApproximation_ = useLaplaceApproximation;
 }
 
+/* Calibration result accessor */
+LeastSquaresCalibrationResult NonLinearLeastSquaresCalibration::getResult() const
+{
+  return result_;
+}
+
 /* String converter */
 String NonLinearLeastSquaresCalibration::__repr__() const
 {
@@ -434,6 +438,7 @@ void NonLinearLeastSquaresCalibration::save(Advocate & adv) const
   adv.saveAttribute("algorithm_", algorithm_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
+  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -444,6 +449,7 @@ void NonLinearLeastSquaresCalibration::load(Advocate & adv)
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
   if (adv.hasAttribute("useLaplaceApproximation_")) adv.loadAttribute("useLaplaceApproximation_", useLaplaceApproximation_);
   else useLaplaceApproximation_ = false;
+  adv.loadAttribute("result_", result_);
 }
 
 END_NAMESPACE_OPENTURNS

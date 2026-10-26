@@ -191,7 +191,7 @@ void GaussianLinearCalibration::run()
   Normal parameterPosterior(thetaStar, covarianceThetaStar);
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getParameterMean(), deltaY, gradientObservations_);
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction, true);
+  result_ = GaussianCalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction, 0);
 }
 
 /* Model observations accessor */
@@ -238,6 +238,12 @@ String GaussianLinearCalibration::getMethodName() const
   return methodName_;
 }
 
+/* Calibration result accessor */
+GaussianCalibrationResult GaussianLinearCalibration::getResult() const
+{
+  return result_;
+}
+
 /* String converter */
 String GaussianLinearCalibration::__repr__() const
 {
@@ -259,6 +265,7 @@ void GaussianLinearCalibration::save(Advocate & adv) const
   adv.saveAttribute("errorCovariance_", errorCovariance_);
   adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
   adv.saveAttribute("methodName_", methodName_);
+  adv.saveAttribute("result_", result_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -270,6 +277,7 @@ void GaussianLinearCalibration::load(Advocate & adv)
   adv.loadAttribute("errorCovariance_", errorCovariance_);
   adv.loadAttribute("globalErrorCovariance_", globalErrorCovariance_);
   adv.loadAttribute("methodName_", methodName_);
+  adv.loadAttribute("result_", result_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -81,7 +81,7 @@ Calibrate a non-linear model using non-linear least squares:
 >>> startingPoint = [1.0] * 3
 >>> algo = ot.NonLinearLeastSquaresCalibration(calibrationModel, x, y, startingPoint)
 >>> algo.run()
->>> print(algo.getResult().getParameterMAP())
+>>> print(algo.getResult().getParameter())
 [2.77311,1.20351,0.499749]"
 
 // ---------------------------------------------------------------------
@@ -165,6 +165,16 @@ useLaplace : bool
     the Gauss-Newton Gram matrix. Default is False. It requires the
     Hessian at the optimum to be definite. It is only used when no
     bootstrap is performed."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getResult
+"Accessor to the result object.
+
+Returns
+-------
+result : :class:`~openturns.LeastSquaresCalibrationResult`
+    Result object."
 
 // ---------------------------------------------------------------------
 
