@@ -3,19 +3,34 @@ R"RAW(Uniform factory.
 
 Notes
 -----
-The parameters are estimated by method of moments:
+Let :math:`n` be the sample size.
+Let :math:`x_{(1)}` be the sample minimum and :math:`x_{(n)}` be the sample maximum.
+Let :math:`\delta` be the sample range:
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{a}_n=(1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
-      \displaystyle\Hat{b}_n=(1+\mathrm{sign}(x_{(n,n)})/(2+n))x_{(n,n)}
+      \delta = x_{(n)} - x_{(1)}.
     \end{eqnarray*}
+
+Then the bounds are estimated by extending the sample range:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \hat{a} &=& x_{(1)} - \frac{\delta}{n + 2}, \\
+      \hat{b} &=& x_{(n)} + \frac{\delta}{n + 2}.
+    \end{eqnarray*}
+
+The maximum likelihood estimators would be :math:`x_{(1)}` and :math:`x_{(n)}`.
+The above estimators expand the sample range to account for the finite sample size.
 
 See also
 --------
-DistributionFactory, Uniform)RAW"
+DistributionFactory, Uniform
+)RAW"
 
 // ---------------------------------------------------------------------
 
