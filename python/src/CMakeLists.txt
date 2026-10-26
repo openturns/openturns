@@ -1206,8 +1206,8 @@ if (SPHINX_FOUND)
   # generate sphinx rule for each format
   foreach (format ${doc_formats})
     add_custom_target (sphinx_${format}
-                        COMMAND ${SPHINX_EXECUTABLE}
-                                  -b ${format}
+                        COMMAND ${CMAKE_COMMAND} -E env OPENTURNS_CONFIG_PATH=${PROJECT_BINARY_DIR}/lib/etc
+	                        ${SPHINX_EXECUTABLE} -b ${format}
                                   -d ${SPHINX_BINARY_DIR}/.doctrees
                                   ${SPHINX_FLAGS}
                                   ${SPHINX_BINARY_DIR}
