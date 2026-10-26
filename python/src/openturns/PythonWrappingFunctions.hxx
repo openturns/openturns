@@ -1100,7 +1100,11 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
 
   // Get dimension of first point
   PyObject * firstPoint = Sequence_Fast_GET_ITEM(newPyObj.get(), 0);
-  check<_PySequence_>(firstPoint);
+  if (!isAPython<_PySequence_>(firstPoint))
+  {
+    Sequence_Fast_DECREF_ITEM(firstPoint);
+    throw InvalidArgumentException(HERE) << "Object passed as argument is not a sequence of sequences: element 0 is not a sequence object.";
+  }
   ScopedPyObjectPointer newPyFirstObj(PySequence_Fast(firstPoint, ""));
   Sequence_Fast_DECREF_ITEM(firstPoint);
   const UnsignedInteger dimension = Sequence_Fast_GET_SIZE(newPyFirstObj.get());
@@ -1109,11 +1113,15 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     PyObject * pointObj = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
+    if (!isAPython<_PySequence_>(pointObj))
+    {
+      Sequence_Fast_DECREF_ITEM(pointObj);
+      throw InvalidArgumentException(HERE) << "Object passed as argument is not a sequence of sequences: element " << i << " is not a sequence object";
+    }
     ScopedPyObjectPointer newPyPointObj(PySequence_Fast(pointObj, ""));
     if (i > 0)
     {
       // Check that object is a sequence, and has the right size
-      check<_PySequence_>(pointObj);
       const UnsignedInteger subDim = static_cast<UnsignedInteger>(Sequence_Fast_GET_SIZE(newPyPointObj.get()));
       if (subDim != dimension)
         throw InvalidArgumentException(HERE) << "Inner sequences must have the same dimension";
@@ -1303,9 +1311,12 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     PyObject * indicesObj = Sequence_Fast_GET_ITEM(newPyObj.get(), i);
+    if (!isAPython<_PySequence_>(indicesObj))
+    {
+      Sequence_Fast_DECREF_ITEM(indicesObj);
+      throw InvalidArgumentException(HERE) << "Object passed as argument is not a sequence of sequences: element " << i << " is not a sequence object";
+    }
     ScopedPyObjectPointer newPyIndicesObj(PySequence_Fast(indicesObj, ""));
-    // Check that object is a sequence
-    check<_PySequence_>(indicesObj);
     Sequence_Fast_DECREF_ITEM(indicesObj);
     const UnsignedInteger dimension = Sequence_Fast_GET_SIZE(newPyIndicesObj.get());
     Indices newIndices(dimension);
