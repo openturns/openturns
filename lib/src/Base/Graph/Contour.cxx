@@ -21,12 +21,43 @@
 #include "openturns/Contour.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Log.hxx"
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(Contour)
 
 static const Factory<Contour> Factory_Contour;
+
+/* Expand a single interior level into two levels for filled contours, keeping the given level as one boundary */
+static Bool ExpandSingleLevel(const Scalar dataMin, const Scalar dataMax, const Scalar midValue, Point & levels)
+{
+  // Overflow-safe midpoints: 0.5*a + 0.5*b never overflows for finite a, b
+  const Scalar lowValue = 0.5 * dataMin + 0.5 * midValue;
+  const Scalar highValue = 0.5 * midValue + 0.5 * dataMax;
+  const Bool lowOk = std::isfinite(lowValue) && (lowValue > dataMin) && (lowValue < midValue);
+  const Bool highOk = std::isfinite(highValue) && (highValue < dataMax) && (highValue > midValue);
+  if (lowOk && highOk)
+  {
+    const Scalar midData = 0.5 * dataMin + 0.5 * dataMax;
+    if (midValue >= midData)
+      levels = Point({lowValue, midValue});
+    else
+      levels = Point({midValue, highValue});
+    return true;
+  }
+  if (lowOk)
+  {
+    levels = Point({lowValue, midValue});
+    return true;
+  }
+  if (highOk)
+  {
+    levels = Point({midValue, highValue});
+    return true;
+  }
+  return false;
+}
 
 /* Default constructor */
 Contour::Contour()
@@ -198,6 +229,22 @@ Bool Contour::isFilled() const
 void Contour::setIsFilled(Bool isFilled)
 {
   isFilled_ = isFilled;
+  if (isFilled_ && (levels_.getSize() == 1) && (data_.getSize() > 0))
+  {
+    // contourf requires at least two levels: keep the caller-specified level as one boundary
+    const Scalar dataMin = data_.getMin()[0];
+    const Scalar dataMax = data_.getMax()[0];
+    const Scalar midValue = levels_[0];
+    if (dataMax > dataMin)
+    {
+      Bool expanded = false;
+      if ((midValue > dataMin) && (midValue < dataMax))
+        expanded = ExpandSingleLevel(dataMin, dataMax, midValue, levels_);
+      if (!expanded)
+        levels_ = Point({dataMin, dataMax});
+      buildDefaultLabels();
+    }
+  }
 }
 
 /** Accessor for colorBarPosition */
@@ -354,6 +401,46 @@ void Contour::buildDefaultLevels(const UnsignedInteger number)
   levels_.resize(number);
   for (UnsignedInteger i = 0; i < number; ++i) levels_[i] = sortedData(static_cast<UnsignedInteger>(size * (i + 0.5) / number), 0);
   levels_.erase(std::unique(levels_.begin(), levels_.end()), levels_.end());
+  // Prune levels at data bounds as they produce empty line contours.
+  // Filled contours (contourf) need range-covering boundaries, so extrema
+  // are pruned only for line contours.
+  if (levels_.getSize() > 0)
+  {
+    const Scalar dataMin = sortedData(0, 0);
+    const Scalar dataMax = sortedData(size - 1, 0);
+    if (dataMax > dataMin)
+    {
+      if (isFilled_)
+      {
+        // Keep data bounds as range-covering boundaries; ensure contourf gets at least two levels
+        if (levels_.getSize() == 1)
+        {
+          // Single level: keep it as one boundary by expanding to a second interior level
+          Point expandedLevels;
+          if (ExpandSingleLevel(dataMin, dataMax, levels_[0], expandedLevels))
+            levels_ = expandedLevels;
+          else
+            levels_ = Point({dataMin, dataMax});
+        }
+      }
+      else
+      {
+        Point prunedLevels(0);
+        for (UnsignedInteger i = 0; i < levels_.getSize(); ++i)
+        {
+          if ((levels_[i] > dataMin) && (levels_[i] < dataMax)) prunedLevels.add(levels_[i]);
+        }
+        // Data with large plateaus can leave no interior level, use mid-value to get a single contour
+        if (prunedLevels.getSize() == 0)
+        {
+          const Scalar midValue = 0.5 * dataMin + 0.5 * dataMax;
+          if (std::isfinite(midValue) && (midValue > dataMin) && (midValue < dataMax))
+            prunedLevels = Point(1, midValue);
+        }
+        levels_ = prunedLevels;
+      }
+    }
+  }
 }
 
 /* Build default labels by taking the level values */
