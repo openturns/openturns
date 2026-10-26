@@ -62,11 +62,11 @@ for bootstrapSize in bootstrapSizes:
     # To avoid discrepancy between the platforms with or without CMinpack
     # Check MAP
     calibrationResult = algo.getResult()
-    parameterMAP = calibrationResult.getParameterMAP()
-    print("(Auto) MAP=", repr(parameterMAP))
+    parameter = calibrationResult.getParameter()
+    print("(Auto) MAP=", repr(parameter))
     rtol = 1.0e-2
     atol = 0.0
-    ott.assert_almost_equal(parameterMAP, trueParameter, rtol, atol)
+    ott.assert_almost_equal(parameter, trueParameter, rtol, atol)
     multiStartSize = 10
     algo.setOptimizationAlgorithm(
         ot.MultiStart(
@@ -83,8 +83,8 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     # To avoid discrepancy between the platforms with or without CMinpack
     calibrationResult = algo.getResult()
-    parameterMAP = calibrationResult.getParameterMAP()
-    print("(Multistart/TNC) MAP=", repr(parameterMAP))
+    parameter = calibrationResult.getParameter()
+    print("(Multistart/TNC) MAP=", repr(parameter))
     rtol = 1.0e-2
     atol = 0.0
-    ott.assert_almost_equal(parameterMAP, trueParameter, rtol, atol)
+    ott.assert_almost_equal(parameter, trueParameter, rtol, atol)

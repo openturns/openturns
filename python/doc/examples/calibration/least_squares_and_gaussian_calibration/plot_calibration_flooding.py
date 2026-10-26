@@ -224,10 +224,10 @@ algo.run()
 calibrationResult = algo.getResult()
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
-# maximum of the posterior distribution of :math:`\theta`.
-thetaMAP = calibrationResult.getParameterMAP()
-print("theta After = ", thetaMAP)
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method returns the
+# optimal value of :math:`\theta`.
+thetaCalibrated = calibrationResult.getParameter()
+print("theta After = ", thetaCalibrated)
 print("theta Before = ", thetaPrior)
 # %%
 # Print the true values of the parameters.
@@ -249,11 +249,11 @@ print("  Zm = ", fm.trueZm)
 # %%
 # In this section, we show how to diagnose the identification problem.
 #
-# The :meth:`~openturns.CalibrationResult.getParameterPosterior` method returns
-# the posterior normal distribution of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameterDistribution` method returns
+# the distribution of the optimal :math:`\theta`.
 
 # %%
-distributionPosterior = calibrationResult.getParameterPosterior()
+distributionPosterior = calibrationResult.getParameterDistribution()
 print(distributionPosterior)
 
 # %%
@@ -334,7 +334,7 @@ print(jacobianMatrix.computeSingularValues())
 
 # %%
 # Use a null bootstrap size to select the linearized posterior instead of
-# the kernel-smoothed bootstrap posterior: the MAP is unchanged, but the
+# the kernel-smoothed bootstrap posterior: the optimal value is unchanged, but the
 # posterior shape as well as its width may change. It avoids ~100 repeat optimizations.
 ot.ResourceMap.SetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize", 0)
 algo = ot.NonLinearLeastSquaresCalibration(calibrationFunction, Qobs, Hobs, thetaPrior)
@@ -350,12 +350,12 @@ calibrationResult = algo.getResult()
 # -----------------------
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
-# maximum of the posterior distribution of :math:`\theta`.
+# The :meth:`~openturns.LeastSquaresCalibrationResult.getParameter` method returns the
+# optimal value of :math:`\theta`.
 
 # %%
-thetaMAP = calibrationResult.getParameterMAP()
-print(thetaMAP)
+thetaCalibrated = calibrationResult.getParameter()
+print(thetaCalibrated)
 
 # %%
 # We can compute a 95% confidence interval of the parameter :math:`\theta^\star`.
@@ -372,8 +372,8 @@ print(
 )
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
-print(thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
+thetaDistribution = calibrationResult.getParameterDistribution()
+print(thetaDistribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0])
 
 # %%
 # In this case, the values of the parameters are quite accurately
@@ -481,7 +481,7 @@ def plotDistributionGridPDF(distribution):
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (9.0, 6.0)},
@@ -530,7 +530,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
 thetaMAP = calibrationResult.getParameterMAP()
 print(thetaMAP)
@@ -561,7 +561,7 @@ view = otv.View(graph)
 # calibration.
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterPosterior` method
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterPosterior` method
 # returns the posterior normal distribution of :math:`\theta`.
 
 # %%
@@ -603,7 +603,7 @@ plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (9.0, 6.0)},
@@ -619,7 +619,7 @@ plt.subplots_adjust(wspace=1.0, hspace=0.5)
 # Use a null bootstrap size here as well (cf. above): it selects the
 # linearized posterior instead of the kernel-smoothed bootstrap posterior.
 # The MAP is unchanged, but the posterior shape as well as its width may
-# change, while the ~100 bootstrap optimizations are skipped
+# change, while the ~100 bootstrap optimizations are skipped.
 ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 algo = ot.GaussianNonLinearCalibration(
     calibrationFunction, Qobs, Hobs, thetaPrior, sigma, errorCovariance
@@ -634,7 +634,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method returns the
 # maximum of the posterior distribution of :math:`\theta`.
 thetaMAP = calibrationResult.getParameterMAP()
 print(thetaMAP)
@@ -669,7 +669,7 @@ plt.subplots_adjust(right=0.6)
 # This is a proof that the calibration did perform correctly.
 
 # %%
-# The :meth:`~openturns.CalibrationResult.getParameterPosterior` method
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterPosterior` method
 # returns the posterior normal distribution of :math:`\theta`.
 distributionPosterior = calibrationResult.getParameterPosterior()
 
@@ -700,7 +700,7 @@ plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (9.0, 6.0)},
@@ -752,7 +752,7 @@ plt.subplots_adjust(right=0.8, bottom=0.2)
 
 # %%
 # Plot the PDF values of the distribution of the optimum parameters.
-grid = plotDistributionGridPDF(thetaPosterior)
+grid = plotDistributionGridPDF(thetaDistribution)
 view = otv.View(
     grid,
     figure_kw={"figsize": (9.0, 6.0)},

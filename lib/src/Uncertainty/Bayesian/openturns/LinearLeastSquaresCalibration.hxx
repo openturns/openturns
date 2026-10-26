@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
+#include "openturns/LeastSquaresCalibrationResult.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Interval.hxx"
@@ -83,6 +84,9 @@ public:
   /** Least squares method name accessor */
   String getMethodName() const;
 
+  /** Calibration result accessor */
+  LeastSquaresCalibrationResult getResult() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
@@ -113,8 +117,10 @@ private:
   /* The least squares method name */
   String methodName_;
 
-}; /* class LINEARLEASTSQUARESCALIBRATION */
+  /* The calibration result */
+  LeastSquaresCalibrationResult result_;
 
+}; /* class LINEARLEASTSQUARESCALIBRATION */
 
 END_NAMESPACE_OPENTURNS
 

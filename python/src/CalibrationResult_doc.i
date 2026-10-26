@@ -1,7 +1,5 @@
 %feature("docstring") OT::CalibrationResult
-"Calibration result.
-
-Returned by calibration algorithms, see :class:`~openturns.CalibrationAlgorithm`.
+"Base class for calibration result.
 
 Parameters
 ----------
@@ -9,8 +7,8 @@ parameterPrior : :class:`~openturns.Distribution`
     The prior distribution of the parameter.
 parameterPosterior : :class:`~openturns.Distribution`
     The posterior distribution of the parameter.
-parameterMap : sequence of float
-    The maximum a posteriori estimate of the parameter.
+calibratedParameter : sequence of float
+    The calibrated value of the parameter.
 observationsError : :class:`~openturns.Distribution`
     The distribution of the observations error.
 inputObservations : :class:`~openturns.Sample`
@@ -19,8 +17,12 @@ outputObservations : :class:`~openturns.Sample`
     The sample of output observations.
 residualFunction : :class:`~openturns.Function`
     The residual function.
-bayesian : bool
-    Whether the method is Bayesian
+bootstrapSize : UnsignedInteger
+    The bootstrap size used to compute parameterPosterior (or 0 if none was used).
+
+See also
+--------
+GaussianCalibrationResult, LeastSquaresCalibrationResult
 
 Notes
 -----
@@ -34,85 +36,17 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``CalibrationResult-PriorPointStyle`` (``String``, default: ``circle``): point style for prior visualization,
 - ``CalibrationResult-PosteriorPointStyle`` (``String``, default: ``diamond``): point style for posterior visualization,
 - ``CalibrationResult-ObservationPointStyle`` (``String``, default: ``fsquare``): point style for observation visualization.
-
-Examples
---------
->>> import openturns as ot
-
-# assume we obtained a result from CalibrationAlgorithm
-
->>> result = ot.CalibrationResult()
->>> pmap = result.getParameterMAP()
->>> prior = result.getParameterPrior()
->>> posterior = result.getParameterPosterior()
->>> graph1 = result.drawParameterDistributions()  # doctest: +SKIP
->>> graph2 = result.drawResiduals()  # doctest: +SKIP
->>> graph3 = result.drawObservationsVsInputs()  # doctest: +SKIP
->>> graph4 = result.drawObservationsVsPredictions()  # doctest: +SKIP
 "
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CalibrationResult::getParameterPrior
-"Accessor to the parameter prior distribution.
+%feature("docstring") OT::CalibrationResult::isBayesian
+"Bayesian method accessor.
 
 Returns
 -------
-parameterPrior : :class:`~openturns.Distribution`
-    The prior distribution of the parameter."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::setParameterPrior
-"Accessor to the parameter prior distribution.
-
-Parameters
-----------
-parameterPrior : : :class:`~openturns.Distribution`
-    The prior distribution of the parameter."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::getParameterPosterior
-"Accessor to the parameter posterior distribution.
-
-The content of the posterior distribution depends of the class that
-created this distribution.
-The next table presents this distribution depending on the
-algorithm.
-
-.. list-table::
-   :widths: 40 60
-   :header-rows: 1
-
-   * - Class
-     - Distribution
-   * - :class:`~openturns.LinearLeastSquaresCalibration`
-     - Distribution of the parameters with respect to randomness in the data
-   * - :class:`~openturns.NonLinearLeastSquaresCalibration`
-     - Distribution of the parameters with respect to randomness in the data
-   * - :class:`~openturns.GaussianLinearCalibration`
-     - Posterior distribution of the parameters given the observations
-   * - :class:`~openturns.GaussianNonLinearCalibration`
-     - Distribution of the MAP with respect to randomness in the data
-
-**Table 1.** Content of the distribution returned by  :meth:`~openturns.CalibrationResult.getParameterPosterior()` different classes returning a :class:`~openturns.CalibrationResult`.
-
-
-Returns
--------
-parameterPosterior : :class:`~openturns.Distribution`
-    The posterior distribution of the parameter."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::setParameterPosterior
-"Accessor to the parameter posterior distribution.
-
-Parameters
-----------
-parameterPosterior : : :class:`~openturns.Distribution`
-    The posterior distribution of the parameter."
+bayesian : bool
+    Whether the method is Bayesian"
 
 // ---------------------------------------------------------------------
 
@@ -123,36 +57,6 @@ Returns
 -------
 observationsError : :class:`~openturns.Distribution`
     The observations error distribution."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::setObservationsError
-"Accessor to the observations error distribution.
-
-Parameters
-----------
-observationsError : :class:`~openturns.Distribution`
-    The observations error distribution."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::getParameterMAP
-"Accessor to the maximum a posteriori parameter estimate.
-
-Returns
--------
-parameterPosterior : :class:`~openturns.Point`
-    The maximum a posteriori parameter estimate."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::setParameterMAP
-"Accessor to the maximum a posteriori parameter estimate.
-
-Parameters
-----------
-parameterPosterior : sequence of float
-    The maximum a posteriori parameter estimate."
 
 // ---------------------------------------------------------------------
 
@@ -206,13 +110,15 @@ residualFunction : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::CalibrationResult::setResidualFunction
-"Accessor to the residual function.
+%feature("docstring") OT::CalibrationResult::getBootstrapSize
+"Accessor to the bootstrap size used to sample the posterior distribution.
 
-Parameters
-----------
-residualFunction : :class:`~openturns.Function`
-    The residual function."
+Returns
+-------
+bootstrapSize : int
+    Bootstrap size used to sample the posterior distribution.
+    A value of 0 means that no bootstrap was performed and that the posterior
+    distribution was computed using a linearization of the model."
 
 // ---------------------------------------------------------------------
 
@@ -309,38 +215,3 @@ Returns
 -------
 grid : :class:`~openturns.GridLayout`
     Graph array."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::isBayesian
-"Bayesian method accessor.
-
-Returns
--------
-bayesian : bool
-    Whether the method is Bayesian"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::isParameterDistributionPosterior
-"Whether the parameter distribution is a posterior distribution.
-
-Returns
--------
-isPosterior : bool
-    True when the parameter distribution is a posterior distribution,
-    False when it is the distribution of the MAP under bootstrap
-    resampling. Used by :meth:`drawParameterDistributions` to label
-    the parameter distribution."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CalibrationResult::setIsParameterDistributionPosterior
-"Set whether the parameter distribution is a posterior distribution.
-
-Parameters
-----------
-isPosterior : bool
-    True when the parameter distribution is a posterior distribution,
-    False when it is the distribution of the MAP under bootstrap
-    resampling."

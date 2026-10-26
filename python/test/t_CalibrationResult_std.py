@@ -41,7 +41,9 @@ algo = ot.GaussianNonLinearCalibration(
 algo.run()
 result = algo.getResult()
 assert result.isBayesian()
-assert not result.isParameterDistributionPosterior()
+result.getMAPDistribution()  # must not raise an exception
+with ott.assert_raises(TypeError):
+    result.getParameterPosterior()
 
 # without bootstrap the posterior label is kept
 bootstrapKey = "GaussianNonLinearCalibration-BootstrapSize"
@@ -53,7 +55,9 @@ try:
     )
     algo2.run()
     result2 = algo2.getResult()
-    assert result2.isParameterDistributionPosterior()
+    result2.getParameterPosterior()  # must not raise an exception
+    with ott.assert_raises(TypeError):
+        result2.getMAPDistribution()
     legends2 = [
         legend
         for j in range(3)
@@ -72,7 +76,7 @@ graph5 = result.drawResidualsNormalPlot()
 
 # the output at the posterior mean is computed on demand: the residual
 # function returns one residual per observation and output component
-posteriorMean = result.getParameterPosterior().getMean()
+posteriorMean = result.getMAPDistribution().getMean()
 outputObservations = result.getOutputObservations()
 residuals = result.getResidualFunction()(posteriorMean)
 expectedOutput = ot.Sample(
@@ -105,7 +109,7 @@ transposable.setOutputObservations(ot.Sample([[1.0], [2.0]]))
 outputAtPosteriorMean = transposable.getOutputAtPosteriorMean()
 assert outputAtPosteriorMean.getSize() == 1, outputAtPosteriorMean.getSize()
 assert outputAtPosteriorMean.getDimension() == 2, outputAtPosteriorMean.getDimension()
-# changing an input of the cached output must invalidate it
+# check the output at posterior mean (computed on demand)
 identity = ot.PythonFunction(2, 2, lambda x: [x[0] + 1.0, x[1] + 1.0])
 cacheTest = ot.CalibrationResult(
     prior,
@@ -115,15 +119,10 @@ cacheTest = ot.CalibrationResult(
     observation,
     observation,
     zeroResidual,
-    True,
+    0,
 )
 ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[1.0, 2.0]])
-cacheTest.setResidualFunction(identity)
-ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[2.0, 3.0]])
-cacheTest.setParameterPosterior(
-    ot.Normal([10.0, 20.0], [1.0, 1.0], ot.IdentityMatrix(2))
-)
-ott.assert_almost_equal(cacheTest.getOutputAtPosteriorMean(), [[12.0, 23.0]])
+
 transposable.setOutputAtPriorAndPosteriorMean(
     ot.Sample([[0.0], [1.0]]), ot.Sample([[1.0], [2.0]])
 )

@@ -283,7 +283,7 @@ calibrationResult = algo.getResult()
 # %%
 # Analysis of the results
 # -----------------------
-# The :meth:`~openturns.CalibrationResult.getParameterMAP` method returns the optimized parameters.
+# The :meth:`~openturns.GaussianCalibrationResult.getParameterMAP` method returns the optimized parameters.
 
 # %%
 thetaMAP = calibrationResult.getParameterMAP()
@@ -294,11 +294,11 @@ print("theta Before = ", thetaPrior)
 # Compute a 95% credibility interval for each marginal.
 
 # %%
-thetaPosterior = calibrationResult.getParameterPosterior()
+MAPDistribution = calibrationResult.getMAPDistribution()
 alpha = 0.95
-dim = thetaPosterior.getDimension()
+dim = MAPDistribution.getDimension()
 for i in range(dim):
-    print(thetaPosterior.getMarginal(i).computeBilateralConfidenceInterval(alpha))
+    print(MAPDistribution.getMarginal(i).computeBilateralConfidenceInterval(alpha))
 
 # %%
 # We see that the parameters are accurately estimated in this case.

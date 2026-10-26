@@ -74,17 +74,17 @@ int main(int, char *[])
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
       // To avoid discrepancy between the platforms with or without CMinpack
-      Point parameterMAP(algo.getResult().getParameterMAP());
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      Point parameter(algo.getResult().getParameter());
+      fullprint << "MAP =" << parameter << std::endl;
+      assert_almost_equal(parameter, trueParameter, 1e-2);
       // Test with TNC
       fullprint << "2. TNC optim" << std::endl;
       const UnsignedInteger multiStartSize = 10;
       algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), multiStartSize).generate()));
       algo.run();
-      parameterMAP = algo.getResult().getParameterMAP();
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      parameter = algo.getResult().getParameter();
+      fullprint << "MAP =" << parameter << std::endl;
+      assert_almost_equal(parameter, trueParameter, 1e-2);
     } // n
   }
   catch (TestFailed & ex)

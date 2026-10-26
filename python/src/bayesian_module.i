@@ -31,6 +31,8 @@
 
 /* Uncertainty/Bayesian */
 %include CalibrationResult.i
+%include GaussianCalibrationResult.i
+%include LeastSquaresCalibrationResult.i
 %include CalibrationAlgorithmImplementation.i
 %include CalibrationAlgorithm.i
 %include GaussianLinearCalibration.i

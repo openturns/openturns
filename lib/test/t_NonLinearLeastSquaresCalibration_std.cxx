@@ -66,19 +66,19 @@ int main(int, char *[])
       NonLinearLeastSquaresCalibration algo(calibrationModel, x, y, candidate);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
-      Point parameterMAP(algo.getResult().getParameterMAP());
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      Point parameter(algo.getResult().getParameter());
+      fullprint << "MAP =" << parameter << std::endl;
+      assert_almost_equal(parameter, trueParameter, 1e-2);
       // To avoid discrepancy between the platforms with or without CMinpack
       // With TNC
       fullprint << "2. TNC optim" << std::endl;
       const UnsignedInteger multiStartSize = 10;
       algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), multiStartSize).generate()));
       algo.run();
-      parameterMAP = algo.getResult().getParameterMAP();
-      fullprint << "MAP =" << parameterMAP << std::endl;
+      parameter = algo.getResult().getParameter();
+      fullprint << "MAP =" << parameter << std::endl;
       fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      assert_almost_equal(parameter, trueParameter, 1e-2);
     } // n
   }
   catch (TestFailed & ex)
