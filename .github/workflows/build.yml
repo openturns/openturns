@@ -139,7 +139,7 @@ jobs:
           usesh: true
           prepare: |
             pkg install -y cmake git devel/llvm devel/swig devel/boost-all devel/onetbb textproc/libxml2
-            pkg install -y math/lapack science/hdf5 math/nanoflann math/spectra math/primesieve math/py-matplotlib
+            pkg install -y math/lapack science/hdf5 math/nanoflann math/spectra math/primesieve #math/py-matplotlib
             pkg install -y science/pagmo2 math/highs math/ipopt math/bonmin math/nlopt math/ceres-solver math/cminpack
           run: |
             git config --global --add safe.directory .
