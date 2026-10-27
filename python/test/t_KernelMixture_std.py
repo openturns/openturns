@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -192,4 +194,42 @@ ott.assert_almost_equal(
 )
 ott.assert_almost_equal(
     dist1D.computeProbability(ot.Interval([0.0], [0.0], [False], [False])), 1.0
+)
+
+# --- KernelMixture: the log-PDF stays finite when every kernel PDF underflows ---
+tail_kernel = ot.KernelMixture(
+    ot.Exponential(1.0), [1.0, 1.0], ot.Sample([[0.0, 0.0]])
+)
+tail_point = [800.0, 0.0]
+assert tail_kernel.computePDF(tail_point) == 0.0
+ott.assert_almost_equal(tail_kernel.computeLogPDF(tail_point), -800.0, 1e-12, 0.0)
+
+# --- KernelMixture: the normalization factor underflows to zero for a huge
+# bandwidth, the log-PDF must still be computed in the log domain ---
+ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", False)
+huge_bandwidth = ot.KernelMixture(
+    ot.Normal(), [1.0e308], ot.Sample([[0.0], [1.0]])
+)
+ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", True)
+ott.assert_almost_equal(
+    huge_bandwidth.computeLogPDF([0.5]),
+    ot.Normal().computeLogPDF([0.0]) - math.log(1.0e308),
+    1.0e-12,
+    0.0,
+)
+
+# --- KernelMixture: the cached inverse bandwidth overflows for a tiny
+# bandwidth; the multivariate log-PDF at a sample center must remain finite ---
+ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", False)
+tiny_bandwidth = ot.KernelMixture(
+    ot.Normal(), [1.0e-320, 1.0e-320], ot.Sample([[0.0, 0.0]])
+)
+ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", True)
+tiny_log_pdf = tiny_bandwidth.computeLogPDF([0.0, 0.0])
+assert math.isfinite(tiny_log_pdf)
+ott.assert_almost_equal(
+    tiny_log_pdf,
+    2.0 * (ot.Normal().computeLogPDF([0.0]) - math.log(1.0e-320)),
+    1.0e-12,
+    0.0,
 )

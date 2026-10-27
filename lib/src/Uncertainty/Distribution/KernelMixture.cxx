@@ -254,7 +254,14 @@ Scalar KernelMixture::computePDF(const Point & point) const
     const Scalar x = point[0];
     const Scalar h = bandwidth_[0];
     for(UnsignedInteger i = 0; i < size; ++i) pdfValue += p_kernel_->computePDF((x - sample_(i, 0)) / h);
-    return pdfValue / (h * size);
+    pdfValue /= (h * size);
+    // Recover from an underflow in every kernel contribution
+    if (pdfValue == 0.0)
+    {
+      const Scalar logPDFValue = computeLogPDF(point);
+      if (logPDFValue != SpecFunc::LowestScalar) return std::exp(logPDFValue);
+    }
+    return pdfValue;
   }
   // Quick rejection test
   //if (!getRange().numericallyContains(point)) return pdfValue;
@@ -269,7 +276,51 @@ Scalar KernelMixture::computePDF(const Point & point) const
     }
     pdfValue += pdfAtom;
   } /* end for */
-  return normalizationFactor_ * pdfValue;
+  pdfValue *= normalizationFactor_;
+  if (pdfValue == 0.0)
+  {
+    const Scalar logPDFValue = computeLogPDF(point);
+    if (logPDFValue != SpecFunc::LowestScalar) return std::exp(logPDFValue);
+  }
+  return pdfValue;
+}
+
+/* Get the log-PDF of the KernelMixture */
+Scalar KernelMixture::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (useApproximatePDFCDF_)
+  {
+    const Scalar pdf = computePDF(point);
+    return (pdf > 0.0) ? std::log(pdf) : SpecFunc::LowestScalar;
+  }
+  const UnsignedInteger size = sample_.getSize();
+  // Compute the log of the normalization factor in the log domain: the factor
+  // 1 / (size * prod(bandwidth)) underflows to zero for large bandwidths.
+  Scalar logNormalization = -std::log(size);
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+    logNormalization -= std::log(bandwidth_[j]);
+  Point logPDFValues(size);
+  if (dimension == 1)
+  {
+    const Scalar x = point[0];
+    const Scalar h = bandwidth_[0];
+    for (UnsignedInteger i = 0; i < size; ++i)
+      logPDFValues[i] = p_kernel_->computeLogPDF(Point(1, (x - sample_(i, 0)) / h));
+    return SpecFunc::LogSumExp(logPDFValues) + logNormalization;
+  }
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Scalar logPDFAtom = 0.0;
+    // Divide by the bandwidth instead of multiplying by its cached inverse:
+    // the inverse overflows for tiny bandwidths and 0 * infinity is NaN at a
+    // sample center, although the log-density is finite there.
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      logPDFAtom += p_kernel_->computeLogPDF(Point(1, (point[j] - sample_(i, j)) / bandwidth_[j]));
+    logPDFValues[i] = logPDFAtom;
+  } /* end for */
+  return SpecFunc::LogSumExp(logPDFValues) + logNormalization;
 }
 
 /* Get the CDF of the KernelMixture */

@@ -455,7 +455,7 @@ Point ClaytonCopula::computeQuantile(const Scalar prob,
   if (tail)
   {
     if (prob < std::sqrt(SpecFunc::ScalarEpsilon)) return Point(2, 1.0 - prob / 2.0);
-    return Point(2, std::exp((M_LN2 - log1p(std::exp(-theta_ * log1p(-prob)))) / theta_));
+    return Point(2, std::exp((M_LN2 - SpecFunc::LogSumExp(0.0, -theta_ * log1p(-prob))) / theta_));
   }
   if (1.0 - prob < std::sqrt(SpecFunc::ScalarEpsilon)) return Point(2, (1.0 + prob) / 2.0);
   return Point(2, std::exp((M_LN2 - log1p(std::pow(prob, -theta_))) / theta_));
