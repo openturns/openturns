@@ -1398,6 +1398,52 @@ Scalar SpecFunc::LogBinomialCoefficient(const UnsignedInteger n,
   return -LogBeta(k + 1.0, n - k + 1.0) - std::log1p(n);
 }
 
+// Log-sum-exp of two logarithms: log(exp(logA) + exp(logB))
+Scalar SpecFunc::LogSumExp(const Scalar logA, const Scalar logB)
+{
+  // NaN must propagate
+  if (logA != logA) return logA;
+  if (logB != logB) return logB;
+  if (logA == LowestScalar) return logB;
+  if (logB == LowestScalar) return logA;
+  const Scalar maximum = std::max(logA, logB);
+  if (maximum == Infinity) return Infinity;
+  return maximum + std::log1p(std::exp(-std::abs(logA - logB)));
+}
+
+// Log-sum-exp of a collection of logarithms
+Scalar SpecFunc::LogSumExp(const Point & logValues)
+{
+  const UnsignedInteger size = logValues.getSize();
+  if (size == 0) return LowestScalar;
+  Scalar maximum = LowestScalar;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // NaN must propagate
+    if (logValues[i] != logValues[i]) return logValues[i];
+    if (logValues[i] > maximum) maximum = logValues[i];
+  }
+  if (maximum == LowestScalar) return LowestScalar;
+  if (maximum == Infinity) return Infinity;
+  // Kahan compensated summation of the shifted exponentials. The terms are
+  // nonnegative and lie in [0, 1], so their sum is O(1): keeping the
+  // accumulators in long double gives the compensation term a wider mantissa
+  // to work with on platforms where long double is wider than double, while
+  // Kahan compensation still reduces the residual rounding error on platforms
+  // where it is not. The result is converted back to Scalar only once, at the
+  // end.
+  long double sum = 0.0L;
+  long double error = 0.0L;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const long double y = static_cast<long double>(std::exp(logValues[i] - maximum)) - error;
+    const long double t = sum + y;
+    error = (t - sum) - y;
+    sum = t;
+  }
+  return maximum + static_cast<Scalar>(std::log(sum));
+}
+
 Scalar SpecFunc::AccurateSum(const Point & v)
 {
 #ifdef OPENTURNS_HAVE_MPFR

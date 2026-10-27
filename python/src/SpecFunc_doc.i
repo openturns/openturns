@@ -1332,6 +1332,52 @@ result : float)RAW"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::LogSumExp
+R"RAW(Logarithm of a sum of exponentials.
+
+Returns the value :math:`\log\left(\sum_{i=0}^{n-1}\exp(x_i)\right)`, computed
+without overflow or underflow.
+
+Available usages:
+    LogSumExp(*logA, logB*)
+
+    LogSumExp(*logValues*)
+
+Parameters
+----------
+logA : float
+    First logarithm.
+logB : float
+    Second logarithm.
+logValues : sequence of float
+    Logarithms to sum.
+
+Returns
+-------
+result : float
+    Logarithm of the sum of the exponentials.
+    It is equal to :math:`-\infty` when the collection is empty or when every
+    term is :math:`-\infty`, and to :math:`+\infty` as soon as one term is
+    :math:`+\infty`. NaN is propagated.
+
+Notes
+-----
+The implementation uses
+:math:`\max_i x_i + \log\left(\sum_i \exp(x_i-\max_i x_i)\right)`.
+It handles infinities and propagates NaN.
+
+Examples
+--------
+>>> import math
+>>> import openturns as ot
+>>> print('%.6f' % ot.SpecFunc.LogSumExp(math.log(2.0), math.log(3.0)))
+1.609438
+>>> print('%.6f' % ot.SpecFunc.LogSumExp([math.log(2.0), math.log(3.0), -math.inf]))
+1.609438
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::Clip01
 "Clip a value on [0, 1].
 

@@ -141,8 +141,8 @@ Scalar Burr::computeLogPDF(const Point & point) const
   if (x < 0.0) return SpecFunc::LowestScalar;
   const Scalar logX = std::log(x);
   const Scalar y = c_ * logX;
-  // Stable evaluation of log1p(exp(y)): use y + log1p(exp(-y)) for y > 0 to avoid overflow
-  const Scalar log1pExpY = (y <= 0.0 ? log1p(std::exp(y)) : y + log1p(std::exp(-y)));
+  // Stable evaluation of log1p(exp(y))
+  const Scalar log1pExpY = SpecFunc::LogSumExp(0.0, y);
   // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for c_ == 1
   return std::log(c_) + std::log(k_) + ((c_ == 1.0) ? 0.0 : (c_ - 1.0) * logX) - (k_ + 1.0) * log1pExpY;
 }
@@ -155,7 +155,7 @@ Scalar Burr::computeCDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   const Scalar y = c_ * std::log(x);
-  const Scalar log1pExpY = (y <= 0.0 ? log1p(std::exp(y)) : y + log1p(std::exp(-y)));
+  const Scalar log1pExpY = SpecFunc::LogSumExp(0.0, y);
   return -expm1(-k_ * log1pExpY);
 }
 

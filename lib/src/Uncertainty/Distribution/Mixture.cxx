@@ -300,7 +300,41 @@ Scalar Mixture::computePDF(const Point & point) const
   const UnsignedInteger size = distributionCollection_.getSize();
   if (!getRange().numericallyContains(point)) return pdfValue;
   for(UnsignedInteger i = 0; i < size; ++i) pdfValue += p_[i] * distributionCollection_[i].computePDF(point);
+  // Recover from a global underflow: some atoms may have a finite log-PDF
+  // even though their PDF has underflowed to zero.
+  if (pdfValue == 0.0)
+  {
+    const Scalar logPDFValue = computeLogPDF(point);
+    if (logPDFValue != SpecFunc::LowestScalar) return std::exp(logPDFValue);
+  }
   return pdfValue;
+}
+
+/* Get the log-PDF of the Mixture */
+Scalar Mixture::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (!isDiscreteOrContinuous_)
+    throw InvalidArgumentException(HERE) << "Cannot compute the PDF of a neither continuous nor discrete Mixture.";
+  if (useApproximatePDFCDF_)
+  {
+    const Scalar pdf = computePDF(point);
+    return (pdf > 0.0) ? std::log(pdf) : SpecFunc::LowestScalar;
+  }
+  // Use the support (which honours the infinite-bound flags) rather than the
+  // numerical range: the latter uses a finite placeholder and would reject
+  // valid tail points.
+  if (!getRange().contains(point)) return SpecFunc::LowestScalar;
+  Scalar logPDFValue = SpecFunc::LowestScalar;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Zero-weight atoms do not contribute and must not produce a NaN
+    if (p_[i] > 0.0)
+      logPDFValue = SpecFunc::LogSumExp(logPDFValue, std::log(p_[i]) + distributionCollection_[i].computeLogPDF(point));
+  }
+  return logPDFValue;
 }
 
 /* Get the CDF of the Mixture */

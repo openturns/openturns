@@ -193,3 +193,11 @@ ott.assert_almost_equal(
 ott.assert_almost_equal(
     dist1D.computeProbability(ot.Interval([0.0], [0.0], [False], [False])), 1.0
 )
+
+# --- KernelMixture: the log-PDF stays finite when every kernel PDF underflows ---
+tail_kernel = ot.KernelMixture(
+    ot.Exponential(1.0), [1.0, 1.0], ot.Sample([[0.0, 0.0]])
+)
+tail_point = [800.0, 0.0]
+assert tail_kernel.computePDF(tail_point) == 0.0
+ott.assert_almost_equal(tail_kernel.computeLogPDF(tail_point), -800.0, 1e-12, 0.0)

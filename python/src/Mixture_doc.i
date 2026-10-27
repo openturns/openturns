@@ -77,3 +77,19 @@ R"RAW(Set the weights.
 Parameters
 ----------
 weights : sequence of float with each component :math:`\geq 0`.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Mixture::computeLogPDF
+R"RAW(Compute the logarithm of the probability density function.
+
+Parameters
+----------
+x : sequence of float
+    Point at which the log-PDF is evaluated.
+
+Returns
+-------
+logPDF : float
+    Logarithm of the mixture density.
+    The atoms are accumulated with a log-sum-exp, so the result remains
+    finite when every individual density has underflowed.)RAW"

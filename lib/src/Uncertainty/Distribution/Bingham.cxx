@@ -157,15 +157,6 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
   // log of the surface area of the unit sphere S^{n-1}
   const Scalar logArea = std::log(2.0) + 0.5 * n * std::log(M_PI) - SpecFunc::LogGamma(0.5 * n);
 
-  // Log-space addition, robust to infinities and to the almost-equal case
-  auto logAdd = [](const Scalar a, const Scalar b)
-  {
-    if (a == -SpecFunc::Infinity) return b;
-    if (b == -SpecFunc::Infinity) return a;
-    if (a >= b) return a + std::log1p(std::exp(b - a));
-    return b + std::log1p(std::exp(a - b));
-  };
-
   // F(zeta) = area * sum_{k>=0} S_k with
   // S_k = Gamma(n/2)/Gamma(n/2+k) * e_k and e_k = sum_{|m|=k} prod_i (1/2)_{m_i} zeta_i^{m_i} / m_i!
   // All the terms are nonnegative (canonical zeta >= 0), sum them in log-space.
@@ -199,7 +190,7 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
     if (!(eBlock > 0.0)) break;
     // log of the block sum S_k
     const Scalar logBlock = SpecFunc::LogGamma(0.5 * n) - SpecFunc::LogGamma(0.5 * n + static_cast<Scalar>(k)) + std::log(eBlock);
-    logSum = logAdd(logSum, logBlock);
+    logSum = SpecFunc::LogSumExp(logSum, logBlock);
     // Stop when the block contribution falls below the precision threshold
     if (logBlock < logSum + std::log(SpecFunc::Precision))
     {
@@ -309,8 +300,7 @@ Point Bingham::computeSecondMoments() const
       break;
     }
     // Log-space addition of the new block
-    if (logSum >= logBlock) logSum = logSum + std::log1p(std::exp(logBlock - logSum));
-    else logSum = logBlock + std::log1p(std::exp(logSum - logBlock));
+    logSum = SpecFunc::LogSumExp(logSum, logBlock);
   }
   if (converged)
   {

@@ -399,10 +399,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
           quad += diff[i] * sigmaInv_(i, j) * diff[j];
 
       const Scalar logTerm = -0.5 * quad - logNormalization_;
-      if (logSum == -SpecFunc::Infinity)
-        logSum = logTerm;
-      else
-        logSum = std::max(logSum, logTerm) + std::log1p(std::exp(-std::abs(logTerm - logSum)));
+      logSum = SpecFunc::LogSumExp(logSum, logTerm);
     }
     evaluated = true;
     }

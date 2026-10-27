@@ -41,6 +41,32 @@ x = [1.0, 2.0**53, -(2.0**53)]
 s2 = ot.SpecFunc.AccurateSum(x)
 assert s2 == 1.0, "accurate sum(x) not 1"
 
+# LogSumExp: two-argument and collection overloads
+ott.assert_almost_equal(
+    ot.SpecFunc.LogSumExp(math.log(2.0), math.log(3.0)), math.log(5.0), 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.LogSumExp([math.log(2.0), math.log(3.0)]), math.log(5.0), 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.LogSumExp([1000.0, 1001.0]), 1001.0 + math.log1p(math.exp(-1.0)), 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.LogSumExp([1000.0, 1001.0, 999.0]),
+    1001.0 + math.log(1.0 + math.exp(-1.0) + math.exp(-2.0)),
+    1e-15,
+    0.0,
+)
+assert ot.SpecFunc.LogSumExp(-math.inf, -math.inf) == -math.inf
+assert ot.SpecFunc.LogSumExp(-math.inf, 1.0) == 1.0
+assert ot.SpecFunc.LogSumExp(1.0, -math.inf) == 1.0
+assert ot.SpecFunc.LogSumExp(math.inf, 1.0) == math.inf
+assert ot.SpecFunc.LogSumExp([-math.inf, -math.inf]) == -math.inf
+assert ot.SpecFunc.LogSumExp([math.inf, 1.0]) == math.inf
+assert ot.SpecFunc.LogSumExp([]) == -math.inf
+assert math.isnan(ot.SpecFunc.LogSumExp(math.nan, 1.0))
+assert math.isnan(ot.SpecFunc.LogSumExp([1.0, math.nan]))
+
 # Clip01
 assert ot.SpecFunc.Clip01(0.2) == 0.2
 assert ot.SpecFunc.Clip01(0.2, True) == 0.8

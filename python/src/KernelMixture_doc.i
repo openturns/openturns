@@ -131,3 +131,19 @@ Returns
 -------
 sample : :class:`~openturns.Sample`
     Sample on which the kernels are centered."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelMixture::computeLogPDF
+R"RAW(Compute the logarithm of the probability density function.
+
+Parameters
+----------
+x : sequence of float
+    Point at which the log-PDF is evaluated.
+
+Returns
+-------
+logPDF : float
+    Logarithm of the kernel mixture density.
+    The atoms are accumulated with a log-sum-exp, so the result remains
+    finite when every individual kernel density has underflowed.)RAW"
