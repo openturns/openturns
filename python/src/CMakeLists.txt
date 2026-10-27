@@ -124,6 +124,7 @@ ot_add_python_module(func func_module.i
                       PointToFieldFunction.i PointToFieldFunction_doc.i
                       ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i
                       VertexValuePointToFieldFunction.i VertexValuePointToFieldFunction_doc.i
+                      MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
                       PointToPointEvaluation.i PointToPointEvaluation_doc.i
                       PointToPointConnection.i PointToPointConnection_doc.i
                       FieldToPointConnection.i FieldToPointConnection_doc.i
@@ -557,7 +558,7 @@ ot_add_python_module(experimental experimental_module.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
-MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
+                     MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      MultivariateHypergeometricFactory.i MultivariateHypergeometricFactory_doc.i
                      MultivariatePolya.i MultivariatePolya_doc.i
                      MultivariatePolyaFactory.i MultivariatePolyaFactory_doc.i
