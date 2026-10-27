@@ -87,15 +87,34 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Get the log-PDF of the CumulativeDistributionNetwork */
+  using DistributionImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
+
   /** Get the CDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
+
+  /** Get the CDF of Xi | X1, ..., Xi-1 */
+  using DistributionImplementation::computeConditionalCDF;
+  Scalar computeConditionalCDF(const Scalar xj, const Point & xcond) const override;
+
+  /** Get the PDF of Xi | X1, ..., Xi-1 */
+  using DistributionImplementation::computeConditionalPDF;
+  Scalar computeConditionalPDF(const Scalar xj, const Point & xcond) const override;
+
+  /** Get the quantile of Xi | X1, ..., Xi-1 */
+  using DistributionImplementation::computeConditionalQuantile;
+  Scalar computeConditionalQuantile(const Scalar p, const Point & xcond) const override;
 
   /** Get the i-th marginal distribution */
   Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   Distribution getMarginal(const Indices & indices) const override;
+
+  /** Check if the distribution is elliptical */
+  Bool isElliptical() const override;
 
   /** Check if the distribution is continuous */
   Bool isContinuous() const override;
@@ -128,15 +147,67 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
+  /** Rebuild the incidence caches from the collection and the graph */
+  void updateStructure();
+
   /** Extract the components of a full dimension point to feed the index distribution */
   Point reducePoint(const Point & point,
                     const UnsignedInteger index) const;
+
+  /** Compute the log of a local mixed partial derivative (or finite difference) */
+  Scalar computeLocalPartialLog(const UnsignedInteger factorIndex,
+                                const Point & localPoint,
+                                const Indices & derivativePositions) const;
+
+  /** Compute the log of a local CDF, factorised when possible */
+  Scalar computeLocalLogCDF(const UnsignedInteger factorIndex,
+                            const Point & localPoint) const;
+
+  /** Compute the log of a CDF at a finite point, factorised when possible */
+  Scalar computeFactorLogCDF(const Distribution & distribution,
+                             const DistributionCollection & univariateMarginals,
+                             const Point & localPoint) const;
+
+  /** Compute the log of a mixed partial derivative at a finite point */
+  Scalar computeFactorPartialLog(const UnsignedInteger factorIndex,
+                                 const Distribution & distribution,
+                                 const DistributionCollection & univariateMarginals,
+                                 const Point & localPoint,
+                                 const Indices & derivativePositions) const;
+
+  /** Compute the log of a mixed partial derivative of the joint CDF */
+  Scalar computePartialDerivativeLog(const Point & point,
+                                     const Indices & derivativeIndices,
+                                     const Bool useDifferences) const;
+
+  /** Compute the log of a mixed difference of the joint CDF of integral factors */
+  Scalar computeDiscretePartialLog(const Point & point,
+                                   const Indices & derivativeIndices) const;
+
+  /** Compute the log-PDF (continuous) or log-PMF (integral) */
+  Scalar computeLogPDFKernel(const Point & point,
+                             const Bool useDifferences) const;
 
   /** The collection of distribution of the cumulativeDistributionNetwork */
   DistributionPersistentCollection distributionCollection_;
 
   /** Bipartite graph corresponding to the network */
   BipartiteGraph graph_;
+
+  /** For each factor, the global indices of its variables, in local order */
+  Collection<Indices> factorVariables_;
+
+  /** For each variable, the indices of the factors containing it */
+  Collection<Indices> variableFactors_;
+
+  /** For each variable, the number of factors containing it */
+  Indices variableMultiplicity_;
+
+  /** For each independent factor, the collection of its univariate marginals */
+  Collection<DistributionCollection> factorUnivariateMarginals_;
+
+  /** Whether the variables can be partitioned into independent factor blocks */
+  Bool blockIndependent_ = false;
 
 }; /* class CumulativeDistributionNetwork */
 

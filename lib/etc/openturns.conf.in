@@ -1211,6 +1211,9 @@
   <Distribution-TailDependenceEpsilon             value_float="1.0e-12"/>
   <Distribution-TailDependenceMargin              value_float="1.0e-3"/>
 
+  <!-- OT::CumulativeDistributionNetwork parameters -->
+  <CumulativeDistributionNetwork-MaximumTerms value_int="1000000" />
+
   <!-- OT::DiscreteMarkovChain parameters -->
   <DiscreteMarkovChain-DOTArcColor value_str="black" />
   <DiscreteMarkovChain-DOTLayout value_str="dot" />

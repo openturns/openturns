@@ -22,6 +22,14 @@
 #include "openturns/CumulativeDistributionNetwork.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/Matrix.hxx"
+
+#include <algorithm>
+#include <cmath>
+#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -125,6 +133,53 @@ void CumulativeDistributionNetwork::computeRange()
   setRange(range);
 }
 
+/* Rebuild the incidence caches from the collection and the graph */
+void CumulativeDistributionNetwork::updateStructure()
+{
+  const UnsignedInteger size = distributionCollection_.getSize();
+  const UnsignedInteger dimension = graph_.getBlackNodes().getSize();
+  factorVariables_ = Collection<Indices>(size);
+  variableFactors_ = Collection<Indices>(dimension);
+  variableMultiplicity_ = Indices(dimension);
+  factorUnivariateMarginals_ = Collection<DistributionCollection>(size);
+  blockIndependent_ = true;
+  for (UnsignedInteger c = 0; c < size; ++c)
+  {
+    const UnsignedInteger localDimension = graph_.cend_at(c) - graph_.cbegin_at(c);
+    if (localDimension == 0) throw InvalidArgumentException(HERE) << "Error: the distribution " << c << " has an empty clique";
+    Indices variables(localDimension);
+    for (UnsignedInteger j = 0; j < localDimension; ++j)
+      variables[j] = graph_(c, j);
+    // Check that the black node numbers are valid and that a clique has no duplicate
+    for (UnsignedInteger j = 0; j < localDimension; ++j)
+    {
+      if (variables[j] >= dimension) throw InvalidArgumentException(HERE) << "Error: the black node " << variables[j] << " linked to the red node " << c << " is not a valid variable index (dimension=" << dimension << ")";
+      for (UnsignedInteger k = 0; k < j; ++k)
+        if (variables[k] == variables[j]) throw InvalidArgumentException(HERE) << "Error: the black node " << variables[j] << " appears twice in the clique of the red node " << c;
+    }
+    factorVariables_[c] = variables;
+    for (UnsignedInteger j = 0; j < localDimension; ++j)
+    {
+      variableFactors_[variables[j]].add(c);
+      variableMultiplicity_[variables[j]] += 1;
+    }
+    // Cache the univariate marginals of independent factors, used by the partial derivative engine
+    if ((localDimension > 1) && distributionCollection_[c].hasIndependentCopula())
+    {
+      const Distribution & distribution = distributionCollection_[c];
+      for (UnsignedInteger j = 0; j < localDimension; ++j)
+        factorUnivariateMarginals_[c].add(distribution.getMarginal(j));
+    }
+  }
+  // Every variable must belong to at least one factor, otherwise the joint law is improper
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (variableMultiplicity_[i] == 0) throw InvalidArgumentException(HERE) << "Error: the black node " << i << " is not linked to any red node";
+    if (variableMultiplicity_[i] > 1) blockIndependent_ = false;
+  }
+}
+
+
 /* Distribution collection accessor */
 void CumulativeDistributionNetwork::setDistributionCollection(const DistributionCollection & coll)
 {
@@ -143,6 +198,7 @@ void CumulativeDistributionNetwork::setDistributionCollection(const Distribution
   distributionCollection_ = coll;
   LOGINFO(OSS() << "graph=" << graph_ << ", dim=" << graph_.getBlackNodes().getSize());
   setDimension(graph_.getBlackNodes().getSize());
+  updateStructure();
   computeRange();
 }
 
@@ -169,6 +225,7 @@ void CumulativeDistributionNetwork::setGraph(const BipartiteGraph & graph)
   setParallel(parallel);
   graph_ = graph;
   setDimension(graph_.getBlackNodes().getSize());
+  updateStructure();
   computeRange();
 }
 
@@ -188,12 +245,45 @@ CumulativeDistributionNetwork * CumulativeDistributionNetwork::clone() const
 /* Get one realization of the CumulativeDistributionNetwork */
 Point CumulativeDistributionNetwork::getRealization() const
 {
+  // A network whose variables are not shared between factors is a product
+  // of independent blocks: sample each block directly.
+  if (blockIndependent_)
+  {
+    const UnsignedInteger dimension = getDimension();
+    Point realization(dimension);
+    const UnsignedInteger size = distributionCollection_.getSize();
+    for (UnsignedInteger c = 0; c < size; ++c)
+    {
+      const Point localRealization(distributionCollection_[c].getRealization());
+      const Indices & variables = factorVariables_[c];
+      for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+        realization[variables[j]] = localRealization[j];
+    }
+    return realization;
+  }
   return DistributionImplementation::getRealizationByInversion();
 }
 
 /* Get many realizations of the CumulativeDistributionNetwork */
 Sample CumulativeDistributionNetwork::getSample(const UnsignedInteger size) const
 {
+  if (blockIndependent_)
+  {
+    const UnsignedInteger dimension = getDimension();
+    Sample result(size, dimension);
+    const UnsignedInteger factorCount = distributionCollection_.getSize();
+    for (UnsignedInteger c = 0; c < factorCount; ++c)
+    {
+      const Sample localSample(distributionCollection_[c].getSample(size));
+      const Indices & variables = factorVariables_[c];
+      for (UnsignedInteger i = 0; i < size; ++i)
+        for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+          result(i, variables[j]) = localSample(i, j);
+    }
+    result.setName(getName());
+    result.setDescription(getDescription());
+    return result;
+  }
   return DistributionImplementation::getSampleByInversion(size);
 }
 
@@ -207,102 +297,1123 @@ Point CumulativeDistributionNetwork::reducePoint(const Point & point,
   return reducedPoint;
 }
 
+/* Compute the log of a local CDF, integrating out infinite coordinates exactly */
+Scalar CumulativeDistributionNetwork::computeLocalLogCDF(const UnsignedInteger factorIndex,
+    const Point & localPoint) const
+{
+  const Distribution & distribution = distributionCollection_[factorIndex];
+  const UnsignedInteger dimension = distribution.getDimension();
+  // A coordinate at -infinity gives a zero CDF
+  Indices finitePositions(0);
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    if (localPoint[j] == SpecFunc::LowestScalar) return -SpecFunc::Infinity;
+    if (localPoint[j] != SpecFunc::Infinity) finitePositions.add(j);
+  }
+  // All coordinates are at +infinity: the CDF is one
+  if (finitePositions.getSize() == 0) return 0.0;
+  if (finitePositions.getSize() == dimension)
+    return computeFactorLogCDF(distribution, factorUnivariateMarginals_[factorIndex], localPoint);
+  // Integrate out the coordinates at +infinity by using the exact marginal
+  Point argument(finitePositions.getSize());
+  for (UnsignedInteger k = 0; k < finitePositions.getSize(); ++k)
+    argument[k] = localPoint[finitePositions[k]];
+  const Distribution marginal(distribution.getMarginal(finitePositions));
+  return computeFactorLogCDF(marginal, DistributionCollection(0), argument);
+}
+
+/* Compute the log of a local CDF at a finite point, factorised when possible */
+Scalar CumulativeDistributionNetwork::computeFactorLogCDF(const Distribution & distribution,
+    const DistributionCollection & univariateMarginals,
+    const Point & localPoint) const
+{
+  const UnsignedInteger dimension = distribution.getDimension();
+  // For an independent factor the log-CDF is a sum of univariate log-CDFs:
+  // this keeps the result finite even when their product underflows.
+  if ((dimension > 1) && distribution.hasIndependentCopula())
+  {
+    const Bool cached = (univariateMarginals.getSize() == dimension);
+    Scalar logCDF = 0.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      const Scalar cdf = cached ? univariateMarginals[j].computeCDF(localPoint[j])
+                        : distribution.getMarginal(j).computeCDF(localPoint[j]);
+      if (!(cdf > 0.0)) return -SpecFunc::Infinity;
+      logCDF += std::log(cdf);
+    }
+    return logCDF;
+  }
+  const Scalar cdf = distribution.computeCDF(localPoint);
+  return (cdf > 0.0) ? std::log(cdf) : -SpecFunc::Infinity;
+}
+
+/* Compute the log of a local mixed partial derivative (or finite difference) */
+Scalar CumulativeDistributionNetwork::computeLocalPartialLog(const UnsignedInteger factorIndex,
+    const Point & localPoint,
+    const Indices & derivativePositions) const
+{
+  const Distribution & distribution = distributionCollection_[factorIndex];
+  const UnsignedInteger dimension = distribution.getDimension();
+  // A coordinate at -infinity gives a zero CDF
+  Indices finitePositions(0);
+  for (UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    if (localPoint[j] == SpecFunc::LowestScalar) return -SpecFunc::Infinity;
+    if (localPoint[j] != SpecFunc::Infinity) finitePositions.add(j);
+  }
+  // A derivative taken at +infinity vanishes
+  for (UnsignedInteger k = 0; k < derivativePositions.getSize(); ++k)
+    if (localPoint[derivativePositions[k]] == SpecFunc::Infinity) return -SpecFunc::Infinity;
+  if (finitePositions.getSize() == dimension)
+    return computeFactorPartialLog(factorIndex, distribution, factorUnivariateMarginals_[factorIndex], localPoint, derivativePositions);
+  // All coordinates are at +infinity: only the CDF remains
+  if (finitePositions.getSize() == 0) return 0.0;
+  // Integrate out the coordinates at +infinity by using the exact marginal
+  Point argument(finitePositions.getSize());
+  for (UnsignedInteger k = 0; k < finitePositions.getSize(); ++k)
+    argument[k] = localPoint[finitePositions[k]];
+  Indices marginalDerivative(derivativePositions.getSize());
+  for (UnsignedInteger k = 0; k < derivativePositions.getSize(); ++k)
+  {
+    UnsignedInteger position = 0;
+    while ((position < finitePositions.getSize()) && (finitePositions[position] != derivativePositions[k])) ++position;
+    if (position == finitePositions.getSize()) throw InternalException(HERE) << "Error: inconsistent derivative position";
+    marginalDerivative[k] = position;
+  }
+  const Distribution marginal(distribution.getMarginal(finitePositions));
+  return computeFactorPartialLog(factorIndex, marginal, DistributionCollection(0), argument, marginalDerivative);
+}
+
+/* Compute the log of a local mixed partial derivative (or finite difference)
+   at a finite point */
+Scalar CumulativeDistributionNetwork::computeFactorPartialLog(const UnsignedInteger factorIndex,
+    const Distribution & distribution,
+    const DistributionCollection & univariateMarginals,
+    const Point & localPoint,
+    const Indices & derivativePositions) const
+{
+  const UnsignedInteger dimension = distribution.getDimension();
+
+  const UnsignedInteger size = derivativePositions.getSize();
+  // No derivative: local CDF
+  if (size == 0)
+    return computeFactorLogCDF(distribution, univariateMarginals, localPoint);
+  // Full derivative: local density or probability mass
+  if (size == dimension)
+    return distribution.computeLogPDF(localPoint);
+  // Independent factors: the local derivative factorises exactly
+  if (distribution.hasIndependentCopula())
+  {
+    Indices derivativeFlags(dimension, 0);
+    for (UnsignedInteger k = 0; k < size; ++k) derivativeFlags[derivativePositions[k]] = 1;
+    const DistributionCollection & marginals = univariateMarginals;
+    const Bool cached = (marginals.getSize() == dimension);
+    Scalar logValue = 0.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      if (derivativeFlags[j])
+      {
+        const Scalar logPDF = cached ? marginals[j].computeLogPDF(localPoint[j])
+                             : distribution.getMarginal(j).computeLogPDF(localPoint[j]);
+        if (logPDF == -SpecFunc::Infinity) return -SpecFunc::Infinity;
+        logValue += logPDF;
+      }
+      else
+      {
+        const Scalar cdf = cached ? marginals[j].computeCDF(localPoint[j])
+                          : distribution.getMarginal(j).computeCDF(localPoint[j]);
+        if (!(cdf > 0.0)) return -SpecFunc::Infinity;
+        logValue += std::log(cdf);
+      }
+    }
+    return logValue;
+  }
+  // Gaussian factors: exact Schur complement formula
+  const Normal *p_normal = dynamic_cast<const Normal *>(distribution.getImplementation().get());
+  if (p_normal)
+  {
+    Bool success = false;
+    Scalar logValue = -SpecFunc::Infinity;
+    try
+    {
+      Indices derivativeFlags(dimension, 0);
+      for (UnsignedInteger k = 0; k < size; ++k) derivativeFlags[derivativePositions[k]] = 1;
+      Indices complement(0);
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        if (!derivativeFlags[j]) complement.add(j);
+      const UnsignedInteger complementSize = complement.getSize();
+      const Point mean(p_normal->getMean());
+      const CovarianceMatrix covariance(p_normal->getCovariance());
+      CovarianceMatrix covarianceSS(size);
+      Matrix covarianceST(size, complementSize);
+      CovarianceMatrix covarianceTT(complementSize);
+      for (UnsignedInteger a = 0; a < size; ++a)
+        for (UnsignedInteger b = 0; b < size; ++b)
+          covarianceSS(a, b) = covariance(derivativePositions[a], derivativePositions[b]);
+      for (UnsignedInteger a = 0; a < size; ++a)
+        for (UnsignedInteger b = 0; b < complementSize; ++b)
+          covarianceST(a, b) = covariance(derivativePositions[a], complement[b]);
+      for (UnsignedInteger a = 0; a < complementSize; ++a)
+        for (UnsignedInteger b = 0; b < complementSize; ++b)
+          covarianceTT(a, b) = covariance(complement[a], complement[b]);
+      const Matrix solution(covarianceSS.solveLinearSystem(covarianceST));
+      const Matrix correction(covarianceST.transpose() * solution);
+      CovarianceMatrix conditionalCovariance(complementSize);
+      for (UnsignedInteger a = 0; a < complementSize; ++a)
+        for (UnsignedInteger b = 0; b <= a; ++b)
+          conditionalCovariance(a, b) = covarianceTT(a, b) - correction(a, b);
+      Point meanS(size);
+      Point meanT(complementSize);
+      Point xS(size);
+      Point xT(complementSize);
+      for (UnsignedInteger a = 0; a < size; ++a)
+      {
+        meanS[a] = mean[derivativePositions[a]];
+        xS[a] = localPoint[derivativePositions[a]];
+      }
+      for (UnsignedInteger a = 0; a < complementSize; ++a)
+      {
+        meanT[a] = mean[complement[a]];
+        xT[a] = localPoint[complement[a]];
+      }
+      const Point conditionalMean(meanT + solution.transpose() * (xS - meanS));
+      const Normal marginalS(meanS, covarianceSS);
+      const Normal conditionalT(conditionalMean, conditionalCovariance);
+      const Scalar logDensity = marginalS.computeLogPDF(xS);
+      const Scalar conditionalCDF = conditionalT.computeCDF(xT);
+      if (std::isfinite(logDensity) && (conditionalCDF > 0.0))
+      {
+        logValue = logDensity + std::log(conditionalCDF);
+        success = true;
+      }
+    }
+    catch (const Exception &)
+    {
+      // Singular covariance: fall back to a generic local derivative
+    }
+    if (success) return logValue;
+  }
+  // Singleton complement: marginal density over the differentiated
+  // coordinates times the conditional CDF of the last coordinate
+  if (dimension - size == 1)
+  {
+    UnsignedInteger complementPosition = dimension;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      Bool differentiated = false;
+      for (UnsignedInteger k = 0; k < size; ++k)
+        if (derivativePositions[k] == j)
+        {
+          differentiated = true;
+          break;
+        }
+      if (!differentiated)
+      {
+        complementPosition = j;
+        break;
+      }
+    }
+    if (complementPosition == dimension) throw InternalException(HERE) << "Error: inconsistent derivative positions";
+    Indices permutation(0);
+    for (UnsignedInteger k = 0; k < size; ++k) permutation.add(derivativePositions[k]);
+    permutation.add(complementPosition);
+    const Distribution permuted(distribution.getMarginal(permutation));
+    Point xS(size);
+    for (UnsignedInteger k = 0; k < size; ++k) xS[k] = localPoint[derivativePositions[k]];
+    Indices marginalIndices(size);
+    marginalIndices.fill();
+    const Scalar logDensity = permuted.getMarginal(marginalIndices).computeLogPDF(xS);
+    if (logDensity == -SpecFunc::Infinity) return -SpecFunc::Infinity;
+    const Scalar conditionalCDF = permuted.computeConditionalCDF(localPoint[complementPosition], xS);
+    if (!(conditionalCDF > 0.0)) return -SpecFunc::Infinity;
+    return logDensity + std::log(conditionalCDF);
+  }
+  // The public services only request local derivatives over a prefix of the
+  // variables. After the cases above, a factor that contains the conditioned
+  // variable has a singleton complement and a factor that does not contain it
+  // is fully differentiated. Reaching this point would mean that the local
+  // assignment cache and the request disagree.
+  throw InternalException(HERE) << "Error: inconsistent local derivative configuration for factor " << factorIndex;
+}
+
+/* Compute the log of a mixed difference of the joint CDF of integral factors.
+
+   For a joint CDF F = prod_c F_c and a set C of integer variables, the mixed
+   backward difference is
+
+     Delta_C F(x) = sum_{R subset C} (-1)^|R|
+                      prod_c F_c(x_j - 1_{j in R}, j in C, x_j, j not in C),
+
+   see the inclusion-exclusion form of the product rule for finite differences.
+   The sum is a partition function over binary variables R_j, evaluated by
+   variable elimination. */
+Scalar CumulativeDistributionNetwork::computeDiscretePartialLog(const Point & point,
+    const Indices & derivativeIndices) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger factorCount = distributionCollection_.getSize();
+  Indices derivative(dimension, 0);
+  Indices derivativeList(0);
+  for (UnsignedInteger k = 0; k < derivativeIndices.getSize(); ++k)
+  {
+    const UnsignedInteger index = derivativeIndices[k];
+    if (index >= dimension) throw InvalidArgumentException(HERE) << "Error: the derivative index " << index << " is not in the range [0, " << dimension - 1 << "]";
+    if (derivative[index]) continue;
+    derivative[index] = 1;
+    derivativeList.add(index);
+  }
+  const UnsignedInteger derivativeSize = derivativeList.getSize();
+  if (derivativeSize == 0)
+  {
+    Scalar logCDF = 0.0;
+    for (UnsignedInteger c = 0; c < factorCount; ++c)
+    {
+      const Scalar factorLogCDF = computeLocalLogCDF(c, reducePoint(point, c));
+      if (factorLogCDF == -SpecFunc::Infinity) return -SpecFunc::Infinity;
+      logCDF += factorLogCDF;
+    }
+    return logCDF;
+  }
+  const UnsignedInteger maximumTerms = ResourceMap::GetAsUnsignedInteger("CumulativeDistributionNetwork-MaximumTerms");
+
+  // A table over the binary variables of a factor scope
+  struct LocalFactor
+  {
+    Indices scope;
+    Collection<long double> values;
+  };
+
+  Collection<LocalFactor> factors(0);
+  long double constant = 1.0L;
+  for (UnsignedInteger c = 0; c < factorCount; ++c)
+  {
+    const Distribution & distribution = distributionCollection_[c];
+    const Indices & variables = factorVariables_[c];
+    const Point localPoint(reducePoint(point, c));
+    // A coordinate at -infinity gives a zero factor CDF. Coordinates at
+    // +infinity are integrated out exactly, using the factor marginal.
+    Indices finitePositions(0);
+    for (UnsignedInteger j = 0; j < localPoint.getDimension(); ++j)
+    {
+      if (localPoint[j] == SpecFunc::LowestScalar) return -SpecFunc::Infinity;
+      if (localPoint[j] != SpecFunc::Infinity) finitePositions.add(j);
+    }
+    Indices localDerivative(0);
+    Bool derivativeAtInfinity = false;
+    for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+      if (derivative[variables[j]])
+      {
+        localDerivative.add(j);
+        if (localPoint[j] == SpecFunc::Infinity) derivativeAtInfinity = true;
+      }
+    // A difference taken at +infinity vanishes
+    if (derivativeAtInfinity) return -SpecFunc::Infinity;
+    Distribution factorDistribution(distribution);
+    Point factorPoint(localPoint);
+    Indices factorDerivative(localDerivative);
+    if (finitePositions.getSize() < variables.getSize())
+    {
+      // All coordinates are at +infinity and there is no derivative: CDF=1
+      if (finitePositions.getSize() == 0) continue;
+      factorDistribution = distribution.getMarginal(finitePositions);
+      factorPoint = Point(finitePositions.getSize());
+      for (UnsignedInteger k = 0; k < finitePositions.getSize(); ++k)
+        factorPoint[k] = localPoint[finitePositions[k]];
+      factorDerivative = Indices(localDerivative.getSize());
+      for (UnsignedInteger k = 0; k < localDerivative.getSize(); ++k)
+      {
+        UnsignedInteger position = 0;
+        while ((position < finitePositions.getSize()) && (finitePositions[position] != localDerivative[k])) ++position;
+        if (position == finitePositions.getSize()) throw InternalException(HERE) << "Error: inconsistent discrete derivative position";
+        factorDerivative[k] = position;
+      }
+    }
+    const UnsignedInteger order = factorDerivative.getSize();
+    if (order == 0)
+    {
+      const Scalar cdf = factorDistribution.computeCDF(factorPoint);
+      if (!(cdf > 0.0)) return -SpecFunc::Infinity;
+      constant *= static_cast<long double>(cdf);
+      continue;
+    }
+    if ((order >= std::numeric_limits<UnsignedInteger>::digits) || ((UnsignedInteger(1) << order) > maximumTerms))
+      throw NotYetImplementedException(HERE) << "Error: the factor " << c << " has " << order << " differentiated variables, above CumulativeDistributionNetwork-MaximumTerms=" << maximumTerms;
+    LocalFactor factor;
+    factor.scope = Indices(order);
+    factor.values.resize(UnsignedInteger(1) << order);
+    for (UnsignedInteger b = 0; b < order; ++b)
+      factor.scope[b] = variables[localDerivative[b]];
+    for (UnsignedInteger mask = 0; mask < factor.values.getSize(); ++mask)
+    {
+      Point argument(factorPoint);
+      for (UnsignedInteger b = 0; b < order; ++b)
+        if (mask & (UnsignedInteger(1) << b))
+          argument[factorDerivative[b]] -= 1.0;
+      factor.values[mask] = static_cast<long double>(factorDistribution.computeCDF(argument));
+    }
+    factors.add(factor);
+  }
+  // Sign of each binary variable in the inclusion-exclusion sum
+  for (UnsignedInteger k = 0; k < derivativeSize; ++k)
+  {
+    LocalFactor signFactor;
+    signFactor.scope = Indices(1, derivativeList[k]);
+    signFactor.values.resize(2);
+    signFactor.values[0] = 1.0L;
+    signFactor.values[1] = -1.0L;
+    factors.add(signFactor);
+  }
+
+  // Variable elimination, choosing the variable with the smallest degree
+  Indices eliminated(dimension, 0);
+  UnsignedInteger remaining = derivativeSize;
+  while (remaining > 0)
+  {
+    UnsignedInteger variable = dimension;
+    UnsignedInteger bestDegree = std::numeric_limits<UnsignedInteger>::max();
+    for (UnsignedInteger k = 0; k < derivativeSize; ++k)
+    {
+      const UnsignedInteger candidate = derivativeList[k];
+      if (eliminated[candidate]) continue;
+      UnsignedInteger degree = 0;
+      for (UnsignedInteger f = 0; f < factors.getSize(); ++f)
+      {
+        const Indices & scope = factors[f].scope;
+        for (UnsignedInteger j = 0; j < scope.getSize(); ++j)
+          if (scope[j] == candidate)
+          {
+            ++degree;
+            break;
+          }
+      }
+      if (degree < bestDegree)
+      {
+        bestDegree = degree;
+        variable = candidate;
+      }
+    }
+    if (variable == dimension) throw InternalException(HERE) << "Error: inconsistent discrete factor graph";
+    if (bestDegree == 0) return -SpecFunc::Infinity;
+
+    // Gather the factors containing the variable
+    Collection<LocalFactor> bucket(0);
+    Collection<LocalFactor> kept(0);
+    for (UnsignedInteger f = 0; f < factors.getSize(); ++f)
+    {
+      const Indices & scope = factors[f].scope;
+      Bool found = false;
+      for (UnsignedInteger j = 0; j < scope.getSize(); ++j)
+        if (scope[j] == variable)
+        {
+          found = true;
+          break;
+        }
+      if (found) bucket.add(factors[f]);
+      else kept.add(factors[f]);
+    }
+    factors = kept;
+
+    // Union of the scopes
+    Indices unionScope(0);
+    for (UnsignedInteger f = 0; f < bucket.getSize(); ++f)
+    {
+      const Indices & scope = bucket[f].scope;
+      for (UnsignedInteger j = 0; j < scope.getSize(); ++j)
+      {
+        Bool found = false;
+        for (UnsignedInteger u = 0; u < unionScope.getSize(); ++u)
+          if (unionScope[u] == scope[j])
+          {
+            found = true;
+            break;
+          }
+        if (!found) unionScope.add(scope[j]);
+      }
+    }
+    std::sort(unionScope.begin(), unionScope.end());
+    const UnsignedInteger unionSize = unionScope.getSize();
+    if ((unionSize >= std::numeric_limits<UnsignedInteger>::digits) || ((UnsignedInteger(1) << unionSize) > maximumTerms))
+      throw NotYetImplementedException(HERE) << "Error: the discrete variable elimination requires more than CumulativeDistributionNetwork-MaximumTerms=" << maximumTerms << " table entries";
+    const UnsignedInteger unionSizeTable = UnsignedInteger(1) << unionSize;
+    Collection<long double> product(unionSizeTable, 1.0L);
+    for (UnsignedInteger f = 0; f < bucket.getSize(); ++f)
+    {
+      const Indices & scope = bucket[f].scope;
+      Indices mapping(scope.getSize());
+      for (UnsignedInteger j = 0; j < scope.getSize(); ++j)
+      {
+        mapping[j] = unionSize;
+        for (UnsignedInteger u = 0; u < unionSize; ++u)
+          if (unionScope[u] == scope[j])
+          {
+            mapping[j] = u;
+            break;
+          }
+        if (mapping[j] == unionSize) throw InternalException(HERE) << "Error: inconsistent discrete factor scope";
+      }
+      for (UnsignedInteger mask = 0; mask < unionSizeTable; ++mask)
+      {
+        UnsignedInteger localMask = 0;
+        for (UnsignedInteger j = 0; j < scope.getSize(); ++j)
+          if (mask & (UnsignedInteger(1) << mapping[j]))
+            localMask |= UnsignedInteger(1) << j;
+        product[mask] *= bucket[f].values[localMask];
+      }
+    }
+
+    // Sum over the eliminated variable
+    UnsignedInteger position = 0;
+    while ((position < unionSize) && (unionScope[position] != variable)) ++position;
+    if (position == unionSize) throw InternalException(HERE) << "Error: inconsistent discrete variable elimination";
+    Indices reducedScope(0);
+    for (UnsignedInteger u = 0; u < unionSize; ++u)
+      if (u != position) reducedScope.add(unionScope[u]);
+    const UnsignedInteger reducedSize = reducedScope.getSize();
+    Collection<long double> reduced(UnsignedInteger(1) << reducedSize, 0.0L);
+    const UnsignedInteger lowMask = (UnsignedInteger(1) << position) - 1;
+    for (UnsignedInteger mask = 0; mask < unionSizeTable; ++mask)
+      if (!(mask & (UnsignedInteger(1) << position)))
+      {
+        const UnsignedInteger reducedMask = (mask & lowMask) | ((mask >> (position + 1)) << position);
+        reduced[reducedMask] += product[mask] + product[mask | (UnsignedInteger(1) << position)];
+      }
+    if (reducedSize == 0) constant *= reduced[0];
+    else
+    {
+      LocalFactor reducedFactor;
+      reducedFactor.scope = reducedScope;
+      reducedFactor.values = reduced;
+      factors.add(reducedFactor);
+    }
+    eliminated[variable] = 1;
+    --remaining;
+  }
+  if (!factors.isEmpty()) throw InternalException(HERE) << "Error: discrete variable elimination left uneliminated factors";
+  if (!(constant > 0.0L)) return -SpecFunc::Infinity;
+  return std::log(static_cast<Scalar>(constant));
+}
+
+/* Compute the log of a mixed partial derivative of the joint CDF.
+
+   The derivative-sum-product expansion implemented below is described in:
+   J. C. Huang and B. J. Frey, "Cumulative distribution networks and the
+   derivative-sum-product algorithm", Proceedings of the 24th Conference on
+   Uncertainty in Artificial Intelligence (UAI 2008), PMLR R6:290-297, 2008,
+   arXiv:1206.3259. The joint CDF is a product of factor CDFs; each
+   differentiated variable is assigned to exactly one of the factors that
+   contain it, and the resulting assignments are summed in log domain.
+   Forest components are processed by dynamic programming, cyclic components
+   by explicit enumeration. */
+Scalar CumulativeDistributionNetwork::computePartialDerivativeLog(const Point & point,
+    const Indices & derivativeIndices,
+    const Bool useDifferences) const
+{
+  if (useDifferences) return computeDiscretePartialLog(point, derivativeIndices);
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger factorCount = distributionCollection_.getSize();
+  const UnsignedInteger derivativeSize = derivativeIndices.getSize();
+  // No derivative: the joint CDF
+  if (derivativeSize == 0)
+  {
+    Scalar logCDF = 0.0;
+    for (UnsignedInteger c = 0; c < factorCount; ++c)
+    {
+      const Scalar factorLogCDF = computeLocalLogCDF(c, reducePoint(point, c));
+      if (factorLogCDF == -SpecFunc::Infinity) return -SpecFunc::Infinity;
+      logCDF += factorLogCDF;
+    }
+    return logCDF;
+  }
+  Indices derivative(dimension, 0);
+  for (UnsignedInteger k = 0; k < derivativeSize; ++k)
+  {
+    const UnsignedInteger index = derivativeIndices[k];
+    if (index >= dimension) throw InvalidArgumentException(HERE) << "Error: the derivative index " << index << " is not in the range [0, " << dimension - 1 << "]";
+    derivative[index] = 1;
+  }
+  const UnsignedInteger maximumTerms = ResourceMap::GetAsUnsignedInteger("CumulativeDistributionNetwork-MaximumTerms");
+  // Local points, local derivative tables and constant factors
+  Collection<Point> localPoints(factorCount);
+  Collection<Indices> forcedPositions(factorCount);
+  Collection<Indices> freePositions(factorCount);
+  Collection<Point> tables(factorCount);
+  Indices active(factorCount, 0);
+  Scalar constantLog = 0.0;
+  for (UnsignedInteger c = 0; c < factorCount; ++c)
+  {
+    localPoints[c] = reducePoint(point, c);
+    Indices forced(0);
+    Indices free(0);
+    const Indices & variables = factorVariables_[c];
+    for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+    {
+      const UnsignedInteger variable = variables[j];
+      if (!derivative[variable]) continue;
+      if (variableMultiplicity_[variable] == 1) forced.add(j);
+      else free.add(j);
+    }
+    forcedPositions[c] = forced;
+    freePositions[c] = free;
+    if ((forced.getSize() == 0) && (free.getSize() == 0))
+    {
+      // This factor is only evaluated, not differentiated: it is a constant
+      const Scalar factorLogCDF = computeLocalLogCDF(c, localPoints[c]);
+      if (factorLogCDF == -SpecFunc::Infinity) return -SpecFunc::Infinity;
+      constantLog += factorLogCDF;
+      continue;
+    }
+    active[c] = 1;
+    const UnsignedInteger freeSize = free.getSize();
+    if ((freeSize >= std::numeric_limits<UnsignedInteger>::digits) || ((UnsignedInteger(1) << freeSize) > maximumTerms))
+      throw NotYetImplementedException(HERE) << "Error: the factor " << c << " has " << freeSize << " free variables, above CumulativeDistributionNetwork-MaximumTerms=" << maximumTerms;
+    const UnsignedInteger tableSize = UnsignedInteger(1) << freeSize;
+    tables[c].resize(tableSize);
+    for (UnsignedInteger mask = 0; mask < tableSize; ++mask)
+    {
+      Indices positions(forced);
+      for (UnsignedInteger b = 0; b < freeSize; ++b)
+        if (mask & (UnsignedInteger(1) << b)) positions.add(free[b]);
+      tables[c][mask] = computeLocalPartialLog(c, localPoints[c], positions);
+    }
+  }
+  // Position of the free variables in the local derivative tables. The
+  // number of free variables is the "no bit" sentinel.
+  Collection<Indices> freeBit(factorCount);
+  for (UnsignedInteger c = 0; c < factorCount; ++c)
+  {
+    if (!active[c]) continue;
+    freeBit[c] = Indices(factorVariables_[c].getSize(), freePositions[c].getSize());
+    for (UnsignedInteger b = 0; b < freePositions[c].getSize(); ++b)
+      freeBit[c][freePositions[c][b]] = b;
+  }
+  // Connected components of the factor graph restricted to derivative variables
+  Indices root(factorCount);
+  for (UnsignedInteger c = 0; c < factorCount; ++c) root[c] = c;
+  const auto findRoot = [&root](UnsignedInteger c)
+  {
+    while (root[c] != c)
+    {
+      root[c] = root[root[c]];
+      c = root[c];
+    }
+    return c;
+  };
+  for (UnsignedInteger k = 0; k < derivativeSize; ++k)
+  {
+    const UnsignedInteger variable = derivativeIndices[k];
+    if (variableMultiplicity_[variable] < 2) continue;
+    const Indices & factors = variableFactors_[variable];
+    for (UnsignedInteger incidence = 1; incidence < factors.getSize(); ++incidence)
+    {
+      const UnsignedInteger a = findRoot(factors[0]);
+      const UnsignedInteger b = findRoot(factors[incidence]);
+      if (a != b) root[b] = a;
+    }
+  }
+  Collection<Indices> groups(factorCount);
+  for (UnsignedInteger c = 0; c < factorCount; ++c)
+    if (active[c]) groups[findRoot(c)].add(c);
+  // Connected components of the factor graph are independent: their
+  // derivatives multiply, hence their logarithms add.
+  Scalar totalLog = 0.0;
+  for (UnsignedInteger groupIndex = 0; groupIndex < factorCount; ++groupIndex)
+  {
+    const Indices & group = groups[groupIndex];
+    if (group.isEmpty()) continue;
+    // Variables of the induced component
+    Indices inGroupVariable(dimension, 0);
+    Indices groupVariables(0);
+    UnsignedInteger edges = 0;
+    for (UnsignedInteger g = 0; g < group.getSize(); ++g)
+    {
+      const Indices & variables = factorVariables_[group[g]];
+      for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+      {
+        const UnsignedInteger variable = variables[j];
+        if (derivative[variable] && !inGroupVariable[variable])
+        {
+          inGroupVariable[variable] = 1;
+          groupVariables.add(variable);
+          edges += variableMultiplicity_[variable];
+        }
+      }
+    }
+    const Bool isTree = (edges + 1 == group.getSize() + groupVariables.getSize());
+    Scalar groupLog = -SpecFunc::Infinity;
+    if (isTree)
+    {
+      // Root the tree at the first factor and compute bottom-up messages.
+      // Parent indices use the dimension (resp. the factor count) as the
+      // "no parent" sentinel; levels are read only for visited nodes.
+      Indices factorParentVariable(factorCount, dimension);
+      Indices variableParentFactor(dimension, factorCount);
+      Indices factorLevel(factorCount);
+      Indices variableLevel(dimension);
+      Indices factorVisited(factorCount, 0);
+      Indices variableVisited(dimension, 0);
+      struct TraversalNode
+      {
+        TraversalNode()
+          : isVariable_(false)
+          , index_(0)
+        {}
+        TraversalNode(const Bool isVariable, const UnsignedInteger index)
+          : isVariable_(isVariable)
+          , index_(index)
+        {}
+        Bool isVariable_;
+        UnsignedInteger index_;
+      };
+      Collection<TraversalNode> order;
+      Indices factorQueue(0);
+      const UnsignedInteger rootFactor = group[0];
+      factorVisited[rootFactor] = 1;
+      factorLevel[rootFactor] = 0;
+      order.add(TraversalNode(false, rootFactor));
+      factorQueue.add(rootFactor);
+      for (UnsignedInteger queueIndex = 0; queueIndex < factorQueue.getSize(); ++queueIndex)
+      {
+        const UnsignedInteger c = factorQueue[queueIndex];
+        const Indices & variables = factorVariables_[c];
+        for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+        {
+          const UnsignedInteger variable = variables[j];
+          if (!derivative[variable] || variableVisited[variable]) continue;
+          variableVisited[variable] = 1;
+          variableLevel[variable] = factorLevel[c] + 1;
+          variableParentFactor[variable] = c;
+          order.add(TraversalNode(true, variable));
+          const Indices & factors = variableFactors_[variable];
+          for (UnsignedInteger incidence = 0; incidence < factors.getSize(); ++incidence)
+          {
+            const UnsignedInteger other = factors[incidence];
+            if ((other == c) || factorVisited[other]) continue;
+            factorVisited[other] = 1;
+            factorLevel[other] = variableLevel[variable] + 1;
+            factorParentVariable[other] = variable;
+            order.add(TraversalNode(false, other));
+            factorQueue.add(other);
+          }
+        }
+      }
+      Point logFactorOut(factorCount, 0.0);
+      Point logFactorIn(factorCount, 0.0);
+      Point logVariableOut(dimension, 0.0);
+      Point logVariableIn(dimension, 0.0);
+      for (Collection<TraversalNode>::const_reverse_iterator it = order.rbegin(); it != order.rend(); ++it)
+      {
+        if (it->isVariable_)
+        {
+          // Variable to its parent factor: in when differentiated in the parent, out otherwise
+          const UnsignedInteger variable = it->index_;
+          const Indices & factors = variableFactors_[variable];
+          Point outs(0);
+          Point ins(0);
+          for (UnsignedInteger incidence = 0; incidence < factors.getSize(); ++incidence)
+          {
+            const UnsignedInteger c = factors[incidence];
+            if (c == variableParentFactor[variable]) continue;
+            outs.add(logFactorOut[c]);
+            ins.add(logFactorIn[c]);
+          }
+          if (outs.isEmpty())
+          {
+            logVariableIn[variable] = 0.0;
+            logVariableOut[variable] = -SpecFunc::Infinity;
+          }
+          else
+          {
+            Scalar sumOut = 0.0;
+            for (UnsignedInteger child = 0; child < outs.getSize(); ++child) sumOut += outs[child];
+            logVariableIn[variable] = sumOut;
+            Scalar total = -SpecFunc::Infinity;
+            for (UnsignedInteger chosen = 0; chosen < outs.getSize(); ++chosen)
+            {
+              Scalar term = ins[chosen];
+              for (UnsignedInteger child = 0; child < outs.getSize(); ++child)
+                if (child != chosen) term += outs[child];
+              total = SpecFunc::LogSumExp(total, term);
+            }
+            logVariableOut[variable] = total;
+          }
+        }
+        else
+        {
+          // Factor to its parent variable
+          const UnsignedInteger c = it->index_;
+          const Indices & variables = factorVariables_[c];
+          Indices childVariables(0);
+          Indices childBits(0);
+          const UnsignedInteger noBit = freePositions[c].getSize();
+          for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+          {
+            const UnsignedInteger variable = variables[j];
+            if (!derivative[variable]) continue;
+            if (variable == factorParentVariable[c]) continue;
+            if (variableMultiplicity_[variable] == 1) continue;
+            const UnsignedInteger bit = freeBit[c][j];
+            if (bit == noBit) throw InternalException(HERE) << "Error: inconsistent free variable cache";
+            childVariables.add(variable);
+            childBits.add(bit);
+          }
+          const UnsignedInteger parentVariable = factorParentVariable[c];
+          const Bool hasParent = (parentVariable != dimension);
+          UnsignedInteger parentBit = 0;
+          if (hasParent)
+          {
+            parentBit = noBit;
+            for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+              if (variables[j] == parentVariable)
+              {
+                parentBit = freeBit[c][j];
+                break;
+              }
+            if (parentBit == noBit) throw InternalException(HERE) << "Error: inconsistent parent variable cache";
+          }
+          const UnsignedInteger childCount = childVariables.getSize();
+          if ((childCount >= std::numeric_limits<UnsignedInteger>::digits) || ((UnsignedInteger(1) << childCount) > maximumTerms))
+            throw NotYetImplementedException(HERE) << "Error: the factor " << c << " has " << childCount << " free children, above CumulativeDistributionNetwork-MaximumTerms=" << maximumTerms;
+          const UnsignedInteger subsetCount = UnsignedInteger(1) << childCount;
+          Scalar logOut = -SpecFunc::Infinity;
+          Scalar logIn = -SpecFunc::Infinity;
+          for (UnsignedInteger subset = 0; subset < subsetCount; ++subset)
+          {
+            UnsignedInteger tableMask = 0;
+            Scalar prefix = 0.0;
+            for (UnsignedInteger b = 0; b < childCount; ++b)
+            {
+              if (subset & (UnsignedInteger(1) << b))
+              {
+                tableMask |= UnsignedInteger(1) << childBits[b];
+                prefix += logVariableIn[childVariables[b]];
+              }
+              else
+                prefix += logVariableOut[childVariables[b]];
+            }
+            logOut = SpecFunc::LogSumExp(logOut, tables[c][tableMask] + prefix);
+            if (hasParent)
+              logIn = SpecFunc::LogSumExp(logIn, tables[c][tableMask | (UnsignedInteger(1) << parentBit)] + prefix);
+          }
+          if (hasParent)
+          {
+            logFactorOut[c] = logOut;
+            logFactorIn[c] = logIn;
+          }
+          else
+            groupLog = logOut;
+        }
+      }
+    }
+    else
+    {
+      // Cyclic component: explicit enumeration of the assignments
+      Indices freeVariables(0);
+      for (UnsignedInteger position = 0; position < groupVariables.getSize(); ++position)
+        if (variableMultiplicity_[groupVariables[position]] > 1) freeVariables.add(groupVariables[position]);
+      UnsignedInteger termCount = 1;
+      for (UnsignedInteger position = 0; position < freeVariables.getSize(); ++position)
+      {
+        const UnsignedInteger multiplicity = variableMultiplicity_[freeVariables[position]];
+        if (termCount > maximumTerms / multiplicity)
+          throw NotYetImplementedException(HERE) << "Error: the cyclic component requires more than CumulativeDistributionNetwork-MaximumTerms=" << maximumTerms << " terms";
+        termCount *= multiplicity;
+      }
+      Collection<Indices> choices(freeVariables.getSize());
+      Collection<Indices> choiceBits(freeVariables.getSize());
+      for (UnsignedInteger position = 0; position < freeVariables.getSize(); ++position)
+      {
+        const UnsignedInteger variable = freeVariables[position];
+        const Indices & factors = variableFactors_[variable];
+        for (UnsignedInteger incidence = 0; incidence < factors.getSize(); ++incidence)
+        {
+          const UnsignedInteger c = factors[incidence];
+          const Indices & variables = factorVariables_[c];
+          const UnsignedInteger noBit = freePositions[c].getSize();
+          for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+            if (variables[j] == variable)
+            {
+              const UnsignedInteger bit = freeBit[c][j];
+              if (bit == noBit) throw InternalException(HERE) << "Error: inconsistent free variable cache";
+              choices[position].add(c);
+              choiceBits[position].add(bit);
+              break;
+            }
+        }
+      }
+      Indices counter(freeVariables.getSize(), 0);
+      Indices masks(factorCount, 0);
+      if (freeVariables.isEmpty())
+      {
+        Scalar term = 0.0;
+        for (UnsignedInteger g = 0; g < group.getSize(); ++g) term += tables[group[g]][0];
+        groupLog = term;
+      }
+      else
+        while (true)
+        {
+          for (UnsignedInteger g = 0; g < group.getSize(); ++g) masks[group[g]] = 0;
+          for (UnsignedInteger position = 0; position < freeVariables.getSize(); ++position)
+          {
+            const UnsignedInteger c = choices[position][counter[position]];
+            masks[c] |= UnsignedInteger(1) << choiceBits[position][counter[position]];
+          }
+          Scalar term = 0.0;
+          for (UnsignedInteger g = 0; g < group.getSize(); ++g) term += tables[group[g]][masks[group[g]]];
+          groupLog = SpecFunc::LogSumExp(groupLog, term);
+          UnsignedInteger position = 0;
+          while (position < counter.getSize())
+          {
+            ++counter[position];
+            if (counter[position] < choices[position].getSize()) break;
+            counter[position] = 0;
+            ++position;
+          }
+          if (position == counter.getSize()) break;
+        }
+    }
+    totalLog += groupLog;
+  }
+  if (totalLog == -SpecFunc::Infinity) return -SpecFunc::Infinity;
+  return totalLog + constantLog;
+}
+
+/* Compute the log-PDF (continuous) or log-PMF (integral) */
+Scalar CumulativeDistributionNetwork::computeLogPDFKernel(const Point & point,
+    const Bool useDifferences) const
+{
+  Indices all(getDimension());
+  all.fill();
+  return computePartialDerivativeLog(point, all, useDifferences);
+}
+
 /* Get the PDF of the CumulativeDistributionNetwork */
 Scalar CumulativeDistributionNetwork::computePDF(const Point & point) const
 {
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  return DistributionImplementation::computePDF(point);
+  return std::exp(computeLogPDF(point));
 }
 
+/* Get the log-PDF of the CumulativeDistributionNetwork */
+Scalar CumulativeDistributionNetwork::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (isContinuous()) return computeLogPDFKernel(point, false);
+  if (isIntegral())
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      if (std::abs(point[j] - std::round(point[j])) > supportEpsilon_) return -SpecFunc::Infinity;
+    return computeLogPDFKernel(point, true);
+  }
+  throw NotYetImplementedException(HERE) << "Error: the PDF of a cumulative distribution network mixing continuous and discrete factors is not implemented";
+}
 
 /* Get the CDF of the CumulativeDistributionNetwork */
 Scalar CumulativeDistributionNetwork::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  Scalar cdf = distributionCollection_[0].computeCDF(reducePoint(point, 0));
   const UnsignedInteger size = distributionCollection_.getSize();
-  for (UnsignedInteger i = 1; i < size; ++i) cdf *= distributionCollection_[i].computeCDF(reducePoint(point, i));
-  return cdf;
+  Scalar logCDF = 0.0;
+  for (UnsignedInteger c = 0; c < size; ++c)
+  {
+    const Scalar factorLogCDF = computeLocalLogCDF(c, reducePoint(point, c));
+    if (factorLogCDF == -SpecFunc::Infinity) return 0.0;
+    logCDF += factorLogCDF;
+  }
+  return std::min(1.0, std::exp(logCDF));
 }
 
+/* Get the CDF of Xi | X1, ..., Xi-1 */
+Scalar CumulativeDistributionNetwork::computeConditionalCDF(const Scalar xj, const Point & xcond) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
+  if (conditioningDimension >= dimension) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  if (conditioningDimension == 0) return getMarginal(UnsignedInteger(0)).computeCDF(Point(1, xj));
+  if (hasIndependentCopula()) return getMarginal(conditioningDimension).computeCDF(Point(1, xj));
+  Bool useDifferences = false;
+  if (isContinuous()) useDifferences = false;
+  else if (isIntegral()) useDifferences = true;
+  else throw NotYetImplementedException(HERE) << "Error: conditional CDF of a cumulative distribution network mixing continuous and discrete factors is not implemented";
+  Point point(dimension, SpecFunc::Infinity);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) point[i] = xcond[i];
+  point[conditioningDimension] = xj;
+  Indices derivative(conditioningDimension);
+  derivative.fill();
+  const Scalar logNumerator = computePartialDerivativeLog(point, derivative, useDifferences);
+  if (logNumerator == -SpecFunc::Infinity) return 0.0;
+  point[conditioningDimension] = SpecFunc::Infinity;
+  const Scalar logDenominator = computePartialDerivativeLog(point, derivative, useDifferences);
+  if (logDenominator == -SpecFunc::Infinity) return 0.0;
+  const Scalar cdf = std::exp(logNumerator - logDenominator);
+  return std::min(1.0, std::max(0.0, cdf));
+}
+
+/* Get the PDF of Xi | X1, ..., Xi-1 */
+Scalar CumulativeDistributionNetwork::computeConditionalPDF(const Scalar xj, const Point & xcond) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
+  if (conditioningDimension >= dimension) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  if (conditioningDimension == 0) return getMarginal(UnsignedInteger(0)).computePDF(Point(1, xj));
+  if (hasIndependentCopula()) return getMarginal(conditioningDimension).computePDF(Point(1, xj));
+  Bool useDifferences = false;
+  if (isContinuous()) useDifferences = false;
+  else if (isIntegral()) useDifferences = true;
+  else throw NotYetImplementedException(HERE) << "Error: conditional PDF of a cumulative distribution network mixing continuous and discrete factors is not implemented";
+  if (useDifferences && (std::abs(xj - std::round(xj)) > supportEpsilon_)) return 0.0;
+  Point point(dimension, SpecFunc::Infinity);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) point[i] = xcond[i];
+  point[conditioningDimension] = xj;
+  Indices derivative(conditioningDimension + 1);
+  derivative.fill();
+  const Scalar logNumerator = computePartialDerivativeLog(point, derivative, useDifferences);
+  if (logNumerator == -SpecFunc::Infinity) return 0.0;
+  point[conditioningDimension] = SpecFunc::Infinity;
+  Indices conditioningDerivative(conditioningDimension);
+  conditioningDerivative.fill();
+  const Scalar logDenominator = computePartialDerivativeLog(point, conditioningDerivative, useDifferences);
+  if (logDenominator == -SpecFunc::Infinity) return 0.0;
+  return std::exp(logNumerator - logDenominator);
+}
+
+/* Get the quantile of Xi | X1, ..., Xi-1 */
+Scalar CumulativeDistributionNetwork::computeConditionalQuantile(const Scalar p, const Point & xcond) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger conditioningDimension = xcond.getDimension();
+  if (conditioningDimension >= dimension) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
+  if (!((p >= 0.0) && (p <= 1.0))) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level q=" << p << " outside of [0, 1]";
+  const Distribution marginal(getMarginal(conditioningDimension));
+  if ((conditioningDimension == 0) || hasIndependentCopula() || (p <= 0.0) || (p >= 1.0))
+    return marginal.computeScalarQuantile(p);
+  if (isIntegral())
+  {
+    // Smallest integer with F(x | xcond) >= p
+    Scalar lower = 0.0;
+    Scalar upper = 0.0;
+    Scalar width = 1.0;
+    UnsignedInteger iteration = 0;
+    while ((computeConditionalCDF(upper, xcond) < p) && (iteration < quantileIterations_))
+    {
+      lower = upper;
+      upper += width;
+      width *= 2.0;
+      ++iteration;
+    }
+    width = 1.0;
+    iteration = 0;
+    while ((computeConditionalCDF(lower, xcond) >= p) && (iteration < quantileIterations_))
+    {
+      upper = lower;
+      lower -= width;
+      width *= 2.0;
+      ++iteration;
+    }
+    if (!(computeConditionalCDF(lower, xcond) < p) || !(computeConditionalCDF(upper, xcond) >= p))
+      return marginal.computeScalarQuantile(p);
+    while (upper - lower > 1.0)
+    {
+      const Scalar middle = std::floor(0.5 * (lower + upper));
+      if ((middle <= lower) || (middle >= upper)) break;
+      if (computeConditionalCDF(middle, xcond) >= p) upper = middle;
+      else lower = middle;
+    }
+    return upper;
+  }
+  // Continuous case: expand a bracket around the origin, then bisect
+  Scalar lower = -1.0;
+  Scalar upper = 1.0;
+  Scalar width = 1.0;
+  UnsignedInteger iteration = 0;
+  while ((computeConditionalCDF(lower, xcond) > p) && (iteration < quantileIterations_))
+  {
+    lower -= width;
+    width *= 2.0;
+    ++iteration;
+  }
+  width = 1.0;
+  iteration = 0;
+  while ((computeConditionalCDF(upper, xcond) < p) && (iteration < quantileIterations_))
+  {
+    upper += width;
+    width *= 2.0;
+    ++iteration;
+  }
+  if (!(computeConditionalCDF(lower, xcond) <= p) || !(computeConditionalCDF(upper, xcond) >= p))
+    return marginal.computeScalarQuantile(p);
+  for (UnsignedInteger iterationIndex = 0; iterationIndex < quantileIterations_; ++iterationIndex)
+  {
+    const Scalar middle = 0.5 * (lower + upper);
+    if ((middle <= lower) || (middle >= upper)) break;
+    if (computeConditionalCDF(middle, xcond) < p) lower = middle;
+    else upper = middle;
+  }
+  return 0.5 * (lower + upper);
+}
 
 /* Get the i-th marginal distribution */
 Distribution CumulativeDistributionNetwork::getMarginal(const UnsignedInteger i) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  // Special case for dimension 1
-  if (dimension == 1) return clone();
-  // General case
-  DistributionCollection contributors(0);
-  Collection<Indices> marginalGraph(0);
-  for (UnsignedInteger j = 0; j < distributionCollection_.getSize(); ++j)
-  {
-    // Check if the current contributor contains k
-    UnsignedInteger localIndex = dimension;
-    UnsignedInteger k = 0;
-    for (IndicesCollection::const_iterator cit = graph_.cbegin_at(j); cit != graph_.cend_at(j); ++cit, ++k)
-      if (i == (*cit))
-      {
-        localIndex = k;
-        break;
-      }
-    // If the marginal index is in the current indices
-    if (localIndex < dimension)
-    {
-      contributors.add(distributionCollection_[j].getMarginal(localIndex));
-      marginalGraph.add(Indices(1, 0));
-    }
-  } // Loop over the CDFs
-  if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
-  return new CumulativeDistributionNetwork(contributors, BipartiteGraph(IndicesCollectionImplementation(marginalGraph)));
+  if (i >= dimension) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be lower than the dimension=" << dimension;
+  return getMarginal(Indices(1, i));
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution CumulativeDistributionNetwork::getMarginal(const Indices & indices) const
 {
-  LOGINFO(OSS() << "in getMarginal(" << indices << "), contributors=" << distributionCollection_ << ", graph=" << graph_);
-  if (indices.getSize() == 1) return getMarginal(indices[0]);
   const UnsignedInteger dimension = getDimension();
-  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be in the range [0, dim-1] and must be different";
-  return DistributionImplementation::getMarginal(indices);
-  /*
-  // General case
+  const UnsignedInteger indexSize = indices.getSize();
+  if (indexSize == 0) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must not be empty";
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "The indices of a marginal distribution must be lower than the dimension=" << dimension << " and must be different";
+  Indices full(dimension);
+  full.fill();
+  if (indices == full) return clone();
+  // The marginal of a CDN is a CDN: each factor is replaced by its marginal
+  // over the selected variables, and factors with no selected variable vanish.
   DistributionCollection contributors(0);
-  BipartiteGraph marginalGraph(0);
-  for (UnsignedInteger j = 0; j < distributionCollection_.getSize(); ++j)
-    {
-      // Check if the current contributor contains k
-      Indices localIndices(0);
-      Indices currentIndices(graph_[j]);
-      LOGINFO(OSS() << "j=" << j << ", currentIndices=" << currentIndices);
-      for (UnsignedInteger k = 0; k < indices.getSize(); ++k)
+  Collection<Indices> marginalGraph(0);
+  const UnsignedInteger factorCount = distributionCollection_.getSize();
+  for (UnsignedInteger c = 0; c < factorCount; ++c)
   {
-    const UnsignedInteger i = indices[k];
-    for (UnsignedInteger n = 0; n < currentIndices.getSize(); ++n)
-      if (i == currentIndices[n])
+    const Indices & variables = factorVariables_[c];
+    Indices localIndices(0);
+    Indices graphPart(0);
+    for (UnsignedInteger k = 0; k < indexSize; ++k)
+      for (UnsignedInteger j = 0; j < variables.getSize(); ++j)
+        if (variables[j] == indices[k])
         {
-  	localIndices.add(n);
-  	break;
+          localIndices.add(j);
+          graphPart.add(k);
+          break;
         }
-    LOGINFO(OSS() << "k=" << k << ", localIndices=" << localIndices);
-  } // Loop over the marginal indices
-      LOGINFO(OSS() << "j=" << j << ", currentIndices=" << currentIndices << ", localIndices=" << localIndices);
-      // If the marginal index is in the current indices
-      if (localIndices.getSize() > 0)
-  {
-    contributors.add(distributionCollection_[j].getMarginal(localIndices));
-    Indices graphPart(localIndices.getSize());
-    graphPart.fill();
-    marginalGraph.add(graphPart);
+    if (localIndices.getSize() > 0)
+    {
+      contributors.add(distributionCollection_[c].getMarginal(localIndices));
+      marginalGraph.add(graphPart);
+    }
   }
-    } // Loop over the CDFs
-  if (contributors.getSize() == 1) return contributors[0].getImplementation()->clone();
-  LOGINFO(OSS() << "in getMarginal(" << indices << "), marginal contributors=" << contributors << ", marginalGraph=" << marginalGraph);
-  return new CumulativeDistributionNetwork(contributors, marginalGraph);
-  */
+  if (contributors.getSize() == 0) throw InternalException(HERE) << "Error: no factor contributes to the marginal distribution";
+  Description description(indexSize);
+  const Description originalDescription(getDescription());
+  for (UnsignedInteger k = 0; k < indexSize; ++k)
+    description[k] = originalDescription[indices[k]];
+  if (contributors.getSize() == 1)
+  {
+    Distribution result(contributors[0]);
+    result.setDescription(description);
+    return result;
+  }
+  Distribution result(new CumulativeDistributionNetwork(contributors, BipartiteGraph(IndicesCollectionImplementation(marginalGraph))));
+  result.setDescription(description);
+  return result;
+}
+
+/* Check if the distribution is elliptical */
+Bool CumulativeDistributionNetwork::isElliptical() const
+{
+  return (distributionCollection_.getSize() == 1) && distributionCollection_[0].isElliptical();
 }
 
 /* Check if the distribution is continuous */
@@ -399,6 +1510,7 @@ void CumulativeDistributionNetwork::load(Advocate & adv)
   adv.loadAttribute( "distributionCollection_", distributionCollection_ );
   adv.loadAttribute( "graph_", graph_ );
   // To compute the range
+  updateStructure();
   computeRange();
 }
 

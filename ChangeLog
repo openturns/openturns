@@ -54,6 +54,7 @@
  * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
  * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
  * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
+ * CumulativeDistributionNetwork-MaximumTerms: maximum number of derivative assignments, free-variable table entries (continuous) or binary elimination-table entries (integral) enumerated by the density and conditional algorithms before a NotYetImplementedException is raised (default is 1000000)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -174,6 +175,9 @@
  * Added the LinearCombinationFunction-MergeDuplicates ResourceMap key; when set to true the LinearCombinationFunction constructor also merges its atoms
  * LMG, PMVD, Johnson indices and VIF metric added to CorrelationAnalysis, the latter as a static CorrelationAnalysis.computeVIF(Sample) method
  * Accelerated Gauss quadrature in HermiteFactory, JacobiFactory, LaguerreFactory, LegendreFactory and OrthogonalUniVariatePolynomialFactory
+ * CumulativeDistributionNetwork: exact PDF and log-PDF from the derivative-sum-product expansion of Huang and Frey (2011), accumulated in log domain, with tree dynamic programming for forest components and a bounded explicit enumeration for cyclic components; integral networks use backward differences
+ * CumulativeDistributionNetwork: exact conditional CDF, conditional PDF and conditional quantile from the conditioning theorem, replacing numerical integration
+ * CumulativeDistributionNetwork: the multi-index getMarginal now returns the exact marginal as a CumulativeDistributionNetwork, block-independent networks are sampled directly, and isElliptical is true for a single elliptical factor
  * SpecFunc: added LogSumExp for two logarithms or a collection of logarithms, with stable handling of infinities
  * Mixture and KernelMixture: the new computeLogPDF implementation uses a log-sum-exp, and computePDF falls back to it when every atom underflows
  * EmpiricalBernsteinCopula: the PDF, log-PDF and conditional services use a log-sum-exp, so mixtures with many atoms remain accurate in the tails

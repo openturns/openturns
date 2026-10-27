@@ -1225,6 +1225,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0);
   addAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1.0e-8);
 
+  // CumulativeDistributionNetwork parameters //
+  addAsUnsignedInteger("CumulativeDistributionNetwork-MaximumTerms", 1000000);
+
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
