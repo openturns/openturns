@@ -20,6 +20,7 @@
  */
 #include "openturns/SimulationSensitivityAnalysis.hxx"
 #include <algorithm>
+#include <cmath>
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/MemoizeFunction.hxx"
@@ -45,10 +46,12 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis()
 /* Standard constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector & event,
     const Sample & inputSample,
-    const Sample & outputSample)
+    const Sample & outputSample,
+    const Point & weights)
   : PersistentObject(),
     inputSample_(inputSample),
     outputSample_(outputSample),
+    weights_(weights),
     event_(event)
 {
   const UnsignedInteger inputSize = inputSample.getSize();
@@ -61,6 +64,13 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector 
   if (inputDimension != getTransformation().getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given iso-probabilistic transformation has a dimension=" << getTransformation().getInputDimension() << " that is different from the input sample dimension=" << inputDimension;
   // Check if the output sample is uni dimensional
   if (outputSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given output sample must have a dimension=1, here dimension=" << outputSample.getDimension();
+  // Check weights
+  if (weights.getDimension() != 0 && weights.getDimension() != inputSize) throw InvalidArgumentException(HERE) << "Error: the weights size=" << weights.getDimension() << " must match the sample size=" << inputSize << " or be empty for uniform weights.";
+  if (weights.getDimension() == inputSize)
+  {
+    for (UnsignedInteger i = 0; i < inputSize; ++ i)
+      if (!std::isfinite(weights[i]) || (weights[i] < 0.0)) throw InvalidArgumentException(HERE) << "Error: weights must be finite and non-negative.";
+  }
 }
 
 /* Standard constructor */
@@ -97,7 +107,30 @@ SimulationSensitivityAnalysis * SimulationSensitivityAnalysis::clone() const
 Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar threshold) const
 {
   const UnsignedInteger inputSize = inputSample_.getSize();
-  Sample filteredSample(0, inputSample_.getDimension());
+  const UnsignedInteger inputDimension = inputSample_.getDimension();
+  const Bool hasWeights = (weights_.getDimension() == inputSize);
+  if (hasWeights)
+  {
+    // Weighted mean: E[X | event] = sum(w_i X_i 1_event) / sum(w_i 1_event)
+    // See e.g. Au & Beck 2001, or Dubourg's thesis for importance sampling estimators
+    Point weightedSum(inputDimension, 0.0);
+    Scalar sumWeights = 0.0;
+    for (UnsignedInteger i = 0; i < inputSize; ++ i)
+    {
+      if (getComparisonOperator()(outputSample_(i, 0), threshold))
+      {
+        const Scalar w = weights_[i];
+        for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+          weightedSum[j] += w * inputSample_(i, j);
+        sumWeights += w;
+      }
+    }
+    if (!(sumWeights > 0.0)) throw NotDefinedException(HERE) << "Error: cannot compute the mean point if no point (weighted) is in the event domain.";
+    for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+      weightedSum[j] /= sumWeights;
+    return weightedSum;
+  }
+  Sample filteredSample(0, inputDimension);
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
     if (getComparisonOperator()(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
@@ -142,6 +175,7 @@ PointWithDescription SimulationSensitivityAnalysis::computeEventProbabilitySensi
   Point sumGrad(parameterDimension);
   const ComparisonOperator op(getComparisonOperator());
   const Scalar threshold = getThreshold();
+  const Bool hasWeights = (weights_.getDimension() == size);
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     if (op(outputSample_(i, 0), threshold))
@@ -154,7 +188,10 @@ PointWithDescription SimulationSensitivityAnalysis::computeEventProbabilitySensi
         std::copy(gradj.begin(), gradj.end(), grad.begin() + index);
         index += gradj.getDimension();
       }
-      sumGrad += grad / size;
+      // Pf sensitivity with importance sampling: E_h[1_event * score * w] with w = target/importance
+      // For Monte Carlo w = 1. See Rubinstein & Kroese 2017, or Dubourg's thesis.
+      const Scalar w = hasWeights ? weights_[i] : 1.0;
+      sumGrad += grad * (w / size);
     }
   }
   PointWithDescription sensitivity(sumGrad);
@@ -213,17 +250,36 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // + In fact, each curve embeds its data, so the input sample is duplicated and the output data is copied d times
   // + In the case of ties in the output sample, the data stored in the curves are shorter than the initial data
   const UnsignedInteger inputDimension = inputSample_.getDimension();
-  Sample mergedSample(size, inputDimension + 1);
+  const Bool hasWeights = (weights_.getDimension() == size);
+  const UnsignedInteger mergedDimension = hasWeights ? inputDimension + 2 : inputDimension + 1;
+  Sample mergedSample(size, mergedDimension);
   // Use the loop to compute the number of points that compares favorably
   // to the internal threshold
   UnsignedInteger good = 0;
+  Scalar sumWeightsEvent = 0.0;
+  Scalar totalWeight = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    std::copy(inputSample_.getImplementation()->data_begin() + i * inputDimension, inputSample_.getImplementation()->data_begin() + (i + 1) * inputDimension, mergedSample.getImplementation()->data_begin() + i * (inputDimension + 1));
+    std::copy(inputSample_.getImplementation()->data_begin() + i * inputDimension, inputSample_.getImplementation()->data_begin() + (i + 1) * inputDimension, mergedSample.getImplementation()->data_begin() + i * mergedDimension);
     mergedSample[i][inputDimension] = outputSample_(i, 0);
-    good += getComparisonOperator()(outputSample_(i, 0), getThreshold());
+    if (hasWeights)
+    {
+      mergedSample[i][inputDimension + 1] = weights_[i];
+      totalWeight += weights_[i];
+    }
+    const Bool inEvent = getComparisonOperator()(outputSample_(i, 0), getThreshold());
+    good += inEvent;
+    if (inEvent && hasWeights)
+      sumWeightsEvent += weights_[i];
   }
-  if ((good < sampleMargin) || (good >= size - sampleMargin)) LOGWARN(OSS() << "Warning: the default threshold does not correspond to well-estimated importance factors according to the default sample margin. The number of points defining the event is " << good << " and should be in [" << sampleMargin << ", " << size - sampleMargin - 1 << "] according to the SimulationSensitivityAnalysis-DefaulSampleMargin key value in ResourceMap.");
+  // Effective event size for weighted case: normalize by the mean weight so uniform weights recover raw counts.
+  // Zero-weight event observations do not contribute to stability.
+  Scalar meanWeight = 1.0;
+  if (hasWeights && (totalWeight > 0.0)) meanWeight = totalWeight / (1.0 * size);
+  Scalar goodEffective = static_cast<Scalar>(good);
+  if (hasWeights && (meanWeight > 0.0)) goodEffective = sumWeightsEvent / meanWeight;
+  const Scalar marginWeight = sampleMargin * meanWeight;
+  if ((goodEffective < sampleMargin) || (goodEffective >= size - sampleMargin)) LOGWARN(OSS() << "Warning: the default threshold does not correspond to well-estimated importance factors according to the default sample margin. The number of points defining the event is " << good << " and should be in [" << sampleMargin << ", " << size - sampleMargin - 1 << "] according to the SimulationSensitivityAnalysis-DefaulSampleMargin key value in ResourceMap.");
   // Sort the merged sample according to its last component
   mergedSample = mergedSample.sortAccordingToAComponent(inputDimension);
   // Prepare the data for the curves
@@ -234,6 +290,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   // Here, we cannot use a simple loop as we have to deal with ties
   SignedInteger i = iStart;
   UnsignedInteger accumulated = 0;
+  Scalar accumulatedWeight = 0.0;
   Bool mustDraw = false;
   while (i != iStopDrawing)
   {
@@ -244,8 +301,10 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     {
       // Accumulate the current threshold candidate, as it will be accepted as soon as a valid threshold will be found
       const Point current(mergedSample[iThreshold]);
-      for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += current[j];
+      const Scalar w = hasWeights ? mergedSample[iThreshold][inputDimension + 1] : 1.0;
+      for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += w * current[j];
       ++accumulated;
+      accumulatedWeight += w;
       iThreshold += step;
       // Exit if no other meaningful threshold is available
       if (iThreshold == iStopDrawing) break;
@@ -263,8 +322,10 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
       {
         // Accumulate the current threshold
         const Point current(mergedSample[iTies]);
-        for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += current[j];
+        const Scalar w = hasWeights ? mergedSample[iTies][inputDimension + 1] : 1.0;
+        for (UnsignedInteger j = 0; j < inputDimension; ++j) accumulator[j] += w * current[j];
         ++accumulated;
+        accumulatedWeight += w;
         iTies += step;
         // Exit if no other point is available. We have to take into account points of index possibly larger than iStopDrawing because the current threshold could have been reached before index iStopDrawing but could stay the current value for indices after iStopDrawing
         if (iTies == iStop) break;
@@ -274,13 +335,16 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     }
     // We must draw the point if the first index associated with the threshold value is equal or after (greater if step = 1, less if step = -1) iStartDrawing.
     mustDraw |= (iThreshold == iStartDrawing);
-    if (mustDraw)
+    // With weights, also require enough effective weight on both sides so zero-weight observations do not extend the drawing range
+    Bool weightStable = true;
+    if (hasWeights) weightStable = (accumulatedWeight >= marginWeight) && (accumulatedWeight <= totalWeight - marginWeight);
+    if (mustDraw && weightStable)
     {
       // Now, augmente the data in the collection
       // Initialize with values associated with probabilityScale == false
       Scalar xValue = currentThreshold;
       // Change the values if probabilityScale == true
-      if (probabilityScale) xValue = Scalar(accumulated) / size;
+      if (probabilityScale) xValue = (hasWeights ? accumulatedWeight : Scalar(accumulated)) / size;
       // Check if the point is in the exploration range
       if ((xValue >= lower) && (xValue <= upper))
       {
@@ -288,7 +352,11 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
         // Check if the importance factors are well-defined for the current threshold
         try
         {
-          importanceFactors = getTransformation()(accumulator / accumulated).normalizeSquare();
+          const Scalar normalizer = hasWeights ? accumulatedWeight : static_cast<Scalar>(accumulated);
+          // Divide component-wise: Point::operator/ builds 1/normalizer first and overflows for tiny normalizers
+          Point meanPoint(inputDimension);
+          for (UnsignedInteger j = 0; j < inputDimension; ++j) meanPoint[j] = accumulator[j] / normalizer;
+          importanceFactors = getTransformation()(meanPoint).normalizeSquare();
           for (UnsignedInteger j = 0; j < inputDimension; ++j)
           {
             const Point point = {xValue, 100.0 * importanceFactors[j]};
@@ -313,7 +381,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   if (probabilityScale)
   {
     xLabel = "probability";
-    internalX = static_cast<Scalar>(good) / size;
+    internalX = (hasWeights ? sumWeightsEvent : static_cast<Scalar>(good)) / size;
   }
   Graph graph("Importance factors range", xLabel, "Importance (%)");
   graph.setLegendPosition("topright");
@@ -324,7 +392,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     graph.add(curve);
   }
   // Highlight the default threshold importance factors if stable enough
-  if ((internalX >= lower) && (internalX <= upper) && (good >= sampleMargin) && (good < size - sampleMargin))
+  if ((internalX >= lower) && (internalX <= upper) && (goodEffective >= sampleMargin) && (goodEffective < size - sampleMargin))
   {
     Sample data(2, 2);
     data(0, 0) = internalX;
@@ -353,6 +421,21 @@ Sample SimulationSensitivityAnalysis::getOutputSample() const
   return outputSample_;
 }
 
+/* Weights accessors */
+Point SimulationSensitivityAnalysis::getWeights() const
+{
+  return weights_;
+}
+
+void SimulationSensitivityAnalysis::setWeights(const Point & weights)
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  if (weights.getDimension() != 0 && weights.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the weights size=" << weights.getDimension() << " must match the sample size=" << size << " or be empty for uniform weights.";
+  for (UnsignedInteger i = 0; i < weights.getDimension(); ++ i)
+    if (!std::isfinite(weights[i]) || (weights[i] < 0.0)) throw InvalidArgumentException(HERE) << "Error: weights must be finite and non-negative.";
+  weights_ = weights;
+}
+
 /* Threshold accessors */
 Scalar SimulationSensitivityAnalysis::getThreshold() const
 {
@@ -379,6 +462,8 @@ String SimulationSensitivityAnalysis::__repr__() const
       << " inputSample=" << inputSample_
       << " outputSample=" << outputSample_
       << " event=" << event_;
+  if (weights_.getDimension() > 0)
+    oss << " weights=" << weights_;
   return oss;
 }
 
@@ -388,6 +473,7 @@ void SimulationSensitivityAnalysis::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
+  adv.saveAttribute("weights_", weights_);
   adv.saveAttribute("event_", event_);
 }
 
@@ -397,6 +483,8 @@ void SimulationSensitivityAnalysis::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
+  if (adv.hasAttribute("weights_"))
+    adv.loadAttribute("weights_", weights_);
   adv.loadAttribute("event_", event_);
 }
 
