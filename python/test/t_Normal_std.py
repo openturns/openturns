@@ -299,3 +299,16 @@ ot.Log.Show(ot.Log.NONE)
 with ott.assert_raises(TypeError):
     ot.ResourceMap.SetAsString("Normal-RectangularProbabilityAlgorithm", "Unknown")
 ot.Log.Show(ot.Log.TRACE)
+
+# setParameter must refresh the independent copula flag, otherwise a correlated
+# normal built from its parameters is still handled as independent
+R = ot.CorrelationMatrix(2)
+R[1, 0] = 0.5
+correlated = ot.Normal([1.0, -2.0], [2.0, 0.5], R)
+copy = ot.Normal(2)
+copy.setParameter(correlated.getParameter())
+assert not copy.hasIndependentCopula()
+ott.assert_almost_equal(
+    copy.computeCDF([0.5, -1.0]), correlated.computeCDF([0.5, -1.0])
+)
+ott.assert_almost_equal(copy.getCovariance(), correlated.getCovariance())

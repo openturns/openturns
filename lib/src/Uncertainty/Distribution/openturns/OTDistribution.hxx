@@ -59,6 +59,7 @@
 #include "openturns/PushForwardDistribution.hxx"
 #include "openturns/PushForwardOverMesh.hxx"
 #include "openturns/CumulativeDistributionNetwork.hxx"
+#include "openturns/CumulativeDistributionNetworkFactory.hxx"
 #include "openturns/JointByConditioningDistribution.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/DiracFactory.hxx"

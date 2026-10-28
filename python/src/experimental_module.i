@@ -44,6 +44,7 @@
 %include SlicedInverseRegression.i
 
 /* Uncertainty/Distribution */
+%include UncertaintyModelCopulaCollection.i
 %import model_copula_module.i
 %import dist_bundle2_module.i
 %import dist_bundle3_module.i
@@ -73,6 +74,7 @@
 
 /* Uncertainty/Distribution */
 %include ChristoffelDistribution.i
+%include CumulativeDistributionNetworkFactory.i
 %include Kent.i
 %include KentFactory.i
 %include MarginalUniformOrderStatistics.i

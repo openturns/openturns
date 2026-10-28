@@ -863,6 +863,14 @@ void Normal::setR(const CorrelationMatrix & R)
   checkIndependentCopula();
 }
 
+/* Parameters accessor */
+void Normal::setParameter(const Point & parameter)
+{
+  EllipticalDistribution::setParameter(parameter);
+  // The upper class updates the shape but not the independence status
+  checkIndependentCopula();
+}
+
 /* Compute the numerical range of the distribution given the parameters values */
 void Normal::computeRange()
 {

@@ -59,6 +59,7 @@
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
+ * CumulativeDistributionNetworkFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -196,6 +197,7 @@
 
  * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
  * Normal::computeCDF used wrong bounds in its large-dimension fallback and returned 0.0, e.g. at the mean of a correlated dimension-7 distribution
+ * Normal::setParameter did not update the independent copula flag, so a correlated normal built by setting its parameters was still handled as independent
  * QuantileConfidence: fixed inverted unilateral case in computeUnilateralMinimumSampleSize, the flag was renamed from tail to lowerBounded with opposite meaning (old tail=True is now lowerBounded=False); calls passing True positionally or by keyword must swap the flag (see #3178). In computeUnilateralRank and the unilateral confidence interval methods the flag was only renamed (old tail=True is lowerBounded=True), with no change of the returned value
 
 === Miscellaneous ===
