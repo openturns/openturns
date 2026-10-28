@@ -34,6 +34,7 @@
  * DistributionImplementation: select the generic characteristic-function integration panels from the absolute argument, keep the Filon grid within Distribution-CharacteristicFunctionNMax points, and document the positive exponent convention used by the implementation
  * DistributionImplementation::operator /: return a RatioDistribution for continuous univariate operands, fixing the inaccurate density of the former inverse composition close to zero
  * HMatrix interface to support HODLR implementation
+ * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
