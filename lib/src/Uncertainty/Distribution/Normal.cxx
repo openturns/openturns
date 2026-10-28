@@ -498,6 +498,21 @@ Scalar Normal::computeProbability(const Interval & interval) const
     return value;
   }
   /* General case */
+  // A zero standard deviation gives a Dirac factor at the mean: marginalize
+  // these degenerate coordinates out before the correlated computation, as the
+  // specialized routines would return zero for a zero-width interval.
+  Indices nonDegenerate(0);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    if (sigma_[i] == 0.0)
+    {
+      if ((finiteLower[i] && rawLower[i] > mean_[i]) || (finiteUpper[i] && rawUpper[i] < mean_[i])) return 0.0;
+    }
+    else nonDegenerate.add(i);
+  }
+  if (nonDegenerate.getSize() == 0) return 1.0;
+  if (nonDegenerate.getSize() < dimension)
+    return getMarginal(nonDegenerate).computeProbability(interval.getMarginal(nonDegenerate));
   // For the bidimensional case, use specialized high precision routine
   if (dimension == 2) return DistFunc::pNormal2D(lower[0], lower[1], upper[0], upper[1], R_(0, 1));
   // For the tridimensional case, use specialized high precision routine
@@ -863,6 +878,14 @@ void Normal::setR(const CorrelationMatrix & R)
   checkIndependentCopula();
 }
 
+/* Parameters accessor */
+void Normal::setParameter(const Point & parameter)
+{
+  EllipticalDistribution::setParameter(parameter);
+  // The upper class updates the shape but not the independence status
+  checkIndependentCopula();
+}
+
 /* Compute the numerical range of the distribution given the parameters values */
 void Normal::computeRange()
 {
@@ -902,6 +925,7 @@ void Normal::save(Advocate & adv) const
 {
   EllipticalDistribution::save(adv);
   adv.saveAttribute( "logNormalizationFactor", logNormalizationFactor_ );
+  // Kept for forward compatibility: load() recomputes this derived flag.
   adv.saveAttribute( "hasIndependentCopula_", hasIndependentCopula_ );
 }
 
@@ -910,7 +934,10 @@ void Normal::load(Advocate & adv)
 {
   EllipticalDistribution::load(adv);
   adv.loadAttribute( "logNormalizationFactor", logNormalizationFactor_ );
-  adv.loadAttribute( "hasIndependentCopula_", hasIndependentCopula_ );
+  // Recompute the independence status from the correlation matrix: archives
+  // written by previous versions may store a stale value when setParameter()
+  // changed the shape of an existing distribution.
+  checkIndependentCopula();
   computeRange();
 }
 

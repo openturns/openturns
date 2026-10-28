@@ -59,6 +59,7 @@
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
+ * CumulativeDistributionNetworkFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -192,6 +193,7 @@
  * CumulativeDistributionNetwork: exact PDF and log-PDF from the derivative-sum-product expansion of Huang and Frey (2011), accumulated in log domain, with tree dynamic programming for forest components and a bounded explicit enumeration for cyclic components; integral networks use backward differences
  * CumulativeDistributionNetwork: exact conditional CDF, conditional PDF and conditional quantile from the conditioning theorem, replacing numerical integration
  * CumulativeDistributionNetwork: the multi-index getMarginal now returns the exact marginal as a CumulativeDistributionNetwork, block-independent networks are sampled directly, and isElliptical is true for a single elliptical factor
+ * CumulativeDistributionNetworkFactory: new structure-learning mode selecting a block-independent graph and the factor distributions from the sample by BIC, with bounds on the minimum and maximum numbers of factors and on the maximum factor dimension
  * SpecFunc: added LogSumExp for two logarithms or a collection of logarithms, with stable handling of infinities
  * Mixture and KernelMixture: the new computeLogPDF implementation uses a log-sum-exp, and computePDF falls back to it when every atom underflows
  * EmpiricalBernsteinCopula: the PDF, log-PDF and conditional services use a log-sum-exp, so mixtures with many atoms remain accurate in the tails
@@ -212,6 +214,7 @@
 
  * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
  * Normal::computeCDF used wrong bounds in its large-dimension fallback and returned 0.0, e.g. at the mean of a correlated dimension-7 distribution
+ * Normal::setParameter did not update the independent copula flag, so a correlated normal built by setting its parameters was still handled as independent
  * QuantileConfidence: fixed inverted unilateral case in computeUnilateralMinimumSampleSize, the flag was renamed from tail to lowerBounded with opposite meaning (old tail=True is now lowerBounded=False); calls passing True positionally or by keyword must swap the flag (see #3178). In computeUnilateralRank and the unilateral confidence interval methods the flag was only renamed (old tail=True is lowerBounded=True), with no change of the returned value
 
 === Miscellaneous ===
