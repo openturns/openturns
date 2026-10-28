@@ -54,6 +54,8 @@
  * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
  * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
  * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
+ * SpecFunc-LauricellaMaximumDegree: maximum degree of the Lauricella hypergeometric series (default is 1024)
+ * SpecFunc-LauricellaTolerance: relative tolerance of the Lauricella hypergeometric series (default is 1.0e-14)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -88,6 +90,7 @@
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points
+ * Added SpecFunc.LauricellaF_A and SpecFunc.LogLauricellaF_A: evaluation of the Lauricella hypergeometric function F_A in the Exton representation, directly or in log scale with a cancellation estimate
  * Added Distribution.getComplementaryCDF/getQuantile/getSurvivalFunction/getInverseSurvivalFunction/getDDF: the remaining distribution functions as Function objects
  * Added Function/Gradient batch gradient evaluation over samples with flattened column-major outputs
  * Added BoxCoxFactory.computeLambdaConfidenceInterval: profile-likelihood confidence bounds of lambda

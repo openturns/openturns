@@ -896,6 +896,112 @@ result : float)RAW"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::LauricellaF_A
+R"RAW(Lauricella hypergeometric function of type :math:`F_A`.
+
+.. math::
+
+    F_A^{(\inputDim)}(a; \vect{b}; \vect{c}; \vect{x})
+    = \sum_{m_1, \dots, m_{\inputDim} = 0}^{+\infty}
+      (a)_{m_1 + \dots + m_{\inputDim}}
+      \prod_{i=1}^{\inputDim} \frac{(b_i)_{m_i}}{(c_i)_{m_i}}
+      \frac{x_i^{m_i}}{m_i!}
+
+where :math:`\vect{b} = (b_1, \dots, b_{\inputDim})`,
+:math:`\vect{c} = (c_1, \dots, c_{\inputDim})`,
+:math:`\vect{x} = (x_1, \dots, x_{\inputDim})` and
+:math:`(a)_m = \Gamma(a + m) / \Gamma(a)` denotes the rising factorial.
+The series converges for :math:`\norm{\vect{x}}_1 < 1`.
+The evaluation uses an exponential generating function to avoid computing
+large multinomial coefficients, see [exton1976]_.
+When the series does not converge before its maximum degree, the function
+returns NaN so that the caller can use a fallback.
+
+Parameters
+----------
+a : float
+b : sequence of float
+c : sequence of float
+x : sequence of float
+
+Returns
+-------
+result : float
+    The value of the function, or NaN if the series cannot be evaluated.
+
+Raises
+------
+TypeError : If ``b``, ``c`` and ``x`` do not have the same dimension.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SpecFunc-LauricellaMaximumDegree`` (``UnsignedInteger``, default: ``1024``): maximum degree of the Lauricella series.
+- ``SpecFunc-LauricellaTolerance`` (``Scalar``, default: ``1.0e-14``): relative tolerance of the Lauricella series. The value must lie in :math:`(0, 1)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> value = ot.SpecFunc.LauricellaF_A(1.5, [2.0], [3.0], [0.5])
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogLauricellaF_A
+R"RAW(Natural logarithm of the Lauricella hypergeometric function of type :math:`F_A`.
+
+.. math::
+
+    \log\left|F_A^{(\inputDim)}(a; \vect{b}; \vect{c}; \vect{x})\right|
+
+where :math:`F_A` is defined in :func:`~openturns.SpecFunc.LauricellaF_A`.
+The sign of the function and an estimate of the cancellation level are
+returned together with the logarithm, so that the value can be reconstructed
+as :math:`\sgn \exp(\mathrm{logValue})`.
+
+Parameters
+----------
+a : float
+b : sequence of float
+c : sequence of float
+x : sequence of float
+
+Returns
+-------
+available : bool
+    Whether the series could be evaluated.
+logValue : float
+    The natural logarithm of the absolute value of the function.
+cancellation : float
+    The ratio between the largest term of the series and the absolute value
+    of its sum. Values much larger than 1 indicate a loss of significance.
+sign : float
+    The sign of the function, equal to 1 or -1.
+
+Raises
+------
+TypeError : If ``b``, ``c`` and ``x`` do not have the same dimension.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``SpecFunc-LauricellaMaximumDegree`` (``UnsignedInteger``, default: ``1024``): maximum degree of the Lauricella series.
+- ``SpecFunc-LauricellaTolerance`` (``Scalar``, default: ``1.0e-14``): relative tolerance of the Lauricella series. The value must lie in :math:`(0, 1)`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> available, logValue, cancellation, sign = ot.SpecFunc.LogLauricellaF_A(1.5, [2.0], [3.0], [0.5])
+>>> available
+True
+>>> sign
+1.0
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::LogHyperGeom_1_1
 R"RAW(Natural logarithm of the hypergeometric function of type (1,1).
 
