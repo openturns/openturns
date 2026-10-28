@@ -675,6 +675,8 @@ void ResourceMap::loadDefaultConfiguration()
   // SpecFunc parameters
   addAsScalar("SpecFunc-Precision", 2.0e-16);
   addAsUnsignedInteger("SpecFunc-MaximumIteration", 1000);
+  addAsScalar("SpecFunc-LauricellaTolerance", 1.0e-14);
+  addAsUnsignedInteger("SpecFunc-LauricellaMaximumDegree", 1024);
 
   // SymbolicParser parameters
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
@@ -1231,7 +1233,16 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Dirichlet parameters //
   addAsUnsignedInteger("Dirichlet-DefaultIntegrationSize", 50);
-  addAsUnsignedInteger("Dirichlet-DefaultSamplingSize", 500000);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 10);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 128);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumTensorNodes", 20000000);
+  addAsScalar("Dirichlet-CDFBoxTolerance", 1.0e-10);
+  addAsScalar("Dirichlet-CDFExtonMaximumCancellation", 1.0e4);
+  addAsScalar("Dirichlet-CDFUpperMaximumCancellation", 1.0e13);
+  addAsScalar("Dirichlet-CDFNormalMinimumTotal", 1.0e5);
+  addAsScalar("Dirichlet-CDFNormalMinimumShape", 100.0);
+  addAsScalar("Dirichlet-CDFNormalMinimumProbability", 1.0e-12);
 
   // DirichletFactory parameters //
   addAsScalar("DirichletFactory-ParametersEpsilon", 1.0e-12);
