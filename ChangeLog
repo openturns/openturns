@@ -36,6 +36,7 @@
  * HMatrix interface to support HODLR implementation
  * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
  * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
+ * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
 
 ==== New ResourceMap keys ====
  * BasisOrthonormalizationAlgorithm-DefaultDiscretization: requested number of 1D nodes in the default Gauss product rule (default is 128)
