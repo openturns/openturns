@@ -91,6 +91,7 @@
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points
  * Added SpecFunc.LauricellaF_A and SpecFunc.LogLauricellaF_A: evaluation of the Lauricella hypergeometric function F_A in the Exton representation, directly or in log scale with a cancellation estimate
+ * Added DistFunc.dBeta and DistFunc.logdBeta: the Beta probability density function and its logarithm. DistFunc.dBeta is now the exponential of DistFunc.logdBeta, and Beta, EmpiricalBernsteinCopula and PointConditionalDistribution evaluate the log form to avoid underflow
  * Added Distribution.getComplementaryCDF/getQuantile/getSurvivalFunction/getInverseSurvivalFunction/getDDF: the remaining distribution functions as Function objects
  * Added Function/Gradient batch gradient evaluation over samples with flattened column-major outputs
  * Added BoxCoxFactory.computeLambdaConfidenceInterval: profile-likelihood confidence bounds of lambda

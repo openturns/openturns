@@ -19,6 +19,7 @@
  *
  */
 
+#include <algorithm>
 #include <cmath>
 #include "openturns/Exception.hxx"
 #include "openturns/PointConditionalDistribution.hxx"
@@ -476,9 +477,11 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
       for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
       {
         const UnsignedInteger newJ = conditioningIndices_[j];
-        const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
+        /* Match EmpiricalBernsteinCopula::update(): clip the copula sample
+           and keep both Beta shape parameters positive. */
+        const Scalar r = std::clamp(std::ceil(binNumber * SpecFunc::Clip01(copulaSample(i, newJ))), 1.0, static_cast<Scalar>(binNumber));
         const Scalar xJ = conditioningValues_[j];
-        logWi += -SpecFunc::LogBeta(r, binNumber - r + 1.0) + (r - 1.0) * std::log(xJ) + (binNumber - r) * std::log1p(-xJ);
+        logWi += DistFunc::logdBeta(r, binNumber - r + 1.0, xJ);
       } // j
       if (std::isfinite(logWi))
       {
@@ -487,7 +490,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         for (UnsignedInteger j = 0; j < dimension; ++j)
         {
           const UnsignedInteger newJ = nonConditioningIndices_[j];
-          const Scalar r = std::ceil(binNumber * copulaSample(i, newJ));
+          const Scalar r = std::clamp(std::ceil(binNumber * SpecFunc::Clip01(copulaSample(i, newJ))), 1.0, static_cast<Scalar>(binNumber));
           atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
         } // j
         atoms.add(JointDistribution(atomComponents));
