@@ -164,7 +164,6 @@ Matrix SquaredExponential::parameterGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
   const Point tau(s - t);
   Scalar tauOverTheta2 = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)

@@ -148,13 +148,13 @@ SymmetricMatrix AbsoluteExponential::partialHessian(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  Scalar norm1 = 0.0;
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
-    norm1 += std::abs(s[i] - t[i]) / scale_[i];
   // The kernel is not differentiable when any coordinate separation is zero:
   // fall back to the finite-difference implementation
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
     if (s[i] == t[i]) return CovarianceModelImplementation::partialHessian(s, t);
+  Scalar norm1 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    norm1 += std::abs(s[i] - t[i]) / scale_[i];
   // k(s, t) = amplitude^2 * exp(-sum_i |tau_i| / scale_i)
   // d^2 k / ds_a ds_b = amplitude^2 exp(-norm1) sign(tau_a) sign(tau_b) / (scale_a scale_b)
   const Scalar value = amplitude_[0] * amplitude_[0] * std::exp(-norm1);
@@ -177,7 +177,6 @@ Matrix AbsoluteExponential::parameterGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
   const Point tau(s - t);
   Scalar tauOverThetaNorm = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverThetaNorm += std::abs(tau[i] / scale_[i]);

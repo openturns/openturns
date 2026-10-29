@@ -484,7 +484,7 @@ OT_CovarianceModel_partialGradient_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_partialHessian_doc
-R"RAW(Compute the Hessian of the covariance function.
+R"RAW(Compute the Hessian of the covariance function with respect to the input :math:`\vect{s}`.
 
 Parameters
 ----------
@@ -541,7 +541,7 @@ OT_CovarianceModel_thirdOrderPartial_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_fourthOrderPartial_doc
-R"RAW(Compute the fourth-order spatial derivatives of the covariance function.
+R"RAW(Compute the fourth-order derivatives of the covariance function with respect to the input :math:`\vect{s}`.
 
 Parameters
 ----------
