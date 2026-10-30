@@ -31,7 +31,13 @@ cmake -DCMAKE_INSTALL_PREFIX=${HOME}/.local \
       -B build ${source_dir}
 cd build
 make install
+
+# drop examples bundles
 find ~/.local/share/doc/openturns/html -name "*.zip" | xargs rm
+
+# workaround sphinx imgmath parallel race, see https://github.com/sphinx-doc/sphinx/pull/13457
+python3 ${source_dir}/utils/strip_sphinx_depth.py ~/.local/share/doc/openturns/html
+
 if test -n "${UID_GID}"
 then
   tar -czf openturns-doc.tar.gz -C ~/.local/share/doc/openturns/ html/
