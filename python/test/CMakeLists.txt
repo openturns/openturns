@@ -888,6 +888,7 @@ ot_pyinstallcheck_test (HSICEstimatorGlobalSensitivity_std IGNOREOUT)
 
 ## Simulation
 ot_pyinstallcheck_test (SimulationSensitivityAnalysis_std)
+ot_pyinstallcheck_test (SimulationSensitivityAnalysis_is IGNOREOUT)
 ot_pyinstallcheck_test (ProbabilitySimulationAlgorithm_std)
 ot_pyinstallcheck_test (ProbabilitySimulationAlgorithm_draw)
 ot_pyinstallcheck_test (ProbabilitySimulationAlgorithm_inoutsample IGNOREOUT)

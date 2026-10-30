@@ -73,7 +73,6 @@
 %include FieldToFieldConnection.i
 %include FieldToPointConnection.i
 %include PointToFieldConnection.i
-%include MemoizePointToFieldFunction.i
 %include PointToPointEvaluation.i
 %include PointToPointConnection.i
 %include VertexFieldToPointFunction.i

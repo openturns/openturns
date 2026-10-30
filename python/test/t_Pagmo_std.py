@@ -256,3 +256,36 @@ for i in range(y.getSize()):
 fi0 = result.getParetoFrontsIndices()[0]
 print("penalized", fi0)
 assert len(fi0) <= 6, "pareto indices " + str(fi0)
+
+print("----- callback lifetime -----")
+progress_calls = []
+
+
+def make_progress():
+    def progress(p):
+        progress_calls.append(p)
+
+    return progress
+
+
+def make_stop():
+    def stop():
+        return False
+
+    return stop
+
+
+# temporaries without any python reference must stay alive (no segfault)
+f = ot.SymbolicFunction(["x1", "x2"], ["x1", "x1+x2"])
+small_problem = ot.OptimizationProblem(f)
+small_problem.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
+small_pop = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 2).getSample(12)
+algo = ot.Pagmo(small_problem, "nsga2", small_pop)
+algo.setMaximumIterationNumber(2)
+algo.setBlockSize(8)
+algo.setProgressCallback(make_progress())
+algo.setStopCallback(make_stop())
+algo.run()
+assert algo.getResult().getCallsNumber() == 36, "wrong calls number"
+assert len(progress_calls) > 0, "progress callback was not invoked"
+print("callback lifetime ok")

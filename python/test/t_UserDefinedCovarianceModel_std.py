@@ -55,12 +55,34 @@ for i in range(timeGrid.getN()):
         )
 print("myModel.discretize()=", myModel.discretize(timeGrid))
 
-# Test the drawing method as a nonstationary model, in the covariance range
-graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, False)
-print(graph)
-# Test the drawing method as a nonstationary model, in the correlation range
-graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, True)
-print(graph)
+# Test the drawing method as a nonstationary model, in the covariance/correlation range
+for correlationFlag in [False, True]:
+    graph = myModel.draw(0, 0, 0.0, 2.0, 21, False, correlationFlag)
+    assert "Contour" in repr(graph)
+    drawable = graph.getDrawable(0)
+    levels = drawable.getLevels()
+    assert len(levels) > 0, "expected non-empty contour levels"
+    data = drawable.getData()
+    dataMin = data.getMin()[0]
+    dataMax = data.getMax()[0]
+    assert dataMax > dataMin
+    for level in levels:
+        assert dataMin < level < dataMax, "bad level bounds"
+
+# Plateau data leaves no interior level: check mid-value fallback
+plateau = ot.Contour(2, 2, [[0.0], [1.0], [0.0], [1.0]])
+levels = plateau.getLevels()
+assert len(levels) == 1, "expected single mid-value level"
+assert levels[0] == 0.5
+plateau.setIsFilled(True)
+levels = plateau.getLevels()
+assert len(levels) == 2, "filled contours require at least two levels"
+for level in levels:
+    assert 0.0 < level < 1.0
+filled = ot.Contour(2, 2, [[0.0], [1.0], [0.0], [1.0]])
+filled.setIsFilled(True)
+filled.buildDefaultLevels()
+assert len(filled.getLevels()) == 2, "filled needs two levels"
 
 # Extra coverage: accessors, error branches, save/load (no prints to keep expout stable)
 

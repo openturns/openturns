@@ -12,6 +12,7 @@
  * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
  * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
  * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
+ * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
@@ -64,6 +65,7 @@
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
+ * MemoizePointToFieldFunction (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -93,7 +95,6 @@
  * Added BoxCoxFactory.computeLambdaConfidenceInterval: profile-likelihood confidence bounds of lambda
  * Added ParametricFunction symbolic substitution: frozen parameters are substituted once into symbolic formulas
  * Added Distribution/Point and Matrix/Distribution arithmetic: shifts preserve the copula, matrix products are exact for Gaussians
- * Added MemoizePointToFieldFunction: point to field functions with transparent evaluation caching
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.experimental as otexp
 import openturns.testing as ott
 import os
 
@@ -23,7 +24,7 @@ class CountingPointToFieldFunction(ot.OpenTURNSPythonPointToFieldFunction):
 # Memoized point to field function, see issue #2802
 counting = CountingPointToFieldFunction()
 func = ot.PointToFieldFunction(counting)
-memo = ot.MemoizePointToFieldFunction(func)
+memo = otexp.MemoizePointToFieldFunction(func)
 assert memo.getInputDimension() == 2
 assert memo.getOutputDimension() == 2
 assert memo.isCacheEnabled()
@@ -67,7 +68,7 @@ study.add("memo", memo)
 study.save()
 loadedStudy = ot.Study("memoize_ptf.xml")
 loadedStudy.load()
-loaded = ot.MemoizePointToFieldFunction()
+loaded = otexp.MemoizePointToFieldFunction()
 loadedStudy.fillObject("memo", loaded)
 assert loaded.isCacheEnabled()
 assert loaded.getInputCache().getSize() == memo.getInputCache().getSize()
@@ -85,7 +86,7 @@ study.add("memo", memo)
 study.save()
 loadedStudy = ot.Study("memoize_ptf_disabled.xml")
 loadedStudy.load()
-loadedDisabled = ot.MemoizePointToFieldFunction()
+loadedDisabled = otexp.MemoizePointToFieldFunction()
 loadedStudy.fillObject("memo", loadedDisabled)
 assert not loadedDisabled.isCacheEnabled()
 assert loadedDisabled.getInputCache().getSize() == memo.getInputCache().getSize()

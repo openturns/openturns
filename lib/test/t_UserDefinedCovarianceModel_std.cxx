@@ -94,12 +94,43 @@ int main(int, char *[])
       }
     }
     fullprint << "myModel.discretize()=" << myModel.discretize(timeGrid) << std::endl;
-    // Test the drawing method as a nonstationary model, in the covariance range
-    Graph graph = myModel.draw(0, 0, 0.0, 2.0, 21, false, false);
-    fullprint << graph << std::endl;
-    // Test the drawing method as a nonstationary model, in the correlation range
-    graph = myModel.draw(0, 0, 0.0, 2.0, 21, false, true);
-    fullprint << graph << std::endl;
+    // Test the drawing method as a nonstationary model, in the covariance/correlation range
+    for (int correlationFlag = 0; correlationFlag < 2; ++ correlationFlag)
+    {
+      const Graph graph(myModel.draw(0, 0, 0.0, 2.0, 21, false, correlationFlag));
+      if (graph.__repr__().find("Contour") == std::string::npos)
+	throw InvalidArgumentException(HERE) << "expected contour";
+      const Point levels(graph.getDrawable(0).getLevels());
+      if (levels.getSize() == 0)
+        throw InvalidArgumentException(HERE) << "expected non-empty contour levels";
+      const Sample data(graph.getDrawable(0).getData());
+      const Scalar dataMin = data.getMin()[0];
+      const Scalar dataMax = data.getMax()[0];
+      if (!(dataMax > dataMin))
+        throw InvalidArgumentException(HERE) << "expected non-constant contour data";
+      for (UnsignedInteger i = 0; i < levels.getSize(); ++ i)
+        if (!(levels[i] > dataMin && levels[i] < dataMax))
+          throw InvalidArgumentException(HERE) << "levels must lie strictly inside data bounds";
+    }
+    {
+      // Plateau data leaves no interior level: check mid-value fallback
+      Sample plateauData(4, 1);
+      plateauData(0, 0) = 0.0;
+      plateauData(1, 0) = 1.0;
+      plateauData(2, 0) = 0.0;
+      plateauData(3, 0) = 1.0;
+      Contour plateau(2, 2, plateauData);
+      if (plateau.getLevels().getSize() != 1 || plateau.getLevels()[0] != 0.5)
+        throw InvalidArgumentException(HERE) << "expected single mid-value level";
+      plateau.setIsFilled(true);
+      if (plateau.getLevels().getSize() != 2)
+        throw InvalidArgumentException(HERE) << "filled contours require at least two levels";
+      Contour filled(2, 2, plateauData);
+      filled.setIsFilled(true);
+      filled.buildDefaultLevels();
+      if (filled.getLevels().getSize() != 2)
+        throw InvalidArgumentException(HERE) << "filled default levels require at least two levels";
+    }
   }
   catch (TestFailed & ex)
   {

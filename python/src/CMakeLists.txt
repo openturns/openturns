@@ -124,7 +124,6 @@ ot_add_python_module(func func_module.i
                       PointToFieldFunction.i PointToFieldFunction_doc.i
                       ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i
                       VertexValuePointToFieldFunction.i VertexValuePointToFieldFunction_doc.i
-                      MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
                       PointToPointEvaluation.i PointToPointEvaluation_doc.i
                       PointToPointConnection.i PointToPointConnection_doc.i
                       FieldToPointConnection.i FieldToPointConnection_doc.i
@@ -590,7 +589,8 @@ ot_add_python_module(experimental experimental_module.i
                      RiemannianGaussian.i RiemannianGaussian_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
                      ExceptionPenalizedEvaluation.i ExceptionPenalizedEvaluation_doc.i
-		     ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
+                     ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
+                     MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
