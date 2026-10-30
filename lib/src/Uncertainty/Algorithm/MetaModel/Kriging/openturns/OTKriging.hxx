@@ -36,5 +36,14 @@
 #include "openturns/GaussianProcessRegression.hxx"
 #include "openturns/GaussianProcessRegressionCrossValidation.hxx"
 #include "openturns/GaussianProcessConditionalCovariance.hxx"
+#include "openturns/SparseGaussianProcessFitterResult.hxx"
+#include "openturns/SparseGaussianProcessEvaluation.hxx"
+#include "openturns/SparseGaussianProcessGradient.hxx"
+#include "openturns/SparseGaussianProcessHessian.hxx"
+#include "openturns/SparseGaussianProcessFitter.hxx"
+#include "openturns/SparseGaussianProcessRegression.hxx"
+#include "openturns/HeteroscedasticSparseGaussianProcessFitterResult.hxx"
+#include "openturns/HeteroscedasticSparseGaussianProcessFitter.hxx"
+#include "openturns/HeteroscedasticSparseGaussianProcessRegression.hxx"
 
 #endif /* OPENTURNS_OTKRIGING_HXX */
