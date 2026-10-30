@@ -70,6 +70,7 @@
 /* Base/Stat */
 %include CurlFreeModel.i
 %include DivFreeModel.i
+%include LinearCombinationCovarianceModel.i
 
 /* Uncertainty/Distribution */
 %include ChristoffelDistribution.i

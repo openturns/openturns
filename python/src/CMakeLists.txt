@@ -597,6 +597,7 @@ ot_add_python_module(experimental experimental_module.i
                      P1InterpolatedProcess.i P1InterpolatedProcess_doc.i
                      CurlFreeModel.i CurlFreeModel_doc.i
                      DivFreeModel.i DivFreeModel_doc.i
+                     LinearCombinationCovarianceModel.i LinearCombinationCovarianceModel_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
