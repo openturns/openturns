@@ -206,6 +206,14 @@ def check_high_order_values():
     )
 
 
+def check_matern_nu_gradient():
+    """The nu derivative is only computed when nu is an active parameter."""
+    model = ot.MaternModel([1.5, 0.8], [2.0], 1.5)
+    model.setActiveParameter(list(range(model.getFullParameter().getSize())))
+    assert model.getParameter().getSize() == model.getFullParameter().getSize()
+    check_parameter_gradient(model)
+
+
 def check_nonstationary_composite_models():
     """Non-stationary CurlFreeModel/DivFreeModel fall back to the base class."""
     basis2d = ot.Basis(
@@ -386,6 +394,7 @@ for model, has_parameter_gradient, check_parameter_hessian_values in models:
         check_parameter_gradient(model)
 
 check_high_order_values()
+check_matern_nu_gradient()
 check_nonstationary_composite_models()
 check_latent_variable_model()
 check_interface_forwarders()
