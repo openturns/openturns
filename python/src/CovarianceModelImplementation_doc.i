@@ -495,7 +495,8 @@ Returns
 -------
 hessian : :class:`~openturns.SymmetricMatrix`
     Hessian of the covariance function with respect to :math:`\vect{s}`
-    for the first output component.)RAW"
+    for the first output component. Its size is :math:`d \times d`, where
+    :math:`d` is the input dimension.)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::partialHessian
 OT_CovarianceModel_partialHessian_doc
@@ -513,7 +514,12 @@ s, t : sequences of float
 Returns
 -------
 gradient : :class:`~openturns.Matrix`
-    Gradient of the function according to the parameters.)RAW"
+    Gradient of the covariance function according to the active parameters.
+    Its size is :math:`n_p \times d^2`, where :math:`n_p` is the number of
+    active parameters and :math:`d` the output dimension: row :math:`k` holds
+    the derivative with respect to the :math:`k`-th active parameter and
+    column :math:`i + d j` holds
+    :math:`\partial k_{ij} / \partial \theta_k`.)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::parameterGradient
 OT_CovarianceModel_parameterGradient_doc
@@ -551,7 +557,9 @@ s, t : sequences of float
 Returns
 -------
 fourth : :class:`~openturns.Point`
-    Flat fourth-order derivatives of the first output component.)RAW"
+    Flat fourth-order derivatives of the first output component,
+    index ``a + d * (b + d * (c + d * e))`` holds
+    :math:`\partial^4 k_{00} / \partial s_a \partial s_b \partial s_c \partial s_e`.)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::fourthOrderPartial
 OT_CovarianceModel_fourthOrderPartial_doc
@@ -569,8 +577,12 @@ s, t : sequences of float
 Returns
 -------
 hessian : :class:`~openturns.Matrix`
-    Derivatives of the partial Hessian with respect to the active
-    parameters.)RAW"
+    Derivatives of the partial Hessian with respect to the active parameters.
+    Its size is :math:`n_p \times d^2`, where :math:`n_p` is the number of
+    active parameters and :math:`d` the input dimension: row :math:`k` holds
+    the derivative with respect to the :math:`k`-th active parameter and
+    column :math:`a + d b` holds
+    :math:`\partial^3 k_{00} / \partial \theta_k \partial s_a \partial s_b`.)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::parameterHessian
 OT_CovarianceModel_parameterHessian_doc

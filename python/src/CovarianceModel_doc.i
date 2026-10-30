@@ -50,6 +50,12 @@ OT_CovarianceModel_partialGradient_doc
 OT_CovarianceModel_partialHessian_doc
 %feature("docstring") OT::CovarianceModel::parameterGradient
 OT_CovarianceModel_parameterGradient_doc
+%feature("docstring") OT::CovarianceModel::thirdOrderPartial
+OT_CovarianceModel_thirdOrderPartial_doc
+%feature("docstring") OT::CovarianceModel::fourthOrderPartial
+OT_CovarianceModel_fourthOrderPartial_doc
+%feature("docstring") OT::CovarianceModel::parameterHessian
+OT_CovarianceModel_parameterHessian_doc
 %feature("docstring") OT::CovarianceModel::setAmplitude
 OT_CovarianceModel_setAmplitude_doc
 %feature("docstring") OT::CovarianceModel::setScale

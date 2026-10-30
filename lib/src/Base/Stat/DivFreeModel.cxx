@@ -408,6 +408,29 @@ void DivFreeModel::setParameter(const Point & parameter)
 }
 
 
+Point DivFreeModel::getFullParameter() const
+{
+  return model_.getFullParameter();
+}
+
+
+void DivFreeModel::setFullParameter(const Point & parameter)
+{
+  model_.setFullParameter(parameter);
+  scale_ = model_.getScale();
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
+}
+
+
+Description DivFreeModel::getFullParameterDescription() const
+{
+  return model_.getFullParameterDescription();
+}
+
+
 Description DivFreeModel::getParameterDescription() const
 {
   return model_.getParameterDescription();

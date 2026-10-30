@@ -95,6 +95,18 @@ public:
   virtual Matrix parameterGradient (const Point & s,
                                     const Point & t) const;
 
+  /** Third-order spatial derivatives */
+  virtual Point thirdOrderPartial(const Point & s,
+                                  const Point & t) const;
+
+  /** Fourth-order spatial derivatives */
+  virtual Point fourthOrderPartial(const Point & s,
+                                   const Point & t) const;
+
+  /** Mixed parameter-spatial Hessian */
+  virtual Matrix parameterHessian(const Point & s,
+                                  const Point & t) const;
+
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   virtual CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
   virtual CovarianceMatrix discretize(const Mesh & mesh) const;

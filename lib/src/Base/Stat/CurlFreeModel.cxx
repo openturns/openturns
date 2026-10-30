@@ -324,6 +324,29 @@ void CurlFreeModel::setParameter(const Point & parameter)
 }
 
 
+Point CurlFreeModel::getFullParameter() const
+{
+  return model_.getFullParameter();
+}
+
+
+void CurlFreeModel::setFullParameter(const Point & parameter)
+{
+  model_.setFullParameter(parameter);
+  scale_ = model_.getScale();
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
+}
+
+
+Description CurlFreeModel::getFullParameterDescription() const
+{
+  return model_.getFullParameterDescription();
+}
+
+
 Description CurlFreeModel::getParameterDescription() const
 {
   return model_.getParameterDescription();

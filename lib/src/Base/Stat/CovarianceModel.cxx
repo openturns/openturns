@@ -144,6 +144,27 @@ Matrix CovarianceModel::parameterGradient(const Point & s,
   return getImplementation()->parameterGradient(s, t);
 }
 
+/* Third-order spatial derivatives */
+Point CovarianceModel::thirdOrderPartial(const Point & s,
+    const Point & t) const
+{
+  return getImplementation()->thirdOrderPartial(s, t);
+}
+
+/* Fourth-order spatial derivatives */
+Point CovarianceModel::fourthOrderPartial(const Point & s,
+    const Point & t) const
+{
+  return getImplementation()->fourthOrderPartial(s, t);
+}
+
+/* Mixed parameter-spatial Hessian */
+Matrix CovarianceModel::parameterHessian(const Point & s,
+    const Point & t) const
+{
+  return getImplementation()->parameterHessian(s, t);
+}
+
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModel::discretize(const RegularGrid & timeGrid) const
 {

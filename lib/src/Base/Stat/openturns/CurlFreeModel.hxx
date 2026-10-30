@@ -87,6 +87,9 @@ public:
   Point getParameter() const override;
   void setParameter(const Point & parameter) override;
   Description getParameterDescription() const override;
+  Point getFullParameter() const override;
+  void setFullParameter(const Point & parameter) override;
+  Description getFullParameterDescription() const override;
   Indices getActiveParameter() const override;
   void setActiveParameter(const Indices & active) override;
 
