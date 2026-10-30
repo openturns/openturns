@@ -91,6 +91,13 @@ public:
   /** Gradient */
   Matrix partialGradient(const Point & s, const Point & t) const override;
 
+  /** Hessian */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Gradient wrt parameters */
+  Matrix parameterGradient(const Point & s, const Point & t) const override;
+
   /** Scale/amplitude set accessors */
   void setScale(const Point & scale) override;
   void setAmplitude(const Point & amplitude) override;

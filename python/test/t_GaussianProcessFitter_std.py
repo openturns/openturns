@@ -89,7 +89,7 @@ def use_case_4(X, Y):
     Biased variance estimate
     """
     ot.ResourceMap.Reset()
-    ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", False)
+    ot.ResourceMap.SetAsBool("GaussianProcessFitter-UnbiasedVariance", False)
     basis = ot.LinearBasisFactory(inputDimension).build()
     # Case of a misspecified covariance model
     covarianceModel = ot.AbsoluteExponential(inputDimension)
@@ -264,6 +264,45 @@ def bugfix_optim_no_feasible():
     ott.assert_almost_equal(squared_epsilon, [7.248e-06, 298.4, 0.9051], 5e-1, 1e-3)
 
 
+def test_reduced_loglikelihood_gradient(X, Y):
+    # The analytic gradient of the reduced log-likelihood must match a central finite difference
+
+    def checkGradient(logLikelihood, referencePoint):
+        epsilon = 1e-5
+        size = len(referencePoint)
+        finiteDifferenceGradient = [0.0] * size
+        for i in range(size):
+            pointMinus = list(referencePoint)
+            pointPlus = list(referencePoint)
+            pointMinus[i] -= epsilon
+            pointPlus[i] += epsilon
+            finiteDifferenceGradient[i] = (
+                logLikelihood(pointPlus)[0] - logLikelihood(pointMinus)[0]
+            ) / (2.0 * epsilon)
+        gradient = logLikelihood.gradient(referencePoint)
+        gradientPoint = [gradient[i, 0] for i in range(size)]
+        ott.assert_almost_equal(gradientPoint, finiteDifferenceGradient, 1e-4, 1e-4)
+
+    # General case: scale and amplitude are both optimized
+    ot.ResourceMap.SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", False)
+    covarianceModel = ot.SquaredExponential([1.0])
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    checkGradient(fitter.getReducedLogLikelihoodFunction(), [0.2, 1.0])
+    # Analytical amplitude case: only the scale is optimized
+    ot.ResourceMap.SetAsBool("GaussianProcessFitter-UseAnalyticalAmplitudeEstimate", True)
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    checkGradient(fitter.getReducedLogLikelihoodFunction(), [0.2])
+
+
+def test_set_method_invalid(X, Y):
+    # setMethod must reject values outside the LAPACK/HMAT enumeration
+    ot.ResourceMap.Reset()
+    covarianceModel = ot.SquaredExponential([1.0])
+    fitter = ot.GaussianProcessFitter(X, Y, covarianceModel)
+    with ott.assert_raises((TypeError, RuntimeError)):
+        fitter.setMethod(999)
+
+
 if __name__ == "__main__":
 
     ot.RandomGenerator.SetSeed(0)
@@ -292,5 +331,7 @@ if __name__ == "__main__":
     use_case_6(X, Y)
     use_case_7(X, Y)
     use_case_8(X, Y)
+    test_reduced_loglikelihood_gradient(X, Y)
+    test_set_method_invalid(X, Y)
     # fix https://github.com/openturns/openturns/issues/2953
     bugfix_optim_no_feasible()

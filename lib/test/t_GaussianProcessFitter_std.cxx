@@ -31,6 +31,7 @@ int main(int, char *[])
 
   try
   {
+    RandomGenerator::SetSeed(0);
     UnsignedInteger sampleSize = 40;
     UnsignedInteger inputDimension = 1;
 
