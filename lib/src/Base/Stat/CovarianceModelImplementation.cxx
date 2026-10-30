@@ -32,6 +32,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TBBImplementation.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -328,6 +329,130 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   return gradient;
 }
 
+/* Hessian */
+SymmetricMatrix CovarianceModelImplementation::partialHessian (const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // Central difference of the (usually analytic) partial gradient:
+  // the covariance itself is never evaluated at the centre point,
+  // so the nugget discontinuity at s == t is avoided, and the step
+  // is relative to the scale. This also covers models whose
+  // partialGradient is itself a finite difference, as it already
+  // offsets s.
+  // Only the (0, 0) output component is differentiated: for output
+  // dimension > 1 the base fallback returns d^2 C_11 / ds_i ds_j,
+  // i.e. the Hessian of the first output component only. Stationary
+  // models override partialHessian with closed forms handling all
+  // output components through outputCovariance_; non-stationary or
+  // edge-case paths (zero norm, etc.) fall back here and are thus
+  // limited to component (0, 0).
+  SymmetricMatrix hessian(inputDimension_);
+  const Scalar baseEpsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  // Isotropic models store a single scale: reuse it for every axis
+  const Bool isotropicScale = (scale_.getSize() != inputDimension_);
+  for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+  {
+    const Scalar epsilon = (isotropicScale ? scale_[0] : scale_[j]) * baseEpsilon;
+    Point sPlus(s);
+    Point sMinus(s);
+    sPlus[j] += epsilon;
+    sMinus[j] -= epsilon;
+    const Scalar delta = sPlus[j] - sMinus[j];  // = 2 * epsilon: central FD step width
+    const Matrix gradientPlus(partialGradient(sPlus, t));
+    const Matrix gradientMinus(partialGradient(sMinus, t));
+    for (UnsignedInteger i = j; i < inputDimension_; ++i)
+      hessian(i, j) = (gradientPlus(i, 0) - gradientMinus(i, 0)) / delta;
+  }
+  return hessian;
+}
+
+/* Third-order spatial derivatives, flat Point + dim0-contiguous layout.
+ * Caller-unrolled central differences of partialHessian, like partialHessian
+ * differences partialGradient and KissFFT::fftND loops over dims. */
+Point CovarianceModelImplementation::thirdOrderPartial(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const UnsignedInteger d = inputDimension_;
+  Point third(d * d * d, 0.0);
+  const Scalar baseEpsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Bool isotropicScale = (scale_.getSize() != d);
+  for (UnsignedInteger c = 0; c < d; ++c)
+  {
+    const Scalar epsilon = (isotropicScale ? scale_[0] : scale_[c]) * baseEpsilon;
+    Point sPlus(s);
+    Point sMinus(s);
+    sPlus[c] += epsilon;
+    sMinus[c] -= epsilon;
+    const Scalar delta = sPlus[c] - sMinus[c];
+    const SymmetricMatrix hessianPlus(partialHessian(sPlus, t));
+    const SymmetricMatrix hessianMinus(partialHessian(sMinus, t));
+    for (UnsignedInteger b = 0; b < d; ++b)
+      for (UnsignedInteger a = 0; a < d; ++a)
+        third[a + d * (b + d * c)] = (hessianPlus(a, b) - hessianMinus(a, b)) / delta;
+  }
+  return third;
+}
+
+/* Fourth-order spatial derivatives, flat Point. Caller-unrolled differences
+ * of thirdOrderPartial. */
+Point CovarianceModelImplementation::fourthOrderPartial(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const UnsignedInteger d = inputDimension_;
+  Point fourth(d * d * d * d, 0.0);
+  const Scalar baseEpsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Bool isotropicScale = (scale_.getSize() != d);
+  for (UnsignedInteger e = 0; e < d; ++e)
+  {
+    const Scalar epsilon = (isotropicScale ? scale_[0] : scale_[e]) * baseEpsilon;
+    Point sPlus(s);
+    Point sMinus(s);
+    sPlus[e] += epsilon;
+    sMinus[e] -= epsilon;
+    const Scalar delta = sPlus[e] - sMinus[e];
+    const Point thirdPlus(thirdOrderPartial(sPlus, t));
+    const Point thirdMinus(thirdOrderPartial(sMinus, t));
+    for (UnsignedInteger c = 0; c < d; ++c)
+      for (UnsignedInteger b = 0; b < d; ++b)
+        for (UnsignedInteger a = 0; a < d; ++a)
+          fourth[a + d * (b + d * (c + d * e))] = (thirdPlus[a + d * (b + d * c)] - thirdMinus[a + d * (b + d * c)]) / delta;
+  }
+  return fourth;
+}
+
+/* Mixed parameter-spatial Hessian. Caller-unrolled forward differences of
+ * partialHessian in full-parameter space, filtered to active parameters. */
+Matrix CovarianceModelImplementation::parameterHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const UnsignedInteger d = inputDimension_;
+  const Point fullParameter(getFullParameter());
+  const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+  const SymmetricMatrix hessianRef(partialHessian(s, t));
+  const UnsignedInteger activeSize = activeParameter_.getSize();
+  Matrix hessian(activeSize, d * d);
+  Pointer<CovarianceModelImplementation> p_implementation(clone());
+  for (UnsignedInteger k = 0; k < activeSize; ++k)
+  {
+    Point parameterP(fullParameter);
+    parameterP[activeParameter_[k]] += epsilon;
+    p_implementation->setFullParameter(parameterP);
+    const SymmetricMatrix hessianP(p_implementation->partialHessian(s, t));
+    for (UnsignedInteger b = 0; b < d; ++b)
+      for (UnsignedInteger a = 0; a < d; ++a)
+        hessian(k, a + d * b) = (hessianP(a, b) - hessianRef(a, b)) / epsilon;
+  }
+  return hessian;
+}
+
 /* Gradient */
 Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
     const Point & t) const
@@ -372,6 +497,25 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
       }
     }
   }
+  return gradient;
+}
+
+/* Filter a gradient computed wrt all the full parameters down to the active ones */
+Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Point & fullGradient) const
+{
+  return filterActiveParameterGradient(Matrix(fullGradient.getSize(), 1, fullGradient));
+}
+
+Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Matrix & fullGradient) const
+{
+  const UnsignedInteger activeSize = activeParameter_.getSize();
+  const UnsignedInteger fullParameterSize = getFullParameter().getSize();
+  if (fullGradient.getNbRows() < fullParameterSize)
+    throw InvalidArgumentException(HERE) << "Error: the fullGradient matrix has " << fullGradient.getNbRows() << " rows, but the full parameter set requires " << fullParameterSize << " rows.";
+  Matrix gradient(activeSize, fullGradient.getNbColumns());
+  for (UnsignedInteger j = 0; j < fullGradient.getNbColumns(); ++j)
+    for (UnsignedInteger i = 0; i < activeSize; ++i)
+      gradient(i, j) = fullGradient(activeParameter_[i], j);
   return gradient;
 }
 

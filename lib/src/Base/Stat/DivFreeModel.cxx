@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/MatrixImplementation.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SquaredExponential.hxx"
 
@@ -39,9 +40,10 @@ static SquareMatrix computeHessian(const CovarianceModel & model,
   SquareMatrix hessian(inputDimension);
   const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
   const Point scale(model.getScale());
+  const Bool isotropicScale = (scale.getDimension() != inputDimension);
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
-    const Scalar epsilon = scale[j] * baseEps;
+    const Scalar epsilon = (isotropicScale ? scale[0] : scale[j]) * baseEps;
     Point tPlus(t);
     Point tMinus(t);
     tPlus[j] += epsilon;
@@ -66,10 +68,11 @@ static SquareMatrix computeHessianStationary(const CovarianceModel & model,
   SquareMatrix hessian(inputDimension);
   const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
   const Point scale(model.getScale());
+  const Bool isotropicScale = (scale.getDimension() != inputDimension);
   const Point zero(inputDimension);
   for (UnsignedInteger j = 0; j < inputDimension; ++j)
   {
-    const Scalar epsilon = scale[j] * baseEps;
+    const Scalar epsilon = (isotropicScale ? scale[0] : scale[j]) * baseEps;
     Point tauPlus(tau);
     Point tauMinus(tau);
     tauPlus[j] += epsilon;
@@ -143,6 +146,19 @@ SquareMatrix DivFreeModel::operator()(const Point & s, const Point & t) const
   if (t.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
 
+  if (isStationary())
+  {
+    // H~_ij(s, t) = -H_ij(s, t), hence C_div = H - trace(H) * I_d: exact, no finite difference
+    const SymmetricMatrix hessian(model_.partialHessian(s, t));
+    Scalar trace = 0.0;
+    for (UnsignedInteger k = 0; k < inputDimension_; ++k) trace += hessian(k, k);
+    SquareMatrix exact(outputDimension_);
+    for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        exact(i, j) = hessian(i, j) - (i == j ? trace : 0.0);
+    return exact;
+  }
+
   const SquareMatrix hessian(computeHessian(model_, s, t, inputDimension_));
 
   // C_div = trace(H) * I_d - H
@@ -168,6 +184,19 @@ SquareMatrix DivFreeModel::operator()(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
+
+  if (isStationary())
+  {
+    const Point zero(inputDimension_);
+    const SymmetricMatrix hessian(model_.partialHessian(tau, zero));
+    Scalar trace = 0.0;
+    for (UnsignedInteger k = 0; k < inputDimension_; ++k) trace += hessian(k, k);
+    SquareMatrix exact(outputDimension_);
+    for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        exact(i, j) = hessian(i, j) - (i == j ? trace : 0.0);
+    return exact;
+  }
 
   const SquareMatrix hessian(computeHessianStationary(model_, tau, inputDimension_));
 
@@ -204,6 +233,153 @@ Bool DivFreeModel::isDiagonal() const
 }
 
 
+/* Gradient */
+Matrix DivFreeModel::partialGradient(const Point & s,
+                                      const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // The (i, j) covariance reads C_ij(s, t) = delta_ij tr(H~(s, t)) - H~_ij(s, t)
+  // with H~_ij(s, t) = d^2 k(s, t) / ds_i dt_j, hence dC_ij/ds_a =
+  // delta_ij sum_k G_akk - G_aij where G_aij = d/dt_j H_ai(s, t) and H is the
+  // partial Hessian of the underlying scalar model. H is analytic, so a single
+  // central finite difference in t yields a gradient exact in s, unlike the
+  // nested finite differences of the base-class fallback.
+  const Scalar baseEps = std::cbrt(SpecFunc::ScalarEpsilon);
+  const Point scale(model_.getScale());
+  const Bool isotropicScaleGrad = (scale.getDimension() != inputDimension_);
+  Collection<SquareMatrix> thirdOrder(inputDimension_, SquareMatrix(outputDimension_));
+  for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+  {
+    const Scalar epsilon = (isotropicScaleGrad ? scale[0] : scale[j]) * baseEps;
+    Point tPlus(t);
+    Point tMinus(t);
+    tPlus[j] += epsilon;
+    tMinus[j] -= epsilon;
+    const Scalar delta = tPlus[j] - tMinus[j];
+    const SymmetricMatrix hessianPlus(model_.partialHessian(s, tPlus));
+    const SymmetricMatrix hessianMinus(model_.partialHessian(s, tMinus));
+    for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        thirdOrder[a](i, j) = (hessianPlus(a, i) - hessianMinus(a, i)) / delta;
+  }
+  Collection<SquareMatrix> derivatives(inputDimension_, SquareMatrix(outputDimension_));
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    Scalar trace = 0.0;
+    for (UnsignedInteger k = 0; k < inputDimension_; ++k)
+      trace += thirdOrder[a](k, k);
+    for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        derivatives[a](i, j) = (i == j ? trace : 0.0) - thirdOrder[a](i, j);
+  }
+  // Same layout as the base class: symmetrized covariance flattened column-wise
+  Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    MatrixImplementation flat(*derivatives[a].getImplementation());
+    flat.symmetrize();
+    const Point values(flat);
+    for (UnsignedInteger k = 0; k < values.getSize(); ++k)
+      gradient(a, k) = values[k];
+  }
+  return gradient;
+}
+
+/* Hessian of the (0, 0) component: C_00 = -sum_{k>0} H_kk, stencil on H */
+SymmetricMatrix DivFreeModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (!isStationary()) return CovarianceModelImplementation::partialHessian(s, t);
+  // Second differences of values: optimal step is eps^(1/4).
+  const Scalar baseEpsilon = std::sqrt(std::sqrt(SpecFunc::ScalarEpsilon));
+  const Point scale(model_.getScale());
+  const Bool isotropicScale = (scale.getDimension() != inputDimension_);
+  SymmetricMatrix hessian(inputDimension_);
+  const SymmetricMatrix hessianST(model_.partialHessian(s, t));
+  Scalar centerValue = 0.0;
+  for (UnsignedInteger k = 1; k < inputDimension_; ++k) centerValue += hessianST(k, k);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar epsilon = (isotropicScale ? scale[0] : scale[i]) * baseEpsilon;
+    Point sPlus(s);
+    Point sMinus(s);
+    sPlus[i] += epsilon;
+    sMinus[i] -= epsilon;
+    const Scalar deltaI = sPlus[i] - sMinus[i];
+    const SymmetricMatrix hessianPlus(model_.partialHessian(sPlus, t));
+    const SymmetricMatrix hessianMinus(model_.partialHessian(sMinus, t));
+    Scalar valuePlus = 0.0;
+    Scalar valueMinus = 0.0;
+    for (UnsignedInteger k = 1; k < inputDimension_; ++k)
+    {
+      valuePlus += hessianPlus(k, k);
+      valueMinus += hessianMinus(k, k);
+    }
+    hessian(i, i) = -(valuePlus - 2.0 * centerValue + valueMinus) / (deltaI * deltaI / 4.0);
+    for (UnsignedInteger j = 0; j < i; ++j)
+    {
+      const Scalar epsilonJ = (isotropicScale ? scale[0] : scale[j]) * baseEpsilon;
+      Point sPP(s);
+      Point sPM(s);
+      Point sMM(s);
+      Point sMP(s);
+      sPP[i] += epsilon;
+      sPP[j] += epsilonJ;
+      sPM[i] += epsilon;
+      sPM[j] -= epsilonJ;
+      sMM[i] -= epsilon;
+      sMM[j] -= epsilonJ;
+      sMP[i] -= epsilon;
+      sMP[j] += epsilonJ;
+      Scalar valuePP = 0.0;
+      Scalar valuePM = 0.0;
+      Scalar valueMM = 0.0;
+      Scalar valueMP = 0.0;
+      const SymmetricMatrix hessianPP(model_.partialHessian(sPP, t));
+      const SymmetricMatrix hessianPM(model_.partialHessian(sPM, t));
+      const SymmetricMatrix hessianMM(model_.partialHessian(sMM, t));
+      const SymmetricMatrix hessianMP(model_.partialHessian(sMP, t));
+      for (UnsignedInteger k = 1; k < inputDimension_; ++k)
+      {
+        valuePP += hessianPP(k, k);
+        valuePM += hessianPM(k, k);
+        valueMM += hessianMM(k, k);
+        valueMP += hessianMP(k, k);
+      }
+      const Scalar deltaJ = sPP[j] - sPM[j];
+      hessian(i, j) = -(valuePP - valuePM - valueMP + valueMM) / (deltaI * deltaJ);
+    }
+  }
+  return hessian;
+}
+
+/* Parameter gradient: C = H - tr(H) I, so dC/dp = dH/dp - tr(dH/dp) I */
+Matrix DivFreeModel::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (!isStationary()) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Matrix baseParameterHessian(model_.getImplementation()->parameterHessian(s, t));
+  const UnsignedInteger activeSize = baseParameterHessian.getNbRows();
+  Matrix gradient(activeSize, outputDimension_ * outputDimension_);
+  for (UnsignedInteger k = 0; k < activeSize; ++k)
+  {
+    Scalar trace = 0.0;
+    for (UnsignedInteger q = 0; q < inputDimension_; ++q)
+      trace += baseParameterHessian(k, q + inputDimension_ * q);
+    UnsignedInteger index = 0;
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++i, ++index)
+        gradient(k, index) = baseParameterHessian(k, i + inputDimension_ * j) - (i == j ? trace : 0.0);
+  }
+  return gradient;
+}
+
+
 void DivFreeModel::setScale(const Point & scale)
 {
   model_.setScale(scale);
@@ -229,6 +405,29 @@ void DivFreeModel::setParameter(const Point & parameter)
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
   updateOutputCovariance();
+}
+
+
+Point DivFreeModel::getFullParameter() const
+{
+  return model_.getFullParameter();
+}
+
+
+void DivFreeModel::setFullParameter(const Point & parameter)
+{
+  model_.setFullParameter(parameter);
+  scale_ = model_.getScale();
+  const SquareMatrix C0(operator()(Point(inputDimension_)));
+  for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+    amplitude_[j] = std::sqrt(std::abs(C0(j, j)));
+  updateOutputCovariance();
+}
+
+
+Description DivFreeModel::getFullParameterDescription() const
+{
+  return model_.getFullParameterDescription();
 }
 
 
