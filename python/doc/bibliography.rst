@@ -543,6 +543,14 @@ Bibliography
 .. [scott2015] Scott, D. W. (2015).
     *Multivariate density estimation: theory, practice, and visualization.*
     John Wiley & Sons.
+.. [Schueremans2005] L. Schueremans and D. van Gemert, "Benefit of splines and neural
+   networks in simulation based structural reliability analysis," *Structural Safety*,
+   vol. 27, no. 3, pp. 241-258, 2005. DOI: 10.1016/j.strusafe.2004.11.001
+
+.. [Echard2011] B. Echard, N. Gayton, and M. Lemaire, "AK-MCS: An active learning
+   reliability method combining Kriging and Monte Carlo simulation",
+   *Reliability Engineering and System Safety*, vol. 96, no. 2, pp. 145-154, 2011.
+
 .. [ScottStewart2011] W. F. Scott & B. Stewart.
     *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*,
     Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
