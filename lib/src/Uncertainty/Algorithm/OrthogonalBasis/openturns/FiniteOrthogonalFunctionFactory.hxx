@@ -77,6 +77,8 @@ public:
 
 protected:
 
+  Bool equals(const OrthogonalFunctionFactory & other) const override;
+
 private:
 
   /** The underlying set of functions */

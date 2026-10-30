@@ -75,6 +75,20 @@ OrthogonalProductFunctionFactory * OrthogonalProductFunctionFactory::clone() con
   return new OrthogonalProductFunctionFactory(*this);
 }
 
+/* Comparison helper */
+Bool OrthogonalProductFunctionFactory::equals(const OrthogonalFunctionFactory & other) const
+{
+  const OrthogonalProductFunctionFactory * p_other = dynamic_cast<const OrthogonalProductFunctionFactory *>(&other);
+  if (!p_other || !OrthogonalFunctionFactory::equals(other)) return false;
+  if (getEnumerateFunction() != p_other->getEnumerateFunction()) return false;
+  const FunctionFamilyCollection coll(getFunctionFamilyCollection());
+  const FunctionFamilyCollection otherColl(p_other->getFunctionFamilyCollection());
+  if (coll.getSize() != otherColl.getSize()) return false;
+  for (UnsignedInteger i = 0; i < coll.getSize(); ++i)
+    if (coll[i].__repr__() != otherColl[i].__repr__()) return false;
+  return true;
+}
+
 /* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction OrthogonalProductFunctionFactory::getEnumerateFunction() const
 {

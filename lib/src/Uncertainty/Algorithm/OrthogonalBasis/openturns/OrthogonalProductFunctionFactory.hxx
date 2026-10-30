@@ -92,6 +92,8 @@ public:
 
 protected:
 
+  Bool equals(const OrthogonalFunctionFactory & other) const override;
+
 private:
   /** Build tensorized function factory */
   void buildTensorizedFunctionFactory(const FunctionFamilyCollection & coll,

@@ -55,6 +55,24 @@ OrthogonalFunctionFactory * OrthogonalFunctionFactory::clone() const
   return new OrthogonalFunctionFactory(*this);
 }
 
+/* Comparison operators */
+Bool OrthogonalFunctionFactory::operator ==(const OrthogonalFunctionFactory & other) const
+{
+  if (this == &other) return true;
+  if (getClassName() != other.getClassName()) return false;
+  return equals(other) && other.equals(*this);
+}
+
+Bool OrthogonalFunctionFactory::operator !=(const OrthogonalFunctionFactory & other) const
+{
+  return !operator==(other);
+}
+
+Bool OrthogonalFunctionFactory::equals(const OrthogonalFunctionFactory & other) const
+{
+  return measure_ == other.measure_;
+}
+
 
 /* Build the Function of the given index */
 Function OrthogonalFunctionFactory::build(const UnsignedInteger ) const
