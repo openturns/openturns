@@ -56,6 +56,7 @@
 #include "openturns/InverseRosenblattEvaluation.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/SklarCopula.hxx"
+#include "openturns/StatisticsEngine.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/Cloud.hxx"
@@ -3975,42 +3976,6 @@ struct DistributionImplementationSortedComponent
   Scalar tiedMass_ = 0.0;
 }; // struct DistributionImplementationSortedComponent
 
-/* Accumulate the probability mass of the atoms of a discrete distribution,
-   gathered by tie group as in the structure above, in order to evaluate in a
-   logarithmic time the mass of the atoms of the tie groups less than a given
-   one. This is a binary indexed tree (Fenwick tree), the tie groups being
-   numbered from 0 whereas the tree is indexed from 1 */
-struct DistributionImplementationMassTree
-{
-  explicit DistributionImplementationMassTree(const UnsignedInteger size)
-    : partialSum_(size + 1, 0.0)
-    , size_(size)
-  {
-    // Nothing to do
-  }
-
-  /** Add the given mass to the atoms of the given tie group */
-  void add(const UnsignedInteger group,
-           const Scalar mass)
-  {
-    for (UnsignedInteger index = group + 1; index <= size_; index += index & (~index + 1)) partialSum_[index] += mass;
-  }
-
-  /** Get the mass of the atoms of the tie groups less than the given one */
-  Scalar getLowerMass(const UnsignedInteger group) const
-  {
-    Scalar mass = 0.0;
-    for (UnsignedInteger index = group; index > 0; index -= index & (~index + 1)) mass += partialSum_[index];
-    return mass;
-  }
-
-  /** The partial sums, the i-th one gathering the masses of the tie groups
-      from the lowest set bit of i to the last one */
-  Point partialSum_;
-  /** The number of tie groups */
-  UnsignedInteger size_;
-}; // struct DistributionImplementationMassTree
-
 /* Get the support and the probability of each of its atoms if the distribution
    is discrete with a small enough enumerable support */
 Bool DistributionImplementation::getEnumerableDiscreteSupport(Sample & support,
@@ -4114,76 +4079,14 @@ CorrelationMatrix DistributionImplementation::computeDiscreteKendallTau(const Sa
     const Point & probabilities,
     const Scalar epsilon)
 {
-  const UnsignedInteger size = support.getSize();
   const UnsignedInteger dimension = support.getDimension();
+  const UnsignedInteger size = support.getSize();
+  DataContainer weightsDC(size, 0.0);
+  for (UnsignedInteger k = 0; k < size; ++k) weightsDC[k] = probabilities[k];
+  const DataContainer result(StatisticsEngine::ComputeWeightedKendallTau(support.getImplementation()->toDataContainer(), weightsDC, epsilon));
   CorrelationMatrix tau(dimension);
-  // Probability of a pair of distinct atoms
-  Scalar sumSquares = 0.0;
-  for (UnsignedInteger k = 0; k < size; ++k) sumSquares += probabilities[k] * probabilities[k];
-  const Scalar pairMass = 0.5 * (1.0 - sumSquares);
-  if (!(pairMass > 0.0)) return tau;
-  // Sort the support by increasing value of each component
-  Collection<DistributionImplementationSortedComponent> sortedComponents(dimension);
-  Point untiedMass(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    sortedComponents[i] = DistributionImplementationSortedComponent(support, probabilities, i, epsilon);
-    // The atoms tied for a given component do not contribute to the numerator,
-    // but they are removed from the denominators, as in the tie-corrected
-    // Kendall tau of SampleImplementation::computeKendallTau()
-    untiedMass[i] = pairMass - sortedComponents[i].getTiedMass();
-    if (!(untiedMass[i] > 0.0)) untiedMass[i] = pairMass;
-  }
-  for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
-  {
-    for (UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
-    {
-      const DistributionImplementationSortedComponent & sortedRow = sortedComponents[rowIndex];
-      const DistributionImplementationSortedComponent & sortedColumn = sortedComponents[columnIndex];
-      const UnsignedInteger groupNumber = sortedColumn.getGroupNumber();
-      // Tree accumulating the mass of the atoms already visited, indexed by
-      // their tie group for the column component
-      DistributionImplementationMassTree massTree(groupNumber);
-      // Mass of the atoms already visited, per tie group and in total
-      Point tiedMass(groupNumber, 0.0);
-      Scalar totalMass = 0.0;
-      Scalar concordance = 0.0;
-      // Walk through the atoms by increasing value of the row component. A tie
-      // group is entirely read before being inserted, so that only strictly
-      // smaller values of the row component contribute to the concordance
-      UnsignedInteger first = 0;
-      while (first < size)
-      {
-        const UnsignedInteger group = sortedRow.getGroup(sortedRow[first]);
-        UnsignedInteger last = first;
-        while ((last < size) && (sortedRow.getGroup(sortedRow[last]) == group)) ++last;
-        // The atoms tied for the column component are neither concordant nor
-        // discordant, hence their exclusion from the concordance
-        for (UnsignedInteger k = first; k < last; ++k)
-        {
-          const UnsignedInteger atom = sortedRow[k];
-          const UnsignedInteger columnGroup = sortedColumn.getGroup(atom);
-          // Mass of the inserted atoms with a lower or a higher value for the
-          // column component, ie strictly lower and strictly higher
-          const Scalar lowerMass = massTree.getLowerMass(columnGroup);
-          const Scalar higherMass = totalMass - lowerMass - tiedMass[columnGroup];
-          concordance += probabilities[atom] * (lowerMass - higherMass);
-        } // k
-        // Then insert the atoms of the tie group
-        for (UnsignedInteger k = first; k < last; ++k)
-        {
-          const UnsignedInteger atom = sortedRow[k];
-          const UnsignedInteger columnGroup = sortedColumn.getGroup(atom);
-          const Scalar p = probabilities[atom];
-          massTree.add(columnGroup, p);
-          tiedMass[columnGroup] += p;
-          totalMass += p;
-        } // k
-        first = last;
-      } // tie group
-      tau(rowIndex, columnIndex) = concordance / std::sqrt(untiedMass[rowIndex] * untiedMass[columnIndex]);
-    } // columnIndex
-  } // rowIndex
+    for (UnsignedInteger j = 0; j < dimension; ++j) tau(i, j) = result(i, j);
   return tau;
 } // computeDiscreteKendallTau
 

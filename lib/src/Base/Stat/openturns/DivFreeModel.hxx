@@ -53,12 +53,13 @@ public:
   SquareMatrix operator()(const Point & tau) const override;
 
   /** Scalar interface (for 1D case) */
+  using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar(const Point & s, const Point & t) const override;
   Scalar computeAsScalar(const Point & tau) const override;
   Scalar computeAsScalar(const Scalar s, const Scalar t) const override;
   Scalar computeAsScalar(const Scalar tau) const override;
-  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                         const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Scalar * s_begin,
+                         const Scalar * t_begin) const override;
 
   /** Is it a stationary covariance model ? */
   Bool isStationary() const override;

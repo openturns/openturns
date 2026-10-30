@@ -54,10 +54,22 @@
  * ChristoffelSubsampleExperiment-ThinningMethod: greedy thinning method, Barrier or Removal (default is Removal)
  * ChristoffelSubsampleExperiment-BarrierStep: barrier advance per selection step of the Barrier method (default is 1.0)
  * ChristoffelSubsampleExperiment-BarrierRegularization: safety gap keeping the barriers strictly inside the spectrum (default is 1e-8)
+ * AlgebraEngine-DefaultBlockSize: number of rows and columns per block for out-of-core blockwise linear algebra (default is 384)
+ * StatisticsEngine-DefaultBlockSize: number of rows per block for out-of-core blockwise statistics (default is 4096)
+ * StatisticsEngine-ParallelThreshold: minimum row count for parallel reductions, smaller inputs use serial reductions (default is 100000)
+ * HDF5Backend-DefaultChunkSize: number of elements per chunk for HDF5-backed storage (default is 4096)
+ * HDF5Backend-DefaultCompressionLevel: deflate compression level for HDF5-backed storage, 0 disables compression (default is 0)
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
+ * DataContainer
+ * ComplexDataContainer
+ * HDF5Backend
+ * ComplexHDF5Backend
+ * AlgebraEngine
+ * StatisticsEngine
+
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -188,6 +200,7 @@
  * PointToFieldFunction.getMarginal
  * GaussKronrod.setMaximumError now requires a strictly positive finite error instead of a nonnegative one
  * FunctionalChaosAlgorithm now rejects an input sample outside of the distribution range at construction time
+ * Added blockwise (*Blockwise) variants of the AlgebraEngine and StatisticsEngine kernels operating on DataContainer storage, with HDF5-backed containers supported throughout
 
 === Documentation ===
  * Theory: add interpolation page
@@ -3694,3 +3707,5 @@ Fixes:
  * Fixed a bug in the Makefile.am that prevented the UseCaseGuide from being compiled.
  * Fixed typo in UseCaseGuide and UserManual. Closes #145.
  * Enhanced the documentation (Reference guide and UseCase guide). This closes ticket #147.
+
+

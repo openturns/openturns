@@ -52,7 +52,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> fft = ot.FFT()
->>> result = fft.transform(ot.Normal(8).getRealization())
+>>> result = fft.transform(ot.ScalarCollection(ot.Normal(8).getRealization()))
 >>> # 2D transform (2x3 matrix)
 >>> data = ot.Point([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
 >>> result = fft.transform(data, [2, 3])

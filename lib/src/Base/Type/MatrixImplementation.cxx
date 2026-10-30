@@ -25,6 +25,7 @@
 #include "openturns/MatrixImplementation.hxx"
 #include "openturns/ComplexMatrixImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/AlgebraEngine.hxx"
 #include "openturns/Lapack.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -41,21 +42,47 @@ static const Factory<MatrixImplementation> Factory_MatrixImplementation;
 // All the pivots with a magnitude less than this threshold are considered as zero
 /* Default constructor */
 MatrixImplementation::MatrixImplementation()
-  : PersistentCollection<Scalar>()
+  : PersistentObject()
   , nbRows_(0)
   , nbColumns_(0)
+  , data_()
 {
   // Nothing to do
 }
+
+#ifndef SWIG
+/* Copy constructor */
+MatrixImplementation::MatrixImplementation(const MatrixImplementation & other)
+  : PersistentObject(other)
+  , nbRows_(other.nbRows_)
+  , nbColumns_(other.nbColumns_)
+  , data_(other.data_)
+{
+}
+
+/* Assignment operator */
+MatrixImplementation & MatrixImplementation::operator = (const MatrixImplementation & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    nbRows_ = other.nbRows_;
+    nbColumns_ = other.nbColumns_;
+    data_ = other.data_;
+  }
+  return *this;
+}
+#endif
 
 /* Constructor with size (rowDim and colDim) */
 /* The MatrixImplementation is made up of a collection of rowDim*colDim elements */
 /* The MatrixImplementation is viewed as a set of column vectors read one after another */
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim)
-  : PersistentCollection<Scalar>(rowDim * colDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim, colDim, 0.0)
 {
   // Nothing to do
 }
@@ -64,9 +91,10 @@ MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
 MatrixImplementation::MatrixImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const Collection<Scalar> & elementsValues)
-  : PersistentCollection<Scalar>(rowDim * colDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
+  , data_(rowDim, colDim, 0.0)
 {
   const UnsignedInteger matrixSize = std::min(rowDim * colDim, elementsValues.getSize());
   std::copy(elementsValues.begin(), elementsValues.begin() + matrixSize, begin());
@@ -79,6 +107,18 @@ MatrixImplementation * MatrixImplementation::clone() const
 }
 
 
+namespace
+{
+String matrixValuesToString(const MatrixImplementation & matrix)
+{
+  OSS oss(true);
+  oss << "[";
+  std::copy( matrix.begin(), matrix.end(), OSS_iterator<Scalar>(oss, ",") );
+  oss << "]";
+  return String(oss);
+}
+}
+
 /* String converter */
 String MatrixImplementation::__repr__() const
 {
@@ -86,7 +126,7 @@ String MatrixImplementation::__repr__() const
          << " name=" << getName()
          << " rows=" << nbRows_
          << " columns=" << nbColumns_
-         << " values=" << PersistentCollection<Scalar>::__repr__();
+         << " values=" << matrixValuesToString(*this);
 }
 
 String MatrixImplementation::__str__(const String & offset) const
@@ -184,37 +224,34 @@ MatrixImplementation MatrixImplementation::transpose() const
 void MatrixImplementation::resize(const UnsignedInteger newRowDim,
                                   const UnsignedInteger newColDim)
 {
-  if (newRowDim < nbRows_)
-  {
-    for (UnsignedInteger j = 1; j < nbColumns_; ++ j)
-      std::copy(data() + j * nbRows_, data() + j * nbRows_ + newRowDim, const_cast<Scalar*>(data()) + j * newRowDim);
-    std::fill(const_cast<Scalar*>(data()) + nbColumns_ * newRowDim, const_cast<Scalar*>(data()) + nbColumns_ * newRowDim + (nbRows_ - newRowDim + 1), 0.0);
-  }
-  resize(newRowDim * newColDim);
-  if (newRowDim > nbRows_)
-  {
-    const UnsignedInteger minCol = std::min(nbColumns_, newColDim);
-    for (SignedInteger j = (minCol - 1); (j >= 0); -- j)
-    {
-      std::copy(data() + j * nbRows_, data() + (j + 1) * nbRows_, const_cast<Scalar*>(data()) + j * newRowDim);
-      std::fill(const_cast<Scalar*>(data()) + j * newRowDim + nbRows_, const_cast<Scalar*>(data()) + (j + 1) * newRowDim, 0.0);
-    }
-  }
+  // Preserve the leading (minRows x minCols) submatrix, zero-fill the rest
+  MatrixImplementation tmp(newRowDim, newColDim);
+  const UnsignedInteger minRows = std::min(nbRows_, newRowDim);
+  const UnsignedInteger minCols = std::min(nbColumns_, newColDim);
+  for (UnsignedInteger j = 0; j < minCols; ++j)
+    std::copy(data() + j * nbRows_, data() + j * nbRows_ + minRows, tmp.data() + j * newRowDim);
   nbRows_ = newRowDim;
   nbColumns_ = newColDim;
+  data_ = tmp.data_;
 }
 
 /* MatrixImplementation reshape */
 MatrixImplementation MatrixImplementation::reshape(const UnsignedInteger newRowDim,
     const UnsignedInteger newColDim) const
 {
-  return MatrixImplementation(newRowDim, newColDim, *this);
+  return MatrixImplementation(newRowDim, newColDim, begin(), end());
 }
 
 void MatrixImplementation::reshapeInPlace(const UnsignedInteger newRowDim,
     const UnsignedInteger newColDim)
 {
-  if (newRowDim * newColDim != getSize()) resize(newRowDim * newColDim);
+  if (newRowDim * newColDim != getSize())
+  {
+    MatrixImplementation tmp(newRowDim, newColDim);
+    const UnsignedInteger size = std::min(getSize(), tmp.getSize());
+    std::copy(begin(), begin() + size, tmp.begin());
+    data_ = tmp.data_;
+  }
   nbRows_ = newRowDim;
   nbColumns_ = newColDim;
 }
@@ -261,27 +298,16 @@ const MatrixImplementation MatrixImplementation::getColumnSym(const UnsignedInte
 MatrixImplementation MatrixImplementation::operator+ (const MatrixImplementation & matrix) const
 {
   if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot add matrices with incompatible dimensions";
-  // Must copy as add will be overwritten by the operation
-  MatrixImplementation result(matrix);
-  int size(nbRows_ * nbColumns_);
-  double alpha(1.0);
-  int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(data()), &one, &result[0], &one);
-
-  return result;
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::Axpy(1.0, data_, matrix.data_), nbRows_, nbColumns_);
 }
 
 /* In-place MatrixImplementation addition (must have the same dimensions) */
 MatrixImplementation & MatrixImplementation::operator+= (const MatrixImplementation & matrix)
 {
   if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot add matrices with incompatible dimensions";
-  // Must copy as add will be overwritten by the operation
-  MatrixImplementation result(matrix);
-  int size(nbRows_ * nbColumns_);
-  double alpha(1.0);
-  int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(matrix.data()), &one, &(*this)[0], &one);
-
+  // Write back in place to preserve view sharing
+  const DataContainer result(AlgebraEngine::Axpy(1.0, matrix.data_, data_));
+  std::copy(result.data(), result.data() + nbRows_ * nbColumns_, data_.data());
   return *this;
 }
 
@@ -289,27 +315,16 @@ MatrixImplementation & MatrixImplementation::operator+= (const MatrixImplementat
 MatrixImplementation MatrixImplementation::operator- (const MatrixImplementation & matrix) const
 {
   if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot subtract matrices with incompatible dimensions";
-  // Must copy as add will be overwritten by the operation
-  MatrixImplementation result(*this);
-  int size(nbRows_ * nbColumns_);
-  double alpha(-1.0);
-  int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(matrix.data()), &one, &result[0], &one);
-
-  return result;
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::Axpy(-1.0, matrix.data_, data_), nbRows_, nbColumns_);
 }
 
 /* In-place MatrixImplementation subtraction (must have the same dimensions) */
 MatrixImplementation & MatrixImplementation::operator-= (const MatrixImplementation & matrix)
 {
   if ((nbRows_ != matrix.nbRows_ ) || (nbColumns_ != matrix.nbColumns_ )) throw InvalidDimensionException(HERE) << "Cannot subtract matrices with incompatible dimensions";
-  // Must copy as add will be overwritten by the operation
-  MatrixImplementation result(*this);
-  int size(nbRows_ * nbColumns_);
-  double alpha(-1.0);
-  int one = 1;
-  daxpy_(&size, &alpha, const_cast<double*>(matrix.data()), &one, &(*this)[0], &one);
-
+  // Write back in place to preserve view sharing
+  const DataContainer result(AlgebraEngine::Axpy(-1.0, matrix.data_, data_));
+  std::copy(result.data(), result.data() + nbRows_ * nbColumns_, data_.data());
   return *this;
 }
 
@@ -332,17 +347,14 @@ MatrixImplementation MatrixImplementation::genProd (const MatrixImplementation &
 
   MatrixImplementation mult(m, n);
   if ((m == 0) || (n == 0) || (k == 0)) return mult;
-  char transa(transposeLeft ? 'T' : 'N');
-  char transb(transposeRight ? 'T' : 'N');
-  double alpha(1.0);
-  double beta(0.0);
-  int ltransa(1);
-  int ltransb(1);
-  int lda(nbRows_);
-  int ldb(matrix.nbRows_);
-  dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(data()), &lda, const_cast<double*>(matrix.data()), &ldb, &beta, &mult[0], &m, &ltransa, &ltransb);
-
-  return mult;
+  if (transposeLeft || transposeRight)
+  {
+    // The engine has no transpose flags: materialize the transposed operands
+    const DataContainer left(transposeLeft ? AlgebraEngine::Transpose(data_) : data_);
+    const DataContainer right(transposeRight ? AlgebraEngine::Transpose(matrix.data_) : matrix.data_);
+    return MatrixImplementation::FromDataContainer(AlgebraEngine::MatrixProduct(left, right), m, n);
+  }
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::MatrixProduct(data_, matrix.data_), m, n);
 }
 
 MatrixImplementation MatrixImplementation::symProd (const MatrixImplementation & matrix,
@@ -381,17 +393,13 @@ Point MatrixImplementation::genVectProd (const Point & pt, const Bool transposed
   int l = transposed ? nbColumns_ : nbRows_;
   Point prod(l);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return prod;
-  char trans = transposed ? 'T' : 'N';
-  int one = 1;
-  double alpha = 1.0;
-  double beta = 0.0;
-  int ltrans = 1;
-  int m = nbRows_;
-  int n = nbColumns_;
-
-  dgemv_(&trans, &m, &n, &alpha, const_cast<double*>(data()), &m, const_cast<double*>(pt.data()), &one, &beta, &prod[0], &one, &ltrans);
-
-  return prod;
+  if (transposed)
+  {
+    // The engine has no transpose flag: materialize the transposed matrix
+    const DataContainer transposedMatrix(AlgebraEngine::Transpose(data_));
+    return Point::FromDataContainer(AlgebraEngine::MatrixPointProduct(transposedMatrix, pt.toDataContainer()));
+  }
+  return Point::FromDataContainer(AlgebraEngine::MatrixPointProduct(data_, pt.toDataContainer()));
 }
 
 /* Multiplications with a SampleImplementation (must have consistent dimensions)
@@ -413,29 +421,32 @@ Sample MatrixImplementation::genSampleProd (const Sample & sample, const Bool tr
   const UnsignedInteger prodColumns(side == 'L' ? sampleColumns : matrixColumns);
   Sample prod(prodRows, prodColumns);
   if (nbRows_ == 0 || nbColumns_ == 0) return prod;
-  char transa = transposeSample ? 'T' : 'N';
-  char transb = transposeMatrix ? 'N' : 'T';
-  double alpha = 1.0;
-  double beta = 0.0;
-  int ltransa = 1;
-  int ltransb = 1;
+  // The engine works column-major: stage both operands column-major,
+  // multiply, then convert back to the row-major Sample layout
+  DataContainer sampleColMajor(sample.getSize(), sample.getDimension(), 0.0, DataContainer::COLUMN_MAJOR);
+  for (UnsignedInteger i = 0; i < sample.getSize(); ++i)
+    for (UnsignedInteger j = 0; j < sample.getDimension(); ++j) sampleColMajor(i, j) = sample(i, j);
+  const DataContainer transposedSample(AlgebraEngine::Transpose(sampleColMajor));
+  const DataContainer transposedMatrix(AlgebraEngine::Transpose(data_));
+  DataContainer colMajorProd;
   if (side == 'L')
   {
-    int m = sampleColumns;
-    int n = matrixRows;
-    int k = matrixColumns;
-    int lda = (transa == 'N' ? m : k);
-    int ldb = (transb == 'N' ? k : n);
-    dgemm_(&transa, &transb, &m, &n, &k, &alpha, const_cast<double*>(&(sample(0, 0))), &lda, const_cast<double*>(data()), &ldb, &beta, &prod(0, 0), &m, &ltransa, &ltransb);
+    // P = opM(this) * opS(sample), stored column-major like prod is row-major
+    const DataContainer & left = transposeMatrix ? transposedMatrix : data_;
+    const DataContainer & right = transposeSample ? transposedSample : sampleColMajor;
+    colMajorProd = AlgebraEngine::MatrixProduct(left, right);
+    for (UnsignedInteger i = 0; i < prodRows; ++i)
+      for (UnsignedInteger j = 0; j < prodColumns; ++j) prod(i, j) = colMajorProd(i, j);
   }
   else
   {
-    int m = matrixColumns;
-    int n = sampleRows;
-    int k = matrixRows;
-    int lda = (transb == 'N' ? m : k);
-    int ldb = (transa == 'N' ? k : n);
-    dgemm_(&transb, &transa, &m, &n, &k, &alpha, const_cast<double*>(data()), &lda, const_cast<double*>(&(sample(0, 0))), &ldb, &beta, &prod(0, 0), &m, &ltransb, &ltransa);
+    // P^T = opM(this) * opS(sample): the matrix operand comes first,
+    // and the result is transposed back on the way out
+    const DataContainer & left = transposeMatrix ? data_ : transposedMatrix;
+    const DataContainer & right = transposeSample ? sampleColMajor : transposedSample;
+    colMajorProd = AlgebraEngine::MatrixProduct(left, right);
+    for (UnsignedInteger i = 0; i < prodRows; ++i)
+      for (UnsignedInteger j = 0; j < prodColumns; ++j) prod(i, j) = colMajorProd(j, i);
   }
 
   return prod;
@@ -448,34 +459,20 @@ Point MatrixImplementation::symVectProd (const Point & pt) const
   Point prod(nbRows_);
   // In this case, nbRows_ == nbColumns_
   if (nbRows_ == 0) return prod;
-  char uplo = 'L';
-  int n = nbRows_;
-  int one = 1;
-  double alpha(1.0);
-  double beta(0.0);
-  int luplo = 1;
-  dsymv_(&uplo, &n, &alpha, const_cast<double*>(data()), &n, const_cast<double*>(pt.data()), &one, &beta, &prod[0], &one, &luplo);
-
-  return prod;
+  return Point::FromDataContainer(AlgebraEngine::SymMatrixPointProduct(data_, pt.toDataContainer()));
 }
 
 /* Gram matrix. If transpose == true, compute M^T.M, else M.M^T. */
 MatrixImplementation MatrixImplementation::computeGram (const Bool transposed) const
 {
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return MatrixImplementation(0, 0);
-  char uplo = 'L';
-  char trans = transposed ? 'T' : 'N';
-  int n = transposed ? nbColumns_ : nbRows_;
-  int k = transposed ? nbRows_ : nbColumns_;
-  double alpha = 1.0;
-  int lda = transposed ? k : n;
-  double beta =  0.0;
-  MatrixImplementation C(n, n);
-  int ldc = n;
-  int one = 1;
-  dsyrk_(&uplo, &trans, &n, &k, &alpha, const_cast<double*>(data()), &lda, &beta, &C[0], &ldc, &one, &one);
-
-  return C;
+  const UnsignedInteger n = transposed ? nbColumns_ : nbRows_;
+  // The historical convention is a lower-only result (upper left to zeros,
+  // healed lazily by symmetrize-on-access); restore it explicitly so raw
+  // readers observe exactly the historical storage
+  MatrixImplementation gram = MatrixImplementation::FromDataContainer(AlgebraEngine::ComputeGram(data_, transposed), n, n);
+  gram.triangularize(true);
+  return gram;
 }
 
 /* Multiplication by a Scalar */
@@ -483,24 +480,16 @@ MatrixImplementation MatrixImplementation::operator* (const Scalar s) const
 {
   if (s == 0.0) return MatrixImplementation(nbRows_, nbColumns_);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
-  MatrixImplementation scalprod(*this);
-  double alpha = s;
-  int one = 1;
-  int n = nbRows_ * nbColumns_;
-  dscal_(&n, &alpha, &scalprod[0], &one);
-
-  return scalprod;
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::Scale(data_, s), nbRows_, nbColumns_);
 }
 
 /* In-place Multiplication by a Scalar */
 MatrixImplementation & MatrixImplementation::operator*= (const Scalar s)
 {
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
-  double alpha = s;
-  int one = 1;
-  int n = nbRows_ * nbColumns_;
-  dscal_(&n, &alpha, &(*this)[0], &one);
-
+  // Write back in place to preserve view sharing
+  const DataContainer result(AlgebraEngine::Scale(data_, s));
+  std::copy(result.data(), result.data() + nbRows_ * nbColumns_, data_.data());
   return *this;
 }
 
@@ -509,13 +498,7 @@ MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
 {
   if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE) << "Trying to divide matrix by 0";
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
-  MatrixImplementation scalprod(*this);
-  double alpha(1.0 / s);
-  int one = 1;
-  int n = nbRows_ * nbColumns_;
-  dscal_(&n, &alpha, &scalprod[0], &one);
-
-  return scalprod;
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::Scale(data_, 1.0 / s), nbRows_, nbColumns_);
 }
 
 /* In-place division by a Scalar */
@@ -523,11 +506,9 @@ MatrixImplementation & MatrixImplementation::operator/= (const Scalar s)
 {
   if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE) << "Trying to divide matrix by 0 in place";
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
-  double alpha(1.0 / s);
-  int one = 1;
-  int n = nbRows_ * nbColumns_;
-  dscal_(&n, &alpha, &(*this)[0], &one);
-
+  // Write back in place to preserve view sharing
+  const DataContainer result(AlgebraEngine::Scale(data_, 1.0 / s));
+  std::copy(result.data(), result.data() + nbRows_ * nbColumns_, data_.data());
   return *this;
 }
 
@@ -542,22 +523,7 @@ MatrixImplementation MatrixImplementation::triangularProd(const MatrixImplementa
 
   MatrixImplementation mult(matrix);
   if ((nbRows_ == 0) || (nbColumns_ == 0) || (matrix.nbColumns_ == 0)) return mult;
-  char side(triangularSide);
-  int lside = 1;
-  char uplo(upperLower);
-  int luplo = 1;
-  char trans('N');
-  int ltrans = 1;
-  char diag('N');
-  int ldiag = 1;
-  int m = nbRows_;
-  int n(matrix.nbColumns_);
-
-  Scalar alpha = 1.0;
-
-  // Lapack routine
-  dtrmm_(&side, &uplo, &trans, &diag, &m, &n, &alpha, const_cast<double*>(data()),  &m, const_cast<double*>(&(mult[0])), &m, &lside, &luplo, &ltrans, &ldiag);
-  return mult;
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::TriangularProd(data_, matrix.data_, triangularSide, upperLower), nbRows_, matrix.nbColumns_);
 }
 
 /* Integer power, general matrix */
@@ -627,7 +593,7 @@ MatrixImplementation MatrixImplementation::symPower(const UnsignedInteger n) con
 /* Empty returns true if there is no element in the MatrixImplementation */
 Bool MatrixImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (PersistentCollection<Scalar>::isEmpty()));
+  return ((nbRows_ == 0)  || (nbColumns_ == 0));
 }
 
 /* Returns true if triangular lower or upper */
@@ -651,9 +617,7 @@ Bool MatrixImplementation::operator == (const MatrixImplementation & other) cons
   Bool equality = true;
   if (this != &other)
   {
-    const Collection<Scalar> & refLhs(*this);
-    const Collection<Scalar> & refRhs(other);
-    equality = (nbRows_ == other.nbRows_ && nbColumns_ == other.nbColumns_ && (refLhs == refRhs));
+    equality = (nbRows_ == other.nbRows_ && nbColumns_ == other.nbColumns_ && std::equal(begin(), end(), other.begin()));
   }
   return equality;
 }
@@ -779,8 +743,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRectInPlace(const Ma
 
 MatrixImplementation MatrixImplementation::solveLinearSystemRect(const MatrixImplementation & b) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemRectInPlace(b);
+  if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::SolveLinearSystemRectangular(data_, b.data_, ResourceMap::GetAsScalar("Matrix-DefaultSmallPivot")), nbColumns_, b.nbColumns_);
 }
 
 /* Resolution of a linear system : rectangular matrix
@@ -792,8 +757,9 @@ Point MatrixImplementation::solveLinearSystemRectInPlace(const Point & b)
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
   // Solve the matrix linear system
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemRectInPlace(MatrixImplementation(m, 1, b));
+  MatrixImplementation B(m, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemRectInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemRect(const Point & b) const
@@ -842,8 +808,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemTri(const MatrixImpl
     const Bool lower,
     const Bool transposed) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemTriInPlace(b, lower, transposed);
+  if (nbRows_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::SolveLinearSystemTriangular(data_, b.data_, lower, transposed), b.nbRows_, b.nbColumns_);
 }
 
 /* Resolution of a linear system : triangular matrix */
@@ -854,16 +821,19 @@ Point MatrixImplementation::solveLinearSystemTriInPlace(const Point & b,
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemTriInPlace(MatrixImplementation(m, 1, b), lower, transposed);
+  MatrixImplementation B(m, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemTriInPlace(B, lower, transposed));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemTri(const Point & b,
     const Bool lower,
     const Bool transposed) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemTriInPlace(b, lower, transposed);
+  const UnsignedInteger m = b.getDimension();
+  if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
+  return Point::FromDataContainer(AlgebraEngine::SolveLinearSystemTriangular(data_, b.toDataContainer(), lower, transposed));
 }
 
 /* Resolution of a linear system : square matrix */
@@ -885,8 +855,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquareInPlace(const 
 
 MatrixImplementation MatrixImplementation::solveLinearSystemSquare(const MatrixImplementation & b) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemSquareInPlace(b);
+  if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::SolveLinearSystem(data_, b.data_), nbRows_, b.nbColumns_);
 }
 
 /* Square matrix inverse */
@@ -919,14 +890,17 @@ Point MatrixImplementation::solveLinearSystemSquareInPlace(const Point & b)
   const UnsignedInteger m = b.getDimension();
   if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemSquareInPlace(MatrixImplementation(m, 1, b));
+  MatrixImplementation B(m, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemSquareInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemSquare(const Point & b) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemSquareInPlace(b);
+  const UnsignedInteger m = b.getDimension();
+  if (nbRows_ != m) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << m << ", expected " << nbRows_;
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
+  return Point::FromDataContainer(AlgebraEngine::SolveLinearSystem(data_, b.toDataContainer()));
 }
 
 /* Resolution of a linear system : symmetric matrix */
@@ -957,8 +931,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSymInPlace(const Mat
 
 MatrixImplementation MatrixImplementation::solveLinearSystemSym(const MatrixImplementation & b) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemSymInPlace(b);
+  if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::SolveLinearSystemSymmetric(data_, b.data_), nbRows_, b.nbColumns_);
 }
 
 /* Resolution of a linear system : symmetric matrix */
@@ -967,9 +942,9 @@ Point MatrixImplementation::solveLinearSystemSymInPlace(const Point & b)
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  MatrixImplementation B(dimension, 1, b);
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemSymInPlace(B);
+  MatrixImplementation B(dimension, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemSymInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemSym(const Point & b) const
@@ -998,8 +973,9 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCovInPlace(const Mat
 
 MatrixImplementation MatrixImplementation::solveLinearSystemCov(const MatrixImplementation & b) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemCovInPlace(b);
+  if (nbRows_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  return MatrixImplementation::FromDataContainer(AlgebraEngine::SolveLinearSystemSPD(data_, b.data_), nbRows_, b.nbColumns_);
 }
 
 /* Resolution of a linear system : symmetric matrix */
@@ -1008,22 +984,24 @@ Point MatrixImplementation::solveLinearSystemCovInPlace(const Point & b)
   const UnsignedInteger dimension = b.getDimension();
   if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
   if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
-  MatrixImplementation B(dimension, 1, b);
-  // A MatrixImplementation is also a collection of Scalar, so it is automatically converted into a Point
-  return solveLinearSystemCovInPlace(B);
+  MatrixImplementation B(dimension, 1, b.begin(), b.end());
+  const MatrixImplementation x(solveLinearSystemCovInPlace(B));
+  return Point(x.begin(), x.end());
 }
 
 Point MatrixImplementation::solveLinearSystemCov(const Point & b) const
 {
-  MatrixImplementation A(*this);
-  return A.solveLinearSystemCovInPlace(b);
+  const UnsignedInteger dimension = b.getDimension();
+  if (nbRows_ != dimension) throw InvalidDimensionException(HERE) << "The right-hand side dimension is " << dimension << ", expected " << nbRows_;
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix";
+  return Point::FromDataContainer(AlgebraEngine::SolveLinearSystemSPD(data_, b.toDataContainer()));
 }
 
 /* Compute determinant */
 Scalar MatrixImplementation::computeLogAbsoluteDeterminant(Scalar & sign) const
 {
-  MatrixImplementation A(*this);
-  return A.computeLogAbsoluteDeterminantInPlace(sign);
+  if (!(nbRows_ > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
+  return AlgebraEngine::ComputeLogAbsoluteDeterminant(data_, sign);
 }
 
 Scalar MatrixImplementation::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
@@ -1079,8 +1057,13 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminantInPlace(Scalar & sign)
 /* Compute determinant */
 Scalar MatrixImplementation::computeDeterminant() const
 {
-  MatrixImplementation A(*this);
-  return A.computeDeterminantInPlace();
+  if (!(nbRows_ > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
+  if (nbRows_ == 1) return (*this)(0, 0);
+  if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
+  Scalar sign = 0.0;
+  const Scalar logAbsoluteDeterminant = AlgebraEngine::ComputeLogAbsoluteDeterminant(data_, sign);
+  if (logAbsoluteDeterminant <= SpecFunc::LowestScalar) return 0.0;
+  return sign * exp(logAbsoluteDeterminant);
 }
 
 Scalar MatrixImplementation::computeDeterminantInPlace()
@@ -1097,7 +1080,8 @@ Scalar MatrixImplementation::computeDeterminantInPlace()
 Scalar MatrixImplementation::computeLogAbsoluteDeterminantSym(Scalar & sign) const
 {
   MatrixImplementation A(*this);
-  return A.computeLogAbsoluteDeterminantSymInPlace(sign);
+  A.symmetrize();
+  return A.computeLogAbsoluteDeterminant(sign);
 }
 
 Scalar MatrixImplementation::computeLogAbsoluteDeterminantSymInPlace(Scalar & sign)
@@ -1110,7 +1094,8 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminantSymInPlace(Scalar & si
 Scalar MatrixImplementation::computeDeterminantSym() const
 {
   MatrixImplementation A(*this);
-  return A.computeDeterminantSymInPlace();
+  A.symmetrize();
+  return A.computeDeterminant();
 }
 
 
@@ -1127,16 +1112,17 @@ Scalar MatrixImplementation::computeDeterminantSymInPlace()
 /* Compute trace */
 Scalar MatrixImplementation::computeTrace() const
 {
-  Scalar trace = 0.0;
-  for (UnsignedInteger i = 0; i < nbRows_; ++i) trace += (*this)(i, i);
-  return trace;
+  return AlgebraEngine::ComputeTrace(data_);
 }
 
 /* Compute the eigenvalues of a square matrix */
 MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquare() const
 {
-  MatrixImplementation A(*this);
-  return A.computeEigenValuesSquareInPlace();
+  if (!(nbRows_ > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
+  const DataContainer eigenValues(AlgebraEngine::ComputeEigenValuesSquare(data_));
+  ComplexCollection result(nbRows_);
+  for (UnsignedInteger i = 0; i < nbRows_; ++i) result[i] = Complex(eigenValues[2 * i], eigenValues[2 * i + 1]);
+  return result;
 }
 
 MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquareInPlace()
@@ -1232,8 +1218,8 @@ MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquareInP
 /* Compute the eigenvalues of a symmetric matrix */
 Point MatrixImplementation::computeEigenValuesSym() const
 {
-  MatrixImplementation A(*this);
-  return A.computeEigenValuesSymInPlace();
+  if (!(nbRows_ > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
+  return Point::FromDataContainer(AlgebraEngine::ComputeEigenValuesSymmetric(data_));
 }
 
 Point MatrixImplementation::computeEigenValuesSymInPlace()
@@ -1347,8 +1333,15 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
 /* Compute the singular values of a matrix */
 Point MatrixImplementation::computeSingularValues() const
 {
-  MatrixImplementation A(*this);
-  return A.computeSingularValuesInPlace();
+  if (!(nbRows_ > 0 && nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
+
+  // check for nans, cf https://github.com/Reference-LAPACK/lapack/issues/469
+  for (UnsignedInteger j = 0; j < getNbColumns(); ++ j)
+    for (UnsignedInteger i = 0; i < getNbRows(); ++ i)
+      if (!std::isfinite(operator()(i, j)))
+        throw InvalidArgumentException(HERE) << "Cannot compute singular values due to nan/inf values";
+
+  return Point::FromDataContainer(AlgebraEngine::ComputeSingularValues(data_));
 }
 
 Point MatrixImplementation::computeSingularValuesInPlace()
@@ -1391,8 +1384,16 @@ Point MatrixImplementation::computeSVD(MatrixImplementation & u,
                                        MatrixImplementation & vT,
                                        const Bool fullSVD) const
 {
-  MatrixImplementation Q(*this);
-  return Q.computeSVDInPlace(u, vT, fullSVD);
+  DataContainer U, VT, S;
+  AlgebraEngine::ComputeSVD(data_, U, S, VT, fullSVD);
+  const UnsignedInteger m = nbRows_;
+  const UnsignedInteger n = nbColumns_;
+  const UnsignedInteger k = std::min(m, n);
+  u = MatrixImplementation::FromDataContainer(U, m, fullSVD ? m : k);
+  vT = MatrixImplementation::FromDataContainer(VT, fullSVD ? n : k, n);
+  Point result(k);
+  for (UnsignedInteger i = 0; i < k; ++i) result[i] = S[i];
+  return result;
 }
 
 Point MatrixImplementation::computeSVDInPlace(MatrixImplementation & u,
@@ -1431,43 +1432,20 @@ Point MatrixImplementation::computeSVDInPlace(MatrixImplementation & u,
 /* Check if the matrix is SPD */
 Bool MatrixImplementation::isPositiveDefinite() const
 {
-  int info;
-  int n = nbRows_;
-  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot check the definite positiveness of an empty matrix";
-  char uplo = 'L';
-  int luplo = 1;
-  MatrixImplementation A(*this);
-  dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
-  return (info == 0) ;
+  if (!(nbRows_ > 0)) throw InvalidDimensionException(HERE) << "Cannot check the definite positiveness of an empty matrix";
+  return AlgebraEngine::IsPositiveDefinite(data_);
 }
 
 MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const ScalarCollection & pt,
     const char side,
     const Bool transpose) const
 {
-  char uplo = side;
-  int luplo = 1;
-
-  // trans tells if the matrix is transposed or not
-  char trans = transpose ? 'T' : 'N';
-  int ltrans = 1;
-
-  // diag tells if M is unit diagonal or not
-  char diag = 'N';
-  int ldiag = 1;
-
-  // the dimension of the matrix
-  int n = nbRows_;
-
-  // leading dimension of M
-  int lda = nbRows_;
-  int one = 1;
-
-  ScalarCollection x(nbRows_);
+  DataContainer x(pt.getSize());
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
-
-  dtrmv_(&uplo, &trans, &diag, &n, const_cast<double*>(data()), &lda, const_cast<double*>(&(x[0])), &one, &luplo, &ltrans, &ldiag);
-  return x;
+  const DataContainer result(AlgebraEngine::TriangularPointProduct(data_, x, side, transpose));
+  ScalarCollection values(nbRows_);
+  for (UnsignedInteger i = 0; i < nbRows_; ++i) values[i] = result[i];
+  return values;
 }
 
 Point MatrixImplementation::triangularVectProd(const Point & pt,
@@ -1480,8 +1458,9 @@ Point MatrixImplementation::triangularVectProd(const Point & pt,
 /* Build the Cholesky factorization of the matrix */
 MatrixImplementation MatrixImplementation::computeCholesky() const
 {
-  MatrixImplementation A(*this);
-  return A.computeCholeskyInPlace();
+  MatrixImplementation result = MatrixImplementation::FromDataContainer(AlgebraEngine::ComputeCholesky(data_), nbRows_, nbColumns_);
+  result.setName("");
+  return result;
 }
 
 MatrixImplementation MatrixImplementation::computeCholeskyInPlace()
@@ -1644,8 +1623,16 @@ void MatrixImplementation::CholeskyDowndate(MatrixImplementation & cholesky,
 */
 MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R, const Bool fullQR) const
 {
-  MatrixImplementation A(*this);
-  return A.computeQRInPlace(R, fullQR);
+  DataContainer Q, Rdc;
+  AlgebraEngine::ComputeQR(data_, Q, Rdc, fullQR);
+  const UnsignedInteger m = nbRows_;
+  const UnsignedInteger n = nbColumns_;
+  const UnsignedInteger k = std::min(m, n);
+  const UnsignedInteger p = fullQR ? m : k;
+  R = MatrixImplementation::FromDataContainer(Rdc, p, n);
+  MatrixImplementation Qmat = MatrixImplementation::FromDataContainer(Q, m, p);
+  Qmat.setName("");
+  return Qmat;
 }
 
 MatrixImplementation MatrixImplementation::computeQRInPlace(MatrixImplementation & R, const Bool fullQR)
@@ -1691,17 +1678,13 @@ MatrixImplementation MatrixImplementation::computeQRInPlace(MatrixImplementation
   if (fullQR && (m > n))
   {
     // Here we must copy Q into a larger matrix to get the desired mxm Q factor before the call to dorgqr
-    resize(m * m);
-    nbRows_ = m;
-    nbColumns_ = m;
+    resize(m, m);
   }
   dorgqr_(&m, &p, &k, &(*this)[0], &lda, &tau[0], &work[0], &lwork, &info);
   if (m < n)
   {
     // Here we must copy Q into a smaller matrix to get the desired mxm Q factor after the call to dorgqr
-    resize(m * m);
-    nbRows_ = m;
-    nbColumns_ = m;
+    resize(m, m);
   }
   if (info != 0) throw InternalException(HERE) << "Lapack DORGQR: error code=" << info;
   setName("");
@@ -1711,7 +1694,17 @@ MatrixImplementation MatrixImplementation::computeQRInPlace(MatrixImplementation
 /* Method save() stores the object through the StorageManager */
 void MatrixImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<Scalar>::save(adv);
+  PersistentObject::save(adv);
+  // Same layout as the former PersistentCollection<Scalar>: a size attribute
+  // followed by the values, so existing studies remain readable.
+  adv.saveAttribute("size", getSize());
+  AdvocateIterator<Scalar> adv_it(adv);
+  const Scalar * pData = data();
+  const UnsignedInteger totalSize = getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
   adv.saveAttribute( "nbRows_",    nbRows_);
   adv.saveAttribute( "nbColumns_", nbColumns_);
 }
@@ -1719,9 +1712,18 @@ void MatrixImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MatrixImplementation::load(Advocate & adv)
 {
-  PersistentCollection<Scalar>::load(adv);
+  PersistentObject::load(adv);
+  UnsignedInteger size = 0;
+  adv.loadAttribute("size", size);
   adv.loadAttribute( "nbRows_",    nbRows_);
   adv.loadAttribute( "nbColumns_", nbColumns_);
+  data_ = DataContainer(nbRows_, nbColumns_, 0.0);
+  AdvocateIterator<Scalar> adv_it(adv);
+  Scalar * pData = data();
+  for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+  {
+    pData[i] = adv_it();
+  }
 }
 
 UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
@@ -1731,6 +1733,34 @@ UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
     stride *= nbRows_;
   return stride;
 }
+
+/* Convert to DataContainer (column-major) */
+DataContainer MatrixImplementation::toDataContainer() const
+{
+  if (nbRows_ == 0 || nbColumns_ == 0) return DataContainer();
+  return data_;
+}
+
+/* Construct a MatrixImplementation from a DataContainer (column-major) */
+MatrixImplementation MatrixImplementation::FromDataContainer(const DataContainer & dc,
+    UnsignedInteger nbRows,
+    UnsignedInteger nbColumns)
+{
+  const UnsignedInteger expectedSize = nbRows * nbColumns;
+  if (expectedSize == 0) return MatrixImplementation(nbRows, nbColumns);
+  if (dc.getSize() * dc.getDimension() != expectedSize)
+    throw InvalidArgumentException(HERE)
+        << "DataContainer size " << dc.getSize() * dc.getDimension()
+        << " does not match matrix dimensions " << nbRows << "x" << nbColumns;
+  return MatrixImplementation(nbRows, nbColumns, dc.data(), dc.data() + expectedSize);
+}
+
+/* Size in bytes of one element */
+UnsignedInteger MatrixImplementation::elementSize() const
+{
+  return sizeof(Scalar);
+}
+
 
 /** Diagonal extraction */
 MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) const
@@ -1905,12 +1935,7 @@ void MatrixImplementation::squareElements()
 /** The Frobenius norm */
 Scalar MatrixImplementation::frobeniusNorm() const
 {
-  int n = nbRows_ * nbColumns_;
-  int one = 1;
-  Scalar norm = 0.0;
-  if (n > 0)
-    norm = dnrm2_(&n, const_cast<double*>(data()), &one);
-  return norm;
+  return AlgebraEngine::Norm(data_);
 }
 
 END_NAMESPACE_OPENTURNS

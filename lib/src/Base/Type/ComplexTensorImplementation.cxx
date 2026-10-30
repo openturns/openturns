@@ -29,13 +29,40 @@ static const Factory<ComplexTensorImplementation> Factory_ComplexTensorImplement
 
 /* Default constructor */
 ComplexTensorImplementation::ComplexTensorImplementation()
-  : PersistentCollection<Complex>()
+  : PersistentObject()
   , nbRows_(0)
   , nbColumns_(0)
   , nbSheets_(0)
+  , data_()
 {
   // Nothing to do
 }
+
+#ifndef SWIG
+/* Copy constructor */
+ComplexTensorImplementation::ComplexTensorImplementation(const ComplexTensorImplementation & other)
+  : PersistentObject(other)
+  , nbRows_(other.nbRows_)
+  , nbColumns_(other.nbColumns_)
+  , nbSheets_(other.nbSheets_)
+  , data_(other.data_)
+{
+}
+
+/* Assignment operator */
+ComplexTensorImplementation & ComplexTensorImplementation::operator = (const ComplexTensorImplementation & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    nbRows_ = other.nbRows_;
+    nbColumns_ = other.nbColumns_;
+    nbSheets_ = other.nbSheets_;
+    data_ = other.data_;
+  }
+  return *this;
+}
+#endif
 
 /* Constructor with size (rowDim, colDim and sheetDim) */
 /* The ComplexTensorImplementation is made up of a collection of rowDim*colDim*sheetDim elements */
@@ -43,10 +70,11 @@ ComplexTensorImplementation::ComplexTensorImplementation()
 ComplexTensorImplementation::ComplexTensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim)
-  : PersistentCollection<Complex>(rowDim * colDim * sheetDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
   , nbSheets_(sheetDim)
+  , data_(rowDim * colDim * sheetDim)
 {
   // Nothing to do
 }
@@ -56,10 +84,11 @@ ComplexTensorImplementation::ComplexTensorImplementation(const UnsignedInteger r
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim,
     const Collection<Complex> & elementsValues)
-  : PersistentCollection<Complex>(rowDim * colDim * sheetDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
   , nbSheets_(sheetDim)
+  , data_(rowDim * colDim * sheetDim)
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
   std::copy(elementsValues.begin(), elementsValues.begin() + tensorSize, begin());
@@ -92,7 +121,13 @@ String ComplexTensorImplementation::__repr__() const
          << " rows=" << getNbRows()
          << " columns=" << getNbColumns()
          << " sheets=" << getNbSheets()
-         << " values=" << PersistentCollection<Complex>::__repr__();
+         << " values=" << [&]() {
+           OSS ossValues(true);
+           ossValues << "[";
+           std::copy( begin(), end(), OSS_iterator<Complex>(ossValues, ",") );
+           ossValues << "]";
+           return String(ossValues);
+         }();
 }
 
 String ComplexTensorImplementation::__str__(const String & offset) const
@@ -188,7 +223,7 @@ void ComplexTensorImplementation::setSheetSym(const UnsignedInteger k,
 /* Empty returns true if there is no element in the ComplexTensorImplementation */
 Bool ComplexTensorImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0) || (PersistentCollection<Complex>::isEmpty())) ;
+  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0)) ;
 }
 
 /* Check for symmetry */
@@ -242,19 +277,32 @@ Bool ComplexTensorImplementation::operator == (const ComplexTensorImplementation
 
   if (&lhs != &rhs)   // Not the same object
   {
-    const PersistentCollection<Complex> & refLhs = static_cast<const PersistentCollection<Complex> >(lhs);
-    const PersistentCollection<Complex> & refRhs = static_cast<const PersistentCollection<Complex> >(rhs);
-
-    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && lhs.nbSheets_ == rhs.nbSheets_ && refLhs == refRhs);
+    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && lhs.nbSheets_ == rhs.nbSheets_ && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
   }
 
   return equality;
 }
 
 /* Method save() stores the object through the StorageManager */
+UnsignedInteger ComplexTensorImplementation::elementSize() const
+{
+  return sizeof(Complex);
+}
+
+/* Method save() stores the object through the StorageManager */
 void ComplexTensorImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<Complex>::save(adv);
+  PersistentObject::save(adv);
+  // Same layout as the former PersistentCollection<Complex>: a size attribute
+  // followed by the values, so existing studies remain readable.
+  adv.saveAttribute("size", getSize());
+  AdvocateIterator<Complex> adv_it(adv);
+  const Complex * pData = data();
+  const UnsignedInteger totalSize = getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
   adv.saveAttribute("nbRows_",    nbRows_);
   adv.saveAttribute("nbColumns_", nbColumns_);
   adv.saveAttribute("nbSheets_", nbSheets_);
@@ -263,11 +311,19 @@ void ComplexTensorImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void ComplexTensorImplementation::load(Advocate & adv)
 {
-  PersistentCollection<Complex>::load(adv);
-
+  PersistentObject::load(adv);
+  UnsignedInteger size = 0;
+  adv.loadAttribute("size", size);
   adv.loadAttribute("nbRows_",    nbRows_);
   adv.loadAttribute("nbColumns_", nbColumns_);
   adv.loadAttribute("nbSheets_", nbSheets_);
+  data_.resize(nbRows_ * nbColumns_ * nbSheets_);
+  AdvocateIterator<Complex> adv_it(adv);
+  Complex * pData = data();
+  for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+  {
+    pData[i] = adv_it();
+  }
 }
 
 UnsignedInteger ComplexTensorImplementation::stride(const UnsignedInteger dim) const

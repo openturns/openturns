@@ -104,6 +104,7 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
   else
     factor = exp(-tauOverThetaNorm);
   SquareMatrix output(outputCovariance_);
+  output.copyOnWrite();
   output.getImplementation()->symmetrize();
   return output * factor;
 }
@@ -220,8 +221,9 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   norm = std::sqrt(norm);
   // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'kronecker',
   SquareMatrix covariance(outputCovariance_);
+  covariance.copyOnWrite();
   covariance.getImplementation()->symmetrize();
-  Point covariancePoint(*covariance.getImplementation());
+  Point covariancePoint(covariance.getImplementation()->begin(), covariance.getImplementation()->end());
   // Finally assemble the final matrix
   const Scalar value = -std::exp(-norm) / norm;
   Matrix gradient(getInputDimension(), covariancePoint.getDimension());

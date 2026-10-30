@@ -113,6 +113,7 @@ Vectors
     :template: class.rst_t
 
     BoolCollection
+    DataContainer
     Description
     Indices
     IndicesCollection
