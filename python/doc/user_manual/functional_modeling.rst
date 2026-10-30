@@ -88,6 +88,7 @@ Refer to :ref:`field_function`.
     OpenTURNSPythonFieldFunction
     OpenTURNSPythonFieldToPointFunction
     OpenTURNSPythonPointToFieldFunction
+    experimental.MemoizePointToFieldFunction
 
 Collection of functions
 =======================

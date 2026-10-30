@@ -65,6 +65,7 @@
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
+ * MemoizePointToFieldFunction (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -94,7 +95,6 @@
  * Added BoxCoxFactory.computeLambdaConfidenceInterval: profile-likelihood confidence bounds of lambda
  * Added ParametricFunction symbolic substitution: frozen parameters are substituted once into symbolic formulas
  * Added Distribution/Point and Matrix/Distribution arithmetic: shifts preserve the copula, matrix products are exact for Gaussians
- * Added MemoizePointToFieldFunction: point to field functions with transparent evaluation caching
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
