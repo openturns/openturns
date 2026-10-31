@@ -15,6 +15,7 @@ Distributions
     copulas
     conditional_distributions
     random_mixture
+    pushforward_over_mesh
 
 Stochastic process
 ------------------

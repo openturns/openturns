@@ -7,35 +7,130 @@ The :class:`~openturns.Distribution` maps the concept of *probability distributi
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``Distribution-MinimumVolumeLevelSetBySampling`` (``Bool``, default: ``false``): Whether to use sampling for minimum volume level set computation.
-- ``Distribution-Parallel`` (``Bool``, default: ``true``): Whether distribution computations are parallelized.
-- ``Distribution-ScaleColorsDiscretePDF`` (``Bool``, default: ``true``): Whether to scale colors for discrete PDF plots.
-- ``Distribution-ShowSupportDiscretePDF`` (``Bool``, default: ``true``): Whether to show support points in discrete PDF plots.
-- ``Distribution-UseCovarianceAdaptiveAlgorithm`` (``Bool``, default: ``true``): Whether to use adaptive algorithm for covariance computation.
-- ``Distribution-QMin`` (``Scalar``, default: ``0.15``): Lower quantile for plot range.
-- ``Distribution-QMax`` (``Scalar``, default: ``0.85``): Upper quantile for plot range.
-- ``Distribution-DefaultQuantileEpsilon`` (``Scalar``, default: ``1.0e-12``): Precision for quantile computation.
-- ``Distribution-DefaultPDFEpsilon`` (``Scalar``, default: ``1.0e-14``): Precision for PDF computation.
-- ``Distribution-DefaultCDFEpsilon`` (``Scalar``, default: ``1.0e-14``): Precision for CDF computation.
-- ``Distribution-DiscreteDrawPDFScaling`` (``Scalar``, default: ``0.25``): Scaling factor for discrete PDF bar plots.
-- ``Distribution-TailDependenceEpsilon`` (``Scalar``, default: ``1.0e-12``): Precision for tail dependence coefficient computation.
-- ``Distribution-TailDependenceMargin`` (``Scalar``, default: ``1.0e-3``): Margin for tail dependence computation.
-- ``Distribution-SupportEpsilon`` (``Scalar``, default: ``1.0e-14``): Precision for support detection.
-- ``Distribution-EntropySamplingMethod`` (``String``, default: ``MonteCarlo``): Method for entropy computation by sampling.
-- ``Distribution-RoughnessSamplingMethod`` (``String``, default: ``MonteCarlo``): Method for roughness computation by sampling.
-- ``Distribution-SupportPointStyleDiscretePDF`` (``String``, default: ``dot``): Point style for discrete PDF support points.
-- ``Distribution-CharacteristicFunctionNMax`` (``UnsignedInteger``, default: ``1000000``): Maximum number of points for characteristic function inversion.
-- ``Distribution-DefaultCDFIteration`` (``UnsignedInteger``, default: ``10000``): Maximum number of iterations for CDF inversion.
-- ``Distribution-DefaultIntegrationNodesNumber`` (``UnsignedInteger``, default: ``255``): Default number of integration nodes.
-- ``Distribution-DefaultLevelNumber`` (``UnsignedInteger``, default: ``10``): Default number of contour levels.
-- ``Distribution-DefaultPointNumber`` (``UnsignedInteger``, default: ``129``): Default number of points for function plots.
-- ``Distribution-DefaultQuantileIteration`` (``UnsignedInteger``, default: ``100``): Maximum number of iterations for quantile computation.
-- ``Distribution-EntropySamplingSize`` (``UnsignedInteger``, default: ``524288``): Sample size for entropy computation.
-- ``Distribution-MinimumVolumeLevelSetSamplingSize`` (``UnsignedInteger``, default: ``16384``): Sample size for minimum volume level set computation.
-- ``Distribution-SmallDimensionEntropy`` (``UnsignedInteger``, default: ``3``): Dimension threshold for using analytical entropy.
-- ``Distribution-RoughnessSamplingSize`` (``UnsignedInteger``, default: ``524288``): Sample size for roughness computation.
-- ``Distribution-SmallDimensionRoughness`` (``UnsignedInteger``, default: ``3``): Dimension threshold for using analytical roughness.
-- ``Distribution-SmallSupport`` (``UnsignedInteger``, default: ``10``): Threshold for considering support as small.
+.. list-table::
+   :widths: 30 15 15 40
+   :header-rows: 1
+
+   * - Key
+     - Type
+     - Default value
+     - Description
+   * - ``Distribution-MinimumVolumeLevelSetBySampling``
+     - ``Bool``
+     - ``False``
+     - Whether to use sampling for minimum volume level set computation.
+   * - ``Distribution-Parallel``
+     - ``Bool``
+     - ``True``
+     - Whether distribution computations are parallelized.
+   * - ``Distribution-ScaleColorsDiscretePDF``
+     - ``Bool``
+     - ``True``
+     - Whether to scale colors for discrete PDF plots.
+   * - ``Distribution-ShowSupportDiscretePDF``
+     - ``Bool``
+     - ``True``
+     - Whether to show support points in discrete PDF plots.
+   * - ``Distribution-UseCovarianceAdaptiveAlgorithm``
+     - ``Bool``
+     - ``True``
+     - Whether to use adaptive algorithm for covariance computation.
+   * - ``Distribution-QMin``
+     - ``Scalar``
+     - ``0.15``
+     - Lower quantile for plot range.
+   * - ``Distribution-QMax``
+     - ``Scalar``
+     - ``0.85``
+     - Upper quantile for plot range.
+   * - ``Distribution-DefaultQuantileEpsilon``
+     - ``Scalar``
+     - ``1.0e-12``
+     - Precision for quantile computation.
+   * - ``Distribution-DefaultPDFEpsilon``
+     - ``Scalar``
+     - ``1.0e-14``
+     - Precision for PDF computation.
+   * - ``Distribution-DefaultCDFEpsilon``
+     - ``Scalar``
+     - ``1.0e-14``
+     - Precision for CDF computation.
+   * - ``Distribution-DiscreteDrawPDFScaling``
+     - ``Scalar``
+     - ``0.25``
+     - Scaling factor for discrete PDF bar plots.
+   * - ``Distribution-TailDependenceEpsilon``
+     - ``Scalar``
+     - ``1.0e-12``
+     - Precision for tail dependence coefficient computation.
+   * - ``Distribution-TailDependenceMargin``
+     - ``Scalar``
+     - ``1.0e-3``
+     - Margin for tail dependence computation.
+   * - ``Distribution-SupportEpsilon``
+     - ``Scalar``
+     - ``1.0e-14``
+     - Precision for support detection.
+   * - ``Distribution-EntropySamplingMethod``
+     - ``String``
+     - ``MonteCarlo``
+     - Method for entropy computation by sampling. Possible values are ``MonteCarlo`` and ``QuasiMonteCarlo``.
+   * - ``Distribution-RoughnessSamplingMethod``
+     - ``String``
+     - ``MonteCarlo``
+     - Method for roughness computation by sampling. Possible values are ``MonteCarlo`` and ``QuasiMonteCarlo``.
+   * - ``Distribution-SupportPointStyleDiscretePDF``
+     - ``String``
+     - ``dot``
+     - Point style for discrete PDF support points.
+   * - ``Distribution-CharacteristicFunctionNMax``
+     - ``UnsignedInteger``
+     - ``1000000``
+     - Maximum number of points for characteristic function inversion.
+   * - ``Distribution-DefaultCDFIteration``
+     - ``UnsignedInteger``
+     - ``10000``
+     - Maximum number of iterations for CDF inversion.
+   * - ``Distribution-DefaultIntegrationNodesNumber``
+     - ``UnsignedInteger``
+     - ``255``
+     - Default number of integration nodes.
+   * - ``Distribution-DefaultLevelNumber``
+     - ``UnsignedInteger``
+     - ``10``
+     - Default number of contour levels.
+   * - ``Distribution-DefaultPointNumber``
+     - ``UnsignedInteger``
+     - ``129``
+     - Default number of points for function plots.
+   * - ``Distribution-DefaultQuantileIteration``
+     - ``UnsignedInteger``
+     - ``100``
+     - Maximum number of iterations for quantile computation.
+   * - ``Distribution-EntropySamplingSize``
+     - ``UnsignedInteger``
+     - ``524288``
+     - Sample size for entropy computation.
+   * - ``Distribution-MinimumVolumeLevelSetSamplingSize``
+     - ``UnsignedInteger``
+     - ``16384``
+     - Sample size for minimum volume level set computation.
+   * - ``Distribution-SmallDimensionEntropy``
+     - ``UnsignedInteger``
+     - ``3``
+     - Dimension threshold for using analytical entropy.
+   * - ``Distribution-RoughnessSamplingSize``
+     - ``UnsignedInteger``
+     - ``524288``
+     - Sample size for roughness computation.
+   * - ``Distribution-SmallDimensionRoughness``
+     - ``UnsignedInteger``
+     - ``3``
+     - Dimension threshold for using analytical roughness.
+   * - ``Distribution-SmallSupport``
+     - ``UnsignedInteger``
+     - ``10``
+     - Threshold for considering support as small.
 )RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation
@@ -137,7 +232,7 @@ Notes
 The characteristic function is defined as:
 
 .. math::
-    \phi_X(t) = \mathbb{E}\left[\exp(- i t X)\right],
+    \phi_X(t) = \mathbb{E}\left[\exp(+ i t X)\right],
                 \quad t \in \Rset
 
 The library features a generic implementation of the characteristic function for

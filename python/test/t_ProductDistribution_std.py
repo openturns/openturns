@@ -122,10 +122,13 @@ validation.setDomainSamplingSize(10000)
 validation.setFittingSamplingSize(1000)
 validation.run()
 
-# --- ProductDistribution: only centered Normal products are elliptical ---
+# --- ProductDistribution: a centered symmetric factor makes the product symmetric ---
 assert ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Normal(0.0, 2.0)).isElliptical()
-assert not ot.ProductDistribution(ot.Laplace(), ot.Laplace()).isElliptical()
-assert not ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Laplace()).isElliptical()
+assert ot.ProductDistribution(ot.Laplace(), ot.Laplace()).isElliptical()
+assert ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Laplace()).isElliptical()
+assert ot.ProductDistribution(ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)).isElliptical()
+assert ot.ProductDistribution(ot.Normal(0.0, 1.0), ot.Normal(1.0, 1.0)).isElliptical()
+assert not ot.ProductDistribution(ot.Uniform(-1.0, 2.0), ot.Normal(1.0, 2.0)).isElliptical()
 
 # --- Coverage: equality, characteristic function, quadrant PDF sweeps, moments ---
 l_cov = ot.Uniform(-1.0, 2.0)

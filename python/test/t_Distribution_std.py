@@ -164,6 +164,30 @@ finally:
         "Distribution-CharacteristicFunctionNMax", 1000000
     )
 
+# Negative arguments must select the same integration panels as positive
+# arguments.  With NMax=1020 and |x|>=1000, a signed panel count would send
+# negative arguments to the single-panel fixed branch while positive arguments
+# use Filon.
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1020)
+try:
+    for x in [1000.0, 10000.0]:
+        cfPositive = mimic.computeCharacteristicFunction(x)
+        cfNegative = mimic.computeCharacteristicFunction(-x)
+        # The reference magnitude is about 8e-7 at x=1000 and 1.4e-8 at
+        # x=10000, so a zero result is rejected by these checks. The Filon
+        # grid allowed by NMax=1020 is too coarse to match the analytic
+        # reference tightly, but both signs must use the same panels, hence
+        # be exact conjugates.
+        assert abs(cfPositive) > 1e-9
+        assert abs(cfNegative) > 1e-9
+        ott.assert_almost_equal(cfNegative, cfPositive.conjugate(), 1e-10, 1e-20)
+        cf_ref = triangular.computeCharacteristicFunction(x)
+        ott.assert_almost_equal(cfPositive, cf_ref, 1e-4, 1e-4)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "Distribution-CharacteristicFunctionNMax", 1000000
+    )
+
 # zero integration nodes number is rejected, as the GaussLegendre
 # construction used to do before the FastLegendre switch, see PR #3352 review
 defaultNodesNumber = mimic.getIntegrationNodesNumber()

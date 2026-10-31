@@ -600,6 +600,7 @@ ot_add_python_module(experimental experimental_module.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )
