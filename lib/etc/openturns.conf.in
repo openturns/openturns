@@ -28,8 +28,10 @@
   <Collection-size-visible-in-str-from value_int="10" />
     
   <!-- OT::SpecFunc parameters -->
-  <SpecFunc-Precision        value_float="2.0e-16"        />
-  <SpecFunc-MaximumIteration value_int="1000" />
+  <SpecFunc-Precision               value_float="2.0e-16" />
+  <SpecFunc-MaximumIteration        value_int="1000" />
+  <SpecFunc-LauricellaTolerance     value_float="1.0e-14" />
+  <SpecFunc-LauricellaMaximumDegree value_int="1024" />
 
   <!-- OT::SymbolicParser parameters -->
   <SymbolicParser-Backend     value_str="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
@@ -590,8 +592,17 @@
   <CompositeDistribution-StepNumber    value_int="256" />
 
   <!-- OT::Dirichlet parameters -->
-  <Dirichlet-DefaultIntegrationSize  value_int="50"     />
-  <Dirichlet-DefaultSamplingSize     value_int="500000" />
+  <Dirichlet-DefaultIntegrationSize        value_int="50" />
+  <Dirichlet-CDFMaximumBoxDimension        value_int="7" />
+  <Dirichlet-CDFMaximumQuadratureDimension value_int="10" />
+  <Dirichlet-CDFMaximumIntegerBeta         value_int="128" />
+  <Dirichlet-CDFMaximumTensorNodes         value_int="20000000" />
+  <Dirichlet-CDFBoxTolerance               value_float="1.0e-10" />
+  <Dirichlet-CDFExtonMaximumCancellation   value_float="1.0e4" />
+  <Dirichlet-CDFUpperMaximumCancellation   value_float="1.0e13" />
+  <Dirichlet-CDFNormalMinimumTotal         value_float="1.0e5" />
+  <Dirichlet-CDFNormalMinimumShape         value_float="100.0" />
+  <Dirichlet-CDFNormalMinimumProbability   value_float="1.0e-12" />
 
   <!-- OT::DirichletFactory parameters -->
   <DirichletFactory-ParametersEpsilon value_float="1.0e-12"      />

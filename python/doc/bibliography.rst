@@ -172,6 +172,9 @@ Bibliography
 .. [ernst2012] Ernst, O. G., Mugler, A., Starkloff, H. J., & Ullmann, E. (2012).
     *On the convergence of generalized polynomial chaos expansions.*
     ESAIM: Mathematical Modelling and Numerical Analysis, 46(2), 317-339.
+.. [exton1976] Exton, H. (1976).
+    *Multiple Hypergeometric Functions and Applications.*
+    Ellis Horwood, Chichester.
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
@@ -223,6 +226,10 @@ Bibliography
 .. [golub1969] Golub, G. H., Welsch, J. H. (1969).
     *Calculation of Gauss quadrature rules.*
     Mathematics of Computation, 23(106), 221-230.
+.. [gouda2005] Gouda, A. A. E. M. (2005).
+    *Probability estimation and its applications.*
+    PhD thesis, Budapest University of Technology and Economics.
+    `pdf <https://doktori.math.bme.hu/gouda.pdf>`__
 .. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
     Wiley StatsRef: Statistics Reference Online, Wiley
 .. [ginsbourger2025] Ginsbouger, D., & Schärer, C. (2025).
@@ -330,9 +337,16 @@ Bibliography
 .. [koehler1996] J.R. Koehler and A.B. Owen. *Computer experiments. In S. Ghosh
     and C.R. Rao, editors, Design and analysis of experiments,
     volume 13 of Handbook of statistics.* Elsevier, 1996.
+.. [kotz2000] Kotz, S., Balakrishnan, N., & Johnson, N. L. (2000).
+    *Continuous Multivariate Distributions, Volume 1: Models and Applications.*
+    John Wiley & Sons.
 .. [koutsourelakis2004] Koutsourelakis, H. Pradlwarter, G. Schueller,
     *Reliability of structures in high dimensions, part i: algorithms and applications*,
     Probabilistic Engineering Mechanics 19 (4) (2004) 409–417
+.. [lauricella1893] Lauricella, G. (1893).
+    *Sulle funzioni ipergeometriche a piu variabili.*
+    Rendiconti del Circolo Matematico di Palermo, 7, 111-158.
+    `doi <https://doi.org/10.1007/BF03012437>`__
 .. [li1991] Li, K C. *Sliced Inverse Regression for Dimension Reduction*,
     Journal of the American Statistical Association, 86, 316-342, 1991.
     `pdf <https://escholarship.org/content/qt3mw1p0mb/qt3mw1p0mb.pdf>`__

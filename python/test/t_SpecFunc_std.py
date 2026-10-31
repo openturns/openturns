@@ -5,36 +5,50 @@ import math
 import openturns as ot
 import openturns.testing as ott
 
-for lx in range(10):
-    x = 2**lx
-    print("x=", x, "log2=", ot.SpecFunc.Log2(x))
+ot.TESTPREAMBLE()
 
 for lx in range(10):
-    x = 2**lx - 1
-    print("x=", x, "bits=", ot.SpecFunc.BitCount(x))
+    ott.assert_almost_equal(ot.SpecFunc.Log2(2**lx), lx, 1e-15, 0.0)
 
-for x in [0, 1, 2, 3, 4, 10, 100, 1000]:
-    print("x=", x, "nextpow2=", ot.SpecFunc.NextPowerOfTwo(x))
+for lx in range(10):
+    ott.assert_almost_equal(ot.SpecFunc.BitCount(2**lx - 1), lx, 0.0, 0.0)
+
+for x, expected in [
+    (0, 1),
+    (1, 1),
+    (2, 2),
+    (3, 4),
+    (4, 4),
+    (10, 16),
+    (100, 128),
+    (1000, 1024),
+]:
+    ott.assert_almost_equal(ot.SpecFunc.NextPowerOfTwo(x), expected, 0.0, 0.0)
 
 for x in [-2.0, -1.0, 0.0, 1.0, 2.0]:
     for n in [0, 1, 2]:
-        print("x=", x, "n=", n, "ipow=", ot.SpecFunc.IPow(x, n))
+        ott.assert_almost_equal(ot.SpecFunc.IPow(x, n), x**n, 1e-15, 0.0)
 
-for x in [-4.0, 4.0, 9.0]:
-    for n in [1, 2]:
-        if x < 0.0 and n % 2 == 0:
-            continue
-        print("x=", x, "n=", n, "iroot=", ot.SpecFunc.IRoot(x, n))
+for x, n, expected in [
+    (-4.0, 1, -4.0),
+    (4.0, 1, 4.0),
+    (4.0, 2, 2.0),
+    (9.0, 1, 9.0),
+    (9.0, 2, 3.0),
+]:
+    ott.assert_almost_equal(ot.SpecFunc.IRoot(x, n), expected, 1e-15, 0.0)
 
-print("ibeta(2.0, 0.0, 0.95)=", ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95))
-print("ibeta(0.0, 1.0, 0.95)=", ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95))
-print(
-    "ibeta(2.0, 0.0, 0.95, tail)=",
-    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95, True),
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95), 0.0, 1e-15, 0.0
 )
-print(
-    "ibeta(0.0, 1.0, 0.95, tail)=",
-    ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True),
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95), 1.0, 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95, True), 1.0, 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True), 0.0, 1e-15, 0.0
 )
 
 x = [1.0, 2.0**53, -(2.0**53)]
@@ -164,3 +178,121 @@ ott.assert_almost_equal(ot.SpecFunc.LogHyperGeom_1_1(2.0, 2.0, 3.0), 3.0, 1e-15,
 # Nonpositive 1F1 has no real logarithm and must throw
 with ott.assert_raises(TypeError):
     ot.SpecFunc.LogHyperGeom_1_1(-0.5, 1.0, 1000.0)
+
+# Lauricella F_A
+# In one dimension F_A reduces to the Gauss hypergeometric function 2F1
+for x in [0.2, 0.5, 0.8]:
+    value = ot.SpecFunc.LauricellaF_A(1.5, [2.0], [3.0], [x])
+    expected = ot.SpecFunc.HyperGeom_2_1(1.5, 2.0, 3.0, x)
+    ott.assert_almost_equal(value, expected, 1e-12, 0.0)
+# A vanishing first parameter gives F_A = 1
+ott.assert_almost_equal(
+    ot.SpecFunc.LauricellaF_A(0.0, [2.0, 3.0], [4.0, 5.0], [0.2, 0.1]),
+    1.0,
+    1e-15,
+    0.0,
+)
+# A vanishing variable reduces to the one-dimensional function
+ott.assert_almost_equal(
+    ot.SpecFunc.LauricellaF_A(1.5, [2.0, 3.0], [2.5, 4.0], [0.5, 0.0]),
+    ot.SpecFunc.HyperGeom_2_1(1.5, 2.0, 2.5, 0.5),
+    1e-12,
+    0.0,
+)
+# Reference values from mpmath (50 digits)
+lauricella_params = [
+    [0.5, [1.5, 2.5], [2.0, 3.0], [0.2, 0.1], 1.1440685953643620],
+    [-2.5, [1.5, 2.5], [2.0, 3.0], [0.3, -0.2], 0.87335183445907323],
+    [2.5, [0.5, 1.5], [3.0, 4.0], [0.1, 0.2], 1.2873765836948652],
+]
+for a, b, c, x, ref in lauricella_params:
+    value = ot.SpecFunc.LauricellaF_A(a, b, c, x)
+    ott.assert_almost_equal(value, ref, 1e-12, 0.0)
+
+# LogLauricellaF_A returns the logarithm, the sign and a cancellation guess
+available, logValue, cancellation, sign = ot.SpecFunc.LogLauricellaF_A(
+    1.5, [2.0], [3.0], [0.5]
+)
+assert available
+ott.assert_almost_equal(
+    sign * math.exp(logValue),
+    ot.SpecFunc.LauricellaF_A(1.5, [2.0], [3.0], [0.5]),
+    1e-12,
+    0.0,
+)
+assert cancellation > 0.0
+# A negative value is reported through the sign
+available, logValue, cancellation, sign = ot.SpecFunc.LogLauricellaF_A(
+    -1.0, [3.0], [1.0], [0.5]
+)
+assert available
+ott.assert_almost_equal(sign, -1.0, 0.0, 0.0)
+ott.assert_almost_equal(sign * math.exp(logValue), -0.5, 1e-15, 0.0)
+assert cancellation > 1.0
+# Rejected domains are reported through the returned flag
+for b, c, x in [
+    ([2.0], [0.0], [0.2]),
+    ([2.0], [3.0], [float("nan")]),
+    ([2.0, 3.0], [4.0, 5.0], [0.6, 0.5]),
+]:
+    assert not ot.SpecFunc.LogLauricellaF_A(1.5, b, c, x)[0]
+with ott.assert_raises(TypeError):
+    ot.SpecFunc.LogLauricellaF_A(1.5, [2.0, 3.0], [4.0], [0.2, 0.1])
+
+# The series remains accurate close to its convergence radius, where the
+# terms decay slowly
+ott.assert_almost_equal(
+    ot.SpecFunc.LauricellaF_A(1.5, [2.0], [3.0], [0.87]),
+    ot.SpecFunc.HyperGeom_2_1(1.5, 2.0, 3.0, 0.87),
+    1e-12,
+    0.0,
+)
+# Closer to the radius, where hundreds of terms are needed, the result
+# remains accurate.
+ott.assert_almost_equal(
+    ot.SpecFunc.LauricellaF_A(-0.5, [2.0], [3.0], [0.975]),
+    ot.SpecFunc.HyperGeom_2_1(-0.5, 2.0, 3.0, 0.975),
+    1e-11,
+    0.0,
+)
+
+# Mismatched dimensions are a usage error
+with ott.assert_raises(TypeError):
+    ot.SpecFunc.LauricellaF_A(1.5, [2.0, 3.0], [4.0], [0.2, 0.1])
+
+# Degenerate inputs and rejected domains return NaN
+assert ot.SpecFunc.LauricellaF_A(1.5, [], [], []) == 1.0
+for b, c, x in [
+    ([2.0], [0.0], [0.2]),
+    ([2.0], [3.0], [float("nan")]),
+    ([2.0], [3.0], [float("inf")]),
+    ([2.0, 3.0], [4.0, 5.0], [0.6, 0.5]),
+]:
+    assert math.isnan(ot.SpecFunc.LauricellaF_A(1.5, b, c, x))
+
+# A tolerance outside (0, 1), including NaN, is rejected
+lauricellaTolerance = ot.ResourceMap.GetAsScalar("SpecFunc-LauricellaTolerance")
+try:
+    for tolerance in [0.0, -1.0, 1.0, 2.0, float("nan")]:
+        ot.ResourceMap.SetAsScalar("SpecFunc-LauricellaTolerance", tolerance)
+        with ott.assert_raises(Exception):
+            ot.SpecFunc.LauricellaF_A(1.5, [2.0], [3.0], [0.5])
+finally:
+    ot.ResourceMap.SetAsScalar(
+        "SpecFunc-LauricellaTolerance", lauricellaTolerance
+    )
+
+# A series stopped at its degree limit without convergence must not be
+# reported as a valid value: the caller has to use its fallback.
+lauricellaMaximumDegree = ot.ResourceMap.GetAsUnsignedInteger(
+    "SpecFunc-LauricellaMaximumDegree"
+)
+try:
+    ot.ResourceMap.SetAsUnsignedInteger("SpecFunc-LauricellaMaximumDegree", 64)
+    lauricella_args = (0.5, [1.0] * 8, [2.0] * 8, [0.99] + [0.0] * 7)
+    assert math.isnan(ot.SpecFunc.LauricellaF_A(*lauricella_args))
+    assert not ot.SpecFunc.LogLauricellaF_A(*lauricella_args)[0]
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "SpecFunc-LauricellaMaximumDegree", lauricellaMaximumDegree
+    )

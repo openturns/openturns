@@ -126,3 +126,24 @@ with ott.assert_raises(Exception):
     ot.BetaMuSigma().setValues([0.5, 10.0, 0.0, 1.0])
 with ott.assert_raises(Exception):
     ot.BetaMuSigma()([0.5, 10.0, 0.0, 1.0])
+
+# A point strictly below the upper bound must not be normalized to it:
+# (x - a) / (b - a) rounds to 1.0 for x = nextafter(b, a), which used to
+# return a zero density even though x is inside the support.
+xUpper = m.nextafter(1.0, 0.0)
+for alpha, beta in [(2.0, 0.5), (0.5, 2.0), (3.0, 1.0), (2.0, 2.0)]:
+    betaDistribution = ot.Beta(alpha, beta, -1.0, 1.0)
+    logBeta = m.lgamma(alpha) + m.lgamma(beta) - m.lgamma(alpha + beta)
+    expectedLogPDF = (
+        (1.0 - alpha - beta) * m.log(2.0)
+        - logBeta
+        + (alpha - 1.0) * m.log(xUpper + 1.0)
+        + (beta - 1.0) * m.log(1.0 - xUpper)
+    )
+    assert betaDistribution.computePDF(xUpper) > 0.0
+    ott.assert_almost_equal(
+        betaDistribution.computeLogPDF(xUpper), expectedLogPDF, 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        betaDistribution.computePDF(xUpper), m.exp(expectedLogPDF), 1e-12, 1e-30
+    )
