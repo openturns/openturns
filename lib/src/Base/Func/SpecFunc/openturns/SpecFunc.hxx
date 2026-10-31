@@ -253,6 +253,13 @@ OT_API Scalar LogBinomialCoefficient(const UnsignedInteger n,
 // Accurate summation
 OT_API Scalar AccurateSum(const Point & v);
 
+// Log-sum-exp of two logarithms: log(exp(logA) + exp(logB))
+OT_API Scalar LogSumExp(const Scalar logA,
+                        const Scalar logB);
+
+// Log-sum-exp of a collection of logarithms
+OT_API Scalar LogSumExp(const Point & logValues);
+
 // clip value on [0, 1]
 OT_API Scalar Clip01(const Scalar prob, const Bool tail = false);
 

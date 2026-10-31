@@ -278,6 +278,7 @@ as Python functions.
     SpecFunc.LogGamma
     SpecFunc.LogGamma1p
     SpecFunc.LogHyperGeom_1_1
+    SpecFunc.LogSumExp
     SpecFunc.NextPowerOfTwo
     SpecFunc.Psi
     SpecFunc.RegularizedIncompleteBeta

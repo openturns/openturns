@@ -299,3 +299,41 @@ ot.Log.Show(ot.Log.NONE)
 with ott.assert_raises(TypeError):
     ot.ResourceMap.SetAsString("Normal-RectangularProbabilityAlgorithm", "Unknown")
 ot.Log.Show(ot.Log.TRACE)
+
+# setParameter must refresh the independent copula flag, otherwise a correlated
+# normal built from its parameters is still handled as independent
+R = ot.CorrelationMatrix(2)
+R[1, 0] = 0.5
+correlated = ot.Normal([1.0, -2.0], [2.0, 0.5], R)
+copy = ot.Normal(2)
+copy.setParameter(correlated.getParameter())
+assert not copy.hasIndependentCopula()
+ott.assert_almost_equal(
+    copy.computeCDF([0.5, -1.0]), correlated.computeCDF([0.5, -1.0])
+)
+ott.assert_almost_equal(copy.getCovariance(), correlated.getCovariance())
+
+# A zero standard deviation is a Dirac factor: the correlated interval
+# probability must marginalize it out instead of using a zero-width interval
+R = ot.CorrelationMatrix(3)
+R[1, 0] = 0.5
+R[2, 1] = 0.3
+degenerate = ot.Normal([0.0, 0.0, 0.0], [1.0, 2.0, 0.0], R)
+assert not degenerate.hasIndependentCopula()
+R2 = ot.CorrelationMatrix(2)
+R2[1, 0] = 0.5
+reference = ot.Normal([0.0, 0.0], [1.0, 2.0], R2)
+ott.assert_almost_equal(
+    degenerate.computeProbability(
+        ot.Interval([-1.0, -2.0, -0.1], [1.0, 2.0, 0.1])
+    ),
+    reference.computeProbability(ot.Interval([-1.0, -2.0], [1.0, 2.0])),
+    1.0e-14,
+)
+# An interval excluding the Dirac location has zero probability
+ott.assert_almost_equal(
+    degenerate.computeProbability(
+        ot.Interval([-1.0, -2.0, 0.1], [1.0, 2.0, 0.2])
+    ),
+    0.0,
+)

@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -142,3 +144,25 @@ ot.RandomGenerator.SetSeed(1)
 ebc = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(20), 2)
 seqCDF = ebc.computeSequentialConditionalCDF([0.5, 0.5])
 assert all(0.0 <= v <= 1.0 for v in seqCDF)
+
+# --- EmpiricalBernsteinCopula: PDF and log-PDF agree through the log domain ---
+for p in ([0.2, 0.2], [0.05, 0.95], [0.5, 0.5]):
+    ott.assert_almost_equal(
+        copula.computePDF(p), math.exp(copula.computeLogPDF(p)), 1e-14, 0.0
+    )
+assert math.isfinite(copula6D.computeLogPDF([0.01] * 6))
+
+# A permutation sample has no atom that is extreme in every coordinate, so the
+# density underflows while its logarithm remains finite.
+n = 100
+multipliers = [37, 53, 71, 89, 13]
+permutation_sample = ot.Sample(
+    [
+        [(i + 0.5) / n] + [((a * i) % n + 0.5) / n for a in multipliers]
+        for i in range(n)
+    ]
+)
+underflow_copula = ot.EmpiricalBernsteinCopula(permutation_sample, n)
+underflow_point = [1.0 - 1e-9] * 6
+assert underflow_copula.computePDF(underflow_point) == 0.0
+assert math.isfinite(underflow_copula.computeLogPDF(underflow_point))
