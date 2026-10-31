@@ -574,6 +574,9 @@ ot_add_python_module(experimental experimental_module.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                     BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i
+                     GaussLPQuadrature.i GaussLPQuadrature_doc.i
+                     BasisOrthonormalizationFactory.i BasisOrthonormalizationFactory_doc.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i

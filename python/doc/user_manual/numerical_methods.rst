@@ -65,6 +65,7 @@ Integration
     CubaIntegration
     SimplicialCubature
     ExperimentIntegration
+    experimental.GaussLPQuadrature
 
 .. autosummary::
     :toctree: _generated/
