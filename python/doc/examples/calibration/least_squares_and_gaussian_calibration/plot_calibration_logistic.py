@@ -10,8 +10,7 @@ Hence when we calibrate the model on the data, there is a discrepancy that will
 be seen.
 In this example, we calibrate the parameters of a model which predicts
 the dynamics of the size of a population.
-This shows how we can calibrate a model which predicts a time
-dependent output.
+This shows how we can calibrate a model which predicts a time-dependent output.
 The output of the model is a time series representing the evolution of the
 population.
 This requires a transpose of the sample, so that we can benefit from
@@ -155,44 +154,47 @@ print("Physical Model Inputs:", lm.model.getInputDescription())
 print("Physical Model Parameters:", lm.model.getParameterDescription())
 
 # %%
-# In order to perform calibration, we have to define a parametric model,
-# with observed inputs and parameters to calibrate.
+# In order to perform the calibration, we have to define a parametric model.
+# Its inputs correspond to the calibrated parameters
+# and its parameters correspond to the observed inputs.
 # In order to do this, we create a :class:`~openturns.ParametricFunction` where the parameters
-# are `a` and `c` which have the indices 22 and 23 in the physical model.
+# are `t1`, `t2`, ..., `t22` (which have indices 0 to 21 in the physical model).
 #
 # +-------+----------------+
 # | Index | Input variable |
 # +=======+================+
-# | 0     | t1             |
+# | 0     | a              |
 # +-------+----------------+
-# | 1     | t2             |
-# +-------+----------------+
-# | ...   | ...            |
-# +-------+----------------+
-# | 21    | t22            |
+# | 1     | c              |
 # +-------+----------------+
 #
 # +-------+-----------+
 # | Index | Parameter |
 # +=======+===========+
-# | 0     | a         |
+# | 0     | t1        |
 # +-------+-----------+
-# | 1     | c         |
+# | 1     | t2        |
+# +-------+-----------+
+# | ...   | ...       |
+# +-------+-----------+
+# | 21    | t22       |
 # +-------+-----------+
 #
 # **Table 2.** Indices and names of the inputs and parameters of the parametric model.
 #
 
 # %%
-logisticParametric = ot.ParametricFunction(logisticModelPy, [22, 23], thetaPrior)
-print("Parametric Model Inputs:", logisticParametric.getInputDescription())
-print("Parametric Model Parameters:", logisticParametric.getParameterDescription())
+observedIndices = list(range(22))
+calibrationFunction = ot.ParametricFunction(logisticModelPy, observedIndices, [0.0] * len(observedIndices))
+print("Parametric Model Inputs:", calibrationFunction.getInputDescription())
+print("Parametric Model Parameters:", calibrationFunction.getParameterDescription())
 
 # %%
 # Check that we can evaluate the parametric function.
 
 # %%
-populationPredicted = logisticParametric(timeObservations.asPoint())
+calibrationFunction.setParameter(timeObservations.asPoint())
+populationPredicted = calibrationFunction(thetaPrior)
 print(populationPredicted[:5])
 
 # %%
@@ -223,7 +225,7 @@ view = otv.View(graph)
 # %%
 # The calibration algorithm takes input and output samples as arguments.
 # In this case, we choose to consider one single observation in dimension 22.
-# In order to perform calibration, we create a `Sample` of input times which has
+# In order to perform the calibration, we create a `Sample` of input times which has
 # one observation in dimension 22.
 
 # %%
@@ -239,16 +241,6 @@ populationObservationsSample = ot.Sample([populationObservations.asPoint()])
 populationObservationsSample[0, 0:5]
 
 # %%
-logisticParametric = ot.ParametricFunction(logisticModelPy, [22, 23], thetaPrior)
-
-# %%
-# Check that we can evaluate the parametric function.
-
-# %%
-populationPredicted = logisticParametric(timeObservationsSample)
-populationPredicted[0, 0:5]
-
-# %%
 #  Calibration
 # ------------
 
@@ -258,7 +250,7 @@ populationPredicted[0, 0:5]
 
 # %%
 algo = ot.LinearLeastSquaresCalibration(
-    logisticParametric, timeObservationsSample, populationObservationsSample, thetaPrior
+    calibrationFunction, timeObservationsSample, populationObservationsSample, thetaPrior
 )
 algo.run()
 calibrationResult = algo.getResult()

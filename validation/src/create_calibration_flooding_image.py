@@ -45,8 +45,8 @@ ZvInitial = 49.0
 ZmInitial = 51.0
 thetaPrior = [KsInitial, ZvInitial, ZmInitial]
 
-calibratedIndices = [1, 2, 3]
-mycf = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+inputIndices = [0]
+calibrationModel = ot.ParametricFunction(g, inputIndices, [0.0] * len(inputIndices))
 
 sigmaH = 0.5  # (m^2)
 
@@ -69,7 +69,7 @@ defaultBootstrapSize = ot.ResourceMap.GetAsUnsignedInteger(
 ot.ResourceMap.SetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize", 0)
 
 algo = ot.GaussianNonLinearCalibration(
-    mycf, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+    calibrationModel, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )
 algo.run()
 calibrationResult = algo.getResult()

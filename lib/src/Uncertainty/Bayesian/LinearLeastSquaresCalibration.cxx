@@ -52,9 +52,9 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
 {
   // Check the input
   const UnsignedInteger parameterDimension = startingPoint.getDimension();
-  if (model.getParameterDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << parameterDimension << ", got parameter dimension=" << model.getParameterDimension();
+  if (model.getInputDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << parameterDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger inputDimension = inputObservations_.getDimension();
-  if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
+  if (model.getParameterDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of parameter dimension=" << inputDimension << ", got parameter dimension=" << model.getParameterDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = outputObservations.getSize();
@@ -78,7 +78,6 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
   const UnsignedInteger size = outputObservations.getSize();
   if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of columns number=" << parameterDimension << ", got columns number=" << gradientObservations.getNbColumns();
   if (gradientObservations.getNbRows() != size * outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of rows number=" << size * outputDimension << ", got rows number=" << gradientObservations.getNbRows();
-  if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected an observations gradient of column dimension=" << parameterDimension << ", got column dimension=" << gradientObservations.getNbColumns();
   if (modelObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected a model observation sample of size=" << size << ", got size=" << modelObservations.getSize();
   if (modelObservations.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model observation sample of dimension=" << outputDimension << ", got dimension=" << modelObservations.getDimension();
 }
@@ -89,24 +88,26 @@ void LinearLeastSquaresCalibration::run()
   if (getModel().getEvaluation().getImplementation()->isActualImplementation())
   {
     // Compute the linearization
-    Function parametrizedModel(getModel());
-    parametrizedModel.setParameter(getParameterPrior().getMean());
+    Function model(getModel());
     // Flatten everything related to the model evaluations over the input observations
     const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
     const UnsignedInteger outputDimension = getOutputObservations().getDimension();
     const UnsignedInteger size = getOutputObservations().getSize();
-    modelObservations_ = parametrizedModel(getInputObservations());
+    const Point startingPoint(getStartingPoint());
+    modelObservations_ = Sample(0, outputDimension);
     gradientObservations_ = MatrixImplementation(parameterDimension, size * outputDimension);
     UnsignedInteger shift = 0;
-    UnsignedInteger skip = parameterDimension * outputDimension;
+    const UnsignedInteger skip = parameterDimension * outputDimension;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const Matrix parameterGradient(parametrizedModel.parameterGradient(getInputObservations()[i]));
-      std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
+      model.setParameter(getInputObservations()[i]);
+      modelObservations_.add(model(startingPoint));
+      const Matrix gradient(model.gradient(startingPoint));
+      std::copy(gradient.getImplementation()->begin(), gradient.getImplementation()->end(), gradientObservations_.getImplementation()->begin() + shift);
       shift += skip;
     }
     gradientObservations_ = gradientObservations_.transpose();
-    parameterPrior_.setDescription(getModel().getParameterDescription());
+    parameterPrior_.setDescription(model.getInputDescription());
   }
 
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
