@@ -33,6 +33,7 @@
  * ProductDistribution: evaluate the real and imaginary parts of the characteristic function with separate scalar Gauss-Kronrod passes, avoiding a Point allocation at every quadrature node
  * DistributionImplementation: select the generic characteristic-function integration panels from the absolute argument, keep the Filon grid within Distribution-CharacteristicFunctionNMax points, and document the positive exponent convention used by the implementation
  * DistributionImplementation::operator /: return a RatioDistribution for continuous univariate operands, fixing the inaccurate density of the former inverse composition close to zero
+ * HMatrix interface to support HODLR implementation
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
@@ -101,6 +102,9 @@
  * Dirichlet-CDFUpperMaximumCancellation: maximum cancellation level accepted for the upper-corner inclusion-exclusion in Dirichlet::computeCDF (default is 1.0e13)
  * SpecFunc-LauricellaMaximumDegree: maximum degree of the Lauricella hypergeometric series (default is 1024)
  * SpecFunc-LauricellaTolerance: relative tolerance of the Lauricella hypergeometric series (default is 1.0e-14)
+ * HMatrix-ClusteringMaxDof : Create a clustering algorithm with a maximum number of degrees of freedom in a leaf. Default value is 250
+ * HMatrix-ParallelSolver : Select the HMatrix parallel backend StarPU or ToyRT when both are available. Default value is starpu
+ * HMatrix-Admissibility : select the admissibility criterion to assemble an HMatrix. Use the standard one (Hackbusch in the literature) or HODLR. Default is standard.
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -154,6 +158,7 @@
  * Added MetaModelValidation.getWeights and MetaModelValidation.setWeights: the R2 score and the mean squared error are weighted by the validation weights, uniform by default, and normalized by the weight mass
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
+ * HMatrixParameters.getAdmissibility and HMatrixParameters.setAdmissibility
 
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra", values "LAPACK", "HMAT" or "HODLR"); GaussianProcessRegression inherits the linear algebra method from its GaussianProcessFitterResult, and GeneralLinearModelAlgorithm still relies on its own key "GeneralLinearModelAlgorithm-LinearAlgebra" (values "LAPACK" or "HMAT")
  * GaussianProcessFitter: analytical amplitude estimate now works with the HODLR backend; the HODLR path uses the precomputed quadratic form y^T R^{-1} y instead of rho_.normSquare(), since rho_ is the raw residual rather than L^{-1}(residual)
