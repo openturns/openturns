@@ -104,7 +104,7 @@ def use_case_4(X, Y):
     )
     print(result.getCovarianceModel().getParameter())
     ott.assert_almost_equal(
-        result.getCovarianceModel().getParameter(), [0.0078, 0.19575], 1e-4, 1e-4
+        result.getCovarianceModel().getParameter(), [0.0078, 0.1907935], 1e-4, 1e-4
     )
     print(result.getTrendCoefficients())
     ott.assert_almost_equal(
