@@ -98,9 +98,9 @@ PythonActiveLearningReliabilityFunctionImplementation & PythonActiveLearningReli
   if (this != &rhs)
   {
     ActiveLearningReliabilityFunctionImplementation::operator=(rhs);
-    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
-    pyObj_ = pyObjClone.get();
-    Py_XINCREF(pyObj_);
+    PyObject * newObj = rhs.pyObj_ ? deepCopy(rhs.pyObj_) : nullptr; // new reference
+    Py_XDECREF(pyObj_);
+    pyObj_ = newObj;
     // deepCopy drops the GPR result through Python __getstate__: restore it from C++
     syncGPRToPython();
     // The Python copy is the source of truth for the thresholds
