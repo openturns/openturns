@@ -40,7 +40,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * density integral. The mesh itself is not built here, so the dimension n is
  * only used by the local linear algebra and by the spatial hash.
  */
-class OT_API LevelSetContinuation
+class LevelSetContinuation
 {
 public:
 
