@@ -6,7 +6,7 @@ Sparse Gaussian process regression
 Introduction
 ~~~~~~~~~~~~
 
-Gaussian process regression (see :any:`gaussian_process_regression`) requires the
+Gaussian process regression (see :doc:`/theory/meta_modeling/gaussian_process_regression`) requires the
 factorisation of the covariance matrix discretized on the :math:`n` training inputs,
 at a cost that scales as :math:`n^3`.
 This cost becomes prohibitive when :math:`n` is large.
