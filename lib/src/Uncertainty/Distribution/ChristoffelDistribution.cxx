@@ -70,7 +70,7 @@ public:
 
   Point operator()(const Point & point) const override
   {
-    const Scalar density = marginal_.computePDF(Point(1, point[0]));
+    const Scalar density = marginal_.computePDF(point);
     if (density == 0.0) return Point(1, 0.0);
     return Point(1, density * distribution_.computePartialChristoffel(partialProducts_, index_, point[0]));
   }
