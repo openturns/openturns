@@ -517,6 +517,17 @@ Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
     // accuracy that depends on prob.
     // The cut-off is around the mean value
     if (prob <= ccdfApproximation_.getValues()(0, 0)) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()(0, 0), ccdfApproximation_.getValues()(n - 1, 0));
+    // The CDF and CCDF interpolants are integrated independently, so a prob
+    // within the integration error of their junction fits neither bracket;
+    // the quantile is then the junction abscissa itself, provided the gap
+    // holds no significant omitted tail mass
+    if (1.0 - prob >= cdfApproximation_.getValues()(n - 1, 0))
+    {
+      const Scalar gap = 1.0 - cdfApproximation_.getValues()(n - 1, 0) - ccdfApproximation_.getValues()(0, 0);
+      // Allow some slack over cdfEpsilon_ for the independent integration errors
+      if (!(gap >= 0.0) || !(gap <= 100.0 * cdfEpsilon_)) throw InternalException(HERE) << "Error: cannot compute the quantile for prob=" << prob << ", the CDF/CCDF junction gap=" << gap << " exceeds the requested accuracy. The gap can include mass outside the range computed by computeRange(): lower the PDF epsilon, or increase MeixnerDistribution-CDFDiscretization to reduce integration error.";
+      return getMean()[0];
+    }
     return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, 1.0 - prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()(0, 0), cdfApproximation_.getValues()(n - 1, 0));
   }
   // Here we have to solve CDF(x) = prob which is mathematically
@@ -524,6 +535,17 @@ Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
   // different with an accuracy that depends on prob.
   // The cut-off is around the mean value
   if (prob <= cdfApproximation_.getValues()(n - 1, 0)) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()(0, 0), cdfApproximation_.getValues()(n - 1, 0));
+  // The CDF and CCDF interpolants are integrated independently, so a prob
+  // within the integration error of their junction fits neither bracket;
+  // the quantile is then the junction abscissa itself, provided the gap
+  // holds no significant omitted tail mass
+  if (1.0 - prob >= ccdfApproximation_.getValues()(0, 0))
+  {
+    const Scalar gap = 1.0 - cdfApproximation_.getValues()(n - 1, 0) - ccdfApproximation_.getValues()(0, 0);
+    // Allow some slack over cdfEpsilon_ for the independent integration errors
+    if (!(gap >= 0.0) || !(gap <= 100.0 * cdfEpsilon_)) throw InternalException(HERE) << "Error: cannot compute the quantile for prob=" << prob << ", the CDF/CCDF junction gap=" << gap << " exceeds the requested accuracy. The gap can include mass outside the range computed by computeRange(): lower the PDF epsilon, or increase MeixnerDistribution-CDFDiscretization to reduce integration error.";
+    return getMean()[0];
+  }
   return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, 1.0 - prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()(0, 0), ccdfApproximation_.getValues()(n - 1, 0));
 }
 

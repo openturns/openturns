@@ -146,3 +146,19 @@ expectedLog = (
 gotLog = meix.computeLogCharacteristicFunction(x)
 ott.assert_almost_equal([gotLog.real], [expectedLog.real], 1e-12, 0.0)
 ott.assert_almost_equal([gotLog.imag], [expectedLog.imag], 1e-12, 0.0)
+
+# --- Quantile at the CDF/CCDF junction (mean value) ---
+# The CDF and CCDF interpolants are integrated independently, so q=0.5 may
+# fit neither Brent bracket and used to raise an InternalException
+ot.ResourceMap.SetAsUnsignedInteger("MeixnerDistribution-CDFDiscretization", 10000)
+junction = ot.MeixnerDistribution(10.0, 0.0, 10.0, 0.0)
+ott.assert_almost_equal(
+    junction.computeQuantile(0.5), junction.getMean(), 1e-12, 0.0
+)
+ott.assert_almost_equal(
+    junction.computeQuantile(0.5, True), junction.getMean(), 1e-12, 0.0
+)
+skewed = ot.MeixnerDistribution(1.0, 0.5, 1.5, 0.0)
+ott.assert_almost_equal(
+    skewed.computeCDF(skewed.computeQuantile(0.5)), 0.5, 1e-6, 0.0
+)
