@@ -19,7 +19,15 @@ nbColumns : int, optional
 elementsValues : sequence of float, optional
     Initial values.
 layout : int, optional
-    Storage layout: ``DataContainer.COLUMN_MAJOR`` (default) or ``DataContainer.ROW_MAJOR``."
+    Storage layout: ``DataContainer.COLUMN_MAJOR`` (default) or ``DataContainer.ROW_MAJOR``.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used by the HDF5
+backend:
+
+- ``HDF5Backend-DefaultChunkSize`` (``UnsignedInteger``, default: ``4096``): number of elements per chunk of a newly created HDF5 dataset.
+- ``HDF5Backend-DefaultCompressionLevel`` (``UnsignedInteger``, default: ``0``): zlib compression level of a newly created HDF5 dataset, from 0 (no compression) to 9 (best compression)."
 
 // ---------------------------------------------------------------------
 
