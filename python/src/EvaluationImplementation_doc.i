@@ -417,7 +417,7 @@ the min and max of all samples of the function value calculated in all cross cut
 
 - For 1D cross cuts:
 
-OpenTURNS draws the graph:
+it draws the graph:
 
 .. math::
     y = f_k^{(i)}(s)

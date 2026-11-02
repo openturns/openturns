@@ -184,7 +184,8 @@ void LinearEvaluation::load(Advocate & adv)
 
 Bool LinearEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const LinearEvaluation &>(other);
+  const LinearEvaluation * p_other = dynamic_cast<const LinearEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

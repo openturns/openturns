@@ -1,6 +1,7 @@
 import openturns as ot
 import unittest
 import openturns.testing as ott
+import os
 
 
 class CheckKarhunenLoeveReduce(unittest.TestCase):
@@ -53,6 +54,58 @@ class CheckKarhunenLoeveReduce(unittest.TestCase):
         values = field.getValues()
         reducedValues = klreduce(values)
         ott.assert_almost_equal(values, reducedValues)
+
+    def test_misc(self):
+        ot.RandomGenerator.SetSeed(0)
+        numberOfVertices = 10
+        interval = ot.Interval(-1.0, 1.0)
+        mesh = ot.IntervalMesher([numberOfVertices - 1]).build(interval)
+        covariance = ot.SquaredExponential()
+        process = ot.GaussianProcess(covariance, mesh)
+        sample = process.getSample(10)
+        algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
+        algo.run()
+        klresult = algo.getResult()
+        # default constructor, comparison, string converters
+        default = ot.KarhunenLoeveReduction()
+        assert default == default
+        klreduce = ot.KarhunenLoeveReduction(klresult)
+        assert klreduce == ot.KarhunenLoeveReduction(klresult)
+        assert default == ot.KarhunenLoeveReduction()
+        assert default != klreduce
+        assert len(repr(klreduce)) > 0
+        assert len(str(klreduce)) > 0
+        # setTrend / trend constructor
+        trend = ot.TrendTransform(
+            ot.P1LagrangeEvaluation(sample.computeMean()), mesh
+        )
+        klreduce.setTrend(trend)
+        klreduce_trend = ot.KarhunenLoeveReduction(klresult, trend)
+        assert klreduce == klreduce_trend
+        # error paths: wrong dimension / wrong size
+        with ott.assert_raises(Exception):
+            klreduce(ot.Sample(numberOfVertices, 2))
+        with ott.assert_raises(Exception):
+            klreduce(ot.Sample(5, 1))
+        # getMarginal is not implemented
+        with ott.assert_raises(Exception):
+            klreduce.getMarginal(0)
+        with ott.assert_raises(Exception):
+            klreduce.getMarginal([0])
+        # save / load roundtrip
+        study = ot.Study()
+        study.setStorageManager(ot.XMLStorageManager("klreduce_test.xml"))
+        study.add("klreduce", klreduce)
+        study.save()
+        try:
+            study2 = ot.Study()
+            study2.setStorageManager(ot.XMLStorageManager("klreduce_test.xml"))
+            study2.load()
+            loaded = ot.KarhunenLoeveReduction()
+            study2.fillObject("klreduce", loaded)
+            assert loaded == klreduce
+        finally:
+            os.remove("klreduce_test.xml")
 
     def test_trend(self):
         N = 100

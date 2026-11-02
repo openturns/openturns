@@ -226,6 +226,8 @@ void Ipopt::run()
   setResultFromEvaluationHistory(inputHistory, ipoptProblem->getOutputHistory(),
                                  getProblem().hasInequalityConstraint() ? getProblem().getInequalityConstraint()(inputHistory) : Sample(),
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
+  result_.setGradientCallsNumber(ipoptProblem->getGradientCallsNumber());
+  result_.setHessianCallsNumber(ipoptProblem->getHessianCallsNumber());
 
   if (status < 0)
   {

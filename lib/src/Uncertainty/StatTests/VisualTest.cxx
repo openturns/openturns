@@ -22,6 +22,7 @@
 #include "openturns/VisualTest.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
+#include "openturns/Grid.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/FiniteDiscreteDistribution.hxx"
 #include "openturns/DistFunc.hxx"
@@ -775,6 +776,76 @@ Graph VisualTest::DrawLowerExtremalDependenceFunction(const Sample & data)
   Graph result(VisualTestDrawDependenceFunction(data, "2*log(u)/log(cuu)-1", "$\\bar{\\chi}_L(u)$"));
   result.setTitle("Lower extremal dependence function");
   return result;
+}
+
+/* Draw 2-d projections of a design with grid lines in each plane */
+GridLayout VisualTest::DrawPairsWithGrid(const Sample & sample,
+                                         const Interval & bounds,
+                                         const Indices & subdivisions)
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw a design from a multivariate sample of dimension >= 2, got " << dimension;
+  Interval localBounds(bounds);
+  if (localBounds.getDimension() == 0)
+  {
+    Point lower(sample.getMin());
+    Point upper(sample.getMax());
+    // A constant marginal yields a degenerate interval: expand it so a grid can be drawn
+    for (UnsignedInteger k = 0; k < dimension; ++ k)
+    {
+      if (!(upper[k] > lower[k]))
+      {
+        lower[k] -= 0.5;
+        upper[k] += 0.5;
+      }
+    }
+    localBounds = Interval(lower, upper);
+  }
+  if (localBounds.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Bounds dimension (" << localBounds.getDimension() << ") does not match sample dimension (" << dimension << ")";
+  Indices localSubdivisions(subdivisions);
+  if (localSubdivisions.getSize() == 0)
+  {
+    localSubdivisions = Indices(dimension, 5);
+  }
+  if (localSubdivisions.getSize() != dimension)
+    throw InvalidDimensionException(HERE) << "Subdivisions size (" << localSubdivisions.getSize() << ") does not match sample dimension (" << dimension << ")";
+  for (UnsignedInteger k = 0; k < dimension; ++ k)
+  {
+    if (localSubdivisions[k] == 0)
+      throw InvalidArgumentException(HERE) << "Subdivisions must be >= 1 in each direction, got 0 in direction " << k;
+    if (!(localBounds.getUpperBound()[k] > localBounds.getLowerBound()[k]))
+      throw InvalidArgumentException(HERE) << "Bounds upper bound must be strictly greater than lower bound in direction " << k;
+  }
+  GridLayout grid(dimension - 1, dimension - 1);
+  const Description description(sample.getDescription());
+  const Point lowerBound(localBounds.getLowerBound());
+  const Point upperBound(localBounds.getUpperBound());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      Cloud cloud(sample.getMarginal(indices));
+      const Interval bounds2D(Point({lowerBound[j], lowerBound[i]}), Point({upperBound[j], upperBound[i]}));
+      const Indices subdivisions2D({localSubdivisions[j], localSubdivisions[i]});
+      const Grid gridDrawable(bounds2D, subdivisions2D);
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "");
+      graph.setLegendPosition("topright");
+      graph.add(gridDrawable);
+      graph.add(cloud);
+      int location = GraphImplementation::TICKNONE;
+      if (i == dimension - 1)
+        location |= GraphImplementation::TICKX;
+      if (j == 0)
+        location |= GraphImplementation::TICKY;
+      graph.setTickLocation(static_cast<GraphImplementation::TickLocation>(location));
+      graph.setGrid(false);
+      grid.setGraph(i - 1, j, graph);
+    }
+  }
+  return grid;
 }
 
 /** Draw the sample as a cloud of points in or out of the domain */

@@ -148,6 +148,9 @@ public:
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
+  /** compute y<- alpha op(this) * x + beta * op(y) */
+  Matrix gemm_dense(char transHMat, char transDense, char side, Scalar alpha, const Matrix & lhs) const;
+
 private:
   /** Compute an approximation of the maximum eigenvalue */
   Scalar computeApproximateLargestEigenValue(const Scalar epsilon = ResourceMap::GetAsScalar("HMatrix-LargestEigenValueRelativeError"));
@@ -157,6 +160,9 @@ public:
   void transpose();
 
   void addIdentity(Scalar alpha);
+
+  /** Compute log determinant */
+  Scalar computeLogDeterminant() const;
 
   /** Get the Frobenius norm */
   Scalar norm() const;
@@ -204,7 +210,8 @@ private:
   void * hmat_;
   // Shift added to the diagonal during the last factorization, 0 if none
   Scalar regularizationShift_;
-
+  // True if the matrix has been factorized, false otherwise
+  Bool isFactorized_ = false;
 };
 
 // First implementation, by using HMatrixRealAssemblyFunction

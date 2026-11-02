@@ -48,17 +48,6 @@ transformation : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SlicedInverseRegressionResult::getInverseTransformation
-"Inverse transformation function accessor.
-
-Returns
--------
-inverseTransformation : :class:`~openturns.Function`
-    Inverse transformation function
-"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::SlicedInverseRegressionResult::getDirections
 "Directions accessor.
 

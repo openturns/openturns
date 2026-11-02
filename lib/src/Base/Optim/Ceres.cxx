@@ -132,6 +132,8 @@ public:
       std::copy(outP.begin(), outP.end(), residuals);
       algorithm_.evaluationInputHistory_.add(inP);
       algorithm_.evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
+      algorithm_.result_.setCallsNumber(algorithm_.evaluationInputHistory_.getSize());
+      algorithm_.result_.setGradientCallsNumber(algorithm_.gradientCallsNumber_);
     }
     catch (const Exception & exc)
     {
@@ -145,6 +147,8 @@ public:
       try
       {
         const Matrix gradient(problem.getResidualFunction().gradient(inP));
+        ++ algorithm_.gradientCallsNumber_;
+        algorithm_.result_.setGradientCallsNumber(algorithm_.gradientCallsNumber_);
         std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
       }
       catch (const Exception & exc)
@@ -192,6 +196,7 @@ public:
 
       // update result
       algorithm_.result_.setCallsNumber(algorithm_.evaluationInputHistory_.getSize());
+      algorithm_.result_.setGradientCallsNumber(algorithm_.gradientCallsNumber_);
       algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
     }
     catch (const Exception & exc)
@@ -206,6 +211,8 @@ public:
       try
       {
         const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
+        ++ algorithm_.gradientCallsNumber_;
+        algorithm_.result_.setGradientCallsNumber(algorithm_.gradientCallsNumber_);
         std::copy(gradient.data(), gradient.data() + n, jacobian);
       }
       catch (const Exception & exc)
@@ -261,6 +268,8 @@ void Ceres::run()
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
   result_ = OptimizationResult(getProblem());
+
+  gradientCallsNumber_ = 0;
 
   UnsignedInteger iterationNumber = 0;
   Scalar time = 0.0;
@@ -515,6 +524,7 @@ void Ceres::run()
   result_.setTimeDuration(time);
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_.setGradientCallsNumber(gradientCallsNumber_);
   if (termination_type == ceres::FAILURE)
   {
     result_.setStatus(OptimizationResult::FAILURE);

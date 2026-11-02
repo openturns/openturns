@@ -124,6 +124,78 @@ Sample.BuildFromDataFrame = __Sample_BuildFromDataFrame
 
 
 
+def __Sample_describe(self, percentiles=None):
+    """
+    Descriptive statistics of the sample.
+
+    Parameters
+    ----------
+    percentiles : sequence of float, optional
+        Probabilities in ]0, 1[ of the additional quantiles.
+        Default quantiles are 0.25, 0.5 and 0.75.
+
+    Returns
+    -------
+    stats : dict
+        Mapping of statistic names ('count', 'mean', 'std', 'min',
+        'max' and 'XX%' quantiles) to :class:`~openturns.Point` values
+        (the count is stored as a float).
+    """
+    if percentiles is None:
+        percentiles = [0.25, 0.5, 0.75]
+    for prob in percentiles:
+        if not 0.0 < prob < 1.0:
+            raise ValueError(f"Percentile {prob} is outside ]0, 1[.")
+    stats = dict()
+    stats["count"] = openturns.Point([self.getSize()] * self.getDimension())
+    stats["mean"] = self.computeMean()
+    stats["std"] = self.computeStandardDeviation()
+    stats["min"] = self.getMin()
+    for prob in percentiles:
+        # The %g label rounds to 6 significant digits, which can turn a
+        # probability strictly inside ]0, 1[ into a boundary label such as
+        # "100%". Keep the exact value in that case, and on a collision with
+        # an already inserted key, so no row is mislabelled or overwritten.
+        key = f"{100.0 * prob:g}%"
+        if key in stats or not 0.0 < 100.0 * prob < 100.0 or float(key[:-1]) != 100.0 * prob:
+            key = f"{100.0 * prob!r}%"
+        stats[key] = self.computeQuantilePerComponent(prob)
+    stats["max"] = self.getMax()
+    return stats
+Sample.describe = __Sample_describe
+
+def __Sample_summary(self, percentiles=None):
+    """
+    Descriptive statistics of the sample as a table.
+
+    Parameters
+    ----------
+    percentiles : sequence of float, optional
+        Probabilities in ]0, 1[ of the additional quantiles.
+        Default quantiles are 0.25, 0.5 and 0.75.
+
+    Returns
+    -------
+    summary : str
+        Table of the descriptive statistics, with one row per statistic
+        and one column per sample component.
+    """
+    stats = self.describe(percentiles)
+    names = list(self.getDescription())
+    if not names or any(not name for name in names):
+        names = [f"X{i}" for i in range(self.getDimension())]
+    width = max([8] + [len(name) for name in stats])
+    lines = [f'{"":>{width}}' + "".join(f"{name:>12}" for name in names)]
+    for name, values in stats.items():
+        lines.append(
+            f"{name:>{width}}"
+            + "".join(f"{value:>12.6g}" for value in values)
+        )
+    return "\n".join(lines)
+Sample.summary = __Sample_summary
+
+
+
 def __Sample_repr_html(self):
     """Get HTML representation."""
     desc = self.getDescription()

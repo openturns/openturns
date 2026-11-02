@@ -7,8 +7,7 @@ size : int, :math:`n > 0`, optional
     Matrix size.
     Default is 1.
 values : sequence of float with size :math:`n^2`, optional
-    Values. OpenTURNS uses **column-major** ordering (like Fortran) for
-    reshaping the flat list of values.
+    Flat values list, reshaped using **column-major** ordering (like Fortran).
     Default creates a zero matrix.
 
 Raises

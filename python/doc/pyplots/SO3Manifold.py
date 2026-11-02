@@ -6,12 +6,11 @@ import numpy as np
 import openturns.viewer as otv
 import math
 
-# The OpenTURNS drawables (ot.Cloud, ot.Curve, ot.Contour) are two-dimensional:
+# The drawable elements (ot.Cloud, ot.Curve, ot.Contour) are two-dimensional:
 # the viewer draws them with ax.plot(x, y) / ax.scatter(x, y), so they cannot
 # represent points, vectors or curves embedded in R^(3x3). The left panel is a
 # genuine 3-D view and is drawn with matplotlib only, while the right panel is
-# two-dimensional and uses the OpenTURNS Graph/Curve drawables and the OpenTURNS
-# viewer.
+# two-dimensional and uses the Graph/Curve drawables and the viewer submodule.
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -76,7 +75,7 @@ ax1.legend(loc="upper left", fontsize=8)
 
 # ======================================================================
 # Right panel: volume density of the exp-map, a two-dimensional plot drawn
-# with the OpenTURNS Graph/Curve drawables
+# with the Graph/Curve drawables
 # ======================================================================
 ax2 = fig.add_subplot(122)
 

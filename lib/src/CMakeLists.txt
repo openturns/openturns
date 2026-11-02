@@ -14,10 +14,6 @@ set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNIT
 if (Boost_FOUND)
   set_source_files_properties (Base/Func/SpecFunc/BetaFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
   set_source_files_properties (Uncertainty/Distribution/StudentFunctions.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
-  set_source_files_properties (Base/Geom/Mesh.cxx PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
-  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set_source_files_properties (Base/Geom/Mesh.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=maybe-uninitialized")
-  endif ()
 endif ()
 
 # Exclude Ceres sources from unity build (templates take much memory)

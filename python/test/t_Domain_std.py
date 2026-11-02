@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -68,3 +70,43 @@ md2 = ot.MeshDomain(mesh2)
 # Just check that they are equal to themselves
 assert md1 == md1, "MeshDomain self =="
 assert md1 != ot.MeshDomain(), "MeshDomain !="
+
+# Extra MeshDomain coverage: accessors, contains, bounds, save/load (no prints to keep expout stable)
+
+defaultMD = ot.MeshDomain()
+assert isinstance(repr(defaultMD), str)
+assert isinstance(str(defaultMD), str)
+assert md1.getMesh().getVerticesNumber() == mesh1.getVerticesNumber()
+assert isinstance(repr(md1), str)
+assert isinstance(str(md1), str)
+# EnclosingSimplexAlgorithm accessor
+algo = md1.getEnclosingSimplexAlgorithm()
+md1.setEnclosingSimplexAlgorithm(
+    ot.EnclosingSimplexAlgorithm(mesh1.getVertices(), mesh1.getSimplices())
+)
+assert md1.getEnclosingSimplexAlgorithm().getVertices().getSize() == mesh1.getVerticesNumber()
+# contains / bounds / parallel
+assert md1.contains([0.5]), "MeshDomain should contain 0.5"
+assert not md1.contains([5.0]), "MeshDomain should not contain 5.0"
+domainHandle = ot.Domain(md1)
+assert ot.Point([0.5]) in domainHandle
+assert ot.Point([5.0]) not in domainHandle
+ott.assert_almost_equal(md1.getLowerBound(), [0.0], 1e-12, 1e-12)
+ott.assert_almost_equal(md1.getUpperBound(), [1.0], 1e-12, 1e-12)
+assert md1.isParallel()
+# equals with another domain type
+assert not (md1 == ot.Interval([0.0], [1.0])), "MeshDomain != Interval"
+# save/load round-trip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("meshdomain.xml"))
+study.add("md", md1)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("meshdomain.xml"))
+loadedStudy.load()
+assert loadedStudy.hasObject("md")
+loadedMD = ot.MeshDomain()
+loadedStudy.fillObject("md", loadedMD)
+assert loadedMD == md1
+
+os.remove("meshdomain.xml")

@@ -72,6 +72,10 @@ public:
   /** Clone method */
   Curve * clone() const override;
 
+  /** Labels accessors: labels are drawn along the curve, see #2745 */
+  Description getLabels() const override;
+  void setLabels(const Description & labels) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -83,6 +87,8 @@ protected:
   void checkData(const Sample & data) const override;
 
 private:
+  /** Labels drawn along the curve */
+  Description labels_;
 
 }; /* class Curve */
 

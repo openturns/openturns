@@ -46,6 +46,10 @@ public:
   Sample getInputHistory() const;
   Sample getOutputHistory() const;
 
+  /** Number of gradient/hessian calls performed through this wrapper */
+  UnsignedInteger getGradientCallsNumber() const;
+  UnsignedInteger getHessianCallsNumber() const;
+
   // n: number of variables
   // m: number of constraints
 
@@ -140,6 +144,10 @@ private:
   const Point startingPoint_;
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
+
+  // gradient/hessian calls performed through this wrapper
+  UnsignedInteger gradientCallsNumber_ = 0;
+  UnsignedInteger hessianCallsNumber_ = 0;
 
   // Callbacks
   UnsignedInteger maximumCallsNumber_ = 0;

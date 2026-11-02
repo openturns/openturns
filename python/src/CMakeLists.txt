@@ -125,6 +125,7 @@ ot_add_python_module(func func_module.i
                       PointToFieldFunction.i PointToFieldFunction_doc.i
                       ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i
                       VertexValuePointToFieldFunction.i VertexValuePointToFieldFunction_doc.i
+                      MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
                       PointToPointEvaluation.i PointToPointEvaluation_doc.i
                       PointToPointConnection.i PointToPointConnection_doc.i
                       FieldToPointConnection.i FieldToPointConnection_doc.i
@@ -558,7 +559,7 @@ ot_add_python_module(experimental experimental_module.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
-MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
+                     MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      MultivariateHypergeometricFactory.i MultivariateHypergeometricFactory_doc.i
                      MultivariatePolya.i MultivariatePolya_doc.i
                      MultivariatePolyaFactory.i MultivariatePolyaFactory_doc.i
@@ -607,6 +608,7 @@ MultivariateHypergeometric.i MultivariateHypergeometric_doc.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
                     )
@@ -752,6 +754,7 @@ ot_add_python_module(graph graph_module.i
                       Cloud.i Cloud_doc.i
                       Contour.i Contour_doc.i
                       Curve.i Curve_doc.i
+                      Grid.i Grid_doc.i
                       GridLayout.i GridLayout_doc.i
                       Pie.i Pie_doc.i
                       Polygon.i Polygon_doc.i
@@ -1213,8 +1216,8 @@ if (SPHINX_FOUND)
   # generate sphinx rule for each format
   foreach (format ${doc_formats})
     add_custom_target (sphinx_${format}
-                        COMMAND ${SPHINX_EXECUTABLE}
-                                  -b ${format}
+                        COMMAND ${CMAKE_COMMAND} -E env OPENTURNS_CONFIG_PATH=${PROJECT_BINARY_DIR}/lib/etc
+	                        ${SPHINX_EXECUTABLE} -b ${format}
                                   -d ${SPHINX_BINARY_DIR}/.doctrees
                                   ${SPHINX_FLAGS}
                                   ${SPHINX_BINARY_DIR}

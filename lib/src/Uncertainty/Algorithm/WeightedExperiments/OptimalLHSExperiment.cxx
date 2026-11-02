@@ -51,8 +51,8 @@ OptimalLHSExperiment::OptimalLHSExperiment(const LHSExperiment & lhs,
 void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
 {
   lhs_ = lhs;
-  setSize(lhs.getSize());
-  setDistribution(lhs.getDistribution());
+  WeightedExperimentImplementation::setSize(lhs.getSize());
+  WeightedExperimentImplementation::setDistribution(lhs.getDistribution());
 
   // marginal extraction can be costly
   const Distribution distribution(getDistribution());
@@ -62,6 +62,26 @@ void OptimalLHSExperiment::setLHS(const LHSExperiment & lhs)
     marginals[j] = distribution.getMarginal(j);
   // Build the iso-probabilistic transformation
   transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
+}
+
+void OptimalLHSExperiment::setDistribution(const Distribution & distribution)
+{
+  lhs_.setDistribution(distribution);
+  WeightedExperimentImplementation::setDistribution(distribution);
+
+  // marginal extraction can be costly
+  const UnsignedInteger dimension = distribution.getDimension();
+  JointDistribution::DistributionCollection marginals(dimension);
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    marginals[j] = distribution.getMarginal(j);
+  // Build the iso-probabilistic transformation
+  transformation_ = MarginalTransformationEvaluation(marginals, MarginalTransformationEvaluation::TO);
+}
+
+void OptimalLHSExperiment::setSize(const UnsignedInteger size)
+{
+  lhs_.setSize(size);
+  WeightedExperimentImplementation::setSize(size);
 }
 
 /* Virtual constructor method */

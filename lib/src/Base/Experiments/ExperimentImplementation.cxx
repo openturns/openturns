@@ -54,4 +54,12 @@ Sample ExperimentImplementation::generate() const
   throw NotYetImplementedException(HERE) << "In ExperimentImplementation::generate()";
 }
 
+/* Sample generation with weights */
+Sample ExperimentImplementation::generateWithWeights(Point & weights) const
+{
+  const Sample result(generate());
+  weights = Point(result.getSize(), 1.0 / result.getSize());
+  return result;
+}
+
 END_NAMESPACE_OPENTURNS

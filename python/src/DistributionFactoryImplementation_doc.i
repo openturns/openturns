@@ -3,8 +3,8 @@
 
 Notes
 -----
-This class generally describes the factory mechanism of each OpenTURNS
-distribution. Refer to :any:`parametric_estimation` for information on the specific
+This class describes the common interface for all distribution factories.
+Refer to :any:`parametric_estimation` for information on the specific
 estimators used for each distribution.
 
 The following :class:`~openturns.ResourceMap` keys are used:

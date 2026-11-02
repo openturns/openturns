@@ -128,7 +128,8 @@ void ProductGradient::load(Advocate & adv)
 
 Bool ProductGradient::equals(const GradientImplementation & other) const
 {
-  return *this == dynamic_cast<const ProductGradient &>(other);
+  const ProductGradient * p_other = dynamic_cast<const ProductGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

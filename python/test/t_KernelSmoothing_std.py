@@ -506,3 +506,26 @@ with ott.assert_raises(Exception):
 constSample = ot.Sample([[2.0]] * 5)
 ks.buildWeighted(constSample, [0.2] * 5, [0.5])
 ott.assert_almost_equal(ks.getBandwidth(), [0.5], 0.0, 0.0)
+
+# --- Coverage: weighted binned/truncated paths ---
+ks_cov = ot.KernelSmoothing()
+ot.RandomGenerator.SetSeed(0)
+s1_cov = ot.Normal().getSample(500)
+w1_cov = [1.0] * 500
+b1_cov = ot.KernelSmoothing(ot.Normal(), True, 32).buildWeighted(s1_cov, w1_cov)
+assert b1_cov.getDimension() == 1
+s2_cov = ot.Normal(2).getSample(5000)
+b2_cov = ot.KernelSmoothing(ot.Normal(), True, 32).buildWeighted(s2_cov, [1.0] * 5000)
+assert b2_cov.getDimension() == 2
+with ott.assert_raises(Exception):
+    ot.KernelSmoothing().buildWeighted(s2_cov, [1.0] * 20, [0.1])
+with ott.assert_raises(Exception):
+    ot.KernelSmoothing().buildWeightedAsKernelMixture(s2_cov, [1.0] * 20, [0.1])
+with ott.assert_raises(Exception):
+    ot.KernelSmoothing().buildWeightedAsMixture(s2_cov, [1.0] * 20, [0.1])
+ksw_cov = ot.KernelSmoothing(ot.Normal(), False)
+ksw_cov.setBoundingOption(ot.KernelSmoothing.BOTH)
+tw_cov = ksw_cov.buildWeightedAsTruncatedDistribution(s1_cov, w1_cov, [0.5])
+assert tw_cov.getDimension() == 1
+with ott.assert_raises(Exception):
+    ot.KernelSmoothing().computeMixedBandwidth(ot.Sample(10, [1.0]))

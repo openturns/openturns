@@ -164,6 +164,30 @@ finally:
         "Distribution-CharacteristicFunctionNMax", 1000000
     )
 
+# Negative arguments must select the same integration panels as positive
+# arguments.  With NMax=1020 and |x|>=1000, a signed panel count would send
+# negative arguments to the single-panel fixed branch while positive arguments
+# use Filon.
+ot.ResourceMap.SetAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1020)
+try:
+    for x in [1000.0, 10000.0]:
+        cfPositive = mimic.computeCharacteristicFunction(x)
+        cfNegative = mimic.computeCharacteristicFunction(-x)
+        # The reference magnitude is about 8e-7 at x=1000 and 1.4e-8 at
+        # x=10000, so a zero result is rejected by these checks. The Filon
+        # grid allowed by NMax=1020 is too coarse to match the analytic
+        # reference tightly, but both signs must use the same panels, hence
+        # be exact conjugates.
+        assert abs(cfPositive) > 1e-9
+        assert abs(cfNegative) > 1e-9
+        ott.assert_almost_equal(cfNegative, cfPositive.conjugate(), 1e-10, 1e-20)
+        cf_ref = triangular.computeCharacteristicFunction(x)
+        ott.assert_almost_equal(cfPositive, cf_ref, 1e-4, 1e-4)
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "Distribution-CharacteristicFunctionNMax", 1000000
+    )
+
 # zero integration nodes number is rejected, as the GaussLegendre
 # construction used to do before the FastLegendre switch, see PR #3352 review
 defaultNodesNumber = mimic.getIntegrationNodesNumber()
@@ -173,3 +197,31 @@ try:
         mimic.computeCharacteristicFunction(1.0)
 finally:
     mimic.setIntegrationNodesNumber(defaultNodesNumber)
+
+# Point and Matrix arithmetic, see issue #2872
+d4 = ot.Normal(4)
+shifted = d4 + ot.Point([1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(shifted.getMean(), [1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(shifted.getCovariance(), ot.IdentityMatrix(4))
+back = shifted - ot.Point([1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(back.getMean(), [0.0] * 4)
+# Matrix product is exact for Gaussians: mean M.mu, covariance M.Sigma.M^T
+mat = ot.Matrix([[1.0, 0.0, 0.0, 0.0], [0.0, 2.0, 0.0, 0.0]])
+scaled = mat * ot.Normal(4)
+assert scaled.getDimension() == 2
+ott.assert_almost_equal(scaled.getMean(), [0.0, 0.0])
+ott.assert_almost_equal(
+    scaled.getCovariance(), ot.Matrix([[1.0, 0.0], [0.0, 4.0]])
+)
+ott.assert_almost_equal((ot.IdentityMatrix(4) * d4).getMean(), [0.0] * 4)
+# Degenerate null matrix maps the distribution to the origin
+nullDist = ot.Matrix(2, 4) * d4
+assert nullDist.getDimension() == 2
+ott.assert_almost_equal(nullDist.getRealization(), [0.0, 0.0])
+ott.assert_almost_equal(
+    (ot.Dirac([1.0, 2.0]) + [0.5, -0.5]).getRealization(), [1.5, 1.5]
+)
+with ott.assert_raises(Exception):
+    d4 + ot.Point([1.0, 2.0])
+with ott.assert_raises(Exception):
+    ot.Matrix(2, 3) * d4

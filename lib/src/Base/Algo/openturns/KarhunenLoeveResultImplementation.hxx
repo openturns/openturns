@@ -61,6 +61,10 @@ public:
   /** Virtual constructor */
   KarhunenLoeveResultImplementation * clone() const override;
 
+  /** Comparison operator */
+  using PersistentObject::operator ==;
+  Bool operator ==(const KarhunenLoeveResultImplementation & other) const;
+
   /** Threshold accessor */
   Scalar getThreshold() const;
 

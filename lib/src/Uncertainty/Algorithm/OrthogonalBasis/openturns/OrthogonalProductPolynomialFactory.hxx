@@ -100,6 +100,8 @@ public:
 
 protected:
 
+  Bool equals(const OrthogonalFunctionFactory & other) const override;
+
 private:
   /** Build the measure based on the one found in the family collection */
   void buildMeasure();

@@ -35,6 +35,9 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimen
   : CovarianceModelImplementation(1)
   , collection_(dimension, AbsoluteExponential(1))
 {
+  // setCollection sets outputDimension_ from the collection size,
+  // which setAmplitude requires (amplitude size == output dimension)
+  setCollection(collection_);
   setAmplitude(Point(dimension, 1));
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());

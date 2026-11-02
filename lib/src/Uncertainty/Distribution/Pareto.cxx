@@ -134,7 +134,7 @@ Scalar Pareto::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
-  if (x <= beta_) return 0.0;
+  if (x < beta_) return 0.0;
   return alpha_ / beta_ * std::pow(beta_ / x, 1.0 + alpha_);
 }
 
@@ -142,7 +142,7 @@ Scalar Pareto::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
-  if (x <= beta_) return SpecFunc::LowestScalar;
+  if (x < beta_) return SpecFunc::LowestScalar;
   return std::log(alpha_ / beta_) + (1.0 + alpha_) * std::log(beta_ / x);
 }
 
@@ -185,6 +185,12 @@ LevelSet Pareto::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Sc
 Scalar Pareto::computeEntropy() const
 {
   return std::log(beta_ / alpha_) + 1.0 / alpha_ + 1.0;
+}
+
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar Pareto::getRoughness() const
+{
+  return alpha_ * alpha_ / (beta_ * (2.0 * alpha_ + 1.0));
 }
 
 /* Get the PDFGradient of the distribution */

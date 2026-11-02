@@ -282,6 +282,13 @@ SoizeGhanemFactory * SoizeGhanemFactory::clone() const
   return new SoizeGhanemFactory(*this);
 }
 
+/* Comparison helper */
+Bool SoizeGhanemFactory::equals(const OrthogonalFunctionFactory & other) const
+{
+  const SoizeGhanemFactory * p_other = dynamic_cast<const SoizeGhanemFactory *>(&other);
+  return p_other && OrthogonalFunctionFactory::equals(other) && (productPolynomial_ == p_other->productPolynomial_) && (phi_ == p_other->phi_) && (hasIndependentCopula_ == p_other->hasIndependentCopula_);
+}
+
 
 /* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction SoizeGhanemFactory::getEnumerateFunction() const

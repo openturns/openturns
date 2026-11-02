@@ -1,17 +1,6 @@
 %feature("docstring") OT::LevelSetMesher
 "Creation of mesh from a level set.
 
-Parameters
-----------
-discretization : sequence of int
-    Discretization of the level set bounding box.
-solver : :class:`~openturns.OptimizationAlgorithm`, optional
-    Optimization solver used to project the vertices onto the level set.
-    It must be able to solve nearest point problems.
-    Default is :class:`~openturns.AbdoRackwitz`.
-
-Notes
------
 The meshing algorithm is based either on a :class:`~openturns.Field` or on the
 :class:`~openturns.Interval` class.
 
@@ -37,12 +26,54 @@ The meshing algorithm is based either on a :class:`~openturns.Field` or on the
 
       * If the *project* flag is *True*, then the projection is refined using first
         a nonlinear equation solver :class:`~openturns.Brent` depending on the
-        `LevelSetMesher-SolveEquation` key in :class:`~openturns.ResourceMap` class.
+        ``LevelSetMesher-SolveEquation`` key in :class:`~openturns.ResourceMap` class.
         If this key is set to *False* or if the solver fails, then the projection is
         done using the provided optimization algorithm.
         If it fails then the :class:`~openturns.Cobyla` optimization algorithm is used.
 
+  * The ``LevelSetMesher-UseQEF`` flag selects the vertex placement used for
+    the projection: ``False`` (default) keeps the legacy placement, ``True``
+    enables the QEF placement. With QEF, tangent planes from Brent crossings
+    and function gradients are combined in one quadratic error function per
+    cut cell or moved vertex, so sharp edges and corners are recovered
+    instead of chamfered. The default value is given by
+    :class:`~openturns.ResourceMap`, and can be changed per instance with
+    :meth:`setUseQEF`.
 
+  * When ``LevelSetMesher-MaxRefinementLevels`` is positive, the background
+    grid is adaptively refined: dropped simplices sharing a facet with a kept
+    one are bisected at their longest edge, and the meshing is repeated on
+    the refined grid.
+
+  * A collection of level sets can be meshed as well: the meshed domain is
+    then the intersection of the level sets. Each level function is assumed
+    smooth, so per-constraint crossings and gradients stay reliable across
+    sharp junctions (see the QEF placement above). When a field is
+    provided, its values must have one column per level set.
+
+Parameters
+----------
+discretization : sequence of int
+    Discretization of the level set bounding box.
+solver : :class:`~openturns.OptimizationAlgorithm`, optional
+    Optimization solver used to project the vertices onto the level set.
+    It must be able to solve nearest point problems.
+    Default is :class:`~openturns.AbdoRackwitz`.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``LevelSetMesher-MaxRefinementLevels`` (``UnsignedInteger``, default: ``0``):
+  maximum number of adaptive background refinement levels; each level bisects
+  dropped neighbours of the kept domain at their longest edge, recovering
+  dropped-cell strips (``0`` keeps the legacy single pass). Cut simplices are
+  not bisected: they already cover maximally, and the mesh volume is
+  non-decreasing across levels on convex domains.
+- ``LevelSetMesher-SolveEquation`` (``Bool``, default: ``True``): whether the
+  projection is first refined with the :class:`~openturns.Brent` equation solver.
+- ``LevelSetMesher-UseQEF`` (``Bool``, default: ``False``): whether the QEF
+  sharp-edge placement is enabled.
 
 Examples
 --------
@@ -69,11 +100,21 @@ Create a mesh:
 
     build(*levelSet, field, project*)
 
+    build(*collection, project*)
+
+    build(*collection, boundingBox, project*)
+
+    build(*collection, field, project*)
+
 Parameters
 ----------
 levelSet : :class:`~openturns.LevelSet`
     The level set to be meshed, of dimension equal to the dimension
     of `discretization`.
+collection : sequence of :class:`~openturns.LevelSet`
+    The level sets to be meshed, through their intersection. All level sets
+    must share the same dimension, equal to the dimension of `discretization`.
+    Each level function is assumed smooth.
 boundingBox : :class:`~openturns.Interval`
     The bounding box used to mesh the level set. It is automatically computed
     if not provided.
@@ -86,7 +127,7 @@ Returns
 -------
 mesh : :class:`~openturns.Mesh`
     The mesh built."
-   
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LevelSetMesher::getDiscretization
@@ -126,3 +167,23 @@ Parameters
 ----------
 solver : :class:`~openturns.OptimizationAlgorithm`
     The optimization solver used to project vertices onto the level set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSetMesher::getUseQEF
+"Accessor to the QEF sharp-edge recovery flag.
+
+Returns
+-------
+useQEF : bool
+    Whether the QEF vertex placement is used on top of the projection."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSetMesher::setUseQEF
+"Accessor to the QEF sharp-edge recovery flag.
+
+Parameters
+----------
+useQEF : bool
+    Whether the QEF vertex placement is used on top of the projection."

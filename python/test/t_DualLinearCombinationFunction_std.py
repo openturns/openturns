@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 # First, build two functions from R^3->R
 inVar = ["x1", "x2", "x3"]
@@ -33,3 +34,19 @@ print("Marginal (1,2)=", myFunction.getMarginal([1, 2]))
 
 print("myFunction (HTML)=")
 print(myFunction._repr_html_())
+
+# Extra coverage: default ctor, comparison, string converters (no prints to keep expout stable)
+
+defaultFunc = ot.DualLinearCombinationFunction()
+assert isinstance(repr(defaultFunc), str)
+assert isinstance(str(defaultFunc), str)
+assert myFunction == myFunction
+assert not (myFunction != myFunction)
+sameFunc = ot.DualLinearCombinationFunction(functions, coefficients)
+assert myFunction == sameFunc
+assert not (myFunction != sameFunc)
+otherFunctions = [functions[1], functions[0]]
+assert myFunction != ot.DualLinearCombinationFunction(otherFunctions, coefficients)
+assert isinstance(repr(myFunction), str)
+assert isinstance(str(myFunction), str)
+ott.assert_almost_equal(sameFunc(inPoint), myFunction(inPoint), 1e-12, 1e-12)

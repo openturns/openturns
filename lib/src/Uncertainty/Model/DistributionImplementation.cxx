@@ -44,6 +44,7 @@
 #include "openturns/LinearCombinationDistribution.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/ProductDistribution.hxx"
+#include "openturns/RatioDistribution.hxx"
 #include "openturns/SquaredNormal.hxx"
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/Uniform.hxx"
@@ -91,6 +92,11 @@ CLASSNAMEINIT(DistributionImplementation)
 CLASSNAMEINIT(DistributionImplementation::PDFWrapper)
 CLASSNAMEINIT(DistributionImplementation::LogPDFWrapper)
 CLASSNAMEINIT(DistributionImplementation::CDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::ComplementaryCDFWrapper)
+CLASSNAMEINIT(DistributionImplementation::QuantileFunctionWrapper)
+CLASSNAMEINIT(DistributionImplementation::SurvivalWrapper)
+CLASSNAMEINIT(DistributionImplementation::InverseSurvivalFunctionWrapper)
+CLASSNAMEINIT(DistributionImplementation::DDFWrapper)
 
 typedef Collection<Distribution>                                      DistributionCollection;
 
@@ -98,6 +104,11 @@ static const Factory<DistributionImplementation> Factory_DistributionImplementat
 static const Factory<DistributionImplementation::PDFWrapper> Factory_DistributionImplementation_PDFWrapper;
 static const Factory<DistributionImplementation::LogPDFWrapper> Factory_DistributionImplementation_LogPDFWrapper;
 static const Factory<DistributionImplementation::CDFWrapper> Factory_DistributionImplementation_CDFWrapper;
+static const Factory<DistributionImplementation::ComplementaryCDFWrapper> Factory_DistributionImplementation_ComplementaryCDFWrapper;
+static const Factory<DistributionImplementation::QuantileFunctionWrapper> Factory_DistributionImplementation_QuantileFunctionWrapper;
+static const Factory<DistributionImplementation::SurvivalWrapper> Factory_DistributionImplementation_SurvivalWrapper;
+static const Factory<DistributionImplementation::InverseSurvivalFunctionWrapper> Factory_DistributionImplementation_InverseSurvivalFunctionWrapper;
+static const Factory<DistributionImplementation::DDFWrapper> Factory_DistributionImplementation_DDFWrapper;
 
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()
@@ -220,6 +231,21 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
   return new JointDistribution(marginals, getCopula());
 }
 
+/* Addition operator with a point */
+Distribution DistributionImplementation::operator + (const Point & point) const
+{
+  if (point.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Can only add a point of dimension " << dimension_ << ", here dimension=" << point.getDimension();
+  if (point.norm() == 0.0) return clone();
+  // Special case: Dirac distribution
+  if (getClassName() == "Dirac") return new Dirac(getRealization() + point);
+  if (dimension_ == 1) return operator +(point[0]);
+  // Shift each marginal, preserving the copula as the scalar version does
+  Collection< Distribution > marginals(dimension_);
+  for (UnsignedInteger j = 0; j < dimension_; ++ j)
+    marginals[j] = getMarginal(j) + point[j];
+  return new JointDistribution(marginals, getCopula());
+}
+
 /* Subtraction operator */
 Distribution DistributionImplementation::operator - (const Distribution & other) const
 {
@@ -262,6 +288,14 @@ Distribution DistributionImplementation::operator - (const Scalar value) const
 {
   if (value == 0.0) return clone();
   return *this + (-value);
+}
+
+/* Subtraction operator with a point */
+Distribution DistributionImplementation::operator - (const Point & point) const
+{
+  if (point.getDimension() != dimension_) throw InvalidDimensionException(HERE) << "Can only subtract a point of dimension " << dimension_ << ", here dimension=" << point.getDimension();
+  if (point.norm() == 0.0) return clone();
+  return *this + (-point);
 }
 
 /* Multiplication operator */
@@ -323,6 +357,38 @@ Distribution DistributionImplementation::operator * (const Scalar value) const
   return res.clone();
 }
 
+/* Multiplication operator with a matrix: Y = M X */
+Distribution DistributionImplementation::operator * (const Matrix & matrix) const
+{
+  if (matrix.getNbColumns() != dimension_) throw InvalidDimensionException(HERE) << "Can only multiply by a matrix with " << dimension_ << " columns, here columns=" << matrix.getNbColumns();
+  const UnsignedInteger outputDimension = matrix.getNbRows();
+  // Degenerate null matrix: the distribution collapses to the origin
+  if (matrix.frobeniusNorm() == 0.0) return new Dirac(Point(outputDimension));
+  // Identity matrix: the distribution is unchanged
+  Bool isIdentity = (outputDimension == dimension_);
+  for (UnsignedInteger i = 0; isIdentity && (i < dimension_); ++i)
+    for (UnsignedInteger j = 0; isIdentity && (j < dimension_); ++j)
+      isIdentity = (matrix(i, j) == (i == j ? 1.0 : 0.0));
+  if (isIdentity) return clone();
+  // Special case: Dirac distribution
+  if (getClassName() == "Dirac") return new Dirac(matrix * getRealization());
+  // Special case: Gaussian distributions are closed under linear maps
+  if (getClassName() == "Normal")
+  {
+    const Point mean(matrix * getMean());
+    const Matrix sigmaT(Matrix(getCovariance()) * matrix.transpose());
+    Matrix covariance(matrix * sigmaT);
+    // Enforce exact symmetry before building the covariance
+    for (UnsignedInteger i = 0; i < covariance.getNbRows(); ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        covariance(j, i) = covariance(i, j);
+    return new Normal(mean, CovarianceMatrix(*covariance.getImplementation()));
+  }
+  // Special case: 1x1 matrix, same as scalar multiplication
+  if ((matrix.getNbRows() == 1) && (matrix.getNbColumns() == 1)) return operator *(matrix(0, 0));
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator * (const Matrix & matrix) const: can multiply Dirac, Normal or 1x1 matrices only.";
+}
+
 /* Division operator */
 Distribution DistributionImplementation::operator / (const Distribution & other) const
 {
@@ -338,6 +404,11 @@ Distribution DistributionImplementation::operator / (const DistributionImplement
     if (otherValue == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by a Dirac distribution located in 0";
     return *this * (1.0 / otherValue);
   }
+  // Use the dedicated ratio distribution for continuous operands.  The
+  // former composition X * (1 / Y) is inaccurate close to zero because the
+  // inverse distribution is strongly singular there.
+  if (isContinuous() && other.isContinuous())
+    return new RatioDistribution(*this, other.clone());
   return operator * (other.inverse());
 }
 
@@ -528,6 +599,21 @@ UnsignedInteger DistributionImplementation::getDimension() const
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar DistributionImplementation::getRoughness() const
 {
+  // For discrete distributions the L2 norm is the sum of squared probabilities
+  if (isDiscrete())
+  {
+    Sample support;
+    Point probabilities;
+    if (getEnumerableDiscreteSupport(support, probabilities))
+    {
+      Scalar roughness = 0.0;
+      for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i) roughness += probabilities[i] * probabilities[i];
+      return roughness;
+    }
+    // Fall back to a sampling estimate when the support cannot be enumerated
+    const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-RoughnessSamplingSize");
+    return computePDF(getSample(size)).computeMean()[0];
+  }
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFSquaredWrapper pdfSquaredWrapper(this);
   Scalar roughness = 0.0;
@@ -714,6 +800,31 @@ Function DistributionImplementation::getLogPDF() const
 Function DistributionImplementation::getCDF() const
 {
   return Function(DistributionImplementation::CDFWrapper(*this));
+}
+
+Function DistributionImplementation::getComplementaryCDF() const
+{
+  return Function(DistributionImplementation::ComplementaryCDFWrapper(*this));
+}
+
+Function DistributionImplementation::getQuantile() const
+{
+  return Function(DistributionImplementation::QuantileFunctionWrapper(*this));
+}
+
+Function DistributionImplementation::getSurvivalFunction() const
+{
+  return Function(DistributionImplementation::SurvivalWrapper(*this));
+}
+
+Function DistributionImplementation::getInverseSurvivalFunction() const
+{
+  return Function(DistributionImplementation::InverseSurvivalFunctionWrapper(*this));
+}
+
+Function DistributionImplementation::getDDF() const
+{
+  return Function(DistributionImplementation::DDFWrapper(*this));
 }
 
 /* Get the DDF of the distribution */
@@ -1381,7 +1492,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     const Scalar xMin = range_.getLowerBound()[0];
     const Scalar xMax = range_.getUpperBound()[0];
     const Scalar delta = xMax - xMin;
-    const UnsignedInteger intervalsNumber = std::max(1, static_cast<int>(round(2 * x * delta / integrationNodesNumber_)));
+    const UnsignedInteger intervalsNumber = std::max(1, static_cast<int>(round(2.0 * std::abs(x) * delta / integrationNodesNumber_)));
     if (intervalsNumber * integrationNodesNumber_ < N)
     {
       const Scalar halfLength = 0.5 * delta / intervalsNumber;
@@ -1401,8 +1512,10 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     {
       // Highly oscillatory regime: delegate to the Filon quadrature, which
       // interpolates the PDF by parabolas (fourth-order) instead of the
-      // linear Filon-trapezoidal rule previously inlined here
-      const FilonQuadrature filon(N, x, 2);
+      // linear Filon-trapezoidal rule previously inlined here.  A Filon grid
+      // contains 2*n+1 points, so choose n to honor the point budget N.
+      const UnsignedInteger filonN = std::max(UnsignedInteger(1), (N > 2) ? (N - 1) / 2 : UnsignedInteger(1));
+      const FilonQuadrature filon(filonN, x, 2);
       const Point cf(filon.integrate(getPDF(), range_));
       return Complex(cf[0], cf[1]);
     }
@@ -1561,7 +1674,7 @@ Scalar DistributionImplementation::computeEntropy() const
       {
         const Implementation marginalDistribution(getMarginal(marginal).getImplementation());
         Point integrationBounds(1, lowerBound_[marginal]);
-        integrationBounds.add(getSingularities());
+        integrationBounds.add(marginalDistribution->getSingularities());
         integrationBounds.add(upperBound_[marginal]);
         for (UnsignedInteger j = 0; j < integrationBounds.getSize() - 1; ++j)
         {
@@ -1659,7 +1772,7 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
 {
   if (inSample.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << dimension_ << ", got " << inSample.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  Sample result(size, 1);
+  Sample result(size, dimension_);
   const ComputeDDFPolicy policy(inSample, result, *this);
   TBBImplementation::ParallelForIf(size > 2048, 0, size, policy, 1024);
   return result;
@@ -2170,13 +2283,14 @@ Sample DistributionImplementation::computeLogPDFGradient(const Sample & inSample
 Sample DistributionImplementation::computeCDFGradient(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  SampleImplementation outSample(size, getParameterDimension());
+  const UnsignedInteger parameterDimension = getParameterDimension();
+  SampleImplementation outSample(size, parameterDimension);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Point point(computeCDFGradient(inSample[i]));
     std::copy(point.begin(), point.end(), outSample.data_begin() + shift);
-    shift += dimension_;
+    shift += parameterDimension;
   }
   return outSample;
 }
@@ -4776,6 +4890,31 @@ Graph DistributionImplementation::drawMarginal2DPDF(const UnsignedInteger firstM
   return marginalGraph;
 }
 
+/* Draw the PDFs of all the 1D and 2D marginals on a grid */
+GridLayout DistributionImplementation::drawMarginalPDFs() const
+{
+  const UnsignedInteger dimension = getDimension();
+  GridLayout grid(dimension, dimension);
+  // Only the lower triangle is filled: the 2D marginal in row i, column j
+  // has the same density as the one in row j, column i, so drawing both
+  // would duplicate the same graph.
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j <= i; ++j)
+    {
+      if (i == j) grid.setGraph(i, j, getMarginal(i).drawPDF());
+      else
+      {
+        // Default quantile-based plotting bounds, consistent with the diagonal
+        const Indices indices = {i, j};
+        Graph cell(getMarginal(indices).drawPDF());
+        cell.setTitle(OSS() << getDescription() << "->[" << description_[i] << ", " << description_[j] << "] components iso-PDF");
+        grid.setGraph(i, j, cell);
+      }
+    }
+  grid.setTitle(OSS() << getDescription() << " marginal PDFs");
+  return grid;
+}
+
 /* Draw the log-PDF of a discrete distribution */
 Graph DistributionImplementation::drawDiscreteLogPDF(const Scalar xMin,
     const Scalar xMax,
@@ -6378,6 +6517,76 @@ void DistributionImplementation::CDFWrapper::save(Advocate & adv) const
 }
 
 void DistributionImplementation::CDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::ComplementaryCDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::ComplementaryCDFWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::QuantileFunctionWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::QuantileFunctionWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::SurvivalWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::SurvivalWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::InverseSurvivalFunctionWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::InverseSurvivalFunctionWrapper::load(Advocate & adv)
+{
+  EvaluationImplementation::load(adv);
+  Distribution savedDistribution;
+  adv.loadAttribute("savedDistribution", savedDistribution);
+  p_shared_distribution_ = savedDistribution.getImplementation();
+}
+
+void DistributionImplementation::DDFWrapper::save(Advocate & adv) const
+{
+  EvaluationImplementation::save(adv);
+  adv.saveAttribute("savedDistribution", *p_shared_distribution_);
+}
+
+void DistributionImplementation::DDFWrapper::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
   Distribution savedDistribution;

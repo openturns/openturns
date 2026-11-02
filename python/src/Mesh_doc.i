@@ -774,7 +774,19 @@ other : :class:`~openturns.Mesh`
 Returns
 -------
 intersection : :class:`~openturns.Mesh`
-    The intersection mesh."
+    The intersection mesh.
+
+Notes
+-----
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``Mesh-GridThreshold`` (``UnsignedInteger``, default: ``1024``): when the
+  product of the numbers of simplices of the two meshes exceeds this value,
+  the candidate pairs are filtered through a uniform bounding-box grid before
+  the exact overlap test, instead of an exhaustive scan.
+- ``Mesh-WeldEpsilon`` (``Scalar``, default: ``1.0e-12``): relative tolerance
+  used to weld coincident vertices of the intersection, applied to the vertex
+  range plus the largest vertex coordinate magnitude."
 
 // ---------------------------------------------------------------------
 

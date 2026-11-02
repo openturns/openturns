@@ -301,6 +301,9 @@ Scalar LogNormal::computeScalarQuantile(const Scalar prob,
 {
   if (!((prob >= 0.0) && (prob <= 1.0)))
     throw InvalidArgumentException(HERE) << "computeScalarQuantile expected prob to belong to [0,1], but is " << prob;
+  // The normal quantile is clamped to a finite value at the boundaries,
+  // which would map to gamma_ + tiny instead of the exact lower bound gamma_
+  if ((!tail && (prob == 0.0)) || (tail && (prob == 1.0))) return gamma_;
   return gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::qNormal(prob, tail));
 }
 

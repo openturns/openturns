@@ -92,9 +92,19 @@ public:
 
   /** @brief Returns the cache input
    */
+  Sample getInputCache() const;
+
+  /** @brief Returns the cache output
+   */
+  Sample getOutputCache() const;
+
+  /** @brief Returns the cache input
+      @deprecated Use getInputCache instead, see issue #3007
+   */
   Sample getCacheInput() const;
 
   /** @brief Returns the cache output
+      @deprecated Use getOutputCache instead, see issue #3007
    */
   Sample getCacheOutput() const;
 

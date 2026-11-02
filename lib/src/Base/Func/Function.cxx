@@ -350,6 +350,12 @@ Matrix Function::gradient(const Point & inP) const
   return getImplementation()->gradient(inP);
 }
 
+/* Batch gradient() over a sample */
+Sample Function::gradient(const Sample & inS) const
+{
+  return getImplementation()->gradient(inS);
+}
+
 /* Method hessian() returns the symmetric tensor of the function at point */
 SymmetricTensor Function::hessian(const Point & inP) const
 {

@@ -83,6 +83,11 @@ Distribution Distribution::operator + (const Scalar value) const
   return getImplementation()->operator +(value);
 }
 
+Distribution Distribution::operator + (const Point & point) const
+{
+  return getImplementation()->operator +(point);
+}
+
 /* Subtraction operator */
 Distribution Distribution::operator - (const Distribution & other) const
 {
@@ -94,6 +99,11 @@ Distribution Distribution::operator - (const Scalar value) const
   return getImplementation()->operator -(value);
 }
 
+Distribution Distribution::operator - (const Point & point) const
+{
+  return getImplementation()->operator -(point);
+}
+
 /* Multiplication operator */
 Distribution Distribution::operator * (const Distribution & other) const
 {
@@ -103,6 +113,11 @@ Distribution Distribution::operator * (const Distribution & other) const
 Distribution Distribution::operator * (const Scalar value) const
 {
   return getImplementation()->operator *(value);
+}
+
+Distribution Distribution::operator * (const Matrix & matrix) const
+{
+  return getImplementation()->operator *(matrix);
 }
 
 /* Division operator */
@@ -388,6 +403,31 @@ Function Distribution::getLogPDF() const
 Function Distribution::getCDF() const
 {
   return getImplementation()->getCDF();
+}
+
+Function Distribution::getComplementaryCDF() const
+{
+  return getImplementation()->getComplementaryCDF();
+}
+
+Function Distribution::getQuantile() const
+{
+  return getImplementation()->getQuantile();
+}
+
+Function Distribution::getSurvivalFunction() const
+{
+  return getImplementation()->getSurvivalFunction();
+}
+
+Function Distribution::getInverseSurvivalFunction() const
+{
+  return getImplementation()->getInverseSurvivalFunction();
+}
+
+Function Distribution::getDDF() const
+{
+  return getImplementation()->getDDF();
 }
 
 /* Get the DDF of the distribution */
@@ -981,6 +1021,12 @@ Graph Distribution::drawMarginal2DPDF(const UnsignedInteger firstMarginal,
                                       const Bool logScaleY) const
 {
   return getImplementation()->drawMarginal2DPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
+}
+
+/* Draw the PDFs of all the 1D and 2D marginals on a grid */
+GridLayout Distribution::drawMarginalPDFs() const
+{
+  return getImplementation()->drawMarginalPDFs();
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 1 */

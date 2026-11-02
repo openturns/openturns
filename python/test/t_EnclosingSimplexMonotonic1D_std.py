@@ -2,6 +2,7 @@
 
 import openturns as ot
 import os
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -87,3 +88,47 @@ for mesh in [mesh1, mesh2]:
                     coordinates,
                 )
                 os.exit(1)
+
+# Extra coverage for error paths and accessors
+locator = ot.EnclosingSimplexMonotonic1D(ot.Sample.BuildFromPoint([0.0, 1.0, 2.0]))
+assert len(repr(locator)) > 0
+assert len(str(locator)) > 0
+assert locator.getVertices().getSize() == 3
+# exact vertex hit returns the vertex index
+assert locator.query([1.0]) == 1
+# vector version
+ott.assert_almost_equal(locator.queryScalar(ot.Point([0.5, 1.5, 5.0])), [0, 1, 2])
+# out-of-range queries return simplicesNumber
+assert locator.queryScalar(5.0) == 2
+assert locator.queryScalar(-1.0) == 2
+decreasing = ot.EnclosingSimplexMonotonic1D(
+    ot.Sample.BuildFromPoint([2.0, 1.0, 0.0])
+)
+assert decreasing.queryScalar(-1.0) == 2
+assert decreasing.queryScalar(5.0) == 2
+assert decreasing.query([1.0]) == 1
+# wrong point dimension
+with ott.assert_raises(Exception):
+    locator.query([1.0, 2.0])
+# too few vertices
+with ott.assert_raises(Exception):
+    ot.EnclosingSimplexMonotonic1D(ot.Sample([[0.0]]))
+# inconsistent simplices
+with ott.assert_raises(Exception):
+    bad = ot.EnclosingSimplexMonotonic1D()
+    bad.setVerticesAndSimplices(ot.Sample.BuildFromPoint([0.0, 1.0]), [[1, 0]])
+# non-monotonic vertices
+with ott.assert_raises(Exception):
+    ot.EnclosingSimplexMonotonic1D(ot.Sample([[0.0], [2.0], [1.0]]))
+# save / load roundtrip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("esm_test.xml"))
+study.add("locator", locator)
+study.save()
+study2 = ot.Study()
+study2.setStorageManager(ot.XMLStorageManager("esm_test.xml"))
+study2.load()
+loaded = ot.EnclosingSimplexMonotonic1D()
+study2.fillObject("locator", loaded)
+assert loaded.query([0.5]) == locator.query([0.5])
+os.remove("esm_test.xml")

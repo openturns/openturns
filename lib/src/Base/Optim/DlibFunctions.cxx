@@ -34,6 +34,9 @@ DlibGradient::DlibGradient(const Gradient & gradient, const Bool minimization)
 // Operator () for use with DlibFunction
 DlibMatrix DlibGradient::operator() (const DlibMatrix & inP) const
 {
+  if (p_gradientCallsNumber_)
+    ++ (*p_gradientCallsNumber_);
+
   // Check dimension consistency
   UnsignedInteger inputDimension = inP.size();
   UnsignedInteger gradientDimension = getInputDimension();
@@ -58,6 +61,7 @@ DlibMatrix DlibGradient::operator() (const DlibMatrix & inP) const
 DlibMatrix DlibGradient::operator() (const UnsignedInteger i,
                                      const DlibMatrix & inP) const
 {
+  if (p_gradientCallsNumber_) ++ (*p_gradientCallsNumber_);
   // Check dimension consistency
   UnsignedInteger inputDimension = inP.size();
   UnsignedInteger gradientInputDimension = getInputDimension();
@@ -92,6 +96,9 @@ DlibHessian::DlibHessian(const Hessian & hessian)
 // Operator ()
 DlibMatrix DlibHessian::operator() (const DlibMatrix & inP) const
 {
+  if (p_hessianCallsNumber_)
+    ++ (*p_hessianCallsNumber_);
+
   // Check dimension consistency
   UnsignedInteger inputDimension = inP.size();
   UnsignedInteger hessianDimension = getInputDimension();
@@ -183,7 +190,9 @@ double DlibFunction::operator() (const UnsignedInteger i,
 /* Accessors to gradient */
 DlibGradient DlibFunction::asDlibGradient() const
 {
-  return DlibGradient(getImplementation()->getGradient(), minimization_);
+  DlibGradient dlibGradient(getImplementation()->getGradient(), minimization_);
+  dlibGradient.setCallsNumberPointer(&gradientCallsNumber_);
+  return dlibGradient;
 }
 
 // Compute at point
@@ -202,7 +211,9 @@ DlibMatrix DlibFunction::gradient(const UnsignedInteger i,
 /* Accessor to hessian */
 DlibHessian DlibFunction::asDlibHessian() const
 {
-  return DlibHessian(getImplementation()->getHessian());
+  DlibHessian dlibHessian(getImplementation()->getHessian());
+  dlibHessian.setCallsNumberPointer(&hessianCallsNumber_);
+  return dlibHessian;
 }
 
 // Compute at point
@@ -223,6 +234,16 @@ void DlibFunction::get_derivative_and_hessian(const column_vector x,
 UnsignedInteger DlibFunction::getCallsNumber() const
 {
   return inputHistory_.getSize();
+}
+
+UnsignedInteger DlibFunction::getGradientCallsNumber() const
+{
+  return gradientCallsNumber_;
+}
+
+UnsignedInteger DlibFunction::getHessianCallsNumber() const
+{
+  return hessianCallsNumber_;
 }
 
 Sample DlibFunction::getInputHistory()

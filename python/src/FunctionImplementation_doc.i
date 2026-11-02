@@ -463,17 +463,19 @@ OT_Function_setHessian_doc
 // ---------------------------------------------------------------------
 
 %define OT_Function_gradient_doc
-R"RAW(Return the Jacobian transposed matrix of the function at a point.
+R"RAW(Return the Jacobian transposed matrix of the function at a point or sample.
 
 Parameters
 ----------
-inP : sequence of float
-    Point where the Jacobian transposed matrix is calculated.
+inP : sequence of float or 2-d sequence of float
+    Point or sample where the Jacobian transposed matrix is calculated.
 
 Returns
 -------
-gradient : :class:`~openturns.Matrix`
-    The Jacobian transposed matrix of the function at *inP*.
+gradient : :class:`~openturns.Matrix` or :class:`~openturns.Sample`
+    The Jacobian transposed matrix of the function at *inP*. For a
+    sample input, the flattened gradient matrices in column-major order,
+    with ``inputDimension * outputDimension`` columns.
 
 Notes
 -----
@@ -771,7 +773,7 @@ Draws graph of the given 1D *outputMarg* marginal
 marginal with respect to the variation of :math:`x_i` in the interval
 :math:`[x_i^{min}, x_i^{max}]`, when all the other components of
 :math:`\vect{x}` are fixed to the corresponding components of the *centralPoint* :math:`\vect{c}`.
-Then OpenTURNS draws the graph:
+Then it draws the graph:
 
 .. math::
     y = f_k^{(i)}(s)
@@ -789,7 +791,7 @@ with respect to the variation of :math:`(x_i, x_j)` in the interval
 :math:`[x_i^{min}, x_i^{max}] \times [x_j^{min}, x_j^{max}]`, when all the
 other components of :math:`\vect{x}` are fixed to the corresponding components of the
 *centralPoint* :math:`\vect{c}`.
-Then OpenTURNS draws the graph:
+Then it draws the graph:
 
 .. math::
     y = f_k^{(i,j)}(s, t)

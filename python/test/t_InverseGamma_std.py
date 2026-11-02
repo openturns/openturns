@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -121,3 +122,9 @@ for distribution in allDistributions:
     validation = ott.DistributionValidation(distribution)
     validation.skipMinimumVolumeLevelSet()  # level set over-covers heavy right tail
     validation.run()
+
+# Roughness: analytic value lambda * Gamma(2k+1) / (2^(2k+1) * Gamma(k)^2)
+ott.assert_almost_equal(
+    ot.InverseGamma(2.0, 3.0).getRoughness(),
+    3.0 * m.exp(m.lgamma(5.0) - 5.0 * m.log(2.0)),
+)

@@ -70,6 +70,9 @@ public:
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const override;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

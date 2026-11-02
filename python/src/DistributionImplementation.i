@@ -67,9 +67,19 @@ Distribution __radd__(const Scalar s)
   return *self + s;
 }
 
+Distribution __radd__(const Point & p)
+{
+  return *self + p;
+}
+
 Distribution __rmul__(Scalar s)
 {
   return (*self) * s;
+}
+
+Distribution __rmul__(const Matrix & m)
+{
+  return (*self) * m;
 }
 
 } }

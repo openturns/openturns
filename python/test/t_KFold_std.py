@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math
 import openturns as ot
 import openturns.testing as ott
 
@@ -74,3 +75,21 @@ varianceW = sum(wNonUniform[s] * (y[s, 0] - wMeanW) ** 2 for s in range(size)) /
 ott.assert_almost_equal(
     resultW, quadraticResidual / totalTestWeight / varianceW, 1e-8, 1e-10
 )
+
+# SparseMethod with KFold, see issue #3351
+# the decomposition cached during cross-validation must not be reused
+# on the full design afterwards
+ot.RandomGenerator.SetSeed(0)
+basisSize = 3
+sampleSize = 50
+X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
+phis = [ot.SymbolicFunction(["x"], ["x^" + str(j + 1)]) for j in range(basisSize)]
+proxy = ot.DesignProxy(X, phis)
+full = range(basisSize)
+normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
+y = normal.getRealization()
+for fitAlgo in [ot.KFold(), ot.CorrectedLeaveOneOut(), ot.LeaveOneOut()]:
+    method = ot.SparseMethod(ot.QRMethod(proxy, full), ot.LARS(), fitAlgo)
+    coefficients = method.solve(y)
+    assert len(coefficients) == basisSize, "wrong coefficients size"
+    assert all(math.isfinite(c) for c in coefficients), "non-finite coefficients"

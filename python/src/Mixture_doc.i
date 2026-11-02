@@ -7,6 +7,11 @@ The probability density function of a *Mixture* is defined by:
 
     f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1
 
+At a point shared by adjacent component supports, the density sums every
+component density valued at its closed support edge, so it can exceed the
+one-sided limits: one point cannot satisfy both edge densities and junction
+continuity at once.
+
 Parameters
 ----------
 collDist : sequence of :class:`~openturns.Distribution`,

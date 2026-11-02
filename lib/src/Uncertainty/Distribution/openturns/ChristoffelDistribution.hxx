@@ -140,8 +140,17 @@ protected:
   Bool equals(const DistributionImplementation & other) const override;
 
 private:
+  /** Internal constructor from a prebuilt finite basis, used by ChristoffelSubsampleExperiment */
+  ChristoffelDistribution(const OrthogonalBasis & basis,
+                          const Basis & finiteBasis,
+                          const UnsignedInteger size);
+  friend class ChristoffelSubsampleExperiment;
+
   /** Rebuild the derived members from orthogonalBasis_ and size_ */
   void update();
+
+  /** Derive the range, tensor caches, parallel flag and sampler from basis_ and measure_ */
+  void finalizeFiniteBasis();
 
   /** Detect a tensor-product factory and cache univariate evaluators */
   void detectTensorProduct();
@@ -159,8 +168,27 @@ private:
   /** Per-point direct sum of the squared basis functions */
   Scalar computeChristoffelCore(const Point & point) const;
 
+  /** Per-point direct sum and stable log in a single basis pass */
+  Scalar computeChristoffelCore(const Point & point,
+                                Scalar & logCore) const;
+
   /** Per-point stable log by max factoring with log1p */
   Scalar computeLogChristoffelCore(const Point & point) const;
+
+  /** Update the tensor partial products with the factor of dimension j */
+  void updatePartialProducts(Point & partialProducts,
+                             const UnsignedInteger j,
+                             const Scalar x) const;
+
+  /** Conditional PDF from precomputed partial products */
+  Scalar computeConditionalPDFFromPartial(const Scalar x,
+                                          const UnsignedInteger j,
+                                          const Point & partialProducts) const;
+
+  /** Conditional CDF from precomputed partial products */
+  Scalar computeConditionalCDFFromPartial(const Scalar x,
+                                          const UnsignedInteger j,
+                                          const Point & partialProducts) const;
 
   /** Candidate points for the stability factor search */
   Sample generateKnCandidates(const UnsignedInteger size) const;
@@ -194,9 +222,10 @@ private:
       reports initialized with a dummy one-dimensional placeholder */
   Bool hasRatioUniformsSetup_ = false;
 
-  /** Cached Monte-Carlo estimate of the stability factor */
+  /** Cached stability factor estimate and the ResourceMap values it used */
   mutable Scalar knEstimate_ = 0.0;
   mutable Bool isAlreadyComputedKn_ = false;
+  mutable String knCacheKey_;
 
   /** Tensor-product structure detected in the factory */
   Bool isTensorProduct_ = false;

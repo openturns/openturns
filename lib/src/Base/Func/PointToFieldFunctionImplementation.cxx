@@ -100,11 +100,84 @@ PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const Unsig
   return getMarginal(Indices(1, i));
 }
 
+/* Marginal of a point to field function, selecting output components */
+class MarginalPointToFieldFunction
+  : public PointToFieldFunctionImplementation
+{
+  CLASSNAME
+public:
+  MarginalPointToFieldFunction()
+    : PointToFieldFunctionImplementation()
+    , function_()
+    , indices_()
+  {
+    // Nothing to do
+  }
+
+  MarginalPointToFieldFunction(const PointToFieldFunction & function,
+                               const Indices & indices)
+    : PointToFieldFunctionImplementation(function.getInputDimension(), function.getOutputMesh(), indices.getSize())
+    , function_(function)
+    , indices_(indices)
+  {
+    setInputDescription(function.getInputDescription());
+    const Description outputDescription(function.getOutputDescription());
+    Description marginalDescription(indices.getSize());
+    for (UnsignedInteger i = 0; i < indices.getSize(); ++i) marginalDescription[i] = outputDescription[indices[i]];
+    setOutputDescription(marginalDescription);
+  }
+
+  MarginalPointToFieldFunction * clone() const override
+  {
+    return new MarginalPointToFieldFunction(*this);
+  }
+
+  Sample operator() (const Point & inP) const override
+  {
+    callsNumber_.increment();
+    // Sample::getMarginal keeps the selected component descriptions
+    return function_(inP).getMarginal(indices_);
+  }
+
+  /* Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override
+  {
+    PointToFieldFunctionImplementation::save(adv);
+    adv.saveAttribute("function_", function_);
+    adv.saveAttribute("indices_", indices_);
+  }
+
+  /* Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override
+  {
+    PointToFieldFunctionImplementation::load(adv);
+    adv.loadAttribute("function_", function_);
+    adv.loadAttribute("indices_", indices_);
+  }
+
+  PointToFieldFunction getMarginal(const Indices & subIndices) const override
+  {
+    if (!subIndices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
+    Indices composed(subIndices.getSize());
+    for (UnsignedInteger i = 0; i < subIndices.getSize(); ++i) composed[i] = indices_[subIndices[i]];
+    return new MarginalPointToFieldFunction(function_, composed);
+  }
+
+private:
+  PointToFieldFunction function_;
+  Indices indices_;
+
+}; // class MarginalPointToFieldFunction
+
+CLASSNAMEINIT(MarginalPointToFieldFunction)
+
+static const Factory<MarginalPointToFieldFunction> Factory_MarginalPointToFieldFunction;
+
 /* Get the function corresponding to indices components */
 PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  throw NotYetImplementedException(HERE) << "In PointToFieldFunctionImplementation::getMarginal(const Indices & indices) const";
+  return new MarginalPointToFieldFunction(PointToFieldFunction(*this), indices);
 }
 
 /* Input description Accessor */

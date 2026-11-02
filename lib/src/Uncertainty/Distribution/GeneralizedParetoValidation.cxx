@@ -162,7 +162,8 @@ void GeneralizedParetoValidation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("sample_", sample_);
   adv.loadAttribute("result_", result_);
-  adv.loadAttribute("confidenceLevel_", confidenceLevel_);
+  // confidenceLevel_ was added later: keep the default for older archives
+  if (adv.hasAttribute("confidenceLevel_")) adv.loadAttribute("confidenceLevel_", confidenceLevel_);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -38,7 +38,7 @@ sphinx_gallery.gen_gallery
 Docstrings (in separate SWIG header files)
 ------------------------------------------
 
-OpenTURNS main featured language is C++.
+The main featured language is C++.
 We then use `SWIG <http://swig.org/>`_ in order to generate the Python interface.
 Hence, docstrings are defined in **dedicated SWIG files** (:file:`$OT_SOURCE_DIR/python/src/*_doc.i`)
 which are then included in the main SWIG files (:file:`$OT_SOURCE_DIR/python/src/*.i`).

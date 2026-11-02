@@ -72,6 +72,14 @@ public:
   void setCallsNumber(const UnsignedInteger callsNumber);
   UnsignedInteger getCallsNumber() const;
 
+  /** Gradient calls number accessor */
+  void setGradientCallsNumber(const UnsignedInteger gradientCallsNumber);
+  UnsignedInteger getGradientCallsNumber() const;
+
+  /** Hessian calls number accessor */
+  void setHessianCallsNumber(const UnsignedInteger hessianCallsNumber);
+  UnsignedInteger getHessianCallsNumber() const;
+
   /** Iteration number accessor */
   void setIterationNumber(const UnsignedInteger iterationNumber);
   UnsignedInteger getIterationNumber() const;
@@ -152,6 +160,8 @@ private:
   Point optimalPoint_;
   Point optimalValue_;
   UnsignedInteger callsNumber_ = 0; // Number of function calls
+  UnsignedInteger gradientCallsNumber_ = 0; // Number of gradient calls
+  UnsignedInteger hessianCallsNumber_ = 0; // Number of hessian calls
   UnsignedInteger iterationNumber_ = 0; // Number of outermost iterations (in case of nested iterations)
   Scalar time_ = 0.0;
   Scalar absoluteError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| */

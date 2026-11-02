@@ -56,6 +56,7 @@ public:
 
   /** Comparison operator */
   using GradientImplementation::operator ==;
+  using GradientImplementation::gradient;
   Bool operator ==(const PythonGradient & other) const;
 
   /** String converter */

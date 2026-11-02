@@ -119,6 +119,9 @@ public:
   /** Get the standard representative in the parametric family, associated with the standard moments */
   Distribution getStandardRepresentative() const override;
 
+  /** Get the roughness, i.e. the L2-norm of the PDF */
+  Scalar getRoughness() const override;
+
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;

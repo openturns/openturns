@@ -317,7 +317,6 @@ CovarianceMatrix CholeskyMethod::getGramInverse() const
   return invL.computeGram(true);
 }
 
-
 SymmetricMatrix CholeskyMethod::getH() const
 {
   const UnsignedInteger basisSize = currentIndices_.getSize();
@@ -393,6 +392,7 @@ void CholeskyMethod::trashDecomposition()
 void CholeskyMethod::save(Advocate & adv) const
 {
   LeastSquaresMethodImplementation::save(adv);
+  adv.saveAttribute( "l_", l_ );
 }
 
 
@@ -400,6 +400,10 @@ void CholeskyMethod::save(Advocate & adv) const
 void CholeskyMethod::load(Advocate & adv)
 {
   LeastSquaresMethodImplementation::load(adv);
+  if (adv.hasAttribute("l_"))
+    adv.loadAttribute( "l_", l_ );
+  else
+    trashDecomposition();
 }
 
 

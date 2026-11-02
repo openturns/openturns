@@ -332,6 +332,7 @@ Distribution FarlieGumbelMorgensternCopula::getMarginal(const Indices & indices)
 /* Compute the entropy of the distribution */
 Scalar FarlieGumbelMorgensternCopula::computeEntropy() const
 {
+  if ((theta_ == 1.0) || (theta_ == -1.0)) return 5.0 / 4.0 - M_LN2 - M_PI * M_PI / 16.0;
   if (std::abs(theta_) <= 0.024604263883779147)
   {
     const Scalar theta2 = theta_ * theta_;

@@ -18,10 +18,14 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <iomanip>
 #include "openturns/PushForwardOverMesh.hxx"
+#include "openturns/ComposedFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/SimplicialCubature.hxx"
 #include "openturns/SquareMatrix.hxx"
+#include "openturns/SymbolicFunction.hxx"
 #include "openturns/UniformOverMesh.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -533,18 +537,48 @@ Bool PushForwardOverMesh::isDiscrete() const
 /* Compute the mean of the distribution */
 void PushForwardOverMesh::computeMean() const
 {
-  const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardOverMesh-SampleSize");
-  const Sample sample(evaluation_(antecedent_.getSample(sampleSize)));
-  mean_ = sample.computeMean();
+  // The P1 map is affine on each simplex of the reference mesh, so the image
+  // mean is the integral of the P1 function against the antecedent density
+  // over the reference mesh. SimplicialCubature provides a deterministic
+  // cubature rule on each simplex, and supports meshes embedded in a higher
+  // dimensional space
+  const Function integrand(antecedent_.getPDF() * Function(evaluation_));
+  mean_ = SimplicialCubature().integrate(integrand, values_.getMesh());
   isAlreadyComputedMean_ = true;
 }
 
 /* Compute the covariance of the distribution */
 void PushForwardOverMesh::computeCovariance() const
 {
-  const UnsignedInteger sampleSize = ResourceMap::GetAsUnsignedInteger("PushForwardOverMesh-SampleSize");
-  const Sample sample(evaluation_(antecedent_.getSample(sampleSize)));
-  covariance_ = sample.computeCovariance();
+  const UnsignedInteger outputDimension = getDimension();
+  // The centered products need the deterministic mean
+  (void) getMean();
+  const Description imageVariables(Description::BuildDefault(outputDimension, "y"));
+  Description formulas((outputDimension * (outputDimension + 1)) / 2);
+  Description meanAsStrings(outputDimension);
+  UnsignedInteger index = 0;
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
+  {
+    meanAsStrings[j] = (OSS() << std::setprecision(17) << mean_[j]);
+    for (UnsignedInteger i = 0; i <= j; ++i)
+    {
+      formulas[index] = "(" + imageVariables[i] + "-(" + meanAsStrings[i] + "))*(" + imageVariables[j] + "-(" + meanAsStrings[j] + "))";
+      ++index;
+    }
+  }
+  const Function momentsFunction(ComposedFunction(SymbolicFunction(imageVariables, formulas), Function(evaluation_)));
+  const Function integrand(antecedent_.getPDF() * momentsFunction);
+  const Point covarianceAsPoint(SimplicialCubature().integrate(integrand, values_.getMesh()));
+  covariance_ = CovarianceMatrix(outputDimension);
+  index = 0;
+  for (UnsignedInteger j = 0; j < outputDimension; ++j)
+  {
+    for (UnsignedInteger i = 0; i <= j; ++i)
+    {
+      covariance_(i, j) = covarianceAsPoint[index];
+      ++index;
+    }
+  }
   isAlreadyComputedCovariance_ = true;
 }
 

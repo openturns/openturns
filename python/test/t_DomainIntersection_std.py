@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.PlatformInfo.SetNumericalPrecision(6)
 
@@ -50,3 +52,37 @@ u = ot.DomainIntersection([l1, l2])
 x = ot.Normal(2).getSample(1000)
 y = u.contains(x)
 assert len(y) == 1000
+
+# Extra coverage (no output to preserve expout)
+assert ot.DomainIntersection() == ot.DomainIntersection()
+assert domain == domain
+assert domain == ot.DomainIntersection([cube, sphere])
+assert not domain == ot.DomainIntersection([cube])
+assert domain != ot.DomainIntersection([cube])
+assert not domain != domain
+assert len(repr(domain)) > 0
+assert len(str(domain)) > 0
+# empty intersection contains everything
+assert ot.DomainIntersection().contains(p1)
+assert list(ot.DomainIntersection().contains([p0, p1])) == [1, 1]
+# heterogeneous dimensions are rejected
+with ott.assert_raises(Exception):
+    ot.DomainIntersection([cube, ot.Interval([0.0], [1.0])])
+# isParallel is false when a member is not parallel
+assert not u.isParallel()
+assert domain.isParallel()
+# single-domain intersection behaves like the domain itself
+assert ot.DomainIntersection([cube]).contains(p1) == cube.contains(p1)
+# save / load roundtrip
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("di_test.xml"))
+study.add("domain", domain)
+study.save()
+study2 = ot.Study()
+study2.setStorageManager(ot.XMLStorageManager("di_test.xml"))
+study2.load()
+loaded = ot.DomainIntersection()
+study2.fillObject("domain", loaded)
+assert loaded == domain
+
+os.remove("di_test.xml")

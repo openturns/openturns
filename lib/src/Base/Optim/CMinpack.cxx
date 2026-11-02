@@ -162,6 +162,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
 
       // update result
       algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+      algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
       algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
     }
     catch (const std::exception & exc)
@@ -178,6 +179,8 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     try
     {
       jacobian = algorithm->getProblem().getResidualFunction().gradient(inP).transpose();
+      ++ algorithm->gradientCallsNumber_;
+      algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
       if (algorithm->getProblem().hasBounds())
       {
         for (int j = 0; j < n; ++ j)
@@ -230,6 +233,8 @@ void CMinpack::run()
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
   result_ = OptimizationResult(getProblem());
+
+  gradientCallsNumber_ = 0;
 
   Point x(startingPoint);
   const int m = getProblem().getResidualFunction().getOutputDimension();
@@ -435,6 +440,7 @@ void CMinpack::run()
       throw NotYetImplementedException(HERE) << "CMinpack: unknown status code:" << info;
   }
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_.setGradientCallsNumber(gradientCallsNumber_);
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

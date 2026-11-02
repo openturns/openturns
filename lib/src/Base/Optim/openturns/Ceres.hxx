@@ -87,6 +87,9 @@ private:
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
 
+  // gradient counter to populate the result
+  UnsignedInteger gradientCallsNumber_ = 0;
+
 };
 
 

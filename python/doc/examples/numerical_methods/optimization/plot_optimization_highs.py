@@ -93,7 +93,7 @@ problem2 = otexp.LinearProblem([1.0, 1.0], bounds2, A2, cb2)
 
 # %%
 # Solve with each LP solver
-# HiGHS solves the LP directly without OpenTURNS evaluations,
+# HiGHS solves the LP directly without Function evaluations,
 # so error histories stay empty (no convergence curve to draw);
 # solvers are compared on final point, value, status and per-solver iterations.
 for solver in otexp.HiGHS.GetAlgorithmNames():

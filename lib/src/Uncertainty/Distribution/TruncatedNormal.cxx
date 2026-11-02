@@ -164,7 +164,7 @@ Point TruncatedNormal::computeDDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return Point(1, 0.0);
+  if ((x < a_) || (x > b_)) return Point(1, 0.0);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
   return Point(1, -std::exp(normalizationFactor_ + DistFunc::logdNormal(xNorm)) * xNorm * iSigma * iSigma);
@@ -177,7 +177,7 @@ Scalar TruncatedNormal::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return 0.0;
+  if ((x < a_) || (x > b_)) return 0.0;
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
   const Scalar logPDF = normalizationFactor_ + DistFunc::logdNormal(xNorm);
@@ -192,7 +192,7 @@ Scalar TruncatedNormal::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return SpecFunc::LowestScalar;
+  if ((x < a_) || (x > b_)) return SpecFunc::LowestScalar;
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
   return normalizationFactor_ + DistFunc::logdNormal(xNorm) + std::log(iSigma);
@@ -385,7 +385,7 @@ Point TruncatedNormal::computePDFGradient(const Point & point) const
 
   const Scalar x = point[0];
   Point pdfGradient(4, 0.0);
-  if ((x <= a_) || (x > b_)) return pdfGradient;
+  if ((x < a_) || (x > b_)) return pdfGradient;
   // Closed form only when the truncation mass is large enough for the
   // natural-scale formulas to stay accurate (see minimalNaturalMass)
   const Scalar z = PhiBNorm_ - PhiANorm_;

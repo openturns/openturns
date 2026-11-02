@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -23,3 +25,32 @@ print("point=", point)
 print("field=", field)
 # Get the number of calls
 print("called ", lifting.getCallsNumber(), " times")
+
+# Extra coverage (no output to preserve expout)
+default_lifting = ot.KarhunenLoeveLifting()
+assert default_lifting == default_lifting
+assert lifting == lifting
+assert lifting == ot.KarhunenLoeveLifting(result)
+assert not lifting == default_lifting
+assert len(repr(lifting)) > 0
+assert len(str(lifting)) > 0
+with ott.assert_raises(Exception):
+    lifting.getMarginal(lifting.getOutputDimension())
+with ott.assert_raises(Exception):
+    lifting.getMarginal(0)
+with ott.assert_raises(Exception):
+    lifting.getMarginal([0])
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("lifting_test.xml"))
+study.add("lifting", lifting)
+study.save()
+try:
+    study2 = ot.Study()
+    study2.setStorageManager(ot.XMLStorageManager("lifting_test.xml"))
+    study2.load()
+    loaded = ot.KarhunenLoeveLifting()
+    study2.fillObject("lifting", loaded)
+    assert ot.PointToFieldFunction(loaded) == ot.PointToFieldFunction(lifting)
+    assert loaded == lifting
+finally:
+    os.remove("lifting_test.xml")

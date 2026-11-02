@@ -150,6 +150,8 @@ void TNC::run()
   evaluationOutputHistory_ = Sample(0, 1);
   result_ = OptimizationResult(getProblem());
 
+  gradientCallsNumber_ = 0;
+
   Scalar f = -1.0;
   t0_ = std::chrono::steady_clock::now();
 
@@ -219,6 +221,7 @@ void TNC::run()
     result_.setStatus(OptimizationResult::FAILURE);
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
+  result_.setGradientCallsNumber(gradientCallsNumber_);
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -403,6 +406,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
     // Here we take the sign into account and convert the result into a Point in one shot
     const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
+    ++ algorithm->gradientCallsNumber_;
     /* Convert the gradient into the output format */
     std::copy(gradient.data(), gradient.data() + dimension, g);
   }
@@ -424,6 +428,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
   // update result
   algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   int returnValue = 0;

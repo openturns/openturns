@@ -70,3 +70,9 @@ validation.run()
 dist = ot.Poisson(2.5)
 ott.assert_almost_equal(dist.computeCDF([-1e-14]), 0.0)
 ott.assert_almost_equal(dist.computeComplementaryCDF([-1e-14]), 1.0)
+
+# Roughness of a discrete law is the sum of squared probabilities
+dist = ot.Poisson(4.0)
+ott.assert_almost_equal(
+    dist.getRoughness(), sum(p * p for p in dist.getProbabilities())
+)

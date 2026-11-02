@@ -74,15 +74,21 @@ public:
 
   Distribution operator + (const Scalar value) const;
 
+  Distribution operator + (const Point & point) const;
+
   /** Subtraction operator */
   Distribution operator - (const Distribution & other) const;
 
   Distribution operator - (const Scalar value) const;
 
+  Distribution operator - (const Point & point) const;
+
   /** Multiplication operator */
   Distribution operator * (const Distribution & other) const;
 
   Distribution operator * (const Scalar value) const;
+
+  Distribution operator * (const Matrix & matrix) const;
 
   /** Division operator */
   Distribution operator / (const Distribution & other) const;
@@ -141,6 +147,11 @@ public:
   Function getPDF() const;
   Function getLogPDF() const;
   Function getCDF() const;
+  Function getComplementaryCDF() const;
+  Function getQuantile() const;
+  Function getSurvivalFunction() const;
+  Function getInverseSurvivalFunction() const;
+  Function getDDF() const;
 
   /** Get the DDF of the distribution */
   Scalar computeDDF(const Scalar scalar) const;
@@ -440,6 +451,9 @@ public:
                                   const Indices & pointNumber,
                                   const Bool logScaleX = false,
                                   const Bool logScaleY = false) const;
+
+  /** Draw the PDFs of all the 1D and 2D marginals on a grid, see #2904 */
+  virtual GridLayout drawMarginalPDFs() const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
   virtual Graph drawLogPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),

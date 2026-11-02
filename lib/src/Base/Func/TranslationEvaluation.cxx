@@ -90,7 +90,8 @@ void TranslationEvaluation::setConstant(const Point & constant)
 
 Bool TranslationEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const TranslationEvaluation &>(other);
+  const TranslationEvaluation * p_other = dynamic_cast<const TranslationEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Here is the interface that all derived class must implement */

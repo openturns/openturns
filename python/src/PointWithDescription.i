@@ -4,71 +4,47 @@
 #include "openturns/PointWithDescription.hxx"
 
 namespace OT { 
+template <>
+struct traitsPythonType<OT::PointWithDescription>
+{
+  typedef _PySequence_ Type;
+};
 
-  template <>
-  struct traitsPythonType<OT::PointWithDescription>
+template <>
+inline
+OT::PointWithDescription
+convert<_PySequence_, OT::PointWithDescription>(PyObject * pyObj)
+{
+  void * ptr = 0;
+  if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::PointWithDescription *"), SWIG_POINTER_NO_NULL)))
   {
-    typedef _PySequence_ Type;
-  };
-
-  template <>
-  inline
-  OT::PointWithDescription
-  convert<_PySequence_,OT::PointWithDescription>(PyObject * pyObj)
-  {
-    check<_PySequence_>(pyObj);
-    const OT::UnsignedInteger size = PySequence_Length(pyObj);
-    OT::PointWithDescription coll(size);
-    OT::Description desc = OT::Description(size);
-
-    for (OT::UnsignedInteger i = 0; i < size; ++ i)
-    {
-      ScopedPyObjectPointer elt(PySequence_GetItem(pyObj, i));
-      check<_PySequence_>(elt.get());
-      if (PySequence_Length(elt.get()) == 2) {
-        ScopedPyObjectPointer item_0(PySequence_GetItem(elt.get(), 0));
-        check<_PyString_>(item_0.get());
-        desc[i] = convert<_PyString_, OT::String>(item_0.get());
-        ScopedPyObjectPointer item_1(PySequence_GetItem(elt.get(), 1));
-        check<_PyFloat_>(item_1.get());
-        coll[i] = convert<_PyFloat_, OT::Scalar>(item_1.get());
-      }
-      else
-        throw OT::InvalidArgumentException(HERE) << "Sequence item " << i << " passed as argument is not a pair (String, Scalar)";
-    }
-
-    coll.setDescription(desc);
-    return coll;
+    return *reinterpret_cast<OT::PointWithDescription *>(ptr);
   }
+  const OT::Point values(convert<_PySequence_, OT::Point>(pyObj));
+  return OT::PointWithDescription(values);
+}
 
-
-} /* namespace OT */
-
+} // namespace OT
 %}
 
 %include PointWithDescription_doc.i
 
-%rename(PointWithDescription_operator___eq__) OT::operator ==(const PointWithDescription & lhs, const PointWithDescription & rhs);
 %ignore OT::PointWithDescription::PointWithDescription(std::initializer_list<Scalar> initList);
 
+%copyctor OT::PointWithDescription;
+
 %include openturns/PointWithDescription.hxx
-namespace OT{
+
+namespace OT {
 
 %extend PointWithDescription {
 
-PointWithDescription(const PointWithDescription & other)
-{
-  return new OT::PointWithDescription(other);
-}
+Bool __eq__(const PointWithDescription & other) { return (*self) == other; }
+Bool __ne__(const PointWithDescription & other) { return (*self) != other; }
 
+} // %extend
 
-PointWithDescription(PyObject * pyObj)
-{
-  return new OT::PointWithDescription( OT::convert<OT::_PySequence_,OT::PointWithDescription>(pyObj) );
-}
-
-}
-}
+} // OT
 
 %template(_PointWithDescriptionCollection) OT::Collection<OT::PointWithDescription>;
 %template(_PointWithDescriptionPersistentCollection) OT::PersistentCollection<OT::PointWithDescription>;

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import os
 
 ot.TESTPREAMBLE()
 
@@ -17,3 +18,24 @@ assert ot.Less() == ot.Less(), "Less == Less"
 assert not (ot.Less() == ot.Greater()), "Less != Greater"
 assert ot.Greater() != ot.LessOrEqual(), "Greater != LessOrEqual"
 assert not (ot.Greater() != ot.Greater()), "Greater == Greater"
+
+# Extra coverage for Equal / GreaterOrEqual converters and persistence
+
+for op in [ot.Equal(), ot.GreaterOrEqual()]:
+    assert len(repr(op)) > 0
+    assert len(str(op)) > 0
+    assert op == op
+    assert not (op != op)
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager("t_ComparisonOperator_std_tmp.xml"))
+    study.add("op", op)
+    study.save()
+    loadedStudy = ot.Study()
+    loadedStudy.setStorageManager(
+        ot.XMLStorageManager("t_ComparisonOperator_std_tmp.xml")
+    )
+    loadedStudy.load()
+    loaded = ot.Equal() if isinstance(op, ot.Equal) else ot.GreaterOrEqual()
+    loadedStudy.fillObject("op", loaded)
+    assert loaded == op
+os.remove("t_ComparisonOperator_std_tmp.xml")

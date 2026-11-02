@@ -119,7 +119,8 @@ void P1LagrangeEvaluation::setField(const Field & field)
 
 Bool P1LagrangeEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const P1LagrangeEvaluation &>(other);
+  const P1LagrangeEvaluation * p_other = dynamic_cast<const P1LagrangeEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 Field P1LagrangeEvaluation::getField() const

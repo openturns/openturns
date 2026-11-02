@@ -205,7 +205,8 @@ void PointToPointEvaluation::setParameter(const Point & parameter)
 
 Bool PointToPointEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const PointToPointEvaluation &>(other);
+  const PointToPointEvaluation * p_other = dynamic_cast<const PointToPointEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Parameters description accessor */

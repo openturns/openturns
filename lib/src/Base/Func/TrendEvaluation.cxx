@@ -115,6 +115,12 @@ UnsignedInteger TrendEvaluation::getOutputDimension() const
   return function_.getOutputDimension();
 }
 
+/* Is it safe to call in parallel? */
+Bool TrendEvaluation::isParallel() const
+{
+  return function_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void TrendEvaluation::save(Advocate & adv) const
 {
@@ -131,7 +137,8 @@ void TrendEvaluation::load(Advocate & adv)
 
 Bool TrendEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const TrendEvaluation &>(other);
+  const TrendEvaluation * p_other = dynamic_cast<const TrendEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

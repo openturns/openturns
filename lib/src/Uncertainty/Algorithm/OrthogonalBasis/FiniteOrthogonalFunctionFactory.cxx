@@ -56,6 +56,16 @@ FiniteOrthogonalFunctionFactory * FiniteOrthogonalFunctionFactory::clone() const
   return new FiniteOrthogonalFunctionFactory(*this);
 }
 
+/* Comparison helper */
+Bool FiniteOrthogonalFunctionFactory::equals(const OrthogonalFunctionFactory & other) const
+{
+  const FiniteOrthogonalFunctionFactory * p_other = dynamic_cast<const FiniteOrthogonalFunctionFactory *>(&other);
+  if (!p_other || !OrthogonalFunctionFactory::equals(other) || (functions_.getSize() != p_other->functions_.getSize())) return false;
+  for (UnsignedInteger i = 0; i < functions_.getSize(); ++i)
+    if (functions_[i].__repr__() != p_other->functions_[i].__repr__()) return false;
+  return true;
+}
+
 
 /* Build the Function of the given index */
 Function FiniteOrthogonalFunctionFactory::build(const UnsignedInteger index) const

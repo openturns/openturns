@@ -140,3 +140,9 @@ with ott.assert_raises(Exception):
     ot.WeibullMaxMuSigma().setValues([2.0, 1.0, 0.0])
 with ott.assert_raises(Exception):
     ot.WeibullMinMuSigma().setValues([0.0, 1.0, 2.0])
+
+# Quantile at the finite lower bound is exact (no exp/log roundoff)
+bounded = ot.LogNormal(0.0, 0.5, 1.0)
+lower = bounded.getRange().getLowerBound()[0]
+ott.assert_almost_equal(bounded.computeQuantile(0.0)[0], lower, 0.0, 0.0)
+ott.assert_almost_equal(bounded.computeQuantile(1.0, True)[0], lower, 0.0, 0.0)

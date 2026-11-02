@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 
@@ -141,16 +142,77 @@ print(f"submesh={submesh}")
 assert len(submesh.getSimplices()) == 2
 assert sum(submesh.computeSimplicesVolume()) == 1 / 16, "wrong submesh"
 
-if ot.PlatformInfo.HasFeature("boost"):
-    vertices1 = [[0.0, 0.0], [2.0, 0.0], [0.0, 1.0]]
-    simplices1 = [[0, 1, 2]]
-    mesh1 = ot.Mesh(vertices1, simplices1)
-    mesh2 = ot.IntervalMesher([2] * 2).build(ot.Interval([-1.0] * 2, [1.0] * 2))
-    intersection = mesh1.intersect(mesh2)
-    vertices3 = [[0, 1], [0, 0], [1, 0], [0, 1], [1, 0], [1, 0.5]]
-    simplices3 = [[0, 1, 2], [3, 4, 5]]
-    mesh3 = ot.Mesh(vertices3, simplices3)
-    assert intersection == mesh3, "wrong intersection"
+vertices1 = [[0.0, 0.0], [2.0, 0.0], [0.0, 1.0]]
+simplices1 = [[0, 1, 2]]
+mesh1 = ot.Mesh(vertices1, simplices1)
+mesh2 = ot.IntervalMesher([2] * 2).build(ot.Interval([-1.0] * 2, [1.0] * 2))
+intersection = mesh1.intersect(mesh2)
+# welded output: shared vertices merged, 4 vertices and 2 simplices.
+# Vertex order depends on the weld union-find/nanoflann traversal, so
+# compare the sorted vertex sets instead of exact equality.
+ott.assert_almost_equal(intersection.getVolume(), 0.75)
+assert intersection.getVerticesNumber() == 4, "vertices not welded"
+assert intersection.getSimplicesNumber() == 2, "wrong simplices number"
+ott.assert_almost_equal(
+    sorted([list(v) for v in intersection.getVertices()]),
+    sorted([[0, 1], [0, 0], [1, 0], [1, 0.5]]),
+    1e-12,
+    1e-12,
+)
+# disjoint boxes: empty intersection
+meshFar = ot.Mesh([[10.0, 10.0], [11.0, 10.0], [10.0, 11.0]], [[0, 1, 2]])
+interEmpty = mesh1.intersect(meshFar)
+assert interEmpty.getSimplicesNumber() == 0, "expected empty intersection"
+assert interEmpty.getVerticesNumber() == 0, "expected no vertices"
+
+# The weld tolerance scales with the coordinate magnitude: far from the
+# origin, copies of the same crossing computed from different triangle
+# pairs differ by more than a few ulps and must still be welded. With a
+# tolerance relative to the mesh extent only (the former
+# SpecFunc::Precision * range), this case kept 10 vertices instead of 8.
+farVertices1 = [
+    [1000000.0486993039, 999999.5140417002],
+    [1000000.9394377695, 999999.5140417002],
+    [1000000.9394377695, 1000001.2215834407],
+    [1000000.0486993039, 1000001.2215834407],
+]
+farVertices2 = [
+    [1000000.0795570296, 999999.5982353133],
+    [1000001.8168244953, 999999.5982353133],
+    [1000001.8168244953, 1000001.1004651152],
+    [1000000.0795570296, 1000001.1004651152],
+]
+farMesh1 = ot.Mesh(farVertices1, [[0, 1, 2], [0, 2, 3]])
+farMesh2 = ot.Mesh(farVertices2, [[0, 1, 2], [0, 2, 3]])
+farIntersection = farMesh1.intersect(farMesh2)
+assert (
+    farIntersection.getVerticesNumber() == 8
+), "vertices not welded far from the origin"
+assert farIntersection.getSimplicesNumber() == 7, "wrong simplices number"
+x0 = max(farVertices1[0][0], farVertices2[0][0])
+x1 = min(farVertices1[1][0], farVertices2[1][0])
+y0 = max(farVertices1[0][1], farVertices2[0][1])
+y1 = min(farVertices1[2][1], farVertices2[2][1])
+ott.assert_almost_equal(
+    farIntersection.getVolume(), (x1 - x0) * (y1 - y0), 1e-9, 1e-9
+)
+
+# Grid candidate path (above Mesh-GridThreshold pairs): same geometry as
+# the dense product path, here [0, 1]^2 of volume 1.0
+boxA = ot.IntervalMesher([8] * 2).build(ot.Interval([-1.0] * 2, [1.0] * 2))
+boxB = ot.IntervalMesher([8] * 2).build(ot.Interval([0.0] * 2, [2.0] * 2))
+assert (
+    boxA.getSimplicesNumber() * boxB.getSimplicesNumber()
+    > ot.ResourceMap.GetAsUnsignedInteger("Mesh-GridThreshold")
+), "test must take the grid path"
+gridInter = boxA.intersect(boxB)
+ott.assert_almost_equal(gridInter.getVolume(), 1.0, 1e-9, 1e-9)
+gridThreshold = ot.ResourceMap.GetAsUnsignedInteger("Mesh-GridThreshold")
+ot.ResourceMap.SetAsUnsignedInteger("Mesh-GridThreshold", 1000000)
+denseInter = boxA.intersect(boxB)
+ot.ResourceMap.SetAsUnsignedInteger("Mesh-GridThreshold", gridThreshold)
+ott.assert_almost_equal(denseInter.getVolume(), gridInter.getVolume(), 1e-12, 1e-12)
+assert denseInter.getSimplicesNumber() == gridInter.getSimplicesNumber(), "grid/dense simplex mismatch"
 
 # Mesh inequality tests
 assert m1 != m2, "different meshes"

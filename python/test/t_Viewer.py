@@ -2,6 +2,8 @@
 
 from openturns.viewer import View
 import openturns as ot
+import openturns.testing as ott
+import inspect
 
 # Curve
 graph = ot.Normal().drawCDF()
@@ -308,3 +310,96 @@ contour = copulaGraph.getDrawable(0).getImplementation()
 contour.setColor("black")
 contour.setColorBarPosition("")
 contour.setLineWidth(3)
+
+# Curve labels are drawn along the line, see issue #2745
+labeledCurve = ot.Curve([[0.0, 0.0], [1.0, 1.0], [2.0, 0.0]])
+labeledCurve.setLabels(["peak"])
+assert list(labeledCurve.getLabels()) == ["peak"]
+labelGraph = ot.Graph()
+labelGraph.add(labeledCurve)
+labelView = View(labelGraph)
+# The label reaches the axes, not only the C++ accessors
+assert len(labelView._ax[0].texts) == 1
+assert labelView._ax[0].texts[0].get_text() == "peak"
+ott.assert_almost_equal(
+    [labelView._ax[0].texts[0].get_position()[0]],
+    [1.0],
+    1e-12,
+    1e-12,
+)
+# An empty label is skipped rather than drawn as an empty text
+blankCurve = ot.Curve([[0.0, 0.0], [1.0, 1.0], [2.0, 0.0]])
+blankCurve.setLabels([""])
+blankGraph = ot.Graph()
+blankGraph.add(blankCurve)
+assert len(View(blankGraph)._ax[0].texts) == 0
+# Caller-provided text alignment must not reach Axes.text twice
+alignView = View(labelGraph, text_kw={"horizontalalignment": "left"})
+assert len(alignView._ax[0].texts) == 1
+assert alignView._ax[0].texts[0].get_horizontalalignment() == "left"
+
+# Grid title styling, see issue #3001
+titleGraph = ot.Normal(2).drawPDF()
+titleView = View(titleGraph, title_kw={"fontsize": 20})
+ott.assert_almost_equal(titleView._fig._suptitle.get_fontsize(), 20)
+# The GridLayout branch is the one carrying the suptitle, see issue #3001
+gridTitleView = View(
+    ot.Normal(2).drawMarginalPDFs(), title_kw={"fontsize": 18}
+)
+ott.assert_almost_equal(gridTitleView._fig._suptitle.get_fontsize(), 18)
+
+# Cloud transparency survives Graph.add and reaches the viewer, see issue #2831
+alphaCloud = ot.Cloud([[0.0, 0.0], [1.0, 1.0]])
+alphaCloud.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaCloud)
+ott.assert_almost_equal(alphaGraph.getDrawable(0).getAlpha(), 0.3, 1e-2, 0.0)
+# The RGBA color code alone already carries the alpha channel to matplotlib, so
+# the drawn facecolor is checked against an explicit color kwarg: the viewer
+# must forward the alpha instead of relying on the embedded hex digits.
+alphaView = View(alphaGraph, scatter_kw={"color": "#1f77b4"})
+facecolor = alphaView._ax[0].collections[0].get_facecolor()[0]
+ott.assert_almost_equal(facecolor[3], 0.3, 1e-2, 0.0)
+# Without the forward, an explicit opaque color would stay opaque
+opaqueView = View(alphaGraph, scatter_kw={"color": "#1f77b4", "alpha": 0.3})
+opaqueFacecolor = opaqueView._ax[0].collections[0].get_facecolor()[0]
+ott.assert_almost_equal(opaqueFacecolor[3], 0.3, 1e-2, 0.0)
+
+# The same forward applies to the other drawable kinds with an alpha channel
+alphaPolygon = ot.Polygon(
+    ot.Sample([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0]])
+)
+alphaPolygon.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaPolygon)
+alphaView = View(alphaGraph, polygon_kw={"facecolor": "#1f77b4"})
+ott.assert_almost_equal(alphaView._ax[0].patches[0].get_alpha(), 0.3, 1e-2, 0.0)
+
+alphaArray = ot.PolygonArray([alphaPolygon])
+alphaArray.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaArray)
+alphaView = View(alphaGraph, polygoncollection_kw={"facecolors": ["#1f77b4"]})
+ott.assert_almost_equal(
+    alphaView._ax[0].collections[0].get_alpha(), 0.3, 1e-2, 0.0
+)
+
+alphaPie = ot.Pie([1.0, 2.0, 3.0])
+alphaPie.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaPie)
+alphaView = View(
+    alphaGraph, pie_kw={"colors": ["#1f77b4", "#ff7f0e", "#2ca02c"]}
+)
+ott.assert_almost_equal(alphaView._ax[0].patches[0].get_alpha(), 0.3, 1e-2, 0.0)
+
+alphaText = ot.Text([[0.0, 0.0]], ["a"])
+alphaText.setAlpha(0.3)
+alphaGraph = ot.Graph()
+alphaGraph.add(alphaText)
+alphaView = View(alphaGraph, text_kw={"color": "#1f77b4"})
+ott.assert_almost_equal(alphaView._ax[0].texts[0].get_alpha(), 0.3, 1e-2, 0.0)
+
+# title_kw stays last for positional compatibility, see issue #3001
+viewParams = list(inspect.signature(View.__init__).parameters)
+assert viewParams.index("title_kw") > viewParams.index("legend_kw")

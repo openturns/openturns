@@ -139,6 +139,32 @@ size : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getUseLaplaceApproximation
+"Return whether the posterior covariance uses the Laplace approximation.
+
+Returns
+-------
+useLaplace : bool
+    Whether the posterior covariance is computed from the full Hessian
+    of the residuals at the optimum (Laplace approximation) instead of
+    the Gauss-Newton Gram matrix. Default is False."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::setUseLaplaceApproximation
+"Set whether the posterior covariance uses the Laplace approximation.
+
+Parameters
+----------
+useLaplace : bool
+    Whether the posterior covariance is computed from the full Hessian
+    of the residuals at the optimum (Laplace approximation) instead of
+    the Gauss-Newton Gram matrix. Default is False. It requires the
+    Hessian at the optimum to be definite. It is only used when no
+    bootstrap is performed."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::NonLinearLeastSquaresCalibration::BuildResidualFunction
 R"RAW(Build a residual function given a parametric model, input and output observations.
 

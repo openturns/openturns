@@ -156,6 +156,8 @@ void SQP::run()
   Bool stop = false;
   UnsignedInteger iterationNumber = 0;
   const UnsignedInteger initialEvaluationNumber = levelFunction.getEvaluationCallsNumber();
+  UnsignedInteger gradientCallsNumber = 0;
+  UnsignedInteger hessianCallsNumber = 0;
   Scalar absoluteError = -1.0;
   Scalar constraintError = -1.0;
   Scalar relativeError = -1.0;
@@ -166,6 +168,7 @@ void SQP::run()
 
   // Compute the hessian
   currentHessian_ = levelFunction.hessian(currentPoint_).getSheet(0);
+  ++ hessianCallsNumber;
 
   UnsignedInteger evaluationNumber = levelFunction.getEvaluationCallsNumber() - initialEvaluationNumber;
 
@@ -182,6 +185,7 @@ void SQP::run()
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
+    ++ gradientCallsNumber;
     /* Compute the current Lagrange multiplier */
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
@@ -251,6 +255,8 @@ void SQP::run()
 
     // update result
     result_.setCallsNumber(evaluationNumber);
+    result_.setGradientCallsNumber(gradientCallsNumber);
+    result_.setHessianCallsNumber(hessianCallsNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 

@@ -136,7 +136,7 @@ s : float, positive
 
 Notes
 -----
-OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  at the index :math:`K` defined in :eq:`thresholdK`.)RAW"
+The sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}` is truncated at the index :math:`K` defined in :eq:`thresholdK`.)RAW"
 %enddef
 %feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::getThreshold
 OT_KarhunenLoeveAlgorithm_getThreshold_doc

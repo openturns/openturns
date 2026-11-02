@@ -64,6 +64,15 @@ public:
                              const Point & width) const;
   Histogram buildAsHistogram() const;
 
+  /** Build a weighted histogram, see issue #3164 */
+  Distribution buildWeighted(const Sample & sample,
+                             const Point & weights) const;
+  Histogram buildWeightedAsHistogram(const Sample & sample,
+                                     const Point & weights) const;
+  Histogram buildWeightedAsHistogram(const Sample & sample,
+                                     const Scalar bandwidth,
+                                     const Point & weights) const;
+
   /** Build from quantiles */
   Histogram buildFromQuantiles(const Scalar lowerBound,
                                const Point & probabilities,
@@ -72,6 +81,12 @@ public:
   /** Compute the bandwidth according to Silverman's rule */
   Scalar computeBandwidth(const Sample & sample,
                           const Bool useQuantile = true) const;
+
+  /** Compute the bandwidth of a weighted sample, using the Kish
+      effective sample size in place of the sample size (see #3164) */
+  Scalar computeBandwidthWeighted(const Sample & sample,
+                                  const Point & weights,
+                                  const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */
 

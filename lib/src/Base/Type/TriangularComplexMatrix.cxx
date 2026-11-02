@@ -89,16 +89,18 @@ TriangularComplexMatrix TriangularComplexMatrix::transpose () const
 /* TriangularComplexMatrix conjugate */
 TriangularComplexMatrix TriangularComplexMatrix::conjugate () const
 {
-  // Quick return for empty or scalar TriangularComplexMatrix
-  if (getDimension() <= 1) return (*this);
+  // Quick return for empty TriangularComplexMatrix
+  // Note: no quick return for dimension 1, the single element must be conjugated
+  if (getDimension() == 0) return (*this);
   return TriangularComplexMatrix(Implementation(getImplementation()->conjugate().clone()), isLowerTriangular_);
 }
 
 /* TriangularComplexMatrix conjugate */
 TriangularComplexMatrix TriangularComplexMatrix::conjugateTranspose () const
 {
-  // Quick return for empty or scalar TriangularComplexMatrix
-  if (getDimension() <= 1) return (*this);
+  // Quick return for empty TriangularComplexMatrix
+  // Note: no quick return for dimension 1, the single element must be conjugated
+  if (getDimension() == 0) return (*this);
   return TriangularComplexMatrix(Implementation(getImplementation()->conjugateTranspose().clone()), !isLowerTriangular_);
 }
 

@@ -86,6 +86,9 @@ public:
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const override;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
+
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const Point & inP) const override;
 

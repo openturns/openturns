@@ -227,7 +227,7 @@ Sample Fehlberg::solve(const Point & initialState,
       newT = tEnd;
     }
     state = computeStep(transitionFunction, t, state, gradient, h);
-    h = std::max(hMin, h);
+    h = positiveStep ? std::max(hMin, h) : std::min(-hMin, h);
     values.add(state);
     derivatives.add(gradient);
     times.add(newT);

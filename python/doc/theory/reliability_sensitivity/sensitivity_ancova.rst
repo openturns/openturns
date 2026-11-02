@@ -61,7 +61,7 @@ response with a polynomial chaos expansion. However, for the sake of
 computational simplicity, the latter is constructed considering
 :math:`\mathit{independent}` components :math:`\{X^1,\dots,X^\inputDim\}`.
 Thus the chaos basis is not orthogonal with respect to the correlated
-inputs under consideration, and it is only used as a metamodel to
+inputs under consideration, and it is only used as a surrogate model to
 generate approximated evaluations of the model response and its summands
 in :eq:`Model`.
 

@@ -83,6 +83,8 @@ public:
 
 protected:
 
+  Bool equals(const OrthogonalFunctionFactory & other) const override;
+
 private:
 
   /* Build the multivariate polynomial factory associated with the marginal distributions */

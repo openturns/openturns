@@ -25,6 +25,8 @@
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
 #include "openturns/UniVariateFunction.hxx"
 #include "openturns/GaussKronrodRule.hxx"
+#include <memory>
+#include <mutex>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -118,6 +120,15 @@ public:
   GaussKronrodRule getRule() const;
   void setRule(const GaussKronrodRule & rule);
 
+  /** State accessors: they return the state of the last call to integrate,
+      except for the scratch-containers overload which never touches them
+      as its containers may be shared between concurrent calls.
+      They allow a SciPy-like usage without preallocated out-arguments. */
+  Scalar getErrorEstimate() const;
+  UnsignedInteger getIterationNumber() const;
+  Sample getEvaluationSubIntervals() const;
+  Point getLocalErrorEstimates() const;
+
 protected:
   /** Map of NLopt algorithms names */
   static std::map<String, GaussKronrodRule> RuleNames_;
@@ -171,6 +182,22 @@ private:
 
   /* Local integration rule */
   GaussKronrodRule rule_;
+
+  /* Last integration state, filled by integrate() except by the
+     scratch-containers overload. Mutable so that the const integrate()
+     methods can update it. */
+  mutable Scalar errorEstimate_;
+  mutable UnsignedInteger iterationNumber_;
+  mutable Point ai_;
+  mutable Point bi_;
+  mutable Point ei_;
+
+  /* Guards the last integration state above: integrate() runs on worker
+     threads (e.g. batched PDF evaluations) while the accessors may be read
+     from another thread. The mutex is shared between the copies of the object
+     so that it stays alive after a copy, as done for the parsers in
+     SymbolicParserMuParser and SymbolicParserExprTk. */
+  mutable std::shared_ptr<std::mutex> stateMutex_ = std::make_shared<std::mutex>();
 
 } ; /* class GaussKronrod */
 

@@ -132,7 +132,7 @@ Scalar WeibullMax::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x >= 0.0) return 0.0;
+  if (x > 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -141,9 +141,10 @@ Scalar WeibullMax::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x >= 0.0) return SpecFunc::LowestScalar;
+  if (x > 0.0) return SpecFunc::LowestScalar;
   const Scalar y = -x / beta_;
-  return std::log(alpha_) + (alpha_ - 1.0) * std::log(y) - std::log(beta_) - std::pow(y, alpha_);
+  // At y == 0, 0 * log(0) is NaN while the continuous extension is 0 for alpha_ == 1
+  return std::log(alpha_) + ((alpha_ == 1.0) ? 0.0 : (alpha_ - 1.0) * std::log(y)) - std::log(beta_) - std::pow(y, alpha_);
 }
 
 
@@ -223,6 +224,13 @@ Complex WeibullMax::computeCharacteristicFunction(const Scalar x) const
 Scalar WeibullMax::computeEntropy() const
 {
   return 1.0 + SpecFunc::EulerConstant * (1.0 - 1.0 / alpha_) + std::log(beta_ / alpha_);
+}
+
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar WeibullMax::getRoughness() const
+{
+  if (alpha_ <= 0.5) throw NotDefinedException(HERE) << "Error: the roughness is not defined for alpha <= 0.5.";
+  return alpha_ / (2.0 * beta_) * std::exp(SpecFunc::LogGamma(2.0 - 1.0 / alpha_) + (1.0 / alpha_ - 1.0) * M_LN2);
 }
 
 /* Get the PDFGradient of the distribution */

@@ -171,3 +171,32 @@ assert opt_design.getDimension() == dim
 mean_point = opt_design.computeMean()
 for i in range(dim):
     assert math.isfinite(mean_point[i])
+
+# Test setDistribution/setSize propagation (issue #3150)
+lhs_empty = ot.LHSExperiment()
+sa_prop = ot.SimulatedAnnealingLHS(lhs_empty)
+dist3 = ot.JointDistribution([ot.Uniform(1.0, 2.0)] * 3)
+sample_size = 10
+sa_prop.setDistribution(dist3)
+sa_prop.setSize(sample_size)
+assert sa_prop.getDistribution().getDimension() == 3
+assert sa_prop.getSize() == sample_size
+assert sa_prop.getLHS().getDistribution().getDimension() == 3
+assert sa_prop.getLHS().getSize() == sample_size
+sample_prop = sa_prop.generate()
+assert sample_prop.getSize() == sample_size
+assert sample_prop.getDimension() == 3
+assert all(v >= 1.0 and v <= 2.0 for row in sample_prop for v in row)
+sample_prop_w, weights_prop = sa_prop.generateWithWeights()
+assert sample_prop_w.getSize() == sample_size
+assert len(weights_prop) == sample_size
+
+# Same propagation check for MonteCarloLHS
+mc_prop = ot.MonteCarloLHS(lhs_empty, 10)
+mc_prop.setDistribution(dist3)
+mc_prop.setSize(sample_size)
+assert mc_prop.getLHS().getDistribution().getDimension() == 3
+assert mc_prop.getLHS().getSize() == sample_size
+sample_mc = mc_prop.generate()
+assert sample_mc.getSize() == sample_size
+assert sample_mc.getDimension() == 3

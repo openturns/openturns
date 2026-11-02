@@ -328,6 +328,13 @@ Scalar NormalGamma::computeEntropy() const
   return alpha_ + (0.5 - alpha_) * SpecFunc::Psi(alpha_) + SpecFunc::LogGamma(alpha_) - 0.5 * (std::log(beta_) - M_LN2 + std::log(kappa_) - 1.0 - std::log(M_PI));
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar NormalGamma::getRoughness() const
+{
+  if (alpha_ <= 0.25) throw NotDefinedException(HERE) << "Error: the roughness is not defined for alpha <= 0.25.";
+  return std::exp(2.0 * alpha_ * std::log(beta_) + 0.5 * (std::log(kappa_) - std::log(4.0 * M_PI)) + SpecFunc::LogGamma(2.0 * alpha_ - 0.5) - (2.0 * alpha_ - 0.5) * std::log(2.0 * beta_) - 2.0 * SpecFunc::LogGamma(alpha_));
+}
+
 /* Parameters value and description accessor */
 Point NormalGamma::getParameter() const
 {

@@ -1,7 +1,7 @@
-.. _meta_modeling:
+.. _surrogate_modeling:
 
-Meta modeling
-=============
+Surrogate modeling
+==================
 
 The current section is dedicated to the building of an analytical approximation of the model of a given model.
 Such an approximation is commonly referred to as a response surface in the literature.

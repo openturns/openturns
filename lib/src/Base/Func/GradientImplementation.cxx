@@ -96,6 +96,23 @@ Matrix GradientImplementation::gradient(const Point & ) const
   throw NotYetImplementedException(HERE) << "In GradientImplementation::gradient(const Point & inP) const";
 }
 
+/* Batch gradient method: loop over the point-wise gradient by default */
+Sample GradientImplementation::gradient(const Sample & inS) const
+{
+  const UnsignedInteger size = inS.getSize();
+  const UnsignedInteger inputDimension = getInputDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  Sample result(size, inputDimension * outputDimension);
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    const Matrix grad(gradient(inS[k]));
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+        result(k, j * inputDimension + i) = grad(i, j);
+  }
+  return result;
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger GradientImplementation::getInputDimension() const
 {

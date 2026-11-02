@@ -132,6 +132,9 @@ public:
 
 private:
 
+  /** Check that the input sample is consistent with the distribution */
+  void checkInputSampleSupport() const;
+
   /** Marginal computation */
   void runMarginal(const UnsignedInteger marginalIndex, Indices & indices, Point & coefficients, Collection<Point> & coefficientsHistory, Collection<Indices> & indicesHistory, Point & errorHistory);
 

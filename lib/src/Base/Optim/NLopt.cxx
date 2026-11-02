@@ -239,6 +239,8 @@ void NLopt::run()
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
   result_ = OptimizationResult(getProblem());
 
+  gradientCallsNumber_ = 0;
+
   nlopt::opt opt(algo, dimension);
 
   if (getProblem().isMinimization())
@@ -373,6 +375,7 @@ void NLopt::run()
     result_.setStatus(OptimizationResult::FAILURE);
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
+  result_.setGradientCallsNumber(gradientCallsNumber_);
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
@@ -483,12 +486,15 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 
   // update result
   algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // gradient
   if (!grad.empty())
   {
     Matrix gradient(algorithm->getProblem().getObjective().gradient(inP));
+    ++ algorithm->gradientCallsNumber_;
+    algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
     Scalar norm = 0;
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {

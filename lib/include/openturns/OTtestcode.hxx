@@ -463,6 +463,8 @@ public:
     checkFitting();
     if (enableEntropy_)
       checkEntropy();
+    if (enableRoughness_)
+      checkRoughness();
     checkMoments();
     if (enableParameters_)
       checkParameters();
@@ -563,6 +565,10 @@ public:
   {
     enableEntropy_ = false;
   }
+  void skipRoughness()
+  {
+    enableRoughness_ = false;
+  }
   void skipConditional()
   {
     enableConditional_ = false;
@@ -574,6 +580,10 @@ public:
   void setEntropyTolerance(const Scalar entropyTolerance)
   {
     entropyTolerance_ = entropyTolerance;
+  }
+  void setRoughnessTolerance(const Scalar roughnessTolerance)
+  {
+    roughnessTolerance_ = roughnessTolerance;
   }
   void setCDFTolerance(const Scalar cdfTolerance)
   {
@@ -602,6 +612,10 @@ public:
   void setEntropySamplingSize(const UnsignedInteger entropySamplingSize)
   {
     entropySamplingSize_ = entropySamplingSize;
+  }
+  void setRoughnessSamplingSize(const UnsignedInteger roughnessSamplingSize)
+  {
+    roughnessSamplingSize_ = roughnessSamplingSize;
   }
   void setDomainSamplingSize(const UnsignedInteger domainSamplingSize)
   {
@@ -812,6 +826,17 @@ private:
         LOGTRACE(OSS() << "ddf(fd)=" << ddf2);
         assert_almost_equal(ddf1, ddf2, ddfTolerance_, ddfTolerance_, "ddf " + distribution_.__repr__());
       }
+      // Check the Sample overload against the Point overload on a small batch
+      const UnsignedInteger batchSize = std::min<UnsignedInteger>(2, sample.getSize());
+      Sample batchInput(batchSize, distribution_.getDimension());
+      for (UnsignedInteger i = 0; i < batchSize; ++ i) batchInput[i] = sample[i];
+      const Sample batchDDF(distribution_.computeDDF(batchInput));
+      if (batchDDF.getSize() != batchSize)
+        throw TestFailed(OSS() << "wrong ddf batch size (" << batchDDF.getSize() << ") expected (" << batchSize << ") for " << distribution_);
+      if (batchDDF.getDimension() != distribution_.getDimension())
+        throw TestFailed(OSS() << "wrong ddf batch dimension (" << batchDDF.getDimension() << ") expected (" << distribution_.getDimension() << ") for " << distribution_);
+      for (UnsignedInteger i = 0; i < batchSize; ++ i)
+        assert_almost_equal(Point(batchDDF[i]), distribution_.computeDDF(batchInput[i]), ddfTolerance_, ddfTolerance_, "ddf batch vs pointwise " + distribution_.__repr__());
     }
   }
 
@@ -1007,6 +1032,15 @@ private:
       }
       LOGTRACE(OSS() << "cdfgrad(fd)=" << cdfgrfd.__str__());
       assert_almost_equal(cdfGr, cdfgrfd, parameterTolerance_, parameterTolerance_, "wrong cdf gradient for " + distribution_.__repr__());
+      // Check the Sample overload against the Point overload on a small batch, reusing x to avoid consuming RNG
+      const Sample batchInput(2, x);
+      const Sample batchGr(distribution_.computeCDFGradient(batchInput));
+      if (batchGr.getSize() != 2)
+        throw TestFailed(OSS() << "wrong cdfGradient batch size (" << batchGr.getSize() << ") expected (2) for " << distribution_);
+      if (batchGr.getDimension() != parameter.getDimension())
+        throw TestFailed(OSS() << "wrong cdfGradient batch dimension (" << batchGr.getDimension() << ") expected (" << parameter.getDimension() << ") for " << distribution_);
+      assert_almost_equal(Point(batchGr[0]), distribution_.computeCDFGradient(batchInput[0]), parameterTolerance_, parameterTolerance_, "wrong cdf gradient batch row 0 for " + distribution_.__repr__());
+      assert_almost_equal(Point(batchGr[1]), distribution_.computeCDFGradient(batchInput[1]), parameterTolerance_, parameterTolerance_, "wrong cdf gradient batch row 1 for " + distribution_.__repr__());
     }
   }
 
@@ -1059,6 +1093,42 @@ private:
       const Scalar entropyMC  = -distribution_.computeLogPDF(distribution_.getSample(entropySamplingSize_)).computeMean()[0];
       LOGTRACE(OSS() << "entropy(MC)=" << entropyMC);
       assert_almost_equal(entropy, entropyMC, entropyTolerance_, entropyTolerance_, "entropy " + distribution_.__repr__());
+    }
+  }
+
+  void checkRoughness() const
+  {
+    // Restricted to 1D laws: in higher dimension the generic quadrature
+    // misses localized bulks and corner singularities, and Monte Carlo
+    // estimates are too noisy for a generic tolerance
+    if (distribution_.isContinuous() && (distribution_.getDimension() == 1))
+    {
+      LOGTRACE(OSS() << "checking roughness...");
+      // Capture the RNG state first: getRoughness() itself may sample, and the
+      // check must leave the RNG state unmodified on all paths
+      const RandomGeneratorState initialState(RandomGenerator::GetState());
+      Scalar roughness = 0.0;
+      try
+      {
+        roughness = distribution_.getRoughness();
+      }
+      catch (const NotDefinedException &)
+      {
+        // The L2 norm of the PDF is infinite, nothing to check
+        RandomGenerator::SetState(initialState);
+        return;
+      }
+      LOGTRACE(OSS() << "roughness=" << roughness);
+      const Sample pdf(distribution_.computePDF(distribution_.getSample(roughnessSamplingSize_)));
+      RandomGenerator::SetState(initialState);
+      const Scalar roughnessMC = pdf.computeMean()[0];
+      // Accept deviations consistent with the Monte Carlo standard error, so
+      // heavy-tailed sampled PDFs (possibly of infinite variance) do not
+      // reject valid distributions on random fluctuations
+      const Scalar standardError = pdf.computeStandardDeviation()[0] / std::sqrt(1.0 * roughnessSamplingSize_);
+      LOGTRACE(OSS() << "roughness(MC)=" << roughnessMC << " stderr=" << standardError);
+      const Scalar samplingTolerance = 3.0 * standardError / std::max(std::abs(roughnessMC), SpecFunc::ScalarEpsilon);
+      assert_almost_equal(roughness, roughnessMC, roughnessTolerance_ + samplingTolerance, roughnessTolerance_, "roughness " + distribution_.__repr__());
     }
   }
 
@@ -1495,9 +1565,11 @@ private:
   Bool enableCharacteristicFunction_ = true;
   Bool enableGradient_ = true;
   Bool enableEntropy_ = true;
+  Bool enableRoughness_ = true;
   Bool enableTransformation_ = true;
   Bool enableConditional_ = true;
   Scalar entropyTolerance_ = 2e-3;
+  Scalar roughnessTolerance_ = 1e-2;
   Scalar cdfTolerance_ = 2e-5;
   Scalar pdfTolerance_ = 1e-3;
   Scalar ddfTolerance_ = 1e-3;
@@ -1506,6 +1578,7 @@ private:
   Scalar domainTolerance_ = 1e-2;
   UnsignedInteger momentsSamplingSize_ = 1000000;
   UnsignedInteger entropySamplingSize_ = 1000000;
+  UnsignedInteger roughnessSamplingSize_ = 100000;
   UnsignedInteger domainSamplingSize_ = 1000000;
   UnsignedInteger pdfSamplingSize_ = 10;
   UnsignedInteger cdfSamplingSize_ = 5;

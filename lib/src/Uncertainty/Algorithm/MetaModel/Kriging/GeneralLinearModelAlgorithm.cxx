@@ -601,15 +601,17 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
     rho_ -= Phi * beta_;
   }
   LOGDEBUG("Compute log(sqrt(|det(C)|)) = log(|det(L)|)");
-  Scalar logDetL = 0.0;
-  Point diagonal(covarianceCholeskyFactorHMatrix_.getDiagonal());
-  for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
+  Scalar logDeterminant = 0.0;
+  try
   {
-    const Scalar lii = diagonal[i];
-    if (lii <= 0.0) return SpecFunc::LowestScalar;
-    logDetL += log(lii);
+    logDeterminant = covarianceCholeskyFactorHMatrix_.computeLogDeterminant();
+    return 2.0 * logDeterminant;
   }
-  return 2.0 * logDetL;
+  catch (const InternalException & exception)
+  {
+    LOGDEBUG(OSS(false) << "Undefined log-determinant: " << exception.what());
+    return SpecFunc::LowestScalar;
+  }
 }
 
 /* Optimization solver accessor */

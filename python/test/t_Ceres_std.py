@@ -3,6 +3,7 @@
 import openturns as ot
 import openturns.testing as ott
 import sys
+import os
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
@@ -99,3 +100,50 @@ for algoName in algoNames:
             if not line_search:
                 # line search algorithms converge less well
                 ott.assert_almost_equal(x_star, p_ref, 0.1)
+
+# extra coverage: repr/str, algorithm name, checkProblem branches, save/load
+assert isinstance(repr(algo), str)
+assert isinstance(str(algo), str)
+with ott.assert_raises(Exception):
+    ot.Ceres(problem, "UNKNOWN_ALGORITHM")
+simpleObjective = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2^2"])
+with ott.assert_raises(Exception):
+    ot.Ceres(ot.OptimizationProblem(ot.SymbolicFunction(["x"], ["x", "2*x"])))
+with ott.assert_raises(Exception):
+    ot.Ceres(
+        ot.NearestPointProblem(
+            ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2^2"]), 1.0
+        )
+    )
+boundedProblem = ot.OptimizationProblem(simpleObjective)
+boundedProblem.setBounds(ot.Interval([-1.0] * 2, [1.0] * 2))
+with ott.assert_raises(Exception):
+    ot.Ceres(boundedProblem, "LBFGS")
+with ott.assert_raises(Exception):
+    ot.Ceres(boundedProblem, "LEVENBERG_MARQUARDT")
+constrainedProblem = ot.OptimizationProblem(simpleObjective)
+constrainedProblem.setInequalityConstraint(
+    ot.SymbolicFunction(["x1", "x2"], ["x1+x2-1.0"])
+)
+with ott.assert_raises(Exception):
+    ot.Ceres(constrainedProblem)
+integerProblem = ot.OptimizationProblem(simpleObjective)
+integerProblem.setVariablesType(
+    [ot.OptimizationProblemImplementation.INTEGER] * 2
+)
+with ott.assert_raises(Exception):
+    ot.Ceres(integerProblem, "LBFGS")
+badStart = ot.Ceres(ot.OptimizationProblem(simpleObjective), "LBFGS")
+badStart.setStartingPoint([0.0])
+with ott.assert_raises(Exception):
+    badStart.run()
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("ceres.xml"))
+study.add("algo", algo)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("ceres.xml"))
+loadedStudy.load()
+assert loadedStudy.hasObject("algo")
+
+os.remove("ceres.xml")

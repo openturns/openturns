@@ -68,6 +68,12 @@ public:
   Sample generateWithWeights(Point & weightsOut) const override;
   Sample generateWithRestart(const UnsignedInteger nRestart) const;
 
+  /** Distribution accessor */
+  void setDistribution(const Distribution & distribution) override;
+
+  /** Size accessor */
+  void setSize(const UnsignedInteger size) override;
+
   /** String converter */
   String __repr__() const override;
 

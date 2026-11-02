@@ -100,7 +100,7 @@ Inequality constraints are defined by a function :math:`h` such that :math:`h(x)
 The inequality expression above has to be modified to match this formulation.
 
 >>> # Definition of constraints
->>> # Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
+>>> # Constraints in the library are defined as g(x) = 0 and h(x) >= 0
 >>> #    No equality constraint -> nothing to do
 >>> #    Inequality constraints:
 >>> h = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-(x1-1/2)^2 - (x2-1/2)^2 + 1/4', '-x0 + x1', '-x0 - x2 - x3 + 2'])

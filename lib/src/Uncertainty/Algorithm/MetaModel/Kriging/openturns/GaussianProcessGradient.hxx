@@ -65,7 +65,7 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Operator () */
-  //   using GradientImplementation::gradient;
+    using GradientImplementation::gradient;
   Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */

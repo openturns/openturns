@@ -125,7 +125,8 @@ void ConstantEvaluation::load(Advocate & adv)
 
 Bool ConstantEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const ConstantEvaluation &>(other);
+  const ConstantEvaluation * p_other = dynamic_cast<const ConstantEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Constant accessor */

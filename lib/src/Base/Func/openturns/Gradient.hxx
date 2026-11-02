@@ -78,6 +78,9 @@ public:
   /** Gradient method */
   virtual Matrix gradient(const Point & inP) const;
 
+  /** Batch gradient method, see issue #2741 */
+  virtual Sample gradient(const Sample & inS) const;
+
   /** Accessor for input point dimension */
   virtual UnsignedInteger getInputDimension() const;
 

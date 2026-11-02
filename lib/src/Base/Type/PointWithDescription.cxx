@@ -47,21 +47,13 @@ PointWithDescription::PointWithDescription(const UnsignedInteger size,
 }
 
 
-
 /* Constructor from a collection */
-PointWithDescription::PointWithDescription(const Collection<Scalar> & coll)
-  : Point(coll)
-  , description_(coll.getSize())
+PointWithDescription::PointWithDescription(const Point & values, const Description & description)
+  : Point(values)
+  , description_(description.getSize() ? description : Description(values.getSize()))
 {
-  // Nothing to do
-}
-
-/* Constructor from a base class */
-PointWithDescription::PointWithDescription(const Pointer<Point> & p_base)
-  : Point(*p_base)
-  , description_(p_base->getSize())
-{
-  // Nothing to do
+  if (description_.getSize() != values.getSize())
+    throw InvalidDimensionException(HERE) << "PointWithDescription: description dimension (" << description.getSize() << ") must match values dimension (" << values.getSize() << ")";
 }
 
 
@@ -155,6 +147,29 @@ void PointWithDescription::load(Advocate & adv)
 {
   Point::load(adv);
   adv.loadAttribute( "description_", description_ );
+}
+
+/* Comparison operator */
+Bool operator ==(const PointWithDescription & lhs,
+                 const PointWithDescription & rhs)
+{
+  return (static_cast<const Point &>(lhs) == static_cast<const Point &>(rhs)) && (lhs.getDescription() == rhs.getDescription());
+}
+
+/* Comparison operator */
+Bool operator !=(const PointWithDescription & lhs,
+                 const PointWithDescription & rhs)
+{
+  return !(lhs == rhs);
+}
+
+/* Ordering operator */
+Bool operator <(const PointWithDescription & lhs,
+                const PointWithDescription & rhs)
+{
+  if (static_cast<const Point &>(lhs) < static_cast<const Point &>(rhs)) return true;
+  if (static_cast<const Point &>(rhs) < static_cast<const Point &>(lhs)) return false;
+  return lhs.getDescription() < rhs.getDescription();
 }
 
 

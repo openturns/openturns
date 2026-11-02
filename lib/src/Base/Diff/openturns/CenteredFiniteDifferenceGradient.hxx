@@ -81,6 +81,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
+  using GradientImplementation::gradient;
   Matrix gradient(const Point & inP) const override;
 
 protected:

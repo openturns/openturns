@@ -62,4 +62,10 @@ Sample Experiment::generate() const
   return getImplementation()->generate();
 }
 
+/* Sample generation with weights */
+Sample Experiment::generateWithWeights(Point & weights) const
+{
+  return getImplementation()->generateWithWeights(weights);
+}
+
 END_NAMESPACE_OPENTURNS

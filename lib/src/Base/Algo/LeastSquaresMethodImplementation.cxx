@@ -31,6 +31,12 @@ static const Factory<LeastSquaresMethodImplementation> Factory_LeastSquaresMetho
 /* Default constructor */
 LeastSquaresMethodImplementation::LeastSquaresMethodImplementation()
   : PersistentObject()
+  , proxy_()
+  , weight_()
+  , weightSqrt_()
+  , hasUniformWeight_(true)
+  , currentIndices_()
+  , initialIndices_()
 {
   // Nothing to do
 }
@@ -147,6 +153,12 @@ Point LeastSquaresMethodImplementation::solveNormalGram(const Point & )
 CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
 {
   throw NotYetImplementedException(HERE) << " in LeastSquaresMethodImplementation::getGramInverse";
+}
+
+Matrix LeastSquaresMethodImplementation::getPseudoInverse() const
+{
+  // B = (A^T A)^{-1} A^T from the Gram inverse on the current design
+  return Matrix(getGramInverse()) * computeWeightedDesign().transpose();
 }
 
 SymmetricMatrix LeastSquaresMethodImplementation::getH() const
@@ -278,12 +290,40 @@ void LeastSquaresMethodImplementation::trashDecomposition()
 void LeastSquaresMethodImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
+  adv.saveAttribute( "proxy_", proxy_ );
+  adv.saveAttribute( "weight_", weight_ );
+  adv.saveAttribute( "weightSqrt_", weightSqrt_ );
+  adv.saveAttribute( "hasUniformWeight_", hasUniformWeight_ );
+  adv.saveAttribute( "currentIndices_", currentIndices_ );
+  adv.saveAttribute( "initialIndices_", initialIndices_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void LeastSquaresMethodImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+  if (adv.hasAttribute("proxy_"))
+  {
+    adv.loadAttribute( "proxy_", proxy_ );
+    adv.loadAttribute( "weight_", weight_ );
+    if (adv.hasAttribute("weightSqrt_"))
+    {
+      adv.loadAttribute( "weightSqrt_", weightSqrt_ );
+      adv.loadAttribute( "hasUniformWeight_", hasUniformWeight_ );
+    }
+    else
+    {
+      // Backward compatibility: recompute derived weight data
+      if (weight_.getSize() > 0) setWeight(weight_);
+      else
+      {
+        weightSqrt_.clear();
+        hasUniformWeight_ = true;
+      }
+    }
+    adv.loadAttribute( "currentIndices_", currentIndices_ );
+    adv.loadAttribute( "initialIndices_", initialIndices_ );
+  }
 }
 
 END_NAMESPACE_OPENTURNS

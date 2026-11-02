@@ -102,6 +102,12 @@ UnsignedInteger IndicatorEvaluation::getOutputDimension() const
   return 1;
 }
 
+/* Is it safe to call in parallel? */
+Bool IndicatorEvaluation::isParallel() const
+{
+  return domain_.getImplementation()->isParallel();
+}
+
 /* Method save() stores the object through the StorageManager */
 void IndicatorEvaluation::save(Advocate & adv) const
 {
@@ -118,7 +124,8 @@ void IndicatorEvaluation::load(Advocate & adv)
 
 Bool IndicatorEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const IndicatorEvaluation &>(other);
+  const IndicatorEvaluation * p_other = dynamic_cast<const IndicatorEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

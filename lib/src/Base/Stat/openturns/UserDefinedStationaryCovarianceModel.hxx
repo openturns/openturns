@@ -64,6 +64,7 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Scalar tau) const override;
   Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,

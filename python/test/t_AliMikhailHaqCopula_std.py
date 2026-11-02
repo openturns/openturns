@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -122,8 +123,26 @@ ott.assert_almost_equal(unitCopula.computeInverseArchimedeanGenerator(1.0), 0.5,
 ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorDerivative(0.5), -4.0, 0.0, 0.0)
 ott.assert_almost_equal(unitCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 16.0, 0.0, 0.0)
 
+# Theta=0 is the independent copula, of generator -log(t)
+independentCopula = ot.AliMikhailHaqCopula(0.0)
+ott.assert_almost_equal(independentCopula.computeArchimedeanGeneratorDerivative(0.5), -2.0, 0.0, 0.0)
+ott.assert_almost_equal(
+    independentCopula.computeArchimedeanGeneratorSecondDerivative(0.5), 4.0, 0.0, 0.0
+)
+
 # --- AliMikhailHaqCopula: endpoints allowed, independence generator ---
 assert ot.AliMikhailHaqCopula(1.0).getTheta() == 1.0
 assert ot.AliMikhailHaqCopula(-1.0).getTheta() == -1.0
 with ott.assert_raises(Exception):
     ot.AliMikhailHaqCopula(1.5)
+
+# --- AliMikhailHaqCopula: entropy is finite at endpoints, see #3382 ---
+ott.assert_almost_equal(
+    ot.AliMikhailHaqCopula(-1.0).computeEntropy(),
+    0.5 + m.log(2.0) - m.pi**2 / 8.0,
+    1e-12,
+    0.0,
+)
+ott.assert_almost_equal(
+    ot.AliMikhailHaqCopula(1.0).computeEntropy(), 0.5 - m.log(2.0), 1e-12, 0.0
+)

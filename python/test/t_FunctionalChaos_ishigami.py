@@ -294,3 +294,11 @@ for i, idx in enumerate(computedIndices):
     multiIndex = tuple(enumerateFunction(idx))
     if multiIndex not in exactMultiIndicesSet:
         ott.assert_almost_equal(computedCoefficients[i, 0], 0.0, 0.0, 1.0e-7)
+# Mismatched sample and distribution are rejected, see issue #3144
+distribution2 = ot.JointDistribution([ot.Uniform(1.0, 2.0)] * dimension)
+sample2 = distribution.getSample(10)
+output2 = model(sample2)
+with ott.assert_raises(TypeError):
+    ot.FunctionalChaosAlgorithm(
+        sample2, output2, distribution2, listAdaptiveStrategy[0]
+    )

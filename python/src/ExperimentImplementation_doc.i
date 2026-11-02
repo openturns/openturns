@@ -57,4 +57,37 @@ Examples
 %enddef
 %feature("docstring") OT::ExperimentImplementation::generate
 OT_Experiment_generate_doc
+%define OT_Experiment_generateWithWeights_doc
+"Generate points and weights according to the type of the experiment.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    The points which constitute the design of experiments.
+weights : :class:`~openturns.Point`
+    The weights associated to the points. Experiments defined in Python
+    may provide a *generateWithWeights* method returning a
+    (*sample*, *weights*) pair; otherwise uniform weights are returned.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> class WeightedExp:
+...     def generate(self):
+...         return ot.Normal(1).getSample(3)
+...     def generateWithWeights(self):
+...         return (ot.Normal(1).getSample(3), [0.2, 0.3, 0.5])
+>>> experiment = ot.Experiment(WeightedExp())
+>>> weights = ot.Point()
+>>> sample = experiment.generateWithWeights(weights)
+>>> print(sample.getSize())
+3
+>>> print(weights)
+[0.2,0.3,0.5]"
+%enddef
+%feature("docstring") OT::ExperimentImplementation::generateWithWeights
+OT_Experiment_generateWithWeights_doc
+%feature("docstring") OT::Experiment::generateWithWeights
+OT_Experiment_generateWithWeights_doc
 

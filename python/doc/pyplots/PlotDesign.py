@@ -12,4 +12,5 @@ design = lhs.generate()
 subdivisions = [size] * dim
 
 fig = plt.figure(figsize=(8, 8))
-otv.PlotDesign(design, bounds, subdivisions, figure=fig)
+grid = ot.VisualTest.DrawPairsWithGrid(design, bounds, subdivisions)
+view = otv.View(grid, figure=fig)

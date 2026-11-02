@@ -125,5 +125,11 @@ Matrix Gradient::gradient(const Point & inP) const
   return getImplementation()->gradient(inP);
 }
 
+/* Batch gradient method */
+Sample Gradient::gradient(const Sample & inS) const
+{
+  return getImplementation()->gradient(inS);
+}
+
 
 END_NAMESPACE_OPENTURNS

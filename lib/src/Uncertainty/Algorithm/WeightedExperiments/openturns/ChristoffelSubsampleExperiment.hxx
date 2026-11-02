@@ -35,10 +35,23 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * Weighted experiment drawing size_ points from the Christoffel
  * distribution associated to the first spaceDimension_ functions
- * of an orthogonal basis, with weights w = m / k_m. The space
- * dimension m = n-k is the largest dimension supplied by the basis:
- * k=0 with an inexhaustible basis, and k=1,2,... is tried until
- * the basis supplies m functions.
+ * of an orthogonal basis, with importance weights w = m / k_m. An
+ * exactly-size_ supplied design is the exception: it is returned
+ * unchanged with unit weights because no selection takes place.
+ * The space dimension m = n-k is the largest dimension supplied by
+ * the basis: k=0 with an inexhaustible basis, and k=1,2,... is tried
+ * until the basis supplies m functions. By default, fresh designs use
+ * the exact projection DPP of size m, completed by independent
+ * Christoffel points when n > m. When the Certified ResourceMap key is
+ * true, the certified sizing n = gamma m log(m) is used instead, with
+ * the Gamma key as the constant: generateWithWeights() draws n
+ * independent Christoffel points and keeps all of them, and supplied
+ * points are rejected. In the default mode, supplied points are either
+ * volume-sampled when there are more than n of them, returned with
+ * unit weights when there are exactly n, or used as the conditioning
+ * set of a projection DPP when there are at most m of them. Volume
+ * sampling assumes that the supplied candidates are draws from the
+ * reference measure.
  */
 class OT_API ChristoffelSubsampleExperiment
   : public WeightedExperimentImplementation
@@ -77,7 +90,9 @@ public:
   /** Reference distribution accessor (read-only, embedded in the basis) */
   void setDistribution(const Distribution & distribution) override;
 
-  /** Deduce the space dimension from the target size */
+  /** Deduce the space dimension from the target size. When the
+      Certified key is true, use n = gamma m log(m); otherwise return
+      the target size itself and let the basis capacity choose m = n-k. */
   static UnsignedInteger DeduceSpaceDimension(const UnsignedInteger size);
 
   /** Eigenvalues of the weighted design Gramian, the frame stability certificate */
@@ -92,8 +107,8 @@ public:
   /** Sample generation with weights */
   Sample generateWithWeights(Point & weightsOut) const override;
 
-  /** Sample generation with weights from a pool prepended with existing points */
-  Sample generateWithWeights(const Sample & poolSample, Point & weightsOut) const;
+  /** Sample generation with weights from supplied points */
+  Sample generateWithWeights(const Sample & suppliedSample, Point & weightsOut) const;
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -103,44 +118,50 @@ public:
 protected:
   Bool equals(const WeightedExperimentImplementation & other) const override;
 
-  /** Target pool size from the oversampling factor */
-  UnsignedInteger computePoolSize() const;
+  /** Draw fresh Christoffel points */
+  Sample drawChristoffelPoints(const UnsignedInteger count) const;
 
-  /** Draw fresh pool points from the Christoffel law */
-  Sample drawPool(const UnsignedInteger count) const;
-
-  /** Density ratios of pool points, reference over Christoffel law */
-  Point computePoolWeights(const Sample & pool) const;
-
-  /** Thin a pool to size_, weigh and frame-check the design, growing a
-      numerically unusable pool up to the cap */
-  Sample finalizeDesign(const Sample & pool,
-                        const Point & poolWeights,
-                        Point & weightsOut) const;
+  /** Density ratios of design points, reference over Christoffel law */
+  Point computeImportanceWeights(const Sample & sample) const;
 
 private:
-  /** Rebuild the derived members from basis_ and size_ */
+  /** Read the certified settings from the ResourceMap */
+  void initializeSettings();
+
+  /** Rebuild the derived members from basis_, size_ and the certified settings */
+  void rebuild();
+
+  /** Refresh the settings and rebuild the derived members */
   void update();
 
-  /** Gramian of a subset: mean over kept of w * phi * phi^T, via BLAS */
+  /** Largest m >= 1 such that gamma * m * log(m) <= size. Gamma must
+      be finite and strictly positive. */
+  static UnsignedInteger ComputeSpaceDimension(const UnsignedInteger size,
+      const Scalar gamma);
+
+  /** Gramian of a subset of sqrt(w) * phi, via BLAS */
   static SymmetricMatrix ComputeGramian(const Matrix & features,
-                                        const Point & weights,
+                                        const Point & designWeights,
                                         const Indices & kept);
 
-  /** Forward barrier greedy selection: kept indices plus barrier weights */
-  void barrierSelection(const Sample & pool,
-                        const Point & poolWeights,
-                        const Matrix & features,
-                        Indices & keptOut,
-                        Point & barrierWeightsOut) const;
+  /** Exact volume sample of the given size from the rows of a feature matrix */
+  static Indices ComputeVolumeSample(const Matrix & features,
+                                     const UnsignedInteger size);
 
-  /** Greedy removal of pool points down to size_, keeping the largest min eigenvalue */
-  Indices thinIndices(const Sample & pool,
-                      const Point & poolWeights,
-                      const Matrix & features) const;
+  /** Raw finite-basis features of a sample, one row per point */
+  Matrix computeFeatures(const Sample & sample,
+                         const Bool checkFinite = true) const;
 
-  /** Finite basis evaluations on a pool, shared by the thinning step and the frame check */
-  Matrix computePoolFeatures(const Sample & pool) const;
+  /** Exact projection determinantal point process sample, optionally
+      conditioned on supplied points */
+  Sample drawProjectionDPP(const UnsignedInteger size,
+                           const Sample & fixed = Sample()) const;
+
+  /** Check the weighted design frame bounds, optionally warning on failure.
+      Returns true when the design is inside the frame band. */
+  Bool checkFrame(const Sample & sample,
+                  const Point & weights,
+                  const Bool warn = true) const;
 
   /** Identity index set of given size */
   static Indices IdentityIndices(const UnsignedInteger size);
@@ -150,6 +171,20 @@ private:
 
   /** The number of basis functions used */
   UnsignedInteger spaceDimension_ = 0;
+
+  /** Certified sizing switch, initialized from the ResourceMap by update()
+      and persisted across save/load. When false, m = n-k is chosen by the
+      basis capacity. */
+  Bool certified_ = false;
+
+  /** Certified sizing constant, initialized from the ResourceMap by update()
+      and persisted across save/load when certified_ is true. */
+  Scalar gamma_ = 0.0;
+
+  /** Maximum number of independent certified draws tried before giving up
+      on the frame certificate, initialized from the ResourceMap by update()
+      and persisted across save/load. */
+  UnsignedInteger maxAttempts_ = 1;
 
   /** The Christoffel distribution sampled by the experiment */
   ChristoffelDistribution christoffelDistribution_;

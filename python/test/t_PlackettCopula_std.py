@@ -124,3 +124,6 @@ for theta in [0.5, 2.0, 5.0]:
 # hasIndependentCopula at theta=0 and theta=1
 assert not ot.PlackettCopula(0.0).hasIndependentCopula()
 assert ot.PlackettCopula(1.0).hasIndependentCopula()
+
+# --- PlackettCopula: entropy at independence is zero ---
+ott.assert_almost_equal(ot.PlackettCopula(1.0).computeEntropy(), 0.0, 1e-12, 0.0)

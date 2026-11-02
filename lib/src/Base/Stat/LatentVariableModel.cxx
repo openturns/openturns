@@ -328,6 +328,12 @@ void LatentVariableModel::load(Advocate & adv)
   adv.loadAttribute("activeLatentVariables_", activeLatentVariables_);
   adv.loadAttribute("nLevels_", nLevels_);
   adv.loadAttribute("latentDim_", latentDim_);
+  activeLatentCoordinateDim_ = 1 + latentDim_ * (nLevels_ - 2);
+  latentCovarianceModel_ = SquaredExponential(latentDim_);
+  latentCovarianceModel_.setScale(Point(latentDim_, scale_[0]));
+  latentCovarianceModel_.setAmplitude(amplitude_);
+  latentCovarianceModel_.setNuggetFactor(nuggetFactor_);
+  updateLatentCovarianceMatrix();
 }
 
 END_NAMESPACE_OPENTURNS

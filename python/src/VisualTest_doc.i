@@ -732,6 +732,53 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::VisualTest::DrawPairsWithGrid
+"Draw 2-d projections of a design with grid lines in each plane.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Design to draw, of dimension >= 2.
+bounds : :class:`~openturns.Interval`, optional
+    Bounds of the design in each direction, including outer grid edges.
+    By default, bounds are computed from the sample.
+subdivisions : sequence of int, optional
+    Number of subdivisions in each direction, each >= 1.
+    By default, 5 subdivisions in each direction.
+
+Returns
+-------
+grid : :class:`~openturns.GridLayout`
+    Grid of 2-d projections, each graph containing a :class:`~openturns.Grid`
+    and a :class:`~openturns.Cloud`.
+
+Notes
+-----
+Each 2D projection shows the sample points over a uniform grid defined by
+*bounds* and *subdivisions*, including the outer edges. This allows one to
+see how the sample fills the space, e.g. the stratification of LHS or
+low-discrepancy sequences.
+
+The default subdivisions (5 in each direction) keep large samples readable.
+For designs with a known stratification (e.g. LHS of size 10), set
+*subdivisions* to the design size in each direction.
+
+If *bounds* is not given it is estimated from the sample, which is biased
+for uniform samples; providing the true bounds (e.g. the distribution range)
+is recommended.
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.JointDistribution([ot.Uniform(0.0, 1.0)] * 3)
+>>> sample = distribution.getSample(10)
+>>> grid = ot.VisualTest.DrawPairsWithGrid(sample, distribution.getRange(), [10, 10, 10])
+>>> View(grid).show()"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::VisualTest::DrawInsideOutside
 "Draw the 2D projections of a sample, colored according to whether or not the points belong to the domain.
 The projections grid is returned as a :class:`~openturns.GridLayout`.

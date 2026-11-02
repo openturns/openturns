@@ -61,6 +61,12 @@ public:
   /** Attributes for SpaceFilling */
   SpaceFilling getSpaceFilling() const;
 
+  /** Distribution accessor */
+  void setDistribution(const Distribution & distribution) override;
+
+  /** Size accessor */
+  void setSize(const UnsignedInteger size) override;
+
   /** Result accessor */
   virtual LHSResult getResult() const;
 

@@ -1,30 +1,30 @@
 .. _cross_validation:
 
-Validation and cross validation of metamodels
----------------------------------------------
+Validation and cross validation of surrogate models
+---------------------------------------------------
 
 Introduction
 ~~~~~~~~~~~~
 
-In ordinary validation of a metamodel, we hold some observations from the
+In ordinary validation of a surrogate model, we hold some observations from the
 sample and train the model on the remaining observations.
-Then, we test the metamodel against the hold out observations.
+Then, we test the surrogate model against the hold out observations.
 One of the problems of this method is that the surrogate
 model is trained using only a subset of the available data.
 As a consequence, the estimated error can be pessimistic or, on the contrary, overly optimistic.
 In cross-validation, the entirety of the data set is sequentially used for either training or validation.
 Hence, more of the available data is used, resulting in an improved
-accuracy of the estimated error of the metamodel.
+accuracy of the estimated error of the surrogate model.
 One of the problems of cross-validation is that we have to train
-the metamodel several times, which can be time consuming.
+the surrogate model several times, which can be time consuming.
 In this case, the fast methods that we present below can be useful.
 
 Let :math:`\model: \physicalInputSpace \rightarrow \Rset` be a physical
 model where :math:`\physicalInputSpace \subseteq \Rset^{\inputDim}`
 is the domain of the input parameters :math:`\inputReal`.
-Let :math:`\metaModel` be a metamodel of :math:`\model`, i.e.
+Let :math:`\metaModel` be a surrogate model of :math:`\model`, i.e.
 an approximation of the function.
-Once the metamodel :math:`\metaModel`
+Once the surrogate model :math:`\metaModel`
 of the original numerical model :math:`\model` has been
 built, we may estimate the mean squared error, i.e. the
 discrepancy between the response surface and the true model response
@@ -62,7 +62,7 @@ Simple validation
 In the ordinary or naive validation method, we divide the data sample (i.e.
 the experimental design) into two independent sub-samples:
 the training and the test set.
-In this case, the metamodel :math:`\metaModel`
+In this case, the surrogate model :math:`\metaModel`
 is built from one sub-sample, i.e. the *training set*, and its
 performance is assessed by comparing its predictions to the other
 subset, i.e. the *test set*.
@@ -132,14 +132,14 @@ where :math:`\bar{y}` is the sample mean of the output:
     \bar{y} = \frac{1}{\sampleSize} \sum_{j = 1}^\sampleSize y^{(j)}.
 
 If the test set :math:`\set{D}_n` is not independent from the training set
-(the set used to calibrate the metamodel), then the previous estimator
+(the set used to calibrate the surrogate model), then the previous estimator
 may underestimate the true value of the mean squared error.
 Assuming that the sample is made of i.i.d. observations,
 in order to create a test set independent from the training set, a
 simple method is to split the data set into two parts.
 The drawback of this method is that this reduces the size of the training
 set, so that the mean squared error evaluated on the test set can be pessimistic
-(because the metamodel is trained with less data) or optimistic (because the R2
+(because the surrogate model is trained with less data) or optimistic (because the R2
 score has a greater variability).
 The leave-one-out (LOO) and K-Fold cross validation methods presented in the next sections
 have the advantage of using all of the available data.
@@ -156,14 +156,14 @@ two other estimators can be considered:
 the leave-one-out and K-Fold estimators, which are the topic of the next
 sections.
 
-When implemented naively, these methods may require to build many metamodels,
+When implemented naively, these methods may require to build many surrogate models,
 which can be time-consuming.
-Fortunately, there are *shortcuts* for many metamodels
+Fortunately, there are *shortcuts* for many surrogate models
 including linear least squares and splines (and others).
 For a linear least squares model, some methods use the
 Sherman-Morrisson-Woodbury formula to get updates of the inverse Gram matrix,
 as we are going to see later in this document.
-This makes it possible to easily evaluate metamodel errors
+This makes it possible to easily evaluate surrogate model errors
 of a linear least squares model.
 
 Leave-one-out cross-validation
@@ -171,7 +171,7 @@ Leave-one-out cross-validation
 
 In this section, we present the naive leave-one-out error estimator,
 also known as jackknife in statistics.
-Let :math:`\metaModel^{(-j)}` be the metamodel estimated from the
+Let :math:`\metaModel^{(-j)}` be the surrogate model estimated from the
 leave-one-out experimental design :math:`\set{D}_n \setminus \{\inputReal^{(j)}\}`.
 This is the experimental design where the :math:`j`-th observation
 :math:`\inputReal^{(j)}` is set aside.
@@ -213,10 +213,10 @@ Finally, the LOO mean squared error estimator is:
     & =  \frac{1}{\sampleSize} \sum_{j = 1}^\sampleSize \left( \Delta^{(j)} \right)^2
 
 One of the drawbacks of the naive method is that it may require
-to estimate :math:`\sampleSize` different metamodels.
-If :math:`\sampleSize` is large or if training each metamodel is costly,
+to estimate :math:`\sampleSize` different surrogate models.
+If :math:`\sampleSize` is large or if training each surrogate model is costly,
 then the leave-one-out method can be impractical.
-If, however, the metamodel is based on the linear least squares method,
+If, however, the surrogate model is based on the linear least squares method,
 then the leave-one-out error may be computed much more efficiently, as
 shown in the next section.
 
@@ -285,13 +285,13 @@ given by the normal equations (see [Bjorck1996]_ eq. 1.1.15 page 6):
 
     \widehat{\vect{a}} = \left(\boldsymbol{D}^T \boldsymbol{D} \right)^{-1} \boldsymbol{D}^T \vect{y}.
 
-The linear metamodel is the linear model with estimated coefficients:
+The linear surrogate model is the linear model with estimated coefficients:
 
 .. math::
 
     \metaModel(\inputReal) = \hat{a}_0 + \sum_{i=1}^{\inputDim} \hat{a}_i x_i.
 
-The vector of predictions from the metamodel is:
+The vector of predictions from the surrogate model is:
 
 .. math::
 
@@ -330,8 +330,8 @@ We can prove that the LOO residual is:
     = \frac{y^{(j)} - \widehat{g}\left(\inputReal^{(j)}\right)}{1 - h_{jj}}
 
 where :math:`h_{jj}` is the :math:`j`-th diagonal term of the hat matrix.
-In other words, the residual of the LOO metamodel is equal to the
-residual of the full metamodel corrected by :math:`1 - h_{jj}`.
+In other words, the residual of the LOO surrogate model is equal to the
+residual of the full surrogate model corrected by :math:`1 - h_{jj}`.
 
 The number :math:`h_{jj}` is the *leverage* of the :math:`j`-th
 observation.
@@ -351,7 +351,7 @@ of all data points (see [sen1990]_ page 155).
 The equation :eq:`predictionCorrection` implies that if :math:`h_{jj}` is
 large (i.e. close to 1), then removing the :math:`j`-th observation
 from the training sample changes the residual of the leave-one-out
-metamodel significantly.
+surrogate model significantly.
 
 Using the equation :eq:`predictionCorrection` avoids to actually build the LOO surrogate.
 We substitute the previous expression in the definition of the leave-one-out
@@ -428,7 +428,7 @@ If the sample size :math:`\sampleSize` is a multiple of :math:`k`, then the
 folds can have exactly the same size.
 
 For any :math:`\ell \in \{1, ..., k\}`, let :math:`\metaModel^{(-\set{D}_{\sampleSize_\ell})}`
-be the metamodel estimated on the K-fold sample
+be the surrogate model estimated on the K-fold sample
 :math:`\set{D}_n \setminus \set{D}_{\sampleSize_\ell}`.
 Let :math:`\Delta^{(\ell, j)}` be defined as the K-Fold residual:
 
@@ -584,7 +584,7 @@ where :math:`\boldsymbol{I}_{n_{\ell}} \in \Rset^{n_{\ell} \times n_{\ell}}` is 
     = \left(y^{(j)}\right)^T_{j \in \set{S}_{\ell}}
 
 and :math:`\widehat{\boldsymbol{y}}_{\ell} \in \Rset^{n_{\ell}}` is the corresponding
-vector of output predictions from the linear least squares metamodel:
+vector of output predictions from the linear least squares surrogate model:
 
 .. math::
 
@@ -613,13 +613,13 @@ The reason for this behavior is that the model selection produces a set
 of predictors which fits the data particularly well.
 If a model selection method is involved, only the simple validation
 method can produce an unbiased estimator, because the model selection
-is then involved each time a new metamodel is trained i.e. each
+is then involved each time a new surrogate model is trained i.e. each
 time its coefficients are estimated.
 The fast method, on the other hand, only considers the basis which is the
 result of a single training step.
 
 Notice, however, that the order of magnitude of the error estimated
-using the fast method with a metamodel involving a model selection may be satisfactory
+using the fast method with a surrogate model involving a model selection may be satisfactory
 in some cases.
 
 Conclusion

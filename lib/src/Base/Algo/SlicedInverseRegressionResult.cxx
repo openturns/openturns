@@ -68,15 +68,6 @@ Function SlicedInverseRegressionResult::getTransformation() const
   return LinearFunction(center_, Point(outputDim), directions_.transpose());
 }
 
-Function SlicedInverseRegressionResult::getInverseTransformation() const
-{
-  const UnsignedInteger outputDim = directions_.getNbColumns();
-  // Matrix::solveLinearSystem uses SVD (generalized inverse)
-  // to handle the rectangular case where outputDim < inputDimension
-  Matrix inv(directions_.transpose().solveLinearSystem(IdentityMatrix(outputDim)));
-  return LinearFunction(Point(outputDim, 0.0), center_, inv);
-}
-
 Matrix SlicedInverseRegressionResult::getDirections() const
 {
   return directions_;

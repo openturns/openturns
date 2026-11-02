@@ -30,7 +30,7 @@ Use this functionality with caution:
      projected (see [ernst2012]_).
      See :any:`functional_chaos` for more details on this topic.
 
-OpenTURNS implements the following **specific orthonormal** [#orthonormal]_
+The library implements the following **specific orthonormal** [#orthonormal]_
 univariate polynomial families together with their associated **distribution
 families**.
 
@@ -69,7 +69,7 @@ by the substitution :math:`x \mapsto (x - \beta)/\alpha`. For example, if
 :math:`Z \sim \cN(0, 1)`, then :math:`X = \mu + \sigma Z \sim \cN(\mu, \sigma)`
 with :math:`\alpha = \sigma` and :math:`\beta = \mu`.
 
-In addition, OpenTURNS provides generic algorithms for building orthonormal
+In addition, the library provides generic algorithms for building orthonormal
 univariate polynomial families with respect to an arbitrary probability
 measure, given as a :class:`~openturns.Distribution`.
 Currently, :class:`~openturns.AdaptiveStieltjesAlgorithm` is the only

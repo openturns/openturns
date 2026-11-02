@@ -2,6 +2,7 @@
 
 import openturns as ot
 import os
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -97,3 +98,62 @@ assert x in intersection, "intersection 3x"
 x = [3.0]
 assert x not in union, "!union 3x"
 assert x not in intersection, "!intersection 3x"
+
+# Extra coverage (no output to preserve expout)
+default_ls = ot.LevelSet()
+assert default_ls == ot.LevelSet()
+assert levelSet1 == levelSet1
+assert not levelSet1 == levelSet2
+assert not levelSet1 != levelSet1
+assert len(repr(levelSet1)) > 0
+assert len(str(levelSet1)) > 0
+# constructor with wrong output dimension
+with ott.assert_raises(Exception):
+    ot.LevelSet(ot.SymbolicFunction(["x"], ["x", "x"]), ot.Less(), 0.0)
+# accessors and their error paths
+ls_acc = ot.LevelSet(
+    ot.SymbolicFunction(["x", "y"], ["x + y"]), ot.LessOrEqual(), 1.0
+)
+assert ls_acc.getOperator() == ot.LessOrEqual()
+ls_acc.setOperator(ot.Greater())
+assert ls_acc.getOperator() == ot.Greater()
+assert ls_acc.getLevel() == 1.0
+ls_acc.setLevel(2.0)
+assert ls_acc.getLevel() == 2.0
+assert ls_acc.getFunction().getInputDimension() == 2
+with ott.assert_raises(Exception):
+    ls_acc.setFunction(ot.SymbolicFunction(["x", "y", "z"], ["x"]))
+ls_acc.setFunction(ot.SymbolicFunction(["x", "y"], ["x - y"]))
+with ott.assert_raises(Exception):
+    ls_acc.setLowerBound([0.0])
+with ott.assert_raises(Exception):
+    ls_acc.setUpperBound([0.0, 0.0, 0.0])
+ls_acc.setLowerBound([-2.0, -2.0])
+ls_acc.setUpperBound([2.0, 2.0])
+ott.assert_almost_equal(ls_acc.getLowerBound(), [-2.0, -2.0])
+ott.assert_almost_equal(ls_acc.getUpperBound(), [2.0, 2.0])
+# contains with wrong dimensions
+with ott.assert_raises(Exception):
+    ls_acc.contains([1.0])
+with ott.assert_raises(Exception):
+    ls_acc.contains(ot.Sample(3, 3))
+# contains(Sample) with bounding box (pruning path)
+inside = ls_acc.contains(ot.Sample([[-3.0, -3.0], [1.5, -1.0], [0.0, 0.0]]))
+assert list(inside) == [False, True, False]
+# contains(Sample) without bounding box
+ls_nobb = ot.LevelSet(
+    ot.SymbolicFunction(["x", "y"], ["x^4 + y^4"]), ot.LessOrEqual(), 1.0
+)
+assert list(ls_nobb.contains(ot.Sample([[-0.5, -0.5], [1.5, 0.0]]))) == [True, False]
+# non-parallel function exercises the sequential Sample path
+ls_py = ot.LevelSet(
+    ot.PythonFunction(2, 1, lambda X: [X[0] + X[1]]), ot.LessOrEqual(), 1.0
+)
+assert not ls_py.isParallel()
+assert list(ls_py.contains(ot.Sample([[0.0, 0.0], [2.0, 2.0]]))) == [True, False]
+assert ls_py.isParallel() == ls_py.getFunction().getImplementation().isParallel()
+# self-intersection returns self
+assert ls_acc.intersect(ls_acc) == ls_acc
+# incompatible dimensions
+with ott.assert_raises(Exception):
+    ls_acc.intersect(ot.LevelSet(ot.SymbolicFunction(["x"], ["x"]), ot.Less(), 0.0))

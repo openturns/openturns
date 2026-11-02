@@ -141,6 +141,7 @@ void AbdoRackwitz::run()
   Bool stop = false;
   UnsignedInteger iterationNumber = 0;
   const UnsignedInteger initialEvaluationNumber = levelFunction.getEvaluationCallsNumber();
+  UnsignedInteger gradientCallsNumber = 0;
 
   Scalar absoluteError = -1.0;
   Scalar constraintError = -1.0;
@@ -165,6 +166,7 @@ void AbdoRackwitz::run()
 
     /* Compute the level function gradient at the current point -> Grad(G) */
     currentGradient_ = levelFunction.gradient(currentPoint_) * Point(1, 1.0);
+    ++ gradientCallsNumber;
     LOGDEBUG(OSS() << "current point=" << currentPoint_ << " current level value=" << currentLevelValue_ << " current gradient=" << currentGradient_);
     /* Compute the current Lagrange multiplier */
     const Scalar normGradientSquared = currentGradient_.normSquare();
@@ -208,6 +210,7 @@ void AbdoRackwitz::run()
 
     // update result
     result_.setCallsNumber(evaluationNumber);
+    result_.setGradientCallsNumber(gradientCallsNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
 

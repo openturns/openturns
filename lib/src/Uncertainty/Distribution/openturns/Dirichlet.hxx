@@ -87,6 +87,9 @@ public:
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const override;
 
+  /** Get the roughness, i.e. the L2-norm of the PDF */
+  Scalar getRoughness() const override;
+
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const override;
   using DistributionImplementation::setParametersCollection;

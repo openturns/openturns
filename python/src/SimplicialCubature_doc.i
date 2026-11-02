@@ -13,7 +13,8 @@ The keys of :class:`~openturns.ResourceMap` related to the class are:
 - the key `SimplicialCubature-DefaultMaximumCallsNumber` that defines the default maximum calls number,
 - the key `SimplicialCubature-DefaultRule` that defines the default integration rule,
 - the key `SimplicialCubature-EvaluationBlockSize` that defines the number of simplices over which the integrand is evaluated in a single batch, keeping the memory usage bounded,
-- the key `SimplicialCubature-MarginalDiscretizationIntervalsNumber` that defines the number of discretization intervals used along each marginal of the integration interval.
+- the key `SimplicialCubature-MarginalDiscretizationIntervalsNumber` that defines the number of discretization intervals used along each marginal of the integration interval,
+- the key `SimplicialCubature-MaximumRefinementNumber` that defines the maximum number of simplices refined at each iteration.
 
 The rule points of the simplices are built and the rule is contracted over
 the function values with :class:`~openturns.TBB` when the integrand function
@@ -58,6 +59,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``SimplicialCubature-DefaultMaximumRelativeError`` (``Scalar``, default: ``1.0e-5``): default maximum relative error of the simplicial cubature
 - ``SimplicialCubature-DefaultRule`` (``UnsignedInteger``, default: ``3``): rank of the integration rule used by the simplicial cubature, from 1 to 4
 - ``SimplicialCubature-MarginalDiscretizationIntervalsNumber`` (``UnsignedInteger``, default: ``1``): number of discretization intervals used on each marginal of the integration domain
+- ``SimplicialCubature-MaximumRefinementNumber`` (``UnsignedInteger``, default: ``2048``): maximum number of simplices refined at each iteration
 
 Examples
 --------

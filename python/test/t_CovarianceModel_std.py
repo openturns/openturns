@@ -829,3 +829,389 @@ for model in models:
             1.0e-12,
         )
 print("Study round trip of the reduced kernel state: PASS")
+
+# KroneckerCovarianceModel extra coverage: constructors and error branches
+kroneckerRho = ot.GeneralizedExponential([4.0, 5.0], 1.0)
+kroneckerDim = ot.KroneckerCovarianceModel(2)
+assert kroneckerDim.getInputDimension() == 2
+assert kroneckerDim.getOutputDimension() == 1
+kronecker1D = ot.KroneckerCovarianceModel(
+    ot.GeneralizedExponential([1.0], 1.0), [2.0]
+)
+assert kronecker1D.isParallel()
+ott.assert_almost_equal(
+    kronecker1D.computeAsScalar([0.0], [0.0]),
+    kronecker1D.computeAsScalar([0.0]),
+    1e-14,
+    1e-14,
+)
+with ott.assert_raises(Exception):
+    ot.KroneckerCovarianceModel(ot.ExponentialModel([1.0], [1.0, 2.0]), [1.0, 2.0])
+zeroDiag = ot.CovarianceMatrix(2)
+zeroDiag[0, 0] = 4.0
+zeroDiag[1, 1] = 0.0
+with ott.assert_raises(Exception):
+    ot.KroneckerCovarianceModel(kroneckerRho, zeroDiag)
+diagSigma = ot.CovarianceMatrix(2)
+diagSigma[0, 0] = 4.0
+diagSigma[1, 1] = 9.0
+kroneckerDiag = ot.KroneckerCovarianceModel(kroneckerRho, diagSigma)
+ott.assert_almost_equal(kroneckerDiag.getAmplitude(), [2.0, 3.0], 0, 0)
+assert kroneckerDiag.isDiagonal()
+assert len(repr(kroneckerDiag)) > 0
+assert len(str(kroneckerDiag)) > 0
+with ott.assert_raises(Exception):
+    kronecker1D.discretize(ot.Sample([[0.0, 0.0]]))
+with ott.assert_raises(Exception):
+    kronecker1D.partialGradient([0.0, 0.0], [0.0])
+with ott.assert_raises(Exception):
+    kronecker1D.computeAsScalar([0.0, 0.0], [0.0])
+with ott.assert_raises(Exception):
+    kroneckerDiag.computeAsScalar([0.0, 0.0])
+with ott.assert_raises(Exception):
+    kronecker1D.setScale([1.0, 2.0])
+with ott.assert_raises(Exception):
+    kronecker1D.setScale([-1.0])
+with ott.assert_raises(Exception):
+    kronecker1D.setNuggetFactor(-1.0)
+with ott.assert_raises(Exception):
+    kronecker1D.setFullParameter([1.0])
+with ott.assert_raises(Exception):
+    kronecker1D.setFullParameter([1.0, 0.0, -2.0])
+factorized = kroneckerDiag.discretizeAndFactorize(
+    ot.Sample([[0.0, 0.0], [1.0, 1.0]])
+)
+assert factorized.getDimension() == 4
+kroneckerStudy = ot.Study()
+kroneckerStudy.setStorageManager(
+    ot.XMLStorageManager("t_CovarianceModel_std_Kronecker.xml")
+)
+kroneckerStudy.add("model", ot.CovarianceModel(kronecker1D))
+kroneckerStudy.save()
+kroneckerLoadedStudy = ot.Study()
+kroneckerLoadedStudy.setStorageManager(
+    ot.XMLStorageManager("t_CovarianceModel_std_Kronecker.xml")
+)
+kroneckerLoadedStudy.load()
+kroneckerLoaded = ot.CovarianceModel()
+kroneckerLoadedStudy.fillObject("model", kroneckerLoaded)
+assert kroneckerLoaded == ot.CovarianceModel(kronecker1D)
+os.remove("t_CovarianceModel_std_Kronecker.xml")
+
+# TensorizedCovarianceModel extra coverage: constructors and error branches
+tensorizedDefault = ot.TensorizedCovarianceModel(1)
+assert tensorizedDefault.getOutputDimension() == 1
+tensorized2 = ot.TensorizedCovarianceModel(2)
+assert tensorized2.getOutputDimension() == 2
+assert tensorized2.getAmplitude() == [1.0, 1.0]
+assert tensorized2.getCollection().getSize() == 2
+tensorized3 = ot.TensorizedCovarianceModel(3)
+assert tensorized3.getOutputDimension() == 3
+assert tensorizedDefault.isStationary()
+assert tensorizedDefault.isDiagonal()
+assert tensorizedDefault.isParallel()
+assert tensorizedDefault.getCollection().getSize() == 1
+assert tensorizedDefault.getMarginal(0).getOutputDimension() == 1
+with ott.assert_raises(Exception):
+    tensorizedDefault.getMarginal(5)
+with ott.assert_raises(Exception):
+    ot.TensorizedCovarianceModel([])
+with ott.assert_raises(Exception):
+    ot.TensorizedCovarianceModel(
+        [ot.AbsoluteExponential([1.0], [1.0]),
+         ot.AbsoluteExponential([1.0, 2.0], [1.0])]
+    )
+with ott.assert_raises(Exception):
+    ot.TensorizedCovarianceModel(
+        [ot.ExponentialModel([1.0], [1.0, 2.0]),
+         ot.AbsoluteExponential([1.0], [1.0])]
+    )
+tensorized1D = ot.TensorizedCovarianceModel(
+    [ot.AbsoluteExponential([1.0], [1.0])]
+)
+ott.assert_almost_equal(
+    tensorized1D.computeAsScalar([0.0], [0.0]),
+    tensorized1D.computeAsScalar([0.0]),
+    1e-14,
+    1e-14,
+)
+ott.assert_almost_equal(
+    tensorized1D.computeAsScalar([0.0], [0.0]),
+    tensorized1D.computeAsScalar(0.0),
+    1e-14,
+    1e-14,
+)
+assert tensorized1D.partialGradient([0.0], [1.0]).getNbRows() == 1
+tensorized2D = ot.TensorizedCovarianceModel(
+    [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])]
+)
+with ott.assert_raises(Exception):
+    tensorized2D.computeAsScalar([0.0], [0.0])
+with ott.assert_raises(Exception):
+    tensorized2D([0.0, 1.0], [0.0])
+with ott.assert_raises(Exception):
+    tensorized2D.setScale([1.0])
+with ott.assert_raises(Exception):
+    tensorized2D.setAmplitude([1.0])
+with ott.assert_raises(Exception):
+    tensorized2D.setFullParameter([1.0])
+tensorizedScaled = ot.TensorizedCovarianceModel(
+    [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])],
+    [2.0],
+)
+ott.assert_almost_equal(tensorizedScaled.getScale(), [2.0], 0, 0)
+assert len(repr(tensorized2D)) > 0
+assert len(str(tensorized2D)) > 0
+assert tensorized2D == ot.TensorizedCovarianceModel(
+    [ot.AbsoluteExponential([1.0], [2.0]), ot.SquaredExponential([1.0], [3.0])]
+)
+tensorizedStudy = ot.Study()
+tensorizedStudy.setStorageManager(
+    ot.XMLStorageManager("t_CovarianceModel_std_Tensorized.xml")
+)
+tensorizedStudy.add("model", ot.CovarianceModel(tensorized2D))
+tensorizedStudy.save()
+tensorizedLoadedStudy = ot.Study()
+tensorizedLoadedStudy.setStorageManager(
+    ot.XMLStorageManager("t_CovarianceModel_std_Tensorized.xml")
+)
+tensorizedLoadedStudy.load()
+tensorizedLoaded = ot.CovarianceModel()
+tensorizedLoadedStudy.fillObject("model", tensorizedLoaded)
+assert tensorizedLoaded == ot.CovarianceModel(tensorized2D)
+os.remove("t_CovarianceModel_std_Tensorized.xml")
+
+# 15) RankMCovarianceModel
+# default ctor
+defaultRankM = ot.RankMCovarianceModel()
+assert defaultRankM.getInputDimension() == 1
+assert defaultRankM.getOutputDimension() == 1
+
+basis = ot.Basis(
+    [ot.SymbolicFunction(["x"], ["1.0"]), ot.SymbolicFunction(["x"], ["x"])]
+)
+# variance ctor
+rankM = ot.RankMCovarianceModel([2.0, 3.0], basis)
+ott.assert_almost_equal(rankM.getVariance(), [2.0, 3.0], 0, 0)
+assert rankM.getCovariance().getDimension() == 0
+assert len(rankM.getBasis()) == 2
+assert len(rankM.getFunctions()) == 2
+assert rankM.getInputDimension() == 1
+assert rankM.getOutputDimension() == 1
+# operator() against the closed form sum_i variance[i] * phi_i(s) * phi_i(t)
+ott.assert_almost_equal(
+    rankM([0.5], [0.25])[0, 0], 2.0 + 3.0 * 0.5 * 0.25, 1e-12, 1e-12
+)
+# diagonal covariance ctor behaves like the variance ctor
+diagCov = ot.CovarianceMatrix(2)
+diagCov[0, 0] = 2.0
+diagCov[1, 1] = 3.0
+rankMDiag = ot.RankMCovarianceModel(diagCov, basis)
+ott.assert_almost_equal(rankMDiag.getVariance(), [2.0, 3.0], 0, 0)
+ott.assert_almost_equal(
+    rankMDiag([0.5], [0.25])[0, 0], rankM([0.5], [0.25])[0, 0], 1e-12, 1e-12
+)
+# non-diagonal covariance ctor exercises the full covariance branch
+fullCov = ot.CovarianceMatrix(2)
+fullCov[0, 0] = 2.0
+fullCov[1, 1] = 3.0
+fullCov[1, 0] = 0.5
+rankMFull = ot.RankMCovarianceModel(fullCov, basis)
+ott.assert_almost_equal(
+    rankMFull.getCovariance(), fullCov, 1e-14, 1e-14
+)
+# C(s,t) = sum_ij phi_i(s) cov_ij phi_j(t)
+ott.assert_almost_equal(
+    rankMFull([0.5], [0.25])[0, 0],
+    2.0 + 0.5 * (0.5 + 0.25) + 3.0 * 0.5 * 0.25,
+    1e-12,
+    1e-12,
+)
+# discretize on both branches
+vertices = ot.Sample([[0.0], [1.0], [2.0]])
+ott.assert_almost_equal(
+    rankM.discretize(vertices),
+    ot.CovarianceMatrix([[2.0, 2.0, 2.0], [2.0, 5.0, 8.0], [2.0, 8.0, 14.0]]),
+    1e-12,
+    1e-12,
+)
+assert rankMFull.discretize(vertices).getNbRows() == 3
+with ott.assert_raises(Exception):
+    rankM.discretize(ot.Sample([[0.0, 0.0]]))
+# partialGradient is not implemented
+with ott.assert_raises(Exception):
+    rankM.partialGradient([0.0], [1.0])
+# operator() dimension check
+with ott.assert_raises(Exception):
+    rankM([0.0, 1.0], [0.0])
+with ott.assert_raises(Exception):
+    rankM([0.0], [0.0, 1.0])
+# invalid ctors
+with ott.assert_raises(Exception):
+    ot.RankMCovarianceModel([], basis)
+with ott.assert_raises(Exception):
+    ot.RankMCovarianceModel(ot.CovarianceMatrix(0), basis)
+# comparison, repr/str
+assert rankM == rankM
+assert not (rankM != rankM)
+assert rankM != rankMFull
+assert rankMDiag == rankM
+assert len(repr(rankM)) > 0
+assert len(str(rankM)) > 0
+assert len(repr(rankMFull)) > 0
+assert len(str(rankMFull)) > 0
+# cross-check discretize against operator() on a small mesh
+mesh = ot.IntervalMesher([3]).build(ot.Interval([-2.0], [2.0]))
+verts = mesh.getVertices()
+C = rankM.discretize(verts)
+for j in range(len(verts)):
+    for i in range(j, len(verts)):
+        ott.assert_almost_equal(
+            C[i, j], rankM(verts[i], verts[j])[0, 0], 1e-12, 1e-12
+        )
+CFull = rankMFull.discretize(verts)
+for j in range(len(verts)):
+    for i in range(j, len(verts)):
+        ott.assert_almost_equal(
+            CFull[i, j], rankMFull(verts[i], verts[j])[0, 0], 1e-12, 1e-12
+        )
+# save/load
+storage = ot.XMLStorageManager("t_CovarianceModel_std_RankM.xml")
+study = ot.Study()
+study.setStorageManager(storage)
+study.add("model", rankMFull)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("t_CovarianceModel_std_RankM.xml"))
+loadedStudy.load()
+loadedModel = ot.CovarianceModel()
+loadedStudy.fillObject("model", loadedModel)
+assert loadedModel == rankMFull
+os.remove("t_CovarianceModel_std_RankM.xml")
+
+# FractionalBrownianMotionModel extra coverage
+fbm_default = ot.FractionalBrownianMotionModel()
+assert fbm_default == fbm_default
+assert len(repr(fbm_default)) > 0
+assert len(str(fbm_default)) > 0
+fbm = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])
+ott.assert_almost_equal(fbm.getExponent(), [0.25])
+test_model(fbm)
+# 5-argument constructor with dissymmetry and correlation
+eta = ot.SquareMatrix([[0.0, 0.1], [-0.1, 0.0]])
+rho = ot.CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]])
+fbm2 = ot.FractionalBrownianMotionModel([1.0], [1.0, 2.0], [0.3, 0.2], eta, rho)
+assert fbm2 == fbm2
+assert not fbm2 == fbm
+ott.assert_almost_equal(fbm2.getExponent(), [0.3, 0.2])
+ott.assert_almost_equal(fbm2.getEta(), eta)
+ott.assert_almost_equal(fbm2.getRho(), rho)
+assert len(str(fbm2)) > 0
+# NOTE: operator() is not symmetric for output dim > 1 when eta is nonzero,
+# the correct relation is C(s,t)^T == C(t,s), so the symmetry-based generic
+# test_model cannot be used here.
+# Check the diagonal against its closed form instead.
+ott.assert_almost_equal(
+    fbm2([0.5], [1.5])[0, 0],
+    0.5 * (abs(0.5) ** 0.6 + abs(1.5) ** 0.6 - abs(1.0) ** 0.6),
+    1e-12,
+    1e-12,
+)
+ott.assert_almost_equal(
+    fbm2([0.5], [1.5])[1, 1],
+    0.5 * 4.0 * (abs(0.5) ** 0.4 + abs(1.5) ** 0.4 - abs(1.0) ** 0.4),
+    1e-12,
+    1e-12,
+)
+# the asymmetry term changes sign between (i, j) and (j, i), so that
+# C(s,t)^T == C(t,s) (regression: upper triangle stayed 0 or was mirrored)
+assert abs(fbm2([0.5], [1.5])[1, 0]) > 0.0
+assert abs(fbm2([0.5], [1.5])[0, 1]) > 0.0
+ott.assert_almost_equal(
+    fbm2([0.5], [1.5])[0, 1], fbm2([1.5], [0.5])[1, 0], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    fbm2([0.5], [1.5])[1, 0], fbm2([1.5], [0.5])[0, 1], 1e-12, 1e-12
+)
+# symmetric case (eta=0): C(s,t) == C(t,s)^T
+fbmSym = ot.FractionalBrownianMotionModel(
+    [1.0], [1.0, 2.0], [0.3, 0.2], ot.SquareMatrix(2), ot.CorrelationMatrix(2)
+)
+cst = fbmSym([0.5], [1.5])
+cts = fbmSym([1.5], [0.5])
+ott.assert_almost_equal(cst[0, 1], cts[1, 0], 1e-12, 1e-12)
+ott.assert_almost_equal(cst[1, 0], cst[0, 1], 1e-12, 1e-12)
+assert abs(fbm2([-0.5], [1.0])[1, 0]) > 0.0
+# multivariate evaluation: sign/zero/abs branches and Hij == 1 branch
+_ = fbm2([-0.5], [1.0])
+_ = fbm2([0.0], [1.0])
+_ = fbm2([0.0], [0.0])
+fbm_h1 = ot.FractionalBrownianMotionModel(
+    [1.0], [1.0, 1.0], [0.5, 0.5], eta, ot.CorrelationMatrix(2)
+)
+ott.assert_almost_equal(
+    fbm_h1([0.5], [1.5])[0, 0], 0.5 * (abs(0.5) + abs(1.5) - abs(1.0)), 1e-12, 1e-12
+)
+_ = fbm_h1([0.0], [0.0])
+assert fbm_h1 == fbm_h1
+assert not fbm_h1 == fbm2
+# nugget factor on the diagonal
+fbm.setNuggetFactor(0.5)
+assert fbm.computeAsScalar([1.0], [1.0]) > fbm.computeAsScalar([1.0], [2.0])
+_ = fbm([1.0], [1.0])
+fbm.setNuggetFactor(0.0)
+# error paths
+with ott.assert_raises(Exception):
+    ot.FractionalBrownianMotionModel([1.0, 2.0], [1.0], [0.5])
+with ott.assert_raises(Exception):
+    ot.FractionalBrownianMotionModel([1.0], [1.0], [1.5])
+with ott.assert_raises(Exception):
+    ot.FractionalBrownianMotionModel([1.0], [1.0], [-0.5])
+with ott.assert_raises(Exception):
+    ot.FractionalBrownianMotionModel(
+        [1.0], [1.0, 2.0], [0.3, 0.4], ot.SquareMatrix(3), ot.CorrelationMatrix(2)
+    )
+with ott.assert_raises(Exception):
+    ot.FractionalBrownianMotionModel(
+        [1.0], [1.0, 2.0], [0.3, 0.4], ot.SquareMatrix(2), ot.CorrelationMatrix(3)
+    )
+with ott.assert_raises(Exception):
+    ot.FractionalBrownianMotionModel(
+        [1.0],
+        [1.0, 1.0],
+        [0.9, 0.9],
+        ot.SquareMatrix([[0.0, 0.9], [-0.9, 0.0]]),
+        ot.CorrelationMatrix(2),
+    )
+with ott.assert_raises(Exception):
+    fbm.computeAsScalar([0.5, 1.0], [1.0])
+with ott.assert_raises(Exception):
+    fbm.computeAsScalar([0.5, 1.0])
+with ott.assert_raises(Exception):
+    fbm([0.5, 1.0], [1.0])
+with ott.assert_raises(Exception):
+    fbm.partialGradient([0.5, 1.0], [1.0])
+with ott.assert_raises(Exception):
+    fbm2.computeAsScalar([0.5], [1.0])
+with ott.assert_raises(Exception):
+    fbm.setExponentEtaRho([0.5], ot.SquareMatrix(1), ot.CorrelationMatrix(2))
+with ott.assert_raises(Exception):
+    fbm.setFullParameter([1.0])
+# full parameter roundtrip
+fp = fbm2.getFullParameter()
+assert len(fbm2.getFullParameterDescription()) == len(fp)
+fbm2.setFullParameter(fp)
+ott.assert_almost_equal(fbm2.getFullParameter(), fp)
+# save/load
+storage = ot.XMLStorageManager("t_CovarianceModel_std_FBM.xml")
+study = ot.Study()
+study.setStorageManager(storage)
+study.add("model", ot.CovarianceModel(fbm2))
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("t_CovarianceModel_std_FBM.xml"))
+loadedStudy.load()
+loadedModel = ot.CovarianceModel()
+loadedStudy.fillObject("model", loadedModel)
+assert loadedModel == ot.CovarianceModel(fbm2)
+os.remove("t_CovarianceModel_std_FBM.xml")

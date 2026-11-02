@@ -124,7 +124,8 @@ void MarginalEvaluation::load(Advocate & adv)
 
 Bool MarginalEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const MarginalEvaluation &>(other);
+  const MarginalEvaluation * p_other = dynamic_cast<const MarginalEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* Operator () */
@@ -174,6 +175,12 @@ UnsignedInteger MarginalEvaluation::getInputDimension() const
 UnsignedInteger MarginalEvaluation::getOutputDimension() const
 {
   return indices_.getSize();
+}
+
+/* Is it safe to call in parallel? */
+Bool MarginalEvaluation::isParallel() const
+{
+  return p_evaluation_->isParallel();
 }
 
 /* Gradient according to the marginal parameters */

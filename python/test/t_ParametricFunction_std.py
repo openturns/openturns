@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 f = ot.SymbolicFunction(
     ot.Description.BuildDefault(5, "x"),
@@ -164,3 +165,116 @@ assert n_calls_marg == 4, (
 # Verify correctness
 ott.assert_almost_equal(gradient_marg[0, 0], 1.0)
 ott.assert_almost_equal(gradient_marg[1, 0], 1.0)
+
+# Symbolic freeze: substituted formulas give identical values, see #2902
+symFunc = ot.SymbolicFunction(["a", "x", "b"], ["a * x + b", "a * x^2"])
+frozen = ot.ParametricFunction(symFunc, [0, 2], [2.0, 1.0])
+ott.assert_almost_equal(frozen([3.0]), [7.0, 18.0])
+ott.assert_almost_equal(frozen([[3.0], [4.0]]), [[7.0, 18.0], [9.0, 32.0]])
+assert list(frozen.getInputDescription()) == ["x"]
+assert list(frozen.getOutputDescription()) == list(symFunc.getOutputDescription())
+# New reference values are spliced at evaluation time, without recompiling
+for a, b in [(3.0, 0.0), (0.5, -1.0), (-2.0, 4.0)]:
+    frozen.setParameter([a, b])
+    ott.assert_almost_equal(frozen([2.0]), [a * 2.0 + b, a * 4.0])
+# No frozen parameter leaves the compiled function untouched
+plain = ot.ParametricFunction(symFunc, [], [])
+ott.assert_almost_equal(plain([2.0, 3.0, 1.0]), symFunc([2.0, 3.0, 1.0]))
+# Non-symbolic parents keep the legacy path with identical values
+linParent = ot.LinearFunction(
+    [0.0, 0.0], [1.0, 2.0], ot.Matrix([[2.0, 0.0], [0.0, 1.0]])
+)
+linFrozen = ot.ParametricFunction(linParent, [1], [5.0])
+ott.assert_almost_equal(linFrozen([3.0]), linParent([3.0, 5.0]))
+# Frozen values keep their full precision
+precFunc = ot.SymbolicFunction(["a", "x"], ["a * x"])
+precFrozen = ot.ParametricFunction(precFunc, [0], [1.23456789])
+ott.assert_almost_equal(precFrozen([3.0]), precFunc([1.23456789, 3.0]))
+# Frozen negative values must be parenthesized, as -2^2 evaluates to -4
+negFunc = ot.SymbolicFunction(["a", "x"], ["a^2 + x"])
+negFrozen = ot.ParametricFunction(negFunc, [0], [-2.0])
+ott.assert_almost_equal(negFrozen([1.0]), [5.0])
+# A single formula may define several named outputs
+multiFunc = ot.SymbolicFunction(
+    ["a", "x"], ["y0", "y1"], "y0 := a * x; y1 := a + x"
+)
+multiFrozen = ot.ParametricFunction(multiFunc, [0], [2.0])
+assert list(multiFrozen.getOutputDescription()) == ["y0", "y1"]
+ott.assert_almost_equal(multiFrozen([3.0]), [6.0, 5.0])
+# A single formula may assign a declared output name
+namedFunc = ot.SymbolicFunction(["a", "x"], ["result"], "result := a * x")
+namedFrozen = ot.ParametricFunction(namedFunc, [0], [2.0])
+assert list(namedFrozen.getOutputDescription()) == ["result"]
+ott.assert_almost_equal(namedFrozen([3.0]), [6.0])
+# Non-finite frozen values fall back to the generic path: the function is
+# built, and evaluation reports the non-finite input as before
+nonFiniteFunc = ot.SymbolicFunction(["a", "x"], ["a * x"])
+for value in [float("nan"), float("inf"), float("-inf")]:
+    nonFiniteFrozen = ot.ParametricFunction(nonFiniteFunc, [0], [value])
+    with ott.assert_raises(RuntimeError):
+        nonFiniteFrozen([2.0])
+
+# Extra coverage: default ctor, comparison, string converters (no prints to keep expout stable)
+defaultParam = ot.ParametricFunction()
+assert isinstance(repr(defaultParam), str)
+assert isinstance(str(defaultParam), str)
+assert g2 == g2
+assert not (g2 != g2)
+g2bis = ot.ParametricFunction(f, [3, 1], [0.85] * 2, True)
+g2bis.setOutputDescription(g2.getOutputDescription())
+assert g2 == g2bis
+assert g2 != ot.ParametricFunction(f, [0, 2], [0.0, 0.0])
+assert isinstance(repr(g2), str)
+assert isinstance(str(g2), str)
+ott.assert_almost_equal(
+    ot.ParametricFunction(f, [3, 1], [0.85] * 2, True)([1.0, 2.0, 0.0]),
+    g2([1.0, 2.0, 0.0]),
+    1e-12,
+    1e-12,
+)
+
+# ParametricHessian direct coverage (no prints)
+
+hessFunc = ot.SymbolicFunction(["x0", "x1", "a"], ["a*x0^2+x1"])
+hessParam = ot.ParametricFunction(hessFunc, [2], [3.0])
+hess = hessParam.getHessian()
+assert hess.getInputDimension() == 2
+assert hess.getOutputDimension() == 1
+ott.assert_almost_equal(hess.hessian([1.0, 2.0])[0, 0, 0], 6.0)
+ott.assert_almost_equal(hess.hessian([1.0, 2.0])[1, 1, 0], 0.0)
+with ott.assert_raises(Exception):
+    hess.hessian([1.0])
+assert "ParametricHessian" in repr(hess)
+assert "ParametricHessian" in str(hess)
+hessImpl = hess.getImplementation()
+assert hessImpl.getInputDimension() == 2
+assert hessImpl.getOutputDimension() == 1
+assert hessImpl.getParameterDimension() == 1
+assert "ParametricEvaluation" in repr(hessImpl.getEvaluation())
+defaultHess = ot.ParametricHessian()
+assert defaultHess.getInputDimension() == 0
+assert "ParametricHessian" in repr(defaultHess)
+assert "ParametricHessian" in str(defaultHess)
+evalHess = ot.ParametricHessian(hessParam.getEvaluation().getImplementation())
+assert evalHess.getInputDimension() == 2
+assert evalHess.getParameterDimension() == 1
+ott.assert_almost_equal(evalHess.hessian([1.0, 2.0])[0, 0, 0], 6.0)
+with ott.assert_raises(Exception):
+    evalHess.hessian([1.0])
+hessSame = ot.ParametricFunction(hessFunc, [2], [3.0]).getHessian()
+hessOther = ot.ParametricFunction(hessFunc, [2], [4.0]).getHessian()
+assert hess == hessSame
+assert hess != hessOther
+assert not (hess == hessOther)
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("parametric_hessian.xml"))
+study.add("h", hess)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager("parametric_hessian.xml"))
+loadedStudy.load()
+loadedHess = ot.Hessian()
+loadedStudy.fillObject("h", loadedHess)
+assert loadedHess == hess
+ott.assert_almost_equal(loadedHess.hessian([1.0, 2.0])[0, 0, 0], 6.0)
+os.remove("parametric_hessian.xml")

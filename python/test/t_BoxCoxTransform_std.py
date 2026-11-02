@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -81,6 +82,16 @@ assert shiftedTransform.getInputDimension() == 2
 assert shiftedTransform.getOutputDimension() == 2
 assert "BoxCox" in repr(shiftedTransform)
 ott.assert_almost_equal(shiftedTransform([1.0, 1.0]), [0.8284271247461903, 2.0])
+# roundtrip with nonzero shift (regression: inverse subtracted shift from input)
+ott.assert_almost_equal(
+    shiftedTransform.getInverse()(shiftedTransform([1.0, 1.0])), [1.0, 1.0], 1e-12, 1e-12
+)
+ott.assert_almost_equal(
+    shiftedTransform.getInverse()(shiftedTransform([[1.0, 1.0], [0.0, 0.0]])),
+    [[1.0, 1.0], [0.0, 0.0]],
+    1e-12,
+    1e-12,
+)
 outSample = shiftedTransform([[1.0, 1.0], [0.0, 0.0]])
 ott.assert_almost_equal(outSample[0], [0.8284271247461903, 2.0])
 ott.assert_almost_equal(outSample[1], [0.0, 1.0])
@@ -143,3 +154,24 @@ _ = shiftedHessian.getCallsNumber()
 _ = shiftedHessian.getMarginal(0)
 with ott.assert_raises(Exception):
     shiftedHessian.getMarginal(5)
+
+# Scalar (lambda, shift) constructor (no prints)
+scalarShifted = ot.BoxCoxTransform(0.5, 1.0)
+assert scalarShifted.getInputDimension() == 1
+assert scalarShifted.getLambda() == ot.Point([0.5])
+assert scalarShifted.getShift() == ot.Point([1.0])
+ott.assert_almost_equal(scalarShifted([1.0]), [0.8284271247461903])
+assert scalarShifted.getInverse().getLambda() == ot.Point([0.5])
+assert scalarShifted.getInverse().getShift() == ot.Point([1.0])
+# roundtrip with zero shift is an identity
+ott.assert_almost_equal(ot.BoxCoxTransform(0.5).getInverse()([0.8284271247461903]), [2.0])
+assert "BoxCox" in repr(scalarShifted)
+assert "BoxCox" in str(scalarShifted)
+pointShifted = ot.BoxCoxTransform([0.5], [1.0])
+assert scalarShifted.getEvaluation() == pointShifted.getEvaluation()
+studyScalar = ot.Study()
+studyScalar.setStorageManager(ot.XMLStorageManager("boxcox_scalar.xml"))
+studyScalar.add("t", scalarShifted)
+studyScalar.save()
+
+os.remove("boxcox_scalar.xml")

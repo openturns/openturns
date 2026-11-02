@@ -116,7 +116,7 @@ vanish at these points and take small values in their neighborhoods.
 Therefore, the coefficients in the expansion of a function that takes non zero
 values at these points must necessarily be large.
 This leads to numerical instabilities, both for the computation of the expansion coefficients
-and for the evaluation of the metamodel.
+and for the evaluation of the surrogate model.
 
 That is the reason why the use of such a multivariate orthonormal basis is not recommended.
 

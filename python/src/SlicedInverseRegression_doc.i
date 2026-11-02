@@ -5,8 +5,10 @@ R"RAW(Sliced Inverse Regression algorithm.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Sliced Inverse Regression (SIR, [li1991]_) is a dimension reduction technique used
-to find the effective dimension reduction (EDR) space.
+Sliced Inverse Regression (SIR, [li1991]_) is a dimension reduction technique.
+It describes **a low-dimensional linear subspace that captures all the necessary information
+a high-dimensional set of predictors holds about a response variable**.
+
 It assumes the following regression model:
 
 .. math::
@@ -19,6 +21,13 @@ the vector :math:`\vect{\beta}` represents the EDR directions and
 :math:`\varepsilon` is independent of :math:`X`.
 
 The algorithm proceeds as follows:
+
+1. **Standardize the data:** Transform the predictor variables X so they have a mean of zero and an identity covariance matrix.
+2. **Slice the response variable:** Sort your data by the values of the response variable Y. Then, divide the sorted data into H distinct, equally sized intervals or "slices".
+3. **Calculate slice means:** Within each slice, compute the average of the standardized predictor variables X.
+4. **Apply Principal Component Analysis (PCA):** Perform an eigen-decomposition or PCA on the covariance matrix of these sliced means.
+
+Detailed steps consist in:
 
 1. Sort the output :math:`Y` and divide it into :math:`H` slices of equal size
 2. Center the input sample: :math:`\overline{\vect{X}} = \frac{1}{\sampleSize}\sum_{i=1}^\sampleSize \vect{X}_i`

@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 
@@ -52,3 +53,32 @@ distance_to_small_union = ot.DistanceToDomainFunction(small_union)
 ott.assert_almost_equal(distance_to_small_union(sample_dim1), [[0.1]] * 2, 1e-12, 0.0)
 distance_to_big_union = ot.DistanceToDomainFunction(big_union)
 ott.assert_almost_equal(distance_to_big_union(sample_dim1), [[0.1], [0.0]], 1e-12, 0.0)
+
+# extra coverage: default ctor, comparison, string converters
+default = ot.DistanceToDomainFunction()
+assert default == default
+assert distance == distance
+assert not (distance != distance)
+assert distance == ot.DistanceToDomainFunction(box)
+assert distance != distance_to_small_union
+assert len(repr(distance)) > 0
+assert len(str(distance)) > 0
+assert len(repr(default)) > 0
+# gradient/hessian are not implemented
+with ott.assert_raises(Exception):
+    distance.gradient(point1)
+with ott.assert_raises(Exception):
+    distance.hessian(point1)
+# save/load
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager("distance_to_domain.xml"))
+study.add("f", distance)
+study.save()
+loaded_study = ot.Study()
+loaded_study.setStorageManager(ot.XMLStorageManager("distance_to_domain.xml"))
+loaded_study.load()
+loaded = ot.Function()
+loaded_study.fillObject("f", loaded)
+assert loaded == distance
+
+os.remove("distance_to_domain.xml")

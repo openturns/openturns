@@ -44,7 +44,7 @@ print(fun([4.0, math.pi / 3]))
 # ======================
 #
 # The function is piecewise constant along :math:`x_1`, so its derivative
-# with respect to that variable does not exist. However, OpenTURNS builds a
+# with respect to that variable does not exist. However, the library builds a
 # default finite difference gradient for Python functions. Away from the
 # discontinuities, the estimated derivative along the discrete direction is
 # zero, which silently ignores any dependence of the output on

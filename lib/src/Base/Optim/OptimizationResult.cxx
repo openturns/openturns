@@ -116,6 +116,28 @@ void OptimizationResult::setCallsNumber(const UnsignedInteger callsNumber)
   callsNumber_ = callsNumber;
 }
 
+/* Gradient calls accessor */
+UnsignedInteger OptimizationResult::getGradientCallsNumber() const
+{
+  return gradientCallsNumber_;
+}
+
+void OptimizationResult::setGradientCallsNumber(const UnsignedInteger gradientCallsNumber)
+{
+  gradientCallsNumber_ = gradientCallsNumber;
+}
+
+/* Hessian calls accessor */
+UnsignedInteger OptimizationResult::getHessianCallsNumber() const
+{
+  return hessianCallsNumber_;
+}
+
+void OptimizationResult::setHessianCallsNumber(const UnsignedInteger hessianCallsNumber)
+{
+  hessianCallsNumber_ = hessianCallsNumber;
+}
+
 /* Iteration number accessor */
 UnsignedInteger OptimizationResult::getIterationNumber() const
 {
@@ -225,6 +247,8 @@ String OptimizationResult::__repr__() const
       << " optimal point=" << optimalPoint_
       << " optimal value=" << optimalValue_
       << " callsNumber=" << callsNumber_
+      << " gradientCallsNumber=" << gradientCallsNumber_
+      << " hessianCallsNumber=" << hessianCallsNumber_
       << " iterationNumber=" << iterationNumber_
       << " absoluteError=" << getAbsoluteError()
       << " relativeError=" << getRelativeError()
@@ -241,6 +265,8 @@ void OptimizationResult::save(Advocate & adv) const
   adv.saveAttribute( "optimalPoint_", optimalPoint_ );
   adv.saveAttribute( "optimalValue_", optimalValue_ );
   adv.saveAttribute( "callsNumber_", callsNumber_ );
+  adv.saveAttribute( "gradientCallsNumber_", gradientCallsNumber_ );
+  adv.saveAttribute( "hessianCallsNumber_", hessianCallsNumber_ );
   adv.saveAttribute( "iterationNumber_", iterationNumber_ );
   adv.saveAttribute( "absoluteError_", absoluteError_ );
   adv.saveAttribute( "relativeError_", relativeError_ );
@@ -274,6 +300,10 @@ void OptimizationResult::load(Advocate & adv)
     adv.loadAttribute( "callsNumber_", callsNumber_ );
   else
     adv.loadAttribute( "evaluationNumber_", callsNumber_ );
+  if (adv.hasAttribute("gradientCallsNumber_"))
+    adv.loadAttribute( "gradientCallsNumber_", gradientCallsNumber_ );
+  if (adv.hasAttribute("hessianCallsNumber_"))
+    adv.loadAttribute( "hessianCallsNumber_", hessianCallsNumber_ );
   adv.loadAttribute( "iterationNumber_", iterationNumber_ );
   adv.loadAttribute( "absoluteError_", absoluteError_ );
   adv.loadAttribute( "relativeError_", relativeError_ );

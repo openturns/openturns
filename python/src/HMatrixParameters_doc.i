@@ -4,6 +4,19 @@
 Notes
 -----
 This class regroups the parameters used by :class:`~openturns.HMatrix`
+Default values are provided in the :class:`~openturns.ResourceMap` and can be modified by
+the user.
+
+For example, for the admissibility factor, the default value is given by
+the key 'HMatrix-AdmissibilityFactor' in the :class:`~openturns.ResourceMap` and applied
+only if the 'HMatrix-Admissibility' key is set to 'standard'.
+The default clustering algorithm is given by the key 'HMatrix-ClusteringAlgorithm' in
+the :class:`~openturns.ResourceMap`. The HMatrixFactory triggers the h-matrix engine.
+If the key 'HMatrix-ForceSequential' key in the :class:`~openturns.ResourceMap` is True,
+the sequential engine is used even if a parallel one is available.
+Otherwise, if parallel engines (StarPU and ToyRT supported) are both available,
+the key 'HMatrix-ParallelSolver' allows one to select the parallel engine to use.
+If only one of the two parallel engines is available, it is used as default.
 "
 
 // ---------------------------------------------------------------------
@@ -48,13 +61,39 @@ epsilon : float
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::HMatrixParameters::getAdmissibility
+"Return the admissibility used for cluster blocks.
+
+Returns
+-------
+admissibility : str
+    Used admissibility for HMatrix.
+    Might be 'standard' or 'hodlr'."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::setAdmissibility
+"Set the admissibility used for cluster blocks.
+
+Parameters
+----------
+admissibility : str
+    Used admissibility for HMatrix.
+    Should be 'standard' or 'hodlr'."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::HMatrixParameters::getAdmissibilityFactor
 "Return the admissibility factor used for cluster blocks.
 
 Returns
 -------
 epsilon : float
-    admissibility factor for HMatrix."
+    admissibility factor for HMatrix.
+
+Notes
+-----
+Factor is used only in case of standard admissibility."
 
 // ---------------------------------------------------------------------
 
@@ -64,7 +103,11 @@ epsilon : float
 Parameters
 ----------
 epsilon : float
-    admissibility factor for HMatrix."
+    admissibility factor for HMatrix.
+    
+Notes
+-----
+Factor is used only in case of standard admissibility."
 
 // ---------------------------------------------------------------------
 
@@ -114,7 +157,7 @@ method : str
 Returns
 -------
 method : str
-    Factorization method (either 'LU', 'LDLt', or 'LLt')"
+    Factorization method (either 'LU', 'LDLt', or 'LLt', 'hodlr' or 'hodlrsym')"
 
 // ---------------------------------------------------------------------
 
@@ -124,7 +167,7 @@ method : str
 Parameters
 ----------
 method : str
-    Factorization method (either 'LU', 'LDLt', or 'LLt')"
+    Factorization method (either 'LU', 'LDLt', or 'LLt', 'hodlr' or 'hodlrsym')"
 
 // ---------------------------------------------------------------------
 

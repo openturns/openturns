@@ -766,6 +766,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LevelSetMesher parameters //
   addAsBool("LevelSetMesher-SolveEquation", true);
+  addAsBool("LevelSetMesher-UseQEF", false);
+  addAsUnsignedInteger("LevelSetMesher-MaxRefinementLevels", 0);
 
   // PointToPointEvaluation parameters //
   addAsUnsignedInteger("PointToPointEvaluation-BlockSize", 256);
@@ -780,7 +782,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("FieldToPointFunctionalChaosAlgorithm-CopulaType", "Normal", {"Normal", "Beta"});
 
   // PointToFieldFunctionalChaosAlgorithm
-  addAsBool("PointToFieldFunctionalChaosAlgorithm-DefaultRecompress", false);
   addAsString("PointToFieldFunctionalChaosAlgorithm-Expansion", "LeastSquaresExpansion", {"LeastSquaresExpansion", "FunctionalChaosAlgorithm"});
 
   // SQP parameters //
@@ -924,6 +925,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
+  addAsUnsignedInteger("Dlib-InitialSeed", 0);
 
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
@@ -1131,11 +1133,13 @@ void ResourceMap::loadDefaultConfiguration()
   // Mesh parameters
   addAsBool("Mesh-BackfaceCulling", false);
   addAsBool("Mesh-CheckValidity", false);
+  addAsUnsignedInteger("Mesh-GridThreshold", 1024);
   addAsScalar("Mesh-AmbientFactor", 0.1);
   addAsScalar("Mesh-DiffuseFactor", 0.7);
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-WeldEpsilon", 1.0e-12);
   addAsScalar("Mesh-DefaultThetaX", 0.3);
   addAsScalar("Mesh-DefaultThetaY", 0.3);
   addAsScalar("Mesh-DefaultThetaZ", 0.3);
@@ -1214,12 +1218,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ChristoffelDistribution-SliceGridSize", 1000);
 
   // ChristoffelSubsampleExperiment parameters //
-  addAsScalar("ChristoffelSubsampleExperiment-PoolOversamplingFactor", 2.0);
-  addAsScalar("ChristoffelSubsampleExperiment-PoolMaxOversamplingFactor", 16.0);
   addAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5);
-  addAsString("ChristoffelSubsampleExperiment-ThinningMethod", "Removal", {"Barrier", "Removal"});
-  addAsScalar("ChristoffelSubsampleExperiment-BarrierStep", 1.0);
-  addAsScalar("ChristoffelSubsampleExperiment-BarrierRegularization", 1.0e-8);
+  addAsBool("ChristoffelSubsampleExperiment-Certified", false);
+  addAsScalar("ChristoffelSubsampleExperiment-Gamma", 9.242343873386666);
+  addAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10);
+  addAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxProjectionAttempts", 1000000);
 
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
@@ -1380,6 +1383,9 @@ void ResourceMap::loadDefaultConfiguration()
   // ProductDistribution parameters //
   addAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument", 10.0);
 
+  // RatioDistribution parameters //
+  addAsScalar("RatioDistribution-InverseMomentRelativeError", 1.0e-3);
+
   // RiceFactory parameters //
   addAsScalar("RiceFactory-AbsolutePrecision", 1.0e-12);
   addAsScalar("RiceFactory-RelativePrecision", 1.0e-12);
@@ -1405,14 +1411,28 @@ void ResourceMap::loadDefaultConfiguration()
 
   // PushForwardDistribution parameters //
   addAsScalar("PushForwardDistribution-SolverResidualTolerance", 1.0e-5);
+  addAsScalar("PushForwardDistribution-CoAreaConstraintTolerance", 1.0e-12);
+  addAsScalar("PushForwardDistribution-CoAreaTailEpsilon", 1.0e-16);
+  addAsScalar("PushForwardDistribution-CoAreaErrorFloor", 1.0e-7);
+  addAsScalar("PushForwardDistribution-CoAreaMaximumError", 1.0e-14);
+  addAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumSubIntervals", 100);
+  addAsUnsignedInteger("PushForwardDistribution-CoAreaMaximumExtensions", 16);
+  addAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaDiscretization", 128);
+  addAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization", 48);
+  addAsUnsignedInteger("PushForwardDistribution-NonlinearCoAreaVolumeDiscretization", 12);
+  addAsScalar("PushForwardDistribution-NonlinearCoAreaLevelTolerance", 1.0e-12);
+  addAsBool("PushForwardDistribution-NonlinearCoAreaContinuation", true);
+  addAsUnsignedInteger("PushForwardDistribution-MaximumBisections", 64);
+  addAsScalar("PushForwardDistribution-RangeMargin", 0.025);
+  addAsScalar("PushForwardDistribution-DegenerateSearchIntervalHalfWidth", 1.0);
   addAsUnsignedInteger("PushForwardDistribution-SampleSize", 10000);
+  addAsUnsignedInteger("PushForwardDistribution-MomentsMaximumDimension", 4);
   addAsUnsignedInteger("PushForwardDistribution-PreimageSearchSampleSize", 256);
   addAsUnsignedInteger("PushForwardDistribution-NewtonMaximumIterations", 50);
   addAsScalar("PushForwardDistribution-NewtonStepReduction", 0.5);
 
   // PushForwardOverMesh parameters //
   addAsScalar("PushForwardOverMesh-OnSimplexEpsilon", 1.0e-10);
-  addAsUnsignedInteger("PushForwardOverMesh-SampleSize", 10000);
 
   // MaximumLikelihoodFactory parameters //
   addAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError", 1.0e-10);
@@ -1859,6 +1879,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // HMatrix parameters //
   addAsBool("HMatrix-ForceSequential", false);
+  addAsString("HMatrix-ParallelSolver", "starpu");
+  addAsString("HMatrix-Admissibility", "standard");
   addAsScalar("HMatrix-AdmissibilityFactor", 100.0);
   addAsScalar("HMatrix-AssemblyEpsilon", 1.0e-4);
   addAsScalar("HMatrix-LargestEigenValueRelativeError", 1.0e-1);
@@ -1872,6 +1894,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
+  addAsUnsignedInteger("HMatrix-ClusteringMaxDof", 250);
   addAsUnsignedInteger("HMatrix-ValidationDump", 0);
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);
 

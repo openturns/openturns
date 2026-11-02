@@ -166,6 +166,12 @@ Scalar Frechet::computeEntropy() const
   return 1.0 + SpecFunc::EulerConstant * (1.0 + 1.0 / alpha_) + std::log(beta_ / alpha_);
 }
 
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar Frechet::getRoughness() const
+{
+  return alpha_ / (2.0 * beta_) * std::exp(SpecFunc::LogGamma(2.0 + 1.0 / alpha_) - (1.0 + 1.0 / alpha_) * M_LN2);
+}
+
 /* Get the minimum volume level set containing a given probability of the distribution */
 LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & threshold) const
 {

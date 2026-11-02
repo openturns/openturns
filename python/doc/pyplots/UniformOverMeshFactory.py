@@ -28,7 +28,7 @@ graph.setTitle("Mesh estimated from the sample")
 graph.setXTitle("x")
 graph.setYTitle("y")
 
-fig = plt.figure(figsize=(10, 10))
+fig = plt.figure(figsize=(6, 6))
 axis = fig.add_subplot(111)
 otv.View(graph, figure=fig, axes=[axis], add_legend=True, square_axes=True)
 fig.suptitle("UniformOverMeshFactory")

@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 import numpy as np
 import math
 
-# The OpenTURNS drawables (ot.Cloud, ot.Curve, ot.Contour) are two-dimensional:
+# The drawable elements (ot.Cloud, ot.Curve, ot.Contour) are two-dimensional:
 # the viewer draws them with ax.plot(x, y) / ax.scatter(x, y), so they cannot
 # represent points, vectors or curves embedded in R^3. Both panels below are
 # genuine 3-D views of S^2, hence they are drawn with matplotlib only. See

@@ -82,8 +82,31 @@ cacheHits : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MemoizeEvaluation::getInputCache
+"Accessor to the input points stored in the cache.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    The input points stored in the cache."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MemoizeEvaluation::getOutputCache
+"Accessor to the output points stored in the cache.
+
+Returns
+-------
+cacheInput : :class:`~openturns.Sample`
+    The output points stored in the cache."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::MemoizeEvaluation::getCacheInput
 "Accessor to the input points stored in the cache.
+
+.. deprecated:: 1.28
+    Use :meth:`getInputCache` instead.
 
 Returns
 -------
@@ -94,6 +117,9 @@ cacheInput : :class:`~openturns.Sample`
 
 %feature("docstring") OT::MemoizeEvaluation::getCacheOutput
 "Accessor to the output points stored in the cache.
+
+.. deprecated:: 1.28
+    Use :meth:`getOutputCache` instead.
 
 Returns
 -------

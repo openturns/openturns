@@ -219,6 +219,7 @@ validation.setDomainSamplingSize(1000)
 validation.setFittingSamplingSize(1000)
 validation.skipGradient()
 validation.skipEntropy()
+validation.skipRoughness()  # slow 100k-sample Monte Carlo check
 validation.skipMinimumVolumeLevelSet()  # slow optimizer on the mixture
 validation.run()
 

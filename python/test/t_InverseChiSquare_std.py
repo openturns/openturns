@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import math as m
 import openturns as ot
 import openturns.testing as ott
 
@@ -121,3 +122,9 @@ for n in range(len(allDistributions)):
     validation = ott.DistributionValidation(distribution)
     validation.skipMinimumVolumeLevelSet()  # level set over-covers heavy right tail
     validation.run()
+
+# Roughness: analytic value Gamma(nu+1) / (2^nu * Gamma(nu/2)^2)
+ott.assert_almost_equal(
+    ot.InverseChiSquare(5.0).getRoughness(),
+    m.exp(m.lgamma(6.0) - 5.0 * m.log(2.0) - 2.0 * m.lgamma(2.5)),
+)

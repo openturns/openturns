@@ -52,7 +52,6 @@ public:
   Point getEigenvalues() const;
   
   Function getTransformation() const;
-  Function getInverseTransformation() const;
 
   /** String converter */
   String __repr__() const override;

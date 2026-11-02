@@ -39,6 +39,12 @@ Because the rule is a disjunction, setting some of these thresholds to
 zero only disables the corresponding pair: the other pair still applies
 with its own default thresholds.
 
+This solver is restricted to level function (nearest point) problems.
+For general nonlinear optimization problems with arbitrary constraints,
+use the :class:`~openturns.NLopt` SLSQP algorithm (``LD_SLSQP``) instead,
+which supports generic objectives, bounds and nonlinear equality and
+inequality constraints.
+
 See also
 --------
 AbdoRackwitz, Cobyla, TNC, NLopt

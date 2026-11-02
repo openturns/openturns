@@ -9,7 +9,7 @@ sample= 0 : [ 0.882805  ]
 4 : [ 0.969423  ]
 pdf= 1.0
 cdf= 0.2
-roughness= 42.0
+roughness= 1.0
 mean= [0.5]
 standard deviation= [0.288675]
 skewness= [0]
@@ -39,7 +39,7 @@ sample= 0 : [ 0.184862  0.684807  ]
 4 : [ 0.758512  0.0535513 ]
 pdf= 1.0
 cdf= 0.04
-roughness= 42.0
+roughness= 1.0
 mean= [0.5,0.5]
 standard deviation= [0.288675,0.288675]
 skewness= [0,0]

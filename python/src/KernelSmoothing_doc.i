@@ -10,7 +10,8 @@ kernel : :class:`~openturns.Distribution`, optional
 binned : bool, optional
     Activates bining mechanism only in the univariate or bivariate cases. It allows one to speed up the manipulation of the density function of the resulting distribution.  By default, the mechanism is activated.
 binNumber : int, :math:`binNumber \geq 2`, optional
-    Indicates the number of bins used by the bining mechanism. By default, OpenTURNS uses the values stored in :class:`~openturns.ResourceMap`.
+    Indicates the number of bins used by the bining mechanism.
+    By default it is set to :class:`~openturns.ResourceMap` entry `KernelSmoothing-BinNumber`.
 boundaryCorrection : bool, optional
     Activates the boundary correction using the mirroring technique.
     By default, the correction is not provided.

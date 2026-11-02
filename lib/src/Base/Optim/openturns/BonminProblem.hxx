@@ -54,6 +54,10 @@ public:
   Sample getInputHistory() const;
   Sample getOutputHistory() const;
 
+  /** Number of gradient/hessian calls performed through this wrapper */
+  UnsignedInteger getGradientCallsNumber() const;
+  UnsignedInteger getHessianCallsNumber() const;
+
   /** Overloading functions from Bonmin::TMINLP
    See BonTMINLP.hpp for description */
 
@@ -188,6 +192,9 @@ private:
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
   ::Bonmin::TMINLP::SolverReturn status_;
+  // gradient/hessian calls performed through this wrapper
+  UnsignedInteger gradientCallsNumber_ = 0;
+  UnsignedInteger hessianCallsNumber_ = 0;
   // Callbacks
   UnsignedInteger maximumCallsNumber_ = 0;
   Scalar maximumTimeDuration_ = 0.0;

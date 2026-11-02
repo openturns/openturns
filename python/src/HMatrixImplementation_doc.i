@@ -83,6 +83,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``HMatrix-FactorizationIterations`` (``UnsignedInteger``, default: ``10``): number of factorization iterations.
 - ``HMatrix-LargestEigenValueIterations`` (``UnsignedInteger``, default: ``10``): number of eigenvalue iterations.
 - ``HMatrix-MaxLeafSize`` (``UnsignedInteger``, default: ``250``): maximum leaf size for cluster tree.
+- ``HMatrix-ClusteringMaxDof`` (``UnsignedInteger``, default: ``250``): maximum number of degrees of freedom per cluster.
 - ``HMatrix-ValidationDump`` (``UnsignedInteger``, default: ``0``): validation dump level.
 - ``HMatrix-ValidationRerun`` (``UnsignedInteger``, default: ``0``): validation rerun count.
 
@@ -135,6 +136,24 @@ OT_HMatrix_norm_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_HMatrix_computelogdet_doc
+"Compute log determinant value.
+
+Returns
+-------
+logdet : float
+    Log determinant.
+
+Notes
+-----
+The log-determinant is computed only if the HMatrix has been factorized using LLt or HODLRSYM.
+Otherwise, an exception is raised."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::computeLogDeterminant
+OT_HMatrix_computelogdet_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_HMatrix_transpose_doc
 "Transpose matrix in-place."
 %enddef
@@ -172,7 +191,7 @@ OT_HMatrix_assemble_doc
 Parameters
 ----------
 method : str
-    Factorization method, either one of: LDLt, LLt or LU
+    Factorization method, either one of: LDLt, LLt, LU, hodlr or hodlrsym
 
 Notes
 -----
@@ -393,3 +412,32 @@ beta : float
 %enddef
 %feature("docstring") OT::HMatrixImplementation::gemm
 OT_HMatrix_gemm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HMatrix_gemm_dense_doc
+"Multiply matrix y=alpha*op(B)*op(M).
+
+Parameters
+----------
+transHMat : str
+    Whether to use B or B^t: either N or T.
+    B being the hmat.
+transDense : str
+    Whether to use A or A^t: either N or T.
+    A being a matrix.
+side : str
+    Whether we consider op(HMatrix)*op(Dense) or op(Dense)*op(HMatrix)
+    Either L or R.
+alpha : float
+    Coefficient
+lhs : :class:`~openturns.Matrix`
+    Dense Matrix to be multiplied
+
+Returns
+-------
+rhs : :class:`~openturns.Matrix`
+    Result matrix."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::gemm_dense
+OT_HMatrix_gemm_dense_doc

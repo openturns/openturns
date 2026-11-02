@@ -6,43 +6,67 @@ R"RAW(Christoffel distribution.
     To use it, import the ``openturns.experimental`` submodule.
 
 The Christoffel distribution associated to the first :math:`m` functions
-:math:`(L_1, \dots, L_m)` of an orthonormal basis of :math:`L^2(D, \mu)`
-is the probability measure :math:`\sigma` defined by
+:math:`(\varphi_1, \dots, \varphi_m)` of an orthonormal basis of
+:math:`L^2(\cD, \mu)` is the probability measure :math:`\sigma_m` defined
+by
 
 .. math::
-    \mathrm{d}\sigma(x) = \frac{k_m(x)}{m} \, \mathrm{d}\mu(x),
-    \quad k_m(x) = \sum_{j=1}^m L_j(x)^2,
-    \quad x \in D,
+    \di{\sigma_m(\vect{x})} = \frac{k_m(\vect{x})}{m} \di{\mu(\vect{x})},
+    \qquad
+    k_m(\vect{x}) = \sum_{j=1}^m \varphi_j(\vect{x})^2,
+    \qquad \vect{x} \in \cD,
 
 where :math:`k_m` is the Christoffel function and :math:`\mu` is the
-reference measure embedded in the basis. When :math:`\mu` is absolutely
-continuous with density :math:`p_\mu`, the density of :math:`\sigma` is
+reference measure embedded in the basis. When :math:`\mu` has density
+:math:`p_\mu`, the density of :math:`\sigma_m` is
 
 .. math::
-    p(x) = p_\mu(x) \, \frac{k_m(x)}{m}.
+    p_{\sigma_m}(\vect{x}) = p_\mu(\vect{x}) \frac{k_m(\vect{x})}{m}.
+
+The density is proportional to the pointwise energy of the approximation
+space: samples concentrate where the basis functions are large. The
+measure depends only on the space spanned by the functions, not on the
+particular orthonormal basis. See :any:`christoffel_distribution` for the
+definition and the optimality properties of this measure, and
+:any:`christoffel_sampling` for the sampling theory.
 
 Orthonormality with respect to :math:`\mu` is a precondition, and the
 class does not check it. It is what makes :math:`k_m / m` a density.
 The stability factor and the sampling acceptance rates rely on it.
 A cheap numerical check is the trace identity
-:math:`\int k_m \, \mathrm{d}\mu = m`, ie the empirical mean of
+:math:`\int_\cD k_m \di{\mu} = m`, ie the empirical mean of
 :meth:`computeChristoffelFunction` over a sample of :math:`\mu`.
 For a correlated :math:`\mu`, compose tensor-orthonormal functions with
 a whitening map of :math:`\mu`. For a multivariate normal, use
-:math:`x \mapsto L^{-1} x` with :math:`L` the Cholesky factor of the
-correlation. This construction is needed because
+:math:`\vect{x} \mapsto \mat{L}^{-1} \vect{x}` with :math:`\mat{L}` the
+Cholesky factor of the correlation. This construction is needed because
 :class:`~openturns.experimental.FiniteOrthogonalFunctionFactory` stores
 the given functions as given and only checks their dimensions.
 
-When the reference measure factorizes, sampling uses the tensor
-sequential path. Otherwise the class compares two samplers at the first
-draw, once :meth:`computeKn` is known, and keeps the one with the larger
-measured acceptance rate. The candidates are the internal
-ratio-of-uniforms sampler and rejection from the reference under the
-stability factor envelope.
+Rejection sampling is exact only when the numerical envelope bounds the
+density ratio. When the basis is a tensor product and the reference
+measure factorizes, the class uses sequential conditional rejection on the
+tensor slices, with uniform proposals for bounded marginals and Cauchy
+proposals for unbounded ones. Otherwise it compares the internal
+ratio-of-uniforms sampler with rejection from the reference under the
+stability factor envelope, and keeps the branch with the larger measured
+acceptance rate; the ratio-of-uniforms branch is set up on the numerical
+range. The envelope is scanned on a grid uniform in the proposal CDF and
+multiplied by a safety factor: a proposal that exceeds it is discarded after
+raising it, so a draw is never accepted above the envelope, but the scan is a
+numerical estimate and not a proof of the global supremum. Raising the
+envelope after a later exceedance cannot correct a draw already accepted
+under an earlier, too low envelope. See
+:any:`christoffel_sampling` for the algorithms and their numerical safeguards.
 
-Available constructors:
-    ChristoffelDistribution(*basis, size*)
+The interval returned by :meth:`getRange` is a numerical range, not
+necessarily the support. :meth:`computePDF` returns zero when the reference
+density evaluates to zero; for an unbounded reference it may evaluate points
+beyond that numerical range when their density is positive.
+The tensor sequential sampler likewise does not truncate an unbounded
+marginal to that range. Conversely, a reference density that underflows to
+zero makes the PDF zero even when the reference log-density is finite; use
+:meth:`computeLogPDF` when tail values are needed.
 
 Parameters
 ----------
@@ -67,8 +91,8 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``ChristoffelDistribution-KnSamplingSize`` (``UnsignedInteger``, default: ``100000``): size of the candidate pool of the stability factor search.
 - ``ChristoffelDistribution-ExactKn`` (``Bool``, default: ``True``): refine the stability factor by a multi-start bounded maximization instead of keeping the Monte-Carlo maximum.
 - ``ChristoffelDistribution-KnMaximumMultiStart`` (``UnsignedInteger``, default: ``16``): number of best candidates used as starting points of that maximization.
-- ``ChristoffelDistribution-KnSafetyFactor`` (``Scalar``, default: ``1.1``): multiplicative safety margin of the stability factor estimate.
-- ``ChristoffelDistribution-SliceGridSize`` (``UnsignedInteger``, default: ``1000``): grid size of the univariate slice maxima in sequential conditional sampling.
+- ``ChristoffelDistribution-KnSafetyFactor`` (``Scalar``, default: ``1.1``): multiplicative safety margin of the stability factor estimate. It must be positive and finite; the samplers throw if it is not.
+- ``ChristoffelDistribution-SliceGridSize`` (``UnsignedInteger``, default: ``1000``): grid size of the rejection envelope scan in sequential conditional sampling, uniform in the proposal CDF.
 
 Examples
 --------
@@ -188,18 +212,21 @@ kn : float
     low-discrepancy sequence pushed through the inverse Rosenblatt
     transform of the reference measure, refined by a multi-start bounded
     maximization when ``ChristoffelDistribution-ExactKn`` is enabled,
-    times the safety margin. The value is cached until the basis or the
-    size changes.
+    times the safety margin. The value is cached until the basis, the
+    size, or one of the keys that enter the estimate changes
+    (``KnSamplingSize``, ``ExactKn``, ``KnMaximumMultiStart``,
+    ``KnSafetyFactor``, ``OptimizationAlgorithm``). A non-positive or
+    non-finite safety factor is rejected.
 
 Notes
 -----
 With ``ChristoffelDistribution-ExactKn`` enabled (default) the estimate is
-exact up to the coverage of the multi-start optimization: a local maximum
+reliable up to the coverage of the multi-start optimization: a local maximum
 may be missed, hence the safety margin
 (``ChristoffelDistribution-KnSafetyFactor``, default 1.1). If the
 optimization fails, the plain Monte-Carlo maximum over the candidate pool
-is returned instead, and the samplers refresh the envelope on the fly
-whenever a proposal exceeds it."
+is returned instead, and the samplers raise their envelope and discard the
+proposal whenever one exceeds it."
 
 // ---------------------------------------------------------------------
 

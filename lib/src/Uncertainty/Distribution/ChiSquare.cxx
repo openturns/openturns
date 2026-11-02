@@ -150,7 +150,7 @@ Scalar ChiSquare::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return 0.0;
+  if (x < 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -159,8 +159,9 @@ Scalar ChiSquare::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LowestScalar;
-  return normalizationFactor_ + (0.5 * nu_ - 1) * std::log(x) - 0.5 * x;
+  if (x < 0.0) return SpecFunc::LowestScalar;
+  // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for nu_ == 2
+  return normalizationFactor_ + ((nu_ == 2.0) ? 0.0 : (0.5 * nu_ - 1.0) * std::log(x)) - 0.5 * x;
 }
 
 /* Get the CDF of the distribution */
@@ -188,6 +189,13 @@ Scalar ChiSquare::computeComplementaryCDF(const Point & point) const
 Scalar ChiSquare::computeEntropy() const
 {
   return 0.5 * nu_ + M_LN2 + SpecFunc::LogGamma(0.5 * nu_) + (1.0 - 0.5 * nu_) * SpecFunc::Psi(0.5 * nu_);
+}
+
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar ChiSquare::getRoughness() const
+{
+  if (nu_ <= 1.0) throw NotDefinedException(HERE) << "Error: the roughness is not defined for nu <= 1.";
+  return 0.5 * std::exp(SpecFunc::LogGamma(nu_ - 1.0) - (nu_ - 1.0) * M_LN2 - 2.0 * SpecFunc::LogGamma(0.5 * nu_));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

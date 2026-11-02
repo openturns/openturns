@@ -111,3 +111,8 @@ with ott.assert_raises(Exception):
 ott.assert_almost_equal(
     ot.SquaredNormal(-10.0, 1.0).getRange().getUpperBound(), [342.25], 1e-9, 0.0
 )
+
+# Roughness: the PDF behaves as C / sqrt(x) with C > 0 around zero,
+# hence its square is not integrable and the roughness is infinite
+with ott.assert_raises(Exception):
+    ot.SquaredNormal(5.2, 11.6).getRoughness()

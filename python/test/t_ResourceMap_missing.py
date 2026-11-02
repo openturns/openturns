@@ -6,6 +6,9 @@ import re
 
 ot.TESTPREAMBLE()
 
+# keys not registered in the ResourceMap but used by the docstrings
+skipped_keys = ["SymbolicParser-Backend"]
+
 # find all keys
 resourcemap_file = (
     Path(__file__)
@@ -20,12 +23,13 @@ resourcemap_lines = []
 with open(resourcemap_file) as f:
     resourcemap_lines += f.read().splitlines()
 resourcemap_content = {}
+resourcemap_types = {}
 for line in resourcemap_lines:
     match = re.search(r'addAs(\w+)\("([\w\-]+)",[ ]*([\w\d\.\-\"]+)[\),]', line)
     if match is not None:
         key, vtype, value = match.group(2), match.group(1), match.group(3)
         print(key, vtype, value)
-        if key == "SymbolicParser-Backend":
+        if key in skipped_keys:
             continue
         if vtype == "Scalar":
             resourcemap_content[key] = float(value)
@@ -37,6 +41,7 @@ for line in resourcemap_lines:
             resourcemap_content[key] = value.strip('"')
         else:
             raise ValueError(f"got {key}")
+        resourcemap_types[key] = vtype
 print(f"resourcemap: {len(resourcemap_content)} keys")
 
 conf_file = (
@@ -83,7 +88,7 @@ for key in conf_content:
         raise ValueError(f"extra {key} in config")
 
 # find all docstring files
-docstring_files = Path(__file__).parents[1].joinpath("src").glob("*_doc.i")
+docstring_files = sorted(Path(__file__).parents[1].joinpath("src").glob("*_doc.i"))
 docstring_lines = []
 for docstring_file in docstring_files:
     with open(docstring_file, errors="replace") as f:
@@ -103,4 +108,50 @@ for key in undoc_keys:
 n_undoc_keys = len(undoc_keys)
 n_keys = len(resourcemap_content)
 print(f"found {n_undoc_keys} undocumented keys out of {n_keys}")
-assert n_undoc_keys < 475, "too much undocumented resourcemap keys"
+assert not undoc_keys, f"undocumented resourcemap keys: {sorted(undoc_keys)}"
+
+
+# check the documented type and default value of the keys documented as
+# - ``Key`` (``Type``, default: ``value``): description
+# the pattern spans several lines to deal with wrapped entries
+doc_pattern = re.compile(
+    r"-\s+``([\w\-]+)``\s+\(`+(\w+)`+,\s*default:\s*`+([^`]+)`+"
+)
+
+
+def cast_docstring_value(key, vtype, value):
+    """Convert a value given in a docstring into a python object."""
+    if vtype == "Scalar":
+        return float(value)
+    if vtype == "UnsignedInteger":
+        return int(value)
+    if vtype == "Bool":
+        if value.lower() not in ("true", "false"):
+            raise ValueError(f"key={key} got bool value={value}")
+        return value.lower() == "true"
+    if vtype == "String":
+        return value
+    raise ValueError(f"key={key} got type={vtype}")
+
+
+n_typed_keys = 0
+for docstring_file in docstring_files:
+    with open(docstring_file, errors="replace") as f:
+        for key, vtype, value in doc_pattern.findall(f.read()):
+            if key in skipped_keys:
+                continue
+            if key not in resourcemap_content:
+                raise ValueError(f"{docstring_file.name}: key={key} is not a ResourceMap key")
+            if resourcemap_types[key] != vtype:
+                raise ValueError(
+                    f"{docstring_file.name}: key={key} DOC={vtype} RM={resourcemap_types[key]}"
+                )
+            docstring_value = cast_docstring_value(key, vtype, value)
+            if docstring_value != resourcemap_content[key]:
+                raise ValueError(
+                    f"{docstring_file.name}: key={key} DOC={docstring_value} RM={resourcemap_content[key]}"
+                )
+            n_typed_keys += 1
+
+print(f"found {n_typed_keys} documented keys with type and default value")
+assert n_typed_keys > 0, "no documented key with type and default value found"

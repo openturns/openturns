@@ -104,7 +104,8 @@ void ExpertMixture::setExperts(const FunctionCollection & experts)
 
 Bool ExpertMixture::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const ExpertMixture &>(other);
+  const ExpertMixture * p_other = dynamic_cast<const ExpertMixture *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 ExpertMixture::FunctionCollection ExpertMixture::getExperts() const
@@ -265,6 +266,15 @@ UnsignedInteger ExpertMixture::getInputDimension() const
 UnsignedInteger ExpertMixture::getOutputDimension() const
 {
   return experts_[0].getOutputDimension();
+}
+
+/* Is it safe to call in parallel? */
+Bool ExpertMixture::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < experts_.getSize(); ++ i)
+    if (!experts_[i].getImplementation()->isParallel())
+      return false;
+  return classifier_.getImplementation()->isParallel();
 }
 
 

@@ -128,7 +128,7 @@ Scalar FisherSnedecor::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return 0.0;
+  if (x < 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -137,8 +137,9 @@ Scalar FisherSnedecor::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LowestScalar;
-  return normalizationFactor_ + (0.5 * d1_ - 1.0) * std::log(x) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
+  if (x < 0.0) return SpecFunc::LowestScalar;
+  // At x == 0, 0 * log(0) is NaN while the continuous extension is 0 for d1_ == 2
+  return normalizationFactor_ + ((d1_ == 2.0) ? 0.0 : (0.5 * d1_ - 1.0) * std::log(x)) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
 }
 
 Point FisherSnedecor::computeLogPDFGradient(const Point & point) const
@@ -206,6 +207,14 @@ void FisherSnedecor::computeMean() const
 Scalar FisherSnedecor::computeEntropy() const
 {
   return std::log(d2_ / d1_) + SpecFunc::LogBeta(0.5 * d1_, 0.5 * d2_) + (1.0 - 0.5 * d1_) * SpecFunc::Psi(0.5 * d1_) + (0.5 * (d1_ + d2_)) * SpecFunc::Psi(0.5 * (d1_ + d2_)) - (1.0 + 0.5 * d2_) * SpecFunc::Psi(0.5 * d2_);
+}
+
+/* Get the roughness, i.e. the L2-norm of the PDF */
+Scalar FisherSnedecor::getRoughness() const
+{
+  if (d1_ <= 1.0) throw NotDefinedException(HERE) << "Error: the roughness is not defined for d1 <= 1.";
+  const Scalar a = d1_ / d2_;
+  return a * std::exp(SpecFunc::LogBeta(d1_ - 1.0, d2_ + 1.0) - 2.0 * SpecFunc::LogBeta(0.5 * d1_, 0.5 * d2_));
 }
 
 /* Get the standard deviation of the distribution */

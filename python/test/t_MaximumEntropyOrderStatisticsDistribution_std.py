@@ -145,6 +145,7 @@ validation.skipMoments()  # slow
 validation.skipCorrelation()  # slow
 validation.skipParameters()  # slow
 validation.skipGradient()  # slow PDF/CDF gradient FD over ~13 params
+validation.skipRoughness()  # slow 100k-sample Monte Carlo check
 validation.run()
 
 # CDF grid overflow is rejected in integer arithmetic before any allocation

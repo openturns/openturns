@@ -56,3 +56,15 @@ study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("translation_eval.xml"))
 study.add("ev", ot.Function(ev))
 study.save()
+
+# TranslationFunction extra coverage (no prints: output is checked against .expout)
+ott.assert_almost_equal(myFunction.getConstant(), [2.0, 3.0, -4.0], 1e-14, 1e-14)
+assert myFunction == myFunction
+assert not (myFunction != myFunction)
+assert myFunction == ot.TranslationFunction([2.0, 3.0, -4.0])
+assert myFunction != ot.TranslationFunction([1.0, 1.0, 1.0])
+assert len(repr(myFunction)) > 0
+assert len(str(myFunction)) > 0
+myFunction.setConstant([1.0, 1.0, 1.0])
+ott.assert_almost_equal(myFunction.getConstant(), [1.0, 1.0, 1.0], 1e-14, 1e-14)
+ott.assert_almost_equal(myFunction(inPoint), inPoint + [1.0, 1.0, 1.0], 1e-14, 1e-14)

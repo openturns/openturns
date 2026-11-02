@@ -117,6 +117,13 @@ OrthogonalProductPolynomialFactory * OrthogonalProductPolynomialFactory::clone()
   return new OrthogonalProductPolynomialFactory(*this);
 }
 
+/* Comparison helper */
+Bool OrthogonalProductPolynomialFactory::equals(const OrthogonalFunctionFactory & other) const
+{
+  const OrthogonalProductPolynomialFactory * p_other = dynamic_cast<const OrthogonalProductPolynomialFactory *>(&other);
+  return p_other && OrthogonalFunctionFactory::equals(other) && (coll_ == p_other->coll_) && (phi_ == p_other->phi_);
+}
+
 
 /* Return the enumerate function that translate unidimensional indices into multidimensional indices */
 EnumerateFunction OrthogonalProductPolynomialFactory::getEnumerateFunction() const

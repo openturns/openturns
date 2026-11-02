@@ -209,6 +209,15 @@ CovarianceMatrix QRMethod::getGramInverse() const
   return invR.computeGram(false);
 }
 
+Matrix QRMethod::getPseudoInverse() const
+{
+  // B = R^{-1} Q^T, avoiding the Gram matrix entirely
+  const UnsignedInteger basisSize = currentIndices_.getSize();
+  const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
+  Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, false));
+  return invR * q_.transpose();
+}
+
 Point QRMethod::getGramInverseDiag() const
 {
   // G^{-1}=R^-1*R*^-T
@@ -258,6 +267,8 @@ void QRMethod::trashDecomposition()
 void QRMethod::save(Advocate & adv) const
 {
   LeastSquaresMethodImplementation::save(adv);
+  adv.saveAttribute( "q_", q_ );
+  adv.saveAttribute( "r_", r_ );
 }
 
 
@@ -265,6 +276,13 @@ void QRMethod::save(Advocate & adv) const
 void QRMethod::load(Advocate & adv)
 {
   LeastSquaresMethodImplementation::load(adv);
+  if (adv.hasAttribute("q_"))
+  {
+    adv.loadAttribute( "q_", q_ );
+    adv.loadAttribute( "r_", r_ );
+  }
+  else
+    trashDecomposition();
 }
 
 END_NAMESPACE_OPENTURNS

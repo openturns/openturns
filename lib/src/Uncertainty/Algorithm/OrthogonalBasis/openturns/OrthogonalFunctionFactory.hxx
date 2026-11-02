@@ -64,6 +64,17 @@ public:
   /** Virtual constructor */
   OrthogonalFunctionFactory * clone() const override;
 
+  /** Comparison operator */
+  Bool operator ==(const OrthogonalFunctionFactory & other) const;
+  using BasisImplementation::operator ==;
+
+  /** Comparison helper */
+  virtual Bool equals(const OrthogonalFunctionFactory & other) const;
+
+  /** Comparison operator */
+  Bool operator !=(const OrthogonalFunctionFactory & other) const;
+  using BasisImplementation::operator !=;
+
   /** Get the function factory corresponding to marginal input indices */
   virtual OrthogonalBasis getMarginal(const Indices & indices) const;
 

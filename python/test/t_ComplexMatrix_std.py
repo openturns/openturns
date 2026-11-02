@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 
 ot.TESTPREAMBLE()
@@ -214,3 +215,63 @@ D[1, 0] = 2.0 + 0j
 pt4 = ot.Point([5.0])
 result4 = D * pt4
 print("narrow D (2x1) * pt (1) = ", repr(result4))
+
+# --- Coverage: rectangular solve, clean/real/imag, vector products, error paths ---
+A_cov = ot.ComplexMatrix(3, 2)
+A_cov[0, 0] = 1 + 1j
+A_cov[1, 0] = 2
+A_cov[2, 0] = 3 - 1j
+A_cov[0, 1] = 4
+A_cov[1, 1] = 5 + 2j
+A_cov[2, 1] = 6
+B_cov = ot.ComplexMatrix(3, 2)
+B_cov[0, 0] = 1
+B_cov[1, 0] = 2
+B_cov[2, 0] = 3
+B_cov[0, 1] = 4
+B_cov[1, 1] = 5
+B_cov[2, 1] = 6
+X_cov = A_cov.solveLinearSystem(B_cov)
+assert X_cov.getNbRows() == 2 and X_cov.getNbColumns() == 2
+x_cov = A_cov.solveLinearSystem(ot.ComplexCollection([1 + 0j, 2 + 0j, 3 + 0j]))
+assert len(x_cov) == 2
+m_cov = ot.ComplexMatrix(2, 2)
+m_cov[0, 0] = 1.26 + 1.26j
+m_cov[0, 1] = 0.04 + 0.04j
+m_cov[1, 0] = 2
+m_cov[1, 1] = 3
+m_cleaned = m_cov.clean(0.1)
+ott.assert_almost_equal(m_cleaned[0, 1], 0j, 1e-12, 1e-12)
+ott.assert_almost_equal(m_cleaned.real()[0, 0], 1.3, 1e-12, 1e-12)
+ott.assert_almost_equal(m_cleaned.imag()[0, 0], 1.3, 1e-12, 1e-12)
+h_cov = ot.HermitianMatrix(2)
+h_cov[0, 0] = 1
+h_cov[1, 0] = 3 + 1j
+h_cov[1, 1] = 4
+assert h_cov.real().getNbRows() == 2
+assert h_cov.imag().getNbRows() == 2
+res_h_cc = h_cov * ot.ComplexCollection([1 + 1j, 2j])
+ott.assert_almost_equal(complex(res_h_cc[0]), complex(3 + 7j), 1e-12, 1e-12)
+ott.assert_almost_equal(complex(res_h_cc[1]), complex(2 + 12j), 1e-12, 1e-12)
+res_h_pt = h_cov * ot.Point([1.0, 2.0])
+ott.assert_almost_equal(complex(res_h_pt[0]), complex(7 - 2j), 1e-12, 1e-12)
+ott.assert_almost_equal(complex(res_h_pt[1]), complex(11 + 1j), 1e-12, 1e-12)
+t_cov = ot.TriangularComplexMatrix(2)
+t_cov[0, 0] = 1
+t_cov[1, 0] = 3 + 1j
+t_cov[1, 1] = 4
+res_t_pt = t_cov * ot.Point([1.0, 2.0])
+ott.assert_almost_equal(complex(res_t_pt[0]), complex(1 + 0j), 1e-12, 1e-12)
+ott.assert_almost_equal(complex(res_t_pt[1]), complex(11 + 1j), 1e-12, 1e-12)
+res_t_cc = t_cov * ot.ComplexCollection([1 + 1j, 2j])
+ott.assert_almost_equal(complex(res_t_cc[0]), complex(1 + 1j), 1e-12, 1e-12)
+ott.assert_almost_equal(complex(res_t_cc[1]), complex(2 + 12j), 1e-12, 1e-12)
+with ott.assert_raises(Exception):
+    ot.ComplexMatrix(2, 2) * ot.ComplexMatrix(3, 3)
+with ott.assert_raises(Exception):
+    ot.HermitianMatrix(2) * ot.ComplexMatrix(3, 3)
+with ott.assert_raises(Exception):
+    ot.TriangularComplexMatrix(2) * ot.ComplexMatrix(3, 3)
+with ott.assert_raises(Exception):
+    ot.HermitianMatrix(2).computeCholesky()
+str(m_cov)

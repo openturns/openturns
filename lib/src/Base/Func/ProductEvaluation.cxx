@@ -140,7 +140,8 @@ void ProductEvaluation::setParameter(const Point & parameter)
 
 Bool ProductEvaluation::equals(const EvaluationImplementation & other) const
 {
-  return *this == dynamic_cast<const ProductEvaluation &>(other);
+  const ProductEvaluation * p_other = dynamic_cast<const ProductEvaluation *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 
@@ -163,6 +164,13 @@ UnsignedInteger ProductEvaluation::getInputDimension() const
 UnsignedInteger ProductEvaluation::getOutputDimension() const
 {
   return rightEvaluation_.getOutputDimension();
+}
+
+/* Is it safe to call in parallel? */
+Bool ProductEvaluation::isParallel() const
+{
+  return leftEvaluation_.getImplementation()->isParallel()
+      && rightEvaluation_.getImplementation()->isParallel();
 }
 
 /* Method save() stores the object through the StorageManager */

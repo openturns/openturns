@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
 /**
  * @class PythonFieldFunction
  *
- * This class binds a Python function to an OpenTURNS' FieldFunction
+ * This class binds a Python function to a FieldFunction
  */
 class PythonFieldFunction
   : public FieldFunctionImplementation

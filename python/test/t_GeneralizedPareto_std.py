@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import cmath
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -10,112 +12,239 @@ for xi in [-0.2, 0.0, 0.2]:
     # Instantiate one distribution object
     distribution = ot.GeneralizedPareto(1.5, xi, 0.5)
 
-    print("Distribution ", repr(distribution))
-    print("Distribution ", distribution)
+    assert distribution.getClassName() == "GeneralizedPareto"
 
     if xi > 0.0:
-        print("asPareto=", distribution.asPareto())
+        asPareto = distribution.asPareto()
+        assert asPareto.getClassName() == "Pareto"
+        ott.assert_almost_equal(asPareto.getParameter(), [7.5, 5.0, -7.0], 1e-12, 0.0)
 
     # Is this distribution elliptical ?
-    print("Elliptical = ", distribution.isElliptical())
+    assert not distribution.isElliptical()
 
     # Is this distribution continuous ?
-    print("Continuous = ", distribution.isContinuous())
+    assert distribution.isContinuous()
 
     # Test for realization of distribution
     oneRealization = distribution.getRealization()
-    print("oneRealization=", repr(oneRealization))
+    if xi == -0.2:
+        ott.assert_almost_equal(oneRealization, [1.16226], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(oneRealization, [0.633808], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(oneRealization, [0.635009], 1e-5, 0.0)
 
     # Test for sampling
     size = 10000
     oneSample = distribution.getSample(size)
-    print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-    print("mean=", repr(oneSample.computeMean()))
-    print("covariance=", repr(oneSample.computeCovariance()))
+    if xi == -0.2:
+        ott.assert_almost_equal(oneSample[0], [0.684665], 1e-5, 0.0)
+        ott.assert_almost_equal(oneSample[size - 1], [1.68051], 1e-5, 0.0)
+        ott.assert_almost_equal(oneSample.computeMean(), [1.74428], 1e-5, 0.0)
+        ott.assert_almost_equal(
+            oneSample.computeCovariance(), ot.CovarianceMatrix(1, [1.12783]), 1e-5, 0.0
+        )
+    elif xi == 0.0:
+        ott.assert_almost_equal(oneSample[0], [5.22134], 1e-5, 0.0)
+        ott.assert_almost_equal(oneSample[size - 1], [1.0016], 1e-5, 0.0)
+        ott.assert_almost_equal(oneSample.computeMean(), [1.97709], 1e-5, 0.0)
+        ott.assert_almost_equal(
+            oneSample.computeCovariance(), ot.CovarianceMatrix(1, [2.14949]), 1e-5, 0.0
+        )
+    else:
+        ott.assert_almost_equal(oneSample[0], [7.07521], 1e-5, 0.0)
+        ott.assert_almost_equal(oneSample[size - 1], [1.01876], 1e-5, 0.0)
+        ott.assert_almost_equal(oneSample.computeMean(), [2.33451], 1e-5, 0.0)
+        ott.assert_almost_equal(
+            oneSample.computeCovariance(), ot.CovarianceMatrix(1, [5.26239]), 1e-5, 0.0
+        )
 
     # Define a point
     point = ot.Point(distribution.getDimension(), 1.5)
-    print("Point= ", repr(point))
+    ott.assert_almost_equal(point, [1.5], 0.0, 0.0)
 
     # DDF = distribution.computeDDF( point )
-    # print "ddf     =", repr(DDF)
 
     PDF = distribution.computePDF(point)
-    print("pdf     = %.12g" % PDF)
+    if xi == -0.2:
+        ott.assert_almost_equal(PDF, 0.376111934156, 1e-9, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(PDF, 0.342278079355, 1e-9, 0.0)
+    else:
+        ott.assert_almost_equal(PDF, 0.31460293288, 1e-9, 0.0)
 
     CDF = distribution.computeCDF(point)
-    print("cdf= %.12g" % CDF)
-    # CF = distribution.computeCharacteristicFunction( point[0] )
-    # print "characteristic function=", CF
+    if xi == -0.2:
+        ott.assert_almost_equal(CDF, 0.511054485597, 1e-9, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(CDF, 0.486582880967, 1e-9, 0.0)
+    else:
+        ott.assert_almost_equal(CDF, 0.465175014104, 1e-9, 0.0)
     PDFgr = distribution.computePDFGradient(point)
-    print("pdf gradient     =", repr(PDFgr))
+    if xi == -0.2:
+        ott.assert_almost_equal(PDFgr, [-0.096439, -0.188281, 0.231453], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(PDFgr, [-0.0760618, -0.152124, 0.228185], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(PDFgr, [-0.0616868, -0.125946, 0.222073], 1e-5, 0.0)
 
     CDFgr = distribution.computeCDFGradient(point)
-    print("cdf gradient     =", repr(CDFgr))
+    if xi == -0.2:
+        ott.assert_almost_equal(CDFgr, [-0.250741, -0.131347, -0.376112], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(CDFgr, [-0.228185, -0.114093, -0.342278], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(CDFgr, [-0.209735, -0.100495, -0.314603], 1e-5, 0.0)
 
     quantile = distribution.computeQuantile(0.95)
-    print("quantile=", repr(quantile))
-    print("cdf(quantile)=", distribution.computeCDF(quantile))
+    if xi == -0.2:
+        ott.assert_almost_equal(quantile, [3.8804], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(quantile, [4.9936], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(quantile, [6.65423], 1e-5, 0.0)
+    ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-9, 0.0)
     # Get 95% survival function
     inverseSurvival = ot.Point(distribution.computeInverseSurvivalFunction(0.95))
-    print("InverseSurvival=", repr(inverseSurvival))
-    print(
-        "Survival(inverseSurvival)=%.6f"
-        % distribution.computeSurvivalFunction(inverseSurvival)
+    if xi == -0.2:
+        ott.assert_almost_equal(inverseSurvival, [0.576547], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(inverseSurvival, [0.57694], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(inverseSurvival, [0.577336], 1e-5, 0.0)
+    ott.assert_almost_equal(
+        distribution.computeSurvivalFunction(inverseSurvival), 0.95, 1e-6, 1e-6
     )
-    print("entropy=%.6f" % distribution.computeEntropy())
+    if xi == -0.2:
+        ott.assert_almost_equal(distribution.computeEntropy(), 1.205465, 1e-6, 1e-6)
+    elif xi == 0.0:
+        ott.assert_almost_equal(distribution.computeEntropy(), 1.405465, 1e-6, 1e-6)
+    else:
+        ott.assert_almost_equal(distribution.computeEntropy(), 1.605465, 1e-6, 1e-6)
 
     # Confidence regions
     (
         interval,
         threshold,
     ) = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
-    print("Minimum volume interval=", interval)
-    print("threshold=", ot.Point(1, threshold))
+    if xi == -0.2:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [3.8804], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.9936], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [6.65423], 1e-5, 0.0)
+    ott.assert_almost_equal(threshold, 0.95, 1e-5, 0.0)
     levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(0.95)
-    print("Minimum volume level set=", levelSet)
-    print("beta=", ot.Point(1, beta))
+    if xi == -0.2:
+        ott.assert_almost_equal(beta, 0.0606855, 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(beta, 0.0333333, 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(beta, 0.0183093, 1e-5, 0.0)
     (
         interval,
         beta,
     ) = distribution.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)
-    print("Bilateral confidence interval=", interval)
-    print("beta=", ot.Point(1, beta))
+    if xi == -0.2:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.537881], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.41368], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.537977], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [6.03332], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.538073], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [8.68459], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
     (
         interval,
         beta,
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, False
     )
-    print("Unilateral confidence interval (lower tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    if xi == -0.2:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [3.8804], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [4.9936], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.5], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [6.65423], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
     (
         interval,
         beta,
     ) = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
         0.95, True
     )
-    print("Unilateral confidence interval (upper tail)=", interval)
-    print("beta=", ot.Point(1, beta))
+    if xi == -0.2:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.576547], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [8.0], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.57694], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [54.5655], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(interval.getLowerBound(), [0.577336], 1e-5, 0.0)
+        ott.assert_almost_equal(interval.getUpperBound(), [10126.8], 1e-5, 0.0)
+    ott.assert_almost_equal(beta, 0.95, 1e-5, 0.0)
 
     mean = distribution.getMean()
-    print("mean=", repr(mean))
+    if xi == -0.2:
+        ott.assert_almost_equal(mean, [1.75], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(mean, [2.0], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(mean, [2.375], 1e-5, 0.0)
     standardDeviation = distribution.getStandardDeviation()
-    print("standard deviation=", repr(standardDeviation))
+    if xi == -0.2:
+        ott.assert_almost_equal(standardDeviation, [1.05644], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(standardDeviation, [1.5], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(standardDeviation, [2.42061], 1e-5, 0.0)
     skewness = distribution.getSkewness()
-    print("skewness=", repr(skewness))
+    if xi == -0.2:
+        ott.assert_almost_equal(skewness, [1.18322], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(skewness, [2.0], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(skewness, [4.64758], 1e-5, 0.0)
     kurtosis = distribution.getKurtosis()
-    print("kurtosis=", repr(kurtosis))
+    if xi == -0.2:
+        ott.assert_almost_equal(kurtosis, [4.2], 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(kurtosis, [9.0], 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(kurtosis, [73.8], 1e-5, 0.0)
     covariance = distribution.getCovariance()
-    print("covariance=", repr(covariance))
+    if xi == -0.2:
+        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [1.11607]), 1e-5, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [2.25]), 1e-5, 0.0)
+    else:
+        ott.assert_almost_equal(covariance, ot.CovarianceMatrix(1, [5.85938]), 1e-5, 0.0)
     parameters = distribution.getParametersCollection()
-    print("parameters=", repr(parameters))
-    print("Standard representative=", distribution.getStandardRepresentative())
+    assert len(parameters) == 1
+    if xi == -0.2:
+        ott.assert_almost_equal(parameters[0], [1.5, -0.2, 0.5], 0.0, 0.0)
+    elif xi == 0.0:
+        ott.assert_almost_equal(parameters[0], [1.5, 0.0, 0.5], 0.0, 0.0)
+    else:
+        ott.assert_almost_equal(parameters[0], [1.5, 0.2, 0.5], 0.0, 0.0)
+    assert distribution.getStandardRepresentative().getImplementation().getClassName() == "GeneralizedPareto"
 
     ot.Log.Show(ot.Log.TRACE)
     ot.RandomGenerator.SetSeed(1)
     validation = ott.DistributionValidation(distribution)
+    validation.skipPDFAtLowerBound()  # the density is 1 / sigma at the finite lower bound
     validation.run()
+
+# Density at the finite lower bound u: 1 / sigma
+ott.assert_almost_equal(distribution.computePDF(0.5), 1.0 / 1.5, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computeLogPDF(0.5), -math.log(1.5), 1e-12, 0.0)
 
 # Test computeCharacteristicFunction with xi=0 (regression test for missing sigma/u)
 gpd = ot.GeneralizedPareto(1.5, 0.0, 0.5)

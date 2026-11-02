@@ -162,7 +162,8 @@ void LinearGradient::load(Advocate & adv)
 
 Bool LinearGradient::equals(const GradientImplementation & other) const
 {
-  return *this == dynamic_cast<const LinearGradient &>(other);
+  const LinearGradient * p_other = dynamic_cast<const LinearGradient *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

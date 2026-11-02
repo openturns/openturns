@@ -89,6 +89,9 @@ public:
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;
 
+  /** Get the roughness, i.e. the L2-norm of the PDF */
+  Scalar getRoughness() const override;
+
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const override;
 

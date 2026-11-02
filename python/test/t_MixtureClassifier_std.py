@@ -35,3 +35,27 @@ for j in range(len(aCollection)):
             grade *= 2.0
         grades[num] = grade
     print("grades|", j, "=", grades)
+
+
+class SerialLaw(ot.PythonDistribution):
+    # Python distributions are never parallel-safe
+
+    def __init__(self):
+        super().__init__(1)
+
+    def getRange(self):
+        return ot.Interval(-1.0, 1.0)
+
+    def computeCDF(self, X):
+        return 0.5
+
+
+# setMixture refreshes the parallel flag from the replacement mixture
+parallel_mixture = ot.Mixture([ot.Normal(), ot.Normal()])
+serial_mixture = ot.Mixture([ot.Normal(), ot.Distribution(SerialLaw())])
+assert parallel_mixture.isParallel()
+assert not serial_mixture.isParallel()
+classifier.setMixture(serial_mixture)
+assert not classifier.isParallel()
+classifier.setMixture(parallel_mixture)
+assert classifier.isParallel()

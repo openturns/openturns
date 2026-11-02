@@ -221,6 +221,7 @@ Graphical tests
     :template: functionWithPlot.rst_t
 
     VisualTest.DrawCDFplot
+    VisualTest.DrawPairsWithGrid
     VisualTest.DrawHenryLine
     VisualTest.DrawInsideOutside
     VisualTest.DrawKendallPlot

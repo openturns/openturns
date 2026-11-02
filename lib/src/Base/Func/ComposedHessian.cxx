@@ -155,7 +155,8 @@ void ComposedHessian::load(Advocate & adv)
 
 Bool ComposedHessian::equals(const HessianImplementation & other) const
 {
-  return *this == dynamic_cast<const ComposedHessian &>(other);
+  const ComposedHessian * p_other = dynamic_cast<const ComposedHessian *>(&other);
+  return p_other && (*this == *p_other);
 }
 
 END_NAMESPACE_OPENTURNS

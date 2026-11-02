@@ -3,20 +3,42 @@ R"RAW(Triangular factory.
 
 Notes
 -----
-The parameters are estimated by method of moments:
+Let :math:`n` be the sample size.
+Let :math:`x_{(1)}` be the sample minimum and :math:`x_{(n)}` be the sample maximum.
+Let :math:`\delta` be the sample range:
 
 .. math::
     :nowrap:
 
-    \begin{align*}
-      \Hat{a}_n & = \left(1 - \frac{\mathrm{sign}\left(x_{(1,n)}\right)}{2 + n}\right) x_{(1,n)}\\
-      \Hat{b}_n & = \left(1 + \frac{\mathrm{sign}\left(x_{(n,n)}\right)}{2 + n}\right) x_{(n,n)}\\
-      \Hat{m}_n & = 3 \overline{x}_n - \Hat{a}_n - \Hat{b}_n
-    \end{align*}
+    \begin{eqnarray*}
+      \delta = x_{(n)} - x_{(1)}.
+    \end{eqnarray*}
+
+Then the bounds are estimated by extending the sample range:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \hat{a} &=& x_{(1)} - \frac{\delta}{n + 2}, \\
+      \hat{b} &=& x_{(n)} + \frac{\delta}{n + 2}.
+    \end{eqnarray*}
+
+The mode is estimated by the method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \hat{m} = 3 \bar{x}_n - \hat{a} - \hat{b},
+    \end{eqnarray*}
+
+where :math:`\bar{x}_n` is the sample mean.
 
 See also
 --------
-DistributionFactory, Triangular)RAW"
+DistributionFactory, Triangular
+)RAW"
 
 // ---------------------------------------------------------------------
 
