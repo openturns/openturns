@@ -88,6 +88,10 @@ public:
   using CovarianceModelImplementation::partialGradient;
   Matrix partialGradient(const Point &s, const Point &t) const override;
 
+  /** Hessian wrt s */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
   /** isParallel? */
   Bool isParallel() const override;
 

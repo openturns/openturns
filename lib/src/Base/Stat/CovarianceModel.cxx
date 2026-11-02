@@ -22,6 +22,7 @@
 #include "openturns/ExponentialModel.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HODLRMatrix.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -127,6 +128,13 @@ Matrix CovarianceModel::partialGradient(const Point & s,
                                         const Point & t) const
 {
   return getImplementation()->partialGradient(s, t);
+}
+
+/* Hessian */
+SymmetricMatrix CovarianceModel::partialHessian(const Point & s,
+                                                const Point & t) const
+{
+  return getImplementation()->partialHessian(s, t);
 }
 
 /* Gradient wrt parameters */
