@@ -108,6 +108,15 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   if (inputDoE_.getSize() == 0) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input design of experiment is empty";
   if (inputDoE_.getSize() != outputDoE_.getSize()) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: input and output designs have different sizes (" << inputDoE_.getSize() << " vs " << outputDoE_.getSize() << ")";
   if (outputDoE_.getDimension() != 1) throw InvalidArgumentException(HERE) << "ActiveLearningReliabilityAlgorithm: output design must be 1-dimensional";
+  simulation_ = defaultSimulation_;
+  try {
+    simulation_.setKeepSample(true);
+    defaultSimulation_.setKeepSample(true);
+  } catch (const NotYetImplementedException &) {
+    throw InvalidArgumentException(HERE) 
+      << "ActiveLearningReliabilityAlgorithm: the simulator does not support setKeepSample. "
+      "Consider using one of these or modify the simulator to support setKeepSample.";
+  }
   ExtractSurrogateSpec(fitter, covarianceModel_, basis_);
   // The simulator handles share their implementation until first mutation:
   // setEvent/run/setKeepSample detach through copy-on-write, so the caller
@@ -115,9 +124,7 @@ ActiveLearningReliabilityAlgorithm::ActiveLearningReliabilityAlgorithm(const Gau
   // implementation until first mutation (copy-on-write on setGaussianProcessRegression).
   // The simulators keep their own sample policy: the scoring pool is drawn
   // separately, so keepSample is left untouched.
-  simulation_ = defaultSimulation_;
-  simulation_.setKeepSample(true);
-  defaultSimulation_.setKeepSample(true);
+
    
 }
 
