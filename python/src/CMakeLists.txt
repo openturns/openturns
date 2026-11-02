@@ -600,8 +600,17 @@ ot_add_python_module(experimental experimental_module.i
                      SparseExpansion.i SparseExpansion_doc.i
                      PushForwardDistribution.i PushForwardDistribution_doc.i
                      PushForwardOverMesh.i PushForwardOverMesh_doc.i
+                     SparseGaussianProcessFitterResult.i SparseGaussianProcessFitterResult_doc.i
+                     SparseGaussianProcessEvaluation.i SparseGaussianProcessEvaluation_doc.i
+                     SparseGaussianProcessGradient.i SparseGaussianProcessGradient_doc.i
+                     SparseGaussianProcessHessian.i SparseGaussianProcessHessian_doc.i
+                     SparseGaussianProcessFitter.i SparseGaussianProcessFitter_doc.i
+                     SparseGaussianProcessRegression.i SparseGaussianProcessRegression_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
+                     HeteroscedasticSparseGaussianProcessFitter.i HeteroscedasticSparseGaussianProcessFitter_doc.i
+                     HeteroscedasticSparseGaussianProcessFitterResult.i HeteroscedasticSparseGaussianProcessFitterResult_doc.i
+                     HeteroscedasticSparseGaussianProcessRegression.i HeteroscedasticSparseGaussianProcessRegression_doc.i
                     )
 ot_add_python_module(model_process model_process_module.i
                       WhiteNoise.i WhiteNoise_doc.i
