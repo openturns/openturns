@@ -134,7 +134,7 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``SparseGaussianProcessFitter-DefaultOptimizationAlgorithm`` (``String``, default: ``"TNC"``): the default optimization algorithm.
+- ``SparseGaussianProcessFitter-DefaultOptimizationAlgorithm`` (``String``, default: ``TNC``): the default optimization algorithm.
 - ``SparseGaussianProcessFitter-DefaultOptimizationLowerBound`` (``Scalar``, default: ``1.0e-2``): the default lower bound for the covariance model parameters.
 - ``SparseGaussianProcessFitter-DefaultOptimizationUpperBound`` (``Scalar``, default: ``1.0e2``): the default upper bound for the covariance model parameters.
 - ``SparseGaussianProcessFitter-OptimizationLowerBoundScaleFactor`` (``Scalar``, default: ``1.0e-3``): the lower bound scale factor for the covariance model parameters.
@@ -145,7 +145,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``SparseGaussianProcessFitter-DefaultVarianceFunctionLowerBound`` (``Scalar``, default: ``-30.0``): the default lower bound for the log-variance function parameters.
 - ``SparseGaussianProcessFitter-DefaultVarianceFunctionUpperBound`` (``Scalar``, default: ``30.0``): the default upper bound for the log-variance function parameters.
 - ``SparseGaussianProcessFitter-OptimizationNormalization`` (``Bool``, default: ``True``): whether to internally scale the hyperparameters during the optimization using a min-max transformation.
-- ``SparseGaussianProcessFitter-LinearAlgebra`` (``String``, default: ``"LAPACK"``): the default linear algebra method, either ``"LAPACK"`` or ``"HMAT"``.
+- ``SparseGaussianProcessFitter-LinearAlgebra`` (``String``, default: ``LAPACK``): the default linear algebra method, either ``"LAPACK"`` or ``"HMAT"``.
 
 Examples
 --------
