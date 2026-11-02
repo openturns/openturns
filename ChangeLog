@@ -35,7 +35,6 @@
 
 ==== New ResourceMap keys ====
  * ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations: default enrichment budget (default is 100)
- * ActiveLearningReliabilityAlgorithm-DefaultCandidatePoolSize: size of the fixed candidate pool drawn once per run (default is 100000)
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
  * LevelSetMesher-UseQEF: enable the QEF sharp-edge placement in LevelSetMesher (default is False)
  * Mesh-GridThreshold: number of simplex pairs above which Mesh::intersect filters candidate pairs through a bounding-box grid (default is 1024)
