@@ -82,7 +82,7 @@ Notes
 -----
 The following :class:`~openturns.ResourceMap` keys are used:
 
-- ``HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationAlgorithm`` (``String``, default: ``"TNC"``): the default optimization algorithm.
+- ``HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationAlgorithm`` (``String``, default: ``TNC``): the default optimization algorithm.
 - ``HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationLowerBound`` (``Scalar``, default: ``1.0e-2``): the default lower bound for the covariance model parameters.
 - ``HeteroscedasticSparseGaussianProcessFitter-DefaultOptimizationUpperBound`` (``Scalar``, default: ``1.0e2``): the default upper bound for the covariance model parameters.
 - ``HeteroscedasticSparseGaussianProcessFitter-OptimizationLowerBoundScaleFactor`` (``Scalar``, default: ``1.0e-3``): the lower bound scale factor for the covariance model parameters.
