@@ -86,6 +86,99 @@ class=Point name=Unnamed dimension=0 values=[]"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Point::contains
+"Tell whether the vector contains a given value.
+
+Parameters
+----------
+value : float
+    The value to look for.
+
+Returns
+-------
+contains : bool
+    *True* if at least one component is equal to the given value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> x.contains(2.0)
+True
+>>> x.contains(4.0)
+False"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::isEmpty
+"Tell whether the vector is empty.
+
+Returns
+-------
+isEmpty : bool
+    *True* if the vector has no component.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2)
+>>> x.isEmpty()
+False
+>>> x.clear()
+>>> x.isEmpty()
+True"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::resize
+"Change the size of the vector.
+
+Parameters
+----------
+newSize : int
+    New size of the vector.
+
+Notes
+-----
+If the new size is smaller than the current one, the trailing components are
+dropped, otherwise the new components are set to zero.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point(2, 4.0)
+>>> print(x)
+[4,4]
+>>> x.resize(1)
+>>> print(x)
+[4]
+>>> x.resize(4)
+>>> print(x)
+[4,0,0,0]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Point::select
+"Select the components at the given indices.
+
+Parameters
+----------
+indices : sequence of int, :math:`0 \leq i < n`
+    The indices of the selected components, in the output order.
+
+Returns
+-------
+selected : sequence of float
+    The components at the selected indices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> x = ot.Point([1.0, 2.0, 3.0])
+>>> selected = x.select([2, 0, 2])"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Point::isIncreasing
 "Check if the components are in increasing order.
 
