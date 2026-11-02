@@ -174,6 +174,9 @@ private:
   /** Interpolate the CDF */
   Collection<PiecewiseHermiteEvaluation> interpolateCDF(const UnsignedInteger n);
 
+  /** Return the junction abscissa if the CDF/CCDF junction gap is negligible, throw otherwise */
+  Scalar computeJunctionQuantile(const Scalar prob) const;
+
   /** The main parameter set of the distribution */
   Scalar beta_;
   Scalar alpha_;
