@@ -119,13 +119,15 @@ int main()
     assert(!owned.isView());
     std::cout << "  ViewBackend basic: OK" << std::endl;
 
-    // Clone of view materializes into owned container
+    // Clone of a view stays a view: it aliases the same external memory so
+    // that views keep working across copies (e.g. Python by-value returns)
     std::unique_ptr<DataContainer> clonedPtr(view.clone());
-    assert(!clonedPtr->isView());
+    assert(clonedPtr->isView());
     assert(*clonedPtr == view);
     (*clonedPtr)(0, 0) = 0.0;
-    assert(view(0, 0) == 1.0); // original unchanged
-    std::cout << "  ViewBackend clone materializes: OK" << std::endl;
+    assert(view(0, 0) == 0.0); // same external memory
+    extBuf[0] = 1.0; // restore
+    std::cout << "  ViewBackend clone aliases: OK" << std::endl;
 
     // subView
     DataContainer full(6, 2, 0.0, DataContainer::ROW_MAJOR);
@@ -138,7 +140,7 @@ int main()
     assert(sub.getDimension() == 2);
     assert(sub(0, 0) == 4.0); // row 2 of full
     assert(sub(1, 1) == 7.0); // row 3 of full
-    assert(sub(2, 1) == 11.0); // row 5 of full
+    assert(sub(2, 1) == 9.0); // row 4 of full
 
     // Mutation through subView changes parent
     sub(0, 0) = 999.0;
