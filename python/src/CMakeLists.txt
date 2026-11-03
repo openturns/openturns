@@ -282,6 +282,8 @@ ot_add_python_module(experimental experimental_module.i
                      RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i
+                     SteplemanWinarskyResult.i SteplemanWinarskyResult_doc.i
+                     SteplemanWinarsky.i SteplemanWinarsky_doc.i
                     )
 ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Arcsine.i Arcsine_doc.i

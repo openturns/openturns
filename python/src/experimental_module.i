@@ -148,5 +148,9 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 %include ExceptionPenalizedEvaluation.i
 %include MemoizePointToFieldFunction.i
 
+/* Base/Diff */
+%include SteplemanWinarskyResult.i
+%include SteplemanWinarsky.i
+
 /* Base/Optim */
 %include ExceptionPenalizedProblem.i

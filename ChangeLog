@@ -5,6 +5,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * SteplemanWinarsky, SteplemanWinarskyResult (openturns.experimental)
 
 ==== API changes ====
 

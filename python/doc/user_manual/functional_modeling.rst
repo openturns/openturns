@@ -116,6 +116,8 @@ Finite differentiation schemes
     FiniteDifferenceStep
     ConstantStep
     BlendedStep
+    experimental.SteplemanWinarsky
+    experimental.SteplemanWinarskyResult
 
 Evaluation functions
 ====================

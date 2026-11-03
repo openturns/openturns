@@ -706,6 +706,10 @@ void ResourceMap::loadDefaultConfiguration()
   // BlendedStep parameters //
   addAsScalar("BlendedStep-DefaultEta", 1.0);
 
+  // SteplemanWinarsky parameters //
+  addAsScalar("SteplemanWinarsky-DefaultAlpha", 0.25);
+  addAsUnsignedInteger("SteplemanWinarsky-DefaultMaximumIterationNumber", 100);
+
   // CenteredFiniteDifferenceGradient parameters //
   addAsScalar("CenteredFiniteDifferenceGradient-DefaultEpsilon", 1.0e-5);
 
