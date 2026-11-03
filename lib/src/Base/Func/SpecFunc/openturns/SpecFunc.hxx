@@ -193,6 +193,25 @@ OT_API Scalar HyperGeom_2_2(const Scalar p1,
                             const Scalar q1,
                             const Scalar q2,
                             const Scalar x);
+// Lauricella hypergeometric function F_A:
+// F_A(a; b_1, ..., b_n; c_1, ..., c_n; x_1, ..., x_n) =
+// sum_{m_1, ..., m_n >= 0} (a)_{m_1 + ... + m_n}
+//   prod_i (b_i)_{m_i} / (c_i)_{m_i} x_i^{m_i} / m_i!
+// Only defined for sum_i |x_i| < 1.
+OT_API Scalar LauricellaF_A(const Scalar a,
+                            const Point & b,
+                            const Point & c,
+                            const Point & x);
+// Natural logarithm of the absolute value of the Lauricella hypergeometric
+// function F_A, with its sign and an estimate of the cancellation level.
+// Returns false when the series cannot be evaluated.
+OT_API Bool LogLauricellaF_A(const Scalar a,
+                             const Point & b,
+                             const Point & c,
+                             const Point & x,
+                             Scalar & logValue,
+                             Scalar & cancellation,
+                             Scalar & sign);
 // Natural logarithm of the hypergeometric function of type (1,1). Uses the
 // optimally-truncated DLMF 13.7.1 asymptotic expansion for large |x| and the
 // logarithm of the direct series otherwise. Requires 1F1(p1;q1;x) > 0.
