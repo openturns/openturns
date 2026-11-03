@@ -115,8 +115,10 @@ ot.Log.Show(ot.Log.DEFAULT)
 # with a :class:`~openturns.KernelSmoothing` truncated at the lower bound 0.
 # The two densities are drawn on the same doubly logarithmic figure: the
 # Christoffel errors concentrate two orders of magnitude below the natural
-# ones, and the log scale resolves both the body and the tails of the two
-# distributions.
+# ones, and the log scale resolves both bodies and tails. The kernel
+# estimates decay far below the plotted range in their extreme tails, so the
+# vertical axis is clipped at :math:`10^{-8}` to keep both distributions
+# readable.
 christoffelSmoothing = ot.KernelSmoothing()
 christoffelSmoothing.setBoundingOption(ot.KernelSmoothing.LOWER)
 christoffelSmoothing.setLowerBound(0.0)
@@ -131,6 +133,10 @@ graph.setLegends(["Christoffel subsample", "natural sample"])
 graph.setTitle("Squared L2 error distributions")
 graph.setXTitle("squared L2 error")
 graph.setLogScale(ot.GraphImplementation.LOGXY)
+boundingBox = graph.getBoundingBox()
+lowerBound = boundingBox.getLowerBound()
+lowerBound[1] = 1.0e-8
+graph.setBoundingBox(ot.Interval(lowerBound, boundingBox.getUpperBound()))
 view = otv.View(graph)
 
 # %%
