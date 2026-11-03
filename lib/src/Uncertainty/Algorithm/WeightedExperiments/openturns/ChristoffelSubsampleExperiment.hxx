@@ -45,12 +45,14 @@ BEGIN_NAMESPACE_OPENTURNS
  * Christoffel points when n > m. When the Certified ResourceMap key is
  * true, the certified sizing n = gamma m log(m) is used instead, with
  * the Gamma key as the constant: generateWithWeights() draws n
- * independent Christoffel points and keeps all of them, and supplied
- * points are rejected. In the default mode, supplied points are either
- * volume-sampled when there are more than n of them, returned with
- * unit weights when there are exactly n, or used as the conditioning
- * set of a projection DPP when there are at most m of them. Volume
- * sampling assumes that the supplied candidates are draws from the
+ * independent Christoffel points and keeps all of them, retrying the
+ * whole draw until the frame bounds hold or the attempt cap is reached,
+ * in which case the draw with the sharpest realized frame is retained.
+ * Supplied points are rejected in certified mode. In the default mode,
+ * supplied points are volume-sampled when there are more than n of them,
+ * returned with unit weights when there are exactly n, or used as the
+ * conditioning set of a projection DPP when there are at most m of them.
+ * Volume sampling assumes that the supplied candidates are draws from the
  * reference measure.
  */
 class OT_API ChristoffelSubsampleExperiment
@@ -158,10 +160,13 @@ private:
                            const Sample & fixed = Sample()) const;
 
   /** Check the weighted design frame bounds, optionally warning on failure.
-      Returns true when the design is inside the frame band. */
+      Returns true when the design is inside the frame band.  When
+      minEigenvalueOut is not null, it receives the smallest eigenvalue of the
+      weighted Gramian, ie the lower frame bound. */
   Bool checkFrame(const Sample & sample,
                   const Point & weights,
-                  const Bool warn = true) const;
+                  const Bool warn = true,
+                  Scalar * minEigenvalueOut = nullptr) const;
 
   /** Identity index set of given size */
   static Indices IdentityIndices(const UnsignedInteger size);
@@ -181,9 +186,9 @@ private:
       and persisted across save/load when certified_ is true. */
   Scalar gamma_ = 0.0;
 
-  /** Maximum number of independent certified draws tried before giving up
-      on the frame certificate, initialized from the ResourceMap by update()
-      and persisted across save/load. */
+  /** Maximum number of independent certified draws tried before returning
+      the draw with the sharpest realized frame, initialized from the
+      ResourceMap by update() and persisted across save/load. */
   UnsignedInteger maxAttempts_ = 1;
 
   /** The Christoffel distribution sampled by the experiment */
