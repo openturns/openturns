@@ -275,6 +275,11 @@ Bibliography
 .. [hough2009] Hough, J. B., Krishnapur, M., Peres, Y. and Virág, B. (2009).
     *Zeros of Gaussian analytic functions and determinantal point processes.*
     University Lecture Series, vol. 51, American Mathematical Society.
+.. [huang2011] Huang J.C., Frey B.J., *Cumulative distribution networks and the
+    derivative-sum-product algorithm: models and inference for cumulative
+    distribution functions on graphs*,
+    Journal of Machine Learning Research, 12(10):301-348, 2011.
+    `pdf <https://jmlr.org/papers/volume12/huang11a/huang11a.pdf>`__
 .. [iooss2015] Iooss B., Lemaître P. (2015) *A review on global sensitivity
     analysis methods.* In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithms and Applications, Springer.
     `pdf <https://arxiv.org/pdf/1404.2405>`__
@@ -348,6 +353,8 @@ Bibliography
 .. [koehler1996] J.R. Koehler and A.B. Owen. *Computer experiments. In S. Ghosh
     and C.R. Rao, editors, Design and analysis of experiments,
     volume 13 of Handbook of statistics.* Elsevier, 1996.
+.. [koller2009] Koller D., Friedman N., *Probabilistic graphical models:
+    principles and techniques*, MIT Press, 2009.
 .. [kotz2000] Kotz, S., Balakrishnan, N., & Johnson, N. L. (2000).
     *Continuous Multivariate Distributions, Volume 1: Models and Applications.*
     John Wiley & Sons.

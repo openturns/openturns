@@ -352,3 +352,21 @@ assert list(ot.Mixture([ot.Dirac(1.0), ot.Dirac(1.0)], [0.5, 0.5]).getSingularit
 assert list(
     ot.Mixture([ot.Dirac(1.0), ot.Uniform(0.0, 3.0)], [0.5, 0.5]).getSingularities()
 ) == [1.0]
+
+# --- Mixture: the log-PDF stays finite when every atom PDF underflows ---
+tail_mixture = ot.Mixture(
+    [ot.Exponential(1.0), ot.Exponential(2.0)], [0.5, 0.5]
+)
+tail_point = [800.0]
+assert tail_mixture.computePDF(tail_point) == 0.0
+ott.assert_almost_equal(
+    tail_mixture.computeLogPDF(tail_point),
+    math.log(0.5) - 800.0,
+    1e-12,
+    0.0,
+)
+# Zero-weight atoms do not contribute
+zero_weight = ot.Mixture(
+    [ot.Exponential(1.0), ot.Exponential(2.0)], [1.0, 0.0]
+)
+ott.assert_almost_equal(zero_weight.computeLogPDF([1.0]), -1.0, 1e-15, 0.0)

@@ -280,6 +280,7 @@ as Python functions.
     SpecFunc.LogGamma1p
     SpecFunc.LogHyperGeom_1_1
     SpecFunc.LogLauricellaF_A
+    SpecFunc.LogSumExp
     SpecFunc.NextPowerOfTwo
     SpecFunc.Psi
     SpecFunc.RegularizedIncompleteBeta

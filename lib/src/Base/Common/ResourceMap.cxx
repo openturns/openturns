@@ -1226,6 +1226,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10);
   addAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxProjectionAttempts", 1000000);
 
+  // CumulativeDistributionNetwork parameters //
+  addAsUnsignedInteger("CumulativeDistributionNetwork-MaximumTerms", 1000000);
+
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);

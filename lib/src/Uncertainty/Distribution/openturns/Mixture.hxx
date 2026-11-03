@@ -98,6 +98,10 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Get the log-PDF of the Mixture */
+  using DistributionImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
+
   /** Get the CDF of the Mixture */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;

@@ -149,7 +149,7 @@ Scalar Logistic::computeLogPDF(const Point & point) const
   const Scalar z = (point[0] - mu_) / beta_;
   if (z > 12.38075336) return -z + log1p(-2.0 * std::exp(-z)) - std::log(beta_);
   if (z < -12.38075336) return z + log1p(-2.0 * std::exp(z)) - std::log(beta_);
-  return -z - std::log(beta_) - 2.0 * log1p(std::exp(-z));
+  return -z - std::log(beta_) - 2.0 * SpecFunc::LogSumExp(0.0, -z);
 }
 
 /* Get the CDF of the distribution */

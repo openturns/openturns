@@ -1398,6 +1398,51 @@ Scalar SpecFunc::LogBinomialCoefficient(const UnsignedInteger n,
   return -LogBeta(k + 1.0, n - k + 1.0) - std::log1p(n);
 }
 
+// Log-sum-exp of two logarithms: log(exp(logA) + exp(logB))
+Scalar SpecFunc::LogSumExp(const Scalar logA, const Scalar logB)
+{
+  // NaN must propagate
+  if (logA != logA) return logA;
+  if (logB != logB) return logB;
+  if (logA == LowestScalar) return logB;
+  if (logB == LowestScalar) return logA;
+  const Scalar maximum = std::max(logA, logB);
+  if (maximum == Infinity) return Infinity;
+  return maximum + std::log1p(std::exp(-std::abs(logA - logB)));
+}
+
+// Log-sum-exp of a collection of logarithms
+Scalar SpecFunc::LogSumExp(const Point & logValues)
+{
+  const UnsignedInteger size = logValues.getSize();
+  if (size == 0) return LowestScalar;
+  Scalar maximum = LowestScalar;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // NaN must propagate
+    if (logValues[i] != logValues[i]) return logValues[i];
+    if (logValues[i] > maximum) maximum = logValues[i];
+  }
+  if (maximum == LowestScalar) return LowestScalar;
+  if (maximum == Infinity) return Infinity;
+  // Kahan compensated summation of the shifted exponentials. The terms are
+  // nonnegative and lie in [0, 1], so their sum is O(1) and the largest term
+  // is 1: the sum cannot underflow. Kahan compensation keeps the summation
+  // error at the level of one ulp of the Scalar result, which is the precision
+  // of the input and output values.
+  const Scalar logMaximum = maximum;
+  Scalar sum = 0.0;
+  Scalar error = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar y = std::exp(logValues[i] - logMaximum) - error;
+    const Scalar t = sum + y;
+    error = (t - sum) - y;
+    sum = t;
+  }
+  return logMaximum + std::log(sum);
+}
+
 Scalar SpecFunc::AccurateSum(const Point & v)
 {
 #ifdef OPENTURNS_HAVE_MPFR
