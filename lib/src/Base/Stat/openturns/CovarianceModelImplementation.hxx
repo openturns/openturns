@@ -112,6 +112,31 @@ public:
   virtual Matrix partialGradient(const Point & s,
                                  const Point & t) const;
 
+  /** Hessian */
+  virtual SymmetricMatrix partialHessian(const Point & s,
+                                         const Point & t) const;
+
+  /** Third-order spatial derivatives of the (0, 0) component.
+   * Flat Point of size d*d*d, dim0-contiguous like KissFFT::fftND:
+   * index = a + d * (b + d * c) holds d^3 k_00 / ds_a ds_b ds_c.
+   * Default finite differences of partialHessian, caller-unrolled. */
+  virtual Point thirdOrderPartial(const Point & s,
+                                  const Point & t) const;
+
+  /** Fourth-order spatial derivatives of the (0, 0) component.
+   * Flat Point of size d^4, index = a + d * (b + d * (c + d * e)).
+   * Default finite differences of thirdOrderPartial, caller-unrolled. */
+  virtual Point fourthOrderPartial(const Point & s,
+                                   const Point & t) const;
+
+  /** Mixed parameter-spatial Hessian of the (0, 0) component.
+   * Matrix(nActive, d*d), row per active parameter (filterActiveParameterGradient
+   * ordering), column a + d*b holds d H_ab(s, t) / dp where H is the
+   * partialHessian. Default finite differences of partialHessian in
+   * parameter space, caller-unrolled. */
+  virtual Matrix parameterHessian(const Point & s,
+                                  const Point & t) const;
+
   /** Gradient wrt parameters */
   virtual Matrix parameterGradient (const Point & s,
                                     const Point & t) const;
@@ -255,6 +280,10 @@ protected:
 
   // set the covariance structure
   void updateOutputCovariance();
+
+  /** Filter a gradient computed wrt all the full parameters down to the active ones */
+  Matrix filterActiveParameterGradient(const Point & fullGradient) const;
+  Matrix filterActiveParameterGradient(const Matrix & fullGradient) const;
 
   /** Container for scale values  */
   Point scale_;
