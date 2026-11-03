@@ -97,9 +97,19 @@ endpoint concentration.
 The Christoffel measure is the optimal importance sampling measure for
 :math:`L^2(\cD,\mu)` least squares. Let :math:`\nu` be any probability measure
 on :math:`\cD` such that :math:`\mu` is absolutely continuous with respect to
-:math:`\nu`, with Radon-Nikodym derivative :math:`w = \di{\mu} / \di{\nu}`. The
-constant that enters the matrix concentration bound below is
-:math:`\norm{w k_m}_{L^\infty(\nu)}`. Since
+:math:`\nu`, with Radon-Nikodym derivative :math:`w = \di{\mu} / \di{\nu}`. A
+design is a set of points together with weights,
+:math:`(\vect{X}_i, w_i)_{1 \leq i \leq n}`: the points are drawn from
+:math:`\nu`, and :math:`w_i = w(\vect{X}_i)` are importance weights that map
+:math:`\nu`-expectations back to :math:`\mu`. They are not replication counts
+or classical design weights; when :math:`\nu = \mu`, all the weights are one.
+Keeping the points and the weights in a single object lets the same design
+define the quadrature rule, the weighted least squares estimator, and the
+Gramian :eq:`christoffel_gramian` below.
+
+The constant that enters the matrix concentration bound of
+:eq:`christoffel_general_budget` is :math:`\norm{w k_m}_{L^\infty(\nu)}`.
+Since
 
 .. math::
 
@@ -170,9 +180,26 @@ condition with constant :math:`\delta \in (0, 1)` when
     \qquad \forall v \in V_m,
 
 which is equivalent to :math:`\norm{\mat{G}_n - \mat{I}_m}_2 \leq \delta`.
-For the Christoffel sampling measure, :math:`w k_m = m`, and the matrix
-Chernoff bound of [cohendolbeault2020]_ gives, for every
-:math:`\varepsilon \in (0, 1)`, the implication
+For a general sampling measure :math:`\nu` with density ratio :math:`w`, the
+matrix Chernoff bound of [cohendolbeault2020]_ gives, for every
+:math:`\varepsilon \in (0, 1)`,
+
+.. math::
+    :label: christoffel_general_budget
+
+    \Prob{\norm{\mat{G}_n - \mat{I}_m}_2 > \frac{1}{2}}
+    \leq 2m \exp\left(-\frac{n}{\gamma \norm{w k_m}_{L^\infty(\nu)}}\right).
+
+Hence the budget
+
+.. math::
+
+    n \geq \gamma \norm{w k_m}_{L^\infty(\nu)}
+    \log\left(\frac{2m}{\varepsilon}\right)
+
+implies that the frame condition holds with probability at least
+:math:`1 - \varepsilon`. For the Christoffel sampling measure,
+:math:`w k_m = m`, and this is exactly
 
 .. math::
     :label: christoffel_budget
@@ -190,24 +217,50 @@ with the constant
     \approx 9.242343873386666.
 
 Under the same budget condition, the weighted least squares estimator is
-near-best in expectation:
+near-best in expectation. Let
+
+.. math::
+
+    S = \left\{\norm{\mat{G}_n - \mat{I}_m}_2 \leq \frac{1}{2}\right\},
+
+so that :math:`\Prob{S} \geq 1 - \varepsilon`. Conditioning on :math:`S`
+gives
 
 .. math::
     :label: christoffel_near_best
 
-    \Expect{\norm{g - \widetilde{g}_n}_{L^2(\cD,\mu)}^2
-    \mathbf{1}_{\norm{\mat{G}_n - \mat{I}_m}_2 \leq 1/2}}
-    \leq (1 + \eta_n) e_m(g)^2,
+    \Expect{\norm{g - \widetilde{g}_n}_{L^2(\cD,\mu)}^2 \mid S}
+    \leq \frac{1 + \eta_n}{1 - \varepsilon} e_m(g)^2,
     \qquad
-    \eta_n = \frac{4}{n} \norm{w k_m}_{L^\infty(\nu)} = \frac{4m}{n}
+    \eta_n = \frac{4}{n} \norm{w k_m}_{L^\infty(\nu)}
     \leq \frac{4}{\gamma \log(2m/\varepsilon)},
 
 where :math:`e_m(g) = \inf_{v \in V_m} \norm{g - v}_{L^2(\cD,\mu)}` is the
-best approximation error in the space. The sampling error is thus a small
-multiplicative factor over the best possible error, and the factor tends to
-one as :math:`m` grows. The inequality also shows why the Christoffel measure
-is optimal: it makes :math:`\norm{w k_m}_{L^\infty}` as small as possible,
-hence the budget :math:`n` as small as possible.
+best approximation error in the space. The last inequality follows from the
+general budget :eq:`christoffel_general_budget`; for the Christoffel sampling
+measure :math:`\nu = \sigma_m`, :math:`w k_m = m` and hence
+:math:`\eta_n = 4m/n`.
+The factor :math:`(1 - \varepsilon)^{-1}`
+is the price of conditioning on the certified event. The conditioned estimator,
+which sets the estimate to zero outside :math:`S` instead of normalizing by
+:math:`\Prob{S}`, only gives the weaker bound with an additional
+:math:`\varepsilon \norm{g}_{L^2(\cD,\mu)}^2` term. The sampling error is thus
+a small multiplicative factor over the best possible error; for a fixed
+confidence level and growing :math:`m`, the :math:`n`-dependent term
+:math:`\eta_n` tends to zero. A quasi-optimality bound that is uniform in
+:math:`n` and also follows from conditioning is given by [haberstich2022]_:
+for every frame tolerance :math:`\delta \in [0, 1)` such that
+:math:`\Prob{\norm{\mat{G}_n - \mat{I}_m}_2 \leq \delta} \geq 1 - \varepsilon`,
+
+.. math::
+
+    \Expect{\norm{g - \widetilde{g}_n}_{L^2(\cD,\mu)}^2 \mid
+    \norm{\mat{G}_n - \mat{I}_m}_2 \leq \delta}
+    \leq \left(1 + \frac{1}{(1 - \delta)(1 - \varepsilon)}\right) e_m(g)^2.
+
+The inequality also shows why the Christoffel measure is optimal: it makes
+:math:`\norm{w k_m}_{L^\infty}` as small as possible, hence the budget
+:math:`n` as small as possible.
 
 The :class:`~openturns.experimental.ChristoffelSubsampleExperiment` uses the
 largest integer :math:`m` such that :math:`n \geq \gamma m \log(m)` when its
@@ -219,18 +272,45 @@ the realized frame :eq:`eq_christoffel_frame` with the default tolerance
 :math:`\delta = 1/2` (the ``ChristoffelSubsampleExperiment-FrameTolerance``
 key). If the realized design misses the band, the whole independent sample is
 redrawn, up to the number of attempts set by the
-``ChristoffelSubsampleExperiment-MaxAttempts`` key. The last draw is returned
-with a warning when no attempt passes. The theorem gives the probability
-scale of the budget; the frame check turns it into an operational certificate
-for the realized design.
+``ChristoffelSubsampleExperiment-MaxAttempts`` key. When no attempt passes,
+the experiment returns the draw whose weighted Gramian has the largest
+smallest eigenvalue, that is the sharpest realized frame among the attempts,
+and warns with the frame bounds of that retained design. The theorem gives
+the probability scale of the budget; the frame check turns it into an
+operational certificate for the realized design.
+
+This certified sizing fixes :math:`n` and adapts :math:`m`. It is natural when
+the approximation space belongs to a nested hierarchy and :math:`m` can be
+chosen freely. In many applications, :math:`m` is fixed by the model and only
+the number of evaluations :math:`n` can be adapted; the certificate should
+then be read in the other direction, as the lower bound
+:math:`n \geq \gamma m \log(2m/\varepsilon)` for the fixed :math:`m`. The
+current API exposes the fixed-:math:`n` strategy only; a fixed-:math:`m`
+strategy, which would choose :math:`n` from :math:`m`, is left for a future
+release. As a workaround, choose the smallest target size whose certified
+dimension is the fixed :math:`m`,
+:math:`n = \lceil \gamma m \log(m) \rceil` for :math:`m \geq 2` (and
+:math:`n = 1` for :math:`m = 1`), provided the basis supplies :math:`m`
+functions and :math:`n \geq m`. For small :math:`\gamma` the formula can give
+:math:`n < m`; the certified dimension is then bounded by :math:`n`, so check
+``getSpaceDimension()`` and increase :math:`n` (or :math:`\gamma`) until it
+is :math:`m`. This inherits the leading-order confidence of the certified
+sizing.
 
 The default mode of the experiment does not use this sizing: it chooses
 :math:`m = n - k` as the largest dimension supplied by the basis, which gives
 a much larger approximation space for the same budget but no certified frame
-guarantee. The frame check is then advisory only. The trade-off is the
-classical one between a square design (as many points as basis functions) and
-an overdetermined certified design (more points than basis functions, with a
-guaranteed stability margin).
+guarantee. The frame check is then advisory only, and the design is returned
+after a single draw: if it misses the band, the caller should reduce the space
+dimension (by truncating the basis or switching to certified sizing) or, when
+the basis capacity keeps :math:`m` fixed, increase :math:`n`. The experiment
+does not redraw in this mode: it returns the first draw without retrying, even
+though the realized miss still depends on the sampled points. Retrying is
+reserved for the certified mode, where the independent budget makes the
+probability statement meaningful. The trade-off is the classical one between a
+square design (as many points as basis functions) and an overdetermined
+certified design (more points than basis functions, with a guaranteed
+stability margin).
 
 .. _christoffel_dpp:
 
@@ -250,7 +330,8 @@ of the kernel [macchi1975]_, [hough2009]_:
 
 For the Christoffel kernel :math:`K_m` of :eq:`christoffel_kernel`, which is a
 projection kernel of rank :math:`m`, the DPP has exactly :math:`m` points
-almost surely. The joint density of the ordered configuration is
+almost surely. The law of the :math:`m` points is exchangeable, with joint
+density
 
 .. math::
     :label: dpp_density
@@ -259,10 +340,13 @@ almost surely. The joint density of the ordered configuration is
     = \frac{1}{m!} \det\left[K_m(\vect{x}_i, \vect{x}_j)\right]_{1 \leq i, j \leq m}
 
 with respect to :math:`\mu^{\otimes m}`; the normalization follows from the
-Andreief identity and the trace identity :eq:`christoffel_trace`. The
-one-point marginal density with respect to :math:`\mu` is
-:math:`K_m(\vect{x}, \vect{x}) = k_m(\vect{x})`; normalized by the number of
-points, the density of :math:`\sigma_m` with respect to :math:`\mu` is
+Andreief identity and the trace identity :eq:`christoffel_trace`. The density
+is invariant under permutation of the points: it describes the set of points
+rather than a distinguished ordering. The one-point intensity with respect to
+:math:`\mu` is :math:`\rho_1(\vect{x}) = K_m(\vect{x}, \vect{x}) =
+k_m(\vect{x})`, so the expected number of points is
+:math:`\int_\cD k_m \di{\mu} = m`. Normalized by the number of points, each
+ordered coordinate, and hence :math:`\sigma_m`, has density
 
 .. math::
 
@@ -272,8 +356,8 @@ points, the density of :math:`\sigma_m` with respect to :math:`\mu` is
 and its Lebesgue density is
 :math:`p_\mu(\vect{x}) k_m(\vect{x}) / m = p_{\sigma_m}(\vect{x})`.
 
-A Christoffel sample is therefore marginally Christoffel-distributed, but the
-points are not independent. The pair intensity is
+A DPP sample is therefore marginally Christoffel-distributed, but the points
+are not independent. The pair intensity is
 
 .. math::
     :label: dpp_pair
@@ -305,12 +389,19 @@ kernel,
     = \left(\det \mat{V}\right)^2.
 
 The probability of a configuration is thus proportional to the squared volume
-of the parallelepiped spanned by its feature vectors. The DPP is the
-continuous analogue of volume sampling: it favors configurations with a large
-volume, hence well-spread points and a well-conditioned feature matrix. In the
-univariate polynomial case, the projection DPP is the orthogonal polynomial
-ensemble associated with :math:`\mu` [hough2009]_, the random matrix model
-whose eigenvalues have the same Christoffel kernel.
+of the :math:`m`-parallelotope spanned by its feature vectors. This volume
+interpretation connects the projection DPP with volume sampling, the
+subset-selection rule discussed below; continuous formulations of volume
+sampling, including versions with repetitions, are studied in
+[nouymichel2025]_. It favors configurations with a large volume, hence
+well-spread feature vectors and a well-conditioned feature matrix. Repulsion
+acts on the feature vectors, not on the ambient distance: two points can be
+far apart in :math:`\cD` while producing nearly collinear features, and they
+then repel each other strongly; conversely, nearly orthogonal feature vectors
+correspond to weak repulsion. In the univariate polynomial case, the
+projection DPP is the orthogonal polynomial ensemble associated with
+:math:`\mu` [hough2009]_, the random matrix model whose eigenvalues have the
+same Christoffel kernel.
 
 .. _christoffel_dpp_sampling:
 
@@ -414,20 +505,27 @@ with probability
     \Prob{S} \propto \det\left(\Tr{\mat{V}_S} \mat{V}_S\right),
 
 where :math:`\mat{V}_S` is the :math:`n \times m` matrix of the selected
-feature vectors. When :math:`n = m`, this is exactly the projection DPP on
-the discrete measure :math:`(1/M) \sum_{i=1}^M \delta_{\vect{z}_i}`. The
-selection law is the DPP one precisely because the candidates are reference
-draws: the selected points inherit the Christoffel law and the weights
-:math:`m / k_m` turn the subset into a quadrature rule for :math:`\mu`. When
+feature vectors. When :math:`n = m`, this is the projection-DPP law restricted
+to the finite pool, written as volume sampling. This finite-pool law is not a
+continuous Christoffel sample: the selected points do not inherit the
+continuous Christoffel marginals, and :math:`m / k_m` is not in general an
+unbiased quadrature weight for :math:`\mu`. Those properties require the
+continuous projection-DPP or volume-rescaled constructions, where the
+determinant is defined by the reference measure rather than by a finite pool,
+or a pool whose empirical Gram matrix is the identity. When
 :math:`M = n`, the selection is the identity: all candidates are kept and,
 since no Christoffel selection has taken place, they are returned with unit
 weights as a plain Monte Carlo sample of :math:`\mu`. When
 :math:`n > m`, the determinant is positive exactly when the selected feature
-vectors span the :math:`m`-dimensional space, and it measures the squared
-volume of their parallelepiped; volume sampling extends the DPP construction
-by favoring subsets whose span has a large volume [derezinski2021]_. It is
-the natural way to recycle a larger pool of already evaluated points, and it
-is exact, not a heuristic thinning.
+vectors span the :math:`m`-dimensional space. By the Cauchy-Binet identity it
+equals the sum over all :math:`m`-subsets of the squared volume of the
+:math:`m`-parallelotope spanned by that subset; volume sampling extends the
+DPP construction by favoring subsets whose span has a large volume
+[derezinski2021]_. It is the natural way to recycle a larger pool of already
+evaluated points, and it is exact, not a heuristic thinning. Volume sampling
+is not restricted to finite candidate sets: continuous volume-rescaled
+formulations, with their own Christoffel-marginal and quadrature guarantees,
+are also available [nouymichel2025]_.
 
 The implementation draws the volume sample by reverse removal. With
 :math:`r` candidates remaining, the leverage score of candidate :math:`i` is
@@ -451,9 +549,16 @@ remaining :math:`n - m` points are independent draws from
 :math:`\sigma_m`. The union is not a DPP: the independent part adds no
 repulsion, and the two blocks are not exchangeable. The experiment randomly
 permutes the design so that the returned ordering does not expose the blocks,
-and it checks the frame only as an advisory diagnostic. This construction
-improves the budget of the square design while keeping the exact DPP for the
-part that carries the space dimension.
+and it checks the frame only as an advisory diagnostic. The DPP block is a
+continuous volume-rescaled sample of size :math:`m` with base
+:math:`\sigma_m` [derezinski2021]_. The full design is not standard
+volume-rescaled sampling of size :math:`n`, because the independent points do
+not enter a determinant. More
+general schemes draw the independent points from another measure chosen to
+guarantee almost-sure bounds, or repeat the DPP block; both are studied in
+[nouymichel2025]_, where repetitions are observed to be more effective than
+independent filling, although no theoretical guarantee that they are always
+better is available yet.
 
 .. _christoffel_sampling_algorithms:
 
@@ -531,14 +636,24 @@ log-Christoffel function are the stable entry points in the tails.
 
 **Orthonormality is a precondition.** The Christoffel function is a density
 factor only when the basis is orthonormal with respect to :math:`\mu`. The
-classes do not check this condition. A cheap numerical check is the trace
-identity :eq:`christoffel_trace`, for example the empirical mean of
-``computeChristoffelFunction()`` over a sample of :math:`\mu`, which must be
-close to :math:`m`. For a correlated reference measure, tensor-orthonormal
-functions must be composed with a whitening map of :math:`\mu` before being
-passed to the basis: for a multivariate normal, use
-:math:`\vect{x} \mapsto \mat{L}^{-1} \vect{x}` where :math:`\mat{L}` is the
-Cholesky factor of the correlation matrix.
+classes do not check this condition and do not orthogonalize the basis. A
+cheap numerical check is the trace identity :eq:`christoffel_trace`, for
+example the empirical mean of ``computeChristoffelFunction()`` over a sample
+of :math:`\mu`, which must be close to :math:`m`. For a correlated reference
+measure, tensor-orthonormal functions must be composed with a whitening map of
+:math:`\mu` before being passed to the basis: for a multivariate normal with
+mean :math:`\vect{a}` and covariance :math:`\mat{\Sigma} =
+\mat{L}\Tr{\mat{L}}`, use
+:math:`\vect{x} \mapsto \mat{L}^{-1}(\vect{x} - \vect{a})`. The uncentered
+map :math:`\mat{L}^{-1} \vect{x}` applies only when :math:`\vect{a} =
+\vect{0}`; the correlation matrix may replace the covariance in
+:math:`\mat{L}` when the marginals are standardized. When the input is a raw
+dictionary, a quasi-orthogonalization pre-step is therefore recommended before
+constructing the Christoffel distribution: orthogonalize the dictionary with
+respect to :math:`\mu`, for example by Gram-Schmidt or by a Cholesky
+factorization of its Gram matrix, and monitor the conditioning of the
+transformation. Optimal sampling and quasi-orthogonalization for general
+dictionaries are analyzed in [trunschkenouy2025]_.
 
 .. topic:: API:
 
@@ -555,5 +670,8 @@ Cholesky factor of the correlation matrix.
     - [bardenet2020]_
     - [cohendolbeault2020]_
     - [derezinski2021]_
+    - [haberstich2022]_
     - [hough2009]_
     - [macchi1975]_
+    - [nouymichel2025]_
+    - [trunschkenouy2025]_

@@ -9,8 +9,10 @@ Given an orthonormal basis of :math:`L^2(\cD, \mu)` and a target size
 :math:`n`, the experiment builds the first :math:`m` basis functions and
 returns a weighted design of :math:`n` points. The points are drawn from the
 Christoffel distribution, or from the determinantal point process (DPP)
-associated with its kernel, and the weights :math:`m / k_m` are the density
-ratios that turn the design into a quadrature rule for :math:`\mu`. See
+associated with its kernel. In the fresh mode, the weights :math:`m / k_m`
+are the density ratios of the reference measure over the Christoffel
+distribution, so the weighted design is an unbiased quadrature rule for
+:math:`\mu`. See
 :any:`christoffel_sampling` for the theory of the Christoffel distribution,
 of DPPs, and of the frame certificate.
 
@@ -35,21 +37,42 @@ experiment uses the certified sizing of Cohen and Dolbeault
 :class:`~openturns.experimental.ChristoffelDistribution`. No thinning is
 applied. The weighted design is checked against the frame bounds; if it
 misses them, the whole independent sample is redrawn, up to
-``ChristoffelSubsampleExperiment-MaxAttempts`` draws. This mode makes
+``ChristoffelSubsampleExperiment-MaxAttempts`` draws. If no draw passes, the
+draw with the largest smallest eigenvalue of the weighted Gramian (the
+sharpest realized frame) is returned with a warning. This mode makes
 :math:`m` much smaller than :math:`n` and is not the default; when the key is
 false, :math:`m = n-k` is chosen by the basis capacity as described above.
 See :any:`christoffel_frame` for the certified budget and the frame
 condition.
+
+This certified sizing fixes :math:`n` and adapts :math:`m`. It is natural
+when the approximation space belongs to a nested hierarchy, but not when
+:math:`m` is fixed by the model and only :math:`n` can be chosen. In that
+fixed-space setting the certificate gives the lower bound
+:math:`n \ge \gamma m \log(2m/\varepsilon)` for the fixed :math:`m`; the
+current implementation does not expose a fixed-:math:`m` strategy, which is
+left for a future release. As a workaround, choose the target size
+:math:`n = \lceil \gamma m \log(m) \rceil` for :math:`m \ge 2` (and
+:math:`n = 1` for :math:`m = 1`), provided the basis supplies :math:`m`
+functions and :math:`n \ge m`. For small :math:`\gamma` the formula can give
+:math:`n < m`, in which case the certified space dimension is bounded by
+:math:`n`; check :meth:`getSpaceDimension` and increase :math:`n` (or
+:math:`\gamma`) until it is :math:`m`.
 
 When points are supplied to :meth:`generateWithWeights`, an empty sample of
 any dimension selects the fresh path. Supplied candidates are assumed to be
 draws from the reference measure. If more than :math:`n` points are supplied,
 exactly :math:`n` of them are selected by exact volume sampling, with
 probability proportional to the determinant of the Gram matrix of their basis
-features; no fresh point is drawn. If exactly :math:`n` points are supplied,
-all of them are kept with unit weights, since no Christoffel selection takes
-place. If fewer than :math:`n` and at most :math:`m` points are supplied, all
-of them are kept and the DPP is conditioned on their feature vectors; the
+features; no fresh point is drawn. When :math:`n = m` this selection is the
+projection-DPP law restricted to the pool, and when :math:`n > m` it is a
+discrete volume-sampling law. In both cases, unlike a fresh design, the
+finite-pool law does not inherit the continuous Christoffel marginals, so the
+returned :math:`m / k_m` ratios are not guaranteed unbiased quadrature
+weights for :math:`\mu`. If exactly :math:`n` points are supplied, all of
+them are kept with unit weights, since no Christoffel selection takes place.
+If fewer than :math:`n` and at most :math:`m` points are supplied, all of
+them are kept and the DPP is conditioned on their feature vectors; the
 remaining :math:`m - M` DPP points are drawn, followed by
 :math:`n - m` independent Christoffel points when :math:`n > m`.
 Supplying more than :math:`m` points while asking for fewer than :math:`n`
@@ -76,10 +99,13 @@ certificate that the frame bounds hold. For :math:`n = m` the design is
 square and the projection DPP has no certified frame guarantee; for
 :math:`n > m` the extra independent Christoffel points improve the budget
 without making the certificate exact. In certified mode, the independent
-Christoffel budget :math:`n = \gamma m \log(m)` is the Cohen-Dolbeault
-setting, so the frame guarantee holds with high probability under the
-theorem assumptions; the realized design is checked and the draw is repeated
-until it passes, up to the configured attempt limit. Use
+Christoffel budget :math:`n = \gamma m \log(m)` is the leading-order
+Cohen-Dolbeault setting; the omitted :math:`\log(2/\varepsilon)` factor sets
+the confidence level, and the realized design is checked. The draw is repeated
+until it passes, up to the configured attempt limit. If no draw passes, the
+draw with the largest smallest Gram eigenvalue is returned with a warning.
+The conditional quasi-optimality of the weighted least squares estimator on
+the frame event is analyzed in [haberstich2022]_. Use
 :meth:`computeDesignEigenvalues` when a frame diagnostic is required on a
 given design. See :any:`christoffel_frame` for the frame condition and the
 certified budget.
@@ -108,7 +134,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``ChristoffelSubsampleExperiment-FrameTolerance`` (``Scalar``, default: ``0.5``): half-width of the accepted frame eigenvalue band around 1. It must be non-negative and finite.
 - ``ChristoffelSubsampleExperiment-Certified`` (``Bool``, default: ``False``): when true, select the certified sizing :math:`n = \gamma m \log(m)` and independent Christoffel draws.
 - ``ChristoffelSubsampleExperiment-Gamma`` (``Scalar``, default: ``9.242343873386666``): constant :math:`\gamma` of the certified sizing. It must be finite and strictly positive when the certified mode is selected.
-- ``ChristoffelSubsampleExperiment-MaxAttempts`` (``UnsignedInteger``, default: ``10``): maximum number of independent certified draws tried before the last draw is returned with a frame warning.
+- ``ChristoffelSubsampleExperiment-MaxAttempts`` (``UnsignedInteger``, default: ``10``): maximum number of independent certified draws tried before the draw with the largest smallest Gram eigenvalue is returned with a frame warning.
 - ``ChristoffelSubsampleExperiment-MaxProjectionAttempts`` (``UnsignedInteger``, default: ``1000000``): maximum number of Christoffel proposals tried to draw one admissible projection DPP point before an error is raised. It only guards against a pathological numerical failure.
 
 Examples

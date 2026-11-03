@@ -244,6 +244,11 @@ Bibliography
     *Fast calculation of Gaussian Process Multiple-Fold Cross-Validation Residuals and their Covariances*,
     Journal of Computational and Graphical Statistics, 34:1, 1-14.
     `pdf <https://www.tandfonline.com/doi/pdf/10.1080/10618600.2024.2353633>`__
+.. [haberstich2022] Haberstich, C., Nouy, A. and Perrin, G. (2022).
+    *Boosted optimal weighted least-squares.*
+    Mathematics of Computation, 91(335), 1281-1315.
+    doi:10.1090/mcom/3710
+    `pdf <https://arxiv.org/abs/1912.07075>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -495,6 +500,12 @@ Bibliography
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [nouymichel2025] Nouy, A. and Michel, B. (2025).
+    *Weighted least-squares approximation with determinantal point processes
+    and generalized volume sampling.*
+    The SMAI Journal of Computational Mathematics, 11, 1-36.
+    doi:10.5802/smai-jcm.117
+    `pdf <https://arxiv.org/abs/2312.14057>`__
 .. [novak1999] Novak, E., & Ritter, K. (1999).
     Simple cubature formulas with high polynomial exactness.
     Constructive approximation, 15, 499-522.
@@ -638,6 +649,11 @@ Bibliography
 .. [townsend2016] Townsend, A., Trogdon, T., Olver, S. (2016).
     *Fast computation of Gauss quadrature nodes and weights on the whole real line.*
     IMA Journal of Numerical Analysis, 36(2), 802-824.
+.. [trunschkenouy2025] Trunschke, P. and Nouy, A. (2025).
+    *Optimal sampling for least squares approximation with general dictionaries.*
+    Foundations of Computational Mathematics, 25(6), 1975-2034.
+    doi:10.1007/s10208-025-09738-2
+    `pdf <https://arxiv.org/abs/2407.07814>`__
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
