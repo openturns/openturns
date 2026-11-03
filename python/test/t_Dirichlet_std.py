@@ -159,15 +159,11 @@ for dim in range(1, 2):
     validation.setEntropySamplingSize(100000)
     validation.run()
 
-# Use small integration/sampling sizes to keep the test fast
+# Use a small integration size to keep the test fast
 defaultIntegrationSize = ot.ResourceMap.GetAsUnsignedInteger(
     "Dirichlet-DefaultIntegrationSize"
 )
-defaultSamplingSize = ot.ResourceMap.GetAsUnsignedInteger(
-    "Dirichlet-DefaultSamplingSize"
-)
 ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize", 6)
-ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-DefaultSamplingSize", 1000)
 # check Dirichlet computeCDF has no global sample cache
 theta1 = [2.0, 6.0, 3.0, 4.0, 5.0]
 d1 = ot.Dirichlet(theta1)
@@ -287,7 +283,51 @@ for theta in ([1.0, 2.0, 3.0], [2.0, 6.0, 3.0, 4.0], [2.0, 6.0, 3.0, 4.0, 5.0]):
     dd.computeSequentialConditionalCDF(pt)
     dd.computeSequentialConditionalQuantile(ot.Point(dim, 0.5))
 
-# Monte-Carlo CDF fallback (dim >= 4, total sum > 1 but 3 smallest sum < 1)
+# Sequential conditional CDF: a conditioning vector that exhausts the
+# simplex sets the remaining coordinates to one, while a negative
+# coordinate leaves them at zero.
+sequentialCDF = ot.Dirichlet([2.0, 3.0, 4.0, 5.0]).computeSequentialConditionalCDF(
+    [0.7, 0.7, 0.5]
+)
+assert sequentialCDF[2] == 1.0
+assert sequentialCDF[0] < 1.0
+assert list(
+    ot.Dirichlet([2.0, 3.0, 4.0, 5.0]).computeSequentialConditionalCDF(
+        [-0.1, 0.5, 0.5]
+    )
+) == [0.0, 0.0, 0.0]
+
+# Density on the closed simplex: the boundary value follows the exponents
+uniform1 = ot.Dirichlet([1.0, 1.0])
+ott.assert_almost_equal(uniform1.computePDF([0.0]), 1.0, 1e-12, 0.0)
+ott.assert_almost_equal(uniform1.computePDF([1.0]), 1.0, 1e-12, 0.0)
+ott.assert_almost_equal(uniform1.computeLogPDF([0.0]), 0.0, 1e-12, 0.0)
+ott.assert_almost_equal(uniform1.computeLogPDF([1.0]), 0.0, 1e-12, 0.0)
+uniform2 = ot.Dirichlet([1.0, 1.0, 1.0])
+ott.assert_almost_equal(uniform2.computePDF([0.0, 0.5]), 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(uniform2.computePDF([0.2, 0.8]), 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(uniform2.computeLogPDF([0.2, 0.8]), m.log(2.0), 1e-12, 0.0)
+
+vanishing = ot.Dirichlet([2.0, 1.0, 1.0])
+assert vanishing.computePDF([0.0, 0.5]) == 0.0
+assert vanishing.computeLogPDF([0.0, 0.5]) == -m.inf
+vanishingSlack = ot.Dirichlet([1.0, 1.0, 2.0])
+assert vanishingSlack.computePDF([0.2, 0.8]) == 0.0
+assert vanishingSlack.computeLogPDF([0.2, 0.8]) == -m.inf
+
+finiteSlack = ot.Dirichlet([2.0, 1.0])
+ott.assert_almost_equal(finiteSlack.computePDF([1.0]), 2.0, 1e-12, 0.0)
+ott.assert_almost_equal(finiteSlack.computeLogPDF([1.0]), m.log(2.0), 1e-12, 0.0)
+
+# Singular exponents keep the zero convention of the Beta distribution
+singular = ot.Dirichlet([0.5, 1.0, 1.0])
+assert singular.computePDF([0.0, 0.5]) == 0.0
+assert singular.computeLogPDF([0.0, 0.5]) == -m.inf
+singularSlack = ot.Dirichlet([1.0, 1.0, 0.5])
+assert singularSlack.computePDF([0.2, 0.8]) == 0.0
+assert singularSlack.computeLogPDF([0.2, 0.8]) == -m.inf
+
+# CDF outside the simplex (dim >= 4)
 dmc = ot.Dirichlet([2.0, 6.0, 3.0, 4.0, 5.0])
 mcCDF = dmc.computeCDF([0.3, 0.3, 0.3, 0.3])
 assert 0.0 <= mcCDF <= 1.0
@@ -302,12 +342,137 @@ ott.assert_almost_equal(
 seq = ot.Dirichlet([1.0, 1.0, 1.0]).computeSequentialConditionalPDF([0.5, 0.3])
 assert all(m.isfinite(v) for v in seq)
 
+# A zero integration size is clamped to a valid quadrature order
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize", 0)
+assert ot.Dirichlet([2.0, 3.0, 4.0]).computeCDF([0.2, 0.3]) > 0.0
+
 ot.ResourceMap.SetAsUnsignedInteger(
     "Dirichlet-DefaultIntegrationSize", defaultIntegrationSize
 )
-ot.ResourceMap.SetAsUnsignedInteger(
-    "Dirichlet-DefaultSamplingSize", defaultSamplingSize
+
+# --- CDF dispatch: reduced coordinates, exact series and numerical guards ---
+# Coordinates above one are integrated out and the last active coordinate
+# reduces to a beta CDF.
+mixedReduction = ot.Dirichlet([2.0, 3.0, 4.0])
+ott.assert_almost_equal(
+    mixedReduction.computeCDF([0.3, 1.0]),
+    ot.DistFunc.pBeta(2.0, 7.0, 0.3),
+    1e-12,
+    0.0,
 )
+# The uniform Dirichlet has the closed-form CDF 2 x1 x2.
+ott.assert_almost_equal(
+    ot.Dirichlet([1.0, 1.0, 1.0]).computeCDF([0.2, 0.3]), 0.12, 1e-12, 0.0
+)
+# A marginal CDF that underflows to zero makes the whole CDF vanish.
+assert ot.Dirichlet([1000.0, 1000.0, 1000.0]).computeCDF([1e-300, 1e-300]) == 0.0
+
+# Large shape parameters exercise the log-scaled box quadrature.
+logBoxCDF = ot.Dirichlet([1000.0, 1000.0, 1000.0]).computeCDF([0.3, 0.3])
+assert 0.0 < logBoxCDF < 1.0, "log-scaled box quadrature returned an invalid CDF"
+
+# In the upper corner the complement is evaluated by inclusion-exclusion.
+upperCDF = ot.Dirichlet([1000.0, 1000.0, 1000.0]).computeCDF([0.37, 0.37])
+assert 0.999 < upperCDF <= 1.0, "upper-corner complement returned an invalid CDF"
+
+# The adaptive box quadrature reports a failure when the order limit is
+# reached, and the dispatcher then falls back to another method.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-DefaultIntegrationSize", 3)
+assert 0.0 < ot.Dirichlet([2.0, 3.0, 4.5]).computeCDF([0.1, 0.1]) < 1.0
+# A singular upper corner in dimension seven uses the lowest quadrature order.
+assert 0.0 <= ot.Dirichlet([0.5] + [100.0] * 6).computeCDF([0.2] * 6) <= 1.0
+# The same corner in dimension eight needs the box dimension raised.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 8)
+assert 0.0 <= ot.Dirichlet([0.5] + [100.0] * 8).computeCDF([0.1] * 7 + [0.5]) <= 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "Dirichlet-DefaultIntegrationSize", defaultIntegrationSize
+)
+# A zero tensor-product budget disables the box quadrature.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumTensorNodes", 0)
+assert 0.0 < ot.Dirichlet([2.0, 3.0, 4.0]).computeCDF([0.1, 0.1]) < 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumTensorNodes", 20000000)
+
+# The finite beta-integer series is skipped above its exponent limit.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 2)
+assert 0.0 < ot.Dirichlet([2.0, 2.0, 5.0]).computeCDF([0.2, 0.2]) < 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 128)
+# A near-boundary point makes the convolution below the representable range.
+assert (
+    0.0
+    <= ot.Dirichlet([2.0, 2.0, 128.0]).computeCDF([1.0 - 1.0e-15, 1.0e-16])
+    <= 1.0
+)
+
+# The Exton series is rejected for large beta, and the upper-corner
+# quadrature rejects shapes above one million.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 0)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 0)
+assert 0.0 < ot.Dirichlet([2.0, 2.0, 300.0]).computeCDF([0.01, 0.01]) < 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 10)
+assert (
+    0.0
+    <= ot.Dirichlet([2.0, 2.0, 2.0, 1000001.0]).computeCDF([0.6, 0.3, 0.5])
+    <= 1.0
+)
+
+# Normal approximation: large shapes, with the other methods disabled.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 0)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFExtonMaximumCancellation", 0.0)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFUpperMaximumCancellation", 0.0)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFNormalMinimumTotal", 0.0)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFNormalMinimumShape", 0.0)
+normalCDF = ot.Dirichlet([0.5, 100000.0, 100000.0]).computeCDF([1.0e-3, 0.5])
+assert 0.0 <= normalCDF <= 1.0
+normalCDF = ot.Dirichlet([0.5, 100000.0, 100000.0]).computeCDF([0.9, 0.5])
+assert 0.0 <= normalCDF <= 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFExtonMaximumCancellation", 1.0e4)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFUpperMaximumCancellation", 1.0e13)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFNormalMinimumTotal", 1.0e5)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFNormalMinimumShape", 100.0)
+
+# Inside and outside the simplex, force all deterministic methods to fail
+# so that the Frechet midpoint warning path is exercised.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 0)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 0)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFExtonMaximumCancellation", 0.0)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFUpperMaximumCancellation", 0.0)
+assert 0.0 <= ot.Dirichlet([2.0] * 7).computeCDF([0.1] * 6) <= 1.0
+assert 0.0 <= ot.Dirichlet([2.0] * 7).computeCDF([0.2] * 6) <= 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 128)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFExtonMaximumCancellation", 1.0e4)
+ot.ResourceMap.SetAsScalar("Dirichlet-CDFUpperMaximumCancellation", 1.0e13)
+
+# Above the singular box dimension the upper-corner quadrature is disabled.
+assert 0.0 <= ot.Dirichlet([0.5] * 9).computeCDF([0.2] * 8) <= 1.0
+# Singular and regular shapes explore the corner quadrature orders.
+assert 0.0 <= ot.Dirichlet([0.5] * 8).computeCDF([0.15] * 6 + [0.5]) <= 1.0
+assert 0.0 <= ot.Dirichlet([2.0] * 8).computeCDF([0.15] * 6 + [0.5]) <= 1.0
+
+# Positive recursive integration, including an integration cut induced by
+# a point outside the simplex.
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 0)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 0)
+for theta, point in [
+    ([2.0, 3.0, 4.0, 5.0], [0.4, 0.4, 0.4]),
+    ([5.0, 2.0, 1.0, 1.0], [0.6, 0.6, 0.1]),
+    ([2.0, 3.0, 4.0, 5.0, 6.0], [0.4, 0.4, 0.4, 0.4]),
+]:
+    recursiveCDF = ot.Dirichlet(theta).computeCDF(point)
+    assert 0.0 <= recursiveCDF <= 1.0
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7)
+ot.ResourceMap.SetAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 10)
+
+# Marginal of a one-dimensional Dirichlet returns a clone
+assert ot.Dirichlet([0.25, 0.5]).getMarginal(0).getDimension() == 1
+# Sequential quantile beyond the support stops at the first coordinate
+seqQuantile = ot.Dirichlet([1.0, 1.0, 1.0]).computeSequentialConditionalQuantile(
+    [1.0, 0.5]
+)
+assert seqQuantile[0] == 1.0
 
 # Roughness: analytic value B(2*theta - 1) / B(theta)^2 with multinomial Beta
 theta = [2.0, 3.0, 4.0]
