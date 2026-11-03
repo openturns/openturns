@@ -1460,6 +1460,86 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::logdBeta
+R"RAW(Logarithm of the probability density function of a Beta distribution on :math:`[0,1]`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Parameter :math:`\beta`.
+x : float
+    Location.
+
+Returns
+-------
+logp : float
+    The logarithm of the PDF at :math:`x`.
+
+Notes
+-----
+The logarithm of the probability density function is defined as:
+
+.. math::
+    \log p(x) = -\log B(\alpha, \beta)
+    + (\alpha - 1)\log(x) + (\beta - 1)\log(1 - x)
+    \quad x \in (0,1)
+
+with :math:`\alpha, \beta > 0` and where :math:`\rm B` denotes
+Euler's beta function :meth:`~openturns.SpecFunc.Beta`.
+
+Outside the open interval :math:`(0,1)`, the returned value is
+:math:`-\infty`. This function avoids the underflow that may occur when
+evaluating the PDF directly.
+
+Examples
+--------
+>>> import openturns as ot
+>>> logpdf = ot.DistFunc.logdBeta(2.5, 3.5, 0.9)
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dBeta
+R"RAW(Probability density function of a Beta distribution on :math:`[0,1]`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Parameter :math:`\alpha`.
+beta : float, :math:`\beta > 0`
+    Parameter :math:`\beta`.
+x : float
+    Location.
+
+Returns
+-------
+p : float
+    The PDF at :math:`x`.
+
+Notes
+-----
+The probability density function is defined as:
+
+.. math::
+    p(x) = \dfrac{1}{B(\alpha, \beta)}x^{(\alpha-1)}(1-x)^{(\beta-1)} \quad x \in (0,1)
+
+with :math:`\alpha, \beta > 0` and where :math:`\rm B` denotes
+Euler's beta function :meth:`~openturns.SpecFunc.Beta`.
+
+Outside the open interval :math:`(0,1)`, the returned value is zero.
+This function is implemented as the exponential of
+:meth:`~openturns.DistFunc.logdBeta`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> pdf = ot.DistFunc.dBeta(2.5, 3.5, 0.9)
+)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::qBeta
 R"RAW(Quantile of a Beta distribution on :math:`[0,1]`.
 

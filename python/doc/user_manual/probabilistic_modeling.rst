@@ -348,6 +348,7 @@ Low-level distribution functions
     :toctree: _generated/
     :template: function.rst_t
 
+    DistFunc.dBeta
     DistFunc.dBinomial
     DistFunc.dHypergeometric
     DistFunc.dNonCentralChiSquare
@@ -357,6 +358,7 @@ Low-level distribution functions
     DistFunc.eZ1
     DistFunc.kFactor
     DistFunc.kFactorPooled
+    DistFunc.logdBeta
     DistFunc.logdBinomial
     DistFunc.logdHypergeometric
     DistFunc.logdNormal
