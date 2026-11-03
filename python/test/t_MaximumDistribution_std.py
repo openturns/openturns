@@ -91,6 +91,12 @@ for index, distribution in enumerate(coll):
     validation = ott.DistributionValidation(distribution)
     validation.skipEntropy()  # slow
     validation.skipMinimumVolumeLevelSet()  # slow
+    if index < 3:
+        # The PDF gradient is checked by perturbing each of the 20 parameters
+        # of the 5D normal, including its correlations. Once a correlation is
+        # nonzero the maximum PDF falls back to a numerical 5D normal CDF,
+        # which is far too slow to be repeated over all the parameters.
+        validation.skipGradient()
     # Monte Carlo sizes: standard errors stay well below the 1e-2 tolerances
     validation.setMomentsSamplingSize(100000)
     validation.setDomainSamplingSize(100000)

@@ -163,6 +163,9 @@ public:
   /** Correlation matrix accessor */
   void setR(const CorrelationMatrix & R);
 
+  /** Parameters accessors */
+  void setParameter(const Point & parameter) override;
+
   /** Get the copula of a distribution */
   Distribution getCopula() const override;
 
