@@ -44,6 +44,7 @@ Building distributions from samples
     BurrFactory
     ChiFactory
     ChiSquareFactory
+    experimental.CumulativeDistributionNetworkFactory
     DiracFactory
     DirichletFactory
     ExponentialFactory
