@@ -28,7 +28,7 @@ Analysis of active learning algorithms for reliability estimation
 # We use the :class:`~openturns.ProbabilitySimulationAlgorithm` using :class:`~openturns.MonteCarloExperiment` as the simulation algorithm.
 # For active learning, this algorithm is combined with :class:`~openturns.experimental.ActiveLearningGMMFunction`.
 # We propose to compare the two approaches (without and with active learning) with a global simulation budget of 40 samples.
-# For the active learning, 10 samples will be used to generate a first Design of Experiments and 30 other samples will be added using active learning.
+# For the active learning, 20 samples will be used to generate a first Design of Experiments and 20 other samples will be added using active learning.
 
 # %%
 # First, import the python modules:
@@ -121,7 +121,7 @@ print(
 # %%
 # Definition of Design of Experiments
 # -----------------------------------
-# We generate a Design of Experiments of 40 samples for the simulation algorithm using the overall metamodel and we extract 10 samples for active learning reliability.
+# We generate a Design of Experiments of 40 samples for the simulation algorithm using the overall metamodel and we extract 20 samples for active learning reliability.
 
 # %%
 lower_bound_DoE = -5.0
@@ -134,7 +134,7 @@ lhs = ot.LHSExperiment(distribution_LHS, number_samples_DoE_complete)
 input_DoE_complete = lhs.generate()
 output_DoE_complete = g(input_DoE_complete)
 
-indices = ot.Indices(range(0, 10))
+indices = ot.Indices(range(0, 20))
 input_DoE_reduced = input_DoE_complete.select(indices)
 output_DoE_reduced = output_DoE_complete.select(indices)
 
@@ -201,6 +201,7 @@ gmm_function = otexp.ActiveLearningGMMFunction(
 # Definition of the Gaussian process fitter on the reduced DoE: it carries
 # the initial design, the covariance model and the trend basis used by
 # the active learning algorithm
+covariance_model = ot.MaternModel(input_dimension)
 fitter_algo_reduced = ot.GaussianProcessFitter(
     input_DoE_reduced, output_DoE_reduced, covariance_model, basis
 )
@@ -212,7 +213,7 @@ Monte_Carlo_active_learning = ot.ProbabilitySimulationAlgorithm(
 )
 Monte_Carlo_active_learning.setMaximumCoefficientOfVariation(0.01)
 Monte_Carlo_active_learning.setMaximumOuterSampling(10000)
-simulation_budget = 30
+simulation_budget = 20
 ot.RandomGenerator.SetSeed(0)
 active_learning_MonteCarlo = otexp.ActiveLearningReliabilityAlgorithm(
     fitter_algo_reduced, Monte_Carlo_active_learning, gmm_function
