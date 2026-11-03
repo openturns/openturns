@@ -273,6 +273,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       OrdinalSumCopula.i OrdinalSumCopula_doc.i
                       BlockIndependentDistribution.i BlockIndependentDistribution_doc.i
                       JointDistribution.i JointDistribution_doc.i
+                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
                       BlockIndependentCopula.i BlockIndependentCopula_doc.i
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
@@ -532,7 +533,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       UncertaintyMetaModelTemplateDefs.i
                    )
 ot_add_python_module(model_copula2 model_copula2_module.i
-                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
                       PlackettCopula.i PlackettCopula_doc.i
                       PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
                       MarshallOlkinCopula.i MarshallOlkinCopula_doc.i
