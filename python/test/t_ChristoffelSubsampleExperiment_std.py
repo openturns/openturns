@@ -117,20 +117,25 @@ try:
     with ott.assert_raises(TypeError):
         certifiedExperiment.generateWithWeights(existing)
 
-    # an impossible frame band forces a redraw: one allowed attempt returns
-    # the first draw, two allowed attempts return the second draw
+    # an impossible frame band forces a redraw. With two allowed attempts the
+    # returned design is the one with the largest smallest Gram eigenvalue,
+    # not necessarily the second draw. Seeds 2 and 6 exercise both orders.
     ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.0)
     ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 1)
     try:
         oneAttempt = otexp.ChristoffelSubsampleExperiment(basis, 60)
-        ot.RandomGenerator.SetSeed(6)
-        firstSample, _ = oneAttempt.generateWithWeights()
         ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 2)
         twoAttempts = otexp.ChristoffelSubsampleExperiment(basis, 60)
-        ot.RandomGenerator.SetSeed(6)
-        secondSample, _ = twoAttempts.generateWithWeights()
-        assert firstSample.getSize() == secondSample.getSize() == 60
-        assert any(firstSample[i, 0] != secondSample[i, 0] for i in range(60))
+        for seed in (2, 6):
+            ot.RandomGenerator.SetSeed(seed)
+            firstSample, firstWeights = oneAttempt.generateWithWeights()
+            secondSample, secondWeights = oneAttempt.generateWithWeights()
+            firstEigenvalue = min(oneAttempt.computeDesignEigenvalues(firstSample, firstWeights))
+            secondEigenvalue = min(oneAttempt.computeDesignEigenvalues(secondSample, secondWeights))
+            bestSample = firstSample if firstEigenvalue >= secondEigenvalue else secondSample
+            ot.RandomGenerator.SetSeed(seed)
+            retainedSample, _ = twoAttempts.generateWithWeights()
+            ott.assert_almost_equal(retainedSample, bestSample)
     finally:
         ot.ResourceMap.SetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance", 0.5)
         ot.ResourceMap.SetAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10)

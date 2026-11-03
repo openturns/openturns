@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include <algorithm>
+#include <limits>
 #include <utility>
 #include "openturns/ChristoffelSubsampleExperiment.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -195,9 +196,17 @@ Bool ChristoffelSubsampleExperiment::isRandom() const
 }
 
 /* Sample generation with weights: in certified mode, n independent
-   Christoffel draws with no thinning; otherwise an exact projection DPP
-   for the first m points and independent Christoffel draws for the
-   remaining n-m points */
+   Christoffel draws with no thinning, retried until the frame passes and
+   otherwise the draw with the sharpest realized frame is retained;
+   otherwise an exact projection DPP for the first m points and independent
+   Christoffel draws for the remaining n-m points.
+   The certified budget n >= gamma m log(2m/eps) and the frame condition
+   follow from the matrix Chernoff bound of A. Cohen and M. Dolbeault,
+   "Optimal sampling and Christoffel functions on general domains",
+   arXiv:2010.11040, 2020. The conditional quasi-optimality of the weighted
+   least-squares estimator on the frame event is established by C. Haberstich,
+   A. Nouy and G. Perrin, "Boosted optimal weighted least-squares",
+   Mathematics of Computation, 91(335), 1281-1315, 2022. */
 Sample ChristoffelSubsampleExperiment::generateWithWeights(Point & weightsOut) const
 {
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive experiment size.";
@@ -205,18 +214,34 @@ Sample ChristoffelSubsampleExperiment::generateWithWeights(Point & weightsOut) c
     throw InvalidArgumentException(HERE) << "Error: no orthogonal basis is configured, call setOrthogonalBasis() before generating.";
   if (certified_)
   {
-    Sample design;
+    Sample bestDesign;
+    Point bestWeights;
+    Scalar bestMinEigenvalue = -std::numeric_limits<Scalar>::infinity();
     for (UnsignedInteger attempt = 0; attempt < maxAttempts_; ++attempt)
     {
-      design = christoffelDistribution_.getSample(size_);
+      Sample design(christoffelDistribution_.getSample(size_));
       design.setDescription(distribution_.getDescription());
-      weightsOut = computeImportanceWeights(design);
-      const Bool lastAttempt = (attempt + 1 == maxAttempts_);
-      if (checkFrame(design, weightsOut, lastAttempt)) return design;
+      Point designWeights(computeImportanceWeights(design));
+      Scalar minEigenvalue = 0.0;
+      if (checkFrame(design, designWeights, false, &minEigenvalue))
+      {
+        weightsOut = designWeights;
+        return design;
+      }
+      // Keep the draw with the largest smallest Gram eigenvalue, ie the
+      // sharpest realized lower frame bound, in case no draw passes.
+      if (minEigenvalue > bestMinEigenvalue)
+      {
+        bestMinEigenvalue = minEigenvalue;
+        bestDesign = design;
+        bestWeights = designWeights;
+      }
     }
-    // The theorem makes this event very unlikely.  Return the last draw
-    // rather than discard the budget, and let checkFrame() report the miss.
-    return design;
+    // The theorem makes this event very unlikely.  Return the sharpest draw
+    // rather than discard the budget, and let checkFrame() report its miss.
+    weightsOut = bestWeights;
+    checkFrame(bestDesign, bestWeights, true);
+    return bestDesign;
   }
   Sample design(drawProjectionDPP(spaceDimension_));
   if (size_ > spaceDimension_)
@@ -474,10 +499,13 @@ Sample ChristoffelSubsampleExperiment::drawProjectionDPP(const UnsignedInteger s
   return design;
 }
 
-/* Check the weighted design frame bounds, warning on request */
+/* Check the weighted design frame bounds, optionally warning on request.
+   The smallest Gram eigenvalue is also exposed to callers that need to rank
+   several candidate designs by the sharpness of their realized frame. */
 Bool ChristoffelSubsampleExperiment::checkFrame(const Sample & sample,
     const Point & weights,
-    const Bool warn) const
+    const Bool warn,
+    Scalar * minEigenvalueOut) const
 {
   const Scalar tolerance = ResourceMap::GetAsScalar("ChristoffelSubsampleExperiment-FrameTolerance");
   if (!(tolerance >= 0.0) || !std::isfinite(tolerance))
@@ -501,6 +529,7 @@ Bool ChristoffelSubsampleExperiment::checkFrame(const Sample & sample,
     LOGWARN(OSS() << "Warning: the weighted design misses the frame bounds [" << 1.0 - tolerance << ", " << 1.0 + tolerance << "], got [" << minEigenvalue << ", " << maxEigenvalue << "]");
   if ((minEigenvalue <= SpecFunc::Precision) && warn)
     LOGWARN(OSS() << "Warning: the weighted design is numerically rank deficient, got minimum eigenvalue=" << minEigenvalue);
+  if (minEigenvalueOut) *minEigenvalueOut = minEigenvalue;
   return withinBounds && (minEigenvalue > SpecFunc::Precision);
 }
 
