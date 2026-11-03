@@ -145,15 +145,14 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  Scalar norm = 0.0;
+  Scalar normSquare = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
   {
     const Scalar dx = (s[i] - t[i]) / scale_[i];
-    norm += dx * dx;
+    normSquare += dx * dx;
   }
-  norm = std::sqrt(norm);
   Matrix gradient(inputDimension_, 1);
-  if (norm == 0.0)
+  if (normSquare == 0.0)
   {
     // Negative infinite gradient for p < 1
     if (p_ < 1.0)
@@ -170,6 +169,22 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
     // Zero gradient for p > 1
     return gradient;
   }
+  // Fast paths for p == 1 and p == 2, consistent with computeCovarianceValue()
+  if (p_ == 2.0)
+  {
+    const Scalar value = -2.0 * std::exp(-normSquare) * amplitude_[0] * amplitude_[0];
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      gradient(i, 0) = (s[i] - t[i]) / (scale_[i] * scale_[i]) * value;
+    return gradient;
+  }
+  const Scalar norm = std::sqrt(normSquare);
+  if (p_ == 1.0)
+  {
+    const Scalar value = -std::exp(-norm) / norm * amplitude_[0] * amplitude_[0];
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+      gradient(i, 0) = (s[i] - t[i]) / (scale_[i] * scale_[i]) * value;
+    return gradient;
+  }
   // General case
   const Scalar exponent = -std::pow(norm, p_);
   const Scalar value = p_ * exponent * std::exp(exponent) / (norm * norm);
@@ -179,6 +194,123 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
   return gradient;
 }
 
+
+/* Hessian wrt s */
+SymmetricMatrix GeneralizedExponential::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  Scalar normSquare = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) / scale_[i];
+    normSquare += dx * dx;
+  }
+  // At zero norm the Hessian is not defined: fall back to the finite-difference implementation
+  if (normSquare == 0.0) return CovarianceModelImplementation::partialHessian(s, t);
+  // k(s, t) = amplitude^2 * exp(-z^p) with z = ||tau/scale||
+  // d^2 k / ds_a ds_b = u_a u_b [rho''(z) z - rho'(z)] / z^3
+  //   + delta_ab rho'(z) / (scale_a^2 z), with u_i = tau_i / scale_i^2
+  //   and rho(z) = exp(-z^p). Fast paths for p == 1 and p == 2
+  //   consistent with computeCovarianceValue().
+  Point u(inputDimension_);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) u[i] = (s[i] - t[i]) / (scale_[i] * scale_[i]);
+  SymmetricMatrix hessian(inputDimension_);
+  const Scalar amplitudeSquare = amplitude_[0] * amplitude_[0];
+  if (p_ == 2.0)
+  {
+    const Scalar exponent = std::exp(-normSquare);
+    // [rho''(z) z - rho'(z)] / z^3 = 4 exp(-z^2), rho'(z) / z = -2 exp(-z^2)
+    const Scalar factor = 4.0 * amplitudeSquare * exponent;
+    const Scalar diagonalFactor = -2.0 * amplitudeSquare * exponent;
+    for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+    {
+      for (UnsignedInteger b = 0; b < a; ++b)
+        hessian(a, b) = factor * u[a] * u[b];
+      hessian(a, a) = factor * u[a] * u[a] + diagonalFactor / (scale_[a] * scale_[a]);
+    }
+    return hessian;
+  }
+  const Scalar norm = std::sqrt(normSquare);
+  if (p_ == 1.0)
+  {
+    const Scalar z = norm;
+    const Scalar exponent = std::exp(-z);
+    // Same form as ExponentialModel: (z + 1) exp(-z) / z^3, -exp(-z) / z
+    const Scalar factor = amplitudeSquare * (z + 1.0) * exponent / (z * z * z);
+    const Scalar diagonalFactor = -amplitudeSquare * exponent / z;
+    for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+    {
+      for (UnsignedInteger b = 0; b < a; ++b)
+        hessian(a, b) = factor * u[a] * u[b];
+      hessian(a, a) = factor * u[a] * u[a] + diagonalFactor / (scale_[a] * scale_[a]);
+    }
+    return hessian;
+  }
+  const Scalar z = norm;
+  const Scalar zP = std::pow(z, p_);
+  const Scalar exponent = std::exp(-zP);
+  // [rho''(z) z - rho'(z)] / z^3 = p z^(p - 4) (p z^p - p + 2) exp(-z^p)
+  const Scalar factor = amplitude_[0] * amplitude_[0] * p_ * std::pow(z, p_ - 4.0) * (p_ * zP - p_ + 2.0) * exponent;
+  // rho'(z) / z = -p z^(p - 2) exp(-z^p)
+  const Scalar diagonalFactor = -amplitude_[0] * amplitude_[0] * p_ * std::pow(z, p_ - 2.0) * exponent;
+  for (UnsignedInteger a = 0; a < inputDimension_; ++a)
+  {
+    for (UnsignedInteger b = 0; b < a; ++b)
+      hessian(a, b) = factor * u[a] * u[b];
+    hessian(a, a) = factor * u[a] * u[a] + diagonalFactor / (scale_[a] * scale_[a]);
+  }
+  return hessian;
+}
+
+/* Gradient wrt the parameters */
+Matrix GeneralizedExponential::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ != 1) return CovarianceModelImplementation::parameterGradient(s, t);
+  const Point tau(s - t);
+  Scalar normSquare = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    normSquare += dx * dx;
+  }
+  const Bool isZero = (normSquare <= SpecFunc::ScalarEpsilon * SpecFunc::ScalarEpsilon);
+  const Scalar k = computeAsScalar(s, t);
+  Point fullGradient(inputDimension_ + 3, 0.0);
+  if (!isZero)
+  {
+    // Fast paths consistent with computeCovarianceValue(): avoid std::pow
+    // k = amplitude^2 * exp(-norm^p), d norm/d scale_i = tau_i^2/(scale_i^3 norm)
+    if (p_ == 2.0)
+    {
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        fullGradient[i] = 2.0 * k * tau[i] * tau[i] / (scale_[i] * scale_[i] * scale_[i]);
+      // dk/dp = -k * norm^2 * log(norm)
+      fullGradient[inputDimension_ + 2] = -k * normSquare * 0.5 * std::log(normSquare);
+    }
+    else
+    {
+      const Scalar norm = std::sqrt(normSquare);
+      const Scalar normPower = (p_ == 1.0 ? norm : std::pow(norm, p_));
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        fullGradient[i] = k * p_ * normPower * tau[i] * tau[i] / (norm * norm * scale_[i] * scale_[i] * scale_[i]);
+      // dk/dp = -k * norm^p * log(norm)
+      fullGradient[inputDimension_ + 2] = -k * normPower * std::log(norm);
+    }
+  }
+  else
+  {
+    // The nugget factor is the only parameter that affects the value at tau=0
+    fullGradient[inputDimension_] = outputCovariance_.getImplementation()->operator()(0, 0);
+  }
+  // Amplitude: k = amplitude^2 * rho
+  fullGradient[inputDimension_ + 1] = 2.0 * k / amplitude_[0];
+  return filterActiveParameterGradient(fullGradient);
+}
 
 void GeneralizedExponential::setFullParameter(const Point & parameter)
 {

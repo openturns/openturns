@@ -23,6 +23,10 @@
 \newcommand{\outputDim}{{d_Y}}  % The output dimension of the model
 \newcommand{\metaModel}{\widetilde{\model}}  % The surrogate model
 
+% Stochastic processes
+\newcommand{\processDim}{d}  % Value dimension of a stochastic process X(t); equals \inputDim when X is the input of f. Not for the latent GP in Gaussian process regression, whose dimension is \outputDim
+\newcommand{\domainDim}{n}  % Dimension of the index domain cD of a stochastic process; distinct from a sample size
+
 % Probabilistic modeling
 \newcommand{\inputRV}{\vect{X}}  % The input random vector of the model
 \newcommand{\outputRV}{\vect{Y}}  % The output random vector of the model
