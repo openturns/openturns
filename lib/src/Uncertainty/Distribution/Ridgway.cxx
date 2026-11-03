@@ -133,21 +133,6 @@ void gibbsMove(Point& eta,
   }
 }
 
-// Compute log(sum_i exp(logWeights[i])) with the log-sum-exp trick
-Scalar logSumExp(const Point& logWeights)
-{
-  const UnsignedInteger M = logWeights.getSize();
-  Scalar maxVal = logWeights[0];
-  for (UnsignedInteger i = 1; i < M; ++i)
-    if (logWeights[i] > maxVal) maxVal = logWeights[i];
-
-  Scalar sum = 0.0;
-  for (UnsignedInteger i = 0; i < M; ++i)
-    sum += std::exp(logWeights[i] - maxVal);
-
-  return maxVal + std::log(sum);
-}
-
 // Convert a uniform-draw count to a pool size, rejecting absurd values
 // instead of truncating them
 UnsignedInteger checkedPoolSize(const uint64_t count)
@@ -334,7 +319,7 @@ Scalar mvnOrthantProbabilityCore(
   for (UnsignedInteger t = 1; t < d; ++t)
   {
     // Compute normalized weights and ESS
-    const Scalar logSum = logSumExp(logWeights);
+    const Scalar logSum = SpecFunc::LogSumExp(logWeights);
     Scalar sumNormSq = 0.0;
     for (UnsignedInteger i = 0; i < M; ++i)
     {
@@ -432,7 +417,7 @@ Scalar mvnOrthantProbabilityCore(
   }
 
   // Final estimate: Z * (1/M) * sum(w_T)
-  const Scalar logSum = logSumExp(logWeights);
+  const Scalar logSum = SpecFunc::LogSumExp(logWeights);
   const Scalar logResult = logZ + logSum - std::log(static_cast<Scalar>(M));
   return SpecFunc::Clip01(std::exp(logResult));
 }

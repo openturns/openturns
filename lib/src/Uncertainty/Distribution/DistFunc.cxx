@@ -123,7 +123,10 @@ Scalar DistFunc::rBeta(const Scalar p1,
         const Scalar v = RandomGenerator::Generate();
         const Scalar logx = std::log(u) / p1;
         const Scalar logy = std::log(v) / p2;
-        const Scalar logsum = (logx > logy) ? logx + log1p(std::exp(logy - logx)) : logy + log1p(std::exp(logx - logy));
+        const Scalar logsum = SpecFunc::LogSumExp(logx, logy);
+        // Both powers underflowed to zero: retry instead of returning
+        // std::exp(-inf - (-inf)) = NaN.
+        if (logsum == SpecFunc::LowestScalar) continue;
         // Acceptation step
         if (logsum <= 0.0) return std::exp(logy - logsum);
       }

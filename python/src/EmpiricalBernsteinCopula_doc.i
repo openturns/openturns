@@ -147,3 +147,20 @@ Parameters
 m : int, :math:`0 < m \leq \sampleSize`
     The number of sub-intervals in which all the edges of the unit cube
     :math:`[0, 1]^d` are regularly partitioned.)RAW"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::EmpiricalBernsteinCopula::computeLogPDF
+R"RAW(Compute the logarithm of the probability density function.
+
+Parameters
+----------
+x : sequence of float
+    Point in :math:`[0,1]^d` at which the log-PDF is evaluated.
+
+Returns
+-------
+logPDF : float
+    Logarithm of the copula density.
+    The atom contributions are accumulated with a log-sum-exp, so the
+    result remains finite when the density itself underflows.
+)RAW"
