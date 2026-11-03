@@ -5,36 +5,50 @@ import math
 import openturns as ot
 import openturns.testing as ott
 
-for lx in range(10):
-    x = 2**lx
-    print("x=", x, "log2=", ot.SpecFunc.Log2(x))
+ot.TESTPREAMBLE()
 
 for lx in range(10):
-    x = 2**lx - 1
-    print("x=", x, "bits=", ot.SpecFunc.BitCount(x))
+    ott.assert_almost_equal(ot.SpecFunc.Log2(2**lx), lx, 1e-15, 0.0)
 
-for x in [0, 1, 2, 3, 4, 10, 100, 1000]:
-    print("x=", x, "nextpow2=", ot.SpecFunc.NextPowerOfTwo(x))
+for lx in range(10):
+    ott.assert_almost_equal(ot.SpecFunc.BitCount(2**lx - 1), lx, 0.0, 0.0)
+
+for x, expected in [
+    (0, 1),
+    (1, 1),
+    (2, 2),
+    (3, 4),
+    (4, 4),
+    (10, 16),
+    (100, 128),
+    (1000, 1024),
+]:
+    ott.assert_almost_equal(ot.SpecFunc.NextPowerOfTwo(x), expected, 0.0, 0.0)
 
 for x in [-2.0, -1.0, 0.0, 1.0, 2.0]:
     for n in [0, 1, 2]:
-        print("x=", x, "n=", n, "ipow=", ot.SpecFunc.IPow(x, n))
+        ott.assert_almost_equal(ot.SpecFunc.IPow(x, n), x**n, 1e-15, 0.0)
 
-for x in [-4.0, 4.0, 9.0]:
-    for n in [1, 2]:
-        if x < 0.0 and n % 2 == 0:
-            continue
-        print("x=", x, "n=", n, "iroot=", ot.SpecFunc.IRoot(x, n))
+for x, n, expected in [
+    (-4.0, 1, -4.0),
+    (4.0, 1, 4.0),
+    (4.0, 2, 2.0),
+    (9.0, 1, 9.0),
+    (9.0, 2, 3.0),
+]:
+    ott.assert_almost_equal(ot.SpecFunc.IRoot(x, n), expected, 1e-15, 0.0)
 
-print("ibeta(2.0, 0.0, 0.95)=", ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95))
-print("ibeta(0.0, 1.0, 0.95)=", ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95))
-print(
-    "ibeta(2.0, 0.0, 0.95, tail)=",
-    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95, True),
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95), 0.0, 1e-15, 0.0
 )
-print(
-    "ibeta(0.0, 1.0, 0.95, tail)=",
-    ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True),
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95), 1.0, 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95, True), 1.0, 1e-15, 0.0
+)
+ott.assert_almost_equal(
+    ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True), 0.0, 1e-15, 0.0
 )
 
 x = [1.0, 2.0**53, -(2.0**53)]

@@ -59,6 +59,23 @@ Scalar DistFunc::pBeta(const Scalar p1,
 {
   return SpecFunc::RegularizedIncompleteBeta(p1, p2, x, tail);
 }
+/* Log-PDF */
+Scalar DistFunc::logdBeta(const Scalar p1,
+                          const Scalar p2,
+                          const Scalar x)
+{
+  if (!(p1 > 0.0)) throw InvalidArgumentException(HERE) << "Error: p1 must be positive, here p1=" << p1;
+  if (!(p2 > 0.0)) throw InvalidArgumentException(HERE) << "Error: p2 must be positive, here p2=" << p2;
+  if (!(x > 0.0) || !(x < 1.0)) return SpecFunc::LowestScalar;
+  return -SpecFunc::LogBeta(p1, p2) + (p1 - 1.0) * std::log(x) + (p2 - 1.0) * std::log1p(-x);
+}
+/* PDF */
+Scalar DistFunc::dBeta(const Scalar p1,
+                       const Scalar p2,
+                       const Scalar x)
+{
+  return std::exp(logdBeta(p1, p2, x));
+}
 /* CDF Inverse */
 Scalar DistFunc::qBeta(const Scalar p1,
                        const Scalar p2,

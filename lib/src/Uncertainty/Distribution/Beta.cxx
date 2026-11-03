@@ -144,11 +144,15 @@ Point Beta::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-/* Get the PDF of the distribution */
 Scalar Beta::computePDF(const Scalar x) const
 {
   if ((x == b_) && (beta_ == 1.0)) return alpha_ / (b_ - a_);
   if ((x <= a_) || (x >= b_)) return 0.0;
+  const Scalar scaledX = (x - a_) / (b_ - a_);
+  if ((scaledX > 0.0) && (scaledX < 1.0))
+    return DistFunc::dBeta(alpha_, beta_, scaledX) / (b_ - a_);
+  // The normalization rounded to an endpoint although x is strictly inside
+  // the support: use the distances to the bounds instead.
   return std::exp(computeLogPDF(x));
 }
 
@@ -163,6 +167,12 @@ Scalar Beta::computeLogPDF(const Scalar x) const
 {
   if ((x == b_) && (beta_ == 1.0)) return std::log(alpha_ / (b_ - a_));
   if ((x <= a_) || (x >= b_)) return SpecFunc::LowestScalar;
+  const Scalar scaledX = (x - a_) / (b_ - a_);
+  if ((scaledX > 0.0) && (scaledX < 1.0))
+    return DistFunc::logdBeta(alpha_, beta_, scaledX) - std::log(b_ - a_);
+  // The normalization rounded to an endpoint although x is strictly inside
+  // the support: evaluate the log-density from the distances to the bounds so
+  // that values next to a_ or b_ are preserved.
   return normalizationFactor_ + (alpha_ - 1.0) * std::log(x - a_) + (beta_ - 1.0) * std::log(b_ - x);
 }
 

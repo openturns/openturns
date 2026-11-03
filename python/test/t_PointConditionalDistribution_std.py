@@ -141,6 +141,15 @@ simplified = distribution.getSimplifiedVersion()
 print(simplified)
 assert simplified.getName() == "Mixture", "wrong type"
 
+# Boundary values of an empirical copula sample are clipped to the bin
+# range before the beta densities are evaluated
+boundarySample = ot.Sample([[0.0, 0.0], [1.0, 0.5], [0.5, 1.0], [0.25, 0.75]])
+boundaryCopula = ot.EmpiricalBernsteinCopula(boundarySample, 2, True)
+distribution = ot.PointConditionalDistribution(boundaryCopula, [0], [0.5])
+simplified = distribution.getSimplifiedVersion()
+assert simplified.getName() == "Mixture", "wrong type"
+assert distribution.computePDF([0.25]) > 0.0
+
 # special case for BlockIndependentDistribution
 blockIndep = ot.BlockIndependentDistribution([normal, student, mixture])
 # test a conditioning which remove the first block, modify the second block and let the last block unchanged

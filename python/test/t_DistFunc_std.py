@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import math
+
 import openturns as ot
 import openturns.testing as ott
 
@@ -48,3 +50,56 @@ except TypeError as e:
     if 'dimension=2' in msg and 'expected dimension=3' in msg:
         caught = True
 assert caught, "Expected dimension mismatch error with correct point dimension"
+
+# dBeta and logdBeta
+for p1, p2, x in [
+    (0.5, 0.5, 0.25),
+    (1.0, 1.0, 0.5),
+    (2.5, 3.5, 0.1),
+    (2.5, 3.5, 0.5),
+    (2.5, 3.5, 0.9),
+    (0.2, 5.0, 0.7),
+    (1000.0, 2000.0, 0.3),
+]:
+    expected_logpdf = (
+        (p1 - 1.0) * math.log(x)
+        + (p2 - 1.0) * math.log1p(-x)
+        - (math.lgamma(p1) + math.lgamma(p2) - math.lgamma(p1 + p2))
+    )
+    ott.assert_almost_equal(
+        ot.DistFunc.logdBeta(p1, p2, x), expected_logpdf, 1e-11, 0.0
+    )
+    ott.assert_almost_equal(
+        ot.DistFunc.dBeta(p1, p2, x), math.exp(expected_logpdf), 1e-11, 0.0
+    )
+    ott.assert_almost_equal(
+        ot.DistFunc.dBeta(p1, p2, x),
+        math.exp(ot.DistFunc.logdBeta(p1, p2, x)),
+        1e-15,
+        0.0,
+    )
+
+# Symmetry and boundary conventions
+for p1, p2, x in [(0.5, 2.5, 0.2), (2.5, 3.5, 0.75), (5.0, 0.2, 0.9)]:
+    ott.assert_almost_equal(
+        ot.DistFunc.logdBeta(p1, p2, x),
+        ot.DistFunc.logdBeta(p2, p1, 1.0 - x),
+        1e-13,
+        0.0,
+    )
+for x in [0.0, 1.0, -0.5, 1.5]:
+    assert ot.DistFunc.logdBeta(2.5, 3.5, x) == -math.inf
+    assert ot.DistFunc.dBeta(2.5, 3.5, x) == 0.0
+    assert math.exp(ot.DistFunc.logdBeta(2.5, 3.5, x)) == 0.0
+
+# The log-density stays finite where the density underflows
+logpdf = ot.DistFunc.logdBeta(2.5, 3.5, 1.0e-300)
+assert math.isfinite(logpdf)
+assert ot.DistFunc.dBeta(2.5, 3.5, 1.0e-300) == 0.0
+
+# Invalid shape parameters
+for p1, p2 in [(0.0, 1.0), (-1.0, 1.0), (1.0, 0.0), (1.0, -1.0)]:
+    with ott.assert_raises(Exception):
+        ot.DistFunc.logdBeta(p1, p2, 0.5)
+    with ott.assert_raises(Exception):
+        ot.DistFunc.dBeta(p1, p2, 0.5)

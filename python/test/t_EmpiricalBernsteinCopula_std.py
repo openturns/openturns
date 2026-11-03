@@ -142,3 +142,18 @@ ot.RandomGenerator.SetSeed(1)
 ebc = ot.EmpiricalBernsteinCopula(ot.Normal(2).getSample(20), 2)
 seqCDF = ebc.computeSequentialConditionalCDF([0.5, 0.5])
 assert all(0.0 <= v <= 1.0 for v in seqCDF)
+
+# A one-dimensional copula built from an empirical sample that is not a
+# copula sample is not uniform, and its conditional PDFs must not shortcut
+# to the independent-copula branch.
+marginalCopula = ot.EmpiricalBernsteinCopula(
+    ot.Sample([[0.1], [0.35], [0.6], [0.85], [0.95]]), 2, True
+)
+assert not marginalCopula.isCopula()
+assert marginalCopula.hasIndependentCopula()
+ott.assert_almost_equal(
+    marginalCopula.computeConditionalPDF(0.3, []), 0.92, 1e-12, 0.0
+)
+ott.assert_almost_equal(
+    marginalCopula.computeSequentialConditionalPDF([0.3]), [0.92], 1e-12, 0.0
+)

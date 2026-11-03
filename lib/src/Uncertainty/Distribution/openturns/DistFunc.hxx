@@ -113,6 +113,14 @@ OT_API Scalar pBeta(const Scalar p1,
                     const Scalar p2,
                     const Scalar x,
                     const Bool tail = false);
+// Logarithm of the probability density function of a Beta distribution on [0,1]
+OT_API Scalar logdBeta(const Scalar p1,
+                       const Scalar p2,
+                       const Scalar x);
+// Probability density function of a Beta distribution on [0,1]
+OT_API Scalar dBeta(const Scalar p1,
+                    const Scalar p2,
+                    const Scalar x);
 // If tail=false, compute x such that P(X<=x)=q, else x such that P(X>x)=q
 OT_API Scalar qBeta(const Scalar p1,
                     const Scalar p2,
