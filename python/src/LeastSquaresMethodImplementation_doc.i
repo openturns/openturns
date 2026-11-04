@@ -13,8 +13,9 @@ where:
 - :math:`\vect{y} \in \Rset^n` is the output sample,
 - :math:`\mat{U}` is the input sample of :math:`n` points
   :math:`\vect{u}_i`,
-- :math:`\mat{\Psi}(\mat{U})` is the design matrix: its element of row
-  :math:`i` and column :math:`j` is :math:`\psi_j(\vect{u}_i)`,
+- :math:`\mat{\Psi}(\mat{U})` is the design matrix with :math:`n` rows
+  and :math:`P` columns: its element of row :math:`i` and column
+  :math:`j` is :math:`\psi_j(\vect{u}_i)`,
 - :math:`\mat{W} = \mathrm{diag}(w_1, \dots, w_n)` is the diagonal matrix
   built from the *weights*,
 - the *indices* restrict the columns of :math:`\mat{\Psi}(\mat{U})` to the
@@ -36,7 +37,7 @@ Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
     Proxy of the design matrix: its element of row :math:`i` and column
-    :math:`j` is :math:`\psi_j(\vect{u}_i)`, ie the value of the j-th basis
+    :math:`j` is :math:`\psi_j(\vect{u}_i)`, i.e. the value of the j-th basis
     term at the i-th point of the input sample.
 weight : sequence of positive floats
     Statistical weights :math:`w_i` of the equations, of size equal to the
@@ -44,9 +45,12 @@ weight : sequence of positive floats
     By default, all the weights are equal to 1.
 indices : sequence of int
     Indices of the basis terms retained as columns of the design matrix.
+    Each index must be between 0 and one less than the number of functions
+    in the basis.
     By default, all the terms are used.
 design : 2-d sequence of float
-    The known design matrix
+    The known design matrix, with :math:`n` rows (sample size) and
+    :math:`P` columns (number of selected basis terms).
 
 See also
 --------
@@ -54,32 +58,34 @@ CholeskyMethod, SVDMethod, QRMethod
 
 Examples
 --------
-We get the projection onto the functional basis :math:`(x, x^2, x^3)` of
-a model from which we only have a data base of
-size 50. The least squares problem is solved using the QR method: to change the
+In this example, we solve a least-squares fitting problem for the parametric
+model spanned by the basis functions :math:`(x, x^2, x^3)`.
+We have a dataset of 50 observations of the variable :math:`y`,
+where :math:`y = \sin(\pi x)` for :math:`x` in :math:`[-1, 1]`.
+The least squares problem is solved using the SVD method: to change the
 decomposition method, use the :meth:`Build` method.
 
-There is no model selection strategy. The projection has 3 components:
-all the functions of the basis are used.
+There is no model selection strategy. All the functions of the basis are used.
 
 >>> import openturns as ot
 >>> sampleSize = 50
->>> X = ot.Sample.BuildFromPoint(range(1, 1 + sampleSize))
->>> normal = ot.Normal([1.0] * sampleSize, [0.1] * sampleSize)
->>> y = normal.getRealization()
+>>> X = ot.Sample.BuildFromPoint([-1.0 + 2.0 * i / (sampleSize - 1) for i in range(sampleSize)])
+>>> g = ot.SymbolicFunction(['x'], ['sin(pi_*x)'])
+>>> y = g(X).asPoint()
 
-Here we define the functional basis and the design proxy (for the last constructor):
+The functional basis and the design proxy are first defined
+(for the last constructor):
 
 >>> basisSize = 3
 >>> phis = [ot.SymbolicFunction(['x'], ['x^' + str(j + 1)]) for j in range(basisSize)]
 >>> proxy = ot.DesignProxy(X, phis)
 
-Here, we explicit the design matrix:
+The design matrix is then built explicitly:
 
->>> full = range(basisSize)
+>>> full = list(range(basisSize))
 >>> designMatrix = ot.Matrix(proxy.computeDesign(full))
 
-Here, we define and solve the least-squares problem:
+The least-squares problem is finally defined and solved:
 
 >>> method = ot.LeastSquaresMethod(proxy, full)
 >>> x = method.solve(y)
@@ -159,18 +165,18 @@ OT_LeastSquaresMethod_getInitialIndices_doc
 R"RAW(Solve the least-squares problem.
 
 The returned vector minimizes the weighted norm of the residual with
-respect to the second member :math:`\vect{b}`, as described in the
+respect to the right-hand side :math:`\vect{y}`, as described in the
 mathematical definition of the class:
 
 .. math::
 
-    \vect{a} = \argmin_{\vect{x} \in \Rset^P}
-    \left\|\mat{W}^{1/2} \left(\mat{\Psi} \vect{x} - \vect{b}\right)\right\|_2^2
+    \vect{a} = \argmin_{\vect{b} \in \Rset^P}
+    \left\|\mat{W}^{1/2} \left(\mat{\Psi} \vect{b} - \vect{y}\right)\right\|_2^2
 
 Parameters
 ----------
-b : sequence of float
-    Second member of the equation, typically the output sample.
+y : sequence of float
+    Right-hand side of the least squares equation, typically the output sample.
 
 Returns
 -------
@@ -212,7 +218,7 @@ OT_LeastSquaresMethod_solveNormal_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getGramInverse_doc
-R"RAW(Get the inverse Gram matrix of the input sample.
+R"RAW(Get the inverse of the weighted Gram matrix of the input sample.
 
 The weighted Gram matrix is defined as:
 
@@ -244,7 +250,10 @@ For a full-column-rank weighted design matrix
 so that :math:`\hat{\mat{\beta}} = \mat{B} \mat{W}^{1/2} \vect{y}` solves
 the weighted least squares problem. The SVD decomposition also supports
 underdetermined designs of full row rank, where :math:`\mat{B}` is the
-Moore-Penrose pseudo-inverse; rank-deficient designs are rejected. Each
+Moore-Penrose pseudo-inverse. If a singular value is exactly zero, an
+exception is raised; this is an exact-zero check, not a numerical-rank
+test. Before a decomposition has been computed there are no singular
+values to check and an empty matrix is returned. Each
 decomposition (QR, Cholesky, SVD) evaluates it from its own factors.
 
 Returns
@@ -259,7 +268,7 @@ OT_LeastSquaresMethod_getPseudoInverse_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getGramInverseDiag_doc
-R"RAW(Get the diagonal of the inverse Gram matrix.
+R"RAW(Get the diagonal of the inverse weighted Gram matrix.
 
 .. math::
 
@@ -277,7 +286,7 @@ OT_LeastSquaresMethod_getGramInverseDiag_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_getGramInverseTrace_doc
-R"RAW(Get the trace of the inverse Gram matrix.
+R"RAW(Get the trace of the inverse weighted Gram matrix.
 
 .. math::
 
@@ -299,13 +308,13 @@ R"RAW(Get the symmetric weighted hat matrix H.
 
 With :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` the weight-scaled
 design and :math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}`
-the weighted Gram matrix:
+the weighted Gram matrix, the weighted hat matrix is:
 
 .. math::
 
     \mat{H} = \mat{\Psi}_w \mat{G}^{-1} \mat{\Psi}_w^\intercal
 
-Its diagonal holds the leverages
+Its diagonal holds the weighted leverages
 :math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`.
 The fitted values are
 :math:`\hat{\vect{y}} = \mat{\Psi} \mat{G}^{-1} \mat{\Psi}^\intercal \mat{W} \vect{b}`.
@@ -332,10 +341,10 @@ R"RAW(Get the diagonal of the symmetric weighted hat matrix H.
 
 with :math:`\mat{\Psi}_w = \mat{W}^{1/2} \mat{\Psi}` and
 :math:`\mat{G} = \mat{\Psi}^\intercal \mat{W} \, \mat{\Psi}`.
-Each entry is the leverage
-:math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`,
-used by the analytical leave-one-out residual :math:`r_i/(1-h_i)`
-(Allen, 1974).
+Each entry is the weighted leverage
+:math:`h_i = w_i \psi(\vect{u}_i)^\intercal \mat{G}^{-1} \psi(\vect{u}_i)`.
+For example, it is used by the analytical leave-one-out residual
+:math:`r_i/(1-h_i)` [allen1974]_.
 
 Returns
 -------
@@ -353,8 +362,10 @@ R"RAW(Build the design matrix.
 
 The element of row :math:`i` and column :math:`j` of the returned matrix
 is :math:`w_i^{1/2} \psi_j(\vect{u}_i)`: the rows are scaled by the square
-root of the weights, and the columns are restricted to the selected
-indices.
+root of the weights, and the columns are restricted to the current
+indices, that is, the constructor indices including any basis index added
+by :meth:`update`. The initial constructor indices are used only when
+*whole* is True.
 
 Parameters
 ----------
@@ -391,7 +402,7 @@ OT_LeastSquaresMethod_computeDesign_doc
 // ---------------------------------------------------------------------
 
 %define OT_LeastSquaresMethod_solveNormalGram_doc
-R"RAW(Solve the Gram system :math:`G x = \mathrm{rhs}` where :math:`G = M^T W M` is the weighted Gram matrix.
+R"RAW(Solve the Gram system :math:`\mat{G} \vect{x} = \vect{rhs}` where :math:`\mat{G} = \mat{M}^\top \mat{W} \mat{M}` is the weighted Gram matrix.
 
 Unlike :any:`solveNormal`, this method does not apply weight multiplication
 to the right-hand side.
