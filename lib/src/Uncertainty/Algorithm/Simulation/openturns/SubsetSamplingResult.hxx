@@ -21,12 +21,12 @@
 #ifndef OPENTURNS_SUBSETSAMPLINGRESULT_HXX
 #define OPENTURNS_SUBSETSAMPLINGRESULT_HXX
 
-#include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API SubsetSamplingResult
-  : public ProbabilitySimulationResult
+  : public ProbabilitySimulationResultImplementation
 {
   CLASSNAME
 public:

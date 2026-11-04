@@ -64,7 +64,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector 
 }
 
 /* Standard constructor */
-SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result)
+SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySimulationResultImplementation & result)
   : SimulationSensitivityAnalysis(result.getEvent())
 {
   // Nothing to do

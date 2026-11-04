@@ -27,10 +27,14 @@
 #include "openturns/Compact.hxx"
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
+// Forward declaration for restricted access to the history bridge
+class ActiveLearningReliabilityAlgorithm;
 
 /**
  * @class EventSimulationImplementation
@@ -57,7 +61,7 @@ public:
   virtual void setEvent(const RandomVector & event);
 
   /** Result accessor */
-  ProbabilitySimulationResult getResult() const;
+  ProbabilitySimulationResultImplementation getResult() const;
 
   /** String converter */
   String __repr__() const override;
@@ -66,7 +70,7 @@ public:
   void run() override;
 
   /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -86,18 +90,25 @@ public:
 protected:
 
   /** Result accessor */
-  void setResult(const ProbabilitySimulationResult & result);
-  
+  void setResult(const ProbabilitySimulationResultImplementation & result);
+
+  /** Current result with full dynamic type, for per-iteration histories.
+      Restricted to ActiveLearningReliabilityAlgorithm (friend): it has no
+      meaning as standalone public API. The default implementation wraps
+      the base result; simulators with an extended result type override it. */
+  virtual ProbabilitySimulationResult getHistoryResult() const;
+
   /** Compute the block sample and the points that realized the event */
   virtual Sample computeBlockSample();
 
   friend class Factory<EventSimulationImplementation>;
+  friend class ActiveLearningReliabilityAlgorithm;
 
   // The event we are computing the probability of
   RandomVector event_;
 
   // Result of the simulation
-  ProbabilitySimulationResult result_;
+  ProbabilitySimulationResultImplementation result_;
 
 } ; /* class EventSimulationImplementation */
 

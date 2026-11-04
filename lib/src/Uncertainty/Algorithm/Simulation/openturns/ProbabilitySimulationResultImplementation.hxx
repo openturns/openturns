@@ -1,0 +1,112 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief Implementation of SimulationResult
+ *
+ *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef OPENTURNS_PROBABILITYSIMULATIONRESULTIMPLEMENTATION_HXX
+#define OPENTURNS_PROBABILITYSIMULATIONRESULTIMPLEMENTATION_HXX
+
+#include "openturns/RandomVector.hxx"
+#include "openturns/SimulationResult.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/PointWithDescription.hxx"
+#include "openturns/Graph.hxx"
+#include "openturns/Normal.hxx"
+#include "openturns/Distribution.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class ProbabilitySimulationResultImplementation
+ * Implementation of SimulationResult
+ */
+class OT_API ProbabilitySimulationResultImplementation
+  : public SimulationResult
+{
+
+  CLASSNAME
+public:
+
+
+  /** Default constructor */
+  ProbabilitySimulationResultImplementation();
+
+  /** Standard constructor */
+  ProbabilitySimulationResultImplementation(const RandomVector & event,
+                              const Scalar probabilityEstimate,
+                              const Scalar varianceEstimate,
+                              const UnsignedInteger outerSampling,
+                              const UnsignedInteger blockSize);
+
+  /** Virtual constructor */
+  ProbabilitySimulationResultImplementation * clone() const override;
+
+  /** Event accessor */
+  RandomVector getEvent() const;
+  void setEvent(const RandomVector & event);
+
+  /** Probability estimate accessor */
+  Scalar getProbabilityEstimate() const;
+  void setProbabilityEstimate(const Scalar probabilityEstimate);
+
+  /** Variance estimate accessor */
+  Scalar getVarianceEstimate() const;
+  void setVarianceEstimate(const Scalar varianceEstimate);
+
+  /** Probability estimate distribution accessor */
+  Distribution getProbabilityDistribution() const;
+
+  /** Coefficient of variation estimate accessor */
+  virtual Scalar getCoefficientOfVariation() const;
+
+  /** Standard deviation estimate accessor */
+  virtual Scalar getStandardDeviation() const;
+
+  /** Mean point conditioned to the event realization accessor */
+  Point getMeanPointInEventDomain() const;
+
+  /** Importance factors accessor */
+  PointWithDescription getImportanceFactors() const;
+
+  /** Draw the importance factors */
+  Graph drawImportanceFactors() const;
+
+  /** Confidence length @deprecated */
+  virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel")) const;
+
+  /** String converter */
+  String __repr__() const override;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
+protected:
+
+  /* The event we are interested in */
+  RandomVector event_;
+  Scalar probabilityEstimate_ = 0.0;
+  Scalar varianceEstimate_ = 0.0;
+
+}; // class ProbabilitySimulationResultImplementation
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_PROBABILITYSIMULATIONRESULTIMPLEMENTATION_HXX */

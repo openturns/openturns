@@ -84,9 +84,9 @@ public:
 
   /** Draw the probability convergence at the given level */
   Graph drawFirstOrderIndexConvergence(const UnsignedInteger marginalIndex = 0,
-                                       const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+                                       const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel")) const;
   Graph drawTotalOrderIndexConvergence(const UnsignedInteger marginalIndex = 0,
-                                       const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+                                       const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResultImplementation-DefaultConfidenceLevel")) const;
 protected:
   /** Draw the probability convergence at the given level */
   Graph drawIndexConvergence(const UnsignedInteger marginalIndex,

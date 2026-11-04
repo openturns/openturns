@@ -91,3 +91,22 @@ Examples
 >>> myResult = myIS.getResult()
 )RAW"
 
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::StandardSpaceCrossEntropyImportanceSampling::getInputSample
+"Accessor to the input sample in physical space at a given step.
+
+Parameters
+----------
+step : int
+    Step index, between 0 and the number of steps minus 1.
+select : int, optional
+    Flag selecting the complementary event (0), the event realization (1)
+    or both (2, default).
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    Input sample in physical space
+"

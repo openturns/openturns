@@ -28,7 +28,7 @@
 #include "openturns/Graph.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,7 +56,7 @@ public:
   explicit SimulationSensitivityAnalysis(const RandomVector & event);
 
   /** Standard constructor */
-  explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result);
+  explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResultImplementation & result);
 
   /** Virtual constructor */
   SimulationSensitivityAnalysis * clone() const override;

@@ -36,6 +36,7 @@
  * HMatrix interface to support HODLR implementation
 
 ==== New ResourceMap keys ====
+ * ActiveLearningReliabilityAlgorithm-DefaultMaximumIterations: default enrichment budget (default is 100)
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
  * LevelSetMesher-UseQEF: enable the QEF sharp-edge placement in LevelSetMesher (default is False)
  * Mesh-GridThreshold: number of simplex pairs above which Mesh::intersect filters candidate pairs through a bounding-box grid (default is 1024)
@@ -137,6 +138,9 @@
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
+ * ActiveLearningReliabilityAlgorithm, ActiveLearningReliabilityResult, ActiveLearningReliabilityFunction, ActiveLearningReliabilityFunctionImplementation, ActiveLearningUFunction, ActiveLearningEFFFunction, ActiveLearningGMMFunction (openturns.experimental)
+ * GenericSimulationResult
+
 
 ==== API changes ====
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
@@ -224,6 +228,7 @@
  * Deprecated viewer.PlotDesign in favor of VisualTest.DrawPairsWithGrid
 
 ==== New features ====
+ * Added PythonActiveLearningReliabilityFunction (openturns.experimental): define custom active learning criteria from Python, usable through ActiveLearningReliabilityFunction and ActiveLearningReliabilityAlgorithm
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
  * Added QuantileConfidence.computeUnilateralCoverage and QuantileConfidence.computeBilateralCoverage to compute the coverage probability of quantile confidence intervals without sample

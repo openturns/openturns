@@ -42,14 +42,15 @@ AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulationImplementation()
+  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
+  , standardEvent_(StandardEvent(getEvent()))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
   , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultGamma"))
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
-  setEvent(event);
+  samplingStrategy_.setDimension(getEvent().getImplementation()->getAntecedent().getDimension());
 }
 
 /* Virtual constructor */
@@ -61,21 +62,20 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
 /*  Event accessor */
 void AdaptiveDirectionalStratification::setEvent(const RandomVector & event)
 {
-  const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
-  const StandardEvent standardEvent(composedEvent);
-  const UnsignedInteger dimension = composedEvent.getImplementation()->getAntecedent().getDimension();
+  EventSimulationImplementation::setEvent(event.getImplementation()->asComposedEvent());
+  standardEvent_ = StandardEvent(getEvent());
+  const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
+  samplingStrategy_.setDimension(dimension);
   if ((quadrantOrientation_.getDimension() > 0) && (quadrantOrientation_.getDimension() != dimension))
     throw InvalidDimensionException(HERE) << "Error: the quadrant orientation dimension (" << quadrantOrientation_.getDimension() << ") is not compatible with the antecedent dimension (" << dimension << ")";
-  EventSimulationImplementation::setEvent(composedEvent);
-  standardEvent_ = standardEvent;
-  samplingStrategy_.setDimension(dimension);
 }
+
 
 void AdaptiveDirectionalStratification::run()
 {
   // First, reset the convergence history
   convergenceStrategy_.setDimension(3);
-  result_ = ProbabilitySimulationResult();
+  result_ = ProbabilitySimulationResultImplementation();
   result_.setEvent(getEvent());
   result_.setBlockSize(1);
 
@@ -150,7 +150,7 @@ void AdaptiveDirectionalStratification::run()
       if (progressCallback_.first)
         progressCallback_.first((100.0 * n) / n0, progressCallback_.second);
 
-      const ProbabilitySimulationResult result(directionalSampling.getResult());
+      const ProbabilitySimulationResultImplementation result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
       // concatenate the convergence history

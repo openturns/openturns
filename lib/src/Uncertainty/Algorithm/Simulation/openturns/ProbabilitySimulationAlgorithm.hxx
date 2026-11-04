@@ -76,7 +76,7 @@ public:
 
   /** Event accessor */
   void setEvent(const RandomVector & event) override;
-
+  
 protected:
 
   /** Compute the block sample and the points that realized the event */

@@ -106,7 +106,7 @@ try:
     myStudy.add("point", point)
 
     # Create a Simulation::Result
-    simulationResult = ot.ProbabilitySimulationResult(
+    simulationResult = ot.ProbabilitySimulationResultImplementation(
         ot.ThresholdEvent(), 0.5, 0.01, 150, 4
     )
     myStudy.add("simulationResult", simulationResult)
@@ -267,7 +267,7 @@ try:
     print("matrix = ", repr(matrix))
 
     # Create a Simulation::Result from the one stored in the Study
-    simulationResult = ot.ProbabilitySimulationResult()
+    simulationResult = ot.ProbabilitySimulationResultImplementation()
     myStudy.fillObject("simulationResult", simulationResult)
 
     print("simulation result = ", simulationResult)

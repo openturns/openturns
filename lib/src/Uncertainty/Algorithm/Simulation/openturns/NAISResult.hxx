@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_NAISRESULT_HXX
 #define OPENTURNS_NAISRESULT_HXX
 
-#include "openturns/ProbabilitySimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * NAISResult is some NAISResult type to illustrate how to add some classes in Open TURNS
  */
 class OT_API NAISResult
-  : public ProbabilitySimulationResult
+  : public ProbabilitySimulationResultImplementation
 {
 
   CLASSNAME

@@ -34,7 +34,7 @@ static const Factory<NAISResult> Factory_NAISResult;
 
 /* Default constructor */
 NAISResult::NAISResult()
-  : ProbabilitySimulationResult()
+  : ProbabilitySimulationResultImplementation()
 {
   //Nothing TO DO
 }
@@ -102,17 +102,24 @@ Scalar NAISResult::getCoefficientOfVariation() const
 // Method save() stores the object through the StorageManager
 void NAISResult::save(Advocate & adv) const
 {
-  ProbabilitySimulationResult::save(adv);
+  ProbabilitySimulationResultImplementation::save(adv);
   adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.saveAttribute("sample_", auxiliaryInputSample_);
+  adv.saveAttribute("auxiliaryOutputSample_", auxiliaryOutputSample_);
+  adv.saveAttribute("weights_", weights_);
 }
 
 // Method load() reloads the object from the StorageManager
 void NAISResult::load(Advocate & adv)
 {
-  ProbabilitySimulationResult::load(adv);
+  ProbabilitySimulationResultImplementation::load(adv);
   adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
   adv.loadAttribute("sample_", auxiliaryInputSample_);
+  // Attributes added after 1.28: keep old studies loadable
+  if (adv.hasAttribute("auxiliaryOutputSample_"))
+    adv.loadAttribute("auxiliaryOutputSample_", auxiliaryOutputSample_);
+  if (adv.hasAttribute("weights_"))
+    adv.loadAttribute("weights_", weights_);
 }
 
 

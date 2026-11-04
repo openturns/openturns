@@ -15,7 +15,7 @@ event : :class:`~openturns.RandomVector`
     :meth:`isComposite <openturns.RandomVector.isComposite>`).
 inputSample, outputSample : 2-d sequence of float
     Input sample and output sample of a model evaluated apart.
-simulationRes : :class:`~openturns.ProbabilitySimulationResult`
+simulationRes : :class:`~openturns.ProbabilitySimulationResultImplementation`
     A simulation result.
 
 Notes

@@ -66,7 +66,7 @@ int main()
   algo.run();
 
   // Retrieve results
-  const ProbabilitySimulationResult result = algo.getResult();
+  const ProbabilitySimulationResultImplementation result = algo.getResult();
   const Scalar probability = result.getProbabilityEstimate();
   OT::Test::assert_almost_equal(probability, 0.00238288);
 
