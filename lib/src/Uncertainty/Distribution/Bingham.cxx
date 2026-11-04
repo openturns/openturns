@@ -409,7 +409,7 @@ Point Bingham::getRealization() const
                     : -SpecFunc::LogMaxScalar;
   const Scalar logMaxAccept = *std::max_element(logCandidate.begin(), logCandidate.end());
 
-  std::vector<Scalar> z(n);
+  Point z(n);
   for (;;)
   {
     Scalar norm = 0.0;

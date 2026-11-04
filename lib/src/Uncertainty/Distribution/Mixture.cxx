@@ -21,7 +21,6 @@
 #include <cmath>
 #include <set>
 #include <utility>
-#include <vector>
 #include "openturns/Mixture.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -832,7 +831,7 @@ Graph Mixture::drawPDF(const Scalar xMin,
   const UnsignedInteger smallSupport = ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport");
   const Interval drawingInterval(Point(1, xMin), Point(1, xMax));
   Scalar maxMass = 0.0;
-  typedef std::vector< std::pair< UnsignedInteger, Point > > AtomCollection; // (component index, point)
+  typedef Collection< std::pair< UnsignedInteger, Point > > AtomCollection; // (component index, point)
   AtomCollection atoms;
   for (UnsignedInteger j = 0; j < size; ++j)
   {
@@ -843,7 +842,7 @@ Graph Mixture::drawPDF(const Scalar xMin,
     {
       const Scalar mass = distributionCollection_[j].computePDF(support[i]);
       if (!(mass > 0.0)) continue;
-      atoms.push_back(std::make_pair(j, support[i]));
+      atoms.add(std::make_pair(j, support[i]));
       maxMass = std::max(maxMass, p_[j] * mass);
     }
   }
@@ -880,9 +879,9 @@ Graph Mixture::drawPDF(const Scalar xMin,
     }
     // Text labels showing the probability of each atom above its arrow,
     // see #1489
-    Sample atomsData(atoms.size(), 2);
-    Description texts(atoms.size());
-    for (UnsignedInteger i = 0; i < atoms.size(); ++i)
+    Sample atomsData(atoms.getSize(), 2);
+    Description texts(atoms.getSize());
+    for (UnsignedInteger i = 0; i < atoms.getSize(); ++i)
     {
       const Scalar atom = atoms[i].second[0];
       const Scalar height = p_[atoms[i].first] * distributionCollection_[atoms[i].first].computePDF(atoms[i].second) * scale;

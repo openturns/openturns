@@ -27,7 +27,6 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
-#include <vector>
 #include <algorithm>
 
 #include "openturns/Ridgway.hxx"
@@ -64,7 +63,7 @@ Scalar truncatedNormalDraw(const Scalar lower, const Scalar upper, const Scalar 
 // The uniform draw u is passed explicitly so that no RNG call remains
 // inside parallel regions; the sequential overload below pre-draws it
 void systematicResampling(const Point& normWeights,
-                          std::vector<UnsignedInteger>& indices,
+                          Indices& indices,
                           const Scalar u)
 {
   const UnsignedInteger M = normWeights.getSize();
@@ -281,7 +280,7 @@ Scalar mvnOrthantProbabilityCore(
   }
 
   // Particle system: M particles of dimension d
-  std::vector<Point> particles(M, Point(d, 0.0));
+  Collection<Point> particles(M, Point(d, 0.0));
   Point logWeights(M, 0.0);
 
   // Algorithm 3: Initialize first dimension
@@ -293,12 +292,12 @@ Scalar mvnOrthantProbabilityCore(
   // Take the M initial draws sequentially, outside parallel regions
   const Point initU(source.take(M));
   struct InitParticlesFunctor {
-    std::vector<Point>& particles_;
+    Collection<Point>& particles_;
     const TriangularMatrix& L_;
     const Point& a0_;
     const Point& b0_;
     const Point& u_;
-    InitParticlesFunctor(std::vector<Point>& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const Point& u)
+    InitParticlesFunctor(Collection<Point>& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const Point& u)
       : particles_(particles)
       , L_(L)
       , a0_(a0)
@@ -340,11 +339,11 @@ Scalar mvnOrthantProbabilityCore(
         normWeights[i] = std::exp(logWeights[i] - logSum);
 
       // Systematic resampling with a sequentially pre-taken draw
-      std::vector<UnsignedInteger> ancestors(M);
+      Indices ancestors(M);
       systematicResampling(normWeights, ancestors, source.take(1)[0]);
 
       // Copy resampled particles
-      std::vector<Point> newParticles(M, Point(d, 0.0));
+      Collection<Point> newParticles(M, Point(d, 0.0));
       for (UnsignedInteger i = 0; i < M; ++i)
         newParticles[i] = particles[ancestors[i]];
       particles = newParticles;
@@ -355,13 +354,13 @@ Scalar mvnOrthantProbabilityCore(
       // Gibbs moves to rejuvenate particles, using sequentially pre-taken draws
       const Point gibbsU(source.take(M * t));
       struct GibbsMoveFunctor {
-        std::vector<Point>& particles_;
+        Collection<Point>& particles_;
         const TriangularMatrix& L_;
         const Point& a0_;
         const Point& b0_;
         const UnsignedInteger t_;
         const Point& u_;
-        GibbsMoveFunctor(std::vector<Point>& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
+        GibbsMoveFunctor(Collection<Point>& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
           : particles_(particles)
           , L_(L)
           , a0_(a0)
@@ -381,14 +380,14 @@ Scalar mvnOrthantProbabilityCore(
     // Extend to dimension t (Algorithm 3 inner loop), one pre-taken draw per particle
     const Point extendU(source.take(M));
     struct ExtendDimensionFunctor {
-      std::vector<Point>& particles_;
+      Collection<Point>& particles_;
       Point& logWeights_;
       const TriangularMatrix& L_;
       const Point& a0_;
       const Point& b0_;
       const UnsignedInteger t_;
       const Point& u_;
-      ExtendDimensionFunctor(std::vector<Point>& particles, Point& logWeights, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
+      ExtendDimensionFunctor(Collection<Point>& particles, Point& logWeights, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
         : particles_(particles)
         , logWeights_(logWeights)
         , L_(L)

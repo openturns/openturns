@@ -20,6 +20,7 @@
  */
 
 #include <cmath>
+#include <cstdint>
 #include <algorithm>
 #include "openturns/WrappedNormal.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -47,7 +48,7 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
                              Point & current,
                              const UnsignedInteger level,
                              const Scalar doneSquare,
-                             std::vector<Point> & pointsOut,
+                             Collection<Point> & pointsOut,
                              Bool & truncated)
 {
   const UnsignedInteger d = center.getDimension();
@@ -60,16 +61,16 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
   const Scalar root = std::sqrt(remaining);
   const Scalar yLow = (-root - shift) / lower(level, level);
   const Scalar yHigh = (root - shift) / lower(level, level);
-  const long long mLow = static_cast<long long>(std::ceil(center[level] + yLow));
-  const long long mHigh = static_cast<long long>(std::floor(center[level] + yHigh));
-  for (long long m = mLow; m <= mHigh; ++m)
+  const std::int64_t mLow = static_cast<std::int64_t>(std::ceil(center[level] + yLow));
+  const std::int64_t mHigh = static_cast<std::int64_t>(std::floor(center[level] + yHigh));
+  for (std::int64_t m = mLow; m <= mHigh; ++m)
   {
     current[level] = static_cast<Scalar>(m);
     const Scalar residual = lower(level, level) * (current[level] - center[level]) + shift;
     if (level == 0)
     {
-      pointsOut.push_back(current);
-      if (pointsOut.size() > budget)
+      pointsOut.add(current);
+      if (pointsOut.getSize() > budget)
       {
         truncated = true;
         return;
@@ -380,12 +381,12 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     Point center(d);
     for (UnsignedInteger i = 0; i < d; ++i)
       center[i] = (mu_[i] - point[i]) / period_;
-    std::vector<Point> latticePoints;
+    Collection<Point> latticePoints;
     Point current(d);
     Bool truncated = false;
     EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
     if (truncated) continue;
-    for (UnsignedInteger t = 0; t < latticePoints.size(); ++t)
+    for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
     {
       const Point latticePoint(latticePoints[t]);
       Point diff(d);
@@ -422,14 +423,14 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       for (UnsignedInteger j = 0; j <= i; ++j)
         lower(i, j) = chol(i, j);
     const Point center(d);
-    std::vector<Point> latticePoints;
+    Collection<Point> latticePoints;
     Point current(d);
     Bool truncated = false;
     EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
     if (truncated) continue;
     const Scalar omegaSquare = omega * omega;
     Scalar sum = 0.0;
-    for (UnsignedInteger t = 0; t < latticePoints.size(); ++t)
+    for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
     {
       const Point mode(latticePoints[t]);
       // Quadratic form m^T sigma m
@@ -493,7 +494,7 @@ void WrappedNormal::computeCovariance() const
   Point mean(d, 0.0);
   SquareMatrix second(d);
   Scalar totalWeight = 0.0;
-  std::vector<UnsignedInteger> counter(d, 0);
+  Indices counter(d, 0);
   const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
   for (UnsignedInteger t = 0; t < total; ++t)
   {
@@ -551,7 +552,7 @@ Scalar WrappedNormal::computeCDF(const Point & point) const
   const UnsignedInteger K = std::max(static_cast<UnsignedInteger>(1),
                                      static_cast<UnsignedInteger>(std::ceil(std::sqrt(-2.0 * sigma * sigma * targetLog) / period_)));
   Scalar cdf = 0.0;
-  for (int k = -static_cast<int>(K); k <= static_cast<int>(K); ++k)
+  for (SignedInteger k = -static_cast<SignedInteger>(K); k <= static_cast<SignedInteger>(K); ++k)
   {
     const Scalar shift = static_cast<Scalar>(k) * period_;
     cdf += DistFunc::pNormal((x - mu + shift) / sigma)
@@ -720,7 +721,7 @@ Scalar WrappedNormal::computeEntropy() const
       root(i, j) = sigmaEigVec_(i, j) * std::sqrt(sigmaEig_[j]);
   Scalar entropy = 0.0;
   Scalar totalWeight = 0.0;
-  std::vector<UnsignedInteger> counter(d, 0);
+  Indices counter(d, 0);
   const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
   for (UnsignedInteger t = 0; t < total; ++t)
   {
