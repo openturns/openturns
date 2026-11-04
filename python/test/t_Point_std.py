@@ -168,3 +168,17 @@ with ott.assert_raises(ValueError):
     x -= y
 # valid operations keep working
 ott.assert_almost_equal(x + ot.Point([1.0, 2.0]), [1.0, 2.0])
+
+# contains / isEmpty / resize / select
+point11 = ot.Point([1.0, 2.0, 3.0])
+assert point11.contains(2.0)
+assert not point11.contains(4.0)
+assert not point11.isEmpty()
+ott.assert_almost_equal(point11.select([2, 0, 2]), [3.0, 1.0, 3.0])
+ott.assert_almost_equal(point11.select(ot.Indices([2, 0, 2])), [3.0, 1.0, 3.0])
+point11.resize(1)
+ott.assert_almost_equal(point11, [1.0])
+point11.resize(3)
+ott.assert_almost_equal(point11, [1.0, 0.0, 0.0])
+point11.clear()
+assert point11.isEmpty()

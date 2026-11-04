@@ -14,6 +14,15 @@ Sample
     Sample
     SamplePartition
 
+Descriptive statistics
+======================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    StatisticsEngine
+
 .. _parametric_distribution_factories:
 
 Building distributions from samples

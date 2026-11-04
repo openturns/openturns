@@ -1,7 +1,8 @@
 Default constructor : process = 
-DiscreteMarkovChain(origin=Dirac(point = [0]), transition=[1])
+DiscreteMarkovChain(origin=Dirac(point = [0]), transition=[[ 1 ]])
 Constructor from int and SquareMatrix: process = 
-DiscreteMarkovChain(origin=Dirac(point = [0]), transition=[1,0,0,1])
+DiscreteMarkovChain(origin=Dirac(point = [0]), transition=[[ 1 0 ]
+ [ 0 1 ]])
 transition matrix =
 [[ 0   0.5 0.5 ]
  [ 0.7 0   0.3 ]
@@ -9,11 +10,17 @@ transition matrix =
 origin =
 1
 Transition matrix accessor : process = 
-DiscreteMarkovChain(origin=Dirac(point = [0]), transition=[0,0.7,0.8,0.5,0,0,0.5,0.3,0.2])
+DiscreteMarkovChain(origin=Dirac(point = [0]), transition=[[ 0   0.5 0.5 ]
+ [ 0.7 0   0.3 ]
+ [ 0.8 0   0.2 ]])
 Origin accessor : process = 
-DiscreteMarkovChain(origin=Dirac(point = [1]), transition=[0,0.7,0.8,0.5,0,0,0.5,0.3,0.2])
+DiscreteMarkovChain(origin=Dirac(point = [1]), transition=[[ 0   0.5 0.5 ]
+ [ 0.7 0   0.3 ]
+ [ 0.8 0   0.2 ]])
 Time grid accessor : process = 
-DiscreteMarkovChain(origin=Dirac(point = [1]), transition=[0,0.7,0.8,0.5,0,0,0.5,0.3,0.2])
+DiscreteMarkovChain(origin=Dirac(point = [1]), transition=[[ 0   0.5 0.5 ]
+ [ 0.7 0   0.3 ]
+ [ 0.8 0   0.2 ]])
 Realization :
      [ t  v0 ]
  0 : [  0  1 ]

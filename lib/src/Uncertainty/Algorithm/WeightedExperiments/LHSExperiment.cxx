@@ -123,7 +123,7 @@ Sample LHSExperiment::generateStandard() const
   (void) getShuffle();
   SampleImplementation sample(size_, dimension);
   const Point u(randomShift_ ? RandomGenerator::Generate(size_ * dimension) : Point(size_ * dimension, 0.5));
-  sample.setData((Point(*shuffle_.getImplementation()) + u) / size_);
+  sample.setData((Point(shuffle_.getImplementation()->begin(), shuffle_.getImplementation()->end()) + u) / size_);
   return sample;
 }
 

@@ -128,7 +128,7 @@ SquareMatrix RankMCovarianceModel::operator() (const Point & s,
   else
   {
     MatrixImplementation phiT(outputDimension_, size);
-    Collection<Scalar>::iterator itPhiT = phiT.begin();
+    Scalar * itPhiT = phiT.begin();
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Point evalPhiT(functions_[i](t));

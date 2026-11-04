@@ -259,8 +259,8 @@ Scalar CurlFreeModel::computeAsScalar(const Scalar) const
   throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", this method is only for input dimension=1.";
 }
 
-Scalar CurlFreeModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                                      const Collection<Scalar>::const_iterator & t_begin) const
+Scalar CurlFreeModel::computeAsScalar(const Scalar * s_begin,
+                                      const Scalar * t_begin) const
 {
   const Point s(s_begin, s_begin + inputDimension_);
   const Point t(t_begin, t_begin + inputDimension_);

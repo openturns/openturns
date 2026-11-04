@@ -59,7 +59,8 @@ namespace {
   {
     const UnsignedInteger rows = mat.getNbRows();
     const UnsignedInteger cols = mat.getNbColumns();
-    const ComplexCollection& flat = *mat.getImplementation();
+    const ComplexMatrixImplementation & implRef = *mat.getImplementation();
+    const ComplexCollection flat(implRef.begin(), implRef.end());
     ComplexCollection resultFlat = algo.transform(flat, {rows, cols});
     ComplexMatrixImplementation impl(rows, cols, resultFlat.begin(), resultFlat.end());
     return ComplexMatrix(impl);
@@ -70,7 +71,8 @@ namespace {
     const UnsignedInteger rows = tensor.getNbRows();
     const UnsignedInteger cols = tensor.getNbColumns();
     const UnsignedInteger sheets = tensor.getNbSheets();
-    const ComplexCollection& flat = *tensor.getImplementation();
+    const ComplexTensorImplementation & implRef = *tensor.getImplementation();
+    const ComplexCollection flat(implRef.begin(), implRef.end());
     ComplexCollection resultFlat = algo.transform(flat, {rows, cols, sheets});
     return ComplexTensor(rows, cols, sheets, resultFlat.begin(), resultFlat.end());
   }
@@ -569,7 +571,10 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
       // Aggregate the weights
       const Matrix localWeights(w * mixture->weights_);
       Sample localWeightsAsSample(localWeights.getNbColumns(), dimension);
-      localWeightsAsSample.getImplementation()->setData(*localWeights.getImplementation());
+      {
+        const MatrixImplementation & lw_impl(*localWeights.getImplementation());
+        localWeightsAsSample.getImplementation()->setData(Collection<Scalar>(lw_impl.begin(), lw_impl.end()));
+      }
       weightCandidates.add(localWeightsAsSample);
       // Aggregate the atoms
       atomCandidates.add(mixture->getDistributionCollection());
@@ -577,12 +582,18 @@ void LinearCombinationDistribution::setDistributionCollectionAndWeights(const Di
     else if (atomKind == "TruncatedDistribution")
     {
       const TruncatedDistribution * truncatedDistribution(dynamic_cast< const TruncatedDistribution * >(atom.getImplementation().get()));
-      weightCandidates.add(*w.getImplementation());
+      {
+        const MatrixImplementation & w_impl(*w.getImplementation());
+        weightCandidates.add(Point(w_impl.begin(), w_impl.end()));
+      }
       atomCandidates.add(truncatedDistribution->getSimplifiedVersion());
     }
     else
     {
-      weightCandidates.add(*w.getImplementation());
+      {
+        const MatrixImplementation & w_impl(*w.getImplementation());
+        weightCandidates.add(Point(w_impl.begin(), w_impl.end()));
+      }
       atomCandidates.add(atom);
     } // atom is not a LinearCombinationDistribution
   } // Flatten the atoms of LinearCombinationDistribution type
@@ -1653,11 +1664,11 @@ struct AddPDFOn1DGridPolicy
 {
   const LinearCombinationDistribution & mixture_;
   const Point & xPoints_;
-  Collection<Complex> & output_;
+  Complex * output_;
 
   AddPDFOn1DGridPolicy(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
-                       Collection<Complex> & output)
+                       Complex * output)
     : mixture_(mixture)
     , xPoints_(xPoints)
     , output_(output)
@@ -1694,7 +1705,7 @@ void LinearCombinationDistribution::addPDFOn1DGrid(const Indices & pointNumber, 
   // FFT 1D
   Collection<Complex> yk(N);
   // 1) compute \Sigma_+
-  const AddPDFOn1DGridPolicy policyGridPP(*this, xPlus, yk);
+  const AddPDFOn1DGridPolicy policyGridPP(*this, xPlus, yk.data());
   TBBImplementation::ParallelFor(0, N, policyGridPP, 1024);
   for (UnsignedInteger j = 0; j < N; ++j)
     yk[j] *= fx[j];
@@ -1725,12 +1736,12 @@ struct AddPDFOn2DGridPolicy
   const Point & yPoints_;
   const UnsignedInteger nx_;
   const UnsignedInteger ny_;
-  Collection<Complex> & output_;
+  Complex * output_;
 
   AddPDFOn2DGridPolicy(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
-                       Collection<Complex> & output)
+                       Complex * output)
     : mixture_(mixture)
     , xPoints_(xPoints)
     , yPoints_(yPoints)
@@ -1790,7 +1801,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
   }
   ComplexMatrix yk(Nx, Ny);
   // 1) compute \Sigma_++
-  const AddPDFOn2DGridPolicy policyGridPP(*this, xPlus, yPlus, *(yk.getImplementation().get()));
+  const AddPDFOn2DGridPolicy policyGridPP(*this, xPlus, yPlus, yk.getImplementation()->data());
   TBBImplementation::ParallelFor(0, Nx * Ny, policyGridPP, 1024);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1809,7 +1820,7 @@ void LinearCombinationDistribution::addPDFOn2DGrid(const Indices & pointNumber, 
   ComplexMatrix sigma_minus_minus(fftMatrix(fftAlgorithm_, ykc));
 
   // 3) compute \Sigma_+-
-  const AddPDFOn2DGridPolicy policyGridPM(*this, xPlus, yMinus, *(yk.getImplementation().get()));
+  const AddPDFOn2DGridPolicy policyGridPM(*this, xPlus, yMinus, yk.getImplementation()->data());
   TBBImplementation::ParallelFor(0, Nx * Ny, policyGridPM, 1024);
   for (UnsignedInteger j = 0; j < Ny; ++j)
     for (UnsignedInteger i = 0; i < Nx; ++i)
@@ -1895,13 +1906,13 @@ struct AddPDFOn3DGridPolicy
   const UnsignedInteger nx_;
   const UnsignedInteger ny_;
   const UnsignedInteger nz_;
-  Collection<Complex> & output_;
+  Complex * output_;
 
   AddPDFOn3DGridPolicy(const LinearCombinationDistribution & mixture,
                        const Point & xPoints,
                        const Point & yPoints,
                        const Point & zPoints,
-                       Collection<Complex> & output)
+                       Complex * output)
     : mixture_(mixture)
     , xPoints_(xPoints)
     , yPoints_(yPoints)
@@ -1917,8 +1928,8 @@ struct AddPDFOn3DGridPolicy
     Point x(3);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      const UnsignedInteger kk = i / nx_ / ny_;
-      const UnsignedInteger jj = ( i - kk * nx_ * ny_ ) / nx_;
+      const UnsignedInteger kk = i / (nx_ * ny_);
+      const UnsignedInteger jj = (i - kk * nx_ * ny_) / nx_;
       const UnsignedInteger ii = i - kk * nx_ * ny_ - jj * nx_;
       x[0] = xPoints_[ii];
       x[1] = yPoints_[jj];
@@ -1979,7 +1990,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
     zMinus[k] = (static_cast<Scalar>(k) - Nz) * h[2];
   }
   ComplexTensor yk(Nx, Ny, Nz);
-  const AddPDFOn3DGridPolicy policyGridPPP(*this, xPlus, yPlus, zPlus, *(yk.getImplementation().get()));
+  const AddPDFOn3DGridPolicy policyGridPPP(*this, xPlus, yPlus, zPlus, yk.getImplementation()->data());
   TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPPP, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
@@ -2001,7 +2012,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
   ComplexTensor sigma_minus_minus_minus(fftTensor(fftAlgorithm_, ykc));
 
   // 3) compute \Sigma_++-
-  const AddPDFOn3DGridPolicy policyGridPPM(*this, xPlus, yPlus, zMinus, *(yk.getImplementation().get()));
+  const AddPDFOn3DGridPolicy policyGridPPM(*this, xPlus, yPlus, zMinus, yk.getImplementation()->data());
   TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPPM, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
@@ -2027,7 +2038,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
         sigma_minus_minus_plus(i, j, k) *= z_exp_mz[k];
 
   // 5) compute \Sigma_+-+
-  const AddPDFOn3DGridPolicy policyGridPMP(*this, xPlus, yMinus, zPlus, *(yk.getImplementation().get()));
+  const AddPDFOn3DGridPolicy policyGridPMP(*this, xPlus, yMinus, zPlus, yk.getImplementation()->data());
   TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPMP, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
@@ -2053,7 +2064,7 @@ void LinearCombinationDistribution::addPDFOn3DGrid(const Indices & pointNumber, 
         sigma_minus_plus_minus(i, j, k) *= z_exp_my[j];
 
   // 7) compute \Sigma_+--
-  const AddPDFOn3DGridPolicy policyGridPMM(*this, xPlus, yMinus, zMinus, *(yk.getImplementation().get()));
+  const AddPDFOn3DGridPolicy policyGridPMM(*this, xPlus, yMinus, zMinus, yk.getImplementation()->data());
   TBBImplementation::ParallelFor(0, Nx * Ny * Nz, policyGridPMM, 1024);
   for (UnsignedInteger k = 0; k < Nz; ++k)
     for (UnsignedInteger j = 0; j < Ny; ++j)
@@ -3771,11 +3782,17 @@ Sample LinearCombinationDistribution::getSupport(const Interval & interval) cons
   Sample support(0, dimension);
   Sample supportCandidates;
   if (dimension == 1)
-    supportCandidates = distributionCollection_[0].getSupport() * Point(*weights_.getColumn(0).getImplementation()) + constant_;
+  {
+    const Matrix col0(weights_.getColumn(0));
+    const MatrixImplementation & col0_impl(*col0.getImplementation());
+    supportCandidates = distributionCollection_[0].getSupport() * Point(col0_impl.begin(), col0_impl.end()) + constant_;
+  }
   else
   {
     const Sample support0 = distributionCollection_[0].getSupport();
-    const Point scaling(*weights_.getColumn(0).getImplementation());
+    const Matrix col0(weights_.getColumn(0));
+      const MatrixImplementation & col0_impl(*col0.getImplementation());
+      const Point scaling(col0_impl.begin(), col0_impl.end());
     supportCandidates = Sample(support0.getSize(), dimension);
     for (UnsignedInteger i = 0; i < support0.getSize(); ++i)
       supportCandidates[i] = scaling * support0(i, 0) + constant_;
@@ -3784,11 +3801,17 @@ Sample LinearCombinationDistribution::getSupport(const Interval & interval) cons
   {
     Sample nextSupport;
     if (dimension == 1)
-      nextSupport = distributionCollection_[indexNext].getSupport() * Point(*weights_.getColumn(indexNext).getImplementation());
+    {
+      const Matrix colN(weights_.getColumn(indexNext));
+      const MatrixImplementation & colN_impl(*colN.getImplementation());
+      nextSupport = distributionCollection_[indexNext].getSupport() * Point(colN_impl.begin(), colN_impl.end());
+    }
     else
     {
       const Sample supportNext = distributionCollection_[indexNext].getSupport();
-      const Point scaling(*weights_.getColumn(indexNext).getImplementation());
+      const Matrix colN(weights_.getColumn(indexNext));
+      const MatrixImplementation & colN_impl(*colN.getImplementation());
+      const Point scaling(colN_impl.begin(), colN_impl.end());
       nextSupport = Sample(supportNext.getSize(), dimension);
       for (UnsignedInteger i = 0; i < supportNext.getSize(); ++i)
         nextSupport[i] = scaling * supportNext(i, 0) + constant_;

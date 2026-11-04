@@ -193,5 +193,6 @@ for sample_size in [100, 1000]:
     first_error = computed_first_orderB - exact_first_order
     total_error = computed_total_orderB - exact_total_order
     print("Method B :", first_error, total_error)
+    # Same design through both entry points: identical up to parallel-reduction rounding
     assert computed_first_orderB == computed_first_orderA, "wrong first"
     assert computed_total_orderB == computed_total_orderA, "wrong total"
