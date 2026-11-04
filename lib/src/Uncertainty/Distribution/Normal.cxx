@@ -345,7 +345,7 @@ Scalar Normal::computeCDF(const Point & point) const
     kronrodNodes.add(rule.getOtherKronrodNodes() * (-1.0));
     // Perform the integration
     const UnsignedInteger marginalNodesNumber = kronrodNodes.getDimension();
-    const UnsignedInteger size = static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, static_cast<int>(dimension))));
+    const UnsignedInteger size = static_cast< UnsignedInteger >(round(std::pow(1.0 * marginalNodesNumber, 1.0 * dimension)));
     Indices indices(dimension, 0);
     Sample allNodes(size, dimension);
     Point allWeights(size);
