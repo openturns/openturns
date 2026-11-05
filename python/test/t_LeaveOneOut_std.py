@@ -19,11 +19,7 @@ indices = list(range(len(coll)))
 
 fittingAlgo = ot.LeaveOneOut()
 
-print("algo =", fittingAlgo)
-
 result = fittingAlgo.run(x, y, w, basis, indices)
-
-print("result = %g" % result)
 
 # illustrate the other usages
 proxy = ot.DesignProxy(x, basis)

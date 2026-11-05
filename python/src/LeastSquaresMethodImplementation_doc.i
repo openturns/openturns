@@ -175,7 +175,8 @@ b : sequence of float
 Returns
 -------
 a : :class:`~openturns.Point`
-    The solution.)RAW"
+    The solution.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solve
 OT_LeastSquaresMethod_solve_doc
@@ -202,7 +203,8 @@ b : sequence of float
 Returns
 -------
 x : :class:`~openturns.Point`
-    The solution.)RAW"
+    The solution.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solveNormal
 OT_LeastSquaresMethod_solveNormal_doc
@@ -221,7 +223,8 @@ The weighted Gram matrix is defined as:
 Returns
 -------
 gramInverse : :class:`~openturns.CovarianceMatrix`
-    The inverse :math:`\mat{G}^{-1}` of the weighted Gram matrix.)RAW"
+    The inverse :math:`\mat{G}^{-1}` of the weighted Gram matrix.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverse
 OT_LeastSquaresMethod_getGramInverse_doc
@@ -264,7 +267,8 @@ R"RAW(Get the diagonal of the inverse Gram matrix.
 Returns
 -------
 diagGramInverse : :class:`~openturns.Point`
-    The diagonal of the inverse of the weighted Gram matrix.)RAW"
+    The diagonal of the inverse of the weighted Gram matrix.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseDiag
 OT_LeastSquaresMethod_getGramInverseDiag_doc
@@ -281,7 +285,8 @@ R"RAW(Get the trace of the inverse Gram matrix.
 Returns
 -------
 trace : float
-    The trace of the inverse of the weighted Gram matrix.)RAW"
+    The trace of the inverse of the weighted Gram matrix.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getGramInverseTrace
 OT_LeastSquaresMethod_getGramInverseTrace_doc
@@ -309,7 +314,8 @@ of the common weight value.
 Returns
 -------
 h : :class:`~openturns.SymmetricMatrix`
-    The symmetric weighted hat matrix H.)RAW"
+    The symmetric weighted hat matrix H.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getH
 OT_LeastSquaresMethod_getH_doc
@@ -333,7 +339,8 @@ used by the analytical leave-one-out residual :math:`r_i/(1-h_i)`
 Returns
 -------
 diagH : :class:`~openturns.Point`
-    The leverages, ie the diagonal of the symmetric weighted hat matrix.)RAW"
+    The leverages, ie the diagonal of the symmetric weighted hat matrix.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getHDiag
 OT_LeastSquaresMethod_getHDiag_doc
@@ -356,7 +363,8 @@ whole : bool, defaults to False
 Returns
 -------
 psiAk : :class:`~openturns.Matrix`
-    The design matrix)RAW"
+    The design matrix
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::computeWeightedDesign
 OT_LeastSquaresMethod_computeWeightedDesign_doc
@@ -395,7 +403,8 @@ rhs : sequence of float
 Returns
 -------
 x : :class:`~openturns.Point`
-    The solution.)RAW"
+    The solution.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::solveNormalGram
 OT_LeastSquaresMethod_solveNormalGram_doc
