@@ -5,7 +5,7 @@ R"RAW(Wrapped Normal factory.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Given a sample :math:`\mathbf{x}_1,\dots,\mathbf{x}_N` on the torus,
+Given a sample :math:`\vect{x}_1,\dots,\vect{x}_N` on the torus,
 estimates the Wrapped Normal parameters:
 
 1. The mean is estimated by the circular mean:
@@ -71,7 +71,8 @@ Returns
 dist : :class:`~openturns.experimental.WrappedNormal`
     The estimated distribution as a WrappedNormal.
 
-    In the first usage, the default WrappedNormal distribution is built.)RAW"
+    In the first usage, the default WrappedNormal distribution is built.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -98,4 +99,5 @@ Returns
 dist : :class:`~openturns.Distribution`
     The estimated distribution.
 
-    In the first usage, the default WrappedNormal distribution is built.)RAW"
+    In the first usage, the default WrappedNormal distribution is built.
+)RAW"

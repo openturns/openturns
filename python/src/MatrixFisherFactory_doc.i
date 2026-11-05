@@ -5,20 +5,20 @@ R"RAW(Matrix Fisher factory.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Given a sample of rotation matrices :math:`\mathbf{R}_1,\dots,\mathbf{R}_N`,
+Given a sample of rotation matrices :math:`\matr{R}_1,\dots,\matr{R}_N`,
 estimates the Matrix Fisher parameters using the method of moments:
 
-1. Compute the mean matrix :math:`\mathbf{M} = \frac{1}{N}\sum_{i=1}^N
-   \mathbf{R}_i`.
+1. Compute the mean matrix :math:`\matr{M} = \frac{1}{N}\sum_{i=1}^N
+   \matr{R}_i`.
 
 2. Compute the singular values :math:`s_1 \ge s_2 \ge s_3` of
-   :math:`\mathbf{M}` along with the singular vectors
-   :math:`\mathbf{U},\mathbf{V}`.
+   :math:`\matr{M}` along with the singular vectors
+   :math:`\matr{U},\matr{V}`.
 
 3. The concentration matrix is built as
-   :math:`\mathbf{F} = \hat{\mathbf{R}}\,\mathrm{diag}(f_1,f_2,f_3)`
-   where :math:`\hat{\mathbf{R}}` is the proper polar mode of
-   :math:`\mathbf{M}` and the concentrations solve the moment equations
+   :math:`\matr{F} = \hat{\matr{R}}\,\mathrm{diag}(f_1,f_2,f_3)`
+   where :math:`\hat{\matr{R}}` is the proper polar mode of
+   :math:`\matr{M}` and the concentrations solve the moment equations
    by damped Newton-Raphson, starting from :math:`f_i = 3s_i` when
    :math:`s_i < 0.5` and :math:`f_i = 1/(2(1-s_i))` otherwise.
 
@@ -66,14 +66,15 @@ sample : 2-d sequence of float
 param : sequence of float
     The parameters of the :class:`~openturns.experimental.MatrixFisher`:
     :math:`(f_{00},f_{01},\dots,f_{22})` as the row-major flattened
-    :math:`3\times 3` parameter matrix :math:`\mathbf{F}`.
+    :math:`3\times 3` parameter matrix :math:`\matr{F}`.
 
 Returns
 -------
 dist : :class:`~openturns.experimental.MatrixFisher`
     The estimated distribution as a MatrixFisher.
 
-    In the first usage, the default MatrixFisher distribution is built.)RAW"
+    In the first usage, the default MatrixFisher distribution is built.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -100,4 +101,5 @@ Returns
 dist : :class:`~openturns.Distribution`
     The estimated distribution.
 
-    In the first usage, the default MatrixFisher distribution is built.)RAW"
+    In the first usage, the default MatrixFisher distribution is built.
+)RAW"

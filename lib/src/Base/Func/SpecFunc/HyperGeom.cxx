@@ -485,7 +485,7 @@ Scalar AsymptoticExpansion(const Scalar rising1,
   minModulus = 1.0;
   for (UnsignedInteger k = 1; ; ++k)
   {
-    term *= (rising1 + static_cast<Scalar>(k) - 1.0) * (rising2 + static_cast<Scalar>(k) - 1.0) / (static_cast<Scalar>(k) * t);
+    term *= (rising1 + (1.0 * k) - 1.0) * (rising2 + (1.0 * k) - 1.0) / ((1.0 * k) * t);
     const Scalar modulus = std::abs(term);
     if (!std::isfinite(modulus))
     {
