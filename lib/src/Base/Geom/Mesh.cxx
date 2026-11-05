@@ -21,7 +21,6 @@
 #include <fstream>
 #include <algorithm>
 #include <array>
-#include <cstdint>
 #include <deque>
 #include <set>
 #include <vector>
@@ -1392,8 +1391,8 @@ Mesh Mesh::intersect(const Mesh & other) const
     // bits are unused padding keeping the two fields independent, so that
     // the pass test is a single shift and the index an AND mask.
     constexpr UnsignedInteger passShift = 56;
-    constexpr std::uint64_t simplexMask = 0x00ffffffffffffffULL;
-    Collection< Collection<std::uint64_t> > grid(totalCells);
+    constexpr Unsigned64BitsInteger simplexMask = 0x00ffffffffffffffULL;
+    Collection< Collection<Unsigned64BitsInteger> > grid(totalCells);
     Indices global1(0);
     Indices global2(0);
     for (UnsignedInteger pass = 0; pass < 2; ++ pass)
@@ -1419,22 +1418,22 @@ Mesh Mesh::intersect(const Mesh & other) const
         }
         for (UnsignedInteger cx = x0; cx <= x1; ++ cx)
           for (UnsignedInteger cy = y0; cy <= y1; ++ cy)
-            grid[cx + cy * cellsPerSide].add((static_cast<std::uint64_t>(pass) << passShift) | i);
+            grid[cx + cy * cellsPerSide].add((static_cast<Unsigned64BitsInteger>(pass) << passShift) | i);
       }
     }
     // Pair keys pack two 32-bit simplex indices: the first index in the high
     // 32 bits, the second in the low 32 bits, so that sorting groups the
     // pairs by first index.
-    Collection<std::uint64_t> keys(0);
+    Collection<Unsigned64BitsInteger> keys(0);
     for (UnsignedInteger g = 0; g < global1.getSize(); ++ g)
       for (UnsignedInteger j = 0; j < otherSimplicesNumber; ++ j)
-        keys.add((static_cast<std::uint64_t>(global1[g]) << 32) | j);
+        keys.add((static_cast<Unsigned64BitsInteger>(global1[g]) << 32) | j);
     for (UnsignedInteger g = 0; g < global2.getSize(); ++ g)
       for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
-        keys.add((static_cast<std::uint64_t>(i) << 32) | global2[g]);
+        keys.add((static_cast<Unsigned64BitsInteger>(i) << 32) | global2[g]);
     for (UnsignedInteger cell = 0; cell < totalCells; ++ cell)
     {
-      const Collection<std::uint64_t> & content = grid[cell];
+      const Collection<Unsigned64BitsInteger> & content = grid[cell];
       for (UnsignedInteger a = 0; a < content.getSize(); ++ a)
       {
         // keep the entries of the first pass only
@@ -1451,7 +1450,7 @@ Mesh Mesh::intersect(const Mesh & other) const
           if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
            || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
             continue;
-          keys.add((static_cast<std::uint64_t>(i1) << 32) | i2);
+          keys.add((static_cast<Unsigned64BitsInteger>(i1) << 32) | i2);
         }
       }
     }

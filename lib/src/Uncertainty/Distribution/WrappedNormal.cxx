@@ -20,7 +20,6 @@
  */
 
 #include <cmath>
-#include <cstdint>
 #include <algorithm>
 #include "openturns/WrappedNormal.hxx"
 #include "openturns/Sample.hxx"
@@ -62,9 +61,9 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
   const Scalar root = std::sqrt(remaining);
   const Scalar yLow = (-root - shift) / lower(level, level);
   const Scalar yHigh = (root - shift) / lower(level, level);
-  const std::int64_t mLow = static_cast<std::int64_t>(std::ceil(center[level] + yLow));
-  const std::int64_t mHigh = static_cast<std::int64_t>(std::floor(center[level] + yHigh));
-  for (std::int64_t m = mLow; m <= mHigh; ++m)
+  const Signed64BitsInteger mLow = static_cast<Signed64BitsInteger>(std::ceil(center[level] + yLow));
+  const Signed64BitsInteger mHigh = static_cast<Signed64BitsInteger>(std::floor(center[level] + yHigh));
+  for (Signed64BitsInteger m = mLow; m <= mHigh; ++m)
   {
     current[level] = (1.0 * m);
     const Scalar residual = lower(level, level) * (current[level] - center[level]) + shift;
