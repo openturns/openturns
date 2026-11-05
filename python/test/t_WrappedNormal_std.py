@@ -116,6 +116,31 @@ for d in (1, 2, 4):
     ott.assert_almost_equal(wide.computeLogPDF([0.0] * d), math.log(uniform), 0.0, 1e-9)
 ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
 
+# The direct lattice sum and the dual Fourier series must agree: this sigma
+# and period select the Fourier branch for the CDF.
+fourier_cdf = otexp.WrappedNormal([0.2], ot.CovarianceMatrix([[1.0]]), 1.0)
+for x in [-0.5, -0.1, 0.25, 0.5]:
+    cdf_ref = sum(
+        ot.DistFunc.pNormal(x - 0.2 + k) - ot.DistFunc.pNormal(-0.5 - 0.2 + k)
+        for k in range(-100, 101)
+    )
+    ott.assert_almost_equal(fourier_cdf.computeCDF([x]), cdf_ref, 1e-12, 0.0)
+
+# A huge sigma / period ratio used to require billions of lattice terms:
+# the Fourier CDF is bounded and converges to the uniform CDF.
+wide_circle = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[1.0e18]]), 1.0)
+ott.assert_almost_equal(wide_circle.computeCDF([0.25]), 0.75, 1e-12, 0.0)
+
+# A needle-shaped covariance has many partial lattice vectors but few
+# complete points: the node budget must stop the recursion and use the
+# uniform limit instead of looping over the long direction.
+needle = otexp.WrappedNormal(
+    [0.0, 0.0],
+    ot.CovarianceMatrix([[1.0e-12, 0.0], [0.0, 1.0e12]]),
+    1.0,
+)
+ott.assert_almost_equal(needle.computePDF([0.3, 0.4]), 1.0, 1e-12, 0.0)
+
 # Unaffordable Gauss-Hermite grids throw instead of hanging (2^13 > budget)
 big = otexp.WrappedNormal([0.0] * 13, ot.CovarianceMatrix(13))
 with ott.assert_raises(RuntimeError):

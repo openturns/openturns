@@ -40,7 +40,10 @@ namespace {
 
 // Enumerate the integer vectors m with (m - center)^T A (m - center) <= radiusSquare
 // by Cholesky recursion (Fincke-Pohst), where lower holds the lower Cholesky
-// factor of the SPD matrix A. At most budget points are collected.
+// factor of the SPD matrix A. At most budget points are collected, and the
+// recursion visits at most budget * (dimension + 1) nodes: a needle-shaped
+// ellipsoid can hold many partial lattice vectors but few complete points,
+// so the point budget alone does not bound the traversal.
 void EnumerateEllipsoidLevel(const SquareMatrix & lower,
                              const Point & center,
                              const Scalar radiusSquare,
@@ -48,11 +51,18 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
                              Point & current,
                              const UnsignedInteger level,
                              const Scalar doneSquare,
+                             UnsignedInteger & nodeVisits,
                              Sample & pointsOut,
                              Bool & truncated)
 {
   const UnsignedInteger d = center.getDimension();
   if (truncated) return;
+  ++nodeVisits;
+  if (1.0 * nodeVisits > 1.0 * budget * (d + 1))
+  {
+    truncated = true;
+    return;
+  }
   Scalar shift = 0.0;
   for (UnsignedInteger k = level + 1; k < d; ++k)
     shift += lower(k, level) * (current[k] - center[k]);
@@ -77,7 +87,7 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
       }
     }
     else
-      EnumerateEllipsoidLevel(lower, center, radiusSquare, budget, current, level - 1, doneSquare + residual * residual, pointsOut, truncated);
+      EnumerateEllipsoidLevel(lower, center, radiusSquare, budget, current, level - 1, doneSquare + residual * residual, nodeVisits, pointsOut, truncated);
   }
 }
 
@@ -383,8 +393,9 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       center[i] = (mu_[i] - point[i]) / period_;
     Sample latticePoints(0, d);
     Point current(d);
+    UnsignedInteger nodeVisits = 0;
     Bool truncated = false;
-    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
+    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, nodeVisits, latticePoints, truncated);
     if (truncated) continue;
     for (UnsignedInteger t = 0; t < latticePoints.getSize(); ++t)
     {
@@ -425,8 +436,9 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     const Point center(d);
     Sample latticePoints(0, d);
     Point current(d);
+    UnsignedInteger nodeVisits = 0;
     Bool truncated = false;
-    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
+    EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, nodeVisits, latticePoints, truncated);
     if (truncated) continue;
     const Scalar omegaSquare = omega * omega;
     Scalar sum = 0.0;
@@ -543,20 +555,44 @@ Scalar WrappedNormal::computeCDF(const Point & point) const
 
   // On the circle, the CDF over the fundamental domain is
   // F(x) = sum_{k in Z} [Phi((x - mu + k p)/sigma) - Phi((-p/2 - mu + k p)/sigma)]
+  // or, integrating the dual Fourier series of the density term by term,
+  // F(x) = (x + p/2)/p
+  //        + sum_{m >= 1} exp(-2 pi^2 m^2 sigma^2 / p^2)
+  //          * [sin(2 pi m (x - mu)/p) - sin(2 pi m (-p/2 - mu)/p)] / (pi m).
+  // The direct sum needs O(sigma/p) terms and the Fourier series O(p/sigma)
+  // terms, so evaluating the shortest of the two keeps the loop bounded.
   const Scalar halfP = period_ / 2.0;
   const Scalar x = point[0];
   const Scalar mu = mu_[0];
   const Scalar sigma = std::sqrt(sigma_(0, 0));
-  // Choose K such that the tail of the normal is below SpecFunc::Precision
+  const Scalar xMin = -halfP;
   const Scalar targetLog = std::log(SpecFunc::Precision);
-  const UnsignedInteger K = std::max(static_cast<UnsignedInteger>(1),
-                                     static_cast<UnsignedInteger>(std::ceil(std::sqrt(-2.0 * sigma * sigma * targetLog) / period_)));
+  const Scalar latticeHalfWidth = std::ceil(std::sqrt(-2.0 * sigma * sigma * targetLog) / period_);
+  const Scalar fourierModeNumber = std::ceil(std::sqrt(-2.0 * targetLog) * period_ / (SpecFunc::TWOPI * sigma));
   Scalar cdf = 0.0;
-  for (SignedInteger k = -static_cast<SignedInteger>(K); k <= static_cast<SignedInteger>(K); ++k)
+  if (fourierModeNumber < latticeHalfWidth)
   {
-    const Scalar shift = (1.0 * k) * period_;
-    cdf += DistFunc::pNormal((x - mu + shift) / sigma)
-           - DistFunc::pNormal((-halfP - mu + shift) / sigma);
+    const Scalar omega = SpecFunc::TWOPI / period_;
+    cdf = (x - xMin) / period_;
+    const UnsignedInteger modeNumber = static_cast<UnsignedInteger>(fourierModeNumber);
+    for (UnsignedInteger m = 1; m <= modeNumber; ++m)
+    {
+      const Scalar mode = 1.0 * m;
+      const Scalar decay = std::exp(-0.5 * mode * mode * omega * omega * sigma * sigma);
+      cdf += decay * (std::sin(mode * omega * (x - mu)) - std::sin(mode * omega * (xMin - mu))) / (M_PI * mode);
+    }
+  }
+  else
+  {
+    // Choose K such that the tail of the normal is below SpecFunc::Precision
+    const UnsignedInteger K = std::max(static_cast<UnsignedInteger>(1),
+                                       static_cast<UnsignedInteger>(latticeHalfWidth));
+    for (SignedInteger k = -static_cast<SignedInteger>(K); k <= static_cast<SignedInteger>(K); ++k)
+    {
+      const Scalar shift = (1.0 * k) * period_;
+      cdf += DistFunc::pNormal((x - mu + shift) / sigma)
+             - DistFunc::pNormal((-halfP - mu + shift) / sigma);
+    }
   }
   return std::min(std::max(cdf, 0.0), 1.0);
 }
