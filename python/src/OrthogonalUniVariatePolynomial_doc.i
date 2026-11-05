@@ -77,7 +77,8 @@ Examples
 >>> import openturns as ot
 >>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
 >>> print(polynomial.getA())
-1.0)RAW"
+1.0
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -103,7 +104,8 @@ Examples
 >>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
 >>> polynomial.setA(2.0)
 >>> print(polynomial.getA())
-2.0)RAW"
+2.0
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -128,7 +130,8 @@ Examples
 >>> import openturns as ot
 >>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
 >>> print(polynomial.getB())
-0.0)RAW"
+0.0
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -154,4 +157,5 @@ Examples
 >>> polynomial = ot.OrthogonalUniVariatePolynomialFamily().build(2)
 >>> polynomial.setB(1.0)
 >>> print(polynomial.getB())
-1.0)RAW"
+1.0
+)RAW"
