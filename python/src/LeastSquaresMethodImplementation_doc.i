@@ -247,7 +247,8 @@ decomposition (QR, Cholesky, SVD) evaluates it from its own factors.
 Returns
 -------
 pseudoInverse : :class:`~openturns.Matrix`
-    The Moore-Penrose pseudo-inverse of the weighted design matrix.)RAW"
+    The Moore-Penrose pseudo-inverse of the weighted design matrix.
+)RAW"
 %enddef
 %feature("docstring") OT::LeastSquaresMethodImplementation::getPseudoInverse
 OT_LeastSquaresMethod_getPseudoInverse_doc
