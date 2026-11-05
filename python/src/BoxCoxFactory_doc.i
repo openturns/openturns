@@ -181,7 +181,8 @@ level : float, :math:`0 < level < 1`, optional
 Returns
 -------
 interval : :class:`~openturns.Interval`
-    Per-marginal confidence bounds of lambda.)RAW"
+    Per-marginal confidence bounds of lambda.
+)RAW"
 
 // ---------------------------------------------------------------------
 
