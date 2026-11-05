@@ -5,167 +5,15 @@
 === Library ===
 
 ==== Major changes ====
- * Speeding up Gaussian field simulation on large grids with the FFT-based circulant embedding method and the P1 interpolation of the simulated trajectories (new CirculantEmbeddingGaussianProcess and P1InterpolatedProcess, openturns.experimental). It addresses part of the HPC probabilistic modelling roadmap (issue #3305), building on the preliminary work of Valentin Abongo (@Proteidore).
- * LevelSetMesher: intersection of level sets of a collection, quadratic error function (QEF) sharp-edge placement and adaptive background refinement; Mesh::intersect no longer depends on Boost
- * Dirichlet: deterministic CDF evaluation from the Lauricella-Exton hypergeometric series, Gauss-Jacobi quadrature and inclusion-exclusion, replacing the random-sampling estimate
-
- * LinearCombinationDistribution: fuse opposite-weight Poisson atoms into a weighted Skellam atom
- * LinearCombinationDistribution: adapt the confidence band by doubling beta until the estimated outside mass drops below BetaAdaptationEpsilon, with the pointwise summation budget shrinking accordingly
- * Removed the continuous/discrete pairing of LinearCombinationDistribution: continuous and discrete atoms are now kept as they are, which speeds up the pointwise evaluation of mixed models while providing the same accuracy
- * Raised LinearCombinationDistribution-DefaultMaxSize to 16777216 entries (256MiB) so the characteristic function cache covers pointwise PDF evaluations up to the MaximumPDFLevel bound in dimension 3
- * PushForwardDistribution (openturns.experimental): implement the co-area density for affine functions
- * PushForwardDistribution (openturns.experimental): return a zero density for a rank-deficient affine co-area map when the affine fibre misses the antecedent support
- * PushForwardDistribution (openturns.experimental): allow nonlinear co-area maps for sampling, range and moments
- * PushForwardDistribution (openturns.experimental): implement the density for a nonlinear scalar map on R^2 and R^3, and for a nonlinear map from R^n to R^(n-1) with n >= 3 (including R^3 to R^2 and R^4 to R^3), by a deterministic simplicial level-set extraction with actual-function root polishing and intrinsic surface or curve cubature, while the affine co-area path remains exact
- * PushForwardDistribution (openturns.experimental): refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh, the mesh result remaining the fallback for branching and saddle fibres
- * PushForwardDistribution (openturns.experimental): detect outward seeds on the search box boundary and let the continuation reduce its step down to the minimum, so that maps such as the product of two univariate distributions no longer fall back to the low accuracy mesh density
- * PushForwardDistribution (openturns.experimental): seed the scalar co-area continuation from a quarter-resolution mesh while keeping the requested resolution for the integration step and the fallback, which speeds up regular fibres without changing their accuracy
- * PushForwardDistribution (openturns.experimental): stop the co-area continuation when the Newton projection no longer advances along a singular fibre, instead of accepting stagnating steps up to the iteration cap
- * PushForwardDistribution, PushForwardOverMesh: compute the mean and covariance deterministically, with PushForwardDistribution falling back to a sample above PushForwardDistribution-MomentsMaximumDimension for nonlinear maps
- * PushForwardDistribution (openturns.experimental): deduplicate the level-set faces and edges by global mesh vertex numbers
- * RatioDistribution (openturns.experimental): evaluate the density and the distribution function of a ratio of independent continuous random variables by dedicated one-dimensional quadrature instead of composing the numerator with the inverse of the denominator
- * RatioDistribution (openturns.experimental): compute the distribution function in the far tails with a change of variable around the vanishing denominator and expose a stable complementary distribution function
- * RatioDistribution (openturns.experimental): solve the quantile with a capped bracket and Brent instead of an unbounded bisection
- * RatioDistribution (openturns.experimental): compute inverse moments when zero is only an endpoint of the denominator support, and detect divergent integrals from the quadrature error estimate
- * ProductDistribution: evaluate the distribution function and its complement by dedicated product quadrature with stable tails, solve tail quantiles in the logarithmic distance to the support bounds, and detect the integrable density singularity at zero
- * ProductDistribution: return the finite limiting density at zero when exactly one factor density vanishes there, and preserve the original upper-tail probability in the quantile solver
- * ProductDistribution: integrate the factor characteristic function directly for large arguments instead of falling back to the generic nested product density integration
- * ProductDistribution: evaluate the real and imaginary parts of the characteristic function with separate scalar Gauss-Kronrod passes, avoiding a Point allocation at every quadrature node
- * DistributionImplementation: select the generic characteristic-function integration panels from the absolute argument, keep the Filon grid within Distribution-CharacteristicFunctionNMax points, and document the positive exponent convention used by the implementation
- * DistributionImplementation::operator /: return a RatioDistribution for continuous univariate operands, fixing the inaccurate density of the former inverse composition close to zero
- * HMatrix interface to support HODLR implementation
- * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
-
-==== New ResourceMap keys ====
- * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
- * LevelSetMesher-UseQEF: enable the QEF sharp-edge placement in LevelSetMesher (default is False)
- * Mesh-GridThreshold: number of simplex pairs above which Mesh::intersect filters candidate pairs through a bounding-box grid (default is 1024)
- * Mesh-WeldEpsilon: relative tolerance used to weld coincident vertices in Mesh::intersect (default is 1.0e-12)
- * LinearCombinationDistribution-BetaAdaptation: enables or disables the automatic widening of the confidence band (default is True)
- * LinearCombinationDistribution-BetaAdaptationEpsilon: target for the estimated mass outside the confidence band (default is 1e-6)
- * LinearCombinationDistribution-MaximumBeta: upper bound on the confidence band parameter reached by the adaptation (default is 64.0)
- * LinearCombinationDistribution-BandwidthConvergenceEpsilon: tolerance for the bandwidth nesting check when recycling the characteristic function cache (default is 1e-9)
- * LinearCombinationDistribution-MaximumPDFLevel: maximal number of levels summed when the PDF or the CDF is evaluated point by point once the confidence band has been adapted (default is 100)
- * Ridgway-UniformPoolSize: maximum number of uniform draws generated sequentially in advance per outer block of the Student orthant computation (default is 1048576)
- * SparseExpansion-DecompositionMethod: name of the decomposition method used to solve the least-squares problem, either ``SVD``, ``Cholesky`` or ``QR`` (default is SVD)
- * SparseExpansion-ConsecutiveIncreases: number of consecutive increases of the cross-validation error required before stopping the basis selection, at least 1 (default is 2)
- * Normal-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
- * Student-RectangularProbabilityAlgorithm: algorithm used for large-dimension rectangular probabilities, Genz or Ridgway (default is Genz)
- * PushForwardDistribution-SolverResidualTolerance: tolerance on the residual norm used to accept a point as a preimage (default is 1.0e-5)
- * PushForwardDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the range and the moments of nonlinear maps above PushForwardDistribution-MomentsMaximumDimension (default is 10000)
- * PushForwardDistribution-MomentsMaximumDimension: maximum input dimension for which the mean and the covariance of a nonlinear map are integrated deterministically (default is 4)
- * PushForwardDistribution-PreimageSearchSampleSize: number of points used to decompose the search interval and to seed the solver (default is 256)
- * PushForwardDistribution-NewtonMaximumIterations: maximum number of iterations of the damped Newton solver (default is 50)
- * PushForwardDistribution-NewtonStepReduction: reduction factor applied to the step when it fails to decrease the residual norm (default is 0.5)
- * PushForwardDistribution-MaximumBisections: maximum number of bisections used when the damped Newton solver fails on a sign change (default is 64)
- * PushForwardDistribution-CoAreaConstraintTolerance: tolerance used to detect degenerate constraints in the Fourier-Motzkin elimination (default is 1.0e-12)
- * PushForwardDistribution-CoAreaTailEpsilon: relative density below which the end of a one dimensional fibre is negligible (default is 1.0e-16)
- * PushForwardDistribution-CoAreaMaximumError: requested relative error of the integration along the fibre in the co-area case (default is 1.0e-14)
- * PushForwardDistribution-CoAreaErrorFloor: minimum relative error of the integration along a fibre of dimension three or more (default is 1.0e-7)
- * PushForwardDistribution-CoAreaMaximumSubIntervals: maximum number of sub-intervals of the adaptive integration along the fibre (default is 100)
- * PushForwardDistribution-CoAreaMaximumExtensions: maximum number of extensions of the one dimensional integration interval (default is 16)
- * PushForwardDistribution-NonlinearCoAreaDiscretization: number of intervals per input dimension in the fallback triangulation used by the scalar nonlinear co-area density in R^2, a quarter-resolution mesh seeding the continuation first (default is 128)
- * PushForwardDistribution-NonlinearCoAreaSurfaceDiscretization: number of intervals per input dimension in the tetrahedral background mesh used by the nonlinear co-area densities in R^3 (default is 48)
- * PushForwardDistribution-NonlinearCoAreaVolumeDiscretization: number of intervals per input dimension in the simplicial background mesh used by the nonlinear co-area density from R^n to R^(n-1) with n >= 4 (default is 12)
- * PushForwardDistribution-NonlinearCoAreaLevelTolerance: relative tolerance used to classify a mesh vertex as lying on the requested level set (default is 1.0e-12)
- * PushForwardDistribution-NonlinearCoAreaContinuation: refine the regular one dimensional nonlinear co-area fibres by a predictor-corrector continuation seeded by the background mesh (default is true)
- * PushForwardDistribution-RangeMargin: relative margin added to the marginal spans estimated from a sample (default is 0.025)
- * PushForwardDistribution-DegenerateSearchIntervalHalfWidth: half width of the fallback search box used when a marginal interval has zero width (default is 1.0)
- * PushForwardOverMesh-OnSimplexEpsilon: tolerance used when checking whether a point belongs to the image mesh (default is 1.0e-10)
- * Manifold-Epsilon: tolerance used by isOnManifold and the projections (default is 1e-10)
- * ManifoldMappedDistribution-SampleSize: number of Monte-Carlo realizations used to estimate the mean and the covariance (default is 10000)
- * RatioDistribution-InverseMomentRelativeError: relative quadrature error above which an inverse moment of the denominator is reported as divergent (default is 1.0e-3)
- * UniformOverMesh-OnManifoldEpsilon: tolerance used by computePDF and computeLogPDF to decide whether a point lies on the mesh (default is 1e-10)
- * UniformOverMeshFactory-NearestNeighbors: number of nearest neighbors used to estimate each local tangent plane (default is 12)
- * UniformOverMeshFactory-MinimumAreaFactor: degenerate triangles whose area is lower than this factor times the maximum triangle area are removed (default is 1e-3)
- * ChristoffelDistribution-OptimizationAlgorithm: optimization algorithm of the exact stability factor search and of the internal ratio-of-uniforms sampler (default is TNC, using the gradient of the log-objective; Cobyla remains available as the gradient-free alternative)
- * ChristoffelDistribution-RatioUniformCandidateNumber: number of candidate points of the internal ratio-of-uniforms sampler (default is 10000)
- * ChristoffelDistribution-RatioUniformMaxDimension: input dimension above which sampling does not attempt the ratio-of-uniforms sampler and uses crude rejection (default is 5); within this guard, and whenever its setup succeeds, sampling picks the branch with the larger acceptance rate, rejection accepting at exactly size/kn, and a setup failure at any dimension falls back to rejection
- * ChristoffelDistribution-KnSamplingSize: size of the candidate pool of the stability factor search (default is 100000)
- * ChristoffelDistribution-ExactKn: refine the stability factor by a multi-start bounded maximization of the log-objective over the numerical range instead of keeping the Monte-Carlo pool maximum (default is true)
- * ChristoffelDistribution-KnMaximumMultiStart: number of best in-range pool candidates seeded to that maximization (default is 16)
- * ChristoffelDistribution-KnSafetyFactor: multiplicative safety margin of the stability factor estimate (default is 1.1)
- * ChristoffelDistribution-SliceGridSize: grid size of the rejection envelope scan in sequential conditional sampling, uniform in the proposal CDF (default is 1000)
- * ChristoffelSubsampleExperiment-FrameTolerance: half-width of the accepted frame eigenvalue band around 1 (default is 0.5)
- * ChristoffelSubsampleExperiment-Certified: select the certified sizing n = gamma * m * log(m) instead of the default square design (default is false)
- * ChristoffelSubsampleExperiment-Gamma: gamma constant of the certified sizing, used when ChristoffelSubsampleExperiment-Certified is true (default is 9.242343873386666)
- * ChristoffelSubsampleExperiment-MaxAttempts: maximum number of independent certified draws tried before returning the draw with the sharpest realized frame (default is 10)
- * ChristoffelSubsampleExperiment-MaxProjectionAttempts: maximum number of Christoffel proposals tried to draw one projection DPP point before an error is raised (default is 1000000)
- * Dirichlet-CDFBoxTolerance: relative tolerance of the adaptive box quadrature used by Dirichlet::computeCDF (default is 1.0e-10)
- * Dirichlet-CDFExtonMaximumCancellation: maximum cancellation level accepted for the Exton series in Dirichlet::computeCDF (default is 1.0e4)
- * Dirichlet-CDFMaximumBoxDimension: maximum dimension for which the box quadrature is attempted in Dirichlet::computeCDF (default is 7)
- * Dirichlet-CDFMaximumIntegerBeta: maximum integer exponent for the finite incomplete-beta series in Dirichlet::computeCDF (default is 128)
- * Dirichlet-CDFMaximumQuadratureDimension: maximum dimension for the upper-corner inclusion-exclusion and the recursive integration in Dirichlet::computeCDF (default is 10)
- * Dirichlet-CDFMaximumTensorNodes: maximum number of tensor-product nodes in the box quadrature of Dirichlet::computeCDF (default is 20000000)
- * Dirichlet-CDFNormalMinimumProbability: minimum probability for which the normal approximation is accepted in Dirichlet::computeCDF (default is 1.0e-12)
- * Dirichlet-CDFNormalMinimumShape: minimum shape parameter for the normal approximation of Dirichlet::computeCDF (default is 100.0)
- * Dirichlet-CDFNormalMinimumTotal: minimum total shape parameter for the normal approximation of Dirichlet::computeCDF (default is 1.0e5)
- * Dirichlet-CDFUpperMaximumCancellation: maximum cancellation level accepted for the upper-corner inclusion-exclusion in Dirichlet::computeCDF (default is 1.0e13)
- * SpecFunc-LauricellaMaximumDegree: maximum degree of the Lauricella hypergeometric series (default is 1024)
- * SpecFunc-LauricellaTolerance: relative tolerance of the Lauricella hypergeometric series (default is 1.0e-14)
- * HMatrix-ClusteringMaxDof : Create a clustering algorithm with a maximum number of degrees of freedom in a leaf. Default value is 250
- * HMatrix-ParallelSolver : Select the HMatrix parallel backend StarPU or ToyRT when both are available. Default value is starpu
- * HMatrix-Admissibility : select the admissibility criterion to assemble an HMatrix. Use the standard one (Hackbusch in the literature) or HODLR. Default is standard.
- * CumulativeDistributionNetwork-MaximumTerms: maximum number of derivative assignments, free-variable table entries (continuous) or binary elimination-table entries (integral) enumerated by the density and conditional algorithms before a NotYetImplementedException is raised (default is 1000000)
- * Bingham-MaximumIteration: maximum number of terms in the series expansion of the normalization constant (default is 200)
- * Bingham-OrthogonalityThreshold: relative tolerance for the validation of the orthogonality of the basis matrix (default is 1e-12)
- * BinghamFactory-MaximumIterations: maximum number of Newton-Raphson iterations and of step-halving steps in the moment refinement (default is 20)
- * CirculantEmbeddingGaussianProcess-MaximumIteration: maximum number of successive doublings of the embedding size performed when negative eigenvalues are detected (default is 20)
- * DiscreteCompoundDistribution-MaximumSize: maximum number of probability masses of the compound distribution, used to reject combinations with unbounded or disproportionate ranges before allocating the Fourier transform (default is 1048576)
- * FastHermite-AsymptoticThreshold: number of nodes from which the asymptotic expansion is used in the Hermite quadrature (default is 256)
- * FastJacobi-AsymptoticThreshold: number of nodes from which the asymptotic expansions are used in the Jacobi quadrature (default is 100)
- * FastLaguerre-IterativeThreshold: number of nodes from which the iterative sweeps are used in the Laguerre quadrature (default is 8)
- * HODLRMatrix-AssemblyEpsilon: assembly epsilon for the ACA compression of the off-diagonal blocks (default is 1e-10)
- * HODLRMatrix-CompressionMethod: ACA variant for the off-diagonal blocks, AcaPartial or AcaRandom (default is AcaPartial)
- * HODLRMatrix-CorruptionCapFactor: factor applied to the raw kernel diagonal above which a heal shift is considered numerically corrupted (default is 1000.0)
- * HODLRMatrix-DenseThreshold: leaf size below which the dense fallback is used (default is 256)
- * HODLRMatrix-FactorizationIterations: maximum number of outer regularization attempts (default is 20)
- * HODLRMatrix-InitialLambda: starting shift of the node Schur-complement retry loop (default is 1e-4)
- * HODLRMatrix-LeafSeedCap: cap on the outer-loop seed taken from the worst leaf-heal shift (default is 0.05)
- * HODLRMatrix-MaxRegularization: soft cap for the geometric shift escalation (default is 1.0)
- * HODLRMatrix-MinLeafSize: minimum number of rows/columns of a leaf block (default is 250)
- * HODLRMatrix-ParallelAssembly: build independent child subtrees concurrently, deterministic except with AcaRandom (default is False)
- * HODLRMatrix-ProfileFactorization: print per-block factorization timings (default is False)
- * HODLRMatrix-RecompressCorrections: recompress the Schur-complement corrections (default is True)
- * HODLRMatrix-RecompressionEpsilon: truncation tolerance of the factor-stage SVD recompression of the Schur-complement corrections (default is 1.0e-6)
- * HODLRMatrix-RegularizationAttempts: maximum number of inner regularization attempts per node (default is 60)
- * HODLRMatrix-RegularizationEpsilon: initial regularization shift (default is 1.0e-7)
- * HODLRMatrix-RegularizationFactor: geometric factor of the shift escalation (default is 2.0)
- * HODLRMatrix-StackTruncation: pre-truncate the stacked correction columns (default is True)
- * HODLRMatrix-StackTruncationFactor: fraction of the tolerance budget used for the pre-truncation (default is 0.1)
- * KFactor-RMax: upper bound of the bracketing interval explored by the zero-finding algorithm that computes the tolerance factor (default is 8.5)
- * MatrixFisher-MaximumConcentration: ceiling applied to the estimated concentrations, set by quadrature feasibility (default is 100.0)
- * MatrixFisher-OrthogonalityThreshold: relative tolerance for the validation of the orthogonality of the sampled matrices (default is 1e-12)
- * MatrixFisher-QuadratureGrowthFactor: factor applied to the square root of the trace bound to grow the quadrature order (default is 7.0)
- * MatrixFisher-QuadratureOrder: number of quadrature nodes per dimension used in the evaluation of the normalization constant (default is 50)
- * MatrixFisherFactory-MaximumIterations: maximum number of Newton-Raphson iterations and of step-halving steps (default is 20)
- * MultivariateHypergeometric-eta: maximum absolute error of the Poisson summation-based CDF computation (default is 1.0e-9)
- * MultivariateHypergeometric-smallA: threshold below which the generating function of a truncated binomial distribution uses its polynomial form (default is 10.0)
- * MultivariatePolya-eta: maximum absolute error of the Poisson summation-based CDF computation (default is 1.0e-9)
- * MultivariatePolya-smallA: threshold below which the generating function of a truncated negative binomial distribution uses its polynomial form (default is 10.0)
- * NormalCopulaFactory-RegularizationEpsilon: initial diagonal weight of the last-resort regularization, doubled until positive definiteness (default is 1.0e-12)
- * RiemannianGaussian-GaussHermiteMaximumPoints: maximum number of tensor Gauss-Hermite quadrature points for the entropy (default is 4096)
- * RiemannianGaussian-LogJacobianTaylorThreshold: threshold on the exponential coordinates norm below which a Taylor expansion computes the log-Jacobian of the exponential map (default is 1e-3)
- * RiemannianGaussian-PositiveDefiniteThreshold: absolute eigenvalue threshold for the validation of the positive definiteness of the mean and covariance matrices (default is 1e-12)
- * RiemannianGaussianFactory-MaximumIteration: maximum number of iterations of the estimator (default is 100)
- * RiemannianGaussianFactory-StepSize: step size used by the estimator (default is 0.1)
- * RiemannianGaussianFactory-Tolerance: tolerance of the estimator (default is 1e-8)
- * SimplicialCubature-EvaluationBlockSize: number of simplices over which the integrand is evaluated in a single batch (default is 2048)
- * SimplicialCubature-MaximumRefinementNumber: maximum number of simplices refined at each iteration (default is 2048)
- * WrappedNormal-GaussHermiteMaximumPoints: maximum number of Gauss-Hermite quadrature points for the entropy and the covariance (default is 4096)
- * WrappedNormal-MaxLatticeTerms: maximum number of lattice terms in the exact PDF sum (default is 100000)
- * WrappedNormalFactory-DefaultPeriod: default period used by the factory when the sample does not specify one (default is 6.283185307179586)
+ * New manifold distributions
+ * Orthonormal basis construction and sparse functional chaos improvements
+ * Speeding up Gaussian field simulation on large meshes with the FFT-based circulant embedding method and the P1 interpolation
+ * Covariance models for functional spaces to generate trajectories within crucial functional spaces for physical simulations
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
- * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
- * CurlFreeModel (openturns.experimental)
- * DivFreeModel (openturns.experimental)
- * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
- * Grid
- * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
@@ -176,20 +24,24 @@
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
- * P1InterpolatedProcess (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
+ * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
+ * SparseExpansion (openturns.experimental)
+ * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
+ * SquaredNormalFactory (openturns.experimental)
+ * TruncatedDistributionFactory (openturns.experimental)
+ * SlicedInverseRegression (openturns.experimental)
+ * CirculantEmbeddingGaussianProcess (openturns.experimental)
+ * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
  * RatioDistribution (openturns.experimental)
- * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
- * SlicedInverseRegression, SlicedInverseRegressionResult (openturns.experimental)
- * SparseExpansion (openturns.experimental)
- * SquaredNormalFactory (openturns.experimental)
- * TruncatedDistributionFactory (openturns.experimental)
- * UniformOverMeshFactory (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
+ * UniformOverMeshFactory (openturns.experimental)
  * VonMisesFisher(Factory) (openturns.experimental)
  * WrappedNormal, WrappedNormalFactory (openturns.experimental)
+ * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
+
 ==== API changes ====
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
@@ -212,27 +64,6 @@
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
  * HMatrixParameters.getAdmissibility and HMatrixParameters.setAdmissibility
-
- * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra", values "LAPACK", "HMAT" or "HODLR"); GaussianProcessRegression inherits the linear algebra method from its GaussianProcessFitterResult, and GeneralLinearModelAlgorithm still relies on its own key "GeneralLinearModelAlgorithm-LinearAlgebra" (values "LAPACK" or "HMAT")
- * GaussianProcessFitter: analytical amplitude estimate now works with the HODLR backend; the HODLR path uses the precomputed quadratic form y^T R^{-1} y instead of rho_.normSquare(), since rho_ is the raw residual rather than L^{-1}(residual)
- * HODLRMatrix: new method applyNugget() adds a relative nugget to the diagonal of the covariance matrix, enabled by default in the GP covariance assembly path via the ResourceMap key "HODLRMatrix-Nugget" (default 1.0e-8, set to zero to disable)
- * HODLRMatrix: the max rank of the low-rank blocks is now adaptive by default (ResourceMap key "HODLRMatrix-MaxRank", default 0): each block is compressed up to the assembly epsilon instead of being capped at 10, a warning is emitted when a user-set cap starves a block, and a single aggregated warning is emitted at assembly when blocks under the adaptive rank reach the full rank (stored densely)
- * HODLRMatrix: off-diagonal blocks whose numerical rank reaches min(rows, cols) are now stored densely (U = A01, V = I) instead of as truncated low-rank factors
- * HODLRMatrix: the vertices are now reordered along a space-filling curve (KDTree::getOrdering) before assembly, so that the recursive split of the HODLR tree separates spatially close points at the leaves; enabled by default via the ResourceMap key "HODLRMatrix-UseSpatialOrdering" (default true), opt-out via HODLRMatrixParameters.setUseSpatialOrdering(False)
- * HODLRMatrix: the adaptive cross approximation now uses max-element (partial-pivoting) pivots, which compress low-rank blocks reliably on smooth kernels; the former random-pivot selection was removed
- * HODLRMatrix: fixed gemv() after a Cholesky factorization, which applied the factor L instead of the full matrix A = L L^T
- * HODLRMatrix: new method applyFactor(y, x) applies the lower-triangular Cholesky factor once (y = L x); GaussianProcess HODLR sampling now uses it so that realizations have the covariance A of the process instead of A^2
- * HODLRMatrix: a factorized matrix is now persisted by Study, so a compressed operator can be built once and read back later; solve, gemv, applyFactor, logDeterminant and the compression ratios all survive the round trip bit for bit. The assembly function is not serialized, since it may be a Python callable, so a reloaded matrix cannot be re-assembled or re-factorized and reports that explicitly
- * HODLRMatrix: a copy is now a complete, independent operator. It used to drop the HODLR tree and had to be re-assembled before use, which is why a matrix read back from a Study was an empty shell with the right shape; a copy now deep-copies the tree, at a memory cost proportional to the operator
- * HMatrix: new method applyFactor(y, x) applies the lower-triangular Cholesky factor once (y = L x); GaussianProcess HMAT sampling now uses it as the single factor-application entry point, so that realizations have the covariance A of the process on both the HMAT and HODLR backends
- * HODLRMatrix: leaf blocks are now assembled from the lower-triangular kernel evaluations only, mirroring them into the upper triangle (the HODLR tree is symmetric), which halves the kernel evaluations in the leaf assembly
- * HODLRMatrix: fixed the fast Matern assembly path truncating the point coordinates to the first 3 dimensions, which silently corrupted the assembled matrix (and any downstream solve or factorization) for input points of dimension >= 4
- * HODLRMatrix: near-singular leaf blocks now heal locally with the smallest diagonal shift that yields a numerically healthy Cholesky factor (ResourceMap key "HODLRMatrix-PivotFloorFactor", default 1.0e-12), instead of refactorizing the whole child subtree on every failed attempt, which cascaded into thousands of leaf factorizations on strongly-correlated kernels
- * GaussianProcess: HMAT sampling now forces the Cholesky factorization, so that realizations have the covariance A of the process whatever the ResourceMap key "HMatrix-FactorizationMethod" is (with an LU factorization the hmat-oss gemv reconstructed A z, i.e. a N(0, A^2) realization)
- * GaussianProcessConditionalCovariance: conditional mean/covariance and marginal variance now support HODLR results, which previously crashed with an "Empty HMatrix" error
- * GaussianProcessFitterResult: loading a result produced with the HMAT or HODLR backend now rebuilds the Cholesky factor from the stored covariance model and input sample; previously the factor was left empty and any downstream solve crashed
- * HODLRMatrix: the default assembly epsilon is now 1e-7 (with the recompression and regularization epsilons aligned), so that a Cholesky factorization of a Matern covariance with correlation length 0.1 of the domain size reaches a relative log-likelihood accuracy of 1e-5 with margin
- * HODLRMatrix: new method getRegularizationShift() returns the shift actually applied by the last Cholesky factorization; a non-zero value means the factorized matrix is A + shift * I rather than A. Both HODLRMatrix and HMatrix now emit a warning when the shift is non-negligible relative to the diagonal (ResourceMap keys "HODLRMatrix-RegularizationWarnThreshold" and "HMatrix-RegularizationWarnThreshold", default 1e-4), so a silently-degraded solve() or logDeterminant() is reported
  * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed DistFunc.dNonCentralStudentAlt0 and the StudentFunctions NonCentralStudentCDFAlt0/NonCentralStudentCDFAlt1/NonCentralStudentPDFAlt0 helpers: Boost is still used when available for all degrees of freedom, and the native fallback now matches it (Benton & Krishnamoorthy Poisson-mixture series for the CDF, direct Poisson-mixture beta-density series for the PDF instead of the CDF-difference identity)
@@ -244,8 +75,6 @@
  * Removed deprecated DeconditionedDistribution, DeconditionedRandomVector
  * Removed deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors
  * Removed deprecated assert_almost_equal(Indices, Indices)
- * HODLRMatrixParameters.setFactorizationMethod/getFactorizationMethod removed: the HODLR backend always uses its sole LLt (Cholesky) factorization, so the method is no longer configurable
- * HODLRMatrix.factorize() no longer takes a method argument (previously any string other than "LLt"/"LLT" fell back to an LU factorization, which is not supported by the HODLR backend)
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
@@ -295,20 +124,15 @@
  * GaussKronrod.getErrorEstimate, getIterationNumber, getEvaluationSubIntervals and getLocalErrorEstimates
  * Curve.setLabels/getLabels
  * PointToFieldFunction.getMarginal
- * GaussKronrod.setMaximumError now requires a strictly positive finite error instead of a nonnegative one
- * FunctionalChaosAlgorithm now rejects an input sample outside of the distribution range at construction time
- * CumulativeDistributionNetwork: exact PDF and log-PDF from the derivative-sum-product expansion of Huang and Frey (2011), accumulated in log domain, with tree dynamic programming for forest components and a bounded explicit enumeration for cyclic components; integral networks use backward differences
- * CumulativeDistributionNetwork: exact conditional CDF, conditional PDF and conditional quantile from the conditioning theorem, replacing numerical integration
- * CumulativeDistributionNetwork: the multi-index getMarginal now returns the exact marginal as a CumulativeDistributionNetwork, block-independent networks are sampled directly, and isElliptical is true for a single elliptical factor
- * CumulativeDistributionNetworkFactory: new structure-learning mode selecting a block-independent graph and the factor distributions from the sample by BIC, with bounds on the minimum and maximum numbers of factors and on the maximum factor dimension
- * SpecFunc: added LogSumExp for two logarithms or a collection of logarithms, with stable handling of infinities
- * Mixture and KernelMixture: the new computeLogPDF implementation uses a log-sum-exp, and computePDF falls back to it when every atom underflows
- * EmpiricalBernsteinCopula: the PDF, log-PDF and conditional services use a log-sum-exp, so mixtures with many atoms remain accurate in the tails
- * Bingham, Burr, ClaytonCopula, DistFunc, Logistic, Ridgway and WrappedNormal now use SpecFunc.LogSumExp instead of local log-sum-exp code
+ * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra")
+ * NSGA3 multi-objective optimization algorithm is now wired via Pagmo
+ * Added sum and difference operators between fields
+ * HMatrix: Add interface supporting HODLR implementation
 
 === Documentation ===
  * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation
+ * Mentioned all ResourceMap entries for each class
 
 === Python module ===
  * Add Process sample slicing operator
@@ -317,28 +141,16 @@
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
  * Deprecated coupling_tools.execute method (use subprocess.run)
 
-=== Bug fixes ===
-
- * ChristoffelDistribution: the tensor sequential sampler now uses the target-to-proposal ratio consistently: a uniform proposal with a marginal-density-weighted envelope on bounded slices, and a full-support Cauchy or half-Cauchy proposal on unbounded slices, with the envelope scanned on a grid uniform in the proposal CDF; this removes both the non-uniform-marginal bias and the high-degree tail rejection of the former S_j-only envelope, and the degree-29 Hermite regression completes in seconds instead of stalling
- * ChristoffelDistribution: the stability factor now rejects a non-positive or non-finite safety factor, refreshes its cache when a ResourceMap key that enters the estimate changes, recovers optimizer peaks whose raw value overflows but whose logarithm is finite, and fails explicitly on non-finite envelopes instead of looping forever
- * ChristoffelDistribution: the polynomial tensor gradient now clips its input to the numerical range like the objective does, instead of overflowing on infeasible points
- * ChristoffelDistribution: the batch Christoffel and log-Christoffel evaluations now only use TBB above a minimum batch size, instead of spawning parallel work for small samples
- * ChristoffelSubsampleExperiment: exact projection DPP and volume sampling replace the heuristic 2n pool and greedy thinning; fresh designs use the DPP for n=m and a DPP plus independent Christoffel fill for n>m, supplied points use a conditional DPP when M<n and exact candidate volume sampling when M>=n, dependent or zero-weight supplied points are rejected, and the pool, thinning and barrier ResourceMap keys are removed
- * ChristoffelSubsampleExperiment: optional certified mode selected by the ChristoffelSubsampleExperiment-Certified key, with n = gamma * m * log(m) and n independent Christoffel points without thinning; certified draws are repeated up to ChristoffelSubsampleExperiment-MaxAttempts until the frame bounds hold, and the draw with the sharpest realized frame is returned when the attempts are exhausted, the default square design is unchanged, and supplied points are rejected in certified mode
- * ChristoffelSubsampleExperiment: default-constructed experiments no longer silently generate from an unconfigured one-function state, and a null size is rejected on load
- * ChristoffelSubsampleExperiment: the certified mode, gamma and MaxAttempts settings are now persisted across save/load, and loading rebuilds the derived state from the stored settings instead of re-reading the ResourceMap
- * OrthogonalBasis: added a value-based equality operator (measure, enumerate function and factory description) used by ChristoffelDistribution instead of the sole probe-based comparison
- * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
- * Normal::computeCDF used wrong bounds in its large-dimension fallback and returned 0.0, e.g. at the mean of a correlated dimension-7 distribution
- * Dirichlet::computePDF and Dirichlet::computeLogPDF now evaluate the finite continuous extension of the density at the simplex boundary (e.g. one for the uniform Dirichlet) instead of always returning zero
- * Normal::setParameter did not update the independent copula flag, so a correlated normal built by setting its parameters was still handled as independent
- * QuantileConfidence: fixed inverted unilateral case in computeUnilateralMinimumSampleSize, the flag was renamed from tail to lowerBounded with opposite meaning (old tail=True is now lowerBounded=False); calls passing True positionally or by keyword must swap the flag (see #3178). In computeUnilateralRank and the unilateral confidence interval methods the flag was only renamed (old tail=True is lowerBounded=True), with no change of the returned value
-
 === Miscellaneous ===
- * Added sum and difference operators between fields
- * Removed the now-unused ``Dirichlet-DefaultSamplingSize`` ResourceMap key
- * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow (see #1489, #1596)
+ * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow
  * Parallelized and accelerated IteratedQuadrature and SimplicialCubature (batched integrand evaluations, TBB, reduced allocations)
+ * LevelSetMesher: intersection of level sets of a collection, quadratic error function (QEF) sharp-edge placement and adaptive background refinement; Mesh::intersect no longer depends on Boost
+ * Dirichlet: deterministic CDF evaluation from the Lauricella-Exton hypergeometric series, Gauss-Jacobi quadrature and inclusion-exclusion, replacing the random-sampling estimate
+ * ProductDistribution: Evaluate CDF/complement via dedicated product quadrature with stable tails; handle density limits at zero; solve tail quantiles in log-distance; optimize characteristic function evaluation via separate scalar Gauss-Kronrod passes without Point allocations.
+ * DistributionImplementation: Select characteristic function panels by absolute argument, bound Filon grid points, document exponent convention, and make `operator /` return `RatioDistribution` for continuous univariate operands.
+ * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
+
+=== Bug fixes ===
 
 
 == 1.27 release (2026-04-28) == #release-1.27
