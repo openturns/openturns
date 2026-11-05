@@ -286,7 +286,8 @@ Returns
 result : :class:`~openturns.Sample`
     Sample of size :math:`N \times d` (if the process is of dimension
     :math:`d`) containing the covariance values
-    :math:`C(\vect{t}_i, \vect{t}_p)` for :math:`i = 1, \dots, N`.)RAW"
+    :math:`C(\vect{t}_i, \vect{t}_p)` for :math:`i = 1, \dots, N`.
+)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeRow
 OT_CovarianceModel_discretizeRow_doc
