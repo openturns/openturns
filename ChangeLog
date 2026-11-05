@@ -39,6 +39,18 @@
  * BasisOrthonormalizationAlgorithm-DefaultDiscretization: requested number of 1D nodes in the default Gauss product rule (default is 128)
  * BasisOrthonormalizationAlgorithm-MaximumTensorNodes: maximum number of nodes of the default tensor rule, the marginal order being reduced above this budget (default is 1000000)
  * BasisOrthonormalizationAlgorithm-Epsilon: relative threshold for zeroing the coefficients of the orthonormal functions and detecting linear dependence (default is 1.0e-11)
+ * GaussLPQuadrature-AlphaS: number of linear programming candidate points per orthonormal function (default is 100)
+ * GaussLPQuadrature-Margin: minimum number of linear programming candidate points beyond the number of functions (default is 10)
+ * GaussLPQuadrature-Ngauss: requested order of the measure-adapted rule used for the moments (default is 100)
+ * GaussLPQuadrature-MaximumTensorNodes: maximum number of nodes of the tensor rule used for the moments (default is 1000000)
+ * GaussLPQuadrature-Epsilon: warning threshold on the norm of the quadrature residual (default is 1.0e-5)
+ * GaussLPQuadrature-ClusterPath: refine the rules along the greedy clustering path and stop at the first one meeting GaussLPQuadrature-Epsilon (default is true)
+ * GaussLPQuadrature-MaximumAbsoluteError: absolute error tolerance of the GaussLPQuadrature local refinement, superseding OptimizationAlgorithm-DefaultMaximumAbsoluteError (default is 1.0e-12)
+ * GaussLPQuadrature-MaximumRelativeError: relative error tolerance of the GaussLPQuadrature local refinement, superseding OptimizationAlgorithm-DefaultMaximumRelativeError (default is 1.0e-12)
+ * GaussLPQuadrature-MaximumObjectiveError: objective error tolerance of the GaussLPQuadrature local refinement, superseding OptimizationAlgorithm-DefaultMaximumResidualError (default is 1.0e-12)
+ * GaussLPQuadrature-MaximumConstraintError: constraint error tolerance of the GaussLPQuadrature linear programming solve and local refinement, superseding OptimizationAlgorithm-DefaultMaximumConstraintError (default is 1.0e-12)
+ * GaussLPQuadrature-Solver: HiGHS solver used for the linear programming solve (default is choose)
+ * GaussLPQuadrature-FallbackSolver: HiGHS solver used when the first solve fails, an empty value disables the retry (default is ipm)
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
  * LevelSetMesher-UseQEF: enable the QEF sharp-edge placement in LevelSetMesher (default is False)
  * Mesh-GridThreshold: number of simplex pairs above which Mesh::intersect filters candidate pairs through a bounding-box grid (default is 1024)
@@ -111,6 +123,7 @@
  * CumulativeDistributionNetwork-MaximumTerms: maximum number of derivative assignments, free-variable table entries (continuous) or binary elimination-table entries (integral) enumerated by the density and conditional algorithms before a NotYetImplementedException is raised (default is 1000000)
 
 ==== New classes ====
+ * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature, GaussLPQuadratureRule (openturns.experimental)
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
@@ -158,6 +171,14 @@
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
  * OrthogonalBasis now has a value-based equality operator that dispatches to the concrete factory state
+ * BasisOrthonormalizationAlgorithm/BasisOrthonormalizationFactory constructors take an OrthogonalBasis and the number of its first elements to orthonormalize against the basis measure
+ * BasisOrthonormalizationFactory.buildQuadrature/buildQuadratureRule return at most the requested number of nodes, and buildQuadratureRule returns an immutable GaussLPQuadratureRule
+ * GaussLPQuadrature: optional anchor nodes enforced strictly, reused as an anchor-only rule when they reproduce the moments, and completed with added nodes otherwise
+ * GaussLPQuadrature: analytic gradient of the refinement residual
+ * GaussLPQuadrature: follow the greedy clustering path and return the smallest rule meeting the tolerance
+ * GaussLPQuadrature: direct constructor from the functions whose moments are reproduced, the integration measure and optional anchors, with setMeasureAndFunctions/getFunctionsCollection/setAnchors/getAnchors accessors
+ * GaussLPQuadrature: dedicated ResourceMap tolerances for the local refinement, tighter than the generic optimization defaults
+ * GaussLPQuadrature, BasisOrthonormalizationAlgorithm: reject the Gauss-Legendre fallback for a dependent elliptical measure whose standard distribution is not normal, because its truncated heavy tails cannot reproduce the moments
  * Added LeastSquaresMethod.solveNormalGram to solve the weighted Gram system, while solveNormal remains restricted to uniform weights
  * Extended UniformOverMesh to embedded meshes with getIntrinsicDimension and getVolume
  * Restricted the UniformOverMesh(mesh) constructor to explicit conversions

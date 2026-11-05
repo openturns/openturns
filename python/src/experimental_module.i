@@ -60,6 +60,7 @@
 %include BasisOrthonormalizationAlgorithm.i
 %include GaussLPQuadratureRule.i
 %include GaussLPQuadrature.i
+%include BasisOrthonormalizationFactory.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
 %include UncertaintyWeightedExperimentTemplateDefs.i
