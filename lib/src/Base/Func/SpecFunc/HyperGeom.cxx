@@ -367,7 +367,7 @@ Bool SpecFunc::LogLauricellaF_A(const Scalar a,
   /* Floor the convergence gap to avoid an unbounded degree estimate when
      sum|x| is within roundoff of the convergence radius. */
   const Scalar gap = std::max(1.0 - sumAbsX, 1.0e-16);
-  const Scalar maximumEstimate = std::min(static_cast<Scalar>(maxDegree), static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max() / 2));
+  const Scalar maximumEstimate = std::min((1.0 * maxDegree), std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits - 1));
   Scalar estimate = 64.0;
   if (a > 0.0)
     estimate = std::max(64.0, 4.0 * (-std::log(tolerance)) / gap);
@@ -398,7 +398,7 @@ Bool SpecFunc::LogLauricellaF_A(const Scalar a,
         for (UnsignedInteger j = 0; j <= q; ++j)
         {
           sum += binomial * d[j] * factor[q - j];
-          if (j < q) binomial *= static_cast<Scalar>(q - j) / static_cast<Scalar>(j + 1);
+          if (j < q) binomial *= (1.0 * (q - j)) / (1.0 * (j + 1));
         }
         next[q] = sum;
       }
@@ -417,7 +417,7 @@ Bool SpecFunc::LogLauricellaF_A(const Scalar a,
     Bool converged = false;
     for (UnsignedInteger q = 0; q <= degree; ++q)
     {
-      if (q > 0) ratio *= (a + static_cast<Scalar>(q) - 1.0) / static_cast<Scalar>(q);
+      if (q > 0) ratio *= (a + (1.0 * q) - 1.0) / (1.0 * q);
       const Scalar term = ratio * d[q];
       total += term;
       maxAbs = std::max(maxAbs, std::abs(term));
