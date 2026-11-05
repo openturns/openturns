@@ -449,7 +449,7 @@ Bool computeUpperCornerIntegral(const Point & x,
   Matrix weights(k, order);
   for (UnsignedInteger j = 0; j < k; ++j)
   {
-    const Scalar alpha = betaSubset - 1.0 + static_cast<Scalar>(k - 1 - j);
+    const Scalar alpha = betaSubset - 1.0 + (1.0 * (k - 1 - j));
     const Scalar shape = alpha + 1.0;
     /* Above one million the Jacobi nodes become expensive to compute and
        the large-shape normal approximation is both cheaper and accurate. */

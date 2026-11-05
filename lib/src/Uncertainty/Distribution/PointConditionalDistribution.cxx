@@ -479,7 +479,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         const UnsignedInteger newJ = conditioningIndices_[j];
         /* Match EmpiricalBernsteinCopula::update(): clip the copula sample
            and keep both Beta shape parameters positive. */
-        const Scalar r = std::clamp(std::ceil(binNumber * SpecFunc::Clip01(copulaSample(i, newJ))), 1.0, static_cast<Scalar>(binNumber));
+        const Scalar r = std::clamp(std::ceil(binNumber * SpecFunc::Clip01(copulaSample(i, newJ))), 1.0, (1.0 * binNumber));
         const Scalar xJ = conditioningValues_[j];
         logWi += DistFunc::logdBeta(r, binNumber - r + 1.0, xJ);
       } // j
@@ -490,7 +490,7 @@ Bool PointConditionalDistribution::hasSimplifiedVersion(Distribution & simplifie
         for (UnsignedInteger j = 0; j < dimension; ++j)
         {
           const UnsignedInteger newJ = nonConditioningIndices_[j];
-          const Scalar r = std::clamp(std::ceil(binNumber * SpecFunc::Clip01(copulaSample(i, newJ))), 1.0, static_cast<Scalar>(binNumber));
+          const Scalar r = std::clamp(std::ceil(binNumber * SpecFunc::Clip01(copulaSample(i, newJ))), 1.0, (1.0 * binNumber));
           atomComponents[j] = Beta(r, binNumber - r + 1.0, 0.0, 1.0);
         } // j
         atoms.add(JointDistribution(atomComponents));
