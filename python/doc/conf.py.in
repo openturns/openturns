@@ -109,6 +109,10 @@ else:
     # embed image files inside html
     imgmath_embed = True
 
+    # batched imgmath (embedded in sphinxext)
+    extensions.append("sphinx_imgmath_batch")
+    imgmath_batch_size = 256
+
 extensions.append("matplotlib.sphinxext.plot_directive")
 plot_formats = ["svg"]
 plot_rcparams = {"svg.hashsalt": "nacl"}
