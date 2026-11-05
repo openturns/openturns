@@ -164,8 +164,8 @@ UnsignedInteger ChristoffelSubsampleExperiment::ComputeSpaceDimension(const Unsi
   while (lower < upper)
   {
     const UnsignedInteger middle = lower + (upper - lower + 1) / 2;
-    const Scalar budget = gamma * middle * std::log(static_cast<Scalar>(middle));
-    if (std::isfinite(budget) && (budget <= static_cast<Scalar>(size)))
+    const Scalar budget = gamma * middle * std::log((1.0 * middle));
+    if (std::isfinite(budget) && (budget <= (1.0 * size)))
       lower = middle;
     else
       upper = middle - 1;
