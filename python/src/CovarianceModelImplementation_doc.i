@@ -233,7 +233,8 @@ because it compresses data. It does not require any external library.
 The result must be factorized with the
 :py:meth:`~openturns.experimental.HODLRMatrix.factorize` method before
 being used by :py:meth:`~openturns.experimental.HODLRMatrix.solve` or
-:py:meth:`~openturns.experimental.HODLRMatrix.logDeterminant`.)RAW"
+:py:meth:`~openturns.experimental.HODLRMatrix.logDeterminant`.
+)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeHODLRMatrix
 OT_CovarianceModel_discretizeHODLRMatrix_doc
@@ -264,7 +265,8 @@ This method is similar to the :py:meth:`discretizeAndFactorize` method, but
 stores the result in a :class:`~openturns.experimental.HODLRMatrix` instead
 of a dense :class:`~openturns.TriangularMatrix`. It does not require any
 external library. The method is helpful for very large parameters (Mesh,
-grid, Sample) because it compresses data.)RAW"
+grid, Sample) because it compresses data.
+)RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorizeHODLRMatrix
 OT_CovarianceModel_discretizeAndFactorizeHODLRMatrix_doc

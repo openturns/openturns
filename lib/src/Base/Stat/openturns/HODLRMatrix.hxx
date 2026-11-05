@@ -41,6 +41,7 @@ public:
 
   HODLRMatrix copy() const;
 
+  // symmetry and trans follow the BLAS character convention, as in HMatrix
   void assemble(const HODLRRealAssemblyFunction& f, char symmetry);
   void assemble(const HODLRRealAssemblyFunction &f, const HODLRMatrixParameters& parameters, char symmetry);
   void factorize();
