@@ -5,6 +5,10 @@
  *
  *  Implemented with the OpenTURNS Matrix and LAPACK backend.
  *
+ *  The internal workspaces keep std::vector because this file is a port of the
+ *  reference HODLR implementation: it is an internal header, not part of the
+ *  public OpenTURNS interface.
+ *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify

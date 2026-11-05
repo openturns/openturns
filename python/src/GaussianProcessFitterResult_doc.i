@@ -276,7 +276,8 @@ Returns
 -------
 L : :class:`~openturns.experimental.HODLRMatrix`
     Cholesky factor :math:`\mat{L}_{\vect{p}^*}` of the covariance matrix,
-    which can be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.)RAW"
+    which can be written :math:`\mat{L}_{\vect{p}^*} \mat{L}_{\vect{p}^*}^T`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -290,7 +291,8 @@ covarianceCholeskyFactor : :class:`~openturns.TriangularMatrix`
 covarianceHMatrix : :class:`~openturns.HMatrix`
     HMatrix Cholesky factor (may be empty when not using HMAT algebra).
 covarianceHODLRMatrix : :class:`~openturns.experimental.HODLRMatrix`
-    HODLR Cholesky factor (may be empty when not using HODLR algebra).)RAW"
+    HODLR Cholesky factor (may be empty when not using HODLR algebra).
+)RAW"
 
 // ---------------------------------------------------------------------
 
