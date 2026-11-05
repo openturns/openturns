@@ -56,7 +56,8 @@ Get the center, the constant and the matrix :math:`\mat{A}`:
 >>> print(f.getConstant())
 [-1]
 >>> print(f.getLinear())
-[[ 2 3 ]])RAW"
+[[ 2 3 ]]
+)RAW"
 
 // ---------------------------------------------------------------------
 
