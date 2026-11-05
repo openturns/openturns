@@ -351,7 +351,8 @@ R"RAW(Accessor to the function.
 Returns
 -------
 f : :class:`~openturns.Function`, :math:`\Rset^\inputDim \rightarrow \Rset^\outputDim`
-    The function defining the push-forward.)RAW"
+    The function defining the push-forward.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -361,7 +362,8 @@ R"RAW(Accessor to the function.
 Parameters
 ----------
 f : :class:`~openturns.Function`, :math:`\Rset^\inputDim \rightarrow \Rset^\outputDim`
-    The function defining the push-forward.)RAW"
+    The function defining the push-forward.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -371,7 +373,8 @@ R"RAW(Accessor to the antecedent distribution.
 Returns
 -------
 antecedent : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
-    The distribution of :math:`\inputRV`.)RAW"
+    The distribution of :math:`\inputRV`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -381,7 +384,8 @@ R"RAW(Accessor to the antecedent distribution.
 Parameters
 ----------
 antecedent : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
-    The distribution of :math:`\inputRV`.)RAW"
+    The distribution of :math:`\inputRV`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -391,7 +395,8 @@ R"RAW(Solver accessor.
 Returns
 -------
 solver : :class:`~openturns.Solver`
-    The solver used to invert the function in PDF computations.)RAW"
+    The solver used to invert the function in PDF computations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -401,4 +406,5 @@ R"RAW(Solver accessor.
 Parameters
 ----------
 solver : :class:`~openturns.Solver`
-    The solver used to invert the function in PDF computations.)RAW"
+    The solver used to invert the function in PDF computations.
+)RAW"

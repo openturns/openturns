@@ -131,4 +131,5 @@ dist : :class:`~openturns.UniformOverMesh`
     The estimated distribution as a UniformOverMesh.
 
     In the first usage, the default UniformOverMesh distribution is
-    built.)RAW"
+    built.
+)RAW"

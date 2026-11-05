@@ -66,7 +66,8 @@ R"RAW(Accessor to the background distribution.
 Returns
 -------
 background : :class:`~openturns.Distribution`
-    The background Euclidean distribution.)RAW"
+    The background Euclidean distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -76,7 +77,8 @@ R"RAW(Accessor to the background distribution.
 Parameters
 ----------
 background : :class:`~openturns.Distribution`, :math:`\inputDim`-dimensional
-    The background Euclidean distribution.)RAW"
+    The background Euclidean distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -86,7 +88,8 @@ R"RAW(Accessor to the manifold.
 Returns
 -------
 manifold : :class:`~openturns.experimental.Manifold`
-    The manifold supporting the distribution.)RAW"
+    The manifold supporting the distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -96,7 +99,8 @@ R"RAW(Accessor to the manifold.
 Parameters
 ----------
 manifold : :class:`~openturns.experimental.Manifold`
-    The manifold supporting the distribution.)RAW"
+    The manifold supporting the distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -106,7 +110,8 @@ R"RAW(Accessor to the chart center.
 Returns
 -------
 chartCenter : :class:`~openturns.Point`
-    Chart center on the manifold.)RAW"
+    Chart center on the manifold.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +121,8 @@ R"RAW(Accessor to the chart center.
 Parameters
 ----------
 chartCenter : sequence of float
-    Chart center on the manifold.)RAW"
+    Chart center on the manifold.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -126,4 +132,5 @@ R"RAW(Accessor to the tangent basis at the chart center.
 Returns
 -------
 basis : :class:`~openturns.Sample`
-    Orthonormal ambient vectors spanning the tangent space.)RAW"
+    Orthonormal ambient vectors spanning the tangent space.
+)RAW"
