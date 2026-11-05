@@ -45,6 +45,7 @@ Orthonormalization algorithms
 
     OrthonormalizationAlgorithm
     AdaptiveStieltjesAlgorithm
+    experimental.BasisOrthonormalizationAlgorithm
 
 Orthogonal univariate polynomial families
 -----------------------------------------
