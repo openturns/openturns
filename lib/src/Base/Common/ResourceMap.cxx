@@ -1030,6 +1030,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12);
   addAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64);
 
+  // BasisOrthonormalizationAlgorithm parameters //
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-DefaultDiscretization", 128);
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000);
+  addAsScalar("BasisOrthonormalizationAlgorithm-Epsilon", 1.0e-11);
+
   // LinearModelTest parameters //
   addAsScalar("LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5);
   addAsScalar("LinearModelTest-DefaultLevel", 0.05);

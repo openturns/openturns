@@ -1405,5 +1405,10 @@
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
 
+  <!-- OT::BasisOrthonormalizationAlgorithm parameters -->
+  <BasisOrthonormalizationAlgorithm-DefaultDiscretization  value_int="128" />
+  <BasisOrthonormalizationAlgorithm-MaximumTensorNodes     value_int="1000000" />
+  <BasisOrthonormalizationAlgorithm-Epsilon                value_float="1.0e-11" />
+
   <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>
