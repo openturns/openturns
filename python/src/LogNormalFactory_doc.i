@@ -325,4 +325,5 @@ The parameters are adjusted by linear regression on the
 *log-transformed* data. Because this criterion differs from matching the
 moments of the initial data (see :func:`buildMethodOfMoments`), both
 methods generally yield different estimates, especially for small
-samples.)RAW"
+samples.
+)RAW"
