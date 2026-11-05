@@ -10,8 +10,8 @@ with probability density function:
 
 .. math::
 
-    f(\mathbf{x}) = \frac{\exp(\mathbf{x}^T\boldsymbol{\Gamma}\,\mathcal{Z}
-    \,\boldsymbol{\Gamma}^T\mathbf{x})}{F(\boldsymbol{\zeta})}
+    f(\vect{x}) = \frac{\exp(\vect{x}^T\boldsymbol{\Gamma}\,\mathcal{Z}
+    \,\boldsymbol{\Gamma}^T\vect{x})}{F(\boldsymbol{\zeta})}
 
 where :math:`\mathcal{Z} = \mathrm{diag}(\zeta_1,\dots,\zeta_n)` is the
 concentration matrix, :math:`\boldsymbol{\Gamma}` is an orthogonal matrix
@@ -22,11 +22,11 @@ whose columns are the orthonormal frame of the axes and
 
     F(\boldsymbol{\zeta}) = \frac{2\pi^{n/2}}{\Gamma(n/2)}
     \sum_{k=0}^{\infty}\frac{\Gamma(n/2)}{\Gamma(n/2+k)}
-    \sum_{\|\mathbf{m}\|=k}\prod_{i=1}^{n}
+    \sum_{\|\vect{m}\|=k}\prod_{i=1}^{n}
     \frac{(1/2)_{m_i}\zeta_i^{m_i}}{m_i!}
 
 where :math:`(a)_m` is the Pochhammer symbol. Because the density is invariant
-under the shift :math:`\boldsymbol{\zeta}\mapsto\boldsymbol{\zeta}+c\mathbf{1}`,
+under the shift :math:`\boldsymbol{\zeta}\mapsto\boldsymbol{\zeta}+c\vect{1}`,
 the concentration parameters are normalized so that
 :math:`\zeta_n = \min_i\zeta_i = 0`
 
@@ -35,11 +35,11 @@ matrix is:
 
 .. math::
 
-    \mathrm{Cov}(\mathbf{X})
+    \mathrm{Cov}(\vect{X})
     = \boldsymbol{\Gamma}\,\mathrm{diag}\big(\mathbb{E}[u_1^2],\dots,
     \mathbb{E}[u_n^2]\big)\boldsymbol{\Gamma}^T
 
-where :math:`\mathbf{u} = \boldsymbol{\Gamma}^T\mathbf{X}` and the second
+where :math:`\vect{u} = \boldsymbol{\Gamma}^T\vect{X}` and the second
 moments :math:`\mathbb{E}[u_i^2]` are computed by finite differences of
 :math:`\log F`.
 
@@ -96,7 +96,8 @@ R"RAW(Accessor to the concentration parameters.
 Returns
 -------
 zeta : :class:`~openturns.Point`
-    Concentration parameters :math:`(\zeta_1,\dots,\zeta_n)`.)RAW"
+    Concentration parameters :math:`(\zeta_1,\dots,\zeta_n)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -106,7 +107,8 @@ R"RAW(Accessor to the concentration parameters.
 Parameters
 ----------
 zeta : sequence of float
-    Concentration parameters :math:`(\zeta_1,\dots,\zeta_n)`.)RAW"
+    Concentration parameters :math:`(\zeta_1,\dots,\zeta_n)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +118,8 @@ R"RAW(Accessor to the orthogonal basis matrix.
 Returns
 -------
 gamma : :class:`~openturns.SquareMatrix`
-    Orthogonal matrix whose columns are the axes of the distribution.)RAW"
+    Orthogonal matrix whose columns are the axes of the distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -126,7 +129,8 @@ R"RAW(Accessor to the orthogonal basis matrix.
 Parameters
 ----------
 gamma : :class:`~openturns.SquareMatrix`
-    Orthogonal matrix whose columns are orthonormal basis vectors.)RAW"
+    Orthogonal matrix whose columns are orthonormal basis vectors.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -137,7 +141,8 @@ Returns
 -------
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
-    basis matrix.)RAW"
+    basis matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -148,4 +153,5 @@ Parameters
 ----------
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
-    basis matrix.)RAW"
+    basis matrix.
+)RAW"

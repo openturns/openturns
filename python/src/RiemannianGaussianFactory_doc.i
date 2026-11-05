@@ -6,17 +6,17 @@ R"RAW(Riemannian Gaussian factory.
     To use it, import the ``openturns.experimental`` submodule.
 
 Given a sample of symmetric positive definite matrices
-:math:`\mathbf{X}_1,\dots,\mathbf{X}_N` of dimension :math:`n(n+1)/2`,
+:math:`\matr{X}_1,\dots,\matr{X}_N` of dimension :math:`n(n+1)/2`,
 estimates the Riemannian Gaussian parameters:
 
 1. The mean is initialized with the arithmetic mean of the sample,
    projected onto the set of symmetric positive definite matrices, then
    refined into the Fréchet (Karcher) mean by damped gradient iterations
-   :math:`\mathbf{M} \leftarrow \exp_{\mathbf{M}}(s\,\overline{\log_{\mathbf{M}}\mathbf{X}_i})`.
+   :math:`\matr{M} \leftarrow \exp_{\matr{M}}(s\,\overline{\log_{\matr{M}}\matr{X}_i})`.
 
 2. The covariance :math:`\boldsymbol{\Sigma}` is estimated as the empirical
    second moment of the affine-invariant tangent vectors
-   :math:`\log_{\mathbf{M}}\mathbf{X}_i` in orthonormal (Hilbert-Schmidt)
+   :math:`\log_{\matr{M}}\matr{X}_i` in orthonormal (Hilbert-Schmidt)
    coordinates.
 
 See also
@@ -64,8 +64,8 @@ Parameters
 sample : 2-d sequence of float
     Data on the manifold of symmetric positive definite matrices. Each row
     stores the upper-triangle flattened :math:`n\times n` matrix
-    :math:`(\mathbf{X}_{00},\dots,\mathbf{X}_{0,n-1},\mathbf{X}_{11},\dots,
-    \mathbf{X}_{n-1,n-1})`, so the sample dimension must be
+    :math:`(\matr{X}_{00},\dots,\matr{X}_{0,n-1},\matr{X}_{11},\dots,
+    \matr{X}_{n-1,n-1})`, so the sample dimension must be
     :math:`n(n+1)/2`. The sample size must be at least 3.
 param : sequence of float
     The parameters of the
@@ -79,7 +79,8 @@ dist : :class:`~openturns.experimental.RiemannianGaussian`
     The estimated distribution as a RiemannianGaussian.
 
     In the first usage, the default RiemannianGaussian distribution is
-    built.)RAW"
+    built.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -108,4 +109,5 @@ dist : :class:`~openturns.Distribution`
     The estimated distribution.
 
     In the first usage, the default RiemannianGaussian distribution is
-    built.)RAW"
+    built.
+)RAW"

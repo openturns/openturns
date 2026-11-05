@@ -23,6 +23,7 @@
 #include <cstdint>
 #include <algorithm>
 #include "openturns/WrappedNormal.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -48,7 +49,7 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
                              Point & current,
                              const UnsignedInteger level,
                              const Scalar doneSquare,
-                             Collection<Point> & pointsOut,
+                             Sample & pointsOut,
                              Bool & truncated)
 {
   const UnsignedInteger d = center.getDimension();
@@ -65,7 +66,7 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
   const std::int64_t mHigh = static_cast<std::int64_t>(std::floor(center[level] + yHigh));
   for (std::int64_t m = mLow; m <= mHigh; ++m)
   {
-    current[level] = static_cast<Scalar>(m);
+    current[level] = (1.0 * m);
     const Scalar residual = lower(level, level) * (current[level] - center[level]) + shift;
     if (level == 0)
     {
@@ -86,8 +87,8 @@ Scalar LogEllipsoidVolume(const UnsignedInteger d,
                           const Scalar logDetA,
                           const Scalar radiusSquare)
 {
-  return 0.5 * static_cast<Scalar>(d) * std::log(M_PI) - SpecFunc::LogGamma(0.5 * static_cast<Scalar>(d) + 1.0)
-         + 0.5 * static_cast<Scalar>(d) * std::log(radiusSquare) - 0.5 * logDetA;
+  return 0.5 * (1.0 * d) * std::log(M_PI) - SpecFunc::LogGamma(0.5 * (1.0 * d) + 1.0)
+         + 0.5 * (1.0 * d) * std::log(radiusSquare) - 0.5 * logDetA;
 }
 
 // Gauss-Hermite nodes and weights for the N(0,1) expectation by Golub-Welsch:
@@ -100,7 +101,7 @@ void GaussHermiteRule(const UnsignedInteger order,
 {
   SymmetricMatrix jacobi(order);
   for (UnsignedInteger i = 1; i < order; ++i)
-    jacobi(i, i - 1) = std::sqrt(static_cast<Scalar>(i));
+    jacobi(i, i - 1) = std::sqrt((1.0 * i));
   SquareMatrix vectors(order);
   const Point eigenvalues = jacobi.computeEVInPlace(vectors);
   nodes = eigenvalues;
@@ -115,8 +116,8 @@ void GaussHermiteRule(const UnsignedInteger order,
 UnsignedInteger GaussHermiteOrder(const UnsignedInteger dimension,
                                   const UnsignedInteger budget)
 {
-  const Scalar maxOrder = std::cbrt(static_cast<Scalar>(budget));
-  const Scalar tensorOrder = std::pow(static_cast<Scalar>(budget), 1.0 / static_cast<Scalar>(dimension));
+  const Scalar maxOrder = std::cbrt((1.0 * budget));
+  const Scalar tensorOrder = std::pow((1.0 * budget), 1.0 / (1.0 * dimension));
   return std::max(static_cast<UnsignedInteger>(2),
                   static_cast<UnsignedInteger>(std::min(maxOrder, tensorOrder)));
 }
@@ -335,12 +336,12 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     logDetSigma += std::log(sigmaEig_[i]);
   // Direct ellipsoid: (x - mu + k p)^T Sigma^{-1} (x - mu + k p) <= cut,
   // i.e. (k - c)^T A (k - c) <= cut with A = p^2 Sigma^{-1}, c = (mu - x)/p
-  const Scalar logDetDirect = 2.0 * static_cast<Scalar>(d) * std::log(period_) - logDetSigma;
+  const Scalar logDetDirect = 2.0 * (1.0 * d) * std::log(period_) - logDetSigma;
   const Scalar logCountDirect = LogEllipsoidVolume(d, logDetDirect, cut);
   // Fourier ellipsoid: (2 pi m / p)^T Sigma (2 pi m / p) <= cut
-  const Scalar logDetFourier = 2.0 * static_cast<Scalar>(d) * std::log(SpecFunc::TWOPI / period_) + logDetSigma;
+  const Scalar logDetFourier = 2.0 * (1.0 * d) * std::log(SpecFunc::TWOPI / period_) + logDetSigma;
   const Scalar logCountFourier = LogEllipsoidVolume(d, logDetFourier, cut);
-  const Scalar logBudget = std::log(static_cast<Scalar>(maxLatticeTerms_));
+  const Scalar logBudget = std::log((1.0 * maxLatticeTerms_));
   if (std::min(logCountDirect, logCountFourier) > logBudget)
   {
     // Even the cheapest ellipsoidal sum requires too many terms: the density
@@ -349,7 +350,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     OSS oss;
     oss << "WrappedNormal: ellipsoidal lattice sums exceed WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
     LOGWARN(oss.str());
-    return -static_cast<Scalar>(d) * std::log(period_);
+    return -(1.0 * d) * std::log(period_);
   }
 
   Scalar logSum = -SpecFunc::Infinity;
@@ -381,7 +382,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     Point center(d);
     for (UnsignedInteger i = 0; i < d; ++i)
       center[i] = (mu_[i] - point[i]) / period_;
-    Collection<Point> latticePoints;
+    Sample latticePoints(0, d);
     Point current(d);
     Bool truncated = false;
     EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
@@ -423,7 +424,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       for (UnsignedInteger j = 0; j <= i; ++j)
         lower(i, j) = chol(i, j);
     const Point center(d);
-    Collection<Point> latticePoints;
+    Sample latticePoints(0, d);
     Point current(d);
     Bool truncated = false;
     EnumerateEllipsoidLevel(lower, center, cut, maxLatticeTerms_, current, d - 1, 0.0, latticePoints, truncated);
@@ -451,7 +452,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       LOGWARN("WrappedNormal: Fourier sum is non-positive, this point is out of scope");
       return -SpecFunc::Infinity;
     }
-    logSum = std::log(sum) - static_cast<Scalar>(d) * std::log(period_);
+    logSum = std::log(sum) - (1.0 * d) * std::log(period_);
     evaluated = true;
     }
   }
@@ -460,7 +461,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     OSS oss;
     oss << "WrappedNormal: direct and Fourier lattice enumerations exceed WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
     LOGWARN(oss.str());
-    return -static_cast<Scalar>(d) * std::log(period_);
+    return -(1.0 * d) * std::log(period_);
   }
 
   return logSum;
@@ -481,7 +482,7 @@ void WrappedNormal::computeCovariance() const
   const UnsignedInteger d = dimension_;
   const UnsignedInteger budget = ResourceMap::GetAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints");
   const UnsignedInteger order = GaussHermiteOrder(d, budget);
-  if (static_cast<Scalar>(d) * std::log(static_cast<Scalar>(order)) > std::log(static_cast<Scalar>(budget)))
+  if ((1.0 * d) * std::log((1.0 * order)) > std::log((1.0 * budget)))
     throw NotYetImplementedException(HERE) << "WrappedNormal::computeCovariance: the Gauss-Hermite grid exceeds WrappedNormal-GaussHermiteMaximumPoints=" << budget << " in dimension " << d;
   Point nodes;
   Point weights;
@@ -495,7 +496,7 @@ void WrappedNormal::computeCovariance() const
   SquareMatrix second(d);
   Scalar totalWeight = 0.0;
   Indices counter(d, 0);
-  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
+  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow((1.0 * order), (1.0 * d)));
   for (UnsignedInteger t = 0; t < total; ++t)
   {
     Scalar weight = 1.0;
@@ -554,7 +555,7 @@ Scalar WrappedNormal::computeCDF(const Point & point) const
   Scalar cdf = 0.0;
   for (SignedInteger k = -static_cast<SignedInteger>(K); k <= static_cast<SignedInteger>(K); ++k)
   {
-    const Scalar shift = static_cast<Scalar>(k) * period_;
+    const Scalar shift = (1.0 * k) * period_;
     cdf += DistFunc::pNormal((x - mu + shift) / sigma)
            - DistFunc::pNormal((-halfP - mu + shift) / sigma);
   }
@@ -579,7 +580,7 @@ void WrappedNormal::setParameter(const Point & parameter)
 {
   // Infer the dimension from the size d^2 + d + 1 of the parameter vector
   const UnsignedInteger size = parameter.getSize();
-  const Scalar root = (std::sqrt(static_cast<Scalar>(1 + 4 * (size - 1))) - 1.0) / 2.0;
+  const Scalar root = (std::sqrt((1.0 * (1 + 4 * (size - 1)))) - 1.0) / 2.0;
   const UnsignedInteger d = static_cast<UnsignedInteger>(std::round(root));
   if (d * (d + 1) + 1 != size)
     throw InvalidArgumentException(HERE) << "Error: expected a parameter vector of size d^2 + d + 1 for some d >= 1, got size=" << size;
@@ -710,7 +711,7 @@ Scalar WrappedNormal::computeEntropy() const
   const UnsignedInteger d = dimension_;
   const UnsignedInteger budget = ResourceMap::GetAsUnsignedInteger("WrappedNormal-GaussHermiteMaximumPoints");
   const UnsignedInteger order = GaussHermiteOrder(d, budget);
-  if (static_cast<Scalar>(d) * std::log(static_cast<Scalar>(order)) > std::log(static_cast<Scalar>(budget)))
+  if ((1.0 * d) * std::log((1.0 * order)) > std::log((1.0 * budget)))
     throw NotYetImplementedException(HERE) << "WrappedNormal::computeEntropy: the Gauss-Hermite grid exceeds WrappedNormal-GaussHermiteMaximumPoints=" << budget << " in dimension " << d;
   Point nodes;
   Point weights;
@@ -722,7 +723,7 @@ Scalar WrappedNormal::computeEntropy() const
   Scalar entropy = 0.0;
   Scalar totalWeight = 0.0;
   Indices counter(d, 0);
-  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
+  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow((1.0 * order), (1.0 * d)));
   for (UnsignedInteger t = 0; t < total; ++t)
   {
     Scalar weight = 1.0;

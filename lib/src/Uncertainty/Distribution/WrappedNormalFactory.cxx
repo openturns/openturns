@@ -63,7 +63,7 @@ WrappedNormal WrappedNormalFactory::buildAsWrappedNormal(const Point & parameter
   {
     // The dimension is inferred from the size d^2 + d + 1 of the parameter vector
     const UnsignedInteger size = parameters.getSize();
-    const Scalar root = (std::sqrt(static_cast<Scalar>(1 + 4 * (size - 1))) - 1.0) / 2.0;
+    const Scalar root = (std::sqrt((1.0 * (1 + 4 * (size - 1)))) - 1.0) / 2.0;
     const UnsignedInteger d = static_cast<UnsignedInteger>(std::round(root));
     if (d * (d + 1) + 1 != size)
       throw InvalidArgumentException(HERE) << "Error: expected a parameter vector of size d^2 + d + 1 for some d >= 1, got size=" << size;
@@ -120,8 +120,8 @@ WrappedNormal WrappedNormalFactory::buildAsWrappedNormal(const Sample & sample) 
       sumCos += std::cos(2.0 * M_PI * angle / period);
       sumSin += std::sin(2.0 * M_PI * angle / period);
     }
-    sumCos /= static_cast<Scalar>(size);
-    sumSin /= static_cast<Scalar>(size);
+    sumCos /= (1.0 * size);
+    sumSin /= (1.0 * size);
     const Scalar meanAngle = std::atan2(sumSin, sumCos);
     mu[j] = period * meanAngle / (2.0 * M_PI);
     // Wrap to fundamental domain
@@ -162,7 +162,7 @@ WrappedNormal WrappedNormalFactory::buildAsWrappedNormal(const Sample & sample) 
         sigma(r, c) += diff[r] * diff[c];
   }
   // Scale sigma element-wise to avoid SymmetricMatrix return type
-  const Scalar invSize = 1.0 / static_cast<Scalar>(size);
+  const Scalar invSize = 1.0 / (1.0 * size);
   for (UnsignedInteger r = 0; r < d; ++r)
     for (UnsignedInteger c = 0; c <= r; ++c)
       sigma(r, c) *= invSize;

@@ -100,7 +100,7 @@ Bingham BinghamFactory::buildAsBingham(const Sample & sample) const
     for (UnsignedInteger r = 0; r < n; ++r)
       for (UnsignedInteger c = 0; c < n; ++c)
         S(r, c) += sample(i, r) * sample(i, c);
-  S = S * (1.0 / static_cast<Scalar>(size));
+  S = S * (1.0 / (1.0 * size));
 
   // Step 2: eigendecomposition of S to get gamma and eigenvalues
   // For Bingham, we need the eigenvectors (gamma) and eigenvalues related to zeta

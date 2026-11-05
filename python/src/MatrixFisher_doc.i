@@ -10,52 +10,52 @@ The Matrix Fisher distribution is defined on the group of rotation matrices
 
 .. math::
 
-    f(\mathbf{R}) = \frac{\exp\big(\mathrm{tr}(\mathbf{F}^T\mathbf{R})\big)}
-    {a_0(\mathbf{F})}
+    f(\matr{R}) = \frac{\exp\big(\mathrm{tr}(\matr{F}^T\matr{R})\big)}
+    {a_0(\matr{F})}
 
 with respect to the Haar measure of :math:`SO(3)`, where
-:math:`\mathbf{F}` is a :math:`3\times 3` parameter matrix and
-:math:`\mathrm{tr}(\mathbf{F}^T\mathbf{R})` is the Frobenius inner product
-of :math:`\mathbf{F}` and :math:`\mathbf{R}` over all nine matrix entries. The
+:math:`\matr{F}` is a :math:`3\times 3` parameter matrix and
+:math:`\mathrm{tr}(\matr{F}^T\matr{R})` is the Frobenius inner product
+of :math:`\matr{F}` and :math:`\matr{R}` over all nine matrix entries. The
 resulting **mean** matrix is:
 
 .. math::
 
-    \mathbb{E}[\mathbf{R}] = \mathbf{U}\,\mathrm{diag}
-    \big(r_1, r_2, r_3\big)\mathbf{V}^T
+    \mathbb{E}[\matr{R}] = \matr{U}\,\mathrm{diag}
+    \big(r_1, r_2, r_3\big)\matr{V}^T
 
-where :math:`\mathbf{F} = \mathbf{U}\mathrm{diag}(\sigma_1,\sigma_2,\sigma_3)
-\mathbf{V}^T` with :math:`\sigma_1 \ge \sigma_2 \ge \sigma_3`.
+where :math:`\matr{F} = \matr{U}\mathrm{diag}(\sigma_1,\sigma_2,\sigma_3)
+\matr{V}^T` with :math:`\sigma_1 \ge \sigma_2 \ge \sigma_3`.
 
 The **covariance** matrix is the :math:`9\times 9` covariance of the
 row-major flattened rotation:
 
 .. math::
 
-    \mathrm{Cov}(\mathrm{vec}(\mathbf{R})) =
-    \mathbb{E}[\mathrm{vec}(\mathbf{R})\mathrm{vec}(\mathbf{R})^T]
-    - \mathbb{E}[\mathrm{vec}(\mathbf{R})]
-    \mathbb{E}[\mathrm{vec}(\mathbf{R})]^T
+    \mathrm{Cov}(\mathrm{vec}(\matr{R})) =
+    \mathbb{E}[\mathrm{vec}(\matr{R})\mathrm{vec}(\matr{R})^T]
+    - \mathbb{E}[\mathrm{vec}(\matr{R})]
+    \mathbb{E}[\mathrm{vec}(\matr{R})]^T
 
-The normalization constant :math:`a_0(\mathbf{F})` is computed by
+The normalization constant :math:`a_0(\matr{F})` is computed by
 Gauss-Legendre quadrature over the Euler angles
 :math:`(\phi,\theta,\psi)\in[0,2\pi]\times[0,\pi]\times[0,2\pi]`:
 
 .. math::
 
-    a_0(\mathbf{F}) = 4\pi^3 e^{m(\mathbf{F})} \int_{[0,1]^3}
-    \exp\big(\mathrm{tr}(\mathbf{F}^T\mathbf{R}(\phi,\theta,\psi))
-    - m(\mathbf{F})\big)
+    a_0(\matr{F}) = 4\pi^3 e^{m(\matr{F})} \int_{[0,1]^3}
+    \exp\big(\mathrm{tr}(\matr{F}^T\matr{R}(\phi,\theta,\psi))
+    - m(\matr{F})\big)
     \sin\theta\,\mathrm{d}u\,\mathrm{d}v\,\mathrm{d}w
 
-where :math:`m(\mathbf{F}) = \max_{\mathbf{R}\in SO(3)}
-\mathrm{tr}(\mathbf{F}^T\mathbf{R})` is the maximum of the trace over
+where :math:`m(\matr{F}) = \max_{\matr{R}\in SO(3)}
+\mathrm{tr}(\matr{F}^T\matr{R})` is the maximum of the trace over
 :math:`SO(3)`: with :math:`\sigma_1 \ge \sigma_2 \ge \sigma_3` the singular
-values of :math:`\mathbf{F}`, :math:`m(\mathbf{F}) = \sigma_1 + \sigma_2 +
+values of :math:`\matr{F}`, :math:`m(\matr{F}) = \sigma_1 + \sigma_2 +
 \sigma_3`, except :math:`\sigma_1 + \sigma_2 - \sigma_3` when
-:math:`\det\mathbf{F} < 0`. Subtracting :math:`m(\mathbf{F})` keeps the
+:math:`\det\matr{F} < 0`. Subtracting :math:`m(\matr{F})` keeps the
 integrand below one for numerical stability and the implementation restores
-it through :math:`\log a_0(\mathbf{F}) = m(\mathbf{F}) + \log(\mathrm{integral})`.
+it through :math:`\log a_0(\matr{F}) = m(\matr{F}) + \log(\mathrm{integral})`.
 
 **Sampling** uses the acceptance-rejection method with a uniform distribution
 on :math:`SO(3)` as enveloping distribution. The latter is sampled from
@@ -66,8 +66,8 @@ The **entropy** is:
 
 .. math::
 
-    \mathcal{H} = \log a_0(\mathbf{F})
-    - \mathbb{E}[\mathrm{tr}(\mathbf{F}^T\mathbf{R})]
+    \mathcal{H} = \log a_0(\matr{F})
+    - \mathbb{E}[\mathrm{tr}(\matr{F}^T\matr{R})]
 
 Parameters
 ----------
@@ -112,7 +112,8 @@ R"RAW(Accessor to the parameter matrix.
 Returns
 -------
 F : :class:`~openturns.SquareMatrix`
-    The :math:`3\times 3` parameter matrix.)RAW"
+    The :math:`3\times 3` parameter matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -122,7 +123,8 @@ R"RAW(Accessor to the parameter matrix.
 Parameters
 ----------
 F : :class:`~openturns.SquareMatrix`
-    The :math:`3\times 3` parameter matrix.)RAW"
+    The :math:`3\times 3` parameter matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -133,7 +135,8 @@ Returns
 -------
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
-    sampled matrices.)RAW"
+    sampled matrices.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -144,4 +147,5 @@ Parameters
 ----------
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
-    sampled matrices.)RAW"
+    sampled matrices.
+)RAW"
