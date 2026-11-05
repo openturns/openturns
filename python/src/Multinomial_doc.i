@@ -157,7 +157,8 @@ Parameters
 eta : float, :math:`0 \leq eta < 1`
     The maximum absolute error in the Poisson summation-based CDF computation.
 
-A value of 0 turns the error control off.)RAW"
+A value of 0 turns the error control off.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -188,4 +189,5 @@ smallA : float, :math:`smallA \geq 0`
     correction of the generating function of the untruncated Poisson distribution.
 
 The default value comes from the ``Multinomial-smallA`` :class:`~openturns.ResourceMap`
-key, equal to :math:`10.0`.)RAW"
+key, equal to :math:`10.0`.
+)RAW"
