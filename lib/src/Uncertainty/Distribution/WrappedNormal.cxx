@@ -73,7 +73,7 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
   const Scalar yHigh = (root - shift) / lower(level, level);
   const Signed64BitsInteger mLow = static_cast<Signed64BitsInteger>(std::ceil(center[level] + yLow));
   const Signed64BitsInteger mHigh = static_cast<Signed64BitsInteger>(std::floor(center[level] + yHigh));
-  for (Signed64BitsInteger m = mLow; m <= mHigh; ++m)
+  for (Signed64BitsInteger m = mLow; m <= mHigh && !truncated; ++m)
   {
     current[level] = (1.0 * m);
     const Scalar residual = lower(level, level) * (current[level] - center[level]) + shift;
@@ -87,7 +87,10 @@ void EnumerateEllipsoidLevel(const SquareMatrix & lower,
       }
     }
     else
+    {
       EnumerateEllipsoidLevel(lower, center, radiusSquare, budget, current, level - 1, doneSquare + residual * residual, nodeVisits, pointsOut, truncated);
+      if (truncated) return;
+    }
   }
 }
 
@@ -98,6 +101,45 @@ Scalar LogEllipsoidVolume(const UnsignedInteger d,
 {
   return 0.5 * (1.0 * d) * std::log(M_PI) - SpecFunc::LogGamma(0.5 * (1.0 * d) + 1.0)
          + 0.5 * (1.0 * d) * std::log(radiusSquare) - 0.5 * logDetA;
+}
+
+// Log-density of the one-dimensional wrapped normal with mean mu, variance
+// sigma^2 and period p. The direct lattice sum needs O(sigma / p) terms and
+// the dual Fourier series O(p / sigma) terms, so the shortest representation
+// is used. This gives an accurate and cheap evaluation when a diagonal
+// covariance factorizes into independent wrapped normals.
+Scalar LogWrappedNormalPDF1D(const Scalar x,
+                             const Scalar mu,
+                             const Scalar variance,
+                             const Scalar period)
+{
+  const Scalar sigma = std::sqrt(variance);
+  const Scalar cut = -2.0 * std::log(SpecFunc::Precision);
+  const Scalar latticeHalfWidth = std::ceil(std::sqrt(cut) * sigma / period);
+  const Scalar fourierModeNumber = std::ceil(std::sqrt(cut) * period / (SpecFunc::TWOPI * sigma));
+  if (fourierModeNumber < latticeHalfWidth)
+  {
+    const Scalar omega = SpecFunc::TWOPI / period;
+    const UnsignedInteger modeNumber = static_cast<UnsignedInteger>(fourierModeNumber);
+    Scalar sum = 1.0;
+    for (UnsignedInteger m = 1; m <= modeNumber; ++m)
+    {
+      const Scalar mode = 1.0 * m;
+      sum += 2.0 * std::exp(-0.5 * mode * mode * omega * omega * variance) * std::cos(mode * omega * (x - mu));
+    }
+    if (sum > 0.0) return std::log(sum) - std::log(period);
+  }
+  // Choose K such that the tail of the normal is below SpecFunc::Precision
+  const UnsignedInteger kMax = std::max(UnsignedInteger(1),
+                                       static_cast<UnsignedInteger>(latticeHalfWidth));
+  const Scalar logNormalization = std::log(sigma) + 0.5 * std::log(SpecFunc::TWOPI);
+  Scalar logSum = -SpecFunc::Infinity;
+  for (SignedInteger k = -static_cast<SignedInteger>(kMax); k <= static_cast<SignedInteger>(kMax); ++k)
+  {
+    const Scalar z = (x - mu + (1.0 * k) * period) / sigma;
+    logSum = SpecFunc::LogSumExp(logSum, -0.5 * z * z - logNormalization);
+  }
+  return logSum;
 }
 
 // Gauss-Hermite nodes and weights for the N(0,1) expectation by Golub-Welsch:
@@ -469,10 +511,24 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
   }
   if (!evaluated)
   {
-    OSS oss;
-    oss << "WrappedNormal: direct and Fourier lattice enumerations exceed WrappedNormal-MaxLatticeTerms (" << maxLatticeTerms_ << "), using the uniform limit";
-    LOGWARN(oss.str());
-    return -(1.0 * d) * std::log(period_);
+    // A diagonal covariance factorizes into independent one-dimensional
+    // wrapped normals: evaluate each marginal exactly instead of replacing
+    // the density by its uniform limit, which would erase the concentrated
+    // directions of a needle-shaped covariance.
+    Bool diagonal = true;
+    for (UnsignedInteger i = 0; i < d; ++i)
+      for (UnsignedInteger j = 0; j < i; ++j)
+        if (sigma_(i, j) != 0.0) diagonal = false;
+    if (diagonal)
+    {
+      Scalar logPDF = 0.0;
+      for (UnsignedInteger i = 0; i < d; ++i)
+        logPDF += LogWrappedNormalPDF1D(point[i], mu_[i], sigma_(i, i), period_);
+      return logPDF;
+    }
+    throw NotYetImplementedException(HERE) << "WrappedNormal: direct and Fourier lattice enumerations exceed WrappedNormal-MaxLatticeTerms ("
+                                           << maxLatticeTerms_
+                                           << ") and the covariance is not diagonal, the density cannot be evaluated accurately";
   }
 
   return logSum;

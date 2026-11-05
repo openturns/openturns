@@ -132,14 +132,35 @@ wide_circle = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[1.0e18]]), 1.0)
 ott.assert_almost_equal(wide_circle.computeCDF([0.25]), 0.75, 1e-12, 0.0)
 
 # A needle-shaped covariance has many partial lattice vectors but few
-# complete points: the node budget must stop the recursion and use the
-# uniform limit instead of looping over the long direction.
+# complete points: the node budget must stop the recursion instead of looping
+# over the long direction. The diagonal covariance factorizes, so the
+# concentrated direction keeps its exact density instead of being flattened
+# to the uniform limit.
 needle = otexp.WrappedNormal(
     [0.0, 0.0],
     ot.CovarianceMatrix([[1.0e-12, 0.0], [0.0, 1.0e12]]),
     1.0,
 )
-ott.assert_almost_equal(needle.computePDF([0.3, 0.4]), 1.0, 1e-12, 0.0)
+ott.assert_almost_equal(
+    needle.computePDF([0.0, 0.4]), 1.0 / (1.0e-6 * math.sqrt(2.0 * math.pi)), 1e-12, 0.0
+)
+assert needle.computePDF([0.3, 0.4]) < 1e-300
+
+# Without the diagonal factorization the density cannot be recovered when
+# both enumerations exceed the budget: report it instead of returning the
+# uniform limit.
+small, large = 1.0e-6, 1.0e6
+rotated_cov = ot.CovarianceMatrix(2)
+rotated_cov[0, 0] = 0.5 * (small + large)
+rotated_cov[1, 1] = 0.5 * (small + large)
+rotated_cov[0, 1] = 0.5 * (small - large)
+ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100)
+try:
+    rotated_needle = otexp.WrappedNormal([0.0, 0.0], rotated_cov, 1.0)
+    with ott.assert_raises(RuntimeError):
+        rotated_needle.computePDF([0.3, 0.4])
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
 
 # Unaffordable Gauss-Hermite grids throw instead of hanging (2^13 > budget)
 big = otexp.WrappedNormal([0.0] * 13, ot.CovarianceMatrix(13))
