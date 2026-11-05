@@ -100,7 +100,8 @@ R"RAW(Accessor to the antecedent distribution.
 Returns
 -------
 antecedent : :class:`~openturns.Distribution`, :math:`n`-dimensional
-    The distribution of :math:`\inputRV`.)RAW"
+    The distribution of :math:`\inputRV`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -110,7 +111,8 @@ R"RAW(Accessor to the antecedent distribution.
 Parameters
 ----------
 antecedent : :class:`~openturns.Distribution`, :math:`n`-dimensional
-    The distribution of :math:`\inputRV`, whose support must be the reference domain.)RAW"
+    The distribution of :math:`\inputRV`, whose support must be the reference domain.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -121,7 +123,8 @@ Returns
 -------
 values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map: the reference mesh and
-    the image of each reference vertex.)RAW"
+    the image of each reference vertex.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -132,7 +135,8 @@ Parameters
 ----------
 values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map: the reference mesh and
-    the image of each reference vertex.)RAW"
+    the image of each reference vertex.
+)RAW"
 
 // ---------------------------------------------------------------------
 

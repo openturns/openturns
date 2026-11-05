@@ -26,7 +26,6 @@
 #include <set>
 #include <tuple>
 #include <utility>
-#include <vector>
 
 #include "openturns/UniformOverMeshFactory.hxx"
 #include "openturns/Collection.hxx"
@@ -88,10 +87,10 @@ Bool InCircle(const Point2 & a,
 // The input points are augmented with an enclosing super-triangle whose
 // vertices have indices nbPoints, nbPoints + 1 and nbPoints + 2. The
 // returned triangles only refer to the original points.
-std::vector<Triplet> Triangulate2D(const std::vector<Point2> & points)
+Collection<Triplet> Triangulate2D(const Collection<Point2> & points)
 {
-  std::vector<Triplet> result;
-  const UnsignedInteger nbPoints = static_cast<UnsignedInteger>(points.size());
+  Collection<Triplet> result;
+  const UnsignedInteger nbPoints = points.getSize();
   if (nbPoints < 3) return result;
   // Bounding box of the points
   Scalar minX = points[0].x;
@@ -120,30 +119,30 @@ std::vector<Triplet> Triangulate2D(const std::vector<Point2> & points)
   Point2 c;
   c.x = midX;
   c.y = midY + 2.0 * delta;
-  std::vector<Point2> allPoints(points);
-  allPoints.push_back(a);
-  allPoints.push_back(b);
-  allPoints.push_back(c);
+  Collection<Point2> allPoints(points);
+  allPoints.add(a);
+  allPoints.add(b);
+  allPoints.add(c);
   const UnsignedInteger indexA = nbPoints;
   const UnsignedInteger indexB = nbPoints + 1;
   const UnsignedInteger indexC = nbPoints + 2;
-  std::vector<Triplet> triangles(1, Triplet {indexA, indexB, indexC});
+  Collection<Triplet> triangles(1, Triplet {indexA, indexB, indexC});
   for (UnsignedInteger p = 0; p < nbPoints; ++p)
   {
     const Point2 pt(points[p]);
     // Identify the triangles whose circumcircle contains the point
-    std::vector<Bool> badFlag(triangles.size(), false);
-    for (UnsignedInteger i = 0; i < triangles.size(); ++i)
+    Indices badFlag(triangles.getSize(), 0);
+    for (UnsignedInteger i = 0; i < triangles.getSize(); ++i)
     {
       const Triplet t(triangles[i]);
       const Point2 & pa(allPoints[t.i]);
       const Point2 & pb(allPoints[t.j]);
       const Point2 & pc(allPoints[t.k]);
-      if (InCircle(pa, pb, pc, pt)) badFlag[i] = true;
+      if (InCircle(pa, pb, pc, pt)) badFlag[i] = 1;
     }
     // Boundary edges of the union of the bad triangles
     std::map<std::pair<UnsignedInteger, UnsignedInteger>, UnsignedInteger> edgeCount;
-    for (UnsignedInteger i = 0; i < triangles.size(); ++i)
+    for (UnsignedInteger i = 0; i < triangles.getSize(); ++i)
     {
       if (!badFlag[i]) continue;
       const Triplet t(triangles[i]);
@@ -156,10 +155,10 @@ std::vector<Triplet> Triangulate2D(const std::vector<Point2> & points)
       }
     }
     // Remove the bad triangles
-    std::vector<Triplet> newTriangles;
-    for (UnsignedInteger i = 0; i < triangles.size(); ++i)
-      if (!badFlag[i]) newTriangles.push_back(triangles[i]);
-    triangles.swap(newTriangles);
+    Collection<Triplet> newTriangles;
+    for (UnsignedInteger i = 0; i < triangles.getSize(); ++i)
+      if (!badFlag[i]) newTriangles.add(triangles[i]);
+    triangles = newTriangles;
     // Add the triangles (edge, p) for each boundary edge
     for (std::map<std::pair<UnsignedInteger, UnsignedInteger>, UnsignedInteger>::const_iterator it = edgeCount.begin(); it != edgeCount.end(); ++it)
     {
@@ -174,15 +173,15 @@ std::vector<Triplet> Triangulate2D(const std::vector<Point2> & points)
       t.k = p;
       // Keep the triangle counter-clockwise
       if (Orient2D(allPoints[i], allPoints[j], allPoints[p]) < 0.0) std::swap(t.j, t.k);
-      triangles.push_back(t);
+      triangles.add(t);
     }
   }
   // Discard the triangles incident to the super-triangle
-  for (UnsignedInteger i = 0; i < triangles.size(); ++i)
+  for (UnsignedInteger i = 0; i < triangles.getSize(); ++i)
   {
     const Triplet t(triangles[i]);
     if ((t.i < nbPoints) && (t.j < nbPoints) && (t.k < nbPoints))
-      result.push_back(t);
+      result.add(t);
   }
   return result;
 }
@@ -277,7 +276,7 @@ UniformOverMesh UniformOverMeshFactory::buildAsUniformOverMesh(const Sample & sa
       basis1[j] = eigenvectors(j, ambientDimension - 2);
     }
     // Project the neighbors onto the tangent plane
-    std::vector<Point2> chart(k);
+    Collection<Point2> chart(k);
     for (UnsignedInteger j = 0; j < k; ++j)
     {
       const Point offset(sample[neighbors[j]] - center);
@@ -287,8 +286,8 @@ UniformOverMesh UniformOverMeshFactory::buildAsUniformOverMesh(const Sample & sa
       chart[j] = projected;
     }
     // Delaunay triangulate the chart
-    const std::vector<Triplet> triangles(Triangulate2D(chart));
-    for (UnsignedInteger t = 0; t < triangles.size(); ++t)
+    const Collection<Triplet> triangles(Triangulate2D(chart));
+    for (UnsignedInteger t = 0; t < triangles.getSize(); ++t)
     {
       const Triplet triplet(triangles[t]);
       if ((triplet.i >= k) || (triplet.j >= k) || (triplet.k >= k)) continue;
@@ -301,14 +300,13 @@ UniformOverMesh UniformOverMeshFactory::buildAsUniformOverMesh(const Sample & sa
   if (triangleSet.empty())
     throw InvalidArgumentException(HERE) << "Error: cannot estimate a surface mesh from the given sample.";
   // Convert the set into a vector of triangles and compute their areas
-  std::vector<std::array<UnsignedInteger, 3> > triangles;
-  triangles.reserve(triangleSet.size());
+  Collection<std::array<UnsignedInteger, 3> > triangles;
   for (std::set<std::tuple<UnsignedInteger, UnsignedInteger, UnsignedInteger> >::const_iterator it = triangleSet.begin(); it != triangleSet.end(); ++it)
   {
     std::array<UnsignedInteger, 3> triangle = {{std::get<0>(*it), std::get<1>(*it), std::get<2>(*it)}};
-    triangles.push_back(triangle);
+    triangles.add(triangle);
   }
-  const UnsignedInteger nbTriangles = static_cast<UnsignedInteger>(triangles.size());
+  const UnsignedInteger nbTriangles = triangles.getSize();
   Point areas(nbTriangles);
   Scalar maxArea = 0.0;
   for (UnsignedInteger i = 0; i < nbTriangles; ++i)
@@ -323,9 +321,9 @@ UniformOverMesh UniformOverMeshFactory::buildAsUniformOverMesh(const Sample & sa
     throw InvalidArgumentException(HERE) << "Error: the estimated surface mesh is degenerate.";
   // Prune the degenerate triangles, i.e. those of negligible area
   const Scalar areaThreshold = ResourceMap::GetAsScalar("UniformOverMeshFactory-MinimumAreaFactor") * maxArea;
-  std::vector<Bool> keep(nbTriangles, true);
+  Indices keep(nbTriangles, 1);
   for (UnsignedInteger i = 0; i < nbTriangles; ++i)
-    if (areas[i] < areaThreshold) keep[i] = false;
+    if (areas[i] < areaThreshold) keep[i] = 0;
   // Build the kept-triangle list from the pruned triangles
   Collection<Indices> simplicesCollection;
   for (UnsignedInteger i = 0; i < nbTriangles; ++i)
