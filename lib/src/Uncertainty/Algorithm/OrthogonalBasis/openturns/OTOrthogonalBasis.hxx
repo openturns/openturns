@@ -51,5 +51,6 @@
 #include "openturns/SoizeGhanemFactory.hxx"
 #include "openturns/FiniteOrthogonalFunctionFactory.hxx"
 #include "openturns/BasisOrthonormalizationAlgorithm.hxx"
+#include "openturns/GaussLPQuadratureRule.hxx"
 
 #endif /* OPENTURNS_OTORTHOGONALBASIS_HXX */
