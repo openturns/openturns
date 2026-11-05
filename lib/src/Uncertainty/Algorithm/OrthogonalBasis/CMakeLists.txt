@@ -34,6 +34,7 @@ ot_add_source_file (FiniteOrthogonalFunctionFactory.cxx)
 ot_add_source_file (BasisOrthonormalizationAlgorithm.cxx)
 ot_add_source_file (GaussLPQuadrature.cxx)
 ot_add_source_file (GaussLPQuadratureRule.cxx)
+ot_add_source_file (BasisOrthonormalizationFactory.cxx)
 
 ot_install_header_file (OTOrthogonalBasis.hxx)
 ot_install_header_file (OrthogonalFunctionFactory.hxx)
@@ -67,4 +68,5 @@ ot_install_header_file (FiniteOrthogonalFunctionFactory.hxx)
 ot_install_header_file (BasisOrthonormalizationAlgorithm.hxx)
 ot_install_header_file (GaussLPQuadrature.hxx)
 ot_install_header_file (GaussLPQuadratureRule.hxx)
+ot_install_header_file (BasisOrthonormalizationFactory.hxx)
 

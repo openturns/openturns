@@ -8,13 +8,19 @@
 Parameters
 ----------
 functions : sequence of :class:`~openturns.Function`
-    The finite set of functions orthogonal wrt the given measure.
+    The finite set of functions spanning the basis.
 measure : :class:`~openturns.Distribution`
     The measure defining the inner product of the factory.
 
 Notes
 -----
 This class implements a user-defined multivariate orthonormal basis associated with an arbitrary multidimensional distribution.
+
+No orthogonality check is performed because it is costly in general: it is up
+to the user to ensure that the functions are pairwise orthogonal and have unit
+norm with respect to the measure when an orthonormal basis is expected. The
+:class:`~openturns.experimental.BasisOrthonormalizationFactory` class can
+compute an orthonormal basis from a spanning set of functions.
 
 See also
 --------

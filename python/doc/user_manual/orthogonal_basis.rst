@@ -102,6 +102,7 @@ Orthogonal multivariate functions
     :template: class.rst_t
 
     experimental.FiniteOrthogonalFunctionFactory
+    experimental.BasisOrthonormalizationFactory
     experimental.GaussLPQuadrature
 
 Making orthogonal multivariate functions from orthogonal univariate functions
