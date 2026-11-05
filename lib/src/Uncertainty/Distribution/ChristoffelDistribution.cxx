@@ -22,7 +22,6 @@
 #include <algorithm>
 #include <functional>
 #include <limits>
-#include <vector>
 #include <utility>
 #include "openturns/ChristoffelDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -628,9 +627,9 @@ Scalar ChristoffelDistribution::computeKn() const
         // envelope must bound.
         const Interval searchBox(range.getLowerBound(), range.getUpperBound());
         // rank the candidates by decreasing Christoffel value, best first
-        std::vector<std::pair<Scalar, UnsignedInteger> > ranked(values.getSize());
+        Collection<std::pair<Scalar, UnsignedInteger> > ranked(values.getSize());
         for (UnsignedInteger i = 0; i < values.getSize(); ++i) ranked[i] = std::make_pair(values(i, 0), i);
-        const UnsignedInteger rankNumber = std::min(maximumMultiStart, static_cast<UnsignedInteger>(ranked.size()));
+        const UnsignedInteger rankNumber = std::min(maximumMultiStart, ranked.getSize());
         std::partial_sort(ranked.begin(), ranked.begin() + rankNumber, ranked.end(), std::greater<std::pair<Scalar, UnsignedInteger> >());
         // the optimizer works inside the numerical range: seed it there only
         Sample startingPoints(0, getDimension());
@@ -1146,7 +1145,7 @@ Bool ChristoffelDistribution::preferRatioOfUniforms() const
 {
   if (getDimension() > ResourceMap::GetAsUnsignedInteger("ChristoffelDistribution-RatioUniformMaxDimension")) return false;
   if (!hasRatioUniformsSetup_) return false;
-  const Scalar rejectionAcceptance = static_cast<Scalar>(size_) / computeKn();
+  const Scalar rejectionAcceptance = (1.0 * size_) / computeKn();
   const Scalar ratioUniformsAcceptance = sampler_.getAcceptanceRatio();
   return ratioUniformsAcceptance > rejectionAcceptance;
 }

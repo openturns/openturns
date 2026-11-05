@@ -116,7 +116,8 @@ Examples
 >>> print(f"{distribution.computePDF([0.5]):.6f}")
 0.304688
 >>> print(distribution.computePDF([0.5]) == distribution.computePDF([-0.5]))
-True)RAW"
+True
+)RAW"
 
 // ---------------------------------------------------------------------
 
