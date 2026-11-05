@@ -205,11 +205,11 @@ static Scalar BesselTaylor(const Scalar t,
     Scalar sign = 1.0;
     for (UnsignedInteger ell = 0; ell <= k; ++ell)
     {
-      column += sign * SmallBinomial(k, ell) * SpecFunc::BesselJ(a + 2.0 * static_cast<Scalar>(ell) - static_cast<Scalar>(k), z);
+      column += sign * SmallBinomial(k, ell) * SpecFunc::BesselJ(a + 2.0 * (1.0 * ell) - (1.0 * k), z);
       sign = -sign;
     }
     factorial *= k;
-    AA[k] = column / std::pow(2.0, static_cast<Scalar>(k)) / factorial;
+    AA[k] = column / std::pow(2.0, (1.0 * k)) / factorial;
   }
   Scalar result = 0.0;
   Scalar power = 1.0;
@@ -360,7 +360,7 @@ static JacobiBoundaryTables BuildBoundaryTables(const Scalar alpha,
   {
     Scalar w = M_PI / 2.0 - t[i];
     if (i % 2 == 1) w = -w;
-    if (i == Npts - 1) w *= 0.5;
+    if (i + 1 == Npts) w *= 0.5;
     wSum += w;
   }
   Point A2p_t(Npts);
@@ -371,7 +371,7 @@ static JacobiBoundaryTables BuildBoundaryTables(const Scalar alpha,
   {
     Scalar w = M_PI / 2.0 - t[i];
     if (i % 2 == 1) w = -w;
-    if (i == Npts - 1) w *= 0.5;
+    if (i + 1 == Npts) w *= 0.5;
     extrap += w * A2p_t[i];
   }
   A2p_t[0] = extrap / wSum;
@@ -400,7 +400,7 @@ static JacobiBoundaryTables BuildBoundaryTables(const Scalar alpha,
   {
     Scalar w = M_PI / 2.0 - t[i];
     if (i % 2 == 1) w = -w;
-    if (i == Npts - 1) w *= 0.5;
+    if (i + 1 == Npts) w *= 0.5;
     extrap += w * B2[i];
   }
   B2[0] = extrap / wSum;
@@ -430,7 +430,7 @@ static JacobiBoundaryTables BuildBoundaryTables(const Scalar alpha,
   tables.A3 = A3;
   tables.baryV = Point(Npts);
   tables.baryV[0] = 0.5;
-  for (UnsignedInteger i = 1; i < Npts - 1; ++i)
+  for (UnsignedInteger i = 1; i + 1 < Npts; ++i)
     tables.baryV[i] = (i % 2 == 1) ? -1.0 : 1.0;
   tables.baryV[Npts - 1] = ((Npts - 1) % 2 == 1) ? -0.5 : 0.5;
   return tables;
@@ -993,7 +993,7 @@ namespace FastJacobi
     gamma[0] = (beta - alpha) / (ab + 2.0);
     for (UnsignedInteger j = 1; j < n; ++j)
     {
-      const Scalar s = static_cast<Scalar>(j);
+      const Scalar s = (1.0 * j);
       const Scalar t = 2.0 * s + ab;
       gamma[j] = (beta * beta - alpha * alpha) / (t * (t + 2.0));
       // Canceled form for j == 1: s + ab == t - 1, so the general formula
