@@ -223,7 +223,8 @@ useQuantile : bool, optional (default=`True`)
 Returns
 -------
 bandwidth : float
-    The estimated bandwidth.)RAW"
+    The estimated bandwidth.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -248,7 +249,8 @@ useQuantile : bool, optional (default=`True`)
 Returns
 -------
 bandwidth : float
-    The estimated bandwidth.)RAW"
+    The estimated bandwidth.
+)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -152,7 +152,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   // and casting a non-representable value to UnsignedInteger is undefined
   // behavior. The user-supplied bandwidth is kept as is otherwise.
   const Scalar computedBinNumber = std::ceil((xMax - xMin) / bandwidth + 0.5);
-  if (!std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max())))
+  if (!std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits)))
     throw InvalidArgumentException(HERE) << "Error: the bandwidth is too small, it leads to a non-representable number of bins, here bandwidth=" << bandwidth;
   const UnsignedInteger binNumber = static_cast<UnsignedInteger>(computedBinNumber);
   return buildAsHistogram(sample, binNumber);
@@ -281,7 +281,7 @@ Histogram HistogramFactory::buildWeightedAsHistogram(const Sample & sample,
   // Same guard as the unweighted explicit-bandwidth overload: a tiny bandwidth
   // gives an infinite count whose cast is undefined behavior
   const Scalar computedBinNumber = std::ceil((xMax - xMin) / bandwidth + 0.5);
-  if (!std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max())))
+  if (!std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits)))
     throw InvalidArgumentException(HERE) << "Error: the bandwidth is too small, it leads to a non-representable number of bins, here bandwidth=" << bandwidth;
   const UnsignedInteger binNumber = static_cast<UnsignedInteger>(computedBinNumber);
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
@@ -401,7 +401,7 @@ Scalar HistogramFactory::computeBandwidthWeighted(const Sample & sample,
     else
     {
       const Scalar computedBinNumber = std::ceil((xMax - xMin) / hOpt + 0.5);
-      if (!std::isfinite(hOpt) || !std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max())))
+      if (!std::isfinite(hOpt) || !std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits)))
         throw InvalidArgumentException(HERE) << "Error: cannot estimate a finite bandwidth from the weighted sample";
       binNumber = static_cast<UnsignedInteger>(computedBinNumber);
     }
@@ -426,7 +426,7 @@ Scalar HistogramFactory::computeBandwidthWeighted(const Sample & sample,
       throw InvalidArgumentException(HERE) << "Error: cannot estimate a finite bandwidth from the weighted sample";
     hOpt = sigma * std::cbrt(24.0 * std::sqrt(M_PI) / effectiveSize);
     const Scalar computedBinNumber = std::ceil((xMax - xMin) / hOpt + 0.5);
-    if (!std::isfinite(hOpt) || !std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max())))
+    if (!std::isfinite(hOpt) || !std::isfinite(computedBinNumber) || !(computedBinNumber > 0.0) || !(computedBinNumber < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits)))
       throw InvalidArgumentException(HERE) << "Error: cannot estimate a finite bandwidth from the weighted sample";
     binNumber = static_cast<UnsignedInteger>(computedBinNumber);
   }

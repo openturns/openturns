@@ -671,7 +671,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
 >>> print(sample.computeSuperQuantile(0.9))
-[1.36728,1.86897])RAW"
+[1.36728,1.86897]
+)RAW"
 
 // ---------------------------------------------------------------------
 

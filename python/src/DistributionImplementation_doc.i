@@ -1776,7 +1776,8 @@ Examples
 >>> distribution = ot.Normal(3)
 >>> grid = distribution.drawMarginalPDFs()
 >>> print(grid.getNbRows(), grid.getNbColumns())
-3 3)RAW"
+3 3
+)RAW"
 %enddef
 %feature("docstring") OT::DistributionImplementation::drawMarginalPDFs
 OT_Distribution_drawMarginalPDFs_doc

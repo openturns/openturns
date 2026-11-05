@@ -205,7 +205,8 @@ columns, where :math:`n_y` is the output dimension.
 Returns
 -------
 graph : :class:`~openturns.GridLayout`
-    The residuals graph.)RAW"
+    The residuals graph.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -247,7 +248,8 @@ is the output dimension.
 Returns
 -------
 rootMeanSquaredError : :class:`~openturns.Point`
-    The root mean squared error of each marginal output dimension.)RAW"
+    The root mean squared error of each marginal output dimension.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -273,7 +275,8 @@ is the output dimension.
 Returns
 -------
 meanAbsoluteError : :class:`~openturns.Point`
-    The mean absolute error of each marginal output dimension.)RAW"
+    The mean absolute error of each marginal output dimension.
+)RAW"
 
 // ---------------------------------------------------------------------
 
