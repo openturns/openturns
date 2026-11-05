@@ -143,6 +143,12 @@ Point ExperimentIntegration::computeL2Norm(const Function & function) const
   return functionNorm;
 }
 
+/* Weighted experiment accessor */
+WeightedExperiment ExperimentIntegration::getWeightedExperiment() const
+{
+  return weightedExperiment_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void ExperimentIntegration::save(Advocate & adv) const
 {
