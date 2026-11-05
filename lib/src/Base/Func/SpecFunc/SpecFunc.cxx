@@ -261,7 +261,7 @@ Scalar SpecFunc::BesselJ(const Scalar nu,
   if (nu == nearestInteger)
   {
     const Scalar absNearest = std::abs(nearestInteger);
-    if (!(absNearest <= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max()))) throw InvalidArgumentException(HERE) << "Error: |nu|=" << absNearest << " is too large for an integer order";
+    if (!(absNearest < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "Error: |nu|=" << absNearest << " is too large for an integer order";
     const UnsignedInteger order = static_cast<UnsignedInteger>(absNearest);
     if (xx < 0.0)
     {
@@ -269,7 +269,7 @@ Scalar SpecFunc::BesselJ(const Scalar nu,
       if (order % 2 == 1) sign = -sign;
     }
     if ((nearestInteger < 0.0) && (order % 2 == 1)) sign = -sign;
-    nn = static_cast<Scalar>(order);
+    nn = (1.0 * order);
   }
   else
   {
@@ -318,7 +318,7 @@ Scalar SpecFunc::BesselJDerivative(const Scalar nu,
   if (nu == nearestInteger)
   {
     const Scalar absNearest = std::abs(nearestInteger);
-    if (!(absNearest <= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max()))) throw InvalidArgumentException(HERE) << "Error: |nu|=" << absNearest << " is too large for an integer order";
+    if (!(absNearest < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "Error: |nu|=" << absNearest << " is too large for an integer order";
     const UnsignedInteger order = static_cast<UnsignedInteger>(absNearest);
     if (xx < 0.0)
     {
@@ -326,7 +326,7 @@ Scalar SpecFunc::BesselJDerivative(const Scalar nu,
       if (order % 2 == 0) sign = -sign;
     }
     if ((nearestInteger < 0.0) && (order % 2 == 1)) sign = -sign;
-    nn = static_cast<Scalar>(order);
+    nn = (1.0 * order);
   }
   else
   {

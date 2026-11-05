@@ -301,7 +301,7 @@ namespace FastHermite
     Point gamma(n, 0.0);
     Point b(n, 0.0);
     for (UnsignedInteger j = 1; j < n; ++j)
-      b[j] = std::sqrt(static_cast<Scalar>(j));
+      b[j] = std::sqrt((1.0 * j));
 
     // Large rules use the Townsend-Trogdon-Olver Airy path, small ones the
     // polished eigensolver; threshold from the ResourceMap.

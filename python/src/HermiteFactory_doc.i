@@ -4,7 +4,7 @@ R"RAW(Hermite specific orthonormal univariate polynomial family.
 For the :class:`~openturns.Normal` distribution :math:`\cN(0,1)`.
 
 Any sequence of orthogonal polynomials follows the three-term recurrence
-formula detailed in :ref:`orthonormal_polynomials`.
+formula detailed in :any:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Hermite polynomials come analytically and
 read for :math:`i \geq 0`:

@@ -4,7 +4,7 @@ R"RAW(Jacobi specific orthonormal univariate polynomial family.
 For the :class:`~openturns.Beta` distribution.
 
 Any sequence of orthogonal polynomials follows the three-term recurrence
-formula detailed in :ref:`orthonormal_polynomials`.
+formula detailed in :any:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Jacobi polynomials come analytically and
 read:

@@ -82,7 +82,7 @@ namespace FastLegendre
     Point b(n, 0.0);
     for (UnsignedInteger j = 1; j < n; ++j)
     {
-      const Scalar s = static_cast<Scalar>(j);
+      const Scalar s = (1.0 * j);
       b[j] = s / std::sqrt(4.0 * s * s - 1.0);
     }
     FastGaussQuadrature::PolishedSolve(gamma.data(), b.data(), n, nodes, weights);
