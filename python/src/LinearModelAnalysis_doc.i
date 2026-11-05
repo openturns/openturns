@@ -473,7 +473,8 @@ This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef
 
 Returns
 -------
-graph : :class:`~openturns.Graph`)RAW"
+graph : :class:`~openturns.Graph`
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -484,5 +485,6 @@ This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :
 
 Returns
 -------
-graph : :class:`~openturns.Graph`)RAW"
+graph : :class:`~openturns.Graph`
+)RAW"
 
