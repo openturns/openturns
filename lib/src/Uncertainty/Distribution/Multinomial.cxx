@@ -372,7 +372,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   {
     const Scalar a = interval.getLowerBound()[0];
     const Scalar b = interval.getUpperBound()[0];
-    if (p_[0] == 1.0) return (a <= static_cast<Scalar>(n_) && b >= static_cast<Scalar>(n_)) ? 1.0 : 0.0;
+    if (p_[0] == 1.0) return (a <= (1.0 * n_) && b >= (1.0 * n_)) ? 1.0 : 0.0;
     if (p_[0] == 0.0) return (a <= 0.0 && b >= 0.0) ? 1.0 : 0.0;
     if ((a > n_ + supportEpsilon_) || (b < -supportEpsilon_)) return 0.0;
     if ((a < -supportEpsilon_) && (b > n_ + supportEpsilon_)) return 1.0;
@@ -402,7 +402,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   // its lower bounds exceeds the support upper bound n_
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if ((upper[i] < -supportEpsilon_) || (lower[i] > static_cast<Scalar>(n_) + supportEpsilon_)) return 0.0;
+    if ((upper[i] < -supportEpsilon_) || (lower[i] > (1.0 * n_) + supportEpsilon_)) return 0.0;
   }
   // Now we have sumP_ == 1
   Indices a(dimension_);
@@ -509,7 +509,7 @@ Scalar Multinomial::computeConditionalCDF(const Scalar xj, const Point & xcond) 
   if (sumP >= 1.0 - supportEpsilon_) return (xj >= 0.0 ? 1.0 : 0.0);
   // External points of the conditional support
   if (xj < 0.0) return 0.0;
-  if (xj >= static_cast<Scalar>(n_) - sumY) return 1.0;
+  if (xj >= (1.0 * n_) - sumY) return 1.0;
   return DistFunc::pBeta(n_ - sumY - floor(xj), floor(xj) + 1, 1.0 - p_[conditioningDimension] / (1.0 - sumP));
 }
 
@@ -537,7 +537,7 @@ Scalar Multinomial::computeConditionalQuantile(const Scalar p, const Point & xco
   if (sumP >= 1.0 - supportEpsilon_) return 0.0;
   const Scalar condP = p_[conditioningDimension] / (1.0 - sumP);
   if (condP <= 0.0) return 0.0;
-  if (condP >= 1.0) return static_cast<Scalar>(round(n_ - sumY));
+  if (condP >= 1.0) return std::round(n_ - sumY);
   return Binomial(static_cast<UnsignedInteger>(round(n_ - sumY)), condP).computeQuantile(p)[0];
 }
 
