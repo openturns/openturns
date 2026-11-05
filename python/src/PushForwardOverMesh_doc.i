@@ -15,7 +15,7 @@ The general definition of the push-forward distribution, of its density with
 respect to the measure induced on the image, and of the co-area case are given
 in the :class:`~openturns.experimental.PushForwardDistribution` documentation.
 The mesh-specific construction and the resulting density formula are detailed
-in :ref:`pushforward_over_mesh`.
+in :any:`pushforward_over_mesh`.
 
 Here, :math:`\inputRV` is an :math:`n`-dimensional absolutely continuous
 random vector whose support is a domain discretized by a mesh of simplices, and
@@ -167,4 +167,5 @@ Returns
 dim : int
     The intrinsic dimension of the image mesh.  In the supported co-area case
     :math:`\outputDim < d`, the image is assumed to be full-dimensional of
-    dimension :math:`\outputDim`, which is returned.)RAW"
+    dimension :math:`\outputDim`, which is returned.
+)RAW"

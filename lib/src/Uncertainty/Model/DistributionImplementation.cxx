@@ -1492,7 +1492,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     const Scalar xMin = range_.getLowerBound()[0];
     const Scalar xMax = range_.getUpperBound()[0];
     const Scalar delta = xMax - xMin;
-    const UnsignedInteger intervalsNumber = std::max(1, static_cast<int>(round(2.0 * std::abs(x) * delta / integrationNodesNumber_)));
+    const UnsignedInteger intervalsNumber = std::max(static_cast<UnsignedInteger>(1), static_cast<UnsignedInteger>(std::round(2.0 * std::abs(x) * delta / integrationNodesNumber_)));
     if (intervalsNumber * integrationNodesNumber_ < N)
     {
       const Scalar halfLength = 0.5 * delta / intervalsNumber;

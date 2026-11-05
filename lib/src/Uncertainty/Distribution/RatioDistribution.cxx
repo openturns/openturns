@@ -392,7 +392,7 @@ public:
   Scalar operator() (const Scalar u) const override
   {
     if (u == 0.0) return 0.0;
-    return p_right_->computePDF(u) / std::pow(u, static_cast<Scalar>(order_));
+    return p_right_->computePDF(u) / std::pow(u, (1.0 * order_));
   }
 
 private:
