@@ -50,13 +50,17 @@
 %import dist_bundle3_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
+/* GaussLPQuadratureRule derives from WeightedExperimentImplementation, so the
+   weighted experiment module must be imported before the orthonormal basis
+   classes. */
+%import weightedexperiment_module.i
 %import orthogonalbasis_module.i
 %import UncertaintyOrthogonalBasisTemplateDefs.i
 %include FiniteOrthogonalFunctionFactory.i
 %include BasisOrthonormalizationAlgorithm.i
+%include GaussLPQuadratureRule.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
-%import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include FejerExperiment.i
 %include ChristoffelSubsampleExperiment.i
