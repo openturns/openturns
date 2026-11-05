@@ -291,6 +291,9 @@ Bibliography
 .. [jackson1991] Jackson, J. E. (1991).
     *A user’s guide to principal components.*
     John Wiley & Sons.
+.. [jakeman2018] Jakeman, J.D. and Narayan, A., *Generation and application of multivariate
+    polynomial quadrature rules*, Computer Methods in Applied Mechanics and Engineering,
+    338:134-161, 2018.
 .. [jakeman2019] Jakeman J., Franzelin F., Narayan A., Eldred M., Pflüger D. (2019)
     *Polynomial chaos expansions for dependent random variables*,
     Computer Methods in Applied Mechanics and Engineering, 351, pp.643-666.
@@ -565,6 +568,8 @@ Bibliography
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <https://kgut.ac.ir/useruploads/1509987964985oqk.pdf>`__
 .. [rudin1987] Rudin, W. *Real and complex analysis* 1987.
+.. [ryu2015] Ryu, E.K. and Boyd, S.P., *Extensions of Gauss Quadrature Via Linear Programming*,
+    Foundations of Computational Mathematics, 15(4):953-971, 2015.
 .. [saltelli1999] Saltelli, A., Tarantola, S. and Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
