@@ -43,5 +43,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``TrapezoidalFactory-RhoBeg`` (``Scalar``, default: ``0.1``): initial value of the :math:`\rho` parameter of the trapezoidal distribution used as starting point of the optimization
 - ``TrapezoidalFactory-RhoEnd`` (``Scalar``, default: ``1.0e-5``): final value of the :math:`\rho` parameter of the trapezoidal distribution used as bound of the optimization
 
-In the first usage, the default Trapezoidal distribution is built.)RAW"
+In the first usage, the default Trapezoidal distribution is built.
+)RAW"
 
