@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.RandomGenerator.SetSeed(0)
 
@@ -42,5 +43,8 @@ myBoxCox, result = factory.buildWithGPF(
     inputSample, outputSample, covarianceModel, basis, shift
 )
 
-print("myBoxCox (GPF) =", myBoxCox)
-print("GPF result     =", result)
+ott.assert_almost_equal(myBoxCox.getLambda()[0], 1.99098, 1.0e-4, 1.0e-4)
+ott.assert_almost_equal(result.getTrendCoefficients(), [9.90054, 2.95995], 1.0e-4, 1.0e-4)
+# getAmplitude() returns the standard deviation, i.e. the square root of the
+# variance 2.12358e-05 printed by the covariance model.
+ott.assert_almost_equal(result.getCovarianceModel().getAmplitude(), [0.00460823], 1.0e-6, 1.0e-6)
