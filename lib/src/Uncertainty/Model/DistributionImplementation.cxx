@@ -1492,9 +1492,13 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
     const Scalar xMin = range_.getLowerBound()[0];
     const Scalar xMax = range_.getUpperBound()[0];
     const Scalar delta = xMax - xMin;
-    const UnsignedInteger intervalsNumber = std::max(static_cast<UnsignedInteger>(1), static_cast<UnsignedInteger>(std::round(2.0 * std::abs(x) * delta / integrationNodesNumber_)));
-    if (intervalsNumber * integrationNodesNumber_ < N)
+    // Compare the floating-point estimate with the point budget before
+    // converting it, so that a huge number of oscillations neither overflows
+    // the conversion nor the product below.
+    const Scalar intervalsNumberEstimate = std::max(1.0, std::round(2.0 * std::abs(x) * delta / integrationNodesNumber_));
+    if (intervalsNumberEstimate < 1.0 * N / integrationNodesNumber_)
     {
+      const UnsignedInteger intervalsNumber = static_cast<UnsignedInteger>(intervalsNumberEstimate);
       const Scalar halfLength = 0.5 * delta / intervalsNumber;
       for (UnsignedInteger n = 0; n < intervalsNumber; ++n)
       {

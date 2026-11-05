@@ -56,6 +56,12 @@ CCDF = distribution.computeComplementaryCDF(point)
 ott.assert_almost_equal(CCDF, 0.250000, 1e-6, 1e-6)
 CF = distribution.computeCharacteristicFunction(point[0])
 ott.assert_almost_equal([CF.real, CF.imag], [0.738460262604, 0.403422680111], 1e-9, 0.0)
+
+# A huge argument used to overflow the interval count and fall back to an
+# intractable Gaussian quadrature loop instead of the bounded Filon rule.
+hugeCF = distribution.computeCharacteristicFunction(2.0**63)
+assert math.isfinite(hugeCF.real)
+assert math.isfinite(hugeCF.imag)
 PDFgr = distribution.computePDFGradient(point)
 ott.assert_almost_equal(PDFgr, [0.25, -0.25], 1e-5, 0.0)
 
