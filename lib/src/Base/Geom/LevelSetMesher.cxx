@@ -36,7 +36,6 @@
 #include "openturns/SymmetricMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include <map>
-#include <vector>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,8 +64,8 @@ static Bool IsInsideIntersection(const Collection<ComparisonOperator> & operator
  * systems (lens volume 1.525 vs 1.218), so LU stays. */
 static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
                                 const UnsignedInteger minimumPlanes,
-                                const Collection<Point> & crossings,
-                                const Collection<Point> & normals,
+                                const Sample & crossings,
+                                const Sample & normals,
                                 const Indices & planes,
                                 Point & minimizer)
 {
@@ -104,8 +103,8 @@ static Bool ComputeQEFMinimizer(const UnsignedInteger dimension,
   Scalar residual = 0.0;
   for (UnsignedInteger p = 0; p < planes.getSize(); ++ p)
   {
-    const Point delta(solution - crossings[planes[p]]);
-    const Scalar distance = normals[planes[p]].dot(delta);
+    const Point delta(solution - Point(crossings[planes[p]]));
+    const Scalar distance = Point(normals[planes[p]]).dot(delta);
     residual += distance * distance;
   }
   if (!(residual <= SpecFunc::Precision * (1.0 + solution.normSquare())))
@@ -463,18 +462,18 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
   NearestPointProblem problem;
   // Create once some objects that will be reused a lot
   Sample localVertices(dimension + 1, dimension);
-  Collection<Point> localValues(dimension + 1, Point(constraintNumber));
+  Sample localValues(dimension + 1, constraintNumber);
   Indices simplicesToCheck(0);
   UnsignedInteger goodSimplicesNumber = 0;
   Indices keptBackground(0);
   const Bool solveEquation = ResourceMap::GetAsBool("LevelSetMesher-SolveEquation");
   const Bool useQEF = project && useQEF_;
   typedef std::pair<UnsignedInteger, UnsignedInteger> EdgeKey;
-  std::vector< std::map<EdgeKey, UnsignedInteger> > edgePlaneIndices(constraintNumber);
+  Collection< std::map<EdgeKey, UnsignedInteger> > edgePlaneIndices(constraintNumber);
   Collection<Gradient> gradients(0);
   for (UnsignedInteger k = 0; k < constraintNumber; ++ k) gradients.add(Gradient());
-  Collection<Point> crossings;
-  Collection<Point> normals;
+  Sample crossings(0, dimension);
+  Sample normals(0, dimension);
   if (useQEF)
   {
     // Hermite data on cut edges, one cache per (smooth) level function
@@ -575,7 +574,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
           const UnsignedInteger index = boundingSimplices(i, j);
           localVertices[j] = boundingVertices[index];
           for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
-            localValues[j][k] = values(index, k);
+            localValues(j, k) = values(index, k);
         }
         Point center(dimension);
         Point centerValues(constraintNumber);
@@ -586,7 +585,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
           {
             center += localVertices[j];
             for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
-              centerValues[k] += localValues[j][k];
+              centerValues[k] += localValues(j, k);
           }
         center /= numGood;
         centerValues /= 1.0 * numGood;
@@ -676,7 +675,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
             continue;
           Indices violated(0);
           for (UnsignedInteger k = 0; k < constraintNumber; ++ k)
-            if (!operators[k](localValues[j][k], levels[k]))
+            if (!operators[k](localValues(j, k), levels[k]))
               violated.add(k);
           if (!violated.getSize())
             continue;
@@ -690,17 +689,17 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
           for (UnsignedInteger v = 0; v < violated.getSize(); ++ v)
           {
             const UnsignedInteger k = violated[v];
-            const Scalar gap = std::abs(localValues[j][k] - levels[k]);
+            const Scalar gap = std::abs(localValues(j, k) - levels[k]);
             if (gap > largestGap)
             {
               largestGap = gap;
               mostViolated = k;
             }
-            const Scalar denom = localValues[j][k] - centerValues[k];
+            const Scalar denom = localValues(j, k) - centerValues[k];
             if (denom != 0.0)
             {
               rayValid = true;
-              rho = std::max(rho, (localValues[j][k] - levels[k]) / denom);
+              rho = std::max(rho, (localValues(j, k) - levels[k]) / denom);
             }
           }
           const Bool isRemove = !neverSeen;
@@ -810,10 +809,10 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
         vertexPlanes[it->first.first].add(it->second);
         vertexPlanes[it->first.second].add(it->second);
       }
-    std::vector< std::vector<UnsignedInteger> > vertexSimplices(numVertices);
+    Collection<Indices> vertexSimplices(numVertices);
     for (UnsignedInteger i = 0; i < numSimplices; ++ i)
       for (UnsignedInteger j = 0; j <= dimension; ++ j)
-        vertexSimplices[boundingSimplices(i, j)].push_back(i);
+        vertexSimplices[boundingSimplices(i, j)].add(i);
     for (UnsignedInteger m = 0; m < flagMovedVertices.getSize(); ++ m)
     {
       const std::map<UnsignedInteger, Indices>::const_iterator it = vertexPlanes.find(flagMovedVertices[m]);
@@ -823,9 +822,9 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
       if (!ComputeQEFMinimizer(dimension, dimension + 1, crossings, normals, it->second, candidate))
         continue;
       Bool inPatch = false;
-      const std::vector<UnsignedInteger> & incident = vertexSimplices[flagMovedVertices[m]];
+      const Indices & incident = vertexSimplices[flagMovedVertices[m]];
       Point coordinates(0);
-      for (UnsignedInteger s = 0; (s < incident.size()) && !inPatch; ++ s)
+      for (UnsignedInteger s = 0; (s < incident.getSize()) && !inPatch; ++ s)
         if (boundingMesh.checkPointInSimplexWithCoordinates(candidate, incident[s], coordinates))
           inPatch = true;
       if (!inPatch)
@@ -877,12 +876,12 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
     for (UnsignedInteger m = 0; m < keptBackground.getSize(); ++ m)
       isKept[keptBackground[m]] = 1;
     // vertex to kept-simplices incidence for candidate lookup
-    std::vector< std::vector<UnsignedInteger> > incidence(numVertices);
+    Collection<Indices> incidence(numVertices);
     for (UnsignedInteger m = 0; m < keptBackground.getSize(); ++ m)
     {
       const UnsignedInteger simplexIndex = keptBackground[m];
       for (UnsignedInteger j = 0; j <= dimension; ++ j)
-        incidence[boundingSimplices(simplexIndex, j)].push_back(simplexIndex);
+        incidence[boundingSimplices(simplexIndex, j)].add(simplexIndex);
     }
     for (UnsignedInteger i = 0; i < numSimplices; ++ i)
     {
@@ -893,7 +892,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
       for (UnsignedInteger j = 0; (j <= dimension) && !sharesFacet; ++ j)
       {
         const UnsignedInteger vertex = boundingSimplices(i, j);
-        for (UnsignedInteger c = 0; (c < incidence[vertex].size()) && !sharesFacet; ++ c)
+        for (UnsignedInteger c = 0; (c < incidence[vertex].getSize()) && !sharesFacet; ++ c)
         {
           const UnsignedInteger other = incidence[vertex][c];
           UnsignedInteger common = 0;

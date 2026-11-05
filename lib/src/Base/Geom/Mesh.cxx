@@ -1393,15 +1393,15 @@ Mesh Mesh::intersect(const Mesh & other) const
     // the pass test is a single shift and the index an AND mask.
     constexpr UnsignedInteger passShift = 56;
     constexpr std::uint64_t simplexMask = 0x00ffffffffffffffULL;
-    std::vector< std::vector<std::uint64_t> > grid(totalCells);
-    std::vector<UnsignedInteger> global1(0);
-    std::vector<UnsignedInteger> global2(0);
+    Collection< Collection<std::uint64_t> > grid(totalCells);
+    Indices global1(0);
+    Indices global2(0);
     for (UnsignedInteger pass = 0; pass < 2; ++ pass)
     {
       const Sample & lower = pass ? lower2 : lower1;
       const Sample & upper = pass ? upper2 : upper1;
       const UnsignedInteger count = pass ? otherSimplicesNumber : simplicesNumber;
-      std::vector<UnsignedInteger> & globals = pass ? global2 : global1;
+      Indices & globals = pass ? global2 : global1;
       for (UnsignedInteger i = 0; i < count; ++ i)
       {
         UnsignedInteger x0 = static_cast<UnsignedInteger>((lower(i, 0) - globalLower[0]) / cellSize[0]);
@@ -1414,34 +1414,34 @@ Mesh Mesh::intersect(const Mesh & other) const
         y1 = std::min(y1, cellsPerSide - 1);
         if ((x1 - x0 + 1) * (y1 - y0 + 1) > 64)
         {
-          globals.push_back(i);
+          globals.add(i);
           continue;
         }
         for (UnsignedInteger cx = x0; cx <= x1; ++ cx)
           for (UnsignedInteger cy = y0; cy <= y1; ++ cy)
-            grid[cx + cy * cellsPerSide].push_back((static_cast<std::uint64_t>(pass) << passShift) | i);
+            grid[cx + cy * cellsPerSide].add((static_cast<std::uint64_t>(pass) << passShift) | i);
       }
     }
     // Pair keys pack two 32-bit simplex indices: the first index in the high
     // 32 bits, the second in the low 32 bits, so that sorting groups the
     // pairs by first index.
-    std::vector<std::uint64_t> keys(0);
-    for (UnsignedInteger g = 0; g < global1.size(); ++ g)
+    Collection<std::uint64_t> keys(0);
+    for (UnsignedInteger g = 0; g < global1.getSize(); ++ g)
       for (UnsignedInteger j = 0; j < otherSimplicesNumber; ++ j)
-        keys.push_back((static_cast<std::uint64_t>(global1[g]) << 32) | j);
-    for (UnsignedInteger g = 0; g < global2.size(); ++ g)
+        keys.add((static_cast<std::uint64_t>(global1[g]) << 32) | j);
+    for (UnsignedInteger g = 0; g < global2.getSize(); ++ g)
       for (UnsignedInteger i = 0; i < simplicesNumber; ++ i)
-        keys.push_back((static_cast<std::uint64_t>(i) << 32) | global2[g]);
+        keys.add((static_cast<std::uint64_t>(i) << 32) | global2[g]);
     for (UnsignedInteger cell = 0; cell < totalCells; ++ cell)
     {
-      const std::vector<std::uint64_t> & content = grid[cell];
-      for (UnsignedInteger a = 0; a < content.size(); ++ a)
+      const Collection<std::uint64_t> & content = grid[cell];
+      for (UnsignedInteger a = 0; a < content.getSize(); ++ a)
       {
         // keep the entries of the first pass only
         if (content[a] >> passShift)
           continue;
         const UnsignedInteger i1 = static_cast<UnsignedInteger>(content[a] & simplexMask);
-        for (UnsignedInteger b = 0; b < content.size(); ++ b)
+        for (UnsignedInteger b = 0; b < content.getSize(); ++ b)
         {
           // keep the entries of the second pass only
           if (!(content[b] >> passShift))
@@ -1451,14 +1451,14 @@ Mesh Mesh::intersect(const Mesh & other) const
           if ((upper1(i1, 0) < lower2(i2, 0)) || (upper2(i2, 0) < lower1(i1, 0))
            || (upper1(i1, 1) < lower2(i2, 1)) || (upper2(i2, 1) < lower1(i1, 1)))
             continue;
-          keys.push_back((static_cast<std::uint64_t>(i1) << 32) | i2);
+          keys.add((static_cast<std::uint64_t>(i1) << 32) | i2);
         }
       }
     }
     std::sort(keys.begin(), keys.end());
     keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
-    LOGDEBUG(OSS() << "Mesh::intersect grid filter: " << toDoSize << " pairs -> " << keys.size() << " candidates");
-    for (UnsignedInteger q = 0; q < keys.size(); ++ q)
+    LOGDEBUG(OSS() << "Mesh::intersect grid filter: " << toDoSize << " pairs -> " << keys.getSize() << " candidates");
+    for (UnsignedInteger q = 0; q < keys.getSize(); ++ q)
     {
       Indices pair(2);
       pair[0] = static_cast<UnsignedInteger>(keys[q] >> 32);
