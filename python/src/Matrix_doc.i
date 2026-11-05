@@ -65,7 +65,8 @@ Basic linear algebra operations (provided the dimensions are compatible)
 >>> print(A * B - C)
 [[ 0 1 ]
  [ 2 3 ]
- [ 4 5 ]])RAW"
+ [ 4 5 ]]
+)RAW"
 
 // ---------------------------------------------------------------------
 

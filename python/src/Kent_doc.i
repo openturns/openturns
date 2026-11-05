@@ -5,18 +5,18 @@ R"RAW(Kent (Fisher-Bingham) distribution.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-The Kent distribution is defined on the sphere :math:`\mathcal{S}^2` with 
+The Kent distribution is defined on the sphere :math:`\mathcal{S}^2` with
 probability density function [kent1982]_:
 
 .. math::
 
-    f(\mathbf{x}) = \frac{\exp\big(\kappa\,\mathbf{x}^T\boldsymbol{\gamma}_1 
-    + \beta\big((\mathbf{x}^T\boldsymbol{\gamma}_2)^2 - (\mathbf{x}^T\boldsymbol{\gamma}_3)^2\big)\big)}
+    f(\vect{x}) = \frac{\exp\big(\kappa\,\vect{x}^T\boldsymbol{\gamma}_1
+    + \beta\big((\vect{x}^T\boldsymbol{\gamma}_2)^2 - (\vect{x}^T\boldsymbol{\gamma}_3)^2\big)\big)}
     {C(\kappa,\beta)}
 
 where :math:`\kappa > 0` is the concentration parameter, :math:`\beta` satisfies
-:math:`0 \le 2\beta < \kappa`, and 
-:math:`(\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\boldsymbol{\gamma}_3)` is 
+:math:`0 \le 2\beta < \kappa`, and
+:math:`(\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\boldsymbol{\gamma}_3)` is
 an orthonormal basis of :math:`\mathbb{R}^3`.
 
 The parameter :math:`\kappa` determines the concentration (or spread) of the
@@ -31,7 +31,7 @@ Similarly for the :math:`\gamma_i` vectors:
 two determine the orientation of the equal probability contours on the sphere,
 while :math:`\gamma_1` determines the common center of the contours.
 
-When :math:`\beta = 0`, the Kent distribution reduces to the von Mises-Fisher 
+When :math:`\beta = 0`, the Kent distribution reduces to the von Mises-Fisher
 distribution on the sphere.
 
 The normalization constant is computed using the series expansion:
@@ -48,7 +48,7 @@ The **covariance** matrix is:
 
 .. math::
 
-    \mathrm{Cov}(\mathbf{X})
+    \mathrm{Cov}(\vect{X})
     = \boldsymbol{\Gamma}
       \begin{pmatrix} \sigma_1^2 & 0 & 0 \\
                        0 & \sigma_2^2 & 0 \\
@@ -58,16 +58,16 @@ The **covariance** matrix is:
 where
 :math:`\sigma_1^2 = E[X_1^2] - E[X_1]^2`,
 :math:`\sigma_2^2 = (1 - E[X_1^2] + r_2)/2`,
-:math:`\sigma_3^2 = (1 - E[X_1^2] - r_2)/2` and :math:`X_i = \mathbf{X}^T\boldsymbol{\gamma}_i`.
+:math:`\sigma_3^2 = (1 - E[X_1^2] - r_2)/2` and :math:`X_i = \vect{X}^T\boldsymbol{\gamma}_i`.
 
 The **entropy** is:
 
 .. math::
 
     \mathcal{H} = \log C(\kappa,\beta)
-    - \kappa\,\mathbb{E}[\mathbf{X}^T\boldsymbol{\gamma}_1]
-    - \beta\,\mathbb{E}[(\mathbf{X}^T\boldsymbol{\gamma}_2)^2
-    - (\mathbf{X}^T\boldsymbol{\gamma}_3)^2]
+    - \kappa\,\mathbb{E}[\vect{X}^T\boldsymbol{\gamma}_1]
+    - \beta\,\mathbb{E}[(\vect{X}^T\boldsymbol{\gamma}_2)^2
+    - (\vect{X}^T\boldsymbol{\gamma}_3)^2]
 
 Parameters
 ----------
@@ -117,7 +117,8 @@ R"RAW(Accessor to the concentration parameter.
 Returns
 -------
 kappa : float
-Concentration parameter :math:`\kappa`.)RAW"
+Concentration parameter :math:`\kappa`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -127,7 +128,8 @@ R"RAW(Accessor to the concentration parameter.
 Parameters
 ----------
 kappa : float, :math:`\kappa > 0`
-    Concentration parameter.)RAW"
+    Concentration parameter.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -137,7 +139,8 @@ R"RAW(Accessor to the ovalness parameter.
 Returns
 -------
 beta : float
-    Ovalness parameter :math:`\beta`.)RAW"
+    Ovalness parameter :math:`\beta`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -147,7 +150,8 @@ R"RAW(Accessor to the ovalness parameter.
 Parameters
 ----------
 beta : float, :math:`0 \le 2\beta < \kappa`
-    Ovalness parameter.)RAW"
+    Ovalness parameter.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -158,7 +162,8 @@ Returns
 -------
 gamma : :class:`openturns.SquareMatrix`
     Orthogonal matrix whose columns are the basis vectors
-    :math:`(\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\boldsymbol{\gamma}_3)`.)RAW"
+    :math:`(\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\boldsymbol{\gamma}_3)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -168,7 +173,8 @@ R"RAW(Accessor to the orthogonal basis matrix.
 Parameters
 ----------
 gamma : :class:`openturns.SquareMatrix`
-    Orthogonal matrix whose columns are orthonormal basis vectors.)RAW"
+    Orthogonal matrix whose columns are orthonormal basis vectors.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -179,6 +185,7 @@ Returns
 -------
 epsilon : float
     Relative tolerance for the validation of the orthogonality of the
-    basis matrix.)RAW"
+    basis matrix.
+)RAW"
 
 
