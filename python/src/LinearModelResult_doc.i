@@ -125,7 +125,8 @@ R"RAW(Accessor to the coefficients of the linear model.
 Returns
 -------
 coefficients : :class:`~openturns.Point`
-    The estimated of the coefficients :math:`\hat{\vect{a}}`.)RAW"
+    The estimated of the coefficients :math:`\hat{\vect{a}}`.
+)RAW"
 
 // ---------------------------------------------------------------------
 

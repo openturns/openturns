@@ -310,7 +310,8 @@ partOfVariance : :class:`~openturns.Point`
     the part of the variance explained by the corresponding function.
     The sum of part of variances is equal to 1.
     If the corresponding multi-index has total degree equal to 0,
-    then the corresponding part of variance is equal to zero.)RAW"
+    then the corresponding part of variance is equal to zero.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -328,4 +329,5 @@ marginalIndex : int, :math:`0 \leq i < d`, optional
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    The graph of the Sobol' indices.)RAW"
+    The graph of the Sobol' indices.
+)RAW"

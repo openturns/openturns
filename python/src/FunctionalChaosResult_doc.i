@@ -82,7 +82,8 @@ R"RAW(Get the coefficients.
 Returns
 -------
 coefficients : 2-d sequence of float
-    Coefficients :math:`(\vect{a_k})_{k \in \set{J}^P_s}`.)RAW"
+    Coefficients :math:`(\vect{a_k})_{k \in \set{J}^P_s}`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -100,7 +101,8 @@ for any :math:`\standardReal \in \standardInputSpace`.
 Returns
 -------
 composedMetamodel : :class:`~openturns.Function`
-    The metamodel in the standard space :math:`\standardInputSpace`.)RAW"
+    The metamodel in the standard space :math:`\standardInputSpace`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -110,7 +112,8 @@ R"RAW(Get the metamodel.
 Returns
 -------
 metamodel : :class:`~openturns.Function`
-    :math:`\tilde{g} = \sum_{k \in \set{J}^P_s} \vect{a}_k \psi_k \circ T`.)RAW"
+    :math:`\tilde{g} = \sum_{k \in \set{J}^P_s} \vect{a}_k \psi_k \circ T`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -120,7 +123,8 @@ R"RAW(Get the input distribution.
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-    Distribution of the  input random vector :math:`\inputRV`.)RAW"
+    Distribution of the  input random vector :math:`\inputRV`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -133,7 +137,8 @@ indices : :class:`~openturns.Indices`
     Indices :math:`\set{J}^P_s` of the elements of the multivariate basis used in the decomposition.
     Each integer in this list is the input argument of the :class:`~openturns.EnumerateFunction`.
     If a model selection method such as :class:`~.openturns.LARS` is used,
-    these indices are not contiguous.)RAW"
+    these indices are not contiguous.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -143,7 +148,8 @@ R"RAW(Get the inverse isoprobabilistic transformation.
 Returns
 -------
 invTransf : :class:`~openturns.Function`
-     :math:`T^{-1}` such that :math:`T(\inputRV) = \standardRV`.)RAW"
+     :math:`T^{-1}` such that :math:`T(\inputRV) = \standardRV`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -164,7 +170,8 @@ Returns
 -------
 basis : list of :class:`~openturns.Function`
     Collection of the functions  :math:`(\psi_k)_{k\in \set{J}^P_s}`  used in the 
-    decomposition.)RAW"
+    decomposition.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -174,7 +181,8 @@ R"RAW(Get the isoprobabilistic transformation.
 Returns
 -------
 transformation : :class:`~openturns.Function`
-    Transformation :math:`T` such that :math:`T(\inputRV) = \standardRV`.)RAW"
+    Transformation :math:`T` such that :math:`T(\inputRV) = \standardRV`.
+)RAW"
     
 // ---------------------------------------------------------------------
 
@@ -418,7 +426,8 @@ Returns
 -------
 residualsSample : :class:`~openturns.Sample`
     The sample of residuals :math:`r_{ji} = y_{ji} - \metaModel_i(\vect{x^{(j)}})`
-    for :math:`i = 1, ..., n_Y` and :math:`j = 1, ..., n`.)RAW"
+    for :math:`i = 1, ..., n_Y` and :math:`j = 1, ..., n`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -438,7 +447,8 @@ outputIndex : int or list of ints, :math:`0 \leq i < \outputDim`
 Returns
 -------
 marginalPCE : :class:`~openturns.FunctionalChaosResult`
-    The marginal chaos.)RAW"
+    The marginal chaos.
+)RAW"
 
 // ---------------------------------------------------------------------
 
