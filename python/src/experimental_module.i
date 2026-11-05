@@ -59,6 +59,7 @@
 %include FiniteOrthogonalFunctionFactory.i
 %include BasisOrthonormalizationAlgorithm.i
 %include GaussLPQuadratureRule.i
+%include GaussLPQuadrature.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
 %include UncertaintyWeightedExperimentTemplateDefs.i
