@@ -119,7 +119,8 @@ R : :class:`~openturns.CorrelationMatrix`
 
 Notes
 -----
-The shape matrix :math:`\mat{R}` is computed following :eq:`KendallToShape`.)RAW"
+The shape matrix :math:`\mat{R}` is computed following :eq:`KendallToShape`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
