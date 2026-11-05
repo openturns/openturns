@@ -69,7 +69,8 @@ Examples
 
 >>> polynomial_factory = ot.LaguerreFactory(2.5, 2.0, -1.0)
 >>> print(polynomial_factory)
-class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=2.5 lambda=2 gamma=-1)RAW"
+class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=2.5 lambda=2 gamma=-1
+)RAW"
 
 // ---------------------------------------------------------------------
 

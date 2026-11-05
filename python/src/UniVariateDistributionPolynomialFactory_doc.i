@@ -17,6 +17,10 @@ arg : :class:`~openturns.Distribution` or :class:`~openturns.OrthonormalizationA
     it will default to the :class:`~openturns.AdaptiveStieltjesAlgorithm` to build
     an orthonormal univariate polynomial family.
 
+See also
+--------
+:any:`orthonormal_polynomials`, openturns.AdaptiveStieltjesAlgorithm
+
 Notes
 -----
 Use this functionality with caution:
@@ -78,10 +82,6 @@ univariate polynomial families with respect to any arbitrary probability
 measure (implemented as a :class:`~openturns.Distribution`).
 The library implements the following :class:`~openturns.OrthonormalizationAlgorithm`\s,
 with :class:`~openturns.AdaptiveStieltjesAlgorithm` as the default.
-
-See also
---------
-:any:`orthonormal_polynomials`, openturns.AdaptiveStieltjesAlgorithm
 
 Examples
 --------

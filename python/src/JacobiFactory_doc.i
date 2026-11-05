@@ -74,7 +74,8 @@ Examples
 
 >>> polynomial_factory = ot.JacobiFactory(2.5, 3.5, -1.0, 2.0)
 >>> print(polynomial_factory)
-class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=-1 b=2)RAW"
+class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=-1 b=2
+)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -51,4 +51,5 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 -1.73205 + 1.73205 * X
-2.23607 - 6.7082 * X + 3.3541 * X^2)RAW"
+2.23607 - 6.7082 * X + 3.3541 * X^2
+)RAW"
