@@ -1024,7 +1024,7 @@ Point ChristoffelDistribution::drawSequentialTensor() const
     Sample grid(gridSize + 1, 1);
     for (UnsignedInteger g = 0; g <= gridSize; ++g)
     {
-      const Scalar u = static_cast<Scalar>(g) / gridSize;
+      const Scalar u = (1.0 * g) / gridSize;
       Scalar abscissa = lower + width * u;
       if (proposalKind == Proposal::TwoSidedCauchy)
         abscissa = proposalCenter + proposalScale * std::tan(M_PI * uScan * (u - 0.5));
