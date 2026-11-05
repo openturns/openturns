@@ -26,6 +26,7 @@
 #include "openturns/Interval.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/Sample.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -120,14 +121,14 @@ private:
                         Scalar minimumStep,
                         Bool & closed,
                         Scalar & length,
-                        Collection<Point> & path) const;
+                        Sample & path) const;
 
   /** Trace one connected component from one of its mesh segments */
   Status traceComponent(const Segment & segment,
                         Scalar step,
                         Scalar minimumStep,
                         Scalar & density,
-                        Collection<Point> & path) const;
+                        Sample & path) const;
 
   /** The map defining the fibre */
   Function function_;
