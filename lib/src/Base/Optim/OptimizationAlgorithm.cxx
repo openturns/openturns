@@ -25,6 +25,7 @@
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/Dlib.hxx"
+#include "openturns/HiGHS.hxx"
 #include "openturns/Ipopt.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
@@ -264,6 +265,10 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   {
     solver = CMinpack();
   }
+  else if (PlatformInfo::HasFeature("dlib") && Dlib::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Dlib(solverName);
+  }
   else if (solverName == "Cobyla")
   {
     solver = Cobyla();
@@ -280,10 +285,6 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   {
     solver = NLopt(solverName);
   }
-  else if (PlatformInfo::HasFeature("dlib") && Dlib::GetAlgorithmNames().contains(solverName))
-  {
-    solver = Dlib(solverName);
-  }
   else if (PlatformInfo::HasFeature("bonmin") && Bonmin::GetAlgorithmNames().contains(solverName))
   {
     solver = Bonmin(solverName);
@@ -295,6 +296,10 @@ OptimizationAlgorithm OptimizationAlgorithm::GetByName(const String & solverName
   else if (PlatformInfo::HasFeature("pagmo") && Pagmo::GetAlgorithmNames().contains(solverName))
   {
     solver = Pagmo(solverName);
+  }
+  else if (PlatformInfo::HasFeature("highs") && HiGHS::GetAlgorithmNames().contains(solverName))
+  {
+    solver = HiGHS(solverName);
   }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
@@ -327,22 +332,36 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & p
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
-  names.add("AbdoRackwitz");
-  if (PlatformInfo::HasFeature("bonmin"))
-    names.add(Bonmin::GetAlgorithmNames());
-  if (PlatformInfo::HasFeature("ipopt"))
-    names.add("Ipopt");
+  // linear first to pick-up specialized solvers
+  if (PlatformInfo::HasFeature("highs"))
+    names.add(HiGHS::GetAlgorithmNames());
+
+  // least-squares, idem pick up specialized solvers first
   if (PlatformInfo::HasFeature("ceres"))
     names.add(Ceres::GetAlgorithmNames());
   if (PlatformInfo::HasFeature("cminpack"))
     names.add("CMinpack");
+
+  // MINLP
+  if (PlatformInfo::HasFeature("bonmin"))
+    names.add(Bonmin::GetAlgorithmNames());
+
+  if (PlatformInfo::HasFeature("ipopt"))
+    names.add("Ipopt");
   names.add("Cobyla");
   if (PlatformInfo::HasFeature("dlib"))
     names.add(Dlib::GetAlgorithmNames());
+
+  // nearest-point
+  names.add("AbdoRackwitz");
   names.add("SQP");
+
+  // generic
   names.add("TNC");
   if (PlatformInfo::HasFeature("nlopt"))
     names.add(NLopt::GetAlgorithmNames());
+
+  // pagmo at end because unlike others its parametrized by a population
   if (PlatformInfo::HasFeature("pagmo"))
     names.add(Pagmo::GetAlgorithmNames());
   return names;

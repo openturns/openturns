@@ -559,8 +559,6 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
   }
 
   // "least_squares" and "least_squares_lm" require least squares problems
-  if (problem.hasResidualFunction() && !(algoName_ == "least_squares" || algoName_ == "least_squares_lm"))
-    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support least squares problems.";
   if ((algoName_ == "least_squares" || algoName_ == "least_squares_lm") && !problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm only support least squares problems.";
 

@@ -60,9 +60,9 @@ void Ipopt::checkProblem(const OptimizationProblem & problem) const
   // Cannot solve multi-objective problems
   if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Ipopt does not support multi-objective optimization";
 
-  // No LeastSquaresProblem / NearestPointProblem
-  if (problem.hasResidualFunction() || problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Ipopt does not support least squares or nearest point problems";
+  // No NearestPointProblem
+  if (problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Ipopt does not support nearest point problems";
 
   // Cannot solve non continuous problems
   if (!problem.isContinuous())
