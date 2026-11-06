@@ -45,6 +45,7 @@ Orthonormalize a finite set of functions on a multivariate domain
 # functions with respect to the target measure.
 
 # %%
+import matplotlib.pyplot as plt
 import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
@@ -125,15 +126,42 @@ print(computeGramMatrix(orthonormalFunctions))
 # %%
 # The six orthonormal functions are shown in the next figure. They span the
 # same space as the initial Legendre functions, but their contours reflect
-# the dependence structure of the target measure.
+# the dependence structure of the target measure. The color bars are omitted
+# to leave room for the six panels, and the font sizes are increased so that
+# the labels remain readable at the size of the gallery vignette.
+oldLevelsNumber = ot.ResourceMap.GetAsUnsignedInteger("Contour-DefaultLevelsNumber")
+oldColorBarPosition = ot.ResourceMap.GetAsString("Contour-DefaultColorBarPosition")
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 6)
+ot.ResourceMap.SetAsString("Contour-DefaultColorBarPosition", "")
 grid = ot.GridLayout(2, 3)
 for i, function in enumerate(orthonormalFunctions):
     graph = function.draw([-1.0] * dimension, [1.0] * dimension, [100] * dimension)
+    contour = graph.getDrawable(0).getImplementation()
+    contour.setIsFilled(True)
+    # Filled contours require at least two levels; the constant function has one.
+    if len(contour.getLevels()) < 2:
+        value = contour.getLevels()[0] if len(contour.getLevels()) else 0.0
+        contour.setLevels(ot.Point([value - 0.5, value + 0.5]))
+    graph.setDrawable(0, contour)
     graph.setTitle(f"$\\varphi_{i}$")
     graph.setXTitle("$x_1$")
     graph.setYTitle("$x_2$")
     grid.setGraph(i // 3, i % 3, graph)
-view = otv.View(grid, axes_kw={"aspect": "equal"})
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", oldLevelsNumber)
+ot.ResourceMap.SetAsString("Contour-DefaultColorBarPosition", oldColorBarPosition)
+with plt.rc_context(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 14,
+        "xtick.labelsize": 12,
+        "ytick.labelsize": 12,
+    }
+):
+    view = otv.View(
+        grid, figure_kw={"figsize": (10.0, 7.0)}, axes_kw={"aspect": "equal"}
+    )
+plt.subplots_adjust(wspace=0.35, hspace=0.6)
 
 # %%
 # Build a quadrature rule
