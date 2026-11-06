@@ -16,11 +16,16 @@ params = [0, 1, 2]
 model = ot.ParametricFunction(g, params, trueParameter)
 y = model(x)
 y += ot.Normal([0.0] * 2, [0.05] * 2, ot.IdentityMatrix(2)).getSample(m)
+
+# Parametric function needed by the calibration algorithm (input and parameters are swapped)
+input = [3]
+calibrationModel = ot.ParametricFunction(g, input, [0.0] * len(input))
+
 candidate = [1.0] * 3
 methods = ["SVD", "QR", "Cholesky"]
 for method in methods:
     print("method=", method)
-    algo = ot.LinearLeastSquaresCalibration(model, x, y, candidate, method)
+    algo = ot.LinearLeastSquaresCalibration(calibrationModel, x, y, candidate, method)
     algo.run()
     result = algo.getResult()
     print("result=", result)

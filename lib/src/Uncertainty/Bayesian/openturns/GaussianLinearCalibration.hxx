@@ -28,6 +28,7 @@
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/CovarianceMatrix.hxx"
+#include "openturns/GaussianCalibrationResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -94,6 +95,9 @@ public:
   /** Least squares method name accessor */
   String getMethodName() const;
 
+  /** Calibration result accessor */
+  GaussianCalibrationResult getResult() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
@@ -130,8 +134,10 @@ private:
   /* The least squares method name */
   String methodName_;
 
-}; /* class GaussianLinearCalibration */
+  /* The calibration result */
+  GaussianCalibrationResult result_;
 
+}; /* class GaussianLinearCalibration */
 
 END_NAMESPACE_OPENTURNS
 
