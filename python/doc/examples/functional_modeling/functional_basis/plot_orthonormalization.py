@@ -136,8 +136,9 @@ print(computeGramMatrix(orthonormalFunctions))
 # The six orthonormal functions are shown in the next figure. They span the
 # same space as the initial Legendre functions, but their contours reflect
 # the dependence structure of the target measure. The color bars are omitted
-# to leave room for the six panels, and the font sizes are increased so that
-# the labels remain readable at the size of the gallery vignette.
+# to leave room for the six panels, and the figure uses a compact canvas with
+# larger fonts so that the titles, axis labels and tick labels remain
+# readable at the size of the gallery vignette.
 oldLevelsNumber = ot.ResourceMap.GetAsUnsignedInteger("Contour-DefaultLevelsNumber")
 oldColorBarPosition = ot.ResourceMap.GetAsString("Contour-DefaultColorBarPosition")
 ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 6)
