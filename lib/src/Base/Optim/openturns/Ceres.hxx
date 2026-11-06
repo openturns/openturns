@@ -89,6 +89,7 @@ private:
 
   // gradient counter to populate the result
   UnsignedInteger gradientCallsNumber_ = 0;
+  UnsignedInteger initialEvaluationNumber_ = 0;
 
 };
 

@@ -40,6 +40,7 @@ BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
   , evaluationInputHistory_(0, optimProblem.getDimension())
   , evaluationOutputHistory_(0, 1)
   , maximumCallsNumber_(maximumCallsNumber)
+  , initialEvaluationNumber_(optimProblem.getObjective().getEvaluationCallsNumber())
   , maximumTimeDuration_(maximumTimeDuration)
   , t0_(t0)
   , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
@@ -312,10 +313,11 @@ bool BonminProblem::eval_f(int n,
     return false;
   }
 
-  // Check callbacks
+  // Check callbacks (evaluations include finite-difference evaluations)
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumCallsNumber_, progressCallback_.second);
+    const UnsignedInteger evaluationNumber = optimProblem_.getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_;
+    progressCallback_.first((100.0 * evaluationNumber) / maximumCallsNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {
@@ -324,7 +326,10 @@ bool BonminProblem::eval_f(int n,
       return false;
   }
 
-  return (evaluationInputHistory_.getSize() <= maximumCallsNumber_);
+  {
+    const UnsignedInteger evaluationNumber = optimProblem_.getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_;
+    return (evaluationNumber <= maximumCallsNumber_);
+  }
 }
 
 

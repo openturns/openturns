@@ -151,6 +151,7 @@ private:
 
   // Callbacks
   UnsignedInteger maximumCallsNumber_ = 0;
+  UnsignedInteger initialEvaluationNumber_ = 0;
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
   std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;
 };

@@ -35,6 +35,7 @@ IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
   , evaluationInputHistory_(0, optimProblem.getDimension())
   , evaluationOutputHistory_(0, 1)
   , maximumCallsNumber_(maximumCallsNumber)
+  , initialEvaluationNumber_(optimProblem.getObjective().getEvaluationCallsNumber())
   , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(nullptr, nullptr))
   , stopCallback_(std::make_pair<OptimizationAlgorithmImplementation::StopCallback, void *>(0, 0))
 {
@@ -243,8 +244,8 @@ bool IpoptProblem::eval_f(int n,
                           bool /*new_x*/,
                           double& obj_value)
 {
-  // Check if maximum calls reached before evaluating
-  if (evaluationInputHistory_.getSize() >= maximumCallsNumber_)
+  // Check if maximum evaluations reached before evaluating (including FD evaluations)
+  if ((optimProblem_.getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_) >= maximumCallsNumber_)
     return false;
 
   // Convert x to OT::Point
@@ -265,7 +266,8 @@ bool IpoptProblem::eval_f(int n,
   // Check callbacks
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumCallsNumber_, progressCallback_.second);
+    const UnsignedInteger evaluationNumber = optimProblem_.getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_;
+    progressCallback_.first((100.0 * evaluationNumber) / maximumCallsNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {

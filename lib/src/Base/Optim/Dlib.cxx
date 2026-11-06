@@ -292,6 +292,7 @@ public:
     : dlibAlgorithm_(dlibAlgorithm)
     , optimizationResult_(optimizationResult)
     , objectiveFunction_(objectiveFunction)
+    , initialEvaluationNumber_(objectiveFunction.getEvaluationCallsNumber())
     , lastInput_(dlibAlgorithm_.getProblem().getDimension())
     , lastOutput_(1)
     , t0_(t0)
@@ -304,7 +305,8 @@ public:
                               const double funct_value,
                               const DlibMatrix & )
   {
-    optimizationResult_.setCallsNumber(objectiveFunction_.getCallsNumber());
+    const UnsignedInteger evaluationNumber = objectiveFunction_.getEvaluationCallsNumber() - initialEvaluationNumber_;
+    optimizationResult_.setCallsNumber(evaluationNumber);
     optimizationResult_.setGradientCallsNumber(objectiveFunction_.getGradientCallsNumber());
     optimizationResult_.setHessianCallsNumber(objectiveFunction_.getHessianCallsNumber());
 
@@ -335,7 +337,7 @@ public:
                        && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
                        && (residualError < dlibAlgorithm_.getMaximumResidualError()))
                       || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
-                      || (objectiveFunction_.getCallsNumber() >= dlibAlgorithm_.getMaximumCallsNumber())
+                      || ((objectiveFunction_.getEvaluationCallsNumber() - initialEvaluationNumber_) >= dlibAlgorithm_.getMaximumCallsNumber())
                       || timeout
                       || (dlibAlgorithm_.stopCallback_.first && dlibAlgorithm_.stopCallback_.first(dlibAlgorithm_.stopCallback_.second));
 
@@ -357,6 +359,7 @@ private:
   const Dlib & dlibAlgorithm_;
   OptimizationResult & optimizationResult_;
   const DlibFunction & objectiveFunction_;
+  UnsignedInteger initialEvaluationNumber_ = 0;
   Point lastInput_;
   Point lastOutput_;
   std::chrono::steady_clock::time_point t0_;
