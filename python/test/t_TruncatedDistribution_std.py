@@ -442,6 +442,12 @@ truncated_uniform.setIntegrationNodesNumber(256)
 huge_x = 2.0**63
 huge_cf = truncated_uniform.computeCharacteristicFunction(huge_x)
 huge_ref = (complex(m.cos(huge_x), m.sin(huge_x)) - 1.0) / complex(0.0, huge_x)
+# Scale by huge_x so that a zero result is distinguishable from the reference:
+# the generic Filon rule is only accurate to a few percent at this argument,
+# but the scaled value must stay close to sin(huge_x) + i (1 - cos(huge_x)).
 ott.assert_almost_equal(
-    [huge_cf.real, huge_cf.imag], [huge_ref.real, huge_ref.imag], 1e-12, 1e-18
+    [huge_cf.real * huge_x, huge_cf.imag * huge_x],
+    [huge_ref.real * huge_x, huge_ref.imag * huge_x],
+    0.0,
+    0.25,
 )
