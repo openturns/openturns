@@ -45,76 +45,10 @@ size : int
 
 Notes
 -----
-The following :class:`~openturns.ResourceMap` keys are used:
-
-.. list-table::
-   :widths: 30 15 15 40
-   :header-rows: 1
-
-   * - Key
-     - Type
-     - Default value
-     - Description
-   * - ``BasisOrthonormalizationAlgorithm-DefaultDiscretization``
-     - ``UnsignedInteger``
-     - ``128``
-     - Requested number of 1D nodes in the Gauss product experiment.
-   * - ``BasisOrthonormalizationAlgorithm-MaximumTensorNodes``
-     - ``UnsignedInteger``
-     - ``1000000``
-     - Maximum number of nodes of the default tensor rule, the marginal order being reduced above this budget and the rule being rejected when the budget cannot even hold the order-2 tensor product.
-   * - ``BasisOrthonormalizationAlgorithm-Epsilon``
-     - ``Scalar``
-     - ``1.0e-11``
-     - Relative threshold for zeroing coefficients and detecting linearly dependent functions.
-   * - ``GaussLPQuadrature-AlphaS``
-     - ``UnsignedInteger``
-     - ``100``
-     - Multiplier for the number of LP candidate points.
-   * - ``GaussLPQuadrature-Margin``
-     - ``UnsignedInteger``
-     - ``10``
-     - Minimum number of candidate points beyond the number of functions.
-   * - ``GaussLPQuadrature-Ngauss``
-     - ``UnsignedInteger``
-     - ``100``
-     - Requested order of the measure-adapted rule used for the moments.
-   * - ``GaussLPQuadrature-MaximumTensorNodes``
-     - ``UnsignedInteger``
-     - ``1000000``
-     - Maximum number of nodes of the tensor rule used for the moments, the marginal order being reduced above this budget and the rule being rejected when the budget cannot even hold the order-2 tensor product.
-   * - ``GaussLPQuadrature-Epsilon``
-     - ``Scalar``
-     - ``1.0e-5``
-     - Tolerance for quadrature residual.
-   * - ``GaussLPQuadrature-ClusterPath``
-     - ``Bool``
-     - ``True``
-     - Refine the rules along the greedy clustering path and stop at the first rule meeting the tolerance.
-   * - ``GaussLPQuadrature-MaximumAbsoluteError``
-     - ``Scalar``
-     - ``1.0e-12``
-     - Absolute error tolerance of the local refinement, superseding ``OptimizationAlgorithm-DefaultMaximumAbsoluteError``.
-   * - ``GaussLPQuadrature-MaximumRelativeError``
-     - ``Scalar``
-     - ``1.0e-12``
-     - Relative error tolerance of the local refinement, superseding ``OptimizationAlgorithm-DefaultMaximumRelativeError``.
-   * - ``GaussLPQuadrature-MaximumObjectiveError``
-     - ``Scalar``
-     - ``1.0e-12``
-     - Objective error tolerance of the local refinement, superseding ``OptimizationAlgorithm-DefaultMaximumResidualError``.
-   * - ``GaussLPQuadrature-MaximumConstraintError``
-     - ``Scalar``
-     - ``1.0e-12``
-     - Constraint error tolerance of the linear programming solve and of the local refinement, superseding ``OptimizationAlgorithm-DefaultMaximumConstraintError``.
-   * - ``GaussLPQuadrature-Solver``
-     - ``String``
-     - ``choose``
-     - HiGHS solver used for the linear programming solve, see :meth:`~openturns.experimental.HiGHS.GetAlgorithmNames`.
-   * - ``GaussLPQuadrature-FallbackSolver``
-     - ``String``
-     - ``ipm``
-     - HiGHS solver used when the first linear programming solve fails, see :meth:`~openturns.experimental.HiGHS.GetAlgorithmNames`; an empty value disables the retry.
+This class has no dedicated :class:`~openturns.ResourceMap` key: refer to the
+:class:`~openturns.experimental.BasisOrthonormalizationAlgorithm` and
+:class:`~openturns.experimental.GaussLPQuadrature` API documentation to learn
+which numerical parameters tune the computation.
 
 Examples
 --------
