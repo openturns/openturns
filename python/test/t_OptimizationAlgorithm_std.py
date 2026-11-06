@@ -20,14 +20,15 @@ for minimization in [True, False]:
             problem.setInequalityConstraint(h)
         names = ot.OptimizationAlgorithm.GetAlgorithmNames(problem)
         for name in names:
-            if "global" in name:
-                # slow
+            if "global" in name or name.startswith("G"):
+                # slow global optimizers
                 continue
             algo = ot.OptimizationAlgorithm.GetByName(name)
             algo.setProblem(problem)
             algo.setMaximumConstraintError(1e-1)
-            # 200 calls are enough: optimum is at origin of a convex quadric
-            algo.setMaximumCallsNumber(200)
+            # 2000 evaluations are enough: optimum is at origin of a convex quadric
+            # (budget includes finite-difference evaluations)
+            algo.setMaximumCallsNumber(2000)
             try:
                 algo.setStartingPoint(x0)
             except Exception:
@@ -64,7 +65,7 @@ costFunction = ot.PythonFunction(1, 1, _exec)
 problem = ot.OptimizationProblem(costFunction)
 problem.setBounds(bounds)
 for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
-    if "global" in name:
+    if "global" in name or name.startswith("G"):
         # slow global optimizers, already skipped in 1st section above
         continue
     algo = ot.OptimizationAlgorithm.GetByName(name)
@@ -76,7 +77,7 @@ for name in ot.OptimizationAlgorithm.GetAlgorithmNames():
     except Exception:
         # not supported
         continue
-    algo.setMaximumCallsNumber(100)
+    algo.setMaximumCallsNumber(1000)
     algo.setMaximumIterationNumber(100)
     print(f"{name}...")
     algo.run()

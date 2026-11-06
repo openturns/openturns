@@ -193,7 +193,7 @@ void HiGHS::run()
   pdlpIterationNumber_ = 0;
   qpIterationNumber_ = 0;
   std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
-  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getCallsNumber();
+  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
 
   HighsModel model;
   model.lp_.num_col_ = problemDimension;
@@ -358,7 +358,7 @@ void HiGHS::run()
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point({info.objective_function_value}));
   }
-  const UnsignedInteger callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
+  const UnsignedInteger callsNumber = getProblem().getObjective().getEvaluationCallsNumber() - initialCallsNumber;
   result_.setCallsNumber(callsNumber);
   // unused solver iteration counts are set to -1 by HiGHS: clamp each to 0
   simplexIterationNumber_ = static_cast<UnsignedInteger>(std::max<HighsInt>(info.simplex_iteration_count, 0));

@@ -160,8 +160,8 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
       algorithm->evaluationInputHistory_.add(inP);
       algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
 
-      // update result
-      algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+      // update result (total evaluations including finite differences)
+      algorithm->result_.setCallsNumber(algorithm->getProblem().getResidualFunction().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_);
       algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
       algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
     }
@@ -199,11 +199,13 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
   if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
     return -1;
+  if ((algorithm->getProblem().getResidualFunction().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_) >= algorithm->getMaximumCallsNumber())
+    return -1;
 
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * (algorithm->getProblem().getResidualFunction().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_)) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {
@@ -235,6 +237,7 @@ void CMinpack::run()
   result_ = OptimizationResult(getProblem());
 
   gradientCallsNumber_ = 0;
+  initialEvaluationNumber_ = getProblem().getResidualFunction().getEvaluationCallsNumber();
 
   Point x(startingPoint);
   const int m = getProblem().getResidualFunction().getOutputDimension();
@@ -441,6 +444,7 @@ void CMinpack::run()
   }
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setGradientCallsNumber(gradientCallsNumber_);
+  result_.setCallsNumber(getProblem().getResidualFunction().getEvaluationCallsNumber() - initialEvaluationNumber_);
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

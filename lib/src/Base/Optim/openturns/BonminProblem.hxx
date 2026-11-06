@@ -197,6 +197,7 @@ private:
   UnsignedInteger hessianCallsNumber_ = 0;
   // Callbacks
   UnsignedInteger maximumCallsNumber_ = 0;
+  UnsignedInteger initialEvaluationNumber_ = 0;
   Scalar maximumTimeDuration_ = 0.0;
   Bool timeOut_ = false;
   std::chrono::steady_clock::time_point t0_;

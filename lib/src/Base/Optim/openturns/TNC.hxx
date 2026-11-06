@@ -131,6 +131,7 @@ private:
 
   // initial gradient counter to populate the result
   UnsignedInteger gradientCallsNumber_ = 0;
+  UnsignedInteger initialEvaluationNumber_ = 0;
 
   void * p_nfeval_ = nullptr;
   std::chrono::steady_clock::time_point t0_;

@@ -125,9 +125,9 @@ OT_OptimizationAlgorithm_getMaximumIterationNumber_doc
 
 Returns
 -------
-maximumEvaluationNumber : int
-    Maximum allowed number of direct objective function calls through the `()` operator.
-    Does not take into account eventual indirect calls through finite difference gradient calls."
+maximumCallsNumber : int
+    Maximum allowed number of function evaluations, including direct calls through
+    the `()` operator and indirect calls through finite difference gradients."
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::getMaximumCallsNumber
 OT_OptimizationAlgorithm_getMaximumCallsNumber_doc
@@ -217,8 +217,8 @@ OT_OptimizationAlgorithm_setMaximumIterationNumber_doc
 Parameters
 ----------
 maximumCallsNumber : int
-    Maximum allowed number of direct objective function calls through the `()` operator.
-    Does not take into account eventual indirect calls through finite difference gradient calls."
+    Maximum allowed number of function evaluations, including direct calls through
+    the `()` operator and indirect calls through finite difference gradients."
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::setMaximumCallsNumber
 OT_OptimizationAlgorithm_setMaximumCallsNumber_doc
