@@ -874,7 +874,6 @@
   
   <!-- OT::StudentFactory parameters -->
   <StudentFactory-NuMax value_float="1.0e3" />
-  <StudentFactory-NuStart value_float="5.0" />
 
   <!-- OT::MaximumLikelihoodFactory parameters -->
   <StudentCopulaFactory-MaximumAbsoluteError value_float="1.0e-10" />
