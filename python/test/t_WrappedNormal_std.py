@@ -145,6 +145,12 @@ ott.assert_almost_equal(
     needle.computePDF([0.0, 0.4]), 1.0 / (1.0e-6 * math.sqrt(2.0 * math.pi)), 1e-12, 0.0
 )
 assert needle.computePDF([0.3, 0.4]) < 1e-300
+# A huge argument overflows the Fourier phase: the density is period-periodic,
+# so the argument must be reduced before summing instead of falling into the
+# direct lattice loop with a non-finite sum.
+ott.assert_almost_equal(
+    needle.computeLogPDF([1.0e308, 0.4]), needle.computeLogPDF([0.0, 0.4]), 1e-12, 0.0
+)
 
 # Without the diagonal factorization the density cannot be recovered when
 # both enumerations exceed the budget: report it instead of returning the
@@ -158,7 +164,13 @@ ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100)
 try:
     rotated_needle = otexp.WrappedNormal([0.0, 0.0], rotated_cov, 1.0)
     with ott.assert_raises(RuntimeError):
-        rotated_needle.computePDF([0.3, 0.4])
+        try:
+            rotated_needle.computePDF([0.3, 0.4])
+        except RuntimeError as exc:
+            # A Cholesky failure would also raise: check that the intended
+            # exception is reached.
+            assert "not diagonal" in str(exc)
+            raise
 finally:
     ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
 

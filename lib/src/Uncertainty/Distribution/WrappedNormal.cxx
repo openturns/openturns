@@ -113,6 +113,17 @@ Scalar LogWrappedNormalPDF1D(const Scalar x,
                              const Scalar variance,
                              const Scalar period)
 {
+  // The density is period-periodic in x: reduce the argument before summing
+  // so that a huge x cannot overflow the Fourier phase. A non-finite phase
+  // gives a NaN sum, which used to start a direct lattice loop of size
+  // O(sigma / period) instead of returning the density.
+  if (!std::isfinite(x))
+    return -SpecFunc::Infinity;
+  Scalar delta = std::remainder(x, period) - std::remainder(mu, period);
+  if (delta > 0.5 * period)
+    delta -= period;
+  else if (delta < -0.5 * period)
+    delta += period;
   const Scalar sigma = std::sqrt(variance);
   const Scalar cut = -2.0 * std::log(SpecFunc::Precision);
   const Scalar latticeHalfWidth = std::ceil(std::sqrt(cut) * sigma / period);
@@ -125,7 +136,7 @@ Scalar LogWrappedNormalPDF1D(const Scalar x,
     for (UnsignedInteger m = 1; m <= modeNumber; ++m)
     {
       const Scalar mode = 1.0 * m;
-      sum += 2.0 * std::exp(-0.5 * mode * mode * omega * omega * variance) * std::cos(mode * omega * (x - mu));
+      sum += 2.0 * std::exp(-0.5 * mode * mode * omega * omega * variance) * std::cos(mode * omega * delta);
     }
     if (sum > 0.0) return std::log(sum) - std::log(period);
   }
@@ -136,7 +147,7 @@ Scalar LogWrappedNormalPDF1D(const Scalar x,
   Scalar logSum = -SpecFunc::Infinity;
   for (SignedInteger k = -static_cast<SignedInteger>(kMax); k <= static_cast<SignedInteger>(kMax); ++k)
   {
-    const Scalar z = (x - mu + (1.0 * k) * period) / sigma;
+    const Scalar z = (delta + (1.0 * k) * period) / sigma;
     logSum = SpecFunc::LogSumExp(logSum, -0.5 * z * z - logNormalization);
   }
   return logSum;
@@ -296,11 +307,11 @@ Point WrappedNormal::wrap(const Point & x) const
   const Scalar halfP = period_ / 2.0;
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    Scalar val = x[i];
-    // Wrap to [-period/2, period/2)
-    val = std::fmod(val + halfP, period_);
-    if (val < 0.0) val += period_;
-    val -= halfP;
+    // Wrap to [-period/2, period/2). std::remainder is exact for huge
+    // arguments, whereas adding halfP before the modulo would lose it.
+    Scalar val = std::remainder(x[i], period_);
+    if (val >= halfP) val -= period_;
+    else if (val < -halfP) val += period_;
     result[i] = val;
   }
   return result;
@@ -372,6 +383,12 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension_ << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger d = dimension_;
+  for (UnsignedInteger i = 0; i < d; ++i)
+    if (!std::isfinite(point[i]))
+      return -SpecFunc::Infinity;
+  // The density is period-periodic in each coordinate: work on the wrapped
+  // point so that a huge argument cannot overflow the lattice sums.
+  const Point wrappedPoint(wrap(point));
 
   // Sum over lattice points (truncated for numerical stability)
   // p(x) = sum_{k in Z^d} N(x + k*period; mu, sigma)
@@ -432,7 +449,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
         lower(i, j) = chol(i, j);
     Point center(d);
     for (UnsignedInteger i = 0; i < d; ++i)
-      center[i] = (mu_[i] - point[i]) / period_;
+      center[i] = (mu_[i] - wrappedPoint[i]) / period_;
     Sample latticePoints(0, d);
     Point current(d);
     UnsignedInteger nodeVisits = 0;
@@ -444,7 +461,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       const Point latticePoint(latticePoints[t]);
       Point diff(d);
       for (UnsignedInteger i = 0; i < d; ++i)
-        diff[i] = point[i] - mu_[i] + latticePoint[i] * period_;
+        diff[i] = wrappedPoint[i] - mu_[i] + latticePoint[i] * period_;
 
       // Quadratic form
       Scalar quad = 0.0;
@@ -495,7 +512,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
       // Phase 2*pi*m.(x-mu)/period
       Scalar phase = 0.0;
       for (UnsignedInteger i = 0; i < d; ++i)
-        phase += mode[i] * (point[i] - mu_[i]);
+        phase += mode[i] * (wrappedPoint[i] - mu_[i]);
       sum += std::exp(-0.5 * omegaSquare * quad) * std::cos(omega * phase);
     }
     if (!(sum > 0.0))
@@ -523,7 +540,7 @@ Scalar WrappedNormal::computeLogPDF(const Point & point) const
     {
       Scalar logPDF = 0.0;
       for (UnsignedInteger i = 0; i < d; ++i)
-        logPDF += LogWrappedNormalPDF1D(point[i], mu_[i], sigma_(i, i), period_);
+        logPDF += LogWrappedNormalPDF1D(wrappedPoint[i], mu_[i], sigma_(i, i), period_);
       return logPDF;
     }
     throw NotYetImplementedException(HERE) << "WrappedNormal: direct and Fourier lattice enumerations exceed WrappedNormal-MaxLatticeTerms ("
