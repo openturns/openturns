@@ -25,6 +25,9 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 
+# Disable TBB for reproducible EGO runs
+ot.TBB.Disable()
+
 
 # %%
 # Ackley test-case
@@ -316,3 +319,6 @@ view = otv.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 
 
 # %%
 otv.View.ShowAll()
+
+# Re-enable TBB
+ot.TBB.Enable()
