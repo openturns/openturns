@@ -801,12 +801,14 @@ namespace
 // Check whether a face of a simplex is inner or on a boundary.  Arguments must be sorted.
 Bool Mesh_isInnerFace(const Indices & simplices0, const Indices & simplices1, const Indices & simplices2)
 {
-  std::vector<UnsignedInteger> common01;
-  std::set_intersection(simplices0.begin(), simplices0.end(), simplices1.begin(), simplices1.end(), std::back_inserter(common01));
-  if (common01.size() < 2) return false;
-  std::vector<UnsignedInteger> common012;
-  std::set_intersection(simplices2.begin(), simplices2.end(), common01.begin(), common01.end(), std::back_inserter(common012));
-  return common012.size() > 1;
+  Indices common01(std::min(simplices0.getSize(), simplices1.getSize()));
+  Indices::iterator end01 = std::set_intersection(simplices0.begin(), simplices0.end(), simplices1.begin(), simplices1.end(), common01.begin());
+  common01.resize(end01 - common01.begin());
+  if (common01.getSize() < 2) return false;
+  Indices common012(std::min(simplices2.getSize(), common01.getSize()));
+  Indices::iterator end012 = std::set_intersection(simplices2.begin(), simplices2.end(), common01.begin(), common01.end(), common012.begin());
+  common012.resize(end012 - common012.begin());
+  return common012.getSize() > 1;
 }
 
 // Check whether a face of a simplex is oriented toward the front or back
