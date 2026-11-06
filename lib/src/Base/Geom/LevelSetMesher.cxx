@@ -561,7 +561,7 @@ Mesh LevelSetMesher::buildCore(const Collection<LevelSet> & collection,
     // If enough vertices, keep the simplex and flag all the vertices
     if (numGood > 0)
     {
-      goodSimplices.add(Collection<UnsignedInteger>(boundingSimplices.cbegin_at(i), boundingSimplices.cend_at(i)));
+      goodSimplices.add(Indices(boundingSimplices.cbegin_at(i), boundingSimplices.cend_at(i)));
       ++goodSimplicesNumber;
       keptBackground.add(i);
       // Check if we have to move some vertices
