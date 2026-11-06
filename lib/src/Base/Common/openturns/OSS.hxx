@@ -25,6 +25,7 @@
 #include <iterator>
 #include <functional>
 #include <utility>        // for std::pair
+#include <cmath>          // for std::signbit
 #include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -90,6 +91,10 @@ struct OSSFormater<double>
   static
   void apply(std::ostringstream & oss, double d, int precision)
   {
+    // Normalize -0.0 to 0.0 for consistent output across architectures (fixes PPC64EL)
+    if (d == 0.0 && std::signbit(d)) {
+      d = 0.0;  // This creates +0.0
+    }
     int oldPrecision = static_cast<int>(oss.precision(precision));
     oss << d;
     oss.precision(oldPrecision);
@@ -99,6 +104,10 @@ struct OSSFormater<double>
   static
   void apply(OStream & OS, double d, int precision)
   {
+    // Normalize -0.0 to 0.0 for consistent output across architectures (fixes PPC64EL)
+    if (d == 0.0 && std::signbit(d)) {
+      d = 0.0;  // This creates +0.0
+    }
     int oldPrecision = static_cast<int>(OS.getStream().precision(precision));
     OS.getStream() << d;
     OS.getStream().precision(oldPrecision);
@@ -113,6 +122,10 @@ struct OSSFormater<float>
   static
   void apply(std::ostringstream & oss, float f, int precision)
   {
+    // Normalize -0.0f to 0.0f for consistent output across architectures (fixes PPC64EL)
+    if (f == 0.0f && std::signbit(f)) {
+      f = 0.0f;  // This creates +0.0f
+    }
     int oldPrecision = static_cast<int>(oss.precision(precision));
     oss << f;
     oss.precision(oldPrecision);
@@ -122,6 +135,10 @@ struct OSSFormater<float>
   static
   void apply(OStream & OS, float f, int precision)
   {
+    // Normalize -0.0f to 0.0f for consistent output across architectures (fixes PPC64EL)
+    if (f == 0.0f && std::signbit(f)) {
+      f = 0.0f;  // This creates +0.0f
+    }
     int oldPrecision = static_cast<int>(OS.getStream().precision(precision));
     OS.getStream() << f;
     OS.getStream().precision(oldPrecision);
