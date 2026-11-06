@@ -4,6 +4,7 @@ Use case : flood model
 """
 
 import openturns as ot
+import os
 
 
 class FloodModel:
@@ -76,6 +77,11 @@ class FloodModel:
 
     data : :class:`~openturns.Sample`
         of size 10 and dimension 2
+        A data set which contains noisy observations of the flow rate (column 0)
+        and the height (column 1).
+
+    data100 : :class:`~openturns.Sample`
+        of size 100 and dimension 2
         A data set which contains noisy observations of the flow rate (column 0)
         and the height (column 1).
 
@@ -198,6 +204,10 @@ class FloodModel:
             ]
         )
         self.data.setDescription(["Q ($m^3/s$)", "H (m)"])
+
+        script_dir = os.path.dirname(__file__)
+        csv = os.path.join(script_dir, "flood_model.csv")
+        self.data100 = ot.Sample.ImportFromCSVFile(csv, ";")
 
     def getHeightModel(
         self,
