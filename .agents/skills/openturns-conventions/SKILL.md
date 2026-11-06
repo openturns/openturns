@@ -13,8 +13,6 @@ description: 'OpenTURNS source and contribution conventions: Python code formatt
 - Avoid unicode characters in source, commit messages
 - Use `<Classname|Area>: <Short task overview>` as commit title template if possible
 - Commit message body can end with a `Closes #<issue number>` line if it must reference a GH issue
-- Add ChangeLog entries for new classes
-- Add ChangeLog and TODO files entries for public API deprecations
 - Deprecated methods docstrings entries are removed in favor of the new method
 - Deprecated classes Sphinx API entries are removed in favor of the new class
 - Never break the public API without asking first
@@ -66,4 +64,6 @@ description: 'OpenTURNS source and contribution conventions: Python code formatt
 
 ## ChangeLog
 - ChangeLog contains one-liners, no free-prose.
-- Use `New classes` alphabetically-ordered entries only for Python-exposed classes  (mention `openturns.experimental` module)
+- For new classes, limit changes to a one-line entry in `New classes` section
+  (alphabetically-ordered entries only for Python-exposed classes), with the mention of `openturns.experimental` module
+- Add ChangeLog and TODO files entries for public API deprecations

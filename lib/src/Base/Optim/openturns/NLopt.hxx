@@ -122,6 +122,7 @@ private:
 
   // initial gradient counter to populate the result
   UnsignedInteger gradientCallsNumber_ = 0;
+  UnsignedInteger initialEvaluationNumber_ = 0;
 
   // internal solver
   void * p_opt_ = nullptr;

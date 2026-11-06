@@ -16,6 +16,10 @@ Bibliography
 .. [acklam2017] Acklam P.J.
     *Acklam's algorithm for the inverse normal cdf*, 2017.
     https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
+.. [allen1974] Allen, D. M. (1974).
+    *The relationship between variable selection and data augmentation and a method for prediction.*
+    Technometrics, 16(1), 125-127.
+    `doi <https://doi.org/10.1080/00401706.1974.10489157>`__
 .. [amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,

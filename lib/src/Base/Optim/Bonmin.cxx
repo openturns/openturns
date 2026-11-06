@@ -91,9 +91,9 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
   // Cannot solve multi-objective problems
   if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Bonmin does not support multi-objective optimization";
 
-  // No LeastSquaresProblem / NearestPointProblem
-  if (problem.hasResidualFunction() || problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Bonmin does not support least squares or nearest point problems";
+  // No NearestPointProblem
+  if (problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Bonmin does not support nearest point problems";
 }
 
 
@@ -140,6 +140,7 @@ void Bonmin::run()
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
 
   // Create BonminProblem
+  const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
   std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
   Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber(), getMaximumTimeDuration(), t0);
   tminlp->setProgressCallback(progressCallback_.first, progressCallback_.second);
@@ -189,6 +190,7 @@ void Bonmin::run()
                                    getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
     result_.setGradientCallsNumber(tminlp->getGradientCallsNumber());
     result_.setHessianCallsNumber(tminlp->getHessianCallsNumber());
+    result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber);
     return;
   }
   catch(const ::Bonmin::OsiTMINLPInterface::SimpleError & exc)
@@ -234,6 +236,7 @@ void Bonmin::run()
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
   result_.setGradientCallsNumber(tminlp->getGradientCallsNumber());
   result_.setHessianCallsNumber(tminlp->getHessianCallsNumber());
+  result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber);
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())

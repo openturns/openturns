@@ -78,7 +78,7 @@ Refer to :ref:`field_function`.
     FieldToPointFunction
     PointToFieldFunction
     ParametricPointToFieldFunction
-    MemoizePointToFieldFunction
+    experimental.MemoizePointToFieldFunction
     VertexValuePointToFieldFunction
     VertexFieldToPointFunction
     ValueFunction

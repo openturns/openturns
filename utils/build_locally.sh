@@ -32,8 +32,8 @@ case $choice in
     fi
     ;;
   "5" | "mindeps")
-    docker pull debian:11
-    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -v `pwd`:/io debian:11 /io/.ci_support/run_docker_mindeps.sh
+    docker pull openturns/mindeps
+    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -v `pwd`:/io openturns/mindeps /io/.ci_support/run_docker_mindeps.sh
     ;;
   "6" | "abi3")
     docker pull openturns/archlinux-python

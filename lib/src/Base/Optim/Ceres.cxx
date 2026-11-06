@@ -132,7 +132,7 @@ public:
       std::copy(outP.begin(), outP.end(), residuals);
       algorithm_.evaluationInputHistory_.add(inP);
       algorithm_.evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
-      algorithm_.result_.setCallsNumber(algorithm_.evaluationInputHistory_.getSize());
+      algorithm_.result_.setCallsNumber(algorithm_.getProblem().getResidualFunction().getEvaluationCallsNumber() - algorithm_.initialEvaluationNumber_);
       algorithm_.result_.setGradientCallsNumber(algorithm_.gradientCallsNumber_);
     }
     catch (const Exception & exc)
@@ -195,7 +195,7 @@ public:
       algorithm_.evaluationOutputHistory_.add(outP);
 
       // update result
-      algorithm_.result_.setCallsNumber(algorithm_.evaluationInputHistory_.getSize());
+      algorithm_.result_.setCallsNumber(algorithm_.getProblem().getObjective().getEvaluationCallsNumber() - algorithm_.initialEvaluationNumber_);
       algorithm_.result_.setGradientCallsNumber(algorithm_.gradientCallsNumber_);
       algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
     }
@@ -270,6 +270,10 @@ void Ceres::run()
   result_ = OptimizationResult(getProblem());
 
   gradientCallsNumber_ = 0;
+  if (getProblem().hasResidualFunction())
+    initialEvaluationNumber_ = getProblem().getResidualFunction().getEvaluationCallsNumber();
+  else
+    initialEvaluationNumber_ = getProblem().getObjective().getEvaluationCallsNumber();
 
   UnsignedInteger iterationNumber = 0;
   Scalar time = 0.0;
@@ -525,6 +529,10 @@ void Ceres::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setGradientCallsNumber(gradientCallsNumber_);
+  if (getProblem().hasResidualFunction())
+    result_.setCallsNumber(getProblem().getResidualFunction().getEvaluationCallsNumber() - initialEvaluationNumber_);
+  else
+    result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_);
   if (termination_type == ceres::FAILURE)
   {
     result_.setStatus(OptimizationResult::FAILURE);

@@ -269,3 +269,50 @@ atoms = [ot.Bernoulli(0.1), ot.Bernoulli(0.2), ot.Bernoulli(0.3), ot.Bernoulli(0
 weights = [1.0, 2.0, 3.0, 4.0]
 d = ot.LinearCombinationDistribution(atoms, weights, 2.0)
 checkMixture(d, atoms, weights, 2.0, ["FiniteDiscreteDistribution"])
+
+# Test merge of a Normal atom with a single Uniform atom into SmoothedUniform
+atoms = [ot.Normal(1.0, 2.0), ot.Uniform(-1.0, 1.0)]
+weights = [1.0, 0.5]
+d = ot.LinearCombinationDistribution(atoms, weights, 2.0)
+checkMixture(d, atoms, weights, 2.0, ["SmoothedUniform"])
+checkWeights(d, [1.0])
+ott.assert_almost_equal(d.getConstant(), [0.0])
+ott.assert_almost_equal(
+    d.getDistributionCollection()[0].getParameter(), [2.5, 3.5, 2.0], 0.0, 0.0
+)
+ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", False)
+raw = ot.LinearCombinationDistribution(atoms, weights, 2.0)
+ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", True)
+x = d.getMean()[0]
+for offset in [-1.5, -0.5, 0.0, 0.5, 1.5]:
+    xx = x + offset * d.getStandardDeviation()[0]
+    ott.assert_almost_equal(d.computePDF(xx), raw.computePDF(xx), 1e-8, 1e-12, "pdf")
+    ott.assert_almost_equal(d.computeCDF(xx), raw.computeCDF(xx), 1e-10, 1e-12, "cdf")
+
+# Test flattening of a SmoothedUniform atom
+atoms = [ot.SmoothedUniform(0.0, 1.0, 0.5), ot.Normal(2.0, 1.0)]
+weights = [2.0, 1.0]
+d = ot.LinearCombinationDistribution(atoms, weights, 1.0)
+checkMixture(d, atoms, weights, 1.0, ["SmoothedUniform"])
+checkWeights(d, [1.0])
+ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", False)
+raw = ot.LinearCombinationDistribution(atoms, weights, 1.0)
+ot.ResourceMap.SetAsBool("LinearCombinationDistribution-SimplifyAtoms", True)
+x = d.getMean()[0]
+for offset in [-1.5, -0.5, 0.0, 0.5, 1.5]:
+    xx = x + offset * d.getStandardDeviation()[0]
+    ott.assert_almost_equal(d.computePDF(xx), raw.computePDF(xx), 1e-8, 1e-12, "pdf")
+    ott.assert_almost_equal(d.computeCDF(xx), raw.computeCDF(xx), 1e-10, 1e-12, "cdf")
+
+# Test that an atom with null weight is skipped
+atoms = [ot.Normal(1.0, 2.0), ot.Uniform(-1.0, 1.0)]
+d = ot.LinearCombinationDistribution(atoms, [1.0, 0.0])
+checkMixture(d, atoms, [1.0, 0.0], 0.0, ["Normal"])
+checkWeights(d, [1.0])
+
+# Test a single Uniform atom with null constant: it is kept as is
+atoms = [ot.Uniform(-1.0, 1.0)]
+d = ot.LinearCombinationDistribution(atoms, [1.0])
+checkMixture(d, atoms, [1.0], 0.0, ["Uniform"])
+checkWeights(d, [1.0])
+ott.assert_almost_equal(d.getConstant(), [0.0])

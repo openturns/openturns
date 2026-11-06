@@ -125,6 +125,7 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 
 /* Base/Func */
 %include ExceptionPenalizedEvaluation.i
+%include MemoizePointToFieldFunction.i
 
 /* Base/Optim */
 %include ExceptionPenalizedProblem.i
