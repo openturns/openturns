@@ -36,6 +36,7 @@
 #include <chrono>
 #include <cstdio>
 #include <functional>
+#include <vector>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -131,7 +132,7 @@ struct FactorTiming
     double syevd = 0.0;
     double final = 0.0;
   };
-  std::vector<BlockTiming> blocks;
+  Collection<BlockTiming> blocks;
   ~FactorTiming()
   {
     if (printProfile)
@@ -691,11 +692,11 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
   // The buffers grow geometrically with the rank revealed by the ACA. The
   // worst-case allocation min(nRows, nCols) * (nRows + nCols) would otherwise
   // be paid on every block even when the rank stays small (e.g. ~100 MB for a
-  // 2500 x 2500 block of an exactly low-rank 1D kernel), and the value
-  // initialization of std::vector would zero it all.
+  // 2500 x 2500 block of an exactly low-rank 1D kernel), and a full-size
+  // value-initialized buffer would zero it all.
   UnsignedInteger bufferCols = 0;
-  std::vector<Scalar> Udata;
-  std::vector<Scalar> Vdata;
+  Point Udata;
+  Point Vdata;
   const auto ensureBuffer = [&](const UnsignedInteger needed)
   {
     if (needed <= bufferCols)
@@ -725,10 +726,10 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
   Scalar norm = 0.0;
   const Scalar tol2 = tol * tol;
 
-  std::vector<unsigned char> rowFree(nRows, 1);
-  std::vector<unsigned char> colFree(nCols, 1);
-  std::vector<Scalar> aCol(nRows, 0.0);
-  std::vector<Scalar> bCol(nCols, 0.0);
+  Collection<unsigned char> rowFree(nRows, 1);
+  Collection<unsigned char> colFree(nCols, 1);
+  Point aCol(nRows, 0.0);
+  Point bCol(nCols, 0.0);
   UnsignedInteger pivotRow = 0;
   UnsignedInteger pivotCol = 0;
 
@@ -784,22 +785,22 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
   // tracking the true residuals. Random pivots avoid the adversarial
   // stagnation of pure max-element pivoting and usually reach the tolerance
   // at a lower rank with smaller constants.
-  std::vector<UnsignedInteger> poolRow;
-  std::vector<UnsignedInteger> poolCol;
-  std::vector<Scalar> poolVal;
+  Indices poolRow;
+  Indices poolCol;
+  Point poolVal;
   if (useRandomPivots_)
   {
     const UnsignedInteger nSamples = std::max(nRows, nCols);
-    poolRow.reserve(nSamples);
-    poolCol.reserve(nSamples);
-    poolVal.reserve(nSamples);
+    poolRow.resize(nSamples);
+    poolCol.resize(nSamples);
+    poolVal.resize(nSamples);
     for (UnsignedInteger s = 0; s < nSamples; ++s)
     {
       const UnsignedInteger rr = RandomGenerator::IntegerGenerate(nRows);
       const UnsignedInteger cc = RandomGenerator::IntegerGenerate(nCols);
-      poolRow.push_back(rr);
-      poolCol.push_back(cc);
-      poolVal.push_back((*p_eval_)(startRow + rr, startCol + cc));
+      poolRow[s] = rr;
+      poolCol[s] = cc;
+      poolVal[s] = (*p_eval_)(startRow + rr, startCol + cc);
     }
   }
 
@@ -816,7 +817,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // matrix-vector form walks the factors along their contiguous direction
     // instead of striding once per factor.
     const auto ta0 = std::chrono::steady_clock::now();
-    const ACAResidualRowPolicy rowPolicy(p_eval_.get(), startRow, pivotRow, startCol, nCols, bCol.data());
+    const ACAResidualRowPolicy rowPolicy(p_eval_.get(), startRow, pivotRow, startCol, nCols, const_cast<Scalar *>(bCol.data()));
     TBBImplementation::ParallelForIf(parallelAssembly, 0, nCols, rowPolicy);
     const auto ta1 = std::chrono::steady_clock::now();
     g_assemblyTiming.rowEval += std::chrono::duration<double>(ta1 - ta0).count();
@@ -824,7 +825,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     {
       // Gather the pivot row of U, the vector the product reduces against
       const auto ta2 = std::chrono::steady_clock::now();
-      std::vector<Scalar> uRow(rank);
+      Point uRow(rank);
       for (UnsignedInteger idx = 0; idx < rank; ++idx) uRow[idx] = Udata[idx * nRows + pivotRow];
       const auto ta3 = std::chrono::steady_clock::now();
       g_assemblyTiming.gather += std::chrono::duration<double>(ta3 - ta2).count();
@@ -834,8 +835,8 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
       double minusOne = -1.0;
       double accumulate = 1.0;
       // bCol(nCols) -= V(rank x nCols) * uRow(rank), V seen column-major
-      HODLRDgemv("N", &nColsInt, &rankInt, &minusOne, Vdata.data(), &nColsInt,
-                 uRow.data(), &one, &accumulate, bCol.data(), &one);
+      HODLRDgemv("N", &nColsInt, &rankInt, &minusOne, const_cast<Scalar *>(Vdata.data()), &nColsInt,
+                 const_cast<Scalar *>(uRow.data()), &one, &accumulate, const_cast<Scalar *>(bCol.data()), &one);
       g_assemblyTiming.rowDowndate += std::chrono::duration<double>(std::chrono::steady_clock::now() - ta3).count();
     }
     const auto ta4 = std::chrono::steady_clock::now();
@@ -852,14 +853,14 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     g_assemblyTiming.pivotSearch += std::chrono::duration<double>(std::chrono::steady_clock::now() - ta4).count();
     rowFree[pivotRow] = 0;
 
-    if (useRandomPivots_ && !poolVal.empty())
+    if (useRandomPivots_ && !poolVal.isEmpty())
     {
       // Best pre-sampled entry against the residual-row maximum above: a
       // strictly larger random entry restarts the iteration from its row,
       // exactly as hmat-oss doCompressionAcaPartial with useRandomPivots.
       UnsignedInteger best = 0;
       Scalar bestVal = 0.0;
-      for (UnsignedInteger s = 0; s < poolVal.size(); ++s)
+      for (UnsignedInteger s = 0; s < poolVal.getSize(); ++s)
       {
         const Scalar absVal = std::abs(poolVal[s]);
         if (absVal > bestVal)
@@ -892,13 +893,13 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // same split as the row: evaluation first, then one matrix-vector product
     // against U.
     const auto tb0 = std::chrono::steady_clock::now();
-    const ACAResidualColumnPolicy columnPolicy(p_eval_.get(), startRow, nRows, startCol, pivotCol, aCol.data());
+    const ACAResidualColumnPolicy columnPolicy(p_eval_.get(), startRow, nRows, startCol, pivotCol, const_cast<Scalar *>(aCol.data()));
     TBBImplementation::ParallelForIf(parallelAssembly, 0, nRows, columnPolicy);
     const auto tb1 = std::chrono::steady_clock::now();
     g_assemblyTiming.colEval += std::chrono::duration<double>(tb1 - tb0).count();
     if (rank > 0)
     {
-      std::vector<Scalar> vCol(rank);
+      Point vCol(rank);
       for (UnsignedInteger idx = 0; idx < rank; ++idx) vCol[idx] = Vdata[idx * nCols + pivotCol];
       int nRowsInt = static_cast<int>(nRows);
       int rankInt = static_cast<int>(rank);
@@ -906,8 +907,8 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
       double minusOne = -1.0;
       double accumulate = 1.0;
       // aCol(nRows) -= U(rank x nRows) * vCol(rank), U seen column-major
-      HODLRDgemv("N", &nRowsInt, &rankInt, &minusOne, Udata.data(), &nRowsInt,
-                 vCol.data(), &one, &accumulate, aCol.data(), &one);
+      HODLRDgemv("N", &nRowsInt, &rankInt, &minusOne, const_cast<Scalar *>(Udata.data()), &nRowsInt,
+                 const_cast<Scalar *>(vCol.data()), &one, &accumulate, const_cast<Scalar *>(aCol.data()), &one);
       g_assemblyTiming.colDowndate += std::chrono::duration<double>(std::chrono::steady_clock::now() - tb1).count();
     }
     const auto tb2 = std::chrono::steady_clock::now();
@@ -916,19 +917,19 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     // Same scaling convention as the full-pivoting variant: the pivot column
     // is stored unscaled in U, the pivot row divided by the pivot in V.
     const Scalar pivot = bCol[pivotCol];
-    if (useRandomPivots_ && !poolVal.empty())
+    if (useRandomPivots_ && !poolVal.isEmpty())
     {
       // Keep the pre-sampled entries tracking the true residuals: subtract
       // the accepted rank-1 term with the same scaling as the residual
       // downdates above (unscaled column factor times pivot-scaled row).
       const Scalar invPivotUpd = 1.0 / pivot;
-      for (UnsignedInteger s = 0; s < poolVal.size(); ++s)
+      for (UnsignedInteger s = 0; s < poolVal.getSize(); ++s)
         poolVal[s] -= aCol[poolRow[s]] * (bCol[poolCol[s]] * invPivotUpd);
     }
     ensureBuffer(rank + 1);
     Scalar uNorm2 = 0.0;
     {
-      Scalar* const uptr = Udata.data() + rank * nRows;
+      Scalar* const uptr = const_cast<Scalar *>(Udata.data()) + rank * nRows;
       for (UnsignedInteger i = 0; i < nRows; ++i)
       {
         const Scalar v = aCol[i];
@@ -938,7 +939,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
     }
     Scalar vNorm2 = 0.0;
     {
-      Scalar* const vptr = Vdata.data() + rank * nCols;
+      Scalar* const vptr = const_cast<Scalar *>(Vdata.data()) + rank * nCols;
       const Scalar invPivot = 1.0 / pivot;
       for (UnsignedInteger j = 0; j < nCols; ++j)
       {
@@ -1037,7 +1038,7 @@ UnsignedInteger HODLRNode::lowRankApproxPartialPivot(UnsignedInteger startRow, U
 void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
     UnsignedInteger startRow, UnsignedInteger nRows,
     UnsignedInteger startCol, UnsignedInteger nCols,
-    const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+    const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
     Scalar tolerance)
 {
   // Recompress the low-rank block A01' = Uout * Vout^T - sum_k (UK_k * U1_k^T)
@@ -1164,13 +1165,13 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
     {
       const Scalar truncFactor = ResourceMap::GetAsScalar("HODLRMatrix-StackTruncationFactor");
       const Scalar dropBudget = truncFactor * tolerance * weightSum;
-      std::vector<UnsignedInteger> order(totalRank);
+      Indices order(totalRank);
       for (UnsignedInteger c = 0; c < totalRank; ++c)
         order[c] = c;
       std::sort(order.begin(), order.end(),
                 [&weights](UnsignedInteger a, UnsignedInteger b)
                 { return weights[a] < weights[b]; });
-      std::vector<char> drop(totalRank, 0);
+      Collection<char> drop(totalRank, 0);
       Scalar dropped = 0.0;
       UnsignedInteger nDropped = 0;
       for (const UnsignedInteger c : order)
@@ -1341,6 +1342,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
     lwork = static_cast<int>(lworkQuery);
     liwork = static_cast<int>(liworkQuery);
     Point work(lwork);
+    // LAPACK integer workspace: int is imposed by the dsyevd_ ABI.
     std::vector<int> iwork(static_cast<std::size_t>(liwork));
     dsyevd_(&jobz, &uplo, &n, const_cast<Scalar *>(G.data()), &n, const_cast<Scalar *>(eigenvalues.data()), const_cast<Scalar *>(work.data()), &lwork, iwork.data(), &liwork, &info, &ljobz, &luplo);
     if (info != 0)
@@ -1477,7 +1479,7 @@ void HODLRNode::recompressLowRank(Matrix& Uout, Matrix& Vout,
     g_factorTiming.recompFinal += std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
     bt.final = std::chrono::duration<double>(std::chrono::steady_clock::now() - t0).count();
   }
-  g_factorTiming.blocks.push_back(bt);
+  g_factorTiming.blocks.add(bt);
 }
 
 // --- HODLRCorrectedEvaluator factory implementations ---
@@ -1515,8 +1517,8 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::create(
   corr.UK = UK;
   corr.lambda = lambda;
 
-  std::vector<Correction> corrections;
-  corrections.push_back(corr);
+  Collection<Correction> corrections;
+  corrections.add(corr);
 
   return new HODLRCorrectedEvaluator(original, offset, size, corrections);
 }
@@ -1546,7 +1548,7 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::flatten(
   }
 
   // Copy existing corrections
-  std::vector<Correction> allCorrections = existing.corrections_;
+  Collection<Correction> allCorrections = existing.corrections_;
 
   // Append new correction
   Correction newCorr;
@@ -1558,7 +1560,7 @@ Pointer<HODLRCorrectedEvaluator> HODLRCorrectedEvaluator::flatten(
     std::copy(&newU1(0, 0), &newU1(0, 0) + nRows * rank, &newCorr.U1(0, 0));
   newCorr.UK = UK;
   newCorr.lambda = newLambda;
-  allCorrections.push_back(newCorr);
+  allCorrections.add(newCorr);
 
   return new HODLRCorrectedEvaluator(existing.getOriginal(),
                                      existing.getOffset(),
@@ -1571,10 +1573,10 @@ void HODLRNode::computeCholesky()
   g_factorTiming.printProfile = ResourceMap::GetAsBool("HODLRMatrix-ProfileFactorization");
   g_assemblyTiming.print = ResourceMap::GetAsBool("HODLRMatrix-ProfileFactorization");
   maxLeafShift_ = 0.0;
-  computeCholesky(std::vector<HODLRCorrectedEvaluator::Correction>());
+  computeCholesky(Collection<HODLRCorrectedEvaluator::Correction>());
 }
 
-void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+void HODLRNode::computeCholesky(const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
                                 bool rebuildStructure)
 {
   HODLRBlasGuard blasGuard;
@@ -1621,7 +1623,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
   // ~100 attempts x full rebuild, 12 min of factorization).
   if (rebuildStructure)
   {
-    if (!corrections.empty() && ResourceMap::GetAsBool("HODLRMatrix-RecompressCorrections"))
+    if (!corrections.isEmpty() && ResourceMap::GetAsBool("HODLRMatrix-RecompressCorrections"))
     {
       const auto t0 = std::chrono::steady_clock::now();
       recompressLowRank(U_[1], V_[0], start_ + s0, s1, start_, s0, corrections, recompressionTolerance_);
@@ -1733,7 +1735,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
         // tree rebuild with a corrected evaluator is required. Retries with a
         // larger lambda only differ in the diagonal term, so keep the structure
         // built at attempt 0 and re-run the leaves with rebuildStructure == false.
-        std::vector<HODLRCorrectedEvaluator::Correction> childCorrections = corrections;
+        Collection<HODLRCorrectedEvaluator::Correction> childCorrections = corrections;
         HODLRCorrectedEvaluator::Correction newCorr;
         newCorr.offset = start_ + s0;
         newCorr.size = s1;
@@ -1741,7 +1743,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
         newCorr.U1 = U_[1];
         newCorr.UK = UK;
         newCorr.lambda = lambda;
-        childCorrections.push_back(newCorr);
+        childCorrections.add(newCorr);
         const Bool childRebuild = rebuildStructure;
         try
         {
@@ -1775,7 +1777,7 @@ void HODLRNode::computeCholesky(const std::vector<HODLRCorrectedEvaluator::Corre
   logDet_ = p_child0_->getLogDeterminant() + p_child1_->getLogDeterminant();
 }
 
-void HODLRNode::factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+void HODLRNode::factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
                                       bool rebuildStructure)
 {
   // Leaf: assemble the corrected dense matrix from the kernel block cached
@@ -2023,7 +2025,7 @@ void HODLRNode::factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator:
 }
 
 void HODLRNode::factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1, Scalar lambda,
-                                               const std::vector<HODLRCorrectedEvaluator::Correction>& corrections)
+                                               const Collection<HODLRCorrectedEvaluator::Correction>& corrections)
 {
   // Directly assemble A11' = A11 - sum corrections - U1 * K * U1^T + lambda * I
   // Uses the ORIGINAL evaluator (p_eval_) for A11 entries, computes
@@ -2368,15 +2370,15 @@ void HODLRNode::applyFactor(Matrix& y, const Matrix& x) const
   {
     // y += L * x where L is the lower-triangular Cholesky factor in Sfactor_
     // Use dtrmv for each RHS column; allocate workspace once for all RHS.
-    std::vector<double> tmp(size_ * nrhs);
+    Point tmp(size_ * nrhs);
     for (UnsignedInteger j = 0; j < nrhs; ++j)
-      std::copy(x_data + start_ + j * nxRows, x_data + start_ + j * nxRows + size_, tmp.data() + j * size_);
+      std::copy(x_data + start_ + j * nxRows, x_data + start_ + j * nxRows + size_, const_cast<Scalar *>(tmp.data()) + j * size_);
     int n = static_cast<int>(size_);
     int incx = 1;
     const Scalar* L_data = &(*Sfactor_.getImplementation())[0];
     for (UnsignedInteger j = 0; j < nrhs; ++j)
     {
-      HODLRDtrmv("L", "N", "N", &n, const_cast<double*>(L_data), &n, tmp.data() + j * size_, &incx);
+      HODLRDtrmv("L", "N", "N", &n, const_cast<double*>(L_data), &n, const_cast<Scalar *>(tmp.data()) + j * size_, &incx);
       for (UnsignedInteger i = 0; i < size_; ++i)
         y_data[(start_ + i) + j * nyRows] += tmp[i + j * size_];
     }
@@ -2439,15 +2441,15 @@ void HODLRNode::applyFactorTranspose(Matrix& y, const Matrix& x) const
   if (isLeaf_)
   {
     // y += L^T * x where L is the lower-triangular Cholesky factor in Sfactor_
-    std::vector<double> tmp(size_ * nrhs);
+    Point tmp(size_ * nrhs);
     for (UnsignedInteger j = 0; j < nrhs; ++j)
-      std::copy(x_data + start_ + j * nxRows, x_data + start_ + j * nxRows + size_, tmp.data() + j * size_);
+      std::copy(x_data + start_ + j * nxRows, x_data + start_ + j * nxRows + size_, const_cast<Scalar *>(tmp.data()) + j * size_);
     int n = static_cast<int>(size_);
     int incx = 1;
     const Scalar* L_data = &(*Sfactor_.getImplementation())[0];
     for (UnsignedInteger j = 0; j < nrhs; ++j)
     {
-      HODLRDtrmv("L", "T", "N", &n, const_cast<double*>(L_data), &n, tmp.data() + j * size_, &incx);
+      HODLRDtrmv("L", "T", "N", &n, const_cast<double*>(L_data), &n, const_cast<Scalar *>(tmp.data()) + j * size_, &incx);
       for (UnsignedInteger i = 0; i < size_; ++i)
         y_data[(start_ + i) + j * nyRows] += tmp[i + j * size_];
     }
