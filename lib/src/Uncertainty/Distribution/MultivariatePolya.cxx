@@ -36,8 +36,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
-
 CLASSNAMEINIT(MultivariatePolya)
 
 static const Factory<MultivariatePolya> Factory_MultivariatePolya;

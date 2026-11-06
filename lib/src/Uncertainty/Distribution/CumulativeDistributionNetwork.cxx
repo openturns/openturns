@@ -928,7 +928,10 @@ Scalar CumulativeDistributionNetwork::computePartialDerivativeLog(const Point & 
     derivative[index] = 1;
   }
   const UnsignedInteger maximumTerms = ResourceMap::GetAsUnsignedInteger("CumulativeDistributionNetwork-MaximumTerms");
-  // Local points, local derivative tables and constant factors
+  // Local points, local derivative tables and constant factors. Both point
+  // collections are jagged: each factor has its own local dimension and its
+  // own number of free-variable combinations, hence Collection<Point> and
+  // not Sample.
   Collection<Point> localPoints(factorCount);
   Collection<Indices> forcedPositions(factorCount);
   Collection<Indices> freePositions(factorCount);
