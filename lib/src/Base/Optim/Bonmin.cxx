@@ -91,9 +91,9 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
   // Cannot solve multi-objective problems
   if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Bonmin does not support multi-objective optimization";
 
-  // No LeastSquaresProblem / NearestPointProblem
-  if (problem.hasResidualFunction() || problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Bonmin does not support least squares or nearest point problems";
+  // No NearestPointProblem
+  if (problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Bonmin does not support nearest point problems";
 }
 
 
