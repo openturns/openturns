@@ -2,7 +2,7 @@ import openturns as ot
 from matplotlib import pyplot as plt
 import openturns.viewer as otv
 
-distribution = ot.NormalGamma()
+distribution = ot.NormalGamma(0.0, 1.0, 2.0, 1.0)
 
 distribution.setDescription(["$X$", "$Y$"])
 pdf_graph = distribution.drawPDF()
