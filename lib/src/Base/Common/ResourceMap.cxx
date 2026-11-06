@@ -1492,6 +1492,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // StudentFactory parameters //
   addAsScalar("StudentFactory-NuMax", 1.0e3);
+  addAsScalar("StudentFactory-NuStart", 5.0);
 
   // MaximumLikelihoodFactory parameters //
   addAsScalar("StudentCopulaFactory-MaximumAbsoluteError", 1.0e-10);

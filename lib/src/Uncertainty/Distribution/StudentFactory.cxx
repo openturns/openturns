@@ -20,6 +20,7 @@
  */
 #include "openturns/StudentFactory.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -173,7 +174,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
   }
   problem.setBounds(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 
-  Scalar nu0 = 1.0;
+  const Scalar nu0 = ResourceMap::GetAsScalar("StudentFactory-NuStart");
   Point startingPoint(dim);
   startingPoint[0] = nu0;
   if (d <= reducedDimThreshold)
