@@ -108,11 +108,12 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
   const Bool broadcastStep = (finiteDifferenceSteps_.getSize() == 1);
   const Point commonStep(broadcastStep ? finiteDifferenceSteps_[0](inP) : Point());
   // Resolve the step of each output, broadcasting the single step if any
-  Collection<Point> steps(outputDimension);
+  Sample steps(outputDimension, inputDimension);
   for (UnsignedInteger j = 0; j < outputDimension; ++j)
   {
-    steps[j] = broadcastStep ? commonStep : finiteDifferenceSteps_[j](inP);
-    if (inputDimension != steps[j].getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", should be " << steps[j].getDimension();
+    const Point step(broadcastStep ? commonStep : finiteDifferenceSteps_[j](inP));
+    if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", should be " << step.getDimension();
+    steps[j] = step;
   }
   // A single grid suffices when all outputs share the same steps
   Bool sharedSteps = true;
