@@ -73,6 +73,12 @@ Deterministic weighted experiments
     TensorProductExperiment
     SmolyakExperiment
 
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.GaussLPQuadratureRule
+
 .. _low_discrepancy_sequence_api:
 
 Sample splitting

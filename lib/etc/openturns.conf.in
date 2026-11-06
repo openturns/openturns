@@ -1405,5 +1405,24 @@
   <!-- viewer.View parameters -->
   <View-ImageFormat value_str="png" />
 
+  <!-- OT::BasisOrthonormalizationAlgorithm parameters -->
+  <BasisOrthonormalizationAlgorithm-DefaultDiscretization  value_int="128" />
+  <BasisOrthonormalizationAlgorithm-MaximumTensorNodes     value_int="1000000" />
+  <BasisOrthonormalizationAlgorithm-Epsilon                value_float="1.0e-11" />
+
+  <!-- OT::GaussLPQuadrature parameters -->
+  <GaussLPQuadrature-AlphaS             value_int="100" />
+  <GaussLPQuadrature-Margin             value_int="10" />
+  <GaussLPQuadrature-Ngauss             value_int="100" />
+  <GaussLPQuadrature-MaximumTensorNodes value_int="1000000" />
+  <GaussLPQuadrature-Epsilon value_float="1.0e-5" />
+  <GaussLPQuadrature-ClusterPath value_bool="true" />
+  <GaussLPQuadrature-MaximumAbsoluteError value_float="1.0e-12" />
+  <GaussLPQuadrature-MaximumRelativeError value_float="1.0e-12" />
+  <GaussLPQuadrature-MaximumObjectiveError value_float="1.0e-12" />
+  <GaussLPQuadrature-MaximumConstraintError value_float="1.0e-12" />
+  <GaussLPQuadrature-Solver value_str="choose" />
+  <GaussLPQuadrature-FallbackSolver value_str="ipm" />
+
   <!-- <-your-variable value_str="its value" /> -->
 </openturns-configuration>

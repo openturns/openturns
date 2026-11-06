@@ -1030,6 +1030,25 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12);
   addAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64);
 
+  // BasisOrthonormalizationAlgorithm parameters //
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-DefaultDiscretization", 128);
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000);
+  addAsScalar("BasisOrthonormalizationAlgorithm-Epsilon", 1.0e-11);
+
+  // GaussLPQuadrature parameters //
+  addAsUnsignedInteger("GaussLPQuadrature-AlphaS", 100);
+  addAsUnsignedInteger("GaussLPQuadrature-Margin", 10);
+  addAsUnsignedInteger("GaussLPQuadrature-Ngauss", 100);
+  addAsUnsignedInteger("GaussLPQuadrature-MaximumTensorNodes", 1000000);
+  addAsScalar("GaussLPQuadrature-Epsilon", 1.0e-5);
+  addAsBool("GaussLPQuadrature-ClusterPath", true);
+  addAsScalar("GaussLPQuadrature-MaximumAbsoluteError", 1.0e-12);
+  addAsScalar("GaussLPQuadrature-MaximumRelativeError", 1.0e-12);
+  addAsScalar("GaussLPQuadrature-MaximumObjectiveError", 1.0e-12);
+  addAsScalar("GaussLPQuadrature-MaximumConstraintError", 1.0e-12);
+  addAsString("GaussLPQuadrature-Solver", "choose");
+  addAsString("GaussLPQuadrature-FallbackSolver", "ipm");
+
   // LinearModelTest parameters //
   addAsScalar("LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5);
   addAsScalar("LinearModelTest-DefaultLevel", 0.05);

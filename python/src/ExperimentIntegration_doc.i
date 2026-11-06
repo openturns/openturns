@@ -138,3 +138,11 @@ Examples
 >>> functionNorm = integration.computeL2Norm(centeredIshigamiFunction)
 >>> print(functionNorm[0])
 3.7...)RAW"
+
+%feature("docstring") OT::ExperimentIntegration::getWeightedExperiment
+"Accessor to the weighted experiment.
+
+Returns
+-------
+experiment : :class:`~openturns.WeightedExperiment`
+    The weighted experimental design."
