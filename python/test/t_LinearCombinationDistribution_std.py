@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+import cmath
+import os
+
 import openturns as ot
 import openturns.testing as ott
 from math import sqrt, pi, exp, log
@@ -435,3 +438,183 @@ dist1d.setBlockMin(4)
 assert dist1d.getBlockMin() == 4, "wrong blockMin after setter"
 dist1d.setBlockMax(18)
 assert dist1d.getBlockMax() == 18, "wrong blockMax after setter"
+
+print("marginals")
+collection2D = [ot.Normal(), ot.Normal(1.0, 2.0), ot.Normal(-2.0, 1.0)]
+weightMatrix2D = ot.Matrix([[1.0, 2.0, -1.0], [0.5, -1.0, 2.0]])
+distribution2D = ot.LinearCombinationDistribution(collection2D, weightMatrix2D)
+marginal0 = distribution2D.getMarginal(0)
+reference0 = ot.Normal(4.0, sqrt(18.0))
+ott.assert_almost_equal(marginal0.getMean(), reference0.getMean(), 1e-12, 1e-12)
+ott.assert_almost_equal(
+    marginal0.getCovariance(), reference0.getCovariance(), 1e-12, 1e-12
+)
+for x in [-4.0, 0.0, 4.0, 8.0]:
+    ott.assert_almost_equal(
+        marginal0.computePDF(x), reference0.computePDF(x), 1e-6, 1e-9, "marginal pdf"
+    )
+marginal1 = distribution2D.getMarginal(1)
+reference1 = ot.Normal(-5.0, sqrt(8.25))
+ott.assert_almost_equal(marginal1.getMean(), reference1.getMean(), 1e-12, 1e-12)
+swapped = distribution2D.getMarginal([1, 0])
+ott.assert_almost_equal(swapped.getMean(), [-5.0, 4.0], 1e-12, 1e-12)
+oneD = ot.LinearCombinationDistribution([ot.Normal(), ot.Uniform()])
+assert oneD.getMarginal(0) == oneD, "wrong 1D marginal"
+with ott.assert_raises(TypeError):
+    distribution2D.getMarginal(2)
+with ott.assert_raises(TypeError):
+    distribution2D.getMarginal([0, 0])
+
+print("predicates")
+assert oneD.hasIndependentCopula(), "wrong independent copula"
+assert oneD.hasEllipticalCopula(), "wrong elliptical copula"
+assert not distribution2D.hasIndependentCopula(), "wrong independent copula"
+assert not distribution2D.hasEllipticalCopula(), "wrong elliptical copula"
+assert distribution2D.isElliptical(), "wrong elliptical"
+mixed2D = ot.LinearCombinationDistribution(
+    [ot.Normal(), ot.Exponential()], ot.Matrix([[1.0, 1.0], [1.0, -1.0]])
+)
+assert not mixed2D.isElliptical(), "wrong elliptical"
+assert oneD.isContinuous(), "wrong continuous"
+assert not oneD.isDiscrete(), "wrong discrete"
+assert not oneD.isIntegral(), "wrong integral"
+discrete1D = ot.LinearCombinationDistribution(
+    [ot.Bernoulli(0.5), ot.Binomial(2, 0.5)], [1.0, 1.0]
+)
+assert discrete1D.isDiscrete(), "wrong discrete"
+assert not discrete1D.isContinuous(), "wrong continuous"
+assert discrete1D.isIntegral(), "wrong integral"
+halfWeighted = ot.LinearCombinationDistribution(
+    [ot.Bernoulli(0.5), ot.Binomial(2, 0.5)], [1.0, 0.5]
+)
+assert not halfWeighted.isIntegral(), "wrong integral"
+assert not halfWeighted.isContinuous(), "wrong continuous"
+mixed1D = ot.LinearCombinationDistribution(
+    [ot.Normal(), ot.Bernoulli(0.5)], [1.0, 1.0]
+)
+assert mixed1D.isContinuous(), "wrong continuous"
+assert not mixed1D.isDiscrete(), "wrong discrete"
+assert not mixed1D.isIntegral(), "wrong integral"
+
+print("support")
+support = discrete1D.getSupport(ot.Interval(0.0, 3.0))
+assert support.getSize() == 4, "wrong support size"
+for i in range(4):
+    ott.assert_almost_equal(support[i], [float(i)], 0.0, 0.0, "support point")
+supportSlice = discrete1D.getSupport(ot.Interval(1.0, 2.0))
+assert supportSlice.getSize() == 2, "wrong sliced support size"
+with ott.assert_raises(TypeError):
+    discrete1D.getSupport(ot.Interval([0.0, 0.0], [1.0, 1.0]))
+with ott.assert_raises(RuntimeError):
+    oneD.getSupport(oneD.getRange())
+support2D = ot.LinearCombinationDistribution(
+    [ot.Bernoulli(0.5)] * 2, ot.Matrix([[1.0, 0.0], [0.0, 1.0]])
+).getSupport(ot.Interval([-0.5] * 2, [1.5] * 2))
+assert support2D.getSize() == 4, "wrong 2D support size"
+assert sorted([tuple(p) for p in support2D]) == [
+    (0.0, 0.0),
+    (0.0, 1.0),
+    (1.0, 0.0),
+    (1.0, 1.0),
+], "wrong 2D support"
+
+print("analytical gradients and characteristic values")
+analytical = ot.LinearCombinationDistribution([ot.Normal(1.0, 2.0)], [2.0], 1.0)
+x = ot.Point([3.0])
+atomX = ot.Point([(3.0 - 1.0) / 2.0])
+atom = analytical.getDistributionCollection()[0]
+ott.assert_almost_equal(
+    analytical.computePDFGradient(x),
+    atom.computePDFGradient(atomX) * (1.0 / abs(2.0)),
+    1e-12,
+    1e-12,
+    "pdf gradient",
+)
+ott.assert_almost_equal(
+    analytical.computeCDFGradient(x),
+    atom.computeCDFGradient(atomX),
+    1e-12,
+    1e-12,
+    "cdf gradient",
+)
+negative = ot.LinearCombinationDistribution([ot.Normal(1.0, 2.0)], [-2.0], 1.0)
+ott.assert_almost_equal(
+    negative.computeCDFGradient(ot.Point([0.0])),
+    atom.computeCDFGradient(ot.Point([(0.0 - 1.0) / -2.0])) * (-1.0),
+    1e-12,
+    1e-12,
+    "negative cdf gradient",
+)
+generic = ot.LinearCombinationDistribution([ot.Normal(), ot.Normal(1.0, 2.0)])
+for gradient in [
+    generic.computePDFGradient(ot.Point([0.5])),
+    generic.computeCDFGradient(ot.Point([0.5])),
+]:
+    assert all(v == v and abs(v) < float("inf") for v in gradient), "bad gradient"
+assert analytical.computeCharacteristicFunction(0.0) == 1.0, "wrong cf at 0"
+assert analytical.computeLogCharacteristicFunction(0.0) == 0.0, "wrong log cf at 0"
+y = ot.Point([0.3, -0.7])
+mu2D = [sum(weightMatrix2D[j, i] * collection2D[i].getMean()[0] for i in range(3)) for j in range(2)]
+cov2D = ot.CovarianceMatrix(2)
+for j in range(2):
+    for k in range(j + 1):
+        cov2D[j, k] = sum(
+            weightMatrix2D[j, i]
+            * weightMatrix2D[k, i]
+            * collection2D[i].getCovariance()[0, 0]
+            for i in range(3)
+        )
+phase = sum(y[j] * mu2D[j] for j in range(2))
+spread = sum(y[j] * sum(cov2D[j, k] * y[k] for k in range(2)) for j in range(2))
+expectedLogPhi = complex(0.0, phase) - 0.5 * spread
+expectedPhi = cmath.exp(expectedLogPhi)
+gotPhi = distribution2D.computeCharacteristicFunction(y)
+ott.assert_almost_equal([gotPhi.real, gotPhi.imag], [expectedPhi.real, expectedPhi.imag], 1e-9, 1e-12, "cf point")
+gotLogPhi = distribution2D.computeLogCharacteristicFunction(y)
+ott.assert_almost_equal(
+    [gotLogPhi.real, gotLogPhi.imag],
+    [expectedLogPhi.real, expectedLogPhi.imag],
+    1e-9,
+    1e-12,
+    "log cf point",
+)
+
+print("constant, fft, parameters, persistence")
+analytical.setConstant([5.0])
+ott.assert_almost_equal(analytical.getConstant(), [5.0], 0.0, 0.0, "constant")
+ott.assert_almost_equal(analytical.getMean(), [7.0], 1e-12, 1e-12, "shifted mean")
+analytical.setConstant([5.0])
+with ott.assert_raises(TypeError):
+    analytical.setConstant([5.0, 6.0])
+fft = analytical.getFFTAlgorithm()
+analytical.setFFTAlgorithm(fft)
+assert analytical.getFFTAlgorithm().getClassName() == fft.getClassName(), "wrong fft"
+assert len(analytical.getParameterDescription()) == len(analytical.getParameter()) > 0, "bad description"
+with ott.assert_raises(TypeError):
+    analytical.setParameter([0.0])
+same = ot.LinearCombinationDistribution([ot.Normal(1.0, 2.0)], [2.0], 5.0)
+assert analytical == same, "wrong equality"
+assert analytical != oneD, "wrong inequality"
+fileName = "t_LinearCombinationDistribution_std.xml"
+study = ot.Study()
+study.setStorageManager(ot.XMLStorageManager(fileName))
+study.add("dist", analytical)
+study.save()
+loadedStudy = ot.Study()
+loadedStudy.setStorageManager(ot.XMLStorageManager(fileName))
+loadedStudy.load()
+loaded = ot.LinearCombinationDistribution()
+loadedStudy.fillObject("dist", loaded)
+os.remove(fileName)
+ott.assert_almost_equal(loaded.getMean(), analytical.getMean(), 1e-12, 1e-12, "loaded mean")
+ott.assert_almost_equal(
+    loaded.getCovariance(), analytical.getCovariance(), 1e-12, 1e-12, "loaded covariance"
+)
+assert loaded == analytical, "wrong loaded equality"
+
+print("minimum volume level set")
+levelSet = analytical.computeMinimumVolumeLevelSet(0.9)
+assert levelSet.contains(analytical.getMean()), "mean outside level set"
+levelSetPoint, threshold = analytical.computeMinimumVolumeLevelSetWithThreshold(0.9)
+assert levelSetPoint.contains(analytical.getMean()), "mean outside level set"
+assert threshold > 0.0, "bad threshold"
