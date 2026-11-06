@@ -49,6 +49,8 @@ import openturns as ot
 import openturns.experimental as otexp
 import openturns.viewer as otv
 
+# sphinx_gallery_thumbnail_number = 1
+
 # %%
 # Define the target measure and the initial functions
 # ---------------------------------------------------
@@ -119,6 +121,19 @@ print(computeGramMatrix([initialBasis.build(i) for i in range(basisSize)]))
 # precision.
 print("Gram matrix of the orthonormal functions:")
 print(computeGramMatrix(orthonormalFunctions))
+
+# %%
+# The six orthonormal functions are shown in the next figure. They span the
+# same space as the initial Legendre functions, but their contours reflect
+# the dependence structure of the target measure.
+grid = ot.GridLayout(2, 3)
+for i, function in enumerate(orthonormalFunctions):
+    graph = function.draw([-1.0] * dimension, [1.0] * dimension, [100] * dimension)
+    graph.setTitle(f"$\\varphi_{i}$")
+    graph.setXTitle("$x_1$")
+    graph.setYTitle("$x_2$")
+    grid.setGraph(i // 3, i % 3, graph)
+view = otv.View(grid, axes_kw={"aspect": "equal"})
 
 # %%
 # Build a quadrature rule
