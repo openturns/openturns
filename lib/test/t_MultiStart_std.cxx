@@ -73,7 +73,7 @@ int main(int, char *[])
     Scalar trueOptimalValue = -6.55113;
     assert_almost_equal(result.getOptimalPoint(), trueOptimalPoint, 1e-5, 0.0);
     assert_almost_equal(result.getOptimalValue()[0], trueOptimalValue, 1e-5, 0.0);
-    assert_almost_equal(1.0 * algo.getResultCollection().getSize(), 3.0);
+    assert_almost_equal(1.0 * algo.getResultCollection().getSize(), 4.0);
     // Deactivate intermediate results history
     algo = MultiStart(solver, startingSample);
     algo.setKeepResults(false);

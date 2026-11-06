@@ -112,7 +112,8 @@ void Ipopt::run()
   if (getStartingPoint().getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
 
-  // Create BonminProblem
+  // Create IpoptProblem
+  const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
   ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumCallsNumber());
   ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
   ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
@@ -228,6 +229,7 @@ void Ipopt::run()
                                  getProblem().hasEqualityConstraint() ? getProblem().getEqualityConstraint()(inputHistory) : Sample());
   result_.setGradientCallsNumber(ipoptProblem->getGradientCallsNumber());
   result_.setHessianCallsNumber(ipoptProblem->getHessianCallsNumber());
+  result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber);
 
   if (status < 0)
   {
