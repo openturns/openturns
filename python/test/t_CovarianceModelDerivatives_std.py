@@ -141,6 +141,37 @@ def check_high_order_shapes(model):
         assert value == value
 
 
+def check_nugget_gradient(model):
+    """Check the nugget derivative with the nugget activated."""
+    s, _ = get_points(model)
+    description = model.getFullParameterDescription()
+    nugget_indices = [
+        index for index, name in enumerate(description) if name.lower() == "nuggetfactor"
+    ]
+    if len(nugget_indices) != 1:
+        return
+    nugget_index = nugget_indices[0]
+    active_parameter = model.getActiveParameter()
+    model.setActiveParameter(ot.Indices(range(model.getFullParameter().getSize())))
+    model.setNuggetFactor(0.1)
+    gradient = model.parameterGradient(s, s)
+    reference = ot.Point(model(s, s).getImplementation())
+    step = 1e-6
+    model.setNuggetFactor(0.1 + step)
+    shifted = ot.Point(model(s, s).getImplementation())
+    model.setNuggetFactor(0.1)
+    for index in range(reference.getSize()):
+        ott.assert_almost_equal(
+            gradient[nugget_index, index],
+            (shifted[index] - reference[index]) / step,
+            1e-4,
+            1e-4,
+            "in " + model.getClassName() + " nugget parameterGradient",
+        )
+    model.setNuggetFactor(0.0)
+    model.setActiveParameter(active_parameter)
+
+
 def check_zero_separation(model, has_parameter_gradient=True):
     """Zero-separation and nugget branches of the analytic implementations."""
     s, _ = get_points(model)
@@ -159,10 +190,7 @@ def check_zero_separation(model, has_parameter_gradient=True):
     assert model.fourthOrderPartial(s, s).getSize() == dimension**4
     assert model.parameterHessian(s, s).getNbColumns() == dimension * dimension
     if has_parameter_gradient:
-        model.setNuggetFactor(0.1)
-        gradient = model.parameterGradient(s, s)
-        assert gradient.getNbRows() == model.getParameter().getSize()
-        model.setNuggetFactor(0.0)
+        check_nugget_gradient(model)
 
 
 def check_high_order_values():
@@ -215,6 +243,47 @@ def check_matern_nu_gradient():
     model.setActiveParameter(list(range(model.getFullParameter().getSize())))
     assert model.getParameter().getSize() == model.getFullParameter().getSize()
     check_parameter_gradient(model)
+
+
+def check_exponential_model_parameter_cache():
+    """setParameter and setFullParameter must refresh the inverse scales."""
+    model = ot.ExponentialModel([1.5, 0.8], [2.0])
+    reference = ot.ExponentialModel([2.5, 1.7], [2.0])
+    s, t = get_points(model)
+    expected_gradient = reference.partialGradient(s, t)
+    expected_hessian = reference.partialHessian(s, t)
+    expected_parameter_gradient = reference.parameterGradient(s, t)
+    setters = [
+        (lambda: model.setParameter([2.5, 1.7, 2.0]), "setParameter"),
+        (
+            lambda: model.setFullParameter([2.5, 1.7, 1e-12, 2.0]),
+            "setFullParameter",
+        ),
+    ]
+    for setter, name in setters:
+        model.setScale([1.5, 0.8])
+        setter()
+        ott.assert_almost_equal(
+            model.partialGradient(s, t),
+            expected_gradient,
+            1e-12,
+            1e-12,
+            "in ExponentialModel partialGradient after " + name,
+        )
+        ott.assert_almost_equal(
+            model.partialHessian(s, t),
+            expected_hessian,
+            1e-12,
+            1e-12,
+            "in ExponentialModel partialHessian after " + name,
+        )
+        ott.assert_almost_equal(
+            model.parameterGradient(s, t),
+            expected_parameter_gradient,
+            1e-12,
+            1e-12,
+            "in ExponentialModel parameterGradient after " + name,
+        )
 
 
 def check_nonstationary_composite_models():
@@ -355,6 +424,21 @@ rank_covariance[0, 0] = 1.0
 rank_covariance[1, 1] = 4.0
 rank_covariance[1, 0] = 1.0
 
+# TensorizedCovarianceModel exposes the scale of its first marginal model only
+# when the inherited scale_ member mirrors the collection. Before that fix,
+# setParameter() corrupts the collection: the inherited finite-difference
+# parameterGradient and parameterHessian values are meaningless and only their
+# shapes can be checked.
+tensorized = ot.TensorizedCovarianceModel(
+    [
+        ot.SquaredExponential([1.5], [2.0]),
+        ot.AbsoluteExponential([0.8], [1.5]),
+    ]
+)
+tensorized_effective_scale = list(tensorized.getScale()) == list(
+    tensorized.getCollection()[0].getScale()
+)
+
 # (model, check_parameter_gradient, check_parameter_hessian_values)
 # RankMCovarianceModel inherits the finite-difference parameterGradient, which
 # needs computeAsScalar(iterator), not implemented by that class.
@@ -395,9 +479,9 @@ models = [
         True,
     ),
     (
-        # The wrapper scale must match the first model scale, otherwise
-        # setScale() resets the first model scale and the parameter
-        # finite differences are meaningless.
+        # The explicit wrapper scale matches the first marginal model, so the
+        # parameter finite differences stay meaningful with or without the
+        # effective-scale fix.
         ot.TensorizedCovarianceModel(
             [
                 ot.SquaredExponential([1.5], [2.0]),
@@ -408,6 +492,9 @@ models = [
         True,
         True,
     ),
+    # The single-argument constructor uses the first marginal scale: the
+    # parameter-mutating checks are meaningful only once getScale() exposes it.
+    (tensorized, tensorized_effective_scale, tensorized_effective_scale),
     (ot.IsotropicCovarianceModel(ot.MaternModel([1.2], [2.0], 1.5), 2), True, True),
     (otexp.CurlFreeModel(ot.SquaredExponential([1.5, 0.8], [2.0])), True, False),
     (otexp.DivFreeModel(ot.SquaredExponential([1.5, 0.8], [2.0])), True, False),
@@ -426,6 +513,7 @@ for model, has_parameter_gradient, check_parameter_hessian_values in models:
 
 check_high_order_values()
 check_matern_nu_gradient()
+check_exponential_model_parameter_cache()
 check_parameter_hessian_at_upper_bound()
 check_nonstationary_composite_models()
 check_latent_variable_model()

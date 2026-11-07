@@ -23,7 +23,7 @@ function is defined by
 
 where :math:`m: \cD \rightarrow \Rset^{\processDim}` is the mean function
 and :math:`X_{\vect{t}}` is the random variable at index :math:`\vect{t}`.
-In the library, the covariance model is written as
+Many covariance models of the library are written as
 
 .. math::
 
@@ -37,6 +37,13 @@ where :math:`\rho` is a scalar correlation function,
 :math:`\vect{\sigma} \in \Rset^{\processDim}` is the amplitude parameter
 and :math:`\mat{R} \in \cS_{\processDim}^+(\Rset)` is the spatial
 correlation matrix.
+This parameterization is not universal: for example,
+:class:`~openturns.FractionalBrownianMotionModel` has a variance that
+depends on the index, :class:`~openturns.TensorizedCovarianceModel` may
+use a different covariance function in each block and
+:class:`~openturns.experimental.CurlFreeModel` has entries that are
+spatial derivatives. The covariance function of these models does not
+reduce to the expression above.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
@@ -241,8 +248,10 @@ Returns
 choleskyFactor : :class:`~openturns.HMatrix`
     Lower triangular Cholesky factor :math:`\mat{L}` of the covariance
     matrix, such that
-    :math:`\mat{C}_{1, \dots, N} = \mat{L}\Tr{\mat{L}}`, stored in
-    hierarchical format (H-Matrix).
+    :math:`\mat{C}_{1, \dots, N} = \mat{L}\Tr{\mat{L}}` when the
+    factorization method is ``LLt`` (default), stored in hierarchical
+    format (H-Matrix). With the ``LU`` or ``LDLt`` method, the result
+    holds the factorization computed by that method instead.
 
 Notes
 -----
@@ -333,7 +342,7 @@ Parameters
 ----------
 vertices : :class:`~openturns.Sample`
     Container of the discretization vertices
-    :math:`(\vect{t}_1, \dots, \vect{t}_N)`.
+    :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})`.
 p : int, :math:`0 \leq p \leq N - 1`
     Row index of the covariance matrix to discretize.
 
@@ -343,14 +352,14 @@ result : :class:`~openturns.Sample`
     Sample of size :math:`N\processDim` and dimension
     :math:`\processDim`, whose :math:`i`-th block of
     :math:`\processDim` rows contains the covariance matrix
-    :math:`\mat{C}(\vect{t}_i, \vect{t}_p)`, for
-    :math:`i = 1, \dots, N`.
+    :math:`\mat{C}(\vect{t}_p, \vect{t}_i)`, for
+    :math:`i = 0, \dots, N-1`.
 
 Notes
 -----
 When :math:`\processDim = 1`, the result is a sample of size
 :math:`N` and dimension 1 with entries
-:math:`C(\vect{t}_i, \vect{t}_p) = \mat{C}_{11}(\vect{t}_i, \vect{t}_p)`.
+:math:`C(\vect{t}_p, \vect{t}_i) = \mat{C}_{11}(\vect{t}_p, \vect{t}_i)`.
 )RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeRow
@@ -472,6 +481,8 @@ scale : :class:`~openturns.Point`
     Scale parameter :math:`\vect{\theta} \in
     \Rset^{\domainDim}` used in the covariance function.
     Its components are positive.
+    For :class:`~openturns.IsotropicCovarianceModel`, the scale has a
+    single component.
 )RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getScale
