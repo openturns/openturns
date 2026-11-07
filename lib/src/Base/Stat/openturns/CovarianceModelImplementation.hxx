@@ -221,6 +221,18 @@ public:
   using PersistentObject::operator !=;
   Bool operator !=(const CovarianceModelImplementation & other) const;
 
+  /** Addition of two scalar-output covariance models with the same input
+   *  dimension. Unlike FunctionImplementation, the result is returned as a
+   *  handle to avoid slicing: the sum behavior lives in virtual overrides
+   *  that a value copy of the base class would lose.
+   */
+  virtual CovarianceModel operator +(const CovarianceModelImplementation & right) const;
+  virtual CovarianceModel operator +(const Implementation & p_right) const;
+  virtual CovarianceModel operator +(const CovarianceModel & right) const;
+
+  /** Multiplication of a scalar-output model or a combination by a positive scalar */
+  virtual CovarianceModel operator *(const Scalar scalar) const;
+
   /** String converter */
   String __repr__() const override;
 

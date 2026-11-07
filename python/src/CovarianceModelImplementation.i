@@ -9,3 +9,16 @@
 %copyctor OT::CovarianceModelImplementation;
 
 %include openturns/CovarianceModelImplementation.hxx
+
+namespace OT {
+
+%extend CovarianceModelImplementation {
+
+CovarianceModel __rmul__(const Scalar scalar)
+{
+  return *self * scalar;
+}
+
+} // %extend CovarianceModelImplementation
+
+} // namespace OT
