@@ -83,6 +83,7 @@ public:
   CovarianceModel getMarginal(const UnsignedInteger index) const override;
 
   /** Scale accessor */
+  Point getScale() const override;
   void setScale(const Point & scale) override;
 
   /** Amplitude accessor */
