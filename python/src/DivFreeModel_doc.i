@@ -8,7 +8,7 @@ R"RAW(Divergence-free covariance model.
 This class builds a matrix-valued divergence-free covariance model from a scalar
 covariance model :math:`C`, as described in [scheuerer2012]_.
 
-Let :math:`C: \Rset^d \times \Rset^d \rightarrow \Rset` be a scalar covariance
+Let :math:`C: \Rset^{\domainDim} \times \Rset^{\domainDim} \rightarrow \Rset` be a scalar covariance
 model, and let :math:`\mat{H}(\vect{s}, \vect{t})` be the matrix of mixed
 second derivatives:
 
@@ -21,21 +21,21 @@ The divergence-free covariance model is defined as:
 .. math::
 
     \mat{C}_{\mathrm{div}}(\vect{s}, \vect{t})
-        = \mathrm{tr}(\mat{H}(\vect{s}, \vect{t})) \, \mat{I}_d
+        = \mathrm{tr}(\mat{H}(\vect{s}, \vect{t})) \, \mat{I}_{\processDim}
         - \mat{H}(\vect{s}, \vect{t})
 
-The resulting model has input and output dimension :math:`d`. If the
+The resulting model has input dimension :math:`\domainDim` and output dimension :math:`\processDim`, with :math:`\processDim = \domainDim`. If the
 underlying scalar model has :math:`\mathcal{C}^{1,1}` regularity, the
 associated random vector field has divergence-free sample paths almost surely.
 
-The model is defined for input dimensions :math:`d \ge 2`. For
-:math:`d > 3` the model has been conjectured to work but only proven
-for :math:`d = 2, 3` [scheuerer2012]_.
+The model is defined for input dimensions :math:`\domainDim \ge 2`. For
+:math:`\domainDim > 3` the model has been conjectured to work but only proven
+for :math:`\domainDim = 2, 3` [scheuerer2012]_.
 
 Parameters
 ----------
 model : :class:`~openturns.CovarianceModel`
-    A scalar covariance model :math:`C: \Rset^d \times \Rset^d \rightarrow \Rset`.
+    A scalar covariance model :math:`C: \Rset^{\domainDim} \times \Rset^{\domainDim} \rightarrow \Rset`.
 
 See Also
 --------

@@ -10,9 +10,9 @@ Available constructors:
 Parameters
 ----------
 p : int
-    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`\processDim`.
 q : int
-    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`\processDim`.
 invertible : bool, optional
     Restrict the estimation to invertible ARMA processes.
 
@@ -36,7 +36,7 @@ which is based on the maximization of the likelihood function in the frequency d
 The principle is detailed hereafter for the case of a time series : in the case of a process sample,
 the estimator is similar except for the periodogram which is computed differently.
 
-Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`d` from an :math:`ARMA(p,q)` process. 
+Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`\processDim` from an :math:`ARMA(p,q)` process.
 
 The spectral density function of the :math:`ARMA(p,q)` process writes:
 

@@ -23,7 +23,7 @@ with
 
 see :class:`~openturns.FunctionalChaosAlgorithm` for details.
 
-Sobol indices of the input field component :math:`j \in [1,d]` can be computed
+Sobol indices of the input field component :math:`j \in [1,\processDim]` can be computed
 from the coefficients of the chaos decomposition that involve the
 matching Karhunen-Loeve coefficients.
 

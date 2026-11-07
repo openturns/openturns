@@ -21,7 +21,7 @@ R"RAW(Get the marginal(s) at given indice(s).
 
 Parameters
 ----------
-i : int or list of ints, :math:`0 \leq i < d`
+i : int or list of ints, :math:`0 \leq i < \processDim`
     Indice(s) of the marginal(s) to be extracted.
     output vector.
 

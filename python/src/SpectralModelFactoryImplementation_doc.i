@@ -3,18 +3,18 @@ R"RAW(Base class for spectral model factory.
 
 Notes
 -----
-Let :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \in \Rset^n`. We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (*n=1*).
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}`  be a multivariate second order stationary process, with zero mean, where :math:`\cD \subset \Rset^{\domainDim}`. We only treat here the case where the domain is of dimension 1: :math:`\cD \subset \Rset` (:math:`\domainDim=1`).
 
-If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^n \rightarrow \Rset^n` is :math:`\cL^1(\Rset^n)` (ie :math:`\int_{\Rset^n} |C^{stat}_{i,j}(\vect{\tau})|\di{\vect{\tau}}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`. 
+If we note :math:`C(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}` its covariance function, then for all :math:`(i,j), C^{stat}_{i,j} : \Rset^{\domainDim} \rightarrow \Rset` is :math:`\cL^1(\Rset^{\domainDim})` (ie :math:`\int_{\Rset^{\domainDim}} |C^{stat}_{i,j}(\vect{\tau})|\di{\vect{\tau}}\, < +\infty`), with :math:`C^{stat}(\vect{\tau}) = C(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not depend on :math:`\vect{s}`.
 
-The bilateral spectral density function :math:`S : \Rset^n \rightarrow \mathcal{H}^+(d)` exists and is defined as the Fourier transform of the covariance function :math:`C^{stat}` :
+The bilateral spectral density function :math:`S : \Rset^{\domainDim} \rightarrow \cH^+(\processDim)` exists and is defined as the Fourier transform of the covariance function :math:`C^{stat}` :
 
 .. math::
 
-    \forall \vect{f} \in \Rset^n, \,S(\vect{f}) = \int_{\Rset^n}\exp\left\{-2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\di{\vect{\tau}}
+    \forall \vect{f} \in \Rset^{\domainDim}, \,S(\vect{f}) = \int_{\Rset^{\domainDim}}\exp\left\{-2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\di{\vect{\tau}}
 
 
-where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+where :math:`\cH^+(\processDim) \in \cM_{\processDim}(\Cset)` is the set of :math:`\processDim`-dimensional positive definite hermitian matrices.
 
 Depending on the available data, we proceed differently:
 

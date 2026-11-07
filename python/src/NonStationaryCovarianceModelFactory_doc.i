@@ -5,10 +5,10 @@ Refer to :any:`estimate_non_stationary_covariance_model`.
 
 Notes
 -----
-We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d` be a multivariate process of dimension *d* where :math:`\cD \in \Rset^n`. 
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` be a multivariate process of dimension :math:`\processDim` where :math:`\cD \subset \Rset^{\domainDim}`.
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of the mesh :math:`\cM \in \cD`.
 
-*X* is supposed to be a second order process and we note :math:`C : \cD \times \cD \rightarrow \mathcal{M}_{d \times d}(\mathbb{R})` its covariance function. *X* may be stationary or non stationary as well.
+*X* is supposed to be a second order process and we note :math:`C : \cD \times \cD \rightarrow \cM_{\processDim \times \processDim}(\mathbb{R})` its covariance function. *X* may be stationary or non stationary as well.
 
 We suppose that we have *K* fields and we note :math:`(\vect{x}_0^k, \dots, \vect{x}_{N-1}^k)` the values of the field *k* on the mesh :math:`\cM`.
 
@@ -19,7 +19,7 @@ We recall that the covariance function *C* writes:
     \forall (\vect{s}, \vect{t}) \in \cD \times \cD, \quad C(\vect{s}, \vect{t}) = \Expect{\left(X_{\vect{s}}-m(\vect{s})\right)\Tr{\left(X_{\vect{t}}-m(\vect{t})\right)}}
 
 
-where the mean function :math:`m: \cD \rightarrow \Rset^d` is defined by:
+where the mean function :math:`m: \cD \rightarrow \Rset^{\processDim}` is defined by:
 
 .. math::
 

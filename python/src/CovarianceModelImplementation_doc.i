@@ -3,8 +3,6 @@ R"RAW(Covariance model.
 
 Base class for covariance models.
 
-Notes
------
 A covariance model is the covariance function
 :math:`\mat{C}: \cD \times \cD \rightarrow \cM_{\processDim \times \processDim}(\Rset)`
 of a second-order stochastic process
@@ -45,6 +43,8 @@ use a different covariance function in each block and
 spatial derivatives. The covariance function of these models does not
 reduce to the expression above.
 
+Notes
+-----
 The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``CovarianceModel-DefaultNuggetFactor`` (``Scalar``, default: ``1e-12``): default value of the nugget factor :math:`\varepsilon_{nugget}`.
@@ -1015,9 +1015,11 @@ parameter : :class:`~openturns.Point`
       :math:`\mat{R} \in \cS_{\processDim}^+([-1, 1])`, i.e.
       :math:`\processDim(\processDim - 1) / 2` values.
 
-    Its size is therefore at least
+    In the base class, its size is therefore
     :math:`\domainDim + 1 + \processDim(\processDim + 1) / 2`.
-    Models may append model-specific parameters.
+    Subclasses may replace this layout or append model-specific
+    parameters; use :meth:`getFullParameterDescription` to obtain the
+    actual layout.
 )RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setFullParameter
@@ -1031,14 +1033,15 @@ R"RAW(Get the full parameters of the covariance function.
 Returns
 -------
 parameter : :class:`~openturns.Point`
-    Full parameter vector, of size at least
-    :math:`\domainDim + 1 + \processDim(\processDim + 1) / 2`.
-    In the base class, its components are, in order, the scale vector
+    In the base class, the full parameter vector has size
+    :math:`\domainDim + 1 + \processDim(\processDim + 1) / 2` and its
+    components are, in order, the scale vector
     :math:`\vect{\theta}`, the nugget factor
     :math:`\varepsilon_{nugget}`, the amplitude vector
     :math:`\vect{\sigma}` and the lower triangle of the spatial
-    correlation matrix :math:`\mat{R}`. Models may append model-specific
-    parameters.
+    correlation matrix :math:`\mat{R}`. Subclasses may replace this
+    layout or append model-specific parameters; use
+    :meth:`getFullParameterDescription` to obtain the actual layout.
 )RAW"
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getFullParameter

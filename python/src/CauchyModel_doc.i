@@ -17,19 +17,19 @@ theta : sequence of float
     Vector of size 1
 sigma : sequence of float
     Amplitude vector :math:`\vect{\sigma}`
-    Vector of size d
+    Vector of size :math:`\processDim`
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Spatial correlation matrix :math:`\mat{R}` of size :math:`d \times d`.
+    Spatial correlation matrix :math:`\mat{R}` of size :math:`\processDim \times \processDim`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
     Spatial covariance matrix :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \mat{R}\diag(\vect{\sigma})`.
 
 Notes
 -----
-The spectral density function of input dimension 1 and output dimension **d** writes:
+The spectral density function of input dimension 1 and output dimension :math:`\processDim` writes:
 
 .. math::
 
-    \forall f \geq 0, \forall (i,j) \in [0,d-1]^2, S_{i,j}(f) =  2 \mat{C}^{spatial}_{i,j} \frac{\theta}{1 + (2\pi \theta f)^2}
+    \forall f \geq 0, \forall (i,j) \in [0,\processDim-1]^2, S_{i,j}(f) =  2 \mat{C}^{spatial}_{i,j} \frac{\theta}{1 + (2\pi \theta f)^2}
 
 It is the spectral density associated to the :class:`~openturns.AbsoluteExponential` covariance model in dimension 1.
 

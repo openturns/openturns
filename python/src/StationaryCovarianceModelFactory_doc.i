@@ -12,27 +12,27 @@ spectralModelFactory : :class:`~openturns.SpectralModelFactory`
 
 Notes
 -----
-We consider :math:`X: \Omega \times \cD \rightarrow \Rset^d`  be a multivariate   process of dimension *d* where :math:`\cD \in \Rset^n`.
-We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`).
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}`  be a multivariate   process of dimension :math:`\processDim` where :math:`\cD \subset \Rset^{\domainDim}`.
+We only treat here the case where the domain is of dimension 1: :math:`\cD \subset \Rset` (:math:`\domainDim=1`).
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of the  mesh :math:`\cM \in \cD` which is a time grid supposed regular.
 
 *X* is supposed to be a stationary second order process with zero mean.
-We note its covariance function :math:`C^{stat}: \cD \rightarrow \mathcal{M}_{d \times d}(\Rset)`,
+We note its covariance function :math:`C^{stat}: \cD \rightarrow \cM_{\processDim \times \processDim}(\Rset)`,
 defined by :math:`C^{stat}(\tau)=\Expect{X_s\Tr{X_{s+\tau}}}` for all :math:`s\in \cD`.
 
-In addition, we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` is defined,
-where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+In addition, we suppose that its spectral density function :math:`S : \Rset \rightarrow \cH^+(\processDim)` is defined,
+where :math:`\cH^+(\processDim) \in \cM_{\processDim}(\Cset)` is the set of :math:`\processDim`-dimensional positive definite hermitian matrices.
 
 The factory estimates :math:`C^{stat}` from a field or a sample of fields of *X*, using first the estimation of the spectral density function
 and then mapping *S* into :math:`C^{stat}` using the inversion relation:
 
 .. math::
 
-    C^{stat}(\vect{\tau})  = \int_{\Rset^n}\exp\left\{  2i\pi <\vect{f}, \vect{\tau}> \right\}S(\vect{f})\di{\vect{f}}
+    C^{stat}(\vect{\tau})  = \int_{\Rset^{\domainDim}}\exp\left\{  2i\pi <\vect{f}, \vect{\tau}> \right\}S(\vect{f})\di{\vect{f}}
 
 when it is possible.
 
-As the mesh is a time grid (:math:`n=1`), the fields can be interpreted as time series.
+As the mesh is a time grid (:math:`\domainDim=1`), the fields can be interpreted as time series.
 
 The estimation  algorithm is outlined hereafter.
 
@@ -168,7 +168,7 @@ Notes
 -----
 The fields must be time series, ie the underlying mesh must be a 1D lattice.
 
-The estimated :class:`~openturns.CovarianceModel` which is a :class:`~openturns.UserDefinedStationaryCovarianceModel` composed of a time grid and a collection of *K* square matrices of dimension *d* where *K* corresponds to the number of time steps of the final time grid on which the covariance is estimated.
+The estimated :class:`~openturns.CovarianceModel` which is a :class:`~openturns.UserDefinedStationaryCovarianceModel` composed of a time grid and a collection of *K* square matrices of dimension :math:`\processDim` where *K* corresponds to the number of time steps of the final time grid on which the covariance is estimated.
 
 When estimated from a time series, the :class:`~openturns.UserDefinedStationaryCovarianceModel` may have a  time grid different from the initial time grid of the time series.
 

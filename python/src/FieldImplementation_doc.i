@@ -9,10 +9,10 @@ Available constructors:
 Parameters
 ----------
 mesh : :class:`~openturns.Mesh`
-       Each vertice of the mesh is in :math:`\cD` a domain of :math:`\Rset^n`.
+       Each vertice of the mesh is in :math:`\cD` a domain of :math:`\Rset^{\domainDim}`.
 dim : int
-      Dimension :math:`d` of the values.
-values : 2-d sequence of float of dimension :math:`d`
+      Dimension :math:`\processDim` of the values.
+values : 2-d sequence of float of dimension :math:`\processDim`
     The values associated to the vertices of the mesh. The size of *values* is
     equal to the number of vertices in the associated mesh. So we must have the
     equality between *values.getSize()* and *mesh.getVerticesNumber()*.
@@ -27,7 +27,7 @@ A field :math:`F` is an association between vertices and values:
 
 where the :math:`(\vect{t}_i)_{1 \leq i \leq N}` are the vertices of a mesh of the domain :math:`\cD` and :math:`(\vect{v}_i)_{1 \leq i \leq N}` are the associated values.
 
-Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^d)^N` where :math:`N` is the number of vertices of the mesh :math:`\cM_N` of the domain :math:`\cD \subset \Rset^n`.
+Mathematically speaking, :math:`F` is an element :math:`\cM_N \times (\Rset^{\processDim})^N` where :math:`N` is the number of vertices of the mesh :math:`\cM_N` of the domain :math:`\cD \subset \Rset^{\domainDim}`.
 
 The following :class:`~openturns.ResourceMap` keys are used:
 
@@ -72,8 +72,8 @@ Returns
 deformedMesh : :class:`~openturns.Mesh`
     The initial mesh is deformed as follows: each vertex of the mesh is
     translated by the value of the field at this vertex. Only works when
-    the input dimension :math:`n`: is equal to the dimension of the field
-    :math:`d` after extension."
+    the input dimension :math:`\domainDim` is equal to the dimension of the field
+    :math:`\processDim` after extension."
 %enddef
 %feature("docstring") OT::FieldImplementation::asDeformedMesh
 OT_Field_asDeformedMesh_doc
@@ -88,11 +88,11 @@ Returns
 graph : :class:`~openturns.Graph`
     Calls *drawMarginal(0, False)* by default, with the following exceptions:
 
-    - If the dimension of the mesh is :math:`n=1` and the dimension of the
-      values is :math:`d=2`: it draws a curve in the values plane, with the
+    - If the dimension of the mesh is :math:`\domainDim=1` and the dimension of the
+      values is :math:`\processDim=2`: it draws a curve in the values plane, with the
       mesh as a curvilinear parameter.
-    - If the dimension of the mesh is :math:`n=2` and the dimension of the
-      values is :math:`d=2`: it draws the field as a field of arrows. The
+    - If the dimension of the mesh is :math:`\domainDim=2` and the dimension of the
+      values is :math:`\processDim=2`: it draws the field as a field of arrows. The
       graph is controlled by the ``Field-AutomaticScaling``, ``Field-ArrowRatio``
       and ``Field-ArrowScaling`` keys in :class:`~openturns.ResourceMap`.
 
@@ -148,23 +148,23 @@ Returns
 -------
 graph : :class:`~openturns.Graph`
 
-    - If the dimension of the mesh is :math:`n=1` and *interpolate=True*: it
+    - If the dimension of the mesh is :math:`\domainDim=1` and *interpolate=True*: it
       draws the graph of the piecewise linear function based on the selected
       marginal values of the field and the vertices coordinates
       (in :math:`\Rset`).
-    - If the dimension of the mesh is :math:`n=1` and *interpolate=False*: it
+    - If the dimension of the mesh is :math:`\domainDim=1` and *interpolate=False*: it
       draws the cloud of points which coordinates are (vertex, value of the
       marginal *index*).
-    - If the dimension of the mesh is :math:`n=2` and *interpolate=True*: it
+    - If the dimension of the mesh is :math:`\domainDim=2` and *interpolate=True*: it
       draws several iso-values curves of the selected marginal, based on a
       piecewise linear interpolation within the simplices (triangles) of the
       mesh. You get an empty graph if the vertices are not connected through
       simplicies.
-    - If the dimension of the mesh is :math:`n=2` and *interpolate=False*: if
+    - If the dimension of the mesh is :math:`\domainDim=2` and *interpolate=False*: if
       the vertices are connected through simplicies, each simplex is drawn with
       a color defined by the mean of the values of the vertices of the simplex.
       In the other case, it draws each vertex colored by its value.
-    - If the dimension of the mesh is :math:`n=3`, regardless of the value of
+    - If the dimension of the mesh is :math:`\domainDim=3`, regardless of the value of
       *interpolate*: each simplex is drawn with a color defined by the mean of
       the values of the vertices of the simplex.
 
@@ -199,14 +199,14 @@ OT_Field_exportToVTKFile_doc
 Returns
 -------
 description : :class:`~openturns.Description`
-    Description of the vertices and values of the field, size :math:`n+d`."
+    Description of the vertices and values of the field, size :math:`\domainDim+\processDim`."
 %enddef
 %feature("docstring") OT::FieldImplementation::getDescription
 OT_Field_getDescription_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_getOutputDimension_doc
-"Get the dimension :math:`d` of the values.
+"Get the dimension :math:`\processDim` of the values.
 
 .. deprecated:: 1.28
    Use :func:`getDimension` instead.
@@ -214,19 +214,19 @@ OT_Field_getDescription_doc
 Returns
 -------
 d : int
-    Dimension of the field values: :math:`d`."
+    Dimension of the field values: :math:`\processDim`."
 %enddef
 %feature("docstring") OT::FieldImplementation::getOutputDimension
 OT_Field_getOutputDimension_doc
 
 // ---------------------------------------------------------------------
 %define OT_Field_getDimension_doc
-"Get the dimension :math:`d` of the values.
+"Get the dimension :math:`\processDim` of the values.
 
 Returns
 -------
 d : int
-    Dimension of the field values: :math:`d`."
+    Dimension of the field values: :math:`\processDim`."
 %enddef
 %feature("docstring") OT::FieldImplementation::getDimension
 OT_Field_getDimension_doc
@@ -265,7 +265,7 @@ R"RAW(Get the dimension of the domain :math:`\cD`.
 Returns
 -------
 n : int
-    Dimension of the domain :math:`\cD`: :math:`n`.)RAW"
+    Dimension of the domain :math:`\cD`: :math:`\domainDim`.)RAW"
 %enddef
 %feature("docstring") OT::FieldImplementation::getInputDimension
 OT_Field_getInputDimension_doc
@@ -308,7 +308,7 @@ temporalMean : :class:`~openturns.Point`
 Notes
 -----
 If we note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values in
-:math:`\Rset^d` of the field, then the temporal mean is defined by:
+:math:`\Rset^{\processDim}` of the field, then the temporal mean is defined by:
 
 .. math::
 
@@ -361,7 +361,7 @@ index : int
 Returns
 -------
 value : :class:`~openturns.Point`
-    The value of the field associated to the selected vertex, in :math:`\Rset^d`.)RAW"
+    The value of the field associated to the selected vertex, in :math:`\Rset^{\processDim}`.)RAW"
 %enddef
 %feature("docstring") OT::FieldImplementation::getValueAtIndex
 OT_Field_getValueAtIndex_doc
@@ -375,7 +375,7 @@ Returns
 values : :class:`~openturns.Sample`
     Values associated to the mesh. The size of the sample is the number of
     vertices of the mesh and the dimension is the dimension of the values
-    (:math:`d`)."
+    (:math:`\processDim`)."
 %enddef
 %feature("docstring") OT::FieldImplementation::getValues
 OT_Field_getValues_doc
@@ -387,7 +387,7 @@ OT_Field_getValues_doc
 Parameters
 ----------
 myDescription : list of str
-    Description of the field values. Must be of size :math:`n+d` and give the
+    Description of the field values. Must be of size :math:`\domainDim+\processDim` and give the
     description of the vertices and the values."
 %enddef
 %feature("docstring") OT::FieldImplementation::setDescription
@@ -401,7 +401,7 @@ Parameters
 ----------
 index : int
     Index that characterizes one vertex of the mesh.
-value : :class:`~openturns.Point` in :math:`\Rset^d`.
+value : :class:`~openturns.Point` in :math:`\Rset^{\processDim}`.
     New value assigned to the selected vertex.)RAW"
 %enddef
 %feature("docstring") OT::FieldImplementation::setValueAtIndex
@@ -415,7 +415,7 @@ Parameters
 ----------
 values : 2-d sequence of float
     Values assigned to the mesh. The size of the values is the number of
-    vertices of the mesh and the dimension is :math:`d`."
+    vertices of the mesh and the dimension is :math:`\processDim`."
 %enddef
 %feature("docstring") OT::FieldImplementation::setValues
 OT_Field_setValues_doc
