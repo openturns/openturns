@@ -101,6 +101,7 @@ public:
   /** Scale/amplitude set accessors */
   void setScale(const Point & scale) override;
   void setAmplitude(const Point & amplitude) override;
+  void setNuggetFactor(const Scalar nuggetFactor) override;
   void setOutputCorrelation(const CorrelationMatrix & outputCorrelation) override;
 
   /** String converter */

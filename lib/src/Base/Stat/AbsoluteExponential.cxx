@@ -148,10 +148,9 @@ SymmetricMatrix AbsoluteExponential::partialHessian(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  // The kernel is not differentiable when any coordinate separation is zero:
-  // fall back to the finite-difference implementation
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
-    if (s[i] == t[i]) return CovarianceModelImplementation::partialHessian(s, t);
+  // The kernel is not differentiable when a coordinate separation is zero:
+  // use the one-sided derivative, with the same sign convention as
+  // partialGradient
   Scalar norm1 = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
     norm1 += std::abs(s[i] - t[i]) / scale_[i];

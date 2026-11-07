@@ -162,8 +162,11 @@ by translation:
     \begin{aligned}
     \forall (\vect{s},\vect{t}) \in \cD \times \cD, \quad
     & m(\vect{t})   =  m(\vect{s}), \\
-    \forall (\vect{s},\vect{t},\vect{h}) \in
-    \cD \times \cD \times \cD, \quad
+    \forall (\vect{s},\vect{t}) \in \cD \times \cD, \,
+    \forall \vect{h} \in \Rset^{\domainDim}
+    \text{ such that }
+    \vect{s}+\vect{h} \in \cD \text{ and } \vect{t}+\vect{h} \in \cD,
+    \quad
     & \mat{C}(\vect{s}, \vect{s}+\vect{h})
       = \mat{C}(\vect{t}, \vect{t}+\vect{h}).
     \end{aligned}
@@ -171,9 +174,13 @@ by translation:
 We note :math:`\mat{C}^{stat}(\vect{\tau})` for
 :math:`\mat{C}(\vect{s}, \vect{s}+\vect{\tau})` as this quantity does not
 depend on :math:`\vect{s}`.
-In the continuous case, :math:`\cD` must be equal to
-:math:`\Rset^{\domainDim}` as it is invariant by any translation. In the
-discrete case, :math:`\cD` is a lattice
+The translations :math:`\vect{h}` are restricted to those for which all
+the shifted indices remain in :math:`\cD`. When :math:`\cD` is invariant
+under every translation, for example when
+:math:`\cD = \Rset^{\domainDim}`, this restriction is void; otherwise,
+:math:`\vect{h}` must be such that both :math:`\vect{s}+\vect{h}` and
+:math:`\vect{t}+\vect{h}` remain in :math:`\cD`. In the discrete case,
+:math:`\cD` is a lattice
 :math:`\cL=(\delta_1 \Zset \times \dots \times
 \delta_{\domainDim} \Zset)` where :math:`\forall i, \delta_i >0`.
 
@@ -183,20 +190,27 @@ Stationarity
 A process :math:`X` is *stationary* if its
 distribution is invariant by translation: :math:`\forall k \in \Nset`,
 :math:`\forall (\vect{t}_1, \dots, \vect{t}_k) \in \cD^k`,
-:math:`\forall \vect{h}\in \Rset^{\domainDim}`, we have:
+:math:`\forall \vect{h}\in \Rset^{\domainDim}` such that
+:math:`\vect{t}_i+\vect{h} \in \cD` for all :math:`i`, we have:
 
 .. math::
   :label: statGen
 
     \forall k \in \Nset, \,
     \forall (\vect{t}_1, \dots, \vect{t}_k) \in \cD^k, \,
-    \forall \vect{h}\in \Rset^{\domainDim}, \,
+    \forall \vect{h}\in \Rset^{\domainDim}
+    \text{ with }
+    \vect{t}_1+\vect{h}, \dots, \vect{t}_k+\vect{h} \in \cD, \,
     (X_{\vect{t}_1}, \dots, X_{\vect{t}_k})
     \stackrel{\mathcal{D}}{=}
     (X_{\vect{t}_1+\vect{h}}, \dots, X_{\vect{t}_k+\vect{h}})
 
 Spectral density function
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In this section, the index domain is assumed to be invariant under every
+translation, i.e. :math:`\cD = \Rset^{\domainDim}`, so that the covariance
+function is defined on the whole lag domain :math:`\Rset^{\domainDim}`.
 
 If :math:`X` is a zero-mean weakly
 stationary continuous process and if for all :math:`(i,j)`,
