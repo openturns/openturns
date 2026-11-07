@@ -5,11 +5,11 @@ Export a field to VTK
 
 # %%
 # The objective here is to create a field and export it as a VTK file.
-# A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \in \mathbb{R}^n`
-# and a sample of values in :math:`\mathbb{R}^d` associated to each vertex of the mesh.
+# A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}`
+# and a sample of values in :math:`\mathbb{R}^{\processDim}` associated to each vertex of the mesh.
 #
 # We note :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the vertices of :math:`\mathcal{M}`
-# and :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the associated values in :math:`\mathbb{R}^d`.
+# and :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the associated values in :math:`\mathbb{R}^{\processDim}`.
 #
 # A field is stored in the :class:`~openturns.Field` object that stores the mesh and the values at each vertex of the mesh.
 # It can be built from a mesh and values or as a realization of a stochastic process.

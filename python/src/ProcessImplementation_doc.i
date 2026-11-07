@@ -5,25 +5,25 @@ Notes
 -----
 The Process class enables to model a stochastic process.
 
-A multivariate stochastic process :math:`X` of dimension :math:`d` is defined
+A multivariate stochastic process :math:`X` of dimension :math:`\processDim` is defined
 by:
 
 .. math::
 
-    X: \Omega \times\cD \mapsto \Rset^d
+    X: \Omega \times\cD \mapsto \Rset^{\processDim}
 
 where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of
-:math:`\Rset^n` discretized on the mesh :math:`\cM`, :math:`\vect{t}\in \cD` is
-a multivariate index and :math:`X(\omega, \vect{t}) \in \Rset^d`.
+:math:`\Rset^{\domainDim}` discretized on the mesh :math:`\cM`, :math:`\vect{t}\in \cD` is
+a multivariate index and :math:`X(\omega, \vect{t}) \in \Rset^{\processDim}`.
 
 A realization of the process :math:`X`, for a given :math:`\omega \in \Omega`
-is :math:`X(\omega): \cD  \mapsto \Rset^d` defined by:
+is :math:`X(\omega): \cD  \mapsto \Rset^{\processDim}` defined by:
 
 .. math::
 
     X(\omega)(\vect{t}) = X(\omega, \vect{t})
 
-:math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` is the random variable at
+:math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\processDim}` is the random variable at
 index :math:`\vect{t} \in \cD` defined by:
 
 .. math::
@@ -56,8 +56,8 @@ realization : :class:`~openturns.Function`
       basis process.
 
     - or using an interpolation from a discrete realization of the process on
-      :math:`\cM`: in dimension :math:`d=1`, a linear interpolation and in
-      dimension :math:`d \geq 2`, a piecewise constant function (the value at a
+      :math:`\cM`: in dimension :math:`\processDim=1`, a linear interpolation and in
+      dimension :math:`\processDim \geq 2`, a piecewise constant function (the value at a
       given position is equal to the value at the nearest vertex of the mesh of
       the process).)RAW"
 %enddef
@@ -93,12 +93,12 @@ OT_Process_setDescription_doc
 // ---------------------------------------------------------------------
 
 %define OT_Process_getOutputDimension_doc
-R"RAW(Get the dimension of the domain :math:`\cD`.
+R"RAW(Get the dimension of the process :math:`X`.
 
 Returns
 -------
-d : int
-    Dimension of the domain :math:`\cD`.)RAW"
+dimension : int
+    Dimension :math:`\processDim` of the process :math:`X`.)RAW"
 %enddef
 %feature("docstring") OT::ProcessImplementation::getOutputDimension
 OT_Process_getOutputDimension_doc
@@ -132,7 +132,7 @@ R"RAW(Get the :math:`k^{th}` marginal of the random process.
 
 Parameters
 ----------
-k : int or list of ints :math:`0 \leq k < d`
+k : int or list of ints :math:`0 \leq k < \processDim`
     Index of the marginal(s) needed.
 
 Returns
@@ -197,7 +197,7 @@ Returns
 -------
 processSample : :class:`~openturns.ProcessSample`
     :math:`n` realizations of the random process. A process sample is a
-    collection of fields which share the same mesh :math:`\cM \in \Rset^n`.)RAW"
+    collection of fields which share the same mesh :math:`\cM \in \Rset^{\domainDim}`.)RAW"
 %enddef
 %feature("docstring") OT::ProcessImplementation::getSample
 OT_Process_getSample_doc
@@ -210,7 +210,7 @@ R"RAW(Get the dimension of the domain :math:`\cD`.
 Returns
 -------
 n : int
-    Dimension of the domain :math:`\cD`: :math:`n`.)RAW"
+    Dimension of the domain :math:`\cD`: :math:`\domainDim`.)RAW"
 %enddef
 %feature("docstring") OT::ProcessImplementation::getInputDimension
 OT_Process_getInputDimension_doc
@@ -305,7 +305,7 @@ Notes
 A stochastic process is normal if all its finite dimensional joint
 distributions are normal, which means that for all :math:`k \in \Nset` and
 :math:`I_k \in \Nset^*`, with :math:`cardI_k=k`, there is
-:math:`\vect{m}_1, \dots, \vect{m}_k \in \Rset^d` and
+:math:`\vect{m}_1, \dots, \vect{m}_k \in \Rset^{\processDim}` and
 :math:`\mat{C}_{1,\dots,k}\in\mathcal{M}_{kd,kd}(\Rset)` such that:
 
 .. math::
@@ -350,7 +350,7 @@ Notes
 A process :math:`X` is stationary if its distribution is invariant by
 translation: :math:`\forall k \in \Nset`,
 :math:`\forall (\vect{t}_1, \dots, \vect{t}_k) \in \cD`,
-:math:`\forall \vect{h}\in \Rset^n`, we have:
+:math:`\forall \vect{h}\in \Rset^{\domainDim}`, we have:
 
 .. math::
 

@@ -5,8 +5,8 @@ Create an event based on a process
 
 # %%
 # This example gives elements to create an event based on a multivariate stochastic process.
-# Let :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` be a stochastic process
-# of dimension :math:`d`, where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh
+# Let :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}` be a stochastic process
+# of dimension :math:`\processDim`, where :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}` is discretized on the mesh
 # :math:`\mathcal{M}`. We suppose that :math:`\mathcal{M}` contains :math:`N` vertices.
 #
 # We define the event :math:`\mathcal{E}` as:
@@ -16,19 +16,19 @@ Create an event based on a process
 #      \displaystyle \mathcal{E}(X) = \bigcup_{\vect{t}\in \mathcal{M}}\left\{X_{\vect{t}} \in \mathcal{A} \right\}
 #    \end{aligned}
 #
-# where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
+# where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^{\processDim}`.
 #
 # A particular domain :math:`\mathcal{A}` is the cartesian product of type:
 #
 # .. math::
 #    \begin{aligned}
-#      \mathcal{A} = \prod_{i=1}^d [a_i,b_i]
+#      \mathcal{A} = \prod_{i=1}^{\processDim} [a_i,b_i]
 #    \end{aligned}
 #
 # In that case, the library defines :math:`\mathcal{A}` by its both extreme points : :math:`\vect{a}` and :math:`\vect{b}`.
 #
 # In the general case, :math:`\mathcal{A}` is a *Domain* object that is able to
-# check if it contains a given point in :math:`\mathbb{R}^d`.
+# check if it contains a given point in :math:`\mathbb{R}^{\processDim}`.
 #
 # The library creates an *Event* object from the process :math:`X` and the
 # domain :math:`\mathcal{A}`. Then, it is possible to get a realization of the event

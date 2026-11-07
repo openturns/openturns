@@ -7,8 +7,8 @@ Trend computation
 # In this example we are going to estimate a trend from a field.
 #
 # We note :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` the values of
-# the initial field associated to the mesh :math:`\mathcal{M}` of :math:`\mathcal{D} \in \mathbb{R}^n`,
-# where :math:`\vect{x}_i \in \mathbb{R}^d` and :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})`
+# the initial field associated to the mesh :math:`\mathcal{M}` of :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}`,
+# where :math:`\vect{x}_i \in \mathbb{R}^{\processDim}` and :math:`(\vect{x}^{stat}_0, \dots, \vect{x}^{stat}_{N-1})`
 # the values of the resulting stationary field.
 #
 # The object :class:`~openturns.TrendFactory` allows one to estimate a trend and is built from:

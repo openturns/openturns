@@ -15,13 +15,13 @@ a field function :math:`f_{dyn}` of another process :math:`X`:
 General case
 ~~~~~~~~~~~~
 
-In the general case, :math:`X: \Omega \times\cD \rightarrow \Rset^{\inputDim}`
-is a multivariate stochastic process of dimension :math:`\inputDim` where
-:math:`\cD \in \Rset^n`,
+In the general case, :math:`X: \Omega \times\cD \rightarrow \Rset^{\processDim}`
+is a multivariate stochastic process of dimension :math:`\processDim` where
+:math:`\cD \subset \Rset^{\domainDim}`,
 :math:`Y: \Omega \times \cD' \rightarrow \Rset^q` a multivariate
 stochastic process of dimension :math:`q` where
-:math:`\cD' \in \Rset^p` and
-:math:`f_{dyn}:\cD \times \Rset^{\inputDim} \rightarrow \cD' \times \Rset^q` and
+:math:`\cD' \subset \Rset^p` and
+:math:`f_{dyn}:\cD \times \Rset^{\processDim} \rightarrow \cD' \times \Rset^q` and
 :math:`f_{dyn}` is defined in :eq:`dynFct`.
 
 We build the composite process :math:`Y` thanks to function :math:`f_{dyn}`
@@ -35,10 +35,10 @@ Trend modifications
 ~~~~~~~~~~~~~~~~~~~
 
 Very often, we have to remove a trend from a process or to add it. If
-we note :math:`f_{trend}: \Rset^n \rightarrow \Rset^{\inputDim}` the function
+we note :math:`f_{trend}: \Rset^{\domainDim} \rightarrow \Rset^{\processDim}` the function
 modelling a trend, then the field function which consists in
 adding the trend to a process is the vertex-value function
-:math:`f_{temp}: \cD \times \Rset^{\inputDim} \rightarrow \Rset^n \times \Rset^{\inputDim}`
+:math:`f_{temp}: \cD \times \Rset^{\processDim} \rightarrow \Rset^{\domainDim} \times \Rset^{\processDim}`
 defined by:
 
   .. math::
@@ -66,10 +66,10 @@ Box Cox transformation
 
 If the transformation of the process :math:`X` into :math:`Y`
 corresponds to the Box Cox transformation
-:math:`f_{BoxCox}: \Rset^{\inputDim} \rightarrow \Rset^{\inputDim}` which transforms
+:math:`f_{BoxCox}: \Rset^{\processDim} \rightarrow \Rset^{\processDim}` which transforms
 :math:`X` into a process :math:`Y` with stabilized variance, then the
 corresponding field function is the value function
-:math:`f_{spat}: \cD \times \Rset^{\inputDim} \rightarrow \cD \times \Rset^{\inputDim}`
+:math:`f_{spat}: \cD \times \Rset^{\processDim} \rightarrow \cD \times \Rset^{\processDim}`
 defined by:
 
 .. math::

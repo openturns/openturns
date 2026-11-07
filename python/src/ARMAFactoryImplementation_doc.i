@@ -54,22 +54,24 @@ invertible : bool
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ARMAFactoryImplementation::getCurrentP
-"Accessor to the current P order.
+R"RAW(Accessor to the current P order.
 
 Returns
 -------
 p : int
-    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`d`."
+    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`\processDim`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ARMAFactoryImplementation::getCurrentQ
-"Accessor to the current Q order.
+R"RAW(Accessor to the current Q order.
 
 Returns
 -------
 q : int
-    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`d`."
+    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`\processDim`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
