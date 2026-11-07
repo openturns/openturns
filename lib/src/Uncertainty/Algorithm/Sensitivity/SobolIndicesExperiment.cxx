@@ -180,6 +180,12 @@ Bool SobolIndicesExperiment::hasUniformWeights() const
   return true;
 }
 
+/* Return isRandom flag */
+Bool SobolIndicesExperiment::isRandom() const
+{
+  return experiment_.isRandom();
+}
+
 /* Sample generation */
 Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
 {

@@ -36,6 +36,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
+ * QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationImplementation, QuantileSimulationResult, QuantileSimulationResultImplementation (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
@@ -93,6 +94,8 @@
  * Added HiGHS.getDualPoint/getReducedCosts/getConstraintValues to expose the dual solution (openturns.experimental)
  * Added HiGHS.getSimplexIterationNumber/getIPMIterationNumber/getCrossoverIterationNumber/getPDLPIterationNumber/getQPIterationNumber to expose per-solver iteration counts (openturns.experimental)
  * Added ProcessSample.split
+ * Added WeightedExperiment.isIID to identify an independent identically distributed design with uniform weights: MonteCarloExperiment returns True and the default implementation returns False
+ * WeightedExperiment.isRandom now reflects the design randomness: False for FixedExperiment, LowDiscrepancyExperiment when its randomization is disabled, SmolyakExperiment and TensorProductExperiment, and SobolIndicesExperiment delegates to the wrapped experiment
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory
  * Added SpecFunc.BesselJ and SpecFunc.BesselJDerivative

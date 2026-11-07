@@ -59,6 +59,9 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  /** Return whether the experiment generates i.i.d. points with uniform weights */
+  Bool isIID() const override;
+
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
