@@ -37,7 +37,11 @@ case $choice in
     ;;
   "6" | "abi3")
     docker pull openturns/archlinux-python
-    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=2 -e OMP_NUM_THREADS=1 -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_abi3.sh
+    # OPENTURNS_NUM_THREADS=1 works around a shutdown race between oneTBB
+    # (libtcm/libtbb) and hwloc in the Arch Linux image: with several TBB
+    # worker threads, hwloc_topology_destroy() can race with the dlclose()
+    # of the tbbbind plugin and crash the Python interpreter at exit.
+    docker run --rm -e MAKEFLAGS -e OPENTURNS_NUM_THREADS=1 -e OMP_NUM_THREADS=1 -v `pwd`:/io openturns/archlinux-python /io/.ci_support/run_docker_abi3.sh
     ;;
   *)
     echo "sorry?"

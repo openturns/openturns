@@ -34,6 +34,8 @@
  * DistributionImplementation: select the generic characteristic-function integration panels from the absolute argument, keep the Filon grid within Distribution-CharacteristicFunctionNMax points, and document the positive exponent convention used by the implementation
  * DistributionImplementation::operator /: return a RatioDistribution for continuous univariate operands, fixing the inaccurate density of the former inverse composition close to zero
  * HMatrix interface to support HODLR implementation
+ * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
+ * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
 
 ==== New ResourceMap keys ====
  * LevelSetMesher-MaxRefinementLevels: maximum number of adaptive background refinement levels (default is 0)
