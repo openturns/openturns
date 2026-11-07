@@ -12,13 +12,13 @@ mesh : :class:`~openturns.Mesh`
 
 Notes
 -----
-A functional basis process :math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`, writes:
+A functional basis process :math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}` where :math:`\cD \subset \Rset^{\domainDim}`, writes:
 
 .. math::
 
     X(\omega,\vect{t})=\sum_{i=1}^K A_i(\omega)\phi_i(\vect{t}) \quad  \forall \omega \in \Omega and \forall \vect{t} \in \cD
 
-with :math:`\phi_i: \Rset^n \rightarrow \Rset^d` for :math:`1 \leq i \leq K` and :math:`\vect{A}=(A_1,\dots, A_K)` a random vector of dimension :math:`K`.
+with :math:`\phi_i: \Rset^{\domainDim} \rightarrow \Rset^{\processDim}` for :math:`1 \leq i \leq K` and :math:`\vect{A}=(A_1,\dots, A_K)` a random vector of dimension :math:`K`.
 
 Examples
 --------

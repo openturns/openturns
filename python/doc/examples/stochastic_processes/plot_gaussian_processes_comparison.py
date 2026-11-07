@@ -23,7 +23,7 @@ Compare covariance models
 # The :class:`~openturns.SquaredExponential` class allows one to define covariance models:
 #
 # * :math:`\sigma\in\mathbb{R}` is the amplitude parameter,
-# * :math:`\boldsymbol{\theta}\in\mathbb{R}^d` is the scale.
+# * :math:`\boldsymbol{\theta}\in\mathbb{R}^{\domainDim}` is the scale.
 
 # %%
 import openturns.viewer as otv

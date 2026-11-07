@@ -18,16 +18,16 @@ mesh : :class:`~openturns.Mesh`
 Notes
 -----
 GaussianProcess creates the processes,
-:math:`X: \Omega \times\cD \mapsto \Rset^d` where :math:`\cD \in \Rset^n`,
+:math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}` where :math:`\cD \subset \Rset^{\domainDim}`,
 from their temporal covariance function
-:math:`\cC: \cD \times \cD \mapsto \cM_{d \times d}(\Rset)`, which writes, in
-the stationary case: :math:`\cC^{stat}: \cD \mapsto \cM_{d \times d}(\Rset)`. A
+:math:`\cC: \cD \times \cD \mapsto \cM_{\processDim \times \processDim}(\Rset)`, which writes, in
+the stationary case: :math:`\cC^{stat}: \cD \mapsto \cM_{\processDim \times \processDim}(\Rset)`. A
 process is *normal*, if all its finite dimensional joint distributions are
 normal (See the method :meth:`~openturns.Process.isNormal` for a detailed definition).
 
 The gaussian processes may have a trend: in that case, the Gaussian 
 process is the sum of the trend function
-:math:`f_{trend}: \Rset^n \mapsto \Rset^d` and a zero-mean Gaussian process.
+:math:`f_{trend}: \Rset^{\domainDim} \mapsto \Rset^{\processDim}` and a zero-mean Gaussian process.
 
 The following :class:`~openturns.ResourceMap` key is used:
 

@@ -4,8 +4,8 @@ ARMA stochastic process
 -----------------------
 
 Consider a stationary multivariate stochastic process
-:math:`X: \Omega \times[0,T] \rightarrow \Rset^{\inputDim}` of dimension
-:math:`d`, where :math:`X_t : \Omega \rightarrow \Rset^{\inputDim}` is the
+:math:`X: \Omega \times[0,T] \rightarrow \Rset^{\processDim}` of dimension
+:math:`\processDim`, where :math:`X_t : \Omega \rightarrow \Rset^{\processDim}` is the
 random variable at time :math:`t`. Under some general
 conditions,\ :math:`X` can be modeled by an :math:`ARMA(p,q)` model
 defined at the time stamp :math:`t` by:
@@ -18,7 +18,7 @@ defined at the time stamp :math:`t` by:
       \varepsilon_{t-q}
 
 where the coefficients of the recurrence are matrix in
-:math:`\Rset^{\inputDim}` and :math:`(\varepsilon_t)_t` is white noise
+:math:`\Rset^{\processDim}` and :math:`(\varepsilon_t)_t` is white noise
 discretized on the same time grid as the process :math:`X`.
 
 The coefficients :math:`(\mat{A}_{\, 1} , \hdots, \mat{A}_{\, p} )`
@@ -54,23 +54,23 @@ less than 1:
 .. math::
    :label: Modul
 
-     \forall i,j \in [1,d], \,  |r_{ij}| <1
+     \forall i,j \in [1,\processDim], \,  |r_{ij}| <1
 
 Once given the coefficients of the model :math:`ARMA(p,q)`, we
 evaluate the roots of the polynomials :math:`\Phi(\vect{r})` and checks
 the previous condition :eq:`Modul`. The roots :math:`\vect{r}_i`, are the
 eigenvalues of the matrix :math:`\mat{M}` which writes in dimension
-:math:`d` as:
+:math:`\processDim` as:
 
 .. math::
    :label: MatrixMdimn
 
      \mat{M} = \left(
      \begin{array}{cccccc}
-       \mat{0}_{\, \inputDim} & \mat{1}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \hdots & \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} \\
-       \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \mat{1}_{\, \inputDim} & \hdots & \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim}\\
+       \mat{0}_{\, \processDim} & \mat{1}_{\, \processDim} & \mat{0}_{\, \processDim} & \hdots & \mat{0}_{\, \processDim} & \mat{0}_{\, \processDim} \\
+       \mat{0}_{\, \processDim} & \mat{0}_{\, \processDim} & \mat{1}_{\, \processDim} & \hdots & \mat{0}_{\, \processDim} & \mat{0}_{\, \processDim}\\
        \hdots \\
-       \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \mat{0}_{\, \inputDim} & \hdots & \mat{0}_{\, \inputDim} & \mat{1}_{\, \inputDim}\\
+       \mat{0}_{\, \processDim} & \mat{0}_{\, \processDim} & \mat{0}_{\, \processDim} & \hdots & \mat{0}_{\, \processDim} & \mat{1}_{\, \processDim}\\
        - \mat{A}_{\, 1} & -\mat{A}_{\, 2} & - \mat{A}_{\, 3}& \hdots  & -\mat{A}_{\, p-1}& -\mat{A}_{\, p}
      \end{array}
      \right)
