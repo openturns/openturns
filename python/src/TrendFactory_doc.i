@@ -16,7 +16,7 @@ fittingAlgorithm : :class:`~openturns.FittingAlgorithm`, optional
 
 Notes
 -----
-A multivariate stochastic  process :math:`X: \Omega \times \cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` can write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times \cD \rightarrow \Rset^d` of dimension *d* as follows:
+A multivariate stochastic  process :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` of dimension :math:`\processDim` where :math:`\cD \subset \Rset^{\domainDim}` can write as the sum of a trend function :math:`f_{trend}: \Rset^{\domainDim} \rightarrow \Rset^{\processDim}` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times \cD \rightarrow \Rset^{\processDim}` of dimension :math:`\processDim` as follows:
 
 .. math::
 
@@ -24,7 +24,7 @@ A multivariate stochastic  process :math:`X: \Omega \times \cD \rightarrow \Rset
 
 The  :class:`~openturns.TrendFactory` enables to identify the trend  function :math:`f_{trend}` from a given field of the process *X* and then to remove this last one from the initial field. The resulting field is a realization of the process :math:`X_{stat}`.
 
-We consider the functional basis :math:`\cB = (f_1, f_2, \ldots, f_K)` with :math:`f_j : \Rset^n \longrightarrow \Rset^d`. The trend function :math:`f_{trend}` writes:
+We consider the functional basis :math:`\cB = (f_1, f_2, \ldots, f_K)` with :math:`f_j : \Rset^{\domainDim} \longrightarrow \Rset^{\processDim}`. The trend function :math:`f_{trend}` writes:
 
 .. math::
 

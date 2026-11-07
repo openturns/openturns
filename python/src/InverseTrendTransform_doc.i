@@ -1,7 +1,7 @@
 %feature("docstring") OT::InverseTrendTransform
 R"RAW(Inverse Trend transformation.
 
-A multivariate stochastic  process :math:`X: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* where :math:`\cD \in \Rset^n` may write as the sum of a trend function :math:`f_{trend}: \Rset^n \rightarrow \Rset^d` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^d` of dimension *d* as follows:
+A multivariate stochastic  process :math:`X: \Omega \times\cD \rightarrow \Rset^{\processDim}` of dimension :math:`\processDim` where :math:`\cD \subset \Rset^{\domainDim}` may write as the sum of a trend function :math:`f_{trend}: \Rset^{\domainDim} \rightarrow \Rset^{\processDim}` and a stationary multivariate stochastic process :math:`X_{stat}: \Omega \times\cD \rightarrow \Rset^{\processDim}` of dimension :math:`\processDim` as follows:
 
 .. math::
 

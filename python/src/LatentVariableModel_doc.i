@@ -82,7 +82,7 @@ covariance : float
 
 Notes
 -----
-The method makes sense only if the dimension of the process is :math:`d=1`.
+The method makes sense only if the dimension of the process is :math:`\processDim=1`.
 It evaluates :math:`C(s, t)`."
 
 // ---------------------------------------------------------------------
