@@ -361,6 +361,145 @@ UnsignedInteger QuantileSimulationResult::getUpperRank() const
   return getImplementation()->getUpperRank();
 }
 
+/* Threshold-scheme diagnostics accessors */
+void QuantileSimulationResult::setThresholdSequence(const Point & thresholds)
+{
+  copyOnWrite();
+  getImplementation()->setThresholdSequence(thresholds);
+}
+
+Point QuantileSimulationResult::getThresholdSequence() const
+{
+  return getImplementation()->getThresholdSequence();
+}
+
+void QuantileSimulationResult::setLevelProbabilitySequence(const Point & probabilities)
+{
+  copyOnWrite();
+  getImplementation()->setLevelProbabilitySequence(probabilities);
+}
+
+Point QuantileSimulationResult::getLevelProbabilitySequence() const
+{
+  return getImplementation()->getLevelProbabilitySequence();
+}
+
+void QuantileSimulationResult::setStepCount(const UnsignedInteger stepCount)
+{
+  copyOnWrite();
+  getImplementation()->setStepCount(stepCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getStepCount() const
+{
+  return getImplementation()->getStepCount();
+}
+
+void QuantileSimulationResult::setAcceptanceRate(const Scalar acceptanceRate)
+{
+  copyOnWrite();
+  getImplementation()->setAcceptanceRate(acceptanceRate);
+}
+
+Scalar QuantileSimulationResult::getAcceptanceRate() const
+{
+  return getImplementation()->getAcceptanceRate();
+}
+
+void QuantileSimulationResult::setPoissonRanks(const UnsignedInteger lowerRank,
+                                               const UnsignedInteger upperRank)
+{
+  copyOnWrite();
+  getImplementation()->setPoissonRanks(lowerRank, upperRank);
+}
+
+UnsignedInteger QuantileSimulationResult::getPoissonRankLower() const
+{
+  return getImplementation()->getPoissonRankLower();
+}
+
+UnsignedInteger QuantileSimulationResult::getPoissonRankUpper() const
+{
+  return getImplementation()->getPoissonRankUpper();
+}
+
+Bool QuantileSimulationResult::hasPoissonRanks() const
+{
+  return getImplementation()->hasPoissonRanks();
+}
+
+void QuantileSimulationResult::setParticleCount(const UnsignedInteger particleCount)
+{
+  copyOnWrite();
+  getImplementation()->setParticleCount(particleCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getParticleCount() const
+{
+  return getImplementation()->getParticleCount();
+}
+
+void QuantileSimulationResult::setReplicateCount(const UnsignedInteger replicateCount)
+{
+  copyOnWrite();
+  getImplementation()->setReplicateCount(replicateCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getReplicateCount() const
+{
+  return getImplementation()->getReplicateCount();
+}
+
+void QuantileSimulationResult::setReplicateEstimates(const Point & estimates)
+{
+  copyOnWrite();
+  getImplementation()->setReplicateEstimates(estimates);
+}
+
+Point QuantileSimulationResult::getReplicateEstimates() const
+{
+  return getImplementation()->getReplicateEstimates();
+}
+
+/* Cross-entropy diagnostics accessors */
+void QuantileSimulationResult::setAuxiliaryDistribution(const Distribution & distribution)
+{
+  copyOnWrite();
+  getImplementation()->setAuxiliaryDistribution(distribution);
+}
+
+Distribution QuantileSimulationResult::getAuxiliaryDistribution() const
+{
+  return getImplementation()->getAuxiliaryDistribution();
+}
+
+Bool QuantileSimulationResult::hasAuxiliaryDistribution() const
+{
+  return getImplementation()->hasAuxiliaryDistribution();
+}
+
+void QuantileSimulationResult::setIntermediateQuantileLevel(const Scalar level)
+{
+  copyOnWrite();
+  getImplementation()->setIntermediateQuantileLevel(level);
+}
+
+Scalar QuantileSimulationResult::getIntermediateQuantileLevel() const
+{
+  return getImplementation()->getIntermediateQuantileLevel();
+}
+
+void QuantileSimulationResult::setConditionalProbability(const Scalar probability)
+{
+  copyOnWrite();
+  getImplementation()->setConditionalProbability(probability);
+}
+
+Scalar QuantileSimulationResult::getConditionalProbability() const
+{
+  return getImplementation()->getConditionalProbability();
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResult::setIsFixedSample(const Bool fixedSample)
 {

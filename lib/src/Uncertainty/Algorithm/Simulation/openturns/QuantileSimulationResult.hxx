@@ -145,6 +145,35 @@ public:
   void setUpperRank(const UnsignedInteger upperRank);
   UnsignedInteger getUpperRank() const;
 
+  /** Threshold-scheme diagnostics accessors */
+  void setThresholdSequence(const Point & thresholds);
+  Point getThresholdSequence() const;
+  void setLevelProbabilitySequence(const Point & probabilities);
+  Point getLevelProbabilitySequence() const;
+  void setStepCount(const UnsignedInteger stepCount);
+  UnsignedInteger getStepCount() const;
+  void setAcceptanceRate(const Scalar acceptanceRate);
+  Scalar getAcceptanceRate() const;
+  void setPoissonRanks(const UnsignedInteger lowerRank, const UnsignedInteger upperRank);
+  UnsignedInteger getPoissonRankLower() const;
+  UnsignedInteger getPoissonRankUpper() const;
+  Bool hasPoissonRanks() const;
+  void setParticleCount(const UnsignedInteger particleCount);
+  UnsignedInteger getParticleCount() const;
+  void setReplicateCount(const UnsignedInteger replicateCount);
+  UnsignedInteger getReplicateCount() const;
+  void setReplicateEstimates(const Point & estimates);
+  Point getReplicateEstimates() const;
+
+  /** Cross-entropy diagnostics accessors */
+  void setAuxiliaryDistribution(const Distribution & distribution);
+  Distribution getAuxiliaryDistribution() const;
+  Bool hasAuxiliaryDistribution() const;
+  void setIntermediateQuantileLevel(const Scalar level);
+  Scalar getIntermediateQuantileLevel() const;
+  void setConditionalProbability(const Scalar probability);
+  Scalar getConditionalProbability() const;
+
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);
   Bool isFixedSample() const;

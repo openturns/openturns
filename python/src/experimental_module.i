@@ -69,6 +69,9 @@
 %include QuantileSimulationAlgorithm.i
 %include BlockQuantileSimulation.i
 %include ExactTailQuantileSimulation.i
+%include SubsetSamplingQuantile.i
+%include LastParticleQuantile.i
+%include CrossEntropyQuantile.i
 
 /* Uncertainty */
 %import metamodel_module.i

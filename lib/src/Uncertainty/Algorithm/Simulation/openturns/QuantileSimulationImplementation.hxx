@@ -69,7 +69,7 @@ public:
 
   /** Sample size accessor */
   virtual void setSampleSize(const UnsignedInteger sampleSize);
-  UnsignedInteger getSampleSize() const;
+  virtual UnsignedInteger getSampleSize() const;
 
   /** Estimator type accessor */
   void setEstimatorType(const EstimatorType type);

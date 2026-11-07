@@ -434,6 +434,168 @@ UnsignedInteger QuantileSimulationResultImplementation::getUpperRank() const
   return upperRank_;
 }
 
+/* Threshold-scheme diagnostics accessors */
+void QuantileSimulationResultImplementation::setThresholdSequence(const Point & thresholds)
+{
+  for (UnsignedInteger i = 0; i < thresholds.getSize(); ++i)
+    if (!std::isfinite(thresholds[i]))
+      throw InvalidArgumentException(HERE)
+          << "The threshold sequence must be finite, but thresholds[" << i << "] = " << thresholds[i];
+  thresholdSequence_ = thresholds;
+}
+
+Point QuantileSimulationResultImplementation::getThresholdSequence() const
+{
+  return thresholdSequence_;
+}
+
+void QuantileSimulationResultImplementation::setLevelProbabilitySequence(const Point & probabilities)
+{
+  for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i)
+    if (!std::isfinite(probabilities[i]) || !(probabilities[i] >= 0.0) || !(probabilities[i] <= 1.0))
+      throw InvalidArgumentException(HERE)
+          << "The level probabilities must be in [0, 1], but probabilities[" << i << "] = " << probabilities[i];
+  levelProbabilitySequence_ = probabilities;
+}
+
+Point QuantileSimulationResultImplementation::getLevelProbabilitySequence() const
+{
+  return levelProbabilitySequence_;
+}
+
+void QuantileSimulationResultImplementation::setStepCount(const UnsignedInteger stepCount)
+{
+  stepCount_ = stepCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getStepCount() const
+{
+  return stepCount_;
+}
+
+void QuantileSimulationResultImplementation::setAcceptanceRate(const Scalar acceptanceRate)
+{
+  if (!std::isfinite(acceptanceRate) || !(acceptanceRate >= 0.0) || !(acceptanceRate <= 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The acceptance rate must be in [0, 1], but acceptanceRate = " << acceptanceRate;
+  acceptanceRate_ = acceptanceRate;
+}
+
+Scalar QuantileSimulationResultImplementation::getAcceptanceRate() const
+{
+  return acceptanceRate_;
+}
+
+void QuantileSimulationResultImplementation::setPoissonRanks(const UnsignedInteger lowerRank,
+                                                             const UnsignedInteger upperRank)
+{
+  if (lowerRank == 0)
+    throw InvalidArgumentException(HERE) << "The lower Poisson rank must be positive";
+  if (upperRank < lowerRank)
+    throw InvalidArgumentException(HERE)
+        << "The upper Poisson rank (" << upperRank
+        << ") must not be smaller than the lower Poisson rank (" << lowerRank << ")";
+  poissonRankLower_ = lowerRank;
+  poissonRankUpper_ = upperRank;
+  hasPoissonRanks_ = true;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPoissonRankLower() const
+{
+  return poissonRankLower_;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPoissonRankUpper() const
+{
+  return poissonRankUpper_;
+}
+
+Bool QuantileSimulationResultImplementation::hasPoissonRanks() const
+{
+  return hasPoissonRanks_;
+}
+
+void QuantileSimulationResultImplementation::setParticleCount(const UnsignedInteger particleCount)
+{
+  if (particleCount == 0)
+    throw InvalidArgumentException(HERE) << "The particle count must be positive";
+  particleCount_ = particleCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getParticleCount() const
+{
+  return particleCount_;
+}
+
+void QuantileSimulationResultImplementation::setReplicateCount(const UnsignedInteger replicateCount)
+{
+  if (replicateCount == 0)
+    throw InvalidArgumentException(HERE) << "The replicate count must be positive";
+  replicateCount_ = replicateCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getReplicateCount() const
+{
+  return replicateCount_;
+}
+
+void QuantileSimulationResultImplementation::setReplicateEstimates(const Point & estimates)
+{
+  for (UnsignedInteger i = 0; i < estimates.getSize(); ++i)
+    if (!std::isfinite(estimates[i]))
+      throw InvalidArgumentException(HERE)
+          << "The replicate estimates must be finite, but estimates[" << i << "] = " << estimates[i];
+  replicateEstimates_ = estimates;
+}
+
+Point QuantileSimulationResultImplementation::getReplicateEstimates() const
+{
+  return replicateEstimates_;
+}
+
+/* Cross-entropy diagnostics accessors */
+void QuantileSimulationResultImplementation::setAuxiliaryDistribution(const Distribution & distribution)
+{
+  auxiliaryDistribution_ = distribution;
+  hasAuxiliaryDistribution_ = true;
+}
+
+Distribution QuantileSimulationResultImplementation::getAuxiliaryDistribution() const
+{
+  return auxiliaryDistribution_;
+}
+
+Bool QuantileSimulationResultImplementation::hasAuxiliaryDistribution() const
+{
+  return hasAuxiliaryDistribution_;
+}
+
+void QuantileSimulationResultImplementation::setIntermediateQuantileLevel(const Scalar level)
+{
+  if (!(level > 0.0 && level < 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The intermediate quantile level must be in (0, 1), but level = " << level;
+  intermediateQuantileLevel_ = level;
+}
+
+Scalar QuantileSimulationResultImplementation::getIntermediateQuantileLevel() const
+{
+  return intermediateQuantileLevel_;
+}
+
+void QuantileSimulationResultImplementation::setConditionalProbability(const Scalar probability)
+{
+  if (!(probability > 0.0 && probability < 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The conditional probability must be in (0, 1), but probability = " << probability;
+  conditionalProbability_ = probability;
+}
+
+Scalar QuantileSimulationResultImplementation::getConditionalProbability() const
+{
+  return conditionalProbability_;
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResultImplementation::setIsFixedSample(const Bool fixedSample)
 {
@@ -557,6 +719,14 @@ String QuantileSimulationResultImplementation::__repr__() const
       << " retainedCount=" << retainedCount_
       << " lowerRank=" << lowerRank_
       << " upperRank=" << upperRank_
+      << " thresholdCount=" << thresholdSequence_.getSize()
+      << " stepCount=" << stepCount_
+      << " acceptanceRate=" << acceptanceRate_
+      << " particleCount=" << particleCount_
+      << " replicateCount=" << replicateCount_
+      << " intermediateQuantileLevel=" << intermediateQuantileLevel_
+      << " conditionalProbability=" << conditionalProbability_
+      << " hasAuxiliaryDistribution=" << hasAuxiliaryDistribution_
       << " isFixedSample=" << isFixedSample_;
   return oss;
 }
@@ -601,6 +771,20 @@ void QuantileSimulationResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("retainedCount_", retainedCount_);
   adv.saveAttribute("lowerRank_", lowerRank_);
   adv.saveAttribute("upperRank_", upperRank_);
+  adv.saveAttribute("thresholdSequence_", thresholdSequence_);
+  adv.saveAttribute("levelProbabilitySequence_", levelProbabilitySequence_);
+  adv.saveAttribute("stepCount_", stepCount_);
+  adv.saveAttribute("acceptanceRate_", acceptanceRate_);
+  adv.saveAttribute("poissonRankLower_", poissonRankLower_);
+  adv.saveAttribute("poissonRankUpper_", poissonRankUpper_);
+  adv.saveAttribute("hasPoissonRanks_", hasPoissonRanks_);
+  adv.saveAttribute("particleCount_", particleCount_);
+  adv.saveAttribute("replicateCount_", replicateCount_);
+  adv.saveAttribute("replicateEstimates_", replicateEstimates_);
+  adv.saveAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
+  adv.saveAttribute("hasAuxiliaryDistribution_", hasAuxiliaryDistribution_);
+  adv.saveAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
+  adv.saveAttribute("conditionalProbability_", conditionalProbability_);
   adv.saveAttribute("isFixedSample_", isFixedSample_);
   adv.saveAttribute("convergenceHistory_", convergenceHistory_);
 }
@@ -659,6 +843,34 @@ void QuantileSimulationResultImplementation::load(Advocate & adv)
     adv.loadAttribute("lowerRank_", lowerRank_);
   if (adv.hasAttribute("upperRank_"))
     adv.loadAttribute("upperRank_", upperRank_);
+  if (adv.hasAttribute("thresholdSequence_"))
+    adv.loadAttribute("thresholdSequence_", thresholdSequence_);
+  if (adv.hasAttribute("levelProbabilitySequence_"))
+    adv.loadAttribute("levelProbabilitySequence_", levelProbabilitySequence_);
+  if (adv.hasAttribute("stepCount_"))
+    adv.loadAttribute("stepCount_", stepCount_);
+  if (adv.hasAttribute("acceptanceRate_"))
+    adv.loadAttribute("acceptanceRate_", acceptanceRate_);
+  if (adv.hasAttribute("poissonRankLower_"))
+    adv.loadAttribute("poissonRankLower_", poissonRankLower_);
+  if (adv.hasAttribute("poissonRankUpper_"))
+    adv.loadAttribute("poissonRankUpper_", poissonRankUpper_);
+  if (adv.hasAttribute("hasPoissonRanks_"))
+    adv.loadAttribute("hasPoissonRanks_", hasPoissonRanks_);
+  if (adv.hasAttribute("particleCount_"))
+    adv.loadAttribute("particleCount_", particleCount_);
+  if (adv.hasAttribute("replicateCount_"))
+    adv.loadAttribute("replicateCount_", replicateCount_);
+  if (adv.hasAttribute("replicateEstimates_"))
+    adv.loadAttribute("replicateEstimates_", replicateEstimates_);
+  if (adv.hasAttribute("auxiliaryDistribution_"))
+    adv.loadAttribute("auxiliaryDistribution_", auxiliaryDistribution_);
+  if (adv.hasAttribute("hasAuxiliaryDistribution_"))
+    adv.loadAttribute("hasAuxiliaryDistribution_", hasAuxiliaryDistribution_);
+  if (adv.hasAttribute("intermediateQuantileLevel_"))
+    adv.loadAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
+  if (adv.hasAttribute("conditionalProbability_"))
+    adv.loadAttribute("conditionalProbability_", conditionalProbability_);
   adv.loadAttribute("isFixedSample_", isFixedSample_);
   adv.loadAttribute("convergenceHistory_", convergenceHistory_);
 }

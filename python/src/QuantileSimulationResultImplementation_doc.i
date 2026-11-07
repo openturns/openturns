@@ -685,6 +685,282 @@ upperRank : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::QuantileSimulationResultImplementation::getThresholdSequence
+R"RAW(Accessor to the threshold sequence.
+
+Returns
+-------
+thresholds : :class:`~openturns.Point`
+    Intermediate thresholds in the order in which they were generated:
+    the subset levels of the first replicate for
+    :class:`~openturns.experimental.SubsetSamplingQuantile`, the
+    successive extreme values for
+    :class:`~openturns.experimental.LastParticleQuantile`, and the
+    cross-entropy thresholds for
+    :class:`~openturns.experimental.CrossEntropyQuantile`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setThresholdSequence
+R"RAW(Accessor to the threshold sequence.
+
+Parameters
+----------
+thresholds : sequence of float
+    Intermediate thresholds.  All the values must be finite.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getLevelProbabilitySequence
+R"RAW(Accessor to the level probability sequence.
+
+Returns
+-------
+probabilities : :class:`~openturns.Point`
+    Probability of the event associated with each threshold, in the same
+    order as :meth:`getThresholdSequence`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setLevelProbabilitySequence
+R"RAW(Accessor to the level probability sequence.
+
+Parameters
+----------
+probabilities : sequence of float
+    Probability of the event associated with each threshold.  All the
+    values must lie in :math:`[0,1]`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getStepCount
+R"RAW(Accessor to the number of steps.
+
+Returns
+-------
+stepCount : int
+    Number of levels or moves performed by the threshold algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setStepCount
+R"RAW(Accessor to the number of steps.
+
+Parameters
+----------
+stepCount : int
+    Number of levels or moves performed by the threshold algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getAcceptanceRate
+R"RAW(Accessor to the MCMC acceptance rate.
+
+Returns
+-------
+acceptanceRate : float
+    Fraction of proposed Metropolis-Hastings transitions that produced
+    a point satisfying the conditional event.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setAcceptanceRate
+R"RAW(Accessor to the MCMC acceptance rate.
+
+Parameters
+----------
+acceptanceRate : float
+    Fraction of accepted transitions, in :math:`[0,1]`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getPoissonRankLower
+R"RAW(Accessor to the lower Poisson rank.
+
+Returns
+-------
+lowerRank : int
+    One-based index of the lower threshold of the Poisson rank
+    interval.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getPoissonRankUpper
+R"RAW(Accessor to the upper Poisson rank.
+
+Returns
+-------
+upperRank : int
+    One-based index of the upper threshold of the Poisson rank
+    interval.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setPoissonRanks
+R"RAW(Accessor to the Poisson rank interval.
+
+Parameters
+----------
+lowerRank : int
+    One-based index of the lower threshold of the Poisson rank
+    interval.  It must be positive.
+upperRank : int
+    One-based index of the upper threshold of the Poisson rank
+    interval.  It must not be smaller than ``lowerRank``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasPoissonRanks
+R"RAW(Accessor to the presence of Poisson ranks.
+
+Returns
+-------
+hasPoissonRanks : bool
+    Whether the result stores a Poisson rank interval.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getParticleCount
+R"RAW(Accessor to the particle count.
+
+Returns
+-------
+particleCount : int
+    Number of particles used by the threshold algorithm, or number of
+    auxiliary draws for the cross-entropy estimator.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setParticleCount
+R"RAW(Accessor to the particle count.
+
+Parameters
+----------
+particleCount : int
+    Number of particles or auxiliary draws.  It must be positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Returns
+-------
+replicateCount : int
+    Number of independent replicates used by the estimator.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Parameters
+----------
+replicateCount : int
+    Number of independent replicates used by the estimator.  It must be
+    positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Returns
+-------
+estimates : :class:`~openturns.Point`
+    Quantile estimate produced by each independent replicate.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Parameters
+----------
+estimates : sequence of float
+    Quantile estimate produced by each independent replicate.  All the
+    values must be finite.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getAuxiliaryDistribution
+R"RAW(Accessor to the auxiliary distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Distribution`
+    Proposal distribution used by the final weighted estimate of the
+    cross-entropy estimator.  It is defined on the standard space of
+    the input distribution and is the defensive proposal derived from
+    the final cross-entropy auxiliary distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setAuxiliaryDistribution
+R"RAW(Accessor to the auxiliary distribution.
+
+Parameters
+----------
+distribution : :class:`~openturns.Distribution`
+    Proposal distribution used by the final weighted estimate of the
+    cross-entropy estimator.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasAuxiliaryDistribution
+R"RAW(Accessor to the presence of an auxiliary distribution.
+
+Returns
+-------
+hasAuxiliaryDistribution : bool
+    Whether the result stores an auxiliary distribution.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getIntermediateQuantileLevel
+R"RAW(Accessor to the intermediate quantile level.
+
+Returns
+-------
+level : float
+    Intermediate quantile level of the cross-entropy sequence.  It is
+    distinct from the target quantile level :math:`\alpha`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setIntermediateQuantileLevel
+R"RAW(Accessor to the intermediate quantile level.
+
+Parameters
+----------
+level : float
+    Intermediate quantile level of the cross-entropy sequence, in
+    :math:`(0,1)`.  It is distinct from the target quantile level
+    :math:`\alpha`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getConditionalProbability
+R"RAW(Accessor to the conditional probability.
+
+Returns
+-------
+conditionalProbability : float
+    Conditional probability :math:`p_0` of the subset estimator.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setConditionalProbability
+R"RAW(Accessor to the conditional probability.
+
+Parameters
+----------
+conditionalProbability : float
+    Conditional probability :math:`p_0` of the subset estimator, in
+    :math:`(0,1)`.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::QuantileSimulationResultImplementation::isFixedSample
 R"RAW(Accessor to the fixed-sample flag.
 

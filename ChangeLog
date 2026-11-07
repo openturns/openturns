@@ -155,12 +155,14 @@
  * WrappedNormal-MaxLatticeTerms: maximum number of lattice terms in the exact PDF sum (default is 100000)
  * WrappedNormalFactory-DefaultPeriod: default period used by the factory when the sample does not specify one (default is 6.283185307179586)
  * QuantileSimulation, QuantileSimulationAlgorithm, BlockQuantileSimulation and ExactTailQuantileSimulation ResourceMap keys for the default quantile level, confidence level, sample size, trimming fraction, minimum block count, replicate count, block-length policy and tolerances, bootstrap size, pilot sizes and fraction, and minimum chunk size
+ * SubsetSamplingQuantile, LastParticleQuantile and CrossEntropyQuantile ResourceMap keys for the default burn-in, replicate count, particle count, pilot size and minimum proposal standard deviation
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
  * BlockQuantileSimulation (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
+ * CrossEntropyQuantile (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
  * CurlFreeModel (openturns.experimental)
  * DivFreeModel (openturns.experimental)
@@ -170,6 +172,7 @@
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
+ * LastParticleQuantile (openturns.experimental)
  * LeaveOneOut
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
@@ -187,6 +190,7 @@
  * SlicedInverseRegression, SlicedInverseRegressionResult (openturns.experimental)
  * SparseExpansion (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
+ * SubsetSamplingQuantile (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
  * UniformOverMeshFactory (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
