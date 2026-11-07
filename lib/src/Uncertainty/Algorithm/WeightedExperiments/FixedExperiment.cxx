@@ -94,6 +94,12 @@ Bool FixedExperiment::hasUniformWeights() const
   return weights_ == Point(sample_.getSize(), 1.0 / sample_.getSize());
 }
 
+/* Return isRandom flag */
+Bool FixedExperiment::isRandom() const
+{
+  return false;
+}
+
 /* Sample generation */
 Sample FixedExperiment::generateWithWeights(Point & weights) const
 {
