@@ -16,13 +16,13 @@ timeGrid : :class:`~openturns.RegularGrid`, optional
 
 Notes
 -----
-A random walk is a process :math:`X: \Omega \times \cD \rightarrow \Rset^d` where :math:`\cD=\Rset` discretized on the time grid :math:`(t_i)_{i \geq 0}` such that:
+A random walk is a process :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` where :math:`\cD=\Rset` discretized on the time grid :math:`(t_i)_{i \geq 0}` such that:
 
 .. math::
 
     \forall n>0,\: X_{t_n}  =  X_{t_{n-1}} + \varepsilon_{t_n}
 
-where :math:`\vect{x}_0 \in \Rset^d` and :math:`\varepsilon` is a  white noise of dimension :math:`d`.
+where :math:`\vect{x}_0 \in \Rset^{\processDim}` and :math:`\varepsilon` is a  white noise of dimension :math:`\processDim`.
 
 
 Examples
@@ -42,12 +42,13 @@ Get a realization:
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RandomWalk::getDistribution
-"Accessor to the distribution.
+R"RAW(Accessor to the distribution.
 
 Returns
 -------
 distribution : :class:`~openturns.Distribution` 
-    The distribution of dimension :math:`d` of the white noise."
+    The distribution of dimension :math:`\processDim` of the white noise.
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RandomWalk::getOrigin
@@ -60,12 +61,13 @@ origin : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RandomWalk::setDistribution
-"Accessor to the distribution.
+R"RAW(Accessor to the distribution.
 
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution` 
-    The distribution of dimension :math:`d` of the white noise."
+    The distribution of dimension :math:`\processDim` of the white noise.
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RandomWalk::setOrigin

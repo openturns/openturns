@@ -5,10 +5,10 @@ Create a functional basis process
 
 # %%
 # The objective of this example is to define
-# :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic
-# process of dimension :math:`d` where :math:`\mathcal{D} \in \mathbb{R}^n`, as a linear
+# :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}` a multivariate stochastic
+# process of dimension :math:`\processDim` where :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}`, as a linear
 # combination of :math:`K` deterministic functions
-# :math:`(\phi_i)_{i=1,\dots,K}: \mathbb{R}^n \rightarrow \mathbb{R}^d`:
+# :math:`(\phi_i)_{i=1,\dots,K}: \mathbb{R}^{\domainDim} \rightarrow \mathbb{R}^{\processDim}`:
 #
 # .. math::
 #     \begin{aligned}

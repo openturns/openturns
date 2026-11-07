@@ -3,27 +3,27 @@
 Covariance models
 =================
 
-We consider :math:`X: \Omega \times\cD \mapsto \Rset^{\inputDim}` a multivariate
-stochastic process of dimension :math:`d`, where :math:`\omega \in \Omega`
-is an event, :math:`\cD` is a domain of :math:`\Rset^{\sampleSize}`,
+We consider :math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}` a multivariate
+stochastic process of dimension :math:`\processDim`, where :math:`\omega \in \Omega`
+is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`,
 :math:`\vect{t}\in \cD` is a multivariate index and
-:math:`X(\omega, \vect{t}) \in \Rset^{\inputDim}`.
+:math:`X(\omega, \vect{t}) \in \Rset^{\processDim}`.
 
-We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\inputDim}` the random variable at
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\processDim}` the random variable at
 index :math:`\vect{t} \in \cD` defined by
 :math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})` and
-:math:`X(\omega): \cD  \mapsto \Rset^{\inputDim}` a realization of the process
+:math:`X(\omega): \cD  \mapsto \Rset^{\processDim}` a realization of the process
 :math:`X`, for a given :math:`\omega \in \Omega` defined by
 :math:`X(\omega)(\vect{t})=X(\omega, \vect{t})`.
 
 If the process is a second order process, we denote by:
 
-- :math:`m : \cD \mapsto  \Rset^{\inputDim}` its *mean function*, defined by
+- :math:`m : \cD \mapsto  \Rset^{\processDim}` its *mean function*, defined by
   :math:`m(\vect{t})=\Expect{X_{\vect{t}}}`,
-- :math:`\mat{C} : \cD \times \cD \mapsto  \cS_{\inputDim}^+(\Rset)` its
+- :math:`\mat{C} : \cD \times \cD \mapsto  \cS_{\processDim}^+(\Rset)` its
   *covariance function*, defined by
   :math:`\mat{C}(\vect{s}, \vect{t})=\Expect{(X_{\vect{s}}-m(\vect{s}))\Tr{(X_{\vect{t}}-m(\vect{t}))}}`,
-- :math:`\mat{\rho} : \cD \times \cD \mapsto  \cS_{\inputDim}^+(\Rset)` its
+- :math:`\mat{\rho} : \cD \times \cD \mapsto  \cS_{\processDim}^+(\Rset)` its
   *correlation function*, defined for all :math:`(\vect{s}, \vect{t})`,
   by :math:`\mat{\rho}(\vect{s}, \vect{t})` such that for all :math:`(i,j)`,
   :math:`(\rho_{ij}(\vect{s}, \vect{t}) = C_{ij}(\vect{s}, \vect{t})/\sqrt{C_{ii}(\vect{s}, \vect{t})C_{jj}(\vect{s}, \vect{t})}`.
@@ -31,15 +31,15 @@ If the process is a second order process, we denote by:
 
 In the library, it is assumed that:
 
-- the *spatial* correlation :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` between the components of :math:`X_{\vect{t}}`
-  and the vector of marginal standard deviations :math:`\vect{\sigma} \in \Rset^{\inputDim}`
+- the *spatial* correlation :math:`\mat{R} \in \cS_{\processDim}^+(\Rset)` between the components of :math:`X_{\vect{t}}`
+  and the vector of marginal standard deviations :math:`\vect{\sigma} \in \Rset^{\processDim}`
   does not depend on :math:`\vect{t} \in \cD`,
 - the correlation between :math:`X_{\vect{s}}` and  :math:`X_{\vect{t}}`
   which is given by :math:`\mat{\rho}(\vect{s}, \vect{t})` is such that :math:`X^i_{\vect{t}}`
   depends only on :math:`X^i_{\vect{s}}` and that this link does not depend on the component
   :math:`i`. In that case, :math:`\mat{\rho}(\vect{s}, \vect{t})` can be
   defined from the scalar function :math:`\rho(\vect{s}, \vect{t}) \in \Rset` by
-  :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_{\inputDim}`.
+  :math:`\mat{\rho}(\vect{s}, \vect{t}) = \rho(\vect{s}, \vect{t})\, \mat{I}_{\processDim}`.
   We have :math:`\rho(\vect{s}, \vect{s}) = 1`.
 
 
@@ -66,9 +66,9 @@ or:
 
 where:
 
-- :math:`\vect{\theta} \in \Rset^{\sampleSize}` is the *scale* parameter,
-- :math:`\vect{\sigma} \in \Rset^{\inputDim}` is the *amplitude* parameter,
-- :math:`\mat{R} \in \cS_{\inputDim}^+(\Rset)` is the *spatial* correlation matrix,
+- :math:`\vect{\theta} \in \Rset^{\domainDim}` is the *scale* parameter,
+- :math:`\vect{\sigma} \in \Rset^{\processDim}` is the *amplitude* parameter,
+- :math:`\mat{R} \in \cS_{\processDim}^+(\Rset)` is the *spatial* correlation matrix,
 - :math:`\mat{C}^{spatial} = \diag(\vect{\sigma}) \, \mat{R} \, \diag(\vect{\sigma})`
   is the *spatial* covariance matrix which does not depend on :math:`(\vect{s}, \vect{t})`.
 

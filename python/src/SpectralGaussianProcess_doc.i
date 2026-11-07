@@ -17,8 +17,8 @@ R"RAW(Spectral Gaussian process.
   the same as the second usage.
 
 The first call of :meth:`getRealization` might be time consuming because it
-computes :math:`N` hermitian matrices of size :math:`d \times \ d`, where
-:math:`d` is the dimension of the spectral model. These matrices are factorized
+computes :math:`N` hermitian matrices of size :math:`\processDim \times \processDim`, where
+:math:`\processDim` is the dimension of the spectral model. These matrices are factorized
 and stored in order to be used for each call of the *getRealization* method.
 
 Available constructors:

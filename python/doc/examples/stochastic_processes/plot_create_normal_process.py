@@ -21,7 +21,7 @@ import openturns.viewer as otv
 # ---------------------------------------------------
 #
 # Here, we create a Gaussian process :math:`\vect{X}: \Omega \times \cD \rightarrow \Rset` on a
-# domain :math:`\cD \in \Rset` from its covariance model.
+# domain :math:`\cD \subset \Rset` from its covariance model.
 #
 # See :ref:`Covariance models <covariance_model>` to get more details on covariance models.
 #
@@ -71,7 +71,7 @@ view = otv.View(graph)
 # the impact of the nugget effect on a covariance model.
 #
 # Adding a nugget factor modifies the covariance model. It transforms the process by adding a white noise
-# of dimension :math:`d` with zero mean and a covariance matrix equal to
+# of dimension :math:`\processDim` with zero mean and a covariance matrix equal to
 # :math:`\varepsilon_{nugget} \mat{C}^{spatial}`:
 #
 # .. math::
@@ -99,7 +99,7 @@ view = otv.View(graph_nugget)
 # ---------------------------------------------------
 #
 # Here, we create a Gaussian process :math:`\vect{X}: \Omega \times \cD \rightarrow \Rset` on a
-# domain :math:`\cD \in \Rset` from its spectral density.
+# domain :math:`\cD \subset \Rset` from its spectral density.
 #
 # We first define a spectral model. We use a :class:`~openturns.CauchyModel`.
 amplitude = [1.0]

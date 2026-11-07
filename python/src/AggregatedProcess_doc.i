@@ -8,8 +8,8 @@ collProc : sequence of :class:`~openturns.Process`
 
 Notes
 -----
-If we note :math:`X_i: \Omega \times\cD_i \mapsto \Rset^{d_i}` for :math:`0 \leq i \leq N` the collection of processes, where :math:`\cD_i \in \Rset^n` for all :math:`i`.
-Then the resulting aggregated process :math:`Y: \Omega \times\cD_0 \mapsto \Rset^d` where :math:`d=\sum_{i=0}^N d_i`. The mesh of the first process :math:`X_0` has been assigned to the process :math:`Y`.
+If we note :math:`X_i: \Omega \times\cD_i \mapsto \Rset^{\processDim_i}` for :math:`0 \leq i \leq N` the collection of processes, where :math:`\cD_i \subset \Rset^{\domainDim}` for all :math:`i`.
+Then the resulting aggregated process :math:`Y: \Omega \times\cD_0 \mapsto \Rset^{\processDim}` where :math:`\processDim=\sum_{i=0}^N \processDim_i`. The mesh of the first process :math:`X_0` has been assigned to the process :math:`Y`.
 
 Examples
 --------

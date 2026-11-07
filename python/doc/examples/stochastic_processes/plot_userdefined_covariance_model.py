@@ -25,10 +25,10 @@ import math as m
 #
 # We define the covariance model from:
 #
-# - a mesh :math:`\mathcal{M}` of dimension :math:`n` defined by the vertices :math:`(\vect{\tau}_0,\dots, \vect{\tau}_{N-1})`
+# - a mesh :math:`\mathcal{M}` of dimension :math:`\domainDim` defined by the vertices :math:`(\vect{\tau}_0,\dots, \vect{\tau}_{N-1})`
 #   and the associated simplices,
 # - a collection of covariance matrices stored in the object :class:`~openturns.CovarianceMatrixCollection` denoted by
-#   :math:`\vect{C}_0, \dots, \vect{C}_{N-1}`, where :math:`\vect{C}_k \in \mathcal{M}_{d \times d}(\mathbb{R})`
+#   :math:`\vect{C}_0, \dots, \vect{C}_{N-1}`, where :math:`\vect{C}_k \in \mathcal{M}_{\processDim \times \processDim}(\mathbb{R})`
 #   for :math:`0 \leq k \leq N-1`.
 #
 # Then we build a stationary covariance function which is a piecewise constant function on :math:`\mathcal{D}` defined by:

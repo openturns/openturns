@@ -20,7 +20,7 @@ Notes
 This class builds a new process by applying a P1 (piecewise-linear) Lagrange
 interpolation to the realizations of a given process on a target mesh.
 
-Let :math:`X: \Omega \times \cD \mapsto \Rset^d` be the compound process
+Let :math:`X: \Omega \times \cD \mapsto \Rset^{\processDim}` be the compound process
 defined on the mesh :math:`\cM_X` and let :math:`\cM` be the target mesh.
 For any realization :math:`x(\cdot)` of :math:`X`, the corresponding
 realization of the interpolated process :math:`Y` on :math:`\cM` is:

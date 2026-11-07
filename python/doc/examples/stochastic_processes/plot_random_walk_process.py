@@ -6,7 +6,7 @@ Create a random walk process
 # %%
 # This example details first how to create and manipulate a random walk.
 #
-# A random walk :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` is a process
+# A random walk :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}` is a process
 # where :math:`\mathcal{D}=\mathbb{R}` discretized on the time grid :math:`(t_i)_{i \geq 0}` such
 # that:
 #
@@ -16,8 +16,8 @@ Create a random walk process
 #      \forall n>0,\: X_{t_n} & = & X_{t_{n-1}} + \varepsilon_{t_n}
 #    \end{aligned}
 #
-# where :math:`\vect{x}_0 \in \mathbb{R}^d` and :math:`\varepsilon` is a white noise of
-# dimension :math:`d`.
+# where :math:`\vect{x}_0 \in \mathbb{R}^{\processDim}` and :math:`\varepsilon` is a white noise of
+# dimension :math:`\processDim`.
 #
 # The library proposes to model it through the object :class:`~openturns.RandomWalk` defined
 # thanks to the origin, the distribution of the white noise and the time
