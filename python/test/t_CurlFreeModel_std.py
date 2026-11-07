@@ -436,4 +436,78 @@ val0_meta = curl_meta([0.0, 0.0])
 ott.assert_almost_equal(val0_meta[0, 0], 1.0 / 25.0, 1e-10)
 ott.assert_almost_equal(val0_meta[1, 1], 1.0 / 100.0, 1e-10)
 
+# ====================================================================
+# partialGradient against central finite differences of operator()
+# ====================================================================
+print("=" * 60)
+print("Test partialGradient")
+print("=" * 60)
+
+
+def symmetrized_flat(cov):
+    """Flatten a covariance matrix as partialGradient does (lower triangle kept, column-major)."""
+    d = cov.getNbRows()
+    vals = []
+    for j in range(d):
+        for i in range(d):
+            vals.append(cov[i, j] if i >= j else cov[j, i])
+    return vals
+
+
+def assert_partial_gradient(model, s, t, eps=1e-5, tol=1e-4):
+    """Check partialGradient against a central finite difference of operator()."""
+    # eps=1e-5 is near the optimal central-difference step in double precision:
+    # truncation error O(eps^2) balanced against rounding error O(machine_eps/eps).
+    s = ot.Point(s)
+    t = ot.Point(t)
+    d = model.getInputDimension()
+    out = model.getOutputDimension()
+    grad = model.partialGradient(s, t)
+    assert grad.getNbRows() == d
+    assert grad.getNbColumns() == out * out
+    for a in range(d):
+        s_plus = ot.Point(s)
+        s_minus = ot.Point(s)
+        s_plus[a] += eps
+        s_minus[a] -= eps
+        flat_plus = symmetrized_flat(model(s_plus, t))
+        flat_minus = symmetrized_flat(model(s_minus, t))
+        for k in range(out * out):
+            gradfd = (flat_plus[k] - flat_minus[k]) / (2.0 * eps)
+            ott.assert_almost_equal(grad[a, k], gradfd, tol, tol, "partialGradient[" + str(a) + "," + str(k) + "]")
+
+
+assert_partial_gradient(otexp.CurlFreeModel(ot.SquaredExponential([1.5, 2.0], [1.0])), [0.5, 0.3], [0.1, 0.2])
+assert_partial_gradient(otexp.CurlFreeModel(ot.SquaredExponential([1.0, 1.5, 2.0], [1.0])), [0.5, 0.3, 0.2], [0.1, 0.2, 0.3])
+assert_partial_gradient(otexp.CurlFreeModel(ot.MaternModel([1.5, 2.0], [1.0], 1.5)), [0.5, 0.3], [0.1, 0.2])
+# Fallback paths run with the expected shapes
+curl_grad = otexp.CurlFreeModel(ot.SquaredExponential([1.5, 2.0], [1.0]))
+hess = curl_grad.partialHessian([0.5, 0.3], [0.1, 0.2])
+assert hess.getDimension() == 2
+pgrad = curl_grad.parameterGradient([0.5, 0.3], [0.1, 0.2])
+assert pgrad.getNbRows() == curl_grad.getParameter().getSize()
+assert pgrad.getNbColumns() == 4
+
+# ====================================================================
+# Stationary operator() is exactly minus the base Hessian
+# ====================================================================
+print("=" * 60)
+print("Test stationary operator() exactness")
+print("=" * 60)
+
+
+def assert_exact_stationary(base, s, t):
+    model = otexp.CurlFreeModel(base)
+    d = model.getInputDimension()
+    h = base.partialHessian(ot.Point(s), ot.Point(t))
+    c = model(s, t)
+    for i in range(d):
+        for j in range(d):
+            ott.assert_almost_equal(c[i, j], -h[i, j], 1e-14, 1e-14)
+
+
+assert_exact_stationary(ot.SquaredExponential([1.5, 2.0], [1.0]), [0.5, 0.3], [0.1, 0.2])
+assert_exact_stationary(ot.SquaredExponential([1.0, 1.5, 2.0], [1.0]), [0.5, 0.3, 0.2], [0.1, 0.2, 0.3])
+assert_exact_stationary(ot.MaternModel([1.5, 2.0], [1.0], 1.5), [0.5, 0.3], [0.1, 0.2])
+
 print("All tests passed!")

@@ -34,8 +34,8 @@ this is called proper orthogonal decomposition (POD) (see [luo2018]_).
 
 The SVD approach is a particular case of the quadrature approach (see
 :class:`~openturns.KarhunenLoeveQuadratureAlgorithm`)  where we consider the
-functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq d, 1 \leq p \leq P}` of
-:math:`L^2(\cD, \Rset^d)` defined on :math:`\cD` by:
+functional basis  :math:`((\vect{\theta}_p^j(\vect{s}))_{1 \leq j \leq \processDim, 1 \leq p \leq P}` of
+:math:`L^2(\cD, \Rset^{\processDim})` defined on :math:`\cD` by:
 
 .. math:: 
 

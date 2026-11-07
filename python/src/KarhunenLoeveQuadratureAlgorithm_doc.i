@@ -33,7 +33,7 @@ The Karhunen-Loeve quadrature approximation consists in replacing the integral b
 
 .. math::
 
-    \int_{\Rset^n} f(\vect{x}) \mu(\vect{x})\, d\vect{x} \simeq \sum_{\ell=1}^{\ell=L} \omega_\ell f(\vect{\xi}_\ell)
+    \int_{\Rset^{\domainDim}} f(\vect{x}) \mu(\vect{x})\, d\vect{x} \simeq \sum_{\ell=1}^{\ell=L} \omega_\ell f(\vect{\xi}_\ell)
 
 If we note :math:`\eta_{\ell}=\omega_{\ell}\dfrac{1_{\cD}(\vect{\xi}_{\ell})}{\mu(\vect{\xi}_{\ell})}`, we build a more general quadrature approximation :math:`(\eta_\ell, \xi_\ell)_{1 \leq l \leq L}` such that:
 
@@ -43,9 +43,9 @@ If we note :math:`\eta_{\ell}=\omega_{\ell}\dfrac{1_{\cD}(\vect{\xi}_{\ell})}{\m
 
 where only the points :math:`\vect{\xi}_\ell \in \cD` are considered. 
 
-We introduce the matrices :math:`\mat{\Theta}=(\mat{\Theta}_{ij})_{1 \leq i \leq L, 1 \leq j \leq P} \in \cM_{Ld, Pd}(\Rset)` such that :math:`\mat{\Theta}_{ij} = \theta_{j}(\vect{\xi}_i)\mat{I}_d`, :math:`\mat{C}_{\ell, \ell'} =  \mat{C}(\vect{\xi}_{\ell},\vect{\xi}_{\ell'})` and :math:`\mat{W}= \mathrm{diag} (\mat{W}_{ii})_{1 \leq i \leq L} \in \cM_{Ld, Ld}(\Rset)` such that :math:`\mat{W}_{ii} = \eta_i \mat{I}_d`.
+We introduce the matrices :math:`\mat{\Theta}=(\mat{\Theta}_{ij})_{1 \leq i \leq L, 1 \leq j \leq P} \in \cM_{L\processDim, P\processDim}(\Rset)` such that :math:`\mat{\Theta}_{ij} = \theta_{j}(\vect{\xi}_i)\mat{I}_{\processDim}`, :math:`\mat{C}_{\ell, \ell'} =  \mat{C}(\vect{\xi}_{\ell},\vect{\xi}_{\ell'})` and :math:`\mat{W}= \mathrm{diag} (\mat{W}_{ii})_{1 \leq i \leq L} \in \cM_{L\processDim, L\processDim}(\Rset)` such that :math:`\mat{W}_{ii} = \eta_i \mat{I}_{\processDim}`.
 
-The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^d)}=1` and the orthogonality of the :math:`\vect{\varphi}_k` in :math:`L^2(\cD, \Rset^d)` leads to:
+The normalisation constraint :math:`\|\vect{\varphi}_k\|^2_{L^2(\cD, \Rset^{\processDim})}=1` and the orthogonality of the :math:`\vect{\varphi}_k` in :math:`L^2(\cD, \Rset^{\processDim})` leads to:
 
 .. math::
     :label: contNorm

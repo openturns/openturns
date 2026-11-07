@@ -13,24 +13,24 @@ Available constructors:
 Parameters
 ----------
 inputDimension : int
-    Spatial dimension :math:`n`.
+    Spatial dimension :math:`\domainDim`.
     By default, equal to 1.
 amplitude : sequence of positive floats
-    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.
-    Its size is the dimension :math:`d` of the process.
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^{\processDim}`.
+    Its size is the dimension :math:`\processDim` of the process.
     By default, equal to :math:`[1]`.
 correlation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \cS^+_d([-1, 1])`.
+    Correlation matrix :math:`\mat{R} \in \cS^+_{\processDim}([-1, 1])`.
     By default, Identity matrix.
 covariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`\mat{C}^{spatial} \in \cS_d^+(\Rset)`.
+    Covariance matrix :math:`\mat{C}^{spatial} \in \cS_{\processDim}^+(\Rset)`.
     By default, Identity matrix.
 
 Notes
 -----
-The *Dirac* covariance function is a stationary covariance function with dimension :math:`d \geq 1`.
+The *Dirac* covariance function is a stationary covariance function with dimension :math:`\processDim \geq 1`.
 
-We consider the stochastic process :math:`X: \Omega \times\cD \mapsto \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+We consider the stochastic process :math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`.
 
 The  *Dirac* covariance function is defined by:
 
@@ -38,7 +38,7 @@ The  *Dirac* covariance function is defined by:
     
     C(\vect{s}, \vect{t}) =  1_{\{\vect{s}=\vect{t}\}} \, \mbox{Diag}(\vect{\sigma}) \, \mat{R}\,  \mbox{Diag}(\vect{\sigma}), \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-where :math:`\mat{R} \in \cS_d^+([-1,1])` is the spatial correlation matrix. We can define the spatial covariance matrix :math:`\mat{C}^{spatial}` as:
+where :math:`\mat{R} \in \cS_{\processDim}^+([-1,1])` is the spatial correlation matrix. We can define the spatial covariance matrix :math:`\mat{C}^{spatial}` as:
 
 .. math::
     

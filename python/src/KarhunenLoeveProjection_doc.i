@@ -12,7 +12,7 @@ The class :class:`~openturns.KarhunenLoeveProjection` is a specific function  :c
 
 See the documentation of :class:`~openturns.KarhunenLoeveResult` to get information on the projection function.
 
-The function acts on :class:`~openturns.Field` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with an input dimension equal to :math:`n`."
+The function acts on :class:`~openturns.Field` or :class:`~openturns.ProcessSample` associated to a :class:`~openturns.Mesh` with an input dimension equal to :math:`\domainDim`."
 
 // ---------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ R"RAW(Get the marginal(s) at given indice(s).
 
 Parameters
 ----------
-i : int or list of ints, :math:`0 \leq i < d`
+i : int or list of ints, :math:`0 \leq i < \processDim`
     Indice(s) of the marginal(s) to be extracted.
     output vector.
 
