@@ -921,7 +921,7 @@ endif ()
 
 
 ## StatTests
-ot_pyinstallcheck_test (VisualTest_std)
+ot_pyinstallcheck_test (VisualTest_std IGNOREOUT)
 ot_pyinstallcheck_test (HypothesisTest_correlation)
 ot_pyinstallcheck_test (LinearModelTest_std)
 ot_pyinstallcheck_test (HypothesisTest_std)

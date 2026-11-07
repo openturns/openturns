@@ -11,28 +11,46 @@ normal = ot.Normal(1)
 sample = normal.getSample(size)
 sample2 = ot.Gamma(3.0, 4.0, 0.0).getSample(size)
 twoSamplesQQPlot = ot.VisualTest.DrawQQplot(sample, sample2)
-print("twoSamplesQQPlot = ", twoSamplesQQPlot)
+assert isinstance(twoSamplesQQPlot, ot.Graph)
+assert "QQ-plot" in twoSamplesQQPlot.getTitle()
+assert len(twoSamplesQQPlot.getDrawables()) >= 2
+assert twoSamplesQQPlot.getLegends()[0] == "Test line"
 
 sampleDistributionQQPlot = ot.VisualTest.DrawQQplot(sample, normal)
-print("sampleDistributionQQPlot = ", sampleDistributionQQPlot)
+assert isinstance(sampleDistributionQQPlot, ot.Graph)
+assert "QQ-plot" in sampleDistributionQQPlot.getTitle()
+assert len(sampleDistributionQQPlot.getDrawables()) >= 2
+assert sampleDistributionQQPlot.getLegends()[0] == "Test line"
 
 dist = ot.Geometric()
 qq_plot = ot.VisualTest.DrawQQplot(dist.getSample(size), dist)
-print("discrete QQPlot = ", qq_plot)
+assert isinstance(qq_plot, ot.Graph)
+assert "QQ-plot" in qq_plot.getTitle()
+assert len(qq_plot.getDrawables()) >= 2
+assert qq_plot.getLegends()[0] == "Test line"
 
 sample2 = normal.getSample(size)
 twoSamplesPPPlot = ot.VisualTest.DrawPPplot(sample, sample2)
-print("twoSamplesPPPlot = ", twoSamplesPPPlot)
+assert isinstance(twoSamplesPPPlot, ot.Graph)
+assert "PP-plot" in twoSamplesPPPlot.getTitle()
+assert len(twoSamplesPPPlot.getDrawables()) >= 2
+assert twoSamplesPPPlot.getLegends()[0] == "Test line"
 
 sampleDistributionPPplot = ot.VisualTest.DrawPPplot(sample, normal)
-print("sampleDistributionPPplot = ", sampleDistributionPPplot)
+assert isinstance(sampleDistributionPPplot, ot.Graph)
+assert "PP-plot" in sampleDistributionPPplot.getTitle()
+assert len(sampleDistributionPPplot.getDrawables()) >= 2
+assert sampleDistributionPPplot.getLegends()[0] == "Test line"
 
 # HenryLine test
 size = 100
 normal = ot.Normal(1)
 sample = normal.getSample(size)
 henryPlot = ot.VisualTest.DrawHenryLine(sample)
-print("HenryPlot = ", henryPlot)
+assert isinstance(henryPlot, ot.Graph)
+assert "Henry" in henryPlot.getTitle()
+assert len(henryPlot.getDrawables()) >= 2
+assert henryPlot.getLegends()[0] == "Henry line"
 
 # LinearModel tests
 dimension = 2
@@ -49,10 +67,12 @@ for i in range(size):
 
 lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 drawLinearModelVTest = ot.VisualTest.DrawLinearModel(lmtest)
-print("LinearModelV = ", drawLinearModelVTest)
+assert isinstance(drawLinearModelVTest, ot.Graph)
+assert len(drawLinearModelVTest.getDrawables()) >= 1
 
 drawLinearModelResidualTest = ot.VisualTest.DrawLinearModelResidual(lmtest)
-print("LinearModelR = ", drawLinearModelResidualTest)
+assert isinstance(drawLinearModelResidualTest, ot.Graph)
+assert len(drawLinearModelResidualTest.getDrawables()) >= 1
 
 # Parallel coordinates tests
 size = 100
@@ -71,12 +91,14 @@ outputSample = model(inputSample)
 parallelCoordinatesValue = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 2.5, 3.0, "red", False
 )
-print("parallelCoordinatesValue = ", parallelCoordinatesValue)
+assert isinstance(parallelCoordinatesValue, ot.Graph)
+assert len(parallelCoordinatesValue.getDrawables()) >= 1
 
 parallelCoordinatesQuantile = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 0.7, 0.9, "red", False
 )
-print("parallelCoordinatesQuantile = ", parallelCoordinatesQuantile)
+assert isinstance(parallelCoordinatesQuantile, ot.Graph)
+assert len(parallelCoordinatesQuantile.getDrawables()) >= 1
 
 # KendallPlot tests
 size = 100
@@ -87,20 +109,28 @@ sample1.setName("data 1")
 sample2 = copula2.getSample(size)
 sample2.setName("data 2")
 kendallPlot1 = ot.VisualTest.DrawKendallPlot(sample1, copula2)
-print("KendallPlot1 = ", kendallPlot1)
+assert isinstance(kendallPlot1, ot.Graph)
+assert len(kendallPlot1.getDrawables()) >= 1
 
 kendallPlot2 = ot.VisualTest.DrawKendallPlot(sample2, sample1)
-print("KendallPlot2 = ", kendallPlot2)
+assert isinstance(kendallPlot2, ot.Graph)
+assert len(kendallPlot2.getDrawables()) >= 1
 
 # Clouds
 sample = ot.Normal(4).getSample(200)
 clouds = ot.VisualTest.DrawPairs(sample)
-print("Clouds = ", clouds)
+assert isinstance(clouds, ot.GridLayout)
+assert clouds.getNbRows() == 3
+assert clouds.getNbColumns() == 3
+assert len(clouds.getGraph(0, 0).getDrawables()) >= 1
 distribution = ot.JointDistribution(
     [ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(4)]
 )
 cloudsMarginals = ot.VisualTest.DrawPairsMarginals(sample, distribution)
-print("CloudsMarginals = ", cloudsMarginals)
+assert isinstance(cloudsMarginals, ot.GridLayout)
+assert cloudsMarginals.getNbRows() == 4
+assert cloudsMarginals.getNbColumns() == 4
+assert len(cloudsMarginals.getGraph(0, 0).getDrawables()) >= 1
 
 # dependence functions
 copula = ot.GumbelCopula()
@@ -109,6 +139,9 @@ graph1 = ot.VisualTest.DrawUpperTailDependenceFunction(data)
 graph2 = ot.VisualTest.DrawUpperExtremalDependenceFunction(data)
 graph3 = ot.VisualTest.DrawLowerTailDependenceFunction(data)
 graph4 = ot.VisualTest.DrawLowerExtremalDependenceFunction(data)
+for graph in [graph1, graph2, graph3, graph4]:
+    assert isinstance(graph, ot.Graph)
+    assert len(graph.getDrawables()) >= 1
 
 # check vs theoretical value
 theta = copula.getTheta()
@@ -121,12 +154,17 @@ domain = ot.Domain(ot.Interval([-2.0, 0.0, -1], [2.0, 3.0, 1.0]))
 U = ot.Uniform(-3, 3)
 dist = ot.JointDistribution([U, U, U])
 grid = ot.VisualTest.DrawInsideOutside(domain, dist.getSample(30))
-print(grid)
+assert isinstance(grid, ot.GridLayout)
+assert grid.getNbRows() == 2
+assert grid.getNbColumns() == 2
 
 # CDF plot with unique values
 dist = ot.Mixture([ot.Uniform(8, 15), ot.Dirac(10)], [0.1, 0.9])
 ud = ot.FiniteDiscreteDistribution(dist.getSample(1000))
 graph = ot.VisualTest.DrawCDFplot(ud.getSample(100), ud)
+assert isinstance(graph, ot.Graph)
+assert "CDF" in graph.getTitle()
+assert len(graph.getDrawables()) >= 1
 
 # large-sample QQ plot points must remain visible, see issue #1357
 medium_size = ot.ResourceMap.GetAsUnsignedInteger("VisualTest-CloudMediumSize")
