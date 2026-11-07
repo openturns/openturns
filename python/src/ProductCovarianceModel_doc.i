@@ -4,18 +4,18 @@ R"RAW(Univariate covariance function defined as a product.
 Parameters
 ----------
 collection : sequence of :class:`~openturns.CovarianceModel`
-    Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`d=1`.
+    Collection of covariance models :math:`(C_k)_{1 \leq k \leq K}` of dimension :math:`\processDim=1`.
 
 Notes
 -----
 The *product* covariance function is a covariance function with 
-dimension :math:`d=1`. 
+dimension :math:`\processDim=1`.
 This allows one to create a higher input dimension covariance model
 by combining models of smaller input dimensions. 
 The input dimension of each model in the collection does not necessarily have to be equal to 1. 
 It defines a covariance model from the given collection as follows.
 
-We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`.
 
 The product covariance function writes:
 
@@ -23,7 +23,7 @@ The product covariance function writes:
 
     C(\vect{s}, \vect{t}) = \prod_{k=1}^K  C_k(\vect{s}_k, \vect{t}_k), \quad \forall (\vect{s}, \vect{t}) \in \cD
 
-where :math:`C_k : \cD_k \times \cD_k \rightarrow  \cS_d^+(\Rset)`  with :math:`\cD_k \in \Rset^{d_k}`, :math:`\cD = \cD_1 \times \dots \times \cD_K`, :math:`\cD_k \subset \Rset^{n_k}` and :math:`n1 + \dots + n_K=n`.
+where :math:`C_k : \cD_k \times \cD_k \rightarrow  \cS_{\processDim}^+(\Rset)`  with :math:`\cD_k \subset \Rset^{n_k}`, :math:`\cD = \cD_1 \times \dots \times \cD_K` and :math:`n_1 + \dots + n_K=\domainDim`.
 
 :math:`C` also writes:
 

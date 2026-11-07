@@ -6,24 +6,24 @@ Parameters
 frequency : :class:`~openturns.RegularGrid`
     The frequency grid :math:`(-f_c, \dots, f_c)` with step :math:`\delta f` on which the model is built.
 densityCollectionFunction : sequence of :class:`~openturns.HermitianMatrix`
-    Collection of hermitian matrices :math:`\in \mathbb{M}_d(\mathbb{C})` which are the images of each point
+    Collection of hermitian matrices :math:`\in \cM_{\processDim}(\Cset)` which are the images of each point
     of the frequency grid through the density spectral function.
 
 Notes
 -----
-We consider a multivariate process :math:`X: \Omega \times \cD \rightarrow \Rset^d` of dimension :math:`d` where :math:`\cD \in \Rset^n`.
-We only treat here the case where the domain is of dimension 1: :math:`\cD \in \Rset` (:math:`n=1`).
+We consider a multivariate process :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` of dimension :math:`\processDim` where :math:`\cD \subset \Rset^{\domainDim}`.
+We only treat here the case where the domain is of dimension 1: :math:`\cD \subset \Rset` (:math:`\domainDim=1`).
 
 We denote :math:`(\vect{t}_0, \dots, \vect{t}_{N-1})` the time stamps of the time grid.
 
-:math:`X` is supposed to be a stationary second order process and we suppose that its spectral density function :math:`S : \Rset \rightarrow \mathcal{H}^+(d)` defined by:
+:math:`X` is supposed to be a stationary second order process and we suppose that its spectral density function :math:`S : \Rset \rightarrow \cH^+(\processDim)` defined by:
 
 .. math::
     :label: fourier_transform
 
-    \forall \vect{f} \in \Rset^n, \,S(\vect{f}) = \int_{\Rset^n}\exp\left\{  -2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\di{\vect{\tau}}
+    \forall \vect{f} \in \Rset^{\domainDim}, \,S(\vect{f}) = \int_{\Rset^{\domainDim}}\exp\left\{  -2i\pi <\vect{f},\vect{\tau}> \right\} C^{stat}(\vect{\tau})\di{\vect{\tau}}
 
-exists, where :math:`\mathcal{H}^+(d) \in \mathcal{M}_d(\Cset)` is the set of *d*-dimensional positive definite hermitian matrices.
+exists, where :math:`\cH^+(\processDim) \in \cM_{\processDim}(\Cset)` is the set of :math:`\processDim`-dimensional positive definite hermitian matrices.
 
 We get a piecewise constant function on :math:`[-f_c,f_c]`, where the intervals on which the density spectral function is constant
 are centered on the points of the frequency grid, of length :math:`\delta f`. 

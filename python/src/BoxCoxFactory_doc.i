@@ -5,7 +5,7 @@ Notes
 -----
 The class :class:`~openturns.BoxCoxFactory` enables to build a Box Cox transformation from data.
 
-The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` maps
+The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^{\processDim} \rightarrow \Rset^{\processDim}` maps
 a sample into a new sample following a normal distribution with independent components.
 That sample may be the realization of a process as well as the realization of a distribution.
 
@@ -76,8 +76,8 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
 basis : :class:`~openturns.Basis`, optional
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
-    If :math:`d>1`, the same basis is used for each marginal output.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^{\inputDim} \rightarrow \Rset`.
+    If :math:`\outputDim>1`, the same basis is used for each marginal output.
 shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive.
     By default the opposite of the min vector of the data is used if some data are negative.
@@ -123,8 +123,8 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Should have input dimension equal to input sample's dimension and dimension equal to output sample's dimension.
     See note for some particular applications.
 basis : :class:`~openturns.Basis`, optional
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
-    If :math:`d>1`, the same basis is used for each marginal output.
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^{\inputDim} \rightarrow \Rset`.
+    If :math:`\outputDim>1`, the same basis is used for each marginal output.
 shift : :class:`~openturns.Point`
     It ensures that when shifted, the data are all positive.
     By default the opposite of the min vector of the data is used if some data are negative.
@@ -295,7 +295,7 @@ We suppose the general linear model link :math:`h_\lambda(Y) = \vect{F}^t(\vect{
        \end{array}
      \right)
 
-:math:`(f_1, \dots, f_M)` is a functional basis with :math:`f_i: \Rset^d \mapsto \Rset^p` for all *i*, :math:`\beta` are the coefficients of the linear combination and :math:`Z` is a zero-mean gaussian process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}}`
+:math:`(f_1, \dots, f_M)` is a functional basis with :math:`f_i: \Rset^{\inputDim} \mapsto \Rset^{\outputDim}` for all *i*, :math:`\beta` are the coefficients of the linear combination and :math:`Z` is a zero-mean gaussian process with a stationary covariance function :math:`C_{\vect{\sigma}, \vect{\theta}}`
 Thus implies that :math:`h_\lambda(Y) \sim \cN(\vect{F}^t(\vect{x}) \vect{\beta}, C_{\vect{\sigma}, \vect{\theta}})`.
 
 The likelihood function to be maximized writes as follows:

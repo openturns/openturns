@@ -10,7 +10,7 @@ points : 1-d or 2-d sequence of float
 
 Notes
 -----
-KrigingRandomVector helps to create Gaussian random vector, :math:`Y: \Rset^n \mapsto \Rset^d`, with stationary covariance function  :math:`\cC^{stat}: \Rset^n \mapsto \cM_{d \times d}(\Rset)`, conditionally to some observations.
+KrigingRandomVector helps to create Gaussian random vector, :math:`Y: \Rset^{\domainDim} \mapsto \Rset^{\outputDim}`, with stationary covariance function  :math:`\cC^{stat}: \Rset^{\domainDim} \mapsto \cM_{\outputDim \times \outputDim}(\Rset)`, conditionally to some observations.
 
 Let :math:`Y(x=x_1)=y_1,\cdots,Y(x=x_n)=y_n` be the observations of the Gaussian process. We assume the same Gaussian prior as in the :class:`~openturns.GaussianProcessFitter`:
 

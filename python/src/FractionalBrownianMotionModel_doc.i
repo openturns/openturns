@@ -12,7 +12,7 @@ Parameters
 scale : sequence of positive floats of dimension 1
     Correlation scale between two locations.
 amplitude : sequence of positive floats
-    Standard deviations of the model :math:`\vect{\sigma}\in \Rset^d`.
+    Standard deviations of the model :math:`\vect{\sigma}\in \Rset^{\processDim}`.
 exponent : sequence of float, :math:`0<exponent_i<1`
     Hurst exponents of the model, ie homogeneity degrees of the self-similarity
     property.

@@ -20,7 +20,7 @@ Notes
 -----
 Structure generally created by the method run() of a :class:`~openturns.KarhunenLoeveAlgorithm` and obtained thanks to the method getResult().
 
-We consider :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` a covariance function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`.
+We consider :math:`C:\cD \times \cD \rightarrow  \cS^+_{\processDim}(\Rset)` a covariance function defined on :math:`\cD \subset \Rset^{\domainDim}`, continuous at :math:`\vect{0}`.
 
 We note :math:`(\lambda_k,  \vect{\varphi}_k)_{1 \leq k \leq K}` the solutions of the Fredholm problem associated to  :math:`C` where *K* is the highest index :math:`K` such that :math:`\lambda_K \geq s \lambda_1`.
 
@@ -33,7 +33,7 @@ Then we define the linear projection function :math:`\pi_{ \vect{\lambda}, \vect
 
     \pi_{\vect{\lambda}, \vect{\varphi}}: \left|
       \begin{array}{ccl}
-        L^2(\cD, \Rset^d) & \rightarrow & \cS^{\Nset} \\
+        L^2(\cD, \Rset^{\processDim}) & \rightarrow & \cS^{\Nset} \\
         f & \mapsto &\left(\dfrac{1}{\sqrt{\lambda_k}}\int_{\cD}f(\vect{t}) \vect{\varphi}_k(\vect{t})\, d\vect{t}\right)_{k \geq 1}
       \end{array}
     \right.
@@ -47,7 +47,7 @@ According to the Karhunen-Loeve algorithm, the integral of :eq:`projection` is r
 
     \left|
       \begin{array}{ccl}
-         \cM_N \times (\Rset^d)^N & \rightarrow & \Rset^K \\
+         \cM_N \times (\Rset^{\processDim})^N & \rightarrow & \Rset^K \\
          F & \mapsto & (\xi_1, \dots, \xi_K) = MF
       \end{array}
     \right.
@@ -63,7 +63,7 @@ The inverse of :math:`\pi_{\vect{\lambda}, \vect{\varphi}}` is the lift function
 
     \pi_{\vect{\lambda}, \vect{\varphi}}^{-1}: \left|
       \begin{array}{ccl}
-         \cS^{\Nset} & \rightarrow & L^2(\cD, \Rset^d)\\
+         \cS^{\Nset} & \rightarrow & L^2(\cD, \Rset^{\processDim})\\
         (\xi_k)_{k \geq 1} & \mapsto & f(.) = \sum_{k \geq 1} \sqrt{\lambda_k}\xi_k \vect{\varphi}_k(.)
       \end{array}
     \right.
