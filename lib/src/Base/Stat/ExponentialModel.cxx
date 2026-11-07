@@ -187,6 +187,14 @@ void ExponentialModel::setScale(const Point & scale)
   updateInvScale();
 }
 
+void ExponentialModel::setFullParameter(const Point & parameter)
+{
+  // The base implementation writes scale_ directly, bypassing setScale()
+  CovarianceModelImplementation::setFullParameter(parameter);
+  // Update the reduced scales
+  updateInvScale();
+}
+
 Scalar ExponentialModel::computeAsScalar(const Scalar tau) const
 {
   if (inputDimension_ != 1)

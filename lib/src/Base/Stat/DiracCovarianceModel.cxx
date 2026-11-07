@@ -504,6 +504,13 @@ void DiracCovarianceModel::setAmplitude(const Point & amplitude)
   computeCovariance();
 }
 
+/** Nugget factor accessor */
+void DiracCovarianceModel::setNuggetFactor(const Scalar nuggetFactor)
+{
+  CovarianceModelImplementation::setNuggetFactor(nuggetFactor);
+  computeCovariance();
+}
+
 void DiracCovarianceModel::setOutputCorrelation(const CorrelationMatrix & correlation)
 {
   if (correlation.getDimension() != outputDimension_)
