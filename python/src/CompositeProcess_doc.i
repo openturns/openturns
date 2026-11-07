@@ -10,21 +10,21 @@ inputProc : :class:`~openturns.Process`
 
 Notes
 -----
-A composite process is the image of  process :math:`X: \Omega \times\cD \mapsto \Rset^d` by the field function :math:`f_{dyn}:\cD \times \Rset^d \rightarrow \cD' \times \Rset^q`:
+A composite process is the image of  process :math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}` by the field function :math:`f_{dyn}:\cD \times \Rset^{\processDim} \rightarrow \cD' \times \Rset^q`:
 
 .. math::
 
     Y = fdyn(X)
 
 
-where :math:`\cD \in \Rset^n` and  :math:`\cD' \in \Rset^p`, defined by:
+where :math:`\cD \subset \Rset^{\domainDim}` and  :math:`\cD' \subset \Rset^p`, defined by:
 
 .. math::
 
     f_{dyn}(\vect{t}, \vect{x}) = (t'(\vect{t}), v'(\vect{t}, \vect{x}))
 
 
-with :math:`t': \cD \rightarrow \cD'` and :math:`v': \cD \times \Rset^d \rightarrow \Rset^q`.
+with :math:`t': \cD \rightarrow \cD'` and :math:`v': \cD \times \Rset^{\processDim} \rightarrow \Rset^q`.
 
 The process :math:`Y: \Omega \times \cD' \rightarrow \Rset^q` is defined on the domain :math:`\cD'` associated to the mesh :math:`\cM'`.
 

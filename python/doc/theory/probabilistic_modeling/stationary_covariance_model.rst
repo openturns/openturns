@@ -3,15 +3,15 @@
 Parametric stationary covariance models
 ---------------------------------------
 
-Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
-stationary normal process where :math:`\cD \in \Rset^n`. The process
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` be a multivariate
+stationary normal process where :math:`\cD \subset \Rset^{\domainDim}`. The process
 is supposed to be zero mean. It is entirely defined by its covariance
 function
-:math:`C^{stat}: \cD \rightarrow  \mathcal{M}_{\inputDim \times \inputDim}(\Rset)`,
+:math:`C^{stat}: \cD \rightarrow  \cM_{\processDim \times \processDim}(\Rset)`,
 defined by
 :math:`C^{stat}(\vect{\tau})=\Expect{X_{\vect{s}}X_{\vect{s}+\vect{\tau}}^t}`
-for all :math:`\vect{s}\in \Rset^n`.
-If the process is continuous, then :math:`\cD=\Rset^n`. In the
+for all :math:`\vect{s}\in \Rset^{\domainDim}`.
+If the process is continuous, then :math:`\cD=\Rset^{\domainDim}`. In the
 discrete case, :math:`\cD` is a lattice.
 
 This use case highlights how User can create a covariance
@@ -43,7 +43,7 @@ and the spatial covariance matrix :math:`\mat{C^{stat}}(\vect{s}, \vect{t})` by:
 
    \mat{C^{stat}}(\vect{\tau})= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
 
-with :math:`\mat{R} \in \mathcal{M}_{d \times d}([-1, 1])` a correlation matrix,
+with :math:`\mat{R} \in \cM_{\processDim \times \processDim}([-1, 1])` a correlation matrix,
 :math:`\theta_i>0` and :math:`\sigma_i>0` for any :math:`i`.
 
 The expression of :math:`C^{stat}` is the combination of:
@@ -63,7 +63,7 @@ The expression of :math:`C^{stat}` is the combination of:
    .. math::
 
       \begin{aligned}
-          \Var{X_{\vect{t}}} = (\sigma_1, \dots, \sigma_d)
+          \Var{X_{\vect{t}}} = (\sigma_1, \dots, \sigma_{\processDim})
         \end{aligned}
 
 It is possible to define the exponential model from the spatial

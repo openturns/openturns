@@ -3,11 +3,11 @@
 Box Cox transformation
 ----------------------
 
-We consider :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` a
-multivariate stochastic process of dimension :math:`d` where
-:math:`\cD \in \Rset^n` and :math:`\omega \in \Omega` is an event. We
+We consider :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` a
+multivariate stochastic process of dimension :math:`\processDim` where
+:math:`\cD \subset \Rset^{\domainDim}` and :math:`\omega \in \Omega` is an event. We
 suppose that the process is :math:`\cL^2(\Omega)`.
-We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\inputDim}` the random
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\processDim}` the random
 variable at the vertex :math:`\vect{t} \in \cD` defined by
 :math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})`.
 If the variance of :math:`X_{\vect{t}}` depends on the vertex
@@ -23,16 +23,16 @@ We present here:
 -  the action of the Box Cox transformation on a field generated from
    :math:`X`.
 
-We note :math:`h: \Rset^{\inputDim} \rightarrow \Rset^{\inputDim}` the Box Cox
+We note :math:`h: \Rset^{\processDim} \rightarrow \Rset^{\processDim}` the Box Cox
 transformation which maps the process :math:`X` into the process
-:math:`Y: \Omega \times \cD \rightarrow \Rset^{\inputDim}`, where
+:math:`Y: \Omega \times \cD \rightarrow \Rset^{\processDim}`, where
 :math:`Y=h(X)`, such that :math:`\Var{Y_{\vect{t}}}` is independent of
 :math:`\vect{t}` at the first order.
 We suppose that :math:`X_{\vect{t}}` is a positive random variable for
 any :math:`\vect{t}`. To verify that constraint, it may be needed to
 consider the shifted process :math:`X+\vect{\alpha}`.
 We illustrate some usual Box Cox transformations :math:`h` in the
-scalar case (:math:`\inputDim = 1`), using the Taylor development of
+scalar case (:math:`\processDim = 1`), using the Taylor development of
 :math:`h: \Rset \rightarrow \Rset` at the mean point of
 :math:`X_{\vect{t}}`.
 In the multivariate case, we estimate the Box Cox transformation

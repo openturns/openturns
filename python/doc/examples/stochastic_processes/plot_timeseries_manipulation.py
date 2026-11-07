@@ -10,7 +10,7 @@ Manipulate a time series
 # It is possible to draw a time series, using interpolation between the values: see the use case on the Field.
 #
 # A time series can be obtained as a realization of a multivariate stochastic process
-# :math:`X: \Omega \times [0,T] \rightarrow \mathbb{R}^d` of dimension :math:`d` where :math:`[0,T]`
+# :math:`X: \Omega \times [0,T] \rightarrow \mathbb{R}^{\processDim}` of dimension :math:`\processDim` where :math:`[0,T]`
 # is discretized according to the regular grid :math:`(t_0, \dots, t_{N-1})`.
 # The  values :math:`(\vect{x}_0, \dots, \vect{x}_{N-1})` of the  time series are defined by:
 #

@@ -6,8 +6,8 @@ Create a white noise process
 # %%
 # This example details how to create and manipulate a white noise.
 # A second order white noise
-# :math:`\varepsilon: \Omega \times \mathbb{D} \rightarrow \mathbb{R}^d` is a stochastic
-# process of dimension :math:`d` such that the covariance function
+# :math:`\varepsilon: \Omega \times \mathbb{D} \rightarrow \mathbb{R}^{\processDim}` is a stochastic
+# process of dimension :math:`\processDim` such that the covariance function
 # :math:`C(\vect{s},\vect{t})=\delta(\vect{t}-\vect{s})C(\vect{s},\vect{s})`
 # where :math:`C(\vect{s},\vect{s})` is the covariance matrix of the process at
 # vertex :math:`\vect{s}` and :math:`\delta` the Kroenecker function.

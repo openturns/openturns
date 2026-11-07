@@ -3,26 +3,26 @@
 Estimation of a stationary covariance model
 ===========================================
 
-Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
-stationary normal process of dimension :math:`d`. We only treat here
-the case where the domain is of dimension 1: :math:`\cD \in \Rset`.
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` be a multivariate
+stationary normal process of dimension :math:`\processDim`. We only treat here
+the case where the domain is of dimension 1: :math:`\cD \subset \Rset`.
 If the process is continuous, then :math:`\cD=\Rset`. In the discrete
 case, :math:`\cD` is a lattice.
 :math:`X` is supposed a second order process with zero mean. It is
 entirely defined by its covariance function
-:math:`C^{stat}:  \cD \rightarrow  \mathcal{M}_{\inputDim \times \inputDim}(\Rset)`,
+:math:`C^{stat}:  \cD \rightarrow  \cM_{\processDim \times \processDim}(\Rset)`,
 defined by :math:`C^{stat}(\tau)=\Expect{X_sX_{s+\tau}^t}` for all
 :math:`s\in \cD`.
 In addition, we suppose that its spectral density function
-:math:`S : \Rset \rightarrow \mathcal{H}^+(\inputDim)` is defined, where
-:math:`\mathcal{H}^+(\inputDim) \in \mathcal{M}_{\inputDim}(\Cset)` is the set of
-:math:`\inputDim`-dimensional positive definite Hermitian matrices.
+:math:`S : \Rset \rightarrow \cH^+(\processDim)` is defined, where
+:math:`\cH^+(\processDim) \in \cM_{\processDim}(\Cset)` is the set of
+:math:`\processDim`-dimensional positive definite Hermitian matrices.
 The objective is to estimate :math:`C^{stat}` from a
 field or a sample of fields from the process :math:`X`, using first
 the estimation of the spectral density function and then mapping
 :math:`S` into :math:`C^{stat}` using the inversion relation
 :eq:`cspectransform`, when it is possible.
-As the mesh is a time grid (:math:`n=1`), the fields can be
+As the mesh is a time grid (:math:`\domainDim=1`), the fields can be
 interpreted as time series.
 The estimation algorithm is outlined hereafter.
 Let :math:`(t_{0},t_{1},\hdots t_{N-1})` be the time grid on which the

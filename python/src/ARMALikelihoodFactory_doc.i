@@ -10,10 +10,10 @@ Available constructors:
 Parameters
 ----------
 p : int
-    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`d`.
+    Order of the AR part of the :math:`ARMA(p,q)` process of dimension :math:`\processDim`.
 q : int
-    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`d`.
-d : int, :math:`d \geq 1`
+    Order of the MA part of the :math:`ARMA(p,q)` process of dimension :math:`\processDim`.
+d : int, :math:`\processDim \geq 1`
     Dimension of the process.
 invertible : bool, optional
     Restrict the estimation to invertible ARMA processes.
@@ -30,7 +30,7 @@ Notes
 -----
 We suppose here that the white noise is normal with zero mean and covariance matrix :math:`\mat{\Sigma}_{\varepsilon} = \sigma^2\mat{Q}` where :math:`|\mat{Q}| = 1`. It implies that the ARMA process estimated is normal.
 
-Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`d` from an :math:`ARMA(p,q)` process. 
+Let :math:`(t_i, \vect{X}_i)_{0\leq i \leq n-1}` be a multivariate time series of dimension :math:`\processDim` from an :math:`ARMA(p,q)` process.
 
 If we note :math:`\vect{W} = (\vect{X}_0, \hdots, \vect{X}_{n-1})`, then :math:`\vect{W}` is normal with zero mean. Its covariance matrix writes :math:`\mathbb{E}(\vect{W}\Tr{\vect{W}})= \sigma^2 \Sigma_{\vect{W}}` which depends on the coefficients :math:`(\mat{A}_k, \mat{B}_l)` for :math:`k = 1,\ldots,p` and :math:`l = 1,\ldots, q` and on the matrix :math:`\mat{Q}`.
 

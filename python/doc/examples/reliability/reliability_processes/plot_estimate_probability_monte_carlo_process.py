@@ -7,8 +7,8 @@ Estimate a process-based event probability
 # The objective of this example is to evaluate the probability of an
 # event based on a stochastic process, using the Monte Carlo estimator.
 #
-# Let :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` be a stochastic process
-# of dimension :math:`d`, where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh
+# Let :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}` be a stochastic process
+# of dimension :math:`\processDim`, where :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}` is discretized on the mesh
 # :math:`\mathcal{M}`.
 #
 # We define the event :math:`\mathcal{E}` as:
@@ -18,7 +18,7 @@ Estimate a process-based event probability
 #      \displaystyle \mathcal{E}(X) = \bigcup_{\vect{t}\in \mathcal{M}}\left\{X_{\vect{t}}  \in \mathcal{A}  \right\}
 #    \end{aligned}
 #
-# where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
+# where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^{\processDim}`.
 #
 # We estimate the probabilty :math:`p=\mathbb{P}\left(\mathcal{E}(X)\right)` with the Monte Carlo
 # estimator.
@@ -28,7 +28,7 @@ Estimate a process-based event probability
 #
 # We illustrate the algorithm on the example of the bidimensional white
 # noise process :math:`\varepsilon: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^2` where
-# :math:`\mathcal{D}\in \mathbb{R}`, distributed according to the bidimensional standard
+# :math:`\mathcal{D}\subset \mathbb{R}`, distributed according to the bidimensional standard
 # normal distribution (with zero mean, unit variance and independent
 # marginals).
 #

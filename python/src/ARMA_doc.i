@@ -6,11 +6,11 @@ Refer to :any:`arma_process`.
 Parameters
 ----------
 ARCoeff : :class:`~openturns.ARMACoefficients`
-    The coefficients of the AR part of the recurrence : :math:`(a_1, \hdots, a_p)` in dimension 1 and :math:`(\mat{A}_{\, 1}, \hdots, \mat{A}{\, _p})` in dimension :math:`d`.
+    The coefficients of the AR part of the recurrence : :math:`(a_1, \hdots, a_p)` in dimension 1 and :math:`(\mat{A}_{\, 1}, \hdots, \mat{A}{\, _p})` in dimension :math:`\processDim`.
 
     Default is: :math:`0` in dimension 1 and the associated time grid is :math:`\{0,1\}`.
 MACoeff : class:`~openturns.ARMACoefficients`
-    The coefficients of the MA part of the recurrence : :math:`(b_1, \hdots, b_q)` in dimension 1 and :math:`(\mat{B}_{\, 1}, \hdots, \mat{B}{\, _p})` in dimension :math:`d`.
+    The coefficients of the MA part of the recurrence : :math:`(b_1, \hdots, b_q)` in dimension 1 and :math:`(\mat{B}_{\, 1}, \hdots, \mat{B}{\, _p})` in dimension :math:`\processDim`.
 
     Default is: :math:`0` in dimension 1 and the associated time grid is :math:`\{0,1\}`.
 whiteNoise : :class:`~openturns.WhiteNoise`
@@ -25,13 +25,13 @@ ARMAstate : :class:`~openturns.ARMAState`, optional
 
 Notes
 -----
-An ARMA process in dimension :math:`d` is defined by the linear recurrence :
+An ARMA process in dimension :math:`\processDim` is defined by the linear recurrence :
 
 .. math::
 
     \vect{X}_t + \mat{A}_{\, 1}   \,  \vect{X}_{t-1} + \hdots +  \mat{A}_{\, p} \,   \vect{X}_{t-p} = \vect{\varepsilon}_{t}+  \mat{B}_ {\, 1} \,   \vect{\varepsilon}_{t-1}+   \hdots + \mat{B}_{\, q}  \,  \vect{\varepsilon}_{t-q}
 
-where :math:`\mat{A}_{\, i} \in \Rset^d \times \Rset^d` and :math:`\mat{B}_{\, j} \in \Rset^d \times \Rset^d`.
+where :math:`\mat{A}_{\, i} \in \Rset^{\processDim} \times \Rset^{\processDim}` and :math:`\mat{B}_{\, j} \in \Rset^{\processDim} \times \Rset^{\processDim}`.
 
 In dimension 1, an ARMA process is defined by:
 

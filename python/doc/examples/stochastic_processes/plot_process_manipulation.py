@@ -4,8 +4,8 @@ Manipulate stochastic processes
 """
 
 # %%
-# The objective here is to manipulate a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d`,
-# where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh :math:`\mathcal{M}`
+# The objective here is to manipulate a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}`,
+# where :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}` is discretized on the mesh :math:`\mathcal{M}`
 # and exhibit some of the services exposed by the :class:`~openturns.Process` objects:
 #
 # - ask for the dimension, with the method :meth:`~openturns.Process.getOutputDimension` ;
@@ -52,7 +52,7 @@ myCovarianceModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
 process = ot.GaussianProcess(myCovarianceModel, time_grid)
 
 # %%
-# The dimension `d` of the process may be retrieved by
+# The dimension :math:`\processDim` of the process may be retrieved by
 dim = process.getOutputDimension()
 print("Dimension : %d" % dim)
 

@@ -23,8 +23,8 @@ import math as m
 # Then, :math:`t_k = t_{Min} + k \Delta t` and :math:`t_{Max} = t_{Min} +  (N-1) \Delta t`.
 #
 #
-# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic process of dimension :math:`d`,
-# where :math:`n=1`, :math:`\mathcal{D}=[0,T]` and :math:`t\in \mathcal{D}` is interpreted as a time stamp.
+# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}` a multivariate stochastic process of dimension :math:`\processDim`,
+# where :math:`\domainDim=1`, :math:`\mathcal{D}=[0,T]` and :math:`t\in \mathcal{D}` is interpreted as a time stamp.
 # Then the mesh associated to the process :math:`X` is a (regular) time grid.
 
 
@@ -58,15 +58,19 @@ view = otv.View(graph)
 # ------------------
 
 # %%
-# In this paragraph we create a mesh :math:`\mathcal{M}` associated to a domain :math:`\mathcal{D} \in \mathbb{R}^n`.
+# In this paragraph we create a mesh :math:`\mathcal{M}` associated to a domain :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}`.
 #
-# A mesh is defined from vertices in :math:`\mathbb{R}^n` and a topology that connects the vertices: the simplices.
-# The simplex :math:`Indices([i_1,\dots, i_{n+1}])` relies the vertices of index :math:`(i_1,\dots, i_{n+1})` in :math:`\mathbb{N}^n`.
+# A mesh is defined from vertices in :math:`\mathbb{R}^{\domainDim}` and a topology that connects the vertices: the simplices.
+# The simplex :math:`Indices([i_1,\dots, i_{\domainDim+1}])` relies the vertices of index :math:`(i_1,\dots, i_{\domainDim+1})` in :math:`\mathbb{N}^{\domainDim}`.
 # In dimension 1, a simplex is an interval :math:`Indices([i_1,i_2])`; in dimension 2, it is a triangle :math:`Indices([i_1,i_2, i_3])`.
 #
-# The library enables to easily create a mesh which is a box of dimension :math:`d=1` or :math:`d=2` regularly meshed in all its directions, thanks to the object IntervalMesher.
+# The library enables to easily create a mesh which is a box of dimension
+# :math:`\domainDim=1` or :math:`\domainDim=2` regularly meshed in all its directions,
+# thanks to the object IntervalMesher.
 #
-# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` a multivariate stochastic process of dimension :math:`d`, where :math:`\mathcal{D} \in \mathbb{R}^n`.
+# Consider :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^{\processDim}`
+# a multivariate stochastic process of dimension :math:`\processDim`, where
+# :math:`\mathcal{D} \subset \mathbb{R}^{\domainDim}`.
 # The mesh :math:`\mathcal{M}` is a discretization of the domain :math:`\mathcal{D}`.
 
 # %%

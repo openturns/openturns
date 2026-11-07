@@ -26,7 +26,7 @@ Use the Box-Cox transformation
 # The object :class:`~openturns.BoxCoxTransform` enables to:
 #
 # -  transform the field values
-#    :math:`(\vect{x}_{0}, \dots,\vect{x}_{N-1})` of dimension :math:`d`
+#    :math:`(\vect{x}_{0}, \dots,\vect{x}_{N-1})` of dimension :math:`\processDim`
 #    into the values :math:`(\vect{y}_{0}, \dots, \vect{y}_{N-1})` with
 #    stabilized variance, such that for each vertex :math:`\vect{t}_i` we
 #    have:
