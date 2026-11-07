@@ -5,6 +5,8 @@ import os
 import openturns as ot
 import openturns.testing as ott
 
+ot.TESTPREAMBLE()
+
 ticksCollection = [[0.0, 1.0, 3.0, 6.0], [1.0, 2.0, 3.0]]
 
 kind = [
@@ -16,58 +18,64 @@ distribution = ot.MixedHistogramFiniteDiscreteDistribution(
     ticksCollection, kind, probabilityTable
 )
 distribution.setDescription(["A", "B"])
-print("Distribution ", repr(distribution))
-print("Distribution ", distribution)
+assert distribution.getClassName() == "MixedHistogramFiniteDiscreteDistribution"
+assert distribution.getDimension() == 2
 
 # Get mean and covariance
-print("Mean= ", repr(distribution.getMean()))
-print("Covariance= ", repr(distribution.getCovariance()))
+ott.assert_almost_equal(distribution.getMean(), [2.6, 2.4], 1e-12, 0.0)
+covarianceRef = ot.CovarianceMatrix(2)
+covarianceRef[0, 0] = 3.173333333333333
+covarianceRef[0, 1] = -0.106666666666666
+covarianceRef[1, 1] = 0.506666666666667
+ott.assert_almost_equal(distribution.getCovariance(), covarianceRef, 1e-8, 1e-8)
 
 # Is this distribution elliptical ?
-print("Elliptical = ", distribution.isElliptical())
+assert not distribution.isElliptical()
 
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
-print("oneRealization=", repr(oneRealization))
+ott.assert_almost_equal(oneRealization, [1.27055270, 2.0], 1e-6, 1e-8)
 
-# Test for sampling
+# Test for sampling: empirical moments match the theoretical ones
 size = 10000
 oneSample = distribution.getSample(size)
-print("oneSample first=", repr(oneSample[0]), " last=", repr(oneSample[size - 1]))
-print("mean=", repr(oneSample.computeMean()))
-print("covariance=", repr(oneSample.computeCovariance()))
+assert oneSample.getSize() == size
+assert oneSample.getDimension() == distribution.getDimension()
+ott.assert_almost_equal(oneSample.computeMean(), distribution.getMean(), 0.0, 5e-2)
+ott.assert_almost_equal(
+    oneSample.computeCovariance(), distribution.getCovariance(), 2e-1, 5e-3
+)
 
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
-print("Point= ", repr(point))
-
-# Show PDF and CDF of point
-eps = 1e-5
+ott.assert_almost_equal(point, [1.0, 1.0], 0.0, 0.0)
 
 # PDF value
 LPDF = distribution.computeLogPDF(point)
-print("log pdf=%.6f" % LPDF)
+ott.assert_almost_equal(LPDF, -3.806662, 1e-6, 1e-6)
 PDF = distribution.computePDF(point)
-print("pdf     =%.6f" % PDF)
+ott.assert_almost_equal(PDF, 0.0222222, 1e-6, 1e-6)
 
-# derivative of the PDF with regards the parameters of the distribution
+# CDF value
 CDF = distribution.computeCDF(point)
-print("cdf=%.6f" % CDF)
+ott.assert_almost_equal(CDF, 0.0222222, 1e-6, 1e-6)
 CCDF = distribution.computeComplementaryCDF(point)
-print("ccdf=%.6f" % CCDF)
+ott.assert_almost_equal(CCDF, 0.9777778, 1e-6, 1e-6)
+
 # quantile
 quantile = distribution.computeQuantile(0.95)
-print("quantile=", repr(quantile))
-print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
-mean = distribution.getMean()
-print("mean=", repr(mean))
-standardDeviation = distribution.getStandardDeviation()
-print("standard deviation=", repr(standardDeviation))
-skewness = distribution.getSkewness()
-print("skewness=", repr(skewness))
-kurtosis = distribution.getKurtosis()
-print("kurtosis=", repr(kurtosis))
-print("Standard representative=", distribution.getStandardRepresentative())
+ott.assert_almost_equal(quantile, [5.625, 3.0], 1e-12, 0.0)
+ott.assert_almost_equal(distribution.computeCDF(quantile), 0.95, 1e-12, 0.0)
+ott.assert_almost_equal(distribution.getMean(), [2.6, 2.4], 1e-12, 0.0)
+ott.assert_almost_equal(
+    distribution.getStandardDeviation(), [1.78139, 0.711805], 1e-5, 0.0
+)
+ott.assert_almost_equal(distribution.getSkewness(), [0.278086, -0.754198], 1e-5, 0.0)
+ott.assert_almost_equal(distribution.getKurtosis(), [1.81163, 2.29778], 1e-5, 0.0)
+assert (
+    distribution.getStandardRepresentative().getImplementation().getClassName()
+    == "MixedHistogramFiniteDiscreteDistribution"
+)
 
 ot.Log.Show(ot.Log.TRACE)
 validation = ott.DistributionValidation(distribution)
@@ -82,16 +90,21 @@ dim = 8
 ticksCollection = [[0.0, 1.0, 3.0, 6.0]] * dim
 kind = [ot.MixedHistogramFiniteDiscreteDistribution.DISCRETE] * dim
 kind[dim - 2] = ot.MixedHistogramFiniteDiscreteDistribution.CONTINUOUS
+ot.RandomGenerator.SetSeed(0)
 probabilityTable = ot.RandomGenerator.Generate(4 ** (dim - 1) * 3)
-print("probabilityTable=", probabilityTable)
+assert len(probabilityTable) == 4 ** (dim - 1) * 3
 x = [3.0] * dim
 x[dim - 2] = 5.0
-bench = 0
 distribution = ot.MixedHistogramFiniteDiscreteDistribution(
     ticksCollection, kind, probabilityTable
 )
-print("pdf=%.6g" % distribution.computePDF(x))
-print("cdf=%.6g" % distribution.computeCDF(x))
+assert distribution.getDimension() == dim
+pdf = distribution.computePDF(x)
+cdf = distribution.computeCDF(x)
+ott.assert_almost_equal(pdf, 1.0066960082001637e-05, 1e-8, 1e-12)
+ott.assert_almost_equal(cdf, 0.11961497954111239, 1e-8, 1e-12)
+assert m.isfinite(pdf)
+assert 0.0 <= cdf <= 1.0
 
 # test default ctor
 ot.MixedHistogramFiniteDiscreteDistribution().getSample(5)
