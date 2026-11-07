@@ -338,14 +338,17 @@ int main(int, char *[])
       collection.add(mySquaredExponential);
       GeneralizedExponential myGeneralizedExponential(Point(dimension, 10.0), 1.5);
       collection.add(myGeneralizedExponential);
-      // Build TensorizedCovarianceModel with scale = [1,..,1]
+      // Build TensorizedCovarianceModel: the effective scale is the scale
+      // of its first marginal model
       TensorizedCovarianceModel myModel(collection);
+      assert_almost_equal(myModel.getScale(), Point(inputDimension, 3.0), 0, 0);
       test_model(myModel);
       // Define new scale
       Point scale(2, 1.0);
       scale[0] = 2.5;
       scale[1] = 1.5;
       myModel.setScale(scale);
+      assert_almost_equal(myModel.getScale(), scale, 0, 0);
       test_model(myModel);
     }
 

@@ -392,12 +392,12 @@ ott.assert_almost_equal(
 myAbsoluteExponential = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
 mySquaredExponential = ot.SquaredExponential([2.0] * inputDimension, [3.0])
 myGeneralizedExponential = ot.GeneralizedExponential([2.0] * inputDimension, [3.0], 1.5)
-# Build TensorizedCovarianceModel with scale = [1,..,1]
-# Tensorized ignore scales
+# Build TensorizedCovarianceModel from models with scale = [2,..,2]
+# The scale of the tensorized model is the scale of its first marginal model
 myModel = ot.TensorizedCovarianceModel(
     [myAbsoluteExponential, mySquaredExponential, myGeneralizedExponential]
 )
-ott.assert_almost_equal(myModel.getScale(), [1, 1], 0, 0)
+ott.assert_almost_equal(myModel.getScale(), [2.0, 2.0], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 test_model(myModel)
 
@@ -406,7 +406,46 @@ scale = [2.5, 1.5]
 myModel.setScale(scale)
 ott.assert_almost_equal(myModel.getScale(), [2.5, 1.5], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
+# The other marginal models are rescaled relatively to the first one
+ott.assert_almost_equal(
+    myModel.getCollection()[1].getScale(), [2.5, 1.5], 1e-14, 1e-14
+)
+ott.assert_almost_equal(
+    myModel.getCollection()[2].getScale(), [2.5, 1.5], 1e-14, 1e-14
+)
 test_model(myModel)
+
+# The scale accessor is the effective scale of the first marginal model and
+# setParameter(getParameter()) must be a no-op (issue #3374)
+myModel = ot.TensorizedCovarianceModel(
+    [
+        ot.SquaredExponential([0.8, 1.7], [1.2]),
+        ot.MaternModel([0.9, 1.3], [0.9], 1.5),
+    ]
+)
+ott.assert_almost_equal(myModel.getScale(), [0.8, 1.7], 0, 0)
+s = [0.7, -0.4]
+t = [0.1, 0.3]
+covariance_ref = myModel(s, t)
+parameter = myModel.getParameter()
+myModel.setParameter(parameter)
+ott.assert_almost_equal(myModel(s, t), covariance_ref, 0, 0)
+ott.assert_almost_equal(myModel.getParameter(), parameter, 0, 0)
+ott.assert_almost_equal(
+    myModel.getCollection()[0].getScale(), [0.8, 1.7], 0, 0
+)
+# A rejected scale leaves the model unchanged
+with ott.assert_raises(Exception):
+    myModel.setScale([-0.8, 1.7])
+ott.assert_almost_equal(myModel.getScale(), [0.8, 1.7], 0, 0)
+ott.assert_almost_equal(
+    myModel.getCollection()[1].getScale(), [0.9, 1.3], 0, 0
+)
+# getFullParameter() and getParameter() expose the effective scale
+ott.assert_almost_equal(
+    myModel.getFullParameter(), [0.8, 1.7, 0.0, 1.2, 0.9], 0, 1e-12
+)
+ott.assert_almost_equal(myModel.getParameter(), [0.8, 1.7, 1.2, 0.9], 0, 0)
 
 # new test for tensorized covariance model
 output_dimension = 1  # 2 is ok
