@@ -23,6 +23,7 @@
 
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/WeightedExperiment.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,14 +46,14 @@ public:
 
   /** Constructor with parameters */
   QuantileSimulationAlgorithm(const RandomVector & output,
-                              const Scalar alpha = 0.95,
-                              const Scalar beta = 0.95);
+                              const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                              const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor with parameters and experiment */
   QuantileSimulationAlgorithm(const RandomVector & output,
                               const WeightedExperiment & experiment,
-                              const Scalar alpha = 0.95,
-                              const Scalar beta = 0.95);
+                              const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                              const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
   QuantileSimulationAlgorithm * clone() const override;
@@ -92,13 +93,16 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /** Check the input parameters */
+  void checkInputs() const override;
+
   /** Run a fixed-sample experiment */
   QuantileSimulationResult runFixedSample() override;
 
 private:
   WeightedExperiment experiment_;
   Bool isExperimentProvided_ = false;
-  UnsignedInteger replicateCount_ = 30;
+  UnsignedInteger replicateCount_ = ResourceMap::GetAsUnsignedInteger("QuantileSimulationAlgorithm-DefaultReplicateCount");
   Bool keepSample_ = false;
   Sample inputSample_;
   Sample outputSample_;

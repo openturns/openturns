@@ -26,6 +26,7 @@
 #include "openturns/Interval.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -66,13 +67,21 @@ public:
     TRIMMED_MEAN
   };
 
+  /** Retained tail used by exact-tail algorithms */
+  enum TailType
+  {
+    NO_TAIL,
+    LOWER_TAIL,
+    UPPER_TAIL
+  };
+
   /** Default constructor */
   QuantileSimulationResultImplementation();
 
   /** Standard constructor */
   QuantileSimulationResultImplementation(const RandomVector & output,
-                                         const Scalar alpha = 0.95,
-                                         const Scalar beta = 0.95);
+                                         const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                                         const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
   QuantileSimulationResultImplementation * clone() const override;
@@ -130,10 +139,48 @@ public:
   void setBlockLength(const UnsignedInteger blockLength);
   UnsignedInteger getBlockLength() const;
 
+  /** Block count accessor */
+  void setBlockCount(const UnsignedInteger blockCount);
+  UnsignedInteger getBlockCount() const;
+
+  /** Block quantile sample accessor */
+  void setBlockQuantileSample(const Point & blockQuantiles);
+  Point getBlockQuantileSample() const;
+
+  /** Combination rule accessor */
+  void setCombinationType(const CombinationType type);
+  CombinationType getCombinationType() const;
+  String getCombinationDescription() const;
+
+  /** Trimming fraction accessor */
+  void setTrimmingFraction(const Scalar gamma);
+  Scalar getTrimmingFraction() const;
+
+  /** Block-length policy description accessor */
+  void setBlockLengthPolicyDescription(const String & description);
+  String getBlockLengthPolicyDescription() const;
+
+  /** Peak memory accessor, in scalar values */
+  void setPeakMemory(const UnsignedInteger peakMemory);
+  UnsignedInteger getPeakMemory() const;
+  UnsignedInteger getPeakMemoryInBytes() const;
+
   /** Bias estimate accessor */
   void setBiasEstimate(const Scalar bias);
   Scalar getBiasEstimate() const;
   Bool hasBiasEstimate() const;
+  Scalar getBiasToStandardErrorRatio() const;
+
+  /** Exact-tail diagnostics accessors */
+  void setTailType(const TailType type);
+  TailType getTailType() const;
+  String getTailDescription() const;
+  void setRetainedCount(const UnsignedInteger retainedCount);
+  UnsignedInteger getRetainedCount() const;
+  void setLowerRank(const UnsignedInteger lowerRank);
+  UnsignedInteger getLowerRank() const;
+  void setUpperRank(const UnsignedInteger upperRank);
+  UnsignedInteger getUpperRank() const;
 
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);
@@ -165,18 +212,28 @@ protected:
   Scalar quantileEstimate_ = 0.0;
   Scalar standardError_ = 0.0;
   Interval confidenceInterval_;
-  Scalar alpha_ = 0.95;
-  Scalar beta_ = 0.95;
+  Scalar alpha_ = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha");
+  Scalar beta_ = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel");
   UnsignedInteger masterSeed_ = 0;
   Bool hasMasterSeed_ = false;
   EstimatorType estimatorType_ = EMPIRICAL_INVERSE;
   CoverageType coverageType_ = COVERAGE_NONE;
   CoverageType requiredCoverage_ = COVERAGE_NONE;
   Scalar effectiveSampleSize_ = 0.0;
-  UnsignedInteger sampleSize_ = 0;
+  UnsignedInteger sampleSize_ = ResourceMap::GetAsUnsignedInteger("QuantileSimulation-DefaultSampleSize");
   UnsignedInteger blockLength_ = 0;
+  UnsignedInteger blockCount_ = 0;
+  Point blockQuantileSample_;
+  CombinationType combinationType_ = MEAN;
+  Scalar trimmingFraction_ = ResourceMap::GetAsScalar("QuantileSimulation-DefaultTrimmingFraction");
+  String blockLengthPolicyDescription_;
+  UnsignedInteger peakMemory_ = 0;
   Scalar biasEstimate_ = 0.0;
   Bool hasBiasEstimate_ = false;
+  TailType tailType_ = NO_TAIL;
+  UnsignedInteger retainedCount_ = 0;
+  UnsignedInteger lowerRank_ = 0;
+  UnsignedInteger upperRank_ = 0;
   Bool isFixedSample_ = true;
   Sample convergenceHistory_;
 

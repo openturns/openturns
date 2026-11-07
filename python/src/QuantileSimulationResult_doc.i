@@ -21,9 +21,22 @@ value: for example, the bias estimate is only present when
 :meth:`hasBiasEstimate` returns ``True``, and the convergence history is
 empty when the algorithm is not iterative.
 
+Block algorithms add the block length, the number of blocks, the block
+quantile sample, the combination rule, the peak memory estimate and,
+when a pilot is available, the estimated bias.  Exact-tail algorithms
+add the retained tail, the number of retained order statistics, and the
+zero-based exact ranks used by the binomial interval.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``QuantileSimulation-DefaultAlpha`` (``Scalar``, default: ``0.95``): default quantile level.
+- ``QuantileSimulation-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default nominal confidence level.
+- ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``, default: ``0``): default sample size, where ``0`` means that the sample size is not set.
+- ``QuantileSimulation-DefaultTrimmingFraction`` (``Scalar``, default: ``0.1``): default trimming fraction of the ``TRIMMED_MEAN`` combination rule.
+
 See also
 --------
-QuantileSimulationResultImplementation, QuantileSimulationAlgorithm
+QuantileSimulationResultImplementation, QuantileSimulationAlgorithm, BlockQuantileSimulation, ExactTailQuantileSimulation
 
 Examples
 --------
@@ -316,6 +329,159 @@ blockLength : int
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::QuantileSimulationResult::getBlockCount
+R"RAW(Accessor to the number of blocks.
+
+Returns
+-------
+blockCount : int
+    Number of independent blocks combined by a block algorithm; 0 when
+    the algorithm is not block based.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockCount
+R"RAW(Accessor to the number of blocks.
+
+Parameters
+----------
+blockCount : int
+    Number of independent blocks combined by a block algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockQuantileSample
+R"RAW(Accessor to the block quantile sample.
+
+Returns
+-------
+blockQuantiles : :class:`~openturns.Point`
+    Quantile computed from each block.  The size of the point is the
+    number of blocks; it is empty when the algorithm is not block
+    based.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockQuantileSample
+R"RAW(Accessor to the block quantile sample.
+
+Parameters
+----------
+blockQuantiles : sequence of float
+    Quantile computed from each block.  The values must be finite.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCombinationType
+R"RAW(Accessor to the combination rule.
+
+Returns
+-------
+combination : int
+    Rule used to combine the block quantiles.  The values are ``MEAN``,
+    ``MEDIAN`` and ``TRIMMED_MEAN``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setCombinationType
+R"RAW(Accessor to the combination rule.
+
+Parameters
+----------
+combination : int
+    Rule used to combine the block quantiles.  The values are ``MEAN``,
+    ``MEDIAN`` and ``TRIMMED_MEAN``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCombinationDescription
+R"RAW(Accessor to the combination rule description.
+
+Returns
+-------
+description : str
+    Human-readable description of the combination rule, including the
+    trimming fraction for the trimmed mean.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTrimmingFraction
+R"RAW(Accessor to the trimming fraction.
+
+Returns
+-------
+gamma : float
+    Fraction trimmed from each side by the trimmed mean, in
+    :math:`[0, 0.5)`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTrimmingFraction
+R"RAW(Accessor to the trimming fraction.
+
+Parameters
+----------
+gamma : float
+    Fraction trimmed from each side by the trimmed mean, in
+    :math:`[0, 0.5)`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockLengthPolicyDescription
+R"RAW(Accessor to the block-length policy description.
+
+Returns
+-------
+description : str
+    Human-readable description of the policy that selected the block
+    length.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockLengthPolicyDescription
+R"RAW(Accessor to the block-length policy description.
+
+Parameters
+----------
+description : str
+    Human-readable description of the policy that selected the block
+    length.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPeakMemory
+R"RAW(Accessor to the peak memory estimate.
+
+Returns
+-------
+peakMemory : int
+    Peak number of scalar values stored by the algorithm.  For the
+    block estimator it is the block length plus the number of block
+    quantiles; for the exact-tail estimator it is the number of retained
+    order statistics.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPeakMemory
+R"RAW(Accessor to the peak memory estimate.
+
+Parameters
+----------
+peakMemory : int
+    Peak number of scalar values stored by the algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPeakMemoryInBytes
+R"RAW(Accessor to the peak memory estimate in bytes.
+
+Returns
+-------
+peakMemoryInBytes : int
+    Peak memory estimate, assuming eight bytes per scalar value.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::QuantileSimulationResult::getBiasEstimate
 R"RAW(Accessor to the bias estimate.
 
@@ -343,6 +509,115 @@ Returns
 -------
 hasBiasEstimate : bool
     Whether a bias estimate was recorded for the run.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBiasToStandardErrorRatio
+R"RAW(Accessor to the bias-to-standard-error ratio.
+
+Returns
+-------
+ratio : float
+    Absolute value of the estimated bias divided by the standard error.
+    It is zero when no bias estimate is available.  Values below 0.1
+    indicate a negligible bias; values above 0.5 indicate that the
+    nominal interval should not be trusted.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTailType
+R"RAW(Accessor to the retained tail.
+
+Returns
+-------
+tail : int
+    Tail retained by an exact-tail algorithm.  The values are
+    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTailType
+R"RAW(Accessor to the retained tail.
+
+Parameters
+----------
+tail : int
+    Tail retained by an exact-tail algorithm.  The values are
+    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTailDescription
+R"RAW(Accessor to the retained tail description.
+
+Returns
+-------
+description : str
+    Human-readable description of the retained tail.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getRetainedCount
+R"RAW(Accessor to the retained order-statistic count.
+
+Returns
+-------
+retainedCount : int
+    Number of order statistics kept by an exact-tail algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setRetainedCount
+R"RAW(Accessor to the retained order-statistic count.
+
+Parameters
+----------
+retainedCount : int
+    Number of order statistics kept by an exact-tail algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getLowerRank
+R"RAW(Accessor to the lower exact rank.
+
+Returns
+-------
+lowerRank : int
+    Zero-based index of the lower order statistic of the exact binomial
+    interval.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setLowerRank
+R"RAW(Accessor to the lower exact rank.
+
+Parameters
+----------
+lowerRank : int
+    Zero-based index of the lower order statistic of the exact binomial
+    interval.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getUpperRank
+R"RAW(Accessor to the upper exact rank.
+
+Returns
+-------
+upperRank : int
+    Zero-based index of the upper order statistic of the exact binomial
+    interval.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setUpperRank
+R"RAW(Accessor to the upper exact rank.
+
+Parameters
+----------
+upperRank : int
+    Zero-based index of the upper order statistic of the exact binomial
+    interval.)RAW"
 
 // ---------------------------------------------------------------------
 

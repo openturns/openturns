@@ -32,6 +32,12 @@ block size and the callbacks have no effect on this estimator: the
 number of evaluations is fixed by the experiment size, the replicate
 count and :meth:`setSampleSize`.
 
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``QuantileSimulation-DefaultAlpha`` (``Scalar``, default: ``0.95``): default quantile level.
+- ``QuantileSimulation-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default nominal confidence level.
+- ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``, default: ``0``): default sample size, where ``0`` means that the sample size must be set before running.
+
 See also
 --------
 QuantileSimulationImplementation, QuantileSimulationAlgorithm, QuantileSimulationResult

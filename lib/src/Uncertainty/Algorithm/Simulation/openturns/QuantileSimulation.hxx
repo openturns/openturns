@@ -23,6 +23,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/QuantileSimulationImplementation.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,8 +46,8 @@ public:
 
   /** Standard constructor */
   QuantileSimulation(const RandomVector & output,
-                     const Scalar alpha = 0.95,
-                     const Scalar beta = 0.95);
+                     const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                     const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor from implementation */
   QuantileSimulation(const QuantileSimulationImplementation & implementation);

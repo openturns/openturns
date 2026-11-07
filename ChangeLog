@@ -154,14 +154,17 @@
  * WrappedNormal-GaussHermiteMaximumPoints: maximum number of Gauss-Hermite quadrature points for the entropy and the covariance (default is 4096)
  * WrappedNormal-MaxLatticeTerms: maximum number of lattice terms in the exact PDF sum (default is 100000)
  * WrappedNormalFactory-DefaultPeriod: default period used by the factory when the sample does not specify one (default is 6.283185307179586)
+ * QuantileSimulation, QuantileSimulationAlgorithm, BlockQuantileSimulation and ExactTailQuantileSimulation ResourceMap keys for the default quantile level, confidence level, sample size, trimming fraction, minimum block count, replicate count, block-length policy and tolerances, bootstrap size, pilot sizes and fraction, and minimum chunk size
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
+ * BlockQuantileSimulation (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
  * CurlFreeModel (openturns.experimental)
  * DivFreeModel (openturns.experimental)
+ * ExactTailQuantileSimulation (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * Grid
  * HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImplementation, HODLRMatrixParameters (openturns.experimental)

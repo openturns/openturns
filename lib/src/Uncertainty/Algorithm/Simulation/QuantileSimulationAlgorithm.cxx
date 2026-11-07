@@ -406,6 +406,16 @@ void QuantileSimulationAlgorithm::setSampleSize(const UnsignedInteger sampleSize
     experiment_.setSize(sampleSize);
 }
 
+/* Check the input parameters */
+void QuantileSimulationAlgorithm::checkInputs() const
+{
+  QuantileSimulationImplementation::checkInputs();
+  if (replicateCount_ < 2)
+    throw InvalidArgumentException(HERE)
+        << "The replicate count must be at least 2, but replicateCount = " << replicateCount_
+        << " (ResourceMap key QuantileSimulationAlgorithm-DefaultReplicateCount)";
+}
+
 /* Replicate count accessor */
 void QuantileSimulationAlgorithm::setReplicateCount(const UnsignedInteger replicateCount)
 {
