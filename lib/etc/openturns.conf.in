@@ -1064,6 +1064,15 @@
   <CrossEntropyQuantile-DefaultPilotSize value_int="1000" />
   <CrossEntropyQuantile-MinimumProposalStandardDeviation value_float="1.2" />
 
+  <!-- OT::TwoStageQuantileSimulation parameters -->
+  <TwoStageQuantileSimulation-DefaultPilotSize value_int="1000" />
+  <TwoStageQuantileSimulation-DefaultTargetHalfWidth value_float="0.0" />
+
+  <!-- OT::SequentialQuantileSimulation parameters -->
+  <SequentialQuantileSimulation-DefaultTargetHalfWidth value_float="0.0" />
+  <SequentialQuantileSimulation-GridRatio value_float="1.2" />
+  <SequentialQuantileSimulation-MinimumGridSize value_int="64" />
+
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />
   <ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType      value_str="NONE" />

@@ -157,6 +157,7 @@
  * QuantileSimulation, QuantileSimulationAlgorithm, BlockQuantileSimulation and ExactTailQuantileSimulation ResourceMap keys for the default quantile level, confidence level, sample size, trimming fraction, minimum block count, replicate count, block-length policy and tolerances, bootstrap size, pilot sizes and fraction, and minimum chunk size
  * SubsetSamplingQuantile, LastParticleQuantile and CrossEntropyQuantile ResourceMap keys for the default burn-in, replicate count, particle count, pilot size and minimum proposal standard deviation
  * QuantileRootSolver, DirectionalSamplingQuantile, LineSamplingQuantile, PostAnalyticalQuantile and ProbabilityInversionQuantile ResourceMap keys for the default root tolerance, maximum root iteration, bracket expansion, pilot size and refinement replicate count
+ * TwoStageQuantileSimulation and SequentialQuantileSimulation ResourceMap keys for the default pilot size, target half-width, grid ratio and minimum grid size
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -192,11 +193,13 @@
  * QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationImplementation, QuantileSimulationResult, QuantileSimulationResultImplementation (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
+ * SequentialQuantileSimulation (openturns.experimental)
  * SlicedInverseRegression, SlicedInverseRegressionResult (openturns.experimental)
  * SparseExpansion (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * SubsetSamplingQuantile (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
+ * TwoStageQuantileSimulation (openturns.experimental)
  * UniformOverMeshFactory (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * VonMisesFisher(Factory) (openturns.experimental)

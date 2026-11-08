@@ -703,3 +703,12 @@ Bibliography
     SMAI Journal of Computational Mathematics, 8, 21.
     `pdf <https://doi.org/10.5802/smai-jcm.89>`__
 .. [hackbusch1999] Hackbusch, W. (1999). *A sparse matrix arithmetic based on H-matrices. Part I: Introduction to H-matrices.* Computing, 62(2), 89-108.
+.. [dvoretzky1956] Dvoretzky, A., Kiefer, J. and Wolfowitz, J.
+    *Asymptotic minimax character of the sample distribution function and of
+    the classical multinomial estimator.*
+    The Annals of Mathematical Statistics, 1956, 27(3), 642-669.
+    `doi <https://doi.org/10.1214/aoms/1177728174>`__
+.. [massart1990] Massart, P.
+    *The tight constant in the Dvoretzky-Kiefer-Wolfowitz inequality.*
+    The Annals of Probability, 1990, 18(3), 1269-1283.
+    `doi <https://doi.org/10.1214/aop/1176990746>`__

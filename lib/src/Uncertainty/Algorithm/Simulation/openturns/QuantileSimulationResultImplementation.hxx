@@ -266,6 +266,35 @@ public:
   void setRefinementStandardError(const Scalar standardError);
   Scalar getRefinementStandardError() const;
 
+  /** Two-stage design diagnostics accessors */
+  void setPilotSize(const UnsignedInteger pilotSize);
+  UnsignedInteger getPilotSize() const;
+  void setPilotQuantileEstimate(const Scalar estimate);
+  Scalar getPilotQuantileEstimate() const;
+  Bool hasPilotQuantileEstimate() const;
+  void setPilotDensity(const Scalar density);
+  Scalar getPilotDensity() const;
+  Bool hasPilotDensity() const;
+  void setConfirmationSize(const UnsignedInteger confirmationSize);
+  UnsignedInteger getConfirmationSize() const;
+  void setRequiredConfirmationSize(const UnsignedInteger requiredSize);
+  UnsignedInteger getRequiredConfirmationSize() const;
+  void setTargetHalfWidth(const Scalar halfWidth);
+  Scalar getTargetHalfWidth() const;
+  Bool hasTargetHalfWidth() const;
+  void setBudgetExhausted(const Bool exhausted);
+  Bool getBudgetExhausted() const;
+
+  /** Sequential design diagnostics accessors */
+  void setStoppingTime(const UnsignedInteger stoppingTime);
+  UnsignedInteger getStoppingTime() const;
+  void setStoppingCriterion(const String & criterion);
+  String getStoppingCriterion() const;
+  void setConfidenceSequencePath(const Sample & path);
+  Sample getConfidenceSequencePath() const;
+  void setCoverageAssumption(const String & assumption);
+  String getCoverageAssumption() const;
+
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);
   Bool isFixedSample() const;
@@ -357,6 +386,20 @@ protected:
   Scalar refinedProbability_ = 0.0;
   Bool hasRefinedProbability_ = false;
   Scalar refinementStandardError_ = 0.0;
+  UnsignedInteger pilotSize_ = 0;
+  Scalar pilotQuantileEstimate_ = 0.0;
+  Bool hasPilotQuantileEstimate_ = false;
+  Scalar pilotDensity_ = 0.0;
+  Bool hasPilotDensity_ = false;
+  UnsignedInteger confirmationSize_ = 0;
+  UnsignedInteger requiredConfirmationSize_ = 0;
+  Scalar targetHalfWidth_ = 0.0;
+  Bool hasTargetHalfWidth_ = false;
+  Bool budgetExhausted_ = false;
+  UnsignedInteger stoppingTime_ = 0;
+  String stoppingCriterion_;
+  Sample confidenceSequencePath_;
+  String coverageAssumption_;
   Bool isFixedSample_ = true;
   Sample convergenceHistory_;
 

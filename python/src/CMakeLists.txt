@@ -615,6 +615,8 @@ ot_add_python_module(experimental experimental_module.i
                      LineSamplingQuantile.i LineSamplingQuantile_doc.i
                      PostAnalyticalQuantile.i PostAnalyticalQuantile_doc.i
                      ProbabilityInversionQuantile.i ProbabilityInversionQuantile_doc.i
+                     TwoStageQuantileSimulation.i TwoStageQuantileSimulation_doc.i
+                     SequentialQuantileSimulation.i SequentialQuantileSimulation_doc.i
                      RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i

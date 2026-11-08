@@ -25,7 +25,7 @@ engine.  A lower-tail event is handled by the same loop.
 
 A plain Monte Carlo engine configured with a
 :class:`~openturns.MonteCarloExperiment` is not inverted: the adapter
-delegates to :class:`~openturns.QuantileSimulationAlgorithm` and returns
+delegates to :class:`~openturns.experimental.QuantileSimulationAlgorithm` and returns
 the exact order-statistic interval.  Other engines are inverted by a
 confidence-bound bisection: an endpoint is discarded only when its whole
 confidence bound is on one side of the target, and the iteration stops

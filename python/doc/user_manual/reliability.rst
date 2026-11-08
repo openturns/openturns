@@ -70,6 +70,8 @@ Quantile simulation (experimental)
     experimental.LineSamplingQuantile
     experimental.PostAnalyticalQuantile
     experimental.ProbabilityInversionQuantile
+    experimental.TwoStageQuantileSimulation
+    experimental.SequentialQuantileSimulation
     experimental.QuantileSimulationResult
     experimental.QuantileSimulationResultImplementation
 

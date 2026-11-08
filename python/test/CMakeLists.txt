@@ -812,6 +812,8 @@ ot_pyinstallcheck_test (DirectionalSamplingQuantile_std IGNOREOUT)
 ot_pyinstallcheck_test (LineSamplingQuantile_std IGNOREOUT)
 ot_pyinstallcheck_test (PostAnalyticalQuantile_std IGNOREOUT)
 ot_pyinstallcheck_test (ProbabilityInversionQuantile_std IGNOREOUT)
+ot_pyinstallcheck_test (TwoStageQuantileSimulation_std IGNOREOUT)
+ot_pyinstallcheck_test (SequentialQuantileSimulation_std IGNOREOUT)
 ot_pyinstallcheck_test (TaylorExpansionMoments_std)
 
 ## Analytical

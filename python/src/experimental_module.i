@@ -76,6 +76,8 @@
 %include LineSamplingQuantile.i
 %include PostAnalyticalQuantile.i
 %include ProbabilityInversionQuantile.i
+%include TwoStageQuantileSimulation.i
+%include SequentialQuantileSimulation.i
 
 /* Uncertainty */
 %import metamodel_module.i

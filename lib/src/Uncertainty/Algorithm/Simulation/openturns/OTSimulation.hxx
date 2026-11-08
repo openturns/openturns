@@ -58,6 +58,8 @@
 #include "openturns/LineSamplingQuantile.hxx"
 #include "openturns/PostAnalyticalQuantile.hxx"
 #include "openturns/ProbabilityInversionQuantile.hxx"
+#include "openturns/TwoStageQuantileSimulation.hxx"
+#include "openturns/SequentialQuantileSimulation.hxx"
 #include "openturns/AdaptiveDirectionalStratification.hxx"
 #include "openturns/LineSampling.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
