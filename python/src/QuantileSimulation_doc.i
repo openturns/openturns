@@ -23,7 +23,9 @@ beta : float
 Notes
 -----
 The weighted-experiment estimator is described in
-:class:`~openturns.experimental.QuantileSimulationAlgorithm`.
+:class:`~openturns.experimental.QuantileSimulationAlgorithm`.  The
+statistical background, the definitions of the estimators and the
+coverage guarantees are presented in :any:`quantile_theory_weighted`.
 
 The convergence controls (``maximumOuterSampling``,
 ``maximumCoefficientOfVariation``, ``maximumStandardDeviation``,

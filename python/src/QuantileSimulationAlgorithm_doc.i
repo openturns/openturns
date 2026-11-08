@@ -17,25 +17,13 @@ function, not the output values: the algorithm never multiplies the
 outputs by the weights.
 
 For a sample :math:`\{(Y_i, w_i)\}_{i=1}^N` with finite non-negative
-weights and a positive sum, let :math:`W_{(i)} = w_{(i)} / \sum_j w_j`
-be the weights reordered together with the outputs and let
-:math:`Y_{(1)} \le \dots \le Y_{(N)}` be the sorted outputs.  The
-weighted empirical CDF is
-
-.. math::
-
-    \hat F_N(y) = \sum_{i=1}^N W_{(i)} \mathbf{1}\{Y_{(i)} \le y\},
-
-and the default empirical-inverse estimate is the lower generalized
-inverse
-
-.. math::
-
-    \hat q_\alpha = Y_{(K)}, \qquad
-    K = \inf\Bigl\{k : \sum_{i=1}^k W_{(i)} \ge \alpha\Bigr\}.
-
-With uniform weights this is the usual order statistic
-:math:`Y_{(\lceil N\alpha\rceil)}`.
+weights and a positive sum, the default estimate is the weighted
+empirical inverse of the weighted empirical CDF built from the
+normalized weights.  With uniform weights it reduces to the usual
+empirical order statistic :math:`Y_{(\lceil N\alpha\rceil)}`.  The
+weighted empirical CDF, the weighted inverse, the effective sample size
+and the reference intervals are defined in
+:any:`quantile_theory_weighted`.
 
 The confidence interval and the coverage label depend on the
 experiment:
@@ -48,13 +36,18 @@ experiment:
   independent replicates and a Student :math:`t` interval on the
   replicate estimates, coverage ``COVERAGE_ASYMPTOTIC``;
 - all other designs, including i.i.d. sampling with the interpolated
-  estimator, non-uniform weights, and deterministic designs: weighted
-  Woodruff interval on the single design, coverage
-  ``COVERAGE_ASYMPTOTIC`` for a randomized design and
-  ``COVERAGE_NONE`` for a deterministic design.
+  estimator, weighted importance sampling and deterministic designs:
+  weighted Woodruff interval on the single design.  The variance
+  estimator assumes independent draws, so the coverage is
+  ``COVERAGE_ASYMPTOTIC`` for i.i.d. draws from the proposal, as in
+  :class:`~openturns.ImportanceSamplingExperiment`, and
+  ``COVERAGE_NONE`` for a dependent randomized design or a
+  deterministic design.
 
 The replicate count only affects the randomized uniform-weight
-non-i.i.d. branch.  It must be at least 2 and defaults to 30.
+non-i.i.d. branch.  It must be at least 2 and defaults to the value of
+the :class:`~openturns.ResourceMap` key
+``QuantileSimulationAlgorithm-DefaultReplicateCount`` (30).
 
 Parameters
 ----------
@@ -78,12 +71,18 @@ The sample size is the size of the experiment, and one run performs
 replicate branch, the total number of evaluations is
 ``replicateCount * sampleSize``.
 
+The replicate interval requires independent draws.  A
+:class:`~openturns.LHSExperiment` reuses its stratum permutation from
+one draw to the next when ``alwaysShuffle`` is false; the replicate
+estimates are then correlated (and identical when ``randomShift`` is
+false too), so such an experiment is rejected instead of reporting a
+coverage that the design cannot support.
+
 The weights are self-normalized, so an experiment whose weights sum to
 one and an experiment whose weights sum to another positive constant
 produce the same estimate.  The effective sample size reported in the
-result is the Kish effective sample size
-:math:`\left(\sum_i w_i\right)^2 / \sum_i w_i^2` of the normalized
-weights.
+result is the Kish effective sample size :math:`\ESS` of the normalized
+weights, defined in :any:`quantile_theory_definitions`.
 
 The output must be scalar.  For a multivariate output, select a
 marginal with ``output.getMarginal(i)`` or compose a scalar function
@@ -112,6 +111,12 @@ block size, and the progress and stop callbacks do not drive the number
 of evaluations: the sample size is fixed by the experiment, the
 replicate count and :meth:`setSampleSize`.  The block size is reported
 in the result.
+
+The following :class:`~openturns.ResourceMap` key is used:
+
+- ``QuantileSimulationAlgorithm-DefaultReplicateCount``
+  (``UnsignedInteger``, default: ``30``): default number of independent
+  replicates of the randomized uniform-weight branch.
 
 See also
 --------
