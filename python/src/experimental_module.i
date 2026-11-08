@@ -72,6 +72,10 @@
 %include SubsetSamplingQuantile.i
 %include LastParticleQuantile.i
 %include CrossEntropyQuantile.i
+%include DirectionalSamplingQuantile.i
+%include LineSamplingQuantile.i
+%include PostAnalyticalQuantile.i
+%include ProbabilityInversionQuantile.i
 
 /* Uncertainty */
 %import metamodel_module.i

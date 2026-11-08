@@ -611,6 +611,10 @@ ot_add_python_module(experimental experimental_module.i
                      SubsetSamplingQuantile.i SubsetSamplingQuantile_doc.i
                      LastParticleQuantile.i LastParticleQuantile_doc.i
                      CrossEntropyQuantile.i CrossEntropyQuantile_doc.i
+                     DirectionalSamplingQuantile.i DirectionalSamplingQuantile_doc.i
+                     LineSamplingQuantile.i LineSamplingQuantile_doc.i
+                     PostAnalyticalQuantile.i PostAnalyticalQuantile_doc.i
+                     ProbabilityInversionQuantile.i ProbabilityInversionQuantile_doc.i
                      RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i

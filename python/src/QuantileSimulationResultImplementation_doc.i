@@ -961,6 +961,448 @@ conditionalProbability : float
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::QuantileSimulationResultImplementation::getDirectionCount
+R"RAW(Accessor to the direction count.
+
+Returns
+-------
+directionCount : int
+    Number of directions used by the directional estimator, or zero
+    when the estimator is not directional.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setDirectionCount
+R"RAW(Accessor to the direction count.
+
+Parameters
+----------
+directionCount : int
+    Number of directions used by the directional estimator.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getConditionalProbabilitySample
+R"RAW(Accessor to the conditional-probability sample.
+
+Returns
+-------
+probabilities : :class:`~openturns.Point`
+    Per-direction or per-line conditional probabilities evaluated at the
+    returned quantile.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setConditionalProbabilitySample
+R"RAW(Accessor to the conditional-probability sample.
+
+Parameters
+----------
+probabilities : sequence of float
+    Per-direction or per-line conditional probabilities evaluated at the
+    returned quantile.  They must lie in :math:`[0,1]`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getImportantDirection
+R"RAW(Accessor to the important direction.
+
+Returns
+-------
+direction : :class:`~openturns.Point`
+    Important direction used by the line-sampling estimator.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setImportantDirection
+R"RAW(Accessor to the important direction.
+
+Parameters
+----------
+direction : sequence of float
+    Important direction used by the line-sampling estimator.  It must be
+    finite and non-zero.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasImportantDirection
+R"RAW(Test whether an important direction is available.
+
+Returns
+-------
+hasImportantDirection : bool
+    Whether the result stores an important direction.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRootBracket
+R"RAW(Accessor to the root bracket.
+
+Returns
+-------
+bracket : :class:`~openturns.Interval`
+    Final bracket of the root-finding algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setRootBracket
+R"RAW(Accessor to the root bracket.
+
+Parameters
+----------
+bracket : :class:`~openturns.Interval`
+    Final bracket of the root-finding algorithm.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasRootBracket
+R"RAW(Test whether a root bracket is available.
+
+Returns
+-------
+hasRootBracket : bool
+    Whether the result stores a root bracket.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRootIterationCount
+R"RAW(Accessor to the root iteration count.
+
+Returns
+-------
+iterationCount : int
+    Number of bisection iterations performed by the root finder.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setRootIterationCount
+R"RAW(Accessor to the root iteration count.
+
+Parameters
+----------
+iterationCount : int
+    Number of bisection iterations performed by the root finder.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getProbabilityEvaluationCount
+R"RAW(Accessor to the probability evaluation count.
+
+Returns
+-------
+evaluationCount : int
+    Number of probability evaluations performed by the root finder.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setProbabilityEvaluationCount
+R"RAW(Accessor to the probability evaluation count.
+
+Parameters
+----------
+evaluationCount : int
+    Number of probability evaluations performed by the root finder.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRootSolverType
+R"RAW(Accessor to the root-solver type.
+
+Returns
+-------
+type : int
+    Either ``BISECTION`` or ``ROBBINS_MONRO``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setRootSolverType
+R"RAW(Accessor to the root-solver type.
+
+Parameters
+----------
+type : int
+    Either ``BISECTION`` or ``ROBBINS_MONRO``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRootSolverDescription
+R"RAW(Accessor to the root-solver description.
+
+Returns
+-------
+description : str
+    ``"Bisection"`` or ``"Robbins-Monro"``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getCommonRandomNumbers
+R"RAW(Accessor to the common-random-number diagnostic.
+
+Returns
+-------
+commonRandomNumbers : bool
+    Whether the root-finding probability evaluations are effectively
+    coupled by a common random stream.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setCommonRandomNumbers
+R"RAW(Accessor to the common-random-number diagnostic.
+
+Parameters
+----------
+commonRandomNumbers : bool
+    Whether the root-finding probability evaluations are effectively
+    coupled by a common random stream.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRandomStreamCapability
+R"RAW(Accessor to the random-stream capability.
+
+Returns
+-------
+capability : bool
+    Whether the wrapped algorithm can inject a random stream.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setRandomStreamCapability
+R"RAW(Accessor to the random-stream capability.
+
+Parameters
+----------
+capability : bool
+    Whether the wrapped algorithm can inject a random stream.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getDelegatedToDirectExtraction
+R"RAW(Accessor to the direct-extraction delegation flag.
+
+Returns
+-------
+delegated : bool
+    Whether the inversion was delegated to direct extraction from a
+    sample.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setDelegatedToDirectExtraction
+R"RAW(Accessor to the direct-extraction delegation flag.
+
+Parameters
+----------
+delegated : bool
+    Whether the inversion was delegated to direct extraction from a
+    sample.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getWrappedAlgorithmDescription
+R"RAW(Accessor to the wrapped algorithm description.
+
+Returns
+-------
+description : str
+    Description of the event-simulation engine wrapped by the inversion.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setWrappedAlgorithmDescription
+R"RAW(Accessor to the wrapped algorithm description.
+
+Parameters
+----------
+description : str
+    Description of the event-simulation engine wrapped by the inversion.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasWrappedAlgorithmDescription
+R"RAW(Test whether a wrapped algorithm description is available.
+
+Returns
+-------
+hasWrappedAlgorithmDescription : bool
+    Whether the result stores a wrapped algorithm description.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getAnalyticalProbability
+R"RAW(Accessor to the analytical probability.
+
+Returns
+-------
+probability : float
+    FORM or SORM probability evaluated at the returned quantile.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setAnalyticalProbability
+R"RAW(Accessor to the analytical probability.
+
+Parameters
+----------
+probability : float
+    FORM or SORM probability evaluated at the returned quantile, in
+    :math:`[0,1]`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasAnalyticalProbability
+R"RAW(Test whether an analytical probability is available.
+
+Returns
+-------
+hasAnalyticalProbability : bool
+    Whether the result stores an analytical probability.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getDesignPoint
+R"RAW(Accessor to the design point.
+
+Returns
+-------
+designPoint : :class:`~openturns.Point`
+    Standard-space design point of the analytical approximation.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setDesignPoint
+R"RAW(Accessor to the design point.
+
+Parameters
+----------
+designPoint : sequence of float
+    Standard-space design point of the analytical approximation.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasDesignPoint
+R"RAW(Test whether a design point is available.
+
+Returns
+-------
+hasDesignPoint : bool
+    Whether the result stores a design point.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getReliabilityIndex
+R"RAW(Accessor to the reliability index.
+
+Returns
+-------
+reliabilityIndex : float
+    Hasofer-Lind reliability index of the analytical approximation.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setReliabilityIndex
+R"RAW(Accessor to the reliability index.
+
+Parameters
+----------
+reliabilityIndex : float
+    Hasofer-Lind reliability index of the analytical approximation.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasReliabilityIndex
+R"RAW(Test whether a reliability index is available.
+
+Returns
+-------
+hasReliabilityIndex : bool
+    Whether the result stores a reliability index.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getCurvatureCorrection
+R"RAW(Accessor to the curvature correction.
+
+Returns
+-------
+correction : float
+    Ratio between the SORM probability and the FORM probability.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setCurvatureCorrection
+R"RAW(Accessor to the curvature correction.
+
+Parameters
+----------
+correction : float
+    Ratio between the SORM probability and the FORM probability.  It
+    must be finite and positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasCurvatureCorrection
+R"RAW(Test whether a curvature correction is available.
+
+Returns
+-------
+hasCurvatureCorrection : bool
+    Whether the result stores a curvature correction.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRefinedProbability
+R"RAW(Accessor to the refined probability.
+
+Returns
+-------
+probability : float
+    Probability obtained by the importance-sampling refinement.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setRefinedProbability
+R"RAW(Accessor to the refined probability.
+
+Parameters
+----------
+probability : float
+    Probability obtained by the importance-sampling refinement, in
+    :math:`[0,1]`.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::hasRefinedProbability
+R"RAW(Test whether a refined probability is available.
+
+Returns
+-------
+hasRefinedProbability : bool
+    Whether the result stores a refined probability.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getRefinementStandardError
+R"RAW(Accessor to the refinement standard error.
+
+Returns
+-------
+standardError : float
+    Standard error of the importance-sampling refinement.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setRefinementStandardError
+R"RAW(Accessor to the refinement standard error.
+
+Parameters
+----------
+standardError : float
+    Standard error of the importance-sampling refinement.  It must be
+    finite and non-negative.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::QuantileSimulationResultImplementation::isFixedSample
 R"RAW(Accessor to the fixed-sample flag.
 

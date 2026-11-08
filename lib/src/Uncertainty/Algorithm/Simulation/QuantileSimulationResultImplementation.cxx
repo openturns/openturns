@@ -596,6 +596,276 @@ Scalar QuantileSimulationResultImplementation::getConditionalProbability() const
   return conditionalProbability_;
 }
 
+/* Root-finding diagnostics accessors */
+void QuantileSimulationResultImplementation::setDirectionCount(const UnsignedInteger directionCount)
+{
+  directionCount_ = directionCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getDirectionCount() const
+{
+  return directionCount_;
+}
+
+void QuantileSimulationResultImplementation::setConditionalProbabilitySample(const Point & probabilities)
+{
+  for (UnsignedInteger i = 0; i < probabilities.getSize(); ++i)
+    if (!std::isfinite(probabilities[i]) || (probabilities[i] < 0.0) || (probabilities[i] > 1.0))
+      throw InvalidArgumentException(HERE)
+          << "The conditional probabilities must be in [0, 1], but probabilities[" << i
+          << "] = " << probabilities[i];
+  conditionalProbabilitySample_ = probabilities;
+}
+
+Point QuantileSimulationResultImplementation::getConditionalProbabilitySample() const
+{
+  return conditionalProbabilitySample_;
+}
+
+void QuantileSimulationResultImplementation::setImportantDirection(const Point & direction)
+{
+  for (UnsignedInteger i = 0; i < direction.getSize(); ++i)
+    if (!std::isfinite(direction[i]))
+      throw InvalidArgumentException(HERE)
+          << "The important direction must be finite, but direction[" << i
+          << "] = " << direction[i];
+  if (!(direction.norm() > 0.0))
+    throw InvalidArgumentException(HERE) << "The important direction must be non-zero";
+  importantDirection_ = direction;
+  hasImportantDirection_ = true;
+}
+
+Point QuantileSimulationResultImplementation::getImportantDirection() const
+{
+  return importantDirection_;
+}
+
+Bool QuantileSimulationResultImplementation::hasImportantDirection() const
+{
+  return hasImportantDirection_;
+}
+
+void QuantileSimulationResultImplementation::setRootBracket(const Interval & bracket)
+{
+  rootBracket_ = bracket;
+  hasRootBracket_ = true;
+}
+
+Interval QuantileSimulationResultImplementation::getRootBracket() const
+{
+  return rootBracket_;
+}
+
+Bool QuantileSimulationResultImplementation::hasRootBracket() const
+{
+  return hasRootBracket_;
+}
+
+void QuantileSimulationResultImplementation::setRootIterationCount(const UnsignedInteger iterationCount)
+{
+  rootIterationCount_ = iterationCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getRootIterationCount() const
+{
+  return rootIterationCount_;
+}
+
+void QuantileSimulationResultImplementation::setProbabilityEvaluationCount(const UnsignedInteger evaluationCount)
+{
+  probabilityEvaluationCount_ = evaluationCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getProbabilityEvaluationCount() const
+{
+  return probabilityEvaluationCount_;
+}
+
+void QuantileSimulationResultImplementation::setRootSolverType(const RootSolverType type)
+{
+  if ((type != BISECTION) && (type != ROBBINS_MONRO))
+    throw InvalidArgumentException(HERE) << "Unknown root solver type";
+  rootSolverType_ = type;
+}
+
+QuantileSimulationResultImplementation::RootSolverType QuantileSimulationResultImplementation::getRootSolverType() const
+{
+  return rootSolverType_;
+}
+
+String QuantileSimulationResultImplementation::getRootSolverDescription() const
+{
+  switch (rootSolverType_)
+  {
+    case BISECTION:
+      return "Bisection";
+    case ROBBINS_MONRO:
+      return "Robbins-Monro";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+void QuantileSimulationResultImplementation::setCommonRandomNumbers(const Bool commonRandomNumbers)
+{
+  commonRandomNumbers_ = commonRandomNumbers;
+}
+
+Bool QuantileSimulationResultImplementation::getCommonRandomNumbers() const
+{
+  return commonRandomNumbers_;
+}
+
+void QuantileSimulationResultImplementation::setRandomStreamCapability(const Bool capability)
+{
+  randomStreamCapability_ = capability;
+}
+
+Bool QuantileSimulationResultImplementation::getRandomStreamCapability() const
+{
+  return randomStreamCapability_;
+}
+
+void QuantileSimulationResultImplementation::setDelegatedToDirectExtraction(const Bool delegated)
+{
+  delegatedToDirectExtraction_ = delegated;
+}
+
+Bool QuantileSimulationResultImplementation::getDelegatedToDirectExtraction() const
+{
+  return delegatedToDirectExtraction_;
+}
+
+void QuantileSimulationResultImplementation::setWrappedAlgorithmDescription(const String & description)
+{
+  wrappedAlgorithmDescription_ = description;
+  hasWrappedAlgorithmDescription_ = true;
+}
+
+String QuantileSimulationResultImplementation::getWrappedAlgorithmDescription() const
+{
+  return wrappedAlgorithmDescription_;
+}
+
+Bool QuantileSimulationResultImplementation::hasWrappedAlgorithmDescription() const
+{
+  return hasWrappedAlgorithmDescription_;
+}
+
+/* Post-analytical diagnostics accessors */
+void QuantileSimulationResultImplementation::setAnalyticalProbability(const Scalar probability)
+{
+  if (!std::isfinite(probability) || (probability < 0.0) || (probability > 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The analytical probability must be in [0, 1], but probability = " << probability;
+  analyticalProbability_ = probability;
+  hasAnalyticalProbability_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getAnalyticalProbability() const
+{
+  return analyticalProbability_;
+}
+
+Bool QuantileSimulationResultImplementation::hasAnalyticalProbability() const
+{
+  return hasAnalyticalProbability_;
+}
+
+void QuantileSimulationResultImplementation::setDesignPoint(const Point & designPoint)
+{
+  for (UnsignedInteger i = 0; i < designPoint.getSize(); ++i)
+    if (!std::isfinite(designPoint[i]))
+      throw InvalidArgumentException(HERE)
+          << "The design point must be finite, but designPoint[" << i
+          << "] = " << designPoint[i];
+  designPoint_ = designPoint;
+  hasDesignPoint_ = true;
+}
+
+Point QuantileSimulationResultImplementation::getDesignPoint() const
+{
+  return designPoint_;
+}
+
+Bool QuantileSimulationResultImplementation::hasDesignPoint() const
+{
+  return hasDesignPoint_;
+}
+
+void QuantileSimulationResultImplementation::setReliabilityIndex(const Scalar index)
+{
+  if (!std::isfinite(index))
+    throw InvalidArgumentException(HERE)
+        << "The reliability index must be finite, but index = " << index;
+  reliabilityIndex_ = index;
+  hasReliabilityIndex_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getReliabilityIndex() const
+{
+  return reliabilityIndex_;
+}
+
+Bool QuantileSimulationResultImplementation::hasReliabilityIndex() const
+{
+  return hasReliabilityIndex_;
+}
+
+void QuantileSimulationResultImplementation::setCurvatureCorrection(const Scalar correction)
+{
+  if (!std::isfinite(correction) || !(correction > 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The curvature correction must be finite and positive, but correction = "
+        << correction;
+  curvatureCorrection_ = correction;
+  hasCurvatureCorrection_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getCurvatureCorrection() const
+{
+  return curvatureCorrection_;
+}
+
+Bool QuantileSimulationResultImplementation::hasCurvatureCorrection() const
+{
+  return hasCurvatureCorrection_;
+}
+
+void QuantileSimulationResultImplementation::setRefinedProbability(const Scalar probability)
+{
+  if (!std::isfinite(probability) || (probability < 0.0) || (probability > 1.0))
+    throw InvalidArgumentException(HERE)
+        << "The refined probability must be in [0, 1], but probability = " << probability;
+  refinedProbability_ = probability;
+  hasRefinedProbability_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getRefinedProbability() const
+{
+  return refinedProbability_;
+}
+
+Bool QuantileSimulationResultImplementation::hasRefinedProbability() const
+{
+  return hasRefinedProbability_;
+}
+
+void QuantileSimulationResultImplementation::setRefinementStandardError(const Scalar standardError)
+{
+  if (!std::isfinite(standardError) || (standardError < 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The refinement standard error must be finite and non-negative, but standardError = "
+        << standardError;
+  refinementStandardError_ = standardError;
+}
+
+Scalar QuantileSimulationResultImplementation::getRefinementStandardError() const
+{
+  return refinementStandardError_;
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResultImplementation::setIsFixedSample(const Bool fixedSample)
 {
@@ -785,6 +1055,31 @@ void QuantileSimulationResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("hasAuxiliaryDistribution_", hasAuxiliaryDistribution_);
   adv.saveAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
   adv.saveAttribute("conditionalProbability_", conditionalProbability_);
+  adv.saveAttribute("directionCount_", directionCount_);
+  adv.saveAttribute("conditionalProbabilitySample_", conditionalProbabilitySample_);
+  adv.saveAttribute("importantDirection_", importantDirection_);
+  adv.saveAttribute("hasImportantDirection_", hasImportantDirection_);
+  adv.saveAttribute("rootBracket_", rootBracket_);
+  adv.saveAttribute("hasRootBracket_", hasRootBracket_);
+  adv.saveAttribute("rootIterationCount_", rootIterationCount_);
+  adv.saveAttribute("probabilityEvaluationCount_", probabilityEvaluationCount_);
+  adv.saveAttribute("rootSolverType_", static_cast<UnsignedInteger>(rootSolverType_));
+  adv.saveAttribute("commonRandomNumbers_", commonRandomNumbers_);
+  adv.saveAttribute("randomStreamCapability_", randomStreamCapability_);
+  adv.saveAttribute("delegatedToDirectExtraction_", delegatedToDirectExtraction_);
+  adv.saveAttribute("wrappedAlgorithmDescription_", wrappedAlgorithmDescription_);
+  adv.saveAttribute("hasWrappedAlgorithmDescription_", hasWrappedAlgorithmDescription_);
+  adv.saveAttribute("analyticalProbability_", analyticalProbability_);
+  adv.saveAttribute("hasAnalyticalProbability_", hasAnalyticalProbability_);
+  adv.saveAttribute("designPoint_", designPoint_);
+  adv.saveAttribute("hasDesignPoint_", hasDesignPoint_);
+  adv.saveAttribute("reliabilityIndex_", reliabilityIndex_);
+  adv.saveAttribute("hasReliabilityIndex_", hasReliabilityIndex_);
+  adv.saveAttribute("curvatureCorrection_", curvatureCorrection_);
+  adv.saveAttribute("hasCurvatureCorrection_", hasCurvatureCorrection_);
+  adv.saveAttribute("refinedProbability_", refinedProbability_);
+  adv.saveAttribute("hasRefinedProbability_", hasRefinedProbability_);
+  adv.saveAttribute("refinementStandardError_", refinementStandardError_);
   adv.saveAttribute("isFixedSample_", isFixedSample_);
   adv.saveAttribute("convergenceHistory_", convergenceHistory_);
 }
@@ -871,6 +1166,60 @@ void QuantileSimulationResultImplementation::load(Advocate & adv)
     adv.loadAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
   if (adv.hasAttribute("conditionalProbability_"))
     adv.loadAttribute("conditionalProbability_", conditionalProbability_);
+  if (adv.hasAttribute("directionCount_"))
+    adv.loadAttribute("directionCount_", directionCount_);
+  if (adv.hasAttribute("conditionalProbabilitySample_"))
+    adv.loadAttribute("conditionalProbabilitySample_", conditionalProbabilitySample_);
+  if (adv.hasAttribute("importantDirection_"))
+    adv.loadAttribute("importantDirection_", importantDirection_);
+  if (adv.hasAttribute("hasImportantDirection_"))
+    adv.loadAttribute("hasImportantDirection_", hasImportantDirection_);
+  if (adv.hasAttribute("rootBracket_"))
+    adv.loadAttribute("rootBracket_", rootBracket_);
+  if (adv.hasAttribute("hasRootBracket_"))
+    adv.loadAttribute("hasRootBracket_", hasRootBracket_);
+  if (adv.hasAttribute("rootIterationCount_"))
+    adv.loadAttribute("rootIterationCount_", rootIterationCount_);
+  if (adv.hasAttribute("probabilityEvaluationCount_"))
+    adv.loadAttribute("probabilityEvaluationCount_", probabilityEvaluationCount_);
+  if (adv.hasAttribute("rootSolverType_"))
+  {
+    UnsignedInteger rootSolverType = static_cast<UnsignedInteger>(rootSolverType_);
+    adv.loadAttribute("rootSolverType_", rootSolverType);
+    rootSolverType_ = static_cast<RootSolverType>(rootSolverType);
+  }
+  if (adv.hasAttribute("commonRandomNumbers_"))
+    adv.loadAttribute("commonRandomNumbers_", commonRandomNumbers_);
+  if (adv.hasAttribute("randomStreamCapability_"))
+    adv.loadAttribute("randomStreamCapability_", randomStreamCapability_);
+  if (adv.hasAttribute("delegatedToDirectExtraction_"))
+    adv.loadAttribute("delegatedToDirectExtraction_", delegatedToDirectExtraction_);
+  if (adv.hasAttribute("wrappedAlgorithmDescription_"))
+    adv.loadAttribute("wrappedAlgorithmDescription_", wrappedAlgorithmDescription_);
+  if (adv.hasAttribute("hasWrappedAlgorithmDescription_"))
+    adv.loadAttribute("hasWrappedAlgorithmDescription_", hasWrappedAlgorithmDescription_);
+  if (adv.hasAttribute("analyticalProbability_"))
+    adv.loadAttribute("analyticalProbability_", analyticalProbability_);
+  if (adv.hasAttribute("hasAnalyticalProbability_"))
+    adv.loadAttribute("hasAnalyticalProbability_", hasAnalyticalProbability_);
+  if (adv.hasAttribute("designPoint_"))
+    adv.loadAttribute("designPoint_", designPoint_);
+  if (adv.hasAttribute("hasDesignPoint_"))
+    adv.loadAttribute("hasDesignPoint_", hasDesignPoint_);
+  if (adv.hasAttribute("reliabilityIndex_"))
+    adv.loadAttribute("reliabilityIndex_", reliabilityIndex_);
+  if (adv.hasAttribute("hasReliabilityIndex_"))
+    adv.loadAttribute("hasReliabilityIndex_", hasReliabilityIndex_);
+  if (adv.hasAttribute("curvatureCorrection_"))
+    adv.loadAttribute("curvatureCorrection_", curvatureCorrection_);
+  if (adv.hasAttribute("hasCurvatureCorrection_"))
+    adv.loadAttribute("hasCurvatureCorrection_", hasCurvatureCorrection_);
+  if (adv.hasAttribute("refinedProbability_"))
+    adv.loadAttribute("refinedProbability_", refinedProbability_);
+  if (adv.hasAttribute("hasRefinedProbability_"))
+    adv.loadAttribute("hasRefinedProbability_", hasRefinedProbability_);
+  if (adv.hasAttribute("refinementStandardError_"))
+    adv.loadAttribute("refinementStandardError_", refinementStandardError_);
   adv.loadAttribute("isFixedSample_", isFixedSample_);
   adv.loadAttribute("convergenceHistory_", convergenceHistory_);
 }

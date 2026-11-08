@@ -156,6 +156,7 @@
  * WrappedNormalFactory-DefaultPeriod: default period used by the factory when the sample does not specify one (default is 6.283185307179586)
  * QuantileSimulation, QuantileSimulationAlgorithm, BlockQuantileSimulation and ExactTailQuantileSimulation ResourceMap keys for the default quantile level, confidence level, sample size, trimming fraction, minimum block count, replicate count, block-length policy and tolerances, bootstrap size, pilot sizes and fraction, and minimum chunk size
  * SubsetSamplingQuantile, LastParticleQuantile and CrossEntropyQuantile ResourceMap keys for the default burn-in, replicate count, particle count, pilot size and minimum proposal standard deviation
+ * QuantileRootSolver, DirectionalSamplingQuantile, LineSamplingQuantile, PostAnalyticalQuantile and ProbabilityInversionQuantile ResourceMap keys for the default root tolerance, maximum root iteration, bracket expansion, pilot size and refinement replicate count
 
 ==== New classes ====
  * Bingham, BinghamFactory (openturns.experimental)
@@ -165,6 +166,7 @@
  * CrossEntropyQuantile (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
  * CurlFreeModel (openturns.experimental)
+ * DirectionalSamplingQuantile (openturns.experimental)
  * DivFreeModel (openturns.experimental)
  * ExactTailQuantileSimulation (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
@@ -174,6 +176,7 @@
  * Kent, KentFactory (openturns.experimental)
  * LastParticleQuantile (openturns.experimental)
  * LeaveOneOut
+ * LineSamplingQuantile (openturns.experimental)
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
@@ -182,6 +185,8 @@
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
+ * PostAnalyticalQuantile (openturns.experimental)
+ * ProbabilityInversionQuantile (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
  * QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationImplementation, QuantileSimulationResult, QuantileSimulationResultImplementation (openturns.experimental)

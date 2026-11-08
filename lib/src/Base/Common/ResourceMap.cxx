@@ -1661,6 +1661,15 @@ void ResourceMap::loadDefaultConfiguration()
   // QuantileSimulationAlgorithm parameters //
   addAsUnsignedInteger("QuantileSimulationAlgorithm-DefaultReplicateCount", 30);
 
+  // QuantileRootSolver parameters //
+  addAsScalar("QuantileRootSolver-DefaultTolerance", 1.0e-4);
+  addAsUnsignedInteger("QuantileRootSolver-DefaultMaximumIteration", 100);
+  addAsUnsignedInteger("QuantileRootSolver-DefaultBracketExpansion", 40);
+  addAsUnsignedInteger("QuantileRootSolver-PilotSampleSize", 1000);
+
+  // PostAnalyticalQuantile parameters //
+  addAsUnsignedInteger("PostAnalyticalQuantile-DefaultReplicateCount", 30);
+
   // BlockQuantileSimulation parameters //
   addAsScalar("BlockQuantileSimulation-DefaultAdaptiveTolerance", 0.1);
   addAsScalar("BlockQuantileSimulation-DefaultBiasTolerance", 0.1);

@@ -1031,6 +1031,15 @@
   <!-- OT::QuantileSimulationAlgorithm parameters -->
   <QuantileSimulationAlgorithm-DefaultReplicateCount value_int="30" />
 
+  <!-- OT::QuantileRootSolver parameters -->
+  <QuantileRootSolver-DefaultTolerance      value_float="1.0e-4" />
+  <QuantileRootSolver-DefaultMaximumIteration value_int="100" />
+  <QuantileRootSolver-DefaultBracketExpansion value_int="40" />
+  <QuantileRootSolver-PilotSampleSize       value_int="1000" />
+
+  <!-- OT::PostAnalyticalQuantile parameters -->
+  <PostAnalyticalQuantile-DefaultReplicateCount value_int="30" />
+
   <!-- OT::BlockQuantileSimulation parameters -->
   <BlockQuantileSimulation-DefaultAdaptiveTolerance  value_float="0.1" />
   <BlockQuantileSimulation-DefaultBiasTolerance      value_float="0.1" />

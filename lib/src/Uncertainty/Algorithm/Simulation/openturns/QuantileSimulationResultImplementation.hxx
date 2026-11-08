@@ -76,6 +76,13 @@ public:
     UPPER_TAIL
   };
 
+  /** Root solver used by root-finding algorithms */
+  enum RootSolverType
+  {
+    BISECTION,
+    ROBBINS_MONRO
+  };
+
   /** Default constructor */
   QuantileSimulationResultImplementation();
 
@@ -212,6 +219,53 @@ public:
   void setConditionalProbability(const Scalar probability);
   Scalar getConditionalProbability() const;
 
+  /** Root-finding diagnostics accessors */
+  void setDirectionCount(const UnsignedInteger directionCount);
+  UnsignedInteger getDirectionCount() const;
+  void setConditionalProbabilitySample(const Point & probabilities);
+  Point getConditionalProbabilitySample() const;
+  void setImportantDirection(const Point & direction);
+  Point getImportantDirection() const;
+  Bool hasImportantDirection() const;
+  void setRootBracket(const Interval & bracket);
+  Interval getRootBracket() const;
+  Bool hasRootBracket() const;
+  void setRootIterationCount(const UnsignedInteger iterationCount);
+  UnsignedInteger getRootIterationCount() const;
+  void setProbabilityEvaluationCount(const UnsignedInteger evaluationCount);
+  UnsignedInteger getProbabilityEvaluationCount() const;
+  void setRootSolverType(const RootSolverType type);
+  RootSolverType getRootSolverType() const;
+  String getRootSolverDescription() const;
+  void setCommonRandomNumbers(const Bool commonRandomNumbers);
+  Bool getCommonRandomNumbers() const;
+  void setRandomStreamCapability(const Bool capability);
+  Bool getRandomStreamCapability() const;
+  void setDelegatedToDirectExtraction(const Bool delegated);
+  Bool getDelegatedToDirectExtraction() const;
+  void setWrappedAlgorithmDescription(const String & description);
+  String getWrappedAlgorithmDescription() const;
+  Bool hasWrappedAlgorithmDescription() const;
+
+  /** Post-analytical diagnostics accessors */
+  void setAnalyticalProbability(const Scalar probability);
+  Scalar getAnalyticalProbability() const;
+  Bool hasAnalyticalProbability() const;
+  void setDesignPoint(const Point & designPoint);
+  Point getDesignPoint() const;
+  Bool hasDesignPoint() const;
+  void setReliabilityIndex(const Scalar index);
+  Scalar getReliabilityIndex() const;
+  Bool hasReliabilityIndex() const;
+  void setCurvatureCorrection(const Scalar correction);
+  Scalar getCurvatureCorrection() const;
+  Bool hasCurvatureCorrection() const;
+  void setRefinedProbability(const Scalar probability);
+  Scalar getRefinedProbability() const;
+  Bool hasRefinedProbability() const;
+  void setRefinementStandardError(const Scalar standardError);
+  Scalar getRefinementStandardError() const;
+
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);
   Bool isFixedSample() const;
@@ -278,6 +332,31 @@ protected:
   Bool hasAuxiliaryDistribution_ = false;
   Scalar intermediateQuantileLevel_ = 0.0;
   Scalar conditionalProbability_ = 0.0;
+  UnsignedInteger directionCount_ = 0;
+  Point conditionalProbabilitySample_;
+  Point importantDirection_;
+  Bool hasImportantDirection_ = false;
+  Interval rootBracket_;
+  Bool hasRootBracket_ = false;
+  UnsignedInteger rootIterationCount_ = 0;
+  UnsignedInteger probabilityEvaluationCount_ = 0;
+  RootSolverType rootSolverType_ = BISECTION;
+  Bool commonRandomNumbers_ = false;
+  Bool randomStreamCapability_ = false;
+  Bool delegatedToDirectExtraction_ = false;
+  String wrappedAlgorithmDescription_;
+  Bool hasWrappedAlgorithmDescription_ = false;
+  Scalar analyticalProbability_ = 0.0;
+  Bool hasAnalyticalProbability_ = false;
+  Point designPoint_;
+  Bool hasDesignPoint_ = false;
+  Scalar reliabilityIndex_ = 0.0;
+  Bool hasReliabilityIndex_ = false;
+  Scalar curvatureCorrection_ = 1.0;
+  Bool hasCurvatureCorrection_ = false;
+  Scalar refinedProbability_ = 0.0;
+  Bool hasRefinedProbability_ = false;
+  Scalar refinementStandardError_ = 0.0;
   Bool isFixedSample_ = true;
   Sample convergenceHistory_;
 
