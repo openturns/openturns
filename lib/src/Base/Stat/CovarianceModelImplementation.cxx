@@ -532,9 +532,10 @@ Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Matrix
   // model without updating the inherited activeParameter_ member.
   const Indices activeParameter(getActiveParameter());
   const UnsignedInteger activeSize = activeParameter.getSize();
-  const UnsignedInteger fullParameterSize = getFullParameter().getSize();
-  if (fullGradient.getNbRows() < fullParameterSize)
-    throw InvalidArgumentException(HERE) << "Error: the fullGradient matrix has " << fullGradient.getNbRows() << " rows, but the full parameter set requires " << fullParameterSize << " rows.";
+  const UnsignedInteger nbRows = fullGradient.getNbRows();
+  for (UnsignedInteger i = 0; i < activeSize; ++i)
+    if (!(activeParameter[i] < nbRows))
+      throw InvalidArgumentException(HERE) << "Error: the active parameter index " << activeParameter[i] << " is out of range for a fullGradient matrix with " << nbRows << " rows.";
   Matrix gradient(activeSize, fullGradient.getNbColumns());
   for (UnsignedInteger j = 0; j < fullGradient.getNbColumns(); ++j)
     for (UnsignedInteger i = 0; i < activeSize; ++i)
