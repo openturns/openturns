@@ -102,10 +102,48 @@ public:
   void setBlockLength(const UnsignedInteger blockLength);
   UnsignedInteger getBlockLength() const;
 
+  /** Block count accessor */
+  void setBlockCount(const UnsignedInteger blockCount);
+  UnsignedInteger getBlockCount() const;
+
+  /** Block quantile sample accessor */
+  void setBlockQuantileSample(const Point & blockQuantiles);
+  Point getBlockQuantileSample() const;
+
+  /** Combination rule accessor */
+  void setCombinationType(const QuantileSimulationResultImplementation::CombinationType type);
+  QuantileSimulationResultImplementation::CombinationType getCombinationType() const;
+  String getCombinationDescription() const;
+
+  /** Trimming fraction accessor */
+  void setTrimmingFraction(const Scalar gamma);
+  Scalar getTrimmingFraction() const;
+
+  /** Block-length policy description accessor */
+  void setBlockLengthPolicyDescription(const String & description);
+  String getBlockLengthPolicyDescription() const;
+
+  /** Peak memory accessor, in scalar values */
+  void setPeakMemory(const UnsignedInteger peakMemory);
+  UnsignedInteger getPeakMemory() const;
+  UnsignedInteger getPeakMemoryInBytes() const;
+
   /** Bias estimate accessor */
   void setBiasEstimate(const Scalar bias);
   Scalar getBiasEstimate() const;
   Bool hasBiasEstimate() const;
+  Scalar getBiasToStandardErrorRatio() const;
+
+  /** Exact-tail diagnostics accessors */
+  void setTailType(const QuantileSimulationResultImplementation::TailType type);
+  QuantileSimulationResultImplementation::TailType getTailType() const;
+  String getTailDescription() const;
+  void setRetainedCount(const UnsignedInteger retainedCount);
+  UnsignedInteger getRetainedCount() const;
+  void setLowerRank(const UnsignedInteger lowerRank);
+  UnsignedInteger getLowerRank() const;
+  void setUpperRank(const UnsignedInteger upperRank);
+  UnsignedInteger getUpperRank() const;
 
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);

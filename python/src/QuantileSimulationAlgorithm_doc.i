@@ -118,8 +118,15 @@ of evaluations: the sample size is fixed by the experiment, the
 replicate count and :meth:`setSampleSize`.  The block size is reported
 in the result.
 
-The following :class:`~openturns.ResourceMap` key is used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
+- ``QuantileSimulation-DefaultAlpha`` (``Scalar``, default: ``0.95``):
+  default quantile level.
+- ``QuantileSimulation-DefaultConfidenceLevel`` (``Scalar``,
+  default: ``0.95``): default nominal confidence level.
+- ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``,
+  default: ``0``): default sample size, where ``0`` means that the
+  sample size must be set before running.
 - ``QuantileSimulationAlgorithm-DefaultReplicateCount``
   (``UnsignedInteger``, default: ``30``): default number of independent
   replicates of the randomized uniform-weight branch.

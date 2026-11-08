@@ -252,6 +252,102 @@ UnsignedInteger QuantileSimulationResultImplementation::getBlockLength() const
   return blockLength_;
 }
 
+/* Block count accessor */
+void QuantileSimulationResultImplementation::setBlockCount(const UnsignedInteger blockCount)
+{
+  blockCount_ = blockCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getBlockCount() const
+{
+  return blockCount_;
+}
+
+/* Block quantile sample accessor */
+void QuantileSimulationResultImplementation::setBlockQuantileSample(const Point & blockQuantiles)
+{
+  for (UnsignedInteger i = 0; i < blockQuantiles.getSize(); ++i)
+    if (!std::isfinite(blockQuantiles[i]))
+      throw InvalidArgumentException(HERE)
+          << "The block quantiles must be finite, but blockQuantiles[" << i << "] = " << blockQuantiles[i];
+  blockQuantileSample_ = blockQuantiles;
+}
+
+Point QuantileSimulationResultImplementation::getBlockQuantileSample() const
+{
+  return blockQuantileSample_;
+}
+
+/* Combination rule accessor */
+void QuantileSimulationResultImplementation::setCombinationType(const CombinationType type)
+{
+  if ((type != MEAN) && (type != MEDIAN) && (type != TRIMMED_MEAN))
+    throw InvalidArgumentException(HERE) << "Unknown combination type";
+  combinationType_ = type;
+}
+
+QuantileSimulationResultImplementation::CombinationType QuantileSimulationResultImplementation::getCombinationType() const
+{
+  return combinationType_;
+}
+
+String QuantileSimulationResultImplementation::getCombinationDescription() const
+{
+  switch (combinationType_)
+  {
+    case MEAN:
+      return "Mean";
+    case MEDIAN:
+      return "Median";
+    case TRIMMED_MEAN:
+      return OSS() << "Trimmed mean (gamma=" << trimmingFraction_ << ")";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+/* Trimming fraction accessor */
+void QuantileSimulationResultImplementation::setTrimmingFraction(const Scalar gamma)
+{
+  if (!(gamma >= 0.0 && gamma < 0.5))
+    throw InvalidArgumentException(HERE)
+        << "The trimming fraction must be in [0, 0.5), but gamma = " << gamma;
+  trimmingFraction_ = gamma;
+}
+
+Scalar QuantileSimulationResultImplementation::getTrimmingFraction() const
+{
+  return trimmingFraction_;
+}
+
+/* Block-length policy description accessor */
+void QuantileSimulationResultImplementation::setBlockLengthPolicyDescription(const String & description)
+{
+  blockLengthPolicyDescription_ = description;
+}
+
+String QuantileSimulationResultImplementation::getBlockLengthPolicyDescription() const
+{
+  return blockLengthPolicyDescription_;
+}
+
+/* Peak memory accessor */
+void QuantileSimulationResultImplementation::setPeakMemory(const UnsignedInteger peakMemory)
+{
+  peakMemory_ = peakMemory;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPeakMemory() const
+{
+  return peakMemory_;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPeakMemoryInBytes() const
+{
+  return peakMemory_ * sizeof(Scalar);
+}
+
 /* Bias estimate accessor */
 void QuantileSimulationResultImplementation::setBiasEstimate(const Scalar bias)
 {
@@ -270,6 +366,72 @@ Scalar QuantileSimulationResultImplementation::getBiasEstimate() const
 Bool QuantileSimulationResultImplementation::hasBiasEstimate() const
 {
   return hasBiasEstimate_;
+}
+
+Scalar QuantileSimulationResultImplementation::getBiasToStandardErrorRatio() const
+{
+  if (!hasBiasEstimate_ || !(standardError_ > 0.0))
+    return 0.0;
+  return std::abs(biasEstimate_) / standardError_;
+}
+
+/* Exact-tail diagnostics accessors */
+void QuantileSimulationResultImplementation::setTailType(const TailType type)
+{
+  if ((type != NO_TAIL) && (type != LOWER_TAIL) && (type != UPPER_TAIL))
+    throw InvalidArgumentException(HERE) << "Unknown tail type";
+  tailType_ = type;
+}
+
+QuantileSimulationResultImplementation::TailType QuantileSimulationResultImplementation::getTailType() const
+{
+  return tailType_;
+}
+
+String QuantileSimulationResultImplementation::getTailDescription() const
+{
+  switch (tailType_)
+  {
+    case NO_TAIL:
+      return "None";
+    case LOWER_TAIL:
+      return "Lower tail";
+    case UPPER_TAIL:
+      return "Upper tail";
+    default:
+      break;
+  }
+  return "Unknown";
+}
+
+void QuantileSimulationResultImplementation::setRetainedCount(const UnsignedInteger retainedCount)
+{
+  retainedCount_ = retainedCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getRetainedCount() const
+{
+  return retainedCount_;
+}
+
+void QuantileSimulationResultImplementation::setLowerRank(const UnsignedInteger lowerRank)
+{
+  lowerRank_ = lowerRank;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getLowerRank() const
+{
+  return lowerRank_;
+}
+
+void QuantileSimulationResultImplementation::setUpperRank(const UnsignedInteger upperRank)
+{
+  upperRank_ = upperRank;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getUpperRank() const
+{
+  return upperRank_;
 }
 
 /* Fixed sample flag accessor */
@@ -387,6 +549,14 @@ String QuantileSimulationResultImplementation::__repr__() const
       << " sampleSize=" << sampleSize_
       << " effectiveSampleSize=" << effectiveSampleSize_
       << " blockLength=" << blockLength_
+      << " blockCount=" << blockCount_
+      << " combination=" << getCombinationDescription()
+      << " blockLengthPolicy=" << blockLengthPolicyDescription_
+      << " peakMemory=" << peakMemory_
+      << " tail=" << getTailDescription()
+      << " retainedCount=" << retainedCount_
+      << " lowerRank=" << lowerRank_
+      << " upperRank=" << upperRank_
       << " isFixedSample=" << isFixedSample_;
   return oss;
 }
@@ -419,8 +589,18 @@ void QuantileSimulationResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("effectiveSampleSize_", effectiveSampleSize_);
   adv.saveAttribute("sampleSize_", sampleSize_);
   adv.saveAttribute("blockLength_", blockLength_);
+  adv.saveAttribute("blockCount_", blockCount_);
+  adv.saveAttribute("blockQuantileSample_", blockQuantileSample_);
+  adv.saveAttribute("combinationType_", static_cast<UnsignedInteger>(combinationType_));
+  adv.saveAttribute("trimmingFraction_", trimmingFraction_);
+  adv.saveAttribute("blockLengthPolicyDescription_", blockLengthPolicyDescription_);
+  adv.saveAttribute("peakMemory_", peakMemory_);
   adv.saveAttribute("biasEstimate_", biasEstimate_);
   adv.saveAttribute("hasBiasEstimate_", hasBiasEstimate_);
+  adv.saveAttribute("tailType_", static_cast<UnsignedInteger>(tailType_));
+  adv.saveAttribute("retainedCount_", retainedCount_);
+  adv.saveAttribute("lowerRank_", lowerRank_);
+  adv.saveAttribute("upperRank_", upperRank_);
   adv.saveAttribute("isFixedSample_", isFixedSample_);
   adv.saveAttribute("convergenceHistory_", convergenceHistory_);
 }
@@ -449,8 +629,36 @@ void QuantileSimulationResultImplementation::load(Advocate & adv)
   adv.loadAttribute("effectiveSampleSize_", effectiveSampleSize_);
   adv.loadAttribute("sampleSize_", sampleSize_);
   adv.loadAttribute("blockLength_", blockLength_);
+  if (adv.hasAttribute("blockCount_"))
+    adv.loadAttribute("blockCount_", blockCount_);
+  if (adv.hasAttribute("blockQuantileSample_"))
+    adv.loadAttribute("blockQuantileSample_", blockQuantileSample_);
+  if (adv.hasAttribute("combinationType_"))
+  {
+    UnsignedInteger combinationType = static_cast<UnsignedInteger>(combinationType_);
+    adv.loadAttribute("combinationType_", combinationType);
+    combinationType_ = static_cast<CombinationType>(combinationType);
+  }
+  if (adv.hasAttribute("trimmingFraction_"))
+    adv.loadAttribute("trimmingFraction_", trimmingFraction_);
+  if (adv.hasAttribute("blockLengthPolicyDescription_"))
+    adv.loadAttribute("blockLengthPolicyDescription_", blockLengthPolicyDescription_);
+  if (adv.hasAttribute("peakMemory_"))
+    adv.loadAttribute("peakMemory_", peakMemory_);
   adv.loadAttribute("biasEstimate_", biasEstimate_);
   adv.loadAttribute("hasBiasEstimate_", hasBiasEstimate_);
+  if (adv.hasAttribute("tailType_"))
+  {
+    UnsignedInteger tailType = static_cast<UnsignedInteger>(tailType_);
+    adv.loadAttribute("tailType_", tailType);
+    tailType_ = static_cast<TailType>(tailType);
+  }
+  if (adv.hasAttribute("retainedCount_"))
+    adv.loadAttribute("retainedCount_", retainedCount_);
+  if (adv.hasAttribute("lowerRank_"))
+    adv.loadAttribute("lowerRank_", lowerRank_);
+  if (adv.hasAttribute("upperRank_"))
+    adv.loadAttribute("upperRank_", upperRank_);
   adv.loadAttribute("isFixedSample_", isFixedSample_);
   adv.loadAttribute("convergenceHistory_", convergenceHistory_);
 }

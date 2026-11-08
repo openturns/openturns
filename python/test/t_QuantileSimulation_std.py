@@ -793,4 +793,93 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     algo.setReplicateCount(1)
 
+# ---------------------------------------------------------------------
+# 12. ResourceMap defaults
+# ---------------------------------------------------------------------
+alpha_key = "QuantileSimulation-DefaultAlpha"
+beta_key = "QuantileSimulation-DefaultConfidenceLevel"
+size_key = "QuantileSimulation-DefaultSampleSize"
+trimming_key = "QuantileSimulation-DefaultTrimmingFraction"
+replicate_key = "QuantileSimulationAlgorithm-DefaultReplicateCount"
+saved_alpha = ot.ResourceMap.GetAsScalar(alpha_key)
+saved_beta = ot.ResourceMap.GetAsScalar(beta_key)
+saved_size = ot.ResourceMap.GetAsUnsignedInteger(size_key)
+saved_trimming = ot.ResourceMap.GetAsScalar(trimming_key)
+saved_replicates = ot.ResourceMap.GetAsUnsignedInteger(replicate_key)
+
+test_alpha = 0.8
+test_beta = 0.7
+test_size = 123
+test_trimming = 0.25
+test_replicates = 7
+try:
+    ot.ResourceMap.SetAsScalar(alpha_key, test_alpha)
+    ot.ResourceMap.SetAsScalar(beta_key, test_beta)
+    ot.ResourceMap.SetAsUnsignedInteger(size_key, test_size)
+    ot.ResourceMap.SetAsScalar(trimming_key, test_trimming)
+    ot.ResourceMap.SetAsUnsignedInteger(replicate_key, test_replicates)
+
+    algo = otexp.QuantileSimulationAlgorithm(output)
+    assert algo.getAlpha() == test_alpha
+    assert algo.getConfidenceLevel() == test_beta
+    assert algo.getSampleSize() == test_size
+    assert algo.getReplicateCount() == test_replicates
+
+    # The replicate count is also read by the experiment constructor.
+    algo = otexp.QuantileSimulationAlgorithm(
+        output, ot.LHSExperiment(distribution, 10), test_alpha, test_beta)
+    assert algo.getReplicateCount() == test_replicates
+
+    result_impl = otexp.QuantileSimulationResultImplementation()
+    assert result_impl.getQuantileLevel() == test_alpha
+    assert result_impl.getConfidenceLevel() == test_beta
+    assert result_impl.getSampleSize() == test_size
+    assert result_impl.getTrimmingFraction() == test_trimming
+
+    base = otexp.QuantileSimulationImplementation()
+    assert base.getAlpha() == test_alpha
+    assert base.getConfidenceLevel() == test_beta
+    assert base.getSampleSize() == test_size
+
+    # The trimming fraction is also read by the block estimator.
+    block = otexp.BlockQuantileSimulation(output)
+    assert block.getTrimmingFraction() == test_trimming
+finally:
+    ot.ResourceMap.SetAsScalar(alpha_key, saved_alpha)
+    ot.ResourceMap.SetAsScalar(beta_key, saved_beta)
+    ot.ResourceMap.SetAsUnsignedInteger(size_key, saved_size)
+    ot.ResourceMap.SetAsScalar(trimming_key, saved_trimming)
+    ot.ResourceMap.SetAsUnsignedInteger(replicate_key, saved_replicates)
+
+# Invalid ResourceMap defaults are rejected.
+try:
+    ot.ResourceMap.SetAsScalar(alpha_key, 0.0)
+    with ott.assert_raises(TypeError):
+        otexp.QuantileSimulationAlgorithm(output)
+finally:
+    ot.ResourceMap.SetAsScalar(alpha_key, saved_alpha)
+try:
+    ot.ResourceMap.SetAsScalar(beta_key, 1.0)
+    with ott.assert_raises(TypeError):
+        otexp.QuantileSimulationAlgorithm(output)
+finally:
+    ot.ResourceMap.SetAsScalar(beta_key, saved_beta)
+try:
+    ot.ResourceMap.SetAsUnsignedInteger(replicate_key, 1)
+    algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
+    algo.setSampleSize(10)
+    with ott.assert_raises(TypeError):
+        algo.run()
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(replicate_key, saved_replicates)
+try:
+    ot.ResourceMap.SetAsScalar(trimming_key, 0.5)
+    algo = otexp.BlockQuantileSimulation(output, 0.5, 0.5)
+    algo.setSampleSize(100)
+    algo.setBlockLength(10)
+    with ott.assert_raises(TypeError):
+        algo.run()
+finally:
+    ot.ResourceMap.SetAsScalar(trimming_key, saved_trimming)
+
 print("OK")

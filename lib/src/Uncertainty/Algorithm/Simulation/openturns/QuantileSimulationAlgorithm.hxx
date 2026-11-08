@@ -46,14 +46,14 @@ public:
 
   /** Constructor with parameters */
   explicit QuantileSimulationAlgorithm(const RandomVector & output,
-                                       const Scalar alpha = 0.95,
-                                       const Scalar beta = 0.95);
+                                       const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                                       const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor with parameters and experiment */
   QuantileSimulationAlgorithm(const RandomVector & output,
                               const WeightedExperiment & experiment,
-                              const Scalar alpha = 0.95,
-                              const Scalar beta = 0.95);
+                              const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                              const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
   QuantileSimulationAlgorithm * clone() const override;
@@ -93,6 +93,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /** Check the input parameters */
+  void checkInputs() const override;
+
   /** Run a fixed-sample experiment */
   QuantileSimulationResult runFixedSample() override;
 
