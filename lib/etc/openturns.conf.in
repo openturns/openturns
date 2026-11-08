@@ -1042,6 +1042,19 @@
 
   <!-- OT::ExactTailQuantileSimulation parameters -->
   <ExactTailQuantileSimulation-MinimumChunkSize value_int="4096" />
+
+  <!-- OT::SubsetSamplingQuantile parameters -->
+  <SubsetSamplingQuantile-DefaultBurnIn         value_int="10" />
+  <SubsetSamplingQuantile-DefaultReplicateCount value_int="30" />
+
+  <!-- OT::LastParticleQuantile parameters -->
+  <LastParticleQuantile-DefaultBurnIn        value_int="10" />
+  <LastParticleQuantile-DefaultParticleCount value_int="1000" />
+
+  <!-- OT::CrossEntropyQuantile parameters -->
+  <CrossEntropyQuantile-DefaultPilotSize value_int="1000" />
+  <CrossEntropyQuantile-MinimumProposalStandardDeviation value_float="1.2" />
+
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />
   <ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType      value_str="NONE" />

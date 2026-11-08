@@ -808,6 +808,9 @@ ot_pyinstallcheck_test (QuantileConfidence_std IGNOREOUT)
 ot_pyinstallcheck_test (QuantileSimulation_std IGNOREOUT)
 ot_pyinstallcheck_test (BlockQuantileSimulation_std IGNOREOUT)
 ot_pyinstallcheck_test (ExactTailQuantileSimulation_std IGNOREOUT)
+ot_pyinstallcheck_test (SubsetSamplingQuantile_std IGNOREOUT)
+ot_pyinstallcheck_test (LastParticleQuantile_std IGNOREOUT)
+ot_pyinstallcheck_test (CrossEntropyQuantile_std IGNOREOUT)
 ot_pyinstallcheck_test (TaylorExpansionMoments_std)
 
 ## Analytical

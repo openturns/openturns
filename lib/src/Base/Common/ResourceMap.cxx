@@ -1692,6 +1692,18 @@ void ResourceMap::loadDefaultConfiguration()
   // ExactTailQuantileSimulation parameters //
   addAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize", 4096);
 
+  // SubsetSamplingQuantile parameters //
+  addAsUnsignedInteger("SubsetSamplingQuantile-DefaultBurnIn", 10);
+  addAsUnsignedInteger("SubsetSamplingQuantile-DefaultReplicateCount", 30);
+
+  // LastParticleQuantile parameters //
+  addAsUnsignedInteger("LastParticleQuantile-DefaultBurnIn", 10);
+  addAsUnsignedInteger("LastParticleQuantile-DefaultParticleCount", 1000);
+
+  // CrossEntropyQuantile parameters //
+  addAsUnsignedInteger("CrossEntropyQuantile-DefaultPilotSize", 1000);
+  addAsScalar("CrossEntropyQuantile-MinimumProposalStandardDeviation", 1.2);
+
   // ExpectationSimulationAlgorithm parameters //
   addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});
   addAsString("ExpectationSimulationAlgorithm-DefaultStandardDeviationCriterionType", "NONE", {"NONE", "MAX", "NORM1", "NORM2"});

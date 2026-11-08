@@ -23,6 +23,7 @@
 
 #include "openturns/SimulationResult.hxx"
 #include "openturns/RandomVector.hxx"
+#include "openturns/Distribution.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Graph.hxx"
@@ -182,11 +183,35 @@ public:
   void setUpperRank(const UnsignedInteger upperRank);
   UnsignedInteger getUpperRank() const;
 
+  /** Threshold-scheme diagnostics accessors */
+  void setThresholdSequence(const Point & thresholds);
+  Point getThresholdSequence() const;
+  void setLevelProbabilitySequence(const Point & probabilities);
+  Point getLevelProbabilitySequence() const;
+  void setStepCount(const UnsignedInteger stepCount);
+  UnsignedInteger getStepCount() const;
+  void setAcceptanceRate(const Scalar acceptanceRate);
+  Scalar getAcceptanceRate() const;
+  void setPoissonRanks(const UnsignedInteger lowerRank, const UnsignedInteger upperRank);
+  UnsignedInteger getPoissonRankLower() const;
+  UnsignedInteger getPoissonRankUpper() const;
+  Bool hasPoissonRanks() const;
+  void setParticleCount(const UnsignedInteger particleCount);
+  UnsignedInteger getParticleCount() const;
   /** Independent replicate diagnostics accessors */
   void setReplicateCount(const UnsignedInteger replicateCount);
   UnsignedInteger getReplicateCount() const;
   void setReplicateEstimates(const Point & estimates);
   Point getReplicateEstimates() const;
+
+  /** Cross-entropy diagnostics accessors */
+  void setAuxiliaryDistribution(const Distribution & distribution);
+  Distribution getAuxiliaryDistribution() const;
+  Bool hasAuxiliaryDistribution() const;
+  void setIntermediateQuantileLevel(const Scalar level);
+  Scalar getIntermediateQuantileLevel() const;
+  void setConditionalProbability(const Scalar probability);
+  Scalar getConditionalProbability() const;
 
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);
@@ -240,8 +265,20 @@ protected:
   UnsignedInteger retainedCount_ = 0;
   UnsignedInteger lowerRank_ = 0;
   UnsignedInteger upperRank_ = 0;
+  Point thresholdSequence_;
+  Point levelProbabilitySequence_;
+  UnsignedInteger stepCount_ = 0;
+  Scalar acceptanceRate_ = 0.0;
+  UnsignedInteger poissonRankLower_ = 0;
+  UnsignedInteger poissonRankUpper_ = 0;
+  Bool hasPoissonRanks_ = false;
+  UnsignedInteger particleCount_ = 0;
   UnsignedInteger replicateCount_ = 0;
   Point replicateEstimates_;
+  Distribution auxiliaryDistribution_;
+  Bool hasAuxiliaryDistribution_ = false;
+  Scalar intermediateQuantileLevel_ = 0.0;
+  Scalar conditionalProbability_ = 0.0;
   Bool isFixedSample_ = true;
   Sample convergenceHistory_;
 

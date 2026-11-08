@@ -555,7 +555,7 @@ quantile from the resulting population or weighted sample.
 Subset simulation
 ~~~~~~~~~~~~~~~~~
 
-``SubsetSamplingQuantile`` uses the
+:class:`~openturns.experimental.SubsetSamplingQuantile` uses the
 fixed-level splitting scheme of [au2001]_.  Write :math:`p=1-\alpha`
 for the upper tail (:math:`p=\alpha` for the lower tail) and let
 :math:`p_0\in(0,1)` be the conditional probability.  The number of
@@ -608,7 +608,7 @@ the result carries ``COVERAGE_ASYMPTOTIC``.
 Last-particle algorithm
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-``LastParticleQuantile`` is the limiting
+:class:`~openturns.experimental.LastParticleQuantile` is the limiting
 case of subset simulation in which the conditional probability is
 :math:`p_0=1-1/N` [guyader2011]_.  Exactly one particle is replaced at
 each level, the level probability is no longer a tuning parameter, and
@@ -677,7 +677,7 @@ carries ``COVERAGE_ASYMPTOTIC``.
 Cross-entropy importance sampling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``CrossEntropyQuantile`` estimates the
+:class:`~openturns.experimental.CrossEntropyQuantile` estimates the
 quantile by importance sampling with a cross-entropy auxiliary
 distribution [rubinstein2017]_.  A pilot sample first locates the target
 tail; the event :math:`\{Y>t_0\}` (respectively :math:`\{Y<t_0\}`) is

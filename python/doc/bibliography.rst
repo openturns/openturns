@@ -87,6 +87,9 @@ Bibliography
     `pdf <https://tel.archives-ouvertes.fr/tel-00864175/document>`__
 .. [ceres2012] Sameer Agarwal and Keir Mierle and Others, *Ceres Solver*,
     http://ceres-solver.org
+.. [cerou2007] Cérou, F. and Guyader, A. *Adaptive multilevel splitting for
+    rare event analysis.* Stochastic Analysis and Applications, 2007, 25(2), 417-443.
+    `doi <https://doi.org/10.1080/07362990601139628>`__
 .. [chacon2018] Chacón, J. E., & Duong, T. (2018).
     *Multivariate kernel smoothing and its applications.* CRC Press.
 .. [charpentier2015] Charpentier, A., & Flachaire, E. (2014).
@@ -150,6 +153,10 @@ Bibliography
     Journal de la Société française de statistique, 147 (3), 33-71.
 .. [deRocquigny2012] De Rocquigny, E. (2012).
     *Modelling under risk and uncertainty.* John Wiley & Sons.
+.. [deboer2005] de Boer, P.-T., Kroese, D. P., Mannor, S. and Rubinstein, R. Y.
+    *A tutorial on the cross-entropy method.* Annals of Operations Research,
+    2005, 134(1), 19-67.
+    `doi <https://doi.org/10.1007/s10479-005-5724-z>`__
 .. [deisenroth2020] Deisenroth, M. P., Faisal, A. A., and Ong, C. S. (2020).
     *Mathematics for machine learning.* Cambridge University Press.
 .. [derezinski2021] Dereziński, M. and Mahoney, M. W. (2021).
@@ -230,6 +237,10 @@ Bibliography
 .. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October).
     *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
     algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
+.. [guyader2011] Guyader, A., Hengartner, N. and Matzner-Løber, E.
+    *Simulation and estimation of extreme quantiles and extreme probabilities.*
+    Applied Mathematics & Optimization, 2011, 64(2), 171-196.
+    `doi <https://doi.org/10.1007/s00245-011-9135-z>`__
 .. [gil2019] Gil, A., Segura, J., Temme, N. M. (2019).
     *Fast, reliable and unrestricted iterative computation of Gauss-Hermite and Gauss-Laguerre quadratures.*
     Numerische Mathematik, 143(3).
@@ -665,6 +676,10 @@ Bibliography
     `pdf <https://arxiv.org/abs/2407.07814>`__
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
+.. [walter2015] Walter, C. *Moving particles: a parallel optimal multilevel
+    splitting method with application in quantiles estimation and meta-model
+    based algorithms.* Structural Safety, 2015, 55, 10-25.
+    `doi <https://doi.org/10.1016/j.strusafe.2015.02.002>`__
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
 .. [wang2012] Wang, Y. *Model selection.* (2012).
@@ -674,6 +689,10 @@ Bibliography
 .. [wilks1948] Wilks, S. S. (1948). Order statistics. Bulletin of the American Mathematical Society, 54(1) :6–50.
 .. [wood1994] Wood, A. and Chan, G. (1994). *Simulation of stationary Gaussian processes
     in [0,1]^d.* Journal of Computational and Graphical Statistics, 3(4), 409-432.
+.. [woodruff1952] Woodruff, R. S. *Confidence intervals for medians and other
+    position measures.* Journal of the American Statistical Association,
+    1952, 47(260), 635-646.
+    `doi <https://doi.org/10.1080/01621459.1952.10483443>`__
 .. [robert2004] Robert C.P., Casella G. *Monte-Carlo Statistical Methods*, Springer, ISBN 0-387-21239-6, 2nd ed, 2004.
 .. [witkovsky2003] Witkovsky V. *A Note on Computing Extreme Tail Probabilities of the Noncentral T Distribution with Large Noncentrality Parameter.*
     Computational Statistics & Data Analysis, 43 (2003) pp 249-267
@@ -699,26 +718,15 @@ Bibliography
 .. [bjerager1988] Bjerager, P. *Probability integration by directional simulation.*
     Journal of Engineering Mechanics, 1988, 114(8), 1285-1302.
     `doi <https://doi.org/10.1061/(ASCE)0733-9399(1988)114:8(1285)>`__
-.. [cerou2007] Cérou, F. and Guyader, A. *Adaptive multilevel splitting for
-    rare event analysis.* Stochastic Analysis and Applications, 2007, 25(2), 417-443.
-    `doi <https://doi.org/10.1080/07362990601139628>`__
 .. [chow1965] Chow, Y. S. and Robbins, H. *On the asymptotic theory of fixed-width
     sequential confidence intervals for the mean.* The Annals of Mathematical
     Statistics, 1965, 36(2), 457-462.
     `doi <https://doi.org/10.1214/aoms/1177700156>`__
-.. [deboer2005] de Boer, P.-T., Kroese, D. P., Mannor, S. and Rubinstein, R. Y.
-    *A tutorial on the cross-entropy method.* Annals of Operations Research,
-    2005, 134(1), 19-67.
-    `doi <https://doi.org/10.1007/s10479-005-5724-z>`__
 .. [dvoretzky1956] Dvoretzky, A., Kiefer, J. and Wolfowitz, J.
     *Asymptotic minimax character of the sample distribution function and of
     the classical multinomial estimator.*
     The Annals of Mathematical Statistics, 1956, 27(3), 642-669.
     `doi <https://doi.org/10.1214/aoms/1177728174>`__
-.. [guyader2011] Guyader, A., Hengartner, N. and Matzner-Løber, E.
-    *Simulation and estimation of extreme quantiles and extreme probabilities.*
-    Applied Mathematics & Optimization, 2011, 64(2), 171-196.
-    `doi <https://doi.org/10.1007/s00245-011-9135-z>`__
 .. [hohenbichler1988] Hohenbichler, M., Gollwitzer, S., Kruse, W. and Rackwitz, R.
     *New light on first- and second-order reliability methods.*
     Structural Safety, 1988, 4(4), 267-284.
@@ -740,11 +748,3 @@ Bibliography
 .. [tukey1963] Tukey, J. W. and McLaughlin, D. H. *Less vulnerable confidence
     and significance procedures for location based on a single sample:
     trimming/winsorization 1.* Sankhya A, 1963, 25(3), 331-352.
-.. [walter2015] Walter, C. *Moving particles: a parallel optimal multilevel
-    splitting method with application in quantiles estimation and meta-model
-    based algorithms.* Structural Safety, 2015, 55, 10-25.
-    `doi <https://doi.org/10.1016/j.strusafe.2015.02.002>`__
-.. [woodruff1952] Woodruff, R. S. *Confidence intervals for medians and other
-    position measures.* Journal of the American Statistical Association,
-    1952, 47(260), 635-646.
-    `doi <https://doi.org/10.1080/01621459.1952.10483443>`__
