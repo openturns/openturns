@@ -134,7 +134,7 @@ def check_high_order_shapes(model):
     assert third.getSize() == dimension**3
     fourth = model.fourthOrderPartial(s, t)
     assert fourth.getSize() == dimension**4
-    # The (0, 0) component only: every entry must be finite
+    # Every entry must be finite
     for value in third:
         assert math.isfinite(value)
     for value in fourth:
