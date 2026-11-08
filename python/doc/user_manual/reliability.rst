@@ -66,6 +66,10 @@ Quantile simulation (experimental)
     experimental.SubsetSamplingQuantile
     experimental.LastParticleQuantile
     experimental.CrossEntropyQuantile
+    experimental.DirectionalSamplingQuantile
+    experimental.LineSamplingQuantile
+    experimental.PostAnalyticalQuantile
+    experimental.ProbabilityInversionQuantile
     experimental.QuantileSimulationResult
     experimental.QuantileSimulationResultImplementation
 

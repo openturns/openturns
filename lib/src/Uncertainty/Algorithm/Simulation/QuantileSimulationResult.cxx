@@ -500,6 +500,240 @@ Scalar QuantileSimulationResult::getConditionalProbability() const
   return getImplementation()->getConditionalProbability();
 }
 
+/* Root-finding diagnostics accessors */
+void QuantileSimulationResult::setDirectionCount(const UnsignedInteger directionCount)
+{
+  copyOnWrite();
+  getImplementation()->setDirectionCount(directionCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getDirectionCount() const
+{
+  return getImplementation()->getDirectionCount();
+}
+
+void QuantileSimulationResult::setConditionalProbabilitySample(const Point & probabilities)
+{
+  copyOnWrite();
+  getImplementation()->setConditionalProbabilitySample(probabilities);
+}
+
+Point QuantileSimulationResult::getConditionalProbabilitySample() const
+{
+  return getImplementation()->getConditionalProbabilitySample();
+}
+
+void QuantileSimulationResult::setImportantDirection(const Point & direction)
+{
+  copyOnWrite();
+  getImplementation()->setImportantDirection(direction);
+}
+
+Point QuantileSimulationResult::getImportantDirection() const
+{
+  return getImplementation()->getImportantDirection();
+}
+
+Bool QuantileSimulationResult::hasImportantDirection() const
+{
+  return getImplementation()->hasImportantDirection();
+}
+
+void QuantileSimulationResult::setRootBracket(const Interval & bracket)
+{
+  copyOnWrite();
+  getImplementation()->setRootBracket(bracket);
+}
+
+Interval QuantileSimulationResult::getRootBracket() const
+{
+  return getImplementation()->getRootBracket();
+}
+
+Bool QuantileSimulationResult::hasRootBracket() const
+{
+  return getImplementation()->hasRootBracket();
+}
+
+void QuantileSimulationResult::setRootIterationCount(const UnsignedInteger iterationCount)
+{
+  copyOnWrite();
+  getImplementation()->setRootIterationCount(iterationCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getRootIterationCount() const
+{
+  return getImplementation()->getRootIterationCount();
+}
+
+void QuantileSimulationResult::setProbabilityEvaluationCount(const UnsignedInteger evaluationCount)
+{
+  copyOnWrite();
+  getImplementation()->setProbabilityEvaluationCount(evaluationCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getProbabilityEvaluationCount() const
+{
+  return getImplementation()->getProbabilityEvaluationCount();
+}
+
+void QuantileSimulationResult::setRootSolverType(const QuantileSimulationResultImplementation::RootSolverType type)
+{
+  copyOnWrite();
+  getImplementation()->setRootSolverType(type);
+}
+
+QuantileSimulationResultImplementation::RootSolverType QuantileSimulationResult::getRootSolverType() const
+{
+  return getImplementation()->getRootSolverType();
+}
+
+String QuantileSimulationResult::getRootSolverDescription() const
+{
+  return getImplementation()->getRootSolverDescription();
+}
+
+void QuantileSimulationResult::setCommonRandomNumbers(const Bool commonRandomNumbers)
+{
+  copyOnWrite();
+  getImplementation()->setCommonRandomNumbers(commonRandomNumbers);
+}
+
+Bool QuantileSimulationResult::getCommonRandomNumbers() const
+{
+  return getImplementation()->getCommonRandomNumbers();
+}
+
+void QuantileSimulationResult::setRandomStreamCapability(const Bool capability)
+{
+  copyOnWrite();
+  getImplementation()->setRandomStreamCapability(capability);
+}
+
+Bool QuantileSimulationResult::getRandomStreamCapability() const
+{
+  return getImplementation()->getRandomStreamCapability();
+}
+
+void QuantileSimulationResult::setDelegatedToDirectExtraction(const Bool delegated)
+{
+  copyOnWrite();
+  getImplementation()->setDelegatedToDirectExtraction(delegated);
+}
+
+Bool QuantileSimulationResult::getDelegatedToDirectExtraction() const
+{
+  return getImplementation()->getDelegatedToDirectExtraction();
+}
+
+void QuantileSimulationResult::setWrappedAlgorithmDescription(const String & description)
+{
+  copyOnWrite();
+  getImplementation()->setWrappedAlgorithmDescription(description);
+}
+
+String QuantileSimulationResult::getWrappedAlgorithmDescription() const
+{
+  return getImplementation()->getWrappedAlgorithmDescription();
+}
+
+Bool QuantileSimulationResult::hasWrappedAlgorithmDescription() const
+{
+  return getImplementation()->hasWrappedAlgorithmDescription();
+}
+
+/* Post-analytical diagnostics accessors */
+void QuantileSimulationResult::setAnalyticalProbability(const Scalar probability)
+{
+  copyOnWrite();
+  getImplementation()->setAnalyticalProbability(probability);
+}
+
+Scalar QuantileSimulationResult::getAnalyticalProbability() const
+{
+  return getImplementation()->getAnalyticalProbability();
+}
+
+Bool QuantileSimulationResult::hasAnalyticalProbability() const
+{
+  return getImplementation()->hasAnalyticalProbability();
+}
+
+void QuantileSimulationResult::setDesignPoint(const Point & designPoint)
+{
+  copyOnWrite();
+  getImplementation()->setDesignPoint(designPoint);
+}
+
+Point QuantileSimulationResult::getDesignPoint() const
+{
+  return getImplementation()->getDesignPoint();
+}
+
+Bool QuantileSimulationResult::hasDesignPoint() const
+{
+  return getImplementation()->hasDesignPoint();
+}
+
+void QuantileSimulationResult::setReliabilityIndex(const Scalar index)
+{
+  copyOnWrite();
+  getImplementation()->setReliabilityIndex(index);
+}
+
+Scalar QuantileSimulationResult::getReliabilityIndex() const
+{
+  return getImplementation()->getReliabilityIndex();
+}
+
+Bool QuantileSimulationResult::hasReliabilityIndex() const
+{
+  return getImplementation()->hasReliabilityIndex();
+}
+
+void QuantileSimulationResult::setCurvatureCorrection(const Scalar correction)
+{
+  copyOnWrite();
+  getImplementation()->setCurvatureCorrection(correction);
+}
+
+Scalar QuantileSimulationResult::getCurvatureCorrection() const
+{
+  return getImplementation()->getCurvatureCorrection();
+}
+
+Bool QuantileSimulationResult::hasCurvatureCorrection() const
+{
+  return getImplementation()->hasCurvatureCorrection();
+}
+
+void QuantileSimulationResult::setRefinedProbability(const Scalar probability)
+{
+  copyOnWrite();
+  getImplementation()->setRefinedProbability(probability);
+}
+
+Scalar QuantileSimulationResult::getRefinedProbability() const
+{
+  return getImplementation()->getRefinedProbability();
+}
+
+Bool QuantileSimulationResult::hasRefinedProbability() const
+{
+  return getImplementation()->hasRefinedProbability();
+}
+
+void QuantileSimulationResult::setRefinementStandardError(const Scalar standardError)
+{
+  copyOnWrite();
+  getImplementation()->setRefinementStandardError(standardError);
+}
+
+Scalar QuantileSimulationResult::getRefinementStandardError() const
+{
+  return getImplementation()->getRefinementStandardError();
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResult::setIsFixedSample(const Bool fixedSample)
 {

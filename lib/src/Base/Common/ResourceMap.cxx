@@ -1691,6 +1691,14 @@ void ResourceMap::loadDefaultConfiguration()
 
   // ExactTailQuantileSimulation parameters //
   addAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize", 4096);
+  // QuantileRootSolver parameters //
+  addAsScalar("QuantileRootSolver-DefaultTolerance", 1.0e-4);
+  addAsUnsignedInteger("QuantileRootSolver-DefaultMaximumIteration", 100);
+  addAsUnsignedInteger("QuantileRootSolver-DefaultBracketExpansion", 40);
+  addAsUnsignedInteger("QuantileRootSolver-PilotSampleSize", 1000);
+
+  // PostAnalyticalQuantile parameters //
+  addAsUnsignedInteger("PostAnalyticalQuantile-DefaultReplicateCount", 30);
 
   // SubsetSamplingQuantile parameters //
   addAsUnsignedInteger("SubsetSamplingQuantile-DefaultBurnIn", 10);

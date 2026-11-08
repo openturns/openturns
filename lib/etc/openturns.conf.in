@@ -1054,6 +1054,14 @@
   <!-- OT::CrossEntropyQuantile parameters -->
   <CrossEntropyQuantile-DefaultPilotSize value_int="1000" />
   <CrossEntropyQuantile-MinimumProposalStandardDeviation value_float="1.2" />
+  <!-- OT::QuantileRootSolver parameters -->
+  <QuantileRootSolver-DefaultTolerance      value_float="1.0e-4" />
+  <QuantileRootSolver-DefaultMaximumIteration value_int="100" />
+  <QuantileRootSolver-DefaultBracketExpansion value_int="40" />
+  <QuantileRootSolver-PilotSampleSize       value_int="1000" />
+
+  <!-- OT::PostAnalyticalQuantile parameters -->
+  <PostAnalyticalQuantile-DefaultReplicateCount value_int="30" />
 
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />

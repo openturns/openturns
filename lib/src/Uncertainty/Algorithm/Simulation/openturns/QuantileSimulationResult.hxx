@@ -165,6 +165,52 @@ public:
   UnsignedInteger getReplicateCount() const;
   void setReplicateEstimates(const Point & estimates);
   Point getReplicateEstimates() const;
+  /** Root-finding diagnostics accessors */
+  void setDirectionCount(const UnsignedInteger directionCount);
+  UnsignedInteger getDirectionCount() const;
+  void setConditionalProbabilitySample(const Point & probabilities);
+  Point getConditionalProbabilitySample() const;
+  void setImportantDirection(const Point & direction);
+  Point getImportantDirection() const;
+  Bool hasImportantDirection() const;
+  void setRootBracket(const Interval & bracket);
+  Interval getRootBracket() const;
+  Bool hasRootBracket() const;
+  void setRootIterationCount(const UnsignedInteger iterationCount);
+  UnsignedInteger getRootIterationCount() const;
+  void setProbabilityEvaluationCount(const UnsignedInteger evaluationCount);
+  UnsignedInteger getProbabilityEvaluationCount() const;
+  void setRootSolverType(const QuantileSimulationResultImplementation::RootSolverType type);
+  QuantileSimulationResultImplementation::RootSolverType getRootSolverType() const;
+  String getRootSolverDescription() const;
+  void setCommonRandomNumbers(const Bool commonRandomNumbers);
+  Bool getCommonRandomNumbers() const;
+  void setRandomStreamCapability(const Bool capability);
+  Bool getRandomStreamCapability() const;
+  void setDelegatedToDirectExtraction(const Bool delegated);
+  Bool getDelegatedToDirectExtraction() const;
+  void setWrappedAlgorithmDescription(const String & description);
+  String getWrappedAlgorithmDescription() const;
+  Bool hasWrappedAlgorithmDescription() const;
+
+  /** Post-analytical diagnostics accessors */
+  void setAnalyticalProbability(const Scalar probability);
+  Scalar getAnalyticalProbability() const;
+  Bool hasAnalyticalProbability() const;
+  void setDesignPoint(const Point & designPoint);
+  Point getDesignPoint() const;
+  Bool hasDesignPoint() const;
+  void setReliabilityIndex(const Scalar index);
+  Scalar getReliabilityIndex() const;
+  Bool hasReliabilityIndex() const;
+  void setCurvatureCorrection(const Scalar correction);
+  Scalar getCurvatureCorrection() const;
+  Bool hasCurvatureCorrection() const;
+  void setRefinedProbability(const Scalar probability);
+  Scalar getRefinedProbability() const;
+  Bool hasRefinedProbability() const;
+  void setRefinementStandardError(const Scalar standardError);
+  Scalar getRefinementStandardError() const;
 
   /** Cross-entropy diagnostics accessors */
   void setAuxiliaryDistribution(const Distribution & distribution);

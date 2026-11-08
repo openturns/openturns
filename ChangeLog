@@ -17,11 +17,13 @@
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
  * CrossEntropyQuantile (openturns.experimental)
  * CumulativeDistributionNetworkFactory (openturns.experimental)
+ * DirectionalSamplingQuantile (openturns.experimental)
  * ExactTailQuantileSimulation (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LastParticleQuantile (openturns.experimental)
  * LeaveOneOut
+ * LineSamplingQuantile (openturns.experimental)
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
@@ -30,6 +32,8 @@
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
+ * PostAnalyticalQuantile (openturns.experimental)
+ * ProbabilityInversionQuantile (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
  * SparseExpansion (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
@@ -138,6 +142,8 @@
  * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
  * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
  * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
+ * QuantileSimulation, MonteCarloQuantileSimulation, BlockQuantileSimulation and ExactTailQuantileSimulation ResourceMap keys for the default quantile level, confidence level, sample size, trimming fraction, minimum block count, replicate count, block-length policy and tolerances, bootstrap size, pilot sizes and fraction, and minimum chunk size
+ * QuantileRootSolver, DirectionalSamplingQuantile, LineSamplingQuantile, PostAnalyticalQuantile and ProbabilityInversionQuantile ResourceMap keys for the default root tolerance, maximum root iteration, bracket expansion, pilot size and refinement replicate count
 
 === Documentation ===
  * Theory: add interpolation page

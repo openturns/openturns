@@ -757,7 +757,7 @@ quantile is then the root of a monotone probability equation.
 Directional sampling
 ~~~~~~~~~~~~~~~~~~~~
 
-``DirectionalSamplingQuantile`` works in
+:class:`~openturns.experimental.DirectionalSamplingQuantile` works in
 the standard space.  For a direction :math:`\realU` on the unit sphere
 and a threshold :math:`t`, let :math:`r(\realU,t)` be the distance
 along :math:`\realU` at which the limit state
@@ -808,7 +808,7 @@ carries ``COVERAGE_NONE``.
 Line sampling
 ~~~~~~~~~~~~~
 
-``LineSamplingQuantile`` uses an important
+:class:`~openturns.experimental.LineSamplingQuantile` uses an important
 direction :math:`\bde` fixed before the root-finding loop
 [pradlwarter2007]_.  The implementation requires a standard Gaussian
 space, because the probability along a line is a normal tail
@@ -840,7 +840,7 @@ same as for directional sampling.
 Post-analytical estimators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``PostAnalyticalQuantile`` replaces the
+:class:`~openturns.experimental.PostAnalyticalQuantile` replaces the
 sampling probability by the analytical FORM or SORM probability.  For a
 candidate threshold :math:`t`, the event :math:`\{\model(\inputRV)>t\}`
 is analysed in the standard space, the design point and the Hasofer
@@ -874,7 +874,7 @@ negligible relative to the standard error.
 Probability inversion
 ~~~~~~~~~~~~~~~~~~~~~
 
-``ProbabilityInversionQuantile`` is a
+:class:`~openturns.experimental.ProbabilityInversionQuantile` is a
 generic adapter for probability engines that expose only a scalar
 probability for a threshold event.  Let :math:`p=1-\alpha` for an
 upper-tail quantile and
