@@ -19,6 +19,7 @@
  *
  */
 #include <iostream>
+#include <vector>
 #include "openturns/OT.hxx"
 #include "openturns/OTtestcode.hxx"
 
@@ -169,6 +170,167 @@ static void test_scalar_model(const CovarianceModel &myModel)
     gradfd[j] = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
   }
   assert_almost_equal(gradfd[0], grad(0, 0), 1.0e-5, 1.0e-5);
+}
+
+// Smooth separable Gaussian covariance model. It overrides computeAsScalar()
+// only, so that partialGradient() and partialHessian() are the base finite
+// differences: this is the configuration the high-order fallbacks must handle.
+class SmoothGaussianModel
+  : public CovarianceModelImplementation
+{
+public:
+  explicit SmoothGaussianModel(const Point & scale)
+    : CovarianceModelImplementation(scale, Point(1, 1.0))
+  {
+  }
+
+  SmoothGaussianModel * clone() const override
+  {
+    return new SmoothGaussianModel(*this);
+  }
+
+  Scalar computeAsScalar(const Point & s, const Point & t) const override
+  {
+    Scalar squaredNorm = 0.0;
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    {
+      const Scalar delta = (s[i] - t[i]) / scale_[i];
+      squaredNorm += delta * delta;
+    }
+    if (squaredNorm <= SpecFunc::ScalarEpsilon)
+      return 1.0 + nuggetFactor_;
+    return std::exp(-0.5 * squaredNorm);
+  }
+};
+
+// Derivative of one separable Gaussian factor exp(-0.5 ((s - t) / scale)^2).
+static Scalar gaussianDerivative(const UnsignedInteger order,
+                                 const Scalar s,
+                                 const Scalar t,
+                                 const Scalar scale)
+{
+  const Scalar z = (s - t) / scale;
+  const Scalar value = std::exp(-0.5 * z * z);
+  switch (order)
+  {
+    case 0:
+      return value;
+    case 1:
+      return -z / scale * value;
+    case 2:
+      return (z * z - 1.0) / (scale * scale) * value;
+    case 3:
+      return (3.0 * z - z * z * z) / (scale * scale * scale) * value;
+    case 4:
+      return (z * z * z * z - 6.0 * z * z + 3.0) / (scale * scale * scale * scale) * value;
+    default:
+      break;
+  }
+  return 0.0;
+}
+
+// Exact derivative of the separable Gaussian covariance for a multi-index.
+static Scalar gaussianPartialDerivative(const Indices & indices,
+                                        const Point & s,
+                                        const Point & t,
+                                        const Point & scale)
+{
+  std::vector<UnsignedInteger> orders(scale.getSize(), 0);
+  for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+    ++orders[indices[i]];
+  Scalar value = 1.0;
+  for (UnsignedInteger i = 0; i < scale.getSize(); ++i)
+    value *= gaussianDerivative(orders[i], s[i], t[i], scale[i]);
+  return value;
+}
+
+static void test_high_order_custom_model()
+{
+  // 1D: exact third and fourth derivatives, including at zero separation
+  // where the nugget discontinuity must not leak into the stencil.
+  const Scalar scale1D = 1.3;
+  SmoothGaussianModel model1D(Point(1, scale1D));
+  model1D.setNuggetFactor(1e-3);
+  const Point s1D(1, 0.7);
+  const Point t1D(1, 0.2);
+  assert_almost_equal(model1D.thirdOrderPartial(s1D, t1D)[0],
+                      gaussianDerivative(3, s1D[0], t1D[0], scale1D),
+                      1e-4, 1e-6, "in custom model thirdOrderPartial");
+  assert_almost_equal(model1D.fourthOrderPartial(s1D, t1D)[0],
+                      gaussianDerivative(4, s1D[0], t1D[0], scale1D),
+                      1e-4, 1e-6, "in custom model fourthOrderPartial");
+  const Point zero1D(1, 0.3);
+  assert_almost_equal(model1D.thirdOrderPartial(zero1D, zero1D)[0], 0.0,
+                      0.0, 1e-6, "in custom model thirdOrderPartial at zero separation");
+  assert_almost_equal(model1D.fourthOrderPartial(zero1D, zero1D)[0],
+                      3.0 / (scale1D * scale1D * scale1D * scale1D),
+                      1e-4, 1e-6, "in custom model fourthOrderPartial at zero separation");
+
+  // 2D: every mixed derivative, including the entries whose centered stencil
+  // would evaluate the covariance at zero separation.
+  const Point scale2D = {1.5, 0.8};
+  SmoothGaussianModel model2D(scale2D);
+  model2D.setNuggetFactor(1e-3);
+  const UnsignedInteger dimension = 2;
+  const Point s2D = {1.1, 0.6};
+  const Point t2D = {0.3, -0.2};
+  const Point third2D(model2D.thirdOrderPartial(s2D, t2D));
+  const Point fourth2D(model2D.fourthOrderPartial(s2D, t2D));
+  Indices indices(3);
+  for (UnsignedInteger c = 0; c < dimension; ++c)
+    for (UnsignedInteger b = 0; b < dimension; ++b)
+      for (UnsignedInteger a = 0; a < dimension; ++a)
+      {
+        indices[0] = a;
+        indices[1] = b;
+        indices[2] = c;
+        assert_almost_equal(third2D[a + dimension * (b + dimension * c)],
+                            gaussianPartialDerivative(indices, s2D, t2D, scale2D),
+                            1e-4, 1e-5, "in custom model thirdOrderPartial 2D");
+      }
+  indices = Indices(4);
+  for (UnsignedInteger e = 0; e < dimension; ++e)
+    for (UnsignedInteger c = 0; c < dimension; ++c)
+      for (UnsignedInteger b = 0; b < dimension; ++b)
+        for (UnsignedInteger a = 0; a < dimension; ++a)
+        {
+          indices[0] = a;
+          indices[1] = b;
+          indices[2] = c;
+          indices[3] = e;
+          assert_almost_equal(fourth2D[a + dimension * (b + dimension * (c + dimension * e))],
+                              gaussianPartialDerivative(indices, s2D, t2D, scale2D),
+                              1e-4, 1e-5, "in custom model fourthOrderPartial 2D");
+        }
+  const Point zero2D = {0.3, -0.2};
+  const Point third2DZero(model2D.thirdOrderPartial(zero2D, zero2D));
+  const Point fourth2DZero(model2D.fourthOrderPartial(zero2D, zero2D));
+  indices = Indices(3);
+  for (UnsignedInteger c = 0; c < dimension; ++c)
+    for (UnsignedInteger b = 0; b < dimension; ++b)
+      for (UnsignedInteger a = 0; a < dimension; ++a)
+      {
+        indices[0] = a;
+        indices[1] = b;
+        indices[2] = c;
+        assert_almost_equal(third2DZero[a + dimension * (b + dimension * c)],
+                            gaussianPartialDerivative(indices, zero2D, zero2D, scale2D),
+                            1e-4, 1e-5, "in custom model thirdOrderPartial 2D at zero separation");
+      }
+  indices = Indices(4);
+  for (UnsignedInteger e = 0; e < dimension; ++e)
+    for (UnsignedInteger c = 0; c < dimension; ++c)
+      for (UnsignedInteger b = 0; b < dimension; ++b)
+        for (UnsignedInteger a = 0; a < dimension; ++a)
+        {
+          indices[0] = a;
+          indices[1] = b;
+          indices[2] = c;
+          indices[3] = e;
+          assert_almost_equal(fourth2DZero[a + dimension * (b + dimension * (c + dimension * e))],
+                              gaussianPartialDerivative(indices, zero2D, zero2D, scale2D),
+                              1e-4, 1e-5, "in custom model fourthOrderPartial 2D at zero separation");
+        }
 }
 
 int main(int, char *[])
@@ -491,6 +653,8 @@ int main(int, char *[])
       if (!checkDesc)
         throw TestFailed(OSS() << "descriptions differ");
     }
+
+    test_high_order_custom_model();
   }
   catch (TestFailed & ex)
   {

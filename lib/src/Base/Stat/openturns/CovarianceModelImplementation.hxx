@@ -119,13 +119,14 @@ public:
   /** Third-order spatial derivatives of the (0, 0) component.
    * Flat Point of size d*d*d, dim0-contiguous like KissFFT::fftND:
    * index = a + d * (b + d * c) holds d^3 k_00 / ds_a ds_b ds_c.
-   * Default finite differences of partialHessian, caller-unrolled. */
+   * Default direct finite differences of the covariance, caller-unrolled. */
   virtual Point thirdOrderPartial(const Point & s,
                                   const Point & t) const;
 
   /** Fourth-order spatial derivatives of the (0, 0) component.
    * Flat Point of size d^4, index = a + d * (b + d * (c + d * e)).
-   * Default finite differences of thirdOrderPartial, caller-unrolled. */
+   * Default direct finite differences of the covariance, caller-unrolled,
+   * shifted away from the nugget discontinuity at zero separation. */
   virtual Point fourthOrderPartial(const Point & s,
                                    const Point & t) const;
 
