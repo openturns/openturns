@@ -136,9 +136,9 @@ def check_high_order_shapes(model):
     assert fourth.getSize() == dimension**4
     # The (0, 0) component only: every entry must be finite
     for value in third:
-        assert value == value
+        assert math.isfinite(value)
     for value in fourth:
-        assert value == value
+        assert math.isfinite(value)
 
 
 def check_nugget_gradient(model):
@@ -148,8 +148,7 @@ def check_nugget_gradient(model):
     nugget_indices = [
         index for index, name in enumerate(description) if name.lower() == "nuggetfactor"
     ]
-    if len(nugget_indices) != 1:
-        return
+    assert len(nugget_indices) == 1
     nugget_index = nugget_indices[0]
     active_parameter = model.getActiveParameter()
     model.setActiveParameter(ot.Indices(range(model.getFullParameter().getSize())))
