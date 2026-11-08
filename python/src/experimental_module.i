@@ -74,6 +74,8 @@
 %include QuantileSimulationImplementation.i
 %include QuantileSimulation.i
 %include MonteCarloQuantileSimulation.i
+%include BlockQuantileSimulation.i
+%include ExactTailQuantileSimulation.i
 
 /* Uncertainty */
 %import metamodel_module.i

@@ -610,6 +610,8 @@ ot_add_python_module(experimental experimental_module.i
                      QuantileSimulationImplementation.i QuantileSimulationImplementation_doc.i
                      QuantileSimulation.i QuantileSimulation_doc.i
                      MonteCarloQuantileSimulation.i MonteCarloQuantileSimulation_doc.i
+                     BlockQuantileSimulation.i BlockQuantileSimulation_doc.i
+                     ExactTailQuantileSimulation.i ExactTailQuantileSimulation_doc.i
                      RatioDistribution.i RatioDistribution_doc.i
                      WrappedNormal.i WrappedNormal_doc.i
                      WrappedNormalFactory.i WrappedNormalFactory_doc.i

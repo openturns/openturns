@@ -403,7 +403,7 @@ strategies reduce the memory without giving up the quantile estimate.
 Block estimator
 ~~~~~~~~~~~~~~~
 
-``BlockQuantileSimulation`` splits the
+:class:`~openturns.experimental.BlockQuantileSimulation` splits the
 stream of :math:`N` independent outputs into :math:`B` blocks of length
 :math:`b`, with :math:`N=Bb`.  Let :math:`\widehat{q}_i` be the
 empirical quantile of block :math:`i`.  The block quantiles are i.i.d.
@@ -478,7 +478,7 @@ between progress steps.
 Exact-tail estimator
 ~~~~~~~~~~~~~~~~~~~~
 
-``ExactTailQuantileSimulation`` computes
+:class:`~openturns.experimental.ExactTailQuantileSimulation` computes
 the exact binomial interval of a tail quantile without storing the
 full sample.  With :math:`B\sim\Bin(N,\alpha)` and zero-based
 ranks :math:`0\le r_1<r_2<N` returned by

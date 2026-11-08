@@ -544,6 +544,10 @@ Point MonteCarloQuantileSimulation::getWeights() const
 void MonteCarloQuantileSimulation::checkInputs() const
 {
   QuantileSimulationImplementation::checkInputs();
+  if (replicateCount_ < 2)
+    throw InvalidArgumentException(HERE)
+        << "The replicate count must be at least 2, but replicateCount = " << replicateCount_
+        << " (ResourceMap key MonteCarloQuantileSimulation-DefaultReplicateCount)";
   if (requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_ANYTIME_VALID)
     throw InvalidArgumentException(HERE)
         << "The weighted-experiment estimator cannot provide an anytime-valid coverage";

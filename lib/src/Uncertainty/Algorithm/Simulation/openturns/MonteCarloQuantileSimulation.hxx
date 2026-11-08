@@ -46,14 +46,14 @@ public:
 
   /** Constructor with parameters */
   explicit MonteCarloQuantileSimulation(const RandomVector & output,
-                                       const Scalar alpha = 0.95,
-                                       const Scalar beta = 0.95);
+                                       const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                                       const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor with parameters and experiment */
   MonteCarloQuantileSimulation(const RandomVector & output,
                               const WeightedExperiment & experiment,
-                              const Scalar alpha = 0.95,
-                              const Scalar beta = 0.95);
+                              const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                              const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
   MonteCarloQuantileSimulation * clone() const override;
@@ -93,11 +93,11 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  /** Run a fixed-sample experiment */
-  QuantileSimulationResult runFixedSample() override;
-
   /** Check the input parameters */
   void checkInputs() const override;
+
+  /** Run a fixed-sample experiment */
+  QuantileSimulationResult runFixedSample() override;
 
 private:
   WeightedExperiment experiment_;

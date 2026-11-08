@@ -24,6 +24,7 @@
 #include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/QuantileSimulationResult.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,8 +49,8 @@ public:
 
   /** Standard constructor */
   explicit QuantileSimulationImplementation(const RandomVector & output,
-                                            const Scalar alpha = 0.95,
-                                            const Scalar beta = 0.95);
+                                            const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                                            const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Virtual constructor */
   QuantileSimulationImplementation * clone() const override;
@@ -105,9 +106,9 @@ protected:
   virtual void checkCoverage(const QuantileSimulationResult & result) const;
 
   RandomVector output_;
-  Scalar alpha_ = 0.95;
-  Scalar beta_ = 0.95;
-  UnsignedInteger sampleSize_ = 0;
+  Scalar alpha_ = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha");
+  Scalar beta_ = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel");
+  UnsignedInteger sampleSize_ = ResourceMap::GetAsUnsignedInteger("QuantileSimulation-DefaultSampleSize");
   EstimatorType estimatorType_ = QuantileSimulationResultImplementation::EMPIRICAL_INVERSE;
   CoverageType requiredCoverage_ = QuantileSimulationResultImplementation::COVERAGE_NONE;
   QuantileSimulationResult result_;

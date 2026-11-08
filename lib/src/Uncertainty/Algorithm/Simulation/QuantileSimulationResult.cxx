@@ -207,6 +207,88 @@ UnsignedInteger QuantileSimulationResult::getBlockLength() const
   return getImplementation()->getBlockLength();
 }
 
+/* Block count accessor */
+void QuantileSimulationResult::setBlockCount(const UnsignedInteger blockCount)
+{
+  copyOnWrite();
+  getImplementation()->setBlockCount(blockCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getBlockCount() const
+{
+  return getImplementation()->getBlockCount();
+}
+
+/* Block quantile sample accessor */
+void QuantileSimulationResult::setBlockQuantileSample(const Point & blockQuantiles)
+{
+  copyOnWrite();
+  getImplementation()->setBlockQuantileSample(blockQuantiles);
+}
+
+Point QuantileSimulationResult::getBlockQuantileSample() const
+{
+  return getImplementation()->getBlockQuantileSample();
+}
+
+/* Combination rule accessor */
+void QuantileSimulationResult::setCombinationType(const QuantileSimulationResultImplementation::CombinationType type)
+{
+  copyOnWrite();
+  getImplementation()->setCombinationType(type);
+}
+
+QuantileSimulationResultImplementation::CombinationType QuantileSimulationResult::getCombinationType() const
+{
+  return getImplementation()->getCombinationType();
+}
+
+String QuantileSimulationResult::getCombinationDescription() const
+{
+  return getImplementation()->getCombinationDescription();
+}
+
+/* Trimming fraction accessor */
+void QuantileSimulationResult::setTrimmingFraction(const Scalar gamma)
+{
+  copyOnWrite();
+  getImplementation()->setTrimmingFraction(gamma);
+}
+
+Scalar QuantileSimulationResult::getTrimmingFraction() const
+{
+  return getImplementation()->getTrimmingFraction();
+}
+
+/* Block-length policy description accessor */
+void QuantileSimulationResult::setBlockLengthPolicyDescription(const String & description)
+{
+  copyOnWrite();
+  getImplementation()->setBlockLengthPolicyDescription(description);
+}
+
+String QuantileSimulationResult::getBlockLengthPolicyDescription() const
+{
+  return getImplementation()->getBlockLengthPolicyDescription();
+}
+
+/* Peak memory accessor */
+void QuantileSimulationResult::setPeakMemory(const UnsignedInteger peakMemory)
+{
+  copyOnWrite();
+  getImplementation()->setPeakMemory(peakMemory);
+}
+
+UnsignedInteger QuantileSimulationResult::getPeakMemory() const
+{
+  return getImplementation()->getPeakMemory();
+}
+
+UnsignedInteger QuantileSimulationResult::getPeakMemoryInBytes() const
+{
+  return getImplementation()->getPeakMemoryInBytes();
+}
+
 /* Bias estimate accessor */
 void QuantileSimulationResult::setBiasEstimate(const Scalar bias)
 {
@@ -222,6 +304,61 @@ Scalar QuantileSimulationResult::getBiasEstimate() const
 Bool QuantileSimulationResult::hasBiasEstimate() const
 {
   return getImplementation()->hasBiasEstimate();
+}
+
+Scalar QuantileSimulationResult::getBiasToStandardErrorRatio() const
+{
+  return getImplementation()->getBiasToStandardErrorRatio();
+}
+
+/* Exact-tail diagnostics accessors */
+void QuantileSimulationResult::setTailType(const QuantileSimulationResultImplementation::TailType type)
+{
+  copyOnWrite();
+  getImplementation()->setTailType(type);
+}
+
+QuantileSimulationResultImplementation::TailType QuantileSimulationResult::getTailType() const
+{
+  return getImplementation()->getTailType();
+}
+
+String QuantileSimulationResult::getTailDescription() const
+{
+  return getImplementation()->getTailDescription();
+}
+
+void QuantileSimulationResult::setRetainedCount(const UnsignedInteger retainedCount)
+{
+  copyOnWrite();
+  getImplementation()->setRetainedCount(retainedCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getRetainedCount() const
+{
+  return getImplementation()->getRetainedCount();
+}
+
+void QuantileSimulationResult::setLowerRank(const UnsignedInteger lowerRank)
+{
+  copyOnWrite();
+  getImplementation()->setLowerRank(lowerRank);
+}
+
+UnsignedInteger QuantileSimulationResult::getLowerRank() const
+{
+  return getImplementation()->getLowerRank();
+}
+
+void QuantileSimulationResult::setUpperRank(const UnsignedInteger upperRank)
+{
+  copyOnWrite();
+  getImplementation()->setUpperRank(upperRank);
+}
+
+UnsignedInteger QuantileSimulationResult::getUpperRank() const
+{
+  return getImplementation()->getUpperRank();
 }
 
 /* Fixed sample flag accessor */
