@@ -63,6 +63,8 @@ Quantile simulation (experimental)
     experimental.QuantileSimulationAlgorithm
     experimental.BlockQuantileSimulation
     experimental.ExactTailQuantileSimulation
+    experimental.TwoStageQuantileSimulation
+    experimental.SequentialQuantileSimulation
     experimental.QuantileSimulationResult
     experimental.QuantileSimulationResultImplementation
 

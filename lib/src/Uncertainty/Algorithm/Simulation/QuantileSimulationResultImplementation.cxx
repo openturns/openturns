@@ -460,6 +460,167 @@ Point QuantileSimulationResultImplementation::getReplicateEstimates() const
   return replicateEstimates_;
 }
 
+/* Two-stage design diagnostics accessors */
+void QuantileSimulationResultImplementation::setPilotSize(const UnsignedInteger pilotSize)
+{
+  if (pilotSize == 0)
+    throw InvalidArgumentException(HERE) << "The pilot size must be positive";
+  pilotSize_ = pilotSize;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getPilotSize() const
+{
+  return pilotSize_;
+}
+
+void QuantileSimulationResultImplementation::setPilotQuantileEstimate(const Scalar estimate)
+{
+  if (!std::isfinite(estimate))
+    throw InvalidArgumentException(HERE)
+        << "The pilot quantile estimate must be finite, but estimate = " << estimate;
+  pilotQuantileEstimate_ = estimate;
+  hasPilotQuantileEstimate_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getPilotQuantileEstimate() const
+{
+  return pilotQuantileEstimate_;
+}
+
+Bool QuantileSimulationResultImplementation::hasPilotQuantileEstimate() const
+{
+  return hasPilotQuantileEstimate_;
+}
+
+void QuantileSimulationResultImplementation::setPilotDensity(const Scalar density)
+{
+  if (!std::isfinite(density) || !(density >= 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The pilot density estimate must be finite and non-negative, but density = " << density;
+  pilotDensity_ = density;
+  hasPilotDensity_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getPilotDensity() const
+{
+  return pilotDensity_;
+}
+
+Bool QuantileSimulationResultImplementation::hasPilotDensity() const
+{
+  return hasPilotDensity_;
+}
+
+void QuantileSimulationResultImplementation::setConfirmationSize(const UnsignedInteger confirmationSize)
+{
+  if (confirmationSize == 0)
+    throw InvalidArgumentException(HERE) << "The confirmation size must be positive";
+  confirmationSize_ = confirmationSize;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getConfirmationSize() const
+{
+  return confirmationSize_;
+}
+
+void QuantileSimulationResultImplementation::setRequiredConfirmationSize(const UnsignedInteger requiredSize)
+{
+  if (requiredSize == 0)
+    throw InvalidArgumentException(HERE) << "The required confirmation size must be positive";
+  requiredConfirmationSize_ = requiredSize;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getRequiredConfirmationSize() const
+{
+  return requiredConfirmationSize_;
+}
+
+void QuantileSimulationResultImplementation::setTargetHalfWidth(const Scalar halfWidth)
+{
+  if (!std::isfinite(halfWidth) || !(halfWidth > 0.0))
+    throw InvalidArgumentException(HERE)
+        << "The target half-width must be finite and positive, but halfWidth = " << halfWidth;
+  targetHalfWidth_ = halfWidth;
+  hasTargetHalfWidth_ = true;
+}
+
+Scalar QuantileSimulationResultImplementation::getTargetHalfWidth() const
+{
+  return targetHalfWidth_;
+}
+
+Bool QuantileSimulationResultImplementation::hasTargetHalfWidth() const
+{
+  return hasTargetHalfWidth_;
+}
+
+void QuantileSimulationResultImplementation::setBudgetExhausted(const Bool exhausted)
+{
+  budgetExhausted_ = exhausted;
+}
+
+Bool QuantileSimulationResultImplementation::getBudgetExhausted() const
+{
+  return budgetExhausted_;
+}
+
+/* Sequential design diagnostics accessors */
+void QuantileSimulationResultImplementation::setStoppingTime(const UnsignedInteger stoppingTime)
+{
+  if (stoppingTime == 0)
+    throw InvalidArgumentException(HERE) << "The stopping time must be positive";
+  stoppingTime_ = stoppingTime;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getStoppingTime() const
+{
+  return stoppingTime_;
+}
+
+void QuantileSimulationResultImplementation::setStoppingCriterion(const String & criterion)
+{
+  if (criterion.empty())
+    throw InvalidArgumentException(HERE) << "The stopping criterion must not be empty";
+  stoppingCriterion_ = criterion;
+}
+
+String QuantileSimulationResultImplementation::getStoppingCriterion() const
+{
+  return stoppingCriterion_;
+}
+
+void QuantileSimulationResultImplementation::setConfidenceSequencePath(const Sample & path)
+{
+  if ((path.getSize() > 0) && (path.getDimension() != 4))
+    throw InvalidArgumentException(HERE)
+        << "The confidence sequence path must have four columns (sample size, estimate, lower bound, upper bound), but its dimension is "
+        << path.getDimension();
+  for (UnsignedInteger i = 0; i < path.getSize(); ++i)
+    for (UnsignedInteger j = 0; j < path.getDimension(); ++j)
+      if (!std::isfinite(path(i, j)))
+        throw InvalidArgumentException(HERE)
+            << "The confidence sequence path must be finite, but path(" << i << ", " << j
+            << ") = " << path(i, j);
+  confidenceSequencePath_ = path;
+}
+
+Sample QuantileSimulationResultImplementation::getConfidenceSequencePath() const
+{
+  return confidenceSequencePath_;
+}
+
+void QuantileSimulationResultImplementation::setCoverageAssumption(const String & assumption)
+{
+  if (assumption.empty())
+    throw InvalidArgumentException(HERE) << "The coverage assumption must not be empty";
+  coverageAssumption_ = assumption;
+}
+
+String QuantileSimulationResultImplementation::getCoverageAssumption() const
+{
+  return coverageAssumption_;
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResultImplementation::setIsFixedSample(const Bool fixedSample)
 {
@@ -584,6 +745,13 @@ String QuantileSimulationResultImplementation::__repr__() const
       << " lowerRank=" << lowerRank_
       << " upperRank=" << upperRank_
       << " replicateCount=" << replicateCount_
+      << " pilotSize=" << pilotSize_
+      << " confirmationSize=" << confirmationSize_
+      << " requiredConfirmationSize=" << requiredConfirmationSize_
+      << " hasTargetHalfWidth=" << hasTargetHalfWidth_
+      << " budgetExhausted=" << budgetExhausted_
+      << " stoppingTime=" << stoppingTime_
+      << " stoppingCriterion=" << stoppingCriterion_
       << " isFixedSample=" << isFixedSample_;
   return oss;
 }
@@ -630,6 +798,20 @@ void QuantileSimulationResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("upperRank_", upperRank_);
   adv.saveAttribute("replicateCount_", replicateCount_);
   adv.saveAttribute("replicateEstimates_", replicateEstimates_);
+  adv.saveAttribute("pilotSize_", pilotSize_);
+  adv.saveAttribute("pilotQuantileEstimate_", pilotQuantileEstimate_);
+  adv.saveAttribute("hasPilotQuantileEstimate_", hasPilotQuantileEstimate_);
+  adv.saveAttribute("pilotDensity_", pilotDensity_);
+  adv.saveAttribute("hasPilotDensity_", hasPilotDensity_);
+  adv.saveAttribute("confirmationSize_", confirmationSize_);
+  adv.saveAttribute("requiredConfirmationSize_", requiredConfirmationSize_);
+  adv.saveAttribute("targetHalfWidth_", targetHalfWidth_);
+  adv.saveAttribute("hasTargetHalfWidth_", hasTargetHalfWidth_);
+  adv.saveAttribute("budgetExhausted_", budgetExhausted_);
+  adv.saveAttribute("stoppingTime_", stoppingTime_);
+  adv.saveAttribute("stoppingCriterion_", stoppingCriterion_);
+  adv.saveAttribute("confidenceSequencePath_", confidenceSequencePath_);
+  adv.saveAttribute("coverageAssumption_", coverageAssumption_);
   adv.saveAttribute("isFixedSample_", isFixedSample_);
   adv.saveAttribute("convergenceHistory_", convergenceHistory_);
 }
@@ -692,6 +874,34 @@ void QuantileSimulationResultImplementation::load(Advocate & adv)
     adv.loadAttribute("replicateCount_", replicateCount_);
   if (adv.hasAttribute("replicateEstimates_"))
     adv.loadAttribute("replicateEstimates_", replicateEstimates_);
+  if (adv.hasAttribute("pilotSize_"))
+    adv.loadAttribute("pilotSize_", pilotSize_);
+  if (adv.hasAttribute("pilotQuantileEstimate_"))
+    adv.loadAttribute("pilotQuantileEstimate_", pilotQuantileEstimate_);
+  if (adv.hasAttribute("hasPilotQuantileEstimate_"))
+    adv.loadAttribute("hasPilotQuantileEstimate_", hasPilotQuantileEstimate_);
+  if (adv.hasAttribute("pilotDensity_"))
+    adv.loadAttribute("pilotDensity_", pilotDensity_);
+  if (adv.hasAttribute("hasPilotDensity_"))
+    adv.loadAttribute("hasPilotDensity_", hasPilotDensity_);
+  if (adv.hasAttribute("confirmationSize_"))
+    adv.loadAttribute("confirmationSize_", confirmationSize_);
+  if (adv.hasAttribute("requiredConfirmationSize_"))
+    adv.loadAttribute("requiredConfirmationSize_", requiredConfirmationSize_);
+  if (adv.hasAttribute("targetHalfWidth_"))
+    adv.loadAttribute("targetHalfWidth_", targetHalfWidth_);
+  if (adv.hasAttribute("hasTargetHalfWidth_"))
+    adv.loadAttribute("hasTargetHalfWidth_", hasTargetHalfWidth_);
+  if (adv.hasAttribute("budgetExhausted_"))
+    adv.loadAttribute("budgetExhausted_", budgetExhausted_);
+  if (adv.hasAttribute("stoppingTime_"))
+    adv.loadAttribute("stoppingTime_", stoppingTime_);
+  if (adv.hasAttribute("stoppingCriterion_"))
+    adv.loadAttribute("stoppingCriterion_", stoppingCriterion_);
+  if (adv.hasAttribute("confidenceSequencePath_"))
+    adv.loadAttribute("confidenceSequencePath_", confidenceSequencePath_);
+  if (adv.hasAttribute("coverageAssumption_"))
+    adv.loadAttribute("coverageAssumption_", coverageAssumption_);
   adv.loadAttribute("isFixedSample_", isFixedSample_);
   adv.loadAttribute("convergenceHistory_", convergenceHistory_);
 }

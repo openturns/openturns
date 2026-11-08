@@ -1691,6 +1691,14 @@ void ResourceMap::loadDefaultConfiguration()
 
   // ExactTailQuantileSimulation parameters //
   addAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize", 4096);
+  // TwoStageQuantileSimulation parameters //
+  addAsUnsignedInteger("TwoStageQuantileSimulation-DefaultPilotSize", 1000);
+  addAsScalar("TwoStageQuantileSimulation-DefaultTargetHalfWidth", 0.0);
+
+  // SequentialQuantileSimulation parameters //
+  addAsScalar("SequentialQuantileSimulation-DefaultTargetHalfWidth", 0.0);
+  addAsScalar("SequentialQuantileSimulation-GridRatio", 1.2);
+  addAsUnsignedInteger("SequentialQuantileSimulation-MinimumGridSize", 64);
 
   // ExpectationSimulationAlgorithm parameters //
   addAsString("ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType", "MAX", {"NONE", "MAX", "NORM1", "NORM2"});

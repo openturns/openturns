@@ -864,3 +864,276 @@ estimates : sequence of float
 )RAW"
 
 // ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPilotSize
+R"RAW(Accessor to the pilot size of a two-stage design.
+
+Returns
+-------
+pilotSize : int
+    Number of observations drawn in the pilot stage.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPilotSize
+R"RAW(Accessor to the pilot size of a two-stage design.
+
+Parameters
+----------
+pilotSize : int
+    Number of observations drawn in the pilot stage.  It must be
+    positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPilotQuantileEstimate
+R"RAW(Accessor to the pilot quantile estimate.
+
+Returns
+-------
+estimate : float
+    Quantile estimated on the pilot sample of a two-stage design.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPilotQuantileEstimate
+R"RAW(Accessor to the pilot quantile estimate.
+
+Parameters
+----------
+estimate : float
+    Quantile estimated on the pilot sample of a two-stage design.  It
+    must be finite.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasPilotQuantileEstimate
+R"RAW(Test whether a pilot quantile estimate is available.
+
+Returns
+-------
+hasPilotQuantileEstimate : bool
+    Whether the pilot quantile estimate has been set.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPilotDensity
+R"RAW(Accessor to the pilot density estimate.
+
+Returns
+-------
+density : float
+    Spacing estimate of the density at the quantile, computed on the
+    pilot sample of a two-stage design.  Zero means that the spacing
+    was degenerate.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPilotDensity
+R"RAW(Accessor to the pilot density estimate.
+
+Parameters
+----------
+density : float
+    Spacing estimate of the density at the quantile.  It must be finite
+    and non-negative.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasPilotDensity
+R"RAW(Test whether a pilot density estimate is available.
+
+Returns
+-------
+hasPilotDensity : bool
+    Whether the pilot density estimate has been set.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConfirmationSize
+R"RAW(Accessor to the confirmation size of a two-stage design.
+
+Returns
+-------
+confirmationSize : int
+    Number of observations actually drawn in the confirmation stage.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConfirmationSize
+R"RAW(Accessor to the confirmation size of a two-stage design.
+
+Parameters
+----------
+confirmationSize : int
+    Number of observations actually drawn in the confirmation stage.
+    It must be positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getRequiredConfirmationSize
+R"RAW(Accessor to the confirmation size required by the sizing rule.
+
+Returns
+-------
+requiredConfirmationSize : int
+    Confirmation size requested by the two-stage sizing formula.  When
+    the budget is insufficient, it is larger than the confirmation size
+    actually drawn and :meth:`getBudgetExhausted` is ``True``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setRequiredConfirmationSize
+R"RAW(Accessor to the confirmation size required by the sizing rule.
+
+Parameters
+----------
+requiredConfirmationSize : int
+    Confirmation size requested by the two-stage sizing formula.  It
+    must be positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTargetHalfWidth
+R"RAW(Accessor to the target half-width.
+
+Returns
+-------
+targetHalfWidth : float
+    Target half-width requested for a two-stage or sequential design.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTargetHalfWidth
+R"RAW(Accessor to the target half-width.
+
+Parameters
+----------
+targetHalfWidth : float
+    Target half-width requested for a two-stage or sequential design.
+    It must be finite and positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasTargetHalfWidth
+R"RAW(Test whether a target half-width is recorded.
+
+Returns
+-------
+hasTargetHalfWidth : bool
+    Whether a positive target half-width has been set.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBudgetExhausted
+R"RAW(Accessor to the budget exhaustion flag.
+
+Returns
+-------
+budgetExhausted : bool
+    Whether the evaluation budget was reached before the target
+    half-width was met.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBudgetExhausted
+R"RAW(Accessor to the budget exhaustion flag.
+
+Parameters
+----------
+budgetExhausted : bool
+    Whether the evaluation budget was reached before the target
+    half-width was met.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getStoppingTime
+R"RAW(Accessor to the stopping time of a sequential design.
+
+Returns
+-------
+stoppingTime : int
+    Number of observations drawn when the sequential algorithm
+    stopped.  It is zero when no sequential run has been recorded.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setStoppingTime
+R"RAW(Accessor to the stopping time of a sequential design.
+
+Parameters
+----------
+stoppingTime : int
+    Number of observations drawn when the sequential algorithm stopped.
+    It must be positive.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getStoppingCriterion
+R"RAW(Accessor to the stopping criterion of a sequential design.
+
+Returns
+-------
+stoppingCriterion : str
+    ``"target half-width"`` when the run stopped because the interval
+    became short enough, ``"maximum sample size"`` when it stopped at
+    the evaluation budget, and an empty string when no sequential run
+    has been recorded.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setStoppingCriterion
+R"RAW(Accessor to the stopping criterion of a sequential design.
+
+Parameters
+----------
+stoppingCriterion : str
+    Stopping criterion.  It must not be empty.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConfidenceSequencePath
+R"RAW(Accessor to the confidence sequence path of a sequential design.
+
+Returns
+-------
+path : :class:`~openturns.Sample`
+    Path with one row per evaluated sample size and four columns: the
+    sample size, the quantile estimate, the lower bound and the upper
+    bound.  Infinite bounds are represented by
+    :math:`\pm` ``SpecFunc.MaxScalar``.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConfidenceSequencePath
+R"RAW(Accessor to the confidence sequence path of a sequential design.
+
+Parameters
+----------
+path : :class:`~openturns.Sample`
+    Path with four columns: sample size, estimate, lower bound and
+    upper bound.  It must be a finite sample with four columns when it
+    is not empty.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCoverageAssumption
+R"RAW(Accessor to the coverage assumption of a sequential design.
+
+Returns
+-------
+coverageAssumption : str
+    Distribution-free assumption that supports the anytime-valid
+    coverage claim, or an empty string when no such claim is made.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setCoverageAssumption
+R"RAW(Accessor to the coverage assumption of a sequential design.
+
+Parameters
+----------
+coverageAssumption : str
+    Distribution-free assumption that supports the anytime-valid
+    coverage claim.  It must not be empty.)RAW"

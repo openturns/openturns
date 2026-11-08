@@ -383,6 +383,144 @@ Point QuantileSimulationResult::getReplicateEstimates() const
   return getImplementation()->getReplicateEstimates();
 }
 
+/* Two-stage design diagnostics accessors */
+void QuantileSimulationResult::setPilotSize(const UnsignedInteger pilotSize)
+{
+  copyOnWrite();
+  getImplementation()->setPilotSize(pilotSize);
+}
+
+UnsignedInteger QuantileSimulationResult::getPilotSize() const
+{
+  return getImplementation()->getPilotSize();
+}
+
+void QuantileSimulationResult::setPilotQuantileEstimate(const Scalar estimate)
+{
+  copyOnWrite();
+  getImplementation()->setPilotQuantileEstimate(estimate);
+}
+
+Scalar QuantileSimulationResult::getPilotQuantileEstimate() const
+{
+  return getImplementation()->getPilotQuantileEstimate();
+}
+
+Bool QuantileSimulationResult::hasPilotQuantileEstimate() const
+{
+  return getImplementation()->hasPilotQuantileEstimate();
+}
+
+void QuantileSimulationResult::setPilotDensity(const Scalar density)
+{
+  copyOnWrite();
+  getImplementation()->setPilotDensity(density);
+}
+
+Scalar QuantileSimulationResult::getPilotDensity() const
+{
+  return getImplementation()->getPilotDensity();
+}
+
+Bool QuantileSimulationResult::hasPilotDensity() const
+{
+  return getImplementation()->hasPilotDensity();
+}
+
+void QuantileSimulationResult::setConfirmationSize(const UnsignedInteger confirmationSize)
+{
+  copyOnWrite();
+  getImplementation()->setConfirmationSize(confirmationSize);
+}
+
+UnsignedInteger QuantileSimulationResult::getConfirmationSize() const
+{
+  return getImplementation()->getConfirmationSize();
+}
+
+void QuantileSimulationResult::setRequiredConfirmationSize(const UnsignedInteger requiredSize)
+{
+  copyOnWrite();
+  getImplementation()->setRequiredConfirmationSize(requiredSize);
+}
+
+UnsignedInteger QuantileSimulationResult::getRequiredConfirmationSize() const
+{
+  return getImplementation()->getRequiredConfirmationSize();
+}
+
+void QuantileSimulationResult::setTargetHalfWidth(const Scalar halfWidth)
+{
+  copyOnWrite();
+  getImplementation()->setTargetHalfWidth(halfWidth);
+}
+
+Scalar QuantileSimulationResult::getTargetHalfWidth() const
+{
+  return getImplementation()->getTargetHalfWidth();
+}
+
+Bool QuantileSimulationResult::hasTargetHalfWidth() const
+{
+  return getImplementation()->hasTargetHalfWidth();
+}
+
+void QuantileSimulationResult::setBudgetExhausted(const Bool exhausted)
+{
+  copyOnWrite();
+  getImplementation()->setBudgetExhausted(exhausted);
+}
+
+Bool QuantileSimulationResult::getBudgetExhausted() const
+{
+  return getImplementation()->getBudgetExhausted();
+}
+
+/* Sequential design diagnostics accessors */
+void QuantileSimulationResult::setStoppingTime(const UnsignedInteger stoppingTime)
+{
+  copyOnWrite();
+  getImplementation()->setStoppingTime(stoppingTime);
+}
+
+UnsignedInteger QuantileSimulationResult::getStoppingTime() const
+{
+  return getImplementation()->getStoppingTime();
+}
+
+void QuantileSimulationResult::setStoppingCriterion(const String & criterion)
+{
+  copyOnWrite();
+  getImplementation()->setStoppingCriterion(criterion);
+}
+
+String QuantileSimulationResult::getStoppingCriterion() const
+{
+  return getImplementation()->getStoppingCriterion();
+}
+
+void QuantileSimulationResult::setConfidenceSequencePath(const Sample & path)
+{
+  copyOnWrite();
+  getImplementation()->setConfidenceSequencePath(path);
+}
+
+Sample QuantileSimulationResult::getConfidenceSequencePath() const
+{
+  return getImplementation()->getConfidenceSequencePath();
+}
+
+void QuantileSimulationResult::setCoverageAssumption(const String & assumption)
+{
+  copyOnWrite();
+  getImplementation()->setCoverageAssumption(assumption);
+}
+
+String QuantileSimulationResult::getCoverageAssumption() const
+{
+  return getImplementation()->getCoverageAssumption();
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResult::setIsFixedSample(const Bool fixedSample)
 {

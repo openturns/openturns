@@ -892,7 +892,7 @@ There are two clean remedies.
 Two-stage design
 ~~~~~~~~~~~~~~~~
 
-``TwoStageQuantileSimulation`` uses a pilot
+:class:`~openturns.experimental.TwoStageQuantileSimulation` uses a pilot
 sample to choose the final sample size, then draws an independent
 confirmation sample and computes the exact order-statistic interval on
 that sample only.
@@ -937,7 +937,7 @@ nominal target width.
 Sequential design
 ~~~~~~~~~~~~~~~~~
 
-``SequentialQuantileSimulation`` uses an
+:class:`~openturns.experimental.SequentialQuantileSimulation` uses an
 anytime-valid confidence sequence and stops when the interval is short
 enough or when the budget is exhausted.  The distribution-free version
 maintains a time-uniform band for :math:`F` from the

@@ -150,6 +150,34 @@ public:
   UnsignedInteger getReplicateCount() const;
   void setReplicateEstimates(const Point & estimates);
   Point getReplicateEstimates() const;
+  /** Two-stage design diagnostics accessors */
+  void setPilotSize(const UnsignedInteger pilotSize);
+  UnsignedInteger getPilotSize() const;
+  void setPilotQuantileEstimate(const Scalar estimate);
+  Scalar getPilotQuantileEstimate() const;
+  Bool hasPilotQuantileEstimate() const;
+  void setPilotDensity(const Scalar density);
+  Scalar getPilotDensity() const;
+  Bool hasPilotDensity() const;
+  void setConfirmationSize(const UnsignedInteger confirmationSize);
+  UnsignedInteger getConfirmationSize() const;
+  void setRequiredConfirmationSize(const UnsignedInteger requiredSize);
+  UnsignedInteger getRequiredConfirmationSize() const;
+  void setTargetHalfWidth(const Scalar halfWidth);
+  Scalar getTargetHalfWidth() const;
+  Bool hasTargetHalfWidth() const;
+  void setBudgetExhausted(const Bool exhausted);
+  Bool getBudgetExhausted() const;
+
+  /** Sequential design diagnostics accessors */
+  void setStoppingTime(const UnsignedInteger stoppingTime);
+  UnsignedInteger getStoppingTime() const;
+  void setStoppingCriterion(const String & criterion);
+  String getStoppingCriterion() const;
+  void setConfidenceSequencePath(const Sample & path);
+  Sample getConfidenceSequencePath() const;
+  void setCoverageAssumption(const String & assumption);
+  String getCoverageAssumption() const;
 
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);

@@ -29,10 +29,12 @@
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
  * PiecewiseLinearDistribution (openturns.experimental)
  * RiemannianGaussian, RiemannianGaussianFactory (openturns.experimental)
+ * SequentialQuantileSimulation (openturns.experimental)
  * SparseExpansion (openturns.experimental)
  * ExceptionPenalizedEvaluation, ExceptionPenalizedProblem (openturns.experimental)
  * SquaredNormalFactory (openturns.experimental)
  * TruncatedDistributionFactory (openturns.experimental)
+ * TwoStageQuantileSimulation (openturns.experimental)
  * SlicedInverseRegression (openturns.experimental)
  * CirculantEmbeddingGaussianProcess (openturns.experimental)
  * P1InterpolatedProcess (openturns.experimental)
@@ -136,6 +138,7 @@
  * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
  * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
  * QuantileSimulation, QuantileSimulationAlgorithm, BlockQuantileSimulation and ExactTailQuantileSimulation ResourceMap keys for the default quantile level, confidence level, sample size, trimming fraction, minimum block count, replicate count, block-length policy and tolerances, bootstrap size, pilot sizes and fraction, and minimum chunk size
+ * TwoStageQuantileSimulation and SequentialQuantileSimulation ResourceMap keys for the default pilot size, target half-width, grid ratio and minimum grid size
 
 === Documentation ===
  * Theory: add interpolation page

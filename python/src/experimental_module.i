@@ -76,6 +76,8 @@
 %include QuantileSimulationAlgorithm.i
 %include BlockQuantileSimulation.i
 %include ExactTailQuantileSimulation.i
+%include TwoStageQuantileSimulation.i
+%include SequentialQuantileSimulation.i
 
 /* Uncertainty */
 %import metamodel_module.i
