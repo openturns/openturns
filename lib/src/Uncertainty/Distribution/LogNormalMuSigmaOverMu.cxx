@@ -46,9 +46,9 @@ LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu(const Scalar mu, const Scalar sig
   , sigmaOverMu_(sigmaOverMu)
   , gamma_(gamma)
 {
-  if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  if (!(mu != 0.0)) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
   if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 }
 
 /* Virtual constructor */
@@ -108,9 +108,9 @@ Point LogNormalMuSigmaOverMu::operator () (const Point & inP) const
   const Scalar sigmaOverMu = inP[1];
   const Scalar gamma = inP[2];
 
-  if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  if (!(mu != 0.0)) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
   if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu*mu;
-  if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
   Point muSigmaParametersValues(inP);
   muSigmaParametersValues[1] *= mu;
@@ -125,7 +125,7 @@ Point LogNormalMuSigmaOverMu::inverse(const Point & inP) const
   const LogNormalMuSigma muSigmaParameters;
   Point muSigmaOverMuParameters(muSigmaParameters.inverse(inP));
   const Scalar mu = muSigmaOverMuParameters[0];
-  if (mu == 0.0) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  if (!(mu != 0.0)) throw InvalidArgumentException(HERE) << "Error: mu cannot be null in the parameter set (mu, sigmaOverMu)";
   muSigmaOverMuParameters[1] /= mu;
   return muSigmaOverMuParameters;
 }
@@ -137,7 +137,7 @@ void LogNormalMuSigmaOverMu::setValues(const Point & inP)
   const Scalar mu = inP[0];
   const Scalar sigmaOverMu = inP[1];
   const Scalar gamma = inP[2];
-  if (mu == 0.0) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
+  if (!(mu != 0.0)) throw InvalidArgumentException(HERE) << "mu cannot be null in the parameter set (mu, sigmaOverMu)";
   if (!(sigmaOverMu * mu > 0.0)) throw InvalidArgumentException(HERE) << "sigmaOverMu*mu must be > 0, here sigmaOverMu*mu=" << sigmaOverMu * mu;
   if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
   mu_ = mu;

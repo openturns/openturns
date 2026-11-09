@@ -3,8 +3,8 @@ R"RAW(LogNormal distribution parameters.
 
 Parameters
 ----------
-mu : float
-    The mean of the log-normal random variable.
+muLog : float
+    The mean of the logarithm of the log-normal random variable.
 EF : float
     The error factor, :math:`EF > 1`
 gamma : float, optional

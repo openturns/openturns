@@ -4,7 +4,7 @@ R"RAW(LogNormal distribution parameters.
 Parameters
 ----------
 mu : float
-    Mean :math:`\mu > 0`.
+    Mean :math:`\mu > \gamma`.
 
     Default value is :math:`e^{0.5}`.
 delta : float
