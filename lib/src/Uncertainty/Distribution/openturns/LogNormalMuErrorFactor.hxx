@@ -40,7 +40,7 @@ public:
   LogNormalMuErrorFactor();
 
   /** Constructor with parameters */
-  LogNormalMuErrorFactor(const Scalar muLog, const Scalar ef, const Scalar gamma = 0.);
+  LogNormalMuErrorFactor(const Scalar muLog, const Scalar ef, const Scalar gamma = 0.0);
 
   /** Virtual constructor */
   LogNormalMuErrorFactor * clone() const override;
