@@ -134,10 +134,20 @@ Point CompoundDistribution::getParameter() const
 
 void CompoundDistribution::setParameter(const Point & parameter)
 {
+  // Skip the update if the parameters are unchanged: rebuilding would
+  // re-run the (possibly randomized, e.g. MonteCarlo) discretization and
+  // needlessly shift the random generator stream
+  if (parameter == getParameter()) return;
   Distribution conditioningDistribution(conditioningDistribution_);
   conditioningDistribution.setParameter(parameter);
-  Distribution conditionedDistribution(conditionedDistribution_);
-  *this = CompoundDistribution(conditionedDistribution, conditioningDistribution, linkFunction_);
+  // Build the replacement separately so that a failed rebuild (e.g. no
+  // valid atom for the proposed parameters) leaves the current distribution
+  // unchanged, with consistent mixture approximations and marginal
+  // bookkeeping, and allows a later retry with the same parameters
+  CompoundDistribution replacement(conditionedDistribution_, conditioningDistribution, linkFunction_);
+  replacement.setName(getName());
+  replacement.setDescription(getDescription());
+  *this = replacement;
 }
 
 Description CompoundDistribution::getParameterDescription() const
@@ -190,6 +200,14 @@ void CompoundDistribution::setConditionedAndConditioningDistributionsAndLinkFunc
   if (conditionedParametersDimension != linkFunction.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with output dimension equal to the number of parameters of the conditioned distribution. Here, output dimension=" << linkFunction.getOutputDimension() << " and parameters number=" << conditionedParametersDimension;
   if (conditioningDimension != linkFunction.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a link function with input dimension equal to the conditioning distribution dimension. Here, input dimension=" << linkFunction.getInputDimension() << " and conditioning dimension=" << conditioningDimension;
   if ((!conditioningDistribution.isDiscrete()) && (!conditioningDistribution.getCopula().isContinuous())) throw InvalidArgumentException(HERE) << "Error: expected a conditioning distribution with a continuous copula if the conditioning distribution is not fully discrete";
+  // Reset the marginal bookkeeping rebuilt below: indices retained from a
+  // previous conditioning would corrupt the new discretization
+  discreteMarginalsIndices_.clear();
+  diracMarginalsIndices_.clear();
+  diracValues_.clear();
+  continuousMarginalsIndices_.clear();
+  continuousLowerBounds_.clear();
+  continuousUpperBounds_.clear();
   conditionedDistribution_ = conditionedDistribution;
   conditioningDistribution_ = conditioningDistribution;
   linkFunction_ = linkFunction;
