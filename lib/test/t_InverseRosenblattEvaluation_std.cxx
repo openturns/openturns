@@ -38,7 +38,10 @@ int main(int, char *[])
     fullprint << "transformation=" << transformation << std::endl;
     Point point(dim, 0.75);
     fullprint << "transformation(" << point.__str__() << ")=" << transformation(point).__str__() << std::endl;
-    fullprint << "transformation parameters gradient=" << transformation.parameterGradient(point) << std::endl;
+    const Matrix gradient(transformation.parameterGradient(point));
+    fullprint << "transformation parameters gradient=" << gradient << std::endl;
+    // the finite-difference gradient covers all distribution parameters
+    if ((gradient.getNbRows() != distribution.getParameter().getDimension()) || (gradient.getNbColumns() != dim)) throw TestFailed("Wrong parameter gradient dimensions");
     fullprint << "input dimension=" << transformation.getInputDimension() << std::endl;
     fullprint << "output dimension=" << transformation.getOutputDimension() << std::endl;
   }
