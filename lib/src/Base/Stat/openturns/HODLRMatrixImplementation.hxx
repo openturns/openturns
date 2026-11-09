@@ -55,6 +55,10 @@ public:
   {
     throw NotYetImplementedException(HERE) << "HODLREntryEvaluator::getSize";
   }
+  virtual Bool isParallel() const
+  {
+    return true;
+  }
 };
 
 /**
@@ -80,12 +84,12 @@ class OT_API HODLRFunctionEvaluator
 public:
   typedef std::function<Scalar(UnsignedInteger, UnsignedInteger)> EvalFunction;
 
-  explicit HODLRFunctionEvaluator(EvalFunction f, UnsignedInteger size)
-    : f_(std::move(f)), size_(size) {}
+  explicit HODLRFunctionEvaluator(EvalFunction f, UnsignedInteger size, const Bool parallel = true)
+    : f_(std::move(f)), size_(size), parallel_(parallel) {}
 
   HODLRFunctionEvaluator* clone() const override
   {
-    return new HODLRFunctionEvaluator(f_, size_);
+    return new HODLRFunctionEvaluator(f_, size_, parallel_);
   }
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const override
@@ -95,9 +99,12 @@ public:
 
   UnsignedInteger getSize() const override { return size_; }
 
+  Bool isParallel() const override { return parallel_; }
+
 private:
   EvalFunction f_;
   UnsignedInteger size_;
+  Bool parallel_;
 };
 
 /**
