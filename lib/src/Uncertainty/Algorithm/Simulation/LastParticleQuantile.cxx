@@ -122,14 +122,25 @@ QuantileSimulationResult LastParticleQuantile::runFixedSample()
   const Scalar tailProbability = lowerTail ? alpha_ : 1.0 - alpha_;
   const ComparisonOperator op = lowerTail ? ComparisonOperator(Less()) : ComparisonOperator(Greater());
 
-  // Poisson move count and rank interval.  The number of moves needed to
-  // cross the true quantile is Poisson with mean -N log(p).  The ranks are
-  // exact Poisson quantiles, and the process is run up to the upper rank,
-  // which contains the interval by construction.
+  // Poisson move count and rank interval.  The first crossing move is
+  // K = P + 1, where P is Poisson with mean -N log(p).  The interval
+  // [t_L, t_U] covers the quantile only when L < K <= U, i.e. when
+  // L <= P <= U - 1.  Its coverage is F(U - 1) - F(L - 1), where F is
+  // the Poisson distribution function.  The lower rank is the
+  // (1-beta)/2 Poisson quantile and the upper rank is one above the
+  // (1+beta)/2 Poisson quantile: the shift by one in U is necessary
+  // because F(Q(t) - 1) can fall below t.  A zero lower quantile would
+  // put L at the nonexistent move zero; reject that configuration
+  // instead of truncating the rank, which would silently undercover.
   const Scalar expectedMoves = -1.0 * particleCount * std::log(tailProbability);
   const UnsignedInteger moveCountEstimate = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(std::ceil(expectedMoves)));
-  const UnsignedInteger lowerRank = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(DistFunc::qPoisson(expectedMoves, 0.5 * (1.0 - beta_))));
-  const UnsignedInteger upperRank = std::max<UnsignedInteger>(lowerRank, static_cast<UnsignedInteger>(DistFunc::qPoisson(expectedMoves, 0.5 * (1.0 + beta_))));
+  const UnsignedInteger lowerRank = static_cast<UnsignedInteger>(DistFunc::qPoisson(expectedMoves, 0.5 * (1.0 - beta_)));
+  if (lowerRank == 0)
+    throw InvalidArgumentException(HERE)
+        << "The confidence level is too high for the particle count: the lower Poisson rank is zero, "
+        << "so the exact lower endpoint is infinite. "
+        << "Increase the particle count or decrease the confidence level";
+  const UnsignedInteger upperRank = std::max<UnsignedInteger>(lowerRank, static_cast<UnsignedInteger>(DistFunc::qPoisson(expectedMoves, 0.5 * (1.0 + beta_)) + 1.0));
   const UnsignedInteger moveCount = std::max(upperRank, moveCountEstimate);
   const Scalar z = DistFunc::qNormal(0.5 * (1.0 + beta_));
 

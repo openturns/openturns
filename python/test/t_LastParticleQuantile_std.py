@@ -75,20 +75,38 @@ assert not result.isFixedSample()
 assert 0.0 < result.getAcceptanceRate() <= 1.0
 
 # The threshold sequence has one value per move and is nondecreasing for
-# the upper tail.  The Poisson ranks bracket the index at which the true
-# quantile is crossed.
+# the upper tail.  The Poisson interval [t_L, t_U] covers the quantile
+# when the first crossing index K satisfies L < K <= U, so its exact
+# Poisson coverage is at least the requested confidence level.
 thresholds = point_values(result.getThresholdSequence())
 lower_rank = result.getPoissonRankLower()
 upper_rank = result.getPoissonRankUpper()
 assert result.hasPoissonRanks()
 assert 1 <= lower_rank <= upper_rank
-assert result.getStepCount() == len(thresholds) == upper_rank
+assert result.getStepCount() == len(thresholds)
+assert result.getStepCount() >= upper_rank
 for previous, current in zip(thresholds, thresholds[1:]):
     assert current >= previous
 crossing = next(
     index + 1 for index, value in enumerate(thresholds) if value >= true_upper
 )
-assert lower_rank <= crossing <= upper_rank
+assert lower_rank < crossing <= upper_rank
+poisson = ot.Poisson(-particle_count * math.log(tail_probability))
+assert (
+    poisson.computeCDF(upper_rank - 1) - poisson.computeCDF(lower_rank - 1)
+    >= algo.getConfidenceLevel() - 1.0e-12
+)
+
+# Counterexample for the old rank convention: with N=10, p=exp(-2) and
+# beta=0.99, shifting the lower rank down and leaving the upper rank
+# unshifted gives F(U-1)-F(L-2) < beta.  The corrected convention shifts
+# the upper rank up instead, which restores the nominal coverage.
+lambda_moves = 20.0
+poisson = ot.Poisson(lambda_moves)
+lower = int(ot.DistFunc.qPoisson(lambda_moves, 0.005))
+upper = int(ot.DistFunc.qPoisson(lambda_moves, 0.995))
+assert poisson.computeCDF(upper - 1) - poisson.computeCDF(lower - 2) < 0.99
+assert poisson.computeCDF(upper) - poisson.computeCDF(lower - 1) >= 0.99
 
 # The reduced-bias estimate averages the two thresholds around the
 # Poisson move count M = ceil(-N log p).
@@ -218,5 +236,12 @@ with ott.assert_raises(TypeError):
     algo.setProposalRange(-1.0)
 with ott.assert_raises(TypeError):
     algo.setProposalRange(float("inf"))
+
+# A confidence level that puts the exact lower endpoint at infinity is
+# rejected instead of silently truncating the lower Poisson rank.
+algo = otexp.LastParticleQuantile(output, 0.5, 0.9999)
+algo.setParticleCount(10)
+with ott.assert_raises(TypeError):
+    algo.run()
 
 print("OK")

@@ -628,16 +628,16 @@ output with a Metropolis--Hastings kernel and a finite burn-in, and
 replaces the particle.  The lower tail is handled symmetrically by
 reversing the selection and the comparison.
 
-The number of moves needed to cross the true quantile is Poisson with
-mean :math:`\lambda=-N\log p`.  Let :math:`Q_{\Pois(\lambda)}` denote
-the quantile function of that Poisson distribution.  The algorithm runs
-to the upper rank
+The first crossing move is :math:`K=P+1`, where :math:`P` is Poisson
+with mean :math:`\lambda=-N\log p`.  Let :math:`Q_{\Pois(\lambda)}`
+denote the quantile function of that Poisson distribution.  The
+algorithm runs to the upper rank
 
 .. math::
     :label: eq-last-particle-rank
 
     U = Q_{\Pois(\lambda)}
-        \left(\frac{1+\beta}{2}\right),
+        \left(\frac{1+\beta}{2}\right) + 1,
 
 and reports Walter's reduced-bias midpoint estimate [walter2015]_,
 
@@ -654,29 +654,32 @@ the lower tail, where
 .. math::
     :label: eq-last-particle-lower-rank
 
-    L = \max\left(1,
-        Q_{\Pois(\lambda)}
-        \left(\frac{1-\beta}{2}\right) - 1\right).
+    L = Q_{\Pois(\lambda)}
+        \left(\frac{1-\beta}{2}\right).
 
 Let :math:`K` be the first move whose threshold reaches the true
 quantile.  The interval covers :math:`q_\alpha` exactly when
-:math:`L<K\le U`.  The shift by one in :math:`L` is necessary: without
-it, :math:`Q_{\Pois(\lambda)}((1-\beta)/2)` itself belongs to the
-missed event, and the nominal coverage is not attained.  The one-based
-rank convention requires a finite lower threshold.  When the lower
-Poisson quantile is zero or one, the exact lower endpoint would be
-:math:`-\infty`; the implementation rejects this configuration instead
-of truncating the rank to one, so the coverage statement below assumes
-:math:`Q_{\Pois(\lambda)}((1-\beta)/2)\ge 2`.  This condition depends on
-:math:`N`, :math:`p` and :math:`\beta`; it holds for moderate confidence
-levels but fails when :math:`\beta` is close enough to one that the
-lower Poisson quantile falls below two.  With
-:math:`\Prob{K\le U}\ge(1+\beta)/2` and
-:math:`\Prob{K\le L}<(1-\beta)/2`, the coverage is at least
-:math:`\beta`.  It is exact for the
-idealized process with independent conditional draws; the finite-burn-in
-Markov chain makes the achieved coverage asymptotic, so the result
-carries ``COVERAGE_ASYMPTOTIC``.
+:math:`L<K\le U`, i.e. when :math:`L\le P\le U-1`.  Its coverage is
+:math:`F_{\Pois(\lambda)}(U-1)-F_{\Pois(\lambda)}(L-1)`, where
+:math:`F_{\Pois(\lambda)}` is the Poisson distribution function.  The
+shift by one in :math:`U` is necessary: with
+:math:`U=Q_{\Pois(\lambda)}((1+\beta)/2)`, the value
+:math:`F_{\Pois(\lambda)}(U-1)` can fall below :math:`(1+\beta)/2` and
+the nominal coverage is not attained.  With the shifted upper rank,
+:math:`F_{\Pois(\lambda)}(U-1)\ge(1+\beta)/2` and
+:math:`F_{\Pois(\lambda)}(L-1)<(1-\beta)/2`, so the coverage is at
+least :math:`\beta`.  The one-based rank convention requires a finite
+lower threshold.  When the lower Poisson quantile is zero, the exact
+lower endpoint would be :math:`-\infty`; the implementation rejects
+this configuration instead of truncating the rank to one, so the
+coverage statement assumes
+:math:`Q_{\Pois(\lambda)}((1-\beta)/2)\ge 1`.  This condition depends
+on :math:`N`, :math:`p` and :math:`\beta`; it holds for moderate
+confidence levels but fails when :math:`\beta` is close enough to one
+that the lower Poisson quantile is zero.  It is exact for the idealized
+process with independent conditional draws; the finite-burn-in Markov
+chain makes the achieved coverage asymptotic, so the result carries
+``COVERAGE_ASYMPTOTIC``.
 
 Cross-entropy importance sampling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
