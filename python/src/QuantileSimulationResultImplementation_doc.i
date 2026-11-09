@@ -1136,7 +1136,8 @@ Returns
 -------
 directionCount : int
     Number of directions used by the directional estimator, or zero
-    when the estimator is not directional.)RAW"
+    when the estimator is not directional.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1146,7 +1147,8 @@ R"RAW(Accessor to the direction count.
 Parameters
 ----------
 directionCount : int
-    Number of directions used by the directional estimator.)RAW"
+    Number of directions used by the directional estimator.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1157,7 +1159,8 @@ Returns
 -------
 probabilities : :class:`~openturns.Point`
     Per-direction or per-line conditional probabilities evaluated at the
-    returned quantile.)RAW"
+    returned quantile.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1168,7 +1171,8 @@ Parameters
 ----------
 probabilities : sequence of float
     Per-direction or per-line conditional probabilities evaluated at the
-    returned quantile.  They must lie in :math:`[0,1]`.)RAW"
+    returned quantile.  They must lie in :math:`[0,1]`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1178,7 +1182,8 @@ R"RAW(Accessor to the important direction.
 Returns
 -------
 direction : :class:`~openturns.Point`
-    Important direction used by the line-sampling estimator.)RAW"
+    Important direction used by the line-sampling estimator.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1189,7 +1194,8 @@ Parameters
 ----------
 direction : sequence of float
     Important direction used by the line-sampling estimator.  It must be
-    finite and non-zero.)RAW"
+    finite and non-zero.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1199,7 +1205,8 @@ R"RAW(Test whether an important direction is available.
 Returns
 -------
 hasImportantDirection : bool
-    Whether the result stores an important direction.)RAW"
+    Whether the result stores an important direction.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1209,7 +1216,8 @@ R"RAW(Accessor to the root bracket.
 Returns
 -------
 bracket : :class:`~openturns.Interval`
-    Final bracket of the root-finding algorithm.)RAW"
+    Final bracket of the root-finding algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1219,7 +1227,8 @@ R"RAW(Accessor to the root bracket.
 Parameters
 ----------
 bracket : :class:`~openturns.Interval`
-    Final bracket of the root-finding algorithm.)RAW"
+    Final bracket of the root-finding algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1229,7 +1238,8 @@ R"RAW(Test whether a root bracket is available.
 Returns
 -------
 hasRootBracket : bool
-    Whether the result stores a root bracket.)RAW"
+    Whether the result stores a root bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1239,7 +1249,8 @@ R"RAW(Accessor to the root iteration count.
 Returns
 -------
 iterationCount : int
-    Number of bisection iterations performed by the root finder.)RAW"
+    Number of bisection iterations performed by the root finder.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1249,7 +1260,8 @@ R"RAW(Accessor to the root iteration count.
 Parameters
 ----------
 iterationCount : int
-    Number of bisection iterations performed by the root finder.)RAW"
+    Number of bisection iterations performed by the root finder.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1259,7 +1271,8 @@ R"RAW(Accessor to the probability evaluation count.
 Returns
 -------
 evaluationCount : int
-    Number of probability evaluations performed by the root finder.)RAW"
+    Number of probability evaluations performed by the root finder.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1269,7 +1282,8 @@ R"RAW(Accessor to the probability evaluation count.
 Parameters
 ----------
 evaluationCount : int
-    Number of probability evaluations performed by the root finder.)RAW"
+    Number of probability evaluations performed by the root finder.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1279,7 +1293,8 @@ R"RAW(Accessor to the root-solver type.
 Returns
 -------
 type : int
-    Either ``BISECTION`` or ``ROBBINS_MONRO``.)RAW"
+    Either ``BISECTION`` or ``ROBBINS_MONRO``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1289,7 +1304,8 @@ R"RAW(Accessor to the root-solver type.
 Parameters
 ----------
 type : int
-    Either ``BISECTION`` or ``ROBBINS_MONRO``.)RAW"
+    Either ``BISECTION`` or ``ROBBINS_MONRO``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1299,7 +1315,8 @@ R"RAW(Accessor to the root-solver description.
 Returns
 -------
 description : str
-    ``"Bisection"`` or ``"Robbins-Monro"``.)RAW"
+    ``"Bisection"`` or ``"Robbins-Monro"``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1310,7 +1327,8 @@ Returns
 -------
 commonRandomNumbers : bool
     Whether the root-finding probability evaluations are effectively
-    coupled by a common random stream.)RAW"
+    coupled by a common random stream.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1321,7 +1339,8 @@ Parameters
 ----------
 commonRandomNumbers : bool
     Whether the root-finding probability evaluations are effectively
-    coupled by a common random stream.)RAW"
+    coupled by a common random stream.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1331,7 +1350,8 @@ R"RAW(Accessor to the random-stream capability.
 Returns
 -------
 capability : bool
-    Whether the wrapped algorithm can inject a random stream.)RAW"
+    Whether the wrapped algorithm can inject a random stream.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1341,7 +1361,8 @@ R"RAW(Accessor to the random-stream capability.
 Parameters
 ----------
 capability : bool
-    Whether the wrapped algorithm can inject a random stream.)RAW"
+    Whether the wrapped algorithm can inject a random stream.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1352,7 +1373,8 @@ Returns
 -------
 delegated : bool
     Whether the inversion was delegated to direct extraction from a
-    sample.)RAW"
+    sample.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1363,7 +1385,8 @@ Parameters
 ----------
 delegated : bool
     Whether the inversion was delegated to direct extraction from a
-    sample.)RAW"
+    sample.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1373,7 +1396,8 @@ R"RAW(Accessor to the wrapped algorithm description.
 Returns
 -------
 description : str
-    Description of the event-simulation engine wrapped by the inversion.)RAW"
+    Description of the event-simulation engine wrapped by the inversion.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1383,7 +1407,8 @@ R"RAW(Accessor to the wrapped algorithm description.
 Parameters
 ----------
 description : str
-    Description of the event-simulation engine wrapped by the inversion.)RAW"
+    Description of the event-simulation engine wrapped by the inversion.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1393,7 +1418,8 @@ R"RAW(Test whether a wrapped algorithm description is available.
 Returns
 -------
 hasWrappedAlgorithmDescription : bool
-    Whether the result stores a wrapped algorithm description.)RAW"
+    Whether the result stores a wrapped algorithm description.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1403,7 +1429,8 @@ R"RAW(Accessor to the analytical probability.
 Returns
 -------
 probability : float
-    FORM or SORM probability evaluated at the returned quantile.)RAW"
+    FORM or SORM probability evaluated at the returned quantile.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1414,7 +1441,8 @@ Parameters
 ----------
 probability : float
     FORM or SORM probability evaluated at the returned quantile, in
-    :math:`[0,1]`.)RAW"
+    :math:`[0,1]`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1424,7 +1452,8 @@ R"RAW(Test whether an analytical probability is available.
 Returns
 -------
 hasAnalyticalProbability : bool
-    Whether the result stores an analytical probability.)RAW"
+    Whether the result stores an analytical probability.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1434,7 +1463,8 @@ R"RAW(Accessor to the design point.
 Returns
 -------
 designPoint : :class:`~openturns.Point`
-    Standard-space design point of the analytical approximation.)RAW"
+    Standard-space design point of the analytical approximation.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1444,7 +1474,8 @@ R"RAW(Accessor to the design point.
 Parameters
 ----------
 designPoint : sequence of float
-    Standard-space design point of the analytical approximation.)RAW"
+    Standard-space design point of the analytical approximation.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1454,7 +1485,8 @@ R"RAW(Test whether a design point is available.
 Returns
 -------
 hasDesignPoint : bool
-    Whether the result stores a design point.)RAW"
+    Whether the result stores a design point.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1464,7 +1496,8 @@ R"RAW(Accessor to the reliability index.
 Returns
 -------
 reliabilityIndex : float
-    Hasofer-Lind reliability index of the analytical approximation.)RAW"
+    Hasofer-Lind reliability index of the analytical approximation.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1474,7 +1507,8 @@ R"RAW(Accessor to the reliability index.
 Parameters
 ----------
 reliabilityIndex : float
-    Hasofer-Lind reliability index of the analytical approximation.)RAW"
+    Hasofer-Lind reliability index of the analytical approximation.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1484,7 +1518,8 @@ R"RAW(Test whether a reliability index is available.
 Returns
 -------
 hasReliabilityIndex : bool
-    Whether the result stores a reliability index.)RAW"
+    Whether the result stores a reliability index.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1494,7 +1529,8 @@ R"RAW(Accessor to the curvature correction.
 Returns
 -------
 correction : float
-    Ratio between the SORM probability and the FORM probability.)RAW"
+    Ratio between the SORM probability and the FORM probability.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1505,7 +1541,8 @@ Parameters
 ----------
 correction : float
     Ratio between the SORM probability and the FORM probability.  It
-    must be finite and positive.)RAW"
+    must be finite and positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1515,7 +1552,8 @@ R"RAW(Test whether a curvature correction is available.
 Returns
 -------
 hasCurvatureCorrection : bool
-    Whether the result stores a curvature correction.)RAW"
+    Whether the result stores a curvature correction.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1525,7 +1563,8 @@ R"RAW(Accessor to the refined probability.
 Returns
 -------
 probability : float
-    Probability obtained by the importance-sampling refinement.)RAW"
+    Probability obtained by the importance-sampling refinement.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1536,7 +1575,8 @@ Parameters
 ----------
 probability : float
     Probability obtained by the importance-sampling refinement, in
-    :math:`[0,1]`.)RAW"
+    :math:`[0,1]`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1546,7 +1586,8 @@ R"RAW(Test whether a refined probability is available.
 Returns
 -------
 hasRefinedProbability : bool
-    Whether the result stores a refined probability.)RAW"
+    Whether the result stores a refined probability.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1556,7 +1597,8 @@ R"RAW(Accessor to the refinement standard error.
 Returns
 -------
 standardError : float
-    Standard error of the importance-sampling refinement.)RAW"
+    Standard error of the importance-sampling refinement.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1567,6 +1609,7 @@ Parameters
 ----------
 standardError : float
     Standard error of the importance-sampling refinement.  It must be
-    finite and non-negative.)RAW"
+    finite and non-negative.
+)RAW"
 
 // ---------------------------------------------------------------------

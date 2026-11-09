@@ -24,7 +24,7 @@ The inversion strategy and its coverage limitations are described in
 
 A plain Monte Carlo engine configured with a
 :class:`~openturns.MonteCarloExperiment` is not inverted: the adapter
-delegates to :class:`~openturns.experimental.QuantileSimulationAlgorithm` and returns
+delegates to :class:`~openturns.experimental.MonteCarloQuantileSimulation` and returns
 the exact order-statistic interval.  Other engines are inverted by a
 confidence-bound bisection: an endpoint is discarded only when its whole
 confidence bound is on one side of the target, and the iteration stops
@@ -92,7 +92,8 @@ R"RAW(Accessor to the wrapped algorithm.
 Returns
 -------
 algorithm : :class:`~openturns.EventSimulation`
-    Event-simulation engine whose probability is inverted.)RAW"
+    Event-simulation engine whose probability is inverted.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -105,7 +106,8 @@ algorithm : :class:`~openturns.EventSimulation`
     Event-simulation engine whose probability is inverted.  Its event
     must be a threshold event with a ``Greater``, ``GreaterOrEqual``,
     ``Less`` or ``LessOrEqual`` operator on a scalar composite random
-    vector.)RAW"
+    vector.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -115,7 +117,8 @@ R"RAW(Test whether the wrapped algorithm is set.
 Returns
 -------
 hasAlgorithm : bool
-    Whether :meth:`setAlgorithm` has been called.)RAW"
+    Whether :meth:`setAlgorithm` has been called.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -126,7 +129,8 @@ Returns
 -------
 useCommonRandomNumbers : bool
     Requested use of common random numbers.  This is a request, not a
-    capability: the result records whether the coupling was effective.)RAW"
+    capability: the result records whether the coupling was effective.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -138,7 +142,8 @@ Parameters
 useCommonRandomNumbers : bool
     Requested use of common random numbers.  The adapter cannot inject
     a random stream in this release, so the result is still labelled
-    ``COVERAGE_NONE``.)RAW"
+    ``COVERAGE_NONE``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -148,7 +153,8 @@ R"RAW(Accessor to the root-finding tolerance.
 Returns
 -------
 tolerance : float
-    Relative width of the final bracket.)RAW"
+    Relative width of the final bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -159,7 +165,8 @@ Parameters
 ----------
 tolerance : float
     Relative width of the final bracket.  It must be finite and
-    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.)RAW"
+    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -169,7 +176,8 @@ R"RAW(Accessor to the maximum number of root-finding iterations.
 Returns
 -------
 maximumIteration : int
-    Maximum number of bisection iterations.)RAW"
+    Maximum number of bisection iterations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -180,7 +188,8 @@ Parameters
 ----------
 maximumIteration : int
     Maximum number of bisection iterations.  It must be positive.
-    Default is ``QuantileRootSolver-DefaultMaximumIteration``.)RAW"
+    Default is ``QuantileRootSolver-DefaultMaximumIteration``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -190,7 +199,8 @@ R"RAW(Accessor to the pilot sample size.
 Returns
 -------
 pilotSampleSize : int
-    Number of output values used to build the initial bracket.)RAW"
+    Number of output values used to build the initial bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -201,7 +211,8 @@ Parameters
 ----------
 pilotSampleSize : int
     Number of output values used to build the initial bracket.  It must
-    be positive.  Default is ``QuantileRootSolver-PilotSampleSize``.)RAW"
+    be positive.  Default is ``QuantileRootSolver-PilotSampleSize``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -212,7 +223,8 @@ Returns
 -------
 replicateCount : int
     Number of independent complete inversions used to build the
-    Student interval.)RAW"
+    Student interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -224,4 +236,5 @@ Parameters
 replicateCount : int
     Number of independent complete inversions used to build the
     Student interval.  It must be positive.  Default is 1, which
-    reports a degenerate interval.)RAW"
+    reports a degenerate interval.
+)RAW"

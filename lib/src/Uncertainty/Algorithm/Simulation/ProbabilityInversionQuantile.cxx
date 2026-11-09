@@ -24,7 +24,7 @@
 
 #include "openturns/ProbabilityInversionQuantile.hxx"
 #include "openturns/QuantileRootSolver.hxx"
-#include "openturns/QuantileSimulationAlgorithm.hxx"
+#include "openturns/MonteCarloQuantileSimulation.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
@@ -450,7 +450,7 @@ QuantileSimulationResult ProbabilityInversionQuantile::runDelegated()
 {
   const UnsignedInteger nominalSize = getNominalSampleSize();
   const Distribution inputDistribution(output_.getAntecedent().getDistribution());
-  QuantileSimulationAlgorithm algorithm(output_,
+  MonteCarloQuantileSimulation algorithm(output_,
                                         MonteCarloExperiment(inputDistribution, nominalSize),
                                         alpha_, beta_);
   algorithm.setRequiredCoverage(requiredCoverage_);

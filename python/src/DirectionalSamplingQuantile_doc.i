@@ -82,7 +82,8 @@ Returns
 -------
 rootStrategy : :class:`~openturns.RootStrategy`
     Strategy used to find the intersection of a ray with the limit
-    state surface.)RAW"
+    state surface.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -93,7 +94,8 @@ Parameters
 ----------
 rootStrategy : :class:`~openturns.RootStrategy`
     Strategy used to find the intersection of a ray with the limit
-    state surface.  Default is :class:`~openturns.SafeAndSlow`.)RAW"
+    state surface.  Default is :class:`~openturns.SafeAndSlow`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -103,7 +105,8 @@ R"RAW(Accessor to the sampling strategy.
 Returns
 -------
 samplingStrategy : :class:`~openturns.SamplingStrategy`
-    Strategy used to draw the directions on the unit sphere.)RAW"
+    Strategy used to draw the directions on the unit sphere.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -114,7 +117,8 @@ Parameters
 ----------
 samplingStrategy : :class:`~openturns.SamplingStrategy`
     Strategy used to draw the directions on the unit sphere.  Default is
-    :class:`~openturns.RandomDirection`.)RAW"
+    :class:`~openturns.RandomDirection`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -124,7 +128,8 @@ R"RAW(Accessor to the root-finding tolerance.
 Returns
 -------
 tolerance : float
-    Relative width of the final bracket.)RAW"
+    Relative width of the final bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -135,7 +140,8 @@ Parameters
 ----------
 tolerance : float
     Relative width of the final bracket.  It must be finite and
-    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.)RAW"
+    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -145,7 +151,8 @@ R"RAW(Accessor to the maximum number of root-finding iterations.
 Returns
 -------
 maximumIteration : int
-    Maximum number of bisection iterations.)RAW"
+    Maximum number of bisection iterations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -156,7 +163,8 @@ Parameters
 ----------
 maximumIteration : int
     Maximum number of bisection iterations.  It must be positive.
-    Default is ``QuantileRootSolver-DefaultMaximumIteration``.)RAW"
+    Default is ``QuantileRootSolver-DefaultMaximumIteration``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -166,7 +174,8 @@ R"RAW(Accessor to the pilot sample size.
 Returns
 -------
 pilotSampleSize : int
-    Number of output values used to build the initial bracket.)RAW"
+    Number of output values used to build the initial bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -177,4 +186,5 @@ Parameters
 ----------
 pilotSampleSize : int
     Number of output values used to build the initial bracket.  It must
-    be positive.  Default is ``QuantileRootSolver-PilotSampleSize``.)RAW"
+    be positive.  Default is ``QuantileRootSolver-PilotSampleSize``.
+)RAW"

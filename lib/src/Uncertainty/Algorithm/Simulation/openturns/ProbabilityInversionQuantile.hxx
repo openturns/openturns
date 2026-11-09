@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * and no sample, weighted sample or threshold sequence.
  *
  * A plain Monte Carlo probability-simulation engine is not inverted:
- * it exposes a sample and is delegated to QuantileSimulationAlgorithm,
+ * it exposes a sample and is delegated to MonteCarloQuantileSimulation,
  * which returns the exact order-statistic interval.  Other engines are
  * inverted by a confidence-bound bisection.  The wrapped engine is
  * cloned for every probability evaluation; its event is replaced by the

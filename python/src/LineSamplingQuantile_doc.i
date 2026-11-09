@@ -87,7 +87,8 @@ Returns
 -------
 initialAlpha : :class:`~openturns.Point`
     User-provided important direction.  An empty point means that the
-    direction is selected automatically.)RAW"
+    direction is selected automatically.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -100,7 +101,8 @@ initialAlpha : sequence of float
     Important direction in the standard space.  It must be finite and
     non-zero and is normalized internally.  When it is not set, the
     direction is computed by FORM at the pilot threshold, with a
-    fallback to the extreme pilot standard point.)RAW"
+    fallback to the extreme pilot standard point.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -111,7 +113,8 @@ Returns
 -------
 rootStrategy : :class:`~openturns.RootStrategy`
     Strategy used to find the intersection of a line with the limit
-    state surface.)RAW"
+    state surface.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -122,7 +125,8 @@ Parameters
 ----------
 rootStrategy : :class:`~openturns.RootStrategy`
     Strategy used to find the intersection of a line with the limit
-    state surface.  Default is :class:`~openturns.SafeAndSlow`.)RAW"
+    state surface.  Default is :class:`~openturns.SafeAndSlow`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -133,7 +137,8 @@ Returns
 -------
 searchOppositeDirection : bool
     Whether the ray in the direction opposite to the important
-    direction is also searched.)RAW"
+    direction is also searched.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -145,7 +150,8 @@ Parameters
 searchOppositeDirection : bool
     Whether the ray in the direction opposite to the important
     direction is also searched.  Default is
-    ``LineSampling-DefaultSearchOppositeDirection``.)RAW"
+    ``LineSampling-DefaultSearchOppositeDirection``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -155,7 +161,8 @@ R"RAW(Accessor to the root-finding tolerance.
 Returns
 -------
 tolerance : float
-    Relative width of the final bracket.)RAW"
+    Relative width of the final bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -166,7 +173,8 @@ Parameters
 ----------
 tolerance : float
     Relative width of the final bracket.  It must be finite and
-    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.)RAW"
+    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -176,7 +184,8 @@ R"RAW(Accessor to the maximum number of root-finding iterations.
 Returns
 -------
 maximumIteration : int
-    Maximum number of bisection iterations.)RAW"
+    Maximum number of bisection iterations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -187,7 +196,8 @@ Parameters
 ----------
 maximumIteration : int
     Maximum number of bisection iterations.  It must be positive.
-    Default is ``QuantileRootSolver-DefaultMaximumIteration``.)RAW"
+    Default is ``QuantileRootSolver-DefaultMaximumIteration``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -198,7 +208,8 @@ Returns
 -------
 pilotSampleSize : int
     Number of output values used to build the initial bracket and,
-    when needed, the important direction.)RAW"
+    when needed, the important direction.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -210,4 +221,5 @@ Parameters
 pilotSampleSize : int
     Number of output values used to build the initial bracket and,
     when needed, the important direction.  It must be positive.
-    Default is ``QuantileRootSolver-PilotSampleSize``.)RAW"
+    Default is ``QuantileRootSolver-PilotSampleSize``.
+)RAW"

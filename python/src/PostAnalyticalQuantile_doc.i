@@ -86,7 +86,8 @@ R"RAW(Accessor to the nearest-point algorithm.
 Returns
 -------
 nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
-    Optimization algorithm used to search the design point.)RAW"
+    Optimization algorithm used to search the design point.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -98,7 +99,8 @@ Parameters
 nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
     Optimization algorithm used to search the design point.  The
     starting point is set to the input distribution mean when the
-    algorithm does not define one.)RAW"
+    algorithm does not define one.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -108,7 +110,8 @@ R"RAW(Accessor to the analytical method.
 Returns
 -------
 method : int
-    Either ``FORM_APPROXIMATION`` or ``SORM_APPROXIMATION``.)RAW"
+    Either ``FORM_APPROXIMATION`` or ``SORM_APPROXIMATION``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -119,7 +122,8 @@ Parameters
 ----------
 method : int
     Either ``FORM_APPROXIMATION`` or ``SORM_APPROXIMATION``.  Default is
-    ``FORM_APPROXIMATION``.)RAW"
+    ``FORM_APPROXIMATION``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -129,7 +133,8 @@ R"RAW(Accessor to the analytical method description.
 Returns
 -------
 description : str
-    ``"FORM"`` or ``"SORM"``.)RAW"
+    ``"FORM"`` or ``"SORM"``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -139,7 +144,8 @@ R"RAW(Accessor to the SORM curvature formula.
 Returns
 -------
 formula : int
-    One of ``BREITUNG``, ``HOHENBICHLER`` or ``TVEDT``.)RAW"
+    One of ``BREITUNG``, ``HOHENBICHLER`` or ``TVEDT``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -150,7 +156,8 @@ Parameters
 ----------
 formula : int
     One of ``BREITUNG``, ``HOHENBICHLER`` or ``TVEDT``.  Default is
-    ``HOHENBICHLER``.)RAW"
+    ``HOHENBICHLER``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -160,7 +167,8 @@ R"RAW(Accessor to the SORM curvature formula description.
 Returns
 -------
 description : str
-    ``"Breitung"``, ``"Hohenbichler"`` or ``"Tvedt"``.)RAW"
+    ``"Breitung"``, ``"Hohenbichler"`` or ``"Tvedt"``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -171,7 +179,8 @@ Returns
 -------
 refinementEnabled : bool
     Whether the analytical quantile is refined by importance sampling
-    around the design point.)RAW"
+    around the design point.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -182,7 +191,8 @@ Parameters
 ----------
 refinementEnabled : bool
     Whether the analytical quantile is refined by importance sampling
-    around the design point.  Default is ``False``.)RAW"
+    around the design point.  Default is ``False``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -193,7 +203,8 @@ Returns
 -------
 replicateCount : int
     Number of independent importance-sampling replicates used by the
-    refinement.)RAW"
+    refinement.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -206,7 +217,8 @@ replicateCount : int
     Number of independent importance-sampling replicates used by the
     refinement.  It must be positive; at least two replicates are
     required to build the Student interval.  Default is
-    ``PostAnalyticalQuantile-DefaultReplicateCount``.)RAW"
+    ``PostAnalyticalQuantile-DefaultReplicateCount``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -216,7 +228,8 @@ R"RAW(Accessor to the root-finding tolerance.
 Returns
 -------
 tolerance : float
-    Relative width of the final bracket.)RAW"
+    Relative width of the final bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -227,7 +240,8 @@ Parameters
 ----------
 tolerance : float
     Relative width of the final bracket.  It must be finite and
-    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.)RAW"
+    positive.  Default is ``QuantileRootSolver-DefaultTolerance``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -237,7 +251,8 @@ R"RAW(Accessor to the maximum number of root-finding iterations.
 Returns
 -------
 maximumIteration : int
-    Maximum number of bisection iterations.)RAW"
+    Maximum number of bisection iterations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -248,7 +263,8 @@ Parameters
 ----------
 maximumIteration : int
     Maximum number of bisection iterations.  It must be positive.
-    Default is ``QuantileRootSolver-DefaultMaximumIteration``.)RAW"
+    Default is ``QuantileRootSolver-DefaultMaximumIteration``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -258,7 +274,8 @@ R"RAW(Accessor to the pilot sample size.
 Returns
 -------
 pilotSampleSize : int
-    Number of output values used to build the initial bracket.)RAW"
+    Number of output values used to build the initial bracket.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -269,4 +286,5 @@ Parameters
 ----------
 pilotSampleSize : int
     Number of output values used to build the initial bracket.  It must
-    be positive.  Default is ``QuantileRootSolver-PilotSampleSize``.)RAW"
+    be positive.  Default is ``QuantileRootSolver-PilotSampleSize``.
+)RAW"

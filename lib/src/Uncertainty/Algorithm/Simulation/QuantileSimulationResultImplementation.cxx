@@ -1168,7 +1168,8 @@ void QuantileSimulationResultImplementation::load(Advocate & adv)
   if (adv.hasAttribute("intermediateQuantileLevel_"))
     adv.loadAttribute("intermediateQuantileLevel_", intermediateQuantileLevel_);
   if (adv.hasAttribute("conditionalProbability_"))
-    adv.loadAttribute("conditionalProbability_", conditionalProbability_);  if (adv.hasAttribute("directionCount_"))
+    adv.loadAttribute("conditionalProbability_", conditionalProbability_);
+  if (adv.hasAttribute("directionCount_"))
     adv.loadAttribute("directionCount_", directionCount_);
   if (adv.hasAttribute("conditionalProbabilitySample_"))
     adv.loadAttribute("conditionalProbabilitySample_", conditionalProbabilitySample_);

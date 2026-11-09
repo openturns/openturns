@@ -50,11 +50,16 @@ page presents the common statistical background and then the theory of
 each family of algorithms.
 
 .. note::
-    The weighted-experiment, block, exact-tail, subset, last-particle
-    and cross-entropy estimators
+    The weighted-experiment, block, exact-tail, directional, line,
+    post-analytical, probability-inversion, subset, last-particle and
+    cross-entropy estimators
     (:class:`~openturns.experimental.MonteCarloQuantileSimulation`,
     :class:`~openturns.experimental.BlockQuantileSimulation`,
     :class:`~openturns.experimental.ExactTailQuantileSimulation`,
+    :class:`~openturns.experimental.DirectionalSamplingQuantile`,
+    :class:`~openturns.experimental.LineSamplingQuantile`,
+    :class:`~openturns.experimental.PostAnalyticalQuantile`,
+    :class:`~openturns.experimental.ProbabilityInversionQuantile`,
     :class:`~openturns.experimental.SubsetSamplingQuantile`,
     :class:`~openturns.experimental.LastParticleQuantile` and
     :class:`~openturns.experimental.CrossEntropyQuantile`) are available
