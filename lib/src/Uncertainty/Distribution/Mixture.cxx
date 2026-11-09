@@ -234,6 +234,9 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
   computeRange();
+  // Disable the approximation first: interpolatePDFCDF evaluates the exact
+  // PDF/CDF/DDF, which would otherwise reuse the stale tables
+  useApproximatePDFCDF_ = false;
   if ((getDimension() == 1) && (coll.getSize() >= ResourceMap::GetAsUnsignedInteger("Mixture-SmallSize")) && (coll.getSize() < ResourceMap::GetAsUnsignedInteger("Mixture-LargeSize")))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF

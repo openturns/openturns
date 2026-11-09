@@ -370,3 +370,25 @@ zero_weight = ot.Mixture(
     [ot.Exponential(1.0), ot.Exponential(2.0)], [1.0, 0.0]
 )
 ott.assert_almost_equal(zero_weight.computeLogPDF([1.0]), -1.0, 1e-15, 0.0)
+
+# Replacing the collection resets the PDF/CDF interpolation state
+smallKey = "Mixture-SmallSize"
+largeKey = "Mixture-LargeSize"
+smallSize = ot.ResourceMap.GetAsUnsignedInteger(smallKey)
+largeSize = ot.ResourceMap.GetAsUnsignedInteger(largeKey)
+ot.ResourceMap.SetAsUnsignedInteger(smallKey, 2)
+ot.ResourceMap.SetAsUnsignedInteger(largeKey, 100)
+inRangeAtoms = [ot.Normal(float(i), 1.0) for i in range(48)]
+mixture = ot.Mixture(inRangeAtoms)
+outOfRangeAtoms = [ot.Normal(float(i), 1.0) for i in range(150)]
+mixture.setDistributionCollection(outOfRangeAtoms)
+freshMixture = ot.Mixture(outOfRangeAtoms)
+for x in [-1.0, 0.0, 75.0]:
+    ott.assert_almost_equal(
+        mixture.computePDF([x]), freshMixture.computePDF([x]), 1e-12, 1e-12
+    )
+    ott.assert_almost_equal(
+        mixture.computeCDF([x]), freshMixture.computeCDF([x]), 1e-12, 1e-12
+    )
+ot.ResourceMap.SetAsUnsignedInteger(smallKey, smallSize)
+ot.ResourceMap.SetAsUnsignedInteger(largeKey, largeSize)
