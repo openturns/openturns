@@ -20,6 +20,7 @@
  */
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -30,6 +31,25 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(MarginalTransformationEvaluation)
 
 static const Factory<MarginalTransformationEvaluation> Factory_MarginalTransformationEvaluation;
+
+/* Build a parameter description consistent with the parameter vector: fall
+ * back to default names when the marginal provides none (custom distributions
+ * may throw NotYetImplementedException and the Python wrapper returns an empty
+ * description), and fail fast on a short non-empty description instead of
+ * reading out of bounds (as PointWithDescription::setDescription used to). */
+static Description BuildConsistentMarginalParameterDescription(const Distribution & marginal)
+{
+  const UnsignedInteger dimension = marginal.getParameter().getDimension();
+  Description description;
+  try { description = marginal.getParameterDescription(); }
+  catch (const NotYetImplementedException &) { /* fall through to the default below */ }
+  if (description.getSize() != dimension)
+  {
+    if (description.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: the parameter description of dimension " << description.getSize() << " does not match the parameter dimension " << dimension;
+    description = Description::BuildDefault(dimension, "p");
+  }
+  return description;
+}
 
 
 /* Default constructor */
@@ -55,19 +75,27 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
 {
   initialize(simplify);
   // Populate the parameter vector and description with the input marginal
-  // parameters followed by the output marginal parameters
+  // parameters followed by the output marginal parameters. Descriptions
+  // are prefixed with the side and the marginal index to stay unique
+  // when input and output marginals share the same structure.
   Point parameter(0);
   Description parameterDescription(0);
   const UnsignedInteger size = inputDistributionCollection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    parameter.add(inputDistributionCollection_[i].getParameter());
-    parameterDescription.add(inputDistributionCollection_[i].getParameterDescription());
+    const Point marginalParameter(inputDistributionCollection_[i].getParameter());
+    parameter.add(marginalParameter);
+    const Description marginalDescription(BuildConsistentMarginalParameterDescription(inputDistributionCollection_[i]));
+    for (UnsignedInteger j = 0; j < marginalDescription.getSize(); ++j)
+      parameterDescription.add((OSS() << "input_" << i << "_" << marginalDescription[j]).str());
   }
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    parameter.add(outputDistributionCollection_[i].getParameter());
-    parameterDescription.add(outputDistributionCollection_[i].getParameterDescription());
+    const Point marginalParameter(outputDistributionCollection_[i].getParameter());
+    parameter.add(marginalParameter);
+    const Description marginalDescription(BuildConsistentMarginalParameterDescription(outputDistributionCollection_[i]));
+    for (UnsignedInteger j = 0; j < marginalDescription.getSize(); ++j)
+      parameterDescription.add((OSS() << "output_" << i << "_" << marginalDescription[j]).str());
   }
   EvaluationImplementation::setParameter(parameter);
   EvaluationImplementation::setParameterDescription(parameterDescription);
@@ -313,8 +341,11 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   Description parameterDescription(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    parameter.add(distributionCollection[i].getParameter());
-    parameterDescription.add(distributionCollection[i].getParameterDescription());
+    const Point marginalParameter(distributionCollection[i].getParameter());
+    parameter.add(marginalParameter);
+    const Description marginalDescription(BuildConsistentMarginalParameterDescription(distributionCollection[i]));
+    for (UnsignedInteger j = 0; j < marginalDescription.getSize(); ++j)
+      parameterDescription.add((OSS() << "marginal_" << i << "_" << marginalDescription[j]).str());
   } // get all the parameters
   setParameter(parameter);
   setParameterDescription(parameterDescription);
@@ -404,6 +435,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
   const Point parameters(getParameter());
   const UnsignedInteger parametersDimension = parameters.getDimension();
   const UnsignedInteger inputDimension = getInputDimension();
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << ", got dimension=" << inP.getDimension();
   Matrix result(parametersDimension, inputDimension);
   if (parametersDimension > 0)
   {
@@ -420,18 +452,23 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Point x(1, inP[j]);
           const Distribution inputMarginal(inputDistributionCollection_[j]);
           const Distribution outputMarginal(outputDistributionCollection_[j]);
+          const UnsignedInteger marginalParametersDimension = inputMarginal.getParameter().getDimension();
           // Here it is useless to call computeScalarQuantile() as the result will
           // be promoted into a Point in computePDF()
           const Scalar denominator = outputMarginal.computePDF(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
           if (denominator > 0.0)
           {
             const Point normalizedCDFGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
-            const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
               result(rowIndex, j) = normalizedCDFGradient[i];
               ++ rowIndex;
             }
+          }
+          else
+          {
+            // Keep row alignment when the output density vanishes
+            rowIndex += marginalParametersDimension;
           }
         } // FROM
         break;
@@ -445,6 +482,7 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           const Point x(1, inP[j]);
           const Distribution inputMarginal(inputDistributionCollection_[j]);
           const Distribution outputMarginal(outputDistributionCollection_[j]);
+          const UnsignedInteger marginalParametersDimension = outputMarginal.getParameter().getDimension();
           // Here it is useless to call computeScalarQuantile() as the result will
           // be promoted into a Point in computePDF()
           const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
@@ -452,12 +490,16 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           if (denominator > 0.0)
           {
             const Point normalizedCDFGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
-            const UnsignedInteger marginalParametersDimension = normalizedCDFGradient.getDimension();
             for (UnsignedInteger i = 0; i < marginalParametersDimension; ++i)
             {
               result(rowIndex, j) = normalizedCDFGradient[i];
               ++ rowIndex;
             }
+          }
+          else
+          {
+            // Keep row alignment when the output density vanishes
+            rowIndex += marginalParametersDimension;
           }
         } // TO
         break;
@@ -560,30 +602,36 @@ void MarginalTransformationEvaluation::setParameter(const Point & parameter)
       simplify = true;
       break;
     }
+  // Stage the updates on copies: a rejecting marginal must leave *this unchanged
+  DistributionCollection newInput(inputDistributionCollection_);
+  DistributionCollection newOutput(outputDistributionCollection_);
   UnsignedInteger index = 0;
   if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
   {
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger marginalParametersDimension = inputDistributionCollection_[i].getParameter().getDimension();
+      const UnsignedInteger marginalParametersDimension = newInput[i].getParameter().getDimension();
       Point marginalParameter(marginalParametersDimension);
       std::copy(parameter.begin() + index, parameter.begin() + index + marginalParametersDimension, marginalParameter.begin());
-      inputDistributionCollection_[i].setParameter(marginalParameter);
+      newInput[i].setParameter(marginalParameter);
       index += marginalParametersDimension;
     }
   }
   if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
   {
-    const UnsignedInteger outputSize = outputDistributionCollection_.getSize();
+    const UnsignedInteger outputSize = newOutput.getSize();
     for (UnsignedInteger i = 0; i < outputSize; ++i)
     {
-      const UnsignedInteger marginalParametersDimension = outputDistributionCollection_[i].getParameter().getDimension();
+      const UnsignedInteger marginalParametersDimension = newOutput[i].getParameter().getDimension();
       Point marginalParameter(marginalParametersDimension);
       std::copy(parameter.begin() + index, parameter.begin() + index + marginalParametersDimension, marginalParameter.begin());
-      outputDistributionCollection_[i].setParameter(marginalParameter);
+      newOutput[i].setParameter(marginalParameter);
       index += marginalParametersDimension;
     }
   }
+  // All slices accepted: commit the staged updates
+  inputDistributionCollection_ = newInput;
+  outputDistributionCollection_ = newOutput;
   EvaluationImplementation::setParameter(parameter);
   initialize(simplify);
 }
@@ -594,19 +642,30 @@ Description MarginalTransformationEvaluation::getParameterDescription() const
 {
   // Use the externally set descriptions if any, e.g. the prefixed names set
   // through JointDistribution, else expose the marginal descriptions
+  // prefixed with the side and the marginal index to stay unique.
   if (parameterDescription_.getSize() > 0) return parameterDescription_;
   Description description(0);
   if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
   {
     const UnsignedInteger size = inputDistributionCollection_.getSize();
+    const char * prefix = (parameterSide_ == BOTH ? "input_" : "marginal_");
     for (UnsignedInteger i = 0; i < size; ++i)
-      description.add(inputDistributionCollection_[i].getParameterDescription());
+    {
+      const Description marginalDescription(BuildConsistentMarginalParameterDescription(inputDistributionCollection_[i]));
+      for (UnsignedInteger j = 0; j < marginalDescription.getSize(); ++j)
+        description.add((OSS() << prefix << i << "_" << marginalDescription[j]).str());
+    }
   }
   if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
   {
     const UnsignedInteger size = outputDistributionCollection_.getSize();
+    const char * prefix = (parameterSide_ == BOTH ? "output_" : "marginal_");
     for (UnsignedInteger i = 0; i < size; ++i)
-      description.add(outputDistributionCollection_[i].getParameterDescription());
+    {
+      const Description marginalDescription(BuildConsistentMarginalParameterDescription(outputDistributionCollection_[i]));
+      for (UnsignedInteger j = 0; j < marginalDescription.getSize(); ++j)
+        description.add((OSS() << prefix << i << "_" << marginalDescription[j]).str());
+    }
   }
   return description;
 }
