@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -221,3 +222,46 @@ T3 = ot.MarginalTransformationEvaluation(
     [ot.Exponential(3.0, 4.0)], [ot.Exponential(3.0, 5.0)]
 )
 print("T3=", T3)
+
+# parameters are exposed and honored
+transformation = ot.MarginalTransformationEvaluation(
+    [ot.Normal(1.0, 2.0)], [ot.Normal(3.0, 4.0)]
+)
+ott.assert_almost_equal(transformation.getParameter(), [1.0, 2.0, 3.0, 4.0])
+ott.assert_almost_equal(transformation([0.0]), [1.0])
+transformation.setParameter([5.0, 7.0, 8.0, 9.0])
+reference = ot.MarginalTransformationEvaluation(
+    [ot.Normal(5.0, 7.0)], [ot.Normal(8.0, 9.0)]
+)
+ott.assert_almost_equal(transformation([0.0]), reference([0.0]))
+ott.assert_almost_equal(
+    transformation.parameterGradient([0.0]), reference.parameterGradient([0.0])
+)
+# gradient and hessian follow parameter changes
+gradient = ot.MarginalTransformationGradient(
+    ot.MarginalTransformationEvaluation([ot.Normal(1.0, 2.0)], [ot.Normal(3.0, 4.0)])
+)
+gradient.setParameter([5.0, 7.0, 8.0, 9.0])
+ott.assert_almost_equal(
+    gradient.gradient([0.0]),
+    ot.MarginalTransformationGradient(reference).gradient([0.0]),
+)
+hessian = ot.MarginalTransformationHessian(
+    ot.MarginalTransformationEvaluation([ot.Normal(1.0, 2.0)], [ot.Normal(3.0, 4.0)])
+)
+hessian.setParameter([5.0, 7.0, 8.0, 9.0])
+ott.assert_almost_equal(
+    hessian.hessian([0.0]), ot.MarginalTransformationHessian(reference).hessian([0.0])
+)
+# FROM direction honors setParameter
+directed = ot.MarginalTransformationEvaluation(
+    [ot.Normal(1.0, 2.0)], ot.MarginalTransformationEvaluation.FROM
+)
+directed.setParameter([5.0, 7.0])
+directedReference = ot.MarginalTransformationEvaluation(
+    [ot.Normal(5.0, 7.0)], ot.MarginalTransformationEvaluation.FROM
+)
+ott.assert_almost_equal(directed([0.0]), directedReference([0.0]))
+ott.assert_almost_equal(
+    directed.parameterGradient([0.0]), directedReference.parameterGradient([0.0])
+)

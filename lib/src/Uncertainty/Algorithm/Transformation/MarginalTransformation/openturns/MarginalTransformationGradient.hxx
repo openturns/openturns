@@ -70,6 +70,10 @@ public:
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const override;
 
+  /** Parameters value accessor */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

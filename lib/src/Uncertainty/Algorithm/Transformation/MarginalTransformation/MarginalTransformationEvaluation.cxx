@@ -54,6 +54,23 @@ MarginalTransformationEvaluation::MarginalTransformationEvaluation(const Distrib
   , tailThreshold_(ResourceMap::GetAsScalar( "MarginalTransformationEvaluation-DefaultTailThreshold" ))
 {
   initialize(simplify);
+  // Populate the parameter vector and description with the input marginal
+  // parameters followed by the output marginal parameters
+  Point parameter(0);
+  Description parameterDescription(0);
+  const UnsignedInteger size = inputDistributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    parameter.add(inputDistributionCollection_[i].getParameter());
+    parameterDescription.add(inputDistributionCollection_[i].getParameterDescription());
+  }
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    parameter.add(outputDistributionCollection_[i].getParameter());
+    parameterDescription.add(outputDistributionCollection_[i].getParameterDescription());
+  }
+  EvaluationImplementation::setParameter(parameter);
+  EvaluationImplementation::setParameterDescription(parameterDescription);
 }
 
 
@@ -357,10 +374,10 @@ Point MarginalTransformationEvaluation::operator () (const Point & inP) const
  * Q : [0,1]xRt -> R
  *    (y, pq) -> G(y, pq)
  *
- * Let p = [pg, pf] be the parameter vector of H, with:
+ * Let p = [pf, pq] be the parameter vector of H, with:
  *
  * H : RmxRt+s -> Rn
- *     (x, p)  -> Q(F(x, pq), pf)
+ *     (x, p)  -> Q(F(x, pf), pq)
  *
  * We have:
  *
@@ -444,6 +461,51 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
           }
         } // TO
         break;
+      case BOTH:
+        /*
+        * Combine the LEFT and RIGHT formulas: the rows associated with the
+        * input marginal parameters store (dF/dpf)(x, pf) / pdf(Q(F(x, pf))),
+        * the rows associated with the output marginal parameters store
+        * -(dcdf/dpq)(Q(F(x, pf), pq), pq) / pdf(Q(F(x, pf), pq))
+        */
+        {
+          UnsignedInteger inputParametersDimension = 0;
+          for (UnsignedInteger j = 0; j < inputDimension; ++j)
+            inputParametersDimension += inputDistributionCollection_[j].getParameter().getDimension();
+          UnsignedInteger rowInput = 0;
+          UnsignedInteger rowOutput = inputParametersDimension;
+          for (UnsignedInteger j = 0; j < inputDimension; ++j)
+          {
+            const Point x(1, inP[j]);
+            const Distribution inputMarginal(inputDistributionCollection_[j]);
+            const Distribution outputMarginal(outputDistributionCollection_[j]);
+            const Point q(outputMarginal.computeQuantile(inputMarginal.computeCDF(x)));
+            const Scalar denominator = outputMarginal.computePDF(q);
+            const UnsignedInteger inputMarginalParametersDimension = inputMarginal.getParameter().getDimension();
+            const UnsignedInteger outputMarginalParametersDimension = outputMarginal.getParameter().getDimension();
+            if (denominator > 0.0)
+            {
+              const Point leftGradient(inputMarginal.computeCDFGradient(x) * (1.0 / denominator));
+              for (UnsignedInteger i = 0; i < leftGradient.getDimension(); ++i)
+              {
+                result(rowInput, j) = leftGradient[i];
+                ++rowInput;
+              }
+              const Point rightGradient(outputMarginal.computeCDFGradient(q) * (-1.0 / denominator));
+              for (UnsignedInteger i = 0; i < rightGradient.getDimension(); ++i)
+              {
+                result(rowOutput, j) = rightGradient[i];
+                ++rowOutput;
+              }
+            }
+            else
+            {
+              rowInput += inputMarginalParametersDimension;
+              rowOutput += outputMarginalParametersDimension;
+            }
+          } // BOTH
+        }
+        break;
       default:
         // Should never go there
         throw NotYetImplementedException(HERE) << "In MarginalTransformationEvaluation::parameterGradient(const Point & inP)";
@@ -455,95 +517,104 @@ Matrix MarginalTransformationEvaluation::parameterGradient(const Point & inP) co
 
 Point MarginalTransformationEvaluation::getParameter() const
 {
-  return EvaluationImplementation::getParameter();
-//   // use externally set parameters possibly with copula parameters
-//   if (parameter_.getDimension() > 0)
-//     return parameter_;
-//
-//   // else use marginals
-//   Point parameter;
-//   if (parameterSide_ & LEFT)
-//     parameter.add(JointDistribution(inputDistributionCollection_).getParameter());
-//   if (parameterSide_ & RIGHT)
-//     parameter.add(JointDistribution(outputDistributionCollection_).getParameter());
-//   return parameter;
+  Point parameter(0);
+  if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger size = inputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      parameter.add(inputDistributionCollection_[i].getParameter());
+  }
+  if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger size = outputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      parameter.add(outputDistributionCollection_[i].getParameter());
+  }
+  return parameter;
 }
 
 
 void MarginalTransformationEvaluation::setParameter(const Point & parameter)
 {
+  UnsignedInteger inputParametersDimension = 0;
+  if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger size = inputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      inputParametersDimension += inputDistributionCollection_[i].getParameter().getDimension();
+  }
+  UnsignedInteger outputParametersDimension = 0;
+  if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger size = outputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      outputParametersDimension += outputDistributionCollection_[i].getParameter().getDimension();
+  }
+  if (parameter.getDimension() != inputParametersDimension + outputParametersDimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << inputParametersDimension + outputParametersDimension << ", provided " << parameter.getDimension();
+  // Keep track of the active simplifications in order to rebuild consistent expressions
+  Bool simplify = false;
+  const UnsignedInteger size = inputDistributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (simplifications_[i])
+    {
+      simplify = true;
+      break;
+    }
+  UnsignedInteger index = 0;
+  if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const UnsignedInteger marginalParametersDimension = inputDistributionCollection_[i].getParameter().getDimension();
+      Point marginalParameter(marginalParametersDimension);
+      std::copy(parameter.begin() + index, parameter.begin() + index + marginalParametersDimension, marginalParameter.begin());
+      inputDistributionCollection_[i].setParameter(marginalParameter);
+      index += marginalParametersDimension;
+    }
+  }
+  if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger outputSize = outputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < outputSize; ++i)
+    {
+      const UnsignedInteger marginalParametersDimension = outputDistributionCollection_[i].getParameter().getDimension();
+      Point marginalParameter(marginalParametersDimension);
+      std::copy(parameter.begin() + index, parameter.begin() + index + marginalParametersDimension, marginalParameter.begin());
+      outputDistributionCollection_[i].setParameter(marginalParameter);
+      index += marginalParametersDimension;
+    }
+  }
   EvaluationImplementation::setParameter(parameter);
-//   if (parameter.getDimension() == 0)
-//     parameterSide_ = NONE;
-
-//   if (parameter.getDimension() != getParameter().getDimension())
-//     throw InvalidArgumentException(HERE) << "Required " << getParameter().getDimension() << " parameters, got " << parameter.getDimension();
-//
-//   UnsignedInteger index = 0;
-//   if ((direction_ == FROM) || (direction_ == FROMTO))
-//     for (UnsignedInteger i = 0; i < getInputDimension(); ++ i)
-//     {
-//       const UnsignedInteger parametersDimension = inputDistributionCollection_[i].getParameter().getSize();
-//       Point partialParameter(parametersDimension);
-//       std::copy(parameter.begin() + index, parameter.begin() + index + parametersDimension, partialParameter.begin());
-//       inputDistributionCollection_[i].setParameter(partialParameter);
-//       index += parametersDimension;
-//     }
-// //   index = JointDistribution(inputDistributionCollection_).getParameter().getDimension();
-//   if ((direction_ == TO) || (direction_ == FROMTO))
-//     for (UnsignedInteger i = 0; i < getOutputDimension(); ++ i)
-//     {
-//       const UnsignedInteger parametersDimension = outputDistributionCollection_[i].getParameter().getSize();
-//       Point partialParameter(parametersDimension);
-//       std::copy(parameter.begin() + index, parameter.begin() + index + parametersDimension, partialParameter.begin());
-//       outputDistributionCollection_[i].setParameter(partialParameter);
-//       index += parametersDimension;
-//     }
+  initialize(simplify);
 }
 
 
 /* Parameters description accessor */
 Description MarginalTransformationEvaluation::getParameterDescription() const
 {
-  return EvaluationImplementation::getParameterDescription();
-//   // use externally set parameters possibly with copula parameters
-//   if (parameterDescription_.getSize() > 0)
-//     return parameterDescription_;
-//
-//   // else use marginals
-//   Description description;
-//   if (parameterSide_ & LEFT)
-//     description.add(JointDistribution(inputDistributionCollection_).getParameterDescription());
-//   if (parameterSide_ & RIGHT)
-//     description.add(JointDistribution(outputDistributionCollection_).getParameterDescription());
-//   return description;
+  // Use the externally set descriptions if any, e.g. the prefixed names set
+  // through JointDistribution, else expose the marginal descriptions
+  if (parameterDescription_.getSize() > 0) return parameterDescription_;
+  Description description(0);
+  if ((parameterSide_ == LEFT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger size = inputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      description.add(inputDistributionCollection_[i].getParameterDescription());
+  }
+  if ((parameterSide_ == RIGHT) || (parameterSide_ == BOTH))
+  {
+    const UnsignedInteger size = outputDistributionCollection_.getSize();
+    for (UnsignedInteger i = 0; i < size; ++i)
+      description.add(outputDistributionCollection_[i].getParameterDescription());
+  }
+  return description;
 }
 
 
 void MarginalTransformationEvaluation::setParameterDescription(const Description & description)
 {
   EvaluationImplementation::setParameterDescription(description);
-
-//   if (description.getSize() != getParameter().getDimension())
-//     throw InvalidArgumentException(HERE) << "Required " << getParameter().getDimension() << " parameter descriptions, got " << description.getSize();
-
-//   UnsignedInteger index = 0;
-//   for (UnsignedInteger i = 0; i < getInputDimension(); ++ i)
-//   {
-//     const UnsignedInteger parametersDimension = inputDistributionCollection_[i].getParameter().getSize();
-//     Description partialParameter(parametersDimension);
-//     std::copy(description.begin() + index, description.begin() + index + parametersDimension, partialParameter.begin());
-//     inputDistributionCollection_[i].setParameterDescription(partialParameter);
-//     index += parametersDimension;
-//   }
-//   for (UnsignedInteger i = 0; i < getOutputDimension(); ++ i)
-//   {
-//     const UnsignedInteger parametersDimension = outputDistributionCollection_[i].getParameter().getSize();
-//     Description partialParameter(parametersDimension);
-//     std::copy(description.begin() + index, description.begin() + index + parametersDimension, partialParameter.begin());
-//     outputDistributionCollection_[i].setParameterDescription(partialParameter);
-//     index += parametersDimension;
-//   }
 }
 
 

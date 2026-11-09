@@ -107,6 +107,18 @@ UnsignedInteger MarginalTransformationHessian::getOutputDimension() const
   return p_evaluation_->outputDistributionCollection_.getSize();
 }
 
+/* Parameters value accessor */
+Point MarginalTransformationHessian::getParameter() const
+{
+  return p_evaluation_->getParameter();
+}
+
+void MarginalTransformationHessian::setParameter(const Point & parameter)
+{
+  p_evaluation_->setParameter(parameter);
+  HessianImplementation::setParameter(parameter);
+}
+
 /* String converter */
 String MarginalTransformationHessian::__repr__() const
 {
