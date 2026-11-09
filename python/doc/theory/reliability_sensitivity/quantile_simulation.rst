@@ -91,9 +91,10 @@ The interpolated (Hyndman--Fan type 5) estimator is
 
 with the obvious clamping at the boundaries.  The empirical inverse is
 an order statistic and therefore admits the exact distribution-free
-interval recalled below.  The interpolated estimator has a smaller
-leading bias on smooth densities, but it is not an order statistic and
-the exact binomial interval does not apply verbatim.
+interval recalled below.  The interpolated estimator is intended to
+reduce the leading bias on smooth densities, but the reduction is not
+universal; it is not an order statistic and the exact binomial interval
+does not apply verbatim.
 
 The coverage vocabulary used by
 :class:`~openturns.experimental.QuantileSimulationResult` distinguishes
@@ -168,9 +169,10 @@ the sample minimum or maximum would invalidate the coverage statement.
 Asymptotic intervals
 ~~~~~~~~~~~~~~~~~~~~
 
-Assume that :math:`F` is differentiable at :math:`q_\alpha` with
-density :math:`f(q_\alpha)>0`.  The Bahadur representation of the
-empirical quantile [bahadur1966]_ gives
+Assume that :math:`F` is twice differentiable in a neighborhood of
+:math:`q_\alpha`, with a bounded second derivative and density
+:math:`f(q_\alpha)>0`.  The Bahadur representation of the empirical
+quantile [bahadur1966]_ gives
 
 .. math::
 
@@ -329,7 +331,7 @@ distribution function :eq:`eq-weighted-cdf`, never the output values:
 multiplying the outputs by the weights would estimate the quantile of a
 different random variable.
 
-The estimator is selected by ``getEstimatorType``.  The default,
+The estimator is selected by ``setEstimatorType``.  The default,
 ``EMPIRICAL_INVERSE``, is :eq:`eq-weighted-inverse` and returns an
 order statistic.  The ``INTERPOLATED`` alternative returns a convex
 combination of two neighbouring order statistics: with uniform weights

@@ -390,6 +390,16 @@ try:
 finally:
     ot.ResourceMap.SetAsUnsignedInteger(chunk_key, saved_chunk)
 
+# A NaN output is rejected before it can corrupt the retained heaps.
+nan_output = ot.CompositeRandomVector(
+    ot.PythonFunction(1, 1, lambda x: [float("nan")]),
+    ot.RandomVector(ot.Normal()),
+)
+algo = otexp.ExactTailQuantileSimulation(nan_output, 0.95, 0.95)
+algo.setSampleSize(100)
+with ott.assert_raises(TypeError):
+    algo.run()
+
 # A non-positive minimum chunk size is rejected.
 try:
     ot.ResourceMap.SetAsUnsignedInteger(chunk_key, 0)

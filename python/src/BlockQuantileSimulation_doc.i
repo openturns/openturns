@@ -221,9 +221,11 @@ R"RAW(Accessor to the sample size.
 Parameters
 ----------
 sampleSize : int
-    Requested total number of model evaluations.  The actual number of
-    evaluations is the largest multiple of the block length that does
-    not exceed this value.)RAW"
+    Requested total number of model evaluations.  The block sample
+    contains the largest multiple of the block length that does not
+    exceed this value.  The ``BIAS_TARGET`` and ``ADAPTIVE`` policies
+    evaluate additional pilot points, which the result sample size
+    includes.)RAW"
 
 // ---------------------------------------------------------------------
 

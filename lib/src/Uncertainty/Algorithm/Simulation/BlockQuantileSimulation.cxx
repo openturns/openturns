@@ -382,6 +382,10 @@ Sample BlockQuantileSimulation::drawBlock(WeightedExperiment & experiment,
     throw InvalidArgumentException(HERE)
         << "The block estimator requires a scalar output, but the output dimension is "
         << outputSample.getDimension();
+  for (UnsignedInteger i = 0; i < outputSample.getSize(); ++i)
+    if (std::isnan(outputSample(i, 0)))
+      throw InvalidArgumentException(HERE)
+          << "The block estimator cannot process a NaN output value";
   return outputSample;
 }
 
@@ -582,6 +586,14 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
       const UnsignedInteger maximumBlockLength = std::max<UnsignedInteger>(1, sampleSize / blockCountFloor);
       if (blockLength > maximumBlockLength)
         blockLength = maximumBlockLength;
+      // The clamp above can reduce the block length below the smaller root of
+      // b + N / b = budget, in which case the budget is no longer respected.
+      const UnsignedInteger blockCount = sampleSize / blockLength;
+      if (1.0 * blockLength + 1.0 * blockCount > budget)
+        throw InvalidArgumentException(HERE)
+            << "The memory budget (" << memoryBudget_ << " values) cannot host at least "
+            << blockCountFloor << " blocks for a sample size of " << sampleSize
+            << ". Increase the budget or reduce the minimum block count.";
       break;
     }
     case BIAS_TARGET:
