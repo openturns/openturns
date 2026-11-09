@@ -55,18 +55,8 @@ KernelMixture::KernelMixture(const Distribution & kernel,
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: only 1D kernel is allowed for multidimensional product kernels";
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a KernelMixture based on an empty sample.";
   setDimension(sample.getDimension());
-  // This call set also the range.
+  // This call sets also the range and refreshes the PDF/CDF approximation.
   setBandwidth(bandwidth);
-  if ((getDimension() == 1) && ResourceMap::GetAsBool("KernelMixture-EnableInterpolation"))
-  {
-    // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
-    Collection<PiecewiseHermiteEvaluation> coll(DistributionImplementation::interpolatePDFCDF(ResourceMap::GetAsUnsignedInteger("KernelMixture-PDFCDFDiscretization")));
-    pdfApproximationCDF_ = coll[0];
-    cdfApproximation_ = coll[1];
-    pdfApproximationCCDF_ = coll[2];
-    ccdfApproximation_ = coll[3];
-    useApproximatePDFCDF_ = true;
-  }
   setParallel(p_kernel_->isParallel());
 }
 
@@ -125,6 +115,7 @@ void KernelMixture::setKernel(const Distribution & kernel)
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computeRange();
+  updateApproximation();
 }
 
 Distribution KernelMixture::getKernel() const
@@ -139,6 +130,23 @@ void KernelMixture::setInternalSample(const Sample & sample)
   if (sample.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has dimension=" << sample.getDimension() << ", expected dimension=" << getDimension() << ".";
   sample_ = sample;
   computeRange();
+  updateApproximation();
+  isAlreadyComputedMean_ = false;
+  isAlreadyComputedCovariance_ = false;
+}
+
+Sample KernelMixture::getInternalSample() const
+{
+  return sample_;
+}
+
+
+/* Refresh the PDF/CDF interpolation after a change of kernel, bandwidth or sample */
+void KernelMixture::updateApproximation()
+{
+  // Disable the approximation first: interpolatePDFCDF evaluates the exact
+  // PDF/CDF/DDF, which would otherwise reuse the stale tables
+  useApproximatePDFCDF_ = false;
   if ((getDimension() == 1) && ResourceMap::GetAsBool("KernelMixture-EnableInterpolation"))
   {
     // Here we use the implementation provided by the DistributionImplementation class instead of the DistributionImplementation class in order to use both the PDF and the CDF
@@ -149,17 +157,7 @@ void KernelMixture::setInternalSample(const Sample & sample)
     ccdfApproximation_ = coll[3];
     useApproximatePDFCDF_ = true;
   }
-  else
-    useApproximatePDFCDF_ = false;
-  isAlreadyComputedMean_ = false;
-  isAlreadyComputedCovariance_ = false;
 }
-
-Sample KernelMixture::getInternalSample() const
-{
-  return sample_;
-}
-
 
 /* Bandwidth accessor */
 void KernelMixture::setBandwidth(const Point & bandwidth)
@@ -180,6 +178,7 @@ void KernelMixture::setBandwidth(const Point & bandwidth)
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computeRange();
+  updateApproximation();
 }
 
 /* Distribution collection accessor */
@@ -876,6 +875,9 @@ void KernelMixture::setParameter(const Point & parameter)
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = sample_.getSize();
   if (parameter.getDimension() != (dimension * (size + 1))) throw InvalidArgumentException(HERE) << "Expected " << (dimension * (size + 1)) << " parameters";
+  // Skip the update if the parameters are unchanged: rebuilding would
+  // re-run the PDF/CDF interpolation for nothing
+  if (parameter == getParameter()) return;
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -891,7 +893,10 @@ void KernelMixture::setParameter(const Point & parameter)
     ++ index;
   }
   // Use the constructor in order to recompute the PDF/CDF approximation if needed
-  *this = KernelMixture(*p_kernel_, bandwidth_, sample_);
+  KernelMixture replacement(*p_kernel_, bandwidth_, sample_);
+  replacement.setName(getName());
+  replacement.setDescription(getDescription());
+  *this = replacement;
 }
 
 
