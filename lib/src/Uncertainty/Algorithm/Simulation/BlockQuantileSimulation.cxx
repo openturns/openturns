@@ -621,7 +621,7 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
         if (standardError > 0.0)
         {
           const Scalar target = std::ceil(std::abs(biasConstant) / (tolerance * standardError));
-          blockLength = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(target));
+          blockLength = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(std::min(target, 1.0 * sampleSize)));
         }
       }
       if (blockLength == 0)
