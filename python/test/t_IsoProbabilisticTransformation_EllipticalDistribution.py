@@ -179,3 +179,24 @@ ott.assert_almost_equal(
     inverseTransform.gradient(transformedPoint),
     referenceInverseTransform.gradient(transformedPoint),
 )
+# direct construction: diagonal maps honor setParameter
+L = ot.TriangularMatrix(1)
+L[0, 0] = 0.5
+e = ot.NatafEllipticalDistributionEvaluation([1.0], L)
+ott.assert_almost_equal(e.getParameter(), [1.0, 2.0])
+e.setParameter([5.0, 7.0])
+ott.assert_almost_equal(e.getParameter(), [5.0, 7.0])
+ott.assert_almost_equal(e([0.0]), [-5.0 / 7.0])
+C = ot.TriangularMatrix(1)
+C[0, 0] = 2.0
+ie = ot.InverseNatafEllipticalDistributionEvaluation([1.0], C)
+ie.setParameter([5.0, 7.0])
+ott.assert_almost_equal(ie([0.5]), [5.0 + 7.0 * 0.5])
+# direct construction: correlated maps reject setParameter without recorded scales
+gammaCorr = ot.TriangularMatrix(2)
+gammaCorr[0, 0] = 1.0
+gammaCorr[1, 0] = 0.5
+gammaCorr[1, 1] = 1.0
+eCorr = ot.NatafEllipticalDistributionEvaluation([0.0, 0.0], gammaCorr)
+with ott.assert_raises(Exception):
+    eCorr.setParameter([0.0, 0.0, 1.0, 2.0])

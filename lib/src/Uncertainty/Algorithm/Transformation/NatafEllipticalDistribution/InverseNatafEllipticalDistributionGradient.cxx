@@ -48,6 +48,14 @@ InverseNatafEllipticalDistributionGradient::InverseNatafEllipticalDistributionGr
   // Nothing to do
 }
 
+/* Parameter constructor with recorded (mu, sigma) scales */
+InverseNatafEllipticalDistributionGradient::InverseNatafEllipticalDistributionGradient(const SquareMatrix & cholesky,
+    const Point & parameters):
+  ConstantGradient(cholesky.transpose())
+{
+  GradientImplementation::setParameter(parameters);
+}
+
 /* Virtual constructor */
 InverseNatafEllipticalDistributionGradient * InverseNatafEllipticalDistributionGradient::clone() const
 {
@@ -74,20 +82,19 @@ String InverseNatafEllipticalDistributionGradient::__repr__() const
 /* Parameters value accessor, as (mu, sigma).
  * The stored constant matrix is the transpose of the Cholesky factor
  * L = D L_c, so each column j is rescaled by sigma_new[j] / sigma_old[j],
- * with the old values read on the recorded parameter vector. Without
- * record the map is assumed consistent with the provided values and kept
- * as is.
+ * with the old values read on the recorded parameter vector.
  */
 void InverseNatafEllipticalDistributionGradient::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getInputDimension();
   if (parameter.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << 2 * dimension << ", provided " << parameter.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    if (!(parameter[dimension + i] > 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be positive, got sigma[" << i << "]=" << parameter[dimension + i];
+    if (!(parameter[dimension + i] >= 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be non-negative, got sigma[" << i << "]=" << parameter[dimension + i];
   Matrix newConstant(getConstant());
   const Point recorded(GradientImplementation::getParameter());
   if (recorded.getDimension() > 0)
   {
+    if (recorded.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Recorded parameter of dimension " << recorded.getDimension() << " is inconsistent with dimension " << dimension;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const Scalar newSigma = parameter[dimension + j];
@@ -96,10 +103,34 @@ void InverseNatafEllipticalDistributionGradient::setParameter(const Point & para
       if (newSigma != oldSigma)
       {
         if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        if (!(newSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update to a degenerate transformation, please rebuild it";
         factor = newSigma / oldSigma;
       }
       for (UnsignedInteger i = 0; i < dimension; ++i)
         newConstant(i, j) = newConstant(i, j) * factor;
+    }
+  }
+  else
+  {
+    // No recorded scales (direct construction): require a diagonal map,
+    // for which the scales are recovered exactly, else rebuild from a distribution.
+    Bool diagonal = true;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        if ((i != j) && (newConstant(i, j) != 0.0)) diagonal = false;
+    if (!diagonal) throw InvalidArgumentException(HERE) << "Cannot update the parameters of a directly constructed correlated transformation without recorded scales, please rebuild it from a distribution";
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      const Scalar newSigma = parameter[dimension + j];
+      const Scalar oldSigma = newConstant(j, j);
+      if (newSigma != oldSigma)
+      {
+        if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        if (!(newSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update to a degenerate transformation, please rebuild it";
+        const Scalar factor = newSigma / oldSigma;
+        for (UnsignedInteger i = 0; i < dimension; ++i)
+          newConstant(i, j) = newConstant(i, j) * factor;
+      }
     }
   }
   setConstant(newConstant);

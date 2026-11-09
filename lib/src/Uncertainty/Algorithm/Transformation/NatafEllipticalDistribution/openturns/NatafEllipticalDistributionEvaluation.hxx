@@ -48,6 +48,11 @@ public:
   NatafEllipticalDistributionEvaluation(const Point & mean,
                                         const TriangularMatrix & inverseCholesky);
 
+  /** Parameter constructor with recorded (mu, sigma) scales */
+  NatafEllipticalDistributionEvaluation(const Point & mean,
+                                        const TriangularMatrix & inverseCholesky,
+                                        const Point & parameters);
+
   /** Virtual constructor */
   NatafEllipticalDistributionEvaluation * clone() const override;
 
