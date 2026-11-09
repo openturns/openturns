@@ -213,7 +213,7 @@ for policy, tolerance in [(BIAS_TARGET, 0.5), (ADAPTIVE, 0.2)]:
     algo.setBiasTolerance(tolerance)
     algo.run()
     result = algo.getResult()
-    assert result.getBlockLength() >= math.ceil(math.sqrt(result.getSampleSize()))
+    assert result.getBlockLength() >= math.ceil(math.sqrt(algo.getSampleSize()))
     assert result.getBlockCount() >= 2
     assert result.hasBiasEstimate(), "a pilot must provide a bias estimate"
     assert math.isfinite(result.getBiasEstimate())
