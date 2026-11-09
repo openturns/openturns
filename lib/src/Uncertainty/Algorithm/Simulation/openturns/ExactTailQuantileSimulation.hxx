@@ -45,9 +45,9 @@ public:
   ExactTailQuantileSimulation();
 
   /** Constructor with parameters */
-  ExactTailQuantileSimulation(const RandomVector & output,
-                              const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
-                              const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
+  explicit ExactTailQuantileSimulation(const RandomVector & output,
+                                       const Scalar alpha = ResourceMap::GetAsScalar("QuantileSimulation-DefaultAlpha"),
+                                       const Scalar beta = ResourceMap::GetAsScalar("QuantileSimulation-DefaultConfidenceLevel"));
 
   /** Constructor with parameters and experiment */
   ExactTailQuantileSimulation(const RandomVector & output,

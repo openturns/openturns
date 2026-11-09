@@ -70,6 +70,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+QuantileSimulationAlgorithm, ExactTailQuantileSimulation, QuantileSimulationResult
+
 Notes
 -----
 The estimator requires an independent experiment with uniform weights.
