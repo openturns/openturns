@@ -94,7 +94,8 @@ Returns
 -------
 conditionalProbability : float
     Conditional probability :math:`p_0` used to build the level
-    sequence, in :math:`(0, 1)`.)RAW"
+    sequence, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -107,7 +108,8 @@ conditionalProbability : float
     Conditional probability :math:`p_0` used to build the level
     sequence, in :math:`(0, 1)`.  It must also satisfy
     :math:`p_0 N \ge 1`, where :math:`N` is the particle count.
-    Default is 0.1.)RAW"
+    Default is 0.1.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -118,7 +120,8 @@ Returns
 -------
 proposalRange : float
     Range of the componentwise random-walk proposal used by the
-    conditional sampler.)RAW"
+    conditional sampler.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -130,7 +133,8 @@ Parameters
 proposalRange : float
     Range of the componentwise random-walk proposal used by the
     conditional sampler.  It must be finite and positive.  Default is
-    2.0.)RAW"
+    2.0.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -141,7 +145,8 @@ Returns
 -------
 burnIn : int
     Number of Metropolis-Hastings transitions performed before each
-    conditional draw is retained.)RAW"
+    conditional draw is retained.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -152,7 +157,8 @@ Parameters
 ----------
 burnIn : int
     Number of Metropolis-Hastings transitions performed before each
-    conditional draw is retained.  It must be positive.  Default is 10.)RAW"
+    conditional draw is retained.  It must be positive.  Default is 10.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -163,7 +169,8 @@ Returns
 -------
 replicateCount : int
     Number of independent subset runs used to build the Student
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -174,7 +181,8 @@ Parameters
 ----------
 replicateCount : int
     Number of independent subset runs used to build the Student
-    interval.  It must be at least 2.  Default is 30.)RAW"
+    interval.  It must be at least 2.  Default is 30.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -186,7 +194,8 @@ Returns
 particleCount : int
     Number of particles maintained at each level.  It is the explicitly
     set sample size when available, and the product of the maximum
-    outer sampling and block size otherwise.)RAW"
+    outer sampling and block size otherwise.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -197,7 +206,8 @@ Parameters
 ----------
 particleCount : int
     Number of particles maintained at each level.  It is equivalent to
-    :meth:`setSampleSize`.)RAW"
+    :meth:`setSampleSize`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -207,7 +217,8 @@ R"RAW(Accessor to the particle count.
 Returns
 -------
 sampleSize : int
-    Number of particles maintained at each level.)RAW"
+    Number of particles maintained at each level.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -219,4 +230,5 @@ Parameters
 sampleSize : int
     Number of particles maintained at each level.  When it is set
     explicitly, it overrides the value deduced from the maximum outer
-    sampling and the block size.)RAW"
+    sampling and the block size.
+)RAW"

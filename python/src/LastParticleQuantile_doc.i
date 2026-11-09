@@ -77,7 +77,8 @@ R"RAW(Accessor to the particle count.
 Returns
 -------
 particleCount : int
-    Number of particles maintained by the last-particle process.)RAW"
+    Number of particles maintained by the last-particle process.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -88,7 +89,8 @@ Parameters
 ----------
 particleCount : int
     Number of particles maintained by the last-particle process.  It
-    must be at least 10.  Default is 1000.)RAW"
+    must be at least 10.  Default is 1000.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -98,7 +100,8 @@ R"RAW(Accessor to the particle count.
 Returns
 -------
 sampleSize : int
-    Number of particles maintained by the last-particle process.)RAW"
+    Number of particles maintained by the last-particle process.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -110,7 +113,8 @@ Parameters
 sampleSize : int
     Number of particles maintained by the last-particle process.  It
     must be at least 10 and is equivalent to
-    :meth:`setParticleCount`.)RAW"
+    :meth:`setParticleCount`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -121,7 +125,8 @@ Returns
 -------
 burnIn : int
     Number of Metropolis-Hastings transitions performed before each
-    replacement particle is retained.)RAW"
+    replacement particle is retained.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -133,7 +138,8 @@ Parameters
 burnIn : int
     Number of Metropolis-Hastings transitions performed before each
     replacement particle is retained.  It must be positive.  Default is
-    10.)RAW"
+    10.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -144,7 +150,8 @@ Returns
 -------
 proposalRange : float
     Range of the componentwise random-walk proposal used by the
-    conditional sampler.)RAW"
+    conditional sampler.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -156,4 +163,5 @@ Parameters
 proposalRange : float
     Range of the componentwise random-walk proposal used by the
     conditional sampler.  It must be finite and positive.  Default is
-    2.0.)RAW"
+    2.0.
+)RAW"

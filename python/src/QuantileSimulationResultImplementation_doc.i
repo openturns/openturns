@@ -757,7 +757,8 @@ thresholds : :class:`~openturns.Point`
     successive extreme values for
     :class:`~openturns.experimental.LastParticleQuantile`, and the
     cross-entropy thresholds for
-    :class:`~openturns.experimental.CrossEntropyQuantile`.)RAW"
+    :class:`~openturns.experimental.CrossEntropyQuantile`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -767,7 +768,8 @@ R"RAW(Accessor to the threshold sequence.
 Parameters
 ----------
 thresholds : sequence of float
-    Intermediate thresholds.  All the values must be finite.)RAW"
+    Intermediate thresholds.  All the values must be finite.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -778,7 +780,8 @@ Returns
 -------
 probabilities : :class:`~openturns.Point`
     Probability of the event associated with each threshold, in the same
-    order as :meth:`getThresholdSequence`.)RAW"
+    order as :meth:`getThresholdSequence`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -789,7 +792,8 @@ Parameters
 ----------
 probabilities : sequence of float
     Probability of the event associated with each threshold.  All the
-    values must lie in :math:`[0,1]`.)RAW"
+    values must lie in :math:`[0,1]`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -799,7 +803,8 @@ R"RAW(Accessor to the number of steps.
 Returns
 -------
 stepCount : int
-    Number of levels or moves performed by the threshold algorithm.)RAW"
+    Number of levels or moves performed by the threshold algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -809,7 +814,8 @@ R"RAW(Accessor to the number of steps.
 Parameters
 ----------
 stepCount : int
-    Number of levels or moves performed by the threshold algorithm.)RAW"
+    Number of levels or moves performed by the threshold algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -820,7 +826,8 @@ Returns
 -------
 acceptanceRate : float
     Fraction of proposed Metropolis-Hastings transitions that produced
-    a point satisfying the conditional event.)RAW"
+    a point satisfying the conditional event.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -830,7 +837,8 @@ R"RAW(Accessor to the MCMC acceptance rate.
 Parameters
 ----------
 acceptanceRate : float
-    Fraction of accepted transitions, in :math:`[0,1]`.)RAW"
+    Fraction of accepted transitions, in :math:`[0,1]`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -841,7 +849,8 @@ Returns
 -------
 lowerRank : int
     One-based index of the lower threshold of the Poisson rank
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -852,7 +861,8 @@ Returns
 -------
 upperRank : int
     One-based index of the upper threshold of the Poisson rank
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -866,7 +876,8 @@ lowerRank : int
     interval.  It must be positive.
 upperRank : int
     One-based index of the upper threshold of the Poisson rank
-    interval.  It must not be smaller than ``lowerRank``.)RAW"
+    interval.  It must not be smaller than ``lowerRank``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -876,7 +887,8 @@ R"RAW(Accessor to the presence of Poisson ranks.
 Returns
 -------
 hasPoissonRanks : bool
-    Whether the result stores a Poisson rank interval.)RAW"
+    Whether the result stores a Poisson rank interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -887,7 +899,8 @@ Returns
 -------
 particleCount : int
     Number of particles used by the threshold algorithm, or number of
-    auxiliary draws for the cross-entropy estimator.)RAW"
+    auxiliary draws for the cross-entropy estimator.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -897,7 +910,8 @@ R"RAW(Accessor to the particle count.
 Parameters
 ----------
 particleCount : int
-    Number of particles or auxiliary draws.  It must be positive.)RAW"
+    Number of particles or auxiliary draws.  It must be positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -910,7 +924,8 @@ distribution : :class:`~openturns.Distribution`
     Proposal distribution used by the final weighted estimate of the
     cross-entropy estimator.  It is defined on the standard space of
     the input distribution and is the defensive proposal derived from
-    the final cross-entropy auxiliary distribution.)RAW"
+    the final cross-entropy auxiliary distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -921,7 +936,8 @@ Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     Proposal distribution used by the final weighted estimate of the
-    cross-entropy estimator.)RAW"
+    cross-entropy estimator.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -931,7 +947,8 @@ R"RAW(Accessor to the presence of an auxiliary distribution.
 Returns
 -------
 hasAuxiliaryDistribution : bool
-    Whether the result stores an auxiliary distribution.)RAW"
+    Whether the result stores an auxiliary distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -942,7 +959,8 @@ Returns
 -------
 level : float
     Intermediate quantile level of the cross-entropy sequence.  It is
-    distinct from the target quantile level :math:`\alpha`.)RAW"
+    distinct from the target quantile level :math:`\alpha`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -954,7 +972,8 @@ Parameters
 level : float
     Intermediate quantile level of the cross-entropy sequence, in
     :math:`(0,1)`.  It is distinct from the target quantile level
-    :math:`\alpha`.)RAW"
+    :math:`\alpha`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -964,7 +983,8 @@ R"RAW(Accessor to the conditional probability.
 Returns
 -------
 conditionalProbability : float
-    Conditional probability :math:`p_0` of the subset estimator.)RAW"
+    Conditional probability :math:`p_0` of the subset estimator.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -975,7 +995,8 @@ Parameters
 ----------
 conditionalProbability : float
     Conditional probability :math:`p_0` of the subset estimator, in
-    :math:`(0,1)`.)RAW"
+    :math:`(0,1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 

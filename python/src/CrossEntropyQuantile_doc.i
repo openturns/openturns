@@ -89,7 +89,8 @@ Returns
 level : float
     Quantile level used to build the intermediate thresholds of the
     cross-entropy sequence, in :math:`(0, 1)`.  It is distinct from the
-    target quantile level :math:`\alpha`.)RAW"
+    target quantile level :math:`\alpha`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -101,7 +102,8 @@ Parameters
 level : float
     Quantile level used to build the intermediate thresholds of the
     cross-entropy sequence, in :math:`(0, 1)`.  It is distinct from the
-    target quantile level :math:`\alpha`.  Default is 0.25.)RAW"
+    target quantile level :math:`\alpha`.  Default is 0.25.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -112,7 +114,8 @@ Returns
 -------
 pilotSize : int
     Number of pilot draws used to locate the target tail before the
-    cross-entropy run.)RAW"
+    cross-entropy run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -123,7 +126,8 @@ Parameters
 ----------
 pilotSize : int
     Number of pilot draws used to locate the target tail before the
-    cross-entropy run.  It must be at least 2.  Default is 1000.)RAW"
+    cross-entropy run.  It must be at least 2.  Default is 1000.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -134,7 +138,8 @@ Returns
 -------
 value : float
     Floor :math:`s_{\min}` applied to the standard deviations of the
-    defensive proposal.  It is at least one.)RAW"
+    defensive proposal.  It is at least one.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -147,4 +152,5 @@ value : float
     Floor :math:`s_{\min}` applied to the standard deviations of the
     defensive proposal.  It must be finite and at least one.  Values
     strictly larger than one give a safety margin against very
-    concentrated cross-entropy proposals.  Default is 1.2.)RAW"
+    concentrated cross-entropy proposals.  Default is 1.2.
+)RAW"
