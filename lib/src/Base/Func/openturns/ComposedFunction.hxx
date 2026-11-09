@@ -65,6 +65,12 @@ public:
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const Point & inP) const override;
 
+  /** Parameters value accessor */
+  void setParameter(const Point & parameter) override;
+
+  /** Parameters description accessor */
+  void setParameterDescription(const Description & description) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

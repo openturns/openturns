@@ -65,6 +65,10 @@ public:
   using HessianImplementation::hessian;
   SymmetricTensor hessian(const Point & point) const override;
 
+  /** Parameters value accessor */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+
   /** Evaluation accessor */
   Evaluation getEvaluation() const;
 

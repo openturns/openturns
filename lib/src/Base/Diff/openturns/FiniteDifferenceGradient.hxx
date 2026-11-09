@@ -81,6 +81,10 @@ public:
   /** Accessor for the evaluation */
   virtual Evaluation getEvaluation() const;
 
+  /** Parameters value accessor */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+
   /** Accessor for the finite difference step */
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
   virtual FiniteDifferenceStep getFiniteDifferenceStep() const;

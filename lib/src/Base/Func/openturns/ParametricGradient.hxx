@@ -64,6 +64,10 @@ public:
   using GradientImplementation::gradient;
   Matrix gradient(const Point & point) const override;
 
+  /** Parameters value accessor */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+
   /** Dimension accessor */
   UnsignedInteger getInputDimension() const override;
   UnsignedInteger getParameterDimension() const;

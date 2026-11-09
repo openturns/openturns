@@ -97,6 +97,39 @@ UnsignedInteger ComposedGradient::getOutputDimension() const
   return leftGradient_.getOutputDimension();
 }
 
+/* Parameters value accessor */
+Point ComposedGradient::getParameter() const
+{
+  Point parameter(rightFunction_.getParameter());
+  parameter.add(leftGradient_.getParameter());
+  return parameter;
+}
+
+void ComposedGradient::setParameter(const Point & parameter)
+{
+  // The slices follow the function parameter layout [right, left]. The total
+  // is validated upfront against the components own dimensions and the updates
+  // are staged on copies so a rejecting component leaves *this unchanged.
+  const UnsignedInteger rightDimension = rightFunction_.getParameter().getDimension();
+  const UnsignedInteger leftDimension = leftGradient_.getParameter().getDimension();
+  if (parameter.getDimension() != rightDimension + leftDimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << rightDimension + leftDimension << " provided " << parameter.getDimension();
+  Point rightParameter(rightDimension);
+  std::copy(parameter.begin(), parameter.begin() + rightDimension, rightParameter.begin());
+  Point leftParameter(leftDimension);
+  std::copy(parameter.begin() + rightDimension, parameter.end(), leftParameter.begin());
+  // Stage the updates on copies so a rejecting component leaves *this unchanged
+  Evaluation newRightFunction(rightFunction_);
+  Gradient newRightGradient(rightGradient_);
+  Gradient newLeftGradient(leftGradient_);
+  newRightFunction.setParameter(rightParameter);
+  newRightGradient.setParameter(rightParameter);
+  newLeftGradient.setParameter(leftParameter);
+  rightFunction_ = newRightFunction;
+  rightGradient_ = newRightGradient;
+  leftGradient_ = newLeftGradient;
+  GradientImplementation::setParameter(parameter);
+}
+
 /* Method save() stores the object through the StorageManager */
 void ComposedGradient::save(Advocate & adv) const
 {
