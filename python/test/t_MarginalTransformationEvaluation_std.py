@@ -265,3 +265,30 @@ ott.assert_almost_equal(directed([0.0]), directedReference([0.0]))
 ott.assert_almost_equal(
     directed.parameterGradient([0.0]), directedReference.parameterGradient([0.0])
 )
+# BOTH parameter descriptions are unique across sides
+bothDescription = list(transformation.getParameterDescription())
+assert len(bothDescription) == len(set(bothDescription)), "duplicated BOTH descriptions"
+# LEFT/RIGHT row alignment is kept when an output density vanishes:
+# rows after a zero-density marginal stay aligned with the right parameters.
+# With TO direction and a Beta output at u=0 the first quantile is on the
+# bound with zero density, so the first block stays zero and the second
+# block is written at rows 4-5 (Beta has 4 parameters).
+rightTrans = ot.MarginalTransformationEvaluation(
+    [ot.Beta(2.0, 2.0, 0.0, 1.0), ot.Normal(0.0, 1.0)],
+    ot.MarginalTransformationEvaluation.TO,
+)
+gradEdge = rightTrans.parameterGradient([0.0, 0.5])
+assert gradEdge.getNbRows() == 6
+ott.assert_almost_equal(gradEdge[0, 1], 0.0, 1e-12, 0.0)
+ott.assert_almost_equal(gradEdge[1, 1], 0.0, 1e-12, 0.0)
+ott.assert_almost_equal(gradEdge[2, 1], 0.0, 1e-12, 0.0)
+ott.assert_almost_equal(gradEdge[3, 1], 0.0, 1e-12, 0.0)
+assert abs(gradEdge[4, 1]) + abs(gradEdge[5, 1]) > 0.0
+# setParameter stages updates: a rejecting slice leaves the object unchanged
+before = list(transformation.getParameter())
+with ott.assert_raises(TypeError):
+    transformation.setParameter([5.0, 7.0, 8.0, -9.0])
+ott.assert_almost_equal(transformation.getParameter(), before)
+with ott.assert_raises(TypeError):
+    transformation.setParameter([1.0, 2.0])
+ott.assert_almost_equal(transformation.getParameter(), before)
