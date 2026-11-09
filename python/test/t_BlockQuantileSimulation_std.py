@@ -202,6 +202,16 @@ algo.setBlockLengthPolicy(MEMORY_BOUND)
 with ott.assert_raises(TypeError):
     algo.run()
 
+# A budget that cannot host the requested minimum number of blocks is rejected
+# instead of silently exceeding the budget after the block-length clamp.
+algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+algo.setSampleSize(10000)
+algo.setMemoryBudget(250)
+algo.setMinimumBlockCount(1000)
+algo.setBlockLengthPolicy(MEMORY_BOUND)
+with ott.assert_raises(TypeError):
+    algo.run()
+
 # ---------------------------------------------------------------------
 # 5. Pilot-based policies
 # ---------------------------------------------------------------------
@@ -458,6 +468,16 @@ with ott.assert_raises(TypeError):
     diagnostic.setCombinationType(99)
 with ott.assert_raises(TypeError):
     diagnostic.setTrimmingFraction(0.5)
+
+# A NaN output is rejected before it can corrupt the block sort.
+nan_output = ot.CompositeRandomVector(
+    ot.PythonFunction(1, 1, lambda x: [float("nan")]),
+    ot.RandomVector(ot.Normal()),
+)
+algo = otexp.BlockQuantileSimulation(nan_output, 0.95, 0.95)
+algo.setSampleSize(1000)
+with ott.assert_raises(TypeError):
+    algo.run()
 
 # ---------------------------------------------------------------------
 # 12. ResourceMap defaults and validation

@@ -263,6 +263,9 @@ QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
     for (UnsignedInteger i = 0; i < currentSize; ++i)
     {
       const Scalar value = outputSample(i, 0);
+      if (std::isnan(value))
+        throw InvalidArgumentException(HERE)
+            << "The exact-tail estimator cannot process a NaN output value";
       if (tailType == QuantileSimulationResultImplementation::UPPER_TAIL)
       {
         if (upperHeap.size() < retainedCount)
