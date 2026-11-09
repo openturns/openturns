@@ -431,7 +431,8 @@ Returns
 -------
 blockCount : int
     Number of independent blocks combined by a block algorithm; 0 when
-    the algorithm is not block based.)RAW"
+    the algorithm is not block based.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -441,7 +442,8 @@ R"RAW(Accessor to the number of blocks.
 Parameters
 ----------
 blockCount : int
-    Number of independent blocks combined by a block algorithm.)RAW"
+    Number of independent blocks combined by a block algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -453,7 +455,8 @@ Returns
 blockQuantiles : :class:`~openturns.Point`
     Quantile computed from each block.  The size of the point is the
     number of blocks; it is empty when the algorithm is not block
-    based.)RAW"
+    based.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -463,7 +466,8 @@ R"RAW(Accessor to the block quantile sample.
 Parameters
 ----------
 blockQuantiles : sequence of float
-    Quantile computed from each block.  The values must be finite.)RAW"
+    Quantile computed from each block.  The values must be finite.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -474,7 +478,8 @@ Returns
 -------
 combination : int
     Rule used to combine the block quantiles.  The values are ``MEAN``,
-    ``MEDIAN`` and ``TRIMMED_MEAN``.)RAW"
+    ``MEDIAN`` and ``TRIMMED_MEAN``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -485,7 +490,8 @@ Parameters
 ----------
 combination : int
     Rule used to combine the block quantiles.  The values are ``MEAN``,
-    ``MEDIAN`` and ``TRIMMED_MEAN``.)RAW"
+    ``MEDIAN`` and ``TRIMMED_MEAN``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -496,7 +502,8 @@ Returns
 -------
 description : str
     Human-readable description of the combination rule, including the
-    trimming fraction for the trimmed mean.)RAW"
+    trimming fraction for the trimmed mean.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -507,7 +514,8 @@ Returns
 -------
 gamma : float
     Fraction trimmed from each side by the trimmed mean, in
-    :math:`[0, 0.5)`.)RAW"
+    :math:`[0, 0.5)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -518,7 +526,8 @@ Parameters
 ----------
 gamma : float
     Fraction trimmed from each side by the trimmed mean, in
-    :math:`[0, 0.5)`.)RAW"
+    :math:`[0, 0.5)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -529,7 +538,8 @@ Returns
 -------
 description : str
     Human-readable description of the policy that selected the block
-    length.)RAW"
+    length.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -540,7 +550,8 @@ Parameters
 ----------
 description : str
     Human-readable description of the policy that selected the block
-    length.)RAW"
+    length.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -553,7 +564,8 @@ peakMemory : int
     Peak number of scalar values stored by the algorithm.  For the
     block estimator it is the block length plus the number of block
     quantiles; for the exact-tail estimator it is the number of retained
-    order statistics.)RAW"
+    order statistics.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -563,7 +575,8 @@ R"RAW(Accessor to the peak memory estimate.
 Parameters
 ----------
 peakMemory : int
-    Peak number of scalar values stored by the algorithm.)RAW"
+    Peak number of scalar values stored by the algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -573,7 +586,8 @@ R"RAW(Accessor to the peak memory estimate in bytes.
 Returns
 -------
 peakMemoryInBytes : int
-    Peak memory estimate, assuming eight bytes per scalar value.)RAW"
+    Peak memory estimate, assuming eight bytes per scalar value.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -620,7 +634,8 @@ ratio : float
     Absolute value of the estimated bias divided by the standard error.
     It is zero when no bias estimate is available.  Values below 0.1
     indicate a negligible bias; values above 0.5 indicate that the
-    nominal interval should not be trusted.)RAW"
+    nominal interval should not be trusted.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -631,7 +646,8 @@ Returns
 -------
 tail : int
     Tail retained by an exact-tail algorithm.  The values are
-    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.)RAW"
+    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -642,7 +658,8 @@ Parameters
 ----------
 tail : int
     Tail retained by an exact-tail algorithm.  The values are
-    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.)RAW"
+    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -652,7 +669,8 @@ R"RAW(Accessor to the retained tail description.
 Returns
 -------
 description : str
-    Human-readable description of the retained tail.)RAW"
+    Human-readable description of the retained tail.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -662,7 +680,8 @@ R"RAW(Accessor to the retained order-statistic count.
 Returns
 -------
 retainedCount : int
-    Number of order statistics kept by an exact-tail algorithm.)RAW"
+    Number of order statistics kept by an exact-tail algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -672,7 +691,8 @@ R"RAW(Accessor to the retained order-statistic count.
 Parameters
 ----------
 retainedCount : int
-    Number of order statistics kept by an exact-tail algorithm.)RAW"
+    Number of order statistics kept by an exact-tail algorithm.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -683,7 +703,8 @@ Returns
 -------
 lowerRank : int
     Zero-based index of the lower order statistic of the exact binomial
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -694,7 +715,8 @@ Parameters
 ----------
 lowerRank : int
     Zero-based index of the lower order statistic of the exact binomial
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -705,7 +727,8 @@ Returns
 -------
 upperRank : int
     Zero-based index of the upper order statistic of the exact binomial
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -716,7 +739,8 @@ Parameters
 ----------
 upperRank : int
     Zero-based index of the upper order statistic of the exact binomial
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -802,3 +826,49 @@ graph : :class:`~openturns.Graph`
     When the convergence history contains confidence bounds, they are
     drawn as two additional curves.
 )RAW"
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Returns
+-------
+replicateCount : int
+    Number of independent replicates used by the estimator.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Parameters
+----------
+replicateCount : int
+    Number of independent replicates used by the estimator.  It must be
+    positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::getReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Returns
+-------
+estimates : :class:`~openturns.Point`
+    Quantile estimate produced by each independent replicate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResultImplementation::setReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Parameters
+----------
+estimates : sequence of float
+    Quantile estimate produced by each independent replicate.  All the
+    values must be finite.
+)RAW"
+
+// ---------------------------------------------------------------------

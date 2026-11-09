@@ -361,6 +361,28 @@ UnsignedInteger QuantileSimulationResult::getUpperRank() const
   return getImplementation()->getUpperRank();
 }
 
+void QuantileSimulationResult::setReplicateCount(const UnsignedInteger replicateCount)
+{
+  copyOnWrite();
+  getImplementation()->setReplicateCount(replicateCount);
+}
+
+UnsignedInteger QuantileSimulationResult::getReplicateCount() const
+{
+  return getImplementation()->getReplicateCount();
+}
+
+void QuantileSimulationResult::setReplicateEstimates(const Point & estimates)
+{
+  copyOnWrite();
+  getImplementation()->setReplicateEstimates(estimates);
+}
+
+Point QuantileSimulationResult::getReplicateEstimates() const
+{
+  return getImplementation()->getReplicateEstimates();
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResult::setIsFixedSample(const Bool fixedSample)
 {

@@ -182,6 +182,12 @@ public:
   void setUpperRank(const UnsignedInteger upperRank);
   UnsignedInteger getUpperRank() const;
 
+  /** Independent replicate diagnostics accessors */
+  void setReplicateCount(const UnsignedInteger replicateCount);
+  UnsignedInteger getReplicateCount() const;
+  void setReplicateEstimates(const Point & estimates);
+  Point getReplicateEstimates() const;
+
   /** Fixed sample flag accessor */
   void setIsFixedSample(const Bool fixedSample);
   Bool isFixedSample() const;
@@ -234,6 +240,8 @@ protected:
   UnsignedInteger retainedCount_ = 0;
   UnsignedInteger lowerRank_ = 0;
   UnsignedInteger upperRank_ = 0;
+  UnsignedInteger replicateCount_ = 0;
+  Point replicateEstimates_;
   Bool isFixedSample_ = true;
   Sample convergenceHistory_;
 
