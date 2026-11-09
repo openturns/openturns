@@ -48,6 +48,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+TwoStageQuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
+
 Notes
 -----
 The coverage is distribution-free and anytime-valid: it requires
@@ -67,9 +71,6 @@ The achieved coverage is ``COVERAGE_ANYTIME_VALID`` and
 :meth:`QuantileSimulationResult.isFixedSample` is ``False``, because the
 stopping time is data-dependent.
 
-See also
---------
-TwoStageQuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
 
 Examples
 --------
@@ -93,7 +94,8 @@ Returns
 -------
 targetHalfWidth : float
     Target half-width of the confidence sequence, in the output units.
-    Zero means that no target is set.  Default is 0.0.)RAW"
+    Zero means that no target is set.  Default is 0.0.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -104,8 +106,9 @@ Parameters
 ----------
 targetHalfWidth : float
     Target half-width of the confidence sequence, in the output units.
-    It must be finite and positive.  Default is 0.0, which means that
-    no target is set and the run stops at the evaluation budget.)RAW"
+    It must be finite and positive.  A new instance starts without a
+    target, in which case the run stops at the evaluation budget.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,4 +119,5 @@ Returns
 -------
 hasTargetHalfWidth : bool
     Whether :meth:`setTargetHalfWidth` has been called with a positive
-    value.)RAW"
+    value.
+)RAW"

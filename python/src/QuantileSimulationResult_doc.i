@@ -872,7 +872,8 @@ R"RAW(Accessor to the pilot size of a two-stage design.
 Returns
 -------
 pilotSize : int
-    Number of observations drawn in the pilot stage.)RAW"
+    Number of observations drawn in the pilot stage.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -883,7 +884,8 @@ Parameters
 ----------
 pilotSize : int
     Number of observations drawn in the pilot stage.  It must be
-    positive.)RAW"
+    positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -893,7 +895,8 @@ R"RAW(Accessor to the pilot quantile estimate.
 Returns
 -------
 estimate : float
-    Quantile estimated on the pilot sample of a two-stage design.)RAW"
+    Quantile estimated on the pilot sample of a two-stage design.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -904,7 +907,8 @@ Parameters
 ----------
 estimate : float
     Quantile estimated on the pilot sample of a two-stage design.  It
-    must be finite.)RAW"
+    must be finite.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -914,7 +918,8 @@ R"RAW(Test whether a pilot quantile estimate is available.
 Returns
 -------
 hasPilotQuantileEstimate : bool
-    Whether the pilot quantile estimate has been set.)RAW"
+    Whether the pilot quantile estimate has been set.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -924,9 +929,12 @@ R"RAW(Accessor to the pilot density estimate.
 Returns
 -------
 density : float
-    Spacing estimate of the density at the quantile, computed on the
-    pilot sample of a two-stage design.  Zero means that the spacing
-    was degenerate.)RAW"
+    Density estimate at the quantile, computed on the pilot sample of a
+    two-stage design.  It is derived from the bilateral pilot interval
+    when that interval has positive width; the spacing estimate is used
+    only when the interval cannot provide a density.  Zero means that
+    no estimate was available.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -936,8 +944,9 @@ R"RAW(Accessor to the pilot density estimate.
 Parameters
 ----------
 density : float
-    Spacing estimate of the density at the quantile.  It must be finite
-    and non-negative.)RAW"
+    Density estimate at the quantile.  It must be finite and
+    non-negative.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -947,7 +956,8 @@ R"RAW(Test whether a pilot density estimate is available.
 Returns
 -------
 hasPilotDensity : bool
-    Whether the pilot density estimate has been set.)RAW"
+    Whether the pilot density estimate has been set.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -957,7 +967,8 @@ R"RAW(Accessor to the confirmation size of a two-stage design.
 Returns
 -------
 confirmationSize : int
-    Number of observations actually drawn in the confirmation stage.)RAW"
+    Number of observations actually drawn in the confirmation stage.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -968,7 +979,8 @@ Parameters
 ----------
 confirmationSize : int
     Number of observations actually drawn in the confirmation stage.
-    It must be positive.)RAW"
+    It must be positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -980,7 +992,8 @@ Returns
 requiredConfirmationSize : int
     Confirmation size requested by the two-stage sizing formula.  When
     the budget is insufficient, it is larger than the confirmation size
-    actually drawn and :meth:`getBudgetExhausted` is ``True``.)RAW"
+    actually drawn and :meth:`getBudgetExhausted` is ``True``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -991,7 +1004,8 @@ Parameters
 ----------
 requiredConfirmationSize : int
     Confirmation size requested by the two-stage sizing formula.  It
-    must be positive.)RAW"
+    must be positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1001,7 +1015,8 @@ R"RAW(Accessor to the target half-width.
 Returns
 -------
 targetHalfWidth : float
-    Target half-width requested for a two-stage or sequential design.)RAW"
+    Target half-width requested for a two-stage or sequential design.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1012,7 +1027,8 @@ Parameters
 ----------
 targetHalfWidth : float
     Target half-width requested for a two-stage or sequential design.
-    It must be finite and positive.)RAW"
+    It must be finite and positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1022,7 +1038,8 @@ R"RAW(Test whether a target half-width is recorded.
 Returns
 -------
 hasTargetHalfWidth : bool
-    Whether a positive target half-width has been set.)RAW"
+    Whether a positive target half-width has been set.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1032,8 +1049,15 @@ R"RAW(Accessor to the budget exhaustion flag.
 Returns
 -------
 budgetExhausted : bool
-    Whether the evaluation budget was reached before the target
-    half-width was met.)RAW"
+    Whether the design exhausted its evaluation budget before its
+    stopping rule was satisfied.  For a two-stage design, this records
+    that the pilot-based sizing rule required more confirmation
+    observations than the remaining budget; the confirmation interval
+    remains exact at the achieved size, so the target half-width may
+    still be met.  For a sequential design, this records that the
+    maximum sample size was reached without meeting the target
+    half-width.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1043,8 +1067,15 @@ R"RAW(Accessor to the budget exhaustion flag.
 Parameters
 ----------
 budgetExhausted : bool
-    Whether the evaluation budget was reached before the target
-    half-width was met.)RAW"
+    Whether the design exhausted its evaluation budget before its
+    stopping rule was satisfied.  For a two-stage design, this records
+    that the pilot-based sizing rule required more confirmation
+    observations than the remaining budget; the confirmation interval
+    remains exact at the achieved size, so the target half-width may
+    still be met.  For a sequential design, this records that the
+    maximum sample size was reached without meeting the target
+    half-width.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1055,7 +1086,8 @@ Returns
 -------
 stoppingTime : int
     Number of observations drawn when the sequential algorithm
-    stopped.  It is zero when no sequential run has been recorded.)RAW"
+    stopped.  It is zero when no sequential run has been recorded.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1066,7 +1098,8 @@ Parameters
 ----------
 stoppingTime : int
     Number of observations drawn when the sequential algorithm stopped.
-    It must be positive.)RAW"
+    It must be positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1079,7 +1112,8 @@ stoppingCriterion : str
     ``"target half-width"`` when the run stopped because the interval
     became short enough, ``"maximum sample size"`` when it stopped at
     the evaluation budget, and an empty string when no sequential run
-    has been recorded.)RAW"
+    has been recorded.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1089,7 +1123,8 @@ R"RAW(Accessor to the stopping criterion of a sequential design.
 Parameters
 ----------
 stoppingCriterion : str
-    Stopping criterion.  It must not be empty.)RAW"
+    Stopping criterion.  It must not be empty.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1102,7 +1137,8 @@ path : :class:`~openturns.Sample`
     Path with one row per evaluated sample size and four columns: the
     sample size, the quantile estimate, the lower bound and the upper
     bound.  Infinite bounds are represented by
-    :math:`\pm` ``SpecFunc.MaxScalar``.)RAW"
+    :math:`\pm` ``SpecFunc.MaxScalar``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1114,7 +1150,8 @@ Parameters
 path : :class:`~openturns.Sample`
     Path with four columns: sample size, estimate, lower bound and
     upper bound.  It must be a finite sample with four columns when it
-    is not empty.)RAW"
+    is not empty.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1125,7 +1162,8 @@ Returns
 -------
 coverageAssumption : str
     Distribution-free assumption that supports the anytime-valid
-    coverage claim, or an empty string when no such claim is made.)RAW"
+    coverage claim, or an empty string when no such claim is made.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -1136,4 +1174,5 @@ Parameters
 ----------
 coverageAssumption : str
     Distribution-free assumption that supports the anytime-valid
-    coverage claim.  It must not be empty.)RAW"
+    coverage claim.  It must not be empty.
+)RAW"

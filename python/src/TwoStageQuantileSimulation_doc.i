@@ -22,12 +22,14 @@ asymptotic form and the spacing density estimator are given in
 :any:`quantile_theory_sequential`.
 
 Using the pilot interval width instead of a single-spacing density
-estimate avoids the large variance of the latter.  The spacing estimate
-is still reported by :meth:`QuantileSimulationResult.getPilotDensity`.
-When the pilot is too small for an exact interval, the density estimate
-is used with the asymptotic rule instead.  The size is clamped from
-below by the minimum sample size of the exact bilateral order-statistic
-interval and from above by the remaining evaluation budget.
+estimate avoids the large variance of the latter.  The reported
+:meth:`QuantileSimulationResult.getPilotDensity` is derived from the
+bilateral pilot interval when that interval has positive width; the
+spacing-density estimate is used only when the interval cannot provide
+a density, in which case the asymptotic sizing rule is used instead.
+The size is clamped from below by the minimum sample size of the exact
+bilateral order-statistic interval and from above by the remaining
+evaluation budget.
 
 The confirmation sample is drawn independently of the pilot.  The
 estimate is the empirical inverse of the confirmation sample and the
@@ -39,11 +41,15 @@ holds unconditionally, pilot randomness included.  The pilot
 observations are not used in the estimate or in the interval.
 
 The evaluation budget is set with :meth:`setSampleSize` and is shared by
-the two stages.  If the budget is insufficient to reach the target
-half-width, the confirmation sample is limited to the available budget,
+the two stages.  The sizing rule predicts the confirmation size from the
+pilot sample before the confirmation sample is drawn.  When that
+prediction exceeds the available budget, the confirmation sample is
+limited to the available budget,
 :meth:`QuantileSimulationResult.getBudgetExhausted` is set to ``True``
-and a warning is logged.  The interval remains exact at the achieved
-confirmation size; only the target width is missed.
+and a warning is logged.  The flag records the outcome of the sizing
+rule, not the width of the interval actually produced: the interval
+remains exact at the achieved confirmation size, which may still meet
+the target by chance.
 
 Parameters
 ----------
@@ -54,6 +60,10 @@ alpha : float
 beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
+
+See also
+--------
+SequentialQuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
 
 Notes
 -----
@@ -66,9 +76,6 @@ The achieved coverage is ``COVERAGE_EXACT`` and
 :meth:`QuantileSimulationResult.isFixedSample` is ``True``, because the
 confirmation size is fixed before the confirmation sample is drawn.
 
-See also
---------
-SequentialQuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
 
 Examples
 --------
@@ -92,9 +99,12 @@ R"RAW(Accessor to the pilot sample size.
 Returns
 -------
 pilotSize : int
-    Number of observations drawn in the pilot stage.  The pilot is
-    capped so that the remaining budget can hold an exact confirmation
-    interval.  Default is 1000.)RAW"
+    Configured pilot sample size.  The number of observations actually
+    drawn can be smaller when the budget cannot hold the configured
+    pilot and an exact confirmation interval;
+    :meth:`QuantileSimulationResult.getPilotSize` reports the number
+    drawn.  Default is 1000.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -105,7 +115,8 @@ Parameters
 ----------
 pilotSize : int
     Number of observations drawn in the pilot stage.  It must be
-    positive.  Default is 1000.)RAW"
+    positive.  Default is 1000.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +127,8 @@ Returns
 -------
 targetHalfWidth : float
     Target half-width of the confirmation interval, in the output
-    units.  Zero means that no target is set.  Default is 0.0.)RAW"
+    units.  Zero means that no target is set.  Default is 0.0.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -128,7 +140,8 @@ Parameters
 targetHalfWidth : float
     Target half-width of the confirmation interval, in the output
     units.  It must be finite and positive.  Default is 0.0, which
-    means that no target is set.)RAW"
+    means that no target is set.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -139,4 +152,5 @@ Returns
 -------
 hasTargetHalfWidth : bool
     Whether :meth:`setTargetHalfWidth` has been called with a positive
-    value.)RAW"
+    value.
+)RAW"
