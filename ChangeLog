@@ -58,24 +58,12 @@
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
- * OrthogonalBasis now has a value-based equality operator that dispatches to the concrete factory state
- * BasisOrthonormalizationAlgorithm/BasisOrthonormalizationFactory constructors take an OrthogonalBasis (the source basis and its instrumental measure), a Distribution (the target measure) and the number of first basis elements to orthonormalize, and check that the target support is contained in the instrumental support
- * Added compact __str__ to BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature and GaussLPQuadratureRule
- * BasisOrthonormalizationFactory.buildQuadrature/buildQuadratureRule return at most the requested number of nodes, and buildQuadratureRule returns an immutable GaussLPQuadratureRule
- * GaussLPQuadrature: optional anchor nodes, reused as an anchor-only subset when they reproduce the moments and otherwise retained with a positive weight while added nodes complete the rule
- * GaussLPQuadrature: analytic gradient of the refinement residual
- * GaussLPQuadrature: follow the greedy clustering path and return the smallest rule meeting the tolerance
- * GaussLPQuadrature: direct constructor from the functions whose moments are reproduced, the integration measure and optional anchors, with setMeasureAndFunctions/getFunctionsCollection/setAnchors/getAnchors accessors
- * GaussLPQuadrature: dedicated ResourceMap tolerances for the local refinement, tighter than the generic optimization defaults
- * GaussLPQuadrature, BasisOrthonormalizationAlgorithm: reject the Gauss-Legendre fallback for a dependent elliptical measure whose standard distribution is not normal, because its truncated heavy tails cannot reproduce the moments
  * Added LeastSquaresMethod.solveNormalGram to solve the weighted Gram system, while solveNormal remains restricted to uniform weights
  * Extended UniformOverMesh to embedded meshes with getIntrinsicDimension and getVolume
- * Restricted the UniformOverMesh(mesh) constructor to explicit conversions
  * Added MetaModelValidation.getWeights and MetaModelValidation.setWeights: the R2 score and the mean squared error are weighted by the validation weights, uniform by default, and normalized by the weight mass
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
  * HMatrixParameters.getAdmissibility and HMatrixParameters.setAdmissibility
- * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed DistFunc.dNonCentralStudentAlt0 and the StudentFunctions NonCentralStudentCDFAlt0/NonCentralStudentCDFAlt1/NonCentralStudentPDFAlt0 helpers: Boost is still used when available for all degrees of freedom, and the native fallback now matches it (Benton & Krishnamoorthy Poisson-mixture series for the CDF, direct Poisson-mixture beta-density series for the PDF instead of the CDF-difference identity)
  * Removed deprecated Graph.setDrawable(Drawable, int)
@@ -130,6 +118,7 @@
  * Sample.computeSuperQuantile
  * Sample.computeQuantile and computeQuantilePerComponent accept an optional tail flag
  * MetaModelValidation.computeRootMeanSquaredError, computeMeanAbsoluteError and drawResiduals
+ * OrthogonalBasis now has a value-based equality operator that dispatches to the concrete factory state
  * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
  * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
  * Curve.setLabels/getLabels
@@ -140,6 +129,7 @@
  * HMatrix: Add interface supporting HODLR implementation
  * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
  * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
+ * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
 
 === Documentation ===
  * Theory: add interpolation page
