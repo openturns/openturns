@@ -26,10 +26,6 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/TBBImplementation.hxx"
-#ifdef OPENTURNS_HAVE_TBB
-#include <tbb/task_group.h>
-#include <tbb/task_arena.h>
-#endif
 
 #include <algorithm>
 #include <cmath>
@@ -409,39 +405,21 @@ HODLRNode::HODLRNode(Pointer<const HODLREntryEvaluator> eval,
 
     // The two child subtrees are fully independent (disjoint index ranges,
     // private storage): build them concurrently when parallel assembly is
-    // enabled. The root runs its group inside an arena sized by
-    // TBB-ThreadsNumber so the OT thread setting is honored (the default
-    // arena would ignore it); nested groups inherit that arena. Results are
+    // enabled and the evaluator supports it (eg Python callables cannot run
+    // on worker threads, see HODLREntryEvaluator::isParallel). Results are
     // deterministic except with AcaRandom, whose RNG draws then depend on
     // the task schedule.
-#ifdef OPENTURNS_HAVE_TBB
-    if (ResourceMap::GetAsBool("HODLRMatrix-ParallelAssembly"))
+    const Bool useParallelAssembly = ResourceMap::GetAsBool("HODLRMatrix-ParallelAssembly") && !p_eval_.isNull() && p_eval_->isParallel();
+    TBBImplementation::ParallelForIf(useParallelAssembly, 0, 2, [&](const TBBImplementation::BlockedRange<UnsignedInteger> & r)
     {
-      if (parent == nullptr)
+      for (UnsignedInteger child = r.begin(); child != r.end(); ++ child)
       {
-        tbb::task_arena assemblyArena(static_cast<int>(TBBImplementation::GetThreadsNumber()));
-        assemblyArena.execute([&]
-        {
-          tbb::task_group tasks;
-          tasks.run([&] { p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this); });
-          tasks.run([&] { p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this); });
-          tasks.wait();
-        });
+        if (child == 0)
+          p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this);
+        else
+          p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this);
       }
-      else
-      {
-        tbb::task_group tasks;
-        tasks.run([&] { p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this); });
-        tasks.run([&] { p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this); });
-        tasks.wait();
-      }
-    }
-    else
-#endif
-    {
-      p_child0_ = new HODLRNode(p_eval_, p_diag_, start_, half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 0, this);
-      p_child1_ = new HODLRNode(p_eval_, p_diag_, start_ + half, size_ - half, minLeafSize, maxRank_, tolerance_, recompressionTolerance_, 1, this);
-    }
+    });
 
     // Count the blocks that had to be stored at full rank (dense fallback
     // above): the HODLR low-rank assumption does not hold for them at the
