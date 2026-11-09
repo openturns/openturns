@@ -343,11 +343,13 @@ experiment:
   randomized low-discrepancy sequence or a Latin hypercube design:
   :math:`R` independent replicates and the Student interval
   :eq:`eq-replicate-t`, with coverage ``COVERAGE_ASYMPTOTIC``;
-- non-uniform weights and any other design: the weighted Woodruff
-  interval :eq:`eq-weighted-woodruff`, with coverage
-  ``COVERAGE_ASYMPTOTIC`` when the draws are independent, in particular
-  for an importance-sampling experiment, and ``COVERAGE_NONE`` for a
-  dependent randomized design or a deterministic design.
+- an importance-sampling experiment with non-uniform weights: the
+  weighted Woodruff interval :eq:`eq-weighted-woodruff`, with coverage
+  ``COVERAGE_ASYMPTOTIC``, because its i.i.d. proposal draws make the
+  weighted variance estimator valid;
+- any other weighted design: the weighted Woodruff interval
+  :eq:`eq-weighted-woodruff`, with coverage ``COVERAGE_NONE``, because
+  the weighted variance estimator omits the covariance terms.
 
 The replicate interval is
 

@@ -87,7 +87,10 @@ assert result.getConfidenceLevel() == 0.95
 assert result.getEstimatorType() == EMPIRICAL_INVERSE
 assert result.getCoverageType() == COVERAGE_NONE
 assert result.getSampleSize() == len(values)
-assert result.getEffectiveSampleSize() == 1.0 / sum((w / sum(weights)) ** 2 for w in weights)
+ott.assert_almost_equal(
+    result.getEffectiveSampleSize(),
+    1.0 / sum((w / sum(weights)) ** 2 for w in weights),
+    1.0e-12, 1.0e-12)
 assert result.getConvergenceHistory().getSize() == 1
 assert result.isFixedSample()
 
