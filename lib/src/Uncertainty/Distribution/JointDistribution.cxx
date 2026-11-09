@@ -43,10 +43,30 @@
 #include "openturns/Log.hxx"
 #include "openturns/TBBImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Tuples.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
+
+/* Build a parameter description consistent with the parameter vector: fall
+ * back to default names when the marginal provides none (custom distributions
+ * may throw NotYetImplementedException and the Python wrapper returns an empty
+ * description), and fail fast on a short non-empty description instead of
+ * reading out of bounds (as PointWithDescription::setDescription used to). */
+static Description BuildConsistentMarginalParameterDescription(const Distribution & marginal)
+{
+  const UnsignedInteger dimension = marginal.getParameter().getDimension();
+  Description description;
+  try { description = marginal.getParameterDescription(); }
+  catch (const NotYetImplementedException &) { /* fall through to the default below */ }
+  if (description.getSize() != dimension)
+  {
+    if (description.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: the parameter description of dimension " << description.getSize() << " does not match the parameter dimension " << dimension;
+    description = Description::BuildDefault(dimension, "p");
+  }
+  return description;
+}
 
 CLASSNAMEINIT(JointDistribution)
 
@@ -1113,33 +1133,25 @@ Distribution JointDistribution::getMarginal(const Indices & indices) const
 JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProbabilisticTransformation() const
 {
   const UnsignedInteger dimension = getDimension();
-  // Set the parameters values and descriptions
-  PointWithDescriptionCollection parametersCollection(getParametersCollection());
-  // First, compute the dimension of the marginal parameters space
-  const UnsignedInteger size = parametersCollection.getSize();
-  Point parameters(0);
-  Description description(0);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  // The marginal transformations only involve the parameters of the
+  // marginals. They are built directly from the marginal accessors as
+  // getParametersCollection()[0] does not always match getParameter(),
+  // e.g. for 1-d FiniteDiscrete the probabilities are stored outside [0].
+  const Description jointDescription(getDescription());
+  Point marginalParameters(0);
+  Description marginalDescription(0);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const PointWithDescription marginalParameters(parametersCollection[i]);
-    const Description marginalDescription(marginalParameters.getDescription());
-    const UnsignedInteger marginalDimension = marginalParameters.getDimension();
-    const String marginalName(marginalParameters.getName());
-    for (UnsignedInteger j = 0; j < marginalDimension; ++j)
+    const Point marginalParameter(distributionCollection_[i].getParameter());
+    const Description marginalParameterDescription(BuildConsistentMarginalParameterDescription(distributionCollection_[i]));
+    for (UnsignedInteger j = 0; j < marginalParameter.getDimension(); ++j)
     {
-      parameters.add(marginalParameters[j]);
-      description.add(OSS() << marginalName << "_" << marginalDescription[j]);
+      marginalParameters.add(marginalParameter[j]);
+      // Suffix as in getParametersCollection so AnalyticalResult sensitivities
+      // match the marginalName_marginalParameter convention
+      marginalDescription.add(OSS() << jointDescription[i] << "_" << marginalParameterDescription[j] << "_marginal_" << i);
     }
   }
-  // The marginal transformations only involve the parameters of the
-  // marginals, stored first in the parameters vector
-  UnsignedInteger marginalParametersDimension = 0;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    marginalParametersDimension += distributionCollection_[i].getParameter().getDimension();
-  Point marginalParameters(marginalParametersDimension);
-  std::copy(parameters.begin(), parameters.begin() + marginalParametersDimension, marginalParameters.begin());
-  Description marginalDescription(marginalParametersDimension);
-  std::copy(description.begin(), description.begin() + marginalParametersDimension, marginalDescription.begin());
   // Special case for the independent copula case: marginal transformations only to go to the spherical distribution
   if (core_.isCopula() && hasIndependentCopula())
   {
@@ -1155,15 +1167,10 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
   {
     const TriangularMatrix inverseCholesky(getInverseCholesky());
     const Point mean(getMean());
-    IsoProbabilisticTransformation transform;
-    transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean, inverseCholesky));
-    transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky));
-    transform.setHessian(new NatafEllipticalDistributionHessian(dimension));
     // The Nataf transformation only involves (mu, sigma), stored as the
     // mean vector followed by the marginal scales. In the elliptical case
     // the marginals are Normal or Student distributions, accessed through
     // the EllipticalDistribution interface.
-    const Description jointDescription(getDescription());
     Point natafParameters(2 * dimension);
     Description natafDescription(2 * dimension);
     for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -1171,9 +1178,26 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
       natafParameters[i] = mean[i];
       const EllipticalDistribution* p_marginal = dynamic_cast<const EllipticalDistribution*>(distributionCollection_[i].getImplementation().get());
       natafParameters[dimension + i] = (p_marginal ? p_marginal->getSigma()[0] : (inverseCholesky(i, i) != 0.0 ? 1.0 / inverseCholesky(i, i) : 0.0));
-      natafDescription[i] = (OSS() << jointDescription[i] << "_mu_" << i);
-      natafDescription[dimension + i] = (OSS() << jointDescription[i] << "_sigma_" << i);
+      // The marginals are 1-d Normal or Student distributions: locate the
+      // raw location/scale descriptions and suffix them as in
+      // getParametersCollection so AnalyticalResult sensitivities match the
+      // marginalName_marginalParameter convention
+      const Description marginalParameterDescription(distributionCollection_[i].getParameterDescription());
+      String muDescription("mu_0");
+      String sigmaDescription("sigma_0");
+      for (UnsignedInteger j = 0; j < marginalParameterDescription.getSize(); ++j)
+      {
+        if (marginalParameterDescription[j] == "mu_0") muDescription = marginalParameterDescription[j];
+        if (marginalParameterDescription[j] == "sigma_0") sigmaDescription = marginalParameterDescription[j];
+      }
+      natafDescription[i] = (OSS() << jointDescription[i] << "_" << muDescription << "_marginal_" << i);
+      natafDescription[dimension + i] = (OSS() << jointDescription[i] << "_" << sigmaDescription << "_marginal_" << i);
     }
+    // Record the scales at construction, see EllipticalDistribution.
+    IsoProbabilisticTransformation transform;
+    transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean, inverseCholesky, natafParameters));
+    transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky, natafParameters));
+    transform.setHessian(new NatafEllipticalDistributionHessian(dimension));
     transform.setParameter(natafParameters);
     transform.setParameterDescription(natafDescription);
     return transform;
@@ -1209,33 +1233,25 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
 JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getInverseIsoProbabilisticTransformation() const
 {
   const UnsignedInteger dimension = getDimension();
-  // Set the parameters values and descriptions
-  PointWithDescriptionCollection parametersCollection(getParametersCollection());
-  // First, compute the dimension of the marginal parameters space
-  const UnsignedInteger size = parametersCollection.getSize();
-  Point parameters(0);
-  Description description(0);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  // The marginal transformations only involve the parameters of the
+  // marginals. They are built directly from the marginal accessors as
+  // getParametersCollection()[0] does not always match getParameter(),
+  // e.g. for 1-d FiniteDiscrete the probabilities are stored outside [0].
+  const Description jointDescription(getDescription());
+  Point inverseMarginalParameters(0);
+  Description inverseMarginalDescription(0);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const PointWithDescription marginalParameters(parametersCollection[i]);
-    const Description marginalDescription(marginalParameters.getDescription());
-    const UnsignedInteger marginalDimension = marginalParameters.getDimension();
-    const String marginalName(marginalParameters.getName());
-    for (UnsignedInteger j = 0; j < marginalDimension; ++j)
+    const Point marginalParameter(distributionCollection_[i].getParameter());
+    const Description marginalParameterDescription(BuildConsistentMarginalParameterDescription(distributionCollection_[i]));
+    for (UnsignedInteger j = 0; j < marginalParameter.getDimension(); ++j)
     {
-      parameters.add(marginalParameters[j]);
-      description.add(OSS() << marginalName << "_" << marginalDescription[j]);
+      inverseMarginalParameters.add(marginalParameter[j]);
+      // Suffix as in getParametersCollection so AnalyticalResult sensitivities
+      // match the marginalName_marginalParameter convention
+      inverseMarginalDescription.add(OSS() << jointDescription[i] << "_" << marginalParameterDescription[j] << "_marginal_" << i);
     }
   }
-  // The marginal transformations only involve the parameters of the
-  // marginals, stored first in the parameters vector
-  UnsignedInteger inverseMarginalParametersDimension = 0;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    inverseMarginalParametersDimension += distributionCollection_[i].getParameter().getDimension();
-  Point inverseMarginalParameters(inverseMarginalParametersDimension);
-  std::copy(parameters.begin(), parameters.begin() + inverseMarginalParametersDimension, inverseMarginalParameters.begin());
-  Description inverseMarginalDescription(inverseMarginalParametersDimension);
-  std::copy(description.begin(), description.begin() + inverseMarginalParametersDimension, inverseMarginalDescription.begin());
   // Special case for the independent copula case: marginal transformations only to go back from the spherical distribution
   if (core_.isCopula() && hasIndependentCopula())
   {
@@ -1251,15 +1267,10 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
   {
     const TriangularMatrix cholesky(getCholesky());
     const Point mean(getMean());
-    InverseIsoProbabilisticTransformation inverseTransform;
-    inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean, cholesky));
-    inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky));
-    inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(dimension));
     // The Nataf transformation only involves (mu, sigma), stored as the
     // mean vector followed by the marginal scales. In the elliptical case
     // the marginals are Normal or Student distributions, accessed through
     // the EllipticalDistribution interface.
-    const Description jointDescription(getDescription());
     Point natafParameters(2 * dimension);
     Description natafDescription(2 * dimension);
     for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -1267,9 +1278,26 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
       natafParameters[i] = mean[i];
       const EllipticalDistribution* p_marginal = dynamic_cast<const EllipticalDistribution*>(distributionCollection_[i].getImplementation().get());
       natafParameters[dimension + i] = (p_marginal ? p_marginal->getSigma()[0] : cholesky(i, i));
-      natafDescription[i] = (OSS() << jointDescription[i] << "_mu_" << i);
-      natafDescription[dimension + i] = (OSS() << jointDescription[i] << "_sigma_" << i);
+      // The marginals are 1-d Normal or Student distributions: locate the
+      // raw location/scale descriptions and suffix them as in
+      // getParametersCollection so AnalyticalResult sensitivities match the
+      // marginalName_marginalParameter convention
+      const Description marginalParameterDescription(distributionCollection_[i].getParameterDescription());
+      String muDescription("mu_0");
+      String sigmaDescription("sigma_0");
+      for (UnsignedInteger j = 0; j < marginalParameterDescription.getSize(); ++j)
+      {
+        if (marginalParameterDescription[j] == "mu_0") muDescription = marginalParameterDescription[j];
+        if (marginalParameterDescription[j] == "sigma_0") sigmaDescription = marginalParameterDescription[j];
+      }
+      natafDescription[i] = (OSS() << jointDescription[i] << "_" << muDescription << "_marginal_" << i);
+      natafDescription[dimension + i] = (OSS() << jointDescription[i] << "_" << sigmaDescription << "_marginal_" << i);
     }
+    // Record the scales at construction, see EllipticalDistribution.
+    InverseIsoProbabilisticTransformation inverseTransform;
+    inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean, cholesky, natafParameters));
+    inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky, natafParameters));
+    inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(dimension));
     inverseTransform.setParameter(natafParameters);
     inverseTransform.setParameterDescription(natafDescription);
     return inverseTransform;

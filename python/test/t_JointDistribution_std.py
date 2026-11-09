@@ -398,3 +398,23 @@ T2 = d2.getIsoProbabilisticTransformation()
 sample = d2.getSample(5)
 sample_iso = T2(sample)
 ott.assert_almost_equal(sample_iso.computeMean(), [0.0, 0.0], 1.0, 1.0)
+
+# iso transformations build the marginal block from the marginal accessors
+# (getParametersCollection()[0] does not match getParameter() for 1-d
+# FiniteDiscrete), followed by the core dependence parameters
+fd = ot.FiniteDiscreteDistribution([[0.0], [1.0], [2.0]], [0.2, 0.5, 0.3])
+n = ot.Normal(1.0, 2.0)
+jd = ot.JointDistribution([fd, n], ot.ClaytonCopula(1.5))
+marginalParams = list(fd.getParameter()) + list(n.getParameter())
+trans = jd.getIsoProbabilisticTransformation()
+ott.assert_almost_equal(list(trans.getParameter())[:-1], marginalParams)
+ott.assert_almost_equal([trans.getParameter()[-1]], [1.5])
+assert len(trans.getParameterDescription()) == len(trans.getParameter())
+trans.setParameter(trans.getParameter())
+ott.assert_almost_equal(list(trans.getParameter())[:-1], marginalParams)
+transInv = jd.getInverseIsoProbabilisticTransformation()
+ott.assert_almost_equal(list(transInv.getParameter())[1:], marginalParams)
+ott.assert_almost_equal([transInv.getParameter()[0]], [1.5])
+assert len(transInv.getParameterDescription()) == len(transInv.getParameter())
+transInv.setParameter(transInv.getParameter())
+ott.assert_almost_equal(list(transInv.getParameter())[1:], marginalParams)
