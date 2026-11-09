@@ -181,6 +181,9 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
+  /** Refresh the PDF/CDF interpolation after a change of kernel, bandwidth or sample */
+  void updateApproximation();
+
   /** Get the mean of a kernelMixture */
   void computeMean() const override;
 

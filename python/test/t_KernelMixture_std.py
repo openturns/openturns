@@ -218,9 +218,30 @@ ott.assert_almost_equal(
     0.0,
 )
 
+# --- KernelMixture: changing the bandwidth refreshes the PDF/CDF interpolation ---
+ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", True)
+ot.RandomGenerator.SetSeed(0)
+interpolationSample = ot.Normal().getSample(50)
+bandwidthMixture = ot.KernelMixture(ot.Normal(), [1.0], interpolationSample)
+bandwidthMixture.setBandwidth([2.0])
+freshBandwidthMixture = ot.KernelMixture(ot.Normal(), [2.0], interpolationSample)
+for x in [-1.0, 0.5, 2.0]:
+    ott.assert_almost_equal(
+        bandwidthMixture.computePDF([x]),
+        freshBandwidthMixture.computePDF([x]),
+        1e-12,
+        1e-12,
+    )
+    ott.assert_almost_equal(
+        bandwidthMixture.computeCDF([x]),
+        freshBandwidthMixture.computeCDF([x]),
+        1e-12,
+        1e-12,
+    )
+ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", False)
+
 # --- KernelMixture: the cached inverse bandwidth overflows for a tiny
 # bandwidth; the multivariate log-PDF at a sample center must remain finite ---
-ot.ResourceMap.SetAsBool("KernelMixture-EnableInterpolation", False)
 tiny_bandwidth = ot.KernelMixture(
     ot.Normal(), [1.0e-320, 1.0e-320], ot.Sample([[0.0, 0.0]])
 )
