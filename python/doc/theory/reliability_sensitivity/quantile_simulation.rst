@@ -28,14 +28,17 @@ For a continuous and strictly increasing :math:`F`, the quantile
 :math:`q_\alpha` is the unique solution of :math:`F(q_\alpha)=\alpha`.
 For a general :math:`F`, definition :eq:`eq-quantile-definition` selects
 the smallest value whose distribution function reaches :math:`\alpha`.
-The upper-tail probability is
+When :math:`F` is continuous at :math:`q_\alpha`, the upper-tail
+probability is
 
 .. math::
 
     p = 1-\alpha,
 
 so that :math:`q_\alpha` is the value exceeded with probability
-:math:`p`.  Throughout this page, :math:`\alpha` denotes the
+:math:`p`.  When :math:`F` has an atom at :math:`q_\alpha`, the
+exceedance probability :math:`\Prob{Y>q_\alpha}=1-F(q_\alpha)` is
+smaller than :math:`p`.  Throughout this page, :math:`\alpha` denotes the
 *quantile level* and :math:`\beta` denotes the *confidence level*;
 the two numbers are independent.
 
@@ -295,8 +298,11 @@ i.i.d. draws from the proposal, as produced by
 :class:`~openturns.ImportanceSamplingExperiment`, and not for a
 dependent randomized design such as a randomized low-discrepancy
 sequence or a determinantal design.  The weights must also have a
-finite second moment and the proposal must dominate the target on the
-relevant tail.  Heavy-tailed weights make :math:`\ESS` small and the
+finite second moment and the proposal must dominate the target over its
+whole support, not only on the relevant tail: when the proposal vanishes
+where the target has mass, the self-normalized weighted empirical
+distribution converges to the target restricted to the proposal support,
+and its quantiles are biased.  Heavy-tailed weights make :math:`\ESS` small and the
 normal approximation poor.  When independence is not guaranteed, the
 interval is a diagnostic and the result must carry ``COVERAGE_NONE``.
 
@@ -518,7 +524,9 @@ levels is fixed before the run:
     m = \left\lceil\frac{\log p}{\log p_0}\right\rceil.
 
 At level :math:`j=1,\dots,m-1`, the algorithm computes the
-:math:`p_0`-quantile :math:`t_j` of the current population and replaces
+:math:`(1-p_0)`-quantile :math:`t_j` of the current population for the
+upper tail (the :math:`p_0`-quantile for the lower tail), so that the
+upper tail keeps a fraction :math:`p_0` of the particles, and replaces
 the particles that do not satisfy :math:`Y>t_j` (respectively
 :math:`Y<t_j` for the lower tail) by draws from the conditional
 distribution given the same event.  The replacement uses a
@@ -626,11 +634,13 @@ auxiliary Gaussian distribution
 :math:`q_{\mathrm{CE}}=\cN(\vect{\mu},\vect{\sigma})` in the
 standard space.
 
-The cross-entropy scales are typically smaller than one.  With
-:math:`q=q_{\mathrm{CE}}`, the importance weights
-:math:`\varphi/q` have an infinite second moment and their
-self-normalized average is dominated by a few draws.  The estimator
-therefore uses the defensive proposal
+For a standard Gaussian target and a centered Gaussian auxiliary
+distribution with scales :math:`\sigma_i`, the second moment of the
+importance weights :math:`\varphi/q` is finite only when
+:math:`\sigma_i^2>1/2` in every direction, because the integrand then
+decays faster than the proposal.  Below that threshold the second
+moment is infinite and the self-normalized average is dominated by a
+few draws.  The estimator therefore uses the defensive proposal
 
 .. math::
     :label: eq-defensive-proposal
@@ -675,7 +685,12 @@ Directional sampling
 the standard space.  For a direction :math:`\realU` on the unit sphere
 and a threshold :math:`t`, let :math:`r(\realU,t)` be the distance
 along :math:`\realU` at which the limit state
-:math:`\model(r\realU)=t` is reached.  The conditional probability
+:math:`\model(r\realU)=t` is reached.  The formula below assumes that
+the exceedance set is the outer radial interval along each direction,
+i.e. :math:`\model(r'\realU)>t` for :math:`r'>r(\realU,t)` and
+:math:`\model(r'\realU)\le t` below it.  This holds when the limit
+state is crossed exactly once along the ray and the failure domain is
+star-shaped as seen from the origin.  The conditional probability
 that the output exceeds :math:`t` in that direction is
 [bjerager1988]_
 
