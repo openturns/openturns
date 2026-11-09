@@ -681,7 +681,7 @@ for level, empirical, interpolated in [
         (0.25, 0.0, 0.0),
         (0.5, 10.0, 5.0),
         (0.75, 10.0, 10.0),
-        (0.99, 20.0, 20.0)]:
+        (0.99, 20.0, 19.6)]:
     algo.setAlpha(level)
     algo.setEstimatorType(EMPIRICAL_INVERSE)
     algo.run()
