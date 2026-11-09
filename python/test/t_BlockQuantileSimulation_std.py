@@ -643,4 +643,15 @@ try:
 finally:
     ot.ResourceMap.SetAsUnsignedInteger(block_count_key, saved_block_count)
 
+# ---------------------------------------------------------------------
+# A known discrete output distribution cannot claim asymptotic coverage.
+# ---------------------------------------------------------------------
+ot.RandomGenerator.SetSeed(20260120)
+discrete_output = ot.RandomVector(ot.Bernoulli(0.5))
+algo = otexp.BlockQuantileSimulation(discrete_output, 0.5, 0.9)
+algo.setSampleSize(3000)
+algo.setBlockLengthPolicy(ASYMPTOTIC)
+algo.run()
+assert algo.getResult().getCoverageType() == COVERAGE_NONE
+
 print("OK")

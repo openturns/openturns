@@ -201,7 +201,11 @@ spacing estimator of the density at the quantile is
     = \frac{r_2-r_1}{N\left(Y_{(r_2)}-Y_{(r_1)}\right)},
 
 for ranks :math:`r_1<r_2` around :math:`\lceil N\alpha\rceil`.  The
-corresponding Wald interval is
+density estimate is consistent only when the rank span grows while
+remaining negligible relative to the sample size, that is,
+:math:`r_2-r_1\to\infty` and :math:`(r_2-r_1)/N\to 0`.  Fixed adjacent
+ranks leave the scaled spacing random and do not yield a Wald interval
+with nominal coverage.  The corresponding Wald interval is
 
 .. math::
     :label: eq-wald
@@ -349,6 +353,10 @@ experiment:
 - i.i.d. sampling with uniform weights and the empirical inverse: the
   exact binomial order-statistic interval :eq:`eq-exact-coverage`,
   with coverage ``COVERAGE_EXACT``;
+- i.i.d. sampling with uniform weights and the interpolated estimator:
+  the Woodruff interval :eq:`eq-weighted-woodruff`, with coverage
+  ``COVERAGE_ASYMPTOTIC``, because the interpolated value is not an
+  order statistic and the exact binomial interval does not apply;
 - a randomized uniform-weight design that is not i.i.d., for example a
   randomized low-discrepancy sequence or a Latin hypercube design:
   :math:`R` independent replicates and the Student interval
@@ -357,9 +365,10 @@ experiment:
   weighted Woodruff interval :eq:`eq-weighted-woodruff`, with coverage
   ``COVERAGE_ASYMPTOTIC``, because its i.i.d. proposal draws make the
   weighted variance estimator valid;
-- any other weighted design: the weighted Woodruff interval
-  :eq:`eq-weighted-woodruff`, with coverage ``COVERAGE_NONE``, because
-  the weighted variance estimator omits the covariance terms.
+- any other weighted design whose draws are not i.i.d.: the weighted
+  Woodruff interval :eq:`eq-weighted-woodruff`, with coverage
+  ``COVERAGE_NONE``, because the weighted variance estimator omits the
+  covariance terms.
 
 The replicate interval is
 
@@ -432,6 +441,19 @@ sorted block quantiles and :math:`\gamma` is the trimming fraction.  The
 mean has the smallest asymptotic variance, the median is robust to
 heavy-tailed block quantiles, and the trimmed mean is a compromise.
 
+The bias and variance rates used below require a smooth output
+distribution: :math:`F` is differentiable in a neighborhood of
+:math:`q_\alpha` with a positive density :math:`f(q_\alpha)>0`.  For a
+discrete or atomic output the block quantile need not converge to
+:math:`q_\alpha`.  For a Bernoulli output with
+:math:`\Prob{Y=0}=\Prob{Y=1}=1/2`, :math:`\alpha=1/2` and an odd block
+length, each block median is 0 or 1 with equal probability, and the mean
+combination converges to :math:`1/2` rather than to the lower quantile
+0.  The ``COVERAGE_ASYMPTOTIC`` label is selected from the block length
+under this smoothness assumption; a known discrete output distribution
+is rejected, but a general atomic output cannot be detected from a
+finite sample, so the label is not a coverage guarantee in that case.
+
 The default confidence interval is the Student interval
 
 .. math::
@@ -441,8 +463,9 @@ The default confidence interval is the Student interval
     \pm t_{B-1,(1+\beta)/2}\,\frac{s_q}{\sqrt{B}},
 
 where :math:`s_q` is the sample standard deviation of the block
-quantiles.  Each block quantile has variance of order :math:`b^{-1}`
-and bias of order :math:`b^{-1}`, so the mean combination has variance
+quantiles.  Under the smoothness condition above, each block quantile
+has variance of order :math:`b^{-1}` and bias of order :math:`b^{-1}`,
+so the mean combination has variance
 of order :math:`(Bb)^{-1}=N^{-1}`, independent of the block length,
 and remains biased at order :math:`b^{-1}`.  The Student interval
 covers the mean block quantile, hence :math:`q_\alpha`, only when the
@@ -475,8 +498,8 @@ where :math:`s_w` is the sample standard deviation of the winsorized
 values [tukey1963]_.
 
 The block length is a statistical parameter.  It is distinct from the
-evaluation block size, which only controls how many points are evaluated
-between progress steps.
+evaluation block size: the whole statistical block is evaluated in one
+call, and the evaluation block size is only reported in the result.
 
 Exact-tail estimator
 ~~~~~~~~~~~~~~~~~~~~
@@ -563,11 +586,16 @@ conditional sample at level :math:`1-p_{\mathrm{cond}}` (respectively
 The whole procedure is repeated :math:`R` times with independent
 streams.  The reported estimate is the mean of the replicate estimates
 and the interval is the Student interval :eq:`eq-replicate-t`, whose
-coverage is asymptotic in :math:`R`.  The conditional samples are
-produced by a Markov chain and the thresholds are data-dependent, so
-the exact conditional rank interval is not an unconditional exact
-interval for :math:`q_\alpha`; the result carries
-``COVERAGE_ASYMPTOTIC``.
+coverage is asymptotic in :math:`R`.  As for the weighted-experiment
+replicate interval, this interval covers the expectation of the
+replicate estimator, not necessarily :math:`q_\alpha`.  Covering
+:math:`q_\alpha` also requires the bias of each replicate to be
+negligible relative to the standard error; that bias is controlled by
+the particle count, the burn-in and the level probabilities, not by
+:math:`R` alone.  The conditional samples are produced by a Markov chain
+and the thresholds are data-dependent, so the exact conditional rank
+interval is not an unconditional exact interval for :math:`q_\alpha`;
+the result carries ``COVERAGE_ASYMPTOTIC``.
 
 Last-particle algorithm
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -588,18 +616,16 @@ output with a Metropolis--Hastings kernel and a finite burn-in, and
 replaces the particle.  The lower tail is handled symmetrically by
 reversing the selection and the comparison.
 
-Let :math:`K` be the first move whose threshold crosses the true
-quantile, so that :math:`t_k` lies on the same side of the quantile for
-:math:`k<K` and on the other side for :math:`k\ge K`.  In the idealized
-process, :math:`K` is Poisson with mean :math:`\lambda=-N\log p`.  The
-algorithm runs to the upper Poisson rank
+The number of moves needed to cross the true quantile is Poisson with
+mean :math:`\lambda=-N\log p`.  Let :math:`Q_{\Pois(\lambda)}` denote
+the quantile function of that Poisson distribution.  The algorithm runs
+to the upper rank
 
 .. math::
     :label: eq-last-particle-rank
 
-    U = \left\lceil
-      Q_{\Pois(\lambda)}
-      \left(\frac{1+\beta}{2}\right)\right\rceil,
+    U = Q_{\Pois(\lambda)}
+        \left(\frac{1+\beta}{2}\right),
 
 and reports Walter's reduced-bias midpoint estimate [walter2015]_,
 
@@ -609,29 +635,36 @@ and reports Walter's reduced-bias midpoint estimate [walter2015]_,
     \widehat{q}_\alpha = \frac{t_{K_0-1}+t_{K_0}}{2},
     \qquad K_0 = \left\lceil -N\log p\right\rceil,
 
-where :math:`t_k` is the threshold of move :math:`k`.  The interval
-:math:`[t_L,t_U]` covers the quantile exactly when :math:`L<K\le U`, so
-the lower rank is one less than the Poisson quantile at level
-:math:`(1-\beta)/2`, while the upper rank is the Poisson quantile at
-level :math:`(1+\beta)/2`:
+where :math:`t_k` is the threshold of move :math:`k`.  The confidence
+interval is the Poisson rank interval :math:`[t_L,t_U]`, reversed for
+the lower tail, where
 
 .. math::
+    :label: eq-last-particle-lower-rank
 
-    L = \max\left(1,\,
-      Q_{\Pois(\lambda)}\left(\frac{1-\beta}{2}\right)-1\right),
-    \qquad
-    U = \max\left(L,\,
-      Q_{\Pois(\lambda)}\left(\frac{1+\beta}{2}\right)\right).
+    L = \max\left(1,
+        Q_{\Pois(\lambda)}
+        \left(\frac{1-\beta}{2}\right) - 1\right).
 
-The one-based rank convention clamps :math:`L` to one, whereas the exact
-lower endpoint would be :math:`-\infty` when the lower Poisson quantile
-is zero or one.  The supported range :math:`N\ge 10` and
-:math:`p\le 1/2` keeps the lower Poisson quantile at least two, so the
-clamp is not active.  For the lower tail, the interval endpoints are
-reversed.  The coverage is exact for the idealized process with
-independent conditional draws; the finite-burn-in Markov chain makes the
-achieved coverage asymptotic, so the result carries
-``COVERAGE_ASYMPTOTIC``.
+Let :math:`K` be the first move whose threshold reaches the true
+quantile.  The interval covers :math:`q_\alpha` exactly when
+:math:`L<K\le U`.  The shift by one in :math:`L` is necessary: without
+it, :math:`Q_{\Pois(\lambda)}((1-\beta)/2)` itself belongs to the
+missed event, and the nominal coverage is not attained.  The one-based
+rank convention requires a finite lower threshold.  When the lower
+Poisson quantile is zero or one, the exact lower endpoint would be
+:math:`-\infty`; the implementation rejects this configuration instead
+of truncating the rank to one, so the coverage statement below assumes
+:math:`Q_{\Pois(\lambda)}((1-\beta)/2)\ge 2`.  This condition depends on
+:math:`N`, :math:`p` and :math:`\beta`; it holds for moderate confidence
+levels but fails when :math:`\beta` is close enough to one that the
+lower Poisson quantile falls below two.  With
+:math:`\Prob{K\le U}\ge(1+\beta)/2` and
+:math:`\Prob{K\le L}<(1-\beta)/2`, the coverage is at least
+:math:`\beta`.  It is exact for the
+idealized process with independent conditional draws; the finite-burn-in
+Markov chain makes the achieved coverage asymptotic, so the result
+carries ``COVERAGE_ASYMPTOTIC``.
 
 Cross-entropy importance sampling
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -701,20 +734,26 @@ along :math:`\realU` at which the limit state
 the exceedance set is the outer radial interval along each direction,
 i.e. :math:`\model(r'\realU)>t` for :math:`r'>r(\realU,t)` and
 :math:`\model(r'\realU)\le t` below it.  This holds when the limit
-state is crossed exactly once along the ray and the failure domain is
-star-shaped as seen from the origin.  The conditional probability
-that the output exceeds :math:`t` in that direction is
-[bjerager1988]_
+state is crossed exactly once along the ray and the safe set
+:math:`\{\model(\inputRV)\le t\}` is star-shaped as seen from the
+origin; the failure set is then the complementary outer radial
+interval.  The formula does not apply when the failure set is an inner
+region around the origin.  The conditional probability that the output
+exceeds :math:`t` in that direction is [bjerager1988]_
 
 .. math::
     :label: eq-directional-conditional
 
     \ProbCond{\RVU=\realU}{Y>t}
-    = 1-F_{\chi_d}\left(r(\realU,t)^2\right),
+    = \bar{F}_R\left(r(\realU,t)\right),
 
-where :math:`F_{\chi_d}` is the chi-square distribution function with
-:math:`d` degrees of freedom.  The directional estimate of
-:math:`\Prob{Y>t}` is the average of
+where :math:`\bar{F}_R` is the survival function of the radial
+distribution of the standard space.  For a standard Gaussian space, the
+squared radius follows the chi-square distribution with :math:`d`
+degrees of freedom and
+:math:`\bar{F}_R(r)=1-F_{\chi^2_d}(r^2)`, where
+:math:`F_{\chi^2_d}` is the chi-square distribution function.  The
+directional estimate of :math:`\Prob{Y>t}` is the average of
 :eq:`eq-directional-conditional` over a sample of directions.
 
 The quantile solves
@@ -722,7 +761,7 @@ The quantile solves
 .. math::
     :label: eq-directional-root
 
-    H(t) = \Expect{1-F_{\chi_d}\left(r(\RVU,t)^2\right)} - p
+    H(t) = \Expect{\bar{F}_R\left(r(\RVU,t)\right)} - p
     = 0,
     \qquad p=1-\alpha.
 
@@ -731,8 +770,7 @@ The same direction sample is used at every candidate :math:`t`
 random function of :math:`t` and a bisection or secant iteration
 converges to the solution of :math:`\widehat{H}_N(t)=0` rather than
 oscillating on independent noise.  The interval follows from the delta
-method applied to the conditional contributions, or from independent
-replicates and the interval :eq:`eq-replicate-t`; its coverage is
+method applied to the conditional contributions; its coverage is
 asymptotic.  If the root is not valid or does not converge, the result
 carries ``COVERAGE_NONE``.
 
@@ -741,9 +779,12 @@ Line sampling
 
 ``LineSamplingQuantile`` uses an important
 direction :math:`\bde` fixed before the root-finding loop
-[pradlwarter2007]_.  For a threshold :math:`t`, the conditional
-probability of exceeding :math:`t` on a line is a normal tail
-probability, and the line estimate averages it over the lines:
+[pradlwarter2007]_.  The implementation requires a standard Gaussian
+space, because the probability along a line is a normal tail
+probability.  When the limit state crosses the line exactly once in the
+outward direction, the conditional probability of exceeding
+:math:`t` on the line is :math:`\Phi(-r(\realU_i,t))`, and the line
+estimate averages it over the lines:
 
 .. math::
     :label: eq-line-estimate
@@ -754,7 +795,11 @@ probability, and the line estimate averages it over the lines:
 
 where :math:`\Phi` is the standard normal distribution function and
 :math:`r(\realU_i,t)` is the signed distance to the limit state along
-line :math:`i`.  The quantile is again the root of
+line :math:`i`.  When a line crosses the limit state several times, the
+implementation accounts for each crossing by summing the alternating
+tail probabilities of the successive roots, and it can search the
+opposite direction; the single-tail form above is the one-crossing
+special case.  The quantile is again the root of
 :math:`\widehat{\Pset}(Y>t)-p=0`, solved with common random lines.  The
 important direction is not updated across thresholds, because doing so
 would break the common-random-number coupling that makes the outer
@@ -788,7 +833,12 @@ draws an independent sample, solves the weighted empirical root with
 that fixed sample, and the result is the mean of the replicate
 estimates with the Student interval :eq:`eq-replicate-t`.  The refined
 path carries ``COVERAGE_ASYMPTOTIC`` when at least two replicates are
-available.
+available and the replicate estimates are asymptotically unbiased with
+a joint Gaussian limit.  Increasing :math:`R` at a fixed per-replicate
+sample size only concentrates the Student interval around the mean
+replicate estimate; it does not remove the bias of that estimate, so
+covering :math:`q_\alpha` also requires the per-replicate bias to be
+negligible relative to the standard error.
 
 Probability inversion
 ~~~~~~~~~~~~~~~~~~~~~
@@ -821,8 +871,10 @@ when the bracket is narrow or when the bound straddles the target.  The
 adapter cannot claim common random numbers unless the wrapped engine
 exposes an injectable random stream; in the absence of such a stream the
 result carries ``COVERAGE_NONE``.  A bracket failure raises an
-exception: a boundary root or a flat probability surface is never
-reported as a silent point estimate.
+exception.  A flat probability surface is not detected as a bracket
+failure: the solver can bisect the plateau and return a point estimate,
+which is reported with ``COVERAGE_NONE`` and is not a validated
+quantile.
 
 .. _quantile_theory_sequential:
 

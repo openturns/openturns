@@ -25,6 +25,7 @@
 #include "openturns/BlockQuantileSimulation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/Distribution.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -53,7 +54,8 @@ static const Factory<BlockQuantileSimulation> Factory_BlockQuantileSimulation;
  * quantile is computed per block, and the block quantiles are combined
  * by a mean, a median or a trimmed mean.  The block length b is a
  * statistical parameter, distinct from SimulationAlgorithm::blockSize,
- * which only controls the evaluation batches.
+ * which is reported in the result but does not split the block
+ * evaluation.
  */
 
 namespace
@@ -822,12 +824,30 @@ QuantileSimulationResult BlockQuantileSimulation::runFixedSample()
   }
 
   // Coverage label.  The block interval is asymptotic in B and requires
-  // b to dominate sqrt(N).  SQRT_N is always reported without coverage.
+  // b to dominate sqrt(N).  The label assumes a smooth output
+  // distribution with a positive density at the quantile; a known
+  // discrete output distribution is reported with COVERAGE_NONE.  An
+  // arbitrary atomic output cannot be detected from a finite sample.
+  // SQRT_N is always reported without coverage.
+  Bool smoothOutput = true;
+  if (!output_.isComposite())
+  {
+    try
+    {
+      smoothOutput = !output_.getDistribution().isDiscrete();
+    }
+    catch (const Exception &)
+    {
+      // Keep the smoothness assumption when the output distribution is
+      // not available.
+    }
+  }
   QuantileSimulationResultImplementation::CoverageType coverageType
     = QuantileSimulationResultImplementation::COVERAGE_NONE;
   const Scalar sqrtSize = std::sqrt(1.0 * totalSize);
   const Scalar asymptoticLength = computeAsymptoticBlockLength(totalSize);
-  if ((blockLengthPolicy_ != SQRT_N)
+  if (smoothOutput
+      && (blockLengthPolicy_ != SQRT_N)
       && (1.0 * blockLength > sqrtSize)
       && ((blockLengthPolicy_ != ASYMPTOTIC) || (1.0 * blockLength >= asymptoticLength)))
     coverageType = QuantileSimulationResultImplementation::COVERAGE_ASYMPTOTIC;

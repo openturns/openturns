@@ -51,9 +51,11 @@ The statistical block length :math:`b` is selected by
   ``BIAS_TARGET``.
 
 The block length :math:`b` is a statistical parameter.  It is distinct
-from the inherited evaluation block size: ``setBlockSize(1000)``
-evaluates 1000 points per progress step, while ``setBlockLength(100000)``
-computes one block quantile from 100000 points.
+from the inherited evaluation block size: ``setBlockLength(100000)``
+computes one block quantile from 100000 points, and the whole block is
+evaluated in one call.  The inherited ``setBlockSize()`` does not split
+the statistical block into smaller evaluation batches; it is only
+reported in the result.
 
 Parameters
 ----------
@@ -83,7 +85,13 @@ rejected because their blocks would not be identically distributed.
 The coverage label is ``COVERAGE_ASYMPTOTIC`` when the block length
 dominates :math:`\sqrt N`, and ``COVERAGE_NONE`` otherwise.  The
 ``SQRT_N`` policy always reports ``COVERAGE_NONE`` because its bias and
-standard error are of the same order.
+standard error are of the same order.  The asymptotic label assumes a
+smooth output distribution with a positive density at the quantile.
+For a discrete or atomic output the block quantiles need not converge
+to the quantile, so the label is not a coverage guarantee.  The label is
+selected from the block-length policy.  A known discrete output
+distribution is reported with ``COVERAGE_NONE``; a general atomic output
+cannot be detected from a finite sample.
 
 The block sample contains :math:`Bb` evaluations, reported as the
 effective sample size.  The reported sample size also counts the pilot
@@ -210,7 +218,7 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Requested total number of model evaluations.
+    Requested block-sample size.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -221,11 +229,11 @@ R"RAW(Accessor to the sample size.
 Parameters
 ----------
 sampleSize : int
-    Requested total number of model evaluations.  The block sample
-    contains the largest multiple of the block length that does not
-    exceed this value.  The ``BIAS_TARGET`` and ``ADAPTIVE`` policies
-    evaluate additional pilot points, which the result sample size
-    includes.
+    Requested block-sample size.  The block sample contains the largest
+    multiple of the block length that does not exceed this value.  The
+    ``BIAS_TARGET`` and ``ADAPTIVE`` policies draw an additional pilot
+    sample, so the total number of model evaluations reported by the
+    result can exceed this value.
 )RAW"
 
 // ---------------------------------------------------------------------
