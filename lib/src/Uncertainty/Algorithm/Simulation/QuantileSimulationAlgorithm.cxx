@@ -192,19 +192,32 @@ Scalar interpolatedQuantile(const WeightedSample & data, const Scalar alpha)
     const Scalar beta = scalarIndex - index;
     return (1.0 - beta) * data.values[index] + beta * data.values[index + 1];
   }
-  if (alpha <= data.cumulative[0])
-    return data.values[0];
-  UnsignedInteger k = 0;
-  while ((k < size) && (data.cumulative[k] < alpha))
-    ++k;
-  if (k == 0)
-    return data.values[0];
-  const Scalar lowerWeight = data.cumulative[k - 1];
-  const Scalar upperWeight = data.cumulative[k];
-  if (!(upperWeight > lowerWeight))
-    return data.values[k];
-  const Scalar fraction = (alpha - lowerWeight) / (upperWeight - lowerWeight);
-  return (1.0 - fraction) * data.values[k - 1] + fraction * data.values[k];
+  // Zero-weight observations carry no probability mass: they must not
+  // contribute to the interpolation, otherwise a single weighted point
+  // surrounded by zero-weight points would be moved away from its value.
+  UnsignedInteger first = 0;
+  while ((first < size) && !(data.weights[first] > 0.0))
+    ++first;
+  if (first == size)
+    return data.values[size - 1];
+  if (alpha <= data.cumulative[first])
+    return data.values[first];
+  UnsignedInteger lower = first;
+  for (UnsignedInteger i = first + 1; i < size; ++i)
+  {
+    if (!(data.weights[i] > 0.0))
+      continue;
+    if (data.cumulative[i] < alpha)
+    {
+      lower = i;
+      continue;
+    }
+    const Scalar lowerWeight = data.cumulative[lower];
+    const Scalar upperWeight = data.cumulative[i];
+    const Scalar fraction = (alpha - lowerWeight) / (upperWeight - lowerWeight);
+    return (1.0 - fraction) * data.values[lower] + fraction * data.values[i];
+  }
+  return data.values[lower];
 }
 
 /** Whether the experiment reuses a Latin hypercube stratum permutation across draws. */
