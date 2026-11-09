@@ -26,13 +26,9 @@
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/Evaluation.hxx"
 #include "openturns/FiniteDifferenceStep.hxx"
-#include "openturns/PersistentCollection.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
-
-/** Finite difference steps collection, persistable through the StorageManager */
-typedef PersistentCollection<FiniteDifferenceStep> FiniteDifferenceStepPersistentCollection;
 
 /**
  * @class FiniteDifferenceGradient
@@ -89,13 +85,6 @@ public:
   virtual void setFiniteDifferenceStep(const FiniteDifferenceStep & finiteDifferenceStep);
   virtual FiniteDifferenceStep getFiniteDifferenceStep() const;
 
-  /** Per-output finite difference steps. The single-step setter above
-      broadcasts the step to all outputs; these accessors tune each output
-      independently. */
-  virtual void setFiniteDifferenceStep(const UnsignedInteger outputIndex,
-                                       const FiniteDifferenceStep & finiteDifferenceStep);
-  virtual FiniteDifferenceStep getFiniteDifferenceStep(const UnsignedInteger outputIndex) const;
-
   /* Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -118,7 +107,7 @@ protected:
   Bool equals(const GradientImplementation & other) const override;
 
   Evaluation evaluation_;
-  Collection<FiniteDifferenceStep> finiteDifferenceSteps_;
+  FiniteDifferenceStep finiteDifferenceStep_;
 
 
 }; /* class FiniteDifferenceGradient */

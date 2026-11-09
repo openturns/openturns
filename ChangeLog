@@ -131,9 +131,7 @@
  * Sample.computeQuantile and computeQuantilePerComponent accept an optional tail flag
  * MetaModelValidation.computeRootMeanSquaredError, computeMeanAbsoluteError and drawResiduals
  * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
- * FiniteDifferenceGradient per-output finite difference steps
  * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
- * GaussKronrod.getErrorEstimate, getIterationNumber, getEvaluationSubIntervals and getLocalErrorEstimates
  * Curve.setLabels/getLabels
  * PointToFieldFunction.getMarginal
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra")

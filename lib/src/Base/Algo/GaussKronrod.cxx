@@ -22,8 +22,6 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include <cmath>
-#include <mutex>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,18 +42,9 @@ GaussKronrod::GaussKronrod()
   , maximumSubIntervals_(ResourceMap::GetAsUnsignedInteger("GaussKronrod-MaximumSubIntervals"))
   , maximumError_(ResourceMap::GetAsScalar("GaussKronrod-MaximumError"))
   , rule_()
-  , errorEstimate_(0.0)
-  , iterationNumber_(0)
-  , ai_()
-  , bi_()
-  , ei_()
 {
   // Check the maximum number of sub-intervals
   if (!(maximumSubIntervals_ >= 2)) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals_ << ". Check the value of the key 'GaussKronrod-MaximumSubIntervals' in ResourceMap.";
-  // A zero or infinite error target would skip the integration loop and
-  // return a zero integral: with error initialized to maximumError, both
-  // 0 > 0 and inf > inf are false. Reject them at construction time.
-  if (!(maximumError_ > 0.0) || !std::isfinite(maximumError_)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be positive and finite, here maximumError=" << maximumError_ << ". Check the value of the key 'GaussKronrod-MaximumError' in ResourceMap.";
 }
 
 /* Parameters constructor */
@@ -66,18 +55,9 @@ GaussKronrod::GaussKronrod(const UnsignedInteger maximumSubIntervals,
   , maximumSubIntervals_(maximumSubIntervals)
   , maximumError_(maximumError)
   , rule_(rule)
-  , errorEstimate_(0.0)
-  , iterationNumber_(0)
-  , ai_()
-  , bi_()
-  , ei_()
 {
   // Check the maximum number of sub-intervals
   if (!(maximumSubIntervals >= 2)) throw InvalidArgumentException(HERE) << "Error: the maximum number of sub-intervals must be at least 2, here maximumSubIntervals=" << maximumSubIntervals;
-  // A zero or infinite error target would skip the integration loop and
-  // return a zero integral: with error initialized to maximumError, both
-  // 0 > 0 and inf > inf are false. Reject them at construction time.
-  if (!(maximumError > 0.0) || !std::isfinite(maximumError)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be positive and finite, here maximumError=" << maximumError;
 }
 
 /* Virtual constructor */
@@ -154,16 +134,6 @@ Point GaussKronrod::integrate(const Function & function,
   bi.resize(im + 1);
   ei.resize(im + 1);
   fi.erase(im + 1, maximumSubIntervals_);
-  {
-    // The recorded state is shared: concurrent integrate() calls (e.g. from
-    // batched evaluations over threads) must not interleave these updates
-    std::lock_guard<std::mutex> lock(*stateMutex_);
-    errorEstimate_ = error;
-    iterationNumber_ = im + 1;
-    ai_ = ai;
-    bi_ = bi;
-    ei_ = ei;
-  }
   if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
   return result;
 }
@@ -334,18 +304,6 @@ Scalar GaussKronrod::integrate(const UniVariateFunction & function,
     ip = iErrorMax;
     error = sqrt(error);
   } // while (error >...)
-  {
-    // Same shared-state guard as above: this overload also records
-    std::lock_guard<std::mutex> lock(*stateMutex_);
-    errorEstimate_ = error;
-    iterationNumber_ = im + 1;
-    ai_ = Point(ai);
-    ai_.resize(im + 1);
-    bi_ = Point(bi);
-    bi_.resize(im + 1);
-    ei_ = Point(ei);
-    ei_.resize(im + 1);
-  }
   if (!(error <= maximumError_)) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
   return result;
 }
@@ -408,8 +366,7 @@ Scalar GaussKronrod::getMaximumError() const
 
 void GaussKronrod::setMaximumError(const Scalar maximumError)
 {
-  // Same zero/infinite guard as the parameter constructor
-  if (!(maximumError > 0.0) || !std::isfinite(maximumError)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be positive and finite, here maximum error=" << maximumError;
+  if (!(maximumError >= 0.0)) throw InvalidArgumentException(HERE) << "Error: the maximum error must be nonnegative, here maximum error=" << maximumError;
   maximumError_ = maximumError;
 }
 
@@ -422,38 +379,6 @@ GaussKronrodRule GaussKronrod::getRule() const
 void GaussKronrod::setRule(const GaussKronrodRule & rule)
 {
   rule_ = rule;
-}
-
-/* Last integration state accessors */
-Scalar GaussKronrod::getErrorEstimate() const
-{
-  std::lock_guard<std::mutex> lock(*stateMutex_);
-  return errorEstimate_;
-}
-
-UnsignedInteger GaussKronrod::getIterationNumber() const
-{
-  std::lock_guard<std::mutex> lock(*stateMutex_);
-  return iterationNumber_;
-}
-
-Sample GaussKronrod::getEvaluationSubIntervals() const
-{
-  std::lock_guard<std::mutex> lock(*stateMutex_);
-  const UnsignedInteger size = ai_.getSize();
-  Sample subIntervals(size, 2);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    subIntervals(i, 0) = ai_[i];
-    subIntervals(i, 1) = bi_[i];
-  }
-  return subIntervals;
-}
-
-Point GaussKronrod::getLocalErrorEstimates() const
-{
-  std::lock_guard<std::mutex> lock(*stateMutex_);
-  return ei_;
 }
 
 /* Static method to initialize the rule names/GKrule pairing in GaussKronrod */
