@@ -49,6 +49,13 @@ the coverage guarantee that the interval can legitimately claim.  This
 page presents the common statistical background and then the theory of
 each family of algorithms.
 
+.. note::
+    The weighted-experiment estimator
+    (:class:`~openturns.experimental.QuantileSimulationAlgorithm`) is the
+    only quantile simulation algorithm available in this release.  The
+    other algorithms described below are documented for reference and will
+    be added in forthcoming releases.
+
 .. _quantile_theory_definitions:
 
 Estimators and coverage
@@ -102,10 +109,10 @@ four guarantees:
   size, number of blocks, number of replicates or number of directions
   tends to infinity.
 - **Anytime-valid coverage.**
-  :math:`\Prob{\forall n\ge n_0,\ q_\alpha\in\CI_n}\ge\beta`
-  for a data-dependent stopping time.  This is the guarantee of a
-  confidence sequence, not of a fixed-sample interval evaluated at a
-  random time.
+  :math:`\Prob{\forall k\ge0,\ q_\alpha\in\CI_{n_k}}\ge\beta`
+  for a data-dependent stopping time on the deterministic candidate
+  sizes :math:`n_0<n_1<\dots`.  This is the guarantee of a confidence
+  sequence, not of a fixed-sample interval evaluated at a random time.
 - **No coverage.**  The algorithm returns a point estimate and possibly
   a diagnostic interval, but no frequentist guarantee.
 

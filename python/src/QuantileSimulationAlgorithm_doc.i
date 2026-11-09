@@ -64,6 +64,12 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+QuantileSimulation, QuantileSimulationImplementation, QuantileSimulationResult,
+openturns.WeightedExperiment, openturns.MonteCarloExperiment,
+openturns.QuantileConfidence
+
 Notes
 -----
 The sample size is the size of the experiment, and one run performs
@@ -118,12 +124,6 @@ The following :class:`~openturns.ResourceMap` key is used:
   (``UnsignedInteger``, default: ``30``): default number of independent
   replicates of the randomized uniform-weight branch.
 
-See also
---------
-QuantileSimulation, QuantileSimulationImplementation, QuantileSimulationResult,
-openturns.WeightedExperiment, openturns.MonteCarloExperiment,
-openturns.QuantileConfidence
-
 Examples
 --------
 >>> import openturns as ot
@@ -148,7 +148,8 @@ Returns
 experiment : :class:`~openturns.WeightedExperiment`
     Design of experiments used by the algorithm.  When no experiment
     was provided, the returned object is the default-constructed
-    experiment and :meth:`hasExperiment` returns ``False``.)RAW"
+    experiment and :meth:`hasExperiment` returns ``False``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -164,7 +165,8 @@ experiment : :class:`~openturns.WeightedExperiment`
 Notes
 -----
 Setting the experiment also sets the sample size to the size of the
-experiment.)RAW"
+experiment.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -176,7 +178,8 @@ Returns
 hasExperiment : bool
     Whether an experiment was explicitly provided.  When ``False``,
     the algorithm builds a :class:`~openturns.MonteCarloExperiment`
-    from the distribution of the output random vector at run time.)RAW"
+    from the distribution of the output random vector at run time.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -193,7 +196,8 @@ Notes
 -----
 When an experiment was provided, its size is updated as well.  The
 maximum outer sampling is updated to
-``ceil(sampleSize / blockSize)``.)RAW"
+``ceil(sampleSize / blockSize)``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -204,7 +208,8 @@ Returns
 -------
 replicateCount : int
     Number of independent experiment draws used by the replicate
-    Student :math:`t` interval.  Default is 30.)RAW"
+    Student :math:`t` interval.  Default is 30.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -222,7 +227,8 @@ Notes
 The replicate count is only used for a randomized design with uniform
 weights that is not i.i.d., for example a randomized low-discrepancy
 sequence or a Latin hypercube design.  Other designs use a single draw
-and ignore it.)RAW"
+and ignore it.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -233,7 +239,8 @@ Returns
 -------
 keepSample : bool
     Whether the algorithm retains the input sample, the output sample
-    and the weight vector of the last run.  Default is ``False``.)RAW"
+    and the weight vector of the last run.  Default is ``False``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -249,7 +256,8 @@ keepSample : bool
 Notes
 -----
 Retaining the samples costs memory proportional to the sample size.
-For the replicate branch, only the first replicate is retained.)RAW"
+For the replicate branch, only the first replicate is retained.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -260,7 +268,8 @@ Returns
 -------
 inputSample : :class:`~openturns.Sample`
     Input sample of the last run.  It is empty unless
-    :meth:`getKeepSample` returns ``True``.)RAW"
+    :meth:`getKeepSample` returns ``True``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -271,7 +280,8 @@ Returns
 -------
 outputSample : :class:`~openturns.Sample`
     Output sample of the last run.  It is empty unless
-    :meth:`getKeepSample` returns ``True``.)RAW"
+    :meth:`getKeepSample` returns ``True``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -283,4 +293,5 @@ Returns
 weights : :class:`~openturns.Point`
     Weights of the last run, in the order of the retained input and
     output samples.  It is empty unless :meth:`getKeepSample` returns
-    ``True``.)RAW"
+    ``True``.
+)RAW"
