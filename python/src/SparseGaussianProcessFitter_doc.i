@@ -420,6 +420,28 @@ inducingPoints : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SparseGaussianProcessFitter::getCovarianceModel
+R"RAW(Accessor to the covariance model.
+
+Returns
+-------
+covarianceModel : :class:`~openturns.CovarianceModel`
+    The covariance model given at creation, with all its parameters.)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SparseGaussianProcessFitter::getReducedCovarianceModel
+R"RAW(Accessor to the reduced covariance model.
+
+Returns
+-------
+covarianceModel : :class:`~openturns.CovarianceModel`
+    The covariance model used in the computations. It is derived from the
+    initial covariance model by deactivating its parameters when they are
+    not optimized.)RAW"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SparseGaussianProcessFitter::getMethod
 "Accessor to the linear algebra method.
 
