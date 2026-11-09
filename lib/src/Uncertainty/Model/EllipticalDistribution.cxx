@@ -701,9 +701,6 @@ EllipticalDistribution * EllipticalDistribution::clone() const
 EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::getIsoProbabilisticTransformation() const
 {
   IsoProbabilisticTransformation transform;
-  transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean_, getInverseCholesky()));
-  transform.setGradient(new NatafEllipticalDistributionGradient(getInverseCholesky()));
-  transform.setHessian(new NatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
   // The result of parameterGradient is given
   // in the following form:
@@ -726,6 +723,13 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
     description[i] = (OSS() << inputDescription[i] << "_mu_" << i);
     description[dimension + i] = (OSS() << inputDescription[i] << "_sigma_" << i);
   }
+  // Record the (mu, sigma) scales at construction so that subsequent
+  // setParameter calls rescale the stored maps instead of assuming
+  // consistency. This also allows degenerate (zero) scales without throwing.
+  const TriangularMatrix inverseCholesky(getInverseCholesky());
+  transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean_, inverseCholesky, parameters));
+  transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky, parameters));
+  transform.setHessian(new NatafEllipticalDistributionHessian(getDimension()));
   transform.setParameter(parameters);
   transform.setParameterDescription(description);
   return transform;
@@ -735,10 +739,6 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
 EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribution::getInverseIsoProbabilisticTransformation() const
 {
   InverseIsoProbabilisticTransformation inverseTransform;
-  const TriangularMatrix cholesky(getCholesky());
-  inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean_, cholesky));
-  inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky));
-  inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(getDimension()));
   // Set the parameters values and descriptions
   // The result of parameterGradient is given
   // in the following form:
@@ -761,6 +761,11 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
     description[i] = (OSS() << inputDescription[i] << "_mu_" << i);
     description[dimension + i] = (OSS() << inputDescription[i] << "_sigma_" << i);
   }
+  // Record the (mu, sigma) scales at construction, see forward transformation.
+  const TriangularMatrix cholesky(getCholesky());
+  inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean_, cholesky, parameters));
+  inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky, parameters));
+  inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(getDimension()));
   inverseTransform.setParameter(parameters);
   inverseTransform.setParameterDescription(description);
   return inverseTransform;

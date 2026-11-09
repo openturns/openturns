@@ -53,6 +53,19 @@ NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation(con
   // Nothing to do
 }
 
+/* Parameter constructor with recorded (mu, sigma) scales */
+NatafEllipticalDistributionEvaluation::NatafEllipticalDistributionEvaluation(const Point & mean,
+    const TriangularMatrix & inverseCholesky,
+    const Point & parameters)
+  : LinearEvaluation(
+      mean,
+      Point(mean.getDimension(), 0.0),
+      inverseCholesky
+    )
+{
+  EvaluationImplementation::setParameter(parameters);
+}
+
 /* Virtual constructor */
 NatafEllipticalDistributionEvaluation * NatafEllipticalDistributionEvaluation::clone() const
 {
@@ -149,20 +162,18 @@ void NatafEllipticalDistributionEvaluation::setParameter(const Point & parameter
   {
     newMean[i] = parameter[i];
     newSigma[i] = parameter[dimension + i];
-    if (!(newSigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be positive, got sigma[" << i << "]=" << newSigma[i];
+    if (!(newSigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be non-negative, got sigma[" << i << "]=" << newSigma[i];
   }
   // Update the inverse Cholesky factor Gamma from the new sigma values.
   // Gamma writes Gamma = C^{-1} D^{-1} with D = diag(sigma) and C^{-1} the
   // inverse Cholesky factor of the correlation matrix, which does not depend
   // on sigma, so each column j is rescaled by sigma_old[j] / sigma_new[j],
   // with the old values read on the recorded parameter vector.
-  // Without record (fresh object, e.g. right after construction by the
-  // distribution builders) the map is assumed consistent with the provided
-  // values and kept as is.
   Matrix newLinear(getLinear());
   const Point recorded(EvaluationImplementation::getParameter());
   if (recorded.getDimension() > 0)
   {
+    if (recorded.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Recorded parameter of dimension " << recorded.getDimension() << " is inconsistent with dimension " << dimension;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const Scalar oldSigma = recorded[dimension + j];
@@ -170,10 +181,35 @@ void NatafEllipticalDistributionEvaluation::setParameter(const Point & parameter
       if (newSigma[j] != oldSigma)
       {
         if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        if (!(newSigma[j] > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update to a degenerate transformation, please rebuild it";
         factor = oldSigma / newSigma[j];
       }
       for (UnsignedInteger i = 0; i < dimension; ++i)
         newLinear(i, j) = newLinear(i, j) * factor;
+    }
+  }
+  else
+  {
+    // No recorded scales (direct construction): the true marginal scales
+    // cannot be recovered from a correlated map, so an explicit record is
+    // required. For a diagonal map the recovery is exact and the map is
+    // rescaled from the recovered scales.
+    Bool diagonal = true;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        if ((i != j) && (newLinear(i, j) != 0.0)) diagonal = false;
+    if (!diagonal) throw InvalidArgumentException(HERE) << "Cannot update the parameters of a directly constructed correlated transformation without recorded scales, please rebuild it from a distribution";
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      const Scalar oldSigma = (newLinear(j, j) != 0.0 ? 1.0 / newLinear(j, j) : 0.0);
+      if (newSigma[j] != oldSigma)
+      {
+        if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        if (!(newSigma[j] > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update to a degenerate transformation, please rebuild it";
+        const Scalar factor = oldSigma / newSigma[j];
+        for (UnsignedInteger i = 0; i < dimension; ++i)
+          newLinear(i, j) = newLinear(i, j) * factor;
+      }
     }
   }
   setCenter(newMean);

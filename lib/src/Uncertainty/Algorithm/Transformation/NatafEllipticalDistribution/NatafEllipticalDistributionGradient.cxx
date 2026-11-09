@@ -48,6 +48,14 @@ NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient(const T
   // Nothing to do
 }
 
+/* Parameter constructor with recorded (mu, sigma) scales */
+NatafEllipticalDistributionGradient::NatafEllipticalDistributionGradient(const TriangularMatrix & inverseCholesky,
+    const Point & parameters)
+  : ConstantGradient(inverseCholesky.transpose())
+{
+  GradientImplementation::setParameter(parameters);
+}
+
 /* Virtual constructor */
 NatafEllipticalDistributionGradient * NatafEllipticalDistributionGradient::clone() const
 {
@@ -75,19 +83,19 @@ String NatafEllipticalDistributionGradient::__repr__() const
  * The stored constant matrix is the transpose of the inverse Cholesky
  * factor Gamma = C^{-1} D^{-1}, so each row j is rescaled by
  * sigma_old[j] / sigma_new[j], with the old values read on the recorded
- * parameter vector. Without record the map is assumed consistent with the
- * provided values and kept as is.
+ * parameter vector.
  */
 void NatafEllipticalDistributionGradient::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getInputDimension();
   if (parameter.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << 2 * dimension << ", provided " << parameter.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    if (!(parameter[dimension + i] > 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be positive, got sigma[" << i << "]=" << parameter[dimension + i];
+    if (!(parameter[dimension + i] >= 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be non-negative, got sigma[" << i << "]=" << parameter[dimension + i];
   Matrix newConstant(getConstant());
   const Point recorded(GradientImplementation::getParameter());
   if (recorded.getDimension() > 0)
   {
+    if (recorded.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Recorded parameter of dimension " << recorded.getDimension() << " is inconsistent with dimension " << dimension;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       const Scalar newSigma = parameter[dimension + j];
@@ -96,10 +104,34 @@ void NatafEllipticalDistributionGradient::setParameter(const Point & parameter)
       if (newSigma != oldSigma)
       {
         if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        if (!(newSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update to a degenerate transformation, please rebuild it";
         factor = oldSigma / newSigma;
       }
       for (UnsignedInteger i = 0; i < dimension; ++i)
         newConstant(j, i) = newConstant(j, i) * factor;
+    }
+  }
+  else
+  {
+    // No recorded scales (direct construction): require a diagonal map,
+    // for which the scales are recovered exactly, else rebuild from a distribution.
+    Bool diagonal = true;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        if ((i != j) && (newConstant(i, j) != 0.0)) diagonal = false;
+    if (!diagonal) throw InvalidArgumentException(HERE) << "Cannot update the parameters of a directly constructed correlated transformation without recorded scales, please rebuild it from a distribution";
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      const Scalar newSigma = parameter[dimension + j];
+      const Scalar oldSigma = (newConstant(j, j) != 0.0 ? 1.0 / newConstant(j, j) : 0.0);
+      if (newSigma != oldSigma)
+      {
+        if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        if (!(newSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update to a degenerate transformation, please rebuild it";
+        const Scalar factor = oldSigma / newSigma;
+        for (UnsignedInteger i = 0; i < dimension; ++i)
+          newConstant(j, i) = newConstant(j, i) * factor;
+      }
     }
   }
   setConstant(newConstant);

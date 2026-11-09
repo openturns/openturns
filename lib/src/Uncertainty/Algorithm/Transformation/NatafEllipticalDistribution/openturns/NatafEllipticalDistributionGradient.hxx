@@ -46,6 +46,10 @@ public:
   /** Parameter constructor */
   NatafEllipticalDistributionGradient(const TriangularMatrix & inverseCholesky);
 
+  /** Parameter constructor with recorded (mu, sigma) scales */
+  NatafEllipticalDistributionGradient(const TriangularMatrix & inverseCholesky,
+                                      const Point & parameters);
+
   /** Virtual constructor */
   NatafEllipticalDistributionGradient * clone() const override;
 
