@@ -20,6 +20,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+QuantileSimulationImplementation, QuantileSimulationAlgorithm, QuantileSimulationResult
+
 Notes
 -----
 The weighted-experiment estimator is described in
@@ -33,10 +37,6 @@ The convergence controls (``maximumOuterSampling``,
 block size and the callbacks have no effect on this estimator: the
 number of evaluations is fixed by the experiment size, the replicate
 count and :meth:`setSampleSize`.
-
-See also
---------
-QuantileSimulationImplementation, QuantileSimulationAlgorithm, QuantileSimulationResult
 
 Examples
 --------
@@ -57,7 +57,8 @@ R"RAW(Accessor to the output random vector.
 Returns
 -------
 output : :class:`~openturns.RandomVector`
-    Scalar output random vector whose quantile is estimated.)RAW"
+    Scalar output random vector whose quantile is estimated.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -67,7 +68,8 @@ R"RAW(Accessor to the output random vector.
 Parameters
 ----------
 output : :class:`~openturns.RandomVector`
-    Scalar output random vector whose quantile is estimated.)RAW"
+    Scalar output random vector whose quantile is estimated.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -77,7 +79,8 @@ R"RAW(Accessor to the quantile level.
 Returns
 -------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -87,7 +90,8 @@ R"RAW(Accessor to the quantile level.
 Parameters
 ----------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -97,7 +101,8 @@ R"RAW(Accessor to the nominal confidence level.
 Returns
 -------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -107,7 +112,8 @@ R"RAW(Accessor to the nominal confidence level.
 Parameters
 ----------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -117,7 +123,8 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Number of model evaluations performed by one experiment draw.)RAW"
+    Number of model evaluations performed by one experiment draw.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -127,7 +134,8 @@ R"RAW(Accessor to the sample size.
 Parameters
 ----------
 sampleSize : int
-    Number of model evaluations performed by one experiment draw.)RAW"
+    Number of model evaluations performed by one experiment draw.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -139,7 +147,8 @@ Returns
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -151,7 +160,8 @@ Parameters
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -161,7 +171,8 @@ R"RAW(Accessor to the required coverage type.
 Returns
 -------
 requiredCoverage : int
-    Coverage guarantee requested by the user.)RAW"
+    Coverage guarantee requested by the user.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -171,12 +182,14 @@ R"RAW(Accessor to the required coverage type.
 Parameters
 ----------
 requiredCoverage : int
-    Coverage guarantee requested by the user.)RAW"
+    Coverage guarantee requested by the user.
+)RAW"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::QuantileSimulation::run
-R"RAW(Perform the quantile simulation.)RAW"
+R"RAW(Perform the quantile simulation.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -186,7 +199,8 @@ R"RAW(Accessor to the simulation result.
 Returns
 -------
 result : :class:`~openturns.experimental.QuantileSimulationResult`
-    Result of the last run.)RAW"
+    Result of the last run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -198,7 +212,8 @@ Returns
 maximumOuterSampling : int
     Maximum number of outer iterations.  It is updated when the sample
     size changes, but the weighted-experiment algorithm does not use it
-    as a stopping criterion.)RAW"
+    as a stopping criterion.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -209,7 +224,8 @@ Parameters
 ----------
 maximumOuterSampling : int
     Maximum number of outer iterations.  The weighted-experiment
-    algorithm stores it but does not use it as a stopping criterion.)RAW"
+    algorithm stores it but does not use it as a stopping criterion.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -221,7 +237,8 @@ Returns
 maximumCoefficientOfVariation : float
     Maximum coefficient of variation.  The weighted-experiment algorithm
     does not use it: the number of evaluations is fixed by the experiment
-    size, the replicate count and the sample size.)RAW"
+    size, the replicate count and the sample size.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -233,7 +250,8 @@ Parameters
 maximumCoefficientOfVariation : float
     Maximum coefficient of variation.  The weighted-experiment algorithm
     does not use it: the number of evaluations is fixed by the experiment
-    size, the replicate count and the sample size.)RAW"
+    size, the replicate count and the sample size.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -245,7 +263,8 @@ Returns
 maximumStandardDeviation : float
     Maximum standard deviation.  The weighted-experiment algorithm does
     not use it: the number of evaluations is fixed by the experiment
-    size, the replicate count and the sample size.)RAW"
+    size, the replicate count and the sample size.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -257,7 +276,8 @@ Parameters
 maximumStandardDeviation : float
     Maximum standard deviation.  The weighted-experiment algorithm does
     not use it: the number of evaluations is fixed by the experiment
-    size, the replicate count and the sample size.)RAW"
+    size, the replicate count and the sample size.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -268,7 +288,8 @@ Returns
 -------
 blockSize : int
     Evaluation block size.  It is reported in the result but does not
-    split the experiment draw.)RAW"
+    split the experiment draw.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -279,7 +300,8 @@ Parameters
 ----------
 blockSize : int
     Evaluation block size.  It is reported in the result but does not
-    split the experiment draw.)RAW"
+    split the experiment draw.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -290,7 +312,8 @@ Returns
 -------
 maximumTimeDuration : float
     Maximum time duration.  The weighted-experiment algorithm does not
-    use it as a stopping criterion.)RAW"
+    use it as a stopping criterion.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -301,7 +324,8 @@ Parameters
 ----------
 maximumTimeDuration : float
     Maximum time duration.  The weighted-experiment algorithm does not
-    use it as a stopping criterion.)RAW"
+    use it as a stopping criterion.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -313,7 +337,8 @@ Returns
 convergenceStrategy : :class:`~openturns.HistoryStrategy`
     Convergence strategy.  The weighted-experiment algorithm does not
     use it: the convergence history is built from the quantile estimates
-    of the successive draws.)RAW"
+    of the successive draws.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -325,7 +350,8 @@ Parameters
 convergenceStrategy : :class:`~openturns.HistoryStrategy`
     Convergence strategy.  The weighted-experiment algorithm does not
     use it: the convergence history is built from the quantile estimates
-    of the successive draws.)RAW"
+    of the successive draws.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -339,7 +365,8 @@ callback : callable
 
 Notes
 -----
-The weighted-experiment algorithm does not invoke the callback.)RAW"
+The weighted-experiment algorithm does not invoke the callback.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -353,4 +380,5 @@ callback : callable
 
 Notes
 -----
-The weighted-experiment algorithm does not invoke the callback.)RAW"
+The weighted-experiment algorithm does not invoke the callback.
+)RAW"

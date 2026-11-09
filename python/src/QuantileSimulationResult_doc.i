@@ -9,6 +9,10 @@ This class gives access to a quantile simulation result: the estimated
 quantile, its standard error, the confidence interval, the estimator and
 coverage conventions, and the run diagnostics.
 
+See also
+--------
+QuantileSimulationResultImplementation, QuantileSimulationAlgorithm
+
 Notes
 -----
 The confidence interval is the one returned by the algorithm.  Its
@@ -20,10 +24,6 @@ Fields that are irrelevant to a given algorithm keep their default
 value: for example, the bias estimate is only present when
 :meth:`hasBiasEstimate` returns ``True``, and the convergence history is
 empty when the algorithm is not iterative.
-
-See also
---------
-QuantileSimulationResultImplementation, QuantileSimulationAlgorithm
 
 Examples
 --------
@@ -45,7 +45,8 @@ R"RAW(Accessor to the output random vector.
 Returns
 -------
 output : :class:`~openturns.RandomVector`
-    Scalar output random vector whose quantile is estimated.)RAW"
+    Scalar output random vector whose quantile is estimated.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -55,7 +56,8 @@ R"RAW(Accessor to the output random vector.
 Parameters
 ----------
 output : :class:`~openturns.RandomVector`
-    Scalar output random vector whose quantile is estimated.)RAW"
+    Scalar output random vector whose quantile is estimated.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -65,7 +67,8 @@ R"RAW(Accessor to the quantile level.
 Returns
 -------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -75,7 +78,8 @@ R"RAW(Accessor to the quantile level.
 Parameters
 ----------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -85,7 +89,8 @@ R"RAW(Accessor to the nominal confidence level.
 Returns
 -------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -95,7 +100,8 @@ R"RAW(Accessor to the nominal confidence level.
 Parameters
 ----------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -105,7 +111,8 @@ R"RAW(Accessor to the master seed.
 Returns
 -------
 seed : int
-    Seed from which the run's random streams are derived.)RAW"
+    Seed from which the run's random streams are derived.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -115,7 +122,8 @@ R"RAW(Accessor to the master seed.
 Parameters
 ----------
 seed : int
-    Seed from which the run's random streams are derived.)RAW"
+    Seed from which the run's random streams are derived.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -125,7 +133,8 @@ R"RAW(Accessor to the master seed availability.
 Returns
 -------
 hasMasterSeed : bool
-    Whether a master seed was recorded for the run.)RAW"
+    Whether a master seed was recorded for the run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -135,7 +144,8 @@ R"RAW(Accessor to the quantile estimate.
 Returns
 -------
 estimate : float
-    Estimated quantile at level :meth:`getQuantileLevel`.)RAW"
+    Estimated quantile at level :meth:`getQuantileLevel`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -145,7 +155,8 @@ R"RAW(Accessor to the quantile estimate.
 Parameters
 ----------
 estimate : float
-    Estimated quantile at level :meth:`getQuantileLevel`.)RAW"
+    Estimated quantile at level :meth:`getQuantileLevel`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -155,7 +166,8 @@ R"RAW(Accessor to the standard error.
 Returns
 -------
 standardError : float
-    Estimated standard error of the quantile estimate.)RAW"
+    Estimated standard error of the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -165,7 +177,8 @@ R"RAW(Accessor to the standard error.
 Parameters
 ----------
 standardError : float
-    Estimated standard error of the quantile estimate.)RAW"
+    Estimated standard error of the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -175,7 +188,8 @@ R"RAW(Accessor to the confidence interval.
 Returns
 -------
 interval : :class:`~openturns.Interval`
-    Confidence interval at level :meth:`getConfidenceLevel`.)RAW"
+    Confidence interval at level :meth:`getConfidenceLevel`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -185,7 +199,8 @@ R"RAW(Accessor to the confidence interval.
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
-    One-dimensional confidence interval.)RAW"
+    One-dimensional confidence interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -197,7 +212,8 @@ Returns
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -209,7 +225,8 @@ Parameters
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -219,7 +236,8 @@ R"RAW(Accessor to the achieved coverage type.
 Returns
 -------
 coverageType : int
-    Coverage guarantee actually provided by the reported interval.)RAW"
+    Coverage guarantee actually provided by the reported interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -229,7 +247,8 @@ R"RAW(Accessor to the achieved coverage type.
 Parameters
 ----------
 coverageType : int
-    Coverage guarantee actually provided by the reported interval.)RAW"
+    Coverage guarantee actually provided by the reported interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -239,7 +258,8 @@ R"RAW(Accessor to the required coverage type.
 Returns
 -------
 requiredCoverage : int
-    Coverage guarantee requested by the user.)RAW"
+    Coverage guarantee requested by the user.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -249,7 +269,8 @@ R"RAW(Accessor to the required coverage type.
 Parameters
 ----------
 requiredCoverage : int
-    Coverage guarantee requested by the user.)RAW"
+    Coverage guarantee requested by the user.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -260,7 +281,8 @@ Returns
 -------
 effectiveSampleSize : float
     Kish effective sample size of the normalized weights, in
-    :math:`(0, N]`.)RAW"
+    :math:`(0, N]`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -270,7 +292,8 @@ R"RAW(Accessor to the effective sample size.
 Parameters
 ----------
 effectiveSampleSize : float
-    Kish effective sample size of the normalized weights.)RAW"
+    Kish effective sample size of the normalized weights.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -280,7 +303,8 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Number of model evaluations actually performed.)RAW"
+    Number of model evaluations actually performed.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -290,7 +314,8 @@ R"RAW(Accessor to the sample size.
 Parameters
 ----------
 sampleSize : int
-    Number of model evaluations actually performed.)RAW"
+    Number of model evaluations actually performed.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -301,7 +326,8 @@ Returns
 -------
 blockLength : int
     Block length used by a block algorithm; 0 when the algorithm is not
-    block based.)RAW"
+    block based.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -312,7 +338,8 @@ Parameters
 ----------
 blockLength : int
     Block length used by a block algorithm; 0 when the algorithm is not
-    block based.)RAW"
+    block based.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -322,7 +349,8 @@ R"RAW(Accessor to the bias estimate.
 Returns
 -------
 biasEstimate : float
-    Estimated bias of the quantile estimate.)RAW"
+    Estimated bias of the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -332,7 +360,8 @@ R"RAW(Accessor to the bias estimate.
 Parameters
 ----------
 biasEstimate : float
-    Estimated bias of the quantile estimate.)RAW"
+    Estimated bias of the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -342,7 +371,8 @@ R"RAW(Accessor to the bias estimate availability.
 Returns
 -------
 hasBiasEstimate : bool
-    Whether a bias estimate was recorded for the run.)RAW"
+    Whether a bias estimate was recorded for the run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -352,7 +382,8 @@ R"RAW(Accessor to the fixed-sample flag.
 Returns
 -------
 isFixedSample : bool
-    Whether the run used a fixed sample size.)RAW"
+    Whether the run used a fixed sample size.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -362,7 +393,8 @@ R"RAW(Accessor to the fixed-sample flag.
 Parameters
 ----------
 isFixedSample : bool
-    Whether the run used a fixed sample size.)RAW"
+    Whether the run used a fixed sample size.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -373,7 +405,8 @@ Returns
 -------
 history : :class:`~openturns.Sample`
     Convergence history with at least two columns: the cumulative
-    sample size and the quantile estimate.)RAW"
+    sample size and the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -384,7 +417,8 @@ Parameters
 ----------
 history : :class:`~openturns.Sample`
     Convergence history with at least two columns: the cumulative
-    sample size and the quantile estimate.)RAW"
+    sample size and the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -394,7 +428,8 @@ R"RAW(Accessor to the outer sampling count.
 Returns
 -------
 outerSampling : int
-    Number of independent experiment draws or iterations performed.)RAW"
+    Number of independent experiment draws or iterations performed.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -404,7 +439,8 @@ R"RAW(Accessor to the outer sampling count.
 Parameters
 ----------
 outerSampling : int
-    Number of independent experiment draws or iterations performed.)RAW"
+    Number of independent experiment draws or iterations performed.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -414,7 +450,8 @@ R"RAW(Accessor to the evaluation block size.
 Returns
 -------
 blockSize : int
-    Number of model evaluations performed in a single call.)RAW"
+    Number of model evaluations performed in a single call.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -424,7 +461,8 @@ R"RAW(Accessor to the evaluation block size.
 Parameters
 ----------
 blockSize : int
-    Number of model evaluations performed in a single call.)RAW"
+    Number of model evaluations performed in a single call.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -434,7 +472,8 @@ R"RAW(Accessor to the elapsed time.
 Returns
 -------
 timeDuration : float
-    Elapsed wall-clock time of the run, in seconds.)RAW"
+    Elapsed wall-clock time of the run, in seconds.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -444,7 +483,8 @@ R"RAW(Accessor to the elapsed time.
 Parameters
 ----------
 timeDuration : float
-    Elapsed wall-clock time of the run, in seconds.)RAW"
+    Elapsed wall-clock time of the run, in seconds.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -454,7 +494,8 @@ R"RAW(Accessor to the estimator description.
 Returns
 -------
 description : str
-    Human-readable name of the estimator convention.)RAW"
+    Human-readable name of the estimator convention.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -464,7 +505,8 @@ R"RAW(Accessor to the coverage description.
 Returns
 -------
 description : str
-    Human-readable name of the achieved coverage guarantee.)RAW"
+    Human-readable name of the achieved coverage guarantee.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -474,4 +516,5 @@ R"RAW(Draw the quantile convergence.
 Returns
 -------
 graph : :class:`~openturns.Graph`
-    Graph of the quantile estimate against the cumulative sample size.)RAW"
+    Graph of the quantile estimate against the cumulative sample size.
+)RAW"

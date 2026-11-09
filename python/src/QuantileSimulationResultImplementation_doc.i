@@ -82,7 +82,8 @@ R"RAW(Accessor to the output random vector.
 Returns
 -------
 output : :class:`~openturns.RandomVector`
-    Scalar output random vector whose quantile is estimated.)RAW"
+    Scalar output random vector whose quantile is estimated.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -96,7 +97,8 @@ output : :class:`~openturns.RandomVector`
 
 Notes
 -----
-The random vector must be scalar: its dimension must be equal to 1.)RAW"
+The random vector must be scalar: its dimension must be equal to 1.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -106,7 +108,8 @@ R"RAW(Accessor to the quantile level.
 Returns
 -------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,7 +119,8 @@ R"RAW(Accessor to the quantile level.
 Parameters
 ----------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -126,7 +130,8 @@ R"RAW(Accessor to the nominal confidence level.
 Returns
 -------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -136,7 +141,8 @@ R"RAW(Accessor to the nominal confidence level.
 Parameters
 ----------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -151,7 +157,8 @@ seed : int
 Notes
 -----
 The value is only meaningful when :meth:`hasMasterSeed` returns
-``True``.)RAW"
+``True``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -161,7 +168,8 @@ R"RAW(Accessor to the master seed.
 Parameters
 ----------
 seed : int
-    Seed from which the run's random streams are derived.)RAW"
+    Seed from which the run's random streams are derived.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -171,7 +179,8 @@ R"RAW(Accessor to the master seed availability.
 Returns
 -------
 hasMasterSeed : bool
-    Whether a master seed was recorded for the run.)RAW"
+    Whether a master seed was recorded for the run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -181,7 +190,8 @@ R"RAW(Accessor to the quantile estimate.
 Returns
 -------
 estimate : float
-    Estimated quantile at level :meth:`getQuantileLevel`.)RAW"
+    Estimated quantile at level :meth:`getQuantileLevel`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -192,7 +202,8 @@ Parameters
 ----------
 estimate : float
     Estimated quantile at level :meth:`getQuantileLevel`.  It must be
-    finite.)RAW"
+    finite.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -202,7 +213,8 @@ R"RAW(Accessor to the standard error.
 Returns
 -------
 standardError : float
-    Estimated standard error of the quantile estimate.)RAW"
+    Estimated standard error of the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -213,7 +225,8 @@ Parameters
 ----------
 standardError : float
     Estimated standard error of the quantile estimate.  It must be
-    finite and non-negative.)RAW"
+    finite and non-negative.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -224,7 +237,8 @@ Returns
 -------
 interval : :class:`~openturns.Interval`
     Confidence interval at level :meth:`getConfidenceLevel`.  Its
-    coverage guarantee is given by :meth:`getCoverageType`.)RAW"
+    coverage guarantee is given by :meth:`getCoverageType`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -234,7 +248,8 @@ R"RAW(Accessor to the confidence interval.
 Parameters
 ----------
 interval : :class:`~openturns.Interval`
-    One-dimensional confidence interval.)RAW"
+    One-dimensional confidence interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -246,7 +261,8 @@ Returns
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -258,7 +274,8 @@ Parameters
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -269,7 +286,8 @@ Returns
 -------
 coverageType : int
     Coverage guarantee actually provided by the reported interval.
-    See the class documentation for the possible values.)RAW"
+    See the class documentation for the possible values.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -280,7 +298,8 @@ Parameters
 ----------
 coverageType : int
     Coverage guarantee actually provided by the reported interval.
-    See the class documentation for the possible values.)RAW"
+    See the class documentation for the possible values.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -291,7 +310,8 @@ Returns
 -------
 requiredCoverage : int
     Coverage guarantee requested by the user.  A run fails when the
-    achieved coverage does not satisfy it.)RAW"
+    achieved coverage does not satisfy it.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -302,7 +322,8 @@ Parameters
 ----------
 requiredCoverage : int
     Coverage guarantee requested by the user.  A run fails when the
-    achieved coverage does not satisfy it.)RAW"
+    achieved coverage does not satisfy it.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -314,7 +335,8 @@ Returns
 effectiveSampleSize : float
     Kish effective sample size of the normalized weights, in
     :math:`(0, N]`, where :math:`N` is the sample size.  It equals
-    :math:`N` for uniform weights.)RAW"
+    :math:`N` for uniform weights.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -325,7 +347,8 @@ Parameters
 ----------
 effectiveSampleSize : float
     Kish effective sample size of the normalized weights.  It must be
-    finite and positive.)RAW"
+    finite and positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -335,7 +358,8 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Number of model evaluations actually performed.)RAW"
+    Number of model evaluations actually performed.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -346,7 +370,8 @@ Parameters
 ----------
 sampleSize : int
     Number of model evaluations actually performed.  It must be
-    positive.)RAW"
+    positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -357,7 +382,8 @@ Returns
 -------
 blockLength : int
     Block length used by a block algorithm; 0 when the algorithm is not
-    block based.)RAW"
+    block based.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -368,7 +394,8 @@ Parameters
 ----------
 blockLength : int
     Block length used by a block algorithm; 0 when the algorithm is not
-    block based.)RAW"
+    block based.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -379,7 +406,8 @@ Returns
 -------
 biasEstimate : float
     Estimated bias of the quantile estimate.  The value is only
-    meaningful when :meth:`hasBiasEstimate` returns ``True``.)RAW"
+    meaningful when :meth:`hasBiasEstimate` returns ``True``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -389,7 +417,8 @@ R"RAW(Accessor to the bias estimate.
 Parameters
 ----------
 biasEstimate : float
-    Estimated bias of the quantile estimate.  It must be finite.)RAW"
+    Estimated bias of the quantile estimate.  It must be finite.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -399,7 +428,8 @@ R"RAW(Accessor to the bias estimate availability.
 Returns
 -------
 hasBiasEstimate : bool
-    Whether a bias estimate was recorded for the run.)RAW"
+    Whether a bias estimate was recorded for the run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -410,7 +440,8 @@ Returns
 -------
 isFixedSample : bool
     Whether the run used a fixed sample size rather than an adaptive
-    stopping rule.)RAW"
+    stopping rule.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -421,7 +452,8 @@ Parameters
 ----------
 isFixedSample : bool
     Whether the run used a fixed sample size rather than an adaptive
-    stopping rule.)RAW"
+    stopping rule.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -434,7 +466,8 @@ history : :class:`~openturns.Sample`
     Convergence history with at least two columns: the cumulative
     sample size and the quantile estimate.  When the algorithm reports
     confidence bounds, columns 2 and 3 contain the lower and upper
-    bounds.)RAW"
+    bounds.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -445,7 +478,8 @@ Parameters
 ----------
 history : :class:`~openturns.Sample`
     Convergence history with at least two columns: the cumulative
-    sample size and the quantile estimate.)RAW"
+    sample size and the quantile estimate.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -455,7 +489,8 @@ R"RAW(Accessor to the estimator description.
 Returns
 -------
 description : str
-    Human-readable name of the estimator convention.)RAW"
+    Human-readable name of the estimator convention.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -465,7 +500,8 @@ R"RAW(Accessor to the coverage description.
 Returns
 -------
 description : str
-    Human-readable name of the achieved coverage guarantee.)RAW"
+    Human-readable name of the achieved coverage guarantee.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -477,4 +513,5 @@ Returns
 graph : :class:`~openturns.Graph`
     Graph of the quantile estimate against the cumulative sample size.
     When the convergence history contains confidence bounds, they are
-    drawn as two additional curves.)RAW"
+    drawn as two additional curves.
+)RAW"

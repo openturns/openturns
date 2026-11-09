@@ -20,6 +20,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
+
 Notes
 -----
 The estimator convention is either
@@ -45,10 +49,6 @@ have no effect on the weighted-experiment estimator: the number of
 evaluations is fixed by the experiment size, the replicate count and
 :meth:`setSampleSize`.
 
-See also
---------
-QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
-
 Examples
 --------
 >>> import openturns as ot
@@ -68,7 +68,8 @@ R"RAW(Accessor to the output random vector.
 Returns
 -------
 output : :class:`~openturns.RandomVector`
-    Scalar output random vector whose quantile is estimated.)RAW"
+    Scalar output random vector whose quantile is estimated.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -82,7 +83,8 @@ output : :class:`~openturns.RandomVector`
 
 Notes
 -----
-The random vector must be scalar: its dimension must be equal to 1.)RAW"
+The random vector must be scalar: its dimension must be equal to 1.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -92,7 +94,8 @@ R"RAW(Accessor to the quantile level.
 Returns
 -------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -102,7 +105,8 @@ R"RAW(Accessor to the quantile level.
 Parameters
 ----------
 alpha : float
-    Quantile level, in :math:`(0, 1)`.)RAW"
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -112,7 +116,8 @@ R"RAW(Accessor to the nominal confidence level.
 Returns
 -------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -122,7 +127,8 @@ R"RAW(Accessor to the nominal confidence level.
 Parameters
 ----------
 beta : float
-    Nominal confidence level of the interval, in :math:`(0, 1)`.)RAW"
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -132,7 +138,14 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Number of model evaluations performed by one experiment draw.)RAW"
+    Number of model evaluations performed by the algorithm.  For
+    :class:`~openturns.experimental.QuantileSimulationAlgorithm`, this
+    is the number of evaluations performed by one experiment draw.
+    ``TwoStageQuantileSimulation`` uses it as the total
+    pilot-and-confirmation evaluation budget, and
+    ``SequentialQuantileSimulation`` uses it as the maximum number of
+    observations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -142,13 +155,20 @@ R"RAW(Accessor to the sample size.
 Parameters
 ----------
 sampleSize : int
-    Number of model evaluations performed by one experiment draw.
-    It must be positive.
+    Number of model evaluations performed by the algorithm.  For
+    :class:`~openturns.experimental.QuantileSimulationAlgorithm`, this
+    is the number of evaluations performed by one experiment draw.
+    ``TwoStageQuantileSimulation`` uses it as the total
+    pilot-and-confirmation evaluation budget, and
+    ``SequentialQuantileSimulation`` uses it as the maximum number of
+    observations.  It must be positive.
 
 Notes
 -----
-The maximum number of outer iterations is updated to
-``ceil(sampleSize / blockSize)``.)RAW"
+For :class:`~openturns.experimental.QuantileSimulationAlgorithm`, the
+maximum number of outer iterations is updated to
+``ceil(sampleSize / blockSize)``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -160,7 +180,8 @@ Returns
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -172,7 +193,8 @@ Parameters
 estimatorType : int
     Estimator convention, either
     ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
-    ``QuantileSimulationResultImplementation.INTERPOLATED``.)RAW"
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -182,7 +204,8 @@ R"RAW(Accessor to the required coverage type.
 Returns
 -------
 requiredCoverage : int
-    Coverage guarantee requested by the user.)RAW"
+    Coverage guarantee requested by the user.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -200,7 +223,8 @@ requiredCoverage : int
 Notes
 -----
 A run throws when the achieved coverage does not satisfy the required
-coverage.  An exact interval satisfies an asymptotic requirement.)RAW"
+coverage.  An exact interval satisfies an asymptotic requirement.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -215,7 +239,8 @@ Raises
 InvalidArgumentException
     If the output is not scalar, if the levels are outside
     :math:`(0, 1)`, if the sample size is not set, or if the achieved
-    coverage does not satisfy the required coverage.)RAW"
+    coverage does not satisfy the required coverage.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -225,7 +250,8 @@ R"RAW(Accessor to the simulation result.
 Returns
 -------
 result : :class:`~openturns.experimental.QuantileSimulationResult`
-    Result of the last run.)RAW"
+    Result of the last run.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -235,4 +261,5 @@ R"RAW(Accessor to the simulation result.
 Parameters
 ----------
 result : :class:`~openturns.experimental.QuantileSimulationResult`
-    Result of the last run.)RAW"
+    Result of the last run.
+)RAW"
