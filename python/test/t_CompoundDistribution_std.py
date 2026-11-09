@@ -233,3 +233,29 @@ compound = ot.CompoundDistribution(ot.Normal(), ot.Exponential(1.0), link1d)
 pdfBefore = compound.computePDF([0.0])
 compound.setParameter(compound.getParameter())
 ott.assert_almost_equal(compound.computePDF([0.0]), pdfBefore, 1e-12, 0.0)
+
+# --- CompoundDistribution: setParameter rebuilds the discretization ---
+# Dirac conditioning
+diracCompound = ot.CompoundDistribution(ot.Poisson(1.0), ot.Dirac(2.0))
+diracCompound.setParameter([3.0])
+freshDirac = ot.CompoundDistribution(ot.Poisson(1.0), ot.Dirac(3.0))
+ott.assert_almost_equal(diracCompound.getMean(), freshDirac.getMean())
+ott.assert_almost_equal(diracCompound.computeCDF(2.0), freshDirac.computeCDF(2.0))
+# stochastic discrete conditioning
+discreteCompound = ot.CompoundDistribution(
+    ot.Poisson(1.0), ot.Bernoulli(0.3), ot.SymbolicFunction(["y"], ["y + 1"])
+)
+discreteCompound.setParameter([0.7])
+freshDiscrete = ot.CompoundDistribution(
+    ot.Poisson(1.0), ot.Bernoulli(0.7), ot.SymbolicFunction(["y"], ["y + 1"])
+)
+ott.assert_almost_equal(discreteCompound.getMean(), freshDiscrete.getMean())
+ott.assert_almost_equal(discreteCompound.computeCDF(1.0), freshDiscrete.computeCDF(1.0))
+# a failed rebuild preserves the distribution and allows a retry
+poissonCompound = ot.CompoundDistribution(ot.Poisson(1.0), ot.Uniform(1.0, 2.0))
+parametersBefore = poissonCompound.getParameter()
+with ott.assert_raises(Exception):
+    poissonCompound.setParameter([-2.0, -1.0])
+ott.assert_almost_equal(poissonCompound.getParameter(), parametersBefore)
+with ott.assert_raises(Exception):
+    poissonCompound.setParameter([-2.0, -1.0])
