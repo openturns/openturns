@@ -48,6 +48,14 @@ DataContainer::MemoryBackend::MemoryBackend(UnsignedInteger size, Scalar value)
   // Nothing to do
 }
 
+// GCC 16 proves a false positive here: through the speculative devirtualization
+// of backend_->data() in refreshCache(), it analyzes this override against a
+// default-constructed (empty) object and flags vector internals, no matter how
+// the empty case is guarded. Silence that instance only; behavior unchanged.
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
 Scalar * DataContainer::MemoryBackend::data()
 {
   return storage_.data();
@@ -57,6 +65,9 @@ const Scalar * DataContainer::MemoryBackend::data() const
 {
   return storage_.data();
 }
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 void DataContainer::MemoryBackend::resize(UnsignedInteger n)
 {
