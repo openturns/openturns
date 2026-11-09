@@ -96,35 +96,55 @@ String NatafEllipticalDistributionEvaluation::__repr__() const
 /* Gradient according to the marginal parameters.
  * For the Nataf transformation based on elliptical distributions,
  * the marginal parameters \theta are the mean vector \mu and the
- * marginal standard deviations \sigma, which are the reciprocal
- * of the diagonal terms of the inverse Cholesky factor \Gamma of
- * the covariance matrix: \theta = (\mu, \sigma)
- * The expression of the transformation is:
+ * marginal standard deviations \sigma. With Gamma the inverse Cholesky
+ * factor of the covariance matrix, Gamma = C^{-1} D^{-1} where D is
+ * diagonal with the marginal scales and C^{-1} the inverse Cholesky
+ * factor of the correlation matrix, the expression of the transformation is:
  *
- * T_i(X) = \sum_{j=1}^i \Gamma_{ij}(X_j - mu_j)
+ * T_i(X) = \sum_{j} \Gamma_{ij}(X_j - mu_j)
  *
  * thus we have:
  *
- * dT_i/dmu_j = -Gamma_{ij} for j>=i,
- *            = 0 otherwise
- * dT_i/dsigma_j = -Gamma_{ii}^2(X_i - mu_i) for j=i,
- *               = 0 otherwise
+ * dT_i/dmu_j = -Gamma_{ij}
+ * dT_i/dsigma_j = -Gamma_{ij}(X_j - mu_j) / sigma_j
  *
  * The (i,j)th element of the gradient is dT_j/dtheta_i.
  *
  */
-
 Matrix NatafEllipticalDistributionEvaluation::parameterGradient(const Point & inP) const
 {
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << ", got dimension=" << inP.getDimension();
   Point center(getCenter()); // \mu
-  Matrix linear(getLinear().transpose()); // \Gamma^t, transposed inverse Cholesky
-  UnsignedInteger inputDimension = getInputDimension();
+  const Matrix gamma(getLinear()); // \Gamma, inverse Cholesky factor
+  const Matrix linear(gamma.transpose()); // \Gamma^t, transposed inverse Cholesky
   Matrix result(2 * inputDimension, inputDimension);
   // dT_j/dmu_i
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
     for (UnsignedInteger j = i; j < inputDimension; ++j) result(i, j) = -linear(i, j);
-  // dTj/dsigma_j
-  for (UnsignedInteger i = 0; i < inputDimension; ++i) result(inputDimension + i, i) = -linear(i, i) * linear(i, i) * (inP[i] - center[i]);
+  // True marginal scales, recorded at construction when available.
+  // Without record the recovery below is exact for diagonal maps only.
+  const Point recorded(EvaluationImplementation::getParameter());
+  Point sigma(inputDimension);
+  if (recorded.getDimension() > 0)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) sigma[j] = recorded[inputDimension + j];
+  }
+  else
+  {
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      for (UnsignedInteger j = 0; j < inputDimension; ++j)
+        if ((i != j) && (gamma(i, j) != 0.0)) throw InvalidArgumentException(HERE) << "Cannot compute the parameter gradient of a directly constructed correlated transformation without recorded scales, please rebuild it from a distribution";
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) sigma[j] = (gamma(j, j) != 0.0 ? 1.0 / gamma(j, j) : 0.0);
+  }
+  // dT_i/dsigma_j, only the j-th input component matters
+  for (UnsignedInteger j = 0; j < inputDimension; ++j)
+  {
+    if (!(sigma[j] > 0.0)) continue;
+    const Scalar factor = -(inP[j] - center[j]) / sigma[j];
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      result(inputDimension + j, i) = gamma(i, j) * factor;
+  }
   return result;
 }
 
@@ -132,7 +152,8 @@ Matrix NatafEllipticalDistributionEvaluation::parameterGradient(const Point & in
  * The recorded values are returned if any, else they are recovered from the
  * stored map. The recovery is exact for uncorrelated maps; for correlated
  * maps the true marginal scales cannot be recovered from the map alone, in
- * which case the conditional standard deviations are returned instead.
+ * which case an exception is thrown instead of returning the conditional
+ * standard deviations, consistently with setParameter()/parameterGradient().
  * The dependence parameters are intentionally excluded, as the Nataf
  * derivative with respect to them is not implemented.
  */
@@ -143,6 +164,9 @@ Point NatafEllipticalDistributionEvaluation::getParameter() const
   const UnsignedInteger dimension = getInputDimension();
   const Point center(getCenter());
   const Matrix linear(getLinear());
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      if ((i != j) && (linear(i, j) != 0.0)) throw InvalidArgumentException(HERE) << "Cannot recover the parameters of a directly constructed correlated transformation without recorded scales, please rebuild it from a distribution";
   Point parameter(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {

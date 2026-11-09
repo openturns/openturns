@@ -124,14 +124,41 @@ ott.assert_almost_equal(
             [-0.5, 0.28867513459481287, -0.20412414523193148],
             [0.0, -0.3849001794597505, 0.2721655269759086],
             [0.0, 0.0, -1.224744871391589],
-            [-0.125, 0.0, 0.0],
-            [0.0, -0.22222222222222227, 0.0],
+            [-0.125, 0.07216878364870322, -0.05103103630798288],
+            [0.0, -0.19245008972987526, 0.13608276348795434],
             [0.0, 0.0, 0.0],
         ]
     ),
     1e-10,
     1e-10,
 )
+# parameterGradient matches centered finite differences with fresh distributions
+eps = 1e-5
+factor = 1.0 / (2.0 * eps)
+for side, trans, evalPoint in (("forward", transform, point), ("inverse", inverseTransform, transformedPoint)):
+    fd = ot.Matrix(6, dim)
+    for k in range(2 * dim):
+        muP = list(meanPoint)
+        sigmaP = list(sigma)
+        muM = list(meanPoint)
+        sigmaM = list(sigma)
+        if k < dim:
+            muP[k] += eps
+            muM[k] -= eps
+        else:
+            sigmaP[k - dim] += eps
+            sigmaM[k - dim] -= eps
+        if side == "forward":
+            left = ot.Normal(muP, sigmaP, R).getIsoProbabilisticTransformation()
+            right = ot.Normal(muM, sigmaM, R).getIsoProbabilisticTransformation()
+        else:
+            left = ot.Normal(muP, sigmaP, R).getInverseIsoProbabilisticTransformation()
+            right = ot.Normal(muM, sigmaM, R).getInverseIsoProbabilisticTransformation()
+        dTdp = (left(evalPoint) - right(evalPoint)) * factor
+        for i in range(dim):
+            fd[k, i] = dTdp[i]
+    # mu block
+    ott.assert_almost_equal(trans.parameterGradient(evalPoint), fd, 1e-5, 1e-5)
 
 # setParameter updates the evaluation and the gradient
 oneDimTransform = ot.Normal(1.0, 2.0).getIsoProbabilisticTransformation()
