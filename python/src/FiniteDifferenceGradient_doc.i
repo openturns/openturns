@@ -84,12 +84,6 @@ gradient : :class:`~openturns.Matrix`
 %feature("docstring") OT::FiniteDifferenceGradient::getFiniteDifferenceStep
 "Get the finite difference step.
 
-Parameters
-----------
-outputIndex : int, optional
-    Index of the output whose step is returned. Without argument, the
-    step of the first output is returned.
-
 Returns
 -------
 step : :class:`~openturns.FiniteDifferenceStep`
@@ -102,8 +96,5 @@ step : :class:`~openturns.FiniteDifferenceStep`
 
 Parameters
 ----------
-outputIndex : int, optional
-    Index of the output whose step is set. Without argument, the step is
-    broadcast to all the outputs.
 step : :class:`~openturns.FiniteDifferenceStep`
     Defines how finite difference steps values are computed."
