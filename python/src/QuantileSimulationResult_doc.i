@@ -9,10 +9,6 @@ This class gives access to a quantile simulation result: the estimated
 quantile, its standard error, the confidence interval, the estimator and
 coverage conventions, and the run diagnostics.
 
-See also
---------
-QuantileSimulationResultImplementation, QuantileSimulationAlgorithm, BlockQuantileSimulation, ExactTailQuantileSimulation
-
 Notes
 -----
 The confidence interval is the one returned by the algorithm.  Its
@@ -37,6 +33,10 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``QuantileSimulation-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default nominal confidence level.
 - ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``, default: ``0``): default sample size, where ``0`` means that the sample size is not set.
 - ``QuantileSimulation-DefaultTrimmingFraction`` (``Scalar``, default: ``0.1``): default trimming fraction of the ``TRIMMED_MEAN`` combination rule.
+
+See also
+--------
+QuantileSimulationResultImplementation, QuantileSimulationAlgorithm, BlockQuantileSimulation, ExactTailQuantileSimulation
 
 Examples
 --------
@@ -817,3 +817,49 @@ Returns
 graph : :class:`~openturns.Graph`
     Graph of the quantile estimate against the cumulative sample size.
 )RAW"
+
+%feature("docstring") OT::QuantileSimulationResult::getReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Returns
+-------
+replicateCount : int
+    Number of independent replicates used by the estimator.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Parameters
+----------
+replicateCount : int
+    Number of independent replicates used by the estimator.  It must be
+    positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Returns
+-------
+estimates : :class:`~openturns.Point`
+    Quantile estimate produced by each independent replicate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Parameters
+----------
+estimates : sequence of float
+    Quantile estimate produced by each independent replicate.  All the
+    values must be finite.
+)RAW"
+
+// ---------------------------------------------------------------------

@@ -434,6 +434,32 @@ UnsignedInteger QuantileSimulationResultImplementation::getUpperRank() const
   return upperRank_;
 }
 
+void QuantileSimulationResultImplementation::setReplicateCount(const UnsignedInteger replicateCount)
+{
+  if (replicateCount == 0)
+    throw InvalidArgumentException(HERE) << "The replicate count must be positive";
+  replicateCount_ = replicateCount;
+}
+
+UnsignedInteger QuantileSimulationResultImplementation::getReplicateCount() const
+{
+  return replicateCount_;
+}
+
+void QuantileSimulationResultImplementation::setReplicateEstimates(const Point & estimates)
+{
+  for (UnsignedInteger i = 0; i < estimates.getSize(); ++i)
+    if (!std::isfinite(estimates[i]))
+      throw InvalidArgumentException(HERE)
+          << "The replicate estimates must be finite, but estimates[" << i << "] = " << estimates[i];
+  replicateEstimates_ = estimates;
+}
+
+Point QuantileSimulationResultImplementation::getReplicateEstimates() const
+{
+  return replicateEstimates_;
+}
+
 /* Fixed sample flag accessor */
 void QuantileSimulationResultImplementation::setIsFixedSample(const Bool fixedSample)
 {
@@ -557,6 +583,7 @@ String QuantileSimulationResultImplementation::__repr__() const
       << " retainedCount=" << retainedCount_
       << " lowerRank=" << lowerRank_
       << " upperRank=" << upperRank_
+      << " replicateCount=" << replicateCount_
       << " isFixedSample=" << isFixedSample_;
   return oss;
 }
@@ -601,6 +628,8 @@ void QuantileSimulationResultImplementation::save(Advocate & adv) const
   adv.saveAttribute("retainedCount_", retainedCount_);
   adv.saveAttribute("lowerRank_", lowerRank_);
   adv.saveAttribute("upperRank_", upperRank_);
+  adv.saveAttribute("replicateCount_", replicateCount_);
+  adv.saveAttribute("replicateEstimates_", replicateEstimates_);
   adv.saveAttribute("isFixedSample_", isFixedSample_);
   adv.saveAttribute("convergenceHistory_", convergenceHistory_);
 }
@@ -659,6 +688,10 @@ void QuantileSimulationResultImplementation::load(Advocate & adv)
     adv.loadAttribute("lowerRank_", lowerRank_);
   if (adv.hasAttribute("upperRank_"))
     adv.loadAttribute("upperRank_", upperRank_);
+  if (adv.hasAttribute("replicateCount_"))
+    adv.loadAttribute("replicateCount_", replicateCount_);
+  if (adv.hasAttribute("replicateEstimates_"))
+    adv.loadAttribute("replicateEstimates_", replicateEstimates_);
   adv.loadAttribute("isFixedSample_", isFixedSample_);
   adv.loadAttribute("convergenceHistory_", convergenceHistory_);
 }
