@@ -21,6 +21,7 @@
 #include <cmath>
 
 #include "openturns/JointDistribution.hxx"
+#include "openturns/EllipticalDistribution.hxx"
 #include "openturns/MarginalTransformationEvaluation.hxx"
 #include "openturns/MarginalTransformationGradient.hxx"
 #include "openturns/MarginalTransformationHessian.hxx"
@@ -1158,8 +1159,23 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
     transform.setEvaluation(new NatafEllipticalDistributionEvaluation(mean, inverseCholesky));
     transform.setGradient(new NatafEllipticalDistributionGradient(inverseCholesky));
     transform.setHessian(new NatafEllipticalDistributionHessian(dimension));
-    transform.setParameter(parameters);
-    transform.setParameterDescription(description);
+    // The Nataf transformation only involves (mu, sigma), stored as the
+    // mean vector followed by the marginal scales. In the elliptical case
+    // the marginals are Normal or Student distributions, accessed through
+    // the EllipticalDistribution interface.
+    const Description jointDescription(getDescription());
+    Point natafParameters(2 * dimension);
+    Description natafDescription(2 * dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      natafParameters[i] = mean[i];
+      const EllipticalDistribution* p_marginal = dynamic_cast<const EllipticalDistribution*>(distributionCollection_[i].getImplementation().get());
+      natafParameters[dimension + i] = (p_marginal ? p_marginal->getSigma()[0] : (inverseCholesky(i, i) != 0.0 ? 1.0 / inverseCholesky(i, i) : 0.0));
+      natafDescription[i] = (OSS() << jointDescription[i] << "_mu_" << i);
+      natafDescription[dimension + i] = (OSS() << jointDescription[i] << "_sigma_" << i);
+    }
+    transform.setParameter(natafParameters);
+    transform.setParameterDescription(natafDescription);
     return transform;
   }
   // Special case for the elliptical copula case: generalized Nataf transformation (marginal transformations plus linear transformation)
@@ -1239,8 +1255,23 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
     inverseTransform.setEvaluation(new InverseNatafEllipticalDistributionEvaluation(mean, cholesky));
     inverseTransform.setGradient(new InverseNatafEllipticalDistributionGradient(cholesky));
     inverseTransform.setHessian(new InverseNatafEllipticalDistributionHessian(dimension));
-    inverseTransform.setParameter(parameters);
-    inverseTransform.setParameterDescription(description);
+    // The Nataf transformation only involves (mu, sigma), stored as the
+    // mean vector followed by the marginal scales. In the elliptical case
+    // the marginals are Normal or Student distributions, accessed through
+    // the EllipticalDistribution interface.
+    const Description jointDescription(getDescription());
+    Point natafParameters(2 * dimension);
+    Description natafDescription(2 * dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      natafParameters[i] = mean[i];
+      const EllipticalDistribution* p_marginal = dynamic_cast<const EllipticalDistribution*>(distributionCollection_[i].getImplementation().get());
+      natafParameters[dimension + i] = (p_marginal ? p_marginal->getSigma()[0] : cholesky(i, i));
+      natafDescription[i] = (OSS() << jointDescription[i] << "_mu_" << i);
+      natafDescription[dimension + i] = (OSS() << jointDescription[i] << "_sigma_" << i);
+    }
+    inverseTransform.setParameter(natafParameters);
+    inverseTransform.setParameterDescription(natafDescription);
     return inverseTransform;
   }
   // Special case for the elliptical copula case: generalized Nataf transformation (marginal transformations plus linear transformation)

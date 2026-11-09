@@ -71,6 +71,41 @@ String InverseNatafEllipticalDistributionGradient::__repr__() const
          << " cholesky=" << getConstant().transpose();
 }
 
+/* Parameters value accessor, as (mu, sigma).
+ * The stored constant matrix is the transpose of the Cholesky factor
+ * L = D L_c, so each column j is rescaled by sigma_new[j] / sigma_old[j],
+ * with the old values read on the recorded parameter vector. Without
+ * record the map is assumed consistent with the provided values and kept
+ * as is.
+ */
+void InverseNatafEllipticalDistributionGradient::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getInputDimension();
+  if (parameter.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << 2 * dimension << ", provided " << parameter.getDimension();
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    if (!(parameter[dimension + i] > 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be positive, got sigma[" << i << "]=" << parameter[dimension + i];
+  Matrix newConstant(getConstant());
+  const Point recorded(GradientImplementation::getParameter());
+  if (recorded.getDimension() > 0)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+    {
+      const Scalar newSigma = parameter[dimension + j];
+      const Scalar oldSigma = recorded[dimension + j];
+      Scalar factor = 1.0;
+      if (newSigma != oldSigma)
+      {
+        if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        factor = newSigma / oldSigma;
+      }
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+        newConstant(i, j) = newConstant(i, j) * factor;
+    }
+  }
+  setConstant(newConstant);
+  GradientImplementation::setParameter(parameter);
+}
+
 /* Method save() stores the object through the StorageManager */
 void InverseNatafEllipticalDistributionGradient::save(Advocate & adv) const
 {

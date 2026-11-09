@@ -112,6 +112,87 @@ Matrix InverseNatafEllipticalDistributionEvaluation::parameterGradient(const Poi
   return result;
 }
 
+/* Parameters value accessor, as (mu, sigma).
+ * The recorded values are returned if any, else they are recovered from the
+ * stored map. The recovery is exact for uncorrelated maps; for correlated
+ * maps the true marginal scales cannot be recovered from the map alone, in
+ * which case the conditional standard deviations are returned instead.
+ * The dependence parameters are intentionally excluded, as the Nataf
+ * derivative with respect to them is not implemented.
+ */
+Point InverseNatafEllipticalDistributionEvaluation::getParameter() const
+{
+  const Point recorded(EvaluationImplementation::getParameter());
+  if (recorded.getDimension() > 0) return recorded;
+  const UnsignedInteger dimension = getInputDimension();
+  const Point constant(getConstant());
+  const Matrix linear(getLinear());
+  Point parameter(2 * dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    parameter[i] = constant[i];
+    parameter[dimension + i] = linear(i, i);
+  }
+  return parameter;
+}
+
+void InverseNatafEllipticalDistributionEvaluation::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getInputDimension();
+  if (parameter.getDimension() != 2 * dimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << 2 * dimension << ", provided " << parameter.getDimension();
+  Point newMean(dimension);
+  Point newSigma(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    newMean[i] = parameter[i];
+    newSigma[i] = parameter[dimension + i];
+    if (!(newSigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The sigma parameter must be positive, got sigma[" << i << "]=" << newSigma[i];
+  }
+  // Update the Cholesky factor L from the new sigma values. L writes
+  // L = D L_c with D = diag(sigma) and L_c the Cholesky factor of the
+  // correlation matrix, which does not depend on sigma, so each row i is
+  // rescaled by sigma_new[i] / sigma_old[i], with the old values read on
+  // the recorded parameter vector. Without record (fresh object, e.g. right
+  // after construction by the distribution builders) the map is assumed
+  // consistent with the provided values and kept as is.
+  Matrix newLinear(getLinear());
+  const Point recorded(EvaluationImplementation::getParameter());
+  if (recorded.getDimension() > 0)
+  {
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const Scalar oldSigma = recorded[dimension + i];
+      Scalar factor = 1.0;
+      if (newSigma[i] != oldSigma)
+      {
+        if (!(oldSigma > 0.0)) throw InvalidArgumentException(HERE) << "Cannot update a degenerate transformation, please rebuild it";
+        factor = newSigma[i] / oldSigma;
+      }
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        newLinear(i, j) = newLinear(i, j) * factor;
+    }
+  }
+  setConstant(newMean);
+  setLinear(newLinear);
+  EvaluationImplementation::setParameter(parameter);
+}
+
+/* Parameters description accessor */
+Description InverseNatafEllipticalDistributionEvaluation::getParameterDescription() const
+{
+  if (parameterDescription_.getSize() > 0) return parameterDescription_;
+  const UnsignedInteger dimension = getInputDimension();
+  Description description(Description::BuildDefault(dimension, "mu_"));
+  description.add(Description::BuildDefault(dimension, "sigma_"));
+  return description;
+}
+
+/* Accessor for parameters dimension */
+UnsignedInteger InverseNatafEllipticalDistributionEvaluation::getParameterDimension() const
+{
+  return 2 * getInputDimension();
+}
+
 /* Method save() stores the object through the StorageManager */
 void InverseNatafEllipticalDistributionEvaluation::save(Advocate & adv) const
 {

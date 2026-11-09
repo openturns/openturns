@@ -87,6 +87,8 @@ public:
 
 protected:
 
+  /** Accessor for the constant term */
+  void setConstant(const Matrix & constant);
 
 private:
   Matrix constant_;

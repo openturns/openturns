@@ -708,19 +708,23 @@ EllipticalDistribution::IsoProbabilisticTransformation EllipticalDistribution::g
   // The result of parameterGradient is given
   // in the following form:
   // (d/dmu, d/dsigma)
-  // There is no gradient according to the dependence parameters yet (28/10/2006)
+  // The values are built from getMu()/getSigma() rather than from
+  // getParametersCollection(), whose marginal blocks are not always
+  // of the form [mu, sigma], e.g. [nu, mu, sigma] for Student.
+  // The dependence (correlation) parameters are intentionally excluded:
+  // the Nataf derivative with respect to them is not implemented.
   const UnsignedInteger dimension = getDimension();
+  const Point mu(getMu());
+  const Point sigma(getSigma());
+  const Description inputDescription(getDescription());
   Point parameters(2 * dimension);
-  Description description(parameters.getDimension());
-  PointWithDescriptionCollection parametersCollection(getParametersCollection());
+  Description description(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Description parametersDescription(parametersCollection[i].getDescription());
-    const String marginalName(parametersCollection[i].getName());
-    parameters[i] = parametersCollection[i][0];
-    parameters[dimension + i] = parametersCollection[i][1];
-    description[i] = OSS() << marginalName << "_" << parametersDescription[0];
-    description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
+    parameters[i] = mu[i];
+    parameters[dimension + i] = sigma[i];
+    description[i] = (OSS() << inputDescription[i] << "_mu_" << i);
+    description[dimension + i] = (OSS() << inputDescription[i] << "_sigma_" << i);
   }
   transform.setParameter(parameters);
   transform.setParameterDescription(description);
@@ -739,19 +743,23 @@ EllipticalDistribution::InverseIsoProbabilisticTransformation EllipticalDistribu
   // The result of parameterGradient is given
   // in the following form:
   // (d/dmu, d/dsigma)
-  // There is no gradient according to the dependence parameters yet (28/10/2006)
+  // The values are built from getMu()/getSigma() rather than from
+  // getParametersCollection(), whose marginal blocks are not always
+  // of the form [mu, sigma], e.g. [nu, mu, sigma] for Student.
+  // The dependence (correlation) parameters are intentionally excluded:
+  // the Nataf derivative with respect to them is not implemented.
   const UnsignedInteger dimension = getDimension();
+  const Point mu(getMu());
+  const Point sigma(getSigma());
+  const Description inputDescription(getDescription());
   Point parameters(2 * dimension);
-  Description description(parameters.getDimension());
-  PointWithDescriptionCollection parametersCollection(getParametersCollection());
+  Description description(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Description parametersDescription(parametersCollection[i].getDescription());
-    const String marginalName(parametersCollection[i].getName());
-    parameters[i] = parametersCollection[i][0];
-    parameters[dimension + i] = parametersCollection[i][1];
-    description[i] = OSS() << marginalName << "_" << parametersDescription[0];
-    description[dimension + i] = OSS() << marginalName << "_" << parametersDescription[1];
+    parameters[i] = mu[i];
+    parameters[dimension + i] = sigma[i];
+    description[i] = (OSS() << inputDescription[i] << "_mu_" << i);
+    description[dimension + i] = (OSS() << inputDescription[i] << "_sigma_" << i);
   }
   inverseTransform.setParameter(parameters);
   inverseTransform.setParameterDescription(description);

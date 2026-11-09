@@ -116,6 +116,36 @@ Matrix LinearEvaluation::getLinear() const
   return linear_;
 }
 
+/* Accessor for the center */
+void LinearEvaluation::setCenter(const Point & center)
+{
+  if (center.getDimension() != linear_.getNbColumns()) throw InvalidDimensionException(HERE) << "Center term dimension is incompatible with the linear term. "
+      << "The dimension of the center is: " << center.getDimension()
+      << " but the number of columns of the linear matrix is: " << linear_.getNbColumns();
+  center_ = center;
+}
+
+/* Accessor for the constant term */
+void LinearEvaluation::setConstant(const Point & constant)
+{
+  if (constant.getDimension() != linear_.getNbRows()) throw InvalidDimensionException(HERE) << "Constant term dimension is incompatible with the linear term. "
+      << "The constant has dimension: " << constant.getDimension()
+      << " but the number of rows in the linear matrix is: " << linear_.getNbRows();
+  constant_ = constant;
+}
+
+/* Accessor for the linear term */
+void LinearEvaluation::setLinear(const Matrix & linear)
+{
+  if (linear.getNbRows() != constant_.getDimension()) throw InvalidDimensionException(HERE) << "Linear term dimension is incompatible with the constant term. "
+      << "The number of rows in the linear matrix is: " << linear.getNbRows()
+      << " but the constant has dimension: " << constant_.getDimension();
+  if (linear.getNbColumns() != center_.getDimension()) throw InvalidDimensionException(HERE) << "Linear term dimension is incompatible with the center term. "
+      << "The number of columns of the linear matrix is: " << linear.getNbColumns()
+      << " but the dimension of the center is: " << center_.getDimension();
+  linear_ = linear;
+}
+
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
