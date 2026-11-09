@@ -44,6 +44,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+LastParticleQuantile, CrossEntropyQuantile, QuantileSimulationResult
+
 Notes
 -----
 The conditional probability and the particle count must satisfy
@@ -67,10 +71,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``SubsetSampling-DefaultProposalRange`` (``Scalar``, default: ``2.0``): default random-walk proposal range.
 - ``SubsetSamplingQuantile-DefaultBurnIn`` (``UnsignedInteger``, default: ``10``): default number of burn-in transitions.
 - ``SubsetSamplingQuantile-DefaultReplicateCount`` (``UnsignedInteger``, default: ``30``): default number of independent replicates.
-
-See also
---------
-LastParticleQuantile, CrossEntropyQuantile, QuantileSimulationResult
 
 Examples
 --------

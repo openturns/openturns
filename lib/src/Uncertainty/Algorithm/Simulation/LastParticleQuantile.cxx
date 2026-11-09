@@ -130,7 +130,7 @@ QuantileSimulationResult LastParticleQuantile::runFixedSample()
   const UnsignedInteger moveCountEstimate = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(std::ceil(expectedMoves)));
   const UnsignedInteger lowerRank = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(DistFunc::qPoisson(expectedMoves, 0.5 * (1.0 - beta_))));
   const UnsignedInteger upperRank = std::max<UnsignedInteger>(lowerRank, static_cast<UnsignedInteger>(DistFunc::qPoisson(expectedMoves, 0.5 * (1.0 + beta_))));
-  const UnsignedInteger moveCount = upperRank;
+  const UnsignedInteger moveCount = std::max(upperRank, moveCountEstimate);
   const Scalar z = DistFunc::qNormal(0.5 * (1.0 + beta_));
 
   QuantileConditionalSampler sampler(output_, proposalRange_, burnIn_);

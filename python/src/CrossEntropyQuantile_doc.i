@@ -40,6 +40,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+SubsetSamplingQuantile, LastParticleQuantile, QuantileSimulationResult
+
 Notes
 -----
 The pilot sample is used only to place the cross-entropy event.  A
@@ -61,10 +65,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``CrossEntropyImportanceSampling-DefaultQuantileLevel`` (``Scalar``, default: ``0.25``): default intermediate quantile level of the cross-entropy sequence.
 - ``CrossEntropyQuantile-DefaultPilotSize`` (``UnsignedInteger``, default: ``1000``): default pilot sample size.
 - ``CrossEntropyQuantile-MinimumProposalStandardDeviation`` (``Scalar``, default: ``1.2``): default floor :math:`s_{\min}` on the defensive proposal standard deviations.
-
-See also
---------
-SubsetSamplingQuantile, LastParticleQuantile, QuantileSimulationResult
 
 Examples
 --------

@@ -8,7 +8,7 @@ R"RAW(Last-particle quantile estimator.
 Available constructors:
     LastParticleQuantile(*output, alpha=0.95, beta=0.95*)
 
-The last-particle algorithm of Guyader, Hengartner and Matzner-Løber
+The last-particle algorithm of Guyader, Hengartner and Matzner-Lober
 [guyader2011]_ estimates an extreme quantile with a population of
 :math:`N` particles and one model evaluation per move.  It is the
 limiting case of subset simulation in which exactly one particle is
@@ -36,6 +36,10 @@ beta : float
     Nominal confidence level of the interval, in :math:`(0, 1)`.
     Default is 0.95.
 
+See also
+--------
+SubsetSamplingQuantile, CrossEntropyQuantile, QuantileSimulationResult
+
 Notes
 -----
 The algorithm is intended for continuous outputs.  With a discrete
@@ -52,10 +56,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``LastParticleQuantile-DefaultParticleCount`` (``UnsignedInteger``, default: ``1000``): default number of particles.
 - ``LastParticleQuantile-DefaultBurnIn`` (``UnsignedInteger``, default: ``10``): default number of burn-in transitions.
 - ``SubsetSampling-DefaultProposalRange`` (``Scalar``, default: ``2.0``): default random-walk proposal range.
-
-See also
---------
-SubsetSamplingQuantile, CrossEntropyQuantile, QuantileSimulationResult
 
 Examples
 --------
