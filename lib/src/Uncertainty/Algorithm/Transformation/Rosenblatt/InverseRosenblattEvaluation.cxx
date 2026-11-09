@@ -22,6 +22,8 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -76,20 +78,110 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
   return y;
 }
 
-/*
- * Gradient according to the marginal parameters.
- * F(Q(y, p), p) = Id
- * F:RxRp->R
- * Q:RxRp->R
- * dF/dp = dF/dx(Q(y, p), p) . dQ/dp(y, p) + dF/dp(Q(y, p), p)
- *       = f(Q(y, p), p) . dQ/dp(y, p) + dF/dp(Q(y, p), p)
- *       = 0
- * => dQ/dp(y, p) = - dF/dp(Q(y, p), p) / f(Q(y, p), p)
+/* Gradient according to the marginal parameters.
+ * No analytical derivative of the inverse Rosenblatt map with respect to
+ * the distribution parameters is available, so it is computed numerically
+ * by central finite differences.
  */
-Matrix InverseRosenblattEvaluation::parameterGradient(const Point & ) const
+Matrix InverseRosenblattEvaluation::parameterGradient(const Point & inP) const
 {
-  Matrix grad(0, getOutputDimension());
-  return grad;
+  const UnsignedInteger inputDimension = getInputDimension();
+  if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension << ", got dimension=" << inP.getDimension();
+  // No per-parameter continuity information is available: each parameter is
+  // perturbed in turn, and a parameter that cannot be perturbed in either
+  // direction (e.g. an integer parameter) raises NotYetImplemented below
+  const Point parameter(distribution_.getParameter());
+  const UnsignedInteger parameterDimension = parameter.getDimension();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  Matrix gradient(parameterDimension, outputDimension);
+  if (parameterDimension == 0) return gradient;
+  const Scalar epsilon = ResourceMap::GetAsScalar("Evaluation-ParameterEpsilon");
+  const Point nominalValue(operator()(inP));
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+  {
+    const Scalar step = epsilon * (1.0 + std::abs(parameter[i]));
+    // Only an invalid perturbed parameter value falls back to a one-sided
+    // difference: evaluation errors propagate instead of being hidden behind
+    // a degraded gradient
+    InverseRosenblattEvaluation evaluationPlus(*this);
+    Point parameterPlus(parameter);
+    parameterPlus[i] += step;
+    Bool plusOk = true;
+    try
+    {
+      evaluationPlus.distribution_.setParameter(parameterPlus);
+    }
+    catch (const InvalidArgumentException &)
+    {
+      plusOk = false;
+    }
+    const Point valuePlus(plusOk ? evaluationPlus.operator()(inP) : nominalValue);
+    InverseRosenblattEvaluation evaluationMinus(*this);
+    Point parameterMinus(parameter);
+    parameterMinus[i] -= step;
+    Bool minusOk = true;
+    try
+    {
+      evaluationMinus.distribution_.setParameter(parameterMinus);
+    }
+    catch (const InvalidArgumentException &)
+    {
+      minusOk = false;
+    }
+    const Point valueMinus(minusOk ? evaluationMinus.operator()(inP) : nominalValue);
+    if (plusOk && minusOk)
+    {
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        gradient(i, j) = (valuePlus[j] - valueMinus[j]) / (2.0 * step);
+    }
+    else if (plusOk)
+    {
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        gradient(i, j) = (valuePlus[j] - nominalValue[j]) / step;
+    }
+    else if (minusOk)
+    {
+      for (UnsignedInteger j = 0; j < outputDimension; ++j)
+        gradient(i, j) = (nominalValue[j] - valueMinus[j]) / step;
+    }
+    else throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient: cannot perturb parameter " << i << " in either direction";
+  }
+  return gradient;
+}
+
+/* Parameters value accessor */
+Point InverseRosenblattEvaluation::getParameter() const
+{
+  return distribution_.getParameter();
+}
+
+void InverseRosenblattEvaluation::setParameter(const Point & parameter)
+{
+  distribution_.setParameter(parameter);
+}
+
+UnsignedInteger InverseRosenblattEvaluation::getParameterDimension() const
+{
+  return distribution_.getParameterDimension();
+}
+
+/* Parameters description accessor */
+Description InverseRosenblattEvaluation::getParameterDescription() const
+{
+  // Keep the description consistent with the parameter vector: fall back to
+  // default names when the distribution provides none (custom distributions
+  // may throw NotYetImplementedException and the Python wrapper returns an
+  // empty description), and fail fast on a short non-empty description
+  const UnsignedInteger dimension = distribution_.getParameterDimension();
+  Description description;
+  try { description = distribution_.getParameterDescription(); }
+  catch (const NotYetImplementedException &) { /* fall through to the default below */ }
+  if (description.getSize() != dimension)
+  {
+    if (description.getSize() != 0) throw InvalidArgumentException(HERE) << "Error: the parameter description of dimension " << description.getSize() << " does not match the parameter dimension " << dimension;
+    description = Description::BuildDefault(dimension, "p");
+  }
+  return description;
 }
 
 /* Accessor for input point dimension */

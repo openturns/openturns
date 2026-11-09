@@ -61,8 +61,16 @@ public:
   /** Evaluation */
   Point operator () (const Point & inP) const override;
 
-  /** Gradient according to the marginal parameters */
+  /** Gradient according to the marginal parameters, computed by central finite differences */
   Matrix parameterGradient(const Point & inP) const override;
+
+  /** Parameters value accessor */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+  UnsignedInteger getParameterDimension() const override;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const override;
