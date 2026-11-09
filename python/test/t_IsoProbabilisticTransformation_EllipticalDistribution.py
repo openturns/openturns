@@ -132,3 +132,50 @@ ott.assert_almost_equal(
     1e-10,
     1e-10,
 )
+
+# setParameter updates the evaluation and the gradient
+oneDimTransform = ot.Normal(1.0, 2.0).getIsoProbabilisticTransformation()
+ott.assert_almost_equal(oneDimTransform.getParameter(), [1.0, 2.0])
+ott.assert_almost_equal(oneDimTransform([0.0]), [-0.5])
+oneDimTransform.setParameter([5.0, 7.0])
+ott.assert_almost_equal(oneDimTransform.getParameter(), [5.0, 7.0])
+ott.assert_almost_equal(oneDimTransform([0.0]), [-5.0 / 7.0])
+ott.assert_almost_equal(oneDimTransform.gradient([0.0]), ot.Matrix([[1.0 / 7.0]]))
+oneDimInverseTransform = ot.Normal(1.0, 2.0).getInverseIsoProbabilisticTransformation()
+oneDimInverseTransform.setParameter([5.0, 7.0])
+ott.assert_almost_equal(oneDimInverseTransform([0.5]), [5.0 + 7.0 * 0.5])
+ott.assert_almost_equal(oneDimInverseTransform.gradient([0.5]), ot.Matrix([[7.0]]))
+
+# the transformation parameters are (mu, sigma), even with extra marginal
+# parameters such as the degrees of freedom of a Student distribution
+student = ot.Student(4.5, 3)
+ott.assert_almost_equal(
+    student.getIsoProbabilisticTransformation().getParameter(), [0.0] * 3 + [1.0] * 3
+)
+assert list(student.getIsoProbabilisticTransformation().getParameterDescription()) == [
+    "X0_mu_0",
+    "X1_mu_1",
+    "X2_mu_2",
+    "X0_sigma_0",
+    "X1_sigma_1",
+    "X2_sigma_2",
+]
+
+# parameters updated through setParameter match a fresh transformation
+transform.setParameter([5.0, 6.0, 7.0, 8.0, 9.0, 10.0])
+reference = ot.Normal([5.0, 6.0, 7.0], [8.0, 9.0, 10.0], R)
+referenceTransform = reference.getIsoProbabilisticTransformation()
+ott.assert_almost_equal(transform(point), referenceTransform(point))
+ott.assert_almost_equal(transform.gradient(point), referenceTransform.gradient(point))
+ott.assert_almost_equal(
+    transform.parameterGradient(point), referenceTransform.parameterGradient(point)
+)
+inverseTransform.setParameter([5.0, 6.0, 7.0, 8.0, 9.0, 10.0])
+referenceInverseTransform = reference.getInverseIsoProbabilisticTransformation()
+ott.assert_almost_equal(
+    inverseTransform(transformedPoint), referenceInverseTransform(transformedPoint)
+)
+ott.assert_almost_equal(
+    inverseTransform.gradient(transformedPoint),
+    referenceInverseTransform.gradient(transformedPoint),
+)

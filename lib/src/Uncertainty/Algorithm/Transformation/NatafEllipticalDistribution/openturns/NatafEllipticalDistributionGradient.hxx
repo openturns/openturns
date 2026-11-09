@@ -59,6 +59,9 @@ public:
   /** String converter */
   String __repr__() const override;
 
+  /** Parameters value accessor, as (mu, sigma), updating the stored linear map */
+  void setParameter(const Point & parameter) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

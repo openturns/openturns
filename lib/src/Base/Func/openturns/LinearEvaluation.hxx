@@ -99,6 +99,14 @@ public:
 
 protected:
 
+  /** Accessor for the center */
+  void setCenter(const Point & center);
+
+  /** Accessor for the constant term */
+  void setConstant(const Point & constant);
+
+  /** Accessor for the linear term */
+  void setLinear(const Matrix & linear);
 
 private:
   Point center_;

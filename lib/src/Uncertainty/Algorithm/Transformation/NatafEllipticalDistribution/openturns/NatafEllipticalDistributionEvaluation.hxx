@@ -61,6 +61,16 @@ public:
   /** Gradient according to the marginal parameters */
   Matrix parameterGradient(const Point & inP) const override;
 
+  /** Parameters value accessor, as (mu, sigma) */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+
+  /** Parameters description accessor */
+  Description getParameterDescription() const override;
+
+  /** Accessor for parameters dimension */
+  UnsignedInteger getParameterDimension() const override;
+
   /** String converter */
   String __repr__() const override;
 

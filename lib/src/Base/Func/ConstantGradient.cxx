@@ -90,6 +90,12 @@ Matrix ConstantGradient::getConstant() const
   return constant_;
 }
 
+/* Accessor for the constant term */
+void ConstantGradient::setConstant(const Matrix & constant)
+{
+  constant_ = constant;
+}
+
 /* Here is the interface that all derived class must implement */
 
 /* Operator () */
