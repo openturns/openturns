@@ -227,3 +227,28 @@ gammaCorr[1, 1] = 1.0
 eCorr = ot.NatafEllipticalDistributionEvaluation([0.0, 0.0], gammaCorr)
 with ott.assert_raises(Exception):
     eCorr.setParameter([0.0, 0.0, 1.0, 2.0])
+# degenerate sigma: the transformation is well-defined with zero rows/columns
+degenerate = ot.Normal([0.0], [0.0])
+ott.assert_almost_equal(degenerate.computeCDF([0.0]), 1.0)
+degenerateTransform = degenerate.getIsoProbabilisticTransformation()
+ott.assert_almost_equal(degenerateTransform.getParameter(), [0.0, 0.0])
+ott.assert_almost_equal(degenerateTransform([1.0]), [0.0])
+ott.assert_almost_equal(degenerateTransform.parameterGradient([1.0]), ot.Matrix([[0.0], [0.0]]))
+degenerateInverse = degenerate.getInverseIsoProbabilisticTransformation()
+ott.assert_almost_equal(degenerateInverse([1.0]), [0.0])
+ott.assert_almost_equal(degenerateInverse.parameterGradient([1.0]), ot.Matrix([[1.0], [0.0]]))
+# re-setting the same degenerate parameters keeps the zero map
+degenerateTransform.setParameter([0.0, 0.0])
+ott.assert_almost_equal(degenerateTransform([1.0]), [0.0])
+# transitions to/from degeneracy require a rebuild
+with ott.assert_raises(Exception):
+    degenerateTransform.setParameter([0.0, 2.0])
+with ott.assert_raises(Exception):
+    oneDimTransform.setParameter([1.0, 0.0])
+# mixed degenerate case: non-degenerate coordinates keep the usual Nataf map
+mixed = ot.Normal([0.0, 0.0], [1.0, 0.0])
+mixedTransform = mixed.getIsoProbabilisticTransformation()
+ott.assert_almost_equal(mixedTransform([1.0, 1.0]), [1.0, 0.0])
+mixedInverse = mixed.getInverseIsoProbabilisticTransformation()
+ott.assert_almost_equal(mixedInverse([1.0, 0.0]), [1.0, 0.0])
+ott.assert_almost_equal(mixedInverse(mixedTransform([1.0, 1.0])), [1.0, 0.0])

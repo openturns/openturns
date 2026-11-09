@@ -48,7 +48,10 @@ EllipticalDistribution::EllipticalDistribution()
   , sigma_(1, 1.0)
   , R_(1)
 {
-  // Nothing to do
+  // Initialize the cached Cholesky factor (and normalization) so that
+  // getCholesky() is consistent with getInverseCholesky() even before any
+  // setter is called
+  update();
 }
 
 /* Parameter constructor */
@@ -618,77 +621,62 @@ CorrelationMatrix EllipticalDistribution::getR() const
   return R_;
 }
 
-/* Cholesky factor of the correlation matrix accessor */
+/* Cholesky factor of the covariance matrix accessor.
+ * The factor is maintained by update(), with zero rows and columns for
+ * degenerate dimensions, so it is returned directly without recomputation. */
 TriangularMatrix EllipticalDistribution::getCholesky() const
+{
+  return cholesky_;
+}
+
+/* Inverse of the Cholesky factor of the covariance matrix accessor.
+ * Degenerate dimensions (zero marginal standard deviation) get zero rows
+ * and columns, mirroring getCholesky()/update(): their isoprobabilistic
+ * coordinate is deterministically zero and they do not contribute to the
+ * other coordinates. */
+TriangularMatrix EllipticalDistribution::getInverseCholesky() const
 {
   const UnsignedInteger dimension = getDimension();
   if (dimension == 1)
   {
-    TriangularMatrix cholesky(1);
-    cholesky(0, 0) = sigma_[0];
-    return cholesky;
+    TriangularMatrix inverseCholesky(1);
+    if (sigma_[0] > 0.0) inverseCholesky(0, 0) = 1.0 / sigma_[0];
+    return inverseCholesky;
   }
-  // Check for degenerate dimensions
   Indices nonDegenerate;
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
     if (sigma_[i] > 0.0) nonDegenerate.add(i);
   const UnsignedInteger effectiveDimension = nonDegenerate.getSize();
-
+  if (effectiveDimension == 0)
+  {
+    // All dimensions degenerate
+    TriangularMatrix inverseCholesky(dimension);
+    return inverseCholesky;
+  }
+  const TriangularMatrix cholesky(getCholesky());
   if (effectiveDimension == dimension)
   {
     // Standard case: all dimensions are non-degenerate
-    return getShape().computeRegularizedCholesky();
+    const Matrix inverseMatrix(cholesky.solveLinearSystem(IdentityMatrix(dimension)));
+    return TriangularMatrix(inverseMatrix.getImplementation(), true);
   }
-
-  CovarianceMatrix shape(getShape());
-
-  if (effectiveDimension == 0)
-  {
-    // All degenerate
-    TriangularMatrix cholesky(dimension);
-    return cholesky;
-  }
-
-  // Mixed case: extract submatrix for non-degenerate dimensions
-  CovarianceMatrix subShape(effectiveDimension);
-  for (UnsignedInteger ii = 0; ii < effectiveDimension; ++ ii)
+  // Mixed case: invert the non-degenerate sub-block and embed with zeros
+  TriangularMatrix subCholesky(effectiveDimension);
+  for (UnsignedInteger ii = 0; ii < effectiveDimension; ++ii)
   {
     const UnsignedInteger i = nonDegenerate[ii];
-    for (UnsignedInteger jj = 0; jj <= ii; ++ jj)
-    {
-      const UnsignedInteger j = nonDegenerate[jj];
-      subShape(ii, jj) = shape(i, j);
-    }
+    for (UnsignedInteger jj = 0; jj <= ii; ++jj)
+      subCholesky(ii, jj) = cholesky(i, nonDegenerate[jj]);
   }
-
-  TriangularMatrix subCholesky(subShape.computeRegularizedCholesky());
-
-  // Build full Cholesky with zeros for degenerate dimensions
-  TriangularMatrix cholesky(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  const Matrix inverseSub(subCholesky.solveLinearSystem(IdentityMatrix(effectiveDimension)));
+  TriangularMatrix inverseCholesky(dimension);
+  for (UnsignedInteger ii = 0; ii < effectiveDimension; ++ii)
   {
-    if (sigma_[i] > 0.0)
-    {
-      const UnsignedInteger ii = nonDegenerate.find(i);
-      for (UnsignedInteger j = 0; j <= i; ++ j)
-      {
-        if (sigma_[j] > 0.0)
-        {
-          const UnsignedInteger jj = nonDegenerate.find(j);
-          cholesky(i, j) = subCholesky(ii, jj);
-        }
-      }
-    }
+    const UnsignedInteger i = nonDegenerate[ii];
+    for (UnsignedInteger jj = 0; jj <= ii; ++jj)
+      inverseCholesky(i, nonDegenerate[jj]) = inverseSub(ii, jj);
   }
-  return cholesky;
-}
-
-/* Inverse of the Cholesky factor of the correlation matrix accessor */
-TriangularMatrix EllipticalDistribution::getInverseCholesky() const
-{
-  const UnsignedInteger dimension = getDimension();
-  const Matrix inverseMatrix(cholesky_.solveLinearSystem(IdentityMatrix(dimension)));
-  return TriangularMatrix(inverseMatrix.getImplementation(), true);
+  return inverseCholesky;
 }
 
 /* Virtual copy constructor */
