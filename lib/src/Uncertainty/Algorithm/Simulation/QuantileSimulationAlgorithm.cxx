@@ -27,7 +27,9 @@
 #include "openturns/QuantileConfidence.hxx"
 #include "openturns/ImportanceSamplingExperiment.hxx"
 #include "openturns/LHSExperiment.hxx"
+#include "openturns/SobolIndicesExperiment.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/TensorProductExperiment.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Log.hxx"
 
@@ -192,8 +194,6 @@ Scalar interpolatedQuantile(const WeightedSample & data, const Scalar alpha)
   }
   if (alpha <= data.cumulative[0])
     return data.values[0];
-  if (alpha > data.cumulative[size - 2])
-    return data.values[size - 1];
   UnsignedInteger k = 0;
   while ((k < size) && (data.cumulative[k] < alpha))
     ++k;
@@ -205,6 +205,35 @@ Scalar interpolatedQuantile(const WeightedSample & data, const Scalar alpha)
     return data.values[k];
   const Scalar fraction = (alpha - lowerWeight) / (upperWeight - lowerWeight);
   return (1.0 - fraction) * data.values[k - 1] + fraction * data.values[k];
+}
+
+/** Whether the experiment reuses a Latin hypercube stratum permutation across draws. */
+Bool reusesLHSShuffle(const WeightedExperiment & experiment)
+{
+  const LHSExperiment * lhs = dynamic_cast<const LHSExperiment *>(experiment.getImplementation().get());
+  if (lhs != nullptr)
+    return !lhs->getAlwaysShuffle();
+  // A Sobol wrapper expands the underlying design deterministically.  A
+  // Latin hypercube with a fixed random shift then produces the same points
+  // in every replicate, even when the stratum permutation is redrawn.
+  const SobolIndicesExperiment * sobol = dynamic_cast<const SobolIndicesExperiment *>(experiment.getImplementation().get());
+  if (sobol != nullptr)
+  {
+    const WeightedExperiment inner(sobol->getWeightedExperiment());
+    const LHSExperiment * innerLHS = dynamic_cast<const LHSExperiment *>(inner.getImplementation().get());
+    if ((innerLHS != nullptr) && !innerLHS->getRandomShift())
+      return true;
+    return reusesLHSShuffle(inner);
+  }
+  const TensorProductExperiment * tensor = dynamic_cast<const TensorProductExperiment *>(experiment.getImplementation().get());
+  if (tensor != nullptr)
+  {
+    const TensorProductExperiment::WeightedExperimentCollection collection(tensor->getWeightedExperimentCollection());
+    for (UnsignedInteger i = 0; i < collection.getSize(); ++i)
+      if (reusesLHSShuffle(collection[i]))
+        return true;
+  }
+  return false;
 }
 
 /** Woodruff confidence interval for the weighted quantile. */
@@ -558,13 +587,15 @@ QuantileSimulationResult QuantileSimulationAlgorithm::runFixedSample()
     // A Latin hypercube experiment reuses its stratum permutation from one
     // draw to the next when alwaysShuffle is false.  The replicate estimates
     // are then correlated (and identical when randomShift is false too), so
-    // the Student interval is not valid.  Reject the configuration instead of
-    // reporting a coverage that the design cannot support.
-    const LHSExperiment * lhs = dynamic_cast<const LHSExperiment *>(experiment.getImplementation().get());
-    if ((lhs != nullptr) && !lhs->getAlwaysShuffle())
+    // the Student interval is not valid.  The same holds when such an
+    // experiment is nested in a tensor product.  Reject the configuration
+    // instead of reporting a coverage that the design cannot support.
+    if (reusesLHSShuffle(experiment))
       throw InvalidArgumentException(HERE)
           << "The replicate interval requires independent draws, but the Latin hypercube experiment "
-          << "reuses its shuffle (alwaysShuffle=false). Set alwaysShuffle=true, or use another experiment.";
+          << "reuses its shuffle (alwaysShuffle=false) or keeps a fixed random shift, possibly inside "
+          << "a Sobol or tensor-product wrapper. Set alwaysShuffle=true and randomShift=true, "
+          << "or use another experiment.";
     const UnsignedInteger replicateCount = replicateCount_;
     if (replicateCount < 2)
       throw InvalidArgumentException(HERE)

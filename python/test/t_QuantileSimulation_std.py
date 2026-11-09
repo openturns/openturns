@@ -199,6 +199,16 @@ algo = otexp.QuantileSimulationAlgorithm(output, ot.LHSExperiment(distribution, 
 with ott.assert_raises(TypeError):
     algo.run()
 
+# A Sobol wrapper hides the underlying Latin hypercube from the direct
+# check.  A fixed random shift still reuses the design across replicates,
+# so the replicate interval must be rejected as well.
+sobol_lhs = ot.SobolIndicesExperiment(
+    ot.LHSExperiment(distribution, 100, True, False), False
+)
+algo = otexp.QuantileSimulationAlgorithm(output, sobol_lhs, alpha, beta)
+with ott.assert_raises(TypeError):
+    algo.run()
+
 # Deterministic quasi-Monte Carlo: no coverage guarantee.
 qmc = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 1024, False)
 algo = otexp.QuantileSimulationAlgorithm(output, qmc, alpha, beta)
@@ -681,7 +691,7 @@ for level, empirical, interpolated in [
         (0.25, 0.0, 0.0),
         (0.5, 10.0, 5.0),
         (0.75, 10.0, 10.0),
-        (0.99, 20.0, 20.0)]:
+        (0.99, 20.0, 19.6)]:
     algo.setAlpha(level)
     algo.setEstimatorType(EMPIRICAL_INVERSE)
     algo.run()
