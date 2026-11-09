@@ -103,6 +103,18 @@ UnsignedInteger MarginalTransformationGradient::getOutputDimension() const
   return evaluation_.outputDistributionCollection_.getSize();
 }
 
+/* Parameters value accessor */
+Point MarginalTransformationGradient::getParameter() const
+{
+  return evaluation_.getParameter();
+}
+
+void MarginalTransformationGradient::setParameter(const Point & parameter)
+{
+  evaluation_.setParameter(parameter);
+  GradientImplementation::setParameter(parameter);
+}
+
 /* String converter */
 String MarginalTransformationGradient::__repr__() const
 {

@@ -1130,14 +1130,23 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
       description.add(OSS() << marginalName << "_" << marginalDescription[j]);
     }
   }
+  // The marginal transformations only involve the parameters of the
+  // marginals, stored first in the parameters vector
+  UnsignedInteger marginalParametersDimension = 0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    marginalParametersDimension += distributionCollection_[i].getParameter().getDimension();
+  Point marginalParameters(marginalParametersDimension);
+  std::copy(parameters.begin(), parameters.begin() + marginalParametersDimension, marginalParameters.begin());
+  Description marginalDescription(marginalParametersDimension);
+  std::copy(description.begin(), description.begin() + marginalParametersDimension, marginalDescription.begin());
   // Special case for the independent copula case: marginal transformations only to go to the spherical distribution
   if (core_.isCopula() && hasIndependentCopula())
   {
     // Get the evaluation implementations
     MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM, Normal());
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
-    marginalTransformation.setParameter(parameters);
-    marginalTransformation.setParameterDescription(description);
+    marginalTransformation.setParameter(marginalParameters);
+    marginalTransformation.setParameterDescription(marginalDescription);
     return marginalTransformation;
   }
   // Special case for the elliptical distribution case: linear transformation
@@ -1162,8 +1171,8 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
     const Distribution standardMarginal(standardDistribution.getMarginal(0));
     MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::FROM, standardMarginal);
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), MarginalTransformationGradient(evaluation).clone(), MarginalTransformationHessian(evaluation).clone());
-    marginalTransformation.setParameter(parameters);
-    marginalTransformation.setParameterDescription(description);
+    marginalTransformation.setParameter(marginalParameters);
+    marginalTransformation.setParameterDescription(marginalDescription);
     // Suppress the correlation between the components.
     const TriangularMatrix inverseCholesky(core_.getShapeMatrix().computeCholesky().inverse().getImplementation());
     LinearFunction linear(Point(dimension, 0.0), Point(dimension, 0.0), inverseCholesky);
@@ -1175,8 +1184,8 @@ JointDistribution::IsoProbabilisticTransformation JointDistribution::getIsoProba
   // Get the right function implementations
   const MarginalTransformationEvaluation evaluation(distributionCollection_);
   IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
-  marginalTransformation.setParameter(parameters);
-  marginalTransformation.setParameterDescription(description);
+  marginalTransformation.setParameter(marginalParameters);
+  marginalTransformation.setParameterDescription(marginalDescription);
   return ComposedFunction(coreIsoprobabilisticTransformation, marginalTransformation);
 }
 
@@ -1202,14 +1211,23 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
       description.add(OSS() << marginalName << "_" << marginalDescription[j]);
     }
   }
+  // The marginal transformations only involve the parameters of the
+  // marginals, stored first in the parameters vector
+  UnsignedInteger inverseMarginalParametersDimension = 0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    inverseMarginalParametersDimension += distributionCollection_[i].getParameter().getDimension();
+  Point inverseMarginalParameters(inverseMarginalParametersDimension);
+  std::copy(parameters.begin(), parameters.begin() + inverseMarginalParametersDimension, inverseMarginalParameters.begin());
+  Description inverseMarginalDescription(inverseMarginalParametersDimension);
+  std::copy(description.begin(), description.begin() + inverseMarginalParametersDimension, inverseMarginalDescription.begin());
   // Special case for the independent copula case: marginal transformations only to go back from the spherical distribution
   if (core_.isCopula() && hasIndependentCopula())
   {
     // Get the evaluation implementations
     MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO, Normal());
     IsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
-    marginalTransformation.setParameter(parameters);
-    marginalTransformation.setParameterDescription(description);
+    marginalTransformation.setParameter(inverseMarginalParameters);
+    marginalTransformation.setParameterDescription(inverseMarginalDescription);
     return marginalTransformation;
   }
   // Special case for the elliptical distribution case: linear transformation
@@ -1234,8 +1252,8 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
     const Distribution standardMarginal(standardDistribution.getMarginal(0));
     MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO, standardMarginal);
     InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
-    marginalTransformation.setParameter(parameters);
-    marginalTransformation.setParameterDescription(description);
+    marginalTransformation.setParameter(inverseMarginalParameters);
+    marginalTransformation.setParameterDescription(inverseMarginalDescription);
     // Suppress the correlation between the components.
     const TriangularMatrix cholesky(core_.getShapeMatrix().computeCholesky());
     LinearFunction linear(Point(dimension, 0.0), Point(dimension, 0.0), cholesky);
@@ -1247,8 +1265,8 @@ JointDistribution::InverseIsoProbabilisticTransformation JointDistribution::getI
   // Build the marginal transformation
   const MarginalTransformationEvaluation evaluation(distributionCollection_, MarginalTransformationEvaluation::TO);
   InverseIsoProbabilisticTransformation marginalTransformation(evaluation.clone(), new MarginalTransformationGradient(evaluation), new MarginalTransformationHessian(evaluation));
-  marginalTransformation.setParameter(parameters);
-  marginalTransformation.setParameterDescription(description);
+  marginalTransformation.setParameter(inverseMarginalParameters);
+  marginalTransformation.setParameterDescription(inverseMarginalDescription);
   return ComposedFunction(marginalTransformation, coreInverseIsoprobabilisticTransformation);
 }
 
