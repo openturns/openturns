@@ -214,7 +214,10 @@ SymmetricMatrix FractionalBrownianMotionModel::partialHessian(const Point & s,
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   const Scalar s0 = s[0];
   const Scalar t0 = t[0];
-  // At s = 0 or s = t the Hessian diverges for H < 1: fall back to the finite-difference implementation
+  // At s = 0 or s = t the analytic Hessian is infinite for H < 1, because the
+  // kernel is only Holder continuous of order 2H there. Use the centered
+  // finite-difference estimate instead: it evaluates the finite second
+  // difference of the kernel and gives the optimizer a usable finite value.
   if (std::abs(s0) <= SpecFunc::ScalarEpsilon || std::abs(s0 - t0) <= SpecFunc::ScalarEpsilon)
     return CovarianceModelImplementation::partialHessian(s, t);
   // k(s, t) = 0.5 amplitude^2 (|s/theta|^{2H} + |t/theta|^{2H} - |(t - s)/theta|^{2H})
