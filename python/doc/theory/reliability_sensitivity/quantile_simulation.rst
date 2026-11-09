@@ -50,11 +50,12 @@ page presents the common statistical background and then the theory of
 each family of algorithms.
 
 .. note::
-    The weighted-experiment estimator
-    (:class:`~openturns.experimental.QuantileSimulationAlgorithm`) is the
-    only quantile simulation algorithm available in this release.  The
-    other algorithms described below are documented for reference and will
-    be added in forthcoming releases.
+    The weighted-experiment, block and exact-tail estimators
+    (:class:`~openturns.experimental.QuantileSimulationAlgorithm`,
+    :class:`~openturns.experimental.BlockQuantileSimulation` and
+    :class:`~openturns.experimental.ExactTailQuantileSimulation`) are
+    available in this release.  The other algorithms described below are
+    documented for reference and will be added in forthcoming releases.
 
 .. _quantile_theory_definitions:
 

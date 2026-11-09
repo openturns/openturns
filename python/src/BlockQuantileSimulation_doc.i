@@ -149,7 +149,7 @@ The following :class:`~openturns.ResourceMap` keys are used:
    * - ``QuantileSimulation-MinimumBlockCount``
      - ``UnsignedInteger``
      - ``30``
-     - Default minimum number of blocks.
+     - Default minimum number of blocks for the ``MEMORY_BOUND``, ``BIAS_TARGET`` and ``ADAPTIVE`` policies.
 
 Examples
 --------
@@ -174,7 +174,8 @@ R"RAW(Accessor to the design of experiments.
 Returns
 -------
 experiment : :class:`~openturns.WeightedExperiment`
-    Independent design of experiments with uniform weights.)RAW"
+    Independent design of experiments with uniform weights.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -186,7 +187,8 @@ Parameters
 experiment : :class:`~openturns.WeightedExperiment`
     Independent design of experiments with uniform weights.  Its
     distribution must match the input distribution of the output random
-    vector.)RAW"
+    vector.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -197,7 +199,8 @@ Returns
 -------
 hasExperiment : bool
     Whether an experiment was provided.  When ``False``, a Monte Carlo
-    experiment is built from the output distribution at run time.)RAW"
+    experiment is built from the output distribution at run time.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -207,7 +210,8 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Requested total number of model evaluations.)RAW"
+    Requested total number of model evaluations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -221,7 +225,8 @@ sampleSize : int
     contains the largest multiple of the block length that does not
     exceed this value.  The ``BIAS_TARGET`` and ``ADAPTIVE`` policies
     evaluate additional pilot points, which the result sample size
-    includes.)RAW"
+    includes.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -233,7 +238,8 @@ Returns
 blockLength : int
     Statistical block length set by :meth:`setBlockLength`, or 0 when no
     fixed length has been set.  The length actually used by a run is
-    reported by :meth:`QuantileSimulationResult.getBlockLength`.)RAW"
+    reported by :meth:`QuantileSimulationResult.getBlockLength`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -249,7 +255,8 @@ blockLength : int
 Notes
 -----
 The statistical block length is not the evaluation block size.  See
-the class documentation.)RAW"
+the class documentation.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -261,7 +268,8 @@ Returns
 policy : int
     Policy used to select the statistical block length.  The values are
     ``FIXED``, ``SQRT_N``, ``ASYMPTOTIC``, ``BIAS_TARGET``,
-    ``MEMORY_BOUND`` and ``ADAPTIVE``.)RAW"
+    ``MEMORY_BOUND`` and ``ADAPTIVE``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -282,7 +290,8 @@ uses :math:`\lceil \sqrt N \rceil`.  ``ASYMPTOTIC``, the default, uses
 :math:`\lceil N^{2/3} \rceil`.  ``BIAS_TARGET`` and ``ADAPTIVE`` run a
 pilot and then select the block length from the estimated bias
 constant.  ``MEMORY_BOUND`` uses the budget set by
-:meth:`setMemoryBudget`.)RAW"
+:meth:`setMemoryBudget`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -293,7 +302,8 @@ Returns
 -------
 combination : int
     Rule used to combine the block quantiles.  The values are ``MEAN``,
-    ``MEDIAN`` and ``TRIMMED_MEAN``.)RAW"
+    ``MEDIAN`` and ``TRIMMED_MEAN``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -304,7 +314,8 @@ Parameters
 ----------
 combination : int
     Rule used to combine the block quantiles.  The values are ``MEAN``,
-    ``MEDIAN`` and ``TRIMMED_MEAN``.  The default is ``MEAN``.)RAW"
+    ``MEDIAN`` and ``TRIMMED_MEAN``.  The default is ``MEAN``.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -315,7 +326,8 @@ Returns
 -------
 gamma : float
     Fraction trimmed from each side by the trimmed mean, in
-    :math:`[0, 0.5)`.)RAW"
+    :math:`[0, 0.5)`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -326,7 +338,8 @@ Parameters
 ----------
 gamma : float
     Fraction trimmed from each side by the trimmed mean, in
-    :math:`[0, 0.5)`.  Default is 0.1.)RAW"
+    :math:`[0, 0.5)`.  Default is 0.1.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -336,7 +349,10 @@ R"RAW(Accessor to the minimum block count.
 Returns
 -------
 minimumBlockCount : int
-    Minimum number of blocks used by the policy sizing rules.)RAW"
+    Minimum number of blocks used by the ``MEMORY_BOUND``,
+    ``BIAS_TARGET`` and ``ADAPTIVE`` policy sizing rules.  The
+    ``FIXED``, ``SQRT_N`` and ``ASYMPTOTIC`` policies ignore it.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -346,8 +362,11 @@ R"RAW(Accessor to the minimum block count.
 Parameters
 ----------
 minimumBlockCount : int
-    Minimum number of blocks used by the policy sizing rules.  It must
-    be at least 2.  Default is 30.)RAW"
+    Minimum number of blocks used by the ``MEMORY_BOUND``,
+    ``BIAS_TARGET`` and ``ADAPTIVE`` policy sizing rules.  The
+    ``FIXED``, ``SQRT_N`` and ``ASYMPTOTIC`` policies ignore it.  It
+    must be at least 2.  Default is 30.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -357,7 +376,8 @@ R"RAW(Accessor to the memory budget.
 Returns
 -------
 memoryBudget : int
-    Maximum number of scalar values used by the ``MEMORY_BOUND`` policy.)RAW"
+    Maximum number of scalar values used by the ``MEMORY_BOUND`` policy.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -368,7 +388,8 @@ Parameters
 ----------
 memoryBudget : int
     Maximum number of scalar values, including the block buffer and
-    the block quantiles.  It must be positive.)RAW"
+    the block quantiles.  It must be positive.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -379,7 +400,8 @@ Returns
 -------
 tolerance : float
     Maximum ratio of the estimated bias to the standard error used by
-    the ``BIAS_TARGET`` policy.)RAW"
+    the ``BIAS_TARGET`` policy.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -390,7 +412,8 @@ Parameters
 ----------
 tolerance : float
     Maximum ratio of the estimated bias to the standard error, finite
-    and positive.  Default is 0.1.)RAW"
+    and positive.  Default is 0.1.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -401,7 +424,8 @@ Returns
 -------
 bootstrapSize : int
     Number of bootstrap resamples.  A zero value disables the bootstrap
-    interval.)RAW"
+    interval.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -412,4 +436,5 @@ Parameters
 ----------
 bootstrapSize : int
     Number of bootstrap resamples.  Use 0 to disable the bootstrap
-    interval, or at least 2 to enable it.)RAW"
+    interval, or at least 2 to enable it.
+)RAW"

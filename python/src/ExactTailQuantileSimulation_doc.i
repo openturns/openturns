@@ -99,7 +99,8 @@ R"RAW(Accessor to the design of experiments.
 Returns
 -------
 experiment : :class:`~openturns.WeightedExperiment`
-    Independent design of experiments with uniform weights.)RAW"
+    Independent design of experiments with uniform weights.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -111,7 +112,8 @@ Parameters
 experiment : :class:`~openturns.WeightedExperiment`
     Independent design of experiments with uniform weights.  Its
     distribution must match the input distribution of the output random
-    vector.)RAW"
+    vector.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -122,7 +124,8 @@ Returns
 -------
 hasExperiment : bool
     Whether an experiment was provided.  When ``False``, a Monte Carlo
-    experiment is built from the output distribution at run time.)RAW"
+    experiment is built from the output distribution at run time.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -132,7 +135,8 @@ R"RAW(Accessor to the sample size.
 Returns
 -------
 sampleSize : int
-    Total number of model evaluations.)RAW"
+    Total number of model evaluations.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -143,4 +147,5 @@ Parameters
 ----------
 sampleSize : int
     Total number of model evaluations.  It must be positive and large
-    enough for the exact binomial ranks to exist.)RAW"
+    enough for the exact binomial ranks to exist.
+)RAW"

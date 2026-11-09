@@ -9,6 +9,10 @@ This class gives access to a quantile simulation result: the estimated
 quantile, its standard error, the confidence interval, the estimator and
 coverage conventions, and the run diagnostics.
 
+See also
+--------
+QuantileSimulationResultImplementation, QuantileSimulationAlgorithm, BlockQuantileSimulation, ExactTailQuantileSimulation
+
 Notes
 -----
 The confidence interval is the one returned by the algorithm.  Its
@@ -34,9 +38,6 @@ The following :class:`~openturns.ResourceMap` keys are used:
 - ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``, default: ``0``): default sample size, where ``0`` means that the sample size is not set.
 - ``QuantileSimulation-DefaultTrimmingFraction`` (``Scalar``, default: ``0.1``): default trimming fraction of the ``TRIMMED_MEAN`` combination rule.
 
-See also
---------
-QuantileSimulationResultImplementation, QuantileSimulationAlgorithm, BlockQuantileSimulation, ExactTailQuantileSimulation
 
 Examples
 --------
