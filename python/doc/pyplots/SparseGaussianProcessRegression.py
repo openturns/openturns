@@ -1,3 +1,5 @@
+import math
+
 import openturns as ot
 import openturns.viewer as otv
 from openturns.experimental import SparseGaussianProcessRegression
@@ -22,6 +24,18 @@ curveExact = f.draw(0.5, 8.5, 200).getDrawable(0)
 curveExact.setLineStyle("dashed")
 curveExact.setLineWidth(1.5)
 graph.add(curveExact)
+# Conditional confidence interval
+newSampleX = ot.Sample([[0.5 + 8.0 * i / 199.0] for i in range(200)])
+conditionalVariance = result.getConditionalVariance(newSampleX)
+conditionalSigma = ot.Sample([[math.sqrt(max(v, 0.0))] for v in conditionalVariance])
+alpha = 0.1
+bilateralCI = ot.Normal().computeBilateralConfidenceInterval(1.0 - alpha)
+newSampleY = metaModel(newSampleX)
+lowerCI = newSampleY + conditionalSigma * bilateralCI.getLowerBound()[0]
+upperCI = newSampleY + conditionalSigma * bilateralCI.getUpperBound()[0]
+boundsPoly = ot.Polygon.FillBetween(newSampleX, lowerCI, upperCI)
+boundsPoly.setColor("green")
+graph.add(boundsPoly)
 cloud = ot.Cloud(sampleX, sampleY)
 cloud.setPointStyle("circle")
 cloud.setLegend("sample")
@@ -31,5 +45,5 @@ cloudInd.setColor("orange")
 cloudInd.setPointStyle("square")
 cloudInd.setLegend("inducing points")
 graph.add(cloudInd)
-graph.setLegends(["sparse GP metamodel", "exact model", "sample", "inducing points"])
+graph.setLegends(["sparse GP metamodel", "exact model", "%d%% C.I." % ((1.0 - alpha) * 100), "sample", "inducing points"])
 otv.View(graph, figure_kw={"figsize": (8, 4)})
