@@ -136,6 +136,24 @@ Matrix ParametricGradient::gradient(const OT::Point & point) const
   return result;
 }
 
+/* Parameters value accessor: the gradient shares the parameters of the
+ * underlying evaluation, so they are read and written through it */
+Point ParametricGradient::getParameter() const
+{
+  return p_evaluation_->getParameter();
+}
+
+void ParametricGradient::setParameter(const Point & parameter)
+{
+  // Copy-on-write: the wrapped evaluation may be shared (e.g. with the
+  // function this gradient differentiates), so clone it before mutating
+  // to avoid mutating shared state
+  Pointer<ParametricEvaluation> p_newEvaluation(p_evaluation_->clone());
+  p_newEvaluation->setParameter(parameter);
+  p_evaluation_ = p_newEvaluation;
+  GradientImplementation::setParameter(parameter);
+}
+
 /* Dimension accessors */
 UnsignedInteger ParametricGradient::getInputDimension() const
 {

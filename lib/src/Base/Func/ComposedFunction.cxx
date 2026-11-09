@@ -192,6 +192,52 @@ Matrix ComposedFunction::parameterGradient(const Point & inP) const
   return grad;
 }
 
+/* Parameters value accessor */
+void ComposedFunction::setParameter(const Point & parameter)
+{
+  const UnsignedInteger rightDimension = p_rightFunction_->getParameterDimension();
+  const UnsignedInteger leftDimension = p_leftFunction_->getParameterDimension();
+  if (parameter.getDimension() != rightDimension + leftDimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << rightDimension + leftDimension << " provided " << parameter.getDimension();
+  Point rightParameter(rightDimension);
+  std::copy(parameter.begin(), parameter.begin() + rightDimension, rightParameter.begin());
+  Point leftParameter(leftDimension);
+  std::copy(parameter.begin() + rightDimension, parameter.end(), leftParameter.begin());
+  // Stage the updates on copies: Function handles detach on write (copy-on-write),
+  // so a rejecting component leaves *this -- and the caller's functions -- unchanged
+  Function newRight(p_rightFunction_);
+  Function newLeft(p_leftFunction_);
+  newRight.setParameter(rightParameter);
+  newLeft.setParameter(leftParameter);
+  p_rightFunction_ = newRight.getImplementation();
+  p_leftFunction_ = newLeft.getImplementation();
+  FunctionImplementation::setParameter(parameter);
+}
+
+/* Parameters description accessor */
+void ComposedFunction::setParameterDescription(const Description & description)
+{
+  const UnsignedInteger rightDimension = p_rightFunction_->getParameterDimension();
+  const UnsignedInteger leftDimension = p_leftFunction_->getParameterDimension();
+  const UnsignedInteger totalDimension = rightDimension + leftDimension;
+  if ((description.getSize() != 0) && (description.getSize() != totalDimension)) throw InvalidArgumentException(HERE) << "Required parameter description of dimension 0 or " << totalDimension << " provided " << description.getSize();
+  if (description.getSize() == totalDimension)
+  {
+    Description rightDescription(rightDimension);
+    std::copy(description.begin(), description.begin() + rightDimension, rightDescription.begin());
+    Description leftDescription(leftDimension);
+    std::copy(description.begin() + rightDimension, description.end(), leftDescription.begin());
+    // Stage the updates on copies (see setParameter): a rejecting component
+    // must leave *this -- and the callers functions -- unchanged
+    Function newRight(p_rightFunction_);
+    Function newLeft(p_leftFunction_);
+    newRight.setParameterDescription(rightDescription);
+    newLeft.setParameterDescription(leftDescription);
+    p_rightFunction_ = newRight.getImplementation();
+    p_leftFunction_ = newLeft.getImplementation();
+  }
+  FunctionImplementation::setParameterDescription(description);
+}
+
 /* Method save() stores the object through the StorageManager */
 void ComposedFunction::save(Advocate & adv) const
 {

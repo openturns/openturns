@@ -133,6 +133,20 @@ Evaluation FiniteDifferenceGradient::getEvaluation() const
   return evaluation_;
 }
 
+/* Parameters value accessor: the gradient shares the parameters of the
+ * underlying evaluation, so they are read and written through it */
+Point FiniteDifferenceGradient::getParameter() const
+{
+  return evaluation_.getParameter();
+}
+
+void FiniteDifferenceGradient::setParameter(const Point & parameter)
+{
+  // The evaluation handle detaches on write (copy-on-write) if shared
+  evaluation_.setParameter(parameter);
+  GradientImplementation::setParameter(parameter);
+}
+
 /* Accessor for input point dimension */
 UnsignedInteger FiniteDifferenceGradient::getInputDimension() const
 {

@@ -71,6 +71,10 @@ public:
   /** Accessor for output point dimension */
   UnsignedInteger getOutputDimension() const override;
 
+  /** Parameters value accessor */
+  Point getParameter() const override;
+  void setParameter(const Point & parameter) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

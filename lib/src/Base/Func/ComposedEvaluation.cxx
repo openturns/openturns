@@ -152,16 +152,22 @@ Description ComposedEvaluation::getParameterDescription() const
 
 void ComposedEvaluation::setParameterDescription(const Description & description)
 {
-  Description rightDescription(rightFunction_.getParameterDescription());
-  const UnsignedInteger rightDimension = rightDescription.getSize();
-  Description leftDescription(leftFunction_.getParameterDescription());
-  const UnsignedInteger leftDimension = leftDescription.getSize();
-  if (description.getSize() != rightDimension + leftDimension)
-    throw InvalidArgumentException(HERE) << "Required parameter description of dimension " << rightDimension + leftDimension << " provided " << description.getSize();
-  std::copy(description.begin(), description.begin() + rightDimension, rightDescription.begin());
-  rightFunction_.setParameterDescription(rightDescription);
-  std::copy(description.begin() + rightDimension, description.begin() + rightDimension + leftDimension, leftDescription.begin());
-  leftFunction_.setParameterDescription(leftDescription);
+  // Split on the parameter dimensions, as a component may report an empty
+  // description while holding parameters (see ComposedFunction)
+  const UnsignedInteger rightDimension = rightFunction_.getParameterDimension();
+  const UnsignedInteger leftDimension = leftFunction_.getParameterDimension();
+  const UnsignedInteger totalDimension = rightDimension + leftDimension;
+  if ((description.getSize() != 0) && (description.getSize() != totalDimension))
+    throw InvalidArgumentException(HERE) << "Required parameter description of dimension 0 or " << totalDimension << " provided " << description.getSize();
+  if (description.getSize() == totalDimension)
+  {
+    Description rightDescription(rightDimension);
+    std::copy(description.begin(), description.begin() + rightDimension, rightDescription.begin());
+    rightFunction_.setParameterDescription(rightDescription);
+    Description leftDescription(leftDimension);
+    std::copy(description.begin() + rightDimension, description.end(), leftDescription.begin());
+    leftFunction_.setParameterDescription(leftDescription);
+  }
 }
 
 /* Accessor for input point dimension */

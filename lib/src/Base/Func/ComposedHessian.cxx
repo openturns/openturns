@@ -131,6 +131,46 @@ UnsignedInteger ComposedHessian::getOutputDimension() const
   return leftHessian_.getOutputDimension();
 }
 
+/* Parameters value accessor */
+Point ComposedHessian::getParameter() const
+{
+  Point parameter(rightFunction_.getParameter());
+  parameter.add(leftHessian_.getParameter());
+  return parameter;
+}
+
+void ComposedHessian::setParameter(const Point & parameter)
+{
+  // Same layout and staging policy as ComposedGradient::setParameter: the
+  // slices follow the function parameter layout [right, left], the total is
+  // validated upfront against the components own dimensions and updates are
+  // staged on copies so a rejecting component leaves *this unchanged.
+  const UnsignedInteger rightDimension = rightFunction_.getParameter().getDimension();
+  const UnsignedInteger leftDimension = leftHessian_.getParameter().getDimension();
+  if (parameter.getDimension() != rightDimension + leftDimension) throw InvalidArgumentException(HERE) << "Required parameter of dimension " << rightDimension + leftDimension << " provided " << parameter.getDimension();
+  Point rightParameter(rightDimension);
+  std::copy(parameter.begin(), parameter.begin() + rightDimension, rightParameter.begin());
+  Point leftParameter(leftDimension);
+  std::copy(parameter.begin() + rightDimension, parameter.end(), leftParameter.begin());
+  // Stage the updates on copies so a rejecting component leaves *this unchanged
+  Evaluation newRightFunction(rightFunction_);
+  Gradient newRightGradient(rightGradient_);
+  Hessian newRightHessian(rightHessian_);
+  Gradient newLeftGradient(leftGradient_);
+  Hessian newLeftHessian(leftHessian_);
+  newRightFunction.setParameter(rightParameter);
+  newRightGradient.setParameter(rightParameter);
+  newRightHessian.setParameter(rightParameter);
+  newLeftGradient.setParameter(leftParameter);
+  newLeftHessian.setParameter(leftParameter);
+  rightFunction_ = newRightFunction;
+  rightGradient_ = newRightGradient;
+  rightHessian_ = newRightHessian;
+  leftGradient_ = newLeftGradient;
+  leftHessian_ = newLeftHessian;
+  HessianImplementation::setParameter(parameter);
+}
+
 /* Method save() stores the object through the StorageManager */
 void ComposedHessian::save(Advocate & adv) const
 {

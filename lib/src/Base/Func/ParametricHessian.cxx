@@ -106,6 +106,22 @@ Evaluation ParametricHessian::getEvaluation() const
   return p_evaluation_->clone();
 }
 
+/* Parameters value accessor: the hessian shares the parameters of the
+ * underlying evaluation, so they are read and written through it */
+Point ParametricHessian::getParameter() const
+{
+  return p_evaluation_->getParameter();
+}
+
+void ParametricHessian::setParameter(const Point & parameter)
+{
+  // Copy-on-write: see ParametricGradient::setParameter
+  Pointer<ParametricEvaluation> p_newEvaluation(p_evaluation_->clone());
+  p_newEvaluation->setParameter(parameter);
+  p_evaluation_ = p_newEvaluation;
+  HessianImplementation::setParameter(parameter);
+}
+
 /* Dimension accessors */
 UnsignedInteger ParametricHessian::getInputDimension() const
 {

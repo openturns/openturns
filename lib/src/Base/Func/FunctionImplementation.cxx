@@ -313,9 +313,11 @@ Point FunctionImplementation::getParameter() const
 
 void FunctionImplementation::setParameter(const Point & parameter)
 {
-  evaluation_.getImplementation()->setParameter(parameter);
-  gradient_.getImplementation()->setParameter(parameter);
-  hessian_.getImplementation()->setParameter(parameter);
+  // Use the handle-level setters (with copy-on-write) so a shared
+  // evaluation/gradient/hessian is detached instead of being mutated in place
+  evaluation_.setParameter(parameter);
+  gradient_.setParameter(parameter);
+  hessian_.setParameter(parameter);
 }
 
 /* Parameters description accessor */
