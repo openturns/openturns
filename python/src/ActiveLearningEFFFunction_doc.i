@@ -19,7 +19,7 @@ Consider :math:`\inputRV` a sample of dimension :math:`\inputDim` that is return
    \end{align*}
 
 with  :math:`\epsilon(\vect{x}) = 2 \widehat{\sigma}(\vect{x})`, :math:`\widehat{\model^{0}}(\vect{x}) = \frac{T-\widehat{\model}(\vect{x})}{\widehat{\sigma}(\vect{x})}`,
-    :math:`\widehat{\model^{+}}(\vect{x})=\frac{T+\epsilon(\vect{x})-\widehat{\model}(\vect{x})}{\widehat{\sigma}(\vect{x})}` and :math:`\widehat{\model^{-}}(\vect{x})=\frac{T-\epsilon(\vect{x})-\widehat{\model}(\vect{x})}{\widehat{\sigma}(\vect{x})}`. :math:`\Phi(\cdot)` and :math:`\phi(\cdot)` are respectively the CDF and PDF of the Normal distribution.
+    :math:`\widehat{\model^{+}}(\vect{x})=\frac{T+\epsilon(\vect{x})-\widehat{\model}(\vect{x})}{\widehat{\sigma}(\vect{x})}` and :math:`\widehat{\model^{-}}(\vect{x})=\frac{T-\epsilon(\vect{x})-\widehat{\model}(\vect{x})}{\widehat{\sigma}(\vect{x})}`. :math:`\Phi(\cdot)` and :math:`\phi(\cdot)` are respectively the CDF and PDF of the standard Normal distribution.
     See [bichon2008]_.
 
 Parameters

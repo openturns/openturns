@@ -145,17 +145,17 @@ fitter = ot.GaussianProcessFitter(input_DoE, output_DoE, covariance_model, basis
 #
 # .. math::
 #
-#    \mathrm{LIF}(x) = \Phi(-U(x)) \, f_X(x),
+#    \mathrm{LIF}(\vect{x}) = \Phi(-U(\vect{x})) \, f_X(\vect{x}),
 #    \qquad
-#    U(x) = \frac{|\mu(x) - t|}{\sigma(x)},
+#    U(\vect{x}) = \frac{|\widehat{\model}(\vect{x}) - T|}{\hat{\sigma}(\vect{x})},
 #
-# where :math:`\mu(x)` and :math:`\sigma(x)` are the conditional mean and
-# standard deviation of the Gaussian process, :math:`t` is the event threshold
+# where :math:`\widehat{\model}(\vect{x})` and :math:`\hat{\sigma}(\vect{x})` are the conditional mean and
+# standard deviation of the Gaussian process, :math:`T` is the event threshold
 # and :math:`f_X` is the joint probability density function of the inputs.
 #
-# The first factor :math:`\Phi(-U(x))` is the probability that the Gaussian
+# The first factor :math:`\Phi(-U(\vect{x}))` is the probability that the Gaussian
 # process predicts the wrong side of the threshold. The second factor
-# :math:`f_X(x)` favors points that are likely to be sampled. The point that
+# :math:`f_X(\vect{x})` favors points that are likely to be sampled. The point that
 # maximizes the LIF is added to the design of experiments.
 #
 # The class below implements this criterion by subclassing
