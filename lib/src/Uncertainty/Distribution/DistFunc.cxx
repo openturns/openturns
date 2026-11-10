@@ -1374,14 +1374,16 @@ Point DistFunc::qNormal(const Point & p,
   {
     prob = p[i];
     if ((prob < 0.0) || (prob > 1.0)) throw InvalidArgumentException(HERE) << "Error: expected a probability level in [0, 1] for qNormal, got p[" << i << "]=" << prob;
+    // Extreme sentinels match the scalar overload so the values round-trip
+    // through pNormal(): qNormal(0.0) maps back to 0 and qNormal(1.0) to 1
     if (prob == 0.0)
     {
-      result[i] = (tail ? 8.125890664701906 : -8.125890664701906);
+      result[i] = (tail ? 8.125890664701906 : -37.5193793471445);
       continue;
     }
     if (prob == 1.0)
     {
-      result[i] = (tail ? -8.125890664701906 : 8.125890664701906);
+      result[i] = (tail ? -37.5193793471445 : 8.125890664701906);
       continue;
     }
     // Left tail

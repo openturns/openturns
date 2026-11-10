@@ -387,7 +387,9 @@ nc_bug1 = ot.NormalCopula(R_bug1)
 dist_bug1 = ot.JointDistribution([beta_m1, normal_m1], nc_bug1)
 x_bug1 = [0.0, 0.0]
 seq_pdf_bug1 = dist_bug1.computeSequentialConditionalPDF(x_bug1)
-ott.assert_almost_equal(seq_pdf_bug1, [0, 7.65529e-06])
+# the second value depends on the qNormal sentinel for p=0, consistently
+# with the scalar overload (see #3426)
+ott.assert_almost_equal(seq_pdf_bug1, [0, 5.89357e-103])
 
 # Fix #3255: getIsoProbabilisticTransformation segfaults with StudentCopula
 d2 = ot.JointDistribution(
