@@ -153,6 +153,30 @@ timeoutAlgo.setMaximumTimeDuration(0.2)
 timeoutAlgo.run()
 assert timeoutAlgo.getResult().getStatus() == ot.OptimizationResult.TIMEOUT
 
+
+# a user stop concurrent with the time limit is reported as INTERRUPTION,
+# not TIMEOUT: the first slow evaluation already crosses the tiny budget
+# while the callback requests the stop
+def stopImmediately():
+    return True
+
+
+crossAlgo = ot.CMinpack(ot.LeastSquaresProblem(slowFunction))
+crossAlgo.setStartingPoint([1.0] * n)
+crossAlgo.setMaximumCallsNumber(10000)
+crossAlgo.setMaximumTimeDuration(0.01)
+crossAlgo.setStopCallback(stopImmediately)
+crossAlgo.run()
+assert crossAlgo.getResult().getStatus() == ot.OptimizationResult.INTERRUPTION
+
+# call budget and time limit both reached: timeout is reported
+bothAlgo = ot.CMinpack(ot.LeastSquaresProblem(slowFunction))
+bothAlgo.setStartingPoint([1.0] * n)
+bothAlgo.setMaximumCallsNumber(2)
+bothAlgo.setMaximumTimeDuration(0.001)
+bothAlgo.run()
+assert bothAlgo.getResult().getStatus() == ot.OptimizationResult.TIMEOUT
+
 # persistence
 study = ot.Study()
 study.setStorageManager(ot.XMLStorageManager("cminpack_std.xml"))
