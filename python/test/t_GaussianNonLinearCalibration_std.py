@@ -163,6 +163,15 @@ with ott.assert_raises(TypeError):
     algo2.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
 print("wrong bounds dimension raises")
 
+# setOptimizationAlgorithm with incompatible bounds leaves the object unchanged
+wrongProblem = ot.OptimizationProblem(ot.SymbolicFunction(["a", "b"], ["a^2+b^2"]))
+wrongProblem.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
+boundsBefore = algo2.getBounds()
+with ott.assert_raises(TypeError):
+    algo2.setOptimizationAlgorithm(ot.TNC(wrongProblem))
+ott.assert_almost_equal(algo2.getBounds().getLowerBound(), boundsBefore.getLowerBound())
+ott.assert_almost_equal(algo2.getBounds().getUpperBound(), boundsBefore.getUpperBound())
+
 # save/load preserves bounds
 study = ot.Study()
 fileName = "testBoundsGaussianCalibration.xml"
