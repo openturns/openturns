@@ -123,6 +123,7 @@
  * OrthogonalBasis now has a value-based equality operator that dispatches to the concrete factory state
  * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
  * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
+ * Added GaussianNonLinearCalibration.getBounds/setBounds and NonLinearLeastSquaresCalibration.getBounds/setBounds: optional parameter bounds constraining the calibration optimization
  * Curve.setLabels/getLabels
  * PointToFieldFunction.getMarginal
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra")

@@ -148,6 +148,37 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::GaussianNonLinearCalibration::getBounds
+"Accessor to the parameter bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the optimization.
+    An empty interval means no bounds are applied."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GaussianNonLinearCalibration::setBounds
+"Accessor to the parameter bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the optimization.
+    An empty interval means no bounds are applied.
+    A non-empty interval must have the calibration parameter dimension.
+
+Notes
+-----
+:meth:`~openturns.GaussianNonLinearCalibration.setOptimizationAlgorithm`
+adopts the bounds carried by the given algorithm problem when it has some
+and keeps the current bounds otherwise. Call this method after
+:meth:`~openturns.GaussianNonLinearCalibration.setOptimizationAlgorithm`
+to enforce specific bounds."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::GaussianNonLinearCalibration::getBootstrapSize
 "Accessor to the bootstrap size used to sample the posterior distribution.
 
