@@ -961,7 +961,12 @@ void EllipticalDistribution::load(Advocate & adv)
       cholesky_ = TriangularMatrix(cholMat.getImplementation(), true);
     }
   }
+  // Archives written before update() was called in the default constructor
+  // (or before cholesky_ existed) may carry an empty cache: rebuild it so
+  // getCholesky() stays consistent with getInverseCholesky()
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );
+  if (cholesky_.getDimension() != sigma_.getDimension())
+    update();
 }
 
 END_NAMESPACE_OPENTURNS
