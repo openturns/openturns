@@ -124,6 +124,8 @@
  * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
  * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
  * Added GaussianNonLinearCalibration.getBounds/setBounds and NonLinearLeastSquaresCalibration.getBounds/setBounds: optional parameter bounds constraining the calibration optimization
+ * Added getParameter/setParameter (and parameterGradient) to ComposedFunction, MarginalTransformationEvaluation, RosenblattEvaluation/InverseRosenblattEvaluation and NatafEllipticalDistributionEvaluation/InverseNatafEllipticalDistributionEvaluation: transformations expose distribution parameters with (mu, sigma) layout for elliptical cases, direct correlated setParameter without recorded scales throws
+ * JointDistribution iso-probabilistic transformations now build the marginal parameter block from marginal accessors (robust to FiniteDiscrete) while keeping the core dependence parameters
  * Curve.setLabels/getLabels
  * PointToFieldFunction.getMarginal
  * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra")
