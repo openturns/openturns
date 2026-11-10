@@ -208,9 +208,32 @@ void ComposedFunction::setParameter(const Point & parameter)
   Function newLeft(p_leftFunction_);
   newRight.setParameter(rightParameter);
   newLeft.setParameter(leftParameter);
+  // Snapshot the composed state so a failure in the base-class propagation
+  // (evaluation_, gradient_, hessian_) can be rolled back atomically
+  const Implementation oldRight = p_rightFunction_;
+  const Implementation oldLeft = p_leftFunction_;
+  const Evaluation oldEvaluation(getEvaluation());
+  const Gradient oldGradient(getGradient());
+  const Hessian oldHessian(getHessian());
+  const Bool oldGradientFlag = getUseDefaultGradientImplementation();
+  const Bool oldHessianFlag = getUseDefaultHessianImplementation();
   p_rightFunction_ = newRight.getImplementation();
   p_leftFunction_ = newLeft.getImplementation();
-  FunctionImplementation::setParameter(parameter);
+  try
+  {
+    FunctionImplementation::setParameter(parameter);
+  }
+  catch (...)
+  {
+    p_rightFunction_ = oldRight;
+    p_leftFunction_ = oldLeft;
+    setEvaluation(oldEvaluation);
+    setGradient(oldGradient);
+    setUseDefaultGradientImplementation(oldGradientFlag);
+    setHessian(oldHessian);
+    setUseDefaultHessianImplementation(oldHessianFlag);
+    throw;
+  }
 }
 
 /* Parameters description accessor */
