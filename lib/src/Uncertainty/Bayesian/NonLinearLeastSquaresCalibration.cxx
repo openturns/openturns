@@ -385,12 +385,18 @@ OptimizationAlgorithm NonLinearLeastSquaresCalibration::getOptimizationAlgorithm
 
 void NonLinearLeastSquaresCalibration::setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm)
 {
-  algorithm_ = algorithm;
-  // Adopt the bounds carried by the given algorithm when it has some,
-  // otherwise keep the current bounds. Call setBounds() afterwards to
-  // enforce specific bounds.
+  // Validate the bounds carried by the given algorithm before replacing
+  // algorithm_, so a rejecting dimension leaves *this unchanged
   if (algorithm.getProblem().hasBounds())
-    setBounds(algorithm.getProblem().getBounds());
+  {
+    const Interval bounds(algorithm.getProblem().getBounds());
+    setBounds(bounds);
+    algorithm_ = algorithm;
+  }
+  else
+    algorithm_ = algorithm;
+  // Otherwise keep the current bounds. Call setBounds() afterwards to
+  // enforce specific bounds.
 }
 
 /* Bounds accessor */
