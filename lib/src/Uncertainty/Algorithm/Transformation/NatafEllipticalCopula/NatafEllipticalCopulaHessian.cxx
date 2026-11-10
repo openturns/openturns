@@ -100,12 +100,15 @@ String NatafEllipticalCopulaHessian::__repr__() const
  */
 SymmetricTensor NatafEllipticalCopulaHessian::hessian(const Point & inP) const
 {
-  UnsignedInteger dimension = getInputDimension();
+  const UnsignedInteger dimension = getInputDimension();
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   SymmetricTensor result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    Point q(standardMarginal.computeQuantile(inP[i]));
+    const Scalar x = inP[i];
+    if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafEllipticalCopulaHessian if all the components are not in [0, 1], here in=" << inP;
+    Point q(standardMarginal.computeQuantile(x));
     Scalar factor = 1.0 / standardMarginal.computePDF(q);
     Scalar quantileSecondDerivative = -standardMarginal.computeDDF(q)[0] * factor * factor * factor;
     // inverseCholesky_ is lower triangular

@@ -99,7 +99,8 @@ String InverseNatafEllipticalCopulaHessian::__repr__() const
  */
 SymmetricTensor InverseNatafEllipticalCopulaHessian::hessian(const Point & inP) const
 {
-  UnsignedInteger dimension = getInputDimension();
+  const UnsignedInteger dimension = getInputDimension();
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   // First, correlate the components
   Point point(cholesky_ * inP);
   SymmetricTensor result(dimension, dimension);

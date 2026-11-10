@@ -97,6 +97,7 @@ String NatafIndependentCopulaEvaluation::__str__(const String & ) const
  */
 Point NatafIndependentCopulaEvaluation::operator () (const Point & inP) const
 {
+  if (inP.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << inP.getDimension();
   Point result(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
