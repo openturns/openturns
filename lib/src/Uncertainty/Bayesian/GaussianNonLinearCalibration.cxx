@@ -393,6 +393,12 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, parameterMean, parameterInverseCholesky, errorInverseCholesky);
   const Function residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
   LeastSquaresProblem problem(residualFunction);
+  if (bounds_.getDimension() != 0)
+  {
+    if (bounds_.getDimension() != residualFunction.getInputDimension())
+      throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << residualFunction.getInputDimension() << ", got dimension=" << bounds_.getDimension();
+    problem.setBounds(bounds_);
+  }
   algorithm_.setProblem(problem);
   try
   {
@@ -446,6 +452,26 @@ OptimizationAlgorithm GaussianNonLinearCalibration::getOptimizationAlgorithm() c
 void GaussianNonLinearCalibration::setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm)
 {
   algorithm_ = algorithm;
+  // Adopt the bounds carried by the given algorithm when it has some,
+  // otherwise keep the current bounds. Call setBounds() afterwards to
+  // enforce specific bounds.
+  if (algorithm.getProblem().hasBounds())
+    setBounds(algorithm.getProblem().getBounds());
+}
+
+/* Bounds accessor */
+Interval GaussianNonLinearCalibration::getBounds() const
+{
+  return bounds_;
+}
+
+void GaussianNonLinearCalibration::setBounds(const Interval & bounds)
+{
+  // An empty interval means no bounds; otherwise the dimension must match
+  // the calibration parameter dimension when it is already known.
+  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
+  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension)) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
+  bounds_ = bounds;
 }
 
 /* Algorithm accessor */
@@ -478,6 +504,7 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
 {
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
+  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
   adv.saveAttribute("errorCovariance_", errorCovariance_);
   adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
@@ -488,6 +515,8 @@ void GaussianNonLinearCalibration::load(Advocate & adv)
 {
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
+  if (adv.hasAttribute("bounds_"))
+    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
   if (adv.hasAttribute("errorCovariance_"))
   {

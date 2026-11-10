@@ -2,6 +2,7 @@
 
 import openturns as ot
 import openturns.testing as ott
+import os
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(2)
@@ -160,3 +161,52 @@ flatSigma2 = sum(v * v for v in flatResiduals) / (
 )
 ott.assert_almost_equal(flatCovariance[0, 0] * flatHessian, flatSigma2, 1e-6, 1e-6)
 ot.ResourceMap.Reset()
+
+# test bounds
+algo = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+algo.setBootstrapSize(0)
+bounds = ot.Interval([0.0] * 3, [2.0, 2.0, 1.0])
+algo.setBounds(bounds)
+ott.assert_almost_equal(algo.getBounds().getLowerBound(), bounds.getLowerBound())
+ott.assert_almost_equal(algo.getBounds().getUpperBound(), bounds.getUpperBound())
+algo.setOptimizationAlgorithm(ot.TNC())
+algo.run()
+boundedMAP = algo.getResult().getParameterMAP()
+print("result (bounded)=", boundedMAP)
+assert bounds.contains(boundedMAP), "MAP should respect bounds"
+ott.assert_almost_equal(boundedMAP[0], 2.0, 1e-1, 1e-2)
+
+# setOptimizationAlgorithm preserves bounds carried by the solver problem
+boundedProblem = ot.OptimizationProblem(
+    ot.SymbolicFunction(["a", "b", "c"], ["a^2+b^2+c^2"]),
+    ot.Function(),
+    ot.Function(),
+    bounds,
+)
+algo2 = ot.NonLinearLeastSquaresCalibration(model, x, y, candidate)
+algo2.setOptimizationAlgorithm(ot.TNC(boundedProblem))
+print("bounds (from algo)=", algo2.getBounds())
+ott.assert_almost_equal(algo2.getBounds().getLowerBound(), bounds.getLowerBound())
+ott.assert_almost_equal(algo2.getBounds().getUpperBound(), bounds.getUpperBound())
+
+# wrong bounds dimension raises on setBounds
+algo2.setBootstrapSize(0)
+with ott.assert_raises(TypeError):
+    algo2.setBounds(ot.Interval([0.0] * 2, [1.0] * 2))
+print("wrong bounds dimension raises")
+
+# save/load preserves bounds
+study = ot.Study()
+fileName = "testBoundsNLLSCalibration.xml"
+study.setStorageManager(ot.XMLStorageManager(fileName))
+study.add("algo", algo)
+study.save()
+loadedAlgo = ot.NonLinearLeastSquaresCalibration()
+study2 = ot.Study()
+study2.setStorageManager(ot.XMLStorageManager(fileName))
+study2.load()
+study2.fillObject("algo", loadedAlgo)
+print("bounds (loaded)=", loadedAlgo.getBounds())
+ott.assert_almost_equal(loadedAlgo.getBounds().getLowerBound(), bounds.getLowerBound())
+ott.assert_almost_equal(loadedAlgo.getBounds().getUpperBound(), bounds.getUpperBound())
+os.remove(fileName)
