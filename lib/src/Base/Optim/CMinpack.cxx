@@ -195,22 +195,32 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     }
   }
 
+  // User stop has priority over the time and call budgets: when the
+  // callback fires on an evaluation that also crosses a budget, the
+  // interruption must still be reported as INTERRUPTION, not TIMEOUT
+  if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
+  {
+    LOGINFO("CMinpack was stopped by user");
+    algorithm->stopReason_ = 3;
+    return -1;
+  }
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
   if ((algorithm->getMaximumTimeDuration() > 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
+  {
+    algorithm->stopReason_ = 1;
     return -1;
+  }
   if ((algorithm->getProblem().getResidualFunction().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_) >= algorithm->getMaximumCallsNumber())
+  {
+    algorithm->stopReason_ = 2;
     return -1;
+  }
 
   // callbacks
   if (algorithm->progressCallback_.first)
   {
     algorithm->progressCallback_.first((100.0 * (algorithm->getProblem().getResidualFunction().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_)) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
-  }
-  if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
-  {
-    LOGINFO("CMinpack was stopped by user");
-    return -1;
   }
   return 0;
 }
@@ -393,6 +403,7 @@ void CMinpack::run()
     InverseTransform(x, n, bounds);
   }
   t0_ = std::chrono::steady_clock::now();
+  stopReason_ = 0;
 
   info = lmder(&CMinpack::ComputeObjectiveJacobian, this, m, n, &x[0], &fvec[0], &fjac[0], ldfjac, ftol, xtol, gtol,
                maxfev, &diag[0], mode, factor, nprint, &nfev, &njev,
@@ -406,21 +417,24 @@ void CMinpack::run()
   switch (info)
   {
     case -1:
-      // the residual callback asked cminpack to stop: discriminate a
-      // timeout or an exhausted evaluation budget from a user interruption
-      if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      // the residual callback asked cminpack to stop: use the reason
+      // recorded in ComputeObjectiveJacobian so a user stop is not
+      // misreported as TIMEOUT when the last evaluation crosses the
+      // time limit, and a user stop concurrent with an exhausted budget
+      // is not hidden either
+      if (stopReason_ == 1)
       {
         result_.setStatus(OptimizationResult::TIMEOUT);
         result_.setStatusMessage(OSS() << "CMinpack optimization timeout after " << timeDuration << "s");
       }
-      else if ((getProblem().getResidualFunction().getEvaluationCallsNumber() - initialEvaluationNumber_) >= getMaximumCallsNumber())
+      else if (stopReason_ == 2)
       {
         result_.setStatus(OptimizationResult::MAXIMUMCALLS);
         result_.setStatusMessage("maximum function evaluations exceeded");
       }
       else
       {
-        // user stop
+        // user stop (stopReason_ == 3), or unknown fallback
         result_.setStatus(OptimizationResult::INTERRUPTION);
         result_.setStatusMessage("user stop");
       }

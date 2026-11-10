@@ -80,6 +80,10 @@ private:
   UnsignedInteger gradientCallsNumber_ = 0;
   UnsignedInteger initialEvaluationNumber_ = 0;
 
+  // reason of the last ComputeObjectiveJacobian interruption request:
+  // 0 none, 1 time limit, 2 evaluation budget, 3 user stop callback
+  int stopReason_ = 0;
+
   std::chrono::steady_clock::time_point t0_;
 };
 
