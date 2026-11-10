@@ -275,3 +275,15 @@ before = h.getParameter()
 with ott.assert_raises(TypeError):
     h.setParameter([1.0, 2.0, 3.0])
 ott.assert_almost_equal(h.getParameter(), before)
+# a derivative rejecting the update leaves the composition unchanged:
+# parametric evaluation (1 parameter) with a 0-parameter ConstantGradient
+pe = ot.ParametricEvaluation(ot.SymbolicFunction(["y", "a"], ["a*y^2"]), [1], [2.0])
+pf = ot.Function(pe)
+pf.setGradient(ot.ConstantGradient(ot.Matrix([[16.0]])))
+h2 = ot.ComposedFunction(pf, ot.SymbolicFunction(["x"], ["x"]))
+before2 = list(h2.getParameter())
+with ott.assert_raises(Exception):
+    h2.setParameter([3.0])
+ott.assert_almost_equal(h2.getParameter(), before2)
+ott.assert_almost_equal(h2.getLeftFunction().getParameter(), before2)
+assert h2.getRightFunction().getParameterDimension() == 0
