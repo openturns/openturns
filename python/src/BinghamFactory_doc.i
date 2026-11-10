@@ -5,14 +5,14 @@ R"RAW(Bingham factory.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Given a sample :math:`\mathbf{x}_1,\dots,\mathbf{x}_N` on the sphere
+Given a sample :math:`\vect{x}_1,\dots,\vect{x}_N` on the sphere
 :math:`\mathcal{S}^{n-1}`, estimates the Bingham distribution parameters using
 a moment matching algorithm:
 
 1. Compute the scatter matrix
-   :math:`\mathbf{S} = \frac{1}{N}\sum_{i=1}^N \mathbf{x}_i\mathbf{x}_i^T`.
+   :math:`\matr{S} = \frac{1}{N}\sum_{i=1}^N \vect{x}_i\vect{x}_i^T`.
 
-2. Diagonalize :math:`\mathbf{S}`. The eigenvectors give the orientation
+2. Diagonalize :math:`\matr{S}`. The eigenvectors give the orientation
    matrix :math:`\boldsymbol{\Gamma}` and the eigenvalues
    :math:`\lambda_1 \ge \dots \ge \lambda_n` give the starting concentration
    parameters through the approximation
@@ -73,7 +73,8 @@ Returns
 dist : :class:`~openturns.experimental.Bingham`
     The estimated distribution as a Bingham.
 
-    In the first usage, the default Bingham distribution is built.)RAW"
+    In the first usage, the default Bingham distribution is built.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -100,4 +101,5 @@ Returns
 dist : :class:`~openturns.Distribution`
     The estimated distribution.
 
-    In the first usage, the default Bingham distribution is built.)RAW"
+    In the first usage, the default Bingham distribution is built.
+)RAW"

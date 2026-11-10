@@ -795,7 +795,7 @@ Distribution MaximumEntropyOrderStatisticsDistribution::getMarginal(const Indice
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     const Beta* p_beta = dynamic_cast<const Beta*>(distributionCollection_[i].getImplementation().get());
-    if ((p_beta == 0) || (p_beta->getAlpha() != static_cast<Scalar>(i + 1)) || (p_beta->getBeta() != static_cast<Scalar>(dimension - i)) || (p_beta->getA() != 0.0) || (p_beta->getB() != 1.0))
+    if ((p_beta == 0) || (p_beta->getAlpha() != (1.0 * (i + 1))) || (p_beta->getBeta() != (1.0 * (dimension - i))) || (p_beta->getA() != 0.0) || (p_beta->getB() != 1.0))
     {
       isUniformOrderStatistics = false;
       break;

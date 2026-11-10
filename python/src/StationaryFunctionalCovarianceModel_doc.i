@@ -7,10 +7,10 @@ from a custom correlation function.
 Parameters
 ----------
 scale : sequence of floats
-    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    Scale coefficient :math:`\vect{\theta}\in \Rset^{\domainDim}`.
     The size of :math:`\vect{\theta}` is the input dimension.
 amplitude : sequence of positive floats
-    Amplitude  :math:`\vect{\sigma}\in \Rset^d`.
+    Amplitude  :math:`\vect{\sigma}\in \Rset^{\processDim}`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
 rho : :class:`~openturns.Function`
@@ -20,9 +20,9 @@ rho : :class:`~openturns.Function`
 
 Notes
 -----
-The functional covariance function is a stationary covariance function with output dimension :math:`d=1`.
+The functional covariance function is a stationary covariance function with output dimension :math:`\processDim=1`.
 
-We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`.
 
 The functional covariance function is defined by:
 

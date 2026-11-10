@@ -50,7 +50,8 @@ public:
   /** Standard constructor */
   SimulationSensitivityAnalysis(const RandomVector & event,
                                 const Sample & inputSample,
-                                const Sample & outputSample);
+                                const Sample & outputSample,
+                                const Point & weights = {});
 
   /** Standard constructor */
   explicit SimulationSensitivityAnalysis(const RandomVector & event);
@@ -84,6 +85,10 @@ public:
   /** Output sample accessors */
   Sample getOutputSample() const;
 
+  /** Weights accessors */
+  Point getWeights() const;
+  void setWeights(const Point & weights);
+
   /** Threshold accessors */
   Scalar getThreshold() const;
 
@@ -109,6 +114,9 @@ protected:
 
   /* Associated output sample */
   Sample outputSample_;
+
+  /* Importance weights, empty means uniform weights */
+  Point weights_;
 
   /* Event */
   RandomVector event_;

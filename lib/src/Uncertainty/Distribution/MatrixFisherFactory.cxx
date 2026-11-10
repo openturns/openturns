@@ -100,7 +100,7 @@ MatrixFisher MatrixFisherFactory::buildAsMatrixFisher(const Sample & sample) con
       for (UnsignedInteger c = 0; c < 3; ++c)
         M(r, c) += sample(i, r * 3 + c);
   }
-  M = M * (1.0 / static_cast<Scalar>(size));
+  M = M * (1.0 / (1.0 * size));
 
   // Step 2: SVD of M to get U, V and singular values
   Matrix U, vT;

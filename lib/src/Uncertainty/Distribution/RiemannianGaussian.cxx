@@ -51,7 +51,7 @@ void RiemannianGaussianGaussHermiteRule(const UnsignedInteger order,
 {
   SymmetricMatrix jacobi(order);
   for (UnsignedInteger i = 1; i < order; ++i)
-    jacobi(i, i - 1) = std::sqrt(static_cast<Scalar>(i));
+    jacobi(i, i - 1) = std::sqrt((1.0 * i));
   SquareMatrix vectors(order);
   const Point eigenvalues = jacobi.computeEVInPlace(vectors);
   nodes = eigenvalues;
@@ -66,8 +66,8 @@ void RiemannianGaussianGaussHermiteRule(const UnsignedInteger order,
 UnsignedInteger RiemannianGaussianGaussHermiteOrder(const UnsignedInteger dimension,
                                                     const UnsignedInteger budget)
 {
-  const Scalar maxOrder = std::cbrt(static_cast<Scalar>(budget));
-  const Scalar tensorOrder = std::pow(static_cast<Scalar>(budget), 1.0 / static_cast<Scalar>(dimension));
+  const Scalar maxOrder = std::cbrt((1.0 * budget));
+  const Scalar tensorOrder = std::pow((1.0 * budget), 1.0 / (1.0 * dimension));
   return std::max(static_cast<UnsignedInteger>(2),
                   static_cast<UnsignedInteger>(std::min(maxOrder, tensorOrder)));
 }
@@ -764,8 +764,8 @@ Scalar RiemannianGaussian::computeEntropy() const
   RiemannianGaussianGaussHermiteRule(order, nodes, weights);
   Scalar expectedLogJacobian = 0.0;
   Scalar totalWeight = 0.0;
-  std::vector<UnsignedInteger> counter(d, 0);
-  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow(static_cast<Scalar>(order), static_cast<Scalar>(d)));
+  Indices counter(d, 0);
+  const UnsignedInteger total = static_cast<UnsignedInteger>(std::pow((1.0 * order), (1.0 * d)));
   if (total > budget)
   {
     // The tensor grid is unaffordable in high dimension: keep the tangent

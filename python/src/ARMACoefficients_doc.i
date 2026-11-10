@@ -18,7 +18,7 @@ dimension : int,
 coeffList : a list of floats,
     In dimension 1, the list of the coefficients defining the recurrence of the ARMA process (MA or AR part).
 matrixColl : a list of :class:`~openturns.SquareMatrix`
-    In dimension :math:`d`, the collection of square matrices in :math:`\Rset^d \times \Rset^d` defining the recurrence of the ARMA process (MA or AR part).
+    In dimension :math:`\processDim`, the collection of square matrices in :math:`\Rset^{\processDim} \times \Rset^{\processDim}` defining the recurrence of the ARMA process (MA or AR part).
 
 Notes
 -----

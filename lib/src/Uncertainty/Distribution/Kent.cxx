@@ -192,9 +192,9 @@ Point Kent::ComputeMomentsInternal(const Scalar kappa,
       const Scalar logBesselNu0 = SpecFunc::LogBesselInu(kappa, 2.0 * j + 0.5);
       const Scalar Rj = std::exp(logBesselNu1 - logBesselNu0);
       sumDeltaR += delta * Rj;
-      sumJDelta += static_cast<Scalar>(j) * delta;
+      sumJDelta += (1.0 * j) * delta;
       // E[x1^2] = sum delta_j * (1 - 2*(2j+1)*R_j/kappa) / sum delta_j
-      sumDeltaE1 += delta * (1.0 - 2.0 * (2.0 * static_cast<Scalar>(j) + 1.0) * Rj / kappa);
+      sumDeltaE1 += delta * (1.0 - 2.0 * (2.0 * (1.0 * j) + 1.0) * Rj / kappa);
       ++j;
       if (delta < epsilon * factor) go = false;
       if (j >= maximumIteration) go = false;

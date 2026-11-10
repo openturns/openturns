@@ -24,6 +24,11 @@ total : int, :math:`C \geq \max(N, \sum_{i = 1}^d c_i)`
 
     Default value is :math:`\sum_{i = 1}^d c_i` (classical case with empty rest).
 
+See Also
+--------
+openturns.Multinomial
+openturns.Hypergeometric
+
 Notes
 -----
 
@@ -37,7 +42,7 @@ Its probability distribution function is defined as:
 
 .. math::
 
-    \Prob{\vect{X} = \vect{x}} = \frac{\left[\prod_{i = 1}^d \binom{c_i}{x_i}\right] \binom{C - c}{N - s}}{\binom{C}{N}}\mathbf{1}_{\vect{x} \in \cS}
+    \Prob{\vect{X} = \vect{x}} = \frac{\left[\prod_{i = 1}^d \binom{c_i}{x_i}\right] \binom{C - c}{N - s}}{\binom{C}{N}}\vect{1}_{\vect{x} \in \cS}
 
 where :math:`c = \sum_{i = 1}^d c_i`, :math:`s = \sum_{i = 1}^d x_i`.
 
@@ -78,11 +83,6 @@ keys:
 - ``MultivariateHypergeometric-smallA``: Scalar, threshold below which the
   generating function of a truncated binomial distribution is computed with
   its polynomial form, default value :math:`10.0`.
-
-See Also
---------
-openturns.Multinomial
-openturns.Hypergeometric
 
 Examples
 --------
@@ -129,7 +129,8 @@ R"RAW(Accessor to the number of draws parameter :math:`N`.
 Parameters
 ----------
 N : int, :math:`1 \leq N \leq C`
-    The number of draws :math:`N`.)RAW"
+    The number of draws :math:`N`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -139,7 +140,8 @@ R"RAW(Accessor to the population counts parameter :math:`\vect{c}`.
 Returns
 -------
 colors : :class:`~openturns.Indices`
-    The population counts of each tracked category :math:`\vect{c}`.)RAW"
+    The population counts of each tracked category :math:`\vect{c}`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -150,7 +152,8 @@ Parameters
 ----------
 colors : sequence of int, :math:`c_i \geq 0` and :math:`\sum_{i = 1}^d c_i \leq C`
     The population counts of each tracked category :math:`\vect{c}` (all nonnegative,
-    with sum less or equal to the total population).)RAW"
+    with sum less or equal to the total population).
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -160,7 +163,8 @@ R"RAW(Accessor to the total population size :math:`C`.
 Returns
 -------
 total : int
-    The total population size :math:`C`.)RAW"
+    The total population size :math:`C`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -170,7 +174,8 @@ R"RAW(Accessor to the total population size :math:`C`.
 Parameters
 ----------
 total : int, :math:`C \geq \max(N, \sum_{i = 1}^d c_i)`
-    The total population size :math:`C`.)RAW"
+    The total population size :math:`C`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -195,7 +200,8 @@ Parameters
 eta : float, :math:`0 \leq eta < 1`
     The maximum absolute error in the Poisson summation-based CDF computation.
 
-A value of 0 turns the error control off.)RAW"
+A value of 0 turns the error control off.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -226,4 +232,5 @@ smallA : float, :math:`smallA \geq 0`
     correction of the generating function of the untruncated binomial distribution.
 
 The default value comes from the ``MultivariateHypergeometric-smallA``
-:class:`~openturns.ResourceMap` key, equal to :math:`10.0`.)RAW"
+:class:`~openturns.ResourceMap` key, equal to :math:`10.0`.
+)RAW"

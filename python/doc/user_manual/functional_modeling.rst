@@ -78,6 +78,7 @@ Refer to :ref:`field_function`.
     FieldToPointFunction
     PointToFieldFunction
     ParametricPointToFieldFunction
+    experimental.MemoizePointToFieldFunction
     VertexValuePointToFieldFunction
     VertexFieldToPointFunction
     ValueFunction
@@ -265,6 +266,7 @@ as Python functions.
     SpecFunc.IPow
     SpecFunc.IRoot
     SpecFunc.LambertW
+    SpecFunc.LauricellaF_A
     SpecFunc.Log1MExp
     SpecFunc.Log1p
     SpecFunc.Log2
@@ -278,6 +280,8 @@ as Python functions.
     SpecFunc.LogGamma
     SpecFunc.LogGamma1p
     SpecFunc.LogHyperGeom_1_1
+    SpecFunc.LogLauricellaF_A
+    SpecFunc.LogSumExp
     SpecFunc.NextPowerOfTwo
     SpecFunc.Psi
     SpecFunc.RegularizedIncompleteBeta

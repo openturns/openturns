@@ -8,14 +8,14 @@ Parameters
 oneDimensional : :class:`~openturns.CovarianceModel`
     This kernel must be stationary.
     Its input and output dimensions must be 1.
-inputDimension : int, :math:`n > 0`
-    Dimension :math:`n` of the input points taken by the isotropic covariance model.
+inputDimension : int, :math:`\domainDim > 0`
+    Dimension :math:`\domainDim` of the input points taken by the isotropic covariance model.
 
 Notes
 -----
 Let :math:`k` be a stationary :class:`~openturns.CovarianceModel` with both input and output dimension equal to 1: :math:`k : \Rset \rightarrow \Rset`.
 
-For any positive integer :math:`n`, the corresponding :class:`~openturns.IsotropicCovarianceModel` with *inputDimension* equal to  :math:`n` is defined as the function :math:`K : \Rset^n \rightarrow \Rset` such that for any :math:`\vect{\tau} \in \Rset^n`:
+For any positive integer :math:`\domainDim`, the corresponding :class:`~openturns.IsotropicCovarianceModel` with *inputDimension* equal to  :math:`\domainDim` is defined as the function :math:`K : \Rset^{\domainDim} \rightarrow \Rset` such that for any :math:`\vect{\tau} \in \Rset^{\domainDim}`:
 
 .. math::
 

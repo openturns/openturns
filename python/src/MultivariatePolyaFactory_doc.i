@@ -5,6 +5,10 @@ R"RAW(Multivariate Polya factory.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+See also
+--------
+openturns.DistributionFactory, MultivariatePolya
+
 Notes
 -----
 The parameters :math:`N`, :math:`\vect{\alpha}` and :math:`c` are estimated
@@ -44,10 +48,7 @@ i.e. :math:`\theta = (N - f) / (f - 1)`.
 
 Only integer samples with a constant row sum and strictly positive column sums
 are accepted.
-
-See also
---------
-openturns.DistributionFactory, MultivariatePolya)RAW"
+)RAW"
 
 // ---------------------------------------------------------------------
 

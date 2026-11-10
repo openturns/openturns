@@ -89,16 +89,23 @@
  * ChristoffelSubsampleExperiment-Gamma: gamma constant of the certified sizing, used when ChristoffelSubsampleExperiment-Certified is true (default is 9.242343873386666)
  * ChristoffelSubsampleExperiment-MaxAttempts: maximum number of independent certified draws tried before returning the last draw (default is 10)
  * ChristoffelSubsampleExperiment-MaxProjectionAttempts: maximum number of Christoffel proposals tried to draw one projection DPP point before an error is raised (default is 1000000)
+ * New manifold distributions
+ * Orthonormal basis construction and sparse functional chaos improvements
+ * Speeding up Gaussian field simulation on large meshes with the FFT-based circulant embedding method and the P1 interpolation
+ * Covariance models for functional spaces to generate trajectories within crucial functional spaces for physical simulations
 
 ==== New classes ====
+ * BasisOrthonormalizationAlgorithm, BasisOrthonormalizationFactory, GaussLPQuadrature, GaussLPQuadratureRule (openturns.experimental)
  * Bingham, BinghamFactory (openturns.experimental)
  * ChristoffelDistribution, ChristoffelSubsampleExperiment (openturns.experimental)
+ * CumulativeDistributionNetworkFactory (openturns.experimental)
  * InverseGammaFactory (openturns.experimental)
  * Kent, KentFactory (openturns.experimental)
  * LeaveOneOut
  * Manifold, SphereManifold, SO3Manifold (openturns.experimental)
  * ManifoldMappedDistribution (openturns.experimental)
  * MatrixFisher, MatrixFisherFactory (openturns.experimental)
+ * MemoizePointToFieldFunction (openturns.experimental)
  * MultivariateHypergeometric, MultivariateHypergeometricFactory (openturns.experimental)
  * MultivariatePolya, MultivariatePolyaFactory (openturns.experimental)
  * MultivariateUniform, MultivariateUniformFactory (openturns.experimental)
@@ -127,44 +134,23 @@
  * Added MemoizeEvaluation.getInputCache/getOutputCache (and MemoizeFunction counterparts) as consistently-named replacements for getCacheInput/getCacheOutput, kept as deprecated aliases
  * Added LeastSquaresMethod.getPseudoInverse: the Moore-Penrose pseudo-inverse of the weighted design matrix, equal to (A^T A)^{-1} A^T for full-column-rank designs, evaluated per decomposition (QR, Cholesky, SVD)
  * Added Sample.computePairwiseDistance: the symmetric matrix of Euclidean distances between sample points
+ * Added SpecFunc.LauricellaF_A and SpecFunc.LogLauricellaF_A: evaluation of the Lauricella hypergeometric function F_A in the Exton representation, directly or in log scale with a cancellation estimate
+ * Added DistFunc.dBeta and DistFunc.logdBeta: the Beta probability density function and its logarithm. DistFunc.dBeta is now the exponential of DistFunc.logdBeta, and Beta, EmpiricalBernsteinCopula and PointConditionalDistribution evaluate the log form to avoid underflow
+ * Added ExperimentIntegration.getWeightedExperiment: accessor to the weighted experiment wrapped by the integration rule
  * Added Distribution.getComplementaryCDF/getQuantile/getSurvivalFunction/getInverseSurvivalFunction/getDDF: the remaining distribution functions as Function objects
  * Added Function/Gradient batch gradient evaluation over samples with flattened column-major outputs
  * Added BoxCoxFactory.computeLambdaConfidenceInterval: profile-likelihood confidence bounds of lambda
  * Added ParametricFunction symbolic substitution: frozen parameters are substituted once into symbolic formulas
  * Added Distribution/Point and Matrix/Distribution arithmetic: shifts preserve the copula, matrix products are exact for Gaussians
- * Added MemoizePointToFieldFunction: point to field functions with transparent evaluation caching
  * Removed ambiguous TruncatedDistribution(distribution, lowerBound, upperBound) constructor in favor of the Interval variant
  * Deprecated BoxCoxFactory.buildWithGLM in favor of buildWithGPF
  * Added activeFunctions constructor to LeastSquaresExpansion and IntegrationExpansion
- * OrthogonalBasis now has a value-based equality operator that dispatches to the concrete factory state
  * Added LeastSquaresMethod.solveNormalGram to solve the weighted Gram system, while solveNormal remains restricted to uniform weights
  * Extended UniformOverMesh to embedded meshes with getIntrinsicDimension and getVolume
- * Restricted the UniformOverMesh(mesh) constructor to explicit conversions
  * Added MetaModelValidation.getWeights and MetaModelValidation.setWeights: the R2 score and the mean squared error are weighted by the validation weights, uniform by default, and normalized by the weight mass
  * Restricted CorrectedLeaveOneOut to uniform weights and added LeaveOneOut: the uncorrected leave-one-out score exact for any weights
  * Added FunctionalChaosResult.getWeights and FunctionalChaosResult.setWeights: the result stores the design weights, so FunctionalChaosValidation cross-validation is exact for weighted designs
-
- * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra", values "LAPACK", "HMAT" or "HODLR"); GaussianProcessRegression inherits the linear algebra method from its GaussianProcessFitterResult, and GeneralLinearModelAlgorithm still relies on its own key "GeneralLinearModelAlgorithm-LinearAlgebra" (values "LAPACK" or "HMAT")
- * GaussianProcessFitter: analytical amplitude estimate now works with the HODLR backend; the HODLR path uses the precomputed quadratic form y^T R^{-1} y instead of rho_.normSquare(), since rho_ is the raw residual rather than L^{-1}(residual)
- * HODLRMatrix: new method applyNugget() adds a relative nugget to the diagonal of the covariance matrix, enabled by default in the GP covariance assembly path via the ResourceMap key "HODLRMatrix-Nugget" (default 1.0e-8, set to zero to disable)
- * HODLRMatrix: the max rank of the low-rank blocks is now adaptive by default (ResourceMap key "HODLRMatrix-MaxRank", default 0): each block is compressed up to the assembly epsilon instead of being capped at 10, a warning is emitted when a user-set cap starves a block, and a single aggregated warning is emitted at assembly when blocks under the adaptive rank reach the full rank (stored densely)
- * HODLRMatrix: off-diagonal blocks whose numerical rank reaches min(rows, cols) are now stored densely (U = A01, V = I) instead of as truncated low-rank factors
- * HODLRMatrix: the vertices are now reordered along a space-filling curve (KDTree::getOrdering) before assembly, so that the recursive split of the HODLR tree separates spatially close points at the leaves; enabled by default via the ResourceMap key "HODLRMatrix-UseSpatialOrdering" (default true), opt-out via HODLRMatrixParameters.setUseSpatialOrdering(False)
- * HODLRMatrix: the adaptive cross approximation now uses max-element (partial-pivoting) pivots, which compress low-rank blocks reliably on smooth kernels; the former random-pivot selection was removed
- * HODLRMatrix: fixed gemv() after a Cholesky factorization, which applied the factor L instead of the full matrix A = L L^T
- * HODLRMatrix: new method applyFactor(y, x) applies the lower-triangular Cholesky factor once (y = L x); GaussianProcess HODLR sampling now uses it so that realizations have the covariance A of the process instead of A^2
- * HODLRMatrix: a factorized matrix is now persisted by Study, so a compressed operator can be built once and read back later; solve, gemv, applyFactor, logDeterminant and the compression ratios all survive the round trip bit for bit. The assembly function is not serialized, since it may be a Python callable, so a reloaded matrix cannot be re-assembled or re-factorized and reports that explicitly
- * HODLRMatrix: a copy is now a complete, independent operator. It used to drop the HODLR tree and had to be re-assembled before use, which is why a matrix read back from a Study was an empty shell with the right shape; a copy now deep-copies the tree, at a memory cost proportional to the operator
- * HMatrix: new method applyFactor(y, x) applies the lower-triangular Cholesky factor once (y = L x); GaussianProcess HMAT sampling now uses it as the single factor-application entry point, so that realizations have the covariance A of the process on both the HMAT and HODLR backends
- * HODLRMatrix: leaf blocks are now assembled from the lower-triangular kernel evaluations only, mirroring them into the upper triangle (the HODLR tree is symmetric), which halves the kernel evaluations in the leaf assembly
- * HODLRMatrix: fixed the fast Matern assembly path truncating the point coordinates to the first 3 dimensions, which silently corrupted the assembled matrix (and any downstream solve or factorization) for input points of dimension >= 4
- * HODLRMatrix: near-singular leaf blocks now heal locally with the smallest diagonal shift that yields a numerically healthy Cholesky factor (ResourceMap key "HODLRMatrix-PivotFloorFactor", default 1.0e-12), instead of refactorizing the whole child subtree on every failed attempt, which cascaded into thousands of leaf factorizations on strongly-correlated kernels
- * GaussianProcess: HMAT sampling now forces the Cholesky factorization, so that realizations have the covariance A of the process whatever the ResourceMap key "HMatrix-FactorizationMethod" is (with an LU factorization the hmat-oss gemv reconstructed A z, i.e. a N(0, A^2) realization)
- * GaussianProcessConditionalCovariance: conditional mean/covariance and marginal variance now support HODLR results, which previously crashed with an "Empty HMatrix" error
- * GaussianProcessFitterResult: loading a result produced with the HMAT or HODLR backend now rebuilds the Cholesky factor from the stored covariance model and input sample; previously the factor was left empty and any downstream solve crashed
- * HODLRMatrix: the default assembly epsilon is now 1e-7 (with the recompression and regularization epsilons aligned), so that a Cholesky factorization of a Matern covariance with correlation length 0.1 of the domain size reaches a relative log-likelihood accuracy of 1e-5 with margin
- * HODLRMatrix: new method getRegularizationShift() returns the shift actually applied by the last Cholesky factorization; a non-zero value means the factorized matrix is A + shift * I rather than A. Both HODLRMatrix and HMatrix now emit a warning when the shift is non-negligible relative to the diagonal (ResourceMap keys "HODLRMatrix-RegularizationWarnThreshold" and "HMatrix-RegularizationWarnThreshold", default 1e-4), so a silently-degraded solve() or logDeterminant() is reported
- * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
+ * HMatrixParameters.getAdmissibility and HMatrixParameters.setAdmissibility
  * Removed deprecated DistributionFactory.setKnownParameter(Point, Indices)
  * Removed DistFunc.dNonCentralStudentAlt0 and the StudentFunctions NonCentralStudentCDFAlt0/NonCentralStudentCDFAlt1/NonCentralStudentPDFAlt0 helpers: Boost is still used when available for all degrees of freedom, and the native fallback now matches it (Benton & Krishnamoorthy Poisson-mixture series for the CDF, direct Poisson-mixture beta-density series for the PDF instead of the CDF-difference identity)
  * Removed deprecated Graph.setDrawable(Drawable, int)
@@ -175,8 +161,6 @@
  * Removed deprecated DeconditionedDistribution, DeconditionedRandomVector
  * Removed deprecated FORM/SORM/MultiFORM/SystemFORM startingPoint argument and accessors
  * Removed deprecated assert_almost_equal(Indices, Indices)
- * HODLRMatrixParameters.setFactorizationMethod/getFactorizationMethod removed: the HODLR backend always uses its sole LLt (Cholesky) factorization, so the method is no longer configurable
- * HODLRMatrix.factorize() no longer takes a method argument (previously any string other than "LLt"/"LLT" fell back to an LU factorization, which is not supported by the HODLR backend)
  * CombinationsDistribution moved out of experimental
  * LineSampling moved out of experimental
  * GaussianProcessRandomVector moved out of experimental
@@ -204,6 +188,7 @@
  * Deprecated QuantileConfidence.computeBilateralConfidenceIntervalWithCoverage(Sample) in favor of computeBilateralCoverage(UnsignedInteger, UnsignedInteger, UnsignedInteger)
  * Added VisualTest.DrawPairsWithGrid(sample, bounds, subdivisions) returning a GridLayout of Cloud+Grid pairs
  * Deprecated viewer.PlotDesign in favor of VisualTest.DrawPairsWithGrid
+ * Added ExperimentIntegration.getWeightedExperiment: accessor to the weighted experiment wrapped by the integration rule
 
 ==== New features ====
  * Added PythonActiveLearningReliabilityFunction (openturns.experimental): define custom active learning criteria from Python, usable through ActiveLearningReliabilityFunction and ActiveLearningReliabilityAlgorithm
@@ -221,18 +206,23 @@
  * Sample.computeSuperQuantile
  * Sample.computeQuantile and computeQuantilePerComponent accept an optional tail flag
  * MetaModelValidation.computeRootMeanSquaredError, computeMeanAbsoluteError and drawResiduals
+ * OrthogonalBasis now has a value-based equality operator that dispatches to the concrete factory state
  * Distribution.drawMarginalPDFs draws a grid of marginals for dimension greater than 2
- * FiniteDifferenceGradient per-output finite difference steps
  * NonLinearLeastSquaresCalibration.setUseLaplaceApproximation
- * GaussKronrod.getErrorEstimate, getIterationNumber, getEvaluationSubIntervals and getLocalErrorEstimates
  * Curve.setLabels/getLabels
  * PointToFieldFunction.getMarginal
- * GaussKronrod.setMaximumError now requires a strictly positive finite error instead of a nonnegative one
- * FunctionalChaosAlgorithm now rejects an input sample outside of the distribution range at construction time
+ * GaussianProcessFitter now supports HODLR as a linear algebra backend (ResourceMap key "GaussianProcessFitter-LinearAlgebra")
+ * NSGA3 multi-objective optimization algorithm is now wired via Pagmo
+ * Added sum and difference operators between fields
+ * HMatrix: Add interface supporting HODLR implementation
+ * Analytic partialHessian and parameterGradient for covariance models, with thirdOrderPartial, fourthOrderPartial, parameterHessian in CovarianceModelImplementation
+ * Analytic partialGradient and exact stationary operator for CurlFreeModel, DivFreeModel (openturns.experimental), analytic parameterGradient for LatentVariableModel
+ * KDTree: new method getOrdering() returns a deterministic space-filling ordering of the points
 
 === Documentation ===
  * Theory: add interpolation page
  * LeastSquaresMethod: document weights, indices and notation
+ * Mentioned all ResourceMap entries for each class
 
 === Python module ===
  * Add Process sample slicing operator
@@ -241,25 +231,16 @@
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
  * Deprecated coupling_tools.execute method (use subprocess.run)
 
-=== Bug fixes ===
-
- * ChristoffelDistribution: the tensor sequential sampler now uses the target-to-proposal ratio consistently: a uniform proposal with a marginal-density-weighted envelope on bounded slices, and a full-support Cauchy or half-Cauchy proposal on unbounded slices, with the envelope scanned on a grid uniform in the proposal CDF; this removes both the non-uniform-marginal bias and the high-degree tail rejection of the former S_j-only envelope, and the degree-29 Hermite regression completes in seconds instead of stalling
- * ChristoffelDistribution: the stability factor now rejects a non-positive or non-finite safety factor, refreshes its cache when a ResourceMap key that enters the estimate changes, recovers optimizer peaks whose raw value overflows but whose logarithm is finite, and fails explicitly on non-finite envelopes instead of looping forever
- * ChristoffelDistribution: the polynomial tensor gradient now clips its input to the numerical range like the objective does, instead of overflowing on infeasible points
- * ChristoffelDistribution: the batch Christoffel and log-Christoffel evaluations now only use TBB above a minimum batch size, instead of spawning parallel work for small samples
- * ChristoffelSubsampleExperiment: exact projection DPP and volume sampling replace the heuristic 2n pool and greedy thinning; fresh designs use the DPP for n=m and a DPP plus independent Christoffel fill for n>m, supplied points use a conditional DPP when M<n and exact candidate volume sampling when M>=n, dependent or zero-weight supplied points are rejected, and the pool, thinning and barrier ResourceMap keys are removed
- * ChristoffelSubsampleExperiment: optional certified mode selected by the ChristoffelSubsampleExperiment-Certified key, with n = gamma * m * log(m) and n independent Christoffel points without thinning; certified draws are repeated up to ChristoffelSubsampleExperiment-MaxAttempts until the frame bounds hold, the default square design is unchanged, and supplied points are rejected in certified mode
- * ChristoffelSubsampleExperiment: default-constructed experiments no longer silently generate from an unconfigured one-function state, and a null size is rejected on load
- * ChristoffelSubsampleExperiment: the certified mode, gamma and MaxAttempts settings are now persisted across save/load, and loading rebuilds the derived state from the stored settings instead of re-reading the ResourceMap
- * OrthogonalBasis: added a value-based equality operator (measure, enumerate function and factory description) used by ChristoffelDistribution instead of the sole probe-based comparison
- * LinearCombinationDistribution: wrong atom weights when fusing discrete atoms with a pending aggregated discrete
- * Normal::computeCDF used wrong bounds in its large-dimension fallback and returned 0.0, e.g. at the mean of a correlated dimension-7 distribution
- * QuantileConfidence: fixed inverted unilateral case in computeUnilateralMinimumSampleSize, the flag was renamed from tail to lowerBounded with opposite meaning (old tail=True is now lowerBounded=False); calls passing True positionally or by keyword must swap the flag (see #3178). In computeUnilateralRank and the unilateral confidence interval methods the flag was only renamed (old tail=True is lowerBounded=True), with no change of the returned value
-
 === Miscellaneous ===
- * Added sum and difference operators between fields
- * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow (see #1489, #1596)
+ * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow
  * Parallelized and accelerated IteratedQuadrature and SimplicialCubature (batched integrand evaluations, TBB, reduced allocations)
+ * LevelSetMesher: intersection of level sets of a collection, quadratic error function (QEF) sharp-edge placement and adaptive background refinement; Mesh::intersect no longer depends on Boost
+ * Dirichlet: deterministic CDF evaluation from the Lauricella-Exton hypergeometric series, Gauss-Jacobi quadrature and inclusion-exclusion, replacing the random-sampling estimate
+ * ProductDistribution: Evaluate CDF/complement via dedicated product quadrature with stable tails; handle density limits at zero; solve tail quantiles in log-distance; optimize characteristic function evaluation via separate scalar Gauss-Kronrod passes without Point allocations.
+ * DistributionImplementation: Select characteristic function panels by absolute argument, bound Filon grid points, document exponent convention, and make `operator /` return `RatioDistribution` for continuous univariate operands.
+ * SimulationSensitivityAnalysis now supports importance sampling through optional importance weights for the mean point, importance factors and event probability sensitivity
+
+=== Bug fixes ===
 
 
 == 1.27 release (2026-04-28) == #release-1.27

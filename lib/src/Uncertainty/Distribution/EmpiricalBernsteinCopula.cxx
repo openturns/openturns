@@ -41,9 +41,9 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
   : DistributionImplementation()
   , copulaSample_(0, 1)
   , binNumber_(1)
-  , logBetaFactors_(0)
-  , logBetaMarginalFactors_(0, 0)
   , logFactors_(0, 0)
+  , logBetaMarginalFactors_(0, 0)
+  , logBetaFactors_(0)
 {
   setName("EmpiricalBernsteinCopula");
   setCopulaSample(Sample(2, 1));
@@ -57,42 +57,13 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
   : DistributionImplementation()
   , copulaSample_(0, 1)
   , binNumber_(binNumber)
-  , logBetaFactors_(0)
-  , logBetaMarginalFactors_(0, 0)
   , logFactors_(0, 0)
+  , logBetaMarginalFactors_(0, 0)
+  , logBetaFactors_(0)
 {
   setName("EmpiricalBernsteinCopula");
   setCopulaSample(copulaSample, isEmpiricalCopulaSample);
   computeRange();
-}
-
-/* Default constructor */
-EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
-    const UnsignedInteger binNumber,
-    const SampleImplementation & logBetaMarginalFactors,
-    const SampleImplementation & logFactors)
-  : DistributionImplementation()
-  , copulaSample_(copulaSample)
-  , binNumber_(binNumber)
-  , logBetaMarginalFactors_(logBetaMarginalFactors)
-  , logFactors_(logFactors)
-{
-  const UnsignedInteger size = logFactors_.getSize();
-  const UnsignedInteger dimension = logFactors_.getDimension();
-  logBetaFactors_ = Point(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    Scalar sumLogBeta = 0.0;
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      sumLogBeta += logBetaMarginalFactors_(i, j);
-    logBetaFactors_[i] = sumLogBeta;
-  } // i
-  setName("EmpiricalBernsteinCopula");
-  setDimension(copulaSample.getDimension());
-  computeRange();
-  // If the given sample is an empirical copula sample of a compatible size
-  const UnsignedInteger remainder = size % binNumber;
-  isCopula_ = (remainder == 0);
 }
 
 /* Virtual constructor */
@@ -233,37 +204,16 @@ Sample EmpiricalBernsteinCopula::getSample(const UnsignedInteger size) const
    c_m(u_1,...,u_d)=1/n\sum_{i=1}^n\prod_{j=1}^d \beta_{r_j^i,s_j^i}(u_j)
    where r_j^i=\lceil mU_j^i\rceil, s_j^i=m+1-r_j^i
    and \beta_{r,s}(x)=x^{r-1}(1-x)^{s-1}/B(r,s)
-   Here \log(r_j^i) is stored into logFactors_(i,j)=LF(i,j),
+   Here r_j^i is stored into logFactors_(i,j)=LF(i,j),
    B(r_j^i,s_j^i) is stored into logBetaMarginalFactors_(i,j)=LBMF(i,j) and
    \sum_{j=1}^d\log(Beta(r_j^i,s_j^i))=\sum_{j=1}^d LBMF(i,j) is stored into logBetaFactors_(i)=LBF(i)
    so c_m(u_1,...,u_d)=1/n\sum_{i=1}^n\exp(LBF(i)+\sum_{j=1}^d [(LF(i,j)-1)\log(u_j)+(m-LF(i,j))\log(1-u_j)])
 */
 Scalar EmpiricalBernsteinCopula::computePDF(const Point & point) const
 {
-  const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
-  if (binNumber_ == 1) return 1.0;
-  Scalar pdfValue = 0.0;
-  Point logX(dimension);
-  Point log1mX(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    logX[i] = std::log(point[i]);
-    log1mX[i] = log1p(-point[i]);
-  }
-  const UnsignedInteger size = copulaSample_.getSize();
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    Scalar logPDFAtom = -logBetaFactors_[i];
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      logPDFAtom += (logFactors_(i, j) - 1.0) * logX[j] + (binNumber_ - logFactors_(i, j)) * log1mX[j];
-    } // j
-    pdfValue += std::exp(logPDFAtom);
-  } // i
-  return pdfValue / size;
+  // The mixture is evaluated in log domain to avoid an underflow of every
+  // atom before the sum; exp() handles the final underflow on its own.
+  return std::exp(computeLogPDF(point));
 }
 
 /* Get the log-PDF of the EmpiricalBernsteinCopula */
@@ -274,32 +224,24 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return SpecFunc::LowestScalar;
   if (binNumber_ == 1) return 0.0;
-  Scalar sumPDFValue = 0.0;
-  Point logX(dimension);
-  Scalar log1mX = 0.0;
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const Scalar log1mXi = log1p(-point[i]);
-    logX[i] = std::log(point[i]) - log1mXi;
-    log1mX += log1mXi;
-  }
   const UnsignedInteger size = copulaSample_.getSize();
   Point matvec(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  Point logX(dimension);
+  Point log1mX(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    matvec[i] = -logBetaFactors_[i];
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      matvec[i] += (logFactors_(i, j) - 1.0) * logX[j];
+    logX[i] = std::log(point[i]);
+    log1mX[i] = log1p(-point[i]);
   }
-  // To avoid overflows and improve accuracy, we replace
-  //    log(sum(exp(matvec[i])))
-  // by maxValue + log(sum(exp(matvec[i] - maxValue)))
-  const Scalar maxValue = *std::max_element(matvec.begin(), matvec.end());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    sumPDFValue += std::exp(matvec[i] - maxValue);
-  } // i
-  return maxValue + std::log(sumPDFValue) + log1mX * (binNumber_ - 1) - std::log(1.0 * size);
+    matvec[i] = 0.0;
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      matvec[i] += (logFactors_(i, j) - 1.0) * logX[j] + (binNumber_ - logFactors_(i, j)) * log1mX[j] - logBetaMarginalFactors_(i, j);
+  }
+  // log(sum(exp(matvec[i]))) with the log-sum-exp stabilization
+  const Scalar logSum = SpecFunc::LogSumExp(matvec);
+  return logSum - std::log(1.0 * size);
 }
 
 /* Get the CDF of the EmpiricalBernsteinCopula */
@@ -350,12 +292,11 @@ Scalar EmpiricalBernsteinCopula::computeProbability(const Interval & interval) c
    c_m(u_1,...,u_d)=1/n\sum_{i=1}^n\prod_{j=1}^d \beta_{r_j^i,s_j^i}(u_j)
    where r_j^i=\lceil mU_j^i\rceil, s_j^i=m+1-r_j^i
    and \beta_{r,s}(x)=x^{r-1}(1-x)^{s-1}/B(r,s)
-   Here \log(r_j^i) is stored into logFactors_(i,j)=LF(i,j),
+   Here r_j^i is stored into logFactors_(i,j)=LF(i,j),
    B(r_j^i,s_j^i) is stored into logBetaMarginalFactors_(i,j)=LBMF(i,j) and
    \sum_{j=1}^d\log(Beta(r_j^i,s_j^i))=\sum_{j=1}^d LBMF(i,j) is stored into logBetaFactors_(i)=LBF(i)
    so c_m(u_1,...,u_d)=1/n\sum_{i=1}^n\exp(LBF(i)+\sum_{j=1}^d [(LF(i,j)-1)\log(u_j)+(m-LF(i,j))\log(1-u_j)])
 
-   c_m(u_1)=1/n\sum_{i=1}^n\exp(LBMF(i,0)+[(LF(i,j)-1)\log(u_j)+(m-LF(i,j))\log(1-u_j)])
    c_m(u_k|u_1,...,u_{k-1})=c_m(u_1,...,u_k)/c_m(u_1,...,u_{k-1})
                            =\sum_{i=1}^n\exp(LBF(i)+\sum_{j=1}^k [(LF(i,j)-1)\log(u_j)+(m-LF(i,j))\log(1-u_j)])/\sum_{i=1}^n\exp(LBF(i)+\sum_{j=1}^{k-1}[(LF(i,j)-1)\log(u_j)+(m-LF(i,j))\log(1-u_j)])
 
@@ -375,31 +316,37 @@ Scalar EmpiricalBernsteinCopula::computeConditionalPDF(const Scalar xj, const Po
     const UnsignedInteger j = conditioningDimension;
     const Scalar logX = std::log(xj);
     const Scalar log1mX = std::log1p(-xj);
-    Scalar conditionalPDF = 0.0;
+    Point logAtoms(size);
     for (UnsignedInteger i = 0; i < size; ++i)
-      conditionalPDF += std::exp((logFactors_(i, j) - 1.0) * logX + (binNumber_ - logFactors_(i, j)) * log1mX - logBetaMarginalFactors_(i, j));
-    return conditionalPDF / size;
+      logAtoms[i] = (logFactors_(i, j) - 1.0) * logX + (binNumber_ - logFactors_(i, j)) * log1mX - logBetaMarginalFactors_(i, j);
+    return std::exp(SpecFunc::LogSumExp(logAtoms)) / size;
   } // (conditioningDimension == 0) || (hasIndependentCopula())
   // Case with conditioning. The PDFs are computed up to an 1/n factor, which simplifies during the division.
-  Point allConditioningAtomPDF(size);
-  Scalar conditioningPDF = 0.0;
+  Point allConditioningAtomLogPDF(size);
   // First the conditioning part
+  Point logXcond(conditioningDimension);
+  Point log1mXcond(conditioningDimension);
+  for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
+  {
+    logXcond[j] = std::log(xcond[j]);
+    log1mXcond[j] = log1p(-xcond[j]);
+  }
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Scalar conditioningAtomLogPDF = 0.0;
     for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
-      conditioningAtomLogPDF += (logFactors_(i, j) - 1.0) * std::log(xcond[j]) + (binNumber_ - logFactors_(i, j)) * std::log1p(-xcond[j]) - logBetaMarginalFactors_(i, j);
-    const Scalar conditioningAtomPDF = std::exp(conditioningAtomLogPDF);
-    allConditioningAtomPDF[i] = conditioningAtomPDF;
-    conditioningPDF += conditioningAtomPDF;
+      conditioningAtomLogPDF += (logFactors_(i, j) - 1.0) * logXcond[j] + (binNumber_ - logFactors_(i, j)) * log1mXcond[j] - logBetaMarginalFactors_(i, j);
+    allConditioningAtomLogPDF[i] = conditioningAtomLogPDF;
   }
-  // Should not occur except if underflow occurred
-  if (conditioningPDF <= 0.0) return 0.0;
+  const Scalar logConditioningPDF = SpecFunc::LogSumExp(allConditioningAtomLogPDF);
+  if (logConditioningPDF == SpecFunc::LowestScalar) return 0.0;
   // Second, the conditioned part
-  Scalar conditionedPDF = 0.0;
+  const Scalar logX = std::log(xj);
+  const Scalar log1mX = std::log1p(-xj);
+  Point logConditionedAtoms(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    conditionedPDF += std::exp((logFactors_(i, conditioningDimension) - 1.0) * std::log(xj) + (binNumber_ - logFactors_(i, conditioningDimension)) * std::log1p(-xj) - logBetaMarginalFactors_(i, conditioningDimension)) * allConditioningAtomPDF[i];
-  return conditionedPDF / conditioningPDF;
+    logConditionedAtoms[i] = allConditioningAtomLogPDF[i] + (logFactors_(i, conditioningDimension) - 1.0) * logX + (binNumber_ - logFactors_(i, conditioningDimension)) * log1mX - logBetaMarginalFactors_(i, conditioningDimension);
+  return std::exp(SpecFunc::LogSumExp(logConditionedAtoms) - logConditioningPDF);
 }
 
 Point EmpiricalBernsteinCopula::computeSequentialConditionalPDF(const Point & x) const
@@ -470,25 +417,29 @@ Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar xj, const Po
     return SpecFunc::Clip01(conditionalCDF / size);
   } // (conditioningDimension == 0) || (hasIndependentCopula())
   // Case with conditioning. The PDFs are computed up to an 1/n factor, which simplifies during the division.
-  Point allConditioningAtomPDF(size);
-  Scalar conditioningPDF = 0.0;
+  Point allConditioningAtomLogPDF(size);
   // First the conditioning part
+  Point logXcond(conditioningDimension);
+  Point log1mXcond(conditioningDimension);
+  for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
+  {
+    logXcond[j] = std::log(xcond[j]);
+    log1mXcond[j] = log1p(-xcond[j]);
+  }
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Scalar conditioningAtomLogPDF = 0.0;
     for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
-      conditioningAtomLogPDF += (logFactors_(i, j) - 1.0) * std::log(xcond[j]) + (binNumber_ - logFactors_(i, j)) * std::log1p(-xcond[j]) - logBetaMarginalFactors_(i, j);
-    const Scalar conditioningAtomPDF = std::exp(conditioningAtomLogPDF);
-    allConditioningAtomPDF[i] = conditioningAtomPDF;
-    conditioningPDF += conditioningAtomPDF;
+      conditioningAtomLogPDF += (logFactors_(i, j) - 1.0) * logXcond[j] + (binNumber_ - logFactors_(i, j)) * log1mXcond[j] - logBetaMarginalFactors_(i, j);
+    allConditioningAtomLogPDF[i] = conditioningAtomLogPDF;
   }
-  // Should not occur except if underflow occurred
-  if (conditioningPDF <= 0.0) return 0.0;
+  const Scalar logConditioningPDF = SpecFunc::LogSumExp(allConditioningAtomLogPDF);
+  if (logConditioningPDF == SpecFunc::LowestScalar) return 0.0;
   // Second, the conditioned part
   Scalar conditionedCDF = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
-    conditionedCDF += SpecFunc::RegularizedIncompleteBeta(logFactors_(i, conditioningDimension), binNumber_ - logFactors_(i, conditioningDimension) + 1.0, xj) * allConditioningAtomPDF[i];
-  return SpecFunc::Clip01(conditionedCDF / conditioningPDF);
+    conditionedCDF += std::exp(allConditioningAtomLogPDF[i] - logConditioningPDF) * SpecFunc::RegularizedIncompleteBeta(logFactors_(i, conditioningDimension), binNumber_ - logFactors_(i, conditioningDimension) + 1.0, xj);
+  return SpecFunc::Clip01(conditionedCDF);
 }
 
 Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x) const
@@ -532,8 +483,10 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalCDF(const Point & x)
       const Scalar log1mX = std::log1p(-x[j]);
       for (UnsignedInteger i = 0; i < size; ++i)
       {
-        const Scalar currentPDF = std::exp((logFactors_(i, j) - 1.0) * logX + (binNumber_ - logFactors_(i, j)) * log1mX - logBetaMarginalFactors_(i, j));
-        conditionedCDF += allConditionedAtomPDF[i] * SpecFunc::RegularizedIncompleteBeta(logFactors_(i, j), binNumber_ - logFactors_(i, j) + 1.0, x[j]);
+        const Scalar r = logFactors_(i, j);
+        const Scalar s = binNumber_ - r + 1.0;
+        const Scalar currentPDF = std::exp((r - 1.0) * logX + (s - 1.0) * log1mX - logBetaMarginalFactors_(i, j));
+        conditionedCDF += allConditionedAtomPDF[i] * SpecFunc::RegularizedIncompleteBeta(r, s, x[j]);
         allConditionedAtomPDF[i] *= currentPDF;
         conditionedPDF += allConditionedAtomPDF[i];
       }
@@ -559,20 +512,7 @@ Distribution EmpiricalBernsteinCopula::getMarginal(const Indices & indices) cons
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
-  const UnsignedInteger size = copulaSample_.getSize();
-  const UnsignedInteger marginalDimension = indices.getSize();
-  SampleImplementation marginalLogBetaFactors(size, marginalDimension);
-  SampleImplementation marginalLogFactors(size, marginalDimension);
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    for (UnsignedInteger j = 0; j < marginalDimension; ++j)
-    {
-      const UnsignedInteger marginalIndex = indices[j];
-      marginalLogBetaFactors(i, j) = logBetaMarginalFactors_(i, marginalIndex);
-      marginalLogFactors(i, j) = logFactors_(i, marginalIndex);
-    } // j
-  } // i
-  return new EmpiricalBernsteinCopula(copulaSample_.getMarginal(indices), binNumber_, marginalLogBetaFactors, marginalLogFactors);
+  return new EmpiricalBernsteinCopula(copulaSample_.getMarginal(indices), binNumber_, true);
 }
 
 /* Get the Spearman correlation of the distribution */
@@ -616,14 +556,14 @@ void EmpiricalBernsteinCopula::computeRange()
   range_ = Interval(dimension_);
 }
 
-/* Compute the normalization factors */
+/* Compute the bin factors and the Beta log-normalizers */
 void EmpiricalBernsteinCopula::update()
 {
   const UnsignedInteger size = copulaSample_.getSize();
   const UnsignedInteger dimension = copulaSample_.getDimension();
+  logFactors_ = SampleImplementation(size, dimension);
   logBetaMarginalFactors_ = SampleImplementation(size, dimension);
   logBetaFactors_ = Point(size);
-  logFactors_ = SampleImplementation(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Scalar sumLogBeta = 0.0;
@@ -631,11 +571,10 @@ void EmpiricalBernsteinCopula::update()
     {
       const Scalar xIJ = SpecFunc::Clip01(copulaSample_(i, j));
       const Scalar r = std::clamp(ceil(static_cast<Scalar>(binNumber_) * xIJ), 1.0, static_cast<Scalar>(binNumber_));
-      const Scalar s = binNumber_ - r + 1.0;
-      const Scalar logBeta = SpecFunc::LogBeta(r, s);
-      sumLogBeta += logBeta;
-      logBetaMarginalFactors_(i, j) = logBeta;
+      const Scalar logBeta = SpecFunc::LogBeta(r, binNumber_ - r + 1.0);
       logFactors_(i, j) = r;
+      logBetaMarginalFactors_(i, j) = logBeta;
+      sumLogBeta += logBeta;
     } // j
     logBetaFactors_[i] = sumLogBeta;
   } // i

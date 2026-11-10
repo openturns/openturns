@@ -68,7 +68,8 @@ Examples
 >>> algo = ot.RankSobolSensitivityAlgorithm(x, y)
 >>> indices = algo.getFirstOrderIndices()
 
-The ratio of the bootstrap's sample size with respect to the total size of the input sample is fixed in the ``RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio`` ResourceMap key.)RAW"
+The ratio of the bootstrap's sample size with respect to the total size of the input sample is fixed in the ``RankSobolSensitivityAlgorithm-DefaultBootstrapSampleRatio`` ResourceMap key.
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::RankSobolSensitivityAlgorithm::draw

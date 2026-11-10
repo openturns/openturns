@@ -6,6 +6,56 @@ import math as m
 
 ot.TESTPREAMBLE()
 
+# First eigenvalues of each configuration, captured with the default seed.
+# The key is (RandomSVDVariant, configuration index), the last entry of each
+# variant is the final 2D test. Randomized variants are seeded, hence
+# deterministic, but only checked with a loose tolerance.
+referenceFirstEigenvalues = {
+    ("", "cfg0"): 1.4991310843259305,
+    ("", "cfg1"): 0.9382191799579767,
+    ("", "cfg2"): 0.8367021089284625,
+    ("", "cfg3"): 0.8367021089284625,
+    ("", "cfg4"): 9.26418741154587,
+    ("", "final2d"): 4.814227320229137,
+    ("Halko2010", "cfg0"): 2.443400210311546,
+    ("Halko2010", "cfg1"): 0.4140889665127459,
+    ("Halko2010", "cfg2"): 0.5830206729963986,
+    ("Halko2010", "cfg3"): 0.5830206729963986,
+    ("Halko2010", "cfg4"): 10.45192227950802,
+    ("Halko2010", "final2d"): 3.893187186289617,
+    ("Halko2011", "cfg0"): 1.66281026335687,
+    ("Halko2011", "cfg1"): 1.1697552433996439,
+    ("Halko2011", "cfg2"): 1.2434622114002503,
+    ("Halko2011", "cfg3"): 1.2434622114002503,
+    ("Halko2011", "cfg4"): 3.5566190725328326,
+    ("Halko2011", "final2d"): 6.577491541800087,
+}
+
+
+def checkKarhunenLoeveResult(result, sample, referenceEigenvalue):
+    lambd = result.getEigenvalues()
+    nModes = len(lambd)
+    assert nModes > 0
+    assert lambd[0] > 0.0
+    for i in range(nModes):
+        assert lambd[i] >= 0.0
+        if i > 0:
+            assert lambd[i] <= lambd[i - 1]
+    ott.assert_almost_equal(lambd[0], referenceEigenvalue, 1e-6, 0.0)
+    KLFunctions = result.getModes()
+    assert len(KLFunctions) == nModes
+    KLModes = result.getModesAsProcessSample()
+    assert KLModes.getSize() == nModes
+    assert KLModes.getDimension() == sample.getDimension()
+    coefficients = result.project(sample)
+    assert coefficients.getSize() == sample.getSize()
+    assert coefficients.getDimension() == nModes
+    lift = result.lift(coefficients[0])
+    assert lift.getOutputDimension() == sample.getDimension()
+    liftField = result.liftAsField(coefficients[0])
+    assert liftField.getSize() == sample.getMesh().getVerticesNumber()
+    assert liftField.getDimension() == sample.getDimension()
+
 
 for UseRandomSVD, RandomSVDVariant in [
     (False, ""),
@@ -24,64 +74,32 @@ for UseRandomSVD, RandomSVDVariant in [
     sample = ot.GaussianProcess(cov1D, mesh).getSample(16)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
-    result = algo.getResult()
-    lambd = result.getEigenvalues()
-    KLModes = result.getModesAsProcessSample()
-    print("KL modes=", KLModes)
-    print("KL eigenvalues=", lambd)
-    coefficients = result.project(sample)
-    print("KL coefficients=", coefficients)
-    KLFunctions = result.getModes()
-    print("KL functions=", KLFunctions)
-    print("KL lift=", result.lift(coefficients[0]))
-    print("KL lift as field=", result.liftAsField(coefficients[0]))
+    checkKarhunenLoeveResult(
+        algo.getResult(), sample, referenceFirstEigenvalues[(RandomSVDVariant, "cfg0")]
+    )
 
     # 1D mesh, 1D covariance, uniform weight, automatic centering
     sample = ot.GaussianProcess(cov1D, mesh).getSample(6)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
-    result = algo.getResult()
-    lambd = result.getEigenvalues()
-    KLModes = result.getModesAsProcessSample()
-    print("KL modes=", KLModes)
-    print("KL eigenvalues=", lambd)
-    coefficients = result.project(sample)
-    print("KL coefficients=", coefficients)
-    KLFunctions = result.getModes()
-    print("KL functions=", KLFunctions)
-    print("KL lift=", result.lift(coefficients[0]))
-    print("KL lift as field=", result.liftAsField(coefficients[0]))
+    checkKarhunenLoeveResult(
+        algo.getResult(), sample, referenceFirstEigenvalues[(RandomSVDVariant, "cfg1")]
+    )
 
     # 1D mesh, 1D covariance, uniform weight, declared centered
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0, True)
     algo.run()
-    result = algo.getResult()
-    lambd = result.getEigenvalues()
-    KLModes = result.getModesAsProcessSample()
-    print("KL modes=", KLModes)
-    print("KL eigenvalues=", lambd)
-    coefficients = result.project(sample)
-    print("KL coefficients=", coefficients)
-    KLFunctions = result.getModes()
-    print("KL functions=", KLFunctions)
-    print("KL lift=", result.lift(coefficients[0]))
-    print("KL lift as field=", result.liftAsField(coefficients[0]))
+    checkKarhunenLoeveResult(
+        algo.getResult(), sample, referenceFirstEigenvalues[(RandomSVDVariant, "cfg2")]
+    )
 
     # 1D mesh, 1D covariance, nonuniform weight, automatic centering
     weights = mesh.computeWeights()
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, weights, 0.0, True)
     algo.run()
-    result = algo.getResult()
-    lambd = result.getEigenvalues()
-    KLModes = result.getModesAsProcessSample()
-    print("KL modes=", KLModes)
-    print("KL eigenvalues=", lambd)
-    coefficients = result.project(sample)
-    print("KL coefficients=", coefficients)
-    KLFunctions = result.getModes()
-    print("KL functions=", KLFunctions)
-    print("KL lift=", result.lift(coefficients[0]))
-    print("KL lift as field=", result.liftAsField(coefficients[0]))
+    checkKarhunenLoeveResult(
+        algo.getResult(), sample, referenceFirstEigenvalues[(RandomSVDVariant, "cfg3")]
+    )
 
     # 1D mesh, 1D covariance, uniform weight, automatic centering
     R = ot.CorrelationMatrix(2, [1.0, 0.5, 0.5, 1.0])
@@ -91,17 +109,9 @@ for UseRandomSVD, RandomSVDVariant in [
     sample = ot.GaussianProcess(cov2D, mesh).getSample(6)
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
-    result = algo.getResult()
-    lambd = result.getEigenvalues()
-    KLModes = result.getModesAsProcessSample()
-    print("KL modes=", KLModes)
-    print("KL eigenvalues=", lambd)
-    coefficients = result.project(sample)
-    print("KL coefficients=", coefficients)
-    KLFunctions = result.getModes()
-    print("KL functions=", KLFunctions)
-    print("KL lift=", result.lift(coefficients[0]))
-    print("KL lift as field=", result.liftAsField(coefficients[0]))
+    checkKarhunenLoeveResult(
+        algo.getResult(), sample, referenceFirstEigenvalues[(RandomSVDVariant, "cfg4")]
+    )
 
     # truncation test
 
@@ -126,7 +136,6 @@ for UseRandomSVD, RandomSVDVariant in [
     algo = ot.KarhunenLoeveSVDAlgorithm(sample, 0.0)
     algo.run()
     result = algo.getResult()
-    lambd = result.getEigenvalues()
-    print("2D Halko2011 eigenvalues=", lambd)
-    print("2D Halko2011 modes=", result.getModesAsProcessSample())
-    ott.assert_almost_equal(lambd[0] > 0.0, True)
+    checkKarhunenLoeveResult(
+        result, sample, referenceFirstEigenvalues[(RandomSVDVariant, "final2d")]
+    )

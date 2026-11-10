@@ -27,10 +27,10 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
-#include <vector>
 #include <algorithm>
 
 #include "openturns/Ridgway.hxx"
+#include "openturns/Sample.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
@@ -64,7 +64,7 @@ Scalar truncatedNormalDraw(const Scalar lower, const Scalar upper, const Scalar 
 // The uniform draw u is passed explicitly so that no RNG call remains
 // inside parallel regions; the sequential overload below pre-draws it
 void systematicResampling(const Point& normWeights,
-                          std::vector<UnsignedInteger>& indices,
+                          Indices& indices,
                           const Scalar u)
 {
   const UnsignedInteger M = normWeights.getSize();
@@ -87,10 +87,11 @@ void systematicResampling(const Point& normWeights,
 }
 
 
-// One Gibbs sweep for particle eta at time t (Section 4.3.1)
-// Updates all components 0..t-1 of eta in place
+// One Gibbs sweep for particle at row index (Section 4.3.1)
+// Updates all components 0..t-1 of the particle in place
 // Uses pre-generated uniform random numbers u[offset..offset+t-1] for thread safety
-void gibbsMove(Point& eta,
+void gibbsMove(Sample& eta,
+               const UnsignedInteger index,
                const TriangularMatrix& L,
                const Point& a,
                const Point& b,
@@ -110,7 +111,7 @@ void gibbsMove(Point& eta,
       Scalar sum = 0.0;
       for (UnsignedInteger j = 0; j < k; ++j)
       {
-        if (j != i) sum += L(k, j) * eta[j];
+        if (j != i) sum += L(k, j) * eta(index, j);
       }
 
       const Scalar lk = (a[k] - sum) / L(k, i);
@@ -129,23 +130,8 @@ void gibbsMove(Point& eta,
     }
 
     if (lower < upper)
-      eta[i] = truncatedNormalDraw(lower, upper, u[offset++]);
+      eta(index, i) = truncatedNormalDraw(lower, upper, u[offset++]);
   }
-}
-
-// Compute log(sum_i exp(logWeights[i])) with the log-sum-exp trick
-Scalar logSumExp(const Point& logWeights)
-{
-  const UnsignedInteger M = logWeights.getSize();
-  Scalar maxVal = logWeights[0];
-  for (UnsignedInteger i = 1; i < M; ++i)
-    if (logWeights[i] > maxVal) maxVal = logWeights[i];
-
-  Scalar sum = 0.0;
-  for (UnsignedInteger i = 0; i < M; ++i)
-    sum += std::exp(logWeights[i] - maxVal);
-
-  return maxVal + std::log(sum);
 }
 
 // Convert a uniform-draw count to a pool size, rejecting absurd values
@@ -296,7 +282,7 @@ Scalar mvnOrthantProbabilityCore(
   }
 
   // Particle system: M particles of dimension d
-  std::vector<Point> particles(M, Point(d, 0.0));
+  Sample particles(M, d);
   Point logWeights(M, 0.0);
 
   // Algorithm 3: Initialize first dimension
@@ -308,12 +294,12 @@ Scalar mvnOrthantProbabilityCore(
   // Take the M initial draws sequentially, outside parallel regions
   const Point initU(source.take(M));
   struct InitParticlesFunctor {
-    std::vector<Point>& particles_;
+    Sample& particles_;
     const TriangularMatrix& L_;
     const Point& a0_;
     const Point& b0_;
     const Point& u_;
-    InitParticlesFunctor(std::vector<Point>& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const Point& u)
+    InitParticlesFunctor(Sample& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const Point& u)
       : particles_(particles)
       , L_(L)
       , a0_(a0)
@@ -334,20 +320,20 @@ Scalar mvnOrthantProbabilityCore(
   for (UnsignedInteger t = 1; t < d; ++t)
   {
     // Compute normalized weights and ESS
-    const Scalar logSum = logSumExp(logWeights);
+    const Scalar logSum = SpecFunc::LogSumExp(logWeights);
     Scalar sumNormSq = 0.0;
     for (UnsignedInteger i = 0; i < M; ++i)
     {
       const Scalar w = std::exp(logWeights[i] - logSum);
       sumNormSq += w * w;
     }
-    const Scalar essRatio = 1.0 / (static_cast<Scalar>(M) * sumNormSq);
+    const Scalar essRatio = 1.0 / ((1.0 * M) * sumNormSq);
 
     // Resample if ESS falls below threshold alpha
     if (essRatio < alpha)
     {
       // Update marginal likelihood estimate
-      logZ += logSum - std::log(static_cast<Scalar>(M));
+      logZ += logSum - std::log((1.0 * M));
 
       // Normalize weights for resampling
       Point normWeights(M);
@@ -355,14 +341,17 @@ Scalar mvnOrthantProbabilityCore(
         normWeights[i] = std::exp(logWeights[i] - logSum);
 
       // Systematic resampling with a sequentially pre-taken draw
-      std::vector<UnsignedInteger> ancestors(M);
+      Indices ancestors(M);
       systematicResampling(normWeights, ancestors, source.take(1)[0]);
 
-      // Copy resampled particles
-      std::vector<Point> newParticles(M, Point(d, 0.0));
-      for (UnsignedInteger i = 0; i < M; ++i)
-        newParticles[i] = particles[ancestors[i]];
-      particles = newParticles;
+      // Copy resampled particles. Keep the temporary in its own scope so that
+      // the sample is not shared when the parallel Gibbs moves write into it.
+      {
+        Sample newParticles(M, d);
+        for (UnsignedInteger i = 0; i < M; ++i)
+          newParticles[i] = particles[ancestors[i]];
+        particles = newParticles;
+      }
 
       // Reset weights
       std::fill(logWeights.begin(), logWeights.end(), 0.0);
@@ -370,13 +359,13 @@ Scalar mvnOrthantProbabilityCore(
       // Gibbs moves to rejuvenate particles, using sequentially pre-taken draws
       const Point gibbsU(source.take(M * t));
       struct GibbsMoveFunctor {
-        std::vector<Point>& particles_;
+        Sample& particles_;
         const TriangularMatrix& L_;
         const Point& a0_;
         const Point& b0_;
         const UnsignedInteger t_;
         const Point& u_;
-        GibbsMoveFunctor(std::vector<Point>& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
+        GibbsMoveFunctor(Sample& particles, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
           : particles_(particles)
           , L_(L)
           , a0_(a0)
@@ -386,7 +375,7 @@ Scalar mvnOrthantProbabilityCore(
         void operator()(const TBBImplementation::BlockedRange<UnsignedInteger>& r) const {
           for (UnsignedInteger i = r.begin(); i != r.end(); ++i) {
             UnsignedInteger offset = i * t_;
-            gibbsMove(particles_[i], L_, a0_, b0_, t_, u_, offset);
+            gibbsMove(particles_, i, L_, a0_, b0_, t_, u_, offset);
           }
         }
       };
@@ -396,14 +385,14 @@ Scalar mvnOrthantProbabilityCore(
     // Extend to dimension t (Algorithm 3 inner loop), one pre-taken draw per particle
     const Point extendU(source.take(M));
     struct ExtendDimensionFunctor {
-      std::vector<Point>& particles_;
+      Sample& particles_;
       Point& logWeights_;
       const TriangularMatrix& L_;
       const Point& a0_;
       const Point& b0_;
       const UnsignedInteger t_;
       const Point& u_;
-      ExtendDimensionFunctor(std::vector<Point>& particles, Point& logWeights, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
+      ExtendDimensionFunctor(Sample& particles, Point& logWeights, const TriangularMatrix& L, const Point& a0, const Point& b0, const UnsignedInteger t, const Point& u)
         : particles_(particles)
         , logWeights_(logWeights)
         , L_(L)
@@ -432,8 +421,8 @@ Scalar mvnOrthantProbabilityCore(
   }
 
   // Final estimate: Z * (1/M) * sum(w_T)
-  const Scalar logSum = logSumExp(logWeights);
-  const Scalar logResult = logZ + logSum - std::log(static_cast<Scalar>(M));
+  const Scalar logSum = SpecFunc::LogSumExp(logWeights);
+  const Scalar logResult = logZ + logSum - std::log((1.0 * M));
   return SpecFunc::Clip01(std::exp(logResult));
 }
 
@@ -592,7 +581,7 @@ Scalar mvt_orthant_probability(
     sum += body.sum_;
     first = last;
   }
-  return SpecFunc::Clip01(sum / static_cast<Scalar>(N));
+  return SpecFunc::Clip01(sum / (1.0 * N));
 }
 
 Scalar mvt_orthant_probability(

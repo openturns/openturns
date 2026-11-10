@@ -17,9 +17,9 @@ covariance : :class:`~openturns.SquareMatrix`
 
 Notes
 -----
-The covariance model is built as follows. Let :math:`d` be the dimension of the square matrices.
+The covariance model is built as follows. Let :math:`\processDim` be the dimension of the square matrices.
 
-We consider a process :math:`X: \Omega \times \Rset \mapsto \Rset^d`.
+We consider a process :math:`X: \Omega \times \Rset \mapsto \Rset^{\processDim}`.
 
 We note :math:`(t_0,\dots, t_{N-1})` the vertices of :math:`\cM \subset \Rset` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` the collection of square matrices provided by the user.
 

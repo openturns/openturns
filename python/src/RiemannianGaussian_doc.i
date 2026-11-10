@@ -9,26 +9,26 @@ definite matrices.
 The Riemannian Gaussian distribution is defined on the set :math:`\mathcal{P}_n`
 of :math:`n\times n` symmetric positive definite matrices endowed with the
 affine-invariant metric. It is the pushforward of the centered Gaussian
-:math:`\mathcal{N}(\mathbf{0}, \boldsymbol{\Sigma})` of the tangent space
-at the Frechet mean :math:`\overline{\mathbf{X}}` through the exponential
+:math:`\mathcal{N}(\vect{0}, \boldsymbol{\Sigma})` of the tangent space
+at the Frechet mean :math:`\overline{\matr{X}}` through the exponential
 map. Its probability density function with respect to the Lebesgue measure
 on the flattened symmetric-matrix coordinates is:
 
 .. math::
 
-    f(\mathbf{X}) = \frac{1}{C} \exp\left(-\frac{1}{2}
-    \left\|\mathrm{log}_{\overline{\mathbf{X}}}(\mathbf{X})\right\|^2_\sigma
-    \right) \left|\det D\mathrm{log}_{\overline{\mathbf{X}}}(\mathbf{X})\right|
+    f(\matr{X}) = \frac{1}{C} \exp\left(-\frac{1}{2}
+    \left\|\mathrm{log}_{\overline{\matr{X}}}(\matr{X})\right\|^2_\sigma
+    \right) \left|\det D\mathrm{log}_{\overline{\matr{X}}}(\matr{X})\right|
 
-where :math:`\mathrm{log}_{\overline{\mathbf{X}}}(\mathbf{X})` is the
-logarithm map at the Frechet mean :math:`\overline{\mathbf{X}}`,
+where :math:`\mathrm{log}_{\overline{\matr{X}}}(\matr{X})` is the
+logarithm map at the Frechet mean :math:`\overline{\matr{X}}`,
 :math:`\|\cdot\|_\sigma` is the Mahalanobis norm of a tangent vector
-:math:`\mathbf{v}` along the covariance :math:`\boldsymbol{\Sigma}`:
+:math:`\vect{v}` along the covariance :math:`\boldsymbol{\Sigma}`:
 
 .. math::
 
-    \|\mathbf{v}\|^2_\sigma = \mathrm{vec}(\mathbf{v})^T
-    \boldsymbol{\Sigma}^{-1}\mathrm{vec}(\mathbf{v})
+    \|\vect{v}\|^2_\sigma = \mathrm{vec}(\vect{v})^T
+    \boldsymbol{\Sigma}^{-1}\mathrm{vec}(\vect{v})
 
 where :math:`\mathrm{vec}` flattens a tangent vector in Hilbert-Schmidt
 orthonormal coordinates: diagonal entries are kept as-is and
@@ -47,7 +47,7 @@ plus the expected log-Jacobian of the exponential map, evaluated by
 tensor Gauss-Hermite quadrature.
 
 The **mean** matrix is the Frechet mean
-:math:`\overline{\mathbf{X}}` and the **covariance** matrix is
+:math:`\overline{\matr{X}}` and the **covariance** matrix is
 :math:`\boldsymbol{\Sigma}`, both expressed in the coordinate system of
 the :math:`d`-dimensional tangent space.
 
@@ -103,7 +103,8 @@ R"RAW(Accessor to the Frechet mean matrix.
 Parameters
 ----------
 mean : :class:`~openturns.SymmetricMatrix`
-    Symmetric positive definite mean matrix.)RAW"
+    Symmetric positive definite mean matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -113,7 +114,8 @@ R"RAW(Accessor to the Frechet mean matrix.
 Returns
 -------
 mean : :class:`~openturns.SymmetricMatrix`
-    Symmetric positive definite mean matrix.)RAW"
+    Symmetric positive definite mean matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -124,7 +126,8 @@ Returns
 -------
 mean : :class:`~openturns.Point`
     Mean of the distribution, the upper-triangle flattened Frechet mean
-    matrix.)RAW"
+    matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -134,7 +137,8 @@ R"RAW(Accessor to the covariance matrix in the tangent space.
 Parameters
 ----------
 sigma : :class:`~openturns.SquareMatrix`
-    Covariance matrix.)RAW"
+    Covariance matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -144,7 +148,8 @@ R"RAW(Accessor to the covariance matrix in the tangent space.
 Returns
 -------
 sigma : :class:`~openturns.SquareMatrix`
-    Covariance matrix.)RAW"
+    Covariance matrix.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -155,7 +160,8 @@ Returns
 -------
 epsilon : float
     Relative tolerance for the validation of the positive definiteness of
-    the mean and covariance matrices.)RAW"
+    the mean and covariance matrices.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -166,4 +172,5 @@ Parameters
 ----------
 epsilon : float
     Relative tolerance for the validation of the positive definiteness of
-    the mean and covariance matrices.)RAW"
+    the mean and covariance matrices.
+)RAW"

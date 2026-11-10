@@ -21,7 +21,6 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
-#include <vector>
 #include "openturns/Indices.hxx"
 #include "openturns/LevelSetContinuation.hxx"
 #include "openturns/Exception.hxx"
@@ -325,7 +324,7 @@ LevelSetContinuation::Result LevelSetContinuation::traceDirection(const Point & 
                                                                   const Scalar minimumStep,
                                                                   Bool & closed,
                                                                   Scalar & length,
-                                                                  Collection<Point> & path) const
+                                                                  Sample & path) const
 {
   Result result;
   closed = false;
@@ -473,7 +472,7 @@ LevelSetContinuation::Status LevelSetContinuation::traceComponent(const Segment 
                                                                   const Scalar initialStep,
                                                                   const Scalar minimumStep,
                                                                   Scalar & density,
-                                                                  Collection<Point> & path) const
+                                                                  Sample & path) const
 {
   density = 0.0;
   Point direction(segment.second - segment.first);
@@ -528,9 +527,9 @@ LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collecti
   // hash and the connected components, while the stored sequences are Indices.
   // The hash key has one signed integer per coordinate, so that the same code
   // handles the curve in R^2, R^3 and R^4.
-  typedef std::vector<SignedInteger> HashKey;
+  typedef Collection<SignedInteger> HashKey;
   std::map<HashKey, Indices> buckets;
-  Collection<Point> nodes;
+  Sample nodes(0, inputDimension);
   Indices parent;
   Indices degree;
   const auto findRoot = [&](UnsignedInteger index) -> UnsignedInteger
@@ -570,7 +569,7 @@ LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collecti
       if (bucket == buckets.end())
         continue;
       for (const UnsignedInteger nodeIndex : bucket->second)
-        if ((nodes[nodeIndex] - point).norm() <= tolerance)
+        if ((Point(nodes[nodeIndex]) - point).norm() <= tolerance)
           return nodeIndex;
     }
     const UnsignedInteger nodeIndex = nodes.getSize();
@@ -622,7 +621,7 @@ LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collecti
   // fibre several times. After a component has been traced, its path samples
   // cover the whole actual fibre it belongs to; skip any fragment whose
   // projected seed is already on that path.
-  Collection<Point> tracedPoints;
+  Sample tracedPoints(0, inputDimension);
   const Scalar seedMergeTolerance = std::max(initialStep, 4.0 * endpointTolerance);
   for (const auto & component : components)
   {
@@ -636,8 +635,8 @@ LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collecti
     if (project(projectedSeed))
     {
       Bool alreadyTraced = false;
-      for (const Point & tracedPoint : tracedPoints)
-        if ((tracedPoint - projectedSeed).norm() <= seedMergeTolerance)
+      for (UnsignedInteger tracedIndex = 0; tracedIndex < tracedPoints.getSize(); ++tracedIndex)
+        if ((Point(tracedPoints[tracedIndex]) - projectedSeed).norm() <= seedMergeTolerance)
         {
           alreadyTraced = true;
           break;
@@ -646,7 +645,7 @@ LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collecti
         continue;
     }
     Scalar componentDensity = 0.0;
-    Collection<Point> componentPath;
+    Sample componentPath(0, inputDimension);
     const Status status = traceComponent(seed, initialStep,
                                          minimumStep, componentDensity,
                                          componentPath);
@@ -656,8 +655,7 @@ LevelSetContinuation::Result LevelSetContinuation::computeDensity(const Collecti
       return result;
     }
     density += componentDensity;
-    for (const Point & tracedPoint : componentPath)
-      tracedPoints.add(tracedPoint);
+    tracedPoints.add(componentPath);
   }
   result.status = SUCCESS;
   result.density = density;

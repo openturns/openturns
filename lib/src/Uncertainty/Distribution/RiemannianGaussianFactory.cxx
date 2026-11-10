@@ -69,7 +69,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Po
   try
   {
     const UnsignedInteger size = parameters.getSize();
-    const Scalar root = (std::sqrt(1.0 + 4.0 * static_cast<Scalar>(size)) - 1.0) / 2.0;
+    const Scalar root = (std::sqrt(1.0 + 4.0 * (1.0 * size)) - 1.0) / 2.0;
     const UnsignedInteger t = static_cast<UnsignedInteger>(std::round(root));
     // 64-bit products: t(t+1) overflows 32 bits for large garbage sizes
     if (static_cast<Unsigned64BitsInteger>(t) * (t + 1) != size)
@@ -132,13 +132,13 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
   // Find n >= 2 such that n*(n+1)/2 = d, by triangular inversion
   // (64-bit products guard against overflow on garbage dimensions)
   const Unsigned64BitsInteger discriminant = 1 + 8 * static_cast<Unsigned64BitsInteger>(d);
-  const UnsignedInteger nCandidate = static_cast<UnsignedInteger>((std::sqrt(static_cast<Scalar>(discriminant)) - 1.0) / 2.0);
+  const UnsignedInteger nCandidate = static_cast<UnsignedInteger>((std::sqrt((1.0 * discriminant)) - 1.0) / 2.0);
   if (static_cast<Unsigned64BitsInteger>(nCandidate) * (nCandidate + 1) / 2 != d || nCandidate < 2)
     throw InvalidArgumentException(HERE) << "Error: sample dimension " << d << " does not correspond to a symmetric matrix dimension";
   const UnsignedInteger n = nCandidate;
 
   // Step 1: Convert samples to symmetric matrices
-  std::vector<SymmetricMatrix> samples(size, SymmetricMatrix(n));
+  Collection<SymmetricMatrix> samples(size, SymmetricMatrix(n));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     UnsignedInteger idx = 0;
@@ -160,7 +160,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
   }
   for (UnsignedInteger r = 0; r < n; ++r)
     for (UnsignedInteger c = r; c < n; ++c)
-      mean(r, c) /= static_cast<Scalar>(size);
+      mean(r, c) /= (1.0 * size);
 
   // Ensure positive definite by eigenvalue correction
   SymmetricMatrix meanCopy(mean);
@@ -206,7 +206,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
     for (UnsignedInteger r = 0; r < n; ++r)
       for (UnsignedInteger c = r; c < n; ++c)
       {
-        vAverage(r, c) /= static_cast<Scalar>(size);
+        vAverage(r, c) /= (1.0 * size);
         normV += vAverage(r, c) * vAverage(r, c) * (c > r ? 2.0 : 1.0);
       }
     if (std::sqrt(normV) <= tolerance * (1.0 + scale))
@@ -242,7 +242,7 @@ RiemannianGaussian RiemannianGaussianFactory::buildAsRiemannianGaussian(const Sa
       for (UnsignedInteger c = 0; c < d; ++c)
         sigma(r, c) += vVec[r] * vVec[c];
   }
-  sigma = sigma * (1.0 / static_cast<Scalar>(size));
+  sigma = sigma * (1.0 / (1.0 * size));
 
   // Ensure the covariance is positive definite: clamp its eigenvalues to
   // twice the positive definiteness threshold of the RiemannianGaussian class

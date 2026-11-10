@@ -14,7 +14,7 @@ This allows one to create a higher dimension covariance model by combining model
 The dimension of each model in the collection does not necessarily have to be equal to 1. 
 The input dimension of each covariance model in the collection must be the same. 
 
-We consider the stochastic process :math:`X: \Omega \times\cD \mapsto \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+We consider the stochastic process :math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`.
 
 Its covariance function :math:`C : \cD \times \cD \rightarrow  \cS_d^+(\Rset)` is defined from the collection of covariance functions :math:`C_k: \cD \times \cD \mapsto  \cS_{d_k}^+(\Rset)` where :math:`d_1+\dots+d_k=d`, as follows:
 
@@ -27,9 +27,11 @@ Its covariance function :math:`C : \cD \times \cD \rightarrow  \cS_d^+(\Rset)` i
         0 & \dots & \dots &  C_K(\vect{s}, \vect{t})
         \end{array} \right)
 
-The amplitude of the covariance function is :math:`\Tr{\sigma} =(\Tr{\sigma}_{1}, \dots, \Tr{\sigma}_{K})` and each model :math:`C_k` is parameterized by its scale :math:`\vect{\theta}_k \in \Rset^n`.
+The amplitude of the covariance function is :math:`\Tr{\sigma} =(\Tr{\sigma}_{1}, \dots, \Tr{\sigma}_{K})` and each model :math:`C_k` is parameterized by its scale :math:`\vect{\theta}_k \in \Rset^{\domainDim}`.
 
-The method :math:`setScale(\vect{\theta})` updates the scale the following way. Let :math:`\vect{\theta}_k^0=(\theta_{k,1}^0,\hdots,\theta_{k,n}^0)` be the initial scale of the covariance model :math:`C_k`. After the update, :math:`C_k` has the scale :math:`\vect{\theta}_k=\left(\theta_1\rho_{k,1}^0,\hdots,\theta_n\rho_{k,n}^0\right)` where :math:`\rho_{k,j}^0=\dfrac{\theta^0_{k,j}}{\theta^0_{1,j}}`.
+The effective scale of the tensorized model, as returned by :meth:`getScale`, is the scale :math:`\vect{\theta}_1` of the first marginal model :math:`C_1`.
+
+The method :meth:`setScale` with argument :math:`\vect{\theta}` sets the scale of :math:`C_1` to :math:`\vect{\theta}` and rescales the other marginal models proportionally. Let :math:`\vect{\theta}_k=(\theta_{k,1},\hdots,\theta_{k,\domainDim})` be the scale of :math:`C_k` before the call. After the call, :math:`C_k` with :math:`k\geq 2` has the scale :math:`(\theta_1 \theta_{k,1}/\theta_{1,1},\hdots,\theta_{\domainDim} \theta_{k,\domainDim}/\theta_{1,\domainDim})`, so that the scale ratios between the marginal models are preserved.
 
 Examples
 --------
@@ -52,7 +54,7 @@ Create the tensorized model:
 
 >>> covarianceModel = ot.TensorizedCovarianceModel([myCov1, myCov2], scale)
 
-Fix the same scale to each model:
+Set the scale of the first marginal model to one:
 
 >>> covarianceModel.setScale([1.0] * inputDimension)
 )RAW"

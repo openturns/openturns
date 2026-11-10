@@ -13,23 +13,23 @@ Available constructors:
 Parameters
 ----------
 inputDimension : int
-    input dimension :math:`n`.
-    By default, the input dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
+    input dimension :math:`\domainDim`.
+    By default, the input dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`\domainDim=1`.
 scale : sequence of floats
-     Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+     Scale coefficient :math:`\vect{\theta}\in \Rset^{\domainDim}`.
 amplitude : sequence of positive floats
-    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^{\processDim}`.
 spatialCorrelation : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
-    By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
+    Correlation matrix :math:`\mat{R} \in \cS_{\processDim}^+([-1, 1])`
+    By default, :math:`\mat{R}= \mat{I}_{\processDim}` where the dimension :math:`\processDim` is deduced from the amplitude :math:`\vect{\sigma}`.
 spatialCovariance : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix :math:`C^{spatial} \in \cS_d^+(\Rset)`.
+    Covariance matrix :math:`C^{spatial} \in \cS_{\processDim}^+(\Rset)`.
 
 Notes
 -----
-We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^d`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^{\processDim}`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`.
 
-The *exponential* function is a stationary covariance function with dimension :math:`d\geq1`. It is defined by:
+The *exponential* function is a stationary covariance function with dimension :math:`\processDim\geq1`. It is defined by:
 
 .. math::
 

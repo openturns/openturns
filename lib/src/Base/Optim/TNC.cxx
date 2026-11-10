@@ -151,6 +151,7 @@ void TNC::run()
   result_ = OptimizationResult(getProblem());
 
   gradientCallsNumber_ = 0;
+  initialEvaluationNumber_ = getProblem().getObjective().getEvaluationCallsNumber();
 
   Scalar f = -1.0;
   t0_ = std::chrono::steady_clock::now();
@@ -222,6 +223,7 @@ void TNC::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_);
   result_.setGradientCallsNumber(gradientCallsNumber_);
+  result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_);
 
   // check for timeout
   std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
@@ -426,8 +428,9 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
 
-  // update result
-  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+  // update result (total evaluations including finite differences)
+  const UnsignedInteger evaluationNumber = algorithm->getProblem().getObjective().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_;
+  algorithm->result_.setCallsNumber(evaluationNumber);
   algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
@@ -437,11 +440,18 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   const Scalar timeDuration = std::chrono::duration<Scalar>(t1 - algorithm->t0_).count();
   if (!(algorithm->getMaximumTimeDuration() <= 0.0) && (timeDuration > algorithm->getMaximumTimeDuration()))
     returnValue = 1;
+  if (evaluationNumber >= algorithm->getMaximumCallsNumber())
+  {
+    int *p_nfeval = static_cast<int*>(algorithm->p_nfeval_);
+    if (p_nfeval)
+      *p_nfeval = algorithm->getMaximumCallsNumber();
+    returnValue = 1;
+  }
 
   // callbacks
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * evaluationNumber) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
   }
   if (algorithm->stopCallback_.first && algorithm->stopCallback_.first(algorithm->stopCallback_.second))
   {

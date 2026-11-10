@@ -52,7 +52,6 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const CovarianceModelCollec
   : CovarianceModelImplementation()
 {
   setCollection(collection);
-  scale_ = Point(inputDimension_, 1.0);
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
   for (UnsignedInteger i = getScale().getSize(); i < activeParameter_.getSize(); ++i)
@@ -104,6 +103,11 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   }
   // Set collection
   collection_ = collection;
+  // The effective scale of the tensorized model is the scale of its first
+  // marginal model. Mirror it in the inherited scale_ member so that
+  // getFullParameter() and the inherited finite-difference step sizes use
+  // the same scale as the marginal models.
+  scale_ = collection_[0].getScale();
 }
 
 TensorizedCovarianceModel::CovarianceModelCollection TensorizedCovarianceModel::getCollection() const
@@ -222,17 +226,27 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
   return gradient;
 }
 
+/** Hessian wrt s, for the first output component */
+SymmetricMatrix TensorizedCovarianceModel::partialHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // The covariance matrix is diagonal, so the (0,0) entry involves the first model only
+  return collection_[0].partialHessian(s, t);
+}
+
 /* Parameters accessor */
 void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
 {
   const UnsignedInteger parameterDimension = getFullParameter().getSize();
 
-  if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << getParameter().getDimension()
+  if (parameter.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: parameter dimension should be " << parameterDimension
         << " (got " << parameter.getDimension() << ")";
   Point scale(inputDimension_);
   Point amplitude(outputDimension_);
-  for (UnsignedInteger i = 0; i < scale_.getDimension(); ++i) scale[i] = parameter[i];
-  for (UnsignedInteger i = 0; i < amplitude_.getDimension(); ++i) amplitude[i] = parameter[i + inputDimension_ + 1];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) scale[i] = parameter[i];
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i) amplitude[i] = parameter[i + inputDimension_ + 1];
   // set parameters
   setScale(scale);
   setNuggetFactor(parameter[inputDimension_]);
@@ -242,20 +256,26 @@ void TensorizedCovarianceModel::setFullParameter(const Point & parameter)
 Point TensorizedCovarianceModel::getFullParameter() const
 {
   // Same convention : scale then amplitude parameters
-  Point result(0);
-  result.add(scale_);
+  Point result(getScale());
   result.add(nuggetFactor_);
-  result.add(amplitude_);
+  result.add(getAmplitude());
   return result;
 }
 
 Description TensorizedCovarianceModel::getFullParameterDescription() const
 {
   Description description(0);
-  for (UnsignedInteger j = 0; j < scale_.getDimension(); ++ j) description.add(OSS() << "scale_" << j);
+  for (UnsignedInteger j = 0; j < inputDimension_; ++ j) description.add(OSS() << "scale_" << j);
   description.add(OSS() << "nuggetFactor");
-  for (UnsignedInteger j = 0; j < amplitude_.getDimension(); ++ j) description.add(OSS() << "amplitude_" << j);
+  for (UnsignedInteger j = 0; j < outputDimension_; ++ j) description.add(OSS() << "amplitude_" << j);
   return description;
+}
+
+/* Scale accessor. The effective scale is the scale of the first marginal
+ * model: the other marginal models are rescaled relatively to it. */
+Point TensorizedCovarianceModel::getScale() const
+{
+  return collection_[0].getScale();
 }
 
 void TensorizedCovarianceModel::setScale(const Point & scale)
@@ -263,17 +283,27 @@ void TensorizedCovarianceModel::setScale(const Point & scale)
   if (scale.getDimension() != getInputDimension())
     throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, incompatible dimension of the scale vector. Expected scale of size = " << inputDimension_
                                          << ", vector size = " << scale.getDimension();
+  // Validate before changing the collection, so that a failed call leaves the
+  // model in its previous state.
+  for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+    if (!(scale[j] > 0.0))
+      throw InvalidArgumentException(HERE) << "In TensorizedCovarianceModel::setScale, the component " << j << " of scale=" << scale << " is non positive";
 
-  Point scale0(collection_[0].getScale());
-  collection_[0].setScale(scale);
-  for (UnsignedInteger i = 1; i < collection_.getSize(); ++i)
+  const Point scale0(getScale());
+  // Apply the setters to detached marginal copies and commit the collection
+  // and scale_ only once they have all succeeded: a marginal setter can throw
+  // (e.g. when a rescaled component underflows to zero) and must then leave
+  // the model unchanged.
+  CovarianceModelCollection updated(collection_);
+  updated[0].setScale(scale);
+  for (UnsignedInteger i = 1; i < updated.getSize(); ++i)
   {
-    Point newScale(collection_[i].getScale());
+    Point newScale(updated[i].getScale());
     for (UnsignedInteger j = 0; j < inputDimension_; ++j)
       newScale[j] *= scale[j] / scale0[j];
-    collection_[i].setScale(newScale);
+    updated[i].setScale(newScale);
   }
-  // Copy of scale but not used
+  collection_ = updated;
   scale_ = scale;
 }
 
@@ -296,7 +326,7 @@ void TensorizedCovarianceModel::setAmplitude(const Point & amplitude)
     }
     collection_[i].setAmplitude(localAmplitude);
   }
-  // Copy of amplitude but not used
+  // Mirror the amplitude returned by getAmplitude() and getFullParameter()
   amplitude_ = amplitude;
 }
 
@@ -370,6 +400,9 @@ void TensorizedCovarianceModel::load(Advocate & adv)
 {
   CovarianceModelImplementation::load(adv);
   adv.loadAttribute("collection_", collection_);
+  // The inherited scale_ member mirrors the first marginal scale: repair
+  // files saved when it was stored as an unused placeholder.
+  scale_ = collection_[0].getScale();
 }
 
 END_NAMESPACE_OPENTURNS

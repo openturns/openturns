@@ -4,7 +4,7 @@ R"RAW(Hermite specific orthonormal univariate polynomial family.
 For the :class:`~openturns.Normal` distribution :math:`\cN(0,1)`.
 
 Any sequence of orthogonal polynomials follows the three-term recurrence
-formula detailed in :ref:`orthonormal_polynomials`.
+formula detailed in :any:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Hermite polynomials come analytically and
 read for :math:`i \geq 0`:
@@ -51,4 +51,5 @@ X
 
 >>> polynomial_factory = ot.HermiteFactory(1.0, 2.0)
 >>> print(polynomial_factory)
-class=HermiteFactory measure=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1])RAW"
+class=HermiteFactory measure=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+)RAW"

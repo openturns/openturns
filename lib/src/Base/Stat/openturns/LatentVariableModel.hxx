@@ -57,6 +57,18 @@ public:
 #endif
   Scalar computeAsScalar(const Scalar z1, const Scalar z2) const override;
 
+  /** Gradient: not defined, the inputs are discrete levels */
+  Matrix partialGradient(const Point & s,
+                         const Point & t) const override;
+
+  /** Hessian: not defined, the inputs are discrete levels */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Gradient wrt parameters */
+  Matrix parameterGradient(const Point & s,
+                           const Point & t) const override;
+
   /** String converter */
   String __repr__() const override;
 

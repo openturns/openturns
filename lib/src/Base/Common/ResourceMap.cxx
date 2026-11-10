@@ -675,6 +675,8 @@ void ResourceMap::loadDefaultConfiguration()
   // SpecFunc parameters
   addAsScalar("SpecFunc-Precision", 2.0e-16);
   addAsUnsignedInteger("SpecFunc-MaximumIteration", 1000);
+  addAsScalar("SpecFunc-LauricellaTolerance", 1.0e-14);
+  addAsUnsignedInteger("SpecFunc-LauricellaMaximumDegree", 1024);
 
   // SymbolicParser parameters
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
@@ -1028,6 +1030,25 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12);
   addAsUnsignedInteger("AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64);
 
+  // BasisOrthonormalizationAlgorithm parameters //
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-DefaultDiscretization", 128);
+  addAsUnsignedInteger("BasisOrthonormalizationAlgorithm-MaximumTensorNodes", 1000000);
+  addAsScalar("BasisOrthonormalizationAlgorithm-Epsilon", 1.0e-11);
+
+  // GaussLPQuadrature parameters //
+  addAsUnsignedInteger("GaussLPQuadrature-AlphaS", 100);
+  addAsUnsignedInteger("GaussLPQuadrature-Margin", 10);
+  addAsUnsignedInteger("GaussLPQuadrature-Ngauss", 100);
+  addAsUnsignedInteger("GaussLPQuadrature-MaximumTensorNodes", 1000000);
+  addAsScalar("GaussLPQuadrature-Epsilon", 1.0e-5);
+  addAsBool("GaussLPQuadrature-ClusterPath", true);
+  addAsScalar("GaussLPQuadrature-MaximumAbsoluteError", 1.0e-12);
+  addAsScalar("GaussLPQuadrature-MaximumRelativeError", 1.0e-12);
+  addAsScalar("GaussLPQuadrature-MaximumObjectiveError", 1.0e-12);
+  addAsScalar("GaussLPQuadrature-MaximumConstraintError", 1.0e-12);
+  addAsString("GaussLPQuadrature-Solver", "choose");
+  addAsString("GaussLPQuadrature-FallbackSolver", "ipm");
+
   // LinearModelTest parameters //
   addAsScalar("LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5);
   addAsScalar("LinearModelTest-DefaultLevel", 0.05);
@@ -1224,13 +1245,25 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxAttempts", 10);
   addAsUnsignedInteger("ChristoffelSubsampleExperiment-MaxProjectionAttempts", 1000000);
 
+  // CumulativeDistributionNetwork parameters //
+  addAsUnsignedInteger("CumulativeDistributionNetwork-MaximumTerms", 1000000);
+
   // CompositeDistribution parameters //
   addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
 
   // Dirichlet parameters //
   addAsUnsignedInteger("Dirichlet-DefaultIntegrationSize", 50);
-  addAsUnsignedInteger("Dirichlet-DefaultSamplingSize", 500000);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumBoxDimension", 7);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumQuadratureDimension", 10);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumIntegerBeta", 128);
+  addAsUnsignedInteger("Dirichlet-CDFMaximumTensorNodes", 20000000);
+  addAsScalar("Dirichlet-CDFBoxTolerance", 1.0e-10);
+  addAsScalar("Dirichlet-CDFExtonMaximumCancellation", 1.0e4);
+  addAsScalar("Dirichlet-CDFUpperMaximumCancellation", 1.0e13);
+  addAsScalar("Dirichlet-CDFNormalMinimumTotal", 1.0e5);
+  addAsScalar("Dirichlet-CDFNormalMinimumShape", 100.0);
+  addAsScalar("Dirichlet-CDFNormalMinimumProbability", 1.0e-12);
 
   // DirichletFactory parameters //
   addAsScalar("DirichletFactory-ParametersEpsilon", 1.0e-12);

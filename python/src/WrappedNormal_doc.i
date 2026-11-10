@@ -7,16 +7,16 @@ R"RAW(Wrapped Normal distribution on the circle :math:`S^1` and the torus
     To use it, import the ``openturns.experimental`` submodule.
 
 The Wrapped Normal distribution is the distribution of
-:math:`\mathbf{X} = \mathbf{Z} \mod p`, where
-:math:`\mathbf{Z}\sim\mathcal{N}(\boldsymbol{\mu},\boldsymbol{\Sigma})` is a
+:math:`\vect{X} = \vect{Z} \mod p`, where
+:math:`\vect{Z}\sim\mathcal{N}(\boldsymbol{\mu},\boldsymbol{\Sigma})` is a
 multivariate normal random vector and :math:`p` is the common period of all
 coordinates. Its probability density function is:
 
 .. math::
 
-    f(\mathbf{x}) = \sum_{\mathbf{k}\in\mathbb{Z}^n}
-    \varphi_{\boldsymbol{\mu},\boldsymbol{\Sigma}}(\mathbf{x} +
-    p\mathbf{k})
+    f(\vect{x}) = \sum_{\vect{k}\in\mathbb{Z}^n}
+    \varphi_{\boldsymbol{\mu},\boldsymbol{\Sigma}}(\vect{x} +
+    p\vect{k})
 
 where :math:`\varphi_{\boldsymbol{\mu},\boldsymbol{\Sigma}}` is the PDF of
 the normal distribution.
@@ -71,7 +71,8 @@ R"RAW(Accessor to the mean vector.
 Parameters
 ----------
 mu : sequence of float
-    Mean vector, mapped onto the fundamental domain :math:`[-p/2,p/2]^n`.)RAW"
+    Mean vector, mapped onto the fundamental domain :math:`[-p/2,p/2]^n`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -81,7 +82,8 @@ R"RAW(Accessor to the mean vector.
 Returns
 -------
 mu : :class:`~openturns.Point`
-    Mean vector.)RAW"
+    Mean vector.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -91,7 +93,8 @@ R"RAW(Accessor to the covariance matrix.
 Parameters
 ----------
 sigma : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix of the underlying normal distribution.)RAW"
+    Covariance matrix of the underlying normal distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -101,7 +104,8 @@ R"RAW(Accessor to the covariance matrix.
 Returns
 -------
 sigma : :class:`~openturns.CovarianceMatrix`
-    Covariance matrix of the underlying normal distribution.)RAW"
+    Covariance matrix of the underlying normal distribution.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -111,7 +115,8 @@ R"RAW(Accessor to the maximum number of lattice terms for exact sum.
 Parameters
 ----------
 maxTerms : int
-    Maximum number of lattice terms for exact PDF sum (default: ``100000``).)RAW"
+    Maximum number of lattice terms for exact PDF sum (default: ``100000``).
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -121,7 +126,8 @@ R"RAW(Accessor to the maximum number of lattice terms for exact sum.
 Returns
 -------
 maxTerms : int
-    Maximum number of lattice terms for exact PDF sum.)RAW"
+    Maximum number of lattice terms for exact PDF sum.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -131,7 +137,8 @@ R"RAW(Accessor to the period.
 Parameters
 ----------
 period : float
-    Common period of the wrapped coordinates, :math:`p > 0`.)RAW"
+    Common period of the wrapped coordinates, :math:`p > 0`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -141,4 +148,5 @@ R"RAW(Accessor to the period.
 Returns
 -------
 period : float
-    Common period of the wrapped coordinates.)RAW"
+    Common period of the wrapped coordinates.
+)RAW"

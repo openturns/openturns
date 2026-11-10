@@ -11,11 +11,11 @@ Available constructors:
 Parameters
 ----------
 lambdaVect : sequence of float
-    The  :math:`(\lambda_1, \dots, \lambda_d)` parameter.
+    The  :math:`(\lambda_1, \dots, \lambda_{\processDim})` parameter.
 shiftVect : sequence of float
-    The  :math:`(\alpha_1, \dots, \alpha_d)` parameter. 
+    The  :math:`(\alpha_1, \dots, \alpha_{\processDim})` parameter.
 
-    Default is :math:`(\alpha_1, \dots, \alpha_d)=(0, \dots, 0)`.
+    Default is :math:`(\alpha_1, \dots, \alpha_{\processDim})=(0, \dots, 0)`.
 lambda : float
     The  :math:`\lambda` parameter in the univariate case.
 shift : float
@@ -26,7 +26,7 @@ shift : float
 
 Notes
 -----
-The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^d \rightarrow \Rset^d` writes for each component :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset`:
+The Box Cox transformation :math:`h_{\vect{\lambda}, \vect{\alpha}}: \Rset^{\processDim} \rightarrow \Rset^{\processDim}` writes for each component :math:`h_{\lambda_i, \alpha_i}: \Rset \rightarrow \Rset`:
 
 .. math::
 

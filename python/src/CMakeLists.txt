@@ -125,7 +125,6 @@ ot_add_python_module(func func_module.i
                       PointToFieldFunction.i PointToFieldFunction_doc.i
                       ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i
                       VertexValuePointToFieldFunction.i VertexValuePointToFieldFunction_doc.i
-                      MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
                       PointToPointEvaluation.i PointToPointEvaluation_doc.i
                       PointToPointConnection.i PointToPointConnection_doc.i
                       FieldToPointConnection.i FieldToPointConnection_doc.i
@@ -274,6 +273,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       OrdinalSumCopula.i OrdinalSumCopula_doc.i
                       BlockIndependentDistribution.i BlockIndependentDistribution_doc.i
                       JointDistribution.i JointDistribution_doc.i
+                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
                       BlockIndependentCopula.i BlockIndependentCopula_doc.i
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i
@@ -533,7 +533,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       UncertaintyMetaModelTemplateDefs.i
                    )
 ot_add_python_module(model_copula2 model_copula2_module.i
-                      CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i
                       PlackettCopula.i PlackettCopula_doc.i
                       PlackettCopulaFactory.i PlackettCopulaFactory_doc.i
                       MarshallOlkinCopula.i MarshallOlkinCopula_doc.i
@@ -556,6 +555,7 @@ ot_add_python_module(model_copula2 model_copula2_module.i
 
 ot_add_python_module(experimental experimental_module.i
                      ChristoffelDistribution.i ChristoffelDistribution_doc.i
+                     CumulativeDistributionNetworkFactory.i CumulativeDistributionNetworkFactory_doc.i
                      Kent.i Kent_doc.i
                      KentFactory.i KentFactory_doc.i
                      MarginalUniformOrderStatistics.i MarginalUniformOrderStatistics_doc.i
@@ -582,6 +582,10 @@ ot_add_python_module(experimental experimental_module.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
+                     BasisOrthonormalizationAlgorithm.i BasisOrthonormalizationAlgorithm_doc.i
+                     GaussLPQuadrature.i GaussLPQuadrature_doc.i
+                     GaussLPQuadratureRule.i GaussLPQuadratureRule_doc.i
+                     BasisOrthonormalizationFactory.i BasisOrthonormalizationFactory_doc.i
                      UniVariateDistributionPolynomialFactory.i UniVariateDistributionPolynomialFactory_doc.i
                      VonMisesFisher.i VonMisesFisher_doc.i
                      VonMisesFisherFactory.i VonMisesFisherFactory_doc.i
@@ -598,7 +602,8 @@ ot_add_python_module(experimental experimental_module.i
                      RiemannianGaussian.i RiemannianGaussian_doc.i
                      RiemannianGaussianFactory.i RiemannianGaussianFactory_doc.i
                      ExceptionPenalizedEvaluation.i ExceptionPenalizedEvaluation_doc.i
-		     ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
+                     ExceptionPenalizedProblem.i ExceptionPenalizedProblem_doc.i
+                     MemoizePointToFieldFunction.i MemoizePointToFieldFunction_doc.i
                      SlicedInverseRegression.i SlicedInverseRegression_doc.i
                      SlicedInverseRegressionResult.i SlicedInverseRegressionResult_doc.i
                      CirculantEmbeddingGaussianProcess.i CirculantEmbeddingGaussianProcess_doc.i
@@ -1119,7 +1124,7 @@ if (SPHINX_FOUND)
     set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_dlib)")
   endif ()
   if (NOT highs_FOUND)
-    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)")
+    set (SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_highs)|(plot_orthonormalization)|(plot_gauss_lp_quadrature)")
   endif ()
   if (NOT Pagmo_FOUND)
     set(SPHINX_GALLERY_IGNORE_PATTERN "${SPHINX_GALLERY_IGNORE_PATTERN}|(optimization_pagmo)|(optimization_penalized)")

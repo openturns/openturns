@@ -35,5 +35,6 @@ Examples
 
 >>> polynomial_factory = ot.ChebychevFactory(0.0, 2.0)
 >>> print(polynomial_factory)
-class=ChebychevFactory measure=class=Arcsine name=Arcsine dimension=1 a=0 b=2)RAW"
+class=ChebychevFactory measure=class=Arcsine name=Arcsine dimension=1 a=0 b=2
+)RAW"
 

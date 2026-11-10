@@ -142,6 +142,44 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
             myModel.computeAsScalar(1.0)
         with ott.assert_raises(Exception):
             myModel.computeAsScalar(1.0, 2.0)
+    if test_partial_grad and dimension == 1:
+        hess = myModel.partialHessian(x1, x2)
+        eps_hess = 1e-3
+        hessfd = ot.SymmetricMatrix(inputDimension)
+        for a in range(inputDimension):
+            # Diagonal term
+            x1_g = ot.Point(x1)
+            x1_d = ot.Point(x1)
+            x1_g[a] = x1_d[a] + eps_hess
+            x1_d[a] = x1_d[a] - eps_hess
+            hessfd[a, a] = (
+                myModel.computeAsScalar(x1_g, x2)
+                - 2.0 * myModel.computeAsScalar(x1, x2)
+                + myModel.computeAsScalar(x1_d, x2)
+            ) / (eps_hess * eps_hess)
+            # Cross terms
+            for b in range(a):
+                x1_pp = ot.Point(x1)
+                x1_pm = ot.Point(x1)
+                x1_mp = ot.Point(x1)
+                x1_mm = ot.Point(x1)
+                x1_pp[a] += eps_hess
+                x1_pp[b] += eps_hess
+                x1_pm[a] += eps_hess
+                x1_pm[b] -= eps_hess
+                x1_mp[a] -= eps_hess
+                x1_mp[b] += eps_hess
+                x1_mm[a] -= eps_hess
+                x1_mm[b] -= eps_hess
+                hessfd[a, b] = (
+                    myModel.computeAsScalar(x1_pp, x2)
+                    - myModel.computeAsScalar(x1_pm, x2)
+                    - myModel.computeAsScalar(x1_mp, x2)
+                    + myModel.computeAsScalar(x1_mm, x2)
+                ) / (4.0 * eps_hess * eps_hess)
+        ott.assert_almost_equal(
+            hess, hessfd, 1e-5, 1e-5, "in " + myModel.getClassName() + " hess"
+        )
 
 
 def test_scalar_model(myModel, x1=None, x2=None):
@@ -338,6 +376,22 @@ loadedModel = ot.CovarianceModel()
 loadedStudy.fillObject("model", loadedModel)
 assert loadedModel == ot.CovarianceModel(paramModel)
 os.remove("t_CovarianceModel_std_Spherical.xml")
+# Check the analytic partialGradient at additional points for these two models
+for model in (
+    ot.SphericalModel([1.2, 0.8], [2.0], 0.7),
+    ot.ExponentiallyDampedCosineModel([1.2, 0.8], [2.0], 0.5),
+):
+    for s, t in [([0.7, 0.9], [0.3, 0.4]), ([3.0, 3.0], [0.1, 0.4])]:
+        s = ot.Point(s)
+        t = ot.Point(t)
+        grad = model.partialGradient(s, t)
+        eps = 1e-6
+        gradfd = ot.Matrix(model.getInputDimension(), 1)
+        for j in range(model.getInputDimension()):
+            s_g = ot.Point(s)
+            s_g[j] += eps
+            gradfd[j, 0] = (model.computeAsScalar(s_g, t) - model.computeAsScalar(s, t)) / eps
+        ott.assert_almost_equal(grad, gradfd, 1e-4, 1e-4, "in " + model.getClassName() + " grad extra")
 
 # 7) FractionalBrownianMotionModel
 myModel = ot.FractionalBrownianMotionModel([2.0], [3.0], [0.25])
@@ -392,12 +446,12 @@ ott.assert_almost_equal(
 myAbsoluteExponential = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
 mySquaredExponential = ot.SquaredExponential([2.0] * inputDimension, [3.0])
 myGeneralizedExponential = ot.GeneralizedExponential([2.0] * inputDimension, [3.0], 1.5)
-# Build TensorizedCovarianceModel with scale = [1,..,1]
-# Tensorized ignore scales
+# Build TensorizedCovarianceModel from models with scale = [2,..,2]
+# The scale of the tensorized model is the scale of its first marginal model
 myModel = ot.TensorizedCovarianceModel(
     [myAbsoluteExponential, mySquaredExponential, myGeneralizedExponential]
 )
-ott.assert_almost_equal(myModel.getScale(), [1, 1], 0, 0)
+ott.assert_almost_equal(myModel.getScale(), [2.0, 2.0], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 test_model(myModel)
 
@@ -406,7 +460,46 @@ scale = [2.5, 1.5]
 myModel.setScale(scale)
 ott.assert_almost_equal(myModel.getScale(), [2.5, 1.5], 0, 0)
 ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
+# The other marginal models are rescaled relatively to the first one
+ott.assert_almost_equal(
+    myModel.getCollection()[1].getScale(), [2.5, 1.5], 1e-14, 1e-14
+)
+ott.assert_almost_equal(
+    myModel.getCollection()[2].getScale(), [2.5, 1.5], 1e-14, 1e-14
+)
 test_model(myModel)
+
+# The scale accessor is the effective scale of the first marginal model and
+# setParameter(getParameter()) must be a no-op (issue #3374)
+myModel = ot.TensorizedCovarianceModel(
+    [
+        ot.SquaredExponential([0.8, 1.7], [1.2]),
+        ot.MaternModel([0.9, 1.3], [0.9], 1.5),
+    ]
+)
+ott.assert_almost_equal(myModel.getScale(), [0.8, 1.7], 0, 0)
+s = [0.7, -0.4]
+t = [0.1, 0.3]
+covariance_ref = myModel(s, t)
+parameter = myModel.getParameter()
+myModel.setParameter(parameter)
+ott.assert_almost_equal(myModel(s, t), covariance_ref, 0, 0)
+ott.assert_almost_equal(myModel.getParameter(), parameter, 0, 0)
+ott.assert_almost_equal(
+    myModel.getCollection()[0].getScale(), [0.8, 1.7], 0, 0
+)
+# A rejected scale leaves the model unchanged
+with ott.assert_raises(Exception):
+    myModel.setScale([-0.8, 1.7])
+ott.assert_almost_equal(myModel.getScale(), [0.8, 1.7], 0, 0)
+ott.assert_almost_equal(
+    myModel.getCollection()[1].getScale(), [0.9, 1.3], 0, 0
+)
+# getFullParameter() and getParameter() expose the effective scale
+ott.assert_almost_equal(
+    myModel.getFullParameter(), [0.8, 1.7, 0.0, 1.2, 0.9], 0, 1e-12
+)
+ott.assert_almost_equal(myModel.getParameter(), [0.8, 1.7, 1.2, 0.9], 0, 0)
 
 # new test for tensorized covariance model
 output_dimension = 1  # 2 is ok
@@ -960,6 +1053,17 @@ tensorizedScaled = ot.TensorizedCovarianceModel(
     [2.0],
 )
 ott.assert_almost_equal(tensorizedScaled.getScale(), [2.0], 0, 0)
+# A marginal setter failure during setScale must leave the model unchanged:
+# rescaling the second marginal by 1e-200 underflows its scale to zero.
+tensorizedAtomic = ot.TensorizedCovarianceModel(
+    [ot.AbsoluteExponential([1.0]), ot.AbsoluteExponential([1.0e-200])]
+)
+with ott.assert_raises(Exception):
+    tensorizedAtomic.setScale([1.0e-200])
+ott.assert_almost_equal(tensorizedAtomic.getScale(), [1.0], 0, 0)
+ott.assert_almost_equal(
+    tensorizedAtomic.getCollection()[1].getScale(), [1.0e-200], 0, 0
+)
 assert len(repr(tensorized2D)) > 0
 assert len(str(tensorized2D)) > 0
 assert tensorized2D == ot.TensorizedCovarianceModel(

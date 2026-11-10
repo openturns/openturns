@@ -5,6 +5,10 @@ R"RAW(Multivariate hypergeometric factory.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
+See also
+--------
+openturns.DistributionFactory, MultivariateHypergeometric
+
 Notes
 -----
 The parameters :math:`N` and :math:`(c_1, \dots, c_d)` are estimated from a
@@ -25,10 +29,7 @@ that :math:`\sum_{i=1}^d c_i \geq N` is selected, while the unobserved
 categories are set to :math:`c_i = 0`.
 
 Only integer samples with a constant row sum are accepted.
-
-See also
---------
-openturns.DistributionFactory, MultivariateHypergeometric)RAW"
+)RAW"
 
 // ---------------------------------------------------------------------
 

@@ -16,6 +16,10 @@ Bibliography
 .. [acklam2017] Acklam P.J.
     *Acklam's algorithm for the inverse normal cdf*, 2017.
     https://stackedboxes.org/2017/05/01/acklams-normal-quantile-function/
+.. [allen1974] Allen, D. M. (1974).
+    *The relationship between variable selection and data augmentation and a method for prediction.*
+    Technometrics, 16(1), 125-127.
+    `doi <https://doi.org/10.1080/00401706.1974.10489157>`__
 .. [amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
@@ -180,6 +184,9 @@ Bibliography
 .. [ernst2012] Ernst, O. G., Mugler, A., Starkloff, H. J., & Ullmann, E. (2012).
     *On the convergence of generalized polynomial chaos expansions.*
     ESAIM: Mathematical Modelling and Numerical Analysis, 46(2), 317-339.
+.. [exton1976] Exton, H. (1976).
+    *Multiple Hypergeometric Functions and Applications.*
+    Ellis Horwood, Chichester.
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [faraway2014] Faraway, J. J. (2014). *Linear models with R*. Second Edition CRC press.
@@ -231,12 +238,21 @@ Bibliography
 .. [golub1969] Golub, G. H., Welsch, J. H. (1969).
     *Calculation of Gauss quadrature rules.*
     Mathematics of Computation, 23(106), 221-230.
+.. [gouda2005] Gouda, A. A. E. M. (2005).
+    *Probability estimation and its applications.*
+    PhD thesis, Budapest University of Technology and Economics.
+    `pdf <https://doktori.math.bme.hu/gouda.pdf>`__
 .. [ginsbourger2018] Ginsbouger, D., 2018 *Sequential Design of Computer Experiments*,
     Wiley StatsRef: Statistics Reference Online, Wiley
 .. [ginsbourger2025] Ginsbouger, D., & Schärer, C. (2025).
     *Fast calculation of Gaussian Process Multiple-Fold Cross-Validation Residuals and their Covariances*,
     Journal of Computational and Graphical Statistics, 34:1, 1-14.
     `pdf <https://www.tandfonline.com/doi/pdf/10.1080/10618600.2024.2353633>`__
+.. [haberstich2022] Haberstich, C., Nouy, A. and Perrin, G. (2022).
+    *Boosted optimal weighted least-squares.*
+    Mathematics of Computation, 91(335), 1281-1315.
+    doi:10.1090/mcom/3710
+    `pdf <https://arxiv.org/abs/1912.07075>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -268,12 +284,20 @@ Bibliography
 .. [hough2009] Hough, J. B., Krishnapur, M., Peres, Y. and Virág, B. (2009).
     *Zeros of Gaussian analytic functions and determinantal point processes.*
     University Lecture Series, vol. 51, American Mathematical Society.
+.. [huang2011] Huang J.C., Frey B.J., *Cumulative distribution networks and the
+    derivative-sum-product algorithm: models and inference for cumulative
+    distribution functions on graphs*,
+    Journal of Machine Learning Research, 12(10):301-348, 2011.
+    `pdf <https://jmlr.org/papers/volume12/huang11a/huang11a.pdf>`__
 .. [iooss2015] Iooss B., Lemaître P. (2015) *A review on global sensitivity
     analysis methods.* In: Meloni C., Dellino G. (eds) Uncertainty management in Simulation-Optimization of Complex Systems: Algorithms and Applications, Springer.
     `pdf <https://arxiv.org/pdf/1404.2405>`__
 .. [jackson1991] Jackson, J. E. (1991).
     *A user’s guide to principal components.*
     John Wiley & Sons.
+.. [jakeman2018] Jakeman, J.D. and Narayan, A., *Generation and application of multivariate
+    polynomial quadrature rules*, Computer Methods in Applied Mechanics and Engineering,
+    338:134-161, 2018.
 .. [jakeman2019] Jakeman J., Franzelin F., Narayan A., Eldred M., Pflüger D. (2019)
     *Polynomial chaos expansions for dependent random variables*,
     Computer Methods in Applied Mechanics and Engineering, 351, pp.643-666.
@@ -349,9 +373,18 @@ Bibliography
 .. [koehler1996] J.R. Koehler and A.B. Owen. *Computer experiments. In S. Ghosh
     and C.R. Rao, editors, Design and analysis of experiments,
     volume 13 of Handbook of statistics.* Elsevier, 1996.
+.. [koller2009] Koller D., Friedman N., *Probabilistic graphical models:
+    principles and techniques*, MIT Press, 2009.
+.. [kotz2000] Kotz, S., Balakrishnan, N., & Johnson, N. L. (2000).
+    *Continuous Multivariate Distributions, Volume 1: Models and Applications.*
+    John Wiley & Sons.
 .. [koutsourelakis2004] Koutsourelakis, H. Pradlwarter, G. Schueller,
     *Reliability of structures in high dimensions, part i: algorithms and applications*,
     Probabilistic Engineering Mechanics 19 (4) (2004) 409–417
+.. [lauricella1893] Lauricella, G. (1893).
+    *Sulle funzioni ipergeometriche a piu variabili.*
+    Rendiconti del Circolo Matematico di Palermo, 7, 111-158.
+    `doi <https://doi.org/10.1007/BF03012437>`__
 .. [li1991] Li, K C. *Sliced Inverse Regression for Dimension Reduction*,
     Journal of the American Statistical Association, 86, 316-342, 1991.
     `pdf <https://escholarship.org/content/qt3mw1p0mb/qt3mw1p0mb.pdf>`__
@@ -489,6 +522,12 @@ Bibliography
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
     http://ab-initio.mit.edu/nlopt
+.. [nouymichel2025] Nouy, A. and Michel, B. (2025).
+    *Weighted least-squares approximation with determinantal point processes
+    and generalized volume sampling.*
+    The SMAI Journal of Computational Mathematics, 11, 1-36.
+    doi:10.5802/smai-jcm.117
+    `pdf <https://arxiv.org/abs/2312.14057>`__
 .. [novak1999] Novak, E., & Ritter, K. (1999).
     Simple cubature formulas with high polynomial exactness.
     Constructive approximation, 15, 499-522.
@@ -548,6 +587,8 @@ Bibliography
 .. [rubinstein2017] Rubinstein, R. Y., & Kroese, D. P. (2017). *Simulation and the Monte Carlo method.* John Wiley & Sons.
    `pdf <https://kgut.ac.ir/useruploads/1509987964985oqk.pdf>`__
 .. [rudin1987] Rudin, W. *Real and complex analysis* 1987.
+.. [ryu2015] Ryu, E.K. and Boyd, S.P., *Extensions of Gauss Quadrature Via Linear Programming*,
+    Foundations of Computational Mathematics, 15(4):953-971, 2015.
 .. [saltelli1999] Saltelli, A., Tarantola, S. and Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
@@ -636,6 +677,11 @@ Bibliography
 .. [townsend2016] Townsend, A., Trogdon, T., Olver, S. (2016).
     *Fast computation of Gauss quadrature nodes and weights on the whole real line.*
     IMA Journal of Numerical Analysis, 36(2), 802-824.
+.. [trunschkenouy2025] Trunschke, P. and Nouy, A. (2025).
+    *Optimal sampling for least squares approximation with general dictionaries.*
+    Foundations of Computational Mathematics, 25(6), 1975-2034.
+    doi:10.1007/s10208-025-09738-2
+    `pdf <https://arxiv.org/abs/2407.07814>`__
 .. [vaart2000] Van der Vaart, A. W. (2000). *Asymptotic statistics*. Cambridge university press.
 .. [suzuki2020] Suzuki, J. (2020). *Statistical Learning with Math and R*. Springer, Berlin.
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*

@@ -5,6 +5,11 @@
  *
  *  Implemented with the OpenTURNS Matrix and LAPACK backend.
  *
+ *  The workspaces use the OpenTURNS collection types, so that a Point is a
+ *  contiguous Scalar buffer and an Indices is a contiguous index buffer. The
+ *  only std::vector left is the LAPACK integer work array, which requires the
+ *  platform int ABI.
+ *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
@@ -30,7 +35,6 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/HODLRMatrixImplementation.hxx"
 
-#include <vector>
 #include <functional>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -77,7 +81,7 @@ public:
   HODLRCorrectedEvaluator(Pointer<const HODLREntryEvaluator> original,
                            UnsignedInteger offset,
                            UnsignedInteger size,
-                           const std::vector<Correction>& corrections)
+                           const Collection<Correction>& corrections)
     : original_(original)
     , offset_(offset)
     , size_(size)
@@ -136,16 +140,16 @@ public:
   }
 
   const Pointer<const HODLREntryEvaluator> getOriginal() const { return original_; }
-  const std::vector<Correction>& getCorrections() const { return corrections_; }
+  const Collection<Correction>& getCorrections() const { return corrections_; }
   UnsignedInteger getOffset() const { return offset_; }
   UnsignedInteger getSizeLocal() const { return size_; }
-  UnsignedInteger getNumCorrections() const { return corrections_.size(); }
+  UnsignedInteger getNumCorrections() const { return corrections_.getSize(); }
 
 private:
   Pointer<const HODLREntryEvaluator> original_;  // ALWAYS root original
   UnsignedInteger offset_;
   UnsignedInteger size_;
-  std::vector<Correction> corrections_;
+  Collection<Correction> corrections_;
 
   // Friend declarations for internal access
   friend class HODLRNode;
@@ -208,7 +212,7 @@ public:
   static void recompressLowRank(Matrix& Uout, Matrix& Vout,
       UnsignedInteger startRow, UnsignedInteger nRows,
       UnsignedInteger startCol, UnsignedInteger nCols,
-      const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+      const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
       Scalar tolerance);
 
   Scalar getLogDeterminant() const { return logDet_; }
@@ -265,11 +269,11 @@ private:
       UnsignedInteger startCol, UnsignedInteger nCols,
       Scalar tol, Matrix& Uout, Matrix& Vout);
   void factorizeLeafCholesky();
-  void factorizeLeafCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+  void factorizeLeafCholesky(const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
                              bool rebuildStructure = true);
   void factorizeLeafCholeskyCorrected(const Matrix& K, const Matrix& U1, Scalar lambda,
-                                      const std::vector<HODLRCorrectedEvaluator::Correction>& corrections);  // Bypass evaluator, use dgemm correction
-  void computeCholesky(const std::vector<HODLRCorrectedEvaluator::Correction>& corrections,
+                                      const Collection<HODLRCorrectedEvaluator::Correction>& corrections);  // Bypass evaluator, use dgemm correction
+  void computeCholesky(const Collection<HODLRCorrectedEvaluator::Correction>& corrections,
                        bool rebuildStructure = true);
   void applyInverseFactor(Matrix& x) const;  // L^{-1} * x for HODLR Cholesky factor L
   void applyInverseFactorTranspose(Matrix& x) const;  // L^{-T} * x for HODLR Cholesky factor L

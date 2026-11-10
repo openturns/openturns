@@ -592,7 +592,7 @@ Point CompositeDistribution::getSingularities() const
   // excluded.
   const UnsignedInteger size = values_.getSize();
   if (size <= 2) return Point(0);
-  std::vector<Scalar> singularities;
+  Point singularities;
   for (UnsignedInteger i = 1; i < size - 1; ++i)
   {
     Bool isDirectionChange = (increasing_[i - 1] != increasing_[i]);
@@ -611,7 +611,7 @@ Point CompositeDistribution::getSingularities() const
     {
       // If gradient cannot be computed, fall back to direction change only
     }
-    if (isDirectionChange || isStationary) singularities.push_back(values_[i]);
+    if (isDirectionChange || isStationary) singularities.add(values_[i]);
   }
   std::sort(singularities.begin(), singularities.end());
   return Point(singularities.begin(), singularities.end());

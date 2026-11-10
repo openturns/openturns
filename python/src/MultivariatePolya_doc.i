@@ -29,6 +29,10 @@ total : float, :math:`Q \geq \sum_{i = 1}^d \alpha_i`
 
     Default value is :math:`\sum_{i = 1}^d \alpha_i` (classical case with empty rest).
 
+See Also
+--------
+openturns.Multinomial
+
 Notes
 -----
 
@@ -50,7 +54,7 @@ tracked category :math:`\vect{X} = (X_1, \ldots, X_d)` is defined by:
 
 .. math::
 
-    \Prob{\vect{X} = \vect{x}} = \frac{N!}{\mathrm{Po}(Q, N; c)} \left[\prod_{i = 1}^d \frac{\mathrm{Po}(\alpha_i, x_i; c)}{x_i!}\right] \frac{\mathrm{Po}(Q - q, N - s; c)}{(N - s)!}\mathbf{1}_{\vect{x} \in \cS}
+    \Prob{\vect{X} = \vect{x}} = \frac{N!}{\mathrm{Po}(Q, N; c)} \left[\prod_{i = 1}^d \frac{\mathrm{Po}(\alpha_i, x_i; c)}{x_i!}\right] \frac{\mathrm{Po}(Q - q, N - s; c)}{(N - s)!}\vect{1}_{\vect{x} \in \cS}
 
 where :math:`q = \sum_{i = 1}^d \alpha_i`, :math:`s = \sum_{i = 1}^d x_i`.
 When :math:`c = 0` this PMF degenerates into
@@ -107,10 +111,6 @@ keys:
 Sampling is based on the Dirichlet-compound representation of the distribution,
 see the :class:`~openturns.Gamma` distribution.
 
-See Also
---------
-openturns.Multinomial
-
 Examples
 --------
 Create a distribution:
@@ -159,7 +159,8 @@ R"RAW(Accessor to the number of draws parameter :math:`N`.
 Parameters
 ----------
 N : int, :math:`N \geq 1`
-    The number of draws :math:`N`.)RAW"
+    The number of draws :math:`N`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -169,7 +170,8 @@ R"RAW(Accessor to the concentration parameters :math:`\vect{\alpha}`.
 Returns
 -------
 alpha : :class:`~openturns.Point`
-    The concentration parameters of each category :math:`\vect{\alpha}`.)RAW"
+    The concentration parameters of each category :math:`\vect{\alpha}`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -180,7 +182,8 @@ Parameters
 ----------
 alpha : sequence of float, :math:`\alpha_i > 0`, :math:`\sum_{i = 1}^d \alpha_i \leq Q`
     The concentration parameters of each tracked category :math:`\vect{\alpha}`
-    (all strictly positive, with sum less or equal to the total).)RAW"
+    (all strictly positive, with sum less or equal to the total).
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -190,7 +193,8 @@ R"RAW(Accessor to the total concentration :math:`Q`.
 Returns
 -------
 total : float
-    The total concentration :math:`Q`.)RAW"
+    The total concentration :math:`Q`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -200,7 +204,8 @@ R"RAW(Accessor to the total concentration :math:`Q`.
 Parameters
 ----------
 total : float, :math:`Q \geq \sum_{i = 1}^d \alpha_i`
-    The total concentration :math:`Q`.)RAW"
+    The total concentration :math:`Q`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -222,7 +227,8 @@ Parameters
 c : float, :math:`c \geq 0`
     The reinforcement parameter :math:`c`.
 
-A value equal to 0 gives the degenerate multinomial member of the family.)RAW"
+A value equal to 0 gives the degenerate multinomial member of the family.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -247,7 +253,8 @@ Parameters
 eta : float, :math:`0 \leq eta < 1`
     The maximum absolute error in the Poisson summation-based CDF computation.
 
-A value of 0 turns the error control off.)RAW"
+A value of 0 turns the error control off.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -280,4 +287,5 @@ smallA : float, :math:`smallA \geq 0`
     binomial distribution.
 
 The default value comes from the ``MultivariatePolya-smallA``
-:class:`~openturns.ResourceMap` key, equal to :math:`10.0`.)RAW"
+:class:`~openturns.ResourceMap` key, equal to :math:`10.0`.
+)RAW"

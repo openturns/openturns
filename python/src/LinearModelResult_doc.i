@@ -125,7 +125,8 @@ R"RAW(Accessor to the coefficients of the linear model.
 Returns
 -------
 coefficients : :class:`~openturns.Point`
-    The estimated of the coefficients :math:`\hat{\vect{a}}`.)RAW"
+    The estimated of the coefficients :math:`\hat{\vect{a}}`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -183,7 +184,8 @@ The residuals sample is :math:`(\varepsilon_i)_{1 \leq i \leq \sampleSize}` defi
 Returns
 -------
 sampleResiduals : :class:`~openturns.Sample`
-    The sample of the residuals.)RAW"
+    The sample of the residuals.
+)RAW"
 
 // ---------------------------------------------------------------------
 

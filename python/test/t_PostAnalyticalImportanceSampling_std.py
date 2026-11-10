@@ -39,17 +39,15 @@ myAlgo.run()
 # the previous FORM result
 formResult = myAlgo.getResult()
 mySamplingAlgo = ot.PostAnalyticalImportanceSampling(formResult)
-print("FORM probability= %.11g" % formResult.getEventProbability())
+ott.assert_almost_equal(formResult.getEventProbability(), 0.15642741974, 1.0e-6, 1.0e-6)
 mySamplingAlgo.setMaximumOuterSampling(250)
 mySamplingAlgo.setBlockSize(4)
 mySamplingAlgo.setMaximumCoefficientOfVariation(0.1)
 
-print("PostAnalyticalImportanceSampling=", mySamplingAlgo)
 
 mySamplingAlgo.run()
+ott.assert_almost_equal(mySamplingAlgo.getResult().getProbabilityEstimate(), 0.1533152, 1.0e-4, 1.0e-4)
 
-# Stream out the result
-print("PostAnalyticalImportanceSampling result=", mySamplingAlgo.getResult())
 
 # Ticket #3210: Strange differences between PostAnalyticalControlledImportanceSampling and PostAnalyticalImportanceSampling
 

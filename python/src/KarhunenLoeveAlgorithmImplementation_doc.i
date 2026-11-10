@@ -15,8 +15,8 @@ The Karhunen-Loeve decomposition enables to build some finite approximations
 of stochastic processes which are optimal with respect to the :math:`L^2` norm
 (see [sullivan2015]_ page 223).
 
-We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_d(\Rset)` is a covariance
-function defined on :math:`\cD \in \Rset^n`, continuous at :math:`\vect{0}`. 
+We suppose that :math:`C:\cD \times \cD \rightarrow  \cS^+_{\processDim}(\Rset)` is a covariance
+function defined on :math:`\cD \subset \Rset^{\domainDim}`, continuous at :math:`\vect{0}`.
 
 The class :class:`~openturns.KarhunenLoeveAlgorithm` enables to determine the solutions
 of the second kind Fredholm equation associated to  :math:`C`, ie to find the
@@ -31,7 +31,7 @@ of the second kind Fredholm equation associated to  :math:`C`, ie to find the
 where :math:`(\lambda_k)_{k \geq 1}` is a nonincreasing sequence of nonnegative values (the **eigenvalues**)
 and :math:`(\vect{\varphi}_k)_{k \geq 1}` the   associated sequence of **eigenfunctions**,
 normalized by :math:`\int_{\cD}\|\vect{\varphi}_k(\vect{s})\|^2\di{\vect{s}}=1`.
-They form an Hilbertian basis of :math:`L^2(\cD, \Rset^d)`.
+They form an Hilbertian basis of :math:`L^2(\cD, \Rset^{\processDim})`.
 
 
 The Mercer theorem shows that the covariance function  :math:`C` is:
@@ -71,7 +71,7 @@ We search the solutions of type:
 
     \tilde{\vect{\varphi}}_k(\vect{t})=\sum_{p=1}^{P} \vect{\phi}_{pk}\theta_p(\vect{t})
 
-where :math:`\vect{\phi}_{pk} \in \Rset^d`. We note:
+where :math:`\vect{\phi}_{pk} \in \Rset^{\processDim}`. We note:
 
 .. math::
 
@@ -83,7 +83,7 @@ where :math:`\vect{\phi}_{pk} \in \Rset^d`. We note:
             \dots \\
             \vect{\phi}_{Pk}
           \end{array}
-        \right) \in \Rset^{Pd}
+        \right) \in \Rset^{P\processDim}
      \end{align*}
 
 and :math:`\mat{\vect{\Phi}} = (\vect{\Phi}_1\, |\, \dots \, | \vect{\Phi}_K)` the
@@ -95,7 +95,7 @@ The approximated Fredholm problem is for all :math:`k \geq 1`:
 
    \int_{\cD} \mat{C}(\vect{s},\vect{t}) \tilde{\vect{\varphi}}_k(\vect{t})\,  d\vect{t} = \lambda_k   \tilde{\vect{\varphi}}_k(\vect{s}) \quad  \forall \vect{s} \in \cD
 
-which enables to define the **residual function** :math:`\vect{r}: \cD \rightarrow \Rset^d` defined by
+which enables to define the **residual function** :math:`\vect{r}: \cD \rightarrow \Rset^{\processDim}` defined by
 
 .. math::
     :label: fredholmApprox

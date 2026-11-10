@@ -1,6 +1,10 @@
 %feature("docstring") OT::MemoizePointToFieldFunction
 "Point to field function which caches its evaluations.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 When this function is evaluated, it calls the
 :class:`~openturns.PointToFieldFunction` passed as argument, and stores
 the input :class:`~openturns.Point` with the resulting field values.
@@ -16,15 +20,16 @@ function : :class:`~openturns.PointToFieldFunction`
 
 See also
 --------
-PointToFieldFunction, MemoizeFunction
+openturns.PointToFieldFunction, openturns.MemoizeFunction
 
 Examples
 --------
 
 >>> import openturns as ot
+>>> import openturns.experimental as otexp
 >>> mesh = ot.RegularGrid(0.0, 1.0, 2)
 >>> f = ot.PointToFieldFunction(ot.VertexValuePointToFieldFunction(ot.SymbolicFunction(['t'], ['t']), mesh))
->>> f = ot.MemoizePointToFieldFunction(f)
+>>> f = otexp.MemoizePointToFieldFunction(f)
 >>> print(f([]))
     [ y0 ]
 0 : [ 0  ]

@@ -13,46 +13,84 @@ The assembly, factorization and regularization behavior is controlled by the
 following :class:`~openturns.ResourceMap` keys:
 
 .. list-table::
-   :widths: 50 50
+   :widths: 30 15 15 40
    :header-rows: 1
 
    * - Key
+     - Type
+     - Default value
      - Description
-   * - ``HODLRMatrix-DenseThreshold`` (``UnsignedInteger``, default: ``256``)
+   * - ``HODLRMatrix-DenseThreshold``
+     - ``UnsignedInteger``
+     - ``256``
      - Leaf size below which the dense fallback is used.
-   * - ``HODLRMatrix-RegularizationEpsilon`` (``Scalar``, default: ``1.0e-7``)
+   * - ``HODLRMatrix-RegularizationEpsilon``
+     - ``Scalar``
+     - ``1.0e-7``
      - Initial regularization shift.
-   * - ``HODLRMatrix-FactorizationIterations`` (``UnsignedInteger``, default: ``20``)
+   * - ``HODLRMatrix-FactorizationIterations``
+     - ``UnsignedInteger``
+     - ``20``
      - Maximum outer regularization attempts.
-   * - ``HODLRMatrix-Nugget`` (``Scalar``, default: ``0.0``)
+   * - ``HODLRMatrix-Nugget``
+     - ``Scalar``
+     - ``0.0``
      - Extra nugget added at assembly on top of the model nugget, biasing every solve by its ratio to the smallest eigenvalue; keep at ``0.0`` unless the leaves need stabilization.
-   * - ``HODLRMatrix-MaxRegularization`` (``Scalar``, default: ``1.0``)
+   * - ``HODLRMatrix-MaxRegularization``
+     - ``Scalar``
+     - ``1.0``
      - Soft cap for the geometric shift escalation.
-   * - ``HODLRMatrix-RecompressCorrections`` (``Bool``, default: ``True``)
+   * - ``HODLRMatrix-RecompressCorrections``
+     - ``Bool``
+     - ``True``
      - Recompress the Schur-complement corrections.
-   * - ``HODLRMatrix-CompressionMethod`` (``String``, default: ``AcaPartial``)
+   * - ``HODLRMatrix-CompressionMethod``
+     - ``String``
+     - ``AcaPartial``
      - ACA variant for the off-diagonal blocks, ``AcaPartial`` (max-element pivots) or ``AcaRandom`` (hmat-oss random-pivot scheme, usually lower ranks and smaller constants).
-   * - ``HODLRMatrix-ParallelAssembly`` (``Bool``, default: ``False``)
+   * - ``HODLRMatrix-ParallelAssembly``
+     - ``Bool``
+     - ``False``
      - Build independent child subtrees concurrently (results deterministic except with ``AcaRandom``, whose RNG draws then follow the task schedule). It currently buys almost nothing: with the process pinned to eight performance cores, 1, 2, 4 and 8 threads give 15.9 s to 16.2 s of assembly on a 4D cell, that is no speedup at all. The residual update of the ACA is a single matrix-vector product per pivot and cannot be split, and the tree parallelism is two children per node, so the only parallel share left is the kernel evaluations. It is kept because it is correct and because a future change to the assembly may make it pay, not because it currently does.
-   * - ``HODLRMatrix-ProfileFactorization`` (``Bool``, default: ``False``)
+   * - ``HODLRMatrix-ProfileFactorization``
+     - ``Bool``
+     - ``False``
      - Print per-block factorization timings.
-   * - ``HODLRMatrix-RegularizationFactor`` (``Scalar``, default: ``2.0``)
+   * - ``HODLRMatrix-RegularizationFactor``
+     - ``Scalar``
+     - ``2.0``
      - Geometric factor of the shift escalation.
-   * - ``HODLRMatrix-RegularizationAttempts`` (``UnsignedInteger``, default: ``60``)
+   * - ``HODLRMatrix-RegularizationAttempts``
+     - ``UnsignedInteger``
+     - ``60``
      - Maximum inner regularization attempts per node.
-   * - ``HODLRMatrix-PivotFloorFactor`` (``Scalar``, default: ``1.0e-12``)
+   * - ``HODLRMatrix-PivotFloorFactor``
+     - ``Scalar``
+     - ``1.0e-12``
      - Relative pivot floor for the leaf heal loop, scaled to the raw kernel diagonal; only roundoff-degenerate pivots must trip it.
-   * - ``HODLRMatrix-RegularizationWarnThreshold`` (``Scalar``, default: ``1.0e-4``)
+   * - ``HODLRMatrix-RegularizationWarnThreshold``
+     - ``Scalar``
+     - ``1.0e-4``
      - Warn when the shift reaches this fraction of the diagonal.
-   * - ``HODLRMatrix-StackTruncation`` (``Bool``, default: ``True``)
+   * - ``HODLRMatrix-StackTruncation``
+     - ``Bool``
+     - ``True``
      - Pre-truncate the stacked correction columns.
-   * - ``HODLRMatrix-StackTruncationFactor`` (``Scalar``, default: ``0.1``)
+   * - ``HODLRMatrix-StackTruncationFactor``
+     - ``Scalar``
+     - ``0.1``
      - Fraction of the tolerance budget for the pre-truncation.
-   * - ``HODLRMatrix-CorruptionCapFactor`` (``Scalar``, default: ``1000.0``)
+   * - ``HODLRMatrix-CorruptionCapFactor``
+     - ``Scalar``
+     - ``1000.0``
      - Factor applied to the raw kernel diagonal: a heal shift beyond this multiple means a numerically corrupted Schur complement and fails loudly.
-   * - ``HODLRMatrix-InitialLambda`` (``Scalar``, default: ``1e-4``)
+   * - ``HODLRMatrix-InitialLambda``
+     - ``Scalar``
+     - ``1e-4``
      - Starting shift of the node Schur-complement retry loop, jumped to on first failure.
-   * - ``HODLRMatrix-LeafSeedCap`` (``Scalar``, default: ``0.05``)
+   * - ``HODLRMatrix-LeafSeedCap``
+     - ``Scalar``
+     - ``0.05``
      - Cap on the outer-loop seed taken from the worst leaf-heal shift, so a corrupted leaf cannot derail the search."
 %enddef
 

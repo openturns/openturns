@@ -27,8 +27,6 @@ using namespace OT::Test;
 int main(int, char *[])
 {
   TESTPREAMBLE;
-  OStream fullprint(std::cout);
-
   try
   {
     const UnsignedInteger size = 200;
@@ -66,8 +64,11 @@ int main(int, char *[])
     const Point shift = {1e-10};
     BoxCoxTransform myBoxCox = factory.buildWithGPF(inputSample, outputSample, covarianceModel, basis, shift, result);
 
-    fullprint << "myBoxCox (GPF)=" << myBoxCox.__str__() << std::endl;
-    fullprint << "GPF result=" << result.__str__() << std::endl;
+    assert_almost_equal(myBoxCox.getLambda()[0], 1.99098, 1.0e-4, 1.0e-4);
+    assert_almost_equal(result.getTrendCoefficients(), Point({9.90054, 2.95995}), 1.0e-4, 1.0e-4);
+    // getAmplitude() returns the standard deviation, i.e. the square root of the
+    // variance 2.12358e-05 printed by the covariance model.
+    assert_almost_equal(result.getCovarianceModel().getAmplitude(), Point({0.00460823}), 1.0e-6, 1.0e-6);
 
   }
   catch (TestFailed & ex)

@@ -5,31 +5,31 @@ R"RAW(Kent factory.
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-Given a sample :math:`\mathbf{x}_1,\dots,\mathbf{x}_n` on the sphere
+Given a sample :math:`\vect{x}_1,\dots,\vect{x}_n` on the sphere
 :math:`\mathcal{S}^2`, estimates the Kent distribution parameters using the
 method of moments [kent1982]_:
 
-1. Compute the sample mean :math:`\overline{\mathbf{x}}` and the scatter
-   matrix :math:`\mathbf{S} = \frac{1}{n}\sum_{i=1}^n \mathbf{x}_i\mathbf{x}_i^T`.
+1. Compute the sample mean :math:`\overline{\vect{x}}` and the scatter
+   matrix :math:`\matr{S} = \frac{1}{n}\sum_{i=1}^n \vect{x}_i\vect{x}_i^T`.
 
-2. Build an orthogonal matrix :math:`\mathbf{H}` that maps the mean direction
+2. Build an orthogonal matrix :math:`\matr{H}` that maps the mean direction
    to the first axis:
-   :math:`\mathbf{H}\overline{\mathbf{x}} = (\|\overline{\mathbf{x}}\|, 0, 0)^T`.
+   :math:`\matr{H}\overline{\vect{x}} = (\|\overline{\vect{x}}\|, 0, 0)^T`.
 
-3. Rotate the scatter matrix: :math:`\mathbf{B} = \mathbf{H}\mathbf{S}\mathbf{H}^T`.
+3. Rotate the scatter matrix: :math:`\matr{B} = \matr{H}\matr{S}\matr{H}^T`.
 
-4. Diagonalize the lower-right :math:`2\times 2` block of :math:`\mathbf{B}` to
+4. Diagonalize the lower-right :math:`2\times 2` block of :math:`\matr{B}` to
    obtain the angle :math:`\psi`:
    :math:`\tan(2\psi) = 2b_{23} / (b_{22} - b_{33})` with :math:`b_{ij}` the
    entries of the :math:`\vec{B}` matrix.
 
-5. The estimated orientation is :math:`\boldsymbol{\Gamma} = \mathbf{H}^T\mathbf{K}^T`
-   where :math:`\mathbf{K}` is the rotation about the first axis by :math:`\psi`.
+5. The estimated orientation is :math:`\boldsymbol{\Gamma} = \matr{H}^T\matr{K}^T`
+   where :math:`\matr{K}` is the rotation about the first axis by :math:`\psi`.
 
 6. The moment statistics are:
-   :math:`r_1 = \|\overline{\mathbf{x}}\|` and
+   :math:`r_1 = \|\overline{\vect{x}}\|` and
    :math:`r_2 = t_{22} - t_{33}` where
-   :math:`\mathbf{T} = \boldsymbol{\Gamma}^T\mathbf{S}\boldsymbol{\Gamma}`.
+   :math:`\matr{T} = \boldsymbol{\Gamma}^T\matr{S}\boldsymbol{\Gamma}`.
 
 7. The concentration parameters are estimated from the large-kappa approximation:
    :math:`\hat\kappa = \frac{1}{2-2r_1-r_2} + \frac{1}{2-2r_1+r_2}`,
@@ -89,7 +89,8 @@ Returns
 dist : :class:`~openturns.experimental.Kent`
     The estimated distribution as a Kent.
 
-    In the first usage, the default Kent distribution is built.)RAW"
+    In the first usage, the default Kent distribution is built.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -116,4 +117,5 @@ Returns
 dist : :class:`~openturns.Distribution`
     The estimated distribution.
 
-    In the first usage, the default Kent distribution is built.)RAW"
+    In the first usage, the default Kent distribution is built.
+)RAW"

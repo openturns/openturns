@@ -5,7 +5,7 @@ Dickey-Fuller stationarity test
 
 The Dickey-Fuller test checks the stationarity of a scalar time series.
 It assumes that the :math:`X: \Omega \times \cD \rightarrow \Rset` process with
-:math:`\cD \in \Rset`, discretized on the time grid :math:`(t_0, \dots, t_{\sampleSize-1})`
+:math:`\cD \subset \Rset`, discretized on the time grid :math:`(t_0, \dots, t_{\sampleSize-1})`
 is written:
 
 .. math::

@@ -126,7 +126,8 @@ where :math:`\overline{y}` is the weighted output sample mean:
 Returns
 -------
 r2Score : :class:`~openturns.Point`
-    The coefficient of determination R2)RAW"
+    The coefficient of determination R2
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -149,7 +150,8 @@ where :math:`n_y` is the output dimension.
 Returns
 -------
 residual : :class:`~openturns.Sample`
-    The residual sample.)RAW"
+    The residual sample.
+)RAW"
 
 
 // ---------------------------------------------------------------------
@@ -188,7 +190,8 @@ columns, where :math:`n_y` is the output dimension.
 Returns
 -------
 graph : :class:`~openturns.GridLayout`
-    The visual validation graph.)RAW"
+    The visual validation graph.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -205,7 +208,8 @@ columns, where :math:`n_y` is the output dimension.
 Returns
 -------
 graph : :class:`~openturns.GridLayout`
-    The residuals graph.)RAW"
+    The residuals graph.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -230,7 +234,8 @@ is the output dimension.
 Returns
 -------
 meanSquaredError : :class:`~openturns.Point`
-    The mean squared error of each marginal output dimension.)RAW"
+    The mean squared error of each marginal output dimension.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -247,7 +252,8 @@ is the output dimension.
 Returns
 -------
 rootMeanSquaredError : :class:`~openturns.Point`
-    The root mean squared error of each marginal output dimension.)RAW"
+    The root mean squared error of each marginal output dimension.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -273,7 +279,8 @@ is the output dimension.
 Returns
 -------
 meanAbsoluteError : :class:`~openturns.Point`
-    The mean absolute error of each marginal output dimension.)RAW"
+    The mean absolute error of each marginal output dimension.
+)RAW"
 
 // ---------------------------------------------------------------------
 

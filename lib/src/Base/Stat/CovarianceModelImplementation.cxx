@@ -32,6 +32,10 @@
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/TBBImplementation.hxx"
+#include "openturns/SymmetricMatrix.hxx"
+
+#include <utility>
+#include <vector>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -42,6 +46,151 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(CovarianceModelImplementation)
 
 static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImplementation;
+
+namespace
+{
+// One term of a multivariate finite-difference stencil. offsets[i] is the
+// multiple of the step along input coordinate i, and weight already includes
+// the division by the product of the step powers.
+struct SpatialStencilTerm
+{
+  std::vector<int> offsets;
+  Scalar weight;
+};
+
+// Central finite-difference coefficients for the derivative of order `order`
+// at the origin, as (offset, coefficient) pairs. The coefficient includes the
+// division by step^order, so that the stencil applies directly to function
+// values.
+std::vector<std::pair<int, Scalar> > BuildCentralStencil(const UnsignedInteger order,
+    const Scalar step)
+{
+  std::vector<std::pair<int, Scalar> > stencil;
+  const Scalar inverseStep = 1.0 / step;
+  switch (order)
+  {
+    case 1:
+      stencil.push_back(std::make_pair(-1, -0.5 * inverseStep));
+      stencil.push_back(std::make_pair(1, 0.5 * inverseStep));
+      break;
+    case 2:
+    {
+      const Scalar inverseStep2 = inverseStep * inverseStep;
+      stencil.push_back(std::make_pair(-1, inverseStep2));
+      stencil.push_back(std::make_pair(0, -2.0 * inverseStep2));
+      stencil.push_back(std::make_pair(1, inverseStep2));
+      break;
+    }
+    case 3:
+    {
+      const Scalar inverseStep3 = inverseStep * inverseStep * inverseStep;
+      stencil.push_back(std::make_pair(-2, -0.5 * inverseStep3));
+      stencil.push_back(std::make_pair(-1, inverseStep3));
+      stencil.push_back(std::make_pair(1, -inverseStep3));
+      stencil.push_back(std::make_pair(2, 0.5 * inverseStep3));
+      break;
+    }
+    case 4:
+    {
+      const Scalar inverseStep4 = inverseStep * inverseStep * inverseStep * inverseStep;
+      stencil.push_back(std::make_pair(-2, inverseStep4));
+      stencil.push_back(std::make_pair(-1, -4.0 * inverseStep4));
+      stencil.push_back(std::make_pair(0, 6.0 * inverseStep4));
+      stencil.push_back(std::make_pair(1, -4.0 * inverseStep4));
+      stencil.push_back(std::make_pair(2, inverseStep4));
+      break;
+    }
+  }
+  return stencil;
+}
+
+// Expand the one-dimensional stencils of the distinct coordinates into the
+// full multivariate stencil.
+void ExpandStencil(const std::vector<UnsignedInteger> & coordinates,
+                   const std::vector<std::vector<std::pair<int, Scalar> > > & directionStencils,
+                   const UnsignedInteger level,
+                   std::vector<int> & offsets,
+                   const Scalar weight,
+                   std::vector<SpatialStencilTerm> & terms)
+{
+  if (level == coordinates.size())
+  {
+    SpatialStencilTerm term;
+    term.offsets = offsets;
+    term.weight = weight;
+    terms.push_back(term);
+    return;
+  }
+  const UnsignedInteger coordinate = coordinates[level];
+  for (const auto & directionTerm : directionStencils[level])
+  {
+    offsets[coordinate] = directionTerm.first;
+    ExpandStencil(coordinates, directionStencils, level + 1,
+                  offsets, weight * directionTerm.second, terms);
+  }
+}
+
+// Build the stencil of the derivative whose multi-index is `indices`.
+std::vector<SpatialStencilTerm> BuildStencil(const Indices & indices,
+    const Point & steps)
+{
+  // Count the multiplicity of every coordinate in the multi-index.
+  std::vector<UnsignedInteger> coordinates;
+  std::vector<UnsignedInteger> multiplicities;
+  for (UnsignedInteger i = 0; i < indices.getSize(); ++i)
+  {
+    const UnsignedInteger coordinate = indices[i];
+    UnsignedInteger position = 0;
+    while ((position < coordinates.size()) && (coordinates[position] != coordinate)) ++position;
+    if (position == coordinates.size())
+    {
+      coordinates.push_back(coordinate);
+      multiplicities.push_back(1);
+    }
+    else
+      ++multiplicities[position];
+  }
+  std::vector<std::vector<std::pair<int, Scalar> > > directionStencils(coordinates.size());
+  for (UnsignedInteger i = 0; i < coordinates.size(); ++i)
+    directionStencils[i] = BuildCentralStencil(multiplicities[i], steps[coordinates[i]]);
+  std::vector<SpatialStencilTerm> terms;
+  std::vector<int> offsets(steps.getSize(), 0);
+  ExpandStencil(coordinates, directionStencils, 0, offsets, 1.0, terms);
+  return terms;
+}
+
+// Evaluate a multivariate stencil of the (0, 0) covariance component.
+Scalar EvaluateStencil(const CovarianceModelImplementation & model,
+                       const Point & s,
+                       const Point & t,
+                       const Point & steps,
+                       const std::vector<SpatialStencilTerm> & terms)
+{
+  Scalar value = 0.0;
+  for (const auto & term : terms)
+  {
+    Point point(s);
+    for (UnsignedInteger i = 0; i < steps.getSize(); ++i)
+      point[i] += term.offsets[i] * steps[i];
+    value += term.weight * model(point, t)(0, 0);
+  }
+  return value;
+}
+
+// Step of the high-order spatial differences, relative to the scale.
+Point BuildHighOrderSteps(const Point & scale, const UnsignedInteger dimension)
+{
+  // The fourth-order stencil has O(step^2) truncation error and O(epsilon /
+  // step^4) rounding error, balanced for step ~ epsilon^(1/6).
+  const Scalar factor = std::pow(SpecFunc::ScalarEpsilon, 1.0 / 6.0);
+  const Scalar isotropicScale = scale.getSize() == 0 ? 1.0 : scale[0];
+  const Bool isIsotropicScale = (scale.getSize() != dimension);
+  Point steps(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    steps[i] = (isIsotropicScale ? isotropicScale : scale[i]) * factor;
+  return steps;
+}
+} // anonymous namespace
 
 /* Comparison operators */
 Bool CovarianceModelImplementation::operator ==(const CovarianceModelImplementation & other) const
@@ -328,6 +477,164 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   return gradient;
 }
 
+/* Hessian */
+SymmetricMatrix CovarianceModelImplementation::partialHessian (const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // Central difference of the (usually analytic) partial gradient:
+  // the covariance itself is never evaluated at the centre point,
+  // so the nugget discontinuity at s == t is avoided, and the step
+  // is relative to the scale. This also covers models whose
+  // partialGradient is itself a finite difference, as it already
+  // offsets s.
+  // Only the (0, 0) output component is differentiated: for output
+  // dimension > 1 the base fallback returns d^2 C_11 / ds_i ds_j,
+  // i.e. the Hessian of the first output component only. Stationary
+  // models override partialHessian with closed forms handling all
+  // output components through outputCovariance_; non-stationary or
+  // edge-case paths (zero norm, etc.) fall back here and are thus
+  // limited to component (0, 0).
+  SymmetricMatrix hessian(inputDimension_);
+  const Scalar baseEpsilon = std::cbrt(SpecFunc::ScalarEpsilon);
+  // Isotropic models store a single scale: reuse it for every axis
+  const Bool isotropicScale = (scale_.getSize() != inputDimension_);
+  for (UnsignedInteger j = 0; j < inputDimension_; ++j)
+  {
+    const Scalar epsilon = (isotropicScale ? scale_[0] : scale_[j]) * baseEpsilon;
+    Point sPlus(s);
+    Point sMinus(s);
+    sPlus[j] += epsilon;
+    sMinus[j] -= epsilon;
+    const Scalar delta = sPlus[j] - sMinus[j];  // = 2 * epsilon: central FD step width
+    const Matrix gradientPlus(partialGradient(sPlus, t));
+    const Matrix gradientMinus(partialGradient(sMinus, t));
+    for (UnsignedInteger i = j; i < inputDimension_; ++i)
+      hessian(i, j) = (gradientPlus(i, 0) - gradientMinus(i, 0)) / delta;
+  }
+  return hessian;
+}
+
+/* Third-order spatial derivatives, flat Point + dim0-contiguous layout.
+ * Direct central finite differences of the (0, 0) covariance component,
+ * caller-unrolled like KissFFT::fftND loops over dims. Differentiating the
+ * covariance itself instead of nesting differences of partialHessian avoids
+ * the rounding amplification of a finite difference of a finite difference. */
+Point CovarianceModelImplementation::thirdOrderPartial(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const UnsignedInteger d = inputDimension_;
+  Point third(d * d * d, 0.0);
+  if (d == 0) return third;
+  const Point steps(BuildHighOrderSteps(getScale(), d));
+  Indices indices(3);
+  for (UnsignedInteger c = 0; c < d; ++c)
+    for (UnsignedInteger b = 0; b < d; ++b)
+      for (UnsignedInteger a = 0; a < d; ++a)
+      {
+        indices[0] = a;
+        indices[1] = b;
+        indices[2] = c;
+        const std::vector<SpatialStencilTerm> stencil(BuildStencil(indices, steps));
+        third[a + d * (b + d * c)] = EvaluateStencil(*this, s, t, steps, stencil);
+      }
+  return third;
+}
+
+/* Fourth-order spatial derivatives, flat Point. Direct central finite
+ * differences of the (0, 0) covariance component. At zero separation the
+ * stencil is shifted by half a step and the two shifted evaluations are
+ * averaged: this keeps every evaluation away from the nugget discontinuity,
+ * and the average cancels the first-order error introduced by the shift. */
+Point CovarianceModelImplementation::fourthOrderPartial(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const UnsignedInteger d = inputDimension_;
+  Point fourth(d * d * d * d, 0.0);
+  if (d == 0) return fourth;
+  const Point steps(BuildHighOrderSteps(getScale(), d));
+  // A centered stencil of an even derivative evaluates the covariance at s:
+  // at zero separation this value contains the nugget discontinuity. Shift the
+  // stencil by half a step along the first coordinate, in both directions.
+  const Bool zeroSeparation = (s == t);
+  Point sPlus(s);
+  Point sMinus(s);
+  if (zeroSeparation)
+  {
+    sPlus[0] += 0.5 * steps[0];
+    sMinus[0] -= 0.5 * steps[0];
+  }
+  Indices indices(4);
+  for (UnsignedInteger e = 0; e < d; ++e)
+    for (UnsignedInteger c = 0; c < d; ++c)
+      for (UnsignedInteger b = 0; b < d; ++b)
+        for (UnsignedInteger a = 0; a < d; ++a)
+        {
+          indices[0] = a;
+          indices[1] = b;
+          indices[2] = c;
+          indices[3] = e;
+          const std::vector<SpatialStencilTerm> stencil(BuildStencil(indices, steps));
+          const Scalar value = zeroSeparation
+                               ? 0.5 * (EvaluateStencil(*this, sPlus, t, steps, stencil)
+                                        + EvaluateStencil(*this, sMinus, t, steps, stencil))
+                               : EvaluateStencil(*this, s, t, steps, stencil);
+          fourth[a + d * (b + d * (c + d * e))] = value;
+        }
+  return fourth;
+}
+
+/* Mixed parameter-spatial Hessian. Caller-unrolled one-sided differences of
+ * partialHessian in full-parameter space, filtered to active parameters. A
+ * parameter sitting on its upper bound uses a backward step. */
+Matrix CovarianceModelImplementation::parameterHessian(const Point & s,
+    const Point & t) const
+{
+  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  const UnsignedInteger d = inputDimension_;
+  const Point fullParameter(getFullParameter());
+  const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+  const SymmetricMatrix hessianRef(partialHessian(s, t));
+  // Read the active set through the virtual accessor: wrapper models such as
+  // CurlFreeModel and DivFreeModel forward setActiveParameter() to the wrapped
+  // model without updating the inherited activeParameter_ member.
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger activeSize = activeParameter.getSize();
+  Matrix hessian(activeSize, d * d);
+  Pointer<CovarianceModelImplementation> p_implementation(clone());
+  for (UnsignedInteger k = 0; k < activeSize; ++k)
+  {
+    const UnsignedInteger index = activeParameter[k];
+    Point parameterP(fullParameter);
+    Scalar step = epsilon;
+    parameterP[index] += step;
+    try
+    {
+      p_implementation->setFullParameter(parameterP);
+    }
+    catch (const InvalidArgumentException &)
+    {
+      // Some parameters have a finite upper bound, e.g. the exponent p of
+      // GeneralizedExponential is at most 2: step backward from the bound.
+      step = -epsilon;
+      parameterP = fullParameter;
+      parameterP[index] += step;
+      p_implementation->setFullParameter(parameterP);
+    }
+    const SymmetricMatrix hessianP(p_implementation->partialHessian(s, t));
+    for (UnsignedInteger b = 0; b < d; ++b)
+      for (UnsignedInteger a = 0; a < d; ++a)
+        hessian(k, a + d * b) = (hessianP(a, b) - hessianRef(a, b)) / step;
+  }
+  return hessian;
+}
+
 /* Gradient */
 Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
     const Point & t) const
@@ -372,6 +679,30 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
       }
     }
   }
+  return gradient;
+}
+
+/* Filter a gradient computed wrt all the full parameters down to the active ones */
+Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Point & fullGradient) const
+{
+  return filterActiveParameterGradient(Matrix(fullGradient.getSize(), 1, fullGradient));
+}
+
+Matrix CovarianceModelImplementation::filterActiveParameterGradient(const Matrix & fullGradient) const
+{
+  // Read the active set through the virtual accessor: wrapper models such as
+  // CurlFreeModel and DivFreeModel forward setActiveParameter() to the wrapped
+  // model without updating the inherited activeParameter_ member.
+  const Indices activeParameter(getActiveParameter());
+  const UnsignedInteger activeSize = activeParameter.getSize();
+  const UnsignedInteger nbRows = fullGradient.getNbRows();
+  for (UnsignedInteger i = 0; i < activeSize; ++i)
+    if (!(activeParameter[i] < nbRows))
+      throw InvalidArgumentException(HERE) << "Error: the active parameter index " << activeParameter[i] << " is out of range for a fullGradient matrix with " << nbRows << " rows.";
+  Matrix gradient(activeSize, fullGradient.getNbColumns());
+  for (UnsignedInteger j = 0; j < fullGradient.getNbColumns(); ++j)
+    for (UnsignedInteger i = 0; i < activeSize; ++i)
+      gradient(i, j) = fullGradient(activeParameter[i], j);
   return gradient;
 }
 

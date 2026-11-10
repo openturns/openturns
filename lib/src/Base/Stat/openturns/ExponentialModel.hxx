@@ -86,9 +86,19 @@ public:
   using CovarianceModelImplementation::setScale;
   void setScale(const Point & scale) override;
 
+  // Reimplement the setFullParameter method, which writes scale_ directly
+  void setFullParameter(const Point & parameter) override;
+
   /** Gradient */
   using CovarianceModelImplementation::partialGradient;
   Matrix partialGradient(const Point & s, const Point & t) const override;
+
+  /** Hessian */
+  SymmetricMatrix partialHessian(const Point & s,
+                                 const Point & t) const override;
+
+  /** Gradient wrt parameters */
+  Matrix parameterGradient(const Point & s, const Point & t) const override;
 
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;
@@ -109,9 +119,9 @@ public:
 private :
   Bool equals(const CovarianceModelImplementation & other) const override;
 
-  // Inverse of scale_, kept in sync by the constructors, setScale() and load(),
-  // so that the evaluation paths do not divide once per coordinate and per
-  // call
+  // Inverse of scale_, kept in sync by the constructors, setScale(),
+  // setFullParameter() and load(), so that the evaluation paths do not divide
+  // once per coordinate and per call
   void updateInvScale();
 
   // The inverse scales

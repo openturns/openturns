@@ -41,6 +41,8 @@ public:
 
   HODLRMatrix copy() const;
 
+  // symmetry follows the BLAS character convention, as in HMatrix
+  // gemv supports only 'N' or 'n' for trans
   void assemble(const HODLRRealAssemblyFunction& f, char symmetry);
   void assemble(const HODLRRealAssemblyFunction &f, const HODLRMatrixParameters& parameters, char symmetry);
   void factorize();

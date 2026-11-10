@@ -15,7 +15,7 @@ The general definition of the push-forward distribution, of its density with
 respect to the measure induced on the image, and of the co-area case are given
 in the :class:`~openturns.experimental.PushForwardDistribution` documentation.
 The mesh-specific construction and the resulting density formula are detailed
-in :ref:`pushforward_over_mesh`.
+in :any:`pushforward_over_mesh`.
 
 Here, :math:`\inputRV` is an :math:`n`-dimensional absolutely continuous
 random vector whose support is a domain discretized by a mesh of simplices, and
@@ -100,7 +100,8 @@ R"RAW(Accessor to the antecedent distribution.
 Returns
 -------
 antecedent : :class:`~openturns.Distribution`, :math:`n`-dimensional
-    The distribution of :math:`\inputRV`.)RAW"
+    The distribution of :math:`\inputRV`.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -110,7 +111,8 @@ R"RAW(Accessor to the antecedent distribution.
 Parameters
 ----------
 antecedent : :class:`~openturns.Distribution`, :math:`n`-dimensional
-    The distribution of :math:`\inputRV`, whose support must be the reference domain.)RAW"
+    The distribution of :math:`\inputRV`, whose support must be the reference domain.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -121,7 +123,8 @@ Returns
 -------
 values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map: the reference mesh and
-    the image of each reference vertex.)RAW"
+    the image of each reference vertex.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -132,7 +135,8 @@ Parameters
 ----------
 values : :class:`~openturns.Field`, from :math:`\Rset^n` to :math:`\Rset^\outputDim`
     The P1 field defining the piecewise-affine map: the reference mesh and
-    the image of each reference vertex.)RAW"
+    the image of each reference vertex.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -163,4 +167,5 @@ Returns
 dim : int
     The intrinsic dimension of the image mesh.  In the supported co-area case
     :math:`\outputDim < d`, the image is assumed to be full-dimensional of
-    dimension :math:`\outputDim`, which is returned.)RAW"
+    dimension :math:`\outputDim`, which is returned.
+)RAW"

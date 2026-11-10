@@ -430,3 +430,24 @@ ott.assert_almost_equal(truncated_poisson.computeCDFGradient([1.0])[0], cdf_fd, 
 ott.assert_almost_equal(
     truncated_poisson.computePDFGradient([2.0]), [3.0 / 128.0, 0.0, 0.0], 1e-12, 1e-12
 )
+
+# The generic characteristic function must stay bounded for a huge argument:
+# the interval count used to overflow and select an intractable Gaussian
+# quadrature instead of the bounded Filon rule. TruncatedDistribution
+# inherits the generic implementation, unlike Uniform which is analytic.
+truncated_uniform = ot.TruncatedDistribution(
+    ot.Uniform(-0.5, 1.5), ot.Interval(0.0, 1.0)
+)
+truncated_uniform.setIntegrationNodesNumber(256)
+huge_x = 2.0**63
+huge_cf = truncated_uniform.computeCharacteristicFunction(huge_x)
+huge_ref = (complex(m.cos(huge_x), m.sin(huge_x)) - 1.0) / complex(0.0, huge_x)
+# Scale by huge_x so that a zero result is distinguishable from the reference:
+# the generic Filon rule is only accurate to a few percent at this argument,
+# but the scaled value must stay close to sin(huge_x) + i (1 - cos(huge_x)).
+ott.assert_almost_equal(
+    [huge_cf.real * huge_x, huge_cf.imag * huge_x],
+    [huge_ref.real * huge_x, huge_ref.imag * huge_x],
+    0.0,
+    0.25,
+)

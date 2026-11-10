@@ -183,7 +183,8 @@ for the :math:`\ell`-th output marginal.
 
 The coefficient of the :math:`j`-th basis function for the :math:`\ell`-th output marginal
 is located at position :math:`j \times \outputDim + \ell` in the flat vector
-(with 0-based indices :math:`0 \leq j < b` and :math:`0 \leq \ell < \outputDim`).)RAW"
+(with 0-based indices :math:`0 \leq j < b` and :math:`0 \leq \ell < \outputDim`).
+)RAW"
 
 // ---------------------------------------------------------------------
 

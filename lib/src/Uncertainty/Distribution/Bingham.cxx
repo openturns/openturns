@@ -157,15 +157,6 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
   // log of the surface area of the unit sphere S^{n-1}
   const Scalar logArea = std::log(2.0) + 0.5 * n * std::log(M_PI) - SpecFunc::LogGamma(0.5 * n);
 
-  // Log-space addition, robust to infinities and to the almost-equal case
-  auto logAdd = [](const Scalar a, const Scalar b)
-  {
-    if (a == -SpecFunc::Infinity) return b;
-    if (b == -SpecFunc::Infinity) return a;
-    if (a >= b) return a + std::log1p(std::exp(b - a));
-    return b + std::log1p(std::exp(a - b));
-  };
-
   // F(zeta) = area * sum_{k>=0} S_k with
   // S_k = Gamma(n/2)/Gamma(n/2+k) * e_k and e_k = sum_{|m|=k} prod_i (1/2)_{m_i} zeta_i^{m_i} / m_i!
   // All the terms are nonnegative (canonical zeta >= 0), sum them in log-space.
@@ -194,12 +185,12 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
     Scalar eBlock = 0.0;
     for (UnsignedInteger r = 1; r <= k; ++r)
       eBlock += powerSums[r] * eTerms[k - r];
-    eBlock /= static_cast<Scalar>(k);
+    eBlock /= (1.0 * k);
     eTerms[k] = eBlock;
     if (!(eBlock > 0.0)) break;
     // log of the block sum S_k
-    const Scalar logBlock = SpecFunc::LogGamma(0.5 * n) - SpecFunc::LogGamma(0.5 * n + static_cast<Scalar>(k)) + std::log(eBlock);
-    logSum = logAdd(logSum, logBlock);
+    const Scalar logBlock = SpecFunc::LogGamma(0.5 * n) - SpecFunc::LogGamma(0.5 * n + (1.0 * k)) + std::log(eBlock);
+    logSum = SpecFunc::LogSumExp(logSum, logBlock);
     // Stop when the block contribution falls below the precision threshold
     if (logBlock < logSum + std::log(SpecFunc::Precision))
     {
@@ -227,9 +218,9 @@ Scalar Bingham::computeLogNormalizationConstant(const Point & zeta) const
       if (gap <= gapTolerance) ++multiplicity;
       else logGapSum += std::log(gap);
     }
-    const Scalar halfM = 0.5 * static_cast<Scalar>(multiplicity);
+    const Scalar halfM = 0.5 * (1.0 * multiplicity);
     const Scalar logAreaMax = std::log(2.0) + halfM * std::log(M_PI) - SpecFunc::LogGamma(halfM);
-    const Scalar halfRemaining = 0.5 * static_cast<Scalar>(n - multiplicity);
+    const Scalar halfRemaining = 0.5 * (1.0 * (n - multiplicity));
     return minZeta + maxZeta + logAreaMax + halfRemaining * std::log(M_PI) - 0.5 * logGapSum;
   }
 
@@ -284,7 +275,7 @@ Point Bingham::computeSecondMoments() const
     Scalar block = 0.0;
     for (UnsignedInteger r = 1; r <= k; ++r)
       block += scaledPowerSums[r] * scaledBlocks[k - r];
-    block /= static_cast<Scalar>(k);
+    block /= (1.0 * k);
     scaledBlocks[k] = block;
     if (!(block > 0.0)) break;
     for (UnsignedInteger j = 0; j < n; ++j)
@@ -294,13 +285,13 @@ Point Bingham::computeSecondMoments() const
       for (UnsignedInteger r = 1; r <= k; ++r)
       {
         // d(s_r)/d(zeta_j) = 0.5 * r * zeta_j^{r-1} / M^r
-        const Scalar dscaled = 0.5 * static_cast<Scalar>(r) * zetaPower;
+        const Scalar dscaled = 0.5 * (1.0 * r) * zetaPower;
         derivative += dscaled * scaledBlocks[k - r] + scaledPowerSums[r] * deriv(j, k - r);
         zetaPower *= cZeta[j] / scaling;
       }
-      deriv(j, k) = derivative / static_cast<Scalar>(k);
+      deriv(j, k) = derivative / (1.0 * k);
     }
-    const Scalar logBlock = logGammaHalfN - SpecFunc::LogGamma(0.5 * n + static_cast<Scalar>(k)) + static_cast<Scalar>(k) * logScaling + std::log(block);
+    const Scalar logBlock = logGammaHalfN - SpecFunc::LogGamma(0.5 * n + (1.0 * k)) + (1.0 * k) * logScaling + std::log(block);
     logBlockSums[k] = logBlock;
     if (logBlock < logSum + std::log(SpecFunc::Precision))
     {
@@ -309,8 +300,7 @@ Point Bingham::computeSecondMoments() const
       break;
     }
     // Log-space addition of the new block
-    if (logSum >= logBlock) logSum = logSum + std::log1p(std::exp(logBlock - logSum));
-    else logSum = logBlock + std::log1p(std::exp(logSum - logBlock));
+    logSum = SpecFunc::LogSumExp(logSum, logBlock);
   }
   if (converged)
   {
@@ -366,7 +356,7 @@ void Bingham::updateSampler()
   // Uniform case: zeta_1 = zeta_n, no concentration
   if (delta[n - 1] < SpecFunc::ScalarEpsilon)
   {
-    optimalB_ = static_cast<Scalar>(n);
+    optimalB_ = (1.0 * n);
     return;
   }
 
@@ -419,7 +409,7 @@ Point Bingham::getRealization() const
                     : -SpecFunc::LogMaxScalar;
   const Scalar logMaxAccept = *std::max_element(logCandidate.begin(), logCandidate.end());
 
-  std::vector<Scalar> z(n);
+  Point z(n);
   for (;;)
   {
     Scalar norm = 0.0;

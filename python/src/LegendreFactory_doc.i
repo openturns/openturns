@@ -4,7 +4,7 @@ R"RAW(Legendre specific orthonormal univariate polynomial family.
 For the :class:`~openturns.Uniform` distribution :math:`\cU(-1,1)`.
 
 Any sequence of orthogonal polynomials follows the three-term recurrence
-formula detailed in :ref:`orthonormal_polynomials`.
+formula detailed in :any:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Legendre polynomials come analytically and
 read:
@@ -51,4 +51,5 @@ Examples
 ...     print(polynomial_factory.build(i))
 1
 -1.73205 + 1.73205 * X
-2.23607 - 6.7082 * X + 3.3541 * X^2)RAW"
+2.23607 - 6.7082 * X + 3.3541 * X^2
+)RAW"

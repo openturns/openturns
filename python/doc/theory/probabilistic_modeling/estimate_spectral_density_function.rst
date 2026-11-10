@@ -3,17 +3,17 @@
 Estimation of a spectral density function
 -----------------------------------------
 
-Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\inputDim}` be a multivariate
-stationary normal process of dimension :math:`d`. We only treat here
-the case where the domain is of dimension 1: :math:`\cD \in \Rset`.
+Let :math:`X: \Omega \times \cD \rightarrow \Rset^{\processDim}` be a multivariate
+stationary normal process of dimension :math:`\processDim`. We only treat here
+the case where the domain is of dimension 1: :math:`\cD \subset \Rset`.
 If the process is continuous, then :math:`\cD=\Rset`. In the discrete
 case, :math:`\cD` is a lattice.
 :math:`X` is supposed to be a second order process with zero mean and
 we suppose that its spectral density function
-:math:`S : \Rset \rightarrow \mathcal{H}^+(\inputDim)` defined in
+:math:`S : \Rset \rightarrow \cH^+(\processDim)` defined in
 :eq:`specdensFunc` exists.
-:math:`\mathcal{H}^+(\inputDim) \in \mathcal{M}_{\inputDim}(\Cset)` is the set of
-:math:`\inputDim`-dimensional positive definite Hermitian matrices.
+:math:`\cH^+(\processDim) \in \cM_{\processDim}(\Cset)` is the set of
+:math:`\processDim`-dimensional positive definite Hermitian matrices.
 Our goal is to estimate the spectral density
 function :math:`S` from data, which can be a sample of time series or
 one time series.

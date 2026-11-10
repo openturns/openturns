@@ -103,7 +103,7 @@ void MultiStart::run()
   resultCollection_.clear();
   result_ = OptimizationResult(getProblem());
   const UnsignedInteger size = startingSample_.getSize();
-  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getCallsNumber();
+  const UnsignedInteger initialCallsNumber = getProblem().getObjective().getEvaluationCallsNumber();
   UnsignedInteger callsNumber = 0;
   UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -169,7 +169,7 @@ void MultiStart::run()
     timeDuration = std::chrono::duration<Scalar>(t1 - t0).count();
     result_.setTimeDuration(timeDuration);
 
-    callsNumber = getProblem().getObjective().getCallsNumber() - initialCallsNumber;
+    callsNumber = getProblem().getObjective().getEvaluationCallsNumber() - initialCallsNumber;
     result_.setCallsNumber(callsNumber);
 
     if (callsNumber > getMaximumCallsNumber())

@@ -21,7 +21,6 @@
 #include <cmath>
 #include <set>
 #include <utility>
-#include <vector>
 #include "openturns/Mixture.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -298,9 +297,43 @@ Scalar Mixture::computePDF(const Point & point) const
   }
   Scalar pdfValue = 0.0;
   const UnsignedInteger size = distributionCollection_.getSize();
-  if (!getRange().numericallyContains(point)) return pdfValue;
+  if (!getRange().contains(point)) return pdfValue;
   for(UnsignedInteger i = 0; i < size; ++i) pdfValue += p_[i] * distributionCollection_[i].computePDF(point);
+  // Recover from a global underflow: some atoms may have a finite log-PDF
+  // even though their PDF has underflowed to zero.
+  if (pdfValue == 0.0)
+  {
+    const Scalar logPDFValue = computeLogPDF(point);
+    if (logPDFValue != SpecFunc::LowestScalar) return std::exp(logPDFValue);
+  }
   return pdfValue;
+}
+
+/* Get the log-PDF of the Mixture */
+Scalar Mixture::computeLogPDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (!isDiscreteOrContinuous_)
+    throw InvalidArgumentException(HERE) << "Cannot compute the PDF of a neither continuous nor discrete Mixture.";
+  if (useApproximatePDFCDF_)
+  {
+    const Scalar pdf = computePDF(point);
+    return (pdf > 0.0) ? std::log(pdf) : SpecFunc::LowestScalar;
+  }
+  // Use the support (which honours the infinite-bound flags) rather than the
+  // numerical range: the latter uses a finite placeholder and would reject
+  // valid tail points.
+  if (!getRange().contains(point)) return SpecFunc::LowestScalar;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Point logPDFValues(size, SpecFunc::LowestScalar);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Zero-weight atoms do not contribute and must not produce a NaN
+    if (p_[i] > 0.0)
+      logPDFValues[i] = std::log(p_[i]) + distributionCollection_[i].computeLogPDF(point);
+  }
+  return SpecFunc::LogSumExp(logPDFValues);
 }
 
 /* Get the CDF of the Mixture */
@@ -798,7 +831,7 @@ Graph Mixture::drawPDF(const Scalar xMin,
   const UnsignedInteger smallSupport = ResourceMap::GetAsUnsignedInteger("Distribution-SmallSupport");
   const Interval drawingInterval(Point(1, xMin), Point(1, xMax));
   Scalar maxMass = 0.0;
-  typedef std::vector< std::pair< UnsignedInteger, Point > > AtomCollection; // (component index, point)
+  typedef Collection< std::pair< UnsignedInteger, Point > > AtomCollection; // (component index, point)
   AtomCollection atoms;
   for (UnsignedInteger j = 0; j < size; ++j)
   {
@@ -809,7 +842,7 @@ Graph Mixture::drawPDF(const Scalar xMin,
     {
       const Scalar mass = distributionCollection_[j].computePDF(support[i]);
       if (!(mass > 0.0)) continue;
-      atoms.push_back(std::make_pair(j, support[i]));
+      atoms.add(std::make_pair(j, support[i]));
       maxMass = std::max(maxMass, p_[j] * mass);
     }
   }
@@ -846,9 +879,9 @@ Graph Mixture::drawPDF(const Scalar xMin,
     }
     // Text labels showing the probability of each atom above its arrow,
     // see #1489
-    Sample atomsData(atoms.size(), 2);
-    Description texts(atoms.size());
-    for (UnsignedInteger i = 0; i < atoms.size(); ++i)
+    Sample atomsData(atoms.getSize(), 2);
+    Description texts(atoms.getSize());
+    for (UnsignedInteger i = 0; i < atoms.getSize(); ++i)
     {
       const Scalar atom = atoms[i].second[0];
       const Scalar height = p_[atoms[i].first] * distributionCollection_[atoms[i].first].computePDF(atoms[i].second) * scale;

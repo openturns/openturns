@@ -121,7 +121,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-  /** Selection history accessor */
+  /** Selection history accessor. The coefficient history is jagged: the
+      number of selected terms changes from one step to the next, so each
+      entry has its own dimension and Collection<Point> is required instead
+      of Sample. */
   Collection<Indices> getIndicesHistory(const UnsignedInteger outputIndex = 0) const;
   Collection<Point> getCoefficientsHistory(const UnsignedInteger outputIndex = 0) const;
   void setSelectionHistory(const Collection<Indices> & indicesHistory, const Collection<Point> & coefficientsHistory, const Indices & historyCutPoints);

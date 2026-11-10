@@ -36,8 +36,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
-
 CLASSNAMEINIT(MultivariatePolya)
 
 static const Factory<MultivariatePolya> Factory_MultivariatePolya;
@@ -208,7 +206,7 @@ Point MultivariatePolya::drawMultinomial(const UnsignedInteger n,
   Scalar pRemaining = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if (i == dimension - 1)
+    if (i + 1 == dimension)
     {
       realization[i] = remainingN;
       continue;

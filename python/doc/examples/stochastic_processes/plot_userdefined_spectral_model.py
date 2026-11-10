@@ -11,7 +11,7 @@ Create a spectral model
 #
 # -   a frequency grid :math:`(-f_c, \dots, f_c)` with step :math:`\delta f`, stored
 #     in the object :class:`~openturns.RegularGrid`,
-# -   a collection of hermitian matrices :math:`\in \mathbb{M}_d(\mathbb{C})`
+# -   a collection of hermitian matrices :math:`\in \mathbb{M}_{\processDim}(\mathbb{C})`
 #     stored in the object :class:`~openturns.HermitianMatrixCollection`, which are the
 #     images of each point of the frequency grid through the density
 #     spectral function.
@@ -27,7 +27,7 @@ Create a spectral model
 # subinterval of :math:`[-f_c,f_c]` that contains the given frequency.
 #
 # In the following script, we illustrate how to create a modified low
-# pass model of dimension :math:`d=1` with exponential decrease defined by:
+# pass model of dimension :math:`\processDim=1` with exponential decrease defined by:
 # :math:`S: \mathbb{R} \rightarrow  \mathbb{R}` where
 #
 # -   Frequency value :math:`f` should be positive,

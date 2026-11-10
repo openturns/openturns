@@ -19,6 +19,7 @@
  *
  */
 
+#include <cmath>
 #include "openturns/LogNormalFactory.hxx"
 #include "openturns/LogNormalMuErrorFactor.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -39,14 +40,15 @@ LogNormalMuErrorFactor::LogNormalMuErrorFactor()
   // Nothing to do
 }
 
-LogNormalMuErrorFactor::LogNormalMuErrorFactor(const Scalar mu, const Scalar ef, const Scalar gamma)
+LogNormalMuErrorFactor::LogNormalMuErrorFactor(const Scalar muLog, const Scalar ef, const Scalar gamma)
   : DistributionParametersImplementation()
-  , muLog_(mu)
+  , muLog_(muLog)
   , ef_(ef)
   , gamma_(gamma)
 {
   if (!(ef > 1.0)) throw InvalidArgumentException(HERE) << "EF must be > 1, here EF=" << ef;
-  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
+  if (!std::isfinite(muLog)) throw InvalidArgumentException(HERE) << "muLog must be finite, here muLog=" << muLog;
+  if (!std::isfinite(gamma)) throw InvalidArgumentException(HERE) << "gamma must be finite, here gamma=" << gamma;
 }
 
 /* Virtual constructor */
@@ -98,9 +100,13 @@ Matrix LogNormalMuErrorFactor::gradient() const
 Point LogNormalMuErrorFactor::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
+  const Scalar muLog = inP[0];
   const Scalar ef = inP[1];
+  const Scalar gamma = inP[2];
 
   if (!(ef > 1.0)) throw InvalidArgumentException(HERE) << "EF must be > 1, here EF=" << ef;
+  if (!std::isfinite(muLog)) throw InvalidArgumentException(HERE) << "muLog must be finite, here muLog=" << muLog;
+  if (!std::isfinite(gamma)) throw InvalidArgumentException(HERE) << "gamma must be finite, here gamma=" << gamma;
 
   Point nativeParameters(inP);
   Scalar sigmaLog = std::log(ef) / DistFunc::qNormal(0.95);
@@ -130,12 +136,13 @@ Point LogNormalMuErrorFactor::inverse(const Point & inP) const
 void LogNormalMuErrorFactor::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const Scalar mu = inP[0];
+  const Scalar muLog = inP[0];
   const Scalar ef = inP[1];
   const Scalar gamma = inP[2];
   if (!(ef > 1.0)) throw InvalidArgumentException(HERE) << "EF must be > 1, here EF=" << ef;
-  if (!(mu > gamma)) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
-  muLog_ = mu;
+  if (!std::isfinite(muLog)) throw InvalidArgumentException(HERE) << "muLog must be finite, here muLog=" << muLog;
+  if (!std::isfinite(gamma)) throw InvalidArgumentException(HERE) << "gamma must be finite, here gamma=" << gamma;
+  muLog_ = muLog;
   ef_ = ef;
   gamma_ = gamma;
 }

@@ -913,7 +913,7 @@ Scalar ProductDistribution::computeCDFOrComplementaryCDF(const Scalar x,
   const auto integrateSegment = [&](const Scalar lower, const Scalar upper)
   {
     if (!(upper > lower)) return;
-    std::vector<Scalar> breakpoints(2);
+    Point breakpoints(2);
     breakpoints[0] = lower;
     breakpoints[1] = upper;
     // The right CDF changes regime when t = x/u crosses one of its support
@@ -922,16 +922,16 @@ Scalar ProductDistribution::computeCDFOrComplementaryCDF(const Scalar x,
     if (aRight != 0.0)
     {
       const Scalar point = x / aRight;
-      if ((point > lower) && (point < upper)) breakpoints.push_back(point);
+      if ((point > lower) && (point < upper)) breakpoints.add(point);
     }
     if (bRight != 0.0)
     {
       const Scalar point = x / bRight;
-      if ((point > lower) && (point < upper)) breakpoints.push_back(point);
+      if ((point > lower) && (point < upper)) breakpoints.add(point);
     }
     std::sort(breakpoints.begin(), breakpoints.end());
     breakpoints.erase(std::unique(breakpoints.begin(), breakpoints.end()), breakpoints.end());
-    for (UnsignedInteger i = 0; i + 1 < breakpoints.size(); ++i)
+    for (UnsignedInteger i = 0; i + 1 < breakpoints.getSize(); ++i)
     {
       const Scalar u0 = breakpoints[i];
       const Scalar u1 = breakpoints[i + 1];

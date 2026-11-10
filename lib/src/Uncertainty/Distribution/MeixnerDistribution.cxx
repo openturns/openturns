@@ -499,6 +499,28 @@ Scalar MeixnerDistribution::computeComplementaryCDF(const Point & point) const
   else return ccdfApproximation_(point)[0];
 }
 
+/* Return the CDF/CCDF junction abscissa if the junction gap holds no
+ * significant omitted mass, throw otherwise */
+Scalar MeixnerDistribution::computeJunctionQuantile(const Scalar prob) const
+{
+  const UnsignedInteger n = cdfApproximation_.getLocations().getSize();
+  const Scalar gap = 1.0 - cdfApproximation_.getValues()(n - 1, 0) - ccdfApproximation_.getValues()(0, 0);
+  // The gap cumulates the errors of about 2n independent Gauss-Kronrod
+  // integrations plus the mass omitted outside of the range computed by
+  // computeRange(), while cdfEpsilon_ is only the ResourceMap default guard
+  // reused for the Brent solves: it is never updated in this class and does
+  // not measure the actual accuracy of the CDF approximation. A sounder check
+  // would propagate the per-interval error estimates returned by
+  // GaussKronrod::integrate(), currently discarded in interpolateCDF(), but
+  // this bookkeeping is too costly for a mere guard, so the tolerance below
+  // is a pure heuristic. It is covered by the quantile-at-mean checks of
+  // t_MeixnerDistribution_std.py, where the measured gap is a few 1e-14,
+  // i.e. already above cdfEpsilon_ itself.
+  const Scalar tolerance = 100.0 * cdfEpsilon_;
+  if (!(gap >= 0.0) || !(gap <= tolerance)) throw InternalException(HERE) << "Error: cannot compute the quantile for prob=" << prob << ", the CDF/CCDF junction gap=" << gap << " exceeds the heuristic tolerance=" << tolerance << ". The gap can include mass outside the range computed by computeRange(): lower the PDF epsilon, or increase MeixnerDistribution-CDFDiscretization to reduce integration error.";
+  return getMean()[0];
+}
+
 /* Compute the quantile function of the distribution */
 Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
@@ -517,6 +539,12 @@ Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
     // accuracy that depends on prob.
     // The cut-off is around the mean value
     if (prob <= ccdfApproximation_.getValues()(0, 0)) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()(0, 0), ccdfApproximation_.getValues()(n - 1, 0));
+    // The CDF and CCDF interpolants are integrated independently, so a prob
+    // within the integration error of their junction fits neither bracket;
+    // the quantile is then the junction abscissa itself, provided the gap
+    // holds no significant omitted tail mass
+    if (1.0 - prob >= cdfApproximation_.getValues()(n - 1, 0))
+      return computeJunctionQuantile(prob);
     return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, 1.0 - prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()(0, 0), cdfApproximation_.getValues()(n - 1, 0));
   }
   // Here we have to solve CDF(x) = prob which is mathematically
@@ -524,6 +552,12 @@ Scalar MeixnerDistribution::computeScalarQuantile(const Scalar prob,
   // different with an accuracy that depends on prob.
   // The cut-off is around the mean value
   if (prob <= cdfApproximation_.getValues()(n - 1, 0)) return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(cdfApproximation_, prob, cdfApproximation_.getLocations()[0], cdfApproximation_.getLocations()[n - 1], cdfApproximation_.getValues()(0, 0), cdfApproximation_.getValues()(n - 1, 0));
+  // The CDF and CCDF interpolants are integrated independently, so a prob
+  // within the integration error of their junction fits neither bracket;
+  // the quantile is then the junction abscissa itself, provided the gap
+  // holds no significant omitted tail mass
+  if (1.0 - prob >= ccdfApproximation_.getValues()(0, 0))
+    return computeJunctionQuantile(prob);
   return Brent(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_).solve(ccdfApproximation_, 1.0 - prob, ccdfApproximation_.getLocations()[0], ccdfApproximation_.getLocations()[n - 1], ccdfApproximation_.getValues()(0, 0), ccdfApproximation_.getValues()(n - 1, 0));
 }
 

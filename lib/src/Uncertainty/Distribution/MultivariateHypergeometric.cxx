@@ -36,8 +36,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
-
 CLASSNAMEINIT(MultivariateHypergeometric)
 
 static const Factory<MultivariateHypergeometric> Factory_MultivariateHypergeometric;

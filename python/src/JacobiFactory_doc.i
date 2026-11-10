@@ -4,7 +4,7 @@ R"RAW(Jacobi specific orthonormal univariate polynomial family.
 For the :class:`~openturns.Beta` distribution.
 
 Any sequence of orthogonal polynomials follows the three-term recurrence
-formula detailed in :ref:`orthonormal_polynomials`.
+formula detailed in :any:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Jacobi polynomials come analytically and
 read:
@@ -74,7 +74,8 @@ Examples
 
 >>> polynomial_factory = ot.JacobiFactory(2.5, 3.5, -1.0, 2.0)
 >>> print(polynomial_factory)
-class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=-1 b=2)RAW"
+class=JacobiFactory alpha=2.5 beta=3.5 measure=class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=-1 b=2
+)RAW"
 
 // ---------------------------------------------------------------------
 

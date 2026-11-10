@@ -18,11 +18,14 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/ResourceMap.hxx"
 
 #ifdef OPENTURNS_HAVE_BOOST
 
@@ -285,6 +288,185 @@ Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
 
 namespace {
 
+/* Normalize a vector by its largest component and update a log-scale. */
+Bool Normalize(Point & values,
+               Scalar & logScale)
+{
+  Scalar maximum = 0.0;
+  for (const Scalar value : values) maximum = std::max(maximum, std::abs(value));
+  if (!(maximum > 0.0) || !std::isfinite(maximum)) return false;
+  for (Scalar & value : values) value /= maximum;
+  logScale += std::log(maximum);
+  return true;
+}
+
+} /* anonymous namespace */
+
+// Lauricella hypergeometric function F_A, evaluated through an exponential
+// generating function to avoid computing large multinomial coefficients.
+// The F_A series is defined in:
+//   G. Lauricella, Sulle funzioni ipergeometriche a piu variabili,
+//   Rendiconti del Circolo Matematico di Palermo, 7, 111-158, 1893.
+// The exponential generating function used below is described in:
+//   H. Exton, Multiple Hypergeometric Functions and Applications,
+//   Ellis Horwood, Chichester, 1976.
+// Returns the natural logarithm of its absolute value together with its sign
+// and an estimate of the cancellation level. Returns false when the series
+// cannot be evaluated.
+Bool SpecFunc::LogLauricellaF_A(const Scalar a,
+                                const Point & b,
+                                const Point & c,
+                                const Point & x,
+                                Scalar & logValue,
+                                Scalar & cancellation,
+                                Scalar & sign)
+{
+  const UnsignedInteger n = x.getSize();
+  if ((b.getSize() != n) || (c.getSize() != n))
+    throw InvalidArgumentException(HERE) << "Error: expected b, c and x of the same dimension, got b dimension=" << b.getSize() << ", c dimension=" << c.getSize() << " and x dimension=" << n;
+  if (n == 0)
+  {
+    logValue = 0.0;
+    cancellation = 1.0;
+    sign = 1.0;
+    return true;
+  }
+
+  Scalar sumAbsX = 0.0;
+  for (UnsignedInteger i = 0; i < n; ++i)
+  {
+    // Also rejects NaN.
+    if (!(std::abs(x[i]) < SpecFunc::Infinity)) return false;
+    if (!(c[i] > 0.0)) return false;
+    sumAbsX += std::abs(x[i]);
+  }
+  // The series converges for sum_i |x_i| < 1.
+  if (!(sumAbsX < 1.0)) return false;
+
+  if (a == 0.0)
+  {
+    logValue = 0.0;
+    cancellation = 1.0;
+    sign = 1.0;
+    return true;
+  }
+
+  const Scalar tolerance = ResourceMap::GetAsScalar("SpecFunc-LauricellaTolerance");
+  // Also rejects NaN.
+  if (!((tolerance > 0.0) && (tolerance < 1.0)))
+    throw InvalidArgumentException(HERE) << "Error: SpecFunc-LauricellaTolerance must be in (0, 1), here tolerance=" << tolerance;
+  /* The convolution is done in O(n degree) operations, but the number of
+     non-zero coefficients still grows with the dimension. From eight
+     variables, halve the maximum degree to keep the cost bounded. */
+  UnsignedInteger maxDegree = ResourceMap::GetAsUnsignedInteger("SpecFunc-LauricellaMaximumDegree");
+  if (n >= 8) maxDegree = std::max<UnsignedInteger>(64, maxDegree / 2);
+  /* The series terms decay like |x|^q for a > 0, requiring about
+     -log(tolerance) / (1 - sum|x|) terms; the factor 4 and the minimum of
+     64 provide a safety margin. For a <= 0 the binomial factor (a)_q / q!
+     grows like q^(-a-1), so the required degree increases with |a|. */
+  /* Floor the convergence gap to avoid an unbounded degree estimate when
+     sum|x| is within roundoff of the convergence radius. */
+  const Scalar gap = std::max(1.0 - sumAbsX, 1.0e-16);
+  const Scalar maximumEstimate = std::min((1.0 * maxDegree), std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits - 1));
+  Scalar estimate = 64.0;
+  if (a > 0.0)
+    estimate = std::max(64.0, 4.0 * (-std::log(tolerance)) / gap);
+  else
+    estimate = std::max(64.0, 2.0 * (std::abs(a) + 10.0) / gap);
+  /* Clamp before the cast: a tiny tolerance or a tiny gap can push the
+     estimate beyond the UnsignedInteger range. */
+  UnsignedInteger degree = std::min(maxDegree, static_cast<UnsignedInteger>(std::min(maximumEstimate, estimate)));
+
+  while (true)
+  {
+    Point d(degree + 1, 0.0);
+    Point factor(degree + 1, 0.0);
+    Point next(degree + 1, 0.0);
+    d[0] = 1.0;
+    Scalar logScale = 0.0;
+    Bool underflow = false;
+    for (UnsignedInteger i = 0; i < n; ++i)
+    {
+      factor[0] = 1.0;
+      for (UnsignedInteger k = 1; k <= degree; ++k)
+        factor[k] = factor[k - 1] * x[i] * (b[i] + k - 1.0) / (c[i] + k - 1.0);
+      std::fill(next.begin(), next.end(), 0.0);
+      for (UnsignedInteger q = 0; q <= degree; ++q)
+      {
+        Scalar sum = 0.0;
+        Scalar binomial = 1.0;
+        for (UnsignedInteger j = 0; j <= q; ++j)
+        {
+          sum += binomial * d[j] * factor[q - j];
+          if (j < q) binomial *= (1.0 * (q - j)) / (1.0 * (j + 1));
+        }
+        next[q] = sum;
+      }
+      if (!Normalize(next, logScale))
+      {
+        underflow = true;
+        break;
+      }
+      std::swap(d, next);
+    }
+    if (underflow) return false;
+
+    Scalar total = 0.0;
+    Scalar maxAbs = 0.0;
+    Scalar ratio = 1.0;
+    Bool converged = false;
+    for (UnsignedInteger q = 0; q <= degree; ++q)
+    {
+      if (q > 0) ratio *= (a + (1.0 * q) - 1.0) / (1.0 * q);
+      const Scalar term = ratio * d[q];
+      total += term;
+      maxAbs = std::max(maxAbs, std::abs(term));
+      /* Do not test convergence before 20 terms, where the alternating
+         part of the series may still produce an accidentally small term. */
+      if ((q > 20) && (std::abs(term) <= tolerance * std::max(std::abs(total), SpecFunc::MinScalar)))
+      {
+        converged = true;
+        break;
+      }
+    }
+    if (!std::isfinite(total) || (total == 0.0))
+    {
+      if (degree >= maxDegree) return false;
+      degree = std::min(maxDegree, 2 * degree);
+      continue;
+    }
+    cancellation = maxAbs / std::abs(total);
+    logValue = logScale + std::log(std::abs(total));
+    sign = (total < 0.0 ? -1.0 : 1.0);
+    /* A series stopped at its degree limit without meeting the tolerance
+       has not produced a reliable value: report the failure so that the
+       caller can use its fallback instead of accepting a biased result. */
+    if (converged) return true;
+    if (degree >= maxDegree) return false;
+    degree = std::min(maxDegree, 2 * degree);
+  }
+}
+
+// Lauricella hypergeometric function F_A:
+// F_A(a; b_1, ..., b_n; c_1, ..., c_n; x_1, ..., x_n) =
+// sum_{m_1, ..., m_n >= 0} (a)_{m_1 + ... + m_n}
+//   prod_i (b_i)_{m_i} / (c_i)_{m_i} x_i^{m_i} / m_i!
+Scalar SpecFunc::LauricellaF_A(const Scalar a,
+                               const Point & b,
+                               const Point & c,
+                               const Point & x)
+{
+  Scalar logValue = 0.0;
+  Scalar cancellation = 1.0;
+  Scalar sign = 1.0;
+  if (!LogLauricellaF_A(a, b, c, x, logValue, cancellation, sign)) return std::numeric_limits<Scalar>::quiet_NaN();
+  if (logValue > SpecFunc::LogMaxScalar) return sign * SpecFunc::MaxScalar;
+  if (logValue < SpecFunc::LogMinScalar) return 0.0;
+  return sign * std::exp(logValue);
+}
+
+namespace {
+
 // Optimally-truncated asymptotic expansion sum_{k>=0} c_k with c_0 = 1 and
 // c_k = c_{k-1} (rising1 + k - 1) (rising2 + k - 1) / (k t). The loop stops
 // when the terms start growing (optimal truncation) or when they become
@@ -303,7 +485,7 @@ Scalar AsymptoticExpansion(const Scalar rising1,
   minModulus = 1.0;
   for (UnsignedInteger k = 1; ; ++k)
   {
-    term *= (rising1 + static_cast<Scalar>(k) - 1.0) * (rising2 + static_cast<Scalar>(k) - 1.0) / (static_cast<Scalar>(k) * t);
+    term *= (rising1 + (1.0 * k) - 1.0) * (rising2 + (1.0 * k) - 1.0) / ((1.0 * k) * t);
     const Scalar modulus = std::abs(term);
     if (!std::isfinite(modulus))
     {

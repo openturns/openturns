@@ -11,7 +11,7 @@ Available constructors:
 Parameters
 ----------
 inputDimension : int
-    Spatial dimension :math:`n`.
+    Spatial dimension :math:`\domainDim`.
     By default, equal to 1.
 variance : sequence of float
     The marginal variances of the coefficients of the basis.

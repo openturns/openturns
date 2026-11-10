@@ -44,11 +44,11 @@ The class provides several methods that compute asymptotic distributions: :meth:
 :meth:`getPredictionDistribution` and :meth:`getOutputObservationDistribution`. They assume that the sample size is at least equal to 20 (that number
 can be changed by modifying the :class:`~openturns.ResourceMap` key ``LinearModelAnalysis-MinimumSampleSizeForAsymptoticDistributions``).
 
-Regression theory is introduced in :ref:`linear_regression`.
+Regression theory is introduced in :any:`linear_regression`.
 The goodness-of-fit tests for normality are presented in
-:ref:`graphical_fitting_test`, :ref:`chi2_fitting_test`,
-:ref:`kolmogorov_smirnov_test`, :ref:`cramer_vonmises_test`, and
-:ref:`anderson_darling_test`.
+:any:`graphical_fitting_test`, :any:`chi2_fitting_test`,
+:any:`kolmogorov_smirnov_test`, :any:`cramer_vonmises_test`, and
+:any:`anderson_darling_test`.
 
 Parameters
 ----------
@@ -473,7 +473,8 @@ This graph plots the residuals :math:`\varepsilon_i` defined in :eq:`residualDef
 
 Returns
 -------
-graph : :class:`~openturns.Graph`)RAW"
+graph : :class:`~openturns.Graph`
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -484,5 +485,6 @@ This graph plots the Cook distance defined in :eq:`cookDef` and the the ration :
 
 Returns
 -------
-graph : :class:`~openturns.Graph`)RAW"
+graph : :class:`~openturns.Graph`
+)RAW"
 

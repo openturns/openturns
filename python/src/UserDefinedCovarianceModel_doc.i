@@ -6,11 +6,11 @@ Parameters
 mesh : :class:`~openturns.Mesh`
     A mesh which contains `N` vertices.
 matrix : :class:`~openturns.CovarianceMatrix`
-    A symmetric positive definite matrix of dimension :math:`Nd` corresponding to the discretization of the model over the given mesh.
+    A symmetric positive definite matrix of dimension :math:`N\processDim` corresponding to the discretization of the model over the given mesh.
 
 Notes
 -----
-Let :math:`\mat{\Sigma}` be the given covariance matrix, :math:`s_i` and :math:`s_j` be two vertices of the mesh, with :math:`i,j\in\{0,\dots,N-1\}`. The :math:`d\times d` sub-matrix :math:`\mat{S}=(\Sigma_{id+k,jd+\ell})_{k,\ell\in\{0,\dots,d-1}` is equal to :math:`C(s_i,s_j)`, where :math:`C` is the user defined covariance model.
+Let :math:`\mat{\Sigma}` be the given covariance matrix, :math:`s_i` and :math:`s_j` be two vertices of the mesh, with :math:`i,j\in\{0,\dots,N-1\}`. The :math:`\processDim\times \processDim` sub-matrix :math:`\mat{S}=(\Sigma_{i\processDim+k,j\processDim+\ell})_{k,\ell\in\{0,\dots,\processDim-1}` is equal to :math:`C(s_i,s_j)`, where :math:`C` is the user defined covariance model.
 
 Examples
 --------

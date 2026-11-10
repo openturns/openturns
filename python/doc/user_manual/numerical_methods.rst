@@ -158,3 +158,20 @@ Combinatorial generators
     KPermutations
     Tuples
 
+.. _least_squares_methods:
+
+Least Squares problem resolution
+================================
+
+Refer to :ref:`least_squares`.
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    LeastSquaresMethod
+    CholeskyMethod
+    SVDMethod
+    QRMethod
+    SparseMethod
+    DesignProxy

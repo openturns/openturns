@@ -44,17 +44,25 @@
 %include SlicedInverseRegression.i
 
 /* Uncertainty/Distribution */
+%include UncertaintyModelCopulaCollection.i
 %import model_copula_module.i
 %import dist_bundle2_module.i
 %import dist_bundle3_module.i
 
 /* Uncertainty/Algorithm/OrthogonalBasis */
+/* GaussLPQuadratureRule derives from WeightedExperimentImplementation, so the
+   weighted experiment module must be imported before the orthonormal basis
+   classes. */
+%import weightedexperiment_module.i
 %import orthogonalbasis_module.i
 %import UncertaintyOrthogonalBasisTemplateDefs.i
 %include FiniteOrthogonalFunctionFactory.i
+%include BasisOrthonormalizationAlgorithm.i
+%include GaussLPQuadratureRule.i
+%include GaussLPQuadrature.i
+%include BasisOrthonormalizationFactory.i
 
 /* Uncertainty/Algorithm/WeightedExperiment */
-%import weightedexperiment_module.i
 %include UncertaintyWeightedExperimentTemplateDefs.i
 %include FejerExperiment.i
 %include ChristoffelSubsampleExperiment.i
@@ -79,6 +87,7 @@
 
 /* Uncertainty/Distribution */
 %include ChristoffelDistribution.i
+%include CumulativeDistributionNetworkFactory.i
 %include Kent.i
 %include KentFactory.i
 %include MarginalUniformOrderStatistics.i
@@ -137,6 +146,7 @@ from openturns.statistics import HODLRMatrix, HODLRMatrixFactory, HODLRMatrixImp
 
 /* Base/Func */
 %include ExceptionPenalizedEvaluation.i
+%include MemoizePointToFieldFunction.i
 
 /* Base/Optim */
 %include ExceptionPenalizedProblem.i

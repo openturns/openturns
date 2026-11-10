@@ -377,8 +377,8 @@ void Pagmo::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_PAGMO
   if (!problem.hasBounds())
     throw InvalidArgumentException(HERE) << "Pagmo only supports bounded problems";
-  if (problem.hasResidualFunction() || problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Pagmo does not support least squares or nearest point problems";
+  if (problem.hasLevelFunction())
+    throw InvalidArgumentException(HERE) << "Pagmo does not support nearest point problems";
   const Description multiObjectiveAlgorithms = {"nsga2",
 #if PAGMO_VERSION_NR >= 202000
                                                 "nsga3",

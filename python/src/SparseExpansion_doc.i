@@ -158,7 +158,8 @@ R"RAW(Accessor to the active functions in the basis.
 Returns
 -------
 activeFunctions : sequence of `int`
-    The indices of the functions used for the approximation in the basis.)RAW"
+    The indices of the functions used for the approximation in the basis.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -168,7 +169,8 @@ R"RAW(Accessor to the active functions in the basis.
 Parameters
 ----------
 activeFunctions : sequence of `int`
-    The indices of the functions used for the approximation in the basis.)RAW"
+    The indices of the functions used for the approximation in the basis.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -179,7 +181,8 @@ Returns
 -------
 method : str
     The selection method used for basis function selection. Either ``"OMP"``
-    for orthogonal matching pursuit or ``"LARS"`` for least angle regression.)RAW"
+    for orthogonal matching pursuit or ``"LARS"`` for least angle regression.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -190,7 +193,8 @@ Parameters
 ----------
 method : str
     The selection method used for basis function selection. Either ``"OMP"``
-    for orthogonal matching pursuit or ``"LARS"`` for least angle regression.)RAW"
+    for orthogonal matching pursuit or ``"LARS"`` for least angle regression.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -200,7 +204,8 @@ R"RAW(Accessor to the fitting algorithm.
 Returns
 -------
 fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
-    Fitting algorithm used to estimate the cross-validation error.)RAW"
+    Fitting algorithm used to estimate the cross-validation error.
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -210,4 +215,5 @@ R"RAW(Accessor to the fitting algorithm.
 Parameters
 ----------
 fittingAlgorithm : :class:`~openturns.FittingAlgorithm`
-    Fitting algorithm used to estimate the cross-validation error.)RAW"
+    Fitting algorithm used to estimate the cross-validation error.
+)RAW"

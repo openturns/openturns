@@ -405,7 +405,7 @@ public:
         ll += coef * std::log1p(c1);
       }
     }
-    ll += - static_cast<Scalar>(m_) * std::log(sigma);
+    ll += - (1.0 * m_) * std::log(sigma);
     return {ll};
   }
 

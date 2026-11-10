@@ -26,7 +26,6 @@
 #include <memory>
 #include <set>
 #include <utility>
-#include <vector>
 #include "openturns/PushForwardDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
@@ -1202,16 +1201,16 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaSurface(const Point &
         parameter = (level - value[firstVertex]) / (value[secondVertex] - value[firstVertex]);
       return x[firstVertex] + parameter * edgeDirection;
     };
-    std::vector<Point> points;
+    Sample points(0, 3);
     const auto addPoint = [&](const Point & pointToAdd)
     {
       // Consecutive crossings can coincide when the level passes through a
       // mesh vertex. Drop such duplicates, which would only add degenerate
       // triangles to the surface mesh.
-      for (UnsignedInteger i = 0; i < points.size(); ++i)
+      for (UnsignedInteger i = 0; i < points.getSize(); ++i)
         if ((points[i] - pointToAdd).norm() <= pointTolerance)
           return;
-      points.push_back(pointToAdd);
+      points.add(pointToAdd);
     };
     if (zeroCount == 3)
     {
@@ -1279,12 +1278,12 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaSurface(const Point &
           if (sign[first] * sign[second] < 0)
             addPoint(addCrossing(first, second));
     }
-    if (points.size() < 3)
+    if (points.getSize() < 3)
       continue;
     // For a quadrilateral, order the points around their centroid in a local
     // tangent plane before building the two triangles. A triangle does not
     // need an ordering, but the same projection is harmless.
-    if (points.size() > 3)
+    if (points.getSize() > 3)
     {
       Point normal(3);
       // Use the constant P1 gradient of f on the tetrahedron as the normal of
@@ -1346,23 +1345,27 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaSurface(const Point &
       binormal[1] = normal[2] * tangent[0] - normal[0] * tangent[2];
       binormal[2] = normal[0] * tangent[1] - normal[1] * tangent[0];
       Point centroid(3);
-      for (UnsignedInteger i = 0; i < points.size(); ++i)
+      for (UnsignedInteger i = 0; i < points.getSize(); ++i)
         centroid += points[i];
-      centroid /= static_cast<Scalar>(points.size());
-      std::vector<std::pair<Scalar, UnsignedInteger>> angles(points.size());
-      for (UnsignedInteger i = 0; i < points.size(); ++i)
+      centroid /= (1.0 * (points.getSize()));
+      Collection<std::pair<Scalar, UnsignedInteger> > angles(points.getSize());
+      for (UnsignedInteger i = 0; i < points.getSize(); ++i)
       {
         const Point offset(points[i] - centroid);
         angles[i] = std::make_pair(std::atan2(offset.dot(binormal), offset.dot(tangent)), i);
       }
       std::sort(angles.begin(), angles.end());
-      std::vector<Point> orderedPoints(points.size());
-      for (UnsignedInteger i = 0; i < points.size(); ++i)
-        orderedPoints[i] = points[angles[i].second];
-      points = orderedPoints;
+      // Keep the reordered sample in its own scope so that points is not
+      // shared with the temporary during the triangulation.
+      {
+        Sample orderedPoints(points.getSize(), points.getDimension());
+        for (UnsignedInteger i = 0; i < points.getSize(); ++i)
+          orderedPoints[i] = points[angles[i].second];
+        points = orderedPoints;
+      }
     }
     // Triangulate the polygon as a fan from its first vertex.
-    for (UnsignedInteger i = 1; i + 1 < points.size(); ++i)
+    for (UnsignedInteger i = 1; i + 1 < points.getSize(); ++i)
       addTriangle(points[0], points[i], points[i + 1]);
   }
   if (surfaceVertices.getSize() == 0)
@@ -1430,37 +1433,36 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
   const std::shared_ptr<std::atomic<Bool>> singular = std::make_shared<std::atomic<Bool>>(false);
   Scalar density = 0.0;
   Collection<LevelSetContinuation::Segment> continuationSegments;
-  std::set<std::vector<SignedInteger>> countedSegments;
+  std::set<Collection<SignedInteger> > countedSegments;
   for (UnsignedInteger simplexIndex = 0; simplexIndex < mesh.getSimplicesNumber(); ++simplexIndex)
   {
     const Indices simplex(mesh.getSimplex(simplexIndex));
     if (simplex.getSize() != simplexSize)
       continue;
-    std::vector<Point> x(simplexSize);
-    std::vector<Point> value(simplexSize);
-    std::vector<Point> delta(simplexSize);
-    std::vector<Bool> positive(outputDimension, false);
-    std::vector<Bool> negative(outputDimension, false);
-    std::vector<Bool> onLevel(outputDimension, false);
+    Sample x(simplexSize, inputDimension);
+    Sample value(simplexSize, outputDimension);
+    Sample delta(simplexSize, outputDimension);
+    Indices positive(outputDimension, 0);
+    Indices negative(outputDimension, 0);
+    Indices onLevel(outputDimension, 0);
     Bool allOnLevel = true;
     for (UnsignedInteger vertexIndex = 0; vertexIndex < simplexSize; ++vertexIndex)
     {
       x[vertexIndex] = mesh.getVertex(simplex[vertexIndex]);
-      value[vertexIndex] = Point(outputDimension);
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
         value[vertexIndex][outputIndex] = vertexValues(simplex[vertexIndex], outputIndex);
-      delta[vertexIndex] = value[vertexIndex] - point;
-      if (!(delta[vertexIndex].norm() <= levelTolerance * std::max(1.0, point.norm())))
+      delta[vertexIndex] = Point(value[vertexIndex]) - point;
+      if (!(Point(delta[vertexIndex]).norm() <= levelTolerance * std::max(1.0, point.norm())))
         allOnLevel = false;
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
       {
         const Scalar tolerance = levelTolerance * std::max(1.0, std::abs(point[outputIndex]));
         if (delta[vertexIndex][outputIndex] > tolerance)
-          positive[outputIndex] = true;
+          positive[outputIndex] = 1;
         else if (delta[vertexIndex][outputIndex] < -tolerance)
-          negative[outputIndex] = true;
+          negative[outputIndex] = 1;
         else
-          onLevel[outputIndex] = true;
+          onLevel[outputIndex] = 1;
       }
     }
     // A whole simplex maps to the requested point: the n-dimensional part of
@@ -1681,8 +1683,8 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
       continue;
     const auto segmentKey = [&](const Point & first, const Point & second)
     {
-      std::vector<SignedInteger> firstKey(inputDimension);
-      std::vector<SignedInteger> secondKey(inputDimension);
+      Collection<SignedInteger> firstKey(inputDimension);
+      Collection<SignedInteger> secondKey(inputDimension);
       for (UnsignedInteger i = 0; i < inputDimension; ++i)
       {
         firstKey[i] = static_cast<SignedInteger>(std::llround(first[i] / segmentDedupTolerance));
@@ -1690,8 +1692,8 @@ Scalar PushForwardDistribution::computePDFByNonlinearCoAreaCurve(const Point & p
       }
       if (secondKey < firstKey)
         std::swap(firstKey, secondKey);
-      std::vector<SignedInteger> key(firstKey);
-      key.insert(key.end(), secondKey.begin(), secondKey.end());
+      Collection<SignedInteger> key(firstKey);
+      key.add(secondKey);
       return key;
     };
     if (!countedSegments.insert(segmentKey(firstPoint, secondPoint)).second)

@@ -3,30 +3,30 @@ R"RAW(Spectral density model.
 
 Notes
 -----
-We consider :math:`X: \Omega \times\cD \mapsto \Rset^d` a multivariate
-stochastic process of dimension :math:`d`, where :math:`\omega \in \Omega`
-is an event, :math:`\cD` is a domain of :math:`\Rset^n`,
+We consider :math:`X: \Omega \times\cD \mapsto \Rset^{\processDim}` a multivariate
+stochastic process of dimension :math:`\processDim`, where :math:`\omega \in \Omega`
+is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`,
 :math:`\vect{t}\in \cD` is a multivariate index and
-:math:`X(\omega, \vect{t}) \in \Rset^d`.
+:math:`X(\omega, \vect{t}) \in \Rset^{\processDim}`.
 
-We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^d` the random variable at
+We note :math:`X_{\vect{t}}: \Omega \rightarrow \Rset^{\processDim}` the random variable at
 index :math:`\vect{t} \in \cD` defined by
 :math:`X_{\vect{t}}(\omega)=X(\omega, \vect{t})` and
-:math:`X(\omega): \cD  \mapsto \Rset^d` a realization of the process
+:math:`X(\omega): \cD  \mapsto \Rset^{\processDim}` a realization of the process
 :math:`X`, for a given :math:`\omega \in \Omega` defined by
 :math:`X(\omega)(\vect{t})=X(\omega, \vect{t})`.
 
 If the process is a second order process, zero-mean and weakly **stationary**, we define its *bilateral spectral density function*
-:math:`S : \Rset^n \mapsto  \cH^+_{d}` with:
+:math:`S : \Rset^{\domainDim} \mapsto  \cH^+_{\processDim}` with:
 
-- :math:`\cH^+(d) \in \cM^+(d)(\Cset)` is the set of *d-dimensional* positive hermitian matrices
+- :math:`\cH^+(\processDim) \in \cM^+(\processDim)(\Cset)` is the set of :math:`\processDim`-dimensional positive hermitian matrices
 
-Using the *stationary covariance function* :math:`C^{stat}` with :math:`C^{stat} : \cD \mapsto  \cM_{d \times d}(\Rset)` and the Fourier transform, the spectral density writes:
+Using the *stationary covariance function* :math:`C^{stat}` with :math:`C^{stat} : \cD \mapsto  \cM_{\processDim \times \processDim}(\Rset)` and the Fourier transform, the spectral density writes:
 
 
 .. math::
 
-   \forall \vect{f} \in \Rset^n, \cS(\vect{f}) = \int_{\Rset^n} \exp\left(-2i \pi <\vect{f}, \vect{\tau}>\right) C^{stat}(\vect{\tau})\di{\vect{\tau}}
+   \forall \vect{f} \in \Rset^{\domainDim}, \cS(\vect{f}) = \int_{\Rset^{\domainDim}} \exp\left(-2i \pi <\vect{f}, \vect{\tau}>\right) C^{stat}(\vect{\tau})\di{\vect{\tau}}
 
 A SpectralModel object can be created only through its derived classes.
 )RAW"
@@ -58,7 +58,7 @@ Thus,
 
 .. math::
 
-  \forall \vect{f} \in \Rset^n, \cS(\vect{f}) = \prod_{k=1}^{n} \vect{\theta}_k \mat{\Sigma} \rho(\vect{f} \odot \vect{\theta})
+  \forall \vect{f} \in \Rset^{\domainDim}, \cS(\vect{f}) = \prod_{k=1}^{\domainDim} \vect{\theta}_k \mat{\Sigma} \rho(\vect{f} \odot \vect{\theta})
 
 where :math:`\mat{\Sigma}` is a covariance matrix that explains the covariance structure and
 :math:`(\vect{f} \odot \vect{\theta})_k = \vect{f}_k \vect{\theta}_k`)RAW"

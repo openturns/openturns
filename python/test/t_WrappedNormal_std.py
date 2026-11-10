@@ -116,6 +116,64 @@ for d in (1, 2, 4):
     ott.assert_almost_equal(wide.computeLogPDF([0.0] * d), math.log(uniform), 0.0, 1e-9)
 ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
 
+# The direct lattice sum and the dual Fourier series must agree: this sigma
+# and period select the Fourier branch for the CDF.
+fourier_cdf = otexp.WrappedNormal([0.2], ot.CovarianceMatrix([[1.0]]), 1.0)
+for x in [-0.5, -0.1, 0.25, 0.5]:
+    cdf_ref = sum(
+        ot.DistFunc.pNormal(x - 0.2 + k) - ot.DistFunc.pNormal(-0.5 - 0.2 + k)
+        for k in range(-100, 101)
+    )
+    ott.assert_almost_equal(fourier_cdf.computeCDF([x]), cdf_ref, 1e-12, 0.0)
+
+# A huge sigma / period ratio used to require billions of lattice terms:
+# the Fourier CDF is bounded and converges to the uniform CDF.
+wide_circle = otexp.WrappedNormal([0.0], ot.CovarianceMatrix([[1.0e18]]), 1.0)
+ott.assert_almost_equal(wide_circle.computeCDF([0.25]), 0.75, 1e-12, 0.0)
+
+# A needle-shaped covariance has many partial lattice vectors but few
+# complete points: the node budget must stop the recursion instead of looping
+# over the long direction. The diagonal covariance factorizes, so the
+# concentrated direction keeps its exact density instead of being flattened
+# to the uniform limit.
+needle = otexp.WrappedNormal(
+    [0.0, 0.0],
+    ot.CovarianceMatrix([[1.0e-12, 0.0], [0.0, 1.0e12]]),
+    1.0,
+)
+ott.assert_almost_equal(
+    needle.computePDF([0.0, 0.4]), 1.0 / (1.0e-6 * math.sqrt(2.0 * math.pi)), 1e-12, 0.0
+)
+assert needle.computePDF([0.3, 0.4]) < 1e-300
+# A huge argument overflows the Fourier phase: the density is period-periodic,
+# so the argument must be reduced before summing instead of falling into the
+# direct lattice loop with a non-finite sum.
+ott.assert_almost_equal(
+    needle.computeLogPDF([1.0e308, 0.4]), needle.computeLogPDF([0.0, 0.4]), 1e-12, 0.0
+)
+
+# Without the diagonal factorization the density cannot be recovered when
+# both enumerations exceed the budget: report it instead of returning the
+# uniform limit.
+small, large = 1.0e-6, 1.0e6
+rotated_cov = ot.CovarianceMatrix(2)
+rotated_cov[0, 0] = 0.5 * (small + large)
+rotated_cov[1, 1] = 0.5 * (small + large)
+rotated_cov[0, 1] = 0.5 * (small - large)
+ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", 100)
+try:
+    rotated_needle = otexp.WrappedNormal([0.0, 0.0], rotated_cov, 1.0)
+    with ott.assert_raises(RuntimeError):
+        try:
+            rotated_needle.computePDF([0.3, 0.4])
+        except RuntimeError as exc:
+            # A Cholesky failure would also raise: check that the intended
+            # exception is reached.
+            assert "not diagonal" in str(exc)
+            raise
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger("WrappedNormal-MaxLatticeTerms", lattice_terms)
+
 # Unaffordable Gauss-Hermite grids throw instead of hanging (2^13 > budget)
 big = otexp.WrappedNormal([0.0] * 13, ot.CovarianceMatrix(13))
 with ott.assert_raises(RuntimeError):

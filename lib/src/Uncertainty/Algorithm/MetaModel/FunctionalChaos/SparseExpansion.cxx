@@ -230,9 +230,9 @@ void SparseExpansion::runOMP(const Collection<Function> & functions,
     Indices flagActiveFunctions(basisSize_, 0);
     flagActiveFunctions[0] = 1;
     LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
-    std::vector<bool> isCandidate(basisSize_, false);
+    Indices isCandidate(basisSize_, 0);
     for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
-      isCandidate[activeFunctions_[idx]] = true;
+      isCandidate[activeFunctions_[idx]] = 1;
     const Sample marginalOutputSample(outputSample_.getMarginal(outputIndex));
     const Point rhs(marginalOutputSample.asPoint());
 
@@ -382,7 +382,7 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
 
   // Build global-to-active column mapping for PhiW
   // PhiW has activeFunctions_.getSize() columns; column c corresponds to basis function activeFunctions_[c]
-  std::vector<UnsignedInteger> globalToActive(basisSize_, 0);
+  Indices globalToActive(basisSize_, 0);
   for (UnsignedInteger c = 0; c < activeFunctions_.getSize(); ++c)
     globalToActive[activeFunctions_[c]] = c;
 
@@ -398,9 +398,9 @@ void SparseExpansion::runLARS(const Collection<Function> & functions,
     Indices flagActiveFunctions(basisSize_, 0);
     flagActiveFunctions[0] = 1;
     LeastSquaresMethod leastSquaresMethod = LeastSquaresMethod::Build(methodName_, designProxy_, weights_, Indices(1, 0));
-    std::vector<bool> isCandidate(basisSize_, false);
+    Indices isCandidate(basisSize_, 0);
     for (UnsignedInteger idx = 0; idx < activeFunctions_.getSize(); ++idx)
-      isCandidate[activeFunctions_[idx]] = true;
+      isCandidate[activeFunctions_[idx]] = 1;
     const Sample marginalOutputSample(outputSample_.getMarginal(outputIndex));
     const Point rhs(marginalOutputSample.asPoint());
 

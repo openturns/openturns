@@ -11,7 +11,7 @@ Available constructor:
 CirculantEmbeddingGaussianProcess implements a stationary Gaussian process
 on a regular mesh. It takes advantage of the circulant embedding method to
 simulate it: this method is fast and generates exact simulations
-[davies1987]_, [wood1994]_. The extension to d-dimensional domains follows
+[davies1987]_, [wood1994]_. The extension to :math:`\domainDim`-dimensional domains follows
 [coeurjolly2016]_. [graham2018a]_ proves that for a sufficiently large
 embedding domain, the circulant matrix is guaranteed to be positive
 definite.
@@ -22,7 +22,7 @@ mesh from the given interval and discretization.
 The method embeds the Toeplitz covariance matrix into a circulant matrix
 of size N per dimension, where each N is the smallest power of two greater
 than or equal to :math:`2(n_d-1)` and :math:`n_d` is the number of
-vertices along dimension d. The block-circulant matrix is diagonalized via FFT
+vertices along the corresponding spatial dimension. The block-circulant matrix is diagonalized via FFT
 in :math:`\cO(N_1\cdots N_d \log(N_1\cdots N_d))` operations.
 
 For scalar output (output dimension = 1), eigenvalues are computed directly
@@ -40,7 +40,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
     Stationary covariance model :math:`C`.
     Supports scalar or vector-valued output (output dimension >= 1).
 interval : :class:`~openturns.Interval`
-    Spatial domain :math:`\cD` of dimension d.
+    Spatial domain :math:`\cD` of dimension :math:`\domainDim`.
 discretization : sequence of int
     Number of cells per dimension. Each entry must be at least 1.
 

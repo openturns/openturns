@@ -37,11 +37,21 @@ A cheap numerical check is the trace identity
 :math:`\int_\cD k_m \di{\mu} = m`, ie the empirical mean of
 :meth:`computeChristoffelFunction` over a sample of :math:`\mu`.
 For a correlated :math:`\mu`, compose tensor-orthonormal functions with
-a whitening map of :math:`\mu`. For a multivariate normal, use
-:math:`\vect{x} \mapsto \mat{L}^{-1} \vect{x}` with :math:`\mat{L}` the
-Cholesky factor of the correlation. This construction is needed because
+a whitening map of :math:`\mu`. For a multivariate normal with mean
+:math:`\vect{a}` and covariance :math:`\mat{\Sigma} = \mat{L}\Tr{\mat{L}}`,
+use :math:`\vect{x} \mapsto \mat{L}^{-1}(\vect{x} - \vect{a})`. The
+uncentered map :math:`\mat{L}^{-1} \vect{x}` applies only when
+:math:`\vect{a} = \vect{0}`; the correlation matrix may replace the covariance
+in :math:`\mat{L}` when the marginals are standardized. This construction is
+needed because
 :class:`~openturns.experimental.FiniteOrthogonalFunctionFactory` stores
-the given functions as given and only checks their dimensions.
+the given functions as given and only checks their dimensions. When the
+input is a raw dictionary, a quasi-orthogonalization pre-step is therefore
+recommended before constructing the distribution: orthogonalize the
+dictionary with respect to :math:`\mu`, for example by Gram-Schmidt or by a
+Cholesky factorization of its Gram matrix, and monitor the conditioning of
+the transformation. Optimal sampling and quasi-orthogonalization for general
+dictionaries are analyzed in [trunschkenouy2025]_.
 
 Rejection sampling is exact only when the numerical envelope bounds the
 density ratio. When the basis is a tensor product and the reference
@@ -106,7 +116,8 @@ Examples
 >>> print(f"{distribution.computePDF([0.5]):.6f}")
 0.304688
 >>> print(distribution.computePDF([0.5]) == distribution.computePDF([-0.5]))
-True)RAW"
+True
+)RAW"
 
 // ---------------------------------------------------------------------
 

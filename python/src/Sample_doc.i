@@ -372,7 +372,8 @@ Examples
 >>> sample = ot.Sample([[0.0, 0.0], [3.0, 4.0]])
 >>> print(sample.computePairwiseDistance())
 [[ 0 5 ]
- [ 5 0 ]])RAW"
+ [ 5 0 ]]
+)RAW"
 
 // ---------------------------------------------------------------------
 
@@ -670,7 +671,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
 >>> print(sample.computeSuperQuantile(0.9))
-[1.36728,1.86897])RAW"
+[1.36728,1.86897]
+)RAW"
 
 // ---------------------------------------------------------------------
 

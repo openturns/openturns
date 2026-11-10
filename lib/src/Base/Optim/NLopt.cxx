@@ -157,9 +157,6 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
 
-  if (problem.hasResidualFunction())
-    throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support least squares problems";
-
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 
@@ -240,6 +237,7 @@ void NLopt::run()
   result_ = OptimizationResult(getProblem());
 
   gradientCallsNumber_ = 0;
+  initialEvaluationNumber_ = getProblem().getObjective().getEvaluationCallsNumber();
 
   nlopt::opt opt(algo, dimension);
 
@@ -376,6 +374,12 @@ void NLopt::run()
 
   setResultFromEvaluationHistory(evaluationInputHistory_, evaluationOutputHistory_, inequalityConstraintHistory_, equalityConstraintHistory_);
   result_.setGradientCallsNumber(gradientCallsNumber_);
+  result_.setCallsNumber(getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber_);
+  if ((rc == nlopt::FORCED_STOP) && (result_.getCallsNumber() >= getMaximumCallsNumber()))
+  {
+    result_.setStatus(OptimizationResult::MAXIMUMCALLS);
+    result_.setStatusMessage(OSS() << "NLopt reached the maximum calls number after " << result_.getCallsNumber() << " evaluations");
+  }
   if (result_.getStatus() != OptimizationResult::SUCCESS)
   {
     if (getCheckStatus())
@@ -484,8 +488,9 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
 
-  // update result
-  algorithm->result_.setCallsNumber(algorithm->evaluationInputHistory_.getSize());
+  // update result (total evaluations including finite differences)
+  const UnsignedInteger evaluationNumber = algorithm->getProblem().getObjective().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_;
+  algorithm->result_.setCallsNumber(evaluationNumber);
   algorithm->result_.setGradientCallsNumber(algorithm->gradientCallsNumber_);
   algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
@@ -507,9 +512,15 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 
 #ifdef OPENTURNS_HAVE_NLOPT
   // callbacks
+  const UnsignedInteger evaluationNumberCb = algorithm->getProblem().getObjective().getEvaluationCallsNumber() - algorithm->initialEvaluationNumber_;
   if (algorithm->progressCallback_.first)
   {
-    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
+    algorithm->progressCallback_.first((100.0 * evaluationNumberCb) / algorithm->getMaximumCallsNumber(), algorithm->progressCallback_.second);
+  }
+  if (evaluationNumberCb >= algorithm->getMaximumCallsNumber())
+  {
+    nlopt::opt *p_opt = static_cast<nlopt::opt*>(algorithm->p_opt_);
+    if (p_opt) p_opt->force_stop();
   }
   if (algorithm->stopCallback_.first)
   {

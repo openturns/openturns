@@ -9,13 +9,13 @@ Available constructors:
 Parameters
 ----------
 inputDimension : int
-    Spatial dimension :math:`n`.
+    Spatial dimension :math:`\domainDim`.
     By default, equal to 1.
 scale : sequence of floats
-    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    Scale coefficient :math:`\vect{\theta}\in \Rset^{\domainDim}`.
     The size of :math:`\vect{\theta}` is the input dimension.
 amplitude : sequence of positive floats
-    Amplitude of the process :math:`\vect{\sigma} \in \Rset^d`.
+    Amplitude of the process :math:`\vect{\sigma} \in \Rset^{\processDim}`.
     Must be of size equal to 1.
     By default, equal to :math:`[1]`.
 frequency : positive float
@@ -23,9 +23,9 @@ frequency : positive float
 
 Notes
 -----
-The *exponentially damped cosine* function is a stationary covariance function with dimension :math:`d=1`.
+The *exponentially damped cosine* function is a stationary covariance function with dimension :math:`\processDim=1`.
 
-We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^{\domainDim}`.
 
 The  *exponentially damped cosine* covariance function is defined by:
 

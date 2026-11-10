@@ -4,7 +4,7 @@ R"RAW(Laguerre specific orthonormal univariate polynomial family.
 For the :class:`~openturns.Gamma` distribution.
 
 Any sequence of orthogonal polynomials follows the three-term recurrence
-formula detailed in :ref:`orthonormal_polynomials`.
+formula detailed in :any:`orthonormal_polynomials`.
 
 The recurrence coefficients for the Laguerre polynomials come analytically and
 read:
@@ -69,7 +69,8 @@ Examples
 
 >>> polynomial_factory = ot.LaguerreFactory(2.5, 2.0, -1.0)
 >>> print(polynomial_factory)
-class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=2.5 lambda=2 gamma=-1)RAW"
+class=LaguerreFactory k=2.5 measure=class=Gamma name=Gamma dimension=1 k=2.5 lambda=2 gamma=-1
+)RAW"
 
 // ---------------------------------------------------------------------
 

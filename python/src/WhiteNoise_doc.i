@@ -4,16 +4,16 @@ R"RAW(White Noise process.
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution` 
-    Distribution of dimension :math:`d` of the white noise process.
+    Distribution of dimension :math:`\processDim` of the white noise process.
 
 mesh : :class:`~openturns.Mesh`, optional
-    Mesh in :math:`\Rset^n` over which the process is discretized. 
+    Mesh in :math:`\Rset^{\domainDim}` over which the process is discretized.
     By default, the mesh is reduced to one point in :math:`\Rset` which coordinate is equal to 0.
 
 
 Notes
 -----
-A second order white noise :math:`\varepsilon: \Omega \times \cD \rightarrow \Rset^d`  is a stochastic process of dimension :math:`d` such that the covariance function :math:`C(\vect{s},\vect{t})=\delta(\vect{t}-\vect{s})C(\vect{s},\vect{s})` where :math:`C(\vect{s},\vect{s})`  is the covariance matrix of the process at vertex :math:`\vect{s}` and :math:`\delta` the Kroenecker function.
+A second order white noise :math:`\varepsilon: \Omega \times \cD \rightarrow \Rset^{\processDim}`  is a stochastic process of dimension :math:`\processDim` such that the covariance function :math:`C(\vect{s},\vect{t})=\delta(\vect{t}-\vect{s})C(\vect{s},\vect{s})` where :math:`C(\vect{s},\vect{s})`  is the covariance matrix of the process at vertex :math:`\vect{s}` and :math:`\delta` the Kroenecker function.
 
 A process :math:`\varepsilon` is a white noise if  all finite family of locations  :math:`(\vect{t}_i)_{i=1, \dots, n} \in \cD`, :math:`(\varepsilon_{\vect{t}_i})_{i=1, \dots, n}` is independent and identically distributed.
 
@@ -34,12 +34,13 @@ Get a realization:
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::WhiteNoise::getDistribution
-"Accessor to the distribution.
+R"RAW(Accessor to the distribution.
 
 Returns
 -------
 distribution : :class:`~openturns.Distribution` 
-    The distribution of dimension :math:`d` of the white noise."
+    The distribution of dimension :math:`\processDim` of the white noise.
+)RAW"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::WhiteNoise::getMarginal
@@ -60,11 +61,12 @@ wn : :class:`~openturns.WhiteNoise`
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::WhiteNoise::setDistribution
-"Accessor to the distribution.
+R"RAW(Accessor to the distribution.
 
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution` 
-    The distribution of dimension :math:`d` of the white noise."
+    The distribution of dimension :math:`\processDim` of the white noise.
+)RAW"
 
 // ---------------------------------------------------------------------
