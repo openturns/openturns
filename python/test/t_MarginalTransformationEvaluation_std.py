@@ -284,10 +284,12 @@ ott.assert_almost_equal(gradEdge[1, 1], 0.0, 1e-12, 0.0)
 ott.assert_almost_equal(gradEdge[2, 1], 0.0, 1e-12, 0.0)
 ott.assert_almost_equal(gradEdge[3, 1], 0.0, 1e-12, 0.0)
 assert abs(gradEdge[4, 1]) + abs(gradEdge[5, 1]) > 0.0
-# setParameter stages updates: a rejecting slice leaves the object unchanged
+# setParameter stages updates: a rejecting slice leaves the object unchanged.
+# Use a first slice that differs from the current parameters so a
+# non-atomic implementation would leave an observable change.
 before = list(transformation.getParameter())
 with ott.assert_raises(TypeError):
-    transformation.setParameter([5.0, 7.0, 8.0, -9.0])
+    transformation.setParameter([6.0, 7.0, 8.0, -9.0])
 ott.assert_almost_equal(transformation.getParameter(), before)
 with ott.assert_raises(TypeError):
     transformation.setParameter([1.0, 2.0])
