@@ -30,6 +30,18 @@ for iQ in range(nQ):
         f"qNormal({q:.12g})={ot.DistFunc.qNormal(q):.6g}, complementary={ot.DistFunc.qNormal(q, True):.6g}"
     )
 print("qNormal(", grid, ")=", ot.DistFunc.qNormal(grid))
+# extreme quantiles: the vectorized overload matches the scalar sentinel (#3426)
+for tail in [False, True]:
+    for p in [0.0, 1.0]:
+        ott.assert_almost_equal(
+            ot.DistFunc.qNormal([p], tail), [ot.DistFunc.qNormal(p, tail)]
+        )
+ott.assert_almost_equal(
+    ot.DistFunc.pNormal(ot.DistFunc.qNormal(0.0)), 0.0, 0.0, 1e-300
+)
+ott.assert_almost_equal(
+    ot.DistFunc.pNormal(ot.DistFunc.qNormal(1.0)), 1.0, 0.0, 1e-15
+)
 # rNormal
 nR = 10
 for iR in range(nR):
