@@ -18,7 +18,13 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/OT.hxx"
+#include "openturns/NonLinearLeastSquaresCalibration.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/MultiStart.hxx"
+#include "openturns/ParametricFunction.hxx"
+#include "openturns/SobolSequence.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/TNC.hxx"
 #include "openturns/OTtestcode.hxx"
 
 using namespace OT;
@@ -45,6 +51,11 @@ int main(int, char *[])
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
     y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
+
+    // Parametric function needed by the calibration algorithm (input and parameters are swapped)
+    const Indices input = {3};
+    ParametricFunction calibrationModel(g, input, Point(input.getSize()));
+
     Point candidate(3, 1.0);
     const Indices bootstrapSizes = {0, 30};
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
@@ -52,22 +63,22 @@ int main(int, char *[])
       // With default optim
       fullprint << "Bootstrap size =" << bootstrapSizes[n] << std::endl;
       fullprint << "1. Default optim" << std::endl;
-      NonLinearLeastSquaresCalibration algo(model, x, y, candidate);
+      NonLinearLeastSquaresCalibration algo(calibrationModel, x, y, candidate);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
-      Point parameterMAP(algo.getResult().getParameterMAP());
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
-      // To avoid discrepance between the platforms with or without CMinpack
+      Point parameter(algo.getResult().getParameter());
+      fullprint << "MAP =" << parameter << std::endl;
+      assert_almost_equal(parameter, trueParameter, 1e-2);
+      // To avoid discrepancy between the platforms with or without CMinpack
       // With TNC
       fullprint << "2. TNC optim" << std::endl;
       const UnsignedInteger multiStartSize = 10;
       algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), multiStartSize).generate()));
       algo.run();
-      parameterMAP = algo.getResult().getParameterMAP();
-      fullprint << "MAP =" << parameterMAP << std::endl;
+      parameter = algo.getResult().getParameter();
+      fullprint << "MAP =" << parameter << std::endl;
       fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      assert_almost_equal(parameter, trueParameter, 1e-2);
     } // n
   }
   catch (TestFailed & ex)

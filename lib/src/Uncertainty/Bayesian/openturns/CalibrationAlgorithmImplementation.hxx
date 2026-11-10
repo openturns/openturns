@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
-#include "openturns/CalibrationResult.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Distribution.hxx"
 
@@ -70,10 +69,6 @@ public:
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
   virtual void run();
 
-  /** Calibration result accessor */
-  CalibrationResult getResult() const;
-  void setResult(const CalibrationResult & result);
-
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
@@ -98,11 +93,7 @@ protected:
   /* The parameter prior distribution */
   Distribution parameterPrior_;
 
-  /* The calibration result */
-  CalibrationResult result_;
-
 }; /* class CalibrationAlgorithmImplementation */
-
 
 END_NAMESPACE_OPENTURNS
 

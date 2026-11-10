@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 import math as m
 import sys
 
@@ -28,18 +29,21 @@ Hobs = outputH + ot.Normal(0.0, 0.1).getSample(nbobs)
 Qobs = inputSample[:, 0]
 thetaPrior = [20, 49, 51]
 model = ot.ParametricFunction(g, [1, 2, 3], thetaPrior)
+calibrationModel = ot.ParametricFunction(g, [0], [0.0])
 errorCovariance = ot.CovarianceMatrix([[0.5**2]])
 sigma = ot.CovarianceMatrix(3)
 sigma[0, 0] = 5.0**2
 sigma[1, 1] = 1.0**2
 sigma[2, 2] = 1.0**2
 algo = ot.GaussianNonLinearCalibration(
-    model, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+    calibrationModel, Qobs, Hobs, thetaPrior, sigma, errorCovariance
 )
 algo.run()
 result = algo.getResult()
 assert result.isBayesian()
-assert not result.isParameterDistributionPosterior()
+result.getMAPDistribution()  # must not raise an exception
+with ott.assert_raises(TypeError):
+    result.getParameterPosterior()
 
 # without bootstrap the posterior label is kept
 bootstrapKey = "GaussianNonLinearCalibration-BootstrapSize"
@@ -47,11 +51,13 @@ previousBootstrapSize = ot.ResourceMap.GetAsUnsignedInteger(bootstrapKey)
 ot.ResourceMap.SetAsUnsignedInteger(bootstrapKey, 0)
 try:
     algo2 = ot.GaussianNonLinearCalibration(
-        model, Qobs, Hobs, thetaPrior, sigma, errorCovariance
+        calibrationModel, Qobs, Hobs, thetaPrior, sigma, errorCovariance
     )
     algo2.run()
     result2 = algo2.getResult()
-    assert result2.isParameterDistributionPosterior()
+    result2.getParameterPosterior()  # must not raise an exception
+    with ott.assert_raises(TypeError):
+        result2.getMAPDistribution()
     legends2 = [
         legend
         for j in range(3)
