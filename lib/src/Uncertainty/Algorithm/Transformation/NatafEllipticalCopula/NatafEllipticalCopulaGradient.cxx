@@ -94,12 +94,15 @@ String NatafEllipticalCopulaGradient::__repr__() const
  */
 Matrix NatafEllipticalCopulaGradient::gradient(const Point & inP) const
 {
-  UnsignedInteger dimension = getInputDimension();
+  const UnsignedInteger dimension = getInputDimension();
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   Matrix result(dimension, dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    Scalar quantileDerivative = 1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(inP[i]));
+    const Scalar x = inP[i];
+    if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafEllipticalCopulaGradient if all the components are not in [0, 1], here in=" << inP;
+    Scalar quantileDerivative = 1.0 / standardMarginal.computePDF(standardMarginal.computeQuantile(x));
     for (UnsignedInteger j = i; j < dimension; ++j) result(i, j) = inverseCholesky_(j, i) * quantileDerivative;
   }
   return result;

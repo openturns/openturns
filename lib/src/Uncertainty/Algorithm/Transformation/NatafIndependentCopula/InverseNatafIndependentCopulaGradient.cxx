@@ -87,6 +87,7 @@ String InverseNatafIndependentCopulaGradient::__repr__() const
  */
 Matrix InverseNatafIndependentCopulaGradient::gradient(const Point & inP) const
 {
+  if (inP.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << inP.getDimension();
   Matrix result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {

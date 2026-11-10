@@ -93,7 +93,8 @@ String InverseNatafEllipticalCopulaGradient::__repr__() const
  */
 Matrix InverseNatafEllipticalCopulaGradient::gradient(const Point & inP) const
 {
-  UnsignedInteger dimension = getInputDimension();
+  const UnsignedInteger dimension = getInputDimension();
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   // First, correlate the components
   Point point(cholesky_ * inP);
   Matrix result(dimension, dimension);

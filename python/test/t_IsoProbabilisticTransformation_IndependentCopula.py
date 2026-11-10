@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -247,3 +248,23 @@ gradient[4, 0] = dTdp[0]
 gradient[4, 1] = dTdp[1]
 
 print("(inverse) parameters gradient (FD)    =", repr(gradient))
+
+# input validation of the Nataf copula transformations (#3425)
+dim2 = 2
+forwardEval = ot.NatafIndependentCopulaEvaluation(dim2)
+forwardGrad = ot.NatafIndependentCopulaGradient(dim2)
+forwardHess = ot.NatafIndependentCopulaHessian(dim2)
+inverseEval = ot.InverseNatafIndependentCopulaEvaluation(dim2)
+inverseGrad = ot.InverseNatafIndependentCopulaGradient(dim2)
+inverseHess = ot.InverseNatafIndependentCopulaHessian(dim2)
+for transformation in [forwardEval, inverseEval]:
+    with ott.assert_raises(TypeError):
+        transformation([0.5])
+    with ott.assert_raises(TypeError):
+        transformation([0.5, 0.5, 0.5])
+for gradient in [forwardGrad, inverseGrad]:
+    with ott.assert_raises(TypeError):
+        gradient.gradient([0.5])
+for hessian in [forwardHess, inverseHess]:
+    with ott.assert_raises(TypeError):
+        hessian.hessian([0.5])

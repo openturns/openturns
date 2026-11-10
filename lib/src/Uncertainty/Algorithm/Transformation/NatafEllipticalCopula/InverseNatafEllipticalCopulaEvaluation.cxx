@@ -101,6 +101,7 @@ String InverseNatafEllipticalCopulaEvaluation::__str__(const String & ) const
 Point InverseNatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getInputDimension();
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   // First, correlate the components
   Point result(cholesky_ * inP);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));

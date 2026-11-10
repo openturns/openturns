@@ -100,12 +100,17 @@ String NatafEllipticalCopulaEvaluation::__str__(const String & ) const
  */
 Point NatafEllipticalCopulaEvaluation::operator () (const Point & inP) const
 {
-  const UnsignedInteger dimension = getOutputDimension();
+  const UnsignedInteger dimension = getInputDimension();
+  if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
   Point result(dimension);
   const Distribution standardMarginal(standardDistribution_.getMarginal(0));
   // First, filter the common marginal distribution
   for (UnsignedInteger i = 0; i < dimension; ++ i)
-    result[i] = standardMarginal.computeScalarQuantile(inP[i]);
+  {
+    const Scalar x = inP[i];
+    if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafEllipticalCopulaEvaluation if all the components are not in [0, 1], here in=" << inP;
+    result[i] = standardMarginal.computeScalarQuantile(x);
+  }
   // Second, decorrelate the components
   result = inverseCholesky_ * result;
   callsNumber_.increment();

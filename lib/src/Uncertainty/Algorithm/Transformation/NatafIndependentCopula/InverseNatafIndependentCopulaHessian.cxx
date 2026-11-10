@@ -87,6 +87,7 @@ String InverseNatafIndependentCopulaHessian::__repr__() const
  */
 SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const Point & inP) const
 {
+  if (inP.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << inP.getDimension();
   SymmetricTensor result(dimension_, dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {

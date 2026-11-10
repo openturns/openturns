@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -287,3 +288,32 @@ gradient[4, 0] = dTdp[0]
 gradient[4, 1] = dTdp[1]
 
 print("(inverse) parameters gradient (FD)    =", repr(gradient))
+
+# input validation of the Nataf copula transformations (#3425)
+std2d = ot.Normal(2)
+idChol2d = ot.TriangularMatrix(2)
+idChol2d[0, 0] = 1.0
+idChol2d[1, 1] = 1.0
+forwardEval = ot.NatafEllipticalCopulaEvaluation(std2d, idChol2d)
+forwardGrad = ot.NatafEllipticalCopulaGradient(std2d, idChol2d)
+forwardHess = ot.NatafEllipticalCopulaHessian(std2d, idChol2d)
+inverseEval = ot.InverseNatafEllipticalCopulaEvaluation(std2d, idChol2d)
+inverseGrad = ot.InverseNatafEllipticalCopulaGradient(std2d, idChol2d)
+inverseHess = ot.InverseNatafEllipticalCopulaHessian(std2d, idChol2d)
+for transformation in [forwardEval, inverseEval]:
+    with ott.assert_raises(TypeError):
+        transformation([0.5])
+    with ott.assert_raises(TypeError):
+        transformation([0.5, 0.5, 0.5])
+for gradient in [forwardGrad, inverseGrad]:
+    with ott.assert_raises(TypeError):
+        gradient.gradient([0.5])
+for hessian in [forwardHess, inverseHess]:
+    with ott.assert_raises(TypeError):
+        hessian.hessian([0.5])
+with ott.assert_raises(TypeError):
+    forwardEval([2.0, 0.5])
+with ott.assert_raises(TypeError):
+    forwardGrad.gradient([2.0, 0.5])
+with ott.assert_raises(TypeError):
+    forwardHess.hessian([2.0, 0.5])
