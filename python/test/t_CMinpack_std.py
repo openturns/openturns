@@ -4,6 +4,7 @@ import openturns as ot
 import openturns.testing as ott
 import sys
 import os
+import time
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
@@ -128,6 +129,29 @@ stopAlgo.setMaximumCallsNumber(10000)
 stopAlgo.setStopCallback(stopNow)
 stopAlgo.run()
 assert stopAlgo.getResult().getStatusMessage() == "user stop"
+
+# exhausted evaluation budget aborts with MAXIMUMCALLS, not INTERRUPTION
+maxCallsAlgo = ot.CMinpack(ot.LeastSquaresProblem(residualFunction))
+maxCallsAlgo.setStartingPoint([1.0] * n)
+maxCallsAlgo.setMaximumCallsNumber(2)
+maxCallsAlgo.run()
+assert maxCallsAlgo.getResult().getStatus() == ot.OptimizationResult.MAXIMUMCALLS
+
+# maximum time duration aborts with TIMEOUT
+
+
+def slowResidual(p):
+    time.sleep(0.02)
+    return residualFunction(p)
+
+
+slowFunction = ot.PythonFunction(n, m, slowResidual)
+timeoutAlgo = ot.CMinpack(ot.LeastSquaresProblem(slowFunction))
+timeoutAlgo.setStartingPoint([1.0] * n)
+timeoutAlgo.setMaximumCallsNumber(10000)
+timeoutAlgo.setMaximumTimeDuration(0.2)
+timeoutAlgo.run()
+assert timeoutAlgo.getResult().getStatus() == ot.OptimizationResult.TIMEOUT
 
 # persistence
 study = ot.Study()

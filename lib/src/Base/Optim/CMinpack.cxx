@@ -406,9 +406,24 @@ void CMinpack::run()
   switch (info)
   {
     case -1:
-      // user stop
-      result_.setStatus(OptimizationResult::INTERRUPTION);
-      result_.setStatusMessage("user stop");
+      // the residual callback asked cminpack to stop: discriminate a
+      // timeout or an exhausted evaluation budget from a user interruption
+      if ((getMaximumTimeDuration() > 0.0) && (timeDuration > getMaximumTimeDuration()))
+      {
+        result_.setStatus(OptimizationResult::TIMEOUT);
+        result_.setStatusMessage(OSS() << "CMinpack optimization timeout after " << timeDuration << "s");
+      }
+      else if ((getProblem().getResidualFunction().getEvaluationCallsNumber() - initialEvaluationNumber_) >= getMaximumCallsNumber())
+      {
+        result_.setStatus(OptimizationResult::MAXIMUMCALLS);
+        result_.setStatusMessage("maximum function evaluations exceeded");
+      }
+      else
+      {
+        // user stop
+        result_.setStatus(OptimizationResult::INTERRUPTION);
+        result_.setStatusMessage("user stop");
+      }
       break;
     case 0:
       result_.setStatusMessage("improper input parameters");
