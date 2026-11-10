@@ -1,7 +1,8 @@
 #!/bin/sh
 # upload doc to openturns.github.io
 
-set -xe
+set -e
+env
 
 # early exit on PRs
 if test -n "${CIRCLE_PULL_REQUEST}" -o "${CIRCLE_PROJECT_USERNAME}" != "openturns"
@@ -9,7 +10,7 @@ then
   exit 0
 fi
 
-git clone --depth 1 https://${GH_TOKEN}@github.com/openturns/openturns.github.io.git
+git clone --depth 1 https://x-access-token:${GH_TOKEN}@github.com/openturns/openturns.github.io.git
 if test -n "${CIRCLE_TAG}"
 then
   CIRCLE_BRANCH="${CIRCLE_TAG:1}"
