@@ -36,6 +36,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
+ * QuadraticProblem (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)
@@ -93,6 +94,9 @@
  * Added HiGHS.GetAlgorithmNames/setAlgorithmName/getAlgorithmName to select the LP solver (openturns.experimental)
  * Added HiGHS.getDualPoint/getReducedCosts/getConstraintValues to expose the dual solution (openturns.experimental)
  * Added HiGHS.getSimplexIterationNumber/getIPMIterationNumber/getCrossoverIterationNumber/getPDLPIterationNumber/getQPIterationNumber to expose per-solver iteration counts (openturns.experimental)
+ * Added OptimizationProblem.isQuadratic/getHessian/getConstant to describe quadratic objectives
+ * Added HiGHS quadratic programming support through QuadraticProblem (openturns.experimental)
+ * Added LinearLeastSquaresCalibration.getBounds/setBounds to solve a bounded linear least-squares calibration
  * Added ProcessSample.split
  * Added optional yLabel argument to SobolIndicesAlgorithm.DrawCorrelationCoefficients
  * Deprecated StandardDistributionPolynomialFactory in favor of UniVariateDistributionPolynomialFactory

@@ -23,7 +23,10 @@
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/QuadraticProblem.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 
+#include <algorithm>
 #include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -88,13 +91,13 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void LinearLeastSquaresCalibration::run()
 {
+  const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
   if (getModel().getEvaluation().getImplementation()->isActualImplementation())
   {
     // Compute the linearization
     Function parametrizedModel(getModel());
     parametrizedModel.setParameter(getParameterPrior().getMean());
     // Flatten everything related to the model evaluations over the input observations
-    const UnsignedInteger parameterDimension = getParameterPrior().getDimension();
     const UnsignedInteger outputDimension = getOutputObservations().getDimension();
     const UnsignedInteger size = getOutputObservations().getSize();
     modelObservations_ = parametrizedModel(getInputObservations());
@@ -112,17 +115,124 @@ void LinearLeastSquaresCalibration::run()
   }
 
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
-  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
-  const Point deltaTheta(method.solve(deltaY));
-  for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
-    if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
-
-  const Point thetaStar(getStartingPoint() - deltaTheta);
-  const Point r(deltaY - gradientObservations_ * deltaTheta);
   Distribution error;
-  Indices freeIndices(thetaStar.getDimension());
-  freeIndices.fill();
-  Distribution parameterPosterior(ComputePosteriorAndErrorDistribution(thetaStar, r, method.getGramInverse(), freeIndices, thetaStar.getDimension(), outputObservations_.getDimension(), error));
+  Point thetaStar;
+  Point r;
+  CovarianceMatrix gramInverse;
+  UnsignedInteger degreesOfFreedom = 0;
+  Indices freeIndices;
+  if (bounds_.getDimension() > 0)
+  {
+    // Minimize ||J.theta-(J.theta0-deltaY)||^2 subject to the parameter bounds.
+    // The constant term of the QP is ||J.theta0-deltaY||^2, so its optimal
+    // value is the residual sum of squares.
+    const Point target(gradientObservations_ * getStartingPoint() - deltaY);
+    const QuadraticProblem problem(QuadraticProblem::FromLeastSquares(gradientObservations_, target, bounds_));
+    OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
+    // Build only sets the problem: the selected algorithm has no starting point
+    // of its own, and solvers such as Cobyla require one. Start from the
+    // calibration starting point projected onto the bounds, which is feasible.
+    Point solverStart(getStartingPoint());
+    const Point lowerBound(bounds_.getLowerBound());
+    const Point upperBound(bounds_.getUpperBound());
+    const Interval::BoolCollection finiteLowerBound(bounds_.getFiniteLowerBound());
+    const Interval::BoolCollection finiteUpperBound(bounds_.getFiniteUpperBound());
+    for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+    {
+      if (finiteLowerBound[i] && (solverStart[i] < lowerBound[i]))
+        solverStart[i] = lowerBound[i];
+      if (finiteUpperBound[i] && (solverStart[i] > upperBound[i]))
+        solverStart[i] = upperBound[i];
+    }
+    solver.setStartingPoint(solverStart);
+    solver.run();
+    const OptimizationResult result(solver.getResult());
+    if (result.getStatus() != OptimizationResult::SUCCESS)
+      throw InternalException(HERE) << "Error: the bounded quadratic program solver failed: " << result.getStatusMessage();
+    thetaStar = result.getOptimalPoint();
+    r = gradientObservations_ * thetaStar - target;
+
+    // Variables at an active bound are considered fixed: the posterior
+    // covariance is computed on the free block J_F^T J_F only, and the
+    // residual degrees of freedom exclude the active directions. This is the
+    // usual active-set approximation, which treats the active bounds as
+    // equality constraints and applies the unconstrained Gaussian
+    // approximation to the remaining free parameters. See
+    // S. Huet, A. Bouvier, M.-A. Poursat and E. Jolivet, Statistical Tools for
+    // Nonlinear Regression: A Practical Guide with S-PLUS and R Examples,
+    // 2nd ed., Springer, New York, 2004, for the Gaussian approximation, and
+    // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
+    // Academic Press, London, 1981, Section 5.2, for the active-set treatment
+    // of bound constraints.
+    // Absolute tolerance used to detect a parameter lying on one of its bounds.
+    // It is deliberately larger than the default primal feasibility tolerance of
+    // the quadratic solver (1e-7) so that a parameter reported slightly outside
+    // its bound is still detected. It is not scaled by the bound magnitude:
+    // scaling by a large bound would classify a parameter lying well inside the
+    // feasible interval as fixed.
+    const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
+    if (!(tolerance > 0.0) || !std::isfinite(tolerance))
+      throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
+    for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+    {
+      Bool active = false;
+      if (finiteLowerBound[i] && (std::abs(thetaStar[i] - lowerBound[i]) <= tolerance))
+        active = true;
+      if (finiteUpperBound[i] && (std::abs(thetaStar[i] - upperBound[i]) <= tolerance))
+        active = true;
+      if (!active)
+        freeIndices.add(i);
+    }
+    const UnsignedInteger freeDimension = freeIndices.getSize();
+    degreesOfFreedom = freeDimension;
+    // The covariance is zero in the directions fixed at a bound: start from a
+    // zero matrix instead of the identity matrix used by CovarianceMatrix(dim).
+    gramInverse = CovarianceMatrix(parameterDimension, Point(parameterDimension));
+    if (freeDimension > 0)
+    {
+      Matrix freeGradient(gradientObservations_.getNbRows(), freeDimension);
+      for (UnsignedInteger j = 0; j < freeDimension; ++j)
+        for (UnsignedInteger i = 0; i < gradientObservations_.getNbRows(); ++i)
+          freeGradient(i, j) = gradientObservations_(i, freeIndices[j]);
+      // A rank-deficient free block gives a small positive singular value whose
+      // inverse can still be finite: check the numerical rank before relying on
+      // the factorization of the free block.
+      const Point singularValues(freeGradient.computeSingularValues());
+      const UnsignedInteger singularValuesSize = singularValues.getSize();
+      const Scalar largestSingularValue = (singularValuesSize > 0) ? singularValues[0] : 0.0;
+      const Scalar rankTolerance = std::max(freeGradient.getNbRows(), freeDimension) * SpecFunc::Precision * largestSingularValue;
+      if ((singularValuesSize < freeDimension) || !(largestSingularValue > 0.0) || (singularValues[singularValuesSize - 1] <= rankTolerance))
+        throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+      LeastSquaresMethod freeMethod(LeastSquaresMethod::Build(methodName_, freeGradient));
+      // Initialize the decomposition before accessing the Gram inverse
+      freeMethod.update(Indices(), freeMethod.getCurrentIndices(), Indices(), false);
+      const CovarianceMatrix freeGramInverse(freeMethod.getGramInverse());
+      for (UnsignedInteger i = 0; i < freeDimension; ++i)
+        for (UnsignedInteger j = 0; j < freeDimension; ++j)
+        {
+          const Scalar value = freeGramInverse(i, j);
+          if (!std::isfinite(value))
+            throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+          gramInverse(freeIndices[i], freeIndices[j]) = value;
+        }
+    }
+  }
+  else
+  {
+    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
+    const Point deltaTheta(method.solve(deltaY));
+    for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
+      if (!std::isfinite(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+
+    thetaStar = getStartingPoint() - deltaTheta;
+    r = deltaY - gradientObservations_ * deltaTheta;
+    gramInverse = method.getGramInverse();
+    degreesOfFreedom = thetaStar.getDimension();
+    freeIndices = Indices(degreesOfFreedom);
+    for (UnsignedInteger i = 0; i < degreesOfFreedom; ++i)
+      freeIndices[i] = i;
+  }
+  Distribution parameterPosterior(ComputePosteriorAndErrorDistribution(thetaStar, r, gramInverse, freeIndices, degreesOfFreedom, outputObservations_.getDimension(), error));
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
@@ -205,6 +315,22 @@ Point LinearLeastSquaresCalibration::getStartingPoint() const
   return getParameterPrior().getMean();
 }
 
+/* Bounds accessor */
+Interval LinearLeastSquaresCalibration::getBounds() const
+{
+  return bounds_;
+}
+
+void LinearLeastSquaresCalibration::setBounds(const Interval & bounds)
+{
+  // An empty interval means no bounds; otherwise the dimension must match
+  // the calibration parameter dimension when it is already known.
+  const UnsignedInteger parameterDimension = parameterPrior_.getDimension();
+  if ((bounds.getDimension() != 0) && (parameterDimension != 0) && (bounds.getDimension() != parameterDimension))
+    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << parameterDimension << ", got dimension=" << bounds.getDimension();
+  bounds_ = bounds;
+}
+
 /* Least squares method name accessor */
 String LinearLeastSquaresCalibration::getMethodName() const
 {
@@ -231,6 +357,7 @@ void LinearLeastSquaresCalibration::save(Advocate & adv) const
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("modelObservations_", modelObservations_);
   adv.saveAttribute("gradientObservations_", gradientObservations_);
+  adv.saveAttribute("bounds_", bounds_);
   adv.saveAttribute("methodName_", methodName_);
 }
 
@@ -240,6 +367,8 @@ void LinearLeastSquaresCalibration::load(Advocate & adv)
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("modelObservations_", modelObservations_);
   adv.loadAttribute("gradientObservations_", gradientObservations_);
+  if (adv.hasAttribute("bounds_"))
+    adv.loadAttribute("bounds_", bounds_);
   adv.loadAttribute("methodName_", methodName_);
 }
 

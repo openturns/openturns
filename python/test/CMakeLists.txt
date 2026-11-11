@@ -327,8 +327,12 @@ if (dlib_FOUND)
 endif ()
 if (highs_FOUND)
   ot_pyinstallcheck_test (HiGHS_std IGNOREOUT)
+  ot_pyinstallcheck_test (QuadraticProblem_std IGNOREOUT)
   ot_pyinstallcheck_test (GaussLPQuadrature_std IGNOREOUT)
 endif ()
+# bounded calibration falls back to the algorithm selected by
+# OptimizationAlgorithm::Build when HiGHS is not available
+ot_pyinstallcheck_test (LinearLeastSquaresCalibration_bounds IGNOREOUT)
 ot_pyinstallcheck_test (LinearProblem_std IGNOREOUT)
 ot_pyinstallcheck_test (LeastSquaresProblem_std IGNOREOUT)
 ot_pyinstallcheck_test (MultiStart_std IGNOREOUT)
