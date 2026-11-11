@@ -33,7 +33,10 @@ g = ot.SymbolicFunction(["x"], ["0.5*x^2 + sin(2.5*x)"])
 xMin = -0.9
 xMax = 1.9
 X_distr = ot.Uniform(xMin, xMax)
-X = ot.LHSExperiment(X_distr, sampleSize, False, False).generate()
+experiment = ot.LHSExperiment(X_distr, sampleSize)
+experiment.setAlwaysShuffle(False)
+experiment.setRandomShift(False)
+X = experiment.generate()
 Y = g(X)
 
 # %%

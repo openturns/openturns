@@ -33,7 +33,10 @@ DoESize = 4
 xMin = -2.0
 xMax = 2.0
 X_distr = ot.Uniform(xMin, xMax)
-X = ot.LHSExperiment(X_distr, DoESize, False, False).generate()
+experiment = ot.LHSExperiment(X_distr, DoESize)
+experiment.setAlwaysShuffle(False)
+experiment.setRandomShift(False)
+X = experiment.generate()
 Y = g(X)
 
 # %%
