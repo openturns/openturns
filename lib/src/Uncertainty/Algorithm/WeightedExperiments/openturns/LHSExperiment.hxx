@@ -70,6 +70,9 @@ public:
   Sample generateStandard() const;
   Sample generateWithWeights(Point & weightsOut) const override;
 
+  /** Return isRandom flag */
+  Bool isRandom() const override;
+
   /** Shuffle the cells. */
   static Matrix ComputeShuffle(const UnsignedInteger dimension,
                                const UnsignedInteger totalSize);
