@@ -14,6 +14,11 @@ x = ot.Sample([[0.0], [1.0], [2.0], [3.0], [4.0]])
 y = model(x)
 candidate = [0.0, 0.0]
 
+# Without HiGHS, bounded calibration relies on the first generic algorithm
+# returned by OptimizationAlgorithm::Build (Cobyla), which is less accurate
+# than the HiGHS quadratic solver.
+boundedMapRtol = 1e-5 if ot.PlatformInfo.HasFeature("highs") else 1e-3
+
 # unconstrained reference
 algoRef = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
 algoRef.run()
@@ -30,9 +35,9 @@ algo.setBounds(bounds)
 assert algo.getBounds() == bounds
 algo.run()
 result = algo.getResult()
-ott.assert_almost_equal(result.getParameterMAP(), [0.5, 3.5])
+ott.assert_almost_equal(result.getParameterMAP(), [0.5, 3.5], boundedMapRtol)
 posterior = result.getParameterPosterior()
-ott.assert_almost_equal(posterior.getMean(), [0.5, 3.5])
+ott.assert_almost_equal(posterior.getMean(), [0.5, 3.5], boundedMapRtol)
 covariance = posterior.getCovariance()
 # residual r = (1.5, 1.0, 0.5, 0.0, -0.5), dof = 1 free parameter, variance = 0.9375
 # free parameter b: sum x^2 = 30, covariance = 0.9375 / 30 = 0.03125
@@ -64,7 +69,9 @@ for method in ["SVD", "QR", "Cholesky"]:
     algoInactive = ot.LinearLeastSquaresCalibration(model, x, y, candidate, method)
     algoInactive.setBounds(ot.Interval([-10.0, -10.0], [10.0, 10.0]))
     algoInactive.run()
-    ott.assert_almost_equal(algoInactive.getResult().getParameterMAP(), [2.0, 3.0])
+    ott.assert_almost_equal(
+        algoInactive.getResult().getParameterMAP(), [2.0, 3.0], boundedMapRtol
+    )
 
 # lower bound active on a: b = 85 / 30
 for method in ["SVD", "QR", "Cholesky"]:
@@ -72,14 +79,14 @@ for method in ["SVD", "QR", "Cholesky"]:
     algoLower.setBounds(ot.Interval([2.5, -10.0], [10.0, 10.0]))
     algoLower.run()
     ott.assert_almost_equal(
-        algoLower.getResult().getParameterMAP(), [2.5, 85.0 / 30.0]
+        algoLower.getResult().getParameterMAP(), [2.5, 85.0 / 30.0], boundedMapRtol
     )
 
 # upper bound active on b only: a = 3
 algoMixed = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
 algoMixed.setBounds(ot.Interval([-10.0, -10.0], [10.0, 2.5]))
 algoMixed.run()
-ott.assert_almost_equal(algoMixed.getResult().getParameterMAP(), [3.0, 2.5])
+ott.assert_almost_equal(algoMixed.getResult().getParameterMAP(), [3.0, 2.5], boundedMapRtol)
 
 # infinite bounds on the free side are supported
 algoInfinite = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
@@ -88,7 +95,7 @@ algoInfinite.setBounds(
 )
 algoInfinite.run()
 ott.assert_almost_equal(
-    algoInfinite.getResult().getParameterMAP(), [2.5, 85.0 / 30.0]
+    algoInfinite.getResult().getParameterMAP(), [2.5, 85.0 / 30.0], boundedMapRtol
 )
 
 # all parameters active at a bound
@@ -96,7 +103,7 @@ algoAll = ot.LinearLeastSquaresCalibration(model, x, y, candidate, "SVD")
 algoAll.setBounds(ot.Interval([-10.0, -10.0], [0.5, 1.5]))
 algoAll.run()
 resultAll = algoAll.getResult()
-ott.assert_almost_equal(resultAll.getParameterMAP(), [0.5, 1.5])
+ott.assert_almost_equal(resultAll.getParameterMAP(), [0.5, 1.5], boundedMapRtol)
 # residual r = (1.5, 3.0, 4.5, 6.0, 7.5), no free parameter, variance = 24.75
 ott.assert_almost_equal(
     resultAll.getObservationsError().getStandardDeviation(), [4.9749371855331]
@@ -122,7 +129,7 @@ algoVector = ot.LinearLeastSquaresCalibration(
 algoVector.setBounds(ot.Interval([-10.0, -10.0], [0.5, 10.0]))
 algoVector.run()
 resultVector = algoVector.getResult()
-ott.assert_almost_equal(resultVector.getParameterMAP(), [0.5, 3.0])
+ott.assert_almost_equal(resultVector.getParameterMAP(), [0.5, 3.0], boundedMapRtol)
 # residual sum of squares = 22.5 over 10 observations and 1 free parameter:
 # variance = 22.5 / 9 and free parameter b has sum of squares 60
 ott.assert_almost_equal(
@@ -173,7 +180,9 @@ thetaLarge = resultLarge.getParameterPosterior().getMean()[0]
 # least-squares solution a* = aLarge + 3 / 14, i.e. 3 / 14 above the lower bound.
 # The QP solver is only accurate to a relative tolerance at this magnitude, so
 # the comparisons are relative: an active bound would return exactly 1.0e6.
-ott.assert_almost_equal([thetaLarge], [aLarge + 3.0 / 14.0], 1e-7)
+# Without HiGHS the fallback solver is less accurate on this problem.
+largeMapRtol = 1e-7 if ot.PlatformInfo.HasFeature("highs") else 1e-5
+ott.assert_almost_equal([thetaLarge], [aLarge + 3.0 / 14.0], largeMapRtol)
 assert thetaLarge - 1.0e6 > 0.5
 covarianceLarge = resultLarge.getParameterPosterior().getCovariance()
 # residual r = (3, 6, -5) / 14, variance error = (5 / 14) / 2, gram inverse = 1 / 14
@@ -211,5 +220,5 @@ loadedAlgo = ot.LinearLeastSquaresCalibration()
 loadedStudy.fillObject("algo", loadedAlgo)
 assert loadedAlgo.getBounds() == bounds
 loadedAlgo.run()
-ott.assert_almost_equal(loadedAlgo.getResult().getParameterMAP(), [0.5, 3.5])
+ott.assert_almost_equal(loadedAlgo.getResult().getParameterMAP(), [0.5, 3.5], boundedMapRtol)
 os.remove(studyFile)
