@@ -62,7 +62,7 @@ HiGHS::HiGHS(const OptimizationProblem & problem,
 /* Algorithm names accessor */
 Description HiGHS::GetAlgorithmNames()
 {
-  static const Description algoNames({"choose", "simplex", "ipm", "ipx", "hipo", "pdlp", "hipdlp"});
+  static const Description algoNames({"choose", "simplex", "qpasm", "ipm", "ipx", "hipo", "pdlp", "hipdlp"});
   return algoNames;
 }
 
@@ -165,8 +165,25 @@ void HiGHS::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasResidualFunction() || problem.hasLevelFunction() || problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "HiGHS does not support multi-objective / least squares / nearest point problems";
 
-  if (!problem.isLinear())
-    throw InvalidArgumentException(HERE) << "HiGHS does not support non linear problems";
+  // Only the linear constraints set through setLinearConstraint are mapped to
+  // the HiGHS model: arbitrary constraint functions would be silently ignored.
+  if (problem.hasEqualityConstraint() || problem.hasInequalityConstraint())
+    throw InvalidArgumentException(HERE) << "HiGHS does not support equality or inequality constraint functions";
+
+  if (!problem.isLinear() && !problem.isQuadratic())
+    throw InvalidArgumentException(HERE) << "HiGHS does not support problems that are neither linear nor quadratic";
+
+  // HiGHS does not support mixed-integer quadratic problems
+  if (problem.isQuadratic() && !problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "HiGHS does not support mixed-integer quadratic problems";
+
+  if (problem.isQuadratic())
+  {
+    if ((algoName_ != "choose") && (algoName_ != "qpasm") && (algoName_ != "hipo"))
+      throw InvalidArgumentException(HERE) << "HiGHS solver " << algoName_ << " only applies to linear problems, use \"choose\", \"qpasm\" or \"hipo\" on quadratic problems";
+  }
+  else if (algoName_ == "qpasm")
+    throw InvalidArgumentException(HERE) << "HiGHS solver qpasm only applies to quadratic problems";
 
   // Discrete problems are solved by the MIP solver, which ignores the LP solver choice
   if (!problem.isContinuous() && (algoName_ != "choose"))
@@ -201,10 +218,35 @@ void HiGHS::run()
 
   // objective function
   model.lp_.sense_ = getProblem().isMinimization() ? ObjSense::kMinimize : ObjSense::kMaximize;
-  model.lp_.offset_ = 0.0;
+  model.lp_.offset_ = getProblem().isQuadratic() ? getProblem().getConstant() : 0.0;
   model.lp_.col_cost_.resize(model.lp_.num_col_);
   for (UnsignedInteger i = 0; i < problemDimension; ++ i)
     model.lp_.col_cost_[i] = getProblem().getLinearCost()[i];
+
+  // quadratic objective 1/2 x^T Q x, stored as a lower triangular column-wise Hessian
+  if (getProblem().isQuadratic())
+  {
+    const SymmetricMatrix hessian(getProblem().getHessian());
+    if (hessian.getDimension() != problemDimension)
+      throw InvalidDimensionException(HERE) << "Hessian dimension (" << hessian.getDimension() << ") must match problem dimension (" << problemDimension << ")";
+    model.hessian_.dim_ = static_cast<HighsInt>(problemDimension);
+    model.hessian_.format_ = HessianFormat::kTriangular;
+    model.hessian_.start_.resize(problemDimension + 1);
+    model.hessian_.start_[0] = 0;
+    for (UnsignedInteger col = 0; col < problemDimension; ++ col)
+    {
+      for (UnsignedInteger row = col; row < problemDimension; ++ row)
+      {
+        const Scalar coefficient = hessian(row, col);
+        if (coefficient != 0.0)
+        {
+          model.hessian_.index_.push_back(static_cast<HighsInt>(row));
+          model.hessian_.value_.push_back(coefficient);
+        }
+      }
+      model.hessian_.start_[col + 1] = static_cast<HighsInt>(model.hessian_.index_.size());
+    }
+  }
 
   // bound constraints
   model.lp_.col_lower_ = std::vector<double>(model.lp_.num_col_, -SpecFunc::MaxScalar);
