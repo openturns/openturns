@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_QUANTILESIMULATIONALGORITHM_HXX
-#define OPENTURNS_QUANTILESIMULATIONALGORITHM_HXX
+#ifndef OPENTURNS_MONTECARLOQUANTILESIMULATION_HXX
+#define OPENTURNS_MONTECARLOQUANTILESIMULATION_HXX
 
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -28,7 +28,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class QuantileSimulationAlgorithm
+ * @class MonteCarloQuantileSimulation
  *
  * Quantile simulation driven by a WeightedExperiment.  The algorithm
  * draws the experiment once (or several independent replicates for a
@@ -36,27 +36,27 @@ BEGIN_NAMESPACE_OPENTURNS
  * inverse, and dispatches the confidence interval according to the
  * experiment and estimator conventions.
  */
-class OT_API QuantileSimulationAlgorithm
+class OT_API MonteCarloQuantileSimulation
   : public QuantileSimulationImplementation
 {
   CLASSNAME
 public:
   /** Default constructor */
-  QuantileSimulationAlgorithm();
+  MonteCarloQuantileSimulation();
 
   /** Constructor with parameters */
-  explicit QuantileSimulationAlgorithm(const RandomVector & output,
+  explicit MonteCarloQuantileSimulation(const RandomVector & output,
                                        const Scalar alpha = 0.95,
                                        const Scalar beta = 0.95);
 
   /** Constructor with parameters and experiment */
-  QuantileSimulationAlgorithm(const RandomVector & output,
+  MonteCarloQuantileSimulation(const RandomVector & output,
                               const WeightedExperiment & experiment,
                               const Scalar alpha = 0.95,
                               const Scalar beta = 0.95);
 
   /** Virtual constructor */
-  QuantileSimulationAlgorithm * clone() const override;
+  MonteCarloQuantileSimulation * clone() const override;
 
   /** Experiment accessor */
   void setExperiment(const WeightedExperiment & experiment);
@@ -102,14 +102,14 @@ protected:
 private:
   WeightedExperiment experiment_;
   Bool isExperimentProvided_ = false;
-  UnsignedInteger replicateCount_ = ResourceMap::GetAsUnsignedInteger("QuantileSimulationAlgorithm-DefaultReplicateCount");
+  UnsignedInteger replicateCount_ = ResourceMap::GetAsUnsignedInteger("MonteCarloQuantileSimulation-DefaultReplicateCount");
   Bool keepSample_ = false;
   Sample inputSample_;
   Sample outputSample_;
   Point weights_;
 
-}; /* class QuantileSimulationAlgorithm */
+}; /* class MonteCarloQuantileSimulation */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_QUANTILESIMULATIONALGORITHM_HXX */
+#endif /* OPENTURNS_MONTECARLOQUANTILESIMULATION_HXX */

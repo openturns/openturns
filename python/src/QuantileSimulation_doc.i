@@ -22,12 +22,12 @@ beta : float
 
 See also
 --------
-QuantileSimulationImplementation, QuantileSimulationAlgorithm, QuantileSimulationResult
+QuantileSimulationImplementation, MonteCarloQuantileSimulation, QuantileSimulationResult
 
 Notes
 -----
 The weighted-experiment estimator is described in
-:class:`~openturns.experimental.QuantileSimulationAlgorithm`.  The
+:class:`~openturns.experimental.MonteCarloQuantileSimulation`.  The
 statistical background, the definitions of the estimators and the
 coverage guarantees are presented in :any:`quantile_theory_weighted`.
 
@@ -43,7 +43,7 @@ Examples
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> output = ot.RandomVector(ot.Normal())
->>> algo = otexp.QuantileSimulationAlgorithm(output, 0.95, 0.95)
+>>> algo = otexp.MonteCarloQuantileSimulation(output, 0.95, 0.95)
 >>> algo.setSampleSize(1000)
 >>> algo.run()
 >>> result = algo.getResult()

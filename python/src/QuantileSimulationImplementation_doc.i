@@ -22,7 +22,7 @@ beta : float
 
 See also
 --------
-QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationResult
+QuantileSimulation, MonteCarloQuantileSimulation, QuantileSimulationResult
 
 Notes
 -----
@@ -41,7 +41,7 @@ interval satisfies an asymptotic requirement.
 Calling :meth:`run` on a directly constructed
 :class:`~openturns.experimental.QuantileSimulationImplementation` raises
 ``NotYetImplementedException``.  Use
-:class:`~openturns.experimental.QuantileSimulationAlgorithm` for the
+:class:`~openturns.experimental.MonteCarloQuantileSimulation` for the
 weighted-experiment algorithm.
 
 The convergence controls, the evaluation block size and the callbacks
@@ -54,7 +54,7 @@ Examples
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> output = ot.RandomVector(ot.Normal())
->>> algo = otexp.QuantileSimulationAlgorithm(output, 0.95, 0.95)
+>>> algo = otexp.MonteCarloQuantileSimulation(output, 0.95, 0.95)
 >>> algo.setSampleSize(1000)
 >>> algo.run()
 >>> result = algo.getResult()
@@ -139,7 +139,7 @@ Returns
 -------
 sampleSize : int
     Number of model evaluations performed by the algorithm.  For
-    :class:`~openturns.experimental.QuantileSimulationAlgorithm`, this
+    :class:`~openturns.experimental.MonteCarloQuantileSimulation`, this
     is the number of evaluations performed by one experiment draw.
     ``TwoStageQuantileSimulation`` uses it as the total
     pilot-and-confirmation evaluation budget, and
@@ -156,7 +156,7 @@ Parameters
 ----------
 sampleSize : int
     Number of model evaluations performed by the algorithm.  For
-    :class:`~openturns.experimental.QuantileSimulationAlgorithm`, this
+    :class:`~openturns.experimental.MonteCarloQuantileSimulation`, this
     is the number of evaluations performed by one experiment draw.
     ``TwoStageQuantileSimulation`` uses it as the total
     pilot-and-confirmation evaluation budget, and
@@ -165,7 +165,7 @@ sampleSize : int
 
 Notes
 -----
-For :class:`~openturns.experimental.QuantileSimulationAlgorithm`, the
+For :class:`~openturns.experimental.MonteCarloQuantileSimulation`, the
 maximum number of outer iterations is updated to
 ``ceil(sampleSize / blockSize)``.
 )RAW"

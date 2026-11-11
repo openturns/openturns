@@ -36,7 +36,7 @@
  * P1InterpolatedProcess (openturns.experimental)
  * PushForwardDistribution (openturns.experimental)
  * PushForwardOverMesh (openturns.experimental)
- * QuantileSimulation, QuantileSimulationAlgorithm, QuantileSimulationImplementation, QuantileSimulationResult, QuantileSimulationResultImplementation (openturns.experimental)
+ * QuantileSimulation, MonteCarloQuantileSimulation, QuantileSimulationImplementation, QuantileSimulationResult, QuantileSimulationResultImplementation (openturns.experimental)
  * RatioDistribution (openturns.experimental)
  * UniVariateDistributionPolynomialFactory
  * UniformOverMeshFactory (openturns.experimental)

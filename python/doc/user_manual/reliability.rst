@@ -60,7 +60,7 @@ Quantile simulation (experimental)
 
     experimental.QuantileSimulation
     experimental.QuantileSimulationImplementation
-    experimental.QuantileSimulationAlgorithm
+    experimental.MonteCarloQuantileSimulation
     experimental.QuantileSimulationResult
     experimental.QuantileSimulationResultImplementation
 

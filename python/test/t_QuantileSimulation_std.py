@@ -76,7 +76,7 @@ weights = [1.0, 2.0, 3.0, 2.0, 2.0]
 sample = ot.Sample([[value] for value in values])
 fixed = ot.FixedExperiment(sample, weights)
 output = ot.RandomVector(ot.Normal())
-algo = otexp.QuantileSimulationAlgorithm(output, fixed, 0.5, 0.95)
+algo = otexp.MonteCarloQuantileSimulation(output, fixed, 0.5, 0.95)
 algo.setKeepSample(True)
 algo.run()
 result = algo.getResult()
@@ -127,7 +127,7 @@ ot.RandomGenerator.SetSeed(12345)
 alpha = 0.95
 beta = 0.95
 size = 1000
-algo = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo.setSampleSize(size)
 algo.setKeepSample(True)
 algo.run()
@@ -162,7 +162,7 @@ assert lower <= result.getQuantileEstimate() <= upper
 # 3. Interpolated estimator on an i.i.d. sample
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(12345)
-algo = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo.setSampleSize(size)
 algo.setEstimatorType(INTERPOLATED)
 algo.setKeepSample(True)
@@ -184,7 +184,7 @@ distribution = ot.Normal()
 
 # Latin hypercube: independent randomized replicates, asymptotic label.
 lhs = ot.LHSExperiment(distribution, 100, True, True)
-algo = otexp.QuantileSimulationAlgorithm(output, lhs, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, lhs, alpha, beta)
 algo.setReplicateCount(20)
 algo.run()
 result = algo.getResult()
@@ -198,7 +198,7 @@ assert result.getQuantileEstimate() <= result.getConfidenceInterval().getUpperBo
 
 # A Latin hypercube that reuses its shuffle gives correlated replicates:
 # the replicate interval is rejected instead of reporting a false coverage.
-algo = otexp.QuantileSimulationAlgorithm(output, ot.LHSExperiment(distribution, 100), alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, ot.LHSExperiment(distribution, 100), alpha, beta)
 with ott.assert_raises(TypeError):
     algo.run()
 
@@ -208,13 +208,13 @@ with ott.assert_raises(TypeError):
 sobol_lhs = ot.SobolIndicesExperiment(
     ot.LHSExperiment(distribution, 100, True, False), False
 )
-algo = otexp.QuantileSimulationAlgorithm(output, sobol_lhs, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, sobol_lhs, alpha, beta)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # Deterministic quasi-Monte Carlo: no coverage guarantee.
 qmc = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 1024, False)
-algo = otexp.QuantileSimulationAlgorithm(output, qmc, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, qmc, alpha, beta)
 algo.run()
 result = algo.getResult()
 assert result.getCoverageType() == COVERAGE_NONE
@@ -223,7 +223,7 @@ assert result.getSampleSize() == 1024
 # Deterministic quadrature rule: non-uniform positive weights, no coverage.
 uniform_output = ot.RandomVector(ot.Uniform(0.0, 1.0))
 quadrature = ot.GaussProductExperiment(ot.Uniform(0.0, 1.0), [7])
-algo = otexp.QuantileSimulationAlgorithm(uniform_output, quadrature, 0.5, 0.95)
+algo = otexp.MonteCarloQuantileSimulation(uniform_output, quadrature, 0.5, 0.95)
 algo.run()
 result = algo.getResult()
 assert result.getCoverageType() == COVERAGE_NONE
@@ -233,7 +233,7 @@ ott.assert_almost_equal(result.getQuantileEstimate(), 0.5, 1.0e-12, 1.0e-12)
 # Randomized quasi-Monte Carlo: independent randomizations, asymptotic label.
 qmc = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 1024, False)
 qmc.setRandomize(True)
-algo = otexp.QuantileSimulationAlgorithm(output, qmc, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, qmc, alpha, beta)
 algo.setReplicateCount(10)
 algo.run()
 result = algo.getResult()
@@ -242,7 +242,7 @@ assert result.getSampleSize() == 10 * 1024
 
 # Importance sampling: weighted Woodruff interval and effective sample size.
 importance = ot.ImportanceSamplingExperiment(distribution, ot.Normal(1.0, 1.0), 2000)
-algo = otexp.QuantileSimulationAlgorithm(output, importance, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, importance, alpha, beta)
 algo.run()
 result = algo.getResult()
 assert result.getCoverageType() == COVERAGE_ASYMPTOTIC
@@ -254,13 +254,13 @@ assert result.getEffectiveSampleSize() > 0.0
 # 5. Negative limit tests
 # ---------------------------------------------------------------------
 # A required exact coverage cannot be satisfied by a deterministic design.
-algo = otexp.QuantileSimulationAlgorithm(output, fixed, 0.5, 0.95)
+algo = otexp.MonteCarloQuantileSimulation(output, fixed, 0.5, 0.95)
 algo.setRequiredCoverage(COVERAGE_EXACT)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # A required exact coverage is satisfied by the i.i.d. Monte Carlo path.
-algo = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo.setSampleSize(1000)
 algo.setRequiredCoverage(COVERAGE_EXACT)
 algo.run()
@@ -268,7 +268,7 @@ assert algo.getResult().getCoverageType() == COVERAGE_EXACT
 
 # A multivariate output is rejected at construction time.
 with ott.assert_raises(TypeError):
-    otexp.QuantileSimulationAlgorithm(ot.RandomVector(ot.Normal(2)), alpha, beta)
+    otexp.MonteCarloQuantileSimulation(ot.RandomVector(ot.Normal(2)), alpha, beta)
 
 # A multivariate output is also rejected by the result type.
 with ott.assert_raises(TypeError):
@@ -276,36 +276,36 @@ with ott.assert_raises(TypeError):
 
 # Invalid levels are rejected.
 with ott.assert_raises(TypeError):
-    otexp.QuantileSimulationAlgorithm(output, 0.0, beta)
+    otexp.MonteCarloQuantileSimulation(output, 0.0, beta)
 with ott.assert_raises(TypeError):
-    otexp.QuantileSimulationAlgorithm(output, alpha, 1.0)
+    otexp.MonteCarloQuantileSimulation(output, alpha, 1.0)
 
 # The sample size must be positive and set before run.
-algo = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 with ott.assert_raises(TypeError):
     algo.run()
 with ott.assert_raises(TypeError):
     algo.setSampleSize(0)
 
 # The replicate count must be at least two.
-algo = otexp.QuantileSimulationAlgorithm(output, lhs, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, lhs, alpha, beta)
 with ott.assert_raises(TypeError):
     algo.setReplicateCount(1)
 
 # The default replicate count comes from the ResourceMap.
 default_count = ot.ResourceMap.GetAsUnsignedInteger(
-    "QuantileSimulationAlgorithm-DefaultReplicateCount")
+    "MonteCarloQuantileSimulation-DefaultReplicateCount")
 assert default_count == 30
-ot.ResourceMap.SetAsUnsignedInteger("QuantileSimulationAlgorithm-DefaultReplicateCount", 7)
+ot.ResourceMap.SetAsUnsignedInteger("MonteCarloQuantileSimulation-DefaultReplicateCount", 7)
 try:
-    assert otexp.QuantileSimulationAlgorithm(output, lhs, alpha, beta).getReplicateCount() == 7
+    assert otexp.MonteCarloQuantileSimulation(output, lhs, alpha, beta).getReplicateCount() == 7
 finally:
     ot.ResourceMap.SetAsUnsignedInteger(
-        "QuantileSimulationAlgorithm-DefaultReplicateCount", default_count)
+        "MonteCarloQuantileSimulation-DefaultReplicateCount", default_count)
 
 # An experiment whose distribution has the wrong dimension is rejected.
 wrong = ot.LHSExperiment(ot.Normal(2), 100)
-algo = otexp.QuantileSimulationAlgorithm(output, wrong, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, wrong, alpha, beta)
 with ott.assert_raises(TypeError):
     algo.run()
 
@@ -313,12 +313,12 @@ with ott.assert_raises(TypeError):
 # 6. Reproducibility
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(54321)
-algo1 = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo1 = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo1.setSampleSize(500)
 algo1.run()
 first = algo1.getResult()
 ot.RandomGenerator.SetSeed(54321)
-algo2 = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo2 = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo2.setSampleSize(500)
 algo2.run()
 second = algo2.getResult()
@@ -328,7 +328,7 @@ assert first.getConfidenceInterval() == second.getConfidenceInterval()
 # A different seed gives a different sample and, with probability one,
 # a different estimate.
 ot.RandomGenerator.SetSeed(54322)
-algo3 = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo3 = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo3.setSampleSize(500)
 algo3.run()
 assert algo3.getResult().getQuantileEstimate() != first.getQuantileEstimate()
@@ -337,7 +337,7 @@ assert algo3.getResult().getQuantileEstimate() != first.getQuantileEstimate()
 # 7. SWIG handle, downcast and persistence
 # ---------------------------------------------------------------------
 ot.RandomGenerator.SetSeed(7)
-algo = otexp.QuantileSimulationAlgorithm(output, alpha, beta)
+algo = otexp.MonteCarloQuantileSimulation(output, alpha, beta)
 algo.setSampleSize(300)
 algo.run()
 result = algo.getResult()
@@ -382,7 +382,7 @@ study.setStorageManager(ot.XMLStorageManager(path))
 study.load()
 loaded_result = otexp.QuantileSimulationResult()
 study.fillObject("result", loaded_result)
-loaded_algo = otexp.QuantileSimulationAlgorithm()
+loaded_algo = otexp.MonteCarloQuantileSimulation()
 study.fillObject("algo", loaded_algo)
 assert loaded_result.getQuantileEstimate() == result.getQuantileEstimate()
 assert loaded_result.getConfidenceInterval() == result.getConfidenceInterval()
@@ -542,7 +542,7 @@ with ott.assert_raises(TypeError):
 # ---------------------------------------------------------------------
 # 9. Algorithm accessors, base class and handle
 # ---------------------------------------------------------------------
-algo = otexp.QuantileSimulationAlgorithm(output)
+algo = otexp.MonteCarloQuantileSimulation(output)
 assert algo.getAlpha() == 0.95
 assert algo.getConfidenceLevel() == 0.95
 assert not algo.hasExperiment()
@@ -599,7 +599,7 @@ assert algo.getWeights().getSize() == 0
 base_vector = ot.RandomVector(ot.Normal())
 composite = ot.CompositeRandomVector(
     ot.SymbolicFunction(["x"], ["x^2"]), base_vector)
-algo = otexp.QuantileSimulationAlgorithm(composite, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(composite, 0.5, 0.5)
 algo.setSampleSize(200)
 algo.run()
 assert algo.getResult().getQuantileEstimate() >= 0.0
@@ -629,7 +629,7 @@ assert standard_handle.getAlpha() == 0.5
 assert standard_handle.getConfidenceLevel() == 0.5
 
 # The handle forwards all accessors and can be copied with copy-on-write.
-handle_algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
+handle_algo = otexp.MonteCarloQuantileSimulation(output, 0.5, 0.5)
 handle_algo.setSampleSize(100)
 handle = otexp.QuantileSimulation(handle_algo)
 handle.setSampleSize(100)
@@ -688,7 +688,7 @@ values3 = [0.0, 10.0, 20.0]
 weights3 = [1.0, 2.0, 1.0]
 fixed3 = ot.FixedExperiment(
     ot.Sample([[value] for value in values3]), ot.Point(weights3))
-algo = otexp.QuantileSimulationAlgorithm(output, fixed3, 0.5, 0.95)
+algo = otexp.MonteCarloQuantileSimulation(output, fixed3, 0.5, 0.95)
 
 for level, empirical, interpolated in [
         (0.25, 0.0, 0.0),
@@ -711,7 +711,7 @@ for weights, empirical, interpolated in [
         ([1.0, 0.0, 1.0], 0.0, 0.0)]:
     zero_sample = ot.Sample([[float(i)] for i in range(len(weights))])
     zero_fixed = ot.FixedExperiment(zero_sample, ot.Point(weights))
-    algo = otexp.QuantileSimulationAlgorithm(output, zero_fixed, 0.5, 0.95)
+    algo = otexp.MonteCarloQuantileSimulation(output, zero_fixed, 0.5, 0.95)
     algo.run()
     assert algo.getResult().getQuantileEstimate() == empirical
     algo.setEstimatorType(INTERPOLATED)
@@ -724,7 +724,7 @@ for weights, empirical, interpolated in [
 bounded_sample = ot.Sample([[-100.0], [0.0], [1.0], [100.0]])
 bounded_fixed = ot.FixedExperiment(
     bounded_sample, ot.Point([0.0, 0.5, 0.5, 0.0]))
-algo = otexp.QuantileSimulationAlgorithm(output, bounded_fixed, 0.5, 0.95)
+algo = otexp.MonteCarloQuantileSimulation(output, bounded_fixed, 0.5, 0.95)
 algo.run()
 bounded_result = algo.getResult()
 assert bounded_result.getQuantileEstimate() == 0.0
@@ -732,7 +732,7 @@ assert bounded_result.getConfidenceInterval() == ot.Interval(0.0, 1.0)
 
 # A constant deterministic sample has a zero-width Woodruff interval.
 constant = ot.FixedExperiment(ot.Sample([[3.0]] * 5), ot.Point(5, 1.0))
-algo = otexp.QuantileSimulationAlgorithm(output, constant, 0.5, 0.95)
+algo = otexp.MonteCarloQuantileSimulation(output, constant, 0.5, 0.95)
 algo.run()
 constant_result = algo.getResult()
 assert constant_result.getQuantileEstimate() == 3.0
@@ -742,7 +742,7 @@ assert constant_result.getConfidenceInterval() == ot.Interval(3.0, 3.0)
 # A degenerate i.i.d. output exercises the constant-sample exact fallback.
 dirac = ot.Dirac(0.0)
 dirac_output = ot.RandomVector(dirac)
-algo = otexp.QuantileSimulationAlgorithm(
+algo = otexp.MonteCarloQuantileSimulation(
     dirac_output, ot.MonteCarloExperiment(dirac, 100), 0.5, 0.5)
 algo.run()
 dirac_result = algo.getResult()
@@ -752,7 +752,7 @@ assert dirac_result.getStandardError() == 0.0
 assert dirac_result.getConfidenceInterval() == ot.Interval(0.0, 0.0)
 
 # A degenerate randomized design exercises the zero-variance replicate path.
-algo = otexp.QuantileSimulationAlgorithm(
+algo = otexp.MonteCarloQuantileSimulation(
     dirac_output, ot.LHSExperiment(dirac, 20, True, False), 0.5, 0.5)
 algo.setReplicateCount(5)
 algo.setKeepSample(True)
@@ -768,7 +768,7 @@ assert algo.getWeights().getSize() == 20
 # ---------------------------------------------------------------------
 # 11. Required coverage combinations
 # ---------------------------------------------------------------------
-algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(output, 0.5, 0.5)
 algo.setSampleSize(100)
 algo.setRequiredCoverage(COVERAGE_EXACT)
 algo.run()
@@ -785,7 +785,7 @@ with ott.assert_raises(TypeError):
     algo.run()
 
 # A deterministic design cannot satisfy an asymptotic requirement.
-algo = otexp.QuantileSimulationAlgorithm(output, fixed3, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(output, fixed3, 0.5, 0.5)
 algo.setRequiredCoverage(COVERAGE_ASYMPTOTIC)
 with ott.assert_raises(TypeError):
     algo.run()
@@ -794,7 +794,7 @@ algo.run()
 assert algo.getResult().getCoverageType() == COVERAGE_NONE
 
 # An experiment with the wrong dimension is rejected by the setter path too.
-algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(output, 0.5, 0.5)
 algo.setExperiment(ot.LHSExperiment(ot.Normal(2), 100))
 with ott.assert_raises(TypeError):
     algo.run()
@@ -802,7 +802,7 @@ with ott.assert_raises(TypeError):
 # A stochastic experiment must sample from the input distribution of the
 # output, otherwise the estimate describes another distribution.
 mismatch_output = ot.RandomVector(ot.Normal(10.0, 1.0))
-algo = otexp.QuantileSimulationAlgorithm(
+algo = otexp.MonteCarloQuantileSimulation(
     mismatch_output, ot.MonteCarloExperiment(ot.Normal(0.0, 1.0), 100),
     0.5, 0.5)
 with ott.assert_raises(TypeError):
@@ -813,7 +813,7 @@ with ott.assert_raises(TypeError):
 tensor = ot.TensorProductExperiment(
     [ot.MonteCarloExperiment(ot.Normal(), 10)])
 assert tensor.getSize() == 10
-algo = otexp.QuantileSimulationAlgorithm(output, tensor, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(output, tensor, 0.5, 0.5)
 assert algo.getSampleSize() == 10
 with ott.assert_raises(TypeError):
     algo.setSampleSize(1000)
@@ -826,12 +826,12 @@ assert math.isfinite(algo.getResult().getQuantileEstimate())
 # A NaN output cannot be ordered and is rejected.
 nan_fixed = ot.FixedExperiment(
     ot.Sample([[0.0], [float("nan")], [1.0]]), ot.Point(3, 1.0))
-algo = otexp.QuantileSimulationAlgorithm(output, nan_fixed, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(output, nan_fixed, 0.5, 0.5)
 with ott.assert_raises(TypeError):
     algo.run()
 
 # A failed coverage check must not replace the result of the previous run.
-algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
+algo = otexp.MonteCarloQuantileSimulation(output, 0.5, 0.5)
 algo.setSampleSize(100)
 algo.run()
 previous_estimate = algo.getResult().getQuantileEstimate()

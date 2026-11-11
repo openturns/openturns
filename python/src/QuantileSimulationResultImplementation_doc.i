@@ -43,7 +43,7 @@ beta : float
 
 See also
 --------
-QuantileSimulationResult, QuantileSimulationAlgorithm
+QuantileSimulationResult, MonteCarloQuantileSimulation
 
 Notes
 -----
@@ -70,7 +70,7 @@ Examples
 >>> import openturns as ot
 >>> import openturns.experimental as otexp
 >>> output = ot.RandomVector(ot.Normal())
->>> algo = otexp.QuantileSimulationAlgorithm(output, 0.95, 0.95)
+>>> algo = otexp.MonteCarloQuantileSimulation(output, 0.95, 0.95)
 >>> algo.setSampleSize(1000)
 >>> algo.run()
 >>> result = algo.getResult()

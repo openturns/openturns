@@ -1,4 +1,4 @@
-%feature("docstring") OT::QuantileSimulationAlgorithm
+%feature("docstring") OT::MonteCarloQuantileSimulation
 R"RAW(Quantile simulation driven by a weighted experiment.
 
 .. warning::
@@ -6,9 +6,9 @@ R"RAW(Quantile simulation driven by a weighted experiment.
     To use it, import the ``openturns.experimental`` submodule.
 
 Available constructors:
-    QuantileSimulationAlgorithm(*output, alpha=0.95, beta=0.95*)
+    MonteCarloQuantileSimulation(*output, alpha=0.95, beta=0.95*)
 
-    QuantileSimulationAlgorithm(*output, experiment, alpha=0.95, beta=0.95*)
+    MonteCarloQuantileSimulation(*output, experiment, alpha=0.95, beta=0.95*)
 
 The algorithm estimates the quantile of a scalar output random vector
 from a design produced by a :class:`~openturns.WeightedExperiment`.
@@ -47,7 +47,7 @@ experiment:
 The replicate count only affects the randomized uniform-weight
 non-i.i.d. branch.  It must be at least 2 and defaults to the value of
 the :class:`~openturns.ResourceMap` key
-``QuantileSimulationAlgorithm-DefaultReplicateCount`` (30).
+``MonteCarloQuantileSimulation-DefaultReplicateCount`` (30).
 
 Parameters
 ----------
@@ -120,7 +120,7 @@ in the result.
 
 The following :class:`~openturns.ResourceMap` key is used:
 
-- ``QuantileSimulationAlgorithm-DefaultReplicateCount``
+- ``MonteCarloQuantileSimulation-DefaultReplicateCount``
   (``UnsignedInteger``, default: ``30``): default number of independent
   replicates of the randomized uniform-weight branch.
 
@@ -130,7 +130,7 @@ Examples
 >>> import openturns.experimental as otexp
 >>> ot.RandomGenerator.SetSeed(0)
 >>> output = ot.RandomVector(ot.Normal())
->>> algo = otexp.QuantileSimulationAlgorithm(output, 0.95, 0.95)
+>>> algo = otexp.MonteCarloQuantileSimulation(output, 0.95, 0.95)
 >>> algo.setSampleSize(10000)
 >>> algo.run()
 >>> result = algo.getResult()
@@ -140,7 +140,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::getExperiment
+%feature("docstring") OT::MonteCarloQuantileSimulation::getExperiment
 R"RAW(Accessor to the design of experiments.
 
 Returns
@@ -153,7 +153,7 @@ experiment : :class:`~openturns.WeightedExperiment`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::setExperiment
+%feature("docstring") OT::MonteCarloQuantileSimulation::setExperiment
 R"RAW(Accessor to the design of experiments.
 
 Parameters
@@ -170,7 +170,7 @@ experiment.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::hasExperiment
+%feature("docstring") OT::MonteCarloQuantileSimulation::hasExperiment
 R"RAW(Accessor to the experiment availability.
 
 Returns
@@ -183,7 +183,7 @@ hasExperiment : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::setSampleSize
+%feature("docstring") OT::MonteCarloQuantileSimulation::setSampleSize
 R"RAW(Accessor to the sample size.
 
 Parameters
@@ -201,7 +201,7 @@ maximum outer sampling is updated to
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::getReplicateCount
+%feature("docstring") OT::MonteCarloQuantileSimulation::getReplicateCount
 R"RAW(Accessor to the replicate count.
 
 Returns
@@ -213,7 +213,7 @@ replicateCount : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::setReplicateCount
+%feature("docstring") OT::MonteCarloQuantileSimulation::setReplicateCount
 R"RAW(Accessor to the replicate count.
 
 Parameters
@@ -232,7 +232,7 @@ and ignore it.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::getKeepSample
+%feature("docstring") OT::MonteCarloQuantileSimulation::getKeepSample
 R"RAW(Accessor to the keep-sample flag.
 
 Returns
@@ -244,7 +244,7 @@ keepSample : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::setKeepSample
+%feature("docstring") OT::MonteCarloQuantileSimulation::setKeepSample
 R"RAW(Accessor to the keep-sample flag.
 
 Parameters
@@ -261,7 +261,7 @@ For the replicate branch, only the first replicate is retained.
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::getInputSample
+%feature("docstring") OT::MonteCarloQuantileSimulation::getInputSample
 R"RAW(Accessor to the retained input sample.
 
 Returns
@@ -273,7 +273,7 @@ inputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::getOutputSample
+%feature("docstring") OT::MonteCarloQuantileSimulation::getOutputSample
 R"RAW(Accessor to the retained output sample.
 
 Returns
@@ -285,7 +285,7 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuantileSimulationAlgorithm::getWeights
+%feature("docstring") OT::MonteCarloQuantileSimulation::getWeights
 R"RAW(Accessor to the retained weights.
 
 Returns

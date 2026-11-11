@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <limits>
 
-#include "openturns/QuantileSimulationAlgorithm.hxx"
+#include "openturns/MonteCarloQuantileSimulation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/QuantileConfidence.hxx"
 #include "openturns/ImportanceSamplingExperiment.hxx"
@@ -35,9 +35,9 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(QuantileSimulationAlgorithm)
+CLASSNAMEINIT(MonteCarloQuantileSimulation)
 
-static const Factory<QuantileSimulationAlgorithm> Factory_QuantileSimulationAlgorithm;
+static const Factory<MonteCarloQuantileSimulation> Factory_MonteCarloQuantileSimulation;
 
 namespace
 {
@@ -432,14 +432,14 @@ QuantileSimulationResult buildResult(const RandomVector & output,
 } // anonymous namespace
 
 /* Default constructor */
-QuantileSimulationAlgorithm::QuantileSimulationAlgorithm()
+MonteCarloQuantileSimulation::MonteCarloQuantileSimulation()
   : QuantileSimulationImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-QuantileSimulationAlgorithm::QuantileSimulationAlgorithm(const RandomVector & output,
+MonteCarloQuantileSimulation::MonteCarloQuantileSimulation(const RandomVector & output,
                                                          const Scalar alpha,
                                                          const Scalar beta)
   : QuantileSimulationImplementation(output, alpha, beta)
@@ -448,7 +448,7 @@ QuantileSimulationAlgorithm::QuantileSimulationAlgorithm(const RandomVector & ou
 }
 
 /* Constructor with parameters and experiment */
-QuantileSimulationAlgorithm::QuantileSimulationAlgorithm(const RandomVector & output,
+MonteCarloQuantileSimulation::MonteCarloQuantileSimulation(const RandomVector & output,
                                                          const WeightedExperiment & experiment,
                                                          const Scalar alpha,
                                                          const Scalar beta)
@@ -458,31 +458,31 @@ QuantileSimulationAlgorithm::QuantileSimulationAlgorithm(const RandomVector & ou
 }
 
 /* Virtual constructor */
-QuantileSimulationAlgorithm * QuantileSimulationAlgorithm::clone() const
+MonteCarloQuantileSimulation * MonteCarloQuantileSimulation::clone() const
 {
-  return new QuantileSimulationAlgorithm(*this);
+  return new MonteCarloQuantileSimulation(*this);
 }
 
 /* Experiment accessor */
-void QuantileSimulationAlgorithm::setExperiment(const WeightedExperiment & experiment)
+void MonteCarloQuantileSimulation::setExperiment(const WeightedExperiment & experiment)
 {
   experiment_ = experiment;
   isExperimentProvided_ = true;
   sampleSize_ = experiment_.getSize();
 }
 
-WeightedExperiment QuantileSimulationAlgorithm::getExperiment() const
+WeightedExperiment MonteCarloQuantileSimulation::getExperiment() const
 {
   return experiment_;
 }
 
-Bool QuantileSimulationAlgorithm::hasExperiment() const
+Bool MonteCarloQuantileSimulation::hasExperiment() const
 {
   return isExperimentProvided_;
 }
 
 /* Sample size accessor */
-void QuantileSimulationAlgorithm::setSampleSize(const UnsignedInteger sampleSize)
+void MonteCarloQuantileSimulation::setSampleSize(const UnsignedInteger sampleSize)
 {
   if (isExperimentProvided_)
     checkResizableExperiment(experiment_, sampleSize);
@@ -492,7 +492,7 @@ void QuantileSimulationAlgorithm::setSampleSize(const UnsignedInteger sampleSize
 }
 
 /* Replicate count accessor */
-void QuantileSimulationAlgorithm::setReplicateCount(const UnsignedInteger replicateCount)
+void MonteCarloQuantileSimulation::setReplicateCount(const UnsignedInteger replicateCount)
 {
   if (replicateCount < 2)
     throw InvalidArgumentException(HERE)
@@ -500,13 +500,13 @@ void QuantileSimulationAlgorithm::setReplicateCount(const UnsignedInteger replic
   replicateCount_ = replicateCount;
 }
 
-UnsignedInteger QuantileSimulationAlgorithm::getReplicateCount() const
+UnsignedInteger MonteCarloQuantileSimulation::getReplicateCount() const
 {
   return replicateCount_;
 }
 
 /* Keep sample accessor */
-void QuantileSimulationAlgorithm::setKeepSample(const Bool keepSample)
+void MonteCarloQuantileSimulation::setKeepSample(const Bool keepSample)
 {
   if (!keepSample)
   {
@@ -517,31 +517,31 @@ void QuantileSimulationAlgorithm::setKeepSample(const Bool keepSample)
   keepSample_ = keepSample;
 }
 
-Bool QuantileSimulationAlgorithm::getKeepSample() const
+Bool MonteCarloQuantileSimulation::getKeepSample() const
 {
   return keepSample_;
 }
 
 /* Input sample accessor */
-Sample QuantileSimulationAlgorithm::getInputSample() const
+Sample MonteCarloQuantileSimulation::getInputSample() const
 {
   return inputSample_;
 }
 
 /* Output sample accessor */
-Sample QuantileSimulationAlgorithm::getOutputSample() const
+Sample MonteCarloQuantileSimulation::getOutputSample() const
 {
   return outputSample_;
 }
 
 /* Weights accessor */
-Point QuantileSimulationAlgorithm::getWeights() const
+Point MonteCarloQuantileSimulation::getWeights() const
 {
   return weights_;
 }
 
 /* Check the input parameters */
-void QuantileSimulationAlgorithm::checkInputs() const
+void MonteCarloQuantileSimulation::checkInputs() const
 {
   QuantileSimulationImplementation::checkInputs();
   if (requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_ANYTIME_VALID)
@@ -550,7 +550,7 @@ void QuantileSimulationAlgorithm::checkInputs() const
 }
 
 /* Run a fixed-sample experiment */
-QuantileSimulationResult QuantileSimulationAlgorithm::runFixedSample()
+QuantileSimulationResult MonteCarloQuantileSimulation::runFixedSample()
 {
   if (sampleSize_ == 0)
     throw InvalidArgumentException(HERE) << "The sample size must be set before running the algorithm";
@@ -785,10 +785,10 @@ QuantileSimulationResult QuantileSimulationAlgorithm::runFixedSample()
 }
 
 /* String converter */
-String QuantileSimulationAlgorithm::__repr__() const
+String MonteCarloQuantileSimulation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << QuantileSimulationAlgorithm::GetClassName()
+  oss << "class=" << MonteCarloQuantileSimulation::GetClassName()
       << " output=" << output_
       << " alpha=" << alpha_
       << " beta=" << beta_
@@ -804,7 +804,7 @@ String QuantileSimulationAlgorithm::__repr__() const
 }
 
 /* Method save() stores the object through the StorageManager */
-void QuantileSimulationAlgorithm::save(Advocate & adv) const
+void MonteCarloQuantileSimulation::save(Advocate & adv) const
 {
   QuantileSimulationImplementation::save(adv);
   adv.saveAttribute("experiment_", experiment_);
@@ -817,7 +817,7 @@ void QuantileSimulationAlgorithm::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void QuantileSimulationAlgorithm::load(Advocate & adv)
+void MonteCarloQuantileSimulation::load(Advocate & adv)
 {
   QuantileSimulationImplementation::load(adv);
   adv.loadAttribute("experiment_", experiment_);

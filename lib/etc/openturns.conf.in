@@ -1021,8 +1021,8 @@
   <ProbabilitySimulationResult-CheckPositiveVariance  value_bool="false"  />
   <ProbabilitySimulationResult-DefaultConfidenceLevel value_float="0.95" />
 
-  <!-- OT::QuantileSimulationAlgorithm parameters -->
-  <QuantileSimulationAlgorithm-DefaultReplicateCount value_int="30" />
+  <!-- OT::MonteCarloQuantileSimulation parameters -->
+  <MonteCarloQuantileSimulation-DefaultReplicateCount value_int="30" />
 
   <!-- OT::ExpectationSimulationAlgorithm parameters -->
   <ExpectationSimulationAlgorithm-DefaultCoefficientOfVariationCriterionType value_str="MAX"  />

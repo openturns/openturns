@@ -48,7 +48,7 @@
 #include "openturns/QuantileSimulationResult.hxx"
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/QuantileSimulation.hxx"
-#include "openturns/QuantileSimulationAlgorithm.hxx"
+#include "openturns/MonteCarloQuantileSimulation.hxx"
 #include "openturns/AdaptiveDirectionalStratification.hxx"
 #include "openturns/LineSampling.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"

@@ -51,7 +51,7 @@ each family of algorithms.
 
 .. note::
     The weighted-experiment estimator
-    (:class:`~openturns.experimental.QuantileSimulationAlgorithm`) is the
+    (:class:`~openturns.experimental.MonteCarloQuantileSimulation`) is the
     only quantile simulation algorithm available in this release.  The
     other algorithms described below are documented for reference and will
     be added in forthcoming releases.
@@ -318,7 +318,7 @@ interval is a diagnostic and the result must carry ``COVERAGE_NONE``.
 Weighted-experiment estimator
 -----------------------------
 
-:class:`~openturns.experimental.QuantileSimulationAlgorithm` is the
+:class:`~openturns.experimental.MonteCarloQuantileSimulation` is the
 reference quantile estimator driven by a
 :class:`~openturns.WeightedExperiment`.  The experiment produces a
 design :math:`\inputRV_1,\dots,\inputRV_N` and non-negative weights
@@ -810,7 +810,7 @@ carried by the wrapped engine, so the same loop handles both tails.
 
 When the wrapped engine is a plain Monte Carlo engine with a
 :class:`~openturns.MonteCarloExperiment`, the adapter delegates to
-:class:`~openturns.experimental.QuantileSimulationAlgorithm` and returns
+:class:`~openturns.experimental.MonteCarloQuantileSimulation` and returns
 the exact order-statistic interval.  Other engines are inverted by a
 confidence-bound bisection: an endpoint is discarded only when its whole
 confidence bound lies on one side of the target, and the iteration stops
