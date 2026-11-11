@@ -505,3 +505,47 @@ LU : :class:`~openturns.Interval`
 %enddef
 %feature("docstring") OT::OptimizationProblemImplementation::getLinearConstraintBounds
 OT_OptimizationProblem_getLinearConstraintBounds_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_isQuadratic_doc
+"Check if the problem is quadratic.
+
+Returns
+-------
+isQuadratic : bool
+    Returns True if the problem is of quadratic type."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::isQuadratic
+OT_OptimizationProblem_isQuadratic_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getHessian_doc
+"Accessor to the Hessian matrix.
+
+Only relevant for the quadratic problem type.
+
+Returns
+-------
+hessian : :class:`~openturns.SymmetricMatrix`
+    Hessian matrix of the quadratic objective."
+%enddef
+%feature("docstring") OT::OptimizationProblemImplementation::getHessian
+OT_OptimizationProblem_getHessian_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getConstant_doc
+"Accessor to the constant term of the objective.
+
+Only relevant for the quadratic problem type.
+
+Returns
+-------
+constant : float
+    Constant term of the quadratic objective."
+%enddef
+%feature("docstring") OT::OptimizationProblemImplementation::getConstant
+OT_OptimizationProblem_getConstant_doc

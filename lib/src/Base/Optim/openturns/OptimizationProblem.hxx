@@ -103,6 +103,11 @@ public:
   Interval getLinearConstraintBounds() const;
   Bool isLinear() const;
 
+  /** Quadratic function accessor */
+  Bool isQuadratic() const;
+  SymmetricMatrix getHessian() const;
+  Scalar getConstant() const;
+
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
 

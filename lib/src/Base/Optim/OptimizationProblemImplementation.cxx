@@ -234,6 +234,22 @@ Interval OptimizationProblemImplementation::getLinearConstraintBounds() const
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLinearConstraintBounds";
 }
 
+/* Quadratic flag accessor */
+Bool OptimizationProblemImplementation::isQuadratic() const
+{
+  return false;
+}
+
+SymmetricMatrix OptimizationProblemImplementation::getHessian() const
+{
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getHessian";
+}
+
+Scalar OptimizationProblemImplementation::getConstant() const
+{
+  return 0.0;
+}
+
 /* Dimension accessor */
 UnsignedInteger OptimizationProblemImplementation::getDimension() const
 {
