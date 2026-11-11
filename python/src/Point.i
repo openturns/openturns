@@ -160,6 +160,17 @@ Point __neg__()
  return -1.0 * (*self);
 }
 
+const OT::Scalar * __baseaddress__() const
+{
+  return self->data();
+}
+
+UnsignedInteger __elementsize__() const
+{
+  (void) self;
+  return sizeof(OT::Scalar);
+}
+
 } // %extend
 
 } // OT
@@ -170,6 +181,43 @@ def _Point___iter__(self):
     for i in range(self.getSize()):
         yield self[i]
 Point.__iter__ = _Point___iter__
+
+# Numpy compatibility: expose zero-copy array interface and ufunc delegation.
+# Note: ot.Point.__eq__ keeps whole-object semantics (returns Bool); for element-wise
+# comparison use numpy ufuncs, e.g. np.equal(pt, 1) or np.asarray(pt) == 1,
+# then np.where(...) works on the resulting boolean ndarray.
+def __Point_getattribute(self, name):
+    if name == "__array_interface__":
+        self.__dict__["__array_interface__"] = {"shape": (self.getSize(),),
+                                                "typestr": f"|f{self.__elementsize__()}",
+                                                "data": (int(self.__baseaddress__() or 1), True),
+                                                "version": 3,
+                                                }
+    return super(Point, self).__getattribute__(name)
+Point.__getattribute__ = __Point_getattribute
+
+def __Point___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    import numpy as _np
+    def _cvt(a):
+        mod = getattr(type(a), "__module__", "") or ""
+        if mod.startswith("openturns"):
+            try:
+                return _np.asarray(a)
+            except Exception:
+                return a
+        return a
+    out = kwargs.get("out", None)
+    if out is not None:
+        for o in out:
+            if o is not None:
+                mod = getattr(type(o), "__module__", "") or ""
+                if mod.startswith("openturns"):
+                    return NotImplemented
+    new_inputs = tuple(_cvt(x) for x in inputs)
+    new_kwargs = {k: _cvt(v) for k, v in kwargs.items()}
+    return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+Point.__array_ufunc__ = __Point___array_ufunc__
+Point.__array_priority__ = 10000
 %}
 
 #if SWIG_VERSION < 0x040200

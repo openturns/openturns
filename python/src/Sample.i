@@ -89,6 +89,33 @@ def __Sample_getattribute(self, name):
     return super(Sample, self).__getattribute__(name)
 Sample.__getattribute__ = __Sample_getattribute
 
+# Numpy compatibility: delegate ufuncs to ndarrays (element-wise).
+# Note: ot.Sample.__eq__ keeps whole-object semantics (returns Bool); for element-wise
+# comparison use numpy ufuncs, e.g. np.equal(smp, 1) or np.asarray(smp) == 1,
+# then np.where(...) works on the resulting boolean ndarray.
+def __Sample___array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+    import numpy as _np
+    def _cvt(a):
+        mod = getattr(type(a), "__module__", "") or ""
+        if mod.startswith("openturns"):
+            try:
+                return _np.asarray(a)
+            except Exception:
+                return a
+        return a
+    out = kwargs.get("out", None)
+    if out is not None:
+        for o in out:
+            if o is not None:
+                mod = getattr(type(o), "__module__", "") or ""
+                if mod.startswith("openturns"):
+                    return NotImplemented
+    new_inputs = tuple(_cvt(x) for x in inputs)
+    new_kwargs = {k: _cvt(v) for k, v in kwargs.items()}
+    return getattr(ufunc, method)(*new_inputs, **new_kwargs)
+Sample.__array_ufunc__ = __Sample___array_ufunc__
+Sample.__array_priority__ = 10000
+
 def __Sample_asDataFrame(self):
     """
     Convert to pandas DataFrame.
