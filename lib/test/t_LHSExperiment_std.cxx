@@ -40,13 +40,19 @@ int main(int, char *[])
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
-    experiment = LHSExperiment(distribution, size, true, true);
+    experiment = LHSExperiment(distribution, size);
+    experiment.setAlwaysShuffle(true);
+    experiment.setRandomShift(true);
     fullprint << "sample  = " << experiment.generate() << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
-    experiment = LHSExperiment(distribution, size, false, false);
+    experiment = LHSExperiment(distribution, size);
+    experiment.setAlwaysShuffle(false);
+    experiment.setRandomShift(false);
     fullprint << "sample  = " << experiment.generate() << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
-    experiment = LHSExperiment(distribution, size, true, false);
+    experiment = LHSExperiment(distribution, size);
+    experiment.setAlwaysShuffle(true);
+    experiment.setRandomShift(false);
     fullprint << "sample  = " << experiment.generate() << std::endl;
     fullprint << "sample2 = " << experiment.generate() << std::endl;
   }

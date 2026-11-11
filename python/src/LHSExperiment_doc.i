@@ -2,9 +2,9 @@
 R"RAW(LHS experiment.
 
 Available constructors:
-    LHSExperiment(*size, alwaysShuffle, randomShift*)
+    LHSExperiment(*size*)
 
-    LHSExperiment(*distribution, size, alwaysShuffle, randomShift*)
+    LHSExperiment(*distribution, size*)
 
 Parameters
 ----------
@@ -12,16 +12,6 @@ distribution : :class:`~openturns.Distribution`
     Distribution :math:`\mu` used to generate the set of input data.
 size : positive int
     Number :math:`\mathrm{card}\,I` of points that will be generated in the experiment.
-alwaysShuffle : bool
-    Flag to tell if the shuffle must be regenerated at each call to generate
-    or not.
-    Default is *False*: the shuffle is generated once and for all.
-
-randomShift : bool
-    Flag to tell if the point selected in each cell of the shuffle is the center
-    of the cell (*randomshift* is *False*) or if it is drawn wrt the restriction
-    of the distribution to the cell.
-    Default is *True*.
 
 Notes
 -----
@@ -55,10 +45,12 @@ Create an *LHSExperiment*:
 
 >>> import openturns as ot
 
-Generate the sample reusing the initial shuffle and using a random shift:
+Generate the sample reusing the initial shuffle and using a random shift (default):
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> experiment = ot.LHSExperiment(ot.Normal(2), 5, False, True)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5)
+>>> experiment.setAlwaysShuffle(False)
+>>> experiment.setRandomShift(True)
 >>> print(experiment.generate())
     [ X0        X1        ]
 0 : [  0.887671 -0.647818 ]
@@ -77,7 +69,9 @@ Generate the sample reusing the initial shuffle and using a random shift:
 Generate the sample using a new shuffle and a random shift:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> experiment = ot.LHSExperiment(ot.Normal(2), 5, True, True)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5)
+>>> experiment.setAlwaysShuffle(True)
+>>> experiment.setRandomShift(True)
 >>> print(experiment.generate())
     [ X0        X1        ]
 0 : [  0.887671 -0.647818 ]
@@ -96,7 +90,9 @@ Generate the sample using a new shuffle and a random shift:
 Generate the sample reusing the initial shuffle and using a constant shift:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> experiment = ot.LHSExperiment(ot.Normal(2), 5, False, False)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5)
+>>> experiment.setAlwaysShuffle(False)
+>>> experiment.setRandomShift(False)
 >>> print(experiment.generate())
     [ X0        X1        ]
 0 : [  1.28155  -0.524401 ]
@@ -115,7 +111,9 @@ Generate the sample reusing the initial shuffle and using a constant shift:
 Generate the sample using a new shuffle and using a constant shift:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> experiment = ot.LHSExperiment(ot.Normal(2), 5, True, False)
+>>> experiment = ot.LHSExperiment(ot.Normal(2), 5)
+>>> experiment.setAlwaysShuffle(True)
+>>> experiment.setRandomShift(False)
 >>> print(experiment.generate())
     [ X0        X1        ]
 0 : [  1.28155  -0.524401 ]

@@ -63,7 +63,9 @@ view.getFigure().set_size_inches(10, 10)
 # %%
 distribution = ot.JointDistribution([ot.Uniform()] * 3)
 samplesize = 5
-experiment = ot.LHSExperiment(distribution, samplesize, False, False)
+experiment = ot.LHSExperiment(distribution, samplesize)
+experiment.setAlwaysShuffle(False)
+experiment.setRandomShift(False)
 sample = experiment.generate()
 
 # %%

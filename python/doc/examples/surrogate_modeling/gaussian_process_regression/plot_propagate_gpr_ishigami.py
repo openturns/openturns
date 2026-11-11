@@ -22,7 +22,9 @@ im = ishigami_function.IshigamiModel()
 # %%
 # We build a design of experiments with a Latin Hypercube Sampling (LHS) for the three input variables
 # supposed independent.
-experiment = ot.LHSExperiment(im.distribution, 30, False, True)
+experiment = ot.LHSExperiment(im.distribution, 30)
+experiment.setAlwaysShuffle(False)
+experiment.setRandomShift(True)
 xdata = experiment.generate()
 
 # %%

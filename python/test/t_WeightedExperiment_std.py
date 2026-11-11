@@ -15,7 +15,11 @@ assert ot.MonteCarloExperiment(distribution, size) != ot.MonteCarloExperiment(di
 
 # LHSExperiment
 assert ot.LHSExperiment(distribution, size) == ot.LHSExperiment(distribution, size), "LHS==LHS"
-assert ot.LHSExperiment(distribution, size, True) != ot.LHSExperiment(distribution, size, False), "LHS!=LHS shuffle"
+lhs1 = ot.LHSExperiment(distribution, size)
+lhs1.setAlwaysShuffle(True)
+lhs2 = ot.LHSExperiment(distribution, size)
+lhs2.setAlwaysShuffle(False)
+assert lhs1 != lhs2, "LHS!=LHS shuffle"
 
 # LowDiscrepancyExperiment
 seq = ot.SobolSequence(4)
