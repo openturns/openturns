@@ -44,13 +44,13 @@ public:
 
   /** Parameters constructor */
   explicit LHSExperiment(const UnsignedInteger size,
-                         const Bool alwaysShuffle = false,
+                         const Bool alwaysShuffle = false, // deprecated shuffle/shift arguments
                          const Bool randomShift = true);
 
   /** Parameters constructor */
   LHSExperiment(const Distribution & distribution,
                 const UnsignedInteger size,
-                const Bool alwaysShuffle = false,
+                const Bool alwaysShuffle = false, // deprecated shuffle/shift arguments
                 const Bool randomShift = true);
 
   /** Virtual constructor */
