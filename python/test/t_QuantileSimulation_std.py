@@ -823,10 +823,19 @@ algo.setSampleSize(10)
 algo.run()
 assert math.isfinite(algo.getResult().getQuantileEstimate())
 
-# A NaN output cannot be ordered and is rejected.
+# A NaN output cannot be ordered and is rejected by the weighted path.
 nan_fixed = ot.FixedExperiment(
     ot.Sample([[0.0], [float("nan")], [1.0]]), ot.Point(3, 1.0))
 algo = otexp.MonteCarloQuantileSimulation(output, nan_fixed, 0.5, 0.5)
+with ott.assert_raises(TypeError):
+    algo.run()
+
+# The exact i.i.d. path rejects NaN outputs before sorting as well.
+nan_output = ot.CompositeRandomVector(
+    ot.PythonFunction(1, 1, lambda x: [float("nan")]),
+    ot.RandomVector(ot.Normal()))
+algo = otexp.MonteCarloQuantileSimulation(
+    nan_output, ot.MonteCarloExperiment(ot.Normal(), 100), 0.5, 0.5)
 with ott.assert_raises(TypeError):
     algo.run()
 

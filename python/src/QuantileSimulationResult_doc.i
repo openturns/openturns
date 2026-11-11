@@ -495,9 +495,10 @@ Returns
 -------
 peakMemory : int
     Peak number of scalar values stored by the algorithm.  For the
-    block estimator it is the block length plus the number of block
-    quantiles; for the exact-tail estimator it is the number of retained
-    order statistics.
+    block estimator it is :math:`(d+1)` times the block length plus the
+    number of block quantiles, where :math:`d` is the input dimension;
+    for the exact-tail estimator it is the number of retained order
+    statistics plus the input and output samples of one chunk.
 )RAW"
 
 // ---------------------------------------------------------------------

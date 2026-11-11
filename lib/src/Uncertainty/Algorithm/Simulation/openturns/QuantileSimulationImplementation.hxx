@@ -25,6 +25,7 @@
 #include "openturns/RandomVector.hxx"
 #include "openturns/QuantileSimulationResult.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/WeightedExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -101,6 +102,9 @@ protected:
 
   /** Check the input parameters */
   virtual void checkInputs() const;
+
+  /** Check the experiment against the output input distribution and return the input dimension */
+  UnsignedInteger checkExperiment(const WeightedExperiment & experiment) const;
 
   /** Check the required coverage against the achieved coverage */
   virtual void checkCoverage(const QuantileSimulationResult & result) const;

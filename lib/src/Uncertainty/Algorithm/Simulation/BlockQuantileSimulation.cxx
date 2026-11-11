@@ -102,14 +102,14 @@ Scalar percentile(const Point & sortedValues, const Scalar probability)
   return (1.0 - fraction) * sortedValues[index] + fraction * sortedValues[index + 1];
 }
 
-Scalar computeAsymptoticBlockLength(const UnsignedInteger sampleSize)
+UnsignedInteger computeAsymptoticBlockLength(const UnsignedInteger sampleSize)
 {
   // The mean of the block quantiles has variance of order 1/N and bias of
   // order 1/b.  The exponent 2/3 makes the bias o(N^(-1/2)), hence
   // negligible relative to the standard error.  The memory-optimal sqrt(N)
   // length only balances the two terms and does not support a coverage
   // statement.
-  return std::ceil(std::pow(1.0 * sampleSize, 2.0 / 3.0));
+  return static_cast<UnsignedInteger>(std::ceil(std::pow(1.0 * sampleSize, 2.0 / 3.0)));
 }
 
 String computeCombinationDescription(const QuantileSimulationResultImplementation::CombinationType type,
@@ -196,6 +196,20 @@ void BlockQuantileSimulation::checkInputs() const
     throw InvalidArgumentException(HERE)
         << "The minimum block count must be at least 2, but minimumBlockCount = " << minimumBlockCount_
         << " (ResourceMap key QuantileSimulation-MinimumBlockCount)";
+  // The policies that honour the minimum block count must reject an
+  // unattainable request before evaluating the model.
+  const UnsignedInteger blockCountFloor = std::max<UnsignedInteger>(2, minimumBlockCount_);
+  if (((blockLengthPolicy_ == MEMORY_BOUND)
+       || (blockLengthPolicy_ == BIAS_TARGET)
+       || (blockLengthPolicy_ == ADAPTIVE))
+      && (sampleSize_ < blockCountFloor))
+    throw InvalidArgumentException(HERE)
+        << "The sample size (" << sampleSize_ << ") cannot provide the minimum number of blocks ("
+        << blockCountFloor << "). Increase the sample size or reduce the minimum block count.";
+  if ((requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_EXACT)
+      || (requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_ANYTIME_VALID))
+    throw InvalidArgumentException(HERE)
+        << "The block estimator cannot provide an exact or anytime-valid coverage";
   if (!(biasTolerance_ > 0.0) || !std::isfinite(biasTolerance_))
     throw InvalidArgumentException(HERE)
         << "The bias tolerance must be finite and positive, but tolerance = " << biasTolerance_
@@ -543,6 +557,7 @@ Scalar BlockQuantileSimulation::estimateBiasConstant(const UnsignedInteger sampl
 
 /* Compute the block length for a given policy */
 UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedInteger sampleSize,
+                                                            const UnsignedInteger inputDimension,
                                                             WeightedExperiment & experiment,
                                                             Scalar & biasEstimate,
                                                             UnsignedInteger & pilotEvaluationCount) const
@@ -550,7 +565,10 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
   biasEstimate = std::numeric_limits<Scalar>::quiet_NaN();
   pilotEvaluationCount = 0;
   const Scalar sqrtN = std::sqrt(1.0 * sampleSize);
-  const Scalar asymptoticLength = computeAsymptoticBlockLength(sampleSize);
+  const UnsignedInteger asymptoticLength = computeAsymptoticBlockLength(sampleSize);
+  // drawBlock keeps the input and output samples alive at the same time,
+  // and the block quantiles accumulate while the blocks are drawn.
+  const Scalar dimensionFactor = 1.0 + inputDimension;
   UnsignedInteger blockLength = 0;
 
   switch (blockLengthPolicy_)
@@ -565,7 +583,7 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
       blockLength = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(std::ceil(sqrtN)));
       break;
     case ASYMPTOTIC:
-      blockLength = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(asymptoticLength));
+      blockLength = std::max<UnsignedInteger>(1, asymptoticLength);
       break;
     case MEMORY_BOUND:
     {
@@ -573,15 +591,17 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
         throw InvalidArgumentException(HERE)
             << "The MEMORY_BOUND block-length policy requires a positive memory budget";
       const Scalar budget = 1.0 * memoryBudget_;
-      const Scalar discriminant = budget * budget - 4.0 * (1.0 * sampleSize);
+      const Scalar discriminant = budget * budget - 4.0 * dimensionFactor * (1.0 * sampleSize);
       if (!(discriminant >= 0.0))
         throw InvalidArgumentException(HERE)
             << "The memory budget (" << memoryBudget_ << " values) is too small for a sample size of "
-            << sampleSize << ": at least 2*sqrt(sampleSize) = " << 2.0 * sqrtN
-            << " values are required";
-      Scalar candidate = 0.5 * (budget + std::sqrt(discriminant));
+            << sampleSize << " and an input dimension of " << inputDimension
+            << ": at least 2*sqrt((inputDimension + 1)*sampleSize) = "
+            << 2.0 * std::sqrt(dimensionFactor * sampleSize) << " values are required";
+      Scalar candidate = 0.5 * (budget + std::sqrt(discriminant)) / dimensionFactor;
       blockLength = static_cast<UnsignedInteger>(std::floor(candidate));
-      while ((blockLength > 1) && (1.0 * blockLength + (1.0 * sampleSize) / (1.0 * blockLength) > budget))
+      while ((blockLength > 1)
+             && (dimensionFactor * blockLength + (1.0 * sampleSize) / (1.0 * blockLength) > budget))
         --blockLength;
       // Keep at least the minimum number of blocks requested by the user.
       const UnsignedInteger blockCountFloor = std::max<UnsignedInteger>(2, minimumBlockCount_);
@@ -589,12 +609,13 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
       if (blockLength > maximumBlockLength)
         blockLength = maximumBlockLength;
       // The clamp above can reduce the block length below the smaller root of
-      // b + N / b = budget, in which case the budget is no longer respected.
+      // (d + 1)*b + N/b = budget, in which case the budget is no longer respected.
       const UnsignedInteger blockCount = sampleSize / blockLength;
-      if (1.0 * blockLength + 1.0 * blockCount > budget)
+      if (dimensionFactor * blockLength + 1.0 * blockCount > budget)
         throw InvalidArgumentException(HERE)
             << "The memory budget (" << memoryBudget_ << " values) cannot host at least "
             << blockCountFloor << " blocks for a sample size of " << sampleSize
+            << " and an input dimension of " << inputDimension
             << ". Increase the budget or reduce the minimum block count.";
       break;
     }
@@ -627,7 +648,7 @@ UnsignedInteger BlockQuantileSimulation::computeBlockLength(const UnsignedIntege
         }
       }
       if (blockLength == 0)
-        blockLength = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(asymptoticLength));
+        blockLength = std::max<UnsignedInteger>(1, asymptoticLength);
       // Below sqrt(N) the memory grows and the interval is not valid.
       const UnsignedInteger minimumBlockLength = std::max<UnsignedInteger>(1, static_cast<UnsignedInteger>(std::ceil(sqrtN)));
       if (blockLength < minimumBlockLength)
@@ -735,25 +756,11 @@ QuantileSimulationResult BlockQuantileSimulation::runFixedSample()
         << "The block estimator requires uniform weights, but "
         << experiment.getClassName() << " has non-uniform weights";
 
-  UnsignedInteger inputDimension = 0;
-  try
-  {
-    inputDimension = output_.isComposite()
-                     ? output_.getAntecedent().getDimension()
-                     : output_.getDimension();
-  }
-  catch (const Exception &)
-  {
-    throw InvalidArgumentException(HERE) << "The input dimension of the output random vector cannot be retrieved";
-  }
-  if (experiment.getDistribution().getDimension() != inputDimension)
-    throw InvalidArgumentException(HERE)
-        << "The experiment distribution dimension (" << experiment.getDistribution().getDimension()
-        << ") does not match the input dimension (" << inputDimension << ")";
+  const UnsignedInteger inputDimension = checkExperiment(experiment);
 
   Scalar biasEstimate = std::numeric_limits<Scalar>::quiet_NaN();
   UnsignedInteger pilotEvaluationCount = 0;
-  const UnsignedInteger blockLength = computeBlockLength(requestedSize, experiment, biasEstimate, pilotEvaluationCount);
+  const UnsignedInteger blockLength = computeBlockLength(requestedSize, inputDimension, experiment, biasEstimate, pilotEvaluationCount);
   lastBlockLength_ = blockLength;
   const UnsignedInteger blockCount = requestedSize / blockLength;
   const UnsignedInteger totalSize = blockCount * blockLength;
@@ -867,7 +874,9 @@ QuantileSimulationResult BlockQuantileSimulation::runFixedSample()
   result.setCombinationType(combinationType_);
   result.setTrimmingFraction(trimmingFraction_);
   result.setBlockLengthPolicyDescription(getBlockLengthPolicyDescription());
-  result.setPeakMemory(blockLength + blockCount);
+  // Peak storage: the input and output samples of the block being drawn,
+  // plus the retained block quantiles.
+  result.setPeakMemory((inputDimension + 1) * blockLength + blockCount);
   if (std::isfinite(biasEstimate))
     result.setBiasEstimate(biasEstimate);
   result.setIsFixedSample(true);

@@ -146,6 +146,9 @@ void ExactTailQuantileSimulation::checkInputs() const
   if (ResourceMap::GetAsUnsignedInteger("ExactTailQuantileSimulation-MinimumChunkSize") == 0)
     throw InvalidArgumentException(HERE)
         << "The ResourceMap key ExactTailQuantileSimulation-MinimumChunkSize must be positive";
+  if (requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_ANYTIME_VALID)
+    throw InvalidArgumentException(HERE)
+        << "The exact-tail estimator cannot provide an anytime-valid coverage";
 }
 
 /* Run a fixed-sample experiment */
@@ -165,21 +168,7 @@ QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
         << "The exact-tail estimator requires uniform weights, but "
         << experiment.getClassName() << " has non-uniform weights";
 
-  UnsignedInteger inputDimension = 0;
-  try
-  {
-    inputDimension = output_.isComposite()
-                     ? output_.getAntecedent().getDimension()
-                     : output_.getDimension();
-  }
-  catch (const Exception &)
-  {
-    throw InvalidArgumentException(HERE) << "The input dimension of the output random vector cannot be retrieved";
-  }
-  if (experiment.getDistribution().getDimension() != inputDimension)
-    throw InvalidArgumentException(HERE)
-        << "The experiment distribution dimension (" << experiment.getDistribution().getDimension()
-        << ") does not match the input dimension (" << inputDimension << ")";
+  const UnsignedInteger inputDimension = checkExperiment(experiment);
 
   // Exact ranks are computed before sampling; they depend only on the
   // sample size and on the levels alpha and beta.
@@ -358,7 +347,9 @@ QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
   result.setRetainedCount(retainedCount);
   result.setLowerRank(lowerRank);
   result.setUpperRank(upperRank);
-  result.setPeakMemory(retainedCount);
+  // Peak storage: the retained tail plus the input and output samples of
+  // the chunk being processed.
+  result.setPeakMemory(retainedCount + (inputDimension + 1) * std::min(sampleSize_, chunkSize));
   result.setIsFixedSample(true);
   result.setOuterSampling(1);
   result.setBlockSize(getBlockSize());

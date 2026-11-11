@@ -474,9 +474,12 @@ covers the mean block quantile, hence :math:`q_\alpha`, only when the
 bias is negligible relative to the standard error of order
 :math:`N^{-1/2}`; this requires :math:`b` to grow faster than
 :math:`\sqrt{N}`.  The choice :math:`b\asymp\sqrt{N}` balances the
-bias against the standard error and minimizes the :math:`O(b+N/b)`
-memory, but does not make the bias negligible: the result must carry
-``COVERAGE_NONE`` for that policy.  Choosing :math:`b\asymp N^{2/3}`
+bias against the standard error and minimizes the
+:math:`O((d+1)b+N/b)` memory, where :math:`d` is the input dimension:
+the :math:`b` input vectors and the :math:`b` scalar outputs of the
+current block are live at the same time, and the :math:`B` block
+quantiles are accumulated.  This choice does not make the bias
+negligible: the result must carry ``COVERAGE_NONE`` for that policy.  Choosing :math:`b\asymp N^{2/3}`
 makes the bias :math:`o(N^{-1/2})` and is the usual choice when a
 coverage statement is wanted.  A percentile bootstrap interval is
 available as an alternative to :eq:`eq-block-t`.
@@ -530,8 +533,11 @@ tail in a bounded heap gives a memory of
     K \approx N(1-\alpha)
       + z_{(1+\beta)/2}\sqrt{N\alpha(1-\alpha)}
 
-for an upper-tail quantile.  The estimate and the interval are exactly
-the order statistics of the full sample, with no approximation.  The
+for an upper-tail quantile.  The stream is processed by chunks of
+:math:`C` observations, so the input and output samples of the current
+chunk add :math:`(d+1)\min(N,C)` scalar values.  The estimate and the
+interval are exactly the order statistics of the full sample, with no
+approximation.  The
 interpolated estimator is rejected because its value is not an order
 statistic and the exact binomial interval would no longer apply.
 

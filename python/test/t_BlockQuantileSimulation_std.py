@@ -14,6 +14,7 @@ MEDIAN = otexp.QuantileSimulationResultImplementation.MEDIAN
 TRIMMED_MEAN = otexp.QuantileSimulationResultImplementation.TRIMMED_MEAN
 COVERAGE_ASYMPTOTIC = otexp.QuantileSimulationResultImplementation.COVERAGE_ASYMPTOTIC
 COVERAGE_EXACT = otexp.QuantileSimulationResultImplementation.COVERAGE_EXACT
+COVERAGE_ANYTIME_VALID = otexp.QuantileSimulationResultImplementation.COVERAGE_ANYTIME_VALID
 COVERAGE_NONE = otexp.QuantileSimulationResultImplementation.COVERAGE_NONE
 
 FIXED = otexp.BlockQuantileSimulation.FIXED
@@ -61,7 +62,7 @@ assert result.getEffectiveSampleSize() == float(result.getSampleSize())
 assert result.getBlockQuantileSample().getSize() == result.getBlockCount()
 assert result.getCombinationType() == MEAN
 assert result.getCombinationDescription() == "Mean"
-assert result.getPeakMemory() == result.getBlockLength() + result.getBlockCount()
+assert result.getPeakMemory() == 2 * result.getBlockLength() + result.getBlockCount()
 assert result.getPeakMemoryInBytes() == 8 * result.getPeakMemory()
 assert result.getBlockLengthPolicyDescription().startswith("Asymptotic")
 assert not result.hasBiasEstimate()
@@ -188,13 +189,16 @@ algo.setMemoryBudget(5000)
 algo.setBlockLengthPolicy(MEMORY_BOUND)
 algo.run()
 result = algo.getResult()
-assert result.getBlockLength() + result.getBlockCount() <= 5000
+# The input and output block buffers are both live while a block is drawn.
+assert 2 * result.getBlockLength() + result.getBlockCount() <= 5000
+assert result.getPeakMemory() == 2 * result.getBlockLength() + result.getBlockCount()
+assert 2 * result.getBlockLength() + result.getBlockCount() <= algo.getMemoryBudget()
 assert result.getBlockCount() >= algo.getMinimumBlockCount(), "the block count floor is enforced"
 assert result.getBlockLength() > math.sqrt(result.getSampleSize())
 assert result.getCoverageType() == COVERAGE_ASYMPTOTIC
 assert result.getBlockLengthPolicyDescription().startswith("Memory bound")
 
-# A budget below 2*sqrt(N) cannot host a block estimator.
+# A budget below 2*sqrt((d + 1)*N) cannot host a block estimator.
 algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(100000)
 algo.setMemoryBudget(100)
@@ -206,11 +210,35 @@ with ott.assert_raises(TypeError):
 # instead of silently exceeding the budget after the block-length clamp.
 algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(10000)
-algo.setMemoryBudget(250)
+algo.setMemoryBudget(500)
 algo.setMinimumBlockCount(1000)
 algo.setBlockLengthPolicy(MEMORY_BOUND)
 with ott.assert_raises(TypeError):
     algo.run()
+
+# An unattainable minimum block count is rejected before any evaluation.
+evaluation_count = [0]
+
+
+def counted_function(x):
+    evaluation_count[0] += 1
+    return [x[0]]
+
+
+counted_output = ot.CompositeRandomVector(
+    ot.PythonFunction(1, 1, counted_function),
+    ot.RandomVector(ot.Normal()),
+)
+for policy in [MEMORY_BOUND, BIAS_TARGET, ADAPTIVE]:
+    evaluation_count[0] = 0
+    algo = otexp.BlockQuantileSimulation(counted_output, 0.95, 0.95)
+    algo.setSampleSize(10)
+    algo.setMinimumBlockCount(30)
+    algo.setMemoryBudget(1000)
+    algo.setBlockLengthPolicy(policy)
+    with ott.assert_raises(TypeError):
+        algo.run()
+    assert evaluation_count[0] == 0, "the impossible request must fail before evaluation"
 
 # ---------------------------------------------------------------------
 # 5. Pilot-based policies
@@ -370,13 +398,14 @@ algo.setExperiment(ot.MonteCarloExperiment(ot.Normal(2), 1000))
 with ott.assert_raises(TypeError):
     algo.run()
 
-# Exact coverage cannot be claimed by the block estimator.
-algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
-algo.setSampleSize(6000)
-algo.setBlockLength(200)
-algo.setRequiredCoverage(COVERAGE_EXACT)
-with ott.assert_raises(TypeError):
-    algo.run()
+# Exact and anytime-valid coverage cannot be claimed by the block estimator.
+for required in [COVERAGE_EXACT, COVERAGE_ANYTIME_VALID]:
+    algo = otexp.BlockQuantileSimulation(output, 0.95, 0.95)
+    algo.setSampleSize(6000)
+    algo.setBlockLength(200)
+    algo.setRequiredCoverage(required)
+    with ott.assert_raises(TypeError):
+        algo.run()
 
 # A multivariate output is rejected at construction time.
 with ott.assert_raises(TypeError):

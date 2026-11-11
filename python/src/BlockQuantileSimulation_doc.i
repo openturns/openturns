@@ -14,9 +14,11 @@ The block estimator computes a quantile without ever materializing the
 full sample.  The stream of :math:`N` independent outputs is split into
 :math:`B` blocks of length :math:`b`, with :math:`N = B b`.  One block
 quantile is computed from each block, and the :math:`B` block quantiles
-are combined into a single estimate.  Only one block of :math:`b`
-values and the :math:`B` block quantiles are kept in memory, so the peak
-storage is :math:`\cO(b + N/b)` scalar values.
+are combined into a single estimate.  Only the :math:`b` input vectors
+and :math:`b` scalar outputs of one block, plus the :math:`B` block
+quantiles, are kept in memory, so the peak storage is
+:math:`\cO((d+1)b + N/b)` scalar values for an input dimension
+:math:`d`.
 
 The combination rule is selected by :meth:`setCombinationType`: mean,
 median or trimmed mean.  The mean is the default because it has the
@@ -74,7 +76,7 @@ beta : float
 
 See also
 --------
-QuantileSimulationAlgorithm, ExactTailQuantileSimulation, QuantileSimulationResult
+MonteCarloQuantileSimulation, ExactTailQuantileSimulation, QuantileSimulationResult
 
 Notes
 -----
@@ -388,7 +390,9 @@ R"RAW(Accessor to the memory budget.
 Returns
 -------
 memoryBudget : int
-    Maximum number of scalar values used by the ``MEMORY_BOUND`` policy.
+    Maximum number of scalar values used by the ``MEMORY_BOUND``
+    policy, including the input and output block buffers and the block
+    quantiles.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -399,8 +403,8 @@ R"RAW(Accessor to the memory budget.
 Parameters
 ----------
 memoryBudget : int
-    Maximum number of scalar values, including the block buffer and
-    the block quantiles.  It must be positive.
+    Maximum number of scalar values, including the input and output
+    block buffers and the block quantiles.  It must be positive.
 )RAW"
 
 // ---------------------------------------------------------------------

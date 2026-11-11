@@ -319,6 +319,14 @@ Interval exactInterval(const Sample & sample,
   if (size == 0)
     throw InvalidArgumentException(HERE) << "The sample must not be empty";
 
+  // Reject NaN outputs before sorting: comparisons with NaN do not define
+  // a strict weak ordering, so the sorted order (and the estimate) would be
+  // implementation-dependent.
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (std::isnan(sample(i, 0)))
+      throw InvalidArgumentException(HERE)
+          << "The output sample contains a NaN value at index " << i;
+
   const Sample sortedSample(sample.sort());
   Point values(size);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -589,60 +597,7 @@ QuantileSimulationResult MonteCarloQuantileSimulation::runFixedSample()
       checkResizableExperiment(experiment, sampleSize_);
       experiment.setSize(sampleSize_);
     }
-    UnsignedInteger inputDimension = 0;
-    try
-    {
-      inputDimension = output_.isComposite()
-                       ? output_.getAntecedent().getDimension()
-                       : output_.getDimension();
-    }
-    catch (const Exception &)
-    {
-      throw InvalidArgumentException(HERE) << "The input dimension of the output random vector cannot be retrieved";
-    }
-    if (experiment.getDistribution().getDimension() != inputDimension)
-      throw InvalidArgumentException(HERE)
-          << "The experiment distribution dimension (" << experiment.getDistribution().getDimension()
-          << ") does not match the input dimension (" << inputDimension << ")";
-    // A stochastic experiment must sample from the input distribution of
-    // the output.  Otherwise the estimate describes the experiment
-    // distribution and the coverage label would be meaningless.  Fixed
-    // designs are diagnostic and may carry arbitrary supplied values;
-    // TensorProductExperiment reports a block-independent distribution
-    // built from its marginals, whose structural equality with the input
-    // distribution is not a reliable test.
-    if (experiment.isRandom()
-        && (dynamic_cast<const TensorProductExperiment *>(experiment.getImplementation().get()) == nullptr))
-    {
-      Distribution inputDistribution;
-      Bool hasInputDistribution = true;
-      try
-      {
-        inputDistribution = output_.isComposite()
-                            ? output_.getAntecedent().getDistribution()
-                            : output_.getDistribution();
-      }
-      catch (const Exception &)
-      {
-        hasInputDistribution = false;
-      }
-      if (hasInputDistribution)
-      {
-        Bool sameDistribution = true;
-        try
-        {
-          sameDistribution = (experiment.getDistribution() == inputDistribution);
-        }
-        catch (const Exception &)
-        {
-          // Some distributions do not implement structural equality:
-          // keep the dimension check as the fallback.
-        }
-        if (!sameDistribution)
-          throw InvalidArgumentException(HERE)
-              << "The experiment distribution does not match the input distribution of the output random vector";
-      }
-    }
+    checkExperiment(experiment);
   }
 
   const Bool uniformWeights = experiment.hasUniformWeights();

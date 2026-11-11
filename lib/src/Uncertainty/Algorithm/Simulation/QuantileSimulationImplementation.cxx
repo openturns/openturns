@@ -24,6 +24,8 @@
 #include "openturns/QuantileSimulationImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/Distribution.hxx"
+#include "openturns/TensorProductExperiment.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -237,6 +239,66 @@ void QuantileSimulationImplementation::checkInputs() const
         << "The confidence level must be in (0, 1), but beta = " << beta_;
   if (sampleSize_ == 0)
     throw InvalidArgumentException(HERE) << "The sample size must be set before running the algorithm";
+}
+
+/* Check the experiment against the output input distribution */
+UnsignedInteger QuantileSimulationImplementation::checkExperiment(const WeightedExperiment & experiment) const
+{
+  UnsignedInteger inputDimension = 0;
+  try
+  {
+    inputDimension = output_.isComposite()
+                     ? output_.getAntecedent().getDimension()
+                     : output_.getDimension();
+  }
+  catch (const Exception &)
+  {
+    throw InvalidArgumentException(HERE) << "The input dimension of the output random vector cannot be retrieved";
+  }
+  if (experiment.getDistribution().getDimension() != inputDimension)
+    throw InvalidArgumentException(HERE)
+        << "The experiment distribution dimension (" << experiment.getDistribution().getDimension()
+        << ") does not match the input dimension (" << inputDimension << ")";
+  // A stochastic experiment must sample from the input distribution of the
+  // output.  Otherwise the estimate describes the experiment distribution
+  // and the coverage label would be meaningless.  Fixed designs are
+  // diagnostic and may carry arbitrary supplied values;
+  // TensorProductExperiment reports a block-independent distribution built
+  // from its marginals, whose structural equality with the input
+  // distribution is not a reliable test.
+  if (experiment.isRandom()
+      && (dynamic_cast<const TensorProductExperiment *>(experiment.getImplementation().get()) == nullptr))
+  {
+    Distribution inputDistribution;
+    Bool hasInputDistribution = true;
+    try
+    {
+      inputDistribution = output_.isComposite()
+                          ? output_.getAntecedent().getDistribution()
+                          : output_.getDistribution();
+    }
+    catch (const Exception &)
+    {
+      hasInputDistribution = false;
+    }
+    if (hasInputDistribution)
+    {
+      Bool sameDistribution = true;
+      try
+      {
+        sameDistribution = (experiment.getDistribution() == inputDistribution);
+      }
+      catch (const Exception &)
+      {
+        // Some distributions do not implement structural equality:
+        // keep the dimension check as the fallback.
+      }
+      if (!sameDistribution)
+        throw InvalidArgumentException(HERE)
+            << "The experiment distribution does not match the input distribution of the output random vector";
+    }
+  }
+  return inputDimension;
 }
 
 /* Check the required coverage against the achieved coverage */

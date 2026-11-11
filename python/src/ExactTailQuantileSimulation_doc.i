@@ -30,7 +30,7 @@ only the :math:`N - r_1` largest observations are needed, and for a
 lower-tail quantile only the :math:`r_2 + 1` smallest observations are
 needed.  The estimator keeps the smaller of the two tails in a bounded
 heap and updates it chunk by chunk, so its memory is bounded by the
-retained tail.  The estimate and the interval are exactly the order
+retained tail plus one chunk of input and output values.  The estimate and the interval are exactly the order
 statistics of the full sample, with no approximation.  The derivation,
 the coverage formula and the memory analysis are presented in
 :any:`quantile_theory_block`.

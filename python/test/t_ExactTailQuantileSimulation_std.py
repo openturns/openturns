@@ -20,6 +20,8 @@ UPPER_TAIL = otexp.QuantileSimulationResultImplementation.UPPER_TAIL
 distribution = ot.Normal()
 output = ot.RandomVector(distribution)
 
+minimum_chunk_key = "ExactTailQuantileSimulation-MinimumChunkSize"
+
 
 def sorted_values(sample):
     return sorted(sample[i, 0] for i in range(sample.getSize()))
@@ -73,8 +75,11 @@ assert result.getTailDescription() == "Upper tail"
 assert result.getLowerRank() == lower_rank
 assert result.getUpperRank() == upper_rank
 assert result.getRetainedCount() == size - lower_rank
-assert result.getPeakMemory() == result.getRetainedCount()
-assert result.getPeakMemoryInBytes() == 8 * result.getRetainedCount()
+chunk_size = max(algo.getBlockSize(),
+                 ot.ResourceMap.GetAsUnsignedInteger(minimum_chunk_key))
+assert result.getPeakMemory() == (
+    result.getRetainedCount() + 2 * min(size, chunk_size))
+assert result.getPeakMemoryInBytes() == 8 * result.getPeakMemory()
 assert not result.hasBiasEstimate()
 assert result.getBiasToStandardErrorRatio() == 0.0
 assert result.isFixedSample()
@@ -159,7 +164,22 @@ algo.run()
 result = algo.getResult()
 assert result.getTailType() == UPPER_TAIL
 assert result.getRetainedCount() < 100
-assert result.getPeakMemory() == result.getRetainedCount()
+assert result.getPeakMemory() == (
+    result.getRetainedCount() + 2 * min(10000, chunk_size))
+
+# The peak memory follows the chunk size, which bounds the live input and
+# output samples in addition to the retained tail.
+saved_chunk = ot.ResourceMap.GetAsUnsignedInteger(minimum_chunk_key)
+try:
+    ot.ResourceMap.SetAsUnsignedInteger(minimum_chunk_key, 64)
+    ot.RandomGenerator.SetSeed(20260204)
+    algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+    algo.setSampleSize(1000)
+    algo.run()
+    chunk_result = algo.getResult()
+    assert chunk_result.getPeakMemory() == chunk_result.getRetainedCount() + 2 * 64
+finally:
+    ot.ResourceMap.SetAsUnsignedInteger(minimum_chunk_key, saved_chunk)
 
 # The chunked stream is the same stream as a single full sample, so the
 # retained order statistics are the full-sample order statistics.
@@ -245,6 +265,13 @@ with ott.assert_raises(TypeError):
 algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
 algo.setSampleSize(500)
 algo.setEstimatorType(INTERPOLATED)
+with ott.assert_raises(TypeError):
+    algo.run()
+
+# The exact-tail interval is fixed-sample, not anytime-valid.
+algo = otexp.ExactTailQuantileSimulation(output, 0.95, 0.95)
+algo.setSampleSize(500)
+algo.setRequiredCoverage(COVERAGE_ANYTIME_VALID)
 with ott.assert_raises(TypeError):
     algo.run()
 

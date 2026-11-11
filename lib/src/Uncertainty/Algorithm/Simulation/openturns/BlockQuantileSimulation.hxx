@@ -143,6 +143,7 @@ private:
 
   /** Compute the block length for a given policy */
   UnsignedInteger computeBlockLength(const UnsignedInteger sampleSize,
+                                     const UnsignedInteger inputDimension,
                                      WeightedExperiment & experiment,
                                      Scalar & biasEstimate,
                                      UnsignedInteger & pilotEvaluationCount) const;
