@@ -25,6 +25,7 @@
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/Interval.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Indices.hxx"
@@ -79,6 +80,10 @@ public:
   /** StartingPoint accessor */
   Point getStartingPoint() const;
 
+  /** Bounds accessor */
+  Interval getBounds() const;
+  void setBounds(const Interval & bounds);
+
   /** Least squares method name accessor */
   String getMethodName() const;
 
@@ -108,6 +113,9 @@ private:
 
   /* The model gradient wrt the parameter */
   Matrix gradientObservations_;
+
+  /* The parameter bounds */
+  Interval bounds_;
 
   /* The least squares method name */
   String methodName_;

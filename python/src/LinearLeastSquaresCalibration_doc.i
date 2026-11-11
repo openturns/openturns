@@ -30,18 +30,39 @@ Notes
 -----
 LinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
 
+By default the calibration is unconstrained. When bounds are set with
+:meth:`setBounds`, the estimator solves the equivalent convex quadratic problem
+with the first algorithm selected by
+:meth:`~openturns.OptimizationAlgorithm.Build`, which is the
+:class:`~openturns.experimental.HiGHS` quadratic solver when OpenTURNS is built
+with HiGHS support. When some parameters are active at a bound, the posterior
+distribution is a first-order Gaussian approximation: its covariance is
+computed from the inverse of the free block
+:math:`\mat{J}_F^T \mat{J}_F` of the Jacobian, and the residual degrees of
+freedom exclude the parameters fixed at a bound.
+
+A parameter is considered fixed when its distance to a bound is lower than the
+absolute tolerance given by the
+``LinearLeastSquaresCalibration-ActiveBoundTolerance`` key of the
+:class:`~openturns.ResourceMap` (1.0e-6 by default). The tolerance is absolute,
+so a parameter lying inside the feasible interval of a bound with a large
+magnitude is not considered fixed. A rank-deficient free Jacobian block raises
+an exception.
+
 The prior distribution of the parameter is a noninformative prior
 emulated using a flat :class:`~openturns.Normal` centered on the `startingPoint` and with a variance equal to SpecFunc.Infinity.
 
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 
-The associated covariance matrix may be regularized depending on the value of the 
-key ``LinearLeastSquaresCalibration-Regularization`` in the :class:`~openturns.ResourceMap`. 
-Let us denote by :math:`\sigma_1` the largest singular value of the covariance matrix. 
-The default value of the ``LinearLeastSquaresCalibration-Regularization``, zero, 
-ensures that the singular values of the covariance matrix are left unmodified.  
-If this parameter is set to a nonzero, relatively small, value denoted by :math:`\epsilon`, 
-then all singular values of the covariance matrix are increased by :math:`\epsilon \sigma_1`. 
+The associated covariance matrix may be regularized depending on the value of the
+``LinearLeastSquaresCalibration-Regularization`` key of the :class:`~openturns.ResourceMap`;
+its default value is :math:`10^{-12}`.
+Let :math:`\epsilon` be this value and :math:`\sigma_1` the largest singular value
+of the covariance matrix. If :math:`\epsilon` is nonzero, then the singular values
+of the covariance matrix are increased by :math:`\epsilon \sigma_1`.
+When bounds are set, only the free directions are regularized: a parameter fixed
+at a bound keeps a zero variance.
+With the default value :math:`\epsilon = 10^{-12}`, this shift is negligible.
 
 The resulting distribution of the output error is :class:`~openturns.Normal` with a zero mean
 and a diagonal covariance matrix computed from the residuals.
@@ -53,9 +74,11 @@ is constant and is estimated with the unbiased variance estimator.
 Please read :any:`code_calibration` for more details.
 
 
-The following :class:`~openturns.ResourceMap` key is used:
+The following :class:`~openturns.ResourceMap` keys are used:
 
 - ``LinearLeastSquaresCalibration-Method`` (``String``, default: ``QR``): name of the decomposition method used to solve the least squares problem of the linear least squares calibration. The possible values are ``SVD``, ``Cholesky`` and ``QR``
+- ``LinearLeastSquaresCalibration-Regularization`` (``Scalar``, default: ``1e-12``): relative shift applied to the singular values of the parameter covariance matrix
+- ``LinearLeastSquaresCalibration-ActiveBoundTolerance`` (``Scalar``, default: ``1e-6``): absolute distance to a bound below which a parameter is considered fixed at this bound when bounds are set
 
 See also
 --------
@@ -115,6 +138,40 @@ Returns
 -------
 startingPoint : :class:`~openturns.Point`
     Parameter startingPoint."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getBounds
+"Accessor to the parameter bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the calibration.
+    An empty interval means no bounds are applied."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::setBounds
+"Accessor to the parameter bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    Parameter bounds used to constrain the calibration.
+    An empty interval means no bounds are applied.
+    A non-empty interval must have the calibration parameter dimension.
+
+Notes
+-----
+When bounds are set, the calibration solves the bounded linear least-squares
+problem as a quadratic problem, using the first algorithm selected by
+:meth:`~openturns.OptimizationAlgorithm.Build` instead of the unconstrained QR,
+SVD or Cholesky decomposition. The selected algorithm is the
+:class:`~openturns.experimental.HiGHS` quadratic solver when OpenTURNS is built
+with HiGHS support. Parameters lying on a bound up to the absolute tolerance
+``LinearLeastSquaresCalibration-ActiveBoundTolerance`` are considered fixed,
+and a rank-deficient free Jacobian block raises an exception."
 
 // ---------------------------------------------------------------------
 
