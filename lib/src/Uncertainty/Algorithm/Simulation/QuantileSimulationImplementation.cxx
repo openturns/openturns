@@ -197,10 +197,13 @@ void QuantileSimulationImplementation::run()
 {
   checkInputs();
   const std::chrono::steady_clock::time_point t0 = std::chrono::steady_clock::now();
-  result_ = runFixedSample();
+  QuantileSimulationResult result(runFixedSample());
   const std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
-  result_.setTimeDuration(std::chrono::duration<Scalar>(t1 - t0).count());
-  checkCoverage(result_);
+  result.setTimeDuration(std::chrono::duration<Scalar>(t1 - t0).count());
+  checkCoverage(result);
+  // Publish the result only after the coverage check: a failed run must
+  // not replace the result of the previous successful run.
+  result_ = result;
 }
 
 /* Run a fixed-sample experiment */

@@ -718,6 +718,18 @@ for weights, empirical, interpolated in [
     algo.run()
     assert algo.getResult().getQuantileEstimate() == interpolated
 
+# Zero-weight observations carry no probability mass: they must neither
+# move the estimate nor widen the confidence interval beyond the support
+# of the weighted observations.
+bounded_sample = ot.Sample([[-100.0], [0.0], [1.0], [100.0]])
+bounded_fixed = ot.FixedExperiment(
+    bounded_sample, ot.Point([0.0, 0.5, 0.5, 0.0]))
+algo = otexp.QuantileSimulationAlgorithm(output, bounded_fixed, 0.5, 0.95)
+algo.run()
+bounded_result = algo.getResult()
+assert bounded_result.getQuantileEstimate() == 0.0
+assert bounded_result.getConfidenceInterval() == ot.Interval(0.0, 1.0)
+
 # A constant deterministic sample has a zero-width Woodruff interval.
 constant = ot.FixedExperiment(ot.Sample([[3.0]] * 5), ot.Point(5, 1.0))
 algo = otexp.QuantileSimulationAlgorithm(output, constant, 0.5, 0.95)
@@ -786,6 +798,50 @@ algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
 algo.setExperiment(ot.LHSExperiment(ot.Normal(2), 100))
 with ott.assert_raises(TypeError):
     algo.run()
+
+# A stochastic experiment must sample from the input distribution of the
+# output, otherwise the estimate describes another distribution.
+mismatch_output = ot.RandomVector(ot.Normal(10.0, 1.0))
+algo = otexp.QuantileSimulationAlgorithm(
+    mismatch_output, ot.MonteCarloExperiment(ot.Normal(0.0, 1.0), 100),
+    0.5, 0.5)
+with ott.assert_raises(TypeError):
+    algo.run()
+
+# The size of a TensorProductExperiment is the product of its marginal
+# designs: it cannot be resized through the algorithm.
+tensor = ot.TensorProductExperiment(
+    [ot.MonteCarloExperiment(ot.Normal(), 10)])
+assert tensor.getSize() == 10
+algo = otexp.QuantileSimulationAlgorithm(output, tensor, 0.5, 0.5)
+assert algo.getSampleSize() == 10
+with ott.assert_raises(TypeError):
+    algo.setSampleSize(1000)
+assert algo.getSampleSize() == 10
+assert tensor.getSize() == 10
+algo.setSampleSize(10)
+algo.run()
+assert math.isfinite(algo.getResult().getQuantileEstimate())
+
+# A NaN output cannot be ordered and is rejected.
+nan_fixed = ot.FixedExperiment(
+    ot.Sample([[0.0], [float("nan")], [1.0]]), ot.Point(3, 1.0))
+algo = otexp.QuantileSimulationAlgorithm(output, nan_fixed, 0.5, 0.5)
+with ott.assert_raises(TypeError):
+    algo.run()
+
+# A failed coverage check must not replace the result of the previous run.
+algo = otexp.QuantileSimulationAlgorithm(output, 0.5, 0.5)
+algo.setSampleSize(100)
+algo.run()
+previous_estimate = algo.getResult().getQuantileEstimate()
+previous_coverage = algo.getResult().getCoverageType()
+algo.setEstimatorType(INTERPOLATED)
+algo.setRequiredCoverage(COVERAGE_EXACT)
+with ott.assert_raises(TypeError):
+    algo.run()
+assert algo.getResult().getQuantileEstimate() == previous_estimate
+assert algo.getResult().getCoverageType() == previous_coverage
 
 # The public setters reject invalid values.
 with ott.assert_raises(TypeError):

@@ -96,6 +96,9 @@ protected:
   /** Run a fixed-sample experiment */
   QuantileSimulationResult runFixedSample() override;
 
+  /** Check the input parameters */
+  void checkInputs() const override;
+
 private:
   WeightedExperiment experiment_;
   Bool isExperimentProvided_ = false;

@@ -11,10 +11,14 @@ coverage conventions, and the run diagnostics.
 
 The estimator convention is reported through :meth:`getEstimatorType`:
 
-- ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE``: the
-  reported value is an order statistic of the sample;
-- ``QuantileSimulationResultImplementation.INTERPOLATED``: the reported
-  value interpolates neighbouring order statistics.
+- ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE``: each
+  replicate estimate is an order statistic of its sample; the reported
+  value is the mean of the replicate estimates when several independent
+  replicates are used, and an order statistic of the sample otherwise;
+- ``QuantileSimulationResultImplementation.INTERPOLATED``: each
+  replicate estimate interpolates neighbouring order statistics; the
+  reported value is the mean of the replicate estimates when several
+  independent replicates are used.
 
 The coverage guarantee is reported through :meth:`getCoverageType`:
 

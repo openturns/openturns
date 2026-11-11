@@ -848,8 +848,9 @@ that sample only.
    :math:`z_{(1+\beta)/2}\sqrt{\alpha(1-\alpha)}/
    (f(q_\alpha)\sqrt{N_0})` with much less variance than a
    single-spacing density estimate.
-2. **Sizing.**  Choose the confirmation size so that the expected
-   half-width of the exact interval is below the target :math:`h`:
+2. **Sizing.**  Choose the confirmation size from the pilot half-width
+   so that the expected half-width of the exact interval targets
+   :math:`h`:
 
    .. math::
        :label: eq-two-stage-size
@@ -860,6 +861,10 @@ that sample only.
          \frac{z_{(1+\beta)/2}^2\,\alpha(1-\alpha)}
               {f(q_\alpha)^2\,h^2}
        \right\rceil.
+
+   The pilot half-width is random, so this is an estimated target rather
+   than a guarantee: a pilot that underestimates the width can lead to a
+   confirmation interval wider than :math:`h`.
 
    When the pilot is too small for an exact interval, the asymptotic
    form with the spacing density :eq:`eq-spacing` is used instead.  The

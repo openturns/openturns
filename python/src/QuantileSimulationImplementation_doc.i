@@ -236,7 +236,7 @@ the required coverage.
 
 Raises
 ------
-InvalidArgumentException
+TypeError
     If the output is not scalar, if the levels are outside
     :math:`(0, 1)`, if the sample size is not set, or if the achieved
     coverage does not satisfy the required coverage.

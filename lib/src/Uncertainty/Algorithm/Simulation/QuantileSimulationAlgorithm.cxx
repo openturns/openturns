@@ -103,6 +103,14 @@ WeightedSample prepareWeightedSample(const Sample & sample,
   if (!std::isfinite(weightSum) || !(weightSum > 0.0))
     throw InvalidArgumentException(HERE) << "The sum of the weights must be finite and positive";
 
+  // Reject NaN outputs before sorting: comparisons with NaN do not define
+  // a strict weak ordering, so the sorted order (and the estimate) would be
+  // implementation-dependent.
+  for (UnsignedInteger i = 0; i < size; ++i)
+    if (std::isnan(sample(i, 0)))
+      throw InvalidArgumentException(HERE)
+          << "The output sample contains a NaN value at index " << i;
+
   const Indices order(sample.argsort());
   WeightedSample result;
   result.values = Point(size);
@@ -131,16 +139,47 @@ WeightedSample prepareWeightedSample(const Sample & sample,
 Scalar weightedQuantile(const WeightedSample & data, const Scalar p)
 {
   const UnsignedInteger size = data.values.getSize();
+  // Zero-weight observations carry no probability mass and must not
+  // extend the estimate beyond the support of the weighted sample.
   if (p <= 0.0)
-    return data.values[0];
+  {
+    UnsignedInteger k = 0;
+    while ((k < size) && !(data.weights[k] > 0.0))
+      ++k;
+    if (k >= size)
+      k = size - 1;
+    return data.values[k];
+  }
   if (p >= 1.0)
-    return data.values[size - 1];
+  {
+    UnsignedInteger k = size;
+    while ((k > 0) && !(data.weights[k - 1] > 0.0))
+      --k;
+    if (k == 0)
+      k = 1;
+    return data.values[k - 1];
+  }
   UnsignedInteger k = 0;
   while ((k < size) && (data.cumulative[k] < p))
     ++k;
   if (k >= size)
     k = size - 1;
   return data.values[k];
+}
+
+/** Reject a resize of an experiment whose size is derived from its marginals. */
+void checkResizableExperiment(const WeightedExperiment & experiment,
+                              const UnsignedInteger requestedSize)
+{
+  if ((requestedSize == 0)
+      || (experiment.getSize() == requestedSize)
+      || (dynamic_cast<const TensorProductExperiment *>(experiment.getImplementation().get()) == nullptr))
+    return;
+  throw InvalidArgumentException(HERE)
+      << "The size of a TensorProductExperiment cannot be changed from "
+      << experiment.getSize() << " to " << requestedSize
+      << " because it is the product of its marginal designs. "
+      << "Set the size of each marginal experiment instead.";
 }
 
 /** Weighted empirical CDF at a given value. */
@@ -445,8 +484,10 @@ Bool QuantileSimulationAlgorithm::hasExperiment() const
 /* Sample size accessor */
 void QuantileSimulationAlgorithm::setSampleSize(const UnsignedInteger sampleSize)
 {
-  QuantileSimulationImplementation::setSampleSize(sampleSize);
   if (isExperimentProvided_)
+    checkResizableExperiment(experiment_, sampleSize);
+  QuantileSimulationImplementation::setSampleSize(sampleSize);
+  if (isExperimentProvided_ && (experiment_.getSize() != sampleSize))
     experiment_.setSize(sampleSize);
 }
 
@@ -499,6 +540,15 @@ Point QuantileSimulationAlgorithm::getWeights() const
   return weights_;
 }
 
+/* Check the input parameters */
+void QuantileSimulationAlgorithm::checkInputs() const
+{
+  QuantileSimulationImplementation::checkInputs();
+  if (requiredCoverage_ == QuantileSimulationResultImplementation::COVERAGE_ANYTIME_VALID)
+    throw InvalidArgumentException(HERE)
+        << "The weighted-experiment estimator cannot provide an anytime-valid coverage";
+}
+
 /* Run a fixed-sample experiment */
 QuantileSimulationResult QuantileSimulationAlgorithm::runFixedSample()
 {
@@ -531,7 +581,10 @@ QuantileSimulationResult QuantileSimulationAlgorithm::runFixedSample()
   else
   {
     if (experiment.getSize() != sampleSize_)
+    {
+      checkResizableExperiment(experiment, sampleSize_);
       experiment.setSize(sampleSize_);
+    }
     UnsignedInteger inputDimension = 0;
     try
     {
@@ -547,6 +600,45 @@ QuantileSimulationResult QuantileSimulationAlgorithm::runFixedSample()
       throw InvalidArgumentException(HERE)
           << "The experiment distribution dimension (" << experiment.getDistribution().getDimension()
           << ") does not match the input dimension (" << inputDimension << ")";
+    // A stochastic experiment must sample from the input distribution of
+    // the output.  Otherwise the estimate describes the experiment
+    // distribution and the coverage label would be meaningless.  Fixed
+    // designs are diagnostic and may carry arbitrary supplied values;
+    // TensorProductExperiment reports a block-independent distribution
+    // built from its marginals, whose structural equality with the input
+    // distribution is not a reliable test.
+    if (experiment.isRandom()
+        && (dynamic_cast<const TensorProductExperiment *>(experiment.getImplementation().get()) == nullptr))
+    {
+      Distribution inputDistribution;
+      Bool hasInputDistribution = true;
+      try
+      {
+        inputDistribution = output_.isComposite()
+                            ? output_.getAntecedent().getDistribution()
+                            : output_.getDistribution();
+      }
+      catch (const Exception &)
+      {
+        hasInputDistribution = false;
+      }
+      if (hasInputDistribution)
+      {
+        Bool sameDistribution = true;
+        try
+        {
+          sameDistribution = (experiment.getDistribution() == inputDistribution);
+        }
+        catch (const Exception &)
+        {
+          // Some distributions do not implement structural equality:
+          // keep the dimension check as the fallback.
+        }
+        if (!sameDistribution)
+          throw InvalidArgumentException(HERE)
+              << "The experiment distribution does not match the input distribution of the output random vector";
+      }
+    }
   }
 
   const Bool uniformWeights = experiment.hasUniformWeights();
