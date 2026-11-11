@@ -203,6 +203,24 @@ Bool OptimizationProblem::isLinear() const
   return getImplementation()->isLinear();
 }
 
+/* Quadratic function accessor */
+Bool OptimizationProblem::isQuadratic() const
+{
+  return getImplementation()->isQuadratic();
+}
+
+
+SymmetricMatrix OptimizationProblem::getHessian() const
+{
+  return getImplementation()->getHessian();
+}
+
+
+Scalar OptimizationProblem::getConstant() const
+{
+  return getImplementation()->getConstant();
+}
+
 /* Dimension accessor */
 UnsignedInteger OptimizationProblem::getDimension() const
 {

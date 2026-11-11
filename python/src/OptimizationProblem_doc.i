@@ -65,3 +65,9 @@ OT_OptimizationProblem_getLinearCost_doc
 OT_OptimizationProblem_getLinearConstraintCoefficients_doc
 %feature("docstring") OT::OptimizationProblem::getLinearConstraintBounds
 OT_OptimizationProblem_getLinearConstraintBounds_doc
+%feature("docstring") OT::OptimizationProblem::isQuadratic
+OT_OptimizationProblem_isQuadratic_doc
+%feature("docstring") OT::OptimizationProblem::getHessian
+OT_OptimizationProblem_getHessian_doc
+%feature("docstring") OT::OptimizationProblem::getConstant
+OT_OptimizationProblem_getConstant_doc

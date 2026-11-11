@@ -25,6 +25,7 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Interval.hxx"
+#include "openturns/SymmetricMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -106,6 +107,11 @@ public:
   virtual Matrix getLinearConstraintCoefficients() const;
   virtual Interval getLinearConstraintBounds() const;
   virtual Bool isLinear() const;
+
+  /** Quadratic function accessor */
+  virtual Bool isQuadratic() const;
+  virtual SymmetricMatrix getHessian() const;
+  virtual Scalar getConstant() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
