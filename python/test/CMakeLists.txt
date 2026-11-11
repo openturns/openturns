@@ -99,7 +99,10 @@ ot_pyinstallcheck_test (TriangularComplexMatrix_std)
 ot_pyinstallcheck_test (Matrix_slice)
 ot_pyinstallcheck_test (Matrix_operators)
 if (NUMPY_FOUND)
+  ot_pyinstallcheck_test (Description_numpy IGNOREOUT)
   ot_pyinstallcheck_test (Matrix_numpy)
+  ot_pyinstallcheck_test (Point_numpy IGNOREOUT)
+  ot_pyinstallcheck_test (Sample_numpy IGNOREOUT)
 endif ()
 
 # Func

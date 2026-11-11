@@ -152,6 +152,7 @@
  * Add the title_kw argument to the viewer to style the figure suptitle
  * Re-raise native Python exceptions through PythonFunction instead of RuntimeException
  * Deprecated coupling_tools.execute method (use subprocess.run)
+ * Added numpy __array_interface__/__array_ufunc__ support for Point/Sample (zero-copy np.asarray) and __array_ufunc__ support for Description: element-wise ufuncs (np.equal, np.add, ...) and np.where(np.asarray(...) == ...) workflow
 
 === Miscellaneous ===
  * Mixture.drawPDF now draws the probability of each discrete component as a text label above its arrow
