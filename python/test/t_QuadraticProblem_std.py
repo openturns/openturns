@@ -50,10 +50,15 @@ assert result.getStatus() == ot.OptimizationResult.SUCCESS
 ott.assert_almost_equal(result.getOptimalPoint(), [0.5, 2.0])
 ott.assert_almost_equal(result.getOptimalValue(), [-3.75])
 
-# active-set QP solver
-algo = otexp.HiGHS(problem, "qpasm")
-algo.run()
-ott.assert_almost_equal(algo.getResult().getOptimalPoint(), [0.5, 2.0])
+# active-set QP solver: the qpasm name requires HiGHS 1.14 or later, so an
+# older version rejects it either when the algorithm is built or when it runs.
+try:
+    algo = otexp.HiGHS(problem, "qpasm")
+    algo.run()
+except TypeError:
+    pass
+else:
+    ott.assert_almost_equal(algo.getResult().getOptimalPoint(), [0.5, 2.0])
 
 # HiGHS builds without the parallel interior point solver reject "hipo"
 # at run time: GetAlgorithmNames() lists it but not every build provides it.
@@ -80,6 +85,17 @@ problemMIP.setVariablesType(
 )
 with ott.assert_raises(TypeError):
     otexp.HiGHS(problemMIP)
+
+# constraint functions cannot be mapped to the HiGHS model: only the linear
+# constraints given to setLinearConstraint are supported
+problemEquality = otexp.QuadraticProblem(Q, c, ot.Interval())
+problemEquality.setEqualityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
+with ott.assert_raises(TypeError):
+    otexp.HiGHS(problemEquality)
+problemInequality = otexp.QuadraticProblem(Q, c, ot.Interval())
+problemInequality.setInequalityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
+with ott.assert_raises(TypeError):
+    otexp.HiGHS(problemInequality)
 
 # least-squares factory: min ||A.x-b||^2 with 0 <= x0 <= 0.5, 0 <= x1 <= 10
 A = ot.Matrix([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])

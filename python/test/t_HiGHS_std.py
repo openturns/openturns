@@ -37,6 +37,15 @@ algo = otexp.HiGHS(problem)
 with ott.assert_raises(TypeError):
     algo.setAlgorithmName("nosuch")
 
+# constraint functions cannot be mapped to the HiGHS model: only the linear
+# constraints given to setLinearConstraint are supported
+problemConstraint = otexp.LinearProblem(cost, bounds, A, cb)
+problemConstraint.setInequalityConstraint(
+    ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"])
+)
+with ott.assert_raises(TypeError):
+    otexp.HiGHS(problemConstraint)
+
 sol = {
     ot.OptimizationProblemImplementation.CONTINUOUS: [0.5, 2.25],
     ot.OptimizationProblemImplementation.INTEGER: [0.0, 3.0],

@@ -1,14 +1,17 @@
 %feature("docstring") OT::HiGHS
-R"RAW(Linear optimization solver.
+R"RAW(Linear and quadratic optimization solver.
 
 .. warning::
     This class is experimental and likely to be modified in future releases.
     To use it, import the ``openturns.experimental`` submodule.
 
-This class exposes the linear solver from the `HiGHS <https://highs.dev/>`_ library.
-It solves continuous linear problems and mixed-integer linear problems.
+This class exposes the linear and quadratic solvers from the
+`HiGHS <https://highs.dev/>`_ library. It solves continuous linear problems,
+mixed-integer linear problems and continuous convex quadratic problems.
+HiGHS support is optional at build time: in a build without it,
+:meth:`run` raises an exception.
 
-The recognized LP solver names are listed by :func:`GetAlgorithmNames`:
+The recognized solver names are listed by :func:`GetAlgorithmNames`:
 
 .. list-table::
    :widths: 15 55 30
@@ -18,11 +21,14 @@ The recognized LP solver names are listed by :func:`GetAlgorithmNames`:
      - Description
      - Supported variables
    * - ``choose``
-     - Default automatic choice: dual revised simplex for LP, branch-and-bound MIP for discrete problems.
+     - Default automatic choice: dual revised simplex for LP, interior point or active set for QP, branch-and-bound MIP for discrete problems.
      - Continuous and discrete
    * - ``simplex``
      - Primal/dual simplex, always returns a basic solution.
-     - Continuous only
+     - Continuous LP only
+   * - ``qpasm``
+     - Active-set quadratic programming solver (HiGHS 1.14 or later).
+     - Continuous QP only
    * - ``ipm``
      - Interior point (HiPO or IPX depending on the HiGHS build).
      - Continuous only
@@ -46,7 +52,17 @@ unsupported name raises an error.
 
 All solvers accept finite and infinite bounds on variables and linear constraints;
 mark infinite bounds with finite flags set to ``False`` in the
-:class:`~openturns.Interval` (see :class:`~openturns.experimental.LinearProblem`).
+:class:`~openturns.Interval` (see :class:`~openturns.experimental.LinearProblem`
+and :class:`~openturns.experimental.QuadraticProblem`).
+
+Quadratic problems are solved by ``qpasm`` or ``hipo``. The ``choose``
+default selects the quadratic solver available in the linked HiGHS build.
+The active-set ``qpasm`` name requires HiGHS 1.14 or later: earlier versions
+only provide the parallel interior point solver for quadratic problems.
+Mixed-integer quadratic problems are not supported, and the linear-only
+solver names are rejected on a quadratic problem.
+The constant term of a quadratic objective is taken into account in the
+reported optimal value.
 
 By default the interior point solvers run a crossover procedure to return
 a basic solution; this can be tuned with the ``run_crossover`` option below.
@@ -79,15 +95,16 @@ For every option ``optionName``, simply add a key named ``HiGHS-optionName`` wit
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
-    The problem, must be linear (see :class:`~openturns.experimental.LinearProblem`).
+    The problem, must be linear (see :class:`~openturns.experimental.LinearProblem`)
+    or quadratic (see :class:`~openturns.experimental.QuadraticProblem`).
 algoName : str, default is ``choose``
-    The LP solver, use :func:`GetAlgorithmNames` to list the recognized names.
+    The solver, use :func:`GetAlgorithmNames` to list the recognized names.
     Problems with discrete variables are solved by the MIP solver,
     which ignores this choice: use ``choose`` on such problems.
 
 See Also
 --------
-openturns.experimental.LinearProblem
+openturns.experimental.LinearProblem, openturns.experimental.QuadraticProblem
 
 Examples
 --------
@@ -136,40 +153,42 @@ and bound constraints:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::HiGHS::GetAlgorithmNames
-"Accessor to the list of recognized LP solver names, by names.
+"Accessor to the list of recognized solver names.
 
 Returns
 -------
 names : :class:`~openturns.Description`
-    List of recognized LP solver names. Whether a name is accepted at
+    List of recognized solver names. Whether a name is accepted at
     runtime depends on the HiGHS build.
 
 Examples
 --------
 >>> import openturns.experimental as otexp
 >>> print(otexp.HiGHS.GetAlgorithmNames())
-[choose,simplex,ipm,ipx,hipo,pdlp,hipdlp]"
+[choose,simplex,qpasm,ipm,ipx,hipo,pdlp,hipdlp]"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::HiGHS::setAlgorithmName
-"Accessor to the LP solver name.
+"Accessor to the solver name.
 
 Parameters
 ----------
 algoName : str
-    The LP solver name, see :func:`GetAlgorithmNames`.
-    Problems with discrete variables require ``choose``."
+    The solver name, see :func:`GetAlgorithmNames`.
+    Problems with discrete variables require ``choose``.
+    Quadratic problems require ``choose``, ``qpasm`` or ``hipo``;
+    ``qpasm`` requires HiGHS 1.14 or later."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::HiGHS::getAlgorithmName
-"Accessor to the LP solver name.
+"Accessor to the solver name.
 
 Returns
 -------
 algoName : str
-    The LP solver name."
+    The solver name."
 
 // ---------------------------------------------------------------------
 

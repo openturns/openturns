@@ -137,3 +137,25 @@ algoDual = otexp.HiGHS(problem2, "simplex")
 algoDual.run()
 print(" -- Duals = " + str(algoDual.getDualPoint()))
 print(" -- Reduced costs = " + str(algoDual.getReducedCosts()))
+
+# %%
+# Solve a quadratic problem
+# -------------------------
+#
+# The :class:`~openturns.experimental.QuadraticProblem` class defines a convex
+# quadratic problem:
+#
+# .. math::
+#    \min_{\vect{x} \in B} \frac{1}{2} \vect{x}^T \mat{Q} \vect{x} + \vect{c}^T \vect{x}
+#
+# where :math:`\mat{Q}` is a symmetric positive semi-definite matrix and
+# :math:`B` are bound constraints. The ``choose`` solver selects the active-set
+# quadratic solver ``qpasm`` on such problems.
+Q = ot.SymmetricMatrix([[2.0, 0.0], [0.0, 2.0]])
+boundsQP = ot.Interval([0.0, 0.0], [0.5, 10.0])
+problemQP = otexp.QuadraticProblem(Q, [-2.0, -4.0], boundsQP)
+algoQP = otexp.HiGHS(problemQP, "qpasm")
+algoQP.run()
+resultQP = algoQP.getResult()
+print(" -- QP optimal point = " + str(resultQP.getOptimalPoint()))
+print(" -- QP optimal value = " + str(resultQP.getOptimalValue()))
