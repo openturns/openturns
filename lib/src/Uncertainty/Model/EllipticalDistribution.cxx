@@ -816,23 +816,22 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
 {
   const UnsignedInteger size = parametersCollection.getSize();
   const UnsignedInteger dimension = size > 1 ? size - 1 : size;
-  setDimension(dimension);
-  mean_ = Point(dimension);
-  sigma_ = Point(dimension);
+  Point mean(dimension);
+  Point sigma(dimension);
   CorrelationMatrix R(dimension);
   if (dimension == 1)
   {
-    mean_[0] = parametersCollection[0][0];
-    sigma_[0] = parametersCollection[0][1];
-    if (!(sigma_[0] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma_[0];
+    mean[0] = parametersCollection[0][0];
+    sigma[0] = parametersCollection[0][1];
+    if (!(sigma[0] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[0];
   }
   else
   {
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      mean_[i] = parametersCollection[i][0];
-      sigma_[i] = parametersCollection[i][1];
-      if (!(sigma_[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma_[i];
+      mean[i] = parametersCollection[i][0];
+      sigma[i] = parametersCollection[i][1];
+      if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
     }
     UnsignedInteger parameterIndex = 0;
     for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -843,11 +842,19 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
         ++parameterIndex;
       }
     }
-    setR(R);
+    // Validate the correlation matrix before mutating this: R(i, j) assignment above already checks range, setR checks dimension
+    if (R.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Correlation matrix dimension mismatch";
   }
-  update();
-  computeRange();
-  isAlreadyComputedCovariance_ = false;
+  // All validations passed: commit all changes at once via a temporary, no partial update on error
+  EllipticalDistribution tmp(*this);
+  tmp.setDimension(dimension);
+  tmp.mean_ = mean;
+  tmp.sigma_ = sigma;
+  tmp.R_ = R;
+  tmp.update();
+  tmp.computeRange();
+  tmp.isAlreadyComputedCovariance_ = false;
+  *this = tmp;
 }
 
 Point EllipticalDistribution::getParameter() const
