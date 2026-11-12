@@ -393,8 +393,6 @@ ks.setBoundingOption(ot.KernelSmoothing.LOWER)
 assert ks.getBoundingOption() == ot.KernelSmoothing.LOWER
 ks.setBoundingOption(ot.KernelSmoothing.UPPER)
 assert ks.getBoundingOption() == ot.KernelSmoothing.UPPER
-legacy = ot.KernelSmoothing(ot.Normal(), False, 64, True)
-assert legacy.getBoundingOption() == ot.KernelSmoothing.BOTH
 
 # binning/kernel/log-transform accessors
 ks = ot.KernelSmoothing()

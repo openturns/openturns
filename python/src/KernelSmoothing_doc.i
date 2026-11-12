@@ -12,9 +12,6 @@ binned : bool, optional
 binNumber : int, :math:`binNumber \geq 2`, optional
     Indicates the number of bins used by the bining mechanism.
     By default it is set to :class:`~openturns.ResourceMap` entry `KernelSmoothing-BinNumber`.
-boundaryCorrection : bool, optional
-    Activates the boundary correction using the mirroring technique.
-    By default, the correction is not provided.
 
 Notes
 -----
@@ -74,8 +71,7 @@ Nevertheless, the parameters can be manually set.
 >>> binned = True # by default True
 >>> binNumber = 64
 >>> ks = ot.KernelSmoothing(kernel, binned, binNumber)
->>> boundaryCorrection = True # by default False
->>> ks = ot.KernelSmoothing(kernel, binned, binNumber, boundaryCorrection)
+>>> ks.setBoundingOption(ot.KernelSmoothing.BOTH)  # NONE by default
 
 Variants of the :meth:`build` method can be used when the distribution to build
 is expected to be of a certain type. In those cases however,
@@ -151,7 +147,7 @@ Examples
 
 >>> import openturns as ot
 >>> sample = ot.Exponential(1.0).getSample(1000)
->>> smoother = ot.KernelSmoothing(ot.Normal(), True, 100, False)
+>>> smoother = ot.KernelSmoothing(ot.Normal(), True, 100)
 >>> mixture = smoother.buildAsMixture(sample, [1.0])
 "
 
@@ -176,7 +172,7 @@ Examples
 
 >>> import openturns as ot
 >>> sample = ot.Exponential(1.0).getSample(1000)
->>> smoother = ot.KernelSmoothing(ot.Normal(), False, 0, True)
+>>> smoother = ot.KernelSmoothing(ot.Normal(), False, 0)
 >>> truncated = smoother.buildAsTruncatedDistribution(sample, [1.0])
 "
 
