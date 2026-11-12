@@ -495,18 +495,24 @@ void FiniteDiscreteDistribution::setParameter(const Point & parameter)
   const UnsignedInteger size = points_.getSize();
   if (parameter.getSize() != (dimension + 1) * size)
     throw InvalidArgumentException(HERE) << "Expected " << (dimension + 1) * size << " parameters";
+  // No partial update on error: stage into copies before committing
+  Sample newPoints(points_);
+  Point newProbabilities(size);
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < size; ++ j)
     {
-      points_(j, i) = parameter[i * size + j];
+      newPoints(j, i) = parameter[i * size + j];
     }
   }
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    probabilities_[i] = parameter[dimension * size + i];
+    newProbabilities[i] = parameter[dimension * size + i];
   }
-  setData(points_, probabilities_);
+  // Commit via a temporary so a throw in setData() leaves *this unchanged
+  FiniteDiscreteDistribution tmp(*this);
+  tmp.setData(newPoints, newProbabilities);
+  *this = tmp;
 }
 
 /* Get the i-th marginal distribution */
