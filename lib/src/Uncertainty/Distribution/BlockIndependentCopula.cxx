@@ -920,6 +920,8 @@ void BlockIndependentCopula::setParametersCollection(const PointCollection & par
   // Index within the given parametersCollection
   UnsignedInteger globalIndex = 0;
   const UnsignedInteger size = copulaCollection_.getSize();
+  // No partial update on error: work on copies before committing
+  DistributionCollection newCopulas(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // All distributions, including copulas, must output a collection of Point of size at least 1,
@@ -933,9 +935,13 @@ void BlockIndependentCopula::setParametersCollection(const PointCollection & par
       point[j] = parameters[globalIndex];
       ++globalIndex;
     } // atom parameters
-    copulaCollection_[i].setParametersCollection(PointCollection(1, point));
+    Distribution copula(copulaCollection_[i]);
+    copula.setParametersCollection(PointCollection(1, point));
+    newCopulas[i] = copula;
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
+  // All slices accepted: commit the staged updates
+  setCopulaCollection(newCopulas);
 }
 
 Point BlockIndependentCopula::getParameter() const
