@@ -23,6 +23,7 @@
 #include "openturns/HMatrix.hxx"
 #include "openturns/HODLRMatrix.hxx"
 #include "openturns/SymmetricMatrix.hxx"
+#include "openturns/LinearCombinationCovarianceModel.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -453,6 +454,24 @@ CovarianceModel CovarianceModel::getMarginal(const UnsignedInteger index) const
 CovarianceModel CovarianceModel::getMarginal(const Indices & indices) const
 {
   return getImplementation()->getMarginal(indices);
+}
+
+/* Addition of two scalar-output covariance models with the same input dimension */
+CovarianceModel CovarianceModel::operator +(const CovarianceModel & right) const
+{
+  return LinearCombinationCovarianceModel::Add(*this, right);
+}
+
+/* Addition of a covariance model and a covariance model implementation */
+CovarianceModel CovarianceModel::operator +(const CovarianceModelImplementation & right) const
+{
+  return LinearCombinationCovarianceModel::Add(*this, CovarianceModel(right));
+}
+
+/* Multiplication of a covariance model by a positive scalar */
+CovarianceModel CovarianceModel::operator *(const Scalar scalar) const
+{
+  return LinearCombinationCovarianceModel::Scale(*this, scalar);
 }
 
 

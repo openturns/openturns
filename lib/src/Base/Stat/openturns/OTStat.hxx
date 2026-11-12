@@ -81,6 +81,7 @@
 #include "openturns/DiracCovarianceModel.hxx"
 #include "openturns/HMatrixParameters.hxx"
 #include "openturns/ProductCovarianceModel.hxx"
+#include "openturns/LinearCombinationCovarianceModel.hxx"
 #include "openturns/RankMCovarianceModel.hxx"
 #include "openturns/TensorizedCovarianceModel.hxx"
 #include "openturns/HMatrixImplementation.hxx"
