@@ -53,6 +53,9 @@ public:
   /** Accessor to input sample in physical space */
   Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const override;
 
+  /** Keep the no-argument input sample accessor of the base class visible */
+  using CrossEntropyImportanceSampling::getInputSample;
+
 protected:
   Distribution getInitialDistribution() const override;
 
