@@ -127,8 +127,13 @@ Point MarshallOlkinCopula::getParameter() const
 void MarshallOlkinCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 value, got " << parameter.getSize();
-  setAlpha(parameter[0]);
-  setBeta(parameter[1]);
+  // No partial update on error: validate both values before committing
+  const Scalar alpha = parameter[0];
+  const Scalar beta = parameter[1];
+  if (!(alpha >= 0.0) || !(alpha <= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
+  if (!(beta >= 0.0) || !(beta <= 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
+  setAlpha(alpha);
+  setBeta(beta);
 }
 
 /* Tell if the distribution has independent copula */
