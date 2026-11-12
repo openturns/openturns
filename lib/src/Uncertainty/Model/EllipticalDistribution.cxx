@@ -815,12 +815,16 @@ EllipticalDistribution::PointWithDescriptionCollection EllipticalDistribution::g
 void EllipticalDistribution::setParametersCollection(const PointCollection & parametersCollection)
 {
   const UnsignedInteger size = parametersCollection.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
   const UnsignedInteger dimension = size > 1 ? size - 1 : size;
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: empty parameters collection";
   Point mean(dimension);
   Point sigma(dimension);
   CorrelationMatrix R(dimension);
   if (dimension == 1)
   {
+    if (size != 1) throw InvalidArgumentException(HERE) << "Error: invalid parameters collection size " << size << ", expected 1 for dimension 1";
+    if (parametersCollection[0].getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index 0, expected 2, got " << parametersCollection[0].getDimension();
     mean[0] = parametersCollection[0][0];
     sigma[0] = parametersCollection[0][1];
     if (!(sigma[0] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[0];
@@ -829,10 +833,13 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
   {
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
+      if (parametersCollection[i].getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: invalid marginal parameter dimension at index " << i << ", expected 2, got " << parametersCollection[i].getDimension();
       mean[i] = parametersCollection[i][0];
       sigma[i] = parametersCollection[i][1];
       if (!(sigma[i] >= 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be >= 0 sigma=" << sigma[i];
     }
+    const UnsignedInteger dependenceDimension = dimension * (dimension - 1) / 2;
+    if (parametersCollection[size - 1].getDimension() != dependenceDimension) throw InvalidArgumentException(HERE) << "Error: invalid dependence parameter dimension, expected " << dependenceDimension << ", got " << parametersCollection[size - 1].getDimension();
     UnsignedInteger parameterIndex = 0;
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
@@ -845,16 +852,20 @@ void EllipticalDistribution::setParametersCollection(const PointCollection & par
     // Validate the correlation matrix before mutating this: R(i, j) assignment above already checks range, setR checks dimension
     if (R.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Correlation matrix dimension mismatch";
   }
-  // All validations passed: commit all changes at once via a temporary, no partial update on error
-  EllipticalDistribution tmp(*this);
-  tmp.setDimension(dimension);
-  tmp.mean_ = mean;
-  tmp.sigma_ = sigma;
-  tmp.R_ = R;
-  tmp.update();
-  tmp.computeRange();
-  tmp.isAlreadyComputedCovariance_ = false;
-  *this = tmp;
+  // All validations passed: stage the commit on a polymorphic clone so that
+  // range computation retains the concrete distribution behavior (e.g. Normal::computeRange),
+  // no partial update on error
+  Implementation tmp(clone());
+  EllipticalDistribution * p_tmp = dynamic_cast<EllipticalDistribution*>(tmp.get());
+  if (!p_tmp) throw InternalException(HERE) << "Error: cannot stage EllipticalDistribution parameters on a clone of type " << tmp->getClassName();
+  p_tmp->setDimension(dimension);
+  p_tmp->mean_ = mean;
+  p_tmp->sigma_ = sigma;
+  p_tmp->R_ = R;
+  p_tmp->update();
+  p_tmp->computeRange();
+  p_tmp->isAlreadyComputedCovariance_ = false;
+  *this = *p_tmp;
 }
 
 Point EllipticalDistribution::getParameter() const
