@@ -599,17 +599,24 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
   if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "BernsteinCopula expected " << (dimension * size + 1) << " parameters, got " << parameter.getDimension();
   const Scalar binNumber = parameter[dimension * size];
   if ((binNumber < 1.0) || (binNumber != std::round(binNumber))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be a positive integer, got " << binNumber;
+  // No partial update on error: stage into a copy before committing
+  Sample newSample(copulaSample_);
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      copulaSample_(i, j) = parameter[index];
+      newSample(i, j) = parameter[index];
       ++ index;
     }
   }
-  binNumber_ = binNumber;
-  update();
+  // No partial update on error: stage into a temporary and commit at once,
+  // so a throw in update() leaves *this unchanged
+  EmpiricalBernsteinCopula tmp(*this);
+  tmp.copulaSample_ = newSample;
+  tmp.binNumber_ = binNumber;
+  tmp.update();
+  *this = tmp;
 }
 
 Description EmpiricalBernsteinCopula::getParameterDescription() const
