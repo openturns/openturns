@@ -110,12 +110,8 @@ def plotMyBasicGPfitter(gprResult, xMin, xMax, X, Y, level=0.95):
     quantileAlpha = ot.DistFunc.qNormal(alpha)
     # Graphics of the bounds
     epsilon = 1.0e-8
-    dataLower = [
-        yKrig[i, 0] - quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
-    ]
-    dataUpper = [
-        yKrig[i, 0] + quantileAlpha * conditionalSigma[i, 0] for i in range(nbpoints)
-    ]
+    dataLower = np.subtract(yKrig, quantileAlpha * conditionalSigma)[:, 0]
+    dataUpper = np.add(yKrig, quantileAlpha * conditionalSigma)[:, 0]
     # Compute the Polygon graphics
     boundsPoly = ot.Polygon.FillBetween(xGrid.asPoint(), dataLower, dataUpper)
     boundsPoly.setLegend("95% bounds")

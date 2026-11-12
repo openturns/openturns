@@ -268,6 +268,11 @@ selected_points = sample[[i for i in range(sample.getSize()) if sample[i, 2] < 0
 selected_points
 
 # %%
+# or, with Numpy ufuncs directly on the sample:
+selected_points = sample[list(np.where(np.less(sample[:, 2], 0.0))[0])]
+selected_points
+
+# %%
 # or:
 selected_points = sample.select(
     [i for i in range(sample.getSize()) if sample[i, 2] < 0.0]
@@ -298,7 +303,7 @@ selected_points
 
 # %%
 sample = ot.Sample(5, 3)
-array = np.array(sample)
+array = np.asarray(sample)
 array
 
 # %%
