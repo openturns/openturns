@@ -107,16 +107,20 @@ Calibrate a nonlinear model using linear least-squares:
 >>> print(algo.getResult().getParameterMAP())
 [8.24019,0.0768046,0.992957]
 
-Calibrate the same model with bounds on the parameters. The first parameter is
+Calibrate a linear model with bounds on the parameters. The first parameter is
 active at its upper bound:
 
+>>> modelLinear = ot.SymbolicFunction(['a', 'b', 'x'], ['a * x + b'])
+>>> modelXLinear = ot.ParametricFunction(modelLinear, [0, 1], [1.0, 0.0])
+>>> xLinear = [[1.0], [2.0], [3.0]]
+>>> yLinear = modelXLinear(xLinear)
 >>> boundedAlgo = ot.LinearLeastSquaresCalibration(
-...     modelX, x, y, startingPoint, method
+...     modelXLinear, xLinear, yLinear, [1.0, 0.0], method
 ... )
->>> boundedAlgo.setBounds(ot.Interval([0.0, 0.0, 0.0], [2.5, 2.0, 1.0]))
+>>> boundedAlgo.setBounds(ot.Interval([0.0, 0.0], [0.5, 10.0]))
 >>> boundedAlgo.run()
->>> print(boundedAlgo.getResult().getParameterMAP())
-[2.5,0.090285,0.991578]
+>>> print([round(value, 3) for value in boundedAlgo.getResult().getParameterMAP()])
+[0.5, 1.0]
 >>> #
 )RAW"
 
