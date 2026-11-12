@@ -1386,11 +1386,14 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
   Distribution newCore(core_);
   // set core parameters
   if (dimension > 1) newCore.setParameter(parametersCollection[dimension]);
-  // All slices accepted: commit the staged updates
+  // All slices accepted: stage the commit on a copy so a throw in setCore
+  // leaves *this unchanged (e.g. core with support outside the unit cube)
   const Description description(getDescription());
-  setDistributionCollection(newMarginals);
-  setDescription(description);
-  if (dimension > 1) setCore(newCore);
+  JointDistribution tmp(*this);
+  tmp.setDistributionCollection(newMarginals);
+  tmp.setDescription(description);
+  if (dimension > 1) tmp.setCore(newCore);
+  *this = tmp;
 }
 
 
@@ -1436,13 +1439,16 @@ void JointDistribution::setParameter(const Point & parameter)
     std::copy(parameter.begin() + globalIndex, parameter.begin() + globalIndex + parametersSize, newParameters.begin());
     newCore.setParameter(newParameters);
   }
-  // All slices accepted: commit the staged updates
+  // All slices accepted: stage the commit on a copy so a throw in setCore
+  // leaves *this unchanged (e.g. core with support outside the unit cube)
   // setDistributionCollection rebuilds the description from the marginals: save/restore it,
   // before setCore so the core receives the original description
   const Description description(getDescription());
-  setDistributionCollection(newMarginals);
-  setDescription(description);
-  if (dimension > 1) setCore(newCore);
+  JointDistribution tmp(*this);
+  tmp.setDistributionCollection(newMarginals);
+  tmp.setDescription(description);
+  if (dimension > 1) tmp.setCore(newCore);
+  *this = tmp;
 }
 
 Description JointDistribution::getParameterDescription() const
