@@ -941,7 +941,10 @@ void BlockIndependentCopula::setParametersCollection(const PointCollection & par
   } // atoms
   if (globalIndex != parametersDimension) throw InvalidArgumentException(HERE) << "Error: there are too many dependence parameters, expected " << globalIndex << " parameters and got " << parametersDimension;
   // All slices accepted: commit the staged updates
+  // setCopulaCollection rebuilds the description from the copulas: save/restore it
+  const Description description(getDescription());
   setCopulaCollection(newCopulas);
+  setDescription(description);
 }
 
 Point BlockIndependentCopula::getParameter() const
@@ -984,7 +987,10 @@ void BlockIndependentCopula::setParameter(const Point & parameter)
     globalIndex += parametersSize;
   }
   // All slices accepted: commit the staged updates
+  // setCopulaCollection rebuilds the description from the copulas: save/restore it
+  const Description description(getDescription());
   setCopulaCollection(newCopulas);
+  setDescription(description);
 }
 
 /* Tell if the distribution has elliptical copula */
