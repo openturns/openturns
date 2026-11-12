@@ -492,6 +492,7 @@ ot_pyinstallcheck_test (JointDistribution_large)
 ot_pyinstallcheck_test (CombinationsDistribution_std)
 ot_pyinstallcheck_test (CompositeDistribution_std)
 ot_pyinstallcheck_test (PushForwardDistribution_std IGNOREOUT)
+ot_pyinstallcheck_test (PushForwardDistribution_std2 IGNOREOUT)
 # Keep the expensive deterministic moment checks in separate coverage tests
 ot_pyinstallcheck_test (PushForwardDistribution_surface_moments IGNOREOUT)
 ot_pyinstallcheck_test (PushForwardDistribution_curve_moments IGNOREOUT)
