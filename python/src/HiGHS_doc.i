@@ -85,6 +85,11 @@ the per-variable reduced costs; :func:`getConstraintValues` returns the
 linear constraint activity row values.
 There is no dual solution on problems with discrete variables.
 
+The linear constraint matrix is handed over to HiGHS in compressed sparse
+column form. When the problem provides its sparse coefficients (see
+:class:`~openturns.experimental.LinearProblem`), they are copied directly, so
+a large sparse problem is neither densified nor scanned element by element.
+
 HiGHS solver can be adapted using the parameters described `here <https://ergo-code.github.io/HiGHS/dev/options/definitions/>`_.
 These parameters can be modified through the :class:`~openturns.ResourceMap`.
 For every option ``optionName``, simply add a key named ``HiGHS-optionName`` with the value to use, as shown below::
