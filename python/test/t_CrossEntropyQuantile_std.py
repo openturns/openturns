@@ -10,6 +10,7 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 EMPIRICAL_INVERSE = otexp.QuantileSimulationResultImplementation.EMPIRICAL_INVERSE
+INTERPOLATED = otexp.QuantileSimulationResultImplementation.INTERPOLATED
 COVERAGE_ASYMPTOTIC = otexp.QuantileSimulationResultImplementation.COVERAGE_ASYMPTOTIC
 LOWER_TAIL = otexp.QuantileSimulationResultImplementation.LOWER_TAIL
 UPPER_TAIL = otexp.QuantileSimulationResultImplementation.UPPER_TAIL
@@ -232,9 +233,34 @@ with ott.assert_raises(TypeError):
 with ott.assert_raises(TypeError):
     algo.setSampleSize(0)
 
+# The weighted estimator is an empirical inverse: reject the interpolated
+# convention before running the expensive cross-entropy sequence.
+algo = otexp.CrossEntropyQuantile(output)
+algo.setEstimatorType(INTERPOLATED)
+with ott.assert_raises(TypeError):
+    algo.run()
+
 algo = otexp.CrossEntropyQuantile(output)
 algo.setSampleSize(1)
 with ott.assert_raises(TypeError):
     algo.run()
+
+# The outer stop callback applies to the whole run, including the pilot
+# and final importance-sampling stages.
+algo = otexp.CrossEntropyQuantile(output, 0.95, 0.95)
+algo.setPilotSize(50)
+algo.setSampleSize(50)
+stop_calls = []
+
+
+def stop():
+    stop_calls.append(1)
+    return len(stop_calls) >= 2
+
+
+algo.setStopCallback(stop)
+with ott.assert_raises(RuntimeError):
+    algo.run()
+assert stop_calls
 
 print("OK")

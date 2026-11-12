@@ -99,6 +99,19 @@ assert full_result.getConfidenceInterval() == result.getConfidenceInterval()
 ott.assert_almost_equal(
     result.getStandardError(), full_result.getStandardError(), 1.0e-15, 1.0e-15)
 
+# A two-point sample with alpha=0.5, beta=0.1 previously selected the
+# out-of-sample upper rank 2.  The in-sample interval [X_(1), X_(2)] has
+# coverage 0.5 >= beta and must be used instead.
+ot.RandomGenerator.SetSeed(20260202)
+algo = otexp.ExactTailQuantileSimulation(output, 0.5, 0.1)
+algo.setSampleSize(2)
+algo.run()
+result = algo.getResult()
+assert result.getLowerRank() < 2
+assert result.getUpperRank() < 2
+assert result.getConfidenceInterval().getLowerBound()[0] <= result.getQuantileEstimate()
+assert result.getQuantileEstimate() <= result.getConfidenceInterval().getUpperBound()[0]
+
 # A lower confidence rank clamped to the estimate must not shorten the
 # spacing window: the exact-tail standard error must still match the
 # full-sample estimator.

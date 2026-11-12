@@ -29,11 +29,15 @@ The ranks are computed before sampling.  For an upper-tail quantile
 only the :math:`N - r_1` largest observations are needed, and for a
 lower-tail quantile only the :math:`r_2 + 1` smallest observations are
 needed.  The estimator keeps the smaller of the two tails in a bounded
-heap and updates it chunk by chunk, so its memory is bounded by the
-retained tail plus one chunk of input and output values.  The estimate and the interval are exactly the order
-statistics of the full sample, with no approximation.  The derivation,
-the coverage formula and the memory analysis are presented in
-:any:`quantile_theory_block`.
+heap and updates it chunk by chunk.  The chunk size :math:`c` is the
+maximum of the inherited block size and
+``ExactTailQuantileSimulation-MinimumChunkSize``, capped at :math:`N`.
+The peak storage is the retained tail plus :math:`(d+1)\min(N,c)`
+scalar values for an input dimension :math:`d`: one chunk of input
+vectors and one chunk of scalar outputs are live at the same time.  The
+estimate and the interval are exactly the order statistics of the full
+sample, with no approximation.  The derivation, the coverage formula and
+the memory analysis are presented in :any:`quantile_theory_block`.
 
 Parameters
 ----------

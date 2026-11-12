@@ -88,6 +88,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /** Check the input parameters */
+  void checkInputs() const override;
+
   /** Run the last-particle process */
   QuantileSimulationResult runFixedSample() override;
 

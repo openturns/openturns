@@ -57,6 +57,14 @@ number of levels and by the target conditional level
 :math:`p/p_0^{m-1}\le 1`, which the constructor of the level schedule
 enforces.
 
+Only a fraction :math:`k/N` with :math:`k` integer can be retained
+exactly.  The algorithm therefore uses
+:math:`k=\min(N-1,\max(1,\lfloor p_0N\rfloor))` particles and the
+realizable fraction :math:`k/N` for the threshold.  It records the
+actual strict survivor fraction at each level, so tied output values
+are accounted for in the reported level probabilities and in the final
+conditional level.
+
 The conditional sampler is defined in the standard space of the input
 distribution.  Its proposal range controls the standard deviation of
 the componentwise random walk: a range that is too small yields a

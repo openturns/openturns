@@ -404,7 +404,8 @@ randomized quasi-Monte Carlo sequence is a dependent sample, so the
 exact binomial ranks do not apply; independent randomizations are
 required for the replicate interval.  Likewise, a Latin hypercube
 experiment that reuses its stratum permutation from one draw to the
-next (``alwaysShuffle=false``) produces correlated replicates and is
+next (``alwaysShuffle=false``), or that keeps a fixed random shift
+(``randomShift=false``), produces correlated replicates and is
 rejected.
 
 .. _quantile_theory_block:
@@ -570,26 +571,39 @@ levels is fixed before the run:
 
     m = \left\lceil\frac{\log p}{\log p_0}\right\rceil.
 
-At level :math:`j=1,\dots,m-1`, the algorithm computes the
-:math:`(1-p_0)`-quantile :math:`t_j` of the current population for the
-upper tail (the :math:`p_0`-quantile for the lower tail), so that the
-upper tail keeps a fraction :math:`p_0` of the particles, and replaces
-the particles that do not satisfy :math:`Y>t_j` (respectively
-:math:`Y<t_j` for the lower tail) by draws from the conditional
-distribution given the same event.  The replacement uses a
-componentwise random-walk Metropolis--Hastings kernel in the standard
-space with a finite burn-in [cerou2007]_.
+With :math:`N` particles, a conditional probability :math:`p_0` is
+realizable only when :math:`p_0N` is an integer.  At level
+:math:`j=1,\dots,m-1` the algorithm therefore retains
+
+.. math::
+    :label: eq-subset-survivors
+
+    k_j = \min\left(N-1,\max\left(1,\left\lfloor p_0N\right\rfloor\right)\right)
+
+particles and uses the realizable fraction
+:math:`p_j=k_j/N` for the threshold.  For the upper tail the threshold
+:math:`t_j` is the :math:`k_j`-th largest observation; the lower tail is
+symmetric.  The particles that do not satisfy :math:`Y>t_j`
+(respectively :math:`Y<t_j` for the lower tail) are replaced by draws
+from the conditional distribution given the same event.  The
+replacement uses a componentwise random-walk Metropolis--Hastings kernel
+in the standard space with a finite burn-in [cerou2007]_.
+
+Ties can reduce the number of particles that strictly satisfy the
+comparison.  The algorithm counts the actual survivors and records the
+realized fraction :math:`\widehat{p}_j` at each level, so the level
+probabilities reported in the result are the fractions actually used by
+the splitting.
 
 The final population is approximately distributed from :math:`Y`
 conditioned on the last threshold.  The target conditional tail
-probability at level :math:`m-1` is
+probability at level :math:`m-1` follows from the realized fractions:
 
 .. math::
     :label: eq-subset-pcond
 
     p_{\mathrm{cond}}
-    = \frac{p}{p_0^{m-1}}
-    \in [p_0,1),
+    = \min\left(1,\frac{p}{\prod_{j=1}^{m-1}\widehat{p}_j}\right),
 
 and the quantile estimate is the empirical order statistic of the final
 conditional sample at level :math:`1-p_{\mathrm{cond}}` (respectively
@@ -649,7 +663,9 @@ and reports Walter's reduced-bias midpoint estimate [walter2015]_,
 
 where :math:`t_k` is the threshold of move :math:`k`.  The confidence
 interval is the Poisson rank interval :math:`[t_L,t_U]`, reversed for
-the lower tail, where
+the lower tail, widened to the midpoint estimate when the estimate
+rank :math:`K_0` falls beyond the rank interval; the rank interval
+itself is not narrowed.  The ranks are
 
 .. math::
     :label: eq-last-particle-lower-rank

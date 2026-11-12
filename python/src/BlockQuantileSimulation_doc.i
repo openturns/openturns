@@ -390,9 +390,12 @@ R"RAW(Accessor to the memory budget.
 Returns
 -------
 memoryBudget : int
-    Maximum number of scalar values used by the ``MEMORY_BOUND``
-    policy, including the input and output block buffers and the block
-    quantiles.
+    Maximum number of scalar values accounted for by the
+    ``MEMORY_BOUND`` policy.  For a block length :math:`b`, a sample
+    size :math:`N` and an input dimension :math:`d`, the accounted
+    storage is :math:`(d+1)b+\lceil N/b\rceil`: the input and output
+    block buffers and the block quantiles.  Other transient buffers,
+    such as the experiment weights, are not included in the budget.
 )RAW"
 
 // ---------------------------------------------------------------------
@@ -403,8 +406,9 @@ R"RAW(Accessor to the memory budget.
 Parameters
 ----------
 memoryBudget : int
-    Maximum number of scalar values, including the input and output
-    block buffers and the block quantiles.  It must be positive.
+    Maximum number of scalar values accounted for by the
+    ``MEMORY_BOUND`` policy, as described in :meth:`getMemoryBudget`.
+    It must be positive.
 )RAW"
 
 // ---------------------------------------------------------------------

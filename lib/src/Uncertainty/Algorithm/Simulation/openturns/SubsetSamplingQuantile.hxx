@@ -101,6 +101,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /** Check the input parameters */
+  void checkInputs() const override;
+
   /** Run a fixed-level subset experiment */
   QuantileSimulationResult runFixedSample() override;
 

@@ -202,6 +202,13 @@ algo = otexp.MonteCarloQuantileSimulation(output, ot.LHSExperiment(distribution,
 with ott.assert_raises(TypeError):
     algo.run()
 
+# A fixed random shift returns the same stratum centers in every draw,
+# even when the stratum permutation is redrawn.
+algo = otexp.MonteCarloQuantileSimulation(
+    output, ot.LHSExperiment(distribution, 100, True, False), alpha, beta)
+with ott.assert_raises(TypeError):
+    algo.run()
+
 # A Sobol wrapper hides the underlying Latin hypercube from the direct
 # check.  A fixed random shift still reuses the design across replicates,
 # so the replicate interval must be rejected as well.
@@ -436,6 +443,12 @@ assert r_impl.getSampleSize() == 20
 assert r_impl.getBlockLength() == 4
 assert r_impl.hasBiasEstimate()
 assert r_impl.getBiasEstimate() == 0.125
+# A nonzero bias with a zero standard error has an unbounded ratio.
+r_impl.setStandardError(0.0)
+assert math.isinf(r_impl.getBiasToStandardErrorRatio())
+r_impl.setBiasEstimate(0.0)
+assert r_impl.getBiasToStandardErrorRatio() == 0.0
+r_impl.setStandardError(0.25)
 assert not r_impl.isFixedSample()
 assert r_impl.getEstimatorDescription() == "Interpolated"
 assert r_impl.getCoverageDescription() == "Anytime-valid"
@@ -661,7 +674,7 @@ with ott.assert_raises(TypeError):
     handle.setProgressCallback(17)
 with ott.assert_raises(TypeError):
     handle.setStopCallback(17)
-# Passing None clears the callback, as in the other simulation algorithms.
+# Passing None clears the callback.
 handle.setProgressCallback(None)
 handle.setStopCallback(None)
 
@@ -753,7 +766,7 @@ assert dirac_result.getConfidenceInterval() == ot.Interval(0.0, 0.0)
 
 # A degenerate randomized design exercises the zero-variance replicate path.
 algo = otexp.MonteCarloQuantileSimulation(
-    dirac_output, ot.LHSExperiment(dirac, 20, True, False), 0.5, 0.5)
+    dirac_output, ot.LHSExperiment(dirac, 20, True, True), 0.5, 0.5)
 algo.setReplicateCount(5)
 algo.setKeepSample(True)
 algo.run()

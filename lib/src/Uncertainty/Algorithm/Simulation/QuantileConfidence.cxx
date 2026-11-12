@@ -144,10 +144,13 @@ Indices QuantileConfidence::computeBilateralRank(const UnsignedInteger size) con
     const UnsignedInteger k2 = binomial.computeScalarQuantile(probK2);
     const Scalar p2 = binomial.computeCDF(k2);
 
-    // we compute P(k1<Xd<=k2)=CDF(k2)-CDF(k1) and check for improvement
+    // we compute P(k1<Xd<=k2)=CDF(k2)-CDF(k1) and check for improvement.
+    // computeScalarQuantile can return size when p1 + beta is close to
+    // one; the corresponding upper rank would index outside the sample,
+    // so keep the interval in-sample and skip that candidate.
     const Scalar p = p2 - p1;
     LOGDEBUG(OSS() << "k1=" << k1 << " k2=" << k2 << " p=" << p);
-    if ((p >= beta_) && (p < pBest))
+    if ((k2 < size) && (p >= beta_) && (p < pBest))
     {
       pBest = p;
       kBest = {k1, k2};

@@ -41,6 +41,10 @@ namespace OT {
 %extend QuantileSimulation {
 
 void setProgressCallback(PyObject * callBack) {
+  if (callBack == Py_None) {
+    self->setProgressCallback(nullptr, nullptr);
+    return;
+  }
   if (PyCallable_Check(callBack)) {
     self->setProgressCallback(&QuantileSimulation_ProgressCallback, callBack);
   }
@@ -50,6 +54,10 @@ void setProgressCallback(PyObject * callBack) {
 }
 
 void setStopCallback(PyObject * callBack) {
+  if (callBack == Py_None) {
+    self->setStopCallback(nullptr, nullptr);
+    return;
+  }
   if (PyCallable_Check(callBack)) {
     self->setStopCallback(&QuantileSimulation_StopCallback, callBack);
   }

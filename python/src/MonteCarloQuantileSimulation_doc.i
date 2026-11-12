@@ -79,10 +79,11 @@ replicate branch, the total number of evaluations is
 
 The replicate interval requires independent draws.  A
 :class:`~openturns.LHSExperiment` reuses its stratum permutation from
-one draw to the next when ``alwaysShuffle`` is false; the replicate
-estimates are then correlated (and identical when ``randomShift`` is
-false too), so such an experiment is rejected instead of reporting a
-coverage that the design cannot support.
+one draw to the next when ``alwaysShuffle`` is false, and it returns the
+same stratum centers in every draw when ``randomShift`` is false; the
+replicate estimates are then correlated, so such an experiment is
+rejected instead of reporting a coverage that the design cannot
+support.
 
 The weights are self-normalized, so an experiment whose weights sum to
 one and an experiment whose weights sum to another positive constant

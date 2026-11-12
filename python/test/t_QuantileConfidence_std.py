@@ -161,6 +161,15 @@ def get_bilateral_rank_ref():
 # bilateral ranks
 def check_bilateral_rank():
     print("check_bilateral_rank ...")
+
+    # n=2, alpha=0.5, beta=0.1: the upper rank must stay in sample.  The
+    # full-sample interval [X_(1), X_(2)] has coverage 0.5 >= beta.
+    tiny = ot.QuantileConfidence(0.5, 0.1)
+    k1, k2 = tiny.computeBilateralRank(2)
+    assert (k1, k2) == (0, 1)
+    assert k2 < 2
+    assert tiny.computeBilateralCoverage(2, k1, k2) >= 0.1
+
     alpha = 0.05
     beta = 0.95
     algo = ot.QuantileConfidence(alpha, beta)

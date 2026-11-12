@@ -10,6 +10,7 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 EMPIRICAL_INVERSE = otexp.QuantileSimulationResultImplementation.EMPIRICAL_INVERSE
+INTERPOLATED = otexp.QuantileSimulationResultImplementation.INTERPOLATED
 COVERAGE_ASYMPTOTIC = otexp.QuantileSimulationResultImplementation.COVERAGE_ASYMPTOTIC
 LOWER_TAIL = otexp.QuantileSimulationResultImplementation.LOWER_TAIL
 UPPER_TAIL = otexp.QuantileSimulationResultImplementation.UPPER_TAIL
@@ -123,6 +124,20 @@ for j, level in enumerate(levels):
 for value in point_values(thresholds):
     assert math.isfinite(value)
 assert 0.0 < result.getAcceptanceRate() < 1.0
+
+# A conditional probability that is not a multiple of 1/N is
+# discretized to the realizable fraction floor(p0*N)/N.  Here p0*N =
+# 1.5, so one particle out of ten is retained at the single level.
+ot.RandomGenerator.SetSeed(20260304)
+algo = otexp.SubsetSamplingQuantile(output, 0.95, 0.95)
+algo.setSampleSize(10)
+algo.setConditionalProbability(0.15)
+algo.setReplicateCount(3)
+algo.run()
+discrete_result = algo.getResult()
+discrete_levels = point_values(discrete_result.getLevelProbabilitySequence())
+assert len(discrete_levels) == 1
+ott.assert_almost_equal(discrete_levels[0], 0.1, 1.0e-12, 1.0e-12)
 
 # ---------------------------------------------------------------------
 # 3. Lower-tail symmetry
@@ -246,6 +261,13 @@ with ott.assert_raises(TypeError):
     algo.setReplicateCount(1)
 with ott.assert_raises(TypeError):
     algo.setSampleSize(0)
+
+# The replicated estimator is an empirical inverse: reject the
+# interpolated convention before running the level loop.
+algo = otexp.SubsetSamplingQuantile(output)
+algo.setEstimatorType(INTERPOLATED)
+with ott.assert_raises(TypeError):
+    algo.run()
 
 # A particle count smaller than 1 / p0 cannot retain a particle at a level.
 algo = otexp.SubsetSamplingQuantile(output)

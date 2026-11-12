@@ -163,6 +163,17 @@ UnsignedInteger SubsetSamplingQuantile::getBurnIn() const
   return burnIn_;
 }
 
+/* Check the input parameters */
+void SubsetSamplingQuantile::checkInputs() const
+{
+  QuantileSimulationImplementation::checkInputs();
+  if (estimatorType_ != QuantileSimulationResultImplementation::EMPIRICAL_INVERSE)
+    throw InvalidArgumentException(HERE)
+        << "The subset quantile estimator only supports the empirical inverse estimator, "
+        << "but the interpolated estimator was requested. "
+        << "Use MonteCarloQuantileSimulation or BlockQuantileSimulation for the interpolated estimator.";
+}
+
 /* Replicate count accessor */
 void SubsetSamplingQuantile::setReplicateCount(const UnsignedInteger replicateCount)
 {
@@ -235,12 +246,23 @@ QuantileSimulationResult SubsetSamplingQuantile::runFixedSample()
   const UnsignedInteger conditionalLevelCount = levelCount - 1;
   const Scalar targetConditionalProbability = tailProbability
       / std::pow(conditionalProbability, 1.0 * conditionalLevelCount);
-  const Scalar conditionalLevel = lowerTail
-                                  ? targetConditionalProbability
-                                  : 1.0 - targetConditionalProbability;
   if (!(targetConditionalProbability > 0.0) || !(targetConditionalProbability <= 1.0))
     throw InternalException(HERE)
         << "Invalid conditional tail probability: " << targetConditionalProbability;
+
+  // A conditional probability that is not a multiple of 1/N cannot
+  // retain exactly p0*N particles.  The realizable fraction is
+  // floor(p0*N)/N; the threshold below selects that order statistic and
+  // the actual strict survivor fraction is recorded at each level.  The
+  // small tolerance protects an integer product from binary round-off.
+  const UnsignedInteger targetSurvivorCount = std::min<UnsignedInteger>(
+      particleCount - 1,
+      std::max<UnsignedInteger>(
+          1, static_cast<UnsignedInteger>(
+              std::floor(conditionalProbability * particleCount + 1.0e-12))));
+  const UnsignedInteger thresholdIndex = lowerTail
+                                         ? targetSurvivorCount
+                                         : particleCount - 1 - targetSurvivorCount;
 
   const UnsignedInteger replicateCount = replicateCount_;
   Point replicateEstimates(replicateCount);
@@ -265,10 +287,12 @@ QuantileSimulationResult SubsetSamplingQuantile::runFixedSample()
     Point levelProbabilities(conditionalLevelCount);
     for (UnsignedInteger level = 0; level < conditionalLevelCount; ++level)
     {
-      const Scalar ratio = lowerTail ? conditionalProbability : 1.0 - conditionalProbability;
-      const Scalar threshold = outputSample.computeQuantile(ratio)[0];
+      Point sortedOutput(particleCount);
+      for (UnsignedInteger i = 0; i < particleCount; ++i)
+        sortedOutput[i] = outputSample(i, 0);
+      std::sort(sortedOutput.begin(), sortedOutput.end());
+      const Scalar threshold = sortedOutput[thresholdIndex];
       thresholds[level] = threshold;
-      levelProbabilities[level] = std::pow(conditionalProbability, 1.0 * (level + 1));
 
       Indices survivors;
       for (UnsignedInteger i = 0; i < particleCount; ++i)
@@ -278,6 +302,9 @@ QuantileSimulationResult SubsetSamplingQuantile::runFixedSample()
         throw NotDefinedException(HERE)
             << "No particle satisfies the level threshold " << threshold
             << " at level " << (level + 1) << ". Increase the particle count or the conditional probability.";
+      // Use the fraction that is actually retained, including the effect
+      // of tied output values, to build the conditional level sequence.
+      levelProbabilities[level] = 1.0 * survivors.getSize() / (1.0 * particleCount);
 
       UnsignedInteger seedIndex = 0;
       for (UnsignedInteger i = 0; i < particleCount; ++i)
@@ -292,6 +319,19 @@ QuantileSimulationResult SubsetSamplingQuantile::runFixedSample()
       }
     }
 
+    // The final conditional tail probability follows from the realized
+    // level fractions, not from the nominal conditional probability.
+    Scalar realizedProbability = 1.0;
+    for (UnsignedInteger level = 0; level < conditionalLevelCount; ++level)
+      realizedProbability *= levelProbabilities[level];
+    const Scalar finalConditionalProbability = std::min(
+        1.0, tailProbability / realizedProbability);
+    if (!(finalConditionalProbability > 0.0))
+      throw InternalException(HERE)
+          << "Invalid realized conditional tail probability: " << finalConditionalProbability;
+    const Scalar conditionalLevel = lowerTail
+                                    ? finalConditionalProbability
+                                    : 1.0 - finalConditionalProbability;
     replicateEstimates[replicate] = subsetQuantileEmpiricalInverse(outputSample, conditionalLevel);
     if (replicate == 0)
     {

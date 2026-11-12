@@ -194,7 +194,11 @@ QuantileSimulationResult ExactTailQuantileSimulation::runFixedSample()
   if (estimateIndex >= sampleSize_)
     estimateIndex = sampleSize_ - 1;
 
-  // The reported interval always contains the point estimate.
+  // Guard the exact ranks before they index the retained heap: an
+  // out-of-sample upper rank would read past the retained values.  The
+  // reported interval also always contains the point estimate.
+  lowerRank = std::min(lowerRank, sampleSize_ - 1);
+  upperRank = std::min(upperRank, sampleSize_ - 1);
   lowerRank = std::min(lowerRank, estimateIndex);
   upperRank = std::max(upperRank, estimateIndex);
 

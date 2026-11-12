@@ -109,6 +109,17 @@ Scalar LastParticleQuantile::getProposalRange() const
   return proposalRange_;
 }
 
+/* Check the input parameters */
+void LastParticleQuantile::checkInputs() const
+{
+  QuantileSimulationImplementation::checkInputs();
+  if (estimatorType_ != QuantileSimulationResultImplementation::EMPIRICAL_INVERSE)
+    throw InvalidArgumentException(HERE)
+        << "The last-particle estimator only supports the empirical inverse estimator, "
+        << "but the interpolated estimator was requested. "
+        << "Use MonteCarloQuantileSimulation or BlockQuantileSimulation for the interpolated estimator.";
+}
+
 /* Run the last-particle process */
 QuantileSimulationResult LastParticleQuantile::runFixedSample()
 {
@@ -188,8 +199,14 @@ QuantileSimulationResult LastParticleQuantile::runFixedSample()
   const Scalar estimate = (moveCountEstimate >= 2)
                           ? 0.5 * (thresholds[moveCountEstimate - 2] + thresholds[moveCountEstimate - 1])
                           : thresholds[moveCountEstimate - 1];
-  const Scalar lowerBound = lowerTail ? thresholds[upperRank - 1] : thresholds[lowerRank - 1];
-  const Scalar upperBound = lowerTail ? thresholds[lowerRank - 1] : thresholds[upperRank - 1];
+  // The midpoint estimate can lie outside the Poisson rank interval when
+  // the expected move count falls beyond the upper rank.  Extend the
+  // corresponding endpoint so that the reported interval always contains
+  // the point estimate, without narrowing the rank interval.
+  const Scalar lowerBound = std::min(
+      estimate, lowerTail ? thresholds[upperRank - 1] : thresholds[lowerRank - 1]);
+  const Scalar upperBound = std::max(
+      estimate, lowerTail ? thresholds[lowerRank - 1] : thresholds[upperRank - 1]);
   const Scalar standardError = (z > 0.0) ? 0.5 * (upperBound - lowerBound) / z : 0.0;
 
   QuantileSimulationResult result(new QuantileSimulationResultImplementation(output_, alpha_, beta_));

@@ -10,6 +10,7 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 EMPIRICAL_INVERSE = otexp.QuantileSimulationResultImplementation.EMPIRICAL_INVERSE
+INTERPOLATED = otexp.QuantileSimulationResultImplementation.INTERPOLATED
 COVERAGE_ASYMPTOTIC = otexp.QuantileSimulationResultImplementation.COVERAGE_ASYMPTOTIC
 LOWER_TAIL = otexp.QuantileSimulationResultImplementation.LOWER_TAIL
 UPPER_TAIL = otexp.QuantileSimulationResultImplementation.UPPER_TAIL
@@ -64,6 +65,7 @@ assert abs(estimate - true_upper) < 0.1
 assert result.getStandardError() > 0.0
 interval = result.getConfidenceInterval()
 assert interval.getLowerBound()[0] <= true_upper <= interval.getUpperBound()[0]
+assert interval.getLowerBound()[0] <= estimate <= interval.getUpperBound()[0]
 assert result.getEstimatorType() == EMPIRICAL_INVERSE
 assert result.getCoverageType() == COVERAGE_ASYMPTOTIC
 assert result.getTailType() == UPPER_TAIL
@@ -118,8 +120,10 @@ ott.assert_almost_equal(
     1.0e-12,
 )
 z = ot.DistFunc.qNormal(0.975)
-lower_bound = thresholds[lower_rank - 1]
-upper_bound = thresholds[upper_rank - 1]
+# The reported interval contains the midpoint estimate, even when it lies
+# beyond the Poisson rank interval.
+lower_bound = min(estimate, thresholds[lower_rank - 1])
+upper_bound = max(estimate, thresholds[upper_rank - 1])
 ott.assert_almost_equal(interval.getLowerBound()[0], lower_bound, 1.0e-12, 1.0e-12)
 ott.assert_almost_equal(interval.getUpperBound()[0], upper_bound, 1.0e-12, 1.0e-12)
 ott.assert_almost_equal(
@@ -236,6 +240,13 @@ with ott.assert_raises(TypeError):
     algo.setProposalRange(-1.0)
 with ott.assert_raises(TypeError):
     algo.setProposalRange(float("inf"))
+
+# The threshold estimator is an empirical inverse: reject the interpolated
+# convention before running the particle process.
+algo = otexp.LastParticleQuantile(output)
+algo.setEstimatorType(INTERPOLATED)
+with ott.assert_raises(TypeError):
+    algo.run()
 
 # A confidence level that puts the exact lower endpoint at infinity is
 # rejected instead of silently truncating the lower Poisson rank.

@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include <algorithm>
+#include <chrono>
 #include <limits>
 #include <utility>
 
@@ -107,6 +108,17 @@ Scalar CrossEntropyQuantile::getMinimumProposalStandardDeviation() const
   return minimumProposalStandardDeviation_;
 }
 
+/* Check the input parameters */
+void CrossEntropyQuantile::checkInputs() const
+{
+  QuantileSimulationImplementation::checkInputs();
+  if (estimatorType_ != QuantileSimulationResultImplementation::EMPIRICAL_INVERSE)
+    throw InvalidArgumentException(HERE)
+        << "The cross-entropy estimator only supports the empirical inverse estimator, "
+        << "but the interpolated estimator was requested. "
+        << "Use MonteCarloQuantileSimulation or BlockQuantileSimulation for the interpolated estimator.";
+}
+
 /* Run the cross-entropy sequence */
 QuantileSimulationResult CrossEntropyQuantile::runFixedSample()
 {
@@ -118,6 +130,26 @@ QuantileSimulationResult CrossEntropyQuantile::runFixedSample()
     throw InvalidArgumentException(HERE)
         << "The pilot size must be at least 2, but pilotSize = " << pilotSize_;
 
+  // The outer run limits apply to the whole estimator, including the
+  // pilot stage and the final importance-sampling stage.  The engine only
+  // sees its own share of the time budget.
+  const std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
+  const auto elapsedTime = [&startTime]()
+  {
+    return std::chrono::duration<Scalar>(std::chrono::steady_clock::now() - startTime).count();
+  };
+  const auto checkRunLimits = [&](const char * stage)
+  {
+    const Scalar elapsed = elapsedTime();
+    const Scalar maximumDuration = getMaximumTimeDuration();
+    if ((maximumDuration > 0.0) && (elapsed > maximumDuration))
+      throw TimeoutException(HERE)
+          << "Duration (" << elapsed << "s) exceeds maximum duration ("
+          << maximumDuration << " s) during " << stage;
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InterruptionException(HERE) << "User stopped simulation during " << stage;
+  };
+
   const Bool lowerTail = alpha_ <= 0.5;
   const ComparisonOperator op = lowerTail ? ComparisonOperator(Less()) : ComparisonOperator(Greater());
 
@@ -125,7 +157,9 @@ QuantileSimulationResult CrossEntropyQuantile::runFixedSample()
   // event threshold of the cross-entropy run: the final estimator is a
   // self-normalized importance-sampling quantile, which remains
   // consistent for any auxiliary distribution with full support.
+  checkRunLimits("the pilot sampling");
   const Sample pilotOutput(output_.getSample(pilotSize_));
+  checkRunLimits("the pilot sampling");
   if (pilotOutput.getDimension() != 1)
     throw InvalidArgumentException(HERE)
         << "The output random vector must be scalar, but its dimension is "
@@ -143,7 +177,19 @@ QuantileSimulationResult CrossEntropyQuantile::runFixedSample()
   const UnsignedInteger blockSize = std::max<UnsignedInteger>(1, getBlockSize());
   engine.setBlockSize(blockSize);
   engine.setMaximumOuterSampling((sampleSize_ + blockSize - 1) / blockSize);
+  engine.setStopCallback(stopCallback_.first, stopCallback_.second);
+  const Scalar maximumDuration = getMaximumTimeDuration();
+  if (maximumDuration > 0.0)
+  {
+    const Scalar remainingDuration = maximumDuration - elapsedTime();
+    if (!(remainingDuration > 0.0))
+      throw TimeoutException(HERE)
+          << "Duration (" << elapsedTime() << "s) exceeds maximum duration ("
+          << maximumDuration << " s) before the cross-entropy sampling";
+    engine.setMaximumTimeDuration(remainingDuration);
+  }
   engine.run();
+  checkRunLimits("the cross-entropy sampling");
 
   const CrossEntropyResult crossEntropyResult(engine.getResult());
   const Distribution crossEntropyDistribution(crossEntropyResult.getAuxiliaryDistribution());
@@ -167,8 +213,18 @@ QuantileSimulationResult CrossEntropyQuantile::runFixedSample()
     defensiveSigma[i] = std::max(crossEntropySigma[i], minimumProposalStandardDeviation_);
   const Normal defensiveDistribution(defensiveMean, defensiveSigma);
   const Distribution auxiliaryDistribution(defensiveDistribution);
-  const Sample inputSample(defensiveDistribution.getSample(sampleSize_));
-  const Sample outputSample(limitState(inputSample));
+  // Draw and evaluate the final importance sample by chunks so that the
+  // outer stop callback and time limit are checked during this stage too.
+  Sample inputSample(0, defensiveDistribution.getDimension());
+  Sample outputSample(0, 1);
+  for (UnsignedInteger start = 0; start < sampleSize_; start += blockSize)
+  {
+    const UnsignedInteger chunkSize = std::min(blockSize, sampleSize_ - start);
+    const Sample chunkInput(defensiveDistribution.getSample(chunkSize));
+    inputSample.add(chunkInput);
+    outputSample.add(limitState(chunkInput));
+    checkRunLimits("the final sampling");
+  }
   const UnsignedInteger sampleSize = inputSample.getSize();
   if (sampleSize < 2)
     throw NotDefinedException(HERE)

@@ -99,6 +99,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  /** Check the input parameters */
+  void checkInputs() const override;
+
   /** Run the cross-entropy sequence */
   QuantileSimulationResult runFixedSample() override;
 

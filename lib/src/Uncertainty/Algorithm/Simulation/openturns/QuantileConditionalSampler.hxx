@@ -41,8 +41,12 @@ BEGIN_NAMESPACE_OPENTURNS
  * accept/reject step that enforces the threshold event.  The kernel is
  * the one used by SubsetSampling, factored here so that both threshold
  * quantile algorithms share it.
+ *
+ * This class is an implementation detail: its header is not installed,
+ * it is not exposed to Python and it must not be used outside the
+ * simulation library.  It is intentionally not part of the user manual.
  */
-class OT_API QuantileConditionalSampler
+class QuantileConditionalSampler
 {
 public:
   /** Default constructor */

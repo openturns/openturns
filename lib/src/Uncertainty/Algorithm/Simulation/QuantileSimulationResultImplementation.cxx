@@ -370,8 +370,11 @@ Bool QuantileSimulationResultImplementation::hasBiasEstimate() const
 
 Scalar QuantileSimulationResultImplementation::getBiasToStandardErrorRatio() const
 {
-  if (!hasBiasEstimate_ || !(standardError_ > 0.0))
+  if (!hasBiasEstimate_ || (biasEstimate_ == 0.0))
     return 0.0;
+  // A nonzero bias with a zero standard error is unbounded, not negligible.
+  if (!(standardError_ > 0.0))
+    return std::numeric_limits<Scalar>::infinity();
   return std::abs(biasEstimate_) / standardError_;
 }
 

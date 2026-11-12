@@ -264,19 +264,12 @@ Bool reusesLHSShuffle(const WeightedExperiment & experiment)
 {
   const LHSExperiment * lhs = dynamic_cast<const LHSExperiment *>(experiment.getImplementation().get());
   if (lhs != nullptr)
-    return !lhs->getAlwaysShuffle();
-  // A Sobol wrapper expands the underlying design deterministically.  A
-  // Latin hypercube with a fixed random shift then produces the same points
-  // in every replicate, even when the stratum permutation is redrawn.
+    return !lhs->getAlwaysShuffle() || !lhs->getRandomShift();
+  // A Sobol wrapper expands the underlying design deterministically, so
+  // delegate the direct Latin hypercube checks to the inner experiment.
   const SobolIndicesExperiment * sobol = dynamic_cast<const SobolIndicesExperiment *>(experiment.getImplementation().get());
   if (sobol != nullptr)
-  {
-    const WeightedExperiment inner(sobol->getWeightedExperiment());
-    const LHSExperiment * innerLHS = dynamic_cast<const LHSExperiment *>(inner.getImplementation().get());
-    if ((innerLHS != nullptr) && !innerLHS->getRandomShift())
-      return true;
-    return reusesLHSShuffle(inner);
-  }
+    return reusesLHSShuffle(sobol->getWeightedExperiment());
   const TensorProductExperiment * tensor = dynamic_cast<const TensorProductExperiment *>(experiment.getImplementation().get());
   if (tensor != nullptr)
   {
