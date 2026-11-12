@@ -3036,15 +3036,20 @@ void LinearCombinationDistribution::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
   const UnsignedInteger size = distributionCollection_.getSize();
+  DistributionCollection newDistributions(size);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Point localParameter(distributionCollection_[i].getParameter());
+    // Work on a copy: thanks to copy-on-write the stored distribution is left unchanged if a later distribution rejects its slice
+    Distribution distribution(distributionCollection_[i]);
+    Point localParameter(distribution.getParameter());
     std::copy(parameter.begin() + shift, parameter.begin() + shift + localParameter.getSize(), localParameter.begin());
     shift += localParameter.getSize();
-    distributionCollection_[i].setParameter(localParameter);
+    distribution.setParameter(localParameter);
+    newDistributions[i] = distribution;
   }
-  setDistributionCollectionAndWeights(distributionCollection_, weights_, false);
+  // All slices accepted: commit the staged updates
+  setDistributionCollectionAndWeights(newDistributions, weights_, false);
 } // setParameter
 
 /* Parameters value and description accessor */
