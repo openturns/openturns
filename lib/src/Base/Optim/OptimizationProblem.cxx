@@ -192,6 +192,12 @@ Matrix OptimizationProblem::getLinearConstraintCoefficients() const
 }
 
 
+SparseMatrix OptimizationProblem::getSparseLinearConstraintCoefficients() const
+{
+  return getImplementation()->getSparseLinearConstraintCoefficients();
+}
+
+
 Interval OptimizationProblem::getLinearConstraintBounds() const
 {
   return getImplementation()->getLinearConstraintBounds();

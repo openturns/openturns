@@ -484,10 +484,37 @@ Returns
 -------
 A : :class:`~openturns.Matrix`
     Linear inequality constraint term.
+
+Notes
+-----
+A sparse problem materializes the dense matrix on demand. The experimental
+:class:`~openturns.experimental.LinearProblem` provides
+:meth:`~openturns.experimental.LinearProblem.getSparseLinearConstraintCoefficients`
+to avoid the densification.
 "
 %enddef
 %feature("docstring") OT::OptimizationProblemImplementation::getLinearConstraintCoefficients
 OT_OptimizationProblem_getLinearConstraintCoefficients_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getSparseLinearConstraintCoefficients_doc
+"Accessor to the sparse linear constraint term.
+
+Only relevant for the linear problem type.
+
+The default implementation converts the dense coefficients returned by
+:meth:`getLinearConstraintCoefficients`; override it to avoid the
+densification of a large sparse problem.
+
+Returns
+-------
+A : :class:`~openturns.SparseMatrix`
+    Linear inequality constraint term, in compressed sparse column form.
+"
+%enddef
+%feature("docstring") OT::OptimizationProblemImplementation::getSparseLinearConstraintCoefficients
+OT_OptimizationProblem_getSparseLinearConstraintCoefficients_doc
 
 
 // ---------------------------------------------------------------------

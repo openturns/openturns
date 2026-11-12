@@ -144,3 +144,126 @@ if ot.PlatformInfo.HasFeature("highs"):
     algoFunctions = otexp.HiGHS(functionProblem)
     algoFunctions.run()
     ott.assert_almost_equal(algoFunctions.getResult().getOptimalPoint(), [0.0, 2.5])
+
+# the sparse constraint matrix gives the same problem
+sparseA = ot.SparseMatrix.FromDenseMatrix(A)
+assert sparseA.getNbNonZeros() == 6, "non zeros"
+sparseProblem = otexp.LinearProblem(cost, bounds, sparseA, LU)
+ott.assert_almost_equal(sparseProblem.getLinearConstraintCoefficients(), A)
+ott.assert_almost_equal(
+    sparseProblem.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
+)
+ott.assert_almost_equal(sparseProblem.getLinearCost(), cost)
+assert (
+    sparseProblem.getSparseLinearConstraintCoefficients().getColumnPointer()
+    == sparseA.getColumnPointer()
+)
+assert (
+    sparseProblem.getSparseLinearConstraintCoefficients().getRowIndices()
+    == sparseA.getRowIndices()
+)
+ott.assert_almost_equal(
+    sparseProblem.getSparseLinearConstraintCoefficients().getValues(),
+    sparseA.getValues(),
+)
+
+# the linearization result and the dense constructor agree in sparse form too
+ott.assert_almost_equal(
+    linearProblem.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
+)
+
+# the dense constructor skips the zero coefficients once
+sparseZeroProblem = otexp.LinearProblem(
+    [1.0, 1.0], ot.Interval(2), ot.Matrix([[1.0, 0.0], [0.0, 2.0]]), ot.Interval(2)
+)
+assert sparseZeroProblem.getSparseLinearConstraintCoefficients().getNbNonZeros() == 2
+
+# the wrapper forwards the sparse accessor
+wrapper = ot.OptimizationProblem(sparseProblem)
+ott.assert_almost_equal(
+    wrapper.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
+)
+
+# the default sparse accessor delegates to the dense one, which is not
+# implemented by the base class
+with ott.assert_raises(RuntimeError):
+    ot.OptimizationProblemImplementation().getSparseLinearConstraintCoefficients()
+
+# the sparse constraint setter
+sparseProblem.setLinearConstraint(sparseA, LU)
+ott.assert_almost_equal(sparseProblem.getLinearConstraintCoefficients(), A)
+with ott.assert_raises(ValueError):
+    sparseProblem.setLinearConstraint(ot.SparseMatrix(3, 1), ot.Interval(3))
+with ott.assert_raises(ValueError):
+    sparseProblem.setLinearConstraint(ot.SparseMatrix(1, 2), ot.Interval(2))
+
+# the dense constraint setter accepts a matrix without zero
+sparseProblem.setLinearConstraint(A, LU)
+ott.assert_almost_equal(
+    sparseProblem.getSparseLinearConstraintCoefficients().asDenseMatrix(), A
+)
+
+# the equality and inequality constraint functions are read from a sparse
+# problem row by row, without densifying its coefficients
+mixedSparse = otexp.LinearProblem(
+    [1.0, 1.0], ot.Interval([0.0, 0.0], [10.0, 10.0]),
+    otexp.SparseMatrix.FromDenseMatrix(mixedA), mixedLU,
+)
+assert mixedSparse.hasEqualityConstraint()
+assert mixedSparse.hasInequalityConstraint()
+ott.assert_almost_equal(mixedSparse.getEqualityConstraint()([0.0, 0.0]), [-2.5])
+ott.assert_almost_equal(mixedSparse.getEqualityConstraint()([0.75, 1.75]), [0.0])
+ott.assert_almost_equal(mixedSparse.getInequalityConstraint()([0.0, 0.0]), [1.0])
+ott.assert_almost_equal(mixedSparse.getInequalityConstraint()([1.0, 1.5]), [1.5])
+
+# replacing a constraint kind keeps the sparse storage and the other kind
+mixedSparse.setEqualityConstraint(
+    ot.LinearFunction([0.0, 0.0], [-1.0], ot.Matrix([[2.0, -1.0]]))
+)
+assert mixedSparse.hasEqualityConstraint()
+assert mixedSparse.hasInequalityConstraint()
+ott.assert_almost_equal(
+    mixedSparse.getSparseLinearConstraintCoefficients().asDenseMatrix(),
+    ot.Matrix([[1.0, -1.0], [2.0, -1.0]]),
+)
+ott.assert_almost_equal(mixedSparse.getEqualityConstraint()([1.0, 1.0]), [0.0])
+mixedSparse.setInequalityConstraint(
+    ot.LinearFunction([0.0, 0.0], [1.0], ot.Matrix([[-1.0, 1.0]]))
+)
+ott.assert_almost_equal(
+    mixedSparse.getSparseLinearConstraintCoefficients().asDenseMatrix(),
+    ot.Matrix([[2.0, -1.0], [-1.0, 1.0]]),
+)
+ott.assert_almost_equal(mixedSparse.getInequalityConstraint()([0.0, 0.0]), [1.0])
+
+# dimension checks on the sparse constructor
+with ott.assert_raises(ValueError):
+    otexp.LinearProblem(cost, bounds, ot.SparseMatrix(3, 3), LU)
+with ott.assert_raises(ValueError):
+    otexp.LinearProblem(cost, bounds, ot.SparseMatrix(2, 2), LU)
+
+# persistence
+if ot.PlatformInfo.HasFeature("libxml2"):
+    import os
+
+    fileName = "linear_problem_study.xml"
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(fileName))
+    study.add("problem", sparseProblem)
+    study.save()
+    study = ot.Study()
+    study.setStorageManager(ot.XMLStorageManager(fileName))
+    study.load()
+    loadedProblem = otexp.LinearProblem()
+    study.fillObject("problem", loadedProblem)
+    os.remove(fileName)
+    ott.assert_almost_equal(loadedProblem.getLinearCost(), cost)
+    ott.assert_almost_equal(loadedProblem.getLinearConstraintCoefficients(), A)
+    ott.assert_almost_equal(
+        loadedProblem.getLinearConstraintBounds().getLowerBound(),
+        LU.getLowerBound(),
+    )
+    ott.assert_almost_equal(
+        loadedProblem.getLinearConstraintBounds().getUpperBound(),
+        LU.getUpperBound(),
+    )

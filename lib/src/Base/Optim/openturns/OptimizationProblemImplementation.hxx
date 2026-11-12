@@ -26,6 +26,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/SymmetricMatrix.hxx"
+#include "openturns/SparseMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -105,6 +106,10 @@ public:
   /** Linear function accessor */
   virtual Point getLinearCost() const;
   virtual Matrix getLinearConstraintCoefficients() const;
+  /** Sparse linear constraint coefficients accessor.
+      The default implementation converts the dense coefficients returned by
+      getLinearConstraintCoefficients(). */
+  virtual SparseMatrix getSparseLinearConstraintCoefficients() const;
   virtual Interval getLinearConstraintBounds() const;
   virtual Bool isLinear() const;
 
@@ -152,6 +157,20 @@ protected:
                                           const Function & equalityConstraint,
                                           const UnsignedInteger dimension);
   static void SetLinearInequalityConstraint(Matrix & constraintCoefficients,
+                                            Interval & constraintBounds,
+                                            const Function & inequalityConstraint,
+                                            const UnsignedInteger dimension);
+  static Function GetLinearEqualityConstraint(const SparseMatrix & constraintCoefficients,
+                                              const Interval & constraintBounds,
+                                              const UnsignedInteger dimension);
+  static Function GetLinearInequalityConstraint(const SparseMatrix & constraintCoefficients,
+                                                const Interval & constraintBounds,
+                                                const UnsignedInteger dimension);
+  static void SetLinearEqualityConstraint(SparseMatrix & constraintCoefficients,
+                                          Interval & constraintBounds,
+                                          const Function & equalityConstraint,
+                                          const UnsignedInteger dimension);
+  static void SetLinearInequalityConstraint(SparseMatrix & constraintCoefficients,
                                             Interval & constraintBounds,
                                             const Function & inequalityConstraint,
                                             const UnsignedInteger dimension);
