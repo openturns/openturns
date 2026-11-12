@@ -725,7 +725,7 @@ void Multinomial::setParameter(const Point & parameter)
     throw InvalidArgumentException(HERE) << "Multinomial expected " << (dimension + 1) << " parameters, got " << parameter.getDimension();
   const Scalar nScalar = parameter[0];
   if (!(nScalar >= 0.0) || (nScalar != std::round(nScalar))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n must be an integer, got " << parameter[0];
-  if (!(nScalar <= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max()))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n is too large, got " << parameter[0];
+  if (!(nScalar < std::ldexp(1.0, std::numeric_limits<UnsignedInteger>::digits))) throw InvalidArgumentException(HERE) << "the Multinomial first parameter n is too large, got " << parameter[0];
   Point p(dimension);
   std::copy(parameter.begin() + 1, parameter.end(), p.begin());
   // No partial update on error: stage on a copy to preserve description and numerical settings, then commit at once
