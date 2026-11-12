@@ -75,6 +75,8 @@ ot_pyinstallcheck_test (ResourceMap_std IGNOREOUT)
 # Type
 ot_pyinstallcheck_test (Collection_std)
 ot_pyinstallcheck_test (Description_std)
+ot_pyinstallcheck_test (DataEngine_std IGNOREOUT)
+ot_pyinstallcheck_test (DataEngine_blockwise_std IGNOREOUT)
 ot_pyinstallcheck_test (Indices_std)
 ot_pyinstallcheck_test (IndicesCollection_std)
 ot_pyinstallcheck_test (Point_std)

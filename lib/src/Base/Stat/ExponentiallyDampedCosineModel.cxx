@@ -101,12 +101,12 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
   return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(twoPiFrequency_ * absTau);
 }
 
-Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-    const Collection<Scalar>::const_iterator &t_begin) const
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Scalar * s_begin,
+    const Scalar * t_begin) const
 {
   Scalar absTau = 0;
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
+  const Scalar * s_it = s_begin;
+  const Scalar * t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
     const Scalar dx = (*s_it - *t_it) / scale_[i];

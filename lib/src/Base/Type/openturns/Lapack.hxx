@@ -107,6 +107,15 @@ void dorgqr_(int *m, int *n, int *k, double *a, int *lda, double *tau, double *w
 /** Function dormqr is used to multiply a general real matrix C by the orthogonal matrix Q from a QR factorisation */
 void dormqr_(char *side, char *trans, int *m, int *n, int *k, double *a, int *lda, double *tau, double *c, int *ldc, double *work, int *lwork, int *info, int *lside, int *ltrans);
 
+/** Function dlarfb applies a block Householder reflector to a general matrix */
+void dlarfb_(char *side, char *trans, char *direct, char *storev,
+             int *m, int *n, int *k, double *v, int *ldv, double *t, int *ldt,
+             double *c, int *ldc, double *work, int *ldwork, int *lside, int *ltrans, int *ldirect, int *lstorev);
+
+/** Function dlarft forms the triangular factor T of a block Householder reflector */
+void dlarft_(char *direct, char *storev, int *n, int *k, double *v, int *ldv,
+             double *tau, double *t, int *ldt, int *ldirect, int *lstorev);
+
 /** Function dger is used to make the Kronecker product of two vectors */
 void dger_(int *m, int *n, double *alpha, double *x, int *incx, double *y, int *incy, double *a, int *lda);
 

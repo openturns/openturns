@@ -135,7 +135,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
   for (UnsignedInteger columnIndex = 0; columnIndex < numberOfFFT; ++columnIndex)
   {
     // FFT applications
-    const Collection<Complex> marginal(fftAlgorithm.inverseTransform(*matrix.getImplementation(), columnIndex * size, size));
+    const Collection<Complex> marginal(fftAlgorithm.inverseTransform(Collection<Complex>(matrix.getImplementation()->begin() + columnIndex * size, matrix.getImplementation()->begin() + columnIndex * size + size), 0, size));
     // We save result in the same matrix
     for (UnsignedInteger rowIndex = 0; rowIndex < size; ++rowIndex)
     {

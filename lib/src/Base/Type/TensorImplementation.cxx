@@ -29,13 +29,40 @@ static const Factory<TensorImplementation> Factory_TensorImplementation;
 
 /* Default constructor */
 TensorImplementation::TensorImplementation()
-  : PersistentCollection<Scalar>()
+  : PersistentObject()
   , nbRows_(0)
   , nbColumns_(0)
   , nbSheets_(0)
+  , data_()
 {
   // Nothing to do
 }
+
+#ifndef SWIG
+/* Copy constructor */
+TensorImplementation::TensorImplementation(const TensorImplementation & other)
+  : PersistentObject(other)
+  , nbRows_(other.nbRows_)
+  , nbColumns_(other.nbColumns_)
+  , nbSheets_(other.nbSheets_)
+  , data_(other.data_)
+{
+}
+
+/* Assignment operator */
+TensorImplementation & TensorImplementation::operator = (const TensorImplementation & other)
+{
+  if (this != &other)
+  {
+    PersistentObject::operator = (other);
+    nbRows_ = other.nbRows_;
+    nbColumns_ = other.nbColumns_;
+    nbSheets_ = other.nbSheets_;
+    data_ = other.data_;
+  }
+  return *this;
+}
+#endif
 
 /* Constructor with size (rowDim, colDim and sheetDim) */
 /* The TensorImplementation is made up of a collection of rowDim*colDim*sheetDim elements */
@@ -43,10 +70,11 @@ TensorImplementation::TensorImplementation()
 TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim)
-  : PersistentCollection<Scalar>(rowDim * colDim * sheetDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
   , nbSheets_(sheetDim)
+  , data_(rowDim * colDim * sheetDim, 0.0)
 {
   // Nothing to do
 }
@@ -56,10 +84,11 @@ TensorImplementation::TensorImplementation(const UnsignedInteger rowDim,
     const UnsignedInteger colDim,
     const UnsignedInteger sheetDim,
     const Collection<Scalar> & elementsValues)
-  : PersistentCollection<Scalar>(rowDim * colDim * sheetDim, 0.0)
+  : PersistentObject()
   , nbRows_(rowDim)
   , nbColumns_(colDim)
   , nbSheets_(sheetDim)
+  , data_(rowDim * colDim * sheetDim, 0.0)
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
   std::copy(elementsValues.begin(), elementsValues.begin() + tensorSize, begin());
@@ -92,7 +121,13 @@ String TensorImplementation::__repr__() const
          << " rows=" << getNbRows()
          << " columns=" << getNbColumns()
          << " sheets=" << getNbSheets()
-         << " values=" << PersistentCollection<Scalar>::__repr__();
+         << " values=" << [&]() {
+           OSS ossValues(true);
+           ossValues << "[";
+           std::copy( begin(), end(), OSS_iterator<Scalar>(ossValues, ",") );
+           ossValues << "]";
+           return String(ossValues);
+         }();
 }
 
 String TensorImplementation::__str__(const String & offset) const
@@ -188,7 +223,7 @@ void TensorImplementation::setSheetSym(const UnsignedInteger k,
 /* Empty returns true if there is no element in the TensorImplementation */
 Bool TensorImplementation::isEmpty() const
 {
-  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0) || (PersistentCollection<Scalar>::isEmpty())) ;
+  return ((nbRows_ == 0)  || (nbColumns_ == 0) || (nbSheets_ == 0)) ;
 }
 
 /* Check for symmetry */
@@ -220,19 +255,49 @@ Bool TensorImplementation::operator == (const TensorImplementation & rhs) const
 
   if (&lhs != &rhs)   // Not the same object
   {
-    const PersistentCollection<Scalar> & refLhs = static_cast<const PersistentCollection<Scalar> >(lhs);
-    const PersistentCollection<Scalar> & refRhs = static_cast<const PersistentCollection<Scalar> >(rhs);
-
-    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && lhs.nbSheets_ == rhs.nbSheets_ && refLhs == refRhs);
+    equality = ( lhs.nbRows_ == rhs.nbRows_ && lhs.nbColumns_ == rhs.nbColumns_ && lhs.nbSheets_ == rhs.nbSheets_ && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
   }
 
   return equality;
 }
 
+/* Convert to DataContainer (flat, storage order) */
+DataContainer TensorImplementation::toDataContainer() const
+{
+  if (nbRows_ == 0 || nbColumns_ == 0 || nbSheets_ == 0) return DataContainer();
+  return data_;
+}
+
+/* Construct a TensorImplementation from a DataContainer */
+TensorImplementation TensorImplementation::FromDataContainer(const DataContainer & dc,
+    UnsignedInteger nbRows,
+    UnsignedInteger nbColumns,
+    UnsignedInteger nbSheets)
+{
+  const UnsignedInteger expectedSize = nbRows * nbColumns * nbSheets;
+  if (dc.isEmpty() && expectedSize == 0)
+    return TensorImplementation();
+  if (dc.getSize() * dc.getDimension() != expectedSize)
+    throw InvalidArgumentException(HERE)
+        << "DataContainer size " << dc.getSize() * dc.getDimension()
+        << " does not match tensor dimensions " << nbRows << "x" << nbColumns << "x" << nbSheets;
+  return TensorImplementation(nbRows, nbColumns, nbSheets, dc.data(), dc.data() + expectedSize);
+}
+
 /* Method save() stores the object through the StorageManager */
 void TensorImplementation::save(Advocate & adv) const
 {
-  PersistentCollection<Scalar>::save(adv);
+  PersistentObject::save(adv);
+  // Same layout as the former PersistentCollection<Scalar>: a size attribute
+  // followed by the values, so existing studies remain readable.
+  adv.saveAttribute("size", getSize());
+  AdvocateIterator<Scalar> adv_it(adv);
+  const Scalar * pData = data();
+  const UnsignedInteger totalSize = getSize();
+  for (UnsignedInteger i = 0; i < totalSize; ++i, ++adv_it)
+  {
+    *adv_it = pData[i];
+  }
   adv.saveAttribute("nbRows_",    nbRows_);
   adv.saveAttribute("nbColumns_", nbColumns_);
   adv.saveAttribute("nbSheets_", nbSheets_);
@@ -241,11 +306,31 @@ void TensorImplementation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void TensorImplementation::load(Advocate & adv)
 {
-  PersistentCollection<Scalar>::load(adv);
-
+  PersistentObject::load(adv);
+  UnsignedInteger size = 0;
+  adv.loadAttribute("size", size);
   adv.loadAttribute("nbRows_",    nbRows_);
   adv.loadAttribute("nbColumns_", nbColumns_);
   adv.loadAttribute("nbSheets_", nbSheets_);
+  data_.resize(nbRows_ * nbColumns_ * nbSheets_);
+  AdvocateIterator<Scalar> adv_it(adv);
+  Scalar * pData = data();
+  for (UnsignedInteger i = 0; i < size; ++i, ++adv_it)
+  {
+    pData[i] = adv_it();
+  }
+}
+
+/* Size in bytes of one element */
+UnsignedInteger TensorImplementation::elementSize() const
+{
+  return sizeof(Scalar);
+}
+
+/* Give access to the underlying storage as a STL vector */
+std::vector<Scalar> TensorImplementation::toStdVector() const
+{
+  return std::vector<Scalar>(begin(), end());
 }
 
 UnsignedInteger TensorImplementation::stride(const UnsignedInteger dim) const
