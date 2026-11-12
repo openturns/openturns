@@ -157,3 +157,21 @@ result2 = algo.getResult()
 assert_almost_equal(
     result2.getProbabilityEstimate(), ot.Normal().computeCDF(-1), 1.0e-1, 0.0
 )
+
+# setEvent accepts a DomainEvent defined by a plain Interval: the event type
+# and the experiment selection must not be altered by the assignment
+Y3 = ot.RandomVector(ot.Normal())
+domainEvent = ot.DomainEvent(Y3, ot.Interval([-1.0], [1.0]))
+algo.setEvent(domainEvent)
+assert algo.getEvent().isEvent()
+algo.setMaximumOuterSampling(100000)
+algo.setMaximumCoefficientOfVariation(0.01)
+ot.RandomGenerator.SetSeed(0)
+algo.run()
+result3 = algo.getResult()
+assert_almost_equal(
+    result3.getProbabilityEstimate(),
+    ot.Normal().computeCDF(1.0) - ot.Normal().computeCDF(-1.0),
+    1.0e-1,
+    0.0,
+)
