@@ -354,11 +354,14 @@ void JointByConditioningDistribution::setParameter(const Point & parameter)
     throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
   Point::const_iterator start = parameter.begin();
   const UnsignedInteger linkParameterSize = linkFunction_.getParameterDimension();
+  // No partial update on error: work on copies before committing
+  Function newLinkFunction(linkFunction_);
+  Distribution newConditioningDistribution(conditioningDistribution_);
   if (linkParameterSize > 0)
   {
     Point linkParameter(linkParameterSize);
     std::copy(start, start + linkParameterSize, linkParameter.begin());
-    linkFunction_.setParameter(linkParameter);
+    newLinkFunction.setParameter(linkParameter);
     start += linkParameterSize;
   }
   const UnsignedInteger conditioningParameterSize = parameter.getSize() - linkParameterSize;
@@ -366,9 +369,10 @@ void JointByConditioningDistribution::setParameter(const Point & parameter)
   {
     Point conditioningParameter(conditioningParameterSize);
     std::copy(start, parameter.end(), conditioningParameter.begin());
-    conditioningDistribution_.setParameter(conditioningParameter);
+    newConditioningDistribution.setParameter(conditioningParameter);
   }
-  *this = JointByConditioningDistribution(conditionedDistribution_, conditioningDistribution_, linkFunction_);
+  // All slices accepted: commit the staged updates at once
+  *this = JointByConditioningDistribution(conditionedDistribution_, newConditioningDistribution, newLinkFunction);
 } // setParameter
 
 /* Parameters value and description accessor */
