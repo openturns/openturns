@@ -53,6 +53,10 @@ Bibliography
     https://www.sciencedirect.com/science/article/abs/pii/S0167947302002839
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
+.. [bichon2008] Bichon B.J., Eldred M.S., Swiler L.P., Mahadevan S., McFarland J.M.,
+    *Efficient global reliability analysis for nonlinear implicit performance functions*,
+    AIAA Journal, 46(10), 2459-2468, 2008.
+    https://doi.org/10.2514/1.34374
 .. [bjork1996] A. Bjorck (1996),
     *Numerical methods for least squares problems*, SIAM Press, Philadelphia.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
@@ -181,6 +185,10 @@ Bibliography
 .. [dubourg2011] Dubourg, V. *Adaptative surrogate models for reliability and reliability-based design optimization*,
     University Blaise Pascal - Clermont II, 2011.
     `pdf <https://tel.archives-ouvertes.fr/tel-00697026v2/document>`__
+.. [echard2011] Echard B., Gayton N., Lemaire M.,
+    *AK-MCS: an active learning reliability method combining Kriging and Monte Carlo simulation*,
+    Structural Safety, 33(2), 145-154, 2011.
+    https://doi.org/10.1016/j.strusafe.2011.01.002
 .. [ernst2012] Ernst, O. G., Mugler, A., Starkloff, H. J., & Ullmann, E. (2012).
     *On the convergence of generalized polynomial chaos expansions.*
     ESAIM: Mathematical Modelling and Numerical Analysis, 46(2), 317-339.
@@ -373,6 +381,10 @@ Bibliography
 .. [koutsourelakis2004] Koutsourelakis, H. Pradlwarter, G. Schueller,
     *Reliability of structures in high dimensions, part i: algorithms and applications*,
     Probabilistic Engineering Mechanics 19 (4) (2004) 409–417
+.. [lacaze2014] Lacaze S., Missoum S.,
+    *A generalized "max-min" sample for surrogate update*,
+    Structural and Multidisciplinary Optimization, 49(4), 683-687, 2014.
+    https://doi.org/10.1007/s00158-013-1011-9
 .. [lauricella1893] Lauricella, G. (1893).
     *Sulle funzioni ipergeometriche a piu variabili.*
     Rendiconti del Circolo Matematico di Palermo, 7, 111-158.
@@ -483,6 +495,9 @@ Bibliography
 .. [morokoff1995] Morokoff, W. J., & Caflisch, R. E. (1995). *Quasi-Monte Carlo
     integration.* Journal of computational physics, 122(2), 218-230.
     `pdf <https://www.math.ucla.edu/~caflisch/Pubs/Pubs1995-1999/actaNumerica1998.pdf>`__
+.. [moustapha2019] Moustapha, M. and Sudret, B.,
+    *Surrogate-assisted reliability-based design optimization: a survey and a unified modular framework*,
+    Structural and Multidisciplinary Optimization, 60(5), 2157--2176, 2019.
 .. [muller2016] Müller, A. C., & Guido, S. (2016). Introduction to machine learning with Python: a guide for data scientists. " O'Reilly Media, Inc.".
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
@@ -655,6 +670,10 @@ Bibliography
 .. [sudret2008] Sudret, B. (2008). *Global sensitivity analysis using polynomial
     chaos expansions.* Reliability engineering & system safety, *93* (7), 964-979.
 .. [sullivan2015] Sullivan, T. J. (2015). *Introduction to uncertainty quantification*, Vol. 63. Springer.
+.. [sun2017] Sun, Z., Wang, J., Li, R., & Tong, C. (2017).
+    *LIF: a new Kriging based learning function and its application to structural reliability analysis.*
+    Reliability Engineering & System Safety, 157, 152-165.
+    https://doi.org/10.1016/j.ress.2016.09.003
 .. [townsend2016] Townsend, A., Trogdon, T., Olver, S. (2016).
     *Fast computation of Gauss quadrature nodes and weights on the whole real line.*
     IMA Journal of Numerical Analysis, 36(2), 802-824.

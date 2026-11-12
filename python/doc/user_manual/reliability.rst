@@ -46,10 +46,24 @@ Simulation algorithm
     SimulationAlgorithm
     SimulationResult
     EventSimulation
-    ProbabilitySimulationAlgorithm
     ProbabilitySimulationResult
+    ProbabilitySimulationResultImplementation
+    ProbabilitySimulationAlgorithm
     ExpectationSimulationAlgorithm
     ExpectationSimulationResult
+    experimental.ActiveLearningReliabilityFunction
+    experimental.PythonActiveLearningReliabilityFunction
+    experimental.ActiveLearningUFunction
+    experimental.ActiveLearningGMMFunction
+    experimental.ActiveLearningEFFFunction
+    experimental.ActiveLearningReliabilityAlgorithm
+    experimental.ActiveLearningReliabilityResult
+
+:class:`ProbabilitySimulationResult` is the result handle returned by the
+simulation algorithms: it preserves the dynamic type of the concrete result.
+:class:`ProbabilitySimulationResultImplementation` is its implementation class,
+which holds the result state and concrete accessors; most users only handle the
+former.
 
 Directional Sampling
 ====================
