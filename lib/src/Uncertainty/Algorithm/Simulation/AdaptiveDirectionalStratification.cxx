@@ -42,14 +42,15 @@ AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
 AdaptiveDirectionalStratification::AdaptiveDirectionalStratification(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
-  : EventSimulationImplementation()
+  : EventSimulationImplementation(event.getImplementation()->asComposedEvent())
+  , standardEvent_(StandardEvent(getEvent()))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
   , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultGamma"))
   , partialStratification_(false)
   , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
-  setEvent(event);
+  samplingStrategy_.setDimension(getEvent().getImplementation()->getAntecedent().getDimension());
 }
 
 /* Virtual constructor */
@@ -62,20 +63,22 @@ AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() c
 void AdaptiveDirectionalStratification::setEvent(const RandomVector & event)
 {
   const RandomVector composedEvent(event.getImplementation()->asComposedEvent());
-  const StandardEvent standardEvent(composedEvent);
   const UnsignedInteger dimension = composedEvent.getImplementation()->getAntecedent().getDimension();
   if ((quadrantOrientation_.getDimension() > 0) && (quadrantOrientation_.getDimension() != dimension))
     throw InvalidDimensionException(HERE) << "Error: the quadrant orientation dimension (" << quadrantOrientation_.getDimension() << ") is not compatible with the antecedent dimension (" << dimension << ")";
+
+  // Install the event only once every check has passed
   EventSimulationImplementation::setEvent(composedEvent);
-  standardEvent_ = standardEvent;
+  standardEvent_ = StandardEvent(composedEvent);
   samplingStrategy_.setDimension(dimension);
 }
+
 
 void AdaptiveDirectionalStratification::run()
 {
   // First, reset the convergence history
   convergenceStrategy_.setDimension(3);
-  result_ = ProbabilitySimulationResult();
+  result_ = ProbabilitySimulationResultImplementation();
   result_.setEvent(getEvent());
   result_.setBlockSize(1);
 

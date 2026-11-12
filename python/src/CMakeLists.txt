@@ -705,7 +705,7 @@ ot_add_python_module(simulation simulation_module.i
                       SobolIndicesExperiment.i SobolIndicesExperiment_doc.i
                       RankSobolSensitivityAlgorithm.i RankSobolSensitivityAlgorithm_doc.i
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i
-                      ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
+                      ProbabilitySimulationResultImplementation.i ProbabilitySimulationResultImplementation_doc.i
                       SimulationResult.i SimulationResult_doc.i
                       SimulationAlgorithm.i SimulationAlgorithm_doc.i
                       EventSimulationImplementation.i EventSimulationImplementation_doc.i
@@ -740,7 +740,8 @@ ot_add_python_module(simulation simulation_module.i
                       StandardSpaceCrossEntropyImportanceSampling.i StandardSpaceCrossEntropyImportanceSampling_doc.i
                       PhysicalSpaceCrossEntropyImportanceSampling.i PhysicalSpaceCrossEntropyImportanceSampling_doc.i
                       LineSampling.i LineSampling_doc.i
-                    )
+                      ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i
+                   )
 ot_add_python_module(graph graph_module.i
                       DrawableImplementation.i DrawableImplementation_doc.i
                       Drawable.i Drawable_doc.i

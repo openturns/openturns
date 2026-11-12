@@ -1,92 +1,229 @@
-%define OT_SimulationResult_doc
-"Probability simulation result.
-
-Structure created by the method run() of a :class:`~openturns.EventSimulation`,
-and obtained thanks to the method getResult().
-
-Notes
------
-The following :class:`~openturns.ResourceMap` keys are used:
-
-- ``ProbabilitySimulationResult-CheckPositiveVariance`` (``Bool``, default: ``False``): whether the variance of the probability estimator is checked to be strictly positive,
-- ``ProbabilitySimulationResult-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default confidence level used to compute the confidence interval of the probability estimator.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> limitState = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3.*E*I)'])
->>> # Enable the history mechanism in order to use the getImportanceFactors method
->>> limitState = ot.MemoizeFunction(limitState)
->>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
->>> output = ot.CompositeRandomVector(limitState, ot.RandomVector(distribution))
->>> event = ot.ThresholdEvent(output, ot.Less(), -3.0)
->>> experiment = ot.MonteCarloExperiment()
->>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
->>> algo.run()
->>> result = algo.getResult()
->>> importanceFactors = result.getImportanceFactors()"
-%enddef
 %feature("docstring") OT::ProbabilitySimulationResult
-OT_SimulationResult_doc
+R"RAW(Handle to any concrete simulation result, preserving its dynamic type.
 
-// ---------------------------------------------------------------------
+This handle stores e.g. :class:`~openturns.NAISResult`,
+:class:`~openturns.SubsetSamplingResult` or
+:class:`~openturns.CrossEntropyResult` without slicing them. Generic
+quantities are readable directly; concrete details are accessible
+through ``getImplementation()``, which returns a copy of the concrete
+result with its dynamic type.
 
-%define OT_SimulationResult_getBlockSize_doc
-"Accessor to the block size.
+Available constructors:
+    ProbabilitySimulationResult(*result*)
+
+    ProbabilitySimulationResult(*event, probabilityEstimate, varianceEstimate, outerSampling, blockSize*)
+
+Parameters
+----------
+result : :class:`~openturns.ProbabilitySimulationResultImplementation`
+    Concrete simulation result to wrap. It is cloned, so the handle is
+    independent of the source object.
+event : :class:`~openturns.RandomVector`
+    Event we want to evaluate the probability.
+probabilityEstimate : float, :math:`0 \leq P_e \leq 1`
+    Estimate of the event probability.
+varianceEstimate : float, :math:`Var_e \geq 0`
+    Variance estimate.
+outerSampling : int
+    Number of outer sampling.
+blockSize : int
+    Number of evaluations of the limit state function performed at each
+    outer sampling.
+)RAW"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getProbabilityEstimate
+"Accessor to probability estimate.
+
+Returns
+-------
+probabilityEstimate : float
+    Probability estimate of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getVarianceEstimate
+"Accessor to variance estimate.
+
+Returns
+-------
+varianceEstimate : float
+    Variance estimate of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getCoefficientOfVariation
+"Accessor to coefficient of variation.
+
+Returns
+-------
+coefficientOfVariation : float
+    Coefficient of variation of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getStandardDeviation
+"Accessor to standard deviation.
+
+Returns
+-------
+standardDeviation : float
+    Standard deviation of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getOuterSampling
+"Accessor to outer sampling.
+
+Returns
+-------
+outerSampling : int
+    Outer sampling of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getBlockSize
+"Accessor to block size.
 
 Returns
 -------
 blockSize : int
-    Number of terms in the probability simulation estimator grouped together."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getBlockSize
-OT_SimulationResult_getBlockSize_doc
+    Block size of the wrapped result
+"
 
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_setBlockSize_doc
-R"RAW(Accessor to the block size.
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::setOuterSampling
+"Accessor to the outer sampling.
 
 Parameters
 ----------
-blockSize : int, :math:`blockSize \geq 0`
-    Number of terms in the probability simulation estimator grouped together.
-)RAW"
-%enddef
+outerSampling : int
+    Outer sampling of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
 %feature("docstring") OT::ProbabilitySimulationResult::setBlockSize
-OT_SimulationResult_setBlockSize_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_setEvent_doc
-"Accessor to the event.
+"Accessor to the block size.
 
 Parameters
 ----------
-event : :class:`~openturns.RandomVector`
-    Event we want to evaluate the probability."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::setEvent
-OT_SimulationResult_setEvent_doc
+blockSize : int
+    Block size of the wrapped result
+"
 
-// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getTimeDuration
+"Accessor to the elapsed time.
 
-%define OT_SimulationResult_getEvent_doc
-"Accessor to the event.
+Returns
+-------
+timeDuration : float
+    Elapsed time of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::setTimeDuration
+"Accessor to the elapsed time.
+
+Parameters
+----------
+timeDuration : float
+    Elapsed time of the wrapped result
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getEvent
+"Accessor to event.
 
 Returns
 -------
 event : :class:`~openturns.RandomVector`
-    Event we want to evaluate the probability."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getEvent
-OT_SimulationResult_getEvent_doc
+    Event of the wrapped result
+"
 
-// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::setEvent
+R"RAW(Accessor to the event.
 
-%define OT_SimulationResult_getImportanceFactors_doc
+.. deprecated:: 1.28
+    The result is now a handle to a
+    :class:`~openturns.ProbabilitySimulationResultImplementation`. Set the
+    event on the implementation before wrapping it: ``getImplementation()``
+    returns a copy, so modifying that copy does not modify the handle.
+
+Parameters
+----------
+event : :class:`~openturns.RandomVector`
+    Event we want to evaluate the probability.
+)RAW"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::setProbabilityEstimate
+R"RAW(Accessor to the probability estimate.
+
+.. deprecated:: 1.28
+    The result is now a handle to a
+    :class:`~openturns.ProbabilitySimulationResultImplementation`. Set the
+    estimate on the implementation before wrapping it: ``getImplementation()``
+    returns a copy, so modifying that copy does not modify the handle.
+
+Parameters
+----------
+probaEstimate : float, :math:`0 \leq P_e \leq 1`
+    Estimate of the event probability.
+)RAW"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::setVarianceEstimate
+R"RAW(Accessor to the variance estimate.
+
+.. deprecated:: 1.28
+    The result is now a handle to a
+    :class:`~openturns.ProbabilitySimulationResultImplementation`. Set the
+    variance on the implementation before wrapping it: ``getImplementation()``
+    returns a copy, so modifying that copy does not modify the handle.
+
+Parameters
+----------
+varianceEstimate : float, :math:`Var_e \geq 0`
+    Variance estimate.
+)RAW"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getProbabilityDistribution
+"Accessor to the asymptotic probability distribution.
+
+Returns
+-------
+probaDistribution : :class:`~openturns.Normal`
+    Asymptotic normal distribution of the event probability estimate.
+"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getMeanPointInEventDomain
+R"RAW(Accessor to the mean point conditioned to the event realization.
+
+Returns
+-------
+meanPoint : :class:`~openturns.Point`
+    Mean point in the physical space of all the simulations generated by the
+    :class:`~openturns.EventSimulation` algorithm that failed into the event
+    domain.
+
+Notes
+-----
+.. warning::
+    This notion is only available if the history mechanism of the model is
+    activated (see :class:`~openturns.MemoizeFunction`).
+)RAW"
+
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getImportanceFactors
 R"RAW(Accessor to the importance factors.
+
+.. deprecated:: 1.28
+    Use :meth:`~openturns.ProbabilitySimulationResultImplementation.getImportanceFactors`
+    on the concrete result returned by :meth:`getImplementation` instead.
 
 Returns
 -------
@@ -96,172 +233,22 @@ importanceFactors : :class:`~openturns.PointWithDescription`
 
 Notes
 -----
-The importance factors :math:`\alpha_i` are evaluated from the coordinates of
-the mean point of event domain :math:`\vect{X}^*_{event}`, mapped into the
-standard space as follows:
-
-.. math::
-
-  \alpha_i = \displaystyle \frac{\left(U_{i}^*\right)^2}{||\vect{U}^*||^2}
-
-where :math:`\vect{U}^* = T(\vect{X}^*_{event})`
-with :math:`T` the iso-probabilistic transformation and the mean point
-:math:`\vect{X}^*_{event} = \displaystyle \frac{1}{n} \sum_{i=1}^{n} \vect{X}_i 1_{event}(\vect{X}_i)`.
-
 .. warning::
     This notion is only available if the history mechanism of the model is
     activated (see :class:`~openturns.MemoizeFunction`).
 
-See also
+See Also
 --------
-drawImportanceFactors)RAW"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getImportanceFactors
-OT_SimulationResult_getImportanceFactors_doc
+drawImportanceFactors
+)RAW"
 
-// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::drawImportanceFactors
+R"RAW(Draw the importance factors.
 
-%define OT_SimulationResult_getMeanPointInEventDomain_doc
-"Accessor to the mean point conditioned to the event realization.
-
-Returns
--------
-meanPoint : :class:`~openturns.Point`
-    Mean point in the physical space of all the simulations generated by the
-    :class:`~openturns.EventSimulation` algorithm that failed into the event domain.
-
-Notes
------
-.. warning::
-    This notion is only available if the history mechanism of the model is
-    activated (see :class:`~openturns.MemoizeFunction`)."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getMeanPointInEventDomain
-OT_SimulationResult_getMeanPointInEventDomain_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_getCoefficientOfVariation_doc
-R"RAW(Accessor to the coefficient of variation.
-
-Returns
--------
-coefficient : float
-    Coefficient of variation of the simulated sample which is equal to
-    :math:`\sqrt{Var_e} / P_e` with :math:`Var_e` the variance estimate and
-    :math:`P_e` the probability estimate.)RAW"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getCoefficientOfVariation
-OT_SimulationResult_getCoefficientOfVariation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_getOuterSampling_doc
-"Accessor to the outer sampling.
-
-Returns
--------
-outerSampling : int
-    Number of groups of terms in the probability simulation estimator."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getOuterSampling
-OT_SimulationResult_getOuterSampling_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_setOuterSampling_doc
-R"RAW(Accessor to the outer sampling.
-
-Parameters
-----------
-outerSampling : int, :math:`outerSampling \geq 0`
-    Number of groups of terms in the probability simulation estimator.)RAW"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::setOuterSampling
-OT_SimulationResult_setOuterSampling_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_getStandardDeviation_doc
-"Accessor to the standard deviation.
-
-Returns
--------
-sigma : float
-    Standard deviation of the estimator at the end of the simulation."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getStandardDeviation
-OT_SimulationResult_getStandardDeviation_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_getVarianceEstimate_doc
-"Accessor to the variance estimate.
-
-Returns
--------
-varianceEstimate : float
-    Variance estimate."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getVarianceEstimate
-OT_SimulationResult_getVarianceEstimate_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_setVarianceEstimate_doc
-R"RAW(Accessor to the variance estimate.
-
-Parameters
-----------
-varianceEstimate : float, :math:`Var_e \geq 0`
-    Variance estimate.)RAW"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::setVarianceEstimate
-OT_SimulationResult_setVarianceEstimate_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_getProbabilityEstimate_doc
-"Accessor to the probability estimate.
-
-Returns
--------
-probaEstimate : float
-    Estimate of the event probability."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getProbabilityEstimate
-OT_SimulationResult_getProbabilityEstimate_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_setProbabilityEstimate_doc
-R"RAW(Accessor to the probability estimate.
-
-Parameters
-----------
-probaEstimate : float, :math:`0 \leq P_e \leq 1`
-    Estimate of the event probability.)RAW"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::setProbabilityEstimate
-OT_SimulationResult_setProbabilityEstimate_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_getProbabilityDistribution_doc
-"Accessor to the asymptotic probability distribution.
-
-Returns
--------
-probaDistribution : :class:`~openturns.Normal`
-    Asymptotic normal distribution of the event probability estimate."
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::getProbabilityDistribution
-OT_SimulationResult_getProbabilityDistribution_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_SimulationResult_drawImportanceFactors_doc
-"Draw the importance factors.
+.. deprecated:: 1.28
+    Use :meth:`~openturns.ProbabilitySimulationResultImplementation.drawImportanceFactors`
+    on the concrete result returned by :meth:`getImplementation` instead.
 
 .. warning::
     It is necessary to enable the history of the model to perform this analysis
@@ -272,10 +259,26 @@ Returns
 graph : :class:`~openturns.Graph`
     Importance factor graph.
 
-See also
+See Also
 --------
-getImportanceFactors"
-%enddef
-%feature("docstring") OT::ProbabilitySimulationResult::drawImportanceFactors
-OT_SimulationResult_drawImportanceFactors_doc
+getImportanceFactors
+)RAW"
 
+// ---------------------------------------------------------------------------
+%feature("docstring") OT::ProbabilitySimulationResult::getConfidenceLength
+R"RAW(Accessor to the confidence length.
+
+.. deprecated:: 1.28
+    Use :meth:`~openturns.ProbabilitySimulationResultImplementation.getConfidenceLength`
+    on the concrete result returned by :meth:`getImplementation` instead.
+
+Parameters
+----------
+level : float, optional
+    Confidence level, in the range :math:`]0, 1[`.
+
+Returns
+-------
+length : float
+    Length of the bilateral confidence interval of the probability estimate.
+)RAW"

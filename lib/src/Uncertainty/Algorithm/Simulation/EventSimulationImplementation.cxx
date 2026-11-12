@@ -84,7 +84,7 @@ void EventSimulationImplementation::setEvent(const RandomVector & event)
 }
 
 /* Result accessor */
-void EventSimulationImplementation::setResult(const ProbabilitySimulationResult & result)
+void EventSimulationImplementation::setResult(const ProbabilitySimulationResultImplementation & result)
 {
   result_ = result;
 }
@@ -93,7 +93,14 @@ void EventSimulationImplementation::setResult(const ProbabilitySimulationResult 
 /* Result accessor */
 ProbabilitySimulationResult EventSimulationImplementation::getResult() const
 {
-  return result_;
+  // The handle is cloned so that later runs never mutate a returned result
+  return ProbabilitySimulationResult(result_);
+}
+
+/* Current result with full dynamic type */
+ProbabilitySimulationResult EventSimulationImplementation::getHistoryResult() const
+{
+  return ProbabilitySimulationResult(result_);
 }
 
 /* String converter */
@@ -112,6 +119,9 @@ String EventSimulationImplementation::__repr__() const
 /* Performs the actual computation. */
 void EventSimulationImplementation::run()
 {
+  // A previous run or a subclass may have stored a specialized result:
+  // start from a fresh base result so that no stale field survives.
+  result_ = ProbabilitySimulationResultImplementation();
   convergenceStrategy_.setDimension(3);
   UnsignedInteger outerSampling = 0;
   Scalar coefficientOfVariation = -1.0;
@@ -208,7 +218,7 @@ Graph EventSimulationImplementation::drawProbabilityConvergence(const Scalar lev
     dataEstimate(i, 1) = probabilityEstimate;
     if (varianceEstimate >= 0.0)
     {
-      const Interval confidenceInterval(ProbabilitySimulationResult(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getProbabilityDistribution().computeBilateralConfidenceInterval(level));
+      const Interval confidenceInterval(ProbabilitySimulationResultImplementation(event_, probabilityEstimate, varianceEstimate, outerIndex + 1, blockSize_).getProbabilityDistribution().computeBilateralConfidenceInterval(level));
       dataLowerBound.add(Point({outerIndex + 1, confidenceInterval.getLowerBound()[0]}));
       dataUpperBound.add(Point({outerIndex + 1, confidenceInterval.getUpperBound()[0]}));
     }

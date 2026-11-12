@@ -75,7 +75,7 @@ public:
   void run();
 
   /** Draw the probability convergence at the given level */
-  Graph drawProbabilityConvergence(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+  Graph drawProbabilityConvergence(const Scalar level = ProbabilitySimulationResultImplementation::GetDefaultConfidenceLevel()) const;
 
   /** Input accessor */
   Sample getInputSample() const;

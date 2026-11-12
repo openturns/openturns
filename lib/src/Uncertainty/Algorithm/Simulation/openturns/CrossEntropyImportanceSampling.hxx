@@ -69,8 +69,8 @@ public:
 
   /** Input/output sample accessor according to select flag */
   enum SelectSample {EVENT0, EVENT1, BOTH};
-  using EventSimulationImplementation::getInputSample;
-  Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  virtual Sample getInputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
+  Sample getInputSample() const override;
   Sample getOutputSample(const UnsignedInteger step, const UnsignedInteger select = BOTH) const;
 
   /** Method save() stores the object through the StorageManager */
@@ -82,10 +82,10 @@ public:
   /** Event accessor */
   void setEvent(const RandomVector & event) override;
 
-  /** Maximum coefficient of variation accessor */
-  void setMaximumCoefficientOfVariation(const Scalar) override;
-
 protected:
+  /** Restricted history bridge for ActiveLearningReliabilityAlgorithm */
+  ProbabilitySimulationResult getHistoryResult() const override;
+
   virtual Distribution getInitialDistribution() const;
 
   /** Limit state accessor */

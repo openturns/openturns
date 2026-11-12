@@ -66,7 +66,7 @@ We note  :math:`G(\vect{u})` the limit state function in standard space and  :ma
 
 
 
-See also
+See Also
 --------
 PhysicalSpaceCrossEntropyImportanceSampling, CrossEntropyImportanceSampling, CrossEntropyResult
 
