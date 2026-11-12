@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Matrix for standard methods
+ *  @brief The test file of class SparseMatrix for standard methods
  *
  *  Copyright 2005-2026 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -27,160 +27,185 @@ using namespace OT::Test;
 int main(int, char *[])
 {
   TESTPREAMBLE;
-  OStream fullprint(std::cout);
-
-  /** TEST NUMBER ZERO : DEFAULT CONSTRUCTOR AND STRING CONVERTER */
-  fullprint << "test number zero : default constructor and string converter" << std::endl;
 
   /* Default constructor */
-  SparseMatrix matrix0;
+  {
+    SparseMatrix matrix;
+    assert_equal(matrix.getNbRows(), static_cast<UnsignedInteger>(0), "default rows");
+    assert_equal(matrix.getNbColumns(), static_cast<UnsignedInteger>(0), "default columns");
+    assert_equal(matrix.getNbNonZeros(), static_cast<UnsignedInteger>(0), "default non zeros");
+    assert_equal(Indices({0}), matrix.getColumnPointer(), "default column pointer");
+  }
+
+  /* Constructor with size, filling operator and accessors */
+  {
+    SparseMatrix matrix(4, 5);
+    matrix(0, 2) = 5.0;
+    matrix(1, 0) = 8.0;
+    matrix(2, 4) = 2.0;
+    matrix(3, 2) = 9.0;
+    assert_equal(matrix.getNbRows(), static_cast<UnsignedInteger>(4), "rows");
+    assert_equal(matrix.getNbColumns(), static_cast<UnsignedInteger>(5), "columns");
+    assert_equal(matrix.getNbNonZeros(), static_cast<UnsignedInteger>(4), "non zeros");
+    assert_equal(Indices({0, 1, 1, 3, 3, 4}), matrix.getColumnPointer(), "column pointer");
+    assert_equal(Indices({1, 0, 3, 2}), matrix.getRowIndices(), "row indices");
+    assert_almost_equal(Point({8.0, 5.0, 9.0, 2.0}), matrix.getValues(), 1.0e-5, 1.0e-8, "values");
+    assert_almost_equal(matrix(1, 0), 8.0, 1.0e-5, 1.0e-8, "coefficient");
+    // read through a const reference: the mutable accessor inserts the entry
+    const SparseMatrix & constMatrix(matrix);
+    assert_almost_equal(constMatrix(1, 1), 0.0, 1.0e-5, 1.0e-8, "implicit zero");
+    Matrix dense(4, 5);
+    dense(0, 2) = 5.0;
+    dense(1, 0) = 8.0;
+    dense(2, 4) = 2.0;
+    dense(3, 2) = 9.0;
+    assert_almost_equal(dense, matrix.asDenseMatrix(), 1.0e-5, 1.0e-8, "dense conversion");
+    // overwriting an existing coefficient does not add an entry
+    matrix(1, 0) = 3.0;
+    assert_equal(matrix.getNbNonZeros(), static_cast<UnsignedInteger>(4), "non zeros after overwrite");
+    assert_almost_equal(matrix(1, 0), 3.0, 1.0e-5, 1.0e-8, "overwritten coefficient");
+  }
+
+  /* Canonical triplet constructor: rows are sorted and duplicates summed */
+  {
+    SparseMatrix matrix(3, 2,
+                        Indices({2, 0, 0, 1}),
+                        Indices({1, 0, 0, 0}),
+                        Point({2.0, 3.0, 1.0, 4.0}));
+    assert_equal(matrix.getNbNonZeros(), static_cast<UnsignedInteger>(3), "non zeros");
+    assert_equal(Indices({0, 2, 3}), matrix.getColumnPointer(), "column pointer");
+    assert_equal(Indices({0, 1, 2}), matrix.getRowIndices(), "row indices");
+    assert_almost_equal(Point({4.0, 4.0, 2.0}), matrix.getValues(), 1.0e-5, 1.0e-8, "values");
+    Matrix dense(3, 2);
+    dense(0, 0) = 4.0;
+    dense(1, 0) = 4.0;
+    dense(2, 1) = 2.0;
+    assert_almost_equal(dense, matrix.asDenseMatrix(), 1.0e-5, 1.0e-8, "summed duplicates");
+
+    // copy constructor and clone
+    SparseMatrix copy(matrix);
+    assert_equal(copy.getColumnPointer(), matrix.getColumnPointer(), "copy");
+    SparseMatrix * p_clone = matrix.clone();
+    assert_equal(p_clone->getRowIndices(), matrix.getRowIndices(), "clone");
+    assert_almost_equal(p_clone->getValues(), matrix.getValues(), 1.0e-5, 1.0e-8, "clone values");
+    delete p_clone;
+  }
+
+  /* Invalid triplets are rejected */
+  {
+    Bool raised = false;
+    try
+    {
+      const SparseMatrix matrix(2, 2, Indices({2}), Indices({0}), Point({1.0}));
+      (void) matrix;
+    }
+    catch (const OutOfBoundException &)
+    {
+      raised = true;
+    }
+    assert_equal(raised, true, "out of bound row index");
+
+    raised = false;
+    try
+    {
+      const SparseMatrix matrix(2, 2, Indices({0}), Indices({2}), Point({1.0}));
+      (void) matrix;
+    }
+    catch (const OutOfBoundException &)
+    {
+      raised = true;
+    }
+    assert_equal(raised, true, "out of bound column index");
+
+    raised = false;
+    try
+    {
+      const SparseMatrix matrix(2, 2, Indices({0}), Indices({0, 1}), Point({1.0}));
+      (void) matrix;
+    }
+    catch (const InvalidArgumentException &)
+    {
+      raised = true;
+    }
+    assert_equal(raised, true, "mismatched triplets size");
+  }
+
+  /* Dense to sparse conversion skips the zero coefficients */
+  {
+    Matrix dense(4, 5);
+    dense(0, 2) = 5.0;
+    dense(1, 0) = 8.0;
+    dense(2, 4) = 2.0;
+    dense(3, 2) = 9.0;
+    const SparseMatrix matrix(SparseMatrix::FromDenseMatrix(dense));
+    assert_equal(matrix.getNbNonZeros(), static_cast<UnsignedInteger>(4), "non zeros");
+    assert_equal(Indices({0, 1, 1, 3, 3, 4}), matrix.getColumnPointer(), "column pointer");
+    assert_equal(Indices({1, 0, 3, 2}), matrix.getRowIndices(), "row indices");
+    assert_almost_equal(dense, matrix.asDenseMatrix(), 1.0e-5, 1.0e-8, "dense round trip");
+    assert_equal(SparseMatrix::FromDenseMatrix(Matrix(2, 2)).getNbNonZeros(), static_cast<UnsignedInteger>(0), "empty dense matrix");
+  }
+
+  /* Transposition */
+  {
+    Matrix dense(3, 2);
+    dense(0, 0) = 4.0;
+    dense(1, 0) = 4.0;
+    dense(2, 1) = 2.0;
+    const SparseMatrix matrix(SparseMatrix::FromDenseMatrix(dense));
+    const SparseMatrix transposed(matrix.transpose());
+    assert_equal(transposed.getNbRows(), static_cast<UnsignedInteger>(2), "transposed rows");
+    assert_equal(transposed.getNbColumns(), static_cast<UnsignedInteger>(3), "transposed columns");
+    assert_equal(Indices({0, 1, 2, 3}), transposed.getColumnPointer(), "transposed column pointer");
+    assert_equal(Indices({0, 0, 1}), transposed.getRowIndices(), "transposed row indices");
+    assert_almost_equal(Point({4.0, 4.0, 2.0}), transposed.getValues(), 1.0e-5, 1.0e-8, "transposed values");
+    assert_almost_equal(dense.transpose(), transposed.asDenseMatrix(), 1.0e-5, 1.0e-8, "transposed dense");
+  }
+
+  /* Products */
+  {
+    const SparseMatrix matrix(3, 2,
+                              Indices({0, 1, 2}),
+                              Indices({0, 0, 1}),
+                              Point({1.0, 2.0, 3.0}));
+    assert_almost_equal(Point({4.0, 8.0, 9.0}), matrix * Point({4.0, 3.0}), 1.0e-5, 1.0e-8, "sparse * point");
+
+    Matrix dense(2, 2);
+    dense(0, 0) = 1.0;
+    dense(0, 1) = 2.0;
+    dense(1, 0) = 3.0;
+    dense(1, 1) = 4.0;
+    assert_almost_equal(matrix.asDenseMatrix() * dense, matrix * dense, 1.0e-5, 1.0e-8, "sparse * dense");
+
+    Matrix left(2, 3);
+    left(0, 0) = 1.0;
+    left(0, 1) = 2.0;
+    left(0, 2) = 3.0;
+    left(1, 0) = 4.0;
+    left(1, 1) = 5.0;
+    left(1, 2) = 6.0;
+    assert_almost_equal(left * matrix.asDenseMatrix(), matrix.multiplyByDenseOnLeft(left), 1.0e-5, 1.0e-8, "dense * sparse");
+
+    SymmetricMatrix sym(3);
+    sym(0, 0) = 2.0;
+    sym(1, 1) = 3.0;
+    sym(2, 2) = 4.0;
+    sym(1, 0) = 1.0;
+    sym(2, 0) = 2.0;
+    sym(2, 1) = 3.0;
+    const Matrix denseSym(sym);
+    assert_almost_equal(denseSym * matrix.asDenseMatrix(), matrix.multiplyBySymmetricOnLeft(sym), 1.0e-5, 1.0e-8, "symmetric * sparse");
+  }
 
   /* String converter */
-  fullprint << "matrix0 = " << matrix0 << std::endl;
-
-
-  /** TEST NUMBER ONE : CONSTRUCTOR WITH SIZE, OPERATOR() AND STRING CONVERTER */
-  fullprint << "test number one : constructor with size, operator() and string converter" << std::endl;
-
-  /* Constructor with size */
-  SparseMatrix matrix1(4, 5);
-
-  /* Check operator() methods */
-  matrix1(0, 2) = 5. ;
-  matrix1(1, 0) = 8. ;
-  matrix1(2, 4) = 2. ;
-  matrix1(3, 2) = 9. ;
-
-  /* String converter */
-  fullprint << "matrix1 = " << matrix1 << std::endl;
-  fullprint << "matrix1 as dense = " << matrix1.asDenseMatrix().__str__() << std::endl;
-
-  /** TEST NUMBER TWO : COPY CONSTRUCTOR AND STRING CONVERTER */
-  fullprint << "test number two : copy constructor and string converter" << std::endl;
-
-  /* Copy constructor */
-  SparseMatrix matrix2(matrix1);
-
-  /* String converter */
-  fullprint << "matrix2 = " << matrix2 << std::endl;
-
-
-  /** TEST NUMBER THREE : GET DIMENSIONS METHODS */
-  fullprint << "test number three : get dimensions methods" << std::endl;
-
-  /* Get dimension methods */
-  fullprint << "matrix1's nbRows = " << matrix1.getNbRows() << std::endl
-            << "matrix1's nbColumns = " << matrix1.getNbColumns() << std::endl
-            << "matrix1's nbNonZeros = " << matrix1.getNbNonZeros() << std::endl;
-
-
-  /** TEST NUMBER FOUR : TRANSPOSITION METHOD */
-  fullprint << "test number six : transposition method" << std::endl;
-
-  /* Check transpose method */
-  SparseMatrix matrix4 = matrix1.transpose();
-  fullprint << "matrix1 transposed = " << matrix4.asDenseMatrix().__str__() << std::endl;
-
-
-  /* Create the point */
-  Point pt(5);
-  for(UnsignedInteger i = 0; i < 5; ++ i)
-    pt[i] = i + 1;
-  fullprint << "pt = " << pt << std::endl;
-
-  // mul with Point
-  Point ptResult = matrix1.operator * ( pt ) ;
-  fullprint << "ptResult = " << ptResult << std::endl;
-
-  // multiply with Matrix
-  Matrix dense1(5, 6);
-  for(UnsignedInteger i = 0; i < dense1.getNbRows(); ++ i)
-    for(UnsignedInteger j = 0; j < dense1.getNbColumns(); ++ j)
-      dense1(i, j) = i + j * 10;
-
-  fullprint << "dense1=" << dense1.__str__() << std::endl;
-  Matrix res2(matrix1 * dense1);
-  fullprint << "sparse*dense=" << res2.__str__() << std::endl;
-  fullprint << "same=" << (res2 == matrix1.asDenseMatrix() * dense1) << std::endl;
-
-  // multiply with a dense matrix given as left operand
-  Matrix dense2(6, 4);
-  for(UnsignedInteger i = 0; i < dense2.getNbRows(); ++ i)
-    for(UnsignedInteger j = 0; j < dense2.getNbColumns(); ++ j)
-      dense2(i, j) = i + j * 10;
-
-  Matrix res3(matrix1.multiplyByDenseOnLeft(dense2));
-  fullprint << "dense*sparse=" << res3.__str__() << std::endl;
-  fullprint << "same=" << (res3 == dense2 * matrix1.asDenseMatrix()) << std::endl;
-
-  // a SymmetricMatrix only stores its lower triangle: the symmetric overload
-  // must read its coefficients through the symmetric accessor, and give the
-  // same result as the dense overload applied to the symmetrized matrix
-  SymmetricMatrix sym(4);
-  sym(0, 0) = 2.0;
-  sym(1, 1) = 3.0;
-  sym(2, 2) = 4.0;
-  sym(3, 3) = 5.0;
-  sym(1, 0) = 1.0;
-  sym(2, 0) = 2.0;
-  sym(3, 0) = 3.0;
-  sym(2, 1) = 4.0;
-  sym(3, 1) = 5.0;
-  sym(3, 2) = 6.0;
-  Matrix denseSym(sym);
-  Matrix resSym(matrix1.multiplyBySymmetricOnLeft(sym));
-  fullprint << "symmetric*sparse=" << resSym.__str__() << std::endl;
-  fullprint << "same=" << (resSym == denseSym * matrix1.asDenseMatrix()) << std::endl;
-  fullprint << "same=" << (resSym == matrix1.multiplyByDenseOnLeft(denseSym)) << std::endl;
-
-  /** triplet ctor */
-  Indices rowIndices;
-  Indices columnIndices;
-  Point values;
-
-  rowIndices.add(0);
-  columnIndices.add(2);
-  values.add(5.0);
-
-  rowIndices.add(1);
-  columnIndices.add(0);
-  values.add(8.0);
-
-  rowIndices.add(2);
-  columnIndices.add(4);
-  values.add(2.0);
-
-  rowIndices.add(3);
-  columnIndices.add(2);
-  values.add(9.0);
-
-  SparseMatrix matrix3(4, 5, rowIndices, columnIndices, values);
-  fullprint << "matrix3=" << matrix3 << std::endl;
-  fullprint << "matrix3 as dense = " << matrix3.asDenseMatrix().__str__() << std::endl;
-  fullprint << "ptResult = " << matrix3*pt << std::endl;
-
-  // item accessor
-  Scalar a24 = matrix3(2, 4);
-  fullprint << "matrix3(2, 4)=" << a24 << std::endl;
-  matrix3(2, 4) = 8.0;
-  a24 = matrix3(2, 4);
-  fullprint << "matrix3(2, 4)=" << a24 << std::endl;
-
-  // sum values at duplicate indices
-  rowIndices.add(2);
-  columnIndices.add(4);
-  values.add(2.0);
-
-  SparseMatrix matrix5(4, 5, rowIndices, columnIndices, values);
-  fullprint << "matrix5=" << matrix5 << std::endl;
-  fullprint << "matrix5 as dense = " << matrix5.asDenseMatrix().__str__() << std::endl;
-  fullprint << "ptResult = " << matrix5*pt << std::endl;
-
-  // transposition sums the values at duplicate indices
-  const SparseMatrix matrix5T(matrix5.transpose());
-  fullprint << "matrix5T=" << matrix5T << std::endl;
-  fullprint << "matrix5T(4, 2)=" << matrix5T(4, 2) << std::endl;
-  fullprint << "matrix5T as dense = " << matrix5T.asDenseMatrix().__str__() << std::endl;
+  {
+    const SparseMatrix matrix(3, 2,
+                              Indices({2, 0, 0, 1}),
+                              Indices({1, 0, 0, 0}),
+                              Point({2.0, 3.0, 1.0, 4.0}));
+    assert_equal(matrix.__repr__(),
+                 String("class=SparseMatrix rows=3 columns=2 triplets=[[0,0,4],[1,0,4],[2,1,2]]"),
+                 "string converter");
+  }
 
   return ExitCode::Success;
 }

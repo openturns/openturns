@@ -239,6 +239,7 @@ ot_add_python_module(typ typ_module.i
                       IndicesCollectionImplementation.i IndicesCollectionImplementation_doc.i
                       MatrixImplementation.i
                       Matrix.i Matrix_doc.i
+                      SparseMatrix.i SparseMatrix_doc.i
                       SquareMatrix.i SquareMatrix_doc.i
                       SymmetricMatrix.i SymmetricMatrix_doc.i
                       Tensor.i Tensor_doc.i
