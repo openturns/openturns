@@ -935,10 +935,18 @@ void MaximumEntropyOrderStatisticsDistribution::setParametersCollection(const Po
   const UnsignedInteger dimension = getDimension();
   if (parametersCollection.getSize() != dimension) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << dimension << ")";
 
-  // set marginal parameters
+  // No partial update on error: work on copies before committing
+  DistributionCollection newDistributions(dimension);
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
-    distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
-  setDistributionCollection(distributionCollection_);
+  {
+    Distribution marginal(distributionCollection_[marginalIndex]);
+    marginal.setParameter(parametersCollection[marginalIndex]);
+    newDistributions[marginalIndex] = marginal;
+  }
+  // All slices accepted: commit the staged updates
+  const Description description(getDescription());
+  setDistributionCollection(newDistributions);
+  setDescription(description);
 }
 
 
