@@ -20,6 +20,7 @@
  */
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include "openturns/EmpiricalBernsteinCopula.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -598,7 +599,8 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
   const UnsignedInteger size = copulaSample_.getSize();
   if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "BernsteinCopula expected " << (dimension * size + 1) << " parameters, got " << parameter.getDimension();
   const Scalar binNumber = parameter[dimension * size];
-  if ((binNumber < 1.0) || (binNumber != std::round(binNumber))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be a positive integer, got " << binNumber;
+  if (!(binNumber >= 1.0) || (binNumber != std::round(binNumber))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber must be a positive integer, got " << binNumber;
+  if (!(binNumber <= static_cast<Scalar>(std::numeric_limits<UnsignedInteger>::max()))) throw InvalidArgumentException(HERE) << "the BernsteinCopula last parameter binNumber is too large, got " << binNumber;
   // No partial update on error: stage into a copy before committing
   Sample newSample(copulaSample_);
   UnsignedInteger index = 0;
@@ -614,7 +616,7 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
   // so a throw in update() leaves *this unchanged
   EmpiricalBernsteinCopula tmp(*this);
   tmp.copulaSample_ = newSample;
-  tmp.binNumber_ = binNumber;
+  tmp.binNumber_ = static_cast<UnsignedInteger>(binNumber);
   tmp.update();
   *this = tmp;
 }
