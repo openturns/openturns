@@ -74,14 +74,14 @@ public:
   Bool hasMultipleObjective() const;
 
   /** Equality constraint function accessor */
-  Function getEqualityConstraint() const;
-  void setEqualityConstraint(const Function & equalityConstraint);
-  Bool hasEqualityConstraint() const;
+  virtual Function getEqualityConstraint() const;
+  virtual void setEqualityConstraint(const Function & equalityConstraint);
+  virtual Bool hasEqualityConstraint() const;
 
   /** Inequality constraint function accessor */
-  Function getInequalityConstraint() const;
-  void setInequalityConstraint(const Function & inequalityConstraint);
-  Bool hasInequalityConstraint() const;
+  virtual Function getInequalityConstraint() const;
+  virtual void setInequalityConstraint(const Function & inequalityConstraint);
+  virtual Bool hasInequalityConstraint() const;
 
   /** Bounds accessor */
   Interval getBounds() const;
