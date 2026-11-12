@@ -50,8 +50,22 @@ public:
   QuadraticProblem(const SymmetricMatrix & hessian,
                    const Point & linearCost,
                    const Interval & bounds,
+                   const Scalar constant);
+
+  /** Constructor with parameters */
+  QuadraticProblem(const SymmetricMatrix & hessian,
+                   const Point & linearCost,
+                   const Interval & bounds,
                    const Matrix & constraintCoefficients,
                    const Interval & constraintBounds);
+
+  /** Constructor with parameters */
+  QuadraticProblem(const SymmetricMatrix & hessian,
+                   const Point & linearCost,
+                   const Interval & bounds,
+                   const Matrix & constraintCoefficients,
+                   const Interval & constraintBounds,
+                   const Scalar constant);
 
   /** Virtual constructor */
   QuadraticProblem * clone() const override;
@@ -71,6 +85,16 @@ public:
   void setLinearConstraint(const Matrix & constraintCoefficients, const Interval & constraintBounds);
   Matrix getLinearConstraintCoefficients() const override;
   Interval getLinearConstraintBounds() const override;
+
+  /** Equality and inequality constraints derived from the linear constraints.
+      A row whose lower and upper bounds are equal is an equality constraint,
+      the other finite rows are inequality constraints. */
+  Function getEqualityConstraint() const override;
+  void setEqualityConstraint(const Function & equalityConstraint) override;
+  Bool hasEqualityConstraint() const override;
+  Function getInequalityConstraint() const override;
+  void setInequalityConstraint(const Function & inequalityConstraint) override;
+  Bool hasInequalityConstraint() const override;
 
   /** Build a least-squares problem min ||A.x-b||^2 subject to bounds */
   static QuadraticProblem FromLeastSquares(const Matrix & matrix,

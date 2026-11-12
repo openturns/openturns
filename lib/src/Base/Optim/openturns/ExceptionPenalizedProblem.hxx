@@ -84,10 +84,10 @@ public:
   void setObjective(const Function & objective);
 
   /** Equality constraint accessor */
-  void setEqualityConstraint(const Function & equalityConstraint);
+  void setEqualityConstraint(const Function & equalityConstraint) override;
 
   /** Inequality constraint accessor */
-  void setInequalityConstraint(const Function & inequalityConstraint);
+  void setInequalityConstraint(const Function & inequalityConstraint) override;
 
   /** Bounds accessor */
   void setBounds(const Interval & bounds);

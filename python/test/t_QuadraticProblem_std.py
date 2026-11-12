@@ -26,6 +26,11 @@ print(problem)
 # the objective includes the constant term
 ott.assert_almost_equal(problem.getObjective()([0.5, 2.0]), [-3.75])
 
+# the constant term can also be given to the constructor
+problemConstant = otexp.QuadraticProblem(Q, c, bounds, 2.0)
+assert problemConstant.getConstant() == 2.0
+ott.assert_almost_equal(problemConstant.getObjective()([0.5, 2.0]), [-2.75])
+
 # bounds can be replaced or cleared
 problem.setBounds(ot.Interval([0.0, 0.0], [0.25, 10.0]))
 assert problem.getBounds() == ot.Interval([0.0, 0.0], [0.25, 10.0])
@@ -87,15 +92,22 @@ with ott.assert_raises(TypeError):
     otexp.HiGHS(problemMIP)
 
 # constraint functions cannot be mapped to the HiGHS model: only the linear
-# constraints given to setLinearConstraint are supported
-problemEquality = otexp.QuadraticProblem(Q, c, ot.Interval())
-problemEquality.setEqualityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
+# constraints given to setLinearConstraint are supported. A QuadraticProblem
+# refuses nonlinear constraint functions outright; a generic problem that
+# carries them is rejected by HiGHS.
+problemFunctions = otexp.QuadraticProblem(Q, c, ot.Interval())
 with ott.assert_raises(TypeError):
-    otexp.HiGHS(problemEquality)
-problemInequality = otexp.QuadraticProblem(Q, c, ot.Interval())
-problemInequality.setInequalityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
+    problemFunctions.setEqualityConstraint(
+        ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"])
+    )
 with ott.assert_raises(TypeError):
-    otexp.HiGHS(problemInequality)
+    problemFunctions.setInequalityConstraint(
+        ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"])
+    )
+baseProblem = ot.OptimizationProblem(ot.SymbolicFunction(["x0", "x1"], ["x0^2 + x1^2"]))
+baseProblem.setEqualityConstraint(ot.SymbolicFunction(["x0", "x1"], ["x0 + x1"]))
+with ott.assert_raises(TypeError):
+    otexp.HiGHS(baseProblem)
 
 # least-squares factory: min ||A.x-b||^2 with 0 <= x0 <= 0.5, 0 <= x1 <= 10
 A = ot.Matrix([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])
@@ -124,9 +136,7 @@ ott.assert_almost_equal(algoLSUnbounded.getResult().getOptimalValue(), [0.0])
 # linear constraints: projection of (1, 2) onto x0 + x1 = 2.5
 Aconstraint = ot.Matrix([[1.0, 1.0]])
 constraintBounds = ot.Interval([2.5], [2.5])
-problemC = otexp.QuadraticProblem(
-    Q, c, ot.Interval(), Aconstraint, constraintBounds
-)
+problemC = otexp.QuadraticProblem(Q, c, ot.Interval(), Aconstraint, constraintBounds)
 algoC = otexp.HiGHS(problemC)
 algoC.run()
 ott.assert_almost_equal(algoC.getResult().getOptimalPoint(), [0.75, 1.75])
@@ -139,6 +149,68 @@ problemIneq = otexp.QuadraticProblem(
 algoIneq = otexp.HiGHS(problemIneq)
 algoIneq.run()
 ott.assert_almost_equal(algoIneq.getResult().getOptimalPoint(), [0.75, 1.75], 1e-4)
+
+# the getters always return linear functions of the problem dimension, even
+# when no constraint of that kind is defined
+emptyEquality = problem.getEqualityConstraint()
+emptyInequality = problem.getInequalityConstraint()
+for emptyConstraint in [emptyEquality, emptyInequality]:
+    assert isinstance(
+        emptyConstraint.getEvaluation().getImplementation(), ot.LinearEvaluation
+    )
+    assert emptyConstraint.getInputDimension() == 2
+    assert emptyConstraint.getOutputDimension() == 0
+assert not problem.hasEqualityConstraint()
+assert not problem.hasInequalityConstraint()
+
+# equality and inequality constraints are derived from the linear constraints
+assert problemC.hasEqualityConstraint()
+assert not problemC.hasInequalityConstraint()
+equalityC = problemC.getEqualityConstraint()
+assert isinstance(equalityC.getEvaluation().getImplementation(), ot.LinearEvaluation)
+assert equalityC.getInputDimension() == 2
+assert equalityC.getOutputDimension() == 1
+ott.assert_almost_equal(equalityC([0.75, 1.75]), [0.0])
+ott.assert_almost_equal(equalityC([1.0, 1.0]), [-0.5])
+
+assert problemIneq.hasInequalityConstraint()
+assert not problemIneq.hasEqualityConstraint()
+inequalityC = problemIneq.getInequalityConstraint()
+assert isinstance(inequalityC.getEvaluation().getImplementation(), ot.LinearEvaluation)
+assert inequalityC.getInputDimension() == 2
+assert inequalityC.getOutputDimension() == 1
+ott.assert_almost_equal(inequalityC([0.75, 1.75]), [0.0])
+ott.assert_almost_equal(inequalityC([0.0, 0.0]), [2.5])
+
+# a two-sided constraint generates one component per finite bound
+problemTwoSided = otexp.QuadraticProblem(
+    Q, c, ot.Interval(), Aconstraint, ot.Interval([0.0], [2.5])
+)
+inequalityTwoSided = problemTwoSided.getInequalityConstraint()
+assert inequalityTwoSided.getOutputDimension() == 2
+ott.assert_almost_equal(inequalityTwoSided([1.0, 0.0]), [1.0, 1.5])
+
+# a problem can mix equality and inequality rows
+mixedMatrix = ot.Matrix([[1.0, 1.0], [1.0, -1.0]])
+mixedBounds = ot.Interval([2.5, -1e30], [2.5, 1.0], [True, False], [True, True])
+problemMixed = otexp.QuadraticProblem(Q, c, ot.Interval(), mixedMatrix, mixedBounds)
+assert problemMixed.hasEqualityConstraint()
+assert problemMixed.hasInequalityConstraint()
+equalityMixed = problemMixed.getEqualityConstraint()
+inequalityMixed = problemMixed.getInequalityConstraint()
+assert equalityMixed.getInputDimension() == 2
+assert equalityMixed.getOutputDimension() == 1
+assert inequalityMixed.getInputDimension() == 2
+assert inequalityMixed.getOutputDimension() == 1
+ott.assert_almost_equal(equalityMixed([0.75, 1.75]), [0.0])
+ott.assert_almost_equal(inequalityMixed([0.75, 1.75]), [2.0])
+
+# generic algorithms enforce the derived constraints
+algoCobyla = ot.Cobyla(problemC)
+algoCobyla.setStartingPoint([0.0, 0.0])
+algoCobyla.run()
+pointCobyla = algoCobyla.getResult().getOptimalPoint()
+ott.assert_almost_equal([pointCobyla[0] + pointCobyla[1]], [2.5], 1e-3)
 
 # accessors
 problemC.setHessian(Q)
@@ -162,9 +234,7 @@ with ott.assert_raises(ValueError):
         ot.Matrix(2, 1), [1.0, 2.0, 3.0], ot.Interval()
     )
 with ott.assert_raises(ValueError):
-    otexp.QuadraticProblem.FromLeastSquares(
-        ot.Matrix(2, 1), [1.0, 2.0], ot.Interval(2)
-    )
+    otexp.QuadraticProblem.FromLeastSquares(ot.Matrix(2, 1), [1.0, 2.0], ot.Interval(2))
 with ott.assert_raises(ValueError):
     problemC.setLinearConstraint(ot.Matrix(2, 1), ot.Interval(2))
 with ott.assert_raises(ValueError):
