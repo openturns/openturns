@@ -118,7 +118,7 @@ tau_true = 0.1
 mean_true = np.dot(X, theta_true).ravel()
 std_true = np.sqrt(1.0 / tau_true + 1.0 / Q).ravel()
 
-Y_sim = mean_true + [x[0] for x in ot.Normal().getSample(n)] * std_true
+Y_sim = mean_true + std_true * np.asarray(ot.Normal().getSample(n))[:, 0]
 Yobs_sim = np.round(Y_sim / delta) * delta
 
 # %%
@@ -550,7 +550,7 @@ sampleSize = 1000
 sample = gibbs.getSample(sampleSize)
 
 # compute acceptance rate
-tau_post = np.array(sample[:, p]).ravel()
+tau_post = np.asarray(sample[:, p]).ravel()
 acc_rate = (tau_post[1:] != tau_post[:-1]).mean()
 print("Acceptance rate: %s" % acc_rate)
 
