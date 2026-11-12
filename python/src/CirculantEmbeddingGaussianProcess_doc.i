@@ -106,7 +106,7 @@ covarianceModel : :class:`~openturns.CovarianceModel`
 %feature("docstring") OT::CirculantEmbeddingGaussianProcess::getCircularSize
 "Get the size of the circulant matrix per dimension.
 
-Returns the size actually used once the process is initialized, the
+It returns the size actually used once the process is initialized, the
 user-defined size if set with :meth:`setCircularSize`, or the automatically
 computed size otherwise (empty until a realization is generated).
 
