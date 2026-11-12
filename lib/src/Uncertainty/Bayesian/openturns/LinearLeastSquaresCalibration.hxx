@@ -27,6 +27,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -97,6 +98,8 @@ private:
   static Distribution ComputePosteriorAndErrorDistribution(const Point & thetaStar,
       const Point & r,
       const SquareMatrix & gramInverse,
+      const Indices & freeIndices,
+      const UnsignedInteger degreesOfFreedom,
       const UnsignedInteger outputDimension,
       Distribution & error);
 

@@ -2002,6 +2002,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // LinearLeastSquaresCalibration parameters //
   addAsScalar("LinearLeastSquaresCalibration-Regularization", 1e-12);
+  addAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance", 1e-6);
   addAsString("LinearLeastSquaresCalibration-Method", "QR", {"SVD", "Cholesky", "QR"});
 
   // NonLinearLeastSquaresCalibration parameters //

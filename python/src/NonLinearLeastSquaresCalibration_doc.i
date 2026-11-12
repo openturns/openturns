@@ -140,7 +140,11 @@ Notes
 adopts the bounds carried by the given algorithm problem when it has some
 and keeps the current bounds otherwise. Call this method after
 :meth:`~openturns.NonLinearLeastSquaresCalibration.setOptimizationAlgorithm`
-to enforce specific bounds."
+to enforce specific bounds. With a zero bootstrap size, parameters active
+at a bound up to the absolute ``LinearLeastSquaresCalibration-ActiveBoundTolerance``
+tolerance are considered fixed: the posterior covariance is computed from
+the free Jacobian block only and is zero in the fixed directions, and the
+residual degrees of freedom exclude the fixed parameters."
 
 // ---------------------------------------------------------------------
 

@@ -28,6 +28,10 @@
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
+#include "openturns/SpecFunc.hxx"
+
+#include <algorithm>
+#include <cmath>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -369,12 +373,89 @@ void GaussianNonLinearCalibration::run()
 
     // Compute the inverse Gram of the design matrix
     const String methodName(ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
-    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
-    // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
-    (void) method.solve(Point(Abar.getNbRows()));
-    const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
-    // Create the result object
-    parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+    if (bounds_.getDimension() == 0)
+    {
+      LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, Abar));
+      // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
+      (void) method.solve(Point(Abar.getNbRows()));
+      const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
+      // Create the result object
+      parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+    }
+    else
+    {
+      // Variables at an active bound are considered fixed: the posterior
+      // covariance is computed on the free block Abar_F^T Abar_F only and
+      // is zero in the directions fixed at a bound. This is the usual
+      // active-set approximation, which treats the active bounds as equality
+      // constraints and applies the unconstrained Gaussian approximation to
+      // the remaining free parameters. See
+      // S. Huet, A. Bouvier, M.-A. Poursat and E. Jolivet, Statistical Tools for
+      // Nonlinear Regression: A Practical Guide with S-PLUS and R Examples,
+      // 2nd ed., Springer, New York, 2004, for the Gaussian approximation, and
+      // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
+      // Academic Press, London, 1981, Section 5.2, for the active-set treatment
+      // of bound constraints.
+      // Absolute tolerance used to detect a parameter lying on one of its bounds.
+      const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
+      if (!(tolerance > 0.0) || !std::isfinite(tolerance))
+        throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
+      const Point lowerBound(bounds_.getLowerBound());
+      const Point upperBound(bounds_.getUpperBound());
+      const Interval::BoolCollection finiteLowerBound(bounds_.getFiniteLowerBound());
+      const Interval::BoolCollection finiteUpperBound(bounds_.getFiniteUpperBound());
+      Indices freeIndices(0);
+      for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+      {
+        Bool active = false;
+        if (finiteLowerBound[i] && (std::abs(thetaStar[i] - lowerBound[i]) <= tolerance))
+          active = true;
+        if (finiteUpperBound[i] && (std::abs(thetaStar[i] - upperBound[i]) <= tolerance))
+          active = true;
+        if (!active)
+          freeIndices.add(i);
+      }
+      const UnsignedInteger freeDimension = freeIndices.getSize();
+      // The covariance is zero in the directions fixed at a bound
+      CovarianceMatrix covarianceThetaStar(parameterDimension, Point(parameterDimension));
+      if (freeDimension > 0)
+      {
+        Matrix freeDesign(Abar.getNbRows(), freeDimension);
+        for (UnsignedInteger j = 0; j < freeDimension; ++j)
+          for (UnsignedInteger i = 0; i < Abar.getNbRows(); ++i)
+            freeDesign(i, j) = Abar(i, freeIndices[j]);
+        // A rank-deficient free block gives a small positive singular value whose
+        // inverse can still be finite: check the numerical rank before relying on
+        // the factorization of the free block.
+        const Point singularValues(freeDesign.computeSingularValues());
+        const UnsignedInteger singularValuesSize = singularValues.getSize();
+        const Scalar largestSingularValue = (singularValuesSize > 0) ? singularValues[0] : 0.0;
+        const Scalar rankTolerance = std::max(freeDesign.getNbRows(), freeDimension) * SpecFunc::Precision * largestSingularValue;
+        if ((singularValuesSize < freeDimension) || !(largestSingularValue > 0.0) || (singularValues[singularValuesSize - 1] <= rankTolerance))
+          throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+        LeastSquaresMethod freeMethod(LeastSquaresMethod::Build(methodName, freeDesign));
+        // Initialize the decomposition before accessing the Gram inverse
+        freeMethod.update(Indices(), freeMethod.getCurrentIndices(), Indices(), false);
+        const CovarianceMatrix freeGramInverse(freeMethod.getGramInverse());
+        for (UnsignedInteger i = 0; i < freeDimension; ++i)
+          for (UnsignedInteger j = 0; j < freeDimension; ++j)
+          {
+            const Scalar value = freeGramInverse(i, j);
+            if (!std::isfinite(value))
+              throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+            covarianceThetaStar(freeIndices[i], freeIndices[j]) = value;
+          }
+      }
+      // Create the result object
+      try
+      {
+        parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+      }
+      catch (...)
+      {
+        throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable.";
+      }
+    }
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, true);
