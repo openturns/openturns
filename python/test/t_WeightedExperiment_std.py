@@ -47,3 +47,38 @@ assert w1 != ot.WeightedExperiment(), "WE handle !="
 mce = ot.MonteCarloExperiment(distribution, size)
 assert mce == mce, "self =="
 assert not mce != mce, "self !="
+
+# isIID
+assert ot.MonteCarloExperiment(distribution, size).isIID(), "MCE isIID"
+assert not ot.LHSExperiment(distribution, size).isIID(), "LHS not isIID"
+assert not ot.LowDiscrepancyExperiment(seq, distribution, size).isIID(), "LDE not isIID"
+assert not ot.ImportanceSamplingExperiment(distribution, impDist, size).isIID(), "ISE not isIID"
+assert not ot.FixedExperiment(sample, w).isIID(), "FE not isIID"
+assert ot.WeightedExperiment(ot.MonteCarloExperiment(distribution, size)).isIID(), "WE handle isIID"
+
+# isRandom
+assert ot.MonteCarloExperiment(distribution, size).isRandom(), "MCE isRandom"
+assert ot.LHSExperiment(distribution, size).isRandom(), "LHS isRandom"
+assert not ot.LowDiscrepancyExperiment(seq, distribution, size).isRandom(), "LDE not isRandom"
+assert not ot.FixedExperiment(sample, w).isRandom(), "FE not isRandom"
+assert not ot.SmolyakExperiment([ot.GaussProductExperiment(ot.Uniform())], 1).isRandom(), "SE not isRandom"
+assert not ot.TensorProductExperiment([ot.GaussProductExperiment(ot.Uniform())]).isRandom(), "TPE not isRandom"
+assert ot.SobolIndicesExperiment(ot.MonteCarloExperiment(ot.Normal(2), size)).isRandom(), "SIE MonteCarlo isRandom"
+assert not ot.SobolIndicesExperiment(ot.LowDiscrepancyExperiment(ot.SobolSequence(2), ot.Normal(2), size)).isRandom(), "SIE QMC not isRandom"
+
+# isIID of the base implementation and of the remaining designs
+assert ot.WeightedExperimentImplementation().isRandom(), "WEI isRandom"
+assert not ot.WeightedExperimentImplementation().isIID(), "WEI not isIID"
+assert ot.WeightedExperiment().isIID(), "default WE isIID (MonteCarlo)"
+assert not ot.WeightedExperiment(
+    ot.WeightedExperimentImplementation()).isIID(), "WE from WEI not isIID"
+assert not ot.GaussProductExperiment(ot.Uniform()).isIID(), "GPE not isIID"
+assert not ot.TensorProductExperiment(
+    [ot.GaussProductExperiment(ot.Uniform())]).isIID(), "TPE not isIID"
+assert not ot.SmolyakExperiment(
+    [ot.GaussProductExperiment(ot.Uniform())], 1).isIID(), "SE not isIID"
+assert not ot.SobolIndicesExperiment(
+    ot.MonteCarloExperiment(ot.Normal(2), size)).isIID(), "SIE MonteCarlo not isIID"
+assert not ot.SobolIndicesExperiment(
+    ot.LowDiscrepancyExperiment(
+        ot.SobolSequence(2), ot.Normal(2), size)).isIID(), "SIE QMC not isIID"

@@ -82,6 +82,9 @@ public:
   /** Return the random flag */
   virtual Bool isRandom() const;
 
+  /** Return whether the experiment generates i.i.d. points with uniform weights */
+  virtual Bool isIID() const;
+
 } ; /* class WeightedExperiment */
 
 END_NAMESPACE_OPENTURNS

@@ -51,6 +51,23 @@ Simulation algorithm
     ExpectationSimulationAlgorithm
     ExpectationSimulationResult
 
+Quantile simulation (experimental)
+==================================
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    experimental.QuantileSimulation
+    experimental.QuantileSimulationImplementation
+    experimental.QuantileSimulationAlgorithm
+    experimental.BlockQuantileSimulation
+    experimental.ExactTailQuantileSimulation
+    experimental.TwoStageQuantileSimulation
+    experimental.SequentialQuantileSimulation
+    experimental.QuantileSimulationResult
+    experimental.QuantileSimulationResultImplementation
+
 Directional Sampling
 ====================
 

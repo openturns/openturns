@@ -232,6 +232,19 @@ OT_WeightedExperiment_isRandom_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_WeightedExperiment_isIID_doc
+"Ask whether the experiment generates independent identically distributed points with uniform weights.
+
+Returns
+-------
+isIID : bool
+    Whether the design of experiments is an i.i.d. sample with uniform weights."
+%enddef
+%feature("docstring") OT::WeightedExperimentImplementation::isIID
+OT_WeightedExperiment_isIID_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_WeightedExperiment_setLevels_doc
 "Accessor to the experiment nesting levels.
 

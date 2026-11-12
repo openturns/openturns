@@ -89,6 +89,9 @@ public:
   Bool getRandomize() const;
   void setRandomize(const Bool randomize);
 
+  /** Return isRandom flag */
+  Bool isRandom() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

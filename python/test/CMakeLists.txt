@@ -805,6 +805,11 @@ ot_pyinstallcheck_test (OrthogonalProductFunctionFactory_std)
 
 ## Algorithm
 ot_pyinstallcheck_test (QuantileConfidence_std IGNOREOUT)
+ot_pyinstallcheck_test (QuantileSimulation_std IGNOREOUT)
+ot_pyinstallcheck_test (BlockQuantileSimulation_std IGNOREOUT)
+ot_pyinstallcheck_test (ExactTailQuantileSimulation_std IGNOREOUT)
+ot_pyinstallcheck_test (TwoStageQuantileSimulation_std IGNOREOUT)
+ot_pyinstallcheck_test (SequentialQuantileSimulation_std IGNOREOUT)
 ot_pyinstallcheck_test (TaylorExpansionMoments_std)
 
 ## Analytical

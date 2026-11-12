@@ -1,0 +1,1178 @@
+%feature("docstring") OT::QuantileSimulationResult
+R"RAW(Quantile simulation result.
+
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
+This class gives access to a quantile simulation result: the estimated
+quantile, its standard error, the confidence interval, the estimator and
+coverage conventions, and the run diagnostics.
+
+See also
+--------
+QuantileSimulationResultImplementation, QuantileSimulationAlgorithm, BlockQuantileSimulation, ExactTailQuantileSimulation
+
+Notes
+-----
+The confidence interval is the one returned by the algorithm.  Its
+meaning is given by :meth:`getCoverageType`: an exact interval and an
+asymptotic interval are not interchangeable, even when they have the
+same nominal level ``beta``.
+
+Fields that are irrelevant to a given algorithm keep their default
+value: for example, the bias estimate is only present when
+:meth:`hasBiasEstimate` returns ``True``, and the convergence history is
+empty when the algorithm is not iterative.
+
+Block algorithms add the block length, the number of blocks, the block
+quantile sample, the combination rule, the peak memory estimate and,
+when a pilot is available, the estimated bias.  Exact-tail algorithms
+add the retained tail, the number of retained order statistics, and the
+zero-based exact ranks used by the binomial interval.
+
+The following :class:`~openturns.ResourceMap` keys are used:
+
+- ``QuantileSimulation-DefaultAlpha`` (``Scalar``, default: ``0.95``): default quantile level.
+- ``QuantileSimulation-DefaultConfidenceLevel`` (``Scalar``, default: ``0.95``): default nominal confidence level.
+- ``QuantileSimulation-DefaultSampleSize`` (``UnsignedInteger``, default: ``0``): default sample size, where ``0`` means that the sample size is not set.
+- ``QuantileSimulation-DefaultTrimmingFraction`` (``Scalar``, default: ``0.1``): default trimming fraction of the ``TRIMMED_MEAN`` combination rule.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> import openturns.experimental as otexp
+>>> output = ot.RandomVector(ot.Normal())
+>>> algo = otexp.QuantileSimulationAlgorithm(output, 0.95, 0.95)
+>>> algo.setSampleSize(1000)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> alpha = result.getQuantileLevel()
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getOutput
+R"RAW(Accessor to the output random vector.
+
+Returns
+-------
+output : :class:`~openturns.RandomVector`
+    Scalar output random vector whose quantile is estimated.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setOutput
+R"RAW(Accessor to the output random vector.
+
+Parameters
+----------
+output : :class:`~openturns.RandomVector`
+    Scalar output random vector whose quantile is estimated.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getQuantileLevel
+R"RAW(Accessor to the quantile level.
+
+Returns
+-------
+alpha : float
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setQuantileLevel
+R"RAW(Accessor to the quantile level.
+
+Parameters
+----------
+alpha : float
+    Quantile level, in :math:`(0, 1)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConfidenceLevel
+R"RAW(Accessor to the nominal confidence level.
+
+Returns
+-------
+beta : float
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConfidenceLevel
+R"RAW(Accessor to the nominal confidence level.
+
+Parameters
+----------
+beta : float
+    Nominal confidence level of the interval, in :math:`(0, 1)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getMasterSeed
+R"RAW(Accessor to the master seed.
+
+Returns
+-------
+seed : int
+    Seed from which the run's random streams are derived.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setMasterSeed
+R"RAW(Accessor to the master seed.
+
+Parameters
+----------
+seed : int
+    Seed from which the run's random streams are derived.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasMasterSeed
+R"RAW(Accessor to the master seed availability.
+
+Returns
+-------
+hasMasterSeed : bool
+    Whether a master seed was recorded for the run.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getQuantileEstimate
+R"RAW(Accessor to the quantile estimate.
+
+Returns
+-------
+estimate : float
+    Estimated quantile at level :meth:`getQuantileLevel`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setQuantileEstimate
+R"RAW(Accessor to the quantile estimate.
+
+Parameters
+----------
+estimate : float
+    Estimated quantile at level :meth:`getQuantileLevel`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getStandardError
+R"RAW(Accessor to the standard error.
+
+Returns
+-------
+standardError : float
+    Estimated standard error of the quantile estimate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setStandardError
+R"RAW(Accessor to the standard error.
+
+Parameters
+----------
+standardError : float
+    Estimated standard error of the quantile estimate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConfidenceInterval
+R"RAW(Accessor to the confidence interval.
+
+Returns
+-------
+interval : :class:`~openturns.Interval`
+    Confidence interval at level :meth:`getConfidenceLevel`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConfidenceInterval
+R"RAW(Accessor to the confidence interval.
+
+Parameters
+----------
+interval : :class:`~openturns.Interval`
+    One-dimensional confidence interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getEstimatorType
+R"RAW(Accessor to the estimator type.
+
+Returns
+-------
+estimatorType : int
+    Estimator convention, either
+    ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setEstimatorType
+R"RAW(Accessor to the estimator type.
+
+Parameters
+----------
+estimatorType : int
+    Estimator convention, either
+    ``QuantileSimulationResultImplementation.EMPIRICAL_INVERSE`` or
+    ``QuantileSimulationResultImplementation.INTERPOLATED``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCoverageType
+R"RAW(Accessor to the achieved coverage type.
+
+Returns
+-------
+coverageType : int
+    Coverage guarantee actually provided by the reported interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setCoverageType
+R"RAW(Accessor to the achieved coverage type.
+
+Parameters
+----------
+coverageType : int
+    Coverage guarantee actually provided by the reported interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getRequiredCoverage
+R"RAW(Accessor to the required coverage type.
+
+Returns
+-------
+requiredCoverage : int
+    Coverage guarantee requested by the user.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setRequiredCoverage
+R"RAW(Accessor to the required coverage type.
+
+Parameters
+----------
+requiredCoverage : int
+    Coverage guarantee requested by the user.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getEffectiveSampleSize
+R"RAW(Accessor to the effective sample size.
+
+Returns
+-------
+effectiveSampleSize : float
+    Kish effective sample size of the normalized weights, in
+    :math:`(0, N]`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setEffectiveSampleSize
+R"RAW(Accessor to the effective sample size.
+
+Parameters
+----------
+effectiveSampleSize : float
+    Kish effective sample size of the normalized weights.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getSampleSize
+R"RAW(Accessor to the sample size.
+
+Returns
+-------
+sampleSize : int
+    Number of model evaluations actually performed.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setSampleSize
+R"RAW(Accessor to the sample size.
+
+Parameters
+----------
+sampleSize : int
+    Number of model evaluations actually performed.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockLength
+R"RAW(Accessor to the statistical block length.
+
+Returns
+-------
+blockLength : int
+    Block length used by a block algorithm; 0 when the algorithm is not
+    block based.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockLength
+R"RAW(Accessor to the statistical block length.
+
+Parameters
+----------
+blockLength : int
+    Block length used by a block algorithm; 0 when the algorithm is not
+    block based.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockCount
+R"RAW(Accessor to the number of blocks.
+
+Returns
+-------
+blockCount : int
+    Number of independent blocks combined by a block algorithm; 0 when
+    the algorithm is not block based.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockCount
+R"RAW(Accessor to the number of blocks.
+
+Parameters
+----------
+blockCount : int
+    Number of independent blocks combined by a block algorithm.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockQuantileSample
+R"RAW(Accessor to the block quantile sample.
+
+Returns
+-------
+blockQuantiles : :class:`~openturns.Point`
+    Quantile computed from each block.  The size of the point is the
+    number of blocks; it is empty when the algorithm is not block
+    based.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockQuantileSample
+R"RAW(Accessor to the block quantile sample.
+
+Parameters
+----------
+blockQuantiles : sequence of float
+    Quantile computed from each block.  The values must be finite.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCombinationType
+R"RAW(Accessor to the combination rule.
+
+Returns
+-------
+combination : int
+    Rule used to combine the block quantiles.  The values are ``MEAN``,
+    ``MEDIAN`` and ``TRIMMED_MEAN``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setCombinationType
+R"RAW(Accessor to the combination rule.
+
+Parameters
+----------
+combination : int
+    Rule used to combine the block quantiles.  The values are ``MEAN``,
+    ``MEDIAN`` and ``TRIMMED_MEAN``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCombinationDescription
+R"RAW(Accessor to the combination rule description.
+
+Returns
+-------
+description : str
+    Human-readable description of the combination rule, including the
+    trimming fraction for the trimmed mean.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTrimmingFraction
+R"RAW(Accessor to the trimming fraction.
+
+Returns
+-------
+gamma : float
+    Fraction trimmed from each side by the trimmed mean, in
+    :math:`[0, 0.5)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTrimmingFraction
+R"RAW(Accessor to the trimming fraction.
+
+Parameters
+----------
+gamma : float
+    Fraction trimmed from each side by the trimmed mean, in
+    :math:`[0, 0.5)`.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockLengthPolicyDescription
+R"RAW(Accessor to the block-length policy description.
+
+Returns
+-------
+description : str
+    Human-readable description of the policy that selected the block
+    length.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockLengthPolicyDescription
+R"RAW(Accessor to the block-length policy description.
+
+Parameters
+----------
+description : str
+    Human-readable description of the policy that selected the block
+    length.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPeakMemory
+R"RAW(Accessor to the peak memory estimate.
+
+Returns
+-------
+peakMemory : int
+    Peak number of scalar values stored by the algorithm.  For the
+    block estimator it is the block length plus the number of block
+    quantiles; for the exact-tail estimator it is the number of retained
+    order statistics.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPeakMemory
+R"RAW(Accessor to the peak memory estimate.
+
+Parameters
+----------
+peakMemory : int
+    Peak number of scalar values stored by the algorithm.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPeakMemoryInBytes
+R"RAW(Accessor to the peak memory estimate in bytes.
+
+Returns
+-------
+peakMemoryInBytes : int
+    Peak memory estimate, assuming eight bytes per scalar value.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBiasEstimate
+R"RAW(Accessor to the bias estimate.
+
+Returns
+-------
+biasEstimate : float
+    Estimated bias of the quantile estimate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBiasEstimate
+R"RAW(Accessor to the bias estimate.
+
+Parameters
+----------
+biasEstimate : float
+    Estimated bias of the quantile estimate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasBiasEstimate
+R"RAW(Accessor to the bias estimate availability.
+
+Returns
+-------
+hasBiasEstimate : bool
+    Whether a bias estimate was recorded for the run.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBiasToStandardErrorRatio
+R"RAW(Accessor to the bias-to-standard-error ratio.
+
+Returns
+-------
+ratio : float
+    Absolute value of the estimated bias divided by the standard error.
+    It is zero when no bias estimate is available.  Values below 0.1
+    indicate a negligible bias; values above 0.5 indicate that the
+    nominal interval should not be trusted.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTailType
+R"RAW(Accessor to the retained tail.
+
+Returns
+-------
+tail : int
+    Tail retained by an exact-tail algorithm.  The values are
+    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTailType
+R"RAW(Accessor to the retained tail.
+
+Parameters
+----------
+tail : int
+    Tail retained by an exact-tail algorithm.  The values are
+    ``NO_TAIL``, ``LOWER_TAIL`` and ``UPPER_TAIL``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTailDescription
+R"RAW(Accessor to the retained tail description.
+
+Returns
+-------
+description : str
+    Human-readable description of the retained tail.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getRetainedCount
+R"RAW(Accessor to the retained order-statistic count.
+
+Returns
+-------
+retainedCount : int
+    Number of order statistics kept by an exact-tail algorithm.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setRetainedCount
+R"RAW(Accessor to the retained order-statistic count.
+
+Parameters
+----------
+retainedCount : int
+    Number of order statistics kept by an exact-tail algorithm.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getLowerRank
+R"RAW(Accessor to the lower exact rank.
+
+Returns
+-------
+lowerRank : int
+    Zero-based index of the lower order statistic of the exact binomial
+    interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setLowerRank
+R"RAW(Accessor to the lower exact rank.
+
+Parameters
+----------
+lowerRank : int
+    Zero-based index of the lower order statistic of the exact binomial
+    interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getUpperRank
+R"RAW(Accessor to the upper exact rank.
+
+Returns
+-------
+upperRank : int
+    Zero-based index of the upper order statistic of the exact binomial
+    interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setUpperRank
+R"RAW(Accessor to the upper exact rank.
+
+Parameters
+----------
+upperRank : int
+    Zero-based index of the upper order statistic of the exact binomial
+    interval.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::isFixedSample
+R"RAW(Accessor to the fixed-sample flag.
+
+Returns
+-------
+isFixedSample : bool
+    Whether the run used a fixed sample size.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setIsFixedSample
+R"RAW(Accessor to the fixed-sample flag.
+
+Parameters
+----------
+isFixedSample : bool
+    Whether the run used a fixed sample size.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConvergenceHistory
+R"RAW(Accessor to the convergence history.
+
+Returns
+-------
+history : :class:`~openturns.Sample`
+    Convergence history with at least two columns: the cumulative
+    sample size and the quantile estimate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConvergenceHistory
+R"RAW(Accessor to the convergence history.
+
+Parameters
+----------
+history : :class:`~openturns.Sample`
+    Convergence history with at least two columns: the cumulative
+    sample size and the quantile estimate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getOuterSampling
+R"RAW(Accessor to the outer sampling count.
+
+Returns
+-------
+outerSampling : int
+    Number of independent experiment draws or iterations performed.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setOuterSampling
+R"RAW(Accessor to the outer sampling count.
+
+Parameters
+----------
+outerSampling : int
+    Number of independent experiment draws or iterations performed.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBlockSize
+R"RAW(Accessor to the evaluation block size.
+
+Returns
+-------
+blockSize : int
+    Number of model evaluations performed in a single call.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBlockSize
+R"RAW(Accessor to the evaluation block size.
+
+Parameters
+----------
+blockSize : int
+    Number of model evaluations performed in a single call.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTimeDuration
+R"RAW(Accessor to the elapsed time.
+
+Returns
+-------
+timeDuration : float
+    Elapsed wall-clock time of the run, in seconds.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTimeDuration
+R"RAW(Accessor to the elapsed time.
+
+Parameters
+----------
+timeDuration : float
+    Elapsed wall-clock time of the run, in seconds.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getEstimatorDescription
+R"RAW(Accessor to the estimator description.
+
+Returns
+-------
+description : str
+    Human-readable name of the estimator convention.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCoverageDescription
+R"RAW(Accessor to the coverage description.
+
+Returns
+-------
+description : str
+    Human-readable name of the achieved coverage guarantee.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::drawQuantileConvergence
+R"RAW(Draw the quantile convergence.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Graph of the quantile estimate against the cumulative sample size.
+)RAW"
+
+%feature("docstring") OT::QuantileSimulationResult::getReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Returns
+-------
+replicateCount : int
+    Number of independent replicates used by the estimator.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setReplicateCount
+R"RAW(Accessor to the replicate count.
+
+Parameters
+----------
+replicateCount : int
+    Number of independent replicates used by the estimator.  It must be
+    positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Returns
+-------
+estimates : :class:`~openturns.Point`
+    Quantile estimate produced by each independent replicate.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setReplicateEstimates
+R"RAW(Accessor to the replicate estimates.
+
+Parameters
+----------
+estimates : sequence of float
+    Quantile estimate produced by each independent replicate.  All the
+    values must be finite.
+)RAW"
+
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPilotSize
+R"RAW(Accessor to the pilot size of a two-stage design.
+
+Returns
+-------
+pilotSize : int
+    Number of observations drawn in the pilot stage.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPilotSize
+R"RAW(Accessor to the pilot size of a two-stage design.
+
+Parameters
+----------
+pilotSize : int
+    Number of observations drawn in the pilot stage.  It must be
+    positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPilotQuantileEstimate
+R"RAW(Accessor to the pilot quantile estimate.
+
+Returns
+-------
+estimate : float
+    Quantile estimated on the pilot sample of a two-stage design.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPilotQuantileEstimate
+R"RAW(Accessor to the pilot quantile estimate.
+
+Parameters
+----------
+estimate : float
+    Quantile estimated on the pilot sample of a two-stage design.  It
+    must be finite.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasPilotQuantileEstimate
+R"RAW(Test whether a pilot quantile estimate is available.
+
+Returns
+-------
+hasPilotQuantileEstimate : bool
+    Whether the pilot quantile estimate has been set.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getPilotDensity
+R"RAW(Accessor to the pilot density estimate.
+
+Returns
+-------
+density : float
+    Density estimate at the quantile, computed on the pilot sample of a
+    two-stage design.  It is derived from the bilateral pilot interval
+    when that interval has positive width; the spacing estimate is used
+    only when the interval cannot provide a density.  Zero means that
+    no estimate was available.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setPilotDensity
+R"RAW(Accessor to the pilot density estimate.
+
+Parameters
+----------
+density : float
+    Density estimate at the quantile.  It must be finite and
+    non-negative.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasPilotDensity
+R"RAW(Test whether a pilot density estimate is available.
+
+Returns
+-------
+hasPilotDensity : bool
+    Whether the pilot density estimate has been set.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConfirmationSize
+R"RAW(Accessor to the confirmation size of a two-stage design.
+
+Returns
+-------
+confirmationSize : int
+    Number of observations actually drawn in the confirmation stage.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConfirmationSize
+R"RAW(Accessor to the confirmation size of a two-stage design.
+
+Parameters
+----------
+confirmationSize : int
+    Number of observations actually drawn in the confirmation stage.
+    It must be positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getRequiredConfirmationSize
+R"RAW(Accessor to the confirmation size required by the sizing rule.
+
+Returns
+-------
+requiredConfirmationSize : int
+    Confirmation size requested by the two-stage sizing formula.  When
+    the budget is insufficient, it is larger than the confirmation size
+    actually drawn and :meth:`getBudgetExhausted` is ``True``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setRequiredConfirmationSize
+R"RAW(Accessor to the confirmation size required by the sizing rule.
+
+Parameters
+----------
+requiredConfirmationSize : int
+    Confirmation size requested by the two-stage sizing formula.  It
+    must be positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getTargetHalfWidth
+R"RAW(Accessor to the target half-width.
+
+Returns
+-------
+targetHalfWidth : float
+    Target half-width requested for a two-stage or sequential design.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setTargetHalfWidth
+R"RAW(Accessor to the target half-width.
+
+Parameters
+----------
+targetHalfWidth : float
+    Target half-width requested for a two-stage or sequential design.
+    It must be finite and positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::hasTargetHalfWidth
+R"RAW(Test whether a target half-width is recorded.
+
+Returns
+-------
+hasTargetHalfWidth : bool
+    Whether a positive target half-width has been set.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getBudgetExhausted
+R"RAW(Accessor to the budget exhaustion flag.
+
+Returns
+-------
+budgetExhausted : bool
+    Whether the design exhausted its evaluation budget before its
+    stopping rule was satisfied.  For a two-stage design, this records
+    that the pilot-based sizing rule required more confirmation
+    observations than the remaining budget; the confirmation interval
+    remains exact at the achieved size, so the target half-width may
+    still be met.  For a sequential design, this records that the
+    maximum sample size was reached without meeting the target
+    half-width.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setBudgetExhausted
+R"RAW(Accessor to the budget exhaustion flag.
+
+Parameters
+----------
+budgetExhausted : bool
+    Whether the design exhausted its evaluation budget before its
+    stopping rule was satisfied.  For a two-stage design, this records
+    that the pilot-based sizing rule required more confirmation
+    observations than the remaining budget; the confirmation interval
+    remains exact at the achieved size, so the target half-width may
+    still be met.  For a sequential design, this records that the
+    maximum sample size was reached without meeting the target
+    half-width.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getStoppingTime
+R"RAW(Accessor to the stopping time of a sequential design.
+
+Returns
+-------
+stoppingTime : int
+    Number of observations drawn when the sequential algorithm
+    stopped.  It is zero when no sequential run has been recorded.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setStoppingTime
+R"RAW(Accessor to the stopping time of a sequential design.
+
+Parameters
+----------
+stoppingTime : int
+    Number of observations drawn when the sequential algorithm stopped.
+    It must be positive.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getStoppingCriterion
+R"RAW(Accessor to the stopping criterion of a sequential design.
+
+Returns
+-------
+stoppingCriterion : str
+    ``"target half-width"`` when the run stopped because the interval
+    became short enough, ``"maximum sample size"`` when it stopped at
+    the evaluation budget, and an empty string when no sequential run
+    has been recorded.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setStoppingCriterion
+R"RAW(Accessor to the stopping criterion of a sequential design.
+
+Parameters
+----------
+stoppingCriterion : str
+    Stopping criterion.  It must not be empty.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getConfidenceSequencePath
+R"RAW(Accessor to the confidence sequence path of a sequential design.
+
+Returns
+-------
+path : :class:`~openturns.Sample`
+    Path with one row per evaluated sample size and four columns: the
+    sample size, the quantile estimate, the lower bound and the upper
+    bound.  Infinite bounds are represented by
+    :math:`\pm` ``SpecFunc.MaxScalar``.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setConfidenceSequencePath
+R"RAW(Accessor to the confidence sequence path of a sequential design.
+
+Parameters
+----------
+path : :class:`~openturns.Sample`
+    Path with four columns: sample size, estimate, lower bound and
+    upper bound.  It must be a finite sample with four columns when it
+    is not empty.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::getCoverageAssumption
+R"RAW(Accessor to the coverage assumption of a sequential design.
+
+Returns
+-------
+coverageAssumption : str
+    Distribution-free assumption that supports the anytime-valid
+    coverage claim, or an empty string when no such claim is made.
+)RAW"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::QuantileSimulationResult::setCoverageAssumption
+R"RAW(Accessor to the coverage assumption of a sequential design.
+
+Parameters
+----------
+coverageAssumption : str
+    Distribution-free assumption that supports the anytime-valid
+    coverage claim.  It must not be empty.
+)RAW"

@@ -701,3 +701,58 @@ Bibliography
     SMAI Journal of Computational Mathematics, 8, 21.
     `pdf <https://doi.org/10.5802/smai-jcm.89>`__
 .. [hackbusch1999] Hackbusch, W. (1999). *A sparse matrix arithmetic based on H-matrices. Part I: Introduction to H-matrices.* Computing, 62(2), 89-108.
+.. [bahadur1966] Bahadur, R. R. *A note on quantiles in large samples.*
+    The Annals of Mathematical Statistics, 1966, 37(3), 577-580.
+    `doi <https://doi.org/10.1214/aoms/1177699450>`__
+.. [bjerager1988] Bjerager, P. *Probability integration by directional simulation.*
+    Journal of Engineering Mechanics, 1988, 114(8), 1285-1302.
+    `doi <https://doi.org/10.1061/(ASCE)0733-9399(1988)114:8(1285)>`__
+.. [cerou2007] Cérou, F. and Guyader, A. *Adaptive multilevel splitting for
+    rare event analysis.* Stochastic Analysis and Applications, 2007, 25(2), 417-443.
+    `doi <https://doi.org/10.1080/07362990601139628>`__
+.. [chow1965] Chow, Y. S. and Robbins, H. *On the asymptotic theory of fixed-width
+    sequential confidence intervals for the mean.* The Annals of Mathematical
+    Statistics, 1965, 36(2), 457-462.
+    `doi <https://doi.org/10.1214/aoms/1177700156>`__
+.. [deboer2005] de Boer, P.-T., Kroese, D. P., Mannor, S. and Rubinstein, R. Y.
+    *A tutorial on the cross-entropy method.* Annals of Operations Research,
+    2005, 134(1), 19-67.
+    `doi <https://doi.org/10.1007/s10479-005-5724-z>`__
+.. [dvoretzky1956] Dvoretzky, A., Kiefer, J. and Wolfowitz, J.
+    *Asymptotic minimax character of the sample distribution function and of
+    the classical multinomial estimator.*
+    The Annals of Mathematical Statistics, 1956, 27(3), 642-669.
+    `doi <https://doi.org/10.1214/aoms/1177728174>`__
+.. [guyader2011] Guyader, A., Hengartner, N. and Matzner-Løber, E.
+    *Simulation and estimation of extreme quantiles and extreme probabilities.*
+    Applied Mathematics & Optimization, 2011, 64(2), 171-196.
+    `doi <https://doi.org/10.1007/s00245-011-9135-z>`__
+.. [hohenbichler1988] Hohenbichler, M., Gollwitzer, S., Kruse, W. and Rackwitz, R.
+    *New light on first- and second-order reliability methods.*
+    Structural Safety, 1988, 4(4), 267-284.
+    `doi <https://doi.org/10.1016/0167-4730(87)90002-6>`__
+.. [howard2022] Howard, S. R. and Ramdas, A. *Sequential estimation of quantiles
+    with applications to A/B testing and best-arm identification.*
+    Bernoulli, 2022, 28(3), 1704-1728.
+    `doi <https://doi.org/10.3150/21-BEJ1388>`__
+.. [hyndman1996] Hyndman, R. J. and Fan, Y. *Sample quantiles in statistical
+    packages.* The American Statistician, 1996, 50(4), 361-365.
+    `doi <https://doi.org/10.1080/00031305.1996.10473566>`__
+.. [massart1990] Massart, P. *The tight constant in the Dvoretzky-Kiefer-Wolfowitz
+    inequality.* The Annals of Probability, 1990, 18(3), 1269-1283.
+    `doi <https://doi.org/10.1214/aop/1176990746>`__
+.. [pradlwarter2007] Pradlwarter, H. J., Schuëller, G. I., Koutsourelakis, P. S.
+    and Charmpis, D. C. *Application of line sampling simulation method to
+    reliability benchmark problems.* Structural Safety, 2007, 29(3), 208-221.
+    `doi <https://doi.org/10.1016/j.strusafe.2006.07.009>`__
+.. [tukey1963] Tukey, J. W. and McLaughlin, D. H. *Less vulnerable confidence
+    and significance procedures for location based on a single sample:
+    trimming/winsorization 1.* Sankhya A, 1963, 25(3), 331-352.
+.. [walter2015] Walter, C. *Moving particles: a parallel optimal multilevel
+    splitting method with application in quantiles estimation and meta-model
+    based algorithms.* Structural Safety, 2015, 55, 10-25.
+    `doi <https://doi.org/10.1016/j.strusafe.2015.02.002>`__
+.. [woodruff1952] Woodruff, R. S. *Confidence intervals for medians and other
+    position measures.* Journal of the American Statistical Association,
+    1952, 47(260), 635-646.
+    `doi <https://doi.org/10.1080/01621459.1952.10483443>`__
