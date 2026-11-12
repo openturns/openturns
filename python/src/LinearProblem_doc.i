@@ -1,6 +1,10 @@
 %feature("docstring") OT::LinearProblem
 R"RAW(Linear optimization problem.
 
+.. warning::
+    This class is experimental and likely to be modified in future releases.
+    To use it, import the ``openturns.experimental`` submodule.
+
 This defines a linear problem as:
 
 .. math::
@@ -14,7 +18,7 @@ and :math:`\vect{cb_l}, \vect{cb_u}` are the constraints bounds terms.
 
 Parameters
 ----------
-cost : :class:`~openturns.Function`
+cost : sequence of float
     The cost vector :math:`\vect{c}`.
 bounds : :class:`~openturns.Interval`
     Bound constraints :math:`B`
