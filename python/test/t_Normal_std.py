@@ -337,3 +337,48 @@ ott.assert_almost_equal(
     ),
     0.0,
 )
+# setParametersCollection/setParameter must refresh Normal-specific state on
+# dimension change (logNormalizationFactor_, independent copula flag),
+# otherwise densities match a stale dimension
+R2d = ot.CorrelationMatrix(2)
+R2d[1, 0] = 0.5
+ref2d = ot.Normal([1.0, -2.0], [2.0, 0.5], R2d)
+x2d = [0.5, -1.0]
+grown = ot.Normal(1)
+grown.setParametersCollection(ref2d.getParametersCollection())
+assert grown.getDimension() == 2
+assert not grown.hasIndependentCopula()
+ott.assert_almost_equal(grown.computePDF(x2d), ref2d.computePDF(x2d))
+ott.assert_almost_equal(grown.getCovariance(), ref2d.getCovariance())
+grown2 = ot.Normal(1)
+grown2.setParameter(ref2d.getParameter())
+assert grown2.getDimension() == 2
+assert not grown2.hasIndependentCopula()
+ott.assert_almost_equal(grown2.computePDF(x2d), ref2d.computePDF(x2d))
+ott.assert_almost_equal(grown2.getCovariance(), ref2d.getCovariance())
+# shrinking 2d -> 1d must resize the cached Cholesky factor, otherwise the
+# object reports dimension 1 while getInverseCholesky() solves against a 2x2
+ref1d = ot.Normal(0.5, 1.5)
+shrunk = ot.Normal([1.0, -2.0], [2.0, 0.5], R2d)
+shrunk.setParameter(ref1d.getParameter())
+assert shrunk.getDimension() == 1
+assert shrunk.getCholesky().getDimension() == 1
+ott.assert_almost_equal(shrunk.computePDF(0.7), ref1d.computePDF(0.7))
+ott.assert_almost_equal(
+    shrunk.getIsoProbabilisticTransformation()([0.7]),
+    ref1d.getIsoProbabilisticTransformation()([0.7]),
+)
+shrunk2 = ot.Normal([1.0, -2.0], [2.0, 0.5], R2d)
+shrunk2.setParametersCollection(ref1d.getParametersCollection())
+assert shrunk2.getDimension() == 1
+assert shrunk2.getCholesky().getDimension() == 1
+ott.assert_almost_equal(shrunk2.computePDF(0.7), ref1d.computePDF(0.7))
+# malformed collections must raise instead of reading out of bounds
+with ott.assert_raises(Exception):
+    ot.Normal(1).setParametersCollection(ot.PointCollection(3))
+with ott.assert_raises(Exception):
+    ot.Normal(1).setParametersCollection(
+        ot.PointCollection([ot.Point([1.0]), ot.Point([1.0, 2.0]), ot.Point([0.0])])
+    )
+with ott.assert_raises(Exception):
+    ot.Normal(1).setParametersCollection(ot.PointCollection(2, ot.Point(2)))
