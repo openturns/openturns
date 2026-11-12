@@ -46,12 +46,19 @@ public:
   SparseMatrix(const UnsignedInteger nbRows,
                const UnsignedInteger nbCols);
 
-  /** Constructor from triplets, duplicates are summed */
+  /** Constructor from triplets.
+      The row indices are sorted within each column and the values of duplicate
+      (row, column) coordinates are summed, so that the stored representation is
+      the canonical compressed sparse column form. Indices are checked against
+      the dimensions: an out of bound row or column index raises an exception. */
   SparseMatrix(const UnsignedInteger nbRows,
                const UnsignedInteger nbCols,
                const Indices & rowIndices,
                const Indices & columnIndices,
                const Point & values);
+
+  /** Conversion from a dense matrix, zero coefficients are skipped */
+  static SparseMatrix FromDenseMatrix(const Matrix & matrix);
 
   /** Virtual copy constructor */
   SparseMatrix * clone() const override;
@@ -73,6 +80,14 @@ public:
 
   /** Get the number of non-zeros elements */
   UnsignedInteger getNbNonZeros() const;
+
+  /** Read-only access to the compressed sparse column layout.
+      The column pointer has size nbColumns + 1 and starts at 0; the row
+      indices and the values have size getNbNonZeros() and row indices are
+      sorted within each column. */
+  Indices getColumnPointer() const;
+  Indices getRowIndices() const;
+  Point getValues() const;
 
   /** Matrix transpose */
   SparseMatrix transpose() const;
@@ -104,10 +119,10 @@ public:
   String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-//   void save(Advocate & adv) const override;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-//   void load(Advocate & adv) override;
+  void load(Advocate & adv) override;
 
 private:
 
