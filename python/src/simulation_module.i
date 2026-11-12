@@ -56,6 +56,7 @@
 
 /* Uncertainty/Algorithm/Simulation */
 %include SimulationResult.i
+%include ProbabilitySimulationResultImplementation.i
 %include ProbabilitySimulationResult.i
 %include SimulationAlgorithm.i
 %include EventSimulationImplementation.i

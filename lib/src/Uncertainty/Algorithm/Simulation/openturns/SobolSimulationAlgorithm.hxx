@@ -24,6 +24,7 @@
 #include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/SobolSimulationResult.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -84,9 +85,9 @@ public:
 
   /** Draw the probability convergence at the given level */
   Graph drawFirstOrderIndexConvergence(const UnsignedInteger marginalIndex = 0,
-                                       const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+                                       const Scalar level = ProbabilitySimulationResultImplementation::GetDefaultConfidenceLevel()) const;
   Graph drawTotalOrderIndexConvergence(const UnsignedInteger marginalIndex = 0,
-                                       const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+                                       const Scalar level = ProbabilitySimulationResultImplementation::GetDefaultConfidenceLevel()) const;
 protected:
   /** Draw the probability convergence at the given level */
   Graph drawIndexConvergence(const UnsignedInteger marginalIndex,

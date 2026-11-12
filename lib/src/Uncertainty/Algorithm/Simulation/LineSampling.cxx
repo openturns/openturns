@@ -73,11 +73,12 @@ void LineSampling::setEvent(const RandomVector & event)
   const UnsignedInteger inputDimension = composedEvent.getAntecedent().getDistribution().getDimension();
   if (initialAlpha_.getDimension() != inputDimension)
     throw InvalidArgumentException(HERE) << "Got a direction of dimension=" << initialAlpha_.getDimension();
-
   if (outputDimension > 1)
     throw InvalidArgumentException(HERE) << "Output dimension for LineSampling cannot be greater than 1, here output dimension=" << outputDimension;
+
+  // Install the event only once every check has passed
   EventSimulationImplementation::setEvent(composedEvent);
-  standardEvent_ = StandardEvent(getEvent());
+  standardEvent_ = StandardEvent(composedEvent);
 }
 
 /* Performs the actual computation. */

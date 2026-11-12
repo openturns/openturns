@@ -23,6 +23,7 @@
 
 #include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationResult.hxx"
+#include "openturns/ProbabilitySimulationResultImplementation.hxx"
 #include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -72,7 +73,7 @@ public:
 
   /** Draw the probability convergence at the given level */
   Graph drawExpectationConvergence(const UnsignedInteger marginalIndex = 0,
-                                   const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
+                                   const Scalar level = ProbabilitySimulationResultImplementation::GetDefaultConfidenceLevel()) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

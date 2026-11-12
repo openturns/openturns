@@ -22,6 +22,7 @@
 #define OPENTURNS_ADAPTIVEDIRECTIONALSTRATIFICATION_HXX
 
 #include "openturns/EventSimulation.hxx"
+#include "openturns/EventSimulationImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/RootStrategy.hxx"
