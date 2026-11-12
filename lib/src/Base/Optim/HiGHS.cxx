@@ -32,6 +32,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <limits>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -216,7 +217,9 @@ void HiGHS::run()
 
   HighsModel model;
   model.lp_.num_col_ = problemDimension;
-  model.lp_.num_row_ = getProblem().getLinearConstraintCoefficients().getNbRows();
+  // linear constraints, stored sparse column-wise (exact zeros skipped)
+  const SparseMatrix sparseCoefficients(getProblem().getSparseLinearConstraintCoefficients());
+  model.lp_.num_row_ = sparseCoefficients.getNbRows();
 
   // objective function
   model.lp_.sense_ = getProblem().isMinimization() ? ObjSense::kMinimize : ObjSense::kMaximize;
@@ -277,25 +280,37 @@ void HiGHS::run()
       }
     }
 
-  // linear constraints, stored sparse column-wise (exact zeros skipped)
+  // linear constraints: copy the compressed sparse column arrays into the
+  // HiGHS model instead of scanning a dense matrix
   if (model.lp_.num_row_ > 0)
   {
-    const Matrix constraintCoefficients(getProblem().getLinearConstraintCoefficients());
     const UnsignedInteger nbRows = static_cast<UnsignedInteger>(model.lp_.num_row_);
+    if (sparseCoefficients.getNbColumns() != problemDimension)
+      throw InvalidDimensionException(HERE) << "The constraint matrix has " << sparseCoefficients.getNbColumns() << " columns, expected " << problemDimension;
+    const Indices columnPointer(sparseCoefficients.getColumnPointer());
+    const Indices rowIndices(sparseCoefficients.getRowIndices());
+    const Point values(sparseCoefficients.getValues());
+    const Unsigned64BitsInteger maxHighsIndex = static_cast<Unsigned64BitsInteger>(std::numeric_limits<HighsInt>::max());
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     model.lp_.a_matrix_.start_.resize(model.lp_.num_col_ + 1);
     model.lp_.a_matrix_.start_[0] = 0;
     for (UnsignedInteger col = 0; col < problemDimension; ++ col)
     {
-      for (UnsignedInteger row = 0; row < nbRows; ++ row)
+      for (UnsignedInteger k = columnPointer[col]; k < columnPointer[col + 1]; ++ k)
       {
-        const Scalar coefficient = constraintCoefficients(row, col);
+        const Scalar coefficient = values[k];
         if (coefficient != 0.0)
         {
-          model.lp_.a_matrix_.index_.push_back(static_cast<HighsInt>(row));
+          if (!(rowIndices[k] < nbRows))
+            throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the constraint dimension " << nbRows;
+          if (static_cast<Unsigned64BitsInteger>(rowIndices[k]) > maxHighsIndex)
+            throw InvalidArgumentException(HERE) << "The row index " << rowIndices[k] << " exceeds the HiGHS index capacity " << maxHighsIndex;
+          model.lp_.a_matrix_.index_.push_back(static_cast<HighsInt>(rowIndices[k]));
           model.lp_.a_matrix_.value_.push_back(coefficient);
         }
       }
+      if (static_cast<Unsigned64BitsInteger>(model.lp_.a_matrix_.index_.size()) > maxHighsIndex)
+        throw InvalidArgumentException(HERE) << "The number of non-zero constraint coefficients exceeds the HiGHS index capacity " << maxHighsIndex;
       model.lp_.a_matrix_.start_[col + 1] = static_cast<HighsInt>(model.lp_.a_matrix_.index_.size());
     }
     model.lp_.row_lower_.resize(model.lp_.num_row_);

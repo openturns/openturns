@@ -25,6 +25,7 @@
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
+#include "openturns/SparseMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -100,6 +101,7 @@ public:
   /** Linear function accessor */
   Point getLinearCost() const;
   Matrix getLinearConstraintCoefficients() const;
+  SparseMatrix getSparseLinearConstraintCoefficients() const;
   Interval getLinearConstraintBounds() const;
   Bool isLinear() const;
 

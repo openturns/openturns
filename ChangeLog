@@ -111,6 +111,7 @@
 
 ==== New features ====
  * Added SparseMatrix.getColumnPointer/getRowIndices/getValues, SparseMatrix.FromDenseMatrix, canonical triplet constructor (validated indices, sorted rows, summed duplicates), persistence and Python exposure of SparseMatrix
+ * LinearProblem accepts and stores sparse constraint coefficients (SparseMatrix constructor and setLinearConstraint overload); new OptimizationProblem.getSparseLinearConstraintCoefficients avoids the densification, and HiGHS copies the sparse matrix into its model without densifying (openturns.experimental)
  * Added FittingTest.AndersonDarling: Anderson-Darling goodness-of-fit test for fully specified continuous distributions, with p-values from the Marsaglia & Marsaglia asymptotic distribution (new DistFunc.pAndersonDarling)
  * Added FittingTest.CopulaCramerVonMises and FittingTest.CopulaKolmogorov: rank-based Cramer-von Mises and Kolmogorov-Smirnov goodness-of-fit tests for copulas, with parametric bootstrap p-values (new FittingTest-CopulaMinimumSamplingSize/MaximumSamplingSize/Precision ResourceMap keys)
  * Added QuantileConfidence.computeUnilateralCoverage and QuantileConfidence.computeBilateralCoverage to compute the coverage probability of quantile confidence intervals without sample

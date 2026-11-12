@@ -63,6 +63,8 @@ OT_OptimizationProblem_isLinear_doc
 OT_OptimizationProblem_getLinearCost_doc
 %feature("docstring") OT::OptimizationProblem::getLinearConstraintCoefficients
 OT_OptimizationProblem_getLinearConstraintCoefficients_doc
+%feature("docstring") OT::OptimizationProblem::getSparseLinearConstraintCoefficients
+OT_OptimizationProblem_getSparseLinearConstraintCoefficients_doc
 %feature("docstring") OT::OptimizationProblem::getLinearConstraintBounds
 OT_OptimizationProblem_getLinearConstraintBounds_doc
 %feature("docstring") OT::OptimizationProblem::isQuadratic
