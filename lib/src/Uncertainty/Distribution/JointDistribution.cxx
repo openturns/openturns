@@ -1375,10 +1375,22 @@ void JointDistribution::setParametersCollection(const PointCollection& parameter
   const UnsignedInteger parametersSize = dimension + (dimension > 1 ? 1 : 0);
   if (parametersCollection.getSize() < parametersSize) throw InvalidArgumentException(HERE) << "The collection is too small(" << parametersCollection.getSize() << "). Expected (" << parametersSize << ")";
 
-  // set marginal parameters
-  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex) distributionCollection_[marginalIndex].setParameter(parametersCollection[marginalIndex]);
+  // No partial update on error: work on copies before committing
+  DistributionCollection newMarginals(dimension);
+  for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
+  {
+    Distribution marginal(distributionCollection_[marginalIndex]);
+    marginal.setParameter(parametersCollection[marginalIndex]);
+    newMarginals[marginalIndex] = marginal;
+  }
+  Distribution newCore(core_);
   // set core parameters
-  if (dimension > 1) core_.setParameter(parametersCollection[dimension]);
+  if (dimension > 1) newCore.setParameter(parametersCollection[dimension]);
+  // All slices accepted: commit the staged updates
+  const Description description(getDescription());
+  setDistributionCollection(newMarginals);
+  setDescription(description);
+  if (dimension > 1) setCore(newCore);
 }
 
 
