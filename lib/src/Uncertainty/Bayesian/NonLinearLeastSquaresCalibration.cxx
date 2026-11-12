@@ -30,6 +30,9 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
 
+#include <algorithm>
+#include <cmath>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(NonLinearLeastSquaresCalibration)
@@ -285,9 +288,13 @@ void NonLinearLeastSquaresCalibration::run()
       std::copy(parameterGradient.getImplementation()->begin(), parameterGradient.getImplementation()->end(), gradientObservations.getImplementation()->begin() + shift);
       shift += skip;
     }
+    const Matrix jacobian(gradientObservations.transpose());
     const String methodName(ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
-    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, gradientObservations.transpose()));
-    CovarianceMatrix gramInverse;
+    LeastSquaresMethod method(LeastSquaresMethod::Build(methodName, jacobian));
+    // Full Hessian for the Laplace path, full Gram inverse otherwise.
+    // The bounded case below restricts them to the free directions.
+    Matrix laplaceHessian;
+    CovarianceMatrix gramInverseFull;
     if (useLaplaceApproximation_)
     {
       // Laplace approximation: the posterior covariance uses the full Hessian
@@ -296,7 +303,7 @@ void NonLinearLeastSquaresCalibration::run()
       const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
       const Point residuals(residual.getImplementation()->getData());
       const SymmetricTensor residualHessian(residualFunction.hessian(thetaStar));
-      Matrix laplaceHessian(gradientObservations * gradientObservations.transpose());
+      laplaceHessian = Matrix(gradientObservations * gradientObservations.transpose());
       const UnsignedInteger residualSize = residuals.getSize();
       for (UnsignedInteger k = 0; k < residualSize; ++k)
         for (UnsignedInteger i = 0; i < parameterDimension; ++i)
@@ -309,7 +316,7 @@ void NonLinearLeastSquaresCalibration::run()
       try
       {
         const Matrix laplaceInverse(laplaceHessian.solveLinearSystem(IdentityMatrix(parameterDimension)));
-        gramInverse = CovarianceMatrix(*laplaceInverse.getImplementation());
+        gramInverseFull = CovarianceMatrix(*laplaceInverse.getImplementation());
       }
       catch (const Exception &)
       {
@@ -319,11 +326,113 @@ void NonLinearLeastSquaresCalibration::run()
     else
     {
       // Call solve only to insure that the decomposition (QR, Cholesky, SVD...) are up to date.
-      (void) method.solve(Point(gradientObservations.getNbColumns()));
-      gramInverse = method.getGramInverse();
+      (void) method.solve(Point(jacobian.getNbRows()));
+      gramInverseFull = method.getGramInverse();
     }
     Distribution tmp;
-    parameterPosterior = LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(thetaStar, residual.getImplementation()->getData(), gramInverse, 0, tmp);
+    if (bounds_.getDimension() == 0)
+    {
+      Indices freeIndices(parameterDimension);
+      freeIndices.fill();
+      parameterPosterior = LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(thetaStar, residual.getImplementation()->getData(), gramInverseFull, freeIndices, parameterDimension, 0, tmp);
+    }
+    else
+    {
+      // Variables at an active bound are considered fixed: the posterior
+      // covariance is computed on the free block only, and the residual
+      // degrees of freedom exclude the active directions. This is the
+      // usual active-set approximation, which treats the active bounds as
+      // equality constraints and applies the unconstrained Gaussian
+      // approximation to the remaining free parameters. See
+      // S. Huet, A. Bouvier, M.-A. Poursat and E. Jolivet, Statistical Tools for
+      // Nonlinear Regression: A Practical Guide with S-PLUS and R Examples,
+      // 2nd ed., Springer, New York, 2004, for the Gaussian approximation, and
+      // P. E. Gill, W. Murray and M. H. Wright, Practical Optimization,
+      // Academic Press, London, 1981, Section 5.2, for the active-set treatment
+      // of bound constraints.
+      // Absolute tolerance used to detect a parameter lying on one of its bounds.
+      const Scalar tolerance = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance");
+      if (!(tolerance > 0.0) || !std::isfinite(tolerance))
+        throw InvalidArgumentException(HERE) << "Error: the active bound tolerance must be finite and strictly positive, got " << tolerance;
+      const Point lowerBound(bounds_.getLowerBound());
+      const Point upperBound(bounds_.getUpperBound());
+      const Interval::BoolCollection finiteLowerBound(bounds_.getFiniteLowerBound());
+      const Interval::BoolCollection finiteUpperBound(bounds_.getFiniteUpperBound());
+      Indices freeIndices(0);
+      for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+      {
+        Bool active = false;
+        if (finiteLowerBound[i] && (std::abs(thetaStar[i] - lowerBound[i]) <= tolerance))
+          active = true;
+        if (finiteUpperBound[i] && (std::abs(thetaStar[i] - upperBound[i]) <= tolerance))
+          active = true;
+        if (!active)
+          freeIndices.add(i);
+      }
+      const UnsignedInteger freeDimension = freeIndices.getSize();
+      // The covariance is zero in the directions fixed at a bound
+      CovarianceMatrix gramInverse(parameterDimension, Point(parameterDimension));
+      if (freeDimension > 0)
+      {
+        if (useLaplaceApproximation_)
+        {
+          Matrix freeHessian(freeDimension, freeDimension);
+          for (UnsignedInteger i = 0; i < freeDimension; ++i)
+            for (UnsignedInteger j = 0; j < freeDimension; ++j)
+              freeHessian(i, j) = laplaceHessian(freeIndices[i], freeIndices[j]);
+          try
+          {
+            const Matrix freeInverse(freeHessian.solveLinearSystem(IdentityMatrix(freeDimension)));
+            const CovarianceMatrix freeGramInverse(*freeInverse.getImplementation());
+            for (UnsignedInteger i = 0; i < freeDimension; ++i)
+              for (UnsignedInteger j = 0; j < freeDimension; ++j)
+              {
+                const Scalar value = freeGramInverse(i, j);
+                if (!std::isfinite(value))
+                  throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+                gramInverse(freeIndices[i], freeIndices[j]) = value;
+              }
+          }
+          catch (const InvalidArgumentException &)
+          {
+            throw;
+          }
+          catch (const Exception &)
+          {
+            throw InvalidArgumentException(HERE) << "In NonLinearLeastSquaresCalibration::run, cannot compute the Laplace approximation: the Hessian of the residuals at the optimum is not positive definite in the free parameter directions.";
+          }
+        }
+        else
+        {
+          Matrix freeJacobian(jacobian.getNbRows(), freeDimension);
+          for (UnsignedInteger j = 0; j < freeDimension; ++j)
+            for (UnsignedInteger i = 0; i < jacobian.getNbRows(); ++i)
+              freeJacobian(i, j) = jacobian(i, freeIndices[j]);
+          // A rank-deficient free block gives a small positive singular value whose
+          // inverse can still be finite: check the numerical rank before relying on
+          // the factorization of the free block.
+          const Point singularValues(freeJacobian.computeSingularValues());
+          const UnsignedInteger singularValuesSize = singularValues.getSize();
+          const Scalar largestSingularValue = (singularValuesSize > 0) ? singularValues[0] : 0.0;
+          const Scalar rankTolerance = std::max(freeJacobian.getNbRows(), freeDimension) * SpecFunc::Precision * largestSingularValue;
+          if ((singularValuesSize < freeDimension) || !(largestSingularValue > 0.0) || (singularValues[singularValuesSize - 1] <= rankTolerance))
+            throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+          LeastSquaresMethod freeMethod(LeastSquaresMethod::Build(methodName, freeJacobian));
+          // Initialize the decomposition before accessing the Gram inverse
+          freeMethod.update(Indices(), freeMethod.getCurrentIndices(), Indices(), false);
+          const CovarianceMatrix freeGramInverse(freeMethod.getGramInverse());
+          for (UnsignedInteger i = 0; i < freeDimension; ++i)
+            for (UnsignedInteger j = 0; j < freeDimension; ++j)
+            {
+              const Scalar value = freeGramInverse(i, j);
+              if (!std::isfinite(value))
+                throw InvalidArgumentException(HERE) << "Error: the calibration problem is not identifiable in the free parameter directions";
+              gramInverse(freeIndices[i], freeIndices[j]) = value;
+            }
+        }
+      }
+      parameterPosterior = LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(thetaStar, residual.getImplementation()->getData(), gramInverse, freeIndices, freeDimension, 0, tmp);
+    }
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));

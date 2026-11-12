@@ -141,6 +141,22 @@ boundedMAP = algo.getResult().getParameterMAP()
 print("result (bounded)=", boundedMAP)
 assert bounds.contains(boundedMAP), "MAP should respect bounds"
 ott.assert_almost_equal(boundedMAP[0], 2.0, 1e-1, 1e-2)
+# active-set posterior: Normal with zero variance in fixed directions
+posterior = algo.getResult().getParameterPosterior()
+assert posterior.getImplementation().getClassName() == "Normal"
+tol = ot.ResourceMap.GetAsScalar("LinearLeastSquaresCalibration-ActiveBoundTolerance")
+for i in range(3):
+    active = (abs(boundedMAP[i] - bounds.getLowerBound()[i]) <= tol) or (
+        abs(boundedMAP[i] - bounds.getUpperBound()[i]) <= tol
+    )
+    if active:
+        assert posterior.getCovariance()[i, i] == 0.0
+        for j in range(3):
+            assert posterior.getCovariance()[i, j] == 0.0
+            assert posterior.getCovariance()[j, i] == 0.0
+# the first component saturates the upper bound in this setup
+assert abs(boundedMAP[0] - bounds.getUpperBound()[0]) <= 1e-4
+assert posterior.getCovariance()[0, 0] == 0.0
 
 # setOptimizationAlgorithm preserves bounds carried by the solver problem
 boundedProblem = ot.OptimizationProblem(

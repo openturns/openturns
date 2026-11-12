@@ -1337,6 +1337,7 @@
 
   <!-- OT::LinearLeastSquaresCalibration parameters -->
   <LinearLeastSquaresCalibration-Regularization value_float="1e-12" />
+  <LinearLeastSquaresCalibration-ActiveBoundTolerance value_float="1.0e-6" />
   <LinearLeastSquaresCalibration-Method         value_str="QR"   />
 
   <!-- OT::NonLinearLeastSquaresCalibration parameters -->

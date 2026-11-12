@@ -24,6 +24,8 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/SpecFunc.hxx"
 
+#include <cmath>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -118,7 +120,9 @@ void LinearLeastSquaresCalibration::run()
   const Point thetaStar(getStartingPoint() - deltaTheta);
   const Point r(deltaY - gradientObservations_ * deltaTheta);
   Distribution error;
-  Distribution parameterPosterior(ComputePosteriorAndErrorDistribution(thetaStar, r, method.getGramInverse(), outputObservations_.getDimension(), error));
+  Indices freeIndices(thetaStar.getDimension());
+  freeIndices.fill();
+  Distribution parameterPosterior(ComputePosteriorAndErrorDistribution(thetaStar, r, method.getGramInverse(), freeIndices, thetaStar.getDimension(), outputObservations_.getDimension(), error));
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getStartingPoint(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction, false);
@@ -127,21 +131,36 @@ void LinearLeastSquaresCalibration::run()
 Distribution LinearLeastSquaresCalibration::ComputePosteriorAndErrorDistribution(const Point & thetaStar,
     const Point & r,
     const SquareMatrix & gramInverse,
+    const Indices & freeIndices,
+    const UnsignedInteger degreesOfFreedom,
     const UnsignedInteger outputDimension,
     Distribution & error)
 {
-  if (!(r.getDimension() > thetaStar.getDimension()))
+  if (!(r.getDimension() > degreesOfFreedom))
     throw InvalidArgumentException(HERE) << "Error: cannot estimate residual variance because residual dimension="
-                                         << r.getDimension() << " is not greater than parameter dimension=" << thetaStar.getDimension();
-  const Scalar varianceError = r.normSquare() / (r.getDimension() - thetaStar.getDimension());
+                                         << r.getDimension() << " is not greater than the number of free parameters=" << degreesOfFreedom;
+  const Scalar varianceError = r.normSquare() / (r.getDimension() - degreesOfFreedom);
   CovarianceMatrix covarianceThetaStar;
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");
   covarianceThetaStar = CovarianceMatrix((gramInverse * varianceError).getImplementation());
+  // A non-finite trace means a rank-deficient Jacobian block: the resulting
+  // Gaussian posterior would be meaningless, so fail instead of returning it.
+  const Scalar covarianceTrace = covarianceThetaStar.computeTrace();
+  if (!std::isfinite(covarianceTrace))
+    throw InvalidArgumentException(HERE) << "Error: the covariance of the posterior distribution is not finite. The problem may be not identifiable.";
   if (epsilon > 0.0)
   {
-    const Scalar shift = epsilon * covarianceThetaStar.computeLargestEigenValueModule();
-    for (UnsignedInteger i = 0; i < covarianceThetaStar.getDimension(); ++i)
-      covarianceThetaStar(i, i) += shift;
+    // A zero covariance, obtained when every parameter is active at a bound,
+    // has no eigenvalue to shift: skip the regularization in that case.
+    if (covarianceTrace > 0.0)
+    {
+      const Scalar shift = epsilon * covarianceThetaStar.computeLargestEigenValueModule();
+      // Parameters fixed at a bound must keep a zero variance: regularize the
+      // free directions only, as the active directions are excluded from the
+      // posterior covariance and from the residual degrees of freedom.
+      for (UnsignedInteger k = 0; k < freeIndices.getSize(); ++k)
+        covarianceThetaStar(freeIndices[k], freeIndices[k]) += shift;
+    }
   }
   Normal parameterPosterior;
   try
