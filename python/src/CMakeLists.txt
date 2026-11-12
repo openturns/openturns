@@ -25,6 +25,7 @@ add_library (OTPythonWrapping OBJECT
                       PythonExperiment.cxx
                       PythonRandomVector.cxx
                       PythonDistribution.cxx
+                      PythonActiveLearningReliabilityFunction.cxx
                       PythonFieldFunction.cxx
                       PythonFieldToPointFunction.cxx
                       PythonPointToFieldFunction.cxx)
@@ -571,6 +572,13 @@ ot_add_python_module(experimental experimental_module.i
                      FejerExperiment.i FejerExperiment_doc.i
                      ChristoffelSubsampleExperiment.i ChristoffelSubsampleExperiment_doc.i
                      EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i
+                     ActiveLearningReliabilityFunctionImplementation.i ActiveLearningReliabilityFunctionImplementation_doc.i
+                     ActiveLearningReliabilityFunction.i ActiveLearningReliabilityFunction_doc.i
+                     ActiveLearningUFunction.i ActiveLearningUFunction_doc.i
+                     ActiveLearningEFFFunction.i ActiveLearningEFFFunction_doc.i
+                     ActiveLearningGMMFunction.i ActiveLearningGMMFunction_doc.i
+                     ActiveLearningReliabilityAlgorithm.i ActiveLearningReliabilityAlgorithm_doc.i
+                     ActiveLearningReliabilityResult.i ActiveLearningReliabilityResult_doc.i
                      HiGHS.i HiGHS_doc.i
                      LinearProblem.i LinearProblem_doc.i
                      FiniteOrthogonalFunctionFactory.i FiniteOrthogonalFunctionFactory_doc.i
