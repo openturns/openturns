@@ -57,8 +57,9 @@ and :class:`~openturns.experimental.QuadraticProblem`).
 
 Quadratic problems are solved by ``qpasm`` or ``hipo``. The ``choose``
 default selects the quadratic solver available in the linked HiGHS build.
-The active-set ``qpasm`` name requires HiGHS 1.14 or later: earlier versions
-only provide the parallel interior point solver for quadratic problems.
+The active-set ``qpasm`` name requires HiGHS 1.14 or later. Earlier versions
+(HiGHS 1.13) already use an active-set solver for quadratic problems but do
+not accept the explicit ``qpasm`` name: use ``choose`` with these versions.
 Mixed-integer quadratic problems are not supported, and the linear-only
 solver names are rejected on a quadratic problem.
 The constant term of a quadratic objective is taken into account in the
