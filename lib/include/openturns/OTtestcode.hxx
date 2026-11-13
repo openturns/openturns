@@ -274,17 +274,17 @@ inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rto
   if (std::isinf(a) && std::isinf(b))
   {
     if (a * b < 0.0)
-      throw TestFailed(OSS() << "Value a: " << a << " and b: " << b << " are different " << errMsg << " prod=" << (a * b));
+      throw AssertionException(HERE) << "Value a: " << a << " and b: " << b << " are different " << errMsg << " prod=" << (a * b);
     else
       return;
   }
   if (std::isnan(a) && std::isnan(b))
     return;
   if (!std::isfinite(a) || !std::isfinite(b))
-    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
+    throw AssertionException(HERE) << "Value a: " << a << " or b: " << b << " are invalid " << errMsg;
   if (std::abs(a - b) > atol + rtol * std::abs(b))
   {
-    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+    throw AssertionException(HERE) << "Value " << a << " is not close enough to " << b << " " << errMsg;
   }
 }
 
@@ -293,7 +293,7 @@ inline void assert_almost_equal(const Complex & a, const Complex & b, const Scal
   if (std::isfinite(a.real()) && std::isfinite(b.real()) && std::isfinite(a.imag()) && std::isfinite(b.imag()))
   {
     if (std::abs(a - b) > atol + rtol * std::abs(b))
-      throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
+      throw AssertionException(HERE) << "Value " << a << " is not close enough to " << b << " " << errMsg;
   }
   else
   {
@@ -306,7 +306,7 @@ inline void assert_almost_equal(const Complex & a, const Complex & b, const Scal
 inline void assert_almost_equal(const Point & a, const Point & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getDimension() != b.getDimension())
-    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
+    throw AssertionException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
   const UnsignedInteger dimension = a.getDimension();
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
@@ -318,9 +318,9 @@ inline void assert_almost_equal(const Point & a, const Point & b, const Scalar r
 inline void assert_almost_equal(const Sample & a, const Sample & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getSize() != b.getSize())
-    throw InvalidArgumentException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
+    throw AssertionException(HERE) << "A and B must have the same size " << a.getSize() << " vs " << b.getSize();
   if (a.getDimension() != b.getDimension())
-    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
+    throw AssertionException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
   const UnsignedInteger size = a.getSize();
   const UnsignedInteger dimension = a.getDimension();
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -335,9 +335,9 @@ inline void assert_almost_equal(const Sample & a, const Sample & b, const Scalar
 inline void assert_almost_equal(const Matrix &a, const Matrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getNbRows() != b.getNbRows())
-    throw InvalidArgumentException(HERE) << "A and B must have the same row number " << a.getNbRows() << " vs " << b.getNbRows();
+    throw AssertionException(HERE) << "A and B must have the same row number " << a.getNbRows() << " vs " << b.getNbRows();
   if (a.getNbColumns() != b.getNbColumns())
-    throw InvalidArgumentException(HERE) << "A and B must have the same column number " << a.getNbColumns() << " vs " << b.getNbColumns();
+    throw AssertionException(HERE) << "A and B must have the same column number " << a.getNbColumns() << " vs " << b.getNbColumns();
   const UnsignedInteger rows = a.getNbRows();
   const UnsignedInteger columns = a.getNbColumns();
 
@@ -353,7 +353,7 @@ inline void assert_almost_equal(const Matrix &a, const Matrix &b, const Scalar r
 inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getDimension() != b.getDimension())
-    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
+    throw AssertionException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
   const UnsignedInteger dimension = a.getDimension();
 
   for (UnsignedInteger j = 0; j < dimension; ++j)
@@ -373,7 +373,7 @@ inline void assert_almost_equal(const CovarianceMatrix &a, const CovarianceMatri
 inline void assert_almost_equal(const Tensor & a, const Tensor & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getNbSheets() != b.getNbSheets())
-    throw InvalidArgumentException(HERE) << "A and B must have the same sheet number " << a.getNbSheets() << " vs " << b.getNbSheets();
+    throw AssertionException(HERE) << "A and B must have the same sheet number " << a.getNbSheets() << " vs " << b.getNbSheets();
   const UnsignedInteger sheets = a.getNbSheets();
   for (UnsignedInteger k = 0; k < sheets; ++ k)
     assert_almost_equal(a.getSheet(k), b.getSheet(k), rtol, atol, errMsg);
@@ -382,10 +382,10 @@ inline void assert_almost_equal(const Tensor & a, const Tensor & b, const Scalar
 inline void assert_almost_equal(const Distribution &a, const Distribution &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getImplementation()->getClassName() != b.getImplementation()->getClassName())
-    throw InvalidArgumentException(HERE) << "A and B must be the same distribution. A is a " << a.getImplementation()->getClassName() << " whereas B is a " << b.getImplementation()->getClassName();
+    throw AssertionException(HERE) << "A and B must be the same distribution. A is a " << a.getImplementation()->getClassName() << " whereas B is a " << b.getImplementation()->getClassName();
 
   if (a.getParameterDimension() != b.getParameterDimension())
-    throw InvalidArgumentException(HERE) << "A and B must have the same number of parameters. A has " << a.getParameterDimension() << " parameters whereas B has " << b.getParameterDimension() << " parameters.";
+    throw AssertionException(HERE) << "A and B must have the same number of parameters. A has " << a.getParameterDimension() << " parameters whereas B has " << b.getParameterDimension() << " parameters.";
 
   assert_almost_equal(a.getParameter(), b.getParameter(), rtol, atol, errMsg);
 }
@@ -394,7 +394,7 @@ inline void assert_almost_equal(const Mesh & a, const Mesh & b, const Scalar rto
 {
   assert_almost_equal(a.getVertices(), b.getVertices(), rtol, atol, errMsg);
   if (a.getSimplices() != b.getSimplices())
-    throw InvalidArgumentException(HERE) << "A and B must have the same simplices";
+    throw AssertionException(HERE) << "A and B must have the same simplices";
 }
 
 inline void assert_almost_equal(const Field & a, const Field & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
@@ -407,7 +407,7 @@ inline void assert_almost_equal(const ProcessSample & a, const ProcessSample & b
 {
   assert_almost_equal(a.getMesh(), b.getMesh(), rtol, atol, errMsg);
   if (a.getSize() != b.getSize())
-    throw InvalidArgumentException(HERE) << "A and B must have the same size";
+    throw AssertionException(HERE) << "A and B must have the same size";
   for (UnsignedInteger j = 0; j < a.getSize(); ++j)
     assert_almost_equal(a.getField(j).getValues(), b.getField(j).getValues(), rtol, atol, errMsg);
 }
@@ -417,7 +417,7 @@ void assert_equal(const T & a, const T & b, const String errMsg = "")
 {
   if (a != b)
   {
-    throw TestFailed(OSS() << "Value " << a << " is not equal to " << b << " " << errMsg);
+    throw AssertionException(HERE) << "Value " << a << " is not equal to " << b << " " << errMsg;
   }
 }
 

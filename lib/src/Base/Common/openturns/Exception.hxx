@@ -229,6 +229,13 @@ NEW_EXCEPTION( InvalidArgumentException );
 NEW_EXCEPTION( InvalidDimensionException );
 
 /**
+ * @class AssertionException
+ * @brief Raised when an assertion fails in test code
+ * @internal
+ */
+NEW_EXCEPTION( AssertionException );
+
+/**
  * @class NotYetImplementedException
  * @brief Raised when a method has not been implemented yet though it should be
  * @internal

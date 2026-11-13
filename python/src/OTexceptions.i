@@ -34,6 +34,10 @@ namespace std {
   catch (const OT::OutOfBoundException & ex) {
     SWIG_exception(SWIG_IndexError, ex.__repr__().c_str());
   }
+  catch (const OT::AssertionException & ex) {
+    PyErr_SetString(PyExc_AssertionError, ex.__repr__().c_str());
+    SWIG_fail;
+  }
   catch (const OT::InterruptionException &) {
     SWIG_exception(SWIG_RuntimeError, "Interruption in $decl");
   }
